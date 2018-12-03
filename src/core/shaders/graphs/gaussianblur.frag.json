@@ -1,0 +1,261 @@
+{
+    "edges": [
+        {
+            "layers": [
+            ],
+            "sourcePort": "outputColor",
+            "sourceUuid": "{72c4ce9a-b3c4-44a7-af9b-0a8fea5369a2}",
+            "targetPort": "fragColor",
+            "targetUuid": "{19eb6d90-0989-47b9-8d3e-5a737ef298cb}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{bae7e373-14c8-4add-8da5-ccbd76db15a5}",
+            "targetPort": "width",
+            "targetUuid": "{72c4ce9a-b3c4-44a7-af9b-0a8fea5369a2}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{8b47ae2d-e8cf-4e99-91b0-2194d2529c87}",
+            "targetPort": "texCoord",
+            "targetUuid": "{72c4ce9a-b3c4-44a7-af9b-0a8fea5369a2}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{ce6a2a50-d39a-4498-a195-34370060e16a}",
+            "targetPort": "pass",
+            "targetUuid": "{72c4ce9a-b3c4-44a7-af9b-0a8fea5369a2}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{921468b2-0e93-4194-bf18-c87f3cadd796}",
+            "targetPort": "height",
+            "targetUuid": "{72c4ce9a-b3c4-44a7-af9b-0a8fea5369a2}"
+        }
+    ],
+    "nodes": [
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "height",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Uniform"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "input",
+            "uuid": "{921468b2-0e93-4194-bf18-c87f3cadd796}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "width",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Uniform"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "input",
+            "uuid": "{bae7e373-14c8-4add-8da5-ccbd76db15a5}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "texCoord",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            },
+            "type": "input",
+            "uuid": "{8b47ae2d-e8cf-4e99-91b0-2194d2529c87}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "textureSampler",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Uniform"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Sampler2D"
+                }
+            },
+            "type": "input",
+            "uuid": "{346effd4-0265-4b44-91fc-def99f6ea8a4}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "pass",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Uniform"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Int"
+                }
+            },
+            "type": "input",
+            "uuid": "{ce6a2a50-d39a-4498-a195-34370060e16a}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "type": "fragColor",
+            "uuid": "{19eb6d90-0989-47b9-8d3e-5a737ef298cb}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "type": "kuesa_gaussianBlur",
+            "uuid": "{72c4ce9a-b3c4-44a7-af9b-0a8fea5369a2}"
+        }
+    ],
+    "prototypes": {
+        "fragColor": {
+            "inputs": [
+                "fragColor"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "gl_fragColor = $fragColor;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out highp vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
+                }
+            ]
+        },
+        "input": {
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "name": "defaultName",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier highp $type $name;"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
+                }
+            ]
+        },
+        "kuesa_gaussianBlur": {
+            "inputs": [
+                "height",
+                "pass",
+                "texCoord",
+                "width"
+            ],
+            "outputs": [
+                "outputColor"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl3/kuesa_gaussianblur.inc.frag"
+                    ],
+                    "substitution": "vec4 $outputColor = kuesa_gaussianBlur($pass, $width, $height, $texCoord);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es3/kuesa_gaussianblur.inc.frag"
+                    ],
+                    "substitution": "highp vec4 $outputColor = kuesa_gaussianBlur($pass, $width, $height, $texCoord);"
+                }
+            ]
+        }
+    }
+}

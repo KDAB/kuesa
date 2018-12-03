@@ -1,0 +1,77 @@
+/*
+    kuesa-overview.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \page kuesa-overview.html
+    \title Kuesa Overview
+
+    \brief Kuesa provides C++ and QML APIs to ease incorporation of 3D content
+    into Qt 3D based applications.
+
+    \section1 Basic Kuesa Features
+
+    \section2 glTF 2 Importer
+
+    The class Kuesa::GLTF2Importer is a Qt3DCore::QNode based class that allows
+    loading glTF 2 files. glTF 2 files from any exporter should work, note however
+    that the Kuesa specific exporter allow the use of additional features, namely:
+    \list
+    \li Qt 3D compatible PBR Material support
+    \li Qt 3D layer export
+    \li Face wireframe export
+    \endlist
+
+    Once a file has been loaded through the use of the glTF 2 importer, name based
+    collections are populated. Kuesa provides the following collections for:
+    \list
+    \li Entities, Kuesa::EntityCollection
+    \li Animation Clips, Kuesa::AnimationClipCollection
+    \li Animation Mappings, Kuesa::AnimationMappingsCollection
+    \li Cameras, Kuesa::CameraCollection
+    \li Effects, Kuesa::EffectCollection
+    \li Materials, Kuesa::MaterialCollection
+    \li Meshes, Kuesa::MeshCollection
+    \li Skeletons, Kuesa::SkeletonCollection
+    \li Textures, Kuesa::TextureCollection
+    \li Images, Kuesa::TextureImageCollection
+    \endlist
+
+    \section2 Full Screen Post Processing Effects
+
+    Final screen composition can be customized through the use of post
+    processing effects. The effects work along with the default provided
+    Kuesa FrameGraph Kuesa::ForwardRenderer.
+
+    Currently Kuesa provides the following effects:
+    \list
+    \li Bloom, Kuesa::BloomEffect
+    \li Gaussian Blur, Kuesa::GaussianBlurEffect
+    \li Opacity Masking, Kuesa::OpacityMask
+    \li Thresholding, Kuesa::ThresholdEffect
+    \endlist
+*/

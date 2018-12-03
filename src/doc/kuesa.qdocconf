@@ -1,0 +1,54 @@
+include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
+
+project                 = Kuesa
+description             = Kuesa Reference Documentation
+version                 = 1.0
+
+includepaths            = -I . \
+                          -I $QT_INSTALL_HEADERS \
+                          -I $QT_INSTALL_HEADERS/Kuesa
+
+examplesinstallpath       = kuesa
+
+
+qhp.projects              = Kuesa
+qhp.Kuesa.file            = kuesa.qhp
+qhp.Kuesa.namespace       = com.kdab.kuesa.1.0
+qhp.Kuesa.virtualFolder   = kuesa
+qhp.Kuesa.indexTitle      = Kuesa
+qhp.Kuesa.subprojects     = classes qmltypes examples
+qhp.Kuesa.indexRoot       =
+
+qhp.Kuesa.subprojects.classes.title       = C++ Classes
+qhp.Kuesa.subprojects.classes.indexTitle  = Kuesa C++ Classes
+qhp.Kuesa.subprojects.classes.selectors   = class doc:headerfile
+qhp.Kuesa.subprojects.classes.sortPages   = true
+
+qhp.Kuesa.subprojects.qmltypes.title      = QML Types
+qhp.Kuesa.subprojects.qmltypes.indexTitle = Kuesa QML Types
+qhp.Kuesa.subprojects.qmltypes.selectors  = qmlclass
+qhp.Kuesa.subprojects.qmltypes.sortPages  = true
+
+qhp.Kuesa.subprojects.examples.title      = Examples
+qhp.Kuesa.subprojects.examples.indexTitle = Kuesa Examples
+qhp.Kuesa.subprojects.examples.selectors  = doc:example
+qhp.Kuesa.subprojects.examples.sortPages  = true
+
+depends                                   += kuesa
+
+tagfile                                   = kuesa.tags
+
+headerdirs += . \
+          ../core \
+          ../quick
+
+exampledirs += \
+           ../../examples/kuesa
+
+Cpp.ignoretokens                         += KUESASHARED_EXPORT
+Cpp.ignoredirectives                     += Q_DECLARE_LOGGING_CATEGORY
+
+navigation.landingpage = "Kuesa"
+navigation.cppclassespage = "Kuesa C++ Classes"
+navigation.qmltypespage = "Kuesa QML Types"
+

@@ -1,0 +1,50 @@
+{
+    "module": "kuesa",
+    "testDir": "../../config.tests",
+
+    "commandline": {
+        "options": {
+            "draco": { "type": "enum", "values": [ "system", "no" ] }
+        }
+    },
+
+    "libraries": {
+        "draco": {
+            "label": "Draco Compression",
+            "test": "draco",
+            "sources": [
+                { "libs": "-ldraco -ldracodec" }
+            ]
+        }
+    },
+
+    "features": {
+        "system-draco": {
+            "label": "Draco Compression",
+            "disable": "input.draco != 'system' && input.draco != ''",
+            "condition": "libs.draco",
+            "output": [ "privateFeature" ]
+        },
+        "kuesa-draco": {
+            "label": "Draco Compression",
+            "disable": "input.draco == 'no'",
+            "condition": "features.system-draco",
+            "output": [
+                "publicFeature",
+                { "type": "define", "name": "KUESA_DRACO_COMPRESSION" }
+            ]
+        }
+    },
+
+    "report": [
+    ],
+
+    "summary": [
+        {
+            "section": "Kuesa",
+            "entries": [
+                "kuesa-draco"
+            ]
+        }
+    ]
+}

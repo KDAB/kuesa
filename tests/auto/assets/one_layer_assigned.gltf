@@ -1,0 +1,37 @@
+{
+    "asset" : {
+        "generator" : "Khronos Blender glTF 2.0 exporter",
+        "version" : "2.0"
+    },
+    "extensions" : {
+        "KDAB_Kuesa_Layers" : {
+            "layers" : [
+                "vl1", "vl2", "vl3"
+            ]
+        }
+    },
+    "extensionsUsed" : [
+        "KDAB_Kuesa_Layers"
+    ],
+    "nodes" : [
+        {
+            "extensions" : {
+                "KDAB_Kuesa_Layers" : {
+                    "layers" : [
+                        0
+                    ]
+                }
+            },
+            "name" : "entity"
+        }
+    ],
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+#do not report clazy results for these subdirs
+SKIP /3rdParty/
+
+#clazy checks specification
+CHECKS level1
+

@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>shaders/gl3/screen_quad.vert</file>
+        <file>shaders/es2/screen_quad.vert</file>
+        <file>shaders/es2/screen_quad.frag</file>
+        <file>shaders/gl3/screen_quad.frag</file>
+        <file>RenderPreviewGraph.qml</file>
+        <file>icons/max-48.png</file>
+        <file>icons/max-48@2x.png</file>
+        <file>icons/open-48.png</file>
+        <file>icons/open-48@2x.png</file>
+        <file>icons/reload-48.png</file>
+        <file>icons/reload-48@2x.png</file>
+        <file>icons/playing-circleH.png</file>
+        <file>icons/playing-circleH@2x.png</file>
+        <file>icons/playing-circleV.png</file>
+        <file>icons/playing-circleV@2x.png</file>
+        <file>icons/stopped.png</file>
+        <file>icons/stopped@2x.png</file>
+    </qresource>
+</RCC>

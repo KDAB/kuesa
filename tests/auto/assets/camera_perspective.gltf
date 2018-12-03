@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Camera",
+        "perspective": {
+            "aspectRatio": 2.,
+            "yfov": 1.,
+            "zfar": 100.,
+            "znear": 1.
+        },
+        "type": "perspective"
+    }
+]

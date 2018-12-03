@@ -1,0 +1,132 @@
+{
+    "animations": [
+        {
+            "animationName": "RotationAnimation",
+            "channels": [
+                {
+                    "channelName": "Rotation",
+                    "channelComponents": [
+                        {
+                            "channelComponentName": "Rotation W",
+                            "keyFrames": [
+                                {
+                                    "coords": [
+                                        0.0,
+                                        1.0
+                                    ],
+                                    "leftHandle": [
+                                        -1.0,
+                                        1.0
+                                    ],
+                                    "rightHandle": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "coords": [
+                                        10.0,
+                                        -1.0
+                                    ],
+                                    "leftHandle": [
+                                        9.0,
+                                        -1.0
+                                    ],
+                                    "rightHandle": [
+                                        11.0,
+                                        -1.0
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "channelComponentName": "Rotation X",
+                            "keyFrames": [
+                                {
+                                    "coords": [
+                                        0.0,
+                                        0.0
+                                    ],
+                                    "leftHandle": [
+                                        -1.0,
+                                        0.0
+                                    ],
+                                    "rightHandle": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "channelComponentName": "Rotation Y",
+                            "keyFrames": [
+                                {
+                                    "coords": [
+                                        0.0,
+                                        0.0
+                                    ],
+                                    "leftHandle": [
+                                        -1.0,
+                                        0.0
+                                    ],
+                                    "rightHandle": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "coords": [
+                                        5.0,
+                                        1.0
+                                    ],
+                                    "leftHandle": [
+                                        4.0,
+                                        1.0
+                                    ],
+                                    "rightHandle": [
+                                        6.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "coords": [
+                                        10.0,
+                                        0.0
+                                    ],
+                                    "leftHandle": [
+                                        9.0,
+                                        0.0
+                                    ],
+                                    "rightHandle": [
+                                        11.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "channelComponentName": "Rotation Z",
+                            "keyFrames": [
+                                {
+                                    "coords": [
+                                        0.0,
+                                        0.0
+                                    ],
+                                    "leftHandle": [
+                                        -1.0,
+                                        0.0
+                                    ],
+                                    "rightHandle": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

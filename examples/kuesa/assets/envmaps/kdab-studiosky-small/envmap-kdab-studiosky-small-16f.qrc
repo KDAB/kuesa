@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>kdab-studiosky-small_16f_irradiance.dds</file>
+        <file>kdab-studiosky-small_16f_radiance.dds</file>
+        <file>kdab-studiosky-small_16f_specular.dds</file>
+        <file>kdab-studiosky-small_skybox.dds</file>
+        <file>kdab-studiosky-small_16f_specular_es2.dds</file>
+        <file>kdab-studiosky-small_16f_irradiance_es2.dds</file>
+    </qresource>
+</RCC>

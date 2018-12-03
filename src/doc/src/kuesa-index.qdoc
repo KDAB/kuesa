@@ -1,0 +1,94 @@
+/*
+    kuesa-index.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \page kuesa-index.html
+    \title Kuesa
+
+    \e{Kuesa} is a module for Qt 3D which provides:
+    \list
+    \li Support for glTF 2 importing
+    \li Helpers for accessing and manipulating loaded content
+    \li Custom PBR material
+    \li Custom forward renderer for adding effects
+    \li A Qt Creator template for quickly creating new Kuesa based projects
+    \endlist
+
+
+    \annotatedlist kuesa-module
+
+    Application side features provided by Kuesa reside in the Kuesa Qt module.
+
+    \section1 Getting Started
+
+    For a C++ applications and C++/QML applications that performs 2D or 3D
+    rendering leveraging the Kuesa and Qt 3D modules:
+
+    \badcode
+    QT += 3dcore 3drender 3dinput 3dlogic 3dextras 3danimation kuesa
+    \endcode
+
+    To include the definitions of the module's classes, use the following
+    directives:
+
+    \badcode
+    #include <Kuesa>
+    \endcode
+
+    \section1 Overview
+
+    \section1 Reference
+    \list
+        \li \l {Kuesa Overview}
+        \li \l {Kuesa C++ Classes}
+        \li \l {Kuesa QML Types}
+        \li \l {Kuesa Examples}
+    \endlist
+
+    \section1 Kuesa Platform Support
+
+    Kuesa has the following support for platforms:
+
+    \list
+        \li Microsoft Windows (win32) - Supported
+        \li Linux X11 - Supported
+        \li \macos - Supported although there may be some retina scaling issues
+        \li Android - Supported
+        \li Embedded Linux - Supported
+        \li iOS - Supported
+        \li WinRT - Not supported yet
+    \endlist
+
+    \section1 Licenses and Attributions
+
+    Kuesa is available under commercial licenses from \l{KDAB}. In addition, it
+    is also available under the \l{GNU Affero General Public License, version
+    3}
+
+    \generatelist{groupsbymodule attributions-kuesa}
+*/

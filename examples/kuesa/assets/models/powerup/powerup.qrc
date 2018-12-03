@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/assets/models/powerup">
+        <file>powerup.obj</file>
+        <file>basecolor.png</file>
+        <file>roughness.png</file>
+        <file>ambientocclusion.png</file>
+        <file>normal.png</file>
+        <file>ambientocclusion.dds</file>
+        <file>basecolor.dds</file>
+        <file>metalness.dds</file>
+        <file>normal.dds</file>
+        <file>roughness.dds</file>
+        <file>metalness.png</file>
+        <file>metalroughness.png</file>
+        <file>emissive.png</file>
+    </qresource>
+</RCC>

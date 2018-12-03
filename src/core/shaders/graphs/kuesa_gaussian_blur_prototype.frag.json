@@ -1,0 +1,49 @@
+{
+    "templates": {
+        "kuesa_gaussianBlur": {
+            "inputs": [
+                "texCoord",
+                "pass",
+                "width",
+                "height"
+            ],
+            "outputs": [
+                "outputColor"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/gl3/kuesa_gaussianblur.inc.frag" ],
+                    "substitution": "vec4 $outputColor = kuesa_gaussianBlur($pass, $width, $height, $texCoord);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/es3/kuesa_gaussianblur.inc.frag" ],
+                    "substitution": "highp vec4 $outputColor = kuesa_gaussianBlur($pass, $width, $height, $texCoord);"
+                }
+            ]
+        }
+    },
+    "prototypes": {
+        "kuesa_gaussianBlur": {
+            "template": "default.kuesa_gaussianBlur",
+            "inputs": [
+                {"pass": "QShaderLanguage::Int"},
+                {"texCoord": "QShaderLanguage::Vec2"},
+                {"width": "QShaderLanguage::Float"},
+                {"height": "QShaderLanguage::Float"}
+            ],
+            "outputs": [
+                {"outputColor": "QShaderLanguage::Vec4"}
+            ]
+        }
+    }
+}

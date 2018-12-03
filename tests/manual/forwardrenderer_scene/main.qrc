@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>scenes/ThreeSpheres.qml</file>
+        <file>scenes/BloomTest.qml</file>
+        <file>opacitymask.png</file>
+    </qresource>
+</RCC>
