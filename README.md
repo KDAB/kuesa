@@ -1,4 +1,4 @@
-#Kuesa module for Qt 3D
+# Kuesa module for Qt 3D
 
 Kuesa is a module for Qt 3D which provides:
 * Support for glTF 2 importing
@@ -10,6 +10,27 @@ Kuesa is a module for Qt 3D which provides:
 ## Requirements
 
 Kuesa requires Qt 3D 5.12.0 or later.
+
+## Optional Dependencies
+
+If present on the system, Kuesa will detect and use the Draco mesh compression library.
+Draco can be used to dramatically decrease the size of glTF files.
+
+Kuesa supports the ``KHR_draco_mesh_compression`` glTF extension as defined here:
+https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_draco_mesh_compression/
+
+In order to install Draco, please visit https://github.com/google/draco
+
+If you have built Kuesa previously, you will need to run qmake again and
+update the existing build after installing Draco.
+
+If you have Draco installed but wish to build Kuesa without the support
+for it, run qmake again like this:
+
+    qmake kuesa.pro -- --draco=no
+
+In order to produce compressed glTF files, please use the gltf-pipeline tool at
+https://github.com/AnalyticalGraphicsInc/gltf-pipeline
 
 ## Components
 
