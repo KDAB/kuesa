@@ -49,12 +49,12 @@ class QJsonArray;
 namespace Qt3DCore {
 class QEntity;
 class QSkeleton;
-}
+} // namespace Qt3DCore
 
 namespace Qt3DAnimation {
 class QAnimationClip;
 class QChannelMapper;
-}
+} // namespace Qt3DAnimation
 
 namespace Kuesa {
 class SceneEntity;
@@ -65,14 +65,13 @@ namespace GLTF2Import {
 struct TreeNode;
 struct Mesh;
 
-struct HierarchyNode
-{
+struct HierarchyNode {
     int nodeIdx = -1;
     HierarchyNode *parent = nullptr;
     QVector<HierarchyNode *> children;
 };
 
-using KeyParserFuncPair = QPair<QLatin1String, std::function<bool (const QJsonValue &)>>;
+using KeyParserFuncPair = QPair<QLatin1String, std::function<bool(const QJsonValue &)>>;
 
 class Q_AUTOTEST_EXPORT GLTF2Parser
 {
@@ -93,7 +92,7 @@ private:
     void generateSkeletonContent();
     void generateAnimationContent();
 
-    template <class T>
+    template<class T>
     void updateDataForJointsAttr(Qt3DRender::QAttribute *attr, int skinId);
 
     template<typename Asset>

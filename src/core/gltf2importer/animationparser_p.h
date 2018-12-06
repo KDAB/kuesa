@@ -48,21 +48,19 @@ namespace Qt3DAnimation {
 class QChannelMapping;
 class QClipAnimator;
 class QAnimationClip;
-} // Qt3DAnimation
+} // namespace Qt3DAnimation
 
 namespace Kuesa {
 namespace GLTF2Import {
 class GLTF2Context;
 
-struct ChannelMapping
-{
+struct ChannelMapping {
     int targetNodeId = -1;
     QString name;
     QString property;
 };
 
-struct Animation
-{
+struct Animation {
     QString name;
     Qt3DAnimation::QAnimationClipData clipData;
     QVector<ChannelMapping> mappings;
@@ -75,8 +73,7 @@ public:
 
     bool parse(const QJsonArray &animationsArray, GLTF2Context *context);
 
-    enum InterpolationMethod
-    {
+    enum InterpolationMethod {
         Linear,
         Step,
         CubicSpline,
@@ -84,8 +81,7 @@ public:
     };
 
 private:
-    struct AnimationSampler
-    {
+    struct AnimationSampler {
         int inputAccessor = -1;
         int outputAccessor = -1;
         InterpolationMethod interpolationMethod = Linear;
@@ -104,7 +100,7 @@ private:
     mappingFromJson(const QJsonObject &channelObject) const;
 
     Qt3DAnimation::QChannel animationChannelDataFromBuffer(const QString &channelName, const AnimationSampler &sampler) const;
-    std::tuple<int, std::vector<float> > animationChannelDataFromData(const AnimationSampler &sampler) const;
+    std::tuple<int, std::vector<float>> animationChannelDataFromData(const AnimationSampler &sampler) const;
 
     QVector<AnimationSampler> m_samplers;
     GLTF2Context *m_context = nullptr;

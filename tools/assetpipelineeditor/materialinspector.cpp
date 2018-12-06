@@ -48,7 +48,7 @@ void MaterialInspector::setMaterial(Kuesa::MetallicRoughnessMaterial *material)
 
     disconnect(m_materialConnection);
     if (material)
-        m_materialConnection = connect(material, &Qt3DCore::QNode::nodeDestroyed, this, [this]() { setMaterial(nullptr); } );
+        m_materialConnection = connect(material, &Qt3DCore::QNode::nodeDestroyed, this, [this]() { setMaterial(nullptr); });
 
     m_material = material;
 

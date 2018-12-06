@@ -339,7 +339,7 @@ void GLTF2Importer::load()
 void GLTF2Importer::clear()
 {
     if (m_root != nullptr) {
-        m_root->setParent(static_cast<Qt3DCore::QNode*>(nullptr));
+        m_root->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
         m_root->deleteLater();
     }
     m_root = nullptr;

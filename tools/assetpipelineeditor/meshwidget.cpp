@@ -66,7 +66,6 @@ void MeshWidget::updateData()
     m_ui->primitiveCountLabel->setText(QString::number(m_inspector->primitiveCount()));
 }
 
-
 BufferViewer::BufferViewer(QAbstractItemModel *model, QWidget *parent)
     : QScrollArea(parent)
     , m_model(model)
@@ -115,7 +114,6 @@ void BufferViewer::updateDelegates()
     m_mainLayout->invalidate();
 }
 
-
 DelegateWidget::DelegateWidget(QAbstractItemModel *model, QWidget *parent)
     : QWidget(parent)
 {
@@ -132,7 +130,7 @@ DelegateWidget::DelegateWidget(QAbstractItemModel *model, QWidget *parent)
     nameLabel->setFont(font);
 
     auto *gridLayout = new QGridLayout(this);
-    gridLayout->setContentsMargins(0,0,0,0);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
     gridLayout->addWidget(nameLabel, 0, 0, 1, 4, Qt::AlignHCenter);
     gridLayout->addWidget(new QLabel(tr("Vertex Count:")), 1, 0);
     gridLayout->addWidget(vertexCountLabel, 1, 1);

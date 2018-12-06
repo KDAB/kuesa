@@ -67,18 +67,18 @@ private:
     void removeDestructionConnection(Qt3DCore::QNode *asset);
     void clearDestructionConnections();
 
-    QMap<QString, Qt3DCore::QNode*> m_assets;
-    QHash<QNode*, QMetaObject::Connection> m_destructionConnections;
+    QMap<QString, Qt3DCore::QNode *> m_assets;
+    QHash<QNode *, QMetaObject::Connection> m_destructionConnections;
 };
 
 } // namespace Kuesa
 
 QT_END_NAMESPACE
 
-#define KUESA_ASSET_COLLECTION_IMPLEMENTATION(AssetType) \
-    public: \
-        using ContentType = AssetType; \
-        void add(const QString &name, AssetType *asset) { addAsset(name, asset); } \
-        Q_INVOKABLE AssetType *find(const QString &name) { return static_cast<AssetType *>(findAsset(name)); }
+#define KUESA_ASSET_COLLECTION_IMPLEMENTATION(AssetType)                       \
+public:                                                                        \
+    using ContentType = AssetType;                                             \
+    void add(const QString &name, AssetType *asset) { addAsset(name, asset); } \
+    Q_INVOKABLE AssetType *find(const QString &name) { return static_cast<AssetType *>(findAsset(name)); }
 
 #endif // KUESA_ABSTRACTASSETCOLLECTION_H

@@ -52,8 +52,7 @@ namespace GLTF2Import {
 
 class GLTF2Context;
 
-struct TextureInfo
-{
+struct TextureInfo {
     int index = -1;
     int texCoord = 0; // Attribute will be TEXCOORD_<texCoord>
 };
@@ -64,8 +63,7 @@ public:
     QString name;
     bool doubleSided = false;
 
-    struct PBRMetallicRoughness
-    {
+    struct PBRMetallicRoughness {
         QVector4D baseColorFactor = QVector4D(1.0f, 1.0f, 1.0f, 1.0f);
         float metallicFactor = 1.0f;
         float roughtnessFactor = 1.0f;
@@ -73,23 +71,19 @@ public:
         TextureInfo metallicRoughnessTexture;
     } pbr;
 
-    struct NormalTextureInfo : public TextureInfo
-    {
+    struct NormalTextureInfo : public TextureInfo {
         float scale = 1.0f;
     } normalTexture;
 
-    struct OcclusionTextureInfo : public TextureInfo
-    {
+    struct OcclusionTextureInfo : public TextureInfo {
         float strength = 1.0f;
     } occlusionTexture;
 
-    struct EmissiveTextureInfo : public TextureInfo
-    {
+    struct EmissiveTextureInfo : public TextureInfo {
         QVector3D emissiveFactor = QVector3D(0.0f, 0.0f, 0.0f);
     } emissiveTexture;
 
-    struct Alpha
-    {
+    struct Alpha {
         enum Mode {
             Opaque = 0,
             Mask,
@@ -121,8 +115,6 @@ public:
 } // namespace GLTF2Import
 } // namespace Kuesa
 
-
 QT_END_NAMESPACE
-
 
 #endif // KUESA_GLTF2IMPORT_MATERIALPARSER_P_H

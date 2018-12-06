@@ -88,7 +88,7 @@ QString standardAttributeNameFromSemantic(const QString &semantic)
 }
 
 #if defined(KUESA_DRACO_COMPRESSION)
-template <typename ValueType, Qt3DRender::QAttribute::VertexBaseType ComponentType>
+template<typename ValueType, Qt3DRender::QAttribute::VertexBaseType ComponentType>
 Qt3DRender::QAttribute *decodeAttribute(const draco::PointCloud *pointCould,
                                         const draco::PointAttribute *dracoAttribute,
                                         QString attributeName)
@@ -123,7 +123,7 @@ Qt3DRender::QAttribute *decodeAttribute(const draco::PointCloud *pointCould,
     return attribute;
 }
 #endif
-} // anoynmous
+} // namespace
 
 MeshParser::MeshParser()
     : m_context(nullptr)
@@ -168,7 +168,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             // Draco Extensions
             if (extensions.contains(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION)) {
                 if (!geometryDracoFromJSON(geometry, primitivesObject, hasColorAttr) &&
-                     geometry->attributes().isEmpty()) {
+                    geometry->attributes().isEmpty()) {
                     delete geometry;
                     return false;
                 }
@@ -176,7 +176,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
 #endif
             {
                 if (!geometryFromJSON(geometry, primitivesObject, hasColorAttr) &&
-                     geometry->attributes().isEmpty()) {
+                    geometry->attributes().isEmpty()) {
                     delete geometry;
                     return false;
                 }
@@ -199,8 +199,8 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
 }
 
 bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
-                      const QJsonObject &json,
-                      bool &hasColorAttr)
+                                  const QJsonObject &json,
+                                  bool &hasColorAttr)
 {
     // Parse vertex attributes
     if (!geometryAttributesFromJSON(geometry, json, {}, hasColorAttr))
@@ -238,9 +238,9 @@ bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
 }
 
 bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
-                                const QJsonObject &json,
-                                QStringList existingAttributes,
-                                bool &hasColorAttr)
+                                            const QJsonObject &json,
+                                            QStringList existingAttributes,
+                                            bool &hasColorAttr)
 {
     const QJsonObject &attrs = json.value(KEY_ATTRIBUTES).toObject();
 
@@ -410,9 +410,7 @@ bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry
         // Get Draco attribute
         Qt3DRender::QAttribute *attribute = nullptr;
         const int attributeId = dracoAttrs.value(attrName).toInt(-1);
-        const draco::PointAttribute *dracoAttribute = attributeId < 0 ?
-                                                      nullptr :
-                                                      pointCloud->GetAttributeByUniqueId(static_cast<uint32_t>(attributeId));
+        const draco::PointAttribute *dracoAttribute = attributeId < 0 ? nullptr : pointCloud->GetAttributeByUniqueId(static_cast<uint32_t>(attributeId));
         if (dracoAttribute) {
             switch (dracoAttribute->data_type()) {
             case draco::DT_INT8:

@@ -35,12 +35,10 @@ using namespace GLTF2Import;
 
 GLTF2Context::GLTF2Context()
 {
-
 }
 
 GLTF2Context::~GLTF2Context()
 {
-
 }
 
 int GLTF2Context::bufferCount() const
@@ -343,45 +341,87 @@ void GLTF2Context::setRequiredExtensions(const QStringList &requiredExtensions)
 }
 
 template<>
-int GLTF2Context::count<Mesh>() const { return m_meshes.count(); }
+int GLTF2Context::count<Mesh>() const
+{
+    return m_meshes.count();
+}
 
 template<>
-Mesh GLTF2Context::assetAt<Mesh>(int i) const { return mesh(i); }
+Mesh GLTF2Context::assetAt<Mesh>(int i) const
+{
+    return mesh(i);
+}
 
 template<>
-int GLTF2Context::count<Layer>() const { return m_layers.count(); }
+int GLTF2Context::count<Layer>() const
+{
+    return m_layers.count();
+}
 
 template<>
-Layer GLTF2Context::assetAt<Layer>(int i) const { return layer(i); }
+Layer GLTF2Context::assetAt<Layer>(int i) const
+{
+    return layer(i);
+}
 
 template<>
-int GLTF2Context::count<TreeNode>() const { return m_treeNodes.count(); }
+int GLTF2Context::count<TreeNode>() const
+{
+    return m_treeNodes.count();
+}
 
 template<>
-TreeNode GLTF2Context::assetAt<TreeNode>(int i) const { return treeNode(i); }
+TreeNode GLTF2Context::assetAt<TreeNode>(int i) const
+{
+    return treeNode(i);
+}
 
 template<>
-int GLTF2Context::count<Texture>() const { return m_textures.count(); }
+int GLTF2Context::count<Texture>() const
+{
+    return m_textures.count();
+}
 
 template<>
-Texture GLTF2Context::assetAt<Texture>(int i) const { return texture(i); }
+Texture GLTF2Context::assetAt<Texture>(int i) const
+{
+    return texture(i);
+}
 
 template<>
-int GLTF2Context::count<Animation>() const { return m_animations.count(); }
+int GLTF2Context::count<Animation>() const
+{
+    return m_animations.count();
+}
 
 template<>
-Animation GLTF2Context::assetAt<Animation>(int i) const { return animation(i); }
+Animation GLTF2Context::assetAt<Animation>(int i) const
+{
+    return animation(i);
+}
 
 template<>
-int GLTF2Context::count<Material>() const { return m_materials.count(); }
+int GLTF2Context::count<Material>() const
+{
+    return m_materials.count();
+}
 
 template<>
-Material GLTF2Context::assetAt<Material>(int i) const { return material(i); }
+Material GLTF2Context::assetAt<Material>(int i) const
+{
+    return material(i);
+}
 
 template<>
-int GLTF2Context::count<Skin>() const { return m_skins.count(); }
+int GLTF2Context::count<Skin>() const
+{
+    return m_skins.count();
+}
 
 template<>
-Skin GLTF2Context::assetAt<Skin>(int i) const { return skin(i); }
+Skin GLTF2Context::assetAt<Skin>(int i) const
+{
+    return skin(i);
+}
 
 QT_END_NAMESPACE

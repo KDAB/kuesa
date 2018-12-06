@@ -46,7 +46,7 @@ const QLatin1String KEY_BUFFER = QLatin1Literal("buffer");
 const QLatin1String KEY_BYTEOFFSET = QLatin1Literal("byteOffset");
 const QLatin1String KEY_BYTELENGTH = QLatin1Literal("byteLength");
 const QLatin1String KEY_BYTESTRIDE = QLatin1Literal("byteStride");
-}
+} // namespace
 
 Q_LOGGING_CATEGORY(bufferviewsparser, "BufferViewsParser")
 
@@ -66,9 +66,7 @@ BufferView::BufferView()
 
 BufferViewsParser::BufferViewsParser()
 {
-
 }
-
 
 /*!
  * Returns true if the \a bufferViewsArray is parsed correctly. False otherwise

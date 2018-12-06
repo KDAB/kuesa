@@ -46,7 +46,7 @@ private Q_SLOTS:
     {
         // GIVEN
         QJsonObject json;
-        json["componentType"] = GL_FLOAT;;
+        json["componentType"] = GL_FLOAT;
         json["type"] = QStringLiteral("SCALAR");
         json["count"] = 0;
         QJsonArray accessorsArray;

@@ -42,12 +42,12 @@ namespace Qt3DRender {
 class QGeometryRenderer;
 class QAttribute;
 class QMaterial;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 class AbstractAssetCollection;
 class MetallicRoughnessMaterial;
-}
+} // namespace Kuesa
 
 class BufferModel;
 
@@ -131,8 +131,8 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
     static QString vertexBaseTypeName(int vertexBaseType);
-private:
 
+private:
     Qt3DRender::QGeometryRenderer *m_mesh;
     QVector<Qt3DRender::QAttribute *> m_attributes;
 };

@@ -33,7 +33,6 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 using namespace GLTF2Import;
@@ -45,7 +44,7 @@ const QLatin1String KEY_INVERSE_BIND_MATRICES = QLatin1Literal("inverseBindMatri
 const QLatin1String KEY_SKELETON = QLatin1Literal("skeleton");
 const QLatin1String KEY_NAME = QLatin1Literal("name");
 
-} // anonymous
+} // namespace
 
 bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) const
 {
@@ -53,7 +52,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
     for (const QJsonValue &skinValue : skinsArray) {
         const QJsonObject skinObj = skinValue.toObject();
 
-        const QJsonArray jointsArray =  skinObj.value(KEY_JOINTS).toArray();
+        const QJsonArray jointsArray = skinObj.value(KEY_JOINTS).toArray();
 
         // Joints is the only required property for a skin
         if (jointsArray.size() < 1) {
@@ -144,4 +143,3 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
 }
 
 QT_END_NAMESPACE
-

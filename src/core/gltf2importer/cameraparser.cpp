@@ -56,17 +56,14 @@ const QLatin1String KEY_ASPECT_RATIO = QLatin1Literal("aspectRatio");
 const QLatin1String KEY_Y_FOV = QLatin1Literal("yfov");
 const QLatin1String KEY_PERSPECTIVE = QLatin1Literal("perspective");
 const QLatin1String KEY_ORTHOGRAPHIC = QLatin1Literal("orthographic");
-
-}
+} // namespace
 
 CameraParser::CameraParser()
 {
-
 }
 
 CameraParser::~CameraParser()
 {
-
 }
 
 bool CameraParser::parse(const QJsonArray &cameras, Kuesa::GLTF2Import::GLTF2Context *context)
@@ -110,11 +107,11 @@ bool CameraParser::parse(const QJsonArray &cameras, Kuesa::GLTF2Import::GLTF2Con
             } else {
                 v = std::tan(qDegreesToRadians(lens->fieldOfView()) * 0.5f);
                 QMatrix4x4 projectionMatrix;
-                projectionMatrix(0,0) = 1.f / (lens->aspectRatio() * v);
-                projectionMatrix(1,1) = 1.f / v;
-                projectionMatrix(2,2) = -1.f;
-                projectionMatrix(2,3) = -2.f * lens->nearPlane();
-                projectionMatrix(3,2) = -1.f;
+                projectionMatrix(0, 0) = 1.f / (lens->aspectRatio() * v);
+                projectionMatrix(1, 1) = 1.f / v;
+                projectionMatrix(2, 2) = -1.f;
+                projectionMatrix(2, 3) = -2.f * lens->nearPlane();
+                projectionMatrix(3, 2) = -1.f;
                 lens->setProjectionMatrix(projectionMatrix);
             }
         } else if (cameraObject.value(KEY_TYPE).toString() == QStringLiteral("orthographic")) {
@@ -147,16 +144,16 @@ bool CameraParser::parse(const QJsonArray &cameras, Kuesa::GLTF2Import::GLTF2Con
             if (qFuzzyIsNull(v))
                 return false;
             const float yMag = v;
-            projectionMatrix(0,0) = 1.0f / xMag;
-            projectionMatrix(1,1) = 1.0f / yMag;
-            projectionMatrix(2,2) = 2.0f / (zNear - zFar);
-            projectionMatrix(3,3) = 1.0f;
-            projectionMatrix(2,3) = (zFar + zNear) / (zNear - zFar);
+            projectionMatrix(0, 0) = 1.0f / xMag;
+            projectionMatrix(1, 1) = 1.0f / yMag;
+            projectionMatrix(2, 2) = 2.0f / (zNear - zFar);
+            projectionMatrix(3, 3) = 1.0f;
+            projectionMatrix(2, 3) = (zFar + zNear) / (zNear - zFar);
 
             lens->setProjectionMatrix(projectionMatrix);
-        }
-        else
+        } else {
             return false;
+        }
 
         camera.lens = lens.release();
         context->addCamera(camera);

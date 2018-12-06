@@ -56,7 +56,7 @@ ControllerWidget::ControllerWidget(SceneController *controller,
             this, &ControllerWidget::setClearColor);
 
     //bloom
-     connect(ui->bloomFilterGroupBox, &QGroupBox::toggled,
+    connect(ui->bloomFilterGroupBox, &QGroupBox::toggled,
             m_controller, &SceneController::setBloomEffect);
 
     connect(ui->exposureSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
@@ -75,7 +75,7 @@ ControllerWidget::ControllerWidget(SceneController *controller,
 
     //threshold
     connect(ui->thresholdGroupBox, &QGroupBox::toggled,
-           m_controller, &SceneController::setThresholdEffect);
+            m_controller, &SceneController::setThresholdEffect);
     connect(ui->thresholdSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
             m_controller, &SceneController::setThreshold);
 
@@ -123,5 +123,3 @@ void ControllerWidget::setClearColor()
         ui->colorButton->setStyleSheet(qss);
     }
 }
-
-

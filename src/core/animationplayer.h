@@ -37,10 +37,9 @@ QT_BEGIN_NAMESPACE
 namespace Qt3DAnimation {
 class QClipAnimator;
 class QClock;
-}
+} // namespace Qt3DAnimation
 
-namespace Kuesa
-{
+namespace Kuesa {
 class SceneEntity;
 
 class KUESASHARED_EXPORT AnimationPlayer : public Qt3DCore::QNode

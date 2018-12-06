@@ -88,4 +88,3 @@ Qt3DRender::QMesh *MeshCollection::add(const QString &name, const QUrl &source)
 }
 
 QT_END_NAMESPACE
-

@@ -76,5 +76,4 @@ private:
     TextureInspector *m_textureInspector;
 };
 
-
 #endif // ASSETINSPECTOR_H

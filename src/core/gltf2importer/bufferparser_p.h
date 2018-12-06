@@ -37,7 +37,6 @@
 // modified without notice
 //
 
-
 #include <QVector>
 #include <QJsonObject>
 #include <QDir>

@@ -46,7 +46,7 @@ QHash<int, QString> enumToNameMap(const char *enumName)
     return v;
 }
 
-} // anonymous
+} // namespace
 
 TextureInspector::TextureInspector(QObject *parent)
     : QObject(parent)
@@ -122,7 +122,7 @@ QString TextureInspector::target() const
 
 QString TextureInspector::format() const
 {
-    static const auto formatsToName =  enumToNameMap<Qt3DRender::QAbstractTexture>("TextureFormat");
+    static const auto formatsToName = enumToNameMap<Qt3DRender::QAbstractTexture>("TextureFormat");
     return (m_texture != nullptr) ? formatsToName.value(m_texture->format(), QStringLiteral("Undefined")) : QStringLiteral("Undefined");
 }
 
@@ -146,17 +146,15 @@ QString TextureInspector::wrapZMode() const
 
 QString TextureInspector::minificationFilter() const
 {
-    static const auto filtersToName =  enumToNameMap<Qt3DRender::QAbstractTexture>("Filter");
+    static const auto filtersToName = enumToNameMap<Qt3DRender::QAbstractTexture>("Filter");
     return (m_texture != nullptr) ? filtersToName.value(m_texture->minificationFilter(), QStringLiteral("Undefined")) : QStringLiteral("Undefined");
-
 }
 
 QString TextureInspector::magnificationFilter() const
 {
-    static const auto filtersToName =  enumToNameMap<Qt3DRender::QAbstractTexture>("Filter");
+    static const auto filtersToName = enumToNameMap<Qt3DRender::QAbstractTexture>("Filter");
     return (m_texture != nullptr) ? filtersToName.value(m_texture->magnificationFilter(), QStringLiteral("Undefined")) : QStringLiteral("Undefined");
 }
-
 
 TextureImagesModel::TextureImagesModel(QObject *parent)
     : QAbstractTableModel(parent)

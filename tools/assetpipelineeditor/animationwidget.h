@@ -49,7 +49,7 @@ class QAbstractAnimationClip;
 namespace Kuesa {
 class AnimationPlayer;
 class SceneEntity;
-}
+} // namespace Kuesa
 
 class AnimationWidget : public QWidget
 {
@@ -73,7 +73,7 @@ private:
 
     Ui::AnimationWidget *m_ui;
     AnimationClipModel *m_animationModel;
-    QHash<QString, Kuesa::AnimationPlayer*> m_playerHash;
+    QHash<QString, Kuesa::AnimationPlayer *> m_playerHash;
     Kuesa::SceneEntity *m_sceneEntity;
 };
 
@@ -92,13 +92,13 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-    Qt3DAnimation::QAbstractAnimationClip* clipForIndex(const QModelIndex &index) const;
+    Qt3DAnimation::QAbstractAnimationClip *clipForIndex(const QModelIndex &index) const;
     bool clipEnabled(const QModelIndex &index) const;
     void setClipPlaying(const QString &clipName, bool playing);
 
 private:
     void updateDecorationIcon();
-    void updateDuration(const QString& clipName, float duration);
+    void updateDuration(const QString &clipName, float duration);
 
     struct AnimationData {
         QString name;
@@ -114,6 +114,5 @@ private:
     QPixmap m_playingPixmap;
     QPixmap m_stoppedPixmap;
 };
-
 
 #endif // ANIMATIONWIDGET_H

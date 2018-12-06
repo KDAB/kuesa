@@ -52,7 +52,7 @@ void AssetInspector::setAsset(const QString &assetName, Kuesa::AbstractAssetColl
     m_currentAssetName = assetName;
 
     AssetType newAssetType = Unknown;
-    if (auto meshCollection = qobject_cast<Kuesa::MeshCollection*>(collection)) {
+    if (auto meshCollection = qobject_cast<Kuesa::MeshCollection *>(collection)) {
         auto mesh = meshCollection->find(assetName);
         m_meshInspector->setMesh(mesh);
         newAssetType = Mesh;
@@ -61,7 +61,7 @@ void AssetInspector::setAsset(const QString &assetName, Kuesa::AbstractAssetColl
         m_textureInspector->setTexture(assetName, texture);
         newAssetType = Texture;
     } else if (Kuesa::MaterialCollection *materialCollection = qobject_cast<Kuesa::MaterialCollection *>(collection)) {
-        auto material = qobject_cast<Kuesa::MetallicRoughnessMaterial*>(materialCollection->find(assetName));
+        auto material = qobject_cast<Kuesa::MetallicRoughnessMaterial *>(materialCollection->find(assetName));
         if (material) {
             m_materialInspector->setMaterial(material);
             newAssetType = Material;
@@ -69,8 +69,7 @@ void AssetInspector::setAsset(const QString &assetName, Kuesa::AbstractAssetColl
     }
 
     // Reset inspectors
-    switch (newAssetType)
-    {
+    switch (newAssetType) {
     case Mesh:
         m_materialInspector->setMaterial(nullptr);
         m_textureInspector->setTexture("", nullptr);
@@ -134,4 +133,3 @@ TextureInspector *AssetInspector::textureInspector() const
 {
     return m_textureInspector;
 }
-

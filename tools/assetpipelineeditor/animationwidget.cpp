@@ -74,7 +74,7 @@ void AnimationWidget::update(Kuesa::SceneEntity *entity)
     m_animationModel->update(entity);
     m_sceneEntity = entity;
     if (m_animationModel->rowCount() > 0 && !selectedIndex().isValid()) {
-        const auto firstIndex = m_animationModel->index(0,0);
+        const auto firstIndex = m_animationModel->index(0, 0);
         m_ui->animationListView->selectionModel()->setCurrentIndex(firstIndex, QItemSelectionModel::ClearAndSelect);
     }
 
@@ -147,7 +147,7 @@ void AnimationWidget::playAnimationAtIndex(const QModelIndex &index)
         player->setSceneEntity(m_sceneEntity);
         player->setClip(clipName);
         if (player->status() == Kuesa::AnimationPlayer::Ready) {
-            connect(player, &Kuesa::AnimationPlayer::runningChanged, this, [this, clipName](bool running) { handleClipPlayStateChange(clipName, running);});
+            connect(player, &Kuesa::AnimationPlayer::runningChanged, this, [this, clipName](bool running) { handleClipPlayStateChange(clipName, running); });
             m_playerHash.insert(clipName, player);
             player->start();
         } else {
@@ -165,7 +165,6 @@ void AnimationWidget::updateButtonStates()
     m_ui->playAllButton->setEnabled(clipCount > 0);
     m_ui->stopButton->setEnabled(playingClipCount > 0 && clipCount > 0);
 }
-
 
 AnimationClipModel::AnimationClipModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -234,8 +233,10 @@ QVariant AnimationClipModel::data(const QModelIndex &index, int role) const
         break;
     case 1:
         switch (role) {
-        case Qt::DisplayRole: return QString("%1s").arg(m_clips.at(index.row()).duration, 0, 'f', 2);
-        case Qt::TextAlignmentRole: return { Qt::AlignRight | Qt::AlignVCenter };
+        case Qt::DisplayRole:
+            return QString("%1s").arg(m_clips.at(index.row()).duration, 0, 'f', 2);
+        case Qt::TextAlignmentRole:
+            return { Qt::AlignRight | Qt::AlignVCenter };
         }
         break;
     }
@@ -295,24 +296,24 @@ void AnimationClipModel::setClipPlaying(const QString &clipName, bool playing)
 void AnimationClipModel::updateDecorationIcon()
 {
     static int rotation = 0.0;
-    const int rotationInterval= 1000; //how long to do a complete rotation
-    const int rotationPerUpdate = 360 * iconUpdateTimer->interval()/rotationInterval;
+    const int rotationInterval = 1000; //how long to do a complete rotation
+    const int rotationPerUpdate = 360 * iconUpdateTimer->interval() / rotationInterval;
     rotation += rotationPerUpdate;
 
     static QPixmap rotatingCirclePixmap(":/icons/stopped.png");
     static QPixmap playPixmap(":/icons/playing-circleH.png");
     m_playingPixmap = playPixmap;
     QPainter painter(&m_playingPixmap);
-    const QPointF translation(rotatingCirclePixmap.width()/2, rotatingCirclePixmap.height()/2);
+    const QPointF translation(rotatingCirclePixmap.width() / 2, rotatingCirclePixmap.height() / 2);
     painter.translate(translation);
     painter.rotate(rotation % 360);
     painter.translate(-translation);
-    painter.drawPixmap(0,0, rotatingCirclePixmap);
+    painter.drawPixmap(0, 0, rotatingCirclePixmap);
     painter.end();
 
     for (int i = 0; i < m_clips.count(); ++i) {
         if (m_clips.at(i).playing)
-            emit dataChanged(index(i, 0), index(i, 0), {Qt::DecorationRole});
+            emit dataChanged(index(i, 0), index(i, 0), { Qt::DecorationRole });
     }
 }
 

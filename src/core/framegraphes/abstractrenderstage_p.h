@@ -53,8 +53,7 @@ public:
     AbstractRenderStage(Qt3DCore::QNode *parent = nullptr);
     ~AbstractRenderStage();
 };
-
-}
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

@@ -44,7 +44,8 @@ public:
     ~tst_BufferViewParser() {}
 
 private Q_SLOTS:
-    void bufferViewParse_data() {
+    void bufferViewParse_data()
+    {
         QTest::addColumn<int>("bufferIdx");
         QTest::addColumn<int>("byteOffset");
         QTest::addColumn<int>("byteLength");
@@ -67,7 +68,8 @@ private Q_SLOTS:
         QTest::newRow("nonExistintBufferIdx") << 1 << 0 << 128 << 4 << fullyDefinedBuffer << false << QByteArray();
     }
 
-    void bufferViewParse() {
+    void bufferViewParse()
+    {
         // GIVEN
         QFETCH(int, bufferIdx);
         QFETCH(int, byteOffset);
@@ -97,7 +99,7 @@ private Q_SLOTS:
         QCOMPARE(parseResult, expectedParseResult);
         if (parseResult) {
             QCOMPARE(context.bufferViewCount(), 1);
-            QCOMPARE(context.bufferView(0).bufferIdx,  bufferIdx);
+            QCOMPARE(context.bufferView(0).bufferIdx, bufferIdx);
             QCOMPARE(context.bufferView(0).byteLength, byteLength);
             QCOMPARE(context.bufferView(0).byteOffset, byteOffset);
             QCOMPARE(context.bufferView(0).byteStride, byteStride);

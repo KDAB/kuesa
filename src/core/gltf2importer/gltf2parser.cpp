@@ -94,11 +94,12 @@ const QLatin1String KEY_SKINS = QLatin1String("skins");
 const QLatin1String KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION = QLatin1String("KHR_draco_mesh_compression");
 #endif
 
-template <class CollectionType>
-void addToCollectionWithUniqueName(CollectionType *collection, const QString &basename, typename CollectionType::ContentType *asset) {
+template<class CollectionType>
+void addToCollectionWithUniqueName(CollectionType *collection, const QString &basename, typename CollectionType::ContentType *asset)
+{
     Q_ASSERT(!basename.isEmpty());
     QString currentName = basename;
-    for (int i=1;; ++i) {
+    for (int i = 1;; ++i) {
         if (!collection->contains(currentName))
             break;
         currentName = QString(QLatin1Literal("%1_%2")).arg(basename, QString::number(i));
@@ -144,8 +145,7 @@ void extractPositionViewDirAndUpVectorFromViewMatrix(const QMatrix4x4 viewMatrix
                          viewMatrix.row(2)[3]);
 }
 
-} // anonymous
-
+} // namespace
 
 GLTF2Parser::GLTF2Parser(SceneEntity *sceneEntity, bool assignNames)
     : m_sceneEntity(sceneEntity)
@@ -172,7 +172,7 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QString &filePath)
     return parse(jsonData, finfo.absolutePath());
 }
 
-template <class T>
+template<class T>
 void GLTF2Parser::updateDataForJointsAttr(Qt3DRender::QAttribute *attr, int skinId)
 {
     auto bufferData = attr->buffer()->data();
@@ -182,7 +182,7 @@ void GLTF2Parser::updateDataForJointsAttr(Qt3DRender::QAttribute *attr, int skin
     QByteArray updatedData;
 
     updatedData.resize(nbJoints * sizeof(T));
-    T *updatedJointIndices = reinterpret_cast<T*>(updatedData.data());
+    T *updatedJointIndices = reinterpret_cast<T *>(updatedData.data());
     for (size_t jointId = 0; jointId < nbJoints; ++jointId) {
         updatedJointIndices[jointId] = m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinId][typedData[jointId]];
     }
@@ -192,128 +192,113 @@ void GLTF2Parser::updateDataForJointsAttr(Qt3DRender::QAttribute *attr, int skin
 QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
 {
     return {
-        { KEY_BUFFERS, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                BufferParser parser(m_basePath);
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_BUFFERVIEWS, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                BufferViewsParser parser;
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_ACCESSORS, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                BufferAccessorParser parser;
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_MESHES, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                MeshParser parser;
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_CAMERAS, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                CameraParser parser;
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_NODES, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                NodeParser parser;
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_SCENES, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                SceneParser parser;
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_IMAGES, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                ImageParser parser(m_basePath);
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_TEXTURE_SAMPLERS, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                TextureSamplerParser parser;
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_TEXTURES, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                TextureParser parser;
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_SKINS, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                SkinParser parser;
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_ANIMATIONS, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                AnimationParser parser;
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_MATERIALS, [this] (const QJsonValue &value) {
-                const QJsonArray array = value.toArray();
-                if (array.size() == 0)
-                    return true;
-                MaterialParser parser;
-                return parser.parse(array, &m_context);
-            }
-        },
-        { KEY_EXTENSIONS, [this] (const QJsonValue &value) {
-                const QVector<KeyParserFuncPair> extensionParsers = {
-                    { KEY_KDAB_KUESA_LAYER_EXTENSION, [this] (const QJsonValue &value) {
-                            const QJsonObject obj = value.toObject();
-                            const QJsonArray layers = obj.value(KEY_KUESA_LAYERS).toArray();
-                            if (layers.size() == 0)
-                                return true;
-                            LayerParser parser;
-                            return parser.parse(layers, &m_context);
-                        }
-                    }
-                };
-                // Having no extensions is a valid use case
-                if (value.isUndefined())
-                    return true;
-                return traverseGLTF(extensionParsers, value.toObject());
-            }
-        }
+        { KEY_BUFFERS, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             BufferParser parser(m_basePath);
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_BUFFERVIEWS, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             BufferViewsParser parser;
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_ACCESSORS, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             BufferAccessorParser parser;
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_MESHES, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             MeshParser parser;
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_CAMERAS, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             CameraParser parser;
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_NODES, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             NodeParser parser;
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_SCENES, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             SceneParser parser;
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_IMAGES, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             ImageParser parser(m_basePath);
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_TEXTURE_SAMPLERS, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             TextureSamplerParser parser;
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_TEXTURES, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             TextureParser parser;
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_SKINS, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             SkinParser parser;
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_ANIMATIONS, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             AnimationParser parser;
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_MATERIALS, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             MaterialParser parser;
+             return parser.parse(array, &m_context);
+         } },
+        { KEY_EXTENSIONS, [this](const QJsonValue &value) {
+             const QVector<KeyParserFuncPair> extensionParsers = {
+                 { KEY_KDAB_KUESA_LAYER_EXTENSION, [this](const QJsonValue &value) {
+                      const QJsonObject obj = value.toObject();
+                      const QJsonArray layers = obj.value(KEY_KUESA_LAYERS).toArray();
+                      if (layers.size() == 0)
+                          return true;
+                      LayerParser parser;
+                      return parser.parse(layers, &m_context);
+                  } }
+             };
+             // Having no extensions is a valid use case
+             if (value.isUndefined())
+                 return true;
+             return traverseGLTF(extensionParsers, value.toObject());
+         } }
     };
 }
 
@@ -358,7 +343,7 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
             KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION
 #endif
         };
-        for (auto e: qAsConst(extensions)) {
+        for (auto e : qAsConst(extensions)) {
             if (supportedExtensions.contains(e))
                 continue;
             allRequiredAreSupported = false;
@@ -399,7 +384,6 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
     // Generate Qt3D content for animations
     generateAnimationContent();
 
-
     // Note: we only add resources into the collection after having set an
     // existing parent on the scene root This avoid sending a destroy + created
     // changes because sceneEntity exists and has a backend while the scene root
@@ -410,28 +394,28 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
 
         if (m_sceneEntity->meshes()) {
             addAssetsIntoCollection<Mesh>(
-                        [this] (const Mesh &mesh, int) {
-                            for (int j = 0, n = mesh.meshPrimitives.size(); j < n; ++j) {
-                                const QString name = QStringLiteral("%1_%2").arg(mesh.name, QString::number(j));
-                                addToCollectionWithUniqueName(m_sceneEntity->meshes(), name, mesh.meshPrimitives.at(j).primitiveRenderer);
-                            }
-                        },
-                        [this] (const Mesh &mesh, int) {
-                            for (int j = 0, n = mesh.meshPrimitives.size(); j < n; ++j) {
-                                const QString name = QStringLiteral("KeusaMesh_%1").arg(j);
-                                addToCollectionWithUniqueName(m_sceneEntity->meshes(), name, mesh.meshPrimitives.at(j).primitiveRenderer);
-                            }
-                        });
+                    [this](const Mesh &mesh, int) {
+                        for (int j = 0, n = mesh.meshPrimitives.size(); j < n; ++j) {
+                            const QString name = QStringLiteral("%1_%2").arg(mesh.name, QString::number(j));
+                            addToCollectionWithUniqueName(m_sceneEntity->meshes(), name, mesh.meshPrimitives.at(j).primitiveRenderer);
+                        }
+                    },
+                    [this](const Mesh &mesh, int) {
+                        for (int j = 0, n = mesh.meshPrimitives.size(); j < n; ++j) {
+                            const QString name = QStringLiteral("KeusaMesh_%1").arg(j);
+                            addToCollectionWithUniqueName(m_sceneEntity->meshes(), name, mesh.meshPrimitives.at(j).primitiveRenderer);
+                        }
+                    });
         }
 
         if (m_sceneEntity->layers())
             addAssetsIntoCollection<Layer>(
-                        [this] (const Layer &layer, int) { addToCollectionWithUniqueName(m_sceneEntity->layers(), layer.name, layer.layer); },
-                        [this] (const Layer &layer, int i) { addToCollectionWithUniqueName(m_sceneEntity->layers(), QStringLiteral("KuesaLayer_%1").arg(i), layer.layer); });
+                    [this](const Layer &layer, int) { addToCollectionWithUniqueName(m_sceneEntity->layers(), layer.name, layer.layer); },
+                    [this](const Layer &layer, int i) { addToCollectionWithUniqueName(m_sceneEntity->layers(), QStringLiteral("KuesaLayer_%1").arg(i), layer.layer); });
 
         // For TreeNode we use our local copy and not the entries on the context
         if (m_sceneEntity->entities()) {
-            for (const TreeNode &treeNode: qAsConst(m_treeNodes)) {
+            for (const TreeNode &treeNode : qAsConst(m_treeNodes)) {
                 if (treeNode.entity != nullptr && !treeNode.name.isEmpty()) {
                     addToCollectionWithUniqueName(m_sceneEntity->entities(), treeNode.name, treeNode.entity);
 
@@ -441,8 +425,8 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
             }
 
             if (m_assignNames) {
-                int j=0;
-                for (const TreeNode &treeNode: qAsConst(m_treeNodes)) {
+                int j = 0;
+                for (const TreeNode &treeNode : qAsConst(m_treeNodes)) {
                     if (treeNode.entity != nullptr && treeNode.name.isEmpty()) {
                         addToCollectionWithUniqueName(m_sceneEntity->entities(), QStringLiteral("KuesaEntity_%1").arg(j), treeNode.entity);
 
@@ -465,44 +449,44 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
 
         if (m_sceneEntity->textures())
             addAssetsIntoCollection<Texture>(
-                        [this] (const Texture &texture, int) {
-                            if (texture.texture)
-                                addToCollectionWithUniqueName(m_sceneEntity->textures(), texture.name, texture.texture);
-                        },
-                        [this] (const Texture &texture, int i) {
-                            if (texture.texture)
-                                addToCollectionWithUniqueName(m_sceneEntity->textures(), QStringLiteral("KuesaTexture_%1").arg(i), texture.texture);
-                        });
+                    [this](const Texture &texture, int) {
+                        if (texture.texture)
+                            addToCollectionWithUniqueName(m_sceneEntity->textures(), texture.name, texture.texture);
+                    },
+                    [this](const Texture &texture, int i) {
+                        if (texture.texture)
+                            addToCollectionWithUniqueName(m_sceneEntity->textures(), QStringLiteral("KuesaTexture_%1").arg(i), texture.texture);
+                    });
 
         if (m_sceneEntity->animationClips())
             addAssetsIntoCollection<Animation>(
-                        [this] (const Animation &animation, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationClips(), animation.name, m_animators.at(i).clip); },
-                        [this] (const Animation &, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationClips(), QStringLiteral("KuesaAnimation_%1").arg(i), m_animators.at(i).clip); });
+                    [this](const Animation &animation, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationClips(), animation.name, m_animators.at(i).clip); },
+                    [this](const Animation &, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationClips(), QStringLiteral("KuesaAnimation_%1").arg(i), m_animators.at(i).clip); });
 
         if (m_sceneEntity->animationMappings())
             addAssetsIntoCollection<Animation>(
-                        [this] (const Animation &animation, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationMappings(), animation.name, m_animators.at(i).mapper); },
-                        [this] (const Animation &, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationMappings(), QStringLiteral("KuesaAnimation_%1").arg(i), m_animators.at(i).mapper); });
+                    [this](const Animation &animation, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationMappings(), animation.name, m_animators.at(i).mapper); },
+                    [this](const Animation &, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationMappings(), QStringLiteral("KuesaAnimation_%1").arg(i), m_animators.at(i).mapper); });
 
         if (m_sceneEntity->materials())
             addAssetsIntoCollection<Material>(
-                        [this] (const Material &material, int) {
-                            if (material.hasRegularMaterial())
-                                addToCollectionWithUniqueName(m_sceneEntity->materials(), material.name, material.material(false));
-                            if (material.hasSkinnedMaterial())
-                                addToCollectionWithUniqueName(m_sceneEntity->materials(), material.name + QStringLiteral("_skinned"), material.material(true));
-                        },
-                        [this] (const Material &material, int i) {
-                            if (material.hasRegularMaterial())
-                                addToCollectionWithUniqueName(m_sceneEntity->materials(), QStringLiteral("KuesaMaterial_%1").arg(i), material.material(false));
-                            if (material.hasSkinnedMaterial())
-                                addToCollectionWithUniqueName(m_sceneEntity->materials(), QStringLiteral("KuesaMaterial_%1_skinned").arg(i), material.material(true));
-                        });
+                    [this](const Material &material, int) {
+                        if (material.hasRegularMaterial())
+                            addToCollectionWithUniqueName(m_sceneEntity->materials(), material.name, material.material(false));
+                        if (material.hasSkinnedMaterial())
+                            addToCollectionWithUniqueName(m_sceneEntity->materials(), material.name + QStringLiteral("_skinned"), material.material(true));
+                    },
+                    [this](const Material &material, int i) {
+                        if (material.hasRegularMaterial())
+                            addToCollectionWithUniqueName(m_sceneEntity->materials(), QStringLiteral("KuesaMaterial_%1").arg(i), material.material(false));
+                        if (material.hasSkinnedMaterial())
+                            addToCollectionWithUniqueName(m_sceneEntity->materials(), QStringLiteral("KuesaMaterial_%1_skinned").arg(i), material.material(true));
+                    });
 
         if (m_sceneEntity->skeletons())
             addAssetsIntoCollection<Skin>(
-                        [this] (const Skin &skin, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), skin.name, m_skeletons.at(i)); },
-                        [this] (const Skin &, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), QStringLiteral("KuesaSkeleton_%1").arg(i), m_skeletons.at(i));});
+                    [this](const Skin &skin, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), skin.name, m_skeletons.at(i)); },
+                    [this](const Skin &, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), QStringLiteral("KuesaSkeleton_%1").arg(i), m_skeletons.at(i)); });
     }
     return gltfSceneEntity;
 }
@@ -861,7 +845,7 @@ void GLTF2Parser::generateAnimationContent()
         auto *channelMapper = new Qt3DAnimation::QChannelMapper();
         auto *clip = new Qt3DAnimation::QAnimationClip();
         clip->setClipData(animation.clipData);
-        m_animators.push_back({clip, channelMapper});
+        m_animators.push_back({ clip, channelMapper });
 
         for (const auto &skeleton : qAsConst(m_skeletons)) {
             auto skeletonMapping = new Qt3DAnimation::QSkeletonMapping;
@@ -878,9 +862,7 @@ void GLTF2Parser::generateAnimationContent()
                     auto channelMapping = new Qt3DAnimation::QChannelMapping();
                     channelMapping->setTarget(joint);
                     channelMapping->setChannelName(mapping.name);
-                    channelMapping->setProperty(mapping.property == QStringLiteral("scale3D") ?
-                                                QStringLiteral("scale") :
-                                                mapping.property);
+                    channelMapping->setProperty(mapping.property == QStringLiteral("scale3D") ? QStringLiteral("scale") : mapping.property);
                     channelMapper->addMapping(channelMapping);
                 }
             }
@@ -913,7 +895,7 @@ Qt3DCore::QEntity *GLTF2Parser::scene(const int id)
     const QVector<int> toRetrieveNodes = scene.rootNodeIndices;
 
     for (auto i = 0, m = toRetrieveNodes.size(); i < m; ++i) {
-        const TreeNode node =  m_treeNodes[toRetrieveNodes.at(i)];
+        const TreeNode node = m_treeNodes[toRetrieveNodes.at(i)];
         if (node.entity != nullptr)
             node.entity->setParent(m_sceneRootEntity);
         for (auto &joint : node.joints)

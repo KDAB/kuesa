@@ -59,5 +59,4 @@ ZFillRenderStage::ZFillRenderStage(Qt3DCore::QNode *parent)
 
 ZFillRenderStage::~ZFillRenderStage()
 {
-
 }

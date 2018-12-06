@@ -58,7 +58,8 @@ public:
         : Kuesa::AbstractPostProcessingEffect(parent)
         , m_rootNode(new Qt3DRender::QFrameGraphNode())
         , m_inputTexture(nullptr)
-    {}
+    {
+    }
 
     // AbstractPostProcessingEffect interface
     FrameGraphNodePtr frameGraphSubTree() const override
@@ -66,9 +67,9 @@ public:
         return m_rootNode;
     }
 
-    QVector<Qt3DRender::QLayer*> layers() const override
+    QVector<Qt3DRender::QLayer *> layers() const override
     {
-        return QVector<Qt3DRender::QLayer*>();
+        return QVector<Qt3DRender::QLayer *>();
     }
 
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override
@@ -76,7 +77,7 @@ public:
         m_inputTexture = texture;
     }
 
-    Qt3DRender::QAbstractTexture* inputTexture() const
+    Qt3DRender::QAbstractTexture *inputTexture() const
     {
         return m_inputTexture;
     }
@@ -94,9 +95,9 @@ private:
     Qt3DRender::QAbstractTexture *m_inputTexture;
 };
 
-} // anonymous
+} // namespace
 
-class tst_ForwardRenderer: public QObject
+class tst_ForwardRenderer : public QObject
 {
     Q_OBJECT
 private Q_SLOTS:
@@ -108,7 +109,7 @@ private Q_SLOTS:
         QVERIFY(spy.isValid());
 
         // WHEN
-        QRectF newRect(0,0, 100, 200);
+        QRectF newRect(0, 0, 100, 200);
         renderer.setViewportRect(newRect);
 
         // THEN
@@ -130,7 +131,7 @@ private Q_SLOTS:
         QVERIFY(spy.isValid());
 
         // WHEN
-        QSize newSize(123,456);
+        QSize newSize(123, 456);
         renderer.setExternalRenderTargetSize(newSize);
 
         // THEN
@@ -148,8 +149,8 @@ private Q_SLOTS:
     {
         // GIVEN
         Kuesa::ForwardRenderer renderer;
-        qRegisterMetaType<Qt3DCore::QEntity*>("QEntity");
-        QSignalSpy spy(&renderer, SIGNAL(cameraChanged(Qt3DCore::QEntity*)));
+        qRegisterMetaType<Qt3DCore::QEntity *>("QEntity");
+        QSignalSpy spy(&renderer, SIGNAL(cameraChanged(Qt3DCore::QEntity *)));
         QVERIFY(spy.isValid());
 
         // WHEN
@@ -217,7 +218,7 @@ private Q_SLOTS:
         Kuesa::ForwardRenderer renderer;
 
         // THEN
-        Qt3DRender::QTechniqueFilter *filterNode = renderer.findChild<Qt3DRender::QTechniqueFilter*>();
+        Qt3DRender::QTechniqueFilter *filterNode = renderer.findChild<Qt3DRender::QTechniqueFilter *>();
         QVERIFY(filterNode);
 
         auto filters = filterNode->matchAll();
@@ -227,7 +228,7 @@ private Q_SLOTS:
             return filterkey->name() == QStringLiteral("renderingStyle") && filterkey->value().toString() == QStringLiteral("forward");
         };
         auto it = std::find_if(filters.begin(), filters.end(), findForwardRenderingFilterKey);
-        QVERIFY(it != filters.end() );
+        QVERIFY(it != filters.end());
     }
 
     void testChangingFrustumCulling()
@@ -555,7 +556,7 @@ private:
         while (parent && qstrcmp(parent->metaObject()->className(), T::staticMetaObject.className()) != 0) {
             parent = parent->parentNode();
         }
-        return qobject_cast<T*>(parent);
+        return qobject_cast<T *>(parent);
     }
 };
 

@@ -56,10 +56,10 @@ private Q_SLOTS:
                                << 1
                                << ASSETS "aBasePath/anImage.png";
 
-        QTest::newRow("Empty")<< QStringLiteral(ASSETS "imageparser_empty.gltf")
-                              << false
-                              << 0
-                              << QString();
+        QTest::newRow("Empty") << QStringLiteral(ASSETS "imageparser_empty.gltf")
+                               << false
+                               << 0
+                               << QString();
 
         QTest::newRow("PartiallyIncomplete") << QStringLiteral(ASSETS "imageparser_incomplete.gltf")
                                              << false
@@ -67,14 +67,14 @@ private Q_SLOTS:
                                              << QString();
 
         QTest::newRow("UriAndBufferView") << QStringLiteral(ASSETS "imageparser_uri_and_bufferview.gltf")
-                                             << false
-                                             << 0
-                                             << QString();
+                                          << false
+                                          << 0
+                                          << QString();
 
         QTest::newRow("UriAndBufferView") << QStringLiteral(ASSETS "imageparser_bufferview.gltf")
-                                             << false
-                                             << 0
-                                             << QString();
+                                          << false
+                                          << 0
+                                          << QString();
     }
 
     void checkParse()
@@ -126,7 +126,6 @@ private Q_SLOTS:
         QCOMPARE(image.url.scheme(), QStringLiteral("qrc"));
         QCOMPARE(image.url, QUrl("qrc:/anImage.png"));
     }
-
 };
 
 QTEST_APPLESS_MAIN(tst_ImageParser)

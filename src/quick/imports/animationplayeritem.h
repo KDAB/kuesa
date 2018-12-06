@@ -47,7 +47,7 @@ public:
 
     QQmlListProperty<Qt3DCore::QNode> targetList();
 
-    AnimationPlayer *parentAnimationPlayer() const { return qobject_cast<AnimationPlayer*>(parent()); }
+    AnimationPlayer *parentAnimationPlayer() const { return qobject_cast<AnimationPlayer *>(parent()); }
 
 private:
     static void qmlAppendTarget(QQmlListProperty<Qt3DCore::QNode> *list, Qt3DCore::QNode *node);
@@ -57,8 +57,7 @@ private:
 
     QVector<Qt3DCore::QNode *> m_managedTargets;
 };
-
-}
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

@@ -34,7 +34,8 @@ void SSBOBuffer::setTextureSize(QSize size)
     m_wasInitialized = true;
 }
 
-void SSBOBuffer::setIsInteractive(bool interactive) {
+void SSBOBuffer::setIsInteractive(bool interactive)
+{
     if (m_isInteractive == interactive)
         return;
     m_isInteractive = interactive;

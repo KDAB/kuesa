@@ -65,13 +65,13 @@ private Q_SLOTS:
         QCOMPARE(context.treeNodeCount(), 5);
 
         const QVector<QString> names = {
-                QLatin1String("Car"),
-                QLatin1String("wheel_1"),
-                QLatin1String("wheel_2"),
-                QLatin1String("wheel_3"),
-                QLatin1String("wheel_4"),
-                };
-        for (int i=0; i < names.size(); ++i) {
+            QLatin1String("Car"),
+            QLatin1String("wheel_1"),
+            QLatin1String("wheel_2"),
+            QLatin1String("wheel_3"),
+            QLatin1String("wheel_4"),
+        };
+        for (int i = 0; i < names.size(); ++i) {
             const auto &node = context.treeNode(i);
             QVERIFY(!node.entity);
             QCOMPARE(node.name, names.at(i));
@@ -102,7 +102,7 @@ private Q_SLOTS:
 
         const TreeNode::TransformInfo transform = context.treeNode(0).transformInfo;
 
-        QCOMPARE(transform.bits, TreeNode::TransformInfo::TranslationSet|TreeNode::TransformInfo::RotationSet|TreeNode::TransformInfo::ScaleSet);
+        QCOMPARE(transform.bits, TreeNode::TransformInfo::TranslationSet | TreeNode::TransformInfo::RotationSet | TreeNode::TransformInfo::ScaleSet);
         QCOMPARE(transform.translation, QVector3D(-17.7082, -11.4156, 2.0922));
         QCOMPARE(transform.rotation, QQuaternion(1, 0, 0, 0));
         QCOMPARE(transform.scale3D, QVector3D(1, 2, 3));
@@ -140,7 +140,7 @@ private Q_SLOTS:
         expectedMatrix(2, 3) = 4;
         for (int i = 0; i < 4; ++i)
             for (int j = 0; j < 4; ++j)
-                QCOMPARE(matrix(i,j), expectedMatrix(i,j));
+                QCOMPARE(matrix(i, j), expectedMatrix(i, j));
     }
 
     void checkEmptyNodesArray()

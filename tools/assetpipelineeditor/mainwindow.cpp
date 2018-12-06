@@ -173,7 +173,7 @@ void MainWindow::updateScene(Kuesa::SceneEntity *entity)
     m_cameraSelector->addItem("Default", QVariant(-1));
     if (entity->cameras() && entity->cameras()->size()) {
         const QStringList names = entity->cameras()->names();
-        for (const QString& n: names)
+        for (const QString &n : names)
             m_cameraSelector->addItem(n);
     }
     m_cameraSelector->setEnabled(m_cameraSelector->count() > 1);
@@ -200,12 +200,12 @@ void MainWindow::setCamera(int index)
             m_cameraSelector->setCurrentIndex(index);
         m_ui->actionViewAll->setEnabled(false);
         updateCameraAspectRatio();
-        m_cameraWidget->setCamera( m_entity ? m_entity->camera(m_cameraSelector->currentText()) : nullptr);
+        m_cameraWidget->setCamera(m_entity ? m_entity->camera(m_cameraSelector->currentText()) : nullptr);
         m_cameraWidget->setEnabled(false);
         return;
     }
 
-    m_cameraWidget->setCamera( m_camera);
+    m_cameraWidget->setCamera(m_camera);
     m_cameraWidget->setEnabled(true);
 
     m_activeCamera = -1;

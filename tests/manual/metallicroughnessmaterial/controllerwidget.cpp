@@ -115,7 +115,7 @@ void ControllerWidget::onTextureTransformChanged()
     const auto offsetY = ui->textureOffsetY->value();
     const auto rotationZ = ui->textureRotationZ->value();
 
-    const auto transform = [=]{
+    const auto transform = [=] {
         auto t = QTransform();
         t.scale(scale, scale);
         t.rotate(rotationZ);

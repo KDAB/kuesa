@@ -46,7 +46,7 @@ class MainWindow;
 namespace Kuesa {
 class SceneEntity;
 class AbstractAssetCollection;
-}
+} // namespace Kuesa
 
 class MainWindow : public QMainWindow
 {

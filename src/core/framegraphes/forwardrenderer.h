@@ -47,7 +47,7 @@ class QFrustumCulling;
 class QNoDraw;
 class QSortPolicy;
 class QRenderTarget;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 
@@ -57,10 +57,10 @@ class AbstractRenderStage;
 class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QFrameGraphNode
 {
     Q_OBJECT
-    Q_PROPERTY(QObject* renderSurface READ renderSurface WRITE setRenderSurface NOTIFY renderSurfaceChanged)
+    Q_PROPERTY(QObject *renderSurface READ renderSurface WRITE setRenderSurface NOTIFY renderSurfaceChanged)
     Q_PROPERTY(QSize externalRenderTargetSize READ externalRenderTargetSize WRITE setExternalRenderTargetSize NOTIFY externalRenderTargetSizeChanged)
     Q_PROPERTY(QRectF viewportRect READ viewportRect WRITE setViewportRect NOTIFY viewportRectChanged)
-    Q_PROPERTY(Qt3DCore::QEntity* camera READ camera WRITE setCamera NOTIFY cameraChanged)
+    Q_PROPERTY(Qt3DCore::QEntity *camera READ camera WRITE setCamera NOTIFY cameraChanged)
     Q_PROPERTY(QColor clearColor READ clearColor WRITE setClearColor NOTIFY clearColorChanged)
     Q_PROPERTY(Qt3DRender::QClearBuffers::BufferType clearBuffers READ clearBuffers WRITE setClearBuffers NOTIFY clearBuffersChanged)
     Q_PROPERTY(bool frustumCulling READ frustumCulling WRITE setFrustumCulling NOTIFY frustumCullingChanged)
@@ -131,7 +131,7 @@ private:
     bool m_backToFrontSorting;
     bool m_zfilling;
     QVector<AbstractPostProcessingEffect *> m_postProcessingEffects;
-    QHash<AbstractPostProcessingEffect *,  AbstractPostProcessingEffect::FrameGraphNodePtr> m_effectFGSubtrees;
+    QHash<AbstractPostProcessingEffect *, AbstractPostProcessingEffect::FrameGraphNodePtr> m_effectFGSubtrees;
 
     QVector<QMetaObject::Connection> m_resizeConnections;
 
@@ -139,13 +139,12 @@ private:
     Qt3DRender::QFrameGraphNode *m_renderToTextureRootNode;
     Qt3DRender::QFrameGraphNode *m_effectsRootNode;
     Qt3DRender::QFrameGraphNode *m_renderStageRootNode;
-    Qt3DRender::QRenderTarget* m_renderTargets[2];
+    Qt3DRender::QRenderTarget *m_renderTargets[2];
 
     //For controlling render stages
     QVector<AbstractRenderStage *> m_renderStages;
 };
-
-}
+} // namespace Kuesa
 QT_END_NAMESPACE
 
 #endif // FORWARDRENDERER_H

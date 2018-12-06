@@ -39,8 +39,7 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 using namespace Qt3DRender;
 
-
-class tst_MeshInspector: public QObject
+class tst_MeshInspector : public QObject
 {
     Q_OBJECT
 private Q_SLOTS:
@@ -80,7 +79,7 @@ private Q_SLOTS:
         QVERIFY(m_inspector->bufferModel()->rowCount() > 0);
 
         // WHEN
-        m_scene.reset();   // will delete the mesh
+        m_scene.reset(); // will delete the mesh
 
         //THEN
         QCOMPARE(spy.count(), 1);

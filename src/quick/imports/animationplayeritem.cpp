@@ -34,7 +34,6 @@ using namespace Kuesa;
 AnimationPlayerItem::AnimationPlayerItem(QObject *parent)
     : QObject(parent)
 {
-
 }
 
 QQmlListProperty<Qt3DCore::QNode> AnimationPlayerItem::targetList()
@@ -70,7 +69,7 @@ int AnimationPlayerItem::qmlTargetCount(QQmlListProperty<Qt3DCore::QNode> *list)
 void AnimationPlayerItem::qmlClearTargets(QQmlListProperty<Qt3DCore::QNode> *list)
 {
     AnimationPlayerItem *self = static_cast<AnimationPlayerItem *>(list->object);
-    for (Qt3DCore::QNode *target: qAsConst(self->m_managedTargets))
+    for (Qt3DCore::QNode *target : qAsConst(self->m_managedTargets))
         self->parentAnimationPlayer()->removeTarget(target);
     self->m_managedTargets.clear();
 }

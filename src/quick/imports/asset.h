@@ -33,8 +33,7 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Kuesa
-{
+namespace Kuesa {
 class SceneEntity;
 class AbstractAssetCollection;
 
@@ -69,7 +68,7 @@ private:
     AbstractAssetCollection *m_collection;
     QString m_name;
     Qt3DCore::QNode *m_node;
-    QHash<QNode*, QMetaObject::Connection> m_destructionConnections;
+    QHash<QNode *, QMetaObject::Connection> m_destructionConnections;
 
     void setNode(Qt3DCore::QNode *node);
     void findAsset();

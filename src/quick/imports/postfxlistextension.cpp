@@ -42,8 +42,7 @@ ForwardRenderer *kuesaFrameGraph(QObject *parent)
     return qobject_cast<ForwardRenderer *>(parent);
 }
 
-} // anonymous
-
+} // namespace
 
 /*!
  * \class PostFXListExtension
@@ -108,6 +107,6 @@ void PostFXListExtension::clearFx(QQmlListProperty<AbstractPostProcessingEffect>
         kuesaFG->removePostProcessingEffect(fx);
 }
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE

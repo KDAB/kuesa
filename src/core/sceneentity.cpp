@@ -33,7 +33,8 @@
 
 QT_BEGIN_NAMESPACE
 
-static void initResources() {
+static void initResources()
+{
 #ifdef QT_STATIC
     Q_INIT_RESOURCE(shaders);
 #endif

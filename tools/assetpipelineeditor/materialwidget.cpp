@@ -102,7 +102,7 @@ QString MaterialWidget::boolTextValue(bool value) const
 void MaterialWidget::setLabelColor(QLabel *label, const QColor &color)
 {
     const int h = label->sizeHint().height();
-    QPixmap pm( 2 * h, h);
+    QPixmap pm(2 * h, h);
     pm.fill(color);
     label->setPixmap(pm);
     label->setToolTip(color.name());
@@ -120,17 +120,17 @@ MatrixLabel::MatrixLabel(QWidget *parent)
     : QWidget(parent)
 {
     m_gridLayout = new QGridLayout(this);
-    m_gridLayout->setColumnStretch(4,1);
-    m_gridLayout->setContentsMargins(0,0,0,0);
+    m_gridLayout->setColumnStretch(4, 1);
+    m_gridLayout->setContentsMargins(0, 0, 0, 0);
     for (int i = 0; i < 9; ++i)
-        m_gridLayout->addWidget(new QLabel, i/3, i % 3);
+        m_gridLayout->addWidget(new QLabel, i / 3, i % 3);
 }
 
 void MatrixLabel::setMatrix(const QMatrix3x3 &matrix)
 {
     for (int row = 0; row < 3; ++row) {
         for (int col = 0; col < 3; ++col) {
-            auto label = qobject_cast<QLabel*> (m_gridLayout->itemAtPosition(row, col)->widget());
+            auto label = qobject_cast<QLabel *>(m_gridLayout->itemAtPosition(row, col)->widget());
             Q_ASSERT(label);
             if (matrix.isIdentity()) {
                 if (row == 0 && col == 0)

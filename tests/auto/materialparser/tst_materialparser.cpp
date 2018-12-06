@@ -55,37 +55,37 @@ private Q_SLOTS:
                                << true
                                << 1;
 
-        QTest::newRow("Empty")<< QStringLiteral(ASSETS "materialparser_empty.gltf")
-                              << false
-                              << 0;
+        QTest::newRow("Empty") << QStringLiteral(ASSETS "materialparser_empty.gltf")
+                               << false
+                               << 0;
 
-        QTest::newRow("Empty Material")<< QStringLiteral(ASSETS "materialparser_empty_material.gltf")
-                                       << true
-                                       << 1;
+        QTest::newRow("Empty Material") << QStringLiteral(ASSETS "materialparser_empty_material.gltf")
+                                        << true
+                                        << 1;
 
         QTest::newRow("PartiallyComplete") << QStringLiteral(ASSETS "materialparser_partially_complete.gltf")
                                            << true
                                            << 1;
 
-        QTest::newRow("Invalid_AlphaMode")<< QStringLiteral(ASSETS "materialparser_invalid_alpha_mode.gltf")
-                                          << false
-                                          << 0;
+        QTest::newRow("Invalid_AlphaMode") << QStringLiteral(ASSETS "materialparser_invalid_alpha_mode.gltf")
+                                           << false
+                                           << 0;
 
-        QTest::newRow("Invalid_BaseColorArray")<< QStringLiteral(ASSETS "materialparser_invalid_basecolorarray.gltf")
-                                               << false
-                                               << 0;
-
-        QTest::newRow("Invalid_BaseColorArray2")<< QStringLiteral(ASSETS "materialparser_invalid_basecolorarray2.gltf")
-                                               << false
-                                               << 0;
-
-        QTest::newRow("Invalid_EmissiveFactor")<< QStringLiteral(ASSETS "materialparser_invalid_emissivefactor.gltf")
+        QTest::newRow("Invalid_BaseColorArray") << QStringLiteral(ASSETS "materialparser_invalid_basecolorarray.gltf")
                                                 << false
                                                 << 0;
 
-        QTest::newRow("Invalid_EmissiveFactor2")<< QStringLiteral(ASSETS "materialparser_invalid_emissivefactor2.gltf")
-                                               << false
-                                               << 0;
+        QTest::newRow("Invalid_BaseColorArray2") << QStringLiteral(ASSETS "materialparser_invalid_basecolorarray2.gltf")
+                                                 << false
+                                                 << 0;
+
+        QTest::newRow("Invalid_EmissiveFactor") << QStringLiteral(ASSETS "materialparser_invalid_emissivefactor.gltf")
+                                                << false
+                                                << 0;
+
+        QTest::newRow("Invalid_EmissiveFactor2") << QStringLiteral(ASSETS "materialparser_invalid_emissivefactor2.gltf")
+                                                 << false
+                                                 << 0;
     }
 
     void checkParse()
@@ -93,7 +93,6 @@ private Q_SLOTS:
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
         QFETCH(int, materialCount);
-
 
         // GIVEN
         GLTF2Context context;
@@ -133,7 +132,6 @@ private Q_SLOTS:
         QTest::newRow("Mask") << QStringLiteral(ASSETS "materialparser_mask.gltf")
                               << int(Kuesa::GLTF2Import::Material::Alpha::Mask)
                               << 0.1f;
-
     }
 
     void checkMaterialAlpha()
@@ -141,7 +139,6 @@ private Q_SLOTS:
         QFETCH(QString, filePath);
         QFETCH(int, expectedBlendMode);
         QFETCH(float, expectedAlphaCutoff);
-
 
         // GIVEN
         GLTF2Context context;
@@ -164,7 +161,6 @@ private Q_SLOTS:
         QCOMPARE(context.material(0).alpha.alphaCutoff, expectedAlphaCutoff);
         QCOMPARE(int(context.material(0).alpha.mode), expectedBlendMode);
     }
-
 };
 
 QTEST_APPLESS_MAIN(tst_MaterialParser)

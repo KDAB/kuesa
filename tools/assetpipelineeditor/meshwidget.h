@@ -70,7 +70,7 @@ private Q_SLOTS:
 
 private:
     QAbstractItemModel *m_model;
-    QList<DelegateWidget*> m_delegates;
+    QList<DelegateWidget *> m_delegates;
     QVBoxLayout *m_mainLayout;
 };
 

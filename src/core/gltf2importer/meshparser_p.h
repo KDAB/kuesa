@@ -37,7 +37,6 @@
 // modified without notice
 //
 
-
 #include <QtCore/qglobal.h>
 #include <QtCore/QVector>
 
@@ -46,8 +45,7 @@
 QT_BEGIN_NAMESPACE
 
 #if defined(KUESA_DRACO_COMPRESSION)
-namespace draco
-{
+namespace draco {
 class PointCloud;
 };
 #endif
@@ -56,7 +54,7 @@ class QJsonArray;
 namespace Qt3DRender {
 class QGeometryRenderer;
 class QGeometry;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 namespace GLTF2Import {
@@ -64,15 +62,13 @@ namespace GLTF2Import {
 class GLTF2Context;
 struct BufferView;
 
-struct Primitive
-{
+struct Primitive {
     Qt3DRender::QGeometryRenderer *primitiveRenderer = nullptr;
     qint32 materialIdx = -1;
     bool hasColorAttr = false;
 };
 
-struct Mesh
-{
+struct Mesh {
     void clear();
 
     QVector<Primitive> meshPrimitives;
@@ -85,6 +81,7 @@ public:
     MeshParser();
 
     bool parse(const QJsonArray &meshArray, GLTF2Context *context);
+
 private:
     bool geometryFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, bool &hasColorAttr);
     bool geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, QStringList existingAttributes, bool &hasColorAttr);

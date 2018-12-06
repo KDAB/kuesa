@@ -34,9 +34,9 @@
 #include <QPainter>
 #include <QColorDialog>
 
-SettingsDialog::SettingsDialog(MainWindow *parent) :
-    QDialog(parent),
-    ui(new Ui::SettingsDialog)
+SettingsDialog::SettingsDialog(MainWindow *parent)
+    : QDialog(parent)
+    , ui(new Ui::SettingsDialog)
 {
     ui->setupUi(this);
     connect(ui->selectionColorButton, &QToolButton::clicked, this, &SettingsDialog::pickColor);

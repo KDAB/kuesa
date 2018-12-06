@@ -343,7 +343,7 @@ QColor MetallicRoughnessMaterial::baseColorFactor() const
 
 QAbstractTexture *MetallicRoughnessMaterial::baseColorMap() const
 {
-    return m_baseColorMapParameter->value().value<QAbstractTexture*>();
+    return m_baseColorMapParameter->value().value<QAbstractTexture *>();
 }
 
 float MetallicRoughnessMaterial::metallicFactor() const
@@ -428,7 +428,7 @@ void MetallicRoughnessMaterial::setBaseColorFactor(const QColor &baseColorFactor
 
 void MetallicRoughnessMaterial::setBaseColorMap(QAbstractTexture *baseColorMap)
 {
-    if (m_baseColorMapParameter->value().value<QAbstractTexture*>() == baseColorMap)
+    if (m_baseColorMapParameter->value().value<QAbstractTexture *>() == baseColorMap)
         return;
 
     baseColorMap->setFormat(QAbstractTexture::TextureFormat::SRGB8_Alpha8);
@@ -454,7 +454,7 @@ void MetallicRoughnessMaterial::setRoughnessFactor(float roughnessFactor)
 
 void MetallicRoughnessMaterial::setMetalRoughMap(QAbstractTexture *metalRoughMap)
 {
-    if (m_metalRoughMapParameter->value().value<QAbstractTexture*>() == metalRoughMap)
+    if (m_metalRoughMapParameter->value().value<QAbstractTexture *>() == metalRoughMap)
         return;
 
     m_effect->setMetalRoughMapEnabled(metalRoughMap);
@@ -469,7 +469,7 @@ void MetallicRoughnessMaterial::setMetalRoughMap(QAbstractTexture *metalRoughMap
 
 void MetallicRoughnessMaterial::setNormalMap(QAbstractTexture *normalMap)
 {
-    if (m_normalMapParameter->value().value<QAbstractTexture*>() == normalMap)
+    if (m_normalMapParameter->value().value<QAbstractTexture *>() == normalMap)
         return;
 
     m_effect->setNormalMapEnabled(normalMap);
@@ -489,7 +489,7 @@ void MetallicRoughnessMaterial::setNormalScale(float normalScale)
 
 void MetallicRoughnessMaterial::setAmbientOcclusionMap(QAbstractTexture *ambientOcclusionMap)
 {
-    if (m_ambientOcclusionMapParameter->value().value<QAbstractTexture*>() == ambientOcclusionMap)
+    if (m_ambientOcclusionMapParameter->value().value<QAbstractTexture *>() == ambientOcclusionMap)
         return;
 
     m_effect->setAmbientOcclusionMapEnabled(ambientOcclusionMap);
@@ -509,7 +509,7 @@ void MetallicRoughnessMaterial::setEmissiveFactor(const QColor &emissiveFactor)
 
 void MetallicRoughnessMaterial::setEmissiveMap(QAbstractTexture *emissiveMap)
 {
-    if (m_emissiveMapParameter->value().value<QAbstractTexture*>() == emissiveMap)
+    if (m_emissiveMapParameter->value().value<QAbstractTexture *>() == emissiveMap)
         return;
 
     m_effect->setEmissiveMapEnabled(emissiveMap);

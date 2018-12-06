@@ -38,7 +38,6 @@ public:
     KUESA_ASSET_COLLECTION_IMPLEMENTATION(Qt3DRender::QMaterial)
 };
 
-
 class tst_AssetCollection : public QObject
 {
     Q_OBJECT
@@ -74,7 +73,7 @@ private Q_SLOTS:
         QCOMPARE(nameChangeSpy.count(), 1);
 
         // WHEN (adding new object with same name)
-        QSignalSpy destroyedSpy(asset, SIGNAL(destroyed(QObject*)));
+        QSignalSpy destroyedSpy(asset, SIGNAL(destroyed(QObject *)));
         dummyCollection.add("testAsset", new Qt3DRender::QMaterial);
 
         // THEN
@@ -89,7 +88,7 @@ private Q_SLOTS:
         // GIVEN
         DummyAssetCollection dummyCollection;
         auto asset = new Qt3DRender::QMaterial;
-        QSignalSpy destroyedSpy(asset, SIGNAL(destroyed(QObject*)));
+        QSignalSpy destroyedSpy(asset, SIGNAL(destroyed(QObject *)));
 
         // WHEN
         dummyCollection.add("testAsset", asset);
@@ -125,7 +124,7 @@ private Q_SLOTS:
         DummyAssetCollection collection;
         Qt3DCore::QEntity entity;
         auto asset = new Qt3DRender::QMaterial(&entity); // this has a parent, it should be not deleted when replaced in the collection
-        QSignalSpy spy(asset, SIGNAL(destroyed(QObject*)));
+        QSignalSpy spy(asset, SIGNAL(destroyed(QObject *)));
 
         // WHEN
         collection.add("asset", asset);
@@ -151,7 +150,7 @@ private Q_SLOTS:
         // GIVEN
         DummyAssetCollection collection;
         auto asset = new Qt3DRender::QMaterial;
-        QSignalSpy spy(asset, SIGNAL(destroyed(QObject*)));
+        QSignalSpy spy(asset, SIGNAL(destroyed(QObject *)));
 
         // WHEN
         collection.add("asset", asset);

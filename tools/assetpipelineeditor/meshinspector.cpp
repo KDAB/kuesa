@@ -86,14 +86,14 @@ void MeshInspector::setMesh(Qt3DRender::QGeometryRenderer *mesh)
                 entity->removeComponent(mat);
                 entity->addComponent(m_highlightMaterial.data());
                 // Keep track of old material to restore it later
-                m_meshMaterials.push_back({entity, mat});
+                m_meshMaterials.push_back({ entity, mat });
             }
         }
     }
 
     disconnect(m_meshConnection);
     if (mesh)
-        m_meshConnection = connect(mesh, &Qt3DCore::QNode::nodeDestroyed, this, [this]() { setMesh(nullptr); } );
+        m_meshConnection = connect(mesh, &Qt3DCore::QNode::nodeDestroyed, this, [this]() { setMesh(nullptr); });
 
     m_mesh = mesh;
     m_model->setMesh(m_mesh);
@@ -159,13 +159,13 @@ unsigned int MeshInspector::calculatePrimitiveCount(int indexCount, int primitiv
     case Qt3DRender::QGeometryRenderer::Points:
         return indexCount;
     case Qt3DRender::QGeometryRenderer::Lines:
-        return indexCount/2;
+        return indexCount / 2;
     case Qt3DRender::QGeometryRenderer::LineLoop:
         return indexCount;
     case Qt3DRender::QGeometryRenderer::LineStrip:
         return indexCount - 1;
     case Qt3DRender::QGeometryRenderer::Triangles:
-        return indexCount/3;
+        return indexCount / 3;
     case Qt3DRender::QGeometryRenderer::TriangleStrip:
         return indexCount - 2;
     case Qt3DRender::QGeometryRenderer::TriangleFan:
@@ -200,10 +200,10 @@ QString MeshInspector::nameForPrimitiveType(int primitiveType)
 
 QString MeshInspector::totalSizeString() const
 {
-    float size = m_totalSize/1024.0;
+    float size = m_totalSize / 1024.0;
     QString suffix(QStringLiteral(" KB"));
     if (size > 1024) {
-        size = size/1024;
+        size = size / 1024;
         suffix = QStringLiteral(" MB");
     }
     return QString::number(size, 'f', 2) + suffix;
@@ -259,7 +259,6 @@ int MeshInspector::vertexCount() const
     return m_vertexCount;
 }
 
-
 BufferModel::BufferModel(QObject *parent)
     : QAbstractTableModel(parent)
     , m_mesh(nullptr)
@@ -280,13 +279,10 @@ void BufferModel::setMesh(Qt3DRender::QGeometryRenderer *mesh)
     endResetModel();
 }
 
-
 QVariant BufferModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-    {
-        switch (section)
-        {
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
+        switch (section) {
         case BufferNameColumn:
             return QStringLiteral("bufferName");
         case BufferViewIndexColumn:
@@ -329,8 +325,7 @@ QVariant BufferModel::data(const QModelIndex &index, int role) const
     const auto attribute = m_attributes.at(index.row());
 
     switch (index.column()) {
-    case BufferNameColumn:
-    {
+    case BufferNameColumn: {
         auto name = attribute->property("bufferName").toString();
         if (name.isEmpty())
             name = attribute->attributeType() == Qt3DRender::QAttribute::IndexAttribute ? QStringLiteral("Index Buffer") : attribute->name();

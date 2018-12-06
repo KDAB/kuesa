@@ -196,7 +196,6 @@ void TextureImageDelegateWidget::setRow(int row)
 FixedWidthScrollArea::FixedWidthScrollArea(QWidget *parent)
     : QScrollArea(parent)
 {
-
 }
 
 void FixedWidthScrollArea::resizeEvent(QResizeEvent *event)

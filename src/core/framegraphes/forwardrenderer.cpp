@@ -339,7 +339,7 @@ ForwardRenderer::~ForwardRenderer()
 {
     // unparent the effect subtrees or they'll be deleted twice
     for (auto framegraph : m_effectFGSubtrees)
-        framegraph->setParent(static_cast<Qt3DCore::QNode*>(nullptr));
+        framegraph->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
     m_effectFGSubtrees.clear();
     qDeleteAll(m_renderStages);
     m_renderStages.clear();
@@ -418,7 +418,7 @@ void ForwardRenderer::addPostProcessingEffect(AbstractPostProcessingEffect *effe
     QObject::connect(effect,
                      &Qt3DCore::QNode::nodeDestroyed,
                      this,
-                     [this, effect] () { removePostProcessingEffect(effect); });
+                     [this, effect]() { removePostProcessingEffect(effect); });
 
     // Add FrameGraph subtree to dedicated subtree of effects
     auto effectFGSubtree = effect->frameGraphSubTree();
@@ -447,7 +447,7 @@ void ForwardRenderer::removePostProcessingEffect(AbstractPostProcessingEffect *e
     m_postProcessingEffects.removeAll(effect);
 
     // unparent FG subtree associated with Effect.
-    m_effectFGSubtrees.take(effect)->setParent(static_cast<Qt3DCore::QNode*>(nullptr));
+    m_effectFGSubtrees.take(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
 
     // Reconfigure FrameGraph Tree
     reconfigureFrameGraph();
@@ -598,10 +598,10 @@ void ForwardRenderer::handleSurfaceChange()
     m_resizeConnections.clear();
 
     // surface should only be a QWindow or QOffscreenSurface. Have to downcast since QSurface isn't QObject
-    if (auto window = qobject_cast<QWindow*>(surface)) {
+    if (auto window = qobject_cast<QWindow *>(surface)) {
         m_resizeConnections.push_back(connect(window, &QWindow::widthChanged, this, &ForwardRenderer::updateTextureSizes));
         m_resizeConnections.push_back(connect(window, &QWindow::heightChanged, this, &ForwardRenderer::updateTextureSizes));
-    } else if (qobject_cast<QOffscreenSurface*>(surface)) {
+    } else if (qobject_cast<QOffscreenSurface *>(surface)) {
         m_resizeConnections.push_back(connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::updateTextureSizes));
     } else {
         qWarning() << "Unexpected surface type for surface " << surface;
@@ -632,9 +632,9 @@ void ForwardRenderer::reconfigureFrameGraph()
     // subtree framegraph including any render target selectors.
     // It's easier just to re-create the tree below
     for (AbstractPostProcessingEffect *effect : m_postProcessingEffects)
-        m_effectFGSubtrees.value(effect)->setParent(static_cast<Qt3DCore::QNode*>(nullptr));
-    for (AbstractRenderStage *stage: m_renderStages)
-        stage->setParent(static_cast<Qt3DCore::QNode*>(nullptr));
+        m_effectFGSubtrees.value(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+    for (AbstractRenderStage *stage : m_renderStages)
+        stage->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
     delete m_effectsRootNode;
     m_effectsRootNode = nullptr;
 
@@ -744,7 +744,7 @@ void ForwardRenderer::reconfigureStages()
     // Handle change of FG (in case we had no FX before and FX were added)
     // Or in case we have never inserted our stages before
     {
-        requiresReordering |=  (m_renderStages.last()->parent() != m_renderStageRootNode);
+        requiresReordering |= (m_renderStages.last()->parent() != m_renderStageRootNode);
     }
 
     // Handle ZFilling change
@@ -781,10 +781,10 @@ void ForwardRenderer::reconfigureStages()
     // Reorder/Insert node into FG
     if (requiresReordering) {
         // Remove stage from FG tree
-        for (AbstractRenderStage *stage: m_renderStages)
+        for (AbstractRenderStage *stage : m_renderStages)
             stage->setParent(Q_NODE_NULLPTR);
         // Add stages into FG tree
-        for (AbstractRenderStage *stage: m_renderStages)
+        for (AbstractRenderStage *stage : m_renderStages)
             stage->setParent(m_renderStageRootNode);
     };
 }
@@ -836,8 +836,8 @@ Qt3DRender::QAbstractTexture *ForwardRenderer::findRenderTargetTexture(Qt3DRende
 {
     auto outputs = target->outputs();
     auto attachment = std::find_if(outputs.begin(), outputs.end(), [attachmentPoint](Qt3DRender::QRenderTargetOutput *output) {
-            return output->attachmentPoint() == attachmentPoint;
-    } );
+        return output->attachmentPoint() == attachmentPoint;
+    });
     return attachment == outputs.end() ? nullptr : (*attachment)->texture();
 }
 
@@ -855,9 +855,9 @@ QSize ForwardRenderer::currentSurfaceSize() const
 {
     QSize size;
     auto surface = m_surfaceSelector->surface();
-    if (auto window = qobject_cast<QWindow*>(surface))
+    if (auto window = qobject_cast<QWindow *>(surface))
         size = window->size();
-    else if (qobject_cast<QOffscreenSurface*>(surface))
+    else if (qobject_cast<QOffscreenSurface *>(surface))
         size = m_surfaceSelector->externalRenderTargetSize();
     else
         qWarning() << "Unexpected surface type for surface " << surface;
@@ -890,6 +890,5 @@ void ForwardRenderer::setViewportRect(const QRectF &normalizedRect)
 {
     m_viewport->setNormalizedRect(normalizedRect);
 }
-
 
 QT_END_NAMESPACE

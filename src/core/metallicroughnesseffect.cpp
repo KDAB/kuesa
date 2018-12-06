@@ -205,14 +205,14 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     , m_metalRoughES3Shader(new QShaderProgram(this))
     , m_metalRoughES2Shader(new QShaderProgram(this))
 {
-    const auto enabledLayers = QStringList{QStringLiteral("noBaseColorMap"),
-                                           QStringLiteral("noMetalRoughMap"),
-                                           QStringLiteral("noAmbientOcclusionMap"),
-                                           QStringLiteral("noEmissiveMap"),
-                                           QStringLiteral("noNormalMap"),
-                                           QStringLiteral("noHasColorAttr"),
-                                           QStringLiteral("noDoubleSided"),
-                                           QStringLiteral("noHasAlphaCutoff")};
+    const auto enabledLayers = QStringList{ QStringLiteral("noBaseColorMap"),
+                                            QStringLiteral("noMetalRoughMap"),
+                                            QStringLiteral("noAmbientOcclusionMap"),
+                                            QStringLiteral("noEmissiveMap"),
+                                            QStringLiteral("noNormalMap"),
+                                            QStringLiteral("noHasColorAttr"),
+                                            QStringLiteral("noDoubleSided"),
+                                            QStringLiteral("noHasAlphaCutoff") };
     const auto fragmentShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.frag.json"));
     m_metalRoughGL3ShaderBuilder->setShaderProgram(m_metalRoughGL3Shader);
     m_metalRoughGL3ShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph);
@@ -612,18 +612,18 @@ void MetallicRoughnessEffect::initVertexShader()
 {
     if (m_useSkinning) {
         m_metalRoughGL3Shader->setVertexShaderCode(
-            QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/skinned.vert"))));
+                QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/skinned.vert"))));
         m_metalRoughES3Shader->setVertexShaderCode(
-            QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/skinned.vert"))));
+                QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/skinned.vert"))));
         m_metalRoughES2Shader->setVertexShaderCode(
-            QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skinned.vert"))));
+                QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skinned.vert"))));
     } else {
         m_metalRoughGL3Shader->setVertexShaderCode(
-            QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/simple.vert"))));
+                QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/simple.vert"))));
         m_metalRoughES3Shader->setVertexShaderCode(
-            QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/simple.vert"))));
+                QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/simple.vert"))));
         m_metalRoughES2Shader->setVertexShaderCode(
-            QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/simple.vert"))));
+                QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/simple.vert"))));
     }
     m_invokeInitVertexShaderRequested = false;
 }

@@ -54,7 +54,6 @@ OpaqueRenderStage::OpaqueRenderStage(Qt3DCore::QNode *parent)
 
 OpaqueRenderStage::~OpaqueRenderStage()
 {
-
 }
 
 void OpaqueRenderStage::setZFilling(bool zFill)

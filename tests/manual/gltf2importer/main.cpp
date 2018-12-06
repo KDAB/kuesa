@@ -41,7 +41,7 @@ using namespace Kuesa;
 class SceneInitializer : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(SceneEntity* scene READ scene WRITE setScene NOTIFY sceneChanged)
+    Q_PROPERTY(SceneEntity *scene READ scene WRITE setScene NOTIFY sceneChanged)
 public:
     explicit SceneInitializer(QObject *parent = nullptr)
         : QObject(parent)
@@ -73,7 +73,7 @@ private:
     SceneEntity *m_scene;
 };
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 

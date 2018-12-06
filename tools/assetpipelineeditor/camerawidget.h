@@ -36,7 +36,7 @@
 namespace Ui {
 class CameraWidget;
 class VectorWidget;
-}
+} // namespace Ui
 
 class VectorWidget : public QWidget
 {
@@ -70,16 +70,16 @@ private:
 class CameraWidget : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(Qt3DRender::QCamera* camera READ camera WRITE setCamera NOTIFY cameraChanged)
+    Q_PROPERTY(Qt3DRender::QCamera *camera READ camera WRITE setCamera NOTIFY cameraChanged)
 
 public:
     CameraWidget(QWidget *parent = nullptr);
     virtual ~CameraWidget();
 
-    Qt3DRender::QCamera* camera() const;
+    Qt3DRender::QCamera *camera() const;
 
 public slots:
-    void setCamera(Qt3DRender::QCamera* camera);
+    void setCamera(Qt3DRender::QCamera *camera);
     void setCenter(const QVector3D &vector);
     void setViewVector(const QVector3D &vector);
     void setPosition(const QVector3D &vector);
@@ -95,7 +95,7 @@ public slots:
     void updateWidgetValues();
 
 signals:
-    void cameraChanged(Qt3DRender::QCamera* camera);
+    void cameraChanged(Qt3DRender::QCamera *camera);
 
 private:
     Qt3DRender::QCamera *m_camera = nullptr;

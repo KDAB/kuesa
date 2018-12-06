@@ -37,7 +37,7 @@
 namespace Qt3DRender {
 class QLayer;
 class QAbstractTexture;
-}
+} // namespace Qt3DRender
 
 QT_BEGIN_NAMESPACE
 namespace Kuesa {
@@ -61,7 +61,7 @@ public:
     //set texture containing scene to be post-processed
     virtual void setInputTexture(Qt3DRender::QAbstractTexture *texture) = 0;
     virtual void setSceneSize(const QSize &size);
-    virtual QVector<Qt3DRender::QLayer*> layers() const = 0;
+    virtual QVector<Qt3DRender::QLayer *> layers() const = 0;
 
 protected:
     explicit AbstractPostProcessingEffect(Qt3DCore::QNode *parent = nullptr, Type = Custom);

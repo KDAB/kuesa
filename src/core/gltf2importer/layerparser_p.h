@@ -51,8 +51,7 @@ namespace Kuesa {
 namespace GLTF2Import {
 class GLTF2Context;
 
-struct Layer
-{
+struct Layer {
     Qt3DRender::QLayer *layer = nullptr;
     QString name;
 };

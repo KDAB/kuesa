@@ -43,7 +43,6 @@ const QLatin1String KEY_NAME = QLatin1Literal("name");
 ImageParser::ImageParser(const QDir &basePath)
     : m_basePath(basePath)
 {
-
 }
 
 bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) const

@@ -60,8 +60,8 @@ QVector<float> jsonArrayToVectorOfFloats(const QJsonArray &values)
     QVector<float> d(nbComponents);
     std::transform(values.begin(), values.end(), d.begin(),
                    [](const QJsonValue &value) -> float {
-        return value.toDouble(0);
-    });
+                       return value.toDouble(0);
+                   });
     return d;
 }
 
@@ -106,17 +106,14 @@ Qt3DRender::QAttribute::VertexBaseType accessorTypeFromJSON(int componentType)
         return Qt3DRender::QAttribute::Float;
     }
 }
-
-}
+} // namespace
 
 BufferAccessorParser::BufferAccessorParser()
 {
-
 }
 
 BufferAccessorParser::~BufferAccessorParser()
 {
-
 }
 
 bool Kuesa::GLTF2Import::BufferAccessorParser::parse(const QJsonArray &bufferAccessors, Kuesa::GLTF2Import::GLTF2Context *context)

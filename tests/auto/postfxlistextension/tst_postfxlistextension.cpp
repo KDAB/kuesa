@@ -58,7 +58,8 @@ private Q_SLOTS:
                                            BloomEffect { id: bloomEffect }\n\
                                            ThresholdEffect { id: threshold }\n\
                                            postProcessingEffects: [threshold, bloomEffect, opacityMask]\n\
-                                       }"), QUrl());
+                                       }"),
+                    QUrl());
 
         // WHEN
         QObject *rootObj = cmp.create();
