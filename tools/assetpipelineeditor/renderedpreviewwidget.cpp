@@ -35,7 +35,7 @@
 RenderedPreviewWidget::RenderedPreviewWidget(QWidget *parent)
     : QLabel(parent)
 {
-    setMinimumSize({128, 128});
+    setMinimumSize({ 128, 128 });
     setMaximumSize(previewSize());
 }
 
@@ -58,7 +58,7 @@ void RenderedPreviewWidget::onCapture(Qt3DRender::QRenderCaptureReply *reply)
 
 QSize RenderedPreviewWidget::previewSize() const
 {
-    return {512,512};
+    return { 512, 512 };
 }
 
 void RenderedPreviewWidget::resizeEvent(QResizeEvent *)
@@ -68,5 +68,5 @@ void RenderedPreviewWidget::resizeEvent(QResizeEvent *)
 
 QSize RenderedPreviewWidget::sizeHint() const
 {
-    return {256, 256};
+    return { 256, 256 };
 }

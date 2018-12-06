@@ -36,12 +36,9 @@ QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-template
-<
-    class AbstractProduct,
-    typename IdentifierType,
-    typename ProductCreator
->
+template<class AbstractProduct,
+         typename IdentifierType,
+         typename ProductCreator>
 class Factory
 {
 public:

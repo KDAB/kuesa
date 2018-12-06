@@ -43,38 +43,37 @@ class TextureImagesModel;
 class TextureInspector : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(Qt3DRender::QAbstractTexture* texture READ texture NOTIFY textureParamsChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *texture READ texture NOTIFY textureParamsChanged)
 public:
-   explicit TextureInspector(QObject *parent = nullptr);
+    explicit TextureInspector(QObject *parent = nullptr);
 
-   void setTexture(const QString &name, Qt3DRender::QAbstractTexture *texture);
+    void setTexture(const QString &name, Qt3DRender::QAbstractTexture *texture);
 
-   Qt3DRender::QAbstractTexture *texture() const;
-   TextureImagesModel *textureImagesModel() const;
+    Qt3DRender::QAbstractTexture *texture() const;
+    TextureImagesModel *textureImagesModel() const;
 
-   QString assetName() const;
-   int width() const;
-   int height() const;
-   int depth() const;
-   int layers() const;
-   int samples() const;
-   QString target() const;
-   QString format() const;
-   QString wrapXMode() const;
-   QString wrapYMode() const;
-   QString wrapZMode() const;
-   QString minificationFilter() const;
-   QString magnificationFilter() const;
+    QString assetName() const;
+    int width() const;
+    int height() const;
+    int depth() const;
+    int layers() const;
+    int samples() const;
+    QString target() const;
+    QString format() const;
+    QString wrapXMode() const;
+    QString wrapYMode() const;
+    QString wrapZMode() const;
+    QString minificationFilter() const;
+    QString magnificationFilter() const;
 
 Q_SIGNALS:
-   void textureParamsChanged();
+    void textureParamsChanged();
 
 private:
-
-   QString m_assetName;
-   Qt3DRender::QAbstractTexture *m_texture;
-   TextureImagesModel *m_model;
-   QMetaObject::Connection m_textureConnection;
+    QString m_assetName;
+    Qt3DRender::QAbstractTexture *m_texture;
+    TextureImagesModel *m_model;
+    QMetaObject::Connection m_textureConnection;
 };
 
 class TextureImagesModel : public QAbstractTableModel

@@ -81,7 +81,7 @@ bool isValidWrapMode(const int v)
     }
 }
 
-} // anonymous
+} // namespace
 
 bool Kuesa::GLTF2Import::TextureSamplerParser::parse(const QJsonArray &imageSamplers, Kuesa::GLTF2Import::GLTF2Context *context)
 {

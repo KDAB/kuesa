@@ -48,8 +48,7 @@ namespace GLTF2Import {
 
 class GLTF2Context;
 
-struct Accessor
-{
+struct Accessor {
     int bufferViewIndex = 0;
     Qt3DRender::QAttribute::VertexBaseType type = Qt3DRender::QAttribute::Float;
     int dataSize = 0;
@@ -60,7 +59,6 @@ struct Accessor
     QVector<float> min;
     QString name;
 };
-
 
 class Q_AUTOTEST_EXPORT BufferAccessorParser
 {

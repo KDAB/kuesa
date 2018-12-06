@@ -38,7 +38,7 @@ namespace Qt3DRender {
 class QLayer;
 class QCamera;
 class QMaterial;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 

@@ -35,7 +35,7 @@
 namespace Kuesa {
 class SceneEntity;
 class AbstractAssetCollection;
-}
+} // namespace Kuesa
 
 class MainWindow;
 
@@ -58,7 +58,7 @@ public:
 private:
     Kuesa::SceneEntity *m_entity;
     MainWindow *m_window;
-    QVector<Kuesa::AbstractAssetCollection*> m_collections;
+    QVector<Kuesa::AbstractAssetCollection *> m_collections;
 };
 
 #endif // COLLECTIONMODEL_H

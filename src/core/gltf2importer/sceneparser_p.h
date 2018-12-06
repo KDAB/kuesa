@@ -48,8 +48,7 @@ namespace GLTF2Import {
 
 class GLTF2Context;
 
-struct Scene
-{
+struct Scene {
     QString name;
     QVector<int> rootNodeIndices;
 };

@@ -42,8 +42,7 @@ namespace {
 const QLatin1String KEY_NODES = QLatin1Literal("nodes");
 const QLatin1String KEY_NAME = QLatin1Literal("name");
 
-} // anonymous
-
+} // namespace
 
 bool SceneParser::parse(const QJsonArray &scenesArray, GLTF2Context *context) const
 {

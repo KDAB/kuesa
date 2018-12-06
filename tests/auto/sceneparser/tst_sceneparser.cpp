@@ -41,7 +41,7 @@ namespace {
 const QLatin1String KEY_NODES = QLatin1Literal("nodes");
 const QLatin1String KEY_SCENES = QLatin1String("scenes");
 
-} // anonymous
+} // namespace
 
 class tst_SceneParser : public QObject
 {
@@ -59,25 +59,24 @@ private Q_SLOTS:
                                << true
                                << 1;
 
-        QTest::newRow("Invalid-Missing-Nodes")<< QStringLiteral(ASSETS "scenes_missing_nodes.gltf")
-                              << false
-                              << 0;
-
+        QTest::newRow("Invalid-Missing-Nodes") << QStringLiteral(ASSETS "scenes_missing_nodes.gltf")
+                                               << false
+                                               << 0;
 
         QTest::newRow("Invalid-Empty-Nodes") << QStringLiteral(ASSETS "scenes_empty_nodes.gltf")
-                                              << false
-                                              << 0;
+                                             << false
+                                             << 0;
 
         QTest::newRow("Invalid-Duplicate-Nodes") << QStringLiteral(ASSETS "scenes_duplicate_nodes.gltf")
-                                                << false
-                                                << 0;
+                                                 << false
+                                                 << 0;
     }
 
     void checkParse()
     {
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
-        QFETCH(int , sceneCount);
+        QFETCH(int, sceneCount);
 
         // GIVEN
         GLTF2Context context;

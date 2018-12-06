@@ -49,7 +49,7 @@ class QAxis;
 class QAnalogAxisInput;
 class QButtonAxisInput;
 class QAxisActionHandler;
-}
+} // namespace Qt3DInput
 
 namespace Qt3DLogic {
 class QFrameAction;

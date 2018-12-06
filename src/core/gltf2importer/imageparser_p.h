@@ -53,8 +53,7 @@ namespace GLTF2Import {
 
 class GLTF2Context;
 
-struct Image
-{
+struct Image {
     QUrl url;
     QString name;
 };
@@ -65,6 +64,7 @@ public:
     ImageParser(const QDir &basePath);
 
     bool parse(const QJsonArray &imageArray, GLTF2Context *context) const;
+
 private:
     QDir m_basePath;
 };

@@ -70,7 +70,6 @@ private Q_SLOTS:
                 t->addTextureImage(img);
             }
             QTest::addRow("cubemap") << t;
-
         }
     }
 

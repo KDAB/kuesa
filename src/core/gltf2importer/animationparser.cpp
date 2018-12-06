@@ -55,7 +55,7 @@ const QLatin1String KEY_INPUT = QLatin1Literal("input");
 const QLatin1String KEY_OUTPUT = QLatin1Literal("output");
 const QLatin1String KEY_INTERPOLATION = QLatin1Literal("interpolation");
 const QLatin1String KEY_PATH = QLatin1Literal("path");
-const QLatin1String KEY_NODE =QLatin1Literal("node");
+const QLatin1String KEY_NODE = QLatin1Literal("node");
 
 AnimationParser::InterpolationMethod interpolationMethodFromSemantic(const QString &value)
 {
@@ -124,9 +124,9 @@ QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
 
     const int vertexByteSize = elemByteSize * accessor.dataSize;
     for (int i = 0; i < accessor.count; ++i) {
-            std::memcpy(outputDataRawBytes, rawBytes, static_cast<size_t>(vertexByteSize));
-            rawBytes += byteStride;
-            outputDataRawBytes += vertexByteSize;
+        std::memcpy(outputDataRawBytes, rawBytes, static_cast<size_t>(vertexByteSize));
+        rawBytes += byteStride;
+        outputDataRawBytes += vertexByteSize;
     }
 
     return outputData;
@@ -173,7 +173,7 @@ QString channelPathToProperty(const QString &path)
     return {};
 }
 
-} // anonymous
+} // namespace
 
 std::tuple<int, std::vector<float>> AnimationParser::animationChannelDataFromData(const AnimationParser::AnimationSampler &sampler) const
 {
@@ -220,7 +220,7 @@ std::tuple<int, std::vector<float>> AnimationParser::animationChannelDataFromDat
 }
 
 Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QString &channelName,
-                                                       const AnimationParser::AnimationSampler &sampler) const
+                                                                        const AnimationParser::AnimationSampler &sampler) const
 {
     auto channel = Qt3DAnimation::QChannel(channelPathToName(channelName));
     const Accessor inputAccessor = m_context->accessor(sampler.inputAccessor);
@@ -285,7 +285,7 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
         }
 
         for (int keyframeId = 0; keyframeId < nKeyframes; ++keyframeId) {
-            const float tCurrent = timeStamps[keyframeId];  // Time in current keyframe
+            const float tCurrent = timeStamps[keyframeId]; // Time in current keyframe
             const float tNext = timeStamps[std::min(nKeyframes - 1, keyframeId + 1)]; // Time in following keyframe
             const float tPrevious = timeStamps[std::max(0, keyframeId - 1)]; // Time in previous keyframe
 
@@ -309,7 +309,7 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
                 const float lh = p0 - lhTimeDisplacement * a0; // Value of left handle
                 const float rh = p0 + rhTimeDisplacement * b0; // Value of right handle
 
-                const Qt3DAnimation::QKeyFrame keyframe({tCurrent, p0}, {t_lh, lh}, {t_rh, rh});
+                const Qt3DAnimation::QKeyFrame keyframe({ tCurrent, p0 }, { t_lh, lh }, { t_rh, rh });
                 channelComponents[componentId].appendKeyFrame(keyframe);
             }
         }
@@ -322,11 +322,11 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
     const bool isRotationChannel = (channelName == QStringLiteral("rotation"));
     if (isRotationChannel) {
         channel.appendChannelComponent(*(channelComponents.end() - 1));
-        std::for_each(std::begin(channelComponents), std::end(channelComponents) - 1, [&channel] (const Qt3DAnimation::QChannelComponent &channelComponent) {
+        std::for_each(std::begin(channelComponents), std::end(channelComponents) - 1, [&channel](const Qt3DAnimation::QChannelComponent &channelComponent) {
             channel.appendChannelComponent(channelComponent);
         });
     } else {
-        std::for_each(std::begin(channelComponents), std::end(channelComponents), [&channel] (const Qt3DAnimation::QChannelComponent &channelComponent) {
+        std::for_each(std::begin(channelComponents), std::end(channelComponents), [&channel](const Qt3DAnimation::QChannelComponent &channelComponent) {
             channel.appendChannelComponent(channelComponent);
         });
     }
@@ -369,7 +369,7 @@ bool AnimationParser::checkSamplerJSON(const QJsonObject &samplerObject) const
 std::tuple<bool, AnimationParser::AnimationSampler> AnimationParser::animationSamplersFromJson(const QJsonObject &samplerObject) const
 {
     AnimationParser::AnimationSampler animationSampler;
-    animationSampler.inputAccessor =  samplerObject[KEY_INPUT].toInt();
+    animationSampler.inputAccessor = samplerObject[KEY_INPUT].toInt();
     animationSampler.outputAccessor = samplerObject[KEY_OUTPUT].toInt();
     animationSampler.interpolationMethod = interpolationMethodFromSemantic(samplerObject[KEY_INTERPOLATION].toString(QStringLiteral("LINEAR")));
 
@@ -413,7 +413,7 @@ bool AnimationParser::checkChannelJSON(const QJsonObject &channelObject) const
     const QString &path = pathValue.toString();
 
     // Verify path is a valid value
-    const auto validPathValues = { QStringLiteral("translation"), QStringLiteral("rotation"), QStringLiteral("scale"), QStringLiteral("weights")};
+    const auto validPathValues = { QStringLiteral("translation"), QStringLiteral("rotation"), QStringLiteral("scale"), QStringLiteral("weights") };
     if (std::find(std::begin(validPathValues), std::end(validPathValues), path) == std::end(validPathValues)) {
         qCWarning(kuesa, "Channel Path value is not valid");
         return false;
@@ -429,14 +429,14 @@ AnimationParser::channelFromJson(const QJsonObject &channelObject) const
 
     const QJsonValue &samplerValue = channelObject[KEY_SAMPLER];
     const QJsonObject &targetObject = channelObject[KEY_TARGET].toObject();
-    const QString &path =  targetObject[KEY_PATH].toString();
+    const QString &path = targetObject[KEY_PATH].toString();
     const int &targetNode = targetObject[KEY_NODE].toInt();
     const AnimationSampler sampler = m_samplers[samplerValue.toInt()];
 
     channel = animationChannelDataFromBuffer(path, sampler);
     channel.setName(channel.name() + QStringLiteral("_") + QString::number(targetNode));
 
-    if (channel.channelComponentCount() == 0)  {
+    if (channel.channelComponentCount() == 0) {
         qCWarning(kuesa, "Channel doesn't have components");
         return std::make_tuple(false, channel);
     }
@@ -448,7 +448,7 @@ std::tuple<bool, ChannelMapping>
 AnimationParser::mappingFromJson(const QJsonObject &channelObject) const
 {
     const QJsonObject &targetObject = channelObject[KEY_TARGET].toObject();
-    const QString &path =  targetObject[KEY_PATH].toString();
+    const QString &path = targetObject[KEY_PATH].toString();
 
     // TODO If we find a weight mapper, return a default constructed mapping
     // Qt3D doesn't support morph targets yet

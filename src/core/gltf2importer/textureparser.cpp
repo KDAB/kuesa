@@ -46,7 +46,7 @@ const QLatin1String KEY_NAME = QLatin1Literal("name");
 const QLatin1String KEY_GLTF_EXTENSION = QLatin1String("extensions");
 const QLatin1String KEY_MSFT_DDS_EXTENSION = QLatin1String("MSFT_texture_dds");
 
-} // anonymous
+} // namespace
 
 bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context) const
 {

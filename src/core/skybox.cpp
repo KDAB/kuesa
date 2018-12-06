@@ -124,8 +124,7 @@ Skybox::Skybox(QNode *parent)
 {
     m_textureParameter->setName(QStringLiteral("skyboxTexture"));
 
-    struct TechniqueDescription
-    {
+    struct TechniqueDescription {
         QGraphicsApiFilter::Api api;
         QGraphicsApiFilter::OpenGLProfile profile;
         int majorV, minorV;
@@ -134,27 +133,21 @@ Skybox::Skybox(QNode *parent)
     };
 
     static const TechniqueDescription descriptions[] = {
-        {
-            QGraphicsApiFilter::OpenGL,
-            QGraphicsApiFilter::CoreProfile,
-            3, 3,
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/skybox.vert")),
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/skybox.frag"))
-        },
-        {
-            QGraphicsApiFilter::OpenGL,
-            QGraphicsApiFilter::NoProfile,
-            2, 0,
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.vert")),
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.frag"))
-        },
-        {
-            QGraphicsApiFilter::OpenGLES,
-            QGraphicsApiFilter::NoProfile,
-            2, 0,
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.vert")),
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.frag"))
-        }
+        { QGraphicsApiFilter::OpenGL,
+          QGraphicsApiFilter::CoreProfile,
+          3, 3,
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/skybox.vert")),
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/skybox.frag")) },
+        { QGraphicsApiFilter::OpenGL,
+          QGraphicsApiFilter::NoProfile,
+          2, 0,
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.vert")),
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.frag")) },
+        { QGraphicsApiFilter::OpenGLES,
+          QGraphicsApiFilter::NoProfile,
+          2, 0,
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.vert")),
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.frag")) }
     };
 
     auto effect = new QEffect();

@@ -112,51 +112,47 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
         node.transformInfo.matrix = matrix;
         node.transformInfo.bits |= TreeNode::TransformInfo::MatrixSet;
     } else {
-        const QVector<QPair<QLatin1String, std::function<bool (const QJsonArray &)>>> transformConverters
-        {
-            { KEY_SCALE, [&node] (const QJsonArray &transformElement) {
-                    if (transformElement.size() == 3) {
-                        auto scale = QVector3D(transformElement[0].toDouble(),
-                                               transformElement[1].toDouble(),
-                                               transformElement[2].toDouble());
-                        node.transformInfo.scale3D = scale;
-                        node.transformInfo.bits |= TreeNode::TransformInfo::ScaleSet;
-                        return true;
-                    } else {
-                        qCWarning(kuesa, "Node Wrong scale size");
-                        return false;
-                    }
-                }
-            },
-            { KEY_ROTATION, [&node] (const QJsonArray &transformElement) {
-                    if (transformElement.size() == 4) {
-                        auto rotation = QQuaternion(transformElement[3].toDouble(),
-                                                    transformElement[0].toDouble(),
-                                                    transformElement[1].toDouble(),
-                                                    transformElement[2].toDouble());
-                        node.transformInfo.rotation = rotation;
-                        node.transformInfo.bits |= TreeNode::TransformInfo::RotationSet;
-                        return true;
-                    } else {
-                        qCWarning(kuesa, "Node Wrong rotation size");
-                        return false;
-                    }
-                }
-            },
-            { KEY_TRANSLATION, [&node] (const QJsonArray &transformElement) {
-                    if (transformElement.size() == 3) {
-                        auto translation = QVector3D(transformElement[0].toDouble(),
-                                                     transformElement[1].toDouble(),
-                                                     transformElement[2].toDouble());
-                        node.transformInfo.translation = translation;
-                        node.transformInfo.bits |= TreeNode::TransformInfo::TranslationSet;
-                        return true;
-                    } else {
-                        qCWarning(kuesa, "Node Wrong translation size");
-                        return false;
-                    }
-                }
-            }
+        const QVector<QPair<QLatin1String, std::function<bool(const QJsonArray &)>>> transformConverters{
+            { KEY_SCALE, [&node](const QJsonArray &transformElement) {
+                 if (transformElement.size() == 3) {
+                     auto scale = QVector3D(transformElement[0].toDouble(),
+                                            transformElement[1].toDouble(),
+                                            transformElement[2].toDouble());
+                     node.transformInfo.scale3D = scale;
+                     node.transformInfo.bits |= TreeNode::TransformInfo::ScaleSet;
+                     return true;
+                 } else {
+                     qCWarning(kuesa, "Node Wrong scale size");
+                     return false;
+                 }
+             } },
+            { KEY_ROTATION, [&node](const QJsonArray &transformElement) {
+                 if (transformElement.size() == 4) {
+                     auto rotation = QQuaternion(transformElement[3].toDouble(),
+                                                 transformElement[0].toDouble(),
+                                                 transformElement[1].toDouble(),
+                                                 transformElement[2].toDouble());
+                     node.transformInfo.rotation = rotation;
+                     node.transformInfo.bits |= TreeNode::TransformInfo::RotationSet;
+                     return true;
+                 } else {
+                     qCWarning(kuesa, "Node Wrong rotation size");
+                     return false;
+                 }
+             } },
+            { KEY_TRANSLATION, [&node](const QJsonArray &transformElement) {
+                 if (transformElement.size() == 3) {
+                     auto translation = QVector3D(transformElement[0].toDouble(),
+                                                  transformElement[1].toDouble(),
+                                                  transformElement[2].toDouble());
+                     node.transformInfo.translation = translation;
+                     node.transformInfo.bits |= TreeNode::TransformInfo::TranslationSet;
+                     return true;
+                 } else {
+                     qCWarning(kuesa, "Node Wrong translation size");
+                     return false;
+                 }
+             } }
         };
 
         for (const auto &transformConverter : transformConverters) {
@@ -191,7 +187,7 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
     return QPair<bool, TreeNode>(true, node);
 }
 
-} // anonymous
+} // namespace
 
 NodeParser::NodeParser()
 {

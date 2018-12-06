@@ -61,7 +61,8 @@ private Q_SLOTS:
                                   collection: scene.cameras
                               }
                           }
-                      )*"), QUrl());
+                      )*"),
+                    QUrl());
 
         auto errors = cmp.errors();
         qDebug() << errors;
@@ -106,7 +107,6 @@ private Q_SLOTS:
         asset = assetItem->property("node").value<QObject *>();
         QVERIFY(asset == nullptr);
     }
-
 };
 
 QTEST_MAIN(tst_AssetItem)

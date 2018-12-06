@@ -95,14 +95,14 @@ Kuesa::MetallicRoughnessMaterial *createPbrMaterial(const Material &mat, const G
     pbrMaterial->setNormalScale(mat.normalTexture.scale);
     pbrMaterial->setDoubleSided(mat.doubleSided);
     pbrMaterial->setBaseColorFactor(QColor::fromRgbF(
-                                    mat.pbr.baseColorFactor[0],
-                                    mat.pbr.baseColorFactor[1],
-                                    mat.pbr.baseColorFactor[2],
-                                    mat.pbr.baseColorFactor[3]));
+            mat.pbr.baseColorFactor[0],
+            mat.pbr.baseColorFactor[1],
+            mat.pbr.baseColorFactor[2],
+            mat.pbr.baseColorFactor[3]));
     pbrMaterial->setEmissiveFactor(QColor::fromRgbF(
-                                   mat.emissiveTexture.emissiveFactor[0],
-                                   mat.emissiveTexture.emissiveFactor[1],
-                                   mat.emissiveTexture.emissiveFactor[2]));
+            mat.emissiveTexture.emissiveFactor[0],
+            mat.emissiveTexture.emissiveFactor[1],
+            mat.emissiveTexture.emissiveFactor[2]));
 
     const int baseColorTextureIdx = mat.pbr.baseColorTexture.index;
     if (baseColorTextureIdx > -1)
@@ -139,7 +139,7 @@ Kuesa::MetallicRoughnessMaterial *createPbrMaterial(const Material &mat, const G
     return pbrMaterial;
 }
 
-} // anonymous
+} // namespace
 
 Qt3DRender::QMaterial *Material::material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context)
 {

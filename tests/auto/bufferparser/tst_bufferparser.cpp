@@ -53,25 +53,25 @@ private Q_SLOTS:
                                << true
                                << 1;
 
-        QTest::newRow("Empty")<< QStringLiteral(ASSETS "bufferparser_empty.gltf")
-                              << false
-                              << 0;
+        QTest::newRow("Empty") << QStringLiteral(ASSETS "bufferparser_empty.gltf")
+                               << false
+                               << 0;
 
-        QTest::newRow("Non Existent")<< QStringLiteral(ASSETS "bufferparser_nothere.gltf")
-                              << false
-                              << 0;
+        QTest::newRow("Non Existent") << QStringLiteral(ASSETS "bufferparser_nothere.gltf")
+                                      << false
+                                      << 0;
 
         QTest::newRow("PartiallyIncomplete") << QStringLiteral(ASSETS "bufferparser_incomplete.gltf")
                                              << false
                                              << 1;
 
         QTest::newRow("EmptyUri") << QStringLiteral(ASSETS "bufferparser_empty_uri.gltf")
-                                             << false
-                                             << 1;
+                                  << false
+                                  << 1;
 
         QTest::newRow("WrongSize") << QStringLiteral(ASSETS "bufferparser_wrong_size.gltf")
-                                             << false
-                                             << 0;
+                                   << false
+                                   << 0;
     }
 
     void checkParse()
@@ -79,7 +79,6 @@ private Q_SLOTS:
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
         QFETCH(int, bufferCount);
-
 
         // GIVEN
         GLTF2Context context;
@@ -100,7 +99,6 @@ private Q_SLOTS:
         QCOMPARE(success, succeeded);
         QCOMPARE(context.bufferCount(), bufferCount);
     }
-
 };
 
 QTEST_APPLESS_MAIN(tst_BufferParser)

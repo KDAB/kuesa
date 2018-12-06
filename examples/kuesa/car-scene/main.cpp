@@ -59,13 +59,19 @@ int main(int ac, char **av)
     parser.addHelpOption();
     parser.addVersionOption();
 
-    QCommandLineOption cursorDisableOption(QStringList() << "no-cursor" << "cursor visibility", "Make sure no pointer is hidden.");
+    QCommandLineOption cursorDisableOption(QStringList() << "no-cursor"
+                                                         << "cursor visibility",
+                                           "Make sure no pointer is hidden.");
     parser.addOption(cursorDisableOption);
 
-    QCommandLineOption fullscreenOption(QStringList() << "fullscreen" << "Fullscreen option", "Open the demo in fullscreen");
+    QCommandLineOption fullscreenOption(QStringList() << "fullscreen"
+                                                      << "Fullscreen option",
+                                        "Open the demo in fullscreen");
     parser.addOption(fullscreenOption);
 
-    QCommandLineOption heightScaleOption(QStringList() << "screenHeightScale" << "Height Scale UI", "Scale UI based on screen height rather than DPI (default on iOS and Android)");
+    QCommandLineOption heightScaleOption(QStringList() << "screenHeightScale"
+                                                       << "Height Scale UI",
+                                         "Scale UI based on screen height rather than DPI (default on iOS and Android)");
     parser.addOption(heightScaleOption);
 
     parser.process(app);
@@ -77,9 +83,9 @@ int main(int ac, char **av)
 
 #ifdef Q_OS_ANDROID
     const QString assetsPrefix = QStringLiteral("assets:/");
-#elif defined (Q_OS_IOS)
+#elif defined(Q_OS_IOS)
     const QString assetsPrefix = QString(QStringLiteral("file://%1/Library/Application Support/")).arg(QGuiApplication::applicationDirPath());
-#elif defined (Q_OS_OSX)
+#elif defined(Q_OS_OSX)
     const QString assetsPrefix = QString(QStringLiteral("file://%1/../Resources/")).arg(QGuiApplication::applicationDirPath());
 #else
     const QString assetsPrefix = QStringLiteral("qrc:/");

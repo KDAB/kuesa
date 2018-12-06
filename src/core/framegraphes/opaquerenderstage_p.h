@@ -48,7 +48,7 @@ namespace Qt3DRender {
 class QDepthTest;
 class QNoDepthMask;
 class QRenderStateSet;
-} // Qt3DRender
+} // namespace Qt3DRender
 
 namespace Kuesa {
 
@@ -67,8 +67,7 @@ private:
     Qt3DRender::QDepthTest *m_depthTest;
     Qt3DRender::QNoDepthMask *m_noDepthWrite;
 };
-
-}
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

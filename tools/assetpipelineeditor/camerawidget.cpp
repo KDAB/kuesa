@@ -30,15 +30,14 @@
 #include "ui_camerawidget.h"
 #include "ui_vectorwidget.h"
 
-
 VectorWidget::VectorWidget(QWidget *parent)
     : QWidget(parent)
     , m_ui(new Ui::VectorWidget)
 {
     m_ui->setupUi(this);
-    connect(m_ui->x,  QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &VectorWidget::handleXChanged);
-    connect(m_ui->y,  QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &VectorWidget::handleYChanged);
-    connect(m_ui->z,  QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &VectorWidget::handleZChanged);
+    connect(m_ui->x, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &VectorWidget::handleXChanged);
+    connect(m_ui->y, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &VectorWidget::handleYChanged);
+    connect(m_ui->z, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &VectorWidget::handleZChanged);
 }
 
 VectorWidget::~VectorWidget()
@@ -100,7 +99,6 @@ void VectorWidget::handleZChanged(double z)
     emit vectorChanged(m_vector);
 }
 
-
 CameraWidget::CameraWidget(QWidget *parent)
     : QWidget(parent)
     , m_ui(new Ui::CameraWidget)
@@ -144,18 +142,18 @@ void CameraWidget::setCamera(Qt3DRender::QCamera *camera)
         this->disconnect(m_camera);
     m_camera = camera;
     if (m_camera) {
-        connect(m_camera,  &Qt3DRender::QCamera::bottomChanged,     this, &CameraWidget::updateWidgetValues);
-        connect(m_camera,  &Qt3DRender::QCamera::topChanged,        this, &CameraWidget::updateWidgetValues);
-        connect(m_camera,  &Qt3DRender::QCamera::leftChanged ,      this, &CameraWidget::updateWidgetValues);
-        connect(m_camera,  &Qt3DRender::QCamera::rightChanged ,     this, &CameraWidget::updateWidgetValues);
-        connect(m_camera,  &Qt3DRender::QCamera::nearPlaneChanged , this, &CameraWidget::updateWidgetValues);
-        connect(m_camera,  &Qt3DRender::QCamera::farPlaneChanged ,  this, &CameraWidget::updateWidgetValues);
-        connect(m_camera,  &Qt3DRender::QCamera::positionChanged ,  this, &CameraWidget::updateWidgetValues);
-        connect(m_camera,  &Qt3DRender::QCamera::viewCenterChanged, this, &CameraWidget::updateWidgetValues);
-        connect(m_camera,  &Qt3DRender::QCamera::viewVectorChanged, this, &CameraWidget::updateWidgetValues);
-        connect(m_camera,  &Qt3DRender::QCamera::fieldOfViewChanged, this, &CameraWidget::updateWidgetValues);
-        connect(m_camera,  &Qt3DRender::QCamera::aspectRatioChanged, this, &CameraWidget::updateWidgetValues);
-        connect(m_camera,  &Qt3DRender::QCamera::projectionTypeChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::bottomChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::topChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::leftChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::rightChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::nearPlaneChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::farPlaneChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::positionChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::viewCenterChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::viewVectorChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::fieldOfViewChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::aspectRatioChanged, this, &CameraWidget::updateWidgetValues);
+        connect(m_camera, &Qt3DRender::QCamera::projectionTypeChanged, this, &CameraWidget::updateWidgetValues);
     }
     updateWidgetValues();
     emit cameraChanged(m_camera);
@@ -244,20 +242,18 @@ void CameraWidget::updateWidgetValues()
     m_ui->centerVecEdit->setVector(m_camera ? m_camera->viewCenter() : QVector3D());
     m_ui->positionVecEdit->setVector(m_camera ? m_camera->position() : QVector3D());
     m_ui->viewVecEdit->setVector(m_camera ? m_camera->viewVector() : QVector3D());
-    m_ui->near->setValue(m_camera ? m_camera->nearPlane(): 0.0f);
-    m_ui->far->setValue(m_camera ? m_camera->farPlane(): 0.0f);
+    m_ui->near->setValue(m_camera ? m_camera->nearPlane() : 0.0f);
+    m_ui->far->setValue(m_camera ? m_camera->farPlane() : 0.0f);
     const bool isPerspective = m_camera->projectionType() == Qt3DRender::QCameraLens::PerspectiveProjection;
     m_ui->orthoGroupBox->setVisible(!isPerspective);
     m_ui->perspectiveGroupBox->setVisible(isPerspective);
     if (isPerspective) {
-        m_ui->fov->setValue(m_camera ? m_camera->fieldOfView(): 0.0f);
-        m_ui->aspectRatio->setValue(m_camera ? m_camera->aspectRatio(): 1.0f);
-    }
-    else {
+        m_ui->fov->setValue(m_camera ? m_camera->fieldOfView() : 0.0f);
+        m_ui->aspectRatio->setValue(m_camera ? m_camera->aspectRatio() : 1.0f);
+    } else {
         m_ui->left->setValue(m_camera ? m_camera->left() : 0.0f);
-        m_ui->right->setValue(m_camera ? m_camera->right(): 0.0f);
-        m_ui->top->setValue(m_camera ? m_camera->top(): 0.0f);
-        m_ui->bottom->setValue(m_camera ? m_camera->bottom(): 0.0f);
+        m_ui->right->setValue(m_camera ? m_camera->right() : 0.0f);
+        m_ui->top->setValue(m_camera ? m_camera->top() : 0.0f);
+        m_ui->bottom->setValue(m_camera ? m_camera->bottom() : 0.0f);
     }
 }
-

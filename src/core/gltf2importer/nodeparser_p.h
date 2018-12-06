@@ -49,26 +49,24 @@ class QJsonArray;
 namespace Qt3DCore {
 class QEntity;
 class QJoint;
-}
+} // namespace Qt3DCore
 
 namespace Kuesa {
 namespace GLTF2Import {
 
 class GLTF2Context;
 
-struct TreeNode
-{
+struct TreeNode {
     Qt3DCore::QEntity *entity = nullptr;
     QVector<Qt3DCore::QJoint *> joints;
 
-    struct TransformInfo
-    {
+    struct TransformInfo {
         enum TransformBit {
-            None            = 0x0,
-            MatrixSet       = 0x1,
-            ScaleSet        = 0x2,
-            RotationSet     = 0x4,
-            TranslationSet  = 0x8
+            None = 0x0,
+            MatrixSet = 0x1,
+            ScaleSet = 0x2,
+            RotationSet = 0x4,
+            TranslationSet = 0x8
         };
         Q_DECLARE_FLAGS(TransformBits, TransformBit)
 

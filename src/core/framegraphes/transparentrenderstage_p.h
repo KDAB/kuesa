@@ -68,8 +68,7 @@ Q_SIGNALS:
 private:
     Qt3DRender::QSortPolicy *m_alphaSortPolicy;
 };
-
-}
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

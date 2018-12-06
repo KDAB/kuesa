@@ -220,11 +220,11 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
 BloomEffect::~BloomEffect()
 {
     // need to unparent effect framegraphs otherwise they'll get deleted twice
-    m_thresholdEffect->frameGraphSubTree()->setParent(static_cast<Qt3DCore::QNode*>(nullptr));
-    m_blurEffect->frameGraphSubTree()->setParent(static_cast<Qt3DCore::QNode*>(nullptr));
+    m_thresholdEffect->frameGraphSubTree()->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+    m_blurEffect->frameGraphSubTree()->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
 }
 
-Qt3DRender::QRenderPassFilter* BloomEffect::createRenderPassFilter(const QString &name, const QVariant &value)
+Qt3DRender::QRenderPassFilter *BloomEffect::createRenderPassFilter(const QString &name, const QVariant &value)
 {
     auto filter = new Qt3DRender::QRenderPassFilter;
     auto filterKey = new Qt3DRender::QFilterKey;
@@ -349,7 +349,6 @@ void BloomEffect::setBlurPassCount(int blurPassCount)
 {
     m_blurEffect->setBlurPassCount(blurPassCount);
 }
-
 
 QString BloomEffect::passName() const
 {

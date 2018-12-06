@@ -50,8 +50,7 @@ namespace GLTF2Import {
 
 class GLTF2Context;
 
-struct TextureSampler
-{
+struct TextureSampler {
     std::shared_ptr<Qt3DRender::QTextureWrapMode> textureWrapMode;
     Qt3DRender::QAbstractTexture::Filter magnificationFilter = Qt3DRender::QAbstractTexture::Linear;
     Qt3DRender::QAbstractTexture::Filter minificationFilter = Qt3DRender::QAbstractTexture::Linear;

@@ -73,7 +73,7 @@ private Q_SLOTS:
         QCOMPARE(camera.lens->farPlane(), 100.f);
         QCOMPARE(camera.lens->nearPlane(), 1.f);
         QCOMPARE(camera.lens->aspectRatio(), 2.f);
-        QCOMPARE(camera.lens->fieldOfView(), 180.f / (float) M_PI);
+        QCOMPARE(camera.lens->fieldOfView(), 180.f / (float)M_PI);
     }
 
     void checkOrthographicCamera()

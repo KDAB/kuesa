@@ -42,7 +42,7 @@ class QRenderTarget;
 class QRenderTargetOutput;
 class QRenderPassFilter;
 class QFrameGraphNode;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 
@@ -57,7 +57,7 @@ class KUESASHARED_EXPORT GaussianBlurEffect : public AbstractPostProcessingEffec
 public:
     GaussianBlurEffect(Qt3DCore::QNode *parent = nullptr);
     FrameGraphNodePtr frameGraphSubTree() const override;
-    QVector<Qt3DRender::QLayer*> layers() const override;
+    QVector<Qt3DRender::QLayer *> layers() const override;
 
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
     void setSceneSize(const QSize &size) override;
@@ -95,8 +95,7 @@ private:
     Qt3DRender::QParameter *m_widthParameter;
     Qt3DRender::QParameter *m_heightParameter;
 };
-
-}
+} // namespace Kuesa
 QT_END_NAMESPACE
 
 #endif // KUESA_GAUSSIANBLUREFFECT_H

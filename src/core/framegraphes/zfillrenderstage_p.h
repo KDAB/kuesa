@@ -48,7 +48,6 @@ namespace Qt3DRender {
 class QNoDepthMask;
 }
 
-
 namespace Kuesa {
 
 class Q_AUTOTEST_EXPORT ZFillRenderStage : public AbstractRenderStage
@@ -58,8 +57,7 @@ public:
     ZFillRenderStage(Qt3DCore::QNode *parent = nullptr);
     ~ZFillRenderStage();
 };
-
-}
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

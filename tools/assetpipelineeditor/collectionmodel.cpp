@@ -84,7 +84,7 @@ void CollectionModel::update(Kuesa::SceneEntity *entity)
 Kuesa::AbstractAssetCollection *CollectionModel::collection(const QModelIndex &index) const
 {
     if (index.isValid())
-        return (Kuesa::AbstractAssetCollection *) index.internalPointer();
+        return reinterpret_cast<Kuesa::AbstractAssetCollection *>(index.internalPointer());
     return nullptr;
 }
 
@@ -96,7 +96,7 @@ QModelIndex CollectionModel::index(int row, int column, const QModelIndex &paren
     auto r = createIndex(row, column);
     if (parent.isValid()) {
         Q_ASSERT(parent.row() >= 0 && parent.row() < m_collections.size());
-        r = createIndex(row, column, (void*) m_collections.at(parent.row()));
+        r = createIndex(row, column, (void *)m_collections.at(parent.row()));
     }
     return r;
 }

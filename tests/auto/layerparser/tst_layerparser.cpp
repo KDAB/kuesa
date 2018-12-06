@@ -58,8 +58,8 @@ private Q_SLOTS:
                                << 0;
 
         QTest::newRow("InvalidContent") << QStringLiteral(ASSETS "layerparser_invalid.gltf")
-                                      << false
-                                      << 0;
+                                        << false
+                                        << 0;
     }
 
     void checkParse()
@@ -87,7 +87,6 @@ private Q_SLOTS:
         QCOMPARE(success, succeeded);
         QCOMPARE(context.layersCount(), layersCount);
     }
-
 };
 
 QTEST_GUILESS_MAIN(tst_LayerParser)

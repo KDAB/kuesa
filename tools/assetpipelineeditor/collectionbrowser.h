@@ -34,7 +34,7 @@
 namespace Kuesa {
 class AbstractAssetCollection;
 class AnimationPlayer;
-}
+} // namespace Kuesa
 
 class CollectionBrowser : public QTreeView
 {

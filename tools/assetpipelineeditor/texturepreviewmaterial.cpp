@@ -45,8 +45,7 @@ TexturePreviewMaterial::TexturePreviewMaterial(Qt3DCore::QNode *parent)
     , m_textureParameter(new Qt3DRender::QParameter())
     , m_texture(nullptr)
 {
-    struct TechniqueDescription
-    {
+    struct TechniqueDescription {
         Qt3DRender::QGraphicsApiFilter::Api api;
         Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile;
         int majorV, minorV;
@@ -55,27 +54,21 @@ TexturePreviewMaterial::TexturePreviewMaterial(Qt3DCore::QNode *parent)
     };
 
     static const TechniqueDescription descriptions[] = {
-        {
-            Qt3DRender::QGraphicsApiFilter::OpenGL,
-            Qt3DRender::QGraphicsApiFilter::CoreProfile,
-            3, 3,
-            QUrl(QStringLiteral("qrc:/shaders/gl3/screen_quad.vert")),
-            QUrl(QStringLiteral("qrc:/shaders/gl3/screen_quad.frag"))
-        },
-        {
-            Qt3DRender::QGraphicsApiFilter::OpenGL,
-            Qt3DRender::QGraphicsApiFilter::NoProfile,
-            2, 0,
-            QUrl(QStringLiteral("qrc:/shaders/es2/screen_quad.vert")),
-            QUrl(QStringLiteral("qrc:/shaders/es2/screen_quad.frag"))
-        },
-        {
-            Qt3DRender::QGraphicsApiFilter::OpenGLES,
-            Qt3DRender::QGraphicsApiFilter::NoProfile,
-            2, 0,
-            QUrl(QStringLiteral("qrc:/shaders/es2/screen_quad.vert")),
-            QUrl(QStringLiteral("qrc:/shaders/es2/screen_quad.frag"))
-        }
+        { Qt3DRender::QGraphicsApiFilter::OpenGL,
+          Qt3DRender::QGraphicsApiFilter::CoreProfile,
+          3, 3,
+          QUrl(QStringLiteral("qrc:/shaders/gl3/screen_quad.vert")),
+          QUrl(QStringLiteral("qrc:/shaders/gl3/screen_quad.frag")) },
+        { Qt3DRender::QGraphicsApiFilter::OpenGL,
+          Qt3DRender::QGraphicsApiFilter::NoProfile,
+          2, 0,
+          QUrl(QStringLiteral("qrc:/shaders/es2/screen_quad.vert")),
+          QUrl(QStringLiteral("qrc:/shaders/es2/screen_quad.frag")) },
+        { Qt3DRender::QGraphicsApiFilter::OpenGLES,
+          Qt3DRender::QGraphicsApiFilter::NoProfile,
+          2, 0,
+          QUrl(QStringLiteral("qrc:/shaders/es2/screen_quad.vert")),
+          QUrl(QStringLiteral("qrc:/shaders/es2/screen_quad.frag")) }
     };
 
     auto effect = new Qt3DRender::QEffect();

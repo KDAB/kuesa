@@ -62,44 +62,44 @@ private Q_SLOTS:
                                   << Qt3DRender::QTextureWrapMode::ClampToEdge;
 
         QTest::newRow("Invalid_Mag") << QStringLiteral(ASSETS "texturesampler_invalid_magnification.gltf")
-                                  << false
-                                  << 0
-                                  << Qt3DRender::QAbstractTexture::Linear
-                                  << Qt3DRender::QAbstractTexture::Nearest
-                                  << Qt3DRender::QTextureWrapMode::Repeat
-                                  << Qt3DRender::QTextureWrapMode::ClampToEdge;
+                                     << false
+                                     << 0
+                                     << Qt3DRender::QAbstractTexture::Linear
+                                     << Qt3DRender::QAbstractTexture::Nearest
+                                     << Qt3DRender::QTextureWrapMode::Repeat
+                                     << Qt3DRender::QTextureWrapMode::ClampToEdge;
 
         QTest::newRow("Invalid_Min") << QStringLiteral(ASSETS "texturesampler_invalid_minification.gltf")
-                                  << false
-                                  << 0
-                                  << Qt3DRender::QAbstractTexture::Linear
-                                  << Qt3DRender::QAbstractTexture::Nearest
-                                  << Qt3DRender::QTextureWrapMode::Repeat
-                                  << Qt3DRender::QTextureWrapMode::ClampToEdge;
+                                     << false
+                                     << 0
+                                     << Qt3DRender::QAbstractTexture::Linear
+                                     << Qt3DRender::QAbstractTexture::Nearest
+                                     << Qt3DRender::QTextureWrapMode::Repeat
+                                     << Qt3DRender::QTextureWrapMode::ClampToEdge;
 
         QTest::newRow("Invalid_WrapModeS") << QStringLiteral(ASSETS "texturesampler_invalid_wraps.gltf")
-                                  << false
-                                  << 0
-                                  << Qt3DRender::QAbstractTexture::Linear
-                                  << Qt3DRender::QAbstractTexture::Nearest
-                                  << Qt3DRender::QTextureWrapMode::Repeat
-                                  << Qt3DRender::QTextureWrapMode::ClampToEdge;
+                                           << false
+                                           << 0
+                                           << Qt3DRender::QAbstractTexture::Linear
+                                           << Qt3DRender::QAbstractTexture::Nearest
+                                           << Qt3DRender::QTextureWrapMode::Repeat
+                                           << Qt3DRender::QTextureWrapMode::ClampToEdge;
 
         QTest::newRow("Invalid_WrapModeT") << QStringLiteral(ASSETS "texturesampler_invalid_wrapt.gltf")
-                                  << false
-                                  << 0
-                                  << Qt3DRender::QAbstractTexture::Linear
-                                  << Qt3DRender::QAbstractTexture::Nearest
-                                  << Qt3DRender::QTextureWrapMode::Repeat
-                                  << Qt3DRender::QTextureWrapMode::ClampToEdge;
+                                           << false
+                                           << 0
+                                           << Qt3DRender::QAbstractTexture::Linear
+                                           << Qt3DRender::QAbstractTexture::Nearest
+                                           << Qt3DRender::QTextureWrapMode::Repeat
+                                           << Qt3DRender::QTextureWrapMode::ClampToEdge;
 
         QTest::newRow("Empty") << QStringLiteral(ASSETS "texturesampler_empty.gltf")
-                                  << false
-                                  << 0
-                                  << Qt3DRender::QAbstractTexture::Linear
-                                  << Qt3DRender::QAbstractTexture::Nearest
-                                  << Qt3DRender::QTextureWrapMode::Repeat
-                                  << Qt3DRender::QTextureWrapMode::ClampToEdge;
+                               << false
+                               << 0
+                               << Qt3DRender::QAbstractTexture::Linear
+                               << Qt3DRender::QAbstractTexture::Nearest
+                               << Qt3DRender::QTextureWrapMode::Repeat
+                               << Qt3DRender::QTextureWrapMode::ClampToEdge;
 
         QTest::newRow("Empty_Sampler") << QStringLiteral(ASSETS "texturesampler_empty_sampler.gltf")
                                        << true
@@ -144,7 +144,6 @@ private Q_SLOTS:
             QCOMPARE(textureSampler.textureWrapMode->y(), wrapT);
         }
     }
-
 };
 
 QTEST_APPLESS_MAIN(tst_TextureSamplerParser)

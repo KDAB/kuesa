@@ -38,7 +38,7 @@ namespace Qt3DRender {
 class QRenderPass;
 class QParameter;
 class QFrameGraphNode;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 
@@ -52,13 +52,13 @@ public:
     ThresholdEffect(Qt3DCore::QNode *parent = nullptr);
 
     FrameGraphNodePtr frameGraphSubTree() const override;
-    QVector<Qt3DRender::QLayer*> layers() const override;
+    QVector<Qt3DRender::QLayer *> layers() const override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
 
     float threshold() const;
 
 public Q_SLOTS:
-     void setThreshold(float threshold);
+    void setThreshold(float threshold);
 
 Q_SIGNALS:
     void thresholdChanged(float threshold);
@@ -70,8 +70,7 @@ private:
     Qt3DRender::QParameter *m_thresholdParameter;
     Qt3DRender::QParameter *m_textureParam;
 };
-
-}
+} // namespace Kuesa
 QT_END_NAMESPACE
 
 #endif // KUESA_THRESHOLDEFFECT_H

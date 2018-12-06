@@ -52,7 +52,6 @@ namespace Kuesa {
  * A Qt3DRender::QLayer is added to the FullScreenQuad entity which can be retrieved with layer().
  */
 
-
 /*!
  * \brief FullScreenQuad::FullScreenQuad
  * \param material A material to be aggregated to the quad entity.
@@ -91,7 +90,7 @@ FullScreenQuad::~FullScreenQuad()
  * This layer can be used to filter render views and separate the quad entity
  * render from the scene render.
  */
-Qt3DRender::QLayer* FullScreenQuad::layer() const
+Qt3DRender::QLayer *FullScreenQuad::layer() const
 {
     return m_layer;
 }

@@ -50,8 +50,7 @@ namespace GLTF2Import {
 
 class GLTF2Context;
 
-struct Skin
-{
+struct Skin {
     int inverseBindMatricesAccessorIdx = -1;
     int skeletonIdx = -1;
     QVector<int> jointsIndices;
@@ -71,6 +70,5 @@ public:
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-
 
 #endif // KUESA_GLTF2IMPORT_SKINPARSER_P_H

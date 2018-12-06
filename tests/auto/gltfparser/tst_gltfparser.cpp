@@ -51,14 +51,16 @@ class GLTF2ParserNoTextures : public GLTF2Parser
 public:
     GLTF2ParserNoTextures(SceneEntity *sceneEntity = nullptr)
         : GLTF2Parser(sceneEntity)
-    {}
+    {
+    }
 
-    QVector<KeyParserFuncPair> prepareParsers() override {
+    QVector<KeyParserFuncPair> prepareParsers() override
+    {
         auto parsers = GLTF2Parser::prepareParsers();
         const auto textureParser = std::find_if(std::begin(parsers), std::end(parsers),
-                                                [] (const KeyParserFuncPair &parser) -> bool {
-            return parser.first == "textures";
-        });
+                                                [](const KeyParserFuncPair &parser) -> bool {
+                                                    return parser.first == "textures";
+                                                });
         if (textureParser != std::end(parsers))
             parsers.erase(textureParser);
         return parsers;
@@ -159,7 +161,7 @@ private Q_SLOTS:
 
         QList<Qt3DCore::QEntity *> children = res->findChildren<Qt3DCore::QEntity *>();
         Qt3DCore::QComponentVector components;
-        for (Qt3DCore::QEntity *e: children)
+        for (Qt3DCore::QEntity *e : children)
             components << e->components();
         QCOMPARE(fileEntityCount, children.size());
         QCOMPARE(fileComponentCount, components.size());
@@ -422,12 +424,11 @@ private Q_SLOTS:
         // THEN
         QVERIFY(res);
         QCOMPARE(scene.textures()->names().size(), 1);
-        auto textureLoader = qobject_cast<Qt3DRender::QTextureLoader*>(scene.texture(QLatin1String("diffuse")));
+        auto textureLoader = qobject_cast<Qt3DRender::QTextureLoader *>(scene.texture(QLatin1String("diffuse")));
         QVERIFY(textureLoader);
         QVERIFY(textureLoader->source().toString().toLower().endsWith("dds"));
         QVERIFY(parser.context()->usedExtension().contains(QLatin1String("MSFT_texture_dds")));
     }
-
 
     void checkTextureCollection()
     {
@@ -540,14 +541,14 @@ private Q_SLOTS:
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<QVector<QString>>("expectedNames");
 
-        QVector<QString> expectedNames = {"Armature",
-                                          "Armature_Hip",
-                                          "Armature_Chest",
-                                          "Armature_Shoulder.R",
-                                          "Armature_Arm.R",
-                                          "Armature_Shoulder.L",
-                                          "Armature_Arm.L",
-                                          "Armature_Head"};
+        QVector<QString> expectedNames = { "Armature",
+                                           "Armature_Hip",
+                                           "Armature_Chest",
+                                           "Armature_Shoulder.R",
+                                           "Armature_Arm.R",
+                                           "Armature_Shoulder.L",
+                                           "Armature_Arm.L",
+                                           "Armature_Head" };
         QTest::newRow("Check hierarchy") << "joint_hierarchy.gltf" << expectedNames;
     }
 
@@ -573,8 +574,7 @@ private Q_SLOTS:
 
         // THEN
         QVector<QString> actualNames;
-        std::function<void(const Qt3DCore::QJoint *, QVector<QString> &)> acquireNames = [&acquireNames](const Qt3DCore::QJoint *joint, QVector<QString> &actualNames)
-        {
+        std::function<void(const Qt3DCore::QJoint *, QVector<QString> &)> acquireNames = [&acquireNames](const Qt3DCore::QJoint *joint, QVector<QString> &actualNames) {
             actualNames.push_back(joint->name());
             for (const Qt3DCore::QJoint *childJoint : joint->childJoints())
                 acquireNames(childJoint, actualNames);
@@ -639,9 +639,9 @@ private Q_SLOTS:
         QTest::addColumn<QStringList>("expectedAssignedLayers");
 
         QTest::newRow("No layers") << ASSETS "no_layers.gltf" << QStringList{} << QStringList{};
-        QTest::newRow("Several layers") << ASSETS "several_layers.gltf" << QStringList{"vl1", "vl2", "vl3"} << QStringList{};
-        QTest::newRow("One layer assigned") << ASSETS "one_layer_assigned.gltf" << QStringList{"vl1", "vl2", "vl3"} << QStringList{"vl1"};
-        QTest::newRow("Several layers assigned") << ASSETS "several_layers_assigned.gltf" << QStringList{"vl1", "vl2", "vl3"} << QStringList{"vl1", "vl3"};
+        QTest::newRow("Several layers") << ASSETS "several_layers.gltf" << QStringList{ "vl1", "vl2", "vl3" } << QStringList{};
+        QTest::newRow("One layer assigned") << ASSETS "one_layer_assigned.gltf" << QStringList{ "vl1", "vl2", "vl3" } << QStringList{ "vl1" };
+        QTest::newRow("Several layers assigned") << ASSETS "several_layers_assigned.gltf" << QStringList{ "vl1", "vl2", "vl3" } << QStringList{ "vl1", "vl3" };
     }
 
     void checkLayers()
@@ -675,15 +675,16 @@ private Q_SLOTS:
             if (expectedAssignedLayers.size()) {
                 for (const auto &layerName : qAsConst(expectedAssignedLayers)) {
                     QVERIFY(std::find_if(std::begin(assignedLayers), std::end(assignedLayers), [layerName](const Qt3DRender::QLayer *value) {
-                        return value->objectName() == layerName;
-                    }) != std::end(assignedLayers));
+                                return value->objectName() == layerName;
+                            }) != std::end(assignedLayers));
                 }
             }
         }
     }
 
 #if defined(KUESA_DRACO_COMPRESSION)
-    void checkDracoCompression() {
+    void checkDracoCompression()
+    {
         SceneEntity scene;
         GLTF2Parser parser(&scene);
 
@@ -695,7 +696,8 @@ private Q_SLOTS:
     }
 #endif
 
-    void checkUseDracoCompressionIfAvailable() {
+    void checkUseDracoCompressionIfAvailable()
+    {
         SceneEntity scene;
         GLTF2Parser parser(&scene);
 

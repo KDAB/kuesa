@@ -69,10 +69,16 @@ public:
     ~GLTF2Context();
 
     template<typename Asset>
-    int count() const { return 0; }
+    int count() const
+    {
+        return 0;
+    }
 
     template<typename Asset>
-    Asset assetAt(int) const { return {}; }
+    Asset assetAt(int) const
+    {
+        return {};
+    }
 
     int bufferCount() const;
     const QByteArray buffer(int id) const;
@@ -197,9 +203,8 @@ int GLTF2Context::count<Skin>() const;
 template<>
 Skin GLTF2Context::assetAt<Skin>(int i) const;
 
-
-} // GLTF2Import
-} // Kuesa
+} // namespace GLTF2Import
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

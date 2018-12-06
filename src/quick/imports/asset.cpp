@@ -131,7 +131,7 @@ void Asset::setSceneEntity(SceneEntity *sceneEntity)
 
 AbstractAssetCollection *Asset::collection() const
 {
-    return  m_collection;
+    return m_collection;
 }
 
 void Asset::setCollection(AbstractAssetCollection *collection)
@@ -204,7 +204,7 @@ void Asset::findAsset()
                     << m_scene->animationMappings();
     }
 
-    for (AbstractAssetCollection *c: qAsConst(collections)) {
+    for (AbstractAssetCollection *c : qAsConst(collections)) {
         auto n = c->findAsset(m_name);
         if (n) {
             setNode(n);

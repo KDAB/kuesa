@@ -34,13 +34,13 @@
 QT_BEGIN_NAMESPACE
 
 #if defined(QT_SHARED) || !defined(QT_STATIC)
-#  if defined(QT_BUILD_KUESA_LIB)
-#    define KUESASHARED_EXPORT Q_DECL_EXPORT
-#  else
-#    define KUESASHARED_EXPORT Q_DECL_IMPORT
-#  endif
+#if defined(QT_BUILD_KUESA_LIB)
+#define KUESASHARED_EXPORT Q_DECL_EXPORT
 #else
-#  define KUESASHARED_EXPORT
+#define KUESASHARED_EXPORT Q_DECL_IMPORT
+#endif
+#else
+#define KUESASHARED_EXPORT
 #endif
 
 QT_END_NAMESPACE

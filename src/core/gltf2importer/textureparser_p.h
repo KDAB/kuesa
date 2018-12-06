@@ -44,15 +44,14 @@ QT_BEGIN_NAMESPACE
 namespace Qt3DRender {
 class QAbstractTexture;
 class QAbstractTextureImage;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 namespace GLTF2Import {
 
 class GLTF2Context;
 
-struct Texture
-{
+struct Texture {
     Qt3DRender::QAbstractTexture *texture = nullptr;
     QString name;
 };
@@ -67,8 +66,8 @@ public:
                                                    Qt3DRender::QAbstractTexture *texture);
 };
 
-} // GLTF2Import
-} // Kuesa
+} // namespace GLTF2Import
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

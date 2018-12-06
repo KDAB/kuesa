@@ -49,7 +49,6 @@
 #include <Qt3DRender/qdepthtest.h>
 #include <Qt3DRender/qnodepthmask.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -123,7 +122,6 @@ namespace Kuesa {
     This can be useful when combining Kuesa and QtQuick with a Scene3D element.
     It is false by default.
  */
-
 
 OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     : AbstractPostProcessingEffect(parent)
@@ -262,8 +260,8 @@ void OpacityMask::setPremultipliedAlpha(bool premultipliedAlpha)
     emit premultipliedAlphaChanged(m_premultipliedAlpha);
 
     const QString layer = m_premultipliedAlpha ? QStringLiteral("premultiplied_alpha") : QStringLiteral("regular");
-    m_gl3ShaderBuilder->setEnabledLayers({layer});
-    m_es3ShaderBuilder->setEnabledLayers({layer});
+    m_gl3ShaderBuilder->setEnabledLayers({ layer });
+    m_es3ShaderBuilder->setEnabledLayers({ layer });
     m_blendRenderState->setEnabled(!m_premultipliedAlpha);
 }
 
@@ -272,6 +270,6 @@ bool OpacityMask::premultipliedAlpha() const
     return m_premultipliedAlpha;
 }
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE

@@ -28,7 +28,7 @@
 
 #include <draco/compression/decode.h>
 
-int main(int , char **)
+int main(int, char **)
 {
     draco::DecoderBuffer buffer;
     return 0;

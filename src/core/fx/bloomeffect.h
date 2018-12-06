@@ -44,7 +44,7 @@ class QRenderPassFilter;
 class QAbstractTexture;
 class QLayer;
 class QCamera;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 
@@ -64,7 +64,7 @@ public:
     BloomEffect(Qt3DCore::QNode *parent = nullptr);
     ~BloomEffect() override;
     FrameGraphNodePtr frameGraphSubTree() const override;
-    QVector<Qt3DRender::QLayer*> layers() const override;
+    QVector<Qt3DRender::QLayer *> layers() const override;
 
     void setSceneSize(const QSize &size) override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
@@ -96,14 +96,13 @@ private:
     ThresholdEffect *m_thresholdEffect;
     GaussianBlurEffect *m_blurEffect;
 
-    QVector<Qt3DRender::QLayer*> m_layers;
+    QVector<Qt3DRender::QLayer *> m_layers;
 
     Qt3DRender::QParameter *m_sceneTextureParam;
     Qt3DRender::QParameter *m_blurredBrightTextureParam;
     Qt3DRender::QParameter *m_exposureParam;
 };
-
-}
+} // namespace Kuesa
 QT_END_NAMESPACE
 
 #endif // KUESA_BLOOMEFFECT_H

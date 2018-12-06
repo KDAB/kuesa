@@ -44,7 +44,7 @@ namespace {
 const QLatin1String KEY_URI = QLatin1Literal("uri");
 const QLatin1String KEY_NAME = QLatin1Literal("name");
 const QLatin1String KEY_BYTE_LENGTH = QLatin1Literal("byteLength");
-}
+} // namespace
 
 /*!
  * \class BufferParser

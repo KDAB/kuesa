@@ -78,6 +78,7 @@ public:
     virtual ~MatrixLabel() {}
 
     void setMatrix(const QMatrix3x3 &matrix);
+
 private:
     QGridLayout *m_gridLayout;
 };

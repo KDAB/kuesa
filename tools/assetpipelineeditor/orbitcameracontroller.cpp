@@ -27,7 +27,7 @@
 */
 
 #ifndef _USE_MATH_DEFINES
-# define _USE_MATH_DEFINES // For MSVC
+#define _USE_MATH_DEFINES // For MSVC
 #endif
 
 #include "orbitcameracontroller.h"
@@ -115,7 +115,6 @@ OrbitCameraController::OrbitCameraController(Qt3DCore::QNode *parent)
     escapeKeyInput->setButtons(QVector<int>() << Qt::Key_Escape);
     escapeKeyInput->setSourceDevice(m_keyboardDevice);
     m_escapeKeyAction->addInput(escapeKeyInput);
-
 
     //Projection control
     auto changeProjectionTypeInput = new Qt3DInput::QActionInput();
@@ -209,67 +208,65 @@ OrbitCameraController::OrbitCameraController(Qt3DCore::QNode *parent)
 
     QObject::connect(mouseHandler, &Qt3DInput::QMouseHandler::pressed,
                      [this](Qt3DInput::QMouseEvent *pressedEvent) {
-        pressedEvent->setAccepted(true);
-        this->m_mousePressedPosition = QPoint(pressedEvent->x(),
-                                     pressedEvent->y());
-        this->m_mouseCurrentPosition = this->m_mousePressedPosition;
-        this->m_pressedCameraPosition = this->m_camera->position();
+                         pressedEvent->setAccepted(true);
+                         this->m_mousePressedPosition = QPoint(pressedEvent->x(),
+                                                               pressedEvent->y());
+                         this->m_mouseCurrentPosition = this->m_mousePressedPosition;
+                         this->m_pressedCameraPosition = this->m_camera->position();
 
-        // translation active if ONLY right button is pressed at the start
-        m_isTranslationActive = pressedEvent->buttons() == Qt3DInput::QMouseEvent::RightButton;
+                         // translation active if ONLY right button is pressed at the start
+                         m_isTranslationActive = pressedEvent->buttons() == Qt3DInput::QMouseEvent::RightButton;
 #ifdef Q_OS_MACOS
-        if (pressedEvent->buttons() == Qt3DInput::QMouseEvent::LeftButton &&
-                pressedEvent->modifiers() == Qt3DInput::QMouseEvent::MetaModifier)
-            this->m_isTranslationActive = true;
+                         if (pressedEvent->buttons() == Qt3DInput::QMouseEvent::LeftButton &&
+                             pressedEvent->modifiers() == Qt3DInput::QMouseEvent::MetaModifier)
+                             this->m_isTranslationActive = true;
 #endif
-    });
+                     });
 
     QObject::connect(mouseHandler, &Qt3DInput::QMouseHandler::released,
                      [this](Qt3DInput::QMouseEvent *released) {
-        // turn off translation when any button is released.
-        this->m_isTranslationActive = false;
-        released->setAccepted(true);
-    });
+                         // turn off translation when any button is released.
+                         this->m_isTranslationActive = false;
+                         released->setAccepted(true);
+                     });
 
     QObject::connect(mouseHandler, &Qt3DInput::QMouseHandler::positionChanged,
                      [this](Qt3DInput::QMouseEvent *positionChangedEvent) {
-        positionChangedEvent->setAccepted(true);
-        this->m_mouseCurrentPosition = QPoint(positionChangedEvent->x(),
-                                              positionChangedEvent->y());
-    });
+                         positionChangedEvent->setAccepted(true);
+                         this->m_mouseCurrentPosition = QPoint(positionChangedEvent->x(),
+                                                               positionChangedEvent->y());
+                     });
 
     QObject::connect(m_changeProjectionAction, &Qt3DInput::QAction::activeChanged,
                      [this](bool isActive) {
-        if (isActive) {
-            Qt3DRender::QCamera *camera = this->m_camera;
-            Qt3DRender::QCameraLens::ProjectionType projectionType = camera->projectionType();
-            switch (projectionType) {
-            case Qt3DRender::QCameraLens::PerspectiveProjection:
-                camera->setProjectionType(Qt3DRender::QCameraLens::OrthographicProjection);
-                break;
-            case Qt3DRender::QCameraLens::OrthographicProjection:
-                camera->setProjectionType(Qt3DRender::QCameraLens::PerspectiveProjection);
-                break;
-            default:
-                break;
-            }
-        }
-    });
-
+                         if (isActive) {
+                             Qt3DRender::QCamera *camera = this->m_camera;
+                             Qt3DRender::QCameraLens::ProjectionType projectionType = camera->projectionType();
+                             switch (projectionType) {
+                             case Qt3DRender::QCameraLens::PerspectiveProjection:
+                                 camera->setProjectionType(Qt3DRender::QCameraLens::OrthographicProjection);
+                                 break;
+                             case Qt3DRender::QCameraLens::OrthographicProjection:
+                                 camera->setProjectionType(Qt3DRender::QCameraLens::PerspectiveProjection);
+                                 break;
+                             default:
+                                 break;
+                             }
+                         }
+                     });
 
     //// FrameAction
 
     QObject::connect(m_frameAction, &Qt3DLogic::QFrameAction::triggered, this,
                      [this](float dt) {
-        this->onTriggered(dt);
-    });
+                         this->onTriggered(dt);
+                     });
 
     QObject::connect(m_escapeKeyAction, &Qt3DInput::QAction::activeChanged,
                      this, [this](bool isActive) {
-        if (isActive && m_camera)
-            m_camera->viewAll();
-    });
-
+                         if (isActive && m_camera)
+                             m_camera->viewAll();
+                     });
 
     // Disable the logical device when the entity is disabled
     QObject::connect(this, &Qt3DCore::QEntity::enabledChanged,
@@ -298,7 +295,7 @@ void OrbitCameraController::setCamera(Qt3DRender::QCamera *camera)
         m_camera = camera;
 
         if (m_camera)
-            connect(m_camera, &Qt3DCore::QNode::nodeDestroyed, this, [this](){
+            connect(m_camera, &Qt3DCore::QNode::nodeDestroyed, this, [this]() {
                 setCamera(nullptr);
             });
 
@@ -421,7 +418,6 @@ QVector3D OrbitCameraController::tranformCameraLocalToWorld(const QVector3D &vec
     return vWorld;
 }
 
-
 // takes normal axis amount from -1 to 1.0
 void OrbitCameraController::zoomCamera(float axisValue, Qt3DRender::QCamera::CameraTranslationOption translationOption)
 {
@@ -444,7 +440,7 @@ void OrbitCameraController::rotateCamera(float yAxisRotationAmt, float elevation
     const QVector3D upVector(0.0f, 1.0f, 0.0f);
     const auto yRotationQuat = QQuaternion::fromAxisAndAngle(upVector, yAxisRotationAmt);
 
-    const float initialElevationAngle = asin(-initialViewVector.y()/initialViewVector.length()) * 180.0f/M_PI;
+    const float initialElevationAngle = asin(-initialViewVector.y() / initialViewVector.length()) * 180.0f / M_PI;
     //fix this...breaks if we go to 90 degrees
     const float newElevationAngle = clamp(initialElevationAngle + elevationRotationAmt, -89, 89);
     const float xRotationAmount = newElevationAngle - initialElevationAngle;
@@ -459,11 +455,10 @@ void OrbitCameraController::rotateCamera(float yAxisRotationAmt, float elevation
     m_camera->setUpVector(xRotationQuat * upVector);
 }
 
-
 void OrbitCameraController::translateCameraXYByPercentOfScreen(const QVector3D &originalCameraPos, float percentX, float percentY)
 {
     // Calculate size of view frustum at camera view center.  We'll translate perpendicular to this plane.
-    const float worldHeightAtViewCenter = m_camera->viewVector().length() * tan( m_camera->fieldOfView() * M_PI / 180.0);
+    const float worldHeightAtViewCenter = m_camera->viewVector().length() * tan(m_camera->fieldOfView() * M_PI / 180.0);
     const float wordWidthAtViewCenter = worldHeightAtViewCenter * m_camera->aspectRatio();
 
     // determine how far the mouse has traveled in plane perp to camera at view center since mouse down
@@ -496,11 +491,11 @@ void OrbitCameraController::onTriggered(float dt)
         zoomCamera(m_mouseAxisY->value() * dt, zoomTranslationOption);
         return;
     } else if (isMouseTranslating()) {
-        translateCameraXYByPercentOfScreen( m_pressedCameraPosition, -mouseDelta.x() / m_windowSize.width(), mouseDelta.y() / m_windowSize.height());
+        translateCameraXYByPercentOfScreen(m_pressedCameraPosition, -mouseDelta.x() / m_windowSize.width(), mouseDelta.y() / m_windowSize.height());
         return;
     } else if (isMouseOrbiting()) {
-        const float yAxisRotationAmt = -mouseDelta.x()/m_windowSize.width() * m_rotationSpeed * 180.0f;
-        const float elevationRotationAmt = mouseDelta.y()/m_windowSize.height() * m_rotationSpeed * 180.0f;
+        const float yAxisRotationAmt = -mouseDelta.x() / m_windowSize.width() * m_rotationSpeed * 180.0f;
+        const float elevationRotationAmt = mouseDelta.y() / m_windowSize.height() * m_rotationSpeed * 180.0f;
         const QVector3D origViewVector = m_camera->viewCenter() - m_pressedCameraPosition;
         rotateCamera(yAxisRotationAmt, elevationRotationAmt, origViewVector);
         return;
@@ -513,14 +508,14 @@ void OrbitCameraController::onTriggered(float dt)
     const bool hasKeyboardXYInput = !qFuzzyCompare(m_keyboardAxisX->value(), 0.0f) || !qFuzzyCompare(m_keyboardAxisY->value(), 0.0f);
     if (hasKeyboardXYInput) {
         if (m_altKeyAction->isActive()) {
-            rotateCamera(- m_keyboardAxisX->value() , -m_keyboardAxisY->value() , m_camera->viewVector());
+            rotateCamera(-m_keyboardAxisX->value(), -m_keyboardAxisY->value(), m_camera->viewVector());
         } else {
             translateCameraXYByPercentOfScreen(m_camera->position(), -keyboardMotionScale * m_keyboardAxisX->value(), -keyboardMotionScale * m_keyboardAxisY->value());
         }
     }
     // zoom via keyboard or mouse wheel
     if (!qFuzzyCompare(m_keyboardAxisZ->value() + m_mouseWheelAxis->value(), 0.0f)) {
-        zoomCamera( clampInputs(m_keyboardAxisZ->value() *keyboardMotionScale, m_mouseWheelAxis->value() * dt), zoomTranslationOption);
+        zoomCamera(clampInputs(m_keyboardAxisZ->value() * keyboardMotionScale, m_mouseWheelAxis->value() * dt), zoomTranslationOption);
     }
 }
 

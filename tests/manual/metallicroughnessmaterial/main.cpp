@@ -34,7 +34,7 @@
 #include "scenecontroller.h"
 #include "controllerwidget.h"
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 

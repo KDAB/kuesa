@@ -174,7 +174,7 @@ void ThresholdEffect::setThreshold(float newThreshold)
 
 QVector<Qt3DRender::QLayer *> ThresholdEffect::layers() const
 {
-    return QVector<Qt3DRender::QLayer*> {m_layer};
+    return QVector<Qt3DRender::QLayer *>{ m_layer };
 }
 
 /*!
@@ -186,6 +186,5 @@ void ThresholdEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
 {
     m_textureParam->setValue(QVariant::fromValue(texture));
 }
-
 
 QT_END_NAMESPACE

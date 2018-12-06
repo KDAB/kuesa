@@ -72,13 +72,11 @@ namespace Kuesa {
 TextureImageCollection::TextureImageCollection(Qt3DCore::QNode *parent)
     : AbstractAssetCollection(parent)
 {
-
 }
 
 TextureImageCollection::~TextureImageCollection()
 {
 }
-
 
 /*!
  * Utility method to create an instance of Qt3DRender::QTextureImage for the

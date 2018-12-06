@@ -39,12 +39,12 @@ class QAbstractTexture;
 namespace Kuesa {
 class AbstractAssetCollection;
 class MetallicRoughnessMaterial;
-}
+} // namespace Kuesa
 
 class MaterialInspector : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(Kuesa::MetallicRoughnessMaterial* material READ material NOTIFY materialParamsChanged)
+    Q_PROPERTY(Kuesa::MetallicRoughnessMaterial *material READ material NOTIFY materialParamsChanged)
     Q_PROPERTY(bool hasTextures READ hasTextures NOTIFY materialParamsChanged)
 
 public:
@@ -85,6 +85,5 @@ private:
     Kuesa::MetallicRoughnessMaterial *m_material;
     QMetaObject::Connection m_materialConnection;
 };
-
 
 #endif // MATERIALINSPECTOR_H

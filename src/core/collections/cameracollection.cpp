@@ -63,7 +63,6 @@ using namespace Kuesa;
  *
  */
 
-
 CameraCollection::CameraCollection(Qt3DCore::QNode *parent)
     : AbstractAssetCollection(parent)
 {

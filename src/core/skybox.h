@@ -38,7 +38,7 @@ QT_BEGIN_NAMESPACE
 namespace Qt3DRender {
 class QParameter;
 class QAbstractTexture;
-} // Qt3DRender
+} // namespace Qt3DRender
 
 namespace Kuesa {
 

@@ -44,7 +44,7 @@ namespace {
 const QLatin1String KEY_IMAGES = QLatin1Literal("images");
 const QLatin1String KEY_TEXTURES = QLatin1String("textures");
 const QLatin1String KEY_TEXTURE_SAMPLERS = QLatin1Literal("samplers");
-}
+} // namespace
 
 class tst_TextureParser : public QObject
 {
@@ -65,9 +65,9 @@ private Q_SLOTS:
                                   << true;
 
         QTest::newRow("Empty") << QStringLiteral(ASSETS "texture_empty.gltf")
-                                  << false
-                                  << 0
-                                  << false;
+                               << false
+                               << 0
+                               << false;
 
         QTest::newRow("NoSource") << QStringLiteral(ASSETS "texture_no_source.gltf")
                                   << true
@@ -189,7 +189,6 @@ private Q_SLOTS:
         // THEN -> Should issue a warning but still return true
         QVERIFY(TextureParser::ensureImageIsCompatibleWithTexture(&img2, &tex2dArray));
     }
-
 };
 
 QTEST_APPLESS_MAIN(tst_TextureParser)

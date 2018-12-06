@@ -42,8 +42,6 @@
 using namespace Kuesa;
 using namespace GLTF2Import;
 
-
-
 Q_DECLARE_METATYPE(Kuesa::GLTF2Import::Skin)
 
 namespace {
@@ -56,12 +54,12 @@ const QLatin1String KEY_SKINS = QLatin1String("skins");
 bool compareSkins(const Kuesa::GLTF2Import::Skin a, const Kuesa::GLTF2Import::Skin b)
 {
     return a.name == b.name &&
-           a.jointsIndices == b.jointsIndices &&
-           a.skeletonIdx == b.skeletonIdx &&
-           a.inverseBindMatricesAccessorIdx == b.inverseBindMatricesAccessorIdx;
+            a.jointsIndices == b.jointsIndices &&
+            a.skeletonIdx == b.skeletonIdx &&
+            a.inverseBindMatricesAccessorIdx == b.inverseBindMatricesAccessorIdx;
 }
 
-} // anonymous
+} // namespace
 
 class tst_SkinParser : public QObject
 {
@@ -83,29 +81,28 @@ private Q_SLOTS:
         Kuesa::GLTF2Import::Skin skin1;
         skin1.inverseBindMatricesAccessorIdx = 13;
         skin1.skeletonIdx = 2;
-        skin1.jointsIndices = {2, 3};
+        skin1.jointsIndices = { 2, 3 };
         skin1.name = QStringLiteral("Armature");
 
         Kuesa::GLTF2Import::Skin skin2;
         skin2.inverseBindMatricesAccessorIdx = 13;
         skin2.skeletonIdx = -1;
-        skin2.jointsIndices = {2, 3};
+        skin2.jointsIndices = { 2, 3 };
         skin2.name = QStringLiteral("Armature");
 
         Kuesa::GLTF2Import::Skin skin3;
         skin3.inverseBindMatricesAccessorIdx = -1;
         skin3.skeletonIdx = 2;
-        skin3.jointsIndices = {2, 3};
+        skin3.jointsIndices = { 2, 3 };
         skin3.name = QStringLiteral("Armature");
 
         QTest::newRow("Valid") << QStringLiteral(ASSETS "skins_valid.gltf")
                                << true
                                << (QVector<Kuesa::GLTF2Import::Skin>() << skin1);
 
-        QTest::newRow("Empty")<< QStringLiteral(ASSETS "skins_empty.gltf")
-                              << false
-                              << (QVector<Kuesa::GLTF2Import::Skin>());
-
+        QTest::newRow("Empty") << QStringLiteral(ASSETS "skins_empty.gltf")
+                               << false
+                               << (QVector<Kuesa::GLTF2Import::Skin>());
 
         QTest::newRow("Invalid-Joints-Empty") << QStringLiteral(ASSETS "skins_joints_empty.gltf")
                                               << false
@@ -119,7 +116,6 @@ private Q_SLOTS:
                                           << false
                                           << (QVector<Kuesa::GLTF2Import::Skin>());
 
-
         QTest::newRow("Missing-Skeleton") << QStringLiteral(ASSETS "skins_skeleton_missing.gltf")
                                           << true
                                           << (QVector<Kuesa::GLTF2Import::Skin>() << skin2);
@@ -127,7 +123,6 @@ private Q_SLOTS:
         QTest::newRow("Invalid-InverseBindingMatrices") << QStringLiteral(ASSETS "skins_inverse_bind_matrices_invalid.gltf")
                                                         << false
                                                         << (QVector<Kuesa::GLTF2Import::Skin>());
-
 
         QTest::newRow("Missing-InverseBindingMatrices") << QStringLiteral(ASSETS "skins_inverse_bind_matrices_missing.gltf")
                                                         << true

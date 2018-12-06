@@ -267,7 +267,6 @@ AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
 
 AnimationPlayer::~AnimationPlayer()
 {
-
 }
 
 AnimationPlayer::Status AnimationPlayer::status() const
@@ -483,7 +482,7 @@ void AnimationPlayer::matchClipAndTargets()
     // Check that the mapping is using a channel name that exists in the clip data
     for (int mappingId = 0; mappingId < mappings.size(); ++mappingId) {
         // mappings contains either QChannelMappings or QSkeletonMappings
-        Qt3DAnimation::QChannelMapping *mapping = qobject_cast<Qt3DAnimation::QChannelMapping*>(mappings.at(mappingId));
+        Qt3DAnimation::QChannelMapping *mapping = qobject_cast<Qt3DAnimation::QChannelMapping *>(mappings.at(mappingId));
 
         if (mapping != nullptr) {
             // Verify the channel name matches in clip and mapper
@@ -513,7 +512,7 @@ void AnimationPlayer::matchClipAndTargets()
 
         // Check that the mappings try to animate a valid property of the target
         for (int mappingId = 0; mappingId < mappings.size(); ++mappingId) {
-            Qt3DAnimation::QChannelMapping *mapping = qobject_cast<Qt3DAnimation::QChannelMapping*>(mappings.at(mappingId));
+            Qt3DAnimation::QChannelMapping *mapping = qobject_cast<Qt3DAnimation::QChannelMapping *>(mappings.at(mappingId));
             Qt3DCore::QNode *targetNode = m_targets.at(mappingId);
 
             // Verify the target node has the property the mapping is animating

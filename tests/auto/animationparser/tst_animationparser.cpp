@@ -40,7 +40,6 @@
 
 #include <Qt3DAnimation/QAnimationClip>
 
-
 using namespace Kuesa;
 using namespace GLTF2Import;
 
@@ -55,7 +54,6 @@ class tst_AnimationParser : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
-
 
     void checkParse_data()
     {
@@ -97,8 +95,8 @@ private Q_SLOTS:
                                                         << false
                                                         << 0;
         QTest::newRow("Sampler-Missing-Interpolation") << QStringLiteral(ASSETS "animated_cube_sampler_missing_interpolation.gltf")
-                                                        << true
-                                                        << 1;
+                                                       << true
+                                                       << 1;
         QTest::newRow("Channel-Missing-Target") << QStringLiteral(ASSETS "animated_cube_channel_missing_target.gltf")
                                                 << false
                                                 << 0;
@@ -106,11 +104,11 @@ private Q_SLOTS:
                                                  << false
                                                  << 0;
         QTest::newRow("Incompatible-Input-Output-Accessors") << QStringLiteral(ASSETS "animated_cube_sampler_incompatible_input_output.gltf")
-                                                 << false
-                                                 << 0;
+                                                             << false
+                                                             << 0;
         QTest::newRow("Cubic-Animation") << QStringLiteral(ASSETS "animationparser_cubic.gltf")
-                                                 << true
-                                                 << 1;
+                                         << true
+                                         << 1;
     }
 
     void checkParse()
@@ -138,12 +136,11 @@ private Q_SLOTS:
 
         // WHEN
         const bool initSuccess = bufferParser.parse(rootObj.value(KEY_BUFFERS).toArray(), &context) &&
-                                 bufferViewParser.parse(rootObj.value(KEY_BUFFERVIEWS).toArray(), &context) &&
-                                 accessorParser.parse(rootObj.value(KEY_ACCESSORS).toArray(), &context) &&
-                                 nodeParser.parse(rootObj.value(KEY_NODES).toArray(), &context);
+                bufferViewParser.parse(rootObj.value(KEY_BUFFERVIEWS).toArray(), &context) &&
+                accessorParser.parse(rootObj.value(KEY_ACCESSORS).toArray(), &context) &&
+                nodeParser.parse(rootObj.value(KEY_NODES).toArray(), &context);
         // THEN
         QVERIFY(initSuccess);
-
 
         // WHEN
         AnimationParser parser;
@@ -203,12 +200,11 @@ private Q_SLOTS:
 
         // WHEN
         const bool initSuccess = bufferParser.parse(rootObj.value(KEY_BUFFERS).toArray(), &context) &&
-                                 bufferViewParser.parse(rootObj.value(KEY_BUFFERVIEWS).toArray(), &context) &&
-                                 accessorParser.parse(rootObj.value(KEY_ACCESSORS).toArray(), &context) &&
-                                 nodeParser.parse(rootObj.value(KEY_NODES).toArray(), &context);
+                bufferViewParser.parse(rootObj.value(KEY_BUFFERVIEWS).toArray(), &context) &&
+                accessorParser.parse(rootObj.value(KEY_ACCESSORS).toArray(), &context) &&
+                nodeParser.parse(rootObj.value(KEY_NODES).toArray(), &context);
         // THEN
         QVERIFY(initSuccess);
-
 
         // WHEN
         AnimationParser parser;
@@ -223,7 +219,6 @@ private Q_SLOTS:
         QCOMPARE(animation.clipData.begin()->channelComponentCount(), componentCount);
         QCOMPARE(animation.clipData.begin()->name(), path);
     }
-
 };
 
 QTEST_APPLESS_MAIN(tst_AnimationParser)

@@ -41,7 +41,7 @@ class QParameter;
 class QShaderProgramBuilder;
 class QShaderProgram;
 class QRenderStateSet;
-} // Qt3DRender
+} // namespace Qt3DRender
 
 namespace Kuesa {
 
@@ -54,7 +54,7 @@ public:
     explicit OpacityMask(Qt3DCore::QNode *parent = nullptr);
 
     FrameGraphNodePtr frameGraphSubTree() const override;
-    QVector<Qt3DRender::QLayer*> layers() const override;
+    QVector<Qt3DRender::QLayer *> layers() const override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
 
     void setMask(Qt3DRender::QAbstractTexture *mask);
@@ -78,7 +78,7 @@ private:
     Qt3DRender::QParameter *m_inputTextureParameter;
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

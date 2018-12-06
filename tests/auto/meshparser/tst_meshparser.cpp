@@ -79,7 +79,6 @@ private Q_SLOTS:
         QFETCH(bool, succeeded);
         QFETCH(int, meshesCount);
 
-
         // GIVEN
         GLTF2Context context;
         MeshParser parser;
@@ -138,7 +137,6 @@ private Q_SLOTS:
             }
         }
     }
-
 };
 
 QTEST_GUILESS_MAIN(tst_MeshParser)

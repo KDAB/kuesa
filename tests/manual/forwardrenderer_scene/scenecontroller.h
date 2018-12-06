@@ -84,7 +84,7 @@ public slots:
     void setBloomEffect(bool bloomEffect);
     void setBloomThreshold(float bloomThreshold);
     void setBloomExposure(float bloomExposure);
-    void setBloomBlurPassCount (int bloomBlurPassCount);
+    void setBloomBlurPassCount(int bloomBlurPassCount);
     void setThresholdEffect(bool thresholdEffect);
     void setThreshold(float threshold);
     void setBlurEffect(bool blurEffect);
@@ -101,7 +101,7 @@ signals:
     void bloomFilterChanged(bool bloomEffect);
     void bloomThresholdChanged(float bloomThreshold);
     void bloomExposureChanged(float bloomExposure);
-    void bloomBlurPassCountChanged (int bloomBlurPassCount);
+    void bloomBlurPassCountChanged(int bloomBlurPassCount);
     void thresholdEffectChanged(bool thresholdEffect);
     void thresholdChanged(float threshold);
     void blurEffectChanged(bool blurEffect);

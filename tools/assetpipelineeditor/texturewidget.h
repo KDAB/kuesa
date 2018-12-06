@@ -85,7 +85,7 @@ private Q_SLOTS:
 
 private:
     QAbstractItemModel *m_model;
-    QList<TextureImageDelegateWidget*> m_delegates;
+    QList<TextureImageDelegateWidget *> m_delegates;
     QVBoxLayout *m_mainLayout;
 };
 
@@ -101,6 +101,5 @@ public:
 private:
     QDataWidgetMapper *m_mapper;
 };
-
 
 #endif // TEXTUREWIDGET_H

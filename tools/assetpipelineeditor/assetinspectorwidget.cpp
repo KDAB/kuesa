@@ -67,10 +67,10 @@ AssetInspectorWidget::AssetInspectorWidget(AssetInspector *inspector, QWidget *p
 
     m_contentsContainer = new QWidget;
     auto contentsLayout = new QVBoxLayout(m_contentsContainer);
-    contentsLayout->setContentsMargins(0,0,0,0);
+    contentsLayout->setContentsMargins(0, 0, 0, 0);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->addSpacing(5);
     mainLayout->addWidget(m_assetNameLabel, 0, Qt::AlignHCenter);
     mainLayout->addWidget(m_noAssetLabel);
@@ -86,10 +86,10 @@ AssetInspectorWidget::~AssetInspectorWidget()
 
 void AssetInspectorWidget::updateAssetType()
 {
-    static QHash<int, QWidget*> widgetHash = {
+    static QHash<int, QWidget *> widgetHash = {
         { AssetInspector::Unknown, nullptr },
         { AssetInspector::Mesh, m_meshWidget },
-        { AssetInspector::Texture, m_textureWidget} ,
+        { AssetInspector::Texture, m_textureWidget },
         { AssetInspector::Material, m_materialWidget }
     };
 
@@ -116,10 +116,9 @@ void AssetInspectorWidget::setPreviewRenderContext(QQmlContext *context)
 void AssetInspectorWidget::setAssetName(const QString &assetName)
 {
     m_assetNameLabel->setText(assetName);
-    if (assetName.isEmpty())
+    if (assetName.isEmpty()) {
         m_noAssetLabel->setText(tr("Select an asset in Collection Browser for details"));
-    else
-    {
+    } else {
         m_noAssetLabel->setText(tr("No information available for %1").arg(assetName));
     }
 }

@@ -36,10 +36,8 @@ using namespace Qt3DRender;
 AbstractRenderStage::AbstractRenderStage(Qt3DCore::QNode *parent)
     : QRenderPassFilter(parent)
 {
-
 }
 
 AbstractRenderStage::~AbstractRenderStage()
 {
-
 }

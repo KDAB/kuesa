@@ -54,7 +54,7 @@ private:
     static void clearFx(QQmlListProperty<AbstractPostProcessingEffect> *list);
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

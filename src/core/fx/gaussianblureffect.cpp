@@ -210,7 +210,7 @@ AbstractPostProcessingEffect::FrameGraphNodePtr GaussianBlurEffect::frameGraphSu
 
 QVector<Qt3DRender::QLayer *> GaussianBlurEffect::layers() const
 {
-    return QVector<Qt3DRender::QLayer*> {m_layer};
+    return QVector<Qt3DRender::QLayer *>{ m_layer };
 }
 
 /*!
@@ -236,7 +236,7 @@ void GaussianBlurEffect::setSceneSize(const QSize &size)
 {
     m_heightParameter->setValue(size.height());
     m_widthParameter->setValue(size.width());
-     // only need to resize texture 2.
+    // only need to resize texture 2.
     // texture 1 is passed as "input texture" so should be resized elsewhere
     m_blurTexture2->setSize(size.width(), size.height());
 }
@@ -272,7 +272,7 @@ void GaussianBlurEffect::setBlurPassCount(int blurPasscount)
     emit blurPassCountChanged(m_blurPassCount);
 }
 
-Qt3DRender::QRenderPassFilter* GaussianBlurEffect::createRenderPassFilter(const QString &name, const QVariant &value)
+Qt3DRender::QRenderPassFilter *GaussianBlurEffect::createRenderPassFilter(const QString &name, const QVariant &value)
 {
     auto filter = new Qt3DRender::QRenderPassFilter;
     auto filterKey = new Qt3DRender::QFilterKey;
@@ -282,7 +282,7 @@ Qt3DRender::QRenderPassFilter* GaussianBlurEffect::createRenderPassFilter(const 
     return filter;
 }
 
-Qt3DRender::QRenderPass* GaussianBlurEffect::createBlurPass(int pass)
+Qt3DRender::QRenderPass *GaussianBlurEffect::createBlurPass(int pass)
 {
     auto blurPass = new Qt3DRender::QRenderPass;
     auto blurPassFilterKey = new Qt3DRender::QFilterKey;

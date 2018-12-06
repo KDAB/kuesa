@@ -46,8 +46,7 @@ class KUESASHARED_EXPORT GLTF2Importer : public Qt3DCore::QNode
     Q_PROPERTY(Kuesa::SceneEntity *sceneEntity READ sceneEntity WRITE setSceneEntity NOTIFY sceneEntityChanged)
     Q_PROPERTY(bool assignNames READ assignNames WRITE setAssignNames NOTIFY assignNamesChanged)
 public:
-    enum Status
-    {
+    enum Status {
         None,
         Loading,
         Ready,

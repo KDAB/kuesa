@@ -45,7 +45,8 @@ SceneController::SceneController(QObject *parent)
     , m_opacityMaskEffect(false)
     , m_opacityMaskPremultipliedAlpha(false)
 {
-    m_scenes << "ThreeSpheres" << "BloomTest";
+    m_scenes << "ThreeSpheres"
+             << "BloomTest";
     m_sceneName = m_scenes.at(0);
 }
 
