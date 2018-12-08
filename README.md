@@ -29,6 +29,11 @@ for it, run qmake again like this:
 
     qmake kuesa.pro -- --draco=no
 
+If Draco is not installed in the default location on your system, you can
+set the DRACOSDK environment variable to point to where Draco is installed.
+Use the DRACOSDK_LIBS environment variable to point to the folder containing
+the Draco libraries.
+
 In order to produce compressed glTF files, please use the gltf-pipeline tool at
 https://github.com/AnalyticalGraphicsInc/gltf-pipeline
 
