@@ -13,7 +13,7 @@
             "label": "Draco Compression",
             "test": "draco",
             "sources": [
-                { "libs": "-ldraco -ldracodec" }
+                { "type": "draco", "libs": "-ldraco" }
             ]
         }
     },

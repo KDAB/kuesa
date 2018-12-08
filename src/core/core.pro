@@ -40,12 +40,18 @@ include(gltf2importer/gltf2importer.pri)
 include(framegraphes/framegraphes.pri)
 include(fx/fx.pri)
 
+qtConfig(kuesa-draco) {
+    include($$OUT_PWD/qtkuesa-config.pri)
+    QMAKE_USE += draco
+}
+
 RESOURCES += \
     shaders.qrc
 
 OTHER_FILES += \
     shaders/gl3/simple.vert \
     shaders/graphs/metallicroughness.qt3d \
+    configure.pri \
     configure.json
 
 load(qt_module)
