@@ -47,7 +47,8 @@ SOURCES += \
     textureinspector.cpp \
     texturepreviewmaterial.cpp \
     settingsdialog.cpp \
-    orbitcameracontroller.cpp
+    orbitcameracontroller.cpp \
+    exportdialog.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -66,7 +67,8 @@ HEADERS += \
     textureinspector.h \
     texturepreviewmaterial.h \
     settingsdialog.h \
-    orbitcameracontroller.h
+    orbitcameracontroller.h \
+    exportdialog.h
 
 FORMS += \
     animationwidget.ui \
@@ -76,7 +78,8 @@ FORMS += \
     materialwidget.ui \
     meshwidget.ui \
     texturewidget.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    exportdialog.ui
 
 RESOURCES += \
     qml.qrc \
@@ -100,6 +103,8 @@ macos {
 windows {
     RC_ICONS = ../../resources/kuesa.ico
 }
+
+qtConfig(kuesa-draco) : DEFINES += KUESA_DRACO_COMPRESSION
 
 target.path = $$[QT_INSTALL_BINS]
 INSTALLS += target

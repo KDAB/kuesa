@@ -32,7 +32,7 @@
 #include <Qt3DRender/QAttribute>
 #include <Qt3DCore/QEntity>
 #include <Kuesa/MetallicRoughnessMaterial>
-#include <private/kuesa_utils_p.h>
+#include <Kuesa/private/kuesa_utils_p.h>
 
 MeshInspector::MeshInspector(QObject *parent)
     : QObject(parent)

@@ -26,6 +26,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#if defined(KUESA_DRACO_COMPRESSION)
+#include <draco/compression/decode.h>
+#endif
+
 #include "meshparser_p.h"
 #include "bufferviewsparser_p.h"
 #include "gltf2context_p.h"
@@ -41,10 +45,6 @@
 #include <Qt3DRender/QGeometryRenderer>
 
 #include <QtGui/qopengl.h>
-
-#if defined(KUESA_DRACO_COMPRESSION)
-#include <draco/compression/decode.h>
-#endif
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
@@ -284,6 +284,7 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
         attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
         attribute->setProperty("bufferViewOffset", viewData.byteOffset);
         attribute->setProperty("bufferName", accessor.name);
+        attribute->setProperty("semanticName", attrName);
         geometry->addAttribute(attribute);
     }
 
@@ -451,6 +452,7 @@ bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry
         attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
         attribute->setProperty("bufferViewOffset", accessor.offset);
         attribute->setProperty("bufferName", accessor.name);
+        attribute->setProperty("semanticName", attrName);
 
         geometry->addAttribute(attribute);
     }

@@ -85,6 +85,7 @@ protected:
 
 private slots:
     void openFile();
+    void exportFile();
     void reloadFile();
     void about();
     void setCamera(int index);

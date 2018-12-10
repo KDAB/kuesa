@@ -340,6 +340,16 @@ void GLTF2Context::setRequiredExtensions(const QStringList &requiredExtensions)
     m_requiredExtensions = requiredExtensions;
 }
 
+const QJsonDocument &GLTF2Context::json() const
+{
+    return m_json;
+}
+
+void GLTF2Context::setJson(const QJsonDocument &doc)
+{
+    m_json = doc;
+}
+
 template<>
 int GLTF2Context::count<Mesh>() const
 {
