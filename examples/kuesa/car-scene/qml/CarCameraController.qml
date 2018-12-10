@@ -152,6 +152,12 @@ Entity {
                 var oldPos = Qt.vector3d(root.camera.position.x,
                                          root.camera.position.y,
                                          root.camera.position.z);
+                var oldViewCenter = Qt.vector3d(root.camera.viewCenter.x,
+                                                root.camera.viewCenter.y,
+                                                root.camera.viewCenter.z)
+                var oldUpVec = Qt.vector3d(root.camera.upVector.x,
+                                           root.camera.upVector.y,
+                                           root.camera.upVector.z)
 
                 if (d.actionJustStarted) {
                     // Record the radius the first time we are called
@@ -168,15 +174,18 @@ Entity {
                     root.camera.tiltAboutViewCenter(-d.dy * dt)
                 }
 
-                // Keep camera above the floor plane
-                var maxTilt = 0.2
-                if (root.camera.position.y < maxTilt) {
-                    var newOldPos = root.camera.position;
-                    newOldPos.y = maxTilt
-                    root.camera.position.x = (newOldPos.dotProduct(Qt.vector3d(1.0, 0.0, 0.0)) / newOldPos.length()) * radius
-                    root.camera.position.z = (newOldPos.dotProduct(Qt.vector3d(0.0, 0.0, 1.0)) / newOldPos.length()) * radius
-                    root.camera.position.y = maxTilt
-                    root.camera.upVector = Qt.vector3d(0, 1, 0)
+                // Compute angle between viewVector and upVector
+                var normalizedViewVect = root.camera.viewVector.normalized()
+                var normalizedUpVect = root.camera.upVector.normalized()
+                var viewAngle = Math.acos(normalizedViewVect.dotProduct(d.firstPersonUp)) * 180 / Math.PI;
+                var upAngle = Math.acos(normalizedUpVect.dotProduct(d.firstPersonUp)) * 180 / Math.PI;
+
+                // 90 == floor level, 180 would be camera looking straight down at floor from top
+                if (viewAngle < 90 || upAngle > 85) {
+                    root.camera.position = oldPos
+                    root.camera.viewCenter = oldViewCenter
+                    root.camera.upVector = oldUpVec
+                    root.camera.panAboutViewCenter(-d.dx * dt, d.firstPersonUp)
                 }
             }
         }
