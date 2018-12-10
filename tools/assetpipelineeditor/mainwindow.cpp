@@ -52,6 +52,11 @@
 #include <QGuiApplication>
 #include <QClipboard>
 
+#include <QJsonDocument>
+#include <QJsonValue>
+#include <QJsonObject>
+#include <QJsonArray>
+
 #include <Kuesa/SceneEntity>
 #include <private/kuesa_utils_p.h>
 
@@ -341,9 +346,38 @@ void MainWindow::openFile()
 
 void MainWindow::compressFile()
 {
-    for (const auto &meshName : m_entity->meshes()->names()) {
-        compressMesh(*m_entity->mesh(meshName)->geometry());
+    QFile gltfFile(QUrl(m_filePathURL).toLocalFile());
+    if (gltfFile.open(QIODevice::ReadOnly)) {
+        QJsonDocument gltfDocument = QJsonDocument::fromJson(gltfFile.readAll());
+        auto rootObject = gltfDocument.object();
+        auto buffersArray = rootObject["buffers"].toArray();
+        const auto nbBuffers = buffersArray.size();
 
+        QByteArray compressedBufferData;
+        // Meshes are added in to the scene entity as they appear as primitives in the mesh attribute
+        for (const auto &meshName : m_entity->meshes()->names()) {
+            const auto encodedBuffer = compressMesh(*m_entity->mesh(meshName)->geometry());
+            compressedBufferData.push_back(QByteArray { encodedBuffer.get()->data(), static_cast<int>(encodedBuffer.get()->size()) });
+        }
+
+        const QFileInfo gltfFileInfo(m_filePathURL);
+        const QDir gltfFileDir = gltfFileInfo.dir();
+        QFile compressedBufferFile(
+                QUrl(gltfFileDir.filePath({ "compressedBuffer.bin" })).toLocalFile());
+        if (compressedBufferFile.open(QIODevice::WriteOnly))
+            compressedBufferFile.write(compressedBufferData);
+
+        QJsonObject compressedBufferObject;
+        compressedBufferObject["byteLength"] = compressedBufferData.size();
+        compressedBufferObject["uri"] = QUrl(gltfFileDir.filePath({ "compressedBuffer.bin" })).toLocalFile();
+        buffersArray.push_back(compressedBufferObject);
+        rootObject["buffers"] = buffersArray;
+
+        gltfFile.close();
+        if (gltfFile.open(QIODevice::WriteOnly)) {
+            gltfFile.write(QJsonDocument(rootObject).toJson());
+            gltfFile.close();
+        }
     }
 }
 

@@ -6,10 +6,15 @@
 #include <draco/mesh/mesh.h>
 #include <draco/attributes/geometry_attribute.h>
 #include <draco/attributes/geometry_indices.h>
+#include <draco/io/mesh_io.h>
 #include <QVector>
+#include <QFile>
+#include <QDataStream>
+#include <fstream>
+#include <iterator>
+#include <iostream>
 
-namespace
-{
+namespace {
 draco::GeometryAttribute::Type attributeTypeFromName(const QString &attributeName)
 {
     auto type = draco::GeometryAttribute::Type::INVALID;
@@ -19,54 +24,115 @@ draco::GeometryAttribute::Type attributeTypeFromName(const QString &attributeNam
     if (attributeName == Qt3DRender::QAttribute::defaultNormalAttributeName())
         type = draco::GeometryAttribute::Type::NORMAL;
     if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName())
-        type =  draco::GeometryAttribute::Type::TEX_COORD;
+        type = draco::GeometryAttribute::Type::TEX_COORD;
     if (attributeName == Qt3DRender::QAttribute::defaultColorAttributeName())
         type = draco::GeometryAttribute::Type::COLOR;
 
     return type;
 }
 
-draco::DataType dataTypeFromVertexBaseType(Qt3DRender::QAttribute::VertexBaseType vertexBaseType)
+template<typename T>
+struct attribute_type_trait {
+    static constexpr draco::DataType type = draco::DataType::DT_INVALID;
+};
+
+template<>
+struct attribute_type_trait<float> {
+    static constexpr draco::DataType type = draco::DataType::DT_FLOAT32;
+};
+
+template<>
+struct attribute_type_trait<char> {
+    static constexpr draco::DataType type = draco::DataType::DT_INT8;
+};
+
+template<>
+struct attribute_type_trait<unsigned char> {
+    static constexpr draco::DataType type = draco::DataType::DT_UINT8;
+};
+
+template<>
+struct attribute_type_trait<unsigned short> {
+    static constexpr draco::DataType type = draco::DataType::DT_UINT16;
+};
+
+template<>
+struct attribute_type_trait<short> {
+    static constexpr draco::DataType type = draco::DataType::DT_INT16;
+};
+
+template<>
+struct attribute_type_trait<int> {
+    static constexpr draco::DataType type = draco::DataType::DT_INT32;
+};
+
+template<>
+struct attribute_type_trait<unsigned int> {
+    static constexpr draco::DataType type = draco::DataType::DT_UINT32;
+};
+
+template<>
+struct attribute_type_trait<double> {
+    static constexpr draco::DataType type = draco::DataType::DT_FLOAT64;
+};
+
+template<typename T>
+QByteArray packedDataInBuffer(const QByteArray &inputBuffer,
+                              int vertexSize,
+                              int offset,
+                              int stride,
+                              int count)
 {
-    auto dataType = draco::DataType::DT_INVALID;
-    switch (vertexBaseType) {
-    case Qt3DRender::QAttribute::VertexBaseType::Byte:
-        dataType = draco::DataType::DT_INT8;
-        break;
-    case Qt3DRender::QAttribute::VertexBaseType::UnsignedByte:
-        dataType = draco::DataType::DT_UINT8;
-        break;
-    case Qt3DRender::QAttribute::VertexBaseType::Short:
-        dataType = draco::DataType::DT_INT16;
-        break;
-    case Qt3DRender::QAttribute::VertexBaseType::UnsignedShort:
-        dataType = draco::DataType::DT_UINT16;
-        break;
-    case Qt3DRender::QAttribute::VertexBaseType::Int:
-        dataType = draco::DataType::DT_INT32;
-        break;
-    case Qt3DRender::QAttribute::VertexBaseType::UnsignedInt:
-        dataType = draco::DataType::DT_UINT32;
-        break;
-    case Qt3DRender::QAttribute::VertexBaseType::Float:
-        dataType = draco::DataType::DT_FLOAT32;
-        break;
-    case Qt3DRender::QAttribute::VertexBaseType::Double:
-        dataType = draco::DataType::DT_FLOAT64;
-        break;
+    QByteArray outputBuffer;
+    outputBuffer.resize(count * vertexSize * sizeof(T));
+
+    int byteMarkerPosition = offset;
+    stride = (stride == 0) ? vertexSize * sizeof(T) : stride;
+
+    for (int i = 0; i < count; ++i) {
+        std::memcpy(&(outputBuffer.data()[i * vertexSize * sizeof(T)]), &(inputBuffer.data()[byteMarkerPosition]), vertexSize * sizeof(T));
+        byteMarkerPosition += stride;
     }
 
-    return dataType;
+    T *typedData = reinterpret_cast<T *>(outputBuffer.data());
+    for (int i = 0; i < vertexSize * count; ++i) {
+        qDebug() << typedData[i];
+    }
+
+    return outputBuffer;
 }
 
-draco::DataBuffer *createDracoBufferFromQBuffer(const Qt3DRender::QBuffer &qbuffer)
+template<typename T>
+void addAttributeToMesh(const Qt3DRender::QAttribute &attribute, draco::Mesh &mesh)
 {
-    auto dracoDataBuffer = new draco::DataBuffer;
-    dracoDataBuffer->Update(qbuffer.data().data(), qbuffer.data().size());
-    return dracoDataBuffer;
+    const auto dracoAttributeType = attributeTypeFromName(attribute.name());
+    const auto dracoDataType = attribute_type_trait<T>::type;
+
+    if (dracoAttributeType == draco::GeometryAttribute::Type::POSITION)
+        mesh.set_num_points(attribute.count());
+
+    const auto attributeBuffer = attribute.buffer();
+
+    const QByteArray packedData = packedDataInBuffer<T>(attributeBuffer->data(),
+                                                        attribute.vertexSize(),
+                                                        attribute.byteOffset(),
+                                                        attribute.byteStride(),
+                                                        attribute.count());
+
+    draco::PointAttribute meshAttribute;
+    meshAttribute.Init(attributeTypeFromName(attribute.name()),
+                       nullptr,
+                       attribute.vertexSize(),
+                       dracoDataType,
+                       false,
+                       attribute.vertexSize() * sizeof(T),
+                       0);
+    auto attId = mesh.AddAttribute(meshAttribute, true, attribute.count());
+    for (unsigned int i = 0; i < attribute.count(); ++i)
+        mesh.attribute(attId)->SetAttributeValue(draco::AttributeValueIndex(i), &packedData.data()[i * attribute.vertexSize() * sizeof(T)]);
 }
 
-template <typename T>
+template<typename T>
 QVector<T> createIndicesVectorFromAttribute(const Qt3DRender::QAttribute &attribute)
 {
     const auto byteStride = attribute.byteStride();
@@ -78,27 +144,27 @@ QVector<T> createIndicesVectorFromAttribute(const Qt3DRender::QAttribute &attrib
 
     if (byteStride == 0)
         for (int i = 0, nbIndices = indicesVector.size(); i < nbIndices; ++i)
-            indicesVector[i] = static_cast<T>(data.data()[i*sizeof(T)]);
+            indicesVector[i] = static_cast<T>(data.data()[i * sizeof(T)]);
     else
         for (int i = 0, nbIndices = indicesVector.size(); i < nbIndices; ++i)
-            indicesVector[i] = static_cast<T>(data.data()[i*byteStride]);
+            indicesVector[i] = static_cast<T>(data.data()[i * byteStride]);
 
     return indicesVector;
 }
 
-template <typename T>
+template<typename T>
 void addFacesToMesh(const QVector<T> &indices, draco::Mesh &dracoMesh)
 {
-    for (int i, nbIndices = indices.size()/3; i < nbIndices; ++i)
-        dracoMesh.AddFace({static_cast<draco::IndexType<unsigned int, draco::PointIndex_tag_type_>>(indices[3*i+0]),
-                           static_cast<draco::IndexType<unsigned int, draco::PointIndex_tag_type_>>(indices[3*i+1]),
-                           static_cast<draco::IndexType<unsigned int, draco::PointIndex_tag_type_>>(indices[3*i+2])});
+    for (int i = 0, nbIndices = indices.size() / 3; i < nbIndices; ++i)
+        dracoMesh.AddFace({ static_cast<draco::IndexType<unsigned int, draco::PointIndex_tag_type_>>(indices[3 * i + 0]),
+                            static_cast<draco::IndexType<unsigned int, draco::PointIndex_tag_type_>>(indices[3 * i + 1]),
+                            static_cast<draco::IndexType<unsigned int, draco::PointIndex_tag_type_>>(indices[3 * i + 2]) });
 }
-}
+} // namespace
 
 std::unique_ptr<draco::EncoderBuffer> compressMesh(const Qt3DRender::QGeometry &geometry)
 {
-    std::unique_ptr<draco::EncoderBuffer> compressBuffer = std::make_unique<draco::EncoderBuffer>();
+    std::unique_ptr<draco::EncoderBuffer> compressBuffer = std::unique_ptr<draco::EncoderBuffer>(new draco::EncoderBuffer);
     draco::Mesh dracoMesh;
 
     std::unordered_map<Qt3DRender::QBuffer *, draco::DataBuffer *> attributeBufferToDataBuffer;
@@ -106,37 +172,26 @@ std::unique_ptr<draco::EncoderBuffer> compressMesh(const Qt3DRender::QGeometry &
     const auto geometryAttributes = geometry.attributes();
     Qt3DRender::QAttribute *indicesAttribute = nullptr;
     for (const auto attribute : geometryAttributes) {
-
-        const auto dracoAttributeType = attributeTypeFromName(attribute->name());
-
-        if (attribute->attributeType() == Qt3DRender::QAttribute::IndexAttribute)
-            indicesAttribute = attribute;
-
-        const auto dracoDataType = dataTypeFromVertexBaseType(attribute->vertexBaseType());
-        if (dracoAttributeType == draco::GeometryAttribute::Type::INVALID ||
-                        dracoDataType == draco::DataType::DT_INVALID)
-            continue;
-
-        const auto attributeBuffer = attribute->buffer();
-        if (attributeBufferToDataBuffer.find(attributeBuffer) == std::end(attributeBufferToDataBuffer))
-            attributeBufferToDataBuffer[attributeBuffer] = createDracoBufferFromQBuffer(*attributeBuffer);
-
-        const auto dracoBuffer = attributeBufferToDataBuffer[attributeBuffer];
-
-        auto meshAttribute = std::make_unique<draco::GeometryAttribute>();
-        meshAttribute->Init(dracoAttributeType,
-                            dracoBuffer,
-                            attribute->vertexSize(),
-                            dracoDataType,
-                            false,
-                            attribute->byteStride(),
-                            attribute->byteOffset());
-        dracoMesh.AddAttribute(*meshAttribute.get(), true, attribute->count());
+        if (attribute->name() == Qt3DRender::QAttribute::defaultPositionAttributeName())
+            dracoMesh.set_num_points(attribute->count());
     }
 
-    if (indicesAttribute != nullptr)
-    {
-        dracoMesh.set_num_points(indicesAttribute->count()/3);
+    for (const auto attribute : geometryAttributes) {
+        if (attribute->attributeType() == Qt3DRender::QAttribute::IndexAttribute) {
+            indicesAttribute = attribute;
+            continue;
+        }
+
+        switch (attribute->vertexBaseType()) {
+        case Qt3DRender::QAttribute::VertexBaseType::Float:
+            addAttributeToMesh<float>(*attribute, dracoMesh);
+            break;
+        default:
+            break;
+        }
+    }
+
+    if (indicesAttribute != nullptr) {
         switch (indicesAttribute->vertexBaseType()) {
         case Qt3DRender::QAttribute::VertexBaseType::Byte:
             addFacesToMesh(createIndicesVectorFromAttribute<char>(*indicesAttribute), dracoMesh);
@@ -159,8 +214,36 @@ std::unique_ptr<draco::EncoderBuffer> compressMesh(const Qt3DRender::QGeometry &
         }
     }
 
-    draco::Encoder encoder;
-    encoder.EncodeMeshToBuffer(dracoMesh, compressBuffer.get());
+    auto bb = dracoMesh.ComputeBoundingBox();
+    qDebug() << bb.max_point()[0]
+             << bb.max_point()[1]
+             << bb.max_point()[2];
 
+    qDebug() << bb.min_point()[0]
+             << bb.min_point()[1]
+             << bb.min_point()[2];
+
+    draco::Encoder encoder;
+    encoder.SetAttributeQuantization(draco::GeometryAttribute::POSITION, 5);
+    encoder.SetAttributeQuantization(draco::GeometryAttribute::NORMAL, 5);
+    encoder.SetTrackEncodedProperties(true);
+    const auto status = encoder.EncodeMeshToBuffer(dracoMesh, compressBuffer.get());
+    if (!status.ok()) {
+        qDebug() << status.code();
+        qDebug() << status.error_msg();
+    }
+
+    qDebug() << "Mesh properties";
+    qDebug() << "Faces" << dracoMesh.num_faces();
+    qDebug() << "Attributes" << dracoMesh.num_attributes();
+    qDebug() << "Points" << dracoMesh.num_points();
+
+    qDebug() << "Encoded data";
+    qDebug() << "Encoded faces" << encoder.num_encoded_faces();
+    qDebug() << "Encoded points" << encoder.num_encoded_points();
+
+    std::ofstream stream;
+    stream.open("/home/kdab/data.drc");
+    draco::WriteMeshIntoStream(&dracoMesh, stream);
     return compressBuffer;
 }
