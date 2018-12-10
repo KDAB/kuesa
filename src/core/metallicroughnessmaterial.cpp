@@ -48,11 +48,18 @@ template<class OutputType>
 using ValueTypeMapper = typename std::remove_const<typename std::remove_reference<OutputType>::type>::type;
 
 template<class OutputType>
-auto wrapParameterSignal(MetallicRoughnessMaterial *self, SignalType<OutputType> sig)
+struct WrappedSignal
 {
-    return [self, sig](const QVariant &value) {
+    MetallicRoughnessMaterial *self;
+    SignalType<OutputType> sig;
+    void operator()(const QVariant &value) const {
         std::mem_fn(sig)(self, value.value<ValueTypeMapper<OutputType>>());
-    };
+    }
+};
+template<class OutputType>
+WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, SignalType<OutputType> sig)
+{
+    return WrappedSignal<OutputType>{self, sig};
 }
 
 /*!

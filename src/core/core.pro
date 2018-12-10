@@ -37,6 +37,7 @@ QT += qml 3dcore 3dcore-private 3drender 3dquickextras 3danimation
 include(core.pri)
 include(collections/collections.pri)
 include(gltf2importer/gltf2importer.pri)
+include(gltf2exporter/gltf2exporter.pri)
 include(framegraphes/framegraphes.pri)
 include(fx/fx.pri)
 

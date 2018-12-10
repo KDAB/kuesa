@@ -37,6 +37,7 @@
 #include "animationwidget.h"
 #include "camerawidget.h"
 #include "orbitcameracontroller.h"
+#include "exportdialog.h"
 
 #include <QQmlEngine>
 #include <QQmlContext>
@@ -51,8 +52,15 @@
 #include <QGuiApplication>
 #include <QClipboard>
 
+#include <QJsonDocument>
+#include <QJsonValue>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <GLTF2Importer>
+
 #include <Kuesa/SceneEntity>
-#include <private/kuesa_utils_p.h>
+#include <Kuesa/private/gltf2exporter_p.h>
+#include <Kuesa/private/kuesa_utils_p.h>
 
 namespace {
 const QLatin1String LASTPATHSETTING("mainwindow/lastPath");
@@ -83,6 +91,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_ui->actionViewAll, &QAction::triggered, this, &MainWindow::viewAll);
     connect(m_ui->collectionBrowser, &CollectionBrowser::viewCamera, this, QOverload<const QString &>::of(&MainWindow::setCamera));
     connect(m_ui->actionSettings, &QAction::triggered, this, &MainWindow::openSettings);
+    connect(m_ui->actionExport, &QAction::triggered, this, &MainWindow::exportFile);
+#if !defined(KUESA_DRACO_COMPRESSION)
+    m_ui->actionExport->setVisible(false);
+#endif
 
     m_assetInspector = new AssetInspector(this);
     m_assetInspectorWidget = new AssetInspectorWidget(m_assetInspector);
@@ -164,6 +176,10 @@ void MainWindow::updateScene(Kuesa::SceneEntity *entity)
         model->update(entity);
     m_ui->collectionBrowser->expandAll();
     m_ui->actionReload->setEnabled(true);
+#if defined(KUESA_DRACO_COMPRESSION)
+    m_ui->actionExport->setEnabled(true);
+#endif
+
     m_entity = entity;
 
     m_animationWidget->update(m_entity);
@@ -335,6 +351,21 @@ void MainWindow::openFile()
     settings.setValue(LASTPATHSETTING, fi.absolutePath());
 
     setFilePath(filePath);
+}
+
+void MainWindow::exportFile()
+{
+    auto importer = m_entity->findChild<Kuesa::GLTF2Importer *>();
+    if (!importer)
+        return;
+
+    Kuesa::GLTF2Exporter exporter;
+    exporter.setContextFromImporter(importer);
+    exporter.setScene(m_entity);
+
+    ExportDialog dial{ exporter, QUrl(m_filePathURL).toLocalFile(), this };
+
+    dial.exec();
 }
 
 void MainWindow::reloadFile()

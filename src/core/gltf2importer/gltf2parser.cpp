@@ -27,6 +27,7 @@
 */
 
 #include "gltf2parser_p.h"
+#include "gltf2keys_p.h"
 #include "kuesa_p.h"
 #include "kuesa_utils_p.h"
 #include "bufferparser_p.h"
@@ -71,30 +72,6 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 namespace {
-const QLatin1String KEY_BUFFERS = QLatin1Literal("buffers");
-const QLatin1String KEY_BUFFERVIEWS = QLatin1Literal("bufferViews");
-const QLatin1String KEY_ACCESSORS = QLatin1Literal("accessors");
-const QLatin1String KEY_NODES = QLatin1Literal("nodes");
-const QLatin1String KEY_MESHES = QLatin1Literal("meshes");
-const QLatin1String KEY_SCENE = QLatin1Literal("scene");
-const QLatin1String KEY_SCENES = QLatin1Literal("scenes");
-const QLatin1String KEY_KDAB_KUESA_LAYER_EXTENSION = QLatin1String("KDAB_Kuesa_Layers");
-const QLatin1String KEY_MSFT_DDS_EXTENSION = QLatin1String("MSFT_texture_dds");
-const QLatin1String KEY_KUESA_LAYERS = QLatin1Literal("layers");
-const QLatin1String KEY_CAMERAS = QLatin1Literal("cameras");
-const QLatin1String KEY_IMAGES = QLatin1Literal("images");
-const QLatin1String KEY_TEXTURE_SAMPLERS = QLatin1Literal("samplers");
-const QLatin1String KEY_TEXTURES = QLatin1String("textures");
-const QLatin1String KEY_EXTENSIONS = QLatin1String("extensions");
-const QLatin1String KEY_EXTENSIONS_USED = QLatin1String("extensionsUsed");
-const QLatin1String KEY_EXTENSIONS_REQUIRED = QLatin1String("extensionsRequired");
-const QLatin1String KEY_ANIMATIONS = QLatin1String("animations");
-const QLatin1String KEY_MATERIALS = QLatin1String("materials");
-const QLatin1String KEY_SKINS = QLatin1String("skins");
-#if defined(KUESA_DRACO_COMPRESSION)
-const QLatin1String KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION = QLatin1String("KHR_draco_mesh_compression");
-#endif
-
 template<class CollectionType>
 void addToCollectionWithUniqueName(CollectionType *collection, const QString &basename, typename CollectionType::ContentType *asset)
 {
@@ -313,6 +290,8 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
     }
 
     Q_ASSERT(m_context);
+    m_context->setJson(jsonDocument);
+
     m_animators.clear();
     m_treeNodes.clear();
     m_skeletons.clear();

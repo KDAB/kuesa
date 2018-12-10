@@ -37,6 +37,7 @@ QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 class SceneEntity;
+class GLTF2Exporter;
 namespace GLTF2Import {
 class GLTF2Context;
 }
@@ -82,6 +83,8 @@ private Q_SLOTS:
 private:
     void clear();
     void setStatus(Status status);
+
+    friend class GLTF2Exporter;
 
     Kuesa::GLTF2Import::GLTF2Context *m_context;
     QUrl m_source;
