@@ -24,14 +24,15 @@
      <x>0</x>
      <y>0</y>
      <width>1400</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>Fi&amp;le</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
     <addaction name="actionReload"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -44,7 +45,7 @@
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>&amp;View</string>
     </property>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -61,7 +62,7 @@
   </widget>
   <widget class="QDockWidget" name="collectionBrowserDockWidget">
    <property name="windowTitle">
-    <string>Collection Browser</string>
+    <string>&amp;Collection Browser</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -101,13 +102,15 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionOpen"/>
+   <addaction name="actionSave"/>
    <addaction name="actionReload"/>
    <addaction name="separator"/>
    <addaction name="actionViewAll"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QDockWidget" name="assetInspectorDockWidget">
    <property name="windowTitle">
-    <string>Asset Inspector</string>
+    <string>Asset &amp;Inspector</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -131,7 +134,7 @@
   </widget>
   <widget class="QDockWidget" name="animationDockWidget">
    <property name="windowTitle">
-    <string>Animations</string>
+    <string>A&amp;nimations</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -140,7 +143,7 @@
   </widget>
   <widget class="QDockWidget" name="cameraDockWidget">
    <property name="windowTitle">
-    <string>Camera Settings</string>
+    <string>Ca&amp;mera Settings</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -159,7 +162,7 @@
   </action>
   <action name="actionQuit">
    <property name="text">
-    <string>Quit</string>
+    <string>&amp;Quit</string>
    </property>
   </action>
   <action name="actionReload">
@@ -167,7 +170,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Reload</string>
+    <string>&amp;Reload</string>
    </property>
   </action>
   <action name="actionViewAll">
@@ -183,7 +186,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Copy</string>
+    <string>&amp;Copy</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+C</string>
@@ -191,10 +194,15 @@
   </action>
   <action name="actionSettings">
    <property name="text">
-    <string>Settings</string>
+    <string>&amp;Settings</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+,</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>&amp;Save...</string>
    </property>
   </action>
  </widget>

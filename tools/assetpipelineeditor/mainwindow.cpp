@@ -37,6 +37,7 @@
 #include "animationwidget.h"
 #include "camerawidget.h"
 #include "orbitcameracontroller.h"
+#include "dracocompressor.h"
 
 #include <QQmlEngine>
 #include <QQmlContext>
@@ -83,6 +84,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_ui->actionViewAll, &QAction::triggered, this, &MainWindow::viewAll);
     connect(m_ui->collectionBrowser, &CollectionBrowser::viewCamera, this, QOverload<const QString &>::of(&MainWindow::setCamera));
     connect(m_ui->actionSettings, &QAction::triggered, this, &MainWindow::openSettings);
+    connect(m_ui->actionSave, &QAction::triggered, this, &MainWindow::compressFile);
 
     m_assetInspector = new AssetInspector(this);
     m_assetInspectorWidget = new AssetInspectorWidget(m_assetInspector);
@@ -335,6 +337,14 @@ void MainWindow::openFile()
     settings.setValue(LASTPATHSETTING, fi.absolutePath());
 
     setFilePath(filePath);
+}
+
+void MainWindow::compressFile()
+{
+    for (const auto &meshName : m_entity->meshes()->names()) {
+        compressMesh(*m_entity->mesh(meshName)->geometry());
+
+    }
 }
 
 void MainWindow::reloadFile()
