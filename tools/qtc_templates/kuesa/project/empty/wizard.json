@@ -6,7 +6,7 @@
     "trDescription": "Creates a Kuesa/QML based application.",
     "trDisplayName": "Kuesa Application",
     "trDisplayCategory": "Application",
-    "featuresRequired": [ "QtSupport.Wizards.FeatureQt" ],
+    "featuresRequired": [ "QtSupport.Wizards.FeatureQt.5.12" ],
     "enabled": "%{JS: [ %{Plugins} ].indexOf('QmakeProjectManager') >= 0}",
 
     "options":
@@ -43,19 +43,19 @@
                     "type": "ComboBox",
                     "data":
                     {
-                        "index": 1,
+                        "index": 0,
                         "items":
                         [
                             {
                                 "trKey": "Qt 5.12",
                                 "value":
-                                "{
+                                "({
                                     'QtQuickVersion': '2.11',
-                                    'Qt3DVersion': '2.11',
-                                    'Qt3DCoreVersion': '2.10',
-                                    'Qt3DAnimationVersion': '2.10',
-                                    'Qt3DInputVersion': '2.1'
-                                }"
+                                    'Qt3DVersion': '2.12',
+                                    'Qt3DCoreVersion': '2.12',
+                                    'Qt3DAnimationVersion': '2.12',
+                                    'Qt3DInputVersion': '2.12'
+                                })"
                             }
                         ]
                     }
