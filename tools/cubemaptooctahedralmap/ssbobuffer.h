@@ -9,6 +9,7 @@ class SSBOBuffer : public Qt3DRender::QBuffer
     Q_OBJECT
     Q_PROPERTY(bool isInteractive READ isInteractive WRITE setIsInteractive NOTIFY isInteractiveChanged)
     Q_PROPERTY(bool isComplete READ isComplete NOTIFY isCompleteChanged)
+    Q_PROPERTY(bool isInitialized READ isInitialized NOTIFY isInitializedChanged)
     Q_PROPERTY(QSize textureSize READ textureSize WRITE setTextureSize NOTIFY textureSizeChanged)
     Q_PROPERTY(QString outputFileName READ outputFileName WRITE setOutputFileName NOTIFY outputFileNameChanged)
 public:
@@ -20,12 +21,14 @@ public:
 
     bool isInteractive() const { return m_isInteractive; }
     bool isComplete() const { return m_isComplete; }
+    bool isInitialized() const { return m_wasInitialized; }
     QSize textureSize() const { return m_textureSize; }
     QString outputFileName() const { return m_outputFileName; }
 
 signals:
     void textureSizeChanged();
     void isInteractiveChanged();
+    void isInitializedChanged();
     void isCompleteChanged();
     void outputFileNameChanged();
 

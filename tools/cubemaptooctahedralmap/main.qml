@@ -96,14 +96,24 @@ Entity {
         onStatusChanged: console.log("Status "  + status)
     }
 
-    readonly property bool shouldRunComputeShader: cubeMapTexture.status === Texture.Ready && !copyOutputToSSBO.isComplete
-    readonly property int textureWidth: 2048
+    readonly property bool shouldRunComputeShader: cubeMapTexture.status === Texture.Ready &&
+                                                   textureWidthHasBeenSet &&
+                                                   textureHeightHasBeenSet &&
+                                                   copyOutputToSSBO.isInitialized &&
+                                                   !copyOutputToSSBO.isComplete
+    readonly property int textureWidth: cubeMapTexture.width
+    readonly property int textureHeight: cubeMapTexture.height
+    property bool textureWidthHasBeenSet: false
+    property bool textureHeightHasBeenSet: false
+
+    onTextureWidthChanged: textureWidthHasBeenSet = true
+    onTextureHeightChanged: textureHeightHasBeenSet = true
 
     Texture2D {
         id: octahedralTexture
         // To account for mipmaps
-        width: cubeMapTexture.width * 1.5
-        height: cubeMapTexture.height
+        width: textureWidth * 1.5
+        height: textureHeight
 
         // Use format capable of holding HDR information
         format: Texture.RGBA32F
