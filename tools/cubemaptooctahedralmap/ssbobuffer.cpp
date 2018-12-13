@@ -76,7 +76,7 @@ void SSBOBuffer::saveImage()
     //    outputTexture.clear(glm::f32vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
     // Convert to 16 Bits
-    gli::texture2d convertedTexture = gli::convert(outputTexture, gli::FORMAT_RGBA16_SNORM_PACK16);
+    gli::texture2d convertedTexture = gli::convert(outputTexture, gli::FORMAT_RGBA16_SFLOAT_PACK16);
 
     // Save to dds
     if (!gli::save(convertedTexture, m_outputFileName.toLatin1()))
