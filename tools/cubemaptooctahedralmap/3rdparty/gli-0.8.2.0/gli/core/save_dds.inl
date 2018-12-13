@@ -53,8 +53,6 @@ namespace detail
 
                 bool const RequireDX10Header = DXFormat.D3DFormat == dx::D3DFMT_GLI1 || DXFormat.D3DFormat == dx::D3DFMT_DX10 || is_target_array(Texture.target()) || is_target_1d(Texture.target());
 
-                qDebug() << "RequireDX10 " << RequireDX10Header << "DXFormat " << DXFormat.D3DFormat << DXFormat.DDPixelFormat;
-
 		Memory.resize(Texture.size() + sizeof(detail::FOURCC_DDS) + sizeof(detail::dds_header) + (RequireDX10Header ? sizeof(detail::dds_header10) : 0));
 
 		memcpy(&Memory[0], detail::FOURCC_DDS, sizeof(detail::FOURCC_DDS));
