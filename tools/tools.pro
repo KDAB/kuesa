@@ -28,7 +28,8 @@ TEMPLATE = subdirs
 
 !cross_compile: {
     SUBDIRS += \
-        assetpipelineeditor
+        assetpipelineeditor \
+        ddspreviewer
 
     !macos {
         SUBDIRS += \
