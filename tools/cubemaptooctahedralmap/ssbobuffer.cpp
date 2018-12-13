@@ -5,6 +5,7 @@
 #include <cstring>
 #include <gli.hpp>
 #include <convert.hpp>
+#include <QTimer>
 
 SSBOBuffer::SSBOBuffer(Qt3DCore::QNode *parent)
     : Qt3DRender::QBuffer(parent)
@@ -27,11 +28,15 @@ void SSBOBuffer::setTextureSize(QSize size)
     m_textureSize = size;
     emit textureSizeChanged();
 
+    if (m_textureSize.width() <= 1 || m_textureSize.height() <= 1)
+        return;
+
     QByteArray cleanData;
     cleanData.resize(size.width() * size.height() * 4 * sizeof(float));
     std::memset(cleanData.data(), 0, cleanData.size());
     setData(cleanData);
     m_wasInitialized = true;
+    emit isInitializedChanged();
 }
 
 void SSBOBuffer::setIsInteractive(bool interactive)
@@ -73,7 +78,6 @@ void SSBOBuffer::saveImage()
     const QByteArray newData = data();
     const float *rawFloats = reinterpret_cast<const float *>(newData.constData());
     std::memcpy(outputTexture.data(), rawFloats, newData.size());
-    //    outputTexture.clear(glm::f32vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
     // Convert to 16 Bits
     gli::texture2d convertedTexture = gli::convert(outputTexture, gli::FORMAT_RGBA16_SFLOAT_PACK16);
@@ -83,5 +87,5 @@ void SSBOBuffer::saveImage()
         qWarning() << "Failed to write output texture";
 
     if (!m_isInteractive)
-        qApp->exit();
+        QTimer::singleShot(1000, qApp, &QCoreApplication ::quit);
 }

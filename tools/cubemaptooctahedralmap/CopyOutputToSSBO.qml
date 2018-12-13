@@ -5,6 +5,7 @@ import Tools 1.0
 Entity {
     id: root
     property Texture2D fboTexture
+    readonly property bool isInitialized: ssboBuffer.isInitialized
 
     SSBOBuffer {
         id: ssboBuffer
