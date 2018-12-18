@@ -52,6 +52,8 @@ uniform int lightCount;
 struct EnvironmentLight {
     FP sampler2D irradiance; // For diffuse contribution
     FP sampler2D specular; // For specular contribution
+    FP vec3 irradianceSize;
+    FP vec3 specularSize;
 };
 uniform EnvironmentLight envLight;
 uniform int envLightCount;
