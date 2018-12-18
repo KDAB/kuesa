@@ -42,11 +42,17 @@ vec3 gammaCorrect(const in vec3 color)
     return pow(color, vec3(1.0 / gamma));
 }
 
+vec3 toneMap(const in vec3 c)
+{
+    return c / (c + vec3(1.0));
+}
+
 void main()
 {
     vec4 baseColor = texture(skyboxTexture, texCoord0);
-    vec4 gammaColor = vec4(gammaCorrect(baseColor.rgb), 1.0);
+    vec4 cToneMapped = vec4(toneMap(baseColor.rgb), 1.0);
+    vec4 gammaColor = vec4(gammaCorrect(cToneMapped.rgb), 1.0);
     // This is an odd way to enable or not gamma correction,
     // but this is a way to avoid branching until we can generate shaders
-    fragColor = mix(baseColor, gammaColor, gammaStrength);
+    fragColor = mix(cToneMapped, gammaColor, gammaStrength);
 }
