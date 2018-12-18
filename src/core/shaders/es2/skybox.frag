@@ -26,11 +26,33 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+precision highp float;
+
 varying highp vec3 texCoord0;
 uniform samplerCube skyboxTexture;
 
+// Gamma correction
+uniform float gamma;
+
+uniform float gammaStrength;
+
+vec3 gammaCorrect(const in vec3 color)
+{
+    return pow(color, vec3(1.0 / gamma));
+}
+
+vec3 toneMap(const in vec3 c)
+{
+    return c / (c + vec3(1.0));
+}
+
 void main()
 {
-    gl_FragColor = textureCube(skyboxTexture, texCoord0);
+    vec4 baseColor = textureCube(skyboxTexture, texCoord0);
+    vec4 cToneMapped = vec4(toneMap(baseColor.rgb), 1.0);
+    vec4 gammaColor = vec4(gammaCorrect(cToneMapped.rgb), 1.0);
+    // This is an odd way to enable or not gamma correction,
+    // but this is a way to avoid branching until we can generate shaders
+    gl_FragColor = mix(cToneMapped, gammaColor, gammaStrength);
 }
 
