@@ -37,11 +37,10 @@ const FP float gamma = 2.2;
 
 #pragma include light.inc.frag
 
-int mipLevelCount(const in FP sampler2D cube)
+int mipLevelCount(const in FP sampler2D cube, const in FP vec3 size)
 {
-    //   int baseSize = textureSize(cube, 0).x * 2.0 / 3.0;
-    // Hardcoded for now has ES 2 has no textureSize function
-    int baseSize = 2048;
+    // Width is 3/2 * size.y, so we need to use size.y to deduce number of mips
+    int baseSize = int(size.y);
     int nMips = int(log2(float(baseSize > 0 ? baseSize : 1))) + 1;
     return nMips;
 }
@@ -104,7 +103,7 @@ FP float alphaToMipLevel(FP float alpha)
     // TODO: Optimize by doing this on CPU and set as
     // uniform int envLight.specularMipLevels say (if present in shader).
     // Lookup the number of mips in the specular envmap
-    int mipLevels = mipLevelCount(envLight.specular);
+    int mipLevels = mipLevelCount(envLight.specular, envLight.specularSize);
 
     // Offset of smallest miplevel we should use (corresponds to specular
     // power of 1). I.e. in the 32x32 sized mip.
