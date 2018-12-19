@@ -1,0 +1,143 @@
+{
+    "version": 1,
+    "supportedProjectTypes": [ "Qt4ProjectManager.Qt4Project" ],
+    "id": "V.KuesaScene3DApplication.Default",
+    "category": "F.Application",
+    "trDescription": "Creates a QtQuick Scene3D based Kuesa/QML application.",
+    "trDisplayName": "Kuesa Scene3D Application",
+    "trDisplayCategory": "Application",
+    "featuresRequired": [ "QtSupport.Wizards.FeatureQt" ],
+    "enabled": "%{JS: [ %{Plugins} ].indexOf('QmakeProjectManager') >= 0}",
+
+    "options":
+    [
+        { "key": "KuesaVersion", "value": "1.0" },
+        { "key": "Scene3DVersion", "value": "2.0" },
+        { "key": "QtQuickVersion", "value": "%{JS: %{QtVersion}.QtQuickVersion}" },
+        { "key": "Qt3DVersion", "value": "%{JS: %{QtVersion}.Qt3DVersion}" },
+        { "key": "Qt3DCoreVersion", "value": "%{JS: %{QtVersion}.Qt3DCoreVersion}" },
+        { "key": "Qt3DAnimationVersion", "value": "%{JS: %{QtVersion}.Qt3DAnimationVersion}" },
+        { "key": "Qt3DInputVersion", "value": "%{JS: %{QtVersion}.Qt3DInputVersion}" },
+        { "key": "QtQuickFeature", "value": "QtSupport.Wizards.FeatureQtQuick.%{QtQuickVersion}" },
+        { "key": "ProjectFile", "value": "%{ProFile}" },
+        { "key": "ProFile", "value": "%{JS: Util.fileName('%{ProjectDirectory}/%{ProjectName}', 'pro')}" },
+        { "key": "CppFileName", "value": "%{JS: 'main.' + Util.preferredSuffix('text/x-c++src')}" }
+    ],
+
+    "pages":
+    [
+        {
+            "trDisplayName": "Project Location",
+            "trShortTitle": "Location",
+            "typeId": "Project",
+            "data": { "trDescription": "This wizard creates a simple Qt Scene3D based Kuesa/QML application." }
+        },
+        {
+            "trDisplayName": "Define Project Details",
+            "trShortTitle": "Details",
+            "typeId": "Fields",
+            "data":
+            [
+                {
+                    "name": "QtVersion",
+                    "trDisplayName": "Minimal required Qt version:",
+                    "type": "ComboBox",
+                    "data":
+                    {
+                        "index": 1,
+                        "items":
+                        [
+                            {
+                                "trKey": "Qt 5.12",
+                                "value":
+                                "{
+                                    'QtQuickVersion': '2.11',
+                                    'Qt3DVersion': '2.11',
+                                    'Qt3DCoreVersion': '2.10',
+                                    'Qt3DAnimationVersion': '2.10',
+                                    'Qt3DInputVersion': '2.1'
+                                }"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Sp1",
+                    "type": "Spacer",
+                    "data":
+                    {
+                        "factor": 2
+                    }
+                },
+                {
+                    "name": "IncludeGLTF2File",
+                    "trDisplayName": "Open GLTF2 File",
+                    "type": "CheckBox",
+                    "data":
+                    {
+                        "checkedValue": "UseGLTF2File",
+                        "uncheckedValue": ""
+                    }
+                },
+                {
+                    "name": "GLTF2FilePath",
+                    "type": "PathChooser",
+                    "trDisplayName": "GLTF2 File Path:",
+                    "enabled": "%{JS: '%{IncludeGLTF2File}' === 'UseGLTF2File'}",
+                    "mandatory": false,
+                    "data":
+                    {
+                        "kind": "file",
+                        "basePath": "%{GLTF2FilePath}",
+                        "path": "%{GLTF2FilePath}"
+                    }
+                }
+            ]
+        },
+        {
+            "trDisplayName": "Kit Selection",
+            "trShortTitle": "Kits",
+            "typeId": "Kits",
+            "enabled": "%{JS: ! %{IsSubproject}}",
+            "data": {
+                "projectFilePath": "%{ProjectFile}",
+                "requiredFeatures": [ "QtSupport.Wizards.FeatureQt", "%{QtQuickFeature}" ]
+            }
+        },
+        {
+            "trDisplayName": "Project Management",
+            "trShortTitle": "Summary",
+            "typeId": "Summary"
+        }
+    ],
+    "generators":
+    [
+        {
+            "typeId": "File",
+            "data":
+            [
+                {
+                    "source": "app.pro",
+                    "target": "%{ProFile}",
+                    "openAsProject": true
+                },
+                {
+                    "source": "main.cpp",
+                    "target": "%{CppFileName}",
+                    "openInEditor": true
+                },
+                {
+                    "source": "main.qml",
+                    "target": "main.qml",
+                    "openInEditor": true
+                },
+                {
+                    "source": "qml.qrc"
+                },
+                {
+                    "source": "SceneEntity.qml"
+                }
+            ]
+        }
+    ]
+}
