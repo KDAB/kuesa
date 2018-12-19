@@ -3,8 +3,8 @@ CONFIG += resources_big
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-SOURCES += \\
-        %{CppFileName}
+SOURCES += \
+    %{CppFileName}
 
 RESOURCES += qml.qrc
 
