@@ -12,7 +12,7 @@ Kuesa.SceneEntity {
         RenderSettings {
             activeFrameGraph: Kuesa.ForwardRenderer {
                 id: frameGraph
-                camera: root.cameras.names.length ? root.cameras.find(root.cameras.names[0]) : mainCamera
+                camera: cameraAsset.node ? cameraAsset.node : fallbackCamera
                 clearColor: "white"
             }
         },
@@ -25,7 +25,7 @@ Kuesa.SceneEntity {
     ]
 
     Camera {
-        id: mainCamera
+        id: fallbackCamera
         position: Qt.vector3d(0.0, 0.0, 7.0)
         upVector: Qt.vector3d(0.0, 1.0, 0.0)
         viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
@@ -36,6 +36,12 @@ Kuesa.SceneEntity {
         camera: frameGraph.camera
         linearSpeed: 5
         lookSpeed: 180
+    }
+
+    Kuesa.Asset {
+        id: cameraAsset
+        name: root.cameras.names.length ? root.cameras.names[0] : ""
+        collection: root.cameras
     }
 
 @if "%{GLTF2FilePath}" !== ""
