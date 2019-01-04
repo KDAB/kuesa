@@ -74,7 +74,7 @@ BufferViewsParser::BufferViewsParser()
  * If the buffer view references a buffer that does not exists in the context,
  * will return false.
  */
-bool BufferViewsParser::parse(const QJsonArray &bufferViewsArray, GLTF2Context *context)
+bool BufferViewsParser::parse(const QJsonArray &bufferViewsArray, GLTF2ContextPrivate *context)
 {
     const int bufferViewSize = bufferViewsArray.size();
 

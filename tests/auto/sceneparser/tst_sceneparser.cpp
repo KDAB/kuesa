@@ -79,7 +79,7 @@ private Q_SLOTS:
         QFETCH(int, sceneCount);
 
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         NodeParser nodeParser;
 
         QFile file(filePath);

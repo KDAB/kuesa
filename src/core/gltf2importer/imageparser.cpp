@@ -45,7 +45,7 @@ ImageParser::ImageParser(const QDir &basePath)
 {
 }
 
-bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) const
+bool ImageParser::parse(const QJsonArray &imageArray, GLTF2ContextPrivate *context) const
 {
     const int nbImages = imageArray.size();
     for (const auto &imageValue : imageArray) {

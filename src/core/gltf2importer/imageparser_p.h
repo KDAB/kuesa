@@ -51,7 +51,7 @@ namespace Kuesa {
 
 namespace GLTF2Import {
 
-class GLTF2Context;
+class GLTF2ContextPrivate;
 
 struct Image {
     QUrl url;
@@ -63,7 +63,7 @@ class Q_AUTOTEST_EXPORT ImageParser
 public:
     ImageParser(const QDir &basePath);
 
-    bool parse(const QJsonArray &imageArray, GLTF2Context *context) const;
+    bool parse(const QJsonArray &imageArray, GLTF2ContextPrivate *context) const;
 
 private:
     QDir m_basePath;

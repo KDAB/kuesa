@@ -83,7 +83,8 @@ public:
     Qt3DCore::QEntity *parse(const QString &filePath);
     Qt3DCore::QEntity *parse(const QByteArray &jsonData, const QString &basePath);
 
-    const GLTF2Context *context();
+    void setContext(GLTF2ContextPrivate *);
+    const GLTF2ContextPrivate *context() const;
 
 private:
     void buildEntitiesAndJointsGraph();
@@ -99,16 +100,16 @@ private:
     void addAssetsIntoCollection(std::function<void(const Asset &, int)> namedAdd,
                                  std::function<void(const Asset &, int)> unnamedAdd)
     {
-        const int m = m_context.count<Asset>();
+        const int m = m_context->count<Asset>();
         for (int i = 0; i < m; ++i) {
-            const Asset &asset = m_context.assetAt<Asset>(i);
+            const Asset &asset = m_context->assetAt<Asset>(i);
             if (!asset.name.isEmpty())
                 namedAdd(asset, i);
         }
         if (!m_assignNames)
             return;
         for (int i = 0; i < m; ++i) {
-            const Asset &asset = m_context.assetAt<Asset>(i);
+            const Asset &asset = m_context->assetAt<Asset>(i);
             if (asset.name.isEmpty())
                 unnamedAdd(asset, i);
         }
@@ -122,7 +123,7 @@ private:
     Qt3DCore::QEntity *scene(const int id);
 
     QString m_basePath;
-    GLTF2Context m_context;
+    GLTF2ContextPrivate* m_context;
     QVector<TreeNode> m_treeNodes;
     QVector<Qt3DCore::QSkeleton *> m_skeletons;
     QVector<AnimationDetails> m_animators;

@@ -48,7 +48,7 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2Context;
+class GLTF2ContextPrivate;
 
 struct TextureSampler {
     std::shared_ptr<Qt3DRender::QTextureWrapMode> textureWrapMode;
@@ -61,7 +61,7 @@ class Q_AUTOTEST_EXPORT TextureSamplerParser
 public:
     TextureSamplerParser() = default;
 
-    bool parse(const QJsonArray &imageSamplers, GLTF2Context *context);
+    bool parse(const QJsonArray &imageSamplers, GLTF2ContextPrivate *context);
 };
 
 } // namespace GLTF2Import

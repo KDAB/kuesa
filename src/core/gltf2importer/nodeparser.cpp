@@ -193,7 +193,7 @@ NodeParser::NodeParser()
 {
 }
 
-bool NodeParser::parse(const QJsonArray &nodes, GLTF2Context *context) const
+bool NodeParser::parse(const QJsonArray &nodes, GLTF2ContextPrivate *context) const
 {
     const int nbNodes = nodes.size();
     for (int nodeId = 0; nodeId < nbNodes; ++nodeId) {

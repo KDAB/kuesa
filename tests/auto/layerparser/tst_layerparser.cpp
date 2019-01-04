@@ -69,7 +69,7 @@ private Q_SLOTS:
         QFETCH(int, layersCount);
 
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         LayerParser parser;
         QFile file(filePath);
         file.open(QIODevice::ReadOnly);

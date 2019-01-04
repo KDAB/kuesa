@@ -37,6 +37,7 @@ QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 class SceneEntity;
+class GLTF2Context;
 
 class KUESASHARED_EXPORT GLTF2Importer : public Qt3DCore::QNode
 {
@@ -80,6 +81,7 @@ private:
     void clear();
     void setStatus(Status status);
 
+    Kuesa::GLTF2Context* m_context;
     QUrl m_source;
     Qt3DCore::QEntity *m_root;
     Status m_status;
