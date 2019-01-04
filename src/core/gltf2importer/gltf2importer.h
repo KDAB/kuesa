@@ -81,7 +81,7 @@ private:
     void clear();
     void setStatus(Status status);
 
-    Kuesa::GLTF2Context* m_context;
+    Kuesa::GLTF2Context *m_context;
     QUrl m_source;
     Qt3DCore::QEntity *m_root;
     Status m_status;

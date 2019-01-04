@@ -45,9 +45,9 @@ public:
 
 private:
     friend class GLTF2Import::GLTF2ContextPrivate;
-    GLTF2Import::GLTF2ContextPrivate* m_impl;
+    GLTF2Import::GLTF2ContextPrivate *m_impl;
 };
-}
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 #endif // KUESA_GLTF2CONTEXT_H

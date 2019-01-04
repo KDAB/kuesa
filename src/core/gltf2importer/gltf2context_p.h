@@ -69,7 +69,7 @@ public:
     GLTF2ContextPrivate();
     ~GLTF2ContextPrivate();
 
-    static GLTF2ContextPrivate* get(GLTF2Context*);
+    static GLTF2ContextPrivate *get(GLTF2Context *);
 
     template<typename Asset>
     int count() const

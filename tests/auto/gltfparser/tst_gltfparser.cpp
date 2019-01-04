@@ -638,10 +638,10 @@ private Q_SLOTS:
         QTest::addColumn<QStringList>("expectedLayersName");
         QTest::addColumn<QStringList>("expectedAssignedLayers");
 
-        QTest::newRow("No layers") << ASSETS "no_layers.gltf" << QStringList{} << QStringList{};
-        QTest::newRow("Several layers") << ASSETS "several_layers.gltf" << QStringList{ "vl1", "vl2", "vl3" } << QStringList{};
-        QTest::newRow("One layer assigned") << ASSETS "one_layer_assigned.gltf" << QStringList{ "vl1", "vl2", "vl3" } << QStringList{ "vl1" };
-        QTest::newRow("Several layers assigned") << ASSETS "several_layers_assigned.gltf" << QStringList{ "vl1", "vl2", "vl3" } << QStringList{ "vl1", "vl3" };
+        QTest::newRow("No layers") << ASSETS "no_layers.gltf" << QStringList {} << QStringList {};
+        QTest::newRow("Several layers") << ASSETS "several_layers.gltf" << QStringList { "vl1", "vl2", "vl3" } << QStringList {};
+        QTest::newRow("One layer assigned") << ASSETS "one_layer_assigned.gltf" << QStringList { "vl1", "vl2", "vl3" } << QStringList { "vl1" };
+        QTest::newRow("Several layers assigned") << ASSETS "several_layers_assigned.gltf" << QStringList { "vl1", "vl2", "vl3" } << QStringList { "vl1", "vl3" };
     }
 
     void checkLayers()
