@@ -42,10 +42,10 @@ GLTF2ContextPrivate::~GLTF2ContextPrivate()
 {
 }
 
-GLTF2ContextPrivate *GLTF2ContextPrivate::get(GLTF2Context* ctx)
+GLTF2ContextPrivate *GLTF2ContextPrivate::get(GLTF2Context *ctx)
 {
-  Q_ASSERT_X(ctx, "GLTF2ContextPrivate::get", "Requires a valid GLTF2Context");
-  return ctx->m_impl;
+    Q_ASSERT_X(ctx, "GLTF2ContextPrivate::get", "Requires a valid GLTF2Context");
+    return ctx->m_impl;
 }
 
 int GLTF2ContextPrivate::bufferCount() const

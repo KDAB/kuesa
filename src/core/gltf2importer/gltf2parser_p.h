@@ -123,7 +123,7 @@ private:
     Qt3DCore::QEntity *scene(const int id);
 
     QString m_basePath;
-    GLTF2ContextPrivate* m_context;
+    GLTF2ContextPrivate *m_context;
     QVector<TreeNode> m_treeNodes;
     QVector<Qt3DCore::QSkeleton *> m_skeletons;
     QVector<AnimationDetails> m_animators;

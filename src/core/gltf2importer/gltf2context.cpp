@@ -30,14 +30,12 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Kuesa
-{
+namespace Kuesa {
 
 GLTF2Context::GLTF2Context(QObject *parent)
     : QObject(parent)
-    , m_impl{new GLTF2Import::GLTF2ContextPrivate}
+    , m_impl { new GLTF2Import::GLTF2ContextPrivate }
 {
-
 }
 
 GLTF2Context::~GLTF2Context()
@@ -45,6 +43,6 @@ GLTF2Context::~GLTF2Context()
     delete m_impl;
 }
 
-}
+} // namespace Kuesa
 
 QT_END_NAMESPACE
