@@ -81,7 +81,7 @@ private Q_SLOTS:
         QFETCH(int, bufferCount);
 
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         BufferParser parser(QDir(ASSETS));
         QFile file(filePath);
         file.open(QIODevice::ReadOnly);

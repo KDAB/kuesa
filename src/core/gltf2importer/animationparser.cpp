@@ -86,7 +86,7 @@ int accessorDataTypeToBytes(Qt3DRender::QAttribute::VertexBaseType type)
     }
 }
 
-QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
+QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2ContextPrivate *ctx)
 {
     const BufferView &bufferViewData = ctx->bufferView(accessor.bufferViewIndex);
 
@@ -478,7 +478,7 @@ AnimationParser::mappingFromJson(const QJsonObject &channelObject) const
     return std::make_tuple(true, mapping);
 }
 
-bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *context)
+bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2ContextPrivate *context)
 {
     m_context = context;
 

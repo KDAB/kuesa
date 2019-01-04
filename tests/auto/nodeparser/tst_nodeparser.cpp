@@ -48,7 +48,7 @@ private Q_SLOTS:
     void checkNodeTree()
     {
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         NodeParser parser;
         QFile file(QStringLiteral(ASSETS "nodes_tree.gltf"));
         file.open(QIODevice::ReadOnly);
@@ -84,7 +84,7 @@ private Q_SLOTS:
     void checkNodeTransformWithSTR()
     {
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         NodeParser parser;
         QFile file(QStringLiteral(ASSETS "nodes_str.gltf"));
         file.open(QIODevice::ReadOnly);
@@ -111,7 +111,7 @@ private Q_SLOTS:
     void checkNodeTransformWithMatrix()
     {
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         NodeParser parser;
         QFile file(QStringLiteral(ASSETS "nodes_matrix.gltf"));
         file.open(QIODevice::ReadOnly);
@@ -146,7 +146,7 @@ private Q_SLOTS:
     void checkEmptyNodesArray()
     {
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         NodeParser parser;
         QFile file(QStringLiteral(ASSETS "nodes_empty.gltf"));
         file.open(QIODevice::ReadOnly);
@@ -165,7 +165,7 @@ private Q_SLOTS:
     void checkNodesSTRWithWrongSize()
     {
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         NodeParser parser;
         QFile file(QStringLiteral(ASSETS "nodes_str_wrong_size.gltf"));
         file.open(QIODevice::ReadOnly);
@@ -184,7 +184,7 @@ private Q_SLOTS:
     void checkCameraCorrectionRename()
     {
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         NodeParser parser;
         QFile file(QStringLiteral(ASSETS "camera_correction.gltf"));
         file.open(QIODevice::ReadOnly);

@@ -118,7 +118,7 @@ private Q_SLOTS:
         QFETCH(int, animationCount);
 
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         BufferParser bufferParser(QDir(ASSETS));
         BufferViewsParser bufferViewParser;
         BufferAccessorParser accessorParser;
@@ -182,7 +182,7 @@ private Q_SLOTS:
         QFETCH(int, componentCount);
 
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         BufferParser bufferParser(QDir(ASSETS));
         BufferViewsParser bufferViewParser;
         BufferAccessorParser accessorParser;

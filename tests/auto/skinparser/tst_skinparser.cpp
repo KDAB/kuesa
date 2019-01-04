@@ -136,7 +136,7 @@ private Q_SLOTS:
         QFETCH(QVector<Skin>, skins);
 
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         BufferParser bufferParser(QDir(ASSETS));
         BufferViewsParser bufferViewParser;
         BufferAccessorParser accessorParser;

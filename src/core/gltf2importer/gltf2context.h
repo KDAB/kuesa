@@ -1,5 +1,5 @@
 /*
-    layerparser_p.h
+    gltf2importer.h
 
     This file is part of Kuesa.
 
@@ -25,48 +25,29 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#ifndef KUESA_GLTF2CONTEXT_H
+#define KUESA_GLTF2CONTEXT_H
 
-#ifndef KUESA_GLTF2IMPORT_LAYERPARSER_P_H
-#define KUESA_GLTF2IMPORT_LAYERPARSER_P_H
-
-//
-//  NOTICE
-//  ------
-//
-// We mean it: this file is not part of the public API and could be
-// modified without notice
-//
-
-#include <QtCore/qglobal.h>
-#include <QString>
+#include <QObject>
 
 QT_BEGIN_NAMESPACE
-
-class QJsonArray;
-namespace Qt3DRender {
-class QLayer;
-}
 
 namespace Kuesa {
 namespace GLTF2Import {
 class GLTF2ContextPrivate;
-
-struct Layer {
-    Qt3DRender::QLayer *layer = nullptr;
-    QString name;
-};
-
-class Q_AUTOTEST_EXPORT LayerParser
+}
+class GLTF2Context : public QObject
 {
+    Q_OBJECT
 public:
-    LayerParser();
+    explicit GLTF2Context(QObject *parent = nullptr);
+    ~GLTF2Context();
 
-    bool parse(const QJsonArray &layerArray, GLTF2ContextPrivate *context) const;
+private:
+    friend class GLTF2Import::GLTF2ContextPrivate;
+    GLTF2Import::GLTF2ContextPrivate* m_impl;
 };
-
-} // namespace GLTF2Import
-} // namespace Kuesa
+}
 
 QT_END_NAMESPACE
-
-#endif // KUESA_GLTF2IMPORT_LAYERPARSER_P_H
+#endif // KUESA_GLTF2CONTEXT_H

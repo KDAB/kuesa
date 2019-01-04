@@ -49,7 +49,7 @@ private Q_SLOTS:
     void checkPerspectiveCamera()
     {
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         CameraParser parser;
         QFile file(QStringLiteral(ASSETS "camera_perspective.gltf"));
         file.open(QIODevice::ReadOnly);
@@ -79,7 +79,7 @@ private Q_SLOTS:
     void checkOrthographicCamera()
     {
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         CameraParser parser;
         QFile file(QStringLiteral(ASSETS "camera_orthographic.gltf"));
         file.open(QIODevice::ReadOnly);
@@ -136,7 +136,7 @@ private Q_SLOTS:
         QFETCH(QString, filePath);
 
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         CameraParser parser;
         QFile file(filePath);
         file.open(QIODevice::ReadOnly);

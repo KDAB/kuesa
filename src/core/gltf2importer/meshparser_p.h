@@ -59,7 +59,7 @@ class QGeometry;
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2Context;
+class GLTF2ContextPrivate;
 struct BufferView;
 
 struct Primitive {
@@ -80,7 +80,7 @@ class Q_AUTOTEST_EXPORT MeshParser
 public:
     MeshParser();
 
-    bool parse(const QJsonArray &meshArray, GLTF2Context *context);
+    bool parse(const QJsonArray &meshArray, GLTF2ContextPrivate *context);
 
 private:
     bool geometryFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, bool &hasColorAttr);
@@ -90,7 +90,7 @@ private:
     bool geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, const draco::PointCloud *pointCloud, QStringList &existingAttributes, bool &hasColorAttr);
 #endif
 
-    GLTF2Context *m_context;
+    GLTF2ContextPrivate *m_context;
     QHash<int, Qt3DRender::QBuffer *> m_qbuffers;
 };
 

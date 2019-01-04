@@ -121,7 +121,7 @@ private Q_SLOTS:
         QFETCH(Qt3DRender::QTextureWrapMode::WrapMode, wrapT);
 
         // GIVEN
-        GLTF2Context context;
+        GLTF2ContextPrivate context;
         TextureSamplerParser parser;
         QFile file(filePath);
         file.open(QIODevice::ReadOnly);

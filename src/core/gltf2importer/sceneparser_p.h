@@ -46,7 +46,7 @@ class QJsonArray;
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2Context;
+class GLTF2ContextPrivate;
 
 struct Scene {
     QString name;
@@ -58,7 +58,7 @@ class Q_AUTOTEST_EXPORT SceneParser
 public:
     SceneParser() = default;
 
-    bool parse(const QJsonArray &scenesArray, GLTF2Context *context) const;
+    bool parse(const QJsonArray &scenesArray, GLTF2ContextPrivate *context) const;
 };
 
 } // namespace GLTF2Import

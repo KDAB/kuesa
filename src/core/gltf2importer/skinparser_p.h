@@ -48,7 +48,7 @@ class QJsonArray;
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2Context;
+class GLTF2ContextPrivate;
 
 struct Skin {
     int inverseBindMatricesAccessorIdx = -1;
@@ -63,7 +63,7 @@ class Q_AUTOTEST_EXPORT SkinParser
 public:
     SkinParser() = default;
 
-    bool parse(const QJsonArray &skinsArray, GLTF2Context *context) const;
+    bool parse(const QJsonArray &skinsArray, GLTF2ContextPrivate *context) const;
 };
 
 } // namespace GLTF2Import

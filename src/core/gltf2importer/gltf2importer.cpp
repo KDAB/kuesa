@@ -26,6 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "gltf2context.h"
 #include "gltf2importer.h"
 #include "gltf2importer/gltf2parser_p.h"
 
@@ -209,6 +210,7 @@ using namespace Kuesa;
 
 GLTF2Importer::GLTF2Importer(Qt3DCore::QNode *parent)
     : Qt3DCore::QNode(parent)
+    , m_context(new Kuesa::GLTF2Context(this))
     , m_root(nullptr)
     , m_status(None)
     , m_sceneEntity(nullptr)
@@ -325,6 +327,8 @@ void GLTF2Importer::load()
     const QString path = urlToLocalFileOrQrc(m_source);
 
     GLTF2Import::GLTF2Parser parser(m_sceneEntity, m_assignNames);
+    parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(m_context));
+
     Q_ASSERT(m_root == nullptr);
     m_root = parser.parse(path);
     if (m_root) {

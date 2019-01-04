@@ -40,7 +40,7 @@ LayerParser::LayerParser()
 {
 }
 
-bool LayerParser::parse(const QJsonArray &layerArray, GLTF2Context *context) const
+bool LayerParser::parse(const QJsonArray &layerArray, GLTF2ContextPrivate *context) const
 {
     const int arraySize = layerArray.size();
     for (int layerId = 0; layerId < arraySize; ++layerId) {

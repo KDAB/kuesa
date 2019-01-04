@@ -52,7 +52,7 @@ private Q_SLOTS:
         QJsonArray accessorsArray;
         accessorsArray.push_back(json);
 
-        Kuesa::GLTF2Import::GLTF2Context context;
+        Kuesa::GLTF2Import::GLTF2ContextPrivate context;
         Kuesa::GLTF2Import::BufferAccessorParser parser;
 
         // WHEN
@@ -131,7 +131,7 @@ private Q_SLOTS:
     {
         // GIVEN
         QFETCH(QJsonObject, json);
-        Kuesa::GLTF2Import::GLTF2Context context;
+        Kuesa::GLTF2Import::GLTF2ContextPrivate context;
         Kuesa::GLTF2Import::BufferAccessorParser parser;
 
         // WHEN
@@ -171,7 +171,7 @@ private Q_SLOTS:
         QJsonArray accessorArray;
         accessorArray.push_back(json);
 
-        Kuesa::GLTF2Import::GLTF2Context context;
+        Kuesa::GLTF2Import::GLTF2ContextPrivate context;
         Kuesa::GLTF2Import::BufferAccessorParser parser;
 
         // WHEN
@@ -211,7 +211,7 @@ private Q_SLOTS:
         QJsonArray accessorArray;
         accessorArray.push_back(json);
 
-        Kuesa::GLTF2Import::GLTF2Context context;
+        Kuesa::GLTF2Import::GLTF2ContextPrivate context;
         Kuesa::GLTF2Import::BufferAccessorParser parser;
 
         // WHEN
@@ -255,7 +255,7 @@ private Q_SLOTS:
         accessorArray.push_back(firstAccessorJson);
         accessorArray.push_back(secondAccessorJson);
 
-        Kuesa::GLTF2Import::GLTF2Context context;
+        Kuesa::GLTF2Import::GLTF2ContextPrivate context;
         Kuesa::GLTF2Import::BufferAccessorParser parser;
 
         // WHEN
@@ -296,7 +296,7 @@ private Q_SLOTS:
         json["type"] = "VEC2";
         json["count"] = 128;
 
-        Kuesa::GLTF2Import::GLTF2Context context;
+        Kuesa::GLTF2Import::GLTF2ContextPrivate context;
         Kuesa::GLTF2Import::BufferAccessorParser parser;
 
         // WHEN
