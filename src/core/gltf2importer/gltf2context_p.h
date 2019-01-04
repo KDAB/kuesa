@@ -60,13 +60,16 @@ class QLayer;
 }
 
 namespace Kuesa {
+class GLTF2Context;
 namespace GLTF2Import {
 
-class Q_AUTOTEST_EXPORT GLTF2Context
+class Q_AUTOTEST_EXPORT GLTF2ContextPrivate
 {
 public:
-    GLTF2Context();
-    ~GLTF2Context();
+    GLTF2ContextPrivate();
+    ~GLTF2ContextPrivate();
+
+    static GLTF2ContextPrivate* get(GLTF2Context*);
 
     template<typename Asset>
     int count() const
@@ -162,46 +165,46 @@ private:
 };
 
 template<>
-int GLTF2Context::count<Mesh>() const;
+int GLTF2ContextPrivate::count<Mesh>() const;
 
 template<>
-Mesh GLTF2Context::assetAt<Mesh>(int i) const;
+Mesh GLTF2ContextPrivate::assetAt<Mesh>(int i) const;
 
 template<>
-int GLTF2Context::count<Layer>() const;
+int GLTF2ContextPrivate::count<Layer>() const;
 
 template<>
-Layer GLTF2Context::assetAt<Layer>(int i) const;
+Layer GLTF2ContextPrivate::assetAt<Layer>(int i) const;
 
 template<>
-int GLTF2Context::count<TreeNode>() const;
+int GLTF2ContextPrivate::count<TreeNode>() const;
 
 template<>
-TreeNode GLTF2Context::assetAt<TreeNode>(int i) const;
+TreeNode GLTF2ContextPrivate::assetAt<TreeNode>(int i) const;
 
 template<>
-int GLTF2Context::count<Texture>() const;
+int GLTF2ContextPrivate::count<Texture>() const;
 
 template<>
-Texture GLTF2Context::assetAt<Texture>(int i) const;
+Texture GLTF2ContextPrivate::assetAt<Texture>(int i) const;
 
 template<>
-int GLTF2Context::count<Animation>() const;
+int GLTF2ContextPrivate::count<Animation>() const;
 
 template<>
-Animation GLTF2Context::assetAt<Animation>(int i) const;
+Animation GLTF2ContextPrivate::assetAt<Animation>(int i) const;
 
 template<>
-int GLTF2Context::count<Material>() const;
+int GLTF2ContextPrivate::count<Material>() const;
 
 template<>
-Material GLTF2Context::assetAt<Material>(int i) const;
+Material GLTF2ContextPrivate::assetAt<Material>(int i) const;
 
 template<>
-int GLTF2Context::count<Skin>() const;
+int GLTF2ContextPrivate::count<Skin>() const;
 
 template<>
-Skin GLTF2Context::assetAt<Skin>(int i) const;
+Skin GLTF2ContextPrivate::assetAt<Skin>(int i) const;
 
 } // namespace GLTF2Import
 } // namespace Kuesa

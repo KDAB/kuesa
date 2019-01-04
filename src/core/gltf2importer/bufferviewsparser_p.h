@@ -46,7 +46,7 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2Context;
+class GLTF2ContextPrivate;
 
 /*!
  * \brief It contains the information parsed by the BufferViewParser.
@@ -69,7 +69,7 @@ class Q_AUTOTEST_EXPORT BufferViewsParser
 public:
     BufferViewsParser();
 
-    bool parse(const QJsonArray &bufferViewsArray, GLTF2Context *context);
+    bool parse(const QJsonArray &bufferViewsArray, GLTF2ContextPrivate *context);
     QVector<BufferView> parse(const QJsonArray &bufferViewsArray, const QVector<QByteArray> &buffers);
 
 private:

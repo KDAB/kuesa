@@ -72,7 +72,7 @@ BufferParser::BufferParser(const QDir &basePath)
  * \endlist
  *
  */
-bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) const
+bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2ContextPrivate *context) const
 {
     const int bufferDataSize = buffersArray.size();
     for (int bufferId = 0; bufferId < bufferDataSize; ++bufferId) {

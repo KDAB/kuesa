@@ -148,7 +148,8 @@ void extractPositionViewDirAndUpVectorFromViewMatrix(const QMatrix4x4 viewMatrix
 } // namespace
 
 GLTF2Parser::GLTF2Parser(SceneEntity *sceneEntity, bool assignNames)
-    : m_sceneEntity(sceneEntity)
+    : m_context(nullptr)
+    , m_sceneEntity(sceneEntity)
     , m_defaultSceneIdx(-1)
     , m_assignNames(assignNames)
 {
@@ -197,91 +198,91 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
              if (array.size() == 0)
                  return true;
              BufferParser parser(m_basePath);
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_BUFFERVIEWS, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              BufferViewsParser parser;
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_ACCESSORS, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              BufferAccessorParser parser;
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_MESHES, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              MeshParser parser;
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_CAMERAS, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              CameraParser parser;
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_NODES, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              NodeParser parser;
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_SCENES, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              SceneParser parser;
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_IMAGES, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              ImageParser parser(m_basePath);
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_TEXTURE_SAMPLERS, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              TextureSamplerParser parser;
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_TEXTURES, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              TextureParser parser;
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_SKINS, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              SkinParser parser;
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_ANIMATIONS, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              AnimationParser parser;
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_MATERIALS, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
                  return true;
              MaterialParser parser;
-             return parser.parse(array, &m_context);
+             return parser.parse(array, m_context);
          } },
         { KEY_EXTENSIONS, [this](const QJsonValue &value) {
              const QVector<KeyParserFuncPair> extensionParsers = {
@@ -291,7 +292,7 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
                       if (layers.size() == 0)
                           return true;
                       LayerParser parser;
-                      return parser.parse(layers, &m_context);
+                      return parser.parse(layers, m_context);
                   } }
              };
              // Having no extensions is a valid use case
@@ -310,7 +311,7 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
         return nullptr;
     }
 
-    m_context = {};
+    *m_context = {};
     m_animators.clear();
     m_treeNodes.clear();
     m_skeletons.clear();
@@ -324,7 +325,7 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
         QStringList extensions;
         std::transform(extensionObjects.constBegin(), extensionObjects.constEnd(), std::back_inserter(extensions),
                        [](const QJsonValue &e) -> QString { return e.toString(); });
-        m_context.setUsedExtensions(extensions);
+        m_context->setUsedExtensions(extensions);
     }
 
     if (rootObject.contains(KEY_EXTENSIONS_REQUIRED) && rootObject.value(KEY_EXTENSIONS_REQUIRED).isArray()) {
@@ -332,7 +333,7 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
         QStringList extensions;
         std::transform(extensionObjects.constBegin(), extensionObjects.constEnd(), std::back_inserter(extensions),
                        [](const QJsonValue &e) -> QString { return e.toString(); });
-        m_context.setRequiredExtensions(extensions);
+        m_context->setRequiredExtensions(extensions);
 
         bool allRequiredAreSupported = true;
         QStringList unsupportedExtensions;
@@ -363,14 +364,14 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
         return nullptr;
 
     m_defaultSceneIdx = rootObject.value(KEY_SCENE).toInt(-1);
-    if (m_defaultSceneIdx < 0 || m_defaultSceneIdx > m_context.scenesCount()) {
+    if (m_defaultSceneIdx < 0 || m_defaultSceneIdx > m_context->scenesCount()) {
         qCWarning(kuesa()) << "Invalid default scene reference";
         return nullptr;
     }
 
     // Build vector of tree nodes
-    for (int i = 0, m = m_context.treeNodeCount(); i < m; ++i)
-        m_treeNodes.push_back(m_context.treeNode(i));
+    for (int i = 0, m = m_context->treeNodeCount(); i < m; ++i)
+        m_treeNodes.push_back(m_context->treeNode(i));
 
     // Build hierarchies for Entities and QJoints
     buildEntitiesAndJointsGraph();
@@ -441,8 +442,8 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
         // Currently Qt3D doesn't support texture image sharing
         // TO DO: Enable back once Qt3D supports texture image sharing
         //        if (m_sceneEntity->textureImages()) {
-        //            for (int i = 0, m = m_context.imagesCount(); i < m; ++i) {
-        //                const Image img = m_context.image(i);
+        //            for (int i = 0, m = m_context->imagesCount(); i < m; ++i) {
+        //                const Image img = m_context->image(i);
         //                addToCollectionWithUniqueName(m_sceneEntity->textureImages(), img.name, img.textureImage);
         //            }
         //        }
@@ -491,14 +492,19 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
     return gltfSceneEntity;
 }
 
-const GLTF2Context *GLTF2Parser::context()
+void GLTF2Parser::setContext(GLTF2ContextPrivate * ctx)
 {
-    return &m_context;
+  m_context = ctx;
+}
+
+const GLTF2ContextPrivate *GLTF2Parser::context() const
+{
+    return m_context;
 }
 
 void GLTF2Parser::buildEntitiesAndJointsGraph()
 {
-    const int nbNodes = m_context.treeNodeCount();
+    const int nbNodes = m_context->treeNodeCount();
 
     // We need to only build an Entity subtree when we have identified a Mesh
     // or Camera.
@@ -558,14 +564,14 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
         }
     }
 
-    int skinsCount = m_context.skinsCount();
+    int skinsCount = m_context->skinsCount();
     for (auto &treeNode : m_treeNodes)
         treeNode.joints.resize(skinsCount);
 
     // Assign QJoint to treenodes used as joints
-    m_gltfJointIdxToSkeletonJointIdxPerSkeleton.resize(m_context.skinsCount());
-    for (int skinId = 0, m = m_context.skinsCount(); skinId < m; ++skinId) {
-        const Skin skin = m_context.skin(skinId);
+    m_gltfJointIdxToSkeletonJointIdxPerSkeleton.resize(m_context->skinsCount());
+    for (int skinId = 0, m = m_context->skinsCount(); skinId < m; ++skinId) {
+        const Skin skin = m_context->skin(skinId);
 
         int jointAccessor = 0;
 
@@ -623,8 +629,8 @@ void GLTF2Parser::generateTreeNodeContent()
             // The QCamera node already contains a lens + transform components
             if (camera != nullptr) {
                 const qint32 cameraId = node.cameraIdx;
-                if (cameraId >= 0 && cameraId < m_context.cameraCount()) {
-                    const Camera cam = m_context.camera(cameraId);
+                if (cameraId >= 0 && cameraId < m_context->cameraCount()) {
+                    const Camera cam = m_context->camera(cameraId);
                     // Note: we need to keep the lens in cam around as that one will be added
                     // into the collection
                     camera->lens()->setProjectionType(cam.lens->projectionType());
@@ -661,8 +667,8 @@ void GLTF2Parser::generateTreeNodeContent()
             // If the node references Kuesa Layers, add them
             const QVector<int> layerIds = node.layerIndices;
             for (const qint32 layerId : layerIds) {
-                if (layerId >= 0 && layerId < m_context.layersCount()) {
-                    const Layer layer = m_context.layer(layerId);
+                if (layerId >= 0 && layerId < m_context->layersCount()) {
+                    const Layer layer = m_context->layer(layerId);
                     if (layer.layer) {
                         // Make it recursive so it affects subentities and in particular primitive entities
                         layer.layer->setRecursive(true);
@@ -673,10 +679,10 @@ void GLTF2Parser::generateTreeNodeContent()
 
             // If the node has a mesh, add it
             const qint32 meshId = node.meshIdx;
-            if (meshId >= 0 && meshId < m_context.meshesCount()) {
+            if (meshId >= 0 && meshId < m_context->meshesCount()) {
                 const qint32 skinId = node.skinIdx;
-                const Mesh &meshData = m_context.mesh(meshId);
-                const bool isSkinned = skinId >= 0 && skinId < m_context.skinsCount();
+                const Mesh &meshData = m_context->mesh(meshId);
+                const bool isSkinned = skinId >= 0 && skinId < m_context->skinsCount();
                 Qt3DCore::QArmature *armature = nullptr;
                 Qt3DCore::QEntity *skinRootJointEntity = nullptr;
 
@@ -684,7 +690,7 @@ void GLTF2Parser::generateTreeNodeContent()
                 {
                     if (isSkinned) {
                         armature = new Qt3DCore::QArmature();
-                        const Skin &skin = m_context.skin(skinId);
+                        const Skin &skin = m_context->skin(skinId);
                         Qt3DCore::QSkeleton *skeleton = m_skeletons.at(skinId);
                         armature->setSkeleton(skeleton);
                         skinRootJointEntity = m_treeNodes[skin.skeletonIdx].entity->parentEntity();
@@ -733,10 +739,10 @@ void GLTF2Parser::generateTreeNodeContent()
                     {
                         Qt3DCore::QComponent *material = nullptr;
                         const qint32 materialId = primitiveData.materialIdx;
-                        if (materialId >= 0 && materialId < m_context.materialsCount()) {
-                            Material &mat = m_context.material(materialId);
+                        if (materialId >= 0 && materialId < m_context->materialsCount()) {
+                            Material &mat = m_context->material(materialId);
                             // Get or create Qt3D for material
-                            material = mat.material(isSkinned, primitiveData.hasColorAttr, &m_context);
+                            material = mat.material(isSkinned, primitiveData.hasColorAttr, m_context);
                         } else {
                             // Only create defaultMaterial if we know we need it
                             // otherwise we might leak it
@@ -804,8 +810,8 @@ void GLTF2Parser::generateTreeNodeContent()
 
 void GLTF2Parser::generateSkeletonContent()
 {
-    for (int skinId = 0, m = m_context.skinsCount(); skinId < m; ++skinId) {
-        const Skin skin = m_context.skin(skinId);
+    for (int skinId = 0, m = m_context->skinsCount(); skinId < m; ++skinId) {
+        const Skin skin = m_context->skin(skinId);
 
         const bool bindMatrixDataSpecified = skin.inverseBindMatricesAccessorIdx >= 0;
         // Bind Matrix data is specified
@@ -823,7 +829,7 @@ void GLTF2Parser::generateSkeletonContent()
         int rootJointId = skin.skeletonIdx;
         if (rootJointId < 0) {
             // Use the scene's root
-            const Scene defaultScene = m_context.scene(m_defaultSceneIdx);
+            const Scene defaultScene = m_context->scene(m_defaultSceneIdx);
             // Find first root node of type Joint
             const QVector<int> rootNodeIndices = defaultScene.rootNodeIndices;
             rootJointId = rootNodeIndices.first();
@@ -839,8 +845,8 @@ void GLTF2Parser::generateSkeletonContent()
 
 void GLTF2Parser::generateAnimationContent()
 {
-    for (int animationId = 0, m = m_context.animationsCount(); animationId < m; ++animationId) {
-        Animation animation = m_context.animation(animationId);
+    for (int animationId = 0, m = m_context->animationsCount(); animationId < m; ++animationId) {
+        Animation animation = m_context->animation(animationId);
 
         auto *channelMapper = new Qt3DAnimation::QChannelMapper();
         auto *clip = new Qt3DAnimation::QAnimationClip();
@@ -886,10 +892,10 @@ void GLTF2Parser::generateAnimationContent()
 
 Qt3DCore::QEntity *GLTF2Parser::scene(const int id)
 {
-    if (id < 0 || id > m_context.scenesCount())
+    if (id < 0 || id > m_context->scenesCount())
         return nullptr;
 
-    const Scene scene = m_context.scene(id);
+    const Scene scene = m_context->scene(id);
 
     // Get scene node
     const QVector<int> toRetrieveNodes = scene.rootNodeIndices;
