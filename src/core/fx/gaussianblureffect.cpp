@@ -210,7 +210,7 @@ AbstractPostProcessingEffect::FrameGraphNodePtr GaussianBlurEffect::frameGraphSu
 
 QVector<Qt3DRender::QLayer *> GaussianBlurEffect::layers() const
 {
-    return QVector<Qt3DRender::QLayer *>{ m_layer };
+    return QVector<Qt3DRender::QLayer *> { m_layer };
 }
 
 /*!
