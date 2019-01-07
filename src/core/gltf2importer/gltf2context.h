@@ -1,5 +1,5 @@
 /*
-    gltf2importer.h
+    gltf2context.h
 
     This file is part of Kuesa.
 

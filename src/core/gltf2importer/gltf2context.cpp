@@ -1,5 +1,5 @@
 /*
-    gltf2context_p.cpp
+    gltf2context.cpp
 
     This file is part of Kuesa.
 
