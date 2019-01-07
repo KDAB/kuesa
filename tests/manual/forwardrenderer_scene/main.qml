@@ -51,8 +51,7 @@ Entity {
         }
     ]
 
-    function enablePostProcessingEffect(effect, enable)
-    {
+    function enablePostProcessingEffect(effect, enable) {
         if (enable)
             renderer.addPostProcessingEffect(effect);
         else
@@ -96,7 +95,7 @@ Entity {
         viewCenter: Qt.vector3d(0, 0, 0)
     }
 
-    Kuesa.OrbitCameraController {
+    OrbitCameraController {
         camera: mainCamera
     }
 
