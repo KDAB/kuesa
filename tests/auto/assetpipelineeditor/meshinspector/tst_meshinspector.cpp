@@ -28,6 +28,7 @@
 
 #include <QtTest/QtTest>
 #include <Kuesa/SceneEntity>
+#include <Kuesa/gltf2context.h>
 #include <Kuesa/private/gltf2parser_p.h>
 #include <QAttribute>
 #include <QGeometryRenderer>
@@ -242,7 +243,9 @@ private:
 
     QGeometryRenderer *loadMesh(const QString &fileName, const QString &meshName) const
     {
+        GLTF2Context ctx;
         GLTF2Parser parser(m_scene.data(), m_scene.data());
+        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
         parser.parse(fileName);
         auto mesh = m_scene->meshes()->find(meshName);
         mesh->setParent(m_scene.data());
