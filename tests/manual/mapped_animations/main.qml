@@ -49,6 +49,7 @@ Kuesa.SceneEntity {
         DirectionalLight {
             worldDirection: frameGraph.camera.viewVector
         },
+        // TODO: remove with 5.13, no longer needed
         EnvironmentLight {
             irradiance: TextureLoader {
                 source: "qrc:/wobbly_bridge_irradiance.dds"
