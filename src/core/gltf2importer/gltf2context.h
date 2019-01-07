@@ -29,6 +29,7 @@
 #define KUESA_GLTF2CONTEXT_H
 
 #include <QObject>
+#include <Kuesa/kuesa_global.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -36,7 +37,7 @@ namespace Kuesa {
 namespace GLTF2Import {
 class GLTF2ContextPrivate;
 }
-class GLTF2Context : public QObject
+class KUESASHARED_EXPORT GLTF2Context : public QObject
 {
     Q_OBJECT
 public:
