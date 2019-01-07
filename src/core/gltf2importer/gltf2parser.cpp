@@ -311,7 +311,7 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
         return nullptr;
     }
 
-    *m_context = {};
+    Q_ASSERT(m_context);
     m_animators.clear();
     m_treeNodes.clear();
     m_skeletons.clear();
