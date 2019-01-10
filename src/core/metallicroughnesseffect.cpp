@@ -253,24 +253,24 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
 
     auto zfillGL3Shader = new Qt3DRender::QShaderProgram(this);
     zfillGL3Shader->setVertexShaderCode(QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/shaders/gl3/default.vert")))); // from Qt3D
-    zfillGL3Shader->setFragmentShaderCode(QByteArray(R"(
-                                                     #version 330
-                                                     void main() { }
-                                                     )"));
+    zfillGL3Shader->setFragmentShaderCode(QByteArray(R"("
+                                                     "#version 330"
+                                                     "void main() { }"
+                                                     ")"));
 
     auto zfillES3Shader = new Qt3DRender::QShaderProgram(this);
     zfillES3Shader->setVertexShaderCode(QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/shaders/es3/default.vert")))); // from Qt3D
-    zfillES3Shader->setFragmentShaderCode(QByteArray(R"(
-                                                     #version 300 es
-                                                     void main() { }
-                                                     )"));
+    zfillES3Shader->setFragmentShaderCode(QByteArray(R"("
+                                                     "#version 300 es"
+                                                     "void main() { }"
+                                                     ")"));
 
     auto zfillES2Shader = new Qt3DRender::QShaderProgram(this);
     zfillES2Shader->setVertexShaderCode(QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/shaders/es2/default.vert")))); // from Qt3D
-    zfillES2Shader->setFragmentShaderCode(QByteArray(R"(
-                                                     #version 100
-                                                     void main() { }
-                                                     )"));
+    zfillES2Shader->setFragmentShaderCode(QByteArray(R"("
+                                                     "#version 100"
+                                                     "void main() { }"
+                                                     ")"));
 
     {
         auto filterKey = new Qt3DRender::QFilterKey(this);
