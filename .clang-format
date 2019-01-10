@@ -18,6 +18,7 @@ ConstructorInitializerAllOnOneLineOrOnePerLine: true
 AlwaysBreakTemplateDeclarations: true
 BreakBeforeBinaryOperators: None
 
+SpaceBeforeCpp11BracedList: false
 BreakBeforeBraces: Custom
 BraceWrapping:
     AfterClass: true
