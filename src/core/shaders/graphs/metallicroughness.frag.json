@@ -1927,22 +1927,22 @@
                 {
                     "format": {
                         "api": "OpenGLES",
-                        "major": 3,
+                        "major": 2,
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "#pragma include :/kuesa/shaders/es3/kuesa_metalrough.inc.frag"
+                        "#pragma include :/kuesa/shaders/es2/kuesa_metalrough.inc.frag"
                     ],
                     "substitution": "highp vec4 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
                 },
                 {
                     "format": {
                         "api": "OpenGLES",
-                        "major": 2,
+                        "major": 3,
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "#pragma include :/kuesa/shaders/es2/kuesa_metalrough.inc.frag"
+                        "#pragma include :/kuesa/shaders/es3/kuesa_metalrough.inc.frag"
                     ],
                     "substitution": "highp vec4 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
                 }
@@ -2150,6 +2150,17 @@
                         "#pragma include :/shaders/es2/coordinatesystems.inc"
                     ],
                     "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);",
+                    "headerSnippets": [
+                        "#pragma include :/shaders/es3/coordinatesystems.inc"
+                    ]
                 },
                 {
                     "format": {
