@@ -29,7 +29,7 @@
 import QtQuick 2.11
 
 Rectangle {
-    id:wind
+    id: wind
     color: "black"
     property bool animating: visible
 
@@ -37,65 +37,72 @@ Rectangle {
         id: bg
         source: "bg.png"
         anchors.fill: parent
-        opacity: 0.4
+        opacity: 0.5
     }
 
+    function randomDuration() {
+        return Math.random() * 6000 + 4000
+    }
+
+    // right
     Image {
+        id: t1
         source: "t1.png"
         height: parent.height / 4
         fillMode: Image.PreserveAspectFit
         anchors.right: parent.right
         anchors.rightMargin: -width / 20
         rotation: 180
-        opacity: 0.3
 
         NumberAnimation on y {
-            duration: Math.random() * 6000 + 4000
+            duration: randomDuration()
             easing.type: Easing.InOutCubic
-            to: Math.random() * wind.height - parent.height / 2
+            to: Math.random() * wind.height - t1.height * .2
             onStopped: {
-                duration = Math.random() * 6000 + 4000
-                to = Math.random() * wind.height - parent.height / 2
+                duration = randomDuration()
+                to = Math.random() * wind.height - t1.height * .2
                 running = Qt.binding(function() { return animating })
             }
             running: animating
         }
     }
 
+    // top
     Image {
+        id: t2
         source: "t2.png"
         height: parent.height / 5
         fillMode: Image.PreserveAspectFit
         y: -height / 15
-        opacity: 0.3
 
         NumberAnimation on x {
-            duration: Math.random() * 6000 + 4000
+            duration: randomDuration()
             easing.type: Easing.InOutCubic
-            to: Math.random() * wind.width * 1.2 - parent.width
+            to: Math.random() * wind.width * 0.8 - t2.width
             onStopped: {
-                duration = Math.random() * 6000 + 4000
-                to = Math.random() * wind.width * 1.2 - parent.width
+                duration = randomDuration()
+                to = Math.random() * wind.width * 0.8 - t2.width
                 running = Qt.binding(function() { return animating })
             }
             running: animating
         }
     }
 
+    // left
     Image {
+        id: t3
         source: "t3.png"
         width: parent.width / 9
         fillMode: Image.PreserveAspectFit
         anchors.bottom: parent.bottom
-        opacity: 0.3
 
         NumberAnimation on x {
-            duration: Math.random() * 6000 + 4000
+            duration: randomDuration()
             easing.type: Easing.InOutCubic
-            to: Math.random() * wind.width * 1.2 - parent.width
+            to: Math.random() * wind.width * 0.9 - t3.width
             onStopped: {
-                duration = Math.random() * 6000 + 4000
-                to = Math.random() * wind.width * 1.2 - parent.width
+                duration = randomDuration()
+                to = Math.random() * wind.width * 0.9 - t3.width
                 running = Qt.binding(function() { return animating })
             }
             running: animating
