@@ -9,6 +9,8 @@ Kuesa is a module for Qt 3D which provides:
 
 ## Requirements
 
+**Note:** this repository requires [git-lfs](https://git-lfs.github.com) support.
+
 Kuesa requires Qt 3D 5.12.0 or later.
 
 ## Optional Dependencies
