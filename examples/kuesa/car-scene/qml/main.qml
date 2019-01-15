@@ -99,13 +99,6 @@ Item {
         }
     }
 
-    function resetControls() {
-        speedC.value = 0
-        openLeftDoorSwitch.checked = false
-        openRightDoorSwitch.checked = false
-        openHoodSwitch.checked = false
-    }
-
     // to detect mouse activity and stop animations
     MouseArea {
         id: mainMouseArea
@@ -532,10 +525,7 @@ Item {
         repeat: false
         running: true
         interval: 2 * 60 * 1000 // 2 minutes
-        onTriggered: {
-            console.log("Triggered")
-            idleAnimationRunning = true
-        }
+        onTriggered: idleAnimationRunning = true
     }
 
     function restartIdleTimer() {
@@ -546,6 +536,15 @@ Item {
         }
     }
 
+    function resetControls() {
+        speedC.value = 0
+        openLeftDoorSwitch.checked = false
+        openRightDoorSwitch.checked = false
+        openHoodSwitch.checked = false
+        useOpacityMaskSwitch.checked = false
+        showSkyboxSwitch.checked = false
+    }
+
     // Idle Animation
     SequentialAnimation {
         // Reset everything
@@ -553,8 +552,8 @@ Item {
 
         // Show control panel
         ScriptAction { script: menuIcon.expanded = true }
-        // Wait a bit
         PauseAnimation { duration: 1000 }
+        ScriptAction { script: titlePanel.showTitle("Use GLTF Cameras") }
 
         SequentialAnimation {
             // Start the engine
@@ -570,6 +569,7 @@ Item {
         }
 
         SequentialAnimation {
+            ScriptAction { script: titlePanel.showTitle("Trigger GLTF Animations") }
             PauseAnimation { duration: 1000 }
 
             // Animate the panels
@@ -592,6 +592,7 @@ Item {
             // Show skybox
             PauseAnimation { duration: 1000 }
             PropertyAction { targets: showSkyboxSwitch; property: "checked"; value: true }
+            ScriptAction { script: titlePanel.showTitle("Environment Maps") }
             PauseAnimation { duration: 2000 }
 
             // Hide control panel
@@ -616,7 +617,8 @@ Item {
         // Show opacity mask
         PauseAnimation { duration: 1000 }
         PropertyAction { targets: useOpacityMaskSwitch; property: "checked"; value: true }
-        PauseAnimation { duration: 5000 }
+        ScriptAction { script: titlePanel.showTitle("Opacity Mask") }
+        PauseAnimation { duration: 10000 }
 
         // Show control panel
         ScriptAction { script: menuIcon.expanded = true }
@@ -625,6 +627,7 @@ Item {
             id: colorAnimations
 
             PauseAnimation { duration: 2000 }
+            ScriptAction { script: titlePanel.showTitle("Dynamic Materials") }
 
             ParallelAnimation {
                 NumberAnimation { target: redColor; property: "value"; to: 1.; duration: 1000 }
@@ -664,5 +667,52 @@ Item {
 
         loops: Animation.Infinite
         running: idleAnimationRunning
+    }
+
+    // Title Panel & Animation
+    Rectangle {
+        id: titlePanel
+        visible: opacity > 0
+        opacity: 0
+        scale: 0
+        radius: 20
+        color: "#33ffffff"
+        width: childrenRect.width + 20
+        height: childrenRect.height + 20
+
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: 2 * Controls.SharedAttributes.ldpi
+            horizontalCenter: parent.horizontalCenter
+            horizontalCenterOffset: menu.width / 2
+        }
+
+        function showTitle(title) {
+            titleLabel.text = title
+            titleAnimation.running = true
+        }
+
+        Controls.StyledLabel {
+            id: titleLabel
+            x: 10
+            y: 10
+            width: implicitWidth
+            color: "#99ffffff"
+            font.pixelSize: Controls.SharedAttributes.ldpi
+        }
+    }
+
+    SequentialAnimation {
+        id: titleAnimation
+
+        ParallelAnimation {
+            PropertyAnimation { target: titlePanel; property: "opacity"; from: .1; to: 1.; duration: 500; easing.type: Easing.InOutQuad }
+            PropertyAnimation { target: titlePanel; property: "scale"; from: .1; to: 1.; duration: 500; easing.type: Easing.OutBack }
+        }
+        PauseAnimation { duration: 3000 }
+        ParallelAnimation {
+            PropertyAnimation { target: titlePanel; property: "opacity"; to: 0.; duration: 500; easing.type: Easing.OutQuad }
+            PropertyAnimation { target: titlePanel; property: "scale"; to: 0.; duration: 500; easing.type: Easing.OutQuad }
+        }
     }
 }
