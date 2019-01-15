@@ -588,8 +588,69 @@ Item {
             PauseAnimation { duration: 1000 }
         }
 
-        // Show control panel
+        SequentialAnimation {
+            // Show skybox
+            PauseAnimation { duration: 1000 }
+            PropertyAction { targets: showSkyboxSwitch; property: "checked"; value: true }
+            PauseAnimation { duration: 2000 }
+
+            // Hide control panel
+            ScriptAction { script: menuIcon.expanded = false }
+            PauseAnimation { duration: 1000 }
+
+            // Change env map
+            PropertyAction { targets: envNeuerZollhof; property: "checked"; value: true }
+            PauseAnimation { duration: 5000 }
+
+            PropertyAction { targets: envStudioSmall04; property: "checked"; value: true }
+            PauseAnimation { duration: 5000 }
+
+            PropertyAction { targets: envPinkSunrise; property: "checked"; value: true }
+            PauseAnimation { duration: 2000 }
+
+            // Hide skybox
+            PropertyAction { targets: showSkyboxSwitch; property: "checked"; value: false }
+            PauseAnimation { duration: 1000 }
+        }
+
+        // Show opacity mask
         PauseAnimation { duration: 1000 }
+        PropertyAction { targets: useOpacityMaskSwitch; property: "checked"; value: true }
+        PauseAnimation { duration: 5000 }
+
+        // Show control panel
+        ScriptAction { script: menuIcon.expanded = true }
+
+        SequentialAnimation {
+            id: colorAnimations
+
+            PauseAnimation { duration: 2000 }
+
+            ParallelAnimation {
+                NumberAnimation { target: redColor; property: "value"; to: 1.; duration: 1000 }
+                NumberAnimation { target: greenColor; property: "value"; to: 1.; duration: 1000 }
+                NumberAnimation { target: blueColor; property: "value"; to: 0.; duration: 1000 }
+            }
+            PauseAnimation { duration: 5000 }
+
+            ParallelAnimation {
+                NumberAnimation { target: redColor; property: "value"; to: 1.; duration: 1000 }
+                NumberAnimation { target: greenColor; property: "value"; to: 0.; duration: 1000 }
+                NumberAnimation { target: blueColor; property: "value"; to: 0.; duration: 1000 }
+            }
+            PauseAnimation { duration: 5000 }
+
+            ParallelAnimation {
+                NumberAnimation { target: redColor; property: "value"; to: 0.; duration: 1000 }
+                NumberAnimation { target: greenColor; property: "value"; to: 0.07; duration: 1000 }
+                NumberAnimation { target: blueColor; property: "value"; to: 0.2; duration: 1000 }
+            }
+            PauseAnimation { duration: 1000 }
+        }
+
+        // Hide opacity mask
+        PropertyAction { targets: useOpacityMaskSwitch; property: "checked"; value: false }
+        PauseAnimation { duration: 5000 }
 
         // Stop the engine
         PropertyAction { target: speedC; property: "value"; value: 0 }
@@ -604,5 +665,4 @@ Item {
         loops: Animation.Infinite
         running: idleAnimationRunning
     }
-
 }
