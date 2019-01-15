@@ -112,7 +112,7 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
         node.transformInfo.matrix = matrix;
         node.transformInfo.bits |= TreeNode::TransformInfo::MatrixSet;
     } else {
-        const QVector<QPair<QLatin1String, std::function<bool(const QJsonArray &)>>> transformConverters {
+        const QVector<QPair<QLatin1String, std::function<bool(const QJsonArray &)>>> transformConverters{
             { KEY_SCALE, [&node](const QJsonArray &transformElement) {
                  if (transformElement.size() == 3) {
                      auto scale = QVector3D(transformElement[0].toDouble(),
