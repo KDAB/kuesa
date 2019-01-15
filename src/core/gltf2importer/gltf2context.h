@@ -44,6 +44,8 @@ public:
     explicit GLTF2Context(QObject *parent = nullptr);
     ~GLTF2Context();
 
+    void reset();
+
 private:
     friend class GLTF2Import::GLTF2ContextPrivate;
     GLTF2Import::GLTF2ContextPrivate *m_impl;
