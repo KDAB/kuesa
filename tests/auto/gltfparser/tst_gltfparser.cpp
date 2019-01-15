@@ -754,7 +754,10 @@ private Q_SLOTS:
     void checkDracoCompression()
     {
         SceneEntity scene;
+        GLTF2Context ctx;
         GLTF2Parser parser(&scene);
+
+        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
 
         // WHEN
         auto res = parser.parse(QString(ASSETS "draco/Box.gltf"));
