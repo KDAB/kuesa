@@ -34,7 +34,7 @@ namespace Kuesa {
 
 GLTF2Context::GLTF2Context(QObject *parent)
     : QObject(parent)
-    , m_impl { new GLTF2Import::GLTF2ContextPrivate }
+    , m_impl{ new GLTF2Import::GLTF2ContextPrivate }
 {
 }
 
