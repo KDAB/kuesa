@@ -323,14 +323,12 @@ void GLTF2Importer::setAssignNames(bool assignNames)
 void GLTF2Importer::load()
 {
     setStatus(GLTF2Importer::Status::Loading);
+    m_context->reset();
 
     const QString path = urlToLocalFileOrQrc(m_source);
 
     GLTF2Import::GLTF2Parser parser(m_sceneEntity, m_assignNames);
-    auto ctx = GLTF2Import::GLTF2ContextPrivate::get(m_context);
-    *ctx = GLTF2Import::GLTF2ContextPrivate{};
-
-    parser.setContext(ctx);
+    parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(m_context));
 
     Q_ASSERT(m_root == nullptr);
     m_root = parser.parse(path);
