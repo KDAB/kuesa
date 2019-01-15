@@ -32,6 +32,15 @@ QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
+/*!
+ * \class Kuesa::GLTF2Context
+ * \inheaderfile Kuesa/GLTF2Context
+ * \inmodule Kuesa
+ * \since 1.0
+ * \brief Stores information pertaining to a loaded glTF 2 file.
+ *
+ */
+
 GLTF2Context::GLTF2Context(QObject *parent)
     : QObject(parent)
     , m_impl{ new GLTF2Import::GLTF2ContextPrivate }
@@ -41,6 +50,16 @@ GLTF2Context::GLTF2Context(QObject *parent)
 GLTF2Context::~GLTF2Context()
 {
     delete m_impl;
+}
+
+/*!
+ * Puts the context in its default state.
+ *
+ * It is mandatory to call this function before reusing the context with a new glTF file.
+ */
+void GLTF2Context::reset()
+{
+    *m_impl = {};
 }
 
 } // namespace Kuesa
