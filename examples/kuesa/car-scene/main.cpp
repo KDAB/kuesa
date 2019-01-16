@@ -44,7 +44,9 @@ int main(int ac, char **av)
         format.setVersion(4, 1);
         format.setProfile(QSurfaceFormat::CoreProfile);
 #else
+#ifndef QT_OPENGL_ES_3
         isES2 = true;
+#endif
         format.setVersion(3, 0);
         format.setProfile(QSurfaceFormat::NoProfile);
         format.setRenderableType(QSurfaceFormat::OpenGLES);
