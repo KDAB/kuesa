@@ -45,6 +45,7 @@
 #include "zfillrenderstage_p.h"
 #include "opaquerenderstage_p.h"
 #include "transparentrenderstage_p.h"
+#include "kuesa_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -604,7 +605,7 @@ void ForwardRenderer::handleSurfaceChange()
     } else if (qobject_cast<QOffscreenSurface *>(surface)) {
         m_resizeConnections.push_back(connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::updateTextureSizes));
     } else {
-        qWarning() << "Unexpected surface type for surface " << surface;
+        qCWarning(kuesa) << Q_FUNC_INFO << "Unexpected surface type for surface " << surface;
     }
     updateTextureSizes();
 }
@@ -675,6 +676,8 @@ void ForwardRenderer::reconfigureFrameGraph()
         auto clearScreen = new Qt3DRender::QClearBuffers(sceneTargetSelector);
         clearScreen->setBuffers(Qt3DRender::QClearBuffers::ColorDepthBuffer);
         clearScreen->setClearColor(m_clearBuffers->clearColor());
+        connect(m_clearBuffers, &Qt3DRender::QClearBuffers::clearColorChanged,
+                clearScreen, &Qt3DRender::QClearBuffers::setClearColor);
         new Qt3DRender::QNoDraw(clearScreen);
 
         // If we have FX, renderStageRoot is the sceneTargetSelector
@@ -797,7 +800,6 @@ void ForwardRenderer::reconfigureStages()
  */
 Qt3DRender::QRenderTarget *ForwardRenderer::createRenderTarget(bool includeDepth)
 {
-
     auto renderTarget = new Qt3DRender::QRenderTarget(this);
     auto colorTexture = new Qt3DRender::QTexture2D;
     colorTexture->setFormat(Qt3DRender::QAbstractTexture::RGBA8_UNorm);
@@ -855,12 +857,13 @@ QSize ForwardRenderer::currentSurfaceSize() const
 {
     QSize size;
     auto surface = m_surfaceSelector->surface();
+
     if (auto window = qobject_cast<QWindow *>(surface))
         size = window->size();
     else if (qobject_cast<QOffscreenSurface *>(surface))
         size = m_surfaceSelector->externalRenderTargetSize();
     else
-        qWarning() << "Unexpected surface type for surface " << surface;
+        qCWarning(kuesa) << Q_FUNC_INFO << "Unexpected surface type for surface " << surface;
 
     return size;
 }
