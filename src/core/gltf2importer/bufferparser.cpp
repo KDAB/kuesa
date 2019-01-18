@@ -106,15 +106,20 @@ bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) 
 
 QByteArray BufferParser::dataFromUri(const QString &uri, bool &success) const
 {
-    const QString absPath = m_basePath.absoluteFilePath(uri);
-    QFile dataFile(absPath);
-    success = dataFile.open(QIODevice::ReadOnly);
-    if (success)
-        return dataFile.readAll();
-    else
-        qCWarning(kuesa) << "Failed to open" << uri;
+    if (uri.left(5).toLower() == QLatin1String("data:")) {
+        success = true;
+        return QByteArray::fromBase64(uri.toLatin1().remove(0, uri.indexOf(',') + 1));
+    } else {
+        const QString absPath = m_basePath.absoluteFilePath(uri);
+        QFile dataFile(absPath);
+        success = dataFile.open(QIODevice::ReadOnly);
+        if (success)
+            return dataFile.readAll();
+        else
+            qCWarning(kuesa) << "Failed to open" << uri;
+    }
 
-    return QByteArray();
+    return {};
 }
 
 QT_END_NAMESPACE
