@@ -55,9 +55,9 @@ public:
 
     bool parse(const QJsonArray &buffersArray, GLTF2Context *context) const;
 
-private:
-    QByteArray dataFromUri(const QString &uri, bool &success) const;
+    static QByteArray dataFromUri(const QString &uri, const QDir &basePath, bool &success);
 
+private:
     QDir m_basePath;
 };
 
