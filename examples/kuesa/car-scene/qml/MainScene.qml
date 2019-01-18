@@ -77,6 +77,18 @@ Kuesa.SceneEntity {
         }
     }
 
+    ObjectPicker {
+        id: leftHandlePicker
+        onClicked: scene.openLeftDoor = !scene.openLeftDoor
+    }
+
+    Kuesa.Asset {
+        id: leftDoorHandle
+        collection: scene.entities
+        name: "LeftDoorHandle"
+        onNodeChanged: node.components.push(leftHandlePicker)
+    }
+
     QQ2.Binding {
         target: carMaterial.node
         property: "baseColorFactor"

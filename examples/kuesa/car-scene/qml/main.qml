@@ -75,7 +75,6 @@ Item {
                 exposure: exposureSlider.value
                 carSpeed: speedC.value
                 useOpacityMask: useOpacityMaskSwitch.checked
-                openLeftDoor: openLeftDoorSwitch.checked
                 openRightDoor: openRightDoorSwitch.checked
                 openHood: openHoodSwitch.checked
             }
@@ -271,7 +270,8 @@ Item {
                             Controls.LabeledSwitch {
                                 id: openLeftDoorSwitch
                                 text: "Left Door"
-                                checked: false
+                                Binding on checked { value: sceneContent.openLeftDoor }
+                                onCheckedChanged: sceneContent.openLeftDoor = checked
                                 width: menu.switchWidth
                             }
 
