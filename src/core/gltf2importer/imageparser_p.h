@@ -56,6 +56,7 @@ class GLTF2Context;
 struct Image {
     QUrl url;
     QString name;
+    QByteArray data;
 };
 
 class Q_AUTOTEST_EXPORT ImageParser

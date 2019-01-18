@@ -69,18 +69,25 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
         }
 
         auto image = Image();
-        const QString absolutePath = m_basePath.absoluteFilePath(uriValue.toString());
+        QString uriString = uriValue.toString();
+        if (uriString.left(5).toLower() == QLatin1String("data:")) {
+            image.data = QByteArray::fromBase64(uriString.toLatin1().remove(0, uriString.indexOf(',') + 1));
+            image.url = uriString;
+        } else {
+            const QString absolutePath = m_basePath.absoluteFilePath(uriString);
 
-        QUrl sourceUrl(absolutePath);
-        // Handling the case of Qt resources
-        // QUrl(":/path") actually gives QUrl("")
-        // However QUrl("qrc:/path) is valid
-        if (absolutePath.startsWith(QLatin1String(":/")))
-            sourceUrl = QUrl(QStringLiteral("qrc") + absolutePath);
-        else
-            sourceUrl = QUrl::fromLocalFile(absolutePath);
+            QUrl sourceUrl(absolutePath);
+            // Handling the case of Qt resources
+            // QUrl(":/path") actually gives QUrl("")
+            // However QUrl("qrc:/path) is valid
+            if (absolutePath.startsWith(QLatin1String(":/")))
+                sourceUrl = QUrl(QStringLiteral("qrc") + absolutePath);
+            else
+                sourceUrl = QUrl::fromLocalFile(absolutePath);
 
-        image.url = sourceUrl;
+            image.url = sourceUrl;
+        }
+
         image.name = imageObject[KEY_NAME].toString();
         context->addImage(image);
     }
