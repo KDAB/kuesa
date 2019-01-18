@@ -39,6 +39,7 @@ using namespace Kuesa::GLTF2Import;
 const QLatin1String KEY_URI = QLatin1Literal("uri");
 const QLatin1String KEY_BUFFER_VIEW = QLatin1Literal("bufferView");
 const QLatin1String KEY_NAME = QLatin1Literal("name");
+const QLatin1String KEY_MIMETYPE = QLatin1Literal("mimeType");
 
 ImageParser::ImageParser(const QDir &basePath)
     : m_basePath(basePath)
@@ -63,29 +64,36 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
             return false;
         }
 
-        if (!bufferViewValue.isUndefined()) {
-            qCWarning(kuesa, "BufferView images are not supported");
-            return false;
-        }
-
         auto image = Image();
-        QString uriString = uriValue.toString();
-        if (uriString.left(5).toLower() == QLatin1String("data:")) {
-            image.data = QByteArray::fromBase64(uriString.toLatin1().remove(0, uriString.indexOf(',') + 1));
-            image.url = uriString;
+        if (bufferViewValue.isUndefined()) {
+            const QString uriString = uriValue.toString();
+            if (uriString.left(5).toLower() == QLatin1String("data:")) {
+                image.data = QByteArray::fromBase64(uriString.toLatin1().remove(0, uriString.indexOf(',') + 1));
+                image.url = uriString;
+            } else {
+                const QString absolutePath = m_basePath.absoluteFilePath(uriString);
+
+                QUrl sourceUrl(absolutePath);
+                // Handling the case of Qt resources
+                // QUrl(":/path") actually gives QUrl("")
+                // However QUrl("qrc:/path) is valid
+                if (absolutePath.startsWith(QLatin1String(":/")))
+                    sourceUrl = QUrl(QStringLiteral("qrc") + absolutePath);
+                else
+                    sourceUrl = QUrl::fromLocalFile(absolutePath);
+
+                image.url = sourceUrl;
+            }
         } else {
-            const QString absolutePath = m_basePath.absoluteFilePath(uriString);
+            const BufferView bufferData = context->bufferView(bufferViewValue.toInt());
+            image.data = bufferData.bufferData;
 
-            QUrl sourceUrl(absolutePath);
-            // Handling the case of Qt resources
-            // QUrl(":/path") actually gives QUrl("")
-            // However QUrl("qrc:/path) is valid
-            if (absolutePath.startsWith(QLatin1String(":/")))
-                sourceUrl = QUrl(QStringLiteral("qrc") + absolutePath);
-            else
-                sourceUrl = QUrl::fromLocalFile(absolutePath);
-
-            image.url = sourceUrl;
+            const auto &mimeTypeValue = imageObject.value(KEY_MIMETYPE);
+            if (mimeTypeValue.isUndefined()) {
+                qCWarning(kuesa, "Missing mime type for image buffer");
+                return false;
+            }
+            image.mimeType = mimeTypeValue.toString();
         }
 
         image.name = imageObject[KEY_NAME].toString();
