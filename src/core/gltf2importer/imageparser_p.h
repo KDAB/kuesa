@@ -57,6 +57,7 @@ struct Image {
     QUrl url;
     QString name;
     QByteArray data;
+    QString mimeType;
 };
 
 class Q_AUTOTEST_EXPORT ImageParser
