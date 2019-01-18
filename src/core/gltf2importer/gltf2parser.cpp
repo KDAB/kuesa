@@ -51,6 +51,7 @@
 
 #include <functional>
 
+#include <Qt3DCore/private/qabstractnodefactory_p.h>
 #include <Qt3DCore/QEntity>
 #include <Qt3DCore/QJoint>
 #include <Qt3DCore/QTransform>
@@ -558,7 +559,7 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
                 if (node.cameraIdx >= 0)
                     node.entity = new Qt3DRender::QCamera();
                 else
-                    node.entity = new Qt3DCore::QEntity();
+                    node.entity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
             }
             // Set ourselves as parent of our last child
             if (lastChild != nullptr)
@@ -614,7 +615,7 @@ void GLTF2Parser::generateTreeNodeContent()
 {
     Qt3DCore::QComponent *defaultMaterial = nullptr;
     Qt3DCore::QComponent *defaultSkinnedMaterial = nullptr;
-    m_sceneRootEntity = new Qt3DCore::QEntity();
+    m_sceneRootEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
     m_sceneRootEntity->setObjectName(QStringLiteral("GLTF2Scene"));
 
     for (TreeNode &node : m_treeNodes) {
@@ -742,7 +743,7 @@ void GLTF2Parser::generateTreeNodeContent()
 
                 // Generate one Entity per primitive (1 primitive == 1 geometry renderer)
                 for (Primitive primitiveData : meshData.meshPrimitives) {
-                    Qt3DCore::QEntity *primitiveEntity = new Qt3DCore::QEntity();
+                    Qt3DCore::QEntity *primitiveEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
                     primitiveEntity->addComponent(primitiveData.primitiveRenderer);
 
                     // Add material for mesh
