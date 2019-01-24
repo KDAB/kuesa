@@ -95,7 +95,7 @@ private Q_SLOTS:
         QFETCH(int, materialCount);
 
         // GIVEN
-        GLTF2ContextPrivate context;
+        GLTF2Context context;
         MaterialParser parser;
         QFile file(filePath);
         file.open(QIODevice::ReadOnly);
@@ -141,7 +141,7 @@ private Q_SLOTS:
         QFETCH(float, expectedAlphaCutoff);
 
         // GIVEN
-        GLTF2ContextPrivate context;
+        GLTF2Context context;
         MaterialParser parser;
         QFile file(filePath);
         file.open(QIODevice::ReadOnly);

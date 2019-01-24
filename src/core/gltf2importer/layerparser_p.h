@@ -49,7 +49,7 @@ class QLayer;
 
 namespace Kuesa {
 namespace GLTF2Import {
-class GLTF2ContextPrivate;
+class GLTF2Context;
 
 struct Layer {
     Qt3DRender::QLayer *layer = nullptr;
@@ -61,7 +61,7 @@ class Q_AUTOTEST_EXPORT LayerParser
 public:
     LayerParser();
 
-    bool parse(const QJsonArray &layerArray, GLTF2ContextPrivate *context) const;
+    bool parse(const QJsonArray &layerArray, GLTF2Context *context) const;
 };
 
 } // namespace GLTF2Import

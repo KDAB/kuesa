@@ -48,7 +48,7 @@ const QLatin1String KEY_MSFT_DDS_EXTENSION = QLatin1String("MSFT_texture_dds");
 
 } // namespace
 
-bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2ContextPrivate *context) const
+bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context) const
 {
     QHash<QUrl, Qt3DRender::QTextureImage *> sharedImages;
 

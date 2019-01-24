@@ -29,7 +29,6 @@
 #include <QtTest/QtTest>
 #include "materialinspector.h"
 #include "assetinspector.h"
-#include <Kuesa/gltf2context.h>
 #include <Kuesa/private/gltf2parser_p.h>
 #include <Kuesa/SceneEntity>
 #include <QSignalSpy>
@@ -76,7 +75,7 @@ private Q_SLOTS:
     {
         // GIVEN
         auto scene = new SceneEntity;
-        GLTF2ContextPrivate ctx;
+        GLTF2Context ctx;
         GLTF2Parser parser(scene, scene);
         MaterialInspector inspector;
 
@@ -171,7 +170,7 @@ private Q_SLOTS:
 private:
     Kuesa::MetallicRoughnessMaterial *loadMaterial(SceneEntity *scene, const QString &filename)
     {
-        GLTF2ContextPrivate ctx;
+        GLTF2Context ctx;
         GLTF2Parser parser(scene, scene);
         parser.setContext(&ctx);
         parser.parse(filename);

@@ -1,5 +1,5 @@
 /*
-    gltf2context.cpp
+    gltf2context_p.cpp
 
     This file is part of Kuesa.
 
@@ -25,43 +25,403 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include "gltf2context.h"
+
 #include "gltf2context_p.h"
+#include "kuesa_p.h"
 
 QT_BEGIN_NAMESPACE
+using namespace Kuesa;
+using namespace GLTF2Import;
 
-namespace Kuesa {
-
-/*!
- * \class Kuesa::GLTF2Context
- * \inheaderfile Kuesa/GLTF2Context
- * \inmodule Kuesa
- * \since 1.0
- * \brief Stores information pertaining to a loaded glTF 2 file.
- *
- */
-
-GLTF2Context::GLTF2Context(QObject *parent)
-    : QObject(parent)
-    , m_impl{ new GLTF2Import::GLTF2ContextPrivate }
+GLTF2Context::GLTF2Context()
 {
 }
 
 GLTF2Context::~GLTF2Context()
 {
-    delete m_impl;
+}
+
+int GLTF2Context::bufferCount() const
+{
+    return m_buffers.size();
+}
+
+const QByteArray GLTF2Context::buffer(int id) const
+{
+    if (id >= 0 && id < m_buffers.size())
+        return m_buffers.at(id);
+
+    qCWarning(kuesa, "Invalid buffer id");
+    return QByteArray();
+}
+
+void GLTF2Context::addBuffer(const QByteArray &buffer)
+{
+    m_buffers.push_back(buffer);
+}
+
+int GLTF2Context::bufferViewCount() const
+{
+    return m_bufferViews.size();
+}
+
+const BufferView GLTF2Context::bufferView(int id) const
+{
+    if (id >= 0 && id < m_bufferViews.size())
+        return m_bufferViews.at(id);
+
+    qCWarning(kuesa, "Invalid buffer view id");
+    return BufferView();
+}
+
+void GLTF2Context::addBufferView(const BufferView &bufferView)
+{
+    m_bufferViews.push_back(bufferView);
+}
+
+int GLTF2Context::cameraCount() const
+{
+    return m_cameras.size();
+}
+
+const Camera GLTF2Context::camera(int id) const
+{
+    if (id >= 0 && id < m_cameras.size())
+        return m_cameras.at(id);
+
+    qCWarning(kuesa, "Invalid camera id");
+    return {};
+}
+
+void GLTF2Context::addCamera(const Camera &camera)
+{
+    m_cameras.push_back(camera);
+}
+
+int GLTF2Context::treeNodeCount() const
+{
+    return m_treeNodes.size();
+}
+
+const TreeNode GLTF2Context::treeNode(int id) const
+{
+    if (id >= 0 && id < m_treeNodes.size())
+        return m_treeNodes.at(id);
+
+    qCWarning(kuesa, "Invalid tree node id");
+    return {};
+}
+
+void GLTF2Context::addTreeNode(const TreeNode &treeNode)
+{
+    m_treeNodes.push_back(treeNode);
+}
+
+int GLTF2Context::imagesCount() const
+{
+    return m_images.size();
+}
+
+void GLTF2Context::addImage(const Image &image)
+{
+    m_images.push_back(image);
+}
+
+const Image GLTF2Context::image(int id) const
+{
+    if (id >= 0 && id < m_images.size())
+        return m_images.at(id);
+
+    qCWarning(kuesa, "Invalid image id");
+    return Image();
+}
+
+int GLTF2Context::textureSamplersCount() const
+{
+    return m_textureSamplers.size();
+}
+
+void GLTF2Context::addTextureSampler(const TextureSampler &textureSampler)
+{
+    m_textureSamplers.push_back(textureSampler);
+}
+
+const TextureSampler GLTF2Context::textureSampler(int id) const
+{
+    if (id >= 0 && id < m_textureSamplers.size())
+        return m_textureSamplers.at(id);
+
+    qCWarning(kuesa, "Invalid texture sampler id");
+    return TextureSampler();
+}
+
+int GLTF2Context::texturesCount() const
+{
+    return m_textures.size();
+}
+
+void GLTF2Context::addTexture(const Texture &texture)
+{
+    m_textures.push_back(texture);
+}
+
+const Texture GLTF2Context::texture(int id) const
+{
+    if (id >= 0 && id < m_textures.size())
+        return m_textures.at(id);
+
+    qCWarning(kuesa, "Invalid texture id");
+    return Texture();
+}
+
+int GLTF2Context::animationsCount() const
+{
+    return m_animations.size();
+}
+
+void GLTF2Context::addAnimation(const Animation &animation)
+{
+    m_animations.push_back(animation);
+}
+
+const Animation GLTF2Context::animation(int id) const
+{
+    if (id >= 0 && id < m_animations.size())
+        return m_animations.at(id);
+
+    qCWarning(kuesa, "Invalid animation id");
+    return Animation();
+}
+
+int GLTF2Context::materialsCount() const
+{
+    return m_materials.size();
+}
+
+void GLTF2Context::addMaterial(const Material &material)
+{
+    m_materials.push_back(material);
+}
+
+const Material GLTF2Context::material(int id) const
+{
+
+    if (id >= 0 && id < m_materials.size())
+        return m_materials.at(id);
+
+    qCWarning(kuesa, "Invalid material id");
+    return Material();
+}
+
+Material &GLTF2Context::material(int id)
+{
+    return m_materials[id];
+}
+
+int GLTF2Context::accessorCount() const
+{
+    return m_accessors.size();
+}
+
+const Accessor GLTF2Context::accessor(int id) const
+{
+    if (id >= 0 && id < m_accessors.size())
+        return m_accessors.at(id);
+
+    qCWarning(kuesa, "Invalid accessor id");
+    return Accessor();
+}
+
+void GLTF2Context::addAccessor(const Accessor &accessor)
+{
+    m_accessors.push_back(accessor);
+}
+
+int GLTF2Context::meshesCount() const
+{
+    return m_meshes.size();
+}
+
+void GLTF2Context::addMesh(const Mesh &mesh)
+{
+    m_meshes.push_back(mesh);
+}
+
+const Mesh GLTF2Context::mesh(int id) const
+{
+    if (id >= 0 && id < m_meshes.size())
+        return m_meshes.at(id);
+
+    qCWarning(kuesa, "Invalid mesh id");
+    return Mesh();
+}
+
+int GLTF2Context::layersCount() const
+{
+    return m_layers.size();
 }
 
 /*!
- * Puts the context in its default state.
- *
- * It is mandatory to call this function before reusing the context with a new glTF file.
+ * \internal
+ * We assume the GLTF2Context is only used a short amount of time during the
+ * loading of a scene and destroyed immediately afterward. There is therefore
+ * no risk of a QLayer being destroyed while still being referenced by the
+ * GLTF2Context.
  */
-void GLTF2Context::reset()
+void GLTF2Context::addLayer(const Layer &layer)
 {
-    *m_impl = {};
+    m_layers.push_back(layer);
 }
 
-} // namespace Kuesa
+Layer GLTF2Context::layer(int id) const
+{
+    if (id >= 0 && id < m_layers.size())
+        return m_layers.at(id);
+
+    qCWarning(kuesa, "Invalid layer id");
+    return {};
+}
+
+int GLTF2Context::scenesCount() const
+{
+    return m_scenes.size();
+}
+
+void GLTF2Context::addScene(const Scene &scene)
+{
+    m_scenes.push_back(scene);
+}
+
+const Scene GLTF2Context::scene(int id) const
+{
+    if (id >= 0 && id < m_scenes.size())
+        return m_scenes.at(id);
+
+    qCWarning(kuesa, "Invalid scene id");
+    return {};
+}
+
+int GLTF2Context::skinsCount() const
+{
+    return m_skins.size();
+}
+
+void GLTF2Context::addSkin(const Skin &skin)
+{
+    m_skins.push_back(skin);
+}
+
+const Skin GLTF2Context::skin(int id) const
+{
+    if (id >= 0 && id < m_skins.size())
+        return m_skins.at(id);
+
+    qCWarning(kuesa, "Invalid skin id");
+    return Skin();
+}
+
+QStringList GLTF2Context::usedExtension() const
+{
+    return m_usedExtensions;
+}
+
+void GLTF2Context::setUsedExtensions(const QStringList &usedExtensions)
+{
+    m_usedExtensions = usedExtensions;
+}
+
+QStringList GLTF2Context::requiredExtensions() const
+{
+    return m_requiredExtensions;
+}
+
+void GLTF2Context::setRequiredExtensions(const QStringList &requiredExtensions)
+{
+    m_requiredExtensions = requiredExtensions;
+}
+
+template<>
+int GLTF2Context::count<Mesh>() const
+{
+    return m_meshes.count();
+}
+
+template<>
+Mesh GLTF2Context::assetAt<Mesh>(int i) const
+{
+    return mesh(i);
+}
+
+template<>
+int GLTF2Context::count<Layer>() const
+{
+    return m_layers.count();
+}
+
+template<>
+Layer GLTF2Context::assetAt<Layer>(int i) const
+{
+    return layer(i);
+}
+
+template<>
+int GLTF2Context::count<TreeNode>() const
+{
+    return m_treeNodes.count();
+}
+
+template<>
+TreeNode GLTF2Context::assetAt<TreeNode>(int i) const
+{
+    return treeNode(i);
+}
+
+template<>
+int GLTF2Context::count<Texture>() const
+{
+    return m_textures.count();
+}
+
+template<>
+Texture GLTF2Context::assetAt<Texture>(int i) const
+{
+    return texture(i);
+}
+
+template<>
+int GLTF2Context::count<Animation>() const
+{
+    return m_animations.count();
+}
+
+template<>
+Animation GLTF2Context::assetAt<Animation>(int i) const
+{
+    return animation(i);
+}
+
+template<>
+int GLTF2Context::count<Material>() const
+{
+    return m_materials.count();
+}
+
+template<>
+Material GLTF2Context::assetAt<Material>(int i) const
+{
+    return material(i);
+}
+
+template<>
+int GLTF2Context::count<Skin>() const
+{
+    return m_skins.count();
+}
+
+template<>
+Skin GLTF2Context::assetAt<Skin>(int i) const
+{
+    return skin(i);
+}
 
 QT_END_NAMESPACE

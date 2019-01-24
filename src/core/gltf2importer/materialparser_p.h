@@ -50,7 +50,7 @@ class QMaterial;
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2ContextPrivate;
+class GLTF2Context;
 
 struct TextureInfo {
     int index = -1;
@@ -93,7 +93,7 @@ public:
         float alphaCutoff = 0.5f;
     } alpha;
 
-    Qt3DRender::QMaterial *material(bool isSkinned, bool hasColorAttribute, const GLTF2ContextPrivate *context);
+    Qt3DRender::QMaterial *material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context);
     Qt3DRender::QMaterial *material(bool isSkinned) const;
 
     bool hasRegularMaterial() const { return m_regularMaterial != nullptr; }
@@ -109,7 +109,7 @@ class Q_AUTOTEST_EXPORT MaterialParser
 public:
     MaterialParser() = default;
 
-    bool parse(const QJsonArray &materials, GLTF2ContextPrivate *context);
+    bool parse(const QJsonArray &materials, GLTF2Context *context);
 };
 
 } // namespace GLTF2Import

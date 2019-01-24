@@ -83,7 +83,7 @@ bool isValidWrapMode(const int v)
 
 } // namespace
 
-bool Kuesa::GLTF2Import::TextureSamplerParser::parse(const QJsonArray &imageSamplers, Kuesa::GLTF2Import::GLTF2ContextPrivate *context)
+bool Kuesa::GLTF2Import::TextureSamplerParser::parse(const QJsonArray &imageSamplers, Kuesa::GLTF2Import::GLTF2Context *context)
 {
     const int nbImageSamplers = imageSamplers.size();
     for (const auto &imageSamplerValue : imageSamplers) {

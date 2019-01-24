@@ -493,12 +493,12 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
     return gltfSceneEntity;
 }
 
-void GLTF2Parser::setContext(GLTF2ContextPrivate *ctx)
+void GLTF2Parser::setContext(GLTF2Context *ctx)
 {
     m_context = ctx;
 }
 
-const GLTF2ContextPrivate *GLTF2Parser::context() const
+const GLTF2Context *GLTF2Parser::context() const
 {
     return m_context;
 }

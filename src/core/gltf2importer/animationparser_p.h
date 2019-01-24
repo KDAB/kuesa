@@ -52,7 +52,7 @@ class QAnimationClip;
 
 namespace Kuesa {
 namespace GLTF2Import {
-class GLTF2ContextPrivate;
+class GLTF2Context;
 
 struct ChannelMapping {
     int targetNodeId = -1;
@@ -71,7 +71,7 @@ class Q_AUTOTEST_EXPORT AnimationParser
 public:
     AnimationParser() = default;
 
-    bool parse(const QJsonArray &animationsArray, GLTF2ContextPrivate *context);
+    bool parse(const QJsonArray &animationsArray, GLTF2Context *context);
 
     enum InterpolationMethod {
         Linear,
@@ -103,7 +103,7 @@ private:
     std::tuple<int, std::vector<float>> animationChannelDataFromData(const AnimationSampler &sampler) const;
 
     QVector<AnimationSampler> m_samplers;
-    GLTF2ContextPrivate *m_context = nullptr;
+    GLTF2Context *m_context = nullptr;
 };
 
 } // namespace GLTF2Import

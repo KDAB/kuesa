@@ -80,7 +80,7 @@ private Q_SLOTS:
         QFETCH(int, meshesCount);
 
         // GIVEN
-        GLTF2ContextPrivate context;
+        GLTF2Context context;
         MeshParser parser;
         QFile file(filePath);
         file.open(QIODevice::ReadOnly);
@@ -107,7 +107,7 @@ private Q_SLOTS:
     void checkForAssetPipelineEditorProperties()
     {
         // GIVEN
-        GLTF2ContextPrivate context;
+        GLTF2Context context;
         MeshParser parser;
 
         QFile file(QStringLiteral(ASSETS "simple_cube.gltf"));

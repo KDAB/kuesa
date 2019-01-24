@@ -83,8 +83,8 @@ public:
     Qt3DCore::QEntity *parse(const QString &filePath);
     Qt3DCore::QEntity *parse(const QByteArray &jsonData, const QString &basePath);
 
-    void setContext(GLTF2ContextPrivate *);
-    const GLTF2ContextPrivate *context() const;
+    void setContext(GLTF2Context *);
+    const GLTF2Context *context() const;
 
 private:
     void buildEntitiesAndJointsGraph();
@@ -123,7 +123,7 @@ private:
     Qt3DCore::QEntity *scene(const int id);
 
     QString m_basePath;
-    GLTF2ContextPrivate *m_context;
+    GLTF2Context *m_context;
     QVector<TreeNode> m_treeNodes;
     QVector<Qt3DCore::QSkeleton *> m_skeletons;
     QVector<AnimationDetails> m_animators;

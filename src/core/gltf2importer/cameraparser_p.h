@@ -49,7 +49,7 @@ class QCamera;
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2ContextPrivate;
+class GLTF2Context;
 
 struct Camera {
     Qt3DRender::QCameraLens *lens = nullptr;
@@ -62,7 +62,7 @@ public:
     CameraParser();
     ~CameraParser();
 
-    bool parse(const QJsonArray &cameras, GLTF2ContextPrivate *context);
+    bool parse(const QJsonArray &cameras, GLTF2Context *context);
 };
 
 } // namespace GLTF2Import
