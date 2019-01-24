@@ -106,10 +106,13 @@ float alphaToMipLevel(float alpha)
 
 float normalDistribution(const in vec3 n, const in vec3 h, const in float alpha)
 {
-    // Blinn-Phong approximation - see
-    // http://graphicrants.blogspot.co.uk/2013/08/specular-brdf-reference.html
-    float specPower = 2.0 / (alpha * alpha) - 2.0;
-    return (specPower + 2.0) / (2.0 * 3.14159) * pow(max(dot(n, h), 0.0), specPower);
+    // See http://graphicrants.blogspot.co.uk/2013/08/specular-brdf-reference.html
+    // for a good reference on NDFs and geometric shadowing models.
+    // GGX
+    float alphaSq = alpha * alpha;
+    float nDotH = dot(n, h);
+    float factor = nDotH * nDotH * (alphaSq - 1.0) + 1.0;
+    return alphaSq / (3.14159 * factor * factor);
 }
 
 vec3 fresnelFactor(const in vec3 color, const in float cosineFactor)
@@ -122,12 +125,13 @@ vec3 fresnelFactor(const in vec3 color, const in float cosineFactor)
 
 float geometricModel(const in float lDotN,
                      const in float vDotN,
-                     const in vec3 h)
+                     const in vec3 h,
+                     const in float alpha)
 {
-    // Implicit geometric model (equal to denominator in specular model).
-    // This currently assumes that there is no attenuation by geometric shadowing or
-    // masking according to the microfacet theory.
-    return lDotN * vDotN;
+    // Smith GGX
+    float alphaSq = alpha * alpha;
+    float termSq = alphaSq + (1.0 - alphaSq) * vDotN * vDotN;
+    return 2.0 * vDotN / (vDotN + sqrt(termSq));
 }
 
 vec3 specularModel(const in vec3 F0,
@@ -135,7 +139,8 @@ vec3 specularModel(const in vec3 F0,
                    const in float sDotN,
                    const in float vDotN,
                    const in vec3 n,
-                   const in vec3 h)
+                   const in vec3 h,
+                   const in float alpha)
 {
     // Clamp sDotN and vDotN to small positive value to prevent the
     // denominator in the reflection equation going to infinity. Balance this
@@ -145,7 +150,7 @@ vec3 specularModel(const in vec3 F0,
     float vDotNPrime = max(vDotN, 0.001);
 
     vec3 F = fresnelFactor(F0, sDotH);
-    float G = geometricModel(sDotNPrime, vDotNPrime, h);
+    float G = geometricModel(sDotNPrime, vDotNPrime, h, alpha);
 
     vec3 cSpec = F * G / (4.0 * sDotNPrime * vDotNPrime);
     return clamp(cSpec, vec3(0.0), vec3(1.0));
@@ -214,7 +219,7 @@ vec3 pbrModel(const in int lightIndex,
     vec3 F0 = mix(dielectricColor, baseColor, metalness);
     vec3 specularFactor = vec3(0.0);
     if (sDotN > 0.0) {
-        specularFactor = specularModel(F0, sDotH, sDotN, vDotN, n, h);
+        specularFactor = specularModel(F0, sDotH, sDotN, vDotN, n, h, alpha);
         specularFactor *= normalDistribution(n, h, alpha);
     }
     vec3 specularColor = lights[lightIndex].color;
@@ -256,7 +261,7 @@ vec3 pbrIblModel(const in vec3 wNormal,
     // Calculate specular component
     vec3 dielectricColor = vec3(0.04);
     vec3 F0 = mix(dielectricColor, baseColor, metalness);
-    vec3 specularFactor = specularModel(F0, lDotH, lDotN, vDotN, n, h);
+    vec3 specularFactor = specularModel(F0, lDotH, lDotN, vDotN, n, h, alpha);
 
     float lod = alphaToMipLevel(alpha);
 //#define DEBUG_SPECULAR_LODS
