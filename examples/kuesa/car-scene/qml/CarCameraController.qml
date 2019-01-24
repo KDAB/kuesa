@@ -37,7 +37,7 @@ Entity {
     id: root
     property Camera camera
     property real linearSpeed: 8.0
-    property real lookSpeed: 300.0
+    property real lookSpeed: 100.0
 
     QtObject {
         id: d
