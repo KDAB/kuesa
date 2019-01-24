@@ -152,10 +152,10 @@ private Q_SLOTS:
         QFETCH(int, fileEntityCount);
         QFETCH(int, fileComponentCount);
 
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser;
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "GeneratedAssets/") + filePath);
@@ -174,10 +174,10 @@ private Q_SLOTS:
     void checkMeshCollection()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube.gltf"));
@@ -191,10 +191,10 @@ private Q_SLOTS:
     void checkCameraCollection()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube.gltf"));
@@ -210,10 +210,10 @@ private Q_SLOTS:
     {
         // GIVEN
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_layers.gltf"));
@@ -229,10 +229,10 @@ private Q_SLOTS:
     void checkEntityCollection()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube.gltf"));
@@ -248,10 +248,10 @@ private Q_SLOTS:
     void checkEntityCollectionWithDuplicateNames()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_same_names.gltf"));
@@ -282,10 +282,10 @@ private Q_SLOTS:
         QFETCH(bool, parsingSucceeded);
         QFETCH(int, imageCount);
 
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2ParserNoTextures parser;
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS + filePath));
@@ -372,10 +372,10 @@ private Q_SLOTS:
         QFETCH(Qt3DRender::QTextureWrapMode::WrapMode, wrapS);
         QFETCH(Qt3DRender::QTextureWrapMode::WrapMode, wrapT);
 
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2ParserNoTextures parser;
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS + filePath));
@@ -396,10 +396,10 @@ private Q_SLOTS:
     {
         SceneEntity scene;
 
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2ParserNoTextures parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_images.gtlf"));
@@ -432,10 +432,10 @@ private Q_SLOTS:
         QFETCH(bool, parsingSucceeded);
         QFETCH(int, textureCount);
 
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser;
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS + filePath));
@@ -448,10 +448,10 @@ private Q_SLOTS:
     void checkDDSTextureExtension()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_textures_dds.gltf"));
@@ -468,10 +468,10 @@ private Q_SLOTS:
     void checkTextureCollection()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_textures.gltf"));
@@ -486,10 +486,10 @@ private Q_SLOTS:
     void checkAnimationClipCollection()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "animated_cube_lot_rot_scale.gltf"));
@@ -503,10 +503,10 @@ private Q_SLOTS:
     void checkAnimationMappingCollection()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "animated_cube_lot_rot_scale.gltf"));
@@ -534,10 +534,10 @@ private Q_SLOTS:
         QFETCH(bool, parsingSucceeded);
         QFETCH(int, materialCount);
 
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser;
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS + filePath));
@@ -550,10 +550,10 @@ private Q_SLOTS:
     void checkMaterialCollection()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_textures.gltf"));
@@ -575,10 +575,10 @@ private Q_SLOTS:
     void checkSkeletonCollection()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "skins_valid.gltf"));
@@ -612,10 +612,10 @@ private Q_SLOTS:
         QFETCH(QVector<QString>, expectedNames);
 
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene, true);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         Qt3DCore::QEntity *res = parser.parse(QString(ASSETS + filePath));
@@ -643,10 +643,10 @@ private Q_SLOTS:
     void checkAssetsHaveObjectName()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         parser.parse(QString(ASSETS "simple_cube_with_textures.gltf"));
@@ -665,10 +665,10 @@ private Q_SLOTS:
     void checkExtensionsInvalid()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         auto res = parser.parse(QString(ASSETS "extensions_invalid.gltf"));
@@ -682,10 +682,10 @@ private Q_SLOTS:
     void checkExtensionsValid()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         auto res = parser.parse(QString(ASSETS "extensions_valid.gltf"));
@@ -717,10 +717,10 @@ private Q_SLOTS:
         QFETCH(QStringList, expectedAssignedLayers);
 
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         auto res = parser.parse(filePath);
@@ -770,10 +770,10 @@ private Q_SLOTS:
     void checkUseDracoCompressionIfAvailable()
     {
         SceneEntity scene;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(&scene);
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         auto res = parser.parse(QString(ASSETS "draco/Box_optional.gltf"));
