@@ -46,14 +46,14 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2ContextPrivate;
+class GLTF2Context;
 
 class Q_AUTOTEST_EXPORT BufferParser
 {
 public:
     explicit BufferParser(const QDir &basePath);
 
-    bool parse(const QJsonArray &buffersArray, GLTF2ContextPrivate *context) const;
+    bool parse(const QJsonArray &buffersArray, GLTF2Context *context) const;
 
 private:
     QByteArray dataFromUri(const QString &uri, bool &success) const;

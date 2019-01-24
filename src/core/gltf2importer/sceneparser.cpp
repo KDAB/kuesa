@@ -44,7 +44,7 @@ const QLatin1String KEY_NAME = QLatin1Literal("name");
 
 } // namespace
 
-bool SceneParser::parse(const QJsonArray &scenesArray, GLTF2ContextPrivate *context) const
+bool SceneParser::parse(const QJsonArray &scenesArray, GLTF2Context *context) const
 {
     const int nbScenes = scenesArray.size();
     for (const QJsonValue &sceneValue : scenesArray) {

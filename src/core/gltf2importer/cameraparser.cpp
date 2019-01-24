@@ -66,7 +66,7 @@ CameraParser::~CameraParser()
 {
 }
 
-bool CameraParser::parse(const QJsonArray &cameras, Kuesa::GLTF2Import::GLTF2ContextPrivate *context)
+bool CameraParser::parse(const QJsonArray &cameras, Kuesa::GLTF2Import::GLTF2Context *context)
 {
     const int nbCameras = cameras.size();
 

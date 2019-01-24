@@ -130,7 +130,7 @@ MeshParser::MeshParser()
 {
 }
 
-bool MeshParser::parse(const QJsonArray &meshArray, GLTF2ContextPrivate *context)
+bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
 {
     m_context = context;
 

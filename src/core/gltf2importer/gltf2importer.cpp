@@ -210,7 +210,7 @@ using namespace Kuesa;
 
 GLTF2Importer::GLTF2Importer(Qt3DCore::QNode *parent)
     : Qt3DCore::QNode(parent)
-    , m_context(new GLTF2Import::GLTF2ContextPrivate)
+    , m_context(new GLTF2Import::GLTF2Context)
     , m_root(nullptr)
     , m_status(None)
     , m_sceneEntity(nullptr)

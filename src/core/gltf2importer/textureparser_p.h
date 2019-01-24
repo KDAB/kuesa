@@ -49,7 +49,7 @@ class QAbstractTextureImage;
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2ContextPrivate;
+class GLTF2Context;
 
 struct Texture {
     Qt3DRender::QAbstractTexture *texture = nullptr;
@@ -61,7 +61,7 @@ class Q_AUTOTEST_EXPORT TextureParser
 public:
     TextureParser() = default;
 
-    bool parse(const QJsonArray &texturesArray, GLTF2ContextPrivate *context) const;
+    bool parse(const QJsonArray &texturesArray, GLTF2Context *context) const;
     static bool ensureImageIsCompatibleWithTexture(Qt3DRender::QAbstractTextureImage *image,
                                                    Qt3DRender::QAbstractTexture *texture);
 };

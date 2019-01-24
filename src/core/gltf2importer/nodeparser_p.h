@@ -54,7 +54,7 @@ class QJoint;
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2ContextPrivate;
+class GLTF2Context;
 
 struct TreeNode {
     Qt3DCore::QEntity *entity = nullptr;
@@ -93,7 +93,7 @@ class Q_AUTOTEST_EXPORT NodeParser
 public:
     NodeParser();
 
-    bool parse(const QJsonArray &nodes, GLTF2ContextPrivate *context) const;
+    bool parse(const QJsonArray &nodes, GLTF2Context *context) const;
 };
 
 } // namespace GLTF2Import

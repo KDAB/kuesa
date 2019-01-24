@@ -116,7 +116,7 @@ BufferAccessorParser::~BufferAccessorParser()
 {
 }
 
-bool Kuesa::GLTF2Import::BufferAccessorParser::parse(const QJsonArray &bufferAccessors, Kuesa::GLTF2Import::GLTF2ContextPrivate *context)
+bool Kuesa::GLTF2Import::BufferAccessorParser::parse(const QJsonArray &bufferAccessors, Kuesa::GLTF2Import::GLTF2Context *context)
 {
     for (const QJsonValue &bufferAccessor : bufferAccessors) {
         QJsonObject json = bufferAccessor.toObject();

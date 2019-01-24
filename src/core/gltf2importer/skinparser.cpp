@@ -46,7 +46,7 @@ const QLatin1String KEY_NAME = QLatin1Literal("name");
 
 } // namespace
 
-bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2ContextPrivate *context) const
+bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) const
 {
     const int nbSkins = skinsArray.size();
     for (const QJsonValue &skinValue : skinsArray) {

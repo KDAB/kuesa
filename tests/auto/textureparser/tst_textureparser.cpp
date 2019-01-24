@@ -98,7 +98,7 @@ private Q_SLOTS:
         QFETCH(bool, shouldHaveImage);
 
         // GIVEN
-        GLTF2ContextPrivate context;
+        GLTF2Context context;
         TextureParser parser;
         QFile file(filePath);
         Image fakeImage;
@@ -126,7 +126,7 @@ private Q_SLOTS:
     void checkTextureImageSharing()
     {
         // GIVEN
-        GLTF2ContextPrivate context;
+        GLTF2Context context;
         QFile file(QStringLiteral(ASSETS "simple_cube_with_textures_images_shared.gltf"));
         file.open(QIODevice::ReadOnly);
 

@@ -85,7 +85,7 @@ private Q_SLOTS:
         QFETCH(QString, imageFile);
 
         // GIVEN
-        GLTF2ContextPrivate context;
+        GLTF2Context context;
         ImageParser parser(QDir(QString(ASSETS "aBasePath")));
         QFile file(filePath);
         file.open(QIODevice::ReadOnly);
@@ -107,7 +107,7 @@ private Q_SLOTS:
     void checkAssetsInResources()
     {
         // GIVEN
-        GLTF2ContextPrivate context;
+        GLTF2Context context;
         ImageParser parser(QDir(QString(":")));
         QFile file(QStringLiteral(ASSETS "imageparser_valid.gltf"));
         file.open(QIODevice::ReadOnly);

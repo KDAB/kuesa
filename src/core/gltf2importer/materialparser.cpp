@@ -87,7 +87,7 @@ bool parseFloatArray(Vector &v,
     return true;
 }
 
-Kuesa::MetallicRoughnessMaterial *createPbrMaterial(const Material &mat, const GLTF2ContextPrivate *context)
+Kuesa::MetallicRoughnessMaterial *createPbrMaterial(const Material &mat, const GLTF2Context *context)
 {
     auto pbrMaterial = new Kuesa::MetallicRoughnessMaterial();
     pbrMaterial->setMetallicFactor(mat.pbr.metallicFactor);
@@ -141,7 +141,7 @@ Kuesa::MetallicRoughnessMaterial *createPbrMaterial(const Material &mat, const G
 
 } // namespace
 
-Qt3DRender::QMaterial *Material::material(bool isSkinned, bool hasColorAttribute, const GLTF2ContextPrivate *context)
+Qt3DRender::QMaterial *Material::material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context)
 {
     if (isSkinned) {
         if (m_skinnedMaterial == nullptr) {
@@ -168,7 +168,7 @@ Qt3DRender::QMaterial *Material::material(bool isSkinned) const
     return m_regularMaterial;
 }
 
-bool MaterialParser::parse(const QJsonArray &materials, GLTF2ContextPrivate *context)
+bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
 {
     static const QHash<QString, Material::Alpha::Mode> modeEnumMap = {
         { QStringLiteral("OPAQUE"), Material::Alpha::Opaque },

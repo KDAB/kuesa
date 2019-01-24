@@ -46,7 +46,7 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2ContextPrivate;
+class GLTF2Context;
 
 struct Accessor {
     int bufferViewIndex = 0;
@@ -66,7 +66,7 @@ public:
     BufferAccessorParser();
     ~BufferAccessorParser();
 
-    bool parse(const QJsonArray &bufferAccessors, GLTF2ContextPrivate *context);
+    bool parse(const QJsonArray &bufferAccessors, GLTF2Context *context);
 };
 
 } // namespace GLTF2Import

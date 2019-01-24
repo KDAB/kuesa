@@ -85,7 +85,7 @@ private Q_SLOTS:
         json["byteLength"] = byteLength;
         json["byteStride"] = byteStride;
 
-        Kuesa::GLTF2Import::GLTF2ContextPrivate context;
+        Kuesa::GLTF2Import::GLTF2Context context;
         context.addBuffer(buffer);
 
         QJsonArray bufferViewsArray;
