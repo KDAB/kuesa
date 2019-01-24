@@ -243,9 +243,9 @@ private:
 
     QGeometryRenderer *loadMesh(const QString &fileName, const QString &meshName) const
     {
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(m_scene.data(), m_scene.data());
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
         parser.parse(fileName);
         auto mesh = m_scene->meshes()->find(meshName);
         mesh->setParent(m_scene.data());

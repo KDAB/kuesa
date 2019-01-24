@@ -76,11 +76,11 @@ private Q_SLOTS:
     {
         // GIVEN
         auto scene = new SceneEntity;
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(scene, scene);
         MaterialInspector inspector;
 
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
 
         // WHEN
         parser.parse(QString(ASSETS "Box.gltf"));
@@ -171,9 +171,9 @@ private Q_SLOTS:
 private:
     Kuesa::MetallicRoughnessMaterial *loadMaterial(SceneEntity *scene, const QString &filename)
     {
-        GLTF2Context ctx;
+        GLTF2ContextPrivate ctx;
         GLTF2Parser parser(scene, scene);
-        parser.setContext(GLTF2Import::GLTF2ContextPrivate::get(&ctx));
+        parser.setContext(&ctx);
         parser.parse(filename);
         auto material = scene->material(scene->materials()->names().first());
         return qobject_cast<Kuesa::MetallicRoughnessMaterial *>(material);
