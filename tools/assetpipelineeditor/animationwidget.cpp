@@ -28,9 +28,9 @@
 
 #include "animationwidget.h"
 #include "ui_animationwidget.h"
-#include "animationclipcollection.h"
-#include "animationplayer.h"
-#include "sceneentity.h"
+#include <Kuesa/AnimationClipCollection>
+#include <Kuesa/AnimationPlayer>
+#include <Kuesa/SceneEntity>
 
 #include <QAnimationClip>
 #include <QChannelMapper>
