@@ -53,6 +53,10 @@ private Q_SLOTS:
                                << true
                                << 1;
 
+        QTest::newRow("Valid Data URI") << QStringLiteral(ASSETS "bufferparser_valid_datauri.gltf")
+                                        << true
+                                        << 1;
+
         QTest::newRow("Empty") << QStringLiteral(ASSETS "bufferparser_empty.gltf")
                                << false
                                << 0;
