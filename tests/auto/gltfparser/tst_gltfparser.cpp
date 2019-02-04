@@ -800,6 +800,36 @@ private Q_SLOTS:
         // THEN
         QVERIFY(res != nullptr);
     }
+
+    void checkEmbeddedImages()
+    {
+        SceneEntity scene;
+        GLTF2Context ctx;
+        GLTF2Parser parser(&scene);
+
+        parser.setContext(&ctx);
+
+        // WHEN
+        auto res = parser.parse(QString(ASSETS "BoxTextured.gltf"));
+
+        // THEN
+        QVERIFY(res != nullptr);
+    }
+
+    void checkEmbeddedBufferImages()
+    {
+        SceneEntity scene;
+        GLTF2Context ctx;
+        GLTF2Parser parser(&scene);
+
+        parser.setContext(&ctx);
+
+        // WHEN
+        auto res = parser.parse(QString(ASSETS "BoxTexturedEmbeddedBuffer.gltf"));
+
+        // THEN
+        QVERIFY(res != nullptr);
+    }
 };
 
 QTEST_APPLESS_MAIN(tst_GLTFParser)

@@ -104,6 +104,42 @@ private Q_SLOTS:
             QCOMPARE(QUrl::fromLocalFile(imageFile), context.image(0).url.toString());
     }
 
+    void checkParseEmbedded_data()
+    {
+        QTest::addColumn<QString>("filePath");
+        QTest::addColumn<bool>("succeeded");
+        QTest::addColumn<int>("dataSize");
+
+        QTest::newRow("Valid") << QStringLiteral(ASSETS "imageparser_valid_datauri.gltf")
+                               << true
+                               << 5;
+    }
+
+    void checkParseEmbedded()
+    {
+        QFETCH(QString, filePath);
+        QFETCH(bool, succeeded);
+        QFETCH(int, dataSize);
+
+        // GIVEN
+        GLTF2Context context;
+        ImageParser parser({});
+        QFile file(filePath);
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        QVERIFY(!json.isNull() && json.isArray());
+
+        // WHEN
+        const bool success = parser.parse(json.array(), &context);
+
+        // THEN
+        QCOMPARE(success, succeeded);
+        if (success)
+            QCOMPARE(context.image(0).data.size(), dataSize);
+    }
+
     void checkAssetsInResources()
     {
         // GIVEN
