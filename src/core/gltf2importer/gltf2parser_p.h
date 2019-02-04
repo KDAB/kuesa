@@ -40,7 +40,7 @@
 #include <QtCore/qglobal.h>
 #include <QtCore/QString>
 #include <QtCore/QByteArray>
-#include <Kuesa/private/gltf2context_p.h>
+#include "gltf2context_p.h"
 
 QT_BEGIN_NAMESPACE
 
