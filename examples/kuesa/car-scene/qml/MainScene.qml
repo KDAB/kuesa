@@ -217,7 +217,7 @@ Kuesa.SceneEntity {
         upVector: Qt.vector3d(0, 1, 0)
         viewCenter: Qt.vector3d(0, .5, 0)
 
-        exposure: exposureSlider.value + scene.environmentExposure
+        exposure: scene.exposure + scene.environmentExposure
 
         QQ2.Behavior on fieldOfView { QQ2.NumberAnimation { duration: 750; easing.type: QQ2.Easing.OutQuad } }
     }
