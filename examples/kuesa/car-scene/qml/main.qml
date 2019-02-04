@@ -34,7 +34,6 @@ import QtGraphicalEffects 1.0
 
 Item {
     id: mainRoot
-    property bool idleAnimationRunning: true
 
     // 3D Content
 
@@ -61,6 +60,7 @@ Item {
                 id: sceneContent
                 screenWidth: scene3D.width
                 screenHeight: scene3D.height
+                animated: idleAnimation.running
                 showSkybox: showSkyboxSwitch.checked
                 environmentMap: {
                     if (envPinkSunrise.checked) return "pink_sunrise"
@@ -106,11 +106,11 @@ Item {
         hoverEnabled: true
         z: 1
         onPressed: {
-            restartIdleTimer()
+            idleAnimation.restartTimer()
             mouse.accepted = false
         }
         onPositionChanged: {
-            restartIdleTimer()
+            idleAnimation.restartTimer()
             mouse.accepted = false
         }
     }
@@ -496,7 +496,7 @@ Item {
 
         MouseArea {
             anchors.fill: parent
-            onPressAndHold: idleAnimationRunning = true
+            onPressAndHold: idleAnimation.running = true
         }
     }
 
@@ -519,200 +519,19 @@ Item {
         }
     }
 
-    // Animation triggers
-    Timer {
-        id: idleTimer
-        repeat: false
-        running: true
-        interval: 2 * 60 * 1000 // 2 minutes
-        onTriggered: idleAnimationRunning = true
-    }
-
-    function restartIdleTimer() {
-        idleTimer.restart()
-        if (idleAnimationRunning) {
-            idleAnimationRunning = false
-            resetControls()
-        }
-    }
-
-    function resetControls() {
-        speedC.value = 0
-        openLeftDoorSwitch.checked = false
-        openRightDoorSwitch.checked = false
-        openHoodSwitch.checked = false
-        useOpacityMaskSwitch.checked = false
-        showSkyboxSwitch.checked = false
-    }
-
     // Idle Animation
-    SequentialAnimation {
-        // Reset everything
-        ScriptAction { script: resetControls() }
+    IdleDemoAnimation {
+        id: idleAnimation
+        running: true
+        anchors.fill: parent
 
-        // Show control panel
-        ScriptAction { script: menuIcon.expanded = true }
-        PauseAnimation { duration: 1000 }
-        ScriptAction { script: titlePanel.showTitle("Use GLTF Cameras") }
-
-        SequentialAnimation {
-            // Start the engine
-            NumberAnimation { target: speedC; property: "value"; to: 10; duration: 100 }
-            // Wait a bit
-            PauseAnimation { duration: 2500 }
-
-            // Accelerate the engine
-            NumberAnimation { target: speedC; property: "value"; to: 40; duration: 1100 }
-
-            // Wait a bit
-            PauseAnimation { duration: 1500 }
-        }
-
-        SequentialAnimation {
-            ScriptAction { script: titlePanel.showTitle("Trigger GLTF Animations") }
-            PauseAnimation { duration: 1000 }
-
-            // Animate the panels
-            PropertyAction { target: openRightDoorSwitch; property: "checked"; value: true }
-            PauseAnimation { duration: 5000 }
-
-            PropertyAction { target: openRightDoorSwitch; property: "checked"; value: false }
-            PropertyAction { target: openHoodSwitch; property: "checked"; value: true }
-            PauseAnimation { duration: 2500 }
-            PropertyAction { target: openLeftDoorSwitch; property: "checked"; value: true }
-            PauseAnimation { duration: 5000 }
-
-            PropertyAction { target: openLeftDoorSwitch; property: "checked"; value: false }
-            PropertyAction { target: openHoodSwitch; property: "checked"; value: false }
-
-            PauseAnimation { duration: 1000 }
-        }
-
-        SequentialAnimation {
-            // Show skybox
-            PauseAnimation { duration: 1000 }
-            PropertyAction { targets: showSkyboxSwitch; property: "checked"; value: true }
-            ScriptAction { script: titlePanel.showTitle("Environment Maps") }
-            PauseAnimation { duration: 2000 }
-
-            // Hide control panel
-            ScriptAction { script: menuIcon.expanded = false }
-            PauseAnimation { duration: 1000 }
-
-            // Change env map
-            PropertyAction { targets: envNeuerZollhof; property: "checked"; value: true }
-            PauseAnimation { duration: 5000 }
-
-            PropertyAction { targets: envStudioSmall04; property: "checked"; value: true }
-            PauseAnimation { duration: 5000 }
-
-            PropertyAction { targets: envPinkSunrise; property: "checked"; value: true }
-            PauseAnimation { duration: 2000 }
-
-            // Hide skybox
-            PropertyAction { targets: showSkyboxSwitch; property: "checked"; value: false }
-            PauseAnimation { duration: 1000 }
-        }
-
-        // Show opacity mask
-        PauseAnimation { duration: 1000 }
-        PropertyAction { targets: useOpacityMaskSwitch; property: "checked"; value: true }
-        ScriptAction { script: titlePanel.showTitle("Opacity Mask") }
-        PauseAnimation { duration: 10000 }
-
-        // Show control panel
-        ScriptAction { script: menuIcon.expanded = true }
-
-        SequentialAnimation {
-            id: colorAnimations
-
-            PauseAnimation { duration: 2000 }
-            ScriptAction { script: titlePanel.showTitle("Dynamic Materials") }
-
-            ParallelAnimation {
-                NumberAnimation { target: redColor; property: "value"; to: 1.; duration: 1000 }
-                NumberAnimation { target: greenColor; property: "value"; to: 1.; duration: 1000 }
-                NumberAnimation { target: blueColor; property: "value"; to: 0.; duration: 1000 }
-            }
-            PauseAnimation { duration: 5000 }
-
-            ParallelAnimation {
-                NumberAnimation { target: redColor; property: "value"; to: 1.; duration: 1000 }
-                NumberAnimation { target: greenColor; property: "value"; to: 0.; duration: 1000 }
-                NumberAnimation { target: blueColor; property: "value"; to: 0.; duration: 1000 }
-            }
-            PauseAnimation { duration: 5000 }
-
-            ParallelAnimation {
-                NumberAnimation { target: redColor; property: "value"; to: 0.; duration: 1000 }
-                NumberAnimation { target: greenColor; property: "value"; to: 0.07; duration: 1000 }
-                NumberAnimation { target: blueColor; property: "value"; to: 0.2; duration: 1000 }
-            }
-            PauseAnimation { duration: 1000 }
-        }
-
-        // Hide opacity mask
-        PropertyAction { targets: useOpacityMaskSwitch; property: "checked"; value: false }
-        PauseAnimation { duration: 5000 }
-
-        // Stop the engine
-        PropertyAction { target: speedC; property: "value"; value: 0 }
-        PauseAnimation { duration: 1500 }
-
-        // Hide control panel
-        ScriptAction { script: menuIcon.expanded = false }
-
-        // Wait a bit
-        PauseAnimation { duration: 2000 }
-
-        loops: Animation.Infinite
-        running: idleAnimationRunning
-    }
-
-    // Title Panel & Animation
-    Rectangle {
-        id: titlePanel
-        visible: opacity > 0
-        opacity: 0
-        scale: 0
-        radius: 20
-        color: "#33ffffff"
-        width: childrenRect.width + 20
-        height: childrenRect.height + 20
-
-        anchors {
-            bottom: parent.bottom
-            bottomMargin: 2 * Controls.SharedAttributes.ldpi
-            horizontalCenter: parent.horizontalCenter
-            horizontalCenterOffset: menu.width / 2
-        }
-
-        function showTitle(title) {
-            titleLabel.text = title
-            titleAnimation.running = true
-        }
-
-        Controls.StyledLabel {
-            id: titleLabel
-            x: 10
-            y: 10
-            width: implicitWidth
-            color: "#99ffffff"
-            font.pixelSize: Controls.SharedAttributes.ldpi
-        }
-    }
-
-    SequentialAnimation {
-        id: titleAnimation
-
-        ParallelAnimation {
-            PropertyAnimation { target: titlePanel; property: "opacity"; from: .1; to: 1.; duration: 500; easing.type: Easing.InOutQuad }
-            PropertyAnimation { target: titlePanel; property: "scale"; from: .1; to: 1.; duration: 500; easing.type: Easing.OutBack }
-        }
-        PauseAnimation { duration: 3000 }
-        ParallelAnimation {
-            PropertyAnimation { target: titlePanel; property: "opacity"; to: 0.; duration: 500; easing.type: Easing.OutQuad }
-            PropertyAnimation { target: titlePanel; property: "scale"; to: 0.; duration: 500; easing.type: Easing.OutQuad }
+        onReset: {
+            speedC.value = 0
+            openLeftDoorSwitch.checked = false
+            openRightDoorSwitch.checked = false
+            openHoodSwitch.checked = false
+            useOpacityMaskSwitch.checked = false
+            showSkyboxSwitch.checked = false
         }
     }
 }

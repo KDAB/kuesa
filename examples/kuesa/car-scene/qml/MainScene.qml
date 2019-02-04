@@ -43,6 +43,7 @@ Kuesa.SceneEntity {
     property int screenWidth
     property int screenHeight
 
+    property bool animated: false
     property bool explodedView
     property int carSpeed
     property bool openLeftDoor
@@ -116,14 +117,14 @@ Kuesa.SceneEntity {
         sceneEntity: scene
         clip: "SweepCamCenterAction"
         loops: Kuesa.AnimationPlayer.Infinite
-        running: mainRoot.idleAnimationRunning
+        running: scene.animated
     }
     Kuesa.AnimationPlayer {
         id: sweepCamPitchAnimation
         sceneEntity: scene
         clip: "SweepCamPitchAction"
         loops: Kuesa.AnimationPlayer.Infinite
-        running: mainRoot.idleAnimationRunning
+        running: scene.animated
     }
 
     NodeInstantiator {
@@ -170,7 +171,7 @@ Kuesa.SceneEntity {
             // FrameGraph
             activeFrameGraph: Kuesa.ForwardRenderer {
                 id: frameGraph
-                camera: mainRoot.idleAnimationRunning && sweepCam.node ? sweepCam.node : mainCamera
+                camera: scene.animated && sweepCam.node ? sweepCam.node : mainCamera
                 postProcessingEffects: useOpacityMask ? [opacityMaskEffect] : []
                 backToFrontSorting: true
             }
@@ -223,7 +224,7 @@ Kuesa.SceneEntity {
 
     CarCameraController {
         camera: mainCamera
-        enabled: !mainRoot.idleAnimationRunning
+        enabled: !scene.animated
     }
 
     // Loads GLTF 2.0 asset
