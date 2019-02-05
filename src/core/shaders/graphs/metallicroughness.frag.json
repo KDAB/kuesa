@@ -1765,8 +1765,10 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "fragColor = $fragColor;",
-                    "headerSnippets": [ "out highp vec4 fragColor;" ]
+                    "headerSnippets": [
+                        "out highp vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
                 },
                 {
                     "format": {
@@ -2045,8 +2047,10 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "highp vec4 $color = texture($name, $coord);",
-                    "headerSnippets": [ "uniform sampler2D $name;" ]
+                    "headerSnippets": [
+                        "uniform sampler2D $name;"
+                    ],
+                    "substitution": "highp vec4 $color = texture($name, $coord);"
                 },
                 {
                     "format": {
@@ -2157,10 +2161,10 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);",
                     "headerSnippets": [
                         "#pragma include :/shaders/es3/coordinatesystems.inc"
-                    ]
+                    ],
+                    "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
                 },
                 {
                     "format": {
