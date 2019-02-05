@@ -688,11 +688,11 @@
         },
         {
             "enabled": true,
-            "name": "noDoubleSided"
+            "name": "noHasAlphaCutoff"
         },
         {
             "enabled": true,
-            "name": "noHasAlphaCutoff"
+            "name": "noDoubleSided"
         }
     ],
     "nodes": [
@@ -2355,8 +2355,8 @@
     ],
     "project": {
         "position": {
-            "x": 1028,
-            "y": 799
+            "x": 0,
+            "y": 0
         },
         "scale": 0.5
     },
@@ -2541,7 +2541,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "$type $output; if ($condition) discard; $output = $value;"
+                    "substitution": "highp $type $output; if ($condition) discard; $output = $value;"
                 },
                 {
                     "format": {
@@ -2587,6 +2587,43 @@
                         "minor": 0
                     },
                     "substitution": "$type $quotient = $first / $second;"
+                }
+            ]
+        },
+        "dot": {
+            "inputs": [
+                "first",
+                "second"
+            ],
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "outputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp $outputType $value = dot($first, $second);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "$outputType $value = dot($first, $second);"
                 }
             ]
         },
@@ -2667,7 +2704,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "gl_fragColor = $fragColor;"
+                    "substitution": "gl_FragColor = $fragColor;"
                 },
                 {
                     "format": {
@@ -2675,8 +2712,10 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "fragColor = $fragColor;",
-                    "headerSnippets": [ "out highp vec4 fragColor;" ]
+                    "headerSnippets": [
+                        "out highp vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
                 },
                 {
                     "format": {
@@ -2754,7 +2793,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "$type $output; if ($condition) $output = $true; else $output = $false;"
+                    "substitution": "highp $type $output; if ($condition) $output = $true; else $output = $false;"
                 },
                 {
                     "format": {
@@ -2965,9 +3004,20 @@
                         "minor": 1
                     },
                     "headerSnippets": [
-                        "#pragma include :/shaders/gl3/metalrough.inc.frag"
+                        "#pragma include :/kuesa/shaders/gl3/kuesa_metalrough.inc.frag"
                     ],
                     "substitution": "vec4 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es2/kuesa_metalrough.inc.frag"
+                    ],
+                    "substitution": "highp vec4 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
                 },
                 {
                     "format": {
@@ -3217,6 +3267,39 @@
                 }
             ]
         },
+        "pow": {
+            "inputs": [
+                "base",
+                "power"
+            ],
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp $type $value = pow($base, $power);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "$type $value = pow($base, $power);"
+                }
+            ]
+        },
         "sampleTexture": {
             "inputs": [
                 "coord"
@@ -3245,8 +3328,10 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "highp vec4 $color = texture($name, $coord);",
-                    "headerSnippets": [ "uniform sampler2D $name;" ]
+                    "headerSnippets": [
+                        "uniform sampler2D $name;"
+                    ],
+                    "substitution": "highp vec4 $color = texture($name, $coord);"
                 },
                 {
                     "format": {
@@ -3401,6 +3486,28 @@
                 "matrix"
             ],
             "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/shaders/es2/coordinatesystems.inc"
+                    ],
+                    "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/shaders/es3/coordinatesystems.inc"
+                    ],
+                    "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
+                },
                 {
                     "format": {
                         "api": "OpenGLCoreProfile",
