@@ -272,8 +272,6 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     : QMaterial(parent)
     , m_baseColorFactorParameter(new QParameter(QStringLiteral("baseColorFactor"), QColor("grey")))
     , m_baseColorMapParameter(new QParameter(QStringLiteral("baseColorMap"), QVariant()))
-    , m_metallicFactorParameter(new QParameter(QStringLiteral("metallicFactor"), 0.0f))
-    , m_roughnessFactorParameter(new QParameter(QStringLiteral("roughnessFactor"), 0.0f))
     , m_metalRoughMapParameter(new QParameter(QStringLiteral("metalRoughMap"), QVariant()))
     , m_normalScaleParameter(new QParameter(QStringLiteral("normalScale"), 1.0f))
     , m_normalMapParameter(new QParameter(QStringLiteral("normalMap"), QVariant()))
@@ -288,10 +286,6 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
                      this, wrapParameterSignal(this, &MetallicRoughnessMaterial::baseColorFactorChanged));
     QObject::connect(m_baseColorMapParameter, &QParameter::valueChanged,
                      this, wrapParameterSignal(this, &MetallicRoughnessMaterial::baseColorMapChanged));
-    QObject::connect(m_metallicFactorParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::metallicFactorChanged));
-    QObject::connect(m_roughnessFactorParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::roughnessFactorChanged));
     QObject::connect(m_metalRoughMapParameter, &QParameter::valueChanged,
                      this, wrapParameterSignal(this, &MetallicRoughnessMaterial::metalRoughMapChanged));
     QObject::connect(m_normalScaleParameter, &QParameter::valueChanged,
@@ -321,8 +315,6 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
                      this, &MetallicRoughnessMaterial::alphaCutoffEnabledChanged);
 
     addParameter(m_baseColorFactorParameter);
-    addParameter(m_metallicFactorParameter);
-    addParameter(m_roughnessFactorParameter);
     addParameter(m_normalScaleParameter);
     addParameter(m_emissiveFactorParameter);
     addParameter(m_textureTransformParameter);
@@ -348,12 +340,12 @@ QAbstractTexture *MetallicRoughnessMaterial::baseColorMap() const
 
 float MetallicRoughnessMaterial::metallicFactor() const
 {
-    return m_metallicFactorParameter->value().toFloat();
+    return 0.;
 }
 
 float MetallicRoughnessMaterial::roughnessFactor() const
 {
-    return m_roughnessFactorParameter->value().toFloat();
+    return 1.;
 }
 
 QAbstractTexture *MetallicRoughnessMaterial::metalRoughMap() const
@@ -444,12 +436,12 @@ void MetallicRoughnessMaterial::setBaseColorMap(QAbstractTexture *baseColorMap)
 
 void MetallicRoughnessMaterial::setMetallicFactor(float metallicFactor)
 {
-    m_metallicFactorParameter->setValue(metallicFactor);
+    Q_UNUSED(metallicFactor)
 }
 
 void MetallicRoughnessMaterial::setRoughnessFactor(float roughnessFactor)
 {
-    m_roughnessFactorParameter->setValue(roughnessFactor);
+    Q_UNUSED(roughnessFactor)
 }
 
 void MetallicRoughnessMaterial::setMetalRoughMap(QAbstractTexture *metalRoughMap)

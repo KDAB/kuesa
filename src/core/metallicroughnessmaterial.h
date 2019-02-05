@@ -157,8 +157,6 @@ private:
     Qt3DRender::QParameter *m_baseColorFactorParameter;
     Qt3DRender::QParameter *m_baseColorMapParameter;
 
-    Qt3DRender::QParameter *m_metallicFactorParameter;
-    Qt3DRender::QParameter *m_roughnessFactorParameter;
     Qt3DRender::QParameter *m_metalRoughMapParameter;
 
     Qt3DRender::QParameter *m_normalScaleParameter;

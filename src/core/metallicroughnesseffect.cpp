@@ -213,7 +213,7 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
                                             QStringLiteral("noHasColorAttr"),
                                             QStringLiteral("noDoubleSided"),
                                             QStringLiteral("noHasAlphaCutoff") };
-    const auto fragmentShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.frag.json"));
+    const auto fragmentShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/lambert.frag.json"));
     m_metalRoughGL3ShaderBuilder->setShaderProgram(m_metalRoughGL3Shader);
     m_metalRoughGL3ShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph);
     m_metalRoughGL3ShaderBuilder->setEnabledLayers(enabledLayers);
