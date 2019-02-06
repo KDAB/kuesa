@@ -547,7 +547,7 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
                 // If we are dealing with a Camera, we instantiate a QCamera
                 // instead of a QEntity
                 if (node.cameraIdx >= 0)
-                    node.entity = new Qt3DRender::QCamera();
+                    node.entity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DRender::QCamera>("QCamera");
                 else
                     node.entity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
             }
@@ -849,8 +849,8 @@ void GLTF2Parser::generateAnimationContent()
     for (int animationId = 0, m = m_context->animationsCount(); animationId < m; ++animationId) {
         Animation animation = m_context->animation(animationId);
 
-        auto *channelMapper = new Qt3DAnimation::QChannelMapper();
-        auto *clip = new Qt3DAnimation::QAnimationClip();
+        auto *channelMapper = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DAnimation::QChannelMapper>("QChannelMapper");
+        auto *clip = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DAnimation::QAnimationClip>("QAnimationClip");
         clip->setClipData(animation.clipData);
         m_animators.push_back({ clip, channelMapper });
 
