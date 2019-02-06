@@ -83,7 +83,7 @@ bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) 
         bool readSuccess = false;
 
         if (!uri.isNull()) {
-            const QByteArray data = dataFromUri(uri, m_basePath, readSuccess);
+            const QByteArray data = dataFromUri(uri, m_basePath, context, readSuccess);
             if (readSuccess) {
                 const bool hasExpectedSize = data.size() == expectedSize;
                 if (hasExpectedSize) {
@@ -104,11 +104,12 @@ bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) 
     return bufferDataSize > 0;
 }
 
-QByteArray BufferParser::dataFromUri(const QString &uri, const QDir &basePath, bool &success)
+QByteArray BufferParser::dataFromUri(const QString &uri, const QDir &basePath, GLTF2Context *context, bool &success)
 {
     if (uri.left(5).toLower() == QLatin1String("data:")) {
-        success = true;
-        return QByteArray::fromBase64(uri.toLatin1().remove(0, uri.indexOf(',') + 1));
+        auto data = context->parseUri(uri);
+        success = !data.isEmpty();
+        return data;
     } else {
         const QString absPath = basePath.absoluteFilePath(uri);
         QFile dataFile(absPath);
