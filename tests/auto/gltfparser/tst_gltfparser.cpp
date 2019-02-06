@@ -73,6 +73,31 @@ class tst_GLTFParser : public QObject
 
 private Q_SLOTS:
 
+    void checkContextUriHandling_data()
+    {
+        QTest::addColumn<QString>("uri");
+        QTest::addColumn<bool>("success");
+
+        QTest::newRow("Valid URI") << "data:application/octet-stream;base64,S3Vlc2E=" << true;
+        QTest::newRow("Missing data scheme") << "foo" << false;
+        QTest::newRow("Missing header") << "data:foo" << false;
+        QTest::newRow("Not Base64") << "data:application/octet-stream,S3Vlc2E=" << false;
+    }
+
+    void checkContextUriHandling()
+    {
+        // GIVEN
+        QFETCH(QString, uri);
+        QFETCH(bool, success);
+
+        // WHEN
+        GLTF2Context ctx;
+        auto res = ctx.parseUri(uri);
+
+        // THEN
+        QCOMPARE(!res.isNull(), success);
+    }
+
     void checkAsset_data()
     {
         QTest::addColumn<QString>("filePath");

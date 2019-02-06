@@ -68,7 +68,9 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
         if (bufferViewValue.isUndefined()) {
             const QString uriString = uriValue.toString();
             if (uriString.left(5).toLower() == QLatin1String("data:")) {
-                image.data = QByteArray::fromBase64(uriString.toLatin1().remove(0, uriString.indexOf(',') + 1));
+                image.data = context->parseUri(uriString);
+                if (image.data.isEmpty())
+                    return false;
                 image.url = uriString;
             } else {
                 const QString absolutePath = m_basePath.absoluteFilePath(uriString);

@@ -143,6 +143,7 @@ public:
     QStringList requiredExtensions() const;
     void setRequiredExtensions(const QStringList &requiredExtensions);
 
+    QByteArray parseUri(const QString &uri);
     const QJsonDocument &json() const;
     void setJson(const QJsonDocument &doc);
 
