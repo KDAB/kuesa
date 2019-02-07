@@ -100,7 +100,7 @@ void AnimationWidget::playAll()
 void AnimationWidget::stopAll()
 {
     const auto names = m_playerHash.keys();
-    for (auto clipName : names)
+    for (const auto &clipName : names)
         stopClip(clipName);
     m_playerHash.clear();
     updateButtonStates();
@@ -234,7 +234,7 @@ QVariant AnimationClipModel::data(const QModelIndex &index, int role) const
     case 1:
         switch (role) {
         case Qt::DisplayRole:
-            return QString("%1s").arg(static_cast<double>(m_clips.at(index.row()).duration), 0, 'f', 2);
+            return QString(QStringLiteral("%1s")).arg(static_cast<double>(m_clips.at(index.row()).duration), 0, 'f', 2);
         case Qt::TextAlignmentRole:
             return { Qt::AlignRight | Qt::AlignVCenter };
         }
@@ -300,8 +300,8 @@ void AnimationClipModel::updateDecorationIcon()
     const int rotationPerUpdate = 360 * iconUpdateTimer->interval() / rotationInterval;
     rotation += rotationPerUpdate;
 
-    static QPixmap rotatingCirclePixmap(":/icons/stopped.png");
-    static QPixmap playPixmap(":/icons/playing-circleH.png");
+    static const QPixmap rotatingCirclePixmap(":/icons/stopped.png");
+    static const QPixmap playPixmap(":/icons/playing-circleH.png");
     m_playingPixmap = playPixmap;
     QPainter painter(&m_playingPixmap);
     const QPointF translation(rotatingCirclePixmap.width() / 2., rotatingCirclePixmap.height() / 2.);

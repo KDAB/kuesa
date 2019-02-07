@@ -345,7 +345,7 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
             KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION
 #endif
         };
-        for (auto e : qAsConst(extensions)) {
+        for (const auto &e : qAsConst(extensions)) {
             if (supportedExtensions.contains(e))
                 continue;
             allRequiredAreSupported = false;
@@ -702,7 +702,8 @@ void GLTF2Parser::generateTreeNodeContent()
                         for (const auto &primitive : qAsConst(meshData.meshPrimitives)) {
                             Qt3DRender::QGeometry *geometry = primitive.primitiveRenderer->geometry();
                             Qt3DRender::QAttribute *jointIndicesAttr = nullptr;
-                            for (auto attr : geometry->attributes()) {
+                            const auto attributes = geometry->attributes();
+                            for (auto attr : attributes) {
                                 if (attr->name() == Qt3DRender::QAttribute::defaultJointIndicesAttributeName()) {
                                     jointIndicesAttr = attr;
                                     break;
@@ -860,7 +861,7 @@ void GLTF2Parser::generateAnimationContent()
             channelMapper->addMapping(skeletonMapping);
         }
 
-        for (const ChannelMapping &mapping : animation.mappings) {
+        for (const ChannelMapping &mapping : qAsConst(animation.mappings)) {
             const TreeNode targetNode = m_treeNodes[mapping.targetNodeId];
 
             // Map channel to joint

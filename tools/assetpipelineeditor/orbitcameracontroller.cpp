@@ -207,7 +207,7 @@ OrbitCameraController::OrbitCameraController(Qt3DCore::QNode *parent)
     mouseHandler->setSourceDevice(m_mouseDevice);
 
     QObject::connect(mouseHandler, &Qt3DInput::QMouseHandler::pressed,
-                     [this](Qt3DInput::QMouseEvent *pressedEvent) {
+                     this, [this](Qt3DInput::QMouseEvent *pressedEvent) {
                          pressedEvent->setAccepted(true);
                          this->m_mousePressedPosition = QPoint(pressedEvent->x(),
                                                                pressedEvent->y());
@@ -224,21 +224,21 @@ OrbitCameraController::OrbitCameraController(Qt3DCore::QNode *parent)
                      });
 
     QObject::connect(mouseHandler, &Qt3DInput::QMouseHandler::released,
-                     [this](Qt3DInput::QMouseEvent *released) {
+                     this, [this](Qt3DInput::QMouseEvent *released) {
                          // turn off translation when any button is released.
                          this->m_isTranslationActive = false;
                          released->setAccepted(true);
                      });
 
     QObject::connect(mouseHandler, &Qt3DInput::QMouseHandler::positionChanged,
-                     [this](Qt3DInput::QMouseEvent *positionChangedEvent) {
+                     this, [this](Qt3DInput::QMouseEvent *positionChangedEvent) {
                          positionChangedEvent->setAccepted(true);
                          this->m_mouseCurrentPosition = QPoint(positionChangedEvent->x(),
                                                                positionChangedEvent->y());
                      });
 
     QObject::connect(m_changeProjectionAction, &Qt3DInput::QAction::activeChanged,
-                     [this](bool isActive) {
+                     this, [this](bool isActive) {
                          if (isActive) {
                              Qt3DRender::QCamera *camera = this->m_camera;
                              Qt3DRender::QCameraLens::ProjectionType projectionType = camera->projectionType();

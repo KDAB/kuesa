@@ -54,7 +54,7 @@ void MeshInspector::setMesh(Qt3DRender::QGeometryRenderer *mesh)
         return;
 
     // Un-highlight materials used by previous mesh
-    for (const auto &entityMaterialPair : m_meshMaterials) {
+    for (const auto &entityMaterialPair : qAsConst(m_meshMaterials)) {
         Qt3DCore::QEntity *entity = entityMaterialPair.first.data();
         Qt3DRender::QMaterial *material = entityMaterialPair.second.data();
         // Remove highlight material from previously highlighted entity
