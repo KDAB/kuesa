@@ -48,7 +48,7 @@ public:
     QQmlListProperty<Kuesa::AbstractPostProcessingEffect> postProcessingEffects();
 
 private:
-    static void appendFX(QQmlListProperty<AbstractPostProcessingEffect> *list, AbstractPostProcessingEffect *obj);
+    static void appendFX(QQmlListProperty<AbstractPostProcessingEffect> *list, AbstractPostProcessingEffect *fx);
     static AbstractPostProcessingEffect *fxAt(QQmlListProperty<AbstractPostProcessingEffect> *list, int index);
     static int fxCount(QQmlListProperty<AbstractPostProcessingEffect> *list);
     static void clearFx(QQmlListProperty<AbstractPostProcessingEffect> *list);

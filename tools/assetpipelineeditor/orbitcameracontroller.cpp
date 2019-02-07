@@ -419,13 +419,13 @@ QVector3D OrbitCameraController::tranformCameraLocalToWorld(const QVector3D &vec
 }
 
 // takes normal axis amount from -1 to 1.0
-void OrbitCameraController::zoomCamera(float axisValue, Qt3DRender::QCamera::CameraTranslationOption translationOption)
+void OrbitCameraController::zoomCamera(float amount, Qt3DRender::QCamera::CameraTranslationOption translationOption)
 {
-    if (axisValue < -1.0f || axisValue > 1.0f)
+    if (amount < -1.0f || amount > 1.0f)
         return;
 
     // double the default zoom to make it feel about right
-    float zoomFactor = 2.f * m_zoomSpeed * axisValue;
+    float zoomFactor = 2.f * m_zoomSpeed * amount;
 
     const float length = m_camera->viewVector().length();
     float deltaLength = -1.f * zoomFactor * length;

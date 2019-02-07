@@ -535,10 +535,10 @@ void ForwardRenderer::setFrustumCulling(bool frustumCulling)
  * Activates back-to-front sorting which may be required for correct alpha
  * blending rendering.
  */
-void ForwardRenderer::setBackToFrontSorting(bool alphaBlending)
+void ForwardRenderer::setBackToFrontSorting(bool backToFrontSorting)
 {
-    if (m_backToFrontSorting != alphaBlending) {
-        m_backToFrontSorting = alphaBlending;
+    if (m_backToFrontSorting != backToFrontSorting) {
+        m_backToFrontSorting = backToFrontSorting;
         Q_EMIT backToFrontSortingChanged(m_backToFrontSorting);
         reconfigureStages();
     }

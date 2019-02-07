@@ -113,12 +113,12 @@ void AssetInspectorWidget::setPreviewRenderContext(QQmlContext *context)
     m_textureWidget->setPreviewRenderContext(context);
 }
 
-void AssetInspectorWidget::setAssetName(const QString &assetName)
+void AssetInspectorWidget::setAssetName(const QString &name)
 {
-    m_assetNameLabel->setText(assetName);
-    if (assetName.isEmpty()) {
+    m_assetNameLabel->setText(name);
+    if (name.isEmpty()) {
         m_noAssetLabel->setText(tr("Select an asset in Collection Browser for details"));
     } else {
-        m_noAssetLabel->setText(tr("No information available for %1").arg(assetName));
+        m_noAssetLabel->setText(tr("No information available for %1").arg(name));
     }
 }

@@ -84,7 +84,7 @@ bool TransparentRenderStage::backToFrontSorting() const
     return m_alphaSortPolicy->isEnabled();
 }
 
-void TransparentRenderStage::setBackToFrontSorting(bool alphaBlend)
+void TransparentRenderStage::setBackToFrontSorting(bool backToFrontSorting)
 {
-    m_alphaSortPolicy->setEnabled(alphaBlend);
+    m_alphaSortPolicy->setEnabled(backToFrontSorting);
 }
