@@ -330,7 +330,7 @@ QSize OrbitCameraController::windowSize() const
 
 void OrbitCameraController::setPanSpeed(float v)
 {
-    if (m_panSpeed != v) {
+    if (!qFuzzyCompare(m_panSpeed, v)) {
         m_panSpeed = v;
         emit panSpeedChanged();
     }
@@ -338,7 +338,7 @@ void OrbitCameraController::setPanSpeed(float v)
 
 void OrbitCameraController::setZoomSpeed(float v)
 {
-    if (m_zoomSpeed != v) {
+    if (!qFuzzyCompare(m_zoomSpeed, v)) {
         m_zoomSpeed = v;
         emit zoomSpeedChanged();
     }
@@ -346,7 +346,7 @@ void OrbitCameraController::setZoomSpeed(float v)
 
 void OrbitCameraController::setRotationSpeed(float v)
 {
-    if (m_rotationSpeed != v) {
+    if (qFuzzyCompare(m_rotationSpeed, v)) {
         m_rotationSpeed = v;
         emit rotationSpeedChanged();
     }
@@ -354,7 +354,7 @@ void OrbitCameraController::setRotationSpeed(float v)
 
 void OrbitCameraController::setZoomCameraLimit(float v)
 {
-    if (m_zoomCameraLimit != v) {
+    if (!qFuzzyCompare(m_zoomCameraLimit, v)) {
         m_zoomCameraLimit = v;
         emit zoomCameraLimitChanged();
     }

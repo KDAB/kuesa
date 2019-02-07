@@ -234,7 +234,7 @@ QVariant AnimationClipModel::data(const QModelIndex &index, int role) const
     case 1:
         switch (role) {
         case Qt::DisplayRole:
-            return QString("%1s").arg(m_clips.at(index.row()).duration, 0, 'f', 2);
+            return QString("%1s").arg(static_cast<double>(m_clips.at(index.row()).duration), 0, 'f', 2);
         case Qt::TextAlignmentRole:
             return { Qt::AlignRight | Qt::AlignVCenter };
         }
@@ -304,7 +304,7 @@ void AnimationClipModel::updateDecorationIcon()
     static QPixmap playPixmap(":/icons/playing-circleH.png");
     m_playingPixmap = playPixmap;
     QPainter painter(&m_playingPixmap);
-    const QPointF translation(rotatingCirclePixmap.width() / 2, rotatingCirclePixmap.height() / 2);
+    const QPointF translation(rotatingCirclePixmap.width() / 2., rotatingCirclePixmap.height() / 2.);
     painter.translate(translation);
     painter.rotate(rotation % 360);
     painter.translate(-translation);
@@ -324,7 +324,7 @@ void AnimationClipModel::updateDuration(const QString &clipName, float duration)
     });
     if (it != m_clips.end()) {
         (*it).duration = duration;
-        int row = std::distance(m_clips.begin(), it);
+        int row = static_cast<int>(std::distance(m_clips.begin(), it));
         emit dataChanged(index(row, 1), index(row, 1), { Qt::DisplayRole });
     }
 }

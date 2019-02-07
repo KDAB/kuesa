@@ -107,9 +107,9 @@ void MeshInspector::setMesh(Qt3DRender::QGeometryRenderer *mesh)
     if (m_mesh) {
         for (auto attribute : m_mesh->geometry()->attributes()) {
             if (attribute->attributeType() == Qt3DRender::QAttribute::VertexAttribute) {
-                m_vertexCount = attribute->count();
+                m_vertexCount = static_cast<int>(attribute->count());
             } else if (attribute->attributeType() == Qt3DRender::QAttribute::IndexAttribute) {
-                m_primitiveCount += calculatePrimitiveCount(attribute->count(), m_mesh->primitiveType());
+                m_primitiveCount += calculatePrimitiveCount(static_cast<int>(attribute->count()), m_mesh->primitiveType());
             }
             //total size includes index and vertex buffers
             m_totalSize += attributeSizeInBytes(attribute);
@@ -153,7 +153,7 @@ unsigned int MeshInspector::attributeSizeInBytes(Qt3DRender::QAttribute *attribu
     return attribute->count() * attribute->vertexSize() * baseTypeSize;
 }
 
-unsigned int MeshInspector::calculatePrimitiveCount(int indexCount, int primitiveType)
+int MeshInspector::calculatePrimitiveCount(int indexCount, int primitiveType)
 {
     switch (primitiveType) {
     case Qt3DRender::QGeometryRenderer::Points:
@@ -200,10 +200,10 @@ QString MeshInspector::nameForPrimitiveType(int primitiveType)
 
 QString MeshInspector::totalSizeString() const
 {
-    float size = m_totalSize / 1024.0;
+    double size = m_totalSize / 1024.0;
     QString suffix(QStringLiteral(" KB"));
-    if (size > 1024) {
-        size = size / 1024;
+    if (size > 1024.) {
+        size = size / 1024.;
         suffix = QStringLiteral(" MB");
     }
     return QString::number(size, 'f', 2) + suffix;

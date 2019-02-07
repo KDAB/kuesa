@@ -183,12 +183,12 @@ void GLTF2Parser::updateDataForJointsAttr(Qt3DRender::QAttribute *attr, int skin
     const size_t nbJoints = 4 * attr->count();
     QByteArray updatedData;
 
-    updatedData.resize(nbJoints * sizeof(T));
+    updatedData.resize(static_cast<int>(nbJoints * sizeof(T)));
     T *updatedJointIndices = reinterpret_cast<T *>(updatedData.data());
     for (size_t jointId = 0; jointId < nbJoints; ++jointId) {
-        updatedJointIndices[jointId] = m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinId][typedData[jointId]];
+        updatedJointIndices[jointId] = static_cast<T>(m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinId][typedData[jointId]]);
     }
-    attr->buffer()->updateData(attr->byteOffset(), updatedData);
+    attr->buffer()->updateData(static_cast<int>(attr->byteOffset()), updatedData);
 }
 
 QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
@@ -583,7 +583,7 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
     }
 }
 
-void GLTF2Parser::buildJointHierarchy(const HierarchyNode *node, int &jointAccessor, const Skin &skin, unsigned int skinIdx, Qt3DCore::QJoint *parentJoint)
+void GLTF2Parser::buildJointHierarchy(const HierarchyNode *node, int &jointAccessor, const Skin &skin, int skinIdx, Qt3DCore::QJoint *parentJoint)
 {
     Qt3DCore::QJoint *joint = new Qt3DCore::QJoint;
     if (parentJoint != nullptr)
