@@ -65,7 +65,7 @@ public:
     TextureInspector *textureInspector() const;
 
 Q_SIGNALS:
-    void assetTypeChanged(AssetType assetType);
+    void assetTypeChanged(AssetInspector::AssetType assetType);
     void assetChanged(const QString &assetName);
 
 private:

@@ -339,7 +339,7 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
 ForwardRenderer::~ForwardRenderer()
 {
     // unparent the effect subtrees or they'll be deleted twice
-    for (auto framegraph : m_effectFGSubtrees)
+    for (auto framegraph : qAsConst(m_effectFGSubtrees))
         framegraph->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
     m_effectFGSubtrees.clear();
     qDeleteAll(m_renderStages);
@@ -593,9 +593,8 @@ void ForwardRenderer::handleSurfaceChange()
     Q_ASSERT(surface);
 
     // disconnect any existing connections
-    for (auto connection : m_resizeConnections) {
+    for (auto connection : qAsConst(m_resizeConnections))
         disconnect(connection);
-    }
     m_resizeConnections.clear();
 
     // surface should only be a QWindow or QOffscreenSurface. Have to downcast since QSurface isn't QObject
@@ -632,9 +631,9 @@ void ForwardRenderer::reconfigureFrameGraph()
     // Temporarily reparent effect subtrees and other nodes, then delete the node that held the last
     // subtree framegraph including any render target selectors.
     // It's easier just to re-create the tree below
-    for (AbstractPostProcessingEffect *effect : m_postProcessingEffects)
+    for (AbstractPostProcessingEffect *effect : qAsConst(m_postProcessingEffects))
         m_effectFGSubtrees.value(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
-    for (AbstractRenderStage *stage : m_renderStages)
+    for (AbstractRenderStage *stage : qAsConst(m_renderStages))
         stage->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
     delete m_effectsRootNode;
     m_effectsRootNode = nullptr;
@@ -700,7 +699,8 @@ void ForwardRenderer::reconfigureFrameGraph()
             effect->setSceneSize(targetSize);
 
             // add the layers from the effect to block them from being rendered in the main scene
-            for (auto layer : effect->layers())
+            const auto &layers = effect->layers();
+            for (auto layer : layers)
                 mainSceneFilter->addLayer(layer);
 
             // Create a render target selector for all but the last effect to create the input texture for the next effect
@@ -784,10 +784,10 @@ void ForwardRenderer::reconfigureStages()
     // Reorder/Insert node into FG
     if (requiresReordering) {
         // Remove stage from FG tree
-        for (AbstractRenderStage *stage : m_renderStages)
+        for (AbstractRenderStage *stage : qAsConst(m_renderStages))
             stage->setParent(Q_NODE_NULLPTR);
         // Add stages into FG tree
-        for (AbstractRenderStage *stage : m_renderStages)
+        for (AbstractRenderStage *stage : qAsConst(m_renderStages))
             stage->setParent(m_renderStageRootNode);
     };
 }

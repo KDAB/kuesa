@@ -264,9 +264,9 @@ void GaussianBlurEffect::setBlurPassCount(int blurPasscount)
     m_blurPassCount = blurPasscount;
 
     //just do the simple thing for now and delete all children and recreate.
-    for (auto child : m_blurPassRoot->childNodes()) {
+    const auto &childNodes = m_blurPassRoot->childNodes();
+    for (auto child : childNodes)
         delete child;
-    }
     createBlurPasses();
 
     emit blurPassCountChanged(m_blurPassCount);

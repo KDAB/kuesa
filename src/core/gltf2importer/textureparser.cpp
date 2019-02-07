@@ -140,7 +140,8 @@ bool TextureParser::ensureImageIsCompatibleWithTexture(Qt3DRender::QAbstractText
         qCWarning(kuesa) << "Using an image with layer specified for a non array texture" << texture->objectName();
         return false;
     } else {
-        for (const Qt3DRender::QAbstractTextureImage *img : texture->textureImages()) {
+        const auto textureImages = texture->textureImages();
+        for (const Qt3DRender::QAbstractTextureImage *img : textureImages) {
             // Non critical error, just warn user
             if (img->layer() == image->layer() &&
                 img->mipLevel() == image->mipLevel() &&
