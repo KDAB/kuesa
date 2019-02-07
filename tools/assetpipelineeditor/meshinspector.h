@@ -77,7 +77,7 @@ public:
     QColor selectionColor() const;
 
     static unsigned int attributeSizeInBytes(Qt3DRender::QAttribute *attribute);
-    static unsigned int calculatePrimitiveCount(int indexCount, int primitiveType);
+    static int calculatePrimitiveCount(int indexCount, int primitiveType);
     static QString nameForPrimitiveType(int primitiveType);
     QString totalSizeString() const;
 

@@ -88,7 +88,7 @@ public:
 
 private:
     void buildEntitiesAndJointsGraph();
-    void buildJointHierarchy(const HierarchyNode *node, int &jointAccessor, const Skin &skin, unsigned int skinIdx, Qt3DCore::QJoint *parentJoint = nullptr);
+    void buildJointHierarchy(const HierarchyNode *node, int &jointAccessor, const Skin &skin, int skinIdx, Qt3DCore::QJoint *parentJoint = nullptr);
     void generateTreeNodeContent();
     void generateSkeletonContent();
     void generateAnimationContent();
@@ -131,7 +131,7 @@ private:
     Qt3DCore::QEntity *m_sceneRootEntity;
     int m_defaultSceneIdx;
     bool m_assignNames;
-    QVector<QHash<int, unsigned short>> m_gltfJointIdxToSkeletonJointIdxPerSkeleton;
+    QVector<QHash<int, int>> m_gltfJointIdxToSkeletonJointIdxPerSkeleton;
 };
 
 } // namespace GLTF2Import
