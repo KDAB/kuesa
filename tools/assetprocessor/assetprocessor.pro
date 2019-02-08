@@ -1,9 +1,9 @@
-# tools.pro
+# assetprocessor.pro
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Mike Krus <mike.krus@kdab.com>
+# Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,16 +24,15 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = subdirs
+TEMPLATE = app
 
-!cross_compile: {
-    SUBDIRS += \
-        assetpipelineeditor \
-        ddspreviewer \
-        assetprocessor
+QT -= gui
+QT += kuesa kuesa-private
 
-    !macos {
-        SUBDIRS += \
-            cubemaptooctahedralmap
-    }
-}
+DEFINES += QT_DEPRECATED_WARNINGS
+
+SOURCES += \
+    main.cpp
+
+target.path = $$[QT_INSTALL_BINS]
+INSTALLS += target
