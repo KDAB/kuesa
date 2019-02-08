@@ -65,3 +65,6 @@ Should examples not be built, try:
 To install the Qt Creator template, copy the entire kuesa folder
 from ``tools/qtc_templates`` to the ``templates/wizards`` folder inside
 the Qt Creator install location.
+
+
+
