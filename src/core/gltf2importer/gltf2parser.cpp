@@ -364,7 +364,8 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
     if (!parsingSucceeded)
         return nullptr;
 
-    m_defaultSceneIdx = rootObject.value(KEY_SCENE).toInt(-1);
+    m_defaultSceneIdx = rootObject.value(KEY_SCENE).toInt(0);
+
     if (m_defaultSceneIdx < 0 || m_defaultSceneIdx > m_context->scenesCount()) {
         qCWarning(kuesa()) << "Invalid default scene reference";
         return nullptr;
