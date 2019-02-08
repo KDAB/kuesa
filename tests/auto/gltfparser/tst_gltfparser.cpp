@@ -391,6 +391,26 @@ private Q_SLOTS:
         }
     }
 
+    void checkSceneParsing()
+    {
+        SceneEntity scene;
+
+        GLTF2Context ctx;
+        GLTF2Parser parser(&scene);
+
+        parser.setContext(&ctx);
+
+        // WHEN
+        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_images_no_scene.gltf"));
+        Qt3DCore::QEntity *res1 = parser.parse(QString(ASSETS "simple_cube_with_images_invalid_scene.gltf"));
+        Qt3DCore::QEntity *res2 = parser.parse(QString(ASSETS "simple_cube_with_images_invalid_scene_negative.gltf"));
+
+        // THEN
+        QVERIFY(res);
+        QVERIFY(res1 == nullptr);
+        QVERIFY(res2 == nullptr);
+    }
+
     void checkTextureImageCollection()
     {
         SceneEntity scene;
