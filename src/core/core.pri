@@ -38,6 +38,7 @@ HEADERS += \
     $$PWD/factory.h \
     $$PWD/kuesa_p.h \
     $$PWD/kuesa_global.h \
+    $$PWD/kuesa_global_p.h \
     $$PWD/kuesa_utils_p.h \
     $$PWD/metallicroughnesseffect.h \
     $$PWD/metallicroughnessmaterial.h \
