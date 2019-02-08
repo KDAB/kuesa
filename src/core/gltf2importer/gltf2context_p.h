@@ -39,6 +39,7 @@
 
 #include <QVector>
 #include <QJsonDocument>
+#include <Kuesa/private/kuesa_global_p.h>
 #include "bufferparser_p.h"
 #include "bufferviewsparser_p.h"
 #include "cameraparser_p.h"
@@ -63,7 +64,7 @@ class QLayer;
 namespace Kuesa {
 namespace GLTF2Import {
 
-class Q_AUTOTEST_EXPORT GLTF2Context
+class KUESA_PRIVATE_EXPORT GLTF2Context
 {
 public:
     GLTF2Context();

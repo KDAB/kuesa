@@ -37,6 +37,7 @@
 // modified without notice
 //
 
+#include <Kuesa/private/kuesa_global_p.h>
 #include <QtCore/qglobal.h>
 #include <QtCore/QString>
 #include <QtCore/QByteArray>
@@ -73,7 +74,7 @@ struct HierarchyNode {
 
 using KeyParserFuncPair = QPair<QLatin1String, std::function<bool(const QJsonValue &)>>;
 
-class Q_AUTOTEST_EXPORT GLTF2Parser
+class KUESA_PRIVATE_EXPORT GLTF2Parser
 {
 public:
     GLTF2Parser(SceneEntity *sceneEntity = nullptr, bool assignNames = false);
