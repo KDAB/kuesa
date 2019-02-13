@@ -87,6 +87,91 @@ QString standardAttributeNameFromSemantic(const QString &semantic)
     return QString();
 }
 
+std::vector<Qt3DRender::QAttribute::VertexBaseType> validVertexBaseTypesForAttribute(const QString &attributeName)
+{
+    // Standard Attributes
+    if (attributeName == Qt3DRender::QAttribute::defaultPositionAttributeName())
+        return { Qt3DRender::QAttribute::Float };
+    if (attributeName == Qt3DRender::QAttribute::defaultNormalAttributeName())
+        return { Qt3DRender::QAttribute::Float };
+    if (attributeName == Qt3DRender::QAttribute::defaultTangentAttributeName())
+        return { Qt3DRender::QAttribute::Float };
+    if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName())
+        return { Qt3DRender::QAttribute::Float,
+                 Qt3DRender::QAttribute::UnsignedByte,
+                 Qt3DRender::QAttribute::UnsignedShort };
+    if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName())
+        return { Qt3DRender::QAttribute::Float,
+                 Qt3DRender::QAttribute::UnsignedByte,
+                 Qt3DRender::QAttribute::UnsignedShort };
+    if (attributeName == Qt3DRender::QAttribute::defaultColorAttributeName())
+        return { Qt3DRender::QAttribute::Float,
+                 Qt3DRender::QAttribute::UnsignedByte,
+                 Qt3DRender::QAttribute::UnsignedShort };
+    if (attributeName == Qt3DRender::QAttribute::defaultJointIndicesAttributeName())
+        return { Qt3DRender::QAttribute::UnsignedByte,
+                 Qt3DRender::QAttribute::UnsignedShort };
+    if (attributeName == Qt3DRender::QAttribute::defaultJointWeightsAttributeName())
+        return { Qt3DRender::QAttribute::Float,
+                 Qt3DRender::QAttribute::UnsignedByte,
+                 Qt3DRender::QAttribute::UnsignedShort };
+
+    return { Qt3DRender::QAttribute::UnsignedByte,
+             Qt3DRender::QAttribute::UnsignedShort,
+             Qt3DRender::QAttribute::UnsignedInt };
+}
+
+std::vector<int> validVertexSizesForAttribute(const QString &attributeName)
+{
+    // Standard Attributes
+    if (attributeName == Qt3DRender::QAttribute::defaultPositionAttributeName())
+        return { 3 };
+    if (attributeName == Qt3DRender::QAttribute::defaultNormalAttributeName())
+        return { 3 };
+    if (attributeName == Qt3DRender::QAttribute::defaultTangentAttributeName())
+        return { 4 };
+    if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName())
+        return { 2 };
+    if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName())
+        return { 2 };
+    if (attributeName == Qt3DRender::QAttribute::defaultColorAttributeName())
+        return { 3, 4 };
+    if (attributeName == Qt3DRender::QAttribute::defaultJointIndicesAttributeName())
+        return { 4 };
+    if (attributeName == Qt3DRender::QAttribute::defaultJointWeightsAttributeName())
+        return { 4 };
+
+    return { 1 };
+}
+
+bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry)
+{
+    const auto &attributes = geometry->attributes();
+    const bool vertexBaseTypesAreValid = std::find_if(std::begin(attributes), std::end(attributes),
+                                                      [](Qt3DRender::QAttribute *attribute) {
+                                                          const auto validVertexBaseTypes = validVertexBaseTypesForAttribute(attribute->name());
+                                                          const auto vertexBaseType = attribute->vertexBaseType();
+                                                          return std::find_if(std::begin(validVertexBaseTypes),
+                                                                              std::end(validVertexBaseTypes),
+                                                                              [vertexBaseType](Qt3DRender::QAttribute::VertexBaseType validVertexBaseType) {
+                                                                                  return vertexBaseType == validVertexBaseType;
+                                                                              }) == std::end(validVertexBaseTypes);
+                                                      }) == std::end(attributes);
+
+    const bool vertexSizesAreValid = std::find_if(std::begin(attributes), std::end(attributes),
+                                                  [](Qt3DRender::QAttribute *attribute) {
+                                                      const auto validVertexSizes = validVertexSizesForAttribute(attribute->name());
+                                                      const auto vertexSize = attribute->vertexSize();
+                                                      return std::find_if(std::begin(validVertexSizes),
+                                                                          std::end(validVertexSizes),
+                                                                          [vertexSize](int validVertexSize) {
+                                                                              return vertexSize == validVertexSize;
+                                                                          }) == std::end(validVertexSizes);
+                                                  }) == std::end(attributes);
+
+    return vertexSizesAreValid && vertexBaseTypesAreValid;
+}
+
 #if defined(KUESA_DRACO_COMPRESSION)
 template<typename ValueType, Qt3DRender::QAttribute::VertexBaseType ComponentType>
 Qt3DRender::QAttribute *decodeAttribute(const draco::PointCloud *pointCould,
@@ -180,6 +265,12 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
                     delete geometry;
                     return false;
                 }
+            }
+
+            if (!geometryIsGLTF2Valid(geometry)) {
+                qCWarning(kuesa) << QLatin1Literal("Geometry doesn't meet glTF 2.0 requirements");
+                delete geometry;
+                return false;
             }
 
             Qt3DRender::QGeometryRenderer *renderer = new Qt3DRender::QGeometryRenderer;
