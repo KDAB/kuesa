@@ -113,6 +113,8 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     initResources();
 }
 
+SceneEntity::~SceneEntity() = default;
+
 /*!
  * Returns instance of collection of Qt3DAnimation::QAbstractAnimationClip assets
  */

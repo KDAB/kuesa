@@ -59,6 +59,16 @@ struct Accessor {
     QVector<float> max;
     QVector<float> min;
     QString name;
+    int sparseCount = 0;
+    struct SparseIndices {
+        int bufferViewIndex = 0;
+        int offset = 0;
+        Qt3DRender::QAttribute::VertexBaseType type = Qt3DRender::QAttribute::Float;
+    } sparseIndices;
+    struct SparseValues {
+        int bufferViewIndex = 0;
+        int offset = 0;
+    } sparseValues;
 };
 
 class Q_AUTOTEST_EXPORT BufferAccessorParser

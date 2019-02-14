@@ -37,6 +37,7 @@
 #include <QOpenGLContext>
 
 #include "gltf2context_p.h"
+#include "gltf2keys_p.h"
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
@@ -44,15 +45,14 @@ using namespace GLTF2Import;
 
 namespace {
 
-const QLatin1String KEY_BUFFERVIEW = QLatin1Literal("bufferView");
 const QLatin1String KEY_COMPONENTTYPE = QLatin1Literal("componentType");
 const QLatin1String KEY_COUNT = QLatin1Literal("count");
 const QLatin1String KEY_TYPE = QLatin1Literal("type");
 const QLatin1String KEY_NORMALIZED = QLatin1Literal("normalized");
 const QLatin1String KEY_MAX = QLatin1Literal("max");
 const QLatin1String KEY_MIN = QLatin1Literal("min");
-const QLatin1String KEY_BYTEOFFSET = QLatin1Literal("byteOffset");
-const QLatin1String KEY_NAME = QLatin1Literal("name");
+const QLatin1String KEY_SPARSE_INDICES = QLatin1Literal("indices");
+const QLatin1String KEY_SPARSE_VALUES = QLatin1Literal("values");
 
 QVector<float> jsonArrayToVectorOfFloats(const QJsonArray &values)
 {
@@ -60,7 +60,7 @@ QVector<float> jsonArrayToVectorOfFloats(const QJsonArray &values)
     QVector<float> d(nbComponents);
     std::transform(values.begin(), values.end(), d.begin(),
                    [](const QJsonValue &value) -> float {
-                       return value.toDouble(0);
+                       return static_cast<float>(value.toDouble(0));
                    });
     return d;
 }
@@ -106,6 +106,63 @@ Qt3DRender::QAttribute::VertexBaseType accessorTypeFromJSON(int componentType)
         return Qt3DRender::QAttribute::Float;
     }
 }
+
+template<class IndexType>
+bool copySparseValues(int count, const QByteArray &indicesBuffer, const QByteArray &valuesBuffer,
+                      QByteArray &targetBuffer, int attributeOffset, int stride,
+                      int valueSize)
+{
+    if (stride == 0)
+        stride = valueSize;
+    const IndexType *indices = reinterpret_cast<const IndexType *>(indicesBuffer.data());
+    for (int i = 0; i < count; ++i) {
+        const IndexType ndx = indices[i];
+        char *target = targetBuffer.data() + stride * ndx + attributeOffset;
+        const char *source = valuesBuffer.constData() + i * valueSize;
+        memcpy(target, source, static_cast<size_t>(valueSize));
+    }
+    return true;
+}
+
+template<class IndexType>
+bool copySparseValues(int bufferCount, int sparseCount, const QByteArray &indicesBuffer, const QByteArray &valuesBuffer,
+                      QByteArray &targetBuffer, int attributeOffset, int stride,
+                      Qt3DRender::QAttribute::VertexBaseType componentType, int numComponents)
+{
+    int valueSize = 0;
+    switch (componentType) {
+    case Qt3DRender::QAttribute::UnsignedByte:
+    case Qt3DRender::QAttribute::Byte:
+        valueSize = static_cast<int>(sizeof(char)) * numComponents;
+        break;
+    case Qt3DRender::QAttribute::UnsignedShort:
+    case Qt3DRender::QAttribute::Short:
+        valueSize = static_cast<int>(sizeof(short)) * numComponents;
+        break;
+    case Qt3DRender::QAttribute::UnsignedInt:
+    case Qt3DRender::QAttribute::Int:
+        valueSize = static_cast<int>(sizeof(int)) * numComponents;
+        break;
+    case Qt3DRender::QAttribute::Float:
+        valueSize = static_cast<int>(sizeof(float)) * numComponents;
+        break;
+    case Qt3DRender::QAttribute::Double:
+        valueSize = static_cast<int>(sizeof(double)) * numComponents;
+        break;
+    default:
+        qCWarning(kuesa, "Unhandled sparse accessor data type");
+        return false;
+    }
+
+    if (targetBuffer.isEmpty())
+        targetBuffer = QByteArray(bufferCount * valueSize, 0);
+
+    Q_ASSERT(valueSize != 0);
+    return copySparseValues<IndexType>(sparseCount, indicesBuffer, valuesBuffer,
+                                       targetBuffer, attributeOffset, stride,
+                                       valueSize);
+}
+
 } // namespace
 
 BufferAccessorParser::BufferAccessorParser()
@@ -119,10 +176,10 @@ BufferAccessorParser::~BufferAccessorParser()
 bool Kuesa::GLTF2Import::BufferAccessorParser::parse(const QJsonArray &bufferAccessors, Kuesa::GLTF2Import::GLTF2Context *context)
 {
     for (const QJsonValue &bufferAccessor : bufferAccessors) {
-        QJsonObject json = bufferAccessor.toObject();
+        const QJsonObject json = bufferAccessor.toObject();
 
         // Check it has the required properties
-        if (!json.contains(KEY_COMPONENTTYPE) || !json.contains(KEY_COUNT) || !json.contains(KEY_TYPE) || !json.contains(KEY_BUFFERVIEW))
+        if (!json.contains(KEY_COMPONENTTYPE) || !json.contains(KEY_COUNT) || !json.contains(KEY_TYPE))
             return false;
 
         Accessor accessor;
@@ -137,6 +194,102 @@ bool Kuesa::GLTF2Import::BufferAccessorParser::parse(const QJsonArray &bufferAcc
         accessor.max = jsonArrayToVectorOfFloats(json.value(KEY_MAX).toArray());
         accessor.min = jsonArrayToVectorOfFloats(json.value(KEY_MIN).toArray());
         accessor.name = json.value(KEY_NAME).toString();
+
+        if (json.contains(KEY_SPARSE)) {
+            const QJsonObject sparse = json.value(KEY_SPARSE).toObject();
+            if (!sparse.contains(KEY_COUNT) || !sparse.contains(KEY_SPARSE_INDICES) || !sparse.contains(KEY_SPARSE_VALUES)) {
+                qCWarning(kuesa, "Missing sparse data in accessor");
+                return false;
+            }
+
+            accessor.sparseCount = sparse.value(KEY_COUNT).toInt(0);
+
+            const QJsonObject sparseIndices = sparse.value(KEY_SPARSE_INDICES).toObject();
+            accessor.sparseIndices.type = accessorTypeFromJSON(sparseIndices.value(KEY_COMPONENTTYPE).toInt(GL_UNSIGNED_INT));
+            accessor.sparseIndices.bufferViewIndex = sparseIndices.value(KEY_BUFFERVIEW).toInt(-1);
+            accessor.sparseIndices.offset = sparseIndices.value(KEY_BYTEOFFSET).toInt(0);
+
+            const QJsonObject sparseValues = sparse.value(KEY_SPARSE_VALUES).toObject();
+            accessor.sparseValues.bufferViewIndex = sparseValues.value(KEY_BUFFERVIEW).toInt(-1);
+            accessor.sparseValues.offset = sparseValues.value(KEY_BYTEOFFSET).toInt(0);
+
+            if (accessor.sparseIndices.bufferViewIndex == -1 || accessor.sparseValues.bufferViewIndex == -1) {
+                qCWarning(kuesa, "Missing buffers for sparse indices or values in accessor");
+                return false;
+            }
+
+            const QByteArray sparseIndicesData = context->bufferView(accessor.sparseIndices.bufferViewIndex).bufferData;
+            const QByteArray sparseValuesData = context->bufferView(accessor.sparseValues.bufferViewIndex).bufferData;
+            if (sparseIndicesData.isEmpty() || sparseValuesData.isEmpty()) {
+                qCWarning(kuesa, "Empty buffers for sparse indices or values in accessor");
+                return false;
+            }
+
+            int stride = 0;
+            if (!accessor.bufferData.isEmpty()) {
+                accessor.bufferData.detach();
+                const auto &bufferView = context->bufferView(accessor.bufferViewIndex);
+                stride = bufferView.byteStride;
+            }
+
+            switch (accessor.sparseIndices.type) {
+            case Qt3DRender::QAttribute::UnsignedByte:
+                if (!copySparseValues<quint8>(accessor.count, accessor.sparseCount, sparseIndicesData, sparseValuesData,
+                                              accessor.bufferData, accessor.offset, stride, accessor.type, accessor.dataSize)) {
+                    qCWarning(kuesa, "Failed to parse sparse accessor data");
+                    return false;
+                }
+                break;
+            case Qt3DRender::QAttribute::Byte:
+                if (!copySparseValues<qint8>(accessor.count, accessor.sparseCount, sparseIndicesData, sparseValuesData,
+                                             accessor.bufferData, accessor.offset, stride, accessor.type, accessor.dataSize)) {
+                    qCWarning(kuesa, "Failed to parse sparse accessor data");
+                    return false;
+                }
+                break;
+            case Qt3DRender::QAttribute::UnsignedShort:
+                if (!copySparseValues<quint16>(accessor.count, accessor.sparseCount, sparseIndicesData, sparseValuesData,
+                                              accessor.bufferData, accessor.offset, stride, accessor.type, accessor.dataSize)) {
+                    qCWarning(kuesa, "Failed to parse sparse accessor data");
+                    return false;
+                }
+                break;
+            case Qt3DRender::QAttribute::Short:
+                if (!copySparseValues<qint16>(accessor.count, accessor.sparseCount, sparseIndicesData, sparseValuesData,
+                                             accessor.bufferData, accessor.offset, stride, accessor.type, accessor.dataSize)) {
+                    qCWarning(kuesa, "Failed to parse sparse accessor data");
+                    return false;
+                }
+                break;
+            case Qt3DRender::QAttribute::UnsignedInt:
+                if (!copySparseValues<uint>(accessor.count, accessor.sparseCount, sparseIndicesData, sparseValuesData,
+                                            accessor.bufferData, accessor.offset, stride, accessor.type, accessor.dataSize)) {
+                    qCWarning(kuesa, "Failed to parse sparse accessor data");
+                    return false;
+                }
+                break;
+            case Qt3DRender::QAttribute::Int:
+                if (!copySparseValues<int>(accessor.count, accessor.sparseCount, sparseIndicesData, sparseValuesData,
+                                           accessor.bufferData, accessor.offset, stride, accessor.type, accessor.dataSize)) {
+                    qCWarning(kuesa, "Failed to parse sparse accessor data");
+                    return false;
+                }
+                break;
+            default:
+                qCWarning(kuesa, "Unhandled sparse accessor index type");
+                return false;
+            }
+        } else {
+            if (!json.contains(KEY_BUFFERVIEW)
+#if defined(KUESA_DRACO_COMPRESSION)
+                && !context->requiredExtensions().contains(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION)
+#endif
+            ) {
+                qCWarning(kuesa, "Missing bufferView index in accessor");
+                return false;
+            }
+        }
+
         context->addAccessor(accessor);
     }
 
