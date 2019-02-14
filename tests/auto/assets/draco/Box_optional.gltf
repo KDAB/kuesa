@@ -66,6 +66,7 @@
   ],
   "accessors": [
     {
+      "bufferView": 0,
       "componentType": 5123,
       "count": 36,
       "max": [
@@ -77,6 +78,7 @@
       "type": "SCALAR"
     },
     {
+      "bufferView": 0,
       "componentType": 5126,
       "count": 24,
       "max": [
@@ -92,6 +94,7 @@
       "type": "VEC3"
     },
     {
+      "bufferView": 0,
       "componentType": 5126,
       "count": 24,
       "max": [

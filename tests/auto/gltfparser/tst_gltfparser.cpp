@@ -855,6 +855,45 @@ private Q_SLOTS:
         // THEN
         QVERIFY(res != nullptr);
     }
+
+    void checkSparseAccessors_data()
+    {
+        QTest::addColumn<QString>("filePath");
+        QTest::addColumn<int>("bufferView");
+        QTest::addColumn<float>("originalValue");
+
+        QTest::newRow("With Original BufferView") << QString(ASSETS "SimpleSparseAccessor.gltf") << 1 << 1.f;
+        QTest::newRow("Without Original BufferView") << QString(ASSETS "SimpleSparseAccessorNoBufferView.gltf") << -1 << 0.f; // original should be 0s
+    }
+
+    void checkSparseAccessors()
+    {
+        QFETCH(QString, filePath);
+        QFETCH(int, bufferView);
+        QFETCH(float, originalValue);
+
+        SceneEntity scene;
+        GLTF2Context ctx;
+        GLTF2Parser parser(&scene);
+
+        parser.setContext(&ctx);
+
+        // WHEN
+        auto res = parser.parse(filePath);
+
+        // THEN
+        QVERIFY(res != nullptr);
+
+        auto accessor = parser.context()->accessor(1);
+        QCOMPARE(accessor.sparseCount, 3);
+        QCOMPARE(accessor.sparseValues.bufferViewIndex, 3);
+        QCOMPARE(accessor.sparseIndices.bufferViewIndex, 2);
+        QVERIFY(!accessor.bufferData.isEmpty());
+
+        QCOMPARE(accessor.bufferViewIndex, bufferView);
+        const float *data = reinterpret_cast<const float*>(accessor.bufferData.constData());
+        QCOMPARE(data[3], originalValue);
+    }
 };
 
 QTEST_APPLESS_MAIN(tst_GLTFParser)

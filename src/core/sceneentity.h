@@ -69,6 +69,7 @@ class KUESASHARED_EXPORT SceneEntity : public Qt3DCore::QEntity
 
 public:
     SceneEntity(Qt3DCore::QNode *parent = nullptr);
+    ~SceneEntity();
 
     AnimationClipCollection *animationClips() const;
     Q_INVOKABLE Qt3DAnimation::QAbstractAnimationClip *animationClip(const QString &name) const;

@@ -91,7 +91,8 @@ private:
 #endif
 
     GLTF2Context *m_context;
-    QHash<qint32, Qt3DRender::QBuffer *> m_qbuffers;
+    QHash<qint32, Qt3DRender::QBuffer *> m_qViewBuffers;
+    QHash<qint32, Qt3DRender::QBuffer *> m_qAccessorBuffers;
 };
 
 } // namespace GLTF2Import

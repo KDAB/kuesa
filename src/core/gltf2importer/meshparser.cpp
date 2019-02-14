@@ -240,11 +240,21 @@ bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
         const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
         const int byteStride = (!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
 
-        auto *buffer = m_qbuffers.value(accessor.bufferViewIndex, nullptr);
-        if (buffer == nullptr) {
-            buffer = new Qt3DRender::QBuffer;
-            buffer->setData(accessor.bufferData);
-            m_qbuffers.insert(accessor.bufferViewIndex, buffer);
+        Qt3DRender::QBuffer *buffer = nullptr;
+        if (accessor.sparseCount) {
+            buffer = m_qAccessorBuffers.value(accessorIndex, nullptr);
+            if (buffer == nullptr) {
+                buffer = new Qt3DRender::QBuffer;
+                buffer->setData(accessor.bufferData);
+                m_qAccessorBuffers.insert(accessorIndex, buffer);
+            }
+        } else {
+            buffer = m_qViewBuffers.value(accessor.bufferViewIndex, nullptr);
+            if (buffer == nullptr) {
+                buffer = new Qt3DRender::QBuffer;
+                buffer->setData(accessor.bufferData);
+                m_qViewBuffers.insert(accessor.bufferViewIndex, buffer);
+            }
         }
 
         Qt3DRender::QAttribute *attribute = new Qt3DRender::QAttribute(buffer,
@@ -289,14 +299,31 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
         if (attributeName == Qt3DRender::QAttribute::defaultColorAttributeName())
             hasColorAttr = true;
 
-        const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
-        const quint32 byteStride = (!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
+        quint32 byteStride = 0;
+        quint32 byteOffset = 0;
+        qint32 bufferIdx = -1;
+        if (accessor.bufferViewIndex >= 0) {
+            const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
+            byteStride = (!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
+            byteOffset = viewData.byteOffset;
+            bufferIdx = viewData.bufferIdx;
+        }
 
-        auto *buffer = m_qbuffers.value(accessor.bufferViewIndex, nullptr);
-        if (buffer == nullptr) {
-            buffer = new Qt3DRender::QBuffer;
-            buffer->setData(accessor.bufferData);
-            m_qbuffers.insert(accessor.bufferViewIndex, buffer);
+        Qt3DRender::QBuffer *buffer = nullptr;
+        if (accessor.sparseCount) {
+            buffer = m_qAccessorBuffers.value(accessorIndex, nullptr);
+            if (buffer == nullptr) {
+                buffer = new Qt3DRender::QBuffer;
+                buffer->setData(accessor.bufferData);
+                m_qAccessorBuffers.insert(accessor.bufferViewIndex, buffer);
+            }
+        } else {
+            buffer = m_qViewBuffers.value(accessor.bufferViewIndex, nullptr);
+            if (buffer == nullptr) {
+                buffer = new Qt3DRender::QBuffer;
+                buffer->setData(accessor.bufferData);
+                m_qViewBuffers.insert(accessor.bufferViewIndex, buffer);
+            }
         }
 
         Qt3DRender::QAttribute *attribute = new Qt3DRender::QAttribute(buffer,
@@ -308,9 +335,9 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
                                                                        byteStride);
         attribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
         // store some GLTF metadata for asset pipeline editor
-        attribute->setProperty("bufferIndex", viewData.bufferIdx);
+        attribute->setProperty("bufferIndex", bufferIdx);
         attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
-        attribute->setProperty("bufferViewOffset", viewData.byteOffset);
+        attribute->setProperty("bufferViewOffset", byteOffset);
         attribute->setProperty("bufferName", accessor.name);
         attribute->setProperty("semanticName", attrName);
         geometry->addAttribute(attribute);
