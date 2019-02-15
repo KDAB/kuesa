@@ -163,7 +163,9 @@ QVariant CollectionModel::data(const QModelIndex &index, int role) const
         // collection node
         switch (role) {
         case Qt::DisplayRole:
-            return m_collections.at(index.row())->metaObject()->className();
+            return QString(QLatin1String("%1 (%2)"))
+                    .arg(m_collections.at(index.row())->metaObject()->className())
+                    .arg(m_collections.at(index.row())->size());
         default:
             break;
         }
