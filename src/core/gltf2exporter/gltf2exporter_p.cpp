@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <draco/compression/encode.h>
 #if defined(KUESA_DRACO_COMPRESSION)
+#include <draco/compression/encode.h>
 #include "dracocompressor_p.h"
 #endif
 
@@ -50,19 +50,18 @@ class QGeometry;
 
 namespace Kuesa {
 namespace {
-QString generateUniqueFilename(const QDir& dir, QString filename)
+QString generateUniqueFilename(const QDir &dir, QString filename)
 {
     QFileInfo fi(filename);
     auto basename = fi.baseName();
     auto ext = fi.completeSuffix();
     int num = 1;
-    while(dir.exists(filename))
-    {
+    while (dir.exists(filename)) {
         filename = basename + "-" + QString::number(num) + "." + ext;
     }
     return filename;
 }
-}
+} // namespace
 
 void GLTF2ExportConfiguration::setMeshEncodingSpeed(int speed)
 {
