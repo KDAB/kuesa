@@ -111,9 +111,9 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
             }
 
             const BufferView &bufferViewData = context->bufferView(accessor.bufferViewIndex);
-            const qint32 byteOffset = accessor.offset;
+            const quint32 byteOffset = accessor.offset;
             const qint8 elemByteSize = sizeof(float);
-            const qint16 byteStride = (bufferViewData.byteStride > 0 ? bufferViewData.byteStride : accessor.dataSize * elemByteSize);
+            const quint32 byteStride = (!bufferViewData.bufferData.isEmpty() && bufferViewData.byteStride > 0 ? bufferViewData.byteStride : accessor.dataSize * elemByteSize);
 
             if (byteStride < accessor.dataSize * elemByteSize) {
                 qCWarning(kuesa, "InverseBindMatrix Buffer data byteStride doesn't match accessor dataSize and byte size for type");
@@ -121,7 +121,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
             }
 
             // bufferData was generated using the bufferView's byteOffset applied
-            const QByteArray bufferData = bufferViewData.bufferData;
+            const QByteArray bufferData = accessor.bufferData;
 
             if (byteOffset + accessor.count * byteStride > bufferData.size()) {
                 qCWarning(kuesa, "InverseBindMatrix Buffer data is too small");

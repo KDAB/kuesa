@@ -50,6 +50,7 @@ class GLTF2Context;
 
 struct Accessor {
     qint32 bufferViewIndex = 0;
+    QByteArray bufferData;
     Qt3DRender::QAttribute::VertexBaseType type = Qt3DRender::QAttribute::Float;
     quint8 dataSize = 0;
     qint32 count = 0;

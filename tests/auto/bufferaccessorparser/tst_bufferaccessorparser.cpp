@@ -49,6 +49,7 @@ private Q_SLOTS:
         json["componentType"] = GL_FLOAT;
         json["type"] = QStringLiteral("SCALAR");
         json["count"] = 0;
+        json["bufferView"] = 0;
         QJsonArray accessorsArray;
         accessorsArray.push_back(json);
 
@@ -125,6 +126,15 @@ private Q_SLOTS:
             json["componentType"] = GL_FLOAT;
             QTest::newRow("type_and_componentType_only") << json;
         }
+
+        {
+            // WHEN
+            QJsonObject json;
+            json["count"] = 128;
+            json["type"] = 128;
+            json["componentType"] = GL_FLOAT;
+            QTest::newRow("count_and_type_and_componentType_only") << json;
+        }
     }
 
     void shouldFailWhenDoesntHaveRequiredProperties()
@@ -168,6 +178,7 @@ private Q_SLOTS:
         json["componentType"] = componentType;
         json["type"] = QStringLiteral("SCALAR");
         json["count"] = 0;
+        json["bufferView"] = 0;
         QJsonArray accessorArray;
         accessorArray.push_back(json);
 
@@ -208,6 +219,7 @@ private Q_SLOTS:
         json["componentType"] = GL_FLOAT;
         json["type"] = dataType;
         json["count"] = 0;
+        json["bufferView"] = 0;
         QJsonArray accessorArray;
         accessorArray.push_back(json);
 
@@ -295,6 +307,7 @@ private Q_SLOTS:
         json["componentType"] = GL_FLOAT;
         json["type"] = "VEC2";
         json["count"] = 128;
+        json["bufferView"] = 0;
 
         Kuesa::GLTF2Import::GLTF2Context context;
         Kuesa::GLTF2Import::BufferAccessorParser parser;
@@ -314,7 +327,6 @@ private Q_SLOTS:
         QCOMPARE(firstAccessor.count, 128);
 
         QCOMPARE(firstAccessor.normalized, false);
-        QCOMPARE(firstAccessor.bufferViewIndex, 0);
         QCOMPARE(firstAccessor.offset, 0);
         QCOMPARE(firstAccessor.max.size(), 0);
         QCOMPARE(firstAccessor.min.size(), 0);
