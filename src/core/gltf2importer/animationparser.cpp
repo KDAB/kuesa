@@ -88,19 +88,19 @@ quint8 accessorDataTypeToBytes(Qt3DRender::QAttribute::VertexBaseType type)
 
 QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
 {
-    const BufferView &bufferViewData = ctx->bufferView(accessor.bufferViewIndex);
-
-    if (bufferViewData.bufferData.isEmpty()) {
+    if (accessor.bufferData.isEmpty()) {
         qCWarning(kuesa, "No Buffer found for accessor");
         return {};
     }
 
-    const QByteArray bufferData = bufferViewData.bufferData;
+    const BufferView &bufferViewData = ctx->bufferView(accessor.bufferViewIndex);
+
+    const QByteArray bufferData = accessor.bufferData;
 
     // BufferData was generated using the bufferView's byteOffset
     const qint32 byteOffset = accessor.offset;
     const quint8 elemByteSize = accessorDataTypeToBytes(accessor.type);
-    const qint16 byteStride = (bufferViewData.byteStride > 0 ? bufferViewData.byteStride : qint16(accessor.dataSize * elemByteSize));
+    const qint16 byteStride = (!bufferViewData.bufferData.isEmpty() && bufferViewData.byteStride > 0 ? bufferViewData.byteStride : qint16(accessor.dataSize * elemByteSize));
 
     if (byteStride < qint16(elemByteSize * accessor.dataSize)) {
         qCWarning(kuesa, "Buffer Data byteStride doesn't match accessor dataSize and byte size for type");

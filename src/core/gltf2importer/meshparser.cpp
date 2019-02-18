@@ -238,11 +238,12 @@ bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
         const qint32 accessorIndex = indices.toInt();
         const Accessor &accessor = m_context->accessor(accessorIndex);
         const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
+        const int byteStride = (!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
 
         auto *buffer = m_qbuffers.value(accessor.bufferViewIndex, nullptr);
         if (buffer == nullptr) {
             buffer = new Qt3DRender::QBuffer;
-            buffer->setData(viewData.bufferData);
+            buffer->setData(accessor.bufferData);
             m_qbuffers.insert(accessor.bufferViewIndex, buffer);
         }
 
@@ -251,7 +252,7 @@ bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
                                                                        accessor.dataSize,
                                                                        accessor.count,
                                                                        accessor.offset,
-                                                                       viewData.byteStride);
+                                                                       byteStride);
         attribute->setAttributeType(Qt3DRender::QAttribute::IndexAttribute);
         // store some GLTF metadata for asset pipeline editor
         attribute->setProperty("bufferIndex", viewData.bufferIdx);
@@ -289,11 +290,12 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
             hasColorAttr = true;
 
         const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
+        const quint32 byteStride = (!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
 
         auto *buffer = m_qbuffers.value(accessor.bufferViewIndex, nullptr);
         if (buffer == nullptr) {
             buffer = new Qt3DRender::QBuffer;
-            buffer->setData(viewData.bufferData);
+            buffer->setData(accessor.bufferData);
             m_qbuffers.insert(accessor.bufferViewIndex, buffer);
         }
 
@@ -303,7 +305,7 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
                                                                        accessor.dataSize,
                                                                        quint32(accessor.count),
                                                                        quint32(accessor.offset),
-                                                                       quint32(viewData.byteStride));
+                                                                       byteStride);
         attribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
         // store some GLTF metadata for asset pipeline editor
         attribute->setProperty("bufferIndex", viewData.bufferIdx);
