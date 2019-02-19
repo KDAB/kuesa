@@ -36,6 +36,8 @@
 #include <Qt3DAnimation/QAnimationClip>
 #include <Qt3DAnimation/QClock>
 
+#include <iostream>
+
 QT_USE_NAMESPACE
 using namespace Kuesa;
 using namespace Qt3DAnimation;

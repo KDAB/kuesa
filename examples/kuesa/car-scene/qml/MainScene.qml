@@ -138,7 +138,7 @@ Kuesa.SceneEntity {
             clip: modelData
             clock: wheelAnimators.clock
             running: scene.carSpeed > 0
-            loops: Kuesa.AnimationPlayer.Infinite
+            loops: 10
         }
     }
 
