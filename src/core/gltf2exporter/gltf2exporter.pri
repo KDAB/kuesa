@@ -29,16 +29,13 @@ INCLUDEPATH += $$PWD
 SOURCES += \
     $$PWD/gltf2exporter_p.cpp
 
-
 HEADERS += \
     $$PWD/gltf2exporter_p.h
 
-qtConfig(kuesa-draco) {
-    DEFINES += KUESA_DRACO_COMPRESSION
-    LIBS += -ldraco -ldracodec
-
+qtConfig(draco) {
     SOURCES += \
       $$PWD/dracocompressor_p.cpp
     HEADERS +=\
       $$PWD/dracocompressor_p.h
 }
+

@@ -47,7 +47,6 @@ SOURCES += \
     $$PWD/gltf2uri.cpp \
     $$PWD/meshparser_utils.cpp
 
-
 HEADERS += \
     $$PWD/bufferparser_p.h \
     $$PWD/bufferviewsparser_p.h \
@@ -69,9 +68,3 @@ HEADERS += \
     $$PWD/gltf2keys_p.h \
     $$PWD/gltf2uri_p.h \
     $$PWD/meshparser_utils_p.h
-
-qtConfig(kuesa-draco) {
-    DEFINES += KUESA_DRACO_COMPRESSION
-    LIBS += -ldraco -ldracodec
-
-}

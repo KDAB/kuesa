@@ -15,29 +15,35 @@ Kuesa requires Qt 3D 5.12.0 or later.
 
 ## Optional Dependencies
 
-If present on the system, Kuesa will detect and use the Draco mesh compression library.
+Kuesa can optionnally use the [Draco](https://github.com/google/draco) mesh compression library, 
+either through an embedded version, or a version present on the system.
 Draco can be used to dramatically decrease the size of glTF files.
 
 Kuesa supports the ``KHR_draco_mesh_compression`` glTF extension as defined here:
 https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_draco_mesh_compression/
 
-In order to install Draco, please visit https://github.com/google/draco
+By default, Kuesa will build with its own embedded version of the Draco library.
+This can be enforced with:
 
-If you have built Kuesa previously, you will need to run qmake again and
-update the existing build after installing Draco.
-
-If you have Draco installed but wish to build Kuesa without the support
-for it, run qmake again like this:
+    qmake kuesa.pro -- --draco=qt
+    
+To build Kuesa without any support for Draco, run qmake like this:
 
     qmake kuesa.pro -- --draco=no
+    
+To build Kuesa with an external version of Draco, run qmake like this:
 
+    qmake kuesa.pro -- --draco=system
+    
 If Draco is not installed in the default location on your system, you can
-set the DRACOSDK environment variable to point to where Draco is installed.
-Use the DRACOSDK_LIBS environment variable to point to the folder containing
+set the `DRACOSDK` environment variable to point to where Draco is installed.
+Use the `DRACOSDK_LIBS` environment variable to point to the folder containing
 the Draco libraries.
 
-In order to produce compressed glTF files, please use the gltf-pipeline tool at
-https://github.com/AnalyticalGraphicsInc/gltf-pipeline
+Note that Kuesa has last been tested with Draco at commit 8833cf878e6fd43c5a3fd6e4231212e25e25e632.
+
+The asset pipeline editor, provided with Kuesa, is able to compress existing glTF 2.0 
+assets with Draco.
 
 ## Components
 

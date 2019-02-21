@@ -26,6 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <qtkuesa-config.h>
 #include <QtTest/QtTest>
 #include <Kuesa/SceneEntity>
 #include <Kuesa/GLTF2Importer>

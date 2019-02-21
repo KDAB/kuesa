@@ -34,6 +34,4 @@ CONFIG += testcase console
 
 SOURCES += tst_gltfparser.cpp
 
-qtConfig(kuesa-draco) : DEFINES += KUESA_DRACO_COMPRESSION
-
 include(../assets/assets.pri)

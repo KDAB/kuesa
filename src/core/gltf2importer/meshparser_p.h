@@ -40,6 +40,7 @@
 #include <QtCore/qglobal.h>
 #include <QtCore/QVector>
 
+#include <qtkuesa-config.h>
 #include "bufferaccessorparser_p.h"
 
 QT_BEGIN_NAMESPACE

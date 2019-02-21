@@ -1,10 +1,10 @@
 /*
-    dracocompressor_p.h
+    draco_prefix_p.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Juan Jose Casafranca <juan.casafranca@kdab.com>
+    Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,46 +26,26 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_GLTF2EXPORTER_DRACOCOMPRESSOR_P_H
-#define KUESA_GLTF2EXPORTER_DRACOCOMPRESSOR_P_H
+#ifndef KUESA_DRACO_PREFIX_P_H
+#define KUESA_DRACO_PREFIX_P_H
 
 //
-//  NOTICE
-//  ------
+//  W A R N I N G
+//  -------------
 //
-// We mean it: this file is not part of the public API and could be
-// modified without notice
+// This file is not part of the Kuesa API.  It exists for the convenience
+// of other Kuesa classes.  This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
 //
 
-#include <Kuesa/private/draco_prefix_p.h>
-#include <qtkuesa-config.h>
-#include <draco/compression/encode.h>
-#include <memory>
-#include <vector>
-#include <QString>
+#if defined(_WIN32)
 
-namespace draco {
-class EncoderBuffer;
-}
+#if defined(ERROR)
+#undef ERROR
+#endif
 
-QT_BEGIN_NAMESPACE
+#endif
 
-namespace Qt3DRender {
-class QGeometry;
-}
-namespace Kuesa {
-class GLTF2ExportConfiguration;
-namespace DracoCompression {
-
-struct CompressedMesh {
-    std::unique_ptr<draco::EncoderBuffer> buffer;
-    std::vector<std::pair<QString, int>> attributes;
-};
-
-CompressedMesh compressMesh(const Qt3DRender::QGeometry &geometry, const GLTF2ExportConfiguration &);
-} // namespace DracoCompression
-} // namespace Kuesa
-
-QT_END_NAMESPACE
-
-#endif // KUESA_GLTF2EXPORTER_DRACOCOMPRESSOR_H
+#endif // KUESA_DRACO_PREFIX_P_H

@@ -26,6 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <Kuesa/private/draco_prefix_p.h>
+#include <qtkuesa-config.h>
 #include <draco/mesh/mesh.h>
 #include <draco/attributes/geometry_attribute.h>
 #include <draco/attributes/geometry_indices.h>

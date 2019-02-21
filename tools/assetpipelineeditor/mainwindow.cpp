@@ -26,6 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <qtkuesa-config.h>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "collectionmodel.h"

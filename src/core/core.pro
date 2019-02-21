@@ -34,6 +34,12 @@ DEFINES += QT_BUILD_KUESA_LIB
 
 QT += qml 3dcore 3dcore-private 3drender 3dquickextras 3danimation
 
+include($$OUT_PWD/qtkuesa-config.pri)
+qtConfig(draco) {
+    win32:CONFIG -= precompile_header
+    include(../3rdparty/draco/draco_dependency.pri)
+}
+
 include(core.pri)
 include(collections/collections.pri)
 include(gltf2importer/gltf2importer.pri)
@@ -41,11 +47,6 @@ include(gltf2exporter/gltf2exporter.pri)
 include(framegraphes/framegraphes.pri)
 include(fx/fx.pri)
 include(../3rdparty/mikktspace/mikktspace.pri)
-
-qtConfig(kuesa-draco) {
-    include($$OUT_PWD/qtkuesa-config.pri)
-    QMAKE_USE += draco
-}
 
 RESOURCES += \
     shaders.qrc
