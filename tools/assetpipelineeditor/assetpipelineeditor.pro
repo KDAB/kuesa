@@ -104,7 +104,5 @@ windows {
     RC_ICONS = ../../resources/kuesa.ico
 }
 
-qtConfig(kuesa-draco) : DEFINES += KUESA_DRACO_COMPRESSION
-
 target.path = $$[QT_INSTALL_BINS]
 INSTALLS += target

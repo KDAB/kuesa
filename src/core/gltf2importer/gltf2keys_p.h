@@ -39,6 +39,7 @@
 
 #include <QtCore/qglobal.h>
 #include <QtCore/QString>
+#include <qtkuesa-config.h>
 
 QT_BEGIN_NAMESPACE
 namespace Kuesa {

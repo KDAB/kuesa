@@ -26,7 +26,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <qtkuesa-config.h>
 #if defined(KUESA_DRACO_COMPRESSION)
+#include <Kuesa/private/draco_prefix_p.h>
 #include <draco/compression/decode.h>
 #endif
 

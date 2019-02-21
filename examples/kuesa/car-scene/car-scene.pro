@@ -66,7 +66,7 @@ car.files = \
     $${car_dir}/hex-normal.png \
     $${car_dir}/hex-normal.png.png
 
-qtConfig(kuesa-draco) {
+qtConfig(draco) {
     car.files += \
         $${car_dir}/compressed/DodgeViper.bin \
         $${car_dir}/compressed/DodgeViper.gltf
@@ -108,7 +108,7 @@ android {
     RESOURCES += \
         ../assets/models/car/car_images.qrc
 
-    qtConfig(kuesa-draco) {
+    qtConfig(draco) {
         RESOURCES += \
             ../assets/models/car/compressed/car.qrc
     } else {

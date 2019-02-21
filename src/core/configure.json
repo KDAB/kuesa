@@ -4,7 +4,7 @@
 
     "commandline": {
         "options": {
-            "draco": { "type": "enum", "values": [ "system", "no" ] }
+            "draco": { "type": "enum", "values": [ "system", "no", "qt" ] }
         }
     },
 
@@ -19,16 +19,19 @@
     },
 
     "features": {
-        "system-draco": {
-            "label": "Draco Compression",
-            "disable": "input.draco != 'system' && input.draco != ''",
-            "condition": "libs.draco",
-            "output": [ "privateFeature" ]
+        "draco": {
+            "label": "Draco",
+            "output": [
+                "publicFeature",
+                "feature",
+                { "type": "define", "name": "KUESA_DRACO_COMPRESSION" }
+            ]
         },
-        "kuesa-draco": {
-            "label": "Draco Compression",
-            "disable": "input.draco == 'no'",
-            "condition": "features.system-draco",
+        "system-draco": {
+            "label": "System Draco",
+            "enable": "input.draco == 'system'",
+            "disable": "input.draco == 'qt'",
+            "condition": "features.draco && libs.draco",
             "output": [
                 "publicFeature",
                 { "type": "define", "name": "KUESA_DRACO_COMPRESSION" }
@@ -43,7 +46,8 @@
         {
             "section": "Kuesa",
             "entries": [
-                "kuesa-draco"
+                "draco",
+                "system-draco"
             ]
         }
     ]

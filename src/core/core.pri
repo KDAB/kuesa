@@ -45,3 +45,6 @@ HEADERS += \
     $$PWD/animationplayer.h \
     $$PWD/skybox.h
 
+qtConfig(draco) {
+    HEADERS += $$PWD/draco_prefix_p.h
+}

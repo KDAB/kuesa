@@ -26,6 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <qtkuesa-config.h>
 #include "gltf2parser_p.h"
 #include "gltf2keys_p.h"
 #include "kuesa_p.h"
