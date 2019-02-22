@@ -50,6 +50,12 @@ class QGeometry;
 
 namespace Kuesa {
 namespace {
+template<typename T>
+bool isDataUri(const T &data)
+{
+    return data.startsWith(QLatin1Literal("data:"));
+}
+
 QString generateUniqueFilename(const QDir &dir, QString filename)
 {
     QFileInfo fi(filename);
@@ -123,7 +129,7 @@ public:
             QDir destination,
             const QJsonObject &rootObject,
             const GLTF2ExportConfiguration &conf,
-            const GLTF2Import::GLTF2Context &context)
+            GLTF2Import::GLTF2Context &context)
         : m_root(rootObject)
         , m_buffers(rootObject[GLTF2Import::KEY_BUFFERS].toArray())
         , m_bufferViews(rootObject[GLTF2Import::KEY_BUFFERVIEWS].toArray())
@@ -226,7 +232,7 @@ private:
     QDir m_basePath, m_destination;
 
     const GLTF2ExportConfiguration &m_conf;
-    const GLTF2Import::GLTF2Context &m_context;
+    GLTF2Import::GLTF2Context &m_context;
 
     // Compress a single mesh
     QJsonObject compressMesh(QJsonObject mesh_json, int mesh_idx)
@@ -476,7 +482,7 @@ private:
                 const auto buf = m_buffers[buffer_idx].toObject();
                 const auto uri = buf[GLTF2Import::KEY_URI].toString();
 
-                if (QFileInfo::exists(m_basePath.absoluteFilePath(uri))) {
+                if (QFileInfo::exists(m_basePath.absoluteFilePath(uri)) || isDataUri(uri)) {
                     BufferParts p;
                     p.offset = bv[GLTF2Import::KEY_BYTEOFFSET].toInt();
                     p.length = bv[GLTF2Import::KEY_BYTELENGTH].toInt();
@@ -485,8 +491,6 @@ private:
                     bufferParts[buffer_idx].insert(p);
                 } else {
                     m_errors << QStringLiteral("File does not exist: %1").arg(uri);
-                    // TODO Maybe we should download it and strip the downloaded asset
-                    // There's also the base64 case
                 }
             }
         }
@@ -499,14 +503,18 @@ private:
         for (const auto &buffer : bufferParts) {
             QJsonObject buf = m_buffers[buffer.first].toObject();
 
-            auto uri = buf[GLTF2Import::KEY_URI].toString();
-            QFile source_f(m_basePath.absoluteFilePath(uri));
-            if (!source_f.open(QIODevice::ReadOnly)) {
-                m_errors << QStringLiteral("Could not open %1 for reading").arg(source_f.fileName());
+            const auto uri = buf[GLTF2Import::KEY_URI].toString();
+            const bool is_embedded = isDataUri(uri);
+
+            bool success = false;
+            auto data = GLTF2Import::BufferParser::dataFromUri(uri, m_basePath, &m_context, success);
+            if (!success) {
+                if (is_embedded)
+                    m_errors << QStringLiteral("Could not read embedded buffer");
+                else
+                    m_errors << QStringLiteral("Could not read %1").arg(m_basePath.absoluteFilePath(uri));
                 continue;
             }
-            QByteArray data = source_f.readAll();
-            source_f.close();
 
             int removed_length = 0;
 
@@ -521,13 +529,23 @@ private:
                 // Actually we could precompute this case...
                 buffersToRemove.push_back(buffer.first);
             } else {
-                QDir{}.mkpath(QFileInfo(m_destination, uri).absolutePath());
-                QFile target_f(m_destination.filePath(uri));
-                if (!target_f.open(QIODevice::WriteOnly)) {
-                    m_errors << QStringLiteral("Could not open %1 for writing").arg(target_f.fileName());
-                    continue;
+                if (!is_embedded) {
+                    QDir{}.mkpath(QFileInfo(m_destination, uri).absolutePath());
+                    QFile target_f(m_destination.filePath(uri));
+                    if (!target_f.open(QIODevice::WriteOnly)) {
+                        m_errors << QStringLiteral("Could not open %1 for writing").arg(target_f.fileName());
+                        continue;
+                    }
+                    const auto written = target_f.write(data);
+                    if (written != data.size()) {
+                        m_errors << QStringLiteral("Could not write buffer %1 entirely").arg(target_f.fileName());
+                        continue;
+                    }
+                } else {
+                    QByteArray output{ "data:application/octet-stream;base64," };
+                    output += data.toBase64();
+                    buf[GLTF2Import::KEY_URI] = QString::fromLatin1(output);
                 }
-                target_f.write(data);
 
                 const auto len_it = buf.find(GLTF2Import::KEY_BYTELENGTH);
                 if (len_it != buf.end()) {
@@ -700,6 +718,10 @@ void GLTF2Exporter::copyURIs(const QDir &source, const QDir &target, const QJson
         const auto &buffer = val.toObject();
         auto uri_it = buffer.find(GLTF2Import::KEY_URI);
         if (uri_it == buffer.end())
+            return;
+
+        const auto uri = uri_it->toString();
+        if (isDataUri(uri))
             return;
 
         QFile srcFile(source.absoluteFilePath(uri_it->toString()));
