@@ -90,7 +90,7 @@ class KUESA_PRIVATE_EXPORT GLTF2Exporter : public QObject
     Q_PROPERTY(SceneEntity *scene READ scene WRITE setScene NOTIFY sceneChanged)
 
 public:
-    class Export
+    class KUESA_PRIVATE_EXPORT Export
     {
     public:
         bool success() const;
