@@ -1,10 +1,10 @@
 /*
-    bufferparser_p.h
+    gltf2uri_p.h
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,8 +26,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_GLTF2IMPORT_BUFFERPARSER_P_H
-#define KUESA_GLTF2IMPORT_BUFFERPARSER_P_H
+#ifndef KUESA_GLTF2IMPORT_GLTF2URI_P_H
+#define KUESA_GLTF2IMPORT_GLTF2URI_P_H
+
+#include <QString>
+#include <QDir>
+#include <Kuesa/private/kuesa_global_p.h>
 
 //
 //  NOTICE
@@ -37,31 +41,37 @@
 // modified without notice
 //
 
-#include <QVector>
-#include <QJsonObject>
-#include <QDir>
-
 QT_BEGIN_NAMESPACE
+
+class QString;
+class QDir;
 
 namespace Kuesa {
 namespace GLTF2Import {
-
-class GLTF2Context;
-
-class Q_AUTOTEST_EXPORT BufferParser
-{
-public:
-    explicit BufferParser(const QDir &basePath);
-
-    bool parse(const QJsonArray &buffersArray, GLTF2Context *context) const;
-
-private:
-    QDir m_basePath;
+namespace Uri {
+enum class Kind {
+    Path,
+    Data
 };
 
+KUESA_PRIVATE_EXPORT
+Uri::Kind kind(const QString &uri);
+
+KUESA_PRIVATE_EXPORT
+QUrl absoluteUrl(const QString &uri, const QDir &basePath);
+
+KUESA_PRIVATE_EXPORT
+QString localFile(const QString &uri, const QDir &basePath);
+
+KUESA_PRIVATE_EXPORT
+QByteArray parseEmbeddedData(const QString &uri);
+
+KUESA_PRIVATE_EXPORT
+QByteArray fetchData(const QString &uri, const QDir &basePath, bool &success);
+} // namespace Uri
 } // namespace GLTF2Import
 } // namespace Kuesa
 
 QT_END_NAMESPACE
 
-#endif // KUESA_GLTF2IMPORT_BUFFERPARSER_P_H
+#endif // KUESA_GLTF2IMPORT_GLTF2URI_P_H

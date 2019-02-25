@@ -36,6 +36,7 @@
 #include "gltf2exporter_p.h"
 #include "gltf2context_p.h"
 #include "gltf2keys_p.h"
+#include "gltf2uri_p.h"
 #include "gltf2importer.h"
 #include "kuesa_p.h"
 #include <set>
@@ -50,11 +51,6 @@ class QGeometry;
 
 namespace Kuesa {
 namespace {
-template<typename T>
-bool isDataUri(const T &data)
-{
-    return data.startsWith(QLatin1Literal("data:"));
-}
 
 QString generateUniqueFilename(const QDir &dir, QString filename)
 {
@@ -476,6 +472,7 @@ private:
     // Removes the unused data in buffers
     void cleanupBuffers(const QJsonArray &removedBufferViews)
     {
+        using namespace GLTF2Import;
         std::map<int, std::set<BufferParts>> bufferParts;
         // List and order all the parts of the buffers to remove
         for (const QJsonValue &bv_value : removedBufferViews) {
@@ -485,8 +482,9 @@ private:
                 const int buffer_idx = it.value().toInt();
                 const auto buf = m_buffers[buffer_idx].toObject();
                 const auto uri = buf[GLTF2Import::KEY_URI].toString();
+                const bool is_embedded = Uri::kind(uri) == Uri::Kind::Data;
 
-                if (QFileInfo::exists(m_basePath.absoluteFilePath(uri)) || isDataUri(uri)) {
+                if (is_embedded || QFileInfo::exists(Uri::localFile(uri, m_basePath))) {
                     BufferParts p;
                     p.offset = bv[GLTF2Import::KEY_BYTEOFFSET].toInt();
                     p.length = bv[GLTF2Import::KEY_BYTELENGTH].toInt();
@@ -508,10 +506,10 @@ private:
             QJsonObject buf = m_buffers[buffer.first].toObject();
 
             const auto uri = buf[GLTF2Import::KEY_URI].toString();
-            const bool is_embedded = isDataUri(uri);
+            const bool is_embedded = Uri::kind(uri) == Uri::Kind::Data;
 
             bool success = false;
-            auto data = GLTF2Import::BufferParser::dataFromUri(uri, m_basePath, &m_context, success);
+            auto data = Uri::fetchData(uri, m_basePath, success);
             if (!success) {
                 if (is_embedded)
                     m_errors << QStringLiteral("Could not read embedded buffer");
@@ -723,6 +721,7 @@ auto GLTF2Exporter::saveInFolder(
 // Copies all the files referenced in an array of GLTF objects
 void GLTF2Exporter::copyURIs(const QDir &source, const QDir &target, const QJsonArray &array)
 {
+    using namespace GLTF2Import;
     for (const auto &val : array) {
         const auto &buffer = val.toObject();
         auto uri_it = buffer.find(GLTF2Import::KEY_URI);
@@ -730,10 +729,10 @@ void GLTF2Exporter::copyURIs(const QDir &source, const QDir &target, const QJson
             return;
 
         const auto uri = uri_it->toString();
-        if (isDataUri(uri))
+        if (Uri::kind(uri) != Uri::Kind::Path)
             return;
 
-        QFile srcFile(source.absoluteFilePath(uri_it->toString()));
+        QFile srcFile(Uri::localFile(uri_it->toString(), source));
         const QFileInfo destFile(target, uri_it->toString());
 
         if (!destFile.exists()) {

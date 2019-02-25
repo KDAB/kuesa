@@ -43,48 +43,6 @@ class tst_BufferParser : public QObject
 
 private Q_SLOTS:
 
-    void checkUriParsing_data()
-    {
-        QTest::addColumn<QString>("uri");
-        QTest::addColumn<int>("size");
-        QTest::addColumn<QByteArray>("bufferData");
-        QTest::addColumn<bool>("succeeded");
-
-        QTest::newRow("Valid Data URI") << QStringLiteral("data:application/octet-stream;base64,S3Vlc2E=")
-                                        << 5
-                                        << QByteArray("Kuesa")
-                                        << true;
-        QTest::newRow("Valid File URI") << QStringLiteral("bufferparser.bin")
-                                        << 1
-                                        << QByteArray("1")
-                                        << true;
-        QTest::newRow("Non Existent File") << QStringLiteral("bufferparser_nothere.bin")
-                                           << 0
-                                           << QByteArray()
-                                           << false;
-    }
-
-    void checkUriParsing()
-    {
-        // GIVEN
-        QFETCH(QString, uri);
-        QFETCH(int, size);
-        QFETCH(QByteArray, bufferData);
-        QFETCH(bool, succeeded);
-
-        // WHEN
-        GLTF2Context context;
-        bool success;
-        auto data = BufferParser::dataFromUri(uri, QDir(ASSETS), &context, success);
-
-        // THEN
-        QCOMPARE(success, succeeded);
-        if (success) {
-            QCOMPARE(size, data.size());
-            QCOMPARE(bufferData, data);
-        }
-    }
-
     void checkParse_data()
     {
         QTest::addColumn<QString>("filePath");

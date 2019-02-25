@@ -1,0 +1,23 @@
+[
+    {
+        "uri": "anImage.png"
+    },
+    {
+        "uri": "file:anImage.png"
+    },
+    {
+        "uri": "file:/anImage.png"
+    },
+    {
+        "uri": "file:///anImage.png"
+    },
+    {
+        "uri": ":/anImage.png"
+    },
+    {
+        "uri": "qrc:/anImage.png"
+    },
+    {
+        "uri": "qrc:///anImage.png"
+    }
+]

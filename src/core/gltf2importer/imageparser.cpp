@@ -27,6 +27,7 @@
 */
 
 #include "imageparser_p.h"
+#include "gltf2uri_p.h"
 
 #include <kuesa_p.h>
 #include <gltf2context_p.h>
@@ -67,24 +68,18 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
         auto image = Image();
         if (bufferViewValue.isUndefined()) {
             const QString uriString = uriValue.toString();
-            if (uriString.left(5).toLower() == QLatin1String("data:")) {
-                image.data = context->parseUri(uriString);
+            switch (Uri::kind(uriString)) {
+            case Uri::Kind::Data: {
+                image.data = Uri::parseEmbeddedData(uriString);
                 if (image.data.isEmpty())
                     return false;
                 image.url = uriString;
-            } else {
-                const QString absolutePath = m_basePath.absoluteFilePath(uriString);
-
-                QUrl sourceUrl(absolutePath);
-                // Handling the case of Qt resources
-                // QUrl(":/path") actually gives QUrl("")
-                // However QUrl("qrc:/path) is valid
-                if (absolutePath.startsWith(QLatin1String(":/")))
-                    sourceUrl = QUrl(QStringLiteral("qrc") + absolutePath);
-                else
-                    sourceUrl = QUrl::fromLocalFile(absolutePath);
-
-                image.url = sourceUrl;
+                break;
+            }
+            case Uri::Kind::Path: {
+                image.url = Uri::absoluteUrl(uriString, m_basePath);
+                break;
+            }
             }
         } else {
             const BufferView bufferData = context->bufferView(bufferViewValue.toInt());

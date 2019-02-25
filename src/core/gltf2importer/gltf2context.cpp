@@ -340,27 +340,6 @@ void GLTF2Context::setRequiredExtensions(const QStringList &requiredExtensions)
     m_requiredExtensions = requiredExtensions;
 }
 
-QByteArray GLTF2Context::parseUri(const QString &uri)
-{
-    QByteArray data = uri.toLatin1();
-
-    // checking format for https://tools.ietf.org/html/rfc2397
-    if (!data.startsWith(QByteArray("data:")))
-        return {};
-
-    const int separatorPos = data.indexOf(',');
-    if (separatorPos == -1)
-        return {};
-
-    const QByteArray header = data.left(separatorPos);
-    if (!header.endsWith(QByteArray(";base64"))) {
-        qCWarning(kuesa, "URI Embedded data currently only supports Base64 encoding");
-        return {};
-    }
-
-    return QByteArray::fromBase64(data.remove(0, separatorPos + 1));
-}
-
 const QJsonDocument &GLTF2Context::json() const
 {
     return m_json;

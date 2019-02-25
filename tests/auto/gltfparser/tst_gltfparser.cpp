@@ -33,6 +33,7 @@
 #include <QString>
 #include <Kuesa/SceneEntity>
 #include <Kuesa/private/gltf2parser_p.h>
+#include <Kuesa/private/gltf2uri_p.h>
 #include <Qt3DCore/QEntity>
 #include <Qt3DCore/QComponent>
 #include <Kuesa/MetallicRoughnessMaterial>
@@ -91,8 +92,7 @@ private Q_SLOTS:
         QFETCH(bool, success);
 
         // WHEN
-        GLTF2Context ctx;
-        auto res = ctx.parseUri(uri);
+        auto res = Uri::parseEmbeddedData(uri);
 
         // THEN
         QCOMPARE(!res.isNull(), success);
