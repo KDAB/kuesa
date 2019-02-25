@@ -58,12 +58,12 @@ bool isDataUri(const T &data)
 
 QString generateUniqueFilename(const QDir &dir, QString filename)
 {
-    QFileInfo fi(filename);
-    auto basename = fi.baseName();
-    auto ext = fi.completeSuffix();
+    const QFileInfo fi(filename);
+    const auto basename = fi.baseName();
+    const auto ext = fi.completeSuffix();
     int num = 1;
     while (dir.exists(filename)) {
-        filename = basename + "-" + QString::number(num) + "." + ext;
+        filename = QStringLiteral("%1-%2.%3").arg(basename).arg(num).arg(ext);
     }
     return filename;
 }
@@ -140,9 +140,15 @@ public:
         , m_newBufferViewIndex(m_bufferViews.size()) // Indice of where the bufferView are added
         , m_basePath(source)
         , m_destination(destination)
+        , m_compressedBufferFilename(generateUniqueFilename(m_basePath, QStringLiteral("compressedBuffer.bin")))
         , m_conf(conf)
         , m_context(context)
     {
+    }
+
+    const QString &compressedBufferFilename() const noexcept
+    {
+        return m_compressedBufferFilename;
     }
 
     QJsonObject compress()
@@ -161,11 +167,8 @@ public:
 
         // 2. Save all the compressed data in a monolithic buffer and add it to the buffer list
         {
-
-            const auto defaultCompressedBufferFile = generateUniqueFilename(m_basePath, QStringLiteral("compressedBuffer.bin"));
-
             // TODO maybe warn the user of unused assets ?
-            QFile compressedBufferFile(m_destination.filePath({ defaultCompressedBufferFile }));
+            QFile compressedBufferFile(m_destination.filePath({ m_compressedBufferFilename }));
             if (compressedBufferFile.open(QIODevice::WriteOnly)) {
                 compressedBufferFile.write(m_compressedBuffer);
                 compressedBufferFile.close();
@@ -176,7 +179,7 @@ public:
 
             QJsonObject compressedBufferObject;
             compressedBufferObject[GLTF2Import::KEY_BYTELENGTH] = m_compressedBuffer.size();
-            compressedBufferObject[GLTF2Import::KEY_URI] = defaultCompressedBufferFile;
+            compressedBufferObject[GLTF2Import::KEY_URI] = m_compressedBufferFilename;
             m_buffers.push_back(compressedBufferObject);
         }
 
@@ -230,6 +233,7 @@ private:
     int m_newBufferViewIndex;
     std::set<int> m_accessorsToClean;
     QDir m_basePath, m_destination;
+    QString m_compressedBufferFilename;
 
     const GLTF2ExportConfiguration &m_conf;
     GLTF2Import::GLTF2Context &m_context;
@@ -662,9 +666,9 @@ void GLTF2Exporter::setContextFromImporter(GLTF2Importer *importer)
     m_context = importer->m_context;
 }
 
-QJsonObject GLTF2Exporter::saveInFolder(
+auto GLTF2Exporter::saveInFolder(
         const QDir &source,
-        const QDir &target)
+        const QDir &target) -> Export
 {
     m_errors.clear();
     if (!m_context) {
@@ -678,6 +682,7 @@ QJsonObject GLTF2Exporter::saveInFolder(
     }
 
     QJsonObject rootObject = m_context->json().object();
+    QString compressedBuffer;
     if (rootObject.isEmpty()) {
         m_errors << QStringLiteral("Nothing to save");
         return {};
@@ -687,6 +692,7 @@ QJsonObject GLTF2Exporter::saveInFolder(
     if (m_conf.meshCompressionEnabled()) {
         GLTF2DracoCompressor compressor(source, target, rootObject, m_conf, *m_context);
         rootObject = compressor.compress();
+        compressedBuffer = compressor.compressedBufferFilename();
         if (rootObject.empty()) {
             m_errors << QStringLiteral("Draco compression failed");
             return {};
@@ -708,7 +714,10 @@ QJsonObject GLTF2Exporter::saveInFolder(
         }
     }
 
-    return rootObject;
+    Export e;
+    e.m_json = std::move(rootObject);
+    e.m_compressedBufferFilename = std::move(compressedBuffer);
+    return e;
 }
 
 // Copies all the files referenced in an array of GLTF objects
@@ -750,6 +759,21 @@ void GLTF2Exporter::setScene(SceneEntity *scene)
 
     m_scene = scene;
     emit sceneChanged(m_scene);
+}
+
+bool GLTF2Exporter::Export::success() const
+{
+    return !m_json.empty();
+}
+
+const QJsonObject &GLTF2Exporter::Export::json() const
+{
+    return m_json;
+}
+
+const QString &GLTF2Exporter::Export::compressedBufferFilename() const
+{
+    return m_compressedBufferFilename;
 }
 
 } // namespace Kuesa

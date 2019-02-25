@@ -70,7 +70,7 @@ private Q_SLOTS:
         QString asset(ASSETS "Box.gltf");
         QDir tmp = setupTestFolder();
 
-        QJsonObject new_asset;
+        GLTF2Exporter::Export exported;
         // WHEN
         {
             auto res = parser.parse(asset);
@@ -86,22 +86,20 @@ private Q_SLOTS:
             exporter.setScene(&scene);
             exporter.setConfiguration(configuration);
 
-            QFile asset_file(asset);
-            asset_file.open(QIODevice::ReadOnly);
-            new_asset = exporter.saveInFolder(
+            exported = exporter.saveInFolder(
                     QDir(ASSETS),
                     tmp);
         }
 
         // THEN
         {
-            QVERIFY(!new_asset.empty());
+            QVERIFY(exported.success());
 
             ctx = GLTF2Context{};
-            auto res = parser.parse(QJsonDocument{ new_asset }.toJson(), tmp.absolutePath());
+            auto res = parser.parse(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath());
             QVERIFY(res != nullptr);
 
-            QVERIFY(tmp.exists("compressedBuffer.bin"));
+            QVERIFY(tmp.exists(exported.compressedBufferFilename()));
             QVERIFY(!tmp.exists("Box0.bin"));
             QCOMPARE(tmp.count(), 1U);
         }
@@ -119,7 +117,7 @@ private Q_SLOTS:
         QString asset(ASSETS "car/DodgeViper.gltf");
         QDir tmp = setupTestFolder();
 
-        QJsonObject new_asset;
+        GLTF2Exporter::Export exported;
         // WHEN
         {
             auto res = parser.parse(asset);
@@ -138,9 +136,7 @@ private Q_SLOTS:
             exporter.setScene(&scene);
             exporter.setConfiguration(configuration);
 
-            QFile asset_file(asset);
-            asset_file.open(QIODevice::ReadOnly);
-            new_asset = exporter.saveInFolder(
+            exported = exporter.saveInFolder(
                     source_dir,
                     tmp);
 
@@ -151,10 +147,10 @@ private Q_SLOTS:
 
         // THEN
         {
-            QVERIFY(!new_asset.empty());
+            QVERIFY(exported.success());
 
             // Check that a compressed buffer is created
-            QVERIFY(tmp.exists("compressedBuffer.bin"));
+            QVERIFY(tmp.exists(exported.compressedBufferFilename()));
 
             // Check that all the remaining data is correctly copied
             QVERIFY(tmp.exists("DodgeViper.bin"));
@@ -170,12 +166,13 @@ private Q_SLOTS:
             QVERIFY(dodge_info.size() == 21898);
 
             // Compressed mesh is less than a megabyte
-            QFileInfo comp_info(tmp.filePath("compressedBuffer.bin"));
+            QFileInfo comp_info(tmp.filePath(exported.compressedBufferFilename()));
+            QVERIFY(comp_info.exists());
             QVERIFY(comp_info.size() < 1024 * 1024);
 
             // Check that we can reload the mesh properly
             ctx = GLTF2Context{};
-            auto res = parser.parse(QJsonDocument{ new_asset }.toJson(), tmp.absolutePath());
+            auto res = parser.parse(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath());
             QVERIFY(res != nullptr);
         }
     }
@@ -196,7 +193,7 @@ private Q_SLOTS:
 
         QDir tmp = setupTestFolder();
 
-        QJsonObject new_asset;
+        GLTF2Exporter::Export exported;
         // WHEN
         {
             auto res = parser.parse(asset);
@@ -212,9 +209,7 @@ private Q_SLOTS:
             exporter.setScene(&scene);
             exporter.setConfiguration(configuration);
 
-            QFile asset_file(asset);
-            asset_file.open(QIODevice::ReadOnly);
-            new_asset = exporter.saveInFolder(
+            exported = exporter.saveInFolder(
                     QDir(ASSETS "draco"),
                     tmp);
         }
@@ -222,10 +217,73 @@ private Q_SLOTS:
         // THEN
         {
             // JSON hasn't changed
-            QVERIFY(asset_json == new_asset);
+            QVERIFY(asset_json == exported.json());
 
             // Referenced buffer Box0.bin is copied
-            QCOMPARE(tmp.count(), 1);
+            QCOMPARE(tmp.count(), 1U);
+        }
+    }
+
+    void compressedBufferFilenameIncrement()
+    {
+        SceneEntity scene;
+        GLTF2Context ctx;
+
+        GLTF2Parser parser(&scene);
+        parser.setContext(&ctx);
+
+        // Copy assets in a tmp dir
+        QDir tmp = setupTestFolder();
+        tmp.mkdir("sub");
+
+        auto sub = tmp;
+        sub.cd("sub");
+
+        for (QString filename : { "Box.gltf", "Box0.bin" }) {
+            const QString asset(ASSETS + filename);
+            QFile(asset).copy(tmp.absolutePath() + "/" + filename);
+        }
+
+        // Create a fake file named compressedBuffer.bin
+        {
+            QFile existingFile(tmp.absolutePath() + "/compressedBuffer.bin");
+            existingFile.open(QIODevice::WriteOnly);
+            existingFile.write("\0", 1);
+        }
+
+        GLTF2Exporter::Export exported;
+        // WHEN
+        {
+            const QString asset = tmp.absolutePath() + "/Box.gltf";
+            auto res = parser.parse(asset);
+            QVERIFY(res != nullptr);
+
+            GLTF2ExportConfiguration configuration;
+            configuration.setMeshCompressionEnabled(true);
+            configuration.setAttributeQuantizationLevel(GLTF2ExportConfiguration::Position, 5);
+            configuration.setAttributeQuantizationLevel(GLTF2ExportConfiguration::Normal, 5);
+
+            GLTF2Exporter exporter;
+            exporter.setContext(&ctx);
+            exporter.setScene(&scene);
+            exporter.setConfiguration(configuration);
+
+            exported = exporter.saveInFolder(
+                    tmp,
+                    sub);
+        }
+
+        // THEN
+        {
+            QVERIFY(exported.success());
+            QVERIFY(exported.compressedBufferFilename() == "compressedBuffer-1.bin");
+            QVERIFY(sub.exists(exported.compressedBufferFilename()));
+            QVERIFY(!sub.exists("Box0.bin"));
+            QCOMPARE(sub.count(), 1U);
+
+            ctx = GLTF2Context{};
+            auto res = parser.parse(QJsonDocument{ exported.json() }.toJson(), sub.absolutePath());
+            QVERIFY(res != nullptr);
         }
     }
 #endif
