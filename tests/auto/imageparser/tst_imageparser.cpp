@@ -162,6 +162,61 @@ private Q_SLOTS:
         QCOMPARE(image.url.scheme(), QStringLiteral("qrc"));
         QCOMPARE(image.url, QUrl("qrc:/anImage.png"));
     }
+
+    void checkAssetsMixedUris()
+    {
+        // GIVEN
+        GLTF2Context context;
+        ImageParser parser(QDir(QString(ASSETS "aBasePath")));
+        QFile file(QStringLiteral(ASSETS "imageparser_mixed.gltf"));
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        QVERIFY(!json.isNull() && json.isArray());
+
+        // WHEN
+        const bool success = parser.parse(json.array(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.imagesCount(), 7);
+        {
+            Image image = context.image(0);
+            QCOMPARE(image.url.scheme(), QStringLiteral("file"));
+            QCOMPARE(image.url, QUrl::fromLocalFile(ASSETS "aBasePath/anImage.png"));
+        }
+        {
+            Image image = context.image(1);
+            QCOMPARE(image.url.scheme(), QStringLiteral("file"));
+            QCOMPARE(image.url, QUrl::fromLocalFile(ASSETS "aBasePath/anImage.png"));
+        }
+        {
+            Image image = context.image(2);
+            QCOMPARE(image.url.scheme(), QStringLiteral("file"));
+            QCOMPARE(image.url, QUrl("file:///anImage.png"));
+        }
+        {
+            Image image = context.image(3);
+            QCOMPARE(image.url.scheme(), QStringLiteral("file"));
+            QCOMPARE(image.url, QUrl("file:///anImage.png"));
+        }
+        {
+            Image image = context.image(4);
+            QCOMPARE(image.url.scheme(), QStringLiteral("qrc"));
+            QCOMPARE(image.url, QUrl("qrc:/anImage.png"));
+        }
+        {
+            Image image = context.image(5);
+            QCOMPARE(image.url.scheme(), QStringLiteral("qrc"));
+            QCOMPARE(image.url, QUrl("qrc:/anImage.png"));
+        }
+        {
+            Image image = context.image(6);
+            QCOMPARE(image.url.scheme(), QStringLiteral("qrc"));
+            QCOMPARE(image.url, QUrl("qrc:///anImage.png"));
+        }
+    }
 };
 
 QTEST_APPLESS_MAIN(tst_ImageParser)

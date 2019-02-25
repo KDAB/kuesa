@@ -34,6 +34,7 @@
 #include <QDebug>
 
 #include "gltf2context_p.h"
+#include "gltf2uri_p.h"
 #include "kuesa_p.h"
 
 QT_BEGIN_NAMESPACE
@@ -83,7 +84,7 @@ bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) 
         bool readSuccess = false;
 
         if (!uri.isNull()) {
-            const QByteArray data = dataFromUri(uri, m_basePath, context, readSuccess);
+            const QByteArray data = Uri::fetchData(uri, m_basePath, readSuccess);
             if (readSuccess) {
                 const bool hasExpectedSize = data.size() == expectedSize;
                 if (hasExpectedSize) {
@@ -103,24 +104,4 @@ bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) 
 
     return bufferDataSize > 0;
 }
-
-QByteArray BufferParser::dataFromUri(const QString &uri, const QDir &basePath, GLTF2Context *context, bool &success)
-{
-    if (uri.left(5).toLower() == QLatin1String("data:")) {
-        auto data = context->parseUri(uri);
-        success = !data.isEmpty();
-        return data;
-    } else {
-        const QString absPath = basePath.absoluteFilePath(uri);
-        QFile dataFile(absPath);
-        success = dataFile.open(QIODevice::ReadOnly);
-        if (success)
-            return dataFile.readAll();
-        else
-            qCWarning(kuesa) << "Failed to open" << uri;
-    }
-
-    return {};
-}
-
 QT_END_NAMESPACE
