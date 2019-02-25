@@ -90,6 +90,19 @@ class KUESA_PRIVATE_EXPORT GLTF2Exporter : public QObject
     Q_PROPERTY(SceneEntity *scene READ scene WRITE setScene NOTIFY sceneChanged)
 
 public:
+    class Export
+    {
+    public:
+        bool success() const;
+        const QJsonObject &json() const;
+        const QString &compressedBufferFilename() const;
+
+    private:
+        friend class GLTF2Exporter;
+        QJsonObject m_json;
+        QString m_compressedBufferFilename;
+    };
+
     explicit GLTF2Exporter(QObject *parent = nullptr);
 
     SceneEntity *scene() const;
@@ -107,7 +120,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void setScene(SceneEntity *scene);
 
-    QJsonObject saveInFolder(
+    Export saveInFolder(
             const QDir &sourceFolder,
             const QDir &targetFolder);
 

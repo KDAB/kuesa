@@ -130,19 +130,19 @@ void ExportDialog::onSave()
         m_exporter.setConfiguration(conf);
     }
 
-    const auto rootObject = m_exporter.saveInFolder(orig_dir, target_dir);
+    const auto exported = m_exporter.saveInFolder(orig_dir, target_dir);
 
     for (const auto &error : m_exporter.errors()) {
         ui->errorLog->appendPlainText(error);
         ui->errorLog->appendPlainText(QStringLiteral("\n"));
     }
-    if (rootObject.empty()) {
+    if (!exported.success()) {
         return;
     }
 
     QFile outFile(m_targetFile);
     if (outFile.open(QIODevice::WriteOnly)) {
-        outFile.write(QJsonDocument(rootObject).toJson());
+        outFile.write(QJsonDocument(exported.json()).toJson());
 
         ui->errorLog->appendPlainText(tr("Successful export."));
     } else {
