@@ -65,3 +65,15 @@ Should examples not be built, try:
 To install the Qt Creator template, copy the entire kuesa folder
 from ``tools/qtc_templates`` to the ``templates/wizards`` folder inside
 the Qt Creator install location.
+
+## 3rd-party
+Kuesa uses the following 3rd-party software:
+* Qt 5.12 or later, licensed under LGPLv3
+www.qt.io
+
+* Draco, licensed under Apache License 2.0 and authored by Google Inc.
+https://github.com/google/draco
+
+* MikkTSpace, licensed under a custom license and authored by Morten S. Mikkelsen
+http://mmikkelsen3d.blogspot.com/
+

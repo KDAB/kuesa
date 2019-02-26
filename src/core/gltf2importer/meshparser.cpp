@@ -125,6 +125,7 @@ Qt3DRender::QAttribute *decodeAttribute(const draco::PointCloud *pointCould,
     return attribute;
 }
 #endif
+
 } // namespace
 
 MeshParser::MeshParser()
@@ -187,8 +188,28 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
                 return false;
             }
 
+            const auto primitiveType = static_cast<Qt3DRender::QGeometryRenderer::PrimitiveType>(primitivesObject.value(KEY_MODE).toInt(GL_TRIANGLES));
+            if (primitiveType == Qt3DRender::QGeometryRenderer::Triangles ||
+                primitiveType == Qt3DRender::QGeometryRenderer::TriangleStrip ||
+                primitiveType == Qt3DRender::QGeometryRenderer::TriangleFan) {
+                const auto &attributes = geometry->attributes();
+                const bool hasTangent = std::find_if(std::begin(attributes),
+                                                     std::end(attributes),
+                                                     [](const Qt3DRender::QAttribute *attr) {
+                                                         return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
+                                                     }) != std::end(attributes);
+
+                if (!hasTangent) {
+                    auto tangentAttr = Kuesa::GLTF2Import::MeshParserUtils::createTangentAttribute(geometry.get(), primitiveType);
+                    if (tangentAttr) {
+                        tangentAttr->setName(Qt3DRender::QAttribute::defaultTangentAttributeName());
+                        geometry->addAttribute(tangentAttr);
+                    }
+                }
+            }
+
             Qt3DRender::QGeometryRenderer *renderer = new Qt3DRender::QGeometryRenderer;
-            renderer->setPrimitiveType(static_cast<Qt3DRender::QGeometryRenderer::PrimitiveType>(primitivesObject.value(KEY_MODE).toInt(GL_TRIANGLES)));
+            renderer->setPrimitiveType(primitiveType);
             renderer->setGeometry(geometry.release());
             primitive.primitiveRenderer = renderer;
             primitive.materialIdx = primitivesObject.value(KEY_MATERIAL).toInt(-1);

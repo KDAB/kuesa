@@ -37,14 +37,18 @@
 // modified without notice
 //
 
+#include <Qt3DRender/QGeometryRenderer>
+
 namespace Qt3DRender {
 class QGeometry;
+class QAttribute;
 } // namespace Qt3DRender
 
 namespace Kuesa {
 namespace GLTF2Import {
 namespace MeshParserUtils {
 
+Qt3DRender::QAttribute *createTangentAttribute(Qt3DRender::QGeometry *geometry, Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
 bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry);
 
 } // namespace MeshParserUtils
