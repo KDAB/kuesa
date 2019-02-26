@@ -256,7 +256,7 @@ void MainWindow::setCamera(int index)
     m_camera->setPosition(QVector3D(0.0f, 0.0f, 7.0f));
     m_camera->setUpVector(QVector3D(0.0f, 1.0f, 0.0f));
     m_camera->setViewCenter(QVector3D(0.0f, 0.0f, 0.0f));
-    m_camera->viewAll();
+    viewAll();
 }
 
 void MainWindow::setCamera(const QString &name)
@@ -277,12 +277,8 @@ void MainWindow::viewAll()
     if (!m_camera || m_activeCamera != -1)
         return;
 
+    connect(m_camera, &Qt3DRender::QCamera::viewMatrixChanged, this, &MainWindow::autoNearFarPlanes);
     m_camera->viewAll();
-    QVector3D position = m_camera->position();
-    QVector3D viewCenter = m_camera->viewCenter();
-    float sceneExtent = 2.0f * (viewCenter - position).length();
-    m_camera->setFarPlane(10.0f * sceneExtent); // add some headroom to be able to zoom out
-    m_camera->setNearPlane(0.001f * sceneExtent);
 }
 
 int MainWindow::activeCamera() const
@@ -429,4 +425,14 @@ void MainWindow::openSettings()
     if (dlg.exec() == QDialog::Accepted) {
         m_assetInspector->meshInspector()->setSelectionColor(dlg.selectionColor());
     }
+}
+
+void MainWindow::autoNearFarPlanes()
+{
+    disconnect(m_camera, &Qt3DRender::QCamera::viewMatrixChanged, this, &MainWindow::autoNearFarPlanes);
+    const QVector3D position = m_camera->position();
+    const QVector3D viewCenter = m_camera->viewCenter();
+    const float sceneExtent = 2.0f * (viewCenter - position).length();
+    m_camera->setFarPlane(10.0f * sceneExtent); // add some headroom to be able to zoom out
+    m_camera->setNearPlane(0.001f * sceneExtent);
 }
