@@ -44,7 +44,8 @@ SOURCES += \
     $$PWD/sceneparser.cpp \
     $$PWD/materialparser.cpp \
     $$PWD/skinparser.cpp \
-    $$PWD/gltf2uri.cpp
+    $$PWD/gltf2uri.cpp \
+    $$PWD/meshparser_utils.cpp
 
 
 HEADERS += \
@@ -67,6 +68,7 @@ HEADERS += \
     $$PWD/skinparser_p.h \
     $$PWD/gltf2keys_p.h \
     $$PWD/gltf2uri_p.h \
+    $$PWD/meshparser_utils_p.h
 
 qtConfig(kuesa-draco) {
     DEFINES += KUESA_DRACO_COMPRESSION

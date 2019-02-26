@@ -40,6 +40,7 @@ include(gltf2importer/gltf2importer.pri)
 include(gltf2exporter/gltf2exporter.pri)
 include(framegraphes/framegraphes.pri)
 include(fx/fx.pri)
+include(../3rdparty/mikktspace/mikktspace.pri)
 
 qtConfig(kuesa-draco) {
     include($$OUT_PWD/qtkuesa-config.pri)
