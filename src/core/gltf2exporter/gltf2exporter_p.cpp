@@ -664,6 +664,19 @@ void GLTF2Exporter::setContextFromImporter(GLTF2Importer *importer)
     m_context = importer->m_context;
 }
 
+QStringList GLTF2Exporter::overwritableFiles(const QDir &target) const
+{
+    QStringList files;
+    for (const auto& file : m_context->localFiles()) {
+        auto filePath = GLTF2Import::Uri::localFile(file, target);
+        if (!filePath.startsWith(QStringLiteral(":/"))) {
+            if (QFileInfo::exists(filePath))
+                files.append(filePath);
+        }
+    }
+    return files;
+}
+
 auto GLTF2Exporter::saveInFolder(
         const QDir &source,
         const QDir &target) -> Export

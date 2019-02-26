@@ -54,14 +54,14 @@ ExportDialog::ExportDialog(Kuesa::GLTF2Exporter &exporter, const QString &path, 
     ui->sourceLabel->setText(tr("Saving: ") + m_originalFile);
 
     auto act = ui->destination->addAction(
-                style()->standardIcon(QStyle::StandardPixmap::SP_DialogOpenButton),
-                QLineEdit::ActionPosition::TrailingPosition);
+            style()->standardIcon(QStyle::StandardPixmap::SP_DialogOpenButton),
+            QLineEdit::ActionPosition::TrailingPosition);
     connect(act, &QAction::triggered, this, [=] {
         auto res = QFileDialog::getSaveFileName(
-                    this,
-                    tr("Save glTF file"),
-                    m_targetFile,
-                    tr("glTF 2.0 file (*.gltf)"));
+                this,
+                tr("Save glTF file"),
+                m_targetFile,
+                tr("glTF 2.0 file (*.gltf)"));
         ui->destination->setText(res);
     });
 
@@ -70,10 +70,10 @@ ExportDialog::ExportDialog(Kuesa::GLTF2Exporter &exporter, const QString &path, 
             this, &ExportDialog::onSave);
 
     connect(ui->destination, &QLineEdit::textChanged,
-            this, [=] (const QString& text){
-        m_targetFile = text;
-        save_btn->setEnabled(!m_targetFile.isEmpty());
-    });
+            this, [=](const QString &text) {
+                m_targetFile = text;
+                save_btn->setEnabled(!m_targetFile.isEmpty());
+            });
     save_btn->setDisabled(true);
 }
 
@@ -88,10 +88,13 @@ void ExportDialog::onSave()
 
     const QDir orig_dir = QFileInfo(m_originalFile).dir();
     const QDir target_dir = QFileInfo(m_targetFile).dir();
-    if (orig_dir.absolutePath() == target_dir.absolutePath()) {
+
+    const auto overwritable = m_exporter.overwritableFiles(target_dir);
+
+    if (!overwritable.isEmpty()) {
         const int res = QMessageBox::warning(
                 this, tr("Destructive operation"),
-                tr("Saving in the original folder will overwrite assets."),
+                tr("Saving in the original folder will overwrite the following assets: \n%1").arg(overwritable.join("\n")),
                 QMessageBox::Ok | QMessageBox::Cancel,
                 QMessageBox::Cancel);
         if (res != QMessageBox::Ok) {

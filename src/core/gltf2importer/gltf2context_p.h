@@ -146,6 +146,9 @@ public:
     const QJsonDocument &json() const;
     void setJson(const QJsonDocument &doc);
 
+    const QStringList &localFiles() const;
+    void addLocalFile(const QString &file);
+
 private:
     QVector<Accessor> m_accessors;
     QVector<QByteArray> m_buffers;
@@ -164,6 +167,7 @@ private:
     QStringList m_usedExtensions;
     QStringList m_requiredExtensions;
     QJsonDocument m_json;
+    QStringList m_localFiles;
 };
 
 template<>
