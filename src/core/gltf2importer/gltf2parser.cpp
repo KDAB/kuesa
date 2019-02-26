@@ -131,6 +131,14 @@ GLTF2Parser::GLTF2Parser(SceneEntity *sceneEntity, bool assignNames)
     , m_defaultSceneIdx(-1)
     , m_assignNames(assignNames)
 {
+    static_assert(sizeof(int) == 4U, "int is expected to be 4 bytes");
+    static_assert(sizeof(uint) == 4U, "unsigned int is expected to be 4 bytes");
+    static_assert(sizeof(short) == 2U, "short is expected to be 2 bytes");
+    static_assert(sizeof(ushort) == 2U, "unsigned short is expected to be 2 bytes");
+    static_assert(sizeof(char) == 1U, "char is expected to be 1 byte");
+    static_assert(sizeof(uchar) == 1U, "unsigned char is expected to be 1 byte");
+    static_assert(sizeof(float) == 4U, "float is expected to be 4 bytes");
+    static_assert(sizeof(double) == 8U, "double is expected to be 8 bytes");
 }
 
 GLTF2Parser::~GLTF2Parser()
