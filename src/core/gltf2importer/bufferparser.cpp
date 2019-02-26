@@ -86,6 +86,9 @@ bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) 
         if (!uri.isNull()) {
             const QByteArray data = Uri::fetchData(uri, m_basePath, readSuccess);
             if (readSuccess) {
+                if (Uri::kind(uri) == Uri::Kind::Path)
+                    context->addLocalFile(uri);
+
                 const bool hasExpectedSize = data.size() == expectedSize;
                 if (hasExpectedSize) {
                     context->addBuffer(data);

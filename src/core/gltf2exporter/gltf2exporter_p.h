@@ -114,6 +114,8 @@ public:
     void setContext(GLTF2Import::GLTF2Context *context);
     void setContextFromImporter(GLTF2Importer *importer);
 
+    QStringList overwritableFiles(const QDir &target) const;
+
 Q_SIGNALS:
     void sceneChanged(SceneEntity *scene);
 

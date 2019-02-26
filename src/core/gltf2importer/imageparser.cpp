@@ -77,6 +77,7 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
                 break;
             }
             case Uri::Kind::Path: {
+                context->addLocalFile(uriString);
                 image.url = Uri::absoluteUrl(uriString, m_basePath);
                 break;
             }

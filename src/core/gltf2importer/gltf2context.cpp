@@ -350,6 +350,16 @@ void GLTF2Context::setJson(const QJsonDocument &doc)
     m_json = doc;
 }
 
+const QStringList &GLTF2Context::localFiles() const
+{
+    return m_localFiles;
+}
+
+void GLTF2Context::addLocalFile(const QString &file)
+{
+    m_localFiles.push_back(file);
+}
+
 template<>
 int GLTF2Context::count<Mesh>() const
 {
