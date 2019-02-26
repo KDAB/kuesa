@@ -35,6 +35,8 @@
 #include "gltf2context_p.h"
 #include "kuesa_p.h"
 
+#include "meshparser_utils_p.h"
+
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDebug>
@@ -160,31 +162,34 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             const QJsonObject &primitivesObject = primitivesArray[primitiveId].toObject();
 
             bool hasColorAttr = false;
-            Qt3DRender::QGeometry *geometry = new Qt3DRender::QGeometry();
+            auto geometry = std::make_unique<Qt3DRender::QGeometry>();
 
 #if defined(KUESA_DRACO_COMPRESSION)
             const QJsonObject extensions = primitivesObject.value(KEY_EXTENSIONS).toObject();
 
             // Draco Extensions
             if (extensions.contains(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION)) {
-                if (!geometryDracoFromJSON(geometry, primitivesObject, hasColorAttr) &&
+                if (!geometryDracoFromJSON(geometry.get(), primitivesObject, hasColorAttr) &&
                     geometry->attributes().isEmpty()) {
-                    delete geometry;
                     return false;
                 }
             } else
 #endif
             {
-                if (!geometryFromJSON(geometry, primitivesObject, hasColorAttr) &&
+                if (!geometryFromJSON(geometry.get(), primitivesObject, hasColorAttr) &&
                     geometry->attributes().isEmpty()) {
-                    delete geometry;
                     return false;
                 }
             }
 
+            if (!Kuesa::GLTF2Import::MeshParserUtils::geometryIsGLTF2Valid(geometry.get())) {
+                qCWarning(kuesa) << QLatin1Literal("Geometry doesn't meet glTF 2.0 requirements");
+                return false;
+            }
+
             Qt3DRender::QGeometryRenderer *renderer = new Qt3DRender::QGeometryRenderer;
             renderer->setPrimitiveType(static_cast<Qt3DRender::QGeometryRenderer::PrimitiveType>(primitivesObject.value(KEY_MODE).toInt(GL_TRIANGLES)));
-            renderer->setGeometry(geometry);
+            renderer->setGeometry(geometry.release());
             primitive.primitiveRenderer = renderer;
             primitive.materialIdx = primitivesObject.value(KEY_MATERIAL).toInt(-1);
             primitive.hasColorAttr = hasColorAttr;
