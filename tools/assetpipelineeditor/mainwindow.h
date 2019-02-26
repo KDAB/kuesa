@@ -94,6 +94,7 @@ private slots:
     void selectAsset(const QString &assetName);
     void updateCameraAspectRatio();
     void openSettings();
+    void autoNearFarPlanes();
 
 private:
     Ui::MainWindow *m_ui;
