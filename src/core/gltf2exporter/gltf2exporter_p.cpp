@@ -60,6 +60,7 @@ QString generateUniqueFilename(const QDir &dir, QString filename)
     int num = 1;
     while (dir.exists(filename)) {
         filename = QStringLiteral("%1-%2.%3").arg(basename).arg(num).arg(ext);
+        ++num;
     }
     return filename;
 }
