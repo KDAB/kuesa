@@ -55,7 +55,7 @@ namespace GLTF2Import {
 class GLTF2Context;
 
 struct ChannelMapping {
-    int targetNodeId = -1;
+    qint32 targetNodeId = -1;
     QString name;
     QString property;
 };

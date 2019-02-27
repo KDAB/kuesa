@@ -51,9 +51,9 @@ namespace GLTF2Import {
 class GLTF2Context;
 
 struct Skin {
-    int inverseBindMatricesAccessorIdx = -1;
-    int skeletonIdx = -1;
-    QVector<int> jointsIndices;
+    qint32 inverseBindMatricesAccessorIdx = -1;
+    qint32 skeletonIdx = -1;
+    QVector<qint32> jointsIndices;
     QString name;
     QVector<QMatrix4x4> inverseBindMatrices;
 };

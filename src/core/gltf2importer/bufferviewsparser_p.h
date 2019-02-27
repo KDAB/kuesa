@@ -58,10 +58,10 @@ struct BufferView {
     BufferView();
 
     QByteArray bufferData;
-    int bufferIdx;
-    int byteOffset;
-    int byteLength;
-    int byteStride;
+    qint16 byteStride;
+    qint32 bufferIdx;
+    qint32 byteOffset;
+    qint32 byteLength;
 };
 
 class Q_AUTOTEST_EXPORT BufferViewsParser

@@ -42,8 +42,8 @@ LayerParser::LayerParser()
 
 bool LayerParser::parse(const QJsonArray &layerArray, GLTF2Context *context) const
 {
-    const int arraySize = layerArray.size();
-    for (int layerId = 0; layerId < arraySize; ++layerId) {
+    const qint32 arraySize = layerArray.size();
+    for (qint32 layerId = 0; layerId < arraySize; ++layerId) {
         const QString layerName = layerArray.at(layerId).toString();
         if (layerName.isEmpty())
             return false;

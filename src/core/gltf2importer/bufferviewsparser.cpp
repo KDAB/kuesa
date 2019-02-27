@@ -51,10 +51,10 @@ const QLatin1String KEY_BYTESTRIDE = QLatin1Literal("byteStride");
 Q_LOGGING_CATEGORY(bufferviewsparser, "BufferViewsParser")
 
 BufferView::BufferView()
-    : bufferIdx(-1)
+    : byteStride(-1)
+    , bufferIdx(-1)
     , byteOffset(-1)
     , byteLength(-1)
-    , byteStride(-1)
 {
 }
 
@@ -76,15 +76,15 @@ BufferViewsParser::BufferViewsParser()
  */
 bool BufferViewsParser::parse(const QJsonArray &bufferViewsArray, GLTF2Context *context)
 {
-    const int bufferViewSize = bufferViewsArray.size();
+    const qint32 bufferViewSize = bufferViewsArray.size();
 
-    for (int bufferViewId = 0; bufferViewId < bufferViewSize; ++bufferViewId) {
+    for (qint32 bufferViewId = 0; bufferViewId < bufferViewSize; ++bufferViewId) {
         const QJsonObject viewObject = bufferViewsArray[bufferViewId].toObject();
 
-        const int bufferIdx = viewObject.value(KEY_BUFFER).toInt(-1);
-        const int byteOffset = viewObject.value(KEY_BYTEOFFSET).toInt();
-        const int byteLength = viewObject.value(KEY_BYTELENGTH).toInt();
-        const int byteStride = viewObject.value(KEY_BYTESTRIDE).toInt();
+        const qint16 bufferIdx = qint16(viewObject.value(KEY_BUFFER).toInt(-1));
+        const qint32 byteOffset = viewObject.value(KEY_BYTEOFFSET).toInt();
+        const qint32 byteLength = viewObject.value(KEY_BYTELENGTH).toInt();
+        const qint16 byteStride = qint16(viewObject.value(KEY_BYTESTRIDE).toInt());
 
         const QByteArray &data = context->buffer(bufferIdx);
         if (!data.isNull()) {

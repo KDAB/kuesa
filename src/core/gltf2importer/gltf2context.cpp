@@ -46,7 +46,7 @@ int GLTF2Context::bufferCount() const
     return m_buffers.size();
 }
 
-const QByteArray GLTF2Context::buffer(int id) const
+const QByteArray GLTF2Context::buffer(qint32 id) const
 {
     if (id >= 0 && id < m_buffers.size())
         return m_buffers.at(id);
@@ -65,7 +65,7 @@ int GLTF2Context::bufferViewCount() const
     return m_bufferViews.size();
 }
 
-const BufferView GLTF2Context::bufferView(int id) const
+const BufferView GLTF2Context::bufferView(qint32 id) const
 {
     if (id >= 0 && id < m_bufferViews.size())
         return m_bufferViews.at(id);
@@ -84,7 +84,7 @@ int GLTF2Context::cameraCount() const
     return m_cameras.size();
 }
 
-const Camera GLTF2Context::camera(int id) const
+const Camera GLTF2Context::camera(qint32 id) const
 {
     if (id >= 0 && id < m_cameras.size())
         return m_cameras.at(id);
@@ -103,7 +103,7 @@ int GLTF2Context::treeNodeCount() const
     return m_treeNodes.size();
 }
 
-const TreeNode GLTF2Context::treeNode(int id) const
+const TreeNode GLTF2Context::treeNode(qint32 id) const
 {
     if (id >= 0 && id < m_treeNodes.size())
         return m_treeNodes.at(id);
@@ -127,7 +127,7 @@ void GLTF2Context::addImage(const Image &image)
     m_images.push_back(image);
 }
 
-const Image GLTF2Context::image(int id) const
+const Image GLTF2Context::image(qint32 id) const
 {
     if (id >= 0 && id < m_images.size())
         return m_images.at(id);
@@ -146,7 +146,7 @@ void GLTF2Context::addTextureSampler(const TextureSampler &textureSampler)
     m_textureSamplers.push_back(textureSampler);
 }
 
-const TextureSampler GLTF2Context::textureSampler(int id) const
+const TextureSampler GLTF2Context::textureSampler(qint32 id) const
 {
     if (id >= 0 && id < m_textureSamplers.size())
         return m_textureSamplers.at(id);
@@ -165,7 +165,7 @@ void GLTF2Context::addTexture(const Texture &texture)
     m_textures.push_back(texture);
 }
 
-const Texture GLTF2Context::texture(int id) const
+const Texture GLTF2Context::texture(qint32 id) const
 {
     if (id >= 0 && id < m_textures.size())
         return m_textures.at(id);
@@ -184,7 +184,7 @@ void GLTF2Context::addAnimation(const Animation &animation)
     m_animations.push_back(animation);
 }
 
-const Animation GLTF2Context::animation(int id) const
+const Animation GLTF2Context::animation(qint32 id) const
 {
     if (id >= 0 && id < m_animations.size())
         return m_animations.at(id);
@@ -203,7 +203,7 @@ void GLTF2Context::addMaterial(const Material &material)
     m_materials.push_back(material);
 }
 
-const Material GLTF2Context::material(int id) const
+const Material GLTF2Context::material(qint32 id) const
 {
 
     if (id >= 0 && id < m_materials.size())
@@ -213,7 +213,7 @@ const Material GLTF2Context::material(int id) const
     return Material();
 }
 
-Material &GLTF2Context::material(int id)
+Material &GLTF2Context::material(qint32 id)
 {
     return m_materials[id];
 }
@@ -223,7 +223,7 @@ int GLTF2Context::accessorCount() const
     return m_accessors.size();
 }
 
-const Accessor GLTF2Context::accessor(int id) const
+const Accessor GLTF2Context::accessor(qint32 id) const
 {
     if (id >= 0 && id < m_accessors.size())
         return m_accessors.at(id);
@@ -247,7 +247,7 @@ void GLTF2Context::addMesh(const Mesh &mesh)
     m_meshes.push_back(mesh);
 }
 
-const Mesh GLTF2Context::mesh(int id) const
+const Mesh GLTF2Context::mesh(qint32 id) const
 {
     if (id >= 0 && id < m_meshes.size())
         return m_meshes.at(id);
@@ -273,7 +273,7 @@ void GLTF2Context::addLayer(const Layer &layer)
     m_layers.push_back(layer);
 }
 
-Layer GLTF2Context::layer(int id) const
+Layer GLTF2Context::layer(qint32 id) const
 {
     if (id >= 0 && id < m_layers.size())
         return m_layers.at(id);
@@ -292,7 +292,7 @@ void GLTF2Context::addScene(const Scene &scene)
     m_scenes.push_back(scene);
 }
 
-const Scene GLTF2Context::scene(int id) const
+const Scene GLTF2Context::scene(qint32 id) const
 {
     if (id >= 0 && id < m_scenes.size())
         return m_scenes.at(id);
@@ -311,7 +311,7 @@ void GLTF2Context::addSkin(const Skin &skin)
     m_skins.push_back(skin);
 }
 
-const Skin GLTF2Context::skin(int id) const
+const Skin GLTF2Context::skin(qint32 id) const
 {
     if (id >= 0 && id < m_skins.size())
         return m_skins.at(id);
@@ -367,7 +367,7 @@ int GLTF2Context::count<Mesh>() const
 }
 
 template<>
-Mesh GLTF2Context::assetAt<Mesh>(int i) const
+Mesh GLTF2Context::assetAt<Mesh>(qint32 i) const
 {
     return mesh(i);
 }
@@ -379,7 +379,7 @@ int GLTF2Context::count<Layer>() const
 }
 
 template<>
-Layer GLTF2Context::assetAt<Layer>(int i) const
+Layer GLTF2Context::assetAt<Layer>(qint32 i) const
 {
     return layer(i);
 }
@@ -391,7 +391,7 @@ int GLTF2Context::count<TreeNode>() const
 }
 
 template<>
-TreeNode GLTF2Context::assetAt<TreeNode>(int i) const
+TreeNode GLTF2Context::assetAt<TreeNode>(qint32 i) const
 {
     return treeNode(i);
 }
@@ -403,7 +403,7 @@ int GLTF2Context::count<Texture>() const
 }
 
 template<>
-Texture GLTF2Context::assetAt<Texture>(int i) const
+Texture GLTF2Context::assetAt<Texture>(qint32 i) const
 {
     return texture(i);
 }
@@ -415,7 +415,7 @@ int GLTF2Context::count<Animation>() const
 }
 
 template<>
-Animation GLTF2Context::assetAt<Animation>(int i) const
+Animation GLTF2Context::assetAt<Animation>(qint32 i) const
 {
     return animation(i);
 }
@@ -427,7 +427,7 @@ int GLTF2Context::count<Material>() const
 }
 
 template<>
-Material GLTF2Context::assetAt<Material>(int i) const
+Material GLTF2Context::assetAt<Material>(qint32 i) const
 {
     return material(i);
 }
@@ -439,7 +439,7 @@ int GLTF2Context::count<Skin>() const
 }
 
 template<>
-Skin GLTF2Context::assetAt<Skin>(int i) const
+Skin GLTF2Context::assetAt<Skin>(qint32 i) const
 {
     return skin(i);
 }

@@ -75,11 +75,11 @@ BufferParser::BufferParser(const QDir &basePath)
  */
 bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) const
 {
-    const int bufferDataSize = buffersArray.size();
-    for (int bufferId = 0; bufferId < bufferDataSize; ++bufferId) {
+    const qint32 bufferDataSize = buffersArray.size();
+    for (qint32 bufferId = 0; bufferId < bufferDataSize; ++bufferId) {
         const QJsonObject bufferObject = buffersArray[bufferId].toObject();
         const QString uri = bufferObject.value(KEY_URI).toString();
-        const int expectedSize = bufferObject.value(KEY_BYTE_LENGTH).toInt();
+        const qint32 expectedSize = bufferObject.value(KEY_BYTE_LENGTH).toInt();
         const QString bufferName = bufferObject.value(KEY_NAME).toString();
         bool readSuccess = false;
 

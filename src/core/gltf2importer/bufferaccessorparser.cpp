@@ -65,7 +65,7 @@ QVector<float> jsonArrayToVectorOfFloats(const QJsonArray &values)
     return d;
 }
 
-quint32 accessorDataSizeFromJson(const QString &type)
+quint8 accessorDataSizeFromJson(const QString &type)
 {
     const QString typeName = type.toUpper();
     if (typeName == QLatin1String("SCALAR"))

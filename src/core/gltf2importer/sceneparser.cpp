@@ -46,7 +46,7 @@ const QLatin1String KEY_NAME = QLatin1Literal("name");
 
 bool SceneParser::parse(const QJsonArray &scenesArray, GLTF2Context *context) const
 {
-    const int nbScenes = scenesArray.size();
+    const qint32 nbScenes = scenesArray.size();
     for (const QJsonValue &sceneValue : scenesArray) {
         const QJsonObject sceneObj = sceneValue.toObject();
 
@@ -55,10 +55,10 @@ bool SceneParser::parse(const QJsonArray &scenesArray, GLTF2Context *context) co
             qCWarning(kuesa, "A scene must define at least one root node");
             return false;
         }
-        QVector<int> rootIndices;
+        QVector<qint32> rootIndices;
         rootIndices.reserve(nodesArray.size());
         for (const QJsonValue &nodeValue : nodesArray) {
-            const int nodeIdx = nodeValue.toInt(-1);
+            const qint32 nodeIdx = nodeValue.toInt(-1);
             if (nodeIdx < 0 || nodeIdx > context->treeNodeCount()) {
                 qCWarning(kuesa, "Scene root node references invalid node");
                 return false;

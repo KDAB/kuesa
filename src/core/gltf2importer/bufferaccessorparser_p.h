@@ -49,11 +49,11 @@ namespace GLTF2Import {
 class GLTF2Context;
 
 struct Accessor {
-    int bufferViewIndex = 0;
+    qint32 bufferViewIndex = 0;
     Qt3DRender::QAttribute::VertexBaseType type = Qt3DRender::QAttribute::Float;
-    int dataSize = 0;
-    int count = 0;
-    int offset = 0;
+    quint8 dataSize = 0;
+    qint32 count = 0;
+    qint32 offset = 0;
     bool normalized = false;
     QVector<float> max;
     QVector<float> min;
