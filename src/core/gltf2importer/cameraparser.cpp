@@ -68,9 +68,9 @@ CameraParser::~CameraParser()
 
 bool CameraParser::parse(const QJsonArray &cameras, Kuesa::GLTF2Import::GLTF2Context *context)
 {
-    const int nbCameras = cameras.size();
+    const qint32 nbCameras = cameras.size();
 
-    for (int i = 0; i < nbCameras; ++i) {
+    for (qint32 i = 0; i < nbCameras; ++i) {
         const QJsonObject &cameraObject = cameras.at(i).toObject();
         Camera camera;
         if (cameraObject.contains(KEY_NAME))

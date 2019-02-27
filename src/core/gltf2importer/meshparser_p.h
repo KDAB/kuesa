@@ -91,7 +91,7 @@ private:
 #endif
 
     GLTF2Context *m_context;
-    QHash<int, Qt3DRender::QBuffer *> m_qbuffers;
+    QHash<qint32, Qt3DRender::QBuffer *> m_qbuffers;
 };
 
 } // namespace GLTF2Import

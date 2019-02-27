@@ -53,8 +53,8 @@ namespace GLTF2Import {
 class GLTF2Context;
 
 struct TextureInfo {
-    int index = -1;
-    int texCoord = 0; // Attribute will be TEXCOORD_<texCoord>
+    qint32 index = -1;
+    qint32 texCoord = 0; // Attribute will be TEXCOORD_<texCoord>
 };
 
 class Material

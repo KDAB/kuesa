@@ -85,32 +85,32 @@ struct attribute_type_trait<float> {
 };
 
 template<>
-struct attribute_type_trait<char> {
+struct attribute_type_trait<qint8> {
     static constexpr draco::DataType type = draco::DataType::DT_INT8;
 };
 
 template<>
-struct attribute_type_trait<unsigned char> {
+struct attribute_type_trait<quint8> {
     static constexpr draco::DataType type = draco::DataType::DT_UINT8;
 };
 
 template<>
-struct attribute_type_trait<unsigned short> {
+struct attribute_type_trait<quint16> {
     static constexpr draco::DataType type = draco::DataType::DT_UINT16;
 };
 
 template<>
-struct attribute_type_trait<short> {
+struct attribute_type_trait<qint16> {
     static constexpr draco::DataType type = draco::DataType::DT_INT16;
 };
 
 template<>
-struct attribute_type_trait<int> {
+struct attribute_type_trait<qint32> {
     static constexpr draco::DataType type = draco::DataType::DT_INT32;
 };
 
 template<>
-struct attribute_type_trait<unsigned int> {
+struct attribute_type_trait<quint32> {
     static constexpr draco::DataType type = draco::DataType::DT_UINT32;
 };
 
@@ -134,7 +134,7 @@ QByteArray packedDataInBuffer(const QByteArray &inputBuffer,
 {
     const auto elementSize = vertexSize * sizeof(T);
 
-    Q_ASSERT_X(count < std::numeric_limits<int>::max() / elementSize, "Kuesa::packedDataInBuffer", "Too many elements for a QByteArray");
+    Q_ASSERT_X(count < std::numeric_limits<qint32>::max() / elementSize, "Kuesa::packedDataInBuffer", "Too many elements for a QByteArray");
 
     QByteArray outputBuffer(int(count * elementSize), Qt::Uninitialized);
 
@@ -190,13 +190,13 @@ QVector<draco::PointIndex> createIndicesVectorFromAttribute(const Qt3DRender::QA
     const auto byteOffset = attribute.byteOffset();
     const auto data = attribute.buffer()->data().mid(int(byteOffset));
     const auto attrCount = attribute.count();
-    const int stride = actualStride<T>(int(attribute.byteStride()), 1);
+    const int stride = actualStride<T>(qint32(attribute.byteStride()), 1);
 
-    Q_ASSERT_X(attrCount < std::numeric_limits<int>::max(), "Kuesa::createIndicesVectorFromAttribute", "Too many elements for a QVector");
+    Q_ASSERT_X(attrCount < std::numeric_limits<qint32>::max(), "Kuesa::createIndicesVectorFromAttribute", "Too many elements for a QVector");
 
     QVector<draco::PointIndex> indicesVector(static_cast<int>(attrCount));
 
-    for (int i = 0, n = int(attrCount); i < n; ++i)
+    for (qint32 i = 0, n = qint32(attrCount); i < n; ++i)
         indicesVector[i] = *reinterpret_cast<const T *>(data.data() + i * stride);
 
     return indicesVector;
@@ -204,7 +204,7 @@ QVector<draco::PointIndex> createIndicesVectorFromAttribute(const Qt3DRender::QA
 
 void addFacesToMesh(const QVector<draco::PointIndex> &indices, draco::Mesh &dracoMesh)
 {
-    for (int i = 0, nbIndices = indices.size() / 3; i < nbIndices; ++i)
+    for (qint32 i = 0, nbIndices = indices.size() / 3; i < nbIndices; ++i)
         dracoMesh.AddFace({ indices[3 * i + 0],
                             indices[3 * i + 1],
                             indices[3 * i + 2] });
@@ -277,32 +277,32 @@ CompressedMesh compressMesh(
         }
         case Qt3DRender::QAttribute::VertexBaseType::Byte: {
             static_assert(CHAR_MIN < 0, "This code only works on platforms with signed char");
-            if(!compressAttribute<char>(*attribute, dracoMesh, attributes))
+            if(!compressAttribute<qint8>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::UnsignedByte: {
-            if(!compressAttribute<unsigned char>(*attribute, dracoMesh, attributes))
+            if(!compressAttribute<quint8>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::Short: {
-            if(!compressAttribute<short>(*attribute, dracoMesh, attributes))
+            if(!compressAttribute<qint16>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::UnsignedShort: {
-            if(!compressAttribute<unsigned short>(*attribute, dracoMesh, attributes))
+            if(!compressAttribute<quint16>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::Int: {
-            if(!compressAttribute<int>(*attribute, dracoMesh, attributes))
+            if(!compressAttribute<qint32>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::UnsignedInt: {
-            if(!compressAttribute<unsigned int>(*attribute, dracoMesh, attributes))
+            if(!compressAttribute<quint32>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
@@ -321,22 +321,22 @@ CompressedMesh compressMesh(
     if (indicesAttribute != nullptr) {
         switch (indicesAttribute->vertexBaseType()) {
         case Qt3DRender::QAttribute::VertexBaseType::Byte:
-            addFacesToMesh(createIndicesVectorFromAttribute<char>(*indicesAttribute), dracoMesh);
+            addFacesToMesh(createIndicesVectorFromAttribute<qint8>(*indicesAttribute), dracoMesh);
             break;
         case Qt3DRender::QAttribute::VertexBaseType::UnsignedByte:
-            addFacesToMesh(createIndicesVectorFromAttribute<unsigned char>(*indicesAttribute), dracoMesh);
+            addFacesToMesh(createIndicesVectorFromAttribute<quint8>(*indicesAttribute), dracoMesh);
             break;
         case Qt3DRender::QAttribute::VertexBaseType::Short:
-            addFacesToMesh(createIndicesVectorFromAttribute<short>(*indicesAttribute), dracoMesh);
+            addFacesToMesh(createIndicesVectorFromAttribute<qint16>(*indicesAttribute), dracoMesh);
             break;
         case Qt3DRender::QAttribute::VertexBaseType::UnsignedShort:
-            addFacesToMesh(createIndicesVectorFromAttribute<unsigned short>(*indicesAttribute), dracoMesh);
+            addFacesToMesh(createIndicesVectorFromAttribute<quint16>(*indicesAttribute), dracoMesh);
             break;
         case Qt3DRender::QAttribute::VertexBaseType::Int:
-            addFacesToMesh(createIndicesVectorFromAttribute<int>(*indicesAttribute), dracoMesh);
+            addFacesToMesh(createIndicesVectorFromAttribute<qint32>(*indicesAttribute), dracoMesh);
             break;
         case Qt3DRender::QAttribute::VertexBaseType::UnsignedInt:
-            addFacesToMesh(createIndicesVectorFromAttribute<unsigned int>(*indicesAttribute), dracoMesh);
+            addFacesToMesh(createIndicesVectorFromAttribute<quint32>(*indicesAttribute), dracoMesh);
             break;
         default:
             break;

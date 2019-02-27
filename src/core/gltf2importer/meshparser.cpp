@@ -137,7 +137,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
 {
     m_context = context;
 
-    const int meshSize = meshArray.size();
+    const qint32 meshSize = meshArray.size();
     QVector<Mesh> meshes;
     meshes.resize(meshSize);
 
@@ -146,19 +146,19 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
 
     // Each mesh may contain several primitives, so we are storing each mesh as
     // an entity and several subentities, one for each primitive
-    for (int meshId = 0; meshId < meshSize; ++meshId) {
+    for (qint32 meshId = 0; meshId < meshSize; ++meshId) {
         Mesh &mesh = meshes[meshId];
         const QJsonObject &meshObject = meshArray[meshId].toObject();
         const QJsonArray &primitivesArray = meshObject.value(KEY_PRIMITIVES).toArray();
 
-        const int primitiveCount = primitivesArray.size();
+        const qint32 primitiveCount = primitivesArray.size();
 
         if (primitiveCount == 0)
             return false;
 
         mesh.meshPrimitives.resize(primitiveCount);
         mesh.name = meshObject.value(KEY_NAME).toString();
-        for (int primitiveId = 0; primitiveId < primitiveCount; ++primitiveId) {
+        for (qint32 primitiveId = 0; primitiveId < primitiveCount; ++primitiveId) {
             Primitive &primitive = mesh.meshPrimitives[primitiveId];
             const QJsonObject &primitivesObject = primitivesArray[primitiveId].toObject();
 
@@ -235,7 +235,7 @@ bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
     // Index attribute
     const QJsonValue &indices = json.value(KEY_INDICES);
     if (!indices.isUndefined()) {
-        const int accessorIndex = indices.toInt();
+        const qint32 accessorIndex = indices.toInt();
         const Accessor &accessor = m_context->accessor(accessorIndex);
         const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
 
@@ -274,7 +274,7 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
         return false;
 
     for (auto it = attrs.begin(), end = attrs.end(); it != end; ++it) {
-        const int accessorIndex = it.value().toInt();
+        const qint32 accessorIndex = it.value().toInt();
         const Accessor &accessor = m_context->accessor(accessorIndex);
 
         const QString attrName = it.key();
@@ -301,9 +301,9 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
                                                                        attributeName,
                                                                        accessor.type,
                                                                        accessor.dataSize,
-                                                                       accessor.count,
-                                                                       accessor.offset,
-                                                                       viewData.byteStride);
+                                                                       quint32(accessor.count),
+                                                                       quint32(accessor.offset),
+                                                                       quint32(viewData.byteStride));
         attribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
         // store some GLTF metadata for asset pipeline editor
         attribute->setProperty("bufferIndex", viewData.bufferIdx);
@@ -326,7 +326,7 @@ bool MeshParser::geometryDracoFromJSON(Qt3DRender::QGeometry *geometry,
     const QJsonObject dracoExtensionObject = extensions.value(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION).toObject();
 
     // Get the compressed data
-    int bufferViewIndex = dracoExtensionObject.value(KEY_BUFFERVIEW).toInt(-1);
+    qint32 bufferViewIndex = dracoExtensionObject.value(KEY_BUFFERVIEW).toInt(-1);
     if (bufferViewIndex == -1)
         return false;
 

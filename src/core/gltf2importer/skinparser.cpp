@@ -48,7 +48,7 @@ const QLatin1String KEY_NAME = QLatin1Literal("name");
 
 bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) const
 {
-    const int nbSkins = skinsArray.size();
+    const qint32 nbSkins = skinsArray.size();
     for (const QJsonValue &skinValue : skinsArray) {
         const QJsonObject skinObj = skinValue.toObject();
 
@@ -60,10 +60,10 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
             return false;
         }
 
-        QVector<int> jointsIdx;
+        QVector<qint32> jointsIdx;
         jointsIdx.reserve(jointsArray.size());
         for (const QJsonValue &jointValue : jointsArray) {
-            const int nodeIdx = jointValue.toInt(-1);
+            const qint32 nodeIdx = jointValue.toInt(-1);
             if (nodeIdx < 0 || nodeIdx > context->treeNodeCount()) {
                 qCWarning(kuesa, "Skin joints references invalid node");
                 return false;
@@ -82,7 +82,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
         // Defaults to scene root if undefined
         const QJsonValue skeletonValue = skinObj.value(KEY_SKELETON);
         if (!skeletonValue.isUndefined()) {
-            const int skeletonIdx = skeletonValue.toInt(-1);
+            const qint32 skeletonIdx = skeletonValue.toInt(-1);
             if (skeletonIdx < 0 || skeletonIdx > context->treeNodeCount()) {
                 qCWarning(kuesa, "Skin skeleton references invalid node");
                 return false;
@@ -92,7 +92,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
 
         const QJsonValue inverseBindMatricesValue = skinObj.value(KEY_INVERSE_BIND_MATRICES);
         if (!inverseBindMatricesValue.isUndefined()) {
-            const int inverseBindMatricesIdx = inverseBindMatricesValue.toInt(-1);
+            const qint32 inverseBindMatricesIdx = inverseBindMatricesValue.toInt(-1);
             if (inverseBindMatricesIdx < 0 || inverseBindMatricesIdx > context->accessorCount()) {
                 qCWarning(kuesa, "Skin inverseBindMatrices references invalid accessor");
                 return false;
@@ -111,9 +111,9 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
             }
 
             const BufferView &bufferViewData = context->bufferView(accessor.bufferViewIndex);
-            const int byteOffset = accessor.offset;
-            const int elemByteSize = sizeof(float);
-            const int byteStride = (bufferViewData.byteStride > 0 ? bufferViewData.byteStride : accessor.dataSize * elemByteSize);
+            const qint32 byteOffset = accessor.offset;
+            const qint8 elemByteSize = sizeof(float);
+            const qint16 byteStride = (bufferViewData.byteStride > 0 ? bufferViewData.byteStride : accessor.dataSize * elemByteSize);
 
             if (byteStride < accessor.dataSize * elemByteSize) {
                 qCWarning(kuesa, "InverseBindMatrix Buffer data byteStride doesn't match accessor dataSize and byte size for type");
@@ -129,7 +129,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
             }
 
             const char *rawBytes = bufferData.constData() + byteOffset;
-            for (int i = 0; i < accessor.count; ++i) {
+            for (qint32 i = 0; i < accessor.count; ++i) {
                 QMatrix4x4 inverseBindMatrix;
                 memcpy(inverseBindMatrix.data(), reinterpret_cast<const float *>(rawBytes), sizeof(float) * 16);
                 rawBytes += byteStride;

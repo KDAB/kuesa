@@ -49,7 +49,7 @@ ImageParser::ImageParser(const QDir &basePath)
 
 bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) const
 {
-    const int nbImages = imageArray.size();
+    const qint32 nbImages = imageArray.size();
     for (const auto &imageValue : imageArray) {
         const auto imageObject = imageValue.toObject();
         const auto &uriValue = imageObject.value(KEY_URI);

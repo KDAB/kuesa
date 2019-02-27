@@ -72,7 +72,7 @@ T clamp(T val, T min, T max)
 template<typename Vector>
 bool parseFloatArray(Vector &v,
                      const QJsonArray &array,
-                     int minItems, int maxItems,
+                     qint32 minItems, qint32 maxItems,
                      float minValue, float maxValue)
 {
     if (array.size() < minItems || array.size() > maxItems) {
@@ -80,8 +80,8 @@ bool parseFloatArray(Vector &v,
         return false;
     }
 
-    const int entryCount = std::min(maxItems, array.size());
-    for (int i = 0; i < entryCount; ++i)
+    const qint32 entryCount = std::min(maxItems, array.size());
+    for (qint32 i = 0; i < entryCount; ++i)
         v[i] = clamp(float(array.at(i).toDouble(v[i])), minValue, maxValue);
 
     return true;
@@ -104,23 +104,23 @@ Kuesa::MetallicRoughnessMaterial *createPbrMaterial(const Material &mat, const G
             mat.emissiveTexture.emissiveFactor[1],
             mat.emissiveTexture.emissiveFactor[2]));
 
-    const int baseColorTextureIdx = mat.pbr.baseColorTexture.index;
+    const qint32 baseColorTextureIdx = mat.pbr.baseColorTexture.index;
     if (baseColorTextureIdx > -1)
         pbrMaterial->setBaseColorMap(context->texture(baseColorTextureIdx).texture);
 
-    const int metallicRoughnessTextureIdx = mat.pbr.metallicRoughnessTexture.index;
+    const qint32 metallicRoughnessTextureIdx = mat.pbr.metallicRoughnessTexture.index;
     if (metallicRoughnessTextureIdx > -1)
         pbrMaterial->setMetalRoughMap(context->texture(metallicRoughnessTextureIdx).texture);
 
-    const int normalMapTextureIdx = mat.normalTexture.index;
+    const qint32 normalMapTextureIdx = mat.normalTexture.index;
     if (normalMapTextureIdx > -1)
         pbrMaterial->setNormalMap(context->texture(normalMapTextureIdx).texture);
 
-    const int emissiveMapTextureIdx = mat.emissiveTexture.index;
+    const qint32 emissiveMapTextureIdx = mat.emissiveTexture.index;
     if (emissiveMapTextureIdx > -1)
         pbrMaterial->setEmissiveMap(context->texture(emissiveMapTextureIdx).texture);
 
-    const int occulsionMapTextureIdx = mat.occlusionTexture.index;
+    const qint32 occulsionMapTextureIdx = mat.occlusionTexture.index;
     if (occulsionMapTextureIdx > -1)
         pbrMaterial->setAmbientOcclusionMap(context->texture(occulsionMapTextureIdx).texture);
 

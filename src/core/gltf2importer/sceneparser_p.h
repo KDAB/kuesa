@@ -50,7 +50,7 @@ class GLTF2Context;
 
 struct Scene {
     QString name;
-    QVector<int> rootNodeIndices;
+    QVector<qint32> rootNodeIndices;
 };
 
 class Q_AUTOTEST_EXPORT SceneParser

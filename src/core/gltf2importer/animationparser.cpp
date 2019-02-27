@@ -69,7 +69,7 @@ AnimationParser::InterpolationMethod interpolationMethodFromSemantic(const QStri
     return AnimationParser::Unknown;
 }
 
-int accessorDataTypeToBytes(Qt3DRender::QAttribute::VertexBaseType type)
+quint8 accessorDataTypeToBytes(Qt3DRender::QAttribute::VertexBaseType type)
 {
     switch (type) {
     case Qt3DRender::QAttribute::Byte:
@@ -98,16 +98,16 @@ QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
     const QByteArray bufferData = bufferViewData.bufferData;
 
     // BufferData was generated using the bufferView's byteOffset
-    const int byteOffset = accessor.offset;
-    const int elemByteSize = accessorDataTypeToBytes(accessor.type);
-    const int byteStride = (bufferViewData.byteStride > 0 ? bufferViewData.byteStride : accessor.dataSize * elemByteSize);
+    const qint32 byteOffset = accessor.offset;
+    const quint8 elemByteSize = accessorDataTypeToBytes(accessor.type);
+    const qint16 byteStride = (bufferViewData.byteStride > 0 ? bufferViewData.byteStride : qint16(accessor.dataSize * elemByteSize));
 
-    if (byteStride < elemByteSize * accessor.dataSize) {
+    if (byteStride < qint16(elemByteSize * accessor.dataSize)) {
         qCWarning(kuesa, "Buffer Data byteStride doesn't match accessor dataSize and byte size for type");
         return {};
     }
 
-    const int subBufferByteLen = accessor.count * byteStride;
+    const qint32 subBufferByteLen = accessor.count * byteStride;
     if (byteOffset + subBufferByteLen > bufferData.size()) {
         qCWarning(kuesa, "Buffer Data size incompatible with accessor requirement");
         return {};
@@ -122,7 +122,7 @@ QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
     const char *rawBytes = bufferData.constData() + byteOffset;
     char *outputDataRawBytes = outputData.data();
 
-    const int vertexByteSize = elemByteSize * accessor.dataSize;
+    const qint32 vertexByteSize = elemByteSize * accessor.dataSize;
     for (int i = 0; i < accessor.count; ++i) {
         std::memcpy(outputDataRawBytes, rawBytes, static_cast<size_t>(vertexByteSize));
         rawBytes += byteStride;
@@ -200,16 +200,16 @@ std::tuple<int, std::vector<float>> AnimationParser::animationChannelDataFromDat
         std::memcpy(channelData.data(), outputRawData.constData(), static_cast<size_t>(outputRawData.size()));
         break;
     case Qt3DRender::QAttribute::Byte:
-        channelData = normalizeTypedChannelData<char>(outputRawData);
+        channelData = normalizeTypedChannelData<qint8>(outputRawData);
         break;
     case Qt3DRender::QAttribute::UnsignedByte:
-        channelData = normalizeTypedChannelData<uchar>(outputRawData);
+        channelData = normalizeTypedChannelData<quint8>(outputRawData);
         break;
     case Qt3DRender::QAttribute::Short:
-        channelData = normalizeTypedChannelData<short>(outputRawData);
+        channelData = normalizeTypedChannelData<qint16>(outputRawData);
         break;
     case Qt3DRender::QAttribute::UnsignedShort:
-        channelData = normalizeTypedChannelData<ushort>(outputRawData);
+        channelData = normalizeTypedChannelData<quint16>(outputRawData);
         break;
     default:
         qCWarning(kuesa, "Output buffer data type is not correct");
@@ -236,7 +236,7 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
     }
 
     const QByteArray inputRawData = rawDataFromAccessor(inputAccessor, m_context);
-    const int nKeyframes = inputAccessor.count;
+    const qint32 nKeyframes = inputAccessor.count;
     if (inputRawData.size() != nKeyframes * accessorDataTypeToBytes(inputAccessor.type)) {
         qCWarning(kuesa, "Input buffer doesn't have enough data for the animation");
         return channel;
@@ -245,7 +245,7 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
     std::vector<float> timeStamps(nKeyframes);
     std::memcpy(timeStamps.data(), inputRawData.constData(), inputRawData.size());
 
-    int nbComponents = 0;
+    quint8 nbComponents = 0;
     std::vector<float> valueStamps;
     std::tie(nbComponents, valueStamps) = animationChannelDataFromData(sampler);
 
@@ -266,8 +266,8 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
             return channel;
         }
 
-        for (int keyframeId = 0; keyframeId < nKeyframes; ++keyframeId) {
-            for (int componentId = 0; componentId < nbComponents; ++componentId) {
+        for (qint32 keyframeId = 0; keyframeId < nKeyframes; ++keyframeId) {
+            for (qint32 componentId = 0; componentId < nbComponents; ++componentId) {
                 auto keyframe = Qt3DAnimation::QKeyFrame(QVector2D(timeStamps[keyframeId], valueStamps[nbComponents * keyframeId + componentId]));
                 keyframe.setInterpolationType(interpolationType);
                 channelComponents[componentId].appendKeyFrame(keyframe);
@@ -284,7 +284,7 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
             return channel;
         }
 
-        for (int keyframeId = 0; keyframeId < nKeyframes; ++keyframeId) {
+        for (qint32 keyframeId = 0; keyframeId < nKeyframes; ++keyframeId) {
             const float tCurrent = timeStamps[keyframeId]; // Time in current keyframe
             const float tNext = timeStamps[std::min(nKeyframes - 1, keyframeId + 1)]; // Time in following keyframe
             const float tPrevious = timeStamps[std::max(0, keyframeId - 1)]; // Time in previous keyframe

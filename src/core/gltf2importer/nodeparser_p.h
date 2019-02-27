@@ -79,9 +79,9 @@ struct TreeNode {
 
     QString name;
     TransformInfo transformInfo;
-    int meshIdx = -1;
-    int skinIdx = -1;
-    int cameraIdx = -1;
+    qint32 meshIdx = -1;
+    qint32 skinIdx = -1;
+    qint32 cameraIdx = -1;
     QVector<int> childrenIndices;
     QVector<int> layerIndices;
 };

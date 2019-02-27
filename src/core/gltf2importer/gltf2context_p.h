@@ -76,26 +76,26 @@ public:
     }
 
     template<typename Asset>
-    Asset assetAt(int) const
+    Asset assetAt(qint32) const
     {
         return {};
     }
 
     int bufferCount() const;
-    const QByteArray buffer(int id) const;
+    const QByteArray buffer(qint32 id) const;
     void addBuffer(const QByteArray &buffer);
 
     int bufferViewCount() const;
-    const BufferView bufferView(int id) const;
+    const BufferView bufferView(qint32 id) const;
     void addBufferView(const BufferView &bufferView);
 
     int cameraCount() const;
-    const Camera camera(int id) const;
+    const Camera camera(qint32 id) const;
     void addCamera(const Camera &camera);
 
     int accessorCount() const;
     void addAccessor(const Accessor &accessor);
-    const Accessor accessor(int id) const;
+    const Accessor accessor(qint32 id) const;
 
     int meshesCount() const;
     void addMesh(const Mesh &mesh);
@@ -103,40 +103,40 @@ public:
 
     int treeNodeCount() const;
     void addTreeNode(const TreeNode &treeNode);
-    const TreeNode treeNode(int id) const;
+    const TreeNode treeNode(qint32 id) const;
 
     int layersCount() const;
     void addLayer(const Layer &layer);
-    Layer layer(int id) const;
+    Layer layer(qint32 id) const;
 
     int imagesCount() const;
     void addImage(const Image &image);
-    const Image image(int id) const;
+    const Image image(qint32 id) const;
 
     int textureSamplersCount() const;
     void addTextureSampler(const TextureSampler &textureSampler);
-    const TextureSampler textureSampler(int id) const;
+    const TextureSampler textureSampler(qint32 id) const;
 
     int texturesCount() const;
     void addTexture(const Texture &texture);
-    const Texture texture(int id) const;
+    const Texture texture(qint32 id) const;
 
     int animationsCount() const;
     void addAnimation(const Animation &animation);
-    const Animation animation(int id) const;
+    const Animation animation(qint32 id) const;
 
     int scenesCount() const;
     void addScene(const Scene &scene);
-    const Scene scene(int id) const;
+    const Scene scene(qint32 id) const;
 
     int materialsCount() const;
     void addMaterial(const Material &material);
-    const Material material(int id) const;
-    Material &material(int id);
+    const Material material(qint32 id) const;
+    Material &material(qint32 id);
 
     int skinsCount() const;
     void addSkin(const Skin &skin);
-    const Skin skin(int id) const;
+    const Skin skin(qint32 id) const;
 
     QStringList usedExtension() const;
     void setUsedExtensions(const QStringList &usedExtensions);

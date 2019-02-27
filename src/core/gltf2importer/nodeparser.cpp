@@ -94,7 +94,7 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
     node.childrenIndices.reserve(childrenArray.size());
 
     for (const QJsonValue &v : childrenArray) {
-        const int childIdx = v.toInt(-1);
+        const qint32 childIdx = v.toInt(-1);
         if (childIdx < 0) {
             qCWarning(kuesa, "Node referencing invalid child");
             return QPair<bool, TreeNode>(false, node);
@@ -195,8 +195,8 @@ NodeParser::NodeParser()
 
 bool NodeParser::parse(const QJsonArray &nodes, GLTF2Context *context) const
 {
-    const int nbNodes = nodes.size();
-    for (int nodeId = 0; nodeId < nbNodes; ++nodeId) {
+    const qint32 nbNodes = nodes.size();
+    for (qint32 nodeId = 0; nodeId < nbNodes; ++nodeId) {
         const QJsonObject &nodeObject = nodes.at(nodeId).toObject();
         const QPair<bool, TreeNode> treeNodeCreationResult = treenodeFromJson(nodeObject);
         if (!treeNodeCreationResult.first)
