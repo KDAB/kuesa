@@ -123,6 +123,21 @@ private Q_SLOTS:
     {
         // GIVEN
         GLTF2Context context;
+
+        Accessor positionAccessor;
+        positionAccessor.dataSize = 3;
+
+        Accessor normalAccessor;
+        normalAccessor.dataSize = 3;
+
+        Accessor indicesAccessor;
+        indicesAccessor.dataSize = 1;
+        indicesAccessor.type = Qt3DRender::QAttribute::VertexBaseType::UnsignedShort;
+
+        context.addAccessor(normalAccessor);
+        context.addAccessor(positionAccessor);
+        context.addAccessor(indicesAccessor);
+
         MeshParser parser;
 
         QFile file(QStringLiteral(ASSETS "simple_cube.gltf"));

@@ -348,6 +348,29 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
     interface.m_setTSpace = nullptr;
     return interface;
 }
+
+bool vertexBaseTypeForAttributesAreValid(const QVector<Qt3DRender::QAttribute *> &attributes)
+{
+    for (Qt3DRender::QAttribute *attribute : attributes) {
+        const auto validVertexBaseTypes = validVertexBaseTypesForAttribute(attribute->name());
+        const auto vertexBaseType = attribute->vertexBaseType();
+        if (!validVertexBaseTypes.contains(vertexBaseType))
+            return false;
+    }
+    return true;
+}
+
+bool vertexSizesForAttributesAreValid(const QVector<Qt3DRender::QAttribute *> &attributes)
+{
+    for (Qt3DRender::QAttribute *attribute : attributes) {
+        const auto validVertexSizes = validVertexSizesForAttribute(attribute->name());
+        const auto vertexSize = attribute->vertexSize();
+        if (!validVertexSizes.contains(vertexSize))
+            return false;
+    }
+    return true;
+}
+
 } // namespace
 
 // TODO This is only needed when the material has normal mapping
@@ -382,28 +405,8 @@ Qt3DRender::QAttribute *createTangentAttribute(Qt3DRender::QGeometry *geometry, 
 bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry)
 {
     const auto &attributes = geometry->attributes();
-    const bool vertexBaseTypesAreValid = std::find_if(std::begin(attributes), std::end(attributes),
-                                                      [](Qt3DRender::QAttribute *attribute) {
-                                                          const auto validVertexBaseTypes = validVertexBaseTypesForAttribute(attribute->name());
-                                                          const auto vertexBaseType = attribute->vertexBaseType();
-                                                          return std::find_if(std::begin(validVertexBaseTypes),
-                                                                              std::end(validVertexBaseTypes),
-                                                                              [vertexBaseType](Qt3DRender::QAttribute::VertexBaseType validVertexBaseType) {
-                                                                                  return vertexBaseType == validVertexBaseType;
-                                                                              }) == std::end(validVertexBaseTypes);
-                                                      }) == std::end(attributes);
-
-    const bool vertexSizesAreValid = std::find_if(std::begin(attributes), std::end(attributes),
-                                                  [](Qt3DRender::QAttribute *attribute) {
-                                                      const auto validVertexSizes = validVertexSizesForAttribute(attribute->name());
-                                                      const auto vertexSize = attribute->vertexSize();
-                                                      return std::find_if(std::begin(validVertexSizes),
-                                                                          std::end(validVertexSizes),
-                                                                          [vertexSize](uint validVertexSize) {
-                                                                              return vertexSize == validVertexSize;
-                                                                          }) == std::end(validVertexSizes);
-                                                  }) == std::end(attributes);
-
+    const bool vertexBaseTypesAreValid = vertexBaseTypeForAttributesAreValid(attributes);
+    const bool vertexSizesAreValid = vertexSizesForAttributesAreValid(attributes);
     return vertexSizesAreValid && vertexBaseTypesAreValid;
 }
 } // namespace MeshParserUtils
