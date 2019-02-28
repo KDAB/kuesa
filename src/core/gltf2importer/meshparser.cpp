@@ -163,7 +163,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             const QJsonObject &primitivesObject = primitivesArray[primitiveId].toObject();
 
             bool hasColorAttr = false;
-            auto geometry = std::make_unique<Qt3DRender::QGeometry>();
+            auto geometry = std::unique_ptr<Qt3DRender::QGeometry>(new Qt3DRender::QGeometry);
 
 #if defined(KUESA_DRACO_COMPRESSION)
             const QJsonObject extensions = primitivesObject.value(KEY_EXTENSIONS).toObject();
