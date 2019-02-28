@@ -1,5 +1,5 @@
 /*
-    draco_prefix_p.h
+    copyingexportpass_p.h
 
     This file is part of Kuesa.
 
@@ -26,26 +26,40 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_DRACO_PREFIX_P_H
-#define KUESA_DRACO_PREFIX_P_H
+#ifndef KUESA_GLTF2EXPORTER_COPYINGEXPORTPASS_P_H
+#define KUESA_GLTF2EXPORTER_COPYINGEXPORTPASS_P_H
 
 //
-//  W A R N I N G
-//  -------------
+//  NOTICE
+//  ------
 //
-// This file is not part of the Kuesa API.  It exists for the convenience
-// of other Kuesa classes.  This header file may change from version to
-// version without notice, or even be removed.
-//
-// We mean it.
+// We mean it: this file is not part of the public API and could be
+// modified without notice
 //
 
-#if defined(_WIN32)
+#include <QDir>
+#include <QStringList>
+#include <QJsonObject>
 
-#if defined(ERROR)
-#undef ERROR
-#endif
+QT_BEGIN_NAMESPACE
+namespace Kuesa {
 
-#endif
+class CopyExportPass
+{
+public:
+    CopyExportPass(
+            const QDir &source,
+            const QDir &destination);
 
-#endif // KUESA_DRACO_PREFIX_P_H
+    void addGeneratedFiles(const QStringList &lst);
+    const QStringList &errors() const;
+    void copyURIs(QJsonObject &root, QLatin1String key);
+
+private:
+    QStringList m_errors;
+    QStringList m_generated;
+    QDir m_basePath, m_destination;
+};
+} // namespace Kuesa
+QT_END_NAMESPACE
+#endif // KUESA_GLTF2EXPORTER_COPYINGEXPORTPASS_P_H

@@ -1,5 +1,5 @@
 /*
-    draco_prefix_p.h
+    gltf2utils_p.h
 
     This file is part of Kuesa.
 
@@ -26,26 +26,30 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_DRACO_PREFIX_P_H
-#define KUESA_DRACO_PREFIX_P_H
+#ifndef KUESA_GLTF2EXPORTER_GLTF2UTILS_P_H
+#define KUESA_GLTF2EXPORTER_GLTF2UTILS_P_H
 
 //
-//  W A R N I N G
-//  -------------
+//  NOTICE
+//  ------
 //
-// This file is not part of the Kuesa API.  It exists for the convenience
-// of other Kuesa classes.  This header file may change from version to
-// version without notice, or even be removed.
+// We mean it: this file is not part of the public API and could be
+// modified without notice
 //
-// We mean it.
-//
+#include <QtGlobal>
 
-#if defined(_WIN32)
+QT_BEGIN_NAMESPACE
 
-#if defined(ERROR)
-#undef ERROR
-#endif
+class QJsonObject;
+class QJsonArray;
+class QLatin1String;
+class QString;
 
-#endif
+namespace Kuesa {
 
-#endif // KUESA_DRACO_PREFIX_P_H
+void addExtension(QJsonObject &rootObject, const QString &where, const QString &extension);
+
+void replaceJsonArray(QJsonObject &m_root, QLatin1String k, QJsonArray &arr);
+} // namespace Kuesa
+QT_END_NAMESPACE
+#endif // KUESA_GLTF2EXPORTER_GLTF2UTILS_P_H

@@ -340,6 +340,16 @@ void GLTF2Context::setRequiredExtensions(const QStringList &requiredExtensions)
     m_requiredExtensions = requiredExtensions;
 }
 
+const QString &GLTF2Context::filename() const
+{
+    return m_filename;
+}
+
+void GLTF2Context::setFilename(const QString &name)
+{
+    m_filename = name;
+}
+
 const QJsonDocument &GLTF2Context::json() const
 {
     return m_json;
