@@ -123,7 +123,7 @@ QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
     char *outputDataRawBytes = outputData.data();
 
     const qint32 vertexByteSize = elemByteSize * accessor.dataSize;
-    for (int i = 0; i < accessor.count; ++i) {
+    for (quint32 i = 0; i < accessor.count; ++i) {
         std::memcpy(outputDataRawBytes, rawBytes, static_cast<size_t>(vertexByteSize));
         rawBytes += byteStride;
         outputDataRawBytes += vertexByteSize;
