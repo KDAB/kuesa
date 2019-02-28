@@ -78,7 +78,9 @@ QString standardAttributeNameFromSemantic(const QString &semantic)
     if (semantic.startsWith(QLatin1String("TEXCOORD_0")))
         return Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName();
     if (semantic.startsWith(QLatin1String("TEXCOORD_1")))
-        return QString();
+        return Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName();
+    if (semantic.startsWith(QLatin1String("TEXCOORD_2")))
+        return Qt3DRender::QAttribute::defaultTextureCoordinate2AttributeName();
     if (semantic.startsWith(QLatin1String("COLOR_0")))
         return Qt3DRender::QAttribute::defaultColorAttributeName();
     if (semantic.startsWith(QLatin1String("JOINTS_0")))
