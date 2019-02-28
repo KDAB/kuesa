@@ -53,8 +53,8 @@ struct Accessor {
     QByteArray bufferData;
     Qt3DRender::QAttribute::VertexBaseType type = Qt3DRender::QAttribute::Float;
     quint8 dataSize = 0;
-    qint32 count = 0;
-    qint32 offset = 0;
+    quint32 count = 0;
+    quint32 offset = 0;
     bool normalized = false;
     QVector<float> max;
     QVector<float> min;

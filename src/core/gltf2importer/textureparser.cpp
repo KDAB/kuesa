@@ -54,14 +54,14 @@ public:
     {
     }
 
-    Qt3DRender::QTextureImageDataPtr operator()()
+    Qt3DRender::QTextureImageDataPtr operator()() override
     {
         Qt3DRender::QTextureImageDataPtr dataPtr = Qt3DRender::QTextureImageDataPtr::create();
         dataPtr->setImage(m_image);
         return dataPtr;
     }
 
-    bool operator==(const Qt3DRender::QTextureImageDataGenerator &other) const
+    bool operator==(const Qt3DRender::QTextureImageDataGenerator &other) const override
     {
         const EmbeddedTextureImageFunctor *otherFunctor = functor_cast<EmbeddedTextureImageFunctor>(&other);
         return (otherFunctor != nullptr && otherFunctor->m_image == m_image);
