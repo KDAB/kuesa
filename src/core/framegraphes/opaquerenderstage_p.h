@@ -48,6 +48,7 @@ namespace Qt3DRender {
 class QDepthTest;
 class QNoDepthMask;
 class QRenderStateSet;
+class QSortPolicy;
 } // namespace Qt3DRender
 
 namespace Kuesa {
@@ -66,6 +67,7 @@ private:
     Qt3DRender::QRenderStateSet *m_states;
     Qt3DRender::QDepthTest *m_depthTest;
     Qt3DRender::QNoDepthMask *m_noDepthWrite;
+    Qt3DRender::QSortPolicy *m_sortPolicy;
 };
 } // namespace Kuesa
 
