@@ -101,7 +101,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
 
             const Accessor &accessor = context->accessor(inverseBindMatricesIdx);
 
-            if (accessor.count != skin.jointsIndices.size()) {
+            if (accessor.count != static_cast<quint32>(skin.jointsIndices.size())) {
                 qCWarning(kuesa, "InverseBindMatrix Accessor's count differs from number of joints");
                 return false;
             }
@@ -123,13 +123,13 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
             // bufferData was generated using the bufferView's byteOffset applied
             const QByteArray bufferData = accessor.bufferData;
 
-            if (byteOffset + accessor.count * byteStride > bufferData.size()) {
+            if (byteOffset + accessor.count * byteStride > static_cast<quint32>(bufferData.size())) {
                 qCWarning(kuesa, "InverseBindMatrix Buffer data is too small");
                 return false;
             }
 
             const char *rawBytes = bufferData.constData() + byteOffset;
-            for (qint32 i = 0; i < accessor.count; ++i) {
+            for (quint32 i = 0; i < accessor.count; ++i) {
                 QMatrix4x4 inverseBindMatrix;
                 memcpy(inverseBindMatrix.data(), reinterpret_cast<const float *>(rawBytes), sizeof(float) * 16);
                 rawBytes += byteStride;
