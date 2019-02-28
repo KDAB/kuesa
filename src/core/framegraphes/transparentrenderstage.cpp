@@ -71,7 +71,13 @@ TransparentRenderStage::TransparentRenderStage(Qt3DCore::QNode *parent)
     states->addRenderState(blendArgs);
 
     m_alphaSortPolicy = new Qt3DRender::QSortPolicy(states);
-    m_alphaSortPolicy->setSortTypes(QVector<Qt3DRender::QSortPolicy::SortType>{ Qt3DRender::QSortPolicy::BackToFront });
+    m_alphaSortPolicy->setSortTypes(QVector<Qt3DRender::QSortPolicy::SortType>
+                                    { Qt3DRender::QSortPolicy::BackToFront,
+                                      Qt3DRender::QSortPolicy::Material
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+                                      , Qt3DRender::QSortPolicy::Texture
+#endif
+                                    });
     connect(m_alphaSortPolicy, &Qt3DRender::QSortPolicy::enabledChanged, this, &TransparentRenderStage::backToFrontSortingChanged);
 }
 
