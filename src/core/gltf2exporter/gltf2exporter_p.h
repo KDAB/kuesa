@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -77,9 +77,19 @@ public:
     void setMeshCompressionEnabled(bool enabled);
     bool meshCompressionEnabled() const;
 
+    enum Embed {
+        Keep, //! Keep embedded data as-is.
+        None, //! Move all embedded data in outside files.
+        All //! Embed all the data in the glTF file.
+    };
+
+    void setEmbedding(Embed);
+    Embed embedding() const;
+
 private:
     int m_encodingSpeed{};
     int m_decodingSpeed{};
+    Embed m_embedding{ Embed::Keep };
     bool m_meshCompression{};
     QMap<MeshAttribute, int> m_quantization;
 };
@@ -117,24 +127,24 @@ public:
     QStringList overwritableFiles(const QDir &target) const;
 
 Q_SIGNALS:
-    void sceneChanged(SceneEntity *scene);
+    void sceneChanged(Kuesa::SceneEntity *scene);
 
 public Q_SLOTS:
-    void setScene(SceneEntity *scene);
+    void setScene(Kuesa::SceneEntity *scene);
 
     Export saveInFolder(
             const QDir &sourceFolder,
             const QDir &targetFolder);
 
 private:
-    void copyURIs(const QDir &source, const QDir &target, const QJsonArray &array);
-
     GLTF2Import::GLTF2Context *m_context;
     SceneEntity *m_scene;
 
     GLTF2ExportConfiguration m_conf;
     QStringList m_errors;
 };
+
+QString generateUniqueFilename(const QDir &dir, QString filename);
 } // namespace Kuesa
 QT_END_NAMESPACE
 

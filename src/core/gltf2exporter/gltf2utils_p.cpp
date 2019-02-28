@@ -1,5 +1,5 @@
 /*
-    draco_prefix_p.h
+    gltf2utils_p.cpp
 
     This file is part of Kuesa.
 
@@ -26,26 +26,41 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_DRACO_PREFIX_P_H
-#define KUESA_DRACO_PREFIX_P_H
+#include "gltf2utils_p.h"
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QLatin1String>
+#include <algorithm>
 
-//
-//  W A R N I N G
-//  -------------
-//
-// This file is not part of the Kuesa API.  It exists for the convenience
-// of other Kuesa classes.  This header file may change from version to
-// version without notice, or even be removed.
-//
-// We mean it.
-//
+QT_BEGIN_NAMESPACE
+namespace Kuesa {
+/*!
+ * Add an extension to a glTF object if it is not already registered
+ */
+void addExtension(QJsonObject &object, const QString &where, const QString &extension)
+{
+    auto extensions = object[where].toArray();
+    auto ext_it = std::find_if(extensions.begin(), extensions.end(), [&](const QJsonValue &v) {
+        return v.toString() == extension;
+    });
 
-#if defined(_WIN32)
+    if (ext_it == extensions.end()) {
+        extensions.push_back(extension);
+        object[where] = std::move(extensions);
+    }
+}
 
-#if defined(ERROR)
-#undef ERROR
-#endif
+/*!
+ * Replace a Json array in an object, or remove it from the object if the array is empty.
+ */
+void replaceJsonArray(QJsonObject &object, QLatin1String k, QJsonArray &arr)
+{
+    auto it = object.find(k);
+    if (it != object.end() && arr.empty())
+        object.erase(it);
+    else if (!arr.empty())
+        *it = std::move(arr);
+}
 
-#endif
-
-#endif // KUESA_DRACO_PREFIX_P_H
+} // namespace Kuesa
+QT_END_NAMESPACE

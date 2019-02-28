@@ -82,7 +82,7 @@ public:
 
     virtual QVector<KeyParserFuncPair> prepareParsers();
     Qt3DCore::QEntity *parse(const QString &filePath);
-    Qt3DCore::QEntity *parse(const QByteArray &jsonData, const QString &basePath);
+    Qt3DCore::QEntity *parse(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
 
     void setContext(GLTF2Context *);
     const GLTF2Context *context() const;

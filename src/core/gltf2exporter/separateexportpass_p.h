@@ -1,5 +1,5 @@
 /*
-    draco_prefix_p.h
+    separateexportpass_p.h
 
     This file is part of Kuesa.
 
@@ -26,26 +26,45 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_DRACO_PREFIX_P_H
-#define KUESA_DRACO_PREFIX_P_H
+#ifndef KUESA_GLTF2EXPORTER_SEPARATEEXPORTPASS_P_H
+#define KUESA_GLTF2EXPORTER_SEPARATEEXPORTPASS_P_H
 
 //
-//  W A R N I N G
-//  -------------
+//  NOTICE
+//  ------
 //
-// This file is not part of the Kuesa API.  It exists for the convenience
-// of other Kuesa classes.  This header file may change from version to
-// version without notice, or even be removed.
-//
-// We mean it.
+// We mean it: this file is not part of the public API and could be
+// modified without notice
 //
 
-#if defined(_WIN32)
+#include <QDir>
+#include <QStringList>
+#include <QJsonObject>
 
-#if defined(ERROR)
-#undef ERROR
-#endif
+QT_BEGIN_NAMESPACE
+namespace Kuesa {
+class SeparateExportPass
+{
+public:
+    SeparateExportPass(
+            const QString &basename,
+            const QDir &destination);
 
-#endif
+    const QStringList &errors() const;
+    const QStringList &generatedFiles() const;
+    void separateURIs(QJsonObject &root);
 
-#endif // KUESA_DRACO_PREFIX_P_H
+private:
+    using NamingFunction = QString (*)(const QString &, const QJsonObject &, const QByteArray &, int);
+    void separateURIsInArray(QJsonObject &root, QLatin1String key, NamingFunction);
+    bool separateEncodedUri(QJsonObject &object, NamingFunction);
+
+    int m_extractedCount = 0;
+    QStringList m_errors;
+    QStringList m_generated;
+    QString m_basename;
+    QDir m_destination;
+};
+} // namespace Kuesa
+QT_END_NAMESPACE
+#endif // KUESA_GLTF2EXPORTER_SEPARATEEXPORTPASS_P_H

@@ -149,7 +149,7 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QString &filePath)
 
     QFileInfo finfo(filePath);
     const QByteArray jsonData = f.readAll();
-    return parse(jsonData, finfo.absolutePath());
+    return parse(jsonData, finfo.absolutePath(), finfo.fileName());
 }
 
 template<class T>
@@ -282,7 +282,7 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
     };
 }
 
-Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString &basePath)
+Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString &basePath, const QString &filename)
 {
     QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonData);
     if (jsonDocument.isNull() || !jsonDocument.isObject()) {
@@ -292,6 +292,7 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
 
     Q_ASSERT(m_context);
     m_context->setJson(jsonDocument);
+    m_context->setFilename(filename);
 
     m_animators.clear();
     m_treeNodes.clear();

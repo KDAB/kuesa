@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -33,6 +33,8 @@
 #include <Kuesa/private/gltf2context_p.h>
 #include <Kuesa/private/gltf2exporter_p.h>
 #include <Kuesa/private/gltf2parser_p.h>
+#include <Kuesa/private/gltf2keys_p.h>
+#include <Kuesa/private/gltf2uri_p.h>
 #include <Kuesa/private/kuesa_utils_p.h>
 using namespace Kuesa;
 using namespace GLTF2Import;
@@ -58,6 +60,214 @@ class tst_GLTFExporter : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
+
+    void checkEmbedAll()
+    {
+        SceneEntity scene;
+        GLTF2Context ctx;
+
+        GLTF2Parser parser(&scene);
+        parser.setContext(&ctx);
+
+        QString asset(ASSETS "mixed_datauris.gltf");
+        QDir tmp = setupTestFolder();
+
+        GLTF2Exporter::Export exported;
+        // WHEN
+        {
+            auto res = parser.parse(asset);
+            QVERIFY(res != nullptr);
+
+            GLTF2ExportConfiguration configuration;
+            configuration.setMeshCompressionEnabled(false);
+            configuration.setEmbedding(GLTF2ExportConfiguration::Embed::All);
+
+            GLTF2Exporter exporter;
+            exporter.setContext(&ctx);
+            exporter.setScene(&scene);
+            exporter.setConfiguration(configuration);
+
+            exported = exporter.saveInFolder(
+                    QDir(ASSETS),
+                    tmp);
+            qDebug() << exporter.errors();
+            QVERIFY(exporter.errors().empty());
+            QVERIFY(exported.success());
+        }
+
+        // THEN
+        {
+            // Check images
+            {
+                QVERIFY(exported.json()[Kuesa::GLTF2Import::KEY_IMAGES].isArray());
+
+                const auto images = exported.json()[Kuesa::GLTF2Import::KEY_IMAGES].toArray();
+                QCOMPARE(images.size(), 2);
+                for (const auto &img : images) {
+                    const auto &obj = img.toObject();
+                    const auto &uri = obj[Kuesa::GLTF2Import::KEY_URI].toString();
+                    QCOMPARE(GLTF2Import::Uri::kind(uri), GLTF2Import::Uri::Kind::Data);
+                }
+            }
+
+            // Check buffers
+            {
+                QVERIFY(exported.json()[Kuesa::GLTF2Import::KEY_BUFFERS].isArray());
+
+                const auto buffers = exported.json()[Kuesa::GLTF2Import::KEY_BUFFERS].toArray();
+                QCOMPARE(buffers.size(), 2);
+                for (const auto &buf : buffers) {
+                    const auto &obj = buf.toObject();
+                    const auto &uri = obj[Kuesa::GLTF2Import::KEY_URI].toString();
+                    QCOMPARE(GLTF2Import::Uri::kind(uri), GLTF2Import::Uri::Kind::Data);
+                }
+            }
+
+            QCOMPARE(tmp.count(), 0U); // There should be no files copied
+        }
+    }
+
+    void checkEmbedNone()
+    {
+        SceneEntity scene;
+        GLTF2Context ctx;
+
+        GLTF2Parser parser(&scene);
+        parser.setContext(&ctx);
+
+        QString asset(ASSETS "mixed_datauris.gltf");
+        QDir tmp = setupTestFolder();
+
+        GLTF2Exporter::Export exported;
+        // WHEN
+        {
+            auto res = parser.parse(asset);
+            QVERIFY(res != nullptr);
+
+            GLTF2ExportConfiguration configuration;
+            configuration.setMeshCompressionEnabled(false);
+            configuration.setEmbedding(GLTF2ExportConfiguration::Embed::None);
+
+            GLTF2Exporter exporter;
+            exporter.setContext(&ctx);
+            exporter.setScene(&scene);
+            exporter.setConfiguration(configuration);
+
+            exported = exporter.saveInFolder(
+                    QDir(ASSETS),
+                    tmp);
+            qDebug() << exporter.errors();
+            QVERIFY(exporter.errors().empty());
+            QVERIFY(exported.success());
+        }
+
+        // THEN
+        {
+            const auto get_uri = [](const QJsonValue &v) {
+                return v.toObject()[Kuesa::GLTF2Import::KEY_URI].toString();
+            };
+            // Check images
+            {
+                QVERIFY(exported.json()[Kuesa::GLTF2Import::KEY_IMAGES].isArray());
+
+                const auto images = exported.json()[Kuesa::GLTF2Import::KEY_IMAGES].toArray();
+                QCOMPARE(images.size(), 2);
+
+                QCOMPARE(get_uri(images[0]), QStringLiteral("image_data-0.png"));
+                QCOMPARE(get_uri(images[1]), QStringLiteral("GeneratedAssets/Texture_Sampler/Textures/BaseColor_Plane.png"));
+            }
+
+            // Check buffers
+            {
+                QVERIFY(exported.json()[Kuesa::GLTF2Import::KEY_BUFFERS].isArray());
+
+                const auto buffers = exported.json()[Kuesa::GLTF2Import::KEY_BUFFERS].toArray();
+                QCOMPARE(buffers.size(), 2);
+
+                QCOMPARE(get_uri(buffers[0]), QStringLiteral("buffer_data-0.bin"));
+                QCOMPARE(get_uri(buffers[1]), QStringLiteral("uri_qrc_test.bin"));
+            }
+
+            QCOMPARE(tmp.count(), 4U);
+        }
+    }
+
+    void checkEmbedKeep()
+    {
+        SceneEntity scene;
+        GLTF2Context ctx;
+
+        GLTF2Parser parser(&scene);
+        parser.setContext(&ctx);
+
+        QString asset(ASSETS "mixed_datauris.gltf");
+        QDir tmp = setupTestFolder();
+
+        GLTF2Exporter::Export exported;
+        // WHEN
+        {
+            auto res = parser.parse(asset);
+            QVERIFY(res != nullptr);
+
+            GLTF2ExportConfiguration configuration;
+            configuration.setMeshCompressionEnabled(false);
+            configuration.setEmbedding(GLTF2ExportConfiguration::Embed::Keep);
+
+            GLTF2Exporter exporter;
+            exporter.setContext(&ctx);
+            exporter.setScene(&scene);
+            exporter.setConfiguration(configuration);
+
+            exported = exporter.saveInFolder(
+                    QDir(ASSETS),
+                    tmp);
+            qDebug() << exporter.errors();
+            QVERIFY(exporter.errors().empty());
+            QVERIFY(exported.success());
+        }
+
+        // THEN
+        {
+
+            // Check images
+            {
+                QVERIFY(exported.json()[Kuesa::GLTF2Import::KEY_IMAGES].isArray());
+
+                const auto images = exported.json()[Kuesa::GLTF2Import::KEY_IMAGES].toArray();
+                QCOMPARE(images.size(), 2);
+                {
+                    const auto &obj = images[0].toObject();
+                    const auto &uri = obj[Kuesa::GLTF2Import::KEY_URI].toString();
+                    QCOMPARE(GLTF2Import::Uri::kind(uri), GLTF2Import::Uri::Kind::Data);
+                }
+                {
+                    const auto &obj = images[1].toObject();
+                    const auto &uri = obj[Kuesa::GLTF2Import::KEY_URI].toString();
+                    QCOMPARE(GLTF2Import::Uri::kind(uri), GLTF2Import::Uri::Kind::Path);
+                }
+            }
+
+            // Check buffers
+            {
+                QVERIFY(exported.json()[Kuesa::GLTF2Import::KEY_BUFFERS].isArray());
+
+                const auto buffers = exported.json()[Kuesa::GLTF2Import::KEY_BUFFERS].toArray();
+                QCOMPARE(buffers.size(), 2);
+                {
+                    const auto &obj = buffers[0].toObject();
+                    const auto &uri = obj[Kuesa::GLTF2Import::KEY_URI].toString();
+                    QCOMPARE(GLTF2Import::Uri::kind(uri), GLTF2Import::Uri::Kind::Data);
+                }
+                {
+                    const auto &obj = buffers[1].toObject();
+                    const auto &uri = obj[Kuesa::GLTF2Import::KEY_URI].toString();
+                    QCOMPARE(GLTF2Import::Uri::kind(uri), GLTF2Import::Uri::Kind::Path);
+                }
+            }
+
+            QCOMPARE(tmp.count(), 2U);
+        }
+    }
 
 #if defined(KUESA_DRACO_COMPRESSION)
     void checkBoxCompression()
@@ -97,7 +307,7 @@ private Q_SLOTS:
             QVERIFY(exported.success());
 
             ctx = GLTF2Context{};
-            auto res = parser.parse(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath());
+            auto res = parser.parse(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
             QVERIFY(res != nullptr);
 
             QVERIFY(tmp.exists(exported.compressedBufferFilename()));
@@ -173,7 +383,62 @@ private Q_SLOTS:
 
             // Check that we can reload the mesh properly
             ctx = GLTF2Context{};
-            auto res = parser.parse(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath());
+            auto res = parser.parse(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
+            QVERIFY(res != nullptr);
+        }
+    }
+
+    void checkCarCompressionAndEmbedding()
+    {
+        SceneEntity scene;
+        GLTF2Context ctx;
+
+        GLTF2Parser parser(&scene);
+        parser.setContext(&ctx);
+
+        QDir source_dir(ASSETS "car/");
+        QString asset(ASSETS "car/DodgeViper.gltf");
+        QDir tmp = setupTestFolder();
+
+        GLTF2Exporter::Export exported;
+        // WHEN
+        {
+            auto res = parser.parse(asset);
+            QVERIFY(res != nullptr);
+
+            GLTF2ExportConfiguration configuration;
+            configuration.setMeshCompressionEnabled(true);
+            configuration.setAttributeQuantizationLevel(GLTF2ExportConfiguration::Position, 4);
+            configuration.setAttributeQuantizationLevel(GLTF2ExportConfiguration::Normal, 4);
+            configuration.setAttributeQuantizationLevel(GLTF2ExportConfiguration::Color, 4);
+            configuration.setAttributeQuantizationLevel(GLTF2ExportConfiguration::TextureCoordinate, 4);
+            configuration.setAttributeQuantizationLevel(GLTF2ExportConfiguration::Generic, 4);
+            configuration.setEmbedding(GLTF2ExportConfiguration::Embed::All);
+
+            GLTF2Exporter exporter;
+            exporter.setContext(&ctx);
+            exporter.setScene(&scene);
+            exporter.setConfiguration(configuration);
+
+            exported = exporter.saveInFolder(
+                    source_dir,
+                    tmp);
+
+            // Original model is 14 megabytes
+            QFileInfo dodge_info(source_dir.filePath("DodgeViper.bin"));
+            QVERIFY(dodge_info.size() == 14406004);
+        }
+
+        // THEN
+        {
+            QVERIFY(exported.success());
+
+            // Check that a compressed buffer is created
+            QVERIFY(tmp.count() == 0);
+
+            // Check that we can reload the mesh properly
+            ctx = GLTF2Context{};
+            auto res = parser.parse(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
             QVERIFY(res != nullptr);
         }
     }
@@ -277,13 +542,13 @@ private Q_SLOTS:
         // THEN
         {
             QVERIFY(exported.success());
-            QVERIFY(exported.compressedBufferFilename() == "compressedBuffer-1.bin");
+            QCOMPARE(exported.compressedBufferFilename(), QStringLiteral("Box.bin"));
             QVERIFY(sub.exists(exported.compressedBufferFilename()));
             QVERIFY(!sub.exists("Box0.bin"));
             QCOMPARE(sub.count(), 1U);
 
             ctx = GLTF2Context{};
-            auto res = parser.parse(QJsonDocument{ exported.json() }.toJson(), sub.absolutePath());
+            auto res = parser.parse(QJsonDocument{ exported.json() }.toJson(), sub.absolutePath(), QStringLiteral("test.gltf"));
             QVERIFY(res != nullptr);
         }
     }
