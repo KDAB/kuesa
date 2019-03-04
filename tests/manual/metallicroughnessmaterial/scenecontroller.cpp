@@ -42,6 +42,7 @@ SceneController::SceneController(QObject *parent)
     , m_useEmissiveMap(false)
     , m_useColorAttribute(false)
     , m_doubleSided(false)
+    , m_toneMappingAlgorithm(Kuesa::MetallicRoughnessEffect::Reinhard)
 {
 }
 
@@ -108,6 +109,11 @@ bool SceneController::useColorAttribute() const
 bool SceneController::doubleSided() const
 {
     return m_doubleSided;
+}
+
+Kuesa::MetallicRoughnessEffect::ToneMapping SceneController::toneMappingAlgorithm() const
+{
+    return m_toneMappingAlgorithm;
 }
 
 void SceneController::setBaseColorFactor(const QColor &baseColorFactor)
@@ -225,4 +231,12 @@ void SceneController::setDoubleSided(bool doubleSided)
 
     m_doubleSided = doubleSided;
     emit doubleSidedChanged(doubleSided);
+}
+
+void SceneController::setToneMappingAlgorithm(Kuesa::MetallicRoughnessEffect::ToneMapping algorithm)
+{
+    if (m_toneMappingAlgorithm == algorithm)
+        return;
+    m_toneMappingAlgorithm = algorithm;
+    emit toneMappingAlgorithmChanged(algorithm);
 }

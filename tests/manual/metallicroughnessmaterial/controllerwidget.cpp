@@ -87,6 +87,15 @@ ControllerWidget::ControllerWidget(SceneController *sceneController,
             m_controller, &SceneController::setUseColorAttribute);
     connect(ui->doubleSided, &QCheckBox::toggled,
             m_controller, &SceneController::setDoubleSided);
+    connect(ui->toneMapComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, [this](int idx) {
+                if (idx >= 0 && idx < ui->toneMapComboBox->count())
+                    m_controller->setToneMappingAlgorithm(
+                            static_cast<Kuesa::MetallicRoughnessEffect::ToneMapping>(ui->toneMapComboBox->itemData(idx).toInt()));
+            });
+
+    ui->toneMapComboBox->addItem(QStringLiteral("Reinhard"), QVariant::fromValue(Kuesa::MetallicRoughnessEffect::Reinhard));
+    ui->toneMapComboBox->addItem(QStringLiteral("Filmic"), QVariant::fromValue(Kuesa::MetallicRoughnessEffect::Filmic));
 }
 
 ControllerWidget::~ControllerWidget()

@@ -132,6 +132,16 @@ namespace Kuesa {
  */
 
 /*!
+    \property toneMappingAlgoritm
+
+    Tone mapping specifies how we perform color conversion from HDR (high
+    dynamic range) content to LDR (low dynamic range) content which our monitor
+    displays.
+
+    \since 1.1
+ */
+
+/*!
     \qmltype MetallicRoughnessEffect
     \instantiates Kuesa::MetallicRoughnessEffect
     \inmodule Kuesa
@@ -218,6 +228,32 @@ namespace Kuesa {
     threshold are discarded
  */
 
+/*!
+    \qmlproperty MetallicRoughnessEffect.ToneMapping toneMappingAlgoritm
+
+    Tone mapping specifies how we perform color conversion from HDR (high
+    dynamic range) content to LDR (low dynamic range) content which our monitor
+    displays.
+
+    \since 1.1
+ */
+
+namespace {
+
+QString shaderGraphLayerForToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm)
+{
+    switch (algorithm) {
+    case MetallicRoughnessEffect::Reinhard:
+        return QStringLiteral("useReinhardToneMap");
+    case MetallicRoughnessEffect::Filmic:
+        return QStringLiteral("useFilmicToneMap");
+    default:
+        Q_UNREACHABLE();
+    }
+}
+
+} // namespace
+
 MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     : QEffect(parent)
     , m_baseColorMapEnabled(false)
@@ -231,6 +267,7 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     , m_invokeInitVertexShaderRequested(false)
     , m_opaque(true)
     , m_alphaCutoffEnabled(false)
+    , m_toneMappingAlgorithm(MetallicRoughnessEffect::Reinhard)
     , m_backFaceCulling(new QCullFace(this))
     , m_metalRoughGL3ShaderBuilder(new QShaderProgramBuilder(this))
     , m_metalRoughES3ShaderBuilder(new QShaderProgramBuilder(this))
@@ -246,7 +283,8 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
                                             QStringLiteral("noNormalMap"),
                                             QStringLiteral("noHasColorAttr"),
                                             QStringLiteral("noDoubleSided"),
-                                            QStringLiteral("noHasAlphaCutoff") };
+                                            QStringLiteral("noHasAlphaCutoff"),
+                                            shaderGraphLayerForToneMappingAlgorithm(m_toneMappingAlgorithm) };
     const auto fragmentShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.frag.json"));
     m_metalRoughGL3ShaderBuilder->setShaderProgram(m_metalRoughGL3Shader);
     m_metalRoughGL3ShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph);
@@ -454,6 +492,15 @@ bool MetallicRoughnessEffect::isAlphaCutoffEnabled() const
     return m_alphaCutoffEnabled;
 }
 
+/*!
+    Returns the tone mapping algorithm used by the shader.
+    \since 1.1
+ */
+MetallicRoughnessEffect::ToneMapping MetallicRoughnessEffect::toneMappingAlgorithm() const
+{
+    return m_toneMappingAlgorithm;
+}
+
 void MetallicRoughnessEffect::setBaseColorMapEnabled(bool enabled)
 {
     if (m_baseColorMapEnabled == enabled)
@@ -642,6 +689,29 @@ void MetallicRoughnessEffect::setAlphaCutoffEnabled(bool enabled)
     m_metalRoughES3ShaderBuilder->setEnabledLayers(layers);
     m_metalRoughES2ShaderBuilder->setEnabledLayers(layers);
     emit alphaCutoffEnabledChanged(enabled);
+}
+
+/*!
+    Sets the tone mapping algorithm to \a algorithm,
+    \since 1.1
+*/
+void MetallicRoughnessEffect::setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm)
+{
+    if (m_toneMappingAlgorithm == algorithm)
+        return;
+
+    const QString oldLayerName = shaderGraphLayerForToneMappingAlgorithm(m_toneMappingAlgorithm);
+    const QString newLayerName = shaderGraphLayerForToneMappingAlgorithm(algorithm);
+
+    auto layers = m_metalRoughGL3ShaderBuilder->enabledLayers();
+    layers.removeAll(oldLayerName);
+    layers.append(newLayerName);
+    m_metalRoughGL3ShaderBuilder->setEnabledLayers(layers);
+    m_metalRoughES3ShaderBuilder->setEnabledLayers(layers);
+    m_metalRoughES2ShaderBuilder->setEnabledLayers(layers);
+
+    m_toneMappingAlgorithm = algorithm;
+    emit toneMappingAlgorithmChanged(algorithm);
 }
 
 void MetallicRoughnessEffect::initVertexShader()

@@ -48,11 +48,6 @@
 **
 ****************************************************************************/
 
-// Exposure correction
-uniform float exposure = 0.0;
-// Gamma correction
-uniform float gamma = 2.2;
-
 #pragma include light.inc.frag
 
 int mipLevelCount(const in samplerCube cube)
@@ -295,17 +290,7 @@ vec3 pbrIblModel(const in vec3 wNormal,
     return color;
 }
 
-vec3 toneMap(const in vec3 c)
-{
-    return c / (c + vec3(1.0));
-}
-
-vec3 gammaCorrect(const in vec3 color)
-{
-    return pow(color, vec3(1.0 / gamma));
-}
-
-vec4 kuesa_metalRoughFunction(const in vec4 baseColor,
+vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                               const in float metalness,
                               const in float roughness,
                               const in float ambientOcclusion,
@@ -338,14 +323,5 @@ vec4 kuesa_metalRoughFunction(const in vec4 baseColor,
                             ambientOcclusion);
     }
 
-    // Apply exposure correction
-    cLinear *= pow(2.0, exposure);
-
-    // Apply simple (Reinhard) tonemap transform to get into LDR range [0, 1]
-    vec3 cToneMapped = toneMap(cLinear);
-
-    // Apply gamma correction prior to display
-    vec3 cGamma = gammaCorrect(cToneMapped);
-
-    return vec4(cGamma, 1.0);
+    return cLinear;
 }

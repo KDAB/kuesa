@@ -31,7 +31,7 @@ import Qt3D.Render 2.10
 import Qt3D.Input 2.0
 import Qt3D.Animation 2.10
 import Qt3D.Extras 2.10
-import Kuesa 1.0 as Kuesa
+import Kuesa 1.1 as Kuesa
 
 Entity {
     id: scene
@@ -110,6 +110,7 @@ Entity {
                 textureTransform: _controller.textureTransform
                 usingColorAttribute: _controller.useColorAttribute
                 doubleSided: _controller.doubleSided
+                toneMappingAlgorithm: _controller.toneMappingAlgorithm
             }
         ]
     }

@@ -20,7 +20,7 @@
                         "major": 3,
                         "minor": 1
                     },
-                    "substitution": "vec4 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);",
+                    "substitution": "vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);",
                     "headerSnippets": [ "#pragma include :/kuesa/shaders/gl3/kuesa_metalrough.inc.frag" ]
                 },
                 {
@@ -32,7 +32,7 @@
                     "headerSnippets": [
                         "#pragma include :/kuesa/shaders/es2/kuesa_metalrough.inc.frag"
                     ],
-                    "substitution": "highp vec4 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
+                    "substitution": "highp vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
                 },
                 {
                     "format": {
@@ -43,7 +43,7 @@
                     "headerSnippets": [
                         "#pragma include :/kuesa/shaders/es3/kuesa_metalrough.inc.frag"
                     ],
-                    "substitution": "highp vec4 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
+                    "substitution": "highp vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
                 }
             ]
         }
@@ -61,7 +61,7 @@
                 {"worldNormal": "QShaderLanguage::Vec3"}
             ],
             "outputs": [
-                {"outputColor": "QShaderLanguage::Vec4"}
+                {"outputColor": "QShaderLanguage::Vec3"}
             ]
         }
     }
