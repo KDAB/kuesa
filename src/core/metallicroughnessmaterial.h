@@ -33,6 +33,7 @@
 #include <QtGui/qgenericmatrix.h>
 #include <Qt3DRender/qmaterial.h>
 #include <Kuesa/kuesa_global.h>
+#include <Kuesa/metallicroughnesseffect.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -48,8 +49,6 @@ class QCullFace;
 } // namespace Qt3DRender
 
 namespace Kuesa {
-
-class MetallicRoughnessEffect;
 
 class KUESASHARED_EXPORT MetallicRoughnessMaterial : public Qt3DRender::QMaterial
 {
@@ -76,6 +75,7 @@ class KUESASHARED_EXPORT MetallicRoughnessMaterial : public Qt3DRender::QMateria
     Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
     Q_PROPERTY(float alphaCutoff READ alphaCutoff WRITE setAlphaCutoff NOTIFY alphaCutoffChanged)
     Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
+    Q_PROPERTY(Kuesa::MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
 public:
     explicit MetallicRoughnessMaterial(Qt3DCore::QNode *parent = nullptr);
     ~MetallicRoughnessMaterial();
@@ -103,6 +103,8 @@ public:
     bool isAlphaCutoffEnabled() const;
     float alphaCutoff() const;
 
+    MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm() const;
+
 public Q_SLOTS:
     void setBaseColorFactor(const QColor &baseColorFactor);
     void setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap);
@@ -126,6 +128,7 @@ public Q_SLOTS:
     void setOpaque(bool opaque);
     void setAlphaCutoffEnabled(bool enabled);
     void setAlphaCutoff(float alphaCutoff);
+    void setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm);
 
 Q_SIGNALS:
     void baseColorFactorChanged(const QColor &baseColorFactor);
@@ -150,6 +153,7 @@ Q_SIGNALS:
     void opaqueChanged(bool opaque);
     void alphaCutoffEnabledChanged(bool enabled);
     void alphaCutoffChanged(float value);
+    void toneMappingAlgorithmChanged(MetallicRoughnessEffect::ToneMapping algorithm);
 
 private:
     void updateEffect();

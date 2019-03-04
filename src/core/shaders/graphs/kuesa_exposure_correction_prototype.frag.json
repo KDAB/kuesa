@@ -1,0 +1,51 @@
+{
+    "templates": {
+        "kuesa_exposureCorrect": {
+            "inputs": [
+                "color",
+                "exposure"
+            ],
+            "outputs": [
+                "outputColor"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "substitution": "vec3 $outputColor = $color * pow(2.0, $exposure);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp vec3 $outputColor = $color * pow(2.0, $exposure);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "highp vec3 $outputColor = $color * pow(2.0, $exposure);"
+                }
+            ]
+        }
+    },
+    "prototypes": {
+        "kuesa_exposureCorrect": {
+            "template": "default.kuesa_exposureCorrect",
+            "inputs": [
+                {"color": "QShaderLanguage::Vec3"},
+                {"exposure": "QShaderLanguage::Float"}
+            ],
+            "outputs": [
+                {"outputColor": "QShaderLanguage::Vec3"}
+            ]
+        }
+    }
+}

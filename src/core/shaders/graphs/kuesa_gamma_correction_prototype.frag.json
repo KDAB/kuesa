@@ -1,0 +1,51 @@
+{
+    "templates": {
+        "kuesa_gammaCorrect": {
+            "inputs": [
+                "color",
+                "gamma"
+            ],
+            "outputs": [
+                "outputColor"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "substitution": "vec3 $outputColor = pow($color, vec3(1.0 / $gamma));"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp vec3 $outputColor = pow($color, vec3(1.0 / $gamma));"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "highp vec3 $outputColor = pow($color, vec3(1.0 / $gamma));"
+                }
+            ]
+        }
+    },
+    "prototypes": {
+        "kuesa_gammaCorrect": {
+            "template": "default.kuesa_gammaCorrect",
+            "inputs": [
+                {"color": "QShaderLanguage::Vec3"},
+                {"gamma": "QShaderLanguage::Float"}
+            ],
+            "outputs": [
+                {"outputColor": "QShaderLanguage::Vec3"}
+            ]
+        }
+    }
+}

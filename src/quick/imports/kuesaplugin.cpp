@@ -75,6 +75,9 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::GLTF2Importer>(uri, 1, 0, "GLTF2Importer");
     qmlRegisterType<Kuesa::SceneEntity>(uri, 1, 0, "SceneEntity");
     qmlRegisterType<Kuesa::MetallicRoughnessMaterial>(uri, 1, 0, "MetallicRoughnessMaterial");
+    qmlRegisterType<Kuesa::MetallicRoughnessMaterial, 1>(uri, 1, 1, "MetallicRoughnessMaterial");
+    qmlRegisterType<Kuesa::MetallicRoughnessEffect>(uri, 1, 0, "MetallicRoughnessEffect");
+    qmlRegisterType<Kuesa::MetallicRoughnessEffect, 1>(uri, 1, 1, "MetallicRoughnessEffect");
     qmlRegisterType<Kuesa::Skybox>(uri, 1, 0, "Skybox");
     qmlRegisterType<Kuesa::Asset>(uri, 1, 0, "Asset");
     qmlRegisterExtendedType<Kuesa::AnimationPlayer, Kuesa::AnimationPlayerItem>(uri, 1, 0, "AnimationPlayer");

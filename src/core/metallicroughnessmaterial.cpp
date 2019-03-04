@@ -259,6 +259,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \sa alphaCutoffEnabled
  */
 
+/*!
+    \property toneMappingAlgoritm
+
+    Tone mapping specifies how we perform color conversion from HDR (high
+    dynamic range) content to LDR (low dynamic range) content which our monitor
+    displays.
+
+    \since 1.1
+ */
 
 /*!
     \property alphaCutoffEnabled
@@ -472,6 +481,16 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     if changed from true to false or from false to true.
  */
 
+/*!
+    \qmlproperty MetallicRoughnessEffect.ToneMapping toneMappingAlgoritm
+
+    Tone mapping specifies how we perform color conversion from HDR (high
+    dynamic range) content to LDR (low dynamic range) content which our monitor
+    displays.
+
+    \since 1.1
+ */
+
 MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     : QMaterial(parent)
     , m_baseColorFactorParameter(new QParameter(QStringLiteral("baseColorFactor"), QColor("grey")))
@@ -523,6 +542,8 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
                      this, &MetallicRoughnessMaterial::opaqueChanged);
     QObject::connect(m_effect, &MetallicRoughnessEffect::alphaCutoffEnabledChanged,
                      this, &MetallicRoughnessMaterial::alphaCutoffEnabledChanged);
+    QObject::connect(m_effect, &MetallicRoughnessEffect::toneMappingAlgorithmChanged,
+                     this, &MetallicRoughnessMaterial::toneMappingAlgorithmChanged);
 
     addParameter(m_baseColorFactorParameter);
     addParameter(m_metallicFactorParameter);
@@ -623,6 +644,11 @@ bool MetallicRoughnessMaterial::isAlphaCutoffEnabled() const
 float MetallicRoughnessMaterial::alphaCutoff() const
 {
     return m_alphaCutoffParameter->value().toFloat();
+}
+
+MetallicRoughnessEffect::ToneMapping MetallicRoughnessMaterial::toneMappingAlgorithm() const
+{
+    return m_effect->toneMappingAlgorithm();
 }
 
 void MetallicRoughnessMaterial::setBaseColorFactor(const QColor &baseColorFactor)
@@ -761,6 +787,11 @@ void MetallicRoughnessMaterial::setAlphaCutoffEnabled(bool enabled)
 void MetallicRoughnessMaterial::setAlphaCutoff(float alphaCutoff)
 {
     m_alphaCutoffParameter->setValue(QVariant::fromValue(alphaCutoff));
+}
+
+void MetallicRoughnessMaterial::setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm)
+{
+    m_effect->setToneMappingAlgorithm(algorithm);
 }
 
 void MetallicRoughnessMaterial::updateEffect()
