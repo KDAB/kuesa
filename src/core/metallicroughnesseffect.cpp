@@ -47,141 +47,175 @@ using namespace Qt3DRender;
 namespace Kuesa {
 
 /*!
- * \class MetallicRoughnessEffect
- * \inheaderfile Kuesa/MetallicRoughnessEffect
- * \inmodule Kuesa
- * \since 1.0
- *
- * \brief Kuesa::MetallicRoughnessEffect is a Qt3DRender::QEffect for
- * Kuesa::MetallicRoughnessMaterial. It provides several properties used to
- * configure the material effect. This is done using a custom shader graph and
- * activating/deactivating different set of nodes of the graph depending on the
- * effect configuration.
- *
- * \note Kuesa::MetallicRoughnessEffect is used to configure the effect for a
- * material, but property values must be provided through
- * Kuesa::MetallicRoughnessMaterial. Therefore, this effect must be added to a
- * Kuesa.MetallicRoughnessMaterial.
+    \class MetallicRoughnessEffect
+    \inheaderfile Kuesa/MetallicRoughnessEffect
+    \inmodule Kuesa
+    \since 1.0
+
+    \brief Kuesa::MetallicRoughnessEffect is a Qt3DRender::QEffect for
+    Kuesa::MetallicRoughnessMaterial. It provides several properties used to
+    configure the material effect. This is done using a custom shader graph and
+    activating/deactivating different set of nodes of the graph depending on
+    the effect configuration.
+
+    \note Kuesa::MetallicRoughnessEffect is used to configure the effect for a
+    material, but property values must be provided through
+    Kuesa::MetallicRoughnessMaterial. Therefore, this effect must be added to a
+    Kuesa.MetallicRoughnessMaterial.
  */
 
 /*!
- * \property baseColorMapEnabled True to enable the effect support to specify
- * base color propery with textures
+    \property baseColorMapEnabled
+
+    True to enable the effect support to specify base color propery with
+    textures
  */
 
 /*!
- *\property metalRoughMapEnabled True to enable the effect support to specify
- * metalness and roughness properties with textures
+    \property metalRoughMapEnabled
+
+    True to enable the effect support to specify metalness and roughness
+    properties with textures
  */
 
 /*!
- * \property normalMapEnabled True to enable the effect support for normal maps
+    \property normalMapEnabled
+
+    True to enable the effect support for normal maps
  */
 
 /*!
- * \property ambientOcclusionMapEnabled True to enbale the effect support for
- * ambient occlusion texture
+    \property ambientOcclusionMapEnabled
+
+    True to enbale the effect support for ambient occlusion texture
  */
 
 /*!
- * \property emissiveMapEnabled True to enable the effect support to specify
- * emissive property with txtures
+    \property emissiveMapEnabled
+
+    True to enable the effect support to specify emissive property with txtures
  */
 
 /*!
- * \property usingColorAttribute If true, the base color property is multiplied
- * by the color interpolated attribute of the mesh
+    \property usingColorAttribute
+
+    If true, the base color property is multiplied by the color interpolated
+    attribute of the mesh
  */
 
 /*!
- * \property doubleSided If true, back face culling is disabled and the normals
- * for the back faces are the same as for the front faces mulplied by -1
+ * \property doubleSided
+
+    If true, back face culling is disabled and the normals for the back faces
+    are the same as for the front faces mulplied by -1
  */
 
 /*!
- * \property useSkinning If true, a skinning enabled vertex shader is used
- * instead of the default one. This allows to use this effect for rendering
- * skinned meshes
+    \property useSkinning
+
+    If true, a skinning enabled vertex shader is used instead of the default
+    one. This allows to use this effect for rendering skinned meshes
  */
 
 /*!
- * \property opaque If false, alpha blending is enabled for this effect
+    \property opaque
+
+    If false, alpha blending is enabled for this effect
  */
 
 /*!
- * \property alphaCutoffEnabled If true, alpha cutoff is enabled. Fragments
- * with an alpha value above a threshold are rendered as opaque while fragment
- * an alpha value below the threshold are discarded
+    \property alphaCutoffEnabled
+
+    If true, alpha cutoff is enabled. Fragments with an alpha value above a
+    threshold are rendered as opaque while fragment an alpha value below the
+    threshold are discarded
  */
 
 /*!
- * \qmltype MetallicRoughnessEffect
- * \instantiates Kuesa::MetallicRoughnessEffect
- * \inmodule Kuesa
- * \since 1.0
- *
- * \brief Kuesa.MetallicRoughnessEffect is a Qt3D.Render.Effect for
- * Kuesa.MetallicRoughnessMaterial. It provides several properties used to
- * configure the material effect. This is done using a custom shader graph and
- * activating/deactivating different set of nodes of the graph depending on the
- * effect configuration.
- *
- * \note Kuesa.MetallicRoughnessEffect is used to configure the effect for a
- * material, but property values must be provided through
- * Kuesa.MetallicRoughnessMaterial. Therefore, this effect must be added to a
- * Kuesa.MetallicRoughnessMaterial.
+    \qmltype MetallicRoughnessEffect
+    \instantiates Kuesa::MetallicRoughnessEffect
+    \inmodule Kuesa
+    \since 1.0
+
+    \brief Kuesa.MetallicRoughnessEffect is a Qt3D.Render.Effect for
+    Kuesa.MetallicRoughnessMaterial.
+
+    It provides several properties used to configure the material effect. This
+    is done using a custom shader graph and activating/deactivating different
+    set of nodes of the graph depending on the effect configuration.
+
+    \note Kuesa.MetallicRoughnessEffect is used to configure the effect for a
+    material, but property values must be provided through
+    Kuesa.MetallicRoughnessMaterial. Therefore, this effect must be added to a
+    Kuesa.MetallicRoughnessMaterial.
+
+    \sa Kuesa.MetallicRoughnessEffect
  */
 
 /*!
- * \qmlproperty bool baseColorMapEnabled True to enable the effect support to
- * specify base color propery with textures
+    \qmlproperty bool baseColorMapEnabled
+
+    True to enable the effect support to specify base color propery with textures
  */
 
 /*!
- *\qmlproperty bool metalRoughMapEnabled True to enable the effect support to
- * specify metalness and roughness properties with textures
+    \qmlproperty bool metalRoughMapEnabled
+
+    True to enable the effect support to specify metalness and roughness
+    properties with textures
  */
 
 /*!
- * \qmlproperty bool normalMapEnabled True to enable the effect support for
- * normal maps
+    \qmlproperty bool normalMapEnabled
+
+    True to enable the effect support for normal maps
  */
 
 /*!
- * \qmlproperty bool ambientOcclusionMapEnabled True to enbale the effect
- * support for ambient occlusion texture
+    \qmlproperty bool ambientOcclusionMapEnabled
+
+    True to enbale the effect support for ambient occlusion texture
  */
 
 /*!
- * \qmlproperty bool emissiveMapEnabled True to enable the effect support to
- * specify emissive property with txtures
+    \qmlproperty bool emissiveMapEnabled
+
+    True to enable the effect support to specify emissive property with txtures
  */
 
 /*!
- * \qmlproperty bool usingColorAttribute If true, the base color property is
- * multiplied by the color interpolated attribute of the mesh
+    \qmlproperty bool usingColorAttribute
+
+    If true, the base color property is multiplied by the color interpolated
+    attribute of the mesh
  */
 
 /*!
- * \qmlproperty bool doubleSided If true, back face culling is disabled and the
- * normals for the back faces are the same as for the front faces mulplied by
- * -1
+    \qmlproperty bool doubleSided
+
+    If true, back face culling is disabled and the normals for the back faces
+    are the same as for the front faces mulplied by -1
  */
 
 /*!
- * \qmlproperty bool useSkinning If true, a skinning enabled vertex shader is
- * used instead of the default one. This allows to use this effect for
- * rendering skinned meshes
+    \qmlproperty bool useSkinning
+
+    If true, a skinning enabled vertex shader is used instead of the default
+    one. This allows to use this effect for rendering skinned meshes
  */
 
 /*!
- * \qmlproperty bool opaque If false, alpha blending is enabled for this effect
+    \qmlproperty bool opaque
+
+     If false, alpha blending is enabled for this effect
  */
 
 /*!
- * \qmlproperty bool alphaCutoffEnabled If true, alpha cutoff is enabled.
- * Fragments with an alpha value above a threshold are rendered as opaque while
- * fragment an alpha value below the threshold are discarded
+    \qmlproperty bool alphaCutoffEnabled
+
+    If true, alpha cutoff is enabled. Fragments with an alpha value above a
+    threshold are rendered as opaque while fragment an alpha value below the
+    threshold are discarded
  */
 
 MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
