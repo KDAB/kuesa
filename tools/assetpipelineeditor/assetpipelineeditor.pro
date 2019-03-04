@@ -28,6 +28,7 @@ TEMPLATE = app
 QT += 3dcore 3drender 3dinput 3danimation 3dextras 3dquick widgets kuesa kuesa-private
 
 DEFINES += QT_DEPRECATED_WARNINGS
+VERSION = 1.0.0
 
 SOURCES += \
     main.cpp \
@@ -102,6 +103,14 @@ macos {
 
 windows {
     RC_ICONS = ../../resources/kuesa.ico
+
+    APE_SOURCE=$$shell_path($$PWD)
+    APE_BUILD=$$shell_path($$OUT_PWD)
+    KUESA_BUILD_WINPATH=$$shell_path($$KUESA_BUILD_ROOT)
+    KUESA_SOURCE_WINPATH=$$shell_path($$KUESA_ROOT)
+    QT_DEPLOY=$$shell_path($$[QT_INSTALL_LIBS])\..\bin\windeployqt
+    QMAKE_SUBSTITUTES += create_windows_installer.bat.in installer.iss.in
+    OTHER_FILES += create_windows_installer.bat.in installer.iss.in
 }
 
 target.path = $$[QT_INSTALL_BINS]
