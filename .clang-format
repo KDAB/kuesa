@@ -33,3 +33,4 @@ BraceWrapping:
     BeforeElse: false
     IndentBraces: false
 
+CommentPragmas:  '/\*(.+\n.+)+\*/'
