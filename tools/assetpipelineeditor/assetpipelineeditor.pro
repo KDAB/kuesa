@@ -93,9 +93,16 @@ OTHER_FILES += \
 
 macos {
     TARGET = AssetPipelineEditor
-    OTHER_FILES += Info.plist
-    QMAKE_INFO_PLIST = Info.plist
-    ICON = ../../resources/kuesa.icns
+    QT_DEPLOY=$$[QT_INSTALL_LIBS]/../bin/macdeployqt
+    APE_BUNDLE=$${TARGET}.app
+    APE_SOURCE=$$PWD
+    OTHER_FILES += Info.plist.in create_macos_installer.sh.in
+    QMAKE_SUBSTITUTES += Info.plist.in create_macos_installer.sh.in
+    QMAKE_INFO_PLIST = $$OUT_PWD/Info.plist
+
+    ICON_FILE.files = ../../resources/kuesa.icns
+    ICON_FILE.path = Contents/Resources
+    QMAKE_BUNDLE_DATA += ICON_FILE
 
     OBJECTIVE_SOURCES += macUtils.mm
     LIBS += -framework AppKit
@@ -115,3 +122,6 @@ windows {
 
 target.path = $$[QT_INSTALL_BINS]
 INSTALLS += target
+
+DISTFILES += \
+    Info.plist.in
