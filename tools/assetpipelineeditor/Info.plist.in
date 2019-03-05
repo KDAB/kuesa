@@ -24,5 +24,7 @@
     <string>Kuesa Asset Pipeline Editor</string>
     <key>NSHumanReadableCopyright</key>
     <string>Copyright 2018-2019, KDAB</string>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>This application needs to send Apple Events</string>
 </dict>
 </plist>

@@ -1,4 +1,4 @@
 APP_APP=$$APE_BUNDLE
 APP_DMG=${APP_APP/app/dmg}
 test ! -e ${APP_DMG} || /bin/rm -rf ${APP_DMG}
-$$QT_DEPLOY $$APE_BUNDLE -qmldir=$$APE_SOURCE -dmg -codesign=\"3rd Party Mac Developer Application: KDAB (UK) Ltd. (72QK35344H)\"
+$$QT_DEPLOY $$APE_BUNDLE -qmldir=$$APE_SOURCE -dmg -codesign=\"Developer ID Application: KDAB (UK) Ltd. (72QK35344H)\"
