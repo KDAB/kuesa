@@ -129,6 +129,13 @@ void ExportDialog::onSave()
         conf.setAttributeQuantizationLevel(ExportConf::TextureCoordinate, mapSlider(ui->textureQuantizationSlider));
         conf.setAttributeQuantizationLevel(ExportConf::Generic, mapSlider(ui->genericQuantizationSlider));
 
+        if (ui->embedKeep->isChecked())
+            conf.setEmbedding(ExportConf::Embed::Keep);
+        else if (ui->embedAll->isChecked())
+            conf.setEmbedding(ExportConf::Embed::All);
+        else if (ui->embedNone->isChecked())
+            conf.setEmbedding(ExportConf::Embed::None);
+
         m_exporter.setConfiguration(conf);
     }
 
