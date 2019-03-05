@@ -25,6 +25,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 TEMPLATE = app
+CONFIG += console
+CONFIG -= app_bundle
 
 QT -= gui
 QT += kuesa kuesa-private
