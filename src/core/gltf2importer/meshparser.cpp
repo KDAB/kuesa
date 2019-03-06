@@ -455,7 +455,6 @@ bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry
     for (auto it = attrs.begin(), end = attrs.end(); it != end; ++it) {
         const int accessorIndex = it.value().toInt();
         const Accessor &accessor = m_context->accessor(accessorIndex);
-        const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
 
         const QString attrName = it.key();
         QString attributeName = standardAttributeNameFromSemantic(attrName);
@@ -507,7 +506,7 @@ bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry
 
         attribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
         // store some GLTF metadata for asset pipeline editor
-        attribute->setProperty("bufferIndex", viewData.bufferIdx);
+        attribute->setProperty("bufferIndex", -1);
         attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
         attribute->setProperty("bufferViewOffset", accessor.offset);
         attribute->setProperty("bufferName", accessor.name);
