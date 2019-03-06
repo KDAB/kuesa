@@ -15,7 +15,7 @@
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleExecutable</key>
-    <string>${EXECUTABLE_NAME}</string>
+    <string>AssetPipelineEditor</string>
     <key>CFBundleVersion</key>
     <string>$$VERSION</string>
     <key>CFBundleShortVersionString</key>
