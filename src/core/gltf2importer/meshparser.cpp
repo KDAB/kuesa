@@ -193,24 +193,24 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             }
 
             const auto primitiveType = static_cast<Qt3DRender::QGeometryRenderer::PrimitiveType>(primitivesObject.value(KEY_MODE).toInt(GL_TRIANGLES));
-            if (primitiveType == Qt3DRender::QGeometryRenderer::Triangles ||
-                primitiveType == Qt3DRender::QGeometryRenderer::TriangleStrip ||
-                primitiveType == Qt3DRender::QGeometryRenderer::TriangleFan) {
-                const auto &attributes = geometry->attributes();
-                const bool hasTangent = std::find_if(std::begin(attributes),
-                                                     std::end(attributes),
-                                                     [](const Qt3DRender::QAttribute *attr) {
-                                                         return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
-                                                     }) != std::end(attributes);
-
-                if (!hasTangent) {
-                    auto tangentAttr = Kuesa::GLTF2Import::MeshParserUtils::createTangentAttribute(geometry.get(), primitiveType);
-                    if (tangentAttr) {
-                        tangentAttr->setName(Qt3DRender::QAttribute::defaultTangentAttributeName());
-                        geometry->addAttribute(tangentAttr);
-                    }
-                }
-            }
+            // TODO restore when it can be made optional
+//            if (primitiveType == Qt3DRender::QGeometryRenderer::Triangles ||
+//                primitiveType == Qt3DRender::QGeometryRenderer::TriangleStrip ||
+//                primitiveType == Qt3DRender::QGeometryRenderer::TriangleFan) {
+//                const auto &attributes = geometry->attributes();
+//                const bool hasTangent = std::find_if(std::begin(attributes),
+//                                                     std::end(attributes),
+//                                                     [](const Qt3DRender::QAttribute *attr) {
+//                                                         return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
+//                                                     }) != std::end(attributes);
+//                if (!hasTangent) {
+//                    auto tangentAttr = Kuesa::GLTF2Import::MeshParserUtils::createTangentAttribute(geometry.get(), primitiveType);
+//                    if (tangentAttr) {
+//                        tangentAttr->setName(Qt3DRender::QAttribute::defaultTangentAttributeName());
+//                        geometry->addAttribute(tangentAttr);
+//                    }
+//                }
+//            }
 
             Qt3DRender::QGeometryRenderer *renderer = new Qt3DRender::QGeometryRenderer;
             renderer->setPrimitiveType(primitiveType);
@@ -266,7 +266,7 @@ bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
                                                                        accessor.dataSize,
                                                                        accessor.count,
                                                                        accessor.offset,
-                                                                       byteStride);
+                                                                       static_cast<uint>(byteStride));
         attribute->setAttributeType(Qt3DRender::QAttribute::IndexAttribute);
         // store some GLTF metadata for asset pipeline editor
         attribute->setProperty("bufferIndex", viewData.bufferIdx);
@@ -308,8 +308,8 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
         qint32 bufferIdx = -1;
         if (accessor.bufferViewIndex >= 0) {
             const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
-            byteStride = (!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
-            byteOffset = viewData.byteOffset;
+            byteStride = static_cast<quint32>(!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
+            byteOffset = static_cast<quint32>(viewData.byteOffset);
             bufferIdx = viewData.bufferIdx;
         }
 
