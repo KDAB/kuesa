@@ -30,7 +30,7 @@
         "system-draco": {
             "label": "System Draco",
             "enable": "input.draco == 'system'",
-            "disable": "input.draco == 'qt'",
+            "disable": "input.draco != 'system'",
             "condition": "features.draco && libs.draco",
             "output": [
                 "publicFeature",
