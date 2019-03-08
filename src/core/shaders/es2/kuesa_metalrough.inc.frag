@@ -78,7 +78,7 @@ FP float remapRoughness(const in FP float roughness)
     // of "bluriness" as a function of the roughness specified by the user.
     // r = roughness^2
     const FP float maxSpecPower = 999999.0;
-    FP float minRoughness = sqrt(2.0 / (maxSpecPower + 2.0));
+    const FP float minRoughness = 0.00141421; // sqrt(2.0 / (maxSpecPower + 2.0))
     return max(roughness * roughness, minRoughness);
 }
 
