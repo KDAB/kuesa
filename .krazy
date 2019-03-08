@@ -12,5 +12,7 @@ EXCLUDE strings,explicit,normalize,passbyvalue,operators,nullstrcompare,nullstra
 EXCLUDE qminmax,captruefalse
 EXCLUDE style 
 
-#stuff to skip
+#no need to check 3rdparty stuff
+SKIP /3rdparty/
+#more stuff to skip
 SKIP /Manifest\.json
