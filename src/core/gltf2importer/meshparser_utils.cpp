@@ -70,9 +70,7 @@ QVarLengthArray<Qt3DRender::QAttribute::VertexBaseType, 3> validVertexBaseTypesF
                  Qt3DRender::QAttribute::UnsignedByte,
                  Qt3DRender::QAttribute::UnsignedShort };
 
-    return { Qt3DRender::QAttribute::UnsignedByte,
-             Qt3DRender::QAttribute::UnsignedShort,
-             Qt3DRender::QAttribute::UnsignedInt };
+    return QVarLengthArray<Qt3DRender::QAttribute::VertexBaseType, 3>();
 }
 
 QVarLengthArray<uint, 2> validVertexSizesForAttribute(const QString &attributeName)
@@ -95,7 +93,7 @@ QVarLengthArray<uint, 2> validVertexSizesForAttribute(const QString &attributeNa
     if (attributeName == Qt3DRender::QAttribute::defaultJointWeightsAttributeName())
         return { 4 };
 
-    return { 1 };
+    return QVarLengthArray<uint, 2>();
 }
 
 int vertexBaseTypeSize(Qt3DRender::QAttribute::VertexBaseType vertexBaseType)
@@ -354,7 +352,7 @@ bool vertexBaseTypeForAttributesAreValid(const QVector<Qt3DRender::QAttribute *>
     for (Qt3DRender::QAttribute *attribute : attributes) {
         const auto validVertexBaseTypes = validVertexBaseTypesForAttribute(attribute->name());
         const auto vertexBaseType = attribute->vertexBaseType();
-        if (!validVertexBaseTypes.contains(vertexBaseType))
+        if (!validVertexBaseTypes.isEmpty() && !validVertexBaseTypes.contains(vertexBaseType))
             return false;
     }
     return true;
@@ -365,7 +363,7 @@ bool vertexSizesForAttributesAreValid(const QVector<Qt3DRender::QAttribute *> &a
     for (Qt3DRender::QAttribute *attribute : attributes) {
         const auto validVertexSizes = validVertexSizesForAttribute(attribute->name());
         const auto vertexSize = attribute->vertexSize();
-        if (!validVertexSizes.contains(vertexSize))
+        if (!validVertexSizes.isEmpty() && !validVertexSizes.contains(vertexSize))
             return false;
     }
     return true;
