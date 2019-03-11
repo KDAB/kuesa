@@ -44,15 +44,15 @@ Kind kind(const QString &uri)
             : Kind::Path;
 }
 
-QUrl absoluteUrl(const QString &uriString, const QDir &basePath)
+QUrl absoluteUrl(const QString &uri, const QDir &basePath)
 {
     QUrl url;
-    if (uriString.startsWith(QLatin1String("qrc:"), Qt::CaseInsensitive)) {
-        url = QUrl(uriString);
-    } else if (uriString.startsWith(QLatin1String("file:"), Qt::CaseInsensitive)) {
-        url = QUrl::fromLocalFile(basePath.absoluteFilePath(QUrl(uriString).toLocalFile()));
+    if (uri.startsWith(QLatin1String("qrc:"), Qt::CaseInsensitive)) {
+        url = QUrl(uri);
+    } else if (uri.startsWith(QLatin1String("file:"), Qt::CaseInsensitive)) {
+        url = QUrl::fromLocalFile(basePath.absoluteFilePath(QUrl(uri).toLocalFile()));
     } else {
-        const QString absolutePath = basePath.absoluteFilePath(uriString);
+        const QString absolutePath = basePath.absoluteFilePath(uri);
 
         // Handling the case of Qt resources
         // QUrl(":/path") actually gives QUrl("")
@@ -65,19 +65,19 @@ QUrl absoluteUrl(const QString &uriString, const QDir &basePath)
     return url;
 }
 
-QString localFile(const QString &uriString, const QDir &basePath)
+QString localFile(const QString &uri, const QDir &basePath)
 {
     QString path;
-    if (uriString.startsWith(QLatin1String("qrc:///"), Qt::CaseInsensitive)) {
-        path = QLatin1Literal(":/") + uriString.mid(7);
-    } else if (uriString.startsWith(QLatin1String("qrc:/"), Qt::CaseInsensitive)) {
-        path = QLatin1Literal(":/") + uriString.mid(5);
-    } else if (uriString.startsWith(QLatin1String(":/"), Qt::CaseInsensitive)) {
-        path = uriString;
-    } else if (uriString.startsWith(QLatin1String("file:"), Qt::CaseInsensitive)) {
-        path = basePath.absoluteFilePath(QUrl(uriString).toLocalFile());
+    if (uri.startsWith(QLatin1String("qrc:///"), Qt::CaseInsensitive)) {
+        path = QLatin1Literal(":/") + uri.mid(7);
+    } else if (uri.startsWith(QLatin1String("qrc:/"), Qt::CaseInsensitive)) {
+        path = QLatin1Literal(":/") + uri.mid(5);
+    } else if (uri.startsWith(QLatin1String(":/"), Qt::CaseInsensitive)) {
+        path = uri;
+    } else if (uri.startsWith(QLatin1String("file:"), Qt::CaseInsensitive)) {
+        path = basePath.absoluteFilePath(QUrl(uri).toLocalFile());
     } else {
-        path = basePath.absoluteFilePath(uriString);
+        path = basePath.absoluteFilePath(uri);
     }
     return path;
 }

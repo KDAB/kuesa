@@ -42,11 +42,11 @@
 #include <QMessageBox>
 #include <QStyle>
 
-ExportDialog::ExportDialog(Kuesa::GLTF2Exporter &exporter, const QString &path, QWidget *parent)
+ExportDialog::ExportDialog(Kuesa::GLTF2Exporter &exporter, const QString &originalPath, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::ExportDialog)
     , m_exporter(exporter)
-    , m_originalFile(path)
+    , m_originalFile(originalPath)
     , m_targetFile(m_originalFile)
 {
     ui->setupUi(this);
