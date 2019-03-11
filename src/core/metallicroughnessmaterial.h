@@ -110,7 +110,7 @@ public Q_SLOTS:
     void setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap);
 
     void setMetallicFactor(float metallicFactor);
-    void setRoughnessFactor(float roughness);
+    void setRoughnessFactor(float roughnessFactor);
     void setMetalRoughMap(Qt3DRender::QAbstractTexture *metalRoughMap);
 
     void setNormalScale(float normalScale);

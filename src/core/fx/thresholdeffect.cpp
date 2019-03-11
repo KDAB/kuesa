@@ -163,13 +163,13 @@ float ThresholdEffect::threshold() const
  *
  * \sa ThresholdEffect::threshold
  */
-void ThresholdEffect::setThreshold(float newThreshold)
+void ThresholdEffect::setThreshold(float threshold)
 {
-    if (qFuzzyCompare(threshold(), newThreshold))
+    if (qFuzzyCompare(this->threshold(), threshold))
         return;
 
-    m_thresholdParameter->setValue(newThreshold);
-    emit thresholdChanged(newThreshold);
+    m_thresholdParameter->setValue(threshold);
+    emit thresholdChanged(threshold);
 }
 
 QVector<Qt3DRender::QLayer *> ThresholdEffect::layers() const

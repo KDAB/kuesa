@@ -60,7 +60,7 @@ public:
     void setMask(Qt3DRender::QAbstractTexture *mask);
     Qt3DRender::QAbstractTexture *mask() const;
 
-    void setPremultipliedAlpha(bool premultiplied);
+    void setPremultipliedAlpha(bool premultipliedAlpha);
     bool premultipliedAlpha() const;
 
 Q_SIGNALS:

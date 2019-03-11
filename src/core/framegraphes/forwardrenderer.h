@@ -85,7 +85,7 @@ public:
     Q_INVOKABLE void removePostProcessingEffect(AbstractPostProcessingEffect *effect);
     QVector<AbstractPostProcessingEffect *> postProcessingEffects() const;
 
-    static Qt3DRender::QAbstractTexture *findRenderTargetTexture(Qt3DRender::QRenderTarget *target, Qt3DRender::QRenderTargetOutput::AttachmentPoint attachment);
+    static Qt3DRender::QAbstractTexture *findRenderTargetTexture(Qt3DRender::QRenderTarget *target, Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint);
 
     QVector<AbstractRenderStage *> renderStages() const;
 

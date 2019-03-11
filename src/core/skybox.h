@@ -57,7 +57,7 @@ public:
     bool isGammaCorrectEnabled() const;
 
 public Q_SLOTS:
-    void setBaseName(const QString &path);
+    void setBaseName(const QString &baseName);
     void setExtension(const QString &extension);
     void setGammaCorrectEnabled(bool enabled);
 

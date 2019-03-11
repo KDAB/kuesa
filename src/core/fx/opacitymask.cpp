@@ -239,12 +239,12 @@ void OpacityMask::setInputTexture(Qt3DRender::QAbstractTexture *texture)
     m_inputTextureParameter->setValue(QVariant::fromValue(texture));
 }
 
-void OpacityMask::setMask(Qt3DRender::QAbstractTexture *m)
+void OpacityMask::setMask(Qt3DRender::QAbstractTexture *mask)
 {
-    if (mask() == m)
+    if (this->mask() == mask)
         return;
-    m_maskParameter->setValue(QVariant::fromValue(m));
-    emit maskChanged(m);
+    m_maskParameter->setValue(QVariant::fromValue(mask));
+    emit maskChanged(mask);
 }
 
 Qt3DRender::QAbstractTexture *OpacityMask::mask() const

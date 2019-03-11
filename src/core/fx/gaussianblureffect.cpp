@@ -256,12 +256,12 @@ int GaussianBlurEffect::blurPassCount() const
  *
  * \sa GaussianBlurEffect::blurPassCount
  */
-void GaussianBlurEffect::setBlurPassCount(int blurPasscount)
+void GaussianBlurEffect::setBlurPassCount(int blurPassCount)
 {
-    if (m_blurPassCount == blurPasscount || blurPasscount == 0)
+    if (m_blurPassCount == blurPassCount || blurPassCount == 0)
         return;
 
-    m_blurPassCount = blurPasscount;
+    m_blurPassCount = blurPassCount;
 
     //just do the simple thing for now and delete all children and recreate.
     const auto &childNodes = m_blurPassRoot->childNodes();

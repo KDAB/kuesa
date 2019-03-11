@@ -871,9 +871,9 @@ QSize ForwardRenderer::currentSurfaceSize() const
 /*!
  * Sets the size of the external render target.
  */
-void ForwardRenderer::setExternalRenderTargetSize(const QSize &externalRenderTargeSize)
+void ForwardRenderer::setExternalRenderTargetSize(const QSize &externalRenderTargetSize)
 {
-    m_surfaceSelector->setExternalRenderTargetSize(externalRenderTargeSize);
+    m_surfaceSelector->setExternalRenderTargetSize(externalRenderTargetSize);
 }
 
 /*!
@@ -889,9 +889,9 @@ void ForwardRenderer::setRenderSurface(QObject *renderSurface)
  * Sets the dimensions of the viewport where rendering will occur.  Dimensions are in
  * normalized coordinates.
  */
-void ForwardRenderer::setViewportRect(const QRectF &normalizedRect)
+void ForwardRenderer::setViewportRect(const QRectF &viewportRect)
 {
-    m_viewport->setNormalizedRect(normalizedRect);
+    m_viewport->setNormalizedRect(viewportRect);
 }
 
 QT_END_NAMESPACE
