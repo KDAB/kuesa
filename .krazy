@@ -14,5 +14,7 @@ EXCLUDE style
 
 #no need to check 3rdparty stuff
 SKIP /3rdparty/
+#skip templates
+SKIP /qtc_templates/
 #more stuff to skip
 SKIP /Manifest\.json
