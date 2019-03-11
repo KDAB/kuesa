@@ -37,7 +37,6 @@
 #include <QDir>
 #include <QJsonDocument>
 #include <QFileDialog>
-#include <QStyle>
 #include <QPushButton>
 #include <QMessageBox>
 #include <QStyle>

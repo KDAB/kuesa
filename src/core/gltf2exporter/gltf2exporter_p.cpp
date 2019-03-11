@@ -135,8 +135,8 @@ public:
         , m_accessors(rootObject[GLTF2Import::KEY_ACCESSORS].toArray())
         , m_meshes(rootObject[GLTF2Import::KEY_MESHES].toArray())
         , m_images(rootObject[GLTF2Import::KEY_IMAGES].toArray())
-        , m_compressedBufferIndex(m_buffers.size()) // Indice of the added buffer
-        , m_newBufferViewIndex(m_bufferViews.size()) // Indice of where the bufferView are added
+        , m_compressedBufferIndex(m_buffers.size()) // Index of the added buffer
+        , m_newBufferViewIndex(m_bufferViews.size()) // Index of where the bufferView are added
         , m_basePath(source)
         , m_destination(destination)
         , m_compressedBufferFilename(generateUniqueFilename(m_basePath, QStringLiteral("compressedBuffer.bin")))
