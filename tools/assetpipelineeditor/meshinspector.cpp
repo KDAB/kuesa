@@ -105,7 +105,8 @@ void MeshInspector::setMesh(Qt3DRender::QGeometryRenderer *mesh)
     m_primitiveType = m_mesh ? nameForPrimitiveType(m_mesh->primitiveType()) : QString();
 
     if (m_mesh) {
-        for (auto attribute : m_mesh->geometry()->attributes()) {
+        const auto &attributes = m_mesh->geometry()->attributes();
+        for (const auto attribute : attributes) {
             if (attribute->attributeType() == Qt3DRender::QAttribute::VertexAttribute) {
                 m_vertexCount = static_cast<int>(attribute->count());
             } else if (attribute->attributeType() == Qt3DRender::QAttribute::IndexAttribute) {

@@ -111,8 +111,7 @@ Qt3DRender::QAttribute *decodeAttribute(const draco::PointCloud *pointCould,
     qbuffer.resize(static_cast<int>(sizeof(ValueType) * num_entries));
     ValueType *bufferData = reinterpret_cast<ValueType *>(qbuffer.data());
     for (PointIndex i(0); i < num_points; ++i) {
-        const AttributeValueIndex val_index = dracoAttribute->mapped_index(i);
-        if (!dracoAttribute->ConvertValue<ValueType>(val_index, &values[0]))
+        if (!dracoAttribute->ConvertValue<ValueType>(dracoAttribute->mapped_index(i), &values[0]))
             return nullptr;
         for (size_t j = 0; j < components; ++j)
             bufferData[entry_id++] = values[j];
