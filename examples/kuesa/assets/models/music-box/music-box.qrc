@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/">
+        <file>RobotArm.gltf</file>
+        <file>RobotArm.bin</file>
+        <file>armBottomBottomTex.png</file>
+        <file>arrowsArm.png</file>
+        <file>elbowMove.png</file>
+        <file>FiingerTop1Tex.png</file>
+        <file>fingerKnuckle1Tex.png</file>
+        <file>FingerKnuckle2Tex.png</file>
+        <file>FingerKnuckle3Tex.png</file>
+        <file>fingerPivot1Tex.png</file>
+        <file>FingerPivot2Tex.png</file>
+        <file>fingerPivot3Tex.png</file>
+        <file>FingerTop2Tex.png</file>
+        <file>FingerTop3Tex.png</file>
+        <file>robotArmBottomTopTex.png</file>
+        <file>robotArmTopTex.png</file>
+        <file>RobotBaseTex.png</file>
+        <file>shoulderBaseTex.png</file>
+        <file>shoulderMoveTex.png</file>
+        <file>thumbBaseBottomTex.png</file>
+        <file>thumbKnuckleTex.png</file>
+        <file>thumbPivotTex.png</file>
+        <file>thumbTopTex.png</file>
+        <file>WoodTextureBake.png</file>
+        <file>woodTextureCylinderBake.png</file>
+        <file>woodTextureCylinderFarBake.png</file>
+        <file>wristTex.png</file>
+        <file>GroundPlane.png</file>
+    </qresource>
+</RCC>
