@@ -170,6 +170,8 @@ Item {
 
                     Controls.GroupBox {
                         width: parent.width
+                        layer.enabled: true
+                        padding: 1
 
                         Controls.StyledLabel {
                             text: "Car Control"
@@ -177,8 +179,8 @@ Item {
                             font.pixelSize: Controls.SharedAttributes.largeFontSize
                         }
 
-                        Rectangle{
-                            width: parent.width
+                        Rectangle {
+                            width: parent.width - 2
                             height: Math.ceil(Controls.SharedAttributes.ldpi / 150)
                             color: "#70ffffff"
                         }
@@ -186,7 +188,7 @@ Item {
                         Controls.LabeledSlider {
                             id: speedC
                             text: "Car Wheels Speed"
-                            width: parent.width
+                            width: parent.width - 2
                             minimumValue: 0
                             maximumValue: 8
                         }
@@ -198,7 +200,7 @@ Item {
                         }
 
                         Flow {
-                            width: menu.expandedWidth
+                            width: menu.expandedWidth - 2
                             spacing: parent.spacing
 
                             Controls.LabeledSwitch {
@@ -231,6 +233,8 @@ Item {
 
                     Controls.GroupBox {
                         width: parent.width
+                        layer.enabled: true
+                        padding: 1
 
                         Controls.StyledLabel {
                             text: "Scene Control"
@@ -239,7 +243,7 @@ Item {
                         }
 
                         Rectangle {
-                            width: parent.width
+                            width: parent.width - 2
                             height: Math.ceil(Controls.SharedAttributes.ldpi / 150)
                             color: "#70ffffff"
                         }
@@ -250,7 +254,7 @@ Item {
                             minimumValue: -5.0
                             maximumValue: 5
                             value: 2.5
-                            width: parent.width
+                            width: parent.width - 2
                         }
 
                         Item {
@@ -264,7 +268,7 @@ Item {
                         }
 
                         Flow {
-                            width: menu.expandedWidth
+                            width: menu.expandedWidth - 2
                             spacing: parent.spacing
 
                             ExclusiveGroup { id: radioButonsGroup }
@@ -317,6 +321,8 @@ Item {
 
                     Controls.GroupBox {
                         width: parent.width
+                        layer.enabled: true
+                        padding: 1
 
                         Controls.StyledLabel {
                             text: "Car Color"
@@ -325,7 +331,7 @@ Item {
                         }
 
                         Rectangle {
-                            width: parent.width
+                            width: parent.width - 2
                             height: Math.ceil(Controls.SharedAttributes.ldpi / 150)
                             color: "#70ffffff"
                         }
@@ -336,7 +342,7 @@ Item {
                             value: sceneContent.carBaseColorFactor.r
                             onValueChanged: if (value !== sceneContent.carBaseColorFactor.r)
                                                 sceneContent.carBaseColorFactor = Qt.rgba(redColor.value, greenColor.value, blueColor.value)
-                            width: parent.width
+                            width: parent.width - 2
                         }
 
                         Controls.LabeledSlider {
@@ -345,7 +351,7 @@ Item {
                             value: sceneContent.carBaseColorFactor.g
                             onValueChanged: if (value !== sceneContent.carBaseColorFactor.g)
                                                 sceneContent.carBaseColorFactor = Qt.rgba(redColor.value, greenColor.value, blueColor.value)
-                            width: parent.width
+                            width: parent.width - 2
                         }
 
                         Controls.LabeledSlider {
@@ -354,7 +360,7 @@ Item {
                             value: sceneContent.carBaseColorFactor.b
                             onValueChanged: if (value !== sceneContent.carBaseColorFactor.b)
                                                 sceneContent.carBaseColorFactor = Qt.rgba(redColor.value, greenColor.value, blueColor.value)
-                            width: parent.width
+                            width: parent.width - 2
                         }
                     }
 
