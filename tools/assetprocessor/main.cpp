@@ -137,7 +137,8 @@ int main(int argc, char *argv[])
 
     if (!new_asset.success()) {
         QTextStream errors;
-        for (const auto &err : exporter.errors())
+        const auto &reporterErrors = exporter.errors();
+        for (const auto &err : reporterErrors)
             errors << err << "\n";
         qCritical("Errors during compression: \n%s", errors.readAll().toLatin1().constData());
         return 1;
@@ -146,9 +147,7 @@ int main(int argc, char *argv[])
     // Write down the new glTF file
     {
         const auto gltfFilename = assetFileInfo.baseName();
-        const auto gltfPath = QStringLiteral("%1/%2.gltf")
-                                      .arg(targetDir.absolutePath())
-                                      .arg(gltfFilename);
+        const auto gltfPath = QStringLiteral("%1/%2.gltf").arg(targetDir.absolutePath(), gltfFilename);
 
         QFile gltfOut(gltfPath);
         if (gltfOut.exists() && !force) {

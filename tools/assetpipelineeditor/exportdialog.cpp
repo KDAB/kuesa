@@ -134,8 +134,8 @@ void ExportDialog::onSave()
     }
 
     const auto exported = m_exporter.saveInFolder(orig_dir, target_dir);
-
-    for (const auto &error : m_exporter.errors()) {
+    const auto errors = m_exporter.errors();
+    for (const auto &error : errors) {
         ui->errorLog->appendPlainText(error);
         ui->errorLog->appendPlainText(QStringLiteral("\n"));
     }

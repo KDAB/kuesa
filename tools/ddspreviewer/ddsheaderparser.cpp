@@ -236,10 +236,10 @@ void DDSHeaderParser::parseTextureHeader()
                           .arg(header.depth)
                           .arg(header.pitchOrLinearSize)
                           .arg(header.mipmapCount)
-                          .arg(flagsToEnumName(header.caps, "Caps2Flags"))
-                          .arg(flagsToEnumName(header.caps2, "Caps2Flags"))
-                          .arg(flagsToEnumName(header.caps3, "Caps2Flags"))
-                          .arg(flagsToEnumName(header.caps4, "Caps2Flags"))
+                          .arg(flagsToEnumName(header.caps, "Caps2Flags"),
+                               flagsToEnumName(header.caps2, "Caps2Flags"),
+                               flagsToEnumName(header.caps3, "Caps2Flags"),
+                               flagsToEnumName(header.caps4, "Caps2Flags"))
                           .arg(header.pixelFormat.size)
                           .arg(flagsToEnumName(pixelFlags, "PixelFormatFlag"))
                           .arg(fourCC, 0, 2)

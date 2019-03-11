@@ -339,7 +339,7 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
 ForwardRenderer::~ForwardRenderer()
 {
     // unparent the effect subtrees or they'll be deleted twice
-    for (auto framegraph : qAsConst(m_effectFGSubtrees))
+    for (auto &framegraph : qAsConst(m_effectFGSubtrees))
         framegraph->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
     m_effectFGSubtrees.clear();
     qDeleteAll(m_renderStages);
