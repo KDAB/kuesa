@@ -30,7 +30,8 @@ TEMPLATE = subdirs
     SUBDIRS += \
         assetpipelineeditor \
         ddspreviewer \
-        assetprocessor
+        assetprocessor \
+        gltfViewer
 
     !macos {
         SUBDIRS += \
