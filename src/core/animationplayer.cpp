@@ -124,7 +124,7 @@ using namespace Qt3DAnimation;
     \li None   Unknown state (default).
     \li Ready  Both clip and mapper data have been found and are valid (included target nodes
                if they have been defined).
-    \li Error  An error occured when looking for assets or trying to match clip and mapper properties.
+    \li Error  An error occurred when looking for assets or trying to match clip and mapper properties.
     \endlist
  */
 
