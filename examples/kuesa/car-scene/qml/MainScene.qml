@@ -210,14 +210,18 @@ Kuesa.SceneEntity {
         premultipliedAlpha: true // This is what Scene3D/QtQuick expects
     }
 
+    QQ2.Binding {
+        target: frameGraph.camera
+        property: "exposure"
+        value: scene.exposure + scene.environmentExposure
+    }
+
     Camera {
         id: mainCamera
         fieldOfView: scene.explodedView ? 55 : 35
         position: Qt.vector3d(4.5, 1.5, 4.5)
         upVector: Qt.vector3d(0, 1, 0)
         viewCenter: Qt.vector3d(0, .5, 0)
-
-        exposure: scene.exposure + scene.environmentExposure
 
         QQ2.Behavior on fieldOfView { QQ2.NumberAnimation { duration: 750; easing.type: QQ2.Easing.OutQuad } }
     }
