@@ -166,6 +166,21 @@ Kuesa.SceneEntity {
         d.flipAnimation(openRightDoor, rightDoorAnimator)
     }
 
+    // let this point light wander around with the camera to create some shiny lighting
+    Entity {
+        id: pointLightEntity
+        property Camera followedCamera: frameGraph.camera
+        parent: followedCamera.parent
+        components: [
+            PointLight {
+                constantAttenuation: 5.0    // don't illuminate too much, but keep the shininess
+            },
+            Transform {
+                translation: pointLightEntity.followedCamera.position
+            }
+        ]
+    }
+
     components: [
         RenderSettings {
             // FrameGraph
@@ -177,10 +192,6 @@ Kuesa.SceneEntity {
             }
         },
         InputSettings { },
-        DirectionalLight {
-            worldDirection: frameGraph.camera ? frameGraph.camera.viewVector : Qt.vector3d(0, -1, 0)
-            intensity: 0.05
-        },
         EnvironmentLight {
             irradiance: TextureLoader {
                 source: _assetsPrefix + environmentMap + d.envMapFormat + "_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")

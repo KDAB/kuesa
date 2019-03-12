@@ -41,15 +41,27 @@ Kuesa.SceneEntity {
     readonly property Layer texturePreviewLayer: Layer {}
     readonly property Layer materialPreviewLayer: Layer {}
 
+    // let this point light wander around with the camera to create some shiny lighting
+    Entity {
+        id: pointLightEntity
+        property Camera followedCamera: frameGraph.camera
+        parent: followedCamera.parent
+        components: [
+            PointLight {
+                constantAttenuation: 5.0    // don't illuminate too much, but keep the shininess
+            },
+            Transform {
+                translation: pointLightEntity.followedCamera.position
+            }
+        ]
+    }
+
     components: [
         RenderSettings {
             activeFrameGraph: frameGraphNode
             pickingSettings.pickMethod: PickingSettings.TrianglePicking
         },
         InputSettings { },
-        DirectionalLight {
-            worldDirection: frameGraph.camera.viewVector
-        },
         EnvironmentLight {
             irradiance: TextureLoader {
                 source: "qrc:/wobbly_bridge_irradiance.dds"
