@@ -1,3 +1,5 @@
+#version 150 core
+
 /*
     simple.vert
 
@@ -25,8 +27,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#version 150 core
 
 in vec3 vertexPosition;
 in vec3 vertexNormal;
