@@ -52,6 +52,7 @@ Kuesa is composed of:
 * A QML plugin
 * The assetpipelineeditor tool to preview and process glTF 2.0 files
 * The assetprocessor, a command line tool to compress meshes, embed or extract binary assets, etc
+* A simple glTFViewer application to view files, including selecting cameras and animations
 * The cubemaptooctahedralmap tool to convert cube maps to octahedral maps
   to enable PBR rendering on ES 2 platforms
 
