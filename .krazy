@@ -17,4 +17,5 @@ SKIP /3rdparty/
 #skip templates
 SKIP /qtc_templates/
 #more stuff to skip
+SKIP /draco_prefix_p.h
 SKIP /Manifest\.json
