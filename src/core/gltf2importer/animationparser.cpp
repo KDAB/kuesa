@@ -173,6 +173,21 @@ QString channelPathToProperty(const QString &path)
     return {};
 }
 
+quint8 expectedComponentsCountForChannel(const QString &channelName)
+{
+    if (channelName == QStringLiteral("translation"))
+        return 3;
+    if (channelName == QStringLiteral("rotation"))
+        return 4;
+    if (channelName == QStringLiteral("scale"))
+        return 3;
+    if (channelName == QStringLiteral("weights"))
+        return 1;
+
+    qCWarning(kuesa) << "Unrecognized animation channel" << channelName;
+    return 0;
+}
+
 } // namespace
 
 std::tuple<int, std::vector<float>> AnimationParser::animationChannelDataFromData(const AnimationParser::AnimationSampler &sampler) const
@@ -248,6 +263,16 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
     quint8 nbComponents = 0;
     std::vector<float> valueStamps;
     std::tie(nbComponents, valueStamps) = animationChannelDataFromData(sampler);
+
+    // Check nbComponent and type are what is expected for a given channel
+    const quint8 expectedComponents = expectedComponentsCountForChannel(channelName);
+    if (expectedComponents == 0)
+        return channel;
+
+    if (nbComponents != expectedComponents) {
+        qCWarning(kuesa) << "Channel components for" << channelName << "expected" << expectedComponents << "but obtained" << nbComponents;
+        return channel;
+    }
 
     if (nbComponents == 0 || valueStamps.empty())
         return channel;
