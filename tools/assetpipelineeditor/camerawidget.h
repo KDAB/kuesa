@@ -91,6 +91,8 @@ public slots:
     void setNear(double near);
     void setFar(double far);
     void setFoV(double fov);
+    void save();
+    void load();
 
     void updateWidgetValues();
 
@@ -98,6 +100,9 @@ signals:
     void cameraChanged(Qt3DRender::QCamera *camera);
 
 private:
+    void fromJson(const QJsonObject &json);
+    void toJson(QJsonObject &json);
+
     Qt3DRender::QCamera *m_camera = nullptr;
     QScopedPointer<Ui::CameraWidget> m_ui;
 };
