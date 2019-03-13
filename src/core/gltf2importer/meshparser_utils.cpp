@@ -338,9 +338,9 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
         positionHead[1] = fvTangent[1];
         positionHead[2] = fvTangent[2];
         positionHead[3] = fSign;
-        userData->tangentBufferData.insert(vertexIndex * byteStride,
-                                           reinterpret_cast<const char *>(&positionHead[0]),
-                                           sizeof(positionHead));
+        memcpy(userData->tangentBufferData.data() + vertexIndex * byteStride,
+               reinterpret_cast<const char *>(&positionHead[0]),
+               sizeof(positionHead));
     };
 
     interface.m_setTSpace = nullptr;
