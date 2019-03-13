@@ -62,11 +62,17 @@ const QLatin1String KEY_INDICES = QLatin1Literal("indices");
 const QLatin1String KEY_MATERIAL = QLatin1Literal("material");
 const QLatin1String KEY_MODE = QLatin1Literal("mode");
 const QLatin1String KEY_NAME = QLatin1Literal("name");
+const QLatin1String KEY_TARGETS = QLatin1Literal("targets");
+const QLatin1String KEY_WEIGHTS = QLatin1Literal("weights");
 #if defined(KUESA_DRACO_COMPRESSION)
 const QLatin1String KEY_EXTENSIONS = QLatin1String("extensions");
 const QLatin1String KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION = QLatin1String("KHR_draco_mesh_compression");
 const QLatin1String KEY_BUFFERVIEW = QLatin1String("bufferView");
 #endif
+
+const QString morphTargetAttributeNames[]{ QStringLiteral("POSITION"),
+                                           QStringLiteral("NORMAL"),
+                                           QStringLiteral("TANGENT") };
 
 QString standardAttributeNameFromSemantic(const QString &semantic)
 {
@@ -155,12 +161,16 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
         const QJsonArray &primitivesArray = meshObject.value(KEY_PRIMITIVES).toArray();
 
         const qint32 primitiveCount = primitivesArray.size();
+        bool hasMorphTargets = false;
 
-        if (primitiveCount == 0)
+        if (primitiveCount == 0) {
+            qWarning(kuesa) << "Mesh doesn't define any primitive";
             return false;
+        }
 
         mesh.meshPrimitives.resize(primitiveCount);
         mesh.name = meshObject.value(KEY_NAME).toString();
+
         for (qint32 primitiveId = 0; primitiveId < primitiveCount; ++primitiveId) {
             Primitive &primitive = mesh.meshPrimitives[primitiveId];
             const QJsonObject &primitivesObject = primitivesArray[primitiveId].toObject();
@@ -175,6 +185,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             if (extensions.contains(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION)) {
                 if (!geometryDracoFromJSON(geometry.get(), primitivesObject, hasColorAttr) &&
                     geometry->attributes().isEmpty()) {
+                    qCWarning(kuesa) << "Failed to parse draco compressed mesh primitive";
                     return false;
                 }
             } else
@@ -182,7 +193,24 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             {
                 if (!geometryFromJSON(geometry.get(), primitivesObject, hasColorAttr) &&
                     geometry->attributes().isEmpty()) {
+                    qCWarning(kuesa) << "Failed to parse mesh primitive";
                     return false;
+                }
+
+                if (primitivesObject.contains(KEY_TARGETS)) {
+                    hasMorphTargets = true;
+
+                    bool morphTargetsAreValid = false;
+                    QVector<MorphTarget> morphTargets;
+                    std::tie(morphTargetsAreValid, morphTargets) =
+                            geometryMorphTargetsFromJSON(geometry.get(),
+                                                         primitivesObject);
+                    if (!morphTargetsAreValid) {
+                        qCWarning(kuesa) << "Failed to parse Mesh Primitive morph targets";
+                        return false;
+                    }
+
+                    primitive.morphTargets = std::move(morphTargets);
                 }
             }
 
@@ -217,6 +245,74 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             primitive.primitiveRenderer = renderer;
             primitive.materialIdx = primitivesObject.value(KEY_MATERIAL).toInt(-1);
             primitive.hasColorAttr = hasColorAttr;
+        }
+
+        // All primitives in a mesh are required to declare the same number of
+        // morph targets and they should have the same layout (so that we can
+        // use the same shader for all primitives in a mesh)
+        if (hasMorphTargets) {
+            // Initialize count of morph targets
+            const Primitive &firstPrimitive = mesh.meshPrimitives.first();
+            // All primitives are supposed to have the same number of morph targets
+            mesh.morphTargetCount = quint8(firstPrimitive.morphTargets.size());
+
+            for (int i = 1, m = mesh.meshPrimitives.size(); i < m; ++i) {
+                const Primitive &previousPrimitive = mesh.meshPrimitives.at(i - 1);
+                const Primitive &currentPrimitive = mesh.meshPrimitives.at(i);
+                const QVector<MorphTarget> previousPrimitiveMorphTargets = previousPrimitive.morphTargets;
+                const QVector<MorphTarget> currentPrimitiveMorphTargets = currentPrimitive.morphTargets;
+
+                if (previousPrimitiveMorphTargets.size() != currentPrimitiveMorphTargets.size()) {
+                    qWarning(kuesa) << "Mesh primitives should all define the same number of morph targets";
+                    return false;
+                }
+
+                // Check that the first MorphTargets of each primitive define the same attributes
+                // Note: we already check that within a Primitive, all MorphTargets define are compatible
+
+                const MorphTarget firstPreviousMorphTarget = previousPrimitiveMorphTargets.first();
+                const MorphTarget firstCurrentMorphTarget = currentPrimitiveMorphTargets.first();
+
+                if (firstPreviousMorphTarget.attributes.size() != firstCurrentMorphTarget.attributes.size()) {
+                    qWarning(kuesa) << "Morph target attribute counts mismatch between different primitives of the same mesh";
+                    return false;
+                }
+
+                // Check we define attributes with the same names between MorphTargets of different primitives
+                for (const MorphTargetAttribute &currentMorphTargetAttr : firstCurrentMorphTarget.attributes) {
+                    bool matchingAttributeNameFound = false;
+                    for (const MorphTargetAttribute &previousMorphTargetAttr : firstPreviousMorphTarget.attributes) {
+                        if (currentMorphTargetAttr.name == previousMorphTargetAttr.name) {
+                            matchingAttributeNameFound = true;
+                            break;
+                        }
+                    }
+                    if (!matchingAttributeNameFound) {
+                        qWarning(kuesa) << "Morph target attribute name mismatch between different primitives of the same mesh";
+                        return false;
+                    }
+                }
+            }
+
+            const QJsonArray weightsArray = meshObject.value(KEY_WEIGHTS).toArray();
+
+            if (weightsArray.isEmpty()) {
+                // Fill default weights with 0.0 value
+                mesh.morphTargetWeights.resize(mesh.morphTargetCount);
+                std::fill(mesh.morphTargetWeights.begin(), mesh.morphTargetWeights.end(), 0.0f);
+            } else {
+                if (weightsArray.size() != mesh.morphTargetCount) {
+                    qWarning(kuesa) << "Mesh has defined"
+                                    << mesh.morphTargetCount
+                                    << "morph targets but"
+                                    << weightsArray.size()
+                                    << "default weights were specified";
+                    return false;
+                }
+                mesh.morphTargetWeights.reserve(mesh.morphTargetCount);
+                for (const QJsonValue &v : weightsArray)
+                    mesh.morphTargetWeights.push_back(float(v.toDouble(0.0)));
+            }
         }
 
         context->addMesh(mesh);
@@ -277,6 +373,127 @@ bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
     return true;
 }
 
+std::tuple<bool, QVector<MorphTarget>>
+MeshParser::geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry,
+                                         const QJsonObject &json)
+{
+    const QJsonArray &morphTargetsJsonArray = json.value(KEY_TARGETS).toArray();
+
+    const auto morphAttribNamesCbeg = std::cbegin(morphTargetAttributeNames);
+    const auto morphAttribNamesCend = std::cend(morphTargetAttributeNames);
+    const QVector<Qt3DRender::QAttribute *> primitiveAttributes =
+            geometry->attributes();
+
+    QVector<MorphTarget> morphTargets;
+    morphTargets.reserve(morphTargetsJsonArray.size());
+
+    for (const QJsonValue &morphTargetJsonValue : morphTargetsJsonArray) {
+        const QJsonObject morphTargetJsonObj = morphTargetJsonValue.toObject();
+
+        MorphTarget morphTarget;
+        morphTarget.attributes.reserve(morphTargetJsonObj.size());
+
+        // Technically GLTF has no limitation on the maximum number of
+        // morpth targets to support. It states that a conformant implementation
+        // allows to have 8 morph targets with a single attribute, 4 morph target
+        // with 2 attributes, 2 morph targets that have 3 attributes ...
+
+        auto it = morphTargetJsonObj.constBegin();
+        const auto end = morphTargetJsonObj.constEnd();
+        while (it != end) {
+            const qint32 morphTargetAttributeAccessorIdx = it.value().toInt(-1);
+            const QString morphTargetAttributeName = it.key();
+
+            if (morphTargetAttributeAccessorIdx < 0) {
+                qWarning(kuesa) << "Morph target attribute"
+                                << morphTargetAttributeName
+                                << "references an invalid accessor";
+                return std::make_tuple(false, morphTargets);
+            }
+
+            // Currently we will only handle POSITION/TANGENT/NORMAL
+            // technically custom attributes starting with _ATTRIBUTE_NAME
+            // are allowed but wouldn't make sense in our use case
+            if (std::find(morphAttribNamesCbeg, morphAttribNamesCend,
+                          morphTargetAttributeName) == morphAttribNamesCend) {
+                qWarning(kuesa) << morphTargetAttributeName
+                                << "isn't a valid morph target attribute";
+                return std::make_tuple(false, morphTargets);
+            }
+
+            // Check that we have an attribute Name that exists in the geometry
+            const QString standardAttributeName =
+                    standardAttributeNameFromSemantic(morphTargetAttributeName);
+
+            Qt3DRender::QAttribute *referenceAttributeInPrimitive = nullptr;
+            for (Qt3DRender::QAttribute *attribute : primitiveAttributes) {
+                if (attribute->name() == standardAttributeName) {
+                    referenceAttributeInPrimitive = attribute;
+                    break;
+                }
+            }
+
+            if (referenceAttributeInPrimitive == nullptr) {
+                qWarning(kuesa) << "Morph target attribute" << morphTargetAttributeName
+                                << "isn't an attribute referenced in the primitive";
+                return std::make_tuple(false, morphTargets);
+            }
+
+            // The accessor count must match that of the primitive's attribute
+            // accessor count
+            const Accessor &accessor =
+                    m_context->accessor(morphTargetAttributeAccessorIdx);
+            if (referenceAttributeInPrimitive->count() != accessor.count) {
+                qWarning(kuesa) << "Morph target attribute" << morphTargetAttributeName
+                                << " count doesn't match count for the reference "
+                                   "attribute in the primitive";
+                return std::make_tuple(false, morphTargets);
+            }
+
+            // Record Morph Target Attribute
+            const MorphTargetAttribute morphTargetAttribute = { morphTargetAttributeName, morphTargetAttributeAccessorIdx };
+            morphTarget.attributes.push_back(morphTargetAttribute);
+
+            ++it;
+        }
+
+        if (!morphTargets.empty()) {
+            // Compare the morphTarget we are about to insert against the last
+            // inserted to make sure they have a similar layout
+
+            const MorphTarget &lastInsertedMorphTarget = morphTargets.last();
+
+            if (lastInsertedMorphTarget.attributes.size() !=
+                morphTarget.attributes.size()) {
+                qWarning(kuesa) << "Morph targets attribute count mismatch, all "
+                                   "targets should define the same attributes";
+                return std::make_tuple(false, morphTargets);
+            }
+
+            for (const MorphTargetAttribute &currentMorphTargetAttr : lastInsertedMorphTarget.attributes) {
+                bool matchingAttributeNameFound = false;
+                for (const MorphTargetAttribute &previousMorphTargetAttr : morphTarget.attributes) {
+                    if (currentMorphTargetAttr.name == previousMorphTargetAttr.name) {
+                        matchingAttributeNameFound = true;
+                        break;
+                    }
+                }
+                if (!matchingAttributeNameFound) {
+                    qWarning(kuesa) << "Morph target attribute name, all "
+                                       "targets should define the same "
+                                       "attributes names";
+                    return std::make_tuple(false, morphTargets);
+                }
+            }
+        }
+
+        // Record Morph Target
+        morphTargets.push_back(morphTarget);
+    }
+
+    return std::make_tuple(true, morphTargets);
+}
+
 bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
                                             const QJsonObject &json,
                                             QStringList existingAttributes,
@@ -284,8 +501,10 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
 {
     const QJsonObject &attrs = json.value(KEY_ATTRIBUTES).toObject();
 
-    if (attrs.size() == 0)
+    if (attrs.size() == 0) {
+        qCWarning(kuesa) << "Mesh primitive doesn't define any attribute";
         return false;
+    }
 
     for (auto it = attrs.begin(), end = attrs.end(); it != end; ++it) {
         const qint32 accessorIndex = it.value().toInt();

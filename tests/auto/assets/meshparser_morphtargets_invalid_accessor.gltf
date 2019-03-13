@@ -1,0 +1,55 @@
+{
+    "asset": {
+        "copyright": "",
+        "generator": "blendergltf v1.2.0",
+        "version": "2.0"
+    },
+    "buffers": [
+    ],
+    "cameras": [
+    ],
+    "materials": [
+    ],
+    "meshes": [
+        {
+            "name": "Cube",
+            "primitives": [
+                {
+                    "attributes": {
+                         "NORMAL": 0,
+                         "POSITION": 1
+                    },
+                    "indices": 2,
+                    "material": 0,
+                    "mode": 4,
+                    "targets": [
+                        {
+                            "POSITION": 1
+                        },
+                        {
+                            "POSITION": -1
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "nodes": [
+    ],
+    "scene": 0,
+    "scenes": [
+        {
+            "extras": {
+                "active_camera": 0,
+                "background_color": [
+                    0.05087608844041824,
+                    0.05087608844041824,
+                    0.05087608844041824
+                ],
+                "frames_per_second": 24
+            },
+            "name": "Scene",
+            "nodes": [ ]
+        }
+    ]
+}
