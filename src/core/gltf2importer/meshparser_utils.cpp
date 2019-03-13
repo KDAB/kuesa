@@ -133,20 +133,20 @@ struct FindVertexIndicesInFaceHelper {
 
         lastFace = iFace;
         const auto data = indexAttribute.bufferData;
-        const auto iFaceHead = data.mid(indexAttribute.byteOffset + iFace * indexAttribute.byteStride);
+        const auto *iFaceHead = data.constData() + (indexAttribute.byteOffset + iFace * indexAttribute.byteStride);
         switch (vertexBaseType) {
         case Qt3DRender::QAttribute::UnsignedByte: {
-            const auto *typedIndices = reinterpret_cast<const unsigned char *>(iFaceHead.data());
+            const auto *typedIndices = reinterpret_cast<const unsigned char *>(iFaceHead);
             verticesForLastFace = { typedIndices[0], typedIndices[1], typedIndices[2] };
             break;
         }
         case Qt3DRender::QAttribute::UnsignedShort: {
-            const auto *typedIndices = reinterpret_cast<const unsigned short *>(iFaceHead.data());
+            const auto *typedIndices = reinterpret_cast<const unsigned short *>(iFaceHead);
             verticesForLastFace = { typedIndices[0], typedIndices[1], typedIndices[2] };
             break;
         }
         case Qt3DRender::QAttribute::UnsignedInt: {
-            const auto *typedIndices = reinterpret_cast<const unsigned int *>(iFaceHead.data());
+            const auto *typedIndices = reinterpret_cast<const unsigned int *>(iFaceHead);
             verticesForLastFace = { typedIndices[0], typedIndices[1], typedIndices[2] };
             break;
         }
@@ -261,8 +261,8 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
         const auto byteOffset = userData->positionAttribute.byteOffset;
         const auto byteStride = userData->positionAttribute.byteStride;
         const auto &vertexBufferData = userData->positionAttribute.bufferData;
-        const auto positionHead = vertexBufferData.mid(byteOffset + vertexIndex * byteStride);
-        const auto *typedPositionHead = reinterpret_cast<const float *>(positionHead.data());
+        const auto *positionHead = vertexBufferData.constData() + (byteOffset + vertexIndex * byteStride);
+        const auto *typedPositionHead = reinterpret_cast<const float *>(positionHead);
         fvPosOut[0] = typedPositionHead[0];
         fvPosOut[1] = typedPositionHead[1];
         fvPosOut[2] = typedPositionHead[2];
@@ -278,8 +278,8 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
         const auto byteOffset = userData->normalAttribute.byteOffset;
         const auto byteStride = userData->normalAttribute.byteStride;
         const auto &normalBufferData = userData->normalAttribute.bufferData;
-        const auto normalHead = normalBufferData.mid(byteOffset + vertexIndex * byteStride);
-        const auto *typedNormalHead = reinterpret_cast<const float *>(normalHead.data());
+        const auto *normalHead = normalBufferData.constData() + (byteOffset + vertexIndex * byteStride);
+        const auto *typedNormalHead = reinterpret_cast<const float *>(normalHead);
         fvPosOut[0] = typedNormalHead[0];
         fvPosOut[1] = typedNormalHead[1];
         fvPosOut[2] = typedNormalHead[2];
@@ -295,25 +295,25 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
         const auto byteOffset = userData->uvAttribute.byteOffset;
         const auto byteStride = userData->uvAttribute.byteStride;
         const auto &uvBufferData = userData->uvAttribute.bufferData;
-        const auto uvHead = uvBufferData.mid(byteOffset + vertexIndex * byteStride);
+        const auto *uvHead = uvBufferData.constData() + (byteOffset + vertexIndex * byteStride);
 
         // data type can be different from float in UV attribute
         switch (userData->vertexBaseTypeForUVAttribute) {
         case Qt3DRender::QAttribute::VertexBaseType::Float: {
-            const auto *typedUvHead = reinterpret_cast<const float *>(uvHead.data());
+            const auto *typedUvHead = reinterpret_cast<const float *>(uvHead);
             fvPosOut[0] = typedUvHead[0];
             fvPosOut[1] = typedUvHead[1];
             break;
         }
         case Qt3DRender::QAttribute::UnsignedByte: {
-            const auto *typedUvHead = reinterpret_cast<const unsigned char *>(uvHead.data());
+            const auto *typedUvHead = reinterpret_cast<const unsigned char *>(uvHead);
             const auto div = 1.0f / static_cast<float>(std::numeric_limits<unsigned char>::max());
             fvPosOut[0] = div * static_cast<float>(typedUvHead[0]);
             fvPosOut[1] = div * static_cast<float>(typedUvHead[1]);
             break;
         }
         case Qt3DRender::QAttribute::UnsignedShort: {
-            const auto *typedUvHead = reinterpret_cast<const unsigned short *>(uvHead.data());
+            const auto *typedUvHead = reinterpret_cast<const unsigned short *>(uvHead);
             const auto div = 1.0f / static_cast<float>(std::numeric_limits<unsigned short>::max());
             fvPosOut[0] = div * static_cast<float>(typedUvHead[0]);
             fvPosOut[1] = div * static_cast<float>(typedUvHead[1]);
