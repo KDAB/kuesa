@@ -93,7 +93,7 @@ QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
         return {};
     }
 
-    const BufferView &bufferViewData = ctx->bufferView(accessor.bufferViewIndex);
+    const BufferView bufferViewData = ctx->bufferView(accessor.bufferViewIndex);
 
     const QByteArray bufferData = accessor.bufferData;
 
@@ -361,8 +361,8 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
 
 bool AnimationParser::checkSamplerJSON(const QJsonObject &samplerObject) const
 {
-    const QJsonValue &inputValue = samplerObject[KEY_INPUT];
-    const QJsonValue &outputValue = samplerObject[KEY_OUTPUT];
+    const QJsonValue inputValue = samplerObject.value(KEY_INPUT);
+    const QJsonValue outputValue = samplerObject.value(KEY_OUTPUT);
 
     if (inputValue.isUndefined()) {
         qCWarning(kuesa, "Missing input buffer in animation sampler");
@@ -394,9 +394,9 @@ bool AnimationParser::checkSamplerJSON(const QJsonObject &samplerObject) const
 std::tuple<bool, AnimationParser::AnimationSampler> AnimationParser::animationSamplersFromJson(const QJsonObject &samplerObject) const
 {
     AnimationParser::AnimationSampler animationSampler;
-    animationSampler.inputAccessor = samplerObject[KEY_INPUT].toInt();
-    animationSampler.outputAccessor = samplerObject[KEY_OUTPUT].toInt();
-    animationSampler.interpolationMethod = interpolationMethodFromSemantic(samplerObject[KEY_INTERPOLATION].toString(QStringLiteral("LINEAR")));
+    animationSampler.inputAccessor = samplerObject.value(KEY_INPUT).toInt();
+    animationSampler.outputAccessor = samplerObject.value(KEY_OUTPUT).toInt();
+    animationSampler.interpolationMethod = interpolationMethodFromSemantic(samplerObject.value(KEY_INTERPOLATION).toString(QStringLiteral("LINEAR")));
 
     if (animationSampler.interpolationMethod == AnimationParser::Unknown) {
         qCWarning(kuesa, "Invalid interpolation method");
@@ -408,8 +408,8 @@ std::tuple<bool, AnimationParser::AnimationSampler> AnimationParser::animationSa
 
 bool AnimationParser::checkChannelJSON(const QJsonObject &channelObject) const
 {
-    const QJsonValue &samplerValue = channelObject[KEY_SAMPLER];
-    const QJsonValue &targetValue = channelObject[KEY_TARGET];
+    const QJsonValue samplerValue = channelObject.value(KEY_SAMPLER);
+    const QJsonValue targetValue = channelObject.value(KEY_TARGET);
 
     if (samplerValue.isUndefined()) {
         qCWarning(kuesa, "Missing sampler for animation channel");
@@ -427,15 +427,15 @@ bool AnimationParser::checkChannelJSON(const QJsonObject &channelObject) const
         return false;
     }
 
-    const QJsonObject &targetObject = targetValue.toObject();
-    const QJsonValue &pathValue = targetObject[KEY_PATH];
+    const QJsonObject targetObject = targetValue.toObject();
+    const QJsonValue pathValue = targetObject.value(KEY_PATH);
 
     if (pathValue.isUndefined()) {
         qCWarning(kuesa, "Missing path for channel's animation target");
         return false;
     }
 
-    const QString &path = pathValue.toString();
+    const QString path = pathValue.toString();
 
     // Verify path is a valid value
     const auto validPathValues = { QStringLiteral("translation"), QStringLiteral("rotation"), QStringLiteral("scale"), QStringLiteral("weights") };
@@ -452,11 +452,11 @@ AnimationParser::channelFromJson(const QJsonObject &channelObject) const
 {
     Qt3DAnimation::QChannel channel;
 
-    const QJsonValue &samplerValue = channelObject[KEY_SAMPLER];
-    const QJsonObject &targetObject = channelObject[KEY_TARGET].toObject();
-    const QString &path = targetObject[KEY_PATH].toString();
-    const int &targetNode = targetObject[KEY_NODE].toInt();
-    const AnimationSampler sampler = m_samplers[samplerValue.toInt()];
+    const QJsonValue samplerValue = channelObject.value(KEY_SAMPLER);
+    const QJsonObject targetObject = channelObject.value(KEY_TARGET).toObject();
+    const QString path = targetObject.value(KEY_PATH).toString();
+    const int targetNode = targetObject.value(KEY_NODE).toInt();
+    const AnimationSampler sampler = m_samplers.at(samplerValue.toInt());
 
     channel = animationChannelDataFromBuffer(path, sampler);
     channel.setName(channel.name() + QStringLiteral("_") + QString::number(targetNode));
@@ -472,15 +472,15 @@ AnimationParser::channelFromJson(const QJsonObject &channelObject) const
 std::tuple<bool, ChannelMapping>
 AnimationParser::mappingFromJson(const QJsonObject &channelObject) const
 {
-    const QJsonObject &targetObject = channelObject[KEY_TARGET].toObject();
-    const QString &path = targetObject[KEY_PATH].toString();
+    const QJsonObject targetObject = channelObject.value(KEY_TARGET).toObject();
+    const QString path = targetObject.value(KEY_PATH).toString();
 
     // TODO If we find a weight mapper, return a default constructed mapping
     // Qt3D doesn't support morph targets yet
     if (path == QStringLiteral("weights"))
         return std::make_tuple(true, ChannelMapping());
 
-    const QJsonValue &nodeValue = targetObject[KEY_NODE];
+    const QJsonValue nodeValue = targetObject.value(KEY_NODE);
     ChannelMapping mapping;
 
     if (nodeValue.isUndefined()) {
@@ -510,9 +510,9 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
     for (const QJsonValue &animationValue : animationsArray) {
 
         m_samplers.clear();
-        const QJsonObject &animationObject = animationValue.toObject();
-        const QJsonValue &channelsValue = animationObject[KEY_CHANNELS];
-        const QJsonValue &samplersValue = animationObject[KEY_SAMPLERS];
+        const QJsonObject animationObject = animationValue.toObject();
+        const QJsonValue channelsValue = animationObject.value(KEY_CHANNELS);
+        const QJsonValue samplersValue = animationObject.value(KEY_SAMPLERS);
 
         if (channelsValue.isUndefined()) {
             qCWarning(kuesa, "Missing channels array");
@@ -524,8 +524,8 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
             return false;
         }
 
-        const QJsonArray &channelsArray = channelsValue.toArray();
-        const QJsonArray &samplersArray = samplersValue.toArray();
+        const QJsonArray channelsArray = channelsValue.toArray();
+        const QJsonArray samplersArray = samplersValue.toArray();
 
         // Check Sampler Objects have a correct structure
         for (const auto &samplerValue : samplersArray) {
@@ -571,7 +571,7 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
 
         Animation animation;
         animation.clipData = clipData;
-        animation.name = animationObject[KEY_NAME].toString();
+        animation.name = animationObject.value(KEY_NAME).toString();
 
         // Channel Mappings
         for (const auto &channelValue : channelsArray) {
