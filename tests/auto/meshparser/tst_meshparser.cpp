@@ -71,6 +71,38 @@ private Q_SLOTS:
         QTest::newRow("No_Attribute") << QStringLiteral(ASSETS "meshparser_no_attribute.gltf")
                                       << false
                                       << 0;
+
+        QTest::newRow("Valid_MorphTargets") << QStringLiteral(ASSETS "meshparser_valid_morphtargets.gltf")
+                                            << true
+                                            << 1;
+
+        QTest::newRow("Invalid_MorphTargets_Mistmatch_Count_Primitive") << QStringLiteral(ASSETS "meshparser_morphtargets_mismatch_count_primitive.gltf")
+                                                                        << false
+                                                                        << 0;
+
+        QTest::newRow("Invalid_MorphTargets_Mistmatch_Content_Primitive") << QStringLiteral(ASSETS "meshparser_morphtargets_mismatch_content_primitive.gltf")
+                                                                          << false
+                                                                          << 0;
+
+        QTest::newRow("Invalid_MorphTargets_Mistmatch_Attributes") << QStringLiteral(ASSETS "meshparser_morphtargets_mismatch_attributes.gltf")
+                                                                   << false
+                                                                   << 0;
+
+        QTest::newRow("Invalid_MorphTargets_Invalid_Attribute") << QStringLiteral(ASSETS "meshparser_morphtargets_invalid_attribute.gltf")
+                                                                << false
+                                                                << 0;
+
+        QTest::newRow("Invalid_MorphTargets_Invalid_Accessor") << QStringLiteral(ASSETS "meshparser_morphtargets_invalid_accessor.gltf")
+                                                               << false
+                                                               << 0;
+
+        QTest::newRow("Invalid_MorphTargets_Attribute_Not_In_Primitive") << QStringLiteral(ASSETS "meshparser_morphtargets_attribute_not_in_primitive.gltf")
+                                                                         << false
+                                                                         << 0;
+
+        QTest::newRow("Invalid_MorphTargets_Default_Weights_Size_Mismatch") << QStringLiteral(ASSETS "meshparser_morphtargets_default_weights_size_mismatch.gltf")
+                                                                            << false
+                                                                            << 0;
     }
 
     void checkParse()
