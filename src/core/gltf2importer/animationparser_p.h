@@ -53,6 +53,7 @@ class QAnimationClip;
 namespace Kuesa {
 namespace GLTF2Import {
 class GLTF2Context;
+struct TreeNode;
 
 struct ChannelMapping {
     qint32 targetNodeId = -1;
@@ -99,7 +100,9 @@ private:
     std::tuple<bool, ChannelMapping>
     mappingFromJson(const QJsonObject &channelObject) const;
 
-    Qt3DAnimation::QChannel animationChannelDataFromBuffer(const QString &channelName, const AnimationSampler &sampler) const;
+    Qt3DAnimation::QChannel animationChannelDataFromBuffer(const QString &channelName,
+                                                           const AnimationSampler &sampler,
+                                                           const TreeNode &targetNode) const;
     std::tuple<int, std::vector<float>> animationChannelDataFromData(const AnimationSampler &sampler) const;
 
     QVector<AnimationSampler> m_samplers;
