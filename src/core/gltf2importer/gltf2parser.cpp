@@ -45,6 +45,7 @@
 #include "sceneparser_p.h"
 #include "skinparser_p.h"
 #include "metallicroughnessmaterial.h"
+#include "morphcontroller.h"
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonDocument>
@@ -816,8 +817,11 @@ void GLTF2Parser::generateTreeNodeContent()
                 const qint32 skinId = node.skinIdx;
                 const Mesh &meshData = m_context->mesh(meshId);
                 const bool isSkinned = skinId >= 0 && skinId < m_context->skinsCount();
+                const bool hasMorphTargets = meshData.morphTargetCount > 0;
+
                 Qt3DCore::QArmature *armature = nullptr;
                 Qt3DCore::QEntity *skinRootJointEntity = nullptr;
+                MorphController *morphController = nullptr;
 
                 // Create armature if node references a skin
                 {
@@ -864,14 +868,45 @@ void GLTF2Parser::generateTreeNodeContent()
                     }
                 }
 
+                // Create a Morph Controller if we have morph targets
+                {
+                    if (hasMorphTargets) {
+                        // Initiliaze the Morph Controller with the default weights
+                        const QVector<float> nodeDefaultWeight = node.morphTargetWeights;
+                        const QVector<float> meshDefaultWeights = meshData.morphTargetWeights;
+                        const quint8 morphTargetCount = std::min(meshData.morphTargetCount, quint8(8));
+
+                        if (meshData.morphTargetCount > 8)
+                            qCWarning(kuesa) << "Kuesa only supports up to 8 morph targets per mesh";
+
+                        // node Default Weights have priority over the mesh ones
+                        morphController = new MorphController();
+                        morphController->setCount(morphTargetCount);
+
+                        QVariantList defaultWeights;
+                        defaultWeights.reserve(morphTargetCount);
+
+                        for (int i = 0, m = morphTargetCount; i < m; ++i) {
+                            const float defaultWeight = (i < nodeDefaultWeight.size()) ? nodeDefaultWeight.at(i) : meshDefaultWeights.at(i);
+                            defaultWeights.push_back(defaultWeight);
+                        }
+
+                        morphController->setMorphWeights(defaultWeights);
+                    }
+                }
+
                 // Generate one Entity per primitive (1 primitive == 1 geometry renderer)
-                for (Primitive primitiveData : meshData.meshPrimitives) {
+                for (const Primitive &primitiveData : meshData.meshPrimitives) {
                     Qt3DCore::QEntity *primitiveEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
                     primitiveEntity->addComponent(primitiveData.primitiveRenderer);
 
                     // Add material for mesh
                     {
                         Qt3DCore::QComponent *material = nullptr;
+
+                        // TO DO: generate proper morph target vertex shader based
+                        // on meshData.morphTargetCount and primitiveData.morphTargets
+
                         const qint32 materialId = primitiveData.materialIdx;
                         if (materialId >= 0 && materialId < m_context->materialsCount()) {
                             Material &mat = m_context->material(materialId);
@@ -926,6 +961,11 @@ void GLTF2Parser::generateTreeNodeContent()
                     } else {
                         // We set the parent to entity so that transform is applied
                         primitiveEntity->setParent(entity);
+                    }
+
+                    // Add morph controller if it is not null
+                    if (morphController != nullptr) {
+                        primitiveEntity->addComponent(morphController);
                     }
                 }
             }
