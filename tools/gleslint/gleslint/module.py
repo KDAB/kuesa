@@ -2,6 +2,7 @@ import os
 import glob
 import sys
 import subprocess
+import fnmatch
 
 class Module (object):
 
@@ -23,16 +24,28 @@ class Module (object):
         patterns = self.argv[1].split(",")
         unknown_file_types = []
         for pattern in patterns:
-            globpath = None
-            if recursive:
-                globpath = os.path.join(self.path, "**", pattern)
+            split = os.path.split(pattern)
+            path = self.path
+            extension = None
+            if (len(split) == 1):
+                extension = split[0]
             else:
-                globpath = os.path.join(self.path, pattern)
-            print("globbing '{}', recursive = {}...".format(globpath, recursive))
-            filelist = glob.glob(globpath, recursive=recursive)
+                path = os.path.join(path, split[0])
+                extension = split[1]
+            path = os.path.abspath(path)
+            matches = []
+            if recursive:
+                print("globbing recursively {}...".format(os.path.join(path, extension)))
+                for root, dirnames, filenames in os.walk(path): # Python 2
+                    for filename in fnmatch.filter(filenames, extension):
+                        matches.append(os.path.join(root, filename))
+            else:
+                print("globbing {}...".format(os.path.join(path, extension)))
+                matches = glob.glob(os.path.join(path, extension))
+
             count_textures = 0
             count_unknown = 0
-            for path in filelist:
+            for path in matches:
                 absolute_path = os.path.abspath(path)
                 if not os.path.isfile(absolute_path):
                     continue
@@ -46,7 +59,7 @@ class Module (object):
                         unknown_file_types.append(unknown_file_type)
                         print("Unknown file type '{}'".format(absolute_path[-4:]))
                     count_unknown += 1
-            print("{} textures added, {} unknown files".format(count_textures, count_unknown))
+            print("{} textures added, {} unknown files skipped".format(count_textures, count_unknown))
 
     def get_texture_asset_paths(self):
         return self.texture_asset_paths
@@ -69,12 +82,26 @@ class Module (object):
 
     def lint(self):
         print("Linting...")
+        total_assets = len(self.get_dds_paths()) + len(self.get_png_paths()) + len(self.get_jpg_paths())
+        count_assets = 0
         for i in self.get_dds_paths():
             self.lint_dds(i)
+            count_assets += 1
+            self.print_progress(count_assets, total_assets)
         for i in self.get_png_paths():
             self.lint_png(i)
+            count_assets += 1
+            self.print_progress(count_assets, total_assets)
         for i in self.get_jpg_paths():
             self.lint_jpg(i)
+            count_assets += 1
+            self.print_progress(count_assets, total_assets)
+        print("")
+
+    def print_progress(self, count, total):
+        p = int(100 * count / total)
+        sys.stdout.write("\r{} / {} assets: {}%".format(count, total, p))
+        sys.stdout.flush()
 
     def lint_dds(self, path):
         print("lint_dds() not implemented for linting module '{}'!".format(self.__class__.__name__))

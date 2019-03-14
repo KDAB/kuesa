@@ -3,23 +3,28 @@ import sys
 import os
 import subprocess
 
-def checkPythonVersion():
-    if not sys.version.startswith("3"):
-        print("Python 3 is needed! This is Python {}.".format(sys.version.split(" ")[0]))
-        sys.exit(1)
+def help():
+    print("Usage:")
+    print("  python gleslint.py pattern[,pattern][,pattern][...] [-r]")
+    print("pattern examples:")
+    print("  *")
+    print("  *.dds")
+    print("  ../envmaps/*.dds,../textures/*.png")
 
 def checkImageMagick():
     try:
-        subprocess.run(["magick", "-help"], capture_output=True)
+        subprocess.check_output(["magick", "-help"])
     except:
         print("ImageMagick not available!")
         print("Please install!")
         sys.exit(1)
 
 def main():
-    checkPythonVersion()
-    checkImageMagick()
-    gleslint.gleslint.GlesLint(os.getcwd(), sys.argv)
+    if "-h" in sys.argv or "-help" in sys.argv or "--help" in sys.argv:
+        help()
+    else:
+        checkImageMagick()
+        gleslint.gleslint.GlesLint(os.getcwd(), sys.argv)
 
 if (__name__ == "__main__"):
     main()

@@ -34,8 +34,8 @@ class ModuleES2 (Module):
         if dds.type == dds_loader.DDSTexture.Type.TextureCube and dds.mipmap_count > 1:
             self.add_warning(path, "Cubemap with mipmaps can't be used as specular env map. Convert to octahedron map instead!")
 
-        if dds.bpp_or_block_size > 3:
-            self.add_warning(path, "Bytes per pixel > 3. Check format!")
+        if dds.bpp_or_block_size > 4:
+            self.add_warning(path, "Bytes per pixel > 4. Check format!")
 
         if dds.is_compressed:
             self.add_warning(path, "Compression detected. Check if supported!")
@@ -49,14 +49,13 @@ class ModuleES2 (Module):
     def lint_standard_image(self, path):
         result = None
         try:
-            result = subprocess.run(["identify", path], capture_output=True)
+            result = subprocess.check_output(["identify", path]) # Python 2
         except:
             self.add_error(path, "Could not read file.")
             return
-        stdout = result.stdout
 
-        if b"sRGB" in stdout:
+        if b"sRGB" in result:
             self.add_warning(path, "sRGB detected! Must not end up in *SRGB* GL texture!")
 
-        if b"8-bit" not in stdout:
+        if b"8-bit" not in result:
             self.add_error(path, "Image is not 8-bit.")

@@ -25,6 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 import ctypes
 import os
+import struct
 
 from . import dxgi_values
 
@@ -75,7 +76,8 @@ class DDSEnums:
 
 	# Only value we are interested in DDS_PIXELFORMAT::dwFourCC, is needed
 	# to make sure the extended header is included
-	DX10_CC = int.from_bytes(bytearray(b"DX10"), byteorder="little", signed="false")
+	#DX10_CC = int.from_bytes(bytearray(b"DX10"), byteorder="little", signed="false")
+	DX10_CC = struct.unpack("<I", b"DX10")[0] # Python 2
 
 	# Misc flag in the DDS_HEADER_DXT10, flags the resource as cubemap
 	DDS_RESOURCE_MISC_TEXTURECUBE = 0x4
@@ -293,6 +295,7 @@ class DDSTexture:
 			# Computes the type of this DDSTexture instance
 			self._compute_type()
 
+			return # we just need the heade
 
 			total_data_size = 0
 
