@@ -84,6 +84,7 @@ struct TreeNode {
     qint32 cameraIdx = -1;
     QVector<int> childrenIndices;
     QVector<int> layerIndices;
+    QVector<float> morphTargetWeights;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(TreeNode::TransformInfo::TransformBits)
