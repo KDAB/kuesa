@@ -691,16 +691,16 @@ bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry
 {
     const QJsonObject extensions = json.value(KEY_EXTENSIONS).toObject();
     const QJsonObject dracoExtensionObject = extensions.value(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION).toObject();
-    const QJsonObject &attrs = json.value(KEY_ATTRIBUTES).toObject();
-    const QJsonObject &dracoAttrs = dracoExtensionObject.value(KEY_ATTRIBUTES).toObject();
+    const QJsonObject attrs = json.value(KEY_ATTRIBUTES).toObject();
+    const QJsonObject dracoAttrs = dracoExtensionObject.value(KEY_ATTRIBUTES).toObject();
 
-    if (attrs.size() == 0 || dracoAttrs.size() == 0)
+    if (attrs.size() == 0 || dracoAttrs.size() == 0) {
+        qCWarning(kuesa) << "Draco primitive not referencing any attributes";
         return false;
+    }
 
     existingAttributes.reserve(attrs.size());
     for (auto it = attrs.begin(), end = attrs.end(); it != end; ++it) {
-        const int accessorIndex = it.value().toInt();
-        const Accessor &accessor = m_context->accessor(accessorIndex);
 
         const QString attrName = it.key();
         QString attributeName = standardAttributeNameFromSemantic(attrName);
@@ -750,6 +750,9 @@ bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry
             qCWarning(kuesa) << "Failed to parse draco attribute";
             return false;
         }
+
+        const int accessorIndex = it.value().toInt();
+        const Accessor accessor = m_context->accessor(accessorIndex);
 
         attribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
         // store some GLTF metadata for asset pipeline editor
