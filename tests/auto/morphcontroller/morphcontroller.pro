@@ -1,8 +1,8 @@
-# core.pri
+# morphcontroller.pro
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -24,29 +24,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-INCLUDEPATH += $$PWD
+TEMPLATE = app
 
-SOURCES += \
-    $$PWD/sceneentity.cpp \
-    $$PWD/metallicroughnesseffect.cpp \
-    $$PWD/metallicroughnessmaterial.cpp \
-    $$PWD/animationplayer.cpp \
-    $$PWD/skybox.cpp \
-    $$PWD/morphcontroller.cpp
+TARGET = tst_morphcontroller
 
-HEADERS += \
-    $$PWD/sceneentity.h \
-    $$PWD/factory.h \
-    $$PWD/kuesa_p.h \
-    $$PWD/kuesa_global.h \
-    $$PWD/kuesa_global_p.h \
-    $$PWD/kuesa_utils_p.h \
-    $$PWD/metallicroughnesseffect.h \
-    $$PWD/metallicroughnessmaterial.h \
-    $$PWD/animationplayer.h \
-    $$PWD/skybox.h \
-    $$PWD/morphcontroller.h
+QT += testlib kuesa kuesa-private
 
-qtConfig(draco) {
-    HEADERS += $$PWD/draco_prefix_p.h
-}
+CONFIG += testcase
+
+SOURCES += tst_morphcontroller.cpp
+
