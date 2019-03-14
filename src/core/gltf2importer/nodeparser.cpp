@@ -58,6 +58,7 @@ const QLatin1String KEY_CHILDREN = QLatin1Literal("children");
 const QLatin1String KEY_EXTENSIONS = QLatin1String("extensions");
 const QLatin1String KEY_KDAB_KUESA_LAYER_EXTENSION = QLatin1String("KDAB_Kuesa_Layers");
 const QLatin1String KEY_NODE_KUESA_LAYERS = QLatin1Literal("layers");
+const QLatin1String KEY_WEIGHTS = QLatin1String("weights");
 
 QMatrix4x4 matrixFromArray(const QJsonArray &matrixValues)
 {
@@ -183,6 +184,11 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
             }
         }
     }
+
+    const QJsonArray morphTargetWeights = nodeObj.value(KEY_WEIGHTS).toArray();
+    node.morphTargetWeights.reserve(morphTargetWeights.size());
+    for (const QJsonValue &weight : morphTargetWeights)
+        node.morphTargetWeights.push_back(weight.toDouble(0.0));
 
     return QPair<bool, TreeNode>(true, node);
 }
