@@ -97,6 +97,9 @@ public:
     bool parse(const QJsonArray &meshArray, GLTF2Context *context);
 
 private:
+    Qt3DRender::QAttribute *createAttribute(qint32 accessorIndex,
+                                            const QString &attributeName,
+                                            const QString &semanticName);
     bool geometryFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, bool &hasColorAttr);
     bool geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, QStringList existingAttributes, bool &hasColorAttr);
     std::tuple<bool, QVector<MorphTarget>> geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json);

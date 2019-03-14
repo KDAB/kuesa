@@ -29,7 +29,7 @@
 #include "meshparser_utils_p.h"
 
 #include <QVarLengthArray>
-
+#include <QRegularExpression>
 #include <Qt3DRender/QBuffer>
 #include <Qt3DRender/QGeometry>
 #include <Qt3DRender/QAttribute>
@@ -41,15 +41,26 @@
 
 namespace {
 
+const QString morphTargetAttributePattern = QStringLiteral("%1(_\d+)?");
+const QString morphTargetBaseAttributeNames[]{
+    Qt3DRender::QAttribute::defaultPositionAttributeName(),
+    Qt3DRender::QAttribute::defaultNormalAttributeName(),
+    Qt3DRender::QAttribute::defaultTangentAttributeName()};
+
 QVarLengthArray<Qt3DRender::QAttribute::VertexBaseType, 3> validVertexBaseTypesForAttribute(const QString &attributeName)
 {
+    {
+        // Morph Target Attributes
+        QRegularExpression re;
+        for (const QString &baseAttributeName : morphTargetBaseAttributeNames) {
+            re.setPattern(morphTargetAttributePattern.arg(baseAttributeName));
+            Q_ASSERT(re.isValid());
+            if (re.match(attributeName).hasMatch())
+                return { Qt3DRender::QAttribute::Float };
+        }
+    }
+
     // Standard Attributes
-    if (attributeName == Qt3DRender::QAttribute::defaultPositionAttributeName())
-        return { Qt3DRender::QAttribute::Float };
-    if (attributeName == Qt3DRender::QAttribute::defaultNormalAttributeName())
-        return { Qt3DRender::QAttribute::Float };
-    if (attributeName == Qt3DRender::QAttribute::defaultTangentAttributeName())
-        return { Qt3DRender::QAttribute::Float };
     if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName())
         return { Qt3DRender::QAttribute::Float,
                  Qt3DRender::QAttribute::UnsignedByte,
@@ -75,6 +86,21 @@ QVarLengthArray<Qt3DRender::QAttribute::VertexBaseType, 3> validVertexBaseTypesF
 
 QVarLengthArray<uint, 2> validVertexSizesForAttribute(const QString &attributeName)
 {
+    {
+        // Morph Target Attributes
+        QRegularExpression re;
+        for (const QString &baseAttributeName : morphTargetBaseAttributeNames) {
+            re.setPattern(morphTargetAttributePattern.arg(baseAttributeName));
+            Q_ASSERT(re.isValid());
+            if (re.match(attributeName).hasMatch()) {
+                // Tangent attribute size is 4, all others are 3
+                if (baseAttributeName == Qt3DRender::QAttribute::defaultTangentAttributeName())
+                    return { 4 };
+                return { 3 };
+            }
+        }
+    }
+
     // Standard Attributes
     if (attributeName == Qt3DRender::QAttribute::defaultPositionAttributeName())
         return { 3 };
