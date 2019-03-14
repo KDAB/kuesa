@@ -552,8 +552,10 @@ bool MeshParser::geometryDracoFromJSON(Qt3DRender::QGeometry *geometry,
 
     // Get the compressed data
     qint32 bufferViewIndex = dracoExtensionObject.value(KEY_BUFFERVIEW).toInt(-1);
-    if (bufferViewIndex == -1)
+    if (bufferViewIndex == -1) {
+        qCWarning(kuesa) << "Draco extension referencing invalid buffer view";
         return false;
+    }
 
     const BufferView &viewData = m_context->bufferView(bufferViewIndex);
     draco::DecoderBuffer dBuffer;
@@ -741,10 +743,11 @@ bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry
                 attribute = decodeAttribute<double, Qt3DRender::QAttribute::Double>(pointCloud, dracoAttribute, attributeName);
                 break;
             default:
-                qDebug() << "unsupported data type:" << dracoAttribute->data_type();
+                qCWarning(kuesa) << "unsupported data type:" << dracoAttribute->data_type();
                 break;
             }
         } else {
+            qCWarning(kuesa) << "Failed to parse draco attribute";
             return false;
         }
 
