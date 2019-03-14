@@ -49,7 +49,7 @@ namespace GLTF2Import {
 class GLTF2Context;
 
 struct Accessor {
-    qint32 bufferViewIndex = 0;
+    qint32 bufferViewIndex = -1;
     QByteArray bufferData;
     Qt3DRender::QAttribute::VertexBaseType type = Qt3DRender::QAttribute::Float;
     quint8 dataSize = 0;
@@ -61,12 +61,12 @@ struct Accessor {
     QString name;
     int sparseCount = 0;
     struct SparseIndices {
-        int bufferViewIndex = 0;
+        int bufferViewIndex = -1;
         int offset = 0;
         Qt3DRender::QAttribute::VertexBaseType type = Qt3DRender::QAttribute::Float;
     } sparseIndices;
     struct SparseValues {
-        int bufferViewIndex = 0;
+        int bufferViewIndex = -1;
         int offset = 0;
     } sparseValues;
 };
