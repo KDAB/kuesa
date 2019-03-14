@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -124,7 +124,7 @@ using namespace Qt3DAnimation;
     \li None   Unknown state (default).
     \li Ready  Both clip and mapper data have been found and are valid (included target nodes
                if they have been defined).
-    \li Error  An error occured when looking for assets or trying to match clip and mapper properties.
+    \li Error  An error occurred when looking for assets or trying to match clip and mapper properties.
     \endlist
  */
 

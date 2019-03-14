@@ -14,5 +14,9 @@ EXCLUDE style
 
 #no need to check 3rdparty stuff
 SKIP /3rdparty/
+
 #more stuff to skip
+#skip templates
+SKIP /qtc_templates/
+SKIP /draco_prefix_p.h
 SKIP /Manifest\.json
