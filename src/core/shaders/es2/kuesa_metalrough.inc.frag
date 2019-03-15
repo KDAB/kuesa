@@ -120,11 +120,11 @@ FP float normalDistribution(const in FP vec3 n, const in FP vec3 h, const in FP 
     return (specPower + 2.0) / (2.0 * 3.14159) * pow(max(dot(n, h), 0.0), specPower);
 }
 
-FP vec3 fresnelFactor(const in FP vec3 color, const in FP float cosineFactor)
+FP vec3 fresnelFactor(const in FP vec3 color, const in FP float vDotH)
 {
     // Calculate the Fresnel effect value
     FP vec3 f = color;
-    FP vec3 F = f + (1.0 - f) * pow(clamp(1.0 - cosineFactor, 0.0, 1.0), 5.0);
+    FP vec3 F = f + (1.0 - f) * pow(clamp(1.0 - vDotH, 0.0, 1.0), 5.0);
     return clamp(F, f, vec3(1.0));
 }
 
@@ -139,7 +139,7 @@ FP float geometricModel(const in FP float lDotN,
 }
 
 FP vec3 specularModel(const in FP vec3 F0,
-                      const in FP float sDotH,
+                      const in FP float vDotH,
                       const in FP float sDotN,
                       const in FP float vDotN,
                       const in FP vec3 n,
@@ -152,7 +152,7 @@ FP vec3 specularModel(const in FP vec3 F0,
     FP float sDotNPrime = max(sDotN, 0.001);
     FP float vDotNPrime = max(vDotN, 0.001);
 
-    FP vec3 F = fresnelFactor(F0, sDotH);
+    FP vec3 F = fresnelFactor(F0, vDotH);
     FP float G = geometricModel(sDotNPrime, vDotNPrime, h);
 
     FP vec3 cSpec = F * G / (4.0 * sDotNPrime * vDotNPrime);
@@ -176,7 +176,6 @@ FP vec3 pbrModel(const in int lightIndex,
 
     FP float vDotN = dot(v, n);
     FP float sDotN = 0.0;
-    FP float sDotH = 0.0;
     FP float att = 1.0;
 
     if (lights[lightIndex].type != TYPE_DIRECTIONAL) {
@@ -211,7 +210,7 @@ FP vec3 pbrModel(const in int lightIndex,
     }
 
     h = normalize(s + v);
-    sDotH = dot(s, h);
+    FP float vDotH = dot(v, h);
 
     // Calculate diffuse component
     FP vec3 diffuseColor = (1.0 - metalness) * baseColor * lights[lightIndex].color;
@@ -222,7 +221,7 @@ FP vec3 pbrModel(const in int lightIndex,
     FP vec3 F0 = mix(dielectricColor, baseColor, metalness);
     FP vec3 specularFactor = vec3(0.0);
     if (sDotN > 0.0) {
-        specularFactor = specularModel(F0, sDotH, sDotN, vDotN, n, h);
+        specularFactor = specularModel(F0, vDotH, sDotN, vDotN, n, h);
         specularFactor *= normalDistribution(n, h, alpha);
     }
     FP vec3 specularColor = lights[lightIndex].color;
@@ -255,7 +254,7 @@ FP vec3 pbrIblModel(const in FP vec3 wNormal,
     FP vec3 h = normalize(l + v);
     FP float vDotN = dot(v, n);
     FP float lDotN = dot(l, n);
-    FP float lDotH = dot(l, h);
+    FP float vDotH = dot(v, h);
 
     // Calculate diffuse component
     FP vec3 diffuseColor = (1.0 - metalness) * baseColor;
@@ -265,7 +264,7 @@ FP vec3 pbrIblModel(const in FP vec3 wNormal,
     // Calculate specular component
     FP vec3 dielectricColor = vec3(0.04);
     FP vec3 F0 = mix(dielectricColor, baseColor, metalness);
-    FP vec3 specularFactor = specularModel(F0, lDotH, lDotN, vDotN, n, h);
+    FP vec3 specularFactor = specularModel(F0, vDotH, lDotN, vDotN, n, h);
 
     FP float lod = alphaToMipLevel(alpha);
 //#define DEBUG_SPECULAR_LODS
