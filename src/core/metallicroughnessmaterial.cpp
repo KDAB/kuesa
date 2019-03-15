@@ -742,6 +742,7 @@ void MetallicRoughnessMaterial::setEmissiveMap(QAbstractTexture *emissiveMap)
     if (m_emissiveMapParameter->value().value<QAbstractTexture *>() == emissiveMap)
         return;
 
+    emissiveMap->setFormat(QAbstractTexture::TextureFormat::SRGB8_Alpha8);
     m_effect->setEmissiveMapEnabled(emissiveMap);
     m_emissiveMapParameter->setValue(QVariant::fromValue(emissiveMap));
     if (emissiveMap) {
