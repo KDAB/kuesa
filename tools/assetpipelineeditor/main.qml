@@ -63,8 +63,11 @@ Kuesa.SceneEntity {
         },
         InputSettings { },
         EnvironmentLight {
+            id: envLight
+            property string envMapFormat: Qt.platform.os == "osx" ? "_16f" : ""
+
             irradiance: TextureLoader {
-                source: "qrc:/wobbly_bridge_irradiance.dds"
+                source: "qrc:/wobbly_bridge" + envLight.envMapFormat + "_irradiance.dds"
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -72,7 +75,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: "qrc:/wobbly_bridge_specular.dds"
+                source: "qrc:/wobbly_bridge" + envLight.envMapFormat + "_specular.dds"
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
