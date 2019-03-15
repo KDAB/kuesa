@@ -124,7 +124,7 @@ FP vec3 fresnelFactor(const in FP vec3 color, const in FP float cosineFactor)
 {
     // Calculate the Fresnel effect value
     FP vec3 f = color;
-    FP vec3 F = f + (1.0 - f) * pow(1.0 - cosineFactor, 5.0);
+    FP vec3 F = f + (1.0 - f) * pow(clamp(1.0 - cosineFactor, 0.0, 1.0), 5.0);
     return clamp(F, f, vec3(1.0));
 }
 
