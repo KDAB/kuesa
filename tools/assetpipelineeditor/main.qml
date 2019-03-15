@@ -43,15 +43,12 @@ Kuesa.SceneEntity {
 
     // let this point light wander around with the camera to create some shiny lighting
     Entity {
-        id: pointLightEntity
-        property Camera followedCamera: frameGraph.camera
-        parent: followedCamera.parent
+        parent: frameGraph.camera
         components: [
             PointLight {
-                constantAttenuation: 5.0    // don't illuminate too much, but keep the shininess
-            },
-            Transform {
-                translation: pointLightEntity.followedCamera.position
+                constantAttenuation: 1.0
+                linearAttenuation: 0.0
+                quadraticAttenuation: 0.0
             }
         ]
     }
