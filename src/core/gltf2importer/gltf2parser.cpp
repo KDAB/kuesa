@@ -1063,18 +1063,42 @@ void GLTF2Parser::generateAnimationContent()
                 }
             }
 
-            // Map channel to entity transform
+            // Map channel to entity transform or morphcontroller
             if (targetNode.entity != nullptr) {
-                auto transformComponent = componentFromEntity<Qt3DCore::QTransform>(targetNode.entity);
-                if (!transformComponent) {
-                    qCWarning(kuesa, "Target node doesn't have a transform component");
-                    continue;
+                const bool isMorphWeightProperty = (mapping.property == QStringLiteral("morphWeights"));
+
+                if (!isMorphWeightProperty) {
+                    auto transformComponent = componentFromEntity<Qt3DCore::QTransform>(targetNode.entity);
+                    if (!transformComponent) {
+                        qCWarning(kuesa, "Target node doesn't have a transform component");
+                        continue;
+                    }
+                    auto channelMapping = new Qt3DAnimation::QChannelMapping();
+                    channelMapping->setTarget(transformComponent);
+                    channelMapping->setChannelName(mapping.name);
+                    channelMapping->setProperty(mapping.property);
+                    channelMapper->addMapping(channelMapping);
+                } else {
+                    // The actual entities to animate are those which render the
+                    // primitive not the Node Entity
+                    const QList<Qt3DCore::QEntity *> primitiveEntities =
+                            targetNode.entity->findChildren<Qt3DCore::QEntity *>(QString(), Qt::FindDirectChildrenOnly);
+
+                    for (Qt3DCore::QEntity *primitiveEntity : primitiveEntities) {
+                        MorphController *morphControllerComponent =
+                                componentFromEntity<Kuesa::MorphController>(primitiveEntity);
+                        if (!morphControllerComponent) {
+                            qCWarning(kuesa) << "Target node doesn't have a morph "
+                                                "controller component to animate";
+                            continue;
+                        }
+                        auto channelMapping = new Qt3DAnimation::QChannelMapping();
+                        channelMapping->setTarget(morphControllerComponent);
+                        channelMapping->setChannelName(mapping.name);
+                        channelMapping->setProperty(mapping.property);
+                        channelMapper->addMapping(channelMapping);
+                    }
                 }
-                auto channelMapping = new Qt3DAnimation::QChannelMapping();
-                channelMapping->setTarget(transformComponent);
-                channelMapping->setChannelName(mapping.name);
-                channelMapping->setProperty(mapping.property);
-                channelMapper->addMapping(channelMapping);
             }
         }
     }
