@@ -41,21 +41,6 @@ Kuesa.SceneEntity {
     readonly property Layer texturePreviewLayer: Layer {}
     readonly property Layer materialPreviewLayer: Layer {}
 
-    // let this point light wander around with the camera to create some shiny lighting
-    Entity {
-        id: pointLightEntity
-        property Camera followedCamera: frameGraph.camera
-        parent: followedCamera.parent
-        components: [
-            PointLight {
-                constantAttenuation: 5.0    // don't illuminate too much, but keep the shininess
-            },
-            Transform {
-                translation: pointLightEntity.followedCamera.position
-            }
-        ]
-    }
-
     components: [
         RenderSettings {
             activeFrameGraph: frameGraphNode
@@ -93,6 +78,10 @@ Kuesa.SceneEntity {
         position: Qt.vector3d(0.0, 0.0, 7.0)
         upVector: Qt.vector3d(0.0, 1.0, 0.0)
         viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
+
+        components: [
+            PointLight { }
+        ]
 
         // Frame graph and preview nodes are here as a child of camera so that they
         // get ignored when doing a view all for this camera
