@@ -86,7 +86,12 @@ void CopyExportPass::copyURIs(QJsonObject &root, QLatin1String key)
             // Copy files from the source to the target directory
             QDir{}.mkpath(destFile.absolutePath());
 
-            const bool ok = srcFile.copy(m_destination.absoluteFilePath(uri_it->toString()));
+            const QString absPath = m_destination.absoluteFilePath(uri_it->toString());
+
+            if (QFile::exists(absPath) && !QFile::remove(absPath))
+                m_errors << QStringLiteral("Unable to overwrite old file %1").arg(absPath);
+
+            const bool ok = srcFile.copy(absPath);
             if (!ok) {
                 m_errors << QStringLiteral("Unable to copy %1").arg(uri_it->toString());
             }
