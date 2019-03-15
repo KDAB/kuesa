@@ -84,7 +84,7 @@ FORMS += \
 
 RESOURCES += \
     qml.qrc \
-    ../../resources/resources.qrc \
+    ../../resources/resources.qrc
 
 OTHER_FILES += \
     main.qml
@@ -127,6 +127,3 @@ windows {
 
 target.path = $$[QT_INSTALL_BINS]
 INSTALLS += target
-
-DISTFILES += \
-    Info.plist.in
