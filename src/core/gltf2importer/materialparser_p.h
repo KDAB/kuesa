@@ -72,7 +72,7 @@ public:
     } pbr;
 
     struct NormalTextureInfo : public TextureInfo {
-        float scale = 1.0f;
+        float scale = 0.25f;
     } normalTexture;
 
     struct OcclusionTextureInfo : public TextureInfo {

@@ -232,7 +232,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
             const QJsonObject normalTextureObject = materialObject.value(KEY_NORMAL_TEXTURE).toObject();
             if (!normalTextureObject.isEmpty()) {
                 parseTextureInfo(mat.normalTexture, normalTextureObject);
-                mat.normalTexture.scale = normalTextureObject.value(KEY_SCALE).toDouble(1.0);
+                mat.normalTexture.scale = static_cast<float>(normalTextureObject.value(KEY_SCALE).toDouble(0.25));
             }
         }
 
