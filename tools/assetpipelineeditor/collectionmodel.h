@@ -48,6 +48,7 @@ public:
     Kuesa::SceneEntity *entity() const;
     void update(Kuesa::SceneEntity *entity);
     Kuesa::AbstractAssetCollection *collection(const QModelIndex &index) const;
+    QModelIndex index(Kuesa::AbstractAssetCollection *collection, QString name) const;
 
     QModelIndex index(int row, int column, const QModelIndex &parent) const override;
     QModelIndex parent(const QModelIndex &child) const override;

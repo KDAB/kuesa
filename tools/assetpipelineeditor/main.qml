@@ -81,9 +81,15 @@ Kuesa.SceneEntity {
             }
         },
         ObjectPicker {
+            property point __downPos
+            onPressed: __downPos = pick.position
             onClicked: {
+                if (pick.position !== __downPos)
+                    return
                 if (pick.modifiers & Qt.ControlModifier)
                     mainCamera.viewCenter = pick.worldIntersection
+                else
+                    _mainWindow.pickEntity(pick)
             }
         }
     ]

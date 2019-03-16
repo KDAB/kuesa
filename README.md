@@ -51,8 +51,28 @@ Kuesa is composed of:
 * A Qt module with core classes
 * A QML plugin
 * The assetpipelineeditor tool to preview and process glTF 2.0 files
+* The assetprocessor, a command line tool to compress meshes, embed or extract binary assets, etc
 * The cubemaptooctahedralmap tool to convert cube maps to octahedral maps
   to enable PBR rendering on ES 2 platforms
+
+### Asset Pipeline Editor
+
+The Asset Pipeline Editor can be used both by the designer and in order
+to preview and pre-process the content of glTF files.
+
+The designers will use the editor to check the rendering of the scene,
+verify that materials are correct, preview animations, etc.
+
+The developers will also use the editor check model properties such as sizes,
+asset names, etc.
+
+The editor can also be used to compress meshes, embed (or extract) binary assets, etc.
+
+In the 3d view, use the mouse to click on meshes to select them in the collection browser.
+Use:
+* Simple click to select meshes
+* Shift-click to select materials
+* Alt-click to select entities
 
 ## Installation
 

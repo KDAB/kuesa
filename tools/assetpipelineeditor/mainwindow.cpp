@@ -45,6 +45,11 @@
 #include <Qt3DCore/QTransform>
 #include <Qt3DAnimation/QAnimationAspect>
 #include <Qt3DQuick/QQmlAspectEngine>
+#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
+#include <Qt3DCore/private/qentity_p.h>
+#include <Qt3DCore/private/qscene_p.h>
+#include <Qt3DRender/private/qpickevent_p.h>
+#endif
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -65,7 +70,24 @@
 
 namespace {
 const QLatin1String LASTPATHSETTING("mainwindow/lastPath");
+
+template<class AssetType>
+bool selectAssetType(Qt3DCore::QEntity *node, Kuesa::AbstractAssetCollection *collection,
+                     CollectionModel *model, QAbstractItemView *view)
+{
+    AssetType *picked_asset = Kuesa::componentFromEntity<AssetType>(node);
+    if (!picked_asset)
+        return false;
+
+    auto index = model->index(collection, picked_asset->objectName());
+    if (index.isValid()) {
+        view->selectionModel()->select(index, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Current);
+        view->scrollTo(index);
+    }
+    return index.isValid();
 }
+
+} // namespace
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -277,6 +299,47 @@ void MainWindow::viewAll()
 
     connect(m_camera, &Qt3DRender::QCamera::viewMatrixChanged, this, &MainWindow::autoNearFarPlanes);
     m_camera->viewAll();
+}
+
+void MainWindow::pickEntity(Qt3DRender::QPickEvent *event)
+{
+    using namespace Qt3DCore;
+    using namespace Qt3DRender;
+
+    if (!m_entity || event->button() != QPickEvent::LeftButton)
+        return;
+    CollectionModel *model = qobject_cast<CollectionModel *>(m_ui->collectionBrowser->model());
+    if (!model)
+        return;
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+    QEntity *node = event->entity();
+#else
+    auto event_p = QPickEventPrivate::get(event);
+    auto scene_p = QNodePrivate::get(m_entity);
+    QEntity *node = qobject_cast<QEntity *>(scene_p->m_scene->lookupNode(event_p->m_entity));
+#endif
+    if (!node)
+        return;
+
+    if (event->modifiers() == Qt::AltModifier) {
+        while (node) {
+            if (!node->objectName().isEmpty())
+                break;
+            node = node->parentEntity();
+        }
+        if (node) {
+            auto entityIndex = model->index(m_entity->entities(), node->objectName());
+            if (entityIndex.isValid()) {
+                m_ui->collectionBrowser->selectionModel()->select(entityIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Current);
+                m_ui->collectionBrowser->scrollTo(entityIndex);
+            }
+        }
+    } else if (event->modifiers() == Qt::ShiftModifier) {
+        selectAssetType<QMaterial>(node, m_entity->materials(), model, m_ui->collectionBrowser);
+    } else {
+        selectAssetType<QGeometryRenderer>(node, m_entity->meshes(), model, m_ui->collectionBrowser);
+    }
 }
 
 int MainWindow::activeCamera() const

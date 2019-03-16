@@ -32,6 +32,7 @@
 #include <QMainWindow>
 #include <Qt3DQuickExtras/Qt3DQuickWindow>
 #include <Qt3DRender/QCamera>
+#include <Qt3DRender/QPickEvent>
 
 class QComboBox;
 class AnimationWidget;
@@ -68,6 +69,7 @@ public:
     Q_INVOKABLE void updateScene(Kuesa::SceneEntity *entity);
     Q_INVOKABLE void setCamera(const QString &name);
     Q_INVOKABLE void viewAll();
+    Q_INVOKABLE void pickEntity(Qt3DRender::QPickEvent *event);
 
     bool event(QEvent *event) override;
 
