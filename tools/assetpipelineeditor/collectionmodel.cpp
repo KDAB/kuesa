@@ -88,6 +88,12 @@ Kuesa::AbstractAssetCollection *CollectionModel::collection(const QModelIndex &i
     return nullptr;
 }
 
+QModelIndex CollectionModel::index(Kuesa::AbstractAssetCollection *collection, QString name) const
+{
+    QModelIndex parent = index(m_collections.indexOf(collection), 0, {});
+    return index(collection->names().indexOf(name), 0, parent);
+}
+
 QModelIndex CollectionModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (!m_entity)
