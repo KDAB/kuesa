@@ -294,10 +294,12 @@ void OrbitCameraController::setCamera(Qt3DRender::QCamera *camera)
 
         m_camera = camera;
 
-        if (m_camera)
-            connect(m_camera, &Qt3DCore::QNode::nodeDestroyed, this, [this]() {
-                setCamera(nullptr);
+        if (m_camera) {
+            connect(m_camera, &Qt3DCore::QNode::nodeDestroyed, this, [this, camera]() {
+                if (camera == this->m_camera)
+                    setCamera(nullptr);
             });
+        }
 
         emit cameraChanged();
     }
