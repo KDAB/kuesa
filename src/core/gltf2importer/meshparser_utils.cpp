@@ -290,19 +290,19 @@ MikkTSpaceUserData precomputeMikkTSpaceUserData(Qt3DRender::QGeometry *geometry,
 
 SMikkTSpaceInterface createMikkTSpaceInterface()
 {
-    SMikkTSpaceInterface interface;
-    interface.m_getNumFaces = [](const SMikkTSpaceContext *pContext) -> int {
+    ::SMikkTSpaceInterface interface;
+    interface.m_getNumFaces = [](const ::SMikkTSpaceContext *pContext) -> int {
         const auto *userData = reinterpret_cast<MikkTSpaceUserData *>(pContext->m_pUserData);
         return userData->nFaces;
     };
 
-    interface.m_getNumVerticesOfFace = [](const SMikkTSpaceContext *pContext, const int iFace) -> int {
+    interface.m_getNumVerticesOfFace = [](const ::SMikkTSpaceContext *pContext, const int iFace) -> int {
         Q_UNUSED(pContext);
         Q_UNUSED(iFace);
         return 3;
     };
 
-    interface.m_getPosition = [](const SMikkTSpaceContext *pContext,
+    interface.m_getPosition = [](const ::SMikkTSpaceContext *pContext,
                                  float fvPosOut[],
                                  const int iFace,
                                  const int iVertex) {
@@ -319,7 +319,7 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
         fvPosOut[2] = typedPositionHead[2];
     };
 
-    interface.m_getNormal = [](const SMikkTSpaceContext *pContext,
+    interface.m_getNormal = [](const ::SMikkTSpaceContext *pContext,
                                float fvPosOut[],
                                const int iFace,
                                const int iVertex) {
@@ -336,7 +336,7 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
         fvPosOut[2] = typedNormalHead[2];
     };
 
-    interface.m_getTexCoord = [](const SMikkTSpaceContext *pContext,
+    interface.m_getTexCoord = [](const ::SMikkTSpaceContext *pContext,
                                  float fvPosOut[],
                                  const int iFace,
                                  const int iVertex) {
@@ -375,7 +375,7 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
         }
     };
 
-    interface.m_setTSpaceBasic = [](const SMikkTSpaceContext *pContext,
+    interface.m_setTSpaceBasic = [](const ::SMikkTSpaceContext *pContext,
                                     const float fvTangent[],
                                     const float fSign,
                                     const int iFace,
@@ -458,7 +458,7 @@ Qt3DRender::QAttribute *createTangentAttribute(Qt3DRender::QGeometry *geometry, 
         return nullptr;
     mikkContext.m_pUserData = &userData;
 
-    SMikkTSpaceInterface interface = createMikkTSpaceInterface();
+    ::SMikkTSpaceInterface interface = createMikkTSpaceInterface();
     mikkContext.m_pInterface = &interface;
     genTangSpaceDefault(&mikkContext);
 
