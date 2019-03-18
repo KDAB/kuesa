@@ -50,6 +50,10 @@ namespace Qt3DCore {
 class QTransform;
 }
 
+namespace QtDRender {
+class QTextureLoader;
+}
+
 namespace Kuesa {
 
 class KUESASHARED_EXPORT SceneEntity : public Qt3DCore::QEntity
@@ -127,6 +131,8 @@ private:
     EntityCollection *m_entities;
     TextureImageCollection *m_textureImages;
     AnimationMappingCollection *m_animationMappings;
+
+    Qt3DRender::QTextureLoader *m_brdfLUT;
 };
 
 } // namespace Kuesa

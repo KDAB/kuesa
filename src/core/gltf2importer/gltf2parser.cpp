@@ -50,6 +50,7 @@
 #include <QFileInfo>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QString>
 
 #include <functional>
 
@@ -727,6 +728,12 @@ void GLTF2Parser::generateTreeNodeContent()
                             Material &mat = m_context->material(materialId);
                             // Get or create Qt3D for material
                             material = mat.material(isSkinned, primitiveData.hasColorAttr, m_context);
+
+                            auto effect = qobject_cast<MetallicRoughnessEffect *>(qobject_cast<Qt3DRender::QMaterial *>(material)->effect());
+                            if (effect) {
+                                auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
+                                effect->setBrdfLUT(texture);
+                            }
                         } else {
                             // Only create defaultMaterial if we know we need it
                             // otherwise we might leak it
@@ -734,12 +741,22 @@ void GLTF2Parser::generateTreeNodeContent()
                                 if (!defaultSkinnedMaterial) {
                                     MetallicRoughnessMaterial *material = new MetallicRoughnessMaterial;
                                     material->setUseSkinning(true);
+                                    auto effect = qobject_cast<MetallicRoughnessEffect *>(material->effect());
+                                    if (effect) {
+                                        auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
+                                        effect->setBrdfLUT(texture);
+                                    }
                                     defaultSkinnedMaterial = material;
                                 }
                                 material = defaultSkinnedMaterial;
                             } else {
                                 if (!defaultMaterial) {
                                     MetallicRoughnessMaterial *material = new MetallicRoughnessMaterial;
+                                    auto effect = qobject_cast<MetallicRoughnessEffect *>(material->effect());
+                                    if (effect) {
+                                        auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
+                                        effect->setBrdfLUT(texture);
+                                    }
                                     material->setUseSkinning(false);
                                     defaultMaterial = material;
                                 }
