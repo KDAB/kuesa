@@ -350,6 +350,16 @@ void GLTF2Context::setFilename(const QString &name)
     m_filename = name;
 }
 
+const QString &GLTF2Context::basePath() const
+{
+    return m_basePath;
+}
+
+void GLTF2Context::setBasePath(const QString &path)
+{
+    m_basePath = path;
+}
+
 const QJsonDocument &GLTF2Context::json() const
 {
     return m_json;
