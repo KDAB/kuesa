@@ -62,5 +62,22 @@ void replaceJsonArray(QJsonObject &object, QLatin1String k, QJsonArray &arr)
         *it = std::move(arr);
 }
 
+/*!
+ * Add the given JSON object to the array with the given name, which is a child of the given root object.
+ * Returns the index of the inserted element within the array
+ */
+int addToJsonChildArray(QJsonObject &object, const QString &name, const QJsonObject &toInsert)
+{
+    const auto it = object.find(name);
+    if (it == object.constEnd())
+        return -1;
+
+    QJsonArray array = it.value().toArray();
+    const int index = array.size();
+    array.append(toInsert);
+    object.insert(name, array);
+    return index;
+}
+
 } // namespace Kuesa
 QT_END_NAMESPACE
