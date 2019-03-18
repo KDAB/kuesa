@@ -87,6 +87,7 @@ struct Mesh {
     QString name;
     quint8 morphTargetCount = 0;
     QVector<float> morphTargetWeights;
+    qint32 meshIdx = -1;
 };
 
 class Q_AUTOTEST_EXPORT MeshParser

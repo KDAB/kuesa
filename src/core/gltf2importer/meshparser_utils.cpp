@@ -30,6 +30,9 @@
 
 #include <QVarLengthArray>
 #include <QRegularExpression>
+#include <QJsonDocument>
+#include <QJsonObject>
+
 #include <Qt3DRender/QBuffer>
 #include <Qt3DRender/QGeometry>
 #include <Qt3DRender/QAttribute>
@@ -38,6 +41,10 @@
 #include <array>
 
 #include "mikktspace.h"
+#include "gltf2context_p.h"
+#include "gltf2keys_p.h"
+#include "gltf2utils_p.h"
+#include "gltf2exporter_p.h"
 
 namespace {
 
@@ -46,6 +53,13 @@ const QString morphTargetBaseAttributeNames[]{
     Qt3DRender::QAttribute::defaultPositionAttributeName(),
     Qt3DRender::QAttribute::defaultNormalAttributeName(),
     Qt3DRender::QAttribute::defaultTangentAttributeName()};
+const QLatin1String KEY_BUFFERVIEWTARGET = QLatin1String("target");
+const QLatin1String KEY_COMPONENTTYPE = QLatin1Literal("componentType");
+const QLatin1String KEY_COUNT = QLatin1Literal("count");
+const QLatin1String KEY_TYPE = QLatin1Literal("type");
+const QLatin1String KEY_MAX = QLatin1Literal("max");
+const QLatin1String KEY_MIN = QLatin1Literal("min");
+const QLatin1String ATTR_TANGENT = QLatin1Literal("TANGENT");
 
 QVarLengthArray<Qt3DRender::QAttribute::VertexBaseType, 3> validVertexBaseTypesForAttribute(const QString &attributeName)
 {
@@ -395,6 +409,28 @@ bool vertexSizesForAttributesAreValid(const QVector<Qt3DRender::QAttribute *> &a
     return true;
 }
 
+bool getMeshGLTFInformation(const Qt3DRender::QGeometryRenderer *primitiveRenderer,
+                            const Kuesa::GLTF2Import::GLTF2Context *context,
+                            Kuesa::GLTF2Import::Mesh &mesh, int &primitiveNumber)
+{
+    for (int i = 0; i < context->meshesCount(); ++i) {
+        const Kuesa::GLTF2Import::Mesh gltf2Mesh = context->mesh(i);
+
+        for (int nPriv = 0; nPriv < gltf2Mesh.meshPrimitives.size(); ++nPriv) {
+            const Qt3DRender::QGeometryRenderer *primitive = gltf2Mesh.meshPrimitives.at(nPriv).primitiveRenderer;
+
+            if (primitive != primitiveRenderer)
+                continue;
+
+            primitiveNumber = nPriv;
+            mesh = gltf2Mesh;
+            return true;
+        }
+    }
+
+    return false;
+}
+
 } // namespace
 
 // TODO This is only needed when the material has normal mapping
@@ -423,7 +459,119 @@ Qt3DRender::QAttribute *createTangentAttribute(Qt3DRender::QGeometry *geometry, 
                                                         NumberValuesPerTangent,
                                                         userData.nVertices);
 
+    tangentAttribute->setName(Qt3DRender::QAttribute::defaultTangentAttributeName());
+
     return tangentAttribute;
+}
+
+bool needsTangentAttribute(const Qt3DRender::QGeometry *geometry,
+                           Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+{
+    // only generate tangents for triangles
+    if (primitiveType != Qt3DRender::QGeometryRenderer::Triangles &&
+        primitiveType != Qt3DRender::QGeometryRenderer::TriangleStrip &&
+        primitiveType != Qt3DRender::QGeometryRenderer::TriangleFan)
+        return false;
+
+    if (!geometry)
+        return false;
+
+    const auto &attributes = geometry->attributes();
+    const bool hasTangent = std::find_if(std::begin(attributes),
+                                         std::end(attributes),
+                                         [](const Qt3DRender::QAttribute *attr) {
+                                             return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
+                                         }) != std::end(attributes);
+
+    return !hasTangent;
+}
+
+bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
+                                         GLTF2Context *context)
+{
+    Qt3DRender::QGeometry *geometry = mesh->geometry();
+    if (!GLTF2Import::MeshParserUtils::needsTangentAttribute(geometry,
+                                                             mesh->primitiveType()))
+        return false;
+
+    // get information about mesh name and primitive index within the original glTF file
+    Kuesa::GLTF2Import::Mesh gltfMesh;
+    int primitiveNumber;
+    if (!getMeshGLTFInformation(mesh, context, gltfMesh, primitiveNumber))
+        return false;
+    if (gltfMesh.meshIdx < 0) {
+        qWarning() << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
+        return false;
+    }
+
+    QJsonDocument jsonDocument = context->json();
+    QJsonObject rootObject = jsonDocument.object();
+
+    // create new attribute
+    Qt3DRender::QAttribute *newTangentAttr = createTangentAttribute(mesh->geometry(), mesh->primitiveType());
+    if (!newTangentAttr)
+        return false;
+    geometry->addAttribute(newTangentAttr);
+
+    const QByteArray bufferData = newTangentAttr->buffer()->data();
+    const int bufferIndex = rootObject.value(KEY_BUFFERS).toArray().size();
+
+    // glTF: add bufferView
+    QJsonObject jsonBufferView;
+    jsonBufferView[KEY_BUFFER] = bufferIndex;
+    jsonBufferView[KEY_BYTELENGTH] = bufferData.size();
+    jsonBufferView[KEY_BYTEOFFSET] = 0;
+    jsonBufferView[KEY_BUFFERVIEWTARGET] = GL_ARRAY_BUFFER;
+    const int bufferViewIndex = addToJsonChildArray(rootObject, KEY_BUFFERVIEWS, jsonBufferView);
+
+    // add accessor
+    QJsonObject jsonAccessor;
+    jsonAccessor[KEY_BUFFERVIEW] = bufferViewIndex;
+    jsonAccessor[KEY_COMPONENTTYPE] = GL_FLOAT;
+    jsonAccessor[KEY_COUNT] = static_cast<int>(newTangentAttr->count());
+    jsonAccessor[KEY_TYPE] = QLatin1Literal("VEC4");
+    const int accessorIndex = addToJsonChildArray(rootObject, KEY_ACCESSORS, jsonAccessor);
+
+    // modify mesh object and add attribute/accessor
+    QJsonArray jsonMeshes = rootObject.value(KEY_MESHES).toArray();
+    const qint32 meshIdx = gltfMesh.meshIdx;
+    Q_ASSERT(meshIdx < jsonMeshes.size());
+    // Build updated JsonObject for the glTF2 Mesh that references our GeometryRenderer
+    QJsonObject jsonMesh = jsonMeshes.at(meshIdx).toObject();
+    // replace matching primitive
+    QJsonArray jsonPrimitives = jsonMesh.value(KEY_PRIMITIVES).toArray();
+    QJsonObject jsonPrimitive = jsonPrimitives.at(primitiveNumber).toObject();
+    QJsonObject jsonPrimAttrs = jsonPrimitive.value(KEY_ATTRIBUTES).toObject();
+    jsonPrimAttrs[ATTR_TANGENT] = accessorIndex;
+    jsonPrimitive[KEY_ATTRIBUTES] = jsonPrimAttrs;
+    jsonPrimitives[primitiveNumber] = jsonPrimitive;
+    jsonMesh[KEY_PRIMITIVES] = jsonPrimitives;
+    jsonMeshes[meshIdx] = jsonMesh;
+
+    rootObject[KEY_MESHES] = jsonMeshes;
+
+    // create tangent buffer file
+    const QString basePath = context->basePath();
+    const QString bufferFileName = generateUniqueFilename(basePath, "kuesaTangentBuffers.bin");
+    QFile bufferFile(basePath + QDir::separator() + bufferFileName);
+
+    if (!bufferFile.open(QFile::WriteOnly)) {
+        qWarning() << "Can't open" << bufferFile.fileName() << "for writing tangent buffer";
+        return false;
+    } else {
+        // add buffer to JSON
+        bufferFile.write(bufferData);
+        QJsonObject jsonBuffer;
+        jsonBuffer[KEY_BYTELENGTH] = bufferData.size();
+        jsonBuffer[KEY_URI] = bufferFileName;
+        addToJsonChildArray(rootObject, KEY_BUFFERS, jsonBuffer);
+
+        context->addLocalFile(bufferFileName);
+    }
+
+    context->setJson(QJsonDocument(rootObject));
+
+    return true;
 }
 
 bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry)

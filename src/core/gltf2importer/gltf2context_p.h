@@ -154,6 +154,9 @@ public:
     const QString &filename() const;
     void setFilename(const QString &);
 
+    const QString &basePath() const;
+    void setBasePath(const QString &);
+
     const QJsonDocument &json() const;
     void setJson(const QJsonDocument &doc);
 
@@ -187,6 +190,7 @@ private:
     QStringList m_usedExtensions;
     QStringList m_requiredExtensions;
     QString m_filename;
+    QString m_basePath;
     QJsonDocument m_json;
     QStringList m_localFiles;
     QByteArray m_bufferChunk;
