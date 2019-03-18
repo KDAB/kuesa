@@ -74,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_entity(nullptr)
     , m_camera(nullptr)
     , m_activeCamera(-1)
-    , m_clearColor(Qt::white)
+    , m_clearColor(Qt::gray)
     , m_renderAreaSize(1024, 768)
 {
     m_ui->setupUi(this);
@@ -139,9 +139,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(m_view, &QWindow::widthChanged, this, &MainWindow::updateCameraAspectRatio);
     connect(m_view, &QWindow::heightChanged, this, &MainWindow::updateCameraAspectRatio);
-
-    QPalette p = this->palette();
-    m_clearColor = p.color(QPalette::Base);
 
     QSettings settings;
     const auto state = settings.value(QStringLiteral("mainWindowState")).toByteArray();
