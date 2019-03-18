@@ -37,6 +37,7 @@
 // modified without notice
 //
 
+#include <Kuesa/kuesa_global.h>
 #include <Qt3DRender/QGeometryRenderer>
 
 namespace Qt3DRender {
@@ -52,10 +53,10 @@ class GLTF2Context;
 namespace MeshParserUtils {
 
 Qt3DRender::QAttribute *createTangentAttribute(Qt3DRender::QGeometry *geometry, Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
-bool needsTangentAttribute(const Qt3DRender::QGeometry *geometry,
-                           Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
-bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
-                                         GLTF2Context *context);
+KUESASHARED_EXPORT bool needsTangentAttribute(const Qt3DRender::QGeometry *geometry,
+                                              Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
+KUESASHARED_EXPORT bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
+                                                            GLTF2Context *context);
 bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry);
 
 } // namespace MeshParserUtils

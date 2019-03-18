@@ -90,6 +90,7 @@ private:
     void setStatus(Status status);
 
     friend class GLTF2Exporter;
+    friend class Kuesa::GLTF2Import::GLTF2Context;
 
     Kuesa::GLTF2Import::GLTF2Context *m_context;
     QUrl m_source;

@@ -65,8 +65,10 @@
 #include <GLTF2Importer>
 
 #include <Kuesa/SceneEntity>
+#include <Kuesa/private/gltf2context_p.h>
 #include <Kuesa/private/gltf2exporter_p.h>
 #include <Kuesa/private/kuesa_utils_p.h>
+#include <Kuesa/private/meshparser_utils_p.h>
 
 namespace {
 const QLatin1String LASTPATHSETTING("mainwindow/lastPath");
@@ -131,6 +133,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_assetInspector = new AssetInspector(this);
     m_assetInspectorWidget = new AssetInspectorWidget(m_assetInspector);
     m_ui->assetInspectorDockWidget->setWidget(m_assetInspectorWidget);
+
+    connect(m_assetInspector->meshInspector(), &MeshInspector::generateTangents, this, &MainWindow::generateTangents);
 
     m_animationWidget = new AnimationWidget;
     m_ui->animationDockWidget->setWidget(m_animationWidget);
@@ -368,7 +372,7 @@ QSize MainWindow::renderAreaSize() const
     return m_renderAreaSize;
 }
 
-bool MainWindow::generateTangents() const
+bool MainWindow::generateRuntimeTangents() const
 {
     return m_generateTangents;
 }
@@ -460,6 +464,22 @@ void MainWindow::reloadFile()
     setFilePath(c);
 }
 
+void MainWindow::generateTangents()
+{
+    auto importer = m_entity->findChild<Kuesa::GLTF2Importer *>();
+    if (!importer)
+        return;
+
+    if (m_entity) {
+        Qt3DRender::QGeometryRenderer *mesh = m_entity->mesh(m_assetInspector->assetName());
+        if (mesh) {
+            Kuesa::GLTF2Import::MeshParserUtils::generatePrecomputedTangentAttribute(mesh,
+                                                                                     Kuesa::GLTF2Import::GLTF2Context::fromImporter(importer));
+            m_assetInspector->meshInspector()->update();
+        }
+    }
+}
+
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("Kuesa Asset Pipeline Editor"),
@@ -522,7 +542,7 @@ void MainWindow::openSettings()
 
         settings.setValue("generateTangents", dlg.generateTangents());
         m_generateTangents = dlg.generateTangents();
-        emit generateTangentsChanged(m_generateTangents);
+        emit generateRuntimeTangentsChanged(m_generateTangents);
     }
 }
 

@@ -65,6 +65,9 @@ class QLayer;
 }
 
 namespace Kuesa {
+
+class GLTF2Importer;
+
 namespace GLTF2Import {
 
 class KUESA_PRIVATE_EXPORT GLTF2Context
@@ -170,6 +173,8 @@ public:
     const Kuesa::GLTF2Import::GLTF2Options *options() const;
 
     void reset();
+
+    static GLTF2Context *fromImporter(GLTF2Importer *importer);
 
 private:
     QVector<Accessor> m_accessors;

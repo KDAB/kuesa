@@ -56,7 +56,7 @@ class MainWindow : public QMainWindow
     Q_PROPERTY(int activeCamera READ activeCamera NOTIFY activeCameraChanged)
     Q_PROPERTY(QColor clearColor READ clearColor NOTIFY clearColorChanged)
     Q_PROPERTY(QSize renderAreaSize READ renderAreaSize NOTIFY renderAreaSizeChanged)
-    Q_PROPERTY(bool generateTangents READ generateTangents NOTIFY generateTangentsChanged)
+    Q_PROPERTY(bool generateRuntimeTangents READ generateRuntimeTangents NOTIFY generateRuntimeTangentsChanged)
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -65,7 +65,7 @@ public:
     int activeCamera() const;
     QColor clearColor() const;
     QSize renderAreaSize() const;
-    bool generateTangents() const;
+    bool generateRuntimeTangents() const;
 
     Q_INVOKABLE void setup(Qt3DRender::QCamera *camera);
     Q_INVOKABLE void updateScene(Kuesa::SceneEntity *entity);
@@ -83,7 +83,7 @@ signals:
     void activeCameraChanged(int activeCamera);
     void clearColorChanged(QColor clearColor);
     void renderAreaSizeChanged(QSize renderAreaSize);
-    void generateTangentsChanged(bool generateTangents);
+    void generateRuntimeTangentsChanged(bool generateRuntimeTangents);
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -92,6 +92,7 @@ private slots:
     void openFile();
     void exportFile();
     void reloadFile();
+    void generateTangents();
     void about();
     void setCamera(int index);
     void assetSelected(const QString &assetName, Kuesa::AbstractAssetCollection *collection);

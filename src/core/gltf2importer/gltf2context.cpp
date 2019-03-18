@@ -28,6 +28,7 @@
 
 #include "gltf2context_p.h"
 #include "kuesa_p.h"
+#include "gltf2importer.h"
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
@@ -527,6 +528,11 @@ void GLTF2Context::reset()
     m_json = {};
     m_localFiles.clear();
     m_bufferChunk.clear();
+}
+
+GLTF2Context *GLTF2Context::fromImporter(GLTF2Importer *importer)
+{
+    return importer->m_context;
 }
 
 QT_END_NAMESPACE
