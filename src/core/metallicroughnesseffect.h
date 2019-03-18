@@ -36,6 +36,7 @@
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
+class QAbstractTexture;
 class QShaderProgramBuilder;
 class QShaderProgram;
 class QCullFace;
@@ -80,6 +81,7 @@ public:
     bool isOpaque() const;
     bool isAlphaCutoffEnabled() const;
     ToneMapping toneMappingAlgorithm() const;
+    void setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT);
 
 public Q_SLOTS:
     void setBaseColorMapEnabled(bool enabled);
@@ -140,6 +142,7 @@ private:
     Qt3DRender::QRenderPass *m_transparentGL3RenderPass;
     Qt3DRender::QRenderPass *m_transparentES3RenderPass;
     Qt3DRender::QRenderPass *m_transparentES2RenderPass;
+    Qt3DRender::QParameter *m_brdfLUTParameter;
 
     Q_INVOKABLE void initVertexShader();
 };

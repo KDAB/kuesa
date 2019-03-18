@@ -275,6 +275,7 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     , m_metalRoughGL3Shader(new QShaderProgram(this))
     , m_metalRoughES3Shader(new QShaderProgram(this))
     , m_metalRoughES2Shader(new QShaderProgram(this))
+    , m_brdfLUTParameter(new QParameter(this))
 {
     const auto enabledLayers = QStringList{ QStringLiteral("noBaseColorMap"),
                                             QStringLiteral("noMetalRoughMap"),
@@ -433,6 +434,9 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     addParameter(new QParameter(QStringLiteral("envLight.irradiance"), new QTexture2D));
     addParameter(new QParameter(QStringLiteral("envLight.specular"), new QTexture2D));
 #endif
+
+    m_brdfLUTParameter->setName(QLatin1String("brdfLUT"));
+    addParameter(m_brdfLUTParameter);
 
     QMetaObject::invokeMethod(this, "initVertexShader", Qt::QueuedConnection);
     m_invokeInitVertexShaderRequested = true;
@@ -712,6 +716,11 @@ void MetallicRoughnessEffect::setToneMappingAlgorithm(MetallicRoughnessEffect::T
 
     m_toneMappingAlgorithm = algorithm;
     emit toneMappingAlgorithmChanged(algorithm);
+}
+
+void MetallicRoughnessEffect::setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT)
+{
+    m_brdfLUTParameter->setValue(QVariant::fromValue(brdfLUT));
 }
 
 void MetallicRoughnessEffect::initVertexShader()
