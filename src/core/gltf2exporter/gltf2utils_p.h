@@ -50,6 +50,9 @@ namespace Kuesa {
 void addExtension(QJsonObject &rootObject, const QString &where, const QString &extension);
 
 void replaceJsonArray(QJsonObject &m_root, QLatin1String k, QJsonArray &arr);
+
+int addToJsonChildArray(QJsonObject &object, const QString &name, const QJsonObject &toInsert);
+
 } // namespace Kuesa
 QT_END_NAMESPACE
 #endif // KUESA_GLTF2EXPORTER_GLTF2UTILS_P_H
