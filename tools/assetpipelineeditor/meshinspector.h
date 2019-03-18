@@ -67,6 +67,7 @@ public:
     virtual ~MeshInspector() {}
 
     void setMesh(Qt3DRender::QGeometryRenderer *mesh);
+    void update();
 
     QString assetName() const;
     int totalSize() const;
@@ -74,6 +75,7 @@ public:
     int primitiveCount() const;
     QString primitiveType() const;
     BufferModel *bufferModel();
+    bool needsTangents() const;
     QColor selectionColor() const;
 
     static unsigned int attributeSizeInBytes(Qt3DRender::QAttribute *attribute);
@@ -86,6 +88,7 @@ public:
 Q_SIGNALS:
     void meshParamsChanged();
     void selectionColorChanged(QColor selectionColor);
+    void generateTangents();
 
 private:
     Qt3DRender::QGeometryRenderer *m_mesh;
@@ -97,9 +100,9 @@ private:
     int m_vertexCount;
     int m_primitiveCount;
     QString m_primitiveType;
+    bool m_needsTangents;
 
     BufferModel *m_model;
-    QObject m_bufferModel;
     QMetaObject::Connection m_meshConnection;
 
     QColor m_selectionColor;
@@ -123,7 +126,7 @@ public:
         LastColumn
     };
 
-    void setMesh(Qt3DRender::QGeometryRenderer *mesh);
+    void updateMesh(Qt3DRender::QGeometryRenderer *mesh);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;

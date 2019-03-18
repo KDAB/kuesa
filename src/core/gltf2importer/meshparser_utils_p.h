@@ -29,6 +29,8 @@
 #ifndef KUESA_GLTF2IMPORT_MESHPARSER_UTILS_P_H
 #define KUESA_GLTF2IMPORT_MESHPARSER_UTILS_P_H
 
+#include <Kuesa/kuesa_global.h>
+
 //
 //  NOTICE
 //  ------
@@ -50,8 +52,8 @@ class GLTF2Context;
 
 namespace MeshParserUtils {
 
-bool needsTangentAttribute(const Qt3DRender::QGeometryRenderer *mesh);
-bool generateTangentAttribute(Qt3DRender::QGeometryRenderer *mesh, GLTF2Context *context);
+KUESASHARED_EXPORT bool needsTangentAttribute(const Qt3DRender::QGeometryRenderer *mesh);
+KUESASHARED_EXPORT bool generateTangentAttribute(Qt3DRender::QGeometryRenderer *mesh, GLTF2Context *context);
 bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry);
 
 } // namespace MeshParserUtils
