@@ -151,6 +151,35 @@ QByteArray packedDataInBuffer(const QByteArray &inputBuffer,
     return outputBuffer;
 }
 
+QString semanticNameFromAttribute(const Qt3DRender::QAttribute &attribute)
+{
+    auto str = attribute.property("semanticName").toString();
+    if (!str.isEmpty()) {
+        return str;
+    } else {
+        const auto name = attribute.name();
+        if (name == Qt3DRender::QAttribute::defaultPositionAttributeName())
+            return QStringLiteral("TANGENT");
+        if (name == Qt3DRender::QAttribute::defaultNormalAttributeName())
+            return QStringLiteral("NORMAL");
+        if (name == Qt3DRender::QAttribute::defaultTangentAttributeName())
+            return QStringLiteral("TANGENT");
+        if (name == Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName())
+            return QStringLiteral("TEXCOORD_0");
+        if (name == Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName())
+            return QStringLiteral("TEXCOORD_1");
+        if (name == Qt3DRender::QAttribute::defaultTextureCoordinate2AttributeName())
+            return QStringLiteral("TEXCOORD_2");
+        if (name == Qt3DRender::QAttribute::defaultColorAttributeName())
+            return QStringLiteral("COLOR_0");
+        if (name == Qt3DRender::QAttribute::defaultJointIndicesAttributeName())
+            return QStringLiteral("JOINTS_0");
+        if (name == Qt3DRender::QAttribute::defaultJointWeightsAttributeName())
+            return QStringLiteral("WEIGHTS_0");
+        return name;
+    }
+}
+
 template<typename T>
 std::pair<QString, int> addAttributeToMesh(const Qt3DRender::QAttribute &attribute, draco::Mesh &mesh)
 {
@@ -183,7 +212,7 @@ std::pair<QString, int> addAttributeToMesh(const Qt3DRender::QAttribute &attribu
 
     mesh.attribute(attId)->buffer()->Write(0, packedData.data(), static_cast<std::size_t>(packedData.size()));
 
-    return { attribute.property("semanticName").toString(), attId };
+    return { semanticNameFromAttribute(attribute), attId };
 }
 
 template<typename T>
