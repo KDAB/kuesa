@@ -26,6 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <qtkuesa-config.h>
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QQmlEngine>
@@ -93,6 +94,12 @@ int main(int ac, char **av)
     const QString assetsPrefix = QStringLiteral("qrc:/");
 #endif
 
+#if defined(KUESA_DRACO_COMPRESSION)
+    const QString modelSuffix = QStringLiteral("-draco");
+#else
+    const QString modelSuffix = QStringLiteral("");
+#endif
+
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
     bool screenHeightScale = true;
 #else
@@ -104,6 +111,7 @@ int main(int ac, char **av)
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_screenHeightScale"), screenHeightScale);
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_isFullScreen"), parser.isSet(fullscreenOption));
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_assetsPrefix"), assetsPrefix);
+    view.engine()->rootContext()->setContextProperty(QStringLiteral("_modelSuffix"), modelSuffix);
 
 #ifdef Q_OS_IOS
     view.setFlags(view.flags() | Qt::MaximizeUsingFullscreenGeometryHint);

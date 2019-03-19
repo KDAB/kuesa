@@ -68,8 +68,8 @@ car.files = \
 
 qtConfig(draco) {
     car.files += \
-        $${car_dir}/compressed/DodgeViper.bin \
-        $${car_dir}/compressed/DodgeViper.gltf
+        $${car_dir}/DodgeViper-draco.bin \
+        $${car_dir}/DodgeViper-draco.gltf
 } else {
     car.files += \
         $${car_dir}/DodgeViper.bin \
@@ -110,7 +110,7 @@ android {
 
     qtConfig(draco) {
         RESOURCES += \
-            ../assets/models/car/compressed/car.qrc
+            ../assets/models/car/car-draco.qrc
     } else {
         RESOURCES += \
             ../assets/models/car/car.qrc
