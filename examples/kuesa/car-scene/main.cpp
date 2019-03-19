@@ -34,6 +34,9 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include <QStandardPaths>
+#include <QDir>
+#include <QDirIterator>
+#include <QResource>
 
 int main(int ac, char **av)
 {
@@ -56,6 +59,12 @@ int main(int ac, char **av)
     }
 
     QGuiApplication app(ac, av);
+
+    QDir resourceDir(app.applicationDirPath() + QStringLiteral("/resources"));
+    QDirIterator it(resourceDir, QDirIterator::IteratorFlag::NoIteratorFlags);
+    while (it.hasNext()) {
+        QResource::registerResource(it.next());
+    }
 
     QCommandLineParser parser;
     parser.setApplicationDescription("KDAB Kuesa Demo");
