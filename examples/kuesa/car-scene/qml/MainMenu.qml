@@ -249,7 +249,7 @@ Item {
                             text: "Exposure: " + parseFloat(Math.round(exposureSlider.value * 100) / 100).toFixed(2)
                             minimumValue: -5.0
                             maximumValue: 5
-                            value: 2.5
+                            value: 1.0
                             width: parent.width
                         }
 
