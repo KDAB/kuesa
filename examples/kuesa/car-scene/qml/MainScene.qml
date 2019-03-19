@@ -243,7 +243,7 @@ Kuesa.SceneEntity {
     // Loads GLTF 2.0 asset
     Kuesa.GLTF2Importer {
         sceneEntity: scene
-        source: _assetsPrefix + "DodgeViper.gltf"
+        source: _assetsPrefix + "DodgeViper" + _modelSuffix + ".gltf"
     }
 
     Kuesa.Skybox {
