@@ -107,6 +107,13 @@ MainWindow::MainWindow(QWidget *parent)
     m_ui->actionReload->setIcon(QIcon(":/icons/reload-48.png"));
     m_ui->actionViewAll->setIcon(QIcon(":/icons/max-48.png"));
 
+    QSettings settings;
+    m_clearColor = settings.value("clearColor", m_clearColor).value<QColor>();
+    if (settings.value("defaultClearColor", true).toBool()) {
+        QPalette p = this->palette();
+        m_clearColor = p.color(QPalette::Base);
+    }
+
     connect(m_ui->actionCopy, &QAction::triggered, this, &MainWindow::copyAssetName);
     connect(m_ui->actionOpen, &QAction::triggered, this, &MainWindow::openFile);
     connect(m_ui->actionReload, &QAction::triggered, this, &MainWindow::reloadFile);
@@ -162,7 +169,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_view, &QWindow::widthChanged, this, &MainWindow::updateCameraAspectRatio);
     connect(m_view, &QWindow::heightChanged, this, &MainWindow::updateCameraAspectRatio);
 
-    QSettings settings;
     const auto state = settings.value(QStringLiteral("mainWindowState")).toByteArray();
     if (!state.isNull())
         restoreState(state);
@@ -394,9 +400,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 bool MainWindow::event(QEvent *event)
 {
     if (event->type() == QEvent::PaletteChange) {
-        QPalette p = palette();
-        m_clearColor = p.color(QPalette::Base);
-        emit clearColorChanged(m_clearColor);
+        QSettings settings;
+        if (settings.value("defaultClearColor", true).toBool()) {
+            QPalette p = palette();
+            m_clearColor = p.color(QPalette::Base);
+            emit clearColorChanged(m_clearColor);
+        }
     }
 
     return QMainWindow::event(event);
@@ -481,10 +490,24 @@ void MainWindow::updateCameraAspectRatio()
 
 void MainWindow::openSettings()
 {
+    QSettings settings;
+    auto clearColor = settings.value("clearColor", QColor(Qt::gray)).value<QColor>();
+
     SettingsDialog dlg(this);
     dlg.setSelectionColor(m_assetInspector->meshInspector()->selectionColor());
+    dlg.setClearColor(clearColor);
+    dlg.setDefaultClearColor(settings.value("defaultClearColor", true).toBool());
     if (dlg.exec() == QDialog::Accepted) {
         m_assetInspector->meshInspector()->setSelectionColor(dlg.selectionColor());
+        settings.setValue("clearColor", dlg.clearColor());
+        settings.setValue("defaultClearColor", dlg.defaultClearColor());
+        if (dlg.defaultClearColor()) {
+            QPalette p = this->palette();
+            m_clearColor = p.color(QPalette::Base);
+        } else {
+            m_clearColor = dlg.clearColor();
+        }
+        emit clearColorChanged(m_clearColor);
     }
 }
 

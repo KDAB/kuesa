@@ -34,12 +34,35 @@
 #include <QPainter>
 #include <QColorDialog>
 
+namespace {
+
+void setButtonColor(QAbstractButton *button, QColor c)
+{
+    QPixmap px(16, 16);
+    QPainter p(&px);
+    p.fillRect(0, 0, 16, 16, c);
+    button->setIcon(QIcon(px));
+}
+
+} // namespace
+
 SettingsDialog::SettingsDialog(MainWindow *parent)
     : QDialog(parent)
     , ui(new Ui::SettingsDialog)
 {
     ui->setupUi(this);
-    connect(ui->selectionColorButton, &QToolButton::clicked, this, &SettingsDialog::pickColor);
+    connect(ui->selectionColorButton, &QToolButton::clicked, this, [this]() {
+        QColor c = QColorDialog::getColor(m_selectionColor, this, tr("Pick Selection Color"));
+        setSelectionColor(c);
+    });
+    connect(ui->customClearColorButton, &QToolButton::clicked, this, [this]() {
+        QColor c = QColorDialog::getColor(m_selectionColor, this, tr("Pick Selection Color"));
+        setClearColor(c);
+    });
+    connect(ui->defaultClearColor, &QRadioButton::toggled, this, [this](bool checked) {
+        m_defaultClearColor = checked;
+        emit defaultClearColorChanged(m_defaultClearColor);
+    });
 }
 
 SettingsDialog::~SettingsDialog()
@@ -52,6 +75,16 @@ QColor SettingsDialog::selectionColor() const
     return m_selectionColor;
 }
 
+QColor SettingsDialog::clearColor() const
+{
+    return m_clearColor;
+}
+
+bool SettingsDialog::defaultClearColor() const
+{
+    return m_defaultClearColor;
+}
+
 void SettingsDialog::setSelectionColor(QColor selectionColor)
 {
     if (m_selectionColor == selectionColor)
@@ -59,15 +92,27 @@ void SettingsDialog::setSelectionColor(QColor selectionColor)
 
     m_selectionColor = selectionColor;
     emit selectionColorChanged(m_selectionColor);
-
-    QPixmap px(16, 16);
-    QPainter p(&px);
-    p.fillRect(0, 0, 16, 16, m_selectionColor);
-    ui->selectionColorButton->setIcon(QIcon(px));
+    setButtonColor(ui->selectionColorButton, m_selectionColor);
 }
 
-void SettingsDialog::pickColor()
+void SettingsDialog::setClearColor(QColor clearColor)
 {
-    QColor c = QColorDialog::getColor(m_selectionColor, this, tr("Pick Selection Color"));
-    setSelectionColor(c);
+    if (m_clearColor == clearColor)
+        return;
+
+    m_clearColor = clearColor;
+    emit clearColorChanged(m_clearColor);
+    setButtonColor(ui->customClearColorButton, m_clearColor);
+}
+
+void SettingsDialog::setDefaultClearColor(bool defaultClearColor)
+{
+    if (m_defaultClearColor != defaultClearColor) {
+        m_defaultClearColor = defaultClearColor;
+        emit defaultClearColorChanged(m_defaultClearColor);
+        if (m_defaultClearColor)
+            ui->defaultClearColor->setChecked(true);
+        else
+            ui->customClearColor->setChecked(true);
+    }
 }
