@@ -165,6 +165,9 @@ bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context
         if (samplerValue.isUndefined()) {
             // Repeat wrappring and auto filtering should be used
             texture2d->setWrapMode(Qt3DRender::QTextureWrapMode(Qt3DRender::QTextureWrapMode::Repeat));
+            texture2d->setGenerateMipMaps(true);
+            texture2d->setMinificationFilter(Qt3DRender::QAbstractTexture::LinearMipMapLinear);
+            texture2d->setMagnificationFilter(Qt3DRender::QAbstractTexture::Linear);
         } else {
             const auto sampler = context->textureSampler(samplerValue.toInt());
             if (!sampler.textureWrapMode)
