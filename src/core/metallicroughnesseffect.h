@@ -59,6 +59,7 @@ class KUESASHARED_EXPORT MetallicRoughnessEffect : public Qt3DRender::QEffect
     Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
     Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
     Q_PROPERTY(MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLUT READ brdfLUT WRITE setBrdfLUT NOTIFY brdfLUTChanged REVISION 1)
 
 public:
     enum ToneMapping {
@@ -81,7 +82,7 @@ public:
     bool isOpaque() const;
     bool isAlphaCutoffEnabled() const;
     ToneMapping toneMappingAlgorithm() const;
-    void setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT);
+    Qt3DRender::QAbstractTexture *brdfLUT() const;
 
 public Q_SLOTS:
     void setBaseColorMapEnabled(bool enabled);
@@ -95,6 +96,7 @@ public Q_SLOTS:
     void setOpaque(bool opaque);
     void setAlphaCutoffEnabled(bool enabled);
     void setToneMappingAlgorithm(ToneMapping algorithm);
+    void setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT);
 
 Q_SIGNALS:
     void baseColorMapEnabledChanged(bool enabled);
@@ -108,6 +110,7 @@ Q_SIGNALS:
     void opaqueChanged(bool opaque);
     void alphaCutoffEnabledChanged(bool enabled);
     void toneMappingAlgorithmChanged(ToneMapping algorithm);
+    void brdfLUTChanged(Qt3DRender::QAbstractTexture *brdfLUT);
 
 private:
     bool m_baseColorMapEnabled;

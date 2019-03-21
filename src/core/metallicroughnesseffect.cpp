@@ -28,6 +28,7 @@
 
 #include "metallicroughnesseffect.h"
 
+#include <Qt3DCore/private/qnode_p.h>
 #include <Qt3DRender/qcullface.h>
 #include <Qt3DRender/qfilterkey.h>
 #include <Qt3DRender/qgraphicsapifilter.h>
@@ -142,6 +143,19 @@ namespace Kuesa {
  */
 
 /*!
+    \property brdfLUT
+
+    brdfLUT references a texture containing lookup tables for the split sum approximation
+    in the PBR rendering. This is used internally by the material.
+
+    When creating an instance of Kuesa::MetallicRoughnessMaterial, users should assign
+    a texture to this property of the effect. A shared instance can be retrieved from
+    the Kuesa::TextureCollection using the name "_kuesa_brdfLUT"
+
+    \since 1.1
+ */
+
+/*!
     \qmltype MetallicRoughnessEffect
     \instantiates Kuesa::MetallicRoughnessEffect
     \inmodule Kuesa
@@ -234,6 +248,19 @@ namespace Kuesa {
     Tone mapping specifies how we perform color conversion from HDR (high
     dynamic range) content to LDR (low dynamic range) content which our monitor
     displays.
+
+    \since 1.1
+ */
+
+/*!
+    \qmlproperty Qt3DRender.AbstractTexture brdfLUT
+
+    brdfLUT references a texture containing lookup tables for the split sum approximation
+    in the PBR rendering. This is used internally by the material.
+
+    When creating an instance of Kuesa::MetallicRoughnessMaterial, users should assign
+    a texture to this property of the effect. A shared instance can be retrieved from
+    the Kuesa::TextureCollection using the name "_kuesa_brdfLUT"
 
     \since 1.1
  */
@@ -718,8 +745,22 @@ void MetallicRoughnessEffect::setToneMappingAlgorithm(MetallicRoughnessEffect::T
     emit toneMappingAlgorithmChanged(algorithm);
 }
 
+Qt3DRender::QAbstractTexture *MetallicRoughnessEffect::brdfLUT() const
+{
+    return m_brdfLUTParameter->value().value<Qt3DRender::QAbstractTexture *>();
+}
+
 void MetallicRoughnessEffect::setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT)
 {
+    auto d = Qt3DCore::QNodePrivate::get(this);
+    auto current = this->brdfLUT();
+    if (current)
+        d->unregisterDestructionHelper(current);
+    if (brdfLUT) {
+        d->registerDestructionHelper(brdfLUT, &MetallicRoughnessEffect::setBrdfLUT, brdfLUT);
+        if (!brdfLUT->parentNode())
+            brdfLUT->setParent(this);
+    }
     m_brdfLUTParameter->setValue(QVariant::fromValue(brdfLUT));
 }
 
