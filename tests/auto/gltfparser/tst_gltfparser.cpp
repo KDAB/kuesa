@@ -44,6 +44,8 @@
 #include <Qt3DRender/QCamera>
 #include <Kuesa/LayerCollection>
 #include <Kuesa/private/kuesa_utils_p.h>
+#include <array>
+#include <atomic>
 
 using namespace Kuesa;
 using namespace GLTF2Import;
@@ -996,13 +998,44 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(data, {});
+        parser.parse(data, {});
+        Qt3DCore::QEntity *res = parser.setupScene();
 
         // THEN
         QCOMPARE(res != nullptr, success);
     }
+
+    void checkThreadedParser()
+    {
+        constexpr int N = 64;
+        struct GLTFParsingTester {
+            SceneEntity scene;
+            GLTF2Context ctx;
+            ThreadedGLTF2Parser parser{ &ctx, &scene };
+        };
+
+        std::atomic_int amount_successful{};
+        std::atomic_int amount_failed{};
+        std::array<GLTFParsingTester, N> testers;
+        for (auto &tester : testers) {
+            connect(&tester.parser, &ThreadedGLTF2Parser::parsingFinished,
+                    [&](Qt3DCore::QEntity *node) {
+                        if (node) {
+                            ++amount_successful;
+                            node->setParent(&tester.scene);
+                        } else {
+                            ++amount_failed;
+                        }
+                    });
+            tester.parser.parse(ASSETS "car/DodgeViper.gltf");
+        }
+        while (amount_successful < N && amount_failed == 0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            qApp->processEvents();
+        }
+    }
 };
 
-QTEST_APPLESS_MAIN(tst_GLTFParser)
+QTEST_MAIN(tst_GLTFParser)
 
 #include "tst_gltfparser.moc"

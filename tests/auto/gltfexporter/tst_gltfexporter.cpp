@@ -307,7 +307,8 @@ private Q_SLOTS:
             QVERIFY(exported.success());
 
             ctx = GLTF2Context{};
-            auto res = parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
+            parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
+            auto res = parser.setupScene();
             QVERIFY(res != nullptr);
 
             QVERIFY(tmp.exists(exported.compressedBufferFilename()));
@@ -374,7 +375,7 @@ private Q_SLOTS:
 
             // Some non-mesh data remains
             QFileInfo dodge_info(tmp.filePath("DodgeViper.bin"));
-            QVERIFY(dodge_info.size() == 21898);
+            QCOMPARE(dodge_info.size(), 21898);
 
             // Compressed mesh is less than a megabyte
             QFileInfo comp_info(tmp.filePath(exported.compressedBufferFilename()));
@@ -383,7 +384,9 @@ private Q_SLOTS:
 
             // Check that we can reload the mesh properly
             ctx = GLTF2Context{};
-            auto res = parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
+            parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
+
+            auto res = parser.setupScene();
             QVERIFY(res != nullptr);
         }
     }
@@ -438,7 +441,8 @@ private Q_SLOTS:
 
             // Check that we can reload the mesh properly
             ctx = GLTF2Context{};
-            auto res = parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
+            parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
+            auto res = parser.setupScene();
             QVERIFY(res != nullptr);
         }
     }
@@ -548,7 +552,8 @@ private Q_SLOTS:
             QCOMPARE(sub.count(), 1U);
 
             ctx = GLTF2Context{};
-            auto res = parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), sub.absolutePath(), QStringLiteral("test.gltf"));
+            parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), sub.absolutePath(), QStringLiteral("test.gltf"));
+            auto res = parser.setupScene();
             QVERIFY(res != nullptr);
         }
     }
