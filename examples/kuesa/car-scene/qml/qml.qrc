@@ -16,5 +16,10 @@
         <file>Wind.qml</file>
         <file>IdleDemoAnimation.qml</file>
         <file>MainMenu.qml</file>
+        <file>controls/BgImageRasterItem.qml</file>
+        <file>controls/KnobImageRasterItem.qml</file>
+        <file>controls/KnobImageRasterItemActive.qml</file>
+        <file>controls/KnobImageRasterItemActiveDot.qml</file>
+        <file>controls/KnobImageRasterItemDot.qml</file>
     </qresource>
 </RCC>

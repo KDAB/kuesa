@@ -31,13 +31,16 @@ import QtQuick 2.11
 import QtQuick.Window 2.3
 
 Item {
-    readonly property real ldpi: _screenHeightScale || _isFullScreen
-                                 ? 0.085 * Screen.height                // Window is full screen
-                                 : Screen.pixelDensity * 25.4 * .7      // Variable size window
+
+
+
+  readonly property real ldpi: _screenHeightScale || _isFullScreen
+                               ? Math.min ( Screen.pixelDensity * 25.4, Math.max( 0.2 * Screen.height, Screen.pixelDensity * 25.4 / 2.5 ) )              // Window is full screen
+                              : Screen.pixelDensity * 25.4      // Variable size window
     readonly property alias regularFontName: openSansFontRegular.name
-    readonly property real regularFontSize: ldpi / 7
-    readonly property real largeFontSize: ldpi / 5.5
-    readonly property real defaultSpacing: Math.ceil(ldpi / 10)
+    readonly property int regularFontSize: ldpi / 9
+    readonly property int largeFontSize: ldpi / 7
+    readonly property int defaultSpacing: Math.ceil(ldpi / 10)
 
     function returnX(reference, target) {
         var globalCoordinares = reference.mapToItem(target, x, y)

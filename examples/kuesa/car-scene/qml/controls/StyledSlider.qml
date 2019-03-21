@@ -31,7 +31,7 @@ import QtQuick.Controls 2.3
 
 Item {
     id: slideN
-    implicitHeight: Math.ceil(SharedAttributes.ldpi / 2.39)
+    implicitHeight: bg.sourceSize.height
     property alias minimumValue: controller.from
     property alias maximumValue: controller.to
     property alias value: controller.value
@@ -41,38 +41,25 @@ Item {
         id: controller
         anchors.fill: parent
         handle: Item {
-                anchors.centerIn: parent
-                width: slideN.height
-                height: width
-            }
+            anchors.centerIn: parent
+            width: slideN.height
+            height: width
+        }
         background: Item { }
     }
 
-    Rectangle {
-        id: mask
-        anchors.fill: parent
-        radius: SharedAttributes.ldpi / 4.8
-        color: "#33000000"
+    BorderImage {
+        id: bg
+        source: "file:///tmp/bgImageraster.png"
+        width: slideN.width
+        height: parent.height
 
-        Rectangle {
-            width: handle.width
-            height: handle.height
-            radius: width
-            anchors.verticalCenter: parent.verticalCenter
-            x: SharedAttributes.ldpi * 0.04
-            color: "#11aa0000"
-
-            Rectangle {
-                width: parent.height / 2.5
-                height: width
-                radius: width
-                anchors.right: parent.right
-                anchors.rightMargin: (parent.height - height) / 2
-                color: "#1100aa00"
-                anchors.verticalCenter: parent.verticalCenter
-            }
-        }
+        border.left:height/2; border.top: height/2
+        border.right: height/2; border.bottom: height/2
     }
+
+
+
 
     Item {
         id: handleControl
@@ -84,78 +71,46 @@ Item {
     // visual items shadows and edges
     Item {
         anchors.fill: parent
-        anchors.margins: -1
 
-        Repeater {
-            model: [ "#65000000", "#20000000", "#10000000" ]
-            delegate: Rectangle {
-                anchors.fill: parent
-                anchors.margins: model.index + 1
-                radius: height
-                border.color: modelData
-                color: "transparent"
-            }
-        }
-
-        Repeater {
-            model: [ "#75000000", "#25000000", "#10000000" ]
-            delegate: Rectangle {
-                anchors.fill: parent
-                anchors.margins: -(model.index + 1)
-                radius: height
-                border.color: modelData
-                color: "transparent"
-            }
-        }
-
-        Rectangle {
+        Item {
             id: handle
+            x: SharedAttributes.ldpi * 0.045
+            width: height+handleControl.x
+            height:  parent.height - Math.ceil(( SharedAttributes.ldpi * 0.09)/2)*2
+
             anchors.verticalCenter: parent.verticalCenter
-            width: parent.height - SharedAttributes.ldpi * 0.08 + handleControl.x
-            height: Math.ceil(parent.height - SharedAttributes.ldpi * 0.08)
-            radius: height
-            x: SharedAttributes.ldpi * 0.04
-            border.color: controller.pressed ? "#3996ff" : "#65ffffff"
-            color: controller.pressed ? "#603996ff" : "#16ffffff"
+            BorderImage  {
+                width: Math.ceil(parent.width)
+                height: Math.ceil(parent.height)
+                border.bottom: (Math.floor(height/2)-2)
+                border.right: border.bottom; border.top: border.bottom ; border.left: border.bottom
+                source: "file:///tmp/knobImageRaster.png"
+                opacity: controller.pressed ? 0:1
+                Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
+                Image {
 
-            Behavior on color { ColorAnimation { duration: 200 } }
-            Behavior on border.color { ColorAnimation { duration: 200 } }
-            Behavior on border.width { NumberAnimation { duration: 400 } }
-
-            Rectangle {
-                width: parent.height/2.5
-                height: width
-                radius: width
-                anchors.right: parent.right
-                anchors.rightMargin: (parent.height-height)/2
-                color: controller.pressed? "#90000000" : "#00000000"
-                border.color: parent.border.color
-                border.width:  controller.pressed? 2 : 1
-                anchors.verticalCenter: parent.verticalCenter
-
-                Rectangle {
-                    anchors.fill: parent
-                    anchors.margins: 1
-                    radius: height
-                    border.color: "#55000000"
-                    color: "transparent"
-                }
-
-                Rectangle {
-                    anchors.fill: parent
-                    anchors.margins: 2
-                    radius: height
-                    border.color: "#15000000"
-                    color: "transparent"
+                    source: "file:///tmp/knobImageRasterDot.png"
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
                 }
             }
-        }
+            BorderImage  {
+                width: Math.ceil(parent.width)
+                height: Math.ceil(parent.height)
+                border.bottom: (Math.floor(height/2)-2)
+                border.right: border.bottom; border.top: border.bottom ; border.left: border.bottom
+                source: "file:///tmp/knobImageRasterActive.png"
+                opacity: controller.pressed ? 1:0
+                Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
+                Image {
 
-        Rectangle {
-            anchors.fill: parent
-            border.color: "#65ffffff"
-            color: "#00000000"
-            radius: height
+                    source: "file:///tmp/knobImageRasterActiveDot.png"
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+
         }
     }
 }

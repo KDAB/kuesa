@@ -32,7 +32,7 @@ import QtQuick.Controls.Styles 1.2
 
 Item {
     id: sliderN
-    implicitHeight: Math.ceil(SharedAttributes.ldpi / 2.42)
+    implicitHeight: bg.sourceSize.height
     implicitWidth: SharedAttributes.ldpi
 
     property bool radio: false
@@ -46,31 +46,14 @@ Item {
     }
     onCheckedChanged: sliderControl.currentIndex=checked ? 0 : 1
 
-    Rectangle {
-        id: mask
-        anchors.fill: parent
-        radius: SharedAttributes.ldpi / 4.8
-        color: "#33000000"
-
-        Rectangle {
-            width: parent.height - SharedAttributes.ldpi * 0.04
-            height: width
-            radius: width
-            anchors.verticalCenter: parent.verticalCenter
-            x: -sliderControl.contentX + sliderControl.width - width + sliderControl.x
-            color: "#11aa0000"
-            scale: handle.scale
-        }
-    }
-
     ListView {
         id: sliderControl
         property bool onn: currentIndex==0
         property bool move: false
-        interactive: !radio
+        interactive: bg.width>= bg.height+4
 
         x: SharedAttributes.ldpi * 0.04
-        width: parent.width - x * 2 + 2
+        width: parent.width-x*2.1
         height: parent.height
         boundsBehavior: Flickable.StopAtBounds
         model: 2
@@ -81,80 +64,50 @@ Item {
 
         delegate: Item {
             width: sliderControl.width-handle.width
-            height: sliderControl.height
+            height: sliderControl.height   
+        }
+        MouseArea {
+            id: controller
+            anchors.fill: parent
+            onClicked: checked=!checked
         }
     }
 
-    MouseArea {
-        id: marea
-        anchors.fill: sliderControl
-        onClicked: sliderControl.currentIndex = (sliderControl.currentIndex + 1) % 2
-
-        Binding {
-            target: sliderControl
-            property: "move"
-            value: marea.pressed
-        }
-    }
 
     // visual items shadows and edges
     Item {
         anchors.fill: parent
-        anchors.margins: -1
 
-        Repeater {
-            model: [ "#65000000", "#20000000", "#10000000" ]
-            delegate: Rectangle {
-                anchors.fill: parent
-                anchors.margins: model.index + 1
-                radius: height
-                border.color: modelData
-                color: "transparent"
-            }
+        BorderImage {
+            id: bg
+            source: "file:///tmp/bgImageraster.png"
+            width: Math.max(sliderN.width,height)
+            height: parent.height
+
+            border.left:height/2-1; border.top: border.left
+            border.right: border.left; border.bottom: border.left
         }
 
-        Repeater {
-            model: [ "#75000000", "#25000000", "#10000000" ]
-            delegate: Rectangle {
-                anchors.centerIn: handle
-                width: handle.width + 2 * (model.index + 1) / handle.scale
-                height: width
-                radius: height
-                scale: handle.scale
-                border.width: 1 / scale
-                border.color: modelData
-                color: "transparent"
-            }
-        }
-
-        Rectangle {
+        Image {
             id: handle
+            source: "file:///tmp/knobImageRaster.png"
+
             anchors.verticalCenter: parent.verticalCenter
-            width: Math.ceil(parent.height - SharedAttributes.ldpi * 0.08)
+            width: Math.ceil(parent.height - SharedAttributes.ldpi * 0.1)
             height: width
-            radius: width
+            anchors.centerIn: sliderControl.interactive?undefined:parent
             x: -sliderControl.contentX + sliderControl.width - width + sliderControl.x
-            border.color: sliderN.enabled && (sliderControl.move || sliderControl.moving) ? "#3996ff" : "#65ffffff"
-            border.width: sliderN.enabled && (sliderControl.move || sliderControl.moving) ? 2 : 1
-            color: checked ? (sliderN.width === sliderN.height? "#903996ff" : "#603996ff" ) : "#16ffffff"
-            scale: radio && !enabled ? 0.5 : 1
-
-            Behavior on color {ColorAnimation { duration: 200 } }
-            Behavior on border.color { ColorAnimation { duration: 200 } }
-            Behavior on border.width { NumberAnimation { duration: 400 } }
-            Behavior on scale {
-                NumberAnimation {
-                    duration: 200
-                    easing.type: Easing.InOutQuad
-                }
-            }
+            scale: radio && !enabled ? 0.8 : 1
+            opacity: controller.pressed||checked ? 0:1
+            Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
+            Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad } }
         }
-
-        Rectangle {
-            anchors.fill: parent
-            border.color: "#65ffffff"
-            color: "#00000000"
-            radius: height
+        Image {
+         source: "file:///tmp/knobImageRasterActive.png"
+         anchors.fill: handle
+         opacity: controller.pressed||checked ? 1:0
+         Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
+         scale: handle.scale
         }
     }
 }

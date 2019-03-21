@@ -40,4 +40,5 @@ Text {
     renderType: Text.NativeRendering
     style : Text.Outline
     styleColor: "#66000000"
+    height: Math.ceil(paintedHeight)
 }

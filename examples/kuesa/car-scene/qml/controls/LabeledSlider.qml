@@ -36,6 +36,7 @@ GroupBox {
 
     StyledLabel {
         id: label
+
     }
 
     StyledSlider {

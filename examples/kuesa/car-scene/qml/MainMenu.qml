@@ -66,9 +66,8 @@ Item {
     Item {
         id: menu
 
-        property int expandedWidth: Math.min(Controls.SharedAttributes.ldpi * 3, mainRoot.width / 3)
+        property int expandedWidth: Math.min(Controls.SharedAttributes.ldpi * 2.4, mainRoot.width / 3)
         property real switchWidth: Math.floor( Math.min((expandedWidth - Controls.SharedAttributes.defaultSpacing * 4) / 3, Controls.SharedAttributes.ldpi * 1.3) ) - 1
-        property real radioButtonWidth: Math.floor( Math.min( (expandedWidth - Controls.SharedAttributes.defaultSpacing * 4) / 3, Controls.SharedAttributes.ldpi * 1.3) ) - 10
 
         width: menuIcon.expanded ? expandedWidth : 0
         height: parent.height
@@ -133,13 +132,13 @@ Item {
 
             Rectangle {
                 anchors.fill: parent
-                color: "#33000000"
+                color: "#33ffffff"
 
                 Image {
                     fillMode: Image.Tile
                     source: "noise.png"
                     anchors.fill: parent
-                    opacity: 0.8
+                    opacity: 0.6
                 }
             }
         }
@@ -154,7 +153,7 @@ Item {
             height: parent.height
 
             Flickable {
-                y: Controls.SharedAttributes.ldpi * 0.75
+                y: Math.ceil(Controls.SharedAttributes.ldpi * 0.75)
                 width: menu.expandedWidth - Math.ceil(Controls.SharedAttributes.ldpi / 10) * 2
                 x: Math.ceil(Controls.SharedAttributes.ldpi / 10)
                 height: parent.height - y
@@ -225,12 +224,13 @@ Item {
                     }
 
                     Item {
-                        height: Controls.SharedAttributes.ldpi / 10
-                        width: 1
+                        height: Math.ceil(Controls.SharedAttributes.ldpi / 10)
+                        width: 1      
                     }
 
                     Controls.GroupBox {
                         width: parent.width
+
 
                         Controls.StyledLabel {
                             text: "Scene Control"
@@ -251,6 +251,7 @@ Item {
                             maximumValue: 5
                             value: 2.5
                             width: parent.width
+
                         }
 
                         Item {
@@ -271,7 +272,7 @@ Item {
 
                             Controls.LabeledRadioButton {
                                 id: envPinkSunrise
-                                width: menu.radioButtonWidth
+
                                 text: "Pink Sunrise"
                                 exclusiveGroup: radioButonsGroup
                                 checked: true
@@ -279,14 +280,14 @@ Item {
 
                             Controls.LabeledRadioButton {
                                 id: envNeuerZollhof
-                                width: menu.radioButtonWidth
+
                                 text: "Neuer Zollhof"
                                 exclusiveGroup: radioButonsGroup
                             }
 
                             Controls.LabeledRadioButton {
                                 id: envStudioSmall04
-                                width: menu.radioButtonWidth
+
                                 text: "KDAB Studio"
                                 exclusiveGroup: radioButonsGroup
                             }
@@ -311,7 +312,7 @@ Item {
                     }
 
                     Item {
-                        height: Controls.SharedAttributes.ldpi / 10
+                        height: Math.ceil(Controls.SharedAttributes.ldpi / 10)
                         width: 1
                     }
 
@@ -394,12 +395,12 @@ Item {
         Rectangle {
             id: rect1
             width: parent.width * (1 + (-rotation / 200))
-            y: -rotation / height
+
             height:  Math.ceil(width / 6)
             radius: height
             color: "#cccccc"
-            rotation: parent.expanded? -0.25 * Controls.SharedAttributes.ldpi : 0
-
+            rotation: parent.expanded? -24 : 0
+            y: -rotation/150*parent.width
             Behavior on rotation { NumberAnimation {duration: 250; easing.type: Easing.OutCirc } }
         }
 
@@ -422,7 +423,7 @@ Item {
             radius: height
             color: "#cccccc"
             rotation: -rect1.rotation
-            y: -rotation/height
+            anchors.bottomMargin: rect1.y
         }
     }
 
