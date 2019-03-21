@@ -1,9 +1,9 @@
 /*
-    LabeledRadioButton.qml
+    KnobImageRasterItem.qml
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Nuno Pinheiro <nuno.pinheiro@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -25,26 +25,29 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+import QtQuick 2.11
 
-import QtQuick 2.0
+Item {
+    id: root
+    property real dpi: 160
+    property string dpiName
 
-GroupBox {
-    id: radioButons
-    property alias text: label.text
-    property alias checked: control.checked
-    property alias exclusiveGroup: control.exclusiveGroup
-
-    width: label.width
-
-    StyledLabel {
-        id: label
-        horizontalAlignment: Text.AlignHCenter
+    function grabImage() {
+        root.grabToImage(function(result) {
+            result.saveToFile(dpiName + "_knobImageRaster.png")
+        })
     }
 
-    StyledSwitch {
-        id: control
-        width: height
-        anchors.horizontalCenter: parent.horizontalCenter
-        radio: true
+    width: height
+    height:  Math.ceil(dpi / 2.8 - (dpi / 10))
+    Rectangle {
+        id: handle
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.fill: parent
+        radius: height/2
+        border.color: "#65ffffff"
+        color:  "#16ffffff"
+        border.width: Math.ceil(dpi / 150)
     }
 }
+

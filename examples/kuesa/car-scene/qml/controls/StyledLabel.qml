@@ -27,11 +27,9 @@
 */
 
 import QtQuick 2.11
-import QtQuick.Controls 1.4
 
 Text {
     id: labelN
-    width: parent.width
     wrapMode: Text.WordWrap
     font.family: SharedAttributes.regularFontName
     font.pixelSize: SharedAttributes.regularFontSize
@@ -40,4 +38,5 @@ Text {
     renderType: Text.NativeRendering
     style : Text.Outline
     styleColor: "#66000000"
+    height: Math.ceil(paintedHeight)
 }

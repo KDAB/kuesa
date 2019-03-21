@@ -30,13 +30,16 @@ import QtQuick 2.11
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.2
 
-Item {
+BorderImage {
     id: sliderN
-    implicitHeight: Math.ceil(SharedAttributes.ldpi / 2.42)
-    implicitWidth: SharedAttributes.ldpi
+
+    width: height * 1.8
+    source: "bgImageraster.png"
+    border.left: 20; border.right: 20
+    border.top: 20; border.bottom: 20
 
     property bool radio: false
-    property alias checked: sliderControl.onn
+    property bool checked: false
     property ExclusiveGroup exclusiveGroup: null
     enabled: !(radio && checked)
 
@@ -44,117 +47,65 @@ Item {
         if (exclusiveGroup)
             exclusiveGroup.bindCheckable(sliderN)
     }
-    onCheckedChanged: sliderControl.currentIndex=checked ? 0 : 1
 
-    Rectangle {
-        id: mask
-        anchors.fill: parent
-        radius: SharedAttributes.ldpi / 4.8
-        color: "#33000000"
-
-        Rectangle {
-            width: parent.height - SharedAttributes.ldpi * 0.04
-            height: width
-            radius: width
-            anchors.verticalCenter: parent.verticalCenter
-            x: -sliderControl.contentX + sliderControl.width - width + sliderControl.x
-            color: "#11aa0000"
-            scale: handle.scale
-        }
-    }
-
-    ListView {
-        id: sliderControl
-        property bool onn: currentIndex==0
-        property bool move: false
-        interactive: !radio
-
-        x: SharedAttributes.ldpi * 0.04
-        width: parent.width - x * 2 + 2
-        height: parent.height
-        boundsBehavior: Flickable.StopAtBounds
-        model: 2
-        orientation: ListView.Horizontal
-        highlightRangeMode: ListView.StrictlyEnforceRange
-        currentIndex: sliderControl.onn ? 0 : 1
-        onCurrentIndexChanged: checked = currentIndex == 0
-
-        delegate: Item {
-            width: sliderControl.width-handle.width
-            height: sliderControl.height
-        }
-    }
+    readonly property bool interactive: width >= height + 4
 
     MouseArea {
-        id: marea
-        anchors.fill: sliderControl
-        onClicked: sliderControl.currentIndex = (sliderControl.currentIndex + 1) % 2
-
-        Binding {
-            target: sliderControl
-            property: "move"
-            value: marea.pressed
-        }
+        id: controller
+        anchors.fill: parent
+        onClicked: checked = !checked
     }
 
     // visual items shadows and edges
-    Item {
-        anchors.fill: parent
-        anchors.margins: -1
-
-        Repeater {
-            model: [ "#65000000", "#20000000", "#10000000" ]
-            delegate: Rectangle {
-                anchors.fill: parent
-                anchors.margins: model.index + 1
-                radius: height
-                border.color: modelData
-                color: "transparent"
-            }
-        }
-
-        Repeater {
-            model: [ "#75000000", "#25000000", "#10000000" ]
-            delegate: Rectangle {
-                anchors.centerIn: handle
-                width: handle.width + 2 * (model.index + 1) / handle.scale
-                height: width
-                radius: height
-                scale: handle.scale
-                border.width: 1 / scale
-                border.color: modelData
-                color: "transparent"
-            }
-        }
-
-        Rectangle {
-            id: handle
-            anchors.verticalCenter: parent.verticalCenter
-            width: Math.ceil(parent.height - SharedAttributes.ldpi * 0.08)
-            height: width
-            radius: width
-            x: -sliderControl.contentX + sliderControl.width - width + sliderControl.x
-            border.color: sliderN.enabled && (sliderControl.move || sliderControl.moving) ? "#3996ff" : "#65ffffff"
-            border.width: sliderN.enabled && (sliderControl.move || sliderControl.moving) ? 2 : 1
-            color: checked ? (sliderN.width === sliderN.height? "#903996ff" : "#603996ff" ) : "#16ffffff"
-            scale: radio && !enabled ? 0.5 : 1
-
-            Behavior on color {ColorAnimation { duration: 200 } }
-            Behavior on border.color { ColorAnimation { duration: 200 } }
-            Behavior on border.width { NumberAnimation { duration: 400 } }
-            Behavior on scale {
-                NumberAnimation {
-                    duration: 200
-                    easing.type: Easing.InOutQuad
+    Image {
+        id: handle
+        source: "knobImageRaster.png"
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.rightMargin: 5
+        anchors.leftMargin: anchors.rightMargin
+        scale: radio && !enabled ? 0.8 : 1
+        opacity: controller.pressed || checked ? 0 : 1
+        Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
+        Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad } }
+        states: [
+            State {
+                when: interactive && checked
+                AnchorChanges {
+                    target: handle
+                    anchors.right: sliderN.right
+                    anchors.left: undefined
+                }
+            },
+            State {
+                when: interactive && !checked
+                AnchorChanges {
+                    target: handle
+                    anchors.left: sliderN.left
+                    anchors.right: undefined
+                }
+            },
+            State {
+                when: !interactive
+                AnchorChanges {
+                    target: handle
+                    anchors.horizontalCenter: sliderN.horizontalCenter
                 }
             }
+        ]
+        transitions: Transition {
+            from: "*"
+            to: "*"
+            AnchorAnimation {
+                duration: 200
+            }
         }
+    }
 
-        Rectangle {
-            anchors.fill: parent
-            border.color: "#65ffffff"
-            color: "#00000000"
-            radius: height
-        }
+    Image {
+        source: "knobImageRasterActive.png"
+        anchors.fill: handle
+        opacity: controller.pressed||checked ? 1 : 0
+        Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
+        scale: handle.scale
     }
 }

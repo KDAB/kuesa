@@ -38,7 +38,7 @@
 #include <QDirIterator>
 #include <QResource>
 
-#ifdef  Q_OS_ANDROID
+#ifdef Q_OS_ANDROID
 #include <QOpenGLContext>
 #endif
 
@@ -62,6 +62,7 @@ int main(int ac, char **av)
         QSurfaceFormat::setDefaultFormat(format);
     }
 
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(ac, av);
 
     QDir resourceDir(app.applicationDirPath() + QStringLiteral("/resources"));
