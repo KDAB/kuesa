@@ -35,7 +35,7 @@ Item {
 
 
   readonly property real ldpi: _screenHeightScale || _isFullScreen
-                               ? Math.min ( Screen.pixelDensity * 25.4, Math.max( 0.2 * Screen.height, Screen.pixelDensity * 25.4 / 2.5 ) )              // Window is full screen
+                               ? Math.min ( Screen.pixelDensity * 25.4, Math.max( 0.2 * Screen.height, Screen.pixelDensity * 25.4 / 2.5 ) ) // Window is full screen
                               : Screen.pixelDensity * 25.4      // Variable size window
     readonly property alias regularFontName: openSansFontRegular.name
     readonly property int regularFontSize: ldpi / 9

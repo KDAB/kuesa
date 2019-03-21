@@ -33,22 +33,18 @@ import "controls" as Controls
 
 Item {
     id: mainRoot
-
+    
     // 3D Content
-
+    
     Item {
         id: baseUI
         anchors.fill: parent
-
+        
         Wind {
             id: wind
-
             anchors.fill: parent
             visible: menu.useOpacityMask
         }
-
-
-
 
         Scene3D {
             id: scene3D
@@ -56,7 +52,7 @@ Item {
             focus: true
             multisample: true
             aspects: ["input", "animation", "logic"]
-
+            
             // Root Scene Entity
             MainScene {
                 id: sceneContent
@@ -73,13 +69,13 @@ Item {
                 openRightDoor: menu.openRightDoor
                 openHood: menu.openHood
             }
-
+            
             Keys.onPressed: {
                 if (event.modifiers & Qt.ControlModifier) {
                     // Ctrl+F to toggle fullscreen
                     if (event.key === Qt.Key_F) {
                         _isFullScreen = !_isFullScreen
-
+                        
                         if (_isFullScreen)
                             _view.showFullScreen()
                         else
@@ -92,13 +88,13 @@ Item {
             }
         }
     }
-
+    
     // UI menu container
     MainMenu {
         id: menu
         anchors.fill: parent
     }
-
+    
     // Raster Gen.
     Controls.BgImageRasterItem {
         id: bgImageRasterItem
@@ -115,6 +111,7 @@ Item {
     Controls.KnobImageRasterItemDot {
         id: knobDot
     }
+    
     // Logos
     Image {
         id: kdabLogoBottomRight
@@ -127,15 +124,13 @@ Item {
         anchors.bottomMargin: width/4
         anchors.rightMargin: width/4
         fillMode: Image.PreserveAspectFit
-
+        
         MouseArea {
             anchors.fill: parent
             onPressAndHold: menu.idleAnimationRunning = true
         }
     }
-
-
-
+    
     Image {
         id: qtLogo
         property bool kuesaLogo: true
@@ -147,7 +142,7 @@ Item {
         antialiasing: true
         source: kuesaLogo ? "Kuesa-logo-black.png" : "Qt-logo.png"
         fillMode: Image.PreserveAspectFit
-
+        
         MouseArea {
             anchors.fill: parent
             onPressAndHold: qtLogo.kuesaLogo = !qtLogo.kuesaLogo

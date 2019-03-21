@@ -6,7 +6,7 @@ Item {
     visible: false
     width: height
     height:  Math.ceil( SharedAttributes.ldpi / 2.8 - ( SharedAttributes.ldpi / 10) )
-
+    
     Rectangle {
         width: parent.height/2.5
         height: width
@@ -15,7 +15,7 @@ Item {
         color: "#90000000"
         border.color:  "#3996ff"
         border.width:  SharedAttributes.ldpi / 90
-
+        
         Rectangle {
             anchors.fill: parent
             anchors.margins: SharedAttributes.ldpi /150
@@ -24,7 +24,7 @@ Item {
             color: "transparent"
             border.width:  SharedAttributes.ldpi /150
         }
-
+        
         Rectangle {
             anchors.fill: parent
             anchors.margins: SharedAttributes.ldpi /75
@@ -34,15 +34,15 @@ Item {
             border.width:  SharedAttributes.ldpi /150
         }
     }
-
-        Component.onCompleted: frrt.start()
-        
-        Timer {
-            id: frrt
-            interval: 50
-            onTriggered: {root.grabToImage(function(result) {
-                result.saveToFile("/tmp/knobImageRasterActiveDot.png") } )
-            }
+    
+    Component.onCompleted: frrt.start()
+    
+    Timer {
+        id: frrt
+        interval: 50
+        onTriggered: {root.grabToImage(function(result) {
+            result.saveToFile("/tmp/knobImageRasterActiveDot.png") } )
         }
     }
+}
 

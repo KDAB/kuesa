@@ -36,7 +36,7 @@ Item {
     property alias maximumValue: controller.to
     property alias value: controller.value
     readonly property real progress: (value - minimumValue) / (maximumValue - minimumValue)
-
+    
     Slider {
         id: controller
         anchors.fill: parent
@@ -47,37 +47,33 @@ Item {
         }
         background: Item { }
     }
-
+    
     BorderImage {
         id: bg
         source: "file:///tmp/bgImageraster.png"
         width: slideN.width
         height: parent.height
-
         border.left:height/2; border.top: height/2
         border.right: height/2; border.bottom: height/2
     }
-
-
-
-
+  
     Item {
         id: handleControl
         width: parent.height
         height: width
         x: progress * (slideN.width - width)
     }
-
+    
     // visual items shadows and edges
     Item {
         anchors.fill: parent
-
+        
         Item {
             id: handle
             x: SharedAttributes.ldpi * 0.045
             width: height+handleControl.x
             height:  parent.height - Math.ceil(( SharedAttributes.ldpi * 0.09)/2)*2
-
+            
             anchors.verticalCenter: parent.verticalCenter
             BorderImage  {
                 width: Math.ceil(parent.width)
@@ -88,7 +84,7 @@ Item {
                 opacity: controller.pressed ? 0:1
                 Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
                 Image {
-
+                    
                     source: "file:///tmp/knobImageRasterDot.png"
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
@@ -103,14 +99,12 @@ Item {
                 opacity: controller.pressed ? 1:0
                 Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
                 Image {
-
+                    
                     source: "file:///tmp/knobImageRasterActiveDot.png"
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
-
-
         }
     }
 }

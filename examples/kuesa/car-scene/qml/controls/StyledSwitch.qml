@@ -34,24 +34,24 @@ Item {
     id: sliderN
     implicitHeight: bg.sourceSize.height
     implicitWidth: SharedAttributes.ldpi
-
+    
     property bool radio: false
     property alias checked: sliderControl.onn
     property ExclusiveGroup exclusiveGroup: null
     enabled: !(radio && checked)
-
+    
     onExclusiveGroupChanged: {
         if (exclusiveGroup)
             exclusiveGroup.bindCheckable(sliderN)
     }
     onCheckedChanged: sliderControl.currentIndex=checked ? 0 : 1
-
+    
     ListView {
         id: sliderControl
         property bool onn: currentIndex==0
         property bool move: false
         interactive: bg.width>= bg.height+4
-
+        
         x: SharedAttributes.ldpi * 0.04
         width: parent.width-x*2.1
         height: parent.height
@@ -61,7 +61,7 @@ Item {
         highlightRangeMode: ListView.StrictlyEnforceRange
         currentIndex: sliderControl.onn ? 0 : 1
         onCurrentIndexChanged: checked = currentIndex == 0
-
+        
         delegate: Item {
             width: sliderControl.width-handle.width
             height: sliderControl.height   
@@ -72,26 +72,26 @@ Item {
             onClicked: checked=!checked
         }
     }
-
-
+    
+    
     // visual items shadows and edges
     Item {
         anchors.fill: parent
-
+        
         BorderImage {
             id: bg
             source: "file:///tmp/bgImageraster.png"
             width: Math.max(sliderN.width,height)
             height: parent.height
-
+            
             border.left:height/2-1; border.top: border.left
             border.right: border.left; border.bottom: border.left
         }
-
+        
         Image {
             id: handle
             source: "file:///tmp/knobImageRaster.png"
-
+            
             anchors.verticalCenter: parent.verticalCenter
             width: Math.ceil(parent.height - SharedAttributes.ldpi * 0.1)
             height: width
@@ -103,11 +103,11 @@ Item {
             Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad } }
         }
         Image {
-         source: "file:///tmp/knobImageRasterActive.png"
-         anchors.fill: handle
-         opacity: controller.pressed||checked ? 1:0
-         Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
-         scale: handle.scale
+            source: "file:///tmp/knobImageRasterActive.png"
+            anchors.fill: handle
+            opacity: controller.pressed||checked ? 1:0
+            Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
+            scale: handle.scale
         }
     }
 }
