@@ -38,6 +38,5 @@ GroupBox {
 
     StyledSwitch {
         id: control
-        width: parent.width
     }
 }

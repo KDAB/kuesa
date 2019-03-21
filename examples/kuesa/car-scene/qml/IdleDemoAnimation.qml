@@ -32,6 +32,7 @@ import "controls" as Controls
 Item {
     id: root
     property alias running: mainAnimation.running
+    property int minWidth: width
     signal reset()
 
     function restartTimer() {
@@ -188,12 +189,14 @@ Item {
 
         anchors {
             bottom: parent.bottom
-            bottomMargin: 2 * Controls.SharedAttributes.ldpi
+            bottomMargin: 180
             horizontalCenter: parent.horizontalCenter
             horizontalCenterOffset: menu.width / 2
         }
 
         function showTitle(title) {
+            if (titleLabel.font.pixelSize < 20)
+                return
             titleLabel.text = title
             titleAnimation.running = true
         }
@@ -209,7 +212,7 @@ Item {
             y: 10
             width: implicitWidth
             color: "#99ffffff"
-            font.pixelSize: Controls.SharedAttributes.ldpi
+            font.pixelSize: (root.width - root.minWidth) / 15
         }
     }
 
