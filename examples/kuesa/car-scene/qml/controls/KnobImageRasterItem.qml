@@ -6,7 +6,7 @@ Item {
     visible: false
     width: height
     height:  Math.ceil( SharedAttributes.ldpi / 2.8 - ( SharedAttributes.ldpi / 10) )
-    
+    property var storedImage: undefined //now if I could tell image to use this
     Rectangle {
         id: handle
         anchors.verticalCenter: parent.verticalCenter
@@ -24,8 +24,11 @@ Item {
         id: frrt
         interval: 50
         onTriggered: {knobImageRasterItem.grabToImage(function(result) {
-            result.saveToFile("/tmp/knobImageRaster.png") } )
+            result.saveToFile("/tmp/knobImageRaster.png") ;
+            storedImage = result
+        } )
         }
     }
+
 }
 
