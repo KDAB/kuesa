@@ -67,6 +67,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::CameraCollection>(uri, 1, 0, "CameraCollection", QStringLiteral("You are not supposed to create a CameraCollection"));
     qmlRegisterUncreatableType<Kuesa::TextureImageCollection>(uri, 1, 0, "TextureImageCollection", QStringLiteral("You are not supposed to create a TextureImageCollection"));
     qmlRegisterUncreatableType<Kuesa::AnimationMappingCollection>(uri, 1, 0, "AnimationMappingCollection", QStringLiteral("You are not supposed to create an AnimationMappingCollection"));
+    qmlRegisterUncreatableType<Kuesa::AnimationClipCollection>(uri, 1, 0, "AnimationClipCollection", QStringLiteral("You are not supposed to create an AnimationClipCollection"));
 
     // FrameGraphs
     qmlRegisterExtendedType<Kuesa::ForwardRenderer, Kuesa::PostFXListExtension>(uri, 1, 0, "ForwardRenderer");
