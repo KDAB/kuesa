@@ -730,7 +730,7 @@ void GLTF2Parser::generateTreeNodeContent()
                             material = mat.material(isSkinned, primitiveData.hasColorAttr, m_context);
 
                             auto effect = qobject_cast<MetallicRoughnessEffect *>(qobject_cast<Qt3DRender::QMaterial *>(material)->effect());
-                            if (effect) {
+                            if (effect && m_sceneEntity) {
                                 auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
                                 effect->setBrdfLUT(texture);
                             }
@@ -742,7 +742,7 @@ void GLTF2Parser::generateTreeNodeContent()
                                     MetallicRoughnessMaterial *material = new MetallicRoughnessMaterial;
                                     material->setUseSkinning(true);
                                     auto effect = qobject_cast<MetallicRoughnessEffect *>(material->effect());
-                                    if (effect) {
+                                    if (effect && m_sceneEntity) {
                                         auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
                                         effect->setBrdfLUT(texture);
                                     }
@@ -753,7 +753,7 @@ void GLTF2Parser::generateTreeNodeContent()
                                 if (!defaultMaterial) {
                                     MetallicRoughnessMaterial *material = new MetallicRoughnessMaterial;
                                     auto effect = qobject_cast<MetallicRoughnessEffect *>(material->effect());
-                                    if (effect) {
+                                    if (effect && m_sceneEntity) {
                                         auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
                                         effect->setBrdfLUT(texture);
                                     }

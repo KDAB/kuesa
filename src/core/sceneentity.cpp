@@ -114,6 +114,7 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
 
     // TODO: Replace this with a nicer way for registering assets needed by various subsystems
     m_brdfLUT = new Qt3DRender::QTextureLoader(this);
+    m_brdfLUT->setObjectName("_kuesa_brdfLUT");
     m_brdfLUT->setSource(QUrl(QLatin1String("qrc:/kuesa/shaders/brdfLUT.png")));
     m_brdfLUT->setWrapMode(Qt3DRender::QTextureWrapMode(Qt3DRender::QTextureWrapMode::ClampToEdge));
     m_textures->add(QLatin1String("_kuesa_brdfLUT"), m_brdfLUT);

@@ -503,7 +503,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(res);
-        QCOMPARE(scene.textures()->names().size(), 1);
+        QCOMPARE(scene.textures()->names().size(), 2);
         auto textureLoader = qobject_cast<Qt3DRender::QTextureLoader *>(scene.texture(QLatin1String("diffuse")));
         QVERIFY(textureLoader);
         QVERIFY(textureLoader->source().toString().toLower().endsWith("dds"));
@@ -523,7 +523,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(res);
-        QCOMPARE(scene.textures()->names().size(), 2);
+        QCOMPARE(scene.textures()->names().size(), 3);
         QVERIFY(scene.texture(QLatin1String("diffuse")));
         QVERIFY(scene.texture(QLatin1String("normal")));
     }
@@ -605,7 +605,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(res);
-        QCOMPARE(scene.textures()->names().size(), 2);
+        QCOMPARE(scene.textures()->names().size(), 3);
         QCOMPARE(scene.materials()->names().size(), 1);
 
         Kuesa::MetallicRoughnessMaterial *mat = static_cast<decltype(mat)>(scene.material(QStringLiteral("Material")));
@@ -892,7 +892,7 @@ private Q_SLOTS:
         QVERIFY(!accessor.bufferData.isEmpty());
 
         QCOMPARE(accessor.bufferViewIndex, bufferView);
-        const float *data = reinterpret_cast<const float*>(accessor.bufferData.constData());
+        const float *data = reinterpret_cast<const float *>(accessor.bufferData.constData());
         QCOMPARE(data[3], originalValue);
     }
 };
