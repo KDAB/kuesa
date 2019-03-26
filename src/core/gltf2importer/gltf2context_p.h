@@ -153,6 +153,9 @@ public:
     const QStringList &localFiles() const;
     void addLocalFile(const QString &file);
 
+    QByteArray bufferChunk() const;
+    void setBufferChunk(const QByteArray &bufferChunk);
+
 private:
     QVector<Accessor> m_accessors;
     QVector<QByteArray> m_buffers;
@@ -173,6 +176,7 @@ private:
     QString m_filename;
     QJsonDocument m_json;
     QStringList m_localFiles;
+    QByteArray m_bufferChunk;
 };
 
 template<>

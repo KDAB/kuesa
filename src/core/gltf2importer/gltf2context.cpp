@@ -370,6 +370,16 @@ void GLTF2Context::addLocalFile(const QString &file)
     m_localFiles.push_back(file);
 }
 
+QByteArray GLTF2Context::bufferChunk() const
+{
+    return m_bufferChunk;
+}
+
+void GLTF2Context::setBufferChunk(const QByteArray &bufferChunk)
+{
+    m_bufferChunk = bufferChunk;
+}
+
 template<>
 int GLTF2Context::count<Mesh>() const
 {

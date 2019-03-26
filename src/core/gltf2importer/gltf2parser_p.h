@@ -82,12 +82,15 @@ public:
 
     virtual QVector<KeyParserFuncPair> prepareParsers();
     Qt3DCore::QEntity *parse(const QString &filePath);
-    Qt3DCore::QEntity *parse(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
+    Qt3DCore::QEntity *parse(const QByteArray &data, const QString &basePath, const QString &filename = {});
+    Qt3DCore::QEntity *parseJSON(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
+    Qt3DCore::QEntity *parseBinary(const QByteArray &data, const QString &basePath, const QString &filename = {});
 
     void setContext(GLTF2Context *);
     const GLTF2Context *context() const;
 
 private:
+    bool isBinaryGLTF(const QByteArray &data, bool &isValid);
     void buildEntitiesAndJointsGraph();
     void buildJointHierarchy(const HierarchyNode *node, int &jointAccessor, const Skin &skin, int skinIdx, Qt3DCore::QJoint *parentJoint = nullptr);
     void generateTreeNodeContent();
