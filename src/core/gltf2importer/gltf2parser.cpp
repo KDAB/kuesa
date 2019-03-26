@@ -74,6 +74,17 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 namespace {
+
+const quint32 GLTF_BINARY_MAGIC = 0x46546C67;
+const quint32 GLTF_CHUNCK_JSON = 0x4E4F534A;
+const quint32 GLTF_CHUNCK_BIN = 0x004E4942;
+
+struct GLBHeader {
+    quint32 magic;
+    quint32 version;
+    quint32 length;
+};
+
 template<class CollectionType>
 void addToCollectionWithUniqueName(CollectionType *collection, const QString &basename, typename CollectionType::ContentType *asset)
 {
@@ -149,8 +160,42 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QString &filePath)
     }
 
     QFileInfo finfo(filePath);
-    const QByteArray jsonData = f.readAll();
-    return parse(jsonData, finfo.absolutePath(), finfo.fileName());
+    QByteArray data = f.readAll();
+    return parse(data, finfo.absolutePath(), finfo.fileName());
+}
+
+Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &data, const QString &basePath, const QString &filename)
+{
+    bool isValid = false;
+
+    if (isBinaryGLTF(data, isValid)) {
+        return isValid ? parseBinary(data, basePath, filename) : nullptr;
+    } else {
+        return isValid ? parseJSON(data, basePath, filename) : nullptr;
+    }
+}
+
+bool GLTF2Parser::isBinaryGLTF(const QByteArray &data, bool &isValid)
+{
+    bool isBinary = true;
+    isValid = true;
+
+    if (data.size() < sizeof(GLBHeader))
+        return false;
+    const GLBHeader *glbHeader = reinterpret_cast<const GLBHeader *>(data.constData());
+    if (glbHeader->magic != GLTF_BINARY_MAGIC) {
+        isBinary = false;
+    } else {
+        if (glbHeader->version != 2) {
+            qCWarning(kuesa()) << "Unsupported glb version" << glbHeader->version;
+            isValid = false;
+        } else if (glbHeader->length != data.size()) {
+            qCWarning(kuesa()) << "Unexpected glb file size" << data.size() << ". Was expecting" << glbHeader->length;
+            isValid = false;
+        }
+    }
+
+    return isBinary;
 }
 
 template<class T>
@@ -283,7 +328,7 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
     };
 }
 
-Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString &basePath, const QString &filename)
+Qt3DCore::QEntity *GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath, const QString &filename)
 {
     QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonData);
     if (jsonDocument.isNull() || !jsonDocument.isObject()) {
@@ -294,13 +339,13 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
     Q_ASSERT(m_context);
     m_context->setJson(jsonDocument);
     m_context->setFilename(filename);
+    m_basePath = basePath;
 
     m_animators.clear();
     m_treeNodes.clear();
     m_skeletons.clear();
     m_gltfJointIdxToSkeletonJointIdxPerSkeleton.clear();
 
-    m_basePath = basePath;
     const QJsonObject rootObject = jsonDocument.object();
 
     if (rootObject.contains(KEY_EXTENSIONS_USED) && rootObject.value(KEY_EXTENSIONS_USED).isArray()) {
@@ -474,6 +519,72 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
                     [this](const Skin &, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), QStringLiteral("KuesaSkeleton_%1").arg(i), m_skeletons.at(i)); });
     }
     return gltfSceneEntity;
+}
+
+Qt3DCore::QEntity *GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, const QString &filename)
+{
+    QByteArray jsonData;
+    const char *current = data.constData();
+    current += sizeof(GLBHeader);
+    int currentOffset = sizeof(GLBHeader);
+    const int endOffset = data.size();
+
+    while (currentOffset < endOffset) {
+        struct ChunkHeader {
+            quint32 chunkLength;
+            quint32 chunkType;
+        };
+
+        if ((endOffset - currentOffset) < sizeof(ChunkHeader)) {
+            qCWarning(kuesa()) << "Malformed chunck in glb file";
+            return nullptr;
+        }
+
+        const ChunkHeader *chunkHeader = reinterpret_cast<const ChunkHeader *>(current);
+        current += sizeof(ChunkHeader);
+        currentOffset += sizeof(ChunkHeader);
+
+        if ((endOffset - currentOffset) < chunkHeader->chunkLength) {
+            qCWarning(kuesa()) << "Malformed chunck in glb file";
+            return nullptr;
+        }
+
+        if (chunkHeader->chunkType == GLTF_CHUNCK_JSON) {
+            // JSON chunck
+            if (jsonData.isEmpty()) {
+                jsonData = QByteArray::fromRawData(current, chunkHeader->chunkLength);
+            } else {
+                qCWarning(kuesa()) << "Multiple JSON chunks in glb file";
+                return nullptr;
+            }
+        } else if (chunkHeader->chunkType == GLTF_CHUNCK_BIN) {
+            // BIN chunck
+            if (m_context->bufferChunk().isEmpty()) {
+                m_context->setBufferChunk(QByteArray::fromRawData(current, chunkHeader->chunkLength));
+            } else {
+                qCWarning(kuesa()) << "Multiple BIN chunks in glb file";
+                return nullptr;
+            }
+        } else {
+            // skip chunck
+            qCWarning(kuesa()) << "Ignoring unhandled chunck type in glb file:" << chunkHeader->chunkType;
+        }
+
+        current += chunkHeader->chunkLength;
+        currentOffset += chunkHeader->chunkLength;
+    }
+
+    if (jsonData.isEmpty()) {
+        qCWarning(kuesa()) << "Missing JSON chunk in glb file";
+        return nullptr;
+    }
+
+    auto res = parseJSON(jsonData, basePath, filename);
+
+    // make sure chunk doesn't outlive the original data
+    m_context->setBufferChunk({});
+
+    return res;
 }
 
 void GLTF2Parser::setContext(GLTF2Context *ctx)
