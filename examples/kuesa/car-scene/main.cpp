@@ -63,7 +63,11 @@ int main(int ac, char **av)
     QDir resourceDir(app.applicationDirPath() + QStringLiteral("/resources"));
     QDirIterator it(resourceDir, QDirIterator::IteratorFlag::NoIteratorFlags);
     while (it.hasNext()) {
-        QResource::registerResource(it.next());
+        QString path = it.next();
+        if (!QResource::registerResource(path))
+            qWarning() << "Failed to load binary resources: " << path;
+        else
+            qDebug() << "Loaded binary resources: " << path;
     }
 
     QCommandLineParser parser;
