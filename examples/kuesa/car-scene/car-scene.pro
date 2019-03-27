@@ -140,8 +140,8 @@ android {
     asset_builder.CONFIG += no_link target_predeps
     QMAKE_EXTRA_COMPILERS += asset_builder
 
-    ext_resources.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET/resources
-    ext_resources.files = $$OUT_PWD/resources/*
+    ext_resources.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+    ext_resources.files = $$OUT_PWD/resources
 
     INSTALLS += ext_resources
 }
