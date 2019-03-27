@@ -1,10 +1,10 @@
 /*
-    StyledLabel.qml
+    KnobImageRasterItemActive.qml
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Mike Krus <mike.krus@kdab.com>
+    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Nuno Pinheiro <nuno.pinheiro@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -25,20 +25,30 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
 import QtQuick 2.11
-import QtQuick.Controls 1.4
 
-Text {
-    id: labelN
-    width: parent.width
-    wrapMode: Text.WordWrap
-    font.family: SharedAttributes.regularFontName
-    font.pixelSize: SharedAttributes.regularFontSize
-    font.weight: Font.Normal
-    color: "#C0ffffff"
-    renderType: Text.NativeRendering
-    style : Text.Outline
-    styleColor: "#66000000"
-    height: Math.ceil(paintedHeight)
+Item {
+    id: root
+    property real dpi: 160
+    property string dpiName
+
+    function grabImage() {
+        root.grabToImage(function(result) {
+            result.saveToFile(dpiName + "_knobImageRasterActive.png")
+        })
+    }
+
+    width: height
+    height:  Math.ceil(dpi / 2.8 - (dpi / 10))
+
+    Rectangle {
+        id: handle
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.fill: parent
+        radius: height / 2
+        border.color: "#3996ff"
+        color: "#603996ff"
+        border.width: Math.ceil(dpi / 90)
+    }
 }
+
