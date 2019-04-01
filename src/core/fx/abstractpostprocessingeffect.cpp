@@ -77,6 +77,25 @@ AbstractPostProcessingEffect::Type AbstractPostProcessingEffect::type() const
 }
 
 /*!
+ * Sets the depth texture for this effect. The texture contain the depth of the
+ * rendered scene that the effect will be applied to. This is set automatically
+ * by the ForwardRenderer when the effect is added.
+ */
+void AbstractPostProcessingEffect::setDepthTexture(Qt3DRender::QAbstractTexture *texture)
+{
+    Q_UNUSED(texture);
+}
+
+/*!
+ * Sets the camera entity for this effect. This is set automatically by the
+ * ForwardRenderer when the effect is added.
+ */
+void AbstractPostProcessingEffect::setCamera(Qt3DCore::QEntity *camera)
+{
+    Q_UNUSED(camera);
+}
+
+/*!
  * Sets the size of the rendered scene (in pixels) that the effect will be applied to.
  * This is necessary for effects to render correctly.
  */

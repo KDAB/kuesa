@@ -60,6 +60,9 @@ public:
 
     //set texture containing scene to be post-processed
     virtual void setInputTexture(Qt3DRender::QAbstractTexture *texture) = 0;
+    virtual void setDepthTexture(Qt3DRender::QAbstractTexture *texture);
+    virtual void setCamera(Qt3DCore::QEntity *camera);
+
     virtual void setSceneSize(const QSize &size);
     virtual QVector<Qt3DRender::QLayer *> layers() const = 0;
 

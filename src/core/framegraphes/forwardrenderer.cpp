@@ -650,6 +650,8 @@ void ForwardRenderer::reconfigureFrameGraph()
     m_renderTargets[0] = nullptr;
     m_renderTargets[1] = nullptr;
 
+    Qt3DRender::QAbstractTexture *depthTex = nullptr;
+
     // Configure effects
     if (!m_postProcessingEffects.empty()) {
         if (!m_renderTargets[0]) {
@@ -661,6 +663,10 @@ void ForwardRenderer::reconfigureFrameGraph()
             // create a secondary render target to do ping-pong when we have
             // more than 1 fx
         }
+
+        const auto &target0outputs = m_renderTargets[0]->outputs();
+        if (!target0outputs.empty())
+            depthTex = target0outputs.back()->texture();
 
         // create a subtree under m_frustumCulling to render the main scene into a texture
         m_renderToTextureRootNode = new Qt3DRender::QFrameGraphNode(m_frustumCulling);
@@ -696,6 +702,8 @@ void ForwardRenderer::reconfigureFrameGraph()
             // determine which render target we used for previous effect.  It holds the input texture for current effect
             auto previousRenderTarget = m_renderTargets[previousRenderTargetIndex];
             effect->setInputTexture(findRenderTargetTexture(previousRenderTarget, Qt3DRender::QRenderTargetOutput::Color0));
+            effect->setDepthTexture(depthTex);
+            effect->setCamera(this->camera());
             effect->setSceneSize(targetSize);
 
             // add the layers from the effect to block them from being rendered in the main scene
