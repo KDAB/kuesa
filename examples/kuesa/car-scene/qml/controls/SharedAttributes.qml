@@ -34,7 +34,7 @@ Item {
 
 
 
-    readonly property real ldpi: 403 //Screen.pixelDensity * 25.4
+    readonly property real ldpi: Screen.pixelDensity * 25.4
     readonly property alias regularFontName: openSansFontRegular.name
     readonly property int regularFontSize: (ldpi / 8)
     readonly property int largeFontSize: (ldpi / 5)
