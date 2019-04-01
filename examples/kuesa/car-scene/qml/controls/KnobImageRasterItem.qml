@@ -5,7 +5,7 @@ Item {
     id: knobImageRasterItem
     visible: false
     width: height
-    height:  Math.ceil( SharedAttributes.ldpi / 2.8 - ( SharedAttributes.ldpi / 10) )
+    height:  Math.ceil(( SharedAttributes.ldpi / 2.8 - ( SharedAttributes.ldpi / 10)) / sFC )
     property var storedImage: undefined //now if I could tell image to use this
     Rectangle {
         id: handle
@@ -15,7 +15,7 @@ Item {
         
         border.color: "#65ffffff"
         color:  "#16ffffff"
-        border.width: Math.ceil( SharedAttributes.ldpi / 150)
+        border.width: Math.ceil( SharedAttributes.ldpi / 170)
     }
     
     Component.onCompleted: frrt.start()
@@ -27,8 +27,7 @@ Item {
             result.saveToFile("/tmp/knobImageRaster.png") ;
             storedImage = result
         } )
-        }
+       }
     }
-
 }
 

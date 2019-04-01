@@ -34,13 +34,12 @@ Item {
 
 
 
-  readonly property real ldpi: _screenHeightScale || _isFullScreen
-                               ? Math.min ( Screen.pixelDensity * 25.4, Math.max( 0.2 * Screen.height, Screen.pixelDensity * 25.4 / 2.5 ) ) // Window is full screen
-                              : Screen.pixelDensity * 25.4      // Variable size window
+    readonly property real ldpi: 403 //Screen.pixelDensity * 25.4
     readonly property alias regularFontName: openSansFontRegular.name
-    readonly property int regularFontSize: ldpi / 9
-    readonly property int largeFontSize: ldpi / 7
-    readonly property int defaultSpacing: Math.ceil(ldpi / 10)
+    readonly property int regularFontSize: (ldpi / 8)
+    readonly property int largeFontSize: (ldpi / 5)
+    readonly property int defaultSpacing: Math.ceil((ldpi / 10) )
+    //readonly property int sizefactor: mainRoot.width/ldpi
 
     function returnX(reference, target) {
         var globalCoordinares = reference.mapToItem(target, x, y)

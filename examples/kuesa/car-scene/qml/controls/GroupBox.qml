@@ -30,5 +30,5 @@ import QtQuick 2.11
 
 Column {
     id: gruper
-    spacing: SharedAttributes.defaultSpacing
+    spacing: Math.ceil ( SharedAttributes.defaultSpacing / (1+(sFC-1)/3) )
 }

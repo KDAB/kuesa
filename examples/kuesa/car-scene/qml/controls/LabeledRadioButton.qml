@@ -37,6 +37,8 @@ GroupBox {
      StyledLabel {
         id: label
         horizontalAlignment: Text.AlignHCenter
+        height: Math.ceil( font.pixelSize*1.6)
+        lineHeight : 0.8
     }
 
     StyledSwitch {

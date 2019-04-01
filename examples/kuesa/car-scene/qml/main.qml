@@ -33,8 +33,15 @@ import "controls" as Controls
 
 Item {
     id: mainRoot
-    
-    // 3D Content
+    //interpolation of reference values cubic fit makes the ui smaler as the scren goes smaler to take in to consideration distante from eyes to screen
+    //0.000462144 x^3 - 0.0145175 x^2 + 0.0608743 x + 1.9025
+
+    readonly property real sF: Math.min(Math.ceil(mainRoot.width/Controls.SharedAttributes.ldpi*10)/10,20)
+    readonly property real sFC: Math.max((0.000462144*sF*sF*sF - 0.0145175*sF*sF + 0.0608743*sF + 1.9025),1)
+
+
+    // 3D
+
     
     Item {
         id: baseUI
@@ -146,6 +153,6 @@ Item {
         MouseArea {
             anchors.fill: parent
             onPressAndHold: qtLogo.kuesaLogo = !qtLogo.kuesaLogo
-        }
+        } 
     }
 }

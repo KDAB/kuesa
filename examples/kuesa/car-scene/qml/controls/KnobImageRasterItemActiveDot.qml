@@ -5,7 +5,7 @@ Item {
     id: root
     visible: false
     width: height
-    height:  Math.ceil( SharedAttributes.ldpi / 2.8 - ( SharedAttributes.ldpi / 10) )
+    height:  Math.ceil( (SharedAttributes.ldpi / 2.8 - ( SharedAttributes.ldpi / 10)) / sFC )
     
     Rectangle {
         width: parent.height/2.5
@@ -18,20 +18,20 @@ Item {
         
         Rectangle {
             anchors.fill: parent
-            anchors.margins: SharedAttributes.ldpi /150
+            anchors.margins: Math.ceil( (SharedAttributes.ldpi /170) / sFC )
             radius: height
             border.color: "#55000000"
             color: "transparent"
-            border.width:  SharedAttributes.ldpi /150
+            border.width:  Math.ceil(SharedAttributes.ldpi /170)
         }
         
         Rectangle {
             anchors.fill: parent
-            anchors.margins: SharedAttributes.ldpi /75
+            anchors.margins:  Math.ceil((SharedAttributes.ldpi /85)/ sFC)
             radius: height
             border.color: "#15000000"
             color: "transparent"
-            border.width:  SharedAttributes.ldpi /150
+            border.width:  Math.ceil(SharedAttributes.ldpi /150)
         }
     }
     

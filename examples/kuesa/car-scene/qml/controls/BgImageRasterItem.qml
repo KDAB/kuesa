@@ -5,7 +5,7 @@ Item {
     id: bgImageRasterItem
     visible: false
     width: height+2
-    height: Math.ceil( SharedAttributes.ldpi / 2.8)
+    height: Math.ceil( (SharedAttributes.ldpi / 2.8) / sFC)
     Rectangle {
         id: mask
         anchors.fill: parent
@@ -22,11 +22,11 @@ Item {
                 model: [ "#65000000", "#20000000", "#10000000" ]
                 delegate: Rectangle {
                     anchors.fill: parent
-                    anchors.margins: (model.index + 1)*Math.ceil( SharedAttributes.ldpi / 150)
+                    anchors.margins: (model.index + 1)*Math.ceil( SharedAttributes.ldpi / 170)
                     radius: height
                     border.color: modelData
                     color: "transparent"
-                    border.width: Math.ceil( SharedAttributes.ldpi / 150)
+                    border.width: Math.ceil( SharedAttributes.ldpi / 170)
                 }
             }
             
@@ -35,7 +35,7 @@ Item {
                 border.color: "#65ffffff"
                 color: "#00000000"
                 radius: height
-                border.width: Math.ceil( SharedAttributes.ldpi / 150)
+                border.width: Math.ceil( SharedAttributes.ldpi / 170)
             }
         }
         

@@ -70,11 +70,12 @@ Item {
         
         Item {
             id: handle
-            x: SharedAttributes.ldpi * 0.045
+            x: SharedAttributes.ldpi * 0.045 / sFC
             width: height+handleControl.x
-            height:  parent.height - Math.ceil(( SharedAttributes.ldpi * 0.09)/2)*2
+            height:  parent.height - Math.ceil(( SharedAttributes.ldpi * 0.09)/2)*2 / sFC
             
             anchors.verticalCenter: parent.verticalCenter
+
             BorderImage  {
                 width: Math.ceil(parent.width)
                 height: Math.ceil(parent.height)
@@ -84,12 +85,12 @@ Item {
                 opacity: controller.pressed ? 0:1
                 Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
                 Image {
-                    
                     source: "file:///tmp/knobImageRasterDot.png"
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
+
             BorderImage  {
                 width: Math.ceil(parent.width)
                 height: Math.ceil(parent.height)
@@ -98,8 +99,7 @@ Item {
                 source: "file:///tmp/knobImageRasterActive.png"
                 opacity: controller.pressed ? 1:0
                 Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
-                Image {
-                    
+                Image { 
                     source: "file:///tmp/knobImageRasterActiveDot.png"
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter

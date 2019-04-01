@@ -5,7 +5,7 @@ Item {
     id: knobImageRasterItemActive
     visible: false
     width: height
-    height:  Math.ceil( SharedAttributes.ldpi / 2.8 - ( SharedAttributes.ldpi / 10) )
+    height:  Math.ceil( (SharedAttributes.ldpi / 2.8 - ( SharedAttributes.ldpi / 10)) / sFC )
     
     Rectangle {
         id: handle
@@ -15,7 +15,7 @@ Item {
         
         border.color: "#3996ff"
         color: "#603996ff"
-        border.width:  SharedAttributes.ldpi / 90
+        border.width:  Math.ceil(SharedAttributes.ldpi / 110)
     }
     
     Component.onCompleted: frrt.start()

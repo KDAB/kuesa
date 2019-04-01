@@ -66,8 +66,8 @@ Item {
     Item {
         id: menu
         
-        property int expandedWidth: Math.min(Controls.SharedAttributes.ldpi * 2.4, mainRoot.width / 3)
-        property real switchWidth: Math.floor( Math.min((expandedWidth - Controls.SharedAttributes.defaultSpacing * 4) / 3, Controls.SharedAttributes.ldpi * 1.3) ) - 1
+        property int expandedWidth: Math.min(Controls.SharedAttributes.ldpi * 2 / (1+(sFC-1)/2), mainRoot.width / 3.5)
+        property real switchWidth: Math.floor( Math.min((flickElement.width - group1.spacing*2) / 3, Controls.SharedAttributes.ldpi * 1.3 / sFC) ) - 1
         
         width: menuIcon.expanded ? expandedWidth : 0
         height: parent.height
@@ -151,11 +151,24 @@ Item {
         MouseArea {
             width: childrenRect.width
             height: parent.height
-            
+
+            Rectangle {
+                id: scrollbar
+                x: Math.ceil(width/3)
+                y: flickElement.visibleArea.yPosition * flickElement.height+flickElement.y
+                width: Math.ceil(group1.spacing/5)
+                height: flickElement.visibleArea.heightRatio * flickElement.height
+                color: "white"
+                opacity: flickElement.interactive? (flickElement.moving ? 0.5 : 0.2) : 0
+                Behavior on opacity { NumberAnimation {duration: 200 } }
+
+            }
+
             Flickable {
-                y: Math.ceil(Controls.SharedAttributes.ldpi * 0.75)
-                width: menu.expandedWidth - Math.ceil(Controls.SharedAttributes.ldpi / 10) * 2
-                x: Math.ceil(Controls.SharedAttributes.ldpi / 10)
+                id: flickElement
+                y: Math.ceil ( menuIcon.height * 2.3 )
+                width: menu.expandedWidth - x * 2
+                x: Math.ceil((Controls.SharedAttributes.ldpi / 10)/ sFC)
                 height: parent.height - y
                 clip: true
                 contentHeight: controlArea.height
@@ -168,12 +181,14 @@ Item {
                     id: controlArea
                     
                     Controls.GroupBox {
+                        id: group1
                         width: parent.width
                         
                         Controls.StyledLabel {
                             text: "Car Control"
                             font.weight: Font.ExtraLight
-                            font.pixelSize: Controls.SharedAttributes.largeFontSize
+                            font.pixelSize: Math.ceil(Controls.SharedAttributes.largeFontSize / sFC)
+
                         }
                         
                         Rectangle{
@@ -197,8 +212,8 @@ Item {
                         }
                         
                         Flow {
-                            width: menu.expandedWidth
-                            spacing: parent.spacing
+                            width: Math.floor(flickElement.width)
+                            spacing:Math.floor(Math.max(parent.spacing,(width-openHoodSwitch.width*3)/2-1 ) )
                             
                             Controls.LabeledSwitch {
                                 id: openHoodSwitch
@@ -234,7 +249,7 @@ Item {
                         
                         Controls.StyledLabel {
                             text: "Scene Control"
-                            font.pixelSize: Controls.SharedAttributes.largeFontSize
+                            font.pixelSize: Math.floor( Controls.SharedAttributes.largeFontSize / sFC )
                             font.weight: Font.ExtraLight
                         }
                         
@@ -265,8 +280,9 @@ Item {
                         }
                         
                         Flow {
-                            width: menu.expandedWidth
-                            spacing: parent.spacing
+                            width: flickElement.width-parent.spacing*2
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            spacing: Math.floor (Math.max(parent.spacing,(width-envNeuerZollhof.width*3)/2 -1) )
                             
                             ExclusiveGroup { id: radioButonsGroup }
                             
@@ -304,7 +320,7 @@ Item {
                             
                             Controls.LabeledSwitch {
                                 id: useOpacityMaskSwitch
-                                text: "Use OpacityMask"
+                                text: "OpacityMask"
                                 checked: false
                                 width: menu.switchWidth
                             }
@@ -321,7 +337,7 @@ Item {
                         
                         Controls.StyledLabel {
                             text: "Car Color"
-                            font.pixelSize: Controls.SharedAttributes.largeFontSize
+                            font.pixelSize: Controls.SharedAttributes.largeFontSize / sFC
                             font.weight: Font.ExtraLight
                         }
                         
@@ -379,7 +395,7 @@ Item {
     
     Item {
         id: menuIcon
-        width: Math.ceil(Controls.SharedAttributes.ldpi / 3.5)
+        width: Math.ceil(Controls.SharedAttributes.ldpi / (4.5*sFC) )
         height: Math.ceil(width * 0.9)
         x: width / 2
         y: Math.ceil(width * 0.75)

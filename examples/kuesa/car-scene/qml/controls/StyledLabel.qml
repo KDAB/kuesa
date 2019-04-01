@@ -34,11 +34,12 @@ Text {
     width: parent.width
     wrapMode: Text.WordWrap
     font.family: SharedAttributes.regularFontName
-    font.pixelSize: SharedAttributes.regularFontSize
+    font.pixelSize: SharedAttributes.regularFontSize / sFC
     font.weight: Font.Normal
     color: "#C0ffffff"
     renderType: Text.NativeRendering
     style : Text.Outline
     styleColor: "#66000000"
     height: Math.ceil(paintedHeight)
+
 }

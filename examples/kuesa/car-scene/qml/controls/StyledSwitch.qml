@@ -52,7 +52,7 @@ Item {
         property bool move: false
         interactive: bg.width>= bg.height+4
         
-        x: SharedAttributes.ldpi * 0.04
+        x: Math.ceil(SharedAttributes.ldpi * 0.04 / sFC )
         width: parent.width-x*2.1
         height: parent.height
         boundsBehavior: Flickable.StopAtBounds
@@ -93,7 +93,7 @@ Item {
             source: "file:///tmp/knobImageRaster.png"
             
             anchors.verticalCenter: parent.verticalCenter
-            width: Math.ceil(parent.height - SharedAttributes.ldpi * 0.1)
+            width: Math.ceil(parent.height -( SharedAttributes.ldpi * 0.1)/ sFC )
             height: width
             anchors.centerIn: sliderControl.interactive?undefined:parent
             x: -sliderControl.contentX + sliderControl.width - width + sliderControl.x

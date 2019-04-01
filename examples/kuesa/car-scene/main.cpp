@@ -110,7 +110,7 @@ int main(int ac, char **av)
 #endif
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
-    view.resize(1920, 1080);
+    view.resize(2160, 1080);
     if (parser.isSet(fullscreenOption)) {
         view.showFullScreen();
     } else {
