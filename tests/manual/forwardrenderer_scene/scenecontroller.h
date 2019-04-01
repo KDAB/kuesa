@@ -56,6 +56,11 @@ class SceneController : public QObject
     Q_PROPERTY(bool opacityMaskEffect READ opacityMaskEffect WRITE setOpacityMaskEffect NOTIFY opacityMaskEffectChanged)
     Q_PROPERTY(bool opacityMaskPremultipliedAlpha READ opacityMaskPremultipliedAlpha WRITE setOpacityMaskPremultipliedAlpha NOTIFY opacityMaskPremultipliedAlphaChanged)
 
+    Q_PROPERTY(bool depthOfFieldEffect READ depthOfFieldEffect WRITE setDepthOfFieldEffect NOTIFY depthOfFieldEffectChanged)
+    Q_PROPERTY(float depthOfFieldRadius READ depthOfFieldRadius WRITE setDepthOfFieldRadius NOTIFY depthOfFieldRadiusChanged)
+    Q_PROPERTY(float depthOfFieldRange READ depthOfFieldRange WRITE setDepthOfFieldRange NOTIFY depthOfFieldRangeChanged)
+    Q_PROPERTY(float depthOfFieldDistance READ depthOfFieldDistance WRITE setDepthOfFieldDistance NOTIFY depthOfFieldDistanceChanged)
+
 public:
     explicit SceneController(QObject *parent = nullptr);
 
@@ -75,6 +80,10 @@ public:
     bool opacityMaskEffect() const;
     bool opacityMaskPremultipliedAlpha() const;
     bool zFill() const;
+    bool depthOfFieldEffect() const;
+    float depthOfFieldRadius() const;
+    float depthOfFieldRange() const;
+    float depthOfFieldDistance() const;
 
 public slots:
     void setSceneName(const QString &sceneName);
@@ -92,6 +101,10 @@ public slots:
     void setOpacityMaskEffect(bool opacityMaskEffect);
     void setOpacityMaskPremultipliedAlpha(bool premultipliedAlpha);
     void setZFill(bool zFill);
+    void setDepthOfFieldEffect(bool depthOfFieldEffect);
+    void setDepthOfFieldRadius(float depthOfFieldRadius);
+    void setDepthOfFieldRange(float depthOfFieldRange);
+    void setDepthOfFieldDistance(float depthOfFieldDistance);
 
 signals:
     void sceneNameChanged(const QString &sceneName);
@@ -109,6 +122,10 @@ signals:
     void opacityMaskEffectChanged(bool opacityMaskEffect);
     void opacityMaskPremultipliedAlphaChanged(bool premultipliedAlpha);
     void zFillChanged(bool zFill);
+    void depthOfFieldEffectChanged(bool depthOfFieldEffect);
+    void depthOfFieldRadiusChanged(float depthOfFieldRadius);
+    void depthOfFieldRangeChanged(float depthOfFieldRange);
+    void depthOfFieldDistanceChanged(float depthOfFieldDistance);
 
 private:
     QStringList m_scenes;
@@ -132,6 +149,10 @@ private:
 
     bool m_opacityMaskEffect;
     bool m_opacityMaskPremultipliedAlpha;
+    bool m_depthOfFieldEffect;
+    float m_depthOfFieldRadius;
+    float m_depthOfFieldRange;
+    float m_depthOfFieldDistance;
 };
 
 #endif // SCENECONTROLLER_H

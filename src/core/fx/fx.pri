@@ -32,6 +32,7 @@ HEADERS += \
     $$PWD/gaussianblureffect.h \
     $$PWD/thresholdeffect.h \
     $$PWD/bloomeffect.h \
+    $$PWD/depthoffieldeffect.h \
     $$PWD/opacitymask.h
 
 SOURCES += \
@@ -40,4 +41,5 @@ SOURCES += \
     $$PWD/gaussianblureffect.cpp \
     $$PWD/thresholdeffect.cpp \
     $$PWD/bloomeffect.cpp \
+    $$PWD/depthoffieldeffect.cpp \
     $$PWD/opacitymask.cpp

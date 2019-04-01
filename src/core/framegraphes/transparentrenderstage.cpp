@@ -57,7 +57,6 @@ TransparentRenderStage::TransparentRenderStage(Qt3DCore::QNode *parent)
     auto depthTest = new Qt3DRender::QDepthTest;
     depthTest->setDepthFunction(Qt3DRender::QDepthTest::LessOrEqual);
     states->addRenderState(depthTest);
-    states->addRenderState(new Qt3DRender::QNoDepthMask);
 
     auto blendState = new Qt3DRender::QBlendEquation();
     blendState->setBlendFunction(Qt3DRender::QBlendEquation::Add);

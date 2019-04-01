@@ -64,6 +64,7 @@ Entity {
         onBloomEffectChanged: enablePostProcessingEffect(bloomComponent, _controller.bloomEffect)
         onBlurEffectChanged: enablePostProcessingEffect(blurComponent, _controller.blurEffect)
         onOpacityMaskEffectChanged: enablePostProcessingEffect(opacityMaskComponent, _controller.opacityMaskEffect)
+        onDepthOfFieldEffectChanged: enablePostProcessingEffect(depthOfFieldComponent, _controller.depthOfFieldEffect)
     }
 
     ThresholdEffect {
@@ -81,6 +82,13 @@ Entity {
         exposure: _controller.bloomExposure
         threshold: _controller.bloomThreshold
         blurPassCount: _controller.bloomBlurPassCount
+    }
+
+    DepthOfFieldEffect {
+        id: depthOfFieldComponent
+        radius: _controller.depthOfFieldRadius
+        focusDistance: _controller.depthOfFieldDistance
+        focusRange: _controller.depthOfFieldRange
     }
 
     OpacityMask {

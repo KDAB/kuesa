@@ -34,6 +34,7 @@
 #include <Kuesa/ForwardRenderer>
 #include <Kuesa/MetallicRoughnessMaterial>
 #include <Kuesa/BloomEffect>
+#include <Kuesa/DepthOfFieldEffect>
 #include <Kuesa/GaussianBlurEffect>
 #include <Kuesa/ThresholdEffect>
 #include <Kuesa/OpacityMask>
@@ -86,6 +87,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));
     qmlRegisterType<Kuesa::BloomEffect>("Kuesa.Effects", 1, 0, "BloomEffect");
+    qmlRegisterType<Kuesa::DepthOfFieldEffect>("Kuesa.Effects", 1, 0, "DepthOfFieldEffect");
     qmlRegisterType<Kuesa::ThresholdEffect>("Kuesa.Effects", 1, 0, "ThresholdEffect");
     qmlRegisterType<Kuesa::GaussianBlurEffect>("Kuesa.Effects", 1, 0, "BlurEffect");
     qmlRegisterType<Kuesa::OpacityMask>("Kuesa.Effects", 1, 0, "OpacityMask");

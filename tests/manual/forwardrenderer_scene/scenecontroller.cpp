@@ -44,6 +44,10 @@ SceneController::SceneController(QObject *parent)
     , m_threshold(.5)
     , m_opacityMaskEffect(false)
     , m_opacityMaskPremultipliedAlpha(false)
+    , m_depthOfFieldEffect(false)
+    , m_depthOfFieldRadius(16.f)
+    , m_depthOfFieldRange(3.f)
+    , m_depthOfFieldDistance(10.f)
 {
     m_scenes << "ThreeSpheres"
              << "BloomTest";
@@ -123,6 +127,26 @@ bool SceneController::opacityMaskPremultipliedAlpha() const
 bool SceneController::zFill() const
 {
     return m_zFillEnabled;
+}
+
+bool SceneController::depthOfFieldEffect() const
+{
+    return m_depthOfFieldEffect;
+}
+
+float SceneController::depthOfFieldRadius() const
+{
+    return m_depthOfFieldRadius;
+}
+
+float SceneController::depthOfFieldRange() const
+{
+    return m_depthOfFieldRange;
+}
+
+float SceneController::depthOfFieldDistance() const
+{
+    return m_depthOfFieldDistance;
 }
 
 int SceneController::bloomBlurPassCount() const
@@ -252,6 +276,42 @@ void SceneController::setZFill(bool zFill)
 
     m_zFillEnabled = zFill;
     emit zFillChanged(m_zFillEnabled);
+}
+
+void SceneController::setDepthOfFieldEffect(bool depthOfFieldEffect)
+{
+    if (m_depthOfFieldEffect == depthOfFieldEffect)
+        return;
+
+    m_depthOfFieldEffect = depthOfFieldEffect;
+    emit depthOfFieldEffectChanged(m_depthOfFieldEffect);
+}
+
+void SceneController::setDepthOfFieldRadius(float depthOfFieldRadius)
+{
+    if (qFuzzyCompare(m_depthOfFieldRadius, depthOfFieldRadius))
+        return;
+
+    m_depthOfFieldRadius = depthOfFieldRadius;
+    emit depthOfFieldRadiusChanged(m_depthOfFieldRadius);
+}
+
+void SceneController::setDepthOfFieldRange(float depthOfFieldRange)
+{
+    if (qFuzzyCompare(m_depthOfFieldRange, depthOfFieldRange))
+        return;
+
+    m_depthOfFieldRange = depthOfFieldRange;
+    emit depthOfFieldRangeChanged(m_depthOfFieldRange);
+}
+
+void SceneController::setDepthOfFieldDistance(float depthOfFieldDistance)
+{
+    if (qFuzzyCompare(m_depthOfFieldDistance, depthOfFieldDistance))
+        return;
+
+    m_depthOfFieldDistance = depthOfFieldDistance;
+    emit depthOfFieldDistanceChanged(m_depthOfFieldDistance);
 }
 
 void SceneController::setBloomBlurPassCount(int bloomBlurPassCount)
