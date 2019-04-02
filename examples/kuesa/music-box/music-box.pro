@@ -3,9 +3,12 @@ TEMPLATE = app
 TARGET = music-box
 
 QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa
-
 SOURCES += \
-    main.cpp
+    main.cpp \
+    sampler.cpp
+
+HEADERS += \
+    sampler.h
 
 RESOURCES += \
     qml/qml.qrc \
@@ -23,3 +26,19 @@ QMAKE_EXTRA_COMPILERS += asset_builder
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 INSTALLS += target
+
+install_music_samples.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET/samples
+install_music_samples.files = $$PWD/assets/samples/*
+
+INSTALLS += install_music_samples
+
+
+win32 {
+QMAKE_POST_LINK +=$$quote(cmd /c copy /y $$PWD/assets/samples $$OUT_PWD/ $$escape_expand(\n\t))
+LIBS += -lportaudio.dll
+}
+else {
+QMAKE_POST_LINK += $$quote(cp -rf $$PWD/assets/samples $$OUT_PWD/ $$escape_expand(\n\t))
+CONFIG += link_pkgconfig
+PKGCONFIG += portaudio-2.0
+}

@@ -28,5 +28,6 @@ TEMPLATE = subdirs
 
 qtHaveModule(quick) {
     SUBDIRS += \
-        car-scene
+        car-scene \
+        music-box
 }

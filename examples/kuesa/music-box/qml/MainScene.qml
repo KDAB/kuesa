@@ -7,6 +7,7 @@ import Qt3D.Animation 2.10
 import QtQml 2.2
 
 import Kuesa 1.0 as Kuesa
+import MusicBox 1.0 as MusicBox
 
 Kuesa.SceneEntity {
     id: scene
@@ -202,6 +203,7 @@ Kuesa.SceneEntity {
                             var animation = d.prongAnimations[i];
                             animation.setNormalizedTime(0);
                             animation.start();
+                            sampler.note(i, 0.5);
                         }
                     }
                 }
@@ -290,4 +292,8 @@ Kuesa.SceneEntity {
     Kuesa.AnimationPlayer { id: prong27Action; sceneEntity: scene; clip: 'Prong27Action' }
     Kuesa.AnimationPlayer { id: prong28Action; sceneEntity: scene; clip: 'Prong28Action' }
     Kuesa.AnimationPlayer { id: prong29Action; sceneEntity: scene; clip: 'Prong29Action' }
+
+    MusicBox.Sampler {
+        id: sampler
+    }
 }
