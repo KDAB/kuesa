@@ -1,7 +1,8 @@
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QResource>
-
+#include <QTimer>
+#include "sampler.h"
 namespace {
 bool initializeAssetResources(const QVector<QString> &fileNames)
 {
@@ -33,7 +34,8 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    initializeAssetResources({QStringLiteral("music-box.qrb"), QStringLiteral("envmap-pink-sunrise.qrb")});
+    initializeAssetResources({ QStringLiteral("music-box.qrb"), QStringLiteral("envmap-pink-sunrise.qrb") });
+    qmlRegisterType<Sampler>("MusicBox", 1, 0, "Sampler");
 
     QQuickView view;
     view.setResizeMode(QQuickView::SizeRootObjectToView);

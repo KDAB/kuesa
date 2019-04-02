@@ -36,5 +36,6 @@ qtHaveModule(quick) {
 
     SUBDIRS += \
         shared-utils \
-        car-scene
+        car-scene \
+        music-box
 }

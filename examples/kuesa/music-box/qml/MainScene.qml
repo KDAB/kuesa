@@ -7,6 +7,7 @@ import Qt3D.Animation 2.10
 import QtQml 2.2
 
 import Kuesa 1.0 as Kuesa
+import MusicBox 1.0 as MusicBox
 
 Kuesa.SceneEntity {
     id: scene
@@ -202,6 +203,7 @@ Kuesa.SceneEntity {
                             var animation = d.prongAnimations[i];
                             animation.setNormalizedTime(0);
                             animation.start();
+                            sampler.note(i, 0.5);
                         }
                     }
                 }
@@ -290,4 +292,40 @@ Kuesa.SceneEntity {
     Kuesa.AnimationPlayer { id: prong27Action; sceneEntity: scene; clip: 'Prong27Action' }
     Kuesa.AnimationPlayer { id: prong28Action; sceneEntity: scene; clip: 'Prong28Action' }
     Kuesa.AnimationPlayer { id: prong29Action; sceneEntity: scene; clip: 'Prong29Action' }
+
+    MusicBox.Sampler {
+        id: sampler
+        notes: [
+            "samples/114.wav",
+            "samples/112.wav",
+            "samples/110.wav",
+            "samples/109.wav",
+            "samples/107.wav",
+            "samples/105.wav",
+            "samples/103.wav",
+            "samples/102.wav",
+            "samples/100.wav",
+            "samples/98.wav",
+            "samples/97.wav",
+            "samples/95.wav",
+            "samples/94.wav",
+            "samples/93.wav",
+            "samples/91.wav",
+            "samples/90.wav",
+            "samples/88.wav",
+            "samples/86.wav",
+            "samples/85.wav",
+            "samples/83.wav",
+            "samples/82.wav",
+            "samples/81.wav",
+            "samples/79.wav",
+            "samples/78.wav",
+            "samples/76.wav",
+            "samples/74.wav",
+            "samples/71.wav",
+            "samples/70.wav",
+            "samples/67.wav",
+            "samples/66.wav"
+        ]
+    }
 }
