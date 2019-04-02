@@ -118,7 +118,6 @@ private:
     bool m_usingColorAttribute;
     bool m_doubleSided;
     bool m_useSkinning;
-    bool m_invokeInitVertexShaderRequested;
     bool m_opaque;
     bool m_alphaCutoffEnabled;
     ToneMapping m_toneMappingAlgorithm;
@@ -127,8 +126,6 @@ private:
     MetallicRoughnessTechnique *m_metalRoughES3Technique;
     MetallicRoughnessTechnique *m_metalRoughES2Technique;
     Qt3DRender::QParameter *m_brdfLUTParameter;
-
-    Q_INVOKABLE void initVertexShader();
 };
 
 } // namespace Kuesa

@@ -736,8 +736,8 @@ void GLTF2Parser::buildJointHierarchy(const HierarchyNode *node, int &jointAcces
 
 void GLTF2Parser::generateTreeNodeContent()
 {
-    Qt3DCore::QComponent *defaultMaterial = nullptr;
-    Qt3DCore::QComponent *defaultSkinnedMaterial = nullptr;
+    MetallicRoughnessMaterial *defaultMaterial = nullptr;
+    MetallicRoughnessMaterial *defaultSkinnedMaterial = nullptr;
     m_sceneRootEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
     m_sceneRootEntity->setObjectName(QStringLiteral("GLTF2Scene"));
 
@@ -900,9 +900,14 @@ void GLTF2Parser::generateTreeNodeContent()
                     Qt3DCore::QEntity *primitiveEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
                     primitiveEntity->addComponent(primitiveData.primitiveRenderer);
 
+                    // Add morph controller if it is not null
+                    if (morphController != nullptr) {
+                        primitiveEntity->addComponent(morphController);
+                    }
+
                     // Add material for mesh
                     {
-                        Qt3DCore::QComponent *material = nullptr;
+                        MetallicRoughnessMaterial *material = nullptr;
 
                         // TO DO: generate proper morph target vertex shader based
                         // on meshData.morphTargetCount and primitiveData.morphTargets
@@ -947,6 +952,10 @@ void GLTF2Parser::generateTreeNodeContent()
                                 material = defaultMaterial;
                             }
                         }
+
+                        if (hasMorphTargets)
+                            material->setMorphController(morphController);
+
                         primitiveEntity->addComponent(material);
                     }
 
@@ -961,11 +970,6 @@ void GLTF2Parser::generateTreeNodeContent()
                     } else {
                         // We set the parent to entity so that transform is applied
                         primitiveEntity->setParent(entity);
-                    }
-
-                    // Add morph controller if it is not null
-                    if (morphController != nullptr) {
-                        primitiveEntity->addComponent(morphController);
                     }
                 }
             }
