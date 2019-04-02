@@ -1,0 +1,194 @@
+{
+    "templates": {
+        "kuesa_morpthTargetsWeights": {
+            "inputs":[
+            ],
+            "outputs": [
+                "weights"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/es2/kuesa_morphtargets_weights.inc.vert" ],
+                    "substitution": ""
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/es3/kuesa_morphtargets_weights.inc.vert" ],
+                    "substitution": ""
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_weights.inc.vert" ],
+                    "substitution": ""
+                }
+            ]
+        },
+        "kuesa_morphTargetsPosition": {
+            "inputs": [
+                "weights",
+                "vPosition"
+            ],
+            "outputs": [
+                "position"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/es2/kuesa_morphtargets_position.inc.vert" ],
+                    "substitution": "highp vec3 $position = kuesa_morphPosition($vPosition);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/es3/kuesa_morphtargets_position.inc.vert" ],
+                    "substitution": "highp vec3 $position = kuesa_morphPosition($vPosition);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_position.inc.vert" ],
+                    "substitution": "vec3 $position = kuesa_morphPosition($vPosition);"
+                }
+            ]
+        },
+        "kuesa_morphTargetsNormal": {
+            "inputs": [
+                "weights",
+                "vNormal"
+            ],
+            "outputs": [
+                "normal"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/es2/kuesa_morphtargets_normal.inc.vert" ],
+                    "substitution": "highp vec3 $normal = kuesa_morphNormal($vNormal);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/es3/kuesa_morphtargets_normal.inc.vert" ],
+                    "substitution": "highp vec3 $normal = kuesa_morphNormal($vNormal);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_normal.inc.vert" ],
+                    "substitution": "vec3 $normal = kuesa_morphNormal($vNormal);"
+                }
+            ]
+        },
+        "kuesa_morphTargetsTangent": {
+            "inputs": [
+                "weights",
+                "vTangent"
+            ],
+            "outputs": [
+                "tangent"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/es2/kuesa_morphtargets_tangent.inc.vert" ],
+                    "substitution": "highp vec4 $tangent = kuesa_morphTangent($vTangent);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/es3/kuesa_morphtargets_tangent.inc.vert" ],
+                    "substitution": "highp vec4 $tangent = kuesa_morphTangent($vTangent);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [ "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_tangent.inc.vert" ],
+                    "substitution": "vec4 $tangent = kuesa_morphTangent($vTangent);"
+                }
+            ]
+        }
+    },
+    "prototypes": {
+        "kuesa_morpthTargetsWeights": {
+            "template": "default.kuesa_morpthTargetsWeights",
+            "inputs": [
+            ],
+            "outputs": [
+                {"weights": "QShaderLanguage::Float"}
+            ]
+        },
+        "kuesa_morphTargetsPosition": {
+            "template": "default.kuesa_morphTargetsPosition",
+            "inputs": [
+                {"weights": "QShaderLanguage::Float"},
+                {"vPosition": "QShaderLanguage::Vec3"}
+            ],
+            "outputs": [
+                {"position": "QShaderLanguage::Vec3"}
+            ]
+        },
+        "kuesa_morphTargetsNormal": {
+            "template": "default.kuesa_morphTargetsNormal",
+            "inputs": [
+                {"weights": "QShaderLanguage::Float"},
+                {"vNormal": "QShaderLanguage::Vec3"}
+            ],
+            "outputs": [
+                {"normal": "QShaderLanguage::Vec3"}
+            ]
+        },
+        "kuesa_morphTargetsTangent": {
+            "template": "default.kuesa_morphTargetsTangent",
+            "inputs": [
+                {"weights": "QShaderLanguage::Float"},
+                {"vTangent": "QShaderLanguage::Vec4"}
+            ],
+            "outputs": [
+                {"tangent": "QShaderLanguage::Vec4"}
+            ]
+        }
+    }
+}
