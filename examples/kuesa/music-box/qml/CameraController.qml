@@ -26,10 +26,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Qt3D.Core 2.10
-import Qt3D.Render 2.10
-import Qt3D.Input 2.1
-import Qt3D.Logic 2.0
+import Qt3D.Core 2.12
+import Qt3D.Render 2.12
+import Qt3D.Input 2.12
+import Qt3D.Logic 2.12
 import QtQml 2.11
 import QtQuick 2.11 as QQ2
 

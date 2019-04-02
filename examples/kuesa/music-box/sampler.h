@@ -1,10 +1,10 @@
 /*
-    main.qml
+    sampler.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Mauro Persano <mauro.persano@kdab.com>
+    Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,14 +26,35 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.11
-import QtQuick.Scene3D 2.0
+#ifndef KUESA_MUSIC_BOX_SAMPLER_H
+#define KUESA_MUSIC_BOX_SAMPLER_H
+#include <QObject>
+#include <QVariantMap>
 
-Scene3D {
-    id: scene3D
-    anchors.fill: parent
-    multisample: true
-    aspects: ["input", "animation", "logic"]
+class SamplerPrivate;
+class Sampler : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QStringList notes READ notes WRITE setNotes NOTIFY notesChanged)
+public:
+    Sampler(QObject *parent = nullptr);
+    ~Sampler();
 
-    MainScene { }
-}
+    Q_INVOKABLE void note(int sample, float volume);
+
+    QStringList notes() const;
+
+public slots:
+    void setNotes(QStringList note);
+
+signals:
+    void notesChanged(QStringList notes);
+
+private:
+    Q_DECLARE_PRIVATE(Sampler)
+    Q_DISABLE_COPY(Sampler)
+    QScopedPointer<SamplerPrivate> d_ptr;
+    QStringList m_notes;
+};
+
+#endif

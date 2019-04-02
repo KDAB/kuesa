@@ -30,7 +30,8 @@ qtHaveModule(quick) {
     SUBDIRS += \
         shared-utils \
         car-scene \
-        tonemapping
+        tonemapping \
+        music-box
 
     for(subdir, SUBDIRS) {
         !equals(subdir, shared-utils) {

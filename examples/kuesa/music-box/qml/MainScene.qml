@@ -1,12 +1,41 @@
-import Qt3D.Core 2.10
-import Qt3D.Render 2.11
-import Qt3D.Input 2.0
-import Qt3D.Logic 2.0
-import Qt3D.Extras 2.11
-import Qt3D.Animation 2.10
+/*
+    MainScene.qml
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Mauro Persano <mauro.persano@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+import Qt3D.Core 2.12
+import Qt3D.Render 2.12
+import Qt3D.Input 2.12
+import Qt3D.Logic 2.12
+import Qt3D.Extras 2.12
+import Qt3D.Animation 2.12
 import QtQml 2.2
 
 import Kuesa 1.0 as Kuesa
+import MusicBox 1.0 as MusicBox
 
 Kuesa.SceneEntity {
     id: scene
@@ -202,6 +231,7 @@ Kuesa.SceneEntity {
                             var animation = d.prongAnimations[i];
                             animation.setNormalizedTime(0);
                             animation.start();
+                            sampler.note(i, 0.5);
                         }
                     }
                 }
@@ -290,4 +320,40 @@ Kuesa.SceneEntity {
     Kuesa.AnimationPlayer { id: prong27Action; sceneEntity: scene; clip: 'Prong27Action' }
     Kuesa.AnimationPlayer { id: prong28Action; sceneEntity: scene; clip: 'Prong28Action' }
     Kuesa.AnimationPlayer { id: prong29Action; sceneEntity: scene; clip: 'Prong29Action' }
+
+    MusicBox.Sampler {
+        id: sampler
+        notes: [
+            "samples/114.wav",
+            "samples/112.wav",
+            "samples/110.wav",
+            "samples/109.wav",
+            "samples/107.wav",
+            "samples/105.wav",
+            "samples/103.wav",
+            "samples/102.wav",
+            "samples/100.wav",
+            "samples/98.wav",
+            "samples/97.wav",
+            "samples/95.wav",
+            "samples/94.wav",
+            "samples/93.wav",
+            "samples/91.wav",
+            "samples/90.wav",
+            "samples/88.wav",
+            "samples/86.wav",
+            "samples/85.wav",
+            "samples/83.wav",
+            "samples/82.wav",
+            "samples/81.wav",
+            "samples/79.wav",
+            "samples/78.wav",
+            "samples/76.wav",
+            "samples/74.wav",
+            "samples/71.wav",
+            "samples/70.wav",
+            "samples/67.wav",
+            "samples/66.wav"
+        ]
+    }
 }
