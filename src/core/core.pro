@@ -53,7 +53,7 @@ RESOURCES += \
 
 OTHER_FILES += \
     shaders/gl3/simple.vert \
-    shaders/graphs/metallicroughness.qt3d \
+    shaders/graphs/metallicroughness.graph \
     configure.pri \
     configure.json
 
