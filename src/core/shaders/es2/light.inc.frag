@@ -26,6 +26,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#extension OES_texture_float : require
+#extension OES_texture_float_linear : require
+
 #ifndef FP
 #define FP highp
 #endif
