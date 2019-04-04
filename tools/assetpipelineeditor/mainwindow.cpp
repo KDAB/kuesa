@@ -416,7 +416,7 @@ void MainWindow::openFile()
     QSettings settings;
     QString lastPath = settings.value(LASTPATHSETTING, QDir::homePath()).toString();
     QString filePath = QFileDialog::getOpenFileName(this, tr("Open GLTF2 File"),
-                                                    lastPath, QLatin1String("*.gltf;*.glb"));
+                                                    lastPath, QLatin1String("*.gltf *.glb"));
     if (filePath.isEmpty())
         return;
 
