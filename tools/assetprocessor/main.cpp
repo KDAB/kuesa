@@ -30,7 +30,7 @@
 #include <Kuesa/private/gltf2exporter_p.h>
 #include <Kuesa/SceneEntity>
 
-#include <QCoreApplication>
+#include <QGuiApplication>
 #include <QDir>
 #include <QCommandLineParser>
 #include <QElapsedTimer>
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     using namespace Kuesa;
     using namespace Kuesa::GLTF2Import;
 
-    QCoreApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
     QCoreApplication::setApplicationName(QStringLiteral("Kuesa Asset Compressor"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("kdab.com"));
     QCoreApplication::setOrganizationName(QStringLiteral("KDAB"));
