@@ -43,11 +43,10 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DRender {
-class QMaterial;
-}
-
 namespace Kuesa {
+
+class MetallicRoughnessMaterial;
+
 namespace GLTF2Import {
 
 class GLTF2Context;
@@ -93,15 +92,15 @@ public:
         float alphaCutoff = 0.5f;
     } alpha;
 
-    Qt3DRender::QMaterial *material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context);
-    Qt3DRender::QMaterial *material(bool isSkinned) const;
+    MetallicRoughnessMaterial *material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context);
+    MetallicRoughnessMaterial *material(bool isSkinned) const;
 
     bool hasRegularMaterial() const { return m_regularMaterial != nullptr; }
     bool hasSkinnedMaterial() const { return m_skinnedMaterial != nullptr; }
 
 private:
-    Qt3DRender::QMaterial *m_regularMaterial = nullptr;
-    Qt3DRender::QMaterial *m_skinnedMaterial = nullptr;
+    MetallicRoughnessMaterial *m_regularMaterial = nullptr;
+    MetallicRoughnessMaterial *m_skinnedMaterial = nullptr;
 };
 
 class Q_AUTOTEST_EXPORT MaterialParser

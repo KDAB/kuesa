@@ -151,27 +151,23 @@ Kuesa::MetallicRoughnessMaterial *createPbrMaterial(const Material &mat, const G
 
 } // namespace
 
-Qt3DRender::QMaterial *Material::material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context)
+Kuesa::MetallicRoughnessMaterial *Material::material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context)
 {
-    if (isSkinned) {
-        if (m_skinnedMaterial == nullptr) {
-            Kuesa::MetallicRoughnessMaterial *material = createPbrMaterial(*this, context);
-            material->setUseSkinning(true);
-            material->setUsingColorAttribute(hasColorAttribute);
-            m_skinnedMaterial = material;
-        }
-        return m_skinnedMaterial;
-    }
+    MetallicRoughnessMaterial *material = createPbrMaterial(*this, context);
+    material->setUseSkinning(isSkinned);
+    material->setUsingColorAttribute(hasColorAttribute);
 
-    if (m_regularMaterial == nullptr) {
-        Kuesa::MetallicRoughnessMaterial *material = createPbrMaterial(*this, context);
-        material->setUsingColorAttribute(hasColorAttribute);
-        m_regularMaterial = material;
+    if (isSkinned) {
+        if (m_skinnedMaterial == nullptr)
+            m_skinnedMaterial = material;
+    } else {
+        if (m_regularMaterial == nullptr)
+            m_regularMaterial = material;
     }
-    return m_regularMaterial;
+    return material;
 }
 
-Qt3DRender::QMaterial *Material::material(bool isSkinned) const
+Kuesa::MetallicRoughnessMaterial *Material::material(bool isSkinned) const
 {
     if (isSkinned)
         return m_skinnedMaterial;
