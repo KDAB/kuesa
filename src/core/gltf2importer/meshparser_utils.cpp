@@ -95,7 +95,7 @@ QVarLengthArray<uint, 2> validVertexSizesForAttribute(const QString &attributeNa
             if (re.match(attributeName).hasMatch()) {
                 // Tangent attribute size is 4, all others are 3
                 if (baseAttributeName == Qt3DRender::QAttribute::defaultTangentAttributeName())
-                    return { 4 };
+                    return { 3, 4 };
                 return { 3 };
             }
         }
@@ -107,7 +107,7 @@ QVarLengthArray<uint, 2> validVertexSizesForAttribute(const QString &attributeNa
     if (attributeName == Qt3DRender::QAttribute::defaultNormalAttributeName())
         return { 3 };
     if (attributeName == Qt3DRender::QAttribute::defaultTangentAttributeName())
-        return { 4 };
+        return { 3, 4 };
     if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName())
         return { 2 };
     if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName())
