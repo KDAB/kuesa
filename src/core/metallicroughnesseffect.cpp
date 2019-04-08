@@ -700,6 +700,8 @@ void MetallicRoughnessEffect::setOpaque(bool opaque)
     m_transparentES2RenderPass->setEnabled(!opaque);
     if (opaque)
         setAlphaCutoffEnabled(false);
+
+    emit opaqueChanged(opaque);
 }
 
 void MetallicRoughnessEffect::setAlphaCutoffEnabled(bool enabled)
@@ -754,6 +756,8 @@ void MetallicRoughnessEffect::setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT)
 {
     auto d = Qt3DCore::QNodePrivate::get(this);
     auto current = this->brdfLUT();
+    if (brdfLUT == current)
+        return;
     if (current)
         d->unregisterDestructionHelper(current);
     if (brdfLUT) {
@@ -762,6 +766,8 @@ void MetallicRoughnessEffect::setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT)
             brdfLUT->setParent(this);
     }
     m_brdfLUTParameter->setValue(QVariant::fromValue(brdfLUT));
+
+    emit brdfLUTChanged(brdfLUT);
 }
 
 void MetallicRoughnessEffect::initVertexShader()
