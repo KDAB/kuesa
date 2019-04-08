@@ -54,6 +54,7 @@ qtConfig(private_tests) {
         layerparser \
         lightparser \
         imageparser \
+        tangentgenerator \
         texturesamplerparser \
         textureparser \
         animationparser \
