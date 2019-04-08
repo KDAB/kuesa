@@ -34,6 +34,7 @@
 #include <type_traits>
 
 #include "metallicroughnesseffect.h"
+#include "morphcontroller.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -323,6 +324,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
+    \property morphController
+
+    The morph controller instance used to control morph targets weights.
+    This can be null if a material is not used with morph targets.
+
+    \since 1.1
+ */
+
+/*!
     \property alphaCutoffEnabled
 
     If true, alpha cutoff is enabled. Fragments with an alpha value above a
@@ -597,6 +607,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \since 1.1
  */
 
+/*!
+    \qmlproperty MorphController morphController
+
+    The morph controller instance used to control morph targets weights.
+    This can be null if a material is not used with morph targets.
+
+    \since 1.1
+ */
+
 MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     : QMaterial(parent)
     , m_baseColorUsesTexCoord1(new QParameter(QStringLiteral("baseColorUsesTexCoord1"), bool(false)))
@@ -616,6 +635,7 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     , m_emissiveMapParameter(new QParameter(QStringLiteral("emissiveMap"), QVariant()))
     , m_alphaCutoffParameter(new QParameter(QStringLiteral("alphaCutoff"), 0.0))
     , m_textureTransformParameter(new QParameter(QStringLiteral("texCoordTransform"), QVariant::fromValue(QMatrix3x3())))
+    , m_morphControllerParameter(new QParameter(QStringLiteral("morphWeights"), QVariant()))
     , m_effect(new MetallicRoughnessEffect(this))
 {
     QObject::connect(m_baseColorUsesTexCoord1, &QParameter::valueChanged,
@@ -652,6 +672,8 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
                      this, wrapParameterSignal(this, &MetallicRoughnessMaterial::alphaCutoffChanged));
     QObject::connect(m_textureTransformParameter, &QParameter::valueChanged,
                      this, wrapParameterSignal(this, &MetallicRoughnessMaterial::textureTransformChanged));
+    QObject::connect(m_morphControllerParameter, &QParameter::valueChanged,
+                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::morphControllerChanged));
 
     QObject::connect(m_effect, &MetallicRoughnessEffect::usingColorAttributeChanged,
                      this, &MetallicRoughnessMaterial::usingColorAttributeChanged);
@@ -678,6 +700,7 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     addParameter(m_emissiveFactorParameter);
     addParameter(m_textureTransformParameter);
     addParameter(m_alphaCutoffParameter);
+    addParameter(m_morphControllerParameter);
 
     setEffect(m_effect);
     updateEffect();
@@ -827,6 +850,11 @@ void MetallicRoughnessMaterial::setEmissiveUsesTexCoord1(bool emissiveUsesTexCoo
     m_emissiveUsesTexCoord1->setValue(emissiveUsesTexCoord1);
 }
 
+MorphController *MetallicRoughnessMaterial::morphController() const
+{
+    return m_morphControllerParameter->value().value<MorphController *>();
+}
+
 void MetallicRoughnessMaterial::setBaseColorFactor(const QColor &baseColorFactor)
 {
     m_baseColorFactorParameter->setValue(baseColorFactor);
@@ -969,6 +997,14 @@ void MetallicRoughnessMaterial::setAlphaCutoff(float alphaCutoff)
 void MetallicRoughnessMaterial::setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm)
 {
     m_effect->setToneMappingAlgorithm(algorithm);
+}
+
+void MetallicRoughnessMaterial::setMorphController(MorphController *morphController)
+{
+    if (morphController == m_morphControllerParameter->value().value<MorphController *>())
+        return;
+
+    m_morphControllerParameter->setValue(QVariant::fromValue(morphController));
 }
 
 void MetallicRoughnessMaterial::updateEffect()
