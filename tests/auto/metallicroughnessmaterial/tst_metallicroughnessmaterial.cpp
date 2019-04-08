@@ -31,6 +31,7 @@
 #include <Qt3DRender/QTexture>
 #include <Qt3DRender/QParameter>
 #include <Kuesa/metallicroughnessmaterial.h>
+#include <Kuesa/morphcontroller.h>
 
 using namespace Kuesa;
 
@@ -74,7 +75,9 @@ bool testActiveParametersAreValid(const QVector<Qt3DRender::QParameter *> &activ
                                              QStringLiteral("emissiveFactor"),
                                              QStringLiteral("emissiveMap"),
                                              QStringLiteral("alphaCutoff"),
-                                             QStringLiteral("texCoordTransform") };
+                                             QStringLiteral("texCoordTransform"),
+                                             QStringLiteral("morphWeights")
+                                           };
 
     for (const auto &parameter : activeParameters) {
         auto it = std::find_if(std::begin(validParameters),
@@ -98,6 +101,7 @@ private Q_SLOTS:
     void initTestCase()
     {
         qRegisterMetaType<Kuesa::MetallicRoughnessEffect::ToneMapping>("MetallicRoughnessEffect::ToneMapping");
+        qRegisterMetaType<Kuesa::MorphController*>("MorphController*");
     }
 
     void checkDefaultState()
@@ -462,6 +466,20 @@ private Q_SLOTS:
                        &MetallicRoughnessMaterial::toneMappingAlgorithm,
                        &MetallicRoughnessMaterial::toneMappingAlgorithmChanged,
                        MetallicRoughnessEffect::Reinhard, MetallicRoughnessEffect::Filmic);
+    }
+
+    void checkMorphWeights()
+    {
+        // GIVEN
+        Kuesa::MetallicRoughnessMaterial mat;
+        MorphController ctrl;
+
+        // THEN
+        ::testProperty(&mat,
+                       &MetallicRoughnessMaterial::setMorphController,
+                       &MetallicRoughnessMaterial::morphController,
+                       &MetallicRoughnessMaterial::morphControllerChanged,
+                       static_cast<MorphController*>(nullptr), &ctrl);
     }
 };
 

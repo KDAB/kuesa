@@ -50,6 +50,8 @@ class QCullFace;
 
 namespace Kuesa {
 
+class MorphController;
+
 class KUESASHARED_EXPORT MetallicRoughnessMaterial : public Qt3DRender::QMaterial
 {
     Q_OBJECT
@@ -83,6 +85,8 @@ class KUESASHARED_EXPORT MetallicRoughnessMaterial : public Qt3DRender::QMateria
     Q_PROPERTY(float alphaCutoff READ alphaCutoff WRITE setAlphaCutoff NOTIFY alphaCutoffChanged)
     Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
     Q_PROPERTY(Kuesa::MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
+    Q_PROPERTY(Kuesa::MorphController *morphController READ morphController NOTIFY morphControllerChanged)
+
 public:
     explicit MetallicRoughnessMaterial(Qt3DCore::QNode *parent = nullptr);
     ~MetallicRoughnessMaterial();
@@ -117,6 +121,7 @@ public:
     float alphaCutoff() const;
 
     MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm() const;
+    MorphController *morphController() const;
 
 public Q_SLOTS:
     void setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1);
@@ -148,6 +153,7 @@ public Q_SLOTS:
     void setAlphaCutoffEnabled(bool enabled);
     void setAlphaCutoff(float alphaCutoff);
     void setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm);
+    void setMorphController(MorphController *morphController);
 
 Q_SIGNALS:
     void baseColorUsesTexCoord1Changed(bool);
@@ -179,6 +185,7 @@ Q_SIGNALS:
     void alphaCutoffEnabledChanged(bool enabled);
     void alphaCutoffChanged(float value);
     void toneMappingAlgorithmChanged(MetallicRoughnessEffect::ToneMapping algorithm);
+    void morphControllerChanged(MorphController *morphController);
 
 private:
     void updateEffect();
@@ -207,6 +214,8 @@ private:
     Qt3DRender::QParameter *m_alphaCutoffParameter;
 
     Qt3DRender::QParameter *m_textureTransformParameter;
+
+    Qt3DRender::QParameter *m_morphControllerParameter;
 
     MetallicRoughnessEffect *m_effect;
 };
