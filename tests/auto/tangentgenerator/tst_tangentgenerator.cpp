@@ -27,11 +27,29 @@
 */
 
 #include <QtTest/QtTest>
+#include <QDir>
+#include <Kuesa/private/gltf2exporter_p.h>
 #include <Kuesa/private/gltf2parser_p.h>
 #include <Kuesa/private/meshparser_utils_p.h>
 
 using namespace Kuesa;
 using namespace GLTF2Import;
+
+namespace {
+static QDir setupTestFolder()
+{
+    QDir tmp(QStandardPaths::standardLocations(QStandardPaths::TempLocation)[0]);
+    if (tmp.exists("kuesa-tangentgenerator-test")) {
+        tmp.cd("kuesa-tangentgenerator-test");
+        tmp.removeRecursively();
+        tmp.cdUp();
+    }
+    tmp.mkdir("kuesa-tangentgenerator-test");
+    tmp.cd("kuesa-tangentgenerator-test");
+    tmp.setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
+    return tmp;
+}
+} // namespace
 
 class tst_TangentGenerator : public QObject
 {
@@ -58,6 +76,69 @@ private Q_SLOTS:
         QVERIFY(Kuesa::GLTF2Import::MeshParserUtils::generateTangentAttribute(meshRenderer, &ctx));
 
         // THEN
+        QVERIFY(!Kuesa::GLTF2Import::MeshParserUtils::needsTangentAttribute(meshRenderer));
+    }
+
+    void testTangentGenerationFileOutput()
+    {
+        // GIVEN
+        auto tmp = setupTestFolder();
+        auto gltfPath = tmp.absolutePath() + QDir::separator() + "simple_cube_uv.gltf";
+
+        // WHEN
+        {
+            // GIVEN
+            GLTF2Context ctx;
+            GLTF2Parser parser;
+            parser.setContext(&ctx);
+            parser.parse(QString(ASSETS "simple_cube_uv.gltf"));
+
+            QVERIFY(ctx.meshesCount() == 1);
+            auto mesh = ctx.mesh(0);
+
+            QVERIFY(mesh.meshPrimitives.size() == 1);
+            auto meshRenderer = mesh.meshPrimitives[0].primitiveRenderer;
+
+            QVERIFY(Kuesa::GLTF2Import::MeshParserUtils::needsTangentAttribute(meshRenderer));
+
+            GLTF2Exporter::Export exported;
+
+            // WHEN
+            QVERIFY(Kuesa::GLTF2Import::MeshParserUtils::generateTangentAttribute(meshRenderer, &ctx));
+
+            // THEN
+            QVERIFY(!Kuesa::GLTF2Import::MeshParserUtils::needsTangentAttribute(meshRenderer));
+
+            GLTF2ExportConfiguration configuration;
+            configuration.setMeshCompressionEnabled(false);
+            configuration.setEmbedding(GLTF2ExportConfiguration::Embed::Keep);
+
+            GLTF2Exporter exporter;
+            exporter.setContext(&ctx);
+            exporter.setConfiguration(configuration);
+            exported = exporter.saveInFolder(QDir(ASSETS), tmp);
+
+            QVERIFY(exporter.errors().empty());
+            QVERIFY(exported.success());
+
+            QFile file(gltfPath);
+            QVERIFY(file.open(QIODevice::WriteOnly));
+            QJsonDocument doc(exported.json());
+            file.write(doc.toJson());
+        }
+
+        // THEN
+        GLTF2Parser parser;
+        GLTF2Context ctx;
+        parser.setContext(&ctx);
+        parser.parse(gltfPath);
+
+        QVERIFY(ctx.meshesCount() == 1);
+        auto mesh = ctx.mesh(0);
+
+        QVERIFY(mesh.meshPrimitives.size() == 1);
+        auto meshRenderer = mesh.meshPrimitives[0].primitiveRenderer;
+
         QVERIFY(!Kuesa::GLTF2Import::MeshParserUtils::needsTangentAttribute(meshRenderer));
     }
 };
