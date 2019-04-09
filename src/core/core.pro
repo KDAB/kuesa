@@ -32,6 +32,9 @@ DEFINES += QT_NO_FOREACH
 
 DEFINES += QT_BUILD_KUESA_LIB
 
+# Avoid windows defines
+win32:DEFINES += WIN32_LEAN_AND_MEAN
+
 QT += qml 3dcore 3dcore-private 3drender 3dquickextras 3danimation
 
 include($$OUT_PWD/qtkuesa-config.pri)
