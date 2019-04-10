@@ -66,7 +66,8 @@ car.files = \
     $${car_dir}/hex-normal.png \
     $${car_dir}/hex-normal.png.png
 
-qtConfig(draco) {
+qtConfig(draco):!android:!ios {
+    DEFINES += SHOULD_USE_DRACO
     car.files += \
         $${car_dir}/DodgeViper-draco.bin \
         $${car_dir}/DodgeViper-draco.gltf

@@ -121,7 +121,7 @@ int main(int ac, char **av)
     const QString assetsPrefix = QStringLiteral("qrc:/");
 #endif
 
-#if defined(KUESA_DRACO_COMPRESSION)
+#if defined(KUESA_DRACO_COMPRESSION) && defined(SHOULD_USE_DRACO)
     const QString modelSuffix = QStringLiteral("-draco");
 #else
     const QString modelSuffix = QStringLiteral("");
