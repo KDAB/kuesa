@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>RotatingHelmet.bin</file>
+        <file>RotatingHelmet.gltf</file>
+	<file>Default_albedo.png</file>
+        <file>Default_emissive.png</file>
+        <file>Default_metalRoughness.png</file>
+        <file>Default_normal.png</file>
+    </qresource>
+</RCC>

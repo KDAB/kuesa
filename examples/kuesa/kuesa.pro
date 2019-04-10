@@ -27,14 +27,14 @@
 TEMPLATE = subdirs
 
 qtHaveModule(quick) {
-    shared_utils.subdir = $$PWD/shared-utils
-    shared_utils.target = shared-utils
-
-    car_scene.subdir = $$PWD/car-scene
-    car_scene.target = car-scene
-    car_scene.depends = shared_utils
-
     SUBDIRS += \
         shared-utils \
-        car-scene
+        car-scene \
+        tonemapping
+
+    for(subdir, SUBDIRS) {
+        !equals(subdir, shared-utils) {
+            $${subdir}.depends += shared-utils
+        }
+    }
 }

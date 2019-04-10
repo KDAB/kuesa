@@ -55,7 +55,7 @@ class KUESASHARED_EXPORT MetallicRoughnessEffect : public Qt3DRender::QEffect
     Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
     Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
     Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
-    Q_PROPERTY(MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
+    Q_PROPERTY(Kuesa::MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLUT READ brdfLUT WRITE setBrdfLUT NOTIFY brdfLUTChanged REVISION 1)
 
 public:
