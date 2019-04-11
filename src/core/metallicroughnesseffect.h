@@ -37,13 +37,10 @@ QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
 class QAbstractTexture;
-class QShaderProgramBuilder;
-class QShaderProgram;
-class QCullFace;
-class QRenderPass;
 } // namespace Qt3DRender
 
 namespace Kuesa {
+class MetallicRoughnessTechnique;
 
 class KUESASHARED_EXPORT MetallicRoughnessEffect : public Qt3DRender::QEffect
 {
@@ -126,25 +123,9 @@ private:
     bool m_alphaCutoffEnabled;
     ToneMapping m_toneMappingAlgorithm;
 
-    Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QShaderProgramBuilder *m_metalRoughGL3ShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_metalRoughES3ShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_metalRoughES2ShaderBuilder;
-    Qt3DRender::QShaderProgram *m_metalRoughGL3Shader;
-    Qt3DRender::QShaderProgram *m_metalRoughES3Shader;
-    Qt3DRender::QShaderProgram *m_metalRoughES2Shader;
-    Qt3DRender::QTechnique *m_metalRoughGL3Technique;
-    Qt3DRender::QTechnique *m_metalRoughES3Technique;
-    Qt3DRender::QTechnique *m_metalRoughES2Technique;
-    Qt3DRender::QRenderPass *m_zfillGL3RenderPass;
-    Qt3DRender::QRenderPass *m_zfillES3RenderPass;
-    Qt3DRender::QRenderPass *m_zfillES2RenderPass;
-    Qt3DRender::QRenderPass *m_opaqueGL3RenderPass;
-    Qt3DRender::QRenderPass *m_opaqueES3RenderPass;
-    Qt3DRender::QRenderPass *m_opaqueES2RenderPass;
-    Qt3DRender::QRenderPass *m_transparentGL3RenderPass;
-    Qt3DRender::QRenderPass *m_transparentES3RenderPass;
-    Qt3DRender::QRenderPass *m_transparentES2RenderPass;
+    MetallicRoughnessTechnique *m_metalRoughGL3Technique;
+    MetallicRoughnessTechnique *m_metalRoughES3Technique;
+    MetallicRoughnessTechnique *m_metalRoughES2Technique;
     Qt3DRender::QParameter *m_brdfLUTParameter;
 
     Q_INVOKABLE void initVertexShader();
