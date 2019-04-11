@@ -79,7 +79,7 @@ bool testActiveParametersAreValid(const QVector<Qt3DRender::QParameter *> &activ
     for (const auto &parameter : activeParameters) {
         auto it = std::find_if(std::begin(validParameters),
                                std::end(validParameters),
-                               [parameter](const auto &parameterName) {
+                               [parameter](const QString &parameterName) {
                                    return parameter->name() == parameterName;
                                });
         if (it == std::end(validParameters))
