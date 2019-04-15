@@ -34,6 +34,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QTimer>
+#include <array>
 #define DR_WAV_IMPLEMENTATION
 #define DR_WAV_NO_STDIO
 #define DR_WAV_NO_CONVERSION_API
@@ -81,8 +82,26 @@ public:
     }
 
     struct PlayedNote {
-        int position{}; // The position in the sample.
-        float volume{ 1. };
+        PlayedNote()
+            : PlayedNote{0, 1.}
+        {
+
+        }
+
+        PlayedNote(int position, float volume)
+            : position{position}
+            , volume{volume}
+        {
+
+        }
+
+        PlayedNote(const PlayedNote&) = default;
+        PlayedNote(PlayedNote&&) = default;
+        PlayedNote& operator=(const PlayedNote&) = default;
+        PlayedNote& operator=(PlayedNote&&) = default;
+
+        int position; // The position in the sample.
+        float volume;
     };
 
     drwav *wave{};
@@ -91,8 +110,26 @@ public:
 
 // The UI sends this to the audio engine
 struct NoteRequest {
-    int note{};
-    float volume{};
+    NoteRequest()
+        : NoteRequest{0, 1.}
+    {
+
+    }
+
+    NoteRequest(int note, float volume)
+        : note{note}
+        , volume{volume}
+    {
+
+    }
+
+    NoteRequest(const NoteRequest&) = default;
+    NoteRequest(NoteRequest&&) = default;
+    NoteRequest& operator=(const NoteRequest&) = default;
+    NoteRequest& operator=(NoteRequest&&) = default;
+
+    int note; // The sample index.
+    float volume;
 };
 
 // A set of memory-mapped samples
@@ -222,7 +259,7 @@ private:
         NoteRequest nr;
         while (self.notesRequests.try_dequeue(nr) && --max_dequeue > 0) {
             if (nr.note >= 0 && nr.note < notes.size())
-                notes[nr.note].played.push_back({ nr.note, nr.volume });
+                notes[nr.note].played.push_back(Note::PlayedNote{ nr.note, nr.volume });
         }
 
         if (frameCount == 0)
