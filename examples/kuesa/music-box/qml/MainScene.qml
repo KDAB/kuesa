@@ -33,6 +33,7 @@ import Qt3D.Logic 2.12
 import Qt3D.Extras 2.12
 import Qt3D.Animation 2.12
 import QtQml 2.2
+import QtQuick 2.12
 
 import Kuesa 1.0 as Kuesa
 import MusicBox 1.0 as MusicBox
@@ -355,5 +356,87 @@ Kuesa.SceneEntity {
             "samples/67.wav",
             "samples/66.wav"
         ]
+
+        property real previousRms:0.;
+        property real previousPeak: 0.;
+        onAudioSignal: {
+            // Minimal low-pass filtering
+            var newRms = Math.log(1. + rms * previousRms) / 200.
+            var newPeak = Math.log(1. + peak * previousPeak) / 200.
+            previousRms = rms
+            previousPeak = peak
+
+            soundFxRadius = newRms
+        }
+    }
+
+    property real soundFxRadius: 0.
+    Kuesa.MetallicRoughnessMaterial {
+        id: material
+    }
+
+
+    Entity {
+        Transform {
+            id: torus1Transform
+            translation: Qt.vector3d(-0.6, 0.35, 1.95)
+            scale3D: Qt.vector3d(300. * soundFxRadius, 300. * soundFxRadius, 300. * soundFxRadius)
+
+            Behavior on scale3D {
+                Vector3dAnimation { }
+            }
+
+            rotationY: 100
+        }
+        TorusMesh {
+            id: torus1Mesh
+            radius: 0.1
+            minorRadius: 0.01
+            rings: 100
+            slices: 20
+        }
+        components: [ torus1Mesh, material, torus1Transform ]
+    }
+    Entity {
+        Transform {
+            id: torus2Transform
+            translation: Qt.vector3d(-0.7, 0.35, 1.95)
+            scale3D: Qt.vector3d(200. * soundFxRadius, 200. * soundFxRadius, 200. * soundFxRadius)
+
+            Behavior on scale3D {
+                Vector3dAnimation { }
+            }
+
+            rotationY: 100
+        }
+        TorusMesh {
+            id: torus2Mesh
+            radius: 0.1
+            minorRadius: 0.02
+            rings: 100
+            slices: 20
+        }
+        components: [ torus2Mesh, material, torus2Transform ]
+    }
+    Entity {
+        Transform {
+            id: torus3transform
+            translation: Qt.vector3d(-.8, 0.35, 1.95)
+            scale3D: Qt.vector3d(100. * soundFxRadius, 100. * soundFxRadius, 100. * soundFxRadius)
+
+            Behavior on scale3D {
+                Vector3dAnimation { }
+            }
+
+            rotationY: 100
+        }
+        TorusMesh {
+            id: torus3Mesh
+            radius: 0.1
+            minorRadius: 0.05
+            rings: 100
+            slices: 20
+        }
+        components: [ torus3Mesh, material, torus3transform ]
     }
 }

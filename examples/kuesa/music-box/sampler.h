@@ -49,6 +49,7 @@ public slots:
 
 signals:
     void notesChanged(QStringList notes);
+    void audioSignal(float rms, float peak);
 
 private:
     Q_DECLARE_PRIVATE(Sampler)
