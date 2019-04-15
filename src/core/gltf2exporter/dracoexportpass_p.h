@@ -67,6 +67,7 @@ public:
             GLTF2Import::GLTF2Context &context);
 
     const QString &compressedBufferFilename() const;
+    const QStringList &generatedFiles() const;
 
     QJsonObject compress();
 
@@ -93,6 +94,7 @@ private:
     std::set<int> m_accessorsToClean;
     QDir m_basePath, m_destination;
     QString m_compressedBufferFilename;
+    QStringList m_generated;
 
     const GLTF2ExportConfiguration &m_conf;
     GLTF2Import::GLTF2Context &m_context;

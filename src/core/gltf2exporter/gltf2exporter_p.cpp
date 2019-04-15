@@ -203,7 +203,7 @@ auto GLTF2Exporter::saveInFolder(
         rootObject = pass.compress();
         compressedBufferFilename = pass.compressedBufferFilename();
         if (!compressedBufferFilename.isEmpty()) {
-            copy_pass.addGeneratedFiles({ compressedBufferFilename });
+            copy_pass.addGeneratedFiles(pass.generatedFiles());
         }
         if (rootObject.empty()) {
             m_errors << QStringLiteral("Draco compression failed");
