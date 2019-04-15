@@ -362,7 +362,7 @@ private Q_SLOTS:
 
             // Check that a compressed buffer is created
             QVERIFY(tmp.exists(exported.compressedBufferFilename()));
-
+            QCOMPARE(exported.compressedBufferFilename(), "DodgeViper-1.bin");
             // Check that all the remaining data is correctly copied
             QVERIFY(tmp.exists("DodgeViper.bin"));
             QVERIFY(tmp.exists("hex-base.png.png"));
