@@ -40,6 +40,8 @@
 #include "gltf2importer.h"
 #include "gltf2exporter_p.h"
 #include "gltf2context_p.h"
+#include "gltf2uri_p.h"
+#include "gltf2keys_p.h"
 #include "kuesa_p.h"
 
 #include <QFile>
