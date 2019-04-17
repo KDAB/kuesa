@@ -26,15 +26,18 @@
 
 TEMPLATE = subdirs
 
+SUBDIRS += \
+    assetprocessor \
+    gltfViewer
+
 !cross_compile: {
     SUBDIRS += \
         assetpipelineeditor \
-        ddspreviewer \
-        assetprocessor \
-        gltfViewer
+        ddspreviewer
 
     !macos {
         SUBDIRS += \
             cubemaptooctahedralmap
     }
 }
+
