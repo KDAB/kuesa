@@ -32,6 +32,7 @@
 #include <QUrl>
 #include <Qt3DCore/QNode>
 #include <Kuesa/kuesa_global.h>
+#include <Kuesa/GLTF2Options>
 
 QT_BEGIN_NAMESPACE
 
@@ -49,6 +50,7 @@ class KUESASHARED_EXPORT GLTF2Importer : public Qt3DCore::QNode
     Q_PROPERTY(Kuesa::GLTF2Importer::Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(Kuesa::SceneEntity *sceneEntity READ sceneEntity WRITE setSceneEntity NOTIFY sceneEntityChanged)
     Q_PROPERTY(bool assignNames READ assignNames WRITE setAssignNames NOTIFY assignNamesChanged)
+    Q_PROPERTY(Kuesa::GLTF2Import::GLTF2Options *options READ options CONSTANT)
 public:
     enum Status {
         None,
@@ -65,11 +67,14 @@ public:
     GLTF2Importer::Status status() const;
     Kuesa::SceneEntity *sceneEntity() const;
     bool assignNames() const;
+    Kuesa::GLTF2Import::GLTF2Options *options();
+    const Kuesa::GLTF2Import::GLTF2Options *options() const;
 
 public Q_SLOTS:
     void setSource(const QUrl &source);
     void setSceneEntity(Kuesa::SceneEntity *sceneEntity);
     void setAssignNames(bool assignNames);
+    void setOptions(const Kuesa::GLTF2Import::GLTF2Options &options);
 
 Q_SIGNALS:
     void sourceChanged(const QUrl &source);
@@ -93,6 +98,7 @@ private:
     Kuesa::SceneEntity *m_sceneEntity;
     QMetaObject::Connection m_sceneEntityDestructionConnection;
     bool m_assignNames;
+    Kuesa::GLTF2Import::GLTF2Options m_options;
 };
 
 } // namespace Kuesa

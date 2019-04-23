@@ -82,6 +82,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::Skybox>(uri, 1, 0, "Skybox");
     qmlRegisterType<Kuesa::Asset>(uri, 1, 0, "Asset");
     qmlRegisterExtendedType<Kuesa::AnimationPlayer, Kuesa::AnimationPlayerItem>(uri, 1, 0, "AnimationPlayer");
+    qmlRegisterType<Kuesa::GLTF2Import::GLTF2Options>(uri, 1, 1, "GLTF2Options");
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));

@@ -1,4 +1,4 @@
-# auto.pro
+# gltfparser.pro
 #
 # This file is part of Kuesa.
 #
@@ -24,45 +24,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = subdirs
+TEMPLATE = app
 
-SUBDIRS = \
-#    cmake \
-    assetcollection \
-    meshcollection \
-    texturecollection \
-    skeletoncollection \
-    animationclipcollection \
-    effectcollection \
-    sceneentity \
-    textureimagecollection \
-    assetpipelineeditor
+TARGET = tst_parseroptions
 
-#installed_cmake.depends = cmake
+QT += testlib kuesa kuesa-private
 
-qtConfig(private_tests) {
-    SUBDIRS += \
-        bufferparser \
-        bufferviewparser \
-        bufferaccessorparser \
-        cameraparser \
-        meshparser \
-        nodeparser \
-        gltfparser \
-        gltfexporter \
-        layerparser \
-        imageparser \
-        texturesamplerparser \
-        textureparser \
-        animationparser \
-        sceneparser \
-        materialparser \
-        skinparser \
-        postfxlistextension \
-        assetitem \
-        forwardrenderer \
-        uri \
-        metallicroughnesseffect \
-        metallicroughnessmaterial \
-        parseroptions
-}
+CONFIG += testcase console
+
+SOURCES += tst_parseroptions.cpp
+
+include(../assets/assets.pri)

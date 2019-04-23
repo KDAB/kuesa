@@ -464,4 +464,16 @@ Skin GLTF2Context::assetAt<Skin>(qint32 i) const
     return skin(i);
 }
 
+
+
+Kuesa::GLTF2Import::GLTF2Options *GLTF2Context::options() const
+{
+    return m_options;
+}
+
+void GLTF2Context::setOptions(Kuesa::GLTF2Import::GLTF2Options *options)
+{
+    m_options = options;
+}
+
 QT_END_NAMESPACE

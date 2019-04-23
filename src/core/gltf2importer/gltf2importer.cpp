@@ -29,6 +29,7 @@
 #include "gltf2context_p.h"
 #include "gltf2importer.h"
 #include "gltf2importer/gltf2parser_p.h"
+#include "gltf2options.h"
 
 #include "collections/meshcollection.h"
 #include <Qt3DCore/QEntity>
@@ -208,13 +209,22 @@ using namespace Kuesa;
     \brief if true, assets with no names will be added to collections with default names (default is false)
  */
 
+/*!
+    \property GLTF2Importer::options
+    \brief Holds the Kuesa::GLTF2Import::GLTF2Options used to select what to import/generate
+ */
+
+/*!
+    \qmlproperty GLTF2Importer::options
+    \brief Holds the Kuesa.GLTF2Options used to select what to import/generate
+ */
+
 GLTF2Importer::GLTF2Importer(Qt3DCore::QNode *parent)
     : Qt3DCore::QNode(parent)
     , m_context(new GLTF2Import::GLTF2Context)
     , m_root(nullptr)
     , m_status(None)
     , m_sceneEntity(nullptr)
-    , m_assignNames(false)
 {
 }
 
@@ -306,6 +316,16 @@ bool GLTF2Importer::assignNames() const
     return m_assignNames;
 }
 
+Kuesa::GLTF2Import::GLTF2Options *GLTF2Importer::options()
+{
+    return &m_options;
+}
+
+const Kuesa::GLTF2Import::GLTF2Options *GLTF2Importer::options() const
+{
+    return &m_options;
+}
+
 /*!
  * if \param assignNames is true, assets with no names will be added to
  * collections with default names.
@@ -321,6 +341,11 @@ void GLTF2Importer::setAssignNames(bool assignNames)
     emit assignNamesChanged(m_assignNames);
 }
 
+void GLTF2Importer::setOptions(const Kuesa::GLTF2Import::GLTF2Options &options)
+{
+    m_options.setGenerateTangents(options.generateTangents());
+}
+
 void GLTF2Importer::load()
 {
     if (status() == Status::Loading)
@@ -328,6 +353,8 @@ void GLTF2Importer::load()
 
     setStatus(GLTF2Importer::Status::Loading);
     *m_context = {};
+
+    m_context->setOptions(&m_options);
 
     const QString path = urlToLocalFileOrQrc(m_source);
 
