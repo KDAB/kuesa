@@ -55,6 +55,8 @@
 #include "materialparser_p.h"
 #include "skinparser_p.h"
 
+#include "gltf2options.h"
+
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
@@ -156,6 +158,9 @@ public:
     QByteArray bufferChunk() const;
     void setBufferChunk(const QByteArray &bufferChunk);
 
+    Kuesa::GLTF2Import::GLTF2Options *options() const;
+    void setOptions(Kuesa::GLTF2Import::GLTF2Options *options);
+
 private:
     QVector<Accessor> m_accessors;
     QVector<QByteArray> m_buffers;
@@ -177,6 +182,8 @@ private:
     QJsonDocument m_json;
     QStringList m_localFiles;
     QByteArray m_bufferChunk;
+
+    Kuesa::GLTF2Import::GLTF2Options *m_options;
 };
 
 template<>
