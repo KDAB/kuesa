@@ -47,6 +47,7 @@ class QFrustumCulling;
 class QNoDraw;
 class QSortPolicy;
 class QRenderTarget;
+class QRenderTargetSelector;
 } // namespace Qt3DRender
 
 namespace Kuesa {
@@ -58,6 +59,7 @@ class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QFrameGraphNode
 {
     Q_OBJECT
     Q_PROPERTY(QObject *renderSurface READ renderSurface WRITE setRenderSurface NOTIFY renderSurfaceChanged)
+    Q_PROPERTY(Qt3DRender::QRenderTarget *renderTarget READ renderTarget WRITE setRenderTarget NOTIFY renderTargetChanged)
     Q_PROPERTY(QSize externalRenderTargetSize READ externalRenderTargetSize WRITE setExternalRenderTargetSize NOTIFY externalRenderTargetSizeChanged)
     Q_PROPERTY(QRectF viewportRect READ viewportRect WRITE setViewportRect NOTIFY viewportRectChanged)
     Q_PROPERTY(Qt3DCore::QEntity *camera READ camera WRITE setCamera NOTIFY cameraChanged)
@@ -72,6 +74,7 @@ public:
     ~ForwardRenderer();
 
     QObject *renderSurface() const;
+    Qt3DRender::QRenderTarget *renderTarget() const;
     QSize externalRenderTargetSize() const;
     QRectF viewportRect() const;
     Qt3DCore::QEntity *camera() const;
@@ -91,6 +94,7 @@ public:
 
 public Q_SLOTS:
     void setRenderSurface(QObject *renderSurface);
+    void setRenderTarget(Qt3DRender::QRenderTarget *renderTarget);
     void setExternalRenderTargetSize(const QSize &externalRenderTargetSize);
     void setViewportRect(const QRectF &viewportRect);
     void setCamera(Qt3DCore::QEntity *camera);
@@ -102,6 +106,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void renderSurfaceChanged(QObject *renderSurface);
+    void renderTargetChanged(Qt3DRender::QRenderTarget *renderTarget);
     void externalRenderTargetSizeChanged(const QSize &externalRenderTargetSize);
     void viewportRectChanged(const QRectF &viewportRect);
     void cameraChanged(Qt3DCore::QEntity *camera);
@@ -112,20 +117,24 @@ Q_SIGNALS:
     void zFillingChanged(bool zFilling);
     void frameGraphTreeReconfigured();
 
+private Q_SLOTS:
+    void reconfigureFrameGraph();
+
 private:
     void updateTextureSizes();
     void handleSurfaceChange();
     QSize currentSurfaceSize() const;
-    void reconfigureFrameGraph();
     void reconfigureStages();
     Qt3DRender::QRenderTarget *createRenderTarget(bool includeDepth);
     AbstractPostProcessingEffect::FrameGraphNodePtr frameGraphSubtreeForPostProcessingEffect(AbstractPostProcessingEffect *effect) const;
+    Qt3DRender::QAbstractTexture *getRenderTargetColorTexture() const;
 
     Qt3DRender::QTechniqueFilter *m_techniqueFilter;
     Qt3DRender::QViewport *m_viewport;
     Qt3DRender::QCameraSelector *m_cameraSelector;
     Qt3DRender::QClearBuffers *m_clearBuffers;
     Qt3DRender::QRenderSurfaceSelector *m_surfaceSelector;
+    Qt3DRender::QRenderTargetSelector *m_renderTargetSelector;
     Qt3DRender::QNoDraw *m_noDrawClearBuffer;
     Qt3DRender::QFrustumCulling *m_frustumCulling;
     bool m_backToFrontSorting;

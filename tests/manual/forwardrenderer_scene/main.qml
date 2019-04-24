@@ -37,25 +37,64 @@ import Kuesa.Effects 1.0
 Entity {
     id: scene
 
+    OffscreenEntity {
+        id: offscreen
+        enabled: _controller.renderIntoFbo
+    }
+
+    Kuesa.ForwardRenderer {
+        id: forwardRenderer
+        camera: mainCamera
+        backToFrontSorting: _controller.alphaBlending
+        clearColor: _controller.clearColor
+        frustumCulling: _controller.frustumCulling
+        zFilling: _controller.zFill
+    }
+
+    RenderSurfaceSelector {
+        id: deferredRenderer
+        // 1st pass: render Kuesa scene into FBO
+        Kuesa.ForwardRenderer {
+            id: deferredKuesaRenderer
+            camera: mainCamera
+            backToFrontSorting: _controller.alphaBlending
+            clearColor: _controller.clearColor
+            frustumCulling: _controller.frustumCulling
+            zFilling: _controller.zFill
+            renderTarget: offscreen.fbo
+        }
+        // 2nd pass: render quad with scene fbo texture
+        CameraSelector {
+            camera: mainCamera
+            LayerFilter {
+                layers: [ offscreen.layer ]
+                filterMode: LayerFilter.AcceptAnyMatchingLayers
+                ClearBuffers {
+                    buffers: ClearBuffers.ColorDepthBuffer
+                    clearColor: "black"
+                }
+            }
+        }
+    }
+
     components: [
         InputSettings { },
         RenderSettings {
-            Kuesa.ForwardRenderer {
-                id: renderer
-                camera: mainCamera
-                backToFrontSorting: _controller.alphaBlending
-                clearColor: _controller.clearColor
-                frustumCulling: _controller.frustumCulling
-                zFilling: _controller.zFill
-            }
+            activeFrameGraph: _controller.renderIntoFbo ? deferredRenderer : forwardRenderer
         }
     ]
 
     function enablePostProcessingEffect(effect, enable) {
+        var renderer = _controller.renderIntoFbo ? deferredKuesaRenderer : forwardRenderer
         if (enable)
             renderer.addPostProcessingEffect(effect);
         else
             renderer.removePostProcessingEffect(effect);
+    }
+
+    function movePostProcessingEffect(oldFG, newFG, effect) {
+        oldFG.removePostProcessingEffect(effect);
+        newFG.addPostProcessingEffect(effect);
     }
 
     Connections {
@@ -64,6 +103,14 @@ Entity {
         onBloomEffectChanged: enablePostProcessingEffect(bloomComponent, _controller.bloomEffect)
         onBlurEffectChanged: enablePostProcessingEffect(blurComponent, _controller.blurEffect)
         onOpacityMaskEffectChanged: enablePostProcessingEffect(opacityMaskComponent, _controller.opacityMaskEffect)
+        onRenderIntoFboChanged: {
+            var oldKuesaRenderer = _controller.renderIntoFbo ? forwardRenderer : deferredKuesaRenderer
+            var newKuesaRenderer = _controller.renderIntoFbo ? deferredKuesaRenderer : forwardRenderer
+            if (_controller.thresholdEffect) movePostProcessingEffect(oldKuesaRenderer, newKuesaRenderer, thresholdComponent);
+            if (_controller.bloomEffect) movePostProcessingEffect(oldKuesaRenderer, newKuesaRenderer, bloomComponent);
+            if (_controller.blurEffect) movePostProcessingEffect(oldKuesaRenderer, newKuesaRenderer, blurComponent);
+            if (_controller.opacityMaskEffect) movePostProcessingEffect(oldKuesaRenderer, newKuesaRenderer, opacityMaskComponent);
+        }
     }
 
     ThresholdEffect {

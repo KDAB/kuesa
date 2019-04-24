@@ -34,7 +34,8 @@ SOURCES += \
     controllerwidget.cpp
 
 OTHER_FILES += \
-    main.qml
+    main.qml \
+    OffscreenEntity.qml
 
 RESOURCES += \
     main.qrc

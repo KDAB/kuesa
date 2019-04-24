@@ -42,6 +42,7 @@ class SceneController : public QObject
     Q_PROPERTY(bool alphaBlending READ alphaBlending WRITE setAlphaBlending NOTIFY alphaBlendingChanged)
     Q_PROPERTY(bool frustumCulling READ frustumCulling WRITE setFrustumCulling NOTIFY frustumCullingChanged)
     Q_PROPERTY(bool zFill READ zFill WRITE setZFill NOTIFY zFillChanged)
+    Q_PROPERTY(bool renderIntoFbo READ renderIntoFbo WRITE setRenderIntoFbo NOTIFY renderIntoFboChanged)
 
     Q_PROPERTY(bool bloomEffect READ bloomEffect WRITE setBloomEffect NOTIFY bloomFilterChanged)
     Q_PROPERTY(float bloomThreshold READ bloomThreshold WRITE setBloomThreshold NOTIFY bloomThresholdChanged)
@@ -75,6 +76,7 @@ public:
     bool opacityMaskEffect() const;
     bool opacityMaskPremultipliedAlpha() const;
     bool zFill() const;
+    bool renderIntoFbo() const;
 
 public slots:
     void setSceneName(const QString &sceneName);
@@ -92,6 +94,7 @@ public slots:
     void setOpacityMaskEffect(bool opacityMaskEffect);
     void setOpacityMaskPremultipliedAlpha(bool premultipliedAlpha);
     void setZFill(bool zFill);
+    void setRenderIntoFbo(bool renderIntoFbo);
 
 signals:
     void sceneNameChanged(const QString &sceneName);
@@ -109,6 +112,7 @@ signals:
     void opacityMaskEffectChanged(bool opacityMaskEffect);
     void opacityMaskPremultipliedAlphaChanged(bool premultipliedAlpha);
     void zFillChanged(bool zFill);
+    void renderIntoFboChanged(bool renderIntoFbo);
 
 private:
     QStringList m_scenes;
@@ -118,6 +122,7 @@ private:
     bool m_alphaBlendingEnabled;
     bool m_frustumCullingEnabled;
     bool m_zFillEnabled;
+    bool m_renderIntoFboEnabled;
 
     bool m_bloomFilter;
     float m_bloomThreshold;

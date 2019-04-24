@@ -46,6 +46,9 @@ ControllerWidget::ControllerWidget(SceneController *controller,
     connect(ui->alphaBlendingCheckbox, &QCheckBox::toggled,
             m_controller, &SceneController::setAlphaBlending);
 
+    connect(ui->renderIntoFboCheckBox, &QCheckBox::toggled,
+            m_controller, &SceneController::setRenderIntoFbo);
+
     connect(ui->frustumCheckBox, &QCheckBox::toggled,
             m_controller, &SceneController::setFrustumCulling);
 

@@ -34,6 +34,7 @@ SceneController::SceneController(QObject *parent)
     , m_alphaBlendingEnabled(false)
     , m_frustumCullingEnabled(true)
     , m_zFillEnabled(false)
+    , m_renderIntoFboEnabled(false)
     , m_bloomFilter(false)
     , m_bloomThreshold(0.6f)
     , m_bloomExposure(0.0f)
@@ -123,6 +124,11 @@ bool SceneController::opacityMaskPremultipliedAlpha() const
 bool SceneController::zFill() const
 {
     return m_zFillEnabled;
+}
+
+bool SceneController::renderIntoFbo() const
+{
+    return m_renderIntoFboEnabled;
 }
 
 int SceneController::bloomBlurPassCount() const
@@ -252,6 +258,15 @@ void SceneController::setZFill(bool zFill)
 
     m_zFillEnabled = zFill;
     emit zFillChanged(m_zFillEnabled);
+}
+
+void SceneController::setRenderIntoFbo(bool renderIntoFbo)
+{
+    if (m_renderIntoFboEnabled == renderIntoFbo)
+        return;
+
+    m_renderIntoFboEnabled = renderIntoFbo;
+    emit renderIntoFboChanged(m_renderIntoFboEnabled);
 }
 
 void SceneController::setBloomBlurPassCount(int bloomBlurPassCount)

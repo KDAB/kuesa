@@ -168,6 +168,36 @@ private Q_SLOTS:
         QCOMPARE(spy.count(), 1);
     }
 
+    void testChangingRenderTarget()
+    {
+        // GIVEN
+        Kuesa::ForwardRenderer renderer;
+        qRegisterMetaType<Qt3DRender::QRenderTarget *>("QRenderTarget");
+        QSignalSpy spy(&renderer, SIGNAL(renderTargetChanged(Qt3DRender::QRenderTarget *)));
+        QVERIFY(spy.isValid());
+
+        // WHEN
+        Qt3DRender::QRenderTarget newRenderTarget;
+        renderer.setRenderTarget(&newRenderTarget);
+
+        // THEN
+        QCOMPARE(renderer.renderTarget(), &newRenderTarget);
+        QCOMPARE(spy.count(), 1);
+
+        // WHEN
+        renderer.setRenderTarget(&newRenderTarget);
+
+        // THEN
+        QCOMPARE(spy.count(), 1);
+
+        // WHEN
+        renderer.setRenderTarget(nullptr);
+
+        // THEN
+        QCOMPARE(renderer.renderTarget(), nullptr);
+        QCOMPARE(spy.count(), 2);
+    }
+
     void testChangingClearColor()
     {
         // GIVEN

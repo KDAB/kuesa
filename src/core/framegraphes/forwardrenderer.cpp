@@ -77,6 +77,9 @@ using namespace Kuesa;
  * size of the rendering surface, when different from the size reported by the
  * surface, this can be the case with high DPI screens.
  *
+ * The scene can also be rendered into a Qt3D render target by calling
+ * \fn setRenderTarget.
+ *
  * Frustum culling of Entities will be performed by default to only render
  * entities that are visible within the camera's frustum. This can be disabled
  * by calling \fn setFrustumCulling.
@@ -134,6 +137,9 @@ using namespace Kuesa;
  * size of the rendering surface, when different from the size reported by the
  * surface, this can be the case with high DPI screens.
  *
+ * The scene can also be rendered into a Qt3D render target by calling
+ * setting the renderTarget property.
+ *
  * Frustum culling of Entities will be performed by default to only render
  * entities that are visible within the camera's frustum. This can be disabled
  * by setting the frustumCulling property.
@@ -168,13 +174,13 @@ using namespace Kuesa;
 /*!
     \property Kuesa::ForwardRenderer::renderSurface
 
-    Holds the surface where rendering will occur.
+    Holds the surface where rendering will occur (if renderTarget is not set).
 */
 
 /*!
     \qmlproperty Surface Kuesa::ForwardRenderer::renderSurface
 
-    Holds the surface where rendering will occur.
+    Holds the surface where rendering will occur (if renderTarget is not set).
 */
 
 /*!
@@ -187,6 +193,18 @@ using namespace Kuesa;
     \qmlproperty size Kuesa::ForwardRenderer::externalRenderTargetSize
 
     Holds the size of the external render target.
+*/
+
+/*!
+    \property Kuesa::ForwardRenderer::renderTarget
+
+    If set, the scene will be rendered into the Color0 attachment of the given render target
+*/
+
+/*!
+    \qmlproperty Qt3DRender::RenderTarget Kuesa::ForwardRenderer::renderTarget
+
+    If set, the scene will be rendered into the Color0 attachment of the given render target
 */
 
 /*!
@@ -303,6 +321,7 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_cameraSelector(new Qt3DRender::QCameraSelector())
     , m_clearBuffers(new Qt3DRender::QClearBuffers())
     , m_surfaceSelector(new Qt3DRender::QRenderSurfaceSelector())
+    , m_renderTargetSelector(new Qt3DRender::QRenderTargetSelector())
     , m_noDrawClearBuffer(new Qt3DRender::QNoDraw())
     , m_frustumCulling(new Qt3DRender::QFrustumCulling())
     , m_backToFrontSorting(false)
@@ -328,12 +347,13 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::externalRenderTargetSizeChanged);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::renderSurfaceChanged);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::handleSurfaceChange);
+    connect(m_renderTargetSelector, &Qt3DRender::QRenderTargetSelector::targetChanged, this, &ForwardRenderer::renderTargetChanged);
+    connect(m_renderTargetSelector, &Qt3DRender::QRenderTargetSelector::targetChanged, this, &ForwardRenderer::handleSurfaceChange);
+    connect(m_renderTargetSelector, &Qt3DRender::QRenderTargetSelector::targetChanged, this, &ForwardRenderer::reconfigureFrameGraph);
     connect(m_frustumCulling, &Qt3DRender::QFrustumCulling::enabledChanged, this, &ForwardRenderer::frustumCullingChanged);
 
     // Reconfigure FrameGraph
     reconfigureFrameGraph();
-    // Reconfigure Stages
-    reconfigureStages();
 }
 
 ForwardRenderer::~ForwardRenderer()
@@ -429,7 +449,6 @@ void ForwardRenderer::addPostProcessingEffect(AbstractPostProcessingEffect *effe
 
         // Reconfigure FrameGraph Tree
         reconfigureFrameGraph();
-        reconfigureStages();
     }
 }
 
@@ -452,7 +471,6 @@ void ForwardRenderer::removePostProcessingEffect(AbstractPostProcessingEffect *e
 
     // Reconfigure FrameGraph Tree
     reconfigureFrameGraph();
-    reconfigureStages();
 }
 
 /*!
@@ -484,11 +502,19 @@ QSize ForwardRenderer::externalRenderTargetSize() const
 }
 
 /*!
- * Returns the surface where rendering will occur.
+ * Returns the surface where rendering will occur (if renderTarget is not set).
  */
 QObject *ForwardRenderer::renderSurface() const
 {
     return m_surfaceSelector->surface();
+}
+
+/*!
+ * Returns the render target that the scene will be rendered into, or NULL, if it's rendered into a surface
+ */
+Qt3DRender::QRenderTarget *ForwardRenderer::renderTarget() const
+{
+    return m_renderTargetSelector->target();
 }
 
 /*!
@@ -589,23 +615,29 @@ void ForwardRenderer::updateTextureSizes()
  */
 void ForwardRenderer::handleSurfaceChange()
 {
-    auto surface = m_surfaceSelector->surface();
-    Q_ASSERT(surface);
+    QObject *surface = m_surfaceSelector->surface();
+    Qt3DRender::QAbstractTexture *renderTargetTexture = getRenderTargetColorTexture();
 
     // disconnect any existing connections
     for (auto connection : qAsConst(m_resizeConnections))
         disconnect(connection);
     m_resizeConnections.clear();
 
-    // surface should only be a QWindow or QOffscreenSurface. Have to downcast since QSurface isn't QObject
-    if (auto window = qobject_cast<QWindow *>(surface)) {
-        m_resizeConnections.push_back(connect(window, &QWindow::widthChanged, this, &ForwardRenderer::updateTextureSizes));
-        m_resizeConnections.push_back(connect(window, &QWindow::heightChanged, this, &ForwardRenderer::updateTextureSizes));
-    } else if (qobject_cast<QOffscreenSurface *>(surface)) {
-        m_resizeConnections.push_back(connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::updateTextureSizes));
-    } else {
-        qCWarning(kuesa) << Q_FUNC_INFO << "Unexpected surface type for surface " << surface;
+    if (renderTargetTexture) {
+        m_resizeConnections.push_back(connect(renderTargetTexture, &Qt3DRender::QAbstractTexture::widthChanged, this, &ForwardRenderer::updateTextureSizes));
+        m_resizeConnections.push_back(connect(renderTargetTexture, &Qt3DRender::QAbstractTexture::heightChanged, this, &ForwardRenderer::updateTextureSizes));
+    } else if (surface) {
+        // surface should only be a QWindow or QOffscreenSurface. Have to downcast since QSurface isn't QObject
+        if (auto window = qobject_cast<QWindow *>(surface)) {
+            m_resizeConnections.push_back(connect(window, &QWindow::widthChanged, this, &ForwardRenderer::updateTextureSizes));
+            m_resizeConnections.push_back(connect(window, &QWindow::heightChanged, this, &ForwardRenderer::updateTextureSizes));
+        } else if (qobject_cast<QOffscreenSurface *>(surface)) {
+            m_resizeConnections.push_back(connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::updateTextureSizes));
+        } else {
+            qCWarning(kuesa) << Q_FUNC_INFO << "Unexpected surface type for surface " << surface;
+        }
     }
+
     updateTextureSizes();
 }
 
@@ -620,9 +652,23 @@ void ForwardRenderer::reconfigureFrameGraph()
     // e.g We want Bloom to happen after DoF...
     //     We may need to render the scene into a texture first ...
 
+    // check if we render into a separete RenderTarget or onto a surface
+    bool useRenderTarget = (m_renderTargetSelector->target() != nullptr);
+    if (useRenderTarget && getRenderTargetColorTexture() == nullptr) {
+        qCWarning(kuesa) << Q_FUNC_INFO << "RenderTarget is missing a Color0 attachment. Rendering onto surface instead.";
+        useRenderTarget = false;
+    }
+
     m_techniqueFilter->setParent(this);
-    m_surfaceSelector->setParent(m_techniqueFilter);
-    m_viewport->setParent(m_surfaceSelector);
+    if (useRenderTarget) {
+        m_renderTargetSelector->setParent(m_techniqueFilter);
+        m_viewport->setParent(m_renderTargetSelector);
+        m_surfaceSelector->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+    } else {
+        m_surfaceSelector->setParent(m_techniqueFilter);
+        m_viewport->setParent(m_surfaceSelector);
+        m_renderTargetSelector->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+    }
     m_clearBuffers->setParent(m_viewport);
     m_noDrawClearBuffer->setParent(m_clearBuffers);
     m_cameraSelector->setParent(m_viewport);
@@ -722,6 +768,9 @@ void ForwardRenderer::reconfigureFrameGraph()
     const bool blocked = blockNotifications(true);
     emit frameGraphTreeReconfigured();
     blockNotifications(blocked);
+
+    // Always Reconfigure Stages after settup up a new frame-graph
+    reconfigureStages();
 }
 
 void ForwardRenderer::reconfigureStages()
@@ -843,6 +892,12 @@ Qt3DRender::QAbstractTexture *ForwardRenderer::findRenderTargetTexture(Qt3DRende
     return attachment == outputs.end() ? nullptr : (*attachment)->texture();
 }
 
+Qt3DRender::QAbstractTexture *ForwardRenderer::getRenderTargetColorTexture() const
+{
+    Qt3DRender::QRenderTarget *target = m_renderTargetSelector->target();
+    return target ? findRenderTargetTexture(target, Qt3DRender::QRenderTargetOutput::Color0) : nullptr;
+}
+
 QVector<AbstractRenderStage *> ForwardRenderer::renderStages() const
 {
     return m_renderStages;
@@ -856,14 +911,19 @@ QVector<AbstractRenderStage *> ForwardRenderer::renderStages() const
 QSize ForwardRenderer::currentSurfaceSize() const
 {
     QSize size;
-    auto surface = m_surfaceSelector->surface();
+    QObject *surface = m_surfaceSelector->surface();
+    Qt3DRender::QAbstractTexture *renderTargetTexture = getRenderTargetColorTexture();
 
-    if (auto window = qobject_cast<QWindow *>(surface))
-        size = window->size();
-    else if (qobject_cast<QOffscreenSurface *>(surface))
-        size = m_surfaceSelector->externalRenderTargetSize();
-    else
-        qCWarning(kuesa) << Q_FUNC_INFO << "Unexpected surface type for surface " << surface;
+    if (renderTargetTexture) {
+        size = QSize(renderTargetTexture->width(), renderTargetTexture->height());
+    } else {
+        if (auto window = qobject_cast<QWindow *>(surface))
+            size = window->size();
+        else if (qobject_cast<QOffscreenSurface *>(surface))
+            size = m_surfaceSelector->externalRenderTargetSize();
+        else
+            qCWarning(kuesa) << Q_FUNC_INFO << "Unexpected surface type for surface " << surface;
+    }
 
     return size;
 }
@@ -883,6 +943,15 @@ void ForwardRenderer::setExternalRenderTargetSize(const QSize &externalRenderTar
 void ForwardRenderer::setRenderSurface(QObject *renderSurface)
 {
     m_surfaceSelector->setSurface(renderSurface);
+}
+
+/*!
+ * Sets the render target that the scene will be rendered into. If set to NULL,
+ * the scene will be rendered into a surface set by setRenderSurface
+ */
+void ForwardRenderer::setRenderTarget(Qt3DRender::QRenderTarget *renderTarget)
+{
+    m_renderTargetSelector->setTarget(renderTarget);
 }
 
 /*!
