@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Mike Krus <mike.krus@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -61,5 +61,7 @@ qtConfig(private_tests) {
         postfxlistextension \
         assetitem \
         forwardrenderer \
-        uri
+        uri \
+        metallicroughnesseffect \
+        metallicroughnessmaterial
 }

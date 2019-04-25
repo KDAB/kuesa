@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -77,6 +77,7 @@ const QLatin1String KEY_BYTESTRIDE = QLatin1String("byteStride");
 const QLatin1String KEY_INDICES = QLatin1String("indices");
 const QLatin1String KEY_VALUES = QLatin1String("values");
 const QLatin1String KEY_SPARSE = QLatin1String("sparse");
+const QLatin1String KEY_MIMETYPE = QLatin1String("mimeType");
 #if defined(KUESA_DRACO_COMPRESSION)
 const QLatin1String KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION = QLatin1String("KHR_draco_mesh_compression");
 #endif

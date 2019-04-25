@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -53,6 +53,13 @@ namespace Kuesa {
 class KUESASHARED_EXPORT MetallicRoughnessMaterial : public Qt3DRender::QMaterial
 {
     Q_OBJECT
+
+    Q_PROPERTY(bool baseColorUsesTexCoord1 READ isBaseColorUsingTexCoord1 WRITE setBaseColorUsesTexCoord1 NOTIFY baseColorUsesTexCoord1Changed)
+    Q_PROPERTY(bool metallicRoughnessUsesTexCoord1 READ isMetallicRoughnessUsingTexCoord1 WRITE setMetallicRoughnessUsesTexCoord1 NOTIFY metallicRoughnessUsesTexCoord1Changed)
+    Q_PROPERTY(bool normalUsesTexCoord1 READ isNormalUsingTexCoord1 WRITE setNormalUsesTexCoord1 NOTIFY normalUsesTexCoord1Changed)
+    Q_PROPERTY(bool aoUsesTexCoord1 READ isAOUsingTexCoord1 WRITE setAOUsesTexCoord1 NOTIFY aoUsesTexCoord1Changed)
+    Q_PROPERTY(bool emissiveUsesTexCoord1 READ isEmissiveUsingTexCoord1 WRITE setEmissiveUsesTexCoord1 NOTIFY emissiveUsesTexCoord1Changed)
+
     Q_PROPERTY(QColor baseColorFactor READ baseColorFactor WRITE setBaseColorFactor NOTIFY baseColorFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *baseColorMap READ baseColorMap WRITE setBaseColorMap NOTIFY baseColorMapChanged)
 
@@ -80,6 +87,12 @@ public:
     explicit MetallicRoughnessMaterial(Qt3DCore::QNode *parent = nullptr);
     ~MetallicRoughnessMaterial();
 
+    bool isBaseColorUsingTexCoord1() const;
+    bool isMetallicRoughnessUsingTexCoord1() const;
+    bool isNormalUsingTexCoord1() const;
+    bool isAOUsingTexCoord1() const;
+    bool isEmissiveUsingTexCoord1() const;
+
     QColor baseColorFactor() const;
     Qt3DRender::QAbstractTexture *baseColorMap() const;
 
@@ -106,6 +119,12 @@ public:
     MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm() const;
 
 public Q_SLOTS:
+    void setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1);
+    void setMetallicRoughnessUsesTexCoord1(bool metallicRoughnessUsesTexCoord1);
+    void setNormalUsesTexCoord1(bool normalUsesTexCoord1);
+    void setAOUsesTexCoord1(bool aoUsesTexCoord1);
+    void setEmissiveUsesTexCoord1(bool emissiveUsesTexCoord1);
+
     void setBaseColorFactor(const QColor &baseColorFactor);
     void setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap);
 
@@ -131,6 +150,12 @@ public Q_SLOTS:
     void setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm);
 
 Q_SIGNALS:
+    void baseColorUsesTexCoord1Changed(bool);
+    void metallicRoughnessUsesTexCoord1Changed(bool);
+    void normalUsesTexCoord1Changed(bool);
+    void aoUsesTexCoord1Changed(bool);
+    void emissiveUsesTexCoord1Changed(bool);
+
     void baseColorFactorChanged(const QColor &baseColorFactor);
     void baseColorMapChanged(Qt3DRender::QAbstractTexture *baseColorMap);
 
@@ -157,6 +182,12 @@ Q_SIGNALS:
 
 private:
     void updateEffect();
+
+    Qt3DRender::QParameter *m_baseColorUsesTexCoord1;
+    Qt3DRender::QParameter *m_metallicRoughnessUsesTexCoord1;
+    Qt3DRender::QParameter *m_normalUsesTexCoord1;
+    Qt3DRender::QParameter *m_aoUsesTexCoord1;
+    Qt3DRender::QParameter *m_emissiveUsesTexCoord1;
 
     Qt3DRender::QParameter *m_baseColorFactorParameter;
     Qt3DRender::QParameter *m_baseColorMapParameter;

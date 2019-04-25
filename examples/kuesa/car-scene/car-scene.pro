@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Mike Krus <mike.krus@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -68,8 +68,8 @@ car.files = \
 
 qtConfig(draco) {
     car.files += \
-        $${car_dir}/compressed/DodgeViper.bin \
-        $${car_dir}/compressed/DodgeViper.gltf
+        $${car_dir}/DodgeViper-draco.bin \
+        $${car_dir}/DodgeViper-draco.gltf
 } else {
     car.files += \
         $${car_dir}/DodgeViper.bin \
@@ -105,24 +105,24 @@ android {
     OTHER_FILES += Info-macos.plist
     QMAKE_INFO_PLIST = Info-macos.plist
 } else {
-    RESOURCES += \
+    RCC_BINARY_SOURCES += \
         ../assets/models/car/car_images.qrc
 
     qtConfig(draco) {
-        RESOURCES += \
-            ../assets/models/car/compressed/car.qrc
+        RCC_BINARY_SOURCES += \
+            ../assets/models/car/car-draco.qrc
     } else {
-        RESOURCES += \
+        RCC_BINARY_SOURCES += \
             ../assets/models/car/car.qrc
     }
 
-    RESOURCES += \
+    RCC_BINARY_SOURCES += \
         ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc \
         ../assets/envmaps/neuer_zollhof/envmap-neuer-zollhof.qrc \
         ../assets/envmaps/kdab-studiosky-small/envmap-kdab-studiosky-small.qrc
 
     qtConfig(opengles2) {
-        RESOURCES += \
+        RCC_BINARY_SOURCES += \
             ../assets/envmaps/kdab-studiosky-small/envmap-kdab-studiosky-small-16f.qrc \
             ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc \
             ../assets/envmaps/neuer_zollhof/envmap-neuer-zollhof-16f.qrc
@@ -131,7 +131,21 @@ android {
     windows {
         RC_ICONS = ../../../resources/kuesa.ico
     }
+
+    # Build resources as external files
+    asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
+    asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
+    asset_builder.input = RCC_BINARY_SOURCES
+    asset_builder.output = $$OUT_PWD/resources/${QMAKE_FILE_IN_BASE}.qrb
+    asset_builder.CONFIG += no_link target_predeps
+    QMAKE_EXTRA_COMPILERS += asset_builder
+
+    ext_resources.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+    ext_resources.files = $$OUT_PWD/resources
+
+    INSTALLS += ext_resources
 }
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 INSTALLS += target
+

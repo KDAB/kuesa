@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -111,6 +111,13 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     , m_animationMappings(new AnimationMappingCollection(this))
 {
     initResources();
+
+    // TODO: Replace this with a nicer way for registering assets needed by various subsystems
+    m_brdfLUT = new Qt3DRender::QTextureLoader(this);
+    m_brdfLUT->setObjectName("_kuesa_brdfLUT");
+    m_brdfLUT->setSource(QUrl(QLatin1String("qrc:/kuesa/shaders/brdfLUT.png")));
+    m_brdfLUT->setWrapMode(Qt3DRender::QTextureWrapMode(Qt3DRender::QTextureWrapMode::ClampToEdge));
+    m_textures->add(QLatin1String("_kuesa_brdfLUT"), m_brdfLUT);
 }
 
 SceneEntity::~SceneEntity() = default;
@@ -331,6 +338,9 @@ void SceneEntity::clearCollections()
     m_entities->clear();
     m_textureImages->clear();
     m_animationMappings->clear();
+
+    // TODO: Re-add required assets
+    m_textures->add(QLatin1String("_kuesa_brdfLUT"), m_brdfLUT);
 }
 
 /*!

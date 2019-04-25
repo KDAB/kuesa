@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -45,6 +45,11 @@
 #include <Qt3DCore/QTransform>
 #include <Qt3DAnimation/QAnimationAspect>
 #include <Qt3DQuick/QQmlAspectEngine>
+#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
+#include <Qt3DCore/private/qentity_p.h>
+#include <Qt3DCore/private/qscene_p.h>
+#include <Qt3DRender/private/qpickevent_p.h>
+#endif
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -65,7 +70,24 @@
 
 namespace {
 const QLatin1String LASTPATHSETTING("mainwindow/lastPath");
+
+template<class AssetType>
+bool selectAssetType(Qt3DCore::QEntity *node, Kuesa::AbstractAssetCollection *collection,
+                     CollectionModel *model, QAbstractItemView *view)
+{
+    AssetType *picked_asset = Kuesa::componentFromEntity<AssetType>(node);
+    if (!picked_asset)
+        return false;
+
+    auto index = model->index(collection, picked_asset->objectName());
+    if (index.isValid()) {
+        view->selectionModel()->select(index, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Current);
+        view->scrollTo(index);
+    }
+    return index.isValid();
 }
+
+} // namespace
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -74,7 +96,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_entity(nullptr)
     , m_camera(nullptr)
     , m_activeCamera(-1)
-    , m_clearColor(Qt::white)
+    , m_clearColor(Qt::gray)
     , m_renderAreaSize(1024, 768)
 {
     m_ui->setupUi(this);
@@ -84,6 +106,13 @@ MainWindow::MainWindow(QWidget *parent)
     m_ui->actionOpen->setIcon(QIcon(":/icons/open-48.png"));
     m_ui->actionReload->setIcon(QIcon(":/icons/reload-48.png"));
     m_ui->actionViewAll->setIcon(QIcon(":/icons/max-48.png"));
+
+    QSettings settings;
+    m_clearColor = settings.value("clearColor", m_clearColor).value<QColor>();
+    if (settings.value("defaultClearColor", true).toBool()) {
+        QPalette p = this->palette();
+        m_clearColor = p.color(QPalette::Base);
+    }
 
     connect(m_ui->actionCopy, &QAction::triggered, this, &MainWindow::copyAssetName);
     connect(m_ui->actionOpen, &QAction::triggered, this, &MainWindow::openFile);
@@ -140,10 +169,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_view, &QWindow::widthChanged, this, &MainWindow::updateCameraAspectRatio);
     connect(m_view, &QWindow::heightChanged, this, &MainWindow::updateCameraAspectRatio);
 
-    QPalette p = this->palette();
-    m_clearColor = p.color(QPalette::Base);
-
-    QSettings settings;
     const auto state = settings.value(QStringLiteral("mainWindowState")).toByteArray();
     if (!state.isNull())
         restoreState(state);
@@ -282,6 +307,47 @@ void MainWindow::viewAll()
     m_camera->viewAll();
 }
 
+void MainWindow::pickEntity(Qt3DRender::QPickEvent *event)
+{
+    using namespace Qt3DCore;
+    using namespace Qt3DRender;
+
+    if (!m_entity || event->button() != QPickEvent::LeftButton)
+        return;
+    CollectionModel *model = qobject_cast<CollectionModel *>(m_ui->collectionBrowser->model());
+    if (!model)
+        return;
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+    QEntity *node = event->entity();
+#else
+    auto event_p = QPickEventPrivate::get(event);
+    auto scene_p = QNodePrivate::get(m_entity);
+    QEntity *node = qobject_cast<QEntity *>(scene_p->m_scene->lookupNode(event_p->m_entity));
+#endif
+    if (!node)
+        return;
+
+    if (event->modifiers() == Qt::AltModifier) {
+        while (node) {
+            if (!node->objectName().isEmpty())
+                break;
+            node = node->parentEntity();
+        }
+        if (node) {
+            auto entityIndex = model->index(m_entity->entities(), node->objectName());
+            if (entityIndex.isValid()) {
+                m_ui->collectionBrowser->selectionModel()->select(entityIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Current);
+                m_ui->collectionBrowser->scrollTo(entityIndex);
+            }
+        }
+    } else if (event->modifiers() == Qt::ShiftModifier) {
+        selectAssetType<QMaterial>(node, m_entity->materials(), model, m_ui->collectionBrowser);
+    } else {
+        selectAssetType<QGeometryRenderer>(node, m_entity->meshes(), model, m_ui->collectionBrowser);
+    }
+}
+
 int MainWindow::activeCamera() const
 {
     return m_activeCamera;
@@ -334,9 +400,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 bool MainWindow::event(QEvent *event)
 {
     if (event->type() == QEvent::PaletteChange) {
-        QPalette p = palette();
-        m_clearColor = p.color(QPalette::Base);
-        emit clearColorChanged(m_clearColor);
+        QSettings settings;
+        if (settings.value("defaultClearColor", true).toBool()) {
+            QPalette p = palette();
+            m_clearColor = p.color(QPalette::Base);
+            emit clearColorChanged(m_clearColor);
+        }
     }
 
     return QMainWindow::event(event);
@@ -347,7 +416,7 @@ void MainWindow::openFile()
     QSettings settings;
     QString lastPath = settings.value(LASTPATHSETTING, QDir::homePath()).toString();
     QString filePath = QFileDialog::getOpenFileName(this, tr("Open GLTF2 File"),
-                                                    lastPath, QLatin1String("*.gltf"));
+                                                    lastPath, QLatin1String("*.gltf *.glb"));
     if (filePath.isEmpty())
         return;
 
@@ -421,10 +490,24 @@ void MainWindow::updateCameraAspectRatio()
 
 void MainWindow::openSettings()
 {
+    QSettings settings;
+    auto clearColor = settings.value("clearColor", QColor(Qt::gray)).value<QColor>();
+
     SettingsDialog dlg(this);
     dlg.setSelectionColor(m_assetInspector->meshInspector()->selectionColor());
+    dlg.setClearColor(clearColor);
+    dlg.setDefaultClearColor(settings.value("defaultClearColor", true).toBool());
     if (dlg.exec() == QDialog::Accepted) {
         m_assetInspector->meshInspector()->setSelectionColor(dlg.selectionColor());
+        settings.setValue("clearColor", dlg.clearColor());
+        settings.setValue("defaultClearColor", dlg.defaultClearColor());
+        if (dlg.defaultClearColor()) {
+            QPalette p = this->palette();
+            m_clearColor = p.color(QPalette::Base);
+        } else {
+            m_clearColor = dlg.clearColor();
+        }
+        emit clearColorChanged(m_clearColor);
     }
 }
 

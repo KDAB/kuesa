@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -41,18 +41,30 @@ Kuesa.SceneEntity {
     readonly property Layer texturePreviewLayer: Layer {}
     readonly property Layer materialPreviewLayer: Layer {}
 
+    // let this point light wander around with the camera to create some shiny lighting
+    Entity {
+        parent: frameGraph.camera
+        components: [
+            PointLight {
+                constantAttenuation: 1.0
+                linearAttenuation: 0.0
+                quadraticAttenuation: 0.0
+            }
+        ]
+    }
+
     components: [
         RenderSettings {
             activeFrameGraph: frameGraphNode
             pickingSettings.pickMethod: PickingSettings.TrianglePicking
         },
         InputSettings { },
-        DirectionalLight {
-            worldDirection: frameGraph.camera.viewVector
-        },
         EnvironmentLight {
+            id: envLight
+            property string envMapFormat: Qt.platform.os == "osx" ? "_16f" : ""
+
             irradiance: TextureLoader {
-                source: "qrc:/wobbly_bridge_irradiance.dds"
+                source: "qrc:/wobbly_bridge" + envLight.envMapFormat + "_irradiance.dds"
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -60,7 +72,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: "qrc:/wobbly_bridge_specular.dds"
+                source: "qrc:/wobbly_bridge" + envLight.envMapFormat + "_specular.dds"
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -69,9 +81,15 @@ Kuesa.SceneEntity {
             }
         },
         ObjectPicker {
+            property point __downPos
+            onPressed: __downPos = pick.position
             onClicked: {
+                if (pick.position !== __downPos)
+                    return
                 if (pick.modifiers & Qt.ControlModifier)
                     mainCamera.viewCenter = pick.worldIntersection
+                else
+                    _mainWindow.pickEntity(pick)
             }
         }
     ]

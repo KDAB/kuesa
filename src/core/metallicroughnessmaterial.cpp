@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -48,18 +48,18 @@ template<class OutputType>
 using ValueTypeMapper = typename std::remove_const<typename std::remove_reference<OutputType>::type>::type;
 
 template<class OutputType>
-struct WrappedSignal
-{
+struct WrappedSignal {
     MetallicRoughnessMaterial *self;
     SignalType<OutputType> sig;
-    void operator()(const QVariant &value) const {
+    void operator()(const QVariant &value) const
+    {
         std::mem_fn(sig)(self, value.value<ValueTypeMapper<OutputType>>());
     }
 };
 template<class OutputType>
 WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, SignalType<OutputType> sig)
 {
-    return WrappedSignal<OutputType>{self, sig};
+    return WrappedSignal<OutputType>{ self, sig };
 }
 
 /*!
@@ -105,6 +105,14 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     value below a threshold. This is useful to render grass or trees for
     example.
 
+    Kuesa::MetallicRoughnessMaterial supports two texture coordinate sets for
+    each map. To specify the texture coordinate set a map must use, you can
+    set the <map>UsesTexCoord1 property to true or false. If it's false, it
+    will use the 0th coordinate set of the primitive, attached to
+    'defaultTextureCoordinateAttributeName` attribute. If it's true, it will
+    use the 1st coordinate set of the primitive, attached to
+    'defaultTextureCoordinate1AttributeName`.
+
     A more complete description of the material can be found in
     https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#materials
 
@@ -129,6 +137,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \note If this property is nullptr and is set to a non nullptr value, will
     trigger a recompilation of the shader. If its a non nullptr value and is
     set to nullptr, it will trigger a recompilation of the shader.
+ */
+
+/*!
+    \property baseColorUsesTexCoord1
+
+    False if the map must use the 0th texture coordinate set, binded to
+    'defaultTextureCoordinateName' attribute.
+    True if the map must use the 1st texture coordinate set, binded to
+    'defaultTextureCoordinate1Name' attribute.
  */
 
 /*!
@@ -158,6 +175,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
+    \property metallicRoughnessUsesTexCoord1
+
+    False if the map must use the 0th texture coordinate set, binded to
+    'defaultTextureCoordinateName' attribute.
+    True if the map must use the 1st texture coordinate set, binded to
+    'defaultTextureCoordinate1Name' attribute.
+ */
+
+/*!
     \property normalMap
 
     Specifies a normal map for the material. This allows to simulate very
@@ -165,6 +191,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
+ */
+
+/*!
+    \property normalUsesTexCoord1
+
+    False if the map must use the 0th texture coordinate set, binded to
+    'defaultTextureCoordinateName' attribute.
+    True if the map must use the 1st texture coordinate set, binded to
+    'defaultTextureCoordinate1Name' attribute.
  */
 
 /*!
@@ -184,6 +219,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
+    \property aoUsesTexCoord1
+
+    False if the map must use the 0th texture coordinate set, binded to
+    'defaultTextureCoordinateName' attribute.
+    True if the map must use the 1st texture coordinate set, binded to
+    'defaultTextureCoordinate1Name' attribute.
+ */
+
+/*!
     \property emissiveFactor
 
     Specifies an emissive factor to be used for emissive surfaces.
@@ -196,6 +240,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
+ */
+
+/*!
+    \property emissiveUsesTexCoord1
+
+    False if the map must use the 0th texture coordinate set, binded to
+    'defaultTextureCoordinateName' attribute.
+    True if the map must use the 1st texture coordinate set, binded to
+    'defaultTextureCoordinate1Name' attribute.
  */
 
 /*!
@@ -319,6 +372,14 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     value below a threshold. This is useful to render grass or trees for
     example.
 
+    Kuesa.MetallicRoughnessMaterial supports two texture coordinate sets for
+    each map. To specify the texture coordinate set a map must use, you can
+    set the <map>UsesTexCoord1 property to true or false. If it's false, it
+    will use the 0th coordinate set of the primitive, attached to
+    'defaultTextureCoordinateAttributeName` attribute. If it's true, it will
+    use the 1st coordinate set of the primitive, attached to
+    'defaultTextureCoordinate1AttributeName`.
+
     A more complete description of the material can be found in
     https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#materials
 
@@ -342,6 +403,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
+ */
+
+/*!
+    \qmlproperty baseColorUsesTexCoord1
+
+    False if the map must use the 0th texture coordinate set, binded to
+    'defaultTextureCoordinateName' attribute.
+    True if the map must use the 1st texture coordinate set, binded to
+    'defaultTextureCoordinate1Name' attribute.
  */
 
 /*!
@@ -370,6 +440,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
+    \qmlproperty metallicRoughnessUsesTexCoord1
+
+    False if the map must use the 0th texture coordinate set, binded to
+    'defaultTextureCoordinateName' attribute.
+    True if the map must use the 1st texture coordinate set, binded to
+    'defaultTextureCoordinate1Name' attribute.
+ */
+
+/*!
     \qmlproperty normalMap
 
     Specifies a normal map for the material. This allows to simulate very
@@ -377,6 +456,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
+ */
+
+/*!
+    \qmlproperty normalUsesTexCoord1
+
+    False if the map must use the 0th texture coordinate set, binded to
+    'defaultTextureCoordinateName' attribute.
+    True if the map must use the 1st texture coordinate set, binded to
+    'defaultTextureCoordinate1Name' attribute.
  */
 
 /*!
@@ -396,6 +484,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
+    \qmlproperty aoUsesTexCoord1
+
+    False if the map must use the 0th texture coordinate set, binded to
+    'defaultTextureCoordinateName' attribute.
+    True if the map must use the 1st texture coordinate set, binded to
+    'defaultTextureCoordinate1Name' attribute.
+ */
+
+/*!
     \qmlproperty emissiveFactor
 
     Specifies an emissive factor to be used for emissive surfaces.
@@ -408,6 +505,15 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
+ */
+
+/*!
+    \qmlproperty emissiveUsesTexCoord1
+
+    False if the map must use the 0th texture coordinate set, binded to
+    'defaultTextureCoordinateName' attribute.
+    True if the map must use the 1st texture coordinate set, binded to
+    'defaultTextureCoordinate1Name' attribute.
  */
 
 /*!
@@ -493,20 +599,35 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 
 MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     : QMaterial(parent)
-    , m_baseColorFactorParameter(new QParameter(QStringLiteral("baseColorFactor"), QColor("grey")))
+    , m_baseColorUsesTexCoord1(new QParameter(QStringLiteral("baseColorUsesTexCoord1"), bool(false)))
+    , m_metallicRoughnessUsesTexCoord1(new QParameter(QStringLiteral("metallicRoughnessUsesTexCoord1"), bool(false)))
+    , m_normalUsesTexCoord1(new QParameter(QStringLiteral("normalUsesTexCoord1"), bool(false)))
+    , m_aoUsesTexCoord1(new QParameter(QStringLiteral("aoUsesTexCoord1"), bool(false)))
+    , m_emissiveUsesTexCoord1(new QParameter(QStringLiteral("emissiveUsesTexCoord1"), bool(false)))
+    , m_baseColorFactorParameter(new QParameter(QStringLiteral("baseColorFactor"), QColor("gray")))
     , m_baseColorMapParameter(new QParameter(QStringLiteral("baseColorMap"), QVariant()))
     , m_metallicFactorParameter(new QParameter(QStringLiteral("metallicFactor"), 0.0f))
     , m_roughnessFactorParameter(new QParameter(QStringLiteral("roughnessFactor"), 0.0f))
     , m_metalRoughMapParameter(new QParameter(QStringLiteral("metalRoughMap"), QVariant()))
-    , m_normalScaleParameter(new QParameter(QStringLiteral("normalScale"), 1.0f))
+    , m_normalScaleParameter(new QParameter(QStringLiteral("normalScale"), 0.25f))
     , m_normalMapParameter(new QParameter(QStringLiteral("normalMap"), QVariant()))
     , m_ambientOcclusionMapParameter(new QParameter(QStringLiteral("ambientOcclusionMap"), QVariant()))
-    , m_emissiveFactorParameter(new QParameter(QStringLiteral("emissiveFactor"), 0.0))
+    , m_emissiveFactorParameter(new QParameter(QStringLiteral("emissiveFactor"), QColor("black")))
     , m_emissiveMapParameter(new QParameter(QStringLiteral("emissiveMap"), QVariant()))
     , m_alphaCutoffParameter(new QParameter(QStringLiteral("alphaCutoff"), 0.0))
     , m_textureTransformParameter(new QParameter(QStringLiteral("texCoordTransform"), QVariant::fromValue(QMatrix3x3())))
     , m_effect(new MetallicRoughnessEffect(this))
 {
+    QObject::connect(m_baseColorUsesTexCoord1, &QParameter::valueChanged,
+                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::baseColorUsesTexCoord1Changed));
+    QObject::connect(m_metallicRoughnessUsesTexCoord1, &QParameter::valueChanged,
+                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::metallicRoughnessUsesTexCoord1Changed));
+    QObject::connect(m_normalUsesTexCoord1, &QParameter::valueChanged,
+                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::normalUsesTexCoord1Changed));
+    QObject::connect(m_aoUsesTexCoord1, &QParameter::valueChanged,
+                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::aoUsesTexCoord1Changed));
+    QObject::connect(m_emissiveUsesTexCoord1, &QParameter::valueChanged,
+                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::emissiveUsesTexCoord1Changed));
     QObject::connect(m_baseColorFactorParameter, &QParameter::valueChanged,
                      this, wrapParameterSignal(this, &MetallicRoughnessMaterial::baseColorFactorChanged));
     QObject::connect(m_baseColorMapParameter, &QParameter::valueChanged,
@@ -545,6 +666,11 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     QObject::connect(m_effect, &MetallicRoughnessEffect::toneMappingAlgorithmChanged,
                      this, &MetallicRoughnessMaterial::toneMappingAlgorithmChanged);
 
+    addParameter(m_baseColorUsesTexCoord1);
+    addParameter(m_metallicRoughnessUsesTexCoord1);
+    addParameter(m_normalUsesTexCoord1);
+    addParameter(m_aoUsesTexCoord1);
+    addParameter(m_emissiveUsesTexCoord1);
     addParameter(m_baseColorFactorParameter);
     addParameter(m_metallicFactorParameter);
     addParameter(m_roughnessFactorParameter);
@@ -559,6 +685,31 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
 
 MetallicRoughnessMaterial::~MetallicRoughnessMaterial()
 {
+}
+
+bool MetallicRoughnessMaterial::isBaseColorUsingTexCoord1() const
+{
+    return m_baseColorUsesTexCoord1->value().value<bool>();
+}
+
+bool MetallicRoughnessMaterial::isMetallicRoughnessUsingTexCoord1() const
+{
+    return m_metallicRoughnessUsesTexCoord1->value().value<bool>();
+}
+
+bool MetallicRoughnessMaterial::isNormalUsingTexCoord1() const
+{
+    return m_normalUsesTexCoord1->value().value<bool>();
+}
+
+bool MetallicRoughnessMaterial::isAOUsingTexCoord1() const
+{
+    return m_aoUsesTexCoord1->value().value<bool>();
+}
+
+bool MetallicRoughnessMaterial::isEmissiveUsingTexCoord1() const
+{
+    return m_emissiveUsesTexCoord1->value().value<bool>();
 }
 
 QColor MetallicRoughnessMaterial::baseColorFactor() const
@@ -649,6 +800,31 @@ float MetallicRoughnessMaterial::alphaCutoff() const
 MetallicRoughnessEffect::ToneMapping MetallicRoughnessMaterial::toneMappingAlgorithm() const
 {
     return m_effect->toneMappingAlgorithm();
+}
+
+void MetallicRoughnessMaterial::setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1)
+{
+    m_baseColorUsesTexCoord1->setValue(baseColorUsesTexCoord1);
+}
+
+void MetallicRoughnessMaterial::setMetallicRoughnessUsesTexCoord1(bool metallicRoughnessUsesTexCoord1)
+{
+    m_metallicRoughnessUsesTexCoord1->setValue(metallicRoughnessUsesTexCoord1);
+}
+
+void MetallicRoughnessMaterial::setNormalUsesTexCoord1(bool normalUsesTexCoord1)
+{
+    m_normalUsesTexCoord1->setValue(normalUsesTexCoord1);
+}
+
+void MetallicRoughnessMaterial::setAOUsesTexCoord1(bool aoUsesTexCoord1)
+{
+    m_aoUsesTexCoord1->setValue(aoUsesTexCoord1);
+}
+
+void MetallicRoughnessMaterial::setEmissiveUsesTexCoord1(bool emissiveUsesTexCoord1)
+{
+    m_emissiveUsesTexCoord1->setValue(emissiveUsesTexCoord1);
 }
 
 void MetallicRoughnessMaterial::setBaseColorFactor(const QColor &baseColorFactor)
@@ -742,6 +918,7 @@ void MetallicRoughnessMaterial::setEmissiveMap(QAbstractTexture *emissiveMap)
     if (m_emissiveMapParameter->value().value<QAbstractTexture *>() == emissiveMap)
         return;
 
+    emissiveMap->setFormat(QAbstractTexture::TextureFormat::SRGB8_Alpha8);
     m_effect->setEmissiveMapEnabled(emissiveMap);
     m_emissiveMapParameter->setValue(QVariant::fromValue(emissiveMap));
     if (emissiveMap) {

@@ -25,5 +25,6 @@
         <file>shaders/es2/skinned.vert</file>
         <file>shaders/es2/kuesa_metalrough.inc.frag</file>
         <file>shaders/es2/light.inc.frag</file>
+        <file>shaders/brdfLUT.png</file>
     </qresource>
 </RCC>

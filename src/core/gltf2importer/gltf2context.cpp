@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -340,6 +340,16 @@ void GLTF2Context::setRequiredExtensions(const QStringList &requiredExtensions)
     m_requiredExtensions = requiredExtensions;
 }
 
+const QString &GLTF2Context::filename() const
+{
+    return m_filename;
+}
+
+void GLTF2Context::setFilename(const QString &name)
+{
+    m_filename = name;
+}
+
 const QJsonDocument &GLTF2Context::json() const
 {
     return m_json;
@@ -358,6 +368,16 @@ const QStringList &GLTF2Context::localFiles() const
 void GLTF2Context::addLocalFile(const QString &file)
 {
     m_localFiles.push_back(file);
+}
+
+QByteArray GLTF2Context::bufferChunk() const
+{
+    return m_bufferChunk;
+}
+
+void GLTF2Context::setBufferChunk(const QByteArray &bufferChunk)
+{
+    m_bufferChunk = bufferChunk;
 }
 
 template<>

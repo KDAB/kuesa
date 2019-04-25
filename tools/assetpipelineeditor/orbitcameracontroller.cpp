@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -294,10 +294,12 @@ void OrbitCameraController::setCamera(Qt3DRender::QCamera *camera)
 
         m_camera = camera;
 
-        if (m_camera)
-            connect(m_camera, &Qt3DCore::QNode::nodeDestroyed, this, [this]() {
-                setCamera(nullptr);
+        if (m_camera) {
+            connect(m_camera, &Qt3DCore::QNode::nodeDestroyed, this, [this, camera]() {
+                if (camera == this->m_camera)
+                    setCamera(nullptr);
             });
+        }
 
         emit cameraChanged();
     }

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -44,6 +44,8 @@
 #include <Qt3DRender/QCamera>
 #include <Kuesa/LayerCollection>
 #include <Kuesa/private/kuesa_utils_p.h>
+#include <array>
+#include <atomic>
 
 using namespace Kuesa;
 using namespace GLTF2Import;
@@ -503,7 +505,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(res);
-        QCOMPARE(scene.textures()->names().size(), 1);
+        QCOMPARE(scene.textures()->names().size(), 2);
         auto textureLoader = qobject_cast<Qt3DRender::QTextureLoader *>(scene.texture(QLatin1String("diffuse")));
         QVERIFY(textureLoader);
         QVERIFY(textureLoader->source().toString().toLower().endsWith("dds"));
@@ -523,7 +525,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(res);
-        QCOMPARE(scene.textures()->names().size(), 2);
+        QCOMPARE(scene.textures()->names().size(), 3);
         QVERIFY(scene.texture(QLatin1String("diffuse")));
         QVERIFY(scene.texture(QLatin1String("normal")));
     }
@@ -605,7 +607,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(res);
-        QCOMPARE(scene.textures()->names().size(), 2);
+        QCOMPARE(scene.textures()->names().size(), 3);
         QCOMPARE(scene.materials()->names().size(), 1);
 
         Kuesa::MetallicRoughnessMaterial *mat = static_cast<decltype(mat)>(scene.material(QStringLiteral("Material")));
@@ -892,11 +894,148 @@ private Q_SLOTS:
         QVERIFY(!accessor.bufferData.isEmpty());
 
         QCOMPARE(accessor.bufferViewIndex, bufferView);
-        const float *data = reinterpret_cast<const float*>(accessor.bufferData.constData());
+        const float *data = reinterpret_cast<const float *>(accessor.bufferData.constData());
         QCOMPARE(data[3], originalValue);
+    }
+
+    void checkGLBParsing_data()
+    {
+        struct GLBHeader {
+            quint32 magic = 0x46546C67;
+            quint32 version = 2;
+            quint32 length = 0;
+        };
+        struct ChunkHeader {
+            quint32 chunkLength = 0;
+            quint32 chunkType = 0x4E4F534A; // or 0x004E4942
+        };
+
+        QTest::addColumn<QByteArray>("data");
+        QTest::addColumn<bool>("success");
+
+        QFile f(QString(ASSETS + QLatin1String("Box.glb")));
+        f.open(QFile::ReadOnly);
+        const QByteArray fileData = f.readAll();
+        QTest::addRow("Valid glb") << fileData << true;
+        QTest::addRow("Empty glb") << QByteArray() << false;
+        QTest::addRow("Too small glb") << QByteArray(3, 0) << false;
+        {
+            QByteArray data(sizeof(GLBHeader), 0);
+            GLBHeader header;
+            header.magic = 0x01010101;
+            memcpy(data.data(), &header, sizeof(GLBHeader));
+            QTest::addRow("Wrong Header Magic Id") << data << false;
+        }
+        {
+            QByteArray data(sizeof(GLBHeader), 0);
+            GLBHeader header;
+            header.version = 1;
+            memcpy(data.data(), &header, sizeof(GLBHeader));
+            QTest::addRow("Wrong Header Version") << data << false;
+        }
+        {
+            QByteArray data(sizeof(GLBHeader) + 10, 0);
+            GLBHeader header;
+            header.length = sizeof(GLBHeader) + 5;
+            memcpy(data.data(), &header, sizeof(GLBHeader));
+            QTest::addRow("Wrong GLB Size") << data << false;
+        }
+        {
+            QByteArray data(sizeof(GLBHeader) + sizeof(ChunkHeader) + 10, 0);
+            GLBHeader header;
+            header.length = data.size();
+            memcpy(data.data(), &header, sizeof(GLBHeader));
+            ChunkHeader chunck;
+            chunck.chunkLength = 5;
+            memcpy(data.data() + sizeof(GLBHeader), &chunck, sizeof(ChunkHeader));
+            QTest::addRow("Wrong Chunk Length") << data << false;
+        }
+        {
+            QByteArray data(sizeof(GLBHeader) + sizeof(ChunkHeader) + 10, 0);
+            GLBHeader header;
+            header.length = data.size();
+            memcpy(data.data(), &header, sizeof(GLBHeader));
+            ChunkHeader chunck;
+            chunck.chunkType = 0x004E4942;
+            chunck.chunkLength = 10;
+            memcpy(data.data() + sizeof(GLBHeader), &chunck, sizeof(ChunkHeader));
+            QTest::addRow("Missing JSON chunk") << data << false;
+        }
+        {
+            QByteArray data(sizeof(GLBHeader) + (sizeof(ChunkHeader) + 10) * 2, 0);
+            GLBHeader header;
+            header.length = data.size();
+            memcpy(data.data(), &header, sizeof(GLBHeader));
+            ChunkHeader chunck;
+            chunck.chunkType = 0x004E4942;
+            chunck.chunkLength = 10;
+            memcpy(data.data() + sizeof(GLBHeader), &chunck, sizeof(ChunkHeader));
+            memcpy(data.data() + sizeof(GLBHeader) + sizeof(ChunkHeader) + 10, &chunck, sizeof(ChunkHeader));
+            QTest::addRow("Multiple BIN chunk") << data << false;
+        }
+        {
+            QByteArray data(fileData.size() + sizeof(ChunkHeader) + 10, 0);
+            memcpy(data.data(), fileData.constData(), fileData.size());
+            GLBHeader *header = reinterpret_cast<GLBHeader *>(data.data());
+            header->length = data.size();
+            ChunkHeader chunk;
+            chunk.chunkLength = 10;
+            chunk.chunkType = 42;
+            memcpy(data.data() + fileData.size(), &chunk, sizeof(ChunkHeader));
+            QTest::addRow("Skip unknown chunk") << data << true;
+        }
+    }
+
+    void checkGLBParsing()
+    {
+        QFETCH(QByteArray, data);
+        QFETCH(bool, success);
+
+        // GIVEN
+        GLTF2Context ctx;
+        GLTF2Parser parser;
+
+        parser.setContext(&ctx);
+
+        // WHEN
+        parser.parse(data, {});
+        Qt3DCore::QEntity *res = parser.setupScene();
+
+        // THEN
+        QCOMPARE(res != nullptr, success);
+    }
+
+    void checkThreadedParser()
+    {
+        constexpr int N = 64;
+        struct GLTFParsingTester {
+            SceneEntity scene;
+            GLTF2Context ctx;
+            ThreadedGLTF2Parser parser{ &ctx, &scene };
+        };
+
+        std::atomic_int amount_successful{};
+        std::atomic_int amount_failed{};
+        std::array<GLTFParsingTester, N> testers;
+        for (auto &tester : testers) {
+            connect(&tester.parser, &ThreadedGLTF2Parser::parsingFinished,
+                    [&](Qt3DCore::QEntity *node) {
+                        if (node) {
+                            ++amount_successful;
+                            node->setParent(&tester.scene);
+                        } else {
+                            ++amount_failed;
+                        }
+                    });
+            tester.parser.parse(ASSETS "car/DodgeViper.gltf");
+        }
+        while (amount_successful < N && amount_failed == 0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            qApp->processEvents();
+        }
     }
 };
 
-QTEST_APPLESS_MAIN(tst_GLTFParser)
+QTEST_MAIN(tst_GLTFParser)
 
 #include "tst_gltfparser.moc"

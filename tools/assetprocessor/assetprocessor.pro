@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -25,6 +25,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 TEMPLATE = app
+CONFIG += console
+CONFIG -= app_bundle
 
 QT -= gui
 QT += kuesa kuesa-private

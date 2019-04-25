@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -97,10 +97,13 @@ bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) 
                     return false;
                 }
             }
+        } else if (!context->bufferChunk().isEmpty() && bufferId == 0) {
+            readSuccess = true;
+            context->addBuffer(context->bufferChunk());
         }
 
         if (!readSuccess) {
-            qCWarning(kuesa) << "Failed to read buffer" << bufferName;
+            qCWarning(kuesa) << "Failed to read buffer" << bufferName << " (" << bufferId << ")";
             return false;
         }
     }

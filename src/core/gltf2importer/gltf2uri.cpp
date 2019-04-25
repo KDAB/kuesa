@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -44,6 +44,9 @@ Kind kind(const QString &uri)
             : Kind::Path;
 }
 
+/*!
+ * Create a QUrl containing the absolute path to a file referenced in a glTF uri.
+ */
 QUrl absoluteUrl(const QString &uri, const QDir &basePath)
 {
     QUrl url;
@@ -65,6 +68,9 @@ QUrl absoluteUrl(const QString &uri, const QDir &basePath)
     return url;
 }
 
+/*!
+ * Create a QString containing the absolute path to a file referenced in a glTF uri.
+ */
 QString localFile(const QString &uri, const QDir &basePath)
 {
     QString path;
@@ -82,6 +88,9 @@ QString localFile(const QString &uri, const QDir &basePath)
     return path;
 }
 
+/*!
+ * Converts a glTF data uri into a binary data buffer.
+ */
 QByteArray parseEmbeddedData(const QString &uri)
 {
     QByteArray data = uri.toLatin1();
@@ -103,6 +112,17 @@ QByteArray parseEmbeddedData(const QString &uri)
     return QByteArray::fromBase64(data.remove(0, separatorPos + 1));
 }
 
+/*!
+ * Converts binary data into a data uri embeddable in a glTF object.
+ */
+QByteArray toBase64Uri(const QByteArray &arr)
+{
+    return "data:application/octet-stream;base64," + arr.toBase64();
+}
+
+/*!
+ * Get the binary data buffer referenced by a glTF uri.
+ */
 QByteArray fetchData(const QString &uri, const QDir &basePath, bool &success)
 {
     switch (kind(uri)) {

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -129,15 +129,20 @@ void ExportDialog::onSave()
         conf.setAttributeQuantizationLevel(ExportConf::TextureCoordinate, mapSlider(ui->textureQuantizationSlider));
         conf.setAttributeQuantizationLevel(ExportConf::Generic, mapSlider(ui->genericQuantizationSlider));
 
+        if (ui->embedKeep->isChecked())
+            conf.setEmbedding(ExportConf::Embed::Keep);
+        else if (ui->embedAll->isChecked())
+            conf.setEmbedding(ExportConf::Embed::All);
+        else if (ui->embedNone->isChecked())
+            conf.setEmbedding(ExportConf::Embed::None);
+
         m_exporter.setConfiguration(conf);
     }
 
     const auto exported = m_exporter.saveInFolder(orig_dir, target_dir);
     const auto errors = m_exporter.errors();
-    for (const auto &error : errors) {
+    for (const auto &error : errors)
         ui->errorLog->appendPlainText(error);
-        ui->errorLog->appendPlainText(QStringLiteral("\n"));
-    }
     if (!exported.success()) {
         return;
     }

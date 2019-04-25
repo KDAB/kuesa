@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -105,24 +105,34 @@ Kuesa::MetallicRoughnessMaterial *createPbrMaterial(const Material &mat, const G
             mat.emissiveTexture.emissiveFactor[2]));
 
     const qint32 baseColorTextureIdx = mat.pbr.baseColorTexture.index;
-    if (baseColorTextureIdx > -1)
+    if (baseColorTextureIdx > -1) {
         pbrMaterial->setBaseColorMap(context->texture(baseColorTextureIdx).texture);
+        pbrMaterial->setBaseColorUsesTexCoord1(mat.pbr.baseColorTexture.texCoord == 1);
+    }
 
     const qint32 metallicRoughnessTextureIdx = mat.pbr.metallicRoughnessTexture.index;
-    if (metallicRoughnessTextureIdx > -1)
+    if (metallicRoughnessTextureIdx > -1) {
         pbrMaterial->setMetalRoughMap(context->texture(metallicRoughnessTextureIdx).texture);
+        pbrMaterial->setMetallicRoughnessUsesTexCoord1(mat.pbr.metallicRoughnessTexture.texCoord == 1);
+    }
 
     const qint32 normalMapTextureIdx = mat.normalTexture.index;
-    if (normalMapTextureIdx > -1)
+    if (normalMapTextureIdx > -1) {
         pbrMaterial->setNormalMap(context->texture(normalMapTextureIdx).texture);
+        pbrMaterial->setNormalUsesTexCoord1(mat.normalTexture.texCoord == 1);
+    }
 
     const qint32 emissiveMapTextureIdx = mat.emissiveTexture.index;
-    if (emissiveMapTextureIdx > -1)
+    if (emissiveMapTextureIdx > -1) {
         pbrMaterial->setEmissiveMap(context->texture(emissiveMapTextureIdx).texture);
+        pbrMaterial->setEmissiveUsesTexCoord1(mat.emissiveTexture.index == 1);
+    }
 
     const qint32 occulsionMapTextureIdx = mat.occlusionTexture.index;
-    if (occulsionMapTextureIdx > -1)
+    if (occulsionMapTextureIdx > -1) {
         pbrMaterial->setAmbientOcclusionMap(context->texture(occulsionMapTextureIdx).texture);
+        pbrMaterial->setAOUsesTexCoord1(mat.occlusionTexture.texCoord == 1);
+    }
 
     switch (mat.alpha.mode) {
     case Material::Alpha::Opaque:
@@ -232,7 +242,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
             const QJsonObject normalTextureObject = materialObject.value(KEY_NORMAL_TEXTURE).toObject();
             if (!normalTextureObject.isEmpty()) {
                 parseTextureInfo(mat.normalTexture, normalTextureObject);
-                mat.normalTexture.scale = normalTextureObject.value(KEY_SCALE).toDouble(1.0);
+                mat.normalTexture.scale = static_cast<float>(normalTextureObject.value(KEY_SCALE).toDouble(0.25));
             }
         }
 

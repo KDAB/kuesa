@@ -1,9 +1,11 @@
+#version 150
+
 /*
     skinned.vert
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,13 +28,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#version 150
-
 in vec3 vertexPosition;
 in vec3 vertexNormal;
 in vec4 vertexTangent;
 in vec4 vertexColor;
 in vec2 vertexTexCoord;
+in vec2 vertexTexCoord1;
 
 in uvec4 vertexJointIndices;
 in vec4 vertexJointWeights;
@@ -42,6 +43,7 @@ out vec3 worldNormal;
 out vec4 worldTangent;
 out vec4 color;
 out vec2 texCoord;
+out vec2 texCoord1;
 
 uniform mat4 modelMatrix;
 uniform mat3 modelNormalMatrix;
@@ -57,6 +59,8 @@ void main()
     // Pass through scaled texture coordinates
     vec3 transformedTexCoord = texCoordTransform * vec3(vertexTexCoord, 1.0);
     texCoord = transformedTexCoord.xy / transformedTexCoord.z;
+    vec3 transformedTexCoord1 = texCoordTransform * vec3(vertexTexCoord1, 1.0);
+    texCoord1 = transformedTexCoord1.xy / transformedTexCoord1.z;
 
     // Pass through vertex colors
     color = vertexColor;

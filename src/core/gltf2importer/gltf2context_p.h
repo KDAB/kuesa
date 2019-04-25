@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -144,11 +144,17 @@ public:
     QStringList requiredExtensions() const;
     void setRequiredExtensions(const QStringList &requiredExtensions);
 
+    const QString &filename() const;
+    void setFilename(const QString &);
+
     const QJsonDocument &json() const;
     void setJson(const QJsonDocument &doc);
 
     const QStringList &localFiles() const;
     void addLocalFile(const QString &file);
+
+    QByteArray bufferChunk() const;
+    void setBufferChunk(const QByteArray &bufferChunk);
 
 private:
     QVector<Accessor> m_accessors;
@@ -167,8 +173,10 @@ private:
     QVector<Skin> m_skins;
     QStringList m_usedExtensions;
     QStringList m_requiredExtensions;
+    QString m_filename;
     QJsonDocument m_json;
     QStringList m_localFiles;
+    QByteArray m_bufferChunk;
 };
 
 template<>

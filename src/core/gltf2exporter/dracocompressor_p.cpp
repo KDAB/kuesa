@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Jose Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -151,6 +151,35 @@ QByteArray packedDataInBuffer(const QByteArray &inputBuffer,
     return outputBuffer;
 }
 
+QString semanticNameFromAttribute(const Qt3DRender::QAttribute &attribute)
+{
+    auto str = attribute.property("semanticName").toString();
+    if (!str.isEmpty()) {
+        return str;
+    } else {
+        const auto name = attribute.name();
+        if (name == Qt3DRender::QAttribute::defaultPositionAttributeName())
+            return QStringLiteral("TANGENT");
+        if (name == Qt3DRender::QAttribute::defaultNormalAttributeName())
+            return QStringLiteral("NORMAL");
+        if (name == Qt3DRender::QAttribute::defaultTangentAttributeName())
+            return QStringLiteral("TANGENT");
+        if (name == Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName())
+            return QStringLiteral("TEXCOORD_0");
+        if (name == Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName())
+            return QStringLiteral("TEXCOORD_1");
+        if (name == Qt3DRender::QAttribute::defaultTextureCoordinate2AttributeName())
+            return QStringLiteral("TEXCOORD_2");
+        if (name == Qt3DRender::QAttribute::defaultColorAttributeName())
+            return QStringLiteral("COLOR_0");
+        if (name == Qt3DRender::QAttribute::defaultJointIndicesAttributeName())
+            return QStringLiteral("JOINTS_0");
+        if (name == Qt3DRender::QAttribute::defaultJointWeightsAttributeName())
+            return QStringLiteral("WEIGHTS_0");
+        return name;
+    }
+}
+
 template<typename T>
 std::pair<QString, int> addAttributeToMesh(const Qt3DRender::QAttribute &attribute, draco::Mesh &mesh)
 {
@@ -171,7 +200,7 @@ std::pair<QString, int> addAttributeToMesh(const Qt3DRender::QAttribute &attribu
     draco::PointAttribute meshAttribute;
     meshAttribute.Init(attributeTypeFromName(attribute.name()),
                        nullptr,
-                       static_cast<int8_t>(attribute.vertexSize()),
+                       static_cast<qint8>(attribute.vertexSize()),
                        dracoDataType,
                        false,
                        actualStride<T>(attribute.byteStride(), attribute.vertexSize()),
@@ -183,7 +212,7 @@ std::pair<QString, int> addAttributeToMesh(const Qt3DRender::QAttribute &attribu
 
     mesh.attribute(attId)->buffer()->Write(0, packedData.data(), static_cast<std::size_t>(packedData.size()));
 
-    return { attribute.property("semanticName").toString(), attId };
+    return { semanticNameFromAttribute(attribute), attId };
 }
 
 template<typename T>
@@ -216,7 +245,7 @@ template<typename T>
 bool compressAttribute(
         const Qt3DRender::QAttribute &attribute,
         draco::Mesh &dracoMesh,
-        std::vector<std::pair<QString, int>>& attributes)
+        std::vector<std::pair<QString, int>> &attributes)
 {
     auto compressedAttr = addAttributeToMesh<T>(attribute, dracoMesh);
     if (compressedAttr.second == -1) {
@@ -273,43 +302,43 @@ CompressedMesh compressMesh(
 
         switch (attribute->vertexBaseType()) {
         case Qt3DRender::QAttribute::VertexBaseType::Float: {
-            if(!compressAttribute<float>(*attribute, dracoMesh, attributes))
+            if (!compressAttribute<float>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::Byte: {
-            static_assert(CHAR_MIN < 0, "This code only works on platforms with signed char");
-            if(!compressAttribute<qint8>(*attribute, dracoMesh, attributes))
+            static_assert (std::numeric_limits<qint8>::min() < 0, "This code only works on platforms with signed char");
+            if (!compressAttribute<qint8>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::UnsignedByte: {
-            if(!compressAttribute<quint8>(*attribute, dracoMesh, attributes))
+            if (!compressAttribute<quint8>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::Short: {
-            if(!compressAttribute<qint16>(*attribute, dracoMesh, attributes))
+            if (!compressAttribute<qint16>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::UnsignedShort: {
-            if(!compressAttribute<quint16>(*attribute, dracoMesh, attributes))
+            if (!compressAttribute<quint16>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::Int: {
-            if(!compressAttribute<qint32>(*attribute, dracoMesh, attributes))
+            if (!compressAttribute<qint32>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::UnsignedInt: {
-            if(!compressAttribute<quint32>(*attribute, dracoMesh, attributes))
+            if (!compressAttribute<quint32>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
         case Qt3DRender::QAttribute::VertexBaseType::Double: {
-            if(!compressAttribute<double>(*attribute, dracoMesh, attributes))
+            if (!compressAttribute<double>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }

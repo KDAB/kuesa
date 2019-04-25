@@ -1,9 +1,11 @@
+#version 150
+
 /*
     passthrough.vert
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,12 +28,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#version 150
-
 in vec3 vertexPosition;
 in vec2 vertexTexCoord;
+in vec2 vertexTexCoord1;
 
 out vec2 texCoord;
+out vec2 texCoord1;
 
 uniform mat4 mvp;
 
@@ -39,6 +41,7 @@ void main()
 {
     // Pass through the texture coords
     texCoord = vertexTexCoord;
+    texCoord1 = vertexTexCoord1;
 
     // Calculate the clip-space coordinates
     gl_Position = mvp * vec4(vertexPosition, 1.0);

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -86,6 +86,12 @@ Kuesa::AbstractAssetCollection *CollectionModel::collection(const QModelIndex &i
     if (index.isValid())
         return reinterpret_cast<Kuesa::AbstractAssetCollection *>(index.internalPointer());
     return nullptr;
+}
+
+QModelIndex CollectionModel::index(Kuesa::AbstractAssetCollection *collection, QString name) const
+{
+    QModelIndex parent = index(m_collections.indexOf(collection), 0, {});
+    return index(collection->names().indexOf(name), 0, parent);
 }
 
 QModelIndex CollectionModel::index(int row, int column, const QModelIndex &parent) const

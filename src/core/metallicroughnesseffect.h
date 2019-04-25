@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -36,6 +36,7 @@
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
+class QAbstractTexture;
 class QShaderProgramBuilder;
 class QShaderProgram;
 class QCullFace;
@@ -58,6 +59,7 @@ class KUESASHARED_EXPORT MetallicRoughnessEffect : public Qt3DRender::QEffect
     Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
     Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
     Q_PROPERTY(MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLUT READ brdfLUT WRITE setBrdfLUT NOTIFY brdfLUTChanged REVISION 1)
 
 public:
     enum ToneMapping {
@@ -80,6 +82,7 @@ public:
     bool isOpaque() const;
     bool isAlphaCutoffEnabled() const;
     ToneMapping toneMappingAlgorithm() const;
+    Qt3DRender::QAbstractTexture *brdfLUT() const;
 
 public Q_SLOTS:
     void setBaseColorMapEnabled(bool enabled);
@@ -93,6 +96,7 @@ public Q_SLOTS:
     void setOpaque(bool opaque);
     void setAlphaCutoffEnabled(bool enabled);
     void setToneMappingAlgorithm(ToneMapping algorithm);
+    void setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT);
 
 Q_SIGNALS:
     void baseColorMapEnabledChanged(bool enabled);
@@ -106,6 +110,7 @@ Q_SIGNALS:
     void opaqueChanged(bool opaque);
     void alphaCutoffEnabledChanged(bool enabled);
     void toneMappingAlgorithmChanged(ToneMapping algorithm);
+    void brdfLUTChanged(Qt3DRender::QAbstractTexture *brdfLUT);
 
 private:
     bool m_baseColorMapEnabled;
@@ -140,6 +145,7 @@ private:
     Qt3DRender::QRenderPass *m_transparentGL3RenderPass;
     Qt3DRender::QRenderPass *m_transparentES3RenderPass;
     Qt3DRender::QRenderPass *m_transparentES2RenderPass;
+    Qt3DRender::QParameter *m_brdfLUTParameter;
 
     Q_INVOKABLE void initVertexShader();
 };

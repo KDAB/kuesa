@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -25,7 +25,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
 #include <qtkuesa-config.h>
 #include "gltf2parser_p.h"
 #include "gltf2keys_p.h"
@@ -50,6 +49,7 @@
 #include <QFileInfo>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QString>
 
 #include <functional>
 
@@ -73,6 +73,17 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 namespace {
+
+const quint32 GLTF_BINARY_MAGIC = 0x46546C67;
+const quint32 GLTF_CHUNCK_JSON = 0x4E4F534A;
+const quint32 GLTF_CHUNCK_BIN = 0x004E4942;
+
+struct GLBHeader {
+    quint32 magic;
+    quint32 version;
+    quint32 length;
+};
+
 template<class CollectionType>
 void addToCollectionWithUniqueName(CollectionType *collection, const QString &basename, typename CollectionType::ContentType *asset)
 {
@@ -83,7 +94,9 @@ void addToCollectionWithUniqueName(CollectionType *collection, const QString &ba
             break;
         currentName = QString(QLatin1Literal("%1_%2")).arg(basename, QString::number(i));
     }
+
     collection->add(currentName, asset);
+
     if (asset->objectName().isEmpty())
         asset->setObjectName(currentName);
 }
@@ -106,7 +119,7 @@ bool traverseGLTF(const QVector<KeyParserFuncPair> &parsers,
     return true;
 }
 
-void extractPositionViewDirAndUpVectorFromViewMatrix(const QMatrix4x4 viewMatrix,
+void extractPositionViewDirAndUpVectorFromViewMatrix(const QMatrix4x4 &viewMatrix,
                                                      QVector3D &position,
                                                      QVector3D &viewDir,
                                                      QVector3D &up)
@@ -129,6 +142,7 @@ void extractPositionViewDirAndUpVectorFromViewMatrix(const QMatrix4x4 viewMatrix
 GLTF2Parser::GLTF2Parser(SceneEntity *sceneEntity, bool assignNames)
     : m_context(nullptr)
     , m_sceneEntity(sceneEntity)
+    , m_sceneRootEntity(nullptr)
     , m_defaultSceneIdx(-1)
     , m_assignNames(assignNames)
 {
@@ -148,8 +162,52 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QString &filePath)
     }
 
     QFileInfo finfo(filePath);
-    const QByteArray jsonData = f.readAll();
-    return parse(jsonData, finfo.absolutePath());
+    QByteArray data = f.readAll();
+    return parse(data, finfo.absolutePath(), finfo.fileName());
+}
+
+Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &data, const QString &basePath, const QString &filename)
+{
+    bool isValid = detectTypeAndParse(data, basePath, filename);
+    return isValid ? setupScene() : nullptr;
+}
+
+bool GLTF2Parser::detectTypeAndParse(const QByteArray &data, const QString &basePath, const QString &filename)
+{
+    bool isValid = false;
+
+    if (isBinaryGLTF(data, isValid)) {
+        if (isValid)
+            parseBinary(data, basePath, filename);
+    } else {
+        if (isValid)
+            parseJSON(data, basePath, filename);
+    }
+
+    return isValid;
+}
+
+bool GLTF2Parser::isBinaryGLTF(const QByteArray &data, bool &isValid)
+{
+    bool isBinary = true;
+    isValid = true;
+
+    if (data.size() < sizeof(GLBHeader))
+        return false;
+    const GLBHeader *glbHeader = reinterpret_cast<const GLBHeader *>(data.constData());
+    if (glbHeader->magic != GLTF_BINARY_MAGIC) {
+        isBinary = false;
+    } else {
+        if (glbHeader->version != 2) {
+            qCWarning(kuesa()) << "Unsupported glb version" << glbHeader->version;
+            isValid = false;
+        } else if (glbHeader->length != data.size()) {
+            qCWarning(kuesa()) << "Unexpected glb file size" << data.size() << ". Was expecting" << glbHeader->length;
+            isValid = false;
+        }
+    }
+
+    return isBinary;
 }
 
 template<class T>
@@ -282,23 +340,24 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
     };
 }
 
-Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString &basePath)
+void GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath, const QString &filename)
 {
     QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonData);
     if (jsonDocument.isNull() || !jsonDocument.isObject()) {
         qCWarning(kuesa()) << "File is not a valid json document";
-        return nullptr;
+        return;
     }
 
     Q_ASSERT(m_context);
     m_context->setJson(jsonDocument);
+    m_context->setFilename(filename);
+    m_basePath = basePath;
 
     m_animators.clear();
     m_treeNodes.clear();
     m_skeletons.clear();
     m_gltfJointIdxToSkeletonJointIdxPerSkeleton.clear();
 
-    m_basePath = basePath;
     const QJsonObject rootObject = jsonDocument.object();
 
     if (rootObject.contains(KEY_EXTENSIONS_USED) && rootObject.value(KEY_EXTENSIONS_USED).isArray()) {
@@ -334,7 +393,7 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
 
         if (!allRequiredAreSupported) {
             qCWarning(kuesa()) << "File contains unsupported extensions: " << unsupportedExtensions;
-            return nullptr;
+            return;
         }
     }
 
@@ -342,13 +401,13 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
     const bool parsingSucceeded = traverseGLTF(topLevelParsers, rootObject);
 
     if (!parsingSucceeded)
-        return nullptr;
+        return;
 
     m_defaultSceneIdx = rootObject.value(KEY_SCENE).toInt(0);
 
     if (m_defaultSceneIdx < 0 || m_defaultSceneIdx > m_context->scenesCount()) {
         qCWarning(kuesa()) << "Invalid default scene reference";
-        return nullptr;
+        return;
     }
 
     // Build vector of tree nodes
@@ -366,15 +425,52 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
 
     // Generate Qt3D content for animations
     generateAnimationContent();
+}
 
+void GLTF2Parser::moveToThread(QThread *targetThread)
+{
+    QObject::moveToThread(targetThread);
+    if (m_sceneRootEntity)
+        m_sceneRootEntity->moveToThread(targetThread);
+    for (auto &anim : m_animators) {
+        anim.clip->moveToThread(targetThread);
+        anim.mapper->moveToThread(targetThread);
+    }
+
+    for (int i = 0, n = m_context->scenesCount(); i < n; i++) {
+        const Scene scene = m_context->scene(i);
+        const QVector<int> toRetrieveNodes = scene.rootNodeIndices;
+
+        for (int j = 0, m = toRetrieveNodes.size(); j < m; ++j) {
+            const TreeNode node = m_treeNodes[toRetrieveNodes.at(j)];
+            if (node.entity != nullptr)
+                node.entity->moveToThread(targetThread);
+            for (auto &joint : node.joints)
+                if (joint != nullptr)
+                    joint->moveToThread(targetThread);
+        }
+    }
+}
+
+void GLTF2Parser::setContext(GLTF2Context *ctx)
+{
+    m_context = ctx;
+}
+
+const GLTF2Context *GLTF2Parser::context() const
+{
+    return m_context;
+}
+
+Qt3DCore::QEntity *GLTF2Parser::setupScene()
+{
     // Note: we only add resources into the collection after having set an
     // existing parent on the scene root This avoid sending a destroy + created
     // changes because sceneEntity exists and has a backend while the scene root
     // has no backend
+
     Qt3DCore::QEntity *gltfSceneEntity = scene(m_defaultSceneIdx);
-
     if (m_sceneEntity) {
-
         if (m_sceneEntity->meshes()) {
             addAssetsIntoCollection<Mesh>(
                     [this](const Mesh &mesh, int) {
@@ -474,16 +570,71 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &jsonData, const QString 
     return gltfSceneEntity;
 }
 
-void GLTF2Parser::setContext(GLTF2Context *ctx)
+void GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, const QString &filename)
 {
-    m_context = ctx;
-}
+    QByteArray jsonData;
+    const char *current = data.constData();
+    current += sizeof(GLBHeader);
+    int currentOffset = sizeof(GLBHeader);
+    const int endOffset = data.size();
 
-const GLTF2Context *GLTF2Parser::context() const
-{
-    return m_context;
-}
+    while (currentOffset < endOffset) {
+        struct ChunkHeader {
+            quint32 chunkLength;
+            quint32 chunkType;
+        };
 
+        if ((endOffset - currentOffset) < sizeof(ChunkHeader)) {
+            qCWarning(kuesa()) << "Malformed chunck in glb file";
+            return;
+        }
+
+        const ChunkHeader *chunkHeader = reinterpret_cast<const ChunkHeader *>(current);
+        current += sizeof(ChunkHeader);
+        currentOffset += sizeof(ChunkHeader);
+
+        if ((endOffset - currentOffset) < chunkHeader->chunkLength) {
+            qCWarning(kuesa()) << "Malformed chunck in glb file";
+            return;
+        }
+
+        if (chunkHeader->chunkType == GLTF_CHUNCK_JSON) {
+            // JSON chunck
+            if (jsonData.isEmpty()) {
+                jsonData = QByteArray::fromRawData(current, chunkHeader->chunkLength);
+            } else {
+                qCWarning(kuesa()) << "Multiple JSON chunks in glb file";
+                return;
+            }
+        } else if (chunkHeader->chunkType == GLTF_CHUNCK_BIN) {
+            // BIN chunck
+            if (m_context->bufferChunk().isEmpty()) {
+                m_context->setBufferChunk(QByteArray::fromRawData(current, chunkHeader->chunkLength));
+            } else {
+                qCWarning(kuesa()) << "Multiple BIN chunks in glb file";
+                return;
+            }
+        } else {
+            // skip chunck
+            qCWarning(kuesa()) << "Ignoring unhandled chunck type in glb file:" << chunkHeader->chunkType;
+        }
+
+        current += chunkHeader->chunkLength;
+        currentOffset += chunkHeader->chunkLength;
+    }
+
+    if (jsonData.isEmpty()) {
+        qCWarning(kuesa()) << "Missing JSON chunk in glb file";
+        return;
+    }
+
+    parseJSON(jsonData, basePath, filename);
+
+    // make sure chunk doesn't outlive the original data
+    m_context->setBufferChunk({});
+
+    return;
+}
 void GLTF2Parser::buildEntitiesAndJointsGraph()
 {
     const int nbNodes = m_context->treeNodeCount();
@@ -726,6 +877,12 @@ void GLTF2Parser::generateTreeNodeContent()
                             Material &mat = m_context->material(materialId);
                             // Get or create Qt3D for material
                             material = mat.material(isSkinned, primitiveData.hasColorAttr, m_context);
+
+                            auto effect = qobject_cast<MetallicRoughnessEffect *>(qobject_cast<Qt3DRender::QMaterial *>(material)->effect());
+                            if (effect && m_sceneEntity) {
+                                auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
+                                effect->setBrdfLUT(texture);
+                            }
                         } else {
                             // Only create defaultMaterial if we know we need it
                             // otherwise we might leak it
@@ -733,12 +890,22 @@ void GLTF2Parser::generateTreeNodeContent()
                                 if (!defaultSkinnedMaterial) {
                                     MetallicRoughnessMaterial *material = new MetallicRoughnessMaterial;
                                     material->setUseSkinning(true);
+                                    auto effect = qobject_cast<MetallicRoughnessEffect *>(material->effect());
+                                    if (effect && m_sceneEntity) {
+                                        auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
+                                        effect->setBrdfLUT(texture);
+                                    }
                                     defaultSkinnedMaterial = material;
                                 }
                                 material = defaultSkinnedMaterial;
                             } else {
                                 if (!defaultMaterial) {
                                     MetallicRoughnessMaterial *material = new MetallicRoughnessMaterial;
+                                    auto effect = qobject_cast<MetallicRoughnessEffect *>(material->effect());
+                                    if (effect && m_sceneEntity) {
+                                        auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
+                                        effect->setBrdfLUT(texture);
+                                    }
                                     material->setUseSkinning(false);
                                     defaultMaterial = material;
                                 }
@@ -892,6 +1059,75 @@ Qt3DCore::QEntity *GLTF2Parser::scene(const int id)
                 joint->setParent(m_sceneRootEntity);
     }
     return m_sceneRootEntity;
+}
+
+ThreadedGLTF2Parser::ThreadedGLTF2Parser(
+        GLTF2Context *context,
+        SceneEntity *sceneEntity,
+        bool assignNames)
+    : m_parser{ sceneEntity, assignNames }
+{
+    m_parser.setContext(context);
+
+    m_parser.moveToThread(&m_thread);
+    m_thread.start();
+}
+
+ThreadedGLTF2Parser::~ThreadedGLTF2Parser()
+{
+    m_thread.exit(0);
+    m_thread.wait();
+}
+
+void ThreadedGLTF2Parser::on_parsingFinished()
+{
+    auto root = m_parser.setupScene();
+
+    if (root) {
+        root->setParent((Qt3DCore::QNode *)nullptr);
+        root->moveToThread(this->thread());
+    }
+    emit parsingFinished(root);
+}
+
+void ThreadedGLTF2Parser::parse(const QString &path)
+{
+    QMetaObject::invokeMethod(&m_parser, [=] {
+        QFile f(path);
+        f.open(QIODevice::ReadOnly);
+        if (!f.isOpen()) {
+            qCWarning(kuesa()) << "Can't read file" << path;
+            return;
+        }
+
+        QFileInfo finfo(path);
+        const QByteArray jsonData = f.readAll();
+        bool isValid = m_parser.detectTypeAndParse(jsonData, finfo.absolutePath(), finfo.fileName());
+
+        m_parser.moveToThread(this->thread());
+
+        if (isValid) {
+            QMetaObject::invokeMethod(this, &ThreadedGLTF2Parser::on_parsingFinished);
+        } else {
+            emit parsingFinished(nullptr);
+        }
+        return;
+    });
+}
+
+void ThreadedGLTF2Parser::parse(const QByteArray &data, const QString &basePath, const QString &filename)
+{
+    QMetaObject::invokeMethod(&m_parser, [=] {
+        bool isValid = m_parser.detectTypeAndParse(data, basePath, filename);
+
+        m_parser.moveToThread(this->thread());
+
+        if (isValid) {
+            QMetaObject::invokeMethod(this, &ThreadedGLTF2Parser::on_parsingFinished);
+        } else {
+            emit parsingFinished(nullptr);
+        }
+    });
 }
 
 QT_END_NAMESPACE

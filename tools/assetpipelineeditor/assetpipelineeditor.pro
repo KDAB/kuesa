@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Mike Krus <mike.krus@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,6 +26,7 @@
 
 TEMPLATE = app
 QT += 3dcore 3drender 3dinput 3danimation 3dextras 3dquick widgets kuesa kuesa-private
+lessThan(QT_MINOR_VERSION, 13): QT += 3dcore-private 3drender-private
 
 DEFINES += QT_DEPRECATED_WARNINGS
 VERSION = 1.0.0
@@ -84,8 +85,7 @@ FORMS += \
 
 RESOURCES += \
     qml.qrc \
-    ../../resources/resources.qrc \
-    ../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge.qrc
+    ../../resources/resources.qrc
 
 OTHER_FILES += \
     main.qml
@@ -106,6 +106,12 @@ macos {
 
     OBJECTIVE_SOURCES += macUtils.mm
     LIBS += -framework AppKit
+
+    RESOURCES += \
+        ../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge-16f.qrc
+} else {
+    RESOURCES += \
+        ../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge.qrc
 }
 
 windows {
@@ -122,6 +128,3 @@ windows {
 
 target.path = $$[QT_INSTALL_BINS]
 INSTALLS += target
-
-DISTFILES += \
-    Info.plist.in

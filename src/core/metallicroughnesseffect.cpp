@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -28,6 +28,7 @@
 
 #include "metallicroughnesseffect.h"
 
+#include <Qt3DCore/private/qnode_p.h>
 #include <Qt3DRender/qcullface.h>
 #include <Qt3DRender/qfilterkey.h>
 #include <Qt3DRender/qgraphicsapifilter.h>
@@ -142,6 +143,19 @@ namespace Kuesa {
  */
 
 /*!
+    \property brdfLUT
+
+    brdfLUT references a texture containing lookup tables for the split sum approximation
+    in the PBR rendering. This is used internally by the material.
+
+    When creating an instance of Kuesa::MetallicRoughnessMaterial, users should assign
+    a texture to this property of the effect. A shared instance can be retrieved from
+    the Kuesa::TextureCollection using the name "_kuesa_brdfLUT"
+
+    \since 1.1
+ */
+
+/*!
     \qmltype MetallicRoughnessEffect
     \instantiates Kuesa::MetallicRoughnessEffect
     \inmodule Kuesa
@@ -238,6 +252,19 @@ namespace Kuesa {
     \since 1.1
  */
 
+/*!
+    \qmlproperty Qt3DRender.AbstractTexture brdfLUT
+
+    brdfLUT references a texture containing lookup tables for the split sum approximation
+    in the PBR rendering. This is used internally by the material.
+
+    When creating an instance of Kuesa::MetallicRoughnessMaterial, users should assign
+    a texture to this property of the effect. A shared instance can be retrieved from
+    the Kuesa::TextureCollection using the name "_kuesa_brdfLUT"
+
+    \since 1.1
+ */
+
 namespace {
 
 QString shaderGraphLayerForToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm)
@@ -275,6 +302,7 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     , m_metalRoughGL3Shader(new QShaderProgram(this))
     , m_metalRoughES3Shader(new QShaderProgram(this))
     , m_metalRoughES2Shader(new QShaderProgram(this))
+    , m_brdfLUTParameter(new QParameter(this))
 {
     const auto enabledLayers = QStringList{ QStringLiteral("noBaseColorMap"),
                                             QStringLiteral("noMetalRoughMap"),
@@ -433,6 +461,9 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     addParameter(new QParameter(QStringLiteral("envLight.irradiance"), new QTexture2D));
     addParameter(new QParameter(QStringLiteral("envLight.specular"), new QTexture2D));
 #endif
+
+    m_brdfLUTParameter->setName(QLatin1String("brdfLUT"));
+    addParameter(m_brdfLUTParameter);
 
     QMetaObject::invokeMethod(this, "initVertexShader", Qt::QueuedConnection);
     m_invokeInitVertexShaderRequested = true;
@@ -669,6 +700,8 @@ void MetallicRoughnessEffect::setOpaque(bool opaque)
     m_transparentES2RenderPass->setEnabled(!opaque);
     if (opaque)
         setAlphaCutoffEnabled(false);
+
+    emit opaqueChanged(opaque);
 }
 
 void MetallicRoughnessEffect::setAlphaCutoffEnabled(bool enabled)
@@ -712,6 +745,29 @@ void MetallicRoughnessEffect::setToneMappingAlgorithm(MetallicRoughnessEffect::T
 
     m_toneMappingAlgorithm = algorithm;
     emit toneMappingAlgorithmChanged(algorithm);
+}
+
+Qt3DRender::QAbstractTexture *MetallicRoughnessEffect::brdfLUT() const
+{
+    return m_brdfLUTParameter->value().value<Qt3DRender::QAbstractTexture *>();
+}
+
+void MetallicRoughnessEffect::setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT)
+{
+    auto d = Qt3DCore::QNodePrivate::get(this);
+    auto current = this->brdfLUT();
+    if (brdfLUT == current)
+        return;
+    if (current)
+        d->unregisterDestructionHelper(current);
+    if (brdfLUT) {
+        d->registerDestructionHelper(brdfLUT, &MetallicRoughnessEffect::setBrdfLUT, brdfLUT);
+        if (!brdfLUT->parentNode())
+            brdfLUT->setParent(this);
+    }
+    m_brdfLUTParameter->setValue(QVariant::fromValue(brdfLUT));
+
+    emit brdfLUTChanged(brdfLUT);
 }
 
 void MetallicRoughnessEffect::initVertexShader()

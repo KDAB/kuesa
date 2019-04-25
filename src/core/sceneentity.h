@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -48,6 +48,10 @@ QT_BEGIN_NAMESPACE
 
 namespace Qt3DCore {
 class QTransform;
+}
+
+namespace QtDRender {
+class QTextureLoader;
 }
 
 namespace Kuesa {
@@ -127,6 +131,8 @@ private:
     EntityCollection *m_entities;
     TextureImageCollection *m_textureImages;
     AnimationMappingCollection *m_animationMappings;
+
+    Qt3DRender::QTextureLoader *m_brdfLUT;
 };
 
 } // namespace Kuesa

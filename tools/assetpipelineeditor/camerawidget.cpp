@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,6 +29,33 @@
 #include "camerawidget.h"
 #include "ui_camerawidget.h"
 #include "ui_vectorwidget.h"
+
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QSettings>
+
+namespace {
+    const QLatin1String LASTPATHSETTING("mainwindow/lastPath");
+
+    QJsonObject vector3DToJson(const QVector3D &v)
+    {
+        QJsonObject json;
+        json[QLatin1String("x")] = static_cast<double>(v.x());
+        json[QLatin1String("y")] = static_cast<double>(v.y());
+        json[QLatin1String("z")] = static_cast<double>(v.z());
+        return json;
+    }
+
+    QVector3D jsonToVector3D(const QJsonObject &json)
+    {
+        QVector3D v(static_cast<float>(json[QLatin1String("x")].toDouble()),
+                    static_cast<float>(json[QLatin1String("y")].toDouble()),
+                    static_cast<float>(json[QLatin1String("z")].toDouble()));
+        return v;
+    }
+}
 
 VectorWidget::VectorWidget(QWidget *parent)
     : QWidget(parent)
@@ -123,6 +150,8 @@ CameraWidget::CameraWidget(QWidget *parent)
     connect(m_ui->near, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CameraWidget::setNear);
     connect(m_ui->far, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CameraWidget::setFar);
     connect(m_ui->fov, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CameraWidget::setFoV);
+    connect(m_ui->saveButton, &QPushButton::clicked, this, &CameraWidget::save);
+    connect(m_ui->loadButton, &QPushButton::clicked, this, &CameraWidget::load);
 }
 
 CameraWidget::~CameraWidget()
@@ -227,6 +256,61 @@ void CameraWidget::setFoV(double fov)
         m_camera->setFieldOfView(fov);
 }
 
+void CameraWidget::save()
+{
+    QSettings settings;
+    const QString lastPath = settings.value(LASTPATHSETTING, QDir::homePath()).toString();
+    const auto filename = QFileDialog::getSaveFileName(
+                this,
+                QLatin1String("Save Camera Settings"),
+                lastPath,
+                QLatin1String("*.apecam"));
+
+    if (filename.isEmpty())
+        return;
+
+    QFileInfo fi(filename);
+    settings.setValue(LASTPATHSETTING, fi.absolutePath());
+
+    QFile saveFile(filename);
+    if (!saveFile.open(QIODevice::WriteOnly)) {
+        qWarning("Couldn't open camera settings save file.");
+        return;
+    }
+
+    QJsonObject cameraObject;
+    toJson(cameraObject);
+    QJsonDocument saveDoc(cameraObject);
+    saveFile.write(saveDoc.toJson());
+}
+
+void CameraWidget::load()
+{
+    QSettings settings;
+    const QString lastPath = settings.value(LASTPATHSETTING, QDir::homePath()).toString();
+    const auto filename = QFileDialog::getOpenFileName(
+                this,
+                QLatin1String("Load Camera Settings"),
+                lastPath,
+                QLatin1String("*.apecam"));
+
+    if (filename.isEmpty())
+        return;
+
+    QFileInfo fi(filename);
+    settings.setValue(LASTPATHSETTING, fi.absolutePath());
+
+    QFile loadFile(filename);
+    if (!loadFile.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open camera settings load file.");
+        return;
+    }
+
+    const QByteArray savedData = loadFile.readAll();
+    const QJsonDocument loadDoc(QJsonDocument::fromJson(savedData));
+    fromJson(loadDoc.object());
+}
+
 void CameraWidget::updateWidgetValues()
 {
     QSignalBlocker sb1(m_ui->centerVecEdit);
@@ -255,5 +339,57 @@ void CameraWidget::updateWidgetValues()
         m_ui->right->setValue(m_camera ? m_camera->right() : 0.0f);
         m_ui->top->setValue(m_camera ? m_camera->top() : 0.0f);
         m_ui->bottom->setValue(m_camera ? m_camera->bottom() : 0.0f);
+    }
+}
+
+void CameraWidget::fromJson(const QJsonObject &json)
+{
+    if (!m_camera)
+        return;
+
+    m_camera->setPosition(jsonToVector3D(json[QLatin1String("position")].toObject()));
+    m_camera->setViewCenter(jsonToVector3D(json[QLatin1String("viewCenter")].toObject()));
+    m_camera->setUpVector(jsonToVector3D(json[QLatin1String("upVector")].toObject()));
+    m_camera->setNearPlane(static_cast<float>(json[QLatin1String("nearPlane")].toDouble()));
+    m_camera->setFarPlane(static_cast<float>(json[QLatin1String("farPlane")].toDouble()));
+
+    const auto projectionType = json[QLatin1String("projectionType")].toString();
+    if (projectionType == QLatin1String("Perspective")) {
+        m_camera->setProjectionType(Qt3DRender::QCameraLens::PerspectiveProjection);
+        m_camera->setFieldOfView(static_cast<float>(json[QLatin1String("fieldOfView")].toDouble()));
+        m_camera->setAspectRatio(static_cast<float>(json[QLatin1String("aspectRatio")].toDouble()));
+    } else {
+        m_camera->setProjectionType(Qt3DRender::QCameraLens::OrthographicProjection);
+        m_camera->setLeft(static_cast<float>(json[QLatin1String("left")].toDouble()));
+        m_camera->setRight(static_cast<float>(json[QLatin1String("right")].toDouble()));
+        m_camera->setTop(static_cast<float>(json[QLatin1String("top")].toDouble()));
+        m_camera->setBottom(static_cast<float>(json[QLatin1String("bottom")].toDouble()));
+    }
+
+    updateWidgetValues();
+}
+
+void CameraWidget::toJson(QJsonObject &json)
+{
+    if (!m_camera)
+        return;
+
+    json[QLatin1String("position")] = vector3DToJson(m_camera->position());
+    json[QLatin1String("viewCenter")] = vector3DToJson(m_camera->viewCenter());
+    json[QLatin1String("upVector")] = vector3DToJson(m_camera->upVector());
+    json[QLatin1String("nearPlane")] = static_cast<double>(m_camera->nearPlane());
+    json[QLatin1String("farPlane")] = static_cast<double>(m_camera->farPlane());
+
+    const bool isPerspective = m_camera->projectionType() == Qt3DRender::QCameraLens::PerspectiveProjection;
+    if (isPerspective) {
+        json[QLatin1String("projectionType")] = QLatin1String("Perspective");
+        json[QLatin1String("fieldOfView")] = static_cast<double>(m_camera->fieldOfView());
+        json[QLatin1String("aspectRatio")] = static_cast<double>(m_camera->aspectRatio());
+    } else {
+        json[QLatin1String("projectionType")] = QLatin1String("Orthographic");
+        json[QLatin1String("left")] = static_cast<double>(m_camera->left());
+        json[QLatin1String("right")] = static_cast<double>(m_camera->right());
+        json[QLatin1String("top")] = static_cast<double>(m_camera->top());
+        json[QLatin1String("bottom")] = static_cast<double>(m_camera->bottom());
     }
 }

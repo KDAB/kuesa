@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -79,9 +79,19 @@ void MeshInspector::setMesh(Qt3DRender::QGeometryRenderer *mesh)
             m_highlightMaterial->setAlphaCutoffEnabled(false);
         }
 
+        bool setBrdfLUT = true;
         for (Qt3DCore::QEntity *entity : entities) {
             Kuesa::MetallicRoughnessMaterial *mat = Kuesa::componentFromEntity<Kuesa::MetallicRoughnessMaterial>(entity);
             if (mat != nullptr) {
+                if (setBrdfLUT) {
+                    // copy the brdfLUT texture from the current material to the highlight material
+                    const auto *srcEffect = qobject_cast<Kuesa::MetallicRoughnessEffect *>(mat->effect());
+                    auto *highlightEffect = qobject_cast<Kuesa::MetallicRoughnessEffect *>(m_highlightMaterial->effect());
+                    if (srcEffect && highlightEffect)
+                        highlightEffect->setBrdfLUT(srcEffect->brdfLUT());
+                    setBrdfLUT = false;
+                }
+
                 // Replace entity material with highlight material
                 entity->removeComponent(mat);
                 entity->addComponent(m_highlightMaterial.data());

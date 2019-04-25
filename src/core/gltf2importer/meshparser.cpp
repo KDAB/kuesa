@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -193,23 +193,23 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
 
             const auto primitiveType = static_cast<Qt3DRender::QGeometryRenderer::PrimitiveType>(primitivesObject.value(KEY_MODE).toInt(GL_TRIANGLES));
             // TODO restore when it can be made optional
-//            if (primitiveType == Qt3DRender::QGeometryRenderer::Triangles ||
-//                primitiveType == Qt3DRender::QGeometryRenderer::TriangleStrip ||
-//                primitiveType == Qt3DRender::QGeometryRenderer::TriangleFan) {
-//                const auto &attributes = geometry->attributes();
-//                const bool hasTangent = std::find_if(std::begin(attributes),
-//                                                     std::end(attributes),
-//                                                     [](const Qt3DRender::QAttribute *attr) {
-//                                                         return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
-//                                                     }) != std::end(attributes);
-//                if (!hasTangent) {
-//                    auto tangentAttr = Kuesa::GLTF2Import::MeshParserUtils::createTangentAttribute(geometry.get(), primitiveType);
-//                    if (tangentAttr) {
-//                        tangentAttr->setName(Qt3DRender::QAttribute::defaultTangentAttributeName());
-//                        geometry->addAttribute(tangentAttr);
-//                    }
-//                }
-//            }
+            if (primitiveType == Qt3DRender::QGeometryRenderer::Triangles ||
+                primitiveType == Qt3DRender::QGeometryRenderer::TriangleStrip ||
+                primitiveType == Qt3DRender::QGeometryRenderer::TriangleFan) {
+                const auto &attributes = geometry->attributes();
+                const bool hasTangent = std::find_if(std::begin(attributes),
+                                                     std::end(attributes),
+                                                     [](const Qt3DRender::QAttribute *attr) {
+                                                         return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
+                                                     }) != std::end(attributes);
+                if (!hasTangent) {
+                    auto tangentAttr = Kuesa::GLTF2Import::MeshParserUtils::createTangentAttribute(geometry.get(), primitiveType);
+                    if (tangentAttr) {
+                        tangentAttr->setName(Qt3DRender::QAttribute::defaultTangentAttributeName());
+                        geometry->addAttribute(tangentAttr);
+                    }
+                }
+            }
 
             Qt3DRender::QGeometryRenderer *renderer = new Qt3DRender::QGeometryRenderer;
             renderer->setPrimitiveType(primitiveType);

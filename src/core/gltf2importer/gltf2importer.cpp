@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -323,23 +323,36 @@ void GLTF2Importer::setAssignNames(bool assignNames)
 
 void GLTF2Importer::load()
 {
+    if (status() == Status::Loading)
+        return;
+
     setStatus(GLTF2Importer::Status::Loading);
     *m_context = {};
 
     const QString path = urlToLocalFileOrQrc(m_source);
 
-    GLTF2Import::GLTF2Parser parser(m_sceneEntity, m_assignNames);
-    parser.setContext(m_context);
+    auto parser = new GLTF2Import::ThreadedGLTF2Parser(m_context, m_sceneEntity, m_assignNames);
+
+    connect(
+            parser, &GLTF2Import::ThreadedGLTF2Parser::parsingFinished,
+            this, [this, parser](Qt3DCore::QEntity *root) {
+                m_root = root;
+
+                if (m_root) {
+                    m_root->setParent(this);
+                    if (m_sceneEntity)
+                        emit m_sceneEntity->loadingDone();
+                    setStatus(GLTF2Importer::Status::Ready);
+                } else {
+                    setStatus(GLTF2Importer::Status::Error);
+                }
+
+                parser->deleteLater();
+            },
+            Qt::QueuedConnection);
 
     Q_ASSERT(m_root == nullptr);
-    m_root = parser.parse(path);
-    if (m_root) {
-        m_root->setParent(this);
-        if (m_sceneEntity)
-            emit m_sceneEntity->loadingDone();
-    }
-
-    setStatus(m_root ? GLTF2Importer::Status::Ready : GLTF2Importer::Status::Error);
+    parser->parse(path);
 }
 
 void GLTF2Importer::clear()

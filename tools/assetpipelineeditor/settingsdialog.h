@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -41,23 +41,31 @@ class SettingsDialog : public QDialog
 {
     Q_OBJECT
     Q_PROPERTY(QColor selectionColor READ selectionColor WRITE setSelectionColor NOTIFY selectionColorChanged)
+    Q_PROPERTY(QColor clearColor READ clearColor WRITE setClearColor NOTIFY clearColorChanged)
+    Q_PROPERTY(bool defaultClearColor READ defaultClearColor WRITE setDefaultClearColor NOTIFY defaultClearColorChanged)
 public:
     explicit SettingsDialog(MainWindow *parent = nullptr);
     ~SettingsDialog();
 
     QColor selectionColor() const;
+    QColor clearColor() const;
+    bool defaultClearColor() const;
 
 public slots:
     void setSelectionColor(QColor selectionColor);
+    void setClearColor(QColor clearColor);
+    void setDefaultClearColor(bool defaultClearColor);
 
 signals:
     void selectionColorChanged(QColor selectionColor);
+    void clearColorChanged(QColor clearColor);
+    void defaultClearColorChanged(bool defaultClearColor);
 
 private:
-    void pickColor();
-
     Ui::SettingsDialog *ui;
     QColor m_selectionColor;
+    QColor m_clearColor;
+    bool m_defaultClearColor;
 };
 
 #endif // SETTINGSDIALOG_H

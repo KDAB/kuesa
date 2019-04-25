@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -32,6 +32,7 @@
 #include <QMainWindow>
 #include <Qt3DQuickExtras/Qt3DQuickWindow>
 #include <Qt3DRender/QCamera>
+#include <Qt3DRender/QPickEvent>
 
 class QComboBox;
 class AnimationWidget;
@@ -68,6 +69,7 @@ public:
     Q_INVOKABLE void updateScene(Kuesa::SceneEntity *entity);
     Q_INVOKABLE void setCamera(const QString &name);
     Q_INVOKABLE void viewAll();
+    Q_INVOKABLE void pickEntity(Qt3DRender::QPickEvent *event);
 
     bool event(QEvent *event) override;
 
