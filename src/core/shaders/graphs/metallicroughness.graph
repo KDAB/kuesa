@@ -2742,7 +2742,7 @@
                 "x": -210,
                 "y": 272
             },
-            "type": "input",
+            "type": "boolInput",
             "uuid": "{73f256cd-7bc3-4a2e-a3e6-7c513faf5d4e}"
         },
         {
@@ -2800,7 +2800,7 @@
                 "x": -367,
                 "y": 820
             },
-            "type": "input",
+            "type": "boolInput",
             "uuid": "{ac77eaca-31ea-4c5f-866e-d8f138fbff82}"
         },
         {
@@ -2888,7 +2888,7 @@
                 "x": -136,
                 "y": -648
             },
-            "type": "input",
+            "type": "boolInput",
             "uuid": "{93267136-c8d6-433b-b10e-df927628448a}"
         },
         {
@@ -2916,7 +2916,7 @@
                 "x": -834,
                 "y": -340
             },
-            "type": "input",
+            "type": "boolInput",
             "uuid": "{2e308734-5616-497a-9793-3892c4776793}"
         },
         {
@@ -3004,7 +3004,7 @@
                 "x": -1600,
                 "y": 1464
             },
-            "type": "input",
+            "type": "boolInput",
             "uuid": "{d22719a0-39d9-4dd7-86b1-979242fc70ab}"
         }
     ],
@@ -3564,6 +3564,46 @@
                         "$qualifier highp $type $name;"
                     ],
                     "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
+                }
+            ]
+        },
+        "boolInput": {
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "name": "defaultName",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
                 },
                 {
                     "format": {
