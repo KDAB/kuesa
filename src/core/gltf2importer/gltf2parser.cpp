@@ -433,24 +433,47 @@ void GLTF2Parser::moveToThread(QThread *targetThread)
     QObject::moveToThread(targetThread);
     if (m_sceneRootEntity)
         m_sceneRootEntity->moveToThread(targetThread);
-    for (auto &anim : m_animators) {
-        anim.clip->moveToThread(targetThread);
-        anim.mapper->moveToThread(targetThread);
+
+    auto updateThread = [&targetThread](QObject* node) {
+        if(node && node->parent() == nullptr)
+            node->moveToThread(targetThread);
+    };
+
+    for (const TreeNode &treeNode : qAsConst(m_treeNodes)) {
+        updateThread(treeNode.entity);
+        for (Qt3DCore::QJoint * joint : treeNode.joints)
+            updateThread(joint);
     }
 
-    for (int i = 0, n = m_context->scenesCount(); i < n; i++) {
-        const Scene scene = m_context->scene(i);
-        const QVector<int> toRetrieveNodes = scene.rootNodeIndices;
+    for (AnimationDetails &anim : m_animators) {
+        updateThread(anim.clip);
+        updateThread(anim.mapper);
+    }
 
-        for (int j = 0, m = toRetrieveNodes.size(); j < m; ++j) {
-            const TreeNode node = m_treeNodes[toRetrieveNodes.at(j)];
-            if (node.entity != nullptr)
-                node.entity->moveToThread(targetThread);
-            for (auto &joint : node.joints)
-                if (joint != nullptr)
-                    joint->moveToThread(targetThread);
+    for(Qt3DCore::QSkeleton* skeleton : m_skeletons) {
+        updateThread(skeleton);
+    }
+
+    iterateAssets<Mesh>([&updateThread] (const Mesh& mesh) {
+        for (auto& primitive : mesh.meshPrimitives) {
+            updateThread(primitive.primitiveRenderer);
         }
-    }
+    });
+
+    iterateAssets<Layer>([&updateThread] (const Layer& layer) {
+        updateThread(layer.layer);
+    });
+
+    iterateAssets<Texture>([&updateThread] (const Texture& texture) {
+        updateThread(texture.texture);
+    });
+
+    iterateAssets<Material>([&updateThread] (const Material& material) {
+        if (material.hasRegularMaterial())
+            updateThread(material.material(false));
+        if (material.hasSkinnedMaterial())
+            updateThread(material.material(true));
+    });
 }
 
 void GLTF2Parser::setContext(GLTF2Context *ctx)
@@ -568,6 +591,7 @@ Qt3DCore::QEntity *GLTF2Parser::setupScene()
                     [this](const Skin &skin, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), skin.name, m_skeletons.at(i)); },
                     [this](const Skin &, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), QStringLiteral("KuesaSkeleton_%1").arg(i), m_skeletons.at(i)); });
     }
+
     return gltfSceneEntity;
 }
 
@@ -1129,6 +1153,58 @@ Qt3DCore::QEntity *GLTF2Parser::scene(const int id)
     return m_sceneRootEntity;
 }
 
+/**
+ * \internal
+ * \brief ThreadedGLTF2Parser This class enables asynchronous parsing of GLTF scenes.
+ *
+ * It encapsulates a GLTF2Parser which is executed on a separate thread.
+ *
+ * ThreadedGLTF2Parser itself has affinity to the main thread.
+ *
+ * Here is how the parsing currently happens :
+ *
+ * ThreadedGLTF2Parser construction :
+ *  * the m_parser object is moved to the parsing thread
+ *
+ * ThreadedGLTF2Parser::parse :
+ *  * GLTF2Parser::detectTypeAndParse is invoked on the parsing thread.
+ *  * GLTF2Parser is moved to the main thread (`this->thread()`).
+ *    * Note : moveToThread has been reimplemented since it needs to move various non-child objects as well.
+ *    * In particular, all the generated nodes are moved to the main thread at this point
+ *  * ThreadedGLTF2Parser::on_parsingFinished is invoked on the main thread.
+ *    * It calls setupScene on the main thread which adds the items to the SceneEntity (m_sceneRootEntity).
+ *    * This is necessary because SceneEntity lives on the main thread.
+ *
+ * Here is a diagram of the objects thread affinity in time.
+ *
+ *          Main thread                                        Parsing Thread
+ *          -----------                                        --------------
+ *
+ *          GLTF2Importer (I)
+ *          ThreadedGLTF2Parser (T)                            GLTF2Parser (G)
+ *          SceneEntity (G::m_sceneEntity)
+ *
+ *          T::parse --------------------\
+ *                                        \--------------->    G::detectTypeAndParse
+ *                                                                -> creation of QEntities
+ *                                                                -> creation of m_sceneRootEntity
+ *                                                                ....
+ *                                                             G::moveToThread(main thread)
+ *                                                                -> QEntities moved to main thread
+ *                                                                -> m_sceneRootEntity moved to main thread
+ *                                                                ....
+ *                                         /------------------ *
+ *          T::on_parsingFinished <-------/
+ *             -> G::setupScene
+ *               -> QEntities reparented to m_sceneRootEntity
+ *               -> QEntities added to SceneEntity collections
+ *             -> m_sceneRootEntity deparented
+ *             -> T::parsingFinished(m_sceneRootEntity)
+ *               -> callback in GLTF2Importer::load()
+ *                 -> m_sceneRootEntity reparented to I
+ */
+
+
 ThreadedGLTF2Parser::ThreadedGLTF2Parser(
         GLTF2Context *context,
         SceneEntity *sceneEntity,
@@ -1153,7 +1229,6 @@ void ThreadedGLTF2Parser::on_parsingFinished()
 
     if (root) {
         root->setParent((Qt3DCore::QNode *)nullptr);
-        root->moveToThread(this->thread());
     }
     emit parsingFinished(root);
 }

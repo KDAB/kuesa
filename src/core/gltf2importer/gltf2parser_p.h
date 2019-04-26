@@ -132,6 +132,18 @@ private:
         }
     }
 
+    template<typename Asset, typename F>
+    void iterateAssets(F f) {
+        // F must take an argument of type const Asset&
+        using typecheck = decltype(f(std::declval<const Asset&>()));
+
+        const int m = m_context->count<Asset>();
+        for (int i = 0; i < m; ++i) {
+            const Asset &asset = m_context->assetAt<Asset>(i);
+            f(asset);
+        }
+    }
+
     struct AnimationDetails {
         Qt3DAnimation::QAnimationClip *clip;
         Qt3DAnimation::QChannelMapper *mapper;
