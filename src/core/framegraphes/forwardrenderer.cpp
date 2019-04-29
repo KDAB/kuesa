@@ -305,7 +305,7 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_surfaceSelector(new Qt3DRender::QRenderSurfaceSelector())
     , m_noDrawClearBuffer(new Qt3DRender::QNoDraw())
     , m_frustumCulling(new Qt3DRender::QFrustumCulling())
-    , m_backToFrontSorting(false)
+    , m_backToFrontSorting(true)
     , m_zfilling(false)
     , m_renderToTextureRootNode(nullptr)
     , m_effectsRootNode(nullptr)
@@ -533,7 +533,7 @@ void ForwardRenderer::setFrustumCulling(bool frustumCulling)
 
 /*!
  * Activates back-to-front sorting which may be required for correct alpha
- * blending rendering.
+ * blending rendering. This is true by default.
  */
 void ForwardRenderer::setBackToFrontSorting(bool backToFrontSorting)
 {
