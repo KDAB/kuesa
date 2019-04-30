@@ -30,8 +30,7 @@
 #define KUESA_METALLICROUGHNESSMATERIAL_H
 
 #include <QtGui/qcolor.h>
-#include <QtGui/qgenericmatrix.h>
-#include <Qt3DRender/qmaterial.h>
+#include <Kuesa/gltf2material.h>
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/metallicroughnesseffect.h>
 
@@ -52,7 +51,7 @@ namespace Kuesa {
 
 class MorphController;
 
-class KUESASHARED_EXPORT MetallicRoughnessMaterial : public Qt3DRender::QMaterial
+class KUESASHARED_EXPORT MetallicRoughnessMaterial : public GLTF2Material
 {
     Q_OBJECT
 
@@ -64,7 +63,6 @@ class KUESASHARED_EXPORT MetallicRoughnessMaterial : public Qt3DRender::QMateria
 
     Q_PROPERTY(QColor baseColorFactor READ baseColorFactor WRITE setBaseColorFactor NOTIFY baseColorFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *baseColorMap READ baseColorMap WRITE setBaseColorMap NOTIFY baseColorMapChanged)
-
     Q_PROPERTY(float metallicFactor READ metallicFactor WRITE setMetallicFactor NOTIFY metallicFactorChanged)
     Q_PROPERTY(float roughnessFactor READ roughnessFactor WRITE setRoughnessFactor NOTIFY roughnessFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *metalRoughMap READ metalRoughMap WRITE setMetalRoughMap NOTIFY metalRoughMapChanged)
@@ -77,15 +75,7 @@ class KUESASHARED_EXPORT MetallicRoughnessMaterial : public Qt3DRender::QMateria
     Q_PROPERTY(QColor emissiveFactor READ emissiveFactor WRITE setEmissiveFactor NOTIFY emissiveFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *emissiveMap READ emissiveMap WRITE setEmissiveMap NOTIFY emissiveMapChanged)
 
-    Q_PROPERTY(QMatrix3x3 textureTransform READ textureTransform WRITE setTextureTransform NOTIFY textureTransformChanged)
-    Q_PROPERTY(bool usingColorAttribute READ isUsingColorAttribute WRITE setUsingColorAttribute NOTIFY usingColorAttributeChanged)
-    Q_PROPERTY(bool doubleSided READ isDoubleSided WRITE setDoubleSided NOTIFY doubleSidedChanged)
-    Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
-    Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
-    Q_PROPERTY(float alphaCutoff READ alphaCutoff WRITE setAlphaCutoff NOTIFY alphaCutoffChanged)
-    Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
     Q_PROPERTY(Kuesa::MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
-    Q_PROPERTY(Kuesa::MorphController *morphController READ morphController NOTIFY morphControllerChanged)
 
 public:
     explicit MetallicRoughnessMaterial(Qt3DCore::QNode *parent = nullptr);
@@ -112,16 +102,7 @@ public:
     QColor emissiveFactor() const;
     Qt3DRender::QAbstractTexture *emissiveMap() const;
 
-    QMatrix3x3 textureTransform() const;
-    bool isUsingColorAttribute() const;
-    bool isDoubleSided() const;
-    bool useSkinning() const;
-    bool isOpaque() const;
-    bool isAlphaCutoffEnabled() const;
-    float alphaCutoff() const;
-
     MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm() const;
-    MorphController *morphController() const;
 
 public Q_SLOTS:
     void setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1);
@@ -145,15 +126,7 @@ public Q_SLOTS:
     void setEmissiveFactor(const QColor &emissiveFactor);
     void setEmissiveMap(Qt3DRender::QAbstractTexture *emissiveMap);
 
-    void setTextureTransform(const QMatrix3x3 &textureTransform);
-    void setUsingColorAttribute(bool usingColorAttribute);
-    void setDoubleSided(bool doubleSided);
-    void setUseSkinning(bool useSkinning);
-    void setOpaque(bool opaque);
-    void setAlphaCutoffEnabled(bool enabled);
-    void setAlphaCutoff(float alphaCutoff);
     void setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm);
-    void setMorphController(MorphController *morphController);
 
 Q_SIGNALS:
     void baseColorUsesTexCoord1Changed(bool);
@@ -177,15 +150,7 @@ Q_SIGNALS:
     void emissiveFactorChanged(const QColor &emissiveFactor);
     void emissiveMapChanged(Qt3DRender::QAbstractTexture *emissiveMap);
 
-    void textureTransformChanged(const QMatrix3x3 &textureTransform);
-    void usingColorAttributeChanged(bool usingColorAttribute);
-    void doubleSidedChanged(bool doubleSided);
-    void useSkinningChanged(bool useSkinning);
-    void opaqueChanged(bool opaque);
-    void alphaCutoffEnabledChanged(bool enabled);
-    void alphaCutoffChanged(float value);
     void toneMappingAlgorithmChanged(MetallicRoughnessEffect::ToneMapping algorithm);
-    void morphControllerChanged(MorphController *morphController);
 
 private:
     void updateEffect();
@@ -210,12 +175,6 @@ private:
 
     Qt3DRender::QParameter *m_emissiveFactorParameter;
     Qt3DRender::QParameter *m_emissiveMapParameter;
-
-    Qt3DRender::QParameter *m_alphaCutoffParameter;
-
-    Qt3DRender::QParameter *m_textureTransformParameter;
-
-    Qt3DRender::QParameter *m_morphControllerParameter;
 
     MetallicRoughnessEffect *m_effect;
 };

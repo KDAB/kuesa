@@ -1,4 +1,4 @@
-/*
+﻿/*
     metallicroughnessmaterial.cpp
 
     This file is part of Kuesa.
@@ -324,23 +324,6 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property morphController
-
-    The morph controller instance used to control morph targets weights.
-    This can be null if a material is not used with morph targets.
-
-    \since 1.1
- */
-
-/*!
-    \property alphaCutoffEnabled
-
-    If true, alpha cutoff is enabled. Fragments with an alpha value above a
-    threshold are rendered as opaque while fragment an alpha value below the
-    threshold are discarded
- */
-
-/*!
     \qmltype MetallicRoughnessMaterial
     \instantiates Kuesa::MetallicRoughnessMaterial
     \inmodule Kuesa
@@ -527,77 +510,6 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty textureTransform
-
-    Specifies the transform of the texture. This allows to scale, transform or
-    rotate the textures of the material.
- */
-
-/*!
-    \qmlproperty usingColorAttribute
-
-    If true, base color calculations will take into account the vertex color
-    property of the mesh
-
-    \note If this property is changed from true to false or from false to true
-    will trigger a recompilation of the shader.
- */
-
-/*!
-    \qmlproperty doubleSided
-
-    Allows to simulate double sided material. This are materials that should be
-    rendered from the front and front the back.
-
-    The normal for the back face will be the same as for the front face. This
-    includes normal mapping calculations.
-
-    \note If this property is changed from true to false or from false to true
-    will trigger a recompilation of the shader.
- */
-
-/*!
-    \qmlproperty useSkinning
-
-    If the mesh that has this material applied must be animated using skinning
-    techniques, this value must be true. This property will change the vertex
-    shader of the material to use one with skinning capabilities.
-
-    \note If this property is changed from true to false or from false to true
-    will trigger a recompilation of the shader.
- */
-
-/*!
-    \qmlproperty opaque
-
-    If true, the material is opaque. If false, the material is transparent and
-    will use alpha blending for transparency.
-
-    \note This enable some extra render passes and will trigger a recompilation
-    if changed from true to false or from false to true.
- */
-
-/*!
-    \qmlproperty alphaCutoff
-
-    Alpha cutoff threshold. Any fragment with an alpha value higher than this
-    property will be considered opaque. Any fragment with an alpha value lower
-    than this property will be discarded and wont have any effect on the final
-    result. For alphaCutoff to have any effect, it must be activated.
-
-    \sa alphaCutoffEnabled
- */
-
-/*!
-    \qmlproperty alphaCutoffEnabled
-
-    Enables/disables alphaCutoff
-
-    \note This enable some extra render passes and will trigger a recompilation
-    if changed from true to false or from false to true.
- */
-
-/*!
     \qmlproperty MetallicRoughnessEffect.ToneMapping toneMappingAlgoritm
 
     Tone mapping specifies how we perform color conversion from HDR (high
@@ -607,17 +519,9 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \since 1.1
  */
 
-/*!
-    \qmlproperty MorphController morphController
-
-    The morph controller instance used to control morph targets weights.
-    This can be null if a material is not used with morph targets.
-
-    \since 1.1
- */
 
 MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
-    : QMaterial(parent)
+    : GLTF2Material(parent)
     , m_baseColorUsesTexCoord1(new QParameter(QStringLiteral("baseColorUsesTexCoord1"), bool(false)))
     , m_metallicRoughnessUsesTexCoord1(new QParameter(QStringLiteral("metallicRoughnessUsesTexCoord1"), bool(false)))
     , m_normalUsesTexCoord1(new QParameter(QStringLiteral("normalUsesTexCoord1"), bool(false)))
@@ -633,9 +537,6 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     , m_ambientOcclusionMapParameter(new QParameter(QStringLiteral("ambientOcclusionMap"), QVariant()))
     , m_emissiveFactorParameter(new QParameter(QStringLiteral("emissiveFactor"), QColor("black")))
     , m_emissiveMapParameter(new QParameter(QStringLiteral("emissiveMap"), QVariant()))
-    , m_alphaCutoffParameter(new QParameter(QStringLiteral("alphaCutoff"), 0.0))
-    , m_textureTransformParameter(new QParameter(QStringLiteral("texCoordTransform"), QVariant::fromValue(QMatrix3x3())))
-    , m_morphControllerParameter(new QParameter(QStringLiteral("morphWeights"), QVariant()))
     , m_effect(new MetallicRoughnessEffect(this))
 {
     QObject::connect(m_baseColorUsesTexCoord1, &QParameter::valueChanged,
@@ -668,23 +569,18 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
                      this, wrapParameterSignal(this, &MetallicRoughnessMaterial::emissiveFactorChanged));
     QObject::connect(m_emissiveMapParameter, &QParameter::valueChanged,
                      this, wrapParameterSignal(this, &MetallicRoughnessMaterial::emissiveMapChanged));
-    QObject::connect(m_alphaCutoffParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::alphaCutoffChanged));
-    QObject::connect(m_textureTransformParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::textureTransformChanged));
-    QObject::connect(m_morphControllerParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::morphControllerChanged));
 
-    QObject::connect(m_effect, &MetallicRoughnessEffect::usingColorAttributeChanged,
-                     this, &MetallicRoughnessMaterial::usingColorAttributeChanged);
-    QObject::connect(m_effect, &MetallicRoughnessEffect::doubleSidedChanged,
-                     this, &MetallicRoughnessMaterial::doubleSidedChanged);
-    QObject::connect(m_effect, &MetallicRoughnessEffect::useSkinningChanged,
-                     this, &MetallicRoughnessMaterial::useSkinningChanged);
-    QObject::connect(m_effect, &MetallicRoughnessEffect::opaqueChanged,
-                     this, &MetallicRoughnessMaterial::opaqueChanged);
-    QObject::connect(m_effect, &MetallicRoughnessEffect::alphaCutoffEnabledChanged,
-                     this, &MetallicRoughnessMaterial::alphaCutoffEnabledChanged);
+    QObject::connect(this, &MetallicRoughnessMaterial::usingColorAttributeChanged,
+                     this, &MetallicRoughnessMaterial::updateEffect);
+    QObject::connect(this, &MetallicRoughnessMaterial::doubleSidedChanged,
+                     this, &MetallicRoughnessMaterial::updateEffect);
+    QObject::connect(this, &MetallicRoughnessMaterial::useSkinningChanged,
+                     this, &MetallicRoughnessMaterial::updateEffect);
+    QObject::connect(this, &MetallicRoughnessMaterial::opaqueChanged,
+                     this, &MetallicRoughnessMaterial::updateEffect);
+    QObject::connect(this, &MetallicRoughnessMaterial::alphaCutoffEnabledChanged,
+                     this, &MetallicRoughnessMaterial::updateEffect);
+
     QObject::connect(m_effect, &MetallicRoughnessEffect::toneMappingAlgorithmChanged,
                      this, &MetallicRoughnessMaterial::toneMappingAlgorithmChanged);
 
@@ -698,9 +594,7 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     addParameter(m_roughnessFactorParameter);
     addParameter(m_normalScaleParameter);
     addParameter(m_emissiveFactorParameter);
-    addParameter(m_textureTransformParameter);
-    addParameter(m_alphaCutoffParameter);
-    addParameter(m_morphControllerParameter);
+
 
     setEffect(m_effect);
     updateEffect();
@@ -785,41 +679,6 @@ QAbstractTexture *MetallicRoughnessMaterial::emissiveMap() const
     return m_emissiveMapParameter->value().value<QAbstractTexture *>();
 }
 
-QMatrix3x3 Kuesa::MetallicRoughnessMaterial::textureTransform() const
-{
-    return m_textureTransformParameter->value().value<QMatrix3x3>();
-}
-
-bool MetallicRoughnessMaterial::isUsingColorAttribute() const
-{
-    return m_effect->isUsingColorAttribute();
-}
-
-bool MetallicRoughnessMaterial::isDoubleSided() const
-{
-    return m_effect->isDoubleSided();
-}
-
-bool MetallicRoughnessMaterial::useSkinning() const
-{
-    return m_effect->useSkinning();
-}
-
-bool MetallicRoughnessMaterial::isOpaque() const
-{
-    return m_effect->isOpaque();
-}
-
-bool MetallicRoughnessMaterial::isAlphaCutoffEnabled() const
-{
-    return m_effect->isAlphaCutoffEnabled();
-}
-
-float MetallicRoughnessMaterial::alphaCutoff() const
-{
-    return m_alphaCutoffParameter->value().toFloat();
-}
-
 MetallicRoughnessEffect::ToneMapping MetallicRoughnessMaterial::toneMappingAlgorithm() const
 {
     return m_effect->toneMappingAlgorithm();
@@ -848,11 +707,6 @@ void MetallicRoughnessMaterial::setAOUsesTexCoord1(bool aoUsesTexCoord1)
 void MetallicRoughnessMaterial::setEmissiveUsesTexCoord1(bool emissiveUsesTexCoord1)
 {
     m_emissiveUsesTexCoord1->setValue(emissiveUsesTexCoord1);
-}
-
-MorphController *MetallicRoughnessMaterial::morphController() const
-{
-    return m_morphControllerParameter->value().value<MorphController *>();
 }
 
 void MetallicRoughnessMaterial::setBaseColorFactor(const QColor &baseColorFactor)
@@ -957,54 +811,9 @@ void MetallicRoughnessMaterial::setEmissiveMap(QAbstractTexture *emissiveMap)
     updateEffect();
 }
 
-void MetallicRoughnessMaterial::setTextureTransform(const QMatrix3x3 &textureTransform)
-{
-    m_textureTransformParameter->setValue(QVariant::fromValue(textureTransform));
-}
-
-void MetallicRoughnessMaterial::setUsingColorAttribute(bool usingColorAttribute)
-{
-    m_effect->setUsingColorAttribute(usingColorAttribute);
-}
-
-void MetallicRoughnessMaterial::setDoubleSided(bool doubleSided)
-{
-    m_effect->setDoubleSided(doubleSided);
-}
-
-void MetallicRoughnessMaterial::setUseSkinning(bool useSkinning)
-{
-    m_effect->setUseSkinning(useSkinning);
-}
-
-void MetallicRoughnessMaterial::setOpaque(bool opaque)
-{
-    m_effect->setOpaque(opaque);
-}
-
-void MetallicRoughnessMaterial::setAlphaCutoffEnabled(bool enabled)
-{
-    m_effect->setAlphaCutoffEnabled(enabled);
-    if (enabled)
-        m_effect->setOpaque(true);
-}
-
-void MetallicRoughnessMaterial::setAlphaCutoff(float alphaCutoff)
-{
-    m_alphaCutoffParameter->setValue(QVariant::fromValue(alphaCutoff));
-}
-
 void MetallicRoughnessMaterial::setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm)
 {
     m_effect->setToneMappingAlgorithm(algorithm);
-}
-
-void MetallicRoughnessMaterial::setMorphController(MorphController *morphController)
-{
-    if (morphController == m_morphControllerParameter->value().value<MorphController *>())
-        return;
-
-    m_morphControllerParameter->setValue(QVariant::fromValue(morphController));
 }
 
 void MetallicRoughnessMaterial::updateEffect()

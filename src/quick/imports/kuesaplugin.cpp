@@ -33,6 +33,7 @@
 #include <Kuesa/GLTF2Importer>
 #include <Kuesa/ForwardRenderer>
 #include <Kuesa/MetallicRoughnessMaterial>
+#include <Kuesa/UnlitMaterial>
 #include <Kuesa/BloomEffect>
 #include <Kuesa/DepthOfFieldEffect>
 #include <Kuesa/GaussianBlurEffect>
@@ -76,10 +77,13 @@ void KuesaPlugin::registerTypes(const char *uri)
     // Misc
     qmlRegisterType<Kuesa::GLTF2Importer>(uri, 1, 0, "GLTF2Importer");
     qmlRegisterType<Kuesa::SceneEntity>(uri, 1, 0, "SceneEntity");
+    qmlRegisterUncreatableType<Kuesa::GLTF2Material>(uri, 1, 1, "GLTF2Material", QStringLiteral("GLTF2Material is abstract"));
     qmlRegisterType<Kuesa::MetallicRoughnessMaterial>(uri, 1, 0, "MetallicRoughnessMaterial");
     qmlRegisterType<Kuesa::MetallicRoughnessMaterial, 1>(uri, 1, 1, "MetallicRoughnessMaterial");
     qmlRegisterType<Kuesa::MetallicRoughnessEffect>(uri, 1, 0, "MetallicRoughnessEffect");
     qmlRegisterType<Kuesa::MetallicRoughnessEffect, 1>(uri, 1, 1, "MetallicRoughnessEffect");
+    qmlRegisterType<Kuesa::UnlitMaterial, 1>(uri, 1, 1, "UnlitMaterial");
+    qmlRegisterType<Kuesa::UnlitEffect, 1>(uri, 1, 1, "UnlitEffect");
     qmlRegisterType<Kuesa::Skybox>(uri, 1, 0, "Skybox");
     qmlRegisterType<Kuesa::Asset>(uri, 1, 0, "Asset");
     qmlRegisterExtendedType<Kuesa::AnimationPlayer, Kuesa::AnimationPlayerItem>(uri, 1, 0, "AnimationPlayer");

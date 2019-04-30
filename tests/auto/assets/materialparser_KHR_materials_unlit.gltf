@@ -1,0 +1,25 @@
+[
+    {
+        "alphaMode": "OPAQUE",
+        "doubleSided": false,
+        "emissiveFactor": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "name": "Material",
+        "pbrMetallicRoughness": {
+            "baseColorFactor": [
+                0.64000004529953,
+                0.64000004529953,
+                0.64000004529953,
+                1.0
+            ],
+            "metallicFactor": 0.0,
+            "roughnessFactor": 1.0
+        },
+        "extensions": {
+            "KHR_materials_unlit": {}
+        }
+    }
+]
