@@ -1,0 +1,152 @@
+/*
+    tst_gltf2material.cpp
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+#include <QtTest/QtTest>
+
+#include <Qt3DRender/QTexture>
+#include <Qt3DRender/QParameter>
+#include <Kuesa/unlitmaterial.h>
+
+using namespace Kuesa;
+
+namespace {
+template<typename PropSetter,
+         typename PropGetter,
+         typename PropSignal,
+         typename PropType>
+void testProperty(Kuesa::UnlitMaterial *mat,
+                  PropSetter setter,
+                  PropGetter getter,
+                  PropSignal signal,
+                  PropType oldValue,
+                  PropType newValue)
+{
+    QSignalSpy spy(mat, signal);
+    (mat->*setter)(oldValue);
+    (mat->*setter)(newValue);
+    (mat->*setter)(newValue);
+
+    QCOMPARE((mat->*getter)(), newValue);
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(spy.takeFirst().value(0).value<PropType>(), newValue);
+}
+
+bool testActiveParametersAreValid(const QVector<Qt3DRender::QParameter *> &activeParameters)
+{
+    const std::vector<QString> validParameters = { QStringLiteral("baseColorUsesTexCoord1"),
+                                                   QStringLiteral("baseColorFactor"),
+                                                   QStringLiteral("baseColorMap")
+                                                 };
+
+    for (const QString &targetParamName : validParameters) {
+        bool foundName = false;
+        for (const auto &parameter : activeParameters) {
+            foundName = targetParamName == parameter->name();
+            if (foundName)
+                break;
+        }
+        if (!foundName)
+            return false;
+    }
+    return true;
+}
+} // namespace
+
+class tst_UnlitMaterial : public QObject
+{
+    Q_OBJECT
+
+private Q_SLOTS:
+
+    void checkDefaultState()
+    {
+        // GIVEN
+        UnlitMaterial mat;
+
+        // THEN
+        QCOMPARE(mat.isBaseColorUsingTexCoord1(), false);
+        QCOMPARE(mat.baseColorFactor(), QColor("gray"));
+        QCOMPARE(mat.baseColorMap(), nullptr);
+    }
+
+    void checkParametersAreAdded()
+    {
+        // GIVEN
+       UnlitMaterial mat;
+
+        QVERIFY(::testActiveParametersAreValid(mat.parameters()));
+
+        mat.setBaseColorMap(new Qt3DRender::QTexture2D{});
+        QVERIFY(::testActiveParametersAreValid(mat.parameters()));
+    }
+
+    void checkBaseColorUsesTexCoord1()
+    {
+        // GIVEN
+        UnlitMaterial mat;
+
+        // THEN
+        ::testProperty(&mat,
+                       &UnlitMaterial::setBaseColorUsesTexCoord1,
+                       &UnlitMaterial::isBaseColorUsingTexCoord1,
+                       &UnlitMaterial::baseColorUsesTexCoord1Changed,
+                       false, true);
+    }
+
+    void checkBaseColorFactor()
+    {
+        // GIVEN
+        UnlitMaterial mat;
+
+        // THEN
+        ::testProperty(&mat,
+                       &UnlitMaterial::setBaseColorFactor,
+                       &UnlitMaterial::baseColorFactor,
+                       &UnlitMaterial::baseColorFactorChanged,
+                       QColor("gray"), QColor("red"));
+    }
+
+    void checkBaseColorMap()
+    {
+        // GIVEN
+        UnlitMaterial mat;
+
+        // THEN
+        ::testProperty(&mat,
+                       &UnlitMaterial::setBaseColorMap,
+                       &UnlitMaterial::baseColorMap,
+                       &UnlitMaterial::baseColorMapChanged,
+                       static_cast<Qt3DRender::QAbstractTexture *>(nullptr),
+                       static_cast<Qt3DRender::QAbstractTexture *>(new Qt3DRender::QTexture2D()));
+    }
+
+};
+
+QTEST_APPLESS_MAIN(tst_UnlitMaterial)
+
+#include "tst_unlitmaterial.moc"

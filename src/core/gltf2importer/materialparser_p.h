@@ -45,7 +45,7 @@ QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-class MetallicRoughnessMaterial;
+class GLTF2Material;
 
 namespace GLTF2Import {
 
@@ -92,15 +92,19 @@ public:
         float alphaCutoff = 0.5f;
     } alpha;
 
-    MetallicRoughnessMaterial *material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context);
-    MetallicRoughnessMaterial *material(bool isSkinned) const;
+    struct Extensions {
+        bool KHR_materials_unlit;
+    } extensions;
+
+    GLTF2Material *material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context);
+    GLTF2Material *material(bool isSkinned) const;
 
     bool hasRegularMaterial() const { return m_regularMaterial != nullptr; }
     bool hasSkinnedMaterial() const { return m_skinnedMaterial != nullptr; }
 
 private:
-    MetallicRoughnessMaterial *m_regularMaterial = nullptr;
-    MetallicRoughnessMaterial *m_skinnedMaterial = nullptr;
+    GLTF2Material *m_regularMaterial = nullptr;
+    GLTF2Material *m_skinnedMaterial = nullptr;
 };
 
 class Q_AUTOTEST_EXPORT MaterialParser

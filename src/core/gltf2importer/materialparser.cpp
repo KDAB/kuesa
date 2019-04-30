@@ -28,10 +28,12 @@
 
 #include "materialparser_p.h"
 #include "kuesa_p.h"
+#include "gltf2keys_p.h"
 #include <QJsonObject>
 #include <QJsonArray>
 #include "gltf2context_p.h"
 #include <Kuesa/metallicroughnessmaterial.h>
+#include <Kuesa/unlitmaterial.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -149,25 +151,64 @@ Kuesa::MetallicRoughnessMaterial *createPbrMaterial(const Material &mat, const G
     return pbrMaterial;
 }
 
-} // namespace
-
-Kuesa::MetallicRoughnessMaterial *Material::material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context)
+Kuesa::UnlitMaterial *createUnlitMaterial(const Material &mat, const GLTF2Context *context)
 {
-    MetallicRoughnessMaterial *material = createPbrMaterial(*this, context);
-    material->setUseSkinning(isSkinned);
-    material->setUsingColorAttribute(hasColorAttribute);
+    auto unlitMaterial = new Kuesa::UnlitMaterial();
+    unlitMaterial->setDoubleSided(mat.doubleSided);
+    unlitMaterial->setBaseColorFactor(QColor::fromRgbF(
+            mat.pbr.baseColorFactor[0],
+            mat.pbr.baseColorFactor[1],
+            mat.pbr.baseColorFactor[2],
+            mat.pbr.baseColorFactor[3]));
 
-    if (isSkinned) {
-        if (m_skinnedMaterial == nullptr)
-            m_skinnedMaterial = material;
-    } else {
-        if (m_regularMaterial == nullptr)
-            m_regularMaterial = material;
+    const qint32 baseColorTextureIdx = mat.pbr.baseColorTexture.index;
+    if (baseColorTextureIdx > -1) {
+        unlitMaterial->setBaseColorMap(context->texture(baseColorTextureIdx).texture);
+        unlitMaterial->setBaseColorUsesTexCoord1(mat.pbr.baseColorTexture.texCoord == 1);
     }
-    return material;
+
+    switch (mat.alpha.mode) {
+    case Material::Alpha::Opaque:
+        unlitMaterial->setOpaque(true);
+        break;
+    case Material::Alpha::Blend:
+        unlitMaterial->setOpaque(false);
+        break;
+    case Material::Alpha::Mask:
+        unlitMaterial->setAlphaCutoffEnabled(true);
+        unlitMaterial->setAlphaCutoff(mat.alpha.alphaCutoff);
+    }
+
+    return unlitMaterial;
 }
 
-Kuesa::MetallicRoughnessMaterial *Material::material(bool isSkinned) const
+} // namespace
+
+Kuesa::GLTF2Material *Material::material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context)
+{
+    if (isSkinned) {
+        if (m_skinnedMaterial == nullptr) {
+            if (extensions.KHR_materials_unlit)
+                m_skinnedMaterial = createUnlitMaterial(*this, context);
+            else
+                m_skinnedMaterial = createPbrMaterial(*this, context);
+            m_skinnedMaterial->setUseSkinning(true);
+            m_skinnedMaterial->setUsingColorAttribute(hasColorAttribute);
+        }
+        return m_skinnedMaterial;
+    }
+
+    if (m_regularMaterial == nullptr) {
+        if (extensions.KHR_materials_unlit)
+            m_regularMaterial = createUnlitMaterial(*this, context);
+        else
+            m_regularMaterial = createPbrMaterial(*this, context);
+        m_regularMaterial->setUsingColorAttribute(hasColorAttribute);
+    }
+    return m_regularMaterial;
+}
+
+Kuesa::GLTF2Material *Material::material(bool isSkinned) const
 {
     if (isSkinned)
         return m_skinnedMaterial;
@@ -265,6 +306,12 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
                 parseTextureInfo(mat.occlusionTexture, occlusionTextureObject);
                 mat.occlusionTexture.strength = clamp(float(occlusionTextureObject.value(KEY_SCALE).toDouble(1.0)), 0.0f, 1.0f);
             }
+        }
+
+        // Parse extensions
+        {
+            const QJsonObject extensionsObject = materialObject.value(KEY_EXTENSIONS).toObject();
+            mat.extensions.KHR_materials_unlit = extensionsObject.contains(KEY_KHR_MATERIALS_UNLIT);
         }
 
         context->addMaterial(mat);

@@ -81,6 +81,7 @@ const QLatin1String KEY_MIMETYPE = QLatin1String("mimeType");
 #if defined(KUESA_DRACO_COMPRESSION)
 const QLatin1String KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION = QLatin1String("KHR_draco_mesh_compression");
 #endif
+const QLatin1String KEY_KHR_MATERIALS_UNLIT = QLatin1Literal("KHR_materials_unlit");
 
 } // namespace GLTF2Import
 } // namespace Kuesa

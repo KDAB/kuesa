@@ -27,14 +27,18 @@
 INCLUDEPATH += $$PWD
 
 SOURCES += \
+    $$PWD/gltf2material.cpp \
     $$PWD/sceneentity.cpp \
     $$PWD/metallicroughnesseffect.cpp \
     $$PWD/metallicroughnessmaterial.cpp \
+    $$PWD/unliteffect.cpp \
+    $$PWD/unlitmaterial.cpp \
     $$PWD/animationplayer.cpp \
     $$PWD/skybox.cpp \
     $$PWD/morphcontroller.cpp
 
 HEADERS += \
+    $$PWD/gltf2material.h \
     $$PWD/sceneentity.h \
     $$PWD/factory.h \
     $$PWD/kuesa_p.h \
@@ -43,6 +47,8 @@ HEADERS += \
     $$PWD/kuesa_utils_p.h \
     $$PWD/metallicroughnesseffect.h \
     $$PWD/metallicroughnessmaterial.h \
+    $$PWD/unliteffect.h \
+    $$PWD/unlitmaterial.h \
     $$PWD/animationplayer.h \
     $$PWD/skybox.h \
     $$PWD/morphcontroller.h

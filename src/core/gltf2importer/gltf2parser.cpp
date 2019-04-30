@@ -382,8 +382,9 @@ void GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
             KEY_KDAB_KUESA_LAYER_EXTENSION,
             KEY_MSFT_DDS_EXTENSION,
 #if defined(KUESA_DRACO_COMPRESSION)
-            KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION
+            KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION,
 #endif
+            KEY_KHR_MATERIALS_UNLIT
         };
         for (const auto &e : qAsConst(extensions)) {
             if (supportedExtensions.contains(e))
@@ -907,7 +908,7 @@ void GLTF2Parser::generateTreeNodeContent()
 
                     // Add material for mesh
                     {
-                        MetallicRoughnessMaterial *material = nullptr;
+                        GLTF2Material *material = nullptr;
 
                         // TO DO: generate proper morph target vertex shader based
                         // on meshData.morphTargetCount and primitiveData.morphTargets
