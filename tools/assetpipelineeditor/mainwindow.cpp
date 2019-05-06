@@ -45,7 +45,7 @@
 #include <Qt3DCore/QTransform>
 #include <Qt3DAnimation/QAnimationAspect>
 #include <Qt3DQuick/QQmlAspectEngine>
-#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
 #include <Qt3DCore/private/qentity_p.h>
 #include <Qt3DCore/private/qscene_p.h>
 #include <Qt3DRender/private/qpickevent_p.h>
@@ -318,7 +318,7 @@ void MainWindow::pickEntity(Qt3DRender::QPickEvent *event)
     if (!model)
         return;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     QEntity *node = event->entity();
 #else
     auto event_p = QPickEventPrivate::get(event);
