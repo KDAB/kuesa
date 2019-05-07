@@ -44,6 +44,9 @@
 
 int main(int ac, char **av)
 {
+    // clang-format off
+    Q_INIT_RESOURCE(shared_utils);
+
     bool isES2 = false;
     {
         // Set OpenGL requirements

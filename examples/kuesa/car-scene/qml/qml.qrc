@@ -1,17 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>controls/qmldir</file>
-        <file>controls/SharedAttributes.qml</file>
-        <file>controls/StyledLabel.qml</file>
-        <file>controls/StyledSlider.qml</file>
-        <file>controls/StyledSwitch.qml</file>
         <file>MainScene.qml</file>
         <file>CarCameraController.qml</file>
-        <file>controls/GroupBox.qml</file>
-        <file>controls/LabeledSwitch.qml</file>
-        <file>controls/LabeledRadioButton.qml</file>
-        <file>controls/LabeledSlider.qml</file>
         <file>Wind.qml</file>
         <file>IdleDemoAnimation.qml</file>
         <file>MainMenu.qml</file>

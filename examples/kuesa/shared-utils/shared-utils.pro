@@ -1,4 +1,4 @@
-# kuesa.pro
+# shared-utils.pro
 #
 # This file is part of Kuesa.
 #
@@ -24,17 +24,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = subdirs
+TEMPLATE = lib
+CONFIG += staticlib install_ok
+QT_FOR_CONFIG += kuesa
 
-qtHaveModule(quick) {
-    shared_utils.subdir = $$PWD/shared-utils
-    shared_utils.target = shared-utils
-
-    car_scene.subdir = $$PWD/car-scene
-    car_scene.target = car-scene
-    car_scene.depends = shared_utils
-
-    SUBDIRS += \
-        shared-utils \
-        car-scene
-}
+RESOURCES += \
+    shared_utils.qrc
