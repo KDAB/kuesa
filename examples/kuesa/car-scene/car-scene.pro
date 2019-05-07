@@ -35,6 +35,8 @@ RESOURCES += \
     assets/assets.qrc \
     qml/qml.qrc \
 
+LIBS += -L../shared-utils -lshared-utils
+
 envmaps_dir = ../assets/envmaps
 envmaps.files = \
     $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_irradiance.dds \
