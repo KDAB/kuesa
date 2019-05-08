@@ -1,5 +1,5 @@
 /*
-    KnobImageRasterItemActiveDot.qml
+    KnobImageRasterItemActive.qml
 
     This file is part of Kuesa.
 
@@ -34,7 +34,7 @@ Item {
 
     function grabImage() {
         root.grabToImage(function(result) {
-            result.saveToFile(dpiName + "_knobImageRasterActiveDot.png")
+            result.saveToFile("knobImageRasterActive" + dpiName + ".png")
         })
     }
 
@@ -42,31 +42,13 @@ Item {
     height:  Math.ceil(dpi / 2.8 - (dpi / 10))
 
     Rectangle {
-        width: parent.height/2.5
-        height: width
-        radius: width/2
-        anchors.centerIn: parent
-        color: "#90000000"
-        border.color:  "#3996ff"
-        border.width:  dpi / 90
-
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: dpi /150
-            radius: height
-            border.color: "#55000000"
-            color: "transparent"
-            border.width:  dpi /150
-        }
-
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: dpi /75
-            radius: height
-            border.color: "#15000000"
-            color: "transparent"
-            border.width:  dpi /150
-        }
+        id: handle
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.fill: parent
+        radius: height / 2
+        border.color: "#3996ff"
+        color: "#603996ff"
+        border.width: Math.ceil(dpi / 90)
     }
 }
 
