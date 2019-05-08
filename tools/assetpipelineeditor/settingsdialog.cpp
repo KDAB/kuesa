@@ -63,6 +63,10 @@ SettingsDialog::SettingsDialog(MainWindow *parent)
         m_defaultClearColor = checked;
         emit defaultClearColorChanged(m_defaultClearColor);
     });
+    connect(ui->generateTangentsCB, &QRadioButton::toggled, this, [this](bool checked) {
+        m_generateTangents = checked;
+        emit generateTangentsChanged(m_generateTangents);
+    });
 }
 
 SettingsDialog::~SettingsDialog()
@@ -83,6 +87,11 @@ QColor SettingsDialog::clearColor() const
 bool SettingsDialog::defaultClearColor() const
 {
     return m_defaultClearColor;
+}
+
+bool SettingsDialog::generateTangents() const
+{
+    return m_generateTangents;
 }
 
 void SettingsDialog::setSelectionColor(QColor selectionColor)
@@ -114,5 +123,14 @@ void SettingsDialog::setDefaultClearColor(bool defaultClearColor)
             ui->defaultClearColor->setChecked(true);
         else
             ui->customClearColor->setChecked(true);
+    }
+}
+
+void SettingsDialog::setGenerateTangents(bool generateTangents)
+{
+    if (m_generateTangents != generateTangents) {
+        m_generateTangents = generateTangents;
+        emit generateTangentsChanged(m_generateTangents);
+        ui->generateTangentsCB->setChecked(m_generateTangents);
     }
 }

@@ -43,6 +43,7 @@ class SettingsDialog : public QDialog
     Q_PROPERTY(QColor selectionColor READ selectionColor WRITE setSelectionColor NOTIFY selectionColorChanged)
     Q_PROPERTY(QColor clearColor READ clearColor WRITE setClearColor NOTIFY clearColorChanged)
     Q_PROPERTY(bool defaultClearColor READ defaultClearColor WRITE setDefaultClearColor NOTIFY defaultClearColorChanged)
+    Q_PROPERTY(bool generateTangents READ generateTangents WRITE setGenerateTangents NOTIFY generateTangentsChanged)
 public:
     explicit SettingsDialog(MainWindow *parent = nullptr);
     ~SettingsDialog();
@@ -50,22 +51,26 @@ public:
     QColor selectionColor() const;
     QColor clearColor() const;
     bool defaultClearColor() const;
+    bool generateTangents() const;
 
 public slots:
     void setSelectionColor(QColor selectionColor);
     void setClearColor(QColor clearColor);
     void setDefaultClearColor(bool defaultClearColor);
+    void setGenerateTangents(bool generateTangents);
 
 signals:
     void selectionColorChanged(QColor selectionColor);
     void clearColorChanged(QColor clearColor);
     void defaultClearColorChanged(bool defaultClearColor);
+    void generateTangentsChanged(bool generateTangents);
 
 private:
     Ui::SettingsDialog *ui;
     QColor m_selectionColor;
     QColor m_clearColor;
     bool m_defaultClearColor;
+    bool m_generateTangents;
 };
 
 #endif // SETTINGSDIALOG_H
