@@ -34,7 +34,7 @@ Item {
 
     function grabImage() {
         root.grabToImage(function(result) {
-            result.saveToFile(dpiName + "_knobImageRasterDot.png")
+            result.saveToFile("knobImageRasterDot" + dpiName + ".png")
         })
     }
 

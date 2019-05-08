@@ -33,12 +33,8 @@ Item {
 
     property int currentLoop: 0
     readonly property var targetDPIs: [
-        {"name": "ldpi", "value": 120 },
-        {"name": "mdpi", "value" : 160},
-        {"name": "hdpi", "value" : 240},
-        {"name": "xhdpi", "value" : 320},
-        {"name": "xxhdpi", "value" : 480},
-        {"name": "xxxhdpi", "value" : 640}
+        {"name": "", "value": 120 },
+        {"name": "@2x", "value" : 240}
     ]
     readonly property real dpi: targetDPIs[currentLoop].value
     readonly property string dpiName: targetDPIs[currentLoop].name

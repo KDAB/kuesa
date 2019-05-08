@@ -34,12 +34,13 @@ Item {
 
     function grabImage() {
         root.grabToImage(function(result) {
-            result.saveToFile(dpiName + "_knobImageRaster.png")
+            result.saveToFile("knobImageRaster" + dpiName + ".png")
         })
     }
 
     width: height
     height:  Math.ceil(dpi / 2.8 - (dpi / 10))
+
     Rectangle {
         id: handle
         anchors.verticalCenter: parent.verticalCenter

@@ -34,12 +34,13 @@ Item {
 
     function grabImage() {
         root.grabToImage(function(result) {
-            result.saveToFile(dpiName + "_bgImageraster.png")
+            result.saveToFile("bgImageraster" + dpiName + ".png")
         })
     }
 
     width: height + 2
     height: Math.ceil(dpi / 2.8)
+
     Rectangle {
         id: mask
         anchors.fill: parent
