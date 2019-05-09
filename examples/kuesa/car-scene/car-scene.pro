@@ -35,7 +35,7 @@ RESOURCES += \
     assets/assets.qrc \
     qml/qml.qrc \
 
-LIBS += -L../shared-utils -lshared-utils
+include(../shared-utils/shared-utils.pri)
 
 envmaps_dir = ../assets/envmaps
 envmaps.files = \
