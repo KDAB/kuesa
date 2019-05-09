@@ -274,28 +274,28 @@ private Q_SLOTS:
         QVERIFY(spy.isValid());
 
         // THEN
-        QVERIFY(!renderer.backToFrontSorting());
-
-        // WHEN
-        renderer.setBackToFrontSorting(true);
-
-        // THEN
         QVERIFY(renderer.backToFrontSorting());
-        QCOMPARE(spy.count(), 1);
-
-        // WHEN
-        spy.clear();
-        renderer.setBackToFrontSorting(true);
-
-        // THEN
-        QVERIFY(renderer.backToFrontSorting());
-        QCOMPARE(spy.count(), 0);
 
         // WHEN
         renderer.setBackToFrontSorting(false);
 
         // THEN
         QVERIFY(!renderer.backToFrontSorting());
+        QCOMPARE(spy.count(), 1);
+
+        // WHEN
+        spy.clear();
+        renderer.setBackToFrontSorting(false);
+
+        // THEN
+        QVERIFY(!renderer.backToFrontSorting());
+        QCOMPARE(spy.count(), 0);
+
+        // WHEN
+        renderer.setBackToFrontSorting(true);
+
+        // THEN
+        QVERIFY(renderer.backToFrontSorting());
         QCOMPARE(spy.count(), 1);
     }
 
@@ -498,14 +498,14 @@ private Q_SLOTS:
         Kuesa::TransparentRenderStage *transparentStage = static_cast<Kuesa::TransparentRenderStage *>(renderer.renderStages().last());
 
         QCOMPARE(opaqueStage->zFilling(), false);
-        QCOMPARE(transparentStage->backToFrontSorting(), false);
+        QCOMPARE(transparentStage->backToFrontSorting(), true);
 
         // WHEN
-        renderer.setBackToFrontSorting(true);
+        renderer.setBackToFrontSorting(false);
 
         // THEN
         QCOMPARE(opaqueStage->zFilling(), false);
-        QCOMPARE(transparentStage->backToFrontSorting(), true);
+        QCOMPARE(transparentStage->backToFrontSorting(), false);
 
         // WHEN
         renderer.setZFilling(true);
@@ -513,7 +513,7 @@ private Q_SLOTS:
         // THEN
         QCOMPARE(renderer.renderStages().size(), 3);
         QCOMPARE(opaqueStage->zFilling(), true);
-        QCOMPARE(transparentStage->backToFrontSorting(), true);
+        QCOMPARE(transparentStage->backToFrontSorting(), false);
 
         QCOMPARE(renderer.renderStages().at(1), opaqueStage);
         QCOMPARE(renderer.renderStages().last(), transparentStage);
