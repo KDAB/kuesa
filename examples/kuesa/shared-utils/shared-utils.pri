@@ -1,4 +1,4 @@
-# shared-utils.pro
+# shared-utils.pri
 #
 # This file is part of Kuesa.
 #
@@ -24,12 +24,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = lib
-CONFIG += staticlib install_ok
-QT_FOR_CONFIG += kuesa
-
-RESOURCES += \
-    shared_utils.qrc
-
-OTHER_FILES += \
-    shared-utils.pri
+LIBS += -L../shared-utils -lshared-utils
+win32 {
+    CONFIG(release, debug|release): LIBS += -L../shared-utils/release/
+    CONFIG(debug, debug|release): LIBS += -L../shared-utils/debug/
+}
