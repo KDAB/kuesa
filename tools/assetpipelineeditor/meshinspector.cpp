@@ -33,6 +33,7 @@
 #include <Qt3DCore/QEntity>
 #include <Kuesa/MetallicRoughnessMaterial>
 #include <Kuesa/private/kuesa_utils_p.h>
+#include <Kuesa/private/meshparser_utils_p.h>
 
 MeshInspector::MeshInspector(QObject *parent)
     : QObject(parent)
@@ -53,6 +54,12 @@ void MeshInspector::setMesh(Qt3DRender::QGeometryRenderer *mesh)
     if (mesh == m_mesh)
         return;
 
+    m_mesh = mesh;
+    update();
+}
+
+void MeshInspector::update()
+{
     // Un-highlight materials used by previous mesh
     for (const auto &entityMaterialPair : qAsConst(m_meshMaterials)) {
         Qt3DCore::QEntity *entity = entityMaterialPair.first.data();
@@ -66,8 +73,8 @@ void MeshInspector::setMesh(Qt3DRender::QGeometryRenderer *mesh)
     }
     m_meshMaterials.clear();
 
-    if (mesh) {
-        auto entities = mesh->entities();
+    if (m_mesh) {
+        auto entities = m_mesh->entities();
 
         // Check if material has been destroyed, recreate if needed
         if (!m_highlightMaterial) {
@@ -102,17 +109,17 @@ void MeshInspector::setMesh(Qt3DRender::QGeometryRenderer *mesh)
     }
 
     disconnect(m_meshConnection);
-    if (mesh)
-        m_meshConnection = connect(mesh, &Qt3DCore::QNode::nodeDestroyed, this, [this]() { setMesh(nullptr); });
+    if (m_mesh)
+        m_meshConnection = connect(m_mesh, &Qt3DCore::QNode::nodeDestroyed, this, [this]() { setMesh(nullptr); });
 
-    m_mesh = mesh;
-    m_model->setMesh(m_mesh);
+    m_model->updateMesh(m_mesh);
 
     m_meshName = m_mesh ? m_mesh->objectName() : QString();
     m_totalSize = 0;
     m_primitiveCount = 0;
     m_vertexCount = 0;
     m_primitiveType = m_mesh ? nameForPrimitiveType(m_mesh->primitiveType()) : QString();
+    m_needsTangents = m_mesh ? Kuesa::GLTF2Import::MeshParserUtils::needsTangentAttribute(m_mesh) : false;
 
     if (m_mesh) {
         const auto &attributes = m_mesh->geometry()->attributes();
@@ -270,20 +277,24 @@ int MeshInspector::vertexCount() const
     return m_vertexCount;
 }
 
+bool MeshInspector::needsTangents() const
+{
+    return m_needsTangents;
+}
+
 BufferModel::BufferModel(QObject *parent)
     : QAbstractTableModel(parent)
     , m_mesh(nullptr)
 {
 }
 
-void BufferModel::setMesh(Qt3DRender::QGeometryRenderer *mesh)
+void BufferModel::updateMesh(Qt3DRender::QGeometryRenderer *mesh)
 {
-    if (mesh == m_mesh)
-        return;
-
     m_mesh = mesh;
+
+    // always re-build the model, because new attributes might have been added
     beginResetModel();
-    if (m_mesh && mesh->geometry())
+    if (m_mesh && m_mesh->geometry())
         m_attributes = m_mesh->geometry()->attributes();
     else
         m_attributes.clear();

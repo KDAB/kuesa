@@ -29,6 +29,7 @@
 #include "gltf2context_p.h"
 #include "gltf2importer.h"
 #include "gltf2importer/gltf2parser_p.h"
+#include "meshparser_utils_p.h"
 
 #include "collections/meshcollection.h"
 #include <Qt3DCore/QEntity>
@@ -353,6 +354,12 @@ void GLTF2Importer::load()
 
     Q_ASSERT(m_root == nullptr);
     parser->parse(path);
+}
+
+void GLTF2Importer::generateTangents(const QString &meshName)
+{
+    auto mesh = m_sceneEntity->mesh(meshName);
+    GLTF2Import::MeshParserUtils::generateTangentAttribute(mesh, m_context);
 }
 
 void GLTF2Importer::clear()

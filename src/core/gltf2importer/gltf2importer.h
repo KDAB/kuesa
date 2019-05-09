@@ -66,6 +66,8 @@ public:
     Kuesa::SceneEntity *sceneEntity() const;
     bool assignNames() const;
 
+    void generateTangents(const QString &meshName);
+
 public Q_SLOTS:
     void setSource(const QUrl &source);
     void setSceneEntity(Kuesa::SceneEntity *sceneEntity);

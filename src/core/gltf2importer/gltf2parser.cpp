@@ -351,6 +351,7 @@ void GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
     Q_ASSERT(m_context);
     m_context->setJson(jsonDocument);
     m_context->setFilename(filename);
+    m_context->setBasePath(basePath);
     m_basePath = basePath;
 
     m_animators.clear();
