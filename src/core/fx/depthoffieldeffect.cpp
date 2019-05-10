@@ -173,6 +173,9 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     auto setup_technique = [&](Qt3DRender::QGraphicsApiFilter::Api api, int major, int minor,
                                Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile,
                                const QUrl &vertex, const QUrl &fragment) {
+        Q_UNUSED(vertex);
+        Q_UNUSED(fragment);
+
         auto technique = new Qt3DRender::QTechnique;
         effect->addTechnique(technique);
 

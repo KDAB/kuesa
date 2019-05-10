@@ -55,7 +55,6 @@ class QBlitFramebuffer;
 
 namespace Kuesa {
 
-class AbstractPostProcessingEffect;
 class AbstractRenderStage;
 class OpaqueRenderStage;
 class TransparentRenderStage;

@@ -258,7 +258,6 @@ namespace Kuesa {
     https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#materials
  */
 
-
 /*!
     \qmlproperty float MetallicRoughnessProperties::metallicFactor
 
@@ -384,7 +383,6 @@ MetallicRoughnessProperties::MetallicRoughnessProperties(Qt3DCore::QNode *parent
     QObject::connect(this, &GLTF2MaterialProperties::alphaCutoffChanged,
                      m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setAlphaCutoff);
 
-
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::metallicRoughnessUsesTexCoord1Changed,
                      this, &MetallicRoughnessProperties::metallicRoughnessUsesTexCoord1Changed);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::normalUsesTexCoord1Changed,
@@ -414,6 +412,8 @@ MetallicRoughnessProperties::MetallicRoughnessProperties(Qt3DCore::QNode *parent
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::emissiveMapChanged,
                      this, &MetallicRoughnessProperties::emissiveMapChanged);
 }
+
+MetallicRoughnessProperties::~MetallicRoughnessProperties() = default;
 
 Qt3DRender::QShaderData *MetallicRoughnessProperties::shaderData() const
 {
@@ -539,4 +539,4 @@ void MetallicRoughnessProperties::setEmissiveMap(Qt3DRender::QAbstractTexture *e
     m_metallicRoughnessShaderData->setEmissiveMap(emissiveMap);
 }
 
-} // Kuesa
+} // namespace Kuesa

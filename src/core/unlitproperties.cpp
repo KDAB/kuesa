@@ -129,9 +129,11 @@ UnlitProperties::UnlitProperties(Qt3DCore::QNode *parent)
                      m_unlitShaderData, &UnlitShaderData::setAlphaCutoff);
 }
 
+UnlitProperties::~UnlitProperties() = default;
+
 Qt3DRender::QShaderData *UnlitProperties::shaderData() const
 {
     return m_unlitShaderData;
 }
 
-} // Kuesa
+} // namespace Kuesa

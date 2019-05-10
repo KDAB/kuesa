@@ -47,10 +47,6 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DCore {
-class QTransform;
-}
-
 namespace QtDRender {
 class QTextureLoader;
 }

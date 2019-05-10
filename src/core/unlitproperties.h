@@ -50,7 +50,7 @@ class KUESASHARED_EXPORT UnlitProperties : public GLTF2MaterialProperties
 
 public:
     explicit UnlitProperties(Qt3DCore::QNode *parent = nullptr);
-    ~UnlitProperties() = default;
+    ~UnlitProperties();
 
 private:
     friend class UnlitMaterial;

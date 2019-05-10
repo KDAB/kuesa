@@ -65,7 +65,7 @@ class KUESASHARED_EXPORT MetallicRoughnessProperties : public GLTF2MaterialPrope
 
 public:
     explicit MetallicRoughnessProperties(Qt3DCore::QNode *parent = nullptr);
-    ~MetallicRoughnessProperties() = default;
+    ~MetallicRoughnessProperties();
 
     Qt3DRender::QShaderData *shaderData() const override;
 
@@ -85,9 +85,6 @@ public:
 
     QColor emissiveFactor() const;
     Qt3DRender::QAbstractTexture *emissiveMap() const;
-
-    bool isOpaque() const;
-    bool isDoubleSided() const;
 
 public Q_SLOTS:
     void setMetallicRoughnessUsesTexCoord1(bool metallicRoughnessUsesTexCoord1);
