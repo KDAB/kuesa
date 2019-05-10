@@ -191,6 +191,7 @@ Kuesa.SceneEntity {
         source: _mainWindow.filePath
         sceneEntity: scene
         assignNames: true
+        options.generateTangents:  _mainWindow.generateTangents
 
         onStatusChanged: _mainWindow.updateScene(scene)
     }

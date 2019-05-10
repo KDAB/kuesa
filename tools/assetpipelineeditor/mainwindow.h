@@ -56,6 +56,7 @@ class MainWindow : public QMainWindow
     Q_PROPERTY(int activeCamera READ activeCamera NOTIFY activeCameraChanged)
     Q_PROPERTY(QColor clearColor READ clearColor NOTIFY clearColorChanged)
     Q_PROPERTY(QSize renderAreaSize READ renderAreaSize NOTIFY renderAreaSizeChanged)
+    Q_PROPERTY(bool generateTangents READ generateTangents NOTIFY generateTangentsChanged)
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -64,6 +65,7 @@ public:
     int activeCamera() const;
     QColor clearColor() const;
     QSize renderAreaSize() const;
+    bool generateTangents() const;
 
     Q_INVOKABLE void setup(Qt3DRender::QCamera *camera);
     Q_INVOKABLE void updateScene(Kuesa::SceneEntity *entity);
@@ -81,6 +83,7 @@ signals:
     void activeCameraChanged(int activeCamera);
     void clearColorChanged(QColor clearColor);
     void renderAreaSizeChanged(QSize renderAreaSize);
+    void generateTangentsChanged(bool generateTangents);
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -113,6 +116,7 @@ private:
     QColor m_clearColor;
     CameraWidget *m_cameraWidget;
     QSize m_renderAreaSize;
+    bool m_generateTangents;
 };
 
 #endif // MAINWINDOW_H
