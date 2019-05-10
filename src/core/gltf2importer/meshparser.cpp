@@ -379,8 +379,8 @@ MeshParser::geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry,
 {
     const QJsonArray &morphTargetsJsonArray = json.value(KEY_TARGETS).toArray();
 
-    const auto morphAttribNamesCbeg = std::cbegin(morphTargetAttributeNames);
-    const auto morphAttribNamesCend = std::cend(morphTargetAttributeNames);
+    const auto morphAttribNamesCbeg = std::begin(morphTargetAttributeNames);
+    const auto morphAttribNamesCend = std::end(morphTargetAttributeNames);
     const QVector<Qt3DRender::QAttribute *> primitiveAttributes =
             geometry->attributes();
 
@@ -451,7 +451,9 @@ MeshParser::geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry,
             }
 
             // Record Morph Target Attribute
-            const MorphTargetAttribute morphTargetAttribute = { morphTargetAttributeName, morphTargetAttributeAccessorIdx };
+            MorphTargetAttribute morphTargetAttribute;
+            morphTargetAttribute.name = morphTargetAttributeName;
+            morphTargetAttribute.accessorIdx = morphTargetAttributeAccessorIdx;
             morphTarget.attributes.push_back(morphTargetAttribute);
 
             ++it;
