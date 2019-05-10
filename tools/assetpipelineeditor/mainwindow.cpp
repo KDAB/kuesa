@@ -114,6 +114,8 @@ MainWindow::MainWindow(QWidget *parent)
         m_clearColor = p.color(QPalette::Base);
     }
 
+    m_generateTangents = settings.value("generateTangents", false).value<bool>();
+
     connect(m_ui->actionCopy, &QAction::triggered, this, &MainWindow::copyAssetName);
     connect(m_ui->actionOpen, &QAction::triggered, this, &MainWindow::openFile);
     connect(m_ui->actionReload, &QAction::triggered, this, &MainWindow::reloadFile);
@@ -363,6 +365,11 @@ QSize MainWindow::renderAreaSize() const
     return m_renderAreaSize;
 }
 
+bool MainWindow::generateTangents() const
+{
+    return m_generateTangents;
+}
+
 void MainWindow::setFilePath(QString filePath)
 {
     auto filePathURL = QUrl::fromLocalFile(filePath).toString();
@@ -497,6 +504,7 @@ void MainWindow::openSettings()
     dlg.setSelectionColor(m_assetInspector->meshInspector()->selectionColor());
     dlg.setClearColor(clearColor);
     dlg.setDefaultClearColor(settings.value("defaultClearColor", true).toBool());
+    dlg.setGenerateTangents(m_generateTangents);
     if (dlg.exec() == QDialog::Accepted) {
         m_assetInspector->meshInspector()->setSelectionColor(dlg.selectionColor());
         settings.setValue("clearColor", dlg.clearColor());
@@ -508,6 +516,10 @@ void MainWindow::openSettings()
             m_clearColor = dlg.clearColor();
         }
         emit clearColorChanged(m_clearColor);
+
+        settings.setValue("generateTangents", dlg.generateTangents());
+        m_generateTangents = dlg.generateTangents();
+        emit generateTangentsChanged(m_generateTangents);
     }
 }
 
