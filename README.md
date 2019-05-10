@@ -129,3 +129,7 @@ https://github.com/google/draco
 * MikkTSpace, licensed under a custom license and authored by Morten S. Mikkelsen
 http://mmikkelsen3d.blogspot.com/
 
+## Python Binding
+
+A python binding it available, based on PySide 2. Please check the build instructions
+in the ``src/python`` and the sample application in ``examples/kuesa/python``.
