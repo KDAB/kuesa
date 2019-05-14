@@ -32,6 +32,8 @@
 #include <QObject>
 #include <Kuesa/kuesa_global.h>
 
+QT_BEGIN_NAMESPACE
+
 namespace Kuesa {
 namespace GLTF2Import {
 
@@ -56,5 +58,7 @@ private:
 
 } // namespace GLTF2Import
 } // namespace Kuesa
+
+QT_END_NAMESPACE
 
 #endif // KUESA_GLTF2IMPORT_GLTF2OPTIONS_H
