@@ -56,6 +56,8 @@
  * \endlist
  */
 
+QT_BEGIN_NAMESPACE
+
 Kuesa::GLTF2Import::GLTF2Options::GLTF2Options()
     : QObject(nullptr)
     , m_generateTangents(false)
@@ -74,3 +76,5 @@ void Kuesa::GLTF2Import::GLTF2Options::setGenerateTangents(bool generateTangents
     m_generateTangents = generateTangents;
     generateTangentsChanged(m_generateTangents);
 }
+
+QT_END_NAMESPACE
