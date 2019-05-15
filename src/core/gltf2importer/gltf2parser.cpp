@@ -46,6 +46,7 @@
 #include "skinparser_p.h"
 #include "metallicroughnessmaterial.h"
 #include "morphcontroller.h"
+#include "gltf2material.h"
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonDocument>
@@ -913,17 +914,41 @@ void GLTF2Parser::generateTreeNodeContent()
                         // TO DO: generate proper morph target vertex shader based
                         // on meshData.morphTargetCount and primitiveData.morphTargets
 
-                        const qint32 materialId = primitiveData.materialIdx;
-                        if (materialId >= 0 && materialId < m_context->materialsCount()) {
-                            Material &mat = m_context->material(materialId);
-                            // Get or create Qt3D for material
-                            material = mat.material(isSkinned, primitiveData.hasColorAttr, m_context);
-
-                            auto effect = qobject_cast<MetallicRoughnessEffect *>(qobject_cast<Qt3DRender::QMaterial *>(material)->effect());
+                        auto setBrdfLutOnEffect = [this](GLTF2Material *m) {
+                            auto effect = qobject_cast<MetallicRoughnessEffect *>(m->effect());
                             if (effect && m_sceneEntity) {
                                 auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
                                 effect->setBrdfLUT(texture);
                             }
+                        };
+
+                        auto checkMaterialIsCompatibleWithPrimitive = [](GLTF2Material *m, Qt3DRender::QGeometryRenderer *renderer,
+                                                                         const QString &primitiveName, const QString &materialName) {
+                            MetallicRoughnessMaterial *metalRoughMat = qobject_cast<MetallicRoughnessMaterial *>(m);
+                            // When we have a normal map on a MetalRoughMetarial, make sure we have a tangent attribute
+                            if (metalRoughMat != nullptr && metalRoughMat->normalMap() != nullptr) {
+                                Q_ASSERT(renderer->geometry());
+                                const QVector<Qt3DRender::QAttribute *> attributes = renderer->geometry()->attributes();
+                                bool hasTangentAttribute = std::find_if(attributes.cbegin(),
+                                                                        attributes.cend(),
+                                                                        [](Qt3DRender::QAttribute *attr) {
+                                                                            return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
+                                                                        }) != attributes.cend();
+                                if (!hasTangentAttribute)
+                                    qWarning() << QStringLiteral("Primitive %1 is trying to use Material %2 which does normal mapping even though it defines no tangent attribute. This can result in incorrect rendering, please consider generating tangents.")
+                                                          .arg(primitiveName)
+                                                          .arg(materialName);
+                            }
+                        };
+
+                        const qint32 materialId = primitiveData.materialIdx;
+                        QString materialName;
+                        if (materialId >= 0 && materialId < m_context->materialsCount()) {
+                            Material &mat = m_context->material(materialId);
+                            // Get or create Qt3D for material
+                            material = mat.material(isSkinned, primitiveData.hasColorAttr, m_context);
+                            materialName = mat.name;
+                            setBrdfLutOnEffect(material);
                         } else {
                             // Only create defaultMaterial if we know we need it
                             // otherwise we might leak it
@@ -931,25 +956,19 @@ void GLTF2Parser::generateTreeNodeContent()
                                 if (!defaultSkinnedMaterial) {
                                     MetallicRoughnessMaterial *material = new MetallicRoughnessMaterial;
                                     material->setUseSkinning(true);
-                                    auto effect = qobject_cast<MetallicRoughnessEffect *>(material->effect());
-                                    if (effect && m_sceneEntity) {
-                                        auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
-                                        effect->setBrdfLUT(texture);
-                                    }
+                                    setBrdfLutOnEffect(material);
                                     defaultSkinnedMaterial = material;
                                 }
+                                materialName = QStringLiteral("defaultSkinnedMaterial");
                                 material = defaultSkinnedMaterial;
                             } else {
                                 if (!defaultMaterial) {
                                     MetallicRoughnessMaterial *material = new MetallicRoughnessMaterial;
-                                    auto effect = qobject_cast<MetallicRoughnessEffect *>(material->effect());
-                                    if (effect && m_sceneEntity) {
-                                        auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
-                                        effect->setBrdfLUT(texture);
-                                    }
                                     material->setUseSkinning(false);
+                                    setBrdfLutOnEffect(material);
                                     defaultMaterial = material;
                                 }
+                                materialName = QStringLiteral("defaultNonSkinnedMaterial");
                                 material = defaultMaterial;
                             }
                         }
@@ -957,6 +976,8 @@ void GLTF2Parser::generateTreeNodeContent()
                         if (hasMorphTargets)
                             material->setMorphController(morphController);
 
+                        checkMaterialIsCompatibleWithPrimitive(material, primitiveData.primitiveRenderer,
+                                                               meshData.name, materialName);
                         primitiveEntity->addComponent(material);
                     }
 
