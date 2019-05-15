@@ -501,8 +501,8 @@ MeshParser::geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry,
         for (const MorphTargetAttribute &morphTargetAttribute : morphTarget.attributes) {
             const QString semanticName = morphTargetAttribute.name;
             const QString attributeName = QStringLiteral("%1_%2")
-                                          .arg(standardAttributeNameFromSemantic(semanticName))
-                                          .arg(i + 1);
+                                                  .arg(standardAttributeNameFromSemantic(semanticName))
+                                                  .arg(i + 1);
             Qt3DRender::QAttribute *attribute = createAttribute(morphTargetAttribute.accessorIdx,
                                                                 attributeName,
                                                                 semanticName);
@@ -544,6 +544,58 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
     }
 
     return true;
+}
+
+Qt3DRender::QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
+                                                    const QString &attributeName,
+                                                    const QString &semanticName)
+{
+    const Accessor &accessor = m_context->accessor(accessorIndex);
+
+    quint32 byteStride = 0;
+    quint32 byteOffset = 0;
+    qint32 bufferIdx = -1;
+
+    if (accessor.bufferViewIndex >= 0) {
+        const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
+        byteStride = static_cast<quint32>(!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
+        byteOffset = static_cast<quint32>(viewData.byteOffset);
+        bufferIdx = viewData.bufferIdx;
+    }
+
+    Qt3DRender::QBuffer *buffer = nullptr;
+    if (accessor.sparseCount) {
+        buffer = m_qAccessorBuffers.value(accessorIndex, nullptr);
+        if (buffer == nullptr) {
+            buffer = new Qt3DRender::QBuffer;
+            buffer->setData(accessor.bufferData);
+            m_qAccessorBuffers.insert(accessor.bufferViewIndex, buffer);
+        }
+    } else {
+        buffer = m_qViewBuffers.value(accessor.bufferViewIndex, nullptr);
+        if (buffer == nullptr) {
+            buffer = new Qt3DRender::QBuffer;
+            buffer->setData(accessor.bufferData);
+            m_qViewBuffers.insert(accessor.bufferViewIndex, buffer);
+        }
+    }
+
+    Qt3DRender::QAttribute *attribute = new Qt3DRender::QAttribute(buffer,
+                                                                   attributeName,
+                                                                   accessor.type,
+                                                                   accessor.dataSize,
+                                                                   quint32(accessor.count),
+                                                                   quint32(accessor.offset),
+                                                                   byteStride);
+    attribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+    // store some GLTF metadata for asset pipeline editor
+    attribute->setProperty("bufferIndex", bufferIdx);
+    attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
+    attribute->setProperty("bufferViewOffset", byteOffset);
+    attribute->setProperty("bufferName", accessor.name);
+    attribute->setProperty("semanticName", semanticName);
+
+    return attribute;
 }
 
 #if defined(KUESA_DRACO_COMPRESSION)
@@ -633,58 +685,6 @@ bool MeshParser::geometryDracoFromJSON(Qt3DRender::QGeometry *geometry,
         return geometryAttributesFromJSON(geometry, json, existingAttributes, hasColorAttr);
 
     return true;
-}
-
-Qt3DRender::QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
-                                                    const QString &attributeName,
-                                                    const QString &semanticName)
-{
-    const Accessor &accessor = m_context->accessor(accessorIndex);
-
-    quint32 byteStride = 0;
-    quint32 byteOffset = 0;
-    qint32 bufferIdx = -1;
-
-    if (accessor.bufferViewIndex >= 0) {
-        const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
-        byteStride = static_cast<quint32>(!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
-        byteOffset = static_cast<quint32>(viewData.byteOffset);
-        bufferIdx = viewData.bufferIdx;
-    }
-
-    Qt3DRender::QBuffer *buffer = nullptr;
-    if (accessor.sparseCount) {
-        buffer = m_qAccessorBuffers.value(accessorIndex, nullptr);
-        if (buffer == nullptr) {
-            buffer = new Qt3DRender::QBuffer;
-            buffer->setData(accessor.bufferData);
-            m_qAccessorBuffers.insert(accessor.bufferViewIndex, buffer);
-        }
-    } else {
-        buffer = m_qViewBuffers.value(accessor.bufferViewIndex, nullptr);
-        if (buffer == nullptr) {
-            buffer = new Qt3DRender::QBuffer;
-            buffer->setData(accessor.bufferData);
-            m_qViewBuffers.insert(accessor.bufferViewIndex, buffer);
-        }
-    }
-
-    Qt3DRender::QAttribute *attribute = new Qt3DRender::QAttribute(buffer,
-                                                                   attributeName,
-                                                                   accessor.type,
-                                                                   accessor.dataSize,
-                                                                   quint32(accessor.count),
-                                                                   quint32(accessor.offset),
-                                                                   byteStride);
-    attribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
-    // store some GLTF metadata for asset pipeline editor
-    attribute->setProperty("bufferIndex", bufferIdx);
-    attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
-    attribute->setProperty("bufferViewOffset", byteOffset);
-    attribute->setProperty("bufferName", accessor.name);
-    attribute->setProperty("semanticName", semanticName);
-
-    return attribute;
 }
 
 bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry,
