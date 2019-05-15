@@ -827,6 +827,7 @@ void MetallicRoughnessMaterial::updateEffect()
     m_effect->setDoubleSided(isDoubleSided());
     m_effect->setOpaque(isOpaque());
     m_effect->setAlphaCutoffEnabled(isAlphaCutoffEnabled());
+    m_effect->setUseSkinning(m_usesSkinning);
 }
 
 } // namespace Kuesa
