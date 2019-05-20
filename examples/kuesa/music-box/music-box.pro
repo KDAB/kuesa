@@ -60,7 +60,7 @@ INSTALLS += install_music_samples
 
 
 win32 {
-QMAKE_POST_LINK +=$$quote(cmd /c copy /y $$PWD/assets/samples $$OUT_PWD/ $$escape_expand(\n\t))
+QMAKE_POST_LINK +=$$quote(cmd /c copy /y $$PWD\assets\samples $$OUT_PWD\ $$escape_expand(\n\t))
 }
 else {
 QMAKE_POST_LINK += $$quote(cp -rf $$PWD/assets/samples $$OUT_PWD/ $$escape_expand(\n\t))
