@@ -39,6 +39,7 @@
 #include "sceneentity.h"
 #include "meshcollection.h"
 #include "layerparser_p.h"
+#include "lightparser_p.h"
 #include "imageparser_p.h"
 #include "texturesamplerparser_p.h"
 #include "animationparser_p.h"
@@ -64,6 +65,9 @@
 #include <Qt3DRender/QCamera>
 #include <Qt3DRender/QGeometryRenderer>
 #include <Qt3DRender/QLayer>
+#include <Qt3DRender/QPointLight>
+#include <Qt3DRender/QDirectionalLight>
+#include <Qt3DRender/QSpotLight>
 #include <Qt3DAnimation/QClipAnimator>
 #include <Qt3DAnimation/QAnimationClip>
 #include <Qt3DAnimation/QChannelMapping>
@@ -332,6 +336,14 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
                           return true;
                       LayerParser parser;
                       return parser.parse(layers, m_context);
+                  } },
+                 { KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION, [this](const QJsonValue &value) {
+                      const QJsonObject obj = value.toObject();
+                      const QJsonArray lights = obj.value(KEY_KHR_PUNCTUAL_LIGHTS).toArray();
+                      if (lights.isEmpty())
+                          return true;
+                      LightParser parser;
+                      return parser.parse(lights, m_context);
                   } }
              };
              // Having no extensions is a valid use case
@@ -385,7 +397,8 @@ void GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
 #if defined(KUESA_DRACO_COMPRESSION)
             KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION,
 #endif
-            KEY_KHR_MATERIALS_UNLIT
+            KEY_KHR_MATERIALS_UNLIT,
+            KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION
         };
         for (const auto &e : qAsConst(extensions)) {
             if (supportedExtensions.contains(e))
@@ -503,6 +516,10 @@ Qt3DCore::QEntity *GLTF2Parser::setupScene()
 
                     if (treeNode.cameraIdx >= 0)
                         addToCollectionWithUniqueName(m_sceneEntity->cameras(), treeNode.name, qobject_cast<Qt3DRender::QCamera *>(treeNode.entity));
+
+                    auto light = componentFromEntity<Qt3DRender::QAbstractLight>(treeNode.entity);
+                    if (light)
+                        addToCollectionWithUniqueName(m_sceneEntity->lights(), light->objectName(), light);
                 }
             }
 
@@ -514,6 +531,10 @@ Qt3DCore::QEntity *GLTF2Parser::setupScene()
 
                         if (treeNode.cameraIdx >= 0)
                             addToCollectionWithUniqueName(m_sceneEntity->cameras(), QStringLiteral("KuesaCamera_%1").arg(j), qobject_cast<Qt3DRender::QCamera *>(treeNode.entity));
+
+                        auto light = componentFromEntity<Qt3DRender::QAbstractLight>(treeNode.entity);
+                        if (light)
+                            addToCollectionWithUniqueName(m_sceneEntity->lights(), QStringLiteral("KuesaLight_%1").arg(j), light);
                     }
                     j++;
                 }
@@ -811,6 +832,44 @@ void GLTF2Parser::generateTreeNodeContent()
                         entity->addComponent(layer.layer);
                     }
                 }
+            }
+
+            // If the node references Light (KHR_lights_punctual extension), add them
+            if (node.lightIdx != -1 && node.lightIdx < m_context->lightCount()) {
+                const auto lightDefinition = m_context->light(node.lightIdx);
+                Qt3DRender::QAbstractLight *light = nullptr;
+                //TODO:  Handle range for spot and point lights.  Not supported by Qt3D
+                switch (lightDefinition.type) {
+                case Qt3DRender::QAbstractLight::PointLight: {
+                    auto pointLight = new Qt3DRender::QPointLight;
+                    pointLight->setConstantAttenuation(0.0);
+                    pointLight->setLinearAttenuation(0.0);
+                    pointLight->setQuadraticAttenuation(1.0);
+                    light = pointLight;
+                    break;
+                }
+                case Qt3DRender::QAbstractLight::SpotLight: {
+                    auto spotLight = new Qt3DRender::QSpotLight;
+                    spotLight->setCutOffAngle(qRadiansToDegrees(lightDefinition.outerConeAngleRadians));
+                    spotLight->setLocalDirection({ 0.0, 0.0, -1.0 });
+                    spotLight->setConstantAttenuation(0.0);
+                    spotLight->setLinearAttenuation(0.0);
+                    spotLight->setQuadraticAttenuation(1.0);
+                    light = spotLight;
+                    break;
+                }
+                case Qt3DRender::QAbstractLight::DirectionalLight: {
+                    auto directionalLight = new Qt3DRender::QDirectionalLight;
+                    //TODO: Fix. Directional lights are supposed to have rotation component of parent
+                    //entities applied to them. Qt3D's directional lights ignore all transforms.
+                    directionalLight->setWorldDirection({ 0.0, 0.0, -1.0 });
+                    light = directionalLight;
+                }
+                }
+                light->setObjectName(lightDefinition.name);
+                light->setColor(lightDefinition.color);
+                light->setIntensity(lightDefinition.intensity);
+                entity->addComponent(light);
             }
 
             // If the node has a mesh, add it

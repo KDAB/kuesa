@@ -37,6 +37,7 @@ SOURCES += \
     $$PWD/gltf2parser.cpp \
     $$PWD/gltf2importer.cpp \
     $$PWD/layerparser.cpp \
+    $$PWD/lightparser.cpp \
     $$PWD/imageparser.cpp \
     $$PWD/texturesamplerparser.cpp \
     $$PWD/textureparser.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
     $$PWD/gltf2parser_p.h \
     $$PWD/gltf2importer.h \
     $$PWD/layerparser_p.h \
+    $$PWD/lightparser_p.h \
     $$PWD/imageparser_p.h \
     $$PWD/texturesamplerparser_p.h \
     $$PWD/textureparser_p.h \

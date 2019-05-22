@@ -321,6 +321,25 @@ const Skin GLTF2Context::skin(qint32 id) const
     return Skin();
 }
 
+int GLTF2Context::lightCount() const
+{
+    return m_lights.count();
+}
+
+void GLTF2Context::addLight(const Light &light)
+{
+    m_lights.push_back(light);
+}
+
+const Light GLTF2Context::light(qint32 id) const
+{
+    if (id >= 0 && id < m_lights.size())
+        return m_lights.at(id);
+
+    qCWarning(kuesa, "Invalid light id");
+    return Light();
+}
+
 QStringList GLTF2Context::usedExtension() const
 {
     return m_usedExtensions;

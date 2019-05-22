@@ -58,6 +58,8 @@ const QLatin1String KEY_CHILDREN = QLatin1Literal("children");
 const QLatin1String KEY_EXTENSIONS = QLatin1String("extensions");
 const QLatin1String KEY_KDAB_KUESA_LAYER_EXTENSION = QLatin1String("KDAB_Kuesa_Layers");
 const QLatin1String KEY_NODE_KUESA_LAYERS = QLatin1Literal("layers");
+const QLatin1String KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION = QLatin1String("KHR_lights_punctual");
+const QLatin1String KEY_KHR_LIGHT = QLatin1String("light");
 const QLatin1String KEY_WEIGHTS = QLatin1String("weights");
 
 QMatrix4x4 matrixFromArray(const QJsonArray &matrixValues)
@@ -183,6 +185,9 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
                 node.layerIndices.push_back(layerId);
             }
         }
+    } else if (nodeExtensions.contains(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION)) {
+        const QJsonObject lightObject = nodeExtensions.value(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION).toObject();
+        node.lightIdx = lightObject.value(KEY_KHR_LIGHT).toInt(-1);
     }
 
     const QJsonArray morphTargetWeights = nodeObj.value(KEY_WEIGHTS).toArray();

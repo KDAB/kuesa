@@ -47,6 +47,7 @@
 #include "bufferaccessorparser_p.h"
 #include "meshparser_p.h"
 #include "layerparser_p.h"
+#include "lightparser_p.h"
 #include "imageparser_p.h"
 #include "texturesamplerparser_p.h"
 #include "textureparser_p.h"
@@ -141,6 +142,10 @@ public:
     void addSkin(const Skin &skin);
     const Skin skin(qint32 id) const;
 
+    int lightCount() const;
+    void addLight(const Light &light);
+    const Light light(qint32 id) const;
+
     QStringList usedExtension() const;
     void setUsedExtensions(const QStringList &usedExtensions);
     QStringList requiredExtensions() const;
@@ -178,6 +183,7 @@ private:
     QVector<Scene> m_scenes;
     QVector<Material> m_materials;
     QVector<Skin> m_skins;
+    QVector<Light> m_lights;
     QStringList m_usedExtensions;
     QStringList m_requiredExtensions;
     QString m_filename;

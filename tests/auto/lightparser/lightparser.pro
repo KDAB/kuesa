@@ -1,9 +1,9 @@
-# collections.pri
+# lightparser.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# Author: Jim Albamont <jim.albamont@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,36 +24,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-INCLUDEPATH += $$PWD
+TEMPLATE = app
 
-SOURCES += \
-    $$PWD/layercollection.cpp \
-    $$PWD/lightcollection.cpp \
-    $$PWD/meshcollection.cpp \
-    $$PWD/texturecollection.cpp \
-    $$PWD/effectcollection.cpp \
-    $$PWD/materialcollection.cpp \
-    $$PWD/skeletoncollection.cpp \
-    $$PWD/armaturecollection.cpp \
-    $$PWD/animationclipcollection.cpp \
-    $$PWD/abstractassetcollection.cpp \
-    $$PWD/cameracollection.cpp \
-    $$PWD/entitycollection.cpp \
-    $$PWD/textureimagecollection.cpp \
-    $$PWD/animationmappingcollection.cpp
+TARGET = tst_lightparser
 
-HEADERS += \
-    $$PWD/layercollection.h \
-    $$PWD/lightcollection.h \
-    $$PWD/meshcollection.h \
-    $$PWD/texturecollection.h \
-    $$PWD/effectcollection.h \
-    $$PWD/materialcollection.h \
-    $$PWD/skeletoncollection.h \
-    $$PWD/armaturecollection.h \
-    $$PWD/animationclipcollection.h \
-    $$PWD/abstractassetcollection.h \
-    $$PWD/cameracollection.h \
-    $$PWD/entitycollection.h \
-    $$PWD/textureimagecollection.h \
-    $$PWD/animationmappingcollection.h
+QT += testlib kuesa kuesa-private
+
+CONFIG += testcase
+
+SOURCES += tst_lightparser.cpp
+
+include(../assets/assets.pri)

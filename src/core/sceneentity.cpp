@@ -101,6 +101,7 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     , m_armatures(new ArmatureCollection(this))
     , m_effects(new EffectCollection(this))
     , m_layers(new LayerCollection(this))
+    , m_lights(new LightCollection(this))
     , m_materials(new MaterialCollection(this))
     , m_meshes(new MeshCollection(this))
     , m_skeletons(new SkeletonCollection(this))
@@ -318,6 +319,16 @@ Qt3DAnimation::QChannelMapper *SceneEntity::animationMapping(const QString &name
     return m_animationMappings->find(name);
 }
 
+Kuesa::LightCollection *SceneEntity::lights() const
+{
+    return m_lights;
+}
+
+Qt3DRender::QAbstractLight *SceneEntity::light(const QString &name) const
+{
+    return m_lights->find(name);
+}
+
 /*!
  * \brief Removes all assets from all the collections.
  *
@@ -329,6 +340,7 @@ void SceneEntity::clearCollections()
     m_armatures->clear();
     m_effects->clear();
     m_layers->clear();
+    m_lights->clear();
     m_materials->clear();
     m_meshes->clear();
     m_skeletons->clear();

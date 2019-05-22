@@ -1,0 +1,17 @@
+[
+        {
+          "color": [
+            0.3,
+            0.7,
+            1.0
+          ],
+          "name": "Spot",
+          "intensity": 40.0,
+          "type": "spot",
+          "spot": {
+            "innerConeAngle": 0.785398163397448,
+            "outerConeAngle": 1.57079632679
+          },
+		  "range": 10
+        }
+]

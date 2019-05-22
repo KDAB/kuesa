@@ -1,10 +1,10 @@
 /*
-    nodeparser_p.h
+    lightparser_p.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_GLTF2IMPORT_NODEPARSER_P_H
-#define KUESA_GLTF2IMPORT_NODEPARSER_P_H
+#ifndef KUESA_GLTF2IMPORT_LIGHTPARSER_P_H
+#define KUESA_GLTF2IMPORT_LIGHTPARSER_P_H
 
 //
 //  NOTICE
@@ -37,65 +37,34 @@
 // modified without notice
 //
 
-#include <QtCore/qglobal.h>
-#include <QtCore/QString>
-#include <QtGui/QVector3D>
-#include <QtGui/QQuaternion>
-#include <QtGui/QMatrix4x4>
+#include <QJsonArray>
+#include <Qt3DRender/QAbstractLight>
+#include <qmath.h>
 
 QT_BEGIN_NAMESPACE
-
-class QJsonArray;
-namespace Qt3DCore {
-class QEntity;
-class QJoint;
-} // namespace Qt3DCore
 
 namespace Kuesa {
 namespace GLTF2Import {
 
 class GLTF2Context;
 
-struct TreeNode {
-    Qt3DCore::QEntity *entity = nullptr;
-    QVector<Qt3DCore::QJoint *> joints;
-
-    struct TransformInfo {
-        enum TransformBit {
-            None = 0x0,
-            MatrixSet = 0x1,
-            ScaleSet = 0x2,
-            RotationSet = 0x4,
-            TranslationSet = 0x8
-        };
-        Q_DECLARE_FLAGS(TransformBits, TransformBit)
-
-        QMatrix4x4 matrix;
-        QVector3D scale3D;
-        QQuaternion rotation;
-        QVector3D translation;
-        TransformBits bits = 0x0;
-    };
-
+struct Light {
     QString name;
-    TransformInfo transformInfo;
-    qint32 meshIdx = -1;
-    qint32 skinIdx = -1;
-    qint32 cameraIdx = -1;
-    qint32 lightIdx = -1;
-    QVector<int> childrenIndices;
-    QVector<int> layerIndices;
-    QVector<float> morphTargetWeights;
+    Qt3DRender::QAbstractLight::Type type;
+    QColor color = QColor(255, 255, 255);
+    float intensity = 1.0f;
+    // range > 0.  Undefined means infinite
+    QVariant range;
+    float innerConeAngleRadians = 0.0;
+    float outerConeAngleRadians = (float)M_PI_4;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(TreeNode::TransformInfo::TransformBits)
-
-class Q_AUTOTEST_EXPORT NodeParser
+class Q_AUTOTEST_EXPORT LightParser
 {
 public:
-    NodeParser();
+    LightParser() = default;
 
-    bool parse(const QJsonArray &nodes, GLTF2Context *context) const;
+    bool parse(const QJsonArray &lights, GLTF2Context *context);
 };
 
 } // namespace GLTF2Import
@@ -103,4 +72,4 @@ public:
 
 QT_END_NAMESPACE
 
-#endif // KUESA_GLTF2IMPORT_NODEPARSER_P_H
+#endif // KUESA_GLTF2IMPORT_LIGHTPARSER_P_H
