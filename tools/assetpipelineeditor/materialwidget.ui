@@ -28,7 +28,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="baseColorFactorValue">
+       <widget class="ColorLabel" name="baseColorFactorValue">
         <property name="text">
          <string>0</string>
         </property>
@@ -167,7 +167,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="emissiveFactorValue">
+       <widget class="ColorLabel" name="emissiveFactorValue">
         <property name="text">
          <string>0</string>
         </property>
@@ -316,6 +316,11 @@
    <class>RenderedPreviewWidget</class>
    <extends>QLabel</extends>
    <header>renderedpreviewwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ColorLabel</class>
+   <extends>QLabel</extends>
+   <header>colorlabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -65,7 +65,7 @@ void MaterialWidget::setPreviewRenderContext(QQmlContext *context)
 
 void MaterialWidget::updateData()
 {
-    setLabelColor(m_ui->baseColorFactorValue, m_inspector->baseColor());
+    m_ui->baseColorFactorValue->setColor(m_inspector->baseColor());
     setTextureLabelState(m_ui->baseColorMapLabel, m_ui->baseColorMapValue, m_inspector->baseColorMap());
     m_ui->metallicFactorValue->setText(QString::number(m_inspector->metallicFactor(), 'f', 3));
     m_ui->roughnessFactorValue->setText(QString::number(m_inspector->roughnessFactor(), 'f', 3));
@@ -84,7 +84,7 @@ void MaterialWidget::updateData()
         setTextureLabelState(m_ui->AmbientOcclusionMapLabel, m_ui->ambientOcclusionMapValue, m_inspector->ambientOcclusionMap());
     }
 
-    setLabelColor(m_ui->emissiveFactorValue, m_inspector->emissiveFactor());
+    m_ui->emissiveFactorValue->setColor(m_inspector->emissiveFactor());
     setTextureLabelState(m_ui->emissiveMapLabel, m_ui->emissiveMapValue, m_inspector->emissiveMap());
 
     m_ui->textureTransformLabel->setMatrix(m_inspector->textureTransform());
@@ -97,15 +97,6 @@ void MaterialWidget::updateData()
 QString MaterialWidget::boolTextValue(bool value) const
 {
     return value ? tr("True") : tr("False");
-}
-
-void MaterialWidget::setLabelColor(QLabel *label, const QColor &color)
-{
-    const int h = label->sizeHint().height();
-    QPixmap pm(2 * h, h);
-    pm.fill(color);
-    label->setPixmap(pm);
-    label->setToolTip(color.name());
 }
 
 void MaterialWidget::setTextureLabelState(QLabel *nameLabel, QLabel *valueLabel, Qt3DRender::QAbstractTexture *texture) const

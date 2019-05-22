@@ -1,5 +1,5 @@
 /*
-    materialwidget.h
+    colorlabel.h
 
     This file is part of Kuesa.
 
@@ -26,60 +26,20 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef MATERIALWIDGET_H
-#define MATERIALWIDGET_H
+#ifndef COLORLABEL_H
+#define COLORLABEL_H
 
-#include <QWidget>
-#include <QMatrix3x3>
-class QQmlContext;
+#include <QLabel>
 
-class MaterialInspector;
-class QLabel;
-class QGridLayout;
-
-namespace Qt3DRender {
-class QAbstractTexture;
-}
-
-namespace Ui {
-class MaterialWidget;
-}
-
-class MaterialWidget : public QWidget
+class ColorLabel : public QLabel
 {
     Q_OBJECT
 public:
-    explicit MaterialWidget(QWidget *parent = nullptr);
-    virtual ~MaterialWidget();
+    ColorLabel(QWidget *parent = nullptr);
+    ~ColorLabel() override;
 
-    void setMaterialInspector(MaterialInspector *inspector);
-    void setPreviewRenderContext(QQmlContext *context);
-
-Q_SIGNALS:
-    void showAsset(const QString &assetName);
-
-private Q_SLOTS:
-    void updateData();
-
-private:
-    QString boolTextValue(bool value) const;
-    void setTextureLabelState(QLabel *nameLabel, QLabel *valueLabel, Qt3DRender::QAbstractTexture *texture) const;
-
-    MaterialInspector *m_inspector;
-    Ui::MaterialWidget *m_ui;
+public Q_SLOTS:
+    void setColor(const QColor &color);
 };
 
-class MatrixLabel : public QWidget
-{
-    Q_OBJECT
-public:
-    MatrixLabel(QWidget *parent = nullptr);
-    virtual ~MatrixLabel() {}
-
-    void setMatrix(const QMatrix3x3 &matrix);
-
-private:
-    QGridLayout *m_gridLayout;
-};
-
-#endif // MATERIALWIDGET_H
+#endif // COLORLABEL_H

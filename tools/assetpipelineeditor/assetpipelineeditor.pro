@@ -35,6 +35,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     camerawidget.cpp \
+    colorlabel.cpp \
     collectionbrowser.cpp \
     collectionmodel.cpp \
     animationwidget.cpp \
@@ -55,6 +56,7 @@ SOURCES += \
 HEADERS += \
     mainwindow.h \
     camerawidget.h \
+    colorlabel.h \
     collectionbrowser.h \
     collectionmodel.h \
     animationwidget.h \
