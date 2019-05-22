@@ -27,13 +27,16 @@
 */
 
 #include "assetinspector.h"
+#include "lightinspector.h"
 #include "materialinspector.h"
 #include "meshinspector.h"
 #include "textureinspector.h"
+#include <Kuesa/lightcollection.h>
 #include <Kuesa/materialcollection.h>
 #include <Kuesa/meshcollection.h>
 #include <Kuesa/texturecollection.h>
 #include <Kuesa/metallicroughnessmaterial.h>
+#include <QAbstractLight>
 
 AssetInspector::AssetInspector(QObject *parent)
     : QObject(parent)
@@ -42,6 +45,7 @@ AssetInspector::AssetInspector(QObject *parent)
     m_materialInspector = new MaterialInspector(this);
     m_meshInspector = new MeshInspector(this);
     m_textureInspector = new TextureInspector(this);
+    m_lightInspector = new LightInspector(this);
 }
 
 void AssetInspector::setAsset(const QString &assetName, Kuesa::AbstractAssetCollection *collection)
@@ -66,27 +70,21 @@ void AssetInspector::setAsset(const QString &assetName, Kuesa::AbstractAssetColl
             m_materialInspector->setMaterial(material);
             newAssetType = Material;
         }
+    } else if (auto lightCollection = qobject_cast<Kuesa::LightCollection *>(collection)) {
+        auto light = lightCollection->find(assetName);
+        m_lightInspector->setLight(light);
+        newAssetType = Light;
     }
 
     // Reset inspectors
-    switch (newAssetType) {
-    case Mesh:
-        m_materialInspector->setMaterial(nullptr);
-        m_textureInspector->setTexture("", nullptr);
-        break;
-    case Material:
-        m_textureInspector->setTexture("", nullptr);
+    if (newAssetType != Mesh)
         m_meshInspector->setMesh(nullptr);
-        break;
-    case Texture:
+    if (newAssetType != Material)
         m_materialInspector->setMaterial(nullptr);
-        m_meshInspector->setMesh(nullptr);
-        break;
-    case Unknown:
-        m_materialInspector->setMaterial(nullptr);
-        m_meshInspector->setMesh(nullptr);
+    if (newAssetType != Texture)
         m_textureInspector->setTexture("", nullptr);
-    }
+    if (newAssetType != Light)
+        m_lightInspector->setLight(nullptr);
 
     if (newAssetType != m_assetType) {
         m_assetType = newAssetType;
@@ -132,4 +130,9 @@ MeshInspector *AssetInspector::meshInspector() const
 TextureInspector *AssetInspector::textureInspector() const
 {
     return m_textureInspector;
+}
+
+LightInspector *AssetInspector::lightInspector() const
+{
+    return m_lightInspector;
 }

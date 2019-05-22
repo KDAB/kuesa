@@ -38,6 +38,7 @@ class AbstractAssetCollection;
 class TextureInspector;
 class MeshInspector;
 class MaterialInspector;
+class LightInspector;
 
 class AssetInspector : public QObject
 {
@@ -47,6 +48,7 @@ public:
         Material,
         Mesh,
         Texture,
+        Light,
         Unknown
     };
     Q_ENUM(AssetType)
@@ -63,6 +65,7 @@ public:
     MaterialInspector *materialInspector() const;
     MeshInspector *meshInspector() const;
     TextureInspector *textureInspector() const;
+    LightInspector *lightInspector() const;
 
 Q_SIGNALS:
     void assetTypeChanged(AssetInspector::AssetType assetType);
@@ -74,6 +77,7 @@ private:
     MaterialInspector *m_materialInspector;
     MeshInspector *m_meshInspector;
     TextureInspector *m_textureInspector;
+    LightInspector *m_lightInspector;
 };
 
 #endif // ASSETINSPECTOR_H
