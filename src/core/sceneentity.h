@@ -70,6 +70,7 @@ class KUESASHARED_EXPORT SceneEntity : public Qt3DCore::QEntity
     Q_PROPERTY(Kuesa::EntityCollection *entities READ entities NOTIFY loadingDone)
     Q_PROPERTY(Kuesa::TextureImageCollection *textureImages READ textureImages NOTIFY loadingDone)
     Q_PROPERTY(Kuesa::AnimationMappingCollection *animationMappings READ animationMappings NOTIFY loadingDone)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLut READ brdfLut CONSTANT)
 
 public:
     SceneEntity(Qt3DCore::QNode *parent = nullptr);
@@ -114,6 +115,10 @@ public:
     Q_INVOKABLE void clearCollections();
 
     Q_INVOKABLE Qt3DCore::QNode *transformForEntity(const QString &name);
+
+    Q_INVOKABLE Qt3DRender::QAbstractTexture *brdfLut() const;
+
+    static SceneEntity *findParentSceneEntity(Qt3DCore::QEntity *entity);
 
 Q_SIGNALS:
     void loadingDone();

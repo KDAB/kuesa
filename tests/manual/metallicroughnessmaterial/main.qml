@@ -33,7 +33,7 @@ import Qt3D.Animation 2.10
 import Qt3D.Extras 2.10
 import Kuesa 1.1 as Kuesa
 
-Entity {
+Kuesa.SceneEntity {
     id: scene
 
     components: [
