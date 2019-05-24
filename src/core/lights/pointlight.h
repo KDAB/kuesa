@@ -1,10 +1,10 @@
 /*
-    light.inc.frag
+    pointlight.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,27 +26,40 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const int MAX_LIGHTS = 8;
-const int TYPE_POINT = 0;
-const int TYPE_DIRECTIONAL = 1;
-const int TYPE_SPOT = 2;
-struct Light {
-    int type;
-    vec3 position;
-    vec3 color;
-    float intensity;
-    vec3 direction;
-    float range;
-    float lightAngleScale;
-    float lightAngleOffset;
-};
-uniform Light lights[MAX_LIGHTS];
-uniform int lightCount;
+#ifndef KUESA_POINTLIGHT_H
+#define KUESA_POINTLIGHT_H
 
-// Pre-convolved environment maps
-struct EnvironmentLight {
-    samplerCube irradiance; // For diffuse contribution
-    samplerCube specular; // For specular contribution
+#include <QAbstractLight>
+#include <Kuesa/kuesa_global.h>
+
+QT_BEGIN_NAMESPACE
+
+namespace Kuesa {
+class PointLightPrivate;
+class KUESASHARED_EXPORT PointLight : public Qt3DRender::QAbstractLight
+{
+    Q_OBJECT
+    Q_PROPERTY(float range READ range WRITE setRange NOTIFY rangeChanged)
+
+public:
+    explicit PointLight(Qt3DCore::QNode *parent = nullptr);
+    ~PointLight();
+
+    float range() const;
+
+public Q_SLOTS:
+    void setRange(float range);
+
+Q_SIGNALS:
+    void rangeChanged(float range);
+
+protected:
+    Q_DECLARE_PRIVATE(PointLight)
+    PointLight(PointLightPrivate &dd, Qt3DCore::QNode *parent);
 };
-uniform EnvironmentLight envLight;
-uniform int envLightCount = 0;
+
+} // namespace Kuesa
+
+QT_END_NAMESPACE
+
+#endif // KUESA_POINTLIGHT_H

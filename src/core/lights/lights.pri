@@ -1,9 +1,9 @@
-# core.pro
+# lights.pri
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# Author: Jim Albamont <jim.albamont@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,41 +24,17 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TARGET     = Kuesa
-MODULE     = kuesa
+INCLUDEPATH += $$PWD
 
-# Kuesa is free of Q_FOREACH - make sure it stays that way:
-DEFINES += QT_NO_FOREACH
+SOURCES += \
+    $$PWD/directionallight.cpp \
+    $$PWD/pointlight.cpp \
+    $$PWD/spotlight.cpp
 
-DEFINES += QT_BUILD_KUESA_LIB
-
-# Avoid windows defines
-win32:DEFINES += WIN32_LEAN_AND_MEAN
-
-QT += qml 3dcore 3dcore-private 3drender 3drender-private 3dquickextras 3danimation
-
-include($$OUT_PWD/qtkuesa-config.pri)
-qtConfig(draco) {
-    win32:CONFIG -= precompile_header
-    include(../3rdparty/draco/draco_dependency.pri)
-}
-
-include(core.pri)
-include(collections/collections.pri)
-include(gltf2importer/gltf2importer.pri)
-include(gltf2exporter/gltf2exporter.pri)
-include(framegraphes/framegraphes.pri)
-include(lights/lights.pri)
-include(fx/fx.pri)
-include(../3rdparty/mikktspace/mikktspace.pri)
-
-RESOURCES += \
-    shaders.qrc
-
-OTHER_FILES += \
-    shaders/gl3/simple.vert \
-    shaders/graphs/metallicroughness.graph \
-    configure.pri \
-    configure.json
-
-load(qt_module)
+HEADERS += \
+    $$PWD/directionallight.h \
+    $$PWD/directionallight_p.h \
+    $$PWD/pointlight.h \
+    $$PWD/pointlight_p.h \
+    $$PWD/spotlight.h \
+    $$PWD/spotlight_p.h

@@ -48,6 +48,9 @@
 #include "metallicroughnessmaterial.h"
 #include "morphcontroller.h"
 #include "gltf2material.h"
+#include "directionallight.h"
+#include "pointlight.h"
+#include "spotlight.h"
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonDocument>
@@ -65,9 +68,6 @@
 #include <Qt3DRender/QCamera>
 #include <Qt3DRender/QGeometryRenderer>
 #include <Qt3DRender/QLayer>
-#include <Qt3DRender/QPointLight>
-#include <Qt3DRender/QDirectionalLight>
-#include <Qt3DRender/QSpotLight>
 #include <Qt3DAnimation/QClipAnimator>
 #include <Qt3DAnimation/QAnimationClip>
 #include <Qt3DAnimation/QChannelMapping>
@@ -839,31 +839,25 @@ void GLTF2Parser::generateTreeNodeContent()
             if (node.lightIdx != -1 && node.lightIdx < m_context->lightCount()) {
                 const auto lightDefinition = m_context->light(node.lightIdx);
                 Qt3DRender::QAbstractLight *light = nullptr;
-                //TODO:  Handle range for spot and point lights.  Not supported by Qt3D
                 switch (lightDefinition.type) {
                 case Qt3DRender::QAbstractLight::PointLight: {
-                    auto pointLight = new Qt3DRender::QPointLight;
-                    pointLight->setConstantAttenuation(0.0);
-                    pointLight->setLinearAttenuation(0.0);
-                    pointLight->setQuadraticAttenuation(1.0);
+                    auto pointLight = new PointLight;
+                    pointLight->setRange(lightDefinition.range.toFloat());
                     light = pointLight;
                     break;
                 }
                 case Qt3DRender::QAbstractLight::SpotLight: {
-                    auto spotLight = new Qt3DRender::QSpotLight;
-                    spotLight->setCutOffAngle(qRadiansToDegrees(lightDefinition.outerConeAngleRadians));
+                    auto spotLight = new SpotLight;
+                    spotLight->setInnerConeAngle(qRadiansToDegrees(lightDefinition.innerConeAngleRadians));
+                    spotLight->setOuterConeAngle(qRadiansToDegrees(lightDefinition.outerConeAngleRadians));
                     spotLight->setLocalDirection({ 0.0, 0.0, -1.0 });
-                    spotLight->setConstantAttenuation(0.0);
-                    spotLight->setLinearAttenuation(0.0);
-                    spotLight->setQuadraticAttenuation(1.0);
+                    spotLight->setRange(lightDefinition.range.toFloat());
                     light = spotLight;
                     break;
                 }
                 case Qt3DRender::QAbstractLight::DirectionalLight: {
-                    auto directionalLight = new Qt3DRender::QDirectionalLight;
-                    //TODO: Fix. Directional lights are supposed to have rotation component of parent
-                    //entities applied to them. Qt3D's directional lights ignore all transforms.
-                    directionalLight->setWorldDirection({ 0.0, 0.0, -1.0 });
+                    auto directionalLight = new DirectionalLight;
+                    directionalLight->setLocalDirection({ 0.0, 0.0, -1.0 });
                     light = directionalLight;
                 }
                 }

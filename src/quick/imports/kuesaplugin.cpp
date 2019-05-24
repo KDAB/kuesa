@@ -40,6 +40,9 @@
 #include <Kuesa/ThresholdEffect>
 #include <Kuesa/OpacityMask>
 #include <Kuesa/Skybox>
+#include <Kuesa/DirectionalLight>
+#include <Kuesa/SpotLight>
+#include <Kuesa/PointLight>
 #include "postfxlistextension.h"
 
 #include <QtQml/qqml.h>
@@ -73,6 +76,11 @@ void KuesaPlugin::registerTypes(const char *uri)
 
     // FrameGraphs
     qmlRegisterExtendedType<Kuesa::ForwardRenderer, Kuesa::PostFXListExtension>(uri, 1, 0, "ForwardRenderer");
+
+    // Lights
+    qmlRegisterType<Kuesa::DirectionalLight>(uri, 1, 1, "DirectionalLight");
+    qmlRegisterType<Kuesa::PointLight>(uri, 1, 1, "PointLight");
+    qmlRegisterType<Kuesa::SpotLight>(uri, 1, 1, "SpotLight");
 
     // Misc
     qmlRegisterType<Kuesa::GLTF2Importer>(uri, 1, 0, "GLTF2Importer");

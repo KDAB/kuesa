@@ -168,21 +168,27 @@ FP vec3 pbrModel(const in int lightIndex,
         // Calculate the attenuation factor
         sDotN = dot(s, n);
         if (sDotN > 0.0) {
-            if (lights[lightIndex].constantAttenuation != 0.0
-             || lights[lightIndex].linearAttenuation != 0.0
-             || lights[lightIndex].quadraticAttenuation != 0.0) {
-                FP float dist = length(sUnnormalized);
-                att = 1.0 / (lights[lightIndex].constantAttenuation +
-                             lights[lightIndex].linearAttenuation * dist +
-                             lights[lightIndex].quadraticAttenuation * dist * dist);
+            FP float dist = length(sUnnormalized);
+            FP float d2 = dist * dist;
+            if (lights[lightIndex].range > 0.0)
+            {
+                // recommended attenuation with range based on KHR_lights_punctual extension
+                FP float d2OverR2 = d2/(lights[lightIndex].range * lights[lightIndex].range);
+                att = max( min( 1.0 - ( d2OverR2 * d2OverR2 ), 1.0 ), 0.0 ) / d2;
             }
-
-            // The light direction is in world space already
-            if (lights[lightIndex].type == TYPE_SPOT) {
-                // Check if fragment is inside or outside of the spot light cone
-                if (degrees(acos(dot(-s, lights[lightIndex].direction))) > lights[lightIndex].cutOffAngle)
-                    sDotN = 0.0;
+            else {
+               att = 1.0 / d2;
             }
+            att = clamp(att, 0.0, 1.0);
+        }
+        if (lights[lightIndex].type == TYPE_SPOT) {
+            // Calculate angular attenuation of spotlight, between 0 and 1.
+            // yields 1 inside innerCone, 0 outside outerConeAngle, and value interpolated
+            // between 1 and 0 between innerConeAngle and outerConeAngle
+            FP float cd = dot(-lights[lightIndex].direction, s);
+            FP float angularAttenuation = clamp(cd * lights[lightIndex].lightAngleScale + lights[lightIndex].lightAngleOffset, 0.0, 1.0);
+            angularAttenuation *= angularAttenuation;
+            att *= angularAttenuation;
         }
     } else {
         // Directional lights
@@ -190,6 +196,10 @@ FP vec3 pbrModel(const in int lightIndex,
         s = normalize(-lights[lightIndex].direction);
         sDotN = dot(s, n);
     }
+
+    // This light doesn't contribute anything
+    if (sDotN <= 0.0)
+        return vec3(0.0);
 
     h = normalize(s + v);
     FP float vDotH = dot(v, h);

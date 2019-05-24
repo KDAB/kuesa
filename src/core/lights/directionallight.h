@@ -1,10 +1,10 @@
 /*
-    light.inc.frag
+    directionallight.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,27 +26,42 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const int MAX_LIGHTS = 8;
-const int TYPE_POINT = 0;
-const int TYPE_DIRECTIONAL = 1;
-const int TYPE_SPOT = 2;
-struct Light {
-    int type;
-    vec3 position;
-    vec3 color;
-    float intensity;
-    vec3 direction;
-    float range;
-    float lightAngleScale;
-    float lightAngleOffset;
-};
-uniform Light lights[MAX_LIGHTS];
-uniform int lightCount;
+#ifndef KUESA_DIRECTIONALLIGHT_H
+#define KUESA_DIRECTIONALLIGHT_H
 
-// Pre-convolved environment maps
-struct EnvironmentLight {
-    samplerCube irradiance; // For diffuse contribution
-    samplerCube specular; // For specular contribution
+#include <QAbstractLight>
+#include <Kuesa/kuesa_global.h>
+
+QT_BEGIN_NAMESPACE
+
+namespace Kuesa {
+class DirectionalLightPrivate;
+class KUESASHARED_EXPORT DirectionalLight : public Qt3DRender::QAbstractLight
+{
+    Q_OBJECT
+    Q_PROPERTY(QVector3D localDirection READ localDirection WRITE setLocalDirection NOTIFY localDirectionChanged)
+
+public:
+    explicit DirectionalLight(Qt3DCore::QNode *parent = nullptr);
+    ~DirectionalLight();
+
+    QVector3D localDirection() const;
+
+public Q_SLOTS:
+    void setLocalDirection(const QVector3D &localDirection);
+
+Q_SIGNALS:
+    void localDirectionChanged(const QVector3D &localDirection);
+
+protected:
+    explicit DirectionalLight(DirectionalLightPrivate &dd, Qt3DCore::QNode *parent = nullptr);
+
+private:
+    Q_DECLARE_PRIVATE(DirectionalLight)
 };
-uniform EnvironmentLight envLight;
-uniform int envLightCount = 0;
+
+} // namespace Kuesa
+
+QT_END_NAMESPACE
+
+#endif // KUESA_DIRECTIONALLIGHT_H

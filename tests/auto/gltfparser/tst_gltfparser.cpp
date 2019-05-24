@@ -43,9 +43,9 @@
 #include <Qt3DRender/QCameraLens>
 #include <Qt3DRender/QCamera>
 #include <Kuesa/LayerCollection>
-#include <QDirectionalLight>
-#include <QSpotLight>
-#include <QPointLight>
+#include <Kuesa/DirectionalLight>
+#include <Kuesa/SpotLight>
+#include <Kuesa/PointLight>
 #include <Kuesa/private/kuesa_utils_p.h>
 #include <array>
 #include <atomic>
@@ -817,24 +817,27 @@ private Q_SLOTS:
         const auto lights = scene.lights();
         QCOMPARE(lights->size(), 3);
 
-        auto pointLight = qobject_cast<Qt3DRender::QPointLight *>(lights->find("Point"));
+        auto pointLight = qobject_cast<PointLight *>(lights->find("Point"));
         QVERIFY(pointLight);
         QCOMPARE(pointLight->color(), QColor::fromRgbF(1.0f, 0.0f, 0.0f));
         QCOMPARE(pointLight->intensity(), 20.0f);
         QCOMPARE(pointLight->objectName(), QStringLiteral("Point"));
+        QCOMPARE(pointLight->range(), 0.0f);
 
-        auto directionalLight = qobject_cast<Qt3DRender::QDirectionalLight *>(lights->find("Directional"));
+        auto directionalLight = qobject_cast<DirectionalLight *>(lights->find("Directional"));
         QVERIFY(directionalLight);
         QCOMPARE(directionalLight->color(), QColor::fromRgbF(1.0f, 0.9f, 0.7f));
         QCOMPARE(directionalLight->intensity(), 3.0f);
         QCOMPARE(directionalLight->objectName(), QStringLiteral("Directional"));
+        QCOMPARE(directionalLight->localDirection(), QVector3D(0.0, 0.0, -1.0));
 
-        auto spotLight = qobject_cast<Qt3DRender::QSpotLight *>(lights->find("Spot"));
+        auto spotLight = qobject_cast<SpotLight *>(lights->find("Spot"));
         QVERIFY(spotLight);
         QCOMPARE(spotLight->color(), QColor::fromRgbF(.3f, 0.7f, 1.0f));
         QCOMPARE(spotLight->intensity(), 40.0f);
         QCOMPARE(spotLight->objectName(), QStringLiteral("Spot"));
-        QCOMPARE(spotLight->cutOffAngle(), 90);
+        QCOMPARE(spotLight->innerConeAngle(), 45);
+        QCOMPARE(spotLight->outerConeAngle(), 90);
         QCOMPARE(spotLight->localDirection(), QVector3D(0.0, 0.0, -1.0));
     }
 

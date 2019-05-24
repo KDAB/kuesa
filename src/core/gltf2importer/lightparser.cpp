@@ -96,7 +96,7 @@ bool Kuesa::GLTF2Import::LightParser::parse(const QJsonArray &lights, Kuesa::GLT
             light.outerConeAngleRadians = spotObject.value(KEY_OUTER_CONE_ANGLE).toDouble(light.outerConeAngleRadians);
             if (light.innerConeAngleRadians >= light.outerConeAngleRadians || light.innerConeAngleRadians < 0)
                 qCWarning(kuesa) << "KHR_lights_punctual SpotLight innerConeAngle must be between 0 and outerConeAngle. Invalid light: " << light.name;
-            if (light.outerConeAngleRadians > M_PI_2)
+            if (light.outerConeAngleRadians > static_cast<float>(M_PI_2))
                 qCWarning(kuesa) << "KHR_lights_punctual SpotLight outerConeAngle must be less than PI/2. Invalid light: " << light.name;
         }
 
