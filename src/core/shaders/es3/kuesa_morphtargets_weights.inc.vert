@@ -27,7 +27,6 @@
 */
 
 precision highp float;
-precision highp vec3;
 
 struct MorphWeights {
     float morphWeights[8];
