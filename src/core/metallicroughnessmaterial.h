@@ -128,6 +128,9 @@ public Q_SLOTS:
 
     void setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm);
 
+private Q_SLOTS:
+    void onAddedToEntity(Qt3DCore::QEntity *entity);
+
 Q_SIGNALS:
     void baseColorUsesTexCoord1Changed(bool);
     void metallicRoughnessUsesTexCoord1Changed(bool);

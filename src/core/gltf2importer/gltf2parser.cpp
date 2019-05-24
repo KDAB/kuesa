@@ -916,10 +916,8 @@ void GLTF2Parser::generateTreeNodeContent()
 
                         auto setBrdfLutOnEffect = [this](GLTF2Material *m) {
                             auto effect = qobject_cast<MetallicRoughnessEffect *>(m->effect());
-                            if (effect && m_sceneEntity) {
-                                auto texture = m_sceneEntity->texture(QLatin1String("_kuesa_brdfLUT"));
-                                effect->setBrdfLUT(texture);
-                            }
+                            if (effect && m_sceneEntity)
+                                effect->setBrdfLUT(m_sceneEntity->brdfLut());
                         };
 
                         auto checkMaterialIsCompatibleWithPrimitive = [](GLTF2Material *m, Qt3DRender::QGeometryRenderer *renderer,

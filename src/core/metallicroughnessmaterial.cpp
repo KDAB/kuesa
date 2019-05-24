@@ -27,6 +27,7 @@
 */
 
 #include "metallicroughnessmaterial.h"
+#include "kuesa_p.h"
 
 #include <Qt3DRender/qtexture.h>
 #include <Qt3DRender/qparameter.h>
@@ -35,6 +36,8 @@
 
 #include "metallicroughnesseffect.h"
 #include "morphcontroller.h"
+
+#include "sceneentity.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -122,6 +125,11 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     nodes of the shader graph and will trigger a recompilation of the shader.
     It is recommended to create the variations of the material that you need
     once up front at application initialisation time.
+
+    \note The effect behind this material needs a brdfLut texture. If the brdfLut
+    texture in the effect is not set and the material is added to a subtree of a
+    Kuesa::SceneEntity, it will look for the Kuesa::SceneEntity and will use the
+    brdfLut texture in the texture collection.
 */
 
 /*!
@@ -381,6 +389,11 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     nodes of the shader graph and will trigger a recompilation of the shader.
     It is recommended to create the variations of the material that you need
     once up front at application initialisation time.
+
+    \note The effect behind this material needs a brdfLut texture. If the brdfLut
+    texture in the effect is not set and the material is added to a subtree of a
+    Kuesa.SceneEntity, it will look for the Kuesa.SceneEntity and will use the
+    brdfLut texture in the texture collection.
  */
 
 /*!
@@ -519,7 +532,6 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \since 1.1
  */
 
-
 MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     : GLTF2Material(parent)
     , m_baseColorUsesTexCoord1(new QParameter(QStringLiteral("baseColorUsesTexCoord1"), bool(false)))
@@ -595,9 +607,11 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     addParameter(m_normalScaleParameter);
     addParameter(m_emissiveFactorParameter);
 
-
     setEffect(m_effect);
     updateEffect();
+
+    QObject::connect(this, &Kuesa::MetallicRoughnessMaterial::addedToEntity,
+                     this, &Kuesa::MetallicRoughnessMaterial::onAddedToEntity);
 }
 
 MetallicRoughnessMaterial::~MetallicRoughnessMaterial()
@@ -814,6 +828,22 @@ void MetallicRoughnessMaterial::setEmissiveMap(QAbstractTexture *emissiveMap)
 void MetallicRoughnessMaterial::setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm)
 {
     m_effect->setToneMappingAlgorithm(algorithm);
+}
+
+void MetallicRoughnessMaterial::onAddedToEntity(Qt3DCore::QEntity *entity)
+{
+    if (m_effect->brdfLUT() != nullptr)
+        return;
+
+    // Looks on the entity tree until we find a SceneEntity
+    // while we find the SceneEntity, get the brdfLut texture and add it to the effect
+    auto *sceneEntity = Kuesa::SceneEntity::findParentSceneEntity(entity);
+    if (!sceneEntity) {
+        qCWarning(kuesa) << "A material has been added to a subtree without a SceneEntity";
+        return;
+    }
+
+    m_effect->setBrdfLUT(sceneEntity->brdfLut());
 }
 
 void MetallicRoughnessMaterial::updateEffect()
