@@ -26,8 +26,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.11
+import QtQuick 2.12
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.12 as QQC2
 import "controls" as Controls
 import QtGraphicalEffects 1.0
 
@@ -50,6 +51,7 @@ Item {
     property alias showSkybox: showSkyboxSwitch.checked
     property alias exposure: exposureSlider.value
     property alias useOpacityMask: useOpacityMaskSwitch.checked
+    property alias useBloomEffect: useBloomEffectSwitch.checked
     property color carBaseColorFactor: "white"
     property alias idleAnimationRunning: idleAnimation.running
 
@@ -351,6 +353,76 @@ Item {
                             value: sceneContent.carBaseColorFactor.b
                             onValueChanged: if (value !== sceneContent.carBaseColorFactor.b)
                                                 sceneContent.carBaseColorFactor = Qt.rgba(redColor.value, greenColor.value, blueColor.value)
+                            width: parent.width
+                        }
+                    }
+
+
+                    Item {
+                        height: 10
+                        width: 1
+                    }
+                    Controls.GroupBox {
+                        width: parent.width
+
+                        Item {
+                            height: useBloomEffectSwitch.implicitHeight
+                            width: parent.width
+
+                            Controls.StyledLabel {
+                                text: "Bloom effect"
+                                font.pixelSize: Controls.SharedAttributes.largeFontSize
+                                font.weight: Font.ExtraLight
+                                anchors {
+                                    left: parent.left
+                                    verticalCenter: parent.verticalCenter
+                                }
+                            }
+                            Controls.StyledSwitch {
+                                id: useBloomEffectSwitch
+                                checked: false
+                                width: menu.switchWidth
+                                anchors {
+                                    right: parent.right
+                                    bottom: parent.bottom
+                                }
+                            }
+                        }
+
+                        Rectangle {
+                            width: parent.width
+                            height: 1
+                            color: "#70ffffff"
+                        }
+
+                        Controls.LabeledSlider {
+                            id: bloomExposure
+                            text: "exp: " + parseFloat(bloomExposure.value).toFixed(2)
+                            value: sceneContent.bloomEffect.exposure
+                            onValueChanged: if (value !== sceneContent.bloomEffect.exposure)
+                                                sceneContent.bloomEffect.exposure = bloomExposure.value
+                            width: parent.width
+                        }
+
+                        Controls.LabeledSlider {
+                            id: bloomThreshold
+                            text: "th: " + parseFloat(bloomThreshold.value).toFixed(2)
+                            value: sceneContent.bloomEffect.threshold
+                            onValueChanged: if (value !== sceneContent.bloomEffect.threshold)
+                                                sceneContent.bloomEffect.threshold = bloomThreshold.value
+                            width: parent.width
+                        }
+
+                        Controls.LabeledSlider {
+                            id: bloomPasses
+                            text: "pass: " + bloomPasses.value
+                            minimumValue: 0
+                            maximumValue: 8
+                            stepSize: 1
+                            snapMode: QQC2.Slider.SnapAlways
+                            value: sceneContent.bloomEffect.blurPassCount
+                            onValueChanged: if (value !== sceneContent.bloomEffect.blurPassCount)
+                                                sceneContent.bloomEffect.blurPassCount = bloomPasses.value
                             width: parent.width
                         }
                     }

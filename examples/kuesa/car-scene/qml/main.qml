@@ -68,6 +68,7 @@ Item {
                 openLeftDoor: menu.openLeftDoor
                 openRightDoor: menu.openRightDoor
                 openHood: menu.openHood
+                useBloomEffect: menu.useBloomEffect
             }
 
             Keys.onPressed: {

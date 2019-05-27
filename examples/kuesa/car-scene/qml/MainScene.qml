@@ -55,8 +55,10 @@ Kuesa.SceneEntity {
     property alias showSkybox: skybox.enabled
     property double exposure: 0.0
     property bool useOpacityMask: false
+    property bool useBloomEffect: false
     property color carBaseColorFactor: "white"
     property bool es2: _isES2
+    property alias bloomEffect: bloomFx
 
     Entity {
         id: d
@@ -182,7 +184,14 @@ Kuesa.SceneEntity {
             activeFrameGraph: Kuesa.ForwardRenderer {
                 id: frameGraph
                 camera: scene.animated && sweepCam.node ? sweepCam.node : mainCamera
-                postProcessingEffects: useOpacityMask ? [opacityMaskEffect] : []
+                postProcessingEffects: {
+                    var effects = []
+                    if (useBloomEffect)
+                        effects.push(bloomFx)
+                    if (useOpacityMask)
+                        effects.push(opacityMaskEffect)
+                    return effects
+                }
                 backToFrontSorting: true
             }
         },
@@ -214,6 +223,13 @@ Kuesa.SceneEntity {
             generateMipMaps: false
         }
         premultipliedAlpha: true // This is what Scene3D/QtQuick expects
+    }
+
+    Effects.BloomEffect {
+        id: bloomFx
+        exposure: 0.76
+        threshold: 0.34
+        blurPassCount: 2
     }
 
     QQ2.Binding {
