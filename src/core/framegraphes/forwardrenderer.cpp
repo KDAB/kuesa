@@ -867,7 +867,7 @@ QSize ForwardRenderer::currentSurfaceSize() const
     auto surface = m_surfaceSelector->surface();
 
     if (auto window = qobject_cast<QWindow *>(surface))
-        size = window->size();
+        size = window->size() * window->screen()->devicePixelRatio();
     else if (qobject_cast<QOffscreenSurface *>(surface))
         size = m_surfaceSelector->externalRenderTargetSize();
     else
