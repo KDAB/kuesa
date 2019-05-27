@@ -117,7 +117,6 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     m_brdfLUT->setObjectName("_kuesa_brdfLUT");
     m_brdfLUT->setSource(QUrl(QLatin1String("qrc:/kuesa/shaders/brdfLUT.png")));
     m_brdfLUT->setWrapMode(Qt3DRender::QTextureWrapMode(Qt3DRender::QTextureWrapMode::ClampToEdge));
-    m_textures->add(QLatin1String("_kuesa_brdfLUT"), m_brdfLUT);
 }
 
 SceneEntity::~SceneEntity() = default;
@@ -338,9 +337,6 @@ void SceneEntity::clearCollections()
     m_entities->clear();
     m_textureImages->clear();
     m_animationMappings->clear();
-
-    // TODO: Re-add required assets
-    m_textures->add(QLatin1String("_kuesa_brdfLUT"), m_brdfLUT);
 }
 
 /*!
@@ -359,6 +355,35 @@ Qt3DCore::QNode *SceneEntity::transformForEntity(const QString &name)
         return nullptr;
 
     return componentFromEntity<Qt3DCore::QTransform>(e);
+}
+
+/*!
+ * \brief SceneEntity::brdfLut Returns the brdfLut texture stored in the SceneEntity
+ *
+ * The brdfLut is used as a lookup texture and is needed for the metallic roughness effect
+ * instances. The metallic roughness effect will use the brdfLut texture
+ * stored in the SceneEntity if the user doesn't provide another one.
+ * This allows to share the same texture instance between all the instances of
+ * the metallic roughness effect.
+ *
+ * https://learnopengl.com/PBR/IBL/Specular-IBL
+ */
+Qt3DRender::QAbstractTexture *SceneEntity::brdfLut() const
+{
+    return m_brdfLUT;
+}
+
+Kuesa::SceneEntity *Kuesa::SceneEntity::findParentSceneEntity(Qt3DCore::QEntity *entity)
+{
+    auto *parentEntity = entity->parentEntity();
+    if (parentEntity) {
+        auto *sceneEntity = qobject_cast<Kuesa::SceneEntity *>(parentEntity);
+        if (sceneEntity)
+            return sceneEntity;
+
+        return findParentSceneEntity(parentEntity);
+    }
+    return nullptr;
 }
 
 QT_END_NAMESPACE
