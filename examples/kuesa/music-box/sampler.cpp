@@ -45,6 +45,7 @@
 static constexpr int maxSampleCount = 127;
 static constexpr unsigned int sampleRate = 44100;
 static constexpr unsigned int channels = 2;
+static_assert(channels == 2, "The code needs some adjustment if you want use more than two channels");
 
 // Represents a wave file associated to multiple playheads
 class Note
@@ -124,7 +125,8 @@ class SamplerPrivate
     Q_DISABLE_COPY(SamplerPrivate)
 
 public:
-    SamplerPrivate()
+    SamplerPrivate(Sampler &s)
+        : m_sampler{ s }
     {
         m_reverb.init(sampleRate);
         m_reverb.setDryWet(0.3);
@@ -132,7 +134,7 @@ public:
 
         // Start audio playback
         Pa_Initialize();
-        auto err = Pa_OpenDefaultStream(&stream, 2, channels, paInt16, sampleRate, paFramesPerBufferUnspecified, audioCallback, this);
+        auto err = Pa_OpenDefaultStream(&stream, 0, channels, paInt16, sampleRate, paFramesPerBufferUnspecified, audioCallback, this);
         if (err == paNoError) {
             err = Pa_StartStream(stream);
         }
@@ -247,8 +249,8 @@ private:
 
                     // Blit it to the sound card output
                     for (drwav_uint64 i = 0; i < max; i++) {
-                        out[2 * i] += data[i] * p.volume;
-                        out[2 * i + 1] += data[i] * p.volume;
+                        out[channels * i] += data[i] * p.volume;
+                        out[channels * i + 1] += data[i] * p.volume;
                     }
 
                     if (max < frameCount) {
@@ -292,42 +294,54 @@ private:
             }
         }
 
-        // Reverb pass
-        if (channels == 2 && self.m_enableReverb) {
-            const auto int_to_float = [](int16_t v) -> float {
-                return v / float(INT16_MAX);
-            };
-            const auto float_to_int = [](float f) -> int16_t {
-                int32_t v = (f * float(INT16_MAX));
-                return (v < INT16_MIN)
-                        ? INT16_MIN
-                        : ((v > INT16_MAX)
-                                   ? INT16_MAX
-                                   : v);
-            };
+        const auto int_to_float = [](int16_t v) -> float {
+            return v / float(INT16_MAX);
+        };
+        const auto float_to_int = [](float f) -> int16_t {
+            int32_t v = (f * float(INT16_MAX));
+            return (v < INT16_MIN)
+                    ? INT16_MIN
+                    : ((v > INT16_MAX)
+                               ? INT16_MAX
+                               : v);
+        };
 
-            float *reverb_in[channels], *reverb_out[channels];
-            for (int i = 0; i < channels; i++) {
+        // Reverb pass
+        if (self.m_enableReverb) {
+            float *reverb_in[channels];
+            for (std::size_t i = 0; i < channels; i++) {
                 reverb_in[i] = (float *)alloca(sizeof(float) * frameCount);
             }
-            for (int i = 0; i < frameCount; i++) {
-                for (int c = 0; c < channels; c++) {
-                    reverb_in[c][i] = int_to_float(out[2 * i + c]);
+            for (std::size_t i = 0; i < frameCount; i++) {
+                for (std::size_t c = 0; c < channels; c++) {
+                    reverb_in[c][i] = int_to_float(out[channels * i + c]);
                 }
             }
 
             self.m_reverb.compute(frameCount, reverb_in, reverb_in);
 
-            for (int i = 0; i < frameCount; i++) {
-                for (int c = 0; c < channels; c++) {
-                    out[2 * i + c] = float_to_int(reverb_in[c][i]);
+            for (std::size_t i = 0; i < frameCount; i++) {
+                for (std::size_t c = 0; c < channels; c++) {
+                    out[channels * i + c] = float_to_int(reverb_in[c][i]);
                 }
             }
         }
 
+        // Compute RMS and peak values for the first channel
+        int64_t rms = 0;
+        int16_t peak = 0;
+        for (std::size_t i = 0; i < frameCount; i++) {
+            const int16_t val = out[channels * i];
+            peak = std::max(val, peak);
+            rms += val * val;
+        }
+
+        self.m_sampler.audioSignal(std::sqrt((float(rms) / float(INT16_MAX)) / frameCount), int_to_float(peak));
+
         return paNoError;
     }
 
+    Sampler &m_sampler;
     SampleSet *m_current{};
 
     moodycamel::ReaderWriterQueue<SampleSet *> m_nextSamples, m_oldSamples;
@@ -346,7 +360,7 @@ struct SamplerPrivate final {
 Sampler::Sampler(QObject *parent)
     : QObject(parent)
 #if KUESA_HAS_AUDIO
-    , d_ptr(new SamplerPrivate)
+    , d_ptr(new SamplerPrivate{ *this })
 #else
     , d_ptr(nullptr)
 #endif
