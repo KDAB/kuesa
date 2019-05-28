@@ -157,8 +157,8 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
 
         auto renderPass = new Qt3DRender::QRenderPass;
         auto shaderProg = new Qt3DRender::QShaderProgram(renderPass);
-        shaderProg->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"))));
-        shaderProg->setFragmentShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/dof.frag"))));
+        shaderProg->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(vertex));
+        shaderProg->setFragmentShaderCode(Qt3DRender::QShaderProgram::loadSource(fragment));
 
         renderPass->setShaderProgram(shaderProg);
 
@@ -198,12 +198,12 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     //
     //  FrameGraph Construction
     //
-    auto thresholdLayerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
-    thresholdLayerFilter->addLayer(thresholdQuad->layer());
-    auto thresholdRenderPassFilter = new Qt3DRender::QRenderPassFilter(thresholdLayerFilter);
+    auto layerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
+    layerFilter->addLayer(thresholdQuad->layer());
+    auto renderPassFilter = new Qt3DRender::QRenderPassFilter(layerFilter);
     auto filterKey = new Qt3DRender::QFilterKey;
     filterKey->setName(QStringLiteral("KuesaDOFPass"));
-    thresholdRenderPassFilter->addMatch(filterKey);
+    renderPassFilter->addMatch(filterKey);
 }
 
 DepthOfFieldEffect::~DepthOfFieldEffect()
