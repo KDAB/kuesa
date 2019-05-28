@@ -40,6 +40,7 @@
 #include <Qt3DRender/qrendertarget.h>
 #include <Qt3DRender/qrendertargetselector.h>
 #include <QWindow>
+#include <QScreen>
 #include <QOffscreenSurface>
 #include <Kuesa/abstractpostprocessingeffect.h>
 #include "zfillrenderstage_p.h"
