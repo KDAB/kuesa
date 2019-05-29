@@ -318,12 +318,12 @@ bool GLTF2Importer::assignNames() const
 
 Kuesa::GLTF2Import::GLTF2Options *GLTF2Importer::options()
 {
-    return &m_options;
+    return m_context->options();
 }
 
 const Kuesa::GLTF2Import::GLTF2Options *GLTF2Importer::options() const
 {
-    return &m_options;
+    return m_context->options();
 }
 
 /*!
@@ -343,7 +343,8 @@ void GLTF2Importer::setAssignNames(bool assignNames)
 
 void GLTF2Importer::setOptions(const Kuesa::GLTF2Import::GLTF2Options &options)
 {
-    m_options.setGenerateTangents(options.generateTangents());
+    GLTF2Import::GLTF2Options *m_options = m_context->options();
+    m_options->setGenerateTangents(options.generateTangents());
 }
 
 void GLTF2Importer::load()
@@ -352,9 +353,8 @@ void GLTF2Importer::load()
         return;
 
     setStatus(GLTF2Importer::Status::Loading);
-    *m_context = {};
-
-    m_context->setOptions(&m_options);
+    // Reset context (except options)
+    m_context->reset();
 
     const QString path = urlToLocalFileOrQrc(m_source);
 

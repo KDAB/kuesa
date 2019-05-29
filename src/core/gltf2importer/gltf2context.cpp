@@ -34,6 +34,7 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 GLTF2Context::GLTF2Context()
+    : m_options()
 {
 }
 
@@ -464,16 +465,39 @@ Skin GLTF2Context::assetAt<Skin>(qint32 i) const
     return skin(i);
 }
 
-
-
-Kuesa::GLTF2Import::GLTF2Options *GLTF2Context::options() const
+Kuesa::GLTF2Import::GLTF2Options *GLTF2Context::options()
 {
-    return m_options;
+    return &m_options;
 }
 
-void GLTF2Context::setOptions(Kuesa::GLTF2Import::GLTF2Options *options)
+const Kuesa::GLTF2Import::GLTF2Options *GLTF2Context::options() const
 {
-    m_options = options;
+    return &m_options;
+}
+
+void GLTF2Context::reset()
+{
+    // Resets everything but the options;
+    m_accessors.clear();
+    m_buffers.clear();
+    m_bufferViews.clear();
+    m_cameras.clear();
+    m_meshes.clear();
+    m_treeNodes.clear();
+    m_layers.clear();
+    m_images.clear();
+    m_textureSamplers.clear();
+    m_textures.clear();
+    m_animations.clear();
+    m_scenes.clear();
+    m_materials.clear();
+    m_skins.clear();
+    m_usedExtensions.clear();
+    m_requiredExtensions.clear();
+    m_filename.clear();
+    m_json = {};
+    m_localFiles.clear();
+    m_bufferChunk.clear();
 }
 
 QT_END_NAMESPACE

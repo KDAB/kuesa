@@ -306,7 +306,7 @@ private Q_SLOTS:
         {
             QVERIFY(exported.success());
 
-            ctx = GLTF2Context{};
+            ctx.reset();
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
             auto res = parser.setupScene();
             QVERIFY(res != nullptr);
@@ -383,7 +383,7 @@ private Q_SLOTS:
             QVERIFY(comp_info.size() < 1024 * 1024);
 
             // Check that we can reload the mesh properly
-            ctx = GLTF2Context{};
+            ctx.reset();
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
 
             auto res = parser.setupScene();
@@ -440,7 +440,7 @@ private Q_SLOTS:
             QVERIFY(tmp.count() == 0);
 
             // Check that we can reload the mesh properly
-            ctx = GLTF2Context{};
+            ctx.reset();
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
             auto res = parser.setupScene();
             QVERIFY(res != nullptr);
@@ -551,7 +551,7 @@ private Q_SLOTS:
             QVERIFY(!sub.exists("Box0.bin"));
             QCOMPARE(sub.count(), 1U);
 
-            ctx = GLTF2Context{};
+            ctx.reset();
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), sub.absolutePath(), QStringLiteral("test.gltf"));
             auto res = parser.setupScene();
             QVERIFY(res != nullptr);
