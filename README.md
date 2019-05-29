@@ -1,5 +1,8 @@
 # Kuesa module for Qt 3D
 
+![alt text](https://github.com/KDAB/kuesa/blob/dev/examples/kuesa/assets/misc/kuesa_carscene.png)
+
+
 Kuesa is a module for Qt 3D which provides:
 * Support for glTF 2 importing
 * Helpers for accessing and manipulating loaded content
@@ -57,6 +60,9 @@ Kuesa is composed of:
   to enable PBR rendering on ES 2 platforms
 
 ### Asset Pipeline Editor
+
+![alt text](https://github.com/KDAB/kuesa/blob/dev/examples/kuesa/assets/misc/kuesa_ape.png)
+
 
 The Asset Pipeline Editor can be used both by the designer and in order
 to preview and pre-process the content of glTF files.
