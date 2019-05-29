@@ -34,6 +34,7 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 GLTF2Context::GLTF2Context()
+    : m_options(GLTF2OptionsPtr::create())
 {
 }
 
@@ -466,12 +467,12 @@ Skin GLTF2Context::assetAt<Skin>(qint32 i) const
 
 
 
-Kuesa::GLTF2Import::GLTF2Options *GLTF2Context::options() const
+GLTF2OptionsPtr GLTF2Context::options() const
 {
     return m_options;
 }
 
-void GLTF2Context::setOptions(Kuesa::GLTF2Import::GLTF2Options *options)
+void GLTF2Context::setOptions(GLTF2OptionsPtr options)
 {
     m_options = options;
 }

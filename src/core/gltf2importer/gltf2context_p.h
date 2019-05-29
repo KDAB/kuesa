@@ -158,8 +158,8 @@ public:
     QByteArray bufferChunk() const;
     void setBufferChunk(const QByteArray &bufferChunk);
 
-    Kuesa::GLTF2Import::GLTF2Options *options() const;
-    void setOptions(Kuesa::GLTF2Import::GLTF2Options *options);
+    GLTF2OptionsPtr options() const;
+    void setOptions(GLTF2OptionsPtr options);
 
 private:
     QVector<Accessor> m_accessors;
@@ -183,7 +183,7 @@ private:
     QStringList m_localFiles;
     QByteArray m_bufferChunk;
 
-    Kuesa::GLTF2Import::GLTF2Options *m_options;
+    GLTF2OptionsPtr m_options;
 };
 
 template<>

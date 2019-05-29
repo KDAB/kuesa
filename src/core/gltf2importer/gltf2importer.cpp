@@ -225,6 +225,7 @@ GLTF2Importer::GLTF2Importer(Qt3DCore::QNode *parent)
     , m_root(nullptr)
     , m_status(None)
     , m_sceneEntity(nullptr)
+    , m_options(GLTF2Import::GLTF2OptionsPtr::create())
 {
 }
 
@@ -318,12 +319,12 @@ bool GLTF2Importer::assignNames() const
 
 Kuesa::GLTF2Import::GLTF2Options *GLTF2Importer::options()
 {
-    return &m_options;
+    return m_options.data();
 }
 
 const Kuesa::GLTF2Import::GLTF2Options *GLTF2Importer::options() const
 {
-    return &m_options;
+    return m_options.data();
 }
 
 /*!
@@ -343,7 +344,7 @@ void GLTF2Importer::setAssignNames(bool assignNames)
 
 void GLTF2Importer::setOptions(const Kuesa::GLTF2Import::GLTF2Options &options)
 {
-    m_options.setGenerateTangents(options.generateTangents());
+    m_options->setGenerateTangents(options.generateTangents());
 }
 
 void GLTF2Importer::load()
@@ -354,7 +355,7 @@ void GLTF2Importer::load()
     setStatus(GLTF2Importer::Status::Loading);
     *m_context = {};
 
-    m_context->setOptions(&m_options);
+    m_context->setOptions(m_options);
 
     const QString path = urlToLocalFileOrQrc(m_source);
 

@@ -98,7 +98,7 @@ private:
     Kuesa::SceneEntity *m_sceneEntity;
     QMetaObject::Connection m_sceneEntityDestructionConnection;
     bool m_assignNames;
-    Kuesa::GLTF2Import::GLTF2Options m_options;
+    GLTF2Import::GLTF2OptionsPtr m_options;
 };
 
 } // namespace Kuesa

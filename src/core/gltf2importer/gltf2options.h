@@ -30,6 +30,7 @@
 #define KUESA_GLTF2IMPORT_GLTF2OPTIONS_H
 
 #include <QObject>
+#include <QSharedPointer>
 #include <Kuesa/kuesa_global.h>
 
 QT_BEGIN_NAMESPACE
@@ -56,6 +57,7 @@ private:
     bool m_generateTangents;
 };
 
+using GLTF2OptionsPtr = QSharedPointer<GLTF2Options>;
 } // namespace GLTF2Import
 } // namespace Kuesa
 
