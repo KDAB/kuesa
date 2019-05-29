@@ -28,6 +28,8 @@ TEMPLATE = app
 QT += 3dcore 3drender 3dinput 3danimation 3dextras 3dquick widgets kuesa kuesa-private
 lessThan(QT_MINOR_VERSION, 14): QT += 3dcore-private 3drender-private
 
+include($$KUESA_ROOT/kuesa-global.pri)
+
 DEFINES += QT_DEPRECATED_WARNINGS
 VERSION = 1.0.0
 

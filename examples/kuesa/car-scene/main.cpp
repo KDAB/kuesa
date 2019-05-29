@@ -137,6 +137,9 @@ int main(int ac, char **av)
     bool screenHeightScale = parser.isSet(heightScaleOption);
 #endif
 
+#ifdef KUESA_BUILD_ROOT
+    view.engine()->addImportPath(QStringLiteral(KUESA_BUILD_ROOT "/qml"));
+#endif
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_isES2"), isES2);
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_view"), &view);
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_screenHeightScale"), screenHeightScale);

@@ -36,6 +36,7 @@ HEADERS += \
     ../../../tools/assetpipelineeditor/orbitcameracontroller.h
 
 include(../shared-utils/shared-utils.pri)
+include($$KUESA_ROOT/kuesa-global.pri)
 
 RESOURCES += \
     assets/assets.qrc \

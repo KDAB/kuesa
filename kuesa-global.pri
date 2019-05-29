@@ -3,7 +3,7 @@
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Kevin Ottens <kevin.ottens@kdab.com>
+# Author: Mike Krus <mike.krus@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,15 +24,5 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-lessThan(QT_MAJOR_VERSION, 5) | lessThan(QT_MINOR_VERSION, 12): error("This project requires Qt 5.12")
-requires(qtHaveModule(3drender):qtHaveModule(3danimation))
-
-OTHER_FILES += \
-    sync.profile \
-    .qmake.conf \
-    configure.json \
-    config_help.txt \
-    kuesa-global.pri \
-    README.md
-
-load(qt_parts)
+QMAKE_RPATHDIR += $$KUESA_BUILD_ROOT/lib
+DEFINES += KUESA_BUILD_ROOT=\\\"$$KUESA_BUILD_ROOT\\\"

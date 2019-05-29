@@ -142,6 +142,9 @@ MainWindow::MainWindow(QWidget *parent)
     qmlRegisterType<TexturePreviewMaterial>("AssetPipelineEditor", 1, 0, "TexturePreviewMaterial");
     qmlRegisterType<OrbitCameraController>("AssetPipelineEditor", 1, 0, "OrbitCameraController");
 
+#ifdef KUESA_BUILD_ROOT
+    m_view->engine()->qmlEngine()->addImportPath(QStringLiteral(KUESA_BUILD_ROOT "/qml"));
+#endif
     m_view->engine()->qmlEngine()->rootContext()->setContextProperty("_mainWindow", this);
     m_view->registerAspect(new Qt3DAnimation::QAnimationAspect());
     m_view->setSource(QUrl("qrc:/main.qml"));

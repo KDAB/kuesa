@@ -36,6 +36,7 @@ RESOURCES += \
     qml/qml.qrc \
 
 include(../shared-utils/shared-utils.pri)
+include($$KUESA_ROOT/kuesa-global.pri)
 
 envmaps_dir = ../assets/envmaps
 envmaps.files = \

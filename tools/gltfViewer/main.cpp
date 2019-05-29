@@ -206,6 +206,9 @@ int main(int argc, char *argv[])
     view.setFlags(view.flags() | Qt::WindowFullscreenButtonHint);
     view.registerAspect(new Qt3DAnimation::QAnimationAspect());
     view.installEventFilter(&app);
+#ifdef KUESA_BUILD_ROOT
+    view.engine()->qmlEngine()->addImportPath(QStringLiteral(KUESA_BUILD_ROOT "/qml"));
+#endif
 
     QQmlContext *context = view.engine()->qmlEngine()->rootContext();
     app.setContext(context);
