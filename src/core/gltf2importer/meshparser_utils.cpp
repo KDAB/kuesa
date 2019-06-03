@@ -48,11 +48,6 @@
 
 namespace {
 
-const QString morphTargetAttributePattern = QStringLiteral("%1(_\d+)?");
-const QString morphTargetBaseAttributeNames[]{
-    Qt3DRender::QAttribute::defaultPositionAttributeName(),
-    Qt3DRender::QAttribute::defaultNormalAttributeName(),
-    Qt3DRender::QAttribute::defaultTangentAttributeName()};
 const QLatin1String KEY_BUFFERVIEWTARGET = QLatin1String("target");
 const QLatin1String KEY_COMPONENTTYPE = QLatin1Literal("componentType");
 const QLatin1String KEY_COUNT = QLatin1Literal("count");
@@ -61,14 +56,32 @@ const QLatin1String KEY_MAX = QLatin1Literal("max");
 const QLatin1String KEY_MIN = QLatin1Literal("min");
 const QLatin1String ATTR_TANGENT = QLatin1Literal("TANGENT");
 
+const auto morphTargetAttributeRegExps = []() {
+        const QString morphTargetAttributePattern = QStringLiteral("%1(_\d+)?");
+        const QString morphTargetBaseAttributeNames[]{
+            Qt3DRender::QAttribute::defaultPositionAttributeName(),
+            Qt3DRender::QAttribute::defaultNormalAttributeName(),
+            Qt3DRender::QAttribute::defaultTangentAttributeName()
+        };
+
+        // Morph Target Attributes
+        constexpr int maxEntries = sizeof(morphTargetBaseAttributeNames) / sizeof(morphTargetBaseAttributeNames[0]);
+        std::array<QRegularExpression, maxEntries> regExps;
+
+        for (int i = 0; i < maxEntries; ++i) {
+            const QString &baseAttributeName = morphTargetBaseAttributeNames[i];
+            QRegularExpression &re = regExps[i];
+            re.setPattern(morphTargetAttributePattern.arg(baseAttributeName));
+            Q_ASSERT(re.isValid());
+        }
+        return regExps;
+}();
+
 QVarLengthArray<Qt3DRender::QAttribute::VertexBaseType, 3> validVertexBaseTypesForAttribute(const QString &attributeName)
 {
     {
         // Morph Target Attributes
-        QRegularExpression re;
-        for (const QString &baseAttributeName : morphTargetBaseAttributeNames) {
-            re.setPattern(morphTargetAttributePattern.arg(baseAttributeName));
-            Q_ASSERT(re.isValid());
+        for (const QRegularExpression &re : morphTargetAttributeRegExps) {
             if (re.match(attributeName).hasMatch())
                 return { Qt3DRender::QAttribute::Float };
         }
@@ -100,15 +113,13 @@ QVarLengthArray<Qt3DRender::QAttribute::VertexBaseType, 3> validVertexBaseTypesF
 
 QVarLengthArray<uint, 2> validVertexSizesForAttribute(const QString &attributeName)
 {
+    // Morph Target Attributes
     {
         // Morph Target Attributes
-        QRegularExpression re;
-        for (const QString &baseAttributeName : morphTargetBaseAttributeNames) {
-            re.setPattern(morphTargetAttributePattern.arg(baseAttributeName));
-            Q_ASSERT(re.isValid());
+        for (const QRegularExpression &re : morphTargetAttributeRegExps) {
             if (re.match(attributeName).hasMatch()) {
                 // Tangent attribute size is 4, all others are 3
-                if (baseAttributeName == Qt3DRender::QAttribute::defaultTangentAttributeName())
+                if (attributeName.startsWith(Qt3DRender::QAttribute::defaultTangentAttributeName()))
                     return { 3, 4 };
                 return { 3 };
             }
