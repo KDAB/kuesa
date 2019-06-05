@@ -16,6 +16,26 @@ Kuesa is a module for Qt 3D which provides:
 
 Kuesa requires Qt 3D 5.12.0 or later.
 
+### Hardware
+
+#### Desktop
+
+Anything with OpenGL 3.2 support (or more recent) is adequate.
+
+Currently supported operating systems are:
+*Linux
+*Windows
+*Mac OS
+
+#### Embedded
+
+Here's a list of Chipsets/Devices Kuesa has successfully been tested on:
+*Apple iPad 5 (PowerVR GT7600)
+*Apple iPhone 7
+*OnePlus 3T (Android, Qualcolmm Snapdragon 821/Adreno 430)
+*NVidia Tegra K1 (embedded Linux)
+*iMX8 (embedded Linux)
+
 ## Optional Dependencies
 
 Kuesa can optionnally use the [Draco](https://github.com/google/draco) mesh compression library, 
