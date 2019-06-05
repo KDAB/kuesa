@@ -234,8 +234,7 @@ FP vec3 pbrIblModel(const in FP vec3 wNormal,
     FP vec3 n = wNormal;
     FP vec3 l = reflect(-wView, n);
     FP vec3 v = wView;
-    FP vec3 h = normalize(l + v);
-    FP float vDotN = dot(v, n);
+    FP float vDotN = clamp(dot(v, n), 0.0, 1.0);
 
     // Calculate diffuse and specular (F0) colors
     FP vec3 dielectricColor = vec3(0.04);
