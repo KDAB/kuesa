@@ -81,8 +81,6 @@ struct Primitive {
 };
 
 struct Mesh {
-    void clear();
-
     QVector<Primitive> meshPrimitives;
     QString name;
     quint8 morphTargetCount = 0;
