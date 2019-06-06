@@ -77,8 +77,6 @@ void CollectionModel::update(Kuesa::SceneEntity *entity)
             m_collections << m_entity->skeletons();
         if (m_entity->cameras()->size())
             m_collections << m_entity->cameras();
-        if (m_entity->lights()->size())
-            m_collections << m_entity->lights();
     }
     endResetModel();
 }

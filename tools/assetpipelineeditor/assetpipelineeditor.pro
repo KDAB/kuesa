@@ -41,8 +41,6 @@ SOURCES += \
     animationwidget.cpp \
     assetinspector.cpp \
     assetinspectorwidget.cpp \
-    lightinspector.cpp \
-    lightwidget.cpp \
     materialinspector.cpp \
     materialwidget.cpp \
     meshinspector.cpp \
@@ -64,8 +62,6 @@ HEADERS += \
     animationwidget.h \
     assetinspector.h \
     assetinspectorwidget.h \
-    lightinspector.h \
-    lightwidget.h \
     materialinspector.h \
     materialwidget.h \
     meshinspector.h \
@@ -83,7 +79,6 @@ FORMS += \
     vectorwidget.ui \
     camerawidget.ui \
     mainwindow.ui \
-    lightwidget.ui \
     materialwidget.ui \
     meshwidget.ui \
     texturewidget.ui \

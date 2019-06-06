@@ -31,7 +31,6 @@
 
 #include <QWidget>
 
-class LightWidget;
 class MaterialWidget;
 class MeshWidget;
 class TextureWidget;
@@ -56,7 +55,6 @@ Q_SIGNALS:
 private:
     void setAssetName(const QString &name);
 
-    LightWidget *m_lightWidget;
     MaterialWidget *m_materialWidget;
     MeshWidget *m_meshWidget;
     TextureWidget *m_textureWidget;

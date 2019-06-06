@@ -31,8 +31,6 @@
 #include "materialinspector.h"
 #include "textureinspector.h"
 #include "meshinspector.h"
-#include "lightwidget.h"
-#include "lightinspector.h"
 #include "texturewidget.h"
 #include "materialwidget.h"
 #include "meshwidget.h"
@@ -67,9 +65,6 @@ AssetInspectorWidget::AssetInspectorWidget(AssetInspector *inspector, QWidget *p
     m_textureWidget = new TextureWidget;
     m_textureWidget->setTextureInspector(inspector->textureInspector());
 
-    m_lightWidget = new LightWidget;
-    m_lightWidget->setLightInspector(inspector->lightInspector());
-
     m_contentsContainer = new QWidget;
     auto contentsLayout = new QVBoxLayout(m_contentsContainer);
     contentsLayout->setContentsMargins(0, 0, 0, 0);
@@ -93,7 +88,6 @@ void AssetInspectorWidget::updateAssetType()
 {
     static QHash<int, QWidget *> widgetHash = {
         { AssetInspector::Unknown, nullptr },
-        { AssetInspector::Light, m_lightWidget },
         { AssetInspector::Mesh, m_meshWidget },
         { AssetInspector::Texture, m_textureWidget },
         { AssetInspector::Material, m_materialWidget }
