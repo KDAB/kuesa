@@ -232,7 +232,7 @@ FP vec3 pbrIblModel(const in FP vec3 wNormal,
     // to the l vector for punctual light sources. Armed with this, calculate
     // the usual factors needed
     FP vec3 n = wNormal;
-    FP vec3 l = reflect(-wView, n);
+    FP vec3 l = -reflect(wView, n);
     FP vec3 v = wView;
     FP float vDotN = clamp(dot(v, n), 0.0, 1.0);
 
