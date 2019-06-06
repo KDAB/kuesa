@@ -42,7 +42,7 @@
 #include <QOpenGLContext>
 #endif
 
-#include "../../../tools/assetpipelineeditor/orbitcameracontroller.h"
+#include "../../../tools/gltfEditor/orbitcameracontroller.h"
 
 int main(int ac, char **av)
 {

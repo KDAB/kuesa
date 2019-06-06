@@ -1,9 +1,9 @@
-# textureimagesmodel.pro
+# materialinspector.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# Author: Jim Albamont <jim.albamont@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,15 +26,17 @@
 
 TEMPLATE = app
 
-TARGET = tst_textureimagesmodel
+TARGET = tst_materialinspector
 
 QT += testlib kuesa kuesa-private
 
 CONFIG += testcase
 
-INCLUDEPATH += ../../../../tools/assetpipelineeditor
+INCLUDEPATH += ../../../../tools/gltfEditor
 
-SOURCES += tst_textureimagesmodel.cpp \
-           ../../../../tools/assetpipelineeditor/textureinspector.cpp
+SOURCES += tst_materialinspector.cpp \
+           ../../../../tools/gltfEditor/materialinspector.cpp
 
-HEADERS += ../../../../tools/assetpipelineeditor/textureinspector.h
+HEADERS += ../../../../tools/gltfEditor/materialinspector.h
+
+include(../../assets/assets.pri)

@@ -150,8 +150,8 @@ private Q_SLOTS:
         QCOMPARE(context.meshesCount(), meshesCount);
     }
 
-    // The asset pipeline editor needs extra info from GLTF file that's not stored in the Qt3D classes
-    void checkForAssetPipelineEditorProperties()
+    // The glTF editor needs extra info from GLTF file that's not stored in the Qt3D classes
+    void checkForGltfEditorProperties()
     {
         // GIVEN
         GLTF2Context context;

@@ -37,7 +37,7 @@
 #include <Qt3DAnimation/QAnimationAspect>
 #include <Qt3DQuickExtras/Qt3DQuickWindow>
 
-#include "../assetpipelineeditor/orbitcameracontroller.h"
+#include "../gltfEditor/orbitcameracontroller.h"
 
 class ViewerApplication : public QGuiApplication
 {

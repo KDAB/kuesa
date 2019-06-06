@@ -32,13 +32,13 @@ QT += testlib kuesa kuesa-private 3dcore 3drender
 
 CONFIG += testcase
 
-ASSETPIPELINEEDITOR_SRC_DIR = "../../../../tools/assetpipelineeditor"
-INCLUDEPATH += $$ASSETPIPELINEEDITOR_SRC_DIR
+GLTFEDITOR_SRC_DIR = "../../../../tools/gltfEditor"
+INCLUDEPATH += $$GLTFEDITOR_SRC_DIR
 
-HEADERS += $$ASSETPIPELINEEDITOR_SRC_DIR/meshinspector.h
+HEADERS += $$GLTFEDITOR_SRC_DIR/meshinspector.h
 
 SOURCES += \
     tst_meshinspector.cpp \
-    $$ASSETPIPELINEEDITOR_SRC_DIR/meshinspector.cpp
+    $$GLTFEDITOR_SRC_DIR/meshinspector.cpp
 
 include(../../assets/assets.pri)

@@ -1,4 +1,4 @@
-# assetpipelineeditor.pro
+# gltfEditor.pro
 #
 # This file is part of Kuesa.
 #
@@ -96,7 +96,7 @@ OTHER_FILES += \
     RenderPreviewGraph.qml
 
 macos {
-    TARGET = AssetPipelineEditor
+    TARGET = gltfEditor
     QT_DEPLOY=$$[QT_INSTALL_LIBS]/../bin/macdeployqt
     APE_BUNDLE=$${TARGET}.app
     APE_SOURCE=$$PWD

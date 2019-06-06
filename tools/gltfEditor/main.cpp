@@ -36,7 +36,7 @@ extern "C" void disablemacOsTabs();
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setApplicationName("AssetPipeline");
+    QCoreApplication::setApplicationName("glTFEditor");
     QCoreApplication::setOrganizationDomain("kdab.com");
     QCoreApplication::setOrganizationName("KDAB");
 

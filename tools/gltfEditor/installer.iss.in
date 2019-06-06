@@ -6,7 +6,7 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{8A65FC8C-4309-421D-8F96-CECF6A6D8B50}
-AppName=Kuesa Asset Pipeline Editor
+AppName=Kuesa glTF Editor
 AppVersion=$$VERSION
 AppPublisher=KDAB
 AppPublisherURL=http://www.kdab.com/kuesa/
@@ -17,14 +17,14 @@ ArchitecturesInstallIn64BitMode=x64
 DefaultDirName={pf}\KDAB\Kuesa
 DefaultGroupName=KDAB\Kuesa
 LicenseFile=$$APE_SOURCE\..\..\Licensing.txt
-OutputBaseFilename=InstallKuesaAssetPipelineEditor
+OutputBaseFilename=InstallKuesaGltfEditor
 Compression=lzma
 SolidCompression=yes
 VersionInfoVersion=$$VERSION
 VersionInfoCompany=KDAB
-VersionInfoDescription=Kuesa Asset Pipeline Editor
+VersionInfoDescription=Kuesa glTF Editor
 VersionInfoCopyright=KDAB 2018-2019
-VersionInfoProductName=Kuesa Asset Pipeline Editor
+VersionInfoProductName=Kuesa glTF Editor
 VersionInfoProductVersion=$$VERSION
 
 [Languages]
@@ -36,8 +36,8 @@ Source: "$$APE_BUILD\release\*"; DestDir: "{app}"; Flags: ignoreversion recurses
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\Asset Pipeline Editor"; Filename: "{app}\assetpipelineeditor.exe"; WorkingDir: "{app}"
+Name: "{group}\glTF Editor"; Filename: "{app}\gltfEditor.exe"; WorkingDir: "{app}"
 Name: "{group}\About Kuesa"; Filename: "https://kdab.com/kuesa/"
 
 [Run]
-Filename: "{app}\assetpipelineeditor.exe"; Description: "Launch Application"; Flags: postinstall skipifsilent
+Filename: "{app}\gltfEditor.exe"; Description: "Launch Application"; Flags: postinstall skipifsilent

@@ -32,7 +32,7 @@ SUBDIRS += \
 
 !cross_compile: {
     SUBDIRS += \
-        assetpipelineeditor \
+        gltfEditor \
         ddspreviewer
 
     !macos {

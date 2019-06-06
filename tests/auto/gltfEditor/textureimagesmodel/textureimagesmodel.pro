@@ -1,4 +1,4 @@
-# assetpipelineeditor.pro
+# textureimagesmodel.pro
 #
 # This file is part of Kuesa.
 #
@@ -24,13 +24,17 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = subdirs
+TEMPLATE = app
 
-SUBDIRS += \
-    textureimagesmodel
+TARGET = tst_textureimagesmodel
 
-qtConfig(private_tests) {
-    SUBDIRS += \
-        materialinspector \
-        meshinspector
-}
+QT += testlib kuesa kuesa-private
+
+CONFIG += testcase
+
+INCLUDEPATH += ../../../../tools/gltfEditor
+
+SOURCES += tst_textureimagesmodel.cpp \
+           ../../../../tools/gltfEditor/textureinspector.cpp
+
+HEADERS += ../../../../tools/gltfEditor/textureinspector.h

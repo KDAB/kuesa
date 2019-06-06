@@ -355,7 +355,7 @@ bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
                                                                        accessor.offset,
                                                                        static_cast<uint>(byteStride));
         attribute->setAttributeType(Qt3DRender::QAttribute::IndexAttribute);
-        // store some GLTF metadata for asset pipeline editor
+        // store some GLTF metadata for glTF editor
         attribute->setProperty("bufferIndex", viewData.bufferIdx);
         attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
         attribute->setProperty("bufferViewOffset", viewData.byteOffset);
@@ -578,7 +578,7 @@ Qt3DRender::QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
                                                                    quint32(accessor.offset),
                                                                    byteStride);
     attribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
-    // store some GLTF metadata for asset pipeline editor
+    // store some GLTF metadata for glTF editor
     attribute->setProperty("bufferIndex", bufferIdx);
     attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
     attribute->setProperty("bufferViewOffset", byteOffset);
@@ -749,7 +749,7 @@ bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry
         const Accessor accessor = m_context->accessor(accessorIndex);
 
         attribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
-        // store some GLTF metadata for asset pipeline editor
+        // store some GLTF metadata for glTF editor
         attribute->setProperty("bufferIndex", -1);
         attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
         attribute->setProperty("bufferViewOffset", accessor.offset);

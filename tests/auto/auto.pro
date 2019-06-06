@@ -36,7 +36,7 @@ SUBDIRS = \
     effectcollection \
     sceneentity \
     textureimagecollection \
-    assetpipelineeditor \
+    gltfEditor \
     morphcontroller
 
 #installed_cmake.depends = cmake

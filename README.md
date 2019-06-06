@@ -38,7 +38,7 @@ Here's a list of Chipsets/Devices Kuesa has successfully been tested on:
 
 ## Optional Dependencies
 
-Kuesa can optionnally use the [Draco](https://github.com/google/draco) mesh compression library, 
+Kuesa can optionnally use the [Draco](https://github.com/google/draco) mesh compression library,
 either through an embedded version, or a version present on the system.
 Draco can be used to dramatically decrease the size of glTF files.
 
@@ -49,15 +49,15 @@ By default, Kuesa will build with its own embedded version of the Draco library.
 This can be enforced with:
 
     qmake kuesa.pro -- --draco=qt
-    
+
 To build Kuesa without any support for Draco, run qmake like this:
 
     qmake kuesa.pro -- --draco=no
-    
+
 To build Kuesa with an external version of Draco, run qmake like this:
 
     qmake kuesa.pro -- --draco=system
-    
+
 If Draco is not installed in the default location on your system, you can
 set the `DRACOSDK` environment variable to point to where Draco is installed.
 Use the `DRACOSDK_LIBS` environment variable to point to the folder containing
@@ -65,7 +65,7 @@ the Draco libraries.
 
 Note that Kuesa has last been tested with Draco at commit 8833cf878e6fd43c5a3fd6e4231212e25e25e632.
 
-The asset pipeline editor, provided with Kuesa, is able to compress existing glTF 2.0 
+The glTF editor, provided with Kuesa, is able to compress existing glTF 2.0
 assets with Draco.
 
 ## Components
@@ -73,18 +73,17 @@ assets with Draco.
 Kuesa is composed of:
 * A Qt module with core classes
 * A QML plugin
-* The assetpipelineeditor tool to preview and process glTF 2.0 files
+* The gltfEditor tool to preview and process glTF 2.0 files
 * The assetprocessor, a command line tool to compress meshes, embed or extract binary assets, etc
 * A simple glTFViewer application to view files, including selecting cameras and animations
 * The cubemaptooctahedralmap tool to convert cube maps to octahedral maps
   to enable PBR rendering on ES 2 platforms
 
-### Asset Pipeline Editor
+### glTF Editor
 
 ![alt text](https://github.com/KDAB/kuesa/blob/dev/examples/kuesa/assets/misc/kuesa_ape.png)
 
-
-The Asset Pipeline Editor can be used both by the designer and in order
+The glTF Editor can be used both by the designer and developer in order
 to preview and pre-process the content of glTF files.
 
 The designers will use the editor to check the rendering of the scene,

@@ -32,7 +32,7 @@ import Qt3D.Input 2.1
 import Qt3D.Extras 2.10
 import QtQuick 2.10 as QQ2
 import Kuesa 1.0 as Kuesa
-import AssetPipelineEditor 1.0 as AssetPipelineEditor
+import GltfEditor 1.0 as GltfEditor
 
 Kuesa.SceneEntity {
     id: scene
@@ -144,7 +144,7 @@ Kuesa.SceneEntity {
             readonly property Transform transform: Transform {
                 rotation: fromAxisAndAngle(Qt.vector3d(1.0, 0.0, 0.0), 90.0)
             }
-            readonly property Material material: AssetPipelineEditor.TexturePreviewMaterial {
+            readonly property Material material: GltfEditor.TexturePreviewMaterial {
                 texture: _textureInspector.texture
                 onTextureChanged: texturePreviewGraph.requestCapture()
             }
@@ -180,7 +180,7 @@ Kuesa.SceneEntity {
         }
     }
 
-    AssetPipelineEditor.OrbitCameraController {
+    GltfEditor.OrbitCameraController {
         camera: mainCamera
         enabled: _mainWindow.activeCamera === -1
         windowSize: _mainWindow.renderAreaSize

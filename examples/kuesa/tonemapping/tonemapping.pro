@@ -30,10 +30,10 @@ QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimati
 QT_FOR_CONFIG += kuesa
 
 SOURCES += main.cpp \
-    ../../../tools/assetpipelineeditor/orbitcameracontroller.cpp
+    ../../../tools/gltfEditor/orbitcameracontroller.cpp
 
 HEADERS += \
-    ../../../tools/assetpipelineeditor/orbitcameracontroller.h
+    ../../../tools/gltfEditor/orbitcameracontroller.h
 
 include(../shared-utils/shared-utils.pri)
 include($$KUESA_ROOT/kuesa-global.pri)

@@ -143,8 +143,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_ui->cameraDockWidget->setWidget(m_cameraWidget);
     m_ui->cameraDockWidget->setVisible(false);
 
-    qmlRegisterType<TexturePreviewMaterial>("AssetPipelineEditor", 1, 0, "TexturePreviewMaterial");
-    qmlRegisterType<OrbitCameraController>("AssetPipelineEditor", 1, 0, "OrbitCameraController");
+    qmlRegisterType<TexturePreviewMaterial>("GltfEditor", 1, 0, "TexturePreviewMaterial");
+    qmlRegisterType<OrbitCameraController>("GltfEditor", 1, 0, "OrbitCameraController");
 
 #ifdef KUESA_BUILD_ROOT
     m_view->engine()->qmlEngine()->addImportPath(QStringLiteral(KUESA_BUILD_ROOT "/qml"));
@@ -399,7 +399,7 @@ void MainWindow::setFilePath(QString filePath)
     m_filePathURL = filePathURL;
     emit filePathChanged(m_filePathURL);
     setWindowFilePath(m_filePathURL);
-    setWindowTitle(QLatin1String("Kuesa Asset Pipeline Editor - ") + fi.fileName());
+    setWindowTitle(QLatin1String("Kuesa glTF Editor - ") + fi.fileName());
     m_ui->actionReload->setEnabled(false);
 }
 
@@ -482,7 +482,7 @@ void MainWindow::generateTangents()
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, tr("Kuesa Asset Pipeline Editor"),
+    QMessageBox::about(this, tr("Kuesa glTF Editor"),
                        tr("Powered by Kuesa 1.0"));
 }
 
