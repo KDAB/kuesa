@@ -751,8 +751,9 @@ void MetallicRoughnessMaterial::setBaseColorMap(QAbstractTexture *baseColorMap)
 {
     if (m_baseColorMapParameter->value().value<QAbstractTexture *>() == baseColorMap)
         return;
-
+#ifndef QT_OPENGL_ES_2
     baseColorMap->setFormat(QAbstractTexture::TextureFormat::SRGB8_Alpha8);
+#endif
     m_effect->setBaseColorMapEnabled(baseColorMap);
     m_baseColorMapParameter->setValue(QVariant::fromValue(baseColorMap));
     if (baseColorMap) {
@@ -832,8 +833,9 @@ void MetallicRoughnessMaterial::setEmissiveMap(QAbstractTexture *emissiveMap)
 {
     if (m_emissiveMapParameter->value().value<QAbstractTexture *>() == emissiveMap)
         return;
-
+#ifndef QT_OPENGL_ES_2
     emissiveMap->setFormat(QAbstractTexture::TextureFormat::SRGB8_Alpha8);
+#endif
     m_effect->setEmissiveMapEnabled(emissiveMap);
     m_emissiveMapParameter->setValue(QVariant::fromValue(emissiveMap));
     if (emissiveMap) {

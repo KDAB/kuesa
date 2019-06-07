@@ -62,15 +62,6 @@
         },
         {
             "layers": [
-                "baseColorMap"
-            ],
-            "sourcePort": "color",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000007}",
-            "targetPort": "first",
-            "targetUuid": "{60f02f4c-5ef1-4100-aa1a-771cc6a2a0e0}"
-        },
-        {
-            "layers": [
                 "noBaseColorMap"
             ],
             "sourcePort": "value",
@@ -136,15 +127,6 @@
             "sourceUuid": "{1fa6403f-edad-4a0d-8bda-b694bcca4b1f}",
             "targetPort": "first",
             "targetUuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "sourcePort": "color",
-            "sourceUuid": "{48732e42-d590-4f6e-b6d7-d763902312ec}",
-            "targetPort": "first",
-            "targetUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}"
         },
         {
             "layers": [
@@ -611,15 +593,6 @@
             "layers": [
                 "emissiveMap"
             ],
-            "sourcePort": "output",
-            "sourceUuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}",
-            "targetPort": "coord",
-            "targetUuid": "{48732e42-d590-4f6e-b6d7-d763902312ec}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
             "sourcePort": "value",
             "sourceUuid": "{00000000-0000-0000-0000-000000000005}",
             "targetPort": "false",
@@ -719,15 +692,6 @@
             "layers": [
                 "baseColorMap"
             ],
-            "sourcePort": "output",
-            "sourceUuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}",
-            "targetPort": "coord",
-            "targetUuid": "{00000000-0000-0000-0000-000000000007}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
             "sourcePort": "value",
             "sourceUuid": "{2e308734-5616-497a-9793-3892c4776793}",
             "targetPort": "condition",
@@ -786,6 +750,42 @@
             "sourceUuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}",
             "targetPort": "true",
             "targetUuid": "{1ceda485-199f-46b1-b952-3bfd871126ae}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}",
+            "targetPort": "coord",
+            "targetUuid": "{95e203d7-7fc8-4e5b-861f-17c8a180d3e7}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "sourcePort": "color",
+            "sourceUuid": "{95e203d7-7fc8-4e5b-861f-17c8a180d3e7}",
+            "targetPort": "first",
+            "targetUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}",
+            "targetPort": "coord",
+            "targetUuid": "{9f60a39e-ce37-429f-b317-e8587c686660}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "sourcePort": "color",
+            "sourceUuid": "{9f60a39e-ce37-429f-b317-e8587c686660}",
+            "targetPort": "first",
+            "targetUuid": "{60f02f4c-5ef1-4100-aa1a-771cc6a2a0e0}"
         }
     ],
     "groups": [
@@ -811,22 +811,6 @@
             "position": {
                 "x": 592,
                 "y": -551
-            }
-        },
-        {
-            "id": 3,
-            "name": "Emissive",
-            "position": {
-                "x": 455,
-                "y": 275
-            }
-        },
-        {
-            "id": 4,
-            "name": "Base Color",
-            "position": {
-                "x": -208,
-                "y": -301
             }
         },
         {
@@ -875,6 +859,22 @@
             "position": {
                 "x": -125,
                 "y": 285
+            }
+        },
+        {
+            "id": 12,
+            "name": "Emissive",
+            "position": {
+                "x": 455,
+                "y": 268
+            }
+        },
+        {
+            "id": 13,
+            "name": "Base Color",
+            "position": {
+                "x": -208,
+                "y": -308
             }
         }
     ],
@@ -1088,28 +1088,7 @@
         {
             "collapsed": false,
             "displayName": "",
-            "group": 4,
-            "id": 6,
-            "inputValues": {
-                "coord": ""
-            },
-            "layers": [
-                "baseColorMap"
-            ],
-            "parameters": {
-                "name": "baseColorMap"
-            },
-            "position": {
-                "x": -133,
-                "y": -266
-            },
-            "type": "sampleTexture",
-            "uuid": "{00000000-0000-0000-0000-000000000007}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "",
-            "group": 2,
+            "group": -1,
             "id": 13,
             "inputValues": {
             },
@@ -1327,27 +1306,6 @@
         },
         {
             "collapsed": false,
-            "displayName": "sampleTexture",
-            "group": 3,
-            "id": 31,
-            "inputValues": {
-                "coord": ""
-            },
-            "layers": [
-                "emissiveMap"
-            ],
-            "parameters": {
-                "name": "emissiveMap"
-            },
-            "position": {
-                "x": 530,
-                "y": 310
-            },
-            "type": "sampleTexture",
-            "uuid": "{48732e42-d590-4f6e-b6d7-d763902312ec}"
-        },
-        {
-            "collapsed": false,
             "displayName": "fragColor",
             "group": -1,
             "id": 32,
@@ -1368,7 +1326,7 @@
         {
             "collapsed": false,
             "displayName": "multiply",
-            "group": 4,
+            "group": 13,
             "id": 34,
             "inputValues": {
                 "first": "",
@@ -1400,7 +1358,7 @@
         {
             "collapsed": false,
             "displayName": "constant",
-            "group": 4,
+            "group": 13,
             "id": 35,
             "inputValues": {
             },
@@ -1669,7 +1627,7 @@
         {
             "collapsed": false,
             "displayName": "multiply",
-            "group": 3,
+            "group": 12,
             "id": 47,
             "inputValues": {
                 "first": "",
@@ -1701,7 +1659,7 @@
         {
             "collapsed": false,
             "displayName": "constant",
-            "group": 3,
+            "group": 12,
             "id": 48,
             "inputValues": {
             },
@@ -1725,7 +1683,7 @@
         {
             "collapsed": false,
             "displayName": "input",
-            "group": 3,
+            "group": 12,
             "id": 49,
             "inputValues": {
             },
@@ -1752,7 +1710,7 @@
         {
             "collapsed": false,
             "displayName": "input",
-            "group": 4,
+            "group": 13,
             "id": 50,
             "inputValues": {
             },
@@ -1779,7 +1737,7 @@
         {
             "collapsed": false,
             "displayName": "input",
-            "group": 4,
+            "group": 13,
             "id": 51,
             "inputValues": {
             },
@@ -1807,7 +1765,7 @@
         {
             "collapsed": false,
             "displayName": "multiply",
-            "group": 4,
+            "group": 13,
             "id": 52,
             "inputValues": {
                 "first": "",
@@ -1839,7 +1797,7 @@
         {
             "collapsed": false,
             "displayName": "constant",
-            "group": 4,
+            "group": 13,
             "id": 53,
             "inputValues": {
             },
@@ -2225,7 +2183,7 @@
         {
             "collapsed": false,
             "displayName": "swizzle",
-            "group": 4,
+            "group": 13,
             "id": 77,
             "inputValues": {
                 "input": ""
@@ -3006,14 +2964,56 @@
             },
             "type": "boolInput",
             "uuid": "{d22719a0-39d9-4dd7-86b1-979242fc70ab}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "sampleSRGBTexture",
+            "group": 12,
+            "id": 111,
+            "inputValues": {
+                "coord": ""
+            },
+            "layers": [
+                "emissiveMap"
+            ],
+            "parameters": {
+                "name": "emissiveMap"
+            },
+            "position": {
+                "x": 531,
+                "y": 303
+            },
+            "type": "sampleSRGBTexture",
+            "uuid": "{95e203d7-7fc8-4e5b-861f-17c8a180d3e7}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "sampleSRGBTexture",
+            "group": 13,
+            "id": 112,
+            "inputValues": {
+                "coord": ""
+            },
+            "layers": [
+                "baseColorMap"
+            ],
+            "parameters": {
+                "name": "baseColorMap"
+            },
+            "position": {
+                "x": -69,
+                "y": -273
+            },
+            "type": "sampleSRGBTexture",
+            "uuid": "{9f60a39e-ce37-429f-b317-e8587c686660}"
         }
     ],
     "project": {
         "position": {
-            "x": -1267.2000000000003,
-            "y": 739.1999999999997
+            "x": -283.12298812298855,
+            "y": -427.4648462648464
         },
-        "scale": 0.625
+        "scale": 0.8125
     },
     "prototypes": {
         "add": {
@@ -3120,6 +3120,46 @@
                         "minor": 0
                     },
                     "substitution": "$outType $output = $input[$index];"
+                }
+            ]
+        },
+        "boolInput": {
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "name": "defaultName",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
                 }
             ]
         },
@@ -3237,8 +3277,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "headerSnippets": ["highp $type discard_if_$type(bool shouldDiscard, highp $type value) { if (shouldDiscard) discard; return value; }"],
-                    "substitution": "highp $type $output = discard_if_$type($condition, $value);"
+                    "substitution": "highp $type $output; if ($condition) discard; $output = $value;"
                 },
                 {
                     "format": {
@@ -3246,8 +3285,7 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "headerSnippets": ["$type discard_if_$type(bool shouldDiscard, $type value) { if (shouldDiscard) discard; return value; }"],
-                    "substitution": "$type $output = discard_if_$type($condition, $value);"
+                    "substitution": "$type $output; if ($condition) discard; $output = $value;"
                 }
             ]
         },
@@ -3526,7 +3564,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output = ($condition) ? $true : $false;"
+                    "substitution": "highp $type $output; if ($condition) $output = $true; else $output = $false;"
                 },
                 {
                     "format": {
@@ -3534,7 +3572,7 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output = ($condition) ? $true : $false;"
+                    "substitution": "$type $output; if ($condition) $output = $true; else $output = $false;"
                 }
             ]
         },
@@ -3564,46 +3602,6 @@
                         "$qualifier highp $type $name;"
                     ],
                     "substitution": "highp $type $value = $name;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "$qualifier $type $name;"
-                    ],
-                    "substitution": "$type $value = $name;"
-                }
-            ]
-        },
-        "boolInput": {
-            "outputs": [
-                "value"
-            ],
-            "parameters": {
-                "name": "defaultName",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "$qualifier $type $name;"
-                    ],
-                    "substitution": "$type $value = $name;"
                 },
                 {
                     "format": {
@@ -4272,6 +4270,62 @@
                 }
             ]
         },
+        "sampleSRGBTexture": {
+            "inputs": [
+                "coord"
+            ],
+            "outputs": [
+                "color"
+            ],
+            "parameters": {
+                "name": "defaultName"
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "uniform sampler2D $name;",
+                        "highp vec4 sRGBtoLINEAR_$name(const in highp vec2 coords) {",
+                        "    highp vec4 sRGB = texture2D($name, coords);",
+                        "    const highp vec3 sRGBGamma = vec3(2.2);",
+                        "    return vec4(pow(sRGB.rgb, sRGBGamma), sRGB.a);",
+                        "}"
+                    ],
+                    "substitution": "highp vec4 $color = sRGBtoLINEAR_$name($coord);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "uniform sampler2D $name;",
+                        "highp vec4 sRGBtoLINEAR_$name(const in highp vec2 coords) {",
+                        "    highp vec4 sRGB = texture($name, coords);",
+                        "    const highp vec3 sRGBGamma = vec3(2.2);",
+                        "    return vec4(pow(sRGB.rgb, sRGBGamma), sRGB.a);",
+                        "}"
+                    ],
+                    "substitution": "highp vec4 $color = sRGBtoLINEAR_$name($coord);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "uniform sampler2D $name;"
+                    ],
+                    "substitution": "vec4 $color = texture($name, $coord);"
+                }
+            ]
+        },
         "sampleTexture": {
             "inputs": [
                 "coord"
@@ -4317,6 +4371,11 @@
                     "substitution": "vec4 $color = texture($name, $coord);"
                 }
             ]
+        },
+        "subgraph": {
+            "parameters": {
+                "Path": "/path/to/file"
+            }
         },
         "subtract": {
             "inputs": [
@@ -4493,5 +4552,7 @@
                 }
             ]
         }
-    }
+    },
+    "subgraph": [
+    ]
 }
