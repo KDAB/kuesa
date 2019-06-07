@@ -515,6 +515,7 @@ void GLTF2Context::reset()
     m_meshes.clear();
     m_treeNodes.clear();
     m_layers.clear();
+    m_lights.clear();
     m_images.clear();
     m_textureSamplers.clear();
     m_textures.clear();
