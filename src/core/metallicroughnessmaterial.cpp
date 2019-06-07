@@ -141,7 +141,8 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 /*!
     \property baseColorMap
 
-    Specifies a texture to be used as baseColorFactor.
+    Specifies a texture to be used as baseColorFactor. The content of the
+    texture is expected to be in sRGB color space.
 
     \note If this property is nullptr and is set to a non nullptr value, will
     trigger a recompilation of the shader. If its a non nullptr value and is
@@ -177,6 +178,9 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     Specifies a texture to be used as metallic and roughness factor. The
     metallic factor is sampled for the B channel of the texture, while the
     roughness factor is sampled from the G channel. R and A channel are unused.
+    This offers a way of combining the ambientOcclusionMap's R channel in the
+    same texture as the metalRoughMap. The content of the texture is expected
+    to be in linear RGB color space.
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
@@ -196,7 +200,8 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \property normalMap
 
     Specifies a normal map for the material. This allows to simulate very
-    detailed surfaces without a huge number of triangles.
+    detailed surfaces without a huge number of triangles. The content of the
+    texture is expected to be in linear RGB color space.
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
@@ -221,7 +226,10 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 /*!
     \property ambientOcclusionMap
 
-    Specifies a texture to be used for ambient occlusion.
+    Specifies a texture to be used for ambient occlusion. The content of the
+    texture is expected to be a single R channel in linear space. This offers a
+    way of combining the metalRoughMap's G and B channels in the same texture
+    as the ambientOcclusionMap.
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
@@ -245,7 +253,8 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 /*!
     \property emissiveMap
 
-    Specifies a texture to be used for emissive surfaces.
+    Specifies a texture to be used for emissive surfaces. The content of the
+    texture is expected to be in sRGB color space.
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
@@ -405,7 +414,8 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 /*!
     \qmlproperty baseColorMap
 
-    Specifies a texture to be used as baseColorFactor.
+    Specifies a texture to be used as baseColorFactor. The content of the
+    texture is expected to be in sRGB color space.
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
@@ -440,6 +450,9 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     Specifies a texture to be used as metallic and roughness factor. The
     metallic factor is sampled for the B channel of the texture, while the
     roughness factor is sampled from the G channel. R and A channel are unused.
+    This offers a way of combining the ambientOcclusionMap's R channel in the
+    same texture as the metalRoughMap. The content of the texture is expected
+    to be in linear RGB color space.
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
@@ -458,7 +471,8 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \qmlproperty normalMap
 
     Specifies a normal map for the material. This allows to simulate very
-    detailed surfaces without a huge number of triangles.
+    detailed surfaces without a huge number of triangles. The content of the
+    texture is expected to be in linear RGB color space.
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
@@ -483,7 +497,10 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 /*!
     \qmlproperty ambientOcclusionMap
 
-    Specifies a texture to be used for ambient occlusion.
+    Specifies a texture to be used for ambient occlusion. The content of the
+    texture is expected to be a single R channel in linear space. This offers a
+    way of combining the metalRoughMap's G and B channels in the same texture
+    as the ambientOcclusionMap.
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
@@ -507,7 +524,9 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 /*!
     \qmlproperty emissiveMap
 
-    Specifies a texture to be used for emissive surfaces.
+    Specifies a texture to be used for emissive surfaces. The content of the
+    texture is expected to be in sRGB color space.
+
 
     \note If this property is nullptr and is set to a non nullptr value or
     viceverse, it will trigger a recompilation of the shader.
