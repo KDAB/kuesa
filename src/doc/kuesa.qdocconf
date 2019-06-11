@@ -4,12 +4,14 @@ project                 = Kuesa
 description             = Kuesa Reference Documentation
 version                 = 1.0
 
-includepaths            = -I . \
+includepaths            = -I. \
                           -I $QT_INSTALL_HEADERS \
                           -I $QT_INSTALL_HEADERS/Kuesa
 
-examplesinstallpath       = kuesa
+outputformats = HTML
+indexes = $QT_INSTALL_DOCS/html/qt.index
 
+examplesinstallpath       = kuesa
 
 qhp.projects              = Kuesa
 qhp.Kuesa.file            = kuesa.qhp
@@ -36,14 +38,25 @@ qhp.Kuesa.subprojects.examples.sortPages  = true
 
 depends                                   += kuesa
 
+headerdirs += . \
+              ../core \
+              ../quick
+
+sourcedirs += . \
+            ../core \
+            ../quick
+
 tagfile                                   = kuesa.tags
 
-headerdirs += . \
-          ../core \
-          ../quick
+
+# Exclude private header/source files from the documentation build
+excludefiles += "*_p.h *_p.cpp"
 
 exampledirs += \
            ../../examples/kuesa
+
+examples.fileextensions       += "*.frag *.geom *.vert"
+examples.imageextensions      += "*.png"
 
 Cpp.ignoretokens                         += KUESASHARED_EXPORT
 Cpp.ignoredirectives                     += Q_DECLARE_LOGGING_CATEGORY

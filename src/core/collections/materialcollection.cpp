@@ -34,7 +34,7 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::MaterialCollection
  * \inheaderfile Kuesa/MaterialCollection
- * \brief A collection of assets of type Qt3DRender::QMaterial
+ * \brief A collection of assets of type Qt3DRender::QMaterial.
  * \inmodule Kuesa
  * \since 1.0
  * \inherits Kuesa::AbstractAssetCollection
@@ -45,7 +45,7 @@ using namespace Kuesa;
 /*!
  * \fn MaterialCollection::add
  *
- * Adds an \a asset to the collection with key \name.
+ * Adds an \a asset to the collection with key \a name.
  *
  * If the asset has no parent, it will be reparented to the collection.
  *

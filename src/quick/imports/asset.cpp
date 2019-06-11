@@ -38,16 +38,19 @@ using namespace Kuesa;
     \inherits QtObject
     \inqmlmodule Kuesa
 
-    \brief Asset is to access names nodes loaded from a glTF 2 file in a SceneEntity
+    \brief Asset is to access names nodes loaded from a glTF 2 file in a
+    SceneEntity.
 
-    When loading a scene from a glTF 2 file, the resulting nodes are inserted into
-    various collections. They can then searched for by name within these collections.
+    When loading a scene from a glTF 2 file, the resulting nodes are inserted
+    into various collections. They can then searched for by name within these
+    collections.
 
-    Asset provides a declarative way of retrieving assets by name within a specified
-    collection or the entire scene.
+    Asset provides a declarative way of retrieving assets by name within a
+    specified collection or the entire scene.
 
-    If a collection is provided, the search will be limited to that collection. Otherwise,
-    the search will be done in all collections, returning the first asset matching the name.
+    If a collection is provided, the search will be limited to that collection.
+    Otherwise, the search will be done in all collections, returning the first
+    asset matching the name.
 
     \sa Kuesa::SceneEntity, Kuesa::AbstractAssetCollection
  */
@@ -66,15 +69,15 @@ using namespace Kuesa;
 
 /*!
     \qmlproperty string Asset::name
-    The name of the asset. The asset collections will ensure that the name
-    is unique within a collection, but the same name may be used in different
+    The name of the asset. The asset collections will ensure that the name is
+    unique within a collection, but the same name may be used in different
     collections.
  */
 
 /*!
     \qmlproperty Qt3D.Core::Node Asset::node
-    The resulting asset. Will be null if no scene is loaded or if the
-    names asset is not found.
+    The resulting asset. Will be null if no scene is loaded or if the names
+    asset is not found.
     \readonly
  */
 

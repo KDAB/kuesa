@@ -36,6 +36,7 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 /*!
  * Add an extension to a glTF object if it is not already registered
+ * \internal
  */
 void addExtension(QJsonObject &object, const QString &where, const QString &extension)
 {
@@ -52,6 +53,7 @@ void addExtension(QJsonObject &object, const QString &where, const QString &exte
 
 /*!
  * Replace a Json array in an object, or remove it from the object if the array is empty.
+ * \internal
  */
 void replaceJsonArray(QJsonObject &object, QLatin1String k, QJsonArray &arr)
 {
@@ -66,6 +68,7 @@ void replaceJsonArray(QJsonObject &object, QLatin1String k, QJsonArray &arr)
  * Adds the given JSON object to the array with the given name, which is a
  * child of the given root object.
  * Returns the index of the inserted element within the array
+ * \internal
  */
 int addToJsonChildArray(QJsonObject &object, const QString &name, const QJsonObject &toInsert)
 {

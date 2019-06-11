@@ -38,6 +38,7 @@ namespace Kuesa {
 /*!
  * \class EmbedExportPass
  * \brief glTF export pass that embeds referenced assets as base64 buffers in the glTF file.
+ * \internal
  */
 EmbedExportPass::EmbedExportPass(const QDir &source)
     : m_basePath(source)

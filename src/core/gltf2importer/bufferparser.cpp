@@ -48,10 +48,11 @@ const QLatin1String KEY_BYTE_LENGTH = QLatin1Literal("byteLength");
 } // namespace
 
 /*!
- * \class BufferParser
+ * \class Kuesa::GLTF2Import::BufferParser
  *
- * \brief Parses a GLTF2 JSON Buffer description and stores its content in a \a GLTF2Context.
- *
+ * \brief Parses a GLTF2 JSON Buffer description and stores its content in a \a
+ * GLTF2Context.
+ * \internal
  */
 
 BufferParser::BufferParser(const QDir &basePath)
@@ -71,7 +72,7 @@ BufferParser::BufferParser(const QDir &basePath)
  * \li One or more of the referenced buffer resources have a different size
  * than what the description specified
  * \endlist
- *
+ * \internal
  */
 bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) const
 {

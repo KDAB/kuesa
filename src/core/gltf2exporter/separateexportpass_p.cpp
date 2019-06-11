@@ -93,6 +93,7 @@ QString imageNamer(const QString &basename, const QJsonObject &obj, const QByteA
 /*!
  * \class SeparateExportPass
  * \brief glTF export pass that takes all the base64-encoded embedded buffers and saves them in files.
+ * \internal
  */
 SeparateExportPass::SeparateExportPass(const QString &filename, const QDir &destination)
     : m_basename(QFileInfo(filename).baseName())

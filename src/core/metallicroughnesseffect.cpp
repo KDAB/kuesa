@@ -187,7 +187,7 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
 }
 
 /*!
-    \class MetallicRoughnessEffect
+    \class Kuesa::MetallicRoughnessEffect
     \inheaderfile Kuesa/MetallicRoughnessEffect
     \inmodule Kuesa
     \since 1.0
@@ -205,66 +205,66 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
  */
 
 /*!
-    \property baseColorMapEnabled
+    \property MetallicRoughnessEffect::baseColorMapEnabled
 
     True to enable the effect support to specify base color propery with
     textures
  */
 
 /*!
-    \property metalRoughMapEnabled
+    \property MetallicRoughnessEffect::metalRoughMapEnabled
 
     True to enable the effect support to specify metalness and roughness
     properties with textures
  */
 
 /*!
-    \property normalMapEnabled
+    \property MetallicRoughnessEffect::normalMapEnabled
 
     True to enable the effect support for normal maps
  */
 
 /*!
-    \property ambientOcclusionMapEnabled
+    \property MetallicRoughnessEffect::ambientOcclusionMapEnabled
 
     True to enbale the effect support for ambient occlusion texture
  */
 
 /*!
-    \property emissiveMapEnabled
+    \property MetallicRoughnessEffect::emissiveMapEnabled
 
     True to enable the effect support to specify emissive property with txtures
  */
 
 /*!
-    \property usingColorAttribute
+    \property MetallicRoughnessEffect::usingColorAttribute
 
     If true, the base color property is multiplied by the color interpolated
     attribute of the mesh
  */
 
 /*!
- * \property doubleSided
+ * \property MetallicRoughnessEffect::doubleSided
 
     If true, back face culling is disabled and the normals for the back faces
     are the same as for the front faces mulplied by -1
  */
 
 /*!
-    \property useSkinning
+    \property MetallicRoughnessEffect::useSkinning
 
     If true, a skinning enabled vertex shader is used instead of the default
     one. This allows to use this effect for rendering skinned meshes
  */
 
 /*!
-    \property opaque
+    \property MetallicRoughnessEffect::opaque
 
     If false, alpha blending is enabled for this effect
  */
 
 /*!
-    \property alphaCutoffEnabled
+    \property MetallicRoughnessEffect::alphaCutoffEnabled
 
     If true, alpha cutoff is enabled. Fragments with an alpha value above a
     threshold are rendered as opaque while fragment an alpha value below the
@@ -272,7 +272,7 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
  */
 
 /*!
-    \property toneMappingAlgoritm
+    \property MetallicRoughnessEffect::toneMappingAlgorithm
 
     Tone mapping specifies how we perform color conversion from HDR (high
     dynamic range) content to LDR (low dynamic range) content which our monitor
@@ -282,7 +282,7 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
  */
 
 /*!
-    \property brdfLUT
+    \property MetallicRoughnessEffect::brdfLUT
 
     brdfLUT references a texture containing lookup tables for the split sum approximation
     in the PBR rendering. This is used internally by the material.
@@ -297,7 +297,7 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
 /*!
     \qmltype MetallicRoughnessEffect
     \instantiates Kuesa::MetallicRoughnessEffect
-    \inmodule Kuesa
+    \inqmlmodule Kuesa
     \since 1.0
 
     \brief Kuesa.MetallicRoughnessEffect is a Qt3D.Render.Effect for
@@ -316,65 +316,65 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
  */
 
 /*!
-    \qmlproperty bool baseColorMapEnabled
+    \qmlproperty bool MetallicRoughnessEffect::baseColorMapEnabled
 
     True to enable the effect support to specify base color propery with textures
  */
 
 /*!
-    \qmlproperty bool metalRoughMapEnabled
+    \qmlproperty bool MetallicRoughnessEffect::metalRoughMapEnabled
 
     True to enable the effect support to specify metalness and roughness
     properties with textures
  */
 
 /*!
-    \qmlproperty bool normalMapEnabled
+    \qmlproperty bool MetallicRoughnessEffect::normalMapEnabled
 
     True to enable the effect support for normal maps
  */
 
 /*!
-    \qmlproperty bool ambientOcclusionMapEnabled
+    \qmlproperty bool MetallicRoughnessEffect::ambientOcclusionMapEnabled
 
     True to enbale the effect support for ambient occlusion texture
  */
 
 /*!
-    \qmlproperty bool emissiveMapEnabled
+    \qmlproperty bool MetallicRoughnessEffect::emissiveMapEnabled
 
     True to enable the effect support to specify emissive property with txtures
  */
 
 /*!
-    \qmlproperty bool usingColorAttribute
+    \qmlproperty bool MetallicRoughnessEffect::usingColorAttribute
 
     If true, the base color property is multiplied by the color interpolated
     attribute of the mesh
  */
 
 /*!
-    \qmlproperty bool doubleSided
+    \qmlproperty bool MetallicRoughnessEffect::doubleSided
 
     If true, back face culling is disabled and the normals for the back faces
     are the same as for the front faces mulplied by -1
  */
 
 /*!
-    \qmlproperty bool useSkinning
+    \qmlproperty bool MetallicRoughnessEffect::useSkinning
 
     If true, a skinning enabled vertex shader is used instead of the default
     one. This allows to use this effect for rendering skinned meshes
  */
 
 /*!
-    \qmlproperty bool opaque
+    \qmlproperty bool MetallicRoughnessEffect::opaque
 
      If false, alpha blending is enabled for this effect
  */
 
 /*!
-    \qmlproperty bool alphaCutoffEnabled
+    \qmlproperty bool MetallicRoughnessEffect::alphaCutoffEnabled
 
     If true, alpha cutoff is enabled. Fragments with an alpha value above a
     threshold are rendered as opaque while fragment an alpha value below the
@@ -382,7 +382,7 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
  */
 
 /*!
-    \qmlproperty MetallicRoughnessEffect.ToneMapping toneMappingAlgoritm
+    \qmlproperty MetallicRoughnessEffect.ToneMapping MetallicRoughnessEffect::toneMappingAlgoritm
 
     Tone mapping specifies how we perform color conversion from HDR (high
     dynamic range) content to LDR (low dynamic range) content which our monitor
@@ -392,7 +392,7 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
  */
 
 /*!
-    \qmlproperty Qt3DRender.AbstractTexture brdfLUT
+    \qmlproperty Qt3DRender.AbstractTexture MetallicRoughnessEffect::brdfLUT
 
     brdfLUT references a texture containing lookup tables for the split sum approximation
     in the PBR rendering. This is used internally by the material.

@@ -59,9 +59,11 @@ BufferView::BufferView()
 }
 
 /*!
- * \class BufferViewsParser
+ * \class Kuesa::GLTF2Import::BufferViewsParser
  *
- * \brief Parses a GLTF2 JSON BufferView description and return a QVector of BufferView.
+ * \brief Parses a GLTF2 JSON BufferView description and return a QVector of
+ * BufferView.
+ * \internal
  */
 
 BufferViewsParser::BufferViewsParser()
@@ -73,6 +75,7 @@ BufferViewsParser::BufferViewsParser()
  *
  * If the buffer view references a buffer that does not exists in the context,
  * will return false.
+ * \internal
  */
 bool BufferViewsParser::parse(const QJsonArray &bufferViewsArray, GLTF2Context *context)
 {

@@ -53,7 +53,7 @@ QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 
 /*!
- * \class ForwardRender
+ * \class Kuesa::ForwardRenderer
  * \brief Implements a simple forward rendering FrameGraph.
  * \inmodule Kuesa
  * \since 1.0
@@ -64,23 +64,25 @@ using namespace Kuesa;
  * string value "forward".
  *
  * The rendering will be made on a single viewport whose dimensions can be set
- * with normalized coordinates by calling \fn setViewportRect.
+ * with normalized coordinates by calling ForwardRender::setViewportRect.
  *
- * The screen will be cleared with the color set by calling \fn setClearColor.
- * By default the clear color is black.
+ * The screen will be cleared with the color set by calling
+ * ForwardRender::setClearColor. By default the clear color is black.
  *
- * Unless a call to \fn setClearBuffers has been made, only the color and depth
- * buffers will be cleared before the rest of the scene is rendered.
+ * Unless a call to ForwardRender::setClearBuffers has been made, only the
+ * color and depth buffers will be cleared before the rest of the scene is
+ * rendered.
  *
- * The scene will be rendered from the camera set with \fn setCamera on the
- * window or offscreen surface set by calling \fn setRenderSurface.
- * Additionally \fn setExternalRenderTargetSize can be called to specify the
- * size of the rendering surface, when different from the size reported by the
+ * The scene will be rendered from the camera set with ForwardRender::setCamera
+ * on the window or offscreen surface set by calling
+ * ForwardRender::setRenderSurface. Additionally
+ * ForwardRender::setExternalRenderTargetSize can be called to specify the size
+ * of the rendering surface, when different from the size reported by the
  * surface, this can be the case with high DPI screens.
  *
  * Frustum culling of Entities will be performed by default to only render
  * entities that are visible within the camera's frustum. This can be disabled
- * by calling \fn setFrustumCulling.
+ * by calling ForwardRender::setFrustumCulling.
  *
  * By default the rendering is performed so that:
  *
@@ -95,7 +97,7 @@ using namespace Kuesa;
  * Scenes containing materials with transparency need to be drawn from
  * back-to-front in relation to the Camera for the blending to work correctly.
  * This sorting can be expensive and is disabled by default. It can be enabled
- * by calling \fn setBackToFrontSorting.
+ * by calling ForwardRender::setBackToFrontSorting.
  *
  * In some case, an optimization technique known as an early z-filling pass can
  * provide a significant performance gain. This is especially true for large
@@ -103,18 +105,19 @@ using namespace Kuesa;
  * depth buffer with a low complexity shader so that subsequent passes
  * incorporating more detailed rendering techniques only render fragments for
  * the depth previously recorded. The optional z-fill pass can be enabled by
- * calling \fn setZFilling. All Entities having a Material with a compatible
- * RenderPass that has a FilterKey KuesaDrawStage with a value set to ZFill
- * will be rendered. This will take place before the Opaque and Transparent
- * pass. Only Opaque objects should be used to fill the depth buffer.
+ * calling ForwardRender::setZFilling. All Entities having a Material with a
+ * compatible RenderPass that has a FilterKey KuesaDrawStage with a value set
+ * to ZFill will be rendered. This will take place before the Opaque and
+ * Transparent pass. Only Opaque objects should be used to fill the depth
+ * buffer.
  */
 
 /*!
- * \qmltype ForwardRender
+ * \qmltype ForwardRenderer
  * \brief Implements a simple forward rendering FrameGraph.
  * \inqmlmodule Kuesa
  * \since 1.0
- * \instantiates Kuesa::ForwardRender
+ * \instantiates Kuesa::ForwardRenderer
  *
  * This FrameGraph will select all Qt3D Entities that reference a Material with
  * Techniques having a FilterKey with the name "renderingStyle" set to the
@@ -501,7 +504,7 @@ QRectF ForwardRenderer::viewportRect() const
 }
 
 /*!
- * Sets the camera used to view the scene.
+ * Sets the \a camera used to view the scene.
  */
 void ForwardRenderer::setCamera(Qt3DCore::QEntity *camera)
 {
@@ -509,7 +512,7 @@ void ForwardRenderer::setCamera(Qt3DCore::QEntity *camera)
 }
 
 /*!
- * Sets the color used to clear the screen at the start of each frame.
+ * Sets the \a clearColor used to clear the screen at the start of each frame.
  */
 void ForwardRenderer::setClearColor(const QColor &clearColor)
 {
@@ -517,7 +520,7 @@ void ForwardRenderer::setClearColor(const QColor &clearColor)
 }
 
 /*!
- * Sets which buffers will be cleared at the start of each frame.
+ * Sets which \a clearBuffers will be cleared at the start of each frame.
  */
 void ForwardRenderer::setClearBuffers(Qt3DRender::QClearBuffers::BufferType clearBuffers)
 {
@@ -525,7 +528,7 @@ void ForwardRenderer::setClearBuffers(Qt3DRender::QClearBuffers::BufferType clea
 }
 
 /*!
- * Activates culling of geometries which lie outside of the view frustum.
+ * Activates \a frustumCulling of geometries which lie outside of the view frustum.
  */
 void ForwardRenderer::setFrustumCulling(bool frustumCulling)
 {
@@ -533,8 +536,9 @@ void ForwardRenderer::setFrustumCulling(bool frustumCulling)
 }
 
 /*!
- * Activates back-to-front sorting which may be required for correct alpha
- * blending rendering. This is true by default.
+ * Activates or desactivates back-to-front sorting which may be required for
+ * correct alpha blending rendering with \a backToFrontSorting. This is true by
+ * default.
  */
 void ForwardRenderer::setBackToFrontSorting(bool backToFrontSorting)
 {
@@ -546,7 +550,7 @@ void ForwardRenderer::setBackToFrontSorting(bool backToFrontSorting)
 }
 
 /*!
-    Activates multi-pass zFilling support.
+    Activates multi-pass \a zFilling support.
 
     If activated, opaque objects in the scene will be rendered first with a
     simple fragment shader to fill the depth buffer. Then opaque objects will
@@ -878,7 +882,7 @@ QSize ForwardRenderer::currentSurfaceSize() const
 }
 
 /*!
- * Sets the size of the external render target.
+ * Sets the size of the external render target to \a externalRenderTargetSize.
  */
 void ForwardRenderer::setExternalRenderTargetSize(const QSize &externalRenderTargetSize)
 {
@@ -886,8 +890,8 @@ void ForwardRenderer::setExternalRenderTargetSize(const QSize &externalRenderTar
 }
 
 /*!
- * Sets the surface where rendering will occur. This can be an offscreen surface or
- * a window surface.
+ * Sets the surface where rendering will occur to \a renderSurface. This can be
+ * an offscreen surface or a window surface.
  */
 void ForwardRenderer::setRenderSurface(QObject *renderSurface)
 {
@@ -895,8 +899,8 @@ void ForwardRenderer::setRenderSurface(QObject *renderSurface)
 }
 
 /*!
- * Sets the dimensions of the viewport where rendering will occur.  Dimensions are in
- * normalized coordinates.
+ * Sets the dimensions of the viewport where rendering will occur to \a
+ * viewportRect. Dimensions are in normalized coordinates.
  */
 void ForwardRenderer::setViewportRect(const QRectF &viewportRect)
 {

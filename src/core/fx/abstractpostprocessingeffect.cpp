@@ -33,7 +33,10 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 
 /*!
- * \class AbstractPostProcessingEffect
+ * \class Kuesa::AbstractPostProcessingEffect
+ * \inheaderfile Kuesa/AbstractPostProcessingEffect
+ * \inmodule Kuesa
+ * \since 1.0
  *
  * \brief AbstractPostProcessingEffect is the abstract base class for Kuesa
  * post processing effects.
@@ -51,7 +54,7 @@ AbstractPostProcessingEffect::~AbstractPostProcessingEffect()
 }
 
 /*!
- * \fn Qt3DCore::QNode *AbstractPostProcessingEffect::frameGraphSubTree() const
+ * \fn FrameGraphNodePtr AbstractPostProcessingEffect::frameGraphSubTree() const
  *
  * Returns a FrameGraph subtree corresponding to the effect's implementation.
  *

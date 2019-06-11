@@ -34,25 +34,26 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::AnimationClipCollection
  * \inheaderfile Kuesa/AnimationClipCollection
- * \brief A collection of assets of type Qt3DAnimation::QAbstractAnimationClip
+ * \brief A collection of assets of type Qt3DAnimation::QAbstractAnimationClip.
  * \inmodule Kuesa
  * \since 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
- * Kuesa::AnimationClipCollection manages a set of animation clips assets.
- * This includes Qt3DAnimation::QAnimationClip and Qt3DAnimation::QAnimationClipLoader instances.
+ * Kuesa::AnimationClipCollection manages a set of animation clips assets. This
+ * includes Qt3DAnimation::QAnimationClip and
+ * Qt3DAnimation::QAnimationClipLoader instances.
  *
  */
 
 /*!
  * \fn AnimationClipCollection::add
  *
- * Adds an \a asset to the collection with key \name.
+ * Adds an \a asset to the collection with key \a name.
  *
  * If the asset has no parent, it will be reparented to the collection.
  *
- * If an asset is already registered with the same name, it will be removed from the collection
- * and deleted if parented to the collection.
+ * If an asset is already registered with the same name, it will be removed
+ * from the collection and deleted if parented to the collection.
  *
  */
 

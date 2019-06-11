@@ -35,7 +35,7 @@ namespace Kuesa {
 /*!
  * \class Kuesa::TextureImageCollection
  * \inheaderfile Kuesa/TextureImageCollection
- * \brief A collection of assets of type Qt3DRender::QAbstractTextureImage
+ * \brief A collection of assets of type Qt3DRender::QAbstractTextureImage.
  * \inmodule Kuesa
  * \since 1.0
  * \inherits Kuesa::AbstractAssetCollection
@@ -47,7 +47,7 @@ namespace Kuesa {
 /*!
  * \fn TextureImageCollection::add
  *
- * Adds an \a asset to the collection with key \name.
+ * Adds an \a asset to the collection with key \a name.
  *
  * If the asset has no parent, it will be reparented to the collection.
  *

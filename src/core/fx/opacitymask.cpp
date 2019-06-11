@@ -70,14 +70,14 @@ namespace Kuesa {
     be of use when combining Qt 3D / Kuesa content with 2D QtQuick content. It
     performs rendering doing:
     \badcode
-    vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a)
+    vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
     \endcode
  */
 
 /*!
-    \class OpacityMask
+    \class Kuesa::OpacityMask
     \inherits AbstractPostProcessingEffect
-    \inqmlmodule Kuesa
+    \inmodule Kuesa
 
     \brief Masks onscreen content based on the alpha color value of a mask
     texture.
@@ -91,24 +91,24 @@ namespace Kuesa {
     be of use when combining Qt 3D / Kuesa content with 2D QtQuick content. It
     performs rendering doing:
     \badcode
-    vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a)
+    vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
     \endcode
  */
 
 /*!
-    \qmlproperty Texture mask
+    \qmlproperty Qt3DRender.AbstractTexture OpacityMask::mask
 
     The RGBA texture to use as a mask.
  */
 
 /*!
-    \property Qt3DRender::AbstractTexture mask
+    \property OpacityMask::mask
 
     The RGBA texture to use as a mask.
  */
 
 /*!
-    \qmlproperty bool premultipliedAlpha
+    \qmlproperty bool OpacityMask::premultipliedAlpha
 
     Specifies whether the masking should be performed using premultipliedAlpha.
     This can be useful when combining Kuesa and QtQuick with a Scene3D element.
@@ -116,7 +116,7 @@ namespace Kuesa {
  */
 
 /*!
-    \property bool premultipliedAlpha
+    \property OpacityMask::premultipliedAlpha
 
     Specifies whether the masking should be performed using premultipliedAlpha.
     This can be useful when combining Kuesa and QtQuick with a Scene3D element.

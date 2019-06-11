@@ -49,16 +49,16 @@
     Once a file has been loaded through the use of the glTF 2 importer, name based
     collections are populated. Kuesa provides the following collections for:
     \list
-    \li Entities, Kuesa::EntityCollection
-    \li Animation Clips, Kuesa::AnimationClipCollection
-    \li Animation Mappings, Kuesa::AnimationMappingsCollection
-    \li Cameras, Kuesa::CameraCollection
-    \li Effects, Kuesa::EffectCollection
-    \li Materials, Kuesa::MaterialCollection
-    \li Meshes, Kuesa::MeshCollection
-    \li Skeletons, Kuesa::SkeletonCollection
-    \li Textures, Kuesa::TextureCollection
-    \li Images, Kuesa::TextureImageCollection
+    \li Entities, \l {Kuesa::EntityCollection}
+    \li Animation Clips, \l {Kuesa::AnimationClipCollection}
+    \li Animation Mappings, \l {Kuesa::AnimationMappingsCollection}
+    \li Cameras, \l {Kuesa::CameraCollection}
+    \li Effects, \l {Kuesa::EffectCollection}
+    \li Materials, \l {Kuesa::MaterialCollection}
+    \li Meshes, \l {Kuesa::MeshCollection}
+    \li Skeletons, \l {Kuesa::SkeletonCollection}
+    \li Textures, \l {Kuesa::TextureCollection}
+    \li Images, \l {Kuesa::TextureImageCollection}
     \endlist
 
     \section2 Full Screen Post Processing Effects
@@ -69,9 +69,9 @@
 
     Currently Kuesa provides the following effects:
     \list
-    \li Bloom, Kuesa::BloomEffect
-    \li Gaussian Blur, Kuesa::GaussianBlurEffect
-    \li Opacity Masking, Kuesa::OpacityMask
-    \li Thresholding, Kuesa::ThresholdEffect
+    \li Bloom, \l {Kuesa::BloomEffect}
+    \li Gaussian Blur, \l {Kuesa::GaussianBlurEffect}
+    \li Opacity Masking, \l {Kuesa::OpacityMask}
+    \li Thresholding, \l {Kuesa::ThresholdEffect}
     \endlist
 */

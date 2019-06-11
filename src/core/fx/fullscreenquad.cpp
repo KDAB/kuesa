@@ -39,7 +39,7 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 
 /*!
- * \class FullScreenQuad
+ * \class Kuesa::FullScreenQuad
  * \inheaderfile Kuesa/FullScreenQuad
  * \inmodule Kuesa
  * \since 1.0

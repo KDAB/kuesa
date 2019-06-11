@@ -67,17 +67,17 @@ using namespace Kuesa;
 
     \brief the number of blur passes
 
-    This is the number of times to apply the blur filter. More passes result in stronger
-    blurring effect but take longer to render.
+    This is the number of times to apply the blur filter. More passes result in
+    stronger blurring effect but take longer to render.
 */
 
 /*!
-    \qmlproperty GaussianBlurEffect::blurPassCount
+    \qmlproperty int GaussianBlurEffect::blurPassCount
 
     \brief the number of blur passes
 
-    This is the number of times to apply the blur filter. More passes result in stronger
-    blurring effect but take longer to render.
+    This is the number of times to apply the blur filter. More passes result in
+    stronger blurring effect but take longer to render.
 */
 
 GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)

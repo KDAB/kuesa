@@ -77,7 +77,7 @@ private:
 
 
 /*!
-    \class UnlitEffect
+    \class Kuesa::UnlitEffect
     \inheaderfile Kuesa/UnlitEffect
     \inmodule Kuesa
     \since 1.1
@@ -96,7 +96,7 @@ private:
 /*!
     \qmltype UnlitEffect
     \instantiates Kuesa::UnlitEffect
-    \inmodule Kuesa
+    \inqmlmodule Kuesa
     \since 1.1
 
     \brief Kuesa.UnlitEffect is a Qt3D.Render.Effect for

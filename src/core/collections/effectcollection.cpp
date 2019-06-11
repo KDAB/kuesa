@@ -34,7 +34,7 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::EffectCollection
  * \inheaderfile Kuesa/EffectCollection
- * \brief A collection of assets of type Qt3DRender::QArmature
+ * \brief A collection of assets of type Qt3DRender::QEffect.
  * \inmodule Kuesa
  * \since 1.0
  * \inherits Kuesa::AbstractAssetCollection
@@ -54,7 +54,7 @@ using namespace Kuesa;
 /*!
  * \fn EffectCollection::add
  *
- * Adds an \a asset to the collection with key \name.
+ * Adds an \a asset to the collection with key \a name.
  *
  * If the asset has no parent, it will be reparented to the collection.
  *
@@ -107,9 +107,11 @@ Qt3DRender::QEffect *EffectCollection::addEffect(const QString &name,
 /*!
  * Register a new functor with the factory.
  *
- * The functor can be any callable function that returns an new QEffect (or derived) instance.
+ * The functor \a f can be any callable function that returns an new QEffect (or
+ * derived) instance.
  *
- * The registered \id should be passed to EffectCollection::addEffect for the functor to be invoked.
+ * The registered \a id should be passed to EffectCollection::addEffect for the
+ * functor to be invoked.
  */
 void EffectCollection::registerType(const QString &id, EffectCreator f)
 {

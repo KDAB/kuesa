@@ -38,6 +38,7 @@ namespace Kuesa {
 /*!
  * \class CopyExportPass
  * \brief glTF export pass that copies referenced assets in another folder.
+ * \internal
  */
 CopyExportPass::CopyExportPass(const QDir &source, const QDir &destination)
     : m_basePath(source)

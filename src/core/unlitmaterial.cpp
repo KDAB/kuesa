@@ -54,6 +54,7 @@ namespace Kuesa {
     \li baseColorMap: A texture specifying the base color of the material
     \li textureTransform: Allows to transform (scale, translate, rotate) a
     texture.
+    \endlist
 
     For a particular point of an object, the base color is computed as
     baseColorFactor*baseColorMap*vertexColor. The vertexColor is the
@@ -85,13 +86,13 @@ namespace Kuesa {
 */
 
 /*!
-    \property baseColorFactor
+    \property UnlitMaterial::baseColorFactor
 
     Specifies the baseColorFactor of the material
 */
 
 /*!
-    \property baseColorMap
+    \property UnlitMaterial::baseColorMap
 
     Specifies a texture to be used as baseColorFactor.
 
@@ -101,7 +102,7 @@ namespace Kuesa {
  */
 
 /*!
-    \property baseColorUsesTexCoord1
+    \property UnlitMaterial::baseColorUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -112,7 +113,7 @@ namespace Kuesa {
 /*!
     \qmltype UnlitMaterial
     \instantiates Kuesa::UnlitMaterial
-    \inmodule Kuesa
+    \inqmlmodule Kuesa
     \since 1.1
 
     Kuesa.UnlitMaterial is a simple material without shading. It implements the
@@ -124,6 +125,7 @@ namespace Kuesa {
     \li baseColorMap: A texture specifying the base color of the material
     \li textureTransform: Allows to transform (scale, translate, rotate) a
     texture.
+    \endlist
 
     For a particular point of an object, the base color is computed as
     baseColorFactor*baseColorMap*vertexColor. The vertexColor is the
@@ -155,13 +157,13 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty baseColorFactor
+    \qmlproperty color UnlitMaterial::baseColorFactor
 
     Specifies the baseColorFactor of the material
  */
 
 /*!
-    \qmlproperty baseColorMap
+    \qmlproperty Qt3DRender.AbstractTexture UnlitMaterial::baseColorMap
 
     Specifies a texture to be used as baseColorFactor.
 
@@ -170,7 +172,7 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty baseColorUsesTexCoord1
+    \qmlproperty bool UnlitMaterial::baseColorUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -179,7 +181,7 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty alphaCutoffEnabled
+    \qmlproperty bool UnlitMaterial::alphaCutoffEnabled
 
     Enables/disables alphaCutoff
 

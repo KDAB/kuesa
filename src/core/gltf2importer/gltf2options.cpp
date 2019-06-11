@@ -33,7 +33,7 @@
  * \inheaderfile Kuesa/GLTF2Options
  * \inmodule Kuesa
  * \since 1.1
- * \brief Different options to configure the glTF 2.0 importer
+ * \brief Different options to configure the glTF 2.0 importer.
  *
  * Avalaible options are
  * \list
@@ -47,9 +47,9 @@
 /*!
  * \qmltype GLTF2Options
  * \instantiates Kuesa::GLTF2Import::GLTF2Options
- * \inmodule Kuesa
+ * \inqmlmodule Kuesa
  * \since 1.1
- * \brief Different options to configure the glTF 2.0 importer
+ * \brief Different options to configure the glTF 2.0 importer.
  *
  * Avalaible options are
  * \list

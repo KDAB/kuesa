@@ -91,7 +91,7 @@ using namespace Kuesa;
  * \li TextureImages
  * \li AnimationClips
  * \li AnimationMappings
- * \list
+ * \endlist
  *
  * As far as glTF is concerned, a material could be used for skinned as well as
  * regular meshes. This doesn't match with how Qt 3D works. If a material named
@@ -109,7 +109,7 @@ using namespace Kuesa;
 /*!
  * \qmltype GLTF2Importer
  * \instantiates Kuesa::GLTF2Importer
- * \inmodule Kuesa
+ * \inqmlmodule Kuesa
  * \since 1.0
  * \brief Imports glTF 2 scenes into a Qt 3D Scene.
  *
@@ -135,7 +135,7 @@ using namespace Kuesa;
  * \li TextureImages
  * \li AnimationClips
  * \li AnimationMappings
- * \list
+ * \endlist
  *
  * As far as glTF is concerned, a material could be used for skinned as well as
  * regular meshes. This doesn't match with how Qt 3D works. If a material named
@@ -190,22 +190,22 @@ using namespace Kuesa;
  */
 
 /*!
-    \qmlproperty GLTF2Importer::source
+    \qmlproperty url GLTF2Importer::source
     \brief the source of the glTF file
  */
 
 /*!
-    \qmlproperty GLTF2Importer::status
+    \qmlproperty GLTF2Importer::Status GLTF2Importer::status
     \brief the current status of the importer
  */
 
 /*!
-    \qmlproperty GLTF2Importer::sceneEntity
+    \qmlproperty Kuesa.SceneEntity GLTF2Importer::sceneEntity
     \brief pointer to the SceneEntity with which assets will be registered as they are loaded from the glTF file.
  */
 
 /*!
-    \property GLTF2Importer::assignNames
+    \property bool GLTF2Importer::assignNames
     \brief if true, assets with no names will be added to collections with default names (default is false)
  */
 
@@ -215,7 +215,7 @@ using namespace Kuesa;
  */
 
 /*!
-    \qmlproperty GLTF2Importer::options
+    \qmlproperty Kuesa.GLTF2Options GLTF2Importer::options
     \brief Holds the Kuesa.GLTF2Options used to select what to import/generate
  */
 

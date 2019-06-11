@@ -252,7 +252,7 @@ float DepthOfFieldEffect::focusDistance() const
 }
 
 /*!
- * Sets the focal range.
+ * Sets the focal range to \a focusRange.
  *
  * \sa DepthOfFieldEffect::focusRange
  */
@@ -267,7 +267,7 @@ void DepthOfFieldEffect::setFocusRange(float focusRange)
 }
 
 /*!
- * Sets the blur radius.
+ * Sets the blur radius to \a radius.
  *
  * \sa DepthOfFieldEffect::radius
  */
@@ -282,7 +282,7 @@ void DepthOfFieldEffect::setRadius(float radius)
 }
 
 /*!
- * Sets the focus distance.
+ * Sets the focus distance to \a focusDistance.
  *
  * \sa DepthOfFieldEffect::focusDistance
  */

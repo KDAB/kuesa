@@ -51,7 +51,7 @@ using namespace Qt3DRender;
 namespace Kuesa {
 
 /*!
- * \class Skybox
+ * \class Kuesa::Skybox
  * \inheaderfile Kuesa/Skybox
  * \inmodule  Kuesa
  * \since 1.0
@@ -77,6 +77,8 @@ namespace Kuesa {
  *     \li baseName + _negy + extension
  *     \li baseName + _posz + extension
  *     \li baseName + _negz + extension
+ *     \endlist
+ * \endlist
  *
  * \sa extension
  * \sa baseName
@@ -85,7 +87,7 @@ namespace Kuesa {
 /*!
  * \qmltype Skybox
  * \instantiates Kuesa::Skybox
- * \inmodule Kuesa
+ * \inqmlmodule Kuesa
  * \since 1.0
  * \brief Kuesa.SkyBox is a convenience Qt3D.Core.Entity subclass used to
  * insert a skybox in a 3D scene. Unlike SkyboxEntity from Qt3D.Extras,
@@ -109,6 +111,8 @@ namespace Kuesa {
  *     \li baseName + _negy + extension
  *     \li baseName + _posz + extension
  *     \li baseName + _negz + extension
+ *     \endlist
+ * \endlist
  *
  * \sa extension
  * \sa baseName
@@ -242,7 +246,7 @@ QString Skybox::baseName() const
  */
 
 /*!
- * \brief Skybox::setExtension Sets the extension for the texture(s) that will be used as skybox
+ * \brief Skybox::setExtension Sets the \a extension for the texture(s) that will be used as skybox
  */
 void Skybox::setExtension(const QString &extension)
 {
@@ -268,7 +272,8 @@ QString Skybox::extension() const
  */
 
 /*!
- * \brief Skybox::setGammaCorrectEnabled Enables/disables gamma correction
+ * \brief Skybox::setGammaCorrectEnabled Enables/disables gamma correction based
+ * on \a enabled.
  */
 void Skybox::setGammaCorrectEnabled(bool enabled)
 {

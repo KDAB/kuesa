@@ -67,7 +67,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 }
 
 /*!
-    \class MetallicRoughnessMaterial
+    \class Kuesa::MetallicRoughnessMaterial
     \inheaderfile Kuesa/MetallicRoughnessMaterial
     \inmodule Kuesa
     \since 1.0
@@ -97,6 +97,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \li emissiveMap: A texture specifying the emissive property of the material
     \li textureTransform: Allows to transform (scale, translate, rotate) a
     texture.
+    \endlist
 
     For a particular point of an object, the base color is computed as
     baseColorFactor*baseColorMap*vertexColor. The vertexColor is the
@@ -133,13 +134,13 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 */
 
 /*!
-    \property baseColorFactor
+    \property MetallicRoughnessMaterial::baseColorFactor
 
     Specifies the baseColorFactor of the material
 */
 
 /*!
-    \property baseColorMap
+    \property MetallicRoughnessMaterial::baseColorMap
 
     Specifies a texture to be used as baseColorFactor. The content of the
     texture is expected to be in sRGB color space.
@@ -150,7 +151,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property baseColorUsesTexCoord1
+    \property MetallicRoughnessMaterial::baseColorUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -159,21 +160,21 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property metallicFactor
+    \property MetallicRoughnessMaterial::metallicFactor
 
     Specifies the metallic factor of the material. Set this value between 0.0
     and 1.0 to module how metallic the material is.
  */
 
 /*!
-    \property roughnessFactor
+    \property MetallicRoughnessMaterial::roughnessFactor
 
     Specifies the roughness factor of the material. Set the value between 0.0
     and 1.0 to modulate how rough the material is.
  */
 
 /*!
-    \property metalRoughMap
+    \property MetallicRoughnessMaterial::metalRoughMap
 
     Specifies a texture to be used as metallic and roughness factor. The
     metallic factor is sampled for the B channel of the texture, while the
@@ -188,7 +189,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property metallicRoughnessUsesTexCoord1
+    \property MetallicRoughnessMaterial::metallicRoughnessUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -197,7 +198,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property normalMap
+    \property MetallicRoughnessMaterial::normalMap
 
     Specifies a normal map for the material. This allows to simulate very
     detailed surfaces without a huge number of triangles. The content of the
@@ -208,7 +209,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property normalUsesTexCoord1
+    \property MetallicRoughnessMaterial::normalUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -217,14 +218,14 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property normalScale
+    \property MetallicRoughnessMaterial::normalScale
 
     Specifies a scale for the normal map calculations. A bigger number is used
     to simulated bigger bumps in the surface
  */
 
 /*!
-    \property ambientOcclusionMap
+    \property MetallicRoughnessMaterial::ambientOcclusionMap
 
     Specifies a texture to be used for ambient occlusion. The content of the
     texture is expected to be a single R channel in linear space. This offers a
@@ -236,7 +237,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property aoUsesTexCoord1
+    \property MetallicRoughnessMaterial::aoUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -245,13 +246,13 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property emissiveFactor
+    \property MetallicRoughnessMaterial::emissiveFactor
 
     Specifies an emissive factor to be used for emissive surfaces.
  */
 
 /*!
-    \property emissiveMap
+    \property MetallicRoughnessMaterial::emissiveMap
 
     Specifies a texture to be used for emissive surfaces. The content of the
     texture is expected to be in sRGB color space.
@@ -261,7 +262,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property emissiveUsesTexCoord1
+    \property MetallicRoughnessMaterial::emissiveUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -270,14 +271,14 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property textureTransform
+    \property MetallicRoughnessMaterial::textureTransform
 
     Specifies the transform of the texture. This allows to scale, transform or
     rotate the textures of the material.
  */
 
 /*!
-    \property usingColorAttribute
+    \property MetallicRoughnessMaterial::usingColorAttribute
 
     If true, base color calculations will take into account the vertex color
     property of the mesh
@@ -287,7 +288,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property doubleSided
+    \property MetallicRoughnessMaterial::doubleSided
 
     Allows to simulate double sided material. This are materials that should be
     rendered from the front and front the back. The normal for the back face
@@ -299,7 +300,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property useSkinning
+    \property MetallicRoughnessMaterial::useSkinning
 
     If the mesh that has this material applied must be animated using skinning
     techniques, this value must be true. This property will change the vertex
@@ -310,7 +311,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property opaque
+    \property MetallicRoughnessMaterial::opaque
 
     If true, the material is opaque. If false, the material is transparent and
     will use alpha blending for transparency.
@@ -320,7 +321,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property alphaCutoff
+    \property MetallicRoughnessMaterial::alphaCutoff
 
     Alpha cutoff threshold. Any fragment with an alpha value higher than this
     property will be considered opaque. Any fragment with an alpha value lower
@@ -331,7 +332,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \property toneMappingAlgoritm
+    \property MetallicRoughnessMaterial::toneMappingAlgoritm
 
     Tone mapping specifies how we perform color conversion from HDR (high
     dynamic range) content to LDR (low dynamic range) content which our monitor
@@ -343,7 +344,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 /*!
     \qmltype MetallicRoughnessMaterial
     \instantiates Kuesa::MetallicRoughnessMaterial
-    \inmodule Kuesa
+    \inqmlmodule Kuesa
     \since 1.0
 
     \brief Kuesa.MetallicRoughnessMaterial is a ready to use physically based
@@ -370,6 +371,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \li emissiveMap: A texture specifying the emissive property of the material
     \li textureTransform: Allows to transform (scale, translate, rotate) a
     texture.
+    \endlist
 
     For a particular point of an object, the base color is computed as
     baseColorFactor*baseColorMap*vertexColor. The vertexColor is the
@@ -406,13 +408,13 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty baseColorFactor
+    \qmlproperty color MetallicRoughnessMaterial::baseColorFactor
 
     Specifies the baseColorFactor of the material
  */
 
 /*!
-    \qmlproperty baseColorMap
+    \qmlproperty Qt3DRender.AbstractTexture MetallicRoughnessMaterial::baseColorMap
 
     Specifies a texture to be used as baseColorFactor. The content of the
     texture is expected to be in sRGB color space.
@@ -422,7 +424,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty baseColorUsesTexCoord1
+    \qmlproperty bool MetallicRoughnessMaterial::baseColorUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -431,21 +433,21 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty metallicFactor
+    \qmlproperty float MetallicRoughnessMaterial::metallicFactor
 
     Specifies the metallic factor of the material. Set the value between 0.0
     and 1.0 to modulate how metallic the material is.
  */
 
 /*!
-    \qmlproperty roughnessFactor
+    \qmlproperty float MetallicRoughnessMaterial::roughnessFactor
 
     Specifies the roughness factor of the material. Set the value between 0.0
     and 1.0 to modulate how rough the material is.
  */
 
 /*!
-    \qmlproperty metalRoughMap
+    \qmlproperty Qt3DRender.AbstractTexture MetallicRoughnessMaterial::metalRoughMap
 
     Specifies a texture to be used as metallic and roughness factor. The
     metallic factor is sampled for the B channel of the texture, while the
@@ -459,7 +461,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty metallicRoughnessUsesTexCoord1
+    \qmlproperty bool MetallicRoughnessMaterial::metallicRoughnessUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -468,7 +470,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty normalMap
+    \qmlproperty Qt3DRender.AbstractTexture MetallicRoughnessMaterial::normalMap
 
     Specifies a normal map for the material. This allows to simulate very
     detailed surfaces without a huge number of triangles. The content of the
@@ -479,7 +481,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty normalUsesTexCoord1
+    \qmlproperty bool MetallicRoughnessMaterial::normalUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -488,14 +490,14 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty normalScale
+    \qmlproperty float MetallicRoughnessMaterial::normalScale
 
     Specifies a scale for the normal map calculations. A bigger number is used
     to simulated bigger bumps in the surface
  */
 
 /*!
-    \qmlproperty ambientOcclusionMap
+    \qmlproperty Qt3DRender.AbstractTexture MetallicRoughnessMaterial::ambientOcclusionMap
 
     Specifies a texture to be used for ambient occlusion. The content of the
     texture is expected to be a single R channel in linear space. This offers a
@@ -507,7 +509,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty aoUsesTexCoord1
+    \qmlproperty bool MetallicRoughnessMaterial::aoUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -516,13 +518,13 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty emissiveFactor
+    \qmlproperty color MetallicRoughnessMaterial::emissiveFactor
 
     Specifies an emissive factor to be used for emissive surfaces.
  */
 
 /*!
-    \qmlproperty emissiveMap
+    \qmlproperty Qt3DRender.AbstractTexture MetallicRoughnessMaterial::emissiveMap
 
     Specifies a texture to be used for emissive surfaces. The content of the
     texture is expected to be in sRGB color space.
@@ -533,7 +535,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty emissiveUsesTexCoord1
+    \qmlproperty bool MetallicRoughnessMaterial::emissiveUsesTexCoord1
 
     False if the map must use the 0th texture coordinate set, binded to
     'defaultTextureCoordinateName' attribute.
@@ -542,7 +544,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
  */
 
 /*!
-    \qmlproperty MetallicRoughnessEffect.ToneMapping toneMappingAlgoritm
+    \qmlproperty MetallicRoughnessEffect.ToneMapping MetallicRoughnessMaterial::toneMappingAlgoritm
 
     Tone mapping specifies how we perform color conversion from HDR (high
     dynamic range) content to LDR (low dynamic range) content which our monitor

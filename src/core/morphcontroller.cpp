@@ -34,7 +34,7 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 
 /*!
-    \class MorphController
+    \class Kuesa::MorphController
     \inheaderfile Kuesa/MorphController
     \inherits Qt3DRender::QShaderData
     \inmodule Kuesa
@@ -51,61 +51,61 @@ namespace Kuesa {
  */
 
 /*!
-    \property count
+    \property MorphController::count
 
     Holds the actual number of weights being handled by the MorphController.
  */
 
 /*!
-    \property weight0
+    \property MorphController::weight0
 
     Specifies the weight value at index 0.
  */
 
 /*!
-    \property weight1
+    \property MorphController::weight1
 
     Specifies the weight value at index 1.
  */
 
 /*!
-    \property weight2
+    \property MorphController::weight2
 
     Specifies the weight value at index 2.
  */
 
 /*!
-    \property weight3
+    \property MorphController::weight3
 
     Specifies the weight value at index 3.
  */
 
 /*!
-    \property weight4
+    \property MorphController::weight4
 
     Specifies the weight value at index 4.
  */
 
 /*!
-    \property weight5
+    \property MorphController::weight5
 
     Specifies the weight value at index 5.
  */
 
 /*!
-    \property weight6
+    \property MorphController::weight6
 
     Specifies the weight value at index 6.
  */
 
 /*!
-    \property weight7
+    \property MorphController::weight7
 
     Specifies the weight value at index 7.
  */
 
 /*!
-    \property morphWeights
+    \property MorphController::morphWeights
     \internal
 
     Used by the animation aspect to set all weights at once.
@@ -114,7 +114,7 @@ namespace Kuesa {
 /*!
     \qmltype MorphController
     \instantiates Kuesa::MorphController
-    \inmodule Kuesa
+    \inqmlmodule Kuesa
     \inherits Qt3DRender::QShaderData
     \since 1.1
 
@@ -129,61 +129,61 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty count
+    \qmlproperty int MorphController::count
 
     Holds the actual number of weights being handled by the MorphController.
  */
 
 /*!
-    \qmlproperty weight0
+    \qmlproperty real MorphController::weight0
 
     Specifies the weight value at index 0.
  */
 
 /*!
-    \qmlproperty weight1
+    \qmlproperty real MorphController::weight1
 
     Specifies the weight value at index 1.
  */
 
 /*!
-    \qmlproperty weight2
+    \qmlproperty real MorphController::weight2
 
     Specifies the weight value at index 2.
  */
 
 /*!
-    \qmlproperty weight3
+    \qmlproperty real MorphController::weight3
 
     Specifies the weight value at index 3.
  */
 
 /*!
-    \qmlproperty weight4
+    \qmlproperty real MorphController::weight4
 
     Specifies the weight value at index 4.
  */
 
 /*!
-    \qmlproperty weight5
+    \qmlproperty real MorphController::weight5
 
     Specifies the weight value at index 5.
  */
 
 /*!
-    \qmlproperty weight6
+    \qmlproperty real MorphController::weight6
 
     Specifies the weight value at index 6.
  */
 
 /*!
-    \qmlproperty weight7
+    \qmlproperty real MorphController::weight7
 
     Specifies the weight value at index 7.
  */
 
 /*!
-    \qmlproperty morphWeights
+    \qmlproperty variantlist MorphController::morphWeights
     \internal
 
     Used by the animation aspect to set all weights at once.

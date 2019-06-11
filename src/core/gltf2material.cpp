@@ -62,7 +62,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
 } // namespace
 
 /*!
-    \class GLTF2Material
+    \class Kuesa::GLTF2Material
     \inheaderfile Kuesa/GLTF2Material
     \inmodule Kuesa
     \since 1.1
@@ -77,6 +77,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
     texture.
     \li morphController: The MorphTarget controller used to control the weights
     to interpolate between different morph targers
+    \endlist
 
     Kuesa::GLTF2Material also contains the status of alpha blending and alpha
     cutoff. Alpha blending is used to simulate transparent materials, like a
@@ -86,14 +87,14 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
 */
 
 /*!
-    \property textureTransform
+    \property GLTF2Material::textureTransform
 
     Specifies the transform of the texture. This allows to scale, transform or
     rotate the textures of the material.
  */
 
 /*!
-    \property usingColorAttribute
+    \property GLTF2Material::usingColorAttribute
 
     If true, base color calculations will take into account the vertex color
     property of the mesh
@@ -103,7 +104,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \property doubleSided
+    \property GLTF2Material::doubleSided
 
     Allows to simulate double sided material. This are materials that should be
     rendered from the front and front the back. The normal for the back face
@@ -115,7 +116,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \property useSkinning
+    \property GLTF2Material::useSkinning
 
     If the mesh that has this material applied must be animated using skinning
     techniques, this value must be true. This property will change the vertex
@@ -126,7 +127,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \property opaque
+    \property GLTF2Material::opaque
 
     If true, the material is opaque. If false, the material is transparent and
     will use alpha blending for transparency.
@@ -136,7 +137,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \property alphaCutoff
+    \property GLTF2Material::alphaCutoff
 
     Alpha cutoff threshold. Any fragment with an alpha value higher than this
     property will be considered opaque. Any fragment with an alpha value lower
@@ -147,7 +148,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \property alphaCutoffEnabled
+    \property GLTF2Material::alphaCutoffEnabled
 
     If true, alpha cutoff is enabled. Fragments with an alpha value above a
     threshold are rendered as opaque while fragment an alpha value below the
@@ -155,7 +156,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \property morphController
+    \property GLTF2Material::morphController
 
     The morph controller instance used to control morph targets weights.
     This can be null if a material is not used with morph targets.
@@ -166,7 +167,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
 /*!
     \qmltype GLTF2Material
     \instantiates Kuesa::GLTF2Material
-    \inmodule Kuesa
+    \inqmlmodule Kuesa
     \since 1.1
 
     Kuesa.GLTF2Material is a subclass of Qt3DRender::QMaterial which is the base class
@@ -178,6 +179,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
     texture.
     \li morphController: The MorphTarget controller used to control the weights
     to interpolate between different morph targers
+    \endlist
 
     Kuesa::GLTF2Material also contains the status of alpha blending and alpha
     cutoff. Alpha blending is used to simulate transparent materials, like a
@@ -187,14 +189,14 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \qmlproperty textureTransform
+    \qmlproperty matrix3 GLTF2Material::textureTransform
 
     Specifies the transform of the texture. This allows to scale, transform or
     rotate the textures of the material.
  */
 
 /*!
-    \qmlproperty usingColorAttribute
+    \qmlproperty bool GLTF2Material::usingColorAttribute
 
     If true, base color calculations will take into account the vertex color
     property of the mesh
@@ -204,7 +206,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \qmlproperty doubleSided
+    \qmlproperty bool GLTF2Material::doubleSided
 
     Allows to simulate double sided material. This are materials that should be
     rendered from the front and front the back.
@@ -217,7 +219,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \qmlproperty useSkinning
+    \qmlproperty bool GLTF2Material::useSkinning
 
     If the mesh that has this material applied must be animated using skinning
     techniques, this value must be true. This property will change the vertex
@@ -228,7 +230,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \qmlproperty opaque
+    \qmlproperty bool GLTF2Material::opaque
 
     If true, the material is opaque. If false, the material is transparent and
     will use alpha blending for transparency.
@@ -238,7 +240,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \qmlproperty alphaCutoff
+    \qmlproperty real GLTF2Material::alphaCutoff
 
     Alpha cutoff threshold. Any fragment with an alpha value higher than this
     property will be considered opaque. Any fragment with an alpha value lower
@@ -249,7 +251,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \qmlproperty alphaCutoffEnabled
+    \qmlproperty bool GLTF2Material::alphaCutoffEnabled
 
     Enables/disables alphaCutoff
 
@@ -258,7 +260,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
  */
 
 /*!
-    \qmlproperty MorphController morphController
+    \qmlproperty Kuesa.MorphController GLTF2Material::morphController
 
     The morph controller instance used to control morph targets weights.
     This can be null if a material is not used with morph targets.

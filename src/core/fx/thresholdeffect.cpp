@@ -69,7 +69,7 @@ using namespace Kuesa;
 */
 
 /*!
-    \qmlproperty ThresholdEffect::threshold
+    \qmlproperty float ThresholdEffect::threshold
 
     \brief the brightness value used as a cut-off
 

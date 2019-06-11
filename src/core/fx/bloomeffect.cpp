@@ -98,7 +98,7 @@ using namespace Kuesa;
 */
 
 /*!
-    \qmlproperty BloomEffect::exposure
+    \qmlproperty real BloomEffect::exposure
 
     \brief adjusts the overall brightness
 
@@ -107,7 +107,7 @@ using namespace Kuesa;
 */
 
 /*!
-    \qmlproperty BloomEffect::threshold
+    \qmlproperty real BloomEffect::threshold
 
     \brief the brightness level determining which pixels the effect are applied to
 
@@ -116,7 +116,7 @@ using namespace Kuesa;
 */
 
 /*!
-    \qmlproperty BloomEffect::blurPassCount
+    \qmlproperty int BloomEffect::blurPassCount
 
     \brief the number of blur passes
 
