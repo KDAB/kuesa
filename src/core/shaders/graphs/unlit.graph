@@ -1211,7 +1211,8 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output; if ($condition) discard; $output = $value;"
+                    "headerSnippets": ["highp $type discard_if_$type(bool shouldDiscard, highp $type value) { if (shouldDiscard) discard; return value; }"],
+                    "substitution": "highp $type $output = discard_if_$type($condition, $value);"
                 },
                 {
                     "format": {
@@ -1219,7 +1220,8 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output; if ($condition) discard; $output = $value;"
+                    "headerSnippets": ["$type discard_if_$type(bool shouldDiscard, $type value) { if (shouldDiscard) discard; return value; }"],
+                    "substitution": "$type $output = discard_if_$type($condition, $value);"
                 }
             ]
         },
