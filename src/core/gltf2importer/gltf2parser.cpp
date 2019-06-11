@@ -857,7 +857,8 @@ void GLTF2Parser::generateTreeNodeContent()
                 }
                 case Qt3DRender::QAbstractLight::DirectionalLight: {
                     auto directionalLight = new DirectionalLight;
-                    directionalLight->setLocalDirection({ 0.0, 0.0, -1.0 });
+                    directionalLight->setDirection({ 0.0, 0.0, -1.0 });
+                    directionalLight->setDirectionMode(DirectionalLight::Local);
                     light = directionalLight;
                 }
                 }

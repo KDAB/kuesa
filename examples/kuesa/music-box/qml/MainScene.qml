@@ -35,7 +35,7 @@ import Qt3D.Animation 2.12
 import QtQml 2.2
 import QtQuick 2.12
 
-import Kuesa 1.0 as Kuesa
+import Kuesa 1.1 as Kuesa
 import MusicBox 1.0 as MusicBox
 
 Kuesa.SceneEntity {
@@ -185,8 +185,8 @@ Kuesa.SceneEntity {
             }
         },
         InputSettings { },
-        DirectionalLight {
-            worldDirection: frameGraph.camera ? frameGraph.camera.viewVector : Qt.vector3d(0, -1, 0)
+        Kuesa.DirectionalLight {
+            direction: frameGraph.camera ? frameGraph.camera.viewVector : Qt.vector3d(0, -1, 0)
             intensity: 0.05
         },
         EnvironmentLight {

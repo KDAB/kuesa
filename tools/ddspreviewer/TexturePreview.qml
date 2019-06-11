@@ -133,8 +133,7 @@ Entity {
         readonly property Transform transform: Transform {
             rotationX: -90
         }
-        readonly property PointLight light: PointLight {}
-        components: [mesh, material, transform, light]
+        components: [mesh, material, transform]
     }
 
     Entity {

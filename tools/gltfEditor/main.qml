@@ -31,7 +31,7 @@ import Qt3D.Render 2.11
 import Qt3D.Input 2.1
 import Qt3D.Extras 2.10
 import QtQuick 2.10 as QQ2
-import Kuesa 1.0 as Kuesa
+import Kuesa 1.1 as Kuesa
 import GltfEditor 1.0 as GltfEditor
 
 Kuesa.SceneEntity {
@@ -45,11 +45,7 @@ Kuesa.SceneEntity {
     Entity {
         parent: frameGraph.camera
         components: [
-            PointLight {
-                constantAttenuation: 1.0
-                linearAttenuation: 0.0
-                quadraticAttenuation: 0.0
-            }
+            Kuesa.PointLight {}
         ]
     }
 
@@ -171,8 +167,8 @@ Kuesa.SceneEntity {
             readonly property Transform materialTransform: Transform {
                 rotation: fromAxisAndAngle(Qt.vector3d(1.0, .0, 0.0), 90.0)
             }
-            readonly property DirectionalLight materialLight: DirectionalLight {
-                worldDirection: Qt.vector3d(0, 0, -1)
+            readonly property Kuesa.DirectionalLight materialLight: Kuesa.DirectionalLight {
+                direction: Qt.vector3d(0, 0, -1)
                 intensity: 1.0
             }
 

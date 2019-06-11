@@ -43,7 +43,7 @@ Kuesa.SceneEntity {
             }
         },
         InputSettings { },
-        PointLight {
+        Kuesa.PointLight {
             color: "black"
             intensity: 0
         },

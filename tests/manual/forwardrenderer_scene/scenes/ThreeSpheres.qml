@@ -29,13 +29,13 @@
 import Qt3D.Core 2.10
 import Qt3D.Extras 2.10
 import Qt3D.Render 2.10
-import Kuesa 1.0
+import Kuesa 1.1 as Kuesa
 
 Entity
 {
     Entity {
         components: [
-            PointLight { intensity: 1 },
+            Kuesa.PointLight { intensity: 1 },
             Transform { translation: Qt.vector3d(0, 10, 10) }
         ]
     }
@@ -44,7 +44,7 @@ Entity
         components: [
             Transform { translation: Qt.vector3d(-3, 0, 0) },
             SphereMesh {},
-            MetallicRoughnessMaterial {
+            Kuesa.MetallicRoughnessMaterial {
                 baseColorFactor: Qt.rgba(1, 0, 0, .5)
                 metallicFactor: .5
                 roughnessFactor: .25
@@ -57,7 +57,7 @@ Entity
     Entity {
         components: [
             SphereMesh {},
-            MetallicRoughnessMaterial {
+            Kuesa.MetallicRoughnessMaterial {
                 baseColorFactor: Qt.rgba(0, 1, 0, .5)
                 metallicFactor: .5
                 roughnessFactor: .25
@@ -70,7 +70,7 @@ Entity
         components: [
             Transform { translation: Qt.vector3d(3, 0, 0) },
             SphereMesh {},
-            MetallicRoughnessMaterial {
+            Kuesa.MetallicRoughnessMaterial {
                 baseColorFactor: Qt.rgba(0, 0, 1, .5)
                 metallicFactor: .5
                 roughnessFactor: .25

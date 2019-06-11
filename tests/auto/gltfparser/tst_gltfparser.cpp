@@ -829,7 +829,8 @@ private Q_SLOTS:
         QCOMPARE(directionalLight->color(), QColor::fromRgbF(1.0f, 0.9f, 0.7f));
         QCOMPARE(directionalLight->intensity(), 3.0f);
         QCOMPARE(directionalLight->objectName(), QStringLiteral("Directional"));
-        QCOMPARE(directionalLight->localDirection(), QVector3D(0.0, 0.0, -1.0));
+        QCOMPARE(directionalLight->direction(), QVector3D(0.0, 0.0, -1.0));
+        QCOMPARE(directionalLight->directionMode(), DirectionalLight::Local);
 
         auto spotLight = qobject_cast<SpotLight *>(lights->find("Spot"));
         QVERIFY(spotLight);

@@ -32,7 +32,7 @@ import Qt3D.Input 2.0
 import Qt3D.Extras 2.10
 import Qt3D.Animation 2.10
 import QtQuick 2.10 as QQ2
-import Kuesa 1.0 as Kuesa
+import Kuesa 1.1 as Kuesa
 
 Kuesa.SceneEntity {
     id: scene
@@ -46,8 +46,8 @@ Kuesa.SceneEntity {
             }
         },
         InputSettings { },
-        DirectionalLight {
-            worldDirection: frameGraph.camera.viewVector
+        Kuesa.DirectionalLight {
+            direction: frameGraph.camera.viewVector
         }
     ]
 

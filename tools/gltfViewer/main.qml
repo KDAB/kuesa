@@ -3,7 +3,7 @@ import Qt3D.Render 2.12
 import Qt3D.Animation 2.12
 import Qt3D.Input 2.12
 import Qt3D.Extras 2.12
-import Kuesa 1.0 as Kuesa
+import Kuesa 1.1 as Kuesa
 import KuesaViewer 1.0 as KuesaViewer
 
 Kuesa.SceneEntity {
@@ -20,11 +20,7 @@ Kuesa.SceneEntity {
     Entity {
         parent: frameGraph.camera
         components: [
-            PointLight {
-                constantAttenuation: 1.0
-                linearAttenuation: 0.0
-                quadraticAttenuation: 0.0
-            }
+            Kuesa.PointLight {}
         ]
     }
 

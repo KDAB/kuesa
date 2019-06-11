@@ -32,7 +32,7 @@ import Qt3D.Input 2.12
 import Qt3D.Extras 2.12
 import QtQuick 2.12
 
-import Kuesa 1.0 as Kuesa
+import Kuesa 1.1 as Kuesa
 import KuesaDemo 1.0 as KuesaDemo
 
 Kuesa.SceneEntity {
@@ -116,7 +116,7 @@ Kuesa.SceneEntity {
             }
         }
 
-        PointLight {
+        Kuesa.PointLight {
             id: pointLight
             color: "white"
             intensity: 0.2

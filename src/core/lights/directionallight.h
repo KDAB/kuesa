@@ -39,25 +39,37 @@ class DirectionalLightPrivate;
 class KUESASHARED_EXPORT DirectionalLight : public Qt3DRender::QAbstractLight
 {
     Q_OBJECT
-    Q_PROPERTY(QVector3D localDirection READ localDirection WRITE setLocalDirection NOTIFY localDirectionChanged)
+    Q_PROPERTY(QVector3D direction READ direction WRITE setDirection NOTIFY directionChanged)
+    Q_PROPERTY(Kuesa::DirectionalLight::DirectionMode directionMode READ directionMode WRITE setDirectionMode NOTIFY directionModeChanged)
 
 public:
+    enum DirectionMode {
+        World = 0,
+        Local
+    };
+    Q_ENUM(DirectionMode)
+
     explicit DirectionalLight(Qt3DCore::QNode *parent = nullptr);
     ~DirectionalLight();
 
-    QVector3D localDirection() const;
+    QVector3D direction() const;
+    Kuesa::DirectionalLight::DirectionMode directionMode() const;
 
 public Q_SLOTS:
-    void setLocalDirection(const QVector3D &localDirection);
+    void setDirection(const QVector3D &direction);
+    void setDirectionMode(Kuesa::DirectionalLight::DirectionMode directionMode);
 
 Q_SIGNALS:
-    void localDirectionChanged(const QVector3D &localDirection);
+    void directionChanged(const QVector3D &direction);
+    void directionModeChanged(Kuesa::DirectionalLight::DirectionMode directionMode);
 
 protected:
     explicit DirectionalLight(DirectionalLightPrivate &dd, Qt3DCore::QNode *parent = nullptr);
 
 private:
     Q_DECLARE_PRIVATE(DirectionalLight)
+
+    DirectionMode m_directionType = World;
 };
 
 } // namespace Kuesa

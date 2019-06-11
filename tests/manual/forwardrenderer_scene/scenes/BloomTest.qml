@@ -32,7 +32,7 @@ import Qt3D.Core 2.0
 import Qt3D.Render 2.0
 import Qt3D.Input 2.0
 import Qt3D.Extras 2.10
-import Kuesa 1.0 as Kuesa
+import Kuesa 1.1 as Kuesa
 
 Entity {
     id: root
@@ -73,7 +73,7 @@ Entity {
             lightTransform,
             objectsLayer
         ]
-        PointLight { id: light; color: currentColor; intensity: lightIntensity; constantAttenuation: 1; linearAttenuation: .05; quadraticAttenuation: .001}
+        Kuesa.PointLight { id: light; color: currentColor; intensity: lightIntensity}
         Transform { id: lightTransform; translation: activeSpherePos }
     }
 
