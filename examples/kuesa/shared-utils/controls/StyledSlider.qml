@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.11
-import QtQuick.Controls 2.3
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 
 BorderImage {
     id: slideN
@@ -40,6 +40,8 @@ BorderImage {
     property alias minimumValue: controller.from
     property alias maximumValue: controller.to
     property alias value: controller.value
+    property alias stepSize: controller.stepSize
+    property alias snapMode: controller.snapMode
     readonly property real progress: (value - minimumValue) / (maximumValue - minimumValue)
 
     Slider {

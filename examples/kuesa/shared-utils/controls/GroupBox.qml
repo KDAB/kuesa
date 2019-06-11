@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.11
+import QtQuick 2.12
 
 Column {
     id: gruper

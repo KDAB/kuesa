@@ -26,13 +26,16 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
+import QtQuick 2.12
 
 GroupBox {
     property alias text: label.text
     property alias value: control.value
     property alias minimumValue: control.minimumValue
     property alias maximumValue: control.maximumValue
+    property alias snapMode: control.snapMode
+    property alias stepSize: control.stepSize
+
 
     StyledLabel {
         id: label
