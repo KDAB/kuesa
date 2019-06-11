@@ -813,7 +813,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output; if ($condition) $output = $true; else $output = $false;"
+                    "substitution": "highp $type $output = ($condition) ? $true : $false;"
                 },
                 {
                     "format": {
@@ -821,7 +821,7 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output; if ($condition) $output = $true; else $output = $false;"
+                    "substitution": "$type $output = ($condition) ? $true : $false;"
                 }
             ]
         },
