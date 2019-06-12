@@ -41,6 +41,7 @@
 #include <QtCore/qglobal.h>
 #include <QtCore/QString>
 #include <QtCore/QByteArray>
+#include <Qt3DCore/QEntity>
 #include <QThread>
 #include "gltf2context_p.h"
 
@@ -52,7 +53,6 @@ QT_BEGIN_NAMESPACE
 class QJsonArray;
 
 namespace Qt3DCore {
-class QEntity;
 class QSkeleton;
 } // namespace Qt3DCore
 
@@ -76,6 +76,27 @@ struct HierarchyNode {
     QVector<HierarchyNode *> children;
 };
 
+class SceneRootEntity : public Qt3DCore::QEntity
+{
+    Q_OBJECT
+public:
+    explicit SceneRootEntity(const QVector<Qt3DCore::QEntity *> rootNodes,
+                             Qt3DCore::QNode *parent = nullptr)
+        : Qt3DCore::QEntity(parent)
+        , m_rootNodes(rootNodes)
+    {}
+
+    void makeActive()
+    {
+        for (Qt3DCore::QEntity *e : m_rootNodes)
+            e->setParent(this);
+    }
+
+private:
+    QVector<Qt3DCore::QEntity *> m_rootNodes;
+};
+
+
 using KeyParserFuncPair = QPair<QLatin1String, std::function<bool(const QJsonValue &)>>;
 class ThreadedGLTF2Parser;
 class KUESA_PRIVATE_EXPORT GLTF2Parser
@@ -86,11 +107,14 @@ public:
     virtual ~GLTF2Parser();
 
     virtual QVector<KeyParserFuncPair> prepareParsers();
-    Qt3DCore::QEntity *parse(const QString &filePath);
-    Qt3DCore::QEntity *parse(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
+    bool parse(const QString &filePath);
+    bool parse(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
 
     void setContext(GLTF2Context *);
     const GLTF2Context *context() const;
+
+    Qt3DCore::QEntity *contentRoot() const;
+    QVector<SceneRootEntity *> sceneRoots() const;
 
 private:
     bool isBinaryGLTF(const QByteArray &data, bool &isValid);
@@ -99,11 +123,12 @@ private:
     friend class ::tst_GLTFParser;
     void moveToThread(QThread *targetThread);
     bool detectTypeAndParse(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
-    void parseJSON(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
-    void parseBinary(const QByteArray &data, const QString &basePath, const QString &filename = {});
+    bool parseJSON(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
+    bool parseBinary(const QByteArray &data, const QString &basePath, const QString &filename = {});
 
-    Qt3DCore::QEntity *setupScene();
+    void addResourcesToSceneEntityCollections();
 
+    void buildSceneRootEntities();
     void buildEntitiesAndJointsGraph();
     void buildJointHierarchy(const HierarchyNode *node, int &jointAccessor, const Skin &skin, int skinIdx, Qt3DCore::QJoint *parentJoint = nullptr);
     void generateTreeNodeContent();
@@ -137,15 +162,14 @@ private:
         Qt3DAnimation::QChannelMapper *mapper;
     };
 
-    Qt3DCore::QEntity *scene(const int id);
-
     QString m_basePath;
     GLTF2Context *m_context;
     QVector<TreeNode> m_treeNodes;
     QVector<Qt3DCore::QSkeleton *> m_skeletons;
     QVector<AnimationDetails> m_animators;
     SceneEntity *m_sceneEntity;
-    Qt3DCore::QEntity *m_sceneRootEntity;
+    QVector<SceneRootEntity *> m_sceneRootEntities;
+    Qt3DCore::QEntity *m_contentRootEntity;
     int m_defaultSceneIdx;
     bool m_assignNames;
     QVector<QHash<int, int>> m_gltfJointIdxToSkeletonJointIdxPerSkeleton;

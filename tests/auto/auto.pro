@@ -37,7 +37,8 @@ SUBDIRS = \
     sceneentity \
     textureimagecollection \
     gltfEditor \
-    morphcontroller
+    morphcontroller \
+    gltf2importer
 
 #installed_cmake.depends = cmake
 

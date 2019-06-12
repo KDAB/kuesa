@@ -175,6 +175,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_cameraSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, QOverload<int>::of(&MainWindow::setCamera));
     m_ui->toolBar->insertWidget(m_ui->actionViewAll, m_cameraSelector);
 
+    m_sceneSelector = new QComboBox(this);
+    m_sceneSelector->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    m_sceneSelector->setEnabled(false);
+    connect(m_sceneSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, QOverload<int>::of(&MainWindow::setActiveScene));
+    m_ui->toolBar->insertWidget(m_ui->actionScene, m_sceneSelector);
+
     connect(m_view, &QWindow::widthChanged, this, &MainWindow::updateCameraAspectRatio);
     connect(m_view, &QWindow::heightChanged, this, &MainWindow::updateCameraAspectRatio);
 
@@ -231,6 +237,21 @@ void MainWindow::updateScene(Kuesa::SceneEntity *entity)
     m_cameraSelector->blockSignals(false);
     m_cameraSelector->setCurrentIndex(0);
     setCamera(0);
+
+
+    m_sceneSelector->blockSignals(true);
+    m_sceneSelector->clear();
+    auto importer = m_entity->findChild<Kuesa::GLTF2Importer *>();
+    if (importer) {
+        const QStringList sceneNames = importer->availableScenes();
+        int i = 0;
+        for (const QString &sceneName : sceneNames)
+            m_sceneSelector->addItem(QStringLiteral("%1 - (%2)").arg(sceneName)
+                                                                .arg(i++));
+    }
+    m_sceneSelector->setEnabled(m_sceneSelector->count() > 1);
+    m_sceneSelector->setCurrentIndex(importer->activeSceneIndex());
+    m_sceneSelector->blockSignals(false);
 }
 
 void MainWindow::assetSelected(const QString &assetName, Kuesa::AbstractAssetCollection *collection)
@@ -292,6 +313,15 @@ void MainWindow::setCamera(int index)
     m_camera->setUpVector(QVector3D(0.0f, 1.0f, 0.0f));
     m_camera->setViewCenter(QVector3D(0.0f, 0.0f, 0.0f));
     viewAll();
+}
+
+void MainWindow::setActiveScene(int index)
+{
+    auto importer = m_entity->findChild<Kuesa::GLTF2Importer *>();
+    if (!importer)
+        return;
+
+    importer->setActiveSceneIndex(index);
 }
 
 void MainWindow::setCamera(const QString &name)

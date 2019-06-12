@@ -107,6 +107,7 @@
    <addaction name="separator"/>
    <addaction name="actionViewAll"/>
    <addaction name="separator"/>
+   <addaction name="actionScene"/>
   </widget>
   <widget class="QDockWidget" name="assetInspectorDockWidget">
    <property name="windowTitle">
@@ -212,6 +213,14 @@
    </property>
    <property name="toolTip">
     <string>Export</string>
+   </property>
+  </action>
+  <action name="actionScene">
+   <property name="text">
+    <string>&amp;Scene</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
  </widget>

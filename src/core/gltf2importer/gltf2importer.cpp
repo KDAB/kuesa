@@ -219,12 +219,46 @@ using namespace Kuesa;
     \brief Holds the Kuesa.GLTF2Options used to select what to import/generate
  */
 
+/*!
+    \property GLTF2Importer::activeSceneIndex
+    \brief Specifies which glTF scene should be loaded.
+    Defaults to index GLTF2Importer::DefaultScene.
+ */
+
+/*!
+    \qmlproperty int GLTF2Importer::activeSceneIndex
+    \brief Specifies which glTF scene should be loaded.
+    Defaults to index GLTF2Importer.DefaultScene.
+ */
+
+/*!
+    \property GLTF2Importer::availableScenes
+    \brief Holds the names of the available glTF scenes.
+ */
+
+/*!
+    \qmlproperty list GLTF2Importer::availableScenes
+    \brief Holds the names of the available glTF scenes.
+ */
+
+/*!
+ * \enum GLTF2Importer::ActiveScene
+ * \value DefaultScene
+ * Makes the importer load the glTF scene specified as being the default one in
+ * the glTF file. If the glTF file doesn't specify anything, nothing will be loaded
+ * \value EmptyScene
+ * Tell the importer to not load any scene by default
+ */
+
+
 GLTF2Importer::GLTF2Importer(Qt3DCore::QNode *parent)
     : Qt3DCore::QNode(parent)
     , m_context(new GLTF2Import::GLTF2Context)
     , m_root(nullptr)
+    , m_currentSceneEntity(nullptr)
     , m_status(None)
     , m_sceneEntity(nullptr)
+    , m_activeSceneIndex(DefaultScene)
 {
 }
 
@@ -326,6 +360,16 @@ const Kuesa::GLTF2Import::GLTF2Options *GLTF2Importer::options() const
     return m_context->options();
 }
 
+int GLTF2Importer::activeSceneIndex() const
+{
+    return m_activeSceneIndex;
+}
+
+QStringList GLTF2Importer::availableScenes() const
+{
+    return m_availableScenes;
+}
+
 /*!
  * if \param assignNames is true, assets with no names will be added to
  * collections with default names.
@@ -347,6 +391,19 @@ void GLTF2Importer::setOptions(const Kuesa::GLTF2Import::GLTF2Options &options)
     m_options->setGenerateTangents(options.generateTangents());
 }
 
+void GLTF2Importer::setActiveSceneIndex(int index)
+{
+    if (m_activeSceneIndex == index)
+        return;
+    m_activeSceneIndex = index;
+    emit activeSceneIndexChanged(index);
+
+    // Try to load scene tree if parsing has already been performed
+    if (status() == Status::Ready) {
+        setupActiveScene();
+    }
+}
+
 void GLTF2Importer::load()
 {
     if (status() == Status::Loading)
@@ -356,8 +413,12 @@ void GLTF2Importer::load()
     // Reset context (except options)
     m_context->reset();
 
+    // Clear list of available scenes
+    m_availableScenes.clear();
+
     const QString path = urlToLocalFileOrQrc(m_source);
 
+    // Ensure clear has been called before reloading
     Q_ASSERT(m_root == nullptr);
 #ifdef USE_THREADED_PARSER
     auto parser = new GLTF2Import::ThreadedGLTF2Parser(m_context, m_sceneEntity, m_assignNames);
@@ -384,10 +445,23 @@ void GLTF2Importer::load()
 #else
     GLTF2Import::GLTF2Parser parser(m_sceneEntity, m_assignNames);
     parser.setContext(m_context);
-    m_root = parser.parse(path);
+    const bool parsingSucceeded = parser.parse(path);
+    m_root = parser.contentRoot();
 
-    if (m_root) {
+    if (parsingSucceeded && m_root) {
+
+        for (int i = 0, m = m_context->scenesCount(); i < m; ++i) {
+            const GLTF2Import::Scene scene = m_context->scene(i);
+            m_availableScenes << scene.name;
+        }
+
+        // Load scene
+        m_sceneRootEntities = parser.sceneRoots();
+        setupActiveScene();
+
+        // Set parent on root content
         m_root->setParent(this);
+
         if (m_sceneEntity)
             emit m_sceneEntity->loadingDone();
         setStatus(GLTF2Importer::Status::Ready);
@@ -395,15 +469,55 @@ void GLTF2Importer::load()
         setStatus(GLTF2Importer::Status::Error);
     }
 #endif
+
+    emit availableScenesChanged(m_availableScenes);
+}
+
+void GLTF2Importer::setupActiveScene()
+{
+    Q_ASSERT(m_root);
+
+    qDebug() << Q_FUNC_INFO << m_activeSceneIndex;
+
+    // Hide old scene tree
+    if (m_currentSceneEntity != nullptr)
+        m_currentSceneEntity->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+
+    m_currentSceneEntity = nullptr;
+
+    if (m_activeSceneIndex == DefaultScene) {
+        m_activeSceneIndex = m_context->defaultScene();
+        emit activeSceneIndexChanged(m_activeSceneIndex);
+    }
+
+    if (m_activeSceneIndex == EmptyScene)
+        return;
+
+    // Retrieve new scene tree
+    if (m_activeSceneIndex > m_sceneRootEntities.size() ||
+        m_activeSceneIndex < 0) {
+        qWarning() << "Unable to load glTF scene for index" << m_activeSceneIndex;
+        return;
+    }
+
+    m_currentSceneEntity = m_sceneRootEntities.at(m_activeSceneIndex);
+    m_currentSceneEntity->makeActive();
+    m_currentSceneEntity->setParent(m_root);
 }
 
 void GLTF2Importer::clear()
 {
     if (m_root != nullptr) {
+        for (GLTF2Import::SceneRootEntity *sceneRoot : m_sceneRootEntities)
+            sceneRoot->deleteLater();
         m_root->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
         m_root->deleteLater();
     }
+    m_sceneRootEntities.clear();
     m_root = nullptr;
+    m_currentSceneEntity = nullptr;
+
+    setStatus(GLTF2Importer::Status::None);
 }
 
 QT_END_NAMESPACE

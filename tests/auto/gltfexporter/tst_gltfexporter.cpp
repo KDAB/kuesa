@@ -75,8 +75,8 @@ private Q_SLOTS:
         GLTF2Exporter::Export exported;
         // WHEN
         {
-            auto res = parser.parse(asset);
-            QVERIFY(res != nullptr);
+            const bool res = parser.parse(asset);
+            QVERIFY(res);
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(false);
@@ -141,8 +141,8 @@ private Q_SLOTS:
         GLTF2Exporter::Export exported;
         // WHEN
         {
-            auto res = parser.parse(asset);
-            QVERIFY(res != nullptr);
+            const bool res = parser.parse(asset);
+            QVERIFY(res);
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(false);
@@ -206,8 +206,8 @@ private Q_SLOTS:
         GLTF2Exporter::Export exported;
         // WHEN
         {
-            auto res = parser.parse(asset);
-            QVERIFY(res != nullptr);
+            const bool res = parser.parse(asset);
+            QVERIFY(res);
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(false);
@@ -284,8 +284,8 @@ private Q_SLOTS:
         GLTF2Exporter::Export exported;
         // WHEN
         {
-            auto res = parser.parse(asset);
-            QVERIFY(res != nullptr);
+            const bool res = parser.parse(asset);
+            QVERIFY(res);
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -308,7 +308,8 @@ private Q_SLOTS:
 
             ctx.reset();
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
-            auto res = parser.setupScene();
+            parser.addResourcesToSceneEntityCollections();
+            const auto res = parser.contentRoot();
             QVERIFY(res != nullptr);
 
             QVERIFY(tmp.exists(exported.compressedBufferFilename()));
@@ -332,8 +333,8 @@ private Q_SLOTS:
         GLTF2Exporter::Export exported;
         // WHEN
         {
-            auto res = parser.parse(asset);
-            QVERIFY(res != nullptr);
+            const bool res = parser.parse(asset);
+            QVERIFY(res);
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -386,7 +387,7 @@ private Q_SLOTS:
             ctx.reset();
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
 
-            auto res = parser.setupScene();
+            auto res = parser.contentRoot();
             QVERIFY(res != nullptr);
         }
     }
@@ -406,8 +407,8 @@ private Q_SLOTS:
         GLTF2Exporter::Export exported;
         // WHEN
         {
-            auto res = parser.parse(asset);
-            QVERIFY(res != nullptr);
+            const bool res = parser.parse(asset);
+            QVERIFY(res);
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -442,7 +443,8 @@ private Q_SLOTS:
             // Check that we can reload the mesh properly
             ctx.reset();
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
-            auto res = parser.setupScene();
+            parser.addResourcesToSceneEntityCollections();
+            auto res = parser.contentRoot();
             QVERIFY(res != nullptr);
         }
     }
@@ -466,8 +468,8 @@ private Q_SLOTS:
         GLTF2Exporter::Export exported;
         // WHEN
         {
-            auto res = parser.parse(asset);
-            QVERIFY(res != nullptr);
+            const bool res = parser.parse(asset);
+            QVERIFY(res);
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -525,8 +527,8 @@ private Q_SLOTS:
         // WHEN
         {
             const QString asset = tmp.absolutePath() + "/Box.gltf";
-            auto res = parser.parse(asset);
-            QVERIFY(res != nullptr);
+            const bool res = parser.parse(asset);
+            QVERIFY(res);
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -553,7 +555,8 @@ private Q_SLOTS:
 
             ctx.reset();
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), sub.absolutePath(), QStringLiteral("test.gltf"));
-            auto res = parser.setupScene();
+            parser.addResourcesToSceneEntityCollections();
+            auto res = parser.contentRoot();
             QVERIFY(res != nullptr);
         }
     }

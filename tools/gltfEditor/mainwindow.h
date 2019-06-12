@@ -95,6 +95,7 @@ private slots:
     void generateTangents();
     void about();
     void setCamera(int index);
+    void setActiveScene(int index);
     void assetSelected(const QString &assetName, Kuesa::AbstractAssetCollection *collection);
     void copyAssetName();
     void selectAsset(const QString &assetName);
@@ -110,6 +111,7 @@ private:
     Qt3DRender::QCamera *m_camera;
     int m_activeCamera;
     QComboBox *m_cameraSelector;
+    QComboBox *m_sceneSelector;
     AssetInspector *m_assetInspector;
     AssetInspectorWidget *m_assetInspectorWidget;
     AnimationWidget *m_animationWidget;

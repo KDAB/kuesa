@@ -136,6 +136,9 @@ public:
     void addScene(const Scene &scene);
     const Scene scene(qint32 id) const;
 
+    void setDefaultScene(qint32 id);
+    qint32 defaultScene() const;
+
     int materialsCount() const;
     void addMaterial(const Material &material);
     const Material material(qint32 id) const;
@@ -201,6 +204,7 @@ private:
     QByteArray m_bufferChunk;
 
     Kuesa::GLTF2Import::GLTF2Options m_options;
+    qint32 m_defaultScene;
 };
 
 template<>

@@ -148,7 +148,7 @@ void extractPositionViewDirAndUpVectorFromViewMatrix(const QMatrix4x4 &viewMatri
 GLTF2Parser::GLTF2Parser(SceneEntity *sceneEntity, bool assignNames)
     : m_context(nullptr)
     , m_sceneEntity(sceneEntity)
-    , m_sceneRootEntity(nullptr)
+    , m_contentRootEntity(nullptr)
     , m_defaultSceneIdx(-1)
     , m_assignNames(assignNames)
 {
@@ -158,13 +158,13 @@ GLTF2Parser::~GLTF2Parser()
 {
 }
 
-Qt3DCore::QEntity *GLTF2Parser::parse(const QString &filePath)
+bool GLTF2Parser::parse(const QString &filePath)
 {
     QFile f(filePath);
     f.open(QIODevice::ReadOnly);
     if (!f.isOpen()) {
         qCWarning(kuesa()) << "Can't read file" << filePath;
-        return nullptr;
+        return false;
     }
 
     QFileInfo finfo(filePath);
@@ -172,25 +172,38 @@ Qt3DCore::QEntity *GLTF2Parser::parse(const QString &filePath)
     return parse(data, finfo.absolutePath(), finfo.fileName());
 }
 
-Qt3DCore::QEntity *GLTF2Parser::parse(const QByteArray &data, const QString &basePath, const QString &filename)
+/*!
+ * \internal
+ *
+ * Parsing operates in two steps:
+ * First it reads the GLTF/GLB file and create Qt3D resources and store
+ * hierarchies.
+ * If that step is successful
+ * Then it adds named resources to SceneEntity (if SceneEntity provided)
+ * Parsing returns true if parsing was a success, false otherwise
+ */
+bool GLTF2Parser::parse(const QByteArray &data, const QString &basePath, const QString &filename)
 {
-    bool isValid = detectTypeAndParse(data, basePath, filename);
-    return isValid ? setupScene() : nullptr;
+    const bool isValid = detectTypeAndParse(data, basePath, filename);
+    if (isValid)
+        addResourcesToSceneEntityCollections();
+    return isValid;
 }
 
 bool GLTF2Parser::detectTypeAndParse(const QByteArray &data, const QString &basePath, const QString &filename)
 {
+    Q_ASSERT(!m_contentRootEntity);
+    // Ensure we have never parsed a scene before (you have to use a new GLTF2Parser
+    // instance to reload a scene)
     bool isValid = false;
 
     if (isBinaryGLTF(data, isValid)) {
         if (isValid)
-            parseBinary(data, basePath, filename);
+            return parseBinary(data, basePath, filename);
     } else {
         if (isValid)
-            parseJSON(data, basePath, filename);
+            return parseJSON(data, basePath, filename);
     }
-
-    return isValid;
 }
 
 bool GLTF2Parser::isBinaryGLTF(const QByteArray &data, bool &isValid)
@@ -354,12 +367,12 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
     };
 }
 
-void GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath, const QString &filename)
+bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath, const QString &filename)
 {
     QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonData);
     if (jsonDocument.isNull() || !jsonDocument.isObject()) {
         qCWarning(kuesa()) << "File is not a valid json document";
-        return;
+        return false;
     }
 
     Q_ASSERT(m_context);
@@ -409,8 +422,8 @@ void GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
         }
 
         if (!allRequiredAreSupported) {
-            qCWarning(kuesa()) << "File contains unsupported extensions: " << unsupportedExtensions;
-            return;
+            qCWarning(kuesa) << "File contains unsupported extensions: " << unsupportedExtensions;
+            return false;
         }
     }
 
@@ -418,13 +431,19 @@ void GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
     const bool parsingSucceeded = traverseGLTF(topLevelParsers, rootObject);
 
     if (!parsingSucceeded)
-        return;
+        return false;
 
-    m_defaultSceneIdx = rootObject.value(KEY_SCENE).toInt(0);
+    // It is valid for the default scene to not be specified
+    // in that case m_defaultSceneIdx remains at -1 but doesn't
+    // prevent parsing from continuing
+    if (rootObject.contains(KEY_SCENE)) {
+        m_defaultSceneIdx = rootObject.value(KEY_SCENE).toInt(0);
+        m_context->setDefaultScene(m_defaultSceneIdx);
 
-    if (m_defaultSceneIdx < 0 || m_defaultSceneIdx > m_context->scenesCount()) {
-        qCWarning(kuesa()) << "Invalid default scene reference";
-        return;
+        if (m_defaultSceneIdx < 0 || m_defaultSceneIdx > m_context->scenesCount()) {
+            qCWarning(kuesa) << "Invalid default scene reference";
+            return false;
+        }
     }
 
     // Build vector of tree nodes
@@ -442,13 +461,18 @@ void GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
 
     // Generate Qt3D content for animations
     generateAnimationContent();
+
+    // Build Scene Roots
+    buildSceneRootEntities();
+
+    return true;
 }
 
 void GLTF2Parser::moveToThread(QThread *targetThread)
 {
     QObject::moveToThread(targetThread);
-    if (m_sceneRootEntity)
-        m_sceneRootEntity->moveToThread(targetThread);
+    if (m_contentRootEntity)
+        m_contentRootEntity->moveToThread(targetThread);
     for (auto &anim : m_animators) {
         anim.clip->moveToThread(targetThread);
         anim.mapper->moveToThread(targetThread);
@@ -479,14 +503,13 @@ const GLTF2Context *GLTF2Parser::context() const
     return m_context;
 }
 
-Qt3DCore::QEntity *GLTF2Parser::setupScene()
+void GLTF2Parser::addResourcesToSceneEntityCollections()
 {
     // Note: we only add resources into the collection after having set an
     // existing parent on the scene root This avoid sending a destroy + created
     // changes because sceneEntity exists and has a backend while the scene root
     // has no backend
 
-    Qt3DCore::QEntity *gltfSceneEntity = scene(m_defaultSceneIdx);
     if (m_sceneEntity) {
         if (m_sceneEntity->meshes()) {
             addAssetsIntoCollection<Mesh>(
@@ -592,10 +615,40 @@ Qt3DCore::QEntity *GLTF2Parser::setupScene()
                     [this](const Skin &skin, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), skin.name, m_skeletons.at(i)); },
                     [this](const Skin &, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), QStringLiteral("KuesaSkeleton_%1").arg(i), m_skeletons.at(i)); });
     }
-    return gltfSceneEntity;
 }
 
-void GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, const QString &filename)
+void GLTF2Parser::buildSceneRootEntities()
+{
+    for (int i = 0, m = m_context->scenesCount(); i < m; ++i) {
+        const Scene scene = m_context->scene(i);
+
+        // Technically nothing stops having 2 scenes referencing the same root
+        // nodes. This can be an issue with Qt3D as a node can only have a
+        // unique parent We therefore use a specific subclass of QEntity called
+        // SceneRootEntity which records the list of root entities and has a
+        // makeActive function
+
+        // Get scene nodes
+        const QVector<int> toRetrieveNodes = scene.rootNodeIndices;
+        QVector<Qt3DCore::QEntity *> rootNodeEntities;
+
+        for (int j = 0, m = toRetrieveNodes.size(); j < m; ++j) {
+            const TreeNode node = m_treeNodes[toRetrieveNodes.at(j)];
+            // Specs specify that scene nodes have to be root nodes
+            Q_ASSERT(node.isRootNode);
+            rootNodeEntities.push_back(node.entity);
+            for (auto &joint : node.joints)
+                if (joint != nullptr && joint->parent() == nullptr) // For ownership only (doesn't affect hierarchy)
+                    joint->setParent(m_contentRootEntity);
+        }
+
+        // Record SceneRootEntity
+        SceneRootEntity *sceneRootEntity = new SceneRootEntity(rootNodeEntities);
+        m_sceneRootEntities.push_back(sceneRootEntity);
+    }
+}
+
+bool GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, const QString &filename)
 {
     QByteArray jsonData;
     const char *current = data.constData();
@@ -611,7 +664,7 @@ void GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
 
         if ((endOffset - currentOffset) < sizeof(ChunkHeader)) {
             qCWarning(kuesa()) << "Malformed chunck in glb file";
-            return;
+            return false;
         }
 
         const ChunkHeader *chunkHeader = reinterpret_cast<const ChunkHeader *>(current);
@@ -620,7 +673,7 @@ void GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
 
         if ((endOffset - currentOffset) < chunkHeader->chunkLength) {
             qCWarning(kuesa()) << "Malformed chunck in glb file";
-            return;
+            return false;
         }
 
         if (chunkHeader->chunkType == GLTF_CHUNCK_JSON) {
@@ -629,7 +682,7 @@ void GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
                 jsonData = QByteArray::fromRawData(current, chunkHeader->chunkLength);
             } else {
                 qCWarning(kuesa()) << "Multiple JSON chunks in glb file";
-                return;
+                return false;
             }
         } else if (chunkHeader->chunkType == GLTF_CHUNCK_BIN) {
             // BIN chunck
@@ -637,7 +690,7 @@ void GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
                 m_context->setBufferChunk(QByteArray::fromRawData(current, chunkHeader->chunkLength));
             } else {
                 qCWarning(kuesa()) << "Multiple BIN chunks in glb file";
-                return;
+                return false;
             }
         } else {
             // skip chunck
@@ -650,16 +703,17 @@ void GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
 
     if (jsonData.isEmpty()) {
         qCWarning(kuesa()) << "Missing JSON chunk in glb file";
-        return;
+        return false;
     }
 
-    parseJSON(jsonData, basePath, filename);
+    const bool parsingSucceeded = parseJSON(jsonData, basePath, filename);
 
     // make sure chunk doesn't outlive the original data
     m_context->setBufferChunk({});
 
-    return;
+    return parsingSucceeded;
 }
+
 void GLTF2Parser::buildEntitiesAndJointsGraph()
 {
     const int nbNodes = m_context->treeNodeCount();
@@ -697,6 +751,7 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
     // Traverse branches from leaves to roots and create QEntity
     for (HierarchyNode *leaf : leafNodes) {
         Qt3DCore::QEntity *lastChild = nullptr;
+        HierarchyNode *root = leaf;
         while (leaf) {
             TreeNode &node = m_treeNodes[leaf->nodeIdx];
             const bool entityAlreadyCreated = (node.entity != nullptr);
@@ -718,8 +773,12 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
                 break;
 
             lastChild = node.entity;
+            root = leaf;
             leaf = leaf->parent;
         }
+        // Root is at this point the root of the branch
+        TreeNode &branchRoot = m_treeNodes[root->nodeIdx];
+        branchRoot.isRootNode = true;
     }
 
     int skinsCount = m_context->skinsCount();
@@ -762,8 +821,8 @@ void GLTF2Parser::generateTreeNodeContent()
 {
     MetallicRoughnessMaterial *defaultMaterial = nullptr;
     MetallicRoughnessMaterial *defaultSkinnedMaterial = nullptr;
-    m_sceneRootEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
-    m_sceneRootEntity->setObjectName(QStringLiteral("GLTF2Scene"));
+    m_contentRootEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
+    m_contentRootEntity->setObjectName(QStringLiteral("GLTF2Scene"));
 
     for (TreeNode &node : m_treeNodes) {
         // Build Entity Content
@@ -1041,7 +1100,7 @@ void GLTF2Parser::generateTreeNodeContent()
                         // (in other words, our parent is the entity that
                         // corresponds to the node to which the root joint is
                         // assigned)
-                        primitiveEntity->setParent(skinRootJointEntity->parentEntity() ? skinRootJointEntity->parentEntity() : m_sceneRootEntity);
+                        primitiveEntity->setParent(skinRootJointEntity->parentEntity() ? skinRootJointEntity->parentEntity() : m_contentRootEntity);
                     } else {
                         // We set the parent to entity so that transform is applied
                         primitiveEntity->setParent(entity);
@@ -1183,25 +1242,16 @@ void GLTF2Parser::generateAnimationContent()
     }
 }
 
-Qt3DCore::QEntity *GLTF2Parser::scene(const int id)
+// Root Entity to which Qt3D resources a parented
+Qt3DCore::QEntity *GLTF2Parser::contentRoot() const
 {
-    if (id < 0 || id > m_context->scenesCount())
-        return nullptr;
+    return m_contentRootEntity;
+}
 
-    const Scene scene = m_context->scene(id);
-
-    // Get scene node
-    const QVector<int> toRetrieveNodes = scene.rootNodeIndices;
-
-    for (auto i = 0, m = toRetrieveNodes.size(); i < m; ++i) {
-        const TreeNode node = m_treeNodes[toRetrieveNodes.at(i)];
-        if (node.entity != nullptr)
-            node.entity->setParent(m_sceneRootEntity);
-        for (auto &joint : node.joints)
-            if (joint != nullptr) // For ownership only (doesn't affect hierarchy)
-                joint->setParent(m_sceneRootEntity);
-    }
-    return m_sceneRootEntity;
+// Array of QEntity subtrees for each glTF scene
+QVector<SceneRootEntity *> GLTF2Parser::sceneRoots() const
+{
+    return m_sceneRootEntities;
 }
 
 ThreadedGLTF2Parser::ThreadedGLTF2Parser(
@@ -1224,9 +1274,10 @@ ThreadedGLTF2Parser::~ThreadedGLTF2Parser()
 
 void ThreadedGLTF2Parser::on_parsingFinished()
 {
-    auto root = m_parser.setupScene();
+    Qt3DCore::QEntity *root = m_parser.m_contentRootEntity;
 
     if (root) {
+        m_parser.addResourcesToSceneEntityCollections();
         root->setParent((Qt3DCore::QNode *)nullptr);
         root->moveToThread(this->thread());
     }

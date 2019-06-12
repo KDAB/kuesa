@@ -36,7 +36,7 @@
 #include <Qt3DQuick/QQmlAspectEngine>
 #include <Qt3DAnimation/QAnimationAspect>
 #include <Qt3DQuickExtras/Qt3DQuickWindow>
-
+#include <Kuesa/GLTF2Importer>
 #include "../gltfEditor/orbitcameracontroller.h"
 
 class ViewerApplication : public QGuiApplication
@@ -182,7 +182,9 @@ int main(int argc, char *argv[])
     QCommandLineOption cameraOption({ "c", "camera" }, QObject::tr("use named camera"), QObject::tr("camera"), QString());
     QCommandLineOption animationsOption({ "p", "play" }, QObject::tr("play named animation"), QObject::tr("animations"), QString());
     QCommandLineOption loopOption({ "l", "loop" }, QObject::tr("loop animations"));
-    cmdline.addOptions({ fullScreenOption, animationsOption, loopOption, cameraOption });
+    QCommandLineOption sceneOption({ "s", "scene" }, QObject::tr("index of the glTF scene to load"),
+                                   QObject::tr("scene"), QString::number(Kuesa::GLTF2Importer::DefaultScene));
+    cmdline.addOptions({ fullScreenOption, animationsOption, loopOption, cameraOption, sceneOption });
 
     cmdline.process(app);
 
@@ -218,6 +220,7 @@ int main(int argc, char *argv[])
     context->setContextProperty("_gltfCamera", cmdline.value(cameraOption));
     context->setContextProperty("_gltfAnimations", cmdline.values(animationsOption));
     context->setContextProperty("_gltfLoopAnimations", cmdline.isSet(loopOption));
+    context->setContextProperty("_sceneIndex", cmdline.value(sceneOption));
     view.setSource(QUrl("qrc:/main.qml"));
 
     view.resize(1920, 1080);

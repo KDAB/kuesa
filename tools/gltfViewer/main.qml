@@ -86,6 +86,7 @@ Kuesa.SceneEntity {
         id: importer
         sceneEntity: root
         assignNames: true
+        activeSceneIndex: _sceneIndex
     }
 
     onLoadingDone: {

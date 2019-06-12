@@ -36,6 +36,7 @@ using namespace GLTF2Import;
 
 GLTF2Context::GLTF2Context()
     : m_options()
+    , m_defaultScene(-1)
 {
 }
 
@@ -301,6 +302,16 @@ const Scene GLTF2Context::scene(qint32 id) const
 
     qCWarning(kuesa, "Invalid scene id");
     return {};
+}
+
+void GLTF2Context::setDefaultScene(qint32 id)
+{
+    m_defaultScene = id;
+}
+
+qint32 GLTF2Context::defaultScene() const
+{
+    return m_defaultScene;
 }
 
 int GLTF2Context::skinsCount() const

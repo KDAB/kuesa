@@ -98,7 +98,7 @@ private Q_SLOTS:
         QFETCH(bool, success);
 
         // WHEN
-        auto res = Uri::parseEmbeddedData(uri);
+        const auto res = Uri::parseEmbeddedData(uri);
 
         // THEN
         QCOMPARE(!res.isNull(), success);
@@ -188,10 +188,13 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "GeneratedAssets/") + filePath);
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "GeneratedAssets/") + filePath);
 
         // THEN
+        QVERIFY(parsingSuccesful);
+        auto *res = parser.sceneRoots().first();
         QVERIFY(res);
+        res->makeActive();
 
         QList<Qt3DCore::QEntity *> children = res->findChildren<Qt3DCore::QEntity *>();
         Qt3DCore::QComponentVector components;
@@ -210,9 +213,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "simple_cube.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(scene.meshes()->names().size(), 1);
         QVERIFY(scene.mesh(QLatin1String("Cube_0")));
@@ -227,9 +232,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "simple_cube.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(scene.cameras()->names().size(), 1);
         const Qt3DRender::QCamera *camera = scene.camera(QStringLiteral("Camera"));
@@ -246,9 +253,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_layers.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "simple_cube_with_layers.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(scene.layers()->names().size(), 3);
         QVERIFY(scene.layer(QLatin1String("VL0")));
@@ -265,9 +274,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "simple_cube.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(scene.entities()->names().size(), 3);
         QVERIFY(scene.entity(QLatin1String("Camera")));
@@ -284,9 +295,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_same_names.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "simple_cube_same_names.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(scene.entities()->names().size(), 3);
         QVERIFY(scene.entity(QLatin1String("Node")));
@@ -318,10 +331,10 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS + filePath));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS + filePath));
 
         // THEN
-        QCOMPARE(res != nullptr, parsingSucceeded);
+        QCOMPARE(parsingSuccesful, parsingSucceeded);
         QCOMPARE(parser.context()->imagesCount(), imageCount);
     }
 
@@ -408,22 +421,36 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS + filePath));
+       const bool parsingSuccesful = parser.parse(QString(ASSETS + filePath));
 
-        // THEN
-        QCOMPARE(res != nullptr, parsingSucceeded);
-        QCOMPARE(parser.context()->textureSamplersCount(), samplerCount);
-        for (int i = 0; i < samplerCount; ++i) {
-            const TextureSampler s = parser.context()->textureSampler(i);
-            QCOMPARE(s.minificationFilter, minFilter);
-            QCOMPARE(s.magnificationFilter, magFilter);
-            QCOMPARE(s.textureWrapMode->x(), wrapS);
-            QCOMPARE(s.textureWrapMode->y(), wrapT);
-        }
+       // THEN
+       QCOMPARE(parsingSuccesful, parsingSucceeded);
+       QCOMPARE(parser.context()->textureSamplersCount(), samplerCount);
+       for (int i = 0; i < samplerCount; ++i) {
+           const TextureSampler s = parser.context()->textureSampler(i);
+           QCOMPARE(s.minificationFilter, minFilter);
+           QCOMPARE(s.magnificationFilter, magFilter);
+           QCOMPARE(s.textureWrapMode->x(), wrapS);
+           QCOMPARE(s.textureWrapMode->y(), wrapT);
+       }
+    }
+
+    void checkSceneParsing_data()
+    {
+        QTest::addColumn<QString>("filePath");
+        QTest::addColumn<bool>("expectedResult");
+
+        QTest::newRow("NoDefaultScene") << QString(ASSETS "simple_cube_with_images_no_scene.gltf") << true;
+        QTest::newRow("InvalidDefaultScene") << QString(ASSETS "simple_cube_with_images_invalid_scene.gltf") << false;
+        QTest::newRow("InvalidDefaultSceneNegative") << QString(ASSETS "simple_cube_with_images_invalid_scene_negative.gltf") << false;
     }
 
     void checkSceneParsing()
     {
+        // GIVEN
+        QFETCH(QString, filePath);
+        QFETCH(bool, expectedResult);
+
         SceneEntity scene;
 
         GLTF2Context ctx;
@@ -432,14 +459,10 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_images_no_scene.gltf"));
-        Qt3DCore::QEntity *res1 = parser.parse(QString(ASSETS "simple_cube_with_images_invalid_scene.gltf"));
-        Qt3DCore::QEntity *res2 = parser.parse(QString(ASSETS "simple_cube_with_images_invalid_scene_negative.gltf"));
+        const bool parsingSuccesful = parser.parse(filePath);
 
         // THEN
-        QVERIFY(res);
-        QVERIFY(res1 == nullptr);
-        QVERIFY(res2 == nullptr);
+        QCOMPARE(parsingSuccesful, expectedResult);
     }
 
     void checkTextureImageCollection()
@@ -452,9 +475,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_images.gtlf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "simple_cube_with_images.gtlf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(parser.context()->imagesCount(), 2);
         QCOMPARE(parser.context()->image(0).name, QStringLiteral("diffuse.png"));
@@ -488,10 +513,10 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS + filePath));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS + filePath));
 
         // THEN
-        QCOMPARE(res != nullptr, parsingSucceeded);
+        QCOMPARE(parsingSuccesful, parsingSucceeded);
         QCOMPARE(parser.context()->texturesCount(), textureCount);
     }
 
@@ -504,15 +529,17 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_textures_dds.gltf"));
+       const bool parsingSuccesful = parser.parse(QString(ASSETS "simple_cube_with_textures_dds.gltf"));
+       Qt3DCore::QEntity *res = parser.contentRoot();
 
-        // THEN
-        QVERIFY(res);
-        QCOMPARE(scene.textures()->names().size(), 1);
-        auto textureLoader = qobject_cast<Qt3DRender::QTextureLoader *>(scene.texture(QLatin1String("diffuse")));
-        QVERIFY(textureLoader);
-        QVERIFY(textureLoader->source().toString().toLower().endsWith("dds"));
-        QVERIFY(parser.context()->usedExtension().contains(QLatin1String("MSFT_texture_dds")));
+       // THEN
+       QVERIFY(parsingSuccesful);
+       QVERIFY(res);
+       QCOMPARE(scene.textures()->names().size(), 1);
+       auto textureLoader = qobject_cast<Qt3DRender::QTextureLoader *>(scene.texture(QLatin1String("diffuse")));
+       QVERIFY(textureLoader);
+       QVERIFY(textureLoader->source().toString().toLower().endsWith("dds"));
+       QVERIFY(parser.context()->usedExtension().contains(QLatin1String("MSFT_texture_dds")));
     }
 
     void checkTextureCollection()
@@ -524,9 +551,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_textures.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "simple_cube_with_textures.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(scene.textures()->names().size(), 2);
         QVERIFY(scene.texture(QLatin1String("diffuse")));
@@ -542,9 +571,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "animated_cube_lot_rot_scale.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "animated_cube_lot_rot_scale.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(scene.animationClips()->names().size(), 1);
         QVERIFY(scene.animationClip(QStringLiteral("Cube_CubeAction")));
@@ -559,9 +590,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "animated_cube_lot_rot_scale.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "animated_cube_lot_rot_scale.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(scene.animationMappings()->names().size(), 1);
         QVERIFY(scene.animationMapping(QStringLiteral("Cube_CubeAction")));
@@ -590,9 +623,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS + filePath));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS + filePath));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QCOMPARE(res != nullptr, parsingSucceeded);
         QCOMPARE(parser.context()->materialsCount(), materialCount);
     }
@@ -606,9 +641,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "simple_cube_with_textures.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "simple_cube_with_textures.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(scene.textures()->names().size(), 2);
         QCOMPARE(scene.materials()->names().size(), 1);
@@ -631,9 +668,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS "skins_valid.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "skins_valid.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(scene.skeletons()->names().size(), 1);
         QVERIFY(scene.skeleton(QStringLiteral("Armature")));
@@ -668,9 +707,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        Qt3DCore::QEntity *res = parser.parse(QString(ASSETS + filePath));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS + filePath));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res);
         QCOMPARE(scene.skeletons()->names().size(), 1);
         QCOMPARE(scene.skeletons()->names().first(), QStringLiteral("armature"));
@@ -721,9 +762,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        auto res = parser.parse(QString(ASSETS "extensions_invalid.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "extensions_invalid.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(!parsingSuccesful);
         QCOMPARE(res, nullptr);
         QCOMPARE(parser.context()->requiredExtensions().size(), 1);
         QCOMPARE(parser.context()->requiredExtensions().front(), QLatin1String("KDAB_Some_Unknown_Extension"));
@@ -738,9 +781,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        auto res = parser.parse(QString(ASSETS "extensions_valid.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "extensions_valid.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res != nullptr);
         QCOMPARE(parser.context()->requiredExtensions().size(), 1);
         QCOMPARE(parser.context()->usedExtension().size(), 1);
@@ -773,9 +818,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        auto res = parser.parse(filePath);
+        const bool parsingSuccesful = parser.parse(filePath);
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res != nullptr);
 
         QCOMPARE(expectedLayersName.size(), scene.layers()->size());
@@ -809,9 +856,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        auto res = parser.parse(QString(ASSETS "KHR_lights_punctual/lights.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "KHR_lights_punctual/lights.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res != nullptr);
 
         const auto lights = scene.lights();
@@ -852,9 +901,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        auto res = parser.parse(QString(ASSETS "draco/Box.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "draco/Box.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res != nullptr);
     }
 #endif
@@ -868,9 +919,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        auto res = parser.parse(QString(ASSETS "draco/Box_optional.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "draco/Box_optional.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res != nullptr);
     }
 
@@ -883,9 +936,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        auto res = parser.parse(QString(ASSETS "BoxTextured.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "BoxTextured.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res != nullptr);
     }
 
@@ -898,9 +953,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        auto res = parser.parse(QString(ASSETS "BoxTexturedEmbeddedBuffer.gltf"));
+        const bool parsingSuccesful = parser.parse(QString(ASSETS "BoxTexturedEmbeddedBuffer.gltf"));
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res != nullptr);
     }
 
@@ -927,9 +984,11 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        auto res = parser.parse(filePath);
+        const bool parsingSuccesful = parser.parse(filePath);
+        Qt3DCore::QEntity *res = parser.contentRoot();
 
         // THEN
+        QVERIFY(parsingSuccesful);
         QVERIFY(res != nullptr);
 
         auto accessor = parser.context()->accessor(1);
@@ -1043,11 +1102,10 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        parser.parse(data, {});
-        Qt3DCore::QEntity *res = parser.setupScene();
+        const bool parsingSuccesful = parser.parse(data, {});
 
         // THEN
-        QCOMPARE(res != nullptr, success);
+        QCOMPARE(parsingSuccesful, success);
     }
 
     void checkThreadedParser()
