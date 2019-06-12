@@ -1,5 +1,5 @@
 /*
-    assetinspectorwidget.h
+    lightwidget.h
 
     This file is part of Kuesa.
 
@@ -26,47 +26,32 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef ASSETINSPECTORWIDGET_H
-#define ASSETINSPECTORWIDGET_H
+#ifndef LIGHTWIDGET_H
+#define LIGHTWIDGET_H
 
 #include <QWidget>
 
-class LightWidget;
-class MaterialWidget;
-class MeshWidget;
-class TextureWidget;
-class AssetInspector;
-class QLabel;
-class QQmlContext;
+class LightInspector;
 
-class AssetInspectorWidget : public QWidget
+namespace Ui {
+class LightWidget;
+}
+
+class LightWidget : public QWidget
 {
     Q_OBJECT
 public:
-    AssetInspectorWidget(AssetInspector *inspector, QWidget *parent = nullptr);
-    virtual ~AssetInspectorWidget();
+    LightWidget(QWidget *parent = nullptr);
+    virtual ~LightWidget();
 
-    void updateAssetType();
+    void setLightInspector(LightInspector *inspector);
 
-    void setPreviewRenderContext(QQmlContext *context);
-
-Q_SIGNALS:
-    void showAsset(const QString &assetName);
+private Q_SLOTS:
+    void updateData();
 
 private:
-    void setAssetName(const QString &name);
-
-    LightWidget *m_lightWidget;
-    MaterialWidget *m_materialWidget;
-    MeshWidget *m_meshWidget;
-    TextureWidget *m_textureWidget;
-    AssetInspector *m_assetInspector;
-
-    QLabel *m_assetNameLabel;
-    QLabel *m_noAssetLabel;
-
-    QWidget *m_contentsContainer;
-    QWidget *m_currentWidget;
+    LightInspector *m_inspector;
+    Ui::LightWidget *m_ui;
 };
 
-#endif // ASSETINSPECTORWIDGET_H
+#endif // LIGHTWIDGET_H
