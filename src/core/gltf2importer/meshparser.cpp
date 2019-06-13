@@ -221,7 +221,14 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
                 return false;
             }
 
-            const auto primitiveType = static_cast<Qt3DRender::QGeometryRenderer::PrimitiveType>(primitivesObject.value(KEY_MODE).toInt(GL_TRIANGLES));
+            auto primitiveType = static_cast<Qt3DRender::QGeometryRenderer::PrimitiveType>(primitivesObject.value(KEY_MODE).toInt(GL_TRIANGLES));
+            if (m_context->options()->generateNormals()) {
+                if (MeshParserUtils::needsNormalAttribute(geometry.get(), primitiveType)) {
+                    Kuesa::GLTF2Import::MeshParserUtils::createNormalsForGeometry(geometry.get(), primitiveType);
+                    // The generation of normal forces the primitive type to be Triangles
+                    primitiveType = Qt3DRender::QGeometryRenderer::Triangles;
+                }
+            }
             if (m_context->options()->generateTangents()) {
                 if (MeshParserUtils::needsTangentAttribute(geometry.get(), primitiveType)) {
                     auto tangentAttr = Kuesa::GLTF2Import::MeshParserUtils::createTangentAttribute(geometry.get(), primitiveType);

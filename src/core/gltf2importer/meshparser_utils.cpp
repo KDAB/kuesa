@@ -39,12 +39,14 @@
 #include <Qt3DRender/QGeometryRenderer>
 
 #include <array>
+#include <cstring>
 
 #include "mikktspace.h"
 #include "gltf2context_p.h"
 #include "gltf2keys_p.h"
 #include "gltf2utils_p.h"
 #include "gltf2exporter_p.h"
+#include "kuesa_p.h"
 
 namespace {
 
@@ -147,17 +149,16 @@ QVarLengthArray<uint, 2> validVertexSizesForAttribute(const QString &attributeNa
     return QVarLengthArray<uint, 2>();
 }
 
-int vertexBaseTypeSize(Qt3DRender::QAttribute::VertexBaseType vertexBaseType)
+uint vertexBaseTypeSize(Qt3DRender::QAttribute::VertexBaseType vertexBaseType)
 {
     switch (vertexBaseType) {
     case Qt3DRender::QAttribute::UnsignedByte:
-        return 1;
+        return 1U;
     case Qt3DRender::QAttribute::UnsignedShort:
-        return 2;
+        return 2U;
     case Qt3DRender::QAttribute::UnsignedInt:
-        return 4;
     case Qt3DRender::QAttribute::Float:
-        return 4;
+        return 4U;
     default:
         Q_UNREACHABLE();
     }
@@ -229,7 +230,8 @@ struct MikkTSpaceUserData {
     QByteArray tangentBufferData;
 };
 
-MikkTSpaceUserData precomputeMikkTSpaceUserData(Qt3DRender::QGeometry *geometry, Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+MikkTSpaceUserData precomputeMikkTSpaceUserData(Qt3DRender::QGeometry *geometry,
+                                                Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
 {
     // Precompute some data
     MikkTSpaceUserData userData;
@@ -511,7 +513,7 @@ bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
     if (!getMeshGLTFInformation(mesh, context, gltfMesh, primitiveNumber))
         return false;
     if (gltfMesh.meshIdx < 0) {
-        qWarning() << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
+        qCWarning(kuesa) << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
         return false;
     }
 
@@ -567,7 +569,7 @@ bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
     QFile bufferFile(basePath + QDir::separator() + bufferFileName);
 
     if (!bufferFile.open(QFile::WriteOnly)) {
-        qWarning() << "Can't open" << bufferFile.fileName() << "for writing tangent buffer";
+        qCWarning(kuesa) << "Can't open" << bufferFile.fileName() << "for writing tangent buffer";
         return false;
     } else {
         // add buffer to JSON
@@ -592,6 +594,503 @@ bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry)
     const bool vertexSizesAreValid = vertexSizesForAttributesAreValid(attributes);
     return vertexSizesAreValid && vertexBaseTypesAreValid;
 }
+
+bool needsNormalAttribute(const Qt3DRender::QGeometry *geometry,
+                          Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+{
+    // only generate tangents for triangles
+    if (primitiveType != Qt3DRender::QGeometryRenderer::Triangles &&
+        primitiveType != Qt3DRender::QGeometryRenderer::TriangleStrip &&
+        primitiveType != Qt3DRender::QGeometryRenderer::TriangleFan)
+        return false;
+
+    if (!geometry)
+        return false;
+
+    const auto &attributes = geometry->attributes();
+    const bool hasNormal = std::find_if(std::begin(attributes),
+                                        std::end(attributes),
+                                        [](const Qt3DRender::QAttribute *attr) {
+                                            return attr->name() == Qt3DRender::QAttribute::defaultNormalAttributeName();
+                                        }) != std::end(attributes);
+    return !hasNormal;
+}
+
+namespace {
+
+quint32 indexValueAt(Qt3DRender::QAttribute::VertexBaseType type, const char *rawValue)
+{
+    switch (type) {
+    case Qt3DRender::QAttribute::UnsignedInt:
+    case Qt3DRender::QAttribute::Int:
+        return static_cast<quint32>(*rawValue);
+    case Qt3DRender::QAttribute::UnsignedShort:
+    case Qt3DRender::QAttribute::Short:
+        return static_cast<quint16>(*rawValue);
+    case Qt3DRender::QAttribute::UnsignedByte:
+    case Qt3DRender::QAttribute::Byte:
+        return static_cast<quint8>(*rawValue);
+    default:
+        Q_UNREACHABLE();
+    }
+}
+
+template<Qt3DRender::QGeometryRenderer::PrimitiveType>
+void convertIndexedGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *)
+{
+    Q_UNREACHABLE();
+}
+
+template<Qt3DRender::QGeometryRenderer::PrimitiveType>
+void convertNonIndexedGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *)
+{
+    Q_UNREACHABLE();
+}
+
+struct NormalGenerationContext {
+    int vertexCount = 0;
+    int vertexByteSize = 0;
+    int indexByteStride = 0;
+    int newVertexCount = 0;
+
+    struct VertexAttrInfo {
+        Qt3DRender::QAttribute *attr;
+        uint originalByteOffset;
+        uint originalByteStride;
+        uint actualByteSize;
+        const char *rawData;
+    };
+    Qt3DRender::QAttribute *indexAttribute = nullptr;
+    QVector<VertexAttrInfo> vertexAttributes;
+    Qt3DRender::QGeometry *geometry = nullptr;
+
+    void prepareFromIndexed(Qt3DRender::QGeometry *g)
+    {
+        geometry = g;
+        const auto &attributes = geometry->attributes();
+        vertexAttributes.reserve(attributes.size() - 1);
+
+        // Compute Vertex Stride out of all Vertex Attributes
+        // And retrive count of vertices
+        for (Qt3DRender::QAttribute *attr : attributes) {
+            switch (attr->attributeType()) {
+            case Qt3DRender::QAttribute::VertexAttribute: {
+                const uint rawSize = attr->vertexSize() * vertexBaseTypeSize(attr->vertexBaseType());
+                vertexByteSize += rawSize;
+                vertexAttributes.push_back({ attr,
+                                             attr->byteOffset(),
+                                             std::max(attr->byteStride(), rawSize),
+                                             rawSize,
+                                             attr->buffer()->data().constData() });
+                break;
+            }
+            case Qt3DRender::QAttribute::IndexAttribute: {
+                vertexCount = attr->count();
+                indexByteStride = std::max(attr->byteStride(), vertexBaseTypeSize(attr->vertexBaseType()));
+                indexAttribute = attr;
+            }
+            default:
+                break;
+            }
+        }
+    }
+
+    void prepareFromNonIndexed(Qt3DRender::QGeometry *g)
+    {
+        geometry = g;
+        const auto &attributes = geometry->attributes();
+        vertexAttributes.reserve(attributes.size() - 1);
+
+        // Compute Vertex Stride out of all Vertex Attributes
+        // And retrive count of vertices
+        for (Qt3DRender::QAttribute *attr : attributes) {
+            switch (attr->attributeType()) {
+            case Qt3DRender::QAttribute::VertexAttribute: {
+                const uint rawSize = attr->vertexSize() * vertexBaseTypeSize(attr->vertexBaseType());
+                vertexByteSize += rawSize;
+                vertexAttributes.push_back({ attr,
+                                             attr->byteOffset(),
+                                             std::max(attr->byteStride(), rawSize),
+                                             rawSize,
+                                             attr->buffer()->data().constData() });
+                if (attr->name() == Qt3DRender::QAttribute::defaultPositionAttributeName())
+                    vertexCount = attr->count();
+                break;
+            }
+            default:
+                break;
+            }
+        }
+
+        Q_ASSERT(vertexCount > 0);
+    }
+
+    void updateAttributes(const QByteArray &newVertexData)
+    {
+        Q_ASSERT(newVertexCount > 0);
+        // Generate a new QBuffer to hold the data and set it on the attributes
+        Qt3DRender::QBuffer *buffer = new Qt3DRender::QBuffer();
+        buffer->setData(newVertexData);
+
+        const auto &attributes = geometry->attributes();
+
+        int byteOffset = 0;
+        for (Qt3DRender::QAttribute *attr : attributes) {
+            switch (attr->attributeType()) {
+            case Qt3DRender::QAttribute::VertexAttribute: {
+                // Update attributes to map properly against new buffer
+                attr->setBuffer(buffer);
+                attr->setByteStride(vertexByteSize);
+                attr->setByteOffset(byteOffset);
+                attr->setCount(newVertexCount);
+                byteOffset += attr->vertexSize() * vertexBaseTypeSize(attr->vertexBaseType());
+                break;
+            }
+            case Qt3DRender::QAttribute::IndexAttribute: {
+                // Remove Index Attribute
+                geometry->removeAttribute(attr);
+            }
+            default:
+                break;
+            }
+        }
+    }
+};
+
+template<>
+void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::Triangles>(Qt3DRender::QGeometry *geometry)
+{
+    NormalGenerationContext ctx;
+    ctx.prepareFromIndexed(geometry);
+
+    // Since we are already dealing with Triangles, vertex count stays the same
+    ctx.newVertexCount = ctx.vertexCount;
+
+    // Create raw buffer large enough
+    QByteArray newVertexData;
+    newVertexData.resize(ctx.newVertexCount * ctx.vertexByteSize);
+    char *rawData = newVertexData.data();
+
+    // Copy all vertex attributes data into new buffer
+    Qt3DRender::QAttribute *indexAttribute = ctx.indexAttribute;
+    const QByteArray &indexBufferData = indexAttribute->buffer()->data();
+    const char *rawIndexData = indexBufferData.constData();
+    for (uint i = 0, m = indexAttribute->count(); i < m; ++i) {
+        const uint rawIdx = indexAttribute->byteOffset() + i * ctx.indexByteStride;
+        const quint32 idx = indexValueAt(indexAttribute->vertexBaseType(), rawIndexData + rawIdx);
+        for (const NormalGenerationContext::VertexAttrInfo &attr : qAsConst(ctx.vertexAttributes)) {
+            const char *attrData = attr.rawData + attr.originalByteOffset + idx * attr.originalByteStride;
+            std::memcpy(rawData, attrData, attr.actualByteSize);
+            rawData += attr.actualByteSize;
+        }
+    }
+
+    // Update attributes/buffer based on new data
+    ctx.updateAttributes(newVertexData);
+}
+
+template<>
+void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleStrip>(Qt3DRender::QGeometry *geometry)
+{
+    NormalGenerationContext ctx;
+    ctx.prepareFromIndexed(geometry);
+
+    // 3 First vertices form the first triangle, then each new vertex forms a
+    // new triangle with the last two vertices.
+    ctx.newVertexCount = 3 + (ctx.vertexCount - 3) * 3;
+
+    // Create raw buffer large enough
+    QByteArray newVertexData;
+    newVertexData.resize(ctx.newVertexCount * ctx.vertexByteSize);
+    char *rawData = newVertexData.data();
+
+    // Copy all vertex attributes data into new buffer
+    Qt3DRender::QAttribute *indexAttribute = ctx.indexAttribute;
+    const QByteArray &indexBufferData = indexAttribute->buffer()->data();
+    const char *rawIndexData = indexBufferData.constData();
+
+    for (uint i = 0, m = indexAttribute->count(); i < m; ++i) {
+        QVarLengthArray<quint32, 3> indices;
+        if (i >= 3) {
+            const uint rawIdxPrev = indexAttribute->byteOffset() + (i - 1) * ctx.indexByteStride;
+            indices.push_back(indexValueAt(indexAttribute->vertexBaseType(), rawIndexData + rawIdxPrev));
+            const uint rawIdxPrevPrev = indexAttribute->byteOffset() + (i - 2) * ctx.indexByteStride;
+            indices.push_back(indexValueAt(indexAttribute->vertexBaseType(), rawIndexData + rawIdxPrevPrev));
+        }
+        const uint rawIdx = indexAttribute->byteOffset() + i * ctx.indexByteStride;
+        indices.push_back(indexValueAt(indexAttribute->vertexBaseType(), rawIndexData + rawIdx));
+
+        for (const quint32 idx : indices) {
+            for (const NormalGenerationContext::VertexAttrInfo &attr : qAsConst(ctx.vertexAttributes)) {
+                const char *attrData = attr.rawData + attr.originalByteOffset + idx * attr.originalByteStride;
+                std::memcpy(rawData, attrData, attr.actualByteSize);
+                rawData += attr.actualByteSize;
+            }
+        }
+    }
+
+    // Update attributes/buffer based on new data
+    ctx.updateAttributes(newVertexData);
+}
+
+template<>
+void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleFan>(Qt3DRender::QGeometry *geometry)
+{
+    NormalGenerationContext ctx;
+    ctx.prepareFromIndexed(geometry);
+
+    // 3 First vertices form the first triangle, then each new vertex forms a
+    // new triangle with using the first vertex and the last vertex
+    ctx.newVertexCount = 3 + (ctx.vertexCount - 3) * 3;
+
+    // Create raw buffer large enough
+    QByteArray newVertexData;
+    newVertexData.resize(ctx.newVertexCount * ctx.vertexByteSize);
+    char *rawData = newVertexData.data();
+
+    // Copy all vertex attributes data into new buffer
+    Qt3DRender::QAttribute *indexAttribute = ctx.indexAttribute;
+    const QByteArray &indexBufferData = indexAttribute->buffer()->data();
+    const char *rawIndexData = indexBufferData.constData();
+
+    for (uint i = 0, m = indexAttribute->count(); i < m; ++i) {
+        QVarLengthArray<quint32, 3> indices;
+        const uint rawIdx = indexAttribute->byteOffset() + i * ctx.indexByteStride;
+        if (i >= 3) {
+            const uint rawFirstIdx = indexAttribute->byteOffset();
+            indices.push_back(indexValueAt(indexAttribute->vertexBaseType(), rawIndexData + rawFirstIdx));
+
+            indices.push_back(indexValueAt(indexAttribute->vertexBaseType(), rawIndexData + rawIdx));
+
+            const uint rawIdxPrev = indexAttribute->byteOffset() + (i - 1) * ctx.indexByteStride;
+            indices.push_back(indexValueAt(indexAttribute->vertexBaseType(), rawIndexData + rawIdxPrev));
+        } else {
+            indices.push_back(indexValueAt(indexAttribute->vertexBaseType(), rawIndexData + rawIdx));
+        }
+
+        for (const quint32 idx : indices) {
+            for (const NormalGenerationContext::VertexAttrInfo &attr : qAsConst(ctx.vertexAttributes)) {
+                const char *attrData = attr.rawData + attr.originalByteOffset + idx * attr.originalByteStride;
+                std::memcpy(rawData, attrData, attr.actualByteSize);
+                rawData += attr.actualByteSize;
+            }
+        }
+    }
+
+    // Update attributes/buffer based on new data
+    ctx.updateAttributes(newVertexData);
+}
+
+template<>
+void convertNonIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleStrip>(Qt3DRender::QGeometry *geometry)
+{
+    NormalGenerationContext ctx;
+    ctx.prepareFromNonIndexed(geometry);
+
+    // 3 First vertices form the first triangle, then each new vertex forms a
+    // new triangle with the last two vertices.
+    ctx.newVertexCount = 3 + (ctx.vertexCount - 3) * 3;
+
+    // Create raw buffer large enough
+    QByteArray newVertexData;
+    newVertexData.resize(ctx.newVertexCount * ctx.vertexByteSize);
+    char *rawData = newVertexData.data();
+
+    // Copy all vertex attributes data into new buffer
+    for (uint i = 0, m = ctx.vertexCount; i < m; ++i) {
+        QVarLengthArray<quint32, 3> indices;
+        if (i >= 3) {
+            indices.push_back(i - 1);
+            indices.push_back(i - 2);
+        }
+        indices.push_back(i);
+        for (const quint32 idx : indices) {
+            for (const NormalGenerationContext::VertexAttrInfo &attr : qAsConst(ctx.vertexAttributes)) {
+                const char *attrData = attr.rawData + attr.originalByteOffset + idx * attr.originalByteStride;
+                std::memcpy(rawData, attrData, attr.actualByteSize);
+                rawData += attr.actualByteSize;
+            }
+        }
+    }
+
+    // Update attributes/buffer based on new data
+    ctx.updateAttributes(newVertexData);
+}
+
+template<>
+void convertNonIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleFan>(Qt3DRender::QGeometry *geometry)
+{
+    NormalGenerationContext ctx;
+    ctx.prepareFromNonIndexed(geometry);
+
+    // 3 First vertices form the first triangle, then each new vertex forms a
+    // new triangle with using the first vertex and the last vertex
+    ctx.newVertexCount = 3 + (ctx.vertexCount - 3) * 3;
+
+    // Create raw buffer large enough
+    QByteArray newVertexData;
+    newVertexData.resize(ctx.newVertexCount * ctx.vertexByteSize);
+    char *rawData = newVertexData.data();
+
+    // Copy all vertex attributes data into new buffer
+    for (uint i = 0, m = ctx.vertexCount; i < m; ++i) {
+        QVarLengthArray<quint32, 3> indices;
+        if (i >= 3) {
+            indices.push_back(0);
+            indices.push_back(i);
+            indices.push_back(i - 1);
+        } else {
+            indices.push_back(i);
+        }
+        for (const quint32 idx : indices) {
+            for (const NormalGenerationContext::VertexAttrInfo &attr : qAsConst(ctx.vertexAttributes)) {
+                const char *attrData = attr.rawData + attr.originalByteOffset + idx * attr.originalByteStride;
+                std::memcpy(rawData, attrData, attr.actualByteSize);
+                rawData += attr.actualByteSize;
+            }
+        }
+    }
+
+    // Update attributes/buffer based on new data
+    ctx.updateAttributes(newVertexData);
+}
+
+void convertGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *geometry,
+                                            Qt3DRender::QGeometryRenderer::PrimitiveType primitive,
+                                            bool hasIndexAttribute)
+{
+    if (hasIndexAttribute) {
+        switch (primitive) {
+        case Qt3DRender::QGeometryRenderer::Triangles:
+            convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::Triangles>(geometry);
+            break;
+        case Qt3DRender::QGeometryRenderer::TriangleStrip:
+            convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleStrip>(geometry);
+            break;
+        case Qt3DRender::QGeometryRenderer::TriangleFan:
+            convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleFan>(geometry);
+            break;
+        default:
+            Q_UNREACHABLE();
+        }
+    } else {
+        switch (primitive) {
+        case Qt3DRender::QGeometryRenderer::TriangleStrip:
+            convertNonIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleStrip>(geometry);
+            break;
+        case Qt3DRender::QGeometryRenderer::TriangleFan:
+            convertNonIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleFan>(geometry);
+            break;
+        default:
+            Q_UNREACHABLE();
+        }
+    }
+}
+
+void generateNormals(Qt3DRender::QGeometry *geometry)
+{
+    const auto &attributes = geometry->attributes();
+
+    auto posIt = std::find_if(std::begin(attributes), std::end(attributes),
+                              [](const Qt3DRender::QAttribute *attr) {
+                                  return attr->name() == Qt3DRender::QAttribute::defaultPositionAttributeName();
+                              });
+
+    if (posIt == std::end(attributes)) {
+        qCWarning(kuesa) << "No position attribute found on geometry, unable to generate normals.";
+        return;
+    }
+
+    Qt3DRender::QAttribute *positionAttribute = *posIt;
+
+    if (positionAttribute->vertexBaseType() != Qt3DRender::QAttribute::Float ||
+        positionAttribute->vertexSize() != 3) {
+        qCWarning(kuesa) << "Currently only vec3 positions are supported, unable to generate normals.";
+        return;
+    }
+
+    QByteArray rawNormals;
+    rawNormals.resize(positionAttribute->count() * sizeof(QVector3D));
+    QVector3D *normals = reinterpret_cast<QVector3D *>(rawNormals.data());
+
+    Qt3DRender::QBuffer *positionBuffer = positionAttribute->buffer();
+    const char *positionData = positionBuffer->data().constData();
+    const uint positionByteOffset = positionAttribute->byteOffset();
+    const uint positionByteStride = std::max(positionAttribute->byteStride(), uint(sizeof(QVector3D)));
+
+    // Iterate over position attribute and compute normals
+    // (Only handle vec3 types for now)
+    Q_ASSERT(positionAttribute->count() % 3 == 0);
+    for (int i = 0; i < positionAttribute->count(); i += 3) {
+        QVarLengthArray<QVector3D, 3> positions;
+        for (int j = 0; j < 3; ++j) {
+            const char *rawPos = positionData + positionByteOffset + (i + j) * positionByteStride;
+            const QVector3D p = *reinterpret_cast<const QVector3D *>(rawPos);
+            positions.push_back(p);
+        }
+
+        // Compute normals from positions
+        const QVector3D ab = positions[1] - positions[0];
+        const QVector3D ac = positions[2] - positions[0];
+        const QVector3D normal = QVector3D::crossProduct(ab, ac).normalized();
+
+        // Insert computed normals (its a per face normal, the 3 triangle
+        // vertices will have the same normal)
+        for (int j = 0; j < 3; ++j) {
+            *normals = normal;
+            ++normals;
+        }
+    }
+
+    // TO DO: use same buffer for all attributes
+    // We use a separate buffer for normals:
+    // An improvement would be to preallocate some space for normals
+    // directly when converting from indexed of triangle stip/fan
+    // However in the case the mesh was already provided as triangles this would
+    // be a bit prolematic, this would have to be handled as well
+    Qt3DRender::QBuffer *buffer = new Qt3DRender::QBuffer();
+    buffer->setData(rawNormals);
+
+    Qt3DRender::QAttribute *normalsAttribute = new Qt3DRender::QAttribute();
+    normalsAttribute->setName(Qt3DRender::QAttribute::defaultNormalAttributeName());
+    normalsAttribute->setCount(positionAttribute->count());
+    normalsAttribute->setByteOffset(0);
+    normalsAttribute->setByteStride(3 * sizeof(float));
+    normalsAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+    normalsAttribute->setVertexSize(3);
+    normalsAttribute->setBuffer(buffer);
+    normalsAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+
+    geometry->addAttribute(normalsAttribute);
+}
+
+} // namespace
+
+void createNormalsForGeometry(Qt3DRender::QGeometry *geometry,
+                              Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+{
+    const auto &attributes = geometry->attributes();
+
+    // Check if we are sharing vertices between faces. This is the case if we
+    // have an IndexAttribute or if the primitive type is a TriangleStrip or
+    // TriangleFan
+    const bool hasIndexAttribute = std::find_if(std::begin(attributes), std::end(attributes),
+                                                [](const Qt3DRender::QAttribute *attr) {
+                                                    return attr->attributeType() == Qt3DRender::QAttribute::IndexAttribute;
+                                                }) != std::end(attributes);
+    const bool hasSharedVertices = (primitiveType != Qt3DRender::QGeometryRenderer::Triangles) || hasIndexAttribute;
+
+    if (hasSharedVertices) {
+        // This step gets rid of the IndexAttribute if we had one which has no use
+        // anymore since every entry will be unique
+        // The new geometry content we will generate will be Triangle based
+        convertGeometryToTriangleBasedGeometry(geometry, primitiveType, hasIndexAttribute);
+    }
+
+    // Generate normals on triangle based geometry
+    generateNormals(geometry);
+}
+
 } // namespace MeshParserUtils
 } // namespace GLTF2Import
 } // namespace Kuesa

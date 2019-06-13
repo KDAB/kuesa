@@ -55,6 +55,10 @@ namespace MeshParserUtils {
 Qt3DRender::QAttribute *createTangentAttribute(Qt3DRender::QGeometry *geometry, Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
 KUESASHARED_EXPORT bool needsTangentAttribute(const Qt3DRender::QGeometry *geometry,
                                               Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
+KUESASHARED_EXPORT void createNormalsForGeometry(Qt3DRender::QGeometry *geometry,
+                                                 Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
+KUESASHARED_EXPORT bool needsNormalAttribute(const Qt3DRender::QGeometry *geometry,
+                                             Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
 KUESASHARED_EXPORT bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
                                                             GLTF2Context *context);
 bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry);

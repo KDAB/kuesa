@@ -71,5 +71,6 @@ qtConfig(private_tests) {
         metallicroughnessmaterial \
         parseroptions \
         gltf2material \
-        unlitmaterial
+        unlitmaterial \
+        meshparser_utils
 }
