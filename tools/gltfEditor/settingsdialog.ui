@@ -14,6 +14,16 @@
    <string>Settings</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="1">
+    <widget class="QRadioButton" name="defaultClearColor">
+     <property name="text">
+      <string>Default</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -35,30 +45,13 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0" colspan="2">
+   <item row="4" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Selection Color</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QRadioButton" name="defaultClearColor">
-     <property name="text">
-      <string>Default</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -80,6 +73,20 @@
     <widget class="QCheckBox" name="generateTangentsCB">
      <property name="text">
       <string>Generate Tangents on Import</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Selection Color</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QCheckBox" name="generateNormalsCB">
+     <property name="text">
+      <string>Generate Normals on Import</string>
      </property>
     </widget>
    </item>

@@ -38,7 +38,9 @@
  * Avalaible options are
  * \list
  * \li generateTangents: If true, the importer will generate tangents
- * for all the primitives which doesn't have tangents.
+ * for all the primitives which don't have tangents.
+ * \li generateNormals: If true, the importer will generate flat normals
+ * for all the primitives which don't have normals.
  * \endlist
  */
 
@@ -52,7 +54,9 @@
  * Avalaible options are
  * \list
  * \li generateTangents: If true, the importer will generate tangents
- * for all the primitives which doesn't have tangents.
+ * for all the primitives which don't have tangents.
+ * \li generateNormals: If true, the importer will generate flat normals
+ * for all the primitives which don't have normals.
  * \endlist
  */
 
@@ -61,6 +65,7 @@ QT_BEGIN_NAMESPACE
 Kuesa::GLTF2Import::GLTF2Options::GLTF2Options()
     : QObject(nullptr)
     , m_generateTangents(false)
+    , m_generateNormals(false)
 {
 }
 
@@ -69,12 +74,25 @@ bool Kuesa::GLTF2Import::GLTF2Options::generateTangents() const
     return m_generateTangents;
 }
 
+bool Kuesa::GLTF2Import::GLTF2Options::generateNormals() const
+{
+    return m_generateNormals;
+}
+
 void Kuesa::GLTF2Import::GLTF2Options::setGenerateTangents(bool generateTangents)
 {
     if (generateTangents == m_generateTangents)
         return;
     m_generateTangents = generateTangents;
-    generateTangentsChanged(m_generateTangents);
+    emit generateTangentsChanged(m_generateTangents);
+}
+
+void Kuesa::GLTF2Import::GLTF2Options::setGenerateNormals(bool generateNormals)
+{
+    if (generateNormals == m_generateNormals)
+        return;
+    m_generateNormals = generateNormals;
+    emit generateNormalsChanged(m_generateNormals);
 }
 
 QT_END_NAMESPACE

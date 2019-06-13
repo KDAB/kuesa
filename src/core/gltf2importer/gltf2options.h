@@ -41,19 +41,24 @@ class KUESASHARED_EXPORT GLTF2Options : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool generateTangents READ generateTangents WRITE setGenerateTangents NOTIFY generateTangentsChanged)
+    Q_PROPERTY(bool generateNormals READ generateNormals WRITE setGenerateNormals NOTIFY generateNormalsChanged)
 public:
     GLTF2Options();
 
     bool generateTangents() const;
+    bool generateNormals() const;
 
 public Q_SLOTS:
     void setGenerateTangents(bool generateTangents);
+    void setGenerateNormals(bool generateNormals);
 
 Q_SIGNALS:
     void generateTangentsChanged(bool generateTangents);
+    void generateNormalsChanged(bool generateNormals);
 
 private:
     bool m_generateTangents;
+    bool m_generateNormals;
 };
 
 } // namespace GLTF2Import

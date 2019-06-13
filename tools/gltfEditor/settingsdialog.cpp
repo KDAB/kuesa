@@ -49,6 +49,8 @@ void setButtonColor(QAbstractButton *button, QColor c)
 SettingsDialog::SettingsDialog(MainWindow *parent)
     : QDialog(parent)
     , ui(new Ui::SettingsDialog)
+    , m_generateTangents(false)
+    , m_generateNormals(false)
 {
     ui->setupUi(this);
     connect(ui->selectionColorButton, &QToolButton::clicked, this, [this]() {
@@ -66,6 +68,10 @@ SettingsDialog::SettingsDialog(MainWindow *parent)
     connect(ui->generateTangentsCB, &QRadioButton::toggled, this, [this](bool checked) {
         m_generateTangents = checked;
         emit generateTangentsChanged(m_generateTangents);
+    });
+    connect(ui->generateNormalsCB, &QRadioButton::toggled, this, [this](bool checked) {
+        m_generateNormals = checked;
+        emit generateNormalsChanged(m_generateNormals);
     });
 }
 
@@ -92,6 +98,11 @@ bool SettingsDialog::defaultClearColor() const
 bool SettingsDialog::generateTangents() const
 {
     return m_generateTangents;
+}
+
+bool SettingsDialog::generateNormals() const
+{
+    return m_generateNormals;
 }
 
 void SettingsDialog::setSelectionColor(QColor selectionColor)
@@ -132,5 +143,14 @@ void SettingsDialog::setGenerateTangents(bool generateTangents)
         m_generateTangents = generateTangents;
         emit generateTangentsChanged(m_generateTangents);
         ui->generateTangentsCB->setChecked(m_generateTangents);
+    }
+}
+
+void SettingsDialog::setGenerateNormals(bool generateNormals)
+{
+    if (m_generateNormals != generateNormals) {
+        m_generateNormals = generateNormals;
+        emit generateNormalsChanged(m_generateNormals);
+        ui->generateNormalsCB->setChecked(m_generateNormals);
     }
 }

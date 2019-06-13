@@ -38,7 +38,8 @@ SUBDIRS = \
     textureimagecollection \
     gltfEditor \
     morphcontroller \
-    gltf2importer
+    gltf2importer \
+    gltf2options
 
 #installed_cmake.depends = cmake
 

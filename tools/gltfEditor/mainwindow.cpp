@@ -117,6 +117,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     m_generateTangents = settings.value("generateTangents", false).value<bool>();
+    m_generateNormals = settings.value("generateNormals", false).value<bool>();
 
     connect(m_ui->actionCopy, &QAction::triggered, this, &MainWindow::copyAssetName);
     connect(m_ui->actionOpen, &QAction::triggered, this, &MainWindow::openFile);
@@ -407,6 +408,11 @@ bool MainWindow::generateRuntimeTangents() const
     return m_generateTangents;
 }
 
+bool MainWindow::generateRuntimeNormals() const
+{
+    return m_generateNormals;
+}
+
 void MainWindow::setFilePath(QString filePath)
 {
     auto filePathURL = QUrl::fromLocalFile(filePath).toString();
@@ -558,6 +564,7 @@ void MainWindow::openSettings()
     dlg.setClearColor(clearColor);
     dlg.setDefaultClearColor(settings.value("defaultClearColor", true).toBool());
     dlg.setGenerateTangents(m_generateTangents);
+    dlg.setGenerateNormals(m_generateNormals);
     if (dlg.exec() == QDialog::Accepted) {
         m_assetInspector->meshInspector()->setSelectionColor(dlg.selectionColor());
         settings.setValue("clearColor", dlg.clearColor());
@@ -573,6 +580,10 @@ void MainWindow::openSettings()
         settings.setValue("generateTangents", dlg.generateTangents());
         m_generateTangents = dlg.generateTangents();
         emit generateRuntimeTangentsChanged(m_generateTangents);
+
+        settings.setValue("generateNormals", dlg.generateNormals());
+        m_generateNormals = dlg.generateNormals();
+        emit generateRuntimeNormalsChanged(m_generateNormals);
     }
 }
 

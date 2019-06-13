@@ -188,7 +188,7 @@ Kuesa.SceneEntity {
         sceneEntity: scene
         assignNames: true
         options.generateTangents:  _mainWindow.generateRuntimeTangents
-
+        options.generateNormals: _mainWindow.generateRuntimeNormals
         onStatusChanged: _mainWindow.updateScene(scene)
     }
 }
