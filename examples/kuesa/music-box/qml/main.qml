@@ -26,6 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+//![0]
 import QtQuick 2.11
 import QtQuick.Scene3D 2.0
 
@@ -37,3 +38,4 @@ Scene3D {
 
     MainScene { }
 }
+//![0]

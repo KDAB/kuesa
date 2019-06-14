@@ -35,12 +35,15 @@ import Qt3D.Animation 2.12
 import QtQml 2.2
 import QtQuick 2.12
 
+//![0]
 import Kuesa 1.1 as Kuesa
 import MusicBox 1.0 as MusicBox
 
 Kuesa.SceneEntity {
     id: scene
+//![0]
 
+//![2.1]
     QtObject {
         id: d
 
@@ -72,6 +75,7 @@ Kuesa.SceneEntity {
             'thumbTopAction',
             'wristPivotAction'
         ]
+//![2.1]
 
         readonly property var musicRows: [
             '........x.....................',
@@ -252,10 +256,13 @@ Kuesa.SceneEntity {
         camera: mainCamera
     }
 
+//!    [1]
     Kuesa.GLTF2Importer {
         id: importer
         sceneEntity: scene
         source: "qrc:/RobotArm.gltf"
+//!    [1]
+//!    [2.3]
         onStatusChanged: {
             if (status == Kuesa.GLTF2Importer.Ready) {
                 console.log('Animation clips: ' + scene.animationClips.names);
@@ -270,6 +277,7 @@ Kuesa.SceneEntity {
                 d.animationRunning = true
             }
         }
+//!    [2.3]
     }
 
     Kuesa.Skybox {
@@ -279,6 +287,7 @@ Kuesa.SceneEntity {
     }
 
     // robot arm animation
+//!    [2.2]
     NodeInstantiator {
         id: actionPlayers
         model: []
@@ -289,6 +298,7 @@ Kuesa.SceneEntity {
             running: d.animationRunning
         }
     }
+//!    [2.2]
 
     // prong animations
     Kuesa.AnimationPlayer { id: prong00Action; sceneEntity: scene; clip: 'Prong00Action' }

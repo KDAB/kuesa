@@ -2,3 +2,5 @@ tests/auto/assets/KHR_lights_punctual/MODEL_ROUNDED_CUBE_PART_1/*.bin filter=lfs
 tests/auto/assets/cube_no_normals.bin filter=lfs diff=lfs merge=lfs -text
 tests/auto/assets/cube_no_normals.gltf filter=lfs diff=lfs merge=lfs -text
 examples/kuesa/car-scene/doc/images/car-scene-example.jpg filter=lfs diff=lfs merge=lfs -text
+examples/kuesa/music-box/doc/images filter=lfs diff=lfs merge=lfs -text
+examples/kuesa/music-box/doc/images/music-box-example.jpg filter=lfs diff=lfs merge=lfs -text
