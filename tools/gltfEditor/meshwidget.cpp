@@ -52,6 +52,7 @@ void MeshWidget::setMeshInspector(MeshInspector *inspector)
     m_inspector = inspector;
     connect(m_inspector, &MeshInspector::meshParamsChanged, this, &MeshWidget::updateData);
     connect(m_ui->generateTangentsButton, &QPushButton::clicked, m_inspector, &MeshInspector::generateTangents);
+    connect(m_ui->generateNormalsButton, &QPushButton::clicked, m_inspector, &MeshInspector::generateNormals);
 
     BufferViewer *bufferViewer = new BufferViewer(m_inspector->bufferModel());
     auto layout = new QVBoxLayout(m_ui->bufferGroupBox);
@@ -66,6 +67,7 @@ void MeshWidget::updateData()
     m_ui->primitiveTypeLabel->setText(m_inspector->primitiveType());
     m_ui->primitiveCountLabel->setText(QString::number(m_inspector->primitiveCount()));
     m_ui->tangentGroupBox->setVisible(m_inspector->needsTangents());
+    m_ui->normalsGroupBox->setVisible(m_inspector->needsNormals());
 }
 
 BufferViewer::BufferViewer(QAbstractItemModel *model, QWidget *parent)

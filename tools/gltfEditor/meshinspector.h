@@ -76,6 +76,7 @@ public:
     QString primitiveType() const;
     BufferModel *bufferModel();
     bool needsTangents() const;
+    bool needsNormals() const;
     QColor selectionColor() const;
 
     static unsigned int attributeSizeInBytes(Qt3DRender::QAttribute *attribute);
@@ -89,6 +90,7 @@ Q_SIGNALS:
     void meshParamsChanged();
     void selectionColorChanged(QColor selectionColor);
     void generateTangents();
+    void generateNormals();
 
 private:
     Qt3DRender::QGeometryRenderer *m_mesh;
@@ -101,6 +103,7 @@ private:
     int m_primitiveCount;
     QString m_primitiveType;
     bool m_needsTangents;
+    bool m_needsNormals;
 
     BufferModel *m_model;
     QMetaObject::Connection m_meshConnection;

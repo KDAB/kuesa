@@ -72,5 +72,6 @@ qtConfig(private_tests) {
         parseroptions \
         gltf2material \
         unlitmaterial \
-        meshparser_utils
+        meshparser_utils \
+        normalgenerator
 }

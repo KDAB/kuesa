@@ -40,6 +40,8 @@
 #include <Kuesa/kuesa_global.h>
 #include <Qt3DRender/QGeometryRenderer>
 
+QT_BEGIN_NAMESPACE
+
 namespace Qt3DRender {
 class QGeometry;
 class QAttribute;
@@ -61,10 +63,14 @@ KUESASHARED_EXPORT bool needsNormalAttribute(const Qt3DRender::QGeometry *geomet
                                              Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
 KUESASHARED_EXPORT bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
                                                             GLTF2Context *context);
+KUESASHARED_EXPORT bool generatePrecomputedNormalAttribute(Qt3DRender::QGeometryRenderer *mesh,
+                                                           GLTF2Context *context);
 bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry);
 
 } // namespace MeshParserUtils
 } // namespace GLTF2Import
 } // namespace Kuesa
+
+QT_END_NAMESPACE
 
 #endif // KUESA_GLTF2IMPORT_MESHPARSER_UTILS_P_H

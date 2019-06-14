@@ -48,14 +48,10 @@
 #include "gltf2exporter_p.h"
 #include "kuesa_p.h"
 
+QT_BEGIN_NAMESPACE
+
 namespace {
 
-const QLatin1String KEY_BUFFERVIEWTARGET = QLatin1String("target");
-const QLatin1String KEY_COMPONENTTYPE = QLatin1Literal("componentType");
-const QLatin1String KEY_COUNT = QLatin1Literal("count");
-const QLatin1String KEY_TYPE = QLatin1Literal("type");
-const QLatin1String KEY_MAX = QLatin1Literal("max");
-const QLatin1String KEY_MIN = QLatin1Literal("min");
 const QLatin1String ATTR_TANGENT = QLatin1Literal("TANGENT");
 
 const auto morphTargetAttributeRegExps = []() {
@@ -162,6 +158,21 @@ uint vertexBaseTypeSize(Qt3DRender::QAttribute::VertexBaseType vertexBaseType)
     default:
         Q_UNREACHABLE();
     }
+}
+
+Qt3DRender::QAttribute *attributeFromGeometry(const QString &name,
+                                              const Qt3DRender::QGeometry *geometry)
+{
+    const auto attributes = geometry->attributes();
+    const auto end = std::end(attributes);
+    auto it = std::find_if(std::begin(attributes),
+                           end,
+                           [name](const Qt3DRender::QAttribute *attr) {
+                               return attr->name() == name;
+                           });
+    if (it == end)
+        return nullptr;
+    return *it;
 }
 
 struct Attribute {
@@ -444,6 +455,99 @@ bool getMeshGLTFInformation(const Qt3DRender::QGeometryRenderer *primitiveRender
     return false;
 }
 
+QLatin1String glTFAttributeNameFromQt3DAttribute(const Qt3DRender::QAttribute *attribute)
+{
+    const QString attributeName = attribute->name();
+    // Standard Attributes
+    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultPositionAttributeName()))
+        return QLatin1String("POSITION");
+    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultNormalAttributeName()))
+        return QLatin1String("NORMAL");
+    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultTangentAttributeName()))
+        return QLatin1String("TANGENT");
+    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName()))
+        return QLatin1String("TEXCOORD_0");
+    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName()))
+        return QLatin1String("TEXCOORD_1");
+    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultTextureCoordinate2AttributeName()))
+        return QLatin1String("TEXCOORD_2");
+    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultColorAttributeName()))
+        return QLatin1String("COLOR_0");
+    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultJointIndicesAttributeName()))
+        return QLatin1String("JOINTS_0");
+    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultJointWeightsAttributeName()))
+        return QLatin1String("WEIGHTS_0");
+    return QLatin1String();
+}
+
+QLatin1String glTFTypeForAttribute(const Qt3DRender::QAttribute *attribute)
+{
+    Q_ASSERT(attribute->vertexBaseType() == Qt3DRender::QAttribute::Float);
+    switch (attribute->vertexSize()) {
+    case 1:
+        return QLatin1String("SCALAR");
+    case 2:
+        return QLatin1String("VEC2");
+    case 3:
+        return QLatin1String("VEC3");
+    case 4:
+        return QLatin1String("VEC4");
+    case 9:
+        return QLatin1String("MAT3");
+    case 16:
+        return QLatin1String("MAT4");
+    default:
+        Q_UNREACHABLE();
+    }
+    return QLatin1String();
+}
+
+int addJsonBufferView(QJsonObject &rootObject,
+                      int bufferIndex,
+                      int byteLength,
+                      int byteStride = 0) {
+    QJsonObject jsonBufferView;
+    jsonBufferView[Kuesa::GLTF2Import::KEY_BUFFER] = bufferIndex;
+    jsonBufferView[Kuesa::GLTF2Import::KEY_BYTELENGTH] = byteLength;
+    jsonBufferView[Kuesa::GLTF2Import::KEY_BYTEOFFSET] = 0;
+    if (byteStride > 0)
+        jsonBufferView[Kuesa::GLTF2Import::KEY_BYTESTRIDE] = byteStride;
+    jsonBufferView[Kuesa::GLTF2Import::KEY_BUFFERVIEWTARGET] = GL_ARRAY_BUFFER;
+    const int bufferViewIndex = Kuesa::addToJsonChildArray(rootObject, Kuesa::GLTF2Import::KEY_BUFFERVIEWS, jsonBufferView);
+    return bufferViewIndex;
+}
+
+int addJsonAccessor(QJsonObject &rootObject,
+                    int bufferViewIndex,
+                    const Qt3DRender::QAttribute *attribute) {
+    // add accessor
+    QJsonObject jsonAccessor;
+    jsonAccessor[Kuesa::GLTF2Import::KEY_BUFFERVIEW] = bufferViewIndex;
+    jsonAccessor[Kuesa::GLTF2Import::KEY_COMPONENTTYPE] = GL_FLOAT;
+    jsonAccessor[Kuesa::GLTF2Import::KEY_BYTEOFFSET] = static_cast<int>(attribute->byteOffset());
+    jsonAccessor[Kuesa::GLTF2Import::KEY_COUNT] = static_cast<int>(attribute->count());
+    jsonAccessor[Kuesa::GLTF2Import::KEY_TYPE] = glTFTypeForAttribute(attribute);
+    const int accessorIndex = Kuesa::addToJsonChildArray(rootObject, Kuesa::GLTF2Import::KEY_ACCESSORS, jsonAccessor);
+    return accessorIndex;
+}
+
+int addJsonBuffer(QJsonObject &rootObject,
+                  const QByteArray &data,
+                  const QString bufferFileName,
+                  const QString pathPrefix) {
+    QFile bufferFile(pathPrefix + bufferFileName);
+    if (!bufferFile.open(QFile::WriteOnly)) {
+        qCWarning(kuesa) << "Can't open" << bufferFile.fileName() << "for writing tangent buffer";
+        return -1;
+    }
+    bufferFile.write(data);
+    QJsonObject jsonBuffer;
+    jsonBuffer[Kuesa::GLTF2Import::KEY_BYTELENGTH] = data.size();
+    jsonBuffer[Kuesa::GLTF2Import::KEY_URI] = bufferFileName;
+    const int bufferIndex = Kuesa::addToJsonChildArray(rootObject, Kuesa::GLTF2Import::KEY_BUFFERS, jsonBuffer);
+    return bufferIndex;
+}
+
 } // namespace
 
 // TODO This is only needed when the material has normal mapping
@@ -489,14 +593,8 @@ bool needsTangentAttribute(const Qt3DRender::QGeometry *geometry,
     if (!geometry)
         return false;
 
-    const auto &attributes = geometry->attributes();
-    const bool hasTangent = std::find_if(std::begin(attributes),
-                                         std::end(attributes),
-                                         [](const Qt3DRender::QAttribute *attr) {
-                                             return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
-                                         }) != std::end(attributes);
-
-    return !hasTangent;
+    return attributeFromGeometry(Qt3DRender::QAttribute::defaultTangentAttributeName(),
+                                 geometry) == nullptr;
 }
 
 bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
@@ -527,23 +625,25 @@ bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
     geometry->addAttribute(newTangentAttr);
 
     const QByteArray bufferData = newTangentAttr->buffer()->data();
-    const int bufferIndex = rootObject.value(KEY_BUFFERS).toArray().size();
+    const QString basePath = context->basePath();
+    const QString bufferFileName = generateUniqueFilename(basePath, QStringLiteral("kuesaTangentBuffers.bin"));
 
-    // glTF: add bufferView
-    QJsonObject jsonBufferView;
-    jsonBufferView[KEY_BUFFER] = bufferIndex;
-    jsonBufferView[KEY_BYTELENGTH] = bufferData.size();
-    jsonBufferView[KEY_BYTEOFFSET] = 0;
-    jsonBufferView[KEY_BUFFERVIEWTARGET] = GL_ARRAY_BUFFER;
-    const int bufferViewIndex = addToJsonChildArray(rootObject, KEY_BUFFERVIEWS, jsonBufferView);
+    // Add Buffer
+    const int bufferIdx = addJsonBuffer(rootObject,
+                                        bufferData,
+                                        bufferFileName,
+                                        basePath + QDir::separator());
+    if (bufferIdx < 0) {
+        qCWarning(kuesa) << "unable to insert new buffer";
+        return false;
+    }
+    context->addLocalFile(bufferFileName);
 
-    // add accessor
-    QJsonObject jsonAccessor;
-    jsonAccessor[KEY_BUFFERVIEW] = bufferViewIndex;
-    jsonAccessor[KEY_COMPONENTTYPE] = GL_FLOAT;
-    jsonAccessor[KEY_COUNT] = static_cast<int>(newTangentAttr->count());
-    jsonAccessor[KEY_TYPE] = QLatin1Literal("VEC4");
-    const int accessorIndex = addToJsonChildArray(rootObject, KEY_ACCESSORS, jsonAccessor);
+    // Add BufferView
+    const int bufferViewIndex = addJsonBufferView(rootObject, bufferIdx, bufferData.size(), 0);
+
+    // Add Accessor
+    const int accessorIndex = addJsonAccessor(rootObject, bufferViewIndex, newTangentAttr);
 
     // modify mesh object and add attribute/accessor
     QJsonArray jsonMeshes = rootObject.value(KEY_MESHES).toArray();
@@ -562,25 +662,6 @@ bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
     jsonMeshes[meshIdx] = jsonMesh;
 
     rootObject[KEY_MESHES] = jsonMeshes;
-
-    // create tangent buffer file
-    const QString basePath = context->basePath();
-    const QString bufferFileName = generateUniqueFilename(basePath, "kuesaTangentBuffers.bin");
-    QFile bufferFile(basePath + QDir::separator() + bufferFileName);
-
-    if (!bufferFile.open(QFile::WriteOnly)) {
-        qCWarning(kuesa) << "Can't open" << bufferFile.fileName() << "for writing tangent buffer";
-        return false;
-    } else {
-        // add buffer to JSON
-        bufferFile.write(bufferData);
-        QJsonObject jsonBuffer;
-        jsonBuffer[KEY_BYTELENGTH] = bufferData.size();
-        jsonBuffer[KEY_URI] = bufferFileName;
-        addToJsonChildArray(rootObject, KEY_BUFFERS, jsonBuffer);
-
-        context->addLocalFile(bufferFileName);
-    }
 
     context->setJson(QJsonDocument(rootObject));
 
@@ -607,13 +688,8 @@ bool needsNormalAttribute(const Qt3DRender::QGeometry *geometry,
     if (!geometry)
         return false;
 
-    const auto &attributes = geometry->attributes();
-    const bool hasNormal = std::find_if(std::begin(attributes),
-                                        std::end(attributes),
-                                        [](const Qt3DRender::QAttribute *attr) {
-                                            return attr->name() == Qt3DRender::QAttribute::defaultNormalAttributeName();
-                                        }) != std::end(attributes);
-    return !hasNormal;
+    return attributeFromGeometry(Qt3DRender::QAttribute::defaultNormalAttributeName(),
+                                 geometry) == nullptr;
 }
 
 namespace {
@@ -955,10 +1031,35 @@ void convertNonIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRende
     ctx.updateAttributes(newVertexData);
 }
 
-void convertGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *geometry,
-                                            Qt3DRender::QGeometryRenderer::PrimitiveType primitive,
-                                            bool hasIndexAttribute)
+bool geometryHasIndexAttribute(Qt3DRender::QGeometry *geometry)
 {
+    const auto &attributes = geometry->attributes();
+
+    // Check if we are sharing vertices between faces. This is the case if we
+    // have an IndexAttribute or if the primitive type is a TriangleStrip or
+    // TriangleFan
+    const bool hasIndexAttribute = std::find_if(std::begin(attributes), std::end(attributes),
+                                                [](const Qt3DRender::QAttribute *attr) {
+                                                    return attr->attributeType() == Qt3DRender::QAttribute::IndexAttribute;
+                                                }) != std::end(attributes);
+    return hasIndexAttribute;
+}
+
+bool geometryHasSharedVertices(Qt3DRender::QGeometry *geometry,
+                               Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+{
+    // Check if we are sharing vertices between faces. This is the case if we
+    // have an IndexAttribute or if the primitive type is a TriangleStrip or
+    // TriangleFan
+    const bool hasIndexAttribute = geometryHasIndexAttribute(geometry);
+    return (primitiveType != Qt3DRender::QGeometryRenderer::Triangles) || hasIndexAttribute;
+
+}
+
+void convertGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *geometry,
+                                            Qt3DRender::QGeometryRenderer::PrimitiveType primitive)
+{
+    const bool hasIndexAttribute = geometryHasIndexAttribute(geometry);
     if (hasIndexAttribute) {
         switch (primitive) {
         case Qt3DRender::QGeometryRenderer::Triangles:
@@ -989,19 +1090,13 @@ void convertGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *geometry,
 
 void generateNormals(Qt3DRender::QGeometry *geometry)
 {
-    const auto &attributes = geometry->attributes();
+    const Qt3DRender::QAttribute *positionAttribute = attributeFromGeometry(Qt3DRender::QAttribute::defaultPositionAttributeName(),
+                                                                            geometry);
 
-    auto posIt = std::find_if(std::begin(attributes), std::end(attributes),
-                              [](const Qt3DRender::QAttribute *attr) {
-                                  return attr->name() == Qt3DRender::QAttribute::defaultPositionAttributeName();
-                              });
-
-    if (posIt == std::end(attributes)) {
+    if (positionAttribute == nullptr) {
         qCWarning(kuesa) << "No position attribute found on geometry, unable to generate normals.";
         return;
     }
-
-    Qt3DRender::QAttribute *positionAttribute = *posIt;
 
     if (positionAttribute->vertexBaseType() != Qt3DRender::QAttribute::Float ||
         positionAttribute->vertexSize() != 3) {
@@ -1069,28 +1164,146 @@ void generateNormals(Qt3DRender::QGeometry *geometry)
 void createNormalsForGeometry(Qt3DRender::QGeometry *geometry,
                               Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
 {
-    const auto &attributes = geometry->attributes();
-
-    // Check if we are sharing vertices between faces. This is the case if we
-    // have an IndexAttribute or if the primitive type is a TriangleStrip or
-    // TriangleFan
-    const bool hasIndexAttribute = std::find_if(std::begin(attributes), std::end(attributes),
-                                                [](const Qt3DRender::QAttribute *attr) {
-                                                    return attr->attributeType() == Qt3DRender::QAttribute::IndexAttribute;
-                                                }) != std::end(attributes);
-    const bool hasSharedVertices = (primitiveType != Qt3DRender::QGeometryRenderer::Triangles) || hasIndexAttribute;
-
+    const bool hasSharedVertices = geometryHasSharedVertices(geometry, primitiveType);
     if (hasSharedVertices) {
         // This step gets rid of the IndexAttribute if we had one which has no use
         // anymore since every entry will be unique
         // The new geometry content we will generate will be Triangle based
-        convertGeometryToTriangleBasedGeometry(geometry, primitiveType, hasIndexAttribute);
+        convertGeometryToTriangleBasedGeometry(geometry, primitiveType);
     }
 
     // Generate normals on triangle based geometry
     generateNormals(geometry);
 }
 
+bool generatePrecomputedNormalAttribute(Qt3DRender::QGeometryRenderer *mesh, GLTF2Context *context)
+{
+    Qt3DRender::QGeometry *geometry = mesh->geometry();
+    if (!GLTF2Import::MeshParserUtils::needsNormalAttribute(geometry,
+                                                            mesh->primitiveType()))
+        return false;
+
+    // get information about mesh name and primitive index within the original glTF file
+    Kuesa::GLTF2Import::Mesh gltfMesh;
+    int primitiveNumber;
+    if (!getMeshGLTFInformation(mesh, context, gltfMesh, primitiveNumber))
+        return false;
+    if (gltfMesh.meshIdx < 0) {
+        qCWarning(kuesa) << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
+        return false;
+    }
+
+    QJsonDocument jsonDocument = context->json();
+    QJsonObject rootObject = jsonDocument.object();
+    QJsonArray jsonMeshes = rootObject.value(KEY_MESHES).toArray();
+    const qint32 meshIdx = gltfMesh.meshIdx;
+    Q_ASSERT(meshIdx < jsonMeshes.size());
+    QJsonObject jsonMesh = jsonMeshes.at(meshIdx).toObject();
+    QJsonArray jsonPrimitives = jsonMesh.value(KEY_PRIMITIVES).toArray();
+    QJsonObject jsonPrimitive = jsonPrimitives.at(primitiveNumber).toObject();
+    QJsonObject jsonPrimAttrs = jsonPrimitive.value(KEY_ATTRIBUTES).toObject();
+
+    const bool hasSharedVertices = geometryHasSharedVertices(geometry,
+                                                             mesh->primitiveType());
+    // Generate normals
+    createNormalsForGeometry(geometry, mesh->primitiveType());
+
+    if (hasSharedVertices) {
+        // To create normals in the case some vertices were shared, we have to
+        // regenerate all other attributes and combine them in a single buffer,
+        // also changing the primitive type to Triangles
+        // For these reasons, we need to rewrite completely the buffer views,
+        // accessors and meshes
+        const auto attributes = geometry->attributes();
+        int bufferIdx = -1;
+        int bufferSize = -1;
+
+        // Clear previous attributes for mesh in JSON
+        jsonPrimAttrs = {};
+        // Remove index buffer reference in jsonPrimitive
+        jsonPrimitive.remove(KEY_INDICES);
+
+        for (const Qt3DRender::QAttribute *attr : attributes) {
+            // All attributes are backed by the same buffer except the normal
+            // attribute which uses its own buffer
+            if (attr->name() != Qt3DRender::QAttribute::defaultNormalAttributeName()) {
+                // Write buffer if not done already
+                if (bufferIdx < 0) {
+                    const QByteArray bufferData = attr->buffer()->data();
+                    const QString basePath = context->basePath();
+                    const QString bufferFileName = generateUniqueFilename(basePath, "kuesaMeshNoSharedVerticesBuffers.bin");
+                    bufferSize = bufferData.size();
+
+                    // Add Buffer
+                    bufferIdx = addJsonBuffer(rootObject,
+                                              bufferData,
+                                              bufferFileName,
+                                              basePath + QDir::separator());
+                    if (bufferIdx < 0) {
+                        qCWarning(kuesa) << "unable to insert new buffer";
+                        return false;
+                    }
+                    context->addLocalFile(bufferFileName);
+                }
+                // Add BufferView
+                const int bufferViewIndex = addJsonBufferView(rootObject, bufferIdx, bufferSize, 0);
+                // Add Accessor
+                const int accessorIndex = addJsonAccessor(rootObject, bufferViewIndex, attr);
+                // Add updated Mesh Primitive
+                const QLatin1String gltfAttributeName = glTFAttributeNameFromQt3DAttribute(attr);
+
+                // replace matching primitive
+                jsonPrimAttrs[gltfAttributeName] = accessorIndex;
+            }
+        }
+    }
+
+    // Write Normals Attribute
+    {
+        // We can get away by writing only the normals attribute
+        Qt3DRender::QAttribute *normalAttribute = attributeFromGeometry(Qt3DRender::QAttribute::defaultNormalAttributeName(),
+                                                                        geometry);
+        if (!normalAttribute)
+            return false;
+
+        const QByteArray bufferData = normalAttribute->buffer()->data();
+        const QString basePath = context->basePath();
+        const QString bufferFileName = generateUniqueFilename(basePath, "kuesaMeshNormalsBuffers.bin");
+
+        // Add Buffer
+        const int bufferIdx = addJsonBuffer(rootObject,
+                                            bufferData,
+                                            bufferFileName,
+                                            basePath + QDir::separator());
+        if (bufferIdx < 0) {
+            qCWarning(kuesa) << "unable to insert new buffer";
+            return false;
+        }
+        context->addLocalFile(bufferFileName);
+
+        // Add BufferView
+        const int bufferViewIndex = addJsonBufferView(rootObject, bufferIdx, bufferData.size(), 0);
+        // Add Accessor
+        const int accessorIndex = addJsonAccessor(rootObject, bufferViewIndex, normalAttribute);
+        // Add updated Mesh Primitive
+        const QLatin1String gltfAttributeName = glTFAttributeNameFromQt3DAttribute(normalAttribute);
+
+        // replace matching primitive
+        jsonPrimAttrs[gltfAttributeName] = accessorIndex;
+    }
+
+    jsonPrimitive[KEY_ATTRIBUTES] = jsonPrimAttrs;
+    jsonPrimitives[primitiveNumber] = jsonPrimitive;
+    jsonMesh[KEY_PRIMITIVES] = jsonPrimitives;
+    jsonMeshes[meshIdx] = jsonMesh;
+    rootObject[KEY_MESHES] = jsonMeshes;
+    context->setJson(QJsonDocument(rootObject));
+
+    return true;
+}
+
 } // namespace MeshParserUtils
 } // namespace GLTF2Import
 } // namespace Kuesa
+
+QT_END_NAMESPACE

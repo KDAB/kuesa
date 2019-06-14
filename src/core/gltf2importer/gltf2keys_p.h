@@ -84,6 +84,12 @@ const QLatin1String KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION = QLatin1String("KH
 const QLatin1String KEY_KHR_MATERIALS_UNLIT = QLatin1Literal("KHR_materials_unlit");
 const QLatin1String KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION = QLatin1Literal("KHR_lights_punctual");
 const QLatin1String KEY_KHR_PUNCTUAL_LIGHTS = QLatin1Literal("lights");
+const QLatin1String KEY_BUFFERVIEWTARGET = QLatin1String("target");
+const QLatin1String KEY_COMPONENTTYPE = QLatin1Literal("componentType");
+const QLatin1String KEY_COUNT = QLatin1Literal("count");
+const QLatin1String KEY_TYPE = QLatin1Literal("type");
+const QLatin1String KEY_MAX = QLatin1Literal("max");
+const QLatin1String KEY_MIN = QLatin1Literal("min");
 
 } // namespace GLTF2Import
 } // namespace Kuesa

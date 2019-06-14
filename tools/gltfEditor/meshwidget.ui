@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>198</width>
-    <height>311</height>
+    <height>441</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -122,6 +122,32 @@
        <widget class="QPushButton" name="generateTangentsButton">
         <property name="text">
          <string>Generate Tangents</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="normalsGroupBox">
+     <property name="title">
+      <string>GroupBox</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>The mesh is missing normal vertex attributes. If these are needed for rendering, they can be added now:</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="generateNormalsButton">
+        <property name="text">
+         <string>Generate Normals</string>
         </property>
        </widget>
       </item>

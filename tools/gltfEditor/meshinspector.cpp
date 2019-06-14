@@ -65,11 +65,28 @@ void MeshInspector::update()
         Qt3DCore::QEntity *entity = entityMaterialPair.first.data();
         Qt3DRender::QMaterial *material = entityMaterialPair.second.data();
         // Remove highlight material from previously highlighted entity
-        if (entity && m_highlightMaterial)
-            entity->removeComponent(m_highlightMaterial.data());
-        // Restore original material on entity
-        if (entity && material)
-            entity->addComponent(material);
+        if (entity) {
+            if (m_highlightMaterial)
+                entity->removeComponent(m_highlightMaterial.data());
+            // Restore original material on entity
+            if (material)
+                entity->addComponent(material);
+
+            // Unset and set the geometry on the geometryRenderer component
+            // This forces Qt3D to check if VAO requires an update
+            // This is needed to handle the case where:
+            // 1) We selected a mesh that uses the default material (which is therefore not parented to mesh directly)
+            // 2) Since mesh is selected it's not using its default material but the highlight one
+            // 3) When we add/remove an attribute VAO is updated (but for the highlight material only)
+            // 4) When switching back to the non highlighted material (default material in this case)
+            //    We need to force a VAO update for that material
+            Qt3DRender::QGeometryRenderer *geometryRenderer = Kuesa::componentFromEntity<Qt3DRender::QGeometryRenderer>(entity);
+            if (geometryRenderer) {
+                Qt3DRender::QGeometry *geometry = geometryRenderer->geometry();
+                geometryRenderer->setGeometry(nullptr);
+                geometryRenderer->setGeometry(geometry);
+            }
+        }
     }
     m_meshMaterials.clear();
 
@@ -122,6 +139,9 @@ void MeshInspector::update()
     m_needsTangents = m_mesh ? Kuesa::GLTF2Import::MeshParserUtils::needsTangentAttribute(m_mesh->geometry(),
                                                                                           m_mesh->primitiveType())
                              : false;
+    m_needsNormals = m_mesh ? Kuesa::GLTF2Import::MeshParserUtils::needsNormalAttribute(m_mesh->geometry(),
+                                                                                        m_mesh->primitiveType())
+                            : false;
 
     if (m_mesh) {
         const auto &attributes = m_mesh->geometry()->attributes();
@@ -282,6 +302,11 @@ int MeshInspector::vertexCount() const
 bool MeshInspector::needsTangents() const
 {
     return m_needsTangents;
+}
+
+bool MeshInspector::needsNormals() const
+{
+    return m_needsNormals;
 }
 
 BufferModel::BufferModel(QObject *parent)

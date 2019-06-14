@@ -96,6 +96,7 @@ private slots:
     void exportFile();
     void reloadFile();
     void generateTangents();
+    void generateNormals();
     void about();
     void setCamera(int index);
     void setActiveScene(int index);

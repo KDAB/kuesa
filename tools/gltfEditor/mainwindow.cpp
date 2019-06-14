@@ -136,6 +136,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_ui->assetInspectorDockWidget->setWidget(m_assetInspectorWidget);
 
     connect(m_assetInspector->meshInspector(), &MeshInspector::generateTangents, this, &MainWindow::generateTangents);
+    connect(m_assetInspector->meshInspector(), &MeshInspector::generateNormals, this, &MainWindow::generateNormals);
 
     m_animationWidget = new AnimationWidget;
     m_ui->animationDockWidget->setWidget(m_animationWidget);
@@ -511,6 +512,22 @@ void MainWindow::generateTangents()
         if (mesh) {
             Kuesa::GLTF2Import::MeshParserUtils::generatePrecomputedTangentAttribute(mesh,
                                                                                      Kuesa::GLTF2Import::GLTF2Context::fromImporter(importer));
+            m_assetInspector->meshInspector()->update();
+        }
+    }
+}
+
+void MainWindow::generateNormals()
+{
+    auto importer = m_entity->findChild<Kuesa::GLTF2Importer *>();
+    if (!importer)
+        return;
+
+    if (m_entity) {
+        Qt3DRender::QGeometryRenderer *mesh = m_entity->mesh(m_assetInspector->assetName());
+        if (mesh) {
+            Kuesa::GLTF2Import::MeshParserUtils::generatePrecomputedNormalAttribute(mesh,
+                                                                                    Kuesa::GLTF2Import::GLTF2Context::fromImporter(importer));
             m_assetInspector->meshInspector()->update();
         }
     }
