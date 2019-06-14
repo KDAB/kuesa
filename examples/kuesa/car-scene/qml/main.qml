@@ -31,6 +31,7 @@ import QtQuick 2.11
 import QtQuick.Controls 1.4
 import "controls" as Controls
 
+//! [0]
 Item {
     id: mainRoot
 
@@ -56,6 +57,7 @@ Item {
             // Root Scene Entity
             MainScene {
                 id: sceneContent
+//! [0]
                 screenWidth: scene3D.width
                 screenHeight: scene3D.height
                 animated: menu.idleAnimationRunning

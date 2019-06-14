@@ -31,14 +31,16 @@ import Qt3D.Render 2.11
 import Qt3D.Input 2.0
 import Qt3D.Extras 2.11
 import Qt3D.Animation 2.10
+import QtQuick 2.11 as QQ2
 
+//! [0]
 import Kuesa 1.1 as Kuesa
 import Kuesa.Effects 1.0 as Effects
 
-import QtQuick 2.11 as QQ2
 
 Kuesa.SceneEntity {
     id: scene
+//! [0]
 
     property int screenWidth
     property int screenHeight
@@ -80,19 +82,24 @@ Kuesa.SceneEntity {
         }
     }
 
+//![2.4]
     QQ2.Binding {
         target: carMaterial.node
         property: "baseColorFactor"
         value: scene.carBaseColorFactor
     }
+//![2.4]
 
+//![2.3]
     Kuesa.Asset {
         id: carMaterial
         collection: scene.materials
         name: "Mat_CarPaint"
         onNodeChanged: scene.carBaseColorFactor = node.baseColorFactor
     }
+//![2.3]
 
+//! [4.1]
     Kuesa.AnimationPlayer {
         id: hoodAnimator
         sceneEntity: scene
@@ -113,6 +120,7 @@ Kuesa.SceneEntity {
         clock: Clock { }
         clip: "DoorRAction"
     }
+//! [4.1]
 
     Kuesa.AnimationPlayer {
         id: sweepCamCenterAnimation
@@ -144,17 +152,21 @@ Kuesa.SceneEntity {
         }
     }
 
+//! [2.1]
     Kuesa.Asset {
         id: sweepCam
         collection: scene.cameras
         name: "SweepCam"
     }
+//! [2.1]
 
+//! [2.2]
     QQ2.Binding {
         target: sweepCam.node
         property: "aspectRatio"
         value: mainCamera.aspectRatio
     }
+//! [2.2]
 
     onOpenHoodChanged: {
         d.flipAnimation(openHood, hoodAnimator)
@@ -179,6 +191,7 @@ Kuesa.SceneEntity {
     }
 
     components: [
+//! [3.2]
         RenderSettings {
             // FrameGraph
             activeFrameGraph: Kuesa.ForwardRenderer {
@@ -195,6 +208,7 @@ Kuesa.SceneEntity {
                 backToFrontSorting: true
             }
         },
+//! [3.2]
         InputSettings { },
         EnvironmentLight {
             irradiance: TextureLoader {
@@ -216,6 +230,7 @@ Kuesa.SceneEntity {
         }
     ]
 
+//! [3.1]
     Effects.OpacityMask {
         id: opacityMaskEffect
         mask: TextureLoader {
@@ -231,6 +246,7 @@ Kuesa.SceneEntity {
         threshold: 0.34
         blurPassCount: 2
     }
+//! [3.1]
 
     QQ2.Binding {
         target: frameGraph.camera
@@ -253,11 +269,13 @@ Kuesa.SceneEntity {
         enabled: !scene.animated
     }
 
+//! [1]
     // Loads GLTF 2.0 asset
     Kuesa.GLTF2Importer {
         sceneEntity: scene
         source: _assetsPrefix + "DodgeViper" + _modelSuffix + ".gltf"
     }
+//! [1]
 
     Kuesa.Skybox {
         id: skybox
