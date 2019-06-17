@@ -56,33 +56,56 @@
     To include the definitions of the module's classes, use the following
     directives:
 
+    C++:
     \badcode
     #include <Kuesa>
+    \endcode
+
+    QML:
+    \badcode
+    import Kuesa 1.0
     \endcode
 
     \section1 Quick Overview
 
     Kuesa aims at making it easier for both Artist and Developers to preview and
     integrate 3D scenes into a Qt based application.
+
+    Kuesa provides an easy, integrated and unified workflow without any
+    compromises for designers and developers based on the glTF 2 format.
+
+    It is composed of 3 components:
+
+    \section2 Kuesa Digital Content Creation Plugins
+
     \list
-    \li \l {Kuesa::GLTF2Importer} {glTF2 compliant importer that generates a Qt 3D based scene}
-    \li \l {Kuesa::MetallicRoughnessMaterial} {Custom PBR materials}
+    \li \l {https://github.com/KDAB/kuesa-blender} {Kuesa Blender glTF2 Exporter plugin}
+    \li \l {https://github.com/KDAB/kuesa-3dsmax} {Kuesa 3ds Max glTF2 Exporter plugin}
+    \endlist
+
+    \section2 Kuesa Runtime
+    Libraries on top of Qt 3D that provide:
+    \list
+    \li \l [CPP]{Kuesa::GLTF2Importer} {glTF2 compliant importer that generates a Qt 3D based scene}
+    \li \l [CPP]{Kuesa::MetallicRoughnessMaterial} {Custom PBR materials}
     \li Asset collections to retrieve assets by name
     \li Post Processing Effects
-    \li A set of tools to preview scenes
+    \endlist
+
+    \section2 Kuesa Tools
+    A set of tools to preview scenes
+    \list
+    \li \l {gltfEditor}
+    \li \l {gltfViewer}
+    \li \l {ddspreviewer}
+    \li \l {cubemaptooctahedralmap}
     \endlist
 
     \l {Kuesa Overview} {Read More}
 
     \section1 Requirements
-    \section2 Supported Platforms
-    \list
-    \li Windows
-    \li Linux
-    \li Mac OS
-    \li Android
-    \li iOS
-    \endlist
+
+    Kuesa require the base Qt 5.12 requirements and OpenGL supports.
 
     \section2 OpenGL requirements
     \list
@@ -115,9 +138,10 @@
 
     \section1 Licenses and Attributions
 
-    Kuesa is available under commercial licenses from \l{KDAB}. In addition, it
-    is also available under the \l{GNU Affero General Public License, version
-    3}
+    Kuesa is available under commercial licenses from \l {https://www.kdab.com}
+    {KDAB}. In addition, it is also available under the \l
+    {https://www.gnu.org/licenses/agpl-3.0.en.html} {GNU Affero General Public
+    License, version 3}
 
     \generatelist{groupsbymodule attributions-kuesa}
 */

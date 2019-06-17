@@ -46,6 +46,8 @@ sourcedirs += . \
             ../core \
             ../quick
 
+imagedirs += ./images
+
 tagfile                                   = kuesa.tags
 
 
@@ -56,7 +58,7 @@ exampledirs += \
            ../../examples/kuesa
 
 examples.fileextensions       += "*.frag *.geom *.vert"
-examples.imageextensions      += "*.png"
+examples.imageextensions      += "*.png *.jpg"
 
 Cpp.ignoretokens                         += KUESASHARED_EXPORT
 Cpp.ignoredirectives                     += Q_DECLARE_LOGGING_CATEGORY

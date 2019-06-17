@@ -30,18 +30,104 @@
     \page kuesa-overview.html
     \title Kuesa Overview
 
-    \brief Kuesa provides C++ and QML APIs to ease incorporation of 3D content
-    into Qt 3D based applications.
+    \brief Kuesa is a solution that provides an integrated and unified workflow
+    for designers and developers to create, optimize and integrate real time 3D
+    content in a 3D or hybrid 2D/3D software user interface. Kuesa is available
+    for both embedded or desktop applications.
 
-    \section1 Basic Kuesa Features
+    \section1 Kuesa's workflow
+
+    There are traditionally two main workflows to integrate real-time 3D
+    content into an application:
+
+    \list
+    \li Hand-made workflow: the designers create mockups of the scenes and the
+    developers recreate them in code, leading to lots of communication
+    overhead, misunderstandings and suboptimal results.
+    \li External tool workflow: the designers and developers work on a common
+    tool for editing the scene for integrating into the application limiting
+    both to the constraints of the tool and creating a black box which provides
+    little control.
+    \endlist
+
+    Kuesa provides an easy, integrated and unified workflow without any
+    compromises for designers and developers with:
+
+    \list
+    \li Great performances, from desktops to embedded boards
+    \li Great quality of the real-time 3D scenes
+    \li Full expressiveness for the designers, using professional 3D design tools
+    \li Full control of the integration by the developers
+    \li A reduced time to market
+    \endlist
+
+    The workflow is based on the glTF™ (GL Transmission Format) format designed
+    by the \l {https://www.khronos.org/} {Khronos Group}, a royalty-free
+    specification for the efficient transmission and loading of 3D scenes and
+    models by applications supporting vendor extension.
+
+
+    \section1 Kuesa's strengths
+
+    \list
+    \li Uses professional 3D design tools for scene creation: 3ds Max®, Blender…
+    \li Provides tools for previewing, optimizing, checking and optimizing assets
+    \li Provides a seamless integration in Qt and Qt3D applications
+    \li Gives full control of the scene from the code, for complex interaction
+    \endlist
+
+
+    \section1 Kuesa components
+
+    \image pipeline-diagram.png
+
+    \section2 Kuesa Digital Content Creation Plugins
+
+    \list
+    \li \l {https://github.com/KDAB/kuesa-blender} {Kuesa Blender glTF2 Exporter plugin}
+    \li \l {https://github.com/KDAB/kuesa-3dsmax} {Kuesa 3ds Max glTF2 Exporter plugin}
+    \endlist
+
+    Checkout out our \l {https://www.youtube.com/watch?v=6W3gMEk_PbE} {video
+    tutorial} on how prepare your assets for Kuesa with 3ds max.
+
+    \section2 Kuesa Runtime
+
+    The Kuesa Runtime provides C++ and QML APIs to ease incorporation of 3D
+    content into Qt 3D based applications.
+
+    \list
+    \li \l [CPP]{Kuesa::GLTF2Importer} {glTF2 compliant importer that generates a Qt 3D based scene}
+    \li \l [CPP]{Kuesa::MetallicRoughnessMaterial} {Custom PBR materials}
+    \li Asset collections to retrieve assets by name
+    \li Post Processing Effects
+    \endlist
+
+    Checkout out our \l {https://www.youtube.com/watch?v=dIdrQMkGVPI} {video
+    tutorial} on creating an interactive 3D application with Kuesa.
+
+    \section2 Kuesa Tools
+    A set of tools to preview scenes
+    \list
+    \li \l {gltfEditor}
+    \li \l {gltfViewer}
+    \li \l {ddspreviewer}
+    \li \l {cubemaptooctahedralmap}
+    \endlist
+
+
+    \section1 Kuesa Runtime Features
 
     \section2 glTF 2 Importer
 
-    The class Kuesa::GLTF2Importer is a Qt3DCore::QNode based class that allows
-    loading glTF 2 files. glTF 2 files from any exporter should work, note however
-    that the Kuesa specific exporter allow the use of additional features, namely:
+    The class \l [CPP] {Kuesa::GLTF2Importer} {GLTF2Importer} is a
+    Qt3DCore::QNode based class that allows loading glTF 2 files. glTF 2 files
+    from any exporter should work, note however that the Kuesa specific
+    exporter allow the use of additional features, namely:
+
     \list
-    \li Qt 3D compatible PBR Material support
+    \li Qt 3D compatible \l [CPP] {Kuesa::MetallicRoughnessMaterial} {PBR Material}
+    support
     \li Qt 3D layer export
     \li Face wireframe export
     \endlist
@@ -49,29 +135,36 @@
     Once a file has been loaded through the use of the glTF 2 importer, name based
     collections are populated. Kuesa provides the following collections for:
     \list
-    \li Entities, \l {Kuesa::EntityCollection}
-    \li Animation Clips, \l {Kuesa::AnimationClipCollection}
-    \li Animation Mappings, \l {Kuesa::AnimationMappingsCollection}
-    \li Cameras, \l {Kuesa::CameraCollection}
-    \li Effects, \l {Kuesa::EffectCollection}
-    \li Materials, \l {Kuesa::MaterialCollection}
-    \li Meshes, \l {Kuesa::MeshCollection}
-    \li Skeletons, \l {Kuesa::SkeletonCollection}
-    \li Textures, \l {Kuesa::TextureCollection}
-    \li Images, \l {Kuesa::TextureImageCollection}
+    \li \l [CPP]{Kuesa::EntityCollection} {Entities}
+    \li \l [CPP]{Kuesa::AnimationClipCollection} {Animation Clips}
+    \li \l [CPP]{Kuesa::AnimationMappingCollection} {Animation Mappings}
+    \li \l [CPP]{Kuesa::CameraCollection} {Cameras}
+    \li \l [CPP]{Kuesa::EffectCollection} {Effects}
+    \li \l [CPP]{Kuesa::MaterialCollection} {Materials}
+    \li \l [CPP]{Kuesa::MeshCollection} {Meshes}
+    \li \l [CPP]{Kuesa::SkeletonCollection} {Skeletons}
+    \li \l [CPP]{Kuesa::TextureCollection} {Textures}
+    \li \l [CPP]{Kuesa::TextureImageCollection} {Images}
     \endlist
+
+    \section2 Kuesa Optimized Frame Graph
+
+    Kuesa provides the \l [CPP] {Kuesa::ForwardRenderer} {ForwardRenderer}
+    Frame Graph which is optimized for the rendering of glTF2 scenes with the
+    addition of post processing effects.
 
     \section2 Full Screen Post Processing Effects
 
     Final screen composition can be customized through the use of post
     processing effects. The effects work along with the default provided
-    Kuesa FrameGraph Kuesa::ForwardRenderer.
+    Kuesa FrameGraph \l [CPP]{Kuesa::ForwardRenderer} {ForwardRenderer}.
 
     Currently Kuesa provides the following effects:
     \list
-    \li Bloom, \l {Kuesa::BloomEffect}
-    \li Gaussian Blur, \l {Kuesa::GaussianBlurEffect}
-    \li Opacity Masking, \l {Kuesa::OpacityMask}
-    \li Thresholding, \l {Kuesa::ThresholdEffect}
+    \li \l [CPP]{Kuesa::BloomEffect} {Bloom}
+    \li \l [CPP]{Kuesa::GaussianBlurEffect} {Gaussian Blur}
+    \li \l [CPP]{Kuesa::OpacityMask} {Opacity Masking}
+    \li \l [CPP]{Kuesa::ThresholdEffect} {Thresholding}
+    \li \l [CPP]{Kuesa::DepthOfFieldEffect} {Depth Of Field}
     \endlist
 */

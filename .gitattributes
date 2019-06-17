@@ -5,3 +5,4 @@ examples/kuesa/car-scene/doc/images/car-scene-example.jpg filter=lfs diff=lfs me
 examples/kuesa/music-box/doc/images filter=lfs diff=lfs merge=lfs -text
 examples/kuesa/music-box/doc/images/music-box-example.jpg filter=lfs diff=lfs merge=lfs -text
 examples/kuesa/tonemapping/doc/images/tonemapping-example.jpg filter=lfs diff=lfs merge=lfs -text
+src/doc/images/pipeline-diagram.png filter=lfs diff=lfs merge=lfs -text
