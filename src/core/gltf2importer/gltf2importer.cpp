@@ -26,9 +26,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "gltf2context_p.h"
 #include "gltf2importer.h"
-#include "gltf2importer/gltf2parser_p.h"
+#include "gltf2context_p.h"
+#include "gltf2parser_p.h"
 #include "gltf2options.h"
 
 #include "collections/meshcollection.h"
@@ -177,14 +177,18 @@ using namespace Kuesa;
 
 /*!
     \property GLTF2Importer::sceneEntity
-    \brief pointer to the SceneEntity with which assets will be registered as they are loaded from the glTF file.
+
+    \brief pointer to the SceneEntity with which assets will be registered as
+    they are loaded from the glTF file.
 
     \sa GLTF2Importer::sceneEntity()
  */
 
 /*!
     \property GLTF2Importer::assignNames
-    \brief if true, assets with no names will be added to collections with default names (default is false)
+
+    \brief if true, assets with no names will be added to collections with
+    default names (default is false)
 
     \sa GLTF2Importer::assignNames()
  */
@@ -201,17 +205,23 @@ using namespace Kuesa;
 
 /*!
     \qmlproperty Kuesa.SceneEntity GLTF2Importer::sceneEntity
-    \brief pointer to the SceneEntity with which assets will be registered as they are loaded from the glTF file.
+
+    \brief pointer to the SceneEntity with which assets will be registered as
+    they are loaded from the glTF file.
  */
 
 /*!
-    \property bool GLTF2Importer::assignNames
-    \brief if true, assets with no names will be added to collections with default names (default is false)
+    \qmlproperty bool GLTF2Importer::assignNames
+
+    \brief if true, assets with no names will be added to collections with
+    default names (default is false)
  */
 
 /*!
     \property GLTF2Importer::options
-    \brief Holds the Kuesa::GLTF2Import::GLTF2Options used to select what to import/generate
+
+    \brief Holds the Kuesa::GLTF2Import::GLTF2Options used to select what to
+    import/generate
  */
 
 /*!
@@ -276,7 +286,7 @@ QUrl GLTF2Importer::source() const
 }
 
 /*!
- * Load the glTF file from the given url.
+ * Load the glTF file from the given url \a source.
  *
  * \note The loading is asynchronous. When loading is complete the status
  * property will change.
@@ -322,8 +332,8 @@ SceneEntity *GLTF2Importer::sceneEntity() const
 }
 
 /*!
- * Set the SceneEntity instance which should be used to access
- * the collections loaded assets will be registered with.
+ * Set the SceneEntity instance which should be used to access the collections
+ * loaded assets will be registered with to \a sceneEntity.
  */
 void GLTF2Importer::setSceneEntity(SceneEntity *sceneEntity)
 {
@@ -371,7 +381,7 @@ QStringList GLTF2Importer::availableScenes() const
 }
 
 /*!
- * if \param assignNames is true, assets with no names will be added to
+ * If \a assignNames is true, assets with no names will be added to
  * collections with default names.
  *
  * Otherwise, assets will not be added to collections.

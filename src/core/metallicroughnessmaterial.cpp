@@ -71,14 +71,14 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \inheaderfile Kuesa/MetallicRoughnessMaterial
     \inmodule Kuesa
     \since 1.0
-    \brief
 
-    Kuesa::MetallicRoughnessMaterial is a ready to use physically based
-    rendering (PBR) material based on the glTF 2.0 material description. The
-    material is defined using a common set of parameter that define how light
-    interacts with it. This allows to use a common description of the material
-    so they are rendered consistently across platforms and 3D software and can
-    be described by an intuitive set of parameters.
+    \brief Kuesa::MetallicRoughnessMaterial is a ready to use physically based
+    rendering (PBR) material based on the glTF 2.0 material description.
+
+    The material is defined using a common set of parameter that define how
+    light interacts with it. This allows to use a common description of the
+    material so they are rendered consistently across platforms and 3D software
+    and can be described by an intuitive set of parameters.
 
     The material consists on the following properties:
     \list
@@ -338,7 +338,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     dynamic range) content to LDR (low dynamic range) content which our monitor
     displays.
 
-    \since 1.1
+    \since Kuesa 1.1
  */
 
 /*!
@@ -348,11 +348,12 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \since 1.0
 
     \brief Kuesa.MetallicRoughnessMaterial is a ready to use physically based
-    rendering (PBR) material based on the glTF 2.0 material description. The
-    material is defined using a common set of parameter that define how light
-    interacts with it. This allows to use a common description of the material
-    so they are rendered consistently across platforms and 3D software and can
-    be described by an intuitive set of parameters.
+    rendering (PBR) material based on the glTF 2.0 material description.
+
+    The material is defined using a common set of parameter that define how
+    light interacts with it. This allows to use a common description of the
+    material so they are rendered consistently across platforms and 3D software
+    and can be described by an intuitive set of parameters.
 
     The material consists on the following properties:
     \list

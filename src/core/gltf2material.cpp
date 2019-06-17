@@ -66,9 +66,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
     \inheaderfile Kuesa/GLTF2Material
     \inmodule Kuesa
     \since 1.1
-    \brief
-
-    Kuesa.GLTF2Material is a subclass of Qt3DRender::QMaterial which is the base class
+    \brief Kuesa.GLTF2Material is a subclass of Qt3DRender::QMaterial which is the base class
     of all GLTF2 based material subclasses
 
     We assume a GLTF2 material will consists on the following base properties:

@@ -38,14 +38,13 @@ using namespace Qt3DRender;
 namespace Kuesa {
 
 /*!
-    \class UnlitMaterial
+    \class Kuesa::UnlitMaterial
     \inheaderfile Kuesa/UnlitMaterial
     \inmodule Kuesa
     \since 1.1
-    \brief
 
-    Kuesa::UnlitMaterial is a simple material without shading. It implements the
-    KHR_materials_unlit extension from glTF 2.0.
+    \brief Kuesa::UnlitMaterial is a simple material without shading. It
+    implements the KHR_materials_unlit extension from glTF 2.0.
 
     The material consists on the following properties:
     \list
@@ -116,8 +115,8 @@ namespace Kuesa {
     \inqmlmodule Kuesa
     \since 1.1
 
-    Kuesa.UnlitMaterial is a simple material without shading. It implements the
-    KHR_materials_unlit extension from glTF 2.0.
+    \brief Kuesa.UnlitMaterial is a simple material without shading. It
+    implements the KHR_materials_unlit extension from glTF 2.0.
 
     The material consists on the following properties:
     \list
