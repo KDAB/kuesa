@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>SceneEntity.qml</file>
         <file>MainMenu.qml</file>
+        <file>MainScene.qml</file>
     </qresource>
 </RCC>

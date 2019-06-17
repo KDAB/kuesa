@@ -124,3 +124,5 @@ android {
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 INSTALLS += target
 
+OTHER_FILES += doc/src/*
+

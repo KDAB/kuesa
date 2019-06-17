@@ -26,6 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+//! [0]
 import Qt3D.Core 2.12
 import Qt3D.Render 2.12
 import Qt3D.Input 2.12
@@ -38,6 +39,8 @@ import KuesaDemo 1.0 as KuesaDemo
 Kuesa.SceneEntity {
     id: root3D
 
+    property bool useFilmicEffect: false
+//! [0]
     property string envMapFormat: (Qt.platform.os == "osx" || Qt.platform.os == "ios" || Qt.platform.os == "android" || _isES2) ? "_16f" : ""
     property int screenWidth
     property int screenHeight
@@ -45,9 +48,6 @@ Kuesa.SceneEntity {
     property double exposure: 1.7
     property bool rotating: false
     property bool lightRotating: true
-    property bool filmicEffect: false
-
-    property var metallic: Kuesa.MetallicRoughnessMaterial.Reinhard
 
     property var __winSize: Qt.size(_view.width, _view.height)
 
@@ -157,21 +157,23 @@ Kuesa.SceneEntity {
         }
     }
 
-    onFilmicEffectChanged: metallic = filmicEffect ? Kuesa.MetallicRoughnessEffect.Filmic : Kuesa.MetallicRoughnessEffect.Reinhard
-
+//! [2.1]
     Kuesa.Asset {
         id: materialsAsset
         name: "Material_MR"
         collection: root3D.materials
-        onNodeChanged: node.toneMappingAlgorithm = Kuesa.MetallicRoughnessEffect.Reinhard
     }
+//! [2.1]
 
+//! [2.2]
     Binding {
         target: materialsAsset.node
         property: "toneMappingAlgorithm"
-        value: root3D.metallic
+        value: useFilmicEffect ? Kuesa.MetallicRoughnessEffect.Filmic : Kuesa.MetallicRoughnessEffect.Reinhard
     }
+//! [2.2]
 
+//! [1]
     Kuesa.GLTF2Importer {
         id: gltf2importer
         sceneEntity: root3D
@@ -179,5 +181,6 @@ Kuesa.SceneEntity {
         source: _assetsPrefix + "RotatingHelmet.gltf"
         options.generateTangents: true
     }
+//! [1]
 
 }

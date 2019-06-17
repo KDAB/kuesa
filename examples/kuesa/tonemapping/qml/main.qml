@@ -31,6 +31,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Scene3D 2.0
 import "controls" as Controls
 
+//! [0]
 Item {
     id: root
 
@@ -45,17 +46,18 @@ Item {
             multisample: true
             aspects: ["render", "input", "logic", "animation"]
 
-            SceneEntity {
+            MainScene {
                 id: sceneEntity
                 screenWidth: scene3d.width
                 screenHeight: scene3d.height
                 exposure: menu.exposure
                 rotating: menu.toggleRotation
                 lightRotating: menu.toggleLightRotation
-                filmicEffect: menu.filmicEffectToneMapping
+                useFilmicEffect: menu.filmicEffectToneMapping
             }
         }
     }
+//! [0]
 
     // UI menu container
     MainMenu {

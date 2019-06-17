@@ -1,0 +1,84 @@
+/*
+    tonemapping.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \example tonemapping
+    \title Kuesa ToneMapping QML Example
+    \ingroup kuesa-examples-qml
+
+    \brief Demonstrates the use of the Kuesa API to import a glTF2 file and
+    control its appearance by using different tone mapping algorithms.
+
+    \image tonemapping-example.jpg
+
+    \section1 QtQuick and Qt3D integration
+
+    The tonemapping example relies on the regular QtQuick and Qt 3D APIs to
+    instantiate a QtQuick based application that combines Qt 3D based content
+    with a 2D UI overlay.
+
+    \snippet tonemapping/qml/main.qml 0
+    \dots
+
+    \section1 SceneEntity
+
+    Kuesa provides the \l [QML] {SceneEntity} element which holds collections
+    of Qt 3D assets accessible by name.
+
+    \snippet tonemapping/qml/MainScene.qml 0
+    \dots
+
+    \section1 Importing a glTF2 File
+
+    In order to load a glTF2 file, Kuesa provides the \l {GLTF2Importer}
+    element. If the \a sceneEntity property is set to a valid \l [QML] {SceneEntity}
+    instance, Qt 3D assets generated while parsing the file will be
+    automatically added to the various asset collections.
+
+    \snippet tonemapping/qml/MainScene.qml 1
+
+    \section1 Extracting a Material Asset
+
+    We know in advance the name of the assets bundled in the glTF2 file. If you
+    haven't authored the file yourself, you can use the \l {gltfEditor} to
+    introspect it, list the assets (meshes, materials, animations, ...) and
+    preview them.
+
+    Given the name of a material:
+    \snippet tonemapping/qml/MainScene.qml 2.1
+    \dots
+
+    The \a node property for our \l {Asset} allows us to access the underlying
+    instance of our Material asset which should be an instance of \l
+    {MetallicRoughnessMaterial}.
+
+    Next we can create a binding on the \a toneMappingAlgorithm property of our
+    \l {MetallicRoughnessMaterial} asset to control the tonemapping algorithm
+    used
+    \snippet tonemapping/qml/MainScene.qml 2.2
+*/
