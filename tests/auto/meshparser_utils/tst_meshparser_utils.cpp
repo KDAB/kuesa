@@ -80,7 +80,7 @@ private Q_SLOTS:
                                                                   Qt3DRender::QGeometryRenderer::Triangles);
 
         // THEN
-        QCOMPARE(needsNormals, true);
+        QCOMPARE(needsNormals, false);
 
         // WHEN
         needsNormals = MeshParserUtils::needsNormalAttribute(geo.data(),

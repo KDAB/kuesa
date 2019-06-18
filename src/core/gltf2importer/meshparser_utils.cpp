@@ -692,7 +692,9 @@ bool needsNormalAttribute(const Qt3DRender::QGeometry *geometry,
         return false;
 
     return attributeFromGeometry(Qt3DRender::QAttribute::defaultNormalAttributeName(),
-                                 geometry) == nullptr;
+                                 geometry) == nullptr &&
+            attributeFromGeometry(Qt3DRender::QAttribute::defaultPositionAttributeName(),
+                                  geometry) != nullptr;
 }
 
 namespace {
@@ -1097,7 +1099,7 @@ void generateNormals(Qt3DRender::QGeometry *geometry)
 
     if (positionAttribute == nullptr) {
         qCWarning(kuesa) << "No position attribute found on geometry, unable to generate normals.";
-        return;
+        Q_UNREACHABLE();
     }
 
     if (positionAttribute->vertexBaseType() != Qt3DRender::QAttribute::Float ||
