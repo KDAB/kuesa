@@ -55,24 +55,24 @@ namespace {
 const QLatin1String ATTR_TANGENT = QLatin1Literal("TANGENT");
 
 const auto morphTargetAttributeRegExps = []() {
-        const QString morphTargetAttributePattern = QStringLiteral("%1(_\d+)?");
-        const QString morphTargetBaseAttributeNames[]{
-            Qt3DRender::QAttribute::defaultPositionAttributeName(),
-            Qt3DRender::QAttribute::defaultNormalAttributeName(),
-            Qt3DRender::QAttribute::defaultTangentAttributeName()
-        };
+    const QString morphTargetAttributePattern = QStringLiteral("%1(_\d+)?");
+    const QString morphTargetBaseAttributeNames[]{
+        Qt3DRender::QAttribute::defaultPositionAttributeName(),
+        Qt3DRender::QAttribute::defaultNormalAttributeName(),
+        Qt3DRender::QAttribute::defaultTangentAttributeName()
+    };
 
-        // Morph Target Attributes
-        constexpr int maxEntries = sizeof(morphTargetBaseAttributeNames) / sizeof(morphTargetBaseAttributeNames[0]);
-        std::array<QRegularExpression, maxEntries> regExps;
+    // Morph Target Attributes
+    constexpr int maxEntries = sizeof(morphTargetBaseAttributeNames) / sizeof(morphTargetBaseAttributeNames[0]);
+    std::array<QRegularExpression, maxEntries> regExps;
 
-        for (int i = 0; i < maxEntries; ++i) {
-            const QString &baseAttributeName = morphTargetBaseAttributeNames[i];
-            QRegularExpression &re = regExps[i];
-            re.setPattern(morphTargetAttributePattern.arg(baseAttributeName));
-            Q_ASSERT(re.isValid());
-        }
-        return regExps;
+    for (int i = 0; i < maxEntries; ++i) {
+        const QString &baseAttributeName = morphTargetBaseAttributeNames[i];
+        QRegularExpression &re = regExps[i];
+        re.setPattern(morphTargetAttributePattern.arg(baseAttributeName));
+        Q_ASSERT(re.isValid());
+    }
+    return regExps;
 }();
 
 QVarLengthArray<Qt3DRender::QAttribute::VertexBaseType, 3> validVertexBaseTypesForAttribute(const QString &attributeName)
@@ -505,7 +505,8 @@ QLatin1String glTFTypeForAttribute(const Qt3DRender::QAttribute *attribute)
 int addJsonBufferView(QJsonObject &rootObject,
                       int bufferIndex,
                       int byteLength,
-                      int byteStride = 0) {
+                      int byteStride = 0)
+{
     QJsonObject jsonBufferView;
     jsonBufferView[Kuesa::GLTF2Import::KEY_BUFFER] = bufferIndex;
     jsonBufferView[Kuesa::GLTF2Import::KEY_BYTELENGTH] = byteLength;
@@ -519,7 +520,8 @@ int addJsonBufferView(QJsonObject &rootObject,
 
 int addJsonAccessor(QJsonObject &rootObject,
                     int bufferViewIndex,
-                    const Qt3DRender::QAttribute *attribute) {
+                    const Qt3DRender::QAttribute *attribute)
+{
     // add accessor
     QJsonObject jsonAccessor;
     jsonAccessor[Kuesa::GLTF2Import::KEY_BUFFERVIEW] = bufferViewIndex;
@@ -534,7 +536,8 @@ int addJsonAccessor(QJsonObject &rootObject,
 int addJsonBuffer(QJsonObject &rootObject,
                   const QByteArray &data,
                   const QString bufferFileName,
-                  const QString pathPrefix) {
+                  const QString pathPrefix)
+{
     QFile bufferFile(pathPrefix + bufferFileName);
     if (!bufferFile.open(QFile::WriteOnly)) {
         qCWarning(kuesa) << "Can't open" << bufferFile.fileName() << "for writing tangent buffer";
@@ -1053,7 +1056,6 @@ bool geometryHasSharedVertices(Qt3DRender::QGeometry *geometry,
     // TriangleFan
     const bool hasIndexAttribute = geometryHasIndexAttribute(geometry);
     return (primitiveType != Qt3DRender::QGeometryRenderer::Triangles) || hasIndexAttribute;
-
 }
 
 void convertGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *geometry,
