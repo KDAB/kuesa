@@ -196,6 +196,12 @@ struct FindVertexIndicesInFaceHelper {
 
         lastFace = iFace;
         const auto data = indexAttribute.bufferData;
+
+        if (data.isNull()) {
+            verticesForLastFace = { 3 * iFace + 0u, 3 * iFace + 1u, 3 * iFace + 2u };
+            return verticesForLastFace;
+        }
+
         const auto *iFaceHead = data.constData() + (indexAttribute.byteOffset + iFace * indexAttribute.byteStride);
         switch (vertexBaseType) {
         case Qt3DRender::QAttribute::UnsignedByte: {
@@ -275,6 +281,9 @@ MikkTSpaceUserData precomputeMikkTSpaceUserData(Qt3DRender::QGeometry *geometry,
             userData.positionAttribute.byteStride = attr->byteStride() == 0 ? attr->vertexSize() * vertexBaseTypeSize(attr->vertexBaseType()) : attr->byteStride();
             userData.positionAttribute.bufferData = attr->buffer()->data();
             userData.nVertices = attr->count();
+            if (userData.indexAttribute.bufferData.isNull()) {
+                userData.nFaces = userData.nVertices / 3;
+            }
         }
         if (attr->name() == Qt3DRender::QAttribute::defaultNormalAttributeName()) {
             userData.normalAttribute.byteOffset = attr->byteOffset();
@@ -289,8 +298,7 @@ MikkTSpaceUserData precomputeMikkTSpaceUserData(Qt3DRender::QGeometry *geometry,
         }
     }
 
-    if (userData.indexAttribute.bufferData.isNull() ||
-        userData.positionAttribute.bufferData.isNull() ||
+    if (userData.positionAttribute.bufferData.isNull() ||
         userData.normalAttribute.bufferData.isNull() ||
         userData.uvAttribute.bufferData.isNull())
         return {};
