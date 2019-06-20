@@ -33,6 +33,8 @@
 #include <Qt3DRender/QBuffer>
 #include <cstring>
 
+#include <iostream>
+
 using namespace Kuesa;
 using namespace GLTF2Import;
 
@@ -81,6 +83,16 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(needsNormals, false);
+
+        // WHEN
+        Qt3DRender::QAttribute *posAttr = new Qt3DRender::QAttribute();
+        posAttr->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+        geo->addAttribute(posAttr);
+        needsNormals = MeshParserUtils::needsNormalAttribute(geo.data(),
+                                                             Qt3DRender::QGeometryRenderer::Triangles);
+
+        // THEN
+        QCOMPARE(needsNormals, true);
 
         // WHEN
         needsNormals = MeshParserUtils::needsNormalAttribute(geo.data(),
@@ -466,6 +478,109 @@ private Q_SLOTS:
             QCOMPARE(*normals, expectedNormal);
             ++normals;
         }
+    }
+
+    void checkNormalMorphTargetGeneration()
+    {
+        // GIVEN
+        Qt3DRender::QGeometry *geometry = new Qt3DRender::QGeometry();
+
+        QVector<QVector3D> positions;
+        QVector<QVector3D> morphPositions;
+
+        positions.reserve(6);
+        morphPositions.reserve(6);
+
+        QVector3D a(-1.0f, 1.0, 0.0f);
+        QVector3D b(1.0f, 1.0, 0.0f);
+        QVector3D c(-1.0f, -1.0, 0.0f);
+        QVector3D d(1.0f, -1.0, 0.0f);
+        positions << a << b << c
+                  << c << b << d;
+
+        a = QVector3D(0, 0, 0);
+        b = QVector3D(0, 0, 0);
+        c = QVector3D(0, 0, 0);
+        d = QVector3D(0, 0, 1.0f);
+        morphPositions << a << b << c
+                       << c << b << d;
+
+        QByteArray rawPositionData;
+        rawPositionData.resize(positions.size() * sizeof(QVector3D));
+        std::memcpy(rawPositionData.data(), positions.data(), positions.size() * sizeof(QVector3D));
+
+        QByteArray rawMorphPositionData;
+        rawMorphPositionData.resize(morphPositions.size() * sizeof(QVector3D));
+        std::memcpy(rawMorphPositionData.data(), morphPositions.data(), morphPositions.size() * sizeof(QVector3D));
+
+        Qt3DRender::QBuffer *vertexBuffer = new Qt3DRender::QBuffer();
+        vertexBuffer->setData(rawPositionData);
+
+        Qt3DRender::QBuffer *morphVertexBuffer = new Qt3DRender::QBuffer();
+        morphVertexBuffer->setData(rawMorphPositionData);
+
+        Qt3DRender::QAttribute *posAttribute = new Qt3DRender::QAttribute();
+        posAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+        posAttribute->setBuffer(vertexBuffer);
+        posAttribute->setByteOffset(0);
+        posAttribute->setByteStride(0);
+        posAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+        posAttribute->setVertexSize(3);
+        posAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+        posAttribute->setCount(6);
+
+        Qt3DRender::QAttribute *posMorphAttribute = new Qt3DRender::QAttribute();
+        posMorphAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName() + QStringLiteral("_1"));
+        posMorphAttribute->setBuffer(morphVertexBuffer);
+        posMorphAttribute->setByteOffset(0);
+        posMorphAttribute->setByteStride(0);
+        posMorphAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+        posMorphAttribute->setVertexSize(3);
+        posMorphAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+        posMorphAttribute->setCount(6);
+
+        geometry->addAttribute(posAttribute);
+        geometry->addAttribute(posMorphAttribute);
+
+        // THEN
+        QVERIFY(MeshParserUtils::needsNormalAttribute(geometry, Qt3DRender::QGeometryRenderer::Triangles));
+
+        // WHEN
+        MeshParserUtils::createNormalsForGeometry(geometry, Qt3DRender::QGeometryRenderer::Triangles);
+
+        // THEN
+        QVERIFY(!MeshParserUtils::needsNormalAttribute(geometry, Qt3DRender::QGeometryRenderer::Triangles));
+
+        const auto attributes = geometry->attributes();
+        auto normalMorphAttrIt = std::find_if(std::begin(attributes), std::end(attributes),
+                                              [](Qt3DRender::QAttribute *attr) {
+                                                  return attr->name() == Qt3DRender::QAttribute::defaultNormalAttributeName() + QStringLiteral("_1");
+                                              });
+
+        auto normalAttrIt = std::find_if(std::begin(attributes), std::end(attributes),
+                                         [](Qt3DRender::QAttribute *attr) {
+                                             return attr->name() == Qt3DRender::QAttribute::defaultNormalAttributeName();
+                                         });
+        QVERIFY(normalAttrIt != std::end(attributes));
+        QVERIFY(normalMorphAttrIt != std::end(attributes));
+
+        Qt3DRender::QAttribute *normalAttribute = *normalAttrIt;
+        Qt3DRender::QBuffer *normalBuffer = normalAttribute->buffer();
+        const QByteArray rawData = normalBuffer->data();
+        const QVector3D *normals = reinterpret_cast<const QVector3D *>(rawData.constData());
+
+        Qt3DRender::QAttribute *normalMorphAttribute = *normalMorphAttrIt;
+        Qt3DRender::QBuffer *normalMorphBuffer = normalMorphAttribute->buffer();
+        const QByteArray rawMorphData = normalMorphBuffer->data();
+        const QVector3D *morphNormals = reinterpret_cast<const QVector3D *>(rawMorphData.constData());
+
+        QCOMPARE(normals[0] + morphNormals[0], QVector3D(0, 0, -1));
+        QCOMPARE(normals[1] + morphNormals[1], QVector3D(0, 0, -1));
+        QCOMPARE(normals[2] + morphNormals[2], QVector3D(0, 0, -1));
+
+        QCOMPARE(normals[3] + morphNormals[3], QVector3D(2, -2, -4).normalized());
+        QCOMPARE(normals[4] + morphNormals[4], QVector3D(2, -2, -4).normalized());
+        QCOMPARE(normals[5] + morphNormals[5], QVector3D(2, -2, -4).normalized());
     }
 };
 

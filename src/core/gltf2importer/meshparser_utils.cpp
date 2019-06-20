@@ -1092,20 +1092,12 @@ void convertGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *geometry,
     }
 }
 
-void generateNormals(Qt3DRender::QGeometry *geometry)
+Qt3DRender::QAttribute *generateNormalsForBaseMesh(const Qt3DRender::QAttribute *positionAttribute)
 {
-    const Qt3DRender::QAttribute *positionAttribute = attributeFromGeometry(Qt3DRender::QAttribute::defaultPositionAttributeName(),
-                                                                            geometry);
-
-    if (positionAttribute == nullptr) {
-        qCWarning(kuesa) << "No position attribute found on geometry, unable to generate normals.";
-        Q_UNREACHABLE();
-    }
-
     if (positionAttribute->vertexBaseType() != Qt3DRender::QAttribute::Float ||
         positionAttribute->vertexSize() != 3) {
         qCWarning(kuesa) << "Currently only vec3 positions are supported, unable to generate normals.";
-        return;
+        return nullptr;
     }
 
     QByteArray rawNormals;
@@ -1160,7 +1152,119 @@ void generateNormals(Qt3DRender::QGeometry *geometry)
     normalsAttribute->setBuffer(buffer);
     normalsAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
 
+    return normalsAttribute;
+}
+
+Qt3DRender::QAttribute *generateNormalsForMorphTarget(const Qt3DRender::QAttribute *positionAttribute, const Qt3DRender::QAttribute *normalsAttribute,
+                                                      const Qt3DRender::QAttribute *positionMorphAttribute, int morphTargetId)
+{
+    QByteArray rawMorphNormals;
+    rawMorphNormals.resize(positionAttribute->count() * sizeof(QVector3D));
+    QVector3D *morphNormals = reinterpret_cast<QVector3D *>(rawMorphNormals.data());
+
+    Qt3DRender::QBuffer *positionBuffer = positionAttribute->buffer();
+    const char *positionData = positionBuffer->data().constData();
+    const uint positionByteOffset = positionAttribute->byteOffset();
+    const uint positionByteStride = std::max(positionAttribute->byteStride(), uint(sizeof(QVector3D)));
+
+    Qt3DRender::QBuffer *positionMorphBuffer = positionMorphAttribute->buffer();
+    const char *positionMorphData = positionMorphBuffer->data().constData();
+    const uint positionMorphByteOffset = positionMorphAttribute->byteOffset();
+    const uint positionMorphByteStride = std::max(positionMorphAttribute->byteStride(), uint(sizeof(QVector3D)));
+
+    Qt3DRender::QBuffer *normalsBuffer = normalsAttribute->buffer();
+    const char *normalsData = normalsBuffer->data().constData();
+    const uint normalsByteOffset = normalsAttribute->byteOffset();
+    const uint normalsByteStride = std::max(normalsAttribute->byteStride(), uint(sizeof(QVector3D)));
+
+    // Iterate over position attribute and compute normals
+    // We need to update the position according to the morph target
+    // And we need to substract the original normal to the deformed normal to have the morphtarget
+    // (Only handle vec3 types for now)
+    Q_ASSERT(positionAttribute->count() % 3 == 0);
+    for (int i = 0; i < positionAttribute->count(); i += 3) {
+        QVarLengthArray<QVector3D, 3> positions;
+        QVarLengthArray<QVector3D, 3> normals;
+        for (int j = 0; j < 3; ++j) {
+            const char *rawPos = positionData + positionByteOffset + (i + j) * positionByteStride;
+            const QVector3D p = *reinterpret_cast<const QVector3D *>(rawPos);
+
+            const char *rawMorphPos = positionMorphData + positionMorphByteOffset + (i + j) * positionMorphByteStride;
+            const QVector3D morphP = *reinterpret_cast<const QVector3D *>(rawMorphPos);
+            positions.push_back(p + morphP);
+
+            const char *rawNormal = normalsData + normalsByteOffset + (i + j) * normalsByteStride;
+            const QVector3D n = *reinterpret_cast<const QVector3D *>(rawNormal);
+            normals.push_back(n);
+        }
+
+        // Compute normals from positions
+        const QVector3D ab = positions[1] - positions[0];
+        const QVector3D ac = positions[2] - positions[0];
+        const QVector3D normal = QVector3D::crossProduct(ab, ac).normalized();
+
+        // Insert computed normals (its a per face normal, the 3 triangle
+        // vertices will have the same normal)
+        for (int j = 0; j < 3; ++j) {
+            *morphNormals = normal - normals[j];
+            ++morphNormals;
+        }
+    }
+
+    // TO DO: use same buffer for all attributes
+    // We use a separate buffer for normals:
+    // An improvement would be to preallocate some space for normals
+    // directly when converting from indexed of triangle stip/fan
+    // However in the case the mesh was already provided as triangles this would
+    // be a bit prolematic, this would have to be handled as well
+    Qt3DRender::QBuffer *buffer = new Qt3DRender::QBuffer();
+    buffer->setData(rawMorphNormals);
+
+    const QString attributeName = QStringLiteral("%1_%2")
+                                          .arg(Qt3DRender::QAttribute::defaultNormalAttributeName())
+                                          .arg(morphTargetId + 1);
+
+    Qt3DRender::QAttribute *normalsMorphAttribute = new Qt3DRender::QAttribute();
+    normalsMorphAttribute->setName(attributeName);
+    normalsMorphAttribute->setCount(positionAttribute->count());
+    normalsMorphAttribute->setByteOffset(0);
+    normalsMorphAttribute->setByteStride(3 * sizeof(float));
+    normalsMorphAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+    normalsMorphAttribute->setVertexSize(3);
+    normalsMorphAttribute->setBuffer(buffer);
+    normalsMorphAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+
+    return normalsMorphAttribute;
+}
+
+void generateNormals(Qt3DRender::QGeometry *geometry)
+{
+    const Qt3DRender::QAttribute *positionAttribute = attributeFromGeometry(Qt3DRender::QAttribute::defaultPositionAttributeName(),
+                                                                            geometry);
+
+    if (positionAttribute == nullptr) {
+        qCWarning(kuesa) << "No position attribute found on geometry, unable to generate normals.";
+        Q_UNREACHABLE();
+    }
+
+    auto normalsAttribute = generateNormalsForBaseMesh(positionAttribute);
+    if (normalsAttribute == nullptr)
+        return;
+
     geometry->addAttribute(normalsAttribute);
+
+    // Compute normals for morph targets
+    for (int morphTargetId = 0; morphTargetId < 8; ++morphTargetId) {
+        const QString attributeName = QStringLiteral("%1_%2")
+                                              .arg(Qt3DRender::QAttribute::defaultPositionAttributeName())
+                                              .arg(morphTargetId + 1);
+        const Qt3DRender::QAttribute *positionMorphAttribute = attributeFromGeometry(attributeName,
+                                                                                     geometry);
+        if (positionMorphAttribute != nullptr) {
+            auto normalMorphAttribute = generateNormalsForMorphTarget(positionAttribute, normalsAttribute, positionMorphAttribute, morphTargetId);
+            geometry->addAttribute(normalMorphAttribute);
+        }
+    }
 }
 
 } // namespace
