@@ -600,6 +600,143 @@ private Q_SLOTS:
         QCOMPARE(normals[4] + morphNormals[4], QVector3D(2, -2, -4).normalized());
         QCOMPARE(normals[5] + morphNormals[5], QVector3D(2, -2, -4).normalized());
     }
+
+    void checkTangentMorphTargetGeneration()
+    {
+        // GIVEN
+        Qt3DRender::QGeometry *geometry = new Qt3DRender::QGeometry();
+
+        QVector<QVector3D> positions;
+        QVector<QVector2D> uv;
+        QVector<QVector3D> morphPositions;
+
+        positions.reserve(6);
+        morphPositions.reserve(6);
+
+        QVector3D a(-1.0f, 1.0, 0.0f);
+        QVector3D b(1.0f, 1.0, 0.0f);
+        QVector3D c(-1.0f, -1.0, 0.0f);
+        QVector3D d(1.0f, -1.0, 0.0f);
+        positions << a << b << c
+                  << c << b << d;
+
+        a = QVector3D(0, 0, 0);
+        b = QVector3D(0, 0, 0);
+        c = QVector3D(0, 0, 0);
+        d = QVector3D(0, 0, 1.0f);
+        morphPositions << a << b << c
+                       << c << b << d;
+
+        auto a2D = QVector2D(0, 0);
+        auto b2D = QVector2D(0, 1);
+        auto c2D = QVector2D(1, 0);
+        auto d2D = QVector2D(1, 1);
+        uv << a2D << b2D << c2D
+           << c2D << b2D << d2D;
+
+        QByteArray rawPositionData;
+        rawPositionData.resize(positions.size() * sizeof(QVector3D));
+        std::memcpy(rawPositionData.data(), positions.data(), positions.size() * sizeof(QVector3D));
+
+        QByteArray rawMorphPositionData;
+        rawMorphPositionData.resize(morphPositions.size() * sizeof(QVector3D));
+        std::memcpy(rawMorphPositionData.data(), morphPositions.data(), morphPositions.size() * sizeof(QVector3D));
+
+        QByteArray rawUVData;
+        rawUVData.resize(uv.size() * sizeof(QVector2D));
+        std::memcpy(rawUVData.data(), uv.data(), uv.size() * sizeof(QVector2D));
+
+        Qt3DRender::QBuffer *vertexBuffer = new Qt3DRender::QBuffer();
+        vertexBuffer->setData(rawPositionData);
+
+        Qt3DRender::QBuffer *morphVertexBuffer = new Qt3DRender::QBuffer();
+        morphVertexBuffer->setData(rawMorphPositionData);
+
+        Qt3DRender::QBuffer *uvBuffer = new Qt3DRender::QBuffer();
+        uvBuffer->setData(rawUVData);
+
+        Qt3DRender::QAttribute *posAttribute = new Qt3DRender::QAttribute();
+        posAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+        posAttribute->setBuffer(vertexBuffer);
+        posAttribute->setByteOffset(0);
+        posAttribute->setByteStride(0);
+        posAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+        posAttribute->setVertexSize(3);
+        posAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+        posAttribute->setCount(6);
+
+        Qt3DRender::QAttribute *posMorphAttribute = new Qt3DRender::QAttribute();
+        posMorphAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName() + QStringLiteral("_1"));
+        posMorphAttribute->setBuffer(morphVertexBuffer);
+        posMorphAttribute->setByteOffset(0);
+        posMorphAttribute->setByteStride(0);
+        posMorphAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+        posMorphAttribute->setVertexSize(3);
+        posMorphAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+        posMorphAttribute->setCount(6);
+
+        Qt3DRender::QAttribute *uvAttribute = new Qt3DRender::QAttribute();
+        uvAttribute->setName(Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName());
+        uvAttribute->setBuffer(vertexBuffer);
+        uvAttribute->setByteOffset(0);
+        uvAttribute->setByteStride(0);
+        uvAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+        uvAttribute->setVertexSize(2);
+        uvAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+        uvAttribute->setCount(6);
+
+        geometry->addAttribute(posAttribute);
+        geometry->addAttribute(posMorphAttribute);
+        geometry->addAttribute(uvAttribute);
+
+        // THEN
+        QVERIFY(MeshParserUtils::needsNormalAttribute(geometry, Qt3DRender::QGeometryRenderer::Triangles));
+
+        // WHEN
+        MeshParserUtils::createNormalsForGeometry(geometry, Qt3DRender::QGeometryRenderer::Triangles);
+
+        // THEN
+        QVERIFY(MeshParserUtils::needsTangentAttribute(geometry, Qt3DRender::QGeometryRenderer::Triangles));
+
+        // WHEN
+        MeshParserUtils::createTangentForGeometry(geometry, Qt3DRender::QGeometryRenderer::Triangles);
+
+        // THEN
+        QVERIFY(!MeshParserUtils::needsTangentAttribute(geometry, Qt3DRender::QGeometryRenderer::Triangles));
+
+        const auto attributes = geometry->attributes();
+        auto tangentMorphAttrIt = std::find_if(std::begin(attributes), std::end(attributes),
+                                               [](Qt3DRender::QAttribute *attr) {
+                                                   return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName() + QStringLiteral("_1");
+                                               });
+
+        auto tangentAttrIt = std::find_if(std::begin(attributes), std::end(attributes),
+                                          [](Qt3DRender::QAttribute *attr) {
+                                              return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
+                                          });
+        QVERIFY(tangentAttrIt != std::end(attributes));
+        QVERIFY(tangentMorphAttrIt != std::end(attributes));
+
+        Qt3DRender::QAttribute *tangentAttribute = *tangentAttrIt;
+        QVERIFY(tangentAttribute->vertexSize() == 4);
+        Qt3DRender::QBuffer *tangentBuffer = tangentAttribute->buffer();
+        const QByteArray rawData = tangentBuffer->data();
+        const QVector4D *tangents = reinterpret_cast<const QVector4D *>(rawData.constData());
+
+        Qt3DRender::QAttribute *tangentMorphAttribute = *tangentMorphAttrIt;
+        Qt3DRender::QBuffer *tangentMorphBuffer = tangentMorphAttribute->buffer();
+        QVERIFY(tangentMorphAttribute->vertexSize() == 3);
+        const QByteArray rawMorphData = tangentMorphBuffer->data();
+        const QVector3D *morphTangents = reinterpret_cast<const QVector3D *>(rawMorphData.constData());
+
+        QVERIFY(qFuzzyCompare(tangents[0] + morphTangents[0], QVector4D(1, 0, 0, 1)));
+        QVERIFY(qFuzzyCompare(tangents[1] + morphTangents[1], QVector4D(1, 0, 0, 1)));
+        QVERIFY(qFuzzyCompare(tangents[2] + morphTangents[2], QVector4D(1, 0, 0, 1)));
+
+        QVERIFY(qFuzzyCompare(tangents[3] + morphTangents[3], QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
+        QVERIFY(qFuzzyCompare(tangents[4] + morphTangents[4], QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
+        QVERIFY(qFuzzyCompare(tangents[5] + morphTangents[5], QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
+    }
 };
 
 QTEST_APPLESS_MAIN(tst_MeshParserUtils)

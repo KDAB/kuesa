@@ -234,9 +234,14 @@ struct FindVertexIndicesInFaceHelper {
 struct MikkTSpaceUserData {
 
     Attribute indexAttribute;
+
     Attribute positionAttribute;
-    Attribute uvAttribute;
+    Attribute positionMorphAttribute;
+
     Attribute normalAttribute;
+    Attribute normalMorphAttribute;
+
+    Attribute uvAttribute;
 
     int nFaces;
     int nVertices;
@@ -307,7 +312,7 @@ MikkTSpaceUserData precomputeMikkTSpaceUserData(Qt3DRender::QGeometry *geometry,
     userData.tangentBufferData.resize(userData.nVertices * sizeof(std::array<float, 4>));
 
     return userData;
-} // namespace
+}
 
 SMikkTSpaceInterface createMikkTSpaceInterface()
 {
@@ -330,14 +335,29 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
         const auto *userData = reinterpret_cast<MikkTSpaceUserData *>(pContext->m_pUserData);
         const auto &vertexIndices = userData->vertexIndicesFinder(iFace);
         const auto vertexIndex = vertexIndices[iVertex];
-        const auto byteOffset = userData->positionAttribute.byteOffset;
-        const auto byteStride = userData->positionAttribute.byteStride;
-        const auto &vertexBufferData = userData->positionAttribute.bufferData;
-        const auto *positionHead = vertexBufferData.constData() + (byteOffset + vertexIndex * byteStride);
-        const auto *typedPositionHead = reinterpret_cast<const float *>(positionHead);
-        fvPosOut[0] = typedPositionHead[0];
-        fvPosOut[1] = typedPositionHead[1];
-        fvPosOut[2] = typedPositionHead[2];
+
+        QVector3D position;
+        {
+            const auto byteOffset = userData->positionAttribute.byteOffset;
+            const auto byteStride = userData->positionAttribute.byteStride;
+            const auto &vertexBufferData = userData->positionAttribute.bufferData;
+            const auto *positionHead = vertexBufferData.constData() + (byteOffset + vertexIndex * byteStride);
+            position = *reinterpret_cast<const QVector3D *>(positionHead);
+        }
+
+        QVector3D morphPosition = { 0.0f, 0.0f, 0.0f };
+        if (!userData->positionMorphAttribute.bufferData.isNull()) {
+            const auto byteOffset = userData->positionMorphAttribute.byteOffset;
+            const auto byteStride = userData->positionMorphAttribute.byteStride;
+            const auto &vertexBufferData = userData->positionMorphAttribute.bufferData;
+            const auto *positionHead = vertexBufferData.constData() + (byteOffset + vertexIndex * byteStride);
+            morphPosition = *reinterpret_cast<const QVector3D *>(positionHead);
+        }
+
+        const auto fv = position + morphPosition;
+        fvPosOut[0] = fv[0];
+        fvPosOut[1] = fv[1];
+        fvPosOut[2] = fv[2];
     };
 
     interface.m_getNormal = [](const ::SMikkTSpaceContext *pContext,
@@ -347,14 +367,29 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
         const auto *userData = reinterpret_cast<MikkTSpaceUserData *>(pContext->m_pUserData);
         const auto &vertexIndices = userData->vertexIndicesFinder(iFace);
         const auto vertexIndex = vertexIndices[iVertex];
-        const auto byteOffset = userData->normalAttribute.byteOffset;
-        const auto byteStride = userData->normalAttribute.byteStride;
-        const auto &normalBufferData = userData->normalAttribute.bufferData;
-        const auto *normalHead = normalBufferData.constData() + (byteOffset + vertexIndex * byteStride);
-        const auto *typedNormalHead = reinterpret_cast<const float *>(normalHead);
-        fvPosOut[0] = typedNormalHead[0];
-        fvPosOut[1] = typedNormalHead[1];
-        fvPosOut[2] = typedNormalHead[2];
+
+        QVector3D normal;
+        {
+            const auto byteOffset = userData->normalAttribute.byteOffset;
+            const auto byteStride = userData->normalAttribute.byteStride;
+            const auto &normalBufferData = userData->normalAttribute.bufferData;
+            const auto *normalHead = normalBufferData.constData() + (byteOffset + vertexIndex * byteStride);
+            normal = *reinterpret_cast<const QVector3D *>(normalHead);
+        }
+
+        QVector3D morphNormal = { 0.0f, 0.0f, 0.0f };
+        if (!userData->normalMorphAttribute.bufferData.isNull()) {
+            const auto byteOffset = userData->normalMorphAttribute.byteOffset;
+            const auto byteStride = userData->normalMorphAttribute.byteStride;
+            const auto &normalBufferData = userData->normalMorphAttribute.bufferData;
+            const auto *normalHead = normalBufferData.constData() + (byteOffset + vertexIndex * byteStride);
+            morphNormal = *reinterpret_cast<const QVector3D *>(normalHead);
+        }
+
+        const auto fv = normal + morphNormal;
+        fvPosOut[0] = fv[0];
+        fvPosOut[1] = fv[1];
+        fvPosOut[2] = fv[2];
     };
 
     interface.m_getTexCoord = [](const ::SMikkTSpaceContext *pContext,
@@ -559,6 +594,107 @@ int addJsonBuffer(QJsonObject &rootObject,
     return bufferIndex;
 }
 
+Qt3DRender::QAttribute *generateTangentForBaseMesh(MikkTSpaceUserData *mikkTSpaceUserData, SMikkTSpaceInterface *interface)
+{
+    ::SMikkTSpaceContext mikkContext;
+    mikkContext.m_pUserData = mikkTSpaceUserData;
+
+    mikkContext.m_pInterface = interface;
+    genTangSpaceDefault(&mikkContext);
+
+    auto *tangentBuffer = new Qt3DRender::QBuffer;
+    constexpr auto NumberValuesPerTangent = 4;
+    tangentBuffer->setData(mikkTSpaceUserData->tangentBufferData);
+    auto *tangentAttribute = new Qt3DRender::QAttribute(tangentBuffer,
+                                                        Qt3DRender::QAttribute::defaultTangentAttributeName(),
+                                                        Qt3DRender::QAttribute::Float,
+                                                        NumberValuesPerTangent,
+                                                        mikkTSpaceUserData->nVertices);
+
+    return tangentAttribute;
+}
+
+Qt3DRender::QAttribute *generateTangentForMorphTarget(Qt3DRender::QGeometry *geometry, MikkTSpaceUserData *mikkTSpaceUserData, SMikkTSpaceInterface *interface, int morphTargetId)
+{
+    // Update userdata to add the morphed attributes
+    QString positionMorphName = Qt3DRender::QAttribute::defaultPositionAttributeName() + QStringLiteral("_") + QString::number(morphTargetId + 1);
+    QString normalMorphName = Qt3DRender::QAttribute::defaultNormalAttributeName() + QStringLiteral("_") + QString::number(morphTargetId + 1);
+    QString tangentName = Qt3DRender::QAttribute::defaultTangentAttributeName();
+
+    auto *positionMorphAttribute = attributeFromGeometry(positionMorphName, geometry);
+    auto *normalMorphAttribute = attributeFromGeometry(normalMorphName, geometry);
+
+    auto *tangentAttribute = attributeFromGeometry(tangentName, geometry);
+    auto tangentByteOffset = tangentAttribute->byteOffset();
+    auto tangentByteStride = tangentAttribute->byteStride() == 0 ? //
+            tangentAttribute->vertexSize() * vertexBaseTypeSize(tangentAttribute->vertexBaseType())
+                                                                 : tangentAttribute->byteStride();
+    auto tangentBufferData = tangentAttribute->buffer()->data();
+
+    const auto nVertices = mikkTSpaceUserData->nVertices;
+    if (positionMorphAttribute && normalMorphAttribute) {
+        ::SMikkTSpaceContext mikkContext;
+
+        if (normalMorphAttribute) {
+            mikkTSpaceUserData->normalMorphAttribute.byteOffset = normalMorphAttribute->byteOffset();
+            mikkTSpaceUserData->normalMorphAttribute.byteStride = normalMorphAttribute->byteStride() == 0 ? //
+                    normalMorphAttribute->vertexSize() * vertexBaseTypeSize(normalMorphAttribute->vertexBaseType())
+                                                                                                          : normalMorphAttribute->byteStride();
+            mikkTSpaceUserData->normalMorphAttribute.bufferData = normalMorphAttribute->buffer()->data();
+        } else {
+            mikkTSpaceUserData->normalMorphAttribute.byteOffset = 0;
+            mikkTSpaceUserData->normalMorphAttribute.byteStride = 0;
+            mikkTSpaceUserData->normalMorphAttribute.bufferData = {};
+        }
+
+        if (positionMorphAttribute) {
+            mikkTSpaceUserData->positionMorphAttribute.byteOffset = positionMorphAttribute->byteOffset();
+            mikkTSpaceUserData->positionMorphAttribute.byteStride = positionMorphAttribute->byteStride() == 0 ? //
+                    positionMorphAttribute->vertexSize() * vertexBaseTypeSize(positionMorphAttribute->vertexBaseType())
+                                                                                                              : positionMorphAttribute->byteStride();
+            mikkTSpaceUserData->positionMorphAttribute.bufferData = positionMorphAttribute->buffer()->data();
+        } else {
+            mikkTSpaceUserData->positionMorphAttribute.byteOffset = 0;
+            mikkTSpaceUserData->positionMorphAttribute.byteStride = 0;
+            mikkTSpaceUserData->positionMorphAttribute.bufferData = {};
+        }
+
+        mikkContext.m_pUserData = mikkTSpaceUserData;
+
+        mikkContext.m_pInterface = interface;
+        genTangSpaceDefault(&mikkContext);
+
+        // TODO instead of creating a new buffer, try to use a new MikkTSpaceInterface which uses directly the buffer we need
+        QByteArray morphTargetTangentMorphData;
+        morphTargetTangentMorphData.resize(nVertices * sizeof(QVector3D));
+
+        for (int vertexId = 0; vertexId < nVertices; ++vertexId) {
+            const auto *tangentHead = tangentBufferData.constData() + (tangentByteOffset + vertexId * tangentByteStride);
+            const auto tangentValue = *reinterpret_cast<const QVector4D *>(tangentHead);
+
+            auto *tangentMorphHead4D = mikkTSpaceUserData->tangentBufferData.data() + (vertexId * sizeof(QVector4D));
+            auto *tangentMorphHead3D = morphTargetTangentMorphData.data() + (vertexId * sizeof(QVector3D));
+
+            QVector4D *tangentMorphValue4D = reinterpret_cast<QVector4D *>(tangentMorphHead4D);
+            QVector3D *tangentMorphValue3D = reinterpret_cast<QVector3D *>(tangentMorphHead3D);
+            *tangentMorphValue3D = QVector3D{ tangentMorphValue4D->x(), tangentMorphValue4D->y(), tangentMorphValue4D->z() } //
+                    - QVector3D{ tangentValue.x(), tangentValue.y(), tangentValue.z() };
+        }
+
+        auto *tangentBuffer = new Qt3DRender::QBuffer;
+        constexpr auto NumberValuesPerMorphTangent = 3;
+        tangentBuffer->setData(morphTargetTangentMorphData);
+        auto *tangentAttribute = new Qt3DRender::QAttribute(tangentBuffer,
+                                                            Qt3DRender::QAttribute::defaultTangentAttributeName() + QStringLiteral("_") + QString::number(morphTargetId + 1),
+                                                            Qt3DRender::QAttribute::Float,
+                                                            NumberValuesPerMorphTangent,
+                                                            mikkTSpaceUserData->nVertices);
+
+        return tangentAttribute;
+    }
+    return nullptr;
+}
+
 } // namespace
 
 // TODO This is only needed when the material has normal mapping
@@ -566,30 +702,23 @@ int addJsonBuffer(QJsonObject &rootObject,
 namespace Kuesa {
 namespace GLTF2Import {
 namespace MeshParserUtils {
-Qt3DRender::QAttribute *createTangentAttribute(Qt3DRender::QGeometry *geometry, Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+
+void createTangentForGeometry(Qt3DRender::QGeometry *geometry, Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
 {
-    //Create callbacks for MikkTSpace
-    ::SMikkTSpaceContext mikkContext;
-    auto userData = precomputeMikkTSpaceUserData(geometry, primitiveType);
-    if (userData.tangentBufferData.isNull())
-        return nullptr;
-    mikkContext.m_pUserData = &userData;
+    auto mikkTSpaceUserData = precomputeMikkTSpaceUserData(geometry, primitiveType);
 
-    ::SMikkTSpaceInterface interface = createMikkTSpaceInterface();
-    mikkContext.m_pInterface = &interface;
-    genTangSpaceDefault(&mikkContext);
+    if (mikkTSpaceUserData.tangentBufferData.isNull())
+        return;
 
-    auto *tangentBuffer = new Qt3DRender::QBuffer;
-    constexpr auto NumberValuesPerTangent = 4;
-    tangentBuffer->setData(userData.tangentBufferData);
-    auto *tangentAttribute = new Qt3DRender::QAttribute(tangentBuffer,
-                                                        Qt3DRender::QAttribute::Float,
-                                                        NumberValuesPerTangent,
-                                                        userData.nVertices);
+    auto mikkTSpaceInterface = createMikkTSpaceInterface();
+    auto tangentAttribute = generateTangentForBaseMesh(&mikkTSpaceUserData, &mikkTSpaceInterface);
+    geometry->addAttribute(tangentAttribute);
 
-    tangentAttribute->setName(Qt3DRender::QAttribute::defaultTangentAttributeName());
-
-    return tangentAttribute;
+    for (int morphTargetId = 0; morphTargetId < 8; ++morphTargetId) {
+        tangentAttribute = generateTangentForMorphTarget(geometry, &mikkTSpaceUserData, &mikkTSpaceInterface, morphTargetId);
+        if (tangentAttribute)
+            geometry->addAttribute(tangentAttribute);
+    }
 }
 
 bool needsTangentAttribute(const Qt3DRender::QGeometry *geometry,
@@ -634,10 +763,10 @@ bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
     QJsonObject rootObject = jsonDocument.object();
 
     // create new attribute
-    Qt3DRender::QAttribute *newTangentAttr = createTangentAttribute(mesh->geometry(), mesh->primitiveType());
-    if (!newTangentAttr)
+    createTangentForGeometry(mesh->geometry(), mesh->primitiveType());
+    auto *newTangentAttr = attributeFromGeometry(Qt3DRender::QAttribute::defaultTangentAttributeName(), mesh->geometry());
+    if (newTangentAttr == nullptr)
         return false;
-    geometry->addAttribute(newTangentAttr);
 
     const QByteArray bufferData = newTangentAttr->buffer()->data();
     const QString basePath = context->basePath();

@@ -230,12 +230,8 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
                 }
             }
             if (m_context->options()->generateTangents()) {
-                if (MeshParserUtils::needsTangentAttribute(geometry.get(), primitiveType)) {
-                    auto tangentAttr = Kuesa::GLTF2Import::MeshParserUtils::createTangentAttribute(geometry.get(), primitiveType);
-                    if (tangentAttr) {
-                        geometry->addAttribute(tangentAttr);
-                    }
-                }
+                if (MeshParserUtils::needsTangentAttribute(geometry.get(), primitiveType))
+                    Kuesa::GLTF2Import::MeshParserUtils::createTangentForGeometry(geometry.get(), primitiveType);
             }
 
             Qt3DRender::QGeometryRenderer *renderer = new Qt3DRender::QGeometryRenderer;
