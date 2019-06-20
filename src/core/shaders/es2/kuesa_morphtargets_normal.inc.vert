@@ -37,6 +37,7 @@ vec3 kuesa_morphNormal(const in vec3 vNormal)
     vec3 norm = vNormal;
     norm += vertexNormal_1 * morphWeights.morphWeights[0];
     norm += vertexNormal_2 * morphWeights.morphWeights[1];
+    norm = normalize(norm);
     return norm;
 }
 

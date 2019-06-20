@@ -37,5 +37,6 @@ vec4 kuesa_morphTangent(const in vec4 vTangent)
     vec4 tangent = vTangent;
     tangent += vertexTangent_1 * morphWeights.morphWeights[0];
     tangent += vertexTangent_2 * morphWeights.morphWeights[1];
+    tangent.xyz = normalize(tangent.xyz);
     return tangent;
 }
