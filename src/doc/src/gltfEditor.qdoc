@@ -1,5 +1,5 @@
 /*
-    kuesa-index.qdoc
+    gltfEditor.qdoc
 
     This file is part of Kuesa.
 
@@ -27,53 +27,27 @@
 */
 
 /*!
-    \page kuesa-cpp.html
-    \title Kuesa C++ Classes
-    \brief The Kuesa module provices a set of helpers on top of Qt 3Dr to ease
-    the Artist to Developer transition.
-    \since Kuesa 1.0
+    \page gltfEditor.html
+    \title gltfEditor
+    \ingroup tools
 
-    The Kuesa module provices a set of helpers on top of Qt 3Dr to ease the
-    Artist to Developer transition.
+    \brief The gltfEditor is a tools that allows to preview and introspect
+    glTF2 files rendered with the Kuesa Qt 3D engine.
 
-    \section1 Namespaces
-    \annotatedlist kuesa-namespaces
+    \image gltfEditor.jpg
 
-    \section1 Classes
-    \generatelist {classesbymodule Kuesa}
+    \section2 Features
+    \list
+    \li Introspect Entities
+    \li Introspect Meshes
+    \li Introspect Materials
+    \li Introspect Textures
+    \li Generate Normals
+    \li Generate Tangents
+    \li Preview Animations
+    \li Preview different scenes
+    \li Preview from the different cameras
+    \li Compress glTF scene with Draco
+    \li Export compressed glTF file with generated normals and tangents
+    \endlist
 */
-
-/*!
-   \page kuesa-qml.html
-   \title Kuesa QML Types
-   \brief QML Types for the Kuesa module.
-   \since Kuesa 1.0
-
-   The Kuesa QML types are imported with
-
-   \qml
-   import Kuesa 1.0
-   \endqml
-
-   \section1 QML Types
-   \generatelist {qmltypesbymodule Kuesa}
-*/
-
-/*!
-    \group tools
-    \title Kuesa Tools
-    \brief All the tools provided as part of the Kuesa module
-    \generatelist {related}
-*/
-
-/*!
-    \namespace Kuesa
-    \inmodule Kuesa
-    \brief Contains all classes of the Kuesa module.
-*/
-
-/*!
-    \namespace Kuesa::GLTF2Import
-    \inmodule Kuesa
-    \brief Contains glTF2 import related classes.
- */

@@ -1,0 +1,77 @@
+/*
+    gltfViewer.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \page gltfViewer.html
+    \title gltfViewer
+    \ingroup tools
+
+    \brief The gltfViewer is a tools that allows to preview glTF2 files
+    rendered with the Kuesa Qt 3D engine.
+
+    \image gltfViewer.jpg
+
+    \section1 Usage
+
+    It is a command line application on all platforms but Mac OS.
+
+    \badcode
+    Usage: tools/gltfViewer/gltfViewer [options] source
+    \endcode
+
+    This tool renders glTF 2.0 files.
+
+    \section2 Example:
+    \badcode
+    ./gltfViewer [-f] my_file.gltf
+    \endcode
+
+    \section2 Options:
+    \list
+    \li -h, --help               Displays this help.
+    \li -v, --version            Displays version information.
+    \li -f, --fullScreen         show full screen.
+    \li -p, --play <animations>  play named animation
+    \li -l, --loop               loop animations
+    \li -c, --camera <camera>    use named camera
+    \li -s, --scene <scene>      index of the glTF scene to load
+    \endlist
+
+    \section2: Arguments:
+    \list
+    \li source                   gltf 2.0 file to render.
+    \endlist
+
+    \section2 Runtime Keyboard Shotcuts:
+    \list
+    \li space       Toggle play state of animations
+    \li tab         Render the scene with the next camera
+    \li previous    Render the scene with the previous camera
+    \li ctrl + r    Reload the glTF file
+    \endlist
+*/
