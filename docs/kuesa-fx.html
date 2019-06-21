@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- kuesa-fx.qdoc -->
+  <title>Kuesa post-processing effects | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td >Kuesa post-processing effects</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#using-post-processing-effects">Using post-processing effects</a></li>
+<li class="level1"><a href="#effect-gallery">Effect gallery</a></li>
+<li class="level1"><a href="#implementing-a-custom-effect">Implementing a custom effect.</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Kuesa post-processing effects</h1>
+<span class="subtitle"></span>
+<!-- $$$kuesa-fx.html-description -->
+<div class="descr"> <a name="details"></a>
+<p>It is possible to use them from both C++ and QML, as well as implement custom additional post-processing effects in C++.</p>
+<a name="using-post-processing-effects"></a>
+<h2 id="using-post-processing-effects">Using post-processing effects</h2>
+<p>Effects are provided by the following import:</p>
+<pre class="qml">
+
+  import Kuesa.Effects 1.1
+
+</pre>
+<p>They can be added to postProcessingEffects in Kuesa.<a href="qml-forwardrenderer.html">ForwardRenderer</a>. For example, the following example first applies a threshold effect to the scene, followed by a bloom.</p>
+<pre class="qml">
+
+  Kuesa.ForwardRenderer {
+      postProcessingEffects: [ thresholdFx, bloomFx ]
+  }
+  BloomEffect { id: bloom }
+  ThresholdEffect { id: threshold }
+
+</pre>
+<a name="effect-gallery"></a>
+<h2 id="effect-gallery">Effect gallery</h2>
+<p><a href="kuesa-depthoffieldeffect.html">Depth Of Field</a></p>
+<p class="centerAlign"><img src="images/dof_range_2.png" alt="" /></p><p><a href="kuesa-opacitymask.html">Opacity Masking</a></p>
+<p class="centerAlign"><img src="images/noalpha.png" alt="" /></p><p><a href="kuesa-thresholdeffect.html">Thresholding</a></p>
+<p class="centerAlign"><img src="images/t35.png" alt="" /></p><p><a href="kuesa-gaussianblureffect.html">Gaussian Blur</a></p>
+<p class="centerAlign"><img src="images/blur.png" alt="" /></p><p><a href="kuesa-bloomeffect.html">Bloom</a></p>
+<p class="centerAlign"><img src="images/bloom.png" alt="" /></p><p><a href="kuesa-tonemappingandgammacorrectioneffect.html">Tone Mapping and Gamma Correction</a></p>
+<a name="implementing-a-custom-effect"></a>
+<h2 id="implementing-a-custom-effect">Implementing a custom effect.</h2>
+<p>To introduce a new effect, it is possible to inherit from <a href="kuesa-abstractpostprocessingeffect.html">Kuesa::AbstractPostProcessingEffect</a>. The core idea will be to provide a set of frame graph nodes, and a layer, which implement the effect.</p>
+<p>Both color and depth textures are available to implement effects.</p>
+<p>In order to simplify effect implementation, the <a href="kuesa-fullscreenquad.html">Kuesa::FullScreenQuad</a> utility class is provided. It renders a given material in a plane mesh.</p>
+<p>A typical simple effect which applies a fragment shader to the output will need :</p>
+<ul>
+<li>A root framegraph node.</li>
+<li>A material to store the shader.</li>
+<li>An effect to register the techniques - one per graphics API supported by the effect. To indicate that the technique is to be used by the Kuesa forward renderer, it is necessary to add a filter key to your techniques to match <code>renderingStyle == forward</code>.</li>
+<li>A render pass with an associated shader program. Note that a default passthrough vertex shader is provided by Kuesa :<ul>
+<li><code>qrc:/kuesa/shaders/gl3/passthrough.vert</code></li>
+<li><code>qrc:/kuesa/shaders/es2/passthrough.vert</code></li>
+<li><code>qrc:/kuesa/shaders/es3/passthrough.vert</code></li>
+</ul>
+<p>The render pass can be filtered by a Qt3DRender::QRenderPassFilter.</p>
+</li>
+<li>A quad on which the effect will be rendered, which can be provided by the <a href="kuesa-fullscreenquad.html">Kuesa::FullScreenQuad</a> convenience class.</li>
+</ul>
+<p>The implementation of the <a href="kuesa-thresholdeffect.html">thresholding effect</a> can give a good starting point to create simple post-processing effects. The implementation of the <a href="kuesa-gaussianblureffect.html">Gaussian blur effect</a> can give a good starting point to create multi-pass post-processing effects.</p>
+</div>
+<!-- @@@kuesa-fx.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

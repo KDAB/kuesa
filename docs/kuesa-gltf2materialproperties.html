@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- gltf2materialproperties.cpp -->
+  <title>GLTF2MaterialProperties Class | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-cpp.html#">C++ Classes</a></td><td >GLTF2MaterialProperties</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">GLTF2MaterialProperties Class</h1>
+<span class="small-subtitle">(<a href="index.html#">Kuesa::GLTF2MaterialProperties</a>)<br/></span>
+<!-- $$$GLTF2MaterialProperties-brief -->
+<p><a href="kuesa-gltf2materialproperties.html">GLTF2MaterialProperties</a> is a base class holding properties common to all glTF2 Materials. <a href="#details">More...</a></p>
+<!-- @@@GLTF2MaterialProperties -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/GLTF2MaterialProperties&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="kuesa-metallicroughnessproperties.html">Kuesa::MetallicRoughnessProperties</a> and <a href="kuesa-unlitproperties.html">Kuesa::UnlitProperties</a></p>
+</td></tr></table></div><p>This class was introduced in  Kuesa 1.1.</p>
+<ul>
+<li><a href="kuesa-gltf2materialproperties-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><a href="kuesa-gltf2materialproperties.html#alphaCutoff-prop">alphaCutoff</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-gltf2materialproperties.html#baseColorFactor-prop">baseColorFactor</a></b> : QColor</li>
+<li class="fn"><b><a href="kuesa-gltf2materialproperties.html#baseColorMap-prop">baseColorMap</a></b> : Qt3DRender::QAbstractTexture*</li>
+<li class="fn"><b><a href="kuesa-gltf2materialproperties.html#textureTransform-prop">textureTransform</a></b> : QMatrix3x3</li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#alphaCutoff-prop">alphaCutoff</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QColor </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#baseColorFactor-prop">baseColorFactor</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#baseColorMap-prop">baseColorMap</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#baseColorUsesTexCoord1-prop">isBaseColorUsingTexCoord1</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMatrix3x3 </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#textureTransform-prop">textureTransform</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#alphaCutoff-prop">setAlphaCutoff</a></b>(float <i>alphaCutoff</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#baseColorFactor-prop">setBaseColorFactor</a></b>(const QColor &amp;<i>baseColorFactor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#baseColorMap-prop">setBaseColorMap</a></b>(Qt3DRender::QAbstractTexture *<i>baseColorMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#baseColorUsesTexCoord1-prop">setBaseColorUsesTexCoord1</a></b>(bool <i>baseColorUsesTexCoord1</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#textureTransform-prop">setTextureTransform</a></b>(const QMatrix3x3 &amp;<i>textureTransform</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#alphaCutoff-prop">alphaCutoffChanged</a></b>(float <i>alphaCutoff</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#baseColorFactor-prop">baseColorFactorChanged</a></b>(const QColor &amp;<i>baseColorFactor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#baseColorMap-prop">baseColorMapChanged</a></b>(Qt3DRender::QAbstractTexture *<i>baseColorMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#baseColorUsesTexCoord1-prop">baseColorUsesTexCoord1Changed</a></b>(<i>bool</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2materialproperties.html#textureTransform-prop">textureTransformChanged</a></b>(const QMatrix3x3 &amp;<i>textureTransform</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$GLTF2MaterialProperties-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>A <a href="kuesa-gltf2materialproperties.html">GLTF2MaterialProperties</a> consists of the following base properties:</p>
+<ul>
+<li>alphaCutOff: The alpha cut off threshold</li>
+<li>baseColorUsesTexCoord1: Whether we use the first or second set of texture coordinates</li>
+<li><a href="kuesa-gltf2materialproperties.html#baseColorFactor-prop">baseColorFactor</a>: Base color of the material</li>
+<li><a href="kuesa-gltf2materialproperties.html#baseColorMap-prop">baseColorMap</a>: A texture specifying the base color of the material</li>
+<li><a href="kuesa-gltf2materialproperties.html#textureTransform-prop">textureTransform</a>: Allows to transform (scale, translate, rotate) a texture.</li>
+</ul>
+</div>
+<!-- @@@GLTF2MaterialProperties -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$alphaCutoff-prop$$$alphaCutoff$$$setAlphaCutofffloat$$$alphaCutoffChangedfloat -->
+<h3 class="fn" id="alphaCutoff-prop"><a name="alphaCutoff-prop"></a><span class="name">alphaCutoff</span> : <span class="type">float</span></h3>
+<p>Alpha cutoff threshold. Any fragment with an alpha value higher than this property will be considered opaque. Any fragment with an alpha value lower than this property will be discarded and wont have any effect on the final result. For alphaCutoff to have any effect, it must be activated.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>alphaCutoff</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setAlphaCutoff</b></span>(float <i>alphaCutoff</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>alphaCutoffChanged</b></span>(float <i>alphaCutoff</i>)</td></tr>
+</table></div>
+<!-- @@@alphaCutoff -->
+<!-- $$$baseColorFactor-prop$$$baseColorFactor$$$setBaseColorFactorconstQColor&$$$baseColorFactorChangedconstQColor& -->
+<h3 class="fn" id="baseColorFactor-prop"><a name="baseColorFactor-prop"></a><span class="name">baseColorFactor</span> : <span class="type">QColor</span></h3>
+<p>Specifies the baseColorFactor of the material</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QColor </td><td class="memItemRight bottomAlign"><span class="name"><b>baseColorFactor</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setBaseColorFactor</b></span>(const QColor &amp;<i>baseColorFactor</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>baseColorFactorChanged</b></span>(const QColor &amp;<i>baseColorFactor</i>)</td></tr>
+</table></div>
+<!-- @@@baseColorFactor -->
+<!-- $$$baseColorMap-prop$$$baseColorMap$$$setBaseColorMapQt3DRender::QAbstractTexture*$$$baseColorMapChangedQt3DRender::QAbstractTexture* -->
+<h3 class="fn" id="baseColorMap-prop"><a name="baseColorMap-prop"></a><span class="name">baseColorMap</span> : <span class="type">Qt3DRender::QAbstractTexture</span>*</h3>
+<p>Specifies a texture to be used as <a href="kuesa-gltf2materialproperties.html#baseColorFactor-prop">baseColorFactor</a>. The content of the texture is expected to be in sRGB color space.</p>
+<p><b>Note: </b>If this property is nullptr and was set to a non nullptr value, this will trigger a recompilation of the shader. If it was a non nullptr value and is set to nullptr, it will also trigger a recompilation of the shader.</p><p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><span class="name"><b>baseColorMap</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setBaseColorMap</b></span>(Qt3DRender::QAbstractTexture *<i>baseColorMap</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>baseColorMapChanged</b></span>(Qt3DRender::QAbstractTexture *<i>baseColorMap</i>)</td></tr>
+</table></div>
+<!-- @@@baseColorMap -->
+<!-- $$$textureTransform-prop$$$textureTransform$$$setTextureTransformconstQMatrix3x3&$$$textureTransformChangedconstQMatrix3x3& -->
+<h3 class="fn" id="textureTransform-prop"><a name="textureTransform-prop"></a><span class="name">textureTransform</span> : <span class="type">QMatrix3x3</span></h3>
+<p>Specifies the transform of the texture. This allows to scale, transform or rotate the textures of the material.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QMatrix3x3 </td><td class="memItemRight bottomAlign"><span class="name"><b>textureTransform</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setTextureTransform</b></span>(const QMatrix3x3 &amp;<i>textureTransform</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>textureTransformChanged</b></span>(const QMatrix3x3 &amp;<i>textureTransform</i>)</td></tr>
+</table></div>
+<!-- @@@textureTransform -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

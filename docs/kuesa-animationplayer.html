@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- animationplayer.cpp -->
+  <title>AnimationPlayer Class | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-cpp.html#">C++ Classes</a></td><td >AnimationPlayer</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">AnimationPlayer Class</h1>
+<span class="small-subtitle">(<a href="index.html#">Kuesa::AnimationPlayer</a>)<br/></span>
+<!-- $$$AnimationPlayer-brief -->
+<p>Play animations defined in glTF files. <a href="#details">More...</a></p>
+<!-- @@@AnimationPlayer -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/AnimationPlayer&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-animationplayer.html">AnimationPlayer</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.0.</p>
+<ul>
+<li><a href="kuesa-animationplayer-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#Status-enum">Status</a></b> { None, Ready, Error }</td></tr>
+</table></div>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary">
+<tr><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-animationplayer.html#clip-prop">clip</a></b> : QString</li>
+<li class="fn"><b><a href="kuesa-animationplayer.html#clock-prop">clock</a></b> : Qt3DAnimation::QClock*</li>
+<li class="fn"><b><a href="kuesa-animationplayer.html#loops-prop">loops</a></b> : int</li>
+<li class="fn"><b><a href="kuesa-animationplayer.html#mapper-prop">mapper</a></b> : QString</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-animationplayer.html#normalizedTime-prop">normalizedTime</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-animationplayer.html#running-prop">running</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-animationplayer.html#sceneEntity-prop">sceneEntity</a></b> : Kuesa::SceneEntity*</li>
+<li class="fn"><b><a href="kuesa-animationplayer.html#status-prop">status</a></b> : const Status</li>
+</ul>
+</td></tr>
+</table></div>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#addTarget">addTarget</a></b>(Qt3DCore::QNode *<i>target</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clip-prop">clip</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DAnimation::QClock *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clock-prop">clock</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#running-prop">isRunning</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#loops-prop">loopCount</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#mapper-prop">mapper</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#normalizedTime-prop">normalizedTime</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#removeTarget">removeTarget</a></b>(Qt3DCore::QNode *<i>target</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::SceneEntity *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#sceneEntity-prop">sceneEntity</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::AnimationPlayer::Status </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#status-prop">status</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector&lt;Qt3DCore::QNode *&gt; </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#targets">targets</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clip-prop">setClip</a></b>(const QString &amp;<i>clip</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clock-prop">setClock</a></b>(Qt3DAnimation::QClock *<i>clock</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#loops-prop">setLoopCount</a></b>(int <i>loops</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#mapper-prop">setMapper</a></b>(const QString &amp;<i>mapper</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#normalizedTime-prop">setNormalizedTime</a></b>(float <i>timeFraction</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#running-prop">setRunning</a></b>(bool <i>running</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#sceneEntity-prop">setSceneEntity</a></b>(Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#start">start</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#stop">stop</a></b>()</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clip-prop">clipChanged</a></b>(const QString &amp;<i>clip</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clock-prop">clockChanged</a></b>(Qt3DAnimation::QClock *<i>clock</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#loops-prop">loopCountChanged</a></b>(int <i>loops</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#mapper-prop">mapperChanged</a></b>(const QString &amp;<i>mapper</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#normalizedTime-prop">normalizedTimeChanged</a></b>(float <i>index</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#running-prop">runningChanged</a></b>(bool <i>running</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#sceneEntity-prop">sceneEntityChanged</a></b>(const Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#status-prop">statusChanged</a></b>(Kuesa::AnimationPlayer::Status <i>status</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$AnimationPlayer-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p><a href="kuesa-animationplayer.html">AnimationPlayer</a> is a utility class designed to easily control animations where the clip and mapping data is stored in a collections (typically loaded from glTF files).</p>
+<p>Clip and mapper data are referenced by name. These will be used to look up actual assets in the appropriate collection.</p>
+<p><a href="kuesa-animationplayer.html">AnimationPlayer</a> internally uses an instance of Qt3DAnimation::QClipAnimator and mirrors it's api.</p>
+<p>Additionally, <a href="kuesa-animationplayer.html">AnimationPlayer</a> can be used to map clip data to other target objects than those specified in a mapper. For example, an animation where the clip data affect transformation properties, can be applied to any Qt3DCore::QTransform instance, not just the one specified in the mapper data.</p>
+</div>
+<!-- @@@AnimationPlayer -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$Status$$$None$$$Ready$$$Error -->
+<h3 class="fn" id="Status-enum"><a name="Status-enum"></a>enum AnimationPlayer::<span class="name">Status</span></h3>
+<p>This enum type describes state of the player.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code>Kuesa::AnimationPlayer::None</code></td><td class="topAlign tblval"><code>0</code></td><td class="topAlign">Unknown state (default).</td></tr>
+<tr><td class="topAlign"><code>Kuesa::AnimationPlayer::Ready</code></td><td class="topAlign tblval"><code>1</code></td><td class="topAlign">Both clip and mapper data have been found and are valid (included target nodes if they have been defined).</td></tr>
+<tr><td class="topAlign"><code>Kuesa::AnimationPlayer::Error</code></td><td class="topAlign tblval"><code>2</code></td><td class="topAlign">An error occurred when looking for assets or trying to match clip and mapper properties.</td></tr>
+</table></div>
+<!-- @@@Status -->
+</div>
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$clip-prop$$$clip$$$setClipconstQString&$$$clipChangedconstQString& -->
+<h3 class="fn" id="clip-prop"><a name="clip-prop"></a><span class="name">clip</span> : <span class="type">QString</span></h3>
+<p>This property holds the name of the clip asset.</p>
+<p>This will be used to lookup the asset in the <a href="kuesa-animationclipcollection.html">AnimationClipCollection</a> instance of the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a>.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>clip</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setClip</b></span>(const QString &amp;<i>clip</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>clipChanged</b></span>(const QString &amp;<i>clip</i>)</td></tr>
+</table></div>
+<!-- @@@clip -->
+<!-- $$$clock-prop$$$clock$$$setClockQt3DAnimation::QClock*$$$clockChangedQt3DAnimation::QClock* -->
+<h3 class="fn" id="clock-prop"><a name="clock-prop"></a><span class="name">clock</span> : <span class="type">Qt3DAnimation::QClock</span>*</h3>
+<p>intense of Qt3DAnimation::QClock used to control animation speed and direction</p>
+<p>A Qt3DAnimation::QClock can be used to control the speed (by setting the playBackRate) and direction (like reversing by setting negative playBackRate values) of the animation.</p>
+<p>This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Qt3DAnimation::QClock *</td><td class="memItemRight bottomAlign"><span class="name"><b>clock</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setClock</b></span>(Qt3DAnimation::QClock *<i>clock</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>clockChanged</b></span>(Qt3DAnimation::QClock *<i>clock</i>)</td></tr>
+</table></div>
+<!-- @@@clock -->
+<!-- $$$loops-prop$$$loopCount$$$setLoopCountint$$$loopCountChangedint -->
+<h3 class="fn" id="loops-prop"><a name="loops-prop"></a><span class="name">loops</span> : <span class="type">int</span></h3>
+<p>controls the number of time the animation should repeat.</p>
+<p>If the value is 0 (default), the animation will run only once.</p>
+<p>If the value is AnimationPlayer::Infinite, the animation will loop indefinitly until explicitly stopped.</p>
+<p>Otherwise, it will repeat the specified number of times.</p>
+<p>This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b>loopCount</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setLoopCount</b></span>(int <i>loops</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>loopCountChanged</b></span>(int <i>loops</i>)</td></tr>
+</table></div>
+<!-- @@@loops -->
+<!-- $$$mapper-prop$$$mapper$$$setMapperconstQString&$$$mapperChangedconstQString& -->
+<h3 class="fn" id="mapper-prop"><a name="mapper-prop"></a><span class="name">mapper</span> : <span class="type">QString</span></h3>
+<p>This property holds the name of the mapper asset.</p>
+<p>This will be used to lookup the asset in the <a href="kuesa-animationmappingcollection.html">AnimationMappingCollection</a> instance of the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a>.</p>
+<p>If empty (default), the name of the clip will be used as it is a common convention that they should match.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>mapper</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMapper</b></span>(const QString &amp;<i>mapper</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>mapperChanged</b></span>(const QString &amp;<i>mapper</i>)</td></tr>
+</table></div>
+<!-- @@@mapper -->
+<!-- $$$normalizedTime-prop$$$normalizedTime$$$setNormalizedTimefloat$$$normalizedTimeChangedfloat -->
+<h3 class="fn" id="normalizedTime-prop"><a name="normalizedTime-prop"></a><span class="name">normalizedTime</span> : <span class="type">float</span></h3>
+<p>progress of the animation as a uniform value between 0. and 1.</p>
+<p>This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>normalizedTime</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNormalizedTime</b></span>(float <i>timeFraction</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>normalizedTimeChanged</b></span>(float <i>index</i>)</td></tr>
+</table></div>
+<!-- @@@normalizedTime -->
+<!-- $$$running-prop$$$isRunning$$$setRunningbool$$$runningChangedbool -->
+<h3 class="fn" id="running-prop"><a name="running-prop"></a><span class="name">running</span> : <span class="type">bool</span></h3>
+<p>controls if the animation is running or not</p>
+<p>This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>isRunning</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setRunning</b></span>(bool <i>running</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>runningChanged</b></span>(bool <i>running</i>)</td></tr>
+</table></div>
+<!-- @@@running -->
+<!-- $$$sceneEntity-prop$$$sceneEntity$$$setSceneEntityKuesa::SceneEntity*$$$sceneEntityChangedconstKuesa::SceneEntity* -->
+<h3 class="fn" id="sceneEntity-prop"><a name="sceneEntity-prop"></a><span class="name">sceneEntity</span> : <span class="type"><a href="kuesa-sceneentity.html">Kuesa::SceneEntity</a></span>*</h3>
+<p>pointer to the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> which contains the collections used to look up clip and mapper data</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::SceneEntity *</td><td class="memItemRight bottomAlign"><span class="name"><b>sceneEntity</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setSceneEntity</b></span>(Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>sceneEntityChanged</b></span>(const Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="kuesa-gltf2importer.html#sceneEntity">GLTF2Importer::sceneEntity</a>().</p>
+<!-- @@@sceneEntity -->
+<!-- $$$status-prop$$$status$$$statusChangedKuesa::AnimationPlayer::Status -->
+<h3 class="fn" id="status-prop"><a name="status-prop"></a><span class="name">status</span> : const <span class="type"><a href="kuesa-animationplayer.html#Status-enum">Status</a></span></h3>
+<p>This property holds the current status of the player</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::AnimationPlayer::Status </td><td class="memItemRight bottomAlign"><span class="name"><b>status</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>statusChanged</b></span>(Kuesa::AnimationPlayer::Status <i>status</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="kuesa-gltf2importer.html#status">GLTF2Importer::status</a>().</p>
+<!-- @@@status -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$start[overload1]$$$start -->
+<h3 class="fn" id="start"><a name="start"></a><code>[slot] </code><span class="type">void</span> AnimationPlayer::<span class="name">start</span>()</h3>
+<p>Starts the animation</p>
+<!-- @@@start -->
+<!-- $$$stop[overload1]$$$stop -->
+<h3 class="fn" id="stop"><a name="stop"></a><code>[slot] </code><span class="type">void</span> AnimationPlayer::<span class="name">stop</span>()</h3>
+<p>Stops the animation</p>
+<!-- @@@stop -->
+<!-- $$$addTarget[overload1]$$$addTargetQt3DCore::QNode* -->
+<h3 class="fn" id="addTarget"><a name="addTarget"></a><span class="type">void</span> AnimationPlayer::<span class="name">addTarget</span>(<span class="type">Qt3DCore::QNode</span> *<i>target</i>)</h3>
+<p>AnimationPlayer::addTarget adds a node <i>target</i> as a target for the animation</p>
+<p>If targets are added to the list, the mapping defined by the <a href="kuesa-animationplayer.html#mapper-prop">AnimationPlayer::mapper</a> property will be ignored and the clip data will be mapped to the specified target nodes.</p>
+<p>The target node needs to have properties which match the ones defined by the clips.</p>
+<p><b>Note: </b>When specifying targets, a valid object matching the specified <a href="kuesa-animationplayer.html#mapper-prop">AnimationPlayer::mapper</a> property must exist (even though it won't be affected by the animation) as it will contain information required to establish valid mappings for the new targets.</p><p><b>Note: </b><a href="index.html#">Kuesa::SceneEntity::transformForEntity</a> can be useful to map animations that control transformations from one entity to another. The returned transform can be used as a target for the animation.</p><p><b>See also </b><a href="kuesa-animationplayer.html#removeTarget">AnimationPlayer::removeTarget</a>.</p>
+<!-- @@@addTarget -->
+<!-- $$$removeTarget[overload1]$$$removeTargetQt3DCore::QNode* -->
+<h3 class="fn" id="removeTarget"><a name="removeTarget"></a><span class="type">void</span> AnimationPlayer::<span class="name">removeTarget</span>(<span class="type">Qt3DCore::QNode</span> *<i>target</i>)</h3>
+<p>AnimationPlayer::removeTarget removes a node from the list of targets</p>
+<p><b>See also </b><a href="kuesa-animationplayer.html#addTarget">AnimationPlayer::addTarget</a>.</p>
+<!-- @@@removeTarget -->
+<!-- $$$targets[overload1]$$$targets -->
+<h3 class="fn" id="targets"><a name="targets"></a><span class="type">QVector</span>&lt;<span class="type">Qt3DCore::QNode</span> *&gt; AnimationPlayer::<span class="name">targets</span>() const</h3>
+<p>AnimationPlayer::targets returns the list of currently defined targets for animations</p>
+<p><b>See also </b><a href="kuesa-animationplayer.html#addTarget">AnimationPlayer::addTarget</a> and <a href="kuesa-animationplayer.html#removeTarget">AnimationPlayer::removeTarget</a>.</p>
+<!-- @@@targets -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

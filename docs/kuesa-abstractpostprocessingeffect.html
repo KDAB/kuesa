@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- abstractpostprocessingeffect.cpp -->
+  <title>AbstractPostProcessingEffect Class | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-cpp.html#">C++ Classes</a></td><td >AbstractPostProcessingEffect</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">AbstractPostProcessingEffect Class</h1>
+<span class="small-subtitle">(<a href="index.html#">Kuesa::AbstractPostProcessingEffect</a>)<br/></span>
+<!-- $$$AbstractPostProcessingEffect-brief -->
+<p><a href="kuesa-abstractpostprocessingeffect.html">AbstractPostProcessingEffect</a> is the abstract base class for Kuesa post processing effects. <a href="#details">More...</a></p>
+<!-- @@@AbstractPostProcessingEffect -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/AbstractPostProcessingEffect&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="kuesa-bloomeffect.html">Kuesa::BloomEffect</a>, <a href="kuesa-depthoffieldeffect.html">Kuesa::DepthOfFieldEffect</a>, <a href="kuesa-gaussianblureffect.html">Kuesa::GaussianBlurEffect</a>, <a href="kuesa-opacitymask.html">Kuesa::OpacityMask</a>, <a href="kuesa-thresholdeffect.html">Kuesa::ThresholdEffect</a>, and <a href="kuesa-tonemappingandgammacorrectioneffect.html">Kuesa::ToneMappingAndGammaCorrectionEffect</a></p>
+</td></tr></table></div><p>This class was introduced in  Kuesa 1.0.</p>
+<ul>
+<li><a href="kuesa-abstractpostprocessingeffect-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#frameGraphSubTree">frameGraphSubTree</a></b>() const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QVector&lt;Qt3DRender::QLayer *&gt; </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#layers">layers</a></b>() const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#setCamera">setCamera</a></b>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#setDepthTexture">setDepthTexture</a></b>(Qt3DRender::QAbstractTexture *<i>texture</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#setInputTexture">setInputTexture</a></b>(Qt3DRender::QAbstractTexture *<i>texture</i>) = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#setSceneSize">setSceneSize</a></b>(const QSize &amp;<i>size</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::AbstractPostProcessingEffect::Type </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#type">type</a></b>() const</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$AbstractPostProcessingEffect-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+</div>
+<!-- @@@AbstractPostProcessingEffect -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$frameGraphSubTree[overload1]$$$frameGraphSubTree -->
+<h3 class="fn" id="frameGraphSubTree"><a name="frameGraphSubTree"></a><code>[pure virtual] </code><span class="type">Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr</span> AbstractPostProcessingEffect::<span class="name">frameGraphSubTree</span>() const</h3>
+<p>Returns a FrameGraph subtree corresponding to the effect's implementation.</p>
+<p><b>Note: </b>The lifetime of the returned subtree is assumed to be managed by the shared pointer. Any caller reparenting the subtree to add to a QFrameGraph will need to unparent it to avoid it being deleted twice.</p><!-- @@@frameGraphSubTree -->
+<!-- $$$layers[overload1]$$$layers -->
+<h3 class="fn" id="layers"><a name="layers"></a><code>[pure virtual] </code><span class="type">QVector</span>&lt;<span class="type">Qt3DRender::QLayer</span> *&gt; AbstractPostProcessingEffect::<span class="name">layers</span>() const</h3>
+<p>Return the layers provided by this effect. This will generally be the layer of a <a href="kuesa-fullscreenquad.html">FullScreenQuad</a> on which the effect is being rendered.</p>
+<p>The behaviour is undefined if this function returns an empty container: there must always be at least one layer.</p>
+<!-- @@@layers -->
+<!-- $$$setCamera[overload1]$$$setCameraQt3DCore::QEntity* -->
+<h3 class="fn" id="setCamera"><a name="setCamera"></a><code>[virtual] </code><span class="type">void</span> AbstractPostProcessingEffect::<span class="name">setCamera</span>(<span class="type">Qt3DCore::QEntity</span> *<i>camera</i>)</h3>
+<p>Sets the camera entity to <i>camera</i> for this effect. This is set automatically by the <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> when the effect is added.</p>
+<!-- @@@setCamera -->
+<!-- $$$setDepthTexture[overload1]$$$setDepthTextureQt3DRender::QAbstractTexture* -->
+<h3 class="fn" id="setDepthTexture"><a name="setDepthTexture"></a><code>[virtual] </code><span class="type">void</span> AbstractPostProcessingEffect::<span class="name">setDepthTexture</span>(<span class="type">Qt3DRender::QAbstractTexture</span> *<i>texture</i>)</h3>
+<p>Sets the depth texture to <i>texture</i> for this effect. The texture contain the depth of the rendered scene that the effect will be applied to. This is set automatically by the <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> when the effect is added.</p>
+<!-- @@@setDepthTexture -->
+<!-- $$$setInputTexture[overload1]$$$setInputTextureQt3DRender::QAbstractTexture* -->
+<h3 class="fn" id="setInputTexture"><a name="setInputTexture"></a><code>[pure virtual] </code><span class="type">void</span> AbstractPostProcessingEffect::<span class="name">setInputTexture</span>(<span class="type">Qt3DRender::QAbstractTexture</span> *<i>texture</i>)</h3>
+<p>Sets the input texture to <i>texture</i> for this effect. The texture contain the rendered scene that the effect will be applied to. This is set automatically by the <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> when the effect is added.</p>
+<!-- @@@setInputTexture -->
+<!-- $$$setSceneSize[overload1]$$$setSceneSizeconstQSize& -->
+<h3 class="fn" id="setSceneSize"><a name="setSceneSize"></a><code>[virtual] </code><span class="type">void</span> AbstractPostProcessingEffect::<span class="name">setSceneSize</span>(const <span class="type">QSize</span> &amp;<i>size</i>)</h3>
+<p>Sets the <i>size</i> of the rendered scene (in pixels) that the effect will be applied to. This is necessary for effects to render correctly.</p>
+<!-- @@@setSceneSize -->
+<!-- $$$type[overload1]$$$type -->
+<h3 class="fn" id="type"><a name="type"></a><span class="type">Kuesa::AbstractPostProcessingEffect::Type</span> AbstractPostProcessingEffect::<span class="name">type</span>() const</h3>
+<p>Returns the post processing effect's type.</p>
+<!-- @@@type -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>
