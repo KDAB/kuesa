@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- unlitmaterial.cpp -->
+  <title>UnlitMaterial QML Type | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-qml.html#">QML Types</a></td><td >UnlitMaterial QML Type</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">UnlitMaterial QML Type</h1>
+<span class="subtitle"></span>
+<!-- $$$UnlitMaterial-brief -->
+<p>Kuesa.<a href="qml-unlitmaterial.html">UnlitMaterial</a> is a simple material without shading. It implements the KHR_materials_unlit extension from glTF 2.0&#x2e; <a href="#details">More...</a></p>
+<!-- @@@UnlitMaterial -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  .</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-unlitmaterial.html"><a href="kuesa-unlitmaterial.html">UnlitMaterial</a></td></tr></table></div><ul>
+<li><a href="qml-unlitmaterial-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><b><a href="qml-unlitmaterial.html#alphaCutoffEnabled-prop">alphaCutoffEnabled</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-unlitmaterial.html#baseColorFactor-prop">baseColorFactor</a></b></b> : color</li>
+<li class="fn"><b><b><a href="qml-unlitmaterial.html#baseColorMap-prop">baseColorMap</a></b></b> : Qt3DRender.AbstractTexture</li>
+<li class="fn"><b><b><a href="qml-unlitmaterial.html#baseColorUsesTexCoord1-prop">baseColorUsesTexCoord1</a></b></b> : bool</li>
+</ul>
+<!-- $$$UnlitMaterial-description -->
+<a name="details"></a>
+<h2 id="details">Detailed Description</h2>
+<p>The material consists on the following properties:</p>
+<ul>
+<li><a href="qml-unlitmaterial.html#baseColorFactor-prop">baseColorFactor</a>: Base color of the material</li>
+<li><a href="qml-unlitmaterial.html#baseColorMap-prop">baseColorMap</a>: A texture specifying the base color of the material</li>
+<li>textureTransform: Allows to transform (scale, translate, rotate) a texture.</li>
+</ul>
+<p>For a particular point of an object, the base color is computed as <a href="qml-unlitmaterial.html#baseColorFactor-prop">baseColorFactor</a>*<a href="qml-unlitmaterial.html#baseColorMap-prop">baseColorMap</a>*vertexColor. The vertexColor is the interpolated value of the vertex color property of the mesh to which the material is applied.</p>
+<p><a href="index.html#">Kuesa::UnlitMaterial</a> also supports alpha blending and alpha cutoff. Alpha blending is used to simulate transparent materials, like a glass, while alpha cutoff is used to discard fragment that have an alpha value below a threshold. This is useful to render grass or trees for example.</p>
+<p>Kuesa.<a href="qml-unlitmaterial.html">UnlitMaterial</a> supports two texture coordinate sets for each map. To specify the texture coordinate set a map must use, you can set the &lt;map&gt;UsesTexCoord1 property to true or false. If it's false, it will use the 0th coordinate set of the primitive, attached to 'defaultTextureCoordinateAttributeName` attribute. If it's true, it will use the 1st coordinate set of the primitive, attached to 'defaultTextureCoordinate1AttributeName`.</p>
+<p>A more complete description of the material can be found in https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_unlit</p>
+<p><b>Note: </b>Kuesa.<a href="qml-unlitmaterial.html">UnlitMaterial</a> is implemented using a custom shader graph. Some changes in the properties will activate or deactivate some nodes of the shader graph and will trigger a recompilation of the shader. It is recommended to create the variations of the material that you need once up front at application initialisation time.</p><!-- @@@UnlitMaterial -->
+<h2>Property Documentation</h2>
+<!-- $$$alphaCutoffEnabled -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="alphaCutoffEnabled-prop">
+<td class="tblQmlPropNode"><p>
+<a name="alphaCutoffEnabled-prop"></a><span class="name">alphaCutoffEnabled</span> : <span class="type">bool</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Enables/disables alphaCutoff</p>
+<p><b>Note: </b>This enable some extra render passes and will trigger a recompilation if changed from true to false or from false to true.</p></div></div><!-- @@@alphaCutoffEnabled -->
+<br/>
+<!-- $$$baseColorFactor -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="baseColorFactor-prop">
+<td class="tblQmlPropNode"><p>
+<a name="baseColorFactor-prop"></a><span class="name">baseColorFactor</span> : <span class="type">color</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Specifies the baseColorFactor of the material</p>
+</div></div><!-- @@@baseColorFactor -->
+<br/>
+<!-- $$$baseColorMap -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="baseColorMap-prop">
+<td class="tblQmlPropNode"><p>
+<a name="baseColorMap-prop"></a><span class="name">baseColorMap</span> : <span class="type">Qt3DRender</span>.<span class="type">AbstractTexture</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Specifies a texture to be used as <a href="qml-unlitmaterial.html#baseColorFactor-prop">baseColorFactor</a>.</p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p></div></div><!-- @@@baseColorMap -->
+<br/>
+<!-- $$$baseColorUsesTexCoord1 -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="baseColorUsesTexCoord1-prop">
+<td class="tblQmlPropNode"><p>
+<a name="baseColorUsesTexCoord1-prop"></a><span class="name">baseColorUsesTexCoord1</span> : <span class="type">bool</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
+</div></div><!-- @@@baseColorUsesTexCoord1 -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- directionallight.cpp -->
+  <title>DirectionalLight Class | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-cpp.html#">C++ Classes</a></td><td >DirectionalLight</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">DirectionalLight Class</h1>
+<span class="small-subtitle">(<a href="index.html#">Kuesa::DirectionalLight</a>)<br/></span>
+<!-- $$$DirectionalLight-brief -->
+<p>Encapsulate a Directional Light object in a Qt 3D scene. <a href="#details">More...</a></p>
+<!-- @@@DirectionalLight -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;DirectionalLight&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-directionallight.html">DirectionalLight</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.1.</p>
+<ul>
+<li><a href="kuesa-directionallight-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><a href="kuesa-directionallight.html#direction-prop">direction</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-directionallight.html#directionMode-prop">directionMode</a></b> : Kuesa::DirectionalLight::DirectionMode</li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-directionallight.html#direction-prop">direction</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::DirectionalLight::DirectionMode </td><td class="memItemRight bottomAlign"><b><a href="kuesa-directionallight.html#directionMode-prop">directionMode</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-directionallight.html#direction-prop">setDirection</a></b>(const QVector3D &amp;<i>direction</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-directionallight.html#directionMode-prop">setDirectionMode</a></b>(Kuesa::DirectionalLight::DirectionMode <i>directionMode</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-directionallight.html#direction-prop">directionChanged</a></b>(const QVector3D &amp;<i>direction</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-directionallight.html#directionMode-prop">directionModeChanged</a></b>(Kuesa::DirectionalLight::DirectionMode <i>directionMode</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$DirectionalLight-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+</div>
+<!-- @@@DirectionalLight -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$direction-prop$$$direction$$$setDirectionconstQVector3D&$$$directionChangedconstQVector3D& -->
+<h3 class="fn" id="direction-prop"><a name="direction-prop"></a><span class="name">direction</span> : <span class="type">QVector3D</span></h3>
+<p>Specifies the direction of the light. If the directionType is Local, the light direction wil lbe transformed by any rotations in parent nodes. If the directionType is World, the direction is unaffected by any transformations in parent nodes.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>direction</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setDirection</b></span>(const QVector3D &amp;<i>direction</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>directionChanged</b></span>(const QVector3D &amp;<i>direction</i>)</td></tr>
+</table></div>
+<!-- @@@direction -->
+<!-- $$$directionMode-prop$$$directionMode$$$setDirectionModeKuesa::DirectionalLight::DirectionMode$$$directionModeChangedKuesa::DirectionalLight::DirectionMode -->
+<h3 class="fn" id="directionMode-prop"><a name="directionMode-prop"></a><span class="name">directionMode</span> : <span class="type">Kuesa::DirectionalLight::DirectionMode</span></h3>
+<p>Specifies the direction of the light. If the directionType is Specifies whether the direction property should be interpreted as a world or local direction. Local directions inherit parent node rotation transformations and World directions do not. The default is World.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::DirectionalLight::DirectionMode </td><td class="memItemRight bottomAlign"><span class="name"><b>directionMode</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setDirectionMode</b></span>(Kuesa::DirectionalLight::DirectionMode <i>directionMode</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>directionModeChanged</b></span>(Kuesa::DirectionalLight::DirectionMode <i>directionMode</i>)</td></tr>
+</table></div>
+<!-- @@@directionMode -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

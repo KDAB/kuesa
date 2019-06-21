@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- music-box.qdoc -->
+  <title>Kuesa Music Box QML Example | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td >Kuesa Music Box QML Example</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Kuesa Music Box QML Example</h1>
+<span class="subtitle"></span>
+<pre class="qml">
+
+  <span class="comment">/*
+      CameraController.qml
+
+      This file is part of Kuesa.
+
+      Copyright (C) 2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+      Author: Mike Krus &lt;mike.krus@kdab.com&gt;
+
+      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+      LICENSE.KUESA.ENTERPRISE file.
+
+      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU Affero General Public License as
+      published by the Free Software Foundation, either version 3 of the
+      License, or (at your option) any later version.
+
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Affero General Public License for more details.
+
+      You should have received a copy of the GNU Affero General Public License
+      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+  */</span>
+
+  import Qt3D.Core 2.12
+  import Qt3D.Render 2.12
+  import Qt3D.Input 2.12
+  import Qt3D.Logic 2.12
+  import QtQml 2.11
+  import QtQuick 2.11 as QQ2
+
+  <span class="type">Entity</span> {
+      <span class="name">id</span>: <span class="name">root</span>
+
+      property <span class="type">Camera</span> <span class="name">camera</span>
+
+      property <span class="type">real</span> <span class="name">lookSpeed</span>: <span class="number">30000.0</span>
+      property <span class="type">real</span> <span class="name">mouseWheelZoomSpeed</span>: <span class="number">0.001</span>
+      property <span class="type">real</span> <span class="name">zoomSpeed</span>: <span class="number">0.01</span>
+      property <span class="type">real</span> <span class="name">panSpeed</span>: <span class="number">0.00125</span>
+
+      property <span class="type">real</span> <span class="name">minCameraToViewCenterDistance</span>: <span class="number">2.</span>
+      property <span class="type">real</span> <span class="name">maxCameraToViewCenterDistance</span>: <span class="number">20.</span>
+
+      <span class="type">QtObject</span> {
+          <span class="name">id</span>: <span class="name">d</span>
+          readonly property <span class="type">vector3d</span> <span class="name">firstPersonUp</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)
+
+          readonly property <span class="type">bool</span> <span class="name">leftMouseButtonPressed</span>: <span class="name">leftMouseButtonAction</span>.<span class="name">active</span> <span class="operator">||</span> (<span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;osx&quot;</span> <span class="operator">&amp;&amp;</span> <span class="name">rightMouseButtonAction</span>.<span class="name">active</span> <span class="operator">&amp;&amp;</span> <span class="name">metaAction</span>.<span class="name">active</span>)
+
+          property <span class="type">real</span> <span class="name">dx</span>: <span class="name">rxAxis</span>.<span class="name">value</span> <span class="operator">*</span> <span class="name">lookSpeed</span>
+          property <span class="type">real</span> <span class="name">dy</span>: <span class="name">ryAxis</span>.<span class="name">value</span> <span class="operator">*</span> <span class="name">lookSpeed</span>
+          property <span class="type">real</span> <span class="name">dz</span>: <span class="name">rzAxis</span>.<span class="name">value</span> <span class="operator">*</span> <span class="name">lookSpeed</span>
+
+          QQ2.Behavior on <span class="name">dx</span> { <span class="type">QQ2</span>.NumberAnimation { <span class="name">duration</span>: <span class="number">250</span>; <span class="name">easing</span>.type: <span class="name">QQ2</span>.<span class="name">Easing</span>.<span class="name">OutCubic</span> } }
+          QQ2.Behavior on <span class="name">dy</span> { <span class="type">QQ2</span>.NumberAnimation { <span class="name">duration</span>: <span class="number">250</span>; <span class="name">easing</span>.type: <span class="name">QQ2</span>.<span class="name">Easing</span>.<span class="name">OutCubic</span> } }
+          QQ2.Behavior on <span class="name">dz</span> { <span class="type">QQ2</span>.NumberAnimation { <span class="name">duration</span>: <span class="number">250</span>; <span class="name">easing</span>.type: <span class="name">QQ2</span>.<span class="name">Easing</span>.<span class="name">OutCubic</span> } }
+      }
+
+      <span class="keyword">function</span> <span class="name">rotateCamera</span>(dx, dy) {
+          <span class="name">camera</span>.<span class="name">panAboutViewCenter</span>(-<span class="name">dx</span>, <span class="name">d</span>.<span class="name">firstPersonUp</span>)
+
+          <span class="comment">// avoid going upside down</span>
+          var tiltCamera = <span class="number">false</span>;
+          <span class="keyword">if</span> (<span class="name">dy</span> <span class="operator">&gt;</span> <span class="number">0</span>) {
+              <span class="comment">// allow tilt down</span>
+              <span class="name">tiltCamera</span> <span class="operator">=</span> <span class="number">true</span>;
+          } <span class="keyword">else</span> {
+              <span class="comment">// but constraint tilting up</span>
+              var vv = <span class="name">camera</span>.<span class="name">viewVector</span>.<span class="name">normalized</span>();
+              var uv = <span class="name">camera</span>.<span class="name">upVector</span>.<span class="name">normalized</span>();
+
+              var a = <span class="name">vv</span>.<span class="name">crossProduct</span>(<span class="name">uv</span>); <span class="comment">// orthogonal to the viewvector and upvector</span>
+              var b = <span class="name">vv</span>.<span class="name">crossProduct</span>(<span class="name">a</span>); <span class="comment">// orthogonal to the viewvector, on vv/uv plane</span>
+
+              <span class="keyword">if</span> (<span class="name">Math</span>.<span class="name">abs</span>(<span class="name">b</span>.<span class="name">y</span>) <span class="operator">&gt;</span> <span class="number">0.2</span>) <span class="comment">// allow tilting only if we're not almost horizontal</span>
+                  <span class="name">tiltCamera</span> <span class="operator">=</span> <span class="number">true</span>;
+          }
+
+          var cameraToCenter = <span class="name">camera</span>.<span class="name">position</span>.<span class="name">minus</span>(<span class="name">camera</span>.<span class="name">viewCenter</span>).<span class="name">length</span>()
+
+          <span class="keyword">if</span> (<span class="name">tiltCamera</span>)
+              <span class="name">camera</span>.<span class="name">tiltAboutViewCenter</span>(-<span class="name">dy</span>);
+
+          <span class="comment">// Keep camera above the floor plane</span>
+          <span class="keyword">if</span> (<span class="name">camera</span>.<span class="name">position</span>.<span class="name">y</span> <span class="operator">&lt;</span> <span class="number">0</span>) {
+              <span class="name">camera</span>.<span class="name">position</span>.<span class="name">y</span> <span class="operator">=</span> <span class="number">0</span>;
+
+              <span class="comment">// we may get closer to the view center if we simply clamp y on the camera</span>
+              <span class="comment">// position, so make sure the previous distance to the view center is preserved</span>
+              var v = <span class="name">camera</span>.<span class="name">position</span>.<span class="name">minus</span>(<span class="name">camera</span>.<span class="name">viewCenter</span>).<span class="name">normalized</span>()
+              <span class="name">camera</span>.<span class="name">position</span> <span class="operator">=</span> <span class="name">camera</span>.<span class="name">viewCenter</span>.<span class="name">plus</span>(<span class="name">v</span>.<span class="name">times</span>(<span class="name">cameraToCenter</span>))
+          }
+
+          <span class="comment">// need to do this to force a recomputation of the viewMatrix, otherwise errors</span>
+          <span class="comment">// will pile up and the rotation component (the upper 3x3 submatrix) of the</span>
+          <span class="comment">// viewMatrix will quickly become non-orthogonal</span>
+          <span class="name">camera</span>.<span class="name">upVector</span> <span class="operator">=</span> <span class="name">d</span>.<span class="name">firstPersonUp</span>
+      }
+
+      <span class="keyword">function</span> <span class="name">zoomCamera</span>(dz) {
+          var cameraToCenter = <span class="name">camera</span>.<span class="name">position</span>.<span class="name">minus</span>(<span class="name">camera</span>.<span class="name">viewCenter</span>)
+
+          var distance = <span class="name">cameraToCenter</span>.<span class="name">length</span>()
+          <span class="name">distance</span> <span class="operator">-=</span> <span class="name">distance</span><span class="operator">*</span> <span class="name">dz</span>
+          <span class="name">distance</span> <span class="operator">=</span> <span class="name">Math</span>.<span class="name">min</span>(<span class="name">Math</span>.<span class="name">max</span>(<span class="name">distance</span>, <span class="name">minCameraToViewCenterDistance</span>), <span class="name">maxCameraToViewCenterDistance</span>)
+
+          <span class="name">camera</span>.<span class="name">position</span> <span class="operator">=</span> <span class="name">camera</span>.<span class="name">viewCenter</span>.<span class="name">plus</span>(<span class="name">cameraToCenter</span>.<span class="name">normalized</span>().<span class="name">times</span>(<span class="name">distance</span>))
+      }
+
+      <span class="type">KeyboardDevice</span> {
+          <span class="name">id</span>: <span class="name">keyboardSourceDevice</span>
+      }
+
+      <span class="type">KeyboardHandler</span> {
+          <span class="name">sourceDevice</span>: <span class="name">keyboardSourceDevice</span>
+          <span class="name">focus</span>: <span class="number">true</span>
+      }
+
+      <span class="type">MouseDevice</span> {
+          <span class="name">id</span>: <span class="name">mouseSourceDevice</span>
+          <span class="name">sensitivity</span>: <span class="name">d</span>.<span class="name">fineMotion</span> ? <span class="number">0.0001</span> : <span class="number">0.001</span>
+      }
+
+      <span class="name">components</span>: [
+          <span class="type">LogicalDevice</span> {
+              <span class="name">id</span>: <span class="name">cameraControlDevice</span>
+
+              <span class="name">actions</span>: [
+                  <span class="type">Action</span> {
+                      <span class="name">id</span>: <span class="name">leftMouseButtonAction</span>
+                      <span class="type">ActionInput</span> {
+                          <span class="name">sourceDevice</span>: <span class="name">mouseSourceDevice</span>
+                          <span class="name">buttons</span>: [<span class="name">MouseEvent</span>.<span class="name">LeftButton</span>]
+                      }
+                  },
+                  <span class="type">Action</span> {
+                      <span class="name">id</span>: <span class="name">middleMouseButtonAction</span>
+                      <span class="type">ActionInput</span> {
+                          <span class="name">sourceDevice</span>: <span class="name">mouseSourceDevice</span>
+                          <span class="name">buttons</span>: [<span class="name">MouseEvent</span>.<span class="name">MiddleButton</span>]
+                      }
+                  },
+                  <span class="type">Action</span> {
+                      <span class="name">id</span>: <span class="name">rightMouseButtonAction</span>
+                      <span class="type">ActionInput</span> {
+                          <span class="name">sourceDevice</span>: <span class="name">mouseSourceDevice</span>
+                          <span class="name">buttons</span>: [<span class="name">MouseEvent</span>.<span class="name">RightButton</span>]
+                      }
+                  },
+                  <span class="type">Action</span> {
+                      <span class="name">id</span>: <span class="name">shiftAction</span>
+                      <span class="type">ActionInput</span> {
+                          <span class="name">sourceDevice</span>: <span class="name">keyboardSourceDevice</span>
+                          <span class="name">buttons</span>: [<span class="name">Qt</span>.<span class="name">Key_Shift</span>]
+                      }
+                  },
+                  <span class="type">Action</span> {
+                      <span class="name">id</span>: <span class="name">ctrlAction</span>
+                      <span class="type">ActionInput</span> {
+                          <span class="name">sourceDevice</span>: <span class="name">keyboardSourceDevice</span>
+                          <span class="name">buttons</span>: [<span class="name">Qt</span>.<span class="name">Key_Control</span>]
+                      }
+                  },
+                  <span class="type">Action</span> {
+                      <span class="name">id</span>: <span class="name">metaAction</span>
+                      <span class="name">enabled</span>: <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;osx&quot;</span>
+                      <span class="type">ActionInput</span> {
+                          <span class="name">sourceDevice</span>: <span class="name">keyboardSourceDevice</span>
+                          <span class="name">buttons</span>: [<span class="name">Qt</span>.<span class="name">Key_Meta</span>]
+                      }
+                  },
+                  <span class="type">Action</span> {
+                      <span class="name">id</span>: <span class="name">altAction</span>
+                      <span class="type">ActionInput</span> {
+                          <span class="name">sourceDevice</span>: <span class="name">keyboardSourceDevice</span>
+                          <span class="name">buttons</span>: [<span class="name">Qt</span>.<span class="name">Key_Alt</span>]
+                      }
+                  }
+              ] <span class="comment">// actions</span>
+
+              <span class="name">axes</span>: [
+                  <span class="comment">// Rotation</span>
+                  <span class="type">Axis</span> {
+                      <span class="name">id</span>: <span class="name">rxAxis</span>
+                      <span class="type">AnalogAxisInput</span> {
+                          <span class="name">sourceDevice</span>: <span class="name">mouseSourceDevice</span>
+                          <span class="name">axis</span>: <span class="name">MouseDevice</span>.<span class="name">X</span>
+                      }
+                  },
+                  <span class="type">Axis</span> {
+                      <span class="name">id</span>: <span class="name">ryAxis</span>
+                      <span class="type">AnalogAxisInput</span> {
+                          <span class="name">sourceDevice</span>: <span class="name">mouseSourceDevice</span>
+                          <span class="name">axis</span>: <span class="name">MouseDevice</span>.<span class="name">Y</span>
+                      }
+                  },
+                  <span class="comment">// Zoom</span>
+                  <span class="type">Axis</span> {
+                      <span class="name">id</span>: <span class="name">rzAxis</span>
+                      <span class="type">AnalogAxisInput</span> {
+                          <span class="name">sourceDevice</span>: <span class="name">mouseSourceDevice</span>
+                          <span class="name">axis</span>: <span class="name">MouseDevice</span>.<span class="name">WheelY</span>
+                      }
+                  }
+              ] <span class="comment">// axes</span>
+          },
+
+          <span class="type">FrameAction</span> {
+              <span class="name">onTriggered</span>: {
+                  <span class="keyword">if</span> (!<span class="name">root</span>.<span class="name">enabled</span>)
+                      <span class="keyword">return</span>
+
+                  <span class="comment">// zoom with mouse wheel</span>
+                  <span class="name">zoomCamera</span>(<span class="name">d</span>.<span class="name">dz</span> <span class="operator">*</span> <span class="name">mouseWheelZoomSpeed</span> <span class="operator">*</span> <span class="name">dt</span>)
+
+                  <span class="keyword">if</span> (<span class="name">d</span>.<span class="name">leftMouseButtonPressed</span>)
+                      <span class="name">rotateCamera</span>(<span class="name">d</span>.<span class="name">dx</span> <span class="operator">*</span> <span class="name">dt</span>, <span class="name">d</span>.<span class="name">dy</span> <span class="operator">*</span> <span class="name">dt</span>);
+              }
+          }
+      ] <span class="comment">// components</span>
+  }
+
+</pre>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- bloomeffect.cpp -->
+  <title>BloomEffect Class | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-cpp.html#">C++ Classes</a></td><td >BloomEffect</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">BloomEffect Class</h1>
+<span class="small-subtitle">(<a href="index.html#">Kuesa::BloomEffect</a>)<br/></span>
+<!-- $$$BloomEffect-brief -->
+<p>Post-processing effect for blurring the bright parts of a scene. <a href="#details">More...</a></p>
+<!-- @@@BloomEffect -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/BloomEffect&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-abstractpostprocessingeffect.html">Kuesa::AbstractPostProcessingEffect</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.0.</p>
+<ul>
+<li><a href="kuesa-bloomeffect-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><a href="kuesa-bloomeffect.html#blurPassCount-prop">blurPassCount</a></b> : int</li>
+<li class="fn"><b><a href="kuesa-bloomeffect.html#threshold-prop">threshold</a></b> : float</li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-bloomeffect.html#blurPassCount">blurPassCount</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-bloomeffect.html#threshold">threshold</a></b>() const</td></tr>
+</table></div>
+<a name="reimplemented-public-functions"></a>
+<h2 id="reimplemented-public-functions">Reimplemented Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr </td><td class="memItemRight bottomAlign"><b><a href="kuesa-bloomeffect.html#frameGraphSubTree">frameGraphSubTree</a></b>() const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-bloomeffect.html#setInputTexture">setInputTexture</a></b>(Qt3DRender::QAbstractTexture *<i>texture</i>) override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-bloomeffect.html#setSceneSize">setSceneSize</a></b>(const QSize &amp;<i>size</i>) override</td></tr>
+</table></div>
+<ul>
+<li class="fn">7 public functions inherited from <a href="kuesa-abstractpostprocessingeffect.html#public-functions">Kuesa::AbstractPostProcessingEffect</a></li>
+</ul>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-bloomeffect.html#setBlurPassCount">setBlurPassCount</a></b>(int <i>blurPassCount</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-bloomeffect.html#setThreshold">setThreshold</a></b>(float <i>threshold</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-bloomeffect.html#blurPassCount-prop">blurPassCountChanged</a></b>(int <i>blurPassCount</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-bloomeffect.html#threshold-prop">thresholdChanged</a></b>(float <i>threshold</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$BloomEffect-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p><a href="kuesa-bloomeffect.html">BloomEffect</a> is a post-processing effect that applies a blur to the brightest parts of scene to simulate a fuzzy glow.</p>
+<p>The effect can be configured to change the threshold defining the bright parts of the scene and the amount of blurring to apply.</p>
+</div>
+<!-- @@@BloomEffect -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$blurPassCount-prop$$$blurPassCount$$$setBlurPassCountint$$$blurPassCountChangedint -->
+<h3 class="fn" id="blurPassCount-prop"><a name="blurPassCount-prop"></a><span class="name">blurPassCount</span> : <span class="type">int</span></h3>
+<p>This property holds the number of blur passes</p>
+<p>This is the number of times to apply the blur to the bright parts of the scene. More passes result in stronger blurring effect but take longer to render.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-bloomeffect.html#blurPassCount">blurPassCount</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-bloomeffect.html#setBlurPassCount">setBlurPassCount</a></b></span>(int <i>blurPassCount</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>blurPassCountChanged</b></span>(int <i>blurPassCount</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="kuesa-gaussianblureffect.html#blurPassCount">GaussianBlurEffect::blurPassCount</a>.</p>
+<!-- @@@blurPassCount -->
+<!-- $$$threshold-prop$$$threshold$$$setThresholdfloat$$$thresholdChangedfloat -->
+<h3 class="fn" id="threshold-prop"><a name="threshold-prop"></a><span class="name">threshold</span> : <span class="type">float</span></h3>
+<p>This property holds the brightness level determining which pixels the effect are applied to</p>
+<p>This value determines how bright something has to be for the bloom effect to be applied to it. Any pixels below the threshold are ignored.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-bloomeffect.html#threshold">threshold</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-bloomeffect.html#setThreshold">setThreshold</a></b></span>(float <i>threshold</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>thresholdChanged</b></span>(float <i>threshold</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="kuesa-thresholdeffect.html#threshold">ThresholdEffect::threshold</a>.</p>
+<!-- @@@threshold -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$setBlurPassCount -->
+<h3 class="fn" id="setBlurPassCount"><a name="setBlurPassCount"></a><code>[slot] </code><span class="type">void</span> BloomEffect::<span class="name">setBlurPassCount</span>(<span class="type">int</span> <i>blurPassCount</i>)</h3>
+<p>Sets the number of blur passes to apply.</p>
+<p><b>Note:</b> Setter function for property <a href="kuesa-bloomeffect.html#blurPassCount-prop">blurPassCount</a>. </p><p><b>See also </b><a href="kuesa-bloomeffect.html#blurPassCount">BloomEffect::blurPassCount</a>.</p>
+<!-- @@@setBlurPassCount -->
+<!-- $$$setThreshold -->
+<h3 class="fn" id="setThreshold"><a name="setThreshold"></a><code>[slot] </code><span class="type">void</span> BloomEffect::<span class="name">setThreshold</span>(<span class="type">float</span> <i>threshold</i>)</h3>
+<p>Sets the threshold value.</p>
+<p><b>Note:</b> Setter function for property <a href="kuesa-bloomeffect.html#threshold-prop">threshold</a>. </p><p><b>See also </b><a href="kuesa-bloomeffect.html#threshold">BloomEffect::threshold</a>.</p>
+<!-- @@@setThreshold -->
+<!-- $$$blurPassCount -->
+<h3 class="fn" id="blurPassCount"><a name="blurPassCount"></a><span class="type">int</span> BloomEffect::<span class="name">blurPassCount</span>() const</h3>
+<p>Returns the number of blur passes to apply.</p>
+<p><b>Note:</b> Getter function for property <a href="kuesa-bloomeffect.html#blurPassCount-prop">blurPassCount</a>. </p><p><b>See also </b><a href="kuesa-bloomeffect.html#setBlurPassCount">BloomEffect::setBlurPassCount</a>.</p>
+<!-- @@@blurPassCount -->
+<!-- $$$frameGraphSubTree[overload1]$$$frameGraphSubTree -->
+<h3 class="fn" id="frameGraphSubTree"><a name="frameGraphSubTree"></a><code>[override virtual] </code><span class="type">Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr</span> BloomEffect::<span class="name">frameGraphSubTree</span>() const</h3>
+<p>Reimplements: <a href="kuesa-abstractpostprocessingeffect.html#frameGraphSubTree">AbstractPostProcessingEffect::frameGraphSubTree</a>() const.</p>
+<p>Returns the frame graph subtree corresponding to the effect's implementation.</p>
+<p><b>See also </b><a href="kuesa-abstractpostprocessingeffect.html#frameGraphSubTree">AbstractPostProcessingEffect::frameGraphSubTree</a>.</p>
+<!-- @@@frameGraphSubTree -->
+<!-- $$$setInputTexture[overload1]$$$setInputTextureQt3DRender::QAbstractTexture* -->
+<h3 class="fn" id="setInputTexture"><a name="setInputTexture"></a><code>[override virtual] </code><span class="type">void</span> BloomEffect::<span class="name">setInputTexture</span>(<span class="type">Qt3DRender::QAbstractTexture</span> *<i>texture</i>)</h3>
+<p>Reimplements: <a href="kuesa-abstractpostprocessingeffect.html#setInputTexture">AbstractPostProcessingEffect::setInputTexture</a>(Qt3DRender::QAbstractTexture *texture).</p>
+<p>Sets the input texture for the effect.</p>
+<p><b>See also </b><a href="kuesa-abstractpostprocessingeffect.html#setInputTexture">AbstractPostProcessingEffect::setInputTexture</a>.</p>
+<!-- @@@setInputTexture -->
+<!-- $$$setSceneSize[overload1]$$$setSceneSizeconstQSize& -->
+<h3 class="fn" id="setSceneSize"><a name="setSceneSize"></a><code>[override virtual] </code><span class="type">void</span> BloomEffect::<span class="name">setSceneSize</span>(const <span class="type">QSize</span> &amp;<i>size</i>)</h3>
+<p>Reimplements: <a href="kuesa-abstractpostprocessingeffect.html#setSceneSize">AbstractPostProcessingEffect::setSceneSize</a>(const QSize &amp;size).</p>
+<p>Sets the size of the rendered scene in pixels.</p>
+<p><b>See also </b><a href="kuesa-abstractpostprocessingeffect.html#setSceneSize">AbstractPostProcessingEffect::setSceneSize</a>.</p>
+<!-- @@@setSceneSize -->
+<!-- $$$threshold -->
+<h3 class="fn" id="threshold"><a name="threshold"></a><span class="type">float</span> BloomEffect::<span class="name">threshold</span>() const</h3>
+<p>Returns the threshold value.</p>
+<p><b>Note:</b> Getter function for property <a href="kuesa-bloomeffect.html#threshold-prop">threshold</a>. </p><p><b>See also </b><a href="kuesa-bloomeffect.html#setThreshold">setThreshold</a>() and BloomEffect::SetThreshold.</p>
+<!-- @@@threshold -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- tonemappingandgammacorrectioneffect.cpp -->
+  <title>ToneMappingAndGammaCorrectionEffect Class | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-cpp.html#">C++ Classes</a></td><td >ToneMappingAndGammaCorrectionEffect</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">ToneMappingAndGammaCorrectionEffect Class</h1>
+<span class="small-subtitle">(<a href="index.html#">Kuesa::ToneMappingAndGammaCorrectionEffect</a>)<br/></span>
+<!-- $$$ToneMappingAndGammaCorrectionEffect-brief -->
+<p>Perform conversion from linear color space to sRGB space. <a href="#details">More...</a></p>
+<!-- @@@ToneMappingAndGammaCorrectionEffect -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;ToneMappingAndGammaCorrectionEffect&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-abstractpostprocessingeffect.html">Kuesa::AbstractPostProcessingEffect</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.1.</p>
+<ul>
+<li><a href="kuesa-tonemappingandgammacorrectioneffect-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">ToneMapping</a></b> { None, Reinhard, Filmic, Uncharted }</td></tr>
+</table></div>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#exposure-prop">exposure</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#gamma-prop">gamma</a></b> : float</li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#exposure-prop">exposure</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#gamma-prop">gamma</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping </td><td class="memItemRight bottomAlign"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#toneMappingAlgorithm">toneMappingAlgorithm</a></b>() const</td></tr>
+</table></div>
+<ul>
+<li class="fn">7 public functions inherited from <a href="kuesa-abstractpostprocessingeffect.html#public-functions">Kuesa::AbstractPostProcessingEffect</a></li>
+</ul>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#exposure-prop">setExposure</a></b>(float <i>exposure</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#gamma-prop">setGamma</a></b>(float <i>gamma</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a></b>(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping <i>algorithm</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#exposure-prop">exposureChanged</a></b>(float <i>exposure</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#gamma-prop">gammaChanged</a></b>(float <i>gamma</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-tonemappingandgammacorrectioneffect.html#toneMappingAlgorithm-prop">toneMappingAlgorithmChanged</a></b>(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping <i>toneMappingAlgorithm</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$ToneMappingAndGammaCorrectionEffect-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>This effects performs exposure correction, tone mapping and gamma correction in this order.</p>
+<p>It uses a gamma of 2.2 to perform the correction, but this can be overridden if required.</p>
+<p><b>Note: </b>If using the <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> FrameGraph, this effect is automatically added as the last step of the pipeline, after any user defined post processing effect. Therefore, you shouldn't need to instantiate this effect yourself if using that FrameGraph.</p><p>If you care about Tone Mapping implementation details, the algorithms in use are detailly explained <a href="http://filmicworlds.com/blog/filmic-tonemapping-operators/">here</a>.</p>
+</div>
+<!-- @@@ToneMappingAndGammaCorrectionEffect -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$ToneMapping$$$None$$$Reinhard$$$Filmic$$$Uncharted -->
+<h3 class="fn" id="ToneMapping-enum"><a name="ToneMapping-enum"></a>enum ToneMappingAndGammaCorrectionEffect::<span class="name">ToneMapping</span></h3>
+<p>This enum lists the various Tone Mapping Algorithms</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code>Kuesa::ToneMappingAndGammaCorrectionEffect::None</code></td><td class="topAlign tblval"><code>0</code></td><td class="topAlign">No Tone Mapping (default)</td></tr>
+<tr><td class="topAlign"><code>Kuesa::ToneMappingAndGammaCorrectionEffect::Reinhard</code></td><td class="topAlign tblval"><code>1</code></td><td class="topAlign">Reinhard Tone Mapping</td></tr>
+<tr><td class="topAlign"><code>Kuesa::ToneMappingAndGammaCorrectionEffect::Filmic</code></td><td class="topAlign tblval"><code>2</code></td><td class="topAlign">Filmic Tone Mapping</td></tr>
+<tr><td class="topAlign"><code>Kuesa::ToneMappingAndGammaCorrectionEffect::Uncharted</code></td><td class="topAlign tblval"><code>3</code></td><td class="topAlign">Hable John's Uncharted Tone Mapping</td></tr>
+</table></div>
+<!-- @@@ToneMapping -->
+</div>
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$exposure-prop$$$exposure$$$setExposurefloat$$$exposureChangedfloat -->
+<h3 class="fn" id="exposure-prop"><a name="exposure-prop"></a><span class="name">exposure</span> : <span class="type">float</span></h3>
+<p>Exposure correction factor used before the linear to sRGB conversion.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>exposure</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setExposure</b></span>(float <i>exposure</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>exposureChanged</b></span>(float <i>exposure</i>)</td></tr>
+</table></div>
+<!-- @@@exposure -->
+<!-- $$$gamma-prop$$$gamma$$$setGammafloat$$$gammaChangedfloat -->
+<h3 class="fn" id="gamma-prop"><a name="gamma-prop"></a><span class="name">gamma</span> : <span class="type">float</span></h3>
+<p>Holds the gamma value to use for gamma correction conversion that brings linear colors to sRGB colors.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>gamma</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setGamma</b></span>(float <i>gamma</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>gammaChanged</b></span>(float <i>gamma</i>)</td></tr>
+</table></div>
+<!-- @@@gamma -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$setToneMappingAlgorithm -->
+<h3 class="fn" id="setToneMappingAlgorithm"><a name="setToneMappingAlgorithm"></a><code>[slot] </code><span class="type">void</span> ToneMappingAndGammaCorrectionEffect::<span class="name">setToneMappingAlgorithm</span>(<span class="type"><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping</a></span> <i>algorithm</i>)</h3>
+<p>Sets the tone mapping algorithm to <i>algorithm</i>,</p>
+<p>This function was introduced in  Kuesa 1.1.</p>
+<p><b>Note:</b> Setter function for property <a href="">toneMappingAlgorithm</a>. </p><p><b>See also </b><a href="kuesa-tonemappingandgammacorrectioneffect.html#toneMappingAlgorithm">toneMappingAlgorithm</a>().</p>
+<!-- @@@setToneMappingAlgorithm -->
+<!-- $$$toneMappingAlgorithm -->
+<h3 class="fn" id="toneMappingAlgorithm"><a name="toneMappingAlgorithm"></a><span class="type"><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping</a></span> ToneMappingAndGammaCorrectionEffect::<span class="name">toneMappingAlgorithm</span>() const</h3>
+<p>Returns the tone mapping algorithm used by the shader.</p>
+<p>This function was introduced in  Kuesa 1.1.</p>
+<p><b>Note:</b> Getter function for property <a href="">toneMappingAlgorithm</a>. </p><p><b>See also </b><a href="kuesa-tonemappingandgammacorrectioneffect.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a>().</p>
+<!-- @@@toneMappingAlgorithm -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

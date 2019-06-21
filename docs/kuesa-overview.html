@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- kuesa-overview.qdoc -->
+  <title>Kuesa Overview | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td >Kuesa Overview</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#kuesa-s-workflow">Kuesa's workflow</a></li>
+<li class="level1"><a href="#kuesa-s-strengths">Kuesa's strengths</a></li>
+<li class="level1"><a href="#kuesa-components">Kuesa components</a></li>
+<li class="level2"><a href="#kuesa-digital-content-creation-plugins">Kuesa Digital Content Creation Plugins</a></li>
+<li class="level2"><a href="#kuesa-runtime">Kuesa Runtime</a></li>
+<li class="level2"><a href="#kuesa-tools">Kuesa Tools</a></li>
+<li class="level1"><a href="#kuesa-runtime-features">Kuesa Runtime Features</a></li>
+<li class="level2"><a href="#gltf-2-importer">glTF 2 Importer</a></li>
+<li class="level2"><a href="#kuesa-optimized-frame-graph">Kuesa Optimized Frame Graph</a></li>
+<li class="level2"><a href="#full-screen-post-processing-effects">Full Screen Post Processing Effects</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Kuesa Overview</h1>
+<span class="subtitle"></span>
+<!-- $$$kuesa-overview.html-description -->
+<div class="descr"> <a name="details"></a>
+<a name="kuesa-s-workflow"></a>
+<h2 id="kuesa-s-workflow">Kuesa's workflow</h2>
+<p>There are traditionally two main workflows to integrate real-time 3D content into an application:</p>
+<ul>
+<li>Hand-made workflow: the designers create mockups of the scenes and the developers recreate them in code, leading to lots of communication overhead, misunderstandings and suboptimal results.</li>
+<li>External tool workflow: the designers and developers work on a common tool for editing the scene for integrating into the application limiting both to the constraints of the tool and creating a black box which provides little control.</li>
+</ul>
+<p>Kuesa provides an easy, integrated and unified workflow without any compromises for designers and developers with:</p>
+<ul>
+<li>Great performances, from desktops to embedded boards</li>
+<li>Great quality of the real-time 3D scenes</li>
+<li>Full expressiveness for the designers, using professional 3D design tools</li>
+<li>Full control of the integration by the developers</li>
+<li>A reduced time to market</li>
+</ul>
+<p>The workflow is based on the glTF™ (GL Transmission Format) format designed by the <a href="https://www.khronos.org/">Khronos Group</a>, a royalty-free specification for the efficient transmission and loading of 3D scenes and models by applications supporting vendor extension.</p>
+<a name="kuesa-s-strengths"></a>
+<h2 id="kuesa-s-strengths">Kuesa's strengths</h2>
+<ul>
+<li>Uses professional 3D design tools for scene creation: 3ds Max®, Blender…</li>
+<li>Provides tools for previewing, optimizing, checking and optimizing assets</li>
+<li>Provides a seamless integration in Qt and Qt3D applications</li>
+<li>Gives full control of the scene from the code, for complex interaction</li>
+</ul>
+<a name="kuesa-components"></a>
+<h2 id="kuesa-components">Kuesa components</h2>
+<p class="centerAlign"><img src="images/pipeline-diagram.png" alt="" /></p><a name="kuesa-digital-content-creation-plugins"></a>
+<h3 >Kuesa Digital Content Creation Plugins</h3>
+<ul>
+<li><a href="https://github.com/KDAB/kuesa-blender">Kuesa Blender glTF2 Exporter plugin</a></li>
+<li><a href="https://github.com/KDAB/kuesa-3dsmax">Kuesa 3ds Max glTF2 Exporter plugin</a></li>
+</ul>
+<p>Checkout out our <a href="https://www.youtube.com/watch?v=6W3gMEk_PbE">video tutorial</a> on how prepare your assets for Kuesa with 3ds max.</p>
+<a name="kuesa-runtime"></a>
+<h3 >Kuesa Runtime</h3>
+<p>The Kuesa Runtime provides C++ and QML APIs to ease incorporation of 3D content into Qt 3D based applications.</p>
+<ul>
+<li><a href="kuesa-gltf2importer.html">glTF2 compliant importer that generates a Qt 3D based scene</a></li>
+<li><a href="kuesa-metallicroughnessmaterial.html">Custom PBR materials</a></li>
+<li>Asset collections to retrieve assets by name</li>
+<li>Post Processing Effects</li>
+</ul>
+<p>Checkout out our <a href="https://www.youtube.com/watch?v=dIdrQMkGVPI">video tutorial</a> on creating an interactive 3D application with Kuesa.</p>
+<a name="kuesa-tools"></a>
+<h3 >Kuesa Tools</h3>
+<p>A set of tools to preview scenes</p>
+<ul>
+<li><a href="gltfeditor.html#">gltfEditor</a></li>
+<li><a href="gltfviewer.html#">gltfViewer</a></li>
+<li>ddspreviewer</li>
+<li>cubemaptooctahedralmap</li>
+</ul>
+<a name="kuesa-runtime-features"></a>
+<h2 id="kuesa-runtime-features">Kuesa Runtime Features</h2>
+<a name="gltf-2-importer"></a>
+<h3 >glTF 2 Importer</h3>
+<p>The class <a href="kuesa-gltf2importer.html">GLTF2Importer</a> is a Qt3DCore::QNode based class that allows loading glTF 2 files. glTF 2 files from any exporter should work, note however that the Kuesa specific exporter allow the use of additional features, namely:</p>
+<ul>
+<li>Qt 3D compatible <a href="kuesa-metallicroughnessmaterial.html">PBR Material</a> support</li>
+<li>Qt 3D layer export</li>
+<li>Face wireframe export</li>
+</ul>
+<p>Once a file has been loaded through the use of the glTF 2 importer, name based collections are populated. Kuesa provides the following collections for:</p>
+<ul>
+<li><a href="kuesa-entitycollection.html">Entities</a></li>
+<li><a href="kuesa-animationclipcollection.html">Animation Clips</a></li>
+<li><a href="kuesa-animationmappingcollection.html">Animation Mappings</a></li>
+<li><a href="kuesa-cameracollection.html">Cameras</a></li>
+<li><a href="kuesa-effectcollection.html">Effects</a></li>
+<li><a href="kuesa-materialcollection.html">Materials</a></li>
+<li><a href="kuesa-meshcollection.html">Meshes</a></li>
+<li><a href="kuesa-skeletoncollection.html">Skeletons</a></li>
+<li><a href="kuesa-texturecollection.html">Textures</a></li>
+<li><a href="kuesa-textureimagecollection.html">Images</a></li>
+</ul>
+<a name="kuesa-optimized-frame-graph"></a>
+<h3 >Kuesa Optimized Frame Graph</h3>
+<p>Kuesa provides the <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> Frame Graph which is optimized for the rendering of glTF2 scenes with the addition of post processing effects.</p>
+<a name="full-screen-post-processing-effects"></a>
+<h3 >Full Screen Post Processing Effects</h3>
+<p>Final screen composition can be customized through the use of post processing effects. The effects work along with the default provided Kuesa FrameGraph <a href="kuesa-forwardrenderer.html">ForwardRenderer</a>.</p>
+<p>Currently Kuesa provides the following effects:</p>
+<ul>
+<li><a href="kuesa-bloomeffect.html">Bloom</a></li>
+<li><a href="kuesa-gaussianblureffect.html">Gaussian Blur</a></li>
+<li><a href="kuesa-opacitymask.html">Opacity Masking</a></li>
+<li><a href="kuesa-thresholdeffect.html">Thresholding</a></li>
+<li><a href="kuesa-depthoffieldeffect.html">Depth Of Field</a></li>
+</ul>
+<p>More information about post-processing effects is provided here: <a href="kuesa-fx.html#">Kuesa post-processing effects</a>.</p>
+</div>
+<!-- @@@kuesa-overview.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

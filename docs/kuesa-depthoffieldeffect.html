@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- depthoffieldeffect.cpp -->
+  <title>DepthOfFieldEffect Class | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-cpp.html#">C++ Classes</a></td><td >DepthOfFieldEffect</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">DepthOfFieldEffect Class</h1>
+<span class="small-subtitle">(<a href="index.html#">Kuesa::DepthOfFieldEffect</a>)<br/></span>
+<!-- $$$DepthOfFieldEffect-brief -->
+<p>Post-processing effect implementation of a depth of field. <a href="#details">More...</a></p>
+<!-- @@@DepthOfFieldEffect -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/DepthOfFieldEffect&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-abstractpostprocessingeffect.html">Kuesa::AbstractPostProcessingEffect</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.1.</p>
+<ul>
+<li><a href="kuesa-depthoffieldeffect-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><a href="kuesa-depthoffieldeffect.html#focusDistance-prop">focusDistance</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-depthoffieldeffect.html#focusRange-prop">focusRange</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-depthoffieldeffect.html#radius-prop">radius</a></b> : float</li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-depthoffieldeffect.html#focusDistance-prop">focusDistance</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-depthoffieldeffect.html#focusRange-prop">focusRange</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-depthoffieldeffect.html#radius-prop">radius</a></b>() const</td></tr>
+</table></div>
+<ul>
+<li class="fn">7 public functions inherited from <a href="kuesa-abstractpostprocessingeffect.html#public-functions">Kuesa::AbstractPostProcessingEffect</a></li>
+</ul>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-depthoffieldeffect.html#setFocusDistance">setFocusDistance</a></b>(float <i>focusDistance</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-depthoffieldeffect.html#setFocusRange">setFocusRange</a></b>(float <i>focusRange</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-depthoffieldeffect.html#setRadius">setRadius</a></b>(float <i>radius</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-depthoffieldeffect.html#focusDistance-prop">focusDistanceChanged</a></b>(float <i>focusDistance</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-depthoffieldeffect.html#focusRange-prop">focusRangeChanged</a></b>(float <i>focusRange</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-depthoffieldeffect.html#radius-prop">radiusChanged</a></b>(float <i>radius</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$DepthOfFieldEffect-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p><a href="kuesa-depthoffieldeffect.html">DepthOfFieldEffect</a> implements an effect which simulates a more realistic camera behaviour, where only part of the scene is in-focus, and very far &amp; very close objects are out-of-focus and thus blurred.</p>
+<a name="example"></a>
+<h5 >Example</h5>
+<p class="centerAlign"><img src="images/dof_distance_5.png" alt="" /></p><p class="figCaption">Depth-of-field effect applied on a Kuesa scene.</p>
+</div>
+<!-- @@@DepthOfFieldEffect -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$focusDistance-prop$$$focusDistance$$$setFocusDistancefloat$$$focusDistanceChangedfloat -->
+<h3 class="fn" id="focusDistance-prop"><a name="focusDistance-prop"></a><span class="name">focusDistance</span> : <span class="type">float</span></h3>
+<p>adjusts the focal distance.</p>
+<p>This adjusts the focal distance, that is, the objects at this distance from the camera will be focused; those too close or too far away will be blurred.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Distance 5.0</th><th >Distance 8.0</th></tr></thead>
+<tr valign="top" class="odd"><td ><img src="images/dof_distance_5.png" alt="" /></td><td ><img src="images/dof_distance_8.png" alt="" /></td></tr>
+</table></div>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>focusDistance</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-depthoffieldeffect.html#setFocusDistance">setFocusDistance</a></b></span>(float <i>focusDistance</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>focusDistanceChanged</b></span>(float <i>focusDistance</i>)</td></tr>
+</table></div>
+<p><b>See also </b>BloomEffect::focusRange.</p>
+<!-- @@@focusDistance -->
+<!-- $$$focusRange-prop$$$focusRange$$$setFocusRangefloat$$$focusRangeChangedfloat -->
+<h3 class="fn" id="focusRange-prop"><a name="focusRange-prop"></a><span class="name">focusRange</span> : <span class="type">float</span></h3>
+<p>adjusts the breadth of the area which will be in focus.</p>
+<p>This adjusts the size of the part of the scene which will be in focus. At 0.0, everything will be blurred. The bigger the value, the more of the scene will be in focus, centered on the <a href="kuesa-depthoffieldeffect.html#focusDistance-prop">focusDistance</a>.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Range 2.0</th><th >Range 8.0</th></tr></thead>
+<tr valign="top" class="odd"><td ><img src="images/dof_range_2.png" alt="" /></td><td ><img src="images/dof_range_8.png" alt="" /></td></tr>
+</table></div>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>focusRange</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-depthoffieldeffect.html#setFocusRange">setFocusRange</a></b></span>(float <i>focusRange</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>focusRangeChanged</b></span>(float <i>focusRange</i>)</td></tr>
+</table></div>
+<p><b>See also </b>BloomEffect::focusDistance.</p>
+<!-- @@@focusRange -->
+<!-- $$$radius-prop$$$radius$$$setRadiusfloat$$$radiusChangedfloat -->
+<h3 class="fn" id="radius-prop"><a name="radius-prop"></a><span class="name">radius</span> : <span class="type">float</span></h3>
+<p>adjusts the radius of the depth of field effect.</p>
+<p>The bigger the radius is, the more the out-of-focus objects will appear to be blurred.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Radius 4.0</th><th >Radius 42.0</th></tr></thead>
+<tr valign="top" class="odd"><td ><img src="images/dof_radius_4.png" alt="" /></td><td ><img src="images/dof_radius_42.png" alt="" /></td></tr>
+</table></div>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>radius</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-depthoffieldeffect.html#setRadius">setRadius</a></b></span>(float <i>radius</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>radiusChanged</b></span>(float <i>radius</i>)</td></tr>
+</table></div>
+<!-- @@@radius -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$setFocusDistance -->
+<h3 class="fn" id="setFocusDistance"><a name="setFocusDistance"></a><code>[slot] </code><span class="type">void</span> DepthOfFieldEffect::<span class="name">setFocusDistance</span>(<span class="type">float</span> <i>focusDistance</i>)</h3>
+<p>Sets the focus distance to <i>focusDistance</i>.</p>
+<p><b>Note:</b> Setter function for property <a href="kuesa-depthoffieldeffect.html#focusDistance-prop">focusDistance</a>. </p><p><b>See also </b><a href="kuesa-depthoffieldeffect.html#focusDistance-prop">DepthOfFieldEffect::focusDistance</a>.</p>
+<!-- @@@setFocusDistance -->
+<!-- $$$setFocusRange -->
+<h3 class="fn" id="setFocusRange"><a name="setFocusRange"></a><code>[slot] </code><span class="type">void</span> DepthOfFieldEffect::<span class="name">setFocusRange</span>(<span class="type">float</span> <i>focusRange</i>)</h3>
+<p>Sets the focal range to <i>focusRange</i>.</p>
+<p><b>Note:</b> Setter function for property <a href="kuesa-depthoffieldeffect.html#focusRange-prop">focusRange</a>. </p><p><b>See also </b><a href="kuesa-depthoffieldeffect.html#focusRange-prop">DepthOfFieldEffect::focusRange</a>.</p>
+<!-- @@@setFocusRange -->
+<!-- $$$setRadius -->
+<h3 class="fn" id="setRadius"><a name="setRadius"></a><code>[slot] </code><span class="type">void</span> DepthOfFieldEffect::<span class="name">setRadius</span>(<span class="type">float</span> <i>radius</i>)</h3>
+<p>Sets the blur radius to <i>radius</i>.</p>
+<p><b>Note:</b> Setter function for property <a href="kuesa-depthoffieldeffect.html#radius-prop">radius</a>. </p><p><b>See also </b><a href="kuesa-depthoffieldeffect.html#radius-prop">DepthOfFieldEffect::radius</a>.</p>
+<!-- @@@setRadius -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>
