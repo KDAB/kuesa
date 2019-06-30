@@ -57,6 +57,11 @@ class QTextureLoader;
 
 namespace Kuesa {
 
+namespace GLTF2Import {
+class GLTF2Parser;
+}
+
+class EffectsLibrary;
 class KUESASHARED_EXPORT SceneEntity : public Qt3DCore::QEntity
 {
     Q_OBJECT
@@ -91,7 +96,7 @@ public:
     Q_INVOKABLE Qt3DRender::QLayer *layer(const QString &name) const;
 
     MaterialCollection *materials() const;
-    Q_INVOKABLE Qt3DRender::QMaterial *material(const QString &name) const;
+    Q_INVOKABLE Kuesa::GLTF2MaterialProperties *material(const QString &name) const;
 
     MeshCollection *meshes() const;
     Q_INVOKABLE Qt3DRender::QGeometryRenderer *mesh(const QString &name) const;
@@ -129,6 +134,7 @@ Q_SIGNALS:
     void loadingDone();
 
 private:
+
     AnimationClipCollection *m_clips;
     ArmatureCollection *m_armatures;
     EffectCollection *m_effects;

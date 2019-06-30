@@ -38,20 +38,23 @@ class QAbstractTexture;
 
 namespace Kuesa {
 class AbstractAssetCollection;
+class MetallicRoughnessProperties;
 class MetallicRoughnessMaterial;
 } // namespace Kuesa
 
 class MaterialInspector : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(Kuesa::MetallicRoughnessMaterial *material READ material NOTIFY materialParamsChanged)
-    Q_PROPERTY(bool hasTextures READ hasTextures NOTIFY materialParamsChanged)
+    Q_PROPERTY(Kuesa::MetallicRoughnessProperties *materialProperties READ materialProperties NOTIFY materialPropertiesChanged)
+    Q_PROPERTY(bool hasTextures READ hasTextures NOTIFY materialPropertiesChanged)
+    Q_PROPERTY(Kuesa::MetallicRoughnessMaterial *material READ material NOTIFY materialPropertiesChanged)
 
 public:
     explicit MaterialInspector(QObject *parent = nullptr);
     virtual ~MaterialInspector();
 
-    void setMaterial(Kuesa::MetallicRoughnessMaterial *material);
+    void setMaterialProperties(Kuesa::MetallicRoughnessProperties *materialProperties);
+    Kuesa::MetallicRoughnessProperties *materialProperties() const;
     Kuesa::MetallicRoughnessMaterial *material() const;
 
     QString assetName() const;
@@ -71,17 +74,16 @@ public:
     Qt3DRender::QAbstractTexture *emissiveMap() const;
 
     QMatrix3x3 textureTransform() const;
-    bool usingColorAttributes() const;
     bool doubleSided() const;
-    bool useSkinning() const;
     bool opaque() const;
 
     bool hasTextures() const;
 
 Q_SIGNALS:
-    void materialParamsChanged();
+    void materialPropertiesChanged();
 
 private:
+    Kuesa::MetallicRoughnessProperties *m_materialProperties;
     Kuesa::MetallicRoughnessMaterial *m_material;
     QMetaObject::Connection m_materialConnection;
 };

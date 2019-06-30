@@ -32,6 +32,7 @@
 #include <Qt3DRender/QAttribute>
 #include <Qt3DCore/QEntity>
 #include <Kuesa/MetallicRoughnessMaterial>
+#include <Kuesa/MetallicRoughnessProperties>
 #include <Kuesa/private/kuesa_utils_p.h>
 #include <Kuesa/private/meshparser_utils_p.h>
 
@@ -95,12 +96,18 @@ void MeshInspector::update()
 
         // Check if material has been destroyed, recreate if needed
         if (!m_highlightMaterial) {
-            m_highlightMaterial = new Kuesa::MetallicRoughnessMaterial();
-            m_highlightMaterial->setOpaque(false);
+            Kuesa::MetallicRoughnessProperties *materialProperties = new Kuesa::MetallicRoughnessProperties;
             QColor c = m_selectionColor;
             c.setAlpha(128);
-            m_highlightMaterial->setBaseColorFactor(c);
-            m_highlightMaterial->setAlphaCutoffEnabled(false);
+            materialProperties->setBaseColorFactor(c);
+
+            Kuesa::MetallicRoughnessEffect *effect = new Kuesa::MetallicRoughnessEffect;
+            effect->setOpaque(false);
+            effect->setAlphaCutoffEnabled(false);
+
+            m_highlightMaterial = new Kuesa::MetallicRoughnessMaterial();
+            m_highlightMaterial->setEffect(effect);
+            m_highlightMaterial->setMetallicRoughnessProperties(materialProperties);
         }
 
         bool setBrdfLUT = true;
@@ -260,7 +267,7 @@ void MeshInspector::setSelectionColor(const QColor &c)
     if (m_highlightMaterial) {
         QColor c = m_selectionColor;
         c.setAlpha(128);
-        m_highlightMaterial->setBaseColorFactor(c);
+        m_highlightMaterial->metallicRoughnessProperties()->setBaseColorFactor(c);
     }
 }
 

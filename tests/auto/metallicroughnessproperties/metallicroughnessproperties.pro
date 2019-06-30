@@ -1,9 +1,9 @@
-# tst_gltf2material.pro
+# metallicroughnessproperties.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# Author: Juan Casafranca  <juan.casafranca@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,14 +26,12 @@
 
 TEMPLATE = app
 
-TARGET = tst_gltf2material
+TARGET = tst_metallicroughnessproperties
 
 QT += testlib kuesa kuesa-private
 
 CONFIG += testcase
 
-SOURCES += tst_gltf2material.cpp
+SOURCES += tst_metallicroughnessproperties.cpp
 
 include(../assets/assets.pri)
-
-

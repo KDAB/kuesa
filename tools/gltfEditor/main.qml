@@ -150,7 +150,9 @@ Kuesa.SceneEntity {
         // MaterialPreview
         Entity {
             readonly property Material previewMaterial : _materialInspector.material
-            onPreviewMaterialChanged: materialPreviewGraph.requestCapture()
+            readonly property var previewMaterialProperties : _materialInspector.materialProperties
+
+            onPreviewMaterialPropertiesChanged: materialPreviewGraph.requestCapture()
 
             readonly property SphereMesh sphereMesh: SphereMesh {
                 radius: .8

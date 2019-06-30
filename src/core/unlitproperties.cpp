@@ -1,5 +1,5 @@
 /*
-    unlitmaterial.h
+    unlitproperties.cpp
 
     This file is part of Kuesa.
 
@@ -26,44 +26,28 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_UNLITMATERIAL_H
-#define KUESA_UNLITMATERIAL_H
-
-#include <Kuesa/gltf2material.h>
-#include <Kuesa/kuesa_global.h>
-#include <Kuesa/UnlitEffect>
-
-QT_BEGIN_NAMESPACE
+#include "unlitproperties.h"
+#include "unlitshaderdata_p.h"
 
 namespace Kuesa {
 
-class UnlitProperties;
-
-class KUESASHARED_EXPORT UnlitMaterial : public GLTF2Material
+UnlitProperties::UnlitProperties(Qt3DCore::QNode *parent)
+    : GLTF2MaterialProperties(parent)
+    , m_unlitShaderData(new UnlitShaderData(this))
 {
-    Q_OBJECT
+    QObject::connect(this, &GLTF2MaterialProperties::baseColorMapChanged,
+                     m_unlitShaderData, &UnlitShaderData::setBaseColorMap);
+    QObject::connect(this, &GLTF2MaterialProperties::baseColorFactorChanged,
+                     m_unlitShaderData, &UnlitShaderData::setBaseColorFactor);
+    QObject::connect(this, &GLTF2MaterialProperties::baseColorUsesTexCoord1Changed,
+                     m_unlitShaderData, &UnlitShaderData::setBaseColorUsesTexCoord1);
+    QObject::connect(this, &GLTF2MaterialProperties::alphaCutoffChanged,
+                     m_unlitShaderData, &UnlitShaderData::setAlphaCutoff);
+}
 
-    Q_PROPERTY(UnlitProperties *unlitProperties READ unlitProperties WRITE setUnlitProperties NOTIFY unlitPropertiesChanged)
+Qt3DRender::QShaderData *UnlitProperties::shaderData() const
+{
+    return m_unlitShaderData;
+}
 
-public:
-    explicit UnlitMaterial(Qt3DCore::QNode *parent = nullptr);
-    ~UnlitMaterial();
-
-    UnlitProperties *unlitProperties() const;
-    void setUnlitProperties(UnlitProperties *unlitProperties);
-
-Q_SIGNALS:
-    void unlitPropertiesChanged(UnlitProperties *properties);
-
-private:
-    UnlitEffect *m_effect;
-
-    UnlitProperties *m_unlitProperties;
-    Qt3DRender::QParameter *m_unlitShaderDataParameter;
-};
-
-} // namespace Kuesa
-
-QT_END_NAMESPACE
-
-#endif // KUESA_UNLITMATERIAL_H
+} // Kuesa

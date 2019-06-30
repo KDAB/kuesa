@@ -34,8 +34,8 @@
 
 #include <type_traits>
 
-#include "metallicroughnesseffect.h"
-#include "morphcontroller.h"
+#include "metallicroughnessproperties.h"
+#include "metallicroughnessshaderdata_p.h"
 
 #include "sceneentity.h"
 
@@ -44,27 +44,6 @@ QT_BEGIN_NAMESPACE
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
-template<class OutputType>
-using SignalType = void (MetallicRoughnessMaterial::*)(OutputType);
-
-template<class OutputType>
-using ValueTypeMapper = typename std::remove_const<typename std::remove_reference<OutputType>::type>::type;
-
-template<class OutputType>
-struct WrappedSignal {
-    MetallicRoughnessMaterial *self;
-    SignalType<OutputType> sig;
-    void operator()(const QVariant &value) const
-    {
-        std::mem_fn(sig)(self, value.value<ValueTypeMapper<OutputType>>());
-    }
-};
-template<class OutputType>
-WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, SignalType<OutputType> sig)
-{
-    return WrappedSignal<OutputType>{ self, sig };
-}
 
 /*!
     \class Kuesa::MetallicRoughnessMaterial
@@ -556,332 +535,29 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
 
 MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     : GLTF2Material(parent)
-    , m_baseColorUsesTexCoord1(new QParameter(QStringLiteral("baseColorUsesTexCoord1"), bool(false)))
-    , m_metallicRoughnessUsesTexCoord1(new QParameter(QStringLiteral("metallicRoughnessUsesTexCoord1"), bool(false)))
-    , m_normalUsesTexCoord1(new QParameter(QStringLiteral("normalUsesTexCoord1"), bool(false)))
-    , m_aoUsesTexCoord1(new QParameter(QStringLiteral("aoUsesTexCoord1"), bool(false)))
-    , m_emissiveUsesTexCoord1(new QParameter(QStringLiteral("emissiveUsesTexCoord1"), bool(false)))
-    , m_baseColorFactorParameter(new QParameter(QStringLiteral("baseColorFactor"), QColor("gray")))
-    , m_baseColorMapParameter(new QParameter(QStringLiteral("baseColorMap"), QVariant()))
-    , m_metallicFactorParameter(new QParameter(QStringLiteral("metallicFactor"), 0.0f))
-    , m_roughnessFactorParameter(new QParameter(QStringLiteral("roughnessFactor"), 0.0f))
-    , m_metalRoughMapParameter(new QParameter(QStringLiteral("metalRoughMap"), QVariant()))
-    , m_normalScaleParameter(new QParameter(QStringLiteral("normalScale"), 0.25f))
-    , m_normalMapParameter(new QParameter(QStringLiteral("normalMap"), QVariant()))
-    , m_ambientOcclusionMapParameter(new QParameter(QStringLiteral("ambientOcclusionMap"), QVariant()))
-    , m_emissiveFactorParameter(new QParameter(QStringLiteral("emissiveFactor"), QColor("black")))
-    , m_emissiveMapParameter(new QParameter(QStringLiteral("emissiveMap"), QVariant()))
-    , m_effect(new MetallicRoughnessEffect(this))
+    , m_metallicRoughnessProperties(nullptr)
+    , m_metallicRoughnessShaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("metallicRoughness"), {}))
 {
-    QObject::connect(m_baseColorUsesTexCoord1, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::baseColorUsesTexCoord1Changed));
-    QObject::connect(m_metallicRoughnessUsesTexCoord1, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::metallicRoughnessUsesTexCoord1Changed));
-    QObject::connect(m_normalUsesTexCoord1, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::normalUsesTexCoord1Changed));
-    QObject::connect(m_aoUsesTexCoord1, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::aoUsesTexCoord1Changed));
-    QObject::connect(m_emissiveUsesTexCoord1, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::emissiveUsesTexCoord1Changed));
-    QObject::connect(m_baseColorFactorParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::baseColorFactorChanged));
-    QObject::connect(m_baseColorMapParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::baseColorMapChanged));
-    QObject::connect(m_metallicFactorParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::metallicFactorChanged));
-    QObject::connect(m_roughnessFactorParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::roughnessFactorChanged));
-    QObject::connect(m_metalRoughMapParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::metalRoughMapChanged));
-    QObject::connect(m_normalScaleParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::normalScaleChanged));
-    QObject::connect(m_normalMapParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::normalMapChanged));
-    QObject::connect(m_ambientOcclusionMapParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::ambientOcclusionMapChanged));
-    QObject::connect(m_emissiveFactorParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::emissiveFactorChanged));
-    QObject::connect(m_emissiveMapParameter, &QParameter::valueChanged,
-                     this, wrapParameterSignal(this, &MetallicRoughnessMaterial::emissiveMapChanged));
-
-    QObject::connect(this, &MetallicRoughnessMaterial::usingColorAttributeChanged,
-                     this, &MetallicRoughnessMaterial::updateEffect);
-    QObject::connect(this, &MetallicRoughnessMaterial::doubleSidedChanged,
-                     this, &MetallicRoughnessMaterial::updateEffect);
-    QObject::connect(this, &MetallicRoughnessMaterial::useSkinningChanged,
-                     this, &MetallicRoughnessMaterial::updateEffect);
-    QObject::connect(this, &MetallicRoughnessMaterial::opaqueChanged,
-                     this, &MetallicRoughnessMaterial::updateEffect);
-    QObject::connect(this, &MetallicRoughnessMaterial::alphaCutoffEnabledChanged,
-                     this, &MetallicRoughnessMaterial::updateEffect);
-
-    QObject::connect(m_effect, &MetallicRoughnessEffect::toneMappingAlgorithmChanged,
-                     this, &MetallicRoughnessMaterial::toneMappingAlgorithmChanged);
-
-    addParameter(m_baseColorUsesTexCoord1);
-    addParameter(m_metallicRoughnessUsesTexCoord1);
-    addParameter(m_normalUsesTexCoord1);
-    addParameter(m_aoUsesTexCoord1);
-    addParameter(m_emissiveUsesTexCoord1);
-    addParameter(m_baseColorFactorParameter);
-    addParameter(m_metallicFactorParameter);
-    addParameter(m_roughnessFactorParameter);
-    addParameter(m_normalScaleParameter);
-    addParameter(m_emissiveFactorParameter);
-
-    setEffect(m_effect);
-    updateEffect();
-
-    QObject::connect(this, &Kuesa::MetallicRoughnessMaterial::addedToEntity,
-                     this, &Kuesa::MetallicRoughnessMaterial::onAddedToEntity);
+    addParameter(m_metallicRoughnessShaderDataParameter);
 }
 
 MetallicRoughnessMaterial::~MetallicRoughnessMaterial()
 {
 }
 
-bool MetallicRoughnessMaterial::isBaseColorUsingTexCoord1() const
+MetallicRoughnessProperties *MetallicRoughnessMaterial::metallicRoughnessProperties() const
 {
-    return m_baseColorUsesTexCoord1->value().value<bool>();
+    return m_metallicRoughnessProperties;
 }
 
-bool MetallicRoughnessMaterial::isMetallicRoughnessUsingTexCoord1() const
+void MetallicRoughnessMaterial::setMetallicRoughnessProperties(MetallicRoughnessProperties *metallicRoughnessProperties)
 {
-    return m_metallicRoughnessUsesTexCoord1->value().value<bool>();
-}
-
-bool MetallicRoughnessMaterial::isNormalUsingTexCoord1() const
-{
-    return m_normalUsesTexCoord1->value().value<bool>();
-}
-
-bool MetallicRoughnessMaterial::isAOUsingTexCoord1() const
-{
-    return m_aoUsesTexCoord1->value().value<bool>();
-}
-
-bool MetallicRoughnessMaterial::isEmissiveUsingTexCoord1() const
-{
-    return m_emissiveUsesTexCoord1->value().value<bool>();
-}
-
-QColor MetallicRoughnessMaterial::baseColorFactor() const
-{
-    return m_baseColorFactorParameter->value().value<QColor>();
-}
-
-QAbstractTexture *MetallicRoughnessMaterial::baseColorMap() const
-{
-    return m_baseColorMapParameter->value().value<QAbstractTexture *>();
-}
-
-float MetallicRoughnessMaterial::metallicFactor() const
-{
-    return m_metallicFactorParameter->value().toFloat();
-}
-
-float MetallicRoughnessMaterial::roughnessFactor() const
-{
-    return m_roughnessFactorParameter->value().toFloat();
-}
-
-QAbstractTexture *MetallicRoughnessMaterial::metalRoughMap() const
-{
-    return m_metalRoughMapParameter->value().value<QAbstractTexture *>();
-}
-
-float MetallicRoughnessMaterial::normalScale() const
-{
-    return m_normalScaleParameter->value().toFloat();
-}
-
-QAbstractTexture *MetallicRoughnessMaterial::normalMap() const
-{
-    return m_normalMapParameter->value().value<QAbstractTexture *>();
-}
-
-QAbstractTexture *MetallicRoughnessMaterial::ambientOcclusionMap() const
-{
-    return m_ambientOcclusionMapParameter->value().value<QAbstractTexture *>();
-}
-
-QColor MetallicRoughnessMaterial::emissiveFactor() const
-{
-    return m_emissiveFactorParameter->value().value<QColor>();
-}
-
-QAbstractTexture *MetallicRoughnessMaterial::emissiveMap() const
-{
-    return m_emissiveMapParameter->value().value<QAbstractTexture *>();
-}
-
-MetallicRoughnessEffect::ToneMapping MetallicRoughnessMaterial::toneMappingAlgorithm() const
-{
-    return m_effect->toneMappingAlgorithm();
-}
-
-void MetallicRoughnessMaterial::setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1)
-{
-    m_baseColorUsesTexCoord1->setValue(baseColorUsesTexCoord1);
-}
-
-void MetallicRoughnessMaterial::setMetallicRoughnessUsesTexCoord1(bool metallicRoughnessUsesTexCoord1)
-{
-    m_metallicRoughnessUsesTexCoord1->setValue(metallicRoughnessUsesTexCoord1);
-}
-
-void MetallicRoughnessMaterial::setNormalUsesTexCoord1(bool normalUsesTexCoord1)
-{
-    m_normalUsesTexCoord1->setValue(normalUsesTexCoord1);
-}
-
-void MetallicRoughnessMaterial::setAOUsesTexCoord1(bool aoUsesTexCoord1)
-{
-    m_aoUsesTexCoord1->setValue(aoUsesTexCoord1);
-}
-
-void MetallicRoughnessMaterial::setEmissiveUsesTexCoord1(bool emissiveUsesTexCoord1)
-{
-    m_emissiveUsesTexCoord1->setValue(emissiveUsesTexCoord1);
-}
-
-void MetallicRoughnessMaterial::setBaseColorFactor(const QColor &baseColorFactor)
-{
-    m_baseColorFactorParameter->setValue(baseColorFactor);
-}
-
-void MetallicRoughnessMaterial::setBaseColorMap(QAbstractTexture *baseColorMap)
-{
-    if (m_baseColorMapParameter->value().value<QAbstractTexture *>() == baseColorMap)
-        return;
-#ifndef QT_OPENGL_ES_2
-    baseColorMap->setFormat(QAbstractTexture::TextureFormat::SRGB8_Alpha8);
-#endif
-    m_effect->setBaseColorMapEnabled(baseColorMap);
-    m_baseColorMapParameter->setValue(QVariant::fromValue(baseColorMap));
-    if (baseColorMap) {
-        addParameter(m_baseColorMapParameter);
-    } else {
-        removeParameter(m_baseColorMapParameter);
+    if (m_metallicRoughnessProperties != metallicRoughnessProperties) {
+        m_metallicRoughnessProperties = metallicRoughnessProperties;
+        m_metallicRoughnessShaderDataParameter->setValue(QVariant::fromValue(metallicRoughnessProperties->shaderData()));
+        metallicRoughnessProperties->addClientMaterial(this);
+        emit metallicRoughnessPropertiesChanged(metallicRoughnessProperties);
     }
-    updateEffect();
-}
-
-void MetallicRoughnessMaterial::setMetallicFactor(float metallicFactor)
-{
-    m_metallicFactorParameter->setValue(metallicFactor);
-}
-
-void MetallicRoughnessMaterial::setRoughnessFactor(float roughnessFactor)
-{
-    m_roughnessFactorParameter->setValue(roughnessFactor);
-}
-
-void MetallicRoughnessMaterial::setMetalRoughMap(QAbstractTexture *metalRoughMap)
-{
-    if (m_metalRoughMapParameter->value().value<QAbstractTexture *>() == metalRoughMap)
-        return;
-
-    m_effect->setMetalRoughMapEnabled(metalRoughMap);
-    m_metalRoughMapParameter->setValue(QVariant::fromValue(metalRoughMap));
-    if (metalRoughMap) {
-        addParameter(m_metalRoughMapParameter);
-    } else {
-        removeParameter(m_metalRoughMapParameter);
-    }
-    updateEffect();
-}
-
-void MetallicRoughnessMaterial::setNormalMap(QAbstractTexture *normalMap)
-{
-    if (m_normalMapParameter->value().value<QAbstractTexture *>() == normalMap)
-        return;
-
-    m_effect->setNormalMapEnabled(normalMap);
-    m_normalMapParameter->setValue(QVariant::fromValue(normalMap));
-    if (normalMap) {
-        addParameter(m_normalMapParameter);
-    } else {
-        removeParameter(m_normalMapParameter);
-    }
-    updateEffect();
-}
-
-void MetallicRoughnessMaterial::setNormalScale(float normalScale)
-{
-    m_normalScaleParameter->setValue(normalScale);
-}
-
-void MetallicRoughnessMaterial::setAmbientOcclusionMap(QAbstractTexture *ambientOcclusionMap)
-{
-    if (m_ambientOcclusionMapParameter->value().value<QAbstractTexture *>() == ambientOcclusionMap)
-        return;
-
-    m_effect->setAmbientOcclusionMapEnabled(ambientOcclusionMap);
-    m_ambientOcclusionMapParameter->setValue(QVariant::fromValue(ambientOcclusionMap));
-    if (ambientOcclusionMap) {
-        addParameter(m_ambientOcclusionMapParameter);
-    } else {
-        removeParameter(m_ambientOcclusionMapParameter);
-    }
-    updateEffect();
-}
-
-void MetallicRoughnessMaterial::setEmissiveFactor(const QColor &emissiveFactor)
-{
-    m_emissiveFactorParameter->setValue(emissiveFactor);
-}
-
-void MetallicRoughnessMaterial::setEmissiveMap(QAbstractTexture *emissiveMap)
-{
-    if (m_emissiveMapParameter->value().value<QAbstractTexture *>() == emissiveMap)
-        return;
-#ifndef QT_OPENGL_ES_2
-    emissiveMap->setFormat(QAbstractTexture::TextureFormat::SRGB8_Alpha8);
-#endif
-    m_effect->setEmissiveMapEnabled(emissiveMap);
-    m_emissiveMapParameter->setValue(QVariant::fromValue(emissiveMap));
-    if (emissiveMap) {
-        addParameter(m_emissiveMapParameter);
-    } else {
-        removeParameter(m_emissiveMapParameter);
-    }
-    updateEffect();
-}
-
-void MetallicRoughnessMaterial::setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm)
-{
-    m_effect->setToneMappingAlgorithm(algorithm);
-}
-
-void MetallicRoughnessMaterial::onAddedToEntity(Qt3DCore::QEntity *entity)
-{
-    if (m_effect->brdfLUT() != nullptr)
-        return;
-
-    // Looks on the entity tree until we find a SceneEntity
-    // while we find the SceneEntity, get the brdfLut texture and add it to the effect
-    auto *sceneEntity = Kuesa::SceneEntity::findParentSceneEntity(entity);
-    if (!sceneEntity) {
-        qCWarning(kuesa) << "A material has been added to a subtree without a SceneEntity";
-        return;
-    }
-
-    m_effect->setBrdfLUT(sceneEntity->brdfLut());
-}
-
-void MetallicRoughnessMaterial::updateEffect()
-{
-    m_effect->setBaseColorMapEnabled(baseColorMap() != nullptr);
-    m_effect->setMetalRoughMapEnabled(metalRoughMap() != nullptr);
-    m_effect->setNormalMapEnabled(normalMap() != nullptr);
-    m_effect->setAmbientOcclusionMapEnabled(ambientOcclusionMap() != nullptr);
-    m_effect->setEmissiveMapEnabled(emissiveMap() != nullptr);
-    m_effect->setUsingColorAttribute(isUsingColorAttribute());
-    m_effect->setDoubleSided(isDoubleSided());
-    m_effect->setOpaque(isOpaque());
-    m_effect->setAlphaCutoffEnabled(isAlphaCutoffEnabled());
-    m_effect->setUseSkinning(m_usesSkinning);
 }
 
 } // namespace Kuesa

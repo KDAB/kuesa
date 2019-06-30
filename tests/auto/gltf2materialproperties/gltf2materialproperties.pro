@@ -1,4 +1,4 @@
-# tst_gltf2material.pro
+# gltf2materialproperties.pro
 #
 # This file is part of Kuesa.
 #
@@ -26,14 +26,12 @@
 
 TEMPLATE = app
 
-TARGET = tst_gltf2material
+TARGET = tst_gltf2materialproperties
 
 QT += testlib kuesa kuesa-private
 
 CONFIG += testcase
 
-SOURCES += tst_gltf2material.cpp
+SOURCES += tst_gltf2materialproperties.cpp
 
 include(../assets/assets.pri)
-
-
