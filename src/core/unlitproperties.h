@@ -1,10 +1,10 @@
 /*
-    materialcollection.h
+    unlitproperties.h
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,30 +26,39 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_MATERIALCOLLECTION_H
-#define KUESA_MATERIALCOLLECTION_H
-
-#include <Kuesa/abstractassetcollection.h>
-#include <Kuesa/kuesa_global.h>
+#ifndef KUESA_UNLITPROPERTIES_H
+#define KUESA_UNLITPROPERTIES_H
 
 #include <Kuesa/GLTF2MaterialProperties>
+#include <Kuesa/kuesa_global.h>
+#include <QtGui/QColor>
 
 QT_BEGIN_NAMESPACE
 
+namespace Qt3DRender {
+class QAbstractTexture;
+}
+
 namespace Kuesa {
 
-class KUESASHARED_EXPORT MaterialCollection : public AbstractAssetCollection
+class UnlitShaderData;
+class UnlitMaterial;
+
+class KUESASHARED_EXPORT UnlitProperties : public GLTF2MaterialProperties
 {
     Q_OBJECT
+
 public:
-    explicit MaterialCollection(Qt3DCore::QNode *parent = nullptr);
-    ~MaterialCollection();
+    explicit UnlitProperties(Qt3DCore::QNode *parent = nullptr);
+    ~UnlitProperties() = default;
 
-    KUESA_ASSET_COLLECTION_IMPLEMENTATION(Kuesa::GLTF2MaterialProperties)
+private:
+    friend class UnlitMaterial;
+    Qt3DRender::QShaderData *shaderData() const override;
+
+    UnlitShaderData *m_unlitShaderData;
 };
-
 } // namespace Kuesa
-
 QT_END_NAMESPACE
 
-#endif // KUESA_MATERIALCOLLECTION_H
+#endif // KUESA_UNLITPROPERTIES_H

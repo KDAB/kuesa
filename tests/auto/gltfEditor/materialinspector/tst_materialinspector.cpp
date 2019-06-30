@@ -29,6 +29,7 @@
 #include <QtTest/QtTest>
 #include "materialinspector.h"
 #include "assetinspector.h"
+#include <Kuesa/metallicroughnessproperties.h>
 #include <Kuesa/private/gltf2parser_p.h>
 #include <Kuesa/SceneEntity>
 #include <QSignalSpy>
@@ -48,13 +49,13 @@ private Q_SLOTS:
         // GIVEN
         SceneEntity scene;
         MaterialInspector inspector;
-        QSignalSpy spy(&inspector, SIGNAL(materialParamsChanged()));
+        QSignalSpy spy(&inspector, SIGNAL(materialPropertiesChanged()));
         QVERIFY(spy.isValid());
 
         // WHEN
         auto material = loadMaterial(&scene, QString(ASSETS "Box.gltf"));
         QVERIFY(material);
-        inspector.setMaterial(material);
+        inspector.setMaterialProperties(material);
 
         // THEN
         QCOMPARE(spy.count(), 1);
@@ -64,7 +65,7 @@ private Q_SLOTS:
         SceneEntity scene2;
         auto simpleMaterial = loadMaterial(&scene2, QString(ASSETS "simple_cube_with_textures.gltf"));
         QVERIFY(simpleMaterial);
-        inspector.setMaterial(simpleMaterial);
+        inspector.setMaterialProperties(simpleMaterial);
 
         //THEN
         QCOMPARE(spy.count(), 2);
@@ -89,8 +90,8 @@ private Q_SLOTS:
         QVERIFY(material);
 
         // WHEN
-        inspector.setMaterial(qobject_cast<Kuesa::MetallicRoughnessMaterial *>(material));
-        QSignalSpy spy(&inspector, SIGNAL(materialParamsChanged()));
+        inspector.setMaterialProperties(qobject_cast<Kuesa::MetallicRoughnessProperties *>(material));
+        QSignalSpy spy(&inspector, SIGNAL(materialPropertiesChanged()));
 
         // THEN
         QVERIFY(spy.isValid());
@@ -110,13 +111,13 @@ private Q_SLOTS:
         // GIVEN
         SceneEntity scene;
         MaterialInspector inspector;
-        QSignalSpy spy(&inspector, SIGNAL(materialParamsChanged()));
+        QSignalSpy spy(&inspector, SIGNAL(materialPropertiesChanged()));
         QVERIFY(spy.isValid());
 
         // WHEN
         auto boxMaterial = loadMaterial(&scene, QString(ASSETS "Box.gltf"));
         QVERIFY(boxMaterial);
-        inspector.setMaterial(boxMaterial);
+        inspector.setMaterialProperties(boxMaterial);
 
         QCOMPARE(inspector.baseColor().redF(), 0.8);
         QCOMPARE(inspector.baseColor().greenF(), 0.0);
@@ -130,14 +131,12 @@ private Q_SLOTS:
         QVERIFY(inspector.emissiveMap() == nullptr);
         QCOMPARE(inspector.doubleSided(), false);
         QCOMPARE(inspector.opaque(), true);
-        QCOMPARE(inspector.useSkinning(), false);
-        QCOMPARE(inspector.usingColorAttributes(), false);
 
         // WHEN
         SceneEntity scene2;
         auto material = loadMaterial(&scene2, QString(ASSETS "simple_cube_with_textures_material_test.gltf"));
         QVERIFY(material);
-        inspector.setMaterial(material);
+        inspector.setMaterialProperties(material);
 
         // THEN
         QCOMPARE(inspector.baseColor().redF(), 0.2);
@@ -163,19 +162,17 @@ private Q_SLOTS:
 
         QCOMPARE(inspector.doubleSided(), true);
         QCOMPARE(inspector.opaque(), true);
-        QCOMPARE(inspector.useSkinning(), false);
-        QCOMPARE(inspector.usingColorAttributes(), false);
     }
 
 private:
-    Kuesa::MetallicRoughnessMaterial *loadMaterial(SceneEntity *scene, const QString &filename)
+    Kuesa::MetallicRoughnessProperties *loadMaterial(SceneEntity *scene, const QString &filename)
     {
         GLTF2Context ctx;
         GLTF2Parser parser(scene, scene);
         parser.setContext(&ctx);
         parser.parse(filename);
         auto material = scene->material(scene->materials()->names().first());
-        return qobject_cast<Kuesa::MetallicRoughnessMaterial *>(material);
+        return qobject_cast<Kuesa::MetallicRoughnessProperties *>(material);
     }
 };
 

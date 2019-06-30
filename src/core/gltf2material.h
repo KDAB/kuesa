@@ -31,9 +31,6 @@
 
 #include <Qt3DRender/qmaterial.h>
 #include <Kuesa/kuesa_global.h>
-#include <QtGui/QMatrix3x3>
-#include <QtGui/qcolor.h>
-
 
 QT_BEGIN_NAMESPACE
 
@@ -49,61 +46,26 @@ class MorphController;
 class KUESASHARED_EXPORT GLTF2Material : public Qt3DRender::QMaterial
 {
     Q_OBJECT
-    Q_PROPERTY(QMatrix3x3 textureTransform READ textureTransform WRITE setTextureTransform NOTIFY textureTransformChanged)
-    Q_PROPERTY(bool usingColorAttribute READ isUsingColorAttribute WRITE setUsingColorAttribute NOTIFY usingColorAttributeChanged)
-    Q_PROPERTY(bool doubleSided READ isDoubleSided WRITE setDoubleSided NOTIFY doubleSidedChanged)
-    Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
-    Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
-    Q_PROPERTY(float alphaCutoff READ alphaCutoff WRITE setAlphaCutoff NOTIFY alphaCutoffChanged)
-    Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
     Q_PROPERTY(Kuesa::MorphController *morphController READ morphController NOTIFY morphControllerChanged)
 
 public:
     ~GLTF2Material();
-
-    QMatrix3x3 textureTransform() const;
-    bool isUsingColorAttribute() const;
-    bool isDoubleSided() const;
-    bool useSkinning() const;
-    bool isOpaque() const;
-    bool isAlphaCutoffEnabled() const;
-    float alphaCutoff() const;
     MorphController *morphController() const;
 
 public Q_SLOTS:
-    void setTextureTransform(const QMatrix3x3 &textureTransform);
-    void setUsingColorAttribute(bool usingColorAttribute);
-    void setDoubleSided(bool doubleSided);
-    void setUseSkinning(bool useSkinning);
-    void setOpaque(bool opaque);
-    void setAlphaCutoffEnabled(bool enabled);
-    void setAlphaCutoff(float alphaCutoff);
     void setMorphController(MorphController *morphController);
 
 Q_SIGNALS:
-    void textureTransformChanged(const QMatrix3x3 &textureTransform);
-    void usingColorAttributeChanged(bool usingColorAttribute);
-    void doubleSidedChanged(bool doubleSided);
-    void useSkinningChanged(bool useSkinning);
-    void opaqueChanged(bool opaque);
-    void alphaCutoffEnabledChanged(bool enabled);
-    void alphaCutoffChanged(float value);
     void morphControllerChanged(MorphController *morphController);
 
 protected:
     explicit GLTF2Material(Qt3DCore::QNode *parent = nullptr);
 
-    Qt3DRender::QParameter *m_textureTransformParameter;
-    Qt3DRender::QParameter *m_alphaCutoffParameter;
     Qt3DRender::QParameter *m_morphControllerParameter;
-    bool m_isUsingColorAttribute;
-    bool m_isDoubleSided;
-    bool m_usesSkinning;
-    bool m_isOpaque;
-    bool m_isAlphaCutOffEnabled;
+    Qt3DRender::QParameter *m_textureTransformParameter;
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

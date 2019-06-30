@@ -408,74 +408,6 @@
         {
             "layers": [
             ],
-            "sourcePort": "outputColor",
-            "sourceUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}",
-            "targetPort": "color",
-            "targetUuid": "{2043e54f-6ab6-4950-ba77-500bd6467f47}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{c61c2622-eacb-4512-be77-655fae53afd7}",
-            "targetPort": "exposure",
-            "targetUuid": "{2043e54f-6ab6-4950-ba77-500bd6467f47}"
-        },
-        {
-            "layers": [
-                "useReinhardToneMap"
-            ],
-            "sourcePort": "outputColor",
-            "sourceUuid": "{2043e54f-6ab6-4950-ba77-500bd6467f47}",
-            "targetPort": "color",
-            "targetUuid": "{ef91d9a0-b98e-472e-996c-0d7b0eccbdd7}"
-        },
-        {
-            "layers": [
-                "useFilmicToneMap"
-            ],
-            "sourcePort": "outputColor",
-            "sourceUuid": "{2043e54f-6ab6-4950-ba77-500bd6467f47}",
-            "targetPort": "color",
-            "targetUuid": "{f527671b-4aba-4548-b778-e5088b155db0}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{711d9dcb-441d-4804-9765-d1f62024878c}",
-            "targetPort": "gamma",
-            "targetUuid": "{8d262f61-1609-439d-b296-8111596d1f59}"
-        },
-        {
-            "layers": [
-                "useReinhardToneMap"
-            ],
-            "sourcePort": "outputColor",
-            "sourceUuid": "{ef91d9a0-b98e-472e-996c-0d7b0eccbdd7}",
-            "targetPort": "color",
-            "targetUuid": "{8d262f61-1609-439d-b296-8111596d1f59}"
-        },
-        {
-            "layers": [
-                "useFilmicToneMap"
-            ],
-            "sourcePort": "outputColor",
-            "sourceUuid": "{f527671b-4aba-4548-b778-e5088b155db0}",
-            "targetPort": "color",
-            "targetUuid": "{8d262f61-1609-439d-b296-8111596d1f59}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "outputColor",
-            "sourceUuid": "{8d262f61-1609-439d-b296-8111596d1f59}",
-            "targetPort": "first",
-            "targetUuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}"
-        },
-        {
-            "layers": [
-            ],
             "sourcePort": "output",
             "sourceUuid": "{00000000-0000-0000-0000-000000000016}",
             "targetPort": "ambientOcclusion",
@@ -757,6 +689,15 @@
             "layers": [
                 "baseColorMap"
             ],
+            "sourcePort": "value",
+            "sourceUuid": "{8c4e62e0-c4fc-4353-bcbc-9aa7a272548a}",
+            "targetPort": "texture",
+            "targetUuid": "{1d1ffe9c-1ad8-4552-b034-e8ce82ba706f}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
             "sourcePort": "output",
             "sourceUuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}",
             "targetPort": "coord",
@@ -979,12 +920,11 @@
         },
         {
             "layers": [
-                "baseColorMap"
             ],
-            "sourcePort": "value",
-            "sourceUuid": "{8c4e62e0-c4fc-4353-bcbc-9aa7a272548a}",
-            "targetPort": "texture",
-            "targetUuid": "{1d1ffe9c-1ad8-4552-b034-e8ce82ba706f}"
+            "sourcePort": "outputColor",
+            "sourceUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}",
+            "targetPort": "first",
+            "targetUuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}"
         }
     ],
     "nodes": [
@@ -1770,74 +1710,6 @@
             },
             "type": "kuesa_metalRoughFunction",
             "uuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-            },
-            "type": "kuesa_exposureCorrect",
-            "uuid": "{2043e54f-6ab6-4950-ba77-500bd6467f47}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "exposure",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Uniform"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "input",
-            "uuid": "{c61c2622-eacb-4512-be77-655fae53afd7}"
-        },
-        {
-            "layers": [
-                "useFilmicToneMap"
-            ],
-            "parameters": {
-            },
-            "type": "kuesa_filmicToneMap",
-            "uuid": "{f527671b-4aba-4548-b778-e5088b155db0}"
-        },
-        {
-            "layers": [
-                "useReinhardToneMap"
-            ],
-            "parameters": {
-            },
-            "type": "kuesa_reinhardToneMap",
-            "uuid": "{ef91d9a0-b98e-472e-996c-0d7b0eccbdd7}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-            },
-            "type": "kuesa_gammaCorrect",
-            "uuid": "{8d262f61-1609-439d-b296-8111596d1f59}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "gamma",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Uniform"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "input",
-            "uuid": "{711d9dcb-441d-4804-9765-d1f62024878c}"
         },
         {
             "layers": [
@@ -2642,119 +2514,6 @@
                 }
             ]
         },
-        "kuesa_exposureCorrect": {
-            "inputs": [
-                "color",
-                "exposure"
-            ],
-            "outputs": [
-                "outputColor"
-            ],
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 1
-                    },
-                    "substitution": "vec3 $outputColor = $color * pow(2.0, $exposure);"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp vec3 $outputColor = $color * pow(2.0, $exposure);"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "highp vec3 $outputColor = $color * pow(2.0, $exposure);"
-                }
-            ]
-        },
-        "kuesa_filmicToneMap": {
-            "inputs": [
-                "color"
-            ],
-            "outputs": [
-                "outputColor"
-            ],
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 1
-                    },
-                    "headerSnippets": [
-                        "vec3 filmicToneMap(const in vec3 c) {\n                                           vec3 x = max(vec3(0.0), c - vec3(0.4));    \n                                           return (x * (6.2 * x + vec3(0.5))) / (x * (6.2 * x + vec3(1.7)) + vec3(0.06));\n                                       }"
-                    ],
-                    "substitution": "vec3 $outputColor = filmicToneMap($color);"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "highp vec3 filmicToneMap(const in highp vec3 c) {\n                                           highp vec3 x = max(vec3(0.0), c - vec3(0.4));    \n                                           return (x * (6.2 * x + vec3(0.5))) / (x * (6.2 * x + vec3(1.7)) + vec3(0.06));\n                                       }"
-                    ],
-                    "substitution": "highp vec3 $outputColor = filmicToneMap($color);"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "highp vec3 filmicToneMap(const in highp vec3 c) {\n                                           highp vec3 x = max(vec3(0.0), c - vec3(0.4));    \n                                           return (x * (6.2 * x + vec3(0.5))) / (x * (6.2 * x + vec3(1.7)) + vec3(0.06));\n                                       }"
-                    ],
-                    "substitution": "highp vec3 $outputColor = filmicToneMap($color);"
-                }
-            ]
-        },
-        "kuesa_gammaCorrect": {
-            "inputs": [
-                "color",
-                "gamma"
-            ],
-            "outputs": [
-                "outputColor"
-            ],
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 1
-                    },
-                    "substitution": "vec3 $outputColor = pow($color, vec3(1.0 / $gamma));"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp vec3 $outputColor = pow($color, vec3(1.0 / $gamma));"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "highp vec3 $outputColor = pow($color, vec3(1.0 / $gamma));"
-                }
-            ]
-        },
         "kuesa_metalRoughFunction": {
             "inputs": [
                 "ambientOcclusion",
@@ -2842,40 +2601,6 @@
                         "#pragma include :/kuesa/shaders/gl3/kuesa_metallicRoughnessShaderData.inc.frag"
                     ],
                     "substitution": "MetallicRoughness $shaderData = metallicRoughness;"
-                }
-            ]
-        },
-        "kuesa_reinhardToneMap": {
-            "inputs": [
-                "color"
-            ],
-            "outputs": [
-                "outputColor"
-            ],
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 1
-                    },
-                    "substitution": "vec3 $outputColor = $color / ($color + vec3(1.0));"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp vec3 $outputColor = $color / ($color + vec3(1.0));"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "highp vec3 $outputColor = $color / ($color + vec3(1.0));"
                 }
             ]
         },

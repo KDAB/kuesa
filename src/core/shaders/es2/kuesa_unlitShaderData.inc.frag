@@ -1,10 +1,10 @@
 /*
-    materialcollection.h
+    kuesa_unlitShaderData.inc.frag
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,30 +26,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_MATERIALCOLLECTION_H
-#define KUESA_MATERIALCOLLECTION_H
-
-#include <Kuesa/abstractassetcollection.h>
-#include <Kuesa/kuesa_global.h>
-
-#include <Kuesa/GLTF2MaterialProperties>
-
-QT_BEGIN_NAMESPACE
-
-namespace Kuesa {
-
-class KUESASHARED_EXPORT MaterialCollection : public AbstractAssetCollection
-{
-    Q_OBJECT
-public:
-    explicit MaterialCollection(Qt3DCore::QNode *parent = nullptr);
-    ~MaterialCollection();
-
-    KUESA_ASSET_COLLECTION_IMPLEMENTATION(Kuesa::GLTF2MaterialProperties)
+struct Unlit {
+    highp vec4 baseColorFactor;
+    highp sampler2D baseColorMap;
+    highp float alphaCutoff;
+    bool baseColorUsesTexCoord1;
 };
 
-} // namespace Kuesa
-
-QT_END_NAMESPACE
-
-#endif // KUESA_MATERIALCOLLECTION_H
+uniform Unlit unlit;

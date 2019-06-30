@@ -191,10 +191,11 @@ MaterialCollection *SceneEntity::materials() const
 }
 
 /*!
-    Utility method returning an instance of Qt3DRender::QMaterial matching \a
-    name (or nullptr if not found)
+    Utility method returning an instance of the
+    Qt3DRender::GLTF2MaterialProperties subclass matching \a name (or nullptr
+    if not found)
  */
-Qt3DRender::QMaterial *SceneEntity::material(const QString &name) const
+GLTF2MaterialProperties *SceneEntity::material(const QString &name) const
 {
     return m_materials->find(name);
 }
@@ -327,6 +328,7 @@ Qt3DRender::QAbstractLight *SceneEntity::light(const QString &name) const
 {
     return m_lights->find(name);
 }
+
 
 /*!
     \brief Removes all assets from all the collections.

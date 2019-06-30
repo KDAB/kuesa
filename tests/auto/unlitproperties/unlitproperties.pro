@@ -1,4 +1,4 @@
-# unlitmaterial.pro
+# unlitproperties.pro
 #
 # This file is part of Kuesa.
 #
@@ -26,12 +26,12 @@
 
 TEMPLATE = app
 
-TARGET = tst_unlitmaterial
+TARGET = tst_unlitproperties
 
 QT += testlib kuesa kuesa-private
 
 CONFIG += testcase
 
-SOURCES += tst_unlitmaterial.cpp
+SOURCES += tst_unlitproperties.cpp
 
 include(../assets/assets.pri)

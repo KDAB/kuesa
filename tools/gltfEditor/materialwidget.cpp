@@ -54,7 +54,7 @@ MaterialWidget::~MaterialWidget()
 void MaterialWidget::setMaterialInspector(MaterialInspector *inspector)
 {
     m_inspector = inspector;
-    connect(m_inspector, &MaterialInspector::materialParamsChanged, this, &MaterialWidget::updateData);
+    connect(m_inspector, &MaterialInspector::materialPropertiesChanged, this, &MaterialWidget::updateData);
 }
 
 void MaterialWidget::setPreviewRenderContext(QQmlContext *context)
@@ -88,9 +88,7 @@ void MaterialWidget::updateData()
     setTextureLabelState(m_ui->emissiveMapLabel, m_ui->emissiveMapValue, m_inspector->emissiveMap());
 
     m_ui->textureTransformLabel->setMatrix(m_inspector->textureTransform());
-    m_ui->useColorAttributeValue->setText(boolTextValue(m_inspector->usingColorAttributes()));
     m_ui->doubleSidedValue->setText(boolTextValue(m_inspector->doubleSided()));
-    m_ui->useSkinningValue->setText(boolTextValue(m_inspector->useSkinning()));
     m_ui->opaqueValue->setText(boolTextValue(m_inspector->opaque()));
 }
 

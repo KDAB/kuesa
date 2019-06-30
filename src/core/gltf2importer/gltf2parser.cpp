@@ -46,6 +46,9 @@
 #include "sceneparser_p.h"
 #include "skinparser_p.h"
 #include "metallicroughnessmaterial.h"
+#include "metallicroughnessproperties.h"
+#include "unlitmaterial.h"
+#include "unlitproperties.h"
 #include "morphcontroller.h"
 #include "gltf2material.h"
 #include "directionallight.h"
@@ -204,6 +207,7 @@ bool GLTF2Parser::detectTypeAndParse(const QByteArray &data, const QString &base
         if (isValid)
             return parseJSON(data, basePath, filename);
     }
+    return false;
 }
 
 bool GLTF2Parser::isBinaryGLTF(const QByteArray &data, bool &isValid)
@@ -598,16 +602,10 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
         if (m_sceneEntity->materials())
             addAssetsIntoCollection<Material>(
                     [this](const Material &material, int) {
-                        if (material.hasRegularMaterial())
-                            addToCollectionWithUniqueName(m_sceneEntity->materials(), material.name, material.material(false));
-                        if (material.hasSkinnedMaterial())
-                            addToCollectionWithUniqueName(m_sceneEntity->materials(), material.name + QStringLiteral("_skinned"), material.material(true));
+                        addToCollectionWithUniqueName(m_sceneEntity->materials(), material.name, material.materialProperties());
                     },
                     [this](const Material &material, int i) {
-                        if (material.hasRegularMaterial())
-                            addToCollectionWithUniqueName(m_sceneEntity->materials(), QStringLiteral("KuesaMaterial_%1").arg(i), material.material(false));
-                        if (material.hasSkinnedMaterial())
-                            addToCollectionWithUniqueName(m_sceneEntity->materials(), QStringLiteral("KuesaMaterial_%1_skinned").arg(i), material.material(true));
+                        addToCollectionWithUniqueName(m_sceneEntity->materials(), QStringLiteral("KuesaMaterial_%1").arg(i), material.materialProperties());
                     });
 
         if (m_sceneEntity->skeletons())
@@ -819,8 +817,6 @@ void GLTF2Parser::buildJointHierarchy(const HierarchyNode *node, int &jointAcces
 
 void GLTF2Parser::generateTreeNodeContent()
 {
-    MetallicRoughnessMaterial *defaultMaterial = nullptr;
-    MetallicRoughnessMaterial *defaultSkinnedMaterial = nullptr;
     m_contentRootEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
     m_contentRootEntity->setObjectName(QStringLiteral("GLTF2Scene"));
 
@@ -1031,22 +1027,20 @@ void GLTF2Parser::generateTreeNodeContent()
 
                     // Add material for mesh
                     {
-                        GLTF2Material *material = nullptr;
-
                         // TO DO: generate proper morph target vertex shader based
                         // on meshData.morphTargetCount and primitiveData.morphTargets
 
-                        auto setBrdfLutOnEffect = [this](GLTF2Material *m) {
+                        auto setBrdfLutOnEffect = [this](Qt3DRender::QMaterial *m) {
                             auto effect = qobject_cast<MetallicRoughnessEffect *>(m->effect());
                             if (effect && m_sceneEntity)
                                 effect->setBrdfLUT(m_sceneEntity->brdfLut());
                         };
 
-                        auto checkMaterialIsCompatibleWithPrimitive = [](GLTF2Material *m, Qt3DRender::QGeometryRenderer *renderer,
+                        auto checkMaterialIsCompatibleWithPrimitive = [](Qt3DRender::QMaterial *m, Qt3DRender::QGeometryRenderer *renderer,
                                                                          const QString &primitiveName, const QString &materialName) {
                             MetallicRoughnessMaterial *metalRoughMat = qobject_cast<MetallicRoughnessMaterial *>(m);
                             // When we have a normal map on a MetalRoughMetarial, make sure we have a tangent attribute
-                            if (metalRoughMat != nullptr && metalRoughMat->normalMap() != nullptr) {
+                            if (metalRoughMat != nullptr && metalRoughMat->metallicRoughnessProperties()->normalMap() != nullptr) {
                                 Q_ASSERT(renderer->geometry());
                                 const QVector<Qt3DRender::QAttribute *> attributes = renderer->geometry()->attributes();
                                 bool hasTangentAttribute = std::find_if(attributes.cbegin(),
@@ -1062,45 +1056,50 @@ void GLTF2Parser::generateTreeNodeContent()
                         };
 
                         const qint32 materialId = primitiveData.materialIdx;
-                        QString materialName;
+                        Material mat;
+                        // Check if the mesh references a material and fetch it
+                        // If it doesnt reference a valid material, create a default shader data
                         if (materialId >= 0 && materialId < m_context->materialsCount()) {
-                            Material &mat = m_context->material(materialId);
-                            // Get or create Qt3D for material
-                            material = mat.material(isSkinned, primitiveData.hasColorAttr, m_context);
-                            materialName = mat.name;
-                            setBrdfLutOnEffect(material);
+                            mat = m_context->material(materialId);
                         } else {
-                            // Only create defaultMaterial if we know we need it
-                            // otherwise we might leak it
-                            if (isSkinned) {
-                                if (!defaultSkinnedMaterial) {
-                                    MetallicRoughnessMaterial *material = new MetallicRoughnessMaterial;
-                                    material->setUseSkinning(true);
-                                    setBrdfLutOnEffect(material);
-                                    defaultSkinnedMaterial = material;
-                                }
-                                materialName = QStringLiteral("defaultSkinnedMaterial");
-                                material = defaultSkinnedMaterial;
-                            } else {
-                                if (!defaultMaterial) {
-                                    MetallicRoughnessMaterial *material = new MetallicRoughnessMaterial;
-                                    material->setUseSkinning(false);
-                                    setBrdfLutOnEffect(material);
-                                    defaultMaterial = material;
-                                }
-                                materialName = QStringLiteral("defaultNonSkinnedMaterial");
-                                material = defaultMaterial;
-                            }
+                            mat.materialProperties(*m_context);
                         }
+                        auto effectProperties = Material::effectPropertiesFromMaterial(mat);
+                        if (isSkinned)
+                            effectProperties |= EffectProperty::Skinning;
+                        if (primitiveData.hasColorAttr)
+                            effectProperties |= EffectProperty::VertexColor;
+                        auto *effect = m_context->effectLibrary()->getOrCreateEffect(effectProperties,
+                                                                                     m_contentRootEntity);
 
+                        Kuesa::GLTF2Material *material = nullptr;
+                        auto materialName = mat.name;
+
+                        if (mat.extensions.KHR_materials_unlit) {
+                            auto *specificMaterial = new Kuesa::UnlitMaterial;
+                            material = specificMaterial;
+                            auto materialProperties = static_cast<Kuesa::UnlitProperties *>(mat.materialProperties());
+                            materialProperties->setParent(m_contentRootEntity);
+
+                            specificMaterial->setUnlitProperties(materialProperties);
+                        } else {
+                            auto *specificMaterial = new MetallicRoughnessMaterial;
+                            material = specificMaterial;
+                            auto materialProperties = static_cast<MetallicRoughnessProperties *>(mat.materialProperties());
+                            materialProperties->setParent(m_contentRootEntity);
+                            specificMaterial->setMetallicRoughnessProperties(materialProperties);
+
+                            checkMaterialIsCompatibleWithPrimitive(specificMaterial, primitiveData.primitiveRenderer,
+                                                                   meshData.name, materialName);
+                        }
+                        // TODO assign brdfLut on effect creation on the library
+                        material->setEffect(effect);
+                        setBrdfLutOnEffect(material);
                         if (hasMorphTargets)
                             material->setMorphController(morphController);
 
-                        checkMaterialIsCompatibleWithPrimitive(material, primitiveData.primitiveRenderer,
-                                                               meshData.name, materialName);
                         primitiveEntity->addComponent(material);
                     }
-
                     // Add armature if it is not null
                     if (armature != nullptr) {
                         primitiveEntity->addComponent(armature);

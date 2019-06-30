@@ -37,38 +37,30 @@ QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
+class UnlitProperties;
+
 class KUESASHARED_EXPORT UnlitMaterial : public GLTF2Material
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool baseColorUsesTexCoord1 READ isBaseColorUsingTexCoord1 WRITE setBaseColorUsesTexCoord1 NOTIFY baseColorUsesTexCoord1Changed)
-    Q_PROPERTY(QColor baseColorFactor READ baseColorFactor WRITE setBaseColorFactor NOTIFY baseColorFactorChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture *baseColorMap READ baseColorMap WRITE setBaseColorMap NOTIFY baseColorMapChanged)
+    Q_PROPERTY(UnlitProperties *unlitProperties READ unlitProperties WRITE setUnlitProperties NOTIFY unlitPropertiesChanged)
 
 public:
     explicit UnlitMaterial(Qt3DCore::QNode *parent = nullptr);
     ~UnlitMaterial();
 
-    QColor baseColorFactor() const;
-    Qt3DRender::QAbstractTexture *baseColorMap() const;
-    bool isBaseColorUsingTexCoord1() const;
-
-    void setBaseColorFactor(const QColor &baseColorFactor);
-    void setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap);
-    void setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1);
+    UnlitProperties *unlitProperties() const;
+    void setUnlitProperties(UnlitProperties *unlitProperties);
 
 Q_SIGNALS:
-    void baseColorFactorChanged(const QColor &baseColorFactor);
-    void baseColorMapChanged(Qt3DRender::QAbstractTexture *baseColorMap);
-    void baseColorUsesTexCoord1Changed(bool);
+    void unlitPropertiesChanged(UnlitProperties *properties);
 
 private:
-    void updateEffect();
-
     UnlitEffect *m_effect;
-    Qt3DRender::QParameter *m_baseColorFactorParameter;
-    Qt3DRender::QParameter *m_baseColorMapParameter;
-    Qt3DRender::QParameter *m_baseColorUsesTexCoord1;
+
+    UnlitProperties *m_unlitProperties;
+    Qt3DRender::QParameter *m_unlitShaderDataParameter;
+    QMetaObject::Connection m_textureTransformChangedConnection;
 };
 
 } // namespace Kuesa

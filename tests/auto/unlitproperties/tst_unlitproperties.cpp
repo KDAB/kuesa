@@ -1,5 +1,5 @@
 /*
-    tst_gltf2material.cpp
+    tst_unlitmaterial.cpp
 
     This file is part of Kuesa.
 
@@ -30,7 +30,7 @@
 
 #include <Qt3DRender/QTexture>
 #include <Qt3DRender/QParameter>
-#include <Kuesa/unlitmaterial.h>
+#include <Kuesa/unlitproperties.h>
 
 using namespace Kuesa;
 
@@ -39,7 +39,7 @@ template<typename PropSetter,
          typename PropGetter,
          typename PropSignal,
          typename PropType>
-void testProperty(Kuesa::UnlitMaterial *mat,
+void testProperty(Kuesa::UnlitProperties *mat,
                   PropSetter setter,
                   PropGetter getter,
                   PropSignal signal,
@@ -77,16 +77,21 @@ bool testActiveParametersAreValid(const QVector<Qt3DRender::QParameter *> &activ
 }
 } // namespace
 
-class tst_UnlitMaterial : public QObject
+class tst_UnlitProperties : public QObject
 {
     Q_OBJECT
 
 private Q_SLOTS:
 
+    void initTestCase()
+    {
+        qRegisterMetaType<Qt3DRender::QAbstractTexture *>();
+    }
+
     void checkDefaultState()
     {
         // GIVEN
-        UnlitMaterial mat;
+        UnlitProperties mat;
 
         // THEN
         QCOMPARE(mat.isBaseColorUsingTexCoord1(), false);
@@ -94,59 +99,48 @@ private Q_SLOTS:
         QCOMPARE(mat.baseColorMap(), nullptr);
     }
 
-    void checkParametersAreAdded()
-    {
-        // GIVEN
-       UnlitMaterial mat;
-
-        QVERIFY(::testActiveParametersAreValid(mat.parameters()));
-
-        mat.setBaseColorMap(new Qt3DRender::QTexture2D{});
-        QVERIFY(::testActiveParametersAreValid(mat.parameters()));
-    }
-
     void checkBaseColorUsesTexCoord1()
     {
         // GIVEN
-        UnlitMaterial mat;
+        UnlitProperties mat;
 
         // THEN
         ::testProperty(&mat,
-                       &UnlitMaterial::setBaseColorUsesTexCoord1,
-                       &UnlitMaterial::isBaseColorUsingTexCoord1,
-                       &UnlitMaterial::baseColorUsesTexCoord1Changed,
+                       &UnlitProperties::setBaseColorUsesTexCoord1,
+                       &UnlitProperties::isBaseColorUsingTexCoord1,
+                       &UnlitProperties::baseColorUsesTexCoord1Changed,
                        false, true);
     }
 
     void checkBaseColorFactor()
     {
         // GIVEN
-        UnlitMaterial mat;
+        UnlitProperties mat;
 
         // THEN
         ::testProperty(&mat,
-                       &UnlitMaterial::setBaseColorFactor,
-                       &UnlitMaterial::baseColorFactor,
-                       &UnlitMaterial::baseColorFactorChanged,
+                       &UnlitProperties::setBaseColorFactor,
+                       &UnlitProperties::baseColorFactor,
+                       &UnlitProperties::baseColorFactorChanged,
                        QColor("gray"), QColor("red"));
     }
 
     void checkBaseColorMap()
     {
         // GIVEN
-        UnlitMaterial mat;
+        UnlitProperties mat;
 
         // THEN
         ::testProperty(&mat,
-                       &UnlitMaterial::setBaseColorMap,
-                       &UnlitMaterial::baseColorMap,
-                       &UnlitMaterial::baseColorMapChanged,
+                       &UnlitProperties::setBaseColorMap,
+                       &UnlitProperties::baseColorMap,
+                       &UnlitProperties::baseColorMapChanged,
                        static_cast<Qt3DRender::QAbstractTexture *>(nullptr),
                        static_cast<Qt3DRender::QAbstractTexture *>(new Qt3DRender::QTexture2D()));
     }
 
 };
 
-QTEST_APPLESS_MAIN(tst_UnlitMaterial)
+QTEST_APPLESS_MAIN(tst_UnlitProperties)
 
-#include "tst_unlitmaterial.moc"
+#include "tst_unlitproperties.moc"

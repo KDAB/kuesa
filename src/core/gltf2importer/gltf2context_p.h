@@ -67,6 +67,7 @@ class QLayer;
 namespace Kuesa {
 
 class GLTF2Importer;
+class EffectsLibrary;
 
 namespace GLTF2Import {
 
@@ -179,6 +180,10 @@ public:
 
     static GLTF2Context *fromImporter(GLTF2Importer *importer);
 
+    EffectsLibrary *effectLibrary() const;
+
+
+
 private:
     QVector<Accessor> m_accessors;
     QVector<QByteArray> m_buffers;
@@ -205,6 +210,7 @@ private:
 
     Kuesa::GLTF2Import::GLTF2Options m_options;
     qint32 m_defaultScene;
+    QScopedPointer<EffectsLibrary> m_effectLibrary;
 };
 
 template<>

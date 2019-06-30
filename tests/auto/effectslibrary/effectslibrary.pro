@@ -1,9 +1,9 @@
-# metallicroughnessmaterial.pro
+# tst_effectslibrary.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Juan Casafranca  <juan.casafranca@kdab.com>
+# Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,12 +26,14 @@
 
 TEMPLATE = app
 
-TARGET = tst_metallicroughnessmaterial
+TARGET = tst_effectslibrary
 
 QT += testlib kuesa kuesa-private
 
 CONFIG += testcase
 
-SOURCES += tst_metallicroughnessmaterial.cpp
+SOURCES += tst_effectslibrary.cpp
 
 include(../assets/assets.pri)
+
+

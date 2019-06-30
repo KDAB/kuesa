@@ -37,7 +37,7 @@
 #include <Kuesa/private/gltf2uri_p.h>
 #include <Qt3DCore/QEntity>
 #include <Qt3DCore/QComponent>
-#include <Kuesa/MetallicRoughnessMaterial>
+#include <Kuesa/MetallicRoughnessProperties>
 #include <Qt3DCore/QSkeleton>
 #include <Qt3DCore/QJoint>
 #include <Qt3DRender/QCameraLens>
@@ -650,9 +650,8 @@ private Q_SLOTS:
         QCOMPARE(scene.textures()->names().size(), 2);
         QCOMPARE(scene.materials()->names().size(), 1);
 
-        Kuesa::MetallicRoughnessMaterial *mat = static_cast<decltype(mat)>(scene.material(QStringLiteral("Material")));
+        Kuesa::MetallicRoughnessProperties *mat = static_cast<decltype(mat)>(scene.material(QStringLiteral("Material")));
         QVERIFY(mat != nullptr);
-        QCOMPARE(mat->isDoubleSided(), false);
         QCOMPARE(mat->metallicFactor(), 0.0f);
         QCOMPARE(mat->roughnessFactor(), 1.0f);
         QCOMPARE(mat->emissiveFactor(), QColor::fromRgbF(0.0, 0.0, 0.0));
