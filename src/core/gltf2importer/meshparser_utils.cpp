@@ -604,8 +604,12 @@ bool needsTangentAttribute(const Qt3DRender::QGeometry *geometry,
     if (!geometry)
         return false;
 
-    return attributeFromGeometry(Qt3DRender::QAttribute::defaultTangentAttributeName(),
-                                 geometry) == nullptr;
+    const auto positionAttr = attributeFromGeometry(Qt3DRender::QAttribute::defaultPositionAttributeName(), geometry);
+    const auto normalAttr = attributeFromGeometry(Qt3DRender::QAttribute::defaultNormalAttributeName(), geometry);
+    const auto uvAttr = attributeFromGeometry(Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName(), geometry);
+    const auto tangentAttr = attributeFromGeometry(Qt3DRender::QAttribute::defaultTangentAttributeName(), geometry);
+
+    return positionAttr && normalAttr && uvAttr && (tangentAttr == nullptr);
 }
 
 bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,

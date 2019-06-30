@@ -54,6 +54,24 @@ private Q_SLOTS:
                                                                     Qt3DRender::QGeometryRenderer::Triangles);
 
         // THEN
+        QCOMPARE(needsTangents, false);
+
+        // GIVEN
+        Qt3DRender::QAttribute *posAttr = new Qt3DRender::QAttribute();
+        posAttr->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+        Qt3DRender::QAttribute *normalAttr = new Qt3DRender::QAttribute();
+        normalAttr->setName(Qt3DRender::QAttribute::defaultNormalAttributeName());
+        Qt3DRender::QAttribute *uvAttr = new Qt3DRender::QAttribute();
+        uvAttr->setName(Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName());
+        geo->addAttribute(posAttr);
+        geo->addAttribute(normalAttr);
+        geo->addAttribute(uvAttr);
+
+        // WHEN
+        needsTangents = MeshParserUtils::needsTangentAttribute(geo.data(),
+                                                               Qt3DRender::QGeometryRenderer::Triangles);
+
+        // THEN
         QCOMPARE(needsTangents, true);
 
         // WHEN
