@@ -70,7 +70,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \class Kuesa::MetallicRoughnessMaterial
     \inheaderfile Kuesa/MetallicRoughnessMaterial
     \inmodule Kuesa
-    \since 1.0
+    \since Kuesa 1.0
 
     \brief Kuesa::MetallicRoughnessMaterial is a ready to use physically based
     rendering (PBR) material based on the glTF 2.0 material description.
@@ -345,7 +345,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     \qmltype MetallicRoughnessMaterial
     \instantiates Kuesa::MetallicRoughnessMaterial
     \inqmlmodule Kuesa
-    \since 1.0
+    \since Kuesa 1.0
 
     \brief Kuesa.MetallicRoughnessMaterial is a ready to use physically based
     rendering (PBR) material based on the glTF 2.0 material description.
@@ -551,7 +551,7 @@ WrappedSignal<OutputType> wrapParameterSignal(MetallicRoughnessMaterial *self, S
     dynamic range) content to LDR (low dynamic range) content which our monitor
     displays.
 
-    \since 1.1
+    \since Kuesa 1.1
  */
 
 MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)

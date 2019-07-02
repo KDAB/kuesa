@@ -36,7 +36,7 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/TextureCollection
  * \brief A collection of assets of type Qt3DRender::QAbstractTexture.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::TextureCollection manages a set of Qt3DRender::QAbstractTexture

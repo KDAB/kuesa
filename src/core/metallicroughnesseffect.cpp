@@ -190,7 +190,7 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
     \class Kuesa::MetallicRoughnessEffect
     \inheaderfile Kuesa/MetallicRoughnessEffect
     \inmodule Kuesa
-    \since 1.0
+    \since Kuesa 1.0
 
     \brief Kuesa::MetallicRoughnessEffect is a Qt3DRender::QEffect for
     Kuesa::MetallicRoughnessMaterial. It provides several properties used to
@@ -278,7 +278,7 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
     dynamic range) content to LDR (low dynamic range) content which our monitor
     displays.
 
-    \since 1.1
+    \since Kuesa 1.1
  */
 
 /*!
@@ -291,14 +291,14 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
     a texture to this property of the effect. A shared instance can be retrieved from
     the Kuesa::TextureCollection using the name "_kuesa_brdfLUT"
 
-    \since 1.1
+    \since Kuesa 1.1
  */
 
 /*!
     \qmltype MetallicRoughnessEffect
     \instantiates Kuesa::MetallicRoughnessEffect
     \inqmlmodule Kuesa
-    \since 1.0
+    \since Kuesa 1.0
 
     \brief Kuesa.MetallicRoughnessEffect is a Qt3D.Render.Effect for
     Kuesa.MetallicRoughnessMaterial.
@@ -388,7 +388,7 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
     dynamic range) content to LDR (low dynamic range) content which our monitor
     displays.
 
-    \since 1.1
+    \since Kuesa 1.1
  */
 
 /*!
@@ -401,7 +401,7 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
     a texture to this property of the effect. A shared instance can be retrieved from
     the Kuesa::TextureCollection using the name "_kuesa_brdfLUT"
 
-    \since 1.1
+    \since Kuesa 1.1
  */
 
 namespace {
@@ -534,7 +534,7 @@ bool MetallicRoughnessEffect::isAlphaCutoffEnabled() const
 
 /*!
     Returns the tone mapping algorithm used by the shader.
-    \since 1.1
+    \since Kuesa 1.1
  */
 MetallicRoughnessEffect::ToneMapping MetallicRoughnessEffect::toneMappingAlgorithm() const
 {
@@ -743,7 +743,7 @@ void MetallicRoughnessEffect::setAlphaCutoffEnabled(bool enabled)
 
 /*!
     Sets the tone mapping algorithm to \a algorithm,
-    \since 1.1
+    \since Kuesa 1.1
 */
 void MetallicRoughnessEffect::setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm)
 {

@@ -80,7 +80,7 @@ private:
     \class Kuesa::UnlitEffect
     \inheaderfile Kuesa/UnlitEffect
     \inmodule Kuesa
-    \since 1.1
+    \since Kuesa 1.1
 
     \brief Kuesa::UnlitEffect is a Qt3DRender::QEffect for
     Kuesa::UnlitMaterial. It provides several properties used to configure the
@@ -97,7 +97,7 @@ private:
     \qmltype UnlitEffect
     \instantiates Kuesa::UnlitEffect
     \inqmlmodule Kuesa
-    \since 1.1
+    \since Kuesa 1.1
 
     \brief Kuesa.UnlitEffect is a Qt3D.Render.Effect for
     Kuesa.UnlitMaterial.

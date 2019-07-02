@@ -36,7 +36,7 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/AnimationMappingCollection
  * \brief A collection of assets of type Qt3DAnimation::QChannelMapper.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::AnimationMappingCllection manages a set of

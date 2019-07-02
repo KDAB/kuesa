@@ -38,7 +38,7 @@ namespace Kuesa {
     \inheaderfile Kuesa/MorphController
     \inherits Qt3DRender::QShaderData
     \inmodule Kuesa
-    \since 1.1
+    \since Kuesa 1.1
 
     \brief Kuesa::MorphController allows to control the morph target weights of
     an entity. Though the glTF 2.0 specifications do not impose a limit on the
@@ -116,7 +116,7 @@ namespace Kuesa {
     \instantiates Kuesa::MorphController
     \inqmlmodule Kuesa
     \inherits Qt3DRender::QShaderData
-    \since 1.1
+    \since Kuesa 1.1
 
     \brief Kuesa::MorphController allows to control the morph target weights of
     an entity. Though the glTF 2.0 specifications do not impose a limit on the

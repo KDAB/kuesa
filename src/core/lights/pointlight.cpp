@@ -36,7 +36,7 @@ namespace Kuesa {
 /*!
   \class Kuesa::PointLight
   \inmodule Kuesa
-  \since 1.1
+  \since Kuesa 1.1
     \brief Encapsulate a Point Light object in a Qt 3D scene.
 
  */
@@ -46,7 +46,7 @@ namespace Kuesa {
     \instantiates Kuesa::PointLight
     \inherits AbstractLight
     \inqmlmodule Kuesa
-    \since 1.1
+    \since Kuesa 1.1
     \brief Encapsulate a Point Light object in a Qt 3D scene.
 */
 

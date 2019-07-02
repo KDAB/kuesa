@@ -37,7 +37,7 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/LightCollection
  * \brief A collection of assets of type Qt3DRender::QAbstractLight.
  * \inmodule Kuesa
- * \since 1.1
+ * \since Kuesa 1.1
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::LightCollection manages a set of Qt3DRender::QCamera assets.

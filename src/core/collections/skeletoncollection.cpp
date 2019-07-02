@@ -36,7 +36,7 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/SkeletonCollection
  * \brief A collection of assets of type Qt3DCore::QAbstractSkeleton.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::SkeletonCollection manages a set of Qt3DCore::QAbstractSkeleton

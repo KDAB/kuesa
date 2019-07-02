@@ -36,7 +36,7 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/ArmatureCollection
  * \brief A collection of assets of type Qt3DCore::QArmature.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::ArmatureCollection manages a set of Qt3DCore::QArmature assets.

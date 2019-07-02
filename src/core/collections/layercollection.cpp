@@ -36,7 +36,7 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/LayerCollection
  * \brief A collection of assets of type Qt3DRender::QLayer.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::LayerCollection manages a set of Qt3DRender::QLayer assets.

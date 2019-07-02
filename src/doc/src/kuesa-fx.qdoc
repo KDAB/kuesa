@@ -1,0 +1,112 @@
+/*
+    kuesa-fx.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \page kuesa-fx.html
+    \title Kuesa post-processing effects
+
+    \brief Kuesa provides a set of built-in post-processing effects, which are applied
+    after rendering by the default Kuesa renderer, \l [CPP]{Kuesa::ForwardRenderer} {ForwardRenderer}.
+
+    It is possible to use them from both C++ and QML, as well as implement custom additional post-processing
+    effects in C++.
+
+    \section1 Using post-processing effects
+
+    Effects are provided by the following import:
+    \qml
+import Kuesa.Effects 1.1
+    \endqml
+    They can be added to postProcessingEffects in Kuesa.ForwardRenderer.
+    For example, the following example first applies a threshold effect to the scene,
+    followed by a bloom.
+    \qml
+Kuesa.ForwardRenderer {
+    postProcessingEffects: [ thresholdFx, bloomFx ]
+}
+BloomEffect { id: bloom }
+ThresholdEffect { id: threshold }
+    \endqml
+
+    \section1 Effect gallery
+
+    \l [CPP]{Kuesa::DepthOfFieldEffect} {Depth Of Field}
+
+    \image fx/dof/dof_range_2.png
+
+    \l [CPP]{Kuesa::OpacityMask} {Opacity Masking}
+
+    \image fx/opacitymask/noalpha.png
+
+    \l [CPP]{Kuesa::ThresholdEffect} {Thresholding}
+
+    \image fx/threshold/t35.png
+
+    \l [CPP]{Kuesa::GaussianBlurEffect} {Gaussian Blur}
+
+    \image fx/blur/blur.png
+
+    \l [CPP]{Kuesa::BloomEffect} {Bloom}
+
+    \image fx/bloom/bloom.png
+
+    \section1 Implementing a custom effect.
+    To introduce a new effect, it is possible to inherit from
+    \l [CPP]{Kuesa::AbstractPostProcessingEffect}.
+    The core idea will be to provide a set of frame graph nodes, and a layer,
+    which implement the effect.
+
+    Both color and depth textures are available to implement effects.
+
+    In order to simplify effect implementation, the \l [CPP]{Kuesa::FullScreenQuad} utility
+    class is provided. It renders a given material in a plane mesh.
+
+    A typical simple effect which applies a fragment shader to the output will need :
+
+    \list
+    \li A \l [CPP]{Qt3DRender::QFrameGraphNode} {root framegraph node}.
+    \li A \l [CPP]{Qt3DRender::QMaterial} {material} to store the shader.
+    \li An \l [CPP]{Qt3DRender::QEffect} {effect} to register the techniques - one per graphics API supported by the effect.
+        To indicate that the technique is to be used by the Kuesa forward renderer, it is necessary
+        to add a \l [CPP]{Qt3DRender::QFilterKey} {filter key} to your techniques to match \c{renderingStyle == forward}.
+    \li A \l [CPP]{Qt3DRender::QRenderPass} {render pass} with an associated shader program.
+        Note that a default passthrough vertex shader is provided by Kuesa :
+           \list
+               \li \c qrc:/kuesa/shaders/gl3/passthrough.vert
+               \li \c qrc:/kuesa/shaders/es2/passthrough.vert
+               \li \c qrc:/kuesa/shaders/es3/passthrough.vert
+           \endlist
+       The render pass can be filtered by a \l [CPP]{Qt3DRender::QRenderPassFilter}.
+    \li A quad on which the effect will be rendered, which can be provided by the \l [CPP]{Kuesa::FullScreenQuad} convenience class.
+    \endlist
+
+    The implementation of the \l [CPP]{Kuesa::ThresholdEffect} {thresholding effect} can give a good starting point
+    to create simple post-processing effects.
+    The implementation of the \l [CPP]{Kuesa::GaussianBlurEffect} {Gaussian blur effect} can give a good starting point
+    to create multi-pass post-processing effects.
+*/

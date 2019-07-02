@@ -72,46 +72,77 @@ QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 
 /*!
- * \class Kuesa::DepthOfFieldEffect
- * \inheaderfile Kuesa/DepthOfFieldEffect
- * \inmodule Kuesa
- * \since 1.1
- * \brief Post-processing effect implementation of a depth of field.
- *
- * DepthOfFieldEffect implements an effect which simulates a more realistic
- * camera behaviour, where only part of the scene is in-focus, and very far &
- * very close objects are out-of-focus and thus blurred.
- */
+ \class Kuesa::DepthOfFieldEffect
+ \inheaderfile Kuesa/DepthOfFieldEffect
+ \inmodule Kuesa
+ \since Kuesa 1.1
+ \brief Post-processing effect implementation of a depth of field.
 
-/*!
-    \property DepthOfFieldEffect::focusRange
+ DepthOfFieldEffect implements an effect which simulates a more realistic
+ camera behaviour, where only part of the scene is in-focus, and very far &
+ very close objects are out-of-focus and thus blurred.
 
-    \brief adjusts the breadth of the area which will be in focus.
-
-    This adjusts the size of the part of the scene which will be in focus.
-    At 0.0, everything will be blurred. The bigger the value, the more of the
-    scene will be in focus, centered on the focusDistance.
-
-    \sa BloomEffect::focusDistance
+ \section3 Example
+ \image fx/dof/dof_distance_5.png
+ \caption Depth-of-field effect applied on a Kuesa scene.
 */
 
 /*!
-    \property DepthOfFieldEffect::focusDistance
+ \property DepthOfFieldEffect::focusRange
 
-    \brief adjusts the focal distance.
+ \brief adjusts the breadth of the area which will be in focus.
 
-    This adjusts the focal distance, that is, the objects at this distance from
-    the camera will be focused; those too close or too far away will be blurred.
+ This adjusts the size of the part of the scene which will be in focus.
+ At 0.0, everything will be blurred. The bigger the value, the more of the
+ scene will be in focus, centered on the focusDistance.
 
-    \sa BloomEffect::focusRange
+ \table
+ \header
+     \li Range 2.0
+     \li Range 8.0
+ \row
+     \li \inlineimage fx/dof/dof_range_2.png
+     \li \inlineimage fx/dof/dof_range_8.png
+ \endtable
+
+ \sa BloomEffect::focusDistance
 */
 
 /*!
-    \property DepthOfFieldEffect::radius
+ \property DepthOfFieldEffect::focusDistance
 
-    \brief adjusts the radius of the depth of field effect.
+ \brief adjusts the focal distance.
 
-    The bigger the radius is, the more the out-of-focus objects will appear to be blurred.
+ This adjusts the focal distance, that is, the objects at this distance from
+ the camera will be focused; those too close or too far away will be blurred.
+
+ \table
+ \header
+     \li Distance 5.0
+     \li Distance 8.0
+ \row
+     \li \inlineimage fx/dof/dof_distance_5.png
+     \li \inlineimage fx/dof/dof_distance_8.png
+ \endtable
+
+ \sa BloomEffect::focusRange
+*/
+
+/*!
+ \property DepthOfFieldEffect::radius
+
+ \brief adjusts the radius of the depth of field effect.
+
+ The bigger the radius is, the more the out-of-focus objects will appear to be blurred.
+
+ \table
+ \header
+     \li Radius 4.0
+     \li Radius 42.0
+ \row
+     \li \inlineimage fx/dof/dof_radius_4.png
+     \li \inlineimage fx/dof/dof_radius_42.png
+ \endtable
 */
 
 DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)

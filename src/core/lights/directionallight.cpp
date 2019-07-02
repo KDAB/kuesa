@@ -38,7 +38,7 @@ namespace Kuesa {
 /*!
   \class Kuesa::DirectionalLight
   \inmodule Kuesa
-  \since 1.1
+  \since Kuesa 1.1
   \brief Encapsulate a Directional Light object in a Qt 3D scene.
 
  */
@@ -48,7 +48,7 @@ namespace Kuesa {
     \instantiates Kuesa::DirectionalLight
     \inherits AbstractLight
     \inqmlmodule Kuesa
-    \since 1.1
+    \since Kuesa 1.1
     \brief Encapsulate a Directional Light object in a Qt 3D scene.
 
 */

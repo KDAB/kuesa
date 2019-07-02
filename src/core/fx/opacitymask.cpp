@@ -66,12 +66,16 @@ namespace Kuesa {
     vec4 pixelColor = vec4(inputColor.rgb, inputColor.a * maskColor.a)
     \endcode
 
+    \image fx/opacitymask/noalpha.png
+
     A premultiplied alpha variant of the algorithm is also available which can
     be of use when combining Qt 3D / Kuesa content with 2D QtQuick content. It
     performs rendering doing:
     \badcode
     vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
     \endcode
+
+    \image fx/opacitymask/alpha.png
  */
 
 /*!
@@ -87,12 +91,16 @@ namespace Kuesa {
     vec4 pixelColor = vec4(inputColor.rgb, inputColor.a * maskColor.a)
     \endcode
 
+    \image fx/opacitymask/noalpha.png
+
     A premultiplied alpha variant of the algorithm is also available which can
     be of use when combining Qt 3D / Kuesa content with 2D QtQuick content. It
     performs rendering doing:
     \badcode
     vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
     \endcode
+
+    \image fx/opacitymask/alpha.png
  */
 
 /*!

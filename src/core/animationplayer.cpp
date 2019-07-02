@@ -44,7 +44,7 @@ using namespace Qt3DAnimation;
  * \class Kuesa::AnimationPlayer
  * \inheaderfile Kuesa/AnimationPlayer
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \brief Play animations defined in glTF files.
  *
  * AnimationPlayer is a utility class designed to easily control animations
@@ -67,7 +67,7 @@ using namespace Qt3DAnimation;
     \qmltype AnimationPlayer
     \inherits Kuesa::AnimationPlayer
     \inqmlmodule Kuesa
-    \since 1.0
+    \since Kuesa 1.0
     \instantiates Kuesa::AnimationPlayer
     \brief Play animations defined in glTF files.
 

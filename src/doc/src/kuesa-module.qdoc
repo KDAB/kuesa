@@ -31,7 +31,7 @@
     \title Kuesa C++ Classes
     \brief The Kuesa module provices a set of helpers on top of Qt 3Dr to ease
     the Artist to Developer transition.
-    \since 1.0
+    \since Kuesa 1.0
 
     The Kuesa module provices a set of helpers on top of Qt 3Dr to ease the
     Artist to Developer transition.
@@ -47,7 +47,7 @@
    \page kuesa-qml.html
    \title Kuesa QML Types
    \brief QML Types for the Kuesa module.
-   \since 1.0
+   \since Kuesa 1.0
 
    The Kuesa QML types are imported with
 

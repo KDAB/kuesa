@@ -36,10 +36,38 @@ namespace Kuesa {
  * \class Kuesa::AbstractPostProcessingEffect
  * \inheaderfile Kuesa/AbstractPostProcessingEffect
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  *
  * \brief AbstractPostProcessingEffect is the abstract base class for Kuesa
  * post processing effects.
+ */
+
+/*!
+ * \fn FrameGraphNodePtr Kuesa::AbstractPostProcessingEffect::frameGraphSubTree() const
+ *
+ * Returns a FrameGraph subtree corresponding to the effect's implementation.
+ *
+ * \note The lifetime of the returned subtree is assumed to be managed by the shared
+ * pointer. Any caller reparenting the subtree to add to a \l QFrameGraph will need to
+ * unparent it to avoid it being deleted twice.
+ */
+
+/*!
+ * \fn void Kuesa::AbstractPostProcessingEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
+ *
+ * Sets the input texture for this effect.  The texture contain the rendered scene that
+ * the effect will be applied to. This is set automatically by the ForwardRenderer when the
+ * effect is added.
+ */
+
+/*!
+ * \fn QVector<Qt3DRender::QLayer *> Kuesa::AbstractPostProcessingEffect::layers() const
+ *
+ * Return the layers provided by this effect. This will generally be the layer of a \l FullScreenQuad
+ * on which the effect is being rendered.
+ *
+ * The behaviour is undefined if this function returns an empty container: there must always
+ * be at least one layer.
  */
 
 AbstractPostProcessingEffect::AbstractPostProcessingEffect(Qt3DCore::QNode *parent,
@@ -52,24 +80,6 @@ AbstractPostProcessingEffect::AbstractPostProcessingEffect(Qt3DCore::QNode *pare
 AbstractPostProcessingEffect::~AbstractPostProcessingEffect()
 {
 }
-
-/*!
- * \fn FrameGraphNodePtr AbstractPostProcessingEffect::frameGraphSubTree() const
- *
- * Returns a FrameGraph subtree corresponding to the effect's implementation.
- *
- * \note The lifetime of the returned subtree is assumed to be managed by the shared
- * pointer. Any caller reparenting the subtree to add to a QFrameGraph will need to
- * unparent it to avoid it being deleted twice.
- */
-
-/*!
- * \fn void AbstractPostProcessingEffect::setInputTexture(Qt3DRender::QAbstractTexture *)
- *
- * Sets the input texture for this effect.  The texture contain the rendered scene that
- * the effect will be applied to. This is set automatically by the ForwardRenderer when the
- * effect is added.
- */
 
 /*!
  * Returns the post processing effect's type.

@@ -36,7 +36,7 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/MeshCollection
  * \brief A collection of assets of type Qt3DRender::QGeometryRenderer.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::MeshCollection manages a set of Qt3DRender::QGeometryRenderer assets.

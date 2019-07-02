@@ -42,7 +42,7 @@ namespace Kuesa {
  * \class Kuesa::FullScreenQuad
  * \inheaderfile Kuesa/FullScreenQuad
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \brief FullScreenQuad is a convenience Qt3DCore::QEntity subclass
  * use to create a full screen quad.
  *

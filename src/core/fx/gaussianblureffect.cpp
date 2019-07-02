@@ -54,12 +54,19 @@ using namespace Kuesa;
  * \class Kuesa::GaussianBlurEffect
  * \inheaderfile Kuesa/GaussianBlurEffect
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \brief Post-processing effect for blurring the scene
  *
  * GaussianBlurEffect is a post-processing effect that applies a
  * Gaussian blur to the scene. The amount of blurring can be adjusted
  * using the blurPassCount property.
+ *
+ * \section3 Example
+ * \image fx/blur/blur.png
+ * \caption Blur effect applied on a Kuesa scene.
+ *
+ * \note Increasing the number of passes too high may adversely impact
+ * rendering performance, especially on lower-end GPUs.
  */
 
 /*!

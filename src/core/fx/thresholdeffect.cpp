@@ -52,7 +52,7 @@ using namespace Kuesa;
  * \class Kuesa::ThresholdEffect
  * \inheaderfile Kuesa/ThresholdEffect
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \brief Post-processing effect showing only pixels brighter than a specified value
  *
  * ThresholdEffect is a post-processing effect that passes through any pixel
@@ -66,6 +66,16 @@ using namespace Kuesa;
 
     This value is used to determine how bright a pixel needs to be to pass
     the threshold.
+
+ \table
+ \header
+     \li Threshold 0.12
+     \li Threshold 0.35
+ \row
+     \li \inlineimage fx/threshold/t12.png
+     \li \inlineimage fx/threshold/t35.png
+ \endtable
+
 */
 
 /*!
@@ -75,6 +85,16 @@ using namespace Kuesa;
 
     This value is used to determine how bright a pixel needs to be to pass
     the threshold.
+
+ \table
+ \header
+     \li Threshold 0.12
+     \li Threshold 0.35
+ \row
+     \li \inlineimage fx/threshold/t12.png
+     \li \inlineimage fx/threshold/t35.png
+ \endtable
+
 */
 
 ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)

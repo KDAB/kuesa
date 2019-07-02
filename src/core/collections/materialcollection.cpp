@@ -36,7 +36,7 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/MaterialCollection
  * \brief A collection of assets of type Qt3DRender::QMaterial.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::MaterialCollection manages a set of Qt3DRender::QMaterial assets.

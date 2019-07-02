@@ -36,7 +36,7 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/AnimationClipCollection
  * \brief A collection of assets of type Qt3DAnimation::QAbstractAnimationClip.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::AnimationClipCollection manages a set of animation clips assets. This

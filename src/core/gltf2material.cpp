@@ -65,7 +65,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
     \class Kuesa::GLTF2Material
     \inheaderfile Kuesa/GLTF2Material
     \inmodule Kuesa
-    \since 1.1
+    \since Kuesa 1.1
     \brief Kuesa.GLTF2Material is a subclass of Qt3DRender::QMaterial which is the base class
     of all GLTF2 based material subclasses
 
@@ -159,14 +159,14 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
     The morph controller instance used to control morph targets weights.
     This can be null if a material is not used with morph targets.
 
-    \since 1.1
+    \since Kuesa 1.1
 */
 
 /*!
     \qmltype GLTF2Material
     \instantiates Kuesa::GLTF2Material
     \inqmlmodule Kuesa
-    \since 1.1
+    \since Kuesa 1.1
 
     Kuesa.GLTF2Material is a subclass of Qt3DRender::QMaterial which is the base class
     of all GLTF2 based material subclasses
@@ -263,7 +263,7 @@ WrappedSignal<OutputType> wrapParameterSignal(GLTF2Material *self, SignalType<Ou
     The morph controller instance used to control morph targets weights.
     This can be null if a material is not used with morph targets.
 
-    \since 1.1
+    \since Kuesa 1.1
 */
 
 GLTF2Material::GLTF2Material(Qt3DCore::QNode *parent)

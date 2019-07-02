@@ -56,7 +56,7 @@ using namespace Kuesa;
  * \class Kuesa::BloomEffect
  * \inheaderfile Kuesa/BloomEffect
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \brief Post-processing effect for blurring the bright parts of a scene
  *
  * BloomEffect is a post-processing effect that applies a blur to the brightest

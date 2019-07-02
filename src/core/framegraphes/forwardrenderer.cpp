@@ -56,7 +56,7 @@ using namespace Kuesa;
  * \class Kuesa::ForwardRenderer
  * \brief Implements a simple forward rendering FrameGraph.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Qt3DRender::QFrameGraphNode
  *
  * This FrameGraph will select all Qt3D Entities that reference a Material with
@@ -116,7 +116,7 @@ using namespace Kuesa;
  * \qmltype ForwardRenderer
  * \brief Implements a simple forward rendering FrameGraph.
  * \inqmlmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \instantiates Kuesa::ForwardRenderer
  *
  * This FrameGraph will select all Qt3D Entities that reference a Material with

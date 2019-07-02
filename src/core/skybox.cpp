@@ -54,7 +54,7 @@ namespace Kuesa {
  * \class Kuesa::Skybox
  * \inheaderfile Kuesa/Skybox
  * \inmodule  Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \brief Kuesa::SkyBox is a convenience Qt3DCore::QEntity subclass used to
  * insert a skybox in a 3D scene. Unlike Qt3DExtras::SkyboxEntity,
  * its implementation is compatible with the Kuesa provided default framegraph.
@@ -88,7 +88,7 @@ namespace Kuesa {
  * \qmltype Skybox
  * \instantiates Kuesa::Skybox
  * \inqmlmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \brief Kuesa.SkyBox is a convenience Qt3D.Core.Entity subclass used to
  * insert a skybox in a 3D scene. Unlike SkyboxEntity from Qt3D.Extras,
  * its implementation is compatible with the Kuesa provided default framegraph.

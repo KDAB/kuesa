@@ -66,7 +66,7 @@ using namespace Kuesa;
  * \class Kuesa::GLTF2Importer
  * \inheaderfile Kuesa/GLTF2Importer
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \brief Imports glTF 2 scenes into a Qt 3D Scene.
  *
  * GLTF2Importer imports glTF 2 scenes into a Qt 3D scene.
@@ -110,7 +110,7 @@ using namespace Kuesa;
  * \qmltype GLTF2Importer
  * \instantiates Kuesa::GLTF2Importer
  * \inqmlmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \brief Imports glTF 2 scenes into a Qt 3D Scene.
  *
  * GLTF2Importer imports glTF 2 scenes into a Qt 3D scene.

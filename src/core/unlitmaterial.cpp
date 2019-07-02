@@ -41,7 +41,7 @@ namespace Kuesa {
     \class Kuesa::UnlitMaterial
     \inheaderfile Kuesa/UnlitMaterial
     \inmodule Kuesa
-    \since 1.1
+    \since Kuesa 1.1
 
     \brief Kuesa::UnlitMaterial is a simple material without shading. It
     implements the KHR_materials_unlit extension from glTF 2.0.
@@ -113,7 +113,7 @@ namespace Kuesa {
     \qmltype UnlitMaterial
     \instantiates Kuesa::UnlitMaterial
     \inqmlmodule Kuesa
-    \since 1.1
+    \since Kuesa 1.1
 
     \brief Kuesa.UnlitMaterial is a simple material without shading. It
     implements the KHR_materials_unlit extension from glTF 2.0.

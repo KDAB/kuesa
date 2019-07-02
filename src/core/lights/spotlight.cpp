@@ -39,7 +39,7 @@ namespace Kuesa {
 /*!
   \class Kuesa::SpotLight
   \inmodule Kuesa
-  \since 1.1
+  \since Kuesa 1.1
   \brief Encapsulate a Spot Light object in a Qt 3D scene.
 
  */
@@ -49,7 +49,7 @@ namespace Kuesa {
     \instantiates Kuesa::SpotLight
     \inherits AbstractLight
     \inqmlmodule Kuesa
-    \since 1.1
+    \since Kuesa 1.1
     \brief Encapsulate a Spot Light object in a Qt 3D scene.
 
 */

@@ -46,7 +46,7 @@ using namespace Kuesa;
     \class Kuesa::SceneEntity
     \inheaderfile Kuesa/SceneEntity
     \inmodule Kuesa
-    \since 1.0
+    \since Kuesa 1.0
     \brief Root entity for Kuesa runtime.
 
     SceneEntity provides support for the runtime behaviour of various classes
@@ -64,7 +64,7 @@ using namespace Kuesa;
     \qmltype SceneEntity
     \instantiates Kuesa::SceneEntity
     \inqmlmodule Kuesa
-    \since 1.0
+    \since Kuesa 1.0
     \brief Root entity for Kuesa runtime.
 
     SceneEntity provides support for the runtime behaviour of various classes
