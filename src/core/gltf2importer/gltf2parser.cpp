@@ -1014,6 +1014,14 @@ void GLTF2Parser::generateTreeNodeContent()
                 // Generate one Entity per primitive (1 primitive == 1 geometry renderer)
                 for (const Primitive &primitiveData : meshData.meshPrimitives) {
                     Qt3DCore::QEntity *primitiveEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
+
+                    // If the mesh is skinned, the parent of the primitiveEntity wont be the treeNode
+                    // Store this Entity to Entity map so we can use it later on the animation generation
+                    auto mapVectorIt = m_treeNodeIdToPrimitiveEntities.find(node.entity);
+                    if (mapVectorIt == m_treeNodeIdToPrimitiveEntities.end())
+                        mapVectorIt = m_treeNodeIdToPrimitiveEntities.insert(node.entity, {});
+                    mapVectorIt->push_back(primitiveEntity);
+
                     primitiveEntity->addComponent(primitiveData.primitiveRenderer);
 
                     // Add morph controller if it is not null
@@ -1213,10 +1221,11 @@ void GLTF2Parser::generateAnimationContent()
                 } else {
                     // The actual entities to animate are those which render the
                     // primitive not the Node Entity
-                    const QList<Qt3DCore::QEntity *> primitiveEntities =
-                            targetNode.entity->findChildren<Qt3DCore::QEntity *>(QString(), Qt::FindDirectChildrenOnly);
 
-                    for (Qt3DCore::QEntity *primitiveEntity : primitiveEntities) {
+                    const auto primitiveEntities = m_treeNodeIdToPrimitiveEntities.find(targetNode.entity);
+                    Q_ASSERT(primitiveEntities != m_treeNodeIdToPrimitiveEntities.end());
+
+                    for (Qt3DCore::QEntity *primitiveEntity : *primitiveEntities) {
                         MorphController *morphControllerComponent =
                                 componentFromEntity<Kuesa::MorphController>(primitiveEntity);
                         if (!morphControllerComponent) {

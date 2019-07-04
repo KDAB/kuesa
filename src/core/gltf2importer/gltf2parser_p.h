@@ -165,6 +165,7 @@ private:
     QString m_basePath;
     GLTF2Context *m_context;
     QVector<TreeNode> m_treeNodes;
+    QHash<Qt3DCore::QEntity *, QVector<Qt3DCore::QEntity *>> m_treeNodeIdToPrimitiveEntities;
     QVector<Qt3DCore::QSkeleton *> m_skeletons;
     QVector<AnimationDetails> m_animators;
     SceneEntity *m_sceneEntity;
