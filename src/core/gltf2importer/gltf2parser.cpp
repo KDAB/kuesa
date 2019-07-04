@@ -1181,12 +1181,6 @@ void GLTF2Parser::generateAnimationContent()
         clip->setClipData(animation.clipData);
         m_animators.push_back({ clip, channelMapper });
 
-        for (const auto &skeleton : qAsConst(m_skeletons)) {
-            auto skeletonMapping = new Qt3DAnimation::QSkeletonMapping;
-            skeletonMapping->setSkeleton(skeleton);
-            channelMapper->addMapping(skeletonMapping);
-        }
-
         for (const ChannelMapping &mapping : qAsConst(animation.mappings)) {
             const TreeNode targetNode = m_treeNodes[mapping.targetNodeId];
 
