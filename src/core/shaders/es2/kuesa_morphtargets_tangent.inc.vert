@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-attribute vec4 vertexTangent_1;
-attribute vec4 vertexTangent_2;
+attribute vec3 vertexTangent_1;
+attribute vec3 vertexTangent_2;
 
 // Note: it is assumed the morphWeights structure uniform has been defined
 // elsewhere and included prior to this
@@ -35,8 +35,8 @@ attribute vec4 vertexTangent_2;
 vec4 kuesa_morphTangent(const in vec4 vTangent)
 {
     vec4 tangent = vTangent;
-    tangent += vertexTangent_1 * morphWeights.morphWeights[0];
-    tangent += vertexTangent_2 * morphWeights.morphWeights[1];
+    tangent.xyz += vertexTangent_1 * morphWeights.morphWeights[0];
+    tangent.xyz += vertexTangent_2 * morphWeights.morphWeights[1];
     tangent.xyz = normalize(tangent.xyz);
     return tangent;
 }
