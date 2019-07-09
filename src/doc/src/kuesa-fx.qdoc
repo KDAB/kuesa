@@ -75,6 +75,9 @@ ThresholdEffect { id: threshold }
 
     \image fx/bloom/bloom.png
 
+    \l [CPP]{Kuesa::ToneMappingAndGammaCorrectionEffect} {Tone Mapping and Gamma Correction}
+
+
     \section1 Implementing a custom effect.
     To introduce a new effect, it is possible to inherit from
     \l [CPP]{Kuesa::AbstractPostProcessingEffect}.

@@ -34,12 +34,13 @@ import Qt3D.Extras 2.12
 import QtQuick 2.12
 
 import Kuesa 1.1 as Kuesa
+import Kuesa.Effects 1.1 as KuesaFX
 import KuesaDemo 1.0 as KuesaDemo
 
 Kuesa.SceneEntity {
     id: root3D
 
-    property bool useFilmicEffect: false
+    property string toneMappingAlgorithmName: "None"
 //! [0]
     property string envMapFormat: (Qt.platform.os == "osx" || Qt.platform.os == "ios" || Qt.platform.os == "android" || _isES2) ? "_16f" : ""
     property int screenWidth
@@ -60,11 +61,21 @@ Kuesa.SceneEntity {
 
     components: [
         RenderSettings {
+            //! [2.2]
             activeFrameGraph: Kuesa.ForwardRenderer {
                 id: frameGraph
                 camera: cameraAsset.node ? cameraAsset.node : fallbackCamera
                 clearColor: Qt.rgba(0.1, 0.1, 0.1, 1.0)
+                exposure: root3D.exposure
+                toneMappingAlgorithm: {
+                    if (toneMappingAlgorithmName == "Filmic")
+                        return KuesaFX.ToneMappingAndGammaCorrectionEffect.Filmic
+                    if (toneMappingAlgorithmName == "Reinhard")
+                        return KuesaFX.ToneMappingAndGammaCorrectionEffect.Reinhard
+                    return KuesaFX.ToneMappingAndGammaCorrectionEffect.None
+                }
             }
+            //! [2.2]
         },
         InputSettings { },
         EnvironmentLight {
@@ -164,14 +175,6 @@ Kuesa.SceneEntity {
         collection: root3D.materials
     }
 //! [2.1]
-
-//! [2.2]
-    Binding {
-        target: materialsAsset.node
-        property: "toneMappingAlgorithm"
-        value: useFilmicEffect ? Kuesa.MetallicRoughnessEffect.Filmic : Kuesa.MetallicRoughnessEffect.Reinhard
-    }
-//! [2.2]
 
 //! [1]
     Kuesa.GLTF2Importer {

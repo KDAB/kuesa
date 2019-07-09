@@ -1,5 +1,5 @@
-/*
-    opacitymask.h
+﻿/*
+    tonemappingandgammacorrectioneffect.h
 
     This file is part of Kuesa.
 
@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_OPACITYMASK_H
-#define KUESA_OPACITYMASK_H
+#ifndef KUESA_TONEMAPPINGANDGAMMACORRECTIONEFFECT_H
+#define KUESA_TONEMAPPINGANDGAMMACORRECTIONEFFECT_H
 
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
@@ -39,48 +39,61 @@ class QLayer;
 class QAbstractTexture;
 class QParameter;
 class QShaderProgramBuilder;
-class QShaderProgram;
-class QRenderStateSet;
 } // namespace Qt3DRender
 
 namespace Kuesa {
 
-class KUESASHARED_EXPORT OpacityMask : public AbstractPostProcessingEffect
+class KUESASHARED_EXPORT ToneMappingAndGammaCorrectionEffect : public AbstractPostProcessingEffect
 {
     Q_OBJECT
-    Q_PROPERTY(Qt3DRender::QAbstractTexture *mask READ mask WRITE setMask NOTIFY maskChanged)
-    Q_PROPERTY(bool premultipliedAlpha READ premultipliedAlpha WRITE setPremultipliedAlpha NOTIFY premultipliedAlphaChanged)
+    Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
+    Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged)
+    Q_PROPERTY(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
+
 public:
-    explicit OpacityMask(Qt3DCore::QNode *parent = nullptr);
+    enum ToneMapping {
+        None = 0,
+        Reinhard,
+        Filmic
+    };
+    Q_ENUM(ToneMapping)
 
+    explicit ToneMappingAndGammaCorrectionEffect(Qt3DCore::QNode *parent = nullptr);
+    ~ToneMappingAndGammaCorrectionEffect();
+
+    float exposure() const;
+    float gamma() const;
+    ToneMapping toneMappingAlgorithm() const;
+
+    // AbstractPostProcessingEffect interface
     FrameGraphNodePtr frameGraphSubTree() const override;
-    QVector<Qt3DRender::QLayer *> layers() const override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
+    QVector<Qt3DRender::QLayer *> layers() const override;
 
-    void setMask(Qt3DRender::QAbstractTexture *mask);
-    Qt3DRender::QAbstractTexture *mask() const;
-
-    void setPremultipliedAlpha(bool premultipliedAlpha);
-    bool premultipliedAlpha() const;
+public Q_SLOTS:
+    void setExposure(float exposure);
+    void setGamma(float gamma);
+    void setToneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
 
 Q_SIGNALS:
-    void maskChanged(Qt3DRender::QAbstractTexture *mask);
-    void premultipliedAlphaChanged(bool premultipliedAlpha);
+    void exposureChanged(float exposure);
+    void gammaChanged(float gamma);
+    void toneMappingAlgorithmChanged(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
 
 private:
     FrameGraphNodePtr m_rootFrameGraphNode;
-    bool m_premultipliedAlpha;
     Qt3DRender::QLayer *m_layer;
     Qt3DRender::QShaderProgramBuilder *m_gl3ShaderBuilder;
     Qt3DRender::QShaderProgramBuilder *m_es3ShaderBuilder;
     Qt3DRender::QShaderProgramBuilder *m_es2ShaderBuilder;
-    Qt3DRender::QRenderStateSet *m_blendRenderState;
-    Qt3DRender::QParameter *m_maskParameter;
+    Qt3DRender::QParameter *m_exposureParameter;
+    Qt3DRender::QParameter *m_gammaParameter;
     Qt3DRender::QParameter *m_inputTextureParameter;
+    ToneMapping m_toneMappingAlgorithm;
 };
 
 } // namespace Kuesa
 
 QT_END_NAMESPACE
 
-#endif // KUESA_OPACITYMASK_H
+#endif // KUESA_TONEMAPPINGANDGAMMACORRECTIONEFFECT_H

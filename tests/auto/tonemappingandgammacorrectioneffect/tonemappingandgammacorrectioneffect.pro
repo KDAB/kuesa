@@ -1,9 +1,9 @@
-# fx.pri
+# tonemappingandgammacorrectioneffect.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Jim Albamont <jim.albamont@kdab.com>
+# Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,26 +24,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-INCLUDEPATH += $$PWD
+TEMPLATE = app
 
-HEADERS += \
-    $$PWD/abstractpostprocessingeffect.h \
-    $$PWD/fullscreenquad.h \
-    $$PWD/fxutils_p.h \
-    $$PWD/gaussianblureffect.h \
-    $$PWD/thresholdeffect.h \
-    $$PWD/bloomeffect.h \
-    $$PWD/depthoffieldeffect.h \
-    $$PWD/opacitymask.h \
-    $$PWD/tonemappingandgammacorrectioneffect.h
+TARGET = tst_tonemappingandgammacorrectioneffect.cpp
 
-SOURCES += \
-    $$PWD/abstractpostprocessingeffect.cpp \
-    $$PWD/fullscreenquad.cpp \
-    $$PWD/fxutils.cpp \
-    $$PWD/gaussianblureffect.cpp \
-    $$PWD/thresholdeffect.cpp \
-    $$PWD/bloomeffect.cpp \
-    $$PWD/depthoffieldeffect.cpp \
-    $$PWD/opacitymask.cpp \
-    $$PWD/tonemappingandgammacorrectioneffect.cpp
+QT += testlib kuesa kuesa-private
+
+CONFIG += testcase
+
+SOURCES += tst_tonemappingandgammacorrectioneffect.cpp
+
+include(../assets/assets.pri)

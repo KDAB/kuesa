@@ -55,16 +55,9 @@ class KUESASHARED_EXPORT MetallicRoughnessEffect : public Qt3DRender::QEffect
     Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
     Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
     Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
-    Q_PROPERTY(Kuesa::MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLUT READ brdfLUT WRITE setBrdfLUT NOTIFY brdfLUTChanged REVISION 1)
 
 public:
-    enum ToneMapping {
-        Reinhard = 0,
-        Filmic
-    };
-    Q_ENUM(ToneMapping)
-
     explicit MetallicRoughnessEffect(Qt3DCore::QNode *parent = nullptr);
     ~MetallicRoughnessEffect();
 
@@ -78,7 +71,6 @@ public:
     bool useSkinning() const;
     bool isOpaque() const;
     bool isAlphaCutoffEnabled() const;
-    ToneMapping toneMappingAlgorithm() const;
     Qt3DRender::QAbstractTexture *brdfLUT() const;
 
 public Q_SLOTS:
@@ -92,7 +84,6 @@ public Q_SLOTS:
     void setUseSkinning(bool useSkinning);
     void setOpaque(bool opaque);
     void setAlphaCutoffEnabled(bool enabled);
-    void setToneMappingAlgorithm(ToneMapping algorithm);
     void setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT);
 
 Q_SIGNALS:
@@ -106,7 +97,6 @@ Q_SIGNALS:
     void useSkinningChanged(bool useSkinning);
     void opaqueChanged(bool opaque);
     void alphaCutoffEnabledChanged(bool enabled);
-    void toneMappingAlgorithmChanged(ToneMapping algorithm);
     void brdfLUTChanged(Qt3DRender::QAbstractTexture *brdfLUT);
 
 private:
@@ -120,7 +110,6 @@ private:
     bool m_useSkinning;
     bool m_opaque;
     bool m_alphaCutoffEnabled;
-    ToneMapping m_toneMappingAlgorithm;
 
     MetallicRoughnessTechnique *m_metalRoughGL3Technique;
     MetallicRoughnessTechnique *m_metalRoughES3Technique;

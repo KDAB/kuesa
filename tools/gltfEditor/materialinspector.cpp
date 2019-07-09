@@ -69,7 +69,6 @@ void MaterialInspector::setMaterialProperties(Kuesa::MetallicRoughnessProperties
         materialEffect->setEmissiveMapEnabled(clientEffect->isEmissiveMapEnabled());
         materialEffect->setBaseColorMapEnabled(clientEffect->isBaseColorMapEnabled());
         materialEffect->setMetalRoughMapEnabled(clientEffect->isMetalRoughMapEnabled());
-        materialEffect->setToneMappingAlgorithm(clientEffect->toneMappingAlgorithm());
         materialEffect->setAmbientOcclusionMapEnabled(clientEffect->isAmbientOcclusionMapEnabled());
     }
 

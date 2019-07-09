@@ -427,9 +427,9 @@ private Q_SLOTS:
         QVERIFY(outputTexture);
         QCOMPARE(outputTexture, fx3.inputTexture());
 
-        // THEN - fx3 is not rendered into a texture
+        // THEN - fx3 is rendered into a texture which will be used as the input for the final tone mapping / gamma correction
         renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx3.frameGraphSubTree().data());
-        QVERIFY(renderTargetSelector == nullptr);
+        QVERIFY(renderTargetSelector != nullptr);
     }
 
     void testResizingEffectsAndTextures()
@@ -529,22 +529,24 @@ private Q_SLOTS:
         // WHEN
         Qt3DRender::QFrameGraphNode *noFXStageParent = static_cast<Qt3DRender::QFrameGraphNode *>(opaqueStage->parent());
 
-        // THEN
-        QVERIFY(qobject_cast<Qt3DRender::QFrustumCulling *>(noFXStageParent) != nullptr);
+        // THEN -> We still have an internal effect (Tone Mapping / Gamma Correction)
+        QVERIFY(qobject_cast<Qt3DRender::QFrustumCulling *>(noFXStageParent) == nullptr);
+        QVERIFY(qobject_cast<Qt3DRender::QRenderTargetSelector *>(noFXStageParent) != nullptr);
 
         // WHEN
         tst_FX fx;
         renderer.addPostProcessingEffect(&fx);
 
-        // THEN
+        // THEN -> adding effects will have recreated the nodes
         QVERIFY(opaqueStage->parent() != noFXStageParent);
         QVERIFY(qobject_cast<Qt3DRender::QRenderTargetSelector *>(opaqueStage->parent()) != nullptr);
 
-        // WHEN
+        // WHEN -> so does removing the effect
         renderer.removePostProcessingEffect(&fx);
 
         // THEN
-        QVERIFY(opaqueStage->parent() == noFXStageParent);
+        QVERIFY(qobject_cast<Qt3DRender::QRenderTargetSelector *>(opaqueStage->parent()) != nullptr);
+        QVERIFY(opaqueStage->parent() != noFXStageParent);
     }
 
 private:

@@ -67,15 +67,6 @@ using namespace Kuesa;
  */
 
 /*!
-    \property BloomEffect::exposure
-
-    \brief adjusts the overall brightness
-
-    This adjusts the overall brightness of the result after applying the bloom.
-    0.0 corresponds to no adjustment and each increment of 1 doubles the brightness.
-*/
-
-/*!
     \property BloomEffect::threshold
 
     \brief the brightness level determining which pixels the effect are applied to
@@ -95,15 +86,6 @@ using namespace Kuesa;
     More passes result in stronger blurring effect but take longer to render.
 
     \sa GaussianBlurEffect::blurPassCount
-*/
-
-/*!
-    \qmlproperty real BloomEffect::exposure
-
-    \brief adjusts the overall brightness
-
-    This adjusts the overall brightness of the result after applying the bloom.
-    0.0 corresponds to no adjustment and each increment of 1 doubles the brightness.
 */
 
 /*!
@@ -128,7 +110,6 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     : AbstractPostProcessingEffect(parent)
     , m_sceneTextureParam(new Qt3DRender::QParameter(QStringLiteral("texture0"), nullptr))
     , m_blurredBrightTextureParam(new Qt3DRender::QParameter(QStringLiteral("texture1"), nullptr))
-    , m_exposureParam(new Qt3DRender::QParameter(QStringLiteral("exposure"), 0.0))
 {
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode);
     m_rootFrameGraphNode->setObjectName(QStringLiteral("Bloom Effect"));
@@ -183,7 +164,6 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
 
     bloomRenderPass->addParameter(m_sceneTextureParam);
     bloomRenderPass->addParameter(m_blurredBrightTextureParam);
-    bloomRenderPass->addParameter(m_exposureParam);
     m_blurredBrightTextureParam->setValue(QVariant::fromValue(m_blurredBrightTexture));
 
     technique->addRenderPass(bloomRenderPass);
@@ -240,7 +220,7 @@ Qt3DRender::QRenderTarget *BloomEffect::createRenderTarget(Qt3DRender::QAbstract
     auto output = new Qt3DRender::QRenderTargetOutput;
     output->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
     renderTarget->addOutput(output);
-    texture->setFormat(Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+    texture->setFormat(Qt3DRender::QAbstractTexture::RGBA16F);
     texture->setSize(512, 512);
     texture->setGenerateMipMaps(false);
     output->setTexture(texture);
@@ -287,16 +267,6 @@ QVector<Qt3DRender::QLayer *> BloomEffect::layers() const
 }
 
 /*!
- * Returns the exposure value.
- *
- * \sa BloomEffect::setExposure
- */
-float BloomEffect::exposure() const
-{
-    return m_exposureParam->value().toFloat();
-}
-
-/*!
  * Returns the threshold value.
  *
  * \sa BloomEffect::SetThreshold
@@ -314,20 +284,6 @@ float BloomEffect::threshold() const
 int BloomEffect::blurPassCount() const
 {
     return m_blurEffect->blurPassCount();
-}
-
-/*!
- * Sets the exposure value.
- *
- * \sa BloomEffect::exposure
- */
-void BloomEffect::setExposure(float exposure)
-{
-    if (qFuzzyCompare(m_exposureParam->value().toFloat(), exposure))
-        return;
-
-    m_exposureParam->setValue(exposure);
-    emit exposureChanged(exposure);
 }
 
 /*!
