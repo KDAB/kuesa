@@ -272,16 +272,6 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
  */
 
 /*!
-    \property MetallicRoughnessEffect::toneMappingAlgorithm
-
-    Tone mapping specifies how we perform color conversion from HDR (high
-    dynamic range) content to LDR (low dynamic range) content which our monitor
-    displays.
-
-    \since Kuesa 1.1
- */
-
-/*!
     \property MetallicRoughnessEffect::brdfLUT
 
     brdfLUT references a texture containing lookup tables for the split sum approximation
@@ -382,16 +372,6 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
  */
 
 /*!
-    \qmlproperty MetallicRoughnessEffect.ToneMapping MetallicRoughnessEffect::toneMappingAlgoritm
-
-    Tone mapping specifies how we perform color conversion from HDR (high
-    dynamic range) content to LDR (low dynamic range) content which our monitor
-    displays.
-
-    \since Kuesa 1.1
- */
-
-/*!
     \qmlproperty Qt3DRender.AbstractTexture MetallicRoughnessEffect::brdfLUT
 
     brdfLUT references a texture containing lookup tables for the split sum approximation
@@ -404,21 +384,6 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
     \since Kuesa 1.1
  */
 
-namespace {
-
-QString shaderGraphLayerForToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm)
-{
-    switch (algorithm) {
-    case MetallicRoughnessEffect::Reinhard:
-        return QStringLiteral("useReinhardToneMap");
-    case MetallicRoughnessEffect::Filmic:
-        return QStringLiteral("useFilmicToneMap");
-    default:
-        Q_UNREACHABLE();
-    }
-}
-
-} // namespace
 
 MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     : QEffect(parent)
@@ -432,7 +397,6 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     , m_useSkinning(false)
     , m_opaque(true)
     , m_alphaCutoffEnabled(false)
-    , m_toneMappingAlgorithm(MetallicRoughnessEffect::Reinhard)
     , m_brdfLUTParameter(new QParameter(this))
 {
     const auto enabledLayers = QStringList{
@@ -447,7 +411,6 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
         QStringLiteral("noHasColorAttr"),
         QStringLiteral("noDoubleSided"),
         QStringLiteral("noHasAlphaCutoff"),
-        shaderGraphLayerForToneMappingAlgorithm(m_toneMappingAlgorithm)
     };
 
     m_metalRoughGL3Technique = new MetallicRoughnessTechnique(MetallicRoughnessTechnique::GL3, this);
@@ -530,15 +493,6 @@ bool MetallicRoughnessEffect::isOpaque() const
 bool MetallicRoughnessEffect::isAlphaCutoffEnabled() const
 {
     return m_alphaCutoffEnabled;
-}
-
-/*!
-    Returns the tone mapping algorithm used by the shader.
-    \since Kuesa 1.1
- */
-MetallicRoughnessEffect::ToneMapping MetallicRoughnessEffect::toneMappingAlgorithm() const
-{
-    return m_toneMappingAlgorithm;
 }
 
 void MetallicRoughnessEffect::setBaseColorMapEnabled(bool enabled)
@@ -739,29 +693,6 @@ void MetallicRoughnessEffect::setAlphaCutoffEnabled(bool enabled)
     m_metalRoughES3Technique->setEnabledLayers(layers);
     m_metalRoughES2Technique->setEnabledLayers(layers);
     emit alphaCutoffEnabledChanged(enabled);
-}
-
-/*!
-    Sets the tone mapping algorithm to \a algorithm,
-    \since Kuesa 1.1
-*/
-void MetallicRoughnessEffect::setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm)
-{
-    if (m_toneMappingAlgorithm == algorithm)
-        return;
-
-    const QString oldLayerName = shaderGraphLayerForToneMappingAlgorithm(m_toneMappingAlgorithm);
-    const QString newLayerName = shaderGraphLayerForToneMappingAlgorithm(algorithm);
-
-    auto layers = m_metalRoughGL3Technique->enabledLayers();
-    layers.removeAll(oldLayerName);
-    layers.append(newLayerName);
-    m_metalRoughGL3Technique->setEnabledLayers(layers);
-    m_metalRoughES3Technique->setEnabledLayers(layers);
-    m_metalRoughES2Technique->setEnabledLayers(layers);
-
-    m_toneMappingAlgorithm = algorithm;
-    emit toneMappingAlgorithmChanged(algorithm);
 }
 
 Qt3DRender::QAbstractTexture *MetallicRoughnessEffect::brdfLUT() const

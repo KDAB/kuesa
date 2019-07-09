@@ -39,6 +39,7 @@
 #include <Kuesa/GaussianBlurEffect>
 #include <Kuesa/ThresholdEffect>
 #include <Kuesa/OpacityMask>
+#include <Kuesa/ToneMappingAndGammaCorrectionEffect>
 #include <Kuesa/Skybox>
 #include <Kuesa/DirectionalLight>
 #include <Kuesa/SpotLight>
@@ -62,6 +63,7 @@ KuesaPlugin::~KuesaPlugin()
 
 void KuesaPlugin::registerTypes(const char *uri)
 {
+
     // Collections
     qmlRegisterUncreatableType<Kuesa::AbstractAssetCollection>(uri, 1, 0, "AbstractAssetCollection", QStringLiteral("You are not supposed to create an EntityCollection"));
     qmlRegisterUncreatableType<Kuesa::EntityCollection>(uri, 1, 0, "EntityCollection", QStringLiteral("You are not supposed to create an EntityCollection"));
@@ -78,6 +80,7 @@ void KuesaPlugin::registerTypes(const char *uri)
 
     // FrameGraphs
     qmlRegisterExtendedType<Kuesa::ForwardRenderer, Kuesa::PostFXListExtension>(uri, 1, 0, "ForwardRenderer");
+    qmlRegisterRevision<Kuesa::ForwardRenderer, 1>(uri, 1, 1);
 
     // Lights
     qmlRegisterType<Kuesa::DirectionalLight>(uri, 1, 1, "DirectionalLight");
@@ -109,6 +112,9 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::ThresholdEffect>("Kuesa.Effects", 1, 0, "ThresholdEffect");
     qmlRegisterType<Kuesa::GaussianBlurEffect>("Kuesa.Effects", 1, 0, "BlurEffect");
     qmlRegisterType<Kuesa::OpacityMask>("Kuesa.Effects", 1, 0, "OpacityMask");
+
+    qRegisterMetaType<Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping>("ToneMappingAndGammaCorrectionEffect::ToneMapping");
+    qmlRegisterType<Kuesa::ToneMappingAndGammaCorrectionEffect>("Kuesa.Effects", 1, 1, "ToneMappingAndGammaCorrectionEffect");
 }
 
 QT_END_NAMESPACE

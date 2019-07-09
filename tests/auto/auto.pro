@@ -39,7 +39,8 @@ SUBDIRS = \
     gltfEditor \
     morphcontroller \
     gltf2importer \
-    gltf2options
+    gltf2options \
+    tonemappingandgammacorrectioneffect
 
 #installed_cmake.depends = cmake
 

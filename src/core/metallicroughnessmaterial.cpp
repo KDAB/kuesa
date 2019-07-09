@@ -311,16 +311,6 @@ namespace Kuesa {
  */
 
 /*!
-    \property MetallicRoughnessMaterial::toneMappingAlgoritm
-
-    Tone mapping specifies how we perform color conversion from HDR (high
-    dynamic range) content to LDR (low dynamic range) content which our monitor
-    displays.
-
-    \since Kuesa 1.1
- */
-
-/*!
     \qmltype MetallicRoughnessMaterial
     \instantiates Kuesa::MetallicRoughnessMaterial
     \inqmlmodule Kuesa
@@ -521,16 +511,6 @@ namespace Kuesa {
     'defaultTextureCoordinateName' attribute.
     True if the map must use the 1st texture coordinate set, binded to
     'defaultTextureCoordinate1Name' attribute.
- */
-
-/*!
-    \qmlproperty MetallicRoughnessEffect.ToneMapping MetallicRoughnessMaterial::toneMappingAlgoritm
-
-    Tone mapping specifies how we perform color conversion from HDR (high
-    dynamic range) content to LDR (low dynamic range) content which our monitor
-    displays.
-
-    \since Kuesa 1.1
  */
 
 MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)

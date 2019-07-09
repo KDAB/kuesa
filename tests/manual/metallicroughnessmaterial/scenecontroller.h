@@ -32,7 +32,7 @@
 #include <QObject>
 #include <QColor>
 #include <QMatrix3x3>
-#include <Kuesa/MetallicRoughnessEffect>
+#include <Kuesa/ToneMappingAndGammaCorrectionEffect>
 
 class SceneController : public QObject
 {
@@ -50,7 +50,7 @@ class SceneController : public QObject
     Q_PROPERTY(QMatrix3x3 textureTransform READ textureTransform WRITE setTextureTransform NOTIFY textureTransformChanged)
     Q_PROPERTY(bool useColorAttribute READ useColorAttribute WRITE setUseColorAttribute NOTIFY useColorAttributeChanged)
     Q_PROPERTY(bool doubleSided READ doubleSided WRITE setDoubleSided NOTIFY doubleSidedChanged)
-    Q_PROPERTY(Kuesa::MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged)
+    Q_PROPERTY(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged)
 
 public:
     explicit SceneController(QObject *parent = nullptr);
@@ -68,7 +68,7 @@ public:
     QMatrix3x3 textureTransform() const;
     bool useColorAttribute() const;
     bool doubleSided() const;
-    Kuesa::MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm() const;
+    Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
 
 public slots:
     void setBaseColorFactor(const QColor &baseColorFactor);
@@ -84,7 +84,7 @@ public slots:
     void setTextureTransform(const QMatrix3x3 &textureTransform);
     void setUseColorAttribute(bool useColorAttribute);
     void setDoubleSided(bool doubleSided);
-    void setToneMappingAlgorithm(Kuesa::MetallicRoughnessEffect::ToneMapping algorithm);
+    void setToneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping algorithm);
 
 signals:
     void baseColorFactorChanged(const QColor &baseColorFactor);
@@ -100,7 +100,7 @@ signals:
     void textureTransformChanged(const QMatrix3x3 &textureTransform);
     void useColorAttributeChanged(bool useColorAttribute);
     void doubleSidedChanged(bool doubleSided);
-    void toneMappingAlgorithmChanged(Kuesa::MetallicRoughnessEffect::ToneMapping algorithm);
+    void toneMappingAlgorithmChanged(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping algorithm);
 
 private:
     QColor m_baseColorFactor;
@@ -116,7 +116,7 @@ private:
     QMatrix3x3 m_textureTransform;
     bool m_useColorAttribute;
     bool m_doubleSided;
-    Kuesa::MetallicRoughnessEffect::ToneMapping m_toneMappingAlgorithm;
+    Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping m_toneMappingAlgorithm;
 };
 
 #endif // SCENECONTROLLER_H

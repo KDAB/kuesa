@@ -46,6 +46,7 @@
 #include "zfillrenderstage_p.h"
 #include "opaquerenderstage_p.h"
 #include "transparentrenderstage_p.h"
+#include "tonemappingandgammacorrectioneffect.h"
 #include "kuesa_p.h"
 
 QT_BEGIN_NAMESPACE
@@ -110,6 +111,11 @@ using namespace Kuesa;
  * to ZFill will be rendered. This will take place before the Opaque and
  * Transparent pass. Only Opaque objects should be used to fill the depth
  * buffer.
+ *
+ * The pipeline steps, from PBR materials to post processing effects are
+ * working in linear color space. This ForwardRenderer adds a final gamma
+ * correction to perform the final conversion to sRGB, through the use of the
+ * GammaCorrectionEffect, as the last step of this pipeline.
  */
 
 /*!
@@ -167,6 +173,11 @@ using namespace Kuesa;
  * a compatible RenderPass that has a FilterKey KuesaDrawStage with a value set
  * to ZFill will be rendered. This will take place before the Opaque and Transparent
  * pass. Only Opaque objects should be used to fill the depth buffer.
+ *
+ * The pipeline steps, from PBR materials to post processing effects are
+ * working in linear color space. This ForwardRenderer adds a final gamma
+ * correction to perform the final conversion to sRGB, through the use of the
+ * GammaCorrectionEffect, as the last step of this pipeline.
  */
 
 /*!
@@ -300,6 +311,62 @@ using namespace Kuesa;
     The FrameGraph tree is reconfigured upon replacing the list of effects.
 */
 
+/*!
+    \property Kuesa::ForwardRenderer::gamma
+
+    Holds the gamma value to use for gamma correction conversion
+    that brings linear colors to sRGB colors.
+    \default 2.2
+    \since Kuesa 1.1
+ */
+
+/*!
+    \qmlproperty real Kuesa::ForwardRenderer::gamma
+
+    Holds the gamma value to use for gamma correction conversion
+    that brings linear colors to sRGB colors.
+    \default 2.2
+    \since Kuesa 1.1
+ */
+
+/*!
+    \property Kuesa::ForwardRenderer::exposure
+    Exposure correction factor used before the linear to sRGB conversion.
+    \default 0
+    \since Kuesa 1.1
+ */
+
+/*!
+    \qmlproperty real Kuesa::ForwardRenderer::exposure
+    Exposure correction factor used before the linear to sRGB conversion.
+    \default 0
+    \since Kuesa 1.1
+ */
+
+/*!
+    \property Kuesa::ForwardRenderer::toneMappingAlgorithm
+
+    Tone mapping specifies how we perform color conversion from HDR (high
+    dynamic range) content to LDR (low dynamic range) content which our monitor
+    displays.
+
+    \since Kuesa 1.1
+    \default ToneMappingAndGammaCorrectionEffect.None
+ */
+
+/*!
+    \qmlproperty ToneMappingAndGammaCorrectionEffect.ToneMapping Kuesa::ForwardRenderer::toneMappingAlgorithm
+
+    Tone mapping specifies how we perform color conversion from HDR (high
+    dynamic range) content to LDR (low dynamic range) content which our monitor
+    displays.
+
+    \since Kuesa 1.1
+    \default ToneMappingAndGammaCorrectionEffect.None
+ */
+
+
+
 ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     : Qt3DRender::QFrameGraphNode(parent)
     , m_techniqueFilter(new Qt3DRender::QTechniqueFilter())
@@ -314,6 +381,7 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_renderToTextureRootNode(nullptr)
     , m_effectsRootNode(nullptr)
     , m_renderStageRootNode(nullptr)
+    , m_gammaCorrectionFX(new ToneMappingAndGammaCorrectionEffect())
 {
     m_renderTargets[0] = nullptr;
     m_renderTargets[1] = nullptr;
@@ -333,6 +401,15 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::renderSurfaceChanged);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::handleSurfaceChange);
     connect(m_frustumCulling, &Qt3DRender::QFrustumCulling::enabledChanged, this, &ForwardRenderer::frustumCullingChanged);
+    connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::gammaChanged, this, &ForwardRenderer::gammaChanged);
+    connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::exposureChanged, this, &ForwardRenderer::exposureChanged);
+    connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::toneMappingAlgorithmChanged, this, &ForwardRenderer::toneMappingAlgorithmChanged);
+
+    {
+        // Add internal post FX to the pipeline
+        m_internalPostProcessingEffects.push_back(m_gammaCorrectionFX);
+        m_effectFGSubtrees.insert(m_gammaCorrectionFX, m_gammaCorrectionFX->frameGraphSubTree());
+    }
 
     // Reconfigure FrameGraph
     reconfigureFrameGraph();
@@ -399,6 +476,34 @@ bool ForwardRenderer::zFilling() const
 }
 
 /*!
+    Exposure correction factor used before the linear to sRGB conversion.
+
+    \default 0.0
+*/
+float ForwardRenderer::exposure() const
+{
+    return m_gammaCorrectionFX->exposure();
+}
+
+/*!
+    Gamma correction value used for the linear to sRGB conversion.
+    \since Kuesa 1.1
+*/
+float ForwardRenderer::gamma() const
+{
+    return m_gammaCorrectionFX->gamma();
+}
+
+/*!
+    Returns the tone mapping algorithm used by the shader.
+    \since Kuesa 1.1
+ */
+ToneMappingAndGammaCorrectionEffect::ToneMapping ForwardRenderer::toneMappingAlgorithm() const
+{
+    return m_gammaCorrectionFX->toneMappingAlgorithm();
+}
+
+/*!
  * Registers a new post processing effect \a effect with the ForwardRenderer
  * FrameGraph. In essence this will complete the FrameGraph tree with a
  * dedicated subtree provided by the effect.
@@ -413,11 +518,11 @@ bool ForwardRenderer::zFilling() const
  */
 void ForwardRenderer::addPostProcessingEffect(AbstractPostProcessingEffect *effect)
 {
-    if (m_postProcessingEffects.contains(effect))
+    if (m_userPostProcessingEffects.contains(effect))
         return;
 
     // Add effect to vector of registered effects
-    m_postProcessingEffects.push_back(effect);
+    m_userPostProcessingEffects.push_back(effect);
 
     // Handle destruction of effect
     QObject::connect(effect,
@@ -445,11 +550,11 @@ void ForwardRenderer::addPostProcessingEffect(AbstractPostProcessingEffect *effe
  */
 void ForwardRenderer::removePostProcessingEffect(AbstractPostProcessingEffect *effect)
 {
-    if (!m_postProcessingEffects.contains(effect))
+    if (!m_userPostProcessingEffects.contains(effect))
         return;
 
     // Remove effect entry
-    m_postProcessingEffects.removeAll(effect);
+    m_userPostProcessingEffects.removeAll(effect);
 
     // unparent FG subtree associated with Effect.
     m_effectFGSubtrees.take(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
@@ -464,7 +569,7 @@ void ForwardRenderer::removePostProcessingEffect(AbstractPostProcessingEffect *e
  */
 QVector<AbstractPostProcessingEffect *> ForwardRenderer::postProcessingEffects() const
 {
-    return m_postProcessingEffects;
+    return m_userPostProcessingEffects;
 }
 
 /*!
@@ -567,6 +672,34 @@ void ForwardRenderer::setZFilling(bool zfilling)
 }
 
 /*!
+    Sets the \a gamma value to use for gamma correction conversion
+    that brings linear colors to sRGB colors.
+    \default 2.2
+ */
+void ForwardRenderer::setGamma(float gamma)
+{
+    m_gammaCorrectionFX->setGamma(gamma);
+}
+
+/*!
+    Sets the \a exposure value to use for exposure correction conversion
+    \default 0
+ */
+void ForwardRenderer::setExposure(float exposure)
+{
+    m_gammaCorrectionFX->setExposure(exposure);
+}
+
+/*!
+    Sets the tone mapping algorithm to \a algorithm,
+    \since Kuesa 1.1
+*/
+void ForwardRenderer::setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm)
+{
+    m_gammaCorrectionFX->setToneMappingAlgorithm(toneMappingAlgorithm);
+}
+
+/*!
  * \internal
  *
  * Updates all the off-screen rendering textures whenever the render surface
@@ -582,7 +715,7 @@ void ForwardRenderer::updateTextureSizes()
     }
     for (auto output : outputs)
         output->texture()->setSize(targetSize.width(), targetSize.height());
-    for (auto effect : m_postProcessingEffects)
+    for (auto effect : m_userPostProcessingEffects)
         effect->setSceneSize(targetSize);
 }
 
@@ -636,8 +769,11 @@ void ForwardRenderer::reconfigureFrameGraph()
     // Temporarily reparent effect subtrees and other nodes, then delete the node that held the last
     // subtree framegraph including any render target selectors.
     // It's easier just to re-create the tree below
-    for (AbstractPostProcessingEffect *effect : qAsConst(m_postProcessingEffects))
+    for (AbstractPostProcessingEffect *effect : qAsConst(m_userPostProcessingEffects))
         m_effectFGSubtrees.value(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+    for (AbstractPostProcessingEffect *effect : qAsConst(m_internalPostProcessingEffects)) {
+        m_effectFGSubtrees.value(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+    }
     for (AbstractRenderStage *stage : qAsConst(m_renderStages))
         stage->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
     delete m_effectsRootNode;
@@ -658,12 +794,15 @@ void ForwardRenderer::reconfigureFrameGraph()
     Qt3DRender::QAbstractTexture *depthTex = nullptr;
 
     // Configure effects
-    if (!m_postProcessingEffects.empty()) {
+    const bool hasFX = !m_userPostProcessingEffects.empty() || !m_internalPostProcessingEffects.empty();
+    if (hasFX) {
         if (!m_renderTargets[0]) {
             // create a render target for main scene
             m_renderTargets[0] = createRenderTarget(true);
         }
-        if (m_postProcessingEffects.size() > 1 && !m_renderTargets[1]) {
+        const int userFXCount = m_userPostProcessingEffects.size();
+        const int totalFXCount = userFXCount + m_internalPostProcessingEffects.size();
+        if (totalFXCount > 1 && !m_renderTargets[1]) {
             m_renderTargets[1] = createRenderTarget(false);
             // create a secondary render target to do ping-pong when we have
             // more than 1 fx
@@ -700,8 +839,13 @@ void ForwardRenderer::reconfigureFrameGraph()
         // Gather the different effect types
         const auto targetSize = currentSurfaceSize();
         int previousRenderTargetIndex = 0;
-        for (int effectNo = 0; effectNo < m_postProcessingEffects.count(); ++effectNo) {
-            auto effect = m_postProcessingEffects[effectNo];
+        for (int effectNo = 0; effectNo < totalFXCount; ++effectNo) {
+            AbstractPostProcessingEffect *effect = nullptr;
+            if (effectNo < userFXCount)
+                effect = m_userPostProcessingEffects[effectNo];
+            else
+                effect = m_internalPostProcessingEffects[effectNo - userFXCount];
+
             const int currentRenderTargetIndex = 1 - previousRenderTargetIndex;
 
             // determine which render target we used for previous effect.  It holds the input texture for current effect
@@ -718,7 +862,7 @@ void ForwardRenderer::reconfigureFrameGraph()
 
             // Create a render target selector for all but the last effect to create the input texture for the next effect
             Qt3DCore::QNode *effectParentNode = m_effectsRootNode;
-            if (effectNo < m_postProcessingEffects.count() - 1) {
+            if (effectNo < totalFXCount - 1) {
                 auto selector = new Qt3DRender::QRenderTargetSelector(effectParentNode);
                 selector->setObjectName(QStringLiteral("Effect %1").arg(effectNo));
                 selector->setTarget(m_renderTargets[currentRenderTargetIndex]);
@@ -815,7 +959,11 @@ Qt3DRender::QRenderTarget *ForwardRenderer::createRenderTarget(bool includeDepth
 {
     auto renderTarget = new Qt3DRender::QRenderTarget(this);
     auto colorTexture = new Qt3DRender::QTexture2D;
-    colorTexture->setFormat(Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+    // We need to use 16 based format as our content is HDR linear
+    // which we will eventually exposure correct, tone map to LDR and
+    // gamma correct
+    // This requires support for extension OES_texture_float on ES2 platforms
+    colorTexture->setFormat(Qt3DRender::QAbstractTexture::RGBA16F);
     colorTexture->setGenerateMipMaps(false);
 
     const auto targetSize = currentSurfaceSize();

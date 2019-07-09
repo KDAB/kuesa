@@ -90,44 +90,35 @@ Kuesa.SceneEntity {
         }
     ]
 
-    Camera {
-        id: mainCamera
-        position: Qt.vector3d(0.0, 0.0, 7.0)
-        upVector: Qt.vector3d(0.0, 1.0, 0.0)
-        viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
+    FrameGraphNode {
+        id: frameGraphNode
+        // Render GLTF Scene in main viewport
+        LayerFilter {
+            layers: [texturePreviewLayer, materialPreviewLayer]
+            filterMode: LayerFilter.DiscardAnyMatchingLayers
 
-        // Frame graph and preview nodes are here as a child of camera so that they
-        // get ignored when doing a view all for this camera
-        FrameGraphNode {
-            id: frameGraphNode
-            // Render GLTF Scene in main viewport
-            LayerFilter {
-                layers: [texturePreviewLayer, materialPreviewLayer]
-                filterMode: LayerFilter.DiscardAnyMatchingLayers
-
-                Kuesa.ForwardRenderer {
-                    id: frameGraph
-                    camera: _mainWindow.activeCamera >= 0 && _mainWindow.activeCamera < scene.cameras.names.length ?
-                                scene.camera(scene.cameras.names[_mainWindow.activeCamera]) : mainCamera
-                    frustumCulling: true
-                    clearColor: _mainWindow.clearColor
-                }
+            Kuesa.ForwardRenderer {
+                id: frameGraph
+                camera: _mainWindow.activeCamera >= 0 && _mainWindow.activeCamera < scene.cameras.names.length ?
+                            scene.camera(scene.cameras.names[_mainWindow.activeCamera]) : mainCamera
+                frustumCulling: true
+                clearColor: _mainWindow.clearColor
             }
-            // Render texture/material previews and capture
-            RenderPreviewGraph {
-                id: texturePreviewGraph
-                layers: texturePreviewLayer
-                surface: frameGraph.renderSurface
-                previewSize: _textureCaptureReceiver.previewSize
-                receiver: _textureCaptureReceiver
-            }
-            RenderPreviewGraph {
-                id: materialPreviewGraph
-                layers: materialPreviewLayer
-                surface: frameGraph.renderSurface
-                previewSize: _materialCaptureReceiver.previewSize
-                receiver: _materialCaptureReceiver
-            }
+        }
+        // Render texture/material previews and capture
+        RenderPreviewGraph {
+            id: texturePreviewGraph
+            layers: texturePreviewLayer
+            surface: frameGraph.renderSurface
+            previewSize: _textureCaptureReceiver.previewSize
+            receiver: _textureCaptureReceiver
+        }
+        RenderPreviewGraph {
+            id: materialPreviewGraph
+            layers: materialPreviewLayer
+            surface: frameGraph.renderSurface
+            previewSize: _materialCaptureReceiver.previewSize
+            receiver: _materialCaptureReceiver
         }
 
         // TexturePreview
@@ -176,6 +167,13 @@ Kuesa.SceneEntity {
 
             components: [materialMesh, materialTransform, materialPreviewLayer, previewMaterial, materialLight]
         }
+    }
+
+    Camera {
+        id: mainCamera
+        position: Qt.vector3d(0.0, 0.0, 7.0)
+        upVector: Qt.vector3d(0.0, 1.0, 0.0)
+        viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
     }
 
     GltfEditor.OrbitCameraController {
