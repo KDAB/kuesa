@@ -37,7 +37,7 @@ import GltfEditor 1.0 as GltfEditor
 Kuesa.SceneEntity {
     id: scene
 
-    QQ2.Component.onCompleted: _mainWindow.setup(mainCamera)
+    QQ2.Component.onCompleted: _mainWindow.setup(mainCamera, gltf2PlaceHolderEntity)
     readonly property Layer texturePreviewLayer: Layer {}
     readonly property Layer materialPreviewLayer: Layer {}
 
@@ -182,13 +182,16 @@ Kuesa.SceneEntity {
         windowSize: _mainWindow.renderAreaSize
     }
 
-    Kuesa.GLTF2Importer {
-        id: gltf2importer
-        source: _mainWindow.filePath
-        sceneEntity: scene
-        assignNames: true
-        options.generateTangents:  _mainWindow.generateRuntimeTangents
-        options.generateNormals: _mainWindow.generateRuntimeNormals
-        onStatusChanged: _mainWindow.updateScene(scene)
+    Entity {
+        id: gltf2PlaceHolderEntity
+        Kuesa.GLTF2Importer {
+            id: gltf2importer
+            source: _mainWindow.filePath
+            sceneEntity: scene
+            assignNames: true
+            options.generateTangents:  _mainWindow.generateRuntimeTangents
+            options.generateNormals: _mainWindow.generateRuntimeNormals
+            onStatusChanged: _mainWindow.updateScene(scene)
+        }
     }
 }

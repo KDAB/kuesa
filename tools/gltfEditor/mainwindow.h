@@ -69,7 +69,7 @@ public:
     bool generateRuntimeTangents() const;
     bool generateRuntimeNormals() const;
 
-    Q_INVOKABLE void setup(Qt3DRender::QCamera *camera);
+    Q_INVOKABLE void setup(Qt3DRender::QCamera *camera, Qt3DCore::QEntity *placeHolder);
     Q_INVOKABLE void updateScene(Kuesa::SceneEntity *entity);
     Q_INVOKABLE void setCamera(const QString &name);
     Q_INVOKABLE void viewAll();
@@ -113,6 +113,7 @@ private:
     Qt3DExtras::Quick::Qt3DQuickWindow *m_view;
     Kuesa::SceneEntity *m_entity;
     Qt3DRender::QCamera *m_camera;
+    Qt3DCore::QEntity *m_gltf2PlaceHolder;
     int m_activeCamera;
     QComboBox *m_cameraSelector;
     QComboBox *m_sceneSelector;
