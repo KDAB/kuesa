@@ -101,6 +101,9 @@ MainWindow::MainWindow(QWidget *parent)
     , m_activeCamera(-1)
     , m_clearColor(Qt::gray)
     , m_renderAreaSize(1024, 768)
+    , m_gamma(2.2f)
+    , m_exposure(0.0f)
+    , m_toneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectionEffect::None)
 {
     m_ui->setupUi(this);
     m_ui->actionOpen->setShortcut(QKeySequence::Open);
@@ -119,6 +122,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_generateTangents = settings.value("generateTangents", false).value<bool>();
     m_generateNormals = settings.value("generateNormals", false).value<bool>();
+    m_gamma = settings.value("gamma", 2.2f).toFloat();
+    m_exposure = settings.value("exposure", 0.0f).toFloat();
+    m_toneMappingAlgorithm = static_cast<decltype(m_toneMappingAlgorithm)>(settings.value("toneMappingAlgorithm", Kuesa::ToneMappingAndGammaCorrectionEffect::None).toInt());
 
     connect(m_ui->actionCopy, &QAction::triggered, this, &MainWindow::copyAssetName);
     connect(m_ui->actionOpen, &QAction::triggered, this, &MainWindow::openFile);
@@ -416,6 +422,21 @@ bool MainWindow::generateRuntimeNormals() const
     return m_generateNormals;
 }
 
+float MainWindow::gamma() const
+{
+    return m_gamma;
+}
+
+float MainWindow::exposure() const
+{
+    return m_exposure;
+}
+
+Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping MainWindow::toneMappingAlgorithm() const
+{
+    return m_toneMappingAlgorithm;
+}
+
 void MainWindow::setFilePath(QString filePath)
 {
     auto filePathURL = QUrl::fromLocalFile(filePath).toString();
@@ -584,6 +605,9 @@ void MainWindow::openSettings()
     dlg.setDefaultClearColor(settings.value("defaultClearColor", true).toBool());
     dlg.setGenerateTangents(m_generateTangents);
     dlg.setGenerateNormals(m_generateNormals);
+    dlg.setGamma(m_gamma);
+    dlg.setExposure(m_exposure);
+    dlg.setToneMappingAlgorithm(m_toneMappingAlgorithm);
     if (dlg.exec() == QDialog::Accepted) {
         m_assetInspector->meshInspector()->setSelectionColor(dlg.selectionColor());
         settings.setValue("clearColor", dlg.clearColor());
@@ -603,6 +627,20 @@ void MainWindow::openSettings()
         settings.setValue("generateNormals", dlg.generateNormals());
         m_generateNormals = dlg.generateNormals();
         emit generateRuntimeNormalsChanged(m_generateNormals);
+
+        settings.setValue("gamma", dlg.gamma());
+        m_gamma = dlg.gamma();
+        emit gammaChanged(m_gamma);
+
+        settings.setValue("exposure", dlg.exposure());
+        m_exposure = dlg.exposure();
+        emit exposureChanged(m_exposure);
+
+        settings.setValue("toneMappingAlgorithm", dlg.toneMappingAlgorithm());
+        m_toneMappingAlgorithm = dlg.toneMappingAlgorithm();
+        emit toneMappingAlgorithmChanged(m_toneMappingAlgorithm);
+
+        qDebug() << Q_FUNC_INFO << m_toneMappingAlgorithm;
     }
 }
 

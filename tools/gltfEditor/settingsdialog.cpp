@@ -51,6 +51,9 @@ SettingsDialog::SettingsDialog(MainWindow *parent)
     , ui(new Ui::SettingsDialog)
     , m_generateTangents(false)
     , m_generateNormals(false)
+    , m_gamma(2.2f)
+    , m_exposure(0.0f)
+    , m_toneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectionEffect::None)
 {
     ui->setupUi(this);
     connect(ui->selectionColorButton, &QToolButton::clicked, this, [this]() {
@@ -73,6 +76,37 @@ SettingsDialog::SettingsDialog(MainWindow *parent)
         m_generateNormals = checked;
         emit generateNormalsChanged(m_generateNormals);
     });
+    connect(ui->gammaSlider, &QAbstractSlider::valueChanged, this, [this](int value) {
+        // Bring slider Range -6 - 6 to -1 - 1 range
+        m_gamma = 2.2f + float(value) / 6.0f;
+        emit gammaChanged(m_gamma);
+    });
+    connect(this, &SettingsDialog::gammaChanged, this, [this]() {
+        ui->gammaLabel->setText(QStringLiteral("Gamma(%1):)").arg(m_gamma, 0, 'f', 1));
+    });
+    connect(ui->exposureSlider, &QAbstractSlider::valueChanged, this, [this](int value) {
+        // Bring slider Range -6 - 6 to -3 - 3 range
+        m_exposure = float(value) / 2.0f;
+        emit exposureChanged(m_exposure);
+    });
+    connect(this, &SettingsDialog::exposureChanged, this, [this]() {
+        ui->exposureLabel->setText(QStringLiteral("Exposure(%1):)").arg(m_exposure, 0, 'f', 1));
+    });
+    connect(ui->toneMappingCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, [this](int idx) {
+        if (idx >= 0 && idx < ui->toneMappingCombo->count()) {
+            m_toneMappingAlgorithm = static_cast<Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping>(ui->toneMappingCombo->itemData(idx).toInt());
+            emit toneMappingAlgorithmChanged(m_toneMappingAlgorithm);
+        }
+    });
+
+    ui->toneMappingCombo->addItem(QStringLiteral("None"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::None));
+    ui->toneMappingCombo->addItem(QStringLiteral("Reinhard"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::Reinhard));
+    ui->toneMappingCombo->addItem(QStringLiteral("Filmic"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::Filmic));
+
+    // Force Initial UI update
+    emit exposureChanged(m_exposure);
+    emit gammaChanged(m_gamma);
 }
 
 SettingsDialog::~SettingsDialog()
@@ -103,6 +137,21 @@ bool SettingsDialog::generateTangents() const
 bool SettingsDialog::generateNormals() const
 {
     return m_generateNormals;
+}
+
+float SettingsDialog::gamma() const
+{
+    return m_gamma;
+}
+
+float SettingsDialog::exposure() const
+{
+    return m_exposure;
+}
+
+Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping SettingsDialog::toneMappingAlgorithm() const
+{
+    return m_toneMappingAlgorithm;
 }
 
 void SettingsDialog::setSelectionColor(QColor selectionColor)
@@ -152,5 +201,32 @@ void SettingsDialog::setGenerateNormals(bool generateNormals)
         m_generateNormals = generateNormals;
         emit generateNormalsChanged(m_generateNormals);
         ui->generateNormalsCB->setChecked(m_generateNormals);
+    }
+}
+
+void SettingsDialog::setGamma(float gamma)
+{
+    if (m_gamma != gamma) {
+        m_gamma = gamma;
+        emit gammaChanged(m_gamma);
+        ui->gammaSlider->setValue(int((m_gamma - 2.2f) * 6.0f));
+    }
+}
+
+void SettingsDialog::setExposure(float exposure)
+{
+    if (m_exposure != exposure) {
+        m_exposure = exposure;
+        emit exposureChanged(m_exposure);
+        ui->exposureSlider->setValue(int(m_exposure * 2.0f));
+    }
+}
+
+void SettingsDialog::setToneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm)
+{
+    if (m_toneMappingAlgorithm != toneMappingAlgorithm) {
+        m_toneMappingAlgorithm = toneMappingAlgorithm;
+        emit toneMappingAlgorithmChanged(m_toneMappingAlgorithm);
+        ui->toneMappingCombo->setCurrentIndex(static_cast<int>(m_toneMappingAlgorithm));
     }
 }
