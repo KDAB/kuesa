@@ -48,6 +48,7 @@
 #include "transparentrenderstage_p.h"
 #include "tonemappingandgammacorrectioneffect.h"
 #include "kuesa_p.h"
+#include <cmath>
 
 QT_BEGIN_NAMESPACE
 
@@ -621,7 +622,12 @@ void ForwardRenderer::setCamera(Qt3DCore::QEntity *camera)
  */
 void ForwardRenderer::setClearColor(const QColor &clearColor)
 {
-    m_clearBuffers->setClearColor(clearColor);
+    // Convert QColor from sRGB to Linear
+    const QColor linearColor = QColor::fromRgbF(powf(clearColor.redF(), 2.2f),
+                                                powf(clearColor.greenF(), 2.2f),
+                                                powf(clearColor.blueF(), 2.2f),
+                                                clearColor.alphaF());
+    m_clearBuffers->setClearColor(linearColor);
 }
 
 /*!
