@@ -61,57 +61,63 @@ FrameGraphNode {
             id: renderSurfaceSelector
             surface: frameGraph.renderSurface
             Viewport {
-                RenderTargetSelector {
-                    target: RenderTarget {
-                        attachments: [
-                            RenderTargetOutput {
-                                attachmentPoint: RenderTargetOutput.Color0
-                                texture: Texture2D {
-                                    width: previewSize.width
-                                    height: previewSize.height
-                                    format: Texture.RGBAFormat
-                                    generateMipMaps: false
-                                    magnificationFilter: Texture.Linear
-                                    minificationFilter: Texture.Linear
-                                    wrapMode {
-                                        x: WrapMode.ClampToEdge
-                                        y: WrapMode.ClampToEdge
+                RenderStateSet {
+                    renderStates: [
+                        MultiSampleAntiAliasing{},
+                        DepthTest { depthFunction: DepthTest.Less }
+                    ]
+                    RenderTargetSelector {
+                        target: RenderTarget {
+                            attachments: [
+                                RenderTargetOutput {
+                                    attachmentPoint: RenderTargetOutput.Color0
+                                    texture: Texture2DMultisample {
+                                        width: previewSize.width
+                                        height: previewSize.height
+                                        format: Texture.RGBAFormat
+                                        generateMipMaps: false
+                                        magnificationFilter: Texture.Linear
+                                        minificationFilter: Texture.Linear
+                                        wrapMode {
+                                            x: WrapMode.ClampToEdge
+                                            y: WrapMode.ClampToEdge
+                                        }
+                                    }
+                                },
+                                RenderTargetOutput {
+                                    attachmentPoint: RenderTargetOutput.Depth
+                                    texture: Texture2DMultisample {
+                                        width: previewSize.width
+                                        height: previewSize.height
+                                        format: Texture.DepthFormat
                                     }
                                 }
-                            },
-                            RenderTargetOutput {
-                                attachmentPoint: RenderTargetOutput.Depth
-                                texture: Texture2D {
-                                    width: previewSize.width
-                                    height: previewSize.height
-                                    format: Texture.DepthFormat
-                                }
-                            }
-                        ]
-                    }
+                            ]
+                        }
 
-                    ClearBuffers {
-                        buffers: ClearBuffers.ColorDepthBuffer
-                        clearColor: root.clearColor
-                        NoDraw {}
-                    }
-                    TechniqueFilter {
-                        matchAll: FilterKey { name: "renderingStyle"; value: "forward" }
-                        RenderPassFilter {
-                            matchAny: FilterKey { name: "KuesaDrawStage"; value: "Opaque" }
-                            CameraSelector {
-                                camera: Camera {
-                                    projectionType: CameraLens.OrthographicProjection
-                                    left: -1
-                                    right: 1
-                                    bottom: -1
-                                    top: 1
-                                    position: Qt.vector3d(0.0, 0.0, 5.0)
-                                    upVector: Qt.vector3d(0.0, 1.0, 0.0)
-                                    viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
-                                }
-                                RenderCapture {
-                                    id: renderCapture
+                        ClearBuffers {
+                            buffers: ClearBuffers.ColorDepthBuffer
+                            clearColor: root.clearColor
+                            NoDraw {}
+                        }
+                        TechniqueFilter {
+                            matchAll: FilterKey { name: "renderingStyle"; value: "forward" }
+                            RenderPassFilter {
+                                matchAny: FilterKey { name: "KuesaDrawStage"; value: "Opaque" }
+                                CameraSelector {
+                                    camera: Camera {
+                                        projectionType: CameraLens.OrthographicProjection
+                                        left: -1
+                                        right: 1
+                                        bottom: -1
+                                        top: 1
+                                        position: Qt.vector3d(0.0, 0.0, 5.0)
+                                        upVector: Qt.vector3d(0.0, 1.0, 0.0)
+                                        viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
+                                    }
+                                    RenderCapture {
+                                        id: renderCapture
+                                    }
                                 }
                             }
                         }
