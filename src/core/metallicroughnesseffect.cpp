@@ -62,6 +62,7 @@ public:
     void setEnabledLayers(const QStringList &layers);
     void setOpaque(bool opaque);
     void setCullingMode(QCullFace::CullingMode mode);
+    void setAllowCulling(bool allowCulling);
 
 private:
     Qt3DRender::QCullFace *m_backFaceCulling;
@@ -72,6 +73,7 @@ private:
     Qt3DRender::QRenderPass *m_zfillRenderPass;
     Qt3DRender::QRenderPass *m_opaqueRenderPass;
     Qt3DRender::QRenderPass *m_transparentRenderPass;
+    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
 MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore::QNode *parent)
@@ -84,6 +86,7 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     , m_zfillRenderPass(new QRenderPass(this))
     , m_opaqueRenderPass(new QRenderPass(this))
     , m_transparentRenderPass(new QRenderPass(this))
+    , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
 {
     struct ApiFilterInfo {
         int major;
@@ -133,6 +136,10 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     filterKey->setName(QStringLiteral("renderingStyle"));
     filterKey->setValue(QStringLiteral("forward"));
     addFilterKey(filterKey);
+
+    m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
+    m_techniqueAllowFrustumCullingFilterKey->setValue(true);
+    addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
 
     auto zfillFilterKey = new Qt3DRender::QFilterKey(this);
     zfillFilterKey->setName(QStringLiteral("KuesaDrawStage"));
@@ -184,6 +191,11 @@ void MetallicRoughnessTechnique::setOpaque(bool opaque)
 void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
 {
     m_backFaceCulling->setMode(mode);
+}
+
+void MetallicRoughnessTechnique::setAllowCulling(bool allowCulling)
+{
+    m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
 }
 
 /*!
@@ -659,6 +671,9 @@ void MetallicRoughnessEffect::setUseSkinning(bool useSkinning)
     m_metalRoughGL3Technique->setEnabledLayers(layers);
     m_metalRoughES3Technique->setEnabledLayers(layers);
     m_metalRoughES2Technique->setEnabledLayers(layers);
+    m_metalRoughGL3Technique->setAllowCulling(!m_useSkinning);
+    m_metalRoughES3Technique->setAllowCulling(!m_useSkinning);
+    m_metalRoughES2Technique->setAllowCulling(!m_useSkinning);
 }
 
 void MetallicRoughnessEffect::setOpaque(bool opaque)

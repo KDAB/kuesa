@@ -492,10 +492,17 @@ private Q_SLOTS:
         Kuesa::ForwardRenderer renderer;
 
         // THEN
-        QCOMPARE(renderer.renderStages().size(), 2);
+        QCOMPARE(renderer.m_sceneStages.size(), 2);
 
-        Kuesa::OpaqueRenderStage *opaqueStage = static_cast<Kuesa::OpaqueRenderStage *>(renderer.renderStages().first());
-        Kuesa::TransparentRenderStage *transparentStage = static_cast<Kuesa::TransparentRenderStage *>(renderer.renderStages().last());
+        Kuesa::ForwardRenderer::SceneStages sceneStage = renderer.m_sceneStages.first();
+
+        Kuesa::OpaqueRenderStage *opaqueStage = sceneStage.m_opaqueStage;
+        Kuesa::TransparentRenderStage *transparentStage = sceneStage.m_transparentStage;
+        QVERIFY(sceneStage.m_zFillStage == nullptr);
+
+        QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(opaqueStage->parent()) != nullptr);
+        QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(transparentStage->parent()) != nullptr);
+
 
         QCOMPARE(opaqueStage->zFilling(), false);
         QCOMPARE(transparentStage->backToFrontSorting(), true);
@@ -511,42 +518,24 @@ private Q_SLOTS:
         renderer.setZFilling(true);
 
         // THEN
-        QCOMPARE(renderer.renderStages().size(), 3);
+        sceneStage = renderer.m_sceneStages.first();
+
+        QVERIFY(sceneStage.m_zFillStage != nullptr);
         QCOMPARE(opaqueStage->zFilling(), true);
         QCOMPARE(transparentStage->backToFrontSorting(), false);
 
-        QCOMPARE(renderer.renderStages().at(1), opaqueStage);
-        QCOMPARE(renderer.renderStages().last(), transparentStage);
+        QCOMPARE(sceneStage.m_opaqueStage, opaqueStage);
+        QCOMPARE(sceneStage.m_transparentStage, transparentStage);
 
         // WHEN
         renderer.setZFilling(false);
 
         // THEN
-        QCOMPARE(renderer.renderStages().size(), 2);
-        QCOMPARE(renderer.renderStages().first(), opaqueStage);
-        QCOMPARE(renderer.renderStages().last(), transparentStage);
+        sceneStage = renderer.m_sceneStages.first();
 
-        // WHEN
-        Qt3DRender::QFrameGraphNode *noFXStageParent = static_cast<Qt3DRender::QFrameGraphNode *>(opaqueStage->parent());
-
-        // THEN -> We still have an internal effect (Tone Mapping / Gamma Correction)
-        QVERIFY(qobject_cast<Qt3DRender::QFrustumCulling *>(noFXStageParent) == nullptr);
-        QVERIFY(qobject_cast<Qt3DRender::QRenderTargetSelector *>(noFXStageParent) != nullptr);
-
-        // WHEN
-        tst_FX fx;
-        renderer.addPostProcessingEffect(&fx);
-
-        // THEN -> adding effects will have recreated the nodes
-        QVERIFY(opaqueStage->parent() != noFXStageParent);
-        QVERIFY(qobject_cast<Qt3DRender::QRenderTargetSelector *>(opaqueStage->parent()) != nullptr);
-
-        // WHEN -> so does removing the effect
-        renderer.removePostProcessingEffect(&fx);
-
-        // THEN
-        QVERIFY(qobject_cast<Qt3DRender::QRenderTargetSelector *>(opaqueStage->parent()) != nullptr);
-        QVERIFY(opaqueStage->parent() != noFXStageParent);
+        QVERIFY(sceneStage.m_zFillStage == nullptr);
+        QCOMPARE(sceneStage.m_opaqueStage, opaqueStage);
+        QCOMPARE(sceneStage.m_transparentStage, transparentStage);
     }
 
 private:
