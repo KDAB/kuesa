@@ -33,6 +33,7 @@
 #include <Qt3DQuickExtras/Qt3DQuickWindow>
 #include <Qt3DRender/QCamera>
 #include <Qt3DRender/QPickEvent>
+#include <Kuesa/ToneMappingAndGammaCorrectionEffect>
 
 class QComboBox;
 class AnimationWidget;
@@ -58,6 +59,9 @@ class MainWindow : public QMainWindow
     Q_PROPERTY(QSize renderAreaSize READ renderAreaSize NOTIFY renderAreaSizeChanged)
     Q_PROPERTY(bool generateRuntimeTangents READ generateRuntimeTangents NOTIFY generateRuntimeTangentsChanged)
     Q_PROPERTY(bool generateRuntimeNormals READ generateRuntimeNormals NOTIFY generateRuntimeNormalsChanged)
+    Q_PROPERTY(float gamma READ gamma NOTIFY gammaChanged)
+    Q_PROPERTY(float exposure READ exposure NOTIFY exposureChanged)
+    Q_PROPERTY(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged)
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -68,6 +72,9 @@ public:
     QSize renderAreaSize() const;
     bool generateRuntimeTangents() const;
     bool generateRuntimeNormals() const;
+    float gamma() const;
+    float exposure() const;
+    Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
 
     Q_INVOKABLE void setup(Qt3DRender::QCamera *camera, Qt3DCore::QEntity *placeHolder);
     Q_INVOKABLE void updateScene(Kuesa::SceneEntity *entity);
@@ -87,6 +94,9 @@ signals:
     void renderAreaSizeChanged(QSize renderAreaSize);
     void generateRuntimeTangentsChanged(bool generateRuntimeTangents);
     void generateRuntimeNormalsChanged(bool generateRuntimeNormals);
+    void gammaChanged(float gamma);
+    void exposureChanged(float exposure);
+    void toneMappingAlgorithmChanged(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMapAlgorithm);
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -126,6 +136,9 @@ private:
     QSize m_renderAreaSize;
     bool m_generateTangents;
     bool m_generateNormals;
+    float m_gamma;
+    float m_exposure;
+    Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping m_toneMappingAlgorithm;
 };
 
 #endif // MAINWINDOW_H
