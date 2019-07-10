@@ -48,6 +48,7 @@
 #include "transparentrenderstage_p.h"
 #include "tonemappingandgammacorrectioneffect.h"
 #include "kuesa_p.h"
+#include <cmath>
 
 QT_BEGIN_NAMESPACE
 
@@ -436,11 +437,17 @@ Qt3DCore::QEntity *ForwardRenderer::camera() const
 }
 
 /*!
- * Returns the color used to clear the screen at the start of each frame.
+ * Returns the color used to clear the screen at the start of each frame. The
+ * color is returned in sRGB color space.
  */
 QColor ForwardRenderer::clearColor() const
 {
-    return m_clearBuffers->clearColor();
+    const QColor linearColor = m_clearBuffers->clearColor();
+    const float oneOverGamma = 1.0f / 2.2f;
+    return QColor::fromRgbF(powf(linearColor.redF(), oneOverGamma),
+                            powf(linearColor.greenF(), oneOverGamma),
+                            powf(linearColor.blueF(), oneOverGamma),
+                            linearColor.alphaF());
 }
 
 /*!
@@ -620,10 +627,16 @@ void ForwardRenderer::setCamera(Qt3DCore::QEntity *camera)
 
 /*!
  * Sets the \a clearColor used to clear the screen at the start of each frame.
+ * The color is expected to be in sRGB color space.
  */
 void ForwardRenderer::setClearColor(const QColor &clearColor)
 {
-    m_clearBuffers->setClearColor(clearColor);
+    // Convert QColor from sRGB to Linear
+    const QColor linearColor = QColor::fromRgbF(powf(clearColor.redF(), 2.2f),
+                                                powf(clearColor.greenF(), 2.2f),
+                                                powf(clearColor.blueF(), 2.2f),
+                                                clearColor.alphaF());
+    m_clearBuffers->setClearColor(linearColor);
 }
 
 /*!
