@@ -34,6 +34,7 @@
 #include <QQmlAspectEngine>
 #include <QApplication>
 #include <QQmlContext>
+#include "../../../tools/gltfEditor/orbitcameracontroller.h"
 
 #include "controllerwidget.h"
 #include "scenecontroller.h"
@@ -52,6 +53,7 @@ int main(int argc, char *argv[])
     Qt3DExtras::Quick::Qt3DQuickWindow view;
     auto context = view.engine()->qmlEngine()->rootContext();
     context->setContextProperty("_controller", &controller);
+    qmlRegisterType<OrbitCameraController>("Controllers", 1, 0, "OrbitCameraController");
 
     view.setSource(QUrl("qrc:/main.qml"));
     view.resize(1920, 1080);

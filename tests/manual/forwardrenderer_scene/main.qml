@@ -33,6 +33,7 @@ import Qt3D.Input 2.0
 import Qt3D.Extras 2.10
 import Kuesa 1.1 as Kuesa
 import Kuesa.Effects 1.1
+import Controllers 1.0 as Controllers
 
 Entity {
     id: scene
@@ -103,7 +104,7 @@ Entity {
         viewCenter: Qt.vector3d(0, 0, 0)
     }
 
-    OrbitCameraController {
+    Controllers.OrbitCameraController {
         camera: mainCamera
     }
 

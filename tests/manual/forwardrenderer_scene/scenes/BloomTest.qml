@@ -44,8 +44,28 @@ Entity {
     readonly property real angle: activeLight * 2 * Math.PI / sphereCount
     readonly property real sphereDistance: 2
     readonly property vector3d activeSpherePos : Qt.vector3d(sphereDistance * Math.sin(angle), 0, sphereDistance * Math.cos(angle))
+    property bool paused: false
 
     property real lightIntensity: 0
+    readonly property real maxLightIntesity: 10
+
+    KeyboardDevice{
+        id: keyboard
+    }
+
+    Entity {
+        components: [
+            KeyboardHandler {
+                id: handler
+                sourceDevice: keyboard
+                focus: true
+                onSpacePressed: {
+                    root.paused = !root.paused
+                 }
+            }
+        ]
+    }
+
 
     Timer {
         property real time: 0
@@ -55,9 +75,9 @@ Entity {
             var period = 3.0;
             var cycle = time/period;
             activeLight = cycle % sphereCount;
-            lightIntensity = 3 * Math.abs(Math.sin(cycle *Math.PI));
+            lightIntensity = maxLightIntesity * Math.abs(Math.sin(cycle *Math.PI));
         }
-        running: true
+        running: !root.paused
         repeat: true
     }
 
@@ -81,6 +101,7 @@ Entity {
 
 
     OrbitCameraController { camera: mainCamera }
+
 
     Entity {
         components: [
@@ -134,8 +155,8 @@ Entity {
                 id: sphereMaterial
                 effect: Kuesa.MetallicRoughnessEffect { }
                 metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
-                    baseColorFactor: isActiveLight ? currentColor : "gray"
-                    emissiveFactor: isActiveLight ? Qt.rgba(currentColor.r * lightIntensity, currentColor.g * lightIntensity, currentColor.b * lightIntensity) : "gray"
+                    baseColorFactor: isActiveLight ? currentColor: "gray"
+                    emissiveFactor: isActiveLight ?  Qt.rgba(currentColor.r * lightIntensity/maxLightIntesity, currentColor.g * lightIntensity/maxLightIntesity, currentColor.b* lightIntensity/maxLightIntesity) : "gray"
                 }
             }
         }

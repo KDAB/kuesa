@@ -35,8 +35,7 @@ Entity
 {
     Entity {
         components: [
-            Kuesa.PointLight { intensity: 1 },
-            Transform { translation: Qt.vector3d(0, 10, 10) }
+            Kuesa.DirectionalLight { intensity: 2 }
         ]
     }
 

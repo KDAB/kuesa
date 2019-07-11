@@ -31,7 +31,8 @@ QT += 3dcore 3dcore-private 3drender 3dinput 3dextras 3dquick qml quick 3dquicke
 SOURCES += \
     main.cpp \
     scenecontroller.cpp \
-    controllerwidget.cpp
+    controllerwidget.cpp \
+   ../../../tools/gltfEditor/orbitcameracontroller.cpp
 
 OTHER_FILES += \
     main.qml
@@ -41,7 +42,8 @@ RESOURCES += \
 
 HEADERS += \
     scenecontroller.h \
-    controllerwidget.h
+    controllerwidget.h \
+    ../../../tools/gltfEditor/orbitcameracontroller.h
 
 FORMS += \
     controllerwidget.ui
