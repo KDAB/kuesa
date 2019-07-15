@@ -110,8 +110,7 @@
     \section2 OpenGL requirements
     \list
     \li Desktop OpenGL 3+
-    \li OpenGL ES 2.0 with OES_texture_half_float extension. If using 32 bits
-    based texture assets, OES_texture_float extension is required.
+    \li OpenGL ES 2.0
     \li OpenGL ES 3.0
     \endlist
 
