@@ -30,7 +30,6 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
-#include <Kuesa/ToneMappingAndGammaCorrectionEffect>
 
 class MainWindow;
 
@@ -46,9 +45,6 @@ class SettingsDialog : public QDialog
     Q_PROPERTY(bool defaultClearColor READ defaultClearColor WRITE setDefaultClearColor NOTIFY defaultClearColorChanged)
     Q_PROPERTY(bool generateTangents READ generateTangents WRITE setGenerateTangents NOTIFY generateTangentsChanged)
     Q_PROPERTY(bool generateNormals READ generateNormals WRITE setGenerateNormals NOTIFY generateNormalsChanged)
-    Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged)
-    Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
-    Q_PROPERTY(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged)
 public:
     explicit SettingsDialog(MainWindow *parent = nullptr);
     ~SettingsDialog();
@@ -58,9 +54,6 @@ public:
     bool defaultClearColor() const;
     bool generateTangents() const;
     bool generateNormals() const;
-    float gamma() const;
-    float exposure() const;
-    Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
 
 public slots:
     void setSelectionColor(QColor selectionColor);
@@ -68,9 +61,6 @@ public slots:
     void setDefaultClearColor(bool defaultClearColor);
     void setGenerateTangents(bool generateTangents);
     void setGenerateNormals(bool generateNormals);
-    void setGamma(float gamma);
-    void setExposure(float exposure);
-    void setToneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
 
 signals:
     void selectionColorChanged(QColor selectionColor);
@@ -78,9 +68,6 @@ signals:
     void defaultClearColorChanged(bool defaultClearColor);
     void generateTangentsChanged(bool generateTangents);
     void generateNormalsChanged(bool generateNormals);
-    void gammaChanged(float gamma);
-    void exposureChanged(float exposure);
-    void toneMappingAlgorithmChanged(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
 
 private:
     Ui::SettingsDialog *ui;
@@ -89,9 +76,6 @@ private:
     bool m_defaultClearColor;
     bool m_generateTangents;
     bool m_generateNormals;
-    float m_gamma;
-    float m_exposure;
-    Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping m_toneMappingAlgorithm;
 };
 
 #endif // SETTINGSDIALOG_H

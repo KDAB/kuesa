@@ -103,10 +103,6 @@ Kuesa.SceneEntity {
                             scene.camera(scene.cameras.names[_mainWindow.activeCamera]) : mainCamera
                 frustumCulling: true
                 clearColor: _mainWindow.clearColor
-                toneMappingAlgorithm: _mainWindow.toneMappingAlgorithm
-                onToneMappingAlgorithmChanged: console.log(toneMappingAlgorithm)
-                gamma: _mainWindow.gamma
-                exposure: _mainWindow.exposure
             }
         }
         // Render texture/material previews and capture
