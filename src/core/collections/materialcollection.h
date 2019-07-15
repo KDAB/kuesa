@@ -32,7 +32,7 @@
 #include <Kuesa/abstractassetcollection.h>
 #include <Kuesa/kuesa_global.h>
 
-#include <Kuesa/GLTF2MaterialProperties>
+#include <Qt3DRender/qmaterial.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -45,7 +45,7 @@ public:
     explicit MaterialCollection(Qt3DCore::QNode *parent = nullptr);
     ~MaterialCollection();
 
-    KUESA_ASSET_COLLECTION_IMPLEMENTATION(Kuesa::GLTF2MaterialProperties)
+    KUESA_ASSET_COLLECTION_IMPLEMENTATION(Qt3DRender::QMaterial)
 };
 
 } // namespace Kuesa

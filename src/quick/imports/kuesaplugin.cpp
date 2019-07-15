@@ -44,8 +44,6 @@
 #include <Kuesa/SpotLight>
 #include <Kuesa/PointLight>
 #include "postfxlistextension.h"
-#include <Kuesa/MetallicRoughnessProperties>
-#include <Kuesa/UnlitProperties>
 
 #include <QtQml/qqml.h>
 
@@ -88,19 +86,16 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::GLTF2Importer>(uri, 1, 0, "GLTF2Importer");
     qmlRegisterType<Kuesa::SceneEntity>(uri, 1, 0, "SceneEntity");
     qmlRegisterUncreatableType<Kuesa::GLTF2Material>(uri, 1, 1, "GLTF2Material", QStringLiteral("GLTF2Material is abstract"));
-    qmlRegisterUncreatableType<Kuesa::GLTF2Material>(uri, 1, 1, "GLTF2MaterialProperties", QStringLiteral("GLTF2MaterialProperties is abstract"));
     qmlRegisterType<Kuesa::MetallicRoughnessMaterial>(uri, 1, 0, "MetallicRoughnessMaterial");
     qmlRegisterType<Kuesa::MetallicRoughnessMaterial, 1>(uri, 1, 1, "MetallicRoughnessMaterial");
     qmlRegisterType<Kuesa::MetallicRoughnessEffect>(uri, 1, 0, "MetallicRoughnessEffect");
     qmlRegisterType<Kuesa::MetallicRoughnessEffect, 1>(uri, 1, 1, "MetallicRoughnessEffect");
-    qmlRegisterType<Kuesa::MetallicRoughnessProperties>(uri, 1, 1, "MetallicRoughnessProperties");
     qmlRegisterType<Kuesa::UnlitMaterial, 1>(uri, 1, 1, "UnlitMaterial");
     qmlRegisterType<Kuesa::UnlitEffect, 1>(uri, 1, 1, "UnlitEffect");
-    qmlRegisterType<Kuesa::UnlitProperties>(uri, 1, 1, "UnlitProperties");
     qmlRegisterType<Kuesa::Skybox>(uri, 1, 0, "Skybox");
     qmlRegisterType<Kuesa::Asset>(uri, 1, 0, "Asset");
     qmlRegisterExtendedType<Kuesa::AnimationPlayer, Kuesa::AnimationPlayerItem>(uri, 1, 0, "AnimationPlayer");
-    qmlRegisterUncreatableType<Kuesa::GLTF2Import::GLTF2Options>(uri, 1, 1, "GLTF2Options", QStringLiteral("You are not supposed to create a GLTF2Options instance"));
+    qmlRegisterUncreatableType<Kuesa::GLTF2Import::GLTF2Options>(uri, 1, 1, "GLTF2Options",  QStringLiteral("You are not supposed to create a GLTF2Options instance"));
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));

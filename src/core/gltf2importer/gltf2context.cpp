@@ -29,7 +29,6 @@
 #include "gltf2context_p.h"
 #include "kuesa_p.h"
 #include "gltf2importer.h"
-#include "effectslibrary_p.h"
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
@@ -38,7 +37,6 @@ using namespace GLTF2Import;
 GLTF2Context::GLTF2Context()
     : m_options()
     , m_defaultScene(-1)
-    , m_effectLibrary(new EffectsLibrary())
 {
 }
 
@@ -516,11 +514,6 @@ Kuesa::GLTF2Import::GLTF2Options *GLTF2Context::options()
 const Kuesa::GLTF2Import::GLTF2Options *GLTF2Context::options() const
 {
     return &m_options;
-}
-
-EffectsLibrary *GLTF2Context::effectLibrary() const
-{
-    return m_effectLibrary;
 }
 
 void GLTF2Context::reset()

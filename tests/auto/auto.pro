@@ -68,12 +68,10 @@ qtConfig(private_tests) {
         forwardrenderer \
         uri \
         metallicroughnesseffect \
-        metallicroughnessproperties \
+        metallicroughnessmaterial \
         parseroptions \
-        gltf2materialproperties \
-        unlitproperties \
-        meshparser_utils \
-        normalgenerator \
         gltf2material \
-        effectslibrary
+        unlitmaterial \
+        meshparser_utils \
+        normalgenerator
 }

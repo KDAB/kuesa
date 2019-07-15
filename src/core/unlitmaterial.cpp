@@ -29,8 +29,7 @@
 #include <Qt3DRender/qparameter.h>
 #include <Qt3DRender/qabstracttexture.h>
 #include "unlitmaterial.h"
-#include "unlitproperties.h"
-#include "unlitshaderdata_p.h"
+#include "unliteffect.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -189,31 +188,112 @@ namespace Kuesa {
     if changed from true to false or from false to true.
  */
 
+namespace {
+
+template<class OutputType>
+using SignalType = void (UnlitMaterial::*)(OutputType);
+
+template<class OutputType>
+using ValueTypeMapper = typename std::remove_const<typename std::remove_reference<OutputType>::type>::type;
+
+template<class OutputType>
+struct WrappedSignal {
+    UnlitMaterial *self;
+    SignalType<OutputType> sig;
+    void operator()(const QVariant &value) const
+    {
+        std::mem_fn(sig)(self, value.value<ValueTypeMapper<OutputType>>());
+    }
+};
+template<class OutputType>
+WrappedSignal<OutputType> wrapParameterSignal(UnlitMaterial *self, SignalType<OutputType> sig)
+{
+    return WrappedSignal<OutputType>{ self, sig };
+}
+
+} // anonymous
+
 UnlitMaterial::UnlitMaterial(Qt3DCore::QNode *parent)
     : GLTF2Material(parent)
-    , m_unlitProperties(nullptr)
-    , m_unlitShaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("unlit"), {}))
+    , m_effect(new UnlitEffect(this))
+    , m_baseColorFactorParameter(new Qt3DRender::QParameter(QStringLiteral("baseColorFactor"), QColor("gray")))
+    , m_baseColorMapParameter(new Qt3DRender::QParameter(QStringLiteral("baseColorMap"), QVariant()))
+    , m_baseColorUsesTexCoord1(new Qt3DRender::QParameter(QStringLiteral("baseColorUsesTexCoord1"), bool(false)))
 {
-    addParameter(m_unlitShaderDataParameter);
+    QObject::connect(m_baseColorUsesTexCoord1, &Qt3DRender::QParameter::valueChanged,
+                     this, wrapParameterSignal(this, &UnlitMaterial::baseColorUsesTexCoord1Changed));
+    QObject::connect(m_baseColorFactorParameter, &Qt3DRender::QParameter::valueChanged,
+                     this, wrapParameterSignal(this, &UnlitMaterial::baseColorFactorChanged));
+    QObject::connect(m_baseColorMapParameter, &Qt3DRender::QParameter::valueChanged,
+                     this, wrapParameterSignal(this, &UnlitMaterial::baseColorMapChanged));
+
+    QObject::connect(this, &UnlitMaterial::usingColorAttributeChanged,
+                     this, &UnlitMaterial::updateEffect);
+    QObject::connect(this, &UnlitMaterial::doubleSidedChanged,
+                     this, &UnlitMaterial::updateEffect);
+    QObject::connect(this, &UnlitMaterial::useSkinningChanged,
+                     this, &UnlitMaterial::updateEffect);
+    QObject::connect(this, &UnlitMaterial::opaqueChanged,
+                     this, &UnlitMaterial::updateEffect);
+    QObject::connect(this, &UnlitMaterial::alphaCutoffEnabledChanged,
+                     this, &UnlitMaterial::updateEffect);
+    QObject::connect(this, &UnlitMaterial::baseColorMapChanged,
+                     this, &UnlitMaterial::updateEffect);
+
+    addParameter(m_baseColorUsesTexCoord1);
+    addParameter(m_baseColorFactorParameter);
+    addParameter(m_baseColorMapParameter);
+
+    setEffect(m_effect);
+    updateEffect();
 }
 
 UnlitMaterial::~UnlitMaterial()
 {
 }
 
-UnlitProperties *UnlitMaterial::unlitProperties() const
+bool UnlitMaterial::isBaseColorUsingTexCoord1() const
 {
-    return m_unlitProperties;
+    return m_baseColorUsesTexCoord1->value().value<bool>();
 }
 
-void UnlitMaterial::setUnlitProperties(UnlitProperties *unlitProperties)
+QColor UnlitMaterial::baseColorFactor() const
 {
-    if (m_unlitProperties != unlitProperties) {
-        m_unlitProperties = unlitProperties;
-        m_unlitShaderDataParameter->setValue(QVariant::fromValue(m_unlitProperties->shaderData()));
-        m_unlitProperties->addClientMaterial(this);
-        emit unlitPropertiesChanged(unlitProperties);
-    }
+    return m_baseColorFactorParameter->value().value<QColor>();
+}
+
+Qt3DRender::QAbstractTexture *UnlitMaterial::baseColorMap() const
+{
+    return m_baseColorMapParameter->value().value<Qt3DRender::QAbstractTexture *>();
+}
+
+void UnlitMaterial::setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1)
+{
+    m_baseColorUsesTexCoord1->setValue(baseColorUsesTexCoord1);
+}
+
+void UnlitMaterial::setBaseColorFactor(const QColor &baseColorFactor)
+{
+    m_baseColorFactorParameter->setValue(baseColorFactor);
+}
+
+void UnlitMaterial::setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap)
+{
+    if (baseColorMap == m_baseColorMapParameter->value().value<Qt3DRender::QAbstractTexture *>())
+        return;
+    m_baseColorMapParameter->setValue(QVariant::fromValue(baseColorMap));
+    if (baseColorMap != nullptr)
+        baseColorMap->setFormat(Qt3DRender::QAbstractTexture::TextureFormat::SRGB8_Alpha8);
+}
+
+void UnlitMaterial::updateEffect()
+{
+    m_effect->setBaseColorMapEnabled(baseColorMap() != nullptr);
+    m_effect->setUsingColorAttribute(isUsingColorAttribute());
+    m_effect->setDoubleSided(isDoubleSided());
+    m_effect->setOpaque(isOpaque());
+    m_effect->setAlphaCutoffEnabled(isAlphaCutoffEnabled());
+    m_effect->setUseSkinning(m_usesSkinning);
 }
 
 } // namespace Kuesa

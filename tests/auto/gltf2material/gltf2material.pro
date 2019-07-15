@@ -1,4 +1,4 @@
-# tst_gltf2material.pro
+# gltf2material.pro
 #
 # This file is part of Kuesa.
 #
@@ -35,5 +35,3 @@ CONFIG += testcase
 SOURCES += tst_gltf2material.cpp
 
 include(../assets/assets.pri)
-
-

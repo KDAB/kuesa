@@ -49,29 +49,137 @@ class QCullFace;
 
 namespace Kuesa {
 
-class MetallicRoughnessProperties;
+class MorphController;
 
 class KUESASHARED_EXPORT MetallicRoughnessMaterial : public GLTF2Material
 {
     Q_OBJECT
 
-    Q_PROPERTY(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties READ metallicRoughnessProperties WRITE setMetallicRoughnessProperties NOTIFY metallicRoughnessPropertiesChanged)
+    Q_PROPERTY(bool baseColorUsesTexCoord1 READ isBaseColorUsingTexCoord1 WRITE setBaseColorUsesTexCoord1 NOTIFY baseColorUsesTexCoord1Changed)
+    Q_PROPERTY(bool metallicRoughnessUsesTexCoord1 READ isMetallicRoughnessUsingTexCoord1 WRITE setMetallicRoughnessUsesTexCoord1 NOTIFY metallicRoughnessUsesTexCoord1Changed)
+    Q_PROPERTY(bool normalUsesTexCoord1 READ isNormalUsingTexCoord1 WRITE setNormalUsesTexCoord1 NOTIFY normalUsesTexCoord1Changed)
+    Q_PROPERTY(bool aoUsesTexCoord1 READ isAOUsingTexCoord1 WRITE setAOUsesTexCoord1 NOTIFY aoUsesTexCoord1Changed)
+    Q_PROPERTY(bool emissiveUsesTexCoord1 READ isEmissiveUsingTexCoord1 WRITE setEmissiveUsesTexCoord1 NOTIFY emissiveUsesTexCoord1Changed)
+
+    Q_PROPERTY(QColor baseColorFactor READ baseColorFactor WRITE setBaseColorFactor NOTIFY baseColorFactorChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *baseColorMap READ baseColorMap WRITE setBaseColorMap NOTIFY baseColorMapChanged)
+    Q_PROPERTY(float metallicFactor READ metallicFactor WRITE setMetallicFactor NOTIFY metallicFactorChanged)
+    Q_PROPERTY(float roughnessFactor READ roughnessFactor WRITE setRoughnessFactor NOTIFY roughnessFactorChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *metalRoughMap READ metalRoughMap WRITE setMetalRoughMap NOTIFY metalRoughMapChanged)
+
+    Q_PROPERTY(float normalScale READ normalScale WRITE setNormalScale NOTIFY normalScaleChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
+
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *ambientOcclusionMap READ ambientOcclusionMap WRITE setAmbientOcclusionMap NOTIFY ambientOcclusionMapChanged)
+
+    Q_PROPERTY(QColor emissiveFactor READ emissiveFactor WRITE setEmissiveFactor NOTIFY emissiveFactorChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *emissiveMap READ emissiveMap WRITE setEmissiveMap NOTIFY emissiveMapChanged)
+
+    Q_PROPERTY(Kuesa::MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
 
 public:
     explicit MetallicRoughnessMaterial(Qt3DCore::QNode *parent = nullptr);
     ~MetallicRoughnessMaterial();
 
-    MetallicRoughnessProperties *metallicRoughnessProperties() const;
+    bool isBaseColorUsingTexCoord1() const;
+    bool isMetallicRoughnessUsingTexCoord1() const;
+    bool isNormalUsingTexCoord1() const;
+    bool isAOUsingTexCoord1() const;
+    bool isEmissiveUsingTexCoord1() const;
+
+    QColor baseColorFactor() const;
+    Qt3DRender::QAbstractTexture *baseColorMap() const;
+
+    float metallicFactor() const;
+    float roughnessFactor() const;
+    Qt3DRender::QAbstractTexture *metalRoughMap() const;
+
+    float normalScale() const;
+    Qt3DRender::QAbstractTexture *normalMap() const;
+
+    Qt3DRender::QAbstractTexture *ambientOcclusionMap() const;
+
+    QColor emissiveFactor() const;
+    Qt3DRender::QAbstractTexture *emissiveMap() const;
+
+    MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm() const;
 
 public Q_SLOTS:
-    void setMetallicRoughnessProperties(MetallicRoughnessProperties *metallicRoughnessProperties);
+    void setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1);
+    void setMetallicRoughnessUsesTexCoord1(bool metallicRoughnessUsesTexCoord1);
+    void setNormalUsesTexCoord1(bool normalUsesTexCoord1);
+    void setAOUsesTexCoord1(bool aoUsesTexCoord1);
+    void setEmissiveUsesTexCoord1(bool emissiveUsesTexCoord1);
+
+    void setBaseColorFactor(const QColor &baseColorFactor);
+    void setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap);
+
+    void setMetallicFactor(float metallicFactor);
+    void setRoughnessFactor(float roughnessFactor);
+    void setMetalRoughMap(Qt3DRender::QAbstractTexture *metalRoughMap);
+
+    void setNormalScale(float normalScale);
+    void setNormalMap(Qt3DRender::QAbstractTexture *normalMap);
+
+    void setAmbientOcclusionMap(Qt3DRender::QAbstractTexture *ambientOcclusionMap);
+
+    void setEmissiveFactor(const QColor &emissiveFactor);
+    void setEmissiveMap(Qt3DRender::QAbstractTexture *emissiveMap);
+
+    void setToneMappingAlgorithm(MetallicRoughnessEffect::ToneMapping algorithm);
+
+private Q_SLOTS:
+    void onAddedToEntity(Qt3DCore::QEntity *entity);
 
 Q_SIGNALS:
-    void metallicRoughnessPropertiesChanged(MetallicRoughnessProperties *metallicRoughnessProperties);
+    void baseColorUsesTexCoord1Changed(bool);
+    void metallicRoughnessUsesTexCoord1Changed(bool);
+    void normalUsesTexCoord1Changed(bool);
+    void aoUsesTexCoord1Changed(bool);
+    void emissiveUsesTexCoord1Changed(bool);
+
+    void baseColorFactorChanged(const QColor &baseColorFactor);
+    void baseColorMapChanged(Qt3DRender::QAbstractTexture *baseColorMap);
+
+    void metallicFactorChanged(float metallicFactor);
+    void roughnessFactorChanged(float roughnessFactor);
+    void metalRoughMapChanged(Qt3DRender::QAbstractTexture *metalRoughMap);
+
+    void normalScaleChanged(float normalScale);
+    void normalMapChanged(Qt3DRender::QAbstractTexture *normalMapChanged);
+
+    void ambientOcclusionMapChanged(Qt3DRender::QAbstractTexture *ambientOcclusionMap);
+
+    void emissiveFactorChanged(const QColor &emissiveFactor);
+    void emissiveMapChanged(Qt3DRender::QAbstractTexture *emissiveMap);
+
+    void toneMappingAlgorithmChanged(MetallicRoughnessEffect::ToneMapping algorithm);
 
 private:
-    MetallicRoughnessProperties *m_metallicRoughnessProperties;
-    Qt3DRender::QParameter *m_metallicRoughnessShaderDataParameter;
+    void updateEffect();
+
+    Qt3DRender::QParameter *m_baseColorUsesTexCoord1;
+    Qt3DRender::QParameter *m_metallicRoughnessUsesTexCoord1;
+    Qt3DRender::QParameter *m_normalUsesTexCoord1;
+    Qt3DRender::QParameter *m_aoUsesTexCoord1;
+    Qt3DRender::QParameter *m_emissiveUsesTexCoord1;
+
+    Qt3DRender::QParameter *m_baseColorFactorParameter;
+    Qt3DRender::QParameter *m_baseColorMapParameter;
+
+    Qt3DRender::QParameter *m_metallicFactorParameter;
+    Qt3DRender::QParameter *m_roughnessFactorParameter;
+    Qt3DRender::QParameter *m_metalRoughMapParameter;
+
+    Qt3DRender::QParameter *m_normalScaleParameter;
+    Qt3DRender::QParameter *m_normalMapParameter;
+
+    Qt3DRender::QParameter *m_ambientOcclusionMapParameter;
+
+    Qt3DRender::QParameter *m_emissiveFactorParameter;
+    Qt3DRender::QParameter *m_emissiveMapParameter;
+
+    MetallicRoughnessEffect *m_effect;
 };
 
 } // namespace Kuesa

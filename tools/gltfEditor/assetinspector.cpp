@@ -35,7 +35,7 @@
 #include <Kuesa/materialcollection.h>
 #include <Kuesa/meshcollection.h>
 #include <Kuesa/texturecollection.h>
-#include <Kuesa/metallicroughnessproperties.h>
+#include <Kuesa/metallicroughnessmaterial.h>
 #include <QAbstractLight>
 
 AssetInspector::AssetInspector(QObject *parent)
@@ -65,9 +65,9 @@ void AssetInspector::setAsset(const QString &assetName, Kuesa::AbstractAssetColl
         m_textureInspector->setTexture(assetName, texture);
         newAssetType = Texture;
     } else if (Kuesa::MaterialCollection *materialCollection = qobject_cast<Kuesa::MaterialCollection *>(collection)) {
-        auto materialProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(materialCollection->find(assetName));
-        if (materialProperties) {
-            m_materialInspector->setMaterialProperties(materialProperties);
+        auto material = qobject_cast<Kuesa::MetallicRoughnessMaterial *>(materialCollection->find(assetName));
+        if (material) {
+            m_materialInspector->setMaterial(material);
             newAssetType = Material;
         }
     } else if (auto lightCollection = qobject_cast<Kuesa::LightCollection *>(collection)) {
@@ -80,7 +80,7 @@ void AssetInspector::setAsset(const QString &assetName, Kuesa::AbstractAssetColl
     if (newAssetType != Mesh)
         m_meshInspector->setMesh(nullptr);
     if (newAssetType != Material)
-        m_materialInspector->setMaterialProperties(nullptr);
+        m_materialInspector->setMaterial(nullptr);
     if (newAssetType != Texture)
         m_textureInspector->setTexture("", nullptr);
     if (newAssetType != Light)
@@ -101,7 +101,7 @@ void AssetInspector::clear()
 
     // need to do this to prevent a crash when loading new file
     // TODO: figure out where crash is coming from
-    m_materialInspector->setMaterialProperties(nullptr);
+    m_materialInspector->setMaterial(nullptr);
 
     m_assetType = Unknown;
     emit assetTypeChanged(m_assetType);

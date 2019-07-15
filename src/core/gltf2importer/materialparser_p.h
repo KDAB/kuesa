@@ -41,17 +41,11 @@
 #include <QVector3D>
 #include <QString>
 
-#include <Kuesa/private/effectslibrary_p.h>
-
 QT_BEGIN_NAMESPACE
-
-namespace Qt3DRender {
-class QShaderData;
-}
 
 namespace Kuesa {
 
-class GLTF2MaterialProperties;
+class GLTF2Material;
 
 namespace GLTF2Import {
 
@@ -99,15 +93,18 @@ public:
     } alpha;
 
     struct Extensions {
-        bool KHR_materials_unlit = false;
+        bool KHR_materials_unlit;
     } extensions;
 
-    Kuesa::GLTF2MaterialProperties *materialProperties(const GLTF2Context &context);
-    Kuesa::GLTF2MaterialProperties *materialProperties() const;
+    GLTF2Material *material(bool isSkinned, bool hasColorAttribute, const GLTF2Context *context);
+    GLTF2Material *material(bool isSkinned) const;
 
-    Kuesa::GLTF2MaterialProperties *m_materialProperties = nullptr;
+    bool hasRegularMaterial() const { return m_regularMaterial != nullptr; }
+    bool hasSkinnedMaterial() const { return m_skinnedMaterial != nullptr; }
 
-    static Kuesa::EffectProperties effectPropertiesFromMaterial(const Material &material);
+private:
+    GLTF2Material *m_regularMaterial = nullptr;
+    GLTF2Material *m_skinnedMaterial = nullptr;
 };
 
 class Q_AUTOTEST_EXPORT MaterialParser

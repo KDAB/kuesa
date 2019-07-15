@@ -27,6 +27,8 @@
 */
 
 #include <QtTest/QtTest>
+
+#include <Qt3DRender/QParameter>
 #include <Kuesa/gltf2material.h>
 #include <Kuesa/morphcontroller.h>
 
@@ -54,6 +56,24 @@ void testProperty(Kuesa::GLTF2Material *mat,
     QCOMPARE(spy.takeFirst().value(0).value<PropType>(), newValue);
 }
 
+bool testActiveParametersAreValid(const QVector<Qt3DRender::QParameter *> &activeParameters)
+{
+    std::vector<QString> validParameters = { QStringLiteral("alphaCutoff"),
+                                             QStringLiteral("texCoordTransform"),
+                                             QStringLiteral("morphWeights")
+                                           };
+
+    for (const auto &parameter : activeParameters) {
+        auto it = std::find_if(std::begin(validParameters),
+                               std::end(validParameters),
+                               [parameter](const QString &parameterName) {
+                                   return parameter->name() == parameterName;
+                               });
+        if (it == std::end(validParameters))
+            return false;
+    }
+    return true;
+}
 } // namespace
 
 class MyGLTF2Material : public GLTF2Material
@@ -81,8 +101,108 @@ private Q_SLOTS:
         // GIVEN
         MyGLTF2Material mat;
 
-        // THEN -> Default MorphController
-        QVERIFY(mat.morphController() != nullptr);
+        // THEN
+        QCOMPARE(mat.textureTransform(), QMatrix3x3{});
+        QCOMPARE(mat.isUsingColorAttribute(), false);
+        QCOMPARE(mat.isDoubleSided(), false);
+        QCOMPARE(mat.useSkinning(), false);
+        QCOMPARE(mat.isOpaque(), true);
+        QCOMPARE(mat.isAlphaCutoffEnabled(), false);
+        QCOMPARE(mat.alphaCutoff(), 0.0f);
+    }
+
+    void checkTextureTransform()
+    {
+        // GIVEN
+        MyGLTF2Material mat;
+
+        QMatrix3x3 matrix;
+        matrix.fill(5.0);
+
+        // THEN
+        ::testProperty(&mat,
+                       &MyGLTF2Material::setTextureTransform,
+                       &MyGLTF2Material::textureTransform,
+                       &MyGLTF2Material::textureTransformChanged,
+                       QMatrix3x3{}, matrix);
+    }
+
+    void checkUsingColorAttribute()
+    {
+        // GIVEN
+        MyGLTF2Material mat;
+
+        // THEN
+        ::testProperty(&mat,
+                       &MyGLTF2Material::setUsingColorAttribute,
+                       &MyGLTF2Material::isUsingColorAttribute,
+                       &MyGLTF2Material::usingColorAttributeChanged,
+                       false, true);
+    }
+
+    void checkDoubleSided()
+    {
+        // GIVEN
+        MyGLTF2Material mat;
+
+        // THEN
+        ::testProperty(&mat,
+                       &MyGLTF2Material::setDoubleSided,
+                       &MyGLTF2Material::isDoubleSided,
+                       &MyGLTF2Material::doubleSidedChanged,
+                       false, true);
+    }
+
+    void checkUseSkinning()
+    {
+        // GIVEN
+        MyGLTF2Material mat;
+
+        // THEN
+        ::testProperty(&mat,
+                       &MyGLTF2Material::setUseSkinning,
+                       &MyGLTF2Material::useSkinning,
+                       &MyGLTF2Material::useSkinningChanged,
+                       false, true);
+    }
+
+    void checkOpaque()
+    {
+        // GIVEN
+        MyGLTF2Material mat;
+
+        // THEN
+        ::testProperty(&mat,
+                       &MyGLTF2Material::setOpaque,
+                       &MyGLTF2Material::isOpaque,
+                       &MyGLTF2Material::opaqueChanged,
+                       true, false);
+    }
+
+    void checkAlphaCutoff()
+    {
+        // GIVEN
+        MyGLTF2Material mat;
+
+        // THEN
+        ::testProperty(&mat,
+                       &MyGLTF2Material::setAlphaCutoff,
+                       &MyGLTF2Material::alphaCutoff,
+                       &MyGLTF2Material::alphaCutoffChanged,
+                       0.0f, 0.5f);
+    }
+
+    void checkAlphaCutoffEnabled()
+    {
+        // GIVEN
+        MyGLTF2Material mat;
+
+        // THEN
+        ::testProperty(&mat,
+                       &MyGLTF2Material::setAlphaCutoffEnabled,
+                       &MyGLTF2Material::isAlphaCutoffEnabled,
+                       &MyGLTF2Material::alphaCutoffEnabledChanged,
+                       false, true);
     }
 
     void checkMorphWeights()
@@ -96,7 +216,7 @@ private Q_SLOTS:
                        &MyGLTF2Material::setMorphController,
                        &MyGLTF2Material::morphController,
                        &MyGLTF2Material::morphControllerChanged,
-                       mat.morphController(), &ctrl);
+                       static_cast<MorphController*>(nullptr), &ctrl);
     }
 };
 
