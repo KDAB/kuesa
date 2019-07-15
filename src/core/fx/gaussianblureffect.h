@@ -72,8 +72,6 @@ Q_SIGNALS:
 private:
     void createBlurPasses();
     QString passName() const;
-    Qt3DRender::QRenderPassFilter *createRenderPassFilter(const QString &name, const QVariant &value = QVariant());
-    Qt3DRender::QRenderPass *createBlurPass(int pass);
 
     FrameGraphNodePtr m_rootFrameGraphNode;
     Qt3DRender::QLayer *m_layer;

@@ -41,29 +41,49 @@
 //
 
 #include <Qt3DRender/QGraphicsApiFilter>
+#include <QVariant>
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
 class QTechnique;
 class QShaderProgramBuilder;
-} // Qt3DRender
+class QRenderPass;
+class QRenderPassFilter;
+} // namespace Qt3DRender
 
+namespace Qt3DCore {
+class QNode;
+}
 namespace Kuesa {
 
 namespace FXUtils {
 
 Qt3DRender::QTechnique *makeTechnique(Qt3DRender::QGraphicsApiFilter::Api api,
                                       int majorVersion, int minorVersion,
+                                      Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile);
+
+Qt3DRender::QTechnique *makeTechnique(Qt3DRender::QGraphicsApiFilter::Api api,
+                                      int majorVersion, int minorVersion,
+                                      Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile,
+                                      const QString &vertexShader,
+                                      const QString &fragShaderGraphPath,
+                                      const QString &passFilterName, const QString &passFilterValue);
+
+Qt3DRender::QTechnique *makeTechnique(Qt3DRender::QGraphicsApiFilter::Api api,
+                                      int majorVersion, int minorVersion,
                                       Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile,
                                       const QString &vertexShader,
                                       Qt3DRender::QShaderProgramBuilder *shaderBuilder,
-                                      const QString &passName);
+                                      const QString &passFilterName, const QString &passFilterValue);
 
+Qt3DRender::QRenderPass *createRenderPass(const QString &passName, const QVariant &passValue);
 
-} // FXUtils
+Qt3DRender::QRenderPassFilter *createRenderPassFilter(const QString &name, const QVariant &value = {}, Qt3DCore::QNode *parent = nullptr);
 
-} // Kuesa
+} // namespace FXUtils
+
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

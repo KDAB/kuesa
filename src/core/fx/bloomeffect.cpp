@@ -30,6 +30,7 @@
 #include "gaussianblureffect.h"
 #include "thresholdeffect.h"
 #include "fullscreenquad.h"
+#include "fxutils_p.h"
 #include <Qt3DRender/qcameraselector.h>
 #include <Qt3DRender/qrendersurfaceselector.h>
 #include <Qt3DRender/qfilterkey.h>
@@ -135,38 +136,37 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     auto effect = new Qt3DRender::QEffect;
     bloomMaterial->setEffect(effect);
 
-    auto technique = new Qt3DRender::QTechnique;
-    effect->addTechnique(technique);
-    technique->graphicsApiFilter()->setApi(Qt3DRender::QGraphicsApiFilter::OpenGL);
-    technique->graphicsApiFilter()->setMajorVersion(3);
-    technique->graphicsApiFilter()->setMinorVersion(2);
-    technique->graphicsApiFilter()->setProfile(Qt3DRender::QGraphicsApiFilter::CoreProfile);
+    const QString graphPath = QStringLiteral("qrc:/kuesa/shaders/graphs/bloom.frag.json");
+    const QString passFilterValue = QStringLiteral("KuesaBloomPass");
+    const QString passFilterName = QStringLiteral("passName");
 
-    auto techniqueFilterKey = new Qt3DRender::QFilterKey;
-    techniqueFilterKey->setName(QStringLiteral("renderingStyle"));
-    techniqueFilterKey->setValue(QStringLiteral("forward"));
-    technique->addFilterKey(techniqueFilterKey);
+    auto *gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
+                                                3, 2,
+                                                Qt3DRender::QGraphicsApiFilter::CoreProfile,
+                                                QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"),
+                                                graphPath,
+                                                passFilterName, passFilterValue);
+    effect->addTechnique(gl3Technique);
 
-    auto bloomRenderPass = new Qt3DRender::QRenderPass;
+    auto *es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
+                                                3, 0,
+                                                Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                                QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"),
+                                                graphPath,
+                                                passFilterName, passFilterValue);
+    effect->addTechnique(es3Technique);
 
-    auto shaderProg = new Qt3DRender::QShaderProgram(bloomRenderPass);
-    shaderProg->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"))));
+    auto *es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
+                                                2, 0,
+                                                Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                                QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"),
+                                                graphPath,
+                                                passFilterName, passFilterValue);
+    effect->addTechnique(es2Technique);
 
-    auto shaderBuilder = new Qt3DRender::QShaderProgramBuilder(shaderProg);
-    shaderBuilder->setShaderProgram(shaderProg);
-    shaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/bloom.frag.json")));
-
-    bloomRenderPass->setShaderProgram(shaderProg);
-
-    auto passFilterKey = new Qt3DRender::QFilterKey;
-    passFilterKey->setName(passName());
-    bloomRenderPass->addFilterKey(passFilterKey);
-
-    bloomRenderPass->addParameter(m_sceneTextureParam);
-    bloomRenderPass->addParameter(m_blurredBrightTextureParam);
     m_blurredBrightTextureParam->setValue(QVariant::fromValue(m_blurredBrightTexture));
-
-    technique->addRenderPass(bloomRenderPass);
+    effect->addParameter(m_sceneTextureParam);
+    effect->addParameter(m_blurredBrightTextureParam);
 
     auto bloomQuad = new FullScreenQuad(bloomMaterial, m_rootFrameGraphNode.data());
     m_layers.push_back(bloomQuad->layer());
@@ -193,8 +193,9 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     // Bloom Pass
     auto bloomLayerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
     bloomLayerFilter->addLayer(bloomQuad->layer());
-    auto bloomRenderPassFilter = createRenderPassFilter(passName());
-    bloomRenderPassFilter->setParent(bloomLayerFilter);
+
+    //create RenderPassFilter parented to layerFilter
+    FXUtils::createRenderPassFilter(passFilterName, passFilterValue, bloomLayerFilter);
 }
 
 BloomEffect::~BloomEffect()
@@ -202,16 +203,6 @@ BloomEffect::~BloomEffect()
     // need to unparent effect framegraphs otherwise they'll get deleted twice
     m_thresholdEffect->frameGraphSubTree()->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
     m_blurEffect->frameGraphSubTree()->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
-}
-
-Qt3DRender::QRenderPassFilter *BloomEffect::createRenderPassFilter(const QString &name, const QVariant &value)
-{
-    auto filter = new Qt3DRender::QRenderPassFilter;
-    auto filterKey = new Qt3DRender::QFilterKey;
-    filterKey->setName(name);
-    filterKey->setValue(value);
-    filter->addMatch(filterKey);
-    return filter;
 }
 
 Qt3DRender::QRenderTarget *BloomEffect::createRenderTarget(Qt3DRender::QAbstractTexture *texture)
@@ -304,11 +295,6 @@ void BloomEffect::setThreshold(float threshold)
 void BloomEffect::setBlurPassCount(int blurPassCount)
 {
     m_blurEffect->setBlurPassCount(blurPassCount);
-}
-
-QString BloomEffect::passName() const
-{
-    return QStringLiteral("bloomPass");
 }
 
 QT_END_NAMESPACE

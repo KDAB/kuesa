@@ -28,6 +28,7 @@
 
 #include "fxutils_p.h"
 #include <Qt3DRender/QTechnique>
+#include <Qt3DRender/QRenderPassFilter>
 #include <Qt3DRender/QShaderProgramBuilder>
 
 QT_BEGIN_NAMESPACE
@@ -39,12 +40,45 @@ namespace FXUtils {
 /*!
     \internal
  */
+
+Qt3DRender::QTechnique *makeTechnique(Qt3DRender::QGraphicsApiFilter::Api api,
+                                      int majorVersion, int minorVersion,
+                                      Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile,
+                                      const QString &vertexShader,
+                                      const QString &fragShaderGraphPath,
+                                      const QString &passFilterName, const QString &passFilterValue)
+{
+    auto shaderBuilder = new Qt3DRender::QShaderProgramBuilder;
+    shaderBuilder->setFragmentShaderGraph(QUrl(fragShaderGraphPath));
+    return makeTechnique(api, majorVersion, minorVersion, profile, vertexShader, shaderBuilder, passFilterName, passFilterValue);
+}
+
 Qt3DRender::QTechnique *makeTechnique(Qt3DRender::QGraphicsApiFilter::Api api,
                                       int majorVersion, int minorVersion,
                                       Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile,
                                       const QString &vertexShader,
                                       Qt3DRender::QShaderProgramBuilder *shaderBuilder,
-                                      const QString &passName)
+                                      const QString &passFilterName, const QString &passFilterValue)
+{
+    auto technique = makeTechnique(api, majorVersion, minorVersion, profile);
+
+    auto renderPass = createRenderPass(passFilterName, passFilterValue);
+
+    auto *shaderProgram = new Qt3DRender::QShaderProgram(renderPass);
+
+    if (!shaderBuilder->parent())
+        shaderBuilder->setParent(renderPass);
+
+    shaderProgram->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(vertexShader)));
+    shaderBuilder->setShaderProgram(shaderProgram);
+    renderPass->setShaderProgram(shaderProgram);
+
+    technique->addRenderPass(renderPass);
+
+    return technique;
+}
+
+Qt3DRender::QTechnique *makeTechnique(Qt3DRender::QGraphicsApiFilter::Api api, int majorVersion, int minorVersion, Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile)
 {
     auto technique = new Qt3DRender::QTechnique;
 
@@ -58,32 +92,31 @@ Qt3DRender::QTechnique *makeTechnique(Qt3DRender::QGraphicsApiFilter::Api api,
     techniqueFilterKey->setValue(QStringLiteral("forward"));
     technique->addFilterKey(techniqueFilterKey);
 
-    auto renderPass = new Qt3DRender::QRenderPass;
-
-    auto *shaderProgram = new Qt3DRender::QShaderProgram(renderPass);
-
-    if (!shaderBuilder->parent())
-        shaderBuilder->setParent(renderPass);
-
-    shaderProgram->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(vertexShader)));
-    shaderBuilder->setShaderProgram(shaderProgram);
-    renderPass->setShaderProgram(shaderProgram);
-
-
-    auto passFilterKey = new Qt3DRender::QFilterKey;
-    passFilterKey->setName(QStringLiteral("passName"));
-    passFilterKey->setValue(passName);
-    renderPass->addFilterKey(passFilterKey);
-
-    technique->addRenderPass(renderPass);
-
     return technique;
 }
 
+Qt3DRender::QRenderPass *createRenderPass(const QString &passName, const QVariant &passValue)
+{
+    auto renderPass = new Qt3DRender::QRenderPass;
+    auto passFilterKey = new Qt3DRender::QFilterKey;
+    passFilterKey->setName(passName);
+    passFilterKey->setValue(passValue);
+    renderPass->addFilterKey(passFilterKey);
+    return renderPass;
+}
 
+Qt3DRender::QRenderPassFilter *createRenderPassFilter(const QString &name, const QVariant &value, Qt3DCore::QNode *parent)
+{
+    auto filter = new Qt3DRender::QRenderPassFilter(parent);
+    auto filterKey = new Qt3DRender::QFilterKey;
+    filterKey->setName(name);
+    filterKey->setValue(value);
+    filter->addMatch(filterKey);
+    return filter;
+}
 
-} // FXUtils
+} // namespace FXUtils
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE

@@ -181,16 +181,17 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
     , m_toneMappingAlgorithm(ToneMapping::None)
 {
     QObject::connect(m_gammaParameter, &Qt3DRender::QParameter::valueChanged,
-                     this, [this] (QVariant value) { emit gammaChanged(value.toFloat()); });
+                     this, [this](QVariant value) { emit gammaChanged(value.toFloat()); });
     QObject::connect(m_exposureParameter, &Qt3DRender::QParameter::valueChanged,
-                     this, [this] (QVariant value) { emit exposureChanged(value.toFloat()); });
+                     this, [this](QVariant value) { emit exposureChanged(value.toFloat()); });
 
     m_rootFrameGraphNode.reset(new Qt3DRender::QRenderStateSet());
     m_rootFrameGraphNode->setObjectName(QStringLiteral("ToneMappingAndGammaCorrectionEffect"));
 
     // Set up Material
     Qt3DRender::QMaterial *gammaCorrectionMaterial = new Qt3DRender::QMaterial(m_rootFrameGraphNode.data());
-    const QString passName = QStringLiteral("gammaCorrectionPass");
+    const QString passName = QStringLiteral("passName");
+    const QString passFilterValue = QStringLiteral("gammaCorrectionPass");
     {
         Qt3DRender::QEffect *effect = new Qt3DRender::QEffect();
         gammaCorrectionMaterial->setEffect(effect);
@@ -213,7 +214,7 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
                                                     Qt3DRender::QGraphicsApiFilter::CoreProfile,
                                                     QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"),
                                                     m_gl3ShaderBuilder,
-                                                    passName);
+                                                    passName, passFilterValue);
         effect->addTechnique(gl3Technique);
 
         auto *es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
@@ -221,7 +222,7 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
                                                     Qt3DRender::QGraphicsApiFilter::NoProfile,
                                                     QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"),
                                                     m_es3ShaderBuilder,
-                                                    passName);
+                                                    passName, passFilterValue);
         effect->addTechnique(es3Technique);
 
         auto *es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
@@ -229,7 +230,7 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
                                                     Qt3DRender::QGraphicsApiFilter::NoProfile,
                                                     QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"),
                                                     m_es2ShaderBuilder,
-                                                    passName);
+                                                    passName, passFilterValue);
         effect->addTechnique(es2Technique);
         effect->addParameter(m_gammaParameter);
         effect->addParameter(m_inputTextureParameter);
@@ -244,12 +245,9 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
         // Set up FrameGraph
         auto layerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
         layerFilter->addLayer(m_layer);
-        auto renderPassFilter = new Qt3DRender::QRenderPassFilter(layerFilter);
-        auto filterKey = new Qt3DRender::QFilterKey;
 
-        filterKey->setName(QStringLiteral("passName"));
-        filterKey->setValue(passName);
-        renderPassFilter->addMatch(filterKey);
+        //create RenderPassFilter parented to layerFilter
+        FXUtils::createRenderPassFilter(passName, passFilterValue, layerFilter);
     }
 }
 
@@ -292,7 +290,6 @@ void ToneMappingAndGammaCorrectionEffect::setExposure(float exposure)
     m_exposureParameter->setValue(exposure);
 }
 
-
 /*!
     Returns the tone mapping algorithm used by the shader.
     \default ToneMappingAndGammaCorrectionEffect::None
@@ -326,6 +323,6 @@ void ToneMappingAndGammaCorrectionEffect::setToneMappingAlgorithm(ToneMappingAnd
     emit toneMappingAlgorithmChanged(algorithm);
 }
 
-} // namespace
+} // namespace Kuesa
 
 QT_END_NAMESPACE

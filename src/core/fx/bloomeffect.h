@@ -80,9 +80,7 @@ Q_SIGNALS:
     void blurPassCountChanged(int blurPassCount);
 
 private:
-    Qt3DRender::QRenderPassFilter *createRenderPassFilter(const QString &name, const QVariant &value = QVariant());
     Qt3DRender::QRenderTarget *createRenderTarget(Qt3DRender::QAbstractTexture *texture);
-    QString passName() const;
 
     FrameGraphNodePtr m_rootFrameGraphNode;
 
