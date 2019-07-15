@@ -73,7 +73,6 @@ private:
     Qt3DRender::QLayer *m_layer;
     Qt3DRender::QShaderProgramBuilder *m_gl3ShaderBuilder;
     Qt3DRender::QShaderProgramBuilder *m_es3ShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_es2ShaderBuilder;
     Qt3DRender::QRenderStateSet *m_blendRenderState;
     Qt3DRender::QParameter *m_maskParameter;
     Qt3DRender::QParameter *m_inputTextureParameter;

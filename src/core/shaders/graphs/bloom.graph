@@ -21,22 +21,166 @@
             ],
             "sourcePort": "color",
             "sourceUuid": "{1929dd54-dcd0-46e2-b6a8-2e44e37032c5}",
-            "targetPort": "first",
-            "targetUuid": "{a4a7ebcb-8a2c-4bee-8e3c-6067a3a43186}"
+            "targetPort": "input",
+            "targetUuid": "{c343de59-8e32-49f2-960b-8e8525c3950e}"
         },
         {
             "layers": [
             ],
             "sourcePort": "color",
             "sourceUuid": "{ba7592c8-a9ec-4b85-b1e5-ad22dfcdbe89}",
+            "targetPort": "input",
+            "targetUuid": "{325e5c24-31d5-4707-91a6-7e02475b8561}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{c343de59-8e32-49f2-960b-8e8525c3950e}",
+            "targetPort": "first",
+            "targetUuid": "{c748f56a-e6a6-469d-bae4-4203f7668155}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{52a2dcf3-7029-412f-bb5b-935bdbda5753}",
             "targetPort": "second",
-            "targetUuid": "{a4a7ebcb-8a2c-4bee-8e3c-6067a3a43186}"
+            "targetUuid": "{c748f56a-e6a6-469d-bae4-4203f7668155}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{c748f56a-e6a6-469d-bae4-4203f7668155}",
+            "targetPort": "first",
+            "targetUuid": "{192d48f1-afd3-4230-9189-3fd1143f9542}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{325e5c24-31d5-4707-91a6-7e02475b8561}",
+            "targetPort": "second",
+            "targetUuid": "{192d48f1-afd3-4230-9189-3fd1143f9542}"
         },
         {
             "layers": [
             ],
             "sourcePort": "sum",
-            "sourceUuid": "{a4a7ebcb-8a2c-4bee-8e3c-6067a3a43186}",
+            "sourceUuid": "{192d48f1-afd3-4230-9189-3fd1143f9542}",
+            "targetPort": "first",
+            "targetUuid": "{3df4b917-3e08-4db3-8416-8b0eea258ee5}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{cf14a6ff-c7bc-4ef1-b7bf-ab00906fa7d7}",
+            "targetPort": "base",
+            "targetUuid": "{9aa615d7-fb86-4dcf-8b6c-9b3d4c6bc829}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{a927f57c-c8de-4957-a811-e76689fbf6ed}",
+            "targetPort": "power",
+            "targetUuid": "{9aa615d7-fb86-4dcf-8b6c-9b3d4c6bc829}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{9aa615d7-fb86-4dcf-8b6c-9b3d4c6bc829}",
+            "targetPort": "second",
+            "targetUuid": "{3df4b917-3e08-4db3-8416-8b0eea258ee5}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{3df4b917-3e08-4db3-8416-8b0eea258ee5}",
+            "targetPort": "first",
+            "targetUuid": "{3432aa1b-10ba-4031-846b-3ba8af1bf14d}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{3df4b917-3e08-4db3-8416-8b0eea258ee5}",
+            "targetPort": "first",
+            "targetUuid": "{fc01dfb4-3105-4f5f-b4bf-daca5851707f}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{b71920f6-0497-40af-8559-11bd5dccef74}",
+            "targetPort": "second",
+            "targetUuid": "{fc01dfb4-3105-4f5f-b4bf-daca5851707f}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "sum",
+            "sourceUuid": "{fc01dfb4-3105-4f5f-b4bf-daca5851707f}",
+            "targetPort": "second",
+            "targetUuid": "{3432aa1b-10ba-4031-846b-3ba8af1bf14d}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "quotient",
+            "sourceUuid": "{3432aa1b-10ba-4031-846b-3ba8af1bf14d}",
+            "targetPort": "base",
+            "targetUuid": "{b45f3935-11df-48a4-a744-23f70de53257}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{c0b38615-896c-4c37-a310-c632803e3525}",
+            "targetPort": "first",
+            "targetUuid": "{7f7b778a-0a55-4f33-b049-6165415c2f24}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{c44e2523-13b6-4a94-b2db-f01eb4861ff9}",
+            "targetPort": "second",
+            "targetUuid": "{7f7b778a-0a55-4f33-b049-6165415c2f24}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "quotient",
+            "sourceUuid": "{7f7b778a-0a55-4f33-b049-6165415c2f24}",
+            "targetPort": "power",
+            "targetUuid": "{b45f3935-11df-48a4-a744-23f70de53257}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{b45f3935-11df-48a4-a744-23f70de53257}",
+            "targetPort": "first",
+            "targetUuid": "{e5c98241-7cdb-4cbb-be71-8f1b11f3aacd}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{75e24756-4326-4a27-833b-ee03b3cb1bf1}",
+            "targetPort": "second",
+            "targetUuid": "{e5c98241-7cdb-4cbb-be71-8f1b11f3aacd}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{e5c98241-7cdb-4cbb-be71-8f1b11f3aacd}",
             "targetPort": "fragColor",
             "targetUuid": "{12685ae4-eaee-430e-92e9-3884f9857f99}"
         }
@@ -115,6 +259,467 @@
         },
         {
             "collapsed": false,
+            "displayName": "swizzle",
+            "group": -1,
+            "id": 3,
+            "inputValues": {
+                "input": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "fields": "rgb",
+                "inputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 912,
+                "y": 47
+            },
+            "type": "swizzle",
+            "uuid": "{c343de59-8e32-49f2-960b-8e8525c3950e}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "swizzle",
+            "group": -1,
+            "id": 4,
+            "inputValues": {
+                "input": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "fields": "rgb",
+                "inputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 1147,
+                "y": 272
+            },
+            "type": "swizzle",
+            "uuid": "{325e5c24-31d5-4707-91a6-7e02475b8561}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "multiply",
+            "group": -1,
+            "id": 5,
+            "inputValues": {
+                "first": "",
+                "second": "0.0"
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 1137,
+                "y": 130
+            },
+            "type": "multiply",
+            "uuid": "{c748f56a-e6a6-469d-bae4-4203f7668155}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "constant",
+            "group": -1,
+            "id": 6,
+            "inputValues": {
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "1.5",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "position": {
+                "x": 880,
+                "y": 128
+            },
+            "type": "constant",
+            "uuid": "{52a2dcf3-7029-412f-bb5b-935bdbda5753}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "add",
+            "group": -1,
+            "id": 7,
+            "inputValues": {
+                "first": "",
+                "second": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 1379,
+                "y": 206
+            },
+            "type": "add",
+            "uuid": "{192d48f1-afd3-4230-9189-3fd1143f9542}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "multiply",
+            "group": -1,
+            "id": 8,
+            "inputValues": {
+                "first": "",
+                "second": "0.0"
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 1693,
+                "y": 227
+            },
+            "type": "multiply",
+            "uuid": "{3df4b917-3e08-4db3-8416-8b0eea258ee5}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "constant",
+            "group": -1,
+            "id": 10,
+            "inputValues": {
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "2.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "position": {
+                "x": 1020,
+                "y": 363
+            },
+            "type": "constant",
+            "uuid": "{cf14a6ff-c7bc-4ef1-b7bf-ab00906fa7d7}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "input",
+            "group": -1,
+            "id": 11,
+            "inputValues": {
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "name": "exposure",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Uniform"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "position": {
+                "x": 955,
+                "y": 522
+            },
+            "type": "input",
+            "uuid": "{a927f57c-c8de-4957-a811-e76689fbf6ed}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "pow",
+            "group": -1,
+            "id": 12,
+            "inputValues": {
+                "base": "0.0",
+                "power": "0.0"
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "position": {
+                "x": 1416,
+                "y": 478
+            },
+            "type": "pow",
+            "uuid": "{9aa615d7-fb86-4dcf-8b6c-9b3d4c6bc829}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "divide",
+            "group": -1,
+            "id": 13,
+            "inputValues": {
+                "first": "",
+                "second": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 2141,
+                "y": 249
+            },
+            "type": "divide",
+            "uuid": "{3432aa1b-10ba-4031-846b-3ba8af1bf14d}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "add",
+            "group": -1,
+            "id": 14,
+            "inputValues": {
+                "first": "",
+                "second": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 1966,
+                "y": 361
+            },
+            "type": "add",
+            "uuid": "{fc01dfb4-3105-4f5f-b4bf-daca5851707f}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "constant",
+            "group": -1,
+            "id": 15,
+            "inputValues": {
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "1.0,1.0,1.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 1654,
+                "y": 441
+            },
+            "type": "constant",
+            "uuid": "{b71920f6-0497-40af-8559-11bd5dccef74}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "pow",
+            "group": -1,
+            "id": 16,
+            "inputValues": {
+                "base": "0.0",
+                "power": "0.0"
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 2583,
+                "y": 458
+            },
+            "type": "pow",
+            "uuid": "{b45f3935-11df-48a4-a744-23f70de53257}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "constant",
+            "group": -1,
+            "id": 17,
+            "inputValues": {
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "1.4,1.4,1.4",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 2011,
+                "y": 675
+            },
+            "type": "constant",
+            "uuid": "{c44e2523-13b6-4a94-b2db-f01eb4861ff9}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "constant",
+            "group": -1,
+            "id": 18,
+            "inputValues": {
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "1.0,1.0,1.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 2016,
+                "y": 494
+            },
+            "type": "constant",
+            "uuid": "{c0b38615-896c-4c37-a310-c632803e3525}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "divide",
+            "group": -1,
+            "id": 19,
+            "inputValues": {
+                "first": "",
+                "second": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 2352,
+                "y": 595
+            },
+            "type": "divide",
+            "uuid": "{7f7b778a-0a55-4f33-b049-6165415c2f24}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "join2",
+            "group": -1,
+            "id": 20,
+            "inputValues": {
+                "first": "0.0",
+                "second": "0.0"
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "typeOfFirst": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                "typeOfSecond": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "position": {
+                "x": 2824,
+                "y": 599
+            },
+            "type": "join2",
+            "uuid": "{e5c98241-7cdb-4cbb-be71-8f1b11f3aacd}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "constant",
+            "group": -1,
+            "id": 21,
+            "inputValues": {
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "1.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "position": {
+                "x": 2530,
+                "y": 735
+            },
+            "type": "constant",
+            "uuid": "{75e24756-4326-4a27-833b-ee03b3cb1bf1}"
+        },
+        {
+            "collapsed": false,
             "displayName": "fragColor",
             "group": -1,
             "id": 22,
@@ -126,43 +731,19 @@
             "parameters": {
             },
             "position": {
-                "x": 1475,
-                "y": 245
+                "x": 3142,
+                "y": 604
             },
             "type": "fragColor",
             "uuid": "{12685ae4-eaee-430e-92e9-3884f9857f99}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "add",
-            "group": -1,
-            "id": 23,
-            "inputValues": {
-                "first": "",
-                "second": ""
-            },
-            "layers": [
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "position": {
-                "x": 1192,
-                "y": 240
-            },
-            "type": "add",
-            "uuid": "{a4a7ebcb-8a2c-4bee-8e3c-6067a3a43186}"
         }
     ],
     "project": {
         "position": {
-            "x": 339.9509379509385,
-            "y": -50.477988677988776
+            "x": 1050.189082219019,
+            "y": 190.8878413039176
         },
-        "scale": 0.8125
+        "scale": 0.5
     },
     "prototypes": {
         "add": {
@@ -228,47 +809,6 @@
                         "minor": 0
                     },
                     "substitution": "$type $output = $input1 && $input2;"
-                }
-            ]
-        },
-        "atIndex": {
-            "inputs": [
-                "index",
-                "input"
-            ],
-            "outputs": [
-                "output"
-            ],
-            "parameters": {
-                "indexType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Int"
-                },
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "outType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp $outType $output = $input[$index];"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$outType $output = $input[$index];"
                 }
             ]
         },
@@ -363,10 +903,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "headerSnippets": [
-                        "highp $type discard_if_$type(bool shouldDiscard, highp $type value) { if (shouldDiscard) discard; return value; }"
-                    ],
-                    "substitution": "highp $type $output = discard_if_$type($condition, $value);"
+                    "substitution": "$type $output; if ($condition) discard; $output = $value;"
                 },
                 {
                     "format": {
@@ -374,10 +911,7 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "headerSnippets": [
-                        "$type discard_if_$type(bool shouldDiscard, $type value) { if (shouldDiscard) discard; return value; }"
-                    ],
-                    "substitution": "$type $output = discard_if_$type($condition, $value);"
+                    "substitution": "$type $output; if ($condition) discard; $output = $value;"
                 }
             ]
         },
@@ -390,10 +924,6 @@
                 "quotient"
             ],
             "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
                 "secondType": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -536,7 +1066,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "gl_FragColor = $fragColor;"
+                    "substitution": "gl_fragColor = $fragColor;"
                 },
                 {
                     "format": {
@@ -559,37 +1089,6 @@
                         "out vec4 fragColor;"
                     ],
                     "substitution": "fragColor = $fragColor;"
-                }
-            ]
-        },
-        "gl_Position": {
-            "inputs": [
-                "position"
-            ],
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "gl_Position = $position;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "gl_Position = $position;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "gl_Position = $position;"
                 }
             ]
         },
@@ -656,7 +1155,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output = ($condition) ? $true : $false;"
+                    "substitution": "$type $output; if ($condition) $output = $true; else $output = $false;"
                 },
                 {
                     "format": {
@@ -664,7 +1163,7 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output = ($condition) ? $true : $false;"
+                    "substitution": "$type $output; if ($condition) $output = $true; else $output = $false;"
                 }
             ]
         },
@@ -956,10 +1455,6 @@
                 "product"
             ],
             "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
                 "secondType": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -1082,53 +1577,6 @@
                         "minor": 0
                     },
                     "substitution": "$type $output = $input1 || $input2;"
-                }
-            ]
-        },
-        "output": {
-            "inputs": [
-                "value"
-            ],
-            "parameters": {
-                "name": "defaultName",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "varying highp $type $name;"
-                    ],
-                    "substitution": "$name = $value;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "out highp $type $name;"
-                    ],
-                    "substitution": "$name = $value;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "out $type $name;"
-                    ],
-                    "substitution": "$name = $value;"
                 }
             ]
         },
@@ -1353,28 +1801,6 @@
             "rules": [
                 {
                     "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "#pragma include :/shaders/es2/coordinatesystems.inc"
-                    ],
-                    "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "#pragma include :/shaders/es3/coordinatesystems.inc"
-                    ],
-                    "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
-                },
-                {
-                    "format": {
                         "api": "OpenGLCoreProfile",
                         "major": 3,
                         "minor": 0
@@ -1386,7 +1812,5 @@
                 }
             ]
         }
-    },
-    "subgraph": [
-    ]
+    }
 }

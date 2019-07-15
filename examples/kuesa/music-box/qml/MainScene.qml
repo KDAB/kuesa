@@ -37,7 +37,6 @@ import QtQuick 2.12
 
 //![0]
 import Kuesa 1.1 as Kuesa
-import Kuesa.Effects 1.1 as KuesaFX
 import MusicBox 1.0 as MusicBox
 
 Kuesa.SceneEntity {
@@ -187,7 +186,6 @@ Kuesa.SceneEntity {
                 id: frameGraph
                 camera: mainCamera
                 backToFrontSorting: true
-                toneMappingAlgorithm: KuesaFX.ToneMappingAndGammaCorrectionEffect.Reinhard
             }
         },
         InputSettings { },

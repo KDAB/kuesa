@@ -42,7 +42,7 @@ SceneController::SceneController(QObject *parent)
     , m_useEmissiveMap(false)
     , m_useColorAttribute(false)
     , m_doubleSided(false)
-    , m_toneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectionEffect::Reinhard)
+    , m_toneMappingAlgorithm(Kuesa::MetallicRoughnessEffect::Reinhard)
 {
 }
 
@@ -111,7 +111,7 @@ bool SceneController::doubleSided() const
     return m_doubleSided;
 }
 
-Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping SceneController::toneMappingAlgorithm() const
+Kuesa::MetallicRoughnessEffect::ToneMapping SceneController::toneMappingAlgorithm() const
 {
     return m_toneMappingAlgorithm;
 }
@@ -233,7 +233,7 @@ void SceneController::setDoubleSided(bool doubleSided)
     emit doubleSidedChanged(doubleSided);
 }
 
-void SceneController::setToneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping algorithm)
+void SceneController::setToneMappingAlgorithm(Kuesa::MetallicRoughnessEffect::ToneMapping algorithm)
 {
     if (m_toneMappingAlgorithm == algorithm)
         return;

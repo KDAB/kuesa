@@ -53,7 +53,7 @@ Item {
                 exposure: menu.exposure
                 rotating: menu.toggleRotation
                 lightRotating: menu.toggleLightRotation
-                toneMappingAlgorithmName: menu.toneMappingAlgorithmName
+                useFilmicEffect: menu.filmicEffectToneMapping
             }
         }
     }

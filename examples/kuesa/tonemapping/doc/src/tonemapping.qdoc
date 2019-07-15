@@ -62,15 +62,23 @@
 
     \snippet tonemapping/qml/MainScene.qml 1
 
-    \section1 Controlling the Exposure and Tone Mapping
+    \section1 Extracting a Material Asset
 
-    We use a \l {ForwardRenderer} FrameGraph to render our scene. This
-    FrameGraph has properties to control the exposure as well as the tone
-    mapping algorithm we want to use.
+    We know in advance the name of the assets bundled in the glTF2 file. If you
+    haven't authored the file yourself, you can use the \l {gltfEditor} to
+    introspect it, list the assets (meshes, materials, animations, ...) and
+    preview them.
 
-    Therefore we can create a binding on the \a toneMappingAlgorithm property
-    of our \l {ForwardRenderer} FrameGraph to control the tonemapping algorithm
+    Given the name of a material:
+    \snippet tonemapping/qml/MainScene.qml 2.1
+    \dots
+
+    The \a node property for our \l {Asset} allows us to access the underlying
+    instance of our Material asset which should be an instance of \l
+    {MetallicRoughnessMaterial}.
+
+    Next we can create a binding on the \a toneMappingAlgorithm property of our
+    \l {MetallicRoughnessMaterial} asset to control the tonemapping algorithm
     used
-
     \snippet tonemapping/qml/MainScene.qml 2.2
 */

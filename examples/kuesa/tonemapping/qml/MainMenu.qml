@@ -33,7 +33,7 @@ import QtGraphicalEffects 1.0
 
 Item {
     id: root
-    readonly property string toneMappingAlgorithmName: radioButtonsGroup.current && radioButtonsGroup.current.parent ? radioButtonsGroup.current.parent.text : "None"
+    property alias filmicEffectToneMapping: filmicEffectToneMappingSwitch.checked
     property alias toggleRotation: rotationToggleSwitch.checked
     property alias toggleLightRotation: lightToggleSwitch.checked
     property alias exposure: exposureSlider.value
@@ -165,22 +165,17 @@ Item {
                             color: "#70ffffff"
                         }
 
-                        ExclusiveGroup { id: radioButtonsGroup }
-
-                        Controls.HorizontalLabeledSwitch {
-                            exclusiveGroup: radioButtonsGroup
-                            text: "None"
-                        }
+                        ExclusiveGroup { id: radioButonsGroup }
 
                         Controls.HorizontalLabeledSwitch {
                             checked: true
-                            exclusiveGroup: radioButtonsGroup
+                            exclusiveGroup: radioButonsGroup
                             text: "Reinhard"
                         }
 
                         Controls.HorizontalLabeledSwitch {
                             id: filmicEffectToneMappingSwitch
-                            exclusiveGroup: radioButtonsGroup
+                            exclusiveGroup: radioButonsGroup
                             text: "Filmic"
                         }
 

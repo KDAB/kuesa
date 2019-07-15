@@ -408,6 +408,74 @@
         {
             "layers": [
             ],
+            "sourcePort": "outputColor",
+            "sourceUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}",
+            "targetPort": "color",
+            "targetUuid": "{2043e54f-6ab6-4950-ba77-500bd6467f47}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{c61c2622-eacb-4512-be77-655fae53afd7}",
+            "targetPort": "exposure",
+            "targetUuid": "{2043e54f-6ab6-4950-ba77-500bd6467f47}"
+        },
+        {
+            "layers": [
+                "useReinhardToneMap"
+            ],
+            "sourcePort": "outputColor",
+            "sourceUuid": "{2043e54f-6ab6-4950-ba77-500bd6467f47}",
+            "targetPort": "color",
+            "targetUuid": "{ef91d9a0-b98e-472e-996c-0d7b0eccbdd7}"
+        },
+        {
+            "layers": [
+                "useFilmicToneMap"
+            ],
+            "sourcePort": "outputColor",
+            "sourceUuid": "{2043e54f-6ab6-4950-ba77-500bd6467f47}",
+            "targetPort": "color",
+            "targetUuid": "{f527671b-4aba-4548-b778-e5088b155db0}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{711d9dcb-441d-4804-9765-d1f62024878c}",
+            "targetPort": "gamma",
+            "targetUuid": "{8d262f61-1609-439d-b296-8111596d1f59}"
+        },
+        {
+            "layers": [
+                "useReinhardToneMap"
+            ],
+            "sourcePort": "outputColor",
+            "sourceUuid": "{ef91d9a0-b98e-472e-996c-0d7b0eccbdd7}",
+            "targetPort": "color",
+            "targetUuid": "{8d262f61-1609-439d-b296-8111596d1f59}"
+        },
+        {
+            "layers": [
+                "useFilmicToneMap"
+            ],
+            "sourcePort": "outputColor",
+            "sourceUuid": "{f527671b-4aba-4548-b778-e5088b155db0}",
+            "targetPort": "color",
+            "targetUuid": "{8d262f61-1609-439d-b296-8111596d1f59}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "outputColor",
+            "sourceUuid": "{8d262f61-1609-439d-b296-8111596d1f59}",
+            "targetPort": "first",
+            "targetUuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}"
+        },
+        {
+            "layers": [
+            ],
             "sourcePort": "output",
             "sourceUuid": "{00000000-0000-0000-0000-000000000016}",
             "targetPort": "ambientOcclusion",
@@ -917,14 +985,6 @@
             "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
             "targetPort": "shaderData",
             "targetUuid": "{d7b43291-2e50-45ed-adca-30d8082704be}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "outputColor",
-            "sourceUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}",
-            "targetPort": "first",
-            "targetUuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}"
         }
     ],
     "groups": [
@@ -934,6 +994,14 @@
             "position": {
                 "x": 3473,
                 "y": 1137
+            }
+        },
+        {
+            "id": 1,
+            "name": "Exposure and Tone Mapping",
+            "position": {
+                "x": 2172,
+                "y": 1622
             }
         },
         {
@@ -1015,7 +1083,7 @@
             "name": "normalMap"
         },
         {
-            "enabled": true,
+            "enabled": false,
             "name": "ambientOcclusionMap"
         },
         {
@@ -1023,7 +1091,7 @@
             "name": "baseColorMap"
         },
         {
-            "enabled": true,
+            "enabled": false,
             "name": "emissiveMap"
         },
         {
@@ -1035,11 +1103,11 @@
             "name": "noAmbientOcclusionMap"
         },
         {
-            "enabled": true,
+            "enabled": false,
             "name": "noBaseColorMap"
         },
         {
-            "enabled": true,
+            "enabled": false,
             "name": "noMetalRoughMap"
         },
         {
@@ -1047,7 +1115,7 @@
             "name": "noEmissiveMap"
         },
         {
-            "enabled": true,
+            "enabled": false,
             "name": "hasColorAttr"
         },
         {
@@ -1055,7 +1123,7 @@
             "name": "noHasColorAttr"
         },
         {
-            "enabled": true,
+            "enabled": false,
             "name": "doubleSided"
         },
         {
@@ -1063,7 +1131,7 @@
             "name": "hasAlphaCutoff"
         },
         {
-            "enabled": true,
+            "enabled": false,
             "name": "useFilmicToneMap"
         },
         {
@@ -1071,11 +1139,11 @@
             "name": "useReinhardToneMap"
         },
         {
-            "enabled": true,
+            "enabled": false,
             "name": "noHasAlphaCutoff"
         },
         {
-            "enabled": true,
+            "enabled": false,
             "name": "noNormalMap"
         },
         {
@@ -2415,6 +2483,140 @@
         },
         {
             "collapsed": false,
+            "displayName": "kuesa_exposureCorrect",
+            "group": 1,
+            "id": 94,
+            "inputValues": {
+                "color": "",
+                "exposure": "0.0"
+            },
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "position": {
+                "x": 2540,
+                "y": 1677
+            },
+            "type": "kuesa_exposureCorrect",
+            "uuid": "{2043e54f-6ab6-4950-ba77-500bd6467f47}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "input",
+            "group": 1,
+            "id": 95,
+            "inputValues": {
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "name": "exposure",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Uniform"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "position": {
+                "x": 2182,
+                "y": 1716
+            },
+            "type": "input",
+            "uuid": "{c61c2622-eacb-4512-be77-655fae53afd7}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "kuesa_filmicToneMap",
+            "group": 1,
+            "id": 96,
+            "inputValues": {
+                "color": ""
+            },
+            "layers": [
+                "useFilmicToneMap"
+            ],
+            "parameters": {
+            },
+            "position": {
+                "x": 2810,
+                "y": 1746
+            },
+            "type": "kuesa_filmicToneMap",
+            "uuid": "{f527671b-4aba-4548-b778-e5088b155db0}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "kuesa_reinhardToneMap",
+            "group": 1,
+            "id": 97,
+            "inputValues": {
+                "color": ""
+            },
+            "layers": [
+                "useReinhardToneMap"
+            ],
+            "parameters": {
+            },
+            "position": {
+                "x": 2800,
+                "y": 1657
+            },
+            "type": "kuesa_reinhardToneMap",
+            "uuid": "{ef91d9a0-b98e-472e-996c-0d7b0eccbdd7}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "kuesa_gammaCorrect",
+            "group": 1,
+            "id": 98,
+            "inputValues": {
+                "color": "",
+                "gamma": "0.0"
+            },
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "position": {
+                "x": 3099,
+                "y": 1749
+            },
+            "type": "kuesa_gammaCorrect",
+            "uuid": "{8d262f61-1609-439d-b296-8111596d1f59}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "input",
+            "group": 1,
+            "id": 99,
+            "inputValues": {
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "name": "gamma",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Uniform"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "position": {
+                "x": 2798,
+                "y": 1818
+            },
+            "type": "input",
+            "uuid": "{711d9dcb-441d-4804-9765-d1f62024878c}"
+        },
+        {
+            "collapsed": false,
             "displayName": "input: texCoord1",
             "group": -1,
             "id": 100,
@@ -3163,10 +3365,10 @@
     ],
     "project": {
         "position": {
-            "x": 453.0666666666666,
-            "y": 485.3030303030305
+            "x": 0,
+            "y": 0
         },
-        "scale": 0.5
+        "scale": 0.9375
     },
     "prototypes": {
         "add": {

@@ -40,7 +40,6 @@ Kuesa.SceneEntity {
         RenderSettings {
             Kuesa.ForwardRenderer {
                 camera: mainCamera
-                toneMappingAlgorithm: _controller.toneMappingAlgorithm
             }
         },
         InputSettings { },
@@ -111,6 +110,7 @@ Kuesa.SceneEntity {
                 textureTransform: _controller.textureTransform
                 usingColorAttribute: _controller.useColorAttribute
                 doubleSided: _controller.doubleSided
+                toneMappingAlgorithm: _controller.toneMappingAlgorithm
             }
         ]
     }

@@ -28,7 +28,6 @@
 
 #include "opacitymask.h"
 #include "fullscreenquad.h"
-#include "fxutils.h"
 #include <Qt3DRender/qtexture.h>
 #include <Qt3DRender/qrenderpassfilter.h>
 #include <Qt3DRender/qcameraselector.h>
@@ -138,7 +137,6 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     , m_layer(nullptr)
     , m_gl3ShaderBuilder(nullptr)
     , m_es3ShaderBuilder(nullptr)
-    , m_es2ShaderBuilder(nullptr)
     , m_maskParameter(new Qt3DRender::QParameter(QStringLiteral("maskTexture"), nullptr))
     , m_inputTextureParameter(new Qt3DRender::QParameter(QStringLiteral("inputTexture"), nullptr))
 {
@@ -151,43 +149,57 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     auto effect = new Qt3DRender::QEffect;
     opacityMaskMaterial->setEffect(effect);
 
-    m_gl3ShaderBuilder = new Qt3DRender::QShaderProgramBuilder();
-    m_gl3ShaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/opacitymask.frag.json")));
-    m_gl3ShaderBuilder->setEnabledLayers(QStringList() << QStringLiteral("regular"));
+    const auto makeTechnique = [](Qt3DRender::QGraphicsApiFilter::Api api, int majorVersion, int minorVersion,
+                                  Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile, const QString &vertexShader,
+                                  Qt3DRender::QShaderProgramBuilder *&shaderBuilder) {
+        auto technique = new Qt3DRender::QTechnique;
 
-    m_es3ShaderBuilder = new Qt3DRender::QShaderProgramBuilder();
-    m_es3ShaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/opacitymask.frag.json")));
-    m_es3ShaderBuilder->setEnabledLayers(QStringList() << QStringLiteral("regular"));
+        technique->graphicsApiFilter()->setApi(api);
+        technique->graphicsApiFilter()->setMajorVersion(majorVersion);
+        technique->graphicsApiFilter()->setMinorVersion(minorVersion);
+        technique->graphicsApiFilter()->setProfile(profile);
 
-    m_es2ShaderBuilder = new Qt3DRender::QShaderProgramBuilder();
-    m_es2ShaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/opacitymask.frag.json")));
-    m_es2ShaderBuilder->setEnabledLayers(QStringList() << QStringLiteral("regular"));
+        auto techniqueFilterKey = new Qt3DRender::QFilterKey;
+        techniqueFilterKey->setName(QStringLiteral("renderingStyle"));
+        techniqueFilterKey->setValue(QStringLiteral("forward"));
+        technique->addFilterKey(techniqueFilterKey);
 
-    const QString passName = QStringLiteral("opacityMaskPass");
+        auto renderPass = new Qt3DRender::QRenderPass;
 
-    auto *gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
-                                                3, 2,
-                                                Qt3DRender::QGraphicsApiFilter::CoreProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"),
-                                                m_gl3ShaderBuilder,
-                                                passName);
+        auto *shaderProgram = new Qt3DRender::QShaderProgram(renderPass);
+        shaderProgram->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(vertexShader)));
+
+        // Once we are able to set the prototype file on Qt3D, switching to the
+        // shader builder will be done.
+        shaderBuilder = new Qt3DRender::QShaderProgramBuilder(renderPass);
+        shaderBuilder->setShaderProgram(shaderProgram);
+        shaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/opacitymask.frag.json")));
+        shaderBuilder->setEnabledLayers(QStringList() << QStringLiteral("regular"));
+
+        renderPass->setShaderProgram(shaderProgram);
+
+        auto passFilterKey = new Qt3DRender::QFilterKey;
+        passFilterKey->setName(QStringLiteral("opacityMaskPass"));
+        renderPass->addFilterKey(passFilterKey);
+
+        technique->addRenderPass(renderPass);
+
+        return technique;
+    };
+
+    auto *gl3Technique = makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
+                                       3, 2,
+                                       Qt3DRender::QGraphicsApiFilter::CoreProfile,
+                                       QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"),
+                                       m_gl3ShaderBuilder);
     effect->addTechnique(gl3Technique);
 
-    auto *es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
-                                                3, 0,
-                                                Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"),
-                                                m_es3ShaderBuilder,
-                                                passName);
+    auto *es3Technique = makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
+                                       3, 0,
+                                       Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                       QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"),
+                                       m_es3ShaderBuilder);
     effect->addTechnique(es3Technique);
-
-    auto *es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
-                                                2, 0,
-                                                Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"),
-                                                m_es2ShaderBuilder,
-                                                passName);
-    effect->addTechnique(es2Technique);
 
     effect->addParameter(m_maskParameter);
     effect->addParameter(m_inputTextureParameter);
@@ -201,8 +213,7 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     auto renderPassFilter = new Qt3DRender::QRenderPassFilter(layerFilter);
     auto filterKey = new Qt3DRender::QFilterKey;
 
-    filterKey->setName(QStringLiteral("passName"));
-    filterKey->setValue(passName);
+    filterKey->setName(QStringLiteral("opacityMaskPass"));
     renderPassFilter->addMatch(filterKey);
 
     m_blendRenderState = new Qt3DRender::QRenderStateSet(renderPassFilter);

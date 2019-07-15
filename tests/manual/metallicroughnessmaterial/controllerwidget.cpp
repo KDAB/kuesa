@@ -91,12 +91,11 @@ ControllerWidget::ControllerWidget(SceneController *sceneController,
             this, [this](int idx) {
                 if (idx >= 0 && idx < ui->toneMapComboBox->count())
                     m_controller->setToneMappingAlgorithm(
-                            static_cast<Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping>(ui->toneMapComboBox->itemData(idx).toInt()));
+                            static_cast<Kuesa::MetallicRoughnessEffect::ToneMapping>(ui->toneMapComboBox->itemData(idx).toInt()));
             });
 
-    ui->toneMapComboBox->addItem(QStringLiteral("None"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::None));
-    ui->toneMapComboBox->addItem(QStringLiteral("Reinhard"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::Reinhard));
-    ui->toneMapComboBox->addItem(QStringLiteral("Filmic"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::Filmic));
+    ui->toneMapComboBox->addItem(QStringLiteral("Reinhard"), QVariant::fromValue(Kuesa::MetallicRoughnessEffect::Reinhard));
+    ui->toneMapComboBox->addItem(QStringLiteral("Filmic"), QVariant::fromValue(Kuesa::MetallicRoughnessEffect::Filmic));
 }
 
 ControllerWidget::~ControllerWidget()

@@ -35,7 +35,7 @@ import QtQuick 2.11 as QQ2
 
 //! [0]
 import Kuesa 1.1 as Kuesa
-import Kuesa.Effects 1.1 as Effects
+import Kuesa.Effects 1.0 as Effects
 
 
 Kuesa.SceneEntity {
@@ -206,7 +206,6 @@ Kuesa.SceneEntity {
                     return effects
                 }
                 backToFrontSorting: true
-                toneMappingAlgorithm: Effects.ToneMappingAndGammaCorrectionEffect.Reinhard
             }
         },
 //! [3.2]
@@ -243,13 +242,14 @@ Kuesa.SceneEntity {
 
     Effects.BloomEffect {
         id: bloomFx
+        exposure: 0.76
         threshold: 0.34
         blurPassCount: 2
     }
 //! [3.1]
 
     QQ2.Binding {
-        target: frameGraph
+        target: frameGraph.camera
         property: "exposure"
         value: scene.exposure + scene.environmentExposure
     }

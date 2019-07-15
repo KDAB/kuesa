@@ -31,7 +31,6 @@
 
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
-#include <Kuesa/tonemappingandgammacorrectioneffect.h>
 #include <Qt3DRender/qframegraphnode.h>
 #include <Qt3DRender/qclearbuffers.h>
 #include <Qt3DRender/qrendertargetoutput.h>
@@ -67,9 +66,6 @@ class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QFrameGraphNode
     Q_PROPERTY(bool frustumCulling READ frustumCulling WRITE setFrustumCulling NOTIFY frustumCullingChanged)
     Q_PROPERTY(bool backToFrontSorting READ backToFrontSorting WRITE setBackToFrontSorting NOTIFY backToFrontSortingChanged)
     Q_PROPERTY(bool zFilling READ zFilling WRITE setZFilling NOTIFY zFillingChanged)
-    Q_PROPERTY(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
-    Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged REVISION 1)
-    Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged REVISION 1)
 
 public:
     ForwardRenderer(Qt3DCore::QNode *parent = nullptr);
@@ -84,9 +80,6 @@ public:
     bool frustumCulling() const;
     bool backToFrontSorting() const;
     bool zFilling() const;
-    float exposure() const;
-    float gamma() const;
-    ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
 
     Q_INVOKABLE void addPostProcessingEffect(AbstractPostProcessingEffect *effect);
     Q_INVOKABLE void removePostProcessingEffect(AbstractPostProcessingEffect *effect);
@@ -106,9 +99,6 @@ public Q_SLOTS:
     void setFrustumCulling(bool frustumCulling);
     void setBackToFrontSorting(bool backToFrontSorting);
     void setZFilling(bool zfilling);
-    void setGamma(float gamma);
-    void setExposure(float exposure);
-    void setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
 
 Q_SIGNALS:
     void renderSurfaceChanged(QObject *renderSurface);
@@ -121,9 +111,6 @@ Q_SIGNALS:
     void backToFrontSortingChanged(bool backToFrontSorting);
     void zFillingChanged(bool zFilling);
     void frameGraphTreeReconfigured();
-    void gammaChanged();
-    void exposureChanged();
-    void toneMappingAlgorithmChanged(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
 
 private:
     void updateTextureSizes();
@@ -143,8 +130,7 @@ private:
     Qt3DRender::QFrustumCulling *m_frustumCulling;
     bool m_backToFrontSorting;
     bool m_zfilling;
-    QVector<AbstractPostProcessingEffect *> m_userPostProcessingEffects;
-    QVector<AbstractPostProcessingEffect *> m_internalPostProcessingEffects;
+    QVector<AbstractPostProcessingEffect *> m_postProcessingEffects;
     QHash<AbstractPostProcessingEffect *, AbstractPostProcessingEffect::FrameGraphNodePtr> m_effectFGSubtrees;
 
     QVector<QMetaObject::Connection> m_resizeConnections;
@@ -157,9 +143,6 @@ private:
 
     //For controlling render stages
     QVector<AbstractRenderStage *> m_renderStages;
-
-    // GammaCorrection
-    ToneMappingAndGammaCorrectionEffect *m_gammaCorrectionFX;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

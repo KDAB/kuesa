@@ -54,6 +54,7 @@ private Q_SLOTS:
         QCOMPARE(effect.useSkinning(), false);
         QCOMPARE(effect.isOpaque(), true);
         QCOMPARE(effect.isAlphaCutoffEnabled(), false);
+        QCOMPARE(effect.toneMappingAlgorithm(), MetallicRoughnessEffect::Reinhard);
         QCOMPARE(effect.brdfLUT(), nullptr);
     }
 
@@ -182,6 +183,23 @@ private Q_SLOTS:
             // THEN
             QCOMPARE(effect.isAlphaCutoffEnabled(), true);
             QCOMPARE(alphaCutoffSpy.count(), 1);
+        }
+
+        {
+            // Workaround ToneMapping not being registered for QVariants
+            int emitCount = 0;
+            QObject::connect(&effect, &MetallicRoughnessEffect::toneMappingAlgorithmChanged, [&emitCount]() {
+                emitCount++;
+            });
+
+            // WHEN
+            effect.setToneMappingAlgorithm(MetallicRoughnessEffect::Reinhard);
+            effect.setToneMappingAlgorithm(MetallicRoughnessEffect::Filmic);
+            effect.setToneMappingAlgorithm(MetallicRoughnessEffect::Filmic);
+
+            // THEN
+            QCOMPARE(effect.toneMappingAlgorithm(), MetallicRoughnessEffect::Filmic);
+            QCOMPARE(emitCount, 1);
         }
 
         {

@@ -396,6 +396,15 @@ Item {
                         }
 
                         Controls.LabeledSlider {
+                            id: bloomExposure
+                            text: "exp: " + parseFloat(bloomExposure.value).toFixed(2)
+                            value: sceneContent.bloomEffect.exposure
+                            onValueChanged: if (value !== sceneContent.bloomEffect.exposure)
+                                                sceneContent.bloomEffect.exposure = bloomExposure.value
+                            width: parent.width
+                        }
+
+                        Controls.LabeledSlider {
                             id: bloomThreshold
                             text: "th: " + parseFloat(bloomThreshold.value).toFixed(2)
                             value: sceneContent.bloomEffect.threshold
