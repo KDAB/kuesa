@@ -61,10 +61,6 @@ namespace Kuesa {
     added as the last step of the pipeline, after any user defined post
     processing effect. Therefore, you shouldn't need to instantiate this effect
     yourself if using that FrameGraph.
-
-    If you care about Tone Mapping implementation details, the algorithms in
-    use are detailly explained \l
-    {http://filmicworlds.com/blog/filmic-tonemapping-operators/} {here}.
  */
 
 /*!
@@ -84,10 +80,6 @@ namespace Kuesa {
     added as the last step of the pipeline, after any user defined post
     processing effect. Therefore, you shouldn't need to instantiate this effect
     yourself if using that FrameGraph.
-
-    If you care about Tone Mapping implementation details, the algorithms in
-    use are detailly explained \l
-    {http://filmicworlds.com/blog/filmic-tonemapping-operators/} {here}.
  */
 
 /*!
@@ -98,7 +90,6 @@ namespace Kuesa {
     \value None No Tone Mapping (default)
     \value Reinhard Reinhard Tone Mapping
     \value Filmic Filmic Tone Mapping
-    \value Uncharted Hable John's Uncharted Tone Mapping
  */
 
 /*!
@@ -158,8 +149,6 @@ QString shaderGraphLayerForToneMappingAlgorithm(ToneMappingAndGammaCorrectionEff
         return QStringLiteral("useReinhardToneMap");
     case ToneMappingAndGammaCorrectionEffect::Filmic:
         return QStringLiteral("useFilmicToneMap");
-    case ToneMappingAndGammaCorrectionEffect::Uncharted:
-        return QStringLiteral("useUnchartedToneMap");
     case ToneMappingAndGammaCorrectionEffect::None:
         return QStringLiteral("noToneMap");
     }

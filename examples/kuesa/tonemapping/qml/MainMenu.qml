@@ -184,12 +184,6 @@ Item {
                             text: "Filmic"
                         }
 
-                        Controls.HorizontalLabeledSwitch {
-                            id: unchartedEffectToneMappingSwitch
-                            exclusiveGroup: radioButtonsGroup
-                            text: "Uncharted"
-                        }
-
                         Item {
                             height: Controls.SharedAttributes.defaultSpacing
                             width: 1

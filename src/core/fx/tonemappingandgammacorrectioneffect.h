@@ -54,8 +54,7 @@ public:
     enum ToneMapping {
         None = 0,
         Reinhard,
-        Filmic,
-        Uncharted
+        Filmic
     };
     Q_ENUM(ToneMapping)
 

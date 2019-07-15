@@ -72,8 +72,6 @@ Kuesa.SceneEntity {
                         return KuesaFX.ToneMappingAndGammaCorrectionEffect.Filmic
                     if (toneMappingAlgorithmName == "Reinhard")
                         return KuesaFX.ToneMappingAndGammaCorrectionEffect.Reinhard
-                    if (toneMappingAlgorithmName == "Uncharted")
-                        return KuesaFX.ToneMappingAndGammaCorrectionEffect.Uncharted
                     return KuesaFX.ToneMappingAndGammaCorrectionEffect.None
                 }
             }
