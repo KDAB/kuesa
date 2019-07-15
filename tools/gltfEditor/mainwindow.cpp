@@ -97,7 +97,6 @@ MainWindow::MainWindow(QWidget *parent)
     , m_view(new Qt3DExtras::Quick::Qt3DQuickWindow)
     , m_entity(nullptr)
     , m_camera(nullptr)
-    , m_gltf2PlaceHolder(nullptr)
     , m_activeCamera(-1)
     , m_clearColor(Qt::gray)
     , m_renderAreaSize(1024, 768)
@@ -207,9 +206,8 @@ QString MainWindow::filePath() const
     return m_filePathURL;
 }
 
-void MainWindow::setup(Qt3DRender::QCamera *camera,  Qt3DCore::QEntity *placeHolder)
+void MainWindow::setup(Qt3DRender::QCamera *camera)
 {
-    m_gltf2PlaceHolder = placeHolder;
     m_camera = camera;
     m_cameraWidget->setCamera(camera);
 }
@@ -343,11 +341,11 @@ void MainWindow::setCamera(const QString &name)
 
 void MainWindow::viewAll()
 {
-    if (!m_camera || !m_gltf2PlaceHolder || m_activeCamera != -1)
+    if (!m_camera || m_activeCamera != -1)
         return;
 
     connect(m_camera, &Qt3DRender::QCamera::viewMatrixChanged, this, &MainWindow::autoNearFarPlanes);
-    m_camera->viewEntity(m_gltf2PlaceHolder);
+    m_camera->viewAll();
 }
 
 void MainWindow::pickEntity(Qt3DRender::QPickEvent *event)
