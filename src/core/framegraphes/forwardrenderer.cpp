@@ -39,9 +39,11 @@
 #include <Qt3DRender/qtexture.h>
 #include <Qt3DRender/qrendertarget.h>
 #include <Qt3DRender/qrendertargetselector.h>
+#include <Qt3DRender/qblitframebuffer.h>
 #include <QWindow>
 #include <QScreen>
 #include <QOffscreenSurface>
+#include <QOpenGLContext>
 #include <Kuesa/abstractpostprocessingeffect.h>
 #include "zfillrenderstage_p.h"
 #include "opaquerenderstage_p.h"
@@ -368,7 +370,43 @@ using namespace Kuesa;
     \default ToneMappingAndGammaCorrectionEffect.None
  */
 
+namespace {
 
+
+struct GLFeatures
+{
+    bool hasHalfFloatTexture = false;
+    bool hasHalfFloatRenderable = false;
+    bool hasMultisampledTexture = false;
+    bool hasMultisampledFBO = false;
+};
+
+// Check supported GL Features
+GLFeatures checkGLFeatures()
+{
+    GLFeatures features;
+    QOpenGLContext ctx;
+    ctx.setFormat(QSurfaceFormat::defaultFormat());
+    if (ctx.create()) {
+        const QSurfaceFormat format = ctx.format();
+        // Since ES 3.0 or GL 3.0
+        features.hasHalfFloatTexture = format.majorVersion() >= 3 || ctx.hasExtension(QByteArray(""));
+        // Since GL 3.0 or ES 3.2 or extension
+        features.hasHalfFloatRenderable = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 2)
+                                                            : format.majorVersion() >= 3)
+                                          || ctx.hasExtension(QByteArray("GL_EXT_color_buffer_half_float"));
+        // Since ES 3.1, GL 3.0 or extension
+        features.hasMultisampledTexture = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 1)
+                                                            : (format.majorVersion() >= 3))
+                                          || ctx.hasExtension(QByteArray("ARB_texture_multisample"));
+        // Since ES 3.1, GL 3.0 or extension
+        // TO DO: Find how to support that on ES
+        features.hasMultisampledFBO = format.majorVersion() >= 3;
+    }
+    return features;
+}
+
+} // namespace anonymous
 
 ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     : Qt3DRender::QFrameGraphNode(parent)
@@ -387,6 +425,8 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_zfilling(false)
     , m_renderToTextureRootNode(nullptr)
     , m_effectsRootNode(nullptr)
+    , m_multisampleTarget(nullptr)
+    , m_blitFramebufferNode(nullptr)
     , m_gammaCorrectionFX(new ToneMappingAndGammaCorrectionEffect())
 {
     m_renderTargets[0] = nullptr;
@@ -752,6 +792,12 @@ void ForwardRenderer::updateTextureSizes()
         if (target != nullptr)
             outputs += target->outputs();
     }
+    if (m_multisampleTarget != nullptr) {
+        outputs += m_multisampleTarget->outputs();
+        const QRect blitRect(QPoint(), targetSize);
+        m_blitFramebufferNode->setSourceRect(blitRect);
+        m_blitFramebufferNode->setDestinationRect(blitRect);
+    }
     for (auto output : outputs)
         output->texture()->setSize(targetSize.width(), targetSize.height());
     for (auto effect : m_userPostProcessingEffects)
@@ -796,6 +842,7 @@ void ForwardRenderer::reconfigureFrameGraph()
     // Based on the effect types, reorder elements from the FrameGraph in the correct order
     // e.g We want Bloom to happen after DoF...
     //     We may need to render the scene into a texture first ...
+    static const GLFeatures glFeatures = checkGLFeatures();
 
     m_surfaceSelector->setParent(this);
     m_viewport->setParent(m_surfaceSelector);
@@ -843,14 +890,18 @@ void ForwardRenderer::reconfigureFrameGraph()
 
     delete m_renderTargets[0];
     delete m_renderTargets[1];
+    delete m_multisampleTarget;
     m_renderTargets[0] = nullptr;
     m_renderTargets[1] = nullptr;
+    m_multisampleTarget = nullptr;
 
     Qt3DRender::QAbstractTexture *depthTex = nullptr;
 
     // Configure effects
     const bool hasFX = !m_userPostProcessingEffects.empty() || !m_internalPostProcessingEffects.empty();
     if (hasFX) {
+
+
         if (!m_renderTargets[0]) {
             // create a render target for main scene
             m_renderTargets[0] = createRenderTarget(true);
@@ -881,7 +932,6 @@ void ForwardRenderer::reconfigureFrameGraph()
         auto mainSceneFilter = new Qt3DRender::QLayerFilter(m_renderToTextureRootNode);
         mainSceneFilter->setFilterMode(Qt3DRender::QLayerFilter::DiscardAnyMatchingLayers);
         auto sceneTargetSelector = new Qt3DRender::QRenderTargetSelector(mainSceneFilter);
-        sceneTargetSelector->setTarget(m_renderTargets[0]);
 
         auto clearScreen = new Qt3DRender::QClearBuffers(sceneTargetSelector);
         clearScreen->setBuffers(Qt3DRender::QClearBuffers::ColorDepthBuffer);
@@ -893,6 +943,33 @@ void ForwardRenderer::reconfigureFrameGraph()
         // Reparent cameraSelectror to sceneTargetSelector
         m_cameraSelector->setParent(sceneTargetSelector);
 
+        // If we support MSAA FBO -> Then render into it and Blit into regular non FBO
+        // for post FX
+        if (glFeatures.hasMultisampledFBO) {
+            // Render Into MSAA FBO
+            m_multisampleTarget = createMultisampledRenderTarget(true);
+
+            // Blit into regular Tex2D FBO
+            m_blitFramebufferNode = new Qt3DRender::QBlitFramebuffer(sceneTargetSelector);
+
+            sceneTargetSelector->setTarget(m_multisampleTarget);
+
+            m_blitFramebufferNode->setSource(m_multisampleTarget);
+            m_blitFramebufferNode->setDestination(m_renderTargets[0]);
+            m_blitFramebufferNode->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+            m_blitFramebufferNode->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+
+            const QRect blitRect(QPoint(), currentSurfaceSize());
+            m_blitFramebufferNode->setSourceRect(blitRect);
+            m_blitFramebufferNode->setDestinationRect(blitRect);
+
+            new Qt3DRender::QNoDraw(m_blitFramebufferNode);
+
+        } else {
+            // Render into non MSAA FBO directly
+            sceneTargetSelector->setTarget(m_renderTargets[0]);
+        }
+
         // create a node to hold all the effect subtrees, under the main viewport. They don't need camera, alpha, frustum, etc.
         m_effectsRootNode = new Qt3DRender::QFrameGraphNode(m_viewport);
         m_effectsRootNode->setObjectName(QStringLiteral("KuesaPostProcessingEffects"));
@@ -900,6 +977,7 @@ void ForwardRenderer::reconfigureFrameGraph()
         // Gather the different effect types
         const auto targetSize = currentSurfaceSize();
         int previousRenderTargetIndex = 0;
+
         for (int effectNo = 0; effectNo < totalFXCount; ++effectNo) {
             AbstractPostProcessingEffect *effect = nullptr;
             if (effectNo < userFXCount)
@@ -1015,6 +1093,48 @@ Qt3DRender::QRenderTarget *ForwardRenderer::createRenderTarget(bool includeDepth
         depthTexture->setFormat(Qt3DRender::QAbstractTexture::DepthFormat);
         depthTexture->setSize(targetSize.width(), targetSize.height());
         depthTexture->setGenerateMipMaps(false);
+        auto depthOutput = new Qt3DRender::QRenderTargetOutput;
+        depthOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Depth);
+        depthOutput->setTexture(depthTexture);
+        renderTarget->addOutput(depthOutput);
+    }
+
+    return renderTarget;
+}
+
+/*!
+ * \internal
+ *
+ * Helper function to create a QRenderTarget with the correct texture formats
+ * and sizes.
+ */
+Qt3DRender::QRenderTarget *ForwardRenderer::createMultisampledRenderTarget(bool includeDepth)
+{
+    auto renderTarget = new Qt3DRender::QRenderTarget(this);
+    auto colorTexture = new Qt3DRender::QTexture2DMultisample;
+    // We need to use 16 based format as our content is HDR linear
+    // which we will eventually exposure correct, tone map to LDR and
+    // gamma correct
+    // This requires support for extension OES_texture_float on ES2 platforms
+    colorTexture->setFormat(Qt3DRender::QAbstractTexture::RGBA16F);
+    colorTexture->setGenerateMipMaps(false);
+    const int samples = std::max(1, QSurfaceFormat::defaultFormat().samples());
+    colorTexture->setSamples(samples);
+
+    const auto targetSize = currentSurfaceSize();
+    colorTexture->setSize(targetSize.width(), targetSize.height());
+    auto colorOutput = new Qt3DRender::QRenderTargetOutput;
+
+    colorOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+    colorOutput->setTexture(colorTexture);
+    renderTarget->addOutput(colorOutput);
+
+    if (includeDepth) {
+        auto depthTexture = new Qt3DRender::QTexture2DMultisample;
+        depthTexture->setFormat(Qt3DRender::QAbstractTexture::DepthFormat);
+        depthTexture->setSize(targetSize.width(), targetSize.height());
+        depthTexture->setGenerateMipMaps(false);
+        depthTexture->setSamples(samples);
         auto depthOutput = new Qt3DRender::QRenderTargetOutput;
         depthOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Depth);
         depthOutput->setTexture(depthTexture);

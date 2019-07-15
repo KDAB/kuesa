@@ -50,6 +50,7 @@ class QFrustumCulling;
 class QNoDraw;
 class QSortPolicy;
 class QRenderTarget;
+class QBlitFramebuffer;
 } // namespace Qt3DRender
 
 namespace Kuesa {
@@ -135,6 +136,7 @@ private:
     void reconfigureFrameGraph();
     void reconfigureStages();
     Qt3DRender::QRenderTarget *createRenderTarget(bool includeDepth);
+    Qt3DRender::QRenderTarget *createMultisampledRenderTarget(bool includeDepth);
     AbstractPostProcessingEffect::FrameGraphNodePtr frameGraphSubtreeForPostProcessingEffect(AbstractPostProcessingEffect *effect) const;
 
     Qt3DRender::QTechniqueFilter *m_noFrustumCullingOpaqueTechniqueFilter;
@@ -160,6 +162,8 @@ private:
     Qt3DRender::QFrameGraphNode *m_renderToTextureRootNode;
     Qt3DRender::QFrameGraphNode *m_effectsRootNode;
     Qt3DRender::QRenderTarget *m_renderTargets[2];
+    Qt3DRender::QRenderTarget *m_multisampleTarget;
+    Qt3DRender::QBlitFramebuffer *m_blitFramebufferNode;
 
     struct Q_AUTOTEST_EXPORT SceneStages
     {
