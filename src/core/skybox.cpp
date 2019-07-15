@@ -160,10 +160,6 @@ Skybox::Skybox(QNode *parent)
     techniqueFilterKey->setName(QStringLiteral("renderingStyle"));
     techniqueFilterKey->setValue(QStringLiteral("forward"));
 
-    auto techniqueNoCullingFilterKey = new QFilterKey(effect);
-    techniqueNoCullingFilterKey->setName(QStringLiteral("allowCulling"));
-    techniqueNoCullingFilterKey->setValue(false);
-
     auto opaquePassFilterKey = new Qt3DRender::QFilterKey(effect);
     opaquePassFilterKey->setName(QStringLiteral("KuesaDrawStage"));
     opaquePassFilterKey->setValue(QStringLiteral("Opaque"));
@@ -191,7 +187,6 @@ Skybox::Skybox(QNode *parent)
         technique->graphicsApiFilter()->setMajorVersion(description.majorV);
         technique->graphicsApiFilter()->setMinorVersion(description.minorV);
         technique->addFilterKey(techniqueFilterKey);
-        technique->addFilterKey(techniqueNoCullingFilterKey);
         technique->addRenderPass(renderPass);
         renderPass->setShaderProgram(shader);
         renderPass->addRenderState(cullFront);

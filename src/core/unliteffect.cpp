@@ -63,7 +63,6 @@ public:
     void setOpaque(bool opaque);
     void setCullingMode(QCullFace::CullingMode mode);
     QCullFace::CullingMode cullingMode() const;
-    void setAllowCulling(bool allowCulling);
 
 private:
     Qt3DRender::QCullFace *m_backFaceCulling;
@@ -74,7 +73,6 @@ private:
     Qt3DRender::QRenderPass *m_zfillRenderPass;
     Qt3DRender::QRenderPass *m_opaqueRenderPass;
     Qt3DRender::QRenderPass *m_transparentRenderPass;
-    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
 
@@ -125,7 +123,6 @@ UnlitTechnique::UnlitTechnique(UnlitTechnique::Version version, Qt3DCore::QNode 
     , m_zfillRenderPass(new QRenderPass(this))
     , m_opaqueRenderPass(new QRenderPass(this))
     , m_transparentRenderPass(new QRenderPass(this))
-    , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
 {
     struct ApiFilterInfo {
         int major;
@@ -175,10 +172,6 @@ UnlitTechnique::UnlitTechnique(UnlitTechnique::Version version, Qt3DCore::QNode 
     filterKey->setName(QStringLiteral("renderingStyle"));
     filterKey->setValue(QStringLiteral("forward"));
     addFilterKey(filterKey);
-
-    m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
-    m_techniqueAllowFrustumCullingFilterKey->setValue(true);
-    addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
 
     auto zfillFilterKey = new Qt3DRender::QFilterKey(this);
     zfillFilterKey->setName(QStringLiteral("KuesaDrawStage"));
@@ -235,11 +228,6 @@ void UnlitTechnique::setCullingMode(QCullFace::CullingMode mode)
 QCullFace::CullingMode UnlitTechnique::cullingMode() const
 {
     return m_backFaceCulling->mode();
-}
-
-void UnlitTechnique::setAllowCulling(bool allowCulling)
-{
-    m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
 }
 
 
@@ -378,10 +366,6 @@ void UnlitEffect::setUseSkinning(bool useSkinning)
     m_unlitGL3Technique->setEnabledLayers(layers);
     m_unlitES3Technique->setEnabledLayers(layers);
     m_unlitES2Technique->setEnabledLayers(layers);
-    m_unlitGL3Technique->setAllowCulling(!m_useSkinning);
-    m_unlitES3Technique->setAllowCulling(!m_useSkinning);
-    m_unlitES2Technique->setAllowCulling(!m_useSkinning);
-
 }
 
 void UnlitEffect::setOpaque(bool opaque)

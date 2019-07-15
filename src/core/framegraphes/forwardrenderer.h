@@ -37,8 +37,6 @@
 #include <Qt3DRender/qrendertargetoutput.h>
 #include <QVector>
 
-class tst_ForwardRenderer;
-
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
@@ -56,9 +54,6 @@ namespace Kuesa {
 
 class AbstractPostProcessingEffect;
 class AbstractRenderStage;
-class OpaqueRenderStage;
-class TransparentRenderStage;
-class ZFillRenderStage;
 
 class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QFrameGraphNode
 {
@@ -99,6 +94,8 @@ public:
 
     static Qt3DRender::QAbstractTexture *findRenderTargetTexture(Qt3DRender::QRenderTarget *target, Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint);
 
+    QVector<AbstractRenderStage *> renderStages() const;
+
 public Q_SLOTS:
     void setRenderSurface(QObject *renderSurface);
     void setExternalRenderTargetSize(const QSize &externalRenderTargetSize);
@@ -137,8 +134,7 @@ private:
     Qt3DRender::QRenderTarget *createRenderTarget(bool includeDepth);
     AbstractPostProcessingEffect::FrameGraphNodePtr frameGraphSubtreeForPostProcessingEffect(AbstractPostProcessingEffect *effect) const;
 
-    Qt3DRender::QTechniqueFilter *m_noFrustumCullingTechniqueFilter;
-    Qt3DRender::QTechniqueFilter *m_frustumCullingTechniqueFilter;
+    Qt3DRender::QTechniqueFilter *m_techniqueFilter;
     Qt3DRender::QViewport *m_viewport;
     Qt3DRender::QCameraSelector *m_cameraSelector;
     Qt3DRender::QClearBuffers *m_clearBuffers;
@@ -156,37 +152,14 @@ private:
     //For rendering scene when useing post-processing effects
     Qt3DRender::QFrameGraphNode *m_renderToTextureRootNode;
     Qt3DRender::QFrameGraphNode *m_effectsRootNode;
-    QVector<Qt3DRender::QFrameGraphNode *> m_renderStageRootNodes;
+    Qt3DRender::QFrameGraphNode *m_renderStageRootNode;
     Qt3DRender::QRenderTarget *m_renderTargets[2];
 
-    struct SceneStages
-    {
-        SceneStages();
-        ~SceneStages();
-
-        void init();
-        void setZFilling(bool zFilling);
-        void setBackToFrontSorting(bool backToFrontSorting);
-
-        bool zFilling();
-        bool backToFrontSorting();
-
-        void setParent(QNode *parent);
-        QNode *parent() const;
-
-        OpaqueRenderStage *m_opaqueStage;
-        TransparentRenderStage *m_transparentStage;
-        ZFillRenderStage *m_zFillStage;
-        QMetaObject::Connection m_zFillDestroyedConnection;
-    };
-
     //For controlling render stages
-    QVector<SceneStages> m_sceneStages;
+    QVector<AbstractRenderStage *> m_renderStages;
 
     // GammaCorrection
     ToneMappingAndGammaCorrectionEffect *m_gammaCorrectionFX;
-
-    friend class ::tst_ForwardRenderer;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE
