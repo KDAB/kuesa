@@ -346,6 +346,7 @@ private Q_SLOTS:
 
             // WHEN
             renderer.addPostProcessingEffect(&fx);
+            QCoreApplication::processEvents();
 
             // THEN
             QCOMPARE(renderer.postProcessingEffects().size(), 1);
@@ -354,6 +355,7 @@ private Q_SLOTS:
             QCOMPARE(spy.size(), 1);
             spy.clear();
         }
+        QCoreApplication::processEvents();
 
         // THEN
         QCOMPARE(renderer.postProcessingEffects().size(), 0);
@@ -366,7 +368,10 @@ private Q_SLOTS:
         Kuesa::ForwardRenderer renderer;
         tst_FX fx;
         QSignalSpy spy(&renderer, SIGNAL(frameGraphTreeReconfigured()));
+
+        // WHEN
         renderer.addPostProcessingEffect(&fx);
+        QCoreApplication::processEvents();
 
         // THEN
         // QVERIFY(renderer.frameGraphSubtreeForPostProcessingEffect(&fx) != nullptr);
@@ -375,6 +380,7 @@ private Q_SLOTS:
 
         // WHEN
         renderer.removePostProcessingEffect(&fx);
+        QCoreApplication::processEvents();
 
         // THEN
         QCOMPARE(renderer.postProcessingEffects().size(), 0);
@@ -391,6 +397,7 @@ private Q_SLOTS:
         renderer.addPostProcessingEffect(&fx3);
         renderer.addPostProcessingEffect(&fx1);
         renderer.addPostProcessingEffect(&fx2);
+        QCoreApplication::processEvents();
 
         // THEN
         QCOMPARE(renderer.postProcessingEffects().size(), 3);
@@ -401,6 +408,7 @@ private Q_SLOTS:
         // WHEN - removing and re-adding fx3
         renderer.removePostProcessingEffect(&fx3);
         renderer.addPostProcessingEffect(&fx3);
+        QCoreApplication::processEvents();
 
         // THEN - fx3 should go at end and order should now be 1, 2, 3
         QCOMPARE(renderer.postProcessingEffects().size(), 3);
@@ -439,6 +447,7 @@ private Q_SLOTS:
         tst_FX fx1, fx2;
         renderer.addPostProcessingEffect(&fx1);
         renderer.addPostProcessingEffect(&fx2);
+        QCoreApplication::processEvents();
 
         auto renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx1.frameGraphSubTree().data());
         auto fx1Texture = renderTargetSelector->target()->outputs().first()->texture();

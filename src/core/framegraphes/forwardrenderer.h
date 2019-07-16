@@ -133,8 +133,14 @@ private:
     void updateTextureSizes();
     void handleSurfaceChange();
     QSize currentSurfaceSize() const;
+
+    void scheduleFGTreeRebuild();
+    void rebuildFGTree();
+
     void reconfigureFrameGraph();
     void reconfigureStages();
+
+
     Qt3DRender::QRenderTarget *createRenderTarget(bool includeDepth);
     Qt3DRender::QRenderTarget *createMultisampledRenderTarget(bool includeDepth);
     AbstractPostProcessingEffect::FrameGraphNodePtr frameGraphSubtreeForPostProcessingEffect(AbstractPostProcessingEffect *effect) const;
@@ -164,6 +170,7 @@ private:
     Qt3DRender::QRenderTarget *m_renderTargets[2];
     Qt3DRender::QRenderTarget *m_multisampleTarget;
     Qt3DRender::QBlitFramebuffer *m_blitFramebufferNode;
+    bool m_fgTreeRebuiltScheduled;
 
     struct Q_AUTOTEST_EXPORT SceneStages
     {

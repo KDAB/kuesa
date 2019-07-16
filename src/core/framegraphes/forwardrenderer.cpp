@@ -427,6 +427,7 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_effectsRootNode(nullptr)
     , m_multisampleTarget(nullptr)
     , m_blitFramebufferNode(nullptr)
+    , m_fgTreeRebuiltScheduled(false)
     , m_gammaCorrectionFX(new ToneMappingAndGammaCorrectionEffect())
 {
     m_renderTargets[0] = nullptr;
@@ -476,10 +477,7 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
         m_effectFGSubtrees.insert(m_gammaCorrectionFX, m_gammaCorrectionFX->frameGraphSubTree());
     }
 
-    // Reconfigure FrameGraph
-    reconfigureFrameGraph();
-    // Reconfigure Stages
-    reconfigureStages();
+    rebuildFGTree();
 }
 
 ForwardRenderer::~ForwardRenderer()
@@ -608,9 +606,7 @@ void ForwardRenderer::addPostProcessingEffect(AbstractPostProcessingEffect *effe
         // Register FrameGraph Subtree
         m_effectFGSubtrees.insert(effect, effectFGSubtree);
 
-        // Reconfigure FrameGraph Tree
-        reconfigureFrameGraph();
-        reconfigureStages();
+        scheduleFGTreeRebuild();
     }
 }
 
@@ -632,8 +628,7 @@ void ForwardRenderer::removePostProcessingEffect(AbstractPostProcessingEffect *e
     m_effectFGSubtrees.take(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
 
     // Reconfigure FrameGraph Tree
-    reconfigureFrameGraph();
-    reconfigureStages();
+    scheduleFGTreeRebuild();
 }
 
 /*!
@@ -1178,6 +1173,22 @@ QSize ForwardRenderer::currentSurfaceSize() const
         qCWarning(kuesa) << Q_FUNC_INFO << "Unexpected surface type for surface " << surface;
 
     return size;
+}
+
+void ForwardRenderer::scheduleFGTreeRebuild()
+{
+    if (!m_fgTreeRebuiltScheduled) {
+        m_fgTreeRebuiltScheduled = true;
+        QMetaObject::invokeMethod(this, &ForwardRenderer::rebuildFGTree, Qt::QueuedConnection);
+    }
+}
+
+void ForwardRenderer::rebuildFGTree()
+{
+    m_fgTreeRebuiltScheduled = false;
+    // Reconfigure FrameGraph Tree
+    reconfigureFrameGraph();
+    reconfigureStages();
 }
 
 /*!
