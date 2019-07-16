@@ -32,6 +32,7 @@
 #include "gltf2options.h"
 
 #include "collections/meshcollection.h"
+#include "kuesa_p.h"
 #include <Qt3DCore/QEntity>
 #include <Kuesa/SceneEntity>
 
@@ -260,7 +261,6 @@ using namespace Kuesa;
  * Tell the importer to not load any scene by default
  */
 
-
 GLTF2Importer::GLTF2Importer(Qt3DCore::QNode *parent)
     : Qt3DCore::QNode(parent)
     , m_context(new GLTF2Import::GLTF2Context)
@@ -487,8 +487,6 @@ void GLTF2Importer::setupActiveScene()
 {
     Q_ASSERT(m_root);
 
-    qDebug() << Q_FUNC_INFO << m_activeSceneIndex;
-
     // Hide old scene tree
     if (m_currentSceneEntity != nullptr)
         m_currentSceneEntity->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
@@ -506,7 +504,7 @@ void GLTF2Importer::setupActiveScene()
     // Retrieve new scene tree
     if (m_activeSceneIndex > m_sceneRootEntities.size() ||
         m_activeSceneIndex < 0) {
-        qWarning() << "Unable to load glTF scene for index" << m_activeSceneIndex;
+        qCWarning(kuesa) << "Unable to load glTF scene for index" << m_activeSceneIndex;
         return;
     }
 
