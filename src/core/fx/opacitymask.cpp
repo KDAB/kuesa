@@ -198,19 +198,15 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     // Set up FrameGraph
     auto layerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
     layerFilter->addLayer(m_layer);
-    auto renderPassFilter = new Qt3DRender::QRenderPassFilter(layerFilter);
-    auto filterKey = new Qt3DRender::QFilterKey;
 
-    filterKey->setName(QStringLiteral("passName"));
-    filterKey->setValue(passName);
-    renderPassFilter->addMatch(filterKey);
+    m_mainRenderState = new Qt3DRender::QRenderStateSet(layerFilter);
+    m_blendRenderState = new Qt3DRender::QRenderStateSet(m_mainRenderState);
 
-    m_blendRenderState = new Qt3DRender::QRenderStateSet(renderPassFilter);
     auto blendState = new Qt3DRender::QBlendEquation();
     blendState->setBlendFunction(Qt3DRender::QBlendEquation::Add);
     auto blendArgs = new Qt3DRender::QBlendEquationArguments();
     auto depthTest = new Qt3DRender::QDepthTest();
-    depthTest->setDepthFunction(Qt3DRender::QDepthTest::Less);
+    depthTest->setDepthFunction(Qt3DRender::QDepthTest::Always);
     blendArgs->setSourceRgb(Qt3DRender::QBlendEquationArguments::One);
     blendArgs->setSourceAlpha(Qt3DRender::QBlendEquationArguments::One);
     blendArgs->setDestinationRgb(Qt3DRender::QBlendEquationArguments::OneMinusSourceAlpha);
@@ -218,7 +214,16 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
 
     m_blendRenderState->addRenderState(blendState);
     m_blendRenderState->addRenderState(blendArgs);
-    m_blendRenderState->addRenderState(new Qt3DRender::QNoDepthMask());
+
+    m_mainRenderState->addRenderState(depthTest);
+    m_mainRenderState->addRenderState(new Qt3DRender::QNoDepthMask());
+
+    auto renderPassFilter = new Qt3DRender::QRenderPassFilter(m_blendRenderState);
+    auto filterKey = new Qt3DRender::QFilterKey;
+
+    filterKey->setName(QStringLiteral("passName"));
+    filterKey->setValue(passName);
+    renderPassFilter->addMatch(filterKey);
 }
 
 AbstractPostProcessingEffect::FrameGraphNodePtr OpacityMask::frameGraphSubTree() const
