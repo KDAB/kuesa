@@ -47,6 +47,7 @@ Kuesa.SceneEntity {
 //![2.1]
     QtObject {
         id: d
+        property string envMapFormat: (Qt.platform.os == "osx" || Qt.platform.os == "ios" || Qt.platform.os == "android" || es2) ? "_16f" : ""
 
         readonly property var robotArmAnimations: [
             'ArmTopAction',
@@ -267,8 +268,6 @@ Kuesa.SceneEntity {
 //!    [2.3]
         onStatusChanged: {
             if (status == Kuesa.GLTF2Importer.Ready) {
-                console.log('Animation clips: ' + scene.animationClips.names);
-
                 // start robot arm animation
                 actionPlayers.model = d.robotArmAnimations;
 

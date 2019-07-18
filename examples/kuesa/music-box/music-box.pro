@@ -43,10 +43,14 @@ RCC_BINARY_SOURCES += \
     ../assets/models/music-box/music-box.qrc \
     ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
 
+macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
+else: APP_PWD=$$OUT_PWD
+RES_PWD=$$APP_PWD/resources
+
 asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
 asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
 asset_builder.input = RCC_BINARY_SOURCES
-asset_builder.output = $$OUT_PWD/${QMAKE_FILE_IN_BASE}.qrb
+asset_builder.output = $$RES_PWD/${QMAKE_FILE_IN_BASE}.qrb
 asset_builder.CONFIG += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += asset_builder
 
@@ -58,18 +62,21 @@ install_music_samples.files = $$PWD/assets/samples/*
 
 INSTALLS += install_music_samples
 
+include($$KUESA_ROOT/kuesa-global.pri)
 
 win32 {
-    QMAKE_POST_LINK += $$quote(cmd /c copy /y $$PWD\assets\samples $$OUT_PWD\\ $$escape_expand(\n\t))
+    QMAKE_POST_LINK += $$quote(cmd /c copy /y $$PWD\assets\samples $$RES_PWD\\ $$escape_expand(\n\t))
 }
 else {
-    QMAKE_POST_LINK += $$quote(cp -rf $$PWD/assets/samples $$OUT_PWD/ $$escape_expand(\n\t))
+    QMAKE_POST_LINK += $$quote(cp -rf $$PWD/assets/samples $$RES_PWD $$escape_expand(\n\t))
 }
 
 packagesExist(portaudio-2.0) {
-  CONFIG += link_pkgconfig
-  PKGCONFIG += portaudio-2.0
-  DEFINES += KUESA_HAS_AUDIO=1
+    CONFIG += link_pkgconfig
+    PKGCONFIG += portaudio-2.0
+    DEFINES += KUESA_HAS_AUDIO=1
 }
 
-OTHER_FILES += doc/src/*
+OTHER_FILES += doc/src/* \
+    ../assets/models/music-box/music-box.qrc \
+    ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc

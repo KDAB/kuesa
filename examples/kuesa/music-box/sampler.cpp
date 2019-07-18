@@ -34,6 +34,9 @@
 #include <QFile>
 #include <QDebug>
 #include <QTimer>
+#include <QDir>
+#include <QGuiApplication>
+
 #include <array>
 #define DR_WAV_IMPLEMENTATION
 #define DR_WAV_NO_STDIO
@@ -104,7 +107,8 @@ struct SampleSet {
 
     void initFile(int i, const QString &name)
     {
-        files[i].setFileName(name);
+        QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/resources"));
+        files[i].setFileName(resourceDir.path() + QDir::separator() + name);
         bool ok = files[i].open(QIODevice::ReadOnly);
         Q_ASSERT(ok);
 
@@ -120,6 +124,7 @@ struct SampleSet {
         }
     }
 };
+
 class SamplerPrivate
 {
     Q_DISABLE_COPY(SamplerPrivate)

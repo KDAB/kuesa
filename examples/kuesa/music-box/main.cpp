@@ -27,20 +27,32 @@
 */
 #include <QGuiApplication>
 #include <QQuickView>
+#include <QQmlEngine>
 #include <QResource>
+#include <QDir>
+
 #include "sampler.h"
+
 namespace {
+
 bool initializeAssetResources(const QVector<QString> &fileNames)
 {
+#ifdef Q_OS_MACOS
+    QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/../Resources"));
+#else
+    QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/resources"));
+#endif
     bool b = true;
     for (const auto &fileName : fileNames) {
-        b &= QResource::registerResource(fileName);
+        auto f = resourceDir.path() + QDir::separator() + fileName;
+        b &= QResource::registerResource(f);
         if (!b)
-            qDebug() << "Failed to load assets from" << fileName;
+            qDebug() << "Failed to load assets from" << f;
     }
     return b;
 }
-}
+
+} // namespace
 
 int main(int argc, char *argv[])
 {
@@ -64,6 +76,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<Sampler>("MusicBox", 1, 0, "Sampler");
 
     QQuickView view;
+#ifdef KUESA_BUILD_ROOT
+    view.engine()->addImportPath(QStringLiteral(KUESA_BUILD_ROOT "/qml"));
+#endif
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
     view.resize(960, 540);
