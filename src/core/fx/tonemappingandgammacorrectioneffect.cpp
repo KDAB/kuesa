@@ -161,8 +161,9 @@ QString shaderGraphLayerForToneMappingAlgorithm(ToneMappingAndGammaCorrectionEff
     case ToneMappingAndGammaCorrectionEffect::Uncharted:
         return QStringLiteral("useUnchartedToneMap");
     case ToneMappingAndGammaCorrectionEffect::None:
-        return QStringLiteral("noToneMap");
+        break;
     }
+    return QStringLiteral("noToneMap");
 }
 
 } // namespace
