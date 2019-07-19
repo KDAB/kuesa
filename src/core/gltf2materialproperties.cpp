@@ -29,6 +29,8 @@
 #include "gltf2materialproperties.h"
 
 #include <Qt3DRender/QMaterial>
+#include <Qt3DRender/QTexture>
+#include <Qt3DCore/private/qnode_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -181,7 +183,12 @@ void GLTF2MaterialProperties::setBaseColorMap(Qt3DRender::QAbstractTexture *base
 {
     if (m_baseColorTexture == baseColorMap)
         return;
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_baseColorTexture != nullptr)
+        d->unregisterDestructionHelper(m_baseColorTexture);
     m_baseColorTexture = baseColorMap;
+    if (m_baseColorTexture != nullptr)
+        d->registerDestructionHelper(m_baseColorTexture, &GLTF2MaterialProperties::setBaseColorMap, m_baseColorTexture);
     emit baseColorMapChanged(m_baseColorTexture);
 }
 

@@ -165,6 +165,23 @@ private Q_SLOTS:
                        false, true);
     }
 
+    void checkTextureBookeeping()
+    {
+        // Given
+        MyGLTF2MaterialProperties mat;
+
+        // WHEN
+        {
+            Qt3DRender::QTexture2D t;
+            mat.setBaseColorMap(&t);
+
+            // THEN
+            QCOMPARE(mat.baseColorMap(), &t);
+        }
+        // THEN
+        QVERIFY(mat.baseColorMap() == nullptr);
+    }
+
 };
 
 QTEST_APPLESS_MAIN(tst_GLTF2MaterialProperties)

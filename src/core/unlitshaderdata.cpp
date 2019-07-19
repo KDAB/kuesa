@@ -27,6 +27,7 @@
 */
 
 #include "unlitshaderdata_p.h"
+#include <Qt3DRender/private/qshaderdata_p.h>
 
 QT_BEGIN_NAMESPACE
 namespace Kuesa {
@@ -83,11 +84,18 @@ void UnlitShaderData::setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap
 {
     if (m_baseColorMap == baseColorMap)
         return;
-#ifndef QT_OPENGL_ES_2
-    if (baseColorMap)
-        baseColorMap->setFormat(Qt3DRender::QAbstractTexture::TextureFormat::SRGB8_Alpha8);
-#endif
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_baseColorMap != nullptr)
+        d->unregisterDestructionHelper(m_baseColorMap);
     m_baseColorMap = baseColorMap;
+    if (m_baseColorMap != nullptr) {
+#ifndef QT_OPENGL_ES_2
+        m_baseColorMap->setFormat(Qt3DRender::QAbstractTexture::TextureFormat::SRGB8_Alpha8);
+#endif
+        if (m_baseColorMap->parent() == nullptr)
+            m_baseColorMap->setParent(this);
+        d->registerDestructionHelper(m_baseColorMap, &UnlitShaderData::setBaseColorMap, m_baseColorMap);
+    }
     baseColorMapChanged(baseColorMap);
 }
 

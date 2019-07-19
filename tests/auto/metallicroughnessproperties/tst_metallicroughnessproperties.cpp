@@ -326,19 +326,67 @@ private Q_SLOTS:
                        0.0f, 0.5f);
     }
 
-//    void checkMorphWeights()
-//    {
-//        // GIVEN
-//        Kuesa::MetallicRoughnessProperties mat;
-//        MorphController ctrl;
+    void checkTextureBookeeping()
+    {
+        // Given
+        Kuesa::MetallicRoughnessProperties mat;
 
-//        // THEN
-//        ::testProperty(&mat,
-//                       &MetallicRoughnessProperties::setMorphController,
-//                       &MetallicRoughnessProperties::morphController,
-//                       &MetallicRoughnessProperties::morphControllerChanged,
-//                       static_cast<MorphController*>(nullptr), &ctrl);
-//    }
+        // WHEN
+        {
+            Qt3DRender::QTexture2D t;
+            mat.setAmbientOcclusionMap(&t);
+
+            // THEN
+            QCOMPARE(mat.ambientOcclusionMap(), &t);
+        }
+        // THEN
+        QVERIFY(mat.ambientOcclusionMap() == nullptr);
+
+        // WHEN
+        {
+            Qt3DRender::QTexture2D t;
+            mat.setBaseColorMap(&t);
+
+            // THEN
+            QCOMPARE(mat.baseColorMap(), &t);
+        }
+        // THEN
+        QVERIFY(mat.baseColorMap() == nullptr);
+
+        // WHEN
+        {
+            Qt3DRender::QTexture2D t;
+            mat.setEmissiveMap(&t);
+
+            // THEN
+            QCOMPARE(mat.emissiveMap(), &t);
+        }
+        // THEN
+        QVERIFY(mat.emissiveMap() == nullptr);
+
+        // WHEN
+        {
+            Qt3DRender::QTexture2D t;
+            mat.setMetalRoughMap(&t);
+
+            // THEN
+            QCOMPARE(mat.metalRoughMap(), &t);
+        }
+        // THEN
+        QVERIFY(mat.metalRoughMap() == nullptr);
+
+
+        // WHEN
+        {
+            Qt3DRender::QTexture2D t;
+            mat.setNormalMap(&t);
+
+            // THEN
+            QCOMPARE(mat.normalMap(), &t);
+        }
+        // THEN
+        QVERIFY(mat.normalMap() == nullptr);
+    }
 };
 
 QTEST_APPLESS_MAIN(tst_MetallicRoughnessProperties)
