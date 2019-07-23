@@ -26,7 +26,7 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS += \
+!uikit: SUBDIRS += \
     assetprocessor \
     gltfViewer
 
