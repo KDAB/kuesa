@@ -1126,7 +1126,7 @@ Qt3DRender::QRenderTarget *ForwardRenderer::createMultisampledRenderTarget(bool 
 
     if (includeDepth) {
         auto depthTexture = new Qt3DRender::QTexture2DMultisample;
-        depthTexture->setFormat(Qt3DRender::QAbstractTexture::DepthFormat);
+        depthTexture->setFormat(Qt3DRender::QAbstractTexture::D24);
         depthTexture->setSize(targetSize.width(), targetSize.height());
         depthTexture->setGenerateMipMaps(false);
         depthTexture->setSamples(samples);
