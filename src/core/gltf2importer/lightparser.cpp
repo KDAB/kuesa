@@ -37,17 +37,17 @@ QT_BEGIN_NAMESPACE
 using namespace Kuesa::GLTF2Import;
 
 namespace {
-const QLatin1String KEY_NAME = QLatin1Literal("name");
-const QLatin1String KEY_TYPE = QLatin1Literal("type");
-const QLatin1String KEY_COLOR = QLatin1Literal("color");
-const QLatin1String KEY_INTENSITY = QLatin1Literal("intensity");
-const QLatin1String KEY_RANGE = QLatin1Literal("range");
-const QLatin1String KEY_SPOT = QLatin1Literal("spot");
-const QLatin1String KEY_INNER_CONE_ANGLE = QLatin1Literal("innerConeAngle");
-const QLatin1String KEY_OUTER_CONE_ANGLE = QLatin1Literal("outerConeAngle");
-const QLatin1String KEY_LIGHT_DIRECTIONAL = QLatin1Literal("directional");
-const QLatin1String KEY_LIGHT_POINT = QLatin1Literal("point");
-const QLatin1String KEY_LIGHT_SPOT = QLatin1Literal("spot");
+const QLatin1String KEY_NAME = QLatin1String("name");
+const QLatin1String KEY_TYPE = QLatin1String("type");
+const QLatin1String KEY_COLOR = QLatin1String("color");
+const QLatin1String KEY_INTENSITY = QLatin1String("intensity");
+const QLatin1String KEY_RANGE = QLatin1String("range");
+const QLatin1String KEY_SPOT = QLatin1String("spot");
+const QLatin1String KEY_INNER_CONE_ANGLE = QLatin1String("innerConeAngle");
+const QLatin1String KEY_OUTER_CONE_ANGLE = QLatin1String("outerConeAngle");
+const QLatin1String KEY_LIGHT_DIRECTIONAL = QLatin1String("directional");
+const QLatin1String KEY_LIGHT_POINT = QLatin1String("point");
+const QLatin1String KEY_LIGHT_SPOT = QLatin1String("spot");
 
 } // namespace
 

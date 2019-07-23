@@ -72,9 +72,9 @@ QString imageNamer(const QString &basename, const QJsonObject &obj, const QByteA
     const auto mime_it = obj.constFind(GLTF2Import::KEY_MIMETYPE);
     if (mime_it != obj.constEnd()) {
         const auto mime = mime_it->toString();
-        if (mime == QLatin1Literal("image/jpeg")) {
+        if (mime == QLatin1String("image/jpeg")) {
             suffix = QStringLiteral("jpeg");
-        } else if (mime == QLatin1Literal("image/png")) {
+        } else if (mime == QLatin1String("image/png")) {
             suffix = QStringLiteral("png");
         }
     }

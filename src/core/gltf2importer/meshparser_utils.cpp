@@ -52,7 +52,7 @@ QT_BEGIN_NAMESPACE
 
 namespace {
 
-const QLatin1String ATTR_TANGENT = QLatin1Literal("TANGENT");
+const QLatin1String ATTR_TANGENT = QLatin1String("TANGENT");
 
 const auto morphTargetAttributeRegExps = []() {
     const QString morphTargetAttributePattern = QStringLiteral("%1(_\d+)?");

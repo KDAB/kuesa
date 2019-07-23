@@ -41,9 +41,9 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 namespace {
-const QLatin1String KEY_IMAGES = QLatin1Literal("images");
+const QLatin1String KEY_IMAGES = QLatin1String("images");
 const QLatin1String KEY_TEXTURES = QLatin1String("textures");
-const QLatin1String KEY_TEXTURE_SAMPLERS = QLatin1Literal("samplers");
+const QLatin1String KEY_TEXTURE_SAMPLERS = QLatin1String("samplers");
 } // namespace
 
 class tst_TextureParser : public QObject

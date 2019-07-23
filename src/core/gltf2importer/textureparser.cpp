@@ -40,9 +40,9 @@ QT_BEGIN_NAMESPACE
 using namespace Kuesa::GLTF2Import;
 
 namespace {
-const QLatin1String KEY_SAMPLER = QLatin1Literal("sampler");
-const QLatin1String KEY_SOURCE = QLatin1Literal("source");
-const QLatin1String KEY_NAME = QLatin1Literal("name");
+const QLatin1String KEY_SAMPLER = QLatin1String("sampler");
+const QLatin1String KEY_SOURCE = QLatin1String("source");
+const QLatin1String KEY_NAME = QLatin1String("name");
 const QLatin1String KEY_GLTF_EXTENSION = QLatin1String("extensions");
 const QLatin1String KEY_MSFT_DDS_EXTENSION = QLatin1String("MSFT_texture_dds");
 

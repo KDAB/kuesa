@@ -39,7 +39,7 @@ namespace Uri {
 
 Kind kind(const QString &uri)
 {
-    return uri.startsWith(QLatin1Literal("data:"), Qt::CaseInsensitive)
+    return uri.startsWith(QLatin1String("data:"), Qt::CaseInsensitive)
             ? Kind::Data
             : Kind::Path;
 }
@@ -75,9 +75,9 @@ QString localFile(const QString &uri, const QDir &basePath)
 {
     QString path;
     if (uri.startsWith(QLatin1String("qrc:///"), Qt::CaseInsensitive)) {
-        path = QLatin1Literal(":/") + uri.mid(7);
+        path = QLatin1String(":/") + uri.mid(7);
     } else if (uri.startsWith(QLatin1String("qrc:/"), Qt::CaseInsensitive)) {
-        path = QLatin1Literal(":/") + uri.mid(5);
+        path = QLatin1String(":/") + uri.mid(5);
     } else if (uri.startsWith(QLatin1String(":/"), Qt::CaseInsensitive)) {
         path = uri;
     } else if (uri.startsWith(QLatin1String("file:"), Qt::CaseInsensitive)) {

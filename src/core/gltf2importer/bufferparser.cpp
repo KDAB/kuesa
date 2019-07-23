@@ -42,9 +42,9 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 namespace {
-const QLatin1String KEY_URI = QLatin1Literal("uri");
-const QLatin1String KEY_NAME = QLatin1Literal("name");
-const QLatin1String KEY_BYTE_LENGTH = QLatin1Literal("byteLength");
+const QLatin1String KEY_URI = QLatin1String("uri");
+const QLatin1String KEY_NAME = QLatin1String("name");
+const QLatin1String KEY_BYTE_LENGTH = QLatin1String("byteLength");
 } // namespace
 
 /*!

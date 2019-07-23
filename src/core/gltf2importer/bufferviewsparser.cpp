@@ -42,10 +42,10 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 namespace {
-const QLatin1String KEY_BUFFER = QLatin1Literal("buffer");
-const QLatin1String KEY_BYTEOFFSET = QLatin1Literal("byteOffset");
-const QLatin1String KEY_BYTELENGTH = QLatin1Literal("byteLength");
-const QLatin1String KEY_BYTESTRIDE = QLatin1Literal("byteStride");
+const QLatin1String KEY_BUFFER = QLatin1String("buffer");
+const QLatin1String KEY_BYTEOFFSET = QLatin1String("byteOffset");
+const QLatin1String KEY_BYTELENGTH = QLatin1String("byteLength");
+const QLatin1String KEY_BYTESTRIDE = QLatin1String("byteStride");
 } // namespace
 
 Q_LOGGING_CATEGORY(bufferviewsparser, "BufferViewsParser")

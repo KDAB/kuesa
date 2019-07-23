@@ -38,7 +38,7 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 namespace {
-const QLatin1String KEY_NODES = QLatin1Literal("nodes");
+const QLatin1String KEY_NODES = QLatin1String("nodes");
 const QLatin1String KEY_SCENES = QLatin1String("scenes");
 
 } // namespace

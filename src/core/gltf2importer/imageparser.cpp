@@ -37,10 +37,10 @@
 QT_BEGIN_NAMESPACE
 using namespace Kuesa::GLTF2Import;
 
-const QLatin1String KEY_URI = QLatin1Literal("uri");
-const QLatin1String KEY_BUFFER_VIEW = QLatin1Literal("bufferView");
-const QLatin1String KEY_NAME = QLatin1Literal("name");
-const QLatin1String KEY_MIMETYPE = QLatin1Literal("mimeType");
+const QLatin1String KEY_URI = QLatin1String("uri");
+const QLatin1String KEY_BUFFER_VIEW = QLatin1String("bufferView");
+const QLatin1String KEY_NAME = QLatin1String("name");
+const QLatin1String KEY_MIMETYPE = QLatin1String("mimeType");
 
 ImageParser::ImageParser(const QDir &basePath)
     : m_basePath(basePath)

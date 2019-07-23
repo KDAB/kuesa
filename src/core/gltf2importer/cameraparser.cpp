@@ -46,16 +46,16 @@ using namespace GLTF2Import;
 
 namespace {
 
-const QLatin1String KEY_NAME = QLatin1Literal("name");
-const QLatin1String KEY_TYPE = QLatin1Literal("type");
-const QLatin1String KEY_Z_NEAR = QLatin1Literal("znear");
-const QLatin1String KEY_Z_FAR = QLatin1Literal("zfar");
-const QLatin1String KEY_X_MAG = QLatin1Literal("xmag");
-const QLatin1String KEY_Y_MAG = QLatin1Literal("ymag");
-const QLatin1String KEY_ASPECT_RATIO = QLatin1Literal("aspectRatio");
-const QLatin1String KEY_Y_FOV = QLatin1Literal("yfov");
-const QLatin1String KEY_PERSPECTIVE = QLatin1Literal("perspective");
-const QLatin1String KEY_ORTHOGRAPHIC = QLatin1Literal("orthographic");
+const QLatin1String KEY_NAME = QLatin1String("name");
+const QLatin1String KEY_TYPE = QLatin1String("type");
+const QLatin1String KEY_Z_NEAR = QLatin1String("znear");
+const QLatin1String KEY_Z_FAR = QLatin1String("zfar");
+const QLatin1String KEY_X_MAG = QLatin1String("xmag");
+const QLatin1String KEY_Y_MAG = QLatin1String("ymag");
+const QLatin1String KEY_ASPECT_RATIO = QLatin1String("aspectRatio");
+const QLatin1String KEY_Y_FOV = QLatin1String("yfov");
+const QLatin1String KEY_PERSPECTIVE = QLatin1String("perspective");
+const QLatin1String KEY_ORTHOGRAPHIC = QLatin1String("orthographic");
 } // namespace
 
 CameraParser::CameraParser()

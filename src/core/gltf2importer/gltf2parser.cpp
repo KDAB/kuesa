@@ -101,7 +101,7 @@ void addToCollectionWithUniqueName(CollectionType *collection, const QString &ba
     for (int i = 1;; ++i) {
         if (!collection->contains(currentName))
             break;
-        currentName = QString(QLatin1Literal("%1_%2")).arg(basename, QString::number(i));
+        currentName = QString(QLatin1String("%1_%2")).arg(basename, QString::number(i));
     }
 
     collection->add(currentName, asset);

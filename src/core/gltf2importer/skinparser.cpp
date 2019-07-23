@@ -39,10 +39,10 @@ using namespace GLTF2Import;
 
 namespace {
 
-const QLatin1String KEY_JOINTS = QLatin1Literal("joints");
-const QLatin1String KEY_INVERSE_BIND_MATRICES = QLatin1Literal("inverseBindMatrices");
-const QLatin1String KEY_SKELETON = QLatin1Literal("skeleton");
-const QLatin1String KEY_NAME = QLatin1Literal("name");
+const QLatin1String KEY_JOINTS = QLatin1String("joints");
+const QLatin1String KEY_INVERSE_BIND_MATRICES = QLatin1String("inverseBindMatrices");
+const QLatin1String KEY_SKELETON = QLatin1String("skeleton");
+const QLatin1String KEY_NAME = QLatin1String("name");
 
 } // namespace
 

@@ -45,19 +45,19 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 namespace GLTF2Import {
 
-const QLatin1String KEY_BUFFERS = QLatin1Literal("buffers");
-const QLatin1String KEY_BUFFERVIEWS = QLatin1Literal("bufferViews");
-const QLatin1String KEY_ACCESSORS = QLatin1Literal("accessors");
-const QLatin1String KEY_NODES = QLatin1Literal("nodes");
-const QLatin1String KEY_MESHES = QLatin1Literal("meshes");
-const QLatin1String KEY_SCENE = QLatin1Literal("scene");
-const QLatin1String KEY_SCENES = QLatin1Literal("scenes");
+const QLatin1String KEY_BUFFERS = QLatin1String("buffers");
+const QLatin1String KEY_BUFFERVIEWS = QLatin1String("bufferViews");
+const QLatin1String KEY_ACCESSORS = QLatin1String("accessors");
+const QLatin1String KEY_NODES = QLatin1String("nodes");
+const QLatin1String KEY_MESHES = QLatin1String("meshes");
+const QLatin1String KEY_SCENE = QLatin1String("scene");
+const QLatin1String KEY_SCENES = QLatin1String("scenes");
 const QLatin1String KEY_KDAB_KUESA_LAYER_EXTENSION = QLatin1String("KDAB_Kuesa_Layers");
 const QLatin1String KEY_MSFT_DDS_EXTENSION = QLatin1String("MSFT_texture_dds");
-const QLatin1String KEY_KUESA_LAYERS = QLatin1Literal("layers");
-const QLatin1String KEY_CAMERAS = QLatin1Literal("cameras");
-const QLatin1String KEY_IMAGES = QLatin1Literal("images");
-const QLatin1String KEY_TEXTURE_SAMPLERS = QLatin1Literal("samplers");
+const QLatin1String KEY_KUESA_LAYERS = QLatin1String("layers");
+const QLatin1String KEY_CAMERAS = QLatin1String("cameras");
+const QLatin1String KEY_IMAGES = QLatin1String("images");
+const QLatin1String KEY_TEXTURE_SAMPLERS = QLatin1String("samplers");
 const QLatin1String KEY_TEXTURES = QLatin1String("textures");
 const QLatin1String KEY_EXTENSIONS = QLatin1String("extensions");
 const QLatin1String KEY_EXTENSIONS_USED = QLatin1String("extensionsUsed");
@@ -81,15 +81,15 @@ const QLatin1String KEY_MIMETYPE = QLatin1String("mimeType");
 #if defined(KUESA_DRACO_COMPRESSION)
 const QLatin1String KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION = QLatin1String("KHR_draco_mesh_compression");
 #endif
-const QLatin1String KEY_KHR_MATERIALS_UNLIT = QLatin1Literal("KHR_materials_unlit");
-const QLatin1String KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION = QLatin1Literal("KHR_lights_punctual");
-const QLatin1String KEY_KHR_PUNCTUAL_LIGHTS = QLatin1Literal("lights");
+const QLatin1String KEY_KHR_MATERIALS_UNLIT = QLatin1String("KHR_materials_unlit");
+const QLatin1String KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION = QLatin1String("KHR_lights_punctual");
+const QLatin1String KEY_KHR_PUNCTUAL_LIGHTS = QLatin1String("lights");
 const QLatin1String KEY_BUFFERVIEWTARGET = QLatin1String("target");
-const QLatin1String KEY_COMPONENTTYPE = QLatin1Literal("componentType");
-const QLatin1String KEY_COUNT = QLatin1Literal("count");
-const QLatin1String KEY_TYPE = QLatin1Literal("type");
-const QLatin1String KEY_MAX = QLatin1Literal("max");
-const QLatin1String KEY_MIN = QLatin1Literal("min");
+const QLatin1String KEY_COMPONENTTYPE = QLatin1String("componentType");
+const QLatin1String KEY_COUNT = QLatin1String("count");
+const QLatin1String KEY_TYPE = QLatin1String("type");
+const QLatin1String KEY_MAX = QLatin1String("max");
+const QLatin1String KEY_MIN = QLatin1String("min");
 
 } // namespace GLTF2Import
 } // namespace Kuesa

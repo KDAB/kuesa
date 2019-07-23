@@ -43,10 +43,10 @@
 using namespace Kuesa;
 using namespace GLTF2Import;
 
-const QLatin1String KEY_BUFFERS = QLatin1Literal("buffers");
-const QLatin1String KEY_BUFFERVIEWS = QLatin1Literal("bufferViews");
-const QLatin1String KEY_ACCESSORS = QLatin1Literal("accessors");
-const QLatin1String KEY_NODES = QLatin1Literal("nodes");
+const QLatin1String KEY_BUFFERS = QLatin1String("buffers");
+const QLatin1String KEY_BUFFERVIEWS = QLatin1String("bufferViews");
+const QLatin1String KEY_ACCESSORS = QLatin1String("accessors");
+const QLatin1String KEY_NODES = QLatin1String("nodes");
 const QLatin1String KEY_ANIMATIONS = QLatin1String("animations");
 
 class tst_AnimationParser : public QObject

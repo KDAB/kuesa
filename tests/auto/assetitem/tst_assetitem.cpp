@@ -83,7 +83,7 @@ private Q_SLOTS:
         QVERIFY(importer);
 
         // WITH
-        QObject *assetItem = rootObj->findChild<QObject *>(QLatin1Literal("cameraAsset"));
+        QObject *assetItem = rootObj->findChild<QObject *>(QLatin1String("cameraAsset"));
 
         // THEN
         QVERIFY(assetItem != nullptr);

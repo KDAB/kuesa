@@ -42,23 +42,23 @@ using namespace Kuesa::GLTF2Import;
 
 namespace {
 
-const QLatin1String KEY_NAME = QLatin1Literal("name");
-const QLatin1String KEY_ALPHA_MODE = QLatin1Literal("alphaMode");
-const QLatin1String KEY_ALPHA_CUTOFF = QLatin1Literal("alphaCutoff");
-const QLatin1String KEY_DOUBLE_SIDED = QLatin1Literal("doubleSided");
-const QLatin1String KEY_PBR_METALLIC_ROUGHNESS = QLatin1Literal("pbrMetallicRoughness");
-const QLatin1String KEY_BASE_COLOR_FACTOR = QLatin1Literal("baseColorFactor");
-const QLatin1String KEY_BASE_COLOR_TEXTURE = QLatin1Literal("baseColorTexture");
-const QLatin1String KEY_ROUGHNESS_FACTOR = QLatin1Literal("roughnessFactor");
-const QLatin1String KEY_ROUGHNESS_TEXTURE = QLatin1Literal("metallicRoughnessTexture");
-const QLatin1String KEY_METALLIC_FACTOR = QLatin1Literal("metallicFactor");
-const QLatin1String KEY_INDEX = QLatin1Literal("index");
-const QLatin1String KEY_TEXCOORD = QLatin1Literal("texCoord");
-const QLatin1String KEY_NORMAL_TEXTURE = QLatin1Literal("normalTexture");
-const QLatin1String KEY_OCCLUSION_TEXTURE = QLatin1Literal("occlusionTexture");
-const QLatin1String KEY_EMISSIVE_TEXTURE = QLatin1Literal("emissiveTexture");
-const QLatin1String KEY_SCALE = QLatin1Literal("scale");
-const QLatin1String KEY_EMISSIVE_FACTOR = QLatin1Literal("emissiveFactor");
+const QLatin1String KEY_NAME = QLatin1String("name");
+const QLatin1String KEY_ALPHA_MODE = QLatin1String("alphaMode");
+const QLatin1String KEY_ALPHA_CUTOFF = QLatin1String("alphaCutoff");
+const QLatin1String KEY_DOUBLE_SIDED = QLatin1String("doubleSided");
+const QLatin1String KEY_PBR_METALLIC_ROUGHNESS = QLatin1String("pbrMetallicRoughness");
+const QLatin1String KEY_BASE_COLOR_FACTOR = QLatin1String("baseColorFactor");
+const QLatin1String KEY_BASE_COLOR_TEXTURE = QLatin1String("baseColorTexture");
+const QLatin1String KEY_ROUGHNESS_FACTOR = QLatin1String("roughnessFactor");
+const QLatin1String KEY_ROUGHNESS_TEXTURE = QLatin1String("metallicRoughnessTexture");
+const QLatin1String KEY_METALLIC_FACTOR = QLatin1String("metallicFactor");
+const QLatin1String KEY_INDEX = QLatin1String("index");
+const QLatin1String KEY_TEXCOORD = QLatin1String("texCoord");
+const QLatin1String KEY_NORMAL_TEXTURE = QLatin1String("normalTexture");
+const QLatin1String KEY_OCCLUSION_TEXTURE = QLatin1String("occlusionTexture");
+const QLatin1String KEY_EMISSIVE_TEXTURE = QLatin1String("emissiveTexture");
+const QLatin1String KEY_SCALE = QLatin1String("scale");
+const QLatin1String KEY_EMISSIVE_FACTOR = QLatin1String("emissiveFactor");
 
 void parseTextureInfo(TextureInfo &info, const QJsonObject &textureInfoObj)
 {

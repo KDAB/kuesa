@@ -56,14 +56,14 @@ using namespace GLTF2Import;
 
 namespace {
 
-const QLatin1String KEY_PRIMITIVES = QLatin1Literal("primitives");
-const QLatin1String KEY_ATTRIBUTES = QLatin1Literal("attributes");
-const QLatin1String KEY_INDICES = QLatin1Literal("indices");
-const QLatin1String KEY_MATERIAL = QLatin1Literal("material");
-const QLatin1String KEY_MODE = QLatin1Literal("mode");
-const QLatin1String KEY_NAME = QLatin1Literal("name");
-const QLatin1String KEY_TARGETS = QLatin1Literal("targets");
-const QLatin1String KEY_WEIGHTS = QLatin1Literal("weights");
+const QLatin1String KEY_PRIMITIVES = QLatin1String("primitives");
+const QLatin1String KEY_ATTRIBUTES = QLatin1String("attributes");
+const QLatin1String KEY_INDICES = QLatin1String("indices");
+const QLatin1String KEY_MATERIAL = QLatin1String("material");
+const QLatin1String KEY_MODE = QLatin1String("mode");
+const QLatin1String KEY_NAME = QLatin1String("name");
+const QLatin1String KEY_TARGETS = QLatin1String("targets");
+const QLatin1String KEY_WEIGHTS = QLatin1String("weights");
 #if defined(KUESA_DRACO_COMPRESSION)
 const QLatin1String KEY_EXTENSIONS = QLatin1String("extensions");
 const QLatin1String KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION = QLatin1String("KHR_draco_mesh_compression");
@@ -217,7 +217,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             }
 
             if (!Kuesa::GLTF2Import::MeshParserUtils::geometryIsGLTF2Valid(geometry.get())) {
-                qCWarning(kuesa) << QLatin1Literal("Geometry doesn't meet glTF 2.0 requirements");
+                qCWarning(kuesa) << QLatin1String("Geometry doesn't meet glTF 2.0 requirements");
                 return false;
             }
 
@@ -618,7 +618,7 @@ bool MeshParser::geometryDracoFromJSON(Qt3DRender::QGeometry *geometry,
     }
 
     if (geom_type.value() != draco::TRIANGULAR_MESH && geom_type.value() != draco::POINT_CLOUD) {
-        qCWarning(kuesa) << QLatin1Literal("Draco data is not a mesh nor a point cloud");
+        qCWarning(kuesa) << QLatin1String("Draco data is not a mesh nor a point cloud");
         return false;
     }
 

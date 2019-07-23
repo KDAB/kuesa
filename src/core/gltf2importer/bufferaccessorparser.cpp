@@ -45,14 +45,14 @@ using namespace GLTF2Import;
 
 namespace {
 
-const QLatin1String KEY_COMPONENTTYPE = QLatin1Literal("componentType");
-const QLatin1String KEY_COUNT = QLatin1Literal("count");
-const QLatin1String KEY_TYPE = QLatin1Literal("type");
-const QLatin1String KEY_NORMALIZED = QLatin1Literal("normalized");
-const QLatin1String KEY_MAX = QLatin1Literal("max");
-const QLatin1String KEY_MIN = QLatin1Literal("min");
-const QLatin1String KEY_SPARSE_INDICES = QLatin1Literal("indices");
-const QLatin1String KEY_SPARSE_VALUES = QLatin1Literal("values");
+const QLatin1String KEY_COMPONENTTYPE = QLatin1String("componentType");
+const QLatin1String KEY_COUNT = QLatin1String("count");
+const QLatin1String KEY_TYPE = QLatin1String("type");
+const QLatin1String KEY_NORMALIZED = QLatin1String("normalized");
+const QLatin1String KEY_MAX = QLatin1String("max");
+const QLatin1String KEY_MIN = QLatin1String("min");
+const QLatin1String KEY_SPARSE_INDICES = QLatin1String("indices");
+const QLatin1String KEY_SPARSE_VALUES = QLatin1String("values");
 
 QVector<float> jsonArrayToVectorOfFloats(const QJsonArray &values)
 {
