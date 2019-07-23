@@ -139,9 +139,6 @@ private:
     void reconfigureFrameGraph();
     void reconfigureStages();
 
-
-    Qt3DRender::QRenderTarget *createRenderTarget(bool includeDepth);
-    Qt3DRender::QRenderTarget *createMultisampledRenderTarget(bool includeDepth);
     AbstractPostProcessingEffect::FrameGraphNodePtr frameGraphSubtreeForPostProcessingEffect(AbstractPostProcessingEffect *effect) const;
 
     Qt3DRender::QTechniqueFilter *m_noFrustumCullingOpaqueTechniqueFilter;

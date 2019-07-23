@@ -390,7 +390,7 @@ GLFeatures checkGLFeatures()
     if (ctx.create()) {
         const QSurfaceFormat format = ctx.format();
         // Since ES 3.0 or GL 3.0
-        features.hasHalfFloatTexture = format.majorVersion() >= 3 || ctx.hasExtension(QByteArray(""));
+        features.hasHalfFloatTexture = format.majorVersion() >= 3 || ctx.hasExtension(QByteArray("GL_OES_texture_half_float"));
         // Since GL 3.0 or ES 3.2 or extension
         features.hasHalfFloatRenderable = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 2)
                                                             : format.majorVersion() >= 3)
@@ -401,9 +401,72 @@ GLFeatures checkGLFeatures()
                                           || ctx.hasExtension(QByteArray("ARB_texture_multisample"));
         // Since ES 3.1, GL 3.0 or extension
         // TO DO: Find how to support that on ES
-        features.hasMultisampledFBO = format.majorVersion() >= 3;
+        features.hasMultisampledFBO = (ctx.isOpenGLES() ? (format.majorVersion() >= 3 && format.minorVersion() >= 1)
+                                                        : format.majorVersion() >= 3);
     }
     return features;
+}
+
+enum RenderTargetFlag {
+    IncludeDepth = (1 << 0),
+    Multisampled = (1 << 1),
+    HalfFloatAttachments = (1 << 2),
+};
+Q_DECLARE_FLAGS(RenderTargetFlags, RenderTargetFlag)
+
+/*!
+ * \internal
+ *
+ * Helper function to create a QRenderTarget with the correct texture formats
+ * and sizes.
+ */
+Qt3DRender::QRenderTarget *createRenderTarget(RenderTargetFlags flags,
+                                              Qt3DCore::QNode *owner,
+                                              const QSize surfaceSize,
+                                              int samples = 0)
+{
+    auto renderTarget = new Qt3DRender::QRenderTarget(owner);
+    Qt3DRender::QAbstractTexture *colorTexture = nullptr;
+    if (flags & RenderTargetFlag::Multisampled) {
+        colorTexture = new Qt3DRender::QTexture2DMultisample;
+        colorTexture->setSamples(samples);
+    } else {
+        colorTexture = new Qt3DRender::QTexture2D;
+    }
+    // We need to use 16 based format as our content is HDR linear
+    // which we will eventually exposure correct, tone map to LDR and
+    // gamma correct
+    // This requires support for extension OES_texture_half_float on ES2 platforms
+    colorTexture->setFormat((flags & RenderTargetFlag::HalfFloatAttachments)
+                            ? Qt3DRender::QAbstractTexture::RGBA16F
+                            : Qt3DRender::QAbstractTexture::RGBA8U);
+    colorTexture->setGenerateMipMaps(false);
+    colorTexture->setSize(surfaceSize.width(), surfaceSize.height());
+    auto colorOutput = new Qt3DRender::QRenderTargetOutput;
+
+    colorOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+    colorOutput->setTexture(colorTexture);
+    renderTarget->addOutput(colorOutput);
+
+    if (flags & RenderTargetFlag::IncludeDepth) {
+        Qt3DRender::QAbstractTexture *depthTexture = nullptr;
+        if (flags & RenderTargetFlag::Multisampled) {
+            depthTexture = new Qt3DRender::QTexture2DMultisample;
+            depthTexture->setSamples(samples);
+        } else {
+            depthTexture = new Qt3DRender::QTexture2D;
+        }
+        depthTexture->setFormat(Qt3DRender::QAbstractTexture::DepthFormat);
+        depthTexture->setSize(surfaceSize.width(), surfaceSize.height());
+        depthTexture->setGenerateMipMaps(false);
+        depthTexture->setFormat(Qt3DRender::QAbstractTexture::D24);
+        auto depthOutput = new Qt3DRender::QRenderTargetOutput;
+        depthOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Depth);
+        depthOutput->setTexture(depthTexture);
+        renderTarget->addOutput(depthOutput);
+    }
+
+    return renderTarget;
 }
 
 } // namespace anonymous
@@ -896,15 +959,21 @@ void ForwardRenderer::reconfigureFrameGraph()
     const bool hasFX = !m_userPostProcessingEffects.empty() || !m_internalPostProcessingEffects.empty();
     if (hasFX) {
 
+        RenderTargetFlags baseRenderTargetFlags;
 
+        if (glFeatures.hasHalfFloatTexture)
+            baseRenderTargetFlags |= RenderTargetFlag::HalfFloatAttachments;
+
+        const QSize surfaceSize = currentSurfaceSize();
         if (!m_renderTargets[0]) {
             // create a render target for main scene
-            m_renderTargets[0] = createRenderTarget(true);
+            m_renderTargets[0] = createRenderTarget(baseRenderTargetFlags|RenderTargetFlag::IncludeDepth,
+                                                    this, surfaceSize);
         }
         const int userFXCount = m_userPostProcessingEffects.size();
         const int totalFXCount = userFXCount + m_internalPostProcessingEffects.size();
         if (totalFXCount > 1 && !m_renderTargets[1]) {
-            m_renderTargets[1] = createRenderTarget(false);
+            m_renderTargets[1] = createRenderTarget(baseRenderTargetFlags, this, surfaceSize);
             // create a secondary render target to do ping-pong when we have
             // more than 1 fx
         }
@@ -940,9 +1009,13 @@ void ForwardRenderer::reconfigureFrameGraph()
 
         // If we support MSAA FBO -> Then render into it and Blit into regular non FBO
         // for post FX
-        if (glFeatures.hasMultisampledFBO) {
+        const int samples = QSurfaceFormat::defaultFormat().samples();
+        if (glFeatures.hasMultisampledFBO && samples > 1) {
             // Render Into MSAA FBO
-            m_multisampleTarget = createMultisampledRenderTarget(true);
+            m_multisampleTarget = createRenderTarget(baseRenderTargetFlags|RenderTargetFlag::Multisampled|RenderTargetFlag::IncludeDepth,
+                                                     this,
+                                                     surfaceSize,
+                                                     samples);
 
             // Blit into regular Tex2D FBO
             m_blitFramebufferNode = new Qt3DRender::QBlitFramebuffer(sceneTargetSelector);
@@ -1056,87 +1129,6 @@ void ForwardRenderer::reconfigureStages()
         SceneStagesPtr &sceneStage = m_sceneStages[i];
         sceneStage->insertTransparentStage(transparentStageRoots[i]);
     }
-}
-
-/*!
- * \internal
- *
- * Helper function to create a QRenderTarget with the correct texture formats
- * and sizes.
- */
-Qt3DRender::QRenderTarget *ForwardRenderer::createRenderTarget(bool includeDepth)
-{
-    auto renderTarget = new Qt3DRender::QRenderTarget(this);
-    auto colorTexture = new Qt3DRender::QTexture2D;
-    // We need to use 16 based format as our content is HDR linear
-    // which we will eventually exposure correct, tone map to LDR and
-    // gamma correct
-    // This requires support for extension OES_texture_half_float on ES2 platforms
-    colorTexture->setFormat(Qt3DRender::QAbstractTexture::RGBA16F);
-    colorTexture->setGenerateMipMaps(false);
-
-    const auto targetSize = currentSurfaceSize();
-    colorTexture->setSize(targetSize.width(), targetSize.height());
-    auto colorOutput = new Qt3DRender::QRenderTargetOutput;
-
-    colorOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
-    colorOutput->setTexture(colorTexture);
-    renderTarget->addOutput(colorOutput);
-
-    if (includeDepth) {
-        auto depthTexture = new Qt3DRender::QTexture2D;
-        depthTexture->setFormat(Qt3DRender::QAbstractTexture::DepthFormat);
-        depthTexture->setSize(targetSize.width(), targetSize.height());
-        depthTexture->setGenerateMipMaps(false);
-        auto depthOutput = new Qt3DRender::QRenderTargetOutput;
-        depthOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Depth);
-        depthOutput->setTexture(depthTexture);
-        renderTarget->addOutput(depthOutput);
-    }
-
-    return renderTarget;
-}
-
-/*!
- * \internal
- *
- * Helper function to create a QRenderTarget with the correct texture formats
- * and sizes.
- */
-Qt3DRender::QRenderTarget *ForwardRenderer::createMultisampledRenderTarget(bool includeDepth)
-{
-    auto renderTarget = new Qt3DRender::QRenderTarget(this);
-    auto colorTexture = new Qt3DRender::QTexture2DMultisample;
-    // We need to use 16 based format as our content is HDR linear
-    // which we will eventually exposure correct, tone map to LDR and
-    // gamma correct
-    // This requires support for extension OES_texture_float on ES2 platforms
-    colorTexture->setFormat(Qt3DRender::QAbstractTexture::RGBA16F);
-    colorTexture->setGenerateMipMaps(false);
-    const int samples = std::max(1, QSurfaceFormat::defaultFormat().samples());
-    colorTexture->setSamples(samples);
-
-    const auto targetSize = currentSurfaceSize();
-    colorTexture->setSize(targetSize.width(), targetSize.height());
-    auto colorOutput = new Qt3DRender::QRenderTargetOutput;
-
-    colorOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
-    colorOutput->setTexture(colorTexture);
-    renderTarget->addOutput(colorOutput);
-
-    if (includeDepth) {
-        auto depthTexture = new Qt3DRender::QTexture2DMultisample;
-        depthTexture->setFormat(Qt3DRender::QAbstractTexture::D24);
-        depthTexture->setSize(targetSize.width(), targetSize.height());
-        depthTexture->setGenerateMipMaps(false);
-        depthTexture->setSamples(samples);
-        auto depthOutput = new Qt3DRender::QRenderTargetOutput;
-        depthOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Depth);
-        depthOutput->setTexture(depthTexture);
-        renderTarget->addOutput(depthOutput);
-    }
-
-    return renderTarget;
 }
 
 /*!
