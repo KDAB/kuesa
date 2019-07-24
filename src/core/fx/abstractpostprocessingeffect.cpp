@@ -47,27 +47,27 @@ namespace Kuesa {
  *
  * Returns a FrameGraph subtree corresponding to the effect's implementation.
  *
- * \note The lifetime of the returned subtree is assumed to be managed by the shared
- * pointer. Any caller reparenting the subtree to add to a \l QFrameGraph will need to
- * unparent it to avoid it being deleted twice.
+ * \note The lifetime of the returned subtree is assumed to be managed by the
+ * shared pointer. Any caller reparenting the subtree to add to a \l
+ * QFrameGraph will need to unparent it to avoid it being deleted twice.
  */
 
 /*!
  * \fn void Kuesa::AbstractPostProcessingEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
  *
- * Sets the input texture for this effect.  The texture contain the rendered scene that
- * the effect will be applied to. This is set automatically by the ForwardRenderer when the
- * effect is added.
+ * Sets the input texture to \a texture for this effect. The texture contain
+ * the rendered scene that the effect will be applied to. This is set
+ * automatically by the ForwardRenderer when the effect is added.
  */
 
 /*!
  * \fn QVector<Qt3DRender::QLayer *> Kuesa::AbstractPostProcessingEffect::layers() const
  *
- * Return the layers provided by this effect. This will generally be the layer of a \l FullScreenQuad
- * on which the effect is being rendered.
+ * Return the layers provided by this effect. This will generally be the layer
+ * of a \l FullScreenQuad on which the effect is being rendered.
  *
- * The behaviour is undefined if this function returns an empty container: there must always
- * be at least one layer.
+ * The behaviour is undefined if this function returns an empty container:
+ * there must always be at least one layer.
  */
 
 AbstractPostProcessingEffect::AbstractPostProcessingEffect(Qt3DCore::QNode *parent,
@@ -90,9 +90,9 @@ AbstractPostProcessingEffect::Type AbstractPostProcessingEffect::type() const
 }
 
 /*!
- * Sets the depth texture for this effect. The texture contain the depth of the
- * rendered scene that the effect will be applied to. This is set automatically
- * by the ForwardRenderer when the effect is added.
+ * Sets the depth texture to \a texture for this effect. The texture contain
+ * the depth of the rendered scene that the effect will be applied to. This is
+ * set automatically by the ForwardRenderer when the effect is added.
  */
 void AbstractPostProcessingEffect::setDepthTexture(Qt3DRender::QAbstractTexture *texture)
 {
@@ -100,8 +100,8 @@ void AbstractPostProcessingEffect::setDepthTexture(Qt3DRender::QAbstractTexture 
 }
 
 /*!
- * Sets the camera entity for this effect. This is set automatically by the
- * ForwardRenderer when the effect is added.
+ * Sets the camera entity to \a camera for this effect. This is set
+ * automatically by the ForwardRenderer when the effect is added.
  */
 void AbstractPostProcessingEffect::setCamera(Qt3DCore::QEntity *camera)
 {
@@ -109,8 +109,8 @@ void AbstractPostProcessingEffect::setCamera(Qt3DCore::QEntity *camera)
 }
 
 /*!
- * Sets the size of the rendered scene (in pixels) that the effect will be applied to.
- * This is necessary for effects to render correctly.
+ * Sets the \a size of the rendered scene (in pixels) that the effect will be
+ * applied to. This is necessary for effects to render correctly.
  */
 void AbstractPostProcessingEffect::setSceneSize(const QSize &size)
 {

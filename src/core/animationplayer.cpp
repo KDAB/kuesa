@@ -134,8 +134,6 @@ using namespace Qt3DAnimation;
     \brief the name of the clip asset.
 
     This will be used to lookup the asset in the AnimationClipCollection instance of the SceneEntity.
-
-    \sa GLTF2Importer::clip()
  */
 
 /*!
@@ -152,8 +150,6 @@ using namespace Qt3DAnimation;
     This will be used to lookup the asset in the AnimationMappingCollection instance of the SceneEntity.
 
     If empty (default), the name of the clip will be used as it is a common convention that they should match.
-
-    \sa GLTF2Importer::mapper()
  */
 
 /*!
@@ -170,8 +166,6 @@ using namespace Qt3DAnimation;
     \brief controls if the animation is running or not
 
     This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.
-
-    \sa GLTF2Importer::isRunning()
  */
 
 /*!
@@ -194,8 +188,6 @@ using namespace Qt3DAnimation;
 
     This reflects the state of the internal Qt3DAnimation::QClipAnimator
     instance.
-
-    \sa GLTF2Importer::loopCount()
  */
 
 /*!
@@ -221,8 +213,6 @@ using namespace Qt3DAnimation;
     direction (like reversing by setting negative playBackRate values) of the animation.
 
     This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.
-
-    \sa GLTF2Importer::clock()
  */
 
 /*!
@@ -240,8 +230,6 @@ using namespace Qt3DAnimation;
     \brief progress of the animation as a uniform value between 0. and 1.
 
     This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.
-
-    \sa GLTF2Importer::normalizedTime()
  */
 
 /*!
@@ -363,16 +351,20 @@ QVector<Qt3DCore::QNode *> AnimationPlayer::targets() const
 }
 
 /*!
- * \brief AnimationPlayer::addTarget adds a node as a target for the animation
+ * \brief AnimationPlayer::addTarget adds a node \a target as a target for the
+ * animation
  *
- * If targets are added to the list, the mapping defined by the AnimationPlayer::mapper
- * property will be ignored and the clip data will be mapped to the specified target nodes.
+ * If targets are added to the list, the mapping defined by the
+ * AnimationPlayer::mapper property will be ignored and the clip data will be
+ * mapped to the specified target nodes.
  *
- * The target node needs to have properties which match the ones defined by the clips.
+ * The target node needs to have properties which match the ones defined by the
+ * clips.
  *
- * \note When specifying targets, a valid object matching the specified AnimationPlayer::mapper
- * property must exist (even though it won't be affected by the animation) as it will contain
- * information required to establish valid mappings for the new targets.
+ * \note When specifying targets, a valid object matching the specified
+ * AnimationPlayer::mapper property must exist (even though it won't be
+ * affected by the animation) as it will contain information required to
+ * establish valid mappings for the new targets.
  *
  * \note Kuesa::SceneEntity::transformForEntity can be useful to map animations that control
  * transformations from one entity to another. The returned transform can be used as a

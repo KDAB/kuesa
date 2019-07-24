@@ -102,7 +102,7 @@ namespace Kuesa {
  */
 
 /*!
-    \property ToneMappingAndGammaCorrectionEffect::toneMappingAlgoritm
+    \property ToneMappingAndGammaCorrectionEffect::toneMappingAlgorithm
 
     Tone mapping specifies how we perform color conversion from HDR (high
     dynamic range) content to LDR (low dynamic range) content which our monitor

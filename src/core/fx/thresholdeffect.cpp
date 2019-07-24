@@ -54,7 +54,8 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/ThresholdEffect
  * \inmodule Kuesa
  * \since Kuesa 1.0
- * \brief Post-processing effect showing only pixels brighter than a specified value
+ * \brief Post-processing effect showing only pixels brighter than a specified
+ * value.
  *
  * ThresholdEffect is a post-processing effect that passes through any pixel
  * above a certain brightness value and sets all others to black.
@@ -178,7 +179,7 @@ float ThresholdEffect::threshold() const
 }
 
 /*!
- * Sets the threshold value.
+ * Sets the threshold value to \a threshold.
  *
  * \sa ThresholdEffect::threshold
  */
@@ -197,7 +198,7 @@ QVector<Qt3DRender::QLayer *> ThresholdEffect::layers() const
 }
 
 /*!
- * Sets the input texture for the effect.
+ * Sets the input texture for the effect to \a texture.
  *
  * \sa AbstractPostProcessingEffect::setInputTexture
  */

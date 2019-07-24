@@ -58,7 +58,7 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/BloomEffect
  * \inmodule Kuesa
  * \since Kuesa 1.0
- * \brief Post-processing effect for blurring the bright parts of a scene
+ * \brief Post-processing effect for blurring the bright parts of a scene.
  *
  * BloomEffect is a post-processing effect that applies a blur to the brightest
  * parts of scene to simulate a fuzzy glow.
@@ -229,7 +229,7 @@ AbstractPostProcessingEffect::FrameGraphNodePtr BloomEffect::frameGraphSubTree()
 }
 
 /*!
- * Sets the size of the rendered scene in pixels.
+ * Sets the size of the rendered scene in pixels to \a size.
  *
  * \sa AbstractPostProcessingEffect::setSceneSize
  */
@@ -242,7 +242,7 @@ void BloomEffect::setSceneSize(const QSize &size)
 }
 
 /*!
- * Sets the input texture for the effect.
+ * Sets the input texture for the effect to \a texture.
  *
  * \sa AbstractPostProcessingEffect::setInputTexture
  */
@@ -260,7 +260,7 @@ QVector<Qt3DRender::QLayer *> BloomEffect::layers() const
 /*!
  * Returns the threshold value.
  *
- * \sa BloomEffect::SetThreshold
+ * \sa BloomEffect::setThreshold
  */
 float BloomEffect::threshold() const
 {
@@ -278,7 +278,7 @@ int BloomEffect::blurPassCount() const
 }
 
 /*!
- * Sets the threshold value.
+ * Sets the threshold value to \a threshold.
  *
  * \sa BloomEffect::threshold
  */
@@ -288,7 +288,7 @@ void BloomEffect::setThreshold(float threshold)
 }
 
 /*!
- * Sets the number of blur passes to apply.
+ * Sets the number of blur passes to apply to \a blurPassCount.
  *
  * \sa BloomEffect::blurPassCount
  */

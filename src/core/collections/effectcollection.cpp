@@ -119,7 +119,7 @@ void EffectCollection::registerType(const QString &id, EffectCreator f)
 }
 
 /*!
- * Removes a previous registered functor from the factory.
+ * Removes a previous registered functor with identified \a id from the factory.
  */
 void EffectCollection::unregisterType(const QString &id)
 {

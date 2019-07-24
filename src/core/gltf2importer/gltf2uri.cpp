@@ -45,6 +45,7 @@ Kind kind(const QString &uri)
 }
 
 /*!
+ * \internal
  * Create a QUrl containing the absolute path to a file referenced in a glTF uri.
  */
 QUrl absoluteUrl(const QString &uri, const QDir &basePath)
@@ -69,6 +70,7 @@ QUrl absoluteUrl(const QString &uri, const QDir &basePath)
 }
 
 /*!
+ * \internal
  * Create a QString containing the absolute path to a file referenced in a glTF uri.
  */
 QString localFile(const QString &uri, const QDir &basePath)
@@ -89,6 +91,7 @@ QString localFile(const QString &uri, const QDir &basePath)
 }
 
 /*!
+ * \internal
  * Converts a glTF data uri into a binary data buffer.
  */
 QByteArray parseEmbeddedData(const QString &uri)
@@ -113,6 +116,7 @@ QByteArray parseEmbeddedData(const QString &uri)
 }
 
 /*!
+ * \internal
  * Converts binary data into a data uri embeddable in a glTF object.
  */
 QByteArray toBase64Uri(const QByteArray &arr)
@@ -121,6 +125,7 @@ QByteArray toBase64Uri(const QByteArray &arr)
 }
 
 /*!
+ * \internal
  * Get the binary data buffer referenced by a glTF uri.
  */
 QByteArray fetchData(const QString &uri, const QDir &basePath, bool &success)

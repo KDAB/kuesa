@@ -56,7 +56,8 @@ namespace Kuesa {
  * \brief FullScreenQuad::FullScreenQuad
  * \param material A material to be aggregated to the quad entity.
  *
- * This material can be used to implement a gradient color background or a screen space effect
+ *This material \a material can be used to implement a gradient color
+ *background or a screen space effect
  *
  * \param parent The parent node for the quad entity.
  */

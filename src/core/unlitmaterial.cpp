@@ -91,7 +91,7 @@ namespace Kuesa {
     It is recommended to create the variations of the material that you need
     once up front at application initialisation time.
 
-    \sa Kuesa.UnlitProperties
+    \sa Kuesa::UnlitProperties
  */
 
 /*!

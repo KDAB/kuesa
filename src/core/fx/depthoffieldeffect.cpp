@@ -105,7 +105,7 @@ using namespace Kuesa;
      \li \inlineimage fx/dof/dof_range_8.png
  \endtable
 
- \sa BloomEffect::focusDistance
+ \sa DepthOfFieldEffect::focusDistance
 */
 
 /*!
@@ -125,7 +125,7 @@ using namespace Kuesa;
      \li \inlineimage fx/dof/dof_distance_8.png
  \endtable
 
- \sa BloomEffect::focusRange
+ \sa DepthOfFieldEffect::focusRange
 */
 
 /*!

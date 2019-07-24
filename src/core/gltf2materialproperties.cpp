@@ -43,7 +43,7 @@ namespace Kuesa {
     \since Kuesa 1.1
 
     \brief GLTF2MaterialProperties is a base class holding properties common to
-    all glTF2 Materials
+    all glTF2 Materials.
 
     A GLTF2MaterialProperties consists of the following base properties:
     \list
@@ -97,8 +97,6 @@ namespace Kuesa {
     property will be considered opaque. Any fragment with an alpha value lower
     than this property will be discarded and wont have any effect on the final
     result. For alphaCutoff to have any effect, it must be activated.
-
-    \sa alphaCutoffEnabled
  */
 
 

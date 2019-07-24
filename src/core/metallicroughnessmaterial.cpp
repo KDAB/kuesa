@@ -72,7 +72,7 @@ namespace Kuesa {
 */
 
 /*!
-    \property MetallicRoughnessProperties::metallicRoughnessProperties
+    \property MetallicRoughnessMaterial::metallicRoughnessProperties
 
     The properties defining the appearance of the material.
 
@@ -102,7 +102,7 @@ namespace Kuesa {
     Kuesa.SceneEntity, it will look for the Kuesa.SceneEntity and will use the
     brdfLut texture in the texture collection.
 
-    \sa Kuesa.MetallicRoughnessProperties
+    \sa Kuesa::MetallicRoughnessProperties
  */
 
 /*!

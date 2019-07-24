@@ -314,7 +314,7 @@ void MetallicRoughnessTechnique::setAllowCulling(bool allowCulling)
     Kuesa.MetallicRoughnessMaterial. Therefore, this effect must be added to a
     Kuesa.MetallicRoughnessMaterial.
 
-    \sa Kuesa.MetallicRoughnessEffect
+    \sa Kuesa::MetallicRoughnessEffect
  */
 
 /*!

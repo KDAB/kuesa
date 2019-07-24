@@ -99,7 +99,7 @@ int AbstractAssetCollection::size()
 }
 
 /*!
- * Returns true if the name exists in the collection
+ * Returns true if the name \a name exists in the collection
  */
 bool AbstractAssetCollection::contains(const QString &name) const
 {

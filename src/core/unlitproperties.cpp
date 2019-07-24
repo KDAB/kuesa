@@ -74,8 +74,8 @@ namespace Kuesa {
 */
 
 /*!
-    \qmltype UnlitMaterial
-    \instantiates Kuesa::UnlitMaterial
+    \qmltype UnlitProperties
+    \instantiates Kuesa::UnlitProperties
     \inherits Kuesa::GLTF2MaterialProperties
     \inqmlmodule Kuesa
     \since Kuesa 1.1

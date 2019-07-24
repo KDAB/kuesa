@@ -56,7 +56,7 @@ using namespace Kuesa;
  * \inheaderfile Kuesa/GaussianBlurEffect
  * \inmodule Kuesa
  * \since Kuesa 1.0
- * \brief Post-processing effect for blurring the scene
+ * \brief Post-processing effect for blurring the scene.
  *
  * GaussianBlurEffect is a post-processing effect that applies a
  * Gaussian blur to the scene. The amount of blurring can be adjusted
@@ -243,7 +243,7 @@ QVector<Qt3DRender::QLayer *> GaussianBlurEffect::layers() const
 }
 
 /*!
- * Sets the input texture for the effect.
+ * Sets the input texture for the effect to \a texture.
  *
  * \sa AbstractPostProcessingEffect::setInputTexture
  */
@@ -256,8 +256,8 @@ void GaussianBlurEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
 }
 
 /*!
- * Sets the size of the rendered scene in pixels. This is required to keep
- * a consistent amount of blurring when the scene is resized.
+ * Sets the size of the rendered scene in pixels to \a size. This is required
+ * to keep a consistent amount of blurring when the scene is resized.
  *
  * \sa AbstractPostProcessingEffect::setSceneSize
  */
@@ -281,7 +281,7 @@ int GaussianBlurEffect::blurPassCount() const
 }
 
 /*!
- * Sets the number of blur passes.
+ * Sets the number of blur passes to \a blurPassCount.
  *
  * \sa GaussianBlurEffect::blurPassCount
  */

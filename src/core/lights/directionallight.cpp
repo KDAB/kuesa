@@ -37,6 +37,7 @@ namespace Kuesa {
 
 /*!
   \class Kuesa::DirectionalLight
+  \inheaderfile Kuesa/DirectionalLight
   \inmodule Kuesa
   \since Kuesa 1.1
   \brief Encapsulate a Directional Light object in a Qt 3D scene.

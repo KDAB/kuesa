@@ -792,7 +792,7 @@ void ForwardRenderer::setBackToFrontSorting(bool backToFrontSorting)
 }
 
 /*!
-    Activates multi-pass \a zFilling support.
+    Activates multi-pass \a zfilling support.
 
     If activated, opaque objects in the scene will be rendered first with a
     simple fragment shader to fill the depth buffer. Then opaque objects will
@@ -828,7 +828,7 @@ void ForwardRenderer::setExposure(float exposure)
 }
 
 /*!
-    Sets the tone mapping algorithm to \a algorithm,
+    Sets the tone mapping algorithm to \a toneMappingAlgorithm.
     \since Kuesa 1.1
 */
 void ForwardRenderer::setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm)

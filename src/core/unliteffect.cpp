@@ -112,7 +112,7 @@ private:
     property values must be provided through Kuesa.UnlitMaterial. Therefore,
     this effect must be added to a Kuesa.UnlitMaterial.
 
-    \sa Kuesa.UnlitEffect
+    \sa Kuesa::UnlitEffect
  */
 
 UnlitTechnique::UnlitTechnique(UnlitTechnique::Version version, Qt3DCore::QNode *parent)

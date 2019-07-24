@@ -60,7 +60,7 @@ exampledirs += \
 examples.fileextensions       += "*.frag *.geom *.vert"
 examples.imageextensions      += "*.png *.jpg"
 
-Cpp.ignoretokens                         += KUESASHARED_EXPORT
+Cpp.ignoretokens                         += KUESASHARED_EXPORT Q_INVOKABLE
 Cpp.ignoredirectives                     += Q_DECLARE_LOGGING_CATEGORY
 
 navigation.landingpage = "Kuesa"

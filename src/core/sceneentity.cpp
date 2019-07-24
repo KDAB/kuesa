@@ -79,7 +79,7 @@ using namespace Kuesa;
 */
 
 /*!
-    \fn SceneEntity::loadingDone()
+    \fn SceneEntity::loadingDone
 
     This signal is emitted when a glTF file is successfully loaded using a
     GLTFImporter instance which sceneEntity points to this entity.
@@ -352,7 +352,8 @@ void SceneEntity::clearCollections()
 }
 
 /*!
-    \brief SceneEntity::transformForEntity returns the transform component of the specified entity
+    SceneEntity::transformForEntity returns the transform component of the
+    specified entity identified by \a name.
 
     This is a utility method which will look for an entity in the SceneEntity's
     EntityCollection and return the Qt3DCore::QTransform component if it
