@@ -28,10 +28,15 @@
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QQmlEngine>
+#include <QQmlContext>
 #include <QResource>
 #include <QDir>
 
 #include "sampler.h"
+
+#ifdef Q_OS_ANDROID
+#include <QOpenGLContext>
+#endif
 
 namespace {
 
@@ -58,6 +63,7 @@ bool initializeAssetResources(const QVector<QString> &fileNames)
 
 int main(int argc, char *argv[])
 {
+    bool isES2 = false;
     {
         // Set OpenGL requirements
         QSurfaceFormat format = QSurfaceFormat::defaultFormat();
@@ -66,6 +72,9 @@ int main(int argc, char *argv[])
         format.setProfile(QSurfaceFormat::CoreProfile);
         format.setSamples(4);
 #else
+#ifndef QT_OPENGL_ES_3
+        isES2 = true;
+#endif
         format.setVersion(3, 0);
         format.setProfile(QSurfaceFormat::NoProfile);
         format.setRenderableType(QSurfaceFormat::OpenGLES);
@@ -90,6 +99,24 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_IOS
     view.setFlags(view.flags() | Qt::MaximizeUsingFullscreenGeometryHint);
 #endif
+
+
+#ifdef Q_OS_ANDROID
+    const QString assetsPrefix = QStringLiteral("assets:/");
+    // Qt builds for android may not define QT_OPENGL_ES_3
+    // Therefore we need a runtime check to see whether we can use ES 3.0 or not
+    QOpenGLContext ctx;
+    ctx.setFormat(QSurfaceFormat::defaultFormat());
+    if (ctx.create()) {
+        const QSurfaceFormat androidFormat = ctx.format();
+        isES2 = (androidFormat.majorVersion() == 2);
+    }
+#else
+    const QString assetsPrefix = QStringLiteral("qrc:/");
+#endif
+    view.engine()->rootContext()->setContextProperty(QStringLiteral("_isES2"), isES2);
+    view.engine()->rootContext()->setContextProperty(QStringLiteral("_assetsPrefix"), assetsPrefix);
+
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
     view.resize(960, 540);

@@ -39,27 +39,10 @@ HEADERS += \
 RESOURCES += \
     qml/qml.qrc \
 
-RCC_BINARY_SOURCES += \
-    ../assets/models/music-box/music-box.qrc
-
-ios|macos|android {
-    RCC_BINARY_SOURCES += \
-        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
-} else {
-    RCC_BINARY_SOURCES += \
-        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
-}
-
 macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
 else: APP_PWD=$$OUT_PWD
 RES_PWD=$$APP_PWD/resources
 
-asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
-asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
-asset_builder.input = RCC_BINARY_SOURCES
-asset_builder.output = $$RES_PWD/${QMAKE_FILE_IN_BASE}.qrb
-asset_builder.CONFIG += no_link target_predeps
-QMAKE_EXTRA_COMPILERS += asset_builder
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 INSTALLS += target
@@ -71,28 +54,95 @@ INSTALLS += install_music_samples
 
 include($$KUESA_ROOT/kuesa-global.pri)
 
-win32 {
-    QMAKE_POST_LINK += $$quote(cmd /c copy /y $$PWD\assets\samples $$RES_PWD\\ $$escape_expand(\n\t))
-} else:ios {
+android {
     envmaps_dir = ../assets/envmaps
-    resfiles.files = \
-        $$RES_PWD/music-box.qrb \
-        $$RES_PWD/envmap-pink-sunrise-16f.qrb
-    resfiles.path = "/Library/Application Support"
+    envmaps.files = \
+        $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_irradiance.dds \
+        $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_radiance.dds \
+        $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_specular.dds \
+        $${envmaps_dir}/pink_sunrise/pink_sunrise_skybox.dds
 
-    QMAKE_BUNDLE_DATA += resfiles
+    model_dir = ../assets/models/music-box
+    model.files = \
+        $${model_dir}/RobotArm.gltf \
+        $${model_dir}/RobotArm.bin \
+        $${model_dir}/armBottomBottomTex.png \
+        $${model_dir}/arrowsArm.png \
+        $${model_dir}/elbowMove.png \
+        $${model_dir}/FiingerTop1Tex.png \
+        $${model_dir}/fingerKnuckle1Tex.png \
+        $${model_dir}/FingerKnuckle2Tex.png \
+        $${model_dir}/FingerKnuckle3Tex.png \
+        $${model_dir}/fingerPivot1Tex.png \
+        $${model_dir}/FingerPivot2Tex.png \
+        $${model_dir}/fingerPivot3Tex.png \
+        $${model_dir}/FingerTop2Tex.png \
+        $${model_dir}/FingerTop3Tex.png \
+        $${model_dir}/robotArmBottomTopTex.png \
+        $${model_dir}/robotArmTopTex.png \
+        $${model_dir}/RobotBaseTex.png \
+        $${model_dir}/shoulderBaseTex.png \
+        $${model_dir}/shoulderMoveTex.png \
+        $${model_dir}/thumbBaseBottomTex.png \
+        $${model_dir}/thumbKnuckleTex.png \
+        $${model_dir}/thumbPivotTex.png \
+        $${model_dir}/thumbTopTex.png \
+        $${model_dir}/WoodTextureBake.png \
+        $${model_dir}/woodTextureCylinderBake.png \
+        $${model_dir}/woodTextureCylinderFarBake.png \
+        $${model_dir}/wristTex.png \
+        $${model_dir}/GroundPlane.png
 
-    OTHER_FILES += Info-ios.plist
-    QMAKE_INFO_PLIST = Info-ios.plist
+    envmaps.path = /assets
+    install_music_samples.path = /assets
+    model.path = /assets
 
-    OBJECTIVE_SOURCES += ios/iosutils.mm
-    QMAKE_ASSET_CATALOGS += ios/Images.xcassets
-} else:macos {
-    ICON = ../../../resources/kuesa.icns
-    OTHER_FILES += Info-macos.plist
-    QMAKE_INFO_PLIST = Info-macos.plist
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+    DISTFILES += android/AndroidManifest.xml
+    INSTALLS += envmaps model
 } else {
-    QMAKE_POST_LINK += $$quote(cp -rf $$PWD/assets/samples $$RES_PWD $$escape_expand(\n\t))
+
+    RCC_BINARY_SOURCES += \
+        ../assets/models/music-box/music-box.qrc
+
+    ios|macos {
+        RCC_BINARY_SOURCES += \
+            ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
+    } else {
+        RCC_BINARY_SOURCES += \
+            ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
+    }
+
+    asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
+    asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
+    asset_builder.input = RCC_BINARY_SOURCES
+    asset_builder.output = $$RES_PWD/${QMAKE_FILE_IN_BASE}.qrb
+    asset_builder.CONFIG += no_link target_predeps
+    QMAKE_EXTRA_COMPILERS += asset_builder
+
+    win32 {
+        QMAKE_POST_LINK += $$quote(cmd /c copy /y $$PWD\assets\samples $$RES_PWD\\ $$escape_expand(\n\t))
+    } else:ios {
+        envmaps_dir = ../assets/envmaps
+        resfiles.files = \
+            $$RES_PWD/music-box.qrb \
+            $$RES_PWD/envmap-pink-sunrise-16f.qrb
+        resfiles.path = "/Library/Application Support"
+
+        QMAKE_BUNDLE_DATA += resfiles
+
+        OTHER_FILES += Info-ios.plist
+        QMAKE_INFO_PLIST = Info-ios.plist
+
+        OBJECTIVE_SOURCES += ios/iosutils.mm
+        QMAKE_ASSET_CATALOGS += ios/Images.xcassets
+    } else:macos {
+        ICON = ../../../resources/kuesa.icns
+        OTHER_FILES += Info-macos.plist
+        QMAKE_INFO_PLIST = Info-macos.plist
+    } else {
+        QMAKE_POST_LINK += $$quote(cp -rf $$PWD/assets/samples $$RES_PWD $$escape_expand(\n\t))
+    }
 }
 
 packagesExist(portaudio-2.0) {
