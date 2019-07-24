@@ -96,9 +96,12 @@ Entity {
 
         Kuesa.MetallicRoughnessMaterial {
             id: cubeMat
-            baseColorFactor: Qt.rgba(1.0, 1.0, 1.0)
-            metallicFactor: .75
-            roughnessFactor: .2
+            effect: Kuesa.MetallicRoughnessEffect { }
+            metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                baseColorFactor: Qt.rgba(1.0, 1.0, 1.0)
+                metallicFactor: .75
+                roughnessFactor: .2
+            }
         }
     }
 
@@ -129,9 +132,11 @@ Entity {
 
             Kuesa.MetallicRoughnessMaterial {
                 id: sphereMaterial
-
-                baseColorFactor: isActiveLight ?  currentColor : "gray"
-                emissiveFactor: isActiveLight ?  Qt.rgba(currentColor.r * lightIntensity, currentColor.g * lightIntensity, currentColor.b* lightIntensity) : "gray"
+                effect: Kuesa.MetallicRoughnessEffect { }
+                metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                    baseColorFactor: isActiveLight ? currentColor : "gray"
+                    emissiveFactor: isActiveLight ? Qt.rgba(currentColor.r * lightIntensity, currentColor.g * lightIntensity, currentColor.b * lightIntensity) : "gray"
+                }
             }
         }
     }

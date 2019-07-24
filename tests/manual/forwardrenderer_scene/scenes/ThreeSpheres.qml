@@ -45,23 +45,30 @@ Entity
             Transform { translation: Qt.vector3d(-3, 0, 0) },
             SphereMesh {},
             Kuesa.MetallicRoughnessMaterial {
-                baseColorFactor: Qt.rgba(1, 0, 0, .5)
-                metallicFactor: .5
-                roughnessFactor: .25
-                opaque: false
+                effect: Kuesa.MetallicRoughnessEffect {
+                    opaque: false
+                }
+                metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                    baseColorFactor: Qt.rgba(1, 0, 0, .5)
+                    metallicFactor: .5
+                    roughnessFactor: .25
+                }
             }
         ]
     }
-
 
     Entity {
         components: [
             SphereMesh {},
             Kuesa.MetallicRoughnessMaterial {
-                baseColorFactor: Qt.rgba(0, 1, 0, .5)
-                metallicFactor: .5
-                roughnessFactor: .25
-                opaque: false
+                effect: Kuesa.MetallicRoughnessEffect {
+                    opaque: false
+                }
+                metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                    baseColorFactor: Qt.rgba(0, 1, 0, .5)
+                    metallicFactor: .5
+                    roughnessFactor: .25
+                }
             }
         ]
     }
@@ -71,10 +78,14 @@ Entity
             Transform { translation: Qt.vector3d(3, 0, 0) },
             SphereMesh {},
             Kuesa.MetallicRoughnessMaterial {
-                baseColorFactor: Qt.rgba(0, 0, 1, .5)
-                metallicFactor: .5
-                roughnessFactor: .25
-                opaque: false
+                effect: Kuesa.MetallicRoughnessEffect {
+                    opaque: false
+                }
+                metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                    baseColorFactor: Qt.rgba(0, 0, 1, .5)
+                    metallicFactor: .5
+                    roughnessFactor: .25
+                }
             }
         ]
     }

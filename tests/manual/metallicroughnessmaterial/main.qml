@@ -98,19 +98,23 @@ Kuesa.SceneEntity {
                 source: "qrc:/assets/models/powerup/powerup.obj"
             },
             Kuesa.MetallicRoughnessMaterial {
-                baseColorFactor: _controller.baseColorFactor
-                baseColorMap: _controller.useBaseColorMap ? baseColorTexture : null
-                metallicFactor: _controller.metallicFactor
-                roughnessFactor: _controller.roughnessFactor
-                metalRoughMap: _controller.useMetalRoughMap ? metalRoughTexture : null
-                normalScale: _controller.normalScale
-                normalMap: _controller.useNormalMap ? normalTexture : null
-                ambientOcclusionMap: _controller.useAmbientOcclusionMap ? ambientOcclusionTexture : null
-                emissiveFactor: _controller.emissiveFactor
-                emissiveMap: _controller.useEmissiveMap ? emissiveTexture : null
-                textureTransform: _controller.textureTransform
-                usingColorAttribute: _controller.useColorAttribute
-                doubleSided: _controller.doubleSided
+                effect: Kuesa.MetallicRoughnessEffect {
+                    usingColorAttribute: _controller.useColorAttribute
+                    doubleSided: _controller.doubleSided
+                }
+                metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                    baseColorFactor: _controller.baseColorFactor
+                    baseColorMap: _controller.useBaseColorMap ? baseColorTexture : null
+                    metallicFactor: _controller.metallicFactor
+                    roughnessFactor: _controller.roughnessFactor
+                    metalRoughMap: _controller.useMetalRoughMap ? metalRoughTexture : null
+                    normalScale: _controller.normalScale
+                    normalMap: _controller.useNormalMap ? normalTexture : null
+                    ambientOcclusionMap: _controller.useAmbientOcclusionMap ? ambientOcclusionTexture : null
+                    emissiveFactor: _controller.emissiveFactor
+                    emissiveMap: _controller.useEmissiveMap ? emissiveTexture : null
+                    textureTransform: _controller.textureTransform
+                }
             }
         ]
     }
