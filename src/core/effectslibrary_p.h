@@ -84,6 +84,8 @@ public:
     Qt3DRender::QEffect *getOrCreateEffect(EffectProperties properties,
                                            Qt3DCore::QNode *effectOwner);
 
+    void clear();
+
 private:
     QHash<EffectProperties, Qt3DRender::QEffect *> m_effects;
 };

@@ -547,6 +547,7 @@ void GLTF2Context::reset()
     m_json = {};
     m_localFiles.clear();
     m_bufferChunk.clear();
+    m_effectLibrary->clear();
 }
 
 GLTF2Context *GLTF2Context::fromImporter(GLTF2Importer *importer)

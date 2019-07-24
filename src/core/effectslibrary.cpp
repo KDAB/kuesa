@@ -103,4 +103,9 @@ Qt3DRender::QEffect *Kuesa::EffectsLibrary::getOrCreateEffect(EffectProperties p
     return effectIt.value();
 }
 
+void Kuesa::EffectsLibrary::clear()
+{
+    m_effects.clear();
+}
+
 QT_END_NAMESPACE
