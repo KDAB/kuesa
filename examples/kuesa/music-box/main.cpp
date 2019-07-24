@@ -39,6 +39,8 @@ bool initializeAssetResources(const QVector<QString> &fileNames)
 {
 #ifdef Q_OS_MACOS
     QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/../Resources"));
+#elif defined(Q_OS_IOS)
+    QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/Library/Application Support"));
 #else
     QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/resources"));
 #endif
@@ -62,6 +64,7 @@ int main(int argc, char *argv[])
 #ifndef QT_OPENGL_ES_2
         format.setVersion(4, 1);
         format.setProfile(QSurfaceFormat::CoreProfile);
+        format.setSamples(4);
 #else
         format.setVersion(3, 0);
         format.setProfile(QSurfaceFormat::NoProfile);
@@ -72,12 +75,20 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    initializeAssetResources({ QStringLiteral("music-box.qrb"), QStringLiteral("envmap-pink-sunrise.qrb") });
+    initializeAssetResources({ QStringLiteral("music-box.qrb") });
+#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_ANDROID)
+    initializeAssetResources({ QStringLiteral("envmap-pink-sunrise-16f.qrb") });
+#else
+    initializeAssetResources({ QStringLiteral("envmap-pink-sunrise.qrb") });
+#endif
     qmlRegisterType<Sampler>("MusicBox", 1, 0, "Sampler");
 
     QQuickView view;
 #ifdef KUESA_BUILD_ROOT
     view.engine()->addImportPath(QStringLiteral(KUESA_BUILD_ROOT "/qml"));
+#endif
+#ifdef Q_OS_IOS
+    view.setFlags(view.flags() | Qt::MaximizeUsingFullscreenGeometryHint);
 #endif
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));

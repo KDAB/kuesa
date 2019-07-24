@@ -198,7 +198,7 @@ Kuesa.SceneEntity {
         },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: "qrc:/pink_sunrise_irradiance.dds"
+                source: "qrc:/pink_sunrise" + d.envMapFormat + "_irradiance.dds"
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -206,7 +206,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: "qrc:/pink_sunrise_specular.dds"
+                source: "qrc:/pink_sunrise" + d.envMapFormat + "_specular.dds"
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge

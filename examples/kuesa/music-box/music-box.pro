@@ -40,8 +40,15 @@ RESOURCES += \
     qml/qml.qrc \
 
 RCC_BINARY_SOURCES += \
-    ../assets/models/music-box/music-box.qrc \
-    ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
+    ../assets/models/music-box/music-box.qrc
+
+ios|macos|android {
+    RCC_BINARY_SOURCES += \
+        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
+} else {
+    RCC_BINARY_SOURCES += \
+        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
+}
 
 macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
 else: APP_PWD=$$OUT_PWD
@@ -66,8 +73,25 @@ include($$KUESA_ROOT/kuesa-global.pri)
 
 win32 {
     QMAKE_POST_LINK += $$quote(cmd /c copy /y $$PWD\assets\samples $$RES_PWD\\ $$escape_expand(\n\t))
-}
-else {
+} else:ios {
+    envmaps_dir = ../assets/envmaps
+    resfiles.files = \
+        $$RES_PWD/music-box.qrb \
+        $$RES_PWD/envmap-pink-sunrise-16f.qrb
+    resfiles.path = "/Library/Application Support"
+
+    QMAKE_BUNDLE_DATA += resfiles
+
+    OTHER_FILES += Info-ios.plist
+    QMAKE_INFO_PLIST = Info-ios.plist
+
+    OBJECTIVE_SOURCES += ios/iosutils.mm
+    QMAKE_ASSET_CATALOGS += ios/Images.xcassets
+} else:macos {
+    ICON = ../../../resources/kuesa.icns
+    OTHER_FILES += Info-macos.plist
+    QMAKE_INFO_PLIST = Info-macos.plist
+} else {
     QMAKE_POST_LINK += $$quote(cp -rf $$PWD/assets/samples $$RES_PWD $$escape_expand(\n\t))
 }
 
