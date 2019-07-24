@@ -120,8 +120,8 @@ MainWindow::MainWindow(QWidget *parent)
         m_clearColor = p.color(QPalette::Base);
     }
 
-    m_generateTangents = settings.value("generateTangents", false).value<bool>();
-    m_generateNormals = settings.value("generateNormals", false).value<bool>();
+    m_generateTangents = settings.value("generateTangents", false).toBool();
+    m_generateNormals = settings.value("generateNormals", false).toBool();
     m_gamma = settings.value("gamma", 2.2f).toFloat();
     m_exposure = settings.value("exposure", 0.0f).toFloat();
     m_toneMappingAlgorithm = static_cast<decltype(m_toneMappingAlgorithm)>(settings.value("toneMappingAlgorithm", Kuesa::ToneMappingAndGammaCorrectionEffect::None).toInt());
@@ -213,7 +213,7 @@ QString MainWindow::filePath() const
     return m_filePathURL;
 }
 
-void MainWindow::setup(Qt3DRender::QCamera *camera,  Qt3DCore::QEntity *placeHolder)
+void MainWindow::setup(Qt3DRender::QCamera *camera, Qt3DCore::QEntity *placeHolder)
 {
     m_gltf2PlaceHolder = placeHolder;
     m_camera = camera;
@@ -248,7 +248,6 @@ void MainWindow::updateScene(Kuesa::SceneEntity *entity)
     m_cameraSelector->setCurrentIndex(0);
     setCamera(0);
 
-
     m_sceneSelector->blockSignals(true);
     m_sceneSelector->clear();
     auto importer = m_entity->findChild<Kuesa::GLTF2Importer *>();
@@ -256,8 +255,7 @@ void MainWindow::updateScene(Kuesa::SceneEntity *entity)
         const QStringList sceneNames = importer->availableScenes();
         int i = 0;
         for (const QString &sceneName : sceneNames)
-            m_sceneSelector->addItem(QStringLiteral("%1 - (%2)").arg(sceneName)
-                                                                .arg(i++));
+            m_sceneSelector->addItem(QStringLiteral("%1 - (%2)").arg(sceneName).arg(i++));
     }
     m_sceneSelector->setEnabled(m_sceneSelector->count() > 1);
     m_sceneSelector->setCurrentIndex(importer->activeSceneIndex());

@@ -121,7 +121,7 @@ public:
 
     Q_INVOKABLE Qt3DRender::QAbstractTexture *brdfLut() const;
 
-    Q_INVOKABLE static SceneEntity *findParentSceneEntity(Qt3DCore::QEntity *entity);
+    Q_INVOKABLE static Kuesa::SceneEntity *findParentSceneEntity(Qt3DCore::QEntity *entity);
 
     Kuesa::LightCollection *lights() const;
     Q_INVOKABLE Qt3DRender::QAbstractLight *light(const QString &name) const;

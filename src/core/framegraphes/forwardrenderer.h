@@ -93,8 +93,8 @@ public:
     float gamma() const;
     ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
 
-    Q_INVOKABLE void addPostProcessingEffect(AbstractPostProcessingEffect *effect);
-    Q_INVOKABLE void removePostProcessingEffect(AbstractPostProcessingEffect *effect);
+    Q_INVOKABLE void addPostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
+    Q_INVOKABLE void removePostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
     QVector<AbstractPostProcessingEffect *> postProcessingEffects() const;
 
     static Qt3DRender::QAbstractTexture *findRenderTargetTexture(Qt3DRender::QRenderTarget *target, Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint);
@@ -168,8 +168,7 @@ private:
     Qt3DRender::QBlitFramebuffer *m_blitFramebufferNode;
     bool m_fgTreeRebuiltScheduled;
 
-    struct Q_AUTOTEST_EXPORT SceneStages
-    {
+    struct Q_AUTOTEST_EXPORT SceneStages {
         SceneStages();
         ~SceneStages();
 

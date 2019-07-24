@@ -1050,8 +1050,7 @@ void GLTF2Parser::generateTreeNodeContent()
                                                                         }) != attributes.cend();
                                 if (!hasTangentAttribute)
                                     qWarning() << QStringLiteral("Primitive %1 is trying to use Material %2 which does normal mapping even though it defines no tangent attribute. This can result in incorrect rendering, please consider generating tangents.")
-                                                          .arg(primitiveName)
-                                                          .arg(materialName);
+                                                          .arg(primitiveName, materialName);
                             }
                         };
 

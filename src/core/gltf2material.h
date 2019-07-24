@@ -53,10 +53,10 @@ public:
     MorphController *morphController() const;
 
 public Q_SLOTS:
-    void setMorphController(MorphController *morphController);
+    void setMorphController(Kuesa::MorphController *morphController);
 
 Q_SIGNALS:
-    void morphControllerChanged(MorphController *morphController);
+    void morphControllerChanged(Kuesa::MorphController *morphController);
 
 protected:
     explicit GLTF2Material(Qt3DCore::QNode *parent = nullptr);

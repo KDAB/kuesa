@@ -81,7 +81,7 @@ public:
     void removeTarget(Qt3DCore::QNode *target);
 
 public Q_SLOTS:
-    void setSceneEntity(SceneEntity *sceneEntity);
+    void setSceneEntity(Kuesa::SceneEntity *sceneEntity);
     void setClip(const QString &clip);
     void setMapper(const QString &mapper);
     void setRunning(bool running);
@@ -93,8 +93,8 @@ public Q_SLOTS:
     void stop();
 
 Q_SIGNALS:
-    void sceneEntityChanged(const SceneEntity *sceneEntity);
-    void statusChanged(Status status);
+    void sceneEntityChanged(const Kuesa::SceneEntity *sceneEntity);
+    void statusChanged(Kuesa::AnimationPlayer::Status status);
     void clipChanged(const QString &clip);
     void mapperChanged(const QString &mapper);
     void runningChanged(bool running);

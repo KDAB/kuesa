@@ -64,10 +64,10 @@ public:
     MetallicRoughnessProperties *metallicRoughnessProperties() const;
 
 public Q_SLOTS:
-    void setMetallicRoughnessProperties(MetallicRoughnessProperties *metallicRoughnessProperties);
+    void setMetallicRoughnessProperties(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties);
 
 Q_SIGNALS:
-    void metallicRoughnessPropertiesChanged(MetallicRoughnessProperties *metallicRoughnessProperties);
+    void metallicRoughnessPropertiesChanged(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties);
 
 private:
     MetallicRoughnessProperties *m_metallicRoughnessProperties;

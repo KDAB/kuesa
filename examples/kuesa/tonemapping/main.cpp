@@ -126,7 +126,7 @@ int main(int ac, char **av)
     const QString assetsPrefix = QStringLiteral("qrc:/");
 #endif
 
-    const QString modelSuffix = QStringLiteral("");
+    const QString modelSuffix = {};
 
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
     bool screenHeightScale = true;

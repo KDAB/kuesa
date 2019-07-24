@@ -132,7 +132,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void setScene(Kuesa::SceneEntity *scene);
 
-    Export saveInFolder(
+    Kuesa::GLTF2Exporter::Export saveInFolder(
             const QDir &sourceFolder,
             const QDir &targetFolder);
 

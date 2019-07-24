@@ -50,10 +50,10 @@ public:
     ~UnlitMaterial();
 
     UnlitProperties *unlitProperties() const;
-    void setUnlitProperties(UnlitProperties *unlitProperties);
+    void setUnlitProperties(Kuesa::UnlitProperties *unlitProperties);
 
 Q_SIGNALS:
-    void unlitPropertiesChanged(UnlitProperties *properties);
+    void unlitPropertiesChanged(Kuesa::UnlitProperties *properties);
 
 private:
     UnlitEffect *m_effect;
