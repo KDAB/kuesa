@@ -55,26 +55,6 @@ void testProperty(Kuesa::UnlitProperties *mat,
     QCOMPARE(spy.count(), 1);
     QCOMPARE(spy.takeFirst().value(0).value<PropType>(), newValue);
 }
-
-bool testActiveParametersAreValid(const QVector<Qt3DRender::QParameter *> &activeParameters)
-{
-    const std::vector<QString> validParameters = { QStringLiteral("baseColorUsesTexCoord1"),
-                                                   QStringLiteral("baseColorFactor"),
-                                                   QStringLiteral("baseColorMap")
-                                                 };
-
-    for (const QString &targetParamName : validParameters) {
-        bool foundName = false;
-        for (const auto &parameter : activeParameters) {
-            foundName = targetParamName == parameter->name();
-            if (foundName)
-                break;
-        }
-        if (!foundName)
-            return false;
-    }
-    return true;
-}
 } // namespace
 
 class tst_UnlitProperties : public QObject
@@ -155,8 +135,6 @@ private Q_SLOTS:
         // THEN
         QVERIFY(mat.baseColorMap() == nullptr);
     }
-
-
 };
 
 QTEST_APPLESS_MAIN(tst_UnlitProperties)

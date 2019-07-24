@@ -55,7 +55,7 @@ namespace {
 const QLatin1String ATTR_TANGENT = QLatin1String("TANGENT");
 
 const auto morphTargetAttributeRegExps = []() {
-    const QString morphTargetAttributePattern = QStringLiteral("%1(_\d+)?");
+    const QString morphTargetAttributePattern = QStringLiteral(R"(%1(_\d+)?)");
     const QString morphTargetBaseAttributeNames[]{
         Qt3DRender::QAttribute::defaultPositionAttributeName(),
         Qt3DRender::QAttribute::defaultNormalAttributeName(),
@@ -1480,7 +1480,7 @@ bool generatePrecomputedNormalAttribute(Qt3DRender::QGeometryRenderer *mesh, GLT
                 if (bufferIdx < 0) {
                     const QByteArray bufferData = attr->buffer()->data();
                     const QString basePath = context->basePath();
-                    const QString bufferFileName = generateUniqueFilename(basePath, "kuesaMeshNoSharedVerticesBuffers.bin");
+                    const QString bufferFileName = generateUniqueFilename(basePath, QLatin1String("kuesaMeshNoSharedVerticesBuffers.bin"));
                     bufferSize = bufferData.size();
 
                     // Add Buffer
@@ -1517,7 +1517,7 @@ bool generatePrecomputedNormalAttribute(Qt3DRender::QGeometryRenderer *mesh, GLT
 
         const QByteArray bufferData = normalAttribute->buffer()->data();
         const QString basePath = context->basePath();
-        const QString bufferFileName = generateUniqueFilename(basePath, "kuesaMeshNormalsBuffers.bin");
+        const QString bufferFileName = generateUniqueFilename(basePath, QLatin1String("kuesaMeshNormalsBuffers.bin"));
 
         // Add Buffer
         const int bufferIdx = addJsonBuffer(rootObject,

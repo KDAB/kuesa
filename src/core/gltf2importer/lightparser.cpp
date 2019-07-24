@@ -53,7 +53,6 @@ const QLatin1String KEY_LIGHT_SPOT = QLatin1String("spot");
 
 bool Kuesa::GLTF2Import::LightParser::parse(const QJsonArray &lights, Kuesa::GLTF2Import::GLTF2Context *context)
 {
-    const int nLights = lights.size();
     for (const auto &lightValue : lights) {
         const QJsonObject &lightObject = lightValue.toObject();
 

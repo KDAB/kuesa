@@ -38,11 +38,11 @@ struct BufferParts {
     int offset{};
     int length{};
     int stride{};
-    friend bool operator==(BufferParts lhs, BufferParts rhs)
+    friend bool operator==(const BufferParts &lhs, const BufferParts &rhs)
     {
         return lhs.offset == rhs.offset;
     }
-    friend bool operator<(BufferParts lhs, BufferParts rhs)
+    friend bool operator<(const BufferParts &lhs, const BufferParts &rhs)
     {
         return lhs.offset < rhs.offset;
     }

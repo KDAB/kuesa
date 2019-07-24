@@ -358,7 +358,8 @@ private:
 };
 #else
 // Dummy class needed for Sampler::d_ptr
-struct SamplerPrivate final {
+class SamplerPrivate final
+{
 };
 #endif
 
@@ -384,6 +385,9 @@ void Sampler::note(int sample, float volume)
     if (sample >= 0 && sample < m_notes.size()) {
         d->notesRequests.enqueue(NoteRequest{ sample, 0.1f * volume });
     }
+#else
+    Q_UNUSED(sample);
+    Q_UNUSED(volume);
 #endif
 }
 

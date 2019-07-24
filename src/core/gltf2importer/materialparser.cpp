@@ -42,7 +42,6 @@ using namespace Kuesa::GLTF2Import;
 
 namespace {
 
-const QLatin1String KEY_NAME = QLatin1String("name");
 const QLatin1String KEY_ALPHA_MODE = QLatin1String("alphaMode");
 const QLatin1String KEY_ALPHA_CUTOFF = QLatin1String("alphaCutoff");
 const QLatin1String KEY_DOUBLE_SIDED = QLatin1String("doubleSided");
