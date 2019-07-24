@@ -47,29 +47,24 @@ class KUESASHARED_EXPORT Skybox : public Qt3DCore::QEntity
     Q_OBJECT
     Q_PROPERTY(QString baseName READ baseName WRITE setBaseName NOTIFY baseNameChanged)
     Q_PROPERTY(QString extension READ extension WRITE setExtension NOTIFY extensionChanged)
-    Q_PROPERTY(bool gammaCorrect READ isGammaCorrectEnabled WRITE setGammaCorrectEnabled NOTIFY gammaCorrectEnabledChanged)
 public:
     explicit Skybox(Qt3DCore::QNode *parent = nullptr);
     ~Skybox();
 
     QString baseName() const;
     QString extension() const;
-    bool isGammaCorrectEnabled() const;
 
 public Q_SLOTS:
     void setBaseName(const QString &baseName);
     void setExtension(const QString &extension);
-    void setGammaCorrectEnabled(bool enabled);
 
 Q_SIGNALS:
     void baseNameChanged(const QString &path);
     void extensionChanged(const QString &extension);
-    void gammaCorrectEnabledChanged(bool enabled);
 
 private:
     void reloadTexture();
 
-    Qt3DRender::QParameter *m_gammaStrengthParameter;
     Qt3DRender::QParameter *m_textureParameter;
     Qt3DRender::QAbstractTexture *m_texture;
 

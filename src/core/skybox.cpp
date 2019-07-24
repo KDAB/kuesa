@@ -120,7 +120,6 @@ namespace Kuesa {
 
 Skybox::Skybox(QNode *parent)
     : QEntity(parent)
-    , m_gammaStrengthParameter(new QParameter(QStringLiteral("gammaStrength"), 0.0f))
     , m_textureParameter(new QParameter())
     , m_texture(nullptr)
     , m_extension(QStringLiteral(".png"))
@@ -204,7 +203,6 @@ Skybox::Skybox(QNode *parent)
 
     auto material = new QMaterial();
     material->setEffect(effect);
-    material->addParameter(m_gammaStrengthParameter);
     material->addParameter(m_textureParameter);
 
     auto mesh = new Qt3DExtras::QCuboidMesh();
@@ -226,7 +224,8 @@ Skybox::~Skybox()
  */
 
 /*!
- * \brief Skybox::setBaseName Sets the base name for the texture(s) that will be used as skybox
+ * Sets the base name for the texture(s) that will be used as skybox to \a
+ * baseName.
  */
 void Skybox::setBaseName(const QString &baseName)
 {
@@ -251,7 +250,7 @@ QString Skybox::baseName() const
  */
 
 /*!
- * \brief Skybox::setExtension Sets the \a extension for the texture(s) that will be used as skybox
+ * Sets the \a extension for the texture(s) that will be used as skybox
  */
 void Skybox::setExtension(const QString &extension)
 {
@@ -268,32 +267,6 @@ void Skybox::setExtension(const QString &extension)
 QString Skybox::extension() const
 {
     return m_extension;
-}
-
-/*!
- * \qmlproperty bool Skybox::gammaCorrect
- *
- * True is gamma correction is enabled. False otherwise.
- */
-
-/*!
- * \brief Skybox::setGammaCorrectEnabled Enables/disables gamma correction based
- * on \a enabled.
- */
-void Skybox::setGammaCorrectEnabled(bool enabled)
-{
-    if (enabled != isGammaCorrectEnabled()) {
-        m_gammaStrengthParameter->setValue(enabled ? 1.0f : 0.0f);
-        emit gammaCorrectEnabledChanged(enabled);
-    }
-}
-
-/*!
- * \brief Skybox::isGammaCorrectEnabled True is gamma correction is enabled. False otherwise
- */
-bool Skybox::isGammaCorrectEnabled() const
-{
-    return !qFuzzyIsNull(m_gammaStrengthParameter->value().toFloat());
 }
 
 void Skybox::reloadTexture()

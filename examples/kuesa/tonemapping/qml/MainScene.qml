@@ -56,7 +56,6 @@ Kuesa.SceneEntity {
         // Optional: Use the irradiance instead of the radiance for a simple blurry background
         baseName: _assetsPrefix + "pink_sunrise" + envMapFormat + "_radiance"
         extension: ".dds"
-        gammaCorrect: true
     }
 
     components: [
