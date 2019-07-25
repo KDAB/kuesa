@@ -121,7 +121,7 @@ android {
     QMAKE_EXTRA_COMPILERS += asset_builder
 
     win32 {
-        QMAKE_POST_LINK += $$quote(cmd /c copy /y $$PWD\assets\samples $$RES_PWD\\ $$escape_expand(\n\t))
+        QMAKE_POST_LINK += $$quote(cmd /c copy /y \"$$PWD/assets/samples\" \"$$RES_PWD/\" $$escape_expand(\n\t))
     } else:ios {
         envmaps_dir = ../assets/envmaps
         resfiles.files = \
