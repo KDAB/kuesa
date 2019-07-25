@@ -240,4 +240,5 @@ bool MaterialInspector::hasTextures() const
     const auto unlitProperties = qobject_cast<Kuesa::UnlitProperties *>(m_materialProperties);
     if (unlitProperties)
         return (unlitProperties->baseColorMap());
+    return false;
 }
