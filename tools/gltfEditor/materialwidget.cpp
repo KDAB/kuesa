@@ -29,6 +29,7 @@
 #include "materialwidget.h"
 #include "ui_materialwidget.h"
 #include "materialinspector.h"
+#include <Kuesa/UnlitMaterial>
 #include <Qt3DRender/qabstracttexture.h>
 #include <QQmlContext>
 
@@ -65,27 +66,40 @@ void MaterialWidget::setPreviewRenderContext(QQmlContext *context)
 
 void MaterialWidget::updateData()
 {
-    m_ui->baseColorFactorValue->setColor(m_inspector->baseColor());
-    setTextureLabelState(m_ui->baseColorMapLabel, m_ui->baseColorMapValue, m_inspector->baseColorMap());
-    m_ui->metallicFactorValue->setText(QString::number(m_inspector->metallicFactor(), 'f', 3));
-    m_ui->roughnessFactorValue->setText(QString::number(m_inspector->roughnessFactor(), 'f', 3));
-    setTextureLabelState(m_ui->MetallicColorMapLabel, m_ui->metallicColorMapValue, m_inspector->metalRoughMap());
+    const bool isUnlit = qobject_cast<Kuesa::UnlitMaterial *>(m_inspector->material()) != nullptr;
 
-    const bool hasNormalMap = m_inspector->normalMap();
-    m_ui->normalGroupBox->setVisible(hasNormalMap);
-    if (hasNormalMap) {
-        m_ui->normalScaleValue->setText(QString::number(m_inspector->normalScale(), 'f', 4));
-        setTextureLabelState(m_ui->NormalMapLabel, m_ui->normalMapValue, m_inspector->normalMap());
+    m_ui->unlitGroupBox->setVisible(isUnlit);
+    m_ui->metallicRoughnessGroupBox->setVisible(!isUnlit);
+    m_ui->emissiveGroupBox->setVisible(!isUnlit);
+    m_ui->normalGroupBox->setVisible(!isUnlit);
+    m_ui->occlusionGroupBox->setVisible(!isUnlit);
+
+    if (isUnlit) {
+        m_ui->unlitBaseColorFactorValue->setColor(m_inspector->baseColor());
+        setTextureLabelState(m_ui->unlitBaseColorMapLabel, m_ui->unlitBaseColorMapValue, m_inspector->baseColorMap());
+    } else {
+        m_ui->baseColorFactorValue->setColor(m_inspector->baseColor());
+        setTextureLabelState(m_ui->baseColorMapLabel, m_ui->baseColorMapValue, m_inspector->baseColorMap());
+        m_ui->metallicFactorValue->setText(QString::number(m_inspector->metallicFactor(), 'f', 3));
+        m_ui->roughnessFactorValue->setText(QString::number(m_inspector->roughnessFactor(), 'f', 3));
+        setTextureLabelState(m_ui->MetallicColorMapLabel, m_ui->metallicColorMapValue, m_inspector->metalRoughMap());
+
+        const bool hasNormalMap = m_inspector->normalMap();
+        m_ui->normalGroupBox->setVisible(hasNormalMap);
+        if (hasNormalMap) {
+            m_ui->normalScaleValue->setText(QString::number(m_inspector->normalScale(), 'f', 4));
+            setTextureLabelState(m_ui->NormalMapLabel, m_ui->normalMapValue, m_inspector->normalMap());
+        }
+
+        const bool hasOcclusionMap = m_inspector->ambientOcclusionMap();
+        m_ui->occlusionGroupBox->setVisible(hasOcclusionMap);
+        if (hasOcclusionMap) {
+            setTextureLabelState(m_ui->AmbientOcclusionMapLabel, m_ui->ambientOcclusionMapValue, m_inspector->ambientOcclusionMap());
+        }
+
+        m_ui->emissiveFactorValue->setColor(m_inspector->emissiveFactor());
+        setTextureLabelState(m_ui->emissiveMapLabel, m_ui->emissiveMapValue, m_inspector->emissiveMap());
     }
-
-    const bool hasOcclusionMap = m_inspector->ambientOcclusionMap();
-    m_ui->occlusionGroupBox->setVisible(hasOcclusionMap);
-    if (hasOcclusionMap) {
-        setTextureLabelState(m_ui->AmbientOcclusionMapLabel, m_ui->ambientOcclusionMapValue, m_inspector->ambientOcclusionMap());
-    }
-
-    m_ui->emissiveFactorValue->setColor(m_inspector->emissiveFactor());
-    setTextureLabelState(m_ui->emissiveMapLabel, m_ui->emissiveMapValue, m_inspector->emissiveMap());
 
     m_ui->textureTransformLabel->setMatrix(m_inspector->textureTransform());
     m_ui->doubleSidedValue->setText(boolTextValue(m_inspector->doubleSided()));

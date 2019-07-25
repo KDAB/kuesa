@@ -38,24 +38,26 @@ class QAbstractTexture;
 
 namespace Kuesa {
 class AbstractAssetCollection;
-class MetallicRoughnessProperties;
+class GLTF2MaterialProperties;
+class GLTF2Material;
 class MetallicRoughnessMaterial;
+class UnlitMaterial;
 } // namespace Kuesa
 
 class MaterialInspector : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(Kuesa::MetallicRoughnessProperties *materialProperties READ materialProperties NOTIFY materialPropertiesChanged)
+    Q_PROPERTY(Kuesa::GLTF2MaterialProperties *materialProperties READ materialProperties NOTIFY materialPropertiesChanged)
     Q_PROPERTY(bool hasTextures READ hasTextures NOTIFY materialPropertiesChanged)
-    Q_PROPERTY(Kuesa::MetallicRoughnessMaterial *material READ material NOTIFY materialPropertiesChanged)
+    Q_PROPERTY(Kuesa::GLTF2Material *material READ material NOTIFY materialPropertiesChanged)
 
 public:
     explicit MaterialInspector(QObject *parent = nullptr);
     virtual ~MaterialInspector();
 
-    void setMaterialProperties(Kuesa::MetallicRoughnessProperties *materialProperties);
-    Kuesa::MetallicRoughnessProperties *materialProperties() const;
-    Kuesa::MetallicRoughnessMaterial *material() const;
+    void setMaterialProperties(Kuesa::GLTF2MaterialProperties *materialProperties);
+    Kuesa::GLTF2MaterialProperties *materialProperties() const;
+    Kuesa::GLTF2Material *material() const;
 
     QString assetName() const;
 
@@ -83,8 +85,10 @@ Q_SIGNALS:
     void materialPropertiesChanged();
 
 private:
-    Kuesa::MetallicRoughnessProperties *m_materialProperties;
-    Kuesa::MetallicRoughnessMaterial *m_material;
+    Kuesa::GLTF2MaterialProperties *m_materialProperties;
+    Kuesa::GLTF2Material *m_material;
+    Kuesa::MetallicRoughnessMaterial *m_pbrMaterial;
+    Kuesa::UnlitMaterial *m_unlitMaterial;
     QMetaObject::Connection m_materialConnection;
 };
 

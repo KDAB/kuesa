@@ -65,7 +65,7 @@ void AssetInspector::setAsset(const QString &assetName, Kuesa::AbstractAssetColl
         m_textureInspector->setTexture(assetName, texture);
         newAssetType = Texture;
     } else if (Kuesa::MaterialCollection *materialCollection = qobject_cast<Kuesa::MaterialCollection *>(collection)) {
-        auto materialProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(materialCollection->find(assetName));
+        auto materialProperties = materialCollection->find(assetName);
         if (materialProperties) {
             m_materialInspector->setMaterialProperties(materialProperties);
             newAssetType = Material;

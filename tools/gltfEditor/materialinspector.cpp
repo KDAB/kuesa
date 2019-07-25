@@ -31,24 +31,42 @@
 #include <Kuesa/metallicroughnessmaterial.h>
 #include <Kuesa/metallicroughnesseffect.h>
 #include <Kuesa/metallicroughnessproperties.h>
+#include <Kuesa/unlitmaterial.h>
+#include <Kuesa/unliteffect.h>
+#include <Kuesa/unlitproperties.h>
 #include <Qt3DRender/qabstracttexture.h>
 
 MaterialInspector::MaterialInspector(QObject *parent)
     : QObject(parent)
     , m_materialProperties(nullptr)
-    , m_material(new Kuesa::MetallicRoughnessMaterial)
+    , m_material(nullptr)
+    , m_pbrMaterial(new Kuesa::MetallicRoughnessMaterial)
+    , m_unlitMaterial(new Kuesa::UnlitMaterial)
 {
-    auto *effect = new Kuesa::MetallicRoughnessEffect(m_material);
-    effect->setUseSkinning(false);
-    effect->setUsingColorAttribute(false);
-    m_material->setEffect(effect);
+    {
+        auto *effect = new Kuesa::MetallicRoughnessEffect(m_pbrMaterial);
+        effect->setUseSkinning(false);
+        effect->setUsingColorAttribute(false);
+        m_pbrMaterial->setEffect(effect);
+    }
+    {
+        auto *effect = new Kuesa::UnlitEffect(m_unlitMaterial);
+        effect->setUseSkinning(false);
+        effect->setUsingColorAttribute(false);
+        m_unlitMaterial->setEffect(effect);
+    }
 }
 
 MaterialInspector::~MaterialInspector()
 {
+    m_pbrMaterial->deleteLater();
+    m_unlitMaterial->deleteLater();
+    m_pbrMaterial = nullptr;
+    m_unlitMaterial = nullptr;
+    m_material = nullptr;
 }
 
-void MaterialInspector::setMaterialProperties(Kuesa::MetallicRoughnessProperties *materialProperties)
+void MaterialInspector::setMaterialProperties(Kuesa::GLTF2MaterialProperties *materialProperties)
 {
     if (materialProperties == m_materialProperties)
         return;
@@ -56,33 +74,53 @@ void MaterialInspector::setMaterialProperties(Kuesa::MetallicRoughnessProperties
     disconnect(m_materialConnection);
     if (materialProperties) {
         m_materialConnection = connect(materialProperties, &Qt3DCore::QNode::nodeDestroyed, this, [this]() { setMaterialProperties(nullptr); });
-        m_material->setMetallicRoughnessProperties(materialProperties);
-        auto clientEffect = static_cast<Kuesa::MetallicRoughnessEffect *>(materialProperties->clientMaterials()[0]->effect());
-        auto materialEffect = static_cast<Kuesa::MetallicRoughnessEffect *>(m_material->effect());
-        static_cast<Kuesa::MetallicRoughnessEffect *>(m_material->effect())->setBrdfLUT(clientEffect->brdfLUT());
 
-        // Configure the material effect
-        materialEffect->setOpaque(clientEffect->isOpaque());
-        materialEffect->setDoubleSided(clientEffect->isDoubleSided());
-        materialEffect->setNormalMapEnabled(clientEffect->isNormalMapEnabled());
-        materialEffect->setAlphaCutoffEnabled(clientEffect->isAlphaCutoffEnabled());
-        materialEffect->setEmissiveMapEnabled(clientEffect->isEmissiveMapEnabled());
-        materialEffect->setBaseColorMapEnabled(clientEffect->isBaseColorMapEnabled());
-        materialEffect->setMetalRoughMapEnabled(clientEffect->isMetalRoughMapEnabled());
-        materialEffect->setAmbientOcclusionMapEnabled(clientEffect->isAmbientOcclusionMapEnabled());
+        if (Kuesa::MetallicRoughnessProperties *pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(materialProperties)) {
+
+            if (m_material != m_pbrMaterial) {
+                m_material = m_pbrMaterial;
+            }
+
+            m_pbrMaterial->setMetallicRoughnessProperties(pbrProperties);
+            auto clientEffect = static_cast<Kuesa::MetallicRoughnessEffect *>(materialProperties->clientMaterials()[0]->effect());
+            auto materialEffect = static_cast<Kuesa::MetallicRoughnessEffect *>(m_material->effect());
+            materialEffect->setBrdfLUT(clientEffect->brdfLUT());
+
+            // Configure the material effect
+            materialEffect->setOpaque(clientEffect->isOpaque());
+            materialEffect->setDoubleSided(clientEffect->isDoubleSided());
+            materialEffect->setNormalMapEnabled(clientEffect->isNormalMapEnabled());
+            materialEffect->setAlphaCutoffEnabled(clientEffect->isAlphaCutoffEnabled());
+            materialEffect->setEmissiveMapEnabled(clientEffect->isEmissiveMapEnabled());
+            materialEffect->setBaseColorMapEnabled(clientEffect->isBaseColorMapEnabled());
+            materialEffect->setMetalRoughMapEnabled(clientEffect->isMetalRoughMapEnabled());
+            materialEffect->setAmbientOcclusionMapEnabled(clientEffect->isAmbientOcclusionMapEnabled());
+        } else if (Kuesa::UnlitProperties *unlitProperties = qobject_cast<Kuesa::UnlitProperties *>(materialProperties)) {
+
+            if (m_material != m_unlitMaterial) {
+                m_material = m_unlitMaterial;
+            }
+
+            m_unlitMaterial->setUnlitProperties(unlitProperties);
+            auto clientEffect = static_cast<Kuesa::UnlitEffect *>(materialProperties->clientMaterials()[0]->effect());
+            auto materialEffect = static_cast<Kuesa::UnlitEffect *>(m_material->effect());
+            materialEffect->setOpaque(clientEffect->isOpaque());
+            materialEffect->setDoubleSided(clientEffect->isDoubleSided());
+            materialEffect->setAlphaCutoffEnabled(clientEffect->isAlphaCutoffEnabled());
+            materialEffect->setBaseColorMapEnabled(clientEffect->isBaseColorMapEnabled());
+        }
     }
 
     m_materialProperties = materialProperties;
-
     emit materialPropertiesChanged();
 }
 
-Kuesa::MetallicRoughnessProperties *MaterialInspector::materialProperties() const
+Kuesa::GLTF2MaterialProperties *MaterialInspector::materialProperties() const
 {
     return m_materialProperties;
 }
 
-Kuesa::MetallicRoughnessMaterial *MaterialInspector::material() const
+Kuesa::GLTF2Material *MaterialInspector::material() const
 {
     return m_material;
 }
@@ -104,42 +142,50 @@ Qt3DRender::QAbstractTexture *MaterialInspector::baseColorMap() const
 
 float MaterialInspector::metallicFactor() const
 {
-    return m_materialProperties ? m_materialProperties->metallicFactor() : 0.0f;
+    const auto pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(m_materialProperties);
+    return pbrProperties ? pbrProperties->metallicFactor() : 0.0f;
 }
 
 float MaterialInspector::roughnessFactor() const
 {
-    return m_materialProperties ? m_materialProperties->roughnessFactor() : 0.0f;
+    const auto pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(m_materialProperties);
+    return pbrProperties ? pbrProperties->roughnessFactor() : 0.0f;
 }
 
 Qt3DRender::QAbstractTexture *MaterialInspector::metalRoughMap() const
 {
-    return m_materialProperties ? m_materialProperties->metalRoughMap() : nullptr;
+    const auto pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(m_materialProperties);
+    return pbrProperties ? pbrProperties->metalRoughMap() : nullptr;
 }
 
 Qt3DRender::QAbstractTexture *MaterialInspector::normalMap() const
 {
-    return m_materialProperties ? m_materialProperties->normalMap() : nullptr;
+    const auto pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(m_materialProperties);
+    return pbrProperties ? pbrProperties->normalMap() : nullptr;
 }
 
 float MaterialInspector::normalScale() const
 {
-    return m_materialProperties ? m_materialProperties->normalScale() : 0.0f;
+    const auto pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(m_materialProperties);
+    return pbrProperties ? pbrProperties->normalScale() : 0.0f;
 }
 
 Qt3DRender::QAbstractTexture *MaterialInspector::ambientOcclusionMap() const
 {
-    return m_materialProperties ? m_materialProperties->ambientOcclusionMap() : nullptr;
+    const auto pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(m_materialProperties);
+    return pbrProperties ? pbrProperties->ambientOcclusionMap() : nullptr;
 }
 
 QColor MaterialInspector::emissiveFactor() const
 {
-    return m_materialProperties ? m_materialProperties->emissiveFactor() : QColor();
+    const auto pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(m_materialProperties);
+    return pbrProperties ? pbrProperties->emissiveFactor() : QColor();
 }
 
 Qt3DRender::QAbstractTexture *MaterialInspector::emissiveMap() const
 {
-    return m_materialProperties ? m_materialProperties->emissiveMap() : nullptr;
+    const auto pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(m_materialProperties);
+    return pbrProperties ? pbrProperties->emissiveMap() : nullptr;
 }
 
 QMatrix3x3 MaterialInspector::textureTransform() const
@@ -154,7 +200,12 @@ bool MaterialInspector::doubleSided() const
     auto material = m_materialProperties->clientMaterials();
     if (material.size()) {
         auto effect = material[0]->effect();
-        return static_cast<Kuesa::MetallicRoughnessEffect *>(effect)->isDoubleSided();
+        Kuesa::MetallicRoughnessEffect *pbrEffect = qobject_cast<Kuesa::MetallicRoughnessEffect *>(effect);
+        if (pbrEffect)
+            return pbrEffect->isDoubleSided();
+        Kuesa::UnlitEffect *unlitEffect = qobject_cast<Kuesa::UnlitEffect *>(effect);
+        if (unlitEffect)
+            return unlitEffect->isDoubleSided();
     }
     return false;
 }
@@ -166,16 +217,27 @@ bool MaterialInspector::opaque() const
     auto material = m_materialProperties->clientMaterials();
     if (material.size()) {
         auto effect = material[0]->effect();
-        return static_cast<Kuesa::MetallicRoughnessEffect *>(effect)->isOpaque();
+        Kuesa::MetallicRoughnessEffect *pbrEffect = qobject_cast<Kuesa::MetallicRoughnessEffect *>(effect);
+        if (pbrEffect)
+            return pbrEffect->isOpaque();
+        Kuesa::UnlitEffect *unlitEffect = qobject_cast<Kuesa::UnlitEffect *>(effect);
+        if (unlitEffect)
+            return unlitEffect->isOpaque();
     }
     return true;
 }
 
 bool MaterialInspector::hasTextures() const
 {
-    return m_materialProperties && (m_materialProperties->baseColorMap() //
-                                    || m_materialProperties->metalRoughMap() //
-                                    || m_materialProperties->normalMap() //
-                                    || m_materialProperties->emissiveMap() //
-                                    || m_materialProperties->ambientOcclusionMap());
+    const auto pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(m_materialProperties);
+    if (pbrProperties)
+        return (pbrProperties->baseColorMap() //
+                || pbrProperties->metalRoughMap() //
+                || pbrProperties->normalMap() //
+                || pbrProperties->emissiveMap() //
+                || pbrProperties->ambientOcclusionMap());
+
+    const auto unlitProperties = qobject_cast<Kuesa::UnlitProperties *>(m_materialProperties);
+    if (unlitProperties)
+        return (unlitProperties->baseColorMap());
 }
