@@ -29,6 +29,7 @@
 #include "spotlight.h"
 #include "spotlight_p.h"
 #include <qmath.h>
+#include <cmath>
 #include <Qt3DRender/private/shaderdata_p.h>
 #include <Qt3DCore/qpropertyupdatedchange.h>
 
@@ -207,7 +208,7 @@ void SpotLight::updateAngularAttenuationUniforms()
     Q_D(SpotLight);
     const float innerConeRadians = qDegreesToRadians(innerConeAngle());
     const float outerConeRadians = qDegreesToRadians(outerConeAngle());
-    const float lightAngleScale = 1.0f / qMax(0.001f, cos(innerConeRadians) - cos(outerConeRadians));
+    const float lightAngleScale = 1.0f / std::max(0.001f, std::cos(innerConeRadians) - std::cos(outerConeRadians));
     const float lightAngleOffset = -cos(outerConeRadians) * lightAngleScale;
     d->m_shaderData->setProperty("lightAngleScale", lightAngleScale);
     d->m_shaderData->setProperty("lightAngleOffset", lightAngleOffset);
