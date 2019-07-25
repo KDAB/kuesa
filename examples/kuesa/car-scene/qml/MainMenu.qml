@@ -63,6 +63,9 @@ Item {
         openHoodSwitch.checked = false
         useOpacityMaskSwitch.checked = false
         showSkyboxSwitch.checked = false
+        useBloomEffectSwitch.checked = false
+        bloomThreshold.value = .27
+        bloomPasses.value = 2
     }
 
     Item {
@@ -357,11 +360,11 @@ Item {
                         }
                     }
 
-
                     Item {
                         height: 10
                         width: 1
                     }
+
                     Controls.GroupBox {
                         width: parent.width
 
@@ -378,6 +381,7 @@ Item {
                                     verticalCenter: parent.verticalCenter
                                 }
                             }
+
                             Controls.StyledSwitch {
                                 id: useBloomEffectSwitch
                                 checked: false
