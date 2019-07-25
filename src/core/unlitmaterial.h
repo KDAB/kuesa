@@ -43,7 +43,7 @@ class KUESASHARED_EXPORT UnlitMaterial : public GLTF2Material
 {
     Q_OBJECT
 
-    Q_PROPERTY(UnlitProperties *unlitProperties READ unlitProperties WRITE setUnlitProperties NOTIFY unlitPropertiesChanged)
+    Q_PROPERTY(Kuesa::UnlitProperties *unlitProperties READ unlitProperties WRITE setUnlitProperties NOTIFY unlitPropertiesChanged)
 
 public:
     explicit UnlitMaterial(Qt3DCore::QNode *parent = nullptr);
