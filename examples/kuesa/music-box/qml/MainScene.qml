@@ -384,6 +384,10 @@ Kuesa.SceneEntity {
     property real soundFxRadius: 0.
     Kuesa.MetallicRoughnessMaterial {
         id: material
+        effect: Kuesa.MetallicRoughnessEffect { }
+        metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+            baseColorFactor: "gray"
+        }
     }
 
 
