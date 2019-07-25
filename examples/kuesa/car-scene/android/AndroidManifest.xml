@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <manifest package="com.kdab.carscene" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.1" android:versionCode="1" android:installLocation="auto">
-    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:icon="@drawable/icon" android:label="Kuesa" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:label="Kuesa" android:screenOrientation="landscape" android:launchMode="singleTop">
+    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:icon="@drawable/icon" android:label="Kuesa Car-Scene" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:label="Car-Scene" android:screenOrientation="landscape" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
