@@ -100,6 +100,7 @@ android {
 
     windows {
         RC_ICONS = ../../../resources/kuesa.ico
+        DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
     }
 
     # Build resources as external files

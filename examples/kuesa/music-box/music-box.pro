@@ -101,7 +101,6 @@ android {
     DISTFILES += android/AndroidManifest.xml
     INSTALLS += envmaps model
 } else {
-
     RCC_BINARY_SOURCES += \
         ../assets/models/music-box/music-box.qrc
 
@@ -120,8 +119,10 @@ android {
     asset_builder.CONFIG += no_link target_predeps
     QMAKE_EXTRA_COMPILERS += asset_builder
 
-    win32 {
+    windows {
         QMAKE_POST_LINK += $$quote(cmd /c copy /y \"$$PWD/assets/samples\" \"$$RES_PWD/\" $$escape_expand(\n\t))
+        RC_ICONS = ../../../resources/kuesa.ico
+        DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
     } else:ios {
         envmaps_dir = ../assets/envmaps
         resfiles.files = \
