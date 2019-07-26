@@ -36,13 +36,11 @@
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
-class QShaderProgramBuilder;
-class QShaderProgram;
-class QCullFace;
-class QRenderPass;
+class QAbstractTexture;
 } // namespace Qt3DRender
 
 namespace Kuesa {
+class MetallicRoughnessTechnique;
 
 class KUESASHARED_EXPORT MetallicRoughnessEffect : public Qt3DRender::QEffect
 {
@@ -57,15 +55,9 @@ class KUESASHARED_EXPORT MetallicRoughnessEffect : public Qt3DRender::QEffect
     Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
     Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
     Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
-    Q_PROPERTY(MetallicRoughnessEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLUT READ brdfLUT WRITE setBrdfLUT NOTIFY brdfLUTChanged REVISION 1)
 
 public:
-    enum ToneMapping {
-        Reinhard = 0,
-        Filmic
-    };
-    Q_ENUM(ToneMapping)
-
     explicit MetallicRoughnessEffect(Qt3DCore::QNode *parent = nullptr);
     ~MetallicRoughnessEffect();
 
@@ -79,7 +71,7 @@ public:
     bool useSkinning() const;
     bool isOpaque() const;
     bool isAlphaCutoffEnabled() const;
-    ToneMapping toneMappingAlgorithm() const;
+    Qt3DRender::QAbstractTexture *brdfLUT() const;
 
 public Q_SLOTS:
     void setBaseColorMapEnabled(bool enabled);
@@ -92,7 +84,7 @@ public Q_SLOTS:
     void setUseSkinning(bool useSkinning);
     void setOpaque(bool opaque);
     void setAlphaCutoffEnabled(bool enabled);
-    void setToneMappingAlgorithm(ToneMapping algorithm);
+    void setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT);
 
 Q_SIGNALS:
     void baseColorMapEnabledChanged(bool enabled);
@@ -105,7 +97,7 @@ Q_SIGNALS:
     void useSkinningChanged(bool useSkinning);
     void opaqueChanged(bool opaque);
     void alphaCutoffEnabledChanged(bool enabled);
-    void toneMappingAlgorithmChanged(ToneMapping algorithm);
+    void brdfLUTChanged(Qt3DRender::QAbstractTexture *brdfLUT);
 
 private:
     bool m_baseColorMapEnabled;
@@ -116,32 +108,13 @@ private:
     bool m_usingColorAttribute;
     bool m_doubleSided;
     bool m_useSkinning;
-    bool m_invokeInitVertexShaderRequested;
     bool m_opaque;
     bool m_alphaCutoffEnabled;
-    ToneMapping m_toneMappingAlgorithm;
 
-    Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QShaderProgramBuilder *m_metalRoughGL3ShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_metalRoughES3ShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_metalRoughES2ShaderBuilder;
-    Qt3DRender::QShaderProgram *m_metalRoughGL3Shader;
-    Qt3DRender::QShaderProgram *m_metalRoughES3Shader;
-    Qt3DRender::QShaderProgram *m_metalRoughES2Shader;
-    Qt3DRender::QTechnique *m_metalRoughGL3Technique;
-    Qt3DRender::QTechnique *m_metalRoughES3Technique;
-    Qt3DRender::QTechnique *m_metalRoughES2Technique;
-    Qt3DRender::QRenderPass *m_zfillGL3RenderPass;
-    Qt3DRender::QRenderPass *m_zfillES3RenderPass;
-    Qt3DRender::QRenderPass *m_zfillES2RenderPass;
-    Qt3DRender::QRenderPass *m_opaqueGL3RenderPass;
-    Qt3DRender::QRenderPass *m_opaqueES3RenderPass;
-    Qt3DRender::QRenderPass *m_opaqueES2RenderPass;
-    Qt3DRender::QRenderPass *m_transparentGL3RenderPass;
-    Qt3DRender::QRenderPass *m_transparentES3RenderPass;
-    Qt3DRender::QRenderPass *m_transparentES2RenderPass;
-
-    Q_INVOKABLE void initVertexShader();
+    MetallicRoughnessTechnique *m_metalRoughGL3Technique;
+    MetallicRoughnessTechnique *m_metalRoughES3Technique;
+    MetallicRoughnessTechnique *m_metalRoughES2Technique;
+    Qt3DRender::QParameter *m_brdfLUTParameter;
 };
 
 } // namespace Kuesa

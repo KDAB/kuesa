@@ -36,10 +36,9 @@ struct Light {
     vec3 color;
     float intensity;
     vec3 direction;
-    float constantAttenuation;
-    float linearAttenuation;
-    float quadraticAttenuation;
-    float cutOffAngle;
+    float range;
+    float lightAngleScale;
+    float lightAngleOffset;
 };
 uniform Light lights[MAX_LIGHTS];
 uniform int lightCount;

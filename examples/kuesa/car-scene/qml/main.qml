@@ -31,6 +31,7 @@ import QtQuick 2.11
 import QtQuick.Controls 1.4
 import "controls" as Controls
 
+//! [0]
 Item {
     id: mainRoot
 
@@ -42,7 +43,6 @@ Item {
 
         Wind {
             id: wind
-
             anchors.fill: parent
             visible: menu.useOpacityMask
         }
@@ -57,6 +57,7 @@ Item {
             // Root Scene Entity
             MainScene {
                 id: sceneContent
+//! [0]
                 screenWidth: scene3D.width
                 screenHeight: scene3D.height
                 animated: menu.idleAnimationRunning
@@ -69,6 +70,7 @@ Item {
                 openLeftDoor: menu.openLeftDoor
                 openRightDoor: menu.openRightDoor
                 openHood: menu.openHood
+                useBloomEffect: menu.useBloomEffect
             }
 
             Keys.onPressed: {
@@ -99,16 +101,14 @@ Item {
     // Logos
     Image {
         id: kdabLogoBottomRight
-        width: Controls.SharedAttributes.ldpi * 1.3
-        mipmap: true
+        width: parent.width/13
         smooth: true
         antialiasing: true
-
         source: "kdab_logo_white.png"
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        anchors.bottomMargin: Controls.SharedAttributes.ldpi / 5
-        anchors.rightMargin: Controls.SharedAttributes.ldpi / 5
+        anchors.bottomMargin: width/4
+        anchors.rightMargin: width/4
         fillMode: Image.PreserveAspectFit
 
         MouseArea {
@@ -122,9 +122,8 @@ Item {
         property bool kuesaLogo: true
         anchors.verticalCenter: kdabLogoBottomRight.verticalCenter
         anchors.right: kdabLogoBottomRight.left
-        anchors.rightMargin: Controls.SharedAttributes.ldpi / 3
-        width: Controls.SharedAttributes.ldpi * (kuesaLogo ? 2.3 : 1.8)
-        mipmap: true
+        anchors.rightMargin: kdabLogoBottomRight.anchors.rightMargin/1.3
+        width: parent.width/15* (kuesaLogo ? 2.3 : 1.8)
         smooth: true
         antialiasing: true
         source: kuesaLogo ? "Kuesa-logo-black.png" : "Qt-logo.png"

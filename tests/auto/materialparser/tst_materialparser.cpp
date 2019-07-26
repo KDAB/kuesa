@@ -86,6 +86,10 @@ private Q_SLOTS:
         QTest::newRow("Invalid_EmissiveFactor2") << QStringLiteral(ASSETS "materialparser_invalid_emissivefactor2.gltf")
                                                  << false
                                                  << 0;
+
+        QTest::newRow("KHR_materials_unlit") << QStringLiteral(ASSETS "materialparser_KHR_materials_unlit.gltf")
+                                             << true
+                                             << 1;
     }
 
     void checkParse()
@@ -160,6 +164,23 @@ private Q_SLOTS:
         QCOMPARE(context.materialsCount(), 1);
         QCOMPARE(context.material(0).alpha.alphaCutoff, expectedAlphaCutoff);
         QCOMPARE(int(context.material(0).alpha.mode), expectedBlendMode);
+    }
+
+    void checkUnlit()
+    {
+        // GIVEN
+        GLTF2Context context;
+        MaterialParser parser;
+        QFile file(QStringLiteral(ASSETS "materialparser_KHR_materials_unlit.gltf"));
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        // WHEN
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        parser.parse(json.array(), &context);
+
+        // THEN
+        QVERIFY(context.material(0).extensions.KHR_materials_unlit == true);
     }
 };
 

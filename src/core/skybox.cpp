@@ -51,10 +51,10 @@ using namespace Qt3DRender;
 namespace Kuesa {
 
 /*!
- * \class Skybox
+ * \class Kuesa::Skybox
  * \inheaderfile Kuesa/Skybox
  * \inmodule  Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \brief Kuesa::SkyBox is a convenience Qt3DCore::QEntity subclass used to
  * insert a skybox in a 3D scene. Unlike Qt3DExtras::SkyboxEntity,
  * its implementation is compatible with the Kuesa provided default framegraph.
@@ -77,6 +77,8 @@ namespace Kuesa {
  *     \li baseName + _negy + extension
  *     \li baseName + _posz + extension
  *     \li baseName + _negz + extension
+ *     \endlist
+ * \endlist
  *
  * \sa extension
  * \sa baseName
@@ -85,8 +87,8 @@ namespace Kuesa {
 /*!
  * \qmltype Skybox
  * \instantiates Kuesa::Skybox
- * \inmodule Kuesa
- * \since 1.0
+ * \inqmlmodule Kuesa
+ * \since Kuesa 1.0
  * \brief Kuesa.SkyBox is a convenience Qt3D.Core.Entity subclass used to
  * insert a skybox in a 3D scene. Unlike SkyboxEntity from Qt3D.Extras,
  * its implementation is compatible with the Kuesa provided default framegraph.
@@ -109,6 +111,8 @@ namespace Kuesa {
  *     \li baseName + _negy + extension
  *     \li baseName + _posz + extension
  *     \li baseName + _negz + extension
+ *     \endlist
+ * \endlist
  *
  * \sa extension
  * \sa baseName
@@ -116,7 +120,6 @@ namespace Kuesa {
 
 Skybox::Skybox(QNode *parent)
     : QEntity(parent)
-    , m_gammaStrengthParameter(new QParameter(QStringLiteral("gammaStrength"), 0.0f))
     , m_textureParameter(new QParameter())
     , m_texture(nullptr)
     , m_extension(QStringLiteral(".png"))
@@ -156,6 +159,10 @@ Skybox::Skybox(QNode *parent)
     techniqueFilterKey->setName(QStringLiteral("renderingStyle"));
     techniqueFilterKey->setValue(QStringLiteral("forward"));
 
+    auto techniqueNoCullingFilterKey = new QFilterKey(effect);
+    techniqueNoCullingFilterKey->setName(QStringLiteral("allowCulling"));
+    techniqueNoCullingFilterKey->setValue(false);
+
     auto opaquePassFilterKey = new Qt3DRender::QFilterKey(effect);
     opaquePassFilterKey->setName(QStringLiteral("KuesaDrawStage"));
     opaquePassFilterKey->setValue(QStringLiteral("Opaque"));
@@ -183,6 +190,7 @@ Skybox::Skybox(QNode *parent)
         technique->graphicsApiFilter()->setMajorVersion(description.majorV);
         technique->graphicsApiFilter()->setMinorVersion(description.minorV);
         technique->addFilterKey(techniqueFilterKey);
+        technique->addFilterKey(techniqueNoCullingFilterKey);
         technique->addRenderPass(renderPass);
         renderPass->setShaderProgram(shader);
         renderPass->addRenderState(cullFront);
@@ -195,7 +203,6 @@ Skybox::Skybox(QNode *parent)
 
     auto material = new QMaterial();
     material->setEffect(effect);
-    material->addParameter(m_gammaStrengthParameter);
     material->addParameter(m_textureParameter);
 
     auto mesh = new Qt3DExtras::QCuboidMesh();
@@ -217,7 +224,8 @@ Skybox::~Skybox()
  */
 
 /*!
- * \brief Skybox::setBaseName Sets the base name for the texture(s) that will be used as skybox
+ * Sets the base name for the texture(s) that will be used as skybox to \a
+ * baseName.
  */
 void Skybox::setBaseName(const QString &baseName)
 {
@@ -242,7 +250,7 @@ QString Skybox::baseName() const
  */
 
 /*!
- * \brief Skybox::setExtension Sets the extension for the texture(s) that will be used as skybox
+ * Sets the \a extension for the texture(s) that will be used as skybox
  */
 void Skybox::setExtension(const QString &extension)
 {
@@ -259,31 +267,6 @@ void Skybox::setExtension(const QString &extension)
 QString Skybox::extension() const
 {
     return m_extension;
-}
-
-/*!
- * \qmlproperty bool Skybox::gammaCorrect
- *
- * True is gamma correction is enabled. False otherwise.
- */
-
-/*!
- * \brief Skybox::setGammaCorrectEnabled Enables/disables gamma correction
- */
-void Skybox::setGammaCorrectEnabled(bool enabled)
-{
-    if (enabled != isGammaCorrectEnabled()) {
-        m_gammaStrengthParameter->setValue(enabled ? 1.0f : 0.0f);
-        emit gammaCorrectEnabledChanged(enabled);
-    }
-}
-
-/*!
- * \brief Skybox::isGammaCorrectEnabled True is gamma correction is enabled. False otherwise
- */
-bool Skybox::isGammaCorrectEnabled() const
-{
-    return !qFuzzyIsNull(m_gammaStrengthParameter->value().toFloat());
 }
 
 void Skybox::reloadTexture()

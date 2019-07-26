@@ -45,14 +45,9 @@ using namespace GLTF2Import;
 
 namespace {
 
-const QLatin1String KEY_COMPONENTTYPE = QLatin1Literal("componentType");
-const QLatin1String KEY_COUNT = QLatin1Literal("count");
-const QLatin1String KEY_TYPE = QLatin1Literal("type");
-const QLatin1String KEY_NORMALIZED = QLatin1Literal("normalized");
-const QLatin1String KEY_MAX = QLatin1Literal("max");
-const QLatin1String KEY_MIN = QLatin1Literal("min");
-const QLatin1String KEY_SPARSE_INDICES = QLatin1Literal("indices");
-const QLatin1String KEY_SPARSE_VALUES = QLatin1Literal("values");
+const QLatin1String KEY_NORMALIZED = QLatin1String("normalized");
+const QLatin1String KEY_SPARSE_INDICES = QLatin1String("indices");
+const QLatin1String KEY_SPARSE_VALUES = QLatin1String("values");
 
 QVector<float> jsonArrayToVectorOfFloats(const QJsonArray &values)
 {
@@ -249,14 +244,14 @@ bool Kuesa::GLTF2Import::BufferAccessorParser::parse(const QJsonArray &bufferAcc
                 break;
             case Qt3DRender::QAttribute::UnsignedShort:
                 if (!copySparseValues<quint16>(accessor.count, accessor.sparseCount, sparseIndicesData, sparseValuesData,
-                                              accessor.bufferData, accessor.offset, stride, accessor.type, accessor.dataSize)) {
+                                               accessor.bufferData, accessor.offset, stride, accessor.type, accessor.dataSize)) {
                     qCWarning(kuesa, "Failed to parse sparse accessor data");
                     return false;
                 }
                 break;
             case Qt3DRender::QAttribute::Short:
                 if (!copySparseValues<qint16>(accessor.count, accessor.sparseCount, sparseIndicesData, sparseValuesData,
-                                             accessor.bufferData, accessor.offset, stride, accessor.type, accessor.dataSize)) {
+                                              accessor.bufferData, accessor.offset, stride, accessor.type, accessor.dataSize)) {
                     qCWarning(kuesa, "Failed to parse sparse accessor data");
                     return false;
                 }

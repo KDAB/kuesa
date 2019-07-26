@@ -1,58 +1,40 @@
-/****************************************************************************
-**
-** Copyright (C) 2017-2019 Klaralvdalens Datakonsult AB (KDAB).
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the Qt3D module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** BSD License Usage
-** Alternatively, you may use this file under the terms of the BSD license
-** as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
-**     contributors may be used to endorse or promote products derived
-**     from this software without specific prior written permission.
-**
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+/*
+    kuesa_metalrough.inc.frag
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 
 #ifndef FP
 #define FP highp
 #endif
 
 #pragma include light.inc.frag
+
+const FP float M_PI = 3.141592653589793;
+
+uniform sampler2D brdfLUT;
 
 int mipLevelCount(const in FP samplerCube cube)
 {
@@ -69,7 +51,7 @@ FP float remapRoughness(const in FP float roughness)
     // of "bluriness" as a function of the roughness specified by the user.
     // r = roughness^2
     const FP float maxSpecPower = 999999.0;
-    const FP float minRoughness = sqrt(2.0 / (maxSpecPower + 2.0));
+    const FP float minRoughness = 0.00141421; // sqrt(2.0 / (maxSpecPower + 2.0))
     return max(roughness * roughness, minRoughness);
 }
 
@@ -105,49 +87,36 @@ FP float alphaToMipLevel(FP float alpha)
 
 FP float normalDistribution(const in FP vec3 n, const in FP vec3 h, const in FP float alpha)
 {
-    // Blinn-Phong approximation - see
-    // http://graphicrants.blogspot.co.uk/2013/08/specular-brdf-reference.html
-    FP float specPower = 2.0 / (alpha * alpha) - 2.0;
-    return (specPower + 2.0) / (2.0 * 3.14159) * pow(max(dot(n, h), 0.0), specPower);
+    // See http://graphicrants.blogspot.co.uk/2013/08/specular-brdf-reference.html
+    // for a good reference on NDFs and geometric shadowing models.
+    // GGX
+    FP float alphaSq = alpha * alpha;
+    FP float nDotH = dot(n, h);
+    FP float factor = nDotH * nDotH * (alphaSq - 1.0) + 1.0;
+    return alphaSq / (3.14159 * factor * factor);
 }
 
-FP vec3 fresnelFactor(const in FP vec3 color, const in FP float cosineFactor)
+FP vec3 fresnelFactor(const in FP vec3 F0, const in FP vec3 F90, const in FP float cosineFactor)
 {
     // Calculate the Fresnel effect value
-    FP vec3 f = color;
-    FP vec3 F = f + (1.0 - f) * pow(1.0 - cosineFactor, 5.0);
-    return clamp(F, f, vec3(1.0));
+    FP vec3 F = F0 + (F90 - F0) * pow(clamp(1.0 - cosineFactor, 0.0, 1.0), 5.0);
+    return clamp(F, vec3(0.0), vec3(1.0));
 }
 
 FP float geometricModel(const in FP float lDotN,
                         const in FP float vDotN,
-                        const in FP vec3 h)
+                        const in FP vec3 h,
+                        const in FP float alpha)
 {
-    // Implicit geometric model (equal to denominator in specular model).
-    // This currently assumes that there is no attenuation by geometric shadowing or
-    // masking according to the microfacet theory.
-    return lDotN * vDotN;
+    // Smith GGX
+    FP float alphaSq = alpha * alpha;
+    FP float termSq = alphaSq + (1.0 - alphaSq) * vDotN * vDotN;
+    return 2.0 * vDotN / (vDotN + sqrt(termSq));
 }
 
-FP vec3 specularModel(const in FP vec3 F0,
-                      const in FP float sDotH,
-                      const in FP float sDotN,
-                      const in FP float vDotN,
-                      const in FP vec3 n,
-                      const in FP vec3 h)
+FP vec3 diffuse(const in FP vec3 diffuseColor)
 {
-    // Clamp sDotN and vDotN to small positive value to prevent the
-    // denominator in the reflection equation going to infinity. Balance this
-    // by using the clamped values in the geometric factor function to
-    // avoid ugly seams in the specular lighting.
-    FP float sDotNPrime = max(sDotN, 0.001);
-    FP float vDotNPrime = max(vDotN, 0.001);
-
-    FP vec3 F = fresnelFactor(F0, sDotH);
-    FP float G = geometricModel(sDotNPrime, vDotNPrime, h);
-
-    FP vec3 cSpec = F * G / (4.0 * sDotNPrime * vDotNPrime);
-    return clamp(cSpec, vec3(0.0), vec3(1.0));
+    return diffuseColor / M_PI;
 }
 
 FP vec3 pbrModel(const in int lightIndex,
@@ -167,7 +136,6 @@ FP vec3 pbrModel(const in int lightIndex,
 
     FP float vDotN = dot(v, n);
     FP float sDotN = 0.0;
-    FP float sDotH = 0.0;
     FP float att = 1.0;
 
     if (lights[lightIndex].type != TYPE_DIRECTIONAL) {
@@ -178,21 +146,27 @@ FP vec3 pbrModel(const in int lightIndex,
         // Calculate the attenuation factor
         sDotN = dot(s, n);
         if (sDotN > 0.0) {
-            if (lights[lightIndex].constantAttenuation != 0.0
-             || lights[lightIndex].linearAttenuation != 0.0
-             || lights[lightIndex].quadraticAttenuation != 0.0) {
-                FP float dist = length(sUnnormalized);
-                att = 1.0 / (lights[lightIndex].constantAttenuation +
-                             lights[lightIndex].linearAttenuation * dist +
-                             lights[lightIndex].quadraticAttenuation * dist * dist);
+            FP float dist = length(sUnnormalized);
+            FP float d2 = dist * dist;
+            if (lights[lightIndex].range > 0.0)
+            {
+                // recommended attenuation with range based on KHR_lights_punctual extension
+                FP float d2OverR2 = d2/(lights[lightIndex].range * lights[lightIndex].range);
+                att = max( min( 1.0 - ( d2OverR2 * d2OverR2 ), 1.0 ), 0.0 ) / d2;
             }
-
-            // The light direction is in world space already
-            if (lights[lightIndex].type == TYPE_SPOT) {
-                // Check if fragment is inside or outside of the spot light cone
-                if (degrees(acos(dot(-s, lights[lightIndex].direction))) > lights[lightIndex].cutOffAngle)
-                    sDotN = 0.0;
+            else {
+               att = 1.0 / d2;
             }
+            att = clamp(att, 0.0, 1.0);
+        }
+        if (lights[lightIndex].type == TYPE_SPOT) {
+            // Calculate angular attenuation of spotlight, between 0 and 1.
+            // yields 1 inside innerCone, 0 outside outerConeAngle, and value interpolated
+            // between 1 and 0 between innerConeAngle and outerConeAngle
+            FP float cd = dot(-lights[lightIndex].direction, s);
+            FP float angularAttenuation = clamp(cd * lights[lightIndex].lightAngleScale + lights[lightIndex].lightAngleOffset, 0.0, 1.0);
+            angularAttenuation *= angularAttenuation;
+            att *= angularAttenuation;
         }
     } else {
         // Directional lights
@@ -201,29 +175,34 @@ FP vec3 pbrModel(const in int lightIndex,
         sDotN = dot(s, n);
     }
 
+    // This light doesn't contribute anything
+    if (sDotN <= 0.0)
+        return vec3(0.0);
+
     h = normalize(s + v);
-    sDotH = dot(s, h);
+    FP float vDotH = dot(v, h);
 
-    // Calculate diffuse component
-    FP vec3 diffuseColor = (1.0 - metalness) * baseColor * lights[lightIndex].color;
-    FP vec3 diffuse = diffuseColor * max(sDotN, 0.0) / 3.14159;
-
-    // Calculate specular component
     FP vec3 dielectricColor = vec3(0.04);
-    FP vec3 F0 = mix(dielectricColor, baseColor, metalness);
-    FP vec3 specularFactor = vec3(0.0);
-    if (sDotN > 0.0) {
-        specularFactor = specularModel(F0, sDotH, sDotN, vDotN, n, h);
-        specularFactor *= normalDistribution(n, h, alpha);
-    }
-    FP vec3 specularColor = lights[lightIndex].color;
-    FP vec3 specular = specularColor * specularFactor;
+    FP vec3 diffuseColor = baseColor * (vec3(1.0) - dielectricColor);
+    diffuseColor *= (1.0 - metalness);
+    FP vec3 F0 = mix(dielectricColor, baseColor, metalness); // = specularColor
 
-    // Blend between diffuse and specular to conserver energy
-    FP vec3 color = att * lights[lightIndex].intensity * (specular + diffuse * (vec3(1.0) - specular));
+    // Compute reflectance.
+    FP float reflectance = max(max(F0.r, F0.g), F0.b);
+    FP vec3 F90 = clamp(reflectance * 25.0, 0.0, 1.0) * vec3(1.0);
 
-    // Reduce by ambient occlusion amount
-    color *= ambientOcclusion;
+    // Compute shading terms
+    FP vec3 F = fresnelFactor(F0, F90, vDotH);
+    FP float G = geometricModel(sDotN, vDotN, h, alpha);
+    FP float D = normalDistribution(n, h, alpha);
+
+    // Analytical (punctual) lighting
+    FP vec3 diffuseContrib = (vec3(1.0) - F) * diffuse(diffuseColor);
+    FP vec3 specularContrib = F * G * D / (4.0 * sDotN * vDotN);
+
+    // Obtain final intensity as reflectance (BRDF) scaled by the energy of the light (cosine law)
+    FP vec3 color = att * sDotN * lights[lightIndex].intensity * lights[lightIndex].color
+                    * (diffuseContrib + specularContrib);
 
     return color;
 }
@@ -241,22 +220,20 @@ FP vec3 pbrIblModel(const in FP vec3 wNormal,
     // to the l vector for punctual light sources. Armed with this, calculate
     // the usual factors needed
     FP vec3 n = wNormal;
-    FP vec3 l = reflect(-wView, n);
+    FP vec3 l = -reflect(wView, n);
     FP vec3 v = wView;
-    FP vec3 h = normalize(l + v);
-    FP float vDotN = dot(v, n);
-    FP float lDotN = dot(l, n);
-    FP float lDotH = dot(l, h);
+    FP float vDotN = clamp(dot(v, n), 0.0, 1.0);
 
-    // Calculate diffuse component
-    FP vec3 diffuseColor = (1.0 - metalness) * baseColor;
-    FP vec3 diffuse = diffuseColor * texture(envLight.irradiance, l).rgb;
-
-    // Calculate specular component
+    // Calculate diffuse and specular (F0) colors
     FP vec3 dielectricColor = vec3(0.04);
-    FP vec3 F0 = mix(dielectricColor, baseColor, metalness);
-    FP vec3 specularFactor = specularModel(F0, lDotH, lDotN, vDotN, n, h);
+    FP vec3 diffuseColor = baseColor * (vec3(1.0) - dielectricColor);
+    diffuseColor *= (1.0 - metalness);
+    FP vec3 F0 = mix(dielectricColor, baseColor, metalness); // = specularColor
 
+    FP vec2 brdfUV = clamp(vec2(vDotN, 1.0 - sqrt(alpha)), vec2(0.0), vec2(1.0));
+    FP vec2 brdf = texture(brdfLUT, brdfUV).rg;
+
+    FP vec3 diffuseLight = texture(envLight.irradiance, l).rgb;
     FP float lod = alphaToMipLevel(alpha);
 //#define DEBUG_SPECULAR_LODS
 #ifdef DEBUG_SPECULAR_LODS
@@ -277,22 +254,19 @@ FP vec3 pbrIblModel(const in FP vec3 wNormal,
     else if (lod > 0.0)
         return vec3(1.0, 0.0, 1.0);
 #endif
-    FP vec3 specularSkyColor = textureLod(envLight.specular, l, lod).rgb;
-    FP vec3 specular = specularSkyColor * specularFactor;
+    FP vec3 specularLight = textureLod(envLight.specular, l, lod).rgb;
 
-    // Blend between diffuse and specular to conserve energy
-    FP vec3 color = specular + diffuse * (vec3(1.0) - specularFactor);
+    FP vec3 diffuse = diffuseLight * diffuseColor;
+    FP vec3 specular = specularLight * (F0 * brdf.x + brdf.y);
 
-    // Reduce by ambient occlusion amount
-    color *= ambientOcclusion;
-
-    return color;
+    return diffuse + specular;
 }
 
 FP vec3 kuesa_metalRoughFunction(const in FP vec4 baseColor,
                                  const in FP float metalness,
                                  const in FP float roughness,
                                  const in FP float ambientOcclusion,
+                                 const in FP vec4 emissive,
                                  const in FP vec3 worldPosition,
                                  const in FP vec3 worldView,
                                  const in FP vec3 worldNormal)
@@ -321,6 +295,10 @@ FP vec3 kuesa_metalRoughFunction(const in FP vec4 baseColor,
                             alpha,
                             ambientOcclusion);
     }
+
+    // Apply ambient occlusion and emissive channels
+    cLinear *= ambientOcclusion;
+    cLinear += emissive.rgb;
 
     return cLinear;
 }

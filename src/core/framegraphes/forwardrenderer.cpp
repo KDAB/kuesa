@@ -39,23 +39,28 @@
 #include <Qt3DRender/qtexture.h>
 #include <Qt3DRender/qrendertarget.h>
 #include <Qt3DRender/qrendertargetselector.h>
+#include <Qt3DRender/qblitframebuffer.h>
 #include <QWindow>
+#include <QScreen>
 #include <QOffscreenSurface>
+#include <QOpenGLContext>
 #include <Kuesa/abstractpostprocessingeffect.h>
 #include "zfillrenderstage_p.h"
 #include "opaquerenderstage_p.h"
 #include "transparentrenderstage_p.h"
+#include "tonemappingandgammacorrectioneffect.h"
 #include "kuesa_p.h"
+#include <cmath>
 
 QT_BEGIN_NAMESPACE
 
 using namespace Kuesa;
 
 /*!
- * \class ForwardRender
+ * \class Kuesa::ForwardRenderer
  * \brief Implements a simple forward rendering FrameGraph.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Qt3DRender::QFrameGraphNode
  *
  * This FrameGraph will select all Qt3D Entities that reference a Material with
@@ -63,23 +68,26 @@ using namespace Kuesa;
  * string value "forward".
  *
  * The rendering will be made on a single viewport whose dimensions can be set
- * with normalized coordinates by calling \fn setViewportRect.
+ * with normalized coordinates by calling ForwardRender::setViewportRect.
  *
- * The screen will be cleared with the color set by calling \fn setClearColor.
- * By default the clear color is black.
+ * The screen will be cleared with the color set by calling
+ * ForwardRender::setClearColor. By default the clear color is black.
  *
- * Unless a call to \fn setClearBuffers has been made, only the color and depth
- * buffers will be cleared before the rest of the scene is rendered.
+ * Unless a call to ForwardRender::setClearBuffers has been made, only the
+ * color and depth buffers will be cleared before the rest of the scene is
+ * rendered.
  *
- * The scene will be rendered from the camera set with \fn setCamera on the
- * window or offscreen surface set by calling \fn setRenderSurface.
- * Additionally \fn setExternalRenderTargetSize can be called to specify the
- * size of the rendering surface, when different from the size reported by the
+ * The scene will be rendered from the camera set with ForwardRender::setCamera
+ * on the window or offscreen surface set by calling
+ * ForwardRender::setRenderSurface. Additionally
+ * ForwardRender::setExternalRenderTargetSize can be called to specify the size
+ * of the rendering surface, when different from the size reported by the
  * surface, this can be the case with high DPI screens.
  *
  * Frustum culling of Entities will be performed by default to only render
  * entities that are visible within the camera's frustum. This can be disabled
- * by calling \fn setFrustumCulling.
+ * by calling ForwardRender::setFrustumCulling. Please note frustum culling is
+ * not performed on skinned meshes.
  *
  * By default the rendering is performed so that:
  *
@@ -94,7 +102,7 @@ using namespace Kuesa;
  * Scenes containing materials with transparency need to be drawn from
  * back-to-front in relation to the Camera for the blending to work correctly.
  * This sorting can be expensive and is disabled by default. It can be enabled
- * by calling \fn setBackToFrontSorting.
+ * by calling ForwardRender::setBackToFrontSorting.
  *
  * In some case, an optimization technique known as an early z-filling pass can
  * provide a significant performance gain. This is especially true for large
@@ -102,18 +110,24 @@ using namespace Kuesa;
  * depth buffer with a low complexity shader so that subsequent passes
  * incorporating more detailed rendering techniques only render fragments for
  * the depth previously recorded. The optional z-fill pass can be enabled by
- * calling \fn setZFilling. All Entities having a Material with a compatible
- * RenderPass that has a FilterKey KuesaDrawStage with a value set to ZFill
- * will be rendered. This will take place before the Opaque and Transparent
- * pass. Only Opaque objects should be used to fill the depth buffer.
+ * calling ForwardRender::setZFilling. All Entities having a Material with a
+ * compatible RenderPass that has a FilterKey KuesaDrawStage with a value set
+ * to ZFill will be rendered. This will take place before the Opaque and
+ * Transparent pass. Only Opaque objects should be used to fill the depth
+ * buffer.
+ *
+ * The pipeline steps, from materials to post processing effects are working in
+ * linear color space. This ForwardRenderer adds a final gamma correction to
+ * perform the final conversion to sRGB, through the use of the
+ * GammaCorrectionEffect, as the last step of this pipeline.
  */
 
 /*!
- * \qmltype ForwardRender
+ * \qmltype ForwardRenderer
  * \brief Implements a simple forward rendering FrameGraph.
  * \inqmlmodule Kuesa
- * \since 1.0
- * \instantiates Kuesa::ForwardRender
+ * \since Kuesa 1.0
+ * \instantiates Kuesa::ForwardRenderer
  *
  * This FrameGraph will select all Qt3D Entities that reference a Material with
  * Techniques having a FilterKey with the name "renderingStyle" set to the
@@ -136,7 +150,8 @@ using namespace Kuesa;
  *
  * Frustum culling of Entities will be performed by default to only render
  * entities that are visible within the camera's frustum. This can be disabled
- * by setting the frustumCulling property.
+ * by setting the frustumCulling property. Please note frustum culling is not
+ * performed on skinned meshes.
  *
  * By default the rendering is performed so that:
  *
@@ -163,6 +178,11 @@ using namespace Kuesa;
  * a compatible RenderPass that has a FilterKey KuesaDrawStage with a value set
  * to ZFill will be rendered. This will take place before the Opaque and Transparent
  * pass. Only Opaque objects should be used to fill the depth buffer.
+ *
+ * The pipeline steps, from materials to post processing effects are working in
+ * linear color space. This ForwardRenderer adds a final gamma correction to
+ * perform the final conversion to sRGB, through the use of the
+ * GammaCorrectionEffect, as the last step of this pipeline.
  */
 
 /*!
@@ -296,28 +316,209 @@ using namespace Kuesa;
     The FrameGraph tree is reconfigured upon replacing the list of effects.
 */
 
+/*!
+    \property Kuesa::ForwardRenderer::gamma
+
+    Holds the gamma value to use for gamma correction that brings linear colors
+    to sRGB colors.
+    \default 2.2
+    \since Kuesa 1.1
+ */
+
+/*!
+    \qmlproperty real Kuesa::ForwardRenderer::gamma
+
+    Holds the gamma value to use for gamma correction that brings linear colors
+    to sRGB colors.
+    \default 2.2
+    \since Kuesa 1.1
+ */
+
+/*!
+    \property Kuesa::ForwardRenderer::exposure
+    Exposure correction factor used before the linear to sRGB conversion.
+    \default 0
+    \since Kuesa 1.1
+ */
+
+/*!
+    \qmlproperty real Kuesa::ForwardRenderer::exposure
+    Exposure correction factor used before the linear to sRGB conversion.
+    \default 0
+    \since Kuesa 1.1
+ */
+
+/*!
+    \property Kuesa::ForwardRenderer::toneMappingAlgorithm
+
+    Tone mapping specifies how we perform color conversion from HDR (high
+    dynamic range) content to LDR (low dynamic range) content which our monitor
+    displays.
+
+    \since Kuesa 1.1
+    \default ToneMappingAndGammaCorrectionEffect::None
+ */
+
+/*!
+    \qmlproperty ToneMappingAndGammaCorrectionEffect.ToneMapping Kuesa::ForwardRenderer::toneMappingAlgorithm
+
+    Tone mapping specifies how we perform color conversion from HDR (high
+    dynamic range) content to LDR (low dynamic range) content which our monitor
+    displays.
+
+    \since Kuesa 1.1
+    \default ToneMappingAndGammaCorrectionEffect.None
+ */
+
+namespace {
+
+
+struct GLFeatures
+{
+    bool hasHalfFloatTexture = false;
+    bool hasHalfFloatRenderable = false;
+    bool hasMultisampledTexture = false;
+    bool hasMultisampledFBO = false;
+};
+
+// Check supported GL Features
+GLFeatures checkGLFeatures()
+{
+    GLFeatures features;
+    QOpenGLContext ctx;
+    ctx.setFormat(QSurfaceFormat::defaultFormat());
+    if (ctx.create()) {
+        const QSurfaceFormat format = ctx.format();
+        // Since ES 3.0 or GL 3.0
+        features.hasHalfFloatTexture = format.majorVersion() >= 3 || ctx.hasExtension(QByteArray("GL_OES_texture_half_float"));
+        // Since GL 3.0 or ES 3.2 or extension
+        features.hasHalfFloatRenderable = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 2)
+                                                            : format.majorVersion() >= 3)
+                                          || ctx.hasExtension(QByteArray("GL_EXT_color_buffer_half_float"));
+        // Since ES 3.1, GL 3.0 or extension
+        features.hasMultisampledTexture = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 1)
+                                                            : (format.majorVersion() >= 3))
+                                          || ctx.hasExtension(QByteArray("ARB_texture_multisample"));
+        // Since ES 3.1, GL 3.0 or extension
+        // TO DO: Find how to support that on ES
+        features.hasMultisampledFBO = (ctx.isOpenGLES() ? (format.majorVersion() >= 3 && format.minorVersion() >= 1)
+                                                        : format.majorVersion() >= 3);
+    }
+    return features;
+}
+
+enum RenderTargetFlag {
+    IncludeDepth = (1 << 0),
+    Multisampled = (1 << 1),
+    HalfFloatAttachments = (1 << 2),
+};
+Q_DECLARE_FLAGS(RenderTargetFlags, RenderTargetFlag)
+
+/*!
+ * \internal
+ *
+ * Helper function to create a QRenderTarget with the correct texture formats
+ * and sizes.
+ */
+Qt3DRender::QRenderTarget *createRenderTarget(RenderTargetFlags flags,
+                                              Qt3DCore::QNode *owner,
+                                              const QSize surfaceSize,
+                                              int samples = 0)
+{
+    auto renderTarget = new Qt3DRender::QRenderTarget(owner);
+    Qt3DRender::QAbstractTexture *colorTexture = nullptr;
+    if (flags & RenderTargetFlag::Multisampled) {
+        colorTexture = new Qt3DRender::QTexture2DMultisample;
+        colorTexture->setSamples(samples);
+    } else {
+        colorTexture = new Qt3DRender::QTexture2D;
+    }
+    // We need to use 16 based format as our content is HDR linear
+    // which we will eventually exposure correct, tone map to LDR and
+    // gamma correct
+    // This requires support for extension OES_texture_half_float on ES2 platforms
+    colorTexture->setFormat((flags & RenderTargetFlag::HalfFloatAttachments)
+                            ? Qt3DRender::QAbstractTexture::RGBA16F
+                            : Qt3DRender::QAbstractTexture::RGBA8U);
+    colorTexture->setGenerateMipMaps(false);
+    colorTexture->setSize(surfaceSize.width(), surfaceSize.height());
+    auto colorOutput = new Qt3DRender::QRenderTargetOutput;
+
+    colorOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+    colorOutput->setTexture(colorTexture);
+    renderTarget->addOutput(colorOutput);
+
+    if (flags & RenderTargetFlag::IncludeDepth) {
+        Qt3DRender::QAbstractTexture *depthTexture = nullptr;
+        if (flags & RenderTargetFlag::Multisampled) {
+            depthTexture = new Qt3DRender::QTexture2DMultisample;
+            depthTexture->setSamples(samples);
+        } else {
+            depthTexture = new Qt3DRender::QTexture2D;
+        }
+        depthTexture->setFormat(Qt3DRender::QAbstractTexture::DepthFormat);
+        depthTexture->setSize(surfaceSize.width(), surfaceSize.height());
+        depthTexture->setGenerateMipMaps(false);
+        depthTexture->setFormat(Qt3DRender::QAbstractTexture::D24);
+        auto depthOutput = new Qt3DRender::QRenderTargetOutput;
+        depthOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Depth);
+        depthOutput->setTexture(depthTexture);
+        renderTarget->addOutput(depthOutput);
+    }
+
+    return renderTarget;
+}
+
+} // namespace anonymous
+
 ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     : Qt3DRender::QFrameGraphNode(parent)
-    , m_techniqueFilter(new Qt3DRender::QTechniqueFilter())
+    , m_noFrustumCullingOpaqueTechniqueFilter(new Qt3DRender::QTechniqueFilter())
+    , m_frustumCullingOpaqueTechniqueFilter(new Qt3DRender::QTechniqueFilter())
+    , m_noFrustumCullingTransparentTechniqueFilter(new Qt3DRender::QTechniqueFilter())
+    , m_frustumCullingTransparentTechniqueFilter(new Qt3DRender::QTechniqueFilter())
     , m_viewport(new Qt3DRender::QViewport())
     , m_cameraSelector(new Qt3DRender::QCameraSelector())
     , m_clearBuffers(new Qt3DRender::QClearBuffers())
     , m_surfaceSelector(new Qt3DRender::QRenderSurfaceSelector())
     , m_noDrawClearBuffer(new Qt3DRender::QNoDraw())
-    , m_frustumCulling(new Qt3DRender::QFrustumCulling())
-    , m_backToFrontSorting(false)
+    , m_frustumCullingOpaque(new Qt3DRender::QFrustumCulling())
+    , m_frustumCullingTransparent(new Qt3DRender::QFrustumCulling())
+    , m_backToFrontSorting(true)
     , m_zfilling(false)
     , m_renderToTextureRootNode(nullptr)
     , m_effectsRootNode(nullptr)
-    , m_renderStageRootNode(nullptr)
+    , m_multisampleTarget(nullptr)
+    , m_blitFramebufferNode(nullptr)
+    , m_fgTreeRebuiltScheduled(false)
+    , m_gammaCorrectionFX(new ToneMappingAndGammaCorrectionEffect())
 {
     m_renderTargets[0] = nullptr;
     m_renderTargets[1] = nullptr;
 
-    auto filterKey = new Qt3DRender::QFilterKey(this);
-    filterKey->setName(QStringLiteral("renderingStyle"));
-    filterKey->setValue(QStringLiteral("forward"));
-    m_techniqueFilter->addMatch(filterKey);
+    {
+        auto filterKey = new Qt3DRender::QFilterKey(this);
+        filterKey->setName(QStringLiteral("renderingStyle"));
+        filterKey->setValue(QStringLiteral("forward"));
+        m_frustumCullingOpaqueTechniqueFilter->addMatch(filterKey);
+        m_noFrustumCullingOpaqueTechniqueFilter->addMatch(filterKey);
+        m_frustumCullingTransparentTechniqueFilter->addMatch(filterKey);
+        m_noFrustumCullingTransparentTechniqueFilter->addMatch(filterKey);
+    }
+    {
+        auto filterKey = new Qt3DRender::QFilterKey(this);
+        filterKey->setName(QStringLiteral("allowCulling"));
+        filterKey->setValue(true);
+        m_frustumCullingOpaqueTechniqueFilter->addMatch(filterKey);
+        m_frustumCullingTransparentTechniqueFilter->addMatch(filterKey);
+    }
+    {
+        auto filterKey = new Qt3DRender::QFilterKey(this);
+        filterKey->setName(QStringLiteral("allowCulling"));
+        filterKey->setValue(false);
+        m_noFrustumCullingOpaqueTechniqueFilter->addMatch(filterKey);
+        m_noFrustumCullingTransparentTechniqueFilter->addMatch(filterKey);
+    }
 
     m_clearBuffers->setBuffers(Qt3DRender::QClearBuffers::ColorDepthBuffer);
 
@@ -328,22 +529,27 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::externalRenderTargetSizeChanged);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::renderSurfaceChanged);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::handleSurfaceChange);
-    connect(m_frustumCulling, &Qt3DRender::QFrustumCulling::enabledChanged, this, &ForwardRenderer::frustumCullingChanged);
+    connect(m_frustumCullingOpaque, &Qt3DRender::QFrustumCulling::enabledChanged, this, &ForwardRenderer::frustumCullingChanged);
+    connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::gammaChanged, this, &ForwardRenderer::gammaChanged);
+    connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::exposureChanged, this, &ForwardRenderer::exposureChanged);
+    connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::toneMappingAlgorithmChanged, this, &ForwardRenderer::toneMappingAlgorithmChanged);
 
-    // Reconfigure FrameGraph
-    reconfigureFrameGraph();
-    // Reconfigure Stages
-    reconfigureStages();
+    {
+        // Add internal post FX to the pipeline
+        m_internalPostProcessingEffects.push_back(m_gammaCorrectionFX);
+        m_effectFGSubtrees.insert(m_gammaCorrectionFX, m_gammaCorrectionFX->frameGraphSubTree());
+    }
+
+    rebuildFGTree();
 }
 
 ForwardRenderer::~ForwardRenderer()
 {
     // unparent the effect subtrees or they'll be deleted twice
-    for (auto framegraph : qAsConst(m_effectFGSubtrees))
+    for (auto &framegraph : qAsConst(m_effectFGSubtrees))
         framegraph->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
     m_effectFGSubtrees.clear();
-    qDeleteAll(m_renderStages);
-    m_renderStages.clear();
+    m_sceneStages.clear();
 }
 
 /*!
@@ -355,11 +561,17 @@ Qt3DCore::QEntity *ForwardRenderer::camera() const
 }
 
 /*!
- * Returns the color used to clear the screen at the start of each frame.
+ * Returns the color used to clear the screen at the start of each frame. The
+ * color is returned in sRGB color space.
  */
 QColor ForwardRenderer::clearColor() const
 {
-    return m_clearBuffers->clearColor();
+    const QColor linearColor = m_clearBuffers->clearColor();
+    const float oneOverGamma = 1.0f / 2.2f;
+    return QColor::fromRgbF(powf(linearColor.redF(), oneOverGamma),
+                            powf(linearColor.greenF(), oneOverGamma),
+                            powf(linearColor.blueF(), oneOverGamma),
+                            linearColor.alphaF());
 }
 
 /*!
@@ -375,7 +587,7 @@ Qt3DRender::QClearBuffers::BufferType ForwardRenderer::clearBuffers() const
  */
 bool ForwardRenderer::frustumCulling() const
 {
-    return m_frustumCulling->isEnabled();
+    return m_frustumCullingOpaque->isEnabled();
 }
 
 /*!
@@ -395,6 +607,36 @@ bool ForwardRenderer::zFilling() const
 }
 
 /*!
+    Exposure correction factor used before the linear to sRGB conversion.
+
+    \default 0.0
+*/
+float ForwardRenderer::exposure() const
+{
+    return m_gammaCorrectionFX->exposure();
+}
+
+/*!
+    Gamma correction value used for the linear to sRGB conversion.
+    \default 2.2
+    \since Kuesa 1.1
+*/
+float ForwardRenderer::gamma() const
+{
+    return m_gammaCorrectionFX->gamma();
+}
+
+/*!
+    Returns the tone mapping algorithm used by the shader.
+    \default ToneMappingAndGammaCorrectionEffect::None
+    \since Kuesa 1.1
+ */
+ToneMappingAndGammaCorrectionEffect::ToneMapping ForwardRenderer::toneMappingAlgorithm() const
+{
+    return m_gammaCorrectionFX->toneMappingAlgorithm();
+}
+
+/*!
  * Registers a new post processing effect \a effect with the ForwardRenderer
  * FrameGraph. In essence this will complete the FrameGraph tree with a
  * dedicated subtree provided by the effect.
@@ -409,11 +651,11 @@ bool ForwardRenderer::zFilling() const
  */
 void ForwardRenderer::addPostProcessingEffect(AbstractPostProcessingEffect *effect)
 {
-    if (m_postProcessingEffects.contains(effect))
+    if (m_userPostProcessingEffects.contains(effect))
         return;
 
     // Add effect to vector of registered effects
-    m_postProcessingEffects.push_back(effect);
+    m_userPostProcessingEffects.push_back(effect);
 
     // Handle destruction of effect
     QObject::connect(effect,
@@ -427,9 +669,7 @@ void ForwardRenderer::addPostProcessingEffect(AbstractPostProcessingEffect *effe
         // Register FrameGraph Subtree
         m_effectFGSubtrees.insert(effect, effectFGSubtree);
 
-        // Reconfigure FrameGraph Tree
-        reconfigureFrameGraph();
-        reconfigureStages();
+        scheduleFGTreeRebuild();
     }
 }
 
@@ -441,18 +681,17 @@ void ForwardRenderer::addPostProcessingEffect(AbstractPostProcessingEffect *effe
  */
 void ForwardRenderer::removePostProcessingEffect(AbstractPostProcessingEffect *effect)
 {
-    if (!m_postProcessingEffects.contains(effect))
+    if (!m_userPostProcessingEffects.contains(effect))
         return;
 
     // Remove effect entry
-    m_postProcessingEffects.removeAll(effect);
+    m_userPostProcessingEffects.removeAll(effect);
 
     // unparent FG subtree associated with Effect.
     m_effectFGSubtrees.take(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
 
     // Reconfigure FrameGraph Tree
-    reconfigureFrameGraph();
-    reconfigureStages();
+    scheduleFGTreeRebuild();
 }
 
 /*!
@@ -460,7 +699,7 @@ void ForwardRenderer::removePostProcessingEffect(AbstractPostProcessingEffect *e
  */
 QVector<AbstractPostProcessingEffect *> ForwardRenderer::postProcessingEffects() const
 {
-    return m_postProcessingEffects;
+    return m_userPostProcessingEffects;
 }
 
 /*!
@@ -500,7 +739,7 @@ QRectF ForwardRenderer::viewportRect() const
 }
 
 /*!
- * Sets the camera used to view the scene.
+ * Sets the \a camera used to view the scene.
  */
 void ForwardRenderer::setCamera(Qt3DCore::QEntity *camera)
 {
@@ -508,15 +747,21 @@ void ForwardRenderer::setCamera(Qt3DCore::QEntity *camera)
 }
 
 /*!
- * Sets the color used to clear the screen at the start of each frame.
+ * Sets the \a clearColor used to clear the screen at the start of each frame.
+ * The color is expected to be in sRGB color space.
  */
 void ForwardRenderer::setClearColor(const QColor &clearColor)
 {
-    m_clearBuffers->setClearColor(clearColor);
+    // Convert QColor from sRGB to Linear
+    const QColor linearColor = QColor::fromRgbF(powf(clearColor.redF(), 2.2f),
+                                                powf(clearColor.greenF(), 2.2f),
+                                                powf(clearColor.blueF(), 2.2f),
+                                                clearColor.alphaF());
+    m_clearBuffers->setClearColor(linearColor);
 }
 
 /*!
- * Sets which buffers will be cleared at the start of each frame.
+ * Sets which \a clearBuffers will be cleared at the start of each frame.
  */
 void ForwardRenderer::setClearBuffers(Qt3DRender::QClearBuffers::BufferType clearBuffers)
 {
@@ -524,16 +769,18 @@ void ForwardRenderer::setClearBuffers(Qt3DRender::QClearBuffers::BufferType clea
 }
 
 /*!
- * Activates culling of geometries which lie outside of the view frustum.
+ * Activates \a frustumCulling of geometries which lie outside of the view frustum.
  */
 void ForwardRenderer::setFrustumCulling(bool frustumCulling)
 {
-    m_frustumCulling->setEnabled(frustumCulling);
+    m_frustumCullingOpaque->setEnabled(frustumCulling);
+    m_frustumCullingTransparent->setEnabled(frustumCulling);
 }
 
 /*!
- * Activates back-to-front sorting which may be required for correct alpha
- * blending rendering.
+ * Activates or desactivates back-to-front sorting which may be required for
+ * correct alpha blending rendering with \a backToFrontSorting. This is true by
+ * default.
  */
 void ForwardRenderer::setBackToFrontSorting(bool backToFrontSorting)
 {
@@ -545,7 +792,7 @@ void ForwardRenderer::setBackToFrontSorting(bool backToFrontSorting)
 }
 
 /*!
-    Activates multi-pass zFilling support.
+    Activates multi-pass \a zfilling support.
 
     If activated, opaque objects in the scene will be rendered first with a
     simple fragment shader to fill the depth buffer. Then opaque objects will
@@ -562,6 +809,34 @@ void ForwardRenderer::setZFilling(bool zfilling)
 }
 
 /*!
+    Sets the \a gamma value to use for gamma correction that brings linear
+    colors to sRGB colors.
+    \default 2.2
+ */
+void ForwardRenderer::setGamma(float gamma)
+{
+    m_gammaCorrectionFX->setGamma(gamma);
+}
+
+/*!
+    Sets the \a exposure value to use for exposure correction
+    \default 0
+ */
+void ForwardRenderer::setExposure(float exposure)
+{
+    m_gammaCorrectionFX->setExposure(exposure);
+}
+
+/*!
+    Sets the tone mapping algorithm to \a toneMappingAlgorithm.
+    \since Kuesa 1.1
+*/
+void ForwardRenderer::setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm)
+{
+    m_gammaCorrectionFX->setToneMappingAlgorithm(toneMappingAlgorithm);
+}
+
+/*!
  * \internal
  *
  * Updates all the off-screen rendering textures whenever the render surface
@@ -575,9 +850,15 @@ void ForwardRenderer::updateTextureSizes()
         if (target != nullptr)
             outputs += target->outputs();
     }
+    if (m_multisampleTarget != nullptr) {
+        outputs += m_multisampleTarget->outputs();
+        const QRect blitRect(QPoint(), targetSize);
+        m_blitFramebufferNode->setSourceRect(blitRect);
+        m_blitFramebufferNode->setDestinationRect(blitRect);
+    }
     for (auto output : outputs)
         output->texture()->setSize(targetSize.width(), targetSize.height());
-    for (auto effect : m_postProcessingEffects)
+    for (auto effect : m_userPostProcessingEffects)
         effect->setSceneSize(targetSize);
 }
 
@@ -619,22 +900,45 @@ void ForwardRenderer::reconfigureFrameGraph()
     // Based on the effect types, reorder elements from the FrameGraph in the correct order
     // e.g We want Bloom to happen after DoF...
     //     We may need to render the scene into a texture first ...
+    static const GLFeatures glFeatures = checkGLFeatures();
 
-    m_techniqueFilter->setParent(this);
-    m_surfaceSelector->setParent(m_techniqueFilter);
+    m_surfaceSelector->setParent(this);
     m_viewport->setParent(m_surfaceSelector);
     m_clearBuffers->setParent(m_viewport);
     m_noDrawClearBuffer->setParent(m_clearBuffers);
+
+    // Camera selector hold the root FG node to render the gltf Scene
+    // It might get reparented to something else than m_viewport
+    // in case rendering into FBO is required
     m_cameraSelector->setParent(m_viewport);
-    m_frustumCulling->setParent(m_cameraSelector);
+
+    // Skinned Meshes are not checked against frustum culling as the skinning
+    // could actually make them still be in the view frustum even if their
+    // transform technically makes them out of sight
+
+    // Non skinned opaque
+    m_frustumCullingOpaque->setParent(m_cameraSelector);
+    m_frustumCullingOpaqueTechniqueFilter->setParent(m_frustumCullingOpaque);
+
+    // Skinned opaque
+    m_noFrustumCullingOpaqueTechniqueFilter->setParent(m_cameraSelector);
+
+    // Non skinned transparent
+    m_frustumCullingTransparent->setParent(m_cameraSelector);
+    m_frustumCullingTransparentTechniqueFilter->setParent(m_frustumCullingTransparent);
+
+    // Skinned tranparent
+    m_noFrustumCullingTransparentTechniqueFilter->setParent(m_cameraSelector);
 
     // Temporarily reparent effect subtrees and other nodes, then delete the node that held the last
     // subtree framegraph including any render target selectors.
     // It's easier just to re-create the tree below
-    for (AbstractPostProcessingEffect *effect : qAsConst(m_postProcessingEffects))
+    for (AbstractPostProcessingEffect *effect : qAsConst(m_userPostProcessingEffects))
         m_effectFGSubtrees.value(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
-    for (AbstractRenderStage *stage : qAsConst(m_renderStages))
-        stage->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+    for (AbstractPostProcessingEffect *effect : qAsConst(m_internalPostProcessingEffects))
+        m_effectFGSubtrees.value(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+    for (const SceneStagesPtr &stage : qAsConst(m_sceneStages))
+        stage->unParent();
     delete m_effectsRootNode;
     m_effectsRootNode = nullptr;
 
@@ -642,35 +946,56 @@ void ForwardRenderer::reconfigureFrameGraph()
     delete m_renderToTextureRootNode;
     m_renderToTextureRootNode = nullptr;
 
-    // renderStageRoot if we have no FX is the frustumCullingNode
-    m_renderStageRootNode = m_frustumCulling;
-
     delete m_renderTargets[0];
     delete m_renderTargets[1];
+    delete m_multisampleTarget;
     m_renderTargets[0] = nullptr;
     m_renderTargets[1] = nullptr;
+    m_multisampleTarget = nullptr;
+
+    Qt3DRender::QAbstractTexture *depthTex = nullptr;
 
     // Configure effects
-    if (!m_postProcessingEffects.empty()) {
+    const bool hasFX = !m_userPostProcessingEffects.empty() || !m_internalPostProcessingEffects.empty();
+    if (hasFX) {
+
+        RenderTargetFlags baseRenderTargetFlags;
+
+        if (glFeatures.hasHalfFloatTexture)
+            baseRenderTargetFlags |= RenderTargetFlag::HalfFloatAttachments;
+
+        const QSize surfaceSize = currentSurfaceSize();
         if (!m_renderTargets[0]) {
             // create a render target for main scene
-            m_renderTargets[0] = createRenderTarget(true);
+            m_renderTargets[0] = createRenderTarget(baseRenderTargetFlags|RenderTargetFlag::IncludeDepth,
+                                                    this, surfaceSize);
         }
-        if (m_postProcessingEffects.size() > 1 && !m_renderTargets[1]) {
-            m_renderTargets[1] = createRenderTarget(false);
+        const int userFXCount = m_userPostProcessingEffects.size();
+        const int totalFXCount = userFXCount + m_internalPostProcessingEffects.size();
+        if (totalFXCount > 1 && !m_renderTargets[1]) {
+            m_renderTargets[1] = createRenderTarget(baseRenderTargetFlags, this, surfaceSize);
             // create a secondary render target to do ping-pong when we have
             // more than 1 fx
         }
 
-        // create a subtree under m_frustumCulling to render the main scene into a texture
-        m_renderToTextureRootNode = new Qt3DRender::QFrameGraphNode(m_frustumCulling);
+        const auto &target0outputs = m_renderTargets[0]->outputs();
+        if (!target0outputs.empty())
+            depthTex = target0outputs.back()->texture();
+
+        // Remove cameraSelector subtree
+        m_cameraSelector->setParent(Q_NODE_NULLPTR);
+
+        // create a subtree under m_viewport to render the main scene into a texture
+        // Effectively taking the place of where the CameraSelector node was in the
+        // tree
+        m_renderToTextureRootNode = new Qt3DRender::QFrameGraphNode(m_viewport);
         m_renderToTextureRootNode->setObjectName(QStringLiteral("KuesaMainScene"));
+
 
         // need to exclude the effects layers from being drawn in the main scene
         auto mainSceneFilter = new Qt3DRender::QLayerFilter(m_renderToTextureRootNode);
         mainSceneFilter->setFilterMode(Qt3DRender::QLayerFilter::DiscardAnyMatchingLayers);
         auto sceneTargetSelector = new Qt3DRender::QRenderTargetSelector(mainSceneFilter);
-        sceneTargetSelector->setTarget(m_renderTargets[0]);
 
         auto clearScreen = new Qt3DRender::QClearBuffers(sceneTargetSelector);
         clearScreen->setBuffers(Qt3DRender::QClearBuffers::ColorDepthBuffer);
@@ -679,8 +1004,39 @@ void ForwardRenderer::reconfigureFrameGraph()
                 clearScreen, &Qt3DRender::QClearBuffers::setClearColor);
         new Qt3DRender::QNoDraw(clearScreen);
 
-        // If we have FX, renderStageRoot is the sceneTargetSelector
-        m_renderStageRootNode = sceneTargetSelector;
+        // Reparent cameraSelectror to sceneTargetSelector
+        m_cameraSelector->setParent(sceneTargetSelector);
+
+        // If we support MSAA FBO -> Then render into it and Blit into regular non FBO
+        // for post FX
+        const int samples = QSurfaceFormat::defaultFormat().samples();
+        if (glFeatures.hasMultisampledFBO && samples > 1) {
+            // Render Into MSAA FBO
+            m_multisampleTarget = createRenderTarget(baseRenderTargetFlags|RenderTargetFlag::Multisampled|RenderTargetFlag::IncludeDepth,
+                                                     this,
+                                                     surfaceSize,
+                                                     samples);
+
+            // Blit into regular Tex2D FBO
+            m_blitFramebufferNode = new Qt3DRender::QBlitFramebuffer(sceneTargetSelector);
+
+            sceneTargetSelector->setTarget(m_multisampleTarget);
+
+            m_blitFramebufferNode->setSource(m_multisampleTarget);
+            m_blitFramebufferNode->setDestination(m_renderTargets[0]);
+            m_blitFramebufferNode->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+            m_blitFramebufferNode->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+
+            const QRect blitRect(QPoint(), currentSurfaceSize());
+            m_blitFramebufferNode->setSourceRect(blitRect);
+            m_blitFramebufferNode->setDestinationRect(blitRect);
+
+            new Qt3DRender::QNoDraw(m_blitFramebufferNode);
+
+        } else {
+            // Render into non MSAA FBO directly
+            sceneTargetSelector->setTarget(m_renderTargets[0]);
+        }
 
         // create a node to hold all the effect subtrees, under the main viewport. They don't need camera, alpha, frustum, etc.
         m_effectsRootNode = new Qt3DRender::QFrameGraphNode(m_viewport);
@@ -689,13 +1045,21 @@ void ForwardRenderer::reconfigureFrameGraph()
         // Gather the different effect types
         const auto targetSize = currentSurfaceSize();
         int previousRenderTargetIndex = 0;
-        for (int effectNo = 0; effectNo < m_postProcessingEffects.count(); ++effectNo) {
-            auto effect = m_postProcessingEffects[effectNo];
+
+        for (int effectNo = 0; effectNo < totalFXCount; ++effectNo) {
+            AbstractPostProcessingEffect *effect = nullptr;
+            if (effectNo < userFXCount)
+                effect = m_userPostProcessingEffects[effectNo];
+            else
+                effect = m_internalPostProcessingEffects[effectNo - userFXCount];
+
             const int currentRenderTargetIndex = 1 - previousRenderTargetIndex;
 
             // determine which render target we used for previous effect.  It holds the input texture for current effect
             auto previousRenderTarget = m_renderTargets[previousRenderTargetIndex];
             effect->setInputTexture(findRenderTargetTexture(previousRenderTarget, Qt3DRender::QRenderTargetOutput::Color0));
+            effect->setDepthTexture(depthTex);
+            effect->setCamera(this->camera());
             effect->setSceneSize(targetSize);
 
             // add the layers from the effect to block them from being rendered in the main scene
@@ -705,7 +1069,7 @@ void ForwardRenderer::reconfigureFrameGraph()
 
             // Create a render target selector for all but the last effect to create the input texture for the next effect
             Qt3DCore::QNode *effectParentNode = m_effectsRootNode;
-            if (effectNo < m_postProcessingEffects.count() - 1) {
+            if (effectNo < totalFXCount - 1) {
                 auto selector = new Qt3DRender::QRenderTargetSelector(effectParentNode);
                 selector->setObjectName(QStringLiteral("Effect %1").arg(effectNo));
                 selector->setTarget(m_renderTargets[currentRenderTargetIndex]);
@@ -724,107 +1088,47 @@ void ForwardRenderer::reconfigureFrameGraph()
     blockNotifications(blocked);
 }
 
+// Stages are the FrameGraph sub branches required for the rendering
+// of the actual gltf scene
 void ForwardRenderer::reconfigureStages()
 {
-    bool requiresReordering = false;
-
-    // First time we are created
-    if (m_renderStages.empty()) {
-        auto opaqueStage = new OpaqueRenderStage();
-        auto transparentStage = new TransparentRenderStage();
-
-        opaqueStage->setZFilling(m_zfilling);
-        transparentStage->setBackToFrontSorting(m_backToFrontSorting);
-
-        if (m_zfilling) {
-            auto zFillingState = new ZFillRenderStage();
-            m_renderStages.push_back(zFillingState);
-        }
-        m_renderStages.push_back(opaqueStage);
-        m_renderStages.push_back(transparentStage);
-    }
-
-    // Handle change of FG (in case we had no FX before and FX were added)
-    // Or in case we have never inserted our stages before
-    {
-        requiresReordering |= (m_renderStages.last()->parent() != m_renderStageRootNode);
-    }
-
-    // Handle ZFilling change
-    {
-        const bool hasZFillingStage = m_renderStages.size() == 3;
-        // We have zFilling and hasZFilling stages differ
-        // either we have zFilling and it should now be disabled
-        // or we don't have zFilling and it should be enabled
-        if (m_zfilling != hasZFillingStage) {
-            if (m_zfilling) { // We need to enable zFilling
-                auto zFillingState = new ZFillRenderStage();
-                m_renderStages.prepend(zFillingState);
-            } else { // We need to disable zFilling
-                delete m_renderStages.takeFirst();
-            }
-
-            auto opaqueStage = static_cast<OpaqueRenderStage *>(m_renderStages.at(m_renderStages.size() - 2));
-            opaqueStage->setZFilling(m_zfilling);
-
-            requiresReordering = true;
+    if (m_sceneStages.empty()) {
+        m_sceneStages.resize(2);
+        for (SceneStagesPtr &sceneStage : m_sceneStages) {
+            sceneStage = SceneStagesPtr::create();
+            sceneStage->init();
         }
     }
 
-    // Handle BackToFront sorting change
-    {
-        // This only affects the TransparentRenderStage
-        TransparentRenderStage *transparentRenderStage = static_cast<TransparentRenderStage *>(m_renderStages.last());
-        const bool alphaBlendingIsEnabled = transparentRenderStage->backToFrontSorting();
-
-        if (m_backToFrontSorting != alphaBlendingIsEnabled)
-            transparentRenderStage->setBackToFrontSorting(m_backToFrontSorting);
+    // Update SceneStages and unparent
+    for (int i = 0, m = m_sceneStages.size(); i < m; ++i) {
+        SceneStagesPtr &sceneStage = m_sceneStages[i];
+        sceneStage->setZFilling(m_zfilling);
+        sceneStage->setBackToFrontSorting(m_backToFrontSorting);
+        sceneStage->unParent();
     }
 
-    // Reorder/Insert node into FG
-    if (requiresReordering) {
-        // Remove stage from FG tree
-        for (AbstractRenderStage *stage : qAsConst(m_renderStages))
-            stage->setParent(Q_NODE_NULLPTR);
-        // Add stages into FG tree
-        for (AbstractRenderStage *stage : qAsConst(m_renderStages))
-            stage->setParent(m_renderStageRootNode);
+    // Insert ZFilling/Opaque branches
+    // Root Nodes into which we have to perform the Render Stages to draw the glTF Scene
+    Qt3DRender::QFrameGraphNode *opaqueStageRoots[] = {
+        m_frustumCullingOpaqueTechniqueFilter,
+        m_noFrustumCullingOpaqueTechniqueFilter
     };
-}
-
-/*!
- * \internal
- *
- * Helper function to create a QRenderTarget with the correct texture formats
- * and sizes.
- */
-Qt3DRender::QRenderTarget *ForwardRenderer::createRenderTarget(bool includeDepth)
-{
-    auto renderTarget = new Qt3DRender::QRenderTarget(this);
-    auto colorTexture = new Qt3DRender::QTexture2D;
-    colorTexture->setFormat(Qt3DRender::QAbstractTexture::RGBA8_UNorm);
-    colorTexture->setGenerateMipMaps(false);
-
-    const auto targetSize = currentSurfaceSize();
-    colorTexture->setSize(targetSize.width(), targetSize.height());
-    auto colorOutput = new Qt3DRender::QRenderTargetOutput;
-
-    colorOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
-    colorOutput->setTexture(colorTexture);
-    renderTarget->addOutput(colorOutput);
-
-    if (includeDepth) {
-        auto depthTexture = new Qt3DRender::QTexture2D;
-        depthTexture->setFormat(Qt3DRender::QAbstractTexture::DepthFormat);
-        depthTexture->setSize(targetSize.width(), targetSize.height());
-        depthTexture->setGenerateMipMaps(false);
-        auto depthOutput = new Qt3DRender::QRenderTargetOutput;
-        depthOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Depth);
-        depthOutput->setTexture(depthTexture);
-        renderTarget->addOutput(depthOutput);
+    for (int i = 0, m = m_sceneStages.size(); i < m; ++i) {
+        SceneStagesPtr &sceneStage = m_sceneStages[i];
+        sceneStage->insertZFillAndOpaqueStages(opaqueStageRoots[i]);
     }
 
-    return renderTarget;
+    // Insert Transparent Branches
+    // Root Nodes into which we have to perform the Render Stages to draw the glTF Scene
+    Qt3DRender::QFrameGraphNode *transparentStageRoots[] = {
+        m_frustumCullingTransparentTechniqueFilter,
+        m_noFrustumCullingTransparentTechniqueFilter
+    };
+    for (int i = 0, m = m_sceneStages.size(); i < m; ++i) {
+        SceneStagesPtr &sceneStage = m_sceneStages[i];
+        sceneStage->insertTransparentStage(transparentStageRoots[i]);
+    }
 }
 
 /*!
@@ -843,11 +1147,6 @@ Qt3DRender::QAbstractTexture *ForwardRenderer::findRenderTargetTexture(Qt3DRende
     return attachment == outputs.end() ? nullptr : (*attachment)->texture();
 }
 
-QVector<AbstractRenderStage *> ForwardRenderer::renderStages() const
-{
-    return m_renderStages;
-}
-
 /*!
  * \internal
  *
@@ -859,7 +1158,7 @@ QSize ForwardRenderer::currentSurfaceSize() const
     auto surface = m_surfaceSelector->surface();
 
     if (auto window = qobject_cast<QWindow *>(surface))
-        size = window->size();
+        size = window->size() * window->screen()->devicePixelRatio();
     else if (qobject_cast<QOffscreenSurface *>(surface))
         size = m_surfaceSelector->externalRenderTargetSize();
     else
@@ -868,17 +1167,33 @@ QSize ForwardRenderer::currentSurfaceSize() const
     return size;
 }
 
-/*!
- * Sets the size of the external render target.
- */
-void ForwardRenderer::setExternalRenderTargetSize(const QSize &externalRenderTargeSize)
+void ForwardRenderer::scheduleFGTreeRebuild()
 {
-    m_surfaceSelector->setExternalRenderTargetSize(externalRenderTargeSize);
+    if (!m_fgTreeRebuiltScheduled) {
+        m_fgTreeRebuiltScheduled = true;
+        QMetaObject::invokeMethod(this, &ForwardRenderer::rebuildFGTree, Qt::QueuedConnection);
+    }
+}
+
+void ForwardRenderer::rebuildFGTree()
+{
+    m_fgTreeRebuiltScheduled = false;
+    // Reconfigure FrameGraph Tree
+    reconfigureFrameGraph();
+    reconfigureStages();
 }
 
 /*!
- * Sets the surface where rendering will occur. This can be an offscreen surface or
- * a window surface.
+ * Sets the size of the external render target to \a externalRenderTargetSize.
+ */
+void ForwardRenderer::setExternalRenderTargetSize(const QSize &externalRenderTargetSize)
+{
+    m_surfaceSelector->setExternalRenderTargetSize(externalRenderTargetSize);
+}
+
+/*!
+ * Sets the surface where rendering will occur to \a renderSurface. This can be
+ * an offscreen surface or a window surface.
  */
 void ForwardRenderer::setRenderSurface(QObject *renderSurface)
 {
@@ -886,12 +1201,117 @@ void ForwardRenderer::setRenderSurface(QObject *renderSurface)
 }
 
 /*!
- * Sets the dimensions of the viewport where rendering will occur.  Dimensions are in
- * normalized coordinates.
+ * Sets the dimensions of the viewport where rendering will occur to \a
+ * viewportRect. Dimensions are in normalized coordinates.
  */
-void ForwardRenderer::setViewportRect(const QRectF &normalizedRect)
+void ForwardRenderer::setViewportRect(const QRectF &viewportRect)
 {
-    m_viewport->setNormalizedRect(normalizedRect);
+    m_viewport->setNormalizedRect(viewportRect);
+}
+
+/*!
+    \internal
+ */
+ForwardRenderer::SceneStages::SceneStages()
+    : m_opaqueStage(nullptr)
+    , m_transparentStage(nullptr)
+    , m_zFillStage(nullptr)
+{
+}
+
+ForwardRenderer::SceneStages::~SceneStages()
+{
+    delete m_opaqueStage;
+    delete m_transparentStage;
+    delete m_zFillStage;
+}
+
+/*!
+    \internal
+ */
+void ForwardRenderer::SceneStages::init()
+{
+    m_opaqueStage = new OpaqueRenderStage();
+    m_transparentStage = new TransparentRenderStage();
+
+    QObject::connect(m_opaqueStage, &Qt3DCore::QNode::nodeDestroyed,
+                     [this] { m_opaqueStage = nullptr; });
+    QObject::connect(m_transparentStage, &Qt3DCore::QNode::nodeDestroyed,
+                     [this] { m_transparentStage = nullptr; });
+}
+
+/*!
+    \internal
+ */
+void ForwardRenderer::SceneStages::setZFilling(bool zFilling)
+{
+    const bool hasZillStage = m_zFillStage != nullptr;
+    if (hasZillStage != zFilling) {
+        if (hasZillStage) {
+            QObject::disconnect(m_zFillDestroyedConnection);
+            delete m_zFillStage;
+            m_zFillStage = nullptr;
+        } else {
+            m_zFillStage = new ZFillRenderStage();
+            m_zFillDestroyedConnection = QObject::connect(m_zFillStage, &Qt3DCore::QNode::nodeDestroyed,
+                                                          [this] { m_zFillStage = nullptr; });
+        }
+        m_opaqueStage->setZFilling(zFilling);
+    }
+}
+
+/*!
+    \internal
+ */
+void ForwardRenderer::SceneStages::setBackToFrontSorting(bool backToFrontSorting)
+{
+    if (backToFrontSorting != m_transparentStage->backToFrontSorting())
+        m_transparentStage->setBackToFrontSorting(backToFrontSorting);
+}
+
+/*!
+    \internal
+ */
+bool ForwardRenderer::SceneStages::zFilling()
+{
+    return m_zFillStage != nullptr;
+}
+
+/*!
+    \internal
+ */
+bool ForwardRenderer::SceneStages::backToFrontSorting()
+{
+    return m_transparentStage->backToFrontSorting();
+}
+
+/*!
+    \internal
+ */
+void ForwardRenderer::SceneStages::unParent()
+{
+    if (zFilling())
+        m_zFillStage->setParent(Q_NODE_NULLPTR);
+    m_opaqueStage->setParent(Q_NODE_NULLPTR);
+    m_transparentStage->setParent(Q_NODE_NULLPTR);
+}
+
+/*!
+    \internal
+ */
+void ForwardRenderer::SceneStages::insertZFillAndOpaqueStages(Qt3DCore::QNode *root)
+{
+    if (zFilling())
+        m_zFillStage->setParent(root);
+    m_opaqueStage->setParent(root);
+}
+
+/*!
+    \internal
+ */
+void ForwardRenderer::SceneStages::insertTransparentStage(Qt3DCore::QNode *root)
+{
+    m_transparentStage->setParent(root);
 }
 
 QT_END_NAMESPACE

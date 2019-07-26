@@ -40,9 +40,9 @@ QT_BEGIN_NAMESPACE
 using namespace Kuesa::GLTF2Import;
 
 namespace {
-const QLatin1String KEY_SAMPLER = QLatin1Literal("sampler");
-const QLatin1String KEY_SOURCE = QLatin1Literal("source");
-const QLatin1String KEY_NAME = QLatin1Literal("name");
+const QLatin1String KEY_SAMPLER = QLatin1String("sampler");
+const QLatin1String KEY_SOURCE = QLatin1String("source");
+const QLatin1String KEY_NAME = QLatin1String("name");
 const QLatin1String KEY_GLTF_EXTENSION = QLatin1String("extensions");
 const QLatin1String KEY_MSFT_DDS_EXTENSION = QLatin1String("MSFT_texture_dds");
 
@@ -94,7 +94,7 @@ private:
 
 bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context) const
 {
-    QHash<QUrl, Qt3DRender::QAbstractTextureImage *> sharedImages;
+    QHash<QString, Qt3DRender::QAbstractTextureImage *> sharedImages;
 
     for (const auto &textureValue : texturesArray) {
         const auto &textureObject = textureValue.toObject();
@@ -121,8 +121,10 @@ bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context
         }
 
         const auto image = context->image(sourceValue.toInt());
-        if (image.url.isEmpty() && image.data.isEmpty())
+        if (image.url.isEmpty() && image.data.isEmpty()) {
+            qCWarning(kuesa) << "Invalid image source index for texture:" << sourceValue.toInt();
             return false; // Not a valid image
+        }
 
         auto texture2d = std::unique_ptr<Qt3DRender::QAbstractTexture>(nullptr);
         if (isDDSTexture) {
@@ -137,7 +139,7 @@ bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context
             }
         } else {
             texture2d.reset(new Qt3DRender::QTexture2D);
-            auto *textureImage = sharedImages.value(image.url);
+            auto *textureImage = image.key.isEmpty() ? nullptr : sharedImages.value(image.key);
 
             if (textureImage == nullptr) {
                 if (image.data.isEmpty()) {
@@ -145,13 +147,16 @@ bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context
                     ti->setSource(image.url);
                     ti->setMirrored(false);
                     textureImage = ti;
-                    sharedImages.insert(image.url, textureImage);
                 } else {
                     QImage qimage;
-                    qimage.loadFromData(image.data);
+                    if (!qimage.loadFromData(image.data)) {
+                        qCWarning(kuesa) << "Failed to decode image " << sourceValue.toInt() << "from buffer";
+                        return false;
+                    }
                     textureImage = new EmbeddedTextureImage(qimage);
-                    sharedImages.insert(image.url, textureImage);
                 }
+                if (!image.key.isEmpty())
+                    sharedImages.insert(image.key, textureImage);
             }
 
             // Add Image to Texture if compatible
@@ -165,6 +170,9 @@ bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context
         if (samplerValue.isUndefined()) {
             // Repeat wrappring and auto filtering should be used
             texture2d->setWrapMode(Qt3DRender::QTextureWrapMode(Qt3DRender::QTextureWrapMode::Repeat));
+            texture2d->setGenerateMipMaps(true);
+            texture2d->setMinificationFilter(Qt3DRender::QAbstractTexture::LinearMipMapLinear);
+            texture2d->setMagnificationFilter(Qt3DRender::QAbstractTexture::Linear);
         } else {
             const auto sampler = context->textureSampler(samplerValue.toInt());
             if (!sampler.textureWrapMode)

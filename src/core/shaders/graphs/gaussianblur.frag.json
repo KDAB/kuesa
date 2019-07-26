@@ -156,7 +156,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "gl_fragColor = $fragColor;"
+                    "substitution": "gl_FragColor = $fragColor;"
                 },
                 {
                     "format": {
@@ -243,6 +243,17 @@
                         "#pragma include :/kuesa/shaders/gl3/kuesa_gaussianblur.inc.frag"
                     ],
                     "substitution": "vec4 $outputColor = kuesa_gaussianBlur($pass, $width, $height, $texCoord);"
+                },
+                {
+                    "format": {
+                    "api": "OpenGLES",
+                    "major": 2,
+                    "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es2/kuesa_gaussianblur.inc.frag"
+                    ],
+                    "substitution": "highp vec4 $outputColor = kuesa_gaussianBlur($pass, $width, $height, $texCoord);"
                 },
                 {
                     "format": {

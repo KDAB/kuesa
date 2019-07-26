@@ -42,16 +42,17 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 namespace {
-const QLatin1String KEY_URI = QLatin1Literal("uri");
-const QLatin1String KEY_NAME = QLatin1Literal("name");
-const QLatin1String KEY_BYTE_LENGTH = QLatin1Literal("byteLength");
+const QLatin1String KEY_URI = QLatin1String("uri");
+const QLatin1String KEY_NAME = QLatin1String("name");
+const QLatin1String KEY_BYTE_LENGTH = QLatin1String("byteLength");
 } // namespace
 
 /*!
- * \class BufferParser
+ * \class Kuesa::GLTF2Import::BufferParser
  *
- * \brief Parses a GLTF2 JSON Buffer description and stores its content in a \a GLTF2Context.
- *
+ * \brief Parses a GLTF2 JSON Buffer description and stores its content in a \a
+ * GLTF2Context.
+ * \internal
  */
 
 BufferParser::BufferParser(const QDir &basePath)
@@ -71,7 +72,7 @@ BufferParser::BufferParser(const QDir &basePath)
  * \li One or more of the referenced buffer resources have a different size
  * than what the description specified
  * \endlist
- *
+ * \internal
  */
 bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) const
 {
@@ -97,10 +98,13 @@ bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) 
                     return false;
                 }
             }
+        } else if (!context->bufferChunk().isEmpty() && bufferId == 0) {
+            readSuccess = true;
+            context->addBuffer(context->bufferChunk());
         }
 
         if (!readSuccess) {
-            qCWarning(kuesa) << "Failed to read buffer" << bufferName;
+            qCWarning(kuesa) << "Failed to read buffer" << bufferName << " (" << bufferId << ")";
             return false;
         }
     }

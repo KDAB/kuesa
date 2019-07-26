@@ -85,6 +85,16 @@ ControllerWidget::ControllerWidget(SceneController *controller,
     connect(ui->premultipliedAlphaCheckBox, &QCheckBox::toggled,
             m_controller, &SceneController::setOpacityMaskPremultipliedAlpha);
 
+    // depth of field
+    connect(ui->dofGroupBox, &QGroupBox::toggled,
+            m_controller, &SceneController::setDepthOfFieldEffect);
+    connect(ui->dofRadius, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+            m_controller, &SceneController::setDepthOfFieldRadius);
+    connect(ui->dofDistance, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+            m_controller, &SceneController::setDepthOfFieldDistance);
+    connect(ui->dofRange, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+            m_controller, &SceneController::setDepthOfFieldRange);
+
     ui->sceneComboBox->addItems(m_controller->scenes());
     ui->sceneComboBox->setCurrentIndex(m_controller->scenes().indexOf(m_controller->sceneName()));
 
@@ -107,6 +117,8 @@ ControllerWidget::ControllerWidget(SceneController *controller,
 
     ui->opacityMaskGroupBox->setChecked(controller->opacityMaskEffect());
     ui->premultipliedAlphaCheckBox->setChecked(controller->opacityMaskPremultipliedAlpha());
+
+    ui->dofGroupBox->setChecked(controller->depthOfFieldEffect());
 }
 
 ControllerWidget::~ControllerWidget()

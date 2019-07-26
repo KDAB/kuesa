@@ -205,6 +205,33 @@ private Q_SLOTS:
         QVERIFY(n.cameraIdx != -1);
         QCOMPARE(n.name, QStringLiteral("Camera"));
     }
+
+    void checkMorphTargetWeights()
+    {
+        // GIVEN
+        GLTF2Context context;
+        NodeParser parser;
+        QFile file(QStringLiteral(ASSETS "morphtarget_weights.gltf"));
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        const QJsonValue nodes = json.object().value(QLatin1String("nodes"));
+        QVERIFY(!json.isNull() && nodes.isArray());
+
+        // WHEN
+        const bool success = parser.parse(nodes.toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.treeNodeCount(), 1);
+
+        const TreeNode n = context.treeNode(0);
+        QCOMPARE(n.morphTargetWeights.size(), 2);
+        QCOMPARE(n.morphTargetWeights.at(0), 0.5f);
+        QCOMPARE(n.morphTargetWeights.at(1), 0.8f);
+        QCOMPARE(n.name, QStringLiteral("Morphed"));
+    }
 };
 
 QTEST_APPLESS_MAIN(tst_NodeParser)

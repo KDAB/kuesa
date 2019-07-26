@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.1">
+<dict>
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+    <key>CFBundleIconFile</key>
+    <string>kuesa.icns</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.kdab.kuesa.gltfviewer</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleGetInfoString</key>
+    <string></string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleExecutable</key>
+    <string>gltfViewer</string>
+    <key>CFBundleVersion</key>
+    <string>$$VERSION</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$$VERSION</string>
+    <key>CFBundleDisplayName</key>
+    <string>Kuesa glTF Viewer</string>
+    <key>NSHumanReadableCopyright</key>
+    <string>Copyright 2018-2019, KDAB</string>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>This application needs to send Apple Events</string>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>gltf</string>
+                <string>glb</string>
+            </array>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+        </dict>
+    </array>
+</dict>
+</plist>

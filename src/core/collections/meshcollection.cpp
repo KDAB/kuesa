@@ -34,9 +34,9 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::MeshCollection
  * \inheaderfile Kuesa/MeshCollection
- * \brief A collection of assets of type Qt3DRender::QGeometryRenderer
+ * \brief A collection of assets of type Qt3DRender::QGeometryRenderer.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::MeshCollection manages a set of Qt3DRender::QGeometryRenderer assets.
@@ -45,20 +45,20 @@ using namespace Kuesa;
 /*!
  * \fn MeshCollection::add
  *
- * Adds an \a asset to the collection with key \name.
+ * Adds an \a asset to the collection with key \a name.
  *
  * If the asset has no parent, it will be reparented to the collection.
  *
- * If an asset is already registered with the same name, it will be removed from the collection
- * and deleted if parented to the collection.
+ * If an asset is already registered with the same name, it will be removed
+ * from the collection and deleted if parented to the collection.
  *
  */
 
 /*!
  * \fn MeshCollection::find
  *
- * Returns the asset previously registered with the collection with \a name, if it exists.
- * Otherwise, returns nullptr.
+ * Returns the asset previously registered with the collection with \a name, if
+ * it exists. Otherwise, returns nullptr.
  *
  */
 

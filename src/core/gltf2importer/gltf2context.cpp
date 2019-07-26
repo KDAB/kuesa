@@ -28,12 +28,17 @@
 
 #include "gltf2context_p.h"
 #include "kuesa_p.h"
+#include "gltf2importer.h"
+#include "effectslibrary_p.h"
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 using namespace GLTF2Import;
 
 GLTF2Context::GLTF2Context()
+    : m_options()
+    , m_defaultScene(-1)
+    , m_effectLibrary(new EffectsLibrary())
 {
 }
 
@@ -301,6 +306,16 @@ const Scene GLTF2Context::scene(qint32 id) const
     return {};
 }
 
+void GLTF2Context::setDefaultScene(qint32 id)
+{
+    m_defaultScene = id;
+}
+
+qint32 GLTF2Context::defaultScene() const
+{
+    return m_defaultScene;
+}
+
 int GLTF2Context::skinsCount() const
 {
     return m_skins.size();
@@ -318,6 +333,25 @@ const Skin GLTF2Context::skin(qint32 id) const
 
     qCWarning(kuesa, "Invalid skin id");
     return Skin();
+}
+
+int GLTF2Context::lightCount() const
+{
+    return m_lights.count();
+}
+
+void GLTF2Context::addLight(const Light &light)
+{
+    m_lights.push_back(light);
+}
+
+const Light GLTF2Context::light(qint32 id) const
+{
+    if (id >= 0 && id < m_lights.size())
+        return m_lights.at(id);
+
+    qCWarning(kuesa, "Invalid light id");
+    return Light();
 }
 
 QStringList GLTF2Context::usedExtension() const
@@ -340,6 +374,26 @@ void GLTF2Context::setRequiredExtensions(const QStringList &requiredExtensions)
     m_requiredExtensions = requiredExtensions;
 }
 
+const QString &GLTF2Context::filename() const
+{
+    return m_filename;
+}
+
+void GLTF2Context::setFilename(const QString &name)
+{
+    m_filename = name;
+}
+
+const QString &GLTF2Context::basePath() const
+{
+    return m_basePath;
+}
+
+void GLTF2Context::setBasePath(const QString &path)
+{
+    m_basePath = path;
+}
+
 const QJsonDocument &GLTF2Context::json() const
 {
     return m_json;
@@ -358,6 +412,16 @@ const QStringList &GLTF2Context::localFiles() const
 void GLTF2Context::addLocalFile(const QString &file)
 {
     m_localFiles.push_back(file);
+}
+
+QByteArray GLTF2Context::bufferChunk() const
+{
+    return m_bufferChunk;
+}
+
+void GLTF2Context::setBufferChunk(const QByteArray &bufferChunk)
+{
+    m_bufferChunk = bufferChunk;
 }
 
 template<>
@@ -442,6 +506,53 @@ template<>
 Skin GLTF2Context::assetAt<Skin>(qint32 i) const
 {
     return skin(i);
+}
+
+Kuesa::GLTF2Import::GLTF2Options *GLTF2Context::options()
+{
+    return &m_options;
+}
+
+const Kuesa::GLTF2Import::GLTF2Options *GLTF2Context::options() const
+{
+    return &m_options;
+}
+
+EffectsLibrary *GLTF2Context::effectLibrary() const
+{
+    return m_effectLibrary.data();
+}
+
+void GLTF2Context::reset()
+{
+    // Resets everything but the options;
+    m_accessors.clear();
+    m_buffers.clear();
+    m_bufferViews.clear();
+    m_cameras.clear();
+    m_meshes.clear();
+    m_treeNodes.clear();
+    m_layers.clear();
+    m_lights.clear();
+    m_images.clear();
+    m_textureSamplers.clear();
+    m_textures.clear();
+    m_animations.clear();
+    m_scenes.clear();
+    m_materials.clear();
+    m_skins.clear();
+    m_usedExtensions.clear();
+    m_requiredExtensions.clear();
+    m_filename.clear();
+    m_json = {};
+    m_localFiles.clear();
+    m_bufferChunk.clear();
+    m_effectLibrary->clear();
+}
+
+GLTF2Context *GLTF2Context::fromImporter(GLTF2Importer *importer)
+{
+    return importer->m_context;
 }
 
 QT_END_NAMESPACE

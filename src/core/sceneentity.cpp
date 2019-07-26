@@ -43,55 +43,53 @@ static void initResources()
 using namespace Kuesa;
 
 /*!
- * \class Kuesa::SceneEntity
- * \inheaderfile Kuesa/SceneEntity
- * \inmodule Kuesa
- * \since 1.0
- * \brief Root entity for Kuesa runtime
- *
- * SceneEntity provides support for the runtime behaviour of various
- * classes in Kuesa. It's main purpose is to create instances of
- * various asset collections which will be populated if the
- * scene entity is registered with the glTF importer.
- *
- * The AnimationPlayer classes will also use the SceneEntity
- * to access the collections and find assets.
- *
- * \sa AnimationPlayer, GLTF2Importer
+    \class Kuesa::SceneEntity
+    \inheaderfile Kuesa/SceneEntity
+    \inmodule Kuesa
+    \since Kuesa 1.0
+    \brief Root entity for Kuesa runtime.
+
+    SceneEntity provides support for the runtime behaviour of various classes
+    in Kuesa. It's main purpose is to create instances of various asset
+    collections which will be populated if the scene entity is registered with
+    the glTF importer.
+
+    The AnimationPlayer classes will also use the SceneEntity to access the
+    collections and find assets.
+
+    \sa AnimationPlayer, GLTF2Importer
 */
 
 /*!
- * \qmltype SceneEntity
- * \instantiates Kuesa::SceneEntity
- * \inmodule Kuesa
- * \since 1.0
- * \brief Root entity for Kuesa runtime
- *
- * SceneEntity provides support for the runtime behaviour of various
- * classes in Kuesa. It's main purpose is to create instances of
- * various asset collections which will be populated if the
- * scene entity is registered with the glTF importer.
- *
- * The Asset and AnimationPlayer classes will also use the SceneEntity
- * to access the collections and find assets.
- *
- * \sa AnimationPlayer, Asset, GLTF2Importer
+    \qmltype SceneEntity
+    \instantiates Kuesa::SceneEntity
+    \inqmlmodule Kuesa
+    \since Kuesa 1.0
+    \brief Root entity for Kuesa runtime.
+
+    SceneEntity provides support for the runtime behaviour of various classes
+    in Kuesa. It's main purpose is to create instances of various asset
+    collections which will be populated if the scene entity is registered with
+    the glTF importer.
+
+    The Asset and AnimationPlayer classes will also use the SceneEntity to
+    access the collections and find assets.
+
+    \sa AnimationPlayer, Asset, GLTF2Importer
 */
 
 /*!
-  \fn SceneEntity::loadingDone()
+    \fn SceneEntity::loadingDone
 
-  This signal is emitted when a glTF file is successfully loaded
-  using a GLTFImporter instance which sceneEntity points to this
-  entity.
+    This signal is emitted when a glTF file is successfully loaded using a
+    GLTFImporter instance which sceneEntity points to this entity.
 */
 
 /*!
   \qmlsignal SceneEntity::loadingDone()
 
-  This signal is emitted when a glTF file is successfully loaded
-  using a GLTFImporter instance which sceneEntity points to this
-  entity.
+    This signal is emitted when a glTF file is successfully loaded using a
+    GLTFImporter instance which sceneEntity points to this entity.
 */
 
 // TODO document properties
@@ -101,6 +99,7 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     , m_armatures(new ArmatureCollection(this))
     , m_effects(new EffectCollection(this))
     , m_layers(new LayerCollection(this))
+    , m_lights(new LightCollection(this))
     , m_materials(new MaterialCollection(this))
     , m_meshes(new MeshCollection(this))
     , m_skeletons(new SkeletonCollection(this))
@@ -111,12 +110,18 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     , m_animationMappings(new AnimationMappingCollection(this))
 {
     initResources();
+
+    // TODO: Replace this with a nicer way for registering assets needed by various subsystems
+    m_brdfLUT = new Qt3DRender::QTextureLoader(this);
+    m_brdfLUT->setObjectName(QLatin1String("_kuesa_brdfLUT"));
+    m_brdfLUT->setSource(QUrl(QLatin1String("qrc:/kuesa/shaders/brdfLUT.png")));
+    m_brdfLUT->setWrapMode(Qt3DRender::QTextureWrapMode(Qt3DRender::QTextureWrapMode::ClampToEdge));
 }
 
 SceneEntity::~SceneEntity() = default;
 
 /*!
- * Returns instance of collection of Qt3DAnimation::QAbstractAnimationClip assets
+    Returns instance of collection of Qt3DAnimation::QAbstractAnimationClip assets
  */
 AnimationClipCollection *SceneEntity::animationClips() const
 {
@@ -124,8 +129,9 @@ AnimationClipCollection *SceneEntity::animationClips() const
 }
 
 /*!
- * Utility method returning an instance of Qt3DAnimation::QAbstractAnimationClip matching \a name
- * (or nullptr if not found)
+    Utility method returning an instance of
+    Qt3DAnimation::QAbstractAnimationClip matching \a name (or nullptr if not
+    found)
  */
 Qt3DAnimation::QAbstractAnimationClip *SceneEntity::animationClip(const QString &name) const
 {
@@ -133,7 +139,7 @@ Qt3DAnimation::QAbstractAnimationClip *SceneEntity::animationClip(const QString 
 }
 
 /*!
- * Returns instance of collection of Qt3DCore::QArmature assets
+    Returns instance of collection of Qt3DCore::QArmature assets
  */
 ArmatureCollection *SceneEntity::armatures() const
 {
@@ -141,8 +147,8 @@ ArmatureCollection *SceneEntity::armatures() const
 }
 
 /*!
- * Utility method returning an instance of Qt3DCore::QArmature matching \a name
- * (or nullptr if not found)
+    Utility method returning an instance of Qt3DCore::QArmature matching \a
+    name (or nullptr if not found)
  */
 Qt3DCore::QArmature *SceneEntity::armature(const QString &name) const
 {
@@ -160,7 +166,7 @@ Qt3DRender::QEffect *SceneEntity::effect(const QString &name) const
 }
 
 /*!
- * Returns instance of collection of Qt3DRender::QLayer assets
+    Returns instance of collection of Qt3DRender::QLayer assets
  */
 LayerCollection *SceneEntity::layers() const
 {
@@ -168,8 +174,8 @@ LayerCollection *SceneEntity::layers() const
 }
 
 /*!
- * Utility method returning an instance of Qt3DRender::QLayer matching \a name
- * (or nullptr if not found)
+    Utility method returning an instance of Qt3DRender::QLayer matching \a name
+    (or nullptr if not found)
  */
 Qt3DRender::QLayer *SceneEntity::layer(const QString &name) const
 {
@@ -177,7 +183,7 @@ Qt3DRender::QLayer *SceneEntity::layer(const QString &name) const
 }
 
 /*!
- * Returns instance of collection of Qt3DRender::QMaterial assets
+    Returns instance of collection of Qt3DRender::QMaterial assets
  */
 MaterialCollection *SceneEntity::materials() const
 {
@@ -185,16 +191,17 @@ MaterialCollection *SceneEntity::materials() const
 }
 
 /*!
- * Utility method returning an instance of Qt3DRender::QMaterial matching \a name
- * (or nullptr if not found)
+    Utility method returning an instance of the
+    Qt3DRender::GLTF2MaterialProperties subclass matching \a name (or nullptr
+    if not found)
  */
-Qt3DRender::QMaterial *SceneEntity::material(const QString &name) const
+GLTF2MaterialProperties *SceneEntity::material(const QString &name) const
 {
     return m_materials->find(name);
 }
 
 /*!
- * Returns instance of collection of Qt3DRender::QGeometryRenderer assets
+    Returns instance of collection of Qt3DRender::QGeometryRenderer assets
  */
 MeshCollection *SceneEntity::meshes() const
 {
@@ -202,8 +209,8 @@ MeshCollection *SceneEntity::meshes() const
 }
 
 /*!
- * Utility method returning an instance of Qt3DRender::QGeometryRenderer matching \a name
- * (or nullptr if not found)
+    Utility method returning an instance of Qt3DRender::QGeometryRenderer
+    matching \a name (or nullptr if not found)
  */
 Qt3DRender::QGeometryRenderer *SceneEntity::mesh(const QString &name) const
 {
@@ -211,7 +218,7 @@ Qt3DRender::QGeometryRenderer *SceneEntity::mesh(const QString &name) const
 }
 
 /*!
- * Returns instance of collection of Qt3DCore::QAbstractSkeleton assets
+    Returns instance of collection of Qt3DCore::QAbstractSkeleton assets
  */
 SkeletonCollection *SceneEntity::skeletons() const
 {
@@ -219,8 +226,8 @@ SkeletonCollection *SceneEntity::skeletons() const
 }
 
 /*!
- * Utility method returning an instance of Qt3DCore::QAbstractSkeleton matching \a name
- * (or nullptr if not found)
+    Utility method returning an instance of Qt3DCore::QAbstractSkeleton
+    matching \a name (or nullptr if not found)
  */
 Qt3DCore::QAbstractSkeleton *SceneEntity::skeleton(const QString &name) const
 {
@@ -228,7 +235,7 @@ Qt3DCore::QAbstractSkeleton *SceneEntity::skeleton(const QString &name) const
 }
 
 /*!
- * Returns instance of collection of Qt3DRender::QAbstractTexture assets
+    Returns instance of collection of Qt3DRender::QAbstractTexture assets
  */
 TextureCollection *SceneEntity::textures() const
 {
@@ -236,8 +243,8 @@ TextureCollection *SceneEntity::textures() const
 }
 
 /*!
- * Utility method returning an instance of Qt3DRender::QAbstractTexture matching \a name
- * (or nullptr if not found)
+    Utility method returning an instance of Qt3DRender::QAbstractTexture
+    matching \a name (or nullptr if not found)
  */
 Qt3DRender::QAbstractTexture *SceneEntity::texture(const QString &name) const
 {
@@ -245,7 +252,7 @@ Qt3DRender::QAbstractTexture *SceneEntity::texture(const QString &name) const
 }
 
 /*!
- * Returns instance of collection of Qt3DRender::QCamera assets
+    Returns instance of collection of Qt3DRender::QCamera assets
  */
 CameraCollection *SceneEntity::cameras() const
 {
@@ -253,8 +260,8 @@ CameraCollection *SceneEntity::cameras() const
 }
 
 /*!
- * Utility method returning an instance of Qt3DRender::QCamera matching \a name
- * (or nullptr if not found)
+    Utility method returning an instance of Qt3DRender::QCamera matching \a
+    name (or nullptr if not found)
  */
 Qt3DRender::QCamera *SceneEntity::camera(const QString &name) const
 {
@@ -262,7 +269,7 @@ Qt3DRender::QCamera *SceneEntity::camera(const QString &name) const
 }
 
 /*!
- * Returns instance of collection of Qt3DCore::QEntity assets
+    Returns instance of collection of Qt3DCore::QEntity assets
  */
 EntityCollection *SceneEntity::entities() const
 {
@@ -270,8 +277,8 @@ EntityCollection *SceneEntity::entities() const
 }
 
 /*!
- * Utility method returning an instance of Qt3DCore::QEntity matching \a name
- * (or nullptr if not found)
+    Utility method returning an instance of Qt3DCore::QEntity matching \a name
+    (or nullptr if not found)
  */
 Qt3DCore::QEntity *SceneEntity::entity(const QString &name) const
 {
@@ -279,7 +286,7 @@ Qt3DCore::QEntity *SceneEntity::entity(const QString &name) const
 }
 
 /*!
- * Returns instance of collection of Qt3DRender::QAbstractTextureImage assets
+    Returns instance of collection of Qt3DRender::QAbstractTextureImage assets
  */
 TextureImageCollection *SceneEntity::textureImages() const
 {
@@ -287,8 +294,8 @@ TextureImageCollection *SceneEntity::textureImages() const
 }
 
 /*!
- * Utility method returning an instance of Qt3DRender::QAbstractTextureImage matching \a name
- * (or nullptr if not found)
+    Utility method returning an instance of Qt3DRender::QAbstractTextureImage
+    matching \a name (or nullptr if not found)
  */
 Qt3DRender::QAbstractTextureImage *SceneEntity::textureImage(const QString &name)
 {
@@ -296,7 +303,7 @@ Qt3DRender::QAbstractTextureImage *SceneEntity::textureImage(const QString &name
 }
 
 /*!
- * Returns instance of collection of Qt3DAnimation::QChannelMapper assets
+    Returns instance of collection of Qt3DAnimation::QChannelMapper assets
  */
 AnimationMappingCollection *SceneEntity::animationMappings() const
 {
@@ -304,18 +311,27 @@ AnimationMappingCollection *SceneEntity::animationMappings() const
 }
 
 /*!
- * Utility method returning an instance of Qt3DAnimation::QChannelMapper matching \a name
- * (or nullptr if not found)
+    Utility method returning an instance of Qt3DAnimation::QChannelMapper
+    matching \a name (or nullptr if not found)
  */
 Qt3DAnimation::QChannelMapper *SceneEntity::animationMapping(const QString &name)
 {
     return m_animationMappings->find(name);
 }
 
+Kuesa::LightCollection *SceneEntity::lights() const
+{
+    return m_lights;
+}
+
+Qt3DRender::QAbstractLight *SceneEntity::light(const QString &name) const
+{
+    return m_lights->find(name);
+}
+
 /*!
- * \brief Removes all assets from all the collections.
- *
- * \note Assets which are parented with the collection will be deleted.
+    \brief Removes all assets from all the collections.
+    \note Assets which are parented with the collection will be deleted.
  */
 void SceneEntity::clearCollections()
 {
@@ -323,6 +339,7 @@ void SceneEntity::clearCollections()
     m_armatures->clear();
     m_effects->clear();
     m_layers->clear();
+    m_lights->clear();
     m_materials->clear();
     m_meshes->clear();
     m_skeletons->clear();
@@ -334,10 +351,12 @@ void SceneEntity::clearCollections()
 }
 
 /*!
- * \brief SceneEntity::transformForEntity returns the transform component of the specified entity
- *
- * This is a utility method which will look for an entity in the SceneEntity's
- * EntityCollection and return the Qt3DCore::QTransform component if it exists.
+    SceneEntity::transformForEntity returns the transform component of the
+    specified entity identified by \a name.
+
+    This is a utility method which will look for an entity in the SceneEntity's
+    EntityCollection and return the Qt3DCore::QTransform component if it
+    exists.
  */
 Qt3DCore::QNode *SceneEntity::transformForEntity(const QString &name)
 {
@@ -349,6 +368,36 @@ Qt3DCore::QNode *SceneEntity::transformForEntity(const QString &name)
         return nullptr;
 
     return componentFromEntity<Qt3DCore::QTransform>(e);
+}
+
+/*!
+    \brief SceneEntity::brdfLut Returns the brdfLut texture stored in the
+    SceneEntity
+
+    The brdfLut is used as a lookup texture and is needed for the metallic
+    roughness effect instances. The metallic roughness effect will use the
+    brdfLut texture stored in the SceneEntity if the user doesn't provide
+    another one. This allows to share the same texture instance between all the
+    instances of the metallic roughness effect.
+
+    \l {https://learnopengl.com/PBR/IBL/Specular-IBL}
+ */
+Qt3DRender::QAbstractTexture *SceneEntity::brdfLut() const
+{
+    return m_brdfLUT;
+}
+
+Kuesa::SceneEntity *Kuesa::SceneEntity::findParentSceneEntity(Qt3DCore::QEntity *entity)
+{
+    auto *parentEntity = entity->parentEntity();
+    if (parentEntity) {
+        auto *sceneEntity = qobject_cast<Kuesa::SceneEntity *>(parentEntity);
+        if (sceneEntity)
+            return sceneEntity;
+
+        return findParentSceneEntity(parentEntity);
+    }
+    return nullptr;
 }
 
 QT_END_NAMESPACE

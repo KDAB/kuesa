@@ -34,23 +34,24 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::TextureCollection
  * \inheaderfile Kuesa/TextureCollection
- * \brief A collection of assets of type Qt3DRender::QAbstractTexture
+ * \brief A collection of assets of type Qt3DRender::QAbstractTexture.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
- * Kuesa::TextureCollection manages a set of Qt3DRender::QAbstractTexture assets.
+ * Kuesa::TextureCollection manages a set of Qt3DRender::QAbstractTexture
+ * assets.
  */
 
 /*!
  * \fn TextureCollection::add
  *
- * Adds an \a asset to the collection with key \name.
+ * Adds an \a asset to the collection with key \a name.
  *
  * If the asset has no parent, it will be reparented to the collection.
  *
- * If an asset is already registered with the same name, it will be removed from the collection
- * and deleted if parented to the collection.
+ * If an asset is already registered with the same name, it will be removed
+ * from the collection and deleted if parented to the collection.
  *
  */
 

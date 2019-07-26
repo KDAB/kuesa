@@ -46,18 +46,21 @@ using namespace GLTF2Import;
 
 namespace {
 
-const QLatin1String KEY_NAME = QLatin1Literal("name");
-const QLatin1String KEY_MATRIX = QLatin1Literal("matrix");
-const QLatin1String KEY_TRANSLATION = QLatin1Literal("translation");
-const QLatin1String KEY_ROTATION = QLatin1Literal("rotation");
-const QLatin1String KEY_SCALE = QLatin1Literal("scale");
-const QLatin1String KEY_MESH = QLatin1Literal("mesh");
-const QLatin1String KEY_CAMERA = QLatin1Literal("camera");
+const QLatin1String KEY_NAME = QLatin1String("name");
+const QLatin1String KEY_MATRIX = QLatin1String("matrix");
+const QLatin1String KEY_TRANSLATION = QLatin1String("translation");
+const QLatin1String KEY_ROTATION = QLatin1String("rotation");
+const QLatin1String KEY_SCALE = QLatin1String("scale");
+const QLatin1String KEY_MESH = QLatin1String("mesh");
+const QLatin1String KEY_CAMERA = QLatin1String("camera");
 const QLatin1String KEY_SKIN = QLatin1String("skin");
-const QLatin1String KEY_CHILDREN = QLatin1Literal("children");
+const QLatin1String KEY_CHILDREN = QLatin1String("children");
 const QLatin1String KEY_EXTENSIONS = QLatin1String("extensions");
 const QLatin1String KEY_KDAB_KUESA_LAYER_EXTENSION = QLatin1String("KDAB_Kuesa_Layers");
-const QLatin1String KEY_NODE_KUESA_LAYERS = QLatin1Literal("layers");
+const QLatin1String KEY_NODE_KUESA_LAYERS = QLatin1String("layers");
+const QLatin1String KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION = QLatin1String("KHR_lights_punctual");
+const QLatin1String KEY_KHR_LIGHT = QLatin1String("light");
+const QLatin1String KEY_WEIGHTS = QLatin1String("weights");
 
 QMatrix4x4 matrixFromArray(const QJsonArray &matrixValues)
 {
@@ -182,7 +185,15 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
                 node.layerIndices.push_back(layerId);
             }
         }
+    } else if (nodeExtensions.contains(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION)) {
+        const QJsonObject lightObject = nodeExtensions.value(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION).toObject();
+        node.lightIdx = lightObject.value(KEY_KHR_LIGHT).toInt(-1);
     }
+
+    const QJsonArray morphTargetWeights = nodeObj.value(KEY_WEIGHTS).toArray();
+    node.morphTargetWeights.reserve(morphTargetWeights.size());
+    for (const QJsonValue &weight : morphTargetWeights)
+        node.morphTargetWeights.push_back(weight.toDouble(0.0));
 
     return QPair<bool, TreeNode>(true, node);
 }

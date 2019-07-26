@@ -37,9 +37,10 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::AbstractAssetCollection
  * \inheaderfile Kuesa/AbstractAssetCollection
- * \brief An abstract base class for managing collections of assets in 3d models
+ * \brief An abstract base class for managing collections of assets in 3d
+ * models.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Qt3DCore::Node
  *
  * Kuesa::AbstractAssetCollection is an abstract class used to implement
@@ -98,7 +99,7 @@ int AbstractAssetCollection::size()
 }
 
 /*!
- * Returns true if the name exists in the collection
+ * Returns true if the name \a name exists in the collection
  */
 bool AbstractAssetCollection::contains(const QString &name) const
 {

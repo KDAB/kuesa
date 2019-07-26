@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- tonemapping.qdoc -->
+  <title>Kuesa ToneMapping QML Example | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td >Kuesa ToneMapping QML Example</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Kuesa ToneMapping QML Example</h1>
+<span class="subtitle"></span>
+<pre class="qml">
+
+  <span class="comment">/*
+      main.qml
+
+      This file is part of Kuesa.
+
+      Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+      Author: Robert Brock &lt;robert.brock@kdab.com&gt;
+
+      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+      LICENSE.KUESA.ENTERPRISE file.
+
+      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU Affero General Public License as
+      published by the Free Software Foundation, either version 3 of the
+      License, or (at your option) any later version.
+
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Affero General Public License for more details.
+
+      You should have received a copy of the GNU Affero General Public License
+      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+  */</span>
+
+  import QtQuick 2.12
+  import QtQuick.Controls 2.0
+  import QtQuick.Scene3D 2.0
+  import &quot;controls&quot; as Controls
+
+  <span class="type">Item</span> {
+      <span class="name">id</span>: <span class="name">root</span>
+
+      <span class="type">Item</span> {
+          <span class="name">id</span>: <span class="name">baseUI</span>
+          <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+          <span class="type">Scene3D</span> {
+              <span class="name">id</span>: <span class="name">scene3d</span>
+              <span class="name">anchors</span>.fill: <span class="name">parent</span>
+              <span class="name">focus</span>: <span class="number">true</span>
+              <span class="name">multisample</span>: <span class="number">true</span>
+              <span class="name">aspects</span>: [<span class="string">&quot;render&quot;</span>, <span class="string">&quot;input&quot;</span>, <span class="string">&quot;logic&quot;</span>, <span class="string">&quot;animation&quot;</span>]
+
+              <span class="type">MainScene</span> {
+                  <span class="name">id</span>: <span class="name">sceneEntity</span>
+                  <span class="name">screenWidth</span>: <span class="name">scene3d</span>.<span class="name">width</span>
+                  <span class="name">screenHeight</span>: <span class="name">scene3d</span>.<span class="name">height</span>
+                  <span class="name">exposure</span>: <span class="name">menu</span>.<span class="name">exposure</span>
+                  <span class="name">rotating</span>: <span class="name">menu</span>.<span class="name">toggleRotation</span>
+                  <span class="name">lightRotating</span>: <span class="name">menu</span>.<span class="name">toggleLightRotation</span>
+                  <span class="name">toneMappingAlgorithmName</span>: <span class="name">menu</span>.<span class="name">toneMappingAlgorithmName</span>
+              }
+          }
+      }
+
+      <span class="comment">// UI menu container</span>
+      <span class="type">MainMenu</span> {
+          <span class="name">id</span>: <span class="name">menu</span>
+          <span class="name">anchors</span>.fill: <span class="name">parent</span>
+      }
+
+      <span class="comment">// Logos</span>
+      <span class="type">Image</span> {
+          <span class="name">id</span>: <span class="name">kdabLogoBottomRight</span>
+          <span class="name">width</span>: <span class="name">Controls</span>.<span class="name">SharedAttributes</span>.<span class="name">ldpi</span> <span class="operator">*</span> <span class="number">1.3</span>
+          <span class="name">mipmap</span>: <span class="number">true</span>
+          <span class="name">smooth</span>: <span class="number">true</span>
+          <span class="name">antialiasing</span>: <span class="number">true</span>
+
+          <span class="name">source</span>: <span class="string">&quot;/kdab_logo_white.png&quot;</span>
+          <span class="name">anchors</span>.bottom: <span class="name">parent</span>.<span class="name">bottom</span>
+          <span class="name">anchors</span>.right: <span class="name">parent</span>.<span class="name">right</span>
+          <span class="name">anchors</span>.bottomMargin: <span class="name">Controls</span>.<span class="name">SharedAttributes</span>.<span class="name">ldpi</span> <span class="operator">/</span> <span class="number">5</span>
+          <span class="name">anchors</span>.rightMargin: <span class="name">Controls</span>.<span class="name">SharedAttributes</span>.<span class="name">ldpi</span> <span class="operator">/</span> <span class="number">5</span>
+          <span class="name">fillMode</span>: <span class="name">Image</span>.<span class="name">PreserveAspectFit</span>
+
+          <span class="type">MouseArea</span> {
+              <span class="name">anchors</span>.fill: <span class="name">parent</span>
+              <span class="name">onPressAndHold</span>: <span class="name">menu</span>.<span class="name">idleAnimationRunning</span> <span class="operator">=</span> <span class="number">true</span>
+          }
+      }
+
+      <span class="type">Image</span> {
+          <span class="name">id</span>: <span class="name">qtLogo</span>
+          property <span class="type">bool</span> <span class="name">kuesaLogo</span>: <span class="number">true</span>
+          <span class="name">anchors</span>.verticalCenter: <span class="name">kdabLogoBottomRight</span>.<span class="name">verticalCenter</span>
+          <span class="name">anchors</span>.right: <span class="name">kdabLogoBottomRight</span>.<span class="name">left</span>
+          <span class="name">anchors</span>.rightMargin: <span class="name">Controls</span>.<span class="name">SharedAttributes</span>.<span class="name">ldpi</span> <span class="operator">/</span> <span class="number">3</span>
+          <span class="name">width</span>: <span class="name">Controls</span>.<span class="name">SharedAttributes</span>.<span class="name">ldpi</span> <span class="operator">*</span> (<span class="name">kuesaLogo</span> ? <span class="number">2.3</span> : <span class="number">1.8</span>)
+          <span class="name">mipmap</span>: <span class="number">true</span>
+          <span class="name">smooth</span>: <span class="number">true</span>
+          <span class="name">antialiasing</span>: <span class="number">true</span>
+          <span class="name">source</span>: <span class="name">kuesaLogo</span> ? <span class="string">&quot;/Kuesa-logo-black.png&quot;</span> : <span class="string">&quot;/Qt-logo.png&quot;</span>
+          <span class="name">fillMode</span>: <span class="name">Image</span>.<span class="name">PreserveAspectFit</span>
+
+          <span class="type">MouseArea</span> {
+              <span class="name">anchors</span>.fill: <span class="name">parent</span>
+              <span class="name">onPressAndHold</span>: <span class="name">qtLogo</span>.<span class="name">kuesaLogo</span> <span class="operator">=</span> !<span class="name">qtLogo</span>.<span class="name">kuesaLogo</span>
+          }
+      }
+
+  }
+
+</pre>

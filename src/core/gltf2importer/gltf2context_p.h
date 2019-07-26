@@ -47,6 +47,7 @@
 #include "bufferaccessorparser_p.h"
 #include "meshparser_p.h"
 #include "layerparser_p.h"
+#include "lightparser_p.h"
 #include "imageparser_p.h"
 #include "texturesamplerparser_p.h"
 #include "textureparser_p.h"
@@ -55,6 +56,8 @@
 #include "materialparser_p.h"
 #include "skinparser_p.h"
 
+#include "gltf2options.h"
+
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
@@ -62,6 +65,10 @@ class QLayer;
 }
 
 namespace Kuesa {
+
+class GLTF2Importer;
+class EffectsLibrary;
+
 namespace GLTF2Import {
 
 class KUESA_PRIVATE_EXPORT GLTF2Context
@@ -130,6 +137,9 @@ public:
     void addScene(const Scene &scene);
     const Scene scene(qint32 id) const;
 
+    void setDefaultScene(qint32 id);
+    qint32 defaultScene() const;
+
     int materialsCount() const;
     void addMaterial(const Material &material);
     const Material material(qint32 id) const;
@@ -139,16 +149,40 @@ public:
     void addSkin(const Skin &skin);
     const Skin skin(qint32 id) const;
 
+    int lightCount() const;
+    void addLight(const Light &light);
+    const Light light(qint32 id) const;
+
     QStringList usedExtension() const;
     void setUsedExtensions(const QStringList &usedExtensions);
     QStringList requiredExtensions() const;
     void setRequiredExtensions(const QStringList &requiredExtensions);
+
+    const QString &filename() const;
+    void setFilename(const QString &);
+
+    const QString &basePath() const;
+    void setBasePath(const QString &);
 
     const QJsonDocument &json() const;
     void setJson(const QJsonDocument &doc);
 
     const QStringList &localFiles() const;
     void addLocalFile(const QString &file);
+
+    QByteArray bufferChunk() const;
+    void setBufferChunk(const QByteArray &bufferChunk);
+
+    Kuesa::GLTF2Import::GLTF2Options *options();
+    const Kuesa::GLTF2Import::GLTF2Options *options() const;
+
+    void reset();
+
+    static GLTF2Context *fromImporter(GLTF2Importer *importer);
+
+    EffectsLibrary *effectLibrary() const;
+
+
 
 private:
     QVector<Accessor> m_accessors;
@@ -165,10 +199,18 @@ private:
     QVector<Scene> m_scenes;
     QVector<Material> m_materials;
     QVector<Skin> m_skins;
+    QVector<Light> m_lights;
     QStringList m_usedExtensions;
     QStringList m_requiredExtensions;
+    QString m_filename;
+    QString m_basePath;
     QJsonDocument m_json;
     QStringList m_localFiles;
+    QByteArray m_bufferChunk;
+
+    Kuesa::GLTF2Import::GLTF2Options m_options;
+    qint32 m_defaultScene;
+    QScopedPointer<EffectsLibrary> m_effectLibrary;
 };
 
 template<>

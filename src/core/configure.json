@@ -21,6 +21,7 @@
     "features": {
         "draco": {
             "label": "Draco",
+            "autoDetect": "!config.uikit && !config.android && !config.winrt",
             "output": [
                 "publicFeature",
                 "feature",
@@ -30,8 +31,9 @@
         "system-draco": {
             "label": "System Draco",
             "enable": "input.draco == 'system'",
-            "disable": "input.draco == 'qt'",
+            "disable": "input.draco != 'system'",
             "condition": "features.draco && libs.draco",
+            "autoDetect": "!config.android && !config.winrt",
             "output": [
                 "publicFeature",
                 { "type": "define", "name": "KUESA_DRACO_COMPRESSION" }

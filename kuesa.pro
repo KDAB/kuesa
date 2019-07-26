@@ -32,6 +32,7 @@ OTHER_FILES += \
     .qmake.conf \
     configure.json \
     config_help.txt \
+    kuesa-global.pri \
     README.md
 
 load(qt_parts)

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- forwardrenderer.cpp -->
+  <title>ForwardRenderer QML Type | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-qml.html#">QML Types</a></td><td >ForwardRenderer QML Type</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">ForwardRenderer QML Type</h1>
+<span class="subtitle"></span>
+<!-- $$$ForwardRenderer-brief -->
+<p>Implements a simple forward rendering FrameGraph. <a href="#details">More...</a></p>
+<!-- @@@ForwardRenderer -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  .</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-forwardrenderer.html"><a href="kuesa-forwardrenderer.html">ForwardRenderer</a></td></tr></table></div><ul>
+<li><a href="qml-forwardrenderer-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#backToFrontSorting-prop">backToFrontSorting</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#camera-prop">camera</a></b></b> : Entity</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#clearBuffers-prop">clearBuffers</a></b></b> : enumeration</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#clearColor-prop">clearColor</a></b></b> : color</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#exposure-prop">exposure</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#externalRenderTargetSize-prop">externalRenderTargetSize</a></b></b> : size</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#frustumCulling-prop">frustumCulling</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#gamma-prop">gamma</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#postProcessingEffects-prop">postProcessingEffects</a></b></b> : list&lt;AbstractPostProcessingEffect&gt;</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#renderSurface-prop">renderSurface</a></b></b> : Surface</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithm</a></b></b> : ToneMappingAndGammaCorrectionEffect.ToneMapping</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#viewportRect-prop">viewportRect</a></b></b> : size</li>
+<li class="fn"><b><b><a href="qml-forwardrenderer.html#zFilling-prop">zFilling</a></b></b> : bool</li>
+</ul>
+<!-- $$$ForwardRenderer-description -->
+<a name="details"></a>
+<h2 id="details">Detailed Description</h2>
+<p>This FrameGraph will select all Qt3D Entities that reference a Material with Techniques having a FilterKey with the name &quot;renderingStyle&quot; set to the string value &quot;forward&quot;.</p>
+<p>The rendering will be made on a single viewport whose dimensions can be set with normalized coordinates by setting the <a href="qml-forwardrenderer.html#viewportRect-prop">viewportRect</a> property.</p>
+<p>The screen will be cleared with the color set with the <a href="qml-forwardrenderer.html#clearColor-prop">clearColor</a> property. By default the clear color is black.</p>
+<p>Unless <a href="qml-forwardrenderer.html#clearBuffers-prop">clearBuffers</a> has been set appropriately, only the color and depth buffers will be cleared before the rest of the scene is rendered.</p>
+<p>The scene will be rendered from the camera property on the window or offscreen surface specified by the <a href="qml-forwardrenderer.html#renderSurface-prop">renderSurface</a> property. Additionally, setting <a href="qml-forwardrenderer.html#externalRenderTargetSize-prop">externalRenderTargetSize</a> will specify the size of the rendering surface, when different from the size reported by the surface, this can be the case with high DPI screens.</p>
+<p>Frustum culling of Entities will be performed by default to only render entities that are visible within the camera's frustum. This can be disabled by setting the <a href="qml-forwardrenderer.html#frustumCulling-prop">frustumCulling</a> property. Please note frustum culling is not performed on skinned meshes.</p>
+<p>By default the rendering is performed so that:</p>
+<p>Opaque object are rendered first: Entities having a Material with a compatible RenderPass that has a FilterKey KuesaDrawStage with a value set to Opaque will be rendered.</p>
+<p>Transparent objects are rendered second: select all Entities having a Material with a compatible RenderPass that has a FilterKey KuesaDrawStage with a value set to Transparent will be rendered.</p>
+<p>Scenes containing materials with transparency need to be drawn from back-to-front in relation to the Camera for the blending to work correctly. This sorting can be expensive and is disabled by default. It can be enabled by setting the <a href="qml-forwardrenderer.html#backToFrontSorting-prop">backToFrontSorting</a> to true.</p>
+<p>In some case, an optimization technique known as an early z-filling pass can provide a significant performance gain. This is especially true for large scenes using complex rendering materials. The idea consist in filling the depth buffer with a low complexity shader so that subsequent passes incorporating more detailed rendering techniques only render fragments for the depth previously recorded. The optional z-fill pass can be enabled by setting the <a href="qml-forwardrenderer.html#zFilling-prop">zFilling</a> property to true. All Entities having a Material with a compatible RenderPass that has a FilterKey KuesaDrawStage with a value set to ZFill will be rendered. This will take place before the Opaque and Transparent pass. Only Opaque objects should be used to fill the depth buffer.</p>
+<p>The pipeline steps, from materials to post processing effects are working in linear color space. This <a href="qml-forwardrenderer.html">ForwardRenderer</a> adds a final gamma correction to perform the final conversion to sRGB, through the use of the GammaCorrectionEffect, as the last step of this pipeline.</p>
+<!-- @@@ForwardRenderer -->
+<h2>Property Documentation</h2>
+<!-- $$$backToFrontSorting -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="backToFrontSorting-prop"></a><span class="name">backToFrontSorting</span> : <span class="type">bool</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds whether back to front sorting to render objects in back-to-front order is enabled. This is required for proper alpha blending rendering. Disabled by default.</p>
+</div></div><!-- @@@backToFrontSorting -->
+<br/>
+<!-- $$$camera -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="camera-prop"></a><span class="name">camera</span> : <span class="type">Entity</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds the camera used to view the scene.</p>
+</div></div><!-- @@@camera -->
+<br/>
+<!-- $$$clearBuffers -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="clearBuffers-prop"></a><span class="name">clearBuffers</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds which buffers will be cleared at the start of each frame.</p>
+</div></div><!-- @@@clearBuffers -->
+<br/>
+<!-- $$$clearColor -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="clearColor-prop"></a><span class="name">clearColor</span> : <span class="type">color</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds the color used to clear the screen at the start of each frame.</p>
+</div></div><!-- @@@clearColor -->
+<br/>
+<!-- $$$exposure -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="exposure-prop"></a><span class="qmldefault">[default] </span><span class="name">exposure</span> : <span class="type">real</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Exposure correction factor used before the linear to sRGB conversion.</p>
+<p>This property was introduced in  Kuesa 1.1.</p>
+</div></div><!-- @@@exposure -->
+<br/>
+<!-- $$$externalRenderTargetSize -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="externalRenderTargetSize-prop"></a><span class="name">externalRenderTargetSize</span> : <span class="type">size</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds the size of the external render target.</p>
+</div></div><!-- @@@externalRenderTargetSize -->
+<br/>
+<!-- $$$frustumCulling -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="frustumCulling-prop"></a><span class="name">frustumCulling</span> : <span class="type">bool</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds whether frustum culling is enabled or not. Enabled by default.</p>
+</div></div><!-- @@@frustumCulling -->
+<br/>
+<!-- $$$gamma -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="gamma-prop"></a><span class="qmldefault">[default] </span><span class="name">gamma</span> : <span class="type">real</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds the gamma value to use for gamma correction that brings linear colors to sRGB colors.</p>
+<p>This property was introduced in  Kuesa 1.1.</p>
+</div></div><!-- @@@gamma -->
+<br/>
+<!-- $$$postProcessingEffects -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="postProcessingEffects-prop"></a><span class="name">postProcessingEffects</span> : <span class="type">list</span>&lt;<span class="type">AbstractPostProcessingEffect</span>&gt;</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds the list of post processing effects.</p>
+<p>In essence this will complete the FrameGraph tree with a dedicated subtree provided by the effect.</p>
+<p>Lifetime of the subtree will be entirely managed by the <a href="qml-forwardrenderer.html">ForwardRenderer</a>.</p>
+<p>Be aware that registering several effects of the same type might have unexpected behavior. It is advised against unless explicitly documented in the effect.</p>
+<p>The FrameGraph tree is reconfigured upon replacing the list of effects.</p>
+</div></div><!-- @@@postProcessingEffects -->
+<br/>
+<!-- $$$renderSurface -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="renderSurface-prop"></a><span class="name">renderSurface</span> : <span class="type">Surface</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds the surface where rendering will occur.</p>
+</div></div><!-- @@@renderSurface -->
+<br/>
+<!-- $$$toneMappingAlgorithm -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="toneMappingAlgorithm-prop"></a><span class="qmldefault">[default] </span><span class="name">toneMappingAlgorithm</span> : <span class="type"><a href="qml-tonemappingandgammacorrectioneffect.html">ToneMappingAndGammaCorrectionEffect</a></span>.<span class="type">ToneMapping</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Tone mapping specifies how we perform color conversion from HDR (high dynamic range) content to LDR (low dynamic range) content which our monitor displays.</p>
+<p>This property was introduced in  Kuesa 1.1.</p>
+</div></div><!-- @@@toneMappingAlgorithm -->
+<br/>
+<!-- $$$viewportRect -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="viewportRect-prop"></a><span class="name">viewportRect</span> : <span class="type">size</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds the rectangle within the current render surface where rendering will occur. Rectangle is in normalized coordinates.</p>
+</div></div><!-- @@@viewportRect -->
+<br/>
+<!-- $$$zFilling -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="zFilling-prop"></a><span class="name">zFilling</span> : <span class="type">bool</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds whether multi-pass zFilling support is enabled. Disabled by default.</p>
+</div></div><!-- @@@zFilling -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

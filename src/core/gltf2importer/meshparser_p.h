@@ -63,17 +63,29 @@ namespace GLTF2Import {
 class GLTF2Context;
 struct BufferView;
 
+struct MorphTargetAttribute {
+    QString name;
+    qint32 accessorIdx = -1;
+};
+
+struct MorphTarget {
+    QVector<MorphTargetAttribute> attributes;
+};
+
 struct Primitive {
     Qt3DRender::QGeometryRenderer *primitiveRenderer = nullptr;
     qint32 materialIdx = -1;
     bool hasColorAttr = false;
+
+    QVector<MorphTarget> morphTargets;
 };
 
 struct Mesh {
-    void clear();
-
     QVector<Primitive> meshPrimitives;
     QString name;
+    quint8 morphTargetCount = 0;
+    QVector<float> morphTargetWeights;
+    qint32 meshIdx = -1;
 };
 
 class Q_AUTOTEST_EXPORT MeshParser
@@ -84,8 +96,12 @@ public:
     bool parse(const QJsonArray &meshArray, GLTF2Context *context);
 
 private:
+    Qt3DRender::QAttribute *createAttribute(qint32 accessorIndex,
+                                            const QString &attributeName,
+                                            const QString &semanticName);
     bool geometryFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, bool &hasColorAttr);
     bool geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, QStringList existingAttributes, bool &hasColorAttr);
+    std::tuple<bool, QVector<MorphTarget>> geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json);
 #if defined(KUESA_DRACO_COMPRESSION)
     bool geometryDracoFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, bool &hasColorAttr);
     bool geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, const draco::PointCloud *pointCloud, QStringList &existingAttributes, bool &hasColorAttr);

@@ -1,0 +1,106 @@
+/*
+    car-scene.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \example car-scene
+    \title Kuesa Car-Scene QML Example
+    \ingroup kuesa-examples-qml
+
+    \brief Demonstrates the use of the Kuesa API to import a glTF2 file and
+    extract assets from it.
+
+    \image car-scene-example.jpg
+
+    \section1 QtQuick and Qt3D integration
+
+    The car-scene example relies on the regular QtQuick and Qt 3D APIs to
+    instantiate a QtQuick based application that combines Qt 3D based content
+    with a 2D UI overlay.
+
+
+    \snippet car-scene/qml/main.qml 0
+    \dots 8
+
+    \section1 SceneEntity
+
+    Kuesa provides the \l [QML] {SceneEntity} element which holds collections
+    of Qt 3D assets accessible by name.
+
+    \snippet car-scene/qml/MainScene.qml 0
+
+    \section1 Importing a glTF2 File
+
+    In order to load a glTF2 file, Kuesa provides the \l {GLTF2Importer}
+    element. If the \a sceneEntity property is set to a valid \l [QML]
+    {SceneEntity} instance, Qt 3D assets generated while parsing the file will
+    be automatically added to the various asset collections.
+
+    \snippet car-scene/qml/MainScene.qml 1
+
+    \section1 Extracting Assets from Collections
+
+    Usually, you will want to interact with some elements of your scene.
+    The \l {Asset} element allows to retrieve an asset by name. If the asset
+    for a given name really exist in the specified \a collection, the \a node
+    property allows you to access the underlying asset instance.
+
+    You can use the \l {gltfEditor} to instrospect a glTF2 scene files and find
+    the names of the various assets it contains.
+
+    For instance you might want to select a Camera by name.
+    \snippet car-scene/qml/MainScene.qml 2.1
+
+    Once retrieved, you can create binding on some of the Camera properties.
+    \snippet car-scene/qml/MainScene.qml 2.2
+
+    Similarly you could retrieve a Material asset
+    \snippet car-scene/qml/MainScene.qml 2.3
+
+    And create a binding on its properties to control the appearance of
+    elements in the scene that use that material.
+    \snippet car-scene/qml/MainScene.qml 2.4
+
+    \section1 Playing Animations
+
+    The \l {AnimationPlayer} allows to control the playback of animation clips
+    that can be retrieve by name.
+
+    \snippet car-scene/qml/MainScene.qml 4.1
+
+    \section1 Adding Post Processing Effects
+
+    First you need to instantiate the effects you want to use.
+    \snippet car-scene/qml/MainScene.qml 3.1
+
+    Once you have create the effects, they need to be added to the \l
+    {ForwardRenderer} FrameGraph. The order in which they are added dictates
+    the order in which they are applied.
+    \snippet car-scene/qml/MainScene.qml 3.2
+
+
+*/

@@ -177,6 +177,10 @@
             "layers": [
             ],
             "parameters": {
+                "outputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -310,13 +314,13 @@
                 "value"
             ],
             "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
                 "outputType": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Float"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
                 }
             },
             "rules": [
@@ -349,7 +353,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "gl_fragColor = $fragColor;"
+                    "substitution": "gl_FragColor = $fragColor;"
                 },
                 {
                     "format": {
@@ -438,7 +442,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "$type $output; if ($condition) $output = $true; else $output = $false;"
+                    "substitution": "highp $type $output = ($condition) ? $true : $false;"
                 },
                 {
                     "format": {
@@ -446,7 +450,7 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output; if ($condition) $output = $true; else $output = $false;"
+                    "substitution": "$type $output = ($condition) ? $true : $false;"
                 }
             ]
         },

@@ -46,16 +46,16 @@ using namespace Kuesa::GLTF2Import;
 
 namespace {
 
-const QLatin1String KEY_NAME = QLatin1Literal("name");
-const QLatin1String KEY_CHANNELS = QLatin1Literal("channels");
-const QLatin1String KEY_SAMPLERS = QLatin1Literal("samplers");
-const QLatin1String KEY_SAMPLER = QLatin1Literal("sampler");
-const QLatin1String KEY_TARGET = QLatin1Literal("target");
-const QLatin1String KEY_INPUT = QLatin1Literal("input");
-const QLatin1String KEY_OUTPUT = QLatin1Literal("output");
-const QLatin1String KEY_INTERPOLATION = QLatin1Literal("interpolation");
-const QLatin1String KEY_PATH = QLatin1Literal("path");
-const QLatin1String KEY_NODE = QLatin1Literal("node");
+const QLatin1String KEY_NAME = QLatin1String("name");
+const QLatin1String KEY_CHANNELS = QLatin1String("channels");
+const QLatin1String KEY_SAMPLERS = QLatin1String("samplers");
+const QLatin1String KEY_SAMPLER = QLatin1String("sampler");
+const QLatin1String KEY_TARGET = QLatin1String("target");
+const QLatin1String KEY_INPUT = QLatin1String("input");
+const QLatin1String KEY_OUTPUT = QLatin1String("output");
+const QLatin1String KEY_INTERPOLATION = QLatin1String("interpolation");
+const QLatin1String KEY_PATH = QLatin1String("path");
+const QLatin1String KEY_NODE = QLatin1String("node");
 
 AnimationParser::InterpolationMethod interpolationMethodFromSemantic(const QString &value)
 {
@@ -93,7 +93,7 @@ QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
         return {};
     }
 
-    const BufferView &bufferViewData = ctx->bufferView(accessor.bufferViewIndex);
+    const BufferView bufferViewData = ctx->bufferView(accessor.bufferViewIndex);
 
     const QByteArray bufferData = accessor.bufferData;
 
@@ -159,6 +159,8 @@ QString channelPathToName(const QString &path)
         return QStringLiteral("Rotation");
     if (path == QStringLiteral("scale"))
         return QStringLiteral("Scale3D");
+    if (path == QStringLiteral("weights"))
+        return QStringLiteral("MorphWeights");
     return {};
 }
 
@@ -170,7 +172,24 @@ QString channelPathToProperty(const QString &path)
         return QStringLiteral("rotation");
     if (path == QStringLiteral("scale"))
         return QStringLiteral("scale3D");
+    if (path == QStringLiteral("weights"))
+        return QStringLiteral("morphWeights");
     return {};
+}
+
+quint8 expectedComponentsCountForChannel(const QString &channelName)
+{
+    if (channelName == QStringLiteral("translation"))
+        return 3;
+    if (channelName == QStringLiteral("rotation"))
+        return 4;
+    if (channelName == QStringLiteral("scale"))
+        return 3;
+    if (channelName == QStringLiteral("weights"))
+        return 1;
+
+    qCWarning(kuesa) << "Unrecognized animation channel" << channelName;
+    return 0;
 }
 
 } // namespace
@@ -220,7 +239,8 @@ std::tuple<int, std::vector<float>> AnimationParser::animationChannelDataFromDat
 }
 
 Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QString &channelName,
-                                                                        const AnimationParser::AnimationSampler &sampler) const
+                                                                        const AnimationParser::AnimationSampler &sampler,
+                                                                        const TreeNode &targetNode) const
 {
     auto channel = Qt3DAnimation::QChannel(channelPathToName(channelName));
     const Accessor inputAccessor = m_context->accessor(sampler.inputAccessor);
@@ -249,8 +269,35 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
     std::vector<float> valueStamps;
     std::tie(nbComponents, valueStamps) = animationChannelDataFromData(sampler);
 
+    // Check nbComponent and type are what is expected for a given channel
+    const quint8 expectedComponents = expectedComponentsCountForChannel(channelName);
+    if (expectedComponents == 0)
+        return channel;
+
+    if (nbComponents != expectedComponents) {
+        qCWarning(kuesa) << "Channel components for" << channelName << "expected" << expectedComponents << "but obtained" << nbComponents;
+        return channel;
+    }
+
     if (nbComponents == 0 || valueStamps.empty())
         return channel;
+
+    // When dealing with morph targets we have :
+    // - morphTargetCount * timeStamps.size() keyframe values
+    // - animationChannelDataFromData will set nbComponents to 1 because we are
+    // dealing with a scalar weight type
+    // - the channel should actually expose one scalar weight for each morph
+    // targets
+    // This means we should set nbComponent to be morphTargetCount
+    const bool isMorphTargetWeightChannel = (channelName == QStringLiteral("weights"));
+    if (isMorphTargetWeightChannel) {
+        const Mesh morphTargetMesh = m_context->mesh(targetNode.meshIdx);
+        if (targetNode.meshIdx < 0 || morphTargetMesh.morphTargetCount == 0) {
+            qWarning(kuesa) << "Invalid Mesh for MorphTarget animation";
+            return channel;
+        }
+        nbComponents = morphTargetMesh.morphTargetCount;
+    }
 
     Qt3DAnimation::QKeyFrame::InterpolationType interpolationType = Qt3DAnimation::QKeyFrame::LinearInterpolation;
 
@@ -336,8 +383,8 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
 
 bool AnimationParser::checkSamplerJSON(const QJsonObject &samplerObject) const
 {
-    const QJsonValue &inputValue = samplerObject[KEY_INPUT];
-    const QJsonValue &outputValue = samplerObject[KEY_OUTPUT];
+    const QJsonValue inputValue = samplerObject.value(KEY_INPUT);
+    const QJsonValue outputValue = samplerObject.value(KEY_OUTPUT);
 
     if (inputValue.isUndefined()) {
         qCWarning(kuesa, "Missing input buffer in animation sampler");
@@ -369,9 +416,9 @@ bool AnimationParser::checkSamplerJSON(const QJsonObject &samplerObject) const
 std::tuple<bool, AnimationParser::AnimationSampler> AnimationParser::animationSamplersFromJson(const QJsonObject &samplerObject) const
 {
     AnimationParser::AnimationSampler animationSampler;
-    animationSampler.inputAccessor = samplerObject[KEY_INPUT].toInt();
-    animationSampler.outputAccessor = samplerObject[KEY_OUTPUT].toInt();
-    animationSampler.interpolationMethod = interpolationMethodFromSemantic(samplerObject[KEY_INTERPOLATION].toString(QStringLiteral("LINEAR")));
+    animationSampler.inputAccessor = samplerObject.value(KEY_INPUT).toInt();
+    animationSampler.outputAccessor = samplerObject.value(KEY_OUTPUT).toInt();
+    animationSampler.interpolationMethod = interpolationMethodFromSemantic(samplerObject.value(KEY_INTERPOLATION).toString(QStringLiteral("LINEAR")));
 
     if (animationSampler.interpolationMethod == AnimationParser::Unknown) {
         qCWarning(kuesa, "Invalid interpolation method");
@@ -383,8 +430,8 @@ std::tuple<bool, AnimationParser::AnimationSampler> AnimationParser::animationSa
 
 bool AnimationParser::checkChannelJSON(const QJsonObject &channelObject) const
 {
-    const QJsonValue &samplerValue = channelObject[KEY_SAMPLER];
-    const QJsonValue &targetValue = channelObject[KEY_TARGET];
+    const QJsonValue samplerValue = channelObject.value(KEY_SAMPLER);
+    const QJsonValue targetValue = channelObject.value(KEY_TARGET);
 
     if (samplerValue.isUndefined()) {
         qCWarning(kuesa, "Missing sampler for animation channel");
@@ -402,15 +449,15 @@ bool AnimationParser::checkChannelJSON(const QJsonObject &channelObject) const
         return false;
     }
 
-    const QJsonObject &targetObject = targetValue.toObject();
-    const QJsonValue &pathValue = targetObject[KEY_PATH];
+    const QJsonObject targetObject = targetValue.toObject();
+    const QJsonValue pathValue = targetObject.value(KEY_PATH);
 
     if (pathValue.isUndefined()) {
         qCWarning(kuesa, "Missing path for channel's animation target");
         return false;
     }
 
-    const QString &path = pathValue.toString();
+    const QString path = pathValue.toString();
 
     // Verify path is a valid value
     const auto validPathValues = { QStringLiteral("translation"), QStringLiteral("rotation"), QStringLiteral("scale"), QStringLiteral("weights") };
@@ -427,14 +474,15 @@ AnimationParser::channelFromJson(const QJsonObject &channelObject) const
 {
     Qt3DAnimation::QChannel channel;
 
-    const QJsonValue &samplerValue = channelObject[KEY_SAMPLER];
-    const QJsonObject &targetObject = channelObject[KEY_TARGET].toObject();
-    const QString &path = targetObject[KEY_PATH].toString();
-    const int &targetNode = targetObject[KEY_NODE].toInt();
-    const AnimationSampler sampler = m_samplers[samplerValue.toInt()];
+    const QJsonValue samplerValue = channelObject.value(KEY_SAMPLER);
+    const QJsonObject targetObject = channelObject.value(KEY_TARGET).toObject();
+    const QString path = targetObject.value(KEY_PATH).toString();
+    const int targetNodeIdx = targetObject.value(KEY_NODE).toInt(-1);
+    const AnimationSampler sampler = m_samplers.at(samplerValue.toInt());
+    const TreeNode targetNode = m_context->treeNode(targetNodeIdx);
 
-    channel = animationChannelDataFromBuffer(path, sampler);
-    channel.setName(channel.name() + QStringLiteral("_") + QString::number(targetNode));
+    channel = animationChannelDataFromBuffer(path, sampler, targetNode);
+    channel.setName(channel.name() + QStringLiteral("_") + QString::number(targetNodeIdx));
 
     if (channel.channelComponentCount() == 0) {
         qCWarning(kuesa, "Channel doesn't have components");
@@ -447,15 +495,10 @@ AnimationParser::channelFromJson(const QJsonObject &channelObject) const
 std::tuple<bool, ChannelMapping>
 AnimationParser::mappingFromJson(const QJsonObject &channelObject) const
 {
-    const QJsonObject &targetObject = channelObject[KEY_TARGET].toObject();
-    const QString &path = targetObject[KEY_PATH].toString();
+    const QJsonObject targetObject = channelObject.value(KEY_TARGET).toObject();
+    const QString path = targetObject.value(KEY_PATH).toString();
 
-    // TODO If we find a weight mapper, return a default constructed mapping
-    // Qt3D doesn't support morph targets yet
-    if (path == QStringLiteral("weights"))
-        return std::make_tuple(true, ChannelMapping());
-
-    const QJsonValue &nodeValue = targetObject[KEY_NODE];
+    const QJsonValue nodeValue = targetObject.value(KEY_NODE);
     ChannelMapping mapping;
 
     if (nodeValue.isUndefined()) {
@@ -485,9 +528,9 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
     for (const QJsonValue &animationValue : animationsArray) {
 
         m_samplers.clear();
-        const QJsonObject &animationObject = animationValue.toObject();
-        const QJsonValue &channelsValue = animationObject[KEY_CHANNELS];
-        const QJsonValue &samplersValue = animationObject[KEY_SAMPLERS];
+        const QJsonObject animationObject = animationValue.toObject();
+        const QJsonValue channelsValue = animationObject.value(KEY_CHANNELS);
+        const QJsonValue samplersValue = animationObject.value(KEY_SAMPLERS);
 
         if (channelsValue.isUndefined()) {
             qCWarning(kuesa, "Missing channels array");
@@ -499,8 +542,8 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
             return false;
         }
 
-        const QJsonArray &channelsArray = channelsValue.toArray();
-        const QJsonArray &samplersArray = samplersValue.toArray();
+        const QJsonArray channelsArray = channelsValue.toArray();
+        const QJsonArray samplersArray = samplersValue.toArray();
 
         // Check Sampler Objects have a correct structure
         for (const auto &samplerValue : samplersArray) {
@@ -546,7 +589,7 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
 
         Animation animation;
         animation.clipData = clipData;
-        animation.name = animationObject[KEY_NAME].toString();
+        animation.name = animationObject.value(KEY_NAME).toString();
 
         // Channel Mappings
         for (const auto &channelValue : channelsArray) {
@@ -557,13 +600,6 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
                 qCWarning(kuesa, "An animation mapping is incorrect");
                 return false;
             }
-
-            // TODO Weights mappings are default constructed.
-            // Detect them with the targetNodeId default value and discard them so we don't try to play them
-            // Qt3D doesn't support morph targets yet
-            if (mapping.targetNodeId == -1)
-                continue;
-
             animation.mappings.push_back(mapping);
         }
 

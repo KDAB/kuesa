@@ -26,8 +26,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.11
+import QtQuick 2.12
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.12 as QQC2
 import "controls" as Controls
 import QtGraphicalEffects 1.0
 
@@ -50,6 +51,7 @@ Item {
     property alias showSkybox: showSkyboxSwitch.checked
     property alias exposure: exposureSlider.value
     property alias useOpacityMask: useOpacityMaskSwitch.checked
+    property alias useBloomEffect: useBloomEffectSwitch.checked
     property color carBaseColorFactor: "white"
     property alias idleAnimationRunning: idleAnimation.running
 
@@ -61,14 +63,16 @@ Item {
         openHoodSwitch.checked = false
         useOpacityMaskSwitch.checked = false
         showSkyboxSwitch.checked = false
+        useBloomEffectSwitch.checked = false
+        bloomThreshold.value = .27
+        bloomPasses.value = 2
     }
 
     Item {
         id: menu
 
-        property int expandedWidth: Math.min(Controls.SharedAttributes.ldpi * 3, mainRoot.width / 3)
-        property real switchWidth: Math.floor( Math.min((expandedWidth - Controls.SharedAttributes.defaultSpacing * 4) / 3, Controls.SharedAttributes.ldpi * 1.3) ) - 1
-        property real radioButtonWidth: Math.floor( Math.min( (expandedWidth - Controls.SharedAttributes.defaultSpacing * 4) / 3, Controls.SharedAttributes.ldpi * 1.3) ) - 10
+        property int expandedWidth: 260
+        property real switchWidth: 90
 
         width: menuIcon.expanded ? expandedWidth : 0
         height: parent.height
@@ -133,13 +137,13 @@ Item {
 
             Rectangle {
                 anchors.fill: parent
-                color: "#33000000"
+                color: "#33ffffff"
 
                 Image {
                     fillMode: Image.Tile
                     source: "noise.png"
                     anchors.fill: parent
-                    opacity: 0.8
+                    opacity: 0.6
                 }
             }
         }
@@ -154,9 +158,9 @@ Item {
             height: parent.height
 
             Flickable {
-                y: Controls.SharedAttributes.ldpi * 0.75
-                width: menu.expandedWidth - Math.ceil(Controls.SharedAttributes.ldpi / 10) * 2
-                x: Math.ceil(Controls.SharedAttributes.ldpi / 10)
+                y: 55
+                width: menu.expandedWidth - 10
+                x: 5
                 height: parent.height - y
                 clip: true
                 contentHeight: controlArea.height
@@ -177,9 +181,9 @@ Item {
                             font.pixelSize: Controls.SharedAttributes.largeFontSize
                         }
 
-                        Rectangle{
+                        Rectangle {
                             width: parent.width
-                            height: Math.ceil(Controls.SharedAttributes.ldpi / 150)
+                            height: 1
                             color: "#70ffffff"
                         }
 
@@ -205,27 +209,24 @@ Item {
                                 id: openHoodSwitch
                                 text: "Open Hood"
                                 checked: false
-                                width: menu.switchWidth
                             }
 
                             Controls.LabeledSwitch {
                                 id: openLeftDoorSwitch
                                 text: "Left Door"
                                 checked: false
-                                width: menu.switchWidth
                             }
 
                             Controls.LabeledSwitch {
                                 id: openRightDoorSwitch
                                 text: "Right Door"
                                 checked: false
-                                width: menu.switchWidth
                             }
                         }
                     }
 
                     Item {
-                        height: Controls.SharedAttributes.ldpi / 10
+                        height: 10
                         width: 1
                     }
 
@@ -240,7 +241,7 @@ Item {
 
                         Rectangle {
                             width: parent.width
-                            height: Math.ceil(Controls.SharedAttributes.ldpi / 150)
+                            height: 1
                             color: "#70ffffff"
                         }
 
@@ -249,8 +250,9 @@ Item {
                             text: "Exposure: " + parseFloat(Math.round(exposureSlider.value * 100) / 100).toFixed(2)
                             minimumValue: -5.0
                             maximumValue: 5
-                            value: 2.5
+                            value: 1.0
                             width: parent.width
+
                         }
 
                         Item {
@@ -271,7 +273,7 @@ Item {
 
                             Controls.LabeledRadioButton {
                                 id: envPinkSunrise
-                                width: menu.radioButtonWidth
+
                                 text: "Pink Sunrise"
                                 exclusiveGroup: radioButonsGroup
                                 checked: true
@@ -279,14 +281,14 @@ Item {
 
                             Controls.LabeledRadioButton {
                                 id: envNeuerZollhof
-                                width: menu.radioButtonWidth
+
                                 text: "Neuer Zollhof"
                                 exclusiveGroup: radioButonsGroup
                             }
 
                             Controls.LabeledRadioButton {
                                 id: envStudioSmall04
-                                width: menu.radioButtonWidth
+
                                 text: "KDAB Studio"
                                 exclusiveGroup: radioButonsGroup
                             }
@@ -311,7 +313,7 @@ Item {
                     }
 
                     Item {
-                        height: Controls.SharedAttributes.ldpi / 10
+                        height: 10
                         width: 1
                     }
 
@@ -326,7 +328,7 @@ Item {
 
                         Rectangle {
                             width: parent.width
-                            height: Math.ceil(Controls.SharedAttributes.ldpi / 150)
+                            height: 1
                             color: "#70ffffff"
                         }
 
@@ -358,10 +360,72 @@ Item {
                         }
                     }
 
+                    Item {
+                        height: 10
+                        width: 1
+                    }
+
+                    Controls.GroupBox {
+                        width: parent.width
+
+                        Item {
+                            height: useBloomEffectSwitch.implicitHeight
+                            width: parent.width
+
+                            Controls.StyledLabel {
+                                text: "Bloom effect"
+                                font.pixelSize: Controls.SharedAttributes.largeFontSize
+                                font.weight: Font.ExtraLight
+                                anchors {
+                                    left: parent.left
+                                    verticalCenter: parent.verticalCenter
+                                }
+                            }
+
+                            Controls.StyledSwitch {
+                                id: useBloomEffectSwitch
+                                checked: false
+                                width: menu.switchWidth
+                                anchors {
+                                    right: parent.right
+                                    bottom: parent.bottom
+                                }
+                            }
+                        }
+
+                        Rectangle {
+                            width: parent.width
+                            height: 1
+                            color: "#70ffffff"
+                        }
+
+                        Controls.LabeledSlider {
+                            id: bloomThreshold
+                            text: "th: " + parseFloat(bloomThreshold.value).toFixed(2)
+                            value: sceneContent.bloomEffect.threshold
+                            onValueChanged: if (value !== sceneContent.bloomEffect.threshold)
+                                                sceneContent.bloomEffect.threshold = bloomThreshold.value
+                            width: parent.width
+                        }
+
+                        Controls.LabeledSlider {
+                            id: bloomPasses
+                            text: "pass: " + bloomPasses.value
+                            minimumValue: 0
+                            maximumValue: 8
+                            stepSize: 1
+                            snapMode: QQC2.Slider.SnapAlways
+                            value: sceneContent.bloomEffect.blurPassCount
+                            onValueChanged: if (value !== sceneContent.bloomEffect.blurPassCount)
+                                                sceneContent.bloomEffect.blurPassCount = bloomPasses.value
+                            width: parent.width
+                        }
+                    }
+
 
                     Item {
-                        height: Controls.SharedAttributes.ldpi / 10
-                        width: 10
+                        height: 10
+                        width: 1
                     }
                 }
             }
@@ -378,7 +442,7 @@ Item {
 
     Item {
         id: menuIcon
-        width: Math.ceil(Controls.SharedAttributes.ldpi / 3.5)
+        width: 30
         height: Math.ceil(width * 0.9)
         x: width / 2
         y: Math.ceil(width * 0.75)
@@ -394,12 +458,12 @@ Item {
         Rectangle {
             id: rect1
             width: parent.width * (1 + (-rotation / 200))
-            y: -rotation / height
+
             height:  Math.ceil(width / 6)
             radius: height
             color: "#cccccc"
-            rotation: parent.expanded? -0.25 * Controls.SharedAttributes.ldpi : 0
-
+            rotation: parent.expanded? -24 : 0
+            y: -rotation/150*parent.width
             Behavior on rotation { NumberAnimation {duration: 250; easing.type: Easing.OutCirc } }
         }
 
@@ -422,7 +486,7 @@ Item {
             radius: height
             color: "#cccccc"
             rotation: -rect1.rotation
-            y: -rotation/height
+            anchors.bottomMargin: rect1.y
         }
     }
 
@@ -445,6 +509,8 @@ Item {
         id: idleAnimation
         running: true
         anchors.fill: parent
+
+        minWidth: menu.expandedWidth
 
         onReset: root.reset()
     }

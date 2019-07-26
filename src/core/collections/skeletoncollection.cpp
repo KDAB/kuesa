@@ -34,23 +34,24 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::SkeletonCollection
  * \inheaderfile Kuesa/SkeletonCollection
- * \brief A collection of assets of type Qt3DCore::QAbstractSkeleton
+ * \brief A collection of assets of type Qt3DCore::QAbstractSkeleton.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
- * Kuesa::SkeletonCollection manages a set of Qt3DCore::QAbstractSkeleton assets.
+ * Kuesa::SkeletonCollection manages a set of Qt3DCore::QAbstractSkeleton
+ * assets.
  */
 
 /*!
  * \fn SkeletonCollection::add
  *
- * Adds an \a asset to the collection with key \name.
+ * Adds an \a asset to the collection with key \a name.
  *
  * If the asset has no parent, it will be reparented to the collection.
  *
- * If an asset is already registered with the same name, it will be removed from the collection
- * and deleted if parented to the collection.
+ * If an asset is already registered with the same name, it will be removed
+ * from the collection and deleted if parented to the collection.
  *
  */
 

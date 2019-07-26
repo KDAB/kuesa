@@ -39,10 +39,10 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 
 /*!
- * \class FullScreenQuad
+ * \class Kuesa::FullScreenQuad
  * \inheaderfile Kuesa/FullScreenQuad
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \brief FullScreenQuad is a convenience Qt3DCore::QEntity subclass
  * use to create a full screen quad.
  *
@@ -56,7 +56,8 @@ namespace Kuesa {
  * \brief FullScreenQuad::FullScreenQuad
  * \param material A material to be aggregated to the quad entity.
  *
- * This material can be used to implement a gradient color background or a screen space effect
+ *This material \a material can be used to implement a gradient color
+ *background or a screen space effect
  *
  * \param parent The parent node for the quad entity.
  */

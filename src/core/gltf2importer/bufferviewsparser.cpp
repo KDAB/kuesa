@@ -42,10 +42,10 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 namespace {
-const QLatin1String KEY_BUFFER = QLatin1Literal("buffer");
-const QLatin1String KEY_BYTEOFFSET = QLatin1Literal("byteOffset");
-const QLatin1String KEY_BYTELENGTH = QLatin1Literal("byteLength");
-const QLatin1String KEY_BYTESTRIDE = QLatin1Literal("byteStride");
+const QLatin1String KEY_BUFFER = QLatin1String("buffer");
+const QLatin1String KEY_BYTEOFFSET = QLatin1String("byteOffset");
+const QLatin1String KEY_BYTELENGTH = QLatin1String("byteLength");
+const QLatin1String KEY_BYTESTRIDE = QLatin1String("byteStride");
 } // namespace
 
 Q_LOGGING_CATEGORY(bufferviewsparser, "BufferViewsParser")
@@ -59,9 +59,11 @@ BufferView::BufferView()
 }
 
 /*!
- * \class BufferViewsParser
+ * \class Kuesa::GLTF2Import::BufferViewsParser
  *
- * \brief Parses a GLTF2 JSON BufferView description and return a QVector of BufferView.
+ * \brief Parses a GLTF2 JSON BufferView description and return a QVector of
+ * BufferView.
+ * \internal
  */
 
 BufferViewsParser::BufferViewsParser()
@@ -73,6 +75,7 @@ BufferViewsParser::BufferViewsParser()
  *
  * If the buffer view references a buffer that does not exists in the context,
  * will return false.
+ * \internal
  */
 bool BufferViewsParser::parse(const QJsonArray &bufferViewsArray, GLTF2Context *context)
 {

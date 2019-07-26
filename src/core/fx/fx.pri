@@ -29,15 +29,21 @@ INCLUDEPATH += $$PWD
 HEADERS += \
     $$PWD/abstractpostprocessingeffect.h \
     $$PWD/fullscreenquad.h \
+    $$PWD/fxutils_p.h \
     $$PWD/gaussianblureffect.h \
     $$PWD/thresholdeffect.h \
     $$PWD/bloomeffect.h \
-    $$PWD/opacitymask.h
+    $$PWD/depthoffieldeffect.h \
+    $$PWD/opacitymask.h \
+    $$PWD/tonemappingandgammacorrectioneffect.h
 
 SOURCES += \
     $$PWD/abstractpostprocessingeffect.cpp \
     $$PWD/fullscreenquad.cpp \
+    $$PWD/fxutils.cpp \
     $$PWD/gaussianblureffect.cpp \
     $$PWD/thresholdeffect.cpp \
     $$PWD/bloomeffect.cpp \
-    $$PWD/opacitymask.cpp
+    $$PWD/depthoffieldeffect.cpp \
+    $$PWD/opacitymask.cpp \
+    $$PWD/tonemappingandgammacorrectioneffect.cpp

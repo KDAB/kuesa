@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- tonemapping.qdoc -->
+  <title>Kuesa ToneMapping QML Example | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td >Kuesa ToneMapping QML Example</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Kuesa ToneMapping QML Example</h1>
+<span class="subtitle"></span>
+<pre class="qml">
+
+  <span class="comment">/*
+      SceneEntity.qml
+
+      This file is part of Kuesa.
+
+      Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+      Author: Robert Brock &lt;robert.brock@kdab.com&gt;
+
+      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+      LICENSE.KUESA.ENTERPRISE file.
+
+      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU Affero General Public License as
+      published by the Free Software Foundation, either version 3 of the
+      License, or (at your option) any later version.
+
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Affero General Public License for more details.
+
+      You should have received a copy of the GNU Affero General Public License
+      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+  */</span>
+
+  import Qt3D.Core 2.12
+  import Qt3D.Render 2.12
+  import Qt3D.Input 2.12
+  import Qt3D.Extras 2.12
+  import QtQuick 2.12
+
+  import Kuesa 1.1 as <a href="kuesa.html">Kuesa</a>
+  import Kuesa.Effects 1.1 as KuesaFX
+  import KuesaDemo 1.0 as KuesaDemo
+
+  <span class="type">Kuesa</span>.SceneEntity {
+      <span class="name">id</span>: <span class="name">root3D</span>
+
+      property <span class="type">string</span> <span class="name">toneMappingAlgorithmName</span>: <span class="string">&quot;None&quot;</span>
+      property <span class="type">string</span> <span class="name">envMapFormat</span>: (<span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;osx&quot;</span> <span class="operator">||</span> <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;ios&quot;</span> <span class="operator">||</span> <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;android&quot;</span> <span class="operator">||</span> <span class="name">_isES2</span>) ? <span class="string">&quot;_16f&quot;</span> : <span class="string">&quot;&quot;</span>
+      property <span class="type">int</span> <span class="name">screenWidth</span>
+      property <span class="type">int</span> <span class="name">screenHeight</span>
+
+      property <span class="type">double</span> <span class="name">exposure</span>: <span class="number">1.7</span>
+      property <span class="type">bool</span> <span class="name">rotating</span>: <span class="number">false</span>
+      property <span class="type">bool</span> <span class="name">lightRotating</span>: <span class="number">true</span>
+
+      property <span class="type">var</span> <span class="name">__winSize</span>: <span class="name">Qt</span>.<span class="name">size</span>(<span class="name">_view</span>.<span class="name">width</span>, <span class="name">_view</span>.<span class="name">height</span>)
+
+      <span class="type">Kuesa</span>.Skybox {
+          <span class="comment">// Optional: Use the irradiance instead of the radiance for a simple blurry background</span>
+          <span class="name">baseName</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise&quot;</span> <span class="operator">+</span> <span class="name">envMapFormat</span> <span class="operator">+</span> <span class="string">&quot;_radiance&quot;</span>
+          <span class="name">extension</span>: <span class="string">&quot;.dds&quot;</span>
+      }
+
+      <span class="name">components</span>: [
+          <span class="type">RenderSettings</span> {
+              <span class="name">activeFrameGraph</span>: <span class="name">Kuesa</span>.ForwardRenderer {
+                  <span class="name">id</span>: <span class="name">frameGraph</span>
+                  <span class="name">camera</span>: <span class="name">cameraAsset</span>.<span class="name">node</span> ? <span class="name">cameraAsset</span>.<span class="name">node</span> : <span class="name">fallbackCamera</span>
+                  <span class="name">clearColor</span>: <span class="name">Qt</span>.<span class="name">rgba</span>(<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">1.0</span>)
+                  <span class="name">exposure</span>: <span class="name">root3D</span>.<span class="name">exposure</span>
+                  <span class="name">toneMappingAlgorithm</span>: {
+                      <span class="keyword">if</span> (<span class="name">toneMappingAlgorithmName</span> <span class="operator">==</span> <span class="string">&quot;Filmic&quot;</span>)
+                          <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Filmic</span>
+                      <span class="keyword">if</span> (<span class="name">toneMappingAlgorithmName</span> <span class="operator">==</span> <span class="string">&quot;Reinhard&quot;</span>)
+                          <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Reinhard</span>
+                      <span class="keyword">if</span> (<span class="name">toneMappingAlgorithmName</span> <span class="operator">==</span> <span class="string">&quot;Uncharted&quot;</span>)
+                          <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Uncharted</span>
+                      <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">None</span>
+                  }
+              }
+          },
+          <span class="type">InputSettings</span> { },
+          <span class="type">EnvironmentLight</span> {
+              <span class="name">irradiance</span>: <span class="name">TextureLoader</span> {
+                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise&quot;</span> <span class="operator">+</span> <span class="name">envMapFormat</span> <span class="operator">+</span> <span class="string">&quot;_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">root3D</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+
+                  <span class="name">minificationFilter</span>: <span class="name">Texture</span>.<span class="name">LinearMipMapLinear</span>
+                  <span class="name">magnificationFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+                  <span class="type">wrapMode</span> {
+                      <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                      <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                  }
+                  <span class="name">generateMipMaps</span>: <span class="number">false</span>
+              }
+              <span class="name">specular</span>: <span class="name">TextureLoader</span> {
+                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise&quot;</span> <span class="operator">+</span> <span class="name">envMapFormat</span> <span class="operator">+</span> <span class="string">&quot;_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">root3D</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+
+                  <span class="name">minificationFilter</span>: <span class="name">Texture</span>.<span class="name">LinearMipMapLinear</span>
+                  <span class="name">magnificationFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+                  <span class="type">wrapMode</span> {
+                      <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                      <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                  }
+                  <span class="name">generateMipMaps</span>: <span class="number">false</span>
+              }
+          }
+      ]
+
+      <span class="type">Entity</span> {
+          <span class="type">Transform</span> {
+              <span class="name">id</span>: <span class="name">transform</span>
+              property <span class="type">real</span> <span class="name">angle</span>: <span class="number">0.0</span>
+
+              readonly property <span class="type">real</span> <span class="name">radianAngle</span>: <span class="name">angle</span> <span class="operator">*</span> <span class="number">2</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">PI</span> <span class="operator">/</span> <span class="number">360</span>
+              readonly property <span class="type">real</span> <span class="name">radius</span>: <span class="number">10</span>
+              readonly property <span class="type">real</span> <span class="name">x</span>: <span class="name">radius</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">cos</span>(<span class="name">radianAngle</span>)
+              readonly property <span class="type">real</span> <span class="name">y</span>: <span class="number">0</span>
+              readonly property <span class="type">real</span> <span class="name">z</span>: <span class="name">radius</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">sin</span>(<span class="name">radianAngle</span>)
+
+              <span class="name">scale</span>: <span class="number">10</span>
+              <span class="name">translation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="name">x</span>, <span class="name">y</span>, <span class="name">z</span>)
+
+              NumberAnimation on <span class="name">angle</span> {
+                  <span class="name">loops</span>: <span class="name">Animation</span>.<span class="name">Infinite</span>
+                  <span class="name">duration</span>: <span class="number">10000</span>
+                  <span class="name">from</span>: <span class="number">0</span>
+                  <span class="name">to</span>: <span class="number">360</span>
+                  <span class="name">paused</span>: <span class="name">root3D</span>.<span class="name">lightRotating</span>
+              }
+          }
+
+          <span class="type">Kuesa</span>.PointLight {
+              <span class="name">id</span>: <span class="name">pointLight</span>
+              <span class="name">color</span>: <span class="string">&quot;white&quot;</span>
+              <span class="name">intensity</span>: <span class="number">0.2</span>
+          }
+          <span class="name">components</span>: [ <span class="name">pointLight</span>, <span class="name">transform</span> ]
+      }
+
+      <span class="type">Camera</span> {
+          <span class="name">id</span>: <span class="name">fallbackCamera</span>
+          <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">7.0</span>)
+          <span class="name">upVector</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>)
+          <span class="name">exposure</span>: <span class="name">root3D</span>.<span class="name">exposure</span>
+          <span class="name">viewCenter</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)
+          <span class="name">aspectRatio</span>: <span class="name">root3D</span>.<span class="name">__winSize</span>.<span class="name">width</span> <span class="operator">/</span> <span class="name">root3D</span>.<span class="name">__winSize</span>.<span class="name">height</span>
+      }
+
+      <span class="type">KuesaDemo</span>.OrbitCameraController {
+          <span class="name">id</span>: <span class="name">controller</span>
+          <span class="name">camera</span>: <span class="name">frameGraph</span>.<span class="name">camera</span>
+          <span class="name">windowSize</span>: <span class="name">root3D</span>.<span class="name">__winSize</span>
+      }
+
+      <span class="type">Kuesa</span>.AnimationPlayer {
+          <span class="name">id</span>: <span class="name">helmetSpin</span>
+          <span class="name">sceneEntity</span>: <span class="name">root3D</span>
+          <span class="name">clip</span>: <span class="string">&quot;damagedHelmet_Action&quot;</span>
+          <span class="name">loops</span>: <span class="name">Kuesa</span>.<span class="name">AnimationPlayer</span>.<span class="name">Infinite</span>
+          <span class="name">running</span>: <span class="name">root3D</span>.<span class="name">rotating</span>
+      }
+
+      <span class="type">Kuesa</span>.Asset {
+          <span class="name">id</span>: <span class="name">cameraAsset</span>
+          <span class="name">name</span>: <span class="name">root3D</span>.<span class="name">cameras</span>.<span class="name">names</span>.<span class="name">length</span> ? <span class="name">root3D</span>.<span class="name">cameras</span>.<span class="name">names</span>[<span class="number">0</span>] : <span class="string">&quot;&quot;</span>
+          <span class="name">collection</span>: <span class="name">root3D</span>.<span class="name">cameras</span>
+          <span class="name">onNodeChanged</span>: {
+              <span class="keyword">if</span> (<span class="name">node</span>)
+                  <span class="name">node</span>.<span class="name">aspectRatio</span> <span class="operator">=</span> <span class="name">root3D</span>.<span class="name">__winSize</span>.<span class="name">width</span> <span class="operator">/</span> <span class="name">root3D</span>.<span class="name">__winSize</span>.<span class="name">height</span>
+          }
+      }
+
+      <span class="type">Kuesa</span>.Asset {
+          <span class="name">id</span>: <span class="name">materialsAsset</span>
+          <span class="name">name</span>: <span class="string">&quot;Material_MR&quot;</span>
+          <span class="name">collection</span>: <span class="name">root3D</span>.<span class="name">materials</span>
+      }
+
+      <span class="type">Kuesa</span>.GLTF2Importer {
+          <span class="name">id</span>: <span class="name">gltf2importer</span>
+          <span class="name">sceneEntity</span>: <span class="name">root3D</span>
+          <span class="name">assignNames</span>: <span class="number">true</span>
+          <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;RotatingHelmet.gltf&quot;</span>
+          <span class="name">options</span>.generateTangents: <span class="number">true</span>
+      }
+
+  }
+
+</pre>

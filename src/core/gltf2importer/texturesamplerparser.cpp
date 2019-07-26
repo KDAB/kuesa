@@ -37,10 +37,10 @@ QT_BEGIN_NAMESPACE
 using namespace Kuesa::GLTF2Import;
 
 namespace {
-const QLatin1String KEY_MIN_FILTER = QLatin1Literal("minFilter");
-const QLatin1String KEY_MAG_FILTER = QLatin1Literal("magFilter");
-const QLatin1String KEY_WRAP_S = QLatin1Literal("wrapS");
-const QLatin1String KEY_WRAP_T = QLatin1Literal("wrapT");
+const QLatin1String KEY_MIN_FILTER = QLatin1String("minFilter");
+const QLatin1String KEY_MAG_FILTER = QLatin1String("magFilter");
+const QLatin1String KEY_WRAP_S = QLatin1String("wrapS");
+const QLatin1String KEY_WRAP_T = QLatin1String("wrapT");
 
 bool isValidMinification(const int v)
 {

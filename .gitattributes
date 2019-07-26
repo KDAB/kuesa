@@ -1,0 +1,5 @@
+*.bin filter=lfs diff=lfs merge=lfs -text
+tests/auto/assets/cube_no_normals.bin filter=lfs diff=lfs merge=lfs -text
+tests/auto/assets/cube_no_normals.gltf filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text

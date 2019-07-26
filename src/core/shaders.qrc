@@ -25,5 +25,32 @@
         <file>shaders/es2/skinned.vert</file>
         <file>shaders/es2/kuesa_metalrough.inc.frag</file>
         <file>shaders/es2/light.inc.frag</file>
+        <file>shaders/brdfLUT.png</file>
+        <file>shaders/gl3/dof.frag</file>
+        <file>shaders/es2/dof.frag</file>
+        <file>shaders/es3/dof.frag</file>
+        <file>shaders/graphs/metallicroughness.vert.json</file>
+        <file>shaders/gl3/kuesa_morphtargets_normal.inc.vert</file>
+        <file>shaders/gl3/kuesa_morphtargets_position.inc.vert</file>
+        <file>shaders/gl3/kuesa_morphtargets_weights.inc.vert</file>
+        <file>shaders/gl3/kuesa_morphtargets_tangent.inc.vert</file>
+        <file>shaders/es3/kuesa_morphtargets_normal.inc.vert</file>
+        <file>shaders/es3/kuesa_morphtargets_position.inc.vert</file>
+        <file>shaders/es3/kuesa_morphtargets_tangent.inc.vert</file>
+        <file>shaders/es3/kuesa_morphtargets_weights.inc.vert</file>
+        <file>shaders/es2/kuesa_morphtargets_normal.inc.vert</file>
+        <file>shaders/es2/kuesa_morphtargets_position.inc.vert</file>
+        <file>shaders/es2/kuesa_morphtargets_tangent.inc.vert</file>
+        <file>shaders/es2/kuesa_morphtargets_weights.inc.vert</file>
+        <file>shaders/graphs/unlit.frag.json</file>
+        <file>shaders/gl3/kuesa_metallicRoughnessShaderData.inc.frag</file>
+        <file>shaders/es2/kuesa_metallicRoughnessShaderData.inc.frag</file>
+        <file>shaders/es3/kuesa_metallicRoughnessShaderData.inc.frag</file>
+        <file>shaders/gl3/kuesa_unlitShaderData.inc.frag</file>
+        <file>shaders/es2/kuesa_unlitShaderData.inc.frag</file>
+        <file>shaders/es3/kuesa_unlitShaderData.inc.frag</file>
+        <file>shaders/es2/passthrough.vert</file>
+        <file>shaders/graphs/gammacorrection.frag.json</file>
+        <file>shaders/es2/kuesa_gaussianblur.inc.frag</file>
     </qresource>
 </RCC>

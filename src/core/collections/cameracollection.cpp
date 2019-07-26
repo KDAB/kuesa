@@ -35,9 +35,9 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::CameraCollection
  * \inheaderfile Kuesa/CameraCollection
- * \brief A collection of assets of type Qt3DRender::QCamera
+ * \brief A collection of assets of type Qt3DRender::QCamera.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::CameraCollection manages a set of Qt3DRender::QCamera assets.
@@ -46,7 +46,7 @@ using namespace Kuesa;
 /*!
  * \fn CameraCollection::add
  *
- * Adds an \a asset to the collection with key \name.
+ * Adds an \a asset to the collection with key \a name.
  *
  * If the asset has no parent, it will be reparented to the collection.
  *

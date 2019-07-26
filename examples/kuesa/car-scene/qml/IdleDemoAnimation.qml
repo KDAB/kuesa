@@ -32,6 +32,7 @@ import "controls" as Controls
 Item {
     id: root
     property alias running: mainAnimation.running
+    property int minWidth: width
     signal reset()
 
     function restartTimer() {
@@ -159,7 +160,7 @@ Item {
 
         // Hide opacity mask
         PropertyAction { targets: useOpacityMaskSwitch; property: "checked"; value: false }
-        PauseAnimation { duration: 5000 }
+        PauseAnimation { duration: 2000 }
 
         // Stop the engine
         PropertyAction { target: speedC; property: "value"; value: 0 }
@@ -167,9 +168,22 @@ Item {
 
         // Hide control panel
         ScriptAction { script: menuIcon.expanded = false }
+        PauseAnimation { duration: 1500 }
+
+        // Bloom effect
+        SequentialAnimation {
+            PropertyAction { targets: envStudioSmall04; property: "checked"; value: true }
+            PauseAnimation { duration: 1000 }
+            ScriptAction { script: titlePanel.showTitle("Bloom Effect") }
+            PauseAnimation { duration: 1000 }
+            PropertyAction { targets: useBloomEffectSwitch; property: "checked"; value: true }
+            PauseAnimation { duration: 8000 }
+            PropertyAction { targets: useBloomEffectSwitch; property: "checked"; value: false }
+            PropertyAction { targets: envPinkSunrise; property: "checked"; value: true }
+        }
 
         // Wait a bit
-        PauseAnimation { duration: 2000 }
+        PauseAnimation { duration: 5000 }
 
         loops: Animation.Infinite
     }
@@ -188,12 +202,14 @@ Item {
 
         anchors {
             bottom: parent.bottom
-            bottomMargin: 2 * Controls.SharedAttributes.ldpi
+            bottomMargin: 180
             horizontalCenter: parent.horizontalCenter
             horizontalCenterOffset: menu.width / 2
         }
 
         function showTitle(title) {
+            if (titleLabel.font.pixelSize < 20)
+                return
             titleLabel.text = title
             titleAnimation.running = true
         }
@@ -209,7 +225,7 @@ Item {
             y: 10
             width: implicitWidth
             color: "#99ffffff"
-            font.pixelSize: Controls.SharedAttributes.ldpi
+            font.pixelSize: (root.width - root.minWidth) / 15
         }
     }
 

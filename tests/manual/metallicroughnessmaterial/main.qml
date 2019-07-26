@@ -33,17 +33,18 @@ import Qt3D.Animation 2.10
 import Qt3D.Extras 2.10
 import Kuesa 1.1 as Kuesa
 
-Entity {
+Kuesa.SceneEntity {
     id: scene
 
     components: [
         RenderSettings {
             Kuesa.ForwardRenderer {
                 camera: mainCamera
+                toneMappingAlgorithm: _controller.toneMappingAlgorithm
             }
         },
         InputSettings { },
-        PointLight {
+        Kuesa.PointLight {
             color: "black"
             intensity: 0
         },
@@ -97,20 +98,23 @@ Entity {
                 source: "qrc:/assets/models/powerup/powerup.obj"
             },
             Kuesa.MetallicRoughnessMaterial {
-                baseColorFactor: _controller.baseColorFactor
-                baseColorMap: _controller.useBaseColorMap ? baseColorTexture : null
-                metallicFactor: _controller.metallicFactor
-                roughnessFactor: _controller.roughnessFactor
-                metalRoughMap: _controller.useMetalRoughMap ? metalRoughTexture : null
-                normalScale: _controller.normalScale
-                normalMap: _controller.useNormalMap ? normalTexture : null
-                ambientOcclusionMap: _controller.useAmbientOcclusionMap ? ambientOcclusionTexture : null
-                emissiveFactor: _controller.emissiveFactor
-                emissiveMap: _controller.useEmissiveMap ? emissiveTexture : null
-                textureTransform: _controller.textureTransform
-                usingColorAttribute: _controller.useColorAttribute
-                doubleSided: _controller.doubleSided
-                toneMappingAlgorithm: _controller.toneMappingAlgorithm
+                effect: Kuesa.MetallicRoughnessEffect {
+                    usingColorAttribute: _controller.useColorAttribute
+                    doubleSided: _controller.doubleSided
+                }
+                metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                    baseColorFactor: _controller.baseColorFactor
+                    baseColorMap: _controller.useBaseColorMap ? baseColorTexture : null
+                    metallicFactor: _controller.metallicFactor
+                    roughnessFactor: _controller.roughnessFactor
+                    metalRoughMap: _controller.useMetalRoughMap ? metalRoughTexture : null
+                    normalScale: _controller.normalScale
+                    normalMap: _controller.useNormalMap ? normalTexture : null
+                    ambientOcclusionMap: _controller.useAmbientOcclusionMap ? ambientOcclusionTexture : null
+                    emissiveFactor: _controller.emissiveFactor
+                    emissiveMap: _controller.useEmissiveMap ? emissiveTexture : null
+                    textureTransform: _controller.textureTransform
+                }
             }
         ]
     }

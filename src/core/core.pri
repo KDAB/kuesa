@@ -28,10 +28,20 @@ INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/sceneentity.cpp \
+    $$PWD/gltf2material.cpp \
+    $$PWD/gltf2materialproperties.cpp \
     $$PWD/metallicroughnesseffect.cpp \
     $$PWD/metallicroughnessmaterial.cpp \
+    $$PWD/metallicroughnessshaderdata.cpp \
+    $$PWD/metallicroughnessproperties.cpp \
+    $$PWD/unliteffect.cpp \
+    $$PWD/unlitmaterial.cpp \
+    $$PWD/unlitshaderdata.cpp \
+    $$PWD/unlitproperties.cpp \
     $$PWD/animationplayer.cpp \
-    $$PWD/skybox.cpp
+    $$PWD/skybox.cpp \
+    $$PWD/morphcontroller.cpp \
+    $$PWD/effectslibrary.cpp
 
 HEADERS += \
     $$PWD/sceneentity.h \
@@ -40,10 +50,20 @@ HEADERS += \
     $$PWD/kuesa_global.h \
     $$PWD/kuesa_global_p.h \
     $$PWD/kuesa_utils_p.h \
+    $$PWD/gltf2material.h \
+    $$PWD/gltf2materialproperties.h \
     $$PWD/metallicroughnesseffect.h \
     $$PWD/metallicroughnessmaterial.h \
+    $$PWD/metallicroughnessshaderdata_p.h \
+    $$PWD/metallicroughnessproperties.h \
+    $$PWD/unliteffect.h \
+    $$PWD/unlitmaterial.h \
+    $$PWD/unlitproperties.h \
+    $$PWD/unlitshaderdata_p.h \
     $$PWD/animationplayer.h \
-    $$PWD/skybox.h
+    $$PWD/skybox.h \
+    $$PWD/morphcontroller.h \
+    $$PWD/effectslibrary_p.h
 
 qtConfig(draco) {
     HEADERS += $$PWD/draco_prefix_p.h

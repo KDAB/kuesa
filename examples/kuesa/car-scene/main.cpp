@@ -26,6 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <qtkuesa-config.h>
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QQmlEngine>
@@ -33,9 +34,19 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include <QStandardPaths>
+#include <QDir>
+#include <QDirIterator>
+#include <QResource>
+
+#ifdef Q_OS_ANDROID
+#include <QOpenGLContext>
+#endif
 
 int main(int ac, char **av)
 {
+    // clang-format off
+    Q_INIT_RESOURCE(shared_utils);
+
     bool isES2 = false;
     {
         // Set OpenGL requirements
@@ -43,6 +54,7 @@ int main(int ac, char **av)
 #ifndef QT_OPENGL_ES_2
         format.setVersion(4, 1);
         format.setProfile(QSurfaceFormat::CoreProfile);
+        format.setSamples(4);
 #else
 #ifndef QT_OPENGL_ES_3
         isES2 = true;
@@ -54,7 +66,18 @@ int main(int ac, char **av)
         QSurfaceFormat::setDefaultFormat(format);
     }
 
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(ac, av);
+
+    QDir resourceDir(app.applicationDirPath() + QStringLiteral("/resources"));
+    QDirIterator it(resourceDir, QDirIterator::IteratorFlag::NoIteratorFlags);
+    while (it.hasNext()) {
+        QString path = it.next();
+        if (!QResource::registerResource(path))
+            qWarning() << "Failed to load binary resources: " << path;
+        else
+            qDebug() << "Loaded binary resources: " << path;
+    }
 
     QCommandLineParser parser;
     parser.setApplicationDescription("KDAB Kuesa Demo");
@@ -85,6 +108,16 @@ int main(int ac, char **av)
 
 #ifdef Q_OS_ANDROID
     const QString assetsPrefix = QStringLiteral("assets:/");
+
+    // Qt builds for android may not define QT_OPENGL_ES_3
+    // Therefore we need a runtime check to see whether we can use ES 3.0 or not
+    QOpenGLContext ctx;
+    ctx.setFormat(QSurfaceFormat::defaultFormat());
+    if (ctx.create()) {
+        const QSurfaceFormat androidFormat = ctx.format();
+        isES2 = (androidFormat.majorVersion() == 2);
+    }
+
 #elif defined(Q_OS_IOS)
     const QString assetsPrefix = QString(QStringLiteral("file://%1/Library/Application Support/")).arg(QGuiApplication::applicationDirPath());
 #elif defined(Q_OS_OSX)
@@ -93,17 +126,27 @@ int main(int ac, char **av)
     const QString assetsPrefix = QStringLiteral("qrc:/");
 #endif
 
+#if defined(KUESA_DRACO_COMPRESSION)
+    const QString modelSuffix = QStringLiteral("-draco");
+#else
+    const QString modelSuffix = QStringLiteral("");
+#endif
+
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
     bool screenHeightScale = true;
 #else
     bool screenHeightScale = parser.isSet(heightScaleOption);
 #endif
 
+#ifdef KUESA_BUILD_ROOT
+    view.engine()->addImportPath(QStringLiteral(KUESA_BUILD_ROOT "/qml"));
+#endif
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_isES2"), isES2);
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_view"), &view);
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_screenHeightScale"), screenHeightScale);
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_isFullScreen"), parser.isSet(fullscreenOption));
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_assetsPrefix"), assetsPrefix);
+    view.engine()->rootContext()->setContextProperty(QStringLiteral("_modelSuffix"), modelSuffix);
 
 #ifdef Q_OS_IOS
     view.setFlags(view.flags() | Qt::MaximizeUsingFullscreenGeometryHint);

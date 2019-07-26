@@ -34,9 +34,9 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::LayerCollection
  * \inheaderfile Kuesa/LayerCollection
- * \brief A collection of assets of type Qt3DRender::QLayer
+ * \brief A collection of assets of type Qt3DRender::QLayer.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::LayerCollection manages a set of Qt3DRender::QLayer assets.
@@ -45,20 +45,20 @@ using namespace Kuesa;
 /*!
  * \fn LayerCollection::add
  *
- * Adds an \a asset to the collection with key \name.
+ * Adds an \a asset to the collection with key \a name.
  *
  * If the asset has no parent, it will be reparented to the collection.
  *
- * If an asset is already registered with the same name, it will be removed from the collection
- * and deleted if parented to the collection.
+ * If an asset is already registered with the same name, it will be removed
+ * from the collection and deleted if parented to the collection.
  *
  */
 
 /*!
  * \fn LayerCollection::find
  *
- * Returns the asset previously registered with the collection with \a name, if it exists.
- * Otherwise, returns nullptr.
+ * Returns the asset previously registered with the collection with \a name, if
+ * it exists. Otherwise, returns nullptr.
  *
  */
 

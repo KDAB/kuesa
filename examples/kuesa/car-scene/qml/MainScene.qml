@@ -31,14 +31,16 @@ import Qt3D.Render 2.11
 import Qt3D.Input 2.0
 import Qt3D.Extras 2.11
 import Qt3D.Animation 2.10
-
-import Kuesa 1.0 as Kuesa
-import Kuesa.Effects 1.0 as Effects
-
 import QtQuick 2.11 as QQ2
+
+//! [0]
+import Kuesa 1.1 as Kuesa
+import Kuesa.Effects 1.1 as Effects
+
 
 Kuesa.SceneEntity {
     id: scene
+//! [0]
 
     property int screenWidth
     property int screenHeight
@@ -55,8 +57,10 @@ Kuesa.SceneEntity {
     property alias showSkybox: skybox.enabled
     property double exposure: 0.0
     property bool useOpacityMask: false
+    property bool useBloomEffect: false
     property color carBaseColorFactor: "white"
     property bool es2: _isES2
+    property alias bloomEffect: bloomFx
 
     Entity {
         id: d
@@ -78,19 +82,24 @@ Kuesa.SceneEntity {
         }
     }
 
+//![2.4]
     QQ2.Binding {
         target: carMaterial.node
         property: "baseColorFactor"
         value: scene.carBaseColorFactor
     }
+//![2.4]
 
+//![2.3]
     Kuesa.Asset {
         id: carMaterial
         collection: scene.materials
         name: "Mat_CarPaint"
         onNodeChanged: scene.carBaseColorFactor = node.baseColorFactor
     }
+//![2.3]
 
+//! [4.1]
     Kuesa.AnimationPlayer {
         id: hoodAnimator
         sceneEntity: scene
@@ -111,6 +120,7 @@ Kuesa.SceneEntity {
         clock: Clock { }
         clip: "DoorRAction"
     }
+//! [4.1]
 
     Kuesa.AnimationPlayer {
         id: sweepCamCenterAnimation
@@ -142,17 +152,21 @@ Kuesa.SceneEntity {
         }
     }
 
+//! [2.1]
     Kuesa.Asset {
         id: sweepCam
         collection: scene.cameras
         name: "SweepCam"
     }
+//! [2.1]
 
+//! [2.2]
     QQ2.Binding {
         target: sweepCam.node
         property: "aspectRatio"
         value: mainCamera.aspectRatio
     }
+//! [2.2]
 
     onOpenHoodChanged: {
         d.flipAnimation(openHood, hoodAnimator)
@@ -166,21 +180,37 @@ Kuesa.SceneEntity {
         d.flipAnimation(openRightDoor, rightDoorAnimator)
     }
 
+    // let this point light wander around with the camera to create some shiny lighting
+    Entity {
+        id: pointLightEntity
+        parent: frameGraph.camera
+        components: [
+            Kuesa.PointLight {
+            }
+        ]
+    }
+
     components: [
+//! [3.2]
         RenderSettings {
             // FrameGraph
             activeFrameGraph: Kuesa.ForwardRenderer {
                 id: frameGraph
                 camera: scene.animated && sweepCam.node ? sweepCam.node : mainCamera
-                postProcessingEffects: useOpacityMask ? [opacityMaskEffect] : []
+                postProcessingEffects: {
+                    var effects = []
+                    if (useBloomEffect)
+                        effects.push(bloomFx)
+                    if (useOpacityMask)
+                        effects.push(opacityMaskEffect)
+                    return effects
+                }
                 backToFrontSorting: true
+                toneMappingAlgorithm: Effects.ToneMappingAndGammaCorrectionEffect.Reinhard
             }
         },
+//! [3.2]
         InputSettings { },
-        DirectionalLight {
-            worldDirection: frameGraph.camera ? frameGraph.camera.viewVector : Qt.vector3d(0, -1, 0)
-            intensity: 0.05
-        },
         EnvironmentLight {
             irradiance: TextureLoader {
                 source: _assetsPrefix + environmentMap + d.envMapFormat + "_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")
@@ -201,6 +231,7 @@ Kuesa.SceneEntity {
         }
     ]
 
+//! [3.1]
     Effects.OpacityMask {
         id: opacityMaskEffect
         mask: TextureLoader {
@@ -210,14 +241,25 @@ Kuesa.SceneEntity {
         premultipliedAlpha: true // This is what Scene3D/QtQuick expects
     }
 
+    Effects.BloomEffect {
+        id: bloomFx
+        threshold: 0.34
+        blurPassCount: 2
+    }
+//! [3.1]
+
+    QQ2.Binding {
+        target: frameGraph
+        property: "exposure"
+        value: scene.exposure + scene.environmentExposure
+    }
+
     Camera {
         id: mainCamera
         fieldOfView: scene.explodedView ? 55 : 35
         position: Qt.vector3d(4.5, 1.5, 4.5)
         upVector: Qt.vector3d(0, 1, 0)
         viewCenter: Qt.vector3d(0, .5, 0)
-
-        exposure: scene.exposure + scene.environmentExposure
 
         QQ2.Behavior on fieldOfView { QQ2.NumberAnimation { duration: 750; easing.type: QQ2.Easing.OutQuad } }
     }
@@ -227,11 +269,13 @@ Kuesa.SceneEntity {
         enabled: !scene.animated
     }
 
+//! [1]
     // Loads GLTF 2.0 asset
     Kuesa.GLTF2Importer {
         sceneEntity: scene
-        source: _assetsPrefix + "DodgeViper.gltf"
+        source: _assetsPrefix + "DodgeViper" + _modelSuffix + ".gltf"
     }
+//! [1]
 
     Kuesa.Skybox {
         id: skybox

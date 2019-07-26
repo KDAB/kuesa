@@ -28,6 +28,7 @@
 
 #include "thresholdeffect.h"
 #include "fullscreenquad.h"
+#include "fxutils_p.h"
 #include <Qt3DRender/qtexture.h>
 #include <Qt3DRender/qrenderpassfilter.h>
 #include <Qt3DRender/qcameraselector.h>
@@ -52,8 +53,9 @@ using namespace Kuesa;
  * \class Kuesa::ThresholdEffect
  * \inheaderfile Kuesa/ThresholdEffect
  * \inmodule Kuesa
- * \since 1.0
- * \brief Post-processing effect showing only pixels brighter than a specified value
+ * \since Kuesa 1.0
+ * \brief Post-processing effect showing only pixels brighter than a specified
+ * value.
  *
  * ThresholdEffect is a post-processing effect that passes through any pixel
  * above a certain brightness value and sets all others to black.
@@ -66,15 +68,35 @@ using namespace Kuesa;
 
     This value is used to determine how bright a pixel needs to be to pass
     the threshold.
+
+ \table
+ \header
+     \li Threshold 0.12
+     \li Threshold 0.35
+ \row
+     \li \inlineimage fx/threshold/t12.png
+     \li \inlineimage fx/threshold/t35.png
+ \endtable
+
 */
 
 /*!
-    \qmlproperty ThresholdEffect::threshold
+    \qmlproperty float ThresholdEffect::threshold
 
     \brief the brightness value used as a cut-off
 
     This value is used to determine how bright a pixel needs to be to pass
     the threshold.
+
+ \table
+ \header
+     \li Threshold 0.12
+     \li Threshold 0.35
+ \row
+     \li \inlineimage fx/threshold/t12.png
+     \li \inlineimage fx/threshold/t35.png
+ \endtable
+
 */
 
 ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
@@ -92,37 +114,36 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
     auto effect = new Qt3DRender::QEffect;
     thresholdMaterial->setEffect(effect);
 
-    auto technique = new Qt3DRender::QTechnique;
-    effect->addTechnique(technique);
+    const QString graphPath = QStringLiteral("qrc:/kuesa/shaders/graphs/threshold.frag.json");
+    const QString passFilterValue = QStringLiteral("KuesaThresholdPass");
+    const QString passFilterName = QStringLiteral("passName");
 
-    technique->graphicsApiFilter()->setApi(Qt3DRender::QGraphicsApiFilter::OpenGL);
-    technique->graphicsApiFilter()->setMajorVersion(3);
-    technique->graphicsApiFilter()->setMinorVersion(2);
-    technique->graphicsApiFilter()->setProfile(Qt3DRender::QGraphicsApiFilter::CoreProfile);
+    auto *gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
+                                                3, 2,
+                                                Qt3DRender::QGraphicsApiFilter::CoreProfile,
+                                                QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"),
+                                                graphPath,
+                                                passFilterName, passFilterValue);
+    effect->addTechnique(gl3Technique);
 
-    auto techniqueFilterKey = new Qt3DRender::QFilterKey;
-    techniqueFilterKey->setName(QStringLiteral("renderingStyle"));
-    techniqueFilterKey->setValue(QStringLiteral("forward"));
-    technique->addFilterKey(techniqueFilterKey);
+    auto *es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
+                                                3, 0,
+                                                Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                                QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"),
+                                                graphPath,
+                                                passFilterName, passFilterValue);
+    effect->addTechnique(es3Technique);
 
-    auto renderPass = new Qt3DRender::QRenderPass;
-    auto shaderProg = new Qt3DRender::QShaderProgram(renderPass);
-    shaderProg->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"))));
+    auto *es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
+                                                2, 0,
+                                                Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                                QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"),
+                                                graphPath,
+                                                passFilterName, passFilterValue);
+    effect->addTechnique(es2Technique);
 
-    auto shaderBuilder = new Qt3DRender::QShaderProgramBuilder(shaderProg);
-    shaderBuilder->setShaderProgram(shaderProg);
-    shaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/threshold.frag.json")));
-
-    renderPass->setShaderProgram(shaderProg);
-
-    auto passFilterKey = new Qt3DRender::QFilterKey;
-    passFilterKey->setName(QStringLiteral("KuesaThresholdPass"));
-    renderPass->addFilterKey(passFilterKey);
-
-    renderPass->addParameter(m_textureParam);
-    renderPass->addParameter(m_thresholdParameter);
-
-    technique->addRenderPass(renderPass);
+    effect->addParameter(m_textureParam);
+    effect->addParameter(m_thresholdParameter);
 
     auto thresholdQuad = new FullScreenQuad(thresholdMaterial, m_rootFrameGraphNode.data());
     m_layer = thresholdQuad->layer();
@@ -132,10 +153,9 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
     //
     auto thresholdLayerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
     thresholdLayerFilter->addLayer(thresholdQuad->layer());
-    auto thresholdRenderPassFilter = new Qt3DRender::QRenderPassFilter(thresholdLayerFilter);
-    auto filterKey = new Qt3DRender::QFilterKey;
-    filterKey->setName(QStringLiteral("KuesaThresholdPass"));
-    thresholdRenderPassFilter->addMatch(filterKey);
+
+    //create RenderPassFilter parented to layerFilter
+    FXUtils::createRenderPassFilter(passFilterName, passFilterValue, thresholdLayerFilter);
 }
 
 /*!
@@ -159,17 +179,17 @@ float ThresholdEffect::threshold() const
 }
 
 /*!
- * Sets the threshold value.
+ * Sets the threshold value to \a threshold.
  *
  * \sa ThresholdEffect::threshold
  */
-void ThresholdEffect::setThreshold(float newThreshold)
+void ThresholdEffect::setThreshold(float threshold)
 {
-    if (qFuzzyCompare(threshold(), newThreshold))
+    if (qFuzzyCompare(this->threshold(), threshold))
         return;
 
-    m_thresholdParameter->setValue(newThreshold);
-    emit thresholdChanged(newThreshold);
+    m_thresholdParameter->setValue(threshold);
+    emit thresholdChanged(threshold);
 }
 
 QVector<Qt3DRender::QLayer *> ThresholdEffect::layers() const
@@ -178,7 +198,7 @@ QVector<Qt3DRender::QLayer *> ThresholdEffect::layers() const
 }
 
 /*!
- * Sets the input texture for the effect.
+ * Sets the input texture for the effect to \a texture.
  *
  * \sa AbstractPostProcessingEffect::setInputTexture
  */

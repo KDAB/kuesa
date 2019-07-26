@@ -36,7 +36,11 @@ SUBDIRS = \
     effectcollection \
     sceneentity \
     textureimagecollection \
-    assetpipelineeditor
+    gltfEditor \
+    morphcontroller \
+    gltf2importer \
+    gltf2options \
+    tonemappingandgammacorrectioneffect
 
 #installed_cmake.depends = cmake
 
@@ -51,7 +55,9 @@ qtConfig(private_tests) {
         gltfparser \
         gltfexporter \
         layerparser \
+        lightparser \
         imageparser \
+        tangentgenerator \
         texturesamplerparser \
         textureparser \
         animationparser \
@@ -61,5 +67,14 @@ qtConfig(private_tests) {
         postfxlistextension \
         assetitem \
         forwardrenderer \
-        uri
+        uri \
+        metallicroughnesseffect \
+        metallicroughnessproperties \
+        parseroptions \
+        gltf2materialproperties \
+        unlitproperties \
+        meshparser_utils \
+        normalgenerator \
+        gltf2material \
+        effectslibrary
 }

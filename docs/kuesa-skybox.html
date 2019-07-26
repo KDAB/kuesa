@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- skybox.cpp -->
+  <title>Skybox Class | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-cpp.html#">C++ Classes</a></td><td >Skybox</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Skybox Class</h1>
+<span class="small-subtitle">(<a href="index.html#">Kuesa::Skybox</a>)<br/></span>
+<!-- $$$Skybox-brief -->
+<p><a href="index.html#">Kuesa::SkyBox</a> is a convenience Qt3DCore::QEntity subclass used to insert a skybox in a 3D scene. Unlike Qt3DExtras::SkyboxEntity, its implementation is compatible with the Kuesa provided default framegraph. <a href="#details">More...</a></p>
+<!-- @@@Skybox -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/Skybox&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-skybox.html">Skybox</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.0.</p>
+<ul>
+<li><a href="kuesa-skybox-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesa-skybox.html#baseName">baseName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesa-skybox.html#extension">extension</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-skybox.html#setBaseName">setBaseName</a></b>(const QString &amp;<i>baseName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-skybox.html#setExtension">setExtension</a></b>(const QString &amp;<i>extension</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-skybox.html#baseName-prop">baseNameChanged</a></b>(const QString &amp;<i>path</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-skybox.html#extension-prop">extensionChanged</a></b>(const QString &amp;<i>extension</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$Skybox-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Be sure to disable frustum culling in the FrameGraph through which the skybox rendering happens.</p>
+<p><b>Note: </b>Please note that you shouldn't try to render a skybox with an orthographic projection.</p><p><a href="index.html#">Kuesa::Skybox</a> uses a <a href="kuesa-skybox.html#baseName">baseName</a> and an extension for the textures that will be used for the skybox. Depending on the skybox extension, Kuesa will create different textures to be used as skybox.</p>
+<ul>
+<li>*.dds Kuesa tries to load a texture called <a href="kuesa-skybox.html#baseName">baseName</a> + extension and uses a Qt3DRender::QTextureLoader to generate the texture</li>
+<li>Anything else: Kuesa tries to load 6 different textures and creates a Qt3DRender::QTextureCubeMap from them<ul>
+<li><a href="kuesa-skybox.html#baseName">baseName</a> + _posx + extension</li>
+<li><a href="kuesa-skybox.html#baseName">baseName</a> + _negx + extension</li>
+<li><a href="kuesa-skybox.html#baseName">baseName</a> + _posy + extension</li>
+<li><a href="kuesa-skybox.html#baseName">baseName</a> + _negy + extension</li>
+<li><a href="kuesa-skybox.html#baseName">baseName</a> + _posz + extension</li>
+<li><a href="kuesa-skybox.html#baseName">baseName</a> + _negz + extension</li>
+</ul>
+</li>
+</ul>
+</div>
+<p><b>See also </b><a href="kuesa-skybox.html#extension">extension</a> and <a href="kuesa-skybox.html#baseName">baseName</a>.</p>
+<!-- @@@Skybox -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$setBaseName -->
+<h3 class="fn" id="setBaseName"><a name="setBaseName"></a><code>[slot] </code><span class="type">void</span> Skybox::<span class="name">setBaseName</span>(const <span class="type">QString</span> &amp;<i>baseName</i>)</h3>
+<p>Sets the base name for the texture(s) that will be used as skybox to <i>baseName</i>.</p>
+<p><b>Note:</b> Setter function for property <a href="">baseName</a>. </p><p><b>See also </b><a href="kuesa-skybox.html#baseName">baseName</a>().</p>
+<!-- @@@setBaseName -->
+<!-- $$$setExtension -->
+<h3 class="fn" id="setExtension"><a name="setExtension"></a><code>[slot] </code><span class="type">void</span> Skybox::<span class="name">setExtension</span>(const <span class="type">QString</span> &amp;<i>extension</i>)</h3>
+<p>Sets the <i>extension</i> for the texture(s) that will be used as skybox</p>
+<p><b>Note:</b> Setter function for property <a href="">extension</a>. </p><p><b>See also </b><a href="kuesa-skybox.html#extension">extension</a>().</p>
+<!-- @@@setExtension -->
+<!-- $$$baseName -->
+<h3 class="fn" id="baseName"><a name="baseName"></a><span class="type">QString</span> Skybox::<span class="name">baseName</span>() const</h3>
+<p>Skybox::baseName The skybox base name</p>
+<p><b>Note:</b> Getter function for property <a href="">baseName</a>. </p><p><b>See also </b><a href="kuesa-skybox.html#setBaseName">setBaseName</a>().</p>
+<!-- @@@baseName -->
+<!-- $$$extension -->
+<h3 class="fn" id="extension"><a name="extension"></a><span class="type">QString</span> Skybox::<span class="name">extension</span>() const</h3>
+<p>Skybox::extension The skybox extension</p>
+<p><b>Note:</b> Getter function for property <a href="">extension</a>. </p><p><b>See also </b><a href="kuesa-skybox.html#setExtension">setExtension</a>().</p>
+<!-- @@@extension -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

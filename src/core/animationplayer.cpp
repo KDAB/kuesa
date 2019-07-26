@@ -44,8 +44,8 @@ using namespace Qt3DAnimation;
  * \class Kuesa::AnimationPlayer
  * \inheaderfile Kuesa/AnimationPlayer
  * \inmodule Kuesa
- * \since 1.0
- * \brief Play animations defined in glTF files
+ * \since Kuesa 1.0
+ * \brief Play animations defined in glTF files.
  *
  * AnimationPlayer is a utility class designed to easily control animations
  * where the clip and mapping data is stored in a collections (typically loaded
@@ -64,26 +64,27 @@ using namespace Qt3DAnimation;
  */
 
 /*!
- * \qmltype AnimationPlayer
- * \inqmlmodule Kuesa
- * \since 1.0
- * \instantiates Kuesa::AnimationPlayer
- * \brief Play animations defined in glTF files
- *
- * AnimationPlayer is a utility class designed to easily control animations
- * where the clip and mapping data is stored in a collections (typically loaded
- * from glTF files).
- *
- * Clip and mapper data are referenced by name. These will be used to look up
- * actual assets in the appropriate collection.
- *
- * AnimationPlayer internally uses an instance of Qt3DAnimation::QClipAnimator
- * and mirrors it's api.
- *
- * Additionally, AnimationPlayer can be used to map clip data to other target objects
- * than those specified in a mapper. For example, an animation where the clip
- * data affect transformation properties, can be applied to any Qt3DCore::QTransform
- * instance, not just the one specified in the mapper data.
+    \qmltype AnimationPlayer
+    \inherits Kuesa::AnimationPlayer
+    \inqmlmodule Kuesa
+    \since Kuesa 1.0
+    \instantiates Kuesa::AnimationPlayer
+    \brief Play animations defined in glTF files.
+
+    AnimationPlayer is a utility class designed to easily control animations
+    where the clip and mapping data is stored in a collections (typically loaded
+    from glTF files).
+
+    Clip and mapper data are referenced by name. These will be used to look up
+    actual assets in the appropriate collection.
+
+    AnimationPlayer internally uses an instance of Qt3DAnimation::QClipAnimator
+    and mirrors it's api.
+
+    Additionally, AnimationPlayer can be used to map clip data to other target objects
+    than those specified in a mapper. For example, an animation where the clip
+   data affect transformation properties, can be applied to any Qt3DCore::QTransform
+    instance, not just the one specified in the mapper data.
 */
 
 /*!
@@ -133,8 +134,6 @@ using namespace Qt3DAnimation;
     \brief the name of the clip asset.
 
     This will be used to lookup the asset in the AnimationClipCollection instance of the SceneEntity.
-
-    \sa GLTF2Importer::clip()
  */
 
 /*!
@@ -151,8 +150,6 @@ using namespace Qt3DAnimation;
     This will be used to lookup the asset in the AnimationMappingCollection instance of the SceneEntity.
 
     If empty (default), the name of the clip will be used as it is a common convention that they should match.
-
-    \sa GLTF2Importer::mapper()
  */
 
 /*!
@@ -169,8 +166,6 @@ using namespace Qt3DAnimation;
     \brief controls if the animation is running or not
 
     This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.
-
-    \sa GLTF2Importer::isRunning()
  */
 
 /*!
@@ -181,31 +176,33 @@ using namespace Qt3DAnimation;
  */
 
 /*!
-    \property AnimationPlayer::loopCount
+    \property AnimationPlayer::loops
     \brief controls the number of time the animation should repeat.
 
     If the value is 0 (default), the animation will run only once.
 
-    If the value is AnimationPlayer::Infinite, the animation will loop indefinitly until explicitly stopped.
+    If the value is AnimationPlayer::Infinite, the animation will loop
+    indefinitly until explicitly stopped.
 
     Otherwise, it will repeat the specified number of times.
 
-    This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.
-
-    \sa GLTF2Importer::loopCount()
+    This reflects the state of the internal Qt3DAnimation::QClipAnimator
+    instance.
  */
 
 /*!
-    \qmlproperty int AnimationPlayer::loopCount
+    \qmlproperty int AnimationPlayer::loops
     \brief controls the number of time the animation should repeat.
 
     If the value is 0 (default), the animation will run only once.
 
-    If the value is AnimationPlayer::Infinite, the animation will loop indefinitly until explicitly stopped.
+    If the value is AnimationPlayer::Infinite, the animation will loop
+    indefinitly until explicitly stopped.
 
     Otherwise, it will repeat the specified number of times.
 
-    This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.
+    This reflects the state of the internal Qt3DAnimation::QClipAnimator
+    instance.
  */
 
 /*!
@@ -216,8 +213,6 @@ using namespace Qt3DAnimation;
     direction (like reversing by setting negative playBackRate values) of the animation.
 
     This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.
-
-    \sa GLTF2Importer::clock()
  */
 
 /*!
@@ -235,8 +230,6 @@ using namespace Qt3DAnimation;
     \brief progress of the animation as a uniform value between 0. and 1.
 
     This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.
-
-    \sa GLTF2Importer::normalizedTime()
  */
 
 /*!
@@ -358,16 +351,20 @@ QVector<Qt3DCore::QNode *> AnimationPlayer::targets() const
 }
 
 /*!
- * \brief AnimationPlayer::addTarget adds a node as a target for the animation
+ * \brief AnimationPlayer::addTarget adds a node \a target as a target for the
+ * animation
  *
- * If targets are added to the list, the mapping defined by the AnimationPlayer::mapper
- * property will be ignored and the clip data will be mapped to the specified target nodes.
+ * If targets are added to the list, the mapping defined by the
+ * AnimationPlayer::mapper property will be ignored and the clip data will be
+ * mapped to the specified target nodes.
  *
- * The target node needs to have properties which match the ones defined by the clips.
+ * The target node needs to have properties which match the ones defined by the
+ * clips.
  *
- * \note When specifying targets, a valid object matching the specified AnimationPlayer::mapper
- * property must exist (even though it won't be affected by the animation) as it will contain
- * information required to establish valid mappings for the new targets.
+ * \note When specifying targets, a valid object matching the specified
+ * AnimationPlayer::mapper property must exist (even though it won't be
+ * affected by the animation) as it will contain information required to
+ * establish valid mappings for the new targets.
  *
  * \note Kuesa::SceneEntity::transformForEntity can be useful to map animations that control
  * transformations from one entity to another. The returned transform can be used as a

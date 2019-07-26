@@ -32,7 +32,10 @@ DEFINES += QT_NO_FOREACH
 
 DEFINES += QT_BUILD_KUESA_LIB
 
-QT += qml 3dcore 3dcore-private 3drender 3dquickextras 3danimation
+# Avoid windows defines
+win32:DEFINES += WIN32_LEAN_AND_MEAN
+
+QT += qml 3dcore 3dcore-private 3drender 3drender-private 3dquickextras 3danimation
 
 include($$OUT_PWD/qtkuesa-config.pri)
 qtConfig(draco) {
@@ -45,6 +48,7 @@ include(collections/collections.pri)
 include(gltf2importer/gltf2importer.pri)
 include(gltf2exporter/gltf2exporter.pri)
 include(framegraphes/framegraphes.pri)
+include(lights/lights.pri)
 include(fx/fx.pri)
 include(../3rdparty/mikktspace/mikktspace.pri)
 
@@ -53,7 +57,7 @@ RESOURCES += \
 
 OTHER_FILES += \
     shaders/gl3/simple.vert \
-    shaders/graphs/metallicroughness.qt3d \
+    shaders/graphs/metallicroughness.graph \
     configure.pri \
     configure.json
 

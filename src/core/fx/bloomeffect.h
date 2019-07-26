@@ -56,7 +56,6 @@ class KUESASHARED_EXPORT BloomEffect : public AbstractPostProcessingEffect
 {
     Q_OBJECT
 
-    Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
     Q_PROPERTY(float threshold READ threshold WRITE setThreshold NOTIFY thresholdChanged)
     Q_PROPERTY(int blurPassCount READ blurPassCount WRITE setBlurPassCount NOTIFY blurPassCountChanged)
 
@@ -69,24 +68,19 @@ public:
     void setSceneSize(const QSize &size) override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
 
-    float exposure() const;
     float threshold() const;
     int blurPassCount() const;
 
 public Q_SLOTS:
-    void setExposure(float exposure);
     void setThreshold(float threshold);
     void setBlurPassCount(int blurPassCount);
 
 Q_SIGNALS:
-    void exposureChanged(float exposure);
     void thresholdChanged(float threshold);
     void blurPassCountChanged(int blurPassCount);
 
 private:
-    Qt3DRender::QRenderPassFilter *createRenderPassFilter(const QString &name, const QVariant &value = QVariant());
     Qt3DRender::QRenderTarget *createRenderTarget(Qt3DRender::QAbstractTexture *texture);
-    QString passName() const;
 
     FrameGraphNodePtr m_rootFrameGraphNode;
 
@@ -100,7 +94,6 @@ private:
 
     Qt3DRender::QParameter *m_sceneTextureParam;
     Qt3DRender::QParameter *m_blurredBrightTextureParam;
-    Qt3DRender::QParameter *m_exposureParam;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

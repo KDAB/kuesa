@@ -31,6 +31,7 @@
 #include <Qt3DRender/QRenderStateSet>
 #include <Qt3DRender/QColorMask>
 #include <Qt3DRender/QDepthTest>
+#include <Qt3DRender/QMultiSampleAntiAliasing>
 
 QT_USE_NAMESPACE
 
@@ -55,6 +56,8 @@ ZFillRenderStage::ZFillRenderStage(Qt3DCore::QNode *parent)
     auto depthTest = new Qt3DRender::QDepthTest;
     depthTest->setDepthFunction(Qt3DRender::QDepthTest::Less);
     states->addRenderState(depthTest);
+    auto msaa = new Qt3DRender::QMultiSampleAntiAliasing();
+    states->addRenderState(msaa);
 }
 
 ZFillRenderStage::~ZFillRenderStage()

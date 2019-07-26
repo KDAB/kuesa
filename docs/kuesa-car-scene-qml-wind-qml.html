@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- car-scene.qdoc -->
+  <title>Kuesa Car-Scene QML Example | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td >Kuesa Car-Scene QML Example</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Kuesa Car-Scene QML Example</h1>
+<span class="subtitle"></span>
+<pre class="qml">
+
+  <span class="comment">/*
+      MainScene.qml
+
+      This file is part of Kuesa.
+
+      Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+      Author: Nuno Fernandes Pinheiro &lt;nuno@kdab.com&gt;
+
+      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+      LICENSE.KUESA.ENTERPRISE file.
+
+      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU Affero General Public License as
+      published by the Free Software Foundation, either version 3 of the
+      License, or (at your option) any later version.
+
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Affero General Public License for more details.
+
+      You should have received a copy of the GNU Affero General Public License
+      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+  */</span>
+
+  import QtQuick 2.11
+
+  <span class="type">Rectangle</span> {
+      <span class="name">id</span>: <span class="name">wind</span>
+      <span class="name">color</span>: <span class="string">&quot;black&quot;</span>
+      property <span class="type">bool</span> <span class="name">animating</span>: <span class="name">visible</span>
+
+      <span class="type">Image</span> {
+          <span class="name">id</span>: <span class="name">bg</span>
+          <span class="name">source</span>: <span class="string">&quot;bg.png&quot;</span>
+          <span class="name">anchors</span>.fill: <span class="name">parent</span>
+          <span class="name">opacity</span>: <span class="number">0.5</span>
+      }
+
+      <span class="keyword">function</span> <span class="name">randomDuration</span>() {
+          <span class="keyword">return</span> <span class="name">Math</span>.<span class="name">random</span>() <span class="operator">*</span> <span class="number">6000</span> <span class="operator">+</span> <span class="number">4000</span>
+      }
+
+      <span class="comment">// right</span>
+      <span class="type">Image</span> {
+          <span class="name">id</span>: <span class="name">t1</span>
+          <span class="name">source</span>: <span class="string">&quot;t1.png&quot;</span>
+          <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">4</span>
+          <span class="name">fillMode</span>: <span class="name">Image</span>.<span class="name">PreserveAspectFit</span>
+          <span class="name">anchors</span>.right: <span class="name">parent</span>.<span class="name">right</span>
+          <span class="name">anchors</span>.rightMargin: -<span class="name">width</span> <span class="operator">/</span> <span class="number">20</span>
+          <span class="name">rotation</span>: <span class="number">180</span>
+
+          NumberAnimation on <span class="name">y</span> {
+              <span class="name">duration</span>: <span class="name">randomDuration</span>()
+              <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">InOutCubic</span>
+              <span class="name">to</span>: <span class="name">Math</span>.<span class="name">random</span>() <span class="operator">*</span> <span class="name">wind</span>.<span class="name">height</span> <span class="operator">-</span> <span class="name">t1</span>.<span class="name">height</span> <span class="operator">*</span> <span class="number">.2</span>
+              <span class="name">onStopped</span>: {
+                  <span class="name">duration</span> <span class="operator">=</span> <span class="name">randomDuration</span>()
+                  <span class="name">to</span> <span class="operator">=</span> <span class="name">Math</span>.<span class="name">random</span>() <span class="operator">*</span> <span class="name">wind</span>.<span class="name">height</span> <span class="operator">-</span> <span class="name">t1</span>.<span class="name">height</span> <span class="operator">*</span> <span class="number">.2</span>
+                  <span class="name">running</span> <span class="operator">=</span> <span class="name">Qt</span>.<span class="name">binding</span>(<span class="keyword">function</span>() { <span class="keyword">return</span> <span class="name">animating</span> })
+              }
+              <span class="name">running</span>: <span class="name">animating</span>
+          }
+      }
+
+      <span class="comment">// top</span>
+      <span class="type">Image</span> {
+          <span class="name">id</span>: <span class="name">t2</span>
+          <span class="name">source</span>: <span class="string">&quot;t2.png&quot;</span>
+          <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">5</span>
+          <span class="name">fillMode</span>: <span class="name">Image</span>.<span class="name">PreserveAspectFit</span>
+          <span class="name">y</span>: -<span class="name">height</span> <span class="operator">/</span> <span class="number">15</span>
+
+          NumberAnimation on <span class="name">x</span> {
+              <span class="name">duration</span>: <span class="name">randomDuration</span>()
+              <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">InOutCubic</span>
+              <span class="name">to</span>: <span class="name">Math</span>.<span class="name">random</span>() <span class="operator">*</span> <span class="name">wind</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.8</span> <span class="operator">-</span> <span class="name">t2</span>.<span class="name">width</span>
+              <span class="name">onStopped</span>: {
+                  <span class="name">duration</span> <span class="operator">=</span> <span class="name">randomDuration</span>()
+                  <span class="name">to</span> <span class="operator">=</span> <span class="name">Math</span>.<span class="name">random</span>() <span class="operator">*</span> <span class="name">wind</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.8</span> <span class="operator">-</span> <span class="name">t2</span>.<span class="name">width</span>
+                  <span class="name">running</span> <span class="operator">=</span> <span class="name">Qt</span>.<span class="name">binding</span>(<span class="keyword">function</span>() { <span class="keyword">return</span> <span class="name">animating</span> })
+              }
+              <span class="name">running</span>: <span class="name">animating</span>
+          }
+      }
+
+      <span class="comment">// left</span>
+      <span class="type">Image</span> {
+          <span class="name">id</span>: <span class="name">t3</span>
+          <span class="name">source</span>: <span class="string">&quot;t3.png&quot;</span>
+          <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">9</span>
+          <span class="name">fillMode</span>: <span class="name">Image</span>.<span class="name">PreserveAspectFit</span>
+          <span class="name">anchors</span>.bottom: <span class="name">parent</span>.<span class="name">bottom</span>
+
+          NumberAnimation on <span class="name">x</span> {
+              <span class="name">duration</span>: <span class="name">randomDuration</span>()
+              <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">InOutCubic</span>
+              <span class="name">to</span>: <span class="name">Math</span>.<span class="name">random</span>() <span class="operator">*</span> <span class="name">wind</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.9</span> <span class="operator">-</span> <span class="name">t3</span>.<span class="name">width</span>
+              <span class="name">onStopped</span>: {
+                  <span class="name">duration</span> <span class="operator">=</span> <span class="name">randomDuration</span>()
+                  <span class="name">to</span> <span class="operator">=</span> <span class="name">Math</span>.<span class="name">random</span>() <span class="operator">*</span> <span class="name">wind</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.9</span> <span class="operator">-</span> <span class="name">t3</span>.<span class="name">width</span>
+                  <span class="name">running</span> <span class="operator">=</span> <span class="name">Qt</span>.<span class="name">binding</span>(<span class="keyword">function</span>() { <span class="keyword">return</span> <span class="name">animating</span> })
+              }
+              <span class="name">running</span>: <span class="name">animating</span>
+          }
+      }
+  }
+
+</pre>

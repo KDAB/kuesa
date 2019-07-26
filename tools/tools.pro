@@ -26,14 +26,18 @@
 
 TEMPLATE = subdirs
 
+!uikit: SUBDIRS += \
+    assetprocessor \
+    gltfViewer
+
 !cross_compile: {
     SUBDIRS += \
-        assetpipelineeditor \
-        ddspreviewer \
-        assetprocessor
+        gltfEditor \
+        ddspreviewer
 
     !macos {
         SUBDIRS += \
             cubemaptooctahedralmap
     }
 }
+

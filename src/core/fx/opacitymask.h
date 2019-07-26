@@ -60,7 +60,7 @@ public:
     void setMask(Qt3DRender::QAbstractTexture *mask);
     Qt3DRender::QAbstractTexture *mask() const;
 
-    void setPremultipliedAlpha(bool premultiplied);
+    void setPremultipliedAlpha(bool premultipliedAlpha);
     bool premultipliedAlpha() const;
 
 Q_SIGNALS:
@@ -73,6 +73,8 @@ private:
     Qt3DRender::QLayer *m_layer;
     Qt3DRender::QShaderProgramBuilder *m_gl3ShaderBuilder;
     Qt3DRender::QShaderProgramBuilder *m_es3ShaderBuilder;
+    Qt3DRender::QShaderProgramBuilder *m_es2ShaderBuilder;
+    Qt3DRender::QRenderStateSet *m_mainRenderState;
     Qt3DRender::QRenderStateSet *m_blendRenderState;
     Qt3DRender::QParameter *m_maskParameter;
     Qt3DRender::QParameter *m_inputTextureParameter;

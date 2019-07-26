@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- car-scene.qdoc -->
+  <title>Kuesa Car-Scene QML Example | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td >Kuesa Car-Scene QML Example</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Kuesa Car-Scene QML Example</h1>
+<span class="subtitle"></span>
+<pre class="qml">
+
+  <span class="comment">/*
+      IdleDemoAnimation.qml
+
+      This file is part of Kuesa.
+
+      Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+      Author: Mike Krus &lt;mike.krus@kdab.com&gt;
+
+      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+      LICENSE.KUESA.ENTERPRISE file.
+
+      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU Affero General Public License as
+      published by the Free Software Foundation, either version 3 of the
+      License, or (at your option) any later version.
+
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU Affero General Public License for more details.
+
+      You should have received a copy of the GNU Affero General Public License
+      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+  */</span>
+
+  import QtQuick 2.11
+  import &quot;controls&quot; as Controls
+
+  <span class="type">Item</span> {
+      <span class="name">id</span>: <span class="name">root</span>
+      property <span class="type">alias</span> <span class="name">running</span>: <span class="name">mainAnimation</span>.<span class="name">running</span>
+      property <span class="type">int</span> <span class="name">minWidth</span>: <span class="name">width</span>
+      signal <span class="type">reset</span>()
+
+      <span class="keyword">function</span> <span class="name">restartTimer</span>() {
+          <span class="name">idleTimer</span>.<span class="name">restart</span>()
+          <span class="keyword">if</span> (<span class="name">mainAnimation</span>.<span class="name">running</span>) {
+              <span class="name">mainAnimation</span>.<span class="name">running</span> <span class="operator">=</span> <span class="number">false</span>
+              <span class="name">root</span>.<span class="name">reset</span>()
+          }
+      }
+
+      <span class="type">Timer</span> {
+          <span class="name">id</span>: <span class="name">idleTimer</span>
+          <span class="name">repeat</span>: <span class="number">false</span>
+          <span class="name">running</span>: <span class="number">true</span>
+          <span class="name">interval</span>: <span class="number">2</span> <span class="operator">*</span> <span class="number">60</span> <span class="operator">*</span> <span class="number">1000</span> <span class="comment">// 2 minutes</span>
+          <span class="name">onTriggered</span>: <span class="name">mainAnimation</span>.<span class="name">running</span> <span class="operator">=</span> <span class="number">true</span>
+      }
+
+      <span class="type">SequentialAnimation</span> {
+          <span class="name">id</span>: <span class="name">mainAnimation</span>
+
+          <span class="comment">// Reset everything</span>
+          <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">root</span>.<span class="name">reset</span>() }
+
+          <span class="comment">// Show control panel</span>
+          <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">menuIcon</span>.<span class="name">expanded</span> <span class="operator">=</span> <span class="number">true</span> }
+          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+          <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">titlePanel</span>.<span class="name">showTitle</span>(<span class="string">&quot;Use GLTF Cameras&quot;</span>) }
+
+          <span class="type">SequentialAnimation</span> {
+              <span class="comment">// Start the engine</span>
+              <span class="type">NumberAnimation</span> { <span class="name">target</span>: <span class="name">speedC</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">to</span>: <span class="number">10</span>; <span class="name">duration</span>: <span class="number">100</span> }
+              <span class="comment">// Wait a bit</span>
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">2500</span> }
+
+              <span class="comment">// Accelerate the engine</span>
+              <span class="type">NumberAnimation</span> { <span class="name">target</span>: <span class="name">speedC</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">to</span>: <span class="number">40</span>; <span class="name">duration</span>: <span class="number">1100</span> }
+
+              <span class="comment">// Wait a bit</span>
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1500</span> }
+          }
+
+          <span class="type">SequentialAnimation</span> {
+              <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">titlePanel</span>.<span class="name">showTitle</span>(<span class="string">&quot;Trigger GLTF Animations&quot;</span>) }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+
+              <span class="comment">// Animate the panels</span>
+              <span class="type">PropertyAction</span> { <span class="name">target</span>: <span class="name">openRightDoorSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">5000</span> }
+
+              <span class="type">PropertyAction</span> { <span class="name">target</span>: <span class="name">openRightDoorSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">false</span> }
+              <span class="type">PropertyAction</span> { <span class="name">target</span>: <span class="name">openHoodSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">2500</span> }
+              <span class="type">PropertyAction</span> { <span class="name">target</span>: <span class="name">openLeftDoorSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">5000</span> }
+
+              <span class="type">PropertyAction</span> { <span class="name">target</span>: <span class="name">openLeftDoorSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">false</span> }
+              <span class="type">PropertyAction</span> { <span class="name">target</span>: <span class="name">openHoodSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">false</span> }
+
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+          }
+
+          <span class="type">SequentialAnimation</span> {
+              <span class="comment">// Show skybox</span>
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">showSkyboxSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+              <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">titlePanel</span>.<span class="name">showTitle</span>(<span class="string">&quot;Environment Maps&quot;</span>) }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">2000</span> }
+
+              <span class="comment">// Hide control panel</span>
+              <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">menuIcon</span>.<span class="name">expanded</span> <span class="operator">=</span> <span class="number">false</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+
+              <span class="comment">// Change env map</span>
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">envNeuerZollhof</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">5000</span> }
+
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">envStudioSmall04</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">5000</span> }
+
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">envPinkSunrise</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">2000</span> }
+
+              <span class="comment">// Hide skybox</span>
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">showSkyboxSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">false</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+          }
+
+          <span class="comment">// Show opacity mask</span>
+          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+          <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">useOpacityMaskSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+          <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">titlePanel</span>.<span class="name">showTitle</span>(<span class="string">&quot;Opacity Mask&quot;</span>) }
+          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">10000</span> }
+
+          <span class="comment">// Show control panel</span>
+          <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">menuIcon</span>.<span class="name">expanded</span> <span class="operator">=</span> <span class="number">true</span> }
+
+          <span class="type">SequentialAnimation</span> {
+              <span class="name">id</span>: <span class="name">colorAnimations</span>
+
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">2000</span> }
+              <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">titlePanel</span>.<span class="name">showTitle</span>(<span class="string">&quot;Dynamic Materials&quot;</span>) }
+
+              <span class="type">ParallelAnimation</span> {
+                  <span class="type">NumberAnimation</span> { <span class="name">target</span>: <span class="name">redColor</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">to</span>: <span class="number">1.</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+                  <span class="type">NumberAnimation</span> { <span class="name">target</span>: <span class="name">greenColor</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">to</span>: <span class="number">1.</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+                  <span class="type">NumberAnimation</span> { <span class="name">target</span>: <span class="name">blueColor</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">to</span>: <span class="number">0.</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+              }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">5000</span> }
+
+              <span class="type">ParallelAnimation</span> {
+                  <span class="type">NumberAnimation</span> { <span class="name">target</span>: <span class="name">redColor</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">to</span>: <span class="number">1.</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+                  <span class="type">NumberAnimation</span> { <span class="name">target</span>: <span class="name">greenColor</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">to</span>: <span class="number">0.</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+                  <span class="type">NumberAnimation</span> { <span class="name">target</span>: <span class="name">blueColor</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">to</span>: <span class="number">0.</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+              }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">5000</span> }
+
+              <span class="type">ParallelAnimation</span> {
+                  <span class="type">NumberAnimation</span> { <span class="name">target</span>: <span class="name">redColor</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">to</span>: <span class="number">0.</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+                  <span class="type">NumberAnimation</span> { <span class="name">target</span>: <span class="name">greenColor</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">to</span>: <span class="number">0.07</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+                  <span class="type">NumberAnimation</span> { <span class="name">target</span>: <span class="name">blueColor</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">to</span>: <span class="number">0.2</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+              }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+          }
+
+          <span class="comment">// Hide opacity mask</span>
+          <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">useOpacityMaskSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">false</span> }
+          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">2000</span> }
+
+          <span class="comment">// Stop the engine</span>
+          <span class="type">PropertyAction</span> { <span class="name">target</span>: <span class="name">speedC</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">value</span>: <span class="number">0</span> }
+          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1500</span> }
+
+          <span class="comment">// Hide control panel</span>
+          <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">menuIcon</span>.<span class="name">expanded</span> <span class="operator">=</span> <span class="number">false</span> }
+          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1500</span> }
+
+          <span class="comment">// Bloom effect</span>
+          <span class="type">SequentialAnimation</span> {
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">envStudioSmall04</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+              <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">titlePanel</span>.<span class="name">showTitle</span>(<span class="string">&quot;Bloom Effect&quot;</span>) }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">useBloomEffectSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">8000</span> }
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">useBloomEffectSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">false</span> }
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">envPinkSunrise</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+          }
+
+          <span class="comment">// Wait a bit</span>
+          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">5000</span> }
+
+          <span class="name">loops</span>: <span class="name">Animation</span>.<span class="name">Infinite</span>
+      }
+
+      <span class="comment">// Title Panel &amp; Animation</span>
+      <span class="type">Rectangle</span> {
+          <span class="name">id</span>: <span class="name">titlePanel</span>
+          <span class="name">visible</span>: <span class="name">opacity</span> <span class="operator">&gt;</span> <span class="number">0</span>
+          <span class="name">opacity</span>: <span class="number">0</span>
+          <span class="name">scale</span>: <span class="number">0</span>
+          <span class="name">radius</span>: <span class="number">20</span>
+          <span class="name">color</span>: <span class="string">&quot;#33ffffff&quot;</span>
+          <span class="name">width</span>: <span class="name">childrenRect</span>.<span class="name">width</span> <span class="operator">+</span> <span class="number">20</span>
+          <span class="name">height</span>: <span class="name">childrenRect</span>.<span class="name">height</span> <span class="operator">+</span> <span class="number">20</span>
+
+          <span class="type">anchors</span> {
+              <span class="name">bottom</span>: <span class="name">parent</span>.<span class="name">bottom</span>
+              <span class="name">bottomMargin</span>: <span class="number">180</span>
+              <span class="name">horizontalCenter</span>: <span class="name">parent</span>.<span class="name">horizontalCenter</span>
+              <span class="name">horizontalCenterOffset</span>: <span class="name">menu</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+          }
+
+          <span class="keyword">function</span> <span class="name">showTitle</span>(title) {
+              <span class="keyword">if</span> (<span class="name">titleLabel</span>.<span class="name">font</span>.<span class="name">pixelSize</span> <span class="operator">&lt;</span> <span class="number">20</span>)
+                  <span class="keyword">return</span>
+              <span class="name">titleLabel</span>.<span class="name">text</span> <span class="operator">=</span> <span class="name">title</span>
+              <span class="name">titleAnimation</span>.<span class="name">running</span> <span class="operator">=</span> <span class="number">true</span>
+          }
+
+          <span class="keyword">function</span> <span class="name">dismiss</span>() {
+              <span class="name">titleAnimation</span>.<span class="name">running</span> <span class="operator">=</span> <span class="number">false</span>
+              <span class="name">opacity</span> <span class="operator">=</span> <span class="number">0</span>
+          }
+
+          <span class="type">Controls</span>.StyledLabel {
+              <span class="name">id</span>: <span class="name">titleLabel</span>
+              <span class="name">x</span>: <span class="number">10</span>
+              <span class="name">y</span>: <span class="number">10</span>
+              <span class="name">width</span>: <span class="name">implicitWidth</span>
+              <span class="name">color</span>: <span class="string">&quot;#99ffffff&quot;</span>
+              <span class="name">font</span>.pixelSize: (<span class="name">root</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">root</span>.<span class="name">minWidth</span>) <span class="operator">/</span> <span class="number">15</span>
+          }
+      }
+
+      <span class="type">SequentialAnimation</span> {
+          <span class="name">id</span>: <span class="name">titleAnimation</span>
+
+          <span class="type">ParallelAnimation</span> {
+              <span class="type">PropertyAnimation</span> { <span class="name">target</span>: <span class="name">titlePanel</span>; <span class="name">property</span>: <span class="string">&quot;opacity&quot;</span>; <span class="name">from</span>: <span class="number">.1</span>; <span class="name">to</span>: <span class="number">1.</span>; <span class="name">duration</span>: <span class="number">500</span>; <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">InOutQuad</span> }
+              <span class="type">PropertyAnimation</span> { <span class="name">target</span>: <span class="name">titlePanel</span>; <span class="name">property</span>: <span class="string">&quot;scale&quot;</span>; <span class="name">from</span>: <span class="number">.1</span>; <span class="name">to</span>: <span class="number">1.</span>; <span class="name">duration</span>: <span class="number">500</span>; <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">OutBack</span> }
+          }
+          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">3000</span> }
+          <span class="type">ParallelAnimation</span> {
+              <span class="type">PropertyAnimation</span> { <span class="name">target</span>: <span class="name">titlePanel</span>; <span class="name">property</span>: <span class="string">&quot;opacity&quot;</span>; <span class="name">to</span>: <span class="number">0.</span>; <span class="name">duration</span>: <span class="number">500</span>; <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">OutQuad</span> }
+              <span class="type">PropertyAnimation</span> { <span class="name">target</span>: <span class="name">titlePanel</span>; <span class="name">property</span>: <span class="string">&quot;scale&quot;</span>; <span class="name">to</span>: <span class="number">0.</span>; <span class="name">duration</span>: <span class="number">500</span>; <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">OutQuad</span> }
+          }
+      }
+
+      <span class="name">onRunningChanged</span>: {
+          <span class="keyword">if</span> (!<span class="name">running</span>)
+              <span class="name">titlePanel</span>.<span class="name">dismiss</span>()
+      }
+  }
+
+</pre>

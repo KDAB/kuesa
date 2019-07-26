@@ -32,6 +32,7 @@
 #include <Qt3DRender/QRenderStateSet>
 #include <Qt3DRender/QNoDepthMask>
 #include <Qt3DRender/QDepthTest>
+#include <Qt3DRender/QMultiSampleAntiAliasing>
 #include <Qt3DRender/qblendequation.h>
 #include <Qt3DRender/qblendequationarguments.h>
 
@@ -57,7 +58,6 @@ TransparentRenderStage::TransparentRenderStage(Qt3DCore::QNode *parent)
     auto depthTest = new Qt3DRender::QDepthTest;
     depthTest->setDepthFunction(Qt3DRender::QDepthTest::LessOrEqual);
     states->addRenderState(depthTest);
-    states->addRenderState(new Qt3DRender::QNoDepthMask);
 
     auto blendState = new Qt3DRender::QBlendEquation();
     blendState->setBlendFunction(Qt3DRender::QBlendEquation::Add);
@@ -66,7 +66,9 @@ TransparentRenderStage::TransparentRenderStage(Qt3DCore::QNode *parent)
     blendArgs->setSourceAlpha(Qt3DRender::QBlendEquationArguments::SourceAlpha);
     blendArgs->setDestinationRgb(Qt3DRender::QBlendEquationArguments::OneMinusSourceAlpha);
     blendArgs->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::One);
+    auto msaa = new Qt3DRender::QMultiSampleAntiAliasing;
 
+    states->addRenderState(msaa);
     states->addRenderState(blendState);
     states->addRenderState(blendArgs);
 

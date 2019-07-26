@@ -31,10 +31,13 @@
 
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
+#include <Kuesa/tonemappingandgammacorrectioneffect.h>
 #include <Qt3DRender/qframegraphnode.h>
 #include <Qt3DRender/qclearbuffers.h>
 #include <Qt3DRender/qrendertargetoutput.h>
 #include <QVector>
+
+class tst_ForwardRenderer;
 
 QT_BEGIN_NAMESPACE
 
@@ -47,12 +50,15 @@ class QFrustumCulling;
 class QNoDraw;
 class QSortPolicy;
 class QRenderTarget;
+class QBlitFramebuffer;
 } // namespace Qt3DRender
 
 namespace Kuesa {
 
-class AbstractPostProcessingEffect;
 class AbstractRenderStage;
+class OpaqueRenderStage;
+class TransparentRenderStage;
+class ZFillRenderStage;
 
 class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QFrameGraphNode
 {
@@ -66,6 +72,9 @@ class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QFrameGraphNode
     Q_PROPERTY(bool frustumCulling READ frustumCulling WRITE setFrustumCulling NOTIFY frustumCullingChanged)
     Q_PROPERTY(bool backToFrontSorting READ backToFrontSorting WRITE setBackToFrontSorting NOTIFY backToFrontSortingChanged)
     Q_PROPERTY(bool zFilling READ zFilling WRITE setZFilling NOTIFY zFillingChanged)
+    Q_PROPERTY(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
+    Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged REVISION 1)
+    Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged REVISION 1)
 
 public:
     ForwardRenderer(Qt3DCore::QNode *parent = nullptr);
@@ -80,14 +89,15 @@ public:
     bool frustumCulling() const;
     bool backToFrontSorting() const;
     bool zFilling() const;
+    float exposure() const;
+    float gamma() const;
+    ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
 
-    Q_INVOKABLE void addPostProcessingEffect(AbstractPostProcessingEffect *effect);
-    Q_INVOKABLE void removePostProcessingEffect(AbstractPostProcessingEffect *effect);
+    Q_INVOKABLE void addPostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
+    Q_INVOKABLE void removePostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
     QVector<AbstractPostProcessingEffect *> postProcessingEffects() const;
 
-    static Qt3DRender::QAbstractTexture *findRenderTargetTexture(Qt3DRender::QRenderTarget *target, Qt3DRender::QRenderTargetOutput::AttachmentPoint attachment);
-
-    QVector<AbstractRenderStage *> renderStages() const;
+    static Qt3DRender::QAbstractTexture *findRenderTargetTexture(Qt3DRender::QRenderTarget *target, Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint);
 
 public Q_SLOTS:
     void setRenderSurface(QObject *renderSurface);
@@ -99,6 +109,9 @@ public Q_SLOTS:
     void setFrustumCulling(bool frustumCulling);
     void setBackToFrontSorting(bool backToFrontSorting);
     void setZFilling(bool zfilling);
+    void setGamma(float gamma);
+    void setExposure(float exposure);
+    void setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
 
 Q_SIGNALS:
     void renderSurfaceChanged(QObject *renderSurface);
@@ -111,26 +124,38 @@ Q_SIGNALS:
     void backToFrontSortingChanged(bool backToFrontSorting);
     void zFillingChanged(bool zFilling);
     void frameGraphTreeReconfigured();
+    void gammaChanged(float gamma);
+    void exposureChanged(float exposure);
+    void toneMappingAlgorithmChanged(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
 
 private:
     void updateTextureSizes();
     void handleSurfaceChange();
     QSize currentSurfaceSize() const;
+
+    void scheduleFGTreeRebuild();
+    void rebuildFGTree();
+
     void reconfigureFrameGraph();
     void reconfigureStages();
-    Qt3DRender::QRenderTarget *createRenderTarget(bool includeDepth);
+
     AbstractPostProcessingEffect::FrameGraphNodePtr frameGraphSubtreeForPostProcessingEffect(AbstractPostProcessingEffect *effect) const;
 
-    Qt3DRender::QTechniqueFilter *m_techniqueFilter;
+    Qt3DRender::QTechniqueFilter *m_noFrustumCullingOpaqueTechniqueFilter;
+    Qt3DRender::QTechniqueFilter *m_frustumCullingOpaqueTechniqueFilter;
+    Qt3DRender::QTechniqueFilter *m_noFrustumCullingTransparentTechniqueFilter;
+    Qt3DRender::QTechniqueFilter *m_frustumCullingTransparentTechniqueFilter;
     Qt3DRender::QViewport *m_viewport;
     Qt3DRender::QCameraSelector *m_cameraSelector;
     Qt3DRender::QClearBuffers *m_clearBuffers;
     Qt3DRender::QRenderSurfaceSelector *m_surfaceSelector;
     Qt3DRender::QNoDraw *m_noDrawClearBuffer;
-    Qt3DRender::QFrustumCulling *m_frustumCulling;
+    Qt3DRender::QFrustumCulling *m_frustumCullingOpaque;
+    Qt3DRender::QFrustumCulling *m_frustumCullingTransparent;
     bool m_backToFrontSorting;
     bool m_zfilling;
-    QVector<AbstractPostProcessingEffect *> m_postProcessingEffects;
+    QVector<AbstractPostProcessingEffect *> m_userPostProcessingEffects;
+    QVector<AbstractPostProcessingEffect *> m_internalPostProcessingEffects;
     QHash<AbstractPostProcessingEffect *, AbstractPostProcessingEffect::FrameGraphNodePtr> m_effectFGSubtrees;
 
     QVector<QMetaObject::Connection> m_resizeConnections;
@@ -138,11 +163,43 @@ private:
     //For rendering scene when useing post-processing effects
     Qt3DRender::QFrameGraphNode *m_renderToTextureRootNode;
     Qt3DRender::QFrameGraphNode *m_effectsRootNode;
-    Qt3DRender::QFrameGraphNode *m_renderStageRootNode;
     Qt3DRender::QRenderTarget *m_renderTargets[2];
+    Qt3DRender::QRenderTarget *m_multisampleTarget;
+    Qt3DRender::QBlitFramebuffer *m_blitFramebufferNode;
+    bool m_fgTreeRebuiltScheduled;
+
+    struct Q_AUTOTEST_EXPORT SceneStages {
+        SceneStages();
+        ~SceneStages();
+
+        SceneStages(const SceneStages &) = delete;
+
+        void init();
+        void setZFilling(bool zFilling);
+        void setBackToFrontSorting(bool backToFrontSorting);
+
+        bool zFilling();
+        bool backToFrontSorting();
+
+        void unParent();
+
+        void insertZFillAndOpaqueStages(QNode *root);
+        void insertTransparentStage(QNode *root);
+
+        OpaqueRenderStage *m_opaqueStage;
+        TransparentRenderStage *m_transparentStage;
+        ZFillRenderStage *m_zFillStage;
+        QMetaObject::Connection m_zFillDestroyedConnection;
+    };
+    using SceneStagesPtr = QSharedPointer<SceneStages>;
 
     //For controlling render stages
-    QVector<AbstractRenderStage *> m_renderStages;
+    QVector<SceneStagesPtr> m_sceneStages;
+
+    // GammaCorrection
+    ToneMappingAndGammaCorrectionEffect *m_gammaCorrectionFX;
+
+    friend class ::tst_ForwardRenderer;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

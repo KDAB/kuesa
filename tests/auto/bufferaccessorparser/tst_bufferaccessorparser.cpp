@@ -66,9 +66,9 @@ private Q_SLOTS:
         const Kuesa::GLTF2Import::Accessor accessor = context.accessor(0);
         QCOMPARE(accessor.bufferViewIndex, 0);
         QCOMPARE(accessor.type, Qt3DRender::QAttribute::Float);
-        QCOMPARE(accessor.count, 0);
+        QCOMPARE(accessor.count, 0U);
         QCOMPARE(accessor.dataSize, 1);
-        QCOMPARE(accessor.offset, 0);
+        QCOMPARE(accessor.offset, 0U);
         QCOMPARE(accessor.normalized, false);
         QCOMPARE(accessor.max.size(), 0);
         QCOMPARE(accessor.min.size(), 0);
@@ -280,9 +280,9 @@ private Q_SLOTS:
         const Kuesa::GLTF2Import::Accessor secondAccessor = context.accessor(1);
         QCOMPARE(firstAccessor.dataSize, 2);
         QCOMPARE(firstAccessor.bufferViewIndex, 1);
-        QCOMPARE(firstAccessor.count, 128);
+        QCOMPARE(firstAccessor.count, 128U);
         QCOMPARE(firstAccessor.type, Qt3DRender::QAttribute::Float);
-        QCOMPARE(firstAccessor.offset, 32);
+        QCOMPARE(firstAccessor.offset, 32U);
         QCOMPARE(firstAccessor.max.size(), 2);
         QCOMPARE(firstAccessor.min.size(), 2);
         QCOMPARE(firstAccessor.max.at(0), 1);
@@ -324,10 +324,10 @@ private Q_SLOTS:
         const Kuesa::GLTF2Import::Accessor firstAccessor = context.accessor(0);
         QCOMPARE(firstAccessor.type, Qt3DRender::QAttribute::Float);
         QCOMPARE(firstAccessor.dataSize, 2);
-        QCOMPARE(firstAccessor.count, 128);
+        QCOMPARE(firstAccessor.count, 128U);
 
         QCOMPARE(firstAccessor.normalized, false);
-        QCOMPARE(firstAccessor.offset, 0);
+        QCOMPARE(firstAccessor.offset, 0U);
         QCOMPARE(firstAccessor.max.size(), 0);
         QCOMPARE(firstAccessor.min.size(), 0);
     }

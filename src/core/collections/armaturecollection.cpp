@@ -34,9 +34,9 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::ArmatureCollection
  * \inheaderfile Kuesa/ArmatureCollection
- * \brief A collection of assets of type Qt3DCore::QArmature
+ * \brief A collection of assets of type Qt3DCore::QArmature.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::ArmatureCollection manages a set of Qt3DCore::QArmature assets.
@@ -46,7 +46,7 @@ using namespace Kuesa;
 /*!
  * \fn ArmatureCollection::add
  *
- * Adds an \a asset to the collection with key \name.
+ * Adds an \a asset to the collection with key \a name.
  *
  * If the asset has no parent, it will be reparented to the collection.
  *

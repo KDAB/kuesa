@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -65,6 +65,9 @@ QString localFile(const QString &uri, const QDir &basePath);
 
 KUESA_PRIVATE_EXPORT
 QByteArray parseEmbeddedData(const QString &uri);
+
+KUESA_PRIVATE_EXPORT
+QByteArray toBase64Uri(const QByteArray &arr);
 
 KUESA_PRIVATE_EXPORT
 QByteArray fetchData(const QString &uri, const QDir &basePath, bool &success);

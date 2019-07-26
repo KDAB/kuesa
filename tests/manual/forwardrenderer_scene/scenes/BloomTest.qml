@@ -32,7 +32,7 @@ import Qt3D.Core 2.0
 import Qt3D.Render 2.0
 import Qt3D.Input 2.0
 import Qt3D.Extras 2.10
-import Kuesa 1.0 as Kuesa
+import Kuesa 1.1 as Kuesa
 
 Entity {
     id: root
@@ -44,8 +44,28 @@ Entity {
     readonly property real angle: activeLight * 2 * Math.PI / sphereCount
     readonly property real sphereDistance: 2
     readonly property vector3d activeSpherePos : Qt.vector3d(sphereDistance * Math.sin(angle), 0, sphereDistance * Math.cos(angle))
+    property bool paused: false
 
     property real lightIntensity: 0
+    readonly property real maxLightIntesity: 10
+
+    KeyboardDevice{
+        id: keyboard
+    }
+
+    Entity {
+        components: [
+            KeyboardHandler {
+                id: handler
+                sourceDevice: keyboard
+                focus: true
+                onSpacePressed: {
+                    root.paused = !root.paused
+                 }
+            }
+        ]
+    }
+
 
     Timer {
         property real time: 0
@@ -55,9 +75,9 @@ Entity {
             var period = 3.0;
             var cycle = time/period;
             activeLight = cycle % sphereCount;
-            lightIntensity = 3 * Math.abs(Math.sin(cycle *Math.PI));
+            lightIntensity = maxLightIntesity * Math.abs(Math.sin(cycle *Math.PI));
         }
-        running: true
+        running: !root.paused
         repeat: true
     }
 
@@ -73,7 +93,7 @@ Entity {
             lightTransform,
             objectsLayer
         ]
-        PointLight { id: light; color: currentColor; intensity: lightIntensity; constantAttenuation: 1; linearAttenuation: .05; quadraticAttenuation: .001}
+        Kuesa.PointLight { id: light; color: currentColor; intensity: lightIntensity}
         Transform { id: lightTransform; translation: activeSpherePos }
     }
 
@@ -81,6 +101,7 @@ Entity {
 
 
     OrbitCameraController { camera: mainCamera }
+
 
     Entity {
         components: [
@@ -96,9 +117,12 @@ Entity {
 
         Kuesa.MetallicRoughnessMaterial {
             id: cubeMat
-            baseColorFactor: Qt.rgba(1.0, 1.0, 1.0)
-            metallicFactor: .75
-            roughnessFactor: .2
+            effect: Kuesa.MetallicRoughnessEffect { }
+            metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                baseColorFactor: Qt.rgba(1.0, 1.0, 1.0)
+                metallicFactor: .75
+                roughnessFactor: .2
+            }
         }
     }
 
@@ -129,9 +153,11 @@ Entity {
 
             Kuesa.MetallicRoughnessMaterial {
                 id: sphereMaterial
-
-                baseColorFactor: isActiveLight ?  currentColor : "gray"
-                emissiveFactor: isActiveLight ?  Qt.rgba(currentColor.r * lightIntensity, currentColor.g * lightIntensity, currentColor.b* lightIntensity) : "gray"
+                effect: Kuesa.MetallicRoughnessEffect { }
+                metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                    baseColorFactor: isActiveLight ? currentColor: "gray"
+                    emissiveFactor: isActiveLight ?  Qt.rgba(currentColor.r * lightIntensity/maxLightIntesity, currentColor.g * lightIntensity/maxLightIntesity, currentColor.b* lightIntensity/maxLightIntesity) : "gray"
+                }
             }
         }
     }

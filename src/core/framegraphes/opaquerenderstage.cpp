@@ -32,6 +32,7 @@
 #include <Qt3DRender/QNoDepthMask>
 #include <Qt3DRender/QRenderStateSet>
 #include <Qt3DRender/QSortPolicy>
+#include <Qt3DRender/QMultiSampleAntiAliasing>
 
 QT_USE_NAMESPACE
 
@@ -50,6 +51,8 @@ OpaqueRenderStage::OpaqueRenderStage(Qt3DCore::QNode *parent)
     m_depthTest = new Qt3DRender::QDepthTest;
     m_depthTest->setDepthFunction(Qt3DRender::QDepthTest::Less);
     m_states->addRenderState(m_depthTest);
+    auto msaa = new Qt3DRender::QMultiSampleAntiAliasing();
+    m_states->addRenderState(msaa);
     m_noDepthWrite = new Qt3DRender::QNoDepthMask(m_states);
     m_sortPolicy = new Qt3DRender::QSortPolicy(m_states);
     m_sortPolicy->setSortTypes(QVector<Qt3DRender::QSortPolicy::SortType>

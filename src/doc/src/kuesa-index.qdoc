@@ -27,7 +27,7 @@
 */
 
 /*!
-    \page kuesa-index.html
+    \page index.html
     \title Kuesa
 
     \e{Kuesa} is a module for Qt 3D which provides:
@@ -56,11 +56,133 @@
     To include the definitions of the module's classes, use the following
     directives:
 
+    C++:
     \badcode
     #include <Kuesa>
     \endcode
 
-    \section1 Overview
+    QML:
+    \badcode
+    import Kuesa 1.0
+    \endcode
+
+    \section1 Quick Overview
+
+    Kuesa aims at making it easier for both Artist and Developers to preview and
+    integrate 3D scenes into a Qt based application.
+
+    Kuesa provides an easy, integrated and unified workflow without any
+    compromises for designers and developers based on the glTF 2 format.
+
+    It is composed of 3 components:
+
+    \section2 Kuesa Digital Content Creation Plugins
+
+    \list
+    \li \l {https://github.com/KDAB/kuesa-blender} {Kuesa Blender glTF2 Exporter plugin}
+    \li \l {https://github.com/KDAB/kuesa-3dsmax} {Kuesa 3ds Max glTF2 Exporter plugin}
+    \endlist
+
+    \section2 Kuesa Runtime
+    Libraries on top of Qt 3D that provide:
+    \list
+    \li \l [CPP]{Kuesa::GLTF2Importer} {glTF2 compliant importer that generates a Qt 3D based scene}
+    \li \l [CPP]{Kuesa::MetallicRoughnessMaterial} {Custom PBR materials}
+    \li Asset collections to retrieve assets by name
+    \li Post Processing Effects
+    \endlist
+
+    \section2 Kuesa Tools
+    A set of tools to preview scenes
+    \list
+    \li \l {gltfEditor}
+    \li \l {gltfViewer}
+    \li \l {ddspreviewer}
+    \li \l {cubemaptooctahedralmap}
+    \endlist
+
+    \l {Kuesa Overview} {Read More}
+
+    \section1 Requirements
+
+    \list
+    \li Kuesa requires the base Qt 5.12 requirements and OpenGL supports.
+    \li Kuesa requires Qt 3D from Qt 5.12.5, Qt 5.13.1 or later.
+    \li Instructions on how to build Qt from source can be found \l {https://wiki.qt.io/Building_Qt_5_from_Git} {here}.
+    \endlist
+
+    \section2 OpenGL requirements
+    \list
+    \li Desktop OpenGL 3+
+    \li OpenGL ES 3.2
+    \li OpenGL ES 3.1 or lower is supported but with a limited feature set depending on available OpenGL extensions:
+        \list
+        \li For HDR support, GL_OES_texture_half_float is required
+        \li For anti aliasing, ARB_texture_multisample and GL_EXT_color_buffer_half_float are required
+        \endlist
+    \endlist
+
+    \section2 Optional Dependencies
+
+    Kuesa can optionnally use the \l {https://github.com/google/draco} {Draco}
+    mesh compression library, either through an embedded version, or a version
+    present on the system. Draco can be used to dramatically decrease the size
+    of glTF files.
+
+    Kuesa supports the \c {KHR_draco_mesh_compression} glTF extension as defined \l {    https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_draco_mesh_compression/} {here}.
+
+    By default, Kuesa will build with its own embedded version of the Draco library.
+    This can be enforced with:
+
+    \badcode
+        qmake kuesa.pro -- --draco=qt
+    \endcode
+
+    To build Kuesa without any support for Draco, run qmake like this:
+
+    \badcode
+        qmake kuesa.pro -- --draco=no
+    \endcode
+
+    To build Kuesa with an external version of Draco, run qmake like this:
+
+    \badcode
+        qmake kuesa.pro -- --draco=system
+    \endcode
+
+    If Draco is not installed in the default location on your system, you can
+    set the \c {DRACOSDK} environment variable to point to where Draco is
+    installed. Use the \c {DRACOSDK_LIBS} environment variable to point to the
+    folder containing the Draco libraries.
+
+    Note that Kuesa has last been tested with Draco at commit
+    8833cf878e6fd43c5a3fd6e4231212e25e25e632.
+
+    The glTF editor, provided with Kuesa, is able to compress existing glTF 2.0
+    assets with Draco.
+
+    \section1 Installation
+
+    Kuesa builds as a Qt module and will be installed alongside Qt.
+
+    \badcode
+        qmake
+        make
+        make install
+    \endcode
+
+    Should examples not be built, try:
+
+    \badcode
+        make sub-examples
+        cd examples
+        make install
+    \endcode
+
+    To install the Qt Creator template, copy the entire kuesa folder
+    from \c {tools/qtc_templates} to the \c {templates/wizards} folder inside
+    the Qt Creator install location.
+
 
     \section1 Reference
     \list
@@ -68,6 +190,7 @@
         \li \l {Kuesa C++ Classes}
         \li \l {Kuesa QML Types}
         \li \l {Kuesa Examples}
+        \li \l {Kuesa Tools}
     \endlist
 
     \section1 Kuesa Platform Support
@@ -86,9 +209,10 @@
 
     \section1 Licenses and Attributions
 
-    Kuesa is available under commercial licenses from \l{KDAB}. In addition, it
-    is also available under the \l{GNU Affero General Public License, version
-    3}
+    Kuesa is available under commercial licenses from \l {https://www.kdab.com}
+    {KDAB}. In addition, it is also available under the \l
+    {https://www.gnu.org/licenses/agpl-3.0.en.html} {GNU Affero General Public
+    License, version 3}
 
     \generatelist{groupsbymodule attributions-kuesa}
 */

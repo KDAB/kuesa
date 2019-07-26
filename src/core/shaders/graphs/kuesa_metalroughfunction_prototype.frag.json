@@ -2,10 +2,11 @@
     "templates": {
         "kuesa_metalRoughFunction": {
             "inputs": [
+                "ambientOcclusion",
                 "baseColor",
+                "emissive",
                 "metalness",
                 "roughness",
-                "ambientOcclusion",
                 "worldPosition",
                 "worldView",
                 "worldNormal"
@@ -20,7 +21,7 @@
                         "major": 3,
                         "minor": 1
                     },
-                    "substitution": "vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);",
+                    "substitution": "vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $emissive, $worldPosition, $worldView, $worldNormal);",
                     "headerSnippets": [ "#pragma include :/kuesa/shaders/gl3/kuesa_metalrough.inc.frag" ]
                 },
                 {
@@ -32,7 +33,7 @@
                     "headerSnippets": [
                         "#pragma include :/kuesa/shaders/es2/kuesa_metalrough.inc.frag"
                     ],
-                    "substitution": "highp vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
+                    "substitution": "highp vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $emissive, $worldPosition, $worldView, $worldNormal);"
                 },
                 {
                     "format": {
@@ -43,7 +44,7 @@
                     "headerSnippets": [
                         "#pragma include :/kuesa/shaders/es3/kuesa_metalrough.inc.frag"
                     ],
-                    "substitution": "highp vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
+                    "substitution": "highp vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $emissive, $worldPosition, $worldView, $worldNormal);"
                 }
             ]
         }
@@ -52,10 +53,11 @@
         "kuesa_metalRoughFunction": {
             "template": "default.kuesa_metalRoughFunction",
             "inputs": [
+                {"ambientOcclusion": "QShaderLanguage::Float"},
                 {"baseColor": "QShaderLanguage::Vec4"},
+                {"emissive": "QShaderLanguage::Float"},
                 {"metalness": "QShaderLanguage::Float"},
                 {"roughness": "QShaderLanguage::Float"},
-                {"ambientOcclusion": "QShaderLanguage::Float"},
                 {"worldPosition": "QShaderLanguage::Vec3"},
                 {"worldView": "QShaderLanguage::Vec3"},
                 {"worldNormal": "QShaderLanguage::Vec3"}

@@ -34,9 +34,9 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::AnimationMappingCollection
  * \inheaderfile Kuesa/AnimationMappingCollection
- * \brief A collection of assets of type Qt3DAnimation::QChannelMapper
+ * \brief A collection of assets of type Qt3DAnimation::QChannelMapper.
  * \inmodule Kuesa
- * \since 1.0
+ * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
  * Kuesa::AnimationMappingCllection manages a set of
@@ -47,7 +47,7 @@ using namespace Kuesa;
 /*!
  * \fn AnimationMappingCollection::add
  *
- * Adds an \a asset to the collection with key \name.
+ * Adds an \a asset to the collection with key \a name.
  *
  * If the asset has no parent, it will be reparented to the collection.
  *

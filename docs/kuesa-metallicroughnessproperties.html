@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- metallicroughnessproperties.cpp -->
+  <title>MetallicRoughnessProperties Class | Kuesa 1.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-cpp.html#">C++ Classes</a></td><td >MetallicRoughnessProperties</td></tr></table><table class="buildversion"><tr>
+<td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">MetallicRoughnessProperties Class</h1>
+<span class="small-subtitle">(<a href="index.html#">Kuesa::MetallicRoughnessProperties</a>)<br/></span>
+<!-- $$$MetallicRoughnessProperties-brief -->
+<p><a href="index.html#">Kuesa::MetallicRoughnessProperties</a> hold the properties of a physically based rendering (PBR) material based on the glTF 2.0 material description. <a href="#details">More...</a></p>
+<!-- @@@MetallicRoughnessProperties -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/MetallicRoughnessProperties&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-metallicroughnessproperties.html">MetallicRoughnessProperties</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-gltf2materialproperties.html">Kuesa::GLTF2MaterialProperties</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.1.</p>
+<ul>
+<li><a href="kuesa-metallicroughnessproperties-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary">
+<tr><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop">ambientOcclusionMap</a></b> : Qt3DRender::QAbstractTexture*</li>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#aoUsesTexCoord1-prop">aoUsesTexCoord1</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#emissiveFactor-prop">emissiveFactor</a></b> : QColor</li>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#emissiveMap-prop">emissiveMap</a></b> : Qt3DRender::QAbstractTexture*</li>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#emissiveUsesTexCoord1-prop">emissiveUsesTexCoord1</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#metalRoughMap-prop">metalRoughMap</a></b> : Qt3DRender::QAbstractTexture*</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#metallicFactor-prop">metallicFactor</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#metallicRoughnessUsesTexCoord1-prop">metallicRoughnessUsesTexCoord1</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#normalMap-prop">normalMap</a></b> : Qt3DRender::QAbstractTexture*</li>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#normalScale-prop">normalScale</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#normalUsesTexCoord1-prop">normalUsesTexCoord1</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-metallicroughnessproperties.html#roughnessFactor-prop">roughnessFactor</a></b> : float</li>
+</ul>
+</td></tr>
+</table></div>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop">ambientOcclusionMap</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QColor </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#emissiveFactor-prop">emissiveFactor</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#emissiveMap-prop">emissiveMap</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#aoUsesTexCoord1-prop">isAOUsingTexCoord1</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#emissiveUsesTexCoord1-prop">isEmissiveUsingTexCoord1</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#metallicRoughnessUsesTexCoord1-prop">isMetallicRoughnessUsingTexCoord1</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#normalUsesTexCoord1-prop">isNormalUsingTexCoord1</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#metalRoughMap-prop">metalRoughMap</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#metallicFactor-prop">metallicFactor</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#normalMap-prop">normalMap</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#normalScale-prop">normalScale</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#roughnessFactor-prop">roughnessFactor</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#aoUsesTexCoord1-prop">setAOUsesTexCoord1</a></b>(bool <i>aoUsesTexCoord1</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop">setAmbientOcclusionMap</a></b>(Qt3DRender::QAbstractTexture *<i>ambientOcclusionMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#emissiveFactor-prop">setEmissiveFactor</a></b>(const QColor &amp;<i>emissiveFactor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#emissiveMap-prop">setEmissiveMap</a></b>(Qt3DRender::QAbstractTexture *<i>emissiveMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#emissiveUsesTexCoord1-prop">setEmissiveUsesTexCoord1</a></b>(bool <i>emissiveUsesTexCoord1</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#metalRoughMap-prop">setMetalRoughMap</a></b>(Qt3DRender::QAbstractTexture *<i>metalRoughMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#metallicFactor-prop">setMetallicFactor</a></b>(float <i>metallicFactor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#metallicRoughnessUsesTexCoord1-prop">setMetallicRoughnessUsesTexCoord1</a></b>(bool <i>metallicRoughnessUsesTexCoord1</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#normalMap-prop">setNormalMap</a></b>(Qt3DRender::QAbstractTexture *<i>normalMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#normalScale-prop">setNormalScale</a></b>(float <i>normalScale</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#normalUsesTexCoord1-prop">setNormalUsesTexCoord1</a></b>(bool <i>normalUsesTexCoord1</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#roughnessFactor-prop">setRoughnessFactor</a></b>(float <i>roughnessFactor</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop">ambientOcclusionMapChanged</a></b>(Qt3DRender::QAbstractTexture *<i>ambientOcclusionMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#aoUsesTexCoord1-prop">aoUsesTexCoord1Changed</a></b>(<i>bool</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#emissiveFactor-prop">emissiveFactorChanged</a></b>(const QColor &amp;<i>emissiveFactor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#emissiveMap-prop">emissiveMapChanged</a></b>(Qt3DRender::QAbstractTexture *<i>emissiveMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#emissiveUsesTexCoord1-prop">emissiveUsesTexCoord1Changed</a></b>(<i>bool</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#metalRoughMap-prop">metalRoughMapChanged</a></b>(Qt3DRender::QAbstractTexture *<i>metalRoughMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#metallicFactor-prop">metallicFactorChanged</a></b>(float <i>metallicFactor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#metallicRoughnessUsesTexCoord1-prop">metallicRoughnessUsesTexCoord1Changed</a></b>(<i>bool</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#normalMap-prop">normalMapChanged</a></b>(Qt3DRender::QAbstractTexture *<i>normalMapChanged</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#normalScale-prop">normalScaleChanged</a></b>(float <i>normalScale</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#normalUsesTexCoord1-prop">normalUsesTexCoord1Changed</a></b>(<i>bool</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessproperties.html#roughnessFactor-prop">roughnessFactorChanged</a></b>(float <i>roughnessFactor</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$MetallicRoughnessProperties-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The material properties are defined using a common set of parameter that define how light interacts with it. This allows to use a common description of the material so they are rendered consistently across platforms and 3D software and can be described by an intuitive set of parameters.</p>
+<p>The <a href="kuesa-metallicroughnessproperties.html">MetallicRoughnessProperties</a> consists of the following properties:</p>
+<ul>
+<li><a href="kuesa-gltf2materialproperties.html#baseColorFactor-prop">baseColorFactor</a>: Base color of the material</li>
+<li><a href="kuesa-gltf2materialproperties.html#baseColorMap-prop">baseColorMap</a>: A texture specifying the base color of the material</li>
+<li><a href="kuesa-metallicroughnessproperties.html#metallicFactor-prop">metallicFactor</a>: The metalness of the material</li>
+<li><a href="kuesa-metallicroughnessproperties.html#roughnessFactor-prop">roughnessFactor</a>: The roughness of the material</li>
+<li><a href="kuesa-metallicroughnessproperties.html#metalRoughMap-prop">metalRoughMap</a>: A texture specifying both metalness and roughness of the material</li>
+<li><a href="kuesa-metallicroughnessproperties.html#normalMap-prop">normalMap</a>: Normal texture for normal mapping. This allows to simulate very detailed surfaces without too many triangle</li>
+<li><a href="kuesa-metallicroughnessproperties.html#normalScale-prop">normalScale</a>: A scale factor for the normal map</li>
+<li><a href="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop">ambientOcclusionMap</a>: An ambient occlusion map. This allows to simulate ambient occlusion and shadow zones that otherwise will be too bright</li>
+<li><a href="kuesa-metallicroughnessproperties.html#emissiveFactor-prop">emissiveFactor</a>: The emissive strength of the material</li>
+<li><a href="kuesa-metallicroughnessproperties.html#emissiveMap-prop">emissiveMap</a>: A texture specifying the emissive property of the material</li>
+<li><a href="kuesa-gltf2materialproperties.html#textureTransform-prop">textureTransform</a>: Allows to transform (scale, translate, rotate) a texture.</li>
+</ul>
+<p>For a particular point of an object, the base color is computed as <a href="kuesa-gltf2materialproperties.html#baseColorFactor-prop">baseColorFactor</a>*<a href="kuesa-gltf2materialproperties.html#baseColorMap-prop">baseColorMap</a>*vertexColor. The vertexColor is the interpolated value of the vertex color property of the mesh to which the material is applied.</p>
+<p><a href="index.html#">Kuesa::MetallicRoughnessProperties</a> also supports alpha blending and alpha cutoff. Alpha blending is used to simulate transparent materials, like a glass, while alpha cutoff is used to discard fragment that have an alpha value below a threshold. This is useful to render grass or trees for example.</p>
+<p><a href="index.html#">Kuesa::MetallicRoughnessProperties</a> supports two texture coordinate sets for each map. To specify the texture coordinate set a map must use, you can set the &lt;map&gt;UsesTexCoord1 property to true or false. If it's false, it will use the 0th coordinate set of the primitive, attached to 'defaultTextureCoordinateAttributeName` attribute. If it's true, it will use the 1st coordinate set of the primitive, attached to 'defaultTextureCoordinate1AttributeName`.</p>
+<p>A more complete description of the material can be found in https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#materials</p>
+</div>
+<!-- @@@MetallicRoughnessProperties -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$ambientOcclusionMap-prop$$$ambientOcclusionMap$$$setAmbientOcclusionMapQt3DRender::QAbstractTexture*$$$ambientOcclusionMapChangedQt3DRender::QAbstractTexture* -->
+<h3 class="fn" id="ambientOcclusionMap-prop"><a name="ambientOcclusionMap-prop"></a><span class="name">ambientOcclusionMap</span> : <span class="type">Qt3DRender::QAbstractTexture</span>*</h3>
+<p>Specifies a texture to be used for ambient occlusion. The content of the texture is expected to be a single R channel in linear space. This offers a way of combining the <a href="kuesa-metallicroughnessproperties.html#metalRoughMap-prop">metalRoughMap</a>'s G and B channels in the same texture as the ambientOcclusionMap.</p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p><p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><span class="name"><b>ambientOcclusionMap</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setAmbientOcclusionMap</b></span>(Qt3DRender::QAbstractTexture *<i>ambientOcclusionMap</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>ambientOcclusionMapChanged</b></span>(Qt3DRender::QAbstractTexture *<i>ambientOcclusionMap</i>)</td></tr>
+</table></div>
+<!-- @@@ambientOcclusionMap -->
+<!-- $$$aoUsesTexCoord1-prop$$$isAOUsingTexCoord1$$$setAOUsesTexCoord1bool$$$aoUsesTexCoord1Changedbool -->
+<h3 class="fn" id="aoUsesTexCoord1-prop"><a name="aoUsesTexCoord1-prop"></a><span class="name">aoUsesTexCoord1</span> : <span class="type">bool</span></h3>
+<p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>isAOUsingTexCoord1</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setAOUsesTexCoord1</b></span>(bool <i>aoUsesTexCoord1</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>aoUsesTexCoord1Changed</b></span>(<i>bool</i>)</td></tr>
+</table></div>
+<!-- @@@aoUsesTexCoord1 -->
+<!-- $$$emissiveFactor-prop$$$emissiveFactor$$$setEmissiveFactorconstQColor&$$$emissiveFactorChangedconstQColor& -->
+<h3 class="fn" id="emissiveFactor-prop"><a name="emissiveFactor-prop"></a><span class="name">emissiveFactor</span> : <span class="type">QColor</span></h3>
+<p>Specifies an emissive factor to be used for emissive surfaces.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QColor </td><td class="memItemRight bottomAlign"><span class="name"><b>emissiveFactor</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setEmissiveFactor</b></span>(const QColor &amp;<i>emissiveFactor</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>emissiveFactorChanged</b></span>(const QColor &amp;<i>emissiveFactor</i>)</td></tr>
+</table></div>
+<!-- @@@emissiveFactor -->
+<!-- $$$emissiveMap-prop$$$emissiveMap$$$setEmissiveMapQt3DRender::QAbstractTexture*$$$emissiveMapChangedQt3DRender::QAbstractTexture* -->
+<h3 class="fn" id="emissiveMap-prop"><a name="emissiveMap-prop"></a><span class="name">emissiveMap</span> : <span class="type">Qt3DRender::QAbstractTexture</span>*</h3>
+<p>Specifies a texture to be used for emissive surfaces. The content of the texture is expected to be in sRGB color space.</p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p><p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><span class="name"><b>emissiveMap</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setEmissiveMap</b></span>(Qt3DRender::QAbstractTexture *<i>emissiveMap</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>emissiveMapChanged</b></span>(Qt3DRender::QAbstractTexture *<i>emissiveMap</i>)</td></tr>
+</table></div>
+<!-- @@@emissiveMap -->
+<!-- $$$emissiveUsesTexCoord1-prop$$$isEmissiveUsingTexCoord1$$$setEmissiveUsesTexCoord1bool$$$emissiveUsesTexCoord1Changedbool -->
+<h3 class="fn" id="emissiveUsesTexCoord1-prop"><a name="emissiveUsesTexCoord1-prop"></a><span class="name">emissiveUsesTexCoord1</span> : <span class="type">bool</span></h3>
+<p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>isEmissiveUsingTexCoord1</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setEmissiveUsesTexCoord1</b></span>(bool <i>emissiveUsesTexCoord1</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>emissiveUsesTexCoord1Changed</b></span>(<i>bool</i>)</td></tr>
+</table></div>
+<!-- @@@emissiveUsesTexCoord1 -->
+<!-- $$$metalRoughMap-prop$$$metalRoughMap$$$setMetalRoughMapQt3DRender::QAbstractTexture*$$$metalRoughMapChangedQt3DRender::QAbstractTexture* -->
+<h3 class="fn" id="metalRoughMap-prop"><a name="metalRoughMap-prop"></a><span class="name">metalRoughMap</span> : <span class="type">Qt3DRender::QAbstractTexture</span>*</h3>
+<p>Specifies a texture to be used as metallic and roughness factor. The metallic factor is sampled for the B channel of the texture, while the roughness factor is sampled from the G channel. R and A channel are unused. This offers a way of combining the <a href="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop">ambientOcclusionMap</a>'s R channel in the same texture as the metalRoughMap. The content of the texture is expected to be in linear RGB color space.</p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p><p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><span class="name"><b>metalRoughMap</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMetalRoughMap</b></span>(Qt3DRender::QAbstractTexture *<i>metalRoughMap</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>metalRoughMapChanged</b></span>(Qt3DRender::QAbstractTexture *<i>metalRoughMap</i>)</td></tr>
+</table></div>
+<!-- @@@metalRoughMap -->
+<!-- $$$metallicFactor-prop$$$metallicFactor$$$setMetallicFactorfloat$$$metallicFactorChangedfloat -->
+<h3 class="fn" id="metallicFactor-prop"><a name="metallicFactor-prop"></a><span class="name">metallicFactor</span> : <span class="type">float</span></h3>
+<p>Specifies the metallic factor of the material. Set this value between 0.0 and 1.0 to module how metallic the material is.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>metallicFactor</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMetallicFactor</b></span>(float <i>metallicFactor</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>metallicFactorChanged</b></span>(float <i>metallicFactor</i>)</td></tr>
+</table></div>
+<!-- @@@metallicFactor -->
+<!-- $$$metallicRoughnessUsesTexCoord1-prop$$$isMetallicRoughnessUsingTexCoord1$$$setMetallicRoughnessUsesTexCoord1bool$$$metallicRoughnessUsesTexCoord1Changedbool -->
+<h3 class="fn" id="metallicRoughnessUsesTexCoord1-prop"><a name="metallicRoughnessUsesTexCoord1-prop"></a><span class="name">metallicRoughnessUsesTexCoord1</span> : <span class="type">bool</span></h3>
+<p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>isMetallicRoughnessUsingTexCoord1</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMetallicRoughnessUsesTexCoord1</b></span>(bool <i>metallicRoughnessUsesTexCoord1</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>metallicRoughnessUsesTexCoord1Changed</b></span>(<i>bool</i>)</td></tr>
+</table></div>
+<!-- @@@metallicRoughnessUsesTexCoord1 -->
+<!-- $$$normalMap-prop$$$normalMap$$$setNormalMapQt3DRender::QAbstractTexture*$$$normalMapChangedQt3DRender::QAbstractTexture* -->
+<h3 class="fn" id="normalMap-prop"><a name="normalMap-prop"></a><span class="name">normalMap</span> : <span class="type">Qt3DRender::QAbstractTexture</span>*</h3>
+<p>Specifies a normal map for the material. This allows to simulate very detailed surfaces without a huge number of triangles. The content of the texture is expected to be in linear RGB color space.</p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p><p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><span class="name"><b>normalMap</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNormalMap</b></span>(Qt3DRender::QAbstractTexture *<i>normalMap</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>normalMapChanged</b></span>(Qt3DRender::QAbstractTexture *<i>normalMapChanged</i>)</td></tr>
+</table></div>
+<!-- @@@normalMap -->
+<!-- $$$normalScale-prop$$$normalScale$$$setNormalScalefloat$$$normalScaleChangedfloat -->
+<h3 class="fn" id="normalScale-prop"><a name="normalScale-prop"></a><span class="name">normalScale</span> : <span class="type">float</span></h3>
+<p>Specifies a scale for the normal map calculations. A bigger number is used to simulated bigger bumps in the surface</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>normalScale</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNormalScale</b></span>(float <i>normalScale</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>normalScaleChanged</b></span>(float <i>normalScale</i>)</td></tr>
+</table></div>
+<!-- @@@normalScale -->
+<!-- $$$normalUsesTexCoord1-prop$$$isNormalUsingTexCoord1$$$setNormalUsesTexCoord1bool$$$normalUsesTexCoord1Changedbool -->
+<h3 class="fn" id="normalUsesTexCoord1-prop"><a name="normalUsesTexCoord1-prop"></a><span class="name">normalUsesTexCoord1</span> : <span class="type">bool</span></h3>
+<p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>isNormalUsingTexCoord1</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNormalUsesTexCoord1</b></span>(bool <i>normalUsesTexCoord1</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>normalUsesTexCoord1Changed</b></span>(<i>bool</i>)</td></tr>
+</table></div>
+<!-- @@@normalUsesTexCoord1 -->
+<!-- $$$roughnessFactor-prop$$$roughnessFactor$$$setRoughnessFactorfloat$$$roughnessFactorChangedfloat -->
+<h3 class="fn" id="roughnessFactor-prop"><a name="roughnessFactor-prop"></a><span class="name">roughnessFactor</span> : <span class="type">float</span></h3>
+<p>Specifies the roughness factor of the material. Set the value between 0.0 and 1.0 to modulate how rough the material is.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>roughnessFactor</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setRoughnessFactor</b></span>(float <i>roughnessFactor</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>roughnessFactorChanged</b></span>(float <i>roughnessFactor</i>)</td></tr>
+</table></div>
+<!-- @@@roughnessFactor -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

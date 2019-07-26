@@ -33,12 +33,20 @@
 #include <Kuesa/GLTF2Importer>
 #include <Kuesa/ForwardRenderer>
 #include <Kuesa/MetallicRoughnessMaterial>
+#include <Kuesa/UnlitMaterial>
 #include <Kuesa/BloomEffect>
+#include <Kuesa/DepthOfFieldEffect>
 #include <Kuesa/GaussianBlurEffect>
 #include <Kuesa/ThresholdEffect>
 #include <Kuesa/OpacityMask>
+#include <Kuesa/ToneMappingAndGammaCorrectionEffect>
 #include <Kuesa/Skybox>
+#include <Kuesa/DirectionalLight>
+#include <Kuesa/SpotLight>
+#include <Kuesa/PointLight>
 #include "postfxlistextension.h"
+#include <Kuesa/MetallicRoughnessProperties>
+#include <Kuesa/UnlitProperties>
 
 #include <QtQml/qqml.h>
 
@@ -55,6 +63,7 @@ KuesaPlugin::~KuesaPlugin()
 
 void KuesaPlugin::registerTypes(const char *uri)
 {
+
     // Collections
     qmlRegisterUncreatableType<Kuesa::AbstractAssetCollection>(uri, 1, 0, "AbstractAssetCollection", QStringLiteral("You are not supposed to create an EntityCollection"));
     qmlRegisterUncreatableType<Kuesa::EntityCollection>(uri, 1, 0, "EntityCollection", QStringLiteral("You are not supposed to create an EntityCollection"));
@@ -67,27 +76,47 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::CameraCollection>(uri, 1, 0, "CameraCollection", QStringLiteral("You are not supposed to create a CameraCollection"));
     qmlRegisterUncreatableType<Kuesa::TextureImageCollection>(uri, 1, 0, "TextureImageCollection", QStringLiteral("You are not supposed to create a TextureImageCollection"));
     qmlRegisterUncreatableType<Kuesa::AnimationMappingCollection>(uri, 1, 0, "AnimationMappingCollection", QStringLiteral("You are not supposed to create an AnimationMappingCollection"));
+    qmlRegisterUncreatableType<Kuesa::AnimationClipCollection>(uri, 1, 0, "AnimationClipCollection", QStringLiteral("You are not supposed to create an AnimationClipCollection"));
 
     // FrameGraphs
     qmlRegisterExtendedType<Kuesa::ForwardRenderer, Kuesa::PostFXListExtension>(uri, 1, 0, "ForwardRenderer");
+    qmlRegisterRevision<Kuesa::ForwardRenderer, 1>(uri, 1, 1);
+
+    // Lights
+    qmlRegisterType<Kuesa::DirectionalLight>(uri, 1, 1, "DirectionalLight");
+    qmlRegisterType<Kuesa::PointLight>(uri, 1, 1, "PointLight");
+    qmlRegisterType<Kuesa::SpotLight>(uri, 1, 1, "SpotLight");
 
     // Misc
     qmlRegisterType<Kuesa::GLTF2Importer>(uri, 1, 0, "GLTF2Importer");
     qmlRegisterType<Kuesa::SceneEntity>(uri, 1, 0, "SceneEntity");
+    qmlRegisterUncreatableType<Kuesa::GLTF2Material>(uri, 1, 1, "GLTF2Material", QStringLiteral("GLTF2Material is abstract"));
+    qmlRegisterUncreatableType<Kuesa::GLTF2MaterialProperties>(uri, 1, 1, "GLTF2MaterialProperties", QStringLiteral("GLTF2MaterialProperties is abstract"));
     qmlRegisterType<Kuesa::MetallicRoughnessMaterial>(uri, 1, 0, "MetallicRoughnessMaterial");
     qmlRegisterType<Kuesa::MetallicRoughnessMaterial, 1>(uri, 1, 1, "MetallicRoughnessMaterial");
+    qmlRegisterType<Kuesa::MetallicRoughnessProperties, 1>(uri, 1, 1, "MetallicRoughnessProperties");
     qmlRegisterType<Kuesa::MetallicRoughnessEffect>(uri, 1, 0, "MetallicRoughnessEffect");
     qmlRegisterType<Kuesa::MetallicRoughnessEffect, 1>(uri, 1, 1, "MetallicRoughnessEffect");
+    qmlRegisterType<Kuesa::MetallicRoughnessProperties>(uri, 1, 1, "MetallicRoughnessProperties");
+    qmlRegisterType<Kuesa::UnlitMaterial, 1>(uri, 1, 1, "UnlitMaterial");
+    qmlRegisterType<Kuesa::UnlitProperties, 1>(uri, 1, 1, "UnlitProperties");
+    qmlRegisterType<Kuesa::UnlitEffect, 1>(uri, 1, 1, "UnlitEffect");
+    qmlRegisterType<Kuesa::UnlitProperties>(uri, 1, 1, "UnlitProperties");
     qmlRegisterType<Kuesa::Skybox>(uri, 1, 0, "Skybox");
     qmlRegisterType<Kuesa::Asset>(uri, 1, 0, "Asset");
     qmlRegisterExtendedType<Kuesa::AnimationPlayer, Kuesa::AnimationPlayerItem>(uri, 1, 0, "AnimationPlayer");
+    qmlRegisterUncreatableType<Kuesa::GLTF2Import::GLTF2Options>(uri, 1, 1, "GLTF2Options", QStringLiteral("You are not supposed to create a GLTF2Options instance"));
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));
     qmlRegisterType<Kuesa::BloomEffect>("Kuesa.Effects", 1, 0, "BloomEffect");
+    qmlRegisterType<Kuesa::DepthOfFieldEffect>("Kuesa.Effects", 1, 0, "DepthOfFieldEffect");
     qmlRegisterType<Kuesa::ThresholdEffect>("Kuesa.Effects", 1, 0, "ThresholdEffect");
     qmlRegisterType<Kuesa::GaussianBlurEffect>("Kuesa.Effects", 1, 0, "BlurEffect");
     qmlRegisterType<Kuesa::OpacityMask>("Kuesa.Effects", 1, 0, "OpacityMask");
+
+    qRegisterMetaType<Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping>("ToneMappingAndGammaCorrectionEffect::ToneMapping");
+    qmlRegisterType<Kuesa::ToneMappingAndGammaCorrectionEffect>("Kuesa.Effects", 1, 1, "ToneMappingAndGammaCorrectionEffect");
 }
 
 QT_END_NAMESPACE

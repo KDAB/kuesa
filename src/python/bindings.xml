@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<typesystem package="Kuesa">
+    <load-typesystem name="typesystem_core.xml" generate="no"/>
+    <load-typesystem name="typesystem_gui.xml" generate="no"/>
+    <load-typesystem name="typesystem_3dcore.xml" generate="no"/>
+    <load-typesystem name="typesystem_3drender.xml" generate="no"/>
+    <load-typesystem name="typesystem_3danimation.xml" generate="no"/>
+    <namespace-type name="Kuesa">
+        <object-type name="AbstractAssetCollection"/>
+        <object-type name="AbstractPostProcessingEffect">
+            <modify-function signature="AbstractPostProcessingEffect(Qt3DCore::QNode*,Kuesa::AbstractPostProcessingEffect::Type)" remove="all"/>
+            <modify-field name="m_type" write="false"/>
+            <enum-type name="Type"/>
+        </object-type>
+        <object-type name="AnimationClipCollection"/>
+        <object-type name="AnimationMappingCollection"/>
+        <object-type name="AnimationPlayer">
+            <enum-type name="Loops"/>
+            <enum-type name="Status"/>
+        </object-type>
+        <object-type name="ArmatureCollection"/>
+        <object-type name="BloomEffect"/>
+        <object-type name="CameraCollection"/>
+        <object-type name="DepthOfFieldEffect"/>
+        <object-type name="DirectionalLight"/>
+        <object-type name="EffectCollection"/>
+        <object-type name="EntityCollection"/>
+        <object-type name="ForwardRenderer"/>
+        <object-type name="FullScreenQuad"/>
+        <object-type name="GLTF2Importer">
+            <enum-type name="Status"/>
+        </object-type>
+        <namespace-type name="GLTF2Import">
+            <object-type name="GLTF2Options"/>
+        </namespace-type>
+        <object-type name="GLTF2Material"/>
+        <object-type name="GLTF2MaterialProperties"/>
+        <object-type name="GaussianBlurEffect"/>
+        <object-type name="LayerCollection"/>
+        <object-type name="MaterialCollection"/>
+        <object-type name="MeshCollection"/>
+        <object-type name="MetallicRoughnessEffect">
+            <enum-type name="ToneMapping"/>
+        </object-type>
+        <object-type name="MetallicRoughnessMaterial"/>
+        <object-type name="MetallicRoughnessProperties"/>
+        <object-type name="MorphController"/>
+        <object-type name="OpacityMask"/>
+        <object-type name="PointLight"/>
+        <object-type name="SceneEntity"/>
+        <object-type name="SpotLight"/>
+        <object-type name="SkeletonCollection"/>
+        <object-type name="Skybox"/>
+        <object-type name="TextureCollection"/>
+        <object-type name="TextureImageCollection"/>
+        <object-type name="ToneMappingAndGammaCorrectionEffect">
+            <enum-type name="ToneMapping"/>
+        </object-type>
+        <object-type name="ThresholdEffect"/>
+        <object-type name="UnlitEffect"/>
+        <object-type name="UnlitMaterial"/>
+        <object-type name="UnlitProperties"/>
+    </namespace-type>
+    <rejection class="Kuesa::AbstractPostProcessingEffect" field-name="m_type" />
+</typesystem>

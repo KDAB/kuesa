@@ -28,6 +28,7 @@
 
 #include "gaussianblureffect.h"
 #include "fullscreenquad.h"
+#include "fxutils_p.h"
 #include <Qt3DRender/qtexture.h>
 #include <Qt3DRender/qrendertarget.h>
 #include <Qt3DRender/qmaterial.h>
@@ -54,12 +55,19 @@ using namespace Kuesa;
  * \class Kuesa::GaussianBlurEffect
  * \inheaderfile Kuesa/GaussianBlurEffect
  * \inmodule Kuesa
- * \since 1.0
- * \brief Post-processing effect for blurring the scene
+ * \since Kuesa 1.0
+ * \brief Post-processing effect for blurring the scene.
  *
  * GaussianBlurEffect is a post-processing effect that applies a
  * Gaussian blur to the scene. The amount of blurring can be adjusted
  * using the blurPassCount property.
+ *
+ * \section3 Example
+ * \image fx/blur/blur.png
+ * \caption Blur effect applied on a Kuesa scene.
+ *
+ * \note Increasing the number of passes too high may adversely impact
+ * rendering performance, especially on lower-end GPUs.
  */
 
 /*!
@@ -67,17 +75,17 @@ using namespace Kuesa;
 
     \brief the number of blur passes
 
-    This is the number of times to apply the blur filter. More passes result in stronger
-    blurring effect but take longer to render.
+    This is the number of times to apply the blur filter. More passes result in
+    stronger blurring effect but take longer to render.
 */
 
 /*!
-    \qmlproperty GaussianBlurEffect::blurPassCount
+    \qmlproperty int GaussianBlurEffect::blurPassCount
 
     \brief the number of blur passes
 
-    This is the number of times to apply the blur filter. More passes result in stronger
-    blurring effect but take longer to render.
+    This is the number of times to apply the blur filter. More passes result in
+    stronger blurring effect but take longer to render.
 */
 
 GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
@@ -112,45 +120,66 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     m_blurTarget2->addOutput(blurOutput2);
 
     m_blurTexture2 = new Qt3DRender::QTexture2D;
-    m_blurTexture2->setFormat(Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+    m_blurTexture2->setFormat(Qt3DRender::QAbstractTexture::RGBA16F);
     m_blurTexture2->setGenerateMipMaps(false);
     m_blurTexture2->setSize(512, 512);
     blurOutput2->setTexture(m_blurTexture2);
+
+    m_blurTextureParam2->setValue(QVariant::fromValue(m_blurTexture2));
 
     // Set up GaussianBlur Material
     auto blurMaterial = new Qt3DRender::QMaterial(m_rootFrameGraphNode.data());
     auto effect = new Qt3DRender::QEffect;
     blurMaterial->setEffect(effect);
 
-    auto technique = new Qt3DRender::QTechnique;
-    effect->addTechnique(technique);
-    technique->graphicsApiFilter()->setApi(Qt3DRender::QGraphicsApiFilter::OpenGL);
-    technique->graphicsApiFilter()->setMajorVersion(3);
-    technique->graphicsApiFilter()->setMinorVersion(2);
-    technique->graphicsApiFilter()->setProfile(Qt3DRender::QGraphicsApiFilter::CoreProfile);
+    auto makeTechnique = [this](Qt3DRender::QGraphicsApiFilter::Api api,
+                                int majorVersion, int minorVersion,
+                                Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile,
+                                const QString &vertexShader) -> Qt3DRender::QTechnique * {
+        auto *technique = FXUtils::makeTechnique(api, majorVersion, minorVersion, profile);
 
-    auto techniqueFilterKey = new Qt3DRender::QFilterKey;
-    techniqueFilterKey->setName(QStringLiteral("renderingStyle"));
-    techniqueFilterKey->setValue(QStringLiteral("forward"));
-    technique->addFilterKey(techniqueFilterKey);
+        // create shader
+        auto blurShader = new Qt3DRender::QShaderProgram(technique);
+        blurShader->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(vertexShader)));
+        auto shaderBuilder = new Qt3DRender::QShaderProgramBuilder(blurShader);
+        shaderBuilder->setShaderProgram(blurShader);
+        shaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/gaussianblur.frag.json")));
 
-    auto blurPass1 = createBlurPass(1);
-    auto blurShader = new Qt3DRender::QShaderProgram(blurPass1);
-    blurShader->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"))));
+        auto createAndAddBlurPass = [technique, blurShader](const QString &passName, int pass, Qt3DRender::QParameter *textureParam) -> Qt3DRender::QRenderPass * {
+            auto blurPass = FXUtils::createRenderPass(passName, pass);
+            blurPass->addParameter(new Qt3DRender::QParameter(QStringLiteral("pass"), pass));
+            blurPass->addParameter(textureParam);
+            blurPass->setShaderProgram(blurShader);
+            technique->addRenderPass(blurPass);
+            return blurPass;
+        };
 
-    auto shaderBuilder = new Qt3DRender::QShaderProgramBuilder(blurShader);
-    shaderBuilder->setShaderProgram(blurShader);
-    shaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/gaussianblur.frag.json")));
+        createAndAddBlurPass(passName(), 1, m_blurTextureParam1);
+        createAndAddBlurPass(passName(), 2, m_blurTextureParam2);
 
-    blurPass1->addParameter(m_blurTextureParam1);
-    blurPass1->setShaderProgram(blurShader);
-    technique->addRenderPass(blurPass1);
+        return technique;
+    };
 
-    auto blurPass2 = createBlurPass(2);
-    blurPass2->addParameter(m_blurTextureParam2);
-    m_blurTextureParam2->setValue(QVariant::fromValue(m_blurTexture2));
-    blurPass2->setShaderProgram(blurShader);
-    technique->addRenderPass(blurPass2);
+    auto *gl3Technique = makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
+                                       3, 2,
+                                       Qt3DRender::QGraphicsApiFilter::CoreProfile,
+                                       QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"));
+
+    effect->addTechnique(gl3Technique);
+
+    auto *es3Technique = makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
+                                       3, 0,
+                                       Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                       QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"));
+
+    effect->addTechnique(es3Technique);
+
+    auto *es2Technique = makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
+                                       2, 0,
+                                       Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                       QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"));
+
+    effect->addTechnique(es2Technique);
 
     blurMaterial->addParameter(m_widthParameter);
     blurMaterial->addParameter(m_heightParameter);
@@ -178,23 +207,23 @@ void GaussianBlurEffect::createBlurPasses()
         auto blurTargetSelectorA = new Qt3DRender::QRenderTargetSelector(m_blurPassRoot);
         blurTargetSelectorA->setTarget(m_blurTarget2);
 
-        auto blurPassFilterA = createRenderPassFilter(passName(), 1);
+        auto blurPassFilterA = FXUtils::createRenderPassFilter(passName(), 1);
         blurPassFilterA->setParent(blurTargetSelectorA);
 
         auto blurTargetSelectorB = new Qt3DRender::QRenderTargetSelector(m_blurPassRoot);
         blurTargetSelectorB->setTarget(m_blurTarget1);
 
-        auto blurPassFilterB = createRenderPassFilter(passName(), 2);
+        auto blurPassFilterB = FXUtils::createRenderPassFilter(passName(), 2);
         blurPassFilterB->setParent(blurTargetSelectorB);
     }
     auto blurTargetSelectorA = new Qt3DRender::QRenderTargetSelector(m_blurPassRoot);
     blurTargetSelectorA->setTarget(m_blurTarget2);
 
-    auto blurPassFilterA = createRenderPassFilter(passName(), 1);
+    auto blurPassFilterA = FXUtils::createRenderPassFilter(passName(), 1);
     blurPassFilterA->setParent(blurTargetSelectorA);
 
     //render one final blur, but not into any any render target
-    auto blurPassFilterB = createRenderPassFilter(passName(), 2);
+    auto blurPassFilterB = FXUtils::createRenderPassFilter(passName(), 2);
     blurPassFilterB->setParent(m_blurPassRoot);
 }
 
@@ -214,7 +243,7 @@ QVector<Qt3DRender::QLayer *> GaussianBlurEffect::layers() const
 }
 
 /*!
- * Sets the input texture for the effect.
+ * Sets the input texture for the effect to \a texture.
  *
  * \sa AbstractPostProcessingEffect::setInputTexture
  */
@@ -227,8 +256,8 @@ void GaussianBlurEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
 }
 
 /*!
- * Sets the size of the rendered scene in pixels. This is required to keep
- * a consistent amount of blurring when the scene is resized.
+ * Sets the size of the rendered scene in pixels to \a size. This is required
+ * to keep a consistent amount of blurring when the scene is resized.
  *
  * \sa AbstractPostProcessingEffect::setSceneSize
  */
@@ -252,16 +281,16 @@ int GaussianBlurEffect::blurPassCount() const
 }
 
 /*!
- * Sets the number of blur passes.
+ * Sets the number of blur passes to \a blurPassCount.
  *
  * \sa GaussianBlurEffect::blurPassCount
  */
-void GaussianBlurEffect::setBlurPassCount(int blurPasscount)
+void GaussianBlurEffect::setBlurPassCount(int blurPassCount)
 {
-    if (m_blurPassCount == blurPasscount || blurPasscount == 0)
+    if (m_blurPassCount == blurPassCount || blurPassCount == 0)
         return;
 
-    m_blurPassCount = blurPasscount;
+    m_blurPassCount = blurPassCount;
 
     //just do the simple thing for now and delete all children and recreate.
     const auto &childNodes = m_blurPassRoot->childNodes();
@@ -270,28 +299,6 @@ void GaussianBlurEffect::setBlurPassCount(int blurPasscount)
     createBlurPasses();
 
     emit blurPassCountChanged(m_blurPassCount);
-}
-
-Qt3DRender::QRenderPassFilter *GaussianBlurEffect::createRenderPassFilter(const QString &name, const QVariant &value)
-{
-    auto filter = new Qt3DRender::QRenderPassFilter;
-    auto filterKey = new Qt3DRender::QFilterKey;
-    filterKey->setName(name);
-    filterKey->setValue(value);
-    filter->addMatch(filterKey);
-    return filter;
-}
-
-Qt3DRender::QRenderPass *GaussianBlurEffect::createBlurPass(int pass)
-{
-    auto blurPass = new Qt3DRender::QRenderPass;
-    auto blurPassFilterKey = new Qt3DRender::QFilterKey;
-    blurPassFilterKey->setName(passName());
-    blurPassFilterKey->setValue(pass);
-    blurPass->addFilterKey(blurPassFilterKey);
-
-    blurPass->addParameter(new Qt3DRender::QParameter(QStringLiteral("pass"), pass));
-    return blurPass;
 }
 
 QString GaussianBlurEffect::passName() const

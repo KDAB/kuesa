@@ -1,0 +1,79 @@
+/*
+    kuesa-index.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \page kuesa-cpp.html
+    \title Kuesa C++ Classes
+    \brief The Kuesa module provices a set of helpers on top of Qt 3Dr to ease
+    the Artist to Developer transition.
+    \since Kuesa 1.0
+
+    The Kuesa module provices a set of helpers on top of Qt 3Dr to ease the
+    Artist to Developer transition.
+
+    \section1 Namespaces
+    \annotatedlist kuesa-namespaces
+
+    \section1 Classes
+    \generatelist {classesbymodule Kuesa}
+*/
+
+/*!
+   \page kuesa-qml.html
+   \title Kuesa QML Types
+   \brief QML Types for the Kuesa module.
+   \since Kuesa 1.0
+
+   The Kuesa QML types are imported with
+
+   \qml
+   import Kuesa 1.0
+   \endqml
+
+   \section1 QML Types
+   \generatelist {qmltypesbymodule Kuesa}
+*/
+
+/*!
+    \group tools
+    \title Kuesa Tools
+    \brief All the tools provided as part of the Kuesa module
+    \generatelist {related}
+*/
+
+/*!
+    \namespace Kuesa
+    \inmodule Kuesa
+    \brief Contains all classes of the Kuesa module.
+*/
+
+/*!
+    \namespace Kuesa::GLTF2Import
+    \inmodule Kuesa
+    \brief Contains glTF2 import related classes.
+ */

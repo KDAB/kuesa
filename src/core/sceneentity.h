@@ -34,6 +34,7 @@
 #include <Kuesa/armaturecollection.h>
 #include <Kuesa/effectcollection.h>
 #include <Kuesa/layercollection.h>
+#include <Kuesa/lightcollection.h>
 #include <Kuesa/materialcollection.h>
 #include <Kuesa/meshcollection.h>
 #include <Kuesa/skeletoncollection.h>
@@ -46,12 +47,17 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DCore {
-class QTransform;
+namespace QtDRender {
+class QTextureLoader;
 }
 
 namespace Kuesa {
 
+namespace GLTF2Import {
+class GLTF2Parser;
+}
+
+class EffectsLibrary;
 class KUESASHARED_EXPORT SceneEntity : public Qt3DCore::QEntity
 {
     Q_OBJECT
@@ -66,6 +72,8 @@ class KUESASHARED_EXPORT SceneEntity : public Qt3DCore::QEntity
     Q_PROPERTY(Kuesa::EntityCollection *entities READ entities NOTIFY loadingDone)
     Q_PROPERTY(Kuesa::TextureImageCollection *textureImages READ textureImages NOTIFY loadingDone)
     Q_PROPERTY(Kuesa::AnimationMappingCollection *animationMappings READ animationMappings NOTIFY loadingDone)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLut READ brdfLut CONSTANT)
+    Q_PROPERTY(Kuesa::LightCollection *lights READ lights NOTIFY loadingDone)
 
 public:
     SceneEntity(Qt3DCore::QNode *parent = nullptr);
@@ -84,7 +92,7 @@ public:
     Q_INVOKABLE Qt3DRender::QLayer *layer(const QString &name) const;
 
     MaterialCollection *materials() const;
-    Q_INVOKABLE Qt3DRender::QMaterial *material(const QString &name) const;
+    Q_INVOKABLE Kuesa::GLTF2MaterialProperties *material(const QString &name) const;
 
     MeshCollection *meshes() const;
     Q_INVOKABLE Qt3DRender::QGeometryRenderer *mesh(const QString &name) const;
@@ -111,6 +119,13 @@ public:
 
     Q_INVOKABLE Qt3DCore::QNode *transformForEntity(const QString &name);
 
+    Q_INVOKABLE Qt3DRender::QAbstractTexture *brdfLut() const;
+
+    Q_INVOKABLE static Kuesa::SceneEntity *findParentSceneEntity(Qt3DCore::QEntity *entity);
+
+    Kuesa::LightCollection *lights() const;
+    Q_INVOKABLE Qt3DRender::QAbstractLight *light(const QString &name) const;
+
 Q_SIGNALS:
     void loadingDone();
 
@@ -119,6 +134,7 @@ private:
     ArmatureCollection *m_armatures;
     EffectCollection *m_effects;
     LayerCollection *m_layers;
+    LightCollection *m_lights;
     MaterialCollection *m_materials;
     MeshCollection *m_meshes;
     SkeletonCollection *m_skeletons;
@@ -127,6 +143,8 @@ private:
     EntityCollection *m_entities;
     TextureImageCollection *m_textureImages;
     AnimationMappingCollection *m_animationMappings;
+
+    Qt3DRender::QTextureLoader *m_brdfLUT;
 };
 
 } // namespace Kuesa
