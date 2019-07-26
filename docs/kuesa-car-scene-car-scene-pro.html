@@ -173,18 +173,20 @@
 
       windows {
           RC_ICONS = ../../../resources/kuesa.ico
+          DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
       }
 
       # Build resources as external files
+      RES_DIR = $${OUT_PWD}/resources
       asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
       asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
       asset_builder.input = RCC_BINARY_SOURCES
-      asset_builder.output = $$OUT_PWD/resources/${QMAKE_FILE_IN_BASE}.qrb
+      asset_builder.output = $$RES_DIR/${QMAKE_FILE_IN_BASE}.qrb
       asset_builder.CONFIG += no_link target_predeps
       QMAKE_EXTRA_COMPILERS += asset_builder
 
       ext_resources.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-      ext_resources.files = $$OUT_PWD/resources
+      ext_resources.files = $$RES_DIR
 
       INSTALLS += ext_resources
   }

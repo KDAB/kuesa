@@ -38,14 +38,10 @@
 <span class="subtitle"></span>
 <pre class="cpp">
 
-  &lt;?xml version='1.0' encoding='utf-8'?&gt;
-  &lt;manifest package=&quot;com.kdab.kuesademo&quot; xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:versionName=&quot;1.0&quot; android:versionCode=&quot;1&quot; android:installLocation=&quot;auto&quot;&gt;
-      &lt;application android:hardwareAccelerated=&quot;true&quot; android:name=&quot;org.qtproject.qt5.android.bindings.QtApplication&quot; android:icon=&quot;@drawable/icon&quot; android:label=&quot;Kuesa&quot; android:theme=&quot;@android:style/Theme.NoTitleBar.Fullscreen&quot;&gt;
-          &lt;activity android:configChanges=&quot;orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density&quot;
-                    android:name=&quot;org.qtproject.qt5.android.bindings.QtActivity&quot;
-                    android:label=&quot;Kuesa&quot;
-                    android:screenOrientation=&quot;landscape&quot;
-                    android:launchMode=&quot;singleTop&quot;&gt;
+  &lt;?xml version=&quot;1.0&quot;?&gt;
+  &lt;manifest package=&quot;com.kdab.carscene&quot; xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:versionName=&quot;1.1&quot; android:versionCode=&quot;1&quot; android:installLocation=&quot;auto&quot;&gt;
+      &lt;application android:hardwareAccelerated=&quot;true&quot; android:name=&quot;org.qtproject.qt5.android.bindings.QtApplication&quot; android:icon=&quot;@drawable/icon&quot; android:label=&quot;Kuesa Car-Scene&quot; android:theme=&quot;@android:style/Theme.NoTitleBar.Fullscreen&quot;&gt;
+          &lt;activity android:configChanges=&quot;orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density&quot; android:name=&quot;org.qtproject.qt5.android.bindings.QtActivity&quot; android:label=&quot;Car-Scene&quot; android:screenOrientation=&quot;landscape&quot; android:launchMode=&quot;singleTop&quot;&gt;
               &lt;intent-filter&gt;
                   &lt;action android:name=&quot;android.intent.action.MAIN&quot;/&gt;
                   &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot;/&gt;
@@ -87,16 +83,16 @@
 
       &lt;/application&gt;
 
-      &lt;uses-sdk android:minSdkVersion=&quot;18&quot; android:targetSdkVersion=&quot;18&quot;/&gt;
+      &lt;uses-sdk android:minSdkVersion=&quot;21&quot; android:targetSdkVersion=&quot;21&quot;/&gt;
       &lt;supports-screens android:largeScreens=&quot;true&quot; android:normalScreens=&quot;true&quot; android:anyDensity=&quot;true&quot; android:smallScreens=&quot;true&quot;/&gt;
 
            Remove the comment if you do not require these default permissions. --&gt;
-          &lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;
-      &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;
-      &lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;
+          &lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;
+      &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;/&gt;
+      &lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot;/&gt;
 
            Remove the comment if you do not require these default features. --&gt;
-          &lt;uses-feature android:glEsVersion=&quot;0x00030000&quot; android:required=&quot;true&quot; /&gt;
+          &lt;uses-feature android:glEsVersion=&quot;0x00030000&quot; android:required=&quot;true&quot;/&gt;
 
   &lt;/manifest&gt;
 

@@ -91,7 +91,7 @@
       <span class="type">Kuesa</span>.GLTF2Importer {
           <span class="name">id</span>: <span class="name">importer</span>
           <span class="name">sceneEntity</span>: <span class="name">scene</span>
-          <span class="name">source</span>: <span class="string">&quot;qrc:/RobotArm.gltf&quot;</span>
+          <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;RobotArm.gltf&quot;</span>
       ...
 
 </pre>
@@ -103,6 +103,7 @@
 
       <span class="type">QtObject</span> {
           <span class="name">id</span>: <span class="name">d</span>
+          property <span class="type">string</span> <span class="name">envMapFormat</span>: (<span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;osx&quot;</span> <span class="operator">||</span> <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;ios&quot;</span> <span class="operator">||</span> <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;android&quot;</span> <span class="operator">||</span> <span class="name">_isES2</span>) ? <span class="string">&quot;_16f&quot;</span> : <span class="string">&quot;&quot;</span>
 
           readonly property <span class="type">var</span> <span class="name">robotArmAnimations</span>: [
               <span class="string">'ArmTopAction'</span>,
@@ -155,8 +156,6 @@
 
           <span class="name">onStatusChanged</span>: {
               <span class="keyword">if</span> (<span class="name">status</span> <span class="operator">==</span> <span class="name">Kuesa</span>.<span class="name">GLTF2Importer</span>.<span class="name">Ready</span>) {
-                  <span class="name">console</span>.<span class="name">log</span>(<span class="string">'Animation clips: '</span> <span class="operator">+</span> <span class="name">scene</span>.<span class="name">animationClips</span>.<span class="name">names</span>);
-
                   <span class="comment">// start robot arm animation</span>
                   <span class="name">actionPlayers</span>.<span class="name">model</span> <span class="operator">=</span> <span class="name">d</span>.<span class="name">robotArmAnimations</span>;
 
@@ -175,6 +174,7 @@
 <li><a href="kuesa-music-box-3rdparty-freeverb-h.html">music-box/3rdparty/freeverb.h</a></li>
 <li><a href="kuesa-music-box-3rdparty-readerwriterqueue-atomicops-h.html">music-box/3rdparty/readerwriterqueue/atomicops.h</a></li>
 <li><a href="kuesa-music-box-3rdparty-readerwriterqueue-readerwriterqueue-h.html">music-box/3rdparty/readerwriterqueue/readerwriterqueue.h</a></li>
+<li><a href="kuesa-music-box-android-androidmanifest-xml.html">music-box/android/AndroidManifest.xml</a></li>
 <li><a href="kuesa-music-box-main-cpp.html">music-box/main.cpp</a></li>
 <li><a href="kuesa-music-box-music-box-pro.html">music-box/music-box.pro</a></li>
 <li><a href="kuesa-music-box-qml-cameracontroller-qml.html">music-box/qml/CameraController.qml</a></li>
@@ -183,6 +183,20 @@
 <li><a href="kuesa-music-box-qml-qml-qrc.html">music-box/qml/qml.qrc</a></li>
 <li><a href="kuesa-music-box-sampler-cpp.html">music-box/sampler.cpp</a></li>
 <li><a href="kuesa-music-box-sampler-h.html">music-box/sampler.h</a></li>
+</ul>
+<p>Images:</p>
+<ul>
+<li><a href="images/used-in-examples/music-box/android/res/drawable-hdpi/icon.png">music-box/android/res/drawable-hdpi/icon.png</a></li>
+<li><a href="images/used-in-examples/music-box/android/res/drawable-ldpi/icon.png">music-box/android/res/drawable-ldpi/icon.png</a></li>
+<li><a href="images/used-in-examples/music-box/android/res/drawable-mdpi/icon.png">music-box/android/res/drawable-mdpi/icon.png</a></li>
+<li><a href="images/used-in-examples/music-box/android/res/drawable-xhdpi/icon.png">music-box/android/res/drawable-xhdpi/icon.png</a></li>
+<li><a href="images/used-in-examples/music-box/android/res/drawable-xxhdpi/icon.png">music-box/android/res/drawable-xxhdpi/icon.png</a></li>
+<li><a href="images/used-in-examples/music-box/android/res/drawable-xxxhdpi/icon.png">music-box/android/res/drawable-xxxhdpi/icon.png</a></li>
+<li><a href="images/used-in-examples/music-box/android/res/drawable/icon.png">music-box/android/res/drawable/icon.png</a></li>
+<li><a href="images/used-in-examples/music-box/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png">music-box/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png</a></li>
+<li><a href="images/used-in-examples/music-box/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png">music-box/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</a></li>
+<li><a href="images/used-in-examples/music-box/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png">music-box/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</a></li>
+<li><a href="images/used-in-examples/music-box/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png">music-box/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png</a></li>
 </ul>
 </div>
 <!-- @@@music-box -->

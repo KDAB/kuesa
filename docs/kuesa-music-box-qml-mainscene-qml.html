@@ -84,6 +84,7 @@
 
       <span class="type">QtObject</span> {
           <span class="name">id</span>: <span class="name">d</span>
+          property <span class="type">string</span> <span class="name">envMapFormat</span>: (<span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;osx&quot;</span> <span class="operator">||</span> <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;ios&quot;</span> <span class="operator">||</span> <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;android&quot;</span> <span class="operator">||</span> <span class="name">_isES2</span>) ? <span class="string">&quot;_16f&quot;</span> : <span class="string">&quot;&quot;</span>
 
           readonly property <span class="type">var</span> <span class="name">robotArmAnimations</span>: [
               <span class="string">'ArmTopAction'</span>,
@@ -233,7 +234,7 @@
           },
           <span class="type">EnvironmentLight</span> {
               <span class="name">irradiance</span>: <span class="name">TextureLoader</span> {
-                  <span class="name">source</span>: <span class="string">&quot;qrc:/pink_sunrise_irradiance.dds&quot;</span>
+                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise&quot;</span> <span class="operator">+</span> <span class="name">d</span>.<span class="name">envMapFormat</span> <span class="operator">+</span> <span class="string">&quot;_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
                   <span class="type">wrapMode</span> {
                       <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
                       <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
@@ -241,7 +242,7 @@
                   <span class="name">generateMipMaps</span>: <span class="number">false</span>
               }
               <span class="name">specular</span>: <span class="name">TextureLoader</span> {
-                  <span class="name">source</span>: <span class="string">&quot;qrc:/pink_sunrise_specular.dds&quot;</span>
+                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise&quot;</span> <span class="operator">+</span> <span class="name">d</span>.<span class="name">envMapFormat</span> <span class="operator">+</span> <span class="string">&quot;_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
                   <span class="type">wrapMode</span> {
                       <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
                       <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
@@ -297,11 +298,9 @@
       <span class="type">Kuesa</span>.GLTF2Importer {
           <span class="name">id</span>: <span class="name">importer</span>
           <span class="name">sceneEntity</span>: <span class="name">scene</span>
-          <span class="name">source</span>: <span class="string">&quot;qrc:/RobotArm.gltf&quot;</span>
+          <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;RobotArm.gltf&quot;</span>
           <span class="name">onStatusChanged</span>: {
               <span class="keyword">if</span> (<span class="name">status</span> <span class="operator">==</span> <span class="name">Kuesa</span>.<span class="name">GLTF2Importer</span>.<span class="name">Ready</span>) {
-                  <span class="name">console</span>.<span class="name">log</span>(<span class="string">'Animation clips: '</span> <span class="operator">+</span> <span class="name">scene</span>.<span class="name">animationClips</span>.<span class="name">names</span>);
-
                   <span class="comment">// start robot arm animation</span>
                   <span class="name">actionPlayers</span>.<span class="name">model</span> <span class="operator">=</span> <span class="name">d</span>.<span class="name">robotArmAnimations</span>;
 
@@ -316,7 +315,7 @@
 
       <span class="type">Kuesa</span>.Skybox {
           <span class="name">id</span>: <span class="name">skybox</span>
-          <span class="name">baseName</span>: <span class="string">&quot;qrc:/pink_sunrise_skybox&quot;</span>
+          <span class="name">baseName</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_skybox&quot;</span>
           <span class="name">extension</span>: <span class="string">&quot;.dds&quot;</span>
       }
 
@@ -415,6 +414,10 @@
       property <span class="type">real</span> <span class="name">soundFxRadius</span>: <span class="number">0.</span>
       <span class="type">Kuesa</span>.MetallicRoughnessMaterial {
           <span class="name">id</span>: <span class="name">material</span>
+          <span class="name">effect</span>: <span class="name">Kuesa</span>.MetallicRoughnessEffect { }
+          <span class="name">metallicRoughnessProperties</span>: <span class="name">Kuesa</span>.MetallicRoughnessProperties {
+              <span class="name">baseColorFactor</span>: <span class="string">&quot;gray&quot;</span>
+          }
       }
 
       <span class="type">Entity</span> {

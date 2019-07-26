@@ -74,6 +74,9 @@
   <span class="preprocessor">#include &lt;QFile&gt;</span>
   <span class="preprocessor">#include &lt;QDebug&gt;</span>
   <span class="preprocessor">#include &lt;QTimer&gt;</span>
+  <span class="preprocessor">#include &lt;QDir&gt;</span>
+  <span class="preprocessor">#include &lt;QGuiApplication&gt;</span>
+
   <span class="preprocessor">#include &lt;array&gt;</span>
   <span class="preprocessor">#define DR_WAV_IMPLEMENTATION</span>
   <span class="preprocessor">#define DR_WAV_NO_STDIO</span>
@@ -144,7 +147,8 @@
 
       <span class="type">void</span> initFile(<span class="type">int</span> i<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>name)
       {
-          files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>setFileName(name);
+          <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/resources&quot;</span>));
+          files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>setFileName(resourceDir<span class="operator">.</span>path() <span class="operator">+</span> <span class="type">QDir</span><span class="operator">::</span>separator() <span class="operator">+</span> name);
           bool ok <span class="operator">=</span> files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>ReadOnly);
           Q_ASSERT(ok);
 
@@ -160,6 +164,7 @@
           }
       }
   };
+
   <span class="keyword">class</span> SamplerPrivate
   {
       Q_DISABLE_COPY(SamplerPrivate)
@@ -393,7 +398,8 @@
   };
   <span class="preprocessor">#else</span>
   <span class="comment">// Dummy class needed for Sampler::d_ptr</span>
-  <span class="keyword">struct</span> SamplerPrivate final {
+  <span class="keyword">class</span> SamplerPrivate final
+  {
   };
   <span class="preprocessor">#endif</span>
 
@@ -419,6 +425,9 @@
       <span class="keyword">if</span> (sample <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">0</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> sample <span class="operator">&lt;</span> m_notes<span class="operator">.</span>size()) {
           d<span class="operator">-</span><span class="operator">&gt;</span>notesRequests<span class="operator">.</span>enqueue(NoteRequest{ sample<span class="operator">,</span> <span class="number">0.1f</span> <span class="operator">*</span> volume });
       }
+  <span class="preprocessor">#else</span>
+      Q_UNUSED(sample);
+      Q_UNUSED(volume);
   <span class="preprocessor">#endif</span>
   }
 

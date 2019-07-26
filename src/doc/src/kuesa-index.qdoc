@@ -105,15 +105,84 @@
 
     \section1 Requirements
 
-    Kuesa require the base Qt 5.12 requirements and OpenGL supports.
+    \list
+    \li Kuesa requires the base Qt 5.12 requirements and OpenGL supports.
+    \li Kuesa requires Qt 3D from Qt 5.12.5, Qt 5.13.1 or later.
+    \li Instructions on how to build Qt from source can be found \l {https://wiki.qt.io/Building_Qt_5_from_Git} {here}.
+    \endlist
 
     \section2 OpenGL requirements
     \list
     \li Desktop OpenGL 3+
-    \li OpenGL ES 2.0 with OES_texture_half_float extension. If using 32 bits
-    based texture assets, OES_texture_float extension is required.
-    \li OpenGL ES 3.0
+    \li OpenGL ES 3.2
+    \li OpenGL ES 3.1 or lower is supported but with a limited feature set depending on available OpenGL extensions:
+        \list
+        \li For HDR support, GL_OES_texture_half_float is required
+        \li For anti aliasing, ARB_texture_multisample and GL_EXT_color_buffer_half_float are required
+        \endlist
     \endlist
+
+    \section2 Optional Dependencies
+
+    Kuesa can optionnally use the \l {https://github.com/google/draco} {Draco}
+    mesh compression library, either through an embedded version, or a version
+    present on the system. Draco can be used to dramatically decrease the size
+    of glTF files.
+
+    Kuesa supports the \c {KHR_draco_mesh_compression} glTF extension as defined \l {    https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_draco_mesh_compression/} {here}.
+
+    By default, Kuesa will build with its own embedded version of the Draco library.
+    This can be enforced with:
+
+    \badcode
+        qmake kuesa.pro -- --draco=qt
+    \endcode
+
+    To build Kuesa without any support for Draco, run qmake like this:
+
+    \badcode
+        qmake kuesa.pro -- --draco=no
+    \endcode
+
+    To build Kuesa with an external version of Draco, run qmake like this:
+
+    \badcode
+        qmake kuesa.pro -- --draco=system
+    \endcode
+
+    If Draco is not installed in the default location on your system, you can
+    set the \c {DRACOSDK} environment variable to point to where Draco is
+    installed. Use the \c {DRACOSDK_LIBS} environment variable to point to the
+    folder containing the Draco libraries.
+
+    Note that Kuesa has last been tested with Draco at commit
+    8833cf878e6fd43c5a3fd6e4231212e25e25e632.
+
+    The glTF editor, provided with Kuesa, is able to compress existing glTF 2.0
+    assets with Draco.
+
+    \section1 Installation
+
+    Kuesa builds as a Qt module and will be installed alongside Qt.
+
+    \badcode
+        qmake
+        make
+        make install
+    \endcode
+
+    Should examples not be built, try:
+
+    \badcode
+        make sub-examples
+        cd examples
+        make install
+    \endcode
+
+    To install the Qt Creator template, copy the entire kuesa folder
+    from \c {tools/qtc_templates} to the \c {templates/wizards} folder inside
+    the Qt Creator install location.
+
 
     \section1 Reference
     \list

@@ -67,30 +67,54 @@
   */</span>
   <span class="preprocessor">#include &lt;QGuiApplication&gt;</span>
   <span class="preprocessor">#include &lt;QQuickView&gt;</span>
+  <span class="preprocessor">#include &lt;QQmlEngine&gt;</span>
+  <span class="preprocessor">#include &lt;QQmlContext&gt;</span>
   <span class="preprocessor">#include &lt;QResource&gt;</span>
+  <span class="preprocessor">#include &lt;QDir&gt;</span>
+
   <span class="preprocessor">#include &quot;sampler.h&quot;</span>
+
+  <span class="preprocessor">#ifdef Q_OS_ANDROID</span>
+  <span class="preprocessor">#include &lt;QOpenGLContext&gt;</span>
+  <span class="preprocessor">#endif</span>
+
   <span class="keyword">namespace</span> {
+
   bool initializeAssetResources(<span class="keyword">const</span> <span class="type">QVector</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">&gt;</span> <span class="operator">&amp;</span>fileNames)
   {
+  <span class="preprocessor">#ifdef Q_OS_MACOS</span>
+      <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/../Resources&quot;</span>));
+  <span class="preprocessor">#elif defined(Q_OS_IOS)</span>
+      <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/Library/Application Support&quot;</span>));
+  <span class="preprocessor">#else</span>
+      <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/resources&quot;</span>));
+  <span class="preprocessor">#endif</span>
       bool b <span class="operator">=</span> <span class="keyword">true</span>;
       <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>fileName : fileNames) {
-          b <span class="operator">&amp;</span><span class="operator">=</span> <span class="type">QResource</span><span class="operator">::</span>registerResource(fileName);
+          <span class="keyword">auto</span> f <span class="operator">=</span> resourceDir<span class="operator">.</span>path() <span class="operator">+</span> <span class="type">QDir</span><span class="operator">::</span>separator() <span class="operator">+</span> fileName;
+          b <span class="operator">&amp;</span><span class="operator">=</span> <span class="type">QResource</span><span class="operator">::</span>registerResource(f);
           <span class="keyword">if</span> (<span class="operator">!</span>b)
-              qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Failed to load assets from&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> fileName;
+              qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Failed to load assets from&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> f;
       }
       <span class="keyword">return</span> b;
   }
-  }
+
+  } <span class="comment">// namespace</span>
 
   <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
   {
+      bool isES2 <span class="operator">=</span> <span class="keyword">false</span>;
       {
           <span class="comment">// Set OpenGL requirements</span>
           <span class="type">QSurfaceFormat</span> format <span class="operator">=</span> <span class="type">QSurfaceFormat</span><span class="operator">::</span>defaultFormat();
   <span class="preprocessor">#ifndef QT_OPENGL_ES_2</span>
           format<span class="operator">.</span>setVersion(<span class="number">4</span><span class="operator">,</span> <span class="number">1</span>);
           format<span class="operator">.</span>setProfile(<span class="type">QSurfaceFormat</span><span class="operator">::</span>CoreProfile);
+          format<span class="operator">.</span>setSamples(<span class="number">4</span>);
   <span class="preprocessor">#else</span>
+  <span class="preprocessor">#ifndef QT_OPENGL_ES_3</span>
+          isES2 <span class="operator">=</span> <span class="keyword">true</span>;
+  <span class="preprocessor">#endif</span>
           format<span class="operator">.</span>setVersion(<span class="number">3</span><span class="operator">,</span> <span class="number">0</span>);
           format<span class="operator">.</span>setProfile(<span class="type">QSurfaceFormat</span><span class="operator">::</span>NoProfile);
           format<span class="operator">.</span>setRenderableType(<span class="type">QSurfaceFormat</span><span class="operator">::</span>OpenGLES);
@@ -100,10 +124,38 @@
 
       <span class="type">QGuiApplication</span> app(argc<span class="operator">,</span> argv);
 
-      initializeAssetResources({ <span class="type">QStringLiteral</span>(<span class="string">&quot;music-box.qrb&quot;</span>)<span class="operator">,</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;envmap-pink-sunrise.qrb&quot;</span>) });
+      initializeAssetResources({ <span class="type">QStringLiteral</span>(<span class="string">&quot;music-box.qrb&quot;</span>) });
+  <span class="preprocessor">#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_ANDROID)</span>
+      initializeAssetResources({ <span class="type">QStringLiteral</span>(<span class="string">&quot;envmap-pink-sunrise-16f.qrb&quot;</span>) });
+  <span class="preprocessor">#else</span>
+      initializeAssetResources({ <span class="type">QStringLiteral</span>(<span class="string">&quot;envmap-pink-sunrise.qrb&quot;</span>) });
+  <span class="preprocessor">#endif</span>
       qmlRegisterType<span class="operator">&lt;</span>Sampler<span class="operator">&gt;</span>(<span class="string">&quot;MusicBox&quot;</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="string">&quot;Sampler&quot;</span>);
 
       <span class="type">QQuickView</span> view;
+  <span class="preprocessor">#ifdef KUESA_BUILD_ROOT</span>
+      view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>addImportPath(<span class="type">QStringLiteral</span>(KUESA_BUILD_ROOT <span class="string">&quot;/qml&quot;</span>));
+  <span class="preprocessor">#endif</span>
+  <span class="preprocessor">#ifdef Q_OS_IOS</span>
+      view<span class="operator">.</span>setFlags(view<span class="operator">.</span>flags() <span class="operator">|</span> <span class="type">Qt</span><span class="operator">::</span>MaximizeUsingFullscreenGeometryHint);
+  <span class="preprocessor">#endif</span>
+
+  <span class="preprocessor">#ifdef Q_OS_ANDROID</span>
+      <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;assets:/&quot;</span>);
+      <span class="comment">// Qt builds for android may not define QT_OPENGL_ES_3</span>
+      <span class="comment">// Therefore we need a runtime check to see whether we can use ES 3.0 or not</span>
+      <span class="type">QOpenGLContext</span> ctx;
+      ctx<span class="operator">.</span>setFormat(<span class="type">QSurfaceFormat</span><span class="operator">::</span>defaultFormat());
+      <span class="keyword">if</span> (ctx<span class="operator">.</span>create()) {
+          <span class="keyword">const</span> <span class="type">QSurfaceFormat</span> androidFormat <span class="operator">=</span> ctx<span class="operator">.</span>format();
+          isES2 <span class="operator">=</span> (androidFormat<span class="operator">.</span>majorVersion() <span class="operator">=</span><span class="operator">=</span> <span class="number">2</span>);
+      }
+  <span class="preprocessor">#else</span>
+      <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/&quot;</span>);
+  <span class="preprocessor">#endif</span>
+      view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_isES2&quot;</span>)<span class="operator">,</span> isES2);
+      view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_assetsPrefix&quot;</span>)<span class="operator">,</span> assetsPrefix);
+
       view<span class="operator">.</span>setResizeMode(<span class="type">QQuickView</span><span class="operator">::</span>SizeRootObjectToView);
       view<span class="operator">.</span>setSource(<span class="type">QUrl</span>(<span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/main.qml&quot;</span>)));
       view<span class="operator">.</span>resize(<span class="number">960</span><span class="operator">,</span> <span class="number">540</span>);

@@ -102,6 +102,9 @@
           <span class="name">openHoodSwitch</span>.<span class="name">checked</span> <span class="operator">=</span> <span class="number">false</span>
           <span class="name">useOpacityMaskSwitch</span>.<span class="name">checked</span> <span class="operator">=</span> <span class="number">false</span>
           <span class="name">showSkyboxSwitch</span>.<span class="name">checked</span> <span class="operator">=</span> <span class="number">false</span>
+          <span class="name">useBloomEffectSwitch</span>.<span class="name">checked</span> <span class="operator">=</span> <span class="number">false</span>
+          <span class="name">bloomThreshold</span>.<span class="name">value</span> <span class="operator">=</span> <span class="number">.27</span>
+          <span class="name">bloomPasses</span>.<span class="name">value</span> <span class="operator">=</span> <span class="number">2</span>
       }
 
       <span class="type">Item</span> {
@@ -400,6 +403,7 @@
                           <span class="name">height</span>: <span class="number">10</span>
                           <span class="name">width</span>: <span class="number">1</span>
                       }
+
                       <span class="type">Controls</span>.GroupBox {
                           <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
 
@@ -416,6 +420,7 @@
                                       <span class="name">verticalCenter</span>: <span class="name">parent</span>.<span class="name">verticalCenter</span>
                                   }
                               }
+
                               <span class="type">Controls</span>.StyledSwitch {
                                   <span class="name">id</span>: <span class="name">useBloomEffectSwitch</span>
                                   <span class="name">checked</span>: <span class="number">false</span>

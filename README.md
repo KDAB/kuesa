@@ -14,7 +14,9 @@ Kuesa is a module for Qt 3D which provides:
 
 **Note:** this repository requires [git-lfs](https://git-lfs.github.com) support.
 
-Kuesa requires Qt 3D 5.12.0 or later.
+Kuesa requires Qt 3D from Qt 5.12.5, Qt 5.13.1 or later.
+
+Instructions on how to build Qt from source can be found [here](https://wiki.qt.io/Building_Qt_5_from_Git)
 
 ### Hardware
 
@@ -36,14 +38,19 @@ Here's a list of Chipsets/Devices Kuesa has successfully been tested on:
 * NVidia Tegra K1 (embedded Linux)
 * iMX8 (embedded Linux)
 
+Kuesa supports anything with OpenGL ES 3.2 or above.
+
+OpenGL ES 3.1 or lower is supported but with a limited feature set depending on available OpenGL extensions.
+* For HDR support, GL_OES_texture_half_float is required
+* For anti aliasing, ARB_texture_multisample and GL_EXT_color_buffer_half_float are required
+
 ## Optional Dependencies
 
 Kuesa can optionnally use the [Draco](https://github.com/google/draco) mesh compression library,
 either through an embedded version, or a version present on the system.
 Draco can be used to dramatically decrease the size of glTF files.
 
-Kuesa supports the ``KHR_draco_mesh_compression`` glTF extension as defined here:
-https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_draco_mesh_compression/
+Kuesa supports the ``KHR_draco_mesh_compression`` glTF extension as defined [here](https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_draco_mesh_compression/).
 
 By default, Kuesa will build with its own embedded version of the Draco library.
 This can be enforced with:

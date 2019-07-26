@@ -3,8 +3,8 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!-- tonemapping.qdoc -->
-  <title>Kuesa ToneMapping QML Example | Kuesa 1.0</title>
+<!-- music-box.qdoc -->
+  <title>Kuesa Music Box QML Example | Kuesa 1.0</title>
   <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
   <script type="text/javascript">
     document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
@@ -26,7 +26,7 @@
     <div class="main-rounded">
       <div class="navigationbar">
         <table><tr>
-<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td >Kuesa ToneMapping QML Example</td></tr></table><table class="buildversion"><tr>
+<td ><a href="index.html#">Qt 5.12</a></td><td ><a href="index.html#">Kuesa</a></td><td >Kuesa Music Box QML Example</td></tr></table><table class="buildversion"><tr>
 <td id="buildversion" width="100%" align="right"><a href="index.html#">Qt 5.12.0 Reference Documentation</a></td>
         </tr></table>
       </div>
@@ -34,21 +34,21 @@
 <div class="content">
 <div class="line">
 <div class="content mainContent">
-<h1 class="title">Kuesa ToneMapping QML Example</h1>
+<h1 class="title">Kuesa Music Box QML Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
 
   &lt;?xml version=&quot;1.0&quot;?&gt;
-  &lt;manifest package=&quot;com.kdab.tonemapping&quot; xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:versionName=&quot;1.0&quot; android:versionCode=&quot;1&quot; android:installLocation=&quot;auto&quot;&gt;
-      &lt;application android:hardwareAccelerated=&quot;true&quot; android:name=&quot;org.qtproject.qt5.android.bindings.QtApplication&quot; android:icon=&quot;@drawable/icon&quot; android:label=&quot;Kuesa ToneMapping&quot; android:theme=&quot;@android:style/Theme.NoTitleBar.Fullscreen&quot;&gt;
-          &lt;activity android:configChanges=&quot;orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density&quot; android:name=&quot;org.qtproject.qt5.android.bindings.QtActivity&quot; android:label=&quot;ToneMapping&quot; android:screenOrientation=&quot;landscape&quot; android:launchMode=&quot;singleTop&quot;&gt;
+  &lt;manifest package=&quot;com.kdab.musicbox&quot; xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:versionName=&quot;1.0&quot; android:versionCode=&quot;1&quot; android:installLocation=&quot;auto&quot;&gt;
+      &lt;application android:hardwareAccelerated=&quot;true&quot; android:name=&quot;org.qtproject.qt5.android.bindings.QtApplication&quot; android:icon=&quot;@drawable/icon&quot; android:label=&quot;Kuesa Music-Box&quot; android:theme=&quot;@android:style/Theme.NoTitleBar.Fullscreen&quot;&gt;
+          &lt;activity android:configChanges=&quot;orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density&quot; android:name=&quot;org.qtproject.qt5.android.bindings.QtActivity&quot; android:label=&quot;Music-Box&quot; android:screenOrientation=&quot;landscape&quot; android:launchMode=&quot;singleTop&quot;&gt;
               &lt;intent-filter&gt;
                   &lt;action android:name=&quot;android.intent.action.MAIN&quot;/&gt;
                   &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot;/&gt;
               &lt;/intent-filter&gt;
 
 
-              &lt;meta-data android:name=&quot;android.app.lib_name&quot; android:value=&quot;tonemapping&quot;/&gt;
+              &lt;meta-data android:name=&quot;android.app.lib_name&quot; android:value=&quot;music-box&quot;/&gt;
               &lt;meta-data android:name=&quot;android.app.qt_sources_resource_id&quot; android:resource=&quot;@array/qt_sources&quot;/&gt;
               &lt;meta-data android:name=&quot;android.app.repository&quot; android:value=&quot;default&quot;/&gt;
               &lt;meta-data android:name=&quot;android.app.qt_libs_resource_id&quot; android:resource=&quot;@array/qt_libs&quot;/&gt;

@@ -200,7 +200,7 @@
 
           <span class="comment">// Hide opacity mask</span>
           <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">useOpacityMaskSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">false</span> }
-          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">5000</span> }
+          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">2000</span> }
 
           <span class="comment">// Stop the engine</span>
           <span class="type">PropertyAction</span> { <span class="name">target</span>: <span class="name">speedC</span>; <span class="name">property</span>: <span class="string">&quot;value&quot;</span>; <span class="name">value</span>: <span class="number">0</span> }
@@ -208,9 +208,22 @@
 
           <span class="comment">// Hide control panel</span>
           <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">menuIcon</span>.<span class="name">expanded</span> <span class="operator">=</span> <span class="number">false</span> }
+          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1500</span> }
+
+          <span class="comment">// Bloom effect</span>
+          <span class="type">SequentialAnimation</span> {
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">envStudioSmall04</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+              <span class="type">ScriptAction</span> { <span class="name">script</span>: <span class="name">titlePanel</span>.<span class="name">showTitle</span>(<span class="string">&quot;Bloom Effect&quot;</span>) }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">1000</span> }
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">useBloomEffectSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+              <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">8000</span> }
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">useBloomEffectSwitch</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">false</span> }
+              <span class="type">PropertyAction</span> { <span class="name">targets</span>: <span class="name">envPinkSunrise</span>; <span class="name">property</span>: <span class="string">&quot;checked&quot;</span>; <span class="name">value</span>: <span class="number">true</span> }
+          }
 
           <span class="comment">// Wait a bit</span>
-          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">2000</span> }
+          <span class="type">PauseAnimation</span> { <span class="name">duration</span>: <span class="number">5000</span> }
 
           <span class="name">loops</span>: <span class="name">Animation</span>.<span class="name">Infinite</span>
       }
