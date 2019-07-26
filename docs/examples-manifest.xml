@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <instructionals module="Kuesa">
     <examples>
-        <example name="Kuesa Car-Scene QML Example" docUrl="qthelp://com.kdab.kuesa.1.0/kuesa/kuesa-car-scene-example.html" projectPath="kuesa/car-scene/car-scene.pro" imageUrl="qthelp://com.kdab.kuesa.1.0/kuesa/images/car-scene-example.jpg">
+        <example name="Kuesa Car-Scene QML Example" docUrl="qthelp://com.kdab.kuesa.1.1/kuesa/kuesa-car-scene-example.html" projectPath="kuesa/car-scene/car-scene.pro" imageUrl="qthelp://com.kdab.kuesa.1.1/kuesa/images/car-scene-example.jpg">
             <description><![CDATA[Demonstrates the use of the Kuesa API to import a glTF2 file and extract assets from it.]]></description>
             <tags>car-scene,kuesa,qml</tags>
             <fileToOpen>kuesa/car-scene/main.cpp</fileToOpen>
             <fileToOpen mainFile="true">kuesa/car-scene/qml/main.qml</fileToOpen>
         </example>
-        <example name="Kuesa Music Box QML Example" docUrl="qthelp://com.kdab.kuesa.1.0/kuesa/kuesa-music-box-example.html" projectPath="kuesa/music-box/music-box.pro" imageUrl="qthelp://com.kdab.kuesa.1.0/kuesa/images/music-box-example.jpg">
+        <example name="Kuesa Music Box QML Example" docUrl="qthelp://com.kdab.kuesa.1.1/kuesa/kuesa-music-box-example.html" projectPath="kuesa/music-box/music-box.pro" imageUrl="qthelp://com.kdab.kuesa.1.1/kuesa/images/music-box-example.jpg">
             <description><![CDATA[Demonstrates the use of the Kuesa API to import a glTF2 file and play animations.]]></description>
             <tags>box,kuesa,music,qml</tags>
             <fileToOpen>kuesa/music-box/main.cpp</fileToOpen>
             <fileToOpen mainFile="true">kuesa/music-box/qml/main.qml</fileToOpen>
         </example>
-        <example name="Kuesa ToneMapping QML Example" docUrl="qthelp://com.kdab.kuesa.1.0/kuesa/kuesa-tonemapping-example.html" projectPath="kuesa/tonemapping/tonemapping.pro" imageUrl="qthelp://com.kdab.kuesa.1.0/kuesa/images/tonemapping-example.jpg">
+        <example name="Kuesa ToneMapping QML Example" docUrl="qthelp://com.kdab.kuesa.1.1/kuesa/kuesa-tonemapping-example.html" projectPath="kuesa/tonemapping/tonemapping.pro" imageUrl="qthelp://com.kdab.kuesa.1.1/kuesa/images/tonemapping-example.jpg">
             <description><![CDATA[Demonstrates the use of the Kuesa API to import a glTF2 file and control its appearance by using different tone mapping algorithms.]]></description>
             <tags>kuesa,qml,tonemapping</tags>
             <fileToOpen>kuesa/tonemapping/main.cpp</fileToOpen>
