@@ -125,6 +125,10 @@ To install the Qt Creator template, copy the entire kuesa folder
 from ``tools/qtc_templates`` to the ``templates/wizards`` folder inside
 the Qt Creator install location.
 
+## Documentation
+
+The reference documentation is available at: https://kdab.github.io/kuesa/
+
 ## 3rd-party
 Kuesa uses the following 3rd-party software:
 * Qt 5.12 or later, licensed under LGPLv3
