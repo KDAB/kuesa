@@ -50,57 +50,6 @@
         <class>Kuesa::UnlitMaterial</class>
         <class>Kuesa::UnlitProperties</class>
     </compound>
-    <compound kind="namespace">
-        <name>Kuesa::GLTF2Import</name>
-        <filename>kuesa-gltf2import.html</filename>
-        <class>Kuesa::GLTF2Import::GLTF2Options</class>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::GLTF2Import::GLTF2Options</name>
-        <filename>kuesa-gltf2import-gltf2options.html</filename>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>generateTangents</name>
-            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
-            <anchor>generateTangents-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>generateNormals</name>
-            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
-            <anchor>generateNormals-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setGenerateTangents</name>
-            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
-            <anchor>generateTangents-prop</anchor>
-            <arglist>(bool generateTangents)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setGenerateNormals</name>
-            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
-            <anchor>generateNormals-prop</anchor>
-            <arglist>(bool generateNormals)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>generateTangentsChanged</name>
-            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
-            <anchor>generateTangents-prop</anchor>
-            <arglist>(bool generateTangents)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>generateNormalsChanged</name>
-            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
-            <anchor>generateNormals-prop</anchor>
-            <arglist>(bool generateNormals)</arglist>
-        </member>
-    </compound>
     <compound kind="class">
         <name>Kuesa::AbstractAssetCollection</name>
         <filename>kuesa-abstractassetcollection.html</filename>
@@ -599,48 +548,54 @@
         </member>
     </compound>
     <compound kind="class">
-        <name>Kuesa::GLTF2Importer</name>
-        <filename>kuesa-gltf2importer.html</filename>
-        <member kind="property" type="QUrl">
-            <name>source</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>source-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="Kuesa::GLTF2Importer::Status">
-            <name>status</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>status-prop</anchor>
-            <arglist></arglist>
-        </member>
+        <name>Kuesa::AnimationPlayer</name>
+        <filename>kuesa-animationplayer.html</filename>
         <member kind="property" type="Kuesa::SceneEntity*">
             <name>sceneEntity</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
             <anchor>sceneEntity-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="bool">
-            <name>assignNames</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>assignNames-prop</anchor>
+        <member kind="property" type="Status">
+            <name>status</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>status-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="Kuesa::GLTF2Import::GLTF2Options*">
-            <name>options</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>options-prop</anchor>
+        <member kind="property" type="QString">
+            <name>clip</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>clip-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="QString">
+            <name>mapper</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>mapper-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="bool">
+            <name>running</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>running-prop</anchor>
             <arglist></arglist>
         </member>
         <member kind="property" type="int">
-            <name>activeSceneIndex</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>activeSceneIndex-prop</anchor>
+            <name>loops</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>loops-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="QStringList">
-            <name>availableScenes</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>availableScenes-prop</anchor>
+        <member kind="property" type="Qt3DAnimation::QClock*">
+            <name>clock</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>clock-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>normalizedTime</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>normalizedTime-prop</anchor>
             <arglist></arglist>
         </member>
         <member kind="enum">
@@ -652,10 +607,6 @@
             <anchor>Status-enum</anchor>
             <arglist></arglist>
         </member>
-        <member name="Loading">
-            <anchor>Status-enum</anchor>
-            <arglist></arglist>
-        </member>
         <member name="Ready">
             <anchor>Status-enum</anchor>
             <arglist></arglist>
@@ -664,416 +615,252 @@
             <anchor>Status-enum</anchor>
             <arglist></arglist>
         </member>
-        <member kind="enum">
-            <name>ActiveScene</name>
-            <anchor>ActiveScene-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member name="DefaultScene">
-            <anchor>ActiveScene-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member name="EmptyScene">
-            <anchor>ActiveScene-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>QUrl</type>
-            <name>source</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>source</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>GLTF2Importer::Status</type>
-            <name>status</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>status</anchor>
-            <arglist>() const const</arglist>
-        </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>Kuesa::SceneEntity *</type>
             <name>sceneEntity</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>sceneEntity</anchor>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>sceneEntity-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>Kuesa::AnimationPlayer::Status</type>
+            <name>status</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>status-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>QString</type>
+            <name>clip</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>clip-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>QString</type>
+            <name>mapper</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>mapper-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>bool</type>
-            <name>assignNames</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>assignNames</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Kuesa::GLTF2Import::GLTF2Options *</type>
-            <name>options</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>options-prop</anchor>
-            <arglist>()</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>const Kuesa::GLTF2Import::GLTF2Options *</type>
-            <name>options</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>options-prop</anchor>
+            <name>isRunning</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>running-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>int</type>
-            <name>activeSceneIndex</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>activeSceneIndex-prop</anchor>
+            <name>loopCount</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>loops-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>QStringList</type>
-            <name>availableScenes</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>availableScenes-prop</anchor>
+            <type>Qt3DAnimation::QClock *</type>
+            <name>clock</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>clock-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>normalizedTime</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>normalizedTime-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>QVector&lt;Qt3DCore::QNode *&gt;</type>
+            <name>targets</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>targets</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setSource</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>setSource</anchor>
-            <arglist>(const QUrl &amp;source)</arglist>
+            <name>addTarget</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>addTarget</anchor>
+            <arglist>(Qt3DCore::QNode *target)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>removeTarget</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>removeTarget</anchor>
+            <arglist>(Qt3DCore::QNode *target)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
             <name>setSceneEntity</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>setSceneEntity</anchor>
-            <arglist>(Kuesa::SceneEntity *sceneEntity)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setAssignNames</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>setAssignNames</anchor>
-            <arglist>(bool assignNames)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setActiveSceneIndex</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>activeSceneIndex-prop</anchor>
-            <arglist>(int index)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>sourceChanged</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>source-prop</anchor>
-            <arglist>(const QUrl &amp;source)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>statusChanged</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>status-prop</anchor>
-            <arglist>(const Kuesa::GLTF2Importer::Status status)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>sceneEntityChanged</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
             <anchor>sceneEntity-prop</anchor>
             <arglist>(Kuesa::SceneEntity *sceneEntity)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>assignNamesChanged</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>assignNames-prop</anchor>
-            <arglist>(bool assignNames)</arglist>
+            <name>setClip</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>clip-prop</anchor>
+            <arglist>(const QString &amp;clip)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>activeSceneIndexChanged</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>activeSceneIndex-prop</anchor>
-            <arglist>(int activeSceneIndex)</arglist>
+            <name>setMapper</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>mapper-prop</anchor>
+            <arglist>(const QString &amp;mapper)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>availableScenesChanged</name>
-            <anchorfile>kuesa-gltf2importer.html</anchorfile>
-            <anchor>availableScenes-prop</anchor>
-            <arglist>(const QStringList &amp;availableScenes)</arglist>
+            <name>setRunning</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>running-prop</anchor>
+            <arglist>(bool running)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setLoopCount</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>loops-prop</anchor>
+            <arglist>(int loops)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setClock</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>clock-prop</anchor>
+            <arglist>(Qt3DAnimation::QClock *clock)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setNormalizedTime</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>normalizedTime-prop</anchor>
+            <arglist>(float timeFraction)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>start</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>start</anchor>
+            <arglist>()</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>stop</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>stop</anchor>
+            <arglist>()</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>sceneEntityChanged</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>sceneEntity-prop</anchor>
+            <arglist>(const Kuesa::SceneEntity *sceneEntity)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>statusChanged</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>status-prop</anchor>
+            <arglist>(Kuesa::AnimationPlayer::Status status)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>clipChanged</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>clip-prop</anchor>
+            <arglist>(const QString &amp;clip)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>mapperChanged</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>mapper-prop</anchor>
+            <arglist>(const QString &amp;mapper)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>runningChanged</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>running-prop</anchor>
+            <arglist>(bool running)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>loopCountChanged</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>loops-prop</anchor>
+            <arglist>(int loops)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>clockChanged</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>clock-prop</anchor>
+            <arglist>(Qt3DAnimation::QClock *clock)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>normalizedTimeChanged</name>
+            <anchorfile>kuesa-animationplayer.html</anchorfile>
+            <anchor>normalizedTime-prop</anchor>
+            <arglist>(float index)</arglist>
         </member>
     </compound>
-    <compound kind="class">
-        <name>Kuesa::MetallicRoughnessMaterial</name>
-        <filename>kuesa-metallicroughnessmaterial.html</filename>
-        <base>GLTF2Material</base>
-        <member kind="property" type="Kuesa::MetallicRoughnessProperties*">
-            <name>metallicRoughnessProperties</name>
-            <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
-            <anchor>metallicRoughnessProperties-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Kuesa::MetallicRoughnessProperties *</type>
-            <name>metallicRoughnessProperties</name>
-            <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
-            <anchor>metallicRoughnessProperties-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setMetallicRoughnessProperties</name>
-            <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
-            <anchor>metallicRoughnessProperties-prop</anchor>
-            <arglist>(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>metallicRoughnessPropertiesChanged</name>
-            <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
-            <anchor>metallicRoughnessProperties-prop</anchor>
-            <arglist>(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties)</arglist>
-        </member>
+    <compound kind="namespace">
+        <name>Kuesa::GLTF2Import</name>
+        <filename>kuesa-gltf2import.html</filename>
+        <class>Kuesa::GLTF2Import::GLTF2Options</class>
     </compound>
     <compound kind="class">
-        <name>Kuesa::MorphController</name>
-        <filename>kuesa-morphcontroller.html</filename>
-        <member kind="property" type="int">
-            <name>count</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>count-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>weight0</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight0-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>weight1</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight1-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>weight2</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight2-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>weight3</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight3-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>weight4</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight4-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>weight5</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight5-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>weight6</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight6-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>weight7</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight7-prop</anchor>
-            <arglist></arglist>
-        </member>
+        <name>Kuesa::GLTF2Import::GLTF2Options</name>
+        <filename>kuesa-gltf2import-gltf2options.html</filename>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>weight0</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight0-prop</anchor>
+            <type>bool</type>
+            <name>generateTangents</name>
+            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
+            <anchor>generateTangents-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>weight1</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight1-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>weight2</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight2-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>weight3</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight3-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>weight4</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight4-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>weight5</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight5-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>weight6</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight6-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>weight7</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight7-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>int</type>
-            <name>count</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>count-prop</anchor>
+            <type>bool</type>
+            <name>generateNormals</name>
+            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
+            <anchor>generateNormals-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setWeight0</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight0-prop</anchor>
-            <arglist>(float weight0)</arglist>
+            <name>setGenerateTangents</name>
+            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
+            <anchor>generateTangents-prop</anchor>
+            <arglist>(bool generateTangents)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setWeight1</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight1-prop</anchor>
-            <arglist>(float weight1)</arglist>
+            <name>setGenerateNormals</name>
+            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
+            <anchor>generateNormals-prop</anchor>
+            <arglist>(bool generateNormals)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setWeight2</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight2-prop</anchor>
-            <arglist>(float weight2)</arglist>
+            <name>generateTangentsChanged</name>
+            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
+            <anchor>generateTangents-prop</anchor>
+            <arglist>(bool generateTangents)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setWeight3</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight3-prop</anchor>
-            <arglist>(float weight3)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setWeight4</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight4-prop</anchor>
-            <arglist>(float weight4)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setWeight5</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight5-prop</anchor>
-            <arglist>(float weight5)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setWeight6</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight6-prop</anchor>
-            <arglist>(float weight6)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setWeight7</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight7-prop</anchor>
-            <arglist>(float weight7)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>weight0Changed</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight0-prop</anchor>
-            <arglist>(float weight0)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>weight1Changed</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight1-prop</anchor>
-            <arglist>(float weight1)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>weight2Changed</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight2-prop</anchor>
-            <arglist>(float weight2)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>weight3Changed</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight3-prop</anchor>
-            <arglist>(float weight3)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>weight4Changed</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight4-prop</anchor>
-            <arglist>(float weight4)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>weight5Changed</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight5-prop</anchor>
-            <arglist>(float weight5)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>weight6Changed</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight6-prop</anchor>
-            <arglist>(float weight6)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>weight7Changed</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>weight7-prop</anchor>
-            <arglist>(float weight7)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>countChanged</name>
-            <anchorfile>kuesa-morphcontroller.html</anchorfile>
-            <anchor>count-prop</anchor>
-            <arglist>(int count)</arglist>
+            <name>generateNormalsChanged</name>
+            <anchorfile>kuesa-gltf2import-gltf2options.html</anchorfile>
+            <anchor>generateNormals-prop</anchor>
+            <arglist>(bool generateNormals)</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -1378,6 +1165,117 @@
         </member>
     </compound>
     <compound kind="class">
+        <name>Kuesa::DepthOfFieldEffect</name>
+        <filename>kuesa-depthoffieldeffect.html</filename>
+        <base>AbstractPostProcessingEffect</base>
+        <member kind="property" type="float">
+            <name>focusRange</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>focusRange-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>focusDistance</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>focusDistance-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>radius</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>radius-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>focusRange</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>focusRange-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>radius</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>radius-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>focusDistance</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>focusDistance-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setFocusRange</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>setFocusRange</anchor>
+            <arglist>(float focusRange)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setRadius</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>setRadius</anchor>
+            <arglist>(float radius)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setFocusDistance</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>setFocusDistance</anchor>
+            <arglist>(float focusDistance)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>focusRangeChanged</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>focusRange-prop</anchor>
+            <arglist>(float focusRange)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>radiusChanged</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>radius-prop</anchor>
+            <arglist>(float radius)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>focusDistanceChanged</name>
+            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
+            <anchor>focusDistance-prop</anchor>
+            <arglist>(float focusDistance)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::PointLight</name>
+        <filename>kuesa-pointlight.html</filename>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>range</name>
+            <anchorfile>kuesa-pointlight.html</anchorfile>
+            <anchor>range-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setRange</name>
+            <anchorfile>kuesa-pointlight.html</anchorfile>
+            <anchor>range-prop</anchor>
+            <arglist>(float range)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>rangeChanged</name>
+            <anchorfile>kuesa-pointlight.html</anchorfile>
+            <anchor>range-prop</anchor>
+            <arglist>(float range)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
         <name>Kuesa::GLTF2Material</name>
         <filename>kuesa-gltf2material.html</filename>
         <member kind="property" type="Kuesa::MorphController*">
@@ -1399,23 +1297,6 @@
             <anchorfile>kuesa-gltf2material.html</anchorfile>
             <anchor>morphController-prop</anchor>
             <arglist>(Kuesa::MorphController *morphController)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::EntityCollection</name>
-        <filename>kuesa-entitycollection.html</filename>
-        <base>AbstractAssetCollection</base>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::TextureImageCollection</name>
-        <filename>kuesa-textureimagecollection.html</filename>
-        <base>AbstractAssetCollection</base>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Qt3DRender::QTextureImage *</type>
-            <name>add</name>
-            <anchorfile>kuesa-textureimagecollection.html</anchorfile>
-            <anchor>add</anchor>
-            <arglist>(const QString &amp;name, const QUrl &amp;source)</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -1768,8 +1649,8 @@
         </member>
     </compound>
     <compound kind="class">
-        <name>Kuesa::AnimationMappingCollection</name>
-        <filename>kuesa-animationmappingcollection.html</filename>
+        <name>Kuesa::CameraCollection</name>
+        <filename>kuesa-cameracollection.html</filename>
         <base>AbstractAssetCollection</base>
     </compound>
     <compound kind="class">
@@ -1780,6 +1661,956 @@
             <type>Qt3DCore::QSkeletonLoader *</type>
             <name>add</name>
             <anchorfile>kuesa-skeletoncollection.html</anchorfile>
+            <anchor>add</anchor>
+            <arglist>(const QString &amp;name, const QUrl &amp;source)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::BloomEffect</name>
+        <filename>kuesa-bloomeffect.html</filename>
+        <base>AbstractPostProcessingEffect</base>
+        <member kind="property" type="float">
+            <name>threshold</name>
+            <anchorfile>kuesa-bloomeffect.html</anchorfile>
+            <anchor>threshold-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="int">
+            <name>blurPassCount</name>
+            <anchorfile>kuesa-bloomeffect.html</anchorfile>
+            <anchor>blurPassCount-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="virtual" static="no">
+            <type>virtual Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr</type>
+            <name>frameGraphSubTree</name>
+            <anchorfile>kuesa-bloomeffect.html</anchorfile>
+            <anchor>frameGraphSubTree</anchor>
+            <arglist>() const const override</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="virtual" static="no">
+            <type>virtual void</type>
+            <name>setSceneSize</name>
+            <anchorfile>kuesa-bloomeffect.html</anchorfile>
+            <anchor>setSceneSize</anchor>
+            <arglist>(const QSize &amp;size) override</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="virtual" static="no">
+            <type>virtual void</type>
+            <name>setInputTexture</name>
+            <anchorfile>kuesa-bloomeffect.html</anchorfile>
+            <anchor>setInputTexture</anchor>
+            <arglist>(Qt3DRender::QAbstractTexture *texture) override</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>threshold</name>
+            <anchorfile>kuesa-bloomeffect.html</anchorfile>
+            <anchor>threshold</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>int</type>
+            <name>blurPassCount</name>
+            <anchorfile>kuesa-bloomeffect.html</anchorfile>
+            <anchor>blurPassCount</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setThreshold</name>
+            <anchorfile>kuesa-bloomeffect.html</anchorfile>
+            <anchor>setThreshold</anchor>
+            <arglist>(float threshold)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setBlurPassCount</name>
+            <anchorfile>kuesa-bloomeffect.html</anchorfile>
+            <anchor>setBlurPassCount</anchor>
+            <arglist>(int blurPassCount)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>thresholdChanged</name>
+            <anchorfile>kuesa-bloomeffect.html</anchorfile>
+            <anchor>threshold-prop</anchor>
+            <arglist>(float threshold)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>blurPassCountChanged</name>
+            <anchorfile>kuesa-bloomeffect.html</anchorfile>
+            <anchor>blurPassCount-prop</anchor>
+            <arglist>(int blurPassCount)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::MeshCollection</name>
+        <filename>kuesa-meshcollection.html</filename>
+        <base>AbstractAssetCollection</base>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>Qt3DRender::QMesh *</type>
+            <name>add</name>
+            <anchorfile>kuesa-meshcollection.html</anchorfile>
+            <anchor>add</anchor>
+            <arglist>(const QString &amp;name, const QUrl &amp;source)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::SpotLight</name>
+        <filename>kuesa-spotlight.html</filename>
+        <member kind="property" type="QVector3D">
+            <name>localDirection</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>localDirection-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>innerConeAngle</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>innerConeAngle-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>outerConeAngle</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>outerConeAngle-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>QVector3D</type>
+            <name>localDirection</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>localDirection-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>innerConeAngle</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>innerConeAngle-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>outerConeAngle</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>outerConeAngle-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>range</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>range-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setLocalDirection</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>localDirection-prop</anchor>
+            <arglist>(const QVector3D &amp;localDirection)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setInnerConeAngle</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>innerConeAngle-prop</anchor>
+            <arglist>(float innerConeAngle)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setOuterConeAngle</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>outerConeAngle-prop</anchor>
+            <arglist>(float outerConeAngle)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setRange</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>range-prop</anchor>
+            <arglist>(float range)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>localDirectionChanged</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>localDirection-prop</anchor>
+            <arglist>(const QVector3D &amp;localDirection)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>innerConeAngleChanged</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>innerConeAngle-prop</anchor>
+            <arglist>(float innerConeAngle)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>outerConeAngleChanged</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>outerConeAngle-prop</anchor>
+            <arglist>(float outerConeAngle)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>rangeChanged</name>
+            <anchorfile>kuesa-spotlight.html</anchorfile>
+            <anchor>range-prop</anchor>
+            <arglist>(float range)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::UnlitEffect</name>
+        <filename>kuesa-unliteffect.html</filename>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>bool</type>
+            <name>isBaseColorMapEnabled</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>baseColorMapEnabled-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>bool</type>
+            <name>isUsingColorAttribute</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>usingColorAttribute-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>bool</type>
+            <name>isDoubleSided</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>doubleSided-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>bool</type>
+            <name>useSkinning</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>useSkinning-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>bool</type>
+            <name>isOpaque</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>opaque-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>bool</type>
+            <name>isAlphaCutoffEnabled</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>alphaCutoffEnabled-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setBaseColorMapEnabled</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>baseColorMapEnabled-prop</anchor>
+            <arglist>(bool enabled)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setUsingColorAttribute</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>usingColorAttribute-prop</anchor>
+            <arglist>(bool usingColorAttribute)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setDoubleSided</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>doubleSided-prop</anchor>
+            <arglist>(bool doubleSided)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setUseSkinning</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>useSkinning-prop</anchor>
+            <arglist>(bool useSkinning)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setOpaque</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>opaque-prop</anchor>
+            <arglist>(bool opaque)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setAlphaCutoffEnabled</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>alphaCutoffEnabled-prop</anchor>
+            <arglist>(bool enabled)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>baseColorMapEnabledChanged</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>baseColorMapEnabled-prop</anchor>
+            <arglist>(bool enabled)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>usingColorAttributeChanged</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>usingColorAttribute-prop</anchor>
+            <arglist>(bool usingColorAttribute)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>doubleSidedChanged</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>doubleSided-prop</anchor>
+            <arglist>(bool doubleSided)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>useSkinningChanged</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>useSkinning-prop</anchor>
+            <arglist>(bool useSkinning)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>opaqueChanged</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>opaque-prop</anchor>
+            <arglist>(bool opaque)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>alphaCutoffEnabledChanged</name>
+            <anchorfile>kuesa-unliteffect.html</anchorfile>
+            <anchor>alphaCutoffEnabled-prop</anchor>
+            <arglist>(bool enabled)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::OpacityMask</name>
+        <filename>kuesa-opacitymask.html</filename>
+        <base>AbstractPostProcessingEffect</base>
+        <member kind="property" type="Qt3DRender::QAbstractTexture*">
+            <name>mask</name>
+            <anchorfile>kuesa-opacitymask.html</anchorfile>
+            <anchor>mask-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="bool">
+            <name>premultipliedAlpha</name>
+            <anchorfile>kuesa-opacitymask.html</anchorfile>
+            <anchor>premultipliedAlpha-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setMask</name>
+            <anchorfile>kuesa-opacitymask.html</anchorfile>
+            <anchor>mask-prop</anchor>
+            <arglist>(Qt3DRender::QAbstractTexture *mask)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>Qt3DRender::QAbstractTexture *</type>
+            <name>mask</name>
+            <anchorfile>kuesa-opacitymask.html</anchorfile>
+            <anchor>mask-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setPremultipliedAlpha</name>
+            <anchorfile>kuesa-opacitymask.html</anchorfile>
+            <anchor>premultipliedAlpha-prop</anchor>
+            <arglist>(bool premultipliedAlpha)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>bool</type>
+            <name>premultipliedAlpha</name>
+            <anchorfile>kuesa-opacitymask.html</anchorfile>
+            <anchor>premultipliedAlpha-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>maskChanged</name>
+            <anchorfile>kuesa-opacitymask.html</anchorfile>
+            <anchor>mask-prop</anchor>
+            <arglist>(Qt3DRender::QAbstractTexture *mask)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>premultipliedAlphaChanged</name>
+            <anchorfile>kuesa-opacitymask.html</anchorfile>
+            <anchor>premultipliedAlpha-prop</anchor>
+            <arglist>(bool premultipliedAlpha)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::MorphController</name>
+        <filename>kuesa-morphcontroller.html</filename>
+        <member kind="property" type="int">
+            <name>count</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>count-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>weight0</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight0-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>weight1</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight1-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>weight2</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight2-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>weight3</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight3-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>weight4</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight4-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>weight5</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight5-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>weight6</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight6-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>weight7</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight7-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>weight0</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight0-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>weight1</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight1-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>weight2</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight2-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>weight3</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight3-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>weight4</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight4-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>weight5</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight5-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>weight6</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight6-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>weight7</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight7-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>int</type>
+            <name>count</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>count-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setWeight0</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight0-prop</anchor>
+            <arglist>(float weight0)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setWeight1</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight1-prop</anchor>
+            <arglist>(float weight1)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setWeight2</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight2-prop</anchor>
+            <arglist>(float weight2)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setWeight3</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight3-prop</anchor>
+            <arglist>(float weight3)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setWeight4</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight4-prop</anchor>
+            <arglist>(float weight4)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setWeight5</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight5-prop</anchor>
+            <arglist>(float weight5)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setWeight6</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight6-prop</anchor>
+            <arglist>(float weight6)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setWeight7</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight7-prop</anchor>
+            <arglist>(float weight7)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>weight0Changed</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight0-prop</anchor>
+            <arglist>(float weight0)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>weight1Changed</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight1-prop</anchor>
+            <arglist>(float weight1)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>weight2Changed</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight2-prop</anchor>
+            <arglist>(float weight2)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>weight3Changed</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight3-prop</anchor>
+            <arglist>(float weight3)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>weight4Changed</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight4-prop</anchor>
+            <arglist>(float weight4)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>weight5Changed</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight5-prop</anchor>
+            <arglist>(float weight5)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>weight6Changed</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight6-prop</anchor>
+            <arglist>(float weight6)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>weight7Changed</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>weight7-prop</anchor>
+            <arglist>(float weight7)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>countChanged</name>
+            <anchorfile>kuesa-morphcontroller.html</anchorfile>
+            <anchor>count-prop</anchor>
+            <arglist>(int count)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::ArmatureCollection</name>
+        <filename>kuesa-armaturecollection.html</filename>
+        <base>AbstractAssetCollection</base>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::MetallicRoughnessMaterial</name>
+        <filename>kuesa-metallicroughnessmaterial.html</filename>
+        <base>GLTF2Material</base>
+        <member kind="property" type="Kuesa::MetallicRoughnessProperties*">
+            <name>metallicRoughnessProperties</name>
+            <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
+            <anchor>metallicRoughnessProperties-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>Kuesa::MetallicRoughnessProperties *</type>
+            <name>metallicRoughnessProperties</name>
+            <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
+            <anchor>metallicRoughnessProperties-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setMetallicRoughnessProperties</name>
+            <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
+            <anchor>metallicRoughnessProperties-prop</anchor>
+            <arglist>(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>metallicRoughnessPropertiesChanged</name>
+            <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
+            <anchor>metallicRoughnessProperties-prop</anchor>
+            <arglist>(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::ToneMappingAndGammaCorrectionEffect</name>
+        <filename>kuesa-tonemappingandgammacorrectioneffect.html</filename>
+        <base>AbstractPostProcessingEffect</base>
+        <member kind="property" type="float">
+            <name>exposure</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>exposure-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="float">
+            <name>gamma</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>gamma-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping">
+            <name>toneMappingAlgorithm</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>toneMappingAlgorithm-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="enum">
+            <name>ToneMapping</name>
+            <anchor>ToneMapping-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member name="None">
+            <anchor>ToneMapping-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member name="Reinhard">
+            <anchor>ToneMapping-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member name="Filmic">
+            <anchor>ToneMapping-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member name="Uncharted">
+            <anchor>ToneMapping-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>exposure</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>exposure-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>float</type>
+            <name>gamma</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>gamma-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping</type>
+            <name>toneMappingAlgorithm</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>toneMappingAlgorithm</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setExposure</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>exposure-prop</anchor>
+            <arglist>(float exposure)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setGamma</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>gamma-prop</anchor>
+            <arglist>(float gamma)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setToneMappingAlgorithm</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>setToneMappingAlgorithm</anchor>
+            <arglist>(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping algorithm)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>exposureChanged</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>exposure-prop</anchor>
+            <arglist>(float exposure)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>gammaChanged</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>gamma-prop</anchor>
+            <arglist>(float gamma)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>toneMappingAlgorithmChanged</name>
+            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
+            <anchor>toneMappingAlgorithm-prop</anchor>
+            <arglist>(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::AnimationMappingCollection</name>
+        <filename>kuesa-animationmappingcollection.html</filename>
+        <base>AbstractAssetCollection</base>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::GaussianBlurEffect</name>
+        <filename>kuesa-gaussianblureffect.html</filename>
+        <base>AbstractPostProcessingEffect</base>
+        <member kind="property" type="int">
+            <name>blurPassCount</name>
+            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
+            <anchor>blurPassCount-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="virtual" static="no">
+            <type>virtual Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr</type>
+            <name>frameGraphSubTree</name>
+            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
+            <anchor>frameGraphSubTree</anchor>
+            <arglist>() const const override</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="virtual" static="no">
+            <type>virtual void</type>
+            <name>setInputTexture</name>
+            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
+            <anchor>setInputTexture</anchor>
+            <arglist>(Qt3DRender::QAbstractTexture *texture) override</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="virtual" static="no">
+            <type>virtual void</type>
+            <name>setSceneSize</name>
+            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
+            <anchor>setSceneSize</anchor>
+            <arglist>(const QSize &amp;size) override</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>int</type>
+            <name>blurPassCount</name>
+            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
+            <anchor>blurPassCount</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setBlurPassCount</name>
+            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
+            <anchor>setBlurPassCount</anchor>
+            <arglist>(int blurPassCount)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>blurPassCountChanged</name>
+            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
+            <anchor>blurPassCount-prop</anchor>
+            <arglist>(int blurPassCount)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::EntityCollection</name>
+        <filename>kuesa-entitycollection.html</filename>
+        <base>AbstractAssetCollection</base>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::DirectionalLight</name>
+        <filename>kuesa-directionallight.html</filename>
+        <member kind="property" type="QVector3D">
+            <name>direction</name>
+            <anchorfile>kuesa-directionallight.html</anchorfile>
+            <anchor>direction-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="Kuesa::DirectionalLight::DirectionMode">
+            <name>directionMode</name>
+            <anchorfile>kuesa-directionallight.html</anchorfile>
+            <anchor>directionMode-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>QVector3D</type>
+            <name>direction</name>
+            <anchorfile>kuesa-directionallight.html</anchorfile>
+            <anchor>direction-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>Kuesa::DirectionalLight::DirectionMode</type>
+            <name>directionMode</name>
+            <anchorfile>kuesa-directionallight.html</anchorfile>
+            <anchor>directionMode-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setDirection</name>
+            <anchorfile>kuesa-directionallight.html</anchorfile>
+            <anchor>direction-prop</anchor>
+            <arglist>(const QVector3D &amp;direction)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setDirectionMode</name>
+            <anchorfile>kuesa-directionallight.html</anchorfile>
+            <anchor>directionMode-prop</anchor>
+            <arglist>(Kuesa::DirectionalLight::DirectionMode directionMode)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>directionChanged</name>
+            <anchorfile>kuesa-directionallight.html</anchorfile>
+            <anchor>direction-prop</anchor>
+            <arglist>(const QVector3D &amp;direction)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>directionModeChanged</name>
+            <anchorfile>kuesa-directionallight.html</anchorfile>
+            <anchor>directionMode-prop</anchor>
+            <arglist>(Kuesa::DirectionalLight::DirectionMode directionMode)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::Skybox</name>
+        <filename>kuesa-skybox.html</filename>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>QString</type>
+            <name>baseName</name>
+            <anchorfile>kuesa-skybox.html</anchorfile>
+            <anchor>baseName</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>QString</type>
+            <name>extension</name>
+            <anchorfile>kuesa-skybox.html</anchorfile>
+            <anchor>extension</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setBaseName</name>
+            <anchorfile>kuesa-skybox.html</anchorfile>
+            <anchor>setBaseName</anchor>
+            <arglist>(const QString &amp;baseName)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setExtension</name>
+            <anchorfile>kuesa-skybox.html</anchorfile>
+            <anchor>setExtension</anchor>
+            <arglist>(const QString &amp;extension)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>baseNameChanged</name>
+            <anchorfile>kuesa-skybox.html</anchorfile>
+            <anchor>baseName-prop</anchor>
+            <arglist>(const QString &amp;path)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>extensionChanged</name>
+            <anchorfile>kuesa-skybox.html</anchorfile>
+            <anchor>extension-prop</anchor>
+            <arglist>(const QString &amp;extension)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
+        <name>Kuesa::TextureImageCollection</name>
+        <filename>kuesa-textureimagecollection.html</filename>
+        <base>AbstractAssetCollection</base>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>Qt3DRender::QTextureImage *</type>
+            <name>add</name>
+            <anchorfile>kuesa-textureimagecollection.html</anchorfile>
             <anchor>add</anchor>
             <arglist>(const QString &amp;name, const QUrl &amp;source)</arglist>
         </member>
@@ -2114,375 +2945,6 @@
         </member>
     </compound>
     <compound kind="class">
-        <name>Kuesa::AnimationPlayer</name>
-        <filename>kuesa-animationplayer.html</filename>
-        <member kind="property" type="Kuesa::SceneEntity*">
-            <name>sceneEntity</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>sceneEntity-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="Status">
-            <name>status</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>status-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="QString">
-            <name>clip</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>clip-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="QString">
-            <name>mapper</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>mapper-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="bool">
-            <name>running</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>running-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="int">
-            <name>loops</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>loops-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="Qt3DAnimation::QClock*">
-            <name>clock</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>clock-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>normalizedTime</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>normalizedTime-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="enum">
-            <name>Status</name>
-            <anchor>Status-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member name="None">
-            <anchor>Status-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member name="Ready">
-            <anchor>Status-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member name="Error">
-            <anchor>Status-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Kuesa::SceneEntity *</type>
-            <name>sceneEntity</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>sceneEntity-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Kuesa::AnimationPlayer::Status</type>
-            <name>status</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>status-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>QString</type>
-            <name>clip</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>clip-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>QString</type>
-            <name>mapper</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>mapper-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>isRunning</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>running-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>int</type>
-            <name>loopCount</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>loops-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Qt3DAnimation::QClock *</type>
-            <name>clock</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>clock-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>normalizedTime</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>normalizedTime-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>QVector&lt;Qt3DCore::QNode *&gt;</type>
-            <name>targets</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>targets</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>addTarget</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>addTarget</anchor>
-            <arglist>(Qt3DCore::QNode *target)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>removeTarget</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>removeTarget</anchor>
-            <arglist>(Qt3DCore::QNode *target)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setSceneEntity</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>sceneEntity-prop</anchor>
-            <arglist>(Kuesa::SceneEntity *sceneEntity)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setClip</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>clip-prop</anchor>
-            <arglist>(const QString &amp;clip)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setMapper</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>mapper-prop</anchor>
-            <arglist>(const QString &amp;mapper)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setRunning</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>running-prop</anchor>
-            <arglist>(bool running)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setLoopCount</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>loops-prop</anchor>
-            <arglist>(int loops)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setClock</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>clock-prop</anchor>
-            <arglist>(Qt3DAnimation::QClock *clock)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setNormalizedTime</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>normalizedTime-prop</anchor>
-            <arglist>(float timeFraction)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>start</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>start</anchor>
-            <arglist>()</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>stop</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>stop</anchor>
-            <arglist>()</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>sceneEntityChanged</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>sceneEntity-prop</anchor>
-            <arglist>(const Kuesa::SceneEntity *sceneEntity)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>statusChanged</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>status-prop</anchor>
-            <arglist>(Kuesa::AnimationPlayer::Status status)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>clipChanged</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>clip-prop</anchor>
-            <arglist>(const QString &amp;clip)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>mapperChanged</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>mapper-prop</anchor>
-            <arglist>(const QString &amp;mapper)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>runningChanged</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>running-prop</anchor>
-            <arglist>(bool running)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>loopCountChanged</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>loops-prop</anchor>
-            <arglist>(int loops)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>clockChanged</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>clock-prop</anchor>
-            <arglist>(Qt3DAnimation::QClock *clock)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>normalizedTimeChanged</name>
-            <anchorfile>kuesa-animationplayer.html</anchorfile>
-            <anchor>normalizedTime-prop</anchor>
-            <arglist>(float index)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::AnimationClipCollection</name>
-        <filename>kuesa-animationclipcollection.html</filename>
-        <base>AbstractAssetCollection</base>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Qt3DAnimation::QAnimationClipLoader *</type>
-            <name>add</name>
-            <anchorfile>kuesa-animationclipcollection.html</anchorfile>
-            <anchor>add</anchor>
-            <arglist>(const QString &amp;name, const QUrl &amp;source)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::BloomEffect</name>
-        <filename>kuesa-bloomeffect.html</filename>
-        <base>AbstractPostProcessingEffect</base>
-        <member kind="property" type="float">
-            <name>threshold</name>
-            <anchorfile>kuesa-bloomeffect.html</anchorfile>
-            <anchor>threshold-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="int">
-            <name>blurPassCount</name>
-            <anchorfile>kuesa-bloomeffect.html</anchorfile>
-            <anchor>blurPassCount-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="virtual" static="no">
-            <type>virtual Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr</type>
-            <name>frameGraphSubTree</name>
-            <anchorfile>kuesa-bloomeffect.html</anchorfile>
-            <anchor>frameGraphSubTree</anchor>
-            <arglist>() const const override</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="virtual" static="no">
-            <type>virtual void</type>
-            <name>setSceneSize</name>
-            <anchorfile>kuesa-bloomeffect.html</anchorfile>
-            <anchor>setSceneSize</anchor>
-            <arglist>(const QSize &amp;size) override</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="virtual" static="no">
-            <type>virtual void</type>
-            <name>setInputTexture</name>
-            <anchorfile>kuesa-bloomeffect.html</anchorfile>
-            <anchor>setInputTexture</anchor>
-            <arglist>(Qt3DRender::QAbstractTexture *texture) override</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>threshold</name>
-            <anchorfile>kuesa-bloomeffect.html</anchorfile>
-            <anchor>threshold</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>int</type>
-            <name>blurPassCount</name>
-            <anchorfile>kuesa-bloomeffect.html</anchorfile>
-            <anchor>blurPassCount</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setThreshold</name>
-            <anchorfile>kuesa-bloomeffect.html</anchorfile>
-            <anchor>setThreshold</anchor>
-            <arglist>(float threshold)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setBlurPassCount</name>
-            <anchorfile>kuesa-bloomeffect.html</anchorfile>
-            <anchor>setBlurPassCount</anchor>
-            <arglist>(int blurPassCount)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>thresholdChanged</name>
-            <anchorfile>kuesa-bloomeffect.html</anchorfile>
-            <anchor>threshold-prop</anchor>
-            <arglist>(float threshold)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>blurPassCountChanged</name>
-            <anchorfile>kuesa-bloomeffect.html</anchorfile>
-            <anchor>blurPassCount-prop</anchor>
-            <arglist>(int blurPassCount)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::MeshCollection</name>
-        <filename>kuesa-meshcollection.html</filename>
-        <base>AbstractAssetCollection</base>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Qt3DRender::QMesh *</type>
-            <name>add</name>
-            <anchorfile>kuesa-meshcollection.html</anchorfile>
-            <anchor>add</anchor>
-            <arglist>(const QString &amp;name, const QUrl &amp;source)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
         <name>Kuesa::UnlitMaterial</name>
         <filename>kuesa-unlitmaterial.html</filename>
         <base>GLTF2Material</base>
@@ -2515,528 +2977,15 @@
         </member>
     </compound>
     <compound kind="class">
-        <name>Kuesa::ToneMappingAndGammaCorrectionEffect</name>
-        <filename>kuesa-tonemappingandgammacorrectioneffect.html</filename>
-        <base>AbstractPostProcessingEffect</base>
-        <member kind="property" type="float">
-            <name>exposure</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>exposure-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>gamma</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>gamma-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping">
-            <name>toneMappingAlgorithm</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>toneMappingAlgorithm-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="enum">
-            <name>ToneMapping</name>
-            <anchor>ToneMapping-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member name="None">
-            <anchor>ToneMapping-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member name="Reinhard">
-            <anchor>ToneMapping-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member name="Filmic">
-            <anchor>ToneMapping-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member name="Uncharted">
-            <anchor>ToneMapping-enum</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>exposure</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>exposure-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>gamma</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>gamma-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping</type>
-            <name>toneMappingAlgorithm</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>toneMappingAlgorithm</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setExposure</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>exposure-prop</anchor>
-            <arglist>(float exposure)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setGamma</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>gamma-prop</anchor>
-            <arglist>(float gamma)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setToneMappingAlgorithm</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>setToneMappingAlgorithm</anchor>
-            <arglist>(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping algorithm)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>exposureChanged</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>exposure-prop</anchor>
-            <arglist>(float exposure)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>gammaChanged</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>gamma-prop</anchor>
-            <arglist>(float gamma)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>toneMappingAlgorithmChanged</name>
-            <anchorfile>kuesa-tonemappingandgammacorrectioneffect.html</anchorfile>
-            <anchor>toneMappingAlgorithm-prop</anchor>
-            <arglist>(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::SpotLight</name>
-        <filename>kuesa-spotlight.html</filename>
-        <member kind="property" type="QVector3D">
-            <name>localDirection</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>localDirection-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>innerConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>innerConeAngle-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>outerConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>outerConeAngle-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>QVector3D</type>
-            <name>localDirection</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>localDirection-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>innerConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>innerConeAngle-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>outerConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>outerConeAngle-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>range</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>range-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setLocalDirection</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>localDirection-prop</anchor>
-            <arglist>(const QVector3D &amp;localDirection)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setInnerConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>innerConeAngle-prop</anchor>
-            <arglist>(float innerConeAngle)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setOuterConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>outerConeAngle-prop</anchor>
-            <arglist>(float outerConeAngle)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setRange</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>range-prop</anchor>
-            <arglist>(float range)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>localDirectionChanged</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>localDirection-prop</anchor>
-            <arglist>(const QVector3D &amp;localDirection)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>innerConeAngleChanged</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>innerConeAngle-prop</anchor>
-            <arglist>(float innerConeAngle)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>outerConeAngleChanged</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>outerConeAngle-prop</anchor>
-            <arglist>(float outerConeAngle)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>rangeChanged</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>range-prop</anchor>
-            <arglist>(float range)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::GaussianBlurEffect</name>
-        <filename>kuesa-gaussianblureffect.html</filename>
-        <base>AbstractPostProcessingEffect</base>
-        <member kind="property" type="int">
-            <name>blurPassCount</name>
-            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
-            <anchor>blurPassCount-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="virtual" static="no">
-            <type>virtual Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr</type>
-            <name>frameGraphSubTree</name>
-            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
-            <anchor>frameGraphSubTree</anchor>
-            <arglist>() const const override</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="virtual" static="no">
-            <type>virtual void</type>
-            <name>setInputTexture</name>
-            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
-            <anchor>setInputTexture</anchor>
-            <arglist>(Qt3DRender::QAbstractTexture *texture) override</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="virtual" static="no">
-            <type>virtual void</type>
-            <name>setSceneSize</name>
-            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
-            <anchor>setSceneSize</anchor>
-            <arglist>(const QSize &amp;size) override</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>int</type>
-            <name>blurPassCount</name>
-            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
-            <anchor>blurPassCount</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setBlurPassCount</name>
-            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
-            <anchor>setBlurPassCount</anchor>
-            <arglist>(int blurPassCount)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>blurPassCountChanged</name>
-            <anchorfile>kuesa-gaussianblureffect.html</anchorfile>
-            <anchor>blurPassCount-prop</anchor>
-            <arglist>(int blurPassCount)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::DirectionalLight</name>
-        <filename>kuesa-directionallight.html</filename>
-        <member kind="property" type="QVector3D">
-            <name>direction</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>direction-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="Kuesa::DirectionalLight::DirectionMode">
-            <name>directionMode</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>directionMode-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>QVector3D</type>
-            <name>direction</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>direction-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Kuesa::DirectionalLight::DirectionMode</type>
-            <name>directionMode</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>directionMode-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setDirection</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>direction-prop</anchor>
-            <arglist>(const QVector3D &amp;direction)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setDirectionMode</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>directionMode-prop</anchor>
-            <arglist>(Kuesa::DirectionalLight::DirectionMode directionMode)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>directionChanged</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>direction-prop</anchor>
-            <arglist>(const QVector3D &amp;direction)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>directionModeChanged</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>directionMode-prop</anchor>
-            <arglist>(Kuesa::DirectionalLight::DirectionMode directionMode)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::TextureCollection</name>
-        <filename>kuesa-texturecollection.html</filename>
+        <name>Kuesa::AnimationClipCollection</name>
+        <filename>kuesa-animationclipcollection.html</filename>
         <base>AbstractAssetCollection</base>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Qt3DRender::QTextureLoader *</type>
+            <type>Qt3DAnimation::QAnimationClipLoader *</type>
             <name>add</name>
-            <anchorfile>kuesa-texturecollection.html</anchorfile>
+            <anchorfile>kuesa-animationclipcollection.html</anchorfile>
             <anchor>add</anchor>
             <arglist>(const QString &amp;name, const QUrl &amp;source)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::OpacityMask</name>
-        <filename>kuesa-opacitymask.html</filename>
-        <base>AbstractPostProcessingEffect</base>
-        <member kind="property" type="Qt3DRender::QAbstractTexture*">
-            <name>mask</name>
-            <anchorfile>kuesa-opacitymask.html</anchorfile>
-            <anchor>mask-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="bool">
-            <name>premultipliedAlpha</name>
-            <anchorfile>kuesa-opacitymask.html</anchorfile>
-            <anchor>premultipliedAlpha-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setMask</name>
-            <anchorfile>kuesa-opacitymask.html</anchorfile>
-            <anchor>mask-prop</anchor>
-            <arglist>(Qt3DRender::QAbstractTexture *mask)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Qt3DRender::QAbstractTexture *</type>
-            <name>mask</name>
-            <anchorfile>kuesa-opacitymask.html</anchorfile>
-            <anchor>mask-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setPremultipliedAlpha</name>
-            <anchorfile>kuesa-opacitymask.html</anchorfile>
-            <anchor>premultipliedAlpha-prop</anchor>
-            <arglist>(bool premultipliedAlpha)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>premultipliedAlpha</name>
-            <anchorfile>kuesa-opacitymask.html</anchorfile>
-            <anchor>premultipliedAlpha-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>maskChanged</name>
-            <anchorfile>kuesa-opacitymask.html</anchorfile>
-            <anchor>mask-prop</anchor>
-            <arglist>(Qt3DRender::QAbstractTexture *mask)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>premultipliedAlphaChanged</name>
-            <anchorfile>kuesa-opacitymask.html</anchorfile>
-            <anchor>premultipliedAlpha-prop</anchor>
-            <arglist>(bool premultipliedAlpha)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::UnlitEffect</name>
-        <filename>kuesa-unliteffect.html</filename>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>isBaseColorMapEnabled</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>baseColorMapEnabled-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>isUsingColorAttribute</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>usingColorAttribute-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>isDoubleSided</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>doubleSided-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>useSkinning</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>useSkinning-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>isOpaque</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>opaque-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>isAlphaCutoffEnabled</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>alphaCutoffEnabled-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setBaseColorMapEnabled</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>baseColorMapEnabled-prop</anchor>
-            <arglist>(bool enabled)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setUsingColorAttribute</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>usingColorAttribute-prop</anchor>
-            <arglist>(bool usingColorAttribute)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setDoubleSided</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>doubleSided-prop</anchor>
-            <arglist>(bool doubleSided)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setUseSkinning</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>useSkinning-prop</anchor>
-            <arglist>(bool useSkinning)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setOpaque</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>opaque-prop</anchor>
-            <arglist>(bool opaque)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setAlphaCutoffEnabled</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>alphaCutoffEnabled-prop</anchor>
-            <arglist>(bool enabled)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>baseColorMapEnabledChanged</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>baseColorMapEnabled-prop</anchor>
-            <arglist>(bool enabled)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>usingColorAttributeChanged</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>usingColorAttribute-prop</anchor>
-            <arglist>(bool usingColorAttribute)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>doubleSidedChanged</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>doubleSided-prop</anchor>
-            <arglist>(bool doubleSided)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>useSkinningChanged</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>useSkinning-prop</anchor>
-            <arglist>(bool useSkinning)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>opaqueChanged</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>opaque-prop</anchor>
-            <arglist>(bool opaque)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>alphaCutoffEnabledChanged</name>
-            <anchorfile>kuesa-unliteffect.html</anchorfile>
-            <anchor>alphaCutoffEnabled-prop</anchor>
-            <arglist>(bool enabled)</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -3086,175 +3035,226 @@
         </member>
     </compound>
     <compound kind="class">
+        <name>Kuesa::TextureCollection</name>
+        <filename>kuesa-texturecollection.html</filename>
+        <base>AbstractAssetCollection</base>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>Qt3DRender::QTextureLoader *</type>
+            <name>add</name>
+            <anchorfile>kuesa-texturecollection.html</anchorfile>
+            <anchor>add</anchor>
+            <arglist>(const QString &amp;name, const QUrl &amp;source)</arglist>
+        </member>
+    </compound>
+    <compound kind="class">
         <name>Kuesa::UnlitProperties</name>
         <filename>kuesa-unlitproperties.html</filename>
         <base>GLTF2MaterialProperties</base>
     </compound>
     <compound kind="class">
-        <name>Kuesa::ArmatureCollection</name>
-        <filename>kuesa-armaturecollection.html</filename>
-        <base>AbstractAssetCollection</base>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::Skybox</name>
-        <filename>kuesa-skybox.html</filename>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>QString</type>
-            <name>baseName</name>
-            <anchorfile>kuesa-skybox.html</anchorfile>
-            <anchor>baseName</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>QString</type>
-            <name>extension</name>
-            <anchorfile>kuesa-skybox.html</anchorfile>
-            <anchor>extension</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setBaseName</name>
-            <anchorfile>kuesa-skybox.html</anchorfile>
-            <anchor>setBaseName</anchor>
-            <arglist>(const QString &amp;baseName)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setExtension</name>
-            <anchorfile>kuesa-skybox.html</anchorfile>
-            <anchor>setExtension</anchor>
-            <arglist>(const QString &amp;extension)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>baseNameChanged</name>
-            <anchorfile>kuesa-skybox.html</anchorfile>
-            <anchor>baseName-prop</anchor>
-            <arglist>(const QString &amp;path)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>extensionChanged</name>
-            <anchorfile>kuesa-skybox.html</anchorfile>
-            <anchor>extension-prop</anchor>
-            <arglist>(const QString &amp;extension)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::CameraCollection</name>
-        <filename>kuesa-cameracollection.html</filename>
-        <base>AbstractAssetCollection</base>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::PointLight</name>
-        <filename>kuesa-pointlight.html</filename>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>range</name>
-            <anchorfile>kuesa-pointlight.html</anchorfile>
-            <anchor>range-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setRange</name>
-            <anchorfile>kuesa-pointlight.html</anchorfile>
-            <anchor>range-prop</anchor>
-            <arglist>(float range)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>rangeChanged</name>
-            <anchorfile>kuesa-pointlight.html</anchorfile>
-            <anchor>range-prop</anchor>
-            <arglist>(float range)</arglist>
-        </member>
-    </compound>
-    <compound kind="class">
-        <name>Kuesa::DepthOfFieldEffect</name>
-        <filename>kuesa-depthoffieldeffect.html</filename>
-        <base>AbstractPostProcessingEffect</base>
-        <member kind="property" type="float">
-            <name>focusRange</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>focusRange-prop</anchor>
+        <name>Kuesa::GLTF2Importer</name>
+        <filename>kuesa-gltf2importer.html</filename>
+        <member kind="property" type="QUrl">
+            <name>source</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>source-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="float">
-            <name>focusDistance</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>focusDistance-prop</anchor>
+        <member kind="property" type="Kuesa::GLTF2Importer::Status">
+            <name>status</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>status-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="float">
-            <name>radius</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>radius-prop</anchor>
+        <member kind="property" type="Kuesa::SceneEntity*">
+            <name>sceneEntity</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>sceneEntity-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="bool">
+            <name>assignNames</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>assignNames-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="Kuesa::GLTF2Import::GLTF2Options*">
+            <name>options</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>options-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="int">
+            <name>activeSceneIndex</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>activeSceneIndex-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="QStringList">
+            <name>availableScenes</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>availableScenes-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="enum">
+            <name>Status</name>
+            <anchor>Status-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member name="None">
+            <anchor>Status-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member name="Loading">
+            <anchor>Status-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member name="Ready">
+            <anchor>Status-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member name="Error">
+            <anchor>Status-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="enum">
+            <name>ActiveScene</name>
+            <anchor>ActiveScene-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member name="DefaultScene">
+            <anchor>ActiveScene-enum</anchor>
+            <arglist></arglist>
+        </member>
+        <member name="EmptyScene">
+            <anchor>ActiveScene-enum</anchor>
             <arglist></arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>focusRange</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>focusRange-prop</anchor>
+            <type>QUrl</type>
+            <name>source</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>source</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>radius</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>radius-prop</anchor>
+            <type>GLTF2Importer::Status</type>
+            <name>status</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>status</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>focusDistance</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>focusDistance-prop</anchor>
+            <type>Kuesa::SceneEntity *</type>
+            <name>sceneEntity</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>sceneEntity</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>bool</type>
+            <name>assignNames</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>assignNames</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>Kuesa::GLTF2Import::GLTF2Options *</type>
+            <name>options</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>options-prop</anchor>
+            <arglist>()</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>const Kuesa::GLTF2Import::GLTF2Options *</type>
+            <name>options</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>options-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>int</type>
+            <name>activeSceneIndex</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>activeSceneIndex-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>QStringList</type>
+            <name>availableScenes</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>availableScenes-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setFocusRange</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>setFocusRange</anchor>
-            <arglist>(float focusRange)</arglist>
+            <name>setSource</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>setSource</anchor>
+            <arglist>(const QUrl &amp;source)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setRadius</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>setRadius</anchor>
-            <arglist>(float radius)</arglist>
+            <name>setSceneEntity</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>setSceneEntity</anchor>
+            <arglist>(Kuesa::SceneEntity *sceneEntity)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setFocusDistance</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>setFocusDistance</anchor>
-            <arglist>(float focusDistance)</arglist>
+            <name>setAssignNames</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>setAssignNames</anchor>
+            <arglist>(bool assignNames)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>focusRangeChanged</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>focusRange-prop</anchor>
-            <arglist>(float focusRange)</arglist>
+            <name>setActiveSceneIndex</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>activeSceneIndex-prop</anchor>
+            <arglist>(int index)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>radiusChanged</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>radius-prop</anchor>
-            <arglist>(float radius)</arglist>
+            <name>sourceChanged</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>source-prop</anchor>
+            <arglist>(const QUrl &amp;source)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>focusDistanceChanged</name>
-            <anchorfile>kuesa-depthoffieldeffect.html</anchorfile>
-            <anchor>focusDistance-prop</anchor>
-            <arglist>(float focusDistance)</arglist>
+            <name>statusChanged</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>status-prop</anchor>
+            <arglist>(const Kuesa::GLTF2Importer::Status status)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>sceneEntityChanged</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>sceneEntity-prop</anchor>
+            <arglist>(Kuesa::SceneEntity *sceneEntity)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>assignNamesChanged</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>assignNames-prop</anchor>
+            <arglist>(bool assignNames)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>activeSceneIndexChanged</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>activeSceneIndex-prop</anchor>
+            <arglist>(int activeSceneIndex)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>availableScenesChanged</name>
+            <anchorfile>kuesa-gltf2importer.html</anchorfile>
+            <anchor>availableScenes-prop</anchor>
+            <arglist>(const QStringList &amp;availableScenes)</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -3262,40 +3262,68 @@
         <filename>qml-animationplayer.html</filename>
     </compound>
     <compound kind="class">
-        <name>UnlitProperties</name>
-        <filename>qml-unlitproperties.html</filename>
+        <name>GLTF2Options</name>
+        <filename>qml-gltf2options.html</filename>
     </compound>
     <compound kind="class">
-        <name>MetallicRoughnessProperties</name>
-        <filename>qml-metallicroughnessproperties.html</filename>
+        <name>UnlitMaterial</name>
+        <filename>qml-unlitmaterial.html</filename>
     </compound>
     <compound kind="class">
-        <name>MetallicRoughnessMaterial</name>
-        <filename>qml-metallicroughnessmaterial.html</filename>
+        <name>SpotLight</name>
+        <filename>qml-spotlight.html</filename>
     </compound>
     <compound kind="class">
-        <name>Asset</name>
-        <filename>qml-asset.html</filename>
+        <name>OpacityMask</name>
+        <filename>qml-opacitymask.html</filename>
     </compound>
     <compound kind="class">
         <name>Skybox</name>
         <filename>qml-skybox.html</filename>
     </compound>
     <compound kind="class">
-        <name>GLTF2Options</name>
-        <filename>qml-gltf2options.html</filename>
+        <name>MetallicRoughnessEffect</name>
+        <filename>qml-metallicroughnesseffect.html</filename>
     </compound>
     <compound kind="class">
-        <name>ToneMappingAndGammaCorrectionEffect</name>
-        <filename>qml-tonemappingandgammacorrectioneffect.html</filename>
+        <name>MetallicRoughnessMaterial</name>
+        <filename>qml-metallicroughnessmaterial.html</filename>
+    </compound>
+    <compound kind="class">
+        <name>MorphController</name>
+        <filename>qml-morphcontroller.html</filename>
     </compound>
     <compound kind="class">
         <name>ForwardRenderer</name>
         <filename>qml-forwardrenderer.html</filename>
     </compound>
     <compound kind="class">
-        <name>MorphController</name>
-        <filename>qml-morphcontroller.html</filename>
+        <name>GLTF2Importer</name>
+        <filename>qml-gltf2importer.html</filename>
+    </compound>
+    <compound kind="class">
+        <name>GLTF2Material</name>
+        <filename>qml-gltf2material.html</filename>
+    </compound>
+    <compound kind="class">
+        <name>UnlitProperties</name>
+        <filename>qml-unlitproperties.html</filename>
+    </compound>
+    <compound kind="class">
+        <name>Asset</name>
+        <filename>qml-asset.html</filename>
+    </compound>
+    <compound kind="class">
+        <name>UnlitEffect</name>
+        <filename>qml-unliteffect.html</filename>
+    </compound>
+    <compound kind="class">
+        <name>PointLight</name>
+        <filename>qml-pointlight.html</filename>
+    </compound>
+    <compound kind="class">
+        <name>ToneMappingAndGammaCorrectionEffect</name>
+        <filename>qml-tonemappingandgammacorrectioneffect.html</filename>
     </compound>
     <compound kind="class">
         <name>SceneEntity</name>
@@ -3309,39 +3337,11 @@
         </member>
     </compound>
     <compound kind="class">
-        <name>UnlitMaterial</name>
-        <filename>qml-unlitmaterial.html</filename>
-    </compound>
-    <compound kind="class">
-        <name>PointLight</name>
-        <filename>qml-pointlight.html</filename>
-    </compound>
-    <compound kind="class">
-        <name>MetallicRoughnessEffect</name>
-        <filename>qml-metallicroughnesseffect.html</filename>
-    </compound>
-    <compound kind="class">
-        <name>UnlitEffect</name>
-        <filename>qml-unliteffect.html</filename>
+        <name>MetallicRoughnessProperties</name>
+        <filename>qml-metallicroughnessproperties.html</filename>
     </compound>
     <compound kind="class">
         <name>DirectionalLight</name>
         <filename>qml-directionallight.html</filename>
-    </compound>
-    <compound kind="class">
-        <name>OpacityMask</name>
-        <filename>qml-opacitymask.html</filename>
-    </compound>
-    <compound kind="class">
-        <name>SpotLight</name>
-        <filename>qml-spotlight.html</filename>
-    </compound>
-    <compound kind="class">
-        <name>GLTF2Material</name>
-        <filename>qml-gltf2material.html</filename>
-    </compound>
-    <compound kind="class">
-        <name>GLTF2Importer</name>
-        <filename>qml-gltf2importer.html</filename>
     </compound>
 </tagfile>
