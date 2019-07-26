@@ -1,5 +1,5 @@
 /*
-    metallicroughnesseffect.h
+    kuesa_metalrough.inc.frag
 
     This file is part of Kuesa.
 
