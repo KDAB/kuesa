@@ -1223,7 +1223,7 @@ void GLTF2Parser::generateAnimationContent()
                     const auto primitiveEntities = m_treeNodeIdToPrimitiveEntities.find(targetNode.entity);
                     Q_ASSERT(primitiveEntities != m_treeNodeIdToPrimitiveEntities.end());
 
-                    for (Qt3DCore::QEntity *primitiveEntity : *primitiveEntities) {
+                    for (Qt3DCore::QEntity *primitiveEntity : qAsConst(*primitiveEntities)) {
                         MorphController *morphControllerComponent =
                                 componentFromEntity<Kuesa::MorphController>(primitiveEntity);
                         if (!morphControllerComponent) {

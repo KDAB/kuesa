@@ -75,6 +75,7 @@ void MaterialInspector::setMaterialProperties(Kuesa::GLTF2MaterialProperties *ma
     if (materialProperties) {
         m_materialConnection = connect(materialProperties, &Qt3DCore::QNode::nodeDestroyed, this, [this]() { setMaterialProperties(nullptr); });
 
+        const auto clientMaterials = materialProperties->clientMaterials();
         if (Kuesa::MetallicRoughnessProperties *pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(materialProperties)) {
 
             if (m_material != m_pbrMaterial) {
@@ -82,8 +83,8 @@ void MaterialInspector::setMaterialProperties(Kuesa::GLTF2MaterialProperties *ma
             }
 
             m_pbrMaterial->setMetallicRoughnessProperties(pbrProperties);
-            auto clientEffect = static_cast<Kuesa::MetallicRoughnessEffect *>(materialProperties->clientMaterials()[0]->effect());
             auto materialEffect = static_cast<Kuesa::MetallicRoughnessEffect *>(m_material->effect());
+            auto clientEffect = static_cast<Kuesa::MetallicRoughnessEffect *>(clientMaterials.front()->effect());
             materialEffect->setBrdfLUT(clientEffect->brdfLUT());
 
             // Configure the material effect
@@ -102,8 +103,8 @@ void MaterialInspector::setMaterialProperties(Kuesa::GLTF2MaterialProperties *ma
             }
 
             m_unlitMaterial->setUnlitProperties(unlitProperties);
-            auto clientEffect = static_cast<Kuesa::UnlitEffect *>(materialProperties->clientMaterials()[0]->effect());
             auto materialEffect = static_cast<Kuesa::UnlitEffect *>(m_material->effect());
+            auto clientEffect = static_cast<Kuesa::UnlitEffect *>(clientMaterials.front()->effect());
             materialEffect->setOpaque(clientEffect->isOpaque());
             materialEffect->setDoubleSided(clientEffect->isDoubleSided());
             materialEffect->setAlphaCutoffEnabled(clientEffect->isAlphaCutoffEnabled());

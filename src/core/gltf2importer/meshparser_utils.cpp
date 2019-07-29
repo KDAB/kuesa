@@ -1245,8 +1245,8 @@ Qt3DRender::QAttribute *generateNormalsForBaseMesh(const Qt3DRender::QAttribute 
     rawNormals.resize(positionAttribute->count() * sizeof(QVector3D));
     QVector3D *normals = reinterpret_cast<QVector3D *>(rawNormals.data());
 
-    Qt3DRender::QBuffer *positionBuffer = positionAttribute->buffer();
-    const char *positionData = positionBuffer->data().constData();
+    QByteArray positionBuffer = positionAttribute->buffer()->data();
+    const char *positionData = positionBuffer.constData();
     const uint positionByteOffset = positionAttribute->byteOffset();
     const uint positionByteStride = std::max(positionAttribute->byteStride(), uint(sizeof(QVector3D)));
 
@@ -1303,18 +1303,18 @@ Qt3DRender::QAttribute *generateNormalsForMorphTarget(const Qt3DRender::QAttribu
     rawMorphNormals.resize(positionAttribute->count() * sizeof(QVector3D));
     QVector3D *morphNormals = reinterpret_cast<QVector3D *>(rawMorphNormals.data());
 
-    Qt3DRender::QBuffer *positionBuffer = positionAttribute->buffer();
-    const char *positionData = positionBuffer->data().constData();
+    QByteArray positionBuffer = positionAttribute->buffer()->data();
+    const char *positionData = positionBuffer.constData();
     const uint positionByteOffset = positionAttribute->byteOffset();
     const uint positionByteStride = std::max(positionAttribute->byteStride(), uint(sizeof(QVector3D)));
 
-    Qt3DRender::QBuffer *positionMorphBuffer = positionMorphAttribute->buffer();
-    const char *positionMorphData = positionMorphBuffer->data().constData();
+    QByteArray positionMorphBuffer = positionMorphAttribute->buffer()->data();
+    const char *positionMorphData = positionMorphBuffer.constData();
     const uint positionMorphByteOffset = positionMorphAttribute->byteOffset();
     const uint positionMorphByteStride = std::max(positionMorphAttribute->byteStride(), uint(sizeof(QVector3D)));
 
-    Qt3DRender::QBuffer *normalsBuffer = normalsAttribute->buffer();
-    const char *normalsData = normalsBuffer->data().constData();
+    QByteArray normalsBuffer = normalsAttribute->buffer()->data();
+    const char *normalsData = normalsBuffer.constData();
     const uint normalsByteOffset = normalsAttribute->byteOffset();
     const uint normalsByteStride = std::max(normalsAttribute->byteStride(), uint(sizeof(QVector3D)));
 

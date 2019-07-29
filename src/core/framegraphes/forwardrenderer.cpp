@@ -372,9 +372,7 @@ using namespace Kuesa;
 
 namespace {
 
-
-struct GLFeatures
-{
+struct GLFeatures {
     bool hasHalfFloatTexture = false;
     bool hasHalfFloatRenderable = false;
     bool hasMultisampledTexture = false;
@@ -393,12 +391,12 @@ GLFeatures checkGLFeatures()
         features.hasHalfFloatTexture = format.majorVersion() >= 3 || ctx.hasExtension(QByteArray("GL_OES_texture_half_float"));
         // Since GL 3.0 or ES 3.2 or extension
         features.hasHalfFloatRenderable = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 2)
-                                                            : format.majorVersion() >= 3)
-                                          || ctx.hasExtension(QByteArray("GL_EXT_color_buffer_half_float"));
+                                                            : format.majorVersion() >= 3) ||
+                ctx.hasExtension(QByteArray("GL_EXT_color_buffer_half_float"));
         // Since ES 3.1, GL 3.0 or extension
         features.hasMultisampledTexture = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 1)
-                                                            : (format.majorVersion() >= 3))
-                                          || ctx.hasExtension(QByteArray("ARB_texture_multisample"));
+                                                            : (format.majorVersion() >= 3)) ||
+                ctx.hasExtension(QByteArray("ARB_texture_multisample"));
         // Since ES 3.1, GL 3.0 or extension
         // TO DO: Find how to support that on ES
         features.hasMultisampledFBO = (ctx.isOpenGLES() ? (format.majorVersion() >= 3 && format.minorVersion() >= 1)
@@ -438,8 +436,8 @@ Qt3DRender::QRenderTarget *createRenderTarget(RenderTargetFlags flags,
     // gamma correct
     // This requires support for extension OES_texture_half_float on ES2 platforms
     colorTexture->setFormat((flags & RenderTargetFlag::HalfFloatAttachments)
-                            ? Qt3DRender::QAbstractTexture::RGBA16F
-                            : Qt3DRender::QAbstractTexture::RGBA8U);
+                                    ? Qt3DRender::QAbstractTexture::RGBA16F
+                                    : Qt3DRender::QAbstractTexture::RGBA8U);
     colorTexture->setGenerateMipMaps(false);
     colorTexture->setSize(surfaceSize.width(), surfaceSize.height());
     auto colorOutput = new Qt3DRender::QRenderTargetOutput;
@@ -469,7 +467,7 @@ Qt3DRender::QRenderTarget *createRenderTarget(RenderTargetFlags flags,
     return renderTarget;
 }
 
-} // namespace anonymous
+} // namespace
 
 ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     : Qt3DRender::QFrameGraphNode(parent)
@@ -856,9 +854,9 @@ void ForwardRenderer::updateTextureSizes()
         m_blitFramebufferNode->setSourceRect(blitRect);
         m_blitFramebufferNode->setDestinationRect(blitRect);
     }
-    for (auto output : outputs)
+    for (auto output : qAsConst(outputs))
         output->texture()->setSize(targetSize.width(), targetSize.height());
-    for (auto effect : m_userPostProcessingEffects)
+    for (auto effect : qAsConst(m_userPostProcessingEffects))
         effect->setSceneSize(targetSize);
 }
 
@@ -967,7 +965,7 @@ void ForwardRenderer::reconfigureFrameGraph()
         const QSize surfaceSize = currentSurfaceSize();
         if (!m_renderTargets[0]) {
             // create a render target for main scene
-            m_renderTargets[0] = createRenderTarget(baseRenderTargetFlags|RenderTargetFlag::IncludeDepth,
+            m_renderTargets[0] = createRenderTarget(baseRenderTargetFlags | RenderTargetFlag::IncludeDepth,
                                                     this, surfaceSize);
         }
         const int userFXCount = m_userPostProcessingEffects.size();
@@ -991,7 +989,6 @@ void ForwardRenderer::reconfigureFrameGraph()
         m_renderToTextureRootNode = new Qt3DRender::QFrameGraphNode(m_viewport);
         m_renderToTextureRootNode->setObjectName(QStringLiteral("KuesaMainScene"));
 
-
         // need to exclude the effects layers from being drawn in the main scene
         auto mainSceneFilter = new Qt3DRender::QLayerFilter(m_renderToTextureRootNode);
         mainSceneFilter->setFilterMode(Qt3DRender::QLayerFilter::DiscardAnyMatchingLayers);
@@ -1012,7 +1009,7 @@ void ForwardRenderer::reconfigureFrameGraph()
         const int samples = QSurfaceFormat::defaultFormat().samples();
         if (glFeatures.hasMultisampledFBO && samples > 1) {
             // Render Into MSAA FBO
-            m_multisampleTarget = createRenderTarget(baseRenderTargetFlags|RenderTargetFlag::Multisampled|RenderTargetFlag::IncludeDepth,
+            m_multisampleTarget = createRenderTarget(baseRenderTargetFlags | RenderTargetFlag::Multisampled | RenderTargetFlag::IncludeDepth,
                                                      this,
                                                      surfaceSize,
                                                      samples);
@@ -1235,9 +1232,9 @@ void ForwardRenderer::SceneStages::init()
     m_transparentStage = new TransparentRenderStage();
 
     QObject::connect(m_opaqueStage, &Qt3DCore::QNode::nodeDestroyed,
-                     [this] { m_opaqueStage = nullptr; });
+                     m_opaqueStage, [this] { m_opaqueStage = nullptr; });
     QObject::connect(m_transparentStage, &Qt3DCore::QNode::nodeDestroyed,
-                     [this] { m_transparentStage = nullptr; });
+                     m_transparentStage, [this] { m_transparentStage = nullptr; });
 }
 
 /*!
@@ -1254,7 +1251,7 @@ void ForwardRenderer::SceneStages::setZFilling(bool zFilling)
         } else {
             m_zFillStage = new ZFillRenderStage();
             m_zFillDestroyedConnection = QObject::connect(m_zFillStage, &Qt3DCore::QNode::nodeDestroyed,
-                                                          [this] { m_zFillStage = nullptr; });
+                                                          m_zFillStage, [this] { m_zFillStage = nullptr; });
         }
         m_opaqueStage->setZFilling(zFilling);
     }

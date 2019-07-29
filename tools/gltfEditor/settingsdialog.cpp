@@ -94,19 +94,19 @@ SettingsDialog::SettingsDialog(MainWindow *parent)
     });
     connect(ui->toneMappingCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, [this](int idx) {
-        if (idx >= 0 && idx < ui->toneMappingCombo->count()) {
-            m_toneMappingAlgorithm = static_cast<Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping>(ui->toneMappingCombo->itemData(idx).toInt());
-            emit toneMappingAlgorithmChanged(m_toneMappingAlgorithm);
-        }
-    });
+                if (idx >= 0 && idx < ui->toneMappingCombo->count()) {
+                    m_toneMappingAlgorithm = static_cast<Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping>(ui->toneMappingCombo->itemData(idx).toInt());
+                    emit toneMappingAlgorithmChanged(m_toneMappingAlgorithm);
+                }
+            });
 
     ui->toneMappingCombo->addItem(QStringLiteral("None"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::None));
     ui->toneMappingCombo->addItem(QStringLiteral("Reinhard"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::Reinhard));
     ui->toneMappingCombo->addItem(QStringLiteral("Filmic"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::Filmic));
 
-    // Force Initial UI update
-    emit exposureChanged(m_exposure);
-    emit gammaChanged(m_gamma);
+    // Initial UI update
+    ui->exposureLabel->setText(QStringLiteral("Exposure(%1):)").arg(m_exposure, 0, 'f', 1));
+    ui->gammaLabel->setText(QStringLiteral("Gamma(%1):)").arg(m_gamma, 0, 'f', 1));
 }
 
 SettingsDialog::~SettingsDialog()

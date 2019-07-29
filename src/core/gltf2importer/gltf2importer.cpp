@@ -516,7 +516,7 @@ void GLTF2Importer::setupActiveScene()
 void GLTF2Importer::clear()
 {
     if (m_root != nullptr) {
-        for (GLTF2Import::SceneRootEntity *sceneRoot : m_sceneRootEntities)
+        for (GLTF2Import::SceneRootEntity *sceneRoot : qAsConst(m_sceneRootEntities))
             sceneRoot->deleteLater();
         m_root->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
         m_root->deleteLater();

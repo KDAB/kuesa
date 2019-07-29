@@ -177,18 +177,18 @@ private Q_SLOTS:
 
     void testPrimitiveCountCalculation()
     {
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::Points), 12U);
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::Lines), 6U);
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::LineLoop), 12U);
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::LineStrip), 11U);
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::Triangles), 4U);
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::TriangleStrip), 10U);
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::TriangleFan), 10U);
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::LinesAdjacency), 0U);
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::TrianglesAdjacency), 0U);
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::LineStripAdjacency), 0U);
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::TriangleStripAdjacency), 0U);
-        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::Patches), 0U);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::Points), 12);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::Lines), 6);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::LineLoop), 12);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::LineStrip), 11);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::Triangles), 4);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::TriangleStrip), 10);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::TriangleFan), 10);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::LinesAdjacency), 0);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::TrianglesAdjacency), 0);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::LineStripAdjacency), 0);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::TriangleStripAdjacency), 0);
+        QCOMPARE(MeshInspector::calculatePrimitiveCount(12, QGeometryRenderer::Patches), 0);
     }
 
     void testPrimitiveName()

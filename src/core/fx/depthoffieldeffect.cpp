@@ -28,7 +28,6 @@
 
 #include "depthoffieldeffect.h"
 #include "gaussianblureffect.h"
-#include "depthoffieldeffect.h"
 #include "fullscreenquad.h"
 #include <Qt3DRender/qcameraselector.h>
 #include <Qt3DRender/qrendersurfaceselector.h>

@@ -253,7 +253,7 @@ private:
                     const drwav_uint64 max = drwav_read_pcm_frames(n.wave, frameCount, data);
 
                     // Blit it to the sound card output
-                    for (drwav_uint64 i = 0; i < max; i++) {
+                    for (drwav_uint64 i = 0; i < max; ++i) {
                         out[channels * i] += data[i] * p.volume;
                         out[channels * i + 1] += data[i] * p.volume;
                     }

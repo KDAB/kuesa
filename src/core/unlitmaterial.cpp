@@ -26,11 +26,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <Qt3DRender/qparameter.h>
-#include <Qt3DRender/qabstracttexture.h>
 #include "unlitmaterial.h"
 #include "unlitproperties.h"
 #include "unlitshaderdata_p.h"
+#include <Qt3DRender/qparameter.h>
+#include <Qt3DRender/qabstracttexture.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -134,9 +134,9 @@ void UnlitMaterial::setUnlitProperties(UnlitProperties *unlitProperties)
             m_textureTransformChangedConnection = QObject::connect(m_unlitProperties,
                                                                    &UnlitProperties::textureTransformChanged,
                                                                    this,
-                                                                   [this] (const QMatrix3x3 &m) {
-                m_textureTransformParameter->setValue(QVariant::fromValue(m));
-            });
+                                                                   [this](const QMatrix3x3 &m) {
+                                                                       m_textureTransformParameter->setValue(QVariant::fromValue(m));
+                                                                   });
         }
     }
 }

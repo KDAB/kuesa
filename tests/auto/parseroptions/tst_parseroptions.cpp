@@ -78,7 +78,7 @@ private Q_SLOTS:
         QTest::addColumn<bool>("generateTangents");
 
         QTest::newRow("Generate Tangents") << true;
-        QTest::newRow("Dont Generate Tangents") << false;
+        QTest::newRow("Don't Generate Tangents") << false;
     }
 
     void checkGenerateTangents()

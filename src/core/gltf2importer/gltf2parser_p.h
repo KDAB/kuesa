@@ -84,18 +84,18 @@ public:
                              Qt3DCore::QNode *parent = nullptr)
         : Qt3DCore::QEntity(parent)
         , m_rootNodes(rootNodes)
-    {}
+    {
+    }
 
     void makeActive()
     {
-        for (Qt3DCore::QEntity *e : m_rootNodes)
+        for (Qt3DCore::QEntity *e : qAsConst(m_rootNodes))
             e->setParent(this);
     }
 
 private:
     QVector<Qt3DCore::QEntity *> m_rootNodes;
 };
-
 
 using KeyParserFuncPair = QPair<QLatin1String, std::function<bool(const QJsonValue &)>>;
 class ThreadedGLTF2Parser;
@@ -108,7 +108,7 @@ public:
 
     virtual QVector<KeyParserFuncPair> prepareParsers();
     bool parse(const QString &filePath);
-    bool parse(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
+    bool parse(const QByteArray &data, const QString &basePath, const QString &filename = {});
 
     void setContext(GLTF2Context *);
     const GLTF2Context *context() const;
@@ -122,7 +122,7 @@ private:
     friend class ::tst_GLTFExporter;
     friend class ::tst_GLTFParser;
     void moveToThread(QThread *targetThread);
-    bool detectTypeAndParse(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
+    bool detectTypeAndParse(const QByteArray &data, const QString &basePath, const QString &filename = {});
     bool parseJSON(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
     bool parseBinary(const QByteArray &data, const QString &basePath, const QString &filename = {});
 
@@ -184,8 +184,8 @@ public:
     ThreadedGLTF2Parser(GLTF2Context *context, SceneEntity *sceneEntity = nullptr, bool assignNames = false);
     ~ThreadedGLTF2Parser();
 
-    Q_INVOKABLE void parse(const QString &filePath);
-    Q_INVOKABLE void parse(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
+    Q_INVOKABLE void parse(const QString &path);
+    Q_INVOKABLE void parse(const QByteArray &data, const QString &basePath, const QString &filename = {});
 
 signals:
     void parsingFinished(Qt3DCore::QEntity *);

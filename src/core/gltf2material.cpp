@@ -26,12 +26,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "gltf2material.h"
 #include <Qt3DRender/qtexture.h>
 #include <Qt3DRender/qparameter.h>
 #include <Kuesa/MorphController>
 #include <type_traits>
 #include <QMatrix3x3>
-#include "gltf2material.h"
 
 namespace Kuesa {
 
@@ -131,7 +131,6 @@ GLTF2Material::GLTF2Material(Qt3DCore::QNode *parent)
 GLTF2Material::~GLTF2Material()
 {
 }
-
 
 MorphController *GLTF2Material::morphController() const
 {

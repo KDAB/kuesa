@@ -469,7 +469,7 @@ MeshParser::geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry,
 
             for (const MorphTargetAttribute &currentMorphTargetAttr : lastInsertedMorphTarget.attributes) {
                 bool matchingAttributeNameFound = false;
-                for (const MorphTargetAttribute &previousMorphTargetAttr : morphTarget.attributes) {
+                for (const MorphTargetAttribute &previousMorphTargetAttr : qAsConst(morphTarget.attributes)) {
                     if (currentMorphTargetAttr.name == previousMorphTargetAttr.name) {
                         matchingAttributeNameFound = true;
                         break;
