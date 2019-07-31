@@ -98,6 +98,7 @@ public:
     QVector<AbstractPostProcessingEffect *> postProcessingEffects() const;
 
     static Qt3DRender::QAbstractTexture *findRenderTargetTexture(Qt3DRender::QRenderTarget *target, Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint);
+    static bool hasHalfFloatRenderable();
 
 public Q_SLOTS:
     void setRenderSurface(QObject *renderSurface);

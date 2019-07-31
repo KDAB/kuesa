@@ -27,6 +27,7 @@
 */
 
 #include "gaussianblureffect.h"
+#include "forwardrenderer.h"
 #include "fullscreenquad.h"
 #include "fxutils_p.h"
 #include <Qt3DRender/qtexture.h>
@@ -120,7 +121,7 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     m_blurTarget2->addOutput(blurOutput2);
 
     m_blurTexture2 = new Qt3DRender::QTexture2D;
-    m_blurTexture2->setFormat(Qt3DRender::QAbstractTexture::RGBA16F);
+    m_blurTexture2->setFormat(ForwardRenderer::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8U);
     m_blurTexture2->setGenerateMipMaps(false);
     m_blurTexture2->setSize(512, 512);
     blurOutput2->setTexture(m_blurTexture2);

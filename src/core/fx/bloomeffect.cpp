@@ -29,6 +29,7 @@
 #include "bloomeffect.h"
 #include "gaussianblureffect.h"
 #include "thresholdeffect.h"
+#include "forwardrenderer.h"
 #include "fullscreenquad.h"
 #include "fxutils_p.h"
 #include <Qt3DRender/qcameraselector.h>
@@ -211,7 +212,7 @@ Qt3DRender::QRenderTarget *BloomEffect::createRenderTarget(Qt3DRender::QAbstract
     auto output = new Qt3DRender::QRenderTargetOutput;
     output->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
     renderTarget->addOutput(output);
-    texture->setFormat(Qt3DRender::QAbstractTexture::RGBA16F);
+    texture->setFormat(ForwardRenderer::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8U);
     texture->setSize(512, 512);
     texture->setGenerateMipMaps(false);
     output->setTexture(texture);

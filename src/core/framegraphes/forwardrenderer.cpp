@@ -388,7 +388,7 @@ GLFeatures checkGLFeatures()
     if (ctx.create()) {
         const QSurfaceFormat format = ctx.format();
         // Since ES 3.0 or GL 3.0
-        features.hasHalfFloatTexture = format.majorVersion() >= 3 || ctx.hasExtension(QByteArray("GL_OES_texture_half_float"));
+        features.hasHalfFloatTexture = (format.majorVersion() >= 3 || ctx.hasExtension(QByteArray("GL_OES_texture_half_float")));
         // Since GL 3.0 or ES 3.2 or extension
         features.hasHalfFloatRenderable = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 2)
                                                             : format.majorVersion() >= 3) ||
@@ -404,6 +404,7 @@ GLFeatures checkGLFeatures()
     }
     return features;
 }
+GLFeatures const * _glFeatures = nullptr;
 
 enum RenderTargetFlag {
     IncludeDepth = (1 << 0),
@@ -899,6 +900,7 @@ void ForwardRenderer::reconfigureFrameGraph()
     // e.g We want Bloom to happen after DoF...
     //     We may need to render the scene into a texture first ...
     static const GLFeatures glFeatures = checkGLFeatures();
+    _glFeatures = &glFeatures;
 
     m_surfaceSelector->setParent(this);
     m_viewport->setParent(m_surfaceSelector);
@@ -959,7 +961,7 @@ void ForwardRenderer::reconfigureFrameGraph()
 
         RenderTargetFlags baseRenderTargetFlags;
 
-        if (glFeatures.hasHalfFloatTexture)
+        if (glFeatures.hasHalfFloatRenderable)
             baseRenderTargetFlags |= RenderTargetFlag::HalfFloatAttachments;
 
         const QSize surfaceSize = currentSurfaceSize();
@@ -1142,6 +1144,11 @@ Qt3DRender::QAbstractTexture *ForwardRenderer::findRenderTargetTexture(Qt3DRende
         return output->attachmentPoint() == attachmentPoint;
     });
     return attachment == outputs.end() ? nullptr : (*attachment)->texture();
+}
+
+bool ForwardRenderer::hasHalfFloatRenderable()
+{
+    return _glFeatures && _glFeatures->hasHalfFloatRenderable;
 }
 
 /*!
