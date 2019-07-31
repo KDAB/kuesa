@@ -47,8 +47,8 @@ RES_PWD=$$APP_PWD/resources
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 INSTALLS += target
 
-install_music_samples.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET/samples
-install_music_samples.files = $$PWD/assets/samples/*
+install_music_samples.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+install_music_samples.files = $$PWD/assets/samples
 
 INSTALLS += install_music_samples
 
