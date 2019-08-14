@@ -49,7 +49,7 @@
                         "minor": 1
                     },
 		    "headerSnippets": ["vec3 filmicToneMap(const in vec3 c) {
-                                           vec3 x = max(vec3(0.0), c - vec3(0.4));    
+                                           vec3 x = max(vec3(0.0), c - vec3(0.004));
                                            return (x * (6.2 * x + vec3(0.5))) / (x * (6.2 * x + vec3(1.7)) + vec3(0.06));
                                        }"],
                     "substitution": "vec3 $outputColor = filmicToneMap($color);"
@@ -61,7 +61,7 @@
                         "minor": 0
                     },
   		    "headerSnippets": ["highp vec3 filmicToneMap(const in highp vec3 c) {
-                                           highp vec3 x = max(vec3(0.0), c - vec3(0.4));    
+                                           highp vec3 x = max(vec3(0.0), c - vec3(0.004));
                                            return (x * (6.2 * x + vec3(0.5))) / (x * (6.2 * x + vec3(1.7)) + vec3(0.06));
                                        }"],
                     "substitution": "highp vec3 $outputColor = filmicToneMap($color);"
@@ -73,7 +73,7 @@
                         "minor": 0
                     },
     		    "headerSnippets": ["highp vec3 filmicToneMap(const in highp vec3 c) {
-                                           highp vec3 x = max(vec3(0.0), c - vec3(0.4));    
+                                           highp vec3 x = max(vec3(0.0), c - vec3(0.004));
                                            return (x * (6.2 * x + vec3(0.5))) / (x * (6.2 * x + vec3(1.7)) + vec3(0.06));
                                        }"],
                     "substitution": "highp vec3 $outputColor = filmicToneMap($color);"
