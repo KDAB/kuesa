@@ -43,21 +43,21 @@ private Q_SLOTS:
         EffectsLibrary effectsLib;
 
         // WHEN
-        EffectProperties effectProps;
+        EffectProperties::Properties effectProps;
         auto effect = effectsLib.getOrCreateEffect(effectProps, nullptr);
 
         // THEN
         QVERIFY(effect == nullptr);
 
         // WHEN
-        effectProps = EffectProperty::MetallicRoughness|EffectProperty::VertexColor;
+        effectProps = EffectProperties::MetallicRoughness|EffectProperties::VertexColor;
         auto effects2 = effectsLib.getOrCreateEffect(effectProps, nullptr);
 
         // THEN
         QVERIFY(effects2 != nullptr);
 
         // WHEN
-        effectProps = EffectProperty::MetallicRoughness|EffectProperty::Skinning;
+        effectProps = EffectProperties::MetallicRoughness|EffectProperties::Skinning;
         auto effects3 = effectsLib.getOrCreateEffect(effectProps, nullptr);
 
         // THEN
@@ -66,16 +66,16 @@ private Q_SLOTS:
 
         // WHEN
         {
-            EffectProperties props;
-            props |= EffectProperty::MetallicRoughness|EffectProperty::VertexColor;
+            EffectProperties::Properties props;
+            props |= EffectProperties::MetallicRoughness|EffectProperties::VertexColor;
             auto tmpEffect = effectsLib.getOrCreateEffect(props, nullptr);
             // THEN
             QCOMPARE(tmpEffect, effects2);
         }
         // WHEN
         {
-            EffectProperties props;
-            props |= EffectProperty::MetallicRoughness|EffectProperty::Skinning;
+            EffectProperties::Properties props;
+            props |= EffectProperties::MetallicRoughness|EffectProperties::Skinning;
             auto tmpEffect = effectsLib.getOrCreateEffect(props, nullptr);
             // THEN
             QCOMPARE(tmpEffect, effects3);

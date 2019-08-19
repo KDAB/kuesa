@@ -107,7 +107,7 @@ public:
 
     Kuesa::GLTF2MaterialProperties *m_materialProperties = nullptr;
 
-    static Kuesa::EffectProperties effectPropertiesFromMaterial(const Material &material);
+    static Kuesa::EffectProperties::Properties effectPropertiesFromMaterial(const Material &material);
 };
 
 class Q_AUTOTEST_EXPORT MaterialParser

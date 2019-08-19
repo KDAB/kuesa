@@ -279,41 +279,41 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties() const
     return m_materialProperties;
 }
 
-Kuesa::EffectProperties Material::effectPropertiesFromMaterial(const Material &material)
+Kuesa::EffectProperties::Properties Material::effectPropertiesFromMaterial(const Material &material)
 {
-    Kuesa::EffectProperties effectProperties;
+    Kuesa::EffectProperties::Properties effectProperties = {};
 
     if (material.extensions.KHR_materials_unlit)
-        effectProperties |= Kuesa::EffectProperty::Unlit;
+        effectProperties |= Kuesa::EffectProperties::Unlit;
     else
-        effectProperties |= Kuesa::EffectProperty::MetallicRoughness;
+        effectProperties |= Kuesa::EffectProperties::MetallicRoughness;
 
     if (material.doubleSided)
-        effectProperties |= Kuesa::EffectProperty::DoubleSided;
+        effectProperties |= Kuesa::EffectProperties::DoubleSided;
 
     if (material.alpha.mode == Material::Alpha::Blend)
-        effectProperties |= Kuesa::EffectProperty::Blend;
+        effectProperties |= Kuesa::EffectProperties::Blend;
 
     if (material.alpha.mode == Material::Alpha::Mask)
-        effectProperties |= Kuesa::EffectProperty::Mask;
+        effectProperties |= Kuesa::EffectProperties::Mask;
 
     if (material.pbr.baseColorTexture.index != -1)
-        effectProperties |= Kuesa::EffectProperty::BaseColorMap;
+        effectProperties |= Kuesa::EffectProperties::BaseColorMap;
 
     // Ignore rest of properties for unlit
     if (!material.extensions.KHR_materials_unlit) {
 
         if (material.pbr.metallicRoughnessTexture.index != -1)
-            effectProperties |= Kuesa::EffectProperty::MetalRoughnessMap;
+            effectProperties |= Kuesa::EffectProperties::MetalRoughnessMap;
 
         if (material.normalTexture.index != -1)
-            effectProperties |= Kuesa::EffectProperty::NormalMap;
+            effectProperties |= Kuesa::EffectProperties::NormalMap;
 
         if (material.occlusionTexture.index != -1)
-            effectProperties |= Kuesa::EffectProperty::AOMap;
+            effectProperties |= Kuesa::EffectProperties::AOMap;
 
         if (material.emissiveTexture.index != -1)
-            effectProperties |= Kuesa::EffectProperty::EmissiveMap;
+            effectProperties |= Kuesa::EffectProperties::EmissiveMap;
     }
 
     return effectProperties;

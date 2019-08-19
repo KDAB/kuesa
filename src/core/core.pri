@@ -44,6 +44,7 @@ SOURCES += \
     $$PWD/effectslibrary.cpp
 
 HEADERS += \
+    $$PWD/effectproperties.h \
     $$PWD/sceneentity.h \
     $$PWD/factory.h \
     $$PWD/kuesa_p.h \
