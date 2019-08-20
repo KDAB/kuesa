@@ -32,7 +32,7 @@
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
 #include <Kuesa/tonemappingandgammacorrectioneffect.h>
-#include <Qt3DRender/qframegraphnode.h>
+#include <Qt3DRender/qrendersurfaceselector.h>
 #include <Qt3DRender/qclearbuffers.h>
 #include <Qt3DRender/qrendertargetoutput.h>
 #include <QVector>
@@ -60,7 +60,7 @@ class OpaqueRenderStage;
 class TransparentRenderStage;
 class ZFillRenderStage;
 
-class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QFrameGraphNode
+class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QRenderSurfaceSelector
 {
     Q_OBJECT
     Q_PROPERTY(QObject *renderSurface READ renderSurface WRITE setRenderSurface NOTIFY renderSurfaceChanged)
@@ -81,7 +81,6 @@ public:
     ~ForwardRenderer();
 
     QObject *renderSurface() const;
-    QSize externalRenderTargetSize() const;
     QRectF viewportRect() const;
     Qt3DCore::QEntity *camera() const;
     QColor clearColor() const;
@@ -102,7 +101,6 @@ public:
 
 public Q_SLOTS:
     void setRenderSurface(QObject *renderSurface);
-    void setExternalRenderTargetSize(const QSize &externalRenderTargetSize);
     void setViewportRect(const QRectF &viewportRect);
     void setCamera(Qt3DCore::QEntity *camera);
     void setClearColor(const QColor &clearColor);
@@ -149,7 +147,6 @@ private:
     Qt3DRender::QViewport *m_viewport;
     Qt3DRender::QCameraSelector *m_cameraSelector;
     Qt3DRender::QClearBuffers *m_clearBuffers;
-    Qt3DRender::QRenderSurfaceSelector *m_surfaceSelector;
     Qt3DRender::QNoDraw *m_noDrawClearBuffer;
     Qt3DRender::QFrustumCulling *m_frustumCullingOpaque;
     Qt3DRender::QFrustumCulling *m_frustumCullingTransparent;
