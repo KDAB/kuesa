@@ -248,7 +248,6 @@ UnlitEffect::UnlitEffect(Qt3DCore::QNode *parent)
     , m_baseColorMapEnabled(false)
     , m_usingColorAttribute(false)
     , m_useSkinning(false)
-    , m_invokeInitVertexShaderRequested(false)
     , m_opaque(true)
     , m_alphaCutoffEnabled(false)
 {
