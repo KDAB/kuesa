@@ -144,7 +144,7 @@ def shared_library_suffix():
         return 'dylib'
     # Linux
     else:
-        return 'so.*'
+        return 'so'
 
 
 def import_suffixes():
@@ -165,8 +165,7 @@ def is_debug():
 
 
 def shared_library_glob_pattern():
-    glob = '*.' + shared_library_suffix()
-    return glob if sys.platform == 'win32' else 'lib' + glob
+    return '*.' + shared_library_suffix()
 
 
 def filter_shared_libraries(libs_list):
