@@ -26,6 +26,11 @@
 
 TEMPLATE = subdirs
 
+include($$OUT_PWD/qtkuesa-config.pri)
+
+QT_FOR_CONFIG += kuesa
+qtConfig(kuesa-tools) {
+
 !uikit: SUBDIRS += \
     assetprocessor \
     gltfViewer
@@ -41,3 +46,4 @@ TEMPLATE = subdirs
     }
 }
 
+}

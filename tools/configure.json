@@ -1,0 +1,26 @@
+{
+    "module": "kuesa",
+
+    "commandline": {
+        "options": {
+            "kuesa-tools": "boolean"
+        }
+    },
+
+    "features": {
+        "kuesa-tools": {
+            "label": "Tools",
+            "purpose": "Build Kuesa Tools",
+            "output": [ "publicFeature", "publicQtConfig" ]
+        }
+    },
+
+    "summary": [
+        {
+            "section": "Kuesa",
+            "entries": [
+                "kuesa-tools"
+            ]
+        }
+    ]
+}
