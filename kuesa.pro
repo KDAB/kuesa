@@ -36,3 +36,6 @@ OTHER_FILES += \
     README.md
 
 load(qt_parts)
+
+PACKAGE_NAME=Kuesa
+include(package.pri)
