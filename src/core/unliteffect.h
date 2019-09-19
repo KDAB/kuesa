@@ -87,7 +87,6 @@ private:
     bool m_baseColorMapEnabled;
     bool m_usingColorAttribute;
     bool m_useSkinning;
-    bool m_invokeInitVertexShaderRequested;
     bool m_opaque;
     bool m_alphaCutoffEnabled;
 

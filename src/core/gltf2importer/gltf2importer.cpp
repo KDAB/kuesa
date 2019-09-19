@@ -268,6 +268,7 @@ GLTF2Importer::GLTF2Importer(Qt3DCore::QNode *parent)
     , m_currentSceneEntity(nullptr)
     , m_status(None)
     , m_sceneEntity(nullptr)
+    , m_assignNames(true)
     , m_activeSceneIndex(DefaultScene)
 {
 }

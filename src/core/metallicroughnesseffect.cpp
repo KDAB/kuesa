@@ -664,8 +664,8 @@ void MetallicRoughnessEffect::setUseSkinning(bool useSkinning)
         layers.removeAll(QStringLiteral("no-skinning"));
         layers.append(QStringLiteral("skinning"));
     } else {
-        layers.removeAll(QStringLiteral("no-skinning"));
-        layers.append(QStringLiteral("skinning"));
+        layers.removeAll(QStringLiteral("skinning"));
+        layers.append(QStringLiteral("no-skinning"));
     }
 
     m_metalRoughGL3Technique->setEnabledLayers(layers);

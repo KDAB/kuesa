@@ -120,7 +120,7 @@ class Window(Qt3DExtras.Qt3DWindow):
 
         self.el = Qt3DRender.QEnvironmentLight(self.rootEntity)
         self.tli = Qt3DRender.QTextureLoader(self.rootEntity)
-        self.tli.setSource("file://" + wd + "/../assets/envmaps/pink_sunrise/pink_sunrise_" + ("16f" if platform.system() == "Darwin" else "") + "_irradiance.dds")
+        self.tli.setSource("file://" + wd + "/../assets/envmaps/pink_sunrise/pink_sunrise" + ("_16f" if platform.system() == "Darwin" else "") + "_irradiance.dds")
         self.tli.setMinificationFilter(Qt3DRender.QAbstractTexture.LinearMipMapLinear)
         self.tli.setMagnificationFilter(Qt3DRender.QAbstractTexture.Linear)
         self.tli.wrapMode().setX(Qt3DRender.QTextureWrapMode.ClampToEdge)
@@ -128,7 +128,7 @@ class Window(Qt3DExtras.Qt3DWindow):
         self.tli.setGenerateMipMaps(0)
         self.el.setIrradiance(self.tli)
         self.tls = Qt3DRender.QTextureLoader(self.rootEntity)
-        self.tls.setSource("file://" + wd + "/../assets/envmaps/pink_sunrise/pink_sunrise_" + ("16f" if platform.system() == "Darwin" else "") + "_specular.dds")
+        self.tls.setSource("file://" + wd + "/../assets/envmaps/pink_sunrise/pink_sunrise" + ("_16f" if platform.system() == "Darwin" else "") + "_specular.dds")
         self.tls.setMinificationFilter(Qt3DRender.QAbstractTexture.LinearMipMapLinear)
         self.tls.setMagnificationFilter(Qt3DRender.QAbstractTexture.Linear)
         self.tls.wrapMode().setX(Qt3DRender.QTextureWrapMode.ClampToEdge)

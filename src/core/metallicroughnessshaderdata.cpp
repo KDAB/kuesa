@@ -49,6 +49,7 @@ MetallicRoughnessShaderData::MetallicRoughnessShaderData(Qt3DCore::QNode *parent
     , m_ambientOcclusionMap(nullptr)
     , m_emissiveFactor(QColor("black"))
     , m_emissiveMap(nullptr)
+    , m_alphaCutoff(0.0f)
 {
 }
 
