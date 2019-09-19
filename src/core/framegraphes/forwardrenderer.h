@@ -64,7 +64,6 @@ class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QRenderSurfaceSele
 {
     Q_OBJECT
     Q_PROPERTY(QObject *renderSurface READ renderSurface WRITE setRenderSurface NOTIFY renderSurfaceChanged)
-    Q_PROPERTY(QSize externalRenderTargetSize READ externalRenderTargetSize WRITE setExternalRenderTargetSize NOTIFY externalRenderTargetSizeChanged)
     Q_PROPERTY(QRectF viewportRect READ viewportRect WRITE setViewportRect NOTIFY viewportRectChanged)
     Q_PROPERTY(Qt3DCore::QEntity *camera READ camera WRITE setCamera NOTIFY cameraChanged)
     Q_PROPERTY(QColor clearColor READ clearColor WRITE setClearColor NOTIFY clearColorChanged)
@@ -114,7 +113,6 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void renderSurfaceChanged(QObject *renderSurface);
-    void externalRenderTargetSizeChanged(const QSize &externalRenderTargetSize);
     void viewportRectChanged(const QRectF &viewportRect);
     void cameraChanged(Qt3DCore::QEntity *camera);
     void clearColorChanged(const QColor &clearColor);
