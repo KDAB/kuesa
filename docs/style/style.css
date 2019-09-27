@@ -1,0 +1,94 @@
+:root {
+        --kdab-blue: #0077C8;
+        --kdab-blue50: rgba(0, 119, 200, 0.8);
+}
+body {
+    margin: 0;
+    padding: 16px;
+    background-image: url(./images/kdab_background.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: 100%;
+}
+#title {
+        color: var(--kdab-blue);
+        width: 90%;
+        margin-bottom: 30px;
+        padding: 10px 1rem 50px 1rem;
+        position: relative;
+}
+
+#title .logo {
+        float: left;
+        margin-top: 8px;
+        width: 120px;
+        height: 106px;
+}
+
+#title .header {
+        width: 90%;
+        margin: 0;
+        margin-left: 100px;
+        padding: 23px 0px 0px 80px;
+}
+
+#title .header h1 {
+        margin: 0;
+        padding: 0;
+        text-align: left;
+        font-size: xx-large;
+        font-family: "Open Sans";
+}
+.tables {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.thead-kdab {
+    color: white;
+    background-color: var(--kdab-blue);
+    border-color: var(--kdab-blue);
+}
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+tr:nth-child(even) {
+    background-color: rgba(220, 220, 220, 0.5);
+}
+.pad-me {
+    padding: .5rem 1rem;
+}
+.builder {
+    margin: 0.25em 0.5vw;
+    flex-basis: 0;
+    flex-grow: 1;
+}
+.builder_name {
+    height: 2.2em;
+    line-height: 1.1em;
+    margin-bottom: 0.5em;
+    text-align: left;
+}
+
+.indicator {
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    display: inline-block;
+}
+.success {
+    background: #8BC34A;
+}
+.warning {
+    background: #FFC107;
+}
+.failure {
+    background: #F44336;
+}

@@ -5,29 +5,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- unlitmaterial.cpp -->
   <title>UnlitMaterial Class | Kuesa 1.1</title>
-  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
-  <script type="text/javascript">
-    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
-    // loading style sheet breaks anchors that were jumped to before
-    // so force jumping to anchor again
-    setTimeout(function() {
-        var anchor = location.hash;
-        // need to jump to different anchor first (e.g. none)
-        location.hash = "#";
-        setTimeout(function() {
-            location.hash = anchor;
-        }, 0);
-    }, 0);
-  </script>
-</head>
-<body>
-<div class="header" id="qtdocheader">
-  <div class="main">
-    <div class="main-rounded">
-      <div class="navigationbar">
-        <table><tr>
-<td ><a href="index.html#">Kuesa 1.1</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-cpp.html#">C++ Classes</a></td><td >UnlitMaterial</td></tr></table><table class="buildversion"><tr>
-<td id="buildversion" width="100%" align="right"><a href="index.html#">Kuesa 1.1 Reference Documentation</a></td>
+<link rel="stylesheet" type="text/css" href="./style/style.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="./images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html#">Kuesa 1.1</a></li>
+<li><a href="kuesa.html">Kuesa</a></li>
+<li><a href="kuesa-cpp.html#">C++ Classes</a></li>
+<li>UnlitMaterial</li>
+<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -46,9 +30,9 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">UnlitMaterial Class</h1>
-<span class="small-subtitle">(<a href="index.html#">Kuesa::UnlitMaterial</a>)<br/></span>
+<span class="small-subtitle">(<a href="qml-unlitmaterial.html">Kuesa::UnlitMaterial</a>)<br/></span>
 <!-- $$$UnlitMaterial-brief -->
-<p><a href="index.html#">Kuesa::UnlitMaterial</a> is a simple material without shading. It implements the KHR_materials_unlit extension from glTF 2.0&#x2e; <a href="#details">More...</a></p>
+<p><a href="qml-unlitmaterial.html">Kuesa::UnlitMaterial</a> is a simple material without shading. It implements the KHR_materials_unlit extension from glTF 2.0&#x2e; <a href="#details">More...</a></p>
 <!-- @@@UnlitMaterial -->
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/UnlitMaterial&gt;</span>
@@ -77,8 +61,8 @@
 <div class="descr">
 <h2 id="details">Detailed Description</h2>
 <p>It is configured through the set of properties held on the <a href="kuesa-unlitproperties.html">UnlitProperties</a> instance it can receive.</p>
-<p><b>Note: </b><a href="index.html#">Kuesa::UnlitMaterial</a> is implemented using a custom shader graph. Some changes in the properties will activate or deactivate some nodes of the shader graph and will trigger a recompilation of the shader. It is recommended to create the variations of the material that you need once up front at application initialisation time.</p></div>
-<p><b>See also </b><a href="index.html#">Kuesa::UnlitProperties</a>.</p>
+<p><b>Note: </b><a href="qml-unlitmaterial.html">Kuesa::UnlitMaterial</a> is implemented using a custom shader graph. Some changes in the properties will activate or deactivate some nodes of the shader graph and will trigger a recompilation of the shader. It is recommended to create the variations of the material that you need once up front at application initialisation time.</p></div>
+<p><b>See also </b><a href="qml-unlitproperties.html">Kuesa::UnlitProperties</a>.</p>
 <!-- @@@UnlitMaterial -->
 <div class="prop">
 <h2>Property Documentation</h2>
@@ -103,9 +87,9 @@
 </div>
 <div class="footer">
    <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
    Documentation contributions included herein are the copyrights of
-   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>
 </div>
 </body>

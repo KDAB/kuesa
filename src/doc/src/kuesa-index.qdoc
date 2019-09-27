@@ -28,7 +28,6 @@
 
 /*!
     \page index.html
-    \title Kuesa
 
     \e{Kuesa} is a module for Qt 3D which provides:
     \list
@@ -38,7 +37,6 @@
     \li Custom forward renderer for adding effects
     \li A Qt Creator template for quickly creating new Kuesa based projects
     \endlist
-
 
     \annotatedlist kuesa-module
 

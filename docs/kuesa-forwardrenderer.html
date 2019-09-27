@@ -5,29 +5,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- forwardrenderer.cpp -->
   <title>ForwardRenderer Class | Kuesa 1.1</title>
-  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
-  <script type="text/javascript">
-    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
-    // loading style sheet breaks anchors that were jumped to before
-    // so force jumping to anchor again
-    setTimeout(function() {
-        var anchor = location.hash;
-        // need to jump to different anchor first (e.g. none)
-        location.hash = "#";
-        setTimeout(function() {
-            location.hash = anchor;
-        }, 0);
-    }, 0);
-  </script>
-</head>
-<body>
-<div class="header" id="qtdocheader">
-  <div class="main">
-    <div class="main-rounded">
-      <div class="navigationbar">
-        <table><tr>
-<td ><a href="index.html#">Kuesa 1.1</a></td><td ><a href="index.html#">Kuesa</a></td><td ><a href="kuesa-cpp.html#">C++ Classes</a></td><td >ForwardRenderer</td></tr></table><table class="buildversion"><tr>
-<td id="buildversion" width="100%" align="right"><a href="index.html#">Kuesa 1.1 Reference Documentation</a></td>
+<link rel="stylesheet" type="text/css" href="./style/style.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="./images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html#">Kuesa 1.1</a></li>
+<li><a href="kuesa.html">Kuesa</a></li>
+<li><a href="kuesa-cpp.html#">C++ Classes</a></li>
+<li>ForwardRenderer</li>
+<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -47,7 +31,7 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">ForwardRenderer Class</h1>
-<span class="small-subtitle">(<a href="index.html#">Kuesa::ForwardRenderer</a>)<br/></span>
+<span class="small-subtitle">(<a href="qml-forwardrenderer.html">Kuesa::ForwardRenderer</a>)<br/></span>
 <!-- $$$ForwardRenderer-brief -->
 <p>Implements a simple forward rendering FrameGraph. <a href="#details">More...</a></p>
 <!-- @@@ForwardRenderer -->
@@ -66,9 +50,8 @@
 <li class="fn"><b><a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffers</a></b> : Qt3DRender::QClearBuffers::BufferType</li>
 <li class="fn"><b><a href="kuesa-forwardrenderer.html#clearColor-prop">clearColor</a></b> : QColor</li>
 <li class="fn"><b><a href="kuesa-forwardrenderer.html#exposure-prop">exposure</a></b> : float</li>
-<li class="fn"><b><a href="kuesa-forwardrenderer.html#externalRenderTargetSize-prop">externalRenderTargetSize</a></b> : QSize</li>
-</ul></td><td class="topAlign"><ul>
 <li class="fn"><b><a href="kuesa-forwardrenderer.html#frustumCulling-prop">frustumCulling</a></b> : bool</li>
+</ul></td><td class="topAlign"><ul>
 <li class="fn"><b><a href="kuesa-forwardrenderer.html#gamma-prop">gamma</a></b> : float</li>
 <li class="fn"><b><a href="kuesa-forwardrenderer.html#renderSurface-prop">renderSurface</a></b> : QObject*</li>
 <li class="fn"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithm</a></b> : ToneMappingAndGammaCorrectionEffect::ToneMapping</li>
@@ -86,7 +69,6 @@
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QClearBuffers::BufferType </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QColor </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearColor">clearColor</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#exposure">exposure</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> QSize </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#externalRenderTargetSize">externalRenderTargetSize</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#frustumCulling">frustumCulling</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#gamma">gamma</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QVector&lt;Kuesa::AbstractPostProcessingEffect *&gt; </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#postProcessingEffects">postProcessingEffects</a></b>() const</td></tr>
@@ -104,7 +86,6 @@
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a></b>(Qt3DRender::QClearBuffers::BufferType <i>clearBuffers</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setClearColor">setClearColor</a></b>(const QColor &amp;<i>clearColor</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setExposure">setExposure</a></b>(float <i>exposure</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setExternalRenderTargetSize">setExternalRenderTargetSize</a></b>(const QSize &amp;<i>externalRenderTargetSize</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setFrustumCulling">setFrustumCulling</a></b>(bool <i>frustumCulling</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setGamma">setGamma</a></b>(float <i>gamma</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setRenderSurface">setRenderSurface</a></b>(QObject *<i>renderSurface</i>)</td></tr>
@@ -120,7 +101,6 @@
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffersChanged</a></b>(Qt3DRender::QClearBuffers::BufferType <i>clearBuffers</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearColor-prop">clearColorChanged</a></b>(const QColor &amp;<i>clearColor</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#exposure-prop">exposureChanged</a></b>(float <i>exposure</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#externalRenderTargetSize-prop">externalRenderTargetSizeChanged</a></b>(const QSize &amp;<i>externalRenderTargetSize</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#frustumCulling-prop">frustumCullingChanged</a></b>(bool <i>frustumCulling</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#gamma-prop">gammaChanged</a></b>(float <i>gamma</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#renderSurface-prop">renderSurfaceChanged</a></b>(QObject *<i>renderSurface</i>)</td></tr>
@@ -214,19 +194,6 @@
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>exposureChanged</b></span>(float <i>exposure</i>)</td></tr>
 </table></div>
 <!-- @@@exposure -->
-<!-- $$$externalRenderTargetSize-prop$$$externalRenderTargetSize$$$setExternalRenderTargetSizeconstQSize&$$$externalRenderTargetSizeChangedconstQSize& -->
-<h3 class="fn" id="externalRenderTargetSize-prop"><a name="externalRenderTargetSize-prop"></a><span class="name">externalRenderTargetSize</span> : <span class="type">QSize</span></h3>
-<p>Holds the size of the external render target.</p>
-<p><b>Access functions:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> QSize </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#externalRenderTargetSize">externalRenderTargetSize</a></b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#setExternalRenderTargetSize">setExternalRenderTargetSize</a></b></span>(const QSize &amp;<i>externalRenderTargetSize</i>)</td></tr>
-</table></div>
-<p><b>Notifier signal:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>externalRenderTargetSizeChanged</b></span>(const QSize &amp;<i>externalRenderTargetSize</i>)</td></tr>
-</table></div>
-<!-- @@@externalRenderTargetSize -->
 <!-- $$$frustumCulling-prop$$$frustumCulling$$$setFrustumCullingbool$$$frustumCullingChangedbool -->
 <h3 class="fn" id="frustumCulling-prop"><a name="frustumCulling-prop"></a><span class="name">frustumCulling</span> : <span class="type">bool</span></h3>
 <p>Holds whether frustum culling is enabled or not. Enabled by default.</p>
@@ -335,11 +302,6 @@
 <p>Sets the <i>exposure</i> value to use for exposure correction</p>
 <p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#exposure-prop">exposure</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#exposure">exposure</a>().</p>
 <!-- @@@setExposure -->
-<!-- $$$setExternalRenderTargetSize -->
-<h3 class="fn" id="setExternalRenderTargetSize"><a name="setExternalRenderTargetSize"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setExternalRenderTargetSize</span>(const <span class="type">QSize</span> &amp;<i>externalRenderTargetSize</i>)</h3>
-<p>Sets the size of the external render target to <i>externalRenderTargetSize</i>.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#externalRenderTargetSize-prop">externalRenderTargetSize</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#externalRenderTargetSize">externalRenderTargetSize</a>().</p>
-<!-- @@@setExternalRenderTargetSize -->
 <!-- $$$setFrustumCulling -->
 <h3 class="fn" id="setFrustumCulling"><a name="setFrustumCulling"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setFrustumCulling</span>(<span class="type">bool</span> <i>frustumCulling</i>)</h3>
 <p>Activates <i>frustumCulling</i> of geometries which lie outside of the view frustum.</p>
@@ -405,11 +367,6 @@
 <p>Exposure correction factor used before the linear to sRGB conversion.</p>
 <p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#exposure-prop">exposure</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setExposure">setExposure</a>().</p>
 <!-- @@@exposure -->
-<!-- $$$externalRenderTargetSize -->
-<h3 class="fn" id="externalRenderTargetSize"><a name="externalRenderTargetSize"></a><span class="type">QSize</span> ForwardRenderer::<span class="name">externalRenderTargetSize</span>() const</h3>
-<p>Returns the external render target size.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#externalRenderTargetSize-prop">externalRenderTargetSize</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setExternalRenderTargetSize">setExternalRenderTargetSize</a>().</p>
-<!-- @@@externalRenderTargetSize -->
 <!-- $$$frustumCulling -->
 <h3 class="fn" id="frustumCulling"><a name="frustumCulling"></a><span class="type">bool</span> ForwardRenderer::<span class="name">frustumCulling</span>() const</h3>
 <p>Returns whether frustum culling is enabled or not.</p>
@@ -460,9 +417,9 @@
 </div>
 <div class="footer">
    <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 The Qt Company Ltd.
+   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
    Documentation contributions included herein are the copyrights of
-   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>
 </div>
 </body>
