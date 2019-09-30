@@ -76,11 +76,11 @@ bool initializeAssetResources(const QVector<QString> &fileNames)
 static QString envmap(QString name)
 {
     return QStringLiteral("qrc:///pink_sunrise_%1%2")
-    #if defined(__APPLE__)
-            .arg("_16f")
-    #else
+#if defined(Q_OS_MACOS)
+            .arg("16f_")
+#else
             .arg("")
-    #endif
+#endif
             .arg(name);
 }
 
@@ -89,8 +89,8 @@ static QString envmap(QString name)
 class DefaultEnvMap : public Qt3DRender::QEnvironmentLight
 {
 public:
-    DefaultEnvMap(Qt3DCore::QNode *parent = nullptr):
-        Qt3DRender::QEnvironmentLight{parent}
+    DefaultEnvMap(Qt3DCore::QNode *parent = nullptr)
+        : Qt3DRender::QEnvironmentLight{ parent }
     {
         auto tli = new Qt3DRender::QTextureLoader(this);
         tli->setSource(QUrl(envmap("irradiance.dds")));
@@ -125,29 +125,27 @@ public:
         m_scene = new Kuesa::SceneEntity();
         m_scene->addComponent(new DefaultEnvMap(m_scene));
 
-        auto rootEntity = m_scene;
-
         camera()->setPosition(QVector3D(5, 1.5, 5));
         camera()->setViewCenter(QVector3D(0, 0.5, 0));
         camera()->setUpVector(QVector3D(0, 1, 0));
-        camera()->setAspectRatio(16. / 9.);
+        camera()->setAspectRatio(16.f / 9.f);
 
         auto camController = new Qt3DExtras::QOrbitCameraController(m_scene);
         camController->setCamera(camera());
 
         auto fg = new Kuesa::ForwardRenderer();
         fg->setCamera(camera());
-        fg->setGamma(2.2);
-        fg->setExposure(1.);
+        fg->setGamma(2.2f);
+        fg->setExposure(1.f);
         fg->setClearColor("white");
         setActiveFrameGraph(fg);
 
         // Load a few glTF models
-        QVector<Kuesa::SceneEntity*> scenes;
-        QVector<Kuesa::GLTF2Importer*> importers;
+        QVector<Kuesa::SceneEntity *> scenes;
+        QVector<Kuesa::GLTF2Importer *> importers;
         auto gltfImporter = new Kuesa::GLTF2Importer(m_scene);
         gltfImporter->setSceneEntity(m_scene);
-        gltfImporter->setSource(QUrl{"qrc:///assets/models/duck/Duck.glb"});
+        gltfImporter->setSource(QUrl{ "qrc:///assets/models/duck/Duck.glb" });
 
         connect(gltfImporter, &Kuesa::GLTF2Importer::statusChanged,
                 this, &Window::on_sceneLoaded);
@@ -170,23 +168,21 @@ public:
 private:
     void on_sceneLoaded(Kuesa::GLTF2Importer::Status status)
     {
-        if(status == Kuesa::GLTF2Importer::Ready)
-        {
+        if (status == Kuesa::GLTF2Importer::Ready) {
             // First let's take the components that we are going to use to create our clones
             // Gotten from gammaray
             auto parent = m_scene->entity("KuesaEntity_0");
 
             auto orig_entity = m_scene->entity("KuesaEntity_2")->childNodes()[1];
-            auto orig_geometry = dynamic_cast<Qt3DCore::QComponent*>(orig_entity->childNodes()[0]);
-            auto orig_material = dynamic_cast<Qt3DCore::QComponent*>(orig_entity->childNodes()[1]);
+            auto orig_geometry = dynamic_cast<Qt3DCore::QComponent *>(orig_entity->childNodes()[0]);
+            auto orig_material = dynamic_cast<Qt3DCore::QComponent *>(orig_entity->childNodes()[1]);
 
             // Then create clones by giving them a custom transform, and the same components than before
-            for(int i = 0; i < Ducks; i++)
-            {
-                auto new_entity = new Qt3DCore::QEntity{parent};
+            for (int i = 0; i < Ducks; i++) {
+                auto new_entity = new Qt3DCore::QEntity{ parent };
                 auto new_transform = new Qt3DCore::QTransform;
-                new_transform->setScale(0.2);
-                new_transform->setTranslation(QVector3D(rand()%r - r/2,rand()%r- r/2,rand()%r - r/2));
+                new_transform->setScale(0.2f);
+                new_transform->setTranslation(QVector3D(rand() % r - r / 2, rand() % r - r / 2, rand() % r - r / 2));
 
                 new_transform->setRotationX(rand() % 360);
                 new_transform->setRotationY(rand() % 360);
@@ -201,27 +197,26 @@ private:
 
             // Animate everyone
             qreal ms = 1000. / this->screen()->refreshRate();
-            startTimer(ms);
+            startTimer(static_cast<int>(ms));
         }
     }
 
     void timerEvent(QTimerEvent *event) override
     {
-        for(auto transform : m_transforms)
-        {
-            transform->setRotationX(transform->rotationX() + 0.1);
-            transform->setRotationY(transform->rotationY() + 0.1);
-            transform->setRotationZ(transform->rotationZ() + 0.1);
+        Q_UNUSED(event)
+        for (auto transform : m_transforms) {
+            transform->setRotationX(transform->rotationX() + 0.1f);
+            transform->setRotationY(transform->rotationY() + 0.1f);
+            transform->setRotationZ(transform->rotationZ() + 0.1f);
         }
     }
 
-    Kuesa::SceneEntity* m_scene{};
-    std::array<Qt3DCore::QTransform*, Ducks> m_transforms;
+    Kuesa::SceneEntity *m_scene{};
+    std::array<Qt3DCore::QTransform *, Ducks> m_transforms;
 };
 
 int main(int argc, char *argv[])
 {
-    bool isES2 = false;
     {
         // Set OpenGL requirements
         QSurfaceFormat format = QSurfaceFormat::defaultFormat();
@@ -230,9 +225,6 @@ int main(int argc, char *argv[])
         format.setProfile(QSurfaceFormat::CoreProfile);
         format.setSamples(4);
 #else
-#ifndef QT_OPENGL_ES_3
-        isES2 = true;
-#endif
         format.setVersion(3, 0);
         format.setProfile(QSurfaceFormat::NoProfile);
         format.setRenderableType(QSurfaceFormat::OpenGLES);
@@ -255,10 +247,8 @@ int main(int argc, char *argv[])
     // Therefore we need a runtime check to see whether we can use ES 3.0 or not
     QOpenGLContext ctx;
     ctx.setFormat(QSurfaceFormat::defaultFormat());
-    if (ctx.create()) {
+    if (ctx.create())
         const QSurfaceFormat androidFormat = ctx.format();
-        isES2 = (androidFormat.majorVersion() == 2);
-    }
 #else
     const QString assetsPrefix = QStringLiteral("qrc:/");
 #endif

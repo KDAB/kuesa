@@ -102,12 +102,6 @@ android {
     }
 }
 
-packagesExist(portaudio-2.0) {
-    CONFIG += link_pkgconfig
-    PKGCONFIG += portaudio-2.0
-    DEFINES += KUESA_HAS_AUDIO=1
-}
-
 OTHER_FILES += doc/src/* \
     ../assets/models/duck/Duck.qrc \
     ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
