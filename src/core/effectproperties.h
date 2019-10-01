@@ -1,5 +1,5 @@
 /*
-    effectslibrary_p.h
+    effectproperties.h
 
     This file is part of Kuesa.
 
@@ -26,52 +26,50 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_EFFECTSLIBRARY_P_H
-#define KUESA_EFFECTSLIBRARY_P_H
 
-//
-//  W A R N I N G
-//  -------------
-//
-// This file is not part of the Kuesa API.  It exists for the convenience
-// of other Kuesa classes.  This header file may change from version to
-// version without notice, or even be removed.
-//
-// We mean it.
-//
+#ifndef EFFECT_PROPERTIES_H
+#define EFFECT_PROPERTIES_H
 
-#include <unordered_map>
-#include <private/kuesa_global_p.h>
-#include <Qt3DCore/QNode>
-#include <Kuesa/effectproperties.h>
-#include <memory>
+#include <QFlags>
+#include <Kuesa/kuesa_global.h>
+#include <QObject>
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DRender {
-class QEffect;
-};
-
 namespace Kuesa {
 
-class KUESA_PRIVATE_EXPORT EffectsLibrary
+class KUESASHARED_EXPORT EffectProperties
 {
+    Q_GADGET
+
 public:
-    EffectsLibrary();
+    enum Property {
+        // Material type
+        MetallicRoughness = 1 << 1,
+        Unlit = 1 << 2,
 
-    Qt3DRender::QEffect *getOrCreateEffect(EffectProperties::Properties properties,
-                                           Qt3DCore::QNode *effectOwner);
-    int count() const;
-    void clear();
+        // Material properties
+        BaseColorMap = 1 << 3,
+        MetalRoughnessMap = 1 << 4,
+        NormalMap = 1 << 5,
+        AOMap = 1 << 6,
+        EmissiveMap = 1 << 7,
+        Blend = 1 << 8,
+        Mask = 1 << 9,
+        DoubleSided = 1 << 10,
 
-    QHash<EffectProperties::Properties, Qt3DRender::QEffect *> effects() const;
-
-private:
-    QHash<EffectProperties::Properties, Qt3DRender::QEffect *> m_effects;
+        // Mesh properties
+        VertexColor = 1 << 11,
+        Skinning = 1 << 12
+    };
+    Q_DECLARE_FLAGS(Properties, Property)
+    Q_FLAG(Properties)
 };
 
 } // namespace Kuesa
 
+Q_DECLARE_OPERATORS_FOR_FLAGS(Kuesa::EffectProperties::Properties)
+
 QT_END_NAMESPACE
 
-#endif // EFFECTSLIBRARY_H
+#endif // EFFECT_PROPERTIES_H

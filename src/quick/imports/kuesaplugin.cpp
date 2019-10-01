@@ -47,6 +47,7 @@
 #include "postfxlistextension.h"
 #include <Kuesa/MetallicRoughnessProperties>
 #include <Kuesa/UnlitProperties>
+#include <Kuesa/EffectProperties>
 
 #include <QtQml/qqml.h>
 
@@ -106,6 +107,8 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::Asset>(uri, 1, 0, "Asset");
     qmlRegisterExtendedType<Kuesa::AnimationPlayer, Kuesa::AnimationPlayerItem>(uri, 1, 0, "AnimationPlayer");
     qmlRegisterUncreatableType<Kuesa::GLTF2Import::GLTF2Options>(uri, 1, 1, "GLTF2Options", QStringLiteral("You are not supposed to create a GLTF2Options instance"));
+    qmlRegisterUncreatableType<Kuesa::EffectProperties>(uri, 1, 1, "EffectProperties", QStringLiteral("Cannot be instantiated"));
+    qRegisterMetaType<Kuesa::EffectProperties::Properties>("EffectProperties::Properties");
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));

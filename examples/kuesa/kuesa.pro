@@ -31,6 +31,7 @@ qtHaveModule(quick) {
         shared-utils \
         car-scene \
         tonemapping \
+        manyducks \
         music-box
 
     for(subdir, SUBDIRS) {

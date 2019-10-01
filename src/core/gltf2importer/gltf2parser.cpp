@@ -612,6 +612,18 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
             addAssetsIntoCollection<Skin>(
                     [this](const Skin &skin, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), skin.name, m_skeletons.at(i)); },
                     [this](const Skin &, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), QStringLiteral("KuesaSkeleton_%1").arg(i), m_skeletons.at(i)); });
+
+        if (m_sceneEntity->effects()) {
+            const auto effectsHash = m_context->effectLibrary()->effects();
+            auto it = effectsHash.cbegin();
+            const auto end = effectsHash.cend();
+            while (it != end) {
+                const EffectProperties::Properties propertyFlags = it.key();
+                const QString name = QStringLiteral("KuesaEffect_%1").arg(QString::number(static_cast<int>(propertyFlags), 2));
+                addToCollectionWithUniqueName(m_sceneEntity->effects(), name, it.value());
+                ++it;
+            }
+        }
     }
 }
 
@@ -1065,9 +1077,9 @@ void GLTF2Parser::generateTreeNodeContent()
                         }
                         auto effectProperties = Material::effectPropertiesFromMaterial(mat);
                         if (isSkinned)
-                            effectProperties |= EffectProperty::Skinning;
+                            effectProperties |= EffectProperties::Skinning;
                         if (primitiveData.hasColorAttr)
-                            effectProperties |= EffectProperty::VertexColor;
+                            effectProperties |= EffectProperties::VertexColor;
                         auto *effect = m_context->effectLibrary()->getOrCreateEffect(effectProperties,
                                                                                      m_contentRootEntity);
 

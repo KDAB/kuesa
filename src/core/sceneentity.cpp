@@ -160,9 +160,23 @@ EffectCollection *SceneEntity::effects() const
     return m_effects;
 }
 
+/*!
+    Utility method returning an instance of Qt3DRender::QEffect matching the
+    \a name (or nullptr if not found)
+ */
 Qt3DRender::QEffect *SceneEntity::effect(const QString &name) const
 {
     return m_effects->find(name);
+}
+
+/*!
+    Utility method returning an instance of Qt3DRender::QEffect matching the
+    flags in \a effectPropertyFlags (or nullptr if not found)
+ */
+Qt3DRender::QEffect *SceneEntity::effect(int effectPropertyFlags) const
+{
+    const QString name = QStringLiteral("KuesaEffect_%1").arg(QString::number(effectPropertyFlags, 2));
+    return effect(name);
 }
 
 /*!

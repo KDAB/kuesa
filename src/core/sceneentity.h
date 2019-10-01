@@ -44,6 +44,7 @@
 #include <Kuesa/textureimagecollection.h>
 #include <Kuesa/animationmappingcollection.h>
 #include <Kuesa/kuesa_global.h>
+#include <Kuesa/effectproperties.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -87,6 +88,7 @@ public:
 
     EffectCollection *effects() const;
     Q_INVOKABLE Qt3DRender::QEffect *effect(const QString &name) const;
+    Q_INVOKABLE Qt3DRender::QEffect *effect(int effectPropertyFlags) const;
 
     LayerCollection *layers() const;
     Q_INVOKABLE Qt3DRender::QLayer *layer(const QString &name) const;
