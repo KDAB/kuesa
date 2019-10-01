@@ -102,7 +102,7 @@ public:
         setIrradiance(tli);
 
         auto tls = new Qt3DRender::QTextureLoader(this);
-        tli->setSource(QUrl(envmap("specular.dds")));
+        tls->setSource(QUrl(envmap("specular.dds")));
         tls->setMinificationFilter(Qt3DRender::QAbstractTexture::LinearMipMapLinear);
         tls->setMagnificationFilter(Qt3DRender::QAbstractTexture::Linear);
         tls->wrapMode()->setX(Qt3DRender::QTextureWrapMode::ClampToEdge);
