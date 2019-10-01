@@ -240,7 +240,6 @@
             <keyword name="Kuesa QML Types" id="Kuesa QML Types" ref="kuesa-qml.html"/>
             <keyword name="Kuesa Tools" id="Kuesa Tools" ref="tools.html"/>
             <keyword name="Kuesa post-processing effects" id="Kuesa post-processing effects" ref="kuesa-fx.html"/>
-            <keyword name="Kuesa::EffectProperties" id="Kuesa::EffectProperties" ref="kuesa.html#EffectProperty-enum"/>
             <keyword name="LayerCollection" id="Kuesa::LayerCollection" ref="kuesa-layercollection.html"/>
             <keyword name="LightCollection" id="Kuesa::LightCollection" ref="kuesa-lightcollection.html"/>
             <keyword name="MaterialCollection" id="Kuesa::MaterialCollection" ref="kuesa-materialcollection.html"/>
@@ -394,6 +393,7 @@
             <keyword name="doubleSided" id="MetallicRoughnessEffect::doubleSided" ref="qml-metallicroughnesseffect.html#doubleSided-prop"/>
             <keyword name="doubleSidedChanged" id="MetallicRoughnessEffect::doubleSidedChanged" ref="kuesa-metallicroughnesseffect.html#doubleSided-prop"/>
             <keyword name="doubleSidedChanged" id="UnlitEffect::doubleSidedChanged" ref="kuesa-unliteffect.html#doubleSided-prop"/>
+            <keyword name="effect" id="SceneEntity::effect" ref="kuesa-sceneentity.html#effect"/>
             <keyword name="emissiveFactor" id="MetallicRoughnessProperties::emissiveFactor" ref="kuesa-metallicroughnessproperties.html#emissiveFactor-prop"/>
             <keyword name="emissiveFactor" id="MetallicRoughnessProperties::emissiveFactor" ref="kuesa-metallicroughnessproperties.html#emissiveFactor-prop"/>
             <keyword name="emissiveFactor" id="MetallicRoughnessProperties::emissiveFactor" ref="qml-metallicroughnessproperties.html#emissiveFactor-prop"/>
@@ -817,6 +817,7 @@
             <file>images/ico_note_attention.png</file>
             <file>images/ico_out.png</file>
             <file>images/logo.png</file>
+            <file>images/manyducks-example.jpg</file>
             <file>images/music-box-example.jpg</file>
             <file>images/noalpha.png</file>
             <file>images/pipeline-diagram.png</file>
@@ -943,6 +944,9 @@
             <file>kuesa-layercollection.html</file>
             <file>kuesa-lightcollection-members.html</file>
             <file>kuesa-lightcollection.html</file>
+            <file>kuesa-manyducks-example.html</file>
+            <file>kuesa-manyducks-main-cpp.html</file>
+            <file>kuesa-manyducks-manyducks-pro.html</file>
             <file>kuesa-materialcollection-members.html</file>
             <file>kuesa-materialcollection.html</file>
             <file>kuesa-meshcollection-members.html</file>

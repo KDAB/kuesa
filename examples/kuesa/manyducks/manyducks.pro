@@ -104,4 +104,6 @@ android {
 
 OTHER_FILES += doc/src/* \
     ../assets/models/duck/Duck.qrc \
-    ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
+    ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc \
+    doc/src/*
+

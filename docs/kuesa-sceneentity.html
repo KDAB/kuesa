@@ -52,6 +52,8 @@
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QCamera *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#camera">camera</a></b>(const QString &amp;<i>name</i>) const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#cameras">cameras</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#clearCollections">clearCollections</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QEffect *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#effect">effect</a></b>(const QString &amp;<i>name</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QEffect *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#effect-1">effect</a></b>(int <i>effectPropertyFlags</i>) const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#entities">entities</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DCore::QEntity *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#entity">entity</a></b>(const QString &amp;<i>name</i>) const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QLayer *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#layer">layer</a></b>(const QString &amp;<i>name</i>) const</td></tr>
@@ -133,6 +135,16 @@
 <p>Removes all assets from all the collections.</p>
 <p><b>Note: </b>Assets which are parented with the collection will be deleted.</p><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
 <!-- @@@clearCollections -->
+<!-- $$$effect[overload1]$$$effectconstQString& -->
+<h3 class="fn" id="effect"><a name="effect"></a><span class="type">Qt3DRender::QEffect</span> *SceneEntity::<span class="name">effect</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
+<p>Utility method returning an instance of Qt3DRender::QEffect matching the <i>name</i> (or nullptr if not found)</p>
+<p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
+<!-- @@@effect -->
+<!-- $$$effect$$$effectint -->
+<h3 class="fn" id="effect-1"><a name="effect-1"></a><span class="type">Qt3DRender::QEffect</span> *SceneEntity::<span class="name">effect</span>(<span class="type">int</span> <i>effectPropertyFlags</i>) const</h3>
+<p>Utility method returning an instance of Qt3DRender::QEffect matching the flags in <i>effectPropertyFlags</i> (or nullptr if not found)</p>
+<p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
+<!-- @@@effect -->
 <!-- $$$entities -->
 <h3 class="fn" id="entities"><a name="entities"></a><span class="type">int</span> *SceneEntity::<span class="name">entities</span>() const</h3>
 <p>Returns instance of collection of Qt3DCore::QEntity assets</p>

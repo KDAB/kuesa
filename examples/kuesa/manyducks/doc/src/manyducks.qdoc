@@ -1,0 +1,117 @@
+/*
+    car-scene.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \example manyducks
+    \title Kuesa Many Ducks C++ Example
+    \ingroup kuesa-examples-cpp
+
+    \brief Demonstrates the use of the Kuesa C++ API to import a glTF2 file and
+    extract assets from it.
+
+    \image manyducks-example.jpg
+
+    \section1 Setting up a scene
+
+    \section2 Creating a window
+
+    The easiest way to get started is to subclass the Qt3DExtras::Qt3DWindow
+    \snippet manyducks/main.cpp 0
+
+    \section2 Creating a SceneEntity
+
+    The \l {SceneEntity} will hold the assets we will load later. It will also
+    act as our root entity.
+    \snippet manyducks/main.cpp 0.1
+
+    \section2 Creating a Camera and its controller
+
+    We can reuse the default camera provided by Qt3DExtras::Qt3DWindow
+    \snippet manyducks/main.cpp 0.2
+
+    \section2 Setting up the FrameGraph
+
+    We can use the pre made \l {ForwardRenderer} FrameGraph.
+    \snippet manyducks/main.cpp 0.3
+
+    \section2 Importing a glTF2 File
+
+    In order to load a glTF2 file, Kuesa provides the \l {GLTF2Importer}
+    element. If the \a sceneEntity property is set to a valid \l [QML]
+    {SceneEntity} instance, Qt 3D assets generated while parsing the file will
+    be automatically added to the various asset collections.
+    \snippet manyducks/main.cpp 0.4
+
+    \section2 Adding a Skybox
+
+    Kuesa provides \l {Skybox}. It expects a patch and an extension.
+    \snippet manyducks/main.cpp 0.5
+
+    \section2 Adding a PostProcessing Effect
+
+    We can use of of Kuesa's pre made post processing effects such as \l
+    {DepthOfFieldEffect}.
+
+    \snippet manyducks/main.cpp 0.6
+
+    \section1 Extracting Assets from Collections
+
+    Usually, you will want to interact with some elements of your scene.
+
+    You can use the \l {gltfEditor} to instrospect a glTF2 scene files and find
+    the names of the various assets it contains.
+
+    Upon successfull loading of our glTF2 file, we will be able to proceed with
+    asset retrieval.
+    \snippet manyducks/main.cpp 1
+
+    \section2 Retrieving Geometries and Material
+
+    Using the gltfEditor we know our scene files contains a Duck Entity name
+    "KuesaEntity_0"..
+
+    We can therefore retrieve it with:
+    \snippet manyducks/main.cpp 1.1
+
+    In turn, using Qt3D Component API, we can retrieve the Qt3DRender::QGeometry,
+    Qt3DRender::QMaterial components of the previously retrieved entity.
+    \snippet manyducks/main.cpp 1.2
+
+    Then, we can create several entities referencing the same material and geometry.
+    \snippet manyducks/main.cpp 1.3
+
+    \section1 Animating our Scene
+
+    Subclassing the timerEvent function on Qt3DExtras::Qt3DWindow allows us to
+    add some logic to be executed at every frame.
+    \snippet manyducks/main.cpp 2
+
+    Please note that glTF2 offers way to embedded animations in the glTF files
+    directly. This should be preferred unless you want to manually do animations
+    like illustrated above.
+*/

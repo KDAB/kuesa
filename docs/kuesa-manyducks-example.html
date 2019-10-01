@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- manyducks.qdoc -->
+  <title>Kuesa Many Ducks C++ Example | Kuesa 1.1</title>
+<link rel="stylesheet" type="text/css" href="./style/style.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="./images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html#">Kuesa 1.1</a></li>
+<li><a href="kuesa.html">Kuesa</a></li>
+<li>Kuesa Many Ducks C++ Example</li>
+<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#setting-up-a-scene">Setting up a scene</a></li>
+<li class="level2"><a href="#creating-a-window">Creating a window</a></li>
+<li class="level2"><a href="#creating-a-sceneentity">Creating a SceneEntity</a></li>
+<li class="level2"><a href="#creating-a-camera-and-its-controller">Creating a Camera and its controller</a></li>
+<li class="level2"><a href="#setting-up-the-framegraph">Setting up the FrameGraph</a></li>
+<li class="level2"><a href="#importing-a-gltf2-file">Importing a glTF2 File</a></li>
+<li class="level2"><a href="#adding-a-skybox">Adding a Skybox</a></li>
+<li class="level2"><a href="#adding-a-postprocessing-effect">Adding a PostProcessing Effect</a></li>
+<li class="level1"><a href="#extracting-assets-from-collections">Extracting Assets from Collections</a></li>
+<li class="level2"><a href="#retrieving-geometries-and-material">Retrieving Geometries and Material</a></li>
+<li class="level1"><a href="#animating-our-scene">Animating our Scene</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Kuesa Many Ducks C++ Example</h1>
+<span class="subtitle"></span>
+<!-- $$$manyducks-brief -->
+<p>Demonstrates the use of the Kuesa C++ API to import a glTF2 file and extract assets from it.</p>
+<!-- @@@manyducks -->
+<!-- $$$manyducks-description -->
+<div class="descr"> <a name="details"></a>
+<p class="centerAlign"><img src="images/manyducks-example.jpg" alt="" /></p><a name="setting-up-a-scene"></a>
+<h4 id="setting-up-a-scene">Setting up a scene</h4>
+<a name="creating-a-window"></a>
+<h5 id="creating-a-window">Creating a window</h5>
+<p>The easiest way to get started is to subclass the Qt3DExtras::Qt3DWindow</p>
+<pre class="cpp">
+
+  <span class="keyword">class</span> Window : <span class="keyword">public</span> <span class="type">Qt3DExtras</span><span class="operator">::</span><span class="type">Qt3DWindow</span>
+
+</pre>
+<a name="creating-a-sceneentity"></a>
+<h5 id="creating-a-sceneentity">Creating a SceneEntity</h5>
+<p>The <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> will hold the assets we will load later. It will also act as our root entity.</p>
+<pre class="cpp">
+
+  m_scene <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>SceneEntity();
+  m_scene<span class="operator">-</span><span class="operator">&gt;</span>addComponent(<span class="keyword">new</span> DefaultEnvMap(m_scene));
+
+</pre>
+<a name="creating-a-camera-and-its-controller"></a>
+<h5 id="creating-a-camera-and-its-controller">Creating a Camera and its controller</h5>
+<p>We can reuse the default camera provided by Qt3DExtras::Qt3DWindow</p>
+<pre class="cpp">
+
+  camera()<span class="operator">-</span><span class="operator">&gt;</span>setPosition(QVector3D(<span class="number">5</span><span class="operator">,</span> <span class="number">1.5</span><span class="operator">,</span> <span class="number">5</span>));
+  camera()<span class="operator">-</span><span class="operator">&gt;</span>setViewCenter(QVector3D(<span class="number">0</span><span class="operator">,</span> <span class="number">0.5</span><span class="operator">,</span> <span class="number">0</span>));
+  camera()<span class="operator">-</span><span class="operator">&gt;</span>setUpVector(QVector3D(<span class="number">0</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span>));
+  camera()<span class="operator">-</span><span class="operator">&gt;</span>setAspectRatio(<span class="number">16.f</span> <span class="operator">/</span> <span class="number">9.f</span>);
+
+  <span class="keyword">auto</span> camController <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DExtras</span><span class="operator">::</span><span class="type">QOrbitCameraController</span>(m_scene);
+  camController<span class="operator">-</span><span class="operator">&gt;</span>setCamera(camera());
+
+</pre>
+<a name="setting-up-the-framegraph"></a>
+<h5 id="setting-up-the-framegraph">Setting up the FrameGraph</h5>
+<p>We can use the pre made <a href="qml-forwardrenderer.html">ForwardRenderer</a> FrameGraph.</p>
+<pre class="cpp">
+
+  <span class="keyword">auto</span> fg <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>ForwardRenderer();
+  fg<span class="operator">-</span><span class="operator">&gt;</span>setCamera(camera());
+  fg<span class="operator">-</span><span class="operator">&gt;</span>setGamma(<span class="number">2.2f</span>);
+  fg<span class="operator">-</span><span class="operator">&gt;</span>setExposure(<span class="number">1.f</span>);
+  fg<span class="operator">-</span><span class="operator">&gt;</span>setClearColor(<span class="string">&quot;white&quot;</span>);
+  setActiveFrameGraph(fg);
+
+</pre>
+<a name="importing-a-gltf2-file"></a>
+<h5 id="importing-a-gltf2-file">Importing a glTF2 File</h5>
+<p>In order to load a glTF2 file, Kuesa provides the <a href="qml-gltf2importer.html">GLTF2Importer</a> element. If the <i>sceneEntity</i> property is set to a valid <a href="qml-sceneentity.html">SceneEntity</a> instance, Qt 3D assets generated while parsing the file will be automatically added to the various asset collections.</p>
+<pre class="cpp">
+
+  <span class="keyword">auto</span> gltfImporter <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>GLTF2Importer(m_scene);
+  gltfImporter<span class="operator">-</span><span class="operator">&gt;</span>setSceneEntity(m_scene);
+  gltfImporter<span class="operator">-</span><span class="operator">&gt;</span>setSource(<span class="type">QUrl</span>{ <span class="string">&quot;qrc:///assets/models/duck/Duck.glb&quot;</span> });
+
+  connect(gltfImporter<span class="operator">,</span> <span class="operator">&amp;</span>Kuesa<span class="operator">::</span>GLTF2Importer<span class="operator">::</span>statusChanged<span class="operator">,</span>
+          <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>Window<span class="operator">::</span>on_sceneLoaded);
+
+</pre>
+<a name="adding-a-skybox"></a>
+<h5 id="adding-a-skybox">Adding a Skybox</h5>
+<p>Kuesa provides <a href="qml-skybox.html">Skybox</a>. It expects a patch and an extension.</p>
+<pre class="cpp">
+
+  <span class="comment">// Skybox creation</span>
+  <span class="keyword">auto</span> skybox <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>Skybox(m_scene);
+  skybox<span class="operator">-</span><span class="operator">&gt;</span>setBaseName(envmap(<span class="string">&quot;radiance&quot;</span>));
+  skybox<span class="operator">-</span><span class="operator">&gt;</span>setExtension(<span class="string">&quot;.dds&quot;</span>);
+
+</pre>
+<a name="adding-a-postprocessing-effect"></a>
+<h5 id="adding-a-postprocessing-effect">Adding a PostProcessing Effect</h5>
+<p>We can use of of Kuesa's pre made post processing effects such as DepthOfFieldEffect.</p>
+<pre class="cpp">
+
+  <span class="comment">// Depth-of-field</span>
+  <span class="keyword">auto</span> dof <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>DepthOfFieldEffect;
+  dof<span class="operator">-</span><span class="operator">&gt;</span>setRadius(<span class="number">21.</span>);
+  dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusRange(<span class="number">3.1</span>);
+  dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusDistance(<span class="number">6.6</span>);
+  fg<span class="operator">-</span><span class="operator">&gt;</span>addPostProcessingEffect(dof);
+
+</pre>
+<a name="extracting-assets-from-collections"></a>
+<h4 id="extracting-assets-from-collections">Extracting Assets from Collections</h4>
+<p>Usually, you will want to interact with some elements of your scene.</p>
+<p>You can use the <a href="gltfeditor.html#">gltfEditor</a> to instrospect a glTF2 scene files and find the names of the various assets it contains.</p>
+<p>Upon successfull loading of our glTF2 file, we will be able to proceed with asset retrieval.</p>
+<pre class="cpp">
+
+  <span class="type">void</span> on_sceneLoaded(Kuesa<span class="operator">::</span>GLTF2Importer<span class="operator">::</span>Status status)
+  {
+      <span class="keyword">if</span> (status <span class="operator">=</span><span class="operator">=</span> Kuesa<span class="operator">::</span>GLTF2Importer<span class="operator">::</span>Ready) {
+
+</pre>
+<a name="retrieving-geometries-and-material"></a>
+<h5 id="retrieving-geometries-and-material">Retrieving Geometries and Material</h5>
+<p>Using the <a href="gltfeditor.html#">gltfEditor</a> we know our scene files contains a Duck Entity name &quot;KuesaEntity_0&quot;..</p>
+<p>We can therefore retrieve it with:</p>
+<pre class="cpp">
+
+  <span class="comment">// First let's take the components that we are going to use to create our clones</span>
+  <span class="comment">// Gotten from gammaray</span>
+  <span class="keyword">auto</span> parent <span class="operator">=</span> m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_0&quot;</span>);
+
+</pre>
+<p>In turn, using Qt3D Component API, we can retrieve the Qt3DRender::QGeometry, Qt3DRender::QMaterial components of the previously retrieved entity.</p>
+<pre class="cpp">
+
+  <span class="keyword">auto</span> orig_entity <span class="operator">=</span> m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_2&quot;</span>)<span class="operator">-</span><span class="operator">&gt;</span>childNodes()<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>;
+  <span class="keyword">auto</span> orig_geometry <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponent</span> <span class="operator">*</span><span class="operator">&gt;</span>(orig_entity<span class="operator">-</span><span class="operator">&gt;</span>childNodes()<span class="operator">[</span><span class="number">0</span><span class="operator">]</span>);
+  <span class="keyword">auto</span> orig_material <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponent</span> <span class="operator">*</span><span class="operator">&gt;</span>(orig_entity<span class="operator">-</span><span class="operator">&gt;</span>childNodes()<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>);
+
+</pre>
+<p>Then, we can create several entities referencing the same material and geometry.</p>
+<pre class="cpp">
+
+  <span class="comment">// Then create clones by giving them a custom transform, and the same components than before</span>
+  <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> Ducks; i<span class="operator">+</span><span class="operator">+</span>) {
+      <span class="keyword">auto</span> new_entity <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span>{ parent };
+      <span class="keyword">auto</span> new_transform <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QTransform</span>;
+      new_transform<span class="operator">-</span><span class="operator">&gt;</span>setScale(<span class="number">0.2f</span>);
+      new_transform<span class="operator">-</span><span class="operator">&gt;</span>setTranslation(QVector3D(rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span><span class="operator">,</span> rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span><span class="operator">,</span> rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span>));
+
+      new_transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationX(rand() <span class="operator">%</span> <span class="number">360</span>);
+      new_transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationY(rand() <span class="operator">%</span> <span class="number">360</span>);
+      new_transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationZ(rand() <span class="operator">%</span> <span class="number">360</span>);
+
+      new_entity<span class="operator">-</span><span class="operator">&gt;</span>addComponent(new_transform);
+      new_entity<span class="operator">-</span><span class="operator">&gt;</span>addComponent(orig_geometry);
+      new_entity<span class="operator">-</span><span class="operator">&gt;</span>addComponent(orig_material);
+
+      m_transforms<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">=</span> new_transform;
+  }
+
+</pre>
+<a name="animating-our-scene"></a>
+<h4 id="animating-our-scene">Animating our Scene</h4>
+<p>Subclassing the timerEvent function on Qt3DExtras::Qt3DWindow allows us to add some logic to be executed at every frame.</p>
+<pre class="cpp">
+
+  <span class="type">void</span> timerEvent(<span class="type">QTimerEvent</span> <span class="operator">*</span>event) override
+  {
+      Q_UNUSED(event)
+      <span class="keyword">for</span> (<span class="keyword">auto</span> transform : m_transforms) {
+          transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationX(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationX() <span class="operator">+</span> <span class="number">0.1f</span>);
+          transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationY(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationY() <span class="operator">+</span> <span class="number">0.1f</span>);
+          transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationZ(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationZ() <span class="operator">+</span> <span class="number">0.1f</span>);
+      }
+  }
+
+</pre>
+<p>Please note that glTF2 offers way to embedded animations in the glTF files directly. This should be preferred unless you want to manually do animations like illustrated above.</p>
+<p>Files:</p>
+<ul>
+<li><a href="kuesa-manyducks-main-cpp.html">manyducks/main.cpp</a></li>
+<li><a href="kuesa-manyducks-manyducks-pro.html">manyducks/manyducks.pro</a></li>
+</ul>
+</div>
+<!-- @@@manyducks -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>
