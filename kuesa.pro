@@ -37,5 +37,5 @@ OTHER_FILES += \
 
 load(qt_parts)
 
-PACKAGE_NAME=Kuesa
+PACKAGE_NAME=KuesaRuntime
 include(package.pri)
