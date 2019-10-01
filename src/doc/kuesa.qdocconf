@@ -7,8 +7,8 @@ description             = Kuesa Reference Documentation
 version                 = 1.1
 buildversion            = "Kuesa 1.1 Reference Documentation"
 includepaths            = -I. \
-                          -I $QT_INSTALL_HEADERS \
-                          -I $QT_INSTALL_HEADERS/Kuesa
+                          -I $$[QT_INSTALL_HEADERS] \
+                          -I $$[QT_INSTALL_HEADERS]/Kuesa
 
 outputformats = HTML
 indexes = $QT_INSTALL_DOCS/html/qt.index
