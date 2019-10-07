@@ -32,6 +32,7 @@
 #include <Qt3DRender/QAttribute>
 #include <Qt3DCore/QEntity>
 #include <Kuesa/MetallicRoughnessMaterial>
+#include <Kuesa/UnlitMaterial>
 #include <Kuesa/MetallicRoughnessProperties>
 #include <Kuesa/private/kuesa_utils_p.h>
 #include <Kuesa/private/meshparser_utils_p.h>
@@ -112,6 +113,7 @@ void MeshInspector::update()
         }
 
         bool hasSetBrdfLUT = false;
+        bool hasSetUseSkinning = false;
         for (Qt3DCore::QEntity *entity : entities) {
             Kuesa::MetallicRoughnessMaterial *mat = Kuesa::componentFromEntity<Kuesa::MetallicRoughnessMaterial>(entity);
             if (mat != nullptr) {
@@ -122,6 +124,16 @@ void MeshInspector::update()
                     if (srcEffect && highlightEffect)
                         highlightEffect->setBrdfLUT(srcEffect->brdfLUT());
                     hasSetBrdfLUT = true;
+                }
+                if (!hasSetUseSkinning) {
+                    auto *highlightEffect = qobject_cast<Kuesa::MetallicRoughnessEffect *>(m_highlightMaterial->effect());
+                    const Kuesa::MetallicRoughnessEffect *srcPbrEffect = qobject_cast<decltype(srcPbrEffect)>(mat->effect());
+                    const Kuesa::UnlitEffect *srcUnlitEffect = qobject_cast<decltype(srcUnlitEffect)>(mat->effect());
+                    if (srcPbrEffect != nullptr)
+                        highlightEffect->setUseSkinning(srcPbrEffect->useSkinning());
+                    else if (srcUnlitEffect != nullptr)
+                        highlightEffect->setUseSkinning(srcUnlitEffect->useSkinning());
+                    hasSetUseSkinning = true;
                 }
 
                 // Replace entity material with highlight material
