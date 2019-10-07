@@ -5,9 +5,10 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- manyducks.qdoc -->
   <title>Kuesa Many Ducks C++ Example | Kuesa 1.1</title>
-<link rel="stylesheet" type="text/css" href="./style/style.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="./images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html#">Kuesa 1.1</a></li>
+<link rel="stylesheet" type="text/css" href="style/style.css">
+<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
+</head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html#">Kuesa 1.1</a></li>
 <li><a href="kuesa.html">Kuesa</a></li>
 <li>Kuesa Many Ducks C++ Example</li>
 <li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
@@ -119,9 +120,9 @@
 
   <span class="comment">// Depth-of-field</span>
   <span class="keyword">auto</span> dof <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>DepthOfFieldEffect;
-  dof<span class="operator">-</span><span class="operator">&gt;</span>setRadius(<span class="number">21.</span>);
-  dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusRange(<span class="number">3.1</span>);
-  dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusDistance(<span class="number">6.6</span>);
+  dof<span class="operator">-</span><span class="operator">&gt;</span>setRadius(<span class="number">22.0f</span>);
+  dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusRange(<span class="number">150.0f</span>);
+  dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusDistance(<span class="number">20.0f</span>);
   fg<span class="operator">-</span><span class="operator">&gt;</span>addPostProcessingEffect(dof);
 
 </pre>
@@ -151,9 +152,9 @@
 <p>In turn, using Qt3D Component API, we can retrieve the Qt3DRender::QGeometry, Qt3DRender::QMaterial components of the previously retrieved entity.</p>
 <pre class="cpp">
 
-  <span class="keyword">auto</span> orig_entity <span class="operator">=</span> m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_2&quot;</span>)<span class="operator">-</span><span class="operator">&gt;</span>childNodes()<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>;
-  <span class="keyword">auto</span> orig_geometry <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponent</span> <span class="operator">*</span><span class="operator">&gt;</span>(orig_entity<span class="operator">-</span><span class="operator">&gt;</span>childNodes()<span class="operator">[</span><span class="number">0</span><span class="operator">]</span>);
-  <span class="keyword">auto</span> orig_material <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponent</span> <span class="operator">*</span><span class="operator">&gt;</span>(orig_entity<span class="operator">-</span><span class="operator">&gt;</span>childNodes()<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>);
+  <span class="keyword">auto</span> <span class="operator">*</span>orig_entity <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span><span class="operator">&gt;</span>(m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_2&quot;</span>)<span class="operator">-</span><span class="operator">&gt;</span>childNodes()<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>);
+  <span class="keyword">auto</span> <span class="operator">*</span>orig_geometry <span class="operator">=</span> componentFromEntity<span class="operator">&lt;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QGeometryRenderer</span><span class="operator">&gt;</span>(orig_entity);
+  <span class="keyword">auto</span> <span class="operator">*</span>orig_material <span class="operator">=</span> componentFromEntity<span class="operator">&lt;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QMaterial</span><span class="operator">&gt;</span>(orig_entity);
 
 </pre>
 <p>Then, we can create several entities referencing the same material and geometry.</p>
@@ -163,7 +164,7 @@
   <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> Ducks; i<span class="operator">+</span><span class="operator">+</span>) {
       <span class="keyword">auto</span> new_entity <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span>{ parent };
       <span class="keyword">auto</span> new_transform <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QTransform</span>;
-      new_transform<span class="operator">-</span><span class="operator">&gt;</span>setScale(<span class="number">0.2f</span>);
+      new_transform<span class="operator">-</span><span class="operator">&gt;</span>setScale(<span class="number">0.1f</span>);
       new_transform<span class="operator">-</span><span class="operator">&gt;</span>setTranslation(QVector3D(rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span><span class="operator">,</span> rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span><span class="operator">,</span> rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span>));
 
       new_transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationX(rand() <span class="operator">%</span> <span class="number">360</span>);
@@ -199,6 +200,13 @@
 <ul>
 <li><a href="kuesa-manyducks-main-cpp.html">manyducks/main.cpp</a></li>
 <li><a href="kuesa-manyducks-manyducks-pro.html">manyducks/manyducks.pro</a></li>
+</ul>
+<p>Images:</p>
+<ul>
+<li><a href="images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png">manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png</a></li>
+<li><a href="images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png">manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</a></li>
+<li><a href="images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png">manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</a></li>
+<li><a href="images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png">manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png</a></li>
 </ul>
 </div>
 <!-- @@@manyducks -->

@@ -795,14 +795,8 @@
             <file>gltfeditor.html</file>
             <file>gltfviewer.html</file>
             <file>images/alpha.png</file>
-            <file>images/arrow_bc.png</file>
-            <file>images/bgrContent.png</file>
             <file>images/bloom.png</file>
             <file>images/blur.png</file>
-            <file>images/btn_next.png</file>
-            <file>images/btn_prev.png</file>
-            <file>images/bullet_dn.png</file>
-            <file>images/bullet_sq.png</file>
             <file>images/car-scene-example.jpg</file>
             <file>images/dof_distance_5.png</file>
             <file>images/dof_distance_8.png</file>
@@ -812,11 +806,8 @@
             <file>images/dof_range_8.png</file>
             <file>images/gltfEditor.jpg</file>
             <file>images/gltfViewer.jpg</file>
-            <file>images/home.png</file>
-            <file>images/ico_note.png</file>
-            <file>images/ico_note_attention.png</file>
-            <file>images/ico_out.png</file>
-            <file>images/logo.png</file>
+            <file>images/kdabLogo.png</file>
+            <file>images/kdab_background.png</file>
             <file>images/manyducks-example.jpg</file>
             <file>images/music-box-example.jpg</file>
             <file>images/noalpha.png</file>
@@ -856,6 +847,10 @@
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</file>
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</file>
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png</file>
+            <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png</file>
+            <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</file>
+            <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</file>
+            <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png</file>
             <file>images/used-in-examples/music-box/android/res/drawable-hdpi/icon.png</file>
             <file>images/used-in-examples/music-box/android/res/drawable-ldpi/icon.png</file>
             <file>images/used-in-examples/music-box/android/res/drawable-mdpi/icon.png</file>
@@ -1051,8 +1046,8 @@
             <file>qml-unlitmaterial.html</file>
             <file>qml-unlitproperties-members.html</file>
             <file>qml-unlitproperties.html</file>
-            <file>style/offline-simple.css</file>
-            <file>style/offline.css</file>
+            <file>style/boostrap.min.css</file>
+            <file>style/style.css</file>
             <file>tools.html</file>
         </files>
     </filterSection>

@@ -38,6 +38,8 @@
 #include <Qt3DCore/QTransform>
 #include <Qt3DRender/QEnvironmentLight>
 #include <Qt3DRender/QCamera>
+#include <Qt3DRender/QMaterial>
+#include <Qt3DRender/QGeometryRenderer>
 #include <Qt3DExtras/Qt3DWindow>
 #include <Qt3DExtras/QOrbitCameraController>
 
@@ -52,6 +54,26 @@
 #endif
 
 namespace {
+
+template<typename ComponentType>
+inline ComponentType *componentFromEntity(Qt3DCore::QEntity *e)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+   const auto cmps = e->componentsOfType<ComponentType>();
+   return cmps.size() > 0 ? cmps.first() : nullptr;
+#else
+   ComponentType *typedComponent = nullptr;
+   const Qt3DCore::QComponentVector cmps = e->components();
+
+   for (Qt3DCore::QComponent *c : cmps) {
+       typedComponent = qobject_cast<ComponentType *>(c);
+       if (typedComponent != nullptr)
+           break;
+   }
+
+   return typedComponent;
+#endif
+}
 
 // Helper to load .qrb files, used for large environment maps
 bool initializeAssetResources(const QVector<QString> &fileNames)
@@ -118,8 +140,8 @@ class Window : public Qt3DExtras::Qt3DWindow
 //! [0]
 {
 public:
-    static constexpr int Ducks = 50;
-    static constexpr int r = 2000;
+    static constexpr int Ducks = 200;
+    static constexpr int r = 200;
 
     Window()
     {
@@ -169,9 +191,9 @@ public:
         //! [0.6]
         // Depth-of-field
         auto dof = new Kuesa::DepthOfFieldEffect;
-        dof->setRadius(21.);
-        dof->setFocusRange(3.1);
-        dof->setFocusDistance(6.6);
+        dof->setRadius(22.0f);
+        dof->setFocusRange(150.0f);
+        dof->setFocusDistance(20.0f);
         fg->addPostProcessingEffect(dof);
         //! [0.6]
 
@@ -193,9 +215,9 @@ private:
             //! [1.1]
 
             //! [1.2]
-            auto orig_entity = m_scene->entity("KuesaEntity_2")->childNodes()[1];
-            auto orig_geometry = qobject_cast<Qt3DCore::QComponent *>(orig_entity->childNodes()[0]);
-            auto orig_material = qobject_cast<Qt3DCore::QComponent *>(orig_entity->childNodes()[1]);
+            auto *orig_entity = qobject_cast<Qt3DCore::QEntity *>(m_scene->entity("KuesaEntity_2")->childNodes()[1]);
+            auto *orig_geometry = componentFromEntity<Qt3DRender::QGeometryRenderer>(orig_entity);
+            auto *orig_material = componentFromEntity<Qt3DRender::QMaterial>(orig_entity);
             //! [1.2]
 
             //! [1.3]
@@ -203,7 +225,7 @@ private:
             for (int i = 0; i < Ducks; i++) {
                 auto new_entity = new Qt3DCore::QEntity{ parent };
                 auto new_transform = new Qt3DCore::QTransform;
-                new_transform->setScale(0.2f);
+                new_transform->setScale(0.1f);
                 new_transform->setTranslation(QVector3D(rand() % r - r / 2, rand() % r - r / 2, rand() % r - r / 2));
 
                 new_transform->setRotationX(rand() % 360);
