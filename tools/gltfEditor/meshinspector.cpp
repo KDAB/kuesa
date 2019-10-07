@@ -111,17 +111,17 @@ void MeshInspector::update()
             m_highlightMaterial->setMetallicRoughnessProperties(materialProperties);
         }
 
-        bool setBrdfLUT = true;
+        bool hasSetBrdfLUT = false;
         for (Qt3DCore::QEntity *entity : entities) {
             Kuesa::MetallicRoughnessMaterial *mat = Kuesa::componentFromEntity<Kuesa::MetallicRoughnessMaterial>(entity);
             if (mat != nullptr) {
-                if (setBrdfLUT) {
+                if (!hasSetBrdfLUT) {
                     // copy the brdfLUT texture from the current material to the highlight material
                     const auto *srcEffect = qobject_cast<Kuesa::MetallicRoughnessEffect *>(mat->effect());
                     auto *highlightEffect = qobject_cast<Kuesa::MetallicRoughnessEffect *>(m_highlightMaterial->effect());
                     if (srcEffect && highlightEffect)
                         highlightEffect->setBrdfLUT(srcEffect->brdfLUT());
-                    setBrdfLUT = false;
+                    hasSetBrdfLUT = true;
                 }
 
                 // Replace entity material with highlight material
