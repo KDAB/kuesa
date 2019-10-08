@@ -29,7 +29,7 @@
 #ifndef KUESA_POINTLIGHT_H
 #define KUESA_POINTLIGHT_H
 
-#include <QAbstractLight>
+#include <Qt3DRender/QAbstractLight>
 #include <Kuesa/kuesa_global.h>
 
 QT_BEGIN_NAMESPACE

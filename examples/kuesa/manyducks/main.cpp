@@ -38,6 +38,8 @@
 #include <Qt3DCore/QTransform>
 #include <Qt3DRender/QEnvironmentLight>
 #include <Qt3DRender/QCamera>
+#include <Qt3DRender/QMaterial>
+#include <Qt3DRender/QGeometryRenderer>
 #include <Qt3DExtras/Qt3DWindow>
 #include <Qt3DExtras/QOrbitCameraController>
 
@@ -52,6 +54,26 @@
 #endif
 
 namespace {
+
+template<typename ComponentType>
+inline ComponentType *componentFromEntity(Qt3DCore::QEntity *e)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+   const auto cmps = e->componentsOfType<ComponentType>();
+   return cmps.size() > 0 ? cmps.first() : nullptr;
+#else
+   ComponentType *typedComponent = nullptr;
+   const Qt3DCore::QComponentVector cmps = e->components();
+
+   for (Qt3DCore::QComponent *c : cmps) {
+       typedComponent = qobject_cast<ComponentType *>(c);
+       if (typedComponent != nullptr)
+           break;
+   }
+
+   return typedComponent;
+#endif
+}
 
 // Helper to load .qrb files, used for large environment maps
 bool initializeAssetResources(const QVector<QString> &fileNames)
@@ -112,19 +134,25 @@ public:
     }
 };
 
+
+//! [0]
 class Window : public Qt3DExtras::Qt3DWindow
+//! [0]
 {
 public:
-    static constexpr int Ducks = 50;
-    static constexpr int r = 2000;
+    static constexpr int Ducks = 200;
+    static constexpr int r = 200;
 
     Window()
     {
         // Default set-up - here we create an empty entity,
         // which will contain one scene per glTF object.
+        //! [0.1]
         m_scene = new Kuesa::SceneEntity();
         m_scene->addComponent(new DefaultEnvMap(m_scene));
+        //! [0.1]
 
+        //! [0.2]
         camera()->setPosition(QVector3D(5, 1.5, 5));
         camera()->setViewCenter(QVector3D(0, 0.5, 0));
         camera()->setUpVector(QVector3D(0, 1, 0));
@@ -132,56 +160,72 @@ public:
 
         auto camController = new Qt3DExtras::QOrbitCameraController(m_scene);
         camController->setCamera(camera());
+        //! [0.2]
 
+        //! [0.3]
         auto fg = new Kuesa::ForwardRenderer();
         fg->setCamera(camera());
         fg->setGamma(2.2f);
         fg->setExposure(1.f);
         fg->setClearColor("white");
         setActiveFrameGraph(fg);
+        //! [0.3]
 
-        // Load a few glTF models
-        QVector<Kuesa::SceneEntity *> scenes;
-        QVector<Kuesa::GLTF2Importer *> importers;
+        // Load a glTF models
+        //! [0.4]
         auto gltfImporter = new Kuesa::GLTF2Importer(m_scene);
         gltfImporter->setSceneEntity(m_scene);
         gltfImporter->setSource(QUrl{ "qrc:///assets/models/duck/Duck.glb" });
 
         connect(gltfImporter, &Kuesa::GLTF2Importer::statusChanged,
                 this, &Window::on_sceneLoaded);
+        //! [0.4]
 
+        //! [0.5]
         // Skybox creation
         auto skybox = new Kuesa::Skybox(m_scene);
         skybox->setBaseName(envmap("radiance"));
         skybox->setExtension(".dds");
+        //! [0.5]
 
+        //! [0.6]
         // Depth-of-field
         auto dof = new Kuesa::DepthOfFieldEffect;
-        dof->setRadius(21.);
-        dof->setFocusRange(3.1);
-        dof->setFocusDistance(6.6);
+        dof->setRadius(22.0f);
+        dof->setFocusRange(150.0f);
+        dof->setFocusDistance(20.0f);
         fg->addPostProcessingEffect(dof);
+        //! [0.6]
 
+        //! [0.7]
         setRootEntity(m_scene);
+        //! [0.7]
     }
 
 private:
+    //! [1]
     void on_sceneLoaded(Kuesa::GLTF2Importer::Status status)
     {
         if (status == Kuesa::GLTF2Importer::Ready) {
+    //! [1]
+            //! [1.1]
             // First let's take the components that we are going to use to create our clones
             // Gotten from gammaray
             auto parent = m_scene->entity("KuesaEntity_0");
+            //! [1.1]
 
-            auto orig_entity = m_scene->entity("KuesaEntity_2")->childNodes()[1];
-            auto orig_geometry = dynamic_cast<Qt3DCore::QComponent *>(orig_entity->childNodes()[0]);
-            auto orig_material = dynamic_cast<Qt3DCore::QComponent *>(orig_entity->childNodes()[1]);
+            //! [1.2]
+            auto *orig_entity = qobject_cast<Qt3DCore::QEntity *>(m_scene->entity("KuesaEntity_2")->childNodes()[1]);
+            auto *orig_geometry = componentFromEntity<Qt3DRender::QGeometryRenderer>(orig_entity);
+            auto *orig_material = componentFromEntity<Qt3DRender::QMaterial>(orig_entity);
+            //! [1.2]
 
+            //! [1.3]
             // Then create clones by giving them a custom transform, and the same components than before
             for (int i = 0; i < Ducks; i++) {
                 auto new_entity = new Qt3DCore::QEntity{ parent };
                 auto new_transform = new Qt3DCore::QTransform;
-                new_transform->setScale(0.2f);
+                new_transform->setScale(0.1f);
                 new_transform->setTranslation(QVector3D(rand() % r - r / 2, rand() % r - r / 2, rand() % r - r / 2));
 
                 new_transform->setRotationX(rand() % 360);
@@ -194,6 +238,7 @@ private:
 
                 m_transforms[i] = new_transform;
             }
+            //! [1.3]
 
             // Animate everyone
             qreal ms = 1000. / this->screen()->refreshRate();
@@ -201,6 +246,7 @@ private:
         }
     }
 
+    //! [2]
     void timerEvent(QTimerEvent *event) override
     {
         Q_UNUSED(event)
@@ -210,6 +256,7 @@ private:
             transform->setRotationZ(transform->rotationZ() + 0.1f);
         }
     }
+    //! [2]
 
     Kuesa::SceneEntity *m_scene{};
     std::array<Qt3DCore::QTransform *, Ducks> m_transforms;
