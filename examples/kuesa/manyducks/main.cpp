@@ -140,8 +140,8 @@ class Window : public Qt3DExtras::Qt3DWindow
 //! [0]
 {
 public:
-    static constexpr int Ducks = 200;
-    static constexpr int r = 200;
+    static constexpr int Ducks = 2000;
+    static constexpr int r = 2000;
 
     Window()
     {
@@ -191,9 +191,9 @@ public:
         //! [0.6]
         // Depth-of-field
         auto dof = new Kuesa::DepthOfFieldEffect;
-        dof->setRadius(22.0f);
-        dof->setFocusRange(150.0f);
-        dof->setFocusDistance(20.0f);
+        dof->setRadius(35.0f);
+        dof->setFocusRange(2.0f);
+        dof->setFocusDistance(6.5f);
         fg->addPostProcessingEffect(dof);
         //! [0.6]
 
@@ -225,7 +225,7 @@ private:
             for (int i = 0; i < Ducks; i++) {
                 auto new_entity = new Qt3DCore::QEntity{ parent };
                 auto new_transform = new Qt3DCore::QTransform;
-                new_transform->setScale(0.1f);
+                new_transform->setScale(0.2f);
                 new_transform->setTranslation(QVector3D(rand() % r - r / 2, rand() % r - r / 2, rand() % r - r / 2));
 
                 new_transform->setRotationX(rand() % 360);
