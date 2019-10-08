@@ -251,14 +251,16 @@ void MainWindow::updateScene(Kuesa::SceneEntity *entity)
     m_sceneSelector->blockSignals(true);
     m_sceneSelector->clear();
     auto importer = m_entity->findChild<Kuesa::GLTF2Importer *>();
+    int selectorIndex = 0;
     if (importer) {
+        selectorIndex = importer->activeSceneIndex();
         const QStringList sceneNames = importer->availableScenes();
         int i = 0;
         for (const QString &sceneName : sceneNames)
             m_sceneSelector->addItem(QStringLiteral("%1 - (%2)").arg(sceneName).arg(i++));
     }
     m_sceneSelector->setEnabled(m_sceneSelector->count() > 1);
-    m_sceneSelector->setCurrentIndex(importer->activeSceneIndex());
+    m_sceneSelector->setCurrentIndex(selectorIndex);
     m_sceneSelector->blockSignals(false);
 }
 

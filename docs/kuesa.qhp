@@ -240,7 +240,6 @@
             <keyword name="Kuesa QML Types" id="Kuesa QML Types" ref="kuesa-qml.html"/>
             <keyword name="Kuesa Tools" id="Kuesa Tools" ref="tools.html"/>
             <keyword name="Kuesa post-processing effects" id="Kuesa post-processing effects" ref="kuesa-fx.html"/>
-            <keyword name="Kuesa::EffectProperties" id="Kuesa::EffectProperties" ref="kuesa.html#EffectProperty-enum"/>
             <keyword name="LayerCollection" id="Kuesa::LayerCollection" ref="kuesa-layercollection.html"/>
             <keyword name="LightCollection" id="Kuesa::LightCollection" ref="kuesa-lightcollection.html"/>
             <keyword name="MaterialCollection" id="Kuesa::MaterialCollection" ref="kuesa-materialcollection.html"/>
@@ -394,6 +393,7 @@
             <keyword name="doubleSided" id="MetallicRoughnessEffect::doubleSided" ref="qml-metallicroughnesseffect.html#doubleSided-prop"/>
             <keyword name="doubleSidedChanged" id="MetallicRoughnessEffect::doubleSidedChanged" ref="kuesa-metallicroughnesseffect.html#doubleSided-prop"/>
             <keyword name="doubleSidedChanged" id="UnlitEffect::doubleSidedChanged" ref="kuesa-unliteffect.html#doubleSided-prop"/>
+            <keyword name="effect" id="SceneEntity::effect" ref="kuesa-sceneentity.html#effect"/>
             <keyword name="emissiveFactor" id="MetallicRoughnessProperties::emissiveFactor" ref="kuesa-metallicroughnessproperties.html#emissiveFactor-prop"/>
             <keyword name="emissiveFactor" id="MetallicRoughnessProperties::emissiveFactor" ref="kuesa-metallicroughnessproperties.html#emissiveFactor-prop"/>
             <keyword name="emissiveFactor" id="MetallicRoughnessProperties::emissiveFactor" ref="qml-metallicroughnessproperties.html#emissiveFactor-prop"/>
@@ -795,14 +795,8 @@
             <file>gltfeditor.html</file>
             <file>gltfviewer.html</file>
             <file>images/alpha.png</file>
-            <file>images/arrow_bc.png</file>
-            <file>images/bgrContent.png</file>
             <file>images/bloom.png</file>
             <file>images/blur.png</file>
-            <file>images/btn_next.png</file>
-            <file>images/btn_prev.png</file>
-            <file>images/bullet_dn.png</file>
-            <file>images/bullet_sq.png</file>
             <file>images/car-scene-example.jpg</file>
             <file>images/dof_distance_5.png</file>
             <file>images/dof_distance_8.png</file>
@@ -812,11 +806,9 @@
             <file>images/dof_range_8.png</file>
             <file>images/gltfEditor.jpg</file>
             <file>images/gltfViewer.jpg</file>
-            <file>images/home.png</file>
-            <file>images/ico_note.png</file>
-            <file>images/ico_note_attention.png</file>
-            <file>images/ico_out.png</file>
-            <file>images/logo.png</file>
+            <file>images/kdabLogo.png</file>
+            <file>images/kdab_background.png</file>
+            <file>images/manyducks-example.jpg</file>
             <file>images/music-box-example.jpg</file>
             <file>images/noalpha.png</file>
             <file>images/pipeline-diagram.png</file>
@@ -855,6 +847,10 @@
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</file>
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</file>
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png</file>
+            <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png</file>
+            <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</file>
+            <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</file>
+            <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png</file>
             <file>images/used-in-examples/music-box/android/res/drawable-hdpi/icon.png</file>
             <file>images/used-in-examples/music-box/android/res/drawable-ldpi/icon.png</file>
             <file>images/used-in-examples/music-box/android/res/drawable-mdpi/icon.png</file>
@@ -943,6 +939,9 @@
             <file>kuesa-layercollection.html</file>
             <file>kuesa-lightcollection-members.html</file>
             <file>kuesa-lightcollection.html</file>
+            <file>kuesa-manyducks-example.html</file>
+            <file>kuesa-manyducks-main-cpp.html</file>
+            <file>kuesa-manyducks-manyducks-pro.html</file>
             <file>kuesa-materialcollection-members.html</file>
             <file>kuesa-materialcollection.html</file>
             <file>kuesa-meshcollection-members.html</file>
@@ -1047,8 +1046,8 @@
             <file>qml-unlitmaterial.html</file>
             <file>qml-unlitproperties-members.html</file>
             <file>qml-unlitproperties.html</file>
-            <file>style/offline-simple.css</file>
-            <file>style/offline.css</file>
+            <file>style/boostrap.min.css</file>
+            <file>style/style.css</file>
             <file>tools.html</file>
         </files>
     </filterSection>

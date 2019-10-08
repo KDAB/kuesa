@@ -7,6 +7,11 @@
             <fileToOpen>kuesa/car-scene/main.cpp</fileToOpen>
             <fileToOpen mainFile="true">kuesa/car-scene/qml/main.qml</fileToOpen>
         </example>
+        <example name="Kuesa Many Ducks C++ Example" docUrl="qthelp://com.kdab.kuesa.1.1/kuesa/kuesa-manyducks-example.html" projectPath="kuesa/manyducks/manyducks.pro" imageUrl="qthelp://com.kdab.kuesa.1.1/kuesa/images/manyducks-example.jpg">
+            <description><![CDATA[Demonstrates the use of the Kuesa C++ API to import a glTF2 file and extract assets from it.]]></description>
+            <tags>c++,ducks,kuesa,many</tags>
+            <fileToOpen mainFile="true">kuesa/manyducks/main.cpp</fileToOpen>
+        </example>
         <example name="Kuesa Music Box QML Example" docUrl="qthelp://com.kdab.kuesa.1.1/kuesa/kuesa-music-box-example.html" projectPath="kuesa/music-box/music-box.pro" imageUrl="qthelp://com.kdab.kuesa.1.1/kuesa/images/music-box-example.jpg">
             <description><![CDATA[Demonstrates the use of the Kuesa API to import a glTF2 file and play animations.]]></description>
             <tags>box,kuesa,music,qml</tags>
