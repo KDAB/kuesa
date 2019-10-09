@@ -8,9 +8,9 @@
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html#">Kuesa 1.1</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
 <li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-cpp.html#">C++ Classes</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
 <li>ForwardRenderer</li>
 <li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
         </tr></table>
@@ -26,7 +26,7 @@
 <tr><td class="topAlign"><ul>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#backToFrontSorting-prop">backToFrontSortingChanged</a></b></span>(bool )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#camera-prop">cameraChanged</a></b></span>(Qt3DCore::QEntity *)</li>
-<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffersChanged</a></b></span>(Qt3DRender::QClearBuffers::BufferType )</li>
+<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffersChanged</a></b></span>(int )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#clearColor-prop">clearColorChanged</a></b></span>(const QColor &amp;)</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#exposure-prop">exposureChanged</a></b></span>(float )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#frustumCulling-prop">frustumCullingChanged</a></b></span>(bool )</li>
@@ -34,23 +34,23 @@
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#renderSurface-prop">renderSurfaceChanged</a></b></span>(QObject *)</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setBackToFrontSorting">setBackToFrontSorting</a></b></span>(bool )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setCamera">setCamera</a></b></span>(Qt3DCore::QEntity *)</li>
-<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a></b></span>(Qt3DRender::QClearBuffers::BufferType )</li>
+<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a></b></span>(int )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setClearColor">setClearColor</a></b></span>(const QColor &amp;)</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setExposure">setExposure</a></b></span>(float )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setFrustumCulling">setFrustumCulling</a></b></span>(bool )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setGamma">setGamma</a></b></span>(float )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setRenderSurface">setRenderSurface</a></b></span>(QObject *)</li>
-<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a></b></span>(ToneMappingAndGammaCorrectionEffect::ToneMapping )</li>
+<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a></b></span>(int )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setViewportRect">setViewportRect</a></b></span>(const QRectF &amp;)</li>
 </ul></td><td class="topAlign"><ul>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#setZFilling">setZFilling</a></b></span>(bool )</li>
-<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithmChanged</a></b></span>(ToneMappingAndGammaCorrectionEffect::ToneMapping )</li>
+<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithmChanged</a></b></span>(int )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#viewportRect-prop">viewportRectChanged</a></b></span>(const QRectF &amp;)</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#zFilling-prop">zFillingChanged</a></b></span>(bool )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#addPostProcessingEffect">addPostProcessingEffect</a></b></span>(Kuesa::AbstractPostProcessingEffect *)</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#backToFrontSorting">backToFrontSorting</a></b></span>() const : bool</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#camera">camera</a></b></span>() const : Qt3DCore::QEntity *</li>
-<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a></b></span>() const : Qt3DRender::QClearBuffers::BufferType</li>
+<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a></b></span>() const : int</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#clearColor">clearColor</a></b></span>() const : QColor</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#exposure">exposure</a></b></span>() const : float</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#frustumCulling">frustumCulling</a></b></span>() const : bool</li>
@@ -58,7 +58,7 @@
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#postProcessingEffects">postProcessingEffects</a></b></span>() const : QVector&lt;Kuesa::AbstractPostProcessingEffect *&gt;</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#removePostProcessingEffect">removePostProcessingEffect</a></b></span>(Kuesa::AbstractPostProcessingEffect *)</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#renderSurface">renderSurface</a></b></span>() const : QObject *</li>
-<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a></b></span>() const : ToneMappingAndGammaCorrectionEffect::ToneMapping</li>
+<li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a></b></span>() const : int</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#viewportRect">viewportRect</a></b></span>() const : QRectF</li>
 <li class="fn"><span class="name"><b><a href="kuesa-forwardrenderer.html#zFilling">zFilling</a></b></span>() const : bool</li>
 </ul>

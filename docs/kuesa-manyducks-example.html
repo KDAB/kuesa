@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html#">Kuesa 1.1</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
 <li><a href="kuesa.html">Kuesa</a></li>
 <li>Kuesa Many Ducks C++ Example</li>
 <li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
@@ -120,16 +120,16 @@
 
   <span class="comment">// Depth-of-field</span>
   <span class="keyword">auto</span> dof <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>DepthOfFieldEffect;
-  dof<span class="operator">-</span><span class="operator">&gt;</span>setRadius(<span class="number">22.0f</span>);
-  dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusRange(<span class="number">150.0f</span>);
-  dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusDistance(<span class="number">20.0f</span>);
+  dof<span class="operator">-</span><span class="operator">&gt;</span>setRadius(<span class="number">35.0f</span>);
+  dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusRange(<span class="number">2.0f</span>);
+  dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusDistance(<span class="number">6.5f</span>);
   fg<span class="operator">-</span><span class="operator">&gt;</span>addPostProcessingEffect(dof);
 
 </pre>
 <a name="extracting-assets-from-collections"></a>
 <h4 id="extracting-assets-from-collections">Extracting Assets from Collections</h4>
 <p>Usually, you will want to interact with some elements of your scene.</p>
-<p>You can use the <a href="gltfeditor.html#">gltfEditor</a> to instrospect a glTF2 scene files and find the names of the various assets it contains.</p>
+<p>You can use the <a href="gltfeditor.html">gltfEditor</a> to instrospect a glTF2 scene files and find the names of the various assets it contains.</p>
 <p>Upon successfull loading of our glTF2 file, we will be able to proceed with asset retrieval.</p>
 <pre class="cpp">
 
@@ -140,7 +140,7 @@
 </pre>
 <a name="retrieving-geometries-and-material"></a>
 <h5 id="retrieving-geometries-and-material">Retrieving Geometries and Material</h5>
-<p>Using the <a href="gltfeditor.html#">gltfEditor</a> we know our scene files contains a Duck Entity name &quot;KuesaEntity_0&quot;..</p>
+<p>Using the <a href="gltfeditor.html">gltfEditor</a> we know our scene files contains a Duck Entity name &quot;KuesaEntity_0&quot;..</p>
 <p>We can therefore retrieve it with:</p>
 <pre class="cpp">
 
@@ -164,7 +164,7 @@
   <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> Ducks; i<span class="operator">+</span><span class="operator">+</span>) {
       <span class="keyword">auto</span> new_entity <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span>{ parent };
       <span class="keyword">auto</span> new_transform <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QTransform</span>;
-      new_transform<span class="operator">-</span><span class="operator">&gt;</span>setScale(<span class="number">0.1f</span>);
+      new_transform<span class="operator">-</span><span class="operator">&gt;</span>setScale(<span class="number">0.2f</span>);
       new_transform<span class="operator">-</span><span class="operator">&gt;</span>setTranslation(QVector3D(rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span><span class="operator">,</span> rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span><span class="operator">,</span> rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span>));
 
       new_transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationX(rand() <span class="operator">%</span> <span class="number">360</span>);

@@ -8,9 +8,9 @@
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html#">Kuesa 1.1</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
 <li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-cpp.html#">C++ Classes</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
 <li>AbstractPostProcessingEffect</li>
 <li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
         </tr></table>
@@ -43,11 +43,8 @@
 <a name="public-functions"></a>
 <h2 id="public-functions">Public Functions</h2>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> virtual Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#frameGraphSubTree">frameGraphSubTree</a></b>() const = 0</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> virtual QVector&lt;Qt3DRender::QLayer *&gt; </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#layers">layers</a></b>() const = 0</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#setCamera">setCamera</a></b>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#setDepthTexture">setDepthTexture</a></b>(Qt3DRender::QAbstractTexture *<i>texture</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#setInputTexture">setInputTexture</a></b>(Qt3DRender::QAbstractTexture *<i>texture</i>) = 0</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#setSceneSize">setSceneSize</a></b>(const QSize &amp;<i>size</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Kuesa::AbstractPostProcessingEffect::Type </td><td class="memItemRight bottomAlign"><b><a href="kuesa-abstractpostprocessingeffect.html#type">type</a></b>() const</td></tr>
 </table></div>
@@ -59,15 +56,6 @@
 <!-- @@@AbstractPostProcessingEffect -->
 <div class="func">
 <h2>Member Function Documentation</h2>
-<!-- $$$frameGraphSubTree[overload1]$$$frameGraphSubTree -->
-<h3 class="fn" id="frameGraphSubTree"><a name="frameGraphSubTree"></a><code>[pure virtual] </code><span class="type">Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr</span> AbstractPostProcessingEffect::<span class="name">frameGraphSubTree</span>() const</h3>
-<p>Returns a FrameGraph subtree corresponding to the effect's implementation.</p>
-<p><b>Note: </b>The lifetime of the returned subtree is assumed to be managed by the shared pointer. Any caller reparenting the subtree to add to a QFrameGraph will need to unparent it to avoid it being deleted twice.</p><!-- @@@frameGraphSubTree -->
-<!-- $$$layers[overload1]$$$layers -->
-<h3 class="fn" id="layers"><a name="layers"></a><code>[pure virtual] </code><span class="type">QVector</span>&lt;<span class="type">Qt3DRender::QLayer</span> *&gt; AbstractPostProcessingEffect::<span class="name">layers</span>() const</h3>
-<p>Return the layers provided by this effect. This will generally be the layer of a <a href="kuesa-fullscreenquad.html">FullScreenQuad</a> on which the effect is being rendered.</p>
-<p>The behaviour is undefined if this function returns an empty container: there must always be at least one layer.</p>
-<!-- @@@layers -->
 <!-- $$$setCamera[overload1]$$$setCameraQt3DCore::QEntity* -->
 <h3 class="fn" id="setCamera"><a name="setCamera"></a><code>[virtual] </code><span class="type">void</span> AbstractPostProcessingEffect::<span class="name">setCamera</span>(<span class="type">Qt3DCore::QEntity</span> *<i>camera</i>)</h3>
 <p>Sets the camera entity to <i>camera</i> for this effect. This is set automatically by the <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> when the effect is added.</p>
@@ -76,10 +64,6 @@
 <h3 class="fn" id="setDepthTexture"><a name="setDepthTexture"></a><code>[virtual] </code><span class="type">void</span> AbstractPostProcessingEffect::<span class="name">setDepthTexture</span>(<span class="type">Qt3DRender::QAbstractTexture</span> *<i>texture</i>)</h3>
 <p>Sets the depth texture to <i>texture</i> for this effect. The texture contain the depth of the rendered scene that the effect will be applied to. This is set automatically by the <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> when the effect is added.</p>
 <!-- @@@setDepthTexture -->
-<!-- $$$setInputTexture[overload1]$$$setInputTextureQt3DRender::QAbstractTexture* -->
-<h3 class="fn" id="setInputTexture"><a name="setInputTexture"></a><code>[pure virtual] </code><span class="type">void</span> AbstractPostProcessingEffect::<span class="name">setInputTexture</span>(<span class="type">Qt3DRender::QAbstractTexture</span> *<i>texture</i>)</h3>
-<p>Sets the input texture to <i>texture</i> for this effect. The texture contain the rendered scene that the effect will be applied to. This is set automatically by the <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> when the effect is added.</p>
-<!-- @@@setInputTexture -->
 <!-- $$$setSceneSize[overload1]$$$setSceneSizeconstQSize& -->
 <h3 class="fn" id="setSceneSize"><a name="setSceneSize"></a><code>[virtual] </code><span class="type">void</span> AbstractPostProcessingEffect::<span class="name">setSceneSize</span>(const <span class="type">QSize</span> &amp;<i>size</i>)</h3>
 <p>Sets the <i>size</i> of the rendered scene (in pixels) that the effect will be applied to. This is necessary for effects to render correctly.</p>

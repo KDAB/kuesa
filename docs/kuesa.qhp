@@ -52,9 +52,6 @@
                     <section ref="kuesa-gltf2import-gltf2options.html" title="GLTF2Import::GLTF2Options Class Reference">
                         <section ref="kuesa-gltf2import-gltf2options-members.html" title="List of all members"/>
                     </section>
-                    <section ref="kuesa-gltf2importer.html" title="Kuesa::GLTF2Importer Class Reference">
-                        <section ref="kuesa-gltf2importer-members.html" title="List of all members"/>
-                    </section>
                     <section ref="kuesa-gltf2material.html" title="Kuesa::GLTF2Material Class Reference">
                         <section ref="kuesa-gltf2material-members.html" title="List of all members"/>
                     </section>
@@ -211,22 +208,15 @@
             <keyword name="DepthOfFieldEffect" id="Kuesa::DepthOfFieldEffect" ref="kuesa-depthoffieldeffect.html"/>
             <keyword name="DirectionalLight" id="Kuesa::DirectionalLight" ref="kuesa-directionallight.html"/>
             <keyword name="DirectionalLight" id="QML.DirectionalLight" ref="qml-directionallight.html"/>
+            <keyword name="Draco 3D Data Compression" id="Draco 3D Data Compression" ref="kuesa-attribution-draco.html"/>
             <keyword name="EffectCollection" id="Kuesa::EffectCollection" ref="kuesa-effectcollection.html"/>
             <keyword name="EntityCollection" id="Kuesa::EntityCollection" ref="kuesa-entitycollection.html"/>
             <keyword name="ForwardRenderer" id="Kuesa::ForwardRenderer" ref="kuesa-forwardrenderer.html"/>
             <keyword name="ForwardRenderer" id="QML.ForwardRenderer" ref="qml-forwardrenderer.html"/>
+            <keyword name="Freeverb" id="Freeverb" ref="kuesa-attribution-freeverb.html"/>
             <keyword name="FullScreenQuad" id="Kuesa::FullScreenQuad" ref="kuesa-fullscreenquad.html"/>
             <keyword name="GLTF2Import" id="Kuesa::GLTF2Import" ref="kuesa-gltf2import.html"/>
-            <keyword name="GLTF2Importer" id="Kuesa::GLTF2Importer" ref="kuesa-gltf2importer.html"/>
             <keyword name="GLTF2Importer" id="QML.GLTF2Importer" ref="qml-gltf2importer.html"/>
-            <keyword name="GLTF2Importer::ActiveScene" id="GLTF2Importer::ActiveScene" ref="kuesa-gltf2importer.html#ActiveScene-enum"/>
-            <keyword name="GLTF2Importer::DefaultScene" id="GLTF2Importer::DefaultScene" ref="kuesa-gltf2importer.html#ActiveScene-enum"/>
-            <keyword name="GLTF2Importer::EmptyScene" id="GLTF2Importer::EmptyScene" ref="kuesa-gltf2importer.html#ActiveScene-enum"/>
-            <keyword name="GLTF2Importer::Error" id="GLTF2Importer::Error" ref="kuesa-gltf2importer.html#Status-enum"/>
-            <keyword name="GLTF2Importer::Loading" id="GLTF2Importer::Loading" ref="kuesa-gltf2importer.html#Status-enum"/>
-            <keyword name="GLTF2Importer::None" id="GLTF2Importer::None" ref="kuesa-gltf2importer.html#Status-enum"/>
-            <keyword name="GLTF2Importer::Ready" id="GLTF2Importer::Ready" ref="kuesa-gltf2importer.html#Status-enum"/>
-            <keyword name="GLTF2Importer::Status" id="GLTF2Importer::Status" ref="kuesa-gltf2importer.html#Status-enum"/>
             <keyword name="GLTF2Material" id="Kuesa::GLTF2Material" ref="kuesa-gltf2material.html"/>
             <keyword name="GLTF2Material" id="QML.GLTF2Material" ref="qml-gltf2material.html"/>
             <keyword name="GLTF2MaterialProperties" id="Kuesa::GLTF2MaterialProperties" ref="kuesa-gltf2materialproperties.html"/>
@@ -254,6 +244,7 @@
             <keyword name="MorphController" id="QML.MorphController" ref="qml-morphcontroller.html"/>
             <keyword name="OpacityMask" id="Kuesa::OpacityMask" ref="kuesa-opacitymask.html"/>
             <keyword name="OpacityMask" id="QML.OpacityMask" ref="qml-opacitymask.html"/>
+            <keyword name="OpenGL Image (gli)" id="OpenGL Image (gli)" ref="kuesa-attribution-gli.html"/>
             <keyword name="PointLight" id="Kuesa::PointLight" ref="kuesa-pointlight.html"/>
             <keyword name="PointLight" id="QML.PointLight" ref="qml-pointlight.html"/>
             <keyword name="SceneEntity" id="Kuesa::SceneEntity" ref="kuesa-sceneentity.html"/>
@@ -263,6 +254,7 @@
             <keyword name="Skybox" id="QML.Skybox" ref="qml-skybox.html"/>
             <keyword name="SpotLight" id="Kuesa::SpotLight" ref="kuesa-spotlight.html"/>
             <keyword name="SpotLight" id="QML.SpotLight" ref="qml-spotlight.html"/>
+            <keyword name="Tangent Space Library" id="Tangent Space Library" ref="kuesa-attribution-mikktspace.html"/>
             <keyword name="TextureCollection" id="Kuesa::TextureCollection" ref="kuesa-texturecollection.html"/>
             <keyword name="TextureImageCollection" id="Kuesa::TextureImageCollection" ref="kuesa-textureimagecollection.html"/>
             <keyword name="ThresholdEffect" id="Kuesa::ThresholdEffect" ref="kuesa-thresholdeffect.html"/>
@@ -279,10 +271,7 @@
             <keyword name="UnlitMaterial" id="QML.UnlitMaterial" ref="qml-unlitmaterial.html"/>
             <keyword name="UnlitProperties" id="Kuesa::UnlitProperties" ref="kuesa-unlitproperties.html"/>
             <keyword name="UnlitProperties" id="QML.UnlitProperties" ref="qml-unlitproperties.html"/>
-            <keyword name="activeSceneIndex" id="GLTF2Importer::activeSceneIndex" ref="kuesa-gltf2importer.html#activeSceneIndex-prop"/>
-            <keyword name="activeSceneIndex" id="GLTF2Importer::activeSceneIndex" ref="kuesa-gltf2importer.html#activeSceneIndex-prop"/>
             <keyword name="activeSceneIndex" id="GLTF2Importer::activeSceneIndex" ref="qml-gltf2importer.html#activeSceneIndex-prop"/>
-            <keyword name="activeSceneIndexChanged" id="GLTF2Importer::activeSceneIndexChanged" ref="kuesa-gltf2importer.html#activeSceneIndex-prop"/>
             <keyword name="add" id="AnimationClipCollection::add" ref="kuesa-animationclipcollection.html#add"/>
             <keyword name="add" id="MeshCollection::add" ref="kuesa-meshcollection.html#add"/>
             <keyword name="add" id="SkeletonCollection::add" ref="kuesa-skeletoncollection.html#add"/>
@@ -314,14 +303,8 @@
             <keyword name="aoUsesTexCoord1Changed" id="MetallicRoughnessProperties::aoUsesTexCoord1Changed" ref="kuesa-metallicroughnessproperties.html#aoUsesTexCoord1-prop"/>
             <keyword name="armature" id="SceneEntity::armature" ref="kuesa-sceneentity.html#armature"/>
             <keyword name="armatures" id="SceneEntity::armatures" ref="kuesa-sceneentity.html#armatures"/>
-            <keyword name="assignNames" id="GLTF2Importer::assignNames" ref="kuesa-gltf2importer.html#assignNames"/>
-            <keyword name="assignNames" id="GLTF2Importer::assignNames" ref="kuesa-gltf2importer.html#assignNames-prop"/>
             <keyword name="assignNames" id="GLTF2Importer::assignNames" ref="qml-gltf2importer.html#assignNames-prop"/>
-            <keyword name="assignNamesChanged" id="GLTF2Importer::assignNamesChanged" ref="kuesa-gltf2importer.html#assignNames-prop"/>
-            <keyword name="availableScenes" id="GLTF2Importer::availableScenes" ref="kuesa-gltf2importer.html#availableScenes-prop"/>
-            <keyword name="availableScenes" id="GLTF2Importer::availableScenes" ref="kuesa-gltf2importer.html#availableScenes-prop"/>
             <keyword name="availableScenes" id="GLTF2Importer::availableScenes" ref="qml-gltf2importer.html#availableScenes-prop"/>
-            <keyword name="availableScenesChanged" id="GLTF2Importer::availableScenesChanged" ref="kuesa-gltf2importer.html#availableScenes-prop"/>
             <keyword name="backToFrontSorting" id="ForwardRenderer::backToFrontSorting" ref="kuesa-forwardrenderer.html#backToFrontSorting"/>
             <keyword name="backToFrontSorting" id="ForwardRenderer::backToFrontSorting" ref="kuesa-forwardrenderer.html#backToFrontSorting-prop"/>
             <keyword name="backToFrontSorting" id="ForwardRenderer::backToFrontSorting" ref="qml-forwardrenderer.html#backToFrontSorting-prop"/>
@@ -381,6 +364,7 @@
             <keyword name="count" id="MorphController::count" ref="kuesa-morphcontroller.html#count-prop"/>
             <keyword name="count" id="MorphController::count" ref="qml-morphcontroller.html#count-prop"/>
             <keyword name="countChanged" id="MorphController::countChanged" ref="kuesa-morphcontroller.html#count-prop"/>
+            <keyword name="dds-loader-python" id="dds-loader-python" ref="kuesa-attribution-dds-loader-python.html"/>
             <keyword name="direction" id="DirectionalLight::direction" ref="kuesa-directionallight.html#direction-prop"/>
             <keyword name="direction" id="DirectionalLight::direction" ref="kuesa-directionallight.html#direction-prop"/>
             <keyword name="direction" id="DirectionalLight::direction" ref="qml-directionallight.html#direction-prop"/>
@@ -393,6 +377,7 @@
             <keyword name="doubleSided" id="MetallicRoughnessEffect::doubleSided" ref="qml-metallicroughnesseffect.html#doubleSided-prop"/>
             <keyword name="doubleSidedChanged" id="MetallicRoughnessEffect::doubleSidedChanged" ref="kuesa-metallicroughnesseffect.html#doubleSided-prop"/>
             <keyword name="doubleSidedChanged" id="UnlitEffect::doubleSidedChanged" ref="kuesa-unliteffect.html#doubleSided-prop"/>
+            <keyword name="dr_wav" id="dr_wav" ref="kuesa-attribution-dr-wav.html"/>
             <keyword name="effect" id="SceneEntity::effect" ref="kuesa-sceneentity.html#effect"/>
             <keyword name="emissiveFactor" id="MetallicRoughnessProperties::emissiveFactor" ref="kuesa-metallicroughnessproperties.html#emissiveFactor-prop"/>
             <keyword name="emissiveFactor" id="MetallicRoughnessProperties::emissiveFactor" ref="kuesa-metallicroughnessproperties.html#emissiveFactor-prop"/>
@@ -428,7 +413,6 @@
             <keyword name="focusRange" id="DepthOfFieldEffect::focusRange" ref="kuesa-depthoffieldeffect.html#focusRange-prop"/>
             <keyword name="focusRange" id="DepthOfFieldEffect::focusRange" ref="kuesa-depthoffieldeffect.html#focusRange-prop"/>
             <keyword name="focusRangeChanged" id="DepthOfFieldEffect::focusRangeChanged" ref="kuesa-depthoffieldeffect.html#focusRange-prop"/>
-            <keyword name="frameGraphSubTree" id="AbstractPostProcessingEffect::frameGraphSubTree" ref="kuesa-abstractpostprocessingeffect.html#frameGraphSubTree"/>
             <keyword name="frameGraphSubTree" id="BloomEffect::frameGraphSubTree" ref="kuesa-bloomeffect.html#frameGraphSubTree"/>
             <keyword name="frameGraphSubTree" id="GaussianBlurEffect::frameGraphSubTree" ref="kuesa-gaussianblureffect.html#frameGraphSubTree"/>
             <keyword name="frameGraphSubTree" id="ThresholdEffect::frameGraphSubTree" ref="kuesa-thresholdeffect.html#frameGraphSubTree"/>
@@ -476,7 +460,6 @@
             <keyword name="isUsingColorAttribute" id="UnlitEffect::isUsingColorAttribute" ref="kuesa-unliteffect.html#usingColorAttribute-prop"/>
             <keyword name="layer" id="FullScreenQuad::layer" ref="kuesa-fullscreenquad.html#layer"/>
             <keyword name="layer" id="SceneEntity::layer" ref="kuesa-sceneentity.html#layer"/>
-            <keyword name="layers" id="AbstractPostProcessingEffect::layers" ref="kuesa-abstractpostprocessingeffect.html#layers"/>
             <keyword name="layers" id="SceneEntity::layers" ref="kuesa-sceneentity.html#layers"/>
             <keyword name="lights" id="SceneEntity::lights" ref="kuesa-sceneentity.html#lights-prop"/>
             <keyword name="loadingDone" id="SceneEntity::loadingDone" ref="kuesa-sceneentity.html#loadingDone"/>
@@ -550,8 +533,6 @@
             <keyword name="opaque" id="MetallicRoughnessEffect::opaque" ref="qml-metallicroughnesseffect.html#opaque-prop"/>
             <keyword name="opaqueChanged" id="MetallicRoughnessEffect::opaqueChanged" ref="kuesa-metallicroughnesseffect.html#opaque-prop"/>
             <keyword name="opaqueChanged" id="UnlitEffect::opaqueChanged" ref="kuesa-unliteffect.html#opaque-prop"/>
-            <keyword name="options" id="GLTF2Importer::options" ref="kuesa-gltf2importer.html#options-prop"/>
-            <keyword name="options" id="GLTF2Importer::options" ref="kuesa-gltf2importer.html#options-prop"/>
             <keyword name="options" id="GLTF2Importer::options" ref="qml-gltf2importer.html#options-prop"/>
             <keyword name="outerConeAngle" id="SpotLight::outerConeAngle" ref="kuesa-spotlight.html#outerConeAngle-prop"/>
             <keyword name="outerConeAngle" id="SpotLight::outerConeAngle" ref="kuesa-spotlight.html#outerConeAngle-prop"/>
@@ -571,6 +552,7 @@
             <keyword name="range" id="SpotLight::range" ref="kuesa-spotlight.html#range-prop"/>
             <keyword name="rangeChanged" id="PointLight::rangeChanged" ref="kuesa-pointlight.html#range-prop"/>
             <keyword name="rangeChanged" id="SpotLight::rangeChanged" ref="kuesa-spotlight.html#range-prop"/>
+            <keyword name="readerwriterqueue" id="readerwriterqueue" ref="kuesa-attribution-readerwriterqueue.html"/>
             <keyword name="registerType" id="EffectCollection::registerType" ref="kuesa-effectcollection.html#registerType"/>
             <keyword name="remove" id="AbstractAssetCollection::remove" ref="kuesa-abstractassetcollection.html#remove"/>
             <keyword name="removePostProcessingEffect" id="ForwardRenderer::removePostProcessingEffect" ref="kuesa-forwardrenderer.html#removePostProcessingEffect"/>
@@ -590,19 +572,14 @@
             <keyword name="sceneEntity" id="AnimationPlayer::sceneEntity" ref="kuesa-animationplayer.html#sceneEntity-prop"/>
             <keyword name="sceneEntity" id="AnimationPlayer::sceneEntity" ref="qml-animationplayer.html#sceneEntity-prop"/>
             <keyword name="sceneEntity" id="Asset::sceneEntity" ref="qml-asset.html#sceneEntity-prop"/>
-            <keyword name="sceneEntity" id="GLTF2Importer::sceneEntity" ref="kuesa-gltf2importer.html#sceneEntity"/>
-            <keyword name="sceneEntity" id="GLTF2Importer::sceneEntity" ref="kuesa-gltf2importer.html#sceneEntity-prop"/>
             <keyword name="sceneEntity" id="GLTF2Importer::sceneEntity" ref="qml-gltf2importer.html#sceneEntity-prop"/>
             <keyword name="sceneEntityChanged" id="AnimationPlayer::sceneEntityChanged" ref="kuesa-animationplayer.html#sceneEntity-prop"/>
-            <keyword name="sceneEntityChanged" id="GLTF2Importer::sceneEntityChanged" ref="kuesa-gltf2importer.html#sceneEntity-prop"/>
             <keyword name="setAOUsesTexCoord1" id="MetallicRoughnessProperties::setAOUsesTexCoord1" ref="kuesa-metallicroughnessproperties.html#aoUsesTexCoord1-prop"/>
-            <keyword name="setActiveSceneIndex" id="GLTF2Importer::setActiveSceneIndex" ref="kuesa-gltf2importer.html#activeSceneIndex-prop"/>
             <keyword name="setAlphaCutoff" id="GLTF2MaterialProperties::setAlphaCutoff" ref="kuesa-gltf2materialproperties.html#alphaCutoff-prop"/>
             <keyword name="setAlphaCutoffEnabled" id="MetallicRoughnessEffect::setAlphaCutoffEnabled" ref="kuesa-metallicroughnesseffect.html#alphaCutoffEnabled-prop"/>
             <keyword name="setAlphaCutoffEnabled" id="UnlitEffect::setAlphaCutoffEnabled" ref="kuesa-unliteffect.html#alphaCutoffEnabled-prop"/>
             <keyword name="setAmbientOcclusionMap" id="MetallicRoughnessProperties::setAmbientOcclusionMap" ref="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop"/>
             <keyword name="setAmbientOcclusionMapEnabled" id="MetallicRoughnessEffect::setAmbientOcclusionMapEnabled" ref="kuesa-metallicroughnesseffect.html#ambientOcclusionMapEnabled-prop"/>
-            <keyword name="setAssignNames" id="GLTF2Importer::setAssignNames" ref="kuesa-gltf2importer.html#setAssignNames"/>
             <keyword name="setBackToFrontSorting" id="ForwardRenderer::setBackToFrontSorting" ref="kuesa-forwardrenderer.html#setBackToFrontSorting"/>
             <keyword name="setBaseColorFactor" id="GLTF2MaterialProperties::setBaseColorFactor" ref="kuesa-gltf2materialproperties.html#baseColorFactor-prop"/>
             <keyword name="setBaseColorMap" id="GLTF2MaterialProperties::setBaseColorMap" ref="kuesa-gltf2materialproperties.html#baseColorMap-prop"/>
@@ -639,7 +616,6 @@
             <keyword name="setGenerateNormals" id="GLTF2Options::setGenerateNormals" ref="kuesa-gltf2import-gltf2options.html#generateNormals-prop"/>
             <keyword name="setGenerateTangents" id="GLTF2Options::setGenerateTangents" ref="kuesa-gltf2import-gltf2options.html#generateTangents-prop"/>
             <keyword name="setInnerConeAngle" id="SpotLight::setInnerConeAngle" ref="kuesa-spotlight.html#innerConeAngle-prop"/>
-            <keyword name="setInputTexture" id="AbstractPostProcessingEffect::setInputTexture" ref="kuesa-abstractpostprocessingeffect.html#setInputTexture"/>
             <keyword name="setInputTexture" id="BloomEffect::setInputTexture" ref="kuesa-bloomeffect.html#setInputTexture"/>
             <keyword name="setInputTexture" id="GaussianBlurEffect::setInputTexture" ref="kuesa-gaussianblureffect.html#setInputTexture"/>
             <keyword name="setInputTexture" id="ThresholdEffect::setInputTexture" ref="kuesa-thresholdeffect.html#setInputTexture"/>
@@ -668,11 +644,9 @@
             <keyword name="setRoughnessFactor" id="MetallicRoughnessProperties::setRoughnessFactor" ref="kuesa-metallicroughnessproperties.html#roughnessFactor-prop"/>
             <keyword name="setRunning" id="AnimationPlayer::setRunning" ref="kuesa-animationplayer.html#running-prop"/>
             <keyword name="setSceneEntity" id="AnimationPlayer::setSceneEntity" ref="kuesa-animationplayer.html#sceneEntity-prop"/>
-            <keyword name="setSceneEntity" id="GLTF2Importer::setSceneEntity" ref="kuesa-gltf2importer.html#setSceneEntity"/>
             <keyword name="setSceneSize" id="AbstractPostProcessingEffect::setSceneSize" ref="kuesa-abstractpostprocessingeffect.html#setSceneSize"/>
             <keyword name="setSceneSize" id="BloomEffect::setSceneSize" ref="kuesa-bloomeffect.html#setSceneSize"/>
             <keyword name="setSceneSize" id="GaussianBlurEffect::setSceneSize" ref="kuesa-gaussianblureffect.html#setSceneSize"/>
-            <keyword name="setSource" id="GLTF2Importer::setSource" ref="kuesa-gltf2importer.html#setSource"/>
             <keyword name="setTextureTransform" id="GLTF2MaterialProperties::setTextureTransform" ref="kuesa-gltf2materialproperties.html#textureTransform-prop"/>
             <keyword name="setThreshold" id="BloomEffect::setThreshold" ref="kuesa-bloomeffect.html#setThreshold"/>
             <keyword name="setThreshold" id="ThresholdEffect::setThreshold" ref="kuesa-thresholdeffect.html#setThreshold"/>
@@ -697,19 +671,13 @@
             <keyword name="sizeChanged" id="AbstractAssetCollection::sizeChanged" ref="kuesa-abstractassetcollection.html#size-prop"/>
             <keyword name="skeleton" id="SceneEntity::skeleton" ref="kuesa-sceneentity.html#skeleton"/>
             <keyword name="skeletons" id="SceneEntity::skeletons" ref="kuesa-sceneentity.html#skeletons"/>
-            <keyword name="source" id="GLTF2Importer::source" ref="kuesa-gltf2importer.html#source"/>
-            <keyword name="source" id="GLTF2Importer::source" ref="kuesa-gltf2importer.html#source-prop"/>
             <keyword name="source" id="GLTF2Importer::source" ref="qml-gltf2importer.html#source-prop"/>
-            <keyword name="sourceChanged" id="GLTF2Importer::sourceChanged" ref="kuesa-gltf2importer.html#source-prop"/>
             <keyword name="start" id="AnimationPlayer::start" ref="kuesa-animationplayer.html#start"/>
             <keyword name="status" id="AnimationPlayer::status" ref="kuesa-animationplayer.html#status-prop"/>
             <keyword name="status" id="AnimationPlayer::status" ref="kuesa-animationplayer.html#status-prop"/>
             <keyword name="status" id="AnimationPlayer::status" ref="qml-animationplayer.html#status-prop"/>
-            <keyword name="status" id="GLTF2Importer::status" ref="kuesa-gltf2importer.html#status"/>
-            <keyword name="status" id="GLTF2Importer::status" ref="kuesa-gltf2importer.html#status-prop"/>
             <keyword name="status" id="GLTF2Importer::status" ref="qml-gltf2importer.html#status-prop"/>
             <keyword name="statusChanged" id="AnimationPlayer::statusChanged" ref="kuesa-animationplayer.html#status-prop"/>
-            <keyword name="statusChanged" id="GLTF2Importer::statusChanged" ref="kuesa-gltf2importer.html#status-prop"/>
             <keyword name="stop" id="AnimationPlayer::stop" ref="kuesa-animationplayer.html#stop"/>
             <keyword name="targets" id="AnimationPlayer::targets" ref="kuesa-animationplayer.html#targets"/>
             <keyword name="texture" id="SceneEntity::texture" ref="kuesa-sceneentity.html#texture"/>
@@ -893,6 +861,13 @@
             <file>kuesa-animationplayer.html</file>
             <file>kuesa-armaturecollection-members.html</file>
             <file>kuesa-armaturecollection.html</file>
+            <file>kuesa-attribution-dds-loader-python.html</file>
+            <file>kuesa-attribution-dr-wav.html</file>
+            <file>kuesa-attribution-draco.html</file>
+            <file>kuesa-attribution-freeverb.html</file>
+            <file>kuesa-attribution-gli.html</file>
+            <file>kuesa-attribution-mikktspace.html</file>
+            <file>kuesa-attribution-readerwriterqueue.html</file>
             <file>kuesa-bloomeffect-members.html</file>
             <file>kuesa-bloomeffect.html</file>
             <file>kuesa-cameracollection-members.html</file>
@@ -929,8 +904,6 @@
             <file>kuesa-gltf2import-gltf2options-members.html</file>
             <file>kuesa-gltf2import-gltf2options.html</file>
             <file>kuesa-gltf2import.html</file>
-            <file>kuesa-gltf2importer-members.html</file>
-            <file>kuesa-gltf2importer.html</file>
             <file>kuesa-gltf2material-members.html</file>
             <file>kuesa-gltf2material.html</file>
             <file>kuesa-gltf2materialproperties-members.html</file>
