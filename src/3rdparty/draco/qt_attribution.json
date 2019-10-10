@@ -1,0 +1,13 @@
+{
+    "Id": "draco",
+    "Name": "Draco 3D Data Compression",
+    "QDocModule": "kuesa",
+    "Description": "Draco is a library for compressing and decompressing 3D geometric meshes and point clouds. It is intended to improve the storage and transmission of 3D graphics.",
+    "QtUsage": "Used in Kuesa",
+
+    "Homepage": "https://github.com/google/draco",
+    "License": "Apache License 2.0",
+    "LicenseId": "Apache-2.0",
+    "LicenseFile": "Draco/LICENSE",
+    "Copyright": "Copyright (c) 2018-2019, Google Inc. and other contributors"
+}

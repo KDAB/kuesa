@@ -1,0 +1,13 @@
+{
+    "Id": "dds_loader_python",
+    "Name": "dds-loader-python",
+    "QDocModule": "kuesa",
+    "Description": "Minimal Python DDS Loader aimed at offline tools.",
+    "QtUsage": "Used in Kuesa",
+    "QtParts": ["tools"],
+
+    "Homepage": "https://github.com/sparkon/dds-loader-python",
+    "License": "MIT License",
+    "LicenseFile": "LICENSE",
+    "Copyright": "Copyright (c) 2015 Edoardo Dominici"
+}

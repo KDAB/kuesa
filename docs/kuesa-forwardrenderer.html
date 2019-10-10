@@ -8,9 +8,9 @@
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html#">Kuesa 1.1</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
 <li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-cpp.html#">C++ Classes</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
 <li>ForwardRenderer</li>
 <li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
         </tr></table>
@@ -67,7 +67,7 @@
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#addPostProcessingEffect">addPostProcessingEffect</a></b>(Kuesa::AbstractPostProcessingEffect *<i>effect</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#backToFrontSorting">backToFrontSorting</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DCore::QEntity *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#camera">camera</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QClearBuffers::BufferType </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QColor </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearColor">clearColor</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#exposure">exposure</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#frustumCulling">frustumCulling</a></b>() const</td></tr>
@@ -75,7 +75,7 @@
 <tr><td class="memItemLeft rightAlign topAlign"> QVector&lt;Kuesa::AbstractPostProcessingEffect *&gt; </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#postProcessingEffects">postProcessingEffects</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#removePostProcessingEffect">removePostProcessingEffect</a></b>(Kuesa::AbstractPostProcessingEffect *<i>effect</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QObject *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#renderSurface">renderSurface</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> ToneMappingAndGammaCorrectionEffect::ToneMapping </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#viewportRect">viewportRect</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#zFilling">zFilling</a></b>() const</td></tr>
 </table></div>
@@ -84,13 +84,13 @@
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setBackToFrontSorting">setBackToFrontSorting</a></b>(bool <i>backToFrontSorting</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setCamera">setCamera</a></b>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a></b>(Qt3DRender::QClearBuffers::BufferType <i>clearBuffers</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a></b>(int <i>clearBuffers</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setClearColor">setClearColor</a></b>(const QColor &amp;<i>clearColor</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setExposure">setExposure</a></b>(float <i>exposure</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setFrustumCulling">setFrustumCulling</a></b>(bool <i>frustumCulling</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setGamma">setGamma</a></b>(float <i>gamma</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setRenderSurface">setRenderSurface</a></b>(QObject *<i>renderSurface</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a></b>(ToneMappingAndGammaCorrectionEffect::ToneMapping <i>toneMappingAlgorithm</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a></b>(int <i>toneMappingAlgorithm</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setViewportRect">setViewportRect</a></b>(const QRectF &amp;<i>viewportRect</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setZFilling">setZFilling</a></b>(bool <i>zfilling</i>)</td></tr>
 </table></div>
@@ -99,13 +99,13 @@
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#backToFrontSorting-prop">backToFrontSortingChanged</a></b>(bool <i>backToFrontSorting</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#camera-prop">cameraChanged</a></b>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffersChanged</a></b>(Qt3DRender::QClearBuffers::BufferType <i>clearBuffers</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffersChanged</a></b>(int <i>clearBuffers</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearColor-prop">clearColorChanged</a></b>(const QColor &amp;<i>clearColor</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#exposure-prop">exposureChanged</a></b>(float <i>exposure</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#frustumCulling-prop">frustumCullingChanged</a></b>(bool <i>frustumCulling</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#gamma-prop">gammaChanged</a></b>(float <i>gamma</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#renderSurface-prop">renderSurfaceChanged</a></b>(QObject *<i>renderSurface</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithmChanged</a></b>(ToneMappingAndGammaCorrectionEffect::ToneMapping <i>toneMappingAlgorithm</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithmChanged</a></b>(int <i>toneMappingAlgorithm</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#viewportRect-prop">viewportRectChanged</a></b>(const QRectF &amp;<i>viewportRect</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#zFilling-prop">zFillingChanged</a></b>(bool <i>zFilling</i>)</td></tr>
 </table></div>
@@ -155,17 +155,17 @@
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>cameraChanged</b></span>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
 </table></div>
 <!-- @@@camera -->
-<!-- $$$clearBuffers-prop$$$clearBuffers$$$setClearBuffersQt3DRender::QClearBuffers::BufferType$$$clearBuffersChangedQt3DRender::QClearBuffers::BufferType -->
+<!-- $$$clearBuffers-prop$$$clearBuffers$$$setClearBuffersint$$$clearBuffersChangedint -->
 <h3 class="fn" id="clearBuffers-prop"><a name="clearBuffers-prop"></a><span class="name">clearBuffers</span> : <span class="type">Qt3DRender::QClearBuffers::BufferType</span></h3>
 <p>Holds which buffers will be cleared at the start of each frame.</p>
 <p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QClearBuffers::BufferType </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a></b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a></b></span>(Qt3DRender::QClearBuffers::BufferType <i>clearBuffers</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a></b></span>(int <i>clearBuffers</i>)</td></tr>
 </table></div>
 <p><b>Notifier signal:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>clearBuffersChanged</b></span>(Qt3DRender::QClearBuffers::BufferType <i>clearBuffers</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>clearBuffersChanged</b></span>(int <i>clearBuffers</i>)</td></tr>
 </table></div>
 <!-- @@@clearBuffers -->
 <!-- $$$clearColor-prop$$$clearColor$$$setClearColorconstQColor&$$$clearColorChangedconstQColor& -->
@@ -235,18 +235,18 @@
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>renderSurfaceChanged</b></span>(QObject *<i>renderSurface</i>)</td></tr>
 </table></div>
 <!-- @@@renderSurface -->
-<!-- $$$toneMappingAlgorithm-prop$$$toneMappingAlgorithm$$$setToneMappingAlgorithmToneMappingAndGammaCorrectionEffect::ToneMapping$$$toneMappingAlgorithmChangedToneMappingAndGammaCorrectionEffect::ToneMapping -->
+<!-- $$$toneMappingAlgorithm-prop$$$toneMappingAlgorithm$$$setToneMappingAlgorithmint$$$toneMappingAlgorithmChangedint -->
 <h3 class="fn" id="toneMappingAlgorithm-prop"><a name="toneMappingAlgorithm-prop"></a><span class="name">toneMappingAlgorithm</span> : <span class="type"><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">ToneMappingAndGammaCorrectionEffect::ToneMapping</a></span></h3>
 <p>Tone mapping specifies how we perform color conversion from HDR (high dynamic range) content to LDR (low dynamic range) content which our monitor displays.</p>
 <p>This property was introduced in  Kuesa 1.1.</p>
 <p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> ToneMappingAndGammaCorrectionEffect::ToneMapping </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a></b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a></b></span>(ToneMappingAndGammaCorrectionEffect::ToneMapping <i>toneMappingAlgorithm</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a></b></span>(int <i>toneMappingAlgorithm</i>)</td></tr>
 </table></div>
 <p><b>Notifier signal:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>toneMappingAlgorithmChanged</b></span>(ToneMappingAndGammaCorrectionEffect::ToneMapping <i>toneMappingAlgorithm</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>toneMappingAlgorithmChanged</b></span>(int <i>toneMappingAlgorithm</i>)</td></tr>
 </table></div>
 <!-- @@@toneMappingAlgorithm -->
 <!-- $$$viewportRect-prop$$$viewportRect$$$setViewportRectconstQRectF&$$$viewportRectChangedconstQRectF& -->
@@ -289,7 +289,7 @@
 <p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#camera-prop">camera</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#camera">camera</a>().</p>
 <!-- @@@setCamera -->
 <!-- $$$setClearBuffers -->
-<h3 class="fn" id="setClearBuffers"><a name="setClearBuffers"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setClearBuffers</span>(<span class="type">Qt3DRender::QClearBuffers::BufferType</span> <i>clearBuffers</i>)</h3>
+<h3 class="fn" id="setClearBuffers"><a name="setClearBuffers"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setClearBuffers</span>(<span class="type">int</span> <i>clearBuffers</i>)</h3>
 <p>Sets which <i>clearBuffers</i> will be cleared at the start of each frame.</p>
 <p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffers</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a>().</p>
 <!-- @@@setClearBuffers -->
@@ -319,7 +319,7 @@
 <p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#renderSurface-prop">renderSurface</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#renderSurface">renderSurface</a>().</p>
 <!-- @@@setRenderSurface -->
 <!-- $$$setToneMappingAlgorithm -->
-<h3 class="fn" id="setToneMappingAlgorithm"><a name="setToneMappingAlgorithm"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setToneMappingAlgorithm</span>(<span class="type"><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">ToneMappingAndGammaCorrectionEffect::ToneMapping</a></span> <i>toneMappingAlgorithm</i>)</h3>
+<h3 class="fn" id="setToneMappingAlgorithm"><a name="setToneMappingAlgorithm"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setToneMappingAlgorithm</span>(<span class="type">int</span> <i>toneMappingAlgorithm</i>)</h3>
 <p>Sets the tone mapping algorithm to <i>toneMappingAlgorithm</i>.</p>
 <p>This function was introduced in  Kuesa 1.1.</p>
 <p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithm</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a>().</p>
@@ -354,7 +354,7 @@
 <p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#camera-prop">camera</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setCamera">setCamera</a>().</p>
 <!-- @@@camera -->
 <!-- $$$clearBuffers -->
-<h3 class="fn" id="clearBuffers"><a name="clearBuffers"></a><span class="type">Qt3DRender::QClearBuffers::BufferType</span> ForwardRenderer::<span class="name">clearBuffers</span>() const</h3>
+<h3 class="fn" id="clearBuffers"><a name="clearBuffers"></a><span class="type">int</span> ForwardRenderer::<span class="name">clearBuffers</span>() const</h3>
 <p>Returns which buffers are cleared at the start of each frame.</p>
 <p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffers</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a>().</p>
 <!-- @@@clearBuffers -->
@@ -395,7 +395,7 @@
 <p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#renderSurface-prop">renderSurface</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setRenderSurface">setRenderSurface</a>().</p>
 <!-- @@@renderSurface -->
 <!-- $$$toneMappingAlgorithm -->
-<h3 class="fn" id="toneMappingAlgorithm"><a name="toneMappingAlgorithm"></a><span class="type"><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">ToneMappingAndGammaCorrectionEffect::ToneMapping</a></span> ForwardRenderer::<span class="name">toneMappingAlgorithm</span>() const</h3>
+<h3 class="fn" id="toneMappingAlgorithm"><a name="toneMappingAlgorithm"></a><span class="type">int</span> ForwardRenderer::<span class="name">toneMappingAlgorithm</span>() const</h3>
 <p>Returns the tone mapping algorithm used by the shader.</p>
 <p>This function was introduced in  Kuesa 1.1.</p>
 <p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithm</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a>().</p>

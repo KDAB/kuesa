@@ -1,0 +1,14 @@
+{
+    "Id": "readerwriterqueue",
+    "Name": "readerwriterqueue",
+    "QDocModule": "kuesa",
+    "Description": "A single-producer, single-consumer lock-free queue for C++",
+    "QtUsage": "Used in Kuesa",
+    "QtParts": ["examples"],
+
+
+    "Homepage": "https://github.com/cameron314/readerwriterqueue",
+    "License": "BSD Simplified",
+    "LicenseFile": "LICENSE.md",
+    "Copyright": "Copyright (c) 2013-2015, Cameron Desrochers"
+}
