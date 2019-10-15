@@ -66,6 +66,69 @@ using namespace Kuesa;
  *
  * The effect can be configured to change the threshold defining the bright parts of
  * the scene and the amount of blurring to apply.
+ *
+ * The BloomEffect is a combination of the ThresholdEffect and the
+ * GaussianBlurEffect.
+ *
+ * \badcode
+ * #include <Qt3DExtras/Qt3DWindow>
+ * #include <ForwardRenderer>
+ * #include <SceneEntity>
+ * #include <BloomEffect>
+ *
+ * Qt3DExtras::Qt3DWindow win;
+ * Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+ * Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+ * Kuesa::BloomEffect *bloomEffect = new Kuesa::BloomEffect();
+ *
+ * bloomEffect->setThreshold(0.5f);
+ * bloomEffect->setBlurPassCount(2);
+ *
+ * frameGraph->addPostProcessingEffect(bloomEffect);
+ *
+ * win->setRootEntity(root);
+ * win->setActiveFrameGraph(forwardRenderer);
+ *
+ * ...
+ * \endcode
+ */
+
+/*!
+ * \qmltype BloomEffect
+   \inherits AbstractPostProcessingEffect
+ * \inqmlmodule Kuesa
+ * \since Kuesa 1.0
+ * \brief Post-processing effect for blurring the bright parts of a scene.
+ *
+ * BloomEffect is a post-processing effect that applies a blur to the brightest
+ * parts of scene to simulate a fuzzy glow.
+ *
+ * The effect can be configured to change the threshold defining the bright parts of
+ * the scene and the amount of blurring to apply.
+ *
+ * The BloomEffect is a combination of the ThresholdEffect and the
+ * GaussianBlurEffect.
+ *
+ * \badcode
+ * import Kuesa 1.1 as Kuesa
+ *
+ * Kuesa.SceneEnity {
+ *     id: root
+ *     components: [
+ *         RenderSettings {
+ *              Kuesa.ForwardRenderer {
+ *                  postProcessingEffects: [
+ *                      BloomEffect {
+ *                          threshold: 0.5
+ *                          blurPassCount: 2
+ *                      }
+ *                  ]
+ *              }
+ *         }
+ *     ]
+ *    ...
+ * }
+ * \endcode
  */
 
 /*!

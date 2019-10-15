@@ -125,6 +125,31 @@
 <p>Scenes containing materials with transparency need to be drawn from back-to-front in relation to the Camera for the blending to work correctly. This sorting can be expensive and is disabled by default. It can be enabled by calling ForwardRender::setBackToFrontSorting.</p>
 <p>In some case, an optimization technique known as an early z-filling pass can provide a significant performance gain. This is especially true for large scenes using complex rendering materials. The idea consist in filling the depth buffer with a low complexity shader so that subsequent passes incorporating more detailed rendering techniques only render fragments for the depth previously recorded. The optional z-fill pass can be enabled by calling ForwardRender::setZFilling. All Entities having a Material with a compatible RenderPass that has a FilterKey KuesaDrawStage with a value set to ZFill will be rendered. This will take place before the Opaque and Transparent pass. Only Opaque objects should be used to fill the depth buffer.</p>
 <p>The pipeline steps, from materials to post processing effects are working in linear color space. This <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> adds a final gamma correction to perform the final conversion to sRGB, through the use of the GammaCorrectionEffect, as the last step of this pipeline.</p>
+<pre class="cpp plain">
+
+  #include &lt;Qt3DExtras/Qt3DWindow&gt;
+  #include &lt;Qt3DRender/QCamera&gt;
+  #include &lt;ForwardRenderer&gt;
+  #include &lt;SceneEntity&gt;
+  #include &lt;BloomEffect&gt;
+
+  Qt3DExtras::Qt3DWindow win;
+  Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+  Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+  Kuesa::BloomEffect *bloomEffect = new Kuesa::BloomEffect();
+  Qt3DRender::QCamera *camera = new Qt3DRender::QCamera();
+
+  frameGraph-&gt;setCamera(camera);
+  frameGraph-&gt;setFrustumCulling(true);
+  frameGraph-&gt;setClearColor(QColor(Qt::red));
+  frameGraph-&gt;addPostProcessingEffect(bloomEffect);
+
+  win-&gt;setRootEntity(root);
+  win-&gt;setActiveFrameGraph(forwardRenderer);
+
+  ..&#x2e;
+
+</pre>
 </div>
 <!-- @@@ForwardRenderer -->
 <div class="prop">

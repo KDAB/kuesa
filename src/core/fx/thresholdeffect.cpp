@@ -59,6 +59,27 @@ using namespace Kuesa;
  *
  * ThresholdEffect is a post-processing effect that passes through any pixel
  * above a certain brightness value and sets all others to black.
+ *
+ * \badcode
+ * #include <Qt3DExtras/Qt3DWindow>
+ * #include <ForwardRenderer>
+ * #include <SceneEntity>
+ * #include <ThresholdEffect>
+ *
+ * Qt3DExtras::Qt3DWindow win;
+ * Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+ * Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+ * Kuesa::ThresholdEffect *thresholdEffect = new Kuesa::ThresholdEffect();
+ *
+ * thresholdEffect->setThreshold(0.5f);
+ *
+ * frameGraph->addPostProcessingEffect(thresholdEffect);
+ *
+ * win->setRootEntity(root);
+ * win->setActiveFrameGraph(forwardRenderer);
+ *
+ * ...
+ * \endcode
  */
 
 /*!
@@ -79,6 +100,38 @@ using namespace Kuesa;
  \endtable
 
 */
+
+/*!
+ * \qmltype ThresholdEffect
+   \inherits AbstractPostProcessingEffect
+ * \inqmlmodule Kuesa
+ * \since Kuesa 1.0
+ * \brief Post-processing effect showing only pixels brighter than a specified
+ * value.
+ *
+ * ThresholdEffect is a post-processing effect that passes through any pixel
+ * above a certain brightness value and sets all others to black.
+ *
+ * \badcode
+ * import Kuesa 1.1 as Kuesa
+ *
+ * Kuesa.SceneEnity {
+ *     id: root
+ *     components: [
+ *         RenderSettings {
+ *              Kuesa.ForwardRenderer {
+ *                  postProcessingEffects: [
+ *                      ThresholdEffect {
+ *                          threshold: 0.5
+ *                      }
+ *                  ]
+ *              }
+ *         }
+ *     ]
+ *    ...
+ * }
+ * \endcode
+ */
 
 /*!
     \qmlproperty float ThresholdEffect::threshold
@@ -200,7 +253,7 @@ QVector<Qt3DRender::QLayer *> ThresholdEffect::layers() const
 /*!
  * Sets the input texture for the effect to \a texture.
  *
- * \sa AbstractPostProcessingEffect::setInputTexture
+ * \sa AbstractPostProcessingEffect::setInputTexture()
  */
 void ThresholdEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
 {

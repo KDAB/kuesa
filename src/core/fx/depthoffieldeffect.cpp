@@ -81,10 +81,33 @@ using namespace Kuesa;
  camera behaviour, where only part of the scene is in-focus, and very far &
  very close objects are out-of-focus and thus blurred.
 
+ \badcode
+ #include <Qt3DExtras/Qt3DWindow>
+ #include <ForwardRenderer>
+ #include <SceneEntity>
+ #include <DepthOfFieldEffect>
+
+ Qt3DExtras::Qt3DWindow win;
+ Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+ Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+ Kuesa::DepthOfFieldEffect *dofEffect = new Kuesa::DepthOfFieldEffect();
+
+ dofEffect->setRadius(10.5f);
+ dofEffect->setFocusDistance(100.0f);
+ dofEffect->setFocusRange(25.0f);
+
+ frameGraph->addPostProcessingEffect(dofEffect);
+
+ win->setRootEntity(root);
+ win->setActiveFrameGraph(forwardRenderer);
+ ...
+ \endcode
+
  \section3 Example
  \image fx/dof/dof_distance_5.png
  \caption Depth-of-field effect applied on a Kuesa scene.
 */
+
 
 /*!
  \property DepthOfFieldEffect::focusRange
@@ -129,6 +152,103 @@ using namespace Kuesa;
 
 /*!
  \property DepthOfFieldEffect::radius
+
+ \brief adjusts the radius of the depth of field effect.
+
+ The bigger the radius is, the more the out-of-focus objects will appear to be blurred.
+
+ \table
+ \header
+     \li Radius 4.0
+     \li Radius 42.0
+ \row
+     \li \inlineimage fx/dof/dof_radius_4.png
+     \li \inlineimage fx/dof/dof_radius_42.png
+ \endtable
+*/
+
+/*!
+ \qmltype DepthOfFieldEffect
+ \inherits AbstractPostProcessingEffect
+ \inmodule Kuesa
+ \since Kuesa 1.1
+ \brief Post-processing effect implementation of a depth of field.
+
+ DepthOfFieldEffect implements an effect which simulates a more realistic
+ camera behaviour, where only part of the scene is in-focus, and very far &
+ very close objects are out-of-focus and thus blurred.
+
+ \badcode
+ import Kuesa 1.1 as Kuesa
+
+ Kuesa.SceneEnity {
+     id: root
+     components: [
+         RenderSettings {
+             Kuesa.ForwardRenderer {
+                 postProcessingEffects: [
+                     DepthOfFieldEffect {
+                         radius: 10.0
+                         focusDistance: 100.0f
+                         focusRange: 25.0f
+                     }
+                 ]
+             }
+         }
+     ]
+     ...
+ }
+ \endcode
+
+ \section3 Example
+ \image fx/dof/dof_distance_5.png
+ \caption Depth-of-field effect applied on a Kuesa scene.
+*/
+
+
+/*!
+ \qmlproperty float DepthOfFieldEffect::focusRange
+
+ \brief adjusts the breadth of the area which will be in focus.
+
+ This adjusts the size of the part of the scene which will be in focus.
+ At 0.0, everything will be blurred. The bigger the value, the more of the
+ scene will be in focus, centered on the focusDistance.
+
+ \table
+ \header
+     \li Range 2.0
+     \li Range 8.0
+ \row
+     \li \inlineimage fx/dof/dof_range_2.png
+     \li \inlineimage fx/dof/dof_range_8.png
+ \endtable
+
+ \sa DepthOfFieldEffect::focusDistance
+*/
+
+/*!
+ \qmlproperty float DepthOfFieldEffect::focusDistance
+
+ \brief adjusts the focal distance.
+
+ This adjusts the focal distance, that is, the objects at this distance from
+ the camera will be focused; those too close or too far away will be blurred.
+
+ \table
+ \header
+     \li Distance 5.0
+     \li Distance 8.0
+ \row
+     \li \inlineimage fx/dof/dof_distance_5.png
+     \li \inlineimage fx/dof/dof_distance_8.png
+ \endtable
+
+ \sa DepthOfFieldEffect::focusRange
+*/
+
+/*!
+ \qmlproperty float DepthOfFieldEffect::radius
 
  \brief adjusts the radius of the depth of field effect.
 

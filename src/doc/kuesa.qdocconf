@@ -6,12 +6,14 @@ project                 = Kuesa
 description             = Kuesa Reference Documentation
 version                 = 1.1
 buildversion            = "Kuesa 1.1 Reference Documentation"
-includepaths            = -I. \
-                          -I $QT_INSTALL_HEADERS \
-                          -I $QT_INSTALL_HEADERS/Kuesa
+includepaths            =  . \
+                           .. \
+                           $QT_INSTALL_HEADERS \
+                           $QT_INSTALL_HEADERS/Kuesa
 
 outputformats = HTML
 indexes = $QT_INSTALL_DOCS/html/qt.index
+syntaxhighlighting = true
 
 examplesinstallpath       = kuesa
 
@@ -68,7 +70,7 @@ examples.fileextensions       += "*.frag *.geom *.vert"
 examples.imageextensions      += "*.png *.jpg"
 
 Cpp.ignoretokens                         += KUESASHARED_EXPORT Q_INVOKABLE
-Cpp.ignoredirectives                     += Q_DECLARE_LOGGING_CATEGORY
+Cpp.ignoredirectives                     += Q_DECLARE_LOGGING_CATEGORY Q_INVOKABLE
 
 navigation.landingpage = "Kuesa"
 navigation.cppclassespage = "Kuesa C++ Classes"

@@ -72,6 +72,16 @@ using namespace Kuesa;
  *
  * GLTF2Importer imports glTF 2 scenes into a Qt 3D scene.
  *
+ * \badcode
+ * #include <GLTF2Importer>
+ *
+ * Kuesa::SceneEntity *scene = new Kuesa::SceneEntity();
+ * Kuesa::GLTF2Importer *importer = new Kuesa::GLTF2Importer(scene);
+ *
+ * importer->setSceneEntity(scene);
+ * importer->setSource(QUrl("file:///source.gltf"));
+ * \endcode
+ *
  * If a Kuesa::SceneEntity has been set on the importer, various Qt 3D
  * resources generated upon import will be registered into named collections.
  * If no name is specified and assignNames is true, a default name will be
@@ -116,6 +126,18 @@ using namespace Kuesa;
  *
  * GLTF2Importer imports glTF 2 scenes into a Qt 3D scene.
  *
+ * \badcode
+ * import Kuesa 1.1 as Kuesa
+ *
+ * Kuesa.SceneEntity {
+ *     id: scene
+ *     Kuesa.GLTF2Importer {
+ *         sceneEntity: scene
+ *         source: "file:///source.gltf"
+ *     }
+ * }
+ * \endcode
+ *
  * If a Kuesa::SceneEntity has been set on the importer, various Qt 3D
  * resources generated upon import will be registered into named collections.
  * If no name is specified and assignNames is true, a default name will be
@@ -149,10 +171,11 @@ using namespace Kuesa;
  * \li a material that does perform skinning for use with skinned meshes. It will
  * be added to the collection with the name "skinned_Mat"
  * \endlist
+ *
  */
 
 /*!
-    \enum GLTF2Importer::Status
+    \enum Kuesa::GLTF2Importer::Status
 
     This enum type describes state of the importer.
 
@@ -165,33 +188,27 @@ using namespace Kuesa;
 /*!
     \property GLTF2Importer::source
     \brief the source of the glTF file
-
-    \sa GLTF2Importer::source()
  */
 
 /*!
-    \property GLTF2Importer::status
+    \property Kuesa::GLTF2Importer::status
     \brief the current status of the importer
 
-    \sa GLTF2Importer::status(), GLTF2Importer::Status
+    \sa Kuesa::GLTF2Importer::Status
  */
 
 /*!
-    \property GLTF2Importer::sceneEntity
+    \property Kuesa::GLTF2Importer::sceneEntity
 
     \brief pointer to the SceneEntity with which assets will be registered as
     they are loaded from the glTF file.
-
-    \sa GLTF2Importer::sceneEntity()
  */
 
 /*!
-    \property GLTF2Importer::assignNames
+    \property Kuesa::GLTF2Importer::assignNames
 
     \brief if true, assets with no names will be added to collections with
     default names (default is false)
-
-    \sa GLTF2Importer::assignNames()
  */
 
 /*!

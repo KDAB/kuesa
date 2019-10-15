@@ -29,9 +29,9 @@
 #ifndef KUESA_GLTF2IMPORTER_H
 #define KUESA_GLTF2IMPORTER_H
 
+#include <Kuesa/kuesa_global.h>
 #include <QUrl>
 #include <Qt3DCore/QNode>
-#include <Kuesa/kuesa_global.h>
 #include <Kuesa/GLTF2Options>
 
 QT_BEGIN_NAMESPACE
@@ -39,6 +39,7 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 class SceneEntity;
 class GLTF2Exporter;
+
 namespace GLTF2Import {
 class GLTF2Context;
 class GLTF2Parser;

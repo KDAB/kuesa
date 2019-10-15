@@ -45,7 +45,6 @@
 <li class="fn"><b><b><a href="qml-forwardrenderer.html#clearBuffers-prop">clearBuffers</a></b></b> : enumeration</li>
 <li class="fn"><b><b><a href="qml-forwardrenderer.html#clearColor-prop">clearColor</a></b></b> : color</li>
 <li class="fn"><b><b><a href="qml-forwardrenderer.html#exposure-prop">exposure</a></b></b> : real</li>
-<li class="fn"><b><b><a href="qml-forwardrenderer.html#externalRenderTargetSize-prop">externalRenderTargetSize</a></b></b> : size</li>
 <li class="fn"><b><b><a href="qml-forwardrenderer.html#frustumCulling-prop">frustumCulling</a></b></b> : bool</li>
 <li class="fn"><b><b><a href="qml-forwardrenderer.html#gamma-prop">gamma</a></b></b> : real</li>
 <li class="fn"><b><b><a href="qml-forwardrenderer.html#postProcessingEffects-prop">postProcessingEffects</a></b></b> : list&lt;AbstractPostProcessingEffect&gt;</li>
@@ -61,7 +60,7 @@
 <p>The rendering will be made on a single viewport whose dimensions can be set with normalized coordinates by setting the <a href="qml-forwardrenderer.html#viewportRect-prop">viewportRect</a> property.</p>
 <p>The screen will be cleared with the color set with the <a href="qml-forwardrenderer.html#clearColor-prop">clearColor</a> property. By default the clear color is black.</p>
 <p>Unless <a href="qml-forwardrenderer.html#clearBuffers-prop">clearBuffers</a> has been set appropriately, only the color and depth buffers will be cleared before the rest of the scene is rendered.</p>
-<p>The scene will be rendered from the camera property on the window or offscreen surface specified by the <a href="qml-forwardrenderer.html#renderSurface-prop">renderSurface</a> property. Additionally, setting <a href="qml-forwardrenderer.html#externalRenderTargetSize-prop">externalRenderTargetSize</a> will specify the size of the rendering surface, when different from the size reported by the surface, this can be the case with high DPI screens.</p>
+<p>The scene will be rendered from the camera property on the window or offscreen surface specified by the <a href="qml-forwardrenderer.html#renderSurface-prop">renderSurface</a> property. Additionally, setting externalRenderTargetSize will specify the size of the rendering surface, when different from the size reported by the surface, this can be the case with high DPI screens.</p>
 <p>Frustum culling of Entities will be performed by default to only render entities that are visible within the camera's frustum. This can be disabled by setting the <a href="qml-forwardrenderer.html#frustumCulling-prop">frustumCulling</a> property. Please note frustum culling is not performed on skinned meshes.</p>
 <p>By default the rendering is performed so that:</p>
 <p>Opaque object are rendered first: Entities having a Material with a compatible RenderPass that has a FilterKey KuesaDrawStage with a value set to Opaque will be rendered.</p>
@@ -69,6 +68,37 @@
 <p>Scenes containing materials with transparency need to be drawn from back-to-front in relation to the Camera for the blending to work correctly. This sorting can be expensive and is disabled by default. It can be enabled by setting the <a href="qml-forwardrenderer.html#backToFrontSorting-prop">backToFrontSorting</a> to true.</p>
 <p>In some case, an optimization technique known as an early z-filling pass can provide a significant performance gain. This is especially true for large scenes using complex rendering materials. The idea consist in filling the depth buffer with a low complexity shader so that subsequent passes incorporating more detailed rendering techniques only render fragments for the depth previously recorded. The optional z-fill pass can be enabled by setting the <a href="qml-forwardrenderer.html#zFilling-prop">zFilling</a> property to true. All Entities having a Material with a compatible RenderPass that has a FilterKey KuesaDrawStage with a value set to ZFill will be rendered. This will take place before the Opaque and Transparent pass. Only Opaque objects should be used to fill the depth buffer.</p>
 <p>The pipeline steps, from materials to post processing effects are working in linear color space. This <a href="qml-forwardrenderer.html">ForwardRenderer</a> adds a final gamma correction to perform the final conversion to sRGB, through the use of the GammaCorrectionEffect, as the last step of this pipeline.</p>
+<pre class="cpp plain">
+
+  import Kuesa 1.1 as Kuesa
+  import Qt3D.Core 2.12
+  import Qt3D.Render 2.12
+
+  Kuesa.SceneEnity {
+      id: root
+
+      Camera { id: sceneCamera }
+
+      components: [
+          RenderSettings {
+               Kuesa.ForwardRenderer {
+                   clearColor: &quot;red&quot;
+                   camera: sceneCamera
+                   frustumCulling: true
+                   backToFrontSorting: true
+                   postProcessingEffects: [
+                       BloomEffect {
+                           threshold: 0.5
+                           blurPassCount: 2
+                       }
+                   ]
+               }
+          }
+      ]
+     ..&#x2e;
+  }
+
+</pre>
 <!-- @@@ForwardRenderer -->
 <h2>Property Documentation</h2>
 <!-- $$$backToFrontSorting -->
@@ -121,16 +151,6 @@
 </div><div class="qmldoc"><p>Exposure correction factor used before the linear to sRGB conversion.</p>
 <p>This property was introduced in  Kuesa 1.1.</p>
 </div></div><!-- @@@exposure -->
-<br/>
-<!-- $$$externalRenderTargetSize -->
-<div class="qmlitem"><div class="qmlproto">
-<div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
-<td class="tblQmlPropNode"><p>
-<a name="externalRenderTargetSize-prop"></a><span class="name">externalRenderTargetSize</span> : <span class="type">size</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Holds the size of the external render target.</p>
-</div></div><!-- @@@externalRenderTargetSize -->
 <br/>
 <!-- $$$frustumCulling -->
 <div class="qmlitem"><div class="qmlproto">

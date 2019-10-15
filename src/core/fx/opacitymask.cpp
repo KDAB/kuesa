@@ -70,10 +70,33 @@ namespace Kuesa {
     \image fx/opacitymask/noalpha.png
 
     A premultiplied alpha variant of the algorithm is also available which can
-    be of use when combining Qt 3D / Kuesa content with 2D QtQuick content. It
-    performs rendering doing:
+    be of use when combining Qt 3D / Kuesa content with 2D QtQuick content
+    (Scene3D). It performs rendering doing:
     \badcode
     vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
+    \endcode
+
+    \badcode
+    import Kuesa 1.1 as Kuesa
+
+    Kuesa.SceneEnity {
+        id: root
+        components: [
+            RenderSettings {
+                Kuesa.ForwardRenderer {
+                    postProcessingEffects: [
+                        OpacityMask {
+                            mask: TextureLoader {
+                                source: ":/opacity_mask.png";
+                                generateMipMaps: false
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+        ...
+    }
     \endcode
 
     \image fx/opacitymask/alpha.png
@@ -95,10 +118,32 @@ namespace Kuesa {
     \image fx/opacitymask/noalpha.png
 
     A premultiplied alpha variant of the algorithm is also available which can
-    be of use when combining Qt 3D / Kuesa content with 2D QtQuick content. It
-    performs rendering doing:
+    be of use when combining Qt 3D / Kuesa content with 2D QtQuick content
+    (Scene3D). It performs rendering doing:
     \badcode
     vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
+    \endcode
+
+    \badcode
+    #include <Qt3DExtras/Qt3DWindow>
+    #include <ForwardRenderer>
+    #include <SceneEntity>
+    #include <OpacityMask>
+
+    Qt3DExtras::Qt3DWindow win;
+    Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+    Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+    Kuesa::OpacityMask *opacityMask = new Kuesa::OpacityMask();
+
+    Qt3DRender::QTextureLoader *texture = new Qt3DRender::QTextureLoader();
+    texture->setSource(QUrl("file:///opacityMask.png"));
+    opacityMask->setMask(texture);
+
+    frameGraph->addPostProcessingEffect(opacityMask);
+
+    win->setRootEntity(root);
+    win->setActiveFrameGraph(forwardRenderer);
+    ...
     \endcode
 
     \image fx/opacitymask/alpha.png

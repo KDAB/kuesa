@@ -33,7 +33,7 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">GaussianBlurEffect Class</h1>
-<span class="small-subtitle">(<a href="kuesa-gaussianblureffect.html">Kuesa::GaussianBlurEffect</a>)<br/></span>
+<span class="small-subtitle">(<a href="qml-gaussianblureffect.html">Kuesa::GaussianBlurEffect</a>)<br/></span>
 <!-- $$$GaussianBlurEffect-brief -->
 <p>Post-processing effect for blurring the scene. <a href="#details">More...</a></p>
 <!-- @@@GaussianBlurEffect -->
@@ -75,6 +75,28 @@
 <div class="descr">
 <h2 id="details">Detailed Description</h2>
 <p><a href="kuesa-gaussianblureffect.html">GaussianBlurEffect</a> is a post-processing effect that applies a Gaussian blur to the scene. The amount of blurring can be adjusted using the <a href="kuesa-gaussianblureffect.html#blurPassCount">blurPassCount</a> property.</p>
+<pre class="cpp plain">
+
+  #include &lt;Qt3DExtras/Qt3DWindow&gt;
+  #include &lt;ForwardRenderer&gt;
+  #include &lt;SceneEntity&gt;
+  #include &lt;GaussianBlurEffect&gt;
+
+  Qt3DExtras::Qt3DWindow win;
+  Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+  Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+  Kuesa::GaussianBlurEffect *blurEffect = new Kuesa::GaussianBlurEffect();
+
+  blurEffect-&gt;setBlurPassCount(2);
+
+  frameGraph-&gt;addPostProcessingEffect(blurEffect);
+
+  win-&gt;setRootEntity(root);
+  win-&gt;setActiveFrameGraph(forwardRenderer);
+
+  ..&#x2e;
+
+</pre>
 <a name="example"></a>
 <h5 id="example">Example</h5>
 <p class="centerAlign"><img src="images/blur.png" alt="" /></p><p class="figCaption">Blur effect applied on a Kuesa scene.</p>

@@ -33,7 +33,7 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">ThresholdEffect Class</h1>
-<span class="small-subtitle">(<a href="kuesa-thresholdeffect.html">Kuesa::ThresholdEffect</a>)<br/></span>
+<span class="small-subtitle">(<a href="qml-thresholdeffect.html">Kuesa::ThresholdEffect</a>)<br/></span>
 <!-- $$$ThresholdEffect-brief -->
 <p>Post-processing effect showing only pixels brighter than a specified value. <a href="#details">More...</a></p>
 <!-- @@@ThresholdEffect -->
@@ -74,6 +74,28 @@
 <div class="descr">
 <h2 id="details">Detailed Description</h2>
 <p><a href="kuesa-thresholdeffect.html">ThresholdEffect</a> is a post-processing effect that passes through any pixel above a certain brightness value and sets all others to black.</p>
+<pre class="cpp plain">
+
+  #include &lt;Qt3DExtras/Qt3DWindow&gt;
+  #include &lt;ForwardRenderer&gt;
+  #include &lt;SceneEntity&gt;
+  #include &lt;ThresholdEffect&gt;
+
+  Qt3DExtras::Qt3DWindow win;
+  Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+  Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+  Kuesa::ThresholdEffect *thresholdEffect = new Kuesa::ThresholdEffect();
+
+  thresholdEffect-&gt;setThreshold(0.5f);
+
+  frameGraph-&gt;addPostProcessingEffect(thresholdEffect);
+
+  win-&gt;setRootEntity(root);
+  win-&gt;setActiveFrameGraph(forwardRenderer);
+
+  ..&#x2e;
+
+</pre>
 </div>
 <!-- @@@ThresholdEffect -->
 <div class="prop">
@@ -112,7 +134,7 @@
 <!-- $$$setInputTexture[overload1]$$$setInputTextureQt3DRender::QAbstractTexture* -->
 <h3 class="fn" id="setInputTexture"><a name="setInputTexture"></a><code>[override virtual] </code><span class="type">void</span> ThresholdEffect::<span class="name">setInputTexture</span>(<span class="type">Qt3DRender::QAbstractTexture</span> *<i>texture</i>)</h3>
 <p>Sets the input texture for the effect to <i>texture</i>.</p>
-<p><b>See also </b>AbstractPostProcessingEffect::setInputTexture.</p>
+<p><b>See also </b>AbstractPostProcessingEffect::setInputTexture().</p>
 <!-- @@@setInputTexture -->
 <!-- $$$threshold -->
 <h3 class="fn" id="threshold"><a name="threshold"></a><span class="type">float</span> ThresholdEffect::<span class="name">threshold</span>() const</h3>
