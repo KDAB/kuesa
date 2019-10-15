@@ -63,6 +63,27 @@ using namespace Kuesa;
  * Gaussian blur to the scene. The amount of blurring can be adjusted
  * using the blurPassCount property.
  *
+ * \badcode
+ * #include <Qt3DExtras/Qt3DWindow>
+ * #include <ForwardRenderer>
+ * #include <SceneEntity>
+ * #include <GaussianBlurEffect>
+ *
+ * Qt3DExtras::Qt3DWindow win;
+ * Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+ * Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+ * Kuesa::GaussianBlurEffect *blurEffect = new Kuesa::GaussianBlurEffect();
+ *
+ * blurEffect->setBlurPassCount(2);
+ *
+ * frameGraph->addPostProcessingEffect(blurEffect);
+ *
+ * win->setRootEntity(root);
+ * win->setActiveFrameGraph(forwardRenderer);
+ *
+ * ...
+ * \endcode
+ *
  * \section3 Example
  * \image fx/blur/blur.png
  * \caption Blur effect applied on a Kuesa scene.
@@ -79,6 +100,46 @@ using namespace Kuesa;
     This is the number of times to apply the blur filter. More passes result in
     stronger blurring effect but take longer to render.
 */
+
+/*!
+ * \qmltype GaussianBlurEffect
+ *  \inherits AbstractPostProcessingEffect
+ * \inqmlmodule Kuesa
+ * \since Kuesa 1.0
+ * \brief Post-processing effect for blurring the scene.
+ *
+ * GaussianBlurEffect is a post-processing effect that applies a
+ * Gaussian blur to the scene. The amount of blurring can be adjusted
+ * using the blurPassCount property.
+ *
+ * \badcode
+ * import Kuesa 1.1 as Kuesa
+ *
+ * Kuesa.SceneEnity {
+ *     id: root
+ *     components: [
+ *         RenderSettings {
+ *              Kuesa.ForwardRenderer {
+ *                  postProcessingEffects: [
+ *                      GaussianBlurEffect {
+ *                          blurPassCount: 2
+ *                      }
+ *                  ]
+ *              }
+ *         }
+ *     ]
+ *    ...
+ * }
+ * \endcode
+ *
+ * \section3 Example
+ * \image fx/blur/blur.png
+ * \caption Blur effect applied on a Kuesa scene.
+ *
+ * \note Increasing the number of passes too high may adversely impact
+ * rendering performance, especially on lower-end GPUs.
+ */
+
 
 /*!
     \qmlproperty int GaussianBlurEffect::blurPassCount

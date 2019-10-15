@@ -33,7 +33,7 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">BloomEffect Class</h1>
-<span class="small-subtitle">(<a href="kuesa-bloomeffect.html">Kuesa::BloomEffect</a>)<br/></span>
+<span class="small-subtitle">(<a href="qml-bloomeffect.html">Kuesa::BloomEffect</a>)<br/></span>
 <!-- $$$BloomEffect-brief -->
 <p>Post-processing effect for blurring the bright parts of a scene. <a href="#details">More...</a></p>
 <!-- @@@BloomEffect -->
@@ -80,6 +80,30 @@
 <h2 id="details">Detailed Description</h2>
 <p><a href="kuesa-bloomeffect.html">BloomEffect</a> is a post-processing effect that applies a blur to the brightest parts of scene to simulate a fuzzy glow.</p>
 <p>The effect can be configured to change the threshold defining the bright parts of the scene and the amount of blurring to apply.</p>
+<p>The <a href="kuesa-bloomeffect.html">BloomEffect</a> is a combination of the <a href="kuesa-thresholdeffect.html">ThresholdEffect</a> and the <a href="kuesa-gaussianblureffect.html">GaussianBlurEffect</a>.</p>
+<pre class="cpp plain">
+
+  #include &lt;Qt3DExtras/Qt3DWindow&gt;
+  #include &lt;ForwardRenderer&gt;
+  #include &lt;SceneEntity&gt;
+  #include &lt;BloomEffect&gt;
+
+  Qt3DExtras::Qt3DWindow win;
+  Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+  Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+  Kuesa::BloomEffect *bloomEffect = new Kuesa::BloomEffect();
+
+  bloomEffect-&gt;setThreshold(0.5f);
+  bloomEffect-&gt;setBlurPassCount(2);
+
+  frameGraph-&gt;addPostProcessingEffect(bloomEffect);
+
+  win-&gt;setRootEntity(root);
+  win-&gt;setActiveFrameGraph(forwardRenderer);
+
+  ..&#x2e;
+
+</pre>
 </div>
 <!-- @@@BloomEffect -->
 <div class="prop">

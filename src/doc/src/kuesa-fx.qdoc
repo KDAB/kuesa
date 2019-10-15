@@ -40,17 +40,17 @@
 
     Effects are provided by the following import:
     \qml
-import Kuesa.Effects 1.1
+    import Kuesa.Effects 1.1
     \endqml
     They can be added to postProcessingEffects in Kuesa.ForwardRenderer.
     For example, the following example first applies a threshold effect to the scene,
     followed by a bloom.
     \qml
-Kuesa.ForwardRenderer {
-    postProcessingEffects: [ thresholdFx, bloomFx ]
-}
-BloomEffect { id: bloom }
-ThresholdEffect { id: threshold }
+    Kuesa.ForwardRenderer {
+        postProcessingEffects: [ thresholdFx, bloomFx ]
+    }
+    BloomEffect { id: bloom }
+    ThresholdEffect { id: threshold }
     \endqml
 
     \section1 Effect gallery

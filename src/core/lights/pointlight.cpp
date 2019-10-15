@@ -34,11 +34,10 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 
 /*!
-  \class Kuesa::PointLight
-  \inmodule Kuesa
-  \since Kuesa 1.1
+    \class Kuesa::PointLight
+    \inmodule Kuesa
+    \since Kuesa 1.1
     \brief Encapsulate a Point Light object in a Qt 3D scene.
-
  */
 
 /*!
@@ -51,19 +50,14 @@ namespace Kuesa {
 */
 
 /*!
-  \fn Kuesa::PointLight::PointLight(Qt3DCore::QNode *parent)
-  Constructs a new PointLight with the specified \a parent.
- */
-
-/*!
-  \qmlproperty float Kuesa::PointLight::range
+    \qmlproperty float PointLight::range
     Specifies the destance at which the light intensity may be considered
     to have reached zero and has no effect. A range of 0 (default) indicates
     infinite range
 */
 
 /*!
-  \property float Kuesa::PointLight::range
+    \property PointLight::range
     Specifies the destance at which the light intensity may be considered
     to have reached zero and has no effect. A range of 0 (default) indicates
     infinite range
@@ -75,6 +69,9 @@ PointLightPrivate::PointLightPrivate()
     m_shaderData->setProperty("range", 0.0f);
 }
 
+/*!
+    Constructs a new PointLight with the specified \a parent.
+ */
 PointLight::PointLight(QNode *parent)
     : QAbstractLight(*new PointLightPrivate, parent)
 {

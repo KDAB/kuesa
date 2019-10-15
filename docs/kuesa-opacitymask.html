@@ -70,10 +70,33 @@
   vec4 pixelColor = vec4(inputColor.rgb, inputColor.a * maskColor.a)
 
 </pre>
-<p class="centerAlign"><img src="images/noalpha.png" alt="" /></p><p>A premultiplied alpha variant of the algorithm is also available which can be of use when combining Qt 3D / Kuesa content with 2D QtQuick content. It performs rendering doing:</p>
+<p class="centerAlign"><img src="images/noalpha.png" alt="" /></p><p>A premultiplied alpha variant of the algorithm is also available which can be of use when combining Qt 3D / Kuesa content with 2D QtQuick content (Scene3D). It performs rendering doing:</p>
 <pre class="cpp plain">
 
   vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
+
+</pre>
+<pre class="cpp plain">
+
+  #include &lt;Qt3DExtras/Qt3DWindow&gt;
+  #include &lt;ForwardRenderer&gt;
+  #include &lt;SceneEntity&gt;
+  #include &lt;OpacityMask&gt;
+
+  Qt3DExtras::Qt3DWindow win;
+  Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+  Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+  Kuesa::OpacityMask *opacityMask = new Kuesa::OpacityMask();
+
+  Qt3DRender::QTextureLoader *texture = new Qt3DRender::QTextureLoader();
+  texture-&gt;setSource(QUrl(&quot;file:///opacityMask.png&quot;));
+  opacityMask-&gt;setMask(texture);
+
+  frameGraph-&gt;addPostProcessingEffect(opacityMask);
+
+  win-&gt;setRootEntity(root);
+  win-&gt;setActiveFrameGraph(forwardRenderer);
+  ..&#x2e;
 
 </pre>
 <p class="centerAlign"><img src="images/alpha.png" alt="" /></p></div>

@@ -75,6 +75,29 @@
 <div class="descr">
 <h2 id="details">Detailed Description</h2>
 <p><a href="kuesa-depthoffieldeffect.html">DepthOfFieldEffect</a> implements an effect which simulates a more realistic camera behaviour, where only part of the scene is in-focus, and very far &amp; very close objects are out-of-focus and thus blurred.</p>
+<pre class="cpp plain">
+
+  #include &lt;Qt3DExtras/Qt3DWindow&gt;
+  #include &lt;ForwardRenderer&gt;
+  #include &lt;SceneEntity&gt;
+  #include &lt;DepthOfFieldEffect&gt;
+
+  Qt3DExtras::Qt3DWindow win;
+  Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+  Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+  Kuesa::DepthOfFieldEffect *dofEffect = new Kuesa::DepthOfFieldEffect();
+
+  dofEffect-&gt;setRadius(10.5f);
+  dofEffect-&gt;setFocusDistance(100.0f);
+  dofEffect-&gt;setFocusRange(25.0f);
+
+  frameGraph-&gt;addPostProcessingEffect(dofEffect);
+
+  win-&gt;setRootEntity(root);
+  win-&gt;setActiveFrameGraph(forwardRenderer);
+  ..&#x2e;
+
+</pre>
 <a name="example"></a>
 <h5 id="example">Example</h5>
 <p class="centerAlign"><img src="images/dof_distance_5.png" alt="" /></p><p class="figCaption">Depth-of-field effect applied on a Kuesa scene.</p>

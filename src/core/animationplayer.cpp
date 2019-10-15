@@ -382,7 +382,7 @@ void AnimationPlayer::addTarget(Qt3DCore::QNode *target)
 }
 
 /*!
- * \brief AnimationPlayer::removeTarget removes a node from the list of targets
+ * Removes a node \a target from the list of targets
  *
  * \sa AnimationPlayer::addTarget
  */

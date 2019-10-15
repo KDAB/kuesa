@@ -120,6 +120,30 @@ using namespace Kuesa;
  * linear color space. This ForwardRenderer adds a final gamma correction to
  * perform the final conversion to sRGB, through the use of the
  * GammaCorrectionEffect, as the last step of this pipeline.
+ *
+ * \badcode
+ * #include <Qt3DExtras/Qt3DWindow>
+ * #include <Qt3DRender/QCamera>
+ * #include <ForwardRenderer>
+ * #include <SceneEntity>
+ * #include <BloomEffect>
+ *
+ * Qt3DExtras::Qt3DWindow win;
+ * Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+ * Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+ * Kuesa::BloomEffect *bloomEffect = new Kuesa::BloomEffect();
+ * Qt3DRender::QCamera *camera = new Qt3DRender::QCamera();
+ *
+ * frameGraph->setCamera(camera);
+ * frameGraph->setFrustumCulling(true);
+ * frameGraph->setClearColor(QColor(Qt::red));
+ * frameGraph->addPostProcessingEffect(bloomEffect);
+ *
+ * win->setRootEntity(root);
+ * win->setActiveFrameGraph(forwardRenderer);
+ *
+ * ...
+ * \endcode
  */
 
 /*!
@@ -183,6 +207,36 @@ using namespace Kuesa;
  * linear color space. This ForwardRenderer adds a final gamma correction to
  * perform the final conversion to sRGB, through the use of the
  * GammaCorrectionEffect, as the last step of this pipeline.
+ *
+ * \badcode
+ * import Kuesa 1.1 as Kuesa
+ * import Qt3D.Core 2.12
+ * import Qt3D.Render 2.12
+ *
+ * Kuesa.SceneEnity {
+ *     id: root
+ *
+ *     Camera { id: sceneCamera }
+ *
+ *     components: [
+ *         RenderSettings {
+ *              Kuesa.ForwardRenderer {
+ *                  clearColor: "red"
+ *                  camera: sceneCamera
+ *                  frustumCulling: true
+ *                  backToFrontSorting: true
+ *                  postProcessingEffects: [
+ *                      BloomEffect {
+ *                          threshold: 0.5
+ *                          blurPassCount: 2
+ *                      }
+ *                  ]
+ *              }
+ *         }
+ *     ]
+ *    ...
+ * }
+ * \endcode
  */
 
 /*!
@@ -195,18 +249,6 @@ using namespace Kuesa;
     \qmlproperty Surface Kuesa::ForwardRenderer::renderSurface
 
     Holds the surface where rendering will occur.
-*/
-
-/*!
-    \property Kuesa::ForwardRenderer::externalRenderTargetSize
-
-    Holds the size of the external render target.
-*/
-
-/*!
-    \qmlproperty size Kuesa::ForwardRenderer::externalRenderTargetSize
-
-    Holds the size of the external render target.
 */
 
 /*!

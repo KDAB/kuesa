@@ -3,15 +3,15 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!-- opacitymask.cpp -->
-  <title>OpacityMask QML Type | Kuesa 1.1</title>
+<!-- bloomeffect.cpp -->
+  <title>BloomEffect QML Type | Kuesa 1.1</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
 <div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
 <li><a href="kuesa.html">Kuesa</a></li>
 <li><a href="kuesa-qml.html">QML Types</a></li>
-<li>OpacityMask QML Type</li>
+<li>BloomEffect QML Type</li>
 <li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
         </tr></table>
       </div>
@@ -28,36 +28,27 @@
 </ul>
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
-<h1 class="title">OpacityMask QML Type</h1>
+<h1 class="title">BloomEffect QML Type</h1>
 <span class="subtitle"></span>
-<!-- $$$OpacityMask-brief -->
-<p>Masks onscreen content based on the alpha color value of a mask texture. <a href="#details">More...</a></p>
-<!-- @@@OpacityMask -->
+<!-- $$$BloomEffect-brief -->
+<p>Post-processing effect for blurring the bright parts of a scene. <a href="#details">More...</a></p>
+<!-- @@@BloomEffect -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  .</td></tr></table></div><ul>
-<li><a href="qml-opacitymask-members.html">List of all members, including inherited members</a></li>
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  .</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr></table></div><ul>
+<li><a href="qml-bloomeffect-members.html">List of all members, including inherited members</a></li>
 </ul>
 <a name="properties"></a>
 <h2 id="properties">Properties</h2>
 <ul>
-<li class="fn"><b><b><a href="qml-opacitymask.html#mask-prop">mask</a></b></b> : Qt3DRender.AbstractTexture</li>
-<li class="fn"><b><b><a href="qml-opacitymask.html#premultipliedAlpha-prop">premultipliedAlpha</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-bloomeffect.html#blurPassCount-prop">blurPassCount</a></b></b> : int</li>
+<li class="fn"><b><b><a href="qml-bloomeffect.html#threshold-prop">threshold</a></b></b> : real</li>
 </ul>
-<!-- $$$OpacityMask-description -->
+<!-- $$$BloomEffect-description -->
 <a name="details"></a>
 <h2 id="details">Detailed Description</h2>
-<p>Given an RGBA mask texture, content of the backbuffer will be rendered as:</p>
-<pre class="cpp plain">
-
-  vec4 pixelColor = vec4(inputColor.rgb, inputColor.a * maskColor.a)
-
-</pre>
-<p class="centerAlign"><img src="images/noalpha.png" alt="" /></p><p>A premultiplied alpha variant of the algorithm is also available which can be of use when combining Qt 3D / Kuesa content with 2D QtQuick content (Scene3D). It performs rendering doing:</p>
-<pre class="cpp plain">
-
-  vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
-
-</pre>
+<p><a href="qml-bloomeffect.html">BloomEffect</a> is a post-processing effect that applies a blur to the brightest parts of scene to simulate a fuzzy glow.</p>
+<p>The effect can be configured to change the threshold defining the bright parts of the scene and the amount of blurring to apply.</p>
+<p>The <a href="qml-bloomeffect.html">BloomEffect</a> is a combination of the <a href="qml-thresholdeffect.html">ThresholdEffect</a> and the <a href="qml-gaussianblureffect.html">GaussianBlurEffect</a>.</p>
 <pre class="cpp plain">
 
   import Kuesa 1.1 as Kuesa
@@ -66,43 +57,43 @@
       id: root
       components: [
           RenderSettings {
-              Kuesa.ForwardRenderer {
-                  postProcessingEffects: [
-                      OpacityMask {
-                          mask: TextureLoader {
-                              source: &quot;:/opacity_mask.png&quot;;
-                              generateMipMaps: false
-                          }
-                      }
-                  ]
-              }
+               Kuesa.ForwardRenderer {
+                   postProcessingEffects: [
+                       BloomEffect {
+                           threshold: 0.5
+                           blurPassCount: 2
+                       }
+                   ]
+               }
           }
       ]
-      ..&#x2e;
+     ..&#x2e;
   }
 
 </pre>
-<p class="centerAlign"><img src="images/alpha.png" alt="" /></p><!-- @@@OpacityMask -->
+<!-- @@@BloomEffect -->
 <h2>Property Documentation</h2>
-<!-- $$$mask -->
+<!-- $$$blurPassCount -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
 <tr valign="top" class="odd" id="">
 <td class="tblQmlPropNode"><p>
-<a name="mask-prop"></a><span class="name">mask</span> : <span class="type">Qt3DRender</span>.<span class="type">AbstractTexture</span></p></td></tr>
+<a name="blurPassCount-prop"></a><span class="name">blurPassCount</span> : <span class="type">int</span></p></td></tr>
 </table></div>
-</div><div class="qmldoc"><p>The RGBA texture to use as a mask.</p>
-</div></div><!-- @@@mask -->
+</div><div class="qmldoc"><p>the number of blur passes</p>
+<p>This is the number of times to apply the blur to the bright parts of the scene. More passes result in stronger blurring effect but take longer to render.</p>
+</div></div><!-- @@@blurPassCount -->
 <br/>
-<!-- $$$premultipliedAlpha -->
+<!-- $$$threshold -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
 <tr valign="top" class="odd" id="">
 <td class="tblQmlPropNode"><p>
-<a name="premultipliedAlpha-prop"></a><span class="name">premultipliedAlpha</span> : <span class="type">bool</span></p></td></tr>
+<a name="threshold-prop"></a><span class="name">threshold</span> : <span class="type">real</span></p></td></tr>
 </table></div>
-</div><div class="qmldoc"><p>Specifies whether the masking should be performed using premultipliedAlpha. This can be useful when combining Kuesa and QtQuick with a Scene3D element. It is false by default.</p>
-</div></div><!-- @@@premultipliedAlpha -->
+</div><div class="qmldoc"><p>the brightness level determining which pixels the effect are applied to</p>
+<p>This value determines how bright something has to be for the bloom effect to be applied to it. Any pixels below the threshold are ignored.</p>
+</div></div><!-- @@@threshold -->
 <br/>
         </div>
        </div>
