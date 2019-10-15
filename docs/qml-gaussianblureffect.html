@@ -31,7 +31,7 @@
 <h1 class="title">GaussianBlurEffect QML Type</h1>
 <span class="subtitle"></span>
 <!-- $$$GaussianBlurEffect-brief -->
-<p>Post-processing effect for blurring the scene. * * <a href="qml-gaussianblureffect.html">GaussianBlurEffect</a> is a post-processing effect that applies a * Gaussian blur to the scene. The amount of blurring can be adjusted * using the <a href="qml-gaussianblureffect.html#blurPassCount-prop">blurPassCount</a> property. * * *. <a href="#details">More...</a></p>
+<p>Post-processing effect for blurring the scene. <a href="#details">More...</a></p>
 <!-- @@@GaussianBlurEffect -->
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  .</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr></table></div><ul>
@@ -45,36 +45,32 @@
 <!-- $$$GaussianBlurEffect-description -->
 <a name="details"></a>
 <h2 id="details">Detailed Description</h2>
-<p>* * * * *</p>
+<p><a href="qml-gaussianblureffect.html">GaussianBlurEffect</a> is a post-processing effect that applies a Gaussian blur to the scene. The amount of blurring can be adjusted using the <a href="qml-gaussianblureffect.html#blurPassCount-prop">blurPassCount</a> property.</p>
 <pre class="cpp plain">
 
-  * import Kuesa 1.1 as Kuesa
-  *
-  * Kuesa.SceneEnity {
-  *     id: root
-  *     components: [
-  *         RenderSettings {
-  *              Kuesa.ForwardRenderer {
-  *                  postProcessingEffects: [
-  *                      GaussianBlurEffect {
-  *                          blurPassCount: 2
-  *                      }
-  *                  ]
-  *              }
-  *         }
-  *     ]
-  *    ..&#x2e;
-  * }
-  *
+  import Kuesa 1.1 as Kuesa
+
+  Kuesa.SceneEnity {
+      id: root
+      components: [
+          RenderSettings {
+               Kuesa.ForwardRenderer {
+                   postProcessingEffects: [
+                       GaussianBlurEffect {
+                           blurPassCount: 2
+                       }
+                   ]
+               }
+          }
+      ]
+     ..&#x2e;
+  }
 
 </pre>
-<p>* *</p>
 <a name="example"></a>
 <h4 id="example">Example</h4>
-<p>*</p>
-<p class="centerAlign"><img src="images/blur.png" alt="" /></p><p>*</p>
-<p class="figCaption">Blur effect applied on a Kuesa scene. * *</p>
-<p><b>Note: </b>Increasing the number of passes too high may adversely impact * rendering performance, especially on lower-end GPUs.</p><!-- @@@GaussianBlurEffect -->
+<p class="centerAlign"><img src="images/blur.png" alt="" /></p><p class="figCaption">Blur effect applied on a Kuesa scene.</p>
+<p><b>Note: </b>Increasing the number of passes too high may adversely impact rendering performance, especially on lower-end GPUs.</p><!-- @@@GaussianBlurEffect -->
 <h2>Property Documentation</h2>
 <!-- $$$blurPassCount -->
 <div class="qmlitem"><div class="qmlproto">

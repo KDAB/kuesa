@@ -31,7 +31,7 @@
 <h1 class="title">BloomEffect QML Type</h1>
 <span class="subtitle"></span>
 <!-- $$$BloomEffect-brief -->
-<p>Post-processing effect for blurring the bright parts of a scene. * * <a href="qml-bloomeffect.html">BloomEffect</a> is a post-processing effect that applies a blur to the brightest * parts of scene to simulate a fuzzy glow. * * The effect can be configured to change the threshold defining the bright parts of * the scene and the amount of blurring to apply. * * The <a href="qml-bloomeffect.html">BloomEffect</a> is a combination of the <a href="qml-thresholdeffect.html">ThresholdEffect</a> and the * <a href="qml-gaussianblureffect.html">GaussianBlurEffect</a>. * *. <a href="#details">More...</a></p>
+<p>Post-processing effect for blurring the bright parts of a scene. <a href="#details">More...</a></p>
 <!-- @@@BloomEffect -->
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  .</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr></table></div><ul>
@@ -46,28 +46,29 @@
 <!-- $$$BloomEffect-description -->
 <a name="details"></a>
 <h2 id="details">Detailed Description</h2>
-<p>* * * *</p>
+<p><a href="qml-bloomeffect.html">BloomEffect</a> is a post-processing effect that applies a blur to the brightest parts of scene to simulate a fuzzy glow.</p>
+<p>The effect can be configured to change the threshold defining the bright parts of the scene and the amount of blurring to apply.</p>
+<p>The <a href="qml-bloomeffect.html">BloomEffect</a> is a combination of the <a href="qml-thresholdeffect.html">ThresholdEffect</a> and the <a href="qml-gaussianblureffect.html">GaussianBlurEffect</a>.</p>
 <pre class="cpp plain">
 
-  * import Kuesa 1.1 as Kuesa
-  *
-  * Kuesa.SceneEnity {
-  *     id: root
-  *     components: [
-  *         RenderSettings {
-  *              Kuesa.ForwardRenderer {
-  *                  postProcessingEffects: [
-  *                      BloomEffect {
-  *                          threshold: 0.5
-  *                          blurPassCount: 2
-  *                      }
-  *                  ]
-  *              }
-  *         }
-  *     ]
-  *    ..&#x2e;
-  * }
-  *
+  import Kuesa 1.1 as Kuesa
+
+  Kuesa.SceneEnity {
+      id: root
+      components: [
+          RenderSettings {
+               Kuesa.ForwardRenderer {
+                   postProcessingEffects: [
+                       BloomEffect {
+                           threshold: 0.5
+                           blurPassCount: 2
+                       }
+                   ]
+               }
+          }
+      ]
+     ..&#x2e;
+  }
 
 </pre>
 <!-- @@@BloomEffect -->

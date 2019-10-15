@@ -95,7 +95,7 @@ using namespace Kuesa;
 
 /*!
  * \qmltype BloomEffect
-   \inherits AbstractPostProcessingEffect
+ * \inherits AbstractPostProcessingEffect
  * \inqmlmodule Kuesa
  * \since Kuesa 1.0
  * \brief Post-processing effect for blurring the bright parts of a scene.

@@ -103,7 +103,7 @@ using namespace Kuesa;
 
 /*!
  * \qmltype GaussianBlurEffect
-*  \inherits AbstractPostProcessingEffect
+ *  \inherits AbstractPostProcessingEffect
  * \inqmlmodule Kuesa
  * \since Kuesa 1.0
  * \brief Post-processing effect for blurring the scene.
@@ -112,7 +112,7 @@ using namespace Kuesa;
  * Gaussian blur to the scene. The amount of blurring can be adjusted
  * using the blurPassCount property.
  *
- * * \badcode
+ * \badcode
  * import Kuesa 1.1 as Kuesa
  *
  * Kuesa.SceneEnity {

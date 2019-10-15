@@ -103,7 +103,7 @@ using namespace Kuesa;
 
 /*!
  * \qmltype ThresholdEffect
-   \inherits AbstractPostProcessingEffect
+ * \inherits AbstractPostProcessingEffect
  * \inqmlmodule Kuesa
  * \since Kuesa 1.0
  * \brief Post-processing effect showing only pixels brighter than a specified
