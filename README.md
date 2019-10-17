@@ -144,3 +144,17 @@ http://mmikkelsen3d.blogspot.com/
 
 A python binding it available, based on PySide 2. Please check the build instructions
 in the ``src/python`` and the sample application in ``examples/kuesa/python``.
+
+## Support
+
+Please file issues [here](https://github.com/KDAB/Kuesa/issues)
+
+## About KDAB
+
+Kuesa is maintained by Klarälvdalens Datakonsult AB (KDAB).
+
+KDAB, the Qt experts, provide consulting and mentoring for developing
+Qt applications from scratch and in porting from all popular and legacy
+frameworks to Qt. We continue to help develop parts of Qt and are one
+of the major contributors to the Qt Project. We can give advanced or
+standard trainings anywhere around the globe.
