@@ -103,6 +103,7 @@ SettingsDialog::SettingsDialog(MainWindow *parent)
     ui->toneMappingCombo->addItem(QStringLiteral("None"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::None));
     ui->toneMappingCombo->addItem(QStringLiteral("Reinhard"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::Reinhard));
     ui->toneMappingCombo->addItem(QStringLiteral("Filmic"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::Filmic));
+    ui->toneMappingCombo->addItem(QStringLiteral("Uncharted"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::Uncharted));
 
     // Initial UI update
     ui->exposureLabel->setText(QStringLiteral("Exposure(%1):)").arg(m_exposure, 0, 'f', 1));
