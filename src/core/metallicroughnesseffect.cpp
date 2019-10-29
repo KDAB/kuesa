@@ -107,7 +107,11 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
 
     const auto vertexShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"));
+#if (QT_VERSION >= QT_VERSION_CHECK(5,13,2))
+    const auto fragmentShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness_unroll.frag.json"));
+#else
     const auto fragmentShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.frag.json"));
+#endif
 
     const QByteArray zFillFragmentShaderCode[] = {
         QByteArray(R"(
