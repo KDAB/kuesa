@@ -485,7 +485,7 @@ Qt3DRender::QRenderTarget *createRenderTarget(RenderTargetFlags flags,
     // This requires support for extension OES_texture_half_float on ES2 platforms
     colorTexture->setFormat((flags & RenderTargetFlag::HalfFloatAttachments)
                                     ? Qt3DRender::QAbstractTexture::RGBA16F
-                                    : Qt3DRender::QAbstractTexture::RGBA8U);
+                                    : Qt3DRender::QAbstractTexture::RGBA8_UNorm);
     colorTexture->setGenerateMipMaps(false);
     colorTexture->setSize(surfaceSize.width(), surfaceSize.height());
     auto colorOutput = new Qt3DRender::QRenderTargetOutput;
