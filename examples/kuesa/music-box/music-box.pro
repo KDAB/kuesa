@@ -122,7 +122,7 @@ android {
 
     windows {
         QMAKE_POST_LINK += $$quote(cmd /c copy /y \"$$PWD/assets/samples\" \"$$RES_PWD/\" $$escape_expand(\n\t))
-        RC_ICONS = ../../../resources/kuesa.ico
+        RC_ICONS = ../shared-utils/kuesa.ico
         DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
     } else:ios {
         envmaps_dir = ../assets/envmaps
@@ -139,7 +139,7 @@ android {
         OBJECTIVE_SOURCES += ios/iosutils.mm
         QMAKE_ASSET_CATALOGS += ios/Images.xcassets
     } else:macos {
-        ICON = ../../../resources/kuesa.icns
+        ICON = ../shared-utils/kuesa.icns
         OTHER_FILES += Info-macos.plist
         QMAKE_INFO_PLIST = Info-macos.plist
     } else {
@@ -152,6 +152,10 @@ packagesExist(portaudio-2.0) {
     PKGCONFIG += portaudio-2.0
     DEFINES += KUESA_HAS_AUDIO=1
 }
+
+target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+target.files = $$PWD/*
+INSTALLS += target
 
 OTHER_FILES += doc/src/* \
     ../assets/models/music-box/music-box.qrc \

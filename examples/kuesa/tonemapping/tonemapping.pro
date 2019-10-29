@@ -83,7 +83,7 @@ android {
 
     QMAKE_BUNDLE_DATA += helmet envmaps
 
-    ICON = ../../../resources/kuesa.icns
+    ICON = ../shared-utils/kuesa.icns
     OTHER_FILES += Info-macos.plist
     QMAKE_INFO_PLIST = Info-macos.plist
 } else {
@@ -99,7 +99,7 @@ android {
     }
 
     windows {
-        RC_ICONS = ../../../resources/kuesa.ico
+        RC_ICONS = ../shared-utils/kuesa.ico
         DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
     }
 
@@ -123,6 +123,7 @@ android {
 }
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+target.files = $$PWD/*
 INSTALLS += target
 
 OTHER_FILES += doc/src/*

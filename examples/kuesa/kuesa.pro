@@ -28,15 +28,14 @@ TEMPLATE = subdirs
 
 qtHaveModule(quick) {
     SUBDIRS += \
-        shared-utils \
         car-scene \
         tonemapping \
         manyducks \
         music-box
-
-    for(subdir, SUBDIRS) {
-        !equals(subdir, shared-utils) {
-            $${subdir}.depends += shared-utils
-        }
-    }
 }
+
+demo_assets.path = $$[QT_INSTALL_EXAMPLES]/kuesa/assets
+demo_assets.files = assets/envmaps assets/models assets/resources
+demo_shared.path = $$[QT_INSTALL_EXAMPLES]/kuesa
+demo_shared.files = shared-utils
+INSTALLS += demo_assets demo_shared

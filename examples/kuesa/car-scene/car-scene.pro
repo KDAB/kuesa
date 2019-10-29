@@ -110,7 +110,7 @@ android {
 
     QMAKE_BUNDLE_DATA += car envmaps
 
-    ICON = ../../../resources/kuesa.icns
+    ICON = ../shared-utils/kuesa.icns
     OTHER_FILES += Info-macos.plist
     QMAKE_INFO_PLIST = Info-macos.plist
 } else {
@@ -131,7 +131,7 @@ android {
         ../assets/envmaps/neuer_zollhof/envmap-neuer-zollhof-16f.qrc
 
     windows {
-        RC_ICONS = ../../../resources/kuesa.ico
+        RC_ICONS = ../shared-utils/kuesa.ico
         DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
     }
 
@@ -151,6 +151,7 @@ android {
 }
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+target.files = $$PWD/*
 INSTALLS += target
 
 OTHER_FILES += doc/src/*
