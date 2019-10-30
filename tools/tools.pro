@@ -28,6 +28,8 @@ TEMPLATE = subdirs
 
 include($$OUT_PWD/qtkuesa-config.pri)
 
+SUBDIRS = qtc_templates
+
 QT_FOR_CONFIG += kuesa
 qtConfig(kuesa-tools) {
 
@@ -45,5 +47,4 @@ qtConfig(kuesa-tools) {
             cubemaptooctahedralmap
     }
 }
-
 }

@@ -11,14 +11,17 @@ PACKAGE_PREFIX = $$basename(PACKAGE_PATH)
 PACKAGE_PATH = $$clean_path($$PACKAGE_PATH/..)
 
 PACKAGE_LIB_FILE=$$shell_path($$OUT_PWD/$${PACKAGE_NAME}-lib-$${QT_VERSION}-$${PACKAGE_PREFIX}.7z)
+PACKAGE_QTC_TEMPLATES_FILE=$$shell_path($$OUT_PWD/$${PACKAGE_NAME}-qtc_templates-1.0.0-all.7z)
 lib_package.target = lib_package
 lib_package.depends = sub-src
 lib_package.commands = $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install) $$CMD_SEP \
                        $$QMAKE_DEL_FILE $$shell_path($${PACKAGE_LIB_FILE}) $$CMD_SEP \
                        $(MAKE) -f $(MAKEFILE) INSTALL_ROOT=$$shell_path($$fixedPath($$OUT_PWD/install)) install && \
                        7z a -bb3 -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on $${PACKAGE_LIB_FILE} $$shell_path($$PACKAGE_PATH) && \
+                       7z a -bb3 -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on $${PACKAGE_QTC_TEMPLATES_FILE} $$shell_path($$OUT_PWD/install/Tools) && \
                        $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install) $$CMD_SEP \
-                       echo "Generated package file: $${PACKAGE_LIB_FILE}"
+                       echo "Generated package file: $${PACKAGE_LIB_FILE}" $$CMD_SEP \
+                       echo "Generated package file: $${PACKAGE_QTC_TEMPLATES_FILE}"
 
 DOCS_PATH = $$OUT_PWD/install_docs/$$fixedPath($$[QT_INSTALL_DOCS])
 DOCS_PATH = $$clean_path($$DOCS_PATH/..)
