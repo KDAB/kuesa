@@ -228,6 +228,23 @@ bool MaterialInspector::opaque() const
     return true;
 }
 
+bool MaterialInspector::usesSkinning() const
+{
+    if (!m_materialProperties)
+        return false;
+    auto material = m_materialProperties->clientMaterials();
+    if (material.size()) {
+        auto effect = material[0]->effect();
+        Kuesa::MetallicRoughnessEffect *pbrEffect = qobject_cast<Kuesa::MetallicRoughnessEffect *>(effect);
+        if (pbrEffect)
+            return pbrEffect->useSkinning();
+        Kuesa::UnlitEffect *unlitEffect = qobject_cast<Kuesa::UnlitEffect *>(effect);
+        if (unlitEffect)
+            return unlitEffect->useSkinning();
+    }
+    return false;
+}
+
 bool MaterialInspector::hasTextures() const
 {
     const auto pbrProperties = qobject_cast<Kuesa::MetallicRoughnessProperties *>(m_materialProperties);

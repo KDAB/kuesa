@@ -78,7 +78,7 @@ public:
     QMatrix3x3 textureTransform() const;
     bool doubleSided() const;
     bool opaque() const;
-
+    bool usesSkinning() const;
     bool hasTextures() const;
 
 Q_SIGNALS:
