@@ -11,14 +11,12 @@ PACKAGE_PREFIX = $$basename(PACKAGE_PATH)
 PACKAGE_PATH = $$clean_path($$PACKAGE_PATH/..)
 
 PACKAGE_LIB_FILE=$$shell_path($$OUT_PWD/$${PACKAGE_NAME}-lib-$${QT_VERSION}-$${PACKAGE_PREFIX}.7z)
-PACKAGE_QTC_TEMPLATES_FILE=$$shell_path($$OUT_PWD/$${PACKAGE_NAME}-qtc_templates-1.0.0-all.7z)
 lib_package.target = lib_package
 lib_package.depends = sub-src
 lib_package.commands = $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install) $$CMD_SEP \
                        $$QMAKE_DEL_FILE $$shell_path($${PACKAGE_LIB_FILE}) $$CMD_SEP \
                        $(MAKE) -f $(MAKEFILE) INSTALL_ROOT=$$shell_path($$fixedPath($$OUT_PWD/install)) install && \
                        7z a -bb3 -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on $${PACKAGE_LIB_FILE} $$shell_path($$PACKAGE_PATH) && \
-                       7z a -bb3 -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on $${PACKAGE_QTC_TEMPLATES_FILE} $$shell_path($$OUT_PWD/install/Tools) && \
                        $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install) $$CMD_SEP \
                        echo "Generated package file: $${PACKAGE_LIB_FILE}" $$CMD_SEP \
                        echo "Generated package file: $${PACKAGE_QTC_TEMPLATES_FILE}"
@@ -47,7 +45,17 @@ examples_package.commands = $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install_exam
                        $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install_examples) $$CMD_SEP \
                        echo "Generated package file: $${PACKAGE_EXAMPLES_FILE}"
 
-packages.target = packages
-packages.depends = lib_package doc_package examples_package
+PACKAGE_TEMPLATES_FILE=$$shell_path($$OUT_PWD/$${PACKAGE_NAME}-qtc_templates-1.0.0-all.7z)
+templates_package.target = templates_package
+templates_package.depends = sub-examples
+templates_package.commands = $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install_templates) $$CMD_SEP \
+                       $$QMAKE_DEL_FILE $$shell_path($${PACKAGE_TEMPLATES_FILE}) $$CMD_SEP \
+                       $(MAKE) -f $(MAKEFILE) INSTALL_ROOT=$$shell_path($$fixedPath($$OUT_PWD/install_templates)) install && \
+                       7z a -bb3 -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on $${PACKAGE_TEMPLATES_FILE} $$shell_path($$OUT_PWD/install_templates/Tools) && \
+                       $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install_templates) $$CMD_SEP \
+                       echo "Generated package file: $${PACKAGE_TEMPLATES_FILE}"
 
-QMAKE_EXTRA_TARGETS *= lib_package doc_package examples_package packages
+packages.target = packages
+packages.depends = lib_package doc_package examples_package templates_package
+
+QMAKE_EXTRA_TARGETS *= lib_package doc_package examples_package templates_package packages
