@@ -18,8 +18,7 @@ lib_package.commands = $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install) $$CMD_SE
                        $(MAKE) -f $(MAKEFILE) INSTALL_ROOT=$$shell_path($$fixedPath($$OUT_PWD/install)) install && \
                        7z a -bb3 -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on $${PACKAGE_LIB_FILE} $$shell_path($$PACKAGE_PATH) && \
                        $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install) $$CMD_SEP \
-                       echo "Generated package file: $${PACKAGE_LIB_FILE}" $$CMD_SEP \
-                       echo "Generated package file: $${PACKAGE_QTC_TEMPLATES_FILE}"
+                       echo "Generated package file: $${PACKAGE_LIB_FILE}"
 
 DOCS_PATH = $$OUT_PWD/install_docs/$$fixedPath($$[QT_INSTALL_DOCS])
 DOCS_PATH = $$clean_path($$DOCS_PATH/..)
@@ -47,7 +46,7 @@ examples_package.commands = $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install_exam
 
 PACKAGE_TEMPLATES_FILE=$$shell_path($$OUT_PWD/$${PACKAGE_NAME}-qtc_templates-1.0.0-all.7z)
 templates_package.target = templates_package
-templates_package.depends = sub-examples
+templates_package.depends = sub-src
 templates_package.commands = $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install_templates) $$CMD_SEP \
                        $$QMAKE_DEL_FILE $$shell_path($${PACKAGE_TEMPLATES_FILE}) $$CMD_SEP \
                        $(MAKE) -f $(MAKEFILE) INSTALL_ROOT=$$shell_path($$fixedPath($$OUT_PWD/install_templates)) install && \
