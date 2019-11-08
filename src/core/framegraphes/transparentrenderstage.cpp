@@ -67,10 +67,13 @@ TransparentRenderStage::TransparentRenderStage(Qt3DCore::QNode *parent)
     blendArgs->setDestinationRgb(Qt3DRender::QBlendEquationArguments::OneMinusSourceAlpha);
     blendArgs->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::One);
     auto msaa = new Qt3DRender::QMultiSampleAntiAliasing;
+    auto noDepthWrite = new Qt3DRender::QNoDepthMask;
 
     states->addRenderState(msaa);
     states->addRenderState(blendState);
     states->addRenderState(blendArgs);
+    states->addRenderState(noDepthWrite);
+
 
     m_alphaSortPolicy = new Qt3DRender::QSortPolicy(states);
     m_alphaSortPolicy->setSortTypes(QVector<Qt3DRender::QSortPolicy::SortType>
