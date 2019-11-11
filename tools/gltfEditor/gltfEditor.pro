@@ -116,8 +116,6 @@ macos {
 
     OBJECTIVE_SOURCES += macUtils.mm
     LIBS += -framework AppKit
-
-    RESOURCES += \
 }
 
 windows {
