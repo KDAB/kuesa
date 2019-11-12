@@ -46,13 +46,14 @@ class KUESASHARED_EXPORT AnimationPlayer : public Qt3DCore::QNode
 {
     Q_OBJECT
     Q_PROPERTY(Kuesa::SceneEntity *sceneEntity READ sceneEntity WRITE setSceneEntity NOTIFY sceneEntityChanged)
-    Q_PROPERTY(Status status READ status NOTIFY statusChanged REVISION 11)
+    Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString clip READ clip WRITE setClip NOTIFY clipChanged)
     Q_PROPERTY(QString mapper READ mapper WRITE setMapper NOTIFY mapperChanged)
     Q_PROPERTY(bool running READ isRunning WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(int loops READ loopCount WRITE setLoopCount NOTIFY loopCountChanged)
     Q_PROPERTY(Qt3DAnimation::QClock *clock READ clock WRITE setClock NOTIFY clockChanged)
     Q_PROPERTY(float normalizedTime READ normalizedTime WRITE setNormalizedTime NOTIFY normalizedTimeChanged)
+    Q_PROPERTY(float duration READ duration NOTIFY durationChanged REVISION 1)
 public:
     enum Loops { Infinite = -1 };
     Q_ENUM(Loops) // LCOV_EXCL_LINE
@@ -75,6 +76,7 @@ public:
     int loopCount() const;
     Qt3DAnimation::QClock *clock() const;
     float normalizedTime() const;
+    float duration() const;
 
     QVector<Qt3DCore::QNode *> targets() const;
     void addTarget(Qt3DCore::QNode *target);
@@ -101,6 +103,7 @@ Q_SIGNALS:
     void loopCountChanged(int loops);
     void clockChanged(Qt3DAnimation::QClock *clock);
     void normalizedTimeChanged(float index);
+    void durationChanged(float duration);
 
 private:
     void matchClipAndTargets();
