@@ -40,6 +40,7 @@ examples_package.depends = sub-examples
 examples_package.commands = $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install_examples) $$CMD_SEP \
                        $$QMAKE_DEL_FILE $$shell_path($${PACKAGE_EXAMPLES_FILE}) $$CMD_SEP \
                        $(MAKE) -f $(MAKEFILE) INSTALL_ROOT=$$shell_path($$fixedPath($$OUT_PWD/install_examples)) sub-examples-install_subtargets && \
+                       find $$shell_path($$EXAMPLES_PATH) -executable -type f | xargs rm && \
                        7z a -bb3 -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on $$shell_path($${PACKAGE_EXAMPLES_FILE}) $$shell_path($$EXAMPLES_PATH) && \
                        $$QMAKE_DEL_TREE $$shell_path($$OUT_PWD/install_examples) $$CMD_SEP \
                        echo "Generated package file: $${PACKAGE_EXAMPLES_FILE}"
