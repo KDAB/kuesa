@@ -439,7 +439,8 @@ GLFeatures checkGLFeatures()
         features.hasMultisampledTexture = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 1)
                                                             : (format.majorVersion() >= 3)) ||
                 ctx.hasExtension(QByteArray("ARB_texture_multisample"));
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 5) || QT_VERSION <= QT_VERSION_CHECK(5, 13, 2)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 5) \
+    || (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0) && QT_VERSION <= QT_VERSION_CHECK(5, 13, 1))
     // Blitting bug in Qt3D prevents correct depth blitting with multisampled FBO
     // Fixed for 5.12.6/5.13/2 with https://codereview.qt-project.org/c/qt/qt3d/+/276774
 #else
