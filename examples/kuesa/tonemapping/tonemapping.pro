@@ -89,14 +89,7 @@ android {
 } else {
     RCC_BINARY_SOURCES += \
         ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc
-
-    RCC_BINARY_SOURCES += \
-        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
-
-    qtConfig(opengles2) {
-        RCC_BINARY_SOURCES += \
-            ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
-    }
+        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 
     windows {
         RC_ICONS = ../shared-utils/kuesa.ico
@@ -118,7 +111,6 @@ android {
 
     OTHER_FILES += \
         ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc \
-        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc \
         ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 }
 

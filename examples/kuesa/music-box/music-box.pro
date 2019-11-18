@@ -103,15 +103,8 @@ android {
     INSTALLS += envmaps model
 } else {
     RCC_BINARY_SOURCES += \
-        ../assets/models/music-box/music-box.qrc
-
-    ios|macos {
-        RCC_BINARY_SOURCES += \
-            ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
-    } else {
-        RCC_BINARY_SOURCES += \
-            ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
-    }
+        ../assets/models/music-box/music-box.qrc \
+        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 
     asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
     asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
@@ -159,4 +152,4 @@ INSTALLS += target
 
 OTHER_FILES += doc/src/* \
     ../assets/models/music-box/music-box.qrc \
-    ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
+    ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc

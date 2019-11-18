@@ -51,7 +51,7 @@ Kuesa.SceneEntity {
         },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: "qrc:/wobbly_bridge_irradiance.dds"
+                source: "qrc:/wobbly_bridge_16f_irradiance.dds"
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -59,7 +59,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: "qrc:/wobbly_bridge_specular.dds"
+                source: "qrc:/wobbly_bridge_16f_specular.dds"
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge

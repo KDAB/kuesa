@@ -47,7 +47,6 @@ Kuesa.SceneEntity {
 //![2.1]
     QtObject {
         id: d
-        property string envMapFormat: (Qt.platform.os == "osx" || Qt.platform.os == "ios" || Qt.platform.os == "android" || _isES2) ? "_16f" : ""
 
         readonly property var robotArmAnimations: [
             'ArmTopAction',
@@ -198,7 +197,7 @@ Kuesa.SceneEntity {
         },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise" + d.envMapFormat + "_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")
+                source: _assetsPrefix + "pink_sunrise_16f_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -206,7 +205,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise" + d.envMapFormat + "_specular" + ((!scene.es2) ? ".dds" : "_es2.dds")
+                source: _assetsPrefix + "pink_sunrise_16f_specular" + ((!scene.es2) ? ".dds" : "_es2.dds")
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge

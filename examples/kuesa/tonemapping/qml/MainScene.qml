@@ -42,7 +42,6 @@ Kuesa.SceneEntity {
 
     property string toneMappingAlgorithmName: "None"
 //! [0]
-    property string envMapFormat: (Qt.platform.os == "osx" || Qt.platform.os == "ios" || Qt.platform.os == "android" || _isES2) ? "_16f" : ""
     property int screenWidth
     property int screenHeight
 
@@ -54,7 +53,7 @@ Kuesa.SceneEntity {
 
     Kuesa.Skybox {
         // Optional: Use the irradiance instead of the radiance for a simple blurry background
-        baseName: _assetsPrefix + "pink_sunrise" + envMapFormat + "_radiance"
+        baseName: _assetsPrefix + "pink_sunrise_16f_radiance"
         extension: ".dds"
     }
 
@@ -81,7 +80,7 @@ Kuesa.SceneEntity {
         InputSettings { },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise" + envMapFormat + "_irradiance" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+                source: _assetsPrefix + "pink_sunrise_16f_irradiance" + ((!root3D.es2) ? ".dds" : "_es2.dds")
 
                 minificationFilter: Texture.LinearMipMapLinear
                 magnificationFilter: Texture.Linear
@@ -92,7 +91,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise" + envMapFormat + "_specular" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+                source: _assetsPrefix + "pink_sunrise_16f_specular" + ((!root3D.es2) ? ".dds" : "_es2.dds")
 
                 minificationFilter: Texture.LinearMipMapLinear
                 magnificationFilter: Texture.Linear
