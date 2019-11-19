@@ -43,6 +43,9 @@
 #include <Qt3DRender/QGeometryRenderer>
 #include <Qt3DRender/QGeometry>
 
+#include <Kuesa/private/textureparser_p.h>
+#include "textureinspector.h"
+
 namespace {
     const QLatin1String LASTPATHSETTING("mainwindow/lastPath");
 
@@ -78,6 +81,26 @@ void MemoryUsageWidget::setSceneEntity(Kuesa::SceneEntity *sceneEntity)
 
 void MemoryUsageWidget::updateWidgetValues()
 {
+    updateGeometryMemoryUsage();
+
+    Kuesa::TextureCollection *texturesCollection = m_sceneEntity->textures();
+    const auto &names = texturesCollection->names();
+
+    // Textures are loaded by the backend, so we dont have yet the data for the
+    // texture Instead of calling directly updateTextureMemoryUsage, we wait
+    // until we receive a statusChanged notification
+    for (const auto &name : qAsConst(names)) {
+        Qt3DRender::QAbstractTexture *texture = texturesCollection->find(name);
+        QObject::connect(texture, &Qt3DRender::QAbstractTexture::statusChanged,
+                         [this] (Qt3DRender::QAbstractTexture::Status status) {
+            if (status == Qt3DRender::QAbstractTexture::Status::Ready)
+                updateTextureMemoryUsage();
+        });
+    }
+}
+
+void MemoryUsageWidget::updateGeometryMemoryUsage() const
+{
     Kuesa::MeshCollection *meshesCollection = m_sceneEntity->meshes();
     const auto &names = meshesCollection->names();
 
@@ -96,4 +119,23 @@ void MemoryUsageWidget::updateWidgetValues()
     }
 
     m_ui->geometryUsage->setText(totalSizeString(geometrySize));
+}
+
+void MemoryUsageWidget::updateTextureMemoryUsage() const
+{
+    Kuesa::TextureCollection *texturesCollection = m_sceneEntity->textures();
+    const auto &names = texturesCollection->names();
+
+    int texturesSize = 0;
+    QVector<Qt3DRender::QAbstractTextureImage*> visitedImages;
+    for (const auto &name : qAsConst(names)) {
+        Qt3DRender::QAbstractTexture *texture = texturesCollection->find(name);
+        Qt3DRender::QAbstractTextureImage *image = texture->textureImages()[0];
+        if (!visitedImages.contains(image)) {
+            visitedImages.push_back(image);
+            texturesSize += ::textureSizeInBytes(texture);
+        }
+    }
+
+    m_ui->textureUsage->setText(totalSizeString(texturesSize));
 }

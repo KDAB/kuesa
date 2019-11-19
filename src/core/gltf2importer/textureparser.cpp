@@ -73,24 +73,22 @@ private:
     QImage m_image;
 };
 
-class EmbeddedTextureImage : public Qt3DRender::QAbstractTextureImage
-{
-public:
-    EmbeddedTextureImage(const QImage &image, QNode *parent = nullptr)
-        : Qt3DRender::QAbstractTextureImage(parent), m_image(image)
-    {
-    }
-
-    Qt3DRender::QTextureImageDataGeneratorPtr dataGenerator() const
-    {
-        return Qt3DRender::QTextureImageDataGeneratorPtr(new EmbeddedTextureImageFunctor(m_image));
-    }
-
-private:
-    QImage m_image;
-};
-
 } // namespace
+
+TextureParser::EmbeddedTextureImage::EmbeddedTextureImage(const QImage &image, Qt3DCore::QNode *parent)
+    : Qt3DRender::QAbstractTextureImage(parent), m_image(image)
+{
+}
+
+Qt3DRender::QTextureImageDataGeneratorPtr TextureParser::EmbeddedTextureImage::dataGenerator() const
+{
+    return Qt3DRender::QTextureImageDataGeneratorPtr(new EmbeddedTextureImageFunctor(m_image));
+}
+
+QImage TextureParser::EmbeddedTextureImage::image()
+{
+    return m_image;
+}
 
 bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context) const
 {

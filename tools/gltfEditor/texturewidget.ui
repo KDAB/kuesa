@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
-    <height>567</height>
+    <width>250</width>
+    <height>677</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,368 +25,324 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="leftMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <item>
-    <widget class="FixedWidthScrollArea" name="scrollArea">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>200</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents_4">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>391</width>
-        <height>529</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QGroupBox" name="texturePreviewGroupBox">
-         <property name="title">
-          <string>Preview</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="generalGroupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title">
-          <string>Texture Details</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="0">
-           <widget class="QLabel" name="nameTitle">
-            <property name="text">
-             <string>Name:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="targetTitle">
-            <property name="text">
-             <string>Target</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="targetValue">
-            <property name="text">
-             <string>Texture2D</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="formatTitle">
-            <property name="baseSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text">
-             <string>Format:</string>
-            </property>
-            <property name="margin">
-             <number>2</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="formatValue">
-            <property name="text">
-             <string>RGBA</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="nameValue">
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="dimensionsGroupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>210</width>
-           <height>110</height>
-          </size>
-         </property>
-         <property name="title">
-          <string>Dimensions</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="widthTitle">
-            <property name="text">
-             <string>Width:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="widthValue">
-            <property name="text">
-             <string>0</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QLabel" name="samplesTitle">
-            <property name="text">
-             <string>Samples:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3">
-           <widget class="QLabel" name="samplesValue">
-            <property name="text">
-             <string>0</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="heightTitle">
-            <property name="text">
-             <string>Height:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="heightValue">
-            <property name="text">
-             <string>0</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLabel" name="layersTitle">
-            <property name="text">
-             <string>Layers:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QLabel" name="layersValue">
-            <property name="text">
-             <string>0</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="depthTitle">
-            <property name="text">
-             <string>Depth:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="depthValue">
-            <property name="text">
-             <string>0</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="filteringGroupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title">
-          <string>Filtering</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0">
-           <widget class="QLabel" name="minificationTitle">
-            <property name="text">
-             <string>Minification:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="minificationValue">
-            <property name="text">
-             <string>Linear</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="magnificationTitle">
-            <property name="text">
-             <string>Magnification:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="magnificationValue">
-            <property name="text">
-             <string>Nearest</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="wrappingGroupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title">
-          <string>Wrapping</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0">
-           <widget class="QLabel" name="wrapXTitle">
-            <property name="text">
-             <string>x:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="wrapXValue">
-            <property name="text">
-             <string>ClampToEdge</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="wrapYTitle">
-            <property name="text">
-             <string>y:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="wrapYValue">
-            <property name="text">
-             <string>ClampToEdge</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="wrapZTitle">
-            <property name="text">
-             <string>z:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="wrapZValue">
-            <property name="text">
-             <string>ClampToEdge</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="imagesGroupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title">
-          <string>Images</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>5</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
+    <widget class="QWidget" name="rootWidget" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QGroupBox" name="texturePreviewGroupBox">
+        <property name="title">
+         <string>Preview</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="generalGroupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Texture Details</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="1" column="1">
+          <widget class="QLabel" name="targetValue">
+           <property name="text">
+            <string>Texture2D</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="formatTitle">
+           <property name="baseSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Format:</string>
+           </property>
+           <property name="margin">
+            <number>2</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="targetTitle">
+           <property name="text">
+            <string>Target</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="formatValue">
+           <property name="text">
+            <string>RGBA</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="nameValue">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="nameTitle">
+           <property name="text">
+            <string>Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLabel" name="textureSize">
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="sizeLabel">
+           <property name="text">
+            <string>Size:</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="dimensionsGroupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>210</width>
+          <height>110</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Dimensions</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="widthTitle">
+           <property name="text">
+            <string>Width:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="widthValue">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="samplesTitle">
+           <property name="text">
+            <string>Samples:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="samplesValue">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="heightTitle">
+           <property name="text">
+            <string>Height:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="heightValue">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="layersTitle">
+           <property name="text">
+            <string>Layers:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QLabel" name="layersValue">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="depthTitle">
+           <property name="text">
+            <string>Depth:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="depthValue">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="filteringGroupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Filtering</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0">
+          <widget class="QLabel" name="minificationTitle">
+           <property name="text">
+            <string>Minification:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="minificationValue">
+           <property name="text">
+            <string>Linear</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="magnificationTitle">
+           <property name="text">
+            <string>Magnification:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="magnificationValue">
+           <property name="text">
+            <string>Nearest</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="wrappingGroupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Wrapping</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="0">
+          <widget class="QLabel" name="wrapXTitle">
+           <property name="text">
+            <string>x:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="wrapXValue">
+           <property name="text">
+            <string>ClampToEdge</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="wrapYTitle">
+           <property name="text">
+            <string>y:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="wrapYValue">
+           <property name="text">
+            <string>ClampToEdge</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="wrapZTitle">
+           <property name="text">
+            <string>z:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="wrapZValue">
+           <property name="text">
+            <string>ClampToEdge</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="imagesGroupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Images</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-    <class>FixedWidthScrollArea</class>
-    <extends>QScrollArea</extends>
-    <header location="global"> </header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

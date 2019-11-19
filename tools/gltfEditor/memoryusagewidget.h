@@ -54,6 +54,8 @@ public:
 
 private:
     void updateWidgetValues();
+    void updateGeometryMemoryUsage() const;
+    void updateTextureMemoryUsage() const;
 
     QScopedPointer<Ui::MemoryUsageWidget> m_ui;
     Kuesa::SceneEntity *m_sceneEntity;
