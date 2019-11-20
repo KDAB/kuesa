@@ -269,7 +269,7 @@ AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
     connect(m_animator, &QClipAnimator::runningChanged, this, &AnimationPlayer::runningChanged);
     connect(m_animator, &QClipAnimator::loopCountChanged, this, &AnimationPlayer::loopCountChanged);
     connect(m_animator, &QClipAnimator::clockChanged, this, &AnimationPlayer::clockChanged);
-    connect(m_animator, &QClipAnimator::normalizedTimeChanged, this, &AnimationPlayer::normalizedTime);
+    connect(m_animator, &QClipAnimator::normalizedTimeChanged, this, &AnimationPlayer::normalizedTimeChanged);
 }
 
 AnimationPlayer::~AnimationPlayer()
