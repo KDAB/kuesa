@@ -24,8 +24,4 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-LIBS += -L$$KUESA_BUILD_ROOT/examples/kuesa/shared-utils -lshared-utils
-win32 {
-    CONFIG(release, debug|release): LIBS += -L$$KUESA_BUILD_ROOT/examples/kuesa/shared-utils/release/
-    CONFIG(debug, debug|release): LIBS += -L$$KUESA_BUILD_ROOT/examples/kuesa/shared-utils/debug/
-}
+RESOURCES += $$PWD/shared_utils.qrc

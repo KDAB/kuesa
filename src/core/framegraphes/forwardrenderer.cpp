@@ -439,7 +439,8 @@ GLFeatures checkGLFeatures()
         features.hasMultisampledTexture = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 1)
                                                             : (format.majorVersion() >= 3)) ||
                 ctx.hasExtension(QByteArray("ARB_texture_multisample"));
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 5) || QT_VERSION <= QT_VERSION_CHECK(5, 13, 2)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 5) \
+    || (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0) && QT_VERSION <= QT_VERSION_CHECK(5, 13, 1))
     // Blitting bug in Qt3D prevents correct depth blitting with multisampled FBO
     // Fixed for 5.12.6/5.13/2 with https://codereview.qt-project.org/c/qt/qt3d/+/276774
 #else
@@ -485,7 +486,7 @@ Qt3DRender::QRenderTarget *createRenderTarget(RenderTargetFlags flags,
     // This requires support for extension OES_texture_half_float on ES2 platforms
     colorTexture->setFormat((flags & RenderTargetFlag::HalfFloatAttachments)
                                     ? Qt3DRender::QAbstractTexture::RGBA16F
-                                    : Qt3DRender::QAbstractTexture::RGBA8U);
+                                    : Qt3DRender::QAbstractTexture::RGBA8_UNorm);
     colorTexture->setGenerateMipMaps(false);
     colorTexture->setSize(surfaceSize.width(), surfaceSize.height());
     auto colorOutput = new Qt3DRender::QRenderTargetOutput;

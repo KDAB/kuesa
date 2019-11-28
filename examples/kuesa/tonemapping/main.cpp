@@ -46,8 +46,6 @@
 
 int main(int ac, char **av)
 {
-    Q_INIT_RESOURCE(shared_utils);
-
     bool isES2 = false;
     {
         // Set OpenGL requirements

@@ -59,19 +59,19 @@ template<typename ComponentType>
 inline ComponentType *componentFromEntity(Qt3DCore::QEntity *e)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
-   const auto cmps = e->componentsOfType<ComponentType>();
-   return cmps.size() > 0 ? cmps.first() : nullptr;
+    const auto cmps = e->componentsOfType<ComponentType>();
+    return cmps.size() > 0 ? cmps.first() : nullptr;
 #else
-   ComponentType *typedComponent = nullptr;
-   const Qt3DCore::QComponentVector cmps = e->components();
+    ComponentType *typedComponent = nullptr;
+    const Qt3DCore::QComponentVector cmps = e->components();
 
-   for (Qt3DCore::QComponent *c : cmps) {
-       typedComponent = qobject_cast<ComponentType *>(c);
-       if (typedComponent != nullptr)
-           break;
-   }
+    for (Qt3DCore::QComponent *c : cmps) {
+        typedComponent = qobject_cast<ComponentType *>(c);
+        if (typedComponent != nullptr)
+            break;
+    }
 
-   return typedComponent;
+    return typedComponent;
 #endif
 }
 
@@ -97,13 +97,7 @@ bool initializeAssetResources(const QVector<QString> &fileNames)
 
 static QString envmap(QString name)
 {
-    return QStringLiteral("qrc:///pink_sunrise_%1%2")
-#if defined(Q_OS_MACOS)
-            .arg("16f_")
-#else
-            .arg("")
-#endif
-            .arg(name);
+    return QStringLiteral("qrc:///pink_sunrise_16f_%1").arg(name);
 }
 
 } // namespace
@@ -133,7 +127,6 @@ public:
         setSpecular(tls);
     }
 };
-
 
 //! [0]
 class Window : public Qt3DExtras::Qt3DWindow
@@ -207,7 +200,7 @@ private:
     void on_sceneLoaded(Kuesa::GLTF2Importer::Status status)
     {
         if (status == Kuesa::GLTF2Importer::Ready) {
-    //! [1]
+            //! [1]
             //! [1.1]
             // First let's take the components that we are going to use to create our clones
             // Gotten from gammaray

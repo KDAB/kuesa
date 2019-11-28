@@ -12,8 +12,9 @@ SOURCES += main.cpp \
 HEADERS += \
     ../gltfEditor/orbitcameracontroller.h
 
-RESOURCES += qml.qrc
-    ../../resources/resources.qrc
+RESOURCES += qml.qrc \
+    ../../resources/resources.qrc \
+    ../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge-16f.qrc
 
 OTHER_FILES += main.qml
 
@@ -27,11 +28,6 @@ macos {
     ICON_FILE.path = Contents/Resources
     QMAKE_BUNDLE_DATA += ICON_FILE
 
-    RESOURCES += \
-        ../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge-16f.qrc
-} else {
-    RESOURCES += \
-        ../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge.qrc
 }
 
 windows {

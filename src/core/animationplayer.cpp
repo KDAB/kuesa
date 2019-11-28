@@ -239,6 +239,20 @@ using namespace Qt3DAnimation;
     This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.
  */
 
+/*!
+    \property AnimationPlayer::duration
+    \brief duration of the animation in secconds
+
+    \since 1.1
+*/
+
+/*!
+    \qmlproperty float AnimationPlayer::duration
+    \brief duration of the animation in secconds
+
+    \since 1.1
+*/
+
 AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
     : Qt3DCore::QNode(parent)
     , m_sceneEntity(nullptr)
@@ -255,7 +269,7 @@ AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
     connect(m_animator, &QClipAnimator::runningChanged, this, &AnimationPlayer::runningChanged);
     connect(m_animator, &QClipAnimator::loopCountChanged, this, &AnimationPlayer::loopCountChanged);
     connect(m_animator, &QClipAnimator::clockChanged, this, &AnimationPlayer::clockChanged);
-    connect(m_animator, &QClipAnimator::normalizedTimeChanged, this, &AnimationPlayer::normalizedTime);
+    connect(m_animator, &QClipAnimator::normalizedTimeChanged, this, &AnimationPlayer::normalizedTimeChanged);
 }
 
 AnimationPlayer::~AnimationPlayer()
@@ -431,6 +445,11 @@ float AnimationPlayer::normalizedTime() const
     return m_animator->normalizedTime();
 }
 
+float AnimationPlayer::duration() const
+{
+    return m_animator->clip() ? m_animator->clip()->duration() : 0.f;
+}
+
 void AnimationPlayer::setNormalizedTime(float timeFraction)
 {
     m_animator->setNormalizedTime(timeFraction);
@@ -456,11 +475,19 @@ void AnimationPlayer::matchClipAndTargets()
 {
     if (m_sceneEntity == nullptr) {
         setStatus(Error);
+        if (m_animator->clip()) {
+            m_animator->setClip(nullptr);
+            emit durationChanged(0.f);
+        }
         return;
     }
 
     if (m_clip.isEmpty() && m_mapper.isEmpty()) {
         setStatus(Error);
+        if (m_animator->clip()) {
+            m_animator->setClip(nullptr);
+            emit durationChanged(0.f);
+        }
         return;
     }
 
@@ -470,6 +497,10 @@ void AnimationPlayer::matchClipAndTargets()
     if (!clip || !mapper) {
         qCWarning(kuesa, "Undefined clip or mapper in AnimationPlayer");
         setStatus(Error);
+        if (m_animator->clip()) {
+            m_animator->setClip(nullptr);
+            emit durationChanged(0.f);
+        }
         return;
     }
 
@@ -495,7 +526,13 @@ void AnimationPlayer::matchClipAndTargets()
         }
     }
 
-    m_animator->setClip(clip);
+    if (m_animator->clip() != clip) {
+        if (m_animator->clip())
+            disconnect(m_animator->clip(), &QAbstractAnimationClip::durationChanged, this, &AnimationPlayer::durationChanged);
+        m_animator->setClip(clip);
+        connect(m_animator->clip(), &QAbstractAnimationClip::durationChanged, this, &AnimationPlayer::durationChanged);
+        emit durationChanged(clip->duration());
+    }
 
     if (m_targets.isEmpty()) {
         m_animator->setChannelMapper(mapper);

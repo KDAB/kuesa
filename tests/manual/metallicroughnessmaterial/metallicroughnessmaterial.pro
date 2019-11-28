@@ -40,11 +40,7 @@ RESOURCES += \
     main.qrc \
     ../../../examples/kuesa/assets/models/powerup/powerup.qrc
 
-macos {
-    RESOURCES += ../../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge-16f.qrc
-} else {
-    RESOURCES += ../../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge.qrc
-}
+RESOURCES += ../../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge-16f.qrc
 
 HEADERS += \
     scenecontroller.h \

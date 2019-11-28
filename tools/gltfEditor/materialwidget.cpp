@@ -104,6 +104,7 @@ void MaterialWidget::updateData()
     m_ui->textureTransformLabel->setMatrix(m_inspector->textureTransform());
     m_ui->doubleSidedValue->setText(boolTextValue(m_inspector->doubleSided()));
     m_ui->opaqueValue->setText(boolTextValue(m_inspector->opaque()));
+    m_ui->useSkinningValue->setText(boolTextValue(m_inspector->usesSkinning()));
 }
 
 QString MaterialWidget::boolTextValue(bool value) const

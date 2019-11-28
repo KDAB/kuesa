@@ -51,7 +51,13 @@ envmaps.files = \
     $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_16f_irradiance.dds \
     $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_16f_radiance.dds \
     $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_16f_specular.dds \
-    $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_skybox.dds
+    $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_skybox.dds \
+    $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_16f_specular_es2.dds \
+    $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_16f_irradiance_es2.dds \
+    $${envmaps_dir}/neuer_zollhof/neuer_zollhof_16f_specular_es2.dds \
+    $${envmaps_dir}/neuer_zollhof/neuer_zollhof_16f_irradiance_es2.dds \
+    $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_specular_es2.dds \
+    $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_irradiance_es2.dds
 
 car_dir = ../assets/models/car
 car.files = \
@@ -104,7 +110,7 @@ android {
 
     QMAKE_BUNDLE_DATA += car envmaps
 
-    ICON = ../../../resources/kuesa.icns
+    ICON = ../shared-utils/kuesa.icns
     OTHER_FILES += Info-macos.plist
     QMAKE_INFO_PLIST = Info-macos.plist
 } else {
@@ -120,19 +126,12 @@ android {
     }
 
     RCC_BINARY_SOURCES += \
-        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc \
-        ../assets/envmaps/neuer_zollhof/envmap-neuer-zollhof.qrc \
-        ../assets/envmaps/kdab-studiosky-small/envmap-kdab-studiosky-small.qrc
-
-    qtConfig(opengles2) {
-        RCC_BINARY_SOURCES += \
-            ../assets/envmaps/kdab-studiosky-small/envmap-kdab-studiosky-small-16f.qrc \
-            ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc \
-            ../assets/envmaps/neuer_zollhof/envmap-neuer-zollhof-16f.qrc
-    }
+        ../assets/envmaps/kdab-studiosky-small/envmap-kdab-studiosky-small-16f.qrc \
+        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc \
+        ../assets/envmaps/neuer_zollhof/envmap-neuer-zollhof-16f.qrc
 
     windows {
-        RC_ICONS = ../../../resources/kuesa.ico
+        RC_ICONS = ../shared-utils/kuesa.ico
         DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
     }
 
@@ -152,6 +151,7 @@ android {
 }
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+target.files = $$PWD/*
 INSTALLS += target
 
 OTHER_FILES += doc/src/*

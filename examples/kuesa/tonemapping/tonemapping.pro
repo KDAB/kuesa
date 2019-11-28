@@ -83,23 +83,16 @@ android {
 
     QMAKE_BUNDLE_DATA += helmet envmaps
 
-    ICON = ../../../resources/kuesa.icns
+    ICON = ../shared-utils/kuesa.icns
     OTHER_FILES += Info-macos.plist
     QMAKE_INFO_PLIST = Info-macos.plist
 } else {
     RCC_BINARY_SOURCES += \
         ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc
-
-    RCC_BINARY_SOURCES += \
-        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
-
-    qtConfig(opengles2) {
-        RCC_BINARY_SOURCES += \
-            ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
-    }
+        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 
     windows {
-        RC_ICONS = ../../../resources/kuesa.ico
+        RC_ICONS = ../shared-utils/kuesa.ico
         DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
     }
 
@@ -118,11 +111,11 @@ android {
 
     OTHER_FILES += \
         ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc \
-        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc \
         ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 }
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+target.files = $$PWD/*
 INSTALLS += target
 
 OTHER_FILES += doc/src/*

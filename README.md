@@ -156,5 +156,4 @@ Kuesa is maintained by Klarälvdalens Datakonsult AB (KDAB).
 KDAB, the Qt experts, provide consulting and mentoring for developing
 Qt applications from scratch and in porting from all popular and legacy
 frameworks to Qt. We continue to help develop parts of Qt and are one
-of the major contributors to the Qt Project. We can give advanced or
-standard trainings anywhere around the globe.
+of the major contributors to the Qt Project. KDAB is also behind the development effort of the Qt 3D module. We can give advanced or standard trainings anywhere around the globe.

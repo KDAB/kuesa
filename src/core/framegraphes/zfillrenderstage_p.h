@@ -44,10 +44,6 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DRender {
-class QNoDepthMask;
-}
-
 namespace Kuesa {
 
 class Q_AUTOTEST_EXPORT ZFillRenderStage : public AbstractRenderStage

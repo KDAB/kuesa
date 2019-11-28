@@ -94,7 +94,8 @@ FORMS += \
 
 RESOURCES += \
     qml.qrc \
-    ../../resources/resources.qrc
+    ../../resources/resources.qrc \
+    ../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge-16f.qrc
 
 OTHER_FILES += \
     main.qml
@@ -115,12 +116,6 @@ macos {
 
     OBJECTIVE_SOURCES += macUtils.mm
     LIBS += -framework AppKit
-
-    RESOURCES += \
-        ../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge-16f.qrc
-} else {
-    RESOURCES += \
-        ../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge.qrc
 }
 
 windows {
