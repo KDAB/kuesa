@@ -275,11 +275,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     initializeAssetResources({ QStringLiteral("Duck.qrb") });
-#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_ANDROID)
     initializeAssetResources({ QStringLiteral("envmap-pink-sunrise-16f.qrb") });
-#else
-    initializeAssetResources({ QStringLiteral("envmap-pink-sunrise.qrb") });
-#endif
 
 #ifdef Q_OS_ANDROID
     const QString assetsPrefix = QStringLiteral("assets:/");
