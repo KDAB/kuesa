@@ -56,7 +56,8 @@ SOURCES += \
     settingsdialog.cpp \
     orbitcameracontroller.cpp \
     exportdialog.cpp \
-    memoryusagewidget.cpp
+    memoryusagewidget.cpp \
+    utils.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -80,7 +81,8 @@ HEADERS += \
     settingsdialog.h \
     orbitcameracontroller.h \
     exportdialog.h \
-    memoryusagewidget.h
+    memoryusagewidget.h \
+    utils.h
 
 FORMS += \
     animationwidget.ui \

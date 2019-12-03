@@ -56,7 +56,6 @@ class MeshInspector : public QObject
     Q_OBJECT
     Q_PROPERTY(QString assetName READ assetName NOTIFY meshParamsChanged)
     Q_PROPERTY(int totalSize READ totalSize NOTIFY meshParamsChanged)
-    Q_PROPERTY(QString totalSizeString READ totalSizeString NOTIFY meshParamsChanged)
     Q_PROPERTY(int vertexCount READ vertexCount NOTIFY meshParamsChanged)
     Q_PROPERTY(QString primitiveType READ primitiveType NOTIFY meshParamsChanged)
     Q_PROPERTY(int primitiveCount READ primitiveCount NOTIFY meshParamsChanged)
@@ -82,7 +81,6 @@ public:
     static unsigned int attributeSizeInBytes(Qt3DRender::QAttribute *attribute);
     static int calculatePrimitiveCount(int indexCount, int primitiveType);
     static QString nameForPrimitiveType(int primitiveType);
-    QString totalSizeString() const;
 
     void setSelectionColor(const QColor &c);
 

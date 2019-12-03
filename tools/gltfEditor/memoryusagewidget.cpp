@@ -45,20 +45,10 @@
 
 #include <Kuesa/private/textureparser_p.h>
 #include "textureinspector.h"
+#include "utils.h"
 
 namespace {
-    const QLatin1String LASTPATHSETTING("mainwindow/lastPath");
-
-QString totalSizeString(int sizeInBytes)
-{
-    auto size = sizeInBytes / 1024.0;
-    QString suffix(QStringLiteral(" KB"));
-    if (size > 1024.) {
-        size = size / 1024.;
-        suffix = QStringLiteral(" MB");
-    }
-    return QString::number(size, 'f', 2) + suffix;
-}
+const QLatin1String LASTPATHSETTING("mainwindow/lastPath");
 }
 
 MemoryUsageWidget::MemoryUsageWidget(QWidget *parent)
@@ -108,8 +98,8 @@ void MemoryUsageWidget::updateGeometryMemoryUsage() const
     QVector<Qt3DRender::QBuffer *> visitedBuffer;
     for (const auto &name: names) {
         Qt3DRender::QGeometryRenderer *mesh = meshesCollection->find(name);
-
         const auto &attributes =  mesh->geometry()->attributes();
+
         for (Qt3DRender::QAttribute *attribute : attributes) {
             if (!visitedBuffer.contains(attribute->buffer())) {
                 geometrySize += attribute->buffer()->data().size();
@@ -118,7 +108,7 @@ void MemoryUsageWidget::updateGeometryMemoryUsage() const
         }
     }
 
-    m_ui->geometryUsage->setText(totalSizeString(geometrySize));
+    m_ui->geometryUsage->setText(glTFEditor::Utils::totalSizeString(geometrySize));
 }
 
 void MemoryUsageWidget::updateTextureMemoryUsage() const
@@ -127,7 +117,7 @@ void MemoryUsageWidget::updateTextureMemoryUsage() const
     const auto &names = texturesCollection->names();
 
     int texturesSize = 0;
-    QVector<Qt3DRender::QAbstractTextureImage*> visitedImages;
+    QVector<Qt3DRender::QAbstractTextureImage *> visitedImages;
     for (const auto &name : qAsConst(names)) {
         Qt3DRender::QAbstractTexture *texture = texturesCollection->find(name);
         Qt3DRender::QAbstractTextureImage *image = texture->textureImages()[0];
@@ -137,5 +127,5 @@ void MemoryUsageWidget::updateTextureMemoryUsage() const
         }
     }
 
-    m_ui->textureUsage->setText(totalSizeString(texturesSize));
+    m_ui->textureUsage->setText(glTFEditor::Utils::totalSizeString(texturesSize));
 }

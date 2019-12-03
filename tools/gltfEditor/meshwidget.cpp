@@ -33,6 +33,7 @@
 #include <QDataWidgetMapper>
 #include <QLabel>
 #include <QAbstractItemModel>
+#include "utils.h"
 
 MeshWidget::MeshWidget(QWidget *parent)
     : QWidget(parent)
@@ -62,7 +63,7 @@ void MeshWidget::setMeshInspector(MeshInspector *inspector)
 void MeshWidget::updateData()
 {
     m_ui->nameLabel->setText(m_inspector->assetName());
-    m_ui->totalSizeLabel->setText(m_inspector->totalSizeString());
+    m_ui->totalSizeLabel->setText(glTFEditor::Utils::totalSizeString(m_inspector->totalSize()));
     m_ui->vertexCountLabel->setText(QString::number(m_inspector->vertexCount()));
     m_ui->primitiveTypeLabel->setText(m_inspector->primitiveType());
     m_ui->primitiveCountLabel->setText(QString::number(m_inspector->primitiveCount()));

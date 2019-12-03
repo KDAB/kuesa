@@ -40,18 +40,7 @@
 #include <QScrollBar>
 #include <QQmlContext>
 
-namespace {
-QString totalSizeString(int sizeInBytes)
-{
-    auto size = sizeInBytes / 1024.0;
-    QString suffix(QStringLiteral(" KB"));
-    if (size > 1024.) {
-        size = size / 1024.;
-        suffix = QStringLiteral(" MB");
-    }
-    return QString::number(size, 'f', 2) + suffix;
-}
-}
+#include "utils.h"
 
 TextureWidget::TextureWidget(QWidget *parent)
     : QWidget(parent)
@@ -98,7 +87,7 @@ void TextureWidget::updateData()
 {
     ui->nameValue->setText(m_inspector->assetName());
     ui->formatValue->setText(m_inspector->format());
-    ui->textureSize->setText(::totalSizeString(m_inspector->textureSize()));
+    ui->textureSize->setText(glTFEditor::Utils::totalSizeString(m_inspector->textureSize()));
     ui->targetValue->setText(m_inspector->target());
     ui->widthValue->setText(QString::number(m_inspector->width()));
     ui->heightValue->setText(QString::number(m_inspector->height()));
