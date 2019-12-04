@@ -40,6 +40,7 @@ class AnimationWidget;
 class AssetInspectorWidget;
 class AssetInspector;
 class CameraWidget;
+class MemoryUsageWidget;
 
 namespace Ui {
 class MainWindow;
@@ -133,6 +134,7 @@ private:
     QString m_selectedAssetName;
     QColor m_clearColor;
     CameraWidget *m_cameraWidget;
+    MemoryUsageWidget *m_memoryUsageWidget;
     QSize m_renderAreaSize;
     bool m_generateTangents;
     bool m_generateNormals;

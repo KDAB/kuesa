@@ -85,11 +85,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     initializeAssetResources({ QStringLiteral("music-box.qrb") });
-#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_ANDROID)
     initializeAssetResources({ QStringLiteral("envmap-pink-sunrise-16f.qrb") });
-#else
-    initializeAssetResources({ QStringLiteral("envmap-pink-sunrise.qrb") });
-#endif
     qmlRegisterType<Sampler>("MusicBox", 1, 0, "Sampler");
 
     QQuickView view;

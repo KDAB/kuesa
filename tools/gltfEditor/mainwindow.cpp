@@ -37,6 +37,7 @@
 #include "meshinspector.h"
 #include "animationwidget.h"
 #include "camerawidget.h"
+#include "memoryusagewidget.h"
 #include "orbitcameracontroller.h"
 #include "exportdialog.h"
 
@@ -152,6 +153,10 @@ MainWindow::MainWindow(QWidget *parent)
     m_ui->cameraDockWidget->setWidget(m_cameraWidget);
     m_ui->cameraDockWidget->setVisible(false);
 
+    m_memoryUsageWidget = new MemoryUsageWidget;
+    m_ui->memoryUsageWidget->setWidget(m_memoryUsageWidget);
+    m_ui->memoryUsageWidget->setVisible(false);
+
     qmlRegisterType<TexturePreviewMaterial>("GltfEditor", 1, 0, "TexturePreviewMaterial");
     qmlRegisterType<OrbitCameraController>("GltfEditor", 1, 0, "OrbitCameraController");
 
@@ -174,6 +179,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_ui->menuView->addAction(m_ui->assetInspectorDockWidget->toggleViewAction());
     m_ui->menuView->addAction(m_ui->animationDockWidget->toggleViewAction());
     m_ui->menuView->addAction(m_ui->cameraDockWidget->toggleViewAction());
+    m_ui->menuView->addAction(m_ui->memoryUsageWidget->toggleViewAction());
 
     m_ui->collectionBrowser->setModel(new CollectionModel(this));
 
@@ -262,6 +268,8 @@ void MainWindow::updateScene(Kuesa::SceneEntity *entity)
     m_sceneSelector->setEnabled(m_sceneSelector->count() > 1);
     m_sceneSelector->setCurrentIndex(selectorIndex);
     m_sceneSelector->blockSignals(false);
+
+    m_memoryUsageWidget->setSceneEntity(entity);
 }
 
 void MainWindow::assetSelected(const QString &assetName, Kuesa::AbstractAssetCollection *collection)

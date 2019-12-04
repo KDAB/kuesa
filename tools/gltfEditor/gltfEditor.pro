@@ -55,7 +55,9 @@ SOURCES += \
     texturepreviewmaterial.cpp \
     settingsdialog.cpp \
     orbitcameracontroller.cpp \
-    exportdialog.cpp
+    exportdialog.cpp \
+    memoryusagewidget.cpp \
+    utils.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -78,7 +80,9 @@ HEADERS += \
     texturepreviewmaterial.h \
     settingsdialog.h \
     orbitcameracontroller.h \
-    exportdialog.h
+    exportdialog.h \
+    memoryusagewidget.h \
+    utils.h
 
 FORMS += \
     animationwidget.ui \
@@ -90,7 +94,8 @@ FORMS += \
     meshwidget.ui \
     texturewidget.ui \
     settingsdialog.ui \
-    exportdialog.ui
+    exportdialog.ui \
+    memoryusagewidget.ui
 
 RESOURCES += \
     qml.qrc \

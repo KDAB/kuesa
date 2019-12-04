@@ -28,6 +28,9 @@
 
 #include "textureinspector.h"
 #include <QMetaEnum>
+#include <QFileInfo>
+
+#include <Kuesa/private/textureparser_p.h>
 
 namespace {
 
@@ -156,6 +159,11 @@ QString TextureInspector::magnificationFilter() const
     return (m_texture != nullptr) ? filtersToName.value(m_texture->magnificationFilter(), QStringLiteral("Undefined")) : QStringLiteral("Undefined");
 }
 
+int TextureInspector::textureSize() const
+{
+    return ::textureSizeInBytes(m_texture);
+}
+
 TextureImagesModel::TextureImagesModel(QObject *parent)
     : QAbstractTableModel(parent)
     , m_texture(nullptr)
@@ -225,4 +233,25 @@ QVariant TextureImagesModel::headerData(int section, Qt::Orientation orientation
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
         return columnsToName.value(section);
     return QVariant();
+}
+
+int textureSizeInBytes(Qt3DRender::QAbstractTexture *texture)
+{
+    auto mipmapMultiplier = 1.0;
+    if (texture->generateMipMaps())
+        // A mipmap chain uses 1/3 more space than the normal image
+        mipmapMultiplier = 4.0/3.0;
+    // texture can be of two types. QTextureLoader or QTexture2D
+    // We use QTextureLoader for dds files and QTexture2D for png/jpg files
+    auto textureLoader = qobject_cast<Qt3DRender::QTextureLoader *>(texture);
+    if (textureLoader) {
+        QFileInfo fInfo;
+        fInfo.setFile(textureLoader->source().toString());
+        if (fInfo.exists())
+            return static_cast<int>(mipmapMultiplier*fInfo.size());
+    } else {
+        // FIXME Check that all textures we upload coming from a glTF file have 4 channels
+        return static_cast<int>(mipmapMultiplier * texture->width() * texture->height() * 4);
+    }
+    return std::numeric_limits<int>::quiet_NaN();
 }

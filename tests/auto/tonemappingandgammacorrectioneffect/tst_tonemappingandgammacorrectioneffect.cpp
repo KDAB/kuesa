@@ -115,6 +115,6 @@ private Q_SLOTS:
       }
 };
 
-QTEST_APPLESS_MAIN(tst_ToneMappingAndGammaCorrectionEffect)
+QTEST_MAIN(tst_ToneMappingAndGammaCorrectionEffect)
 
 #include "tst_tonemappingandgammacorrectioneffect.moc"

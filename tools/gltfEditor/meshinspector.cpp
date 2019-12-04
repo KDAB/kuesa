@@ -258,17 +258,6 @@ QString MeshInspector::nameForPrimitiveType(int primitiveType)
     }
 }
 
-QString MeshInspector::totalSizeString() const
-{
-    double size = m_totalSize / 1024.0;
-    QString suffix(QStringLiteral(" KB"));
-    if (size > 1024.) {
-        size = size / 1024.;
-        suffix = QStringLiteral(" MB");
-    }
-    return QString::number(size, 'f', 2) + suffix;
-}
-
 void MeshInspector::setSelectionColor(const QColor &c)
 {
     if (c == m_selectionColor)

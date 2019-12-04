@@ -88,7 +88,7 @@ android {
     QMAKE_INFO_PLIST = Info-macos.plist
 } else {
     RCC_BINARY_SOURCES += \
-        ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc
+        ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc \
         ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 
     windows {

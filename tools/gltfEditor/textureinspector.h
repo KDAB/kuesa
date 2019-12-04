@@ -40,6 +40,8 @@ class AbstractAssetCollection;
 
 class TextureImagesModel;
 
+int textureSizeInBytes(Qt3DRender::QAbstractTexture *texture);
+
 class TextureInspector : public QObject
 {
     Q_OBJECT
@@ -65,6 +67,7 @@ public:
     QString wrapZMode() const;
     QString minificationFilter() const;
     QString magnificationFilter() const;
+    int textureSize() const;
 
 Q_SIGNALS:
     void textureParamsChanged();

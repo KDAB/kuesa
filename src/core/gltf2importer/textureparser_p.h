@@ -38,12 +38,12 @@
 //
 
 #include <QJsonArray>
+#include <Qt3DRender/QAbstractTextureImage>
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
 class QAbstractTexture;
-class QAbstractTextureImage;
 } // namespace Qt3DRender
 
 namespace Kuesa {
@@ -64,6 +64,18 @@ public:
     bool parse(const QJsonArray &texturesArray, GLTF2Context *context) const;
     static bool ensureImageIsCompatibleWithTexture(Qt3DRender::QAbstractTextureImage *image,
                                                    Qt3DRender::QAbstractTexture *texture);
+
+    class EmbeddedTextureImage : public Qt3DRender::QAbstractTextureImage
+    {
+    public:
+        EmbeddedTextureImage(const QImage &image, QNode *parent = nullptr);
+        Qt3DRender::QTextureImageDataGeneratorPtr dataGenerator() const;
+
+        QImage image();
+
+    private:
+        QImage m_image;
+    };
 };
 
 } // namespace GLTF2Import
