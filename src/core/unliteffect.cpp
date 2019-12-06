@@ -403,7 +403,7 @@ void UnlitEffect::setAlphaCutoffEnabled(bool enabled)
     if (m_alphaCutoffEnabled == enabled)
         return;
 
-    auto layers = m_unlitES3Technique->enabledLayers();
+    auto layers = m_unlitGL3Technique->enabledLayers();
     if (enabled) {
         layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
         layers.append(QStringLiteral("hasAlphaCutoff"));
@@ -412,9 +412,9 @@ void UnlitEffect::setAlphaCutoffEnabled(bool enabled)
         layers.append(QStringLiteral("noHasAlphaCutoff"));
     }
     m_alphaCutoffEnabled = enabled;
+    m_unlitGL3Technique->setEnabledLayers(layers);
     m_unlitES3Technique->setEnabledLayers(layers);
-    m_unlitES3Technique->setEnabledLayers(layers);
-    m_unlitES3Technique->setEnabledLayers(layers);
+    m_unlitES2Technique->setEnabledLayers(layers);
     emit alphaCutoffEnabledChanged(enabled);
 }
 
