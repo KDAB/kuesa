@@ -1,0 +1,20 @@
+{
+    "type": "MyTestCustom",
+    "properties": [
+        { "name": "customVec4Parameter", "type": "vec4" },
+        { "name": "customVec3Parameter", "type": "vec3" },
+        { "name": "customVec2Parameter", "type": "vec2" },
+        { "name": "customFloatParameter", "type": "float" }
+    ],
+    "shaders": [
+         {
+            "format": {
+                "api": "OpenGLES",
+                "major": 2,
+                "minor": 0
+            },
+            "type": "Fragment",
+            "code": "#version ..."
+        }
+    ]
+}

@@ -36,6 +36,7 @@ qtHaveModule(quick) {
     SUBDIRS += \
         gltf2importer \
         multiple_animations \
-        mapped_animations
+        mapped_animations \
+        KDAB_custom_material 
 }
 

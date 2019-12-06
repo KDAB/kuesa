@@ -1,9 +1,9 @@
-# materialparser.pro
+# gltf2importer.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# Author: Mike Krus <mike.krus@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,13 +26,13 @@
 
 TEMPLATE = app
 
-TARGET = tst_materialparser
+QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa
 
-QT += testlib kuesa kuesa-private
+SOURCES += \
+    main.cpp
 
-CONFIG += testcase
+RESOURCES += \
+    main.qrc
 
-SOURCES += tst_materialparser.cpp
-
-include(../assets/assets.pri)
-include(mytestcustom/mytestcustom.pri)
+DEFINES += ASSETS=\\\"$$KUESA_ROOT/tests/\\\"
+include(examplecustommaterial/examplecustommaterial.pri)

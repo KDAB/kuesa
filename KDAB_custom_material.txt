@@ -1,0 +1,72 @@
+KDAB_custom_material extension
+
+# JSON Schema
+
+{
+    "extensionsUsed": [
+        "KDAB_custom_material"
+    ],
+    "extensionsRequired": [
+        "KDAB_custom_material"
+    ],
+    "materials": [
+        {
+            "name": "MySemDiffuseMaterial",
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [ 0.5, 0.8, 0.0, 1.0 ]
+            },
+            "normalTexture": {},
+            "occlusionTexture": {},
+            "emissiveTexture": {},
+            "alphaMode": "BLEND",
+            "alphaCutOff": 0.5,
+            "emissiveFactor": [0.2, 0.4, 0.1],
+            "doubleSided": false,
+            "extensions": {
+                "KDAB_custom_material": {
+                    "type": "SemDiffuse",
+                    "properties": {
+                        "diffuseInnerFilter": [1.0, 0.5, 0.25, 1.0],
+                        "diffuseOuterFilter": [1.0, 0.5, 0.25, 1.0],
+                        "diffuseMap": { "index": 2, "texCoord": 1 }
+                    }
+                }
+            }
+        }
+    ]
+}
+
+# Kuesa Material Description -> used to generate C++/QML Kuesa classes
+
+{
+    "type": "SemDiffuse",
+    "properties": [
+        { "name": "diffuseInnerFilter", "type": "vec4" },
+        { "name": "diffuseOuterFilter", "type": "vec4" },
+        { "name": "diffuseMap", "type": "texture2d" }
+    ],
+    "shaders": [
+         {
+            "format": {
+                "api": "OpenGLES",
+                "major": 2,
+                "minor": 0
+            },
+            "type": "Fragment",
+            "code": "#version ..."
+        }
+    ]
+
+}
+
+# The generator will generate SemDiffuseMaterial, SemDiffuseProperties,
+# SemDiffuseShaderData and SemDiffuseEffect
+
+# Once classes have been generated:
+
+##  the .pri needs to be imported in the
+  project .pro
+
+## GLTF2Importer::registerCustomMaterial<MaterialClass, PropertiesClass,
+  EffectClass>("SemDiffuse"); needs to be called prior to parsing the gltf
+  file.

@@ -82,6 +82,7 @@ const QLatin1String KEY_MIMETYPE = QLatin1String("mimeType");
 const QLatin1String KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION = QLatin1String("KHR_draco_mesh_compression");
 #endif
 const QLatin1String KEY_KHR_MATERIALS_UNLIT = QLatin1String("KHR_materials_unlit");
+const QLatin1String KEY_KDAB_CUSTOM_MATERIAL = QLatin1String("KDAB_custom_material");
 const QLatin1String KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION = QLatin1String("KHR_lights_punctual");
 const QLatin1String KEY_KHR_PUNCTUAL_LIGHTS = QLatin1String("lights");
 const QLatin1String KEY_BUFFERVIEWTARGET = QLatin1String("target");

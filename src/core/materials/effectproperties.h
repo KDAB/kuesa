@@ -47,20 +47,21 @@ public:
         // Material type
         MetallicRoughness = 1 << 1,
         Unlit = 1 << 2,
+        Custom = 1 << 3,
 
         // Material properties
-        BaseColorMap = 1 << 3,
-        MetalRoughnessMap = 1 << 4,
-        NormalMap = 1 << 5,
-        AOMap = 1 << 6,
-        EmissiveMap = 1 << 7,
-        Blend = 1 << 8,
-        Mask = 1 << 9,
-        DoubleSided = 1 << 10,
+        BaseColorMap = 1 << 4,
+        MetalRoughnessMap = 1 << 5,
+        NormalMap = 1 << 6,
+        AOMap = 1 << 7,
+        EmissiveMap = 1 << 8,
+        Blend = 1 << 10,
+        Mask = 1 << 11,
+        DoubleSided = 1 << 12,
 
         // Mesh properties
-        VertexColor = 1 << 11,
-        Skinning = 1 << 12
+        VertexColor = 1 << 13,
+        Skinning = 1 << 14
     };
     Q_DECLARE_FLAGS(Properties, Property)
     Q_FLAG(Properties)

@@ -71,6 +71,8 @@ Qt3DRender::QEffect *createMetallicRoughnessEffectWithKey(Kuesa::EffectPropertie
 
 Qt3DRender::QEffect *createEffectWithKey(Kuesa::EffectProperties::Properties properties)
 {
+    Q_ASSERT(!(properties & Kuesa::EffectProperties::Custom));
+
     if (properties & Kuesa::EffectProperties::Unlit) {
         return createUnlitEffectWithKey(properties);
     }
@@ -86,6 +88,31 @@ Qt3DRender::QEffect *createEffectWithKey(Kuesa::EffectProperties::Properties pro
 
 Kuesa::EffectsLibrary::EffectsLibrary()
 {
+}
+
+Qt3DRender::QEffect *Kuesa::EffectsLibrary::getOrCreateCustomEffect(Kuesa::EffectsLibrary::CustomEffectKey customEffectKey,
+                                                                    Qt3DCore::QNode *effectOwner)
+{
+    auto customEffectKeyIsEqual = [customEffectKey] (const CustomEffectKeyPair &a) {
+        return std::get<0>(a) == customEffectKey;
+    };
+    const auto it = std::find_if(m_customEffects.cbegin(),
+                                 m_customEffects.cend(),
+                                 customEffectKeyIsEqual);
+    if (it != m_customEffects.cend())
+        return std::get<1>(*it);
+
+    Qt3DRender::QEffect *effect = qobject_cast<Qt3DRender::QEffect *>(
+                customEffectKey.effectClassMetaObject.newInstance(
+                    Q_ARG(Qt3DCore::QNode *, effectOwner)));
+    Q_ASSERT(effect);
+    const EffectProperties::Properties properties = customEffectKey.properties;
+    effect->setProperty("opaque", !(properties & Kuesa::EffectProperties::Blend));
+    effect->setProperty("alphaCutoffEnabled", bool(properties & Kuesa::EffectProperties::Mask));
+    effect->setProperty("doubleSided", bool(properties & Kuesa::EffectProperties::DoubleSided));
+    effect->setProperty("useSkinning", bool(properties & Kuesa::EffectProperties::Skinning));
+    m_customEffects.push_back({customEffectKey, effect});
+    return effect;
 }
 
 Qt3DRender::QEffect *Kuesa::EffectsLibrary::getOrCreateEffect(Kuesa::EffectProperties::Properties properties,
@@ -105,17 +132,29 @@ Qt3DRender::QEffect *Kuesa::EffectsLibrary::getOrCreateEffect(Kuesa::EffectPrope
 
 int Kuesa::EffectsLibrary::count() const
 {
-    return m_effects.size();
+    return m_effects.size() + m_customEffects.size();
 }
 
 void Kuesa::EffectsLibrary::clear()
 {
     m_effects.clear();
+    m_customEffects.clear();
 }
 
 QHash<Kuesa::EffectProperties::Properties, Qt3DRender::QEffect *> Kuesa::EffectsLibrary::effects() const
 {
     return m_effects;
+}
+
+QVector<std::pair<Kuesa::EffectsLibrary::CustomEffectKey, Qt3DRender::QEffect *> > Kuesa::EffectsLibrary::customEffects() const
+{
+    return m_customEffects;
+}
+
+bool Kuesa::operator ==(const Kuesa::EffectsLibrary::CustomEffectKey &a, const Kuesa::EffectsLibrary::CustomEffectKey &b)
+{
+    return a.effectClassMetaObject.className() == b.effectClassMetaObject.className() &&
+           a.properties == b.properties;
 }
 
 QT_END_NAMESPACE

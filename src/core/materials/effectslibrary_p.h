@@ -59,16 +59,30 @@ class KUESA_PRIVATE_EXPORT EffectsLibrary
 public:
     EffectsLibrary();
 
+    struct CustomEffectKey
+    {
+        QMetaObject effectClassMetaObject;
+        EffectProperties::Properties properties;
+    };
+    using CustomEffectKeyPair = std::pair<CustomEffectKey, Qt3DRender::QEffect *>;
+
+    Qt3DRender::QEffect *getOrCreateCustomEffect(CustomEffectKey customEffectKey,
+                                                 Qt3DCore::QNode *effectOwner);
+
     Qt3DRender::QEffect *getOrCreateEffect(EffectProperties::Properties properties,
                                            Qt3DCore::QNode *effectOwner);
     int count() const;
     void clear();
 
     QHash<EffectProperties::Properties, Qt3DRender::QEffect *> effects() const;
+    QVector<CustomEffectKeyPair> customEffects() const;
 
 private:
     QHash<EffectProperties::Properties, Qt3DRender::QEffect *> m_effects;
+    QVector<CustomEffectKeyPair> m_customEffects;
 };
+
+bool operator ==(const EffectsLibrary::CustomEffectKey &a, const EffectsLibrary::CustomEffectKey &b);
 
 } // namespace Kuesa
 

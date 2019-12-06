@@ -1,0 +1,18 @@
+{
+    "type": "ExampleCustomMaterial",
+    "properties": [
+        { "name": "modulator", "type": "float" },
+        { "name": "inputTexture", "type": "texture2d" }
+    ],
+    "shaders": [
+         {
+            "format": {
+                "api": "OpenGL",
+                "major": 3,
+                "minor": 3
+            },
+            "type": "Fragment",
+            "code": "#version 330\n in vec2 texCoord; struct Properties { float modulator;\n sampler2D inputTexture;}; uniform Properties properties;\n out vec4 fragColor;\n void main() { fragColor = properties.modulator * texture(properties.inputTexture, texCoord);}"
+        }
+    ]
+}

@@ -1,4 +1,5 @@
-# materialparser.pro
+
+# examplecustommaterial.pri
 #
 # This file is part of Kuesa.
 #
@@ -24,15 +25,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = app
+INCLUDEPATH += $$PWD
 
-TARGET = tst_materialparser
+QT += 3dcore-private
 
-QT += testlib kuesa kuesa-private
+SOURCES += \
+    $$PWD/examplecustommaterialmaterial.cpp \
+    $$PWD/examplecustommaterialeffect.cpp \
+    $$PWD/examplecustommaterialproperties.cpp \
+    $$PWD/examplecustommaterialshaderdata.cpp
 
-CONFIG += testcase
-
-SOURCES += tst_materialparser.cpp
-
-include(../assets/assets.pri)
-include(mytestcustom/mytestcustom.pri)
+HEADERS += \
+    $$PWD/examplecustommaterialmaterial.h \
+    $$PWD/examplecustommaterialeffect.h \
+    $$PWD/examplecustommaterialproperties.h \
+    $$PWD/examplecustommaterialshaderdata_p.h

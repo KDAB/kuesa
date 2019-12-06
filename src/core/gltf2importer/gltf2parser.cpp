@@ -416,7 +416,8 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
             KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION,
 #endif
             KEY_KHR_MATERIALS_UNLIT,
-            KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION
+            KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION,
+            KEY_KDAB_CUSTOM_MATERIAL
         };
         for (const auto &e : qAsConst(extensions)) {
             if (supportedExtensions.contains(e))
@@ -1080,13 +1081,31 @@ void GLTF2Parser::generateTreeNodeContent()
                             effectProperties |= EffectProperties::Skinning;
                         if (primitiveData.hasColorAttr)
                             effectProperties |= EffectProperties::VertexColor;
-                        auto *effect = m_context->effectLibrary()->getOrCreateEffect(effectProperties,
-                                                                                     m_contentRootEntity);
+                        Qt3DRender::QEffect *effect = nullptr;
+
+                        if (mat.extensions.KDAB_custom_material)
+                            effect = m_context->effectLibrary()->getOrCreateCustomEffect({ mat.customMaterial.effectClassMetaObject, effectProperties },
+                                                                                         m_contentRootEntity);
+                        else
+                            effect = m_context->effectLibrary()->getOrCreateEffect(effectProperties,
+                                                                                   m_contentRootEntity);
 
                         Kuesa::GLTF2Material *material = nullptr;
                         auto materialName = mat.name;
 
-                        if (mat.extensions.KHR_materials_unlit) {
+                        if (mat.extensions.KDAB_custom_material) {
+                            GLTF2Material *specificMaterial = qobject_cast<GLTF2Material *>(
+                                    mat.customMaterial.materialClassMetaObject.newInstance());
+                            Q_ASSERT(specificMaterial);
+                            material = specificMaterial;
+                            Kuesa::GLTF2MaterialProperties *materialProperties = mat.materialProperties();
+                            materialProperties->setParent(m_contentRootEntity);
+                            // Set material properties on material
+                            QMetaObject::invokeMethod(specificMaterial,
+                                                      "setMaterialProperties",
+                                                      Qt::DirectConnection,
+                                                      Q_ARG(Kuesa::GLTF2MaterialProperties *, materialProperties));
+                        } else if (mat.extensions.KHR_materials_unlit) {
                             auto *specificMaterial = new Kuesa::UnlitMaterial;
                             material = specificMaterial;
                             auto materialProperties = static_cast<Kuesa::UnlitProperties *>(mat.materialProperties());

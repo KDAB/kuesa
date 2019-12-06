@@ -30,8 +30,8 @@
 #include "gltf2context_p.h"
 #include "gltf2parser_p.h"
 #include "gltf2options.h"
-
 #include "collections/meshcollection.h"
+
 #include "kuesa_p.h"
 #include <Qt3DCore/QEntity>
 #include <Kuesa/SceneEntity>
