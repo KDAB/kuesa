@@ -425,9 +425,16 @@ struct GLFeatures {
 GLFeatures checkGLFeatures()
 {
     GLFeatures features;
+    QOffscreenSurface offscreen;
     QOpenGLContext ctx;
+
+    offscreen.setFormat(QSurfaceFormat::defaultFormat());
+    offscreen.create();
+    Q_ASSERT_X(offscreen.isValid(), Q_FUNC_INFO, "Unable to create offscreen surface to gather capabilities");
+
     ctx.setFormat(QSurfaceFormat::defaultFormat());
     if (ctx.create()) {
+        ctx.makeCurrent(&offscreen);
         const QSurfaceFormat format = ctx.format();
         // Since ES 3.0 or GL 3.0
         features.hasHalfFloatTexture = (format.majorVersion() >= 3 || ctx.hasExtension(QByteArray("GL_OES_texture_half_float")));
@@ -449,6 +456,7 @@ GLFeatures checkGLFeatures()
         features.hasMultisampledFBO = (ctx.isOpenGLES() ? (format.majorVersion() >= 3 && format.minorVersion() >= 1)
                                                         : format.majorVersion() >= 3);
 #endif
+        ctx.doneCurrent();
     }
     return features;
 }
