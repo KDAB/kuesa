@@ -45,6 +45,7 @@ qtConfig(draco) {
 
 include(core.pri)
 include(materials/materials.pri)
+include(simple-materials/simple-materials.pri)
 include(collections/collections.pri)
 include(gltf2importer/gltf2importer.pri)
 include(gltf2exporter/gltf2exporter.pri)

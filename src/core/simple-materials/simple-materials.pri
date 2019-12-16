@@ -1,9 +1,9 @@
-# manual.pro
+# simple-materials.pri
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Kevin Ottens <kevin.ottens@kdab.com>
+# Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,20 +24,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = subdirs
 
-qtHaveModule(widgets) {
-    SUBDIRS += \
-        forwardrenderer_scene \
-        metallicroughnessmaterial
-}
+INCLUDEPATH += $$PWD
 
-qtHaveModule(quick) {
-    SUBDIRS += \
-        gltf2importer \
-        multiple_animations \
-        mapped_animations \
-        KDAB_custom_material \
-        SphericalEnvMapMaterial
-}
+include(sphericalenvmap/sphericalenvmap.pri)
+
+SOURCES += $$PWD/simple-materials.cpp
+HEADERS += $$PWD/simple-materials_p.h
 

@@ -48,7 +48,9 @@
 #include <Kuesa/MetallicRoughnessProperties>
 #include <Kuesa/UnlitProperties>
 #include <Kuesa/EffectProperties>
-
+#include <Kuesa/SphericalEnvMapMaterial>
+#include <Kuesa/SphericalEnvMapEffect>
+#include <Kuesa/SphericalEnvMapProperties>
 #include <QtQml/qqml.h>
 
 QT_BEGIN_NAMESPACE
@@ -109,6 +111,11 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::GLTF2Import::GLTF2Options>(uri, 1, 1, "GLTF2Options", QStringLiteral("You are not supposed to create a GLTF2Options instance"));
     qmlRegisterUncreatableType<Kuesa::EffectProperties>(uri, 1, 1, "EffectProperties", QStringLiteral("Cannot be instantiated"));
     qRegisterMetaType<Kuesa::EffectProperties::Properties>("EffectProperties::Properties");
+
+    // Custom Simple Materials
+    qmlRegisterType<Kuesa::SphericalEnvMapMaterial>(uri, 1, 2, "SphericalEnvMapMaterial");
+    qmlRegisterType<Kuesa::SphericalEnvMapProperties>(uri, 1, 2, "SphericalEnvMapProperties");
+    qmlRegisterType<Kuesa::SphericalEnvMapEffect>(uri, 1, 2, "SphericalEnvMapEffect");
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));
