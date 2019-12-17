@@ -237,6 +237,9 @@ QVariant TextureImagesModel::headerData(int section, Qt::Orientation orientation
 
 int textureSizeInBytes(Qt3DRender::QAbstractTexture *texture)
 {
+    if (!texture)
+        return 0;
+
     auto mipmapMultiplier = 1.0;
     if (texture->generateMipMaps())
         // A mipmap chain uses 1/3 more space than the normal image
