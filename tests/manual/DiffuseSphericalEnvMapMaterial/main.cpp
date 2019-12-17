@@ -1,10 +1,10 @@
 /*
-    simple-materials.cpp
+    main.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,32 +26,30 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "simple-materials_p.h"
+#include <Kuesa/SceneEntity>
+
+#include <Qt3DAnimation/QAnimationAspect>
+#include <Qt3DQuickExtras/qt3dquickwindow.h>
+
+#include <QQmlAspectEngine>
+#include <QQmlEngine>
+#include <QQmlContext>
+#include <QGuiApplication>
+
 #include <Kuesa/GLTF2Importer>
-#include <Kuesa/SphericalEnvMapMaterial>
-#include <Kuesa/SphericalEnvMapEffect>
-#include <Kuesa/SphericalEnvMapProperties>
-#include <Kuesa/DiffuseSphericalEnvMapMaterial>
-#include <Kuesa/DiffuseSphericalEnvMapEffect>
-#include <Kuesa/DiffuseSphericalEnvMapProperties>
 
-QT_BEGIN_NAMESPACE
-
-namespace Kuesa {
-
-namespace SimpleMaterials {
-
-void registerSimpleMaterials()
+int main(int argc, char *argv[])
 {
-    GLTF2Importer::registerCustomMaterial<SphericalEnvMapMaterial, SphericalEnvMapProperties, SphericalEnvMapEffect>(QStringLiteral("SphericalEnvMap"));
-    GLTF2Importer::registerCustomMaterial<DiffuseSphericalEnvMapMaterial, DiffuseSphericalEnvMapProperties, DiffuseSphericalEnvMapEffect>(QStringLiteral("DiffuseSphericalEnvMap"));
+    QGuiApplication app(argc, argv);
+
+    Qt3DExtras::Quick::Qt3DQuickWindow view;
+    view.registerAspect(new Qt3DAnimation::QAnimationAspect());
+
+    view.engine()->qmlEngine()->rootContext()->setContextProperty("ASSETS", ASSETS);
+
+    view.setSource(QUrl("qrc:/main.qml"));
+    view.resize(1920, 1080);
+    view.show();
+
+    return app.exec();
 }
-
-// This will call registerSimpleMaterials on startup automatically
-Q_CONSTRUCTOR_FUNCTION(registerSimpleMaterials)
-
-} // namespace SimpleMaterials
-
-} // namespace Kuesa
-
-QT_END_NAMESPACE

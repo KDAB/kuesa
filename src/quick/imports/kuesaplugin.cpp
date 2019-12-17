@@ -51,6 +51,9 @@
 #include <Kuesa/SphericalEnvMapMaterial>
 #include <Kuesa/SphericalEnvMapEffect>
 #include <Kuesa/SphericalEnvMapProperties>
+#include <Kuesa/DiffuseSphericalEnvMapMaterial>
+#include <Kuesa/DiffuseSphericalEnvMapEffect>
+#include <Kuesa/DiffuseSphericalEnvMapProperties>
 #include <QtQml/qqml.h>
 
 QT_BEGIN_NAMESPACE
@@ -116,6 +119,10 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::SphericalEnvMapMaterial>(uri, 1, 2, "SphericalEnvMapMaterial");
     qmlRegisterType<Kuesa::SphericalEnvMapProperties>(uri, 1, 2, "SphericalEnvMapProperties");
     qmlRegisterType<Kuesa::SphericalEnvMapEffect>(uri, 1, 2, "SphericalEnvMapEffect");
+
+    qmlRegisterType<Kuesa::DiffuseSphericalEnvMapMaterial>(uri, 1, 2, "DiffuseSphericalEnvMapMaterial");
+    qmlRegisterType<Kuesa::DiffuseSphericalEnvMapProperties>(uri, 1, 2, "DiffuseSphericalEnvMapProperties");
+    qmlRegisterType<Kuesa::DiffuseSphericalEnvMapEffect>(uri, 1, 2, "DiffuseSphericalEnvMapEffect");
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));

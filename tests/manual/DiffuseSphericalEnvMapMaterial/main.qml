@@ -1,10 +1,10 @@
 /*
-    simple-materials.cpp
+    main.qml
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,32 +26,49 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "simple-materials_p.h"
-#include <Kuesa/GLTF2Importer>
-#include <Kuesa/SphericalEnvMapMaterial>
-#include <Kuesa/SphericalEnvMapEffect>
-#include <Kuesa/SphericalEnvMapProperties>
-#include <Kuesa/DiffuseSphericalEnvMapMaterial>
-#include <Kuesa/DiffuseSphericalEnvMapEffect>
-#include <Kuesa/DiffuseSphericalEnvMapProperties>
+import Qt3D.Core 2.10
+import Qt3D.Render 2.10
+import Qt3D.Input 2.0
+import Qt3D.Extras 2.10
+import Qt3D.Animation 2.10
+import QtQuick 2.10 as QQ2
+import Kuesa 1.2 as Kuesa
 
-QT_BEGIN_NAMESPACE
+Kuesa.SceneEntity {
+    id: scene
 
-namespace Kuesa {
+    components: [
+        RenderSettings {
+            activeFrameGraph: Kuesa.ForwardRenderer {
+                id: frameGraph
+                camera: mainCamera
+                clearColor: "white"
+            }
+        },
+        InputSettings { }
+    ]
 
-namespace SimpleMaterials {
+    Camera {
+        id: mainCamera
+        position: Qt.vector3d(0.0, 0.0, 7.0)
+        upVector: Qt.vector3d(0.0, 1.0, 0.0)
+        viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
+    }
 
-void registerSimpleMaterials()
-{
-    GLTF2Importer::registerCustomMaterial<SphericalEnvMapMaterial, SphericalEnvMapProperties, SphericalEnvMapEffect>(QStringLiteral("SphericalEnvMap"));
-    GLTF2Importer::registerCustomMaterial<DiffuseSphericalEnvMapMaterial, DiffuseSphericalEnvMapProperties, DiffuseSphericalEnvMapEffect>(QStringLiteral("DiffuseSphericalEnvMap"));
+    OrbitCameraController {
+        id: controller
+        camera: frameGraph.camera
+        linearSpeed: 5
+        lookSpeed: 180
+    }
+
+    Kuesa.GLTF2Importer {
+        id: gltf2importer
+        sceneEntity: scene
+        source: "file:///" + ASSETS + "manual/assets/SimpleMaterials/DiffuseSphericalEnvMaterial/sphere.gltf"
+    }
+
+    onLoadingDone: {
+        mainCamera.viewAll()
+    }
 }
-
-// This will call registerSimpleMaterials on startup automatically
-Q_CONSTRUCTOR_FUNCTION(registerSimpleMaterials)
-
-} // namespace SimpleMaterials
-
-} // namespace Kuesa
-
-QT_END_NAMESPACE

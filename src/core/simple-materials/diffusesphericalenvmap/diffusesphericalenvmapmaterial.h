@@ -1,5 +1,6 @@
+
 /*
-    simple-materials.cpp
+    diffusesphericalenvmapmaterial.h
 
     This file is part of Kuesa.
 
@@ -26,32 +27,45 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "simple-materials_p.h"
-#include <Kuesa/GLTF2Importer>
-#include <Kuesa/SphericalEnvMapMaterial>
-#include <Kuesa/SphericalEnvMapEffect>
-#include <Kuesa/SphericalEnvMapProperties>
-#include <Kuesa/DiffuseSphericalEnvMapMaterial>
-#include <Kuesa/DiffuseSphericalEnvMapEffect>
-#include <Kuesa/DiffuseSphericalEnvMapProperties>
+#ifndef KUESA_DIFFUSESPHERICALENVMAPMATERIAL_H
+#define KUESA_DIFFUSESPHERICALENVMAPMATERIAL_H
+
+#include <Kuesa/GLTF2Material>
+#include <Kuesa/kuesa_global.h>
+
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-namespace SimpleMaterials {
+class DiffuseSphericalEnvMapProperties;
+class GLTF2MaterialProperties;
 
-void registerSimpleMaterials()
+class KUESASHARED_EXPORT DiffuseSphericalEnvMapMaterial : public GLTF2Material
 {
-    GLTF2Importer::registerCustomMaterial<SphericalEnvMapMaterial, SphericalEnvMapProperties, SphericalEnvMapEffect>(QStringLiteral("SphericalEnvMap"));
-    GLTF2Importer::registerCustomMaterial<DiffuseSphericalEnvMapMaterial, DiffuseSphericalEnvMapProperties, DiffuseSphericalEnvMapEffect>(QStringLiteral("DiffuseSphericalEnvMap"));
-}
+    Q_OBJECT
+    Q_PROPERTY(Kuesa::DiffuseSphericalEnvMapProperties *materialProperties READ materialProperties WRITE setMaterialProperties NOTIFY materialPropertiesChanged)
 
-// This will call registerSimpleMaterials on startup automatically
-Q_CONSTRUCTOR_FUNCTION(registerSimpleMaterials)
+public:
+    Q_INVOKABLE explicit DiffuseSphericalEnvMapMaterial(Qt3DCore::QNode *parent = nullptr);
+    ~DiffuseSphericalEnvMapMaterial();
 
-} // namespace SimpleMaterials
+    DiffuseSphericalEnvMapProperties *materialProperties() const;
+
+public Q_SLOTS:
+    void setMaterialProperties(Kuesa::DiffuseSphericalEnvMapProperties *materialProperties);
+    void setMaterialProperties(Kuesa::GLTF2MaterialProperties *materialProperties);
+
+Q_SIGNALS:
+    void materialPropertiesChanged(Kuesa::DiffuseSphericalEnvMapProperties *materialProperties);
+
+private:
+    DiffuseSphericalEnvMapProperties *m_materialProperties = nullptr;
+    Qt3DRender::QParameter *m_shaderDataParameter;
+};
 
 } // namespace Kuesa
 
 QT_END_NAMESPACE
+
+#endif // KUESA_DIFFUSESPHERICALENVMAPMATERIAL_H

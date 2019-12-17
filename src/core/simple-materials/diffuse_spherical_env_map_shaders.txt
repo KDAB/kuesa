@@ -1,0 +1,99 @@
+#version 150 core
+
+uniform mat4 mvp;
+uniform mat4 modelView;
+
+struct MaterialProperties {
+    vec3 factors;
+    vec2 disturbation;
+    float postVertexColor;
+    float postGain;
+    sampler2D sem;
+    float semGain;
+    vec3 semInnerFilter;
+    vec3 semOuterFilter;
+    vec3 diffuseInnerFilter;
+    vec3 diffuseOuterFilter;
+    sampler2D diffuseMap;
+    vec3 diffuseFactor;
+    bool usesDiffuseMap;
+};
+
+uniform MaterialProperties properties;
+
+in vec3 vertexPosition;
+in vec3 vertexNormal;
+in vec2 vertexTexCoord;
+in vec4 vertexColor;
+
+out vec3 normalSem;
+out vec2 texCoord;
+out vec4 postColor;
+
+vec3 semNormal()
+{
+    vec3 n = (modelView * vec4(vertexNormal, 0.0)).xyz;
+    n *= properties.factors;
+    n.xy += properties.disturbation;
+    return normalize(n);
+}
+
+void main()
+{
+    normalSem = semNormal();
+    texCoord = vertexTexCoord;
+    postColor = mix(vec4(1.0), vertexColor, properties.postVertexColor) * properties.postGain;
+    gl_Position = mvp * vec4(vertexPosition, 1.0);
+}
+
+
+
+#version 150 core
+
+struct MaterialProperties {
+    vec3 factors;
+    vec2 disturbation;
+    float postVertexColor;
+    float postGain;
+    sampler2D sem;
+    float semGain;
+    vec3 semInnerFilter;
+    vec3 semOuterFilter;
+    vec3 diffuseInnerFilter;
+    vec3 diffuseOuterFilter;
+    sampler2D diffuseMap;
+    vec3 diffuseFactor;
+    bool usesDiffuseMap;
+};
+
+uniform MaterialProperties properties;
+
+in vec3 normalSem;
+in vec4 postColor;
+in vec2 texCoord;
+
+out vec4 fragColor;
+
+float semFresnel(vec3 normalSem_)
+{
+    float fresnel = 1.0 - dot(normalSem_, vec3(0.0, 0.0, 1.0));
+    fresnel *= fresnel;
+    return fresnel;
+}
+
+vec2 semS(vec3 normalSem_)
+{
+    vec2 s = normalSem_.xy;
+    s = s * 0.5 + vec2(0.5);
+    return s;
+}
+
+void main()
+{
+    vec3 normalSem_ = normalize(normalSem);
+    float fresnel = semFresnel(normalSem_);
+    vec3 semColor = texture(properties.sem, semS(normalSem_)).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
+    vec3 diffuseColor = properties.usesDiffuseMap ? texture(properties.diffuseMap, texCoord).xyz : properties.diffuseFactor;
+    diffuseColor *= mix(properties.diffuseInnerFilter, properties.diffuseOuterFilter, fresnel);
+    fragColor = postColor * vec4(diffuseColor + semColor, 1.0);
+}

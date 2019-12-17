@@ -28,7 +28,9 @@
 INCLUDEPATH += $$PWD
 
 include(sphericalenvmap/sphericalenvmap.pri)
+include(diffusesphericalenvmap/diffusesphericalenvmap.pri)
 
 SOURCES += $$PWD/simple-materials.cpp
 HEADERS += $$PWD/simple-materials_p.h
 
+OTHER_FILES += $$PWD/*.json
