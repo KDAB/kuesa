@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>343</width>
-    <height>647</height>
+    <height>780</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0">
    <item>
     <widget class="QGroupBox" name="metallicRoughnessGroupBox">
      <property name="title">
@@ -91,6 +91,11 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="customMaterialGroupBox">
+     <layout class="QFormLayout" name="formLayout_3"/>
     </widget>
    </item>
    <item>

@@ -109,6 +109,13 @@ void MaterialInspector::setMaterialProperties(Kuesa::GLTF2MaterialProperties *ma
             materialEffect->setDoubleSided(clientEffect->isDoubleSided());
             materialEffect->setAlphaCutoffEnabled(clientEffect->isAlphaCutoffEnabled());
             materialEffect->setBaseColorMapEnabled(clientEffect->isBaseColorMapEnabled());
+        } else {
+            auto *clientMaterial = qobject_cast<Kuesa::GLTF2Material *>(clientMaterials.front());
+            Q_ASSERT(clientMaterial);
+
+            // Use what we were given, we cannot know whether we need a custom
+            // effect or not to disable skinning and color attributes
+            m_material = clientMaterial;
         }
     }
 
