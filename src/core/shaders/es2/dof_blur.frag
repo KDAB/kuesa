@@ -1,9 +1,9 @@
 /*
-    dof.frag
+    dof_blur.frag
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michael Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -30,6 +30,8 @@
 precision mediump float;
 precision highp int;
 
+const int SAMPLE_COUNT = 21;
+
 uniform highp float nearPlane;
 uniform highp float farPlane;
 uniform highp sampler2D depthTexture;
@@ -48,13 +50,20 @@ highp float mapZ(highp float z)
     return 1.0 / ((a * z) + b);
 }
 
-highp float confusionCircle()
+highp float confusionCircle(highp vec2 texturePos)
 {
-    highp float param = texture2D(depthTexture, texCoord).x;
+    highp float param = texture2D(depthTexture, texturePos).x;
     highp float depth = mapZ(param);
+
+    // points in front: negative coc. points behind: positive coc
     highp float coc = (depth - focusDistance) / focusRange;
     coc = clamp(coc, -1.0, 1.0) * bokehRadius;
     return coc;
+}
+
+highp float confusionCircle()
+{
+    return confusionCircle(texCoord);
 }
 
 highp float weigh(highp float coc, highp float radius)
@@ -64,10 +73,6 @@ highp float weigh(highp float coc, highp float radius)
 
 highp vec4 depthOfField()
 {
-    highp vec3 color = vec3(0.0);
-    highp float weight = 0.0;
-    highp float confCircle = abs(confusionCircle());
-
     highp vec2 _451[113];
     _451[0] = vec2(-0.0);
     _451[1] = vec2(0.09407208859920501708984375, 0.0);
@@ -183,19 +188,49 @@ highp vec4 depthOfField()
     _451[111] = vec2(0.98594224452972412109375, 0.101088054478168487548828125);
     _451[112] = vec2(-0.798861443996429443359375, 0.59411346912384033203125);
 
-    for (int k = 0; k < 113; k++)
+    highp vec3 color = vec3(0.0);
+    highp float weight = 0.0;
+    highp float cocCenter = confusionCircle();
+    highp vec3 bgColor = vec3(0.0);
+    highp float bgWeight = 0.0;
+    highp vec3 fgColor = vec3(0.0);
+    highp float fgWeight = 0.0;
+    for (int k = 0; k < SAMPLE_COUNT; k++)
     {
         highp vec2 sampledPoint = _451[k] * bokehRadius;
         highp float radius = length(sampledPoint);
         sampledPoint /= textureSize;
         highp vec4 s = texture2D(textureSampler, texCoord + sampledPoint);
-        highp float param = confCircle;
-        highp float param_1 = radius;
-        highp float sw = weigh(param, param_1);
-        color += (s.xyz * sw);
-        weight += sw;
+
+        //Find CoC of sampled point. if it's > CoC at this point it will contribute
+        highp float cocSampledPoint = confusionCircle(texCoord + sampledPoint);
+
+        // Background color and weight.  (CoC > 0)
+        // For BG, use CoC of closes point (current point or sampled point)
+        // because things behind don't blur into things in front.
+        highp float bgCoC = min(cocCenter, cocSampledPoint);
+
+        // only keep if it's in background.  CoC > 0
+        highp float bgw = weigh(max(0.0, bgCoC), radius);
+        bgColor += (s.rgb * bgw);
+        bgWeight += bgw;
+
+        // Foreground color and weight. (CoC < 0)
+        highp float fgw = weigh(-cocSampledPoint, radius);
+        fgColor += (s.rgb * fgw);
+        fgWeight += fgw;
     }
-    return vec4(color / vec3(weight), 1.0);
+
+    bgColor = bgColor/ vec3(bgWeight + (bgWeight == 0.0 ? 1.0 : 0.0));
+    fgColor = fgColor/ vec3(fgWeight + (fgWeight == 0.0 ? 1.0 : 0.0));
+
+    // calculate whether this blurred point is in foreground our background
+    // we'll need in composite phase
+    highp float sampleCount = float(SAMPLE_COUNT);
+    highp float bgfg = min(1.0, 3.14 * fgWeight/sampleCount);
+
+    // store blurred value in rgb. bgfg weight in the alpha channel
+    return vec4(mix(bgColor, fgColor, bgfg), bgfg);
 }
 
 void main()

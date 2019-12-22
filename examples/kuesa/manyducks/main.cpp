@@ -183,8 +183,8 @@ public:
 
         //! [0.6]
         // Depth-of-field
-        auto dof = new Kuesa::DepthOfFieldEffect;
-        dof->setRadius(35.0f);
+        auto dof = new Kuesa::DepthOfFieldEffect(m_scene);
+        dof->setRadius(15.0f);
         dof->setFocusRange(2.0f);
         dof->setFocusDistance(6.5f);
         fg->addPostProcessingEffect(dof);

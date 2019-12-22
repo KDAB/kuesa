@@ -26,9 +26,12 @@
         <file>shaders/es2/kuesa_metalrough.inc.frag</file>
         <file>shaders/es2/light.inc.frag</file>
         <file>shaders/brdfLUT.png</file>
-        <file>shaders/gl3/dof.frag</file>
-        <file>shaders/es2/dof.frag</file>
-        <file>shaders/es3/dof.frag</file>
+        <file>shaders/gl3/dof_blur.frag</file>
+        <file>shaders/gl3/dof_composite.frag</file>
+        <file>shaders/es2/dof_blur.frag</file>
+        <file>shaders/es2/dof_composite.frag</file>
+        <file>shaders/es3/dof_blur.frag</file>
+        <file>shaders/es3/dof_composite.frag</file>
         <file>shaders/graphs/metallicroughness.vert.json</file>
         <file>shaders/gl3/kuesa_morphtargets_normal.inc.vert</file>
         <file>shaders/gl3/kuesa_morphtargets_position.inc.vert</file>
