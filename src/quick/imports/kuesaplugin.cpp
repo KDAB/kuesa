@@ -89,6 +89,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     // FrameGraphs
     qmlRegisterExtendedType<Kuesa::ForwardRenderer, Kuesa::PostFXListExtension>(uri, 1, 0, "ForwardRenderer");
     qmlRegisterRevision<Kuesa::ForwardRenderer, 1>(uri, 1, 1);
+    qmlRegisterRevision<Kuesa::ForwardRenderer, 2>(uri, 1, 2);
 
     // Lights
     qmlRegisterType<Kuesa::DirectionalLight>(uri, 1, 1, "DirectionalLight");

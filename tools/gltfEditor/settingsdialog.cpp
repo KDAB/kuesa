@@ -54,6 +54,7 @@ SettingsDialog::SettingsDialog(MainWindow *parent)
     , m_gamma(2.2f)
     , m_exposure(0.0f)
     , m_toneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectionEffect::None)
+    , m_showDebugOverlay(false)
 {
     ui->setupUi(this);
     connect(ui->selectionColorButton, &QToolButton::clicked, this, [this]() {
@@ -68,11 +69,11 @@ SettingsDialog::SettingsDialog(MainWindow *parent)
         m_defaultClearColor = checked;
         emit defaultClearColorChanged(m_defaultClearColor);
     });
-    connect(ui->generateTangentsCB, &QRadioButton::toggled, this, [this](bool checked) {
+    connect(ui->generateTangentsCB, &QCheckBox::toggled, this, [this](bool checked) {
         m_generateTangents = checked;
         emit generateTangentsChanged(m_generateTangents);
     });
-    connect(ui->generateNormalsCB, &QRadioButton::toggled, this, [this](bool checked) {
+    connect(ui->generateNormalsCB, &QCheckBox::toggled, this, [this](bool checked) {
         m_generateNormals = checked;
         emit generateNormalsChanged(m_generateNormals);
     });
@@ -99,6 +100,14 @@ SettingsDialog::SettingsDialog(MainWindow *parent)
                     emit toneMappingAlgorithmChanged(m_toneMappingAlgorithm);
                 }
             });
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    connect(ui->showDebugOverlay, &QCheckBox::toggled, this, [this](bool checked) {
+        m_showDebugOverlay = checked;
+        emit showDebugOverlayChanged(m_showDebugOverlay);
+    });
+#else
+    ui->showDebugOverlay->hide();
+#endif
 
     ui->toneMappingCombo->addItem(QStringLiteral("None"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::None));
     ui->toneMappingCombo->addItem(QStringLiteral("Reinhard"), QVariant::fromValue(Kuesa::ToneMappingAndGammaCorrectionEffect::Reinhard));
@@ -153,6 +162,11 @@ float SettingsDialog::exposure() const
 Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping SettingsDialog::toneMappingAlgorithm() const
 {
     return m_toneMappingAlgorithm;
+}
+
+bool SettingsDialog::showDebugOverlay() const
+{
+    return m_showDebugOverlay;
 }
 
 void SettingsDialog::setSelectionColor(QColor selectionColor)
@@ -229,5 +243,14 @@ void SettingsDialog::setToneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectio
         m_toneMappingAlgorithm = toneMappingAlgorithm;
         emit toneMappingAlgorithmChanged(m_toneMappingAlgorithm);
         ui->toneMappingCombo->setCurrentIndex(static_cast<int>(m_toneMappingAlgorithm));
+    }
+}
+
+void SettingsDialog::setShowDebugOverlay(bool showDebugOverlay)
+{
+    if (showDebugOverlay != m_showDebugOverlay) {
+        m_showDebugOverlay = showDebugOverlay;
+        emit showDebugOverlayChanged(m_showDebugOverlay);
+        ui->showDebugOverlay->setChecked(m_showDebugOverlay);
     }
 }

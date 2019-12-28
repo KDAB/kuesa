@@ -34,7 +34,7 @@ import Qt3D.Animation 2.10
 import QtQuick 2.11 as QQ2
 
 //! [0]
-import Kuesa 1.1 as Kuesa
+import Kuesa 1.2 as Kuesa
 import Kuesa.Effects 1.1 as Effects
 
 
@@ -206,6 +206,7 @@ Kuesa.SceneEntity {
                 }
                 backToFrontSorting: true
                 toneMappingAlgorithm: Effects.ToneMappingAndGammaCorrectionEffect.Reinhard
+//                showDebugOverlay: true
             }
         },
 //! [3.2]

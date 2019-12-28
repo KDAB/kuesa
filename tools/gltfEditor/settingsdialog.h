@@ -49,6 +49,7 @@ class SettingsDialog : public QDialog
     Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged)
     Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
     Q_PROPERTY(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged)
+    Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay WRITE setShowDebugOverlay NOTIFY showDebugOverlayChanged)
 public:
     explicit SettingsDialog(MainWindow *parent = nullptr);
     ~SettingsDialog();
@@ -61,6 +62,7 @@ public:
     float gamma() const;
     float exposure() const;
     Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
+    bool showDebugOverlay() const;
 
 public slots:
     void setSelectionColor(QColor selectionColor);
@@ -71,6 +73,7 @@ public slots:
     void setGamma(float gamma);
     void setExposure(float exposure);
     void setToneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
+    void setShowDebugOverlay(bool showDebugOverlay);
 
 signals:
     void selectionColorChanged(QColor selectionColor);
@@ -81,6 +84,7 @@ signals:
     void gammaChanged(float gamma);
     void exposureChanged(float exposure);
     void toneMappingAlgorithmChanged(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
+    void showDebugOverlayChanged(bool showDebugOverlay);
 
 private:
     Ui::SettingsDialog *ui;
@@ -92,6 +96,7 @@ private:
     float m_gamma;
     float m_exposure;
     Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping m_toneMappingAlgorithm;
+    bool m_showDebugOverlay;
 };
 
 #endif // SETTINGSDIALOG_H

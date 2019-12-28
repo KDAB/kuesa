@@ -106,6 +106,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_gamma(2.2f)
     , m_exposure(0.0f)
     , m_toneMappingAlgorithm(Kuesa::ToneMappingAndGammaCorrectionEffect::None)
+    , m_showDebugOverlay(false)
 {
     m_ui->setupUi(this);
     m_ui->actionOpen->setShortcut(QKeySequence::Open);
@@ -128,6 +129,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_gamma = settings.value("gamma", 2.2f).toFloat();
     m_exposure = settings.value("exposure", 0.0f).toFloat();
     m_toneMappingAlgorithm = static_cast<decltype(m_toneMappingAlgorithm)>(settings.value("toneMappingAlgorithm", Kuesa::ToneMappingAndGammaCorrectionEffect::None).toInt());
+    m_showDebugOverlay = settings.value("showDebugOverlay", false).toBool();
 
     connect(m_ui->actionCopy, &QAction::triggered, this, &MainWindow::copyAssetName);
     connect(m_ui->actionOpen, &QAction::triggered, this, QOverload<>::of(&MainWindow::openFile));
@@ -457,6 +459,11 @@ Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping MainWindow::toneMappingA
     return m_toneMappingAlgorithm;
 }
 
+bool MainWindow::showDebugOverlay() const
+{
+    return m_showDebugOverlay;
+}
+
 void MainWindow::setFilePath(QString filePath)
 {
     auto filePathURL = QUrl::fromLocalFile(filePath).toString();
@@ -643,6 +650,7 @@ void MainWindow::openSettings()
     dlg.setGamma(m_gamma);
     dlg.setExposure(m_exposure);
     dlg.setToneMappingAlgorithm(m_toneMappingAlgorithm);
+    dlg.setShowDebugOverlay(m_showDebugOverlay);
     if (dlg.exec() == QDialog::Accepted) {
         m_assetInspector->meshInspector()->setSelectionColor(dlg.selectionColor());
         settings.setValue("clearColor", dlg.clearColor());
@@ -675,7 +683,9 @@ void MainWindow::openSettings()
         m_toneMappingAlgorithm = dlg.toneMappingAlgorithm();
         emit toneMappingAlgorithmChanged(m_toneMappingAlgorithm);
 
-        qDebug() << Q_FUNC_INFO << m_toneMappingAlgorithm;
+        settings.setValue("showDebugOverlay", dlg.showDebugOverlay());
+        m_showDebugOverlay = dlg.showDebugOverlay();
+        emit showDebugOverlayChanged(m_showDebugOverlay);
     }
 }
 

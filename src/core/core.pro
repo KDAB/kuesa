@@ -29,7 +29,6 @@ MODULE     = kuesa
 
 # Kuesa is free of Q_FOREACH - make sure it stays that way:
 DEFINES += QT_NO_FOREACH
-
 DEFINES += QT_BUILD_KUESA_LIB
 
 # Avoid windows defines

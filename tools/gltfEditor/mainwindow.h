@@ -63,6 +63,7 @@ class MainWindow : public QMainWindow
     Q_PROPERTY(float gamma READ gamma NOTIFY gammaChanged)
     Q_PROPERTY(float exposure READ exposure NOTIFY exposureChanged)
     Q_PROPERTY(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged)
+    Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay NOTIFY showDebugOverlayChanged)
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -76,6 +77,7 @@ public:
     float gamma() const;
     float exposure() const;
     Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
+    bool showDebugOverlay() const;
 
     Q_INVOKABLE void setup(Qt3DRender::QCamera *camera, Qt3DCore::QEntity *placeHolder);
     Q_INVOKABLE void updateScene(Kuesa::SceneEntity *entity);
@@ -98,6 +100,7 @@ signals:
     void gammaChanged(float gamma);
     void exposureChanged(float exposure);
     void toneMappingAlgorithmChanged(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMapAlgorithm);
+    void showDebugOverlayChanged(bool showDebugOverlay);
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -143,6 +146,7 @@ private:
     float m_gamma;
     float m_exposure;
     Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping m_toneMappingAlgorithm;
+    bool m_showDebugOverlay;
 
     enum RecentFiles {
         MaxRecentFiles = 10

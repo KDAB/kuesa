@@ -40,6 +40,9 @@
 #include <Qt3DRender/qrendertarget.h>
 #include <Qt3DRender/qrendertargetselector.h>
 #include <Qt3DRender/qblitframebuffer.h>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#include <Qt3DRender/qdebugoverlay.h>
+#endif
 #include <QWindow>
 #include <QScreen>
 #include <QOffscreenSurface>
@@ -446,10 +449,9 @@ GLFeatures checkGLFeatures()
         features.hasMultisampledTexture = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 1)
                                                             : (format.majorVersion() >= 3)) ||
                 ctx.hasExtension(QByteArray("ARB_texture_multisample"));
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 5) \
-    || (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0) && QT_VERSION <= QT_VERSION_CHECK(5, 13, 1))
-    // Blitting bug in Qt3D prevents correct depth blitting with multisampled FBO
-    // Fixed for 5.12.6/5.13/2 with https://codereview.qt-project.org/c/qt/qt3d/+/276774
+#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 5) || (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0) && QT_VERSION <= QT_VERSION_CHECK(5, 13, 1))
+        // Blitting bug in Qt3D prevents correct depth blitting with multisampled FBO
+        // Fixed for 5.12.6/5.13/2 with https://codereview.qt-project.org/c/qt/qt3d/+/276774
 #else
         // Since ES 3.1, GL 3.0 or extension
         // TO DO: Find how to support that on ES
@@ -460,7 +462,7 @@ GLFeatures checkGLFeatures()
     }
     return features;
 }
-GLFeatures const * _glFeatures = nullptr;
+GLFeatures const *_glFeatures = nullptr;
 
 enum RenderTargetFlag {
     IncludeDepth = (1 << 0),
@@ -544,6 +546,9 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_effectsRootNode(nullptr)
     , m_multisampleTarget(nullptr)
     , m_blitFramebufferNode(nullptr)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    , m_debugOverlay(new Qt3DRender::QDebugOverlay)
+#endif
     , m_fgTreeRebuiltScheduled(false)
     , m_gammaCorrectionFX(new ToneMappingAndGammaCorrectionEffect())
 {
@@ -586,6 +591,10 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::gammaChanged, this, &ForwardRenderer::gammaChanged);
     connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::exposureChanged, this, &ForwardRenderer::exposureChanged);
     connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::toneMappingAlgorithmChanged, this, &ForwardRenderer::toneMappingAlgorithmChanged);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    m_debugOverlay->setEnabled(false);
+    connect(m_debugOverlay, &Qt3DRender::QDebugOverlay::enabledChanged, this, &ForwardRenderer::showDebugOverlayChanged);
+#endif
 
     {
         // Add internal post FX to the pipeline
@@ -677,6 +686,15 @@ float ForwardRenderer::exposure() const
 float ForwardRenderer::gamma() const
 {
     return m_gammaCorrectionFX->gamma();
+}
+
+bool ForwardRenderer::showDebugOverlay() const
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    return m_debugOverlay->isEnabled();
+#else
+    return false;
+#endif
 }
 
 /*!
@@ -881,6 +899,13 @@ void ForwardRenderer::setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffec
     m_gammaCorrectionFX->setToneMappingAlgorithm(toneMappingAlgorithm);
 }
 
+void ForwardRenderer::setShowDebugOverlay(bool showDebugOverlay)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    m_debugOverlay->setEnabled(showDebugOverlay);
+#endif
+}
+
 /*!
  * \internal
  *
@@ -1003,7 +1028,6 @@ void ForwardRenderer::reconfigureFrameGraph()
     // Configure effects
     const bool hasFX = !m_userPostProcessingEffects.empty() || !m_internalPostProcessingEffects.empty();
     if (hasFX) {
-
         RenderTargetFlags baseRenderTargetFlags;
 
         if (glFeatures.hasHalfFloatRenderable)
@@ -1089,6 +1113,7 @@ void ForwardRenderer::reconfigureFrameGraph()
         // Gather the different effect types
         const auto targetSize = currentSurfaceSize();
         int previousRenderTargetIndex = 0;
+        Qt3DRender::QFrameGraphNode *lastEffectFG = nullptr;
 
         for (int effectNo = 0; effectNo < totalFXCount; ++effectNo) {
             AbstractPostProcessingEffect *effect = nullptr;
@@ -1121,10 +1146,19 @@ void ForwardRenderer::reconfigureFrameGraph()
             }
 
             // add the effect subtree to our framegraph
-            m_effectFGSubtrees.value(effect)->setParent(effectParentNode);
+            lastEffectFG = m_effectFGSubtrees.value(effect).data();
+            lastEffectFG->setParent(effectParentNode);
 
             previousRenderTargetIndex = currentRenderTargetIndex;
         }
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        m_debugOverlay->setParent(static_cast<Qt3DCore::QNode *>(lastEffectFG->parentFrameGraphNode()));
+        lastEffectFG->setParent(m_debugOverlay);
+    } else {
+        m_debugOverlay->setParent(static_cast<Qt3DCore::QNode *>(m_frustumCullingTransparentTechniqueFilter->parentFrameGraphNode()));
+        m_frustumCullingTransparentTechniqueFilter->setParent(m_debugOverlay);
+#endif
     }
 
     const bool blocked = blockNotifications(true);

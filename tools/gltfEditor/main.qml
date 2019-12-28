@@ -31,7 +31,7 @@ import Qt3D.Render 2.11
 import Qt3D.Input 2.1
 import Qt3D.Extras 2.10
 import QtQuick 2.10 as QQ2
-import Kuesa 1.1 as Kuesa
+import Kuesa 1.2 as Kuesa
 import GltfEditor 1.0 as GltfEditor
 
 Kuesa.SceneEntity {
@@ -105,6 +105,7 @@ Kuesa.SceneEntity {
                 toneMappingAlgorithm: _mainWindow.toneMappingAlgorithm
                 gamma: _mainWindow.gamma
                 exposure: _mainWindow.exposure
+                showDebugOverlay: _mainWindow.showDebugOverlay
             }
         }
         // Render texture/material previews and capture
