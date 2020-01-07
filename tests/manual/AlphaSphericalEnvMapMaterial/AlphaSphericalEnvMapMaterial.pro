@@ -1,4 +1,4 @@
-# simple-materials.pri
+# AlphaSphericalEnvMapMaterial.pro
 #
 # This file is part of Kuesa.
 #
@@ -24,14 +24,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+TEMPLATE = app
 
-INCLUDEPATH += $$PWD
+QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa
 
-include(sphericalenvmap/sphericalenvmap.pri)
-include(diffusesphericalenvmap/diffusesphericalenvmap.pri)
-include(alphasphericalenvmap/alphasphericalenvmap.pri)
+SOURCES += \
+    main.cpp
 
-SOURCES += $$PWD/simple-materials.cpp
-HEADERS += $$PWD/simple-materials_p.h
+RESOURCES += \
+    main.qrc
 
-OTHER_FILES += $$PWD/*.json
+DEFINES += ASSETS=\\\"$$KUESA_ROOT/tests/\\\"

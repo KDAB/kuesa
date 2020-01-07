@@ -39,6 +39,7 @@ qtHaveModule(quick) {
         mapped_animations \
         KDAB_custom_material \
         SphericalEnvMapMaterial \
-        DiffuseSphericalEnvMapMaterial
+        DiffuseSphericalEnvMapMaterial \
+        AlphaSphericalEnvMapMaterial
 }
 

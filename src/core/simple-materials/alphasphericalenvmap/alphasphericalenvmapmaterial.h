@@ -1,5 +1,6 @@
+
 /*
-    simple-materials.cpp
+    alphasphericalenvmapmaterial.h
 
     This file is part of Kuesa.
 
@@ -26,36 +27,45 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "simple-materials_p.h"
-#include <Kuesa/GLTF2Importer>
-#include <Kuesa/SphericalEnvMapMaterial>
-#include <Kuesa/SphericalEnvMapEffect>
-#include <Kuesa/SphericalEnvMapProperties>
-#include <Kuesa/DiffuseSphericalEnvMapMaterial>
-#include <Kuesa/DiffuseSphericalEnvMapEffect>
-#include <Kuesa/DiffuseSphericalEnvMapProperties>
-#include <Kuesa/AlphaSphericalEnvMapMaterial>
-#include <Kuesa/AlphaSphericalEnvMapEffect>
-#include <Kuesa/AlphaSphericalEnvMapProperties>
+#ifndef KUESA_ALPHASPHERICALENVMAPMATERIAL_H
+#define KUESA_ALPHASPHERICALENVMAPMATERIAL_H
+
+#include <Kuesa/GLTF2Material>
+#include <Kuesa/kuesa_global.h>
+
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-namespace SimpleMaterials {
+class AlphaSphericalEnvMapProperties;
+class GLTF2MaterialProperties;
 
-void registerSimpleMaterials()
+class KUESASHARED_EXPORT AlphaSphericalEnvMapMaterial : public GLTF2Material
 {
-    GLTF2Importer::registerCustomMaterial<SphericalEnvMapMaterial, SphericalEnvMapProperties, SphericalEnvMapEffect>(QStringLiteral("SphericalEnvMap"));
-    GLTF2Importer::registerCustomMaterial<DiffuseSphericalEnvMapMaterial, DiffuseSphericalEnvMapProperties, DiffuseSphericalEnvMapEffect>(QStringLiteral("DiffuseSphericalEnvMap"));
-    GLTF2Importer::registerCustomMaterial<AlphaSphericalEnvMapMaterial, AlphaSphericalEnvMapProperties, AlphaSphericalEnvMapEffect>(QStringLiteral("AlphaSphericalEnvMap"));
-}
+    Q_OBJECT
+    Q_PROPERTY(Kuesa::AlphaSphericalEnvMapProperties *materialProperties READ materialProperties WRITE setMaterialProperties NOTIFY materialPropertiesChanged)
 
-// This will call registerSimpleMaterials on startup automatically
-Q_CONSTRUCTOR_FUNCTION(registerSimpleMaterials)
+public:
+    Q_INVOKABLE explicit AlphaSphericalEnvMapMaterial(Qt3DCore::QNode *parent = nullptr);
+    ~AlphaSphericalEnvMapMaterial();
 
-} // namespace SimpleMaterials
+    AlphaSphericalEnvMapProperties *materialProperties() const;
+
+public Q_SLOTS:
+    void setMaterialProperties(Kuesa::AlphaSphericalEnvMapProperties *materialProperties);
+    void setMaterialProperties(Kuesa::GLTF2MaterialProperties *materialProperties);
+
+Q_SIGNALS:
+    void materialPropertiesChanged(Kuesa::AlphaSphericalEnvMapProperties *materialProperties);
+
+private:
+    AlphaSphericalEnvMapProperties *m_materialProperties = nullptr;
+    Qt3DRender::QParameter *m_shaderDataParameter;
+};
 
 } // namespace Kuesa
 
 QT_END_NAMESPACE
+
+#endif // KUESA_ALPHASPHERICALENVMAPMATERIAL_H

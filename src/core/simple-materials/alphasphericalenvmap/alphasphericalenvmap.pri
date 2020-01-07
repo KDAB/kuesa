@@ -1,4 +1,5 @@
-# simple-materials.pri
+
+# alphasphericalenvmap.pri
 #
 # This file is part of Kuesa.
 #
@@ -24,14 +25,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 INCLUDEPATH += $$PWD
 
-include(sphericalenvmap/sphericalenvmap.pri)
-include(diffusesphericalenvmap/diffusesphericalenvmap.pri)
-include(alphasphericalenvmap/alphasphericalenvmap.pri)
+QT += 3dcore-private
 
-SOURCES += $$PWD/simple-materials.cpp
-HEADERS += $$PWD/simple-materials_p.h
+SOURCES += \
+    $$PWD/alphasphericalenvmapmaterial.cpp \
+    $$PWD/alphasphericalenvmapeffect.cpp \
+    $$PWD/alphasphericalenvmapproperties.cpp \
+    $$PWD/alphasphericalenvmapshaderdata.cpp
 
-OTHER_FILES += $$PWD/*.json
+HEADERS += \
+    $$PWD/alphasphericalenvmapmaterial.h \
+    $$PWD/alphasphericalenvmapeffect.h \
+    $$PWD/alphasphericalenvmapproperties.h \
+    $$PWD/alphasphericalenvmapshaderdata_p.h
