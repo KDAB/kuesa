@@ -89,9 +89,10 @@ public:
     static void registerCustomMaterial(const QString &name)
     {
         auto &cache = CustomMaterialCache::instance();
-        cache.m_registeredCustomMaterial.insert(name, { MaterialClass::staticMetaObject,
-                                                        PropertiesClass::staticMetaObject,
-                                                        EffectClass::staticMetaObject });
+
+        cache.m_registeredCustomMaterial.insert(name, { &MaterialClass::staticMetaObject,
+                                                        &PropertiesClass::staticMetaObject,
+                                                        &EffectClass::staticMetaObject });
     }
 
 public Q_SLOTS:
@@ -135,9 +136,9 @@ private:
 
     friend class Kuesa::GLTF2Import::MaterialParser;
     struct CustomMaterialClassesTypeInfo {
-        QMetaObject materialClassMetaObject;
-        QMetaObject propertiesClassMetaObject;
-        QMetaObject effectClassMetaObject;
+        const QMetaObject *materialClassMetaObject;
+        const QMetaObject *propertiesClassMetaObject;
+        const QMetaObject *effectClassMetaObject;
     };
 
     struct CustomMaterialCache {

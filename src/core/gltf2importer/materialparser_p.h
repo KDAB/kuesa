@@ -105,9 +105,9 @@ public:
 
     struct KDABCustomMaterial {
         QString type;
-        QMetaObject materialClassMetaObject;
-        QMetaObject propertiesClassMetaObject;
-        QMetaObject effectClassMetaObject;
+        const QMetaObject *materialClassMetaObject;
+        const QMetaObject *propertiesClassMetaObject;
+        const QMetaObject *effectClassMetaObject;
 
         struct Property {
             QString name;

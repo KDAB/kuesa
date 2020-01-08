@@ -103,7 +103,7 @@ Qt3DRender::QEffect *Kuesa::EffectsLibrary::getOrCreateCustomEffect(Kuesa::Effec
         return std::get<1>(*it);
 
     Qt3DRender::QEffect *effect = qobject_cast<Qt3DRender::QEffect *>(
-                customEffectKey.effectClassMetaObject.newInstance(
+                customEffectKey.effectClassMetaObject->newInstance(
                     Q_ARG(Qt3DCore::QNode *, effectOwner)));
     Q_ASSERT(effect);
     const EffectProperties::Properties properties = customEffectKey.properties;
@@ -153,7 +153,7 @@ QVector<std::pair<Kuesa::EffectsLibrary::CustomEffectKey, Qt3DRender::QEffect *>
 
 bool Kuesa::operator ==(const Kuesa::EffectsLibrary::CustomEffectKey &a, const Kuesa::EffectsLibrary::CustomEffectKey &b)
 {
-    return a.effectClassMetaObject.className() == b.effectClassMetaObject.className() &&
+    return a.effectClassMetaObject == b.effectClassMetaObject &&
            a.properties == b.properties;
 }
 

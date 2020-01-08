@@ -1095,7 +1095,7 @@ void GLTF2Parser::generateTreeNodeContent()
 
                         if (mat.extensions.KDAB_custom_material) {
                             GLTF2Material *specificMaterial = qobject_cast<GLTF2Material *>(
-                                    mat.customMaterial.materialClassMetaObject.newInstance());
+                                    mat.customMaterial.materialClassMetaObject->newInstance());
                             Q_ASSERT(specificMaterial);
                             material = specificMaterial;
                             Kuesa::GLTF2MaterialProperties *materialProperties = mat.materialProperties();

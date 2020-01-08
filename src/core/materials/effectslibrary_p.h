@@ -61,7 +61,7 @@ public:
 
     struct CustomEffectKey
     {
-        QMetaObject effectClassMetaObject;
+        const QMetaObject *effectClassMetaObject;
         EffectProperties::Properties properties;
     };
     using CustomEffectKeyPair = std::pair<CustomEffectKey, Qt3DRender::QEffect *>;

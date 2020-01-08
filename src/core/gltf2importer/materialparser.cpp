@@ -251,8 +251,8 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
                     mat.customMaterial.effectClassMetaObject = it.value().effectClassMetaObject;
 
                     auto findPropertyTypeFromMetaObject = [&mat] (const QByteArray &propertyName) {
-                        for (int i = 0, m = mat.customMaterial.propertiesClassMetaObject.propertyCount(); i < m; ++i) {
-                            const QMetaProperty p = mat.customMaterial.propertiesClassMetaObject.property(i);
+                        for (int i = 0, m = mat.customMaterial.propertiesClassMetaObject->propertyCount(); i < m; ++i) {
+                            const QMetaProperty p = mat.customMaterial.propertiesClassMetaObject->property(i);
                             if (p.name() == propertyName)
                                 return p.userType();
                         }
@@ -300,12 +300,12 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
     if (extensions.KDAB_custom_material) { // Custom Material
 
         // Check if we find a registered custom material that matches
-        const QByteArray className = QByteArray(customMaterial.propertiesClassMetaObject.className());
+        const QByteArray className = QByteArray(customMaterial.propertiesClassMetaObject->className());
         if (className.isEmpty())
             return nullptr;
 
         GLTF2MaterialProperties *materialProperties = qobject_cast<GLTF2MaterialProperties *>(
-                customMaterial.propertiesClassMetaObject.newInstance());
+                customMaterial.propertiesClassMetaObject->newInstance());
         Q_ASSERT(materialProperties);
 
         // Fill materialProperty class
