@@ -73,6 +73,7 @@
 
 namespace {
 const QLatin1String LASTPATHSETTING("mainwindow/lastPath");
+const QLatin1String RECENT_FILES_SETTING("mainwindow/recentFiles");
 
 template<class AssetType>
 bool selectAssetType(Qt3DCore::QEntity *node, Kuesa::AbstractAssetCollection *collection,
@@ -111,6 +112,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_ui->actionReload->setShortcut(QKeySequence::Refresh);
 
     m_ui->actionOpen->setIcon(QIcon(":/icons/open-48.png"));
+    m_ui->menu_Open_Recent->setIcon(QIcon(":/icons/open-48.png"));
     m_ui->actionReload->setIcon(QIcon(":/icons/reload-48.png"));
     m_ui->actionViewAll->setIcon(QIcon(":/icons/max-48.png"));
 
@@ -128,7 +130,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_toneMappingAlgorithm = static_cast<decltype(m_toneMappingAlgorithm)>(settings.value("toneMappingAlgorithm", Kuesa::ToneMappingAndGammaCorrectionEffect::None).toInt());
 
     connect(m_ui->actionCopy, &QAction::triggered, this, &MainWindow::copyAssetName);
-    connect(m_ui->actionOpen, &QAction::triggered, this, &MainWindow::openFile);
+    connect(m_ui->actionOpen, &QAction::triggered, this, QOverload<>::of(&MainWindow::openFile));
     connect(m_ui->actionReload, &QAction::triggered, this, &MainWindow::reloadFile);
     connect(m_ui->actionAbout, &QAction::triggered, this, &MainWindow::about);
     connect(m_ui->actionViewAll, &QAction::triggered, this, &MainWindow::viewAll);
@@ -180,6 +182,16 @@ MainWindow::MainWindow(QWidget *parent)
     m_ui->menuView->addAction(m_ui->animationDockWidget->toggleViewAction());
     m_ui->menuView->addAction(m_ui->cameraDockWidget->toggleViewAction());
     m_ui->menuView->addAction(m_ui->memoryUsageWidget->toggleViewAction());
+
+    for (int i = 0; i < MaxRecentFiles; ++i) {
+        m_recentFilesAction[i] = new QAction(this);
+        m_recentFilesAction[i]->setVisible(false);
+        m_ui->menu_Open_Recent->addAction(m_recentFilesAction[i]);
+        connect(m_recentFilesAction[i], &QAction::triggered, [this, action=m_recentFilesAction[i]] () {
+            openFile(action->data().toString());
+        });
+    }
+    updateRecentFiles();
 
     m_ui->collectionBrowser->setModel(new CollectionModel(this));
 
@@ -502,10 +514,25 @@ void MainWindow::openFile()
     if (filePath.isEmpty())
         return;
 
-    QFileInfo fi(filePath);
-    settings.setValue(LASTPATHSETTING, fi.absolutePath());
+    openFile(filePath);
+}
 
-    setFilePath(filePath);
+void MainWindow::openFile(const QString &filePath)
+{
+    QFileInfo fi(filePath);
+    if (fi.exists()) {
+        QSettings settings;
+        QStringList files = settings.value(RECENT_FILES_SETTING).toStringList();
+        files.removeAll(filePath);
+        files.prepend(filePath);
+        while (files.size() > MaxRecentFiles)
+            files.removeLast();
+        settings.setValue(RECENT_FILES_SETTING, files);
+        updateRecentFiles();
+
+        settings.setValue(LASTPATHSETTING, fi.absolutePath());
+        setFilePath(filePath);
+    }
 }
 
 void MainWindow::exportFile()
@@ -660,4 +687,24 @@ void MainWindow::autoNearFarPlanes()
     const float sceneExtent = 2.0f * (viewCenter - position).length();
     m_camera->setFarPlane(10.0f * sceneExtent); // add some headroom to be able to zoom out
     m_camera->setNearPlane(0.001f * sceneExtent);
+}
+
+void MainWindow::updateRecentFiles()
+{
+    QSettings settings;
+    QStringList files = settings.value(RECENT_FILES_SETTING).toStringList();
+    const int numRecentFiles = std::min(files.size(), int(MaxRecentFiles));
+
+    auto cleanPath = [] (const QString &path) {
+        return QFileInfo(path).absoluteFilePath();
+    };
+
+    for (int i = 0; i < numRecentFiles; ++i) {
+        const QString text = tr("&%1 %2").arg(i + 1).arg(cleanPath(files[i]));
+        m_recentFilesAction[i]->setText(text);
+        m_recentFilesAction[i]->setData(files[i]);
+        m_recentFilesAction[i]->setVisible(true);
+    }
+    for (int j = numRecentFiles; j < MaxRecentFiles; ++j)
+        m_recentFilesAction[j]->setVisible(false);
 }

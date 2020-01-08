@@ -104,6 +104,7 @@ protected:
 
 private slots:
     void openFile();
+    void openFile(const QString &path);
     void exportFile();
     void reloadFile();
     void generateTangents();
@@ -117,6 +118,7 @@ private slots:
     void updateCameraAspectRatio();
     void openSettings();
     void autoNearFarPlanes();
+    void updateRecentFiles();
 
 private:
     Ui::MainWindow *m_ui;
@@ -141,6 +143,12 @@ private:
     float m_gamma;
     float m_exposure;
     Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping m_toneMappingAlgorithm;
+
+    enum RecentFiles {
+        MaxRecentFiles = 10
+    };
+
+    QAction *m_recentFilesAction[MaxRecentFiles];
 };
 
 #endif // MAINWINDOW_H
