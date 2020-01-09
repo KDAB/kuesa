@@ -230,6 +230,7 @@ void main()
 
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"(#version 150 core
+#define LINEARtosRGB(color) vec4(pow(color.rgb, vec3(2.2)), color.a)
 
 struct MaterialProperties {
     vec3 factors;
@@ -256,11 +257,14 @@ vec2 semS(vec3 normalSem_)
 
 void main()
 {
-    fragColor = postColor * vec4(texture(properties.sem, semS(normalize(normalSem))).rgb * properties.semGain, 1.0);
+    vec4 finalColor = postColor * vec4(texture(properties.sem, semS(normalize(normalSem))).rgb * properties.semGain, 1.0);
+    fragColor = LINEARtosRGB(finalColor);
 })"),
             QByteArray(R"(#version 300 es
 precision highp float;
 precision highp sampler2D;
+#define LINEARtosRGB(color) vec4(pow(color.rgb, vec3(2.2)), color.a)
+
 struct MaterialProperties {
     vec3 factors;
     vec2 disturbation;
@@ -286,10 +290,13 @@ vec2 semS(vec3 normalSem_)
 
 void main()
 {
-    fragColor = postColor * vec4(texture(properties.sem, semS(normalize(normalSem))).rgb * properties.semGain, 1.0);
+    vec4 finalColor = postColor * vec4(texture(properties.sem, semS(normalize(normalSem))).rgb * properties.semGain, 1.0);
+    fragColor = LINEARtosRGB(finalColor);
 })"),
             QByteArray(R"(precision highp float;
 precision highp sampler2D;
+#define LINEARtosRGB(color) vec4(pow(color.rgb, vec3(2.2)), color.a)
+
 struct MaterialProperties {
     vec3 factors;
     vec2 disturbation;
@@ -315,7 +322,8 @@ vec2 semS(vec3 normalSem_)
 
 void main()
 {
-    fragColor = postColor * vec4(texture2D(properties.sem, semS(normalize(normalSem))).rgb * properties.semGain, 1.0);
+    vec4 finalColor = postColor * vec4(texture(properties.sem, semS(normalize(normalSem))).rgb * properties.semGain, 1.0);
+    fragColor = LINEARtosRGB(finalColor);
 })")
         };
 

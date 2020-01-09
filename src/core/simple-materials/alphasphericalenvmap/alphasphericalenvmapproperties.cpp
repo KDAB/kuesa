@@ -211,11 +211,11 @@ float AlphaSphericalEnvMapProperties::semGain() const
 
 /*!
     \qmlproperty Qt3DRender::QAbstractTexture * AlphaSphericalEnvMapProperties::sem
-    Specifies the spherical environment map to use.
+    Specifies the spherical environment map to use. It is expected to be in linear color space.
 */
 /*!
     \property AlphaSphericalEnvMapProperties::sem
-    Specifies the spherical environment map to use.
+    Specifies the spherical environment map to use. It is expected to be in linear color space.
 */
 Qt3DRender::QAbstractTexture * AlphaSphericalEnvMapProperties::sem() const
 {

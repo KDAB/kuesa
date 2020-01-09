@@ -48,6 +48,7 @@ void main()
 
 
 #version 150 core
+#define LINEARtosRGB(color) vec4(pow(color.rgb, vec3(2.2)), color.a)
 
 struct MaterialProperties {
     vec3 factors;
@@ -93,5 +94,6 @@ void main()
     vec3 glassFilter = mix(properties.glassInnerFilter, properties.glassOuterFilter, fresnel);
     vec3 semColor = texture(properties.sem, semS(normalSem_)).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
     vec3 blendedColor = glassFilter + semColor;
-    fragColor = postColor * vec4(blendedColor, mix(properties.semInnerAlpha, properties.semOuterAlpha, fresnel));
+    vec4 finalColor = postColor * vec4(blendedColor, mix(properties.semInnerAlpha, properties.semOuterAlpha, fresnel));
+    fragColor = LINEARtosRGB(finalColor);
 }

@@ -30,9 +30,9 @@
 #ifndef KUESA_DIFFUSESPHERICALENVMAPSHADERDATA_P_H
 #define KUESA_DIFFUSESPHERICALENVMAPSHADERDATA_P_H
 
-#include <Qt3DRender/QAbstractTexture>
 #include <QVector3D>
 #include <QVector2D>
+#include <Qt3DRender/QAbstractTexture>
 #include <Qt3DRender/QShaderData>
 
 QT_BEGIN_NAMESPACE

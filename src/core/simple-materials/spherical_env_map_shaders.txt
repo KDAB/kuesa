@@ -42,6 +42,7 @@ void main()
 
 
 #version 150 core
+#define LINEARtosRGB(color) vec4(pow(color.rgb, vec3(2.2)), color.a)
 
 struct MaterialProperties {
     vec3 factors;
@@ -68,5 +69,6 @@ vec2 semS(vec3 normalSem_)
 
 void main()
 {
-    fragColor = postColor * vec4(texture(properties.sem, semS(normalize(normalSem))).rgb * properties.semGain, 1.0);
+    vec4 finalColor = postColor * vec4(texture(properties.sem, semS(normalize(normalSem))).rgb * properties.semGain, 1.0);
+    fragColor = LINEARtosRGB(finalColor);
 }
