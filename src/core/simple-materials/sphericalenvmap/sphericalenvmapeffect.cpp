@@ -230,7 +230,7 @@ void main()
 
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"(#version 150 core
-#define LINEARtosRGB(color) vec4(pow(color.rgb, vec3(2.2)), color.a)
+vec4 sRGBToLinear(vec4 color)  { return vec4(pow(color.rgb, vec3(2.2)), color.a); }
 
 struct MaterialProperties {
     vec3 factors;
@@ -257,13 +257,12 @@ vec2 semS(vec3 normalSem_)
 
 void main()
 {
-    vec4 finalColor = postColor * vec4(texture(properties.sem, semS(normalize(normalSem))).rgb * properties.semGain, 1.0);
-    fragColor = LINEARtosRGB(finalColor);
+    fragColor = postColor * vec4(sRGBToLinear(texture(properties.sem, semS(normalize(normalSem)))).rgb * properties.semGain, 1.0);
 })"),
             QByteArray(R"(#version 300 es
 precision highp float;
 precision highp sampler2D;
-#define LINEARtosRGB(color) vec4(pow(color.rgb, vec3(2.2)), color.a)
+vec4 sRGBToLinear(vec4 color)  { return vec4(pow(color.rgb, vec3(2.2)), color.a); }
 
 struct MaterialProperties {
     vec3 factors;
@@ -290,12 +289,11 @@ vec2 semS(vec3 normalSem_)
 
 void main()
 {
-    vec4 finalColor = postColor * vec4(texture(properties.sem, semS(normalize(normalSem))).rgb * properties.semGain, 1.0);
-    fragColor = LINEARtosRGB(finalColor);
+    fragColor = postColor * vec4(sRGBToLinear(texture(properties.sem, semS(normalize(normalSem)))).rgb * properties.semGain, 1.0);
 })"),
             QByteArray(R"(precision highp float;
 precision highp sampler2D;
-#define LINEARtosRGB(color) vec4(pow(color.rgb, vec3(2.2)), color.a)
+vec4 sRGBToLinear(vec4 color)  { return vec4(pow(color.rgb, vec3(2.2)), color.a); }
 
 struct MaterialProperties {
     vec3 factors;
@@ -322,8 +320,7 @@ vec2 semS(vec3 normalSem_)
 
 void main()
 {
-    vec4 finalColor = postColor * vec4(texture(properties.sem, semS(normalize(normalSem))).rgb * properties.semGain, 1.0);
-    fragColor = LINEARtosRGB(finalColor);
+    fragColor = postColor * vec4(sRGBToLinear(texture(properties.sem, semS(normalize(normalSem)))).rgb * properties.semGain, 1.0);
 })")
         };
 

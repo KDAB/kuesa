@@ -31,8 +31,8 @@
 #define KUESA_SPHERICALENVMAPPROPERTIES_H
 
 #include <Qt3DRender/QAbstractTexture>
-#include <QVector3D>
 #include <QVector2D>
+#include <QVector3D>
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>
 

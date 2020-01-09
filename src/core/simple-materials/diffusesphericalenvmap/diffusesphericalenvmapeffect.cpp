@@ -251,7 +251,7 @@ void main()
 
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"(#version 150 core
-#define LINEARtosRGB(color) vec4(pow(color.rgb, vec3(2.2)), color.a)
+vec4 sRGBToLinear(vec4 color)  { return vec4(pow(color.rgb, vec3(2.2)), color.a); }
 
 struct MaterialProperties {
     vec3 factors;
@@ -295,16 +295,15 @@ void main()
 {
     vec3 normalSem_ = normalize(normalSem);
     float fresnel = semFresnel(normalSem_);
-    vec3 semColor = texture(properties.sem, semS(normalSem_)).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
-    vec3 diffuseColor = properties.usesDiffuseMap ? texture(properties.diffuseMap, texCoord).xyz : properties.diffuseFactor;
+    vec3 semColor = sRGBToLinear(texture(properties.sem, semS(normalSem_))).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
+    vec3 diffuseColor = properties.usesDiffuseMap ? sRGBToLinear(texture(properties.diffuseMap, texCoord)).xyz : properties.diffuseFactor;
     diffuseColor *= mix(properties.diffuseInnerFilter, properties.diffuseOuterFilter, fresnel);
-    vec4 finalColor = postColor * vec4(diffuseColor + semColor, 1.0);
-    fragColor = LINEARtosRGB(finalColor);
+    fragColor = postColor * vec4(diffuseColor + semColor, 1.0);
 })"),
             QByteArray(R"(#version 300 es
 precision highp float;
 precision highp sampler2D;
-#define LINEARtosRGB(color) vec4(pow(color.rgb, vec3(2.2)), color.a)
+vec4 sRGBToLinear(vec4 color)  { return vec4(pow(color.rgb, vec3(2.2)), color.a); }
 
 struct MaterialProperties {
     vec3 factors;
@@ -348,15 +347,14 @@ void main()
 {
     vec3 normalSem_ = normalize(normalSem);
     float fresnel = semFresnel(normalSem_);
-    vec3 semColor = texture(properties.sem, semS(normalSem_)).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
-    vec3 diffuseColor = properties.usesDiffuseMap ? texture(properties.diffuseMap, texCoord).xyz : properties.diffuseFactor;
+    vec3 semColor = sRGBToLinear(texture(properties.sem, semS(normalSem_))).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
+    vec3 diffuseColor = properties.usesDiffuseMap ? sRGBToLinear(texture(properties.diffuseMap, texCoord)).xyz : properties.diffuseFactor;
     diffuseColor *= mix(properties.diffuseInnerFilter, properties.diffuseOuterFilter, fresnel);
-    vec4 finalColor = postColor * vec4(diffuseColor + semColor, 1.0);
-    fragColor = LINEARtosRGB(finalColor);
+    fragColor = postColor * vec4(diffuseColor + semColor, 1.0);
 })"),
             QByteArray(R"(precision highp float;
 precision highp sampler2D;
-#define LINEARtosRGB(color) vec4(pow(color.rgb, vec3(2.2)), color.a)
+vec4 sRGBToLinear(vec4 color)  { return vec4(pow(color.rgb, vec3(2.2)), color.a); }
 
 struct MaterialProperties {
     vec3 factors;
@@ -400,11 +398,10 @@ void main()
 {
     vec3 normalSem_ = normalize(normalSem);
     float fresnel = semFresnel(normalSem_);
-    vec3 semColor = texture(properties.sem, semS(normalSem_)).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
-    vec3 diffuseColor = properties.usesDiffuseMap ? texture(properties.diffuseMap, texCoord).xyz : properties.diffuseFactor;
+    vec3 semColor = sRGBToLinear(texture(properties.sem, semS(normalSem_))).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
+    vec3 diffuseColor = properties.usesDiffuseMap ? sRGBToLinear(texture(properties.diffuseMap, texCoord)).xyz : properties.diffuseFactor;
     diffuseColor *= mix(properties.diffuseInnerFilter, properties.diffuseOuterFilter, fresnel);
-    vec4 finalColor = postColor * vec4(diffuseColor + semColor, 1.0);
-    fragColor = LINEARtosRGB(finalColor);
+    fragColor = postColor * vec4(diffuseColor + semColor, 1.0);
 })")
         };
 

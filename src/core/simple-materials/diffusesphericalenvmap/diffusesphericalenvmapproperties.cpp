@@ -217,11 +217,11 @@ float DiffuseSphericalEnvMapProperties::semGain() const
 
 /*!
     \qmlproperty Qt3DRender::QAbstractTexture * DiffuseSphericalEnvMapProperties::sem
-    Specifies the spherical environment map to use. It is expected to be in linear color space.
+    Specifies the spherical environment map to use. It is expected to be in sRGB color space.
 */
 /*!
     \property DiffuseSphericalEnvMapProperties::sem
-    Specifies the spherical environment map to use. It is expected to be in linear color space.
+    Specifies the spherical environment map to use. It is expected to be in sRGB color space.
 */
 Qt3DRender::QAbstractTexture * DiffuseSphericalEnvMapProperties::sem() const
 {
@@ -282,11 +282,11 @@ QVector3D DiffuseSphericalEnvMapProperties::diffuseOuterFilter() const
 
 /*!
     \qmlproperty Qt3DRender::QAbstractTexture * DiffuseSphericalEnvMapProperties::diffuseMap
-    Specifies the diffuse map to use. It is expected to be in linear color space.
+    Specifies the diffuse map to use. It is expected to be in sRGB color space.
 */
 /*!
     \property DiffuseSphericalEnvMapProperties::diffuseMap
-    Specifies the diffuse map to use. It is expected to be in linear color space.
+    Specifies the diffuse map to use. It is expected to be in sRGB color space.
 */
 Qt3DRender::QAbstractTexture * DiffuseSphericalEnvMapProperties::diffuseMap() const
 {
