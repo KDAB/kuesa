@@ -62,36 +62,33 @@ BorderImage {
         x: Math.max(0, progress * (slideN.width - width))
     }
 
-    // visual items shadows and edges
-    BorderImage  {
+    Rectangle {
         id: handle
         x: 5
         height: parent.height - Math.ceil((SharedAttributes.ldpi * 0.09) / 2) * 2
         width: height + handleControl.x
         anchors.verticalCenter: parent.verticalCenter
-        border.left: 16; border.right: 16
-        border.top: 16; border.bottom: 16
-        source: "knobImageRaster.png"
-        opacity: controller.pressed ? 0:1
-        Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
+        color: controller.pressed ? "#973895ff" : "#22ffffff"
+        border.color: controller.pressed ? "#ff3895ff" : "#63ffffff"
+        border.width: 1
+        radius: height > 33 ? 16 : height / 2
+        Behavior on color { ColorAnimation { easing.type: Easing.OutQuad; duration: 400} }
+        Behavior on border.color { ColorAnimation { easing.type: Easing.OutQuad; duration: 400} }
+
         Image {
+            id: knobDot
             source: "knobImageRasterDot.png"
             anchors.right: parent.right
+            anchors.rightMargin: (parent.height - 33) / 2
             anchors.verticalCenter: parent.verticalCenter
+            opacity: controller.pressed ? 0 : 1
+            Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
         }
-    }
-
-    BorderImage  {
-        anchors.fill: handle
-        border.left: 16; border.right: 16
-        border.top: 16; border.bottom: 16
-        source: "knobImageRasterActive.png"
-        opacity: controller.pressed ? 1:0
-        Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
         Image {
+            id: knobDotHighlighted
             source: "knobImageRasterActiveDot.png"
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.centerIn: knobDot
+            opacity: 1 - knobDot.opacity
         }
     }
 }
