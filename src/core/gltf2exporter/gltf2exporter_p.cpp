@@ -175,9 +175,7 @@ QStringList GLTF2Exporter::overwritableFiles(const QDir &target) const
     return files;
 }
 
-auto GLTF2Exporter::saveInFolder(
-        const QDir &source,
-        const QDir &target) -> Export
+GLTF2Exporter::Export GLTF2Exporter::saveInFolder(const QDir &source, const QDir &target)
 {
     m_errors.clear();
     if (!m_context) {
