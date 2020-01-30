@@ -30,6 +30,7 @@
 
 #include "gltf2context_p.h"
 #include "kuesa_p.h"
+#include <private/gltf2utils_p.h>
 
 #include <QJsonValue>
 #include <QJsonObject>
@@ -69,23 +70,6 @@ AnimationParser::InterpolationMethod interpolationMethodFromSemantic(const QStri
     return AnimationParser::Unknown;
 }
 
-quint8 accessorDataTypeToBytes(Qt3DRender::QAttribute::VertexBaseType type)
-{
-    switch (type) {
-    case Qt3DRender::QAttribute::Byte:
-    case Qt3DRender::QAttribute::UnsignedByte:
-        return 1;
-    case Qt3DRender::QAttribute::Short:
-    case Qt3DRender::QAttribute::UnsignedShort:
-        return 2;
-    case Qt3DRender::QAttribute::Float:
-        return 4;
-    default:
-        qCWarning(kuesa, "Invalid data type");
-        return 0;
-    }
-}
-
 QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
 {
     if (accessor.bufferData.isEmpty()) {
@@ -99,7 +83,7 @@ QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
 
     // BufferData was generated using the bufferView's byteOffset
     const qint32 byteOffset = accessor.offset;
-    const quint8 elemByteSize = accessorDataTypeToBytes(accessor.type);
+    const quint8 elemByteSize = Kuesa::accessorDataTypeToBytes(accessor.type);
     const qint16 byteStride = (!bufferViewData.bufferData.isEmpty() && bufferViewData.byteStride > 0 ? bufferViewData.byteStride : qint16(accessor.dataSize * elemByteSize));
 
     if (byteStride < qint16(elemByteSize * accessor.dataSize)) {

@@ -91,6 +91,13 @@ const QLatin1String KEY_COUNT = QLatin1String("count");
 const QLatin1String KEY_TYPE = QLatin1String("type");
 const QLatin1String KEY_MAX = QLatin1String("max");
 const QLatin1String KEY_MIN = QLatin1String("min");
+const QLatin1String KEY_MODE = QLatin1String("mode");
+const QLatin1String KEY_TARGETS = QLatin1String("targets");
+const QLatin1String KEY_WEIGHTS = QLatin1String("weights");
+const QLatin1String KEY_NORMALIZED = QLatin1String("normalized");
+const QLatin1String KEY_SPARSE_INDICES = QLatin1String("indices");
+const QLatin1String KEY_SPARSE_VALUES = QLatin1String("values");
+const QLatin1String KEY_MATERIAL = QLatin1String("material");
 
 } // namespace GLTF2Import
 } // namespace Kuesa

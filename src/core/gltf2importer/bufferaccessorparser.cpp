@@ -38,16 +38,13 @@
 
 #include "gltf2context_p.h"
 #include "gltf2keys_p.h"
+#include "gltf2utils_p.h"
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 using namespace GLTF2Import;
 
 namespace {
-
-const QLatin1String KEY_NORMALIZED = QLatin1String("normalized");
-const QLatin1String KEY_SPARSE_INDICES = QLatin1String("indices");
-const QLatin1String KEY_SPARSE_VALUES = QLatin1String("values");
 
 QVector<float> jsonArrayToVectorOfFloats(const QJsonArray &values)
 {
@@ -124,35 +121,11 @@ bool copySparseValues(int bufferCount, int sparseCount, const QByteArray &indice
                       QByteArray &targetBuffer, int attributeOffset, int stride,
                       Qt3DRender::QAttribute::VertexBaseType componentType, int numComponents)
 {
-    int valueSize = 0;
-    switch (componentType) {
-    case Qt3DRender::QAttribute::UnsignedByte:
-    case Qt3DRender::QAttribute::Byte:
-        valueSize = static_cast<int>(sizeof(char)) * numComponents;
-        break;
-    case Qt3DRender::QAttribute::UnsignedShort:
-    case Qt3DRender::QAttribute::Short:
-        valueSize = static_cast<int>(sizeof(short)) * numComponents;
-        break;
-    case Qt3DRender::QAttribute::UnsignedInt:
-    case Qt3DRender::QAttribute::Int:
-        valueSize = static_cast<int>(sizeof(int)) * numComponents;
-        break;
-    case Qt3DRender::QAttribute::Float:
-        valueSize = static_cast<int>(sizeof(float)) * numComponents;
-        break;
-    case Qt3DRender::QAttribute::Double:
-        valueSize = static_cast<int>(sizeof(double)) * numComponents;
-        break;
-    default:
-        qCWarning(kuesa, "Unhandled sparse accessor data type");
-        return false;
-    }
-
+    const int valueSize = accessorDataTypeToBytes(componentType) * numComponents;
+    Q_ASSERT(valueSize != 0);
     if (targetBuffer.isEmpty())
         targetBuffer = QByteArray(bufferCount * valueSize, 0);
 
-    Q_ASSERT(valueSize != 0);
     return copySparseValues<IndexType>(sparseCount, indicesBuffer, valuesBuffer,
                                        targetBuffer, attributeOffset, stride,
                                        valueSize);

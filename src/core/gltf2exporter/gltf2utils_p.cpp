@@ -31,6 +31,7 @@
 #include <QJsonArray>
 #include <QLatin1String>
 #include <algorithm>
+#include <private/kuesa_p.h>
 
 QT_BEGIN_NAMESPACE
 namespace Kuesa {
@@ -81,6 +82,27 @@ int addToJsonChildArray(QJsonObject &object, const QString &name, const QJsonObj
     array.append(toInsert);
     object[name] = std::move(array);
     return index;
+}
+
+quint8 accessorDataTypeToBytes(Qt3DRender::QAttribute::VertexBaseType type)
+{
+    switch (type) {
+    case Qt3DRender::QAttribute::Byte:
+    case Qt3DRender::QAttribute::UnsignedByte:
+        return 1;
+    case Qt3DRender::QAttribute::Short:
+    case Qt3DRender::QAttribute::UnsignedShort:
+        return 2;
+    case Qt3DRender::QAttribute::Float:
+    case Qt3DRender::QAttribute::UnsignedInt:
+    case Qt3DRender::QAttribute::Int:
+        return 4;
+    case Qt3DRender::QAttribute::Double:
+        return 8;
+    default:
+        qCWarning(kuesa, "Invalid data type");
+        return 0;
+    }
 }
 
 } // namespace Kuesa
