@@ -215,14 +215,14 @@ struct MaterialProperties {
 
 uniform MaterialProperties properties;
 
-in vec3 vertexPosition;
-in vec3 vertexNormal;
-in vec2 vertexTexCoord;
-in vec4 vertexColor;
+attribute vec3 vertexPosition;
+attribute vec3 vertexNormal;
+attribute vec2 vertexTexCoord;
+attribute vec4 vertexColor;
 
-out vec3 normalSem;
-out vec2 texCoord;
-out vec4 postColor;
+varying vec3 normalSem;
+varying vec2 texCoord;
+varying vec4 postColor;
 
 vec3 semNormal()
 {
@@ -363,11 +363,9 @@ struct MaterialProperties {
 
 uniform MaterialProperties properties;
 
-in vec3 normalSem;
-in vec4 postColor;
-in vec2 texCoord;
-
-out vec4 fragColor;
+varying vec3 normalSem;
+varying vec4 postColor;
+varying vec2 texCoord;
 
 float semFresnel(vec3 normalSem_)
 {
@@ -390,7 +388,7 @@ void main()
     vec3 glassFilter = mix(properties.glassInnerFilter, properties.glassOuterFilter, fresnel);
     vec3 semColor = sRGBToLinear(texture(properties.sem, semS(normalSem_))).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
     vec3 blendedColor = glassFilter + semColor;
-    fragColor = postColor * vec4(blendedColor, mix(properties.semInnerAlpha, properties.semOuterAlpha, fresnel));
+    gl_FragColor = postColor * vec4(blendedColor, mix(properties.semInnerAlpha, properties.semOuterAlpha, fresnel));
 })")
         };
 

@@ -201,14 +201,14 @@ struct MaterialProperties {
 
 uniform MaterialProperties properties;
 
-in vec3 vertexPosition;
-in vec3 vertexNormal;
-in vec2 vertexTexCoord;
-in vec4 vertexColor;
+attribute vec3 vertexPosition;
+attribute vec3 vertexNormal;
+attribute vec2 vertexTexCoord;
+attribute vec4 vertexColor;
 
-out vec3 normalSem;
-out vec2 texCoord;
-out vec4 postColor;
+varying vec3 normalSem;
+varying vec2 texCoord;
+varying vec4 postColor;
 
 vec3 semNormal()
 {
@@ -306,10 +306,8 @@ struct MaterialProperties {
 
 uniform MaterialProperties properties;
 
-in vec3 normalSem;
-in vec4 postColor;
-
-out vec4 fragColor;
+varying vec3 normalSem;
+varying vec4 postColor;
 
 vec2 semS(vec3 normalSem_)
 {
@@ -320,7 +318,7 @@ vec2 semS(vec3 normalSem_)
 
 void main()
 {
-    fragColor = postColor * vec4(sRGBToLinear(texture(properties.sem, semS(normalize(normalSem)))).rgb * properties.semGain, 1.0);
+    gl_FragColor = postColor * vec4(sRGBToLinear(texture(properties.sem, semS(normalize(normalSem)))).rgb * properties.semGain, 1.0);
 })")
         };
 
