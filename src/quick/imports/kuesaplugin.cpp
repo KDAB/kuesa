@@ -51,12 +51,12 @@
 #include <Kuesa/SphericalEnvMapMaterial>
 #include <Kuesa/SphericalEnvMapEffect>
 #include <Kuesa/SphericalEnvMapProperties>
-#include <Kuesa/DiffuseSphericalEnvMapMaterial>
-#include <Kuesa/DiffuseSphericalEnvMapEffect>
-#include <Kuesa/DiffuseSphericalEnvMapProperties>
-#include <Kuesa/AlphaSphericalEnvMapMaterial>
-#include <Kuesa/AlphaSphericalEnvMapEffect>
-#include <Kuesa/AlphaSphericalEnvMapProperties>
+#include <Kuesa/IroDiffuseMaterial>
+#include <Kuesa/IroDiffuseEffect>
+#include <Kuesa/IroDiffuseProperties>
+#include <Kuesa/IroGlassAddMaterial>
+#include <Kuesa/IroGlassAddEffect>
+#include <Kuesa/IroGlassAddProperties>
 #include <QtQml/qqml.h>
 
 QT_BEGIN_NAMESPACE
@@ -72,6 +72,8 @@ KuesaPlugin::~KuesaPlugin()
 
 void KuesaPlugin::registerTypes(const char *uri)
 {
+    // Make latest Kuesa import available (even if no new types are registered)
+    qmlRegisterModule(uri, 1, 2);
 
     // Collections
     qmlRegisterUncreatableType<Kuesa::AbstractAssetCollection>(uri, 1, 0, "AbstractAssetCollection", QStringLiteral("You are not supposed to create an EntityCollection"));
@@ -119,17 +121,17 @@ void KuesaPlugin::registerTypes(const char *uri)
     qRegisterMetaType<Kuesa::EffectProperties::Properties>("EffectProperties::Properties");
 
     // Custom Simple Materials
-    qmlRegisterType<Kuesa::SphericalEnvMapMaterial>(uri, 1, 2, "SphericalEnvMapMaterial");
-    qmlRegisterType<Kuesa::SphericalEnvMapProperties>(uri, 1, 2, "SphericalEnvMapProperties");
-    qmlRegisterType<Kuesa::SphericalEnvMapEffect>(uri, 1, 2, "SphericalEnvMapEffect");
+    qmlRegisterType<Kuesa::SphericalEnvMapMaterial>("Kuesa.Iro", 1, 2, "SphericalEnvMapMaterial");
+    qmlRegisterType<Kuesa::SphericalEnvMapProperties>("Kuesa.Iro", 1, 2, "SphericalEnvMapProperties");
+    qmlRegisterType<Kuesa::SphericalEnvMapEffect>("Kuesa.Iro", 1, 2, "SphericalEnvMapEffect");
 
-    qmlRegisterType<Kuesa::DiffuseSphericalEnvMapMaterial>(uri, 1, 2, "DiffuseSphericalEnvMapMaterial");
-    qmlRegisterType<Kuesa::DiffuseSphericalEnvMapProperties>(uri, 1, 2, "DiffuseSphericalEnvMapProperties");
-    qmlRegisterType<Kuesa::DiffuseSphericalEnvMapEffect>(uri, 1, 2, "DiffuseSphericalEnvMapEffect");
+    qmlRegisterType<Kuesa::IroDiffuseMaterial>("Kuesa.Iro", 1, 2, "IroDiffuseMaterial");
+    qmlRegisterType<Kuesa::IroDiffuseProperties>("Kuesa.Iro", 1, 2, "IroDiffuseProperties");
+    qmlRegisterType<Kuesa::IroDiffuseEffect>("Kuesa.Iro", 1, 2, "IroDiffuseEffect");
 
-    qmlRegisterType<Kuesa::AlphaSphericalEnvMapMaterial>(uri, 1, 2, "AlphaSphericalEnvMapMaterial");
-    qmlRegisterType<Kuesa::AlphaSphericalEnvMapProperties>(uri, 1, 2, "AlphaSphericalEnvMapProperties");
-    qmlRegisterType<Kuesa::AlphaSphericalEnvMapEffect>(uri, 1, 2, "AlphaSphericalEnvMapEffect");
+    qmlRegisterType<Kuesa::IroGlassAddMaterial>("Kuesa.Iro", 1, 2, "IroGlassAddMaterial");
+    qmlRegisterType<Kuesa::IroGlassAddProperties>("Kuesa.Iro", 1, 2, "IroGlassAddProperties");
+    qmlRegisterType<Kuesa::IroGlassAddEffect>("Kuesa.Iro", 1, 2, "IroGlassAddEffect");
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));

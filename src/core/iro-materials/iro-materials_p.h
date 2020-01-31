@@ -1,10 +1,10 @@
 /*
-    main.qml
+    iro-materials_p.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Mike Krus <mike.krus@kdab.com>
+    Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,49 +26,23 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Qt3D.Core 2.10
-import Qt3D.Render 2.10
-import Qt3D.Input 2.0
-import Qt3D.Extras 2.10
-import Qt3D.Animation 2.10
-import QtQuick 2.10 as QQ2
-import Kuesa 1.2 as Kuesa
+#ifndef KUESA_IRO_MATERIALS_P_H
+#define KUESA_IRO_MATERIALS_P_H
 
-Kuesa.SceneEntity {
-    id: scene
+#include <Kuesa/kuesa_global.h>
 
-    components: [
-        RenderSettings {
-            activeFrameGraph: Kuesa.ForwardRenderer {
-                id: frameGraph
-                camera: mainCamera
-                clearColor: "white"
-            }
-        },
-        InputSettings { }
-    ]
+QT_BEGIN_NAMESPACE
 
-    Camera {
-        id: mainCamera
-        position: Qt.vector3d(0.0, 0.0, 7.0)
-        upVector: Qt.vector3d(0.0, 1.0, 0.0)
-        viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
-    }
+namespace Kuesa {
 
-    OrbitCameraController {
-        id: controller
-        camera: frameGraph.camera
-        linearSpeed: 5
-        lookSpeed: 180
-    }
+namespace IroMaterials {
 
-    Kuesa.GLTF2Importer {
-        id: gltf2importer
-        sceneEntity: scene
-        source: "file:///" + ASSETS + "manual/assets/IroMaterials/SphericalEnvMaterial/sphere.gltf"
-    }
+void registerIroMaterials();
 
-    onLoadingDone: {
-        mainCamera.viewAll()
-    }
-}
+} // namespace IroMaterials
+
+} // namespace Kuesa
+
+QT_END_NAMESPACE
+
+#endif // KUESA_IRO_MATERIALS_H

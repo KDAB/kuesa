@@ -65,7 +65,7 @@ Kuesa.SceneEntity {
     Kuesa.GLTF2Importer {
         id: gltf2importer
         sceneEntity: scene
-        source: "file:///" + ASSETS + "manual/assets/IroMaterials/SphericalEnvMaterial/sphere.gltf"
+        source: "file:///" + ASSETS + "manual/assets/IroMaterials/IroGlassAddMaterial/sphere.gltf"
     }
 
     onLoadingDone: {
