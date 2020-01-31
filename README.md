@@ -16,8 +16,6 @@ Kuesa is a module for Qt 3D which provides:
 
 Kuesa requires Qt 3D from Qt 5.12.5, Qt 5.13.1 or later.
 
-Instructions on how to build Qt from source can be found [here](https://wiki.qt.io/Building_Qt_5_from_Git)
-
 ### Hardware
 
 #### Desktop
@@ -88,7 +86,7 @@ Kuesa is composed of:
 
 ### glTF Editor
 
-![alt text](https://github.com/KDAB/kuesa/blob/dev/examples/kuesa/assets/misc/kuesa_ape.png)
+![glTF Editor](https://github.com/KDAB/kuesa/blob/dev/examples/kuesa/assets/misc/kuesa_ape.png)
 
 The glTF Editor can be used both by the designer and developer in order
 to preview and pre-process the content of glTF files.
@@ -109,7 +107,23 @@ Use:
 
 ## Installation
 
-Kuesa builds as a Qt module and will be installed alongside Qt.
+Kuesa builds as a Qt module and will be installed alongside Qt. The main advantage
+is that once installed, using Kuesa in your projects is as easy as adding ``QT += kuesa``
+to your project file. The down side is that building Kuesa from source can be a little
+more complicated if you're not used to building Qt itself already.
+
+*Note*: you DO NOT have to build Qt from source, building Kuesa against a pre-installed
+version of Qt should work fine.
+
+But building a module means that Kuesa has dependencies that are similar to those that
+apply when building Qt from source (Instructions on how to build Qt from source can be
+found [here](https://wiki.qt.io/Building_Qt_5_from_Git)). In particular:
+* perl must be installed and included in the PATH
+* if you have downloaded Kuesa as an archive from github, you must create an
+  empty ``.git`` folder at the root of the kuesa source directory.
+
+Once these are installed, ``syncqt`` will be able to generate the module headers at
+build time. Simply run:
 
     qmake
     make
