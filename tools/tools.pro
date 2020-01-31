@@ -28,7 +28,9 @@ TEMPLATE = subdirs
 
 include($$OUT_PWD/qtkuesa-config.pri)
 
-SUBDIRS = qtc_templates
+CONFIG(BUILD_FOR_MARKET): {
+    SUBDIRS += qtc_templates
+}
 
 QT_FOR_CONFIG += kuesa
 qtConfig(kuesa-tools) {
