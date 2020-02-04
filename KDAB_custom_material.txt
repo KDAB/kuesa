@@ -54,7 +54,8 @@ KDAB_custom_material extension
             },
             "type": "Fragment",
             "code": "#version ..."
-        }
+            "graph": "qrc:/path/to/graph"
+         }
     ]
 
 }

@@ -30,7 +30,7 @@ class CustomMaterialGenerator:
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -263,7 +263,17 @@ public:
         graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
         graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
 
-        const auto vertexShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"));
+        const QUrl vertexShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s"))
+        };
+
+        const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s"))
+        };
 
         const QByteArray zFillFragmentShaderCode[] = {
             QByteArray(R"(
@@ -301,16 +311,21 @@ public:
         // Use default vertex shader graph if no vertex shader code was specified
         if (renderableVertexShaderCode[version].isEmpty()) {
             m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph);
+            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
 
             m_zfillShaderBuilder->setShaderProgram(m_zfillShader);
-            m_zfillShaderBuilder->setVertexShaderGraph(vertexShaderGraph);
+            m_zfillShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
         } else {
             m_renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
             m_zfillShader->setVertexShaderCode(renderableVertexShaderCode[version]);
         }
 
-        m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
+        if (renderableFragmentShaderCode[version].isEmpty()) {
+            m_renderShaderBuilder->setShaderProgram(m_renderShader);
+            m_renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
+        } else {
+            m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
+        }
         m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
          // Set geometry shader code if one was specified
@@ -1007,6 +1022,12 @@ HEADERS += \\
             gl3GeometryCode = ""
             es3GeometryCode = ""
             es2GeometryCode = ""
+            es2VertexShaderGraph = ""
+            es2FragmentShaderGraph = ""
+            es3VertexShaderGraph = ""
+            es3FragmentShaderGraph = ""
+            gl3VertexShaderGraph = ""
+            gl3FragmentShaderGraph = ""
 
             shaders = self.rawJson.get("shaders", [])
             for shader in shaders:
@@ -1015,24 +1036,31 @@ HEADERS += \\
                 majorVersion = shaderFormat.get("major", 0)
                 api = shaderFormat.get("api", "")
                 code = shader.get("code", "")
+                graph = shader.get("graph", "")
                 if shaderType == "Fragment":
                     if api == "OpenGLES":
                         if majorVersion == 3:
                             es3FragCode = code
+                            es3FragmentShaderGraph = graph
                         elif majorVersion == 2:
                             es2FragCode = code
+                            es2FragmentShaderGraph = graph
                     elif api == "OpenGL":
                         if majorVersion == 3:
                             gl3FragCode = code
+                            gl3FragmentShaderGraph = graph
                 elif shaderType == "Vertex":
                     if api == "OpenGLES":
                         if majorVersion == 3:
                             es3VertCode = code
+                            es3VertexShaderGraph = graph
                         elif majorVersion == 2:
                             es2VertCode = code
+                            es2VertexShaderGraph = graph
                     elif api == "OpenGL":
                         if majorVersion == 3:
                             gl3VertCode = code
+                            gl3VertexShaderGraph = graph
                 elif shaderType == "Geometry":
                     if api == "OpenGLES":
                         if majorVersion == 3:
@@ -1044,6 +1072,12 @@ HEADERS += \\
 
             content = CustomMaterialGenerator.effectClassCppContent % (matName,
                                                                        matName,
+                                                                       gl3VertexShaderGraph,
+                                                                       es3VertexShaderGraph,
+                                                                       es2VertexShaderGraph,
+                                                                       gl3FragmentShaderGraph,
+                                                                       es3FragmentShaderGraph,
+                                                                       es2FragmentShaderGraph,
                                                                        gl3VertCode,
                                                                        es3VertCode,
                                                                        es2VertCode,
