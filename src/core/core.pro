@@ -62,6 +62,8 @@ OTHER_FILES += \
     shaders/graphs/metallicroughness.graph \
     shaders/graphs/irodiffuse.frag.graph \
     shaders/graphs/irodiffuse.vert.graph \
+    shaders/graphs/iroglassadd.frag.graph \
+    shaders/graphs/iroglassadd.vert.graph \
     configure.pri \
     configure.json
 
