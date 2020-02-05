@@ -31,15 +31,21 @@
 #include "gltf2context_p.h"
 #include "kuesa_p.h"
 #include <private/gltf2utils_p.h>
+#include <private/kuesa_utils_p.h>
 
 #include <QJsonValue>
 #include <QJsonObject>
+#include <QRegularExpression>
 #include <Qt3DCore/QEntity>
 #include <Qt3DCore/QTransform>
+#include <Qt3DCore/QJoint>
 #include <Qt3DAnimation/QChannel>
+#include <Qt3DAnimation/QChannelMapping>
 #include <Qt3DAnimation/QAnimationClipData>
 #include <private/gltf2keys_p.h>
-
+#include <private/gltf2context_p.h>
+#include <MorphController>
+#include <GLTF2MaterialProperties>
 #include <cstring>
 
 QT_BEGIN_NAMESPACE
@@ -125,48 +131,182 @@ std::vector<float> normalizeTypedChannelData(const QByteArray &rawData)
     return channelData;
 }
 
-QString channelPathToName(const QString &path)
+struct PathInfo {
+    int componentCount = 0;
+    QString propertyName;
+    QString channelBaseName;
+    AnimatableMappingsGenerator mappingGenerator;
+};
+
+struct AnimatablePropertiesCache {
+private:
+    QHash<QString, PathInfo> m_registeredAnimatables;
+
+    static AnimatablePropertiesCache &instance()
+    {
+        static AnimatablePropertiesCache c;
+        return c;
+    }
+
+public:
+    static QHash<QString, PathInfo> &registeredAnimatables()
+    {
+        return instance().m_registeredAnimatables;
+    }
+};
+
+quint8 expectedComponentsCountForChannel(const ChannelInfo &channelInfo)
 {
-    if (path == QStringLiteral("translation"))
-        return QStringLiteral("Location");
-    if (path == QStringLiteral("rotation"))
-        return QStringLiteral("Rotation");
-    if (path == QStringLiteral("scale"))
-        return QStringLiteral("Scale3D");
-    if (path == QStringLiteral("weights"))
-        return QStringLiteral("MorphWeights");
-    return {};
+    const AnimationTarget &target = channelInfo.target;
+    const quint8 componentCount = AnimatablePropertiesCache::registeredAnimatables().value(target.path).componentCount;
+    if (componentCount == 0)
+        qCWarning(kuesa) << "Unrecognized animation channel" << target.path;
+    return componentCount;
 }
 
-QString channelPathToProperty(const QString &path)
+QVector<Qt3DAnimation::QChannelMapping *> mappingsForTransformTargetNode(const GLTF2Context *ctx,
+                                                                         const ChannelMapping &mapping)
 {
-    if (path == QStringLiteral("translation"))
-        return QStringLiteral("translation");
-    if (path == QStringLiteral("rotation"))
-        return QStringLiteral("rotation");
-    if (path == QStringLiteral("scale"))
-        return QStringLiteral("scale3D");
-    if (path == QStringLiteral("weights"))
-        return QStringLiteral("morphWeights");
-    return {};
+    const TreeNode targetNode = ctx->treeNode(mapping.target.targetNodeId);
+    QVector<Qt3DAnimation::QChannelMapping *> mappings;
+
+    // Map channel to joint
+    for (auto &joint : targetNode.joints) {
+        if (joint) {
+            auto channelMapping = new Qt3DAnimation::QChannelMapping();
+            channelMapping->setTarget(joint);
+            channelMapping->setChannelName(mapping.name);
+            channelMapping->setProperty(mapping.property == QStringLiteral("scale3D") ? QStringLiteral("scale") : mapping.property);
+            mappings.push_back(channelMapping);
+        }
+    }
+
+    if (targetNode.entity != nullptr) {
+        auto transformComponent = Kuesa::componentFromEntity<Qt3DCore::QTransform>(targetNode.entity);
+        if (!transformComponent) {
+            qCWarning(kuesa, "Target node doesn't have a transform component");
+            return mappings;
+        }
+        auto channelMapping = new Qt3DAnimation::QChannelMapping();
+        channelMapping->setTarget(transformComponent);
+        channelMapping->setChannelName(mapping.name);
+        channelMapping->setProperty(mapping.property);
+        mappings.push_back(channelMapping);
+    }
+
+    return mappings;
 }
 
-quint8 expectedComponentsCountForChannel(const QString &channelName)
+QVector<Qt3DAnimation::QChannelMapping *> mappingsForMorphTargetWeights(const GLTF2Context *ctx,
+                                                                        const ChannelMapping &mapping)
 {
-    if (channelName == QStringLiteral("translation"))
-        return 3;
-    if (channelName == QStringLiteral("rotation"))
-        return 4;
-    if (channelName == QStringLiteral("scale"))
-        return 3;
-    if (channelName == QStringLiteral("weights"))
-        return 1;
+    const TreeNode targetNode = ctx->treeNode(mapping.target.targetNodeId);
+    QVector<Qt3DAnimation::QChannelMapping *> mappings;
 
-    qCWarning(kuesa) << "Unrecognized animation channel" << channelName;
-    return 0;
+    if (targetNode.entity != nullptr) {
+        // The actual entities to animate are those which render the
+        // primitive not the Node Entity
+
+        const auto primitiveEntities = ctx->primitiveEntitiesForEntity(targetNode.entity);
+        Q_ASSERT(!primitiveEntities.empty());
+
+        for (Qt3DCore::QEntity *primitiveEntity : primitiveEntities) {
+            Kuesa::MorphController *morphControllerComponent =
+                    Kuesa::componentFromEntity<Kuesa::MorphController>(primitiveEntity);
+            if (!morphControllerComponent) {
+                qCWarning(kuesa) << "Target node doesn't have a morph "
+                                    "controller component to animate";
+                continue;
+            }
+            auto channelMapping = new Qt3DAnimation::QChannelMapping();
+            channelMapping->setTarget(morphControllerComponent);
+            channelMapping->setChannelName(mapping.name);
+            channelMapping->setProperty(mapping.property);
+            mappings.push_back(channelMapping);
+        }
+    }
+
+    return mappings;
+}
+
+QVector<Qt3DAnimation::QChannelMapping *> mappingsForGenericTargetNode(const GLTF2Context *ctx,
+                                                                       const ChannelMapping &mapping)
+{
+    Qt3DCore::QNode *target = nullptr;
+    switch (mapping.target.type) {
+    case AnimationTarget::Material: {
+        const Material &mat = ctx->material(mapping.target.targetNodeId);
+        // For materials, we animate the material's properties class instance
+        target = mat.materialProperties();
+        break;
+    }
+    case AnimationTarget::Camera: {
+        const Camera &cam = ctx->camera(mapping.target.targetNodeId);
+        target = cam.lens;
+    }
+    case AnimationTarget::Light: {
+        const Light &light = ctx->light(mapping.target.targetNodeId);
+        target = light.lightComponent;
+        break;
+    }
+    default:
+        break;
+    }
+
+    if (!target)
+        return {};
+
+    auto channelMapping = new Qt3DAnimation::QChannelMapping();
+    channelMapping->setTarget(target);
+    channelMapping->setChannelName(mapping.name);
+    channelMapping->setProperty(mapping.property);
+
+    return { channelMapping };
+}
+
+void registerDefaultAnimatables()
+{
+    AnimationParser::registerAnimatableProperty(QStringLiteral("translation"), 3, QStringLiteral("translation"), &mappingsForTransformTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("rotation"), 4, QStringLiteral("rotation"), &mappingsForTransformTargetNode, QStringLiteral("Rotation"));
+    AnimationParser::registerAnimatableProperty(QStringLiteral("scale"), 3, QStringLiteral("scale3D"), &mappingsForTransformTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("weights"), 1, QStringLiteral("morphWeights"), &mappingsForMorphTargetWeights, QStringLiteral("MorphWeights"));
+    AnimationParser::registerAnimatableProperty(QStringLiteral("orthographic/xmag"), 1, QStringLiteral("left"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("orthographic/ymag"), 1, QStringLiteral("top"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("orthographic/zfar"), 1, QStringLiteral("farPlane"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("orthographic/znear"), 1, QStringLiteral("nearPlane"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/zfar"), 1, QStringLiteral("farPlane"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/znear"), 1, QStringLiteral("nearPlane"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/aspectRatio"), 1, QStringLiteral("aspectRatio"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/yfov"), 1, QStringLiteral("fieldOfView"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("pbrMetallicRoughness/baseColorFactor"), 4, QStringLiteral("baseColorFactor"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("pbrMetallicRoughness/metallicFactor"), 1, QStringLiteral("metallicFactor"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("pbrMetallicRoughness/roughnessFactor"), 1, QStringLiteral("roughnessFactor"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("alphaCutoff"), 1, QStringLiteral("alphaCutoff"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("emissiveFactor"), 1, QStringLiteral("emissiveFactor"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("normalTexture/scale"), 1, QStringLiteral("normalScale"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("occlusionTexture/strength"), 1, QStringLiteral("occlusionStrength"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("intensity"), 1, QStringLiteral("intensity"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("color"), 4, QStringLiteral("color"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("innerConeAngle"), 1, QStringLiteral("innerConeAngle"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("outerConeAngle"), 1, QStringLiteral("outerConeAngle"), &mappingsForGenericTargetNode);
 }
 
 } // namespace
+
+// Register default animatable properties
+// Can later be extended by custom extensions
+Q_CONSTRUCTOR_FUNCTION(registerDefaultAnimatables)
+
+void AnimationParser::registerAnimatableProperty(const QString gltfPath,
+                                                 int componentCount,
+                                                 const QString &targetPropertyName,
+                                                 const AnimatableMappingsGenerator &targetNodeRetriever,
+                                                 const QString &channelBaseName)
+{
+    auto &animatables = AnimatablePropertiesCache::registeredAnimatables();
+
+    animatables.insert(gltfPath, { componentCount, targetPropertyName, (channelBaseName.isEmpty()) ? targetPropertyName : channelBaseName, targetNodeRetriever });
+}
 
 std::tuple<int, std::vector<float>> AnimationParser::animationChannelDataFromData(const AnimationParser::AnimationSampler &sampler) const
 {
@@ -212,11 +352,13 @@ std::tuple<int, std::vector<float>> AnimationParser::animationChannelDataFromDat
     return std::make_tuple(nbComponents, channelData);
 }
 
-Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QString &channelName,
-                                                                        const AnimationParser::AnimationSampler &sampler,
-                                                                        const TreeNode &targetNode) const
+Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const ChannelInfo &channelInfo,
+                                                                        const AnimationParser::AnimationSampler &sampler) const
 {
-    auto channel = Qt3DAnimation::QChannel(channelPathToName(channelName));
+    const AnimationTarget &target = channelInfo.target;
+    const QString channelPath = channelInfo.target.path;
+    const QString channelName = AnimatablePropertiesCache::registeredAnimatables().value(channelPath).channelBaseName + QStringLiteral("_") + QString::number(target.targetNodeId);
+    auto channel = Qt3DAnimation::QChannel(channelName);
     const Accessor inputAccessor = m_context->accessor(sampler.inputAccessor);
 
     if (inputAccessor.type != Qt3DRender::QAttribute::Float) {
@@ -244,12 +386,12 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
     std::tie(nbComponents, valueStamps) = animationChannelDataFromData(sampler);
 
     // Check nbComponent and type are what is expected for a given channel
-    const quint8 expectedComponents = expectedComponentsCountForChannel(channelName);
+    const quint8 expectedComponents = expectedComponentsCountForChannel(channelInfo);
     if (expectedComponents == 0)
         return channel;
 
     if (nbComponents != expectedComponents) {
-        qCWarning(kuesa) << "Channel components for" << channelName << "expected" << expectedComponents << "but obtained" << nbComponents;
+        qCWarning(kuesa) << "Channel components for" << channelPath << "expected" << expectedComponents << "but obtained" << nbComponents;
         return channel;
     }
 
@@ -263,8 +405,13 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
     // - the channel should actually expose one scalar weight for each morph
     // targets
     // This means we should set nbComponent to be morphTargetCount
-    const bool isMorphTargetWeightChannel = (channelName == QStringLiteral("weights"));
+    const bool isMorphTargetWeightChannel = (channelPath == QStringLiteral("weights"));
     if (isMorphTargetWeightChannel) {
+        if (target.type != AnimationTarget::Node) {
+            qWarning(kuesa) << "Invalid Target Type for MorphTarget animation";
+            return channel;
+        }
+        const TreeNode targetNode = m_context->treeNode(target.targetNodeId);
         const Mesh morphTargetMesh = m_context->mesh(targetNode.meshIdx);
         if (targetNode.meshIdx < 0 || morphTargetMesh.morphTargetCount == 0) {
             qWarning(kuesa) << "Invalid Mesh for MorphTarget animation";
@@ -340,7 +487,7 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const QS
         Q_UNREACHABLE();
     }
 
-    const bool isRotationChannel = (channelName == QStringLiteral("rotation"));
+    const bool isRotationChannel = (channelPath == QStringLiteral("rotation"));
     if (isRotationChannel) {
         channel.appendChannelComponent(*(channelComponents.end() - 1));
         std::for_each(std::begin(channelComponents), std::end(channelComponents) - 1, [&channel](const Qt3DAnimation::QChannelComponent &channelComponent) {
@@ -402,40 +549,27 @@ std::tuple<bool, AnimationParser::AnimationSampler> AnimationParser::animationSa
     return std::make_tuple(true, animationSampler);
 }
 
-bool AnimationParser::checkChannelJSON(const QJsonObject &channelObject) const
+bool AnimationParser::checkChannelInfo(const ChannelInfo &channelInfo) const
 {
-    const QJsonValue samplerValue = channelObject.value(KEY_SAMPLER);
-    const QJsonValue targetValue = channelObject.value(KEY_TARGET);
-
-    if (samplerValue.isUndefined()) {
-        qCWarning(kuesa, "Missing sampler for animation channel");
-        return false;
-    }
-
-    const int samplerIdx = samplerValue.toInt(-1);
+    const int samplerIdx = channelInfo.sampler;
     if (samplerIdx < 0 || samplerIdx > m_context->accessorCount()) {
         qCWarning(kuesa, "Invalid input accessor id for channel");
         return false;
     }
 
-    if (targetValue.isUndefined()) {
+    const AnimationTarget &target = channelInfo.target;
+    if (target.type == Unknown) {
         qCWarning(kuesa, "Missing target for animation channel");
         return false;
     }
 
-    const QJsonObject targetObject = targetValue.toObject();
-    const QJsonValue pathValue = targetObject.value(KEY_PATH);
-
-    if (pathValue.isUndefined()) {
+    if (target.path.isEmpty()) {
         qCWarning(kuesa, "Missing path for channel's animation target");
         return false;
     }
 
-    const QString path = pathValue.toString();
-
     // Verify path is a valid value
-    const auto validPathValues = { QStringLiteral("translation"), QStringLiteral("rotation"), QStringLiteral("scale"), QStringLiteral("weights") };
-    if (std::find(std::begin(validPathValues), std::end(validPathValues), path) == std::end(validPathValues)) {
+    if (!AnimatablePropertiesCache::registeredAnimatables().contains(target.path)) {
         qCWarning(kuesa, "Channel Path value is not valid");
         return false;
     }
@@ -443,20 +577,25 @@ bool AnimationParser::checkChannelJSON(const QJsonObject &channelObject) const
     return true;
 }
 
-std::tuple<bool, Qt3DAnimation::QChannel>
-AnimationParser::channelFromJson(const QJsonObject &channelObject) const
+ChannelInfo AnimationParser::channelInfoFromJson(const QJsonObject &channelObject) const
 {
-    Qt3DAnimation::QChannel channel;
-
     const QJsonValue samplerValue = channelObject.value(KEY_SAMPLER);
     const QJsonObject targetObject = channelObject.value(KEY_TARGET).toObject();
     const QString path = targetObject.value(KEY_PATH).toString();
-    const int targetNodeIdx = targetObject.value(KEY_NODE).toInt(-1);
-    const AnimationSampler sampler = m_samplers.at(samplerValue.toInt());
-    const TreeNode targetNode = m_context->treeNode(targetNodeIdx);
+    const qint32 targetNodeIdx = targetObject.value(KEY_NODE).toInt(-1);
+    const qint32 sampleIdx = samplerValue.toInt(-1);
 
-    channel = animationChannelDataFromBuffer(path, sampler, targetNode);
-    channel.setName(channel.name() + QStringLiteral("_") + QString::number(targetNodeIdx));
+    const AnimationTarget target = { AnimationTarget::Node, targetNodeIdx, path };
+    return { sampleIdx, target };
+}
+
+std::tuple<bool, Qt3DAnimation::QChannel>
+AnimationParser::channelFromChannelInfo(const ChannelInfo &channelInfo) const
+{
+    Qt3DAnimation::QChannel channel;
+    const AnimationSampler sampler = m_samplers.at(channelInfo.sampler);
+
+    channel = animationChannelDataFromBuffer(channelInfo, sampler);
 
     if (channel.channelComponentCount() == 0) {
         qCWarning(kuesa, "Channel doesn't have components");
@@ -467,31 +606,50 @@ AnimationParser::channelFromJson(const QJsonObject &channelObject) const
 }
 
 std::tuple<bool, ChannelMapping>
-AnimationParser::mappingFromJson(const QJsonObject &channelObject) const
+AnimationParser::mappingForChannel(const ChannelInfo &channelInfo, const QString &channelName) const
 {
-    const QJsonObject targetObject = channelObject.value(KEY_TARGET).toObject();
-    const QString path = targetObject.value(KEY_PATH).toString();
-
-    const QJsonValue nodeValue = targetObject.value(KEY_NODE);
     ChannelMapping mapping;
+    const AnimationTarget &target = channelInfo.target;
 
-    if (nodeValue.isUndefined()) {
-        // Spec doesn't require node, but how can we animate an unknown node?
-        qCWarning(kuesa, "Missing node for animation target");
-        return std::make_tuple(false, mapping);
+    switch (target.type) {
+    case AnimationTarget::Node: {
+        if (target.targetNodeId < 0 || target.targetNodeId > m_context->treeNodeCount()) {
+            qCWarning(kuesa, "Invalid node for animation target");
+            return std::make_tuple(false, mapping);
+        }
+        break;
+    }
+    case AnimationTarget::Camera: {
+        if (target.targetNodeId < 0 || target.targetNodeId > m_context->cameraCount()) {
+            qCWarning(kuesa, "Invalid camera for animation target");
+            return std::make_tuple(false, mapping);
+        }
+        break;
+    }
+    case AnimationTarget::Light: {
+        if (target.targetNodeId < 0 || target.targetNodeId > m_context->lightCount()) {
+            qCWarning(kuesa, "Invalid light for animation target");
+            return std::make_tuple(false, mapping);
+        }
+        break;
+    }
+    case AnimationTarget::Material: {
+        if (target.targetNodeId < 0 || target.targetNodeId > m_context->materialsCount()) {
+            qCWarning(kuesa, "Invalid material for animation target");
+            return std::make_tuple(false, mapping);
+        }
+        break;
+    }
+    default:
+        Q_UNREACHABLE();
+        break;
     }
 
-    const int &node = nodeValue.toInt(-1);
-
-    if (node < 0 || node > m_context->treeNodeCount()) {
-        qCWarning(kuesa, "Invalid node for animation target");
-        return std::make_tuple(false, mapping);
-    }
-    const TreeNode targetNode = m_context->treeNode(node);
-
-    mapping.name = channelPathToName(path) + QStringLiteral("_") + QString::number(node);
-    mapping.property = channelPathToProperty(path);
-    mapping.targetNodeId = node;
+    const PathInfo info = AnimatablePropertiesCache::registeredAnimatables().value(target.path);
+    mapping.name = channelName;
+    mapping.generator = info.mappingGenerator;
+    mapping.property = info.propertyName;
+    mapping.target = target;
     return std::make_tuple(true, mapping);
 }
 
@@ -539,48 +697,111 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
             m_samplers.push_back(sampler);
         }
 
+        QVector<ChannelInfo> channelsInfo;
+
+        // Parse regular Channels
+        for (const QJsonValue &channelValue : channelsArray) {
+            channelsInfo.push_back(channelInfoFromJson(channelValue.toObject()));
+        }
+
+        // Parse EXT_property_animation channels
+        const QJsonObject extensionsObj = animationObject.value(KEY_EXTENSIONS).toObject();
+        const QJsonObject extPropertyAnimationObj = extensionsObj.value(KEY_EXT_PROPERTY_ANIMATION_EXTENSION).toObject();
+        if (!extPropertyAnimationObj.empty()) {
+            ExtPropertyAnimationHandler propertyAnimationParser;
+            if (!propertyAnimationParser.parse(extPropertyAnimationObj)) {
+                qCWarning(kuesa, "An animation channel is incorrect");
+                return false;
+            }
+            channelsInfo += propertyAnimationParser.channelsInfo();
+        }
+
         // Check Channel Objects have a correct structure
-        for (const auto &channelValue : channelsArray) {
-            if (!checkChannelJSON(channelValue.toObject())) {
+        for (const ChannelInfo &channelInfo : channelsInfo) {
+            if (!checkChannelInfo(channelInfo)) {
                 qCWarning(kuesa, "An animation channel is incorrect");
                 return false;
             }
         }
 
+        Animation animation;
+        animation.name = animationObject.value(KEY_NAME).toString();
         // Animation Clip Data
+        // Generate channels and mappings based on the gathered ChannelInfo object
         Qt3DAnimation::QAnimationClipData clipData;
-        for (const auto &channelValue : channelsArray) {
+        for (const ChannelInfo &channelInfo : channelsInfo) {
+            // Create Channel
             bool channelIsCorrect = false;
             Qt3DAnimation::QChannel channel;
-            std::tie(channelIsCorrect, channel) = channelFromJson(channelValue.toObject());
+            std::tie(channelIsCorrect, channel) = channelFromChannelInfo(channelInfo);
             if (!channelIsCorrect) {
                 qCWarning(kuesa, "An animation channel is incorrect");
                 return false;
             }
-
             clipData.appendChannel(channel);
-        }
 
-        Animation animation;
-        animation.clipData = clipData;
-        animation.name = animationObject.value(KEY_NAME).toString();
-
-        // Channel Mappings
-        for (const auto &channelValue : channelsArray) {
+            // Create Channel Mapping
             bool channelMappingIsCorrect = false;
             ChannelMapping mapping;
-            std::tie(channelMappingIsCorrect, mapping) = mappingFromJson(channelValue.toObject());
+            std::tie(channelMappingIsCorrect, mapping) = mappingForChannel(channelInfo, channel.name());
             if (!channelMappingIsCorrect) {
                 qCWarning(kuesa, "An animation mapping is incorrect");
                 return false;
             }
             animation.mappings.push_back(mapping);
         }
-
+        animation.clipData = clipData;
         context->addAnimation(animation);
     }
 
     return animationsArray.size();
+}
+
+namespace {
+
+AnimationTarget::TargetType targetTypeFromName(const QString &name)
+{
+    if (name == QLatin1String("nodes"))
+        return AnimationTarget::Node;
+    if (name == QLatin1String("materials"))
+        return AnimationTarget::Material;
+    if (name == QLatin1String("extensions/KHR_lights/lights"))
+        return AnimationTarget::Light;
+    if (name == QLatin1String("cameras"))
+        return AnimationTarget::Camera;
+    return AnimationTarget::Unknown;
+}
+
+} // namespace
+
+bool ExtPropertyAnimationHandler::parse(const QJsonObject &extensionObject)
+{
+    static const QRegularExpression targetPathRegExp = QRegularExpression(QStringLiteral("^\\/((?:(?:extensions\\/)(?:\\w+\\/\\w+))|(?:\\w+))\\/(\\d+)\\/(.*)$"));
+    const QJsonArray channelsArray = extensionObject.value(KEY_CHANNELS).toArray();
+    for (const QJsonValue &channelValue : channelsArray) {
+        const QJsonObject channel = channelValue.toObject();
+        const qint32 samplerIdx = channel.value(KEY_SAMPLER).toInt(-1);
+        const QString targetPath = channel.value(KEY_TARGET).toString();
+
+        // Extract type, target idx and property from targetPath
+        QRegularExpressionMatch match = targetPathRegExp.match(targetPath);
+        if (match.hasMatch()) {
+            const AnimationTarget target = { targetTypeFromName(match.captured(1)),
+                                             match.captured(2).toInt(),
+                                             match.captured(3) };
+            const ChannelInfo channelInfo = { samplerIdx, target };
+            m_channelsInfo.push_back(channelInfo);
+        } else {
+            qCWarning(kuesa) << "Failed to parse EXT_property_animation path";
+            return false;
+        }
+    }
+    return true;
+}
+
+QVector<ChannelInfo> ExtPropertyAnimationHandler::channelsInfo() const
+{
+    return m_channelsInfo;
 }
 
 QT_END_NAMESPACE

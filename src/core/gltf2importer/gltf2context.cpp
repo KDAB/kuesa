@@ -117,6 +117,17 @@ const TreeNode GLTF2Context::treeNode(qint32 id) const
     return {};
 }
 
+TreeNode &GLTF2Context::treeNode(qint32 id)
+{
+    Q_ASSERT(id >= 0 && id < m_treeNodes.size());
+    return m_treeNodes[id];
+}
+
+const QVector<TreeNode> &GLTF2Context::treeNodes() const
+{
+    return m_treeNodes;
+}
+
 void GLTF2Context::addTreeNode(const TreeNode &treeNode)
 {
     m_treeNodes.push_back(treeNode);
@@ -196,6 +207,12 @@ const Animation GLTF2Context::animation(qint32 id) const
 
     qCWarning(kuesa, "Invalid animation id");
     return Animation();
+}
+
+Animation &GLTF2Context::animation(qint32 id)
+{
+    Q_ASSERT(id >= 0 && id < m_animations.size());
+    return m_animations[id];
 }
 
 int GLTF2Context::materialsCount() const
@@ -335,6 +352,12 @@ const Skin GLTF2Context::skin(qint32 id) const
     return Skin();
 }
 
+Skin &GLTF2Context::skin(qint32 id)
+{
+    Q_ASSERT(id >= 0 && id < m_skins.size());
+    return m_skins[id];
+}
+
 int GLTF2Context::lightCount() const
 {
     return m_lights.count();
@@ -352,6 +375,12 @@ const Light GLTF2Context::light(qint32 id) const
 
     qCWarning(kuesa, "Invalid light id");
     return Light();
+}
+
+Light &GLTF2Context::light(qint32 id)
+{
+    Q_ASSERT(id >= 0 && id < m_lights.size());
+    return m_lights[id];
 }
 
 QStringList GLTF2Context::usedExtension() const
@@ -523,6 +552,19 @@ EffectsLibrary *GLTF2Context::effectLibrary() const
     return m_effectLibrary.data();
 }
 
+QVector<Qt3DCore::QEntity *> GLTF2Context::primitiveEntitiesForEntity(Qt3DCore::QEntity *e) const
+{
+    return m_treeNodeIdToPrimitiveEntities.value(e);
+}
+
+void GLTF2Context::addPrimitiveEntityToEntity(Qt3DCore::QEntity *e, Qt3DCore::QEntity *primitive)
+{
+    auto mapVectorIt = m_treeNodeIdToPrimitiveEntities.find(e);
+    if (mapVectorIt == m_treeNodeIdToPrimitiveEntities.end())
+        mapVectorIt = m_treeNodeIdToPrimitiveEntities.insert(e, {});
+    mapVectorIt->push_back(primitive);
+}
+
 void GLTF2Context::reset()
 {
     // Resets everything but the options;
@@ -548,6 +590,8 @@ void GLTF2Context::reset()
     m_localFiles.clear();
     m_bufferChunk.clear();
     m_effectLibrary->clear();
+    m_treeNodes.clear();
+    m_treeNodeIdToPrimitiveEntities.clear();
 }
 
 GLTF2Context *GLTF2Context::fromImporter(GLTF2Importer *importer)

@@ -43,6 +43,10 @@
 
 QT_BEGIN_NAMESPACE
 
+namespace Qt3DRender {
+class QAbstractLight;
+}
+
 namespace Kuesa {
 namespace GLTF2Import {
 
@@ -57,6 +61,8 @@ struct Light {
     QVariant range;
     float innerConeAngleRadians = 0.0;
     float outerConeAngleRadians = (float)M_PI_4;
+
+    Qt3DRender::QAbstractLight *lightComponent = nullptr;
 };
 
 class Q_AUTOTEST_EXPORT LightParser

@@ -41,13 +41,19 @@
 #include <QJsonArray>
 #include <Qt3DAnimation/QChannel>
 #include <Qt3DAnimation/QAnimationClipData>
+#include <functional>
 
 QT_BEGIN_NAMESPACE
+
+namespace Qt3DCore {
+class QNode;
+}
 
 namespace Qt3DAnimation {
 class QChannelMapping;
 class QClipAnimator;
 class QAnimationClip;
+class QChannelMapper;
 } // namespace Qt3DAnimation
 
 namespace Kuesa {
@@ -55,22 +61,62 @@ namespace GLTF2Import {
 class GLTF2Context;
 struct TreeNode;
 
+struct AnimationTarget {
+    enum TargetType {
+        Node = 0,
+        Material,
+        Light,
+        Camera,
+        Unknown
+    };
+    TargetType type;
+    qint32 targetNodeId;
+    QString path;
+};
+
+struct ChannelInfo {
+    qint32 sampler;
+    AnimationTarget target;
+};
+
+struct ChannelMapping;
+using AnimatableMappingsGenerator = std::function<QVector<Qt3DAnimation::QChannelMapping *>(const GLTF2Context *, const ChannelMapping &)>;
+
 struct ChannelMapping {
-    qint32 targetNodeId = -1;
+    AnimationTarget target;
     QString name;
     QString property;
+    AnimatableMappingsGenerator generator;
 };
 
 struct Animation {
     QString name;
     Qt3DAnimation::QAnimationClipData clipData;
     QVector<ChannelMapping> mappings;
+    Qt3DAnimation::QAnimationClip *clip = nullptr;
+    Qt3DAnimation::QChannelMapper *mapper = nullptr;
+};
+
+class Q_AUTOTEST_EXPORT ExtPropertyAnimationHandler
+{
+public:
+    bool parse(const QJsonObject &extensionObject);
+    QVector<ChannelInfo> channelsInfo() const;
+
+private:
+    QVector<ChannelInfo> m_channelsInfo;
 };
 
 class Q_AUTOTEST_EXPORT AnimationParser
 {
 public:
     AnimationParser() = default;
+
+    static void registerAnimatableProperty(const QString gltfPath,
+                                           int componentCount,
+                                           const QString &targetPropertyName,
+                                           const AnimatableMappingsGenerator &mappingsGenerator,
+                                           const QString &channelBaseName = QString());
 
     bool parse(const QJsonArray &animationsArray, GLTF2Context *context);
 
@@ -88,21 +134,22 @@ private:
         InterpolationMethod interpolationMethod = Linear;
     };
 
-    bool checkChannelJSON(const QJsonObject &channelObject) const;
+    bool checkChannelInfo(const ChannelInfo &channelInfo) const;
     bool checkSamplerJSON(const QJsonObject &samplerObject) const;
+
+    ChannelInfo channelInfoFromJson(const QJsonObject &channelObject) const;
 
     std::tuple<bool, AnimationSampler>
     animationSamplersFromJson(const QJsonObject &samplerObject) const;
 
     std::tuple<bool, Qt3DAnimation::QChannel>
-    channelFromJson(const QJsonObject &channelObject) const;
+    channelFromChannelInfo(const ChannelInfo &channelInfo) const;
 
     std::tuple<bool, ChannelMapping>
-    mappingFromJson(const QJsonObject &channelObject) const;
+    mappingForChannel(const ChannelInfo &channelInfo, const QString &channelName) const;
 
-    Qt3DAnimation::QChannel animationChannelDataFromBuffer(const QString &channelName,
-                                                           const AnimationSampler &sampler,
-                                                           const TreeNode &targetNode) const;
+    Qt3DAnimation::QChannel animationChannelDataFromBuffer(const ChannelInfo &channelInfo,
+                                                           const AnimationSampler &sampler) const;
     std::tuple<int, std::vector<float>> animationChannelDataFromData(const AnimationSampler &sampler) const;
 
     QVector<AnimationSampler> m_samplers;
@@ -113,5 +160,8 @@ private:
 } // namespace Kuesa
 
 QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE(Kuesa::GLTF2Import::AnimationTarget)
+Q_DECLARE_METATYPE(Kuesa::GLTF2Import::ChannelInfo)
 
 #endif // KUESA_GLTF2IMPORT_ANIMATIONPARSER_P_H

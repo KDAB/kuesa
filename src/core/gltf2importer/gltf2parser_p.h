@@ -157,17 +157,8 @@ private:
         }
     }
 
-    struct AnimationDetails {
-        Qt3DAnimation::QAnimationClip *clip;
-        Qt3DAnimation::QChannelMapper *mapper;
-    };
-
     QString m_basePath;
     GLTF2Context *m_context;
-    QVector<TreeNode> m_treeNodes;
-    QHash<Qt3DCore::QEntity *, QVector<Qt3DCore::QEntity *>> m_treeNodeIdToPrimitiveEntities;
-    QVector<Qt3DCore::QSkeleton *> m_skeletons;
-    QVector<AnimationDetails> m_animators;
     SceneEntity *m_sceneEntity;
     QVector<SceneRootEntity *> m_sceneRootEntities;
     Qt3DCore::QEntity *m_contentRootEntity;
