@@ -98,6 +98,15 @@ const QLatin1String KEY_NORMALIZED = QLatin1String("normalized");
 const QLatin1String KEY_SPARSE_INDICES = QLatin1String("indices");
 const QLatin1String KEY_SPARSE_VALUES = QLatin1String("values");
 const QLatin1String KEY_MATERIAL = QLatin1String("material");
+const QLatin1String KEY_CHANNELS = QLatin1String("channels");
+const QLatin1String KEY_SAMPLERS = QLatin1String("samplers");
+const QLatin1String KEY_SAMPLER = QLatin1String("sampler");
+const QLatin1String KEY_TARGET = QLatin1String("target");
+const QLatin1String KEY_INPUT = QLatin1String("input");
+const QLatin1String KEY_OUTPUT = QLatin1String("output");
+const QLatin1String KEY_INTERPOLATION = QLatin1String("interpolation");
+const QLatin1String KEY_PATH = QLatin1String("path");
+const QLatin1String KEY_NODE = QLatin1String("node");
 
 } // namespace GLTF2Import
 } // namespace Kuesa

@@ -37,17 +37,13 @@
 #include <Kuesa/private/bufferaccessorparser_p.h>
 #include <Kuesa/private/nodeparser_p.h>
 #include <Kuesa/private/gltf2context_p.h>
+#include <Kuesa/private/gltf2keys_p.h>
 
 #include <Qt3DAnimation/QAnimationClip>
 
 using namespace Kuesa;
 using namespace GLTF2Import;
 
-const QLatin1String KEY_BUFFERS = QLatin1String("buffers");
-const QLatin1String KEY_BUFFERVIEWS = QLatin1String("bufferViews");
-const QLatin1String KEY_ACCESSORS = QLatin1String("accessors");
-const QLatin1String KEY_NODES = QLatin1String("nodes");
-const QLatin1String KEY_ANIMATIONS = QLatin1String("animations");
 
 class tst_AnimationParser : public QObject
 {

@@ -38,6 +38,7 @@
 #include <Qt3DCore/QTransform>
 #include <Qt3DAnimation/QChannel>
 #include <Qt3DAnimation/QAnimationClipData>
+#include <private/gltf2keys_p.h>
 
 #include <cstring>
 
@@ -46,17 +47,6 @@ QT_BEGIN_NAMESPACE
 using namespace Kuesa::GLTF2Import;
 
 namespace {
-
-const QLatin1String KEY_NAME = QLatin1String("name");
-const QLatin1String KEY_CHANNELS = QLatin1String("channels");
-const QLatin1String KEY_SAMPLERS = QLatin1String("samplers");
-const QLatin1String KEY_SAMPLER = QLatin1String("sampler");
-const QLatin1String KEY_TARGET = QLatin1String("target");
-const QLatin1String KEY_INPUT = QLatin1String("input");
-const QLatin1String KEY_OUTPUT = QLatin1String("output");
-const QLatin1String KEY_INTERPOLATION = QLatin1String("interpolation");
-const QLatin1String KEY_PATH = QLatin1String("path");
-const QLatin1String KEY_NODE = QLatin1String("node");
 
 AnimationParser::InterpolationMethod interpolationMethodFromSemantic(const QString &value)
 {
