@@ -84,7 +84,17 @@ public:
         graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
         graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
 
-        const auto vertexShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"));
+        const QUrl vertexShaderGraph[] = {
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"))
+        };
+
+        const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json"))
+        };
 
         const QByteArray zFillFragmentShaderCode[] = {
             QByteArray(R"(
@@ -102,294 +112,15 @@ public:
         };
 
         const QByteArray renderableVertexShaderCode[] = {
-            QByteArray(R"(#version 150 core
-uniform mat4 mvp;
-uniform mat4 modelView;
-
-struct MaterialProperties {
-    vec3 factors;
-    vec2 disturbation;
-    float postVertexColor;
-    float postGain;
-    sampler2D sem;
-    float semGain;
-    vec3 semInnerFilter;
-    vec3 semOuterFilter;
-    float semInnerAlpha;
-    float semOuterAlpha;
-    vec3 glassInnerFilter;
-    vec3 glassOuterFilter;
-};
-
-uniform MaterialProperties properties;
-
-in vec3 vertexPosition;
-in vec3 vertexNormal;
-in vec2 vertexTexCoord;
-in vec4 vertexColor;
-
-out vec3 normalSem;
-out vec2 texCoord;
-out vec4 postColor;
-
-vec3 semNormal()
-{
-    vec3 n = (modelView * vec4(vertexNormal, 0.0)).xyz;
-    n *= properties.factors;
-    n.xy += properties.disturbation;
-    return normalize(n);
-}
-
-void main()
-{
-    normalSem = semNormal();
-    texCoord = vertexTexCoord;
-    postColor = mix(vec4(1.0), vertexColor, properties.postVertexColor) * properties.postGain;
-    gl_Position = mvp * vec4(vertexPosition, 1.0);
-})"),
-            QByteArray(R"(#version 300 es
-precision highp float;
-precision highp sampler2D;
-uniform mat4 mvp;
-uniform mat4 modelView;
-
-struct MaterialProperties {
-    vec3 factors;
-    vec2 disturbation;
-    float postVertexColor;
-    float postGain;
-    sampler2D sem;
-    float semGain;
-    vec3 semInnerFilter;
-    vec3 semOuterFilter;
-    float semInnerAlpha;
-    float semOuterAlpha;
-    vec3 glassInnerFilter;
-    vec3 glassOuterFilter;
-};
-
-uniform MaterialProperties properties;
-
-in vec3 vertexPosition;
-in vec3 vertexNormal;
-in vec2 vertexTexCoord;
-in vec4 vertexColor;
-
-out vec3 normalSem;
-out vec2 texCoord;
-out vec4 postColor;
-
-vec3 semNormal()
-{
-    vec3 n = (modelView * vec4(vertexNormal, 0.0)).xyz;
-    n *= properties.factors;
-    n.xy += properties.disturbation;
-    return normalize(n);
-}
-
-void main()
-{
-    normalSem = semNormal();
-    texCoord = vertexTexCoord;
-    postColor = mix(vec4(1.0), vertexColor, properties.postVertexColor) * properties.postGain;
-    gl_Position = mvp * vec4(vertexPosition, 1.0);
-})"),
-            QByteArray(R"(precision highp float;
-precision highp sampler2D;uniform mat4 mvp;
-uniform mat4 modelView;
-
-struct MaterialProperties {
-    vec3 factors;
-    vec2 disturbation;
-    float postVertexColor;
-    float postGain;
-    sampler2D sem;
-    float semGain;
-    vec3 semInnerFilter;
-    vec3 semOuterFilter;
-    float semInnerAlpha;
-    float semOuterAlpha;
-    vec3 glassInnerFilter;
-    vec3 glassOuterFilter;
-};
-
-uniform MaterialProperties properties;
-
-attribute vec3 vertexPosition;
-attribute vec3 vertexNormal;
-attribute vec2 vertexTexCoord;
-attribute vec4 vertexColor;
-
-varying vec3 normalSem;
-varying vec2 texCoord;
-varying vec4 postColor;
-
-vec3 semNormal()
-{
-    vec3 n = (modelView * vec4(vertexNormal, 0.0)).xyz;
-    n *= properties.factors;
-    n.xy += properties.disturbation;
-    return normalize(n);
-}
-
-void main()
-{
-    normalSem = semNormal();
-    texCoord = vertexTexCoord;
-    postColor = mix(vec4(1.0), vertexColor, properties.postVertexColor) * properties.postGain;
-    gl_Position = mvp * vec4(vertexPosition, 1.0);
-})")
+            QByteArray(R"()"),
+            QByteArray(R"()"),
+            QByteArray(R"()")
         };
 
         const QByteArray renderableFragmentShaderCode[] = {
-            QByteArray(R"(#version 150 core
-vec4 sRGBToLinear(vec4 color)  { return vec4(pow(color.rgb, vec3(2.2)), color.a); }
-
-struct MaterialProperties {
-    vec3 factors;
-    vec2 disturbation;
-    float postVertexColor;
-    float postGain;
-    sampler2D sem;
-    float semGain;
-    vec3 semInnerFilter;
-    vec3 semOuterFilter;
-    float semInnerAlpha;
-    float semOuterAlpha;
-    vec3 glassInnerFilter;
-    vec3 glassOuterFilter;
-};
-
-uniform MaterialProperties properties;
-
-in vec3 normalSem;
-in vec4 postColor;
-in vec2 texCoord;
-
-out vec4 fragColor;
-
-float semFresnel(vec3 normalSem_)
-{
-    float fresnel = 1.0 - dot(normalSem_, vec3(0.0, 0.0, 1.0));
-    fresnel *= fresnel;
-    return fresnel;
-}
-
-vec2 semS(vec3 normalSem_)
-{
-    vec2 s = normalSem_.xy;
-    s = s * 0.5 + vec2(0.5);
-    return s;
-}
-
-void main()
-{
-    vec3 normalSem_ = normalize(normalSem);
-    float fresnel = semFresnel(normalSem_);
-    vec3 glassFilter = mix(properties.glassInnerFilter, properties.glassOuterFilter, fresnel);
-    vec3 semColor = sRGBToLinear(texture(properties.sem, semS(normalSem_))).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
-    vec3 blendedColor = glassFilter + semColor;
-    fragColor = postColor * vec4(blendedColor, mix(properties.semInnerAlpha, properties.semOuterAlpha, fresnel));
-})"),
-            QByteArray(R"(#version 300 es
-precision highp float;
-precision highp sampler2D;
-vec4 sRGBToLinear(vec4 color)  { return vec4(pow(color.rgb, vec3(2.2)), color.a); }
-
-struct MaterialProperties {
-    vec3 factors;
-    vec2 disturbation;
-    float postVertexColor;
-    float postGain;
-    sampler2D sem;
-    float semGain;
-    vec3 semInnerFilter;
-    vec3 semOuterFilter;
-    float semInnerAlpha;
-    float semOuterAlpha;
-    vec3 glassInnerFilter;
-    vec3 glassOuterFilter;
-};
-
-uniform MaterialProperties properties;
-
-in vec3 normalSem;
-in vec4 postColor;
-in vec2 texCoord;
-
-out vec4 fragColor;
-
-float semFresnel(vec3 normalSem_)
-{
-    float fresnel = 1.0 - dot(normalSem_, vec3(0.0, 0.0, 1.0));
-    fresnel *= fresnel;
-    return fresnel;
-}
-
-vec2 semS(vec3 normalSem_)
-{
-    vec2 s = normalSem_.xy;
-    s = s * 0.5 + vec2(0.5);
-    return s;
-}
-
-void main()
-{
-    vec3 normalSem_ = normalize(normalSem);
-    float fresnel = semFresnel(normalSem_);
-    vec3 glassFilter = mix(properties.glassInnerFilter, properties.glassOuterFilter, fresnel);
-    vec3 semColor = sRGBToLinear(texture(properties.sem, semS(normalSem_))).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
-    vec3 blendedColor = glassFilter + semColor;
-    fragColor = postColor * vec4(blendedColor, mix(properties.semInnerAlpha, properties.semOuterAlpha, fresnel));
-})"),
-            QByteArray(R"(precision highp float;
-precision highp sampler2D;
-vec4 sRGBToLinear(vec4 color)  { return vec4(pow(color.rgb, vec3(2.2)), color.a); }
-
-struct MaterialProperties {
-    vec3 factors;
-    vec2 disturbation;
-    float postVertexColor;
-    float postGain;
-    sampler2D sem;
-    float semGain;
-    vec3 semInnerFilter;
-    vec3 semOuterFilter;
-    float semInnerAlpha;
-    float semOuterAlpha;
-    vec3 glassInnerFilter;
-    vec3 glassOuterFilter;
-};
-
-uniform MaterialProperties properties;
-
-varying vec3 normalSem;
-varying vec4 postColor;
-varying vec2 texCoord;
-
-float semFresnel(vec3 normalSem_)
-{
-    float fresnel = 1.0 - dot(normalSem_, vec3(0.0, 0.0, 1.0));
-    fresnel *= fresnel;
-    return fresnel;
-}
-
-vec2 semS(vec3 normalSem_)
-{
-    vec2 s = normalSem_.xy;
-    s = s * 0.5 + vec2(0.5);
-    return s;
-}
-
-void main()
-{
-    vec3 normalSem_ = normalize(normalSem);
-    float fresnel = semFresnel(normalSem_);
-    vec3 glassFilter = mix(properties.glassInnerFilter, properties.glassOuterFilter, fresnel);
-    vec3 semColor = sRGBToLinear(texture(properties.sem, semS(normalSem_))).xyz * mix(properties.semInnerFilter, properties.semOuterFilter, fresnel) * properties.semGain;
-    vec3 blendedColor = glassFilter + semColor;
-    gl_FragColor = postColor * vec4(blendedColor, mix(properties.semInnerAlpha, properties.semOuterAlpha, fresnel));
-})")
+            QByteArray(R"()"),
+            QByteArray(R"()"),
+            QByteArray(R"()")
         };
 
          const QByteArray renderableGeometryShaderCode[] = {
@@ -401,16 +132,21 @@ void main()
         // Use default vertex shader graph if no vertex shader code was specified
         if (renderableVertexShaderCode[version].isEmpty()) {
             m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph);
+            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
 
             m_zfillShaderBuilder->setShaderProgram(m_zfillShader);
-            m_zfillShaderBuilder->setVertexShaderGraph(vertexShaderGraph);
+            m_zfillShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
         } else {
             m_renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
             m_zfillShader->setVertexShaderCode(renderableVertexShaderCode[version]);
         }
 
-        m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
+        if (renderableFragmentShaderCode[version].isEmpty()) {
+            m_renderShaderBuilder->setShaderProgram(m_renderShader);
+            m_renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
+        } else {
+            m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
+        }
         m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
          // Set geometry shader code if one was specified

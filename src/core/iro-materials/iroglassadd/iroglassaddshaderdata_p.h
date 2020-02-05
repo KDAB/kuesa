@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -30,9 +30,9 @@
 #ifndef KUESA_IROGLASSADDSHADERDATA_P_H
 #define KUESA_IROGLASSADDSHADERDATA_P_H
 
-#include <Qt3DRender/QAbstractTexture>
 #include <QVector2D>
 #include <QVector3D>
+#include <Qt3DRender/QAbstractTexture>
 #include <Qt3DRender/QShaderData>
 
 QT_BEGIN_NAMESPACE
