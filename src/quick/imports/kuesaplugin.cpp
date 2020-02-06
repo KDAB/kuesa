@@ -48,9 +48,6 @@
 #include <Kuesa/MetallicRoughnessProperties>
 #include <Kuesa/UnlitProperties>
 #include <Kuesa/EffectProperties>
-#include <Kuesa/SphericalEnvMapMaterial>
-#include <Kuesa/SphericalEnvMapEffect>
-#include <Kuesa/SphericalEnvMapProperties>
 #include <Kuesa/IroDiffuseMaterial>
 #include <Kuesa/IroDiffuseEffect>
 #include <Kuesa/IroDiffuseProperties>
@@ -121,10 +118,6 @@ void KuesaPlugin::registerTypes(const char *uri)
     qRegisterMetaType<Kuesa::EffectProperties::Properties>("EffectProperties::Properties");
 
     // Custom Simple Materials
-    qmlRegisterType<Kuesa::SphericalEnvMapMaterial>("Kuesa.Iro", 1, 2, "SphericalEnvMapMaterial");
-    qmlRegisterType<Kuesa::SphericalEnvMapProperties>("Kuesa.Iro", 1, 2, "SphericalEnvMapProperties");
-    qmlRegisterType<Kuesa::SphericalEnvMapEffect>("Kuesa.Iro", 1, 2, "SphericalEnvMapEffect");
-
     qmlRegisterType<Kuesa::IroDiffuseMaterial>("Kuesa.Iro", 1, 2, "IroDiffuseMaterial");
     qmlRegisterType<Kuesa::IroDiffuseProperties>("Kuesa.Iro", 1, 2, "IroDiffuseProperties");
     qmlRegisterType<Kuesa::IroDiffuseEffect>("Kuesa.Iro", 1, 2, "IroDiffuseEffect");

@@ -28,9 +28,6 @@
 
 #include "iro-materials_p.h"
 #include <Kuesa/GLTF2Importer>
-#include <Kuesa/SphericalEnvMapMaterial>
-#include <Kuesa/SphericalEnvMapEffect>
-#include <Kuesa/SphericalEnvMapProperties>
 #include <Kuesa/IroDiffuseMaterial>
 #include <Kuesa/IroDiffuseEffect>
 #include <Kuesa/IroDiffuseProperties>
@@ -46,7 +43,6 @@ namespace IroMaterials {
 
 void registerIroMaterials()
 {
-    GLTF2Importer::registerCustomMaterial<SphericalEnvMapMaterial, SphericalEnvMapProperties, SphericalEnvMapEffect>(QStringLiteral("SphericalEnvMap"));
     GLTF2Importer::registerCustomMaterial<IroDiffuseMaterial, IroDiffuseProperties, IroDiffuseEffect>(QStringLiteral("IroDiffuse"));
     GLTF2Importer::registerCustomMaterial<IroGlassAddMaterial, IroGlassAddProperties, IroGlassAddEffect>(QStringLiteral("IroGlassAdd"));
 }

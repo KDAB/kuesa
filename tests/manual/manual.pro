@@ -38,7 +38,6 @@ qtHaveModule(quick) {
         multiple_animations \
         mapped_animations \
         KDAB_custom_material \
-        SphericalEnvMapMaterial \
         IroDiffuseMaterial \
         IroGlassAddMaterial
 }

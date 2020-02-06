@@ -27,7 +27,6 @@
 
 INCLUDEPATH += $$PWD
 
-include(sphericalenvmap/sphericalenvmap.pri)
 include(irodiffuse/irodiffuse.pri)
 include(iroglassadd/iroglassadd.pri)
 
