@@ -867,7 +867,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "sem",
+                "name": "reflectionMap",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Sampler2D"
@@ -983,7 +983,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "semGain",
+                "name": "reflectionGain",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Float"
@@ -1385,7 +1385,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "semInnerFilter",
+                "name": "reflectionInnerFilter",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -1409,7 +1409,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "semOuterFilter",
+                "name": "reflectionOuterFilter",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -1467,10 +1467,10 @@
     ],
     "project": {
         "position": {
-            "x": 1604.4860028860035,
-            "y": 167.77633477633424
+            "x": 2745.927272727273,
+            "y": -27.527272727272475
         },
-        "scale": 0.25
+        "scale": 0.625
     },
     "prototypes": {
         "add": {

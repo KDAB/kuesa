@@ -291,7 +291,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "factors",
+                "name": "normalScaling",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -692,7 +692,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "disturbation",
+                "name": "normalDisturb",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec2"
@@ -1077,10 +1077,10 @@
     ],
     "project": {
         "position": {
-            "x": 1604.4860028860037,
-            "y": 167.77633477633424
+            "x": 1237.1272727272728,
+            "y": 194.8727272727274
         },
-        "scale": 0.5625
+        "scale": 0.625
     },
     "prototypes": {
         "add": {

@@ -42,14 +42,14 @@ namespace Kuesa {
 class IroDiffuseShaderData : public Qt3DRender::QShaderData
 {
    Q_OBJECT
-    Q_PROPERTY(QVector3D factors READ factors WRITE setFactors NOTIFY factorsChanged)
-    Q_PROPERTY(QVector2D disturbation READ disturbation WRITE setDisturbation NOTIFY disturbationChanged)
+    Q_PROPERTY(QVector3D normalScaling READ normalScaling WRITE setNormalScaling NOTIFY normalScalingChanged)
+    Q_PROPERTY(QVector2D normalDisturb READ normalDisturb WRITE setNormalDisturb NOTIFY normalDisturbChanged)
     Q_PROPERTY(float postVertexColor READ postVertexColor WRITE setPostVertexColor NOTIFY postVertexColorChanged)
     Q_PROPERTY(float postGain READ postGain WRITE setPostGain NOTIFY postGainChanged)
-    Q_PROPERTY(float semGain READ semGain WRITE setSemGain NOTIFY semGainChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * sem READ sem WRITE setSem NOTIFY semChanged)
-    Q_PROPERTY(QVector3D semInnerFilter READ semInnerFilter WRITE setSemInnerFilter NOTIFY semInnerFilterChanged)
-    Q_PROPERTY(QVector3D semOuterFilter READ semOuterFilter WRITE setSemOuterFilter NOTIFY semOuterFilterChanged)
+    Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture * reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
+    Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
+    Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
     Q_PROPERTY(QVector3D diffuseInnerFilter READ diffuseInnerFilter WRITE setDiffuseInnerFilter NOTIFY diffuseInnerFilterChanged)
     Q_PROPERTY(QVector3D diffuseOuterFilter READ diffuseOuterFilter WRITE setDiffuseOuterFilter NOTIFY diffuseOuterFilterChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture * diffuseMap READ diffuseMap WRITE setDiffuseMap NOTIFY diffuseMapChanged)
@@ -59,14 +59,14 @@ class IroDiffuseShaderData : public Qt3DRender::QShaderData
 public:
     explicit IroDiffuseShaderData(Qt3DCore::QNode *parent = nullptr);
     ~IroDiffuseShaderData();
-    QVector3D factors() const;
-    QVector2D disturbation() const;
+    QVector3D normalScaling() const;
+    QVector2D normalDisturb() const;
     float postVertexColor() const;
     float postGain() const;
-    float semGain() const;
-    Qt3DRender::QAbstractTexture * sem() const;
-    QVector3D semInnerFilter() const;
-    QVector3D semOuterFilter() const;
+    float reflectionGain() const;
+    Qt3DRender::QAbstractTexture * reflectionMap() const;
+    QVector3D reflectionInnerFilter() const;
+    QVector3D reflectionOuterFilter() const;
     QVector3D diffuseInnerFilter() const;
     QVector3D diffuseOuterFilter() const;
     Qt3DRender::QAbstractTexture * diffuseMap() const;
@@ -74,14 +74,14 @@ public:
     bool usesDiffuseMap() const;
 
 public Q_SLOTS:
-    void setFactors(const QVector3D &factors);
-    void setDisturbation(const QVector2D &disturbation);
+    void setNormalScaling(const QVector3D &normalScaling);
+    void setNormalDisturb(const QVector2D &normalDisturb);
     void setPostVertexColor(float postVertexColor);
     void setPostGain(float postGain);
-    void setSemGain(float semGain);
-    void setSem(Qt3DRender::QAbstractTexture * sem);
-    void setSemInnerFilter(const QVector3D &semInnerFilter);
-    void setSemOuterFilter(const QVector3D &semOuterFilter);
+    void setReflectionGain(float reflectionGain);
+    void setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap);
+    void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
+    void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
     void setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter);
     void setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter);
     void setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap);
@@ -89,14 +89,14 @@ public Q_SLOTS:
     void setUsesDiffuseMap(bool usesDiffuseMap);
 
 Q_SIGNALS:
-    void factorsChanged(QVector3D);
-    void disturbationChanged(QVector2D);
+    void normalScalingChanged(QVector3D);
+    void normalDisturbChanged(QVector2D);
     void postVertexColorChanged(float);
     void postGainChanged(float);
-    void semGainChanged(float);
-    void semChanged(Qt3DRender::QAbstractTexture *);
-    void semInnerFilterChanged(QVector3D);
-    void semOuterFilterChanged(QVector3D);
+    void reflectionGainChanged(float);
+    void reflectionMapChanged(Qt3DRender::QAbstractTexture *);
+    void reflectionInnerFilterChanged(QVector3D);
+    void reflectionOuterFilterChanged(QVector3D);
     void diffuseInnerFilterChanged(QVector3D);
     void diffuseOuterFilterChanged(QVector3D);
     void diffuseMapChanged(Qt3DRender::QAbstractTexture *);
@@ -104,14 +104,14 @@ Q_SIGNALS:
     void usesDiffuseMapChanged(bool);
 
 private:
-    QVector3D m_factors;
-    QVector2D m_disturbation;
+    QVector3D m_normalScaling;
+    QVector2D m_normalDisturb;
     float m_postVertexColor;
     float m_postGain;
-    float m_semGain;
-    Qt3DRender::QAbstractTexture * m_sem;
-    QVector3D m_semInnerFilter;
-    QVector3D m_semOuterFilter;
+    float m_reflectionGain;
+    Qt3DRender::QAbstractTexture * m_reflectionMap;
+    QVector3D m_reflectionInnerFilter;
+    QVector3D m_reflectionOuterFilter;
     QVector3D m_diffuseInnerFilter;
     QVector3D m_diffuseOuterFilter;
     Qt3DRender::QAbstractTexture * m_diffuseMap;

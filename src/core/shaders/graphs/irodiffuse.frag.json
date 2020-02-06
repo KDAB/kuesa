@@ -655,7 +655,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "sem",
+                "name": "reflectionMap",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Sampler2D"
@@ -725,7 +725,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "semGain",
+                "name": "reflectionGain",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Float"
@@ -945,7 +945,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "semInnerFilter",
+                "name": "reflectionInnerFilter",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -958,7 +958,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "semOuterFilter",
+                "name": "reflectionOuterFilter",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"

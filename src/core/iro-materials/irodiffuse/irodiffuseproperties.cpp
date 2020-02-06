@@ -61,14 +61,14 @@ IroDiffuseProperties::IroDiffuseProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_shaderData(new IroDiffuseShaderData(this))
 {
-    QObject::connect(m_shaderData, &IroDiffuseShaderData::factorsChanged, this, &IroDiffuseProperties::factorsChanged);
-    QObject::connect(m_shaderData, &IroDiffuseShaderData::disturbationChanged, this, &IroDiffuseProperties::disturbationChanged);
+    QObject::connect(m_shaderData, &IroDiffuseShaderData::normalScalingChanged, this, &IroDiffuseProperties::normalScalingChanged);
+    QObject::connect(m_shaderData, &IroDiffuseShaderData::normalDisturbChanged, this, &IroDiffuseProperties::normalDisturbChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::postVertexColorChanged, this, &IroDiffuseProperties::postVertexColorChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::postGainChanged, this, &IroDiffuseProperties::postGainChanged);
-    QObject::connect(m_shaderData, &IroDiffuseShaderData::semGainChanged, this, &IroDiffuseProperties::semGainChanged);
-    QObject::connect(m_shaderData, &IroDiffuseShaderData::semChanged, this, &IroDiffuseProperties::semChanged);
-    QObject::connect(m_shaderData, &IroDiffuseShaderData::semInnerFilterChanged, this, &IroDiffuseProperties::semInnerFilterChanged);
-    QObject::connect(m_shaderData, &IroDiffuseShaderData::semOuterFilterChanged, this, &IroDiffuseProperties::semOuterFilterChanged);
+    QObject::connect(m_shaderData, &IroDiffuseShaderData::reflectionGainChanged, this, &IroDiffuseProperties::reflectionGainChanged);
+    QObject::connect(m_shaderData, &IroDiffuseShaderData::reflectionMapChanged, this, &IroDiffuseProperties::reflectionMapChanged);
+    QObject::connect(m_shaderData, &IroDiffuseShaderData::reflectionInnerFilterChanged, this, &IroDiffuseProperties::reflectionInnerFilterChanged);
+    QObject::connect(m_shaderData, &IroDiffuseShaderData::reflectionOuterFilterChanged, this, &IroDiffuseProperties::reflectionOuterFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseInnerFilterChanged, this, &IroDiffuseProperties::diffuseInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseOuterFilterChanged, this, &IroDiffuseProperties::diffuseOuterFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseMapChanged, this, &IroDiffuseProperties::diffuseMapChanged);
@@ -84,14 +84,14 @@ Qt3DRender::QShaderData *IroDiffuseProperties::shaderData() const
     return m_shaderData;
 }
 
-void IroDiffuseProperties::setFactors(const QVector3D &factors)
+void IroDiffuseProperties::setNormalScaling(const QVector3D &normalScaling)
 {
-    m_shaderData->setFactors(factors);
+    m_shaderData->setNormalScaling(normalScaling);
 }
 
-void IroDiffuseProperties::setDisturbation(const QVector2D &disturbation)
+void IroDiffuseProperties::setNormalDisturb(const QVector2D &normalDisturb)
 {
-    m_shaderData->setDisturbation(disturbation);
+    m_shaderData->setNormalDisturb(normalDisturb);
 }
 
 void IroDiffuseProperties::setPostVertexColor(float postVertexColor)
@@ -104,24 +104,24 @@ void IroDiffuseProperties::setPostGain(float postGain)
     m_shaderData->setPostGain(postGain);
 }
 
-void IroDiffuseProperties::setSemGain(float semGain)
+void IroDiffuseProperties::setReflectionGain(float reflectionGain)
 {
-    m_shaderData->setSemGain(semGain);
+    m_shaderData->setReflectionGain(reflectionGain);
 }
 
-void IroDiffuseProperties::setSem(Qt3DRender::QAbstractTexture * sem)
+void IroDiffuseProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
 {
-    m_shaderData->setSem(sem);
+    m_shaderData->setReflectionMap(reflectionMap);
 }
 
-void IroDiffuseProperties::setSemInnerFilter(const QVector3D &semInnerFilter)
+void IroDiffuseProperties::setReflectionInnerFilter(const QVector3D &reflectionInnerFilter)
 {
-    m_shaderData->setSemInnerFilter(semInnerFilter);
+    m_shaderData->setReflectionInnerFilter(reflectionInnerFilter);
 }
 
-void IroDiffuseProperties::setSemOuterFilter(const QVector3D &semOuterFilter)
+void IroDiffuseProperties::setReflectionOuterFilter(const QVector3D &reflectionOuterFilter)
 {
-    m_shaderData->setSemOuterFilter(semOuterFilter);
+    m_shaderData->setReflectionOuterFilter(reflectionOuterFilter);
 }
 
 void IroDiffuseProperties::setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter)
@@ -151,29 +151,29 @@ void IroDiffuseProperties::setUsesDiffuseMap(bool usesDiffuseMap)
 
 
 /*!
-    \qmlproperty QVector3D IroDiffuseProperties::factors
+    \qmlproperty QVector3D IroDiffuseProperties::normalScaling
     Specifies a factor to be applied to the normal.
 */
 /*!
-    \property IroDiffuseProperties::factors
+    \property IroDiffuseProperties::normalScaling
     Specifies a factor to be applied to the normal.
 */
-QVector3D IroDiffuseProperties::factors() const
+QVector3D IroDiffuseProperties::normalScaling() const
 {
-    return m_shaderData->factors();
+    return m_shaderData->normalScaling();
 }
 
 /*!
-    \qmlproperty QVector2D IroDiffuseProperties::disturbation
+    \qmlproperty QVector2D IroDiffuseProperties::normalDisturb
     Specifies a disturbance factor that will be added to the normal
 */
 /*!
-    \property IroDiffuseProperties::disturbation
+    \property IroDiffuseProperties::normalDisturb
     Specifies a disturbance factor that will be added to the normal
 */
-QVector2D IroDiffuseProperties::disturbation() const
+QVector2D IroDiffuseProperties::normalDisturb() const
 {
-    return m_shaderData->disturbation();
+    return m_shaderData->normalDisturb();
 }
 
 /*!
@@ -203,55 +203,55 @@ float IroDiffuseProperties::postGain() const
 }
 
 /*!
-    \qmlproperty float IroDiffuseProperties::semGain
+    \qmlproperty float IroDiffuseProperties::reflectionGain
     Specifies the gain factor to be applied to the spherical environment map lookup.
 */
 /*!
-    \property IroDiffuseProperties::semGain
+    \property IroDiffuseProperties::reflectionGain
     Specifies the gain factor to be applied to the spherical environment map lookup.
 */
-float IroDiffuseProperties::semGain() const
+float IroDiffuseProperties::reflectionGain() const
 {
-    return m_shaderData->semGain();
+    return m_shaderData->reflectionGain();
 }
 
 /*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroDiffuseProperties::sem
+    \qmlproperty Qt3DRender::QAbstractTexture * IroDiffuseProperties::reflectionMap
     Specifies the spherical environment map to use. It is expected to be in sRGB color space.
 */
 /*!
-    \property IroDiffuseProperties::sem
+    \property IroDiffuseProperties::reflectionMap
     Specifies the spherical environment map to use. It is expected to be in sRGB color space.
 */
-Qt3DRender::QAbstractTexture * IroDiffuseProperties::sem() const
+Qt3DRender::QAbstractTexture * IroDiffuseProperties::reflectionMap() const
 {
-    return m_shaderData->sem();
+    return m_shaderData->reflectionMap();
 }
 
 /*!
-    \qmlproperty QVector3D IroDiffuseProperties::semInnerFilter
+    \qmlproperty QVector3D IroDiffuseProperties::reflectionInnerFilter
     Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup.
 */
 /*!
-    \property IroDiffuseProperties::semInnerFilter
+    \property IroDiffuseProperties::reflectionInnerFilter
     Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup.
 */
-QVector3D IroDiffuseProperties::semInnerFilter() const
+QVector3D IroDiffuseProperties::reflectionInnerFilter() const
 {
-    return m_shaderData->semInnerFilter();
+    return m_shaderData->reflectionInnerFilter();
 }
 
 /*!
-    \qmlproperty QVector3D IroDiffuseProperties::semOuterFilter
+    \qmlproperty QVector3D IroDiffuseProperties::reflectionOuterFilter
     Specifies the outer color filter to be applied based on fresnel on the spherical environment map lookup.
 */
 /*!
-    \property IroDiffuseProperties::semOuterFilter
+    \property IroDiffuseProperties::reflectionOuterFilter
     Specifies the outer color filter to be applied based on fresnel on the spherical environment map lookup.
 */
-QVector3D IroDiffuseProperties::semOuterFilter() const
+QVector3D IroDiffuseProperties::reflectionOuterFilter() const
 {
-    return m_shaderData->semOuterFilter();
+    return m_shaderData->reflectionOuterFilter();
 }
 
 /*!

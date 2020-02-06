@@ -39,14 +39,14 @@ namespace Kuesa {
 
 IroDiffuseShaderData::IroDiffuseShaderData(Qt3DCore::QNode *parent)
     : Qt3DRender::QShaderData(parent)
-    , m_factors()
-    , m_disturbation()
+    , m_normalScaling()
+    , m_normalDisturb()
     , m_postVertexColor()
     , m_postGain()
-    , m_semGain()
-    , m_sem(nullptr)
-    , m_semInnerFilter()
-    , m_semOuterFilter()
+    , m_reflectionGain()
+    , m_reflectionMap(nullptr)
+    , m_reflectionInnerFilter()
+    , m_reflectionOuterFilter()
     , m_diffuseInnerFilter()
     , m_diffuseOuterFilter()
     , m_diffuseMap(nullptr)
@@ -56,14 +56,14 @@ IroDiffuseShaderData::IroDiffuseShaderData(Qt3DCore::QNode *parent)
 
 IroDiffuseShaderData::~IroDiffuseShaderData() = default;
 
-QVector3D IroDiffuseShaderData::factors() const
+QVector3D IroDiffuseShaderData::normalScaling() const
 {
-    return m_factors;
+    return m_normalScaling;
 }
 
-QVector2D IroDiffuseShaderData::disturbation() const
+QVector2D IroDiffuseShaderData::normalDisturb() const
 {
-    return m_disturbation;
+    return m_normalDisturb;
 }
 
 float IroDiffuseShaderData::postVertexColor() const
@@ -76,24 +76,24 @@ float IroDiffuseShaderData::postGain() const
     return m_postGain;
 }
 
-float IroDiffuseShaderData::semGain() const
+float IroDiffuseShaderData::reflectionGain() const
 {
-    return m_semGain;
+    return m_reflectionGain;
 }
 
-Qt3DRender::QAbstractTexture * IroDiffuseShaderData::sem() const
+Qt3DRender::QAbstractTexture * IroDiffuseShaderData::reflectionMap() const
 {
-    return m_sem;
+    return m_reflectionMap;
 }
 
-QVector3D IroDiffuseShaderData::semInnerFilter() const
+QVector3D IroDiffuseShaderData::reflectionInnerFilter() const
 {
-    return m_semInnerFilter;
+    return m_reflectionInnerFilter;
 }
 
-QVector3D IroDiffuseShaderData::semOuterFilter() const
+QVector3D IroDiffuseShaderData::reflectionOuterFilter() const
 {
-    return m_semOuterFilter;
+    return m_reflectionOuterFilter;
 }
 
 QVector3D IroDiffuseShaderData::diffuseInnerFilter() const
@@ -122,20 +122,20 @@ bool IroDiffuseShaderData::usesDiffuseMap() const
 }
 
 
-void IroDiffuseShaderData::setFactors(const QVector3D &factors)
+void IroDiffuseShaderData::setNormalScaling(const QVector3D &normalScaling)
 {
-    if (m_factors == factors)
+    if (m_normalScaling == normalScaling)
         return;
-    m_factors = factors;
-    emit factorsChanged(factors);
+    m_normalScaling = normalScaling;
+    emit normalScalingChanged(normalScaling);
 }
 
-void IroDiffuseShaderData::setDisturbation(const QVector2D &disturbation)
+void IroDiffuseShaderData::setNormalDisturb(const QVector2D &normalDisturb)
 {
-    if (m_disturbation == disturbation)
+    if (m_normalDisturb == normalDisturb)
         return;
-    m_disturbation = disturbation;
-    emit disturbationChanged(disturbation);
+    m_normalDisturb = normalDisturb;
+    emit normalDisturbChanged(normalDisturb);
 }
 
 void IroDiffuseShaderData::setPostVertexColor(float postVertexColor)
@@ -154,45 +154,45 @@ void IroDiffuseShaderData::setPostGain(float postGain)
     emit postGainChanged(postGain);
 }
 
-void IroDiffuseShaderData::setSemGain(float semGain)
+void IroDiffuseShaderData::setReflectionGain(float reflectionGain)
 {
-    if (m_semGain == semGain)
+    if (m_reflectionGain == reflectionGain)
         return;
-    m_semGain = semGain;
-    emit semGainChanged(semGain);
+    m_reflectionGain = reflectionGain;
+    emit reflectionGainChanged(reflectionGain);
 }
 
-void IroDiffuseShaderData::setSem(Qt3DRender::QAbstractTexture * sem)
+void IroDiffuseShaderData::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
 {
-    if (m_sem == sem)
+    if (m_reflectionMap == reflectionMap)
         return;
 
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    if (m_sem != nullptr)
-        d->unregisterDestructionHelper(m_sem);
-    m_sem = sem;
-    if (m_sem != nullptr) {
-        if (m_sem->parent() == nullptr)
-            m_sem->setParent(this);
-        d->registerDestructionHelper(m_sem, &IroDiffuseShaderData::setSem, m_sem);
+    if (m_reflectionMap != nullptr)
+        d->unregisterDestructionHelper(m_reflectionMap);
+    m_reflectionMap = reflectionMap;
+    if (m_reflectionMap != nullptr) {
+        if (m_reflectionMap->parent() == nullptr)
+            m_reflectionMap->setParent(this);
+        d->registerDestructionHelper(m_reflectionMap, &IroDiffuseShaderData::setReflectionMap, m_reflectionMap);
     }
-    emit semChanged(m_sem);
+    emit reflectionMapChanged(m_reflectionMap);
 }
 
-void IroDiffuseShaderData::setSemInnerFilter(const QVector3D &semInnerFilter)
+void IroDiffuseShaderData::setReflectionInnerFilter(const QVector3D &reflectionInnerFilter)
 {
-    if (m_semInnerFilter == semInnerFilter)
+    if (m_reflectionInnerFilter == reflectionInnerFilter)
         return;
-    m_semInnerFilter = semInnerFilter;
-    emit semInnerFilterChanged(semInnerFilter);
+    m_reflectionInnerFilter = reflectionInnerFilter;
+    emit reflectionInnerFilterChanged(reflectionInnerFilter);
 }
 
-void IroDiffuseShaderData::setSemOuterFilter(const QVector3D &semOuterFilter)
+void IroDiffuseShaderData::setReflectionOuterFilter(const QVector3D &reflectionOuterFilter)
 {
-    if (m_semOuterFilter == semOuterFilter)
+    if (m_reflectionOuterFilter == reflectionOuterFilter)
         return;
-    m_semOuterFilter = semOuterFilter;
-    emit semOuterFilterChanged(semOuterFilter);
+    m_reflectionOuterFilter = reflectionOuterFilter;
+    emit reflectionOuterFilterChanged(reflectionOuterFilter);
 }
 
 void IroDiffuseShaderData::setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter)
