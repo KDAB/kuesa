@@ -72,5 +72,10 @@
         <file>shaders/es3/kuesa_iroGlassAddShaderData.inc.frag</file>
         <file>shaders/graphs/iroglassadd.frag.json</file>
         <file>shaders/graphs/iroglassadd.vert.json</file>
+        <file>shaders/gl3/kuesa_iroDiffuseHemiShaderData.inc.frag</file>
+        <file>shaders/es2/kuesa_iroDiffuseHemiShaderData.inc.frag</file>
+        <file>shaders/es3/kuesa_iroDiffuseHemiShaderData.inc.frag</file>
+        <file>shaders/graphs/irodiffusehemi.frag.json</file>
+        <file>shaders/graphs/irodiffusehemi.vert.json</file>
     </qresource>
 </RCC>

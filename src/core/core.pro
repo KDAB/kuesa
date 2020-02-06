@@ -63,6 +63,8 @@ OTHER_FILES += \
     shaders/graphs/irodiffuse.vert.graph \
     shaders/graphs/iroglassadd.frag.graph \
     shaders/graphs/iroglassadd.vert.graph \
+    shaders/graphs/irodiffusehemi.frag.graph \
+    shaders/graphs/irodiffusehemi.vert.graph \
     configure.pri \
     configure.json
 

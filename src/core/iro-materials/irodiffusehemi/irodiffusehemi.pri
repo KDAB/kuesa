@@ -1,4 +1,5 @@
-# iro-materials.pri
+
+# irodiffusehemi.pri
 #
 # This file is part of Kuesa.
 #
@@ -24,14 +25,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 INCLUDEPATH += $$PWD
 
-include(irodiffuse/irodiffuse.pri)
-include(irodiffusehemi/irodiffusehemi.pri)
-include(iroglassadd/iroglassadd.pri)
+QT += 3dcore-private
 
-SOURCES += $$PWD/iro-materials.cpp
-HEADERS += $$PWD/iro-materials_p.h
+SOURCES += \
+    $$PWD/irodiffusehemimaterial.cpp \
+    $$PWD/irodiffusehemieffect.cpp \
+    $$PWD/irodiffusehemiproperties.cpp \
+    $$PWD/irodiffusehemishaderdata.cpp
 
-OTHER_FILES += $$PWD/*.json
+HEADERS += \
+    $$PWD/irodiffusehemimaterial.h \
+    $$PWD/irodiffusehemieffect.h \
+    $$PWD/irodiffusehemiproperties.h \
+    $$PWD/irodiffusehemishaderdata_p.h

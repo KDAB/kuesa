@@ -31,6 +31,9 @@
 #include <Kuesa/IroDiffuseMaterial>
 #include <Kuesa/IroDiffuseEffect>
 #include <Kuesa/IroDiffuseProperties>
+#include <Kuesa/IroDiffuseHemiMaterial>
+#include <Kuesa/IroDiffuseHemiEffect>
+#include <Kuesa/IroDiffuseHemiProperties>
 #include <Kuesa/IroGlassAddMaterial>
 #include <Kuesa/IroGlassAddEffect>
 #include <Kuesa/IroGlassAddProperties>
@@ -44,6 +47,7 @@ namespace IroMaterials {
 void registerIroMaterials()
 {
     GLTF2Importer::registerCustomMaterial<IroDiffuseMaterial, IroDiffuseProperties, IroDiffuseEffect>(QStringLiteral("IroDiffuse"));
+    GLTF2Importer::registerCustomMaterial<IroDiffuseHemiMaterial, IroDiffuseHemiProperties, IroDiffuseHemiEffect>(QStringLiteral("IroDiffuseHemi"));
     GLTF2Importer::registerCustomMaterial<IroGlassAddMaterial, IroGlassAddProperties, IroGlassAddEffect>(QStringLiteral("IroGlassAdd"));
 }
 
