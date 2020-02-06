@@ -52,7 +52,7 @@ const QLatin1String KEY_NODES = QLatin1String("nodes");
 const QLatin1String KEY_MESHES = QLatin1String("meshes");
 const QLatin1String KEY_SCENE = QLatin1String("scene");
 const QLatin1String KEY_SCENES = QLatin1String("scenes");
-const QLatin1String KEY_KDAB_KUESA_LAYER_EXTENSION = QLatin1String("KDAB_Kuesa_Layers");
+const QLatin1String KEY_KDAB_KUESA_LAYER_EXTENSION = QLatin1String("KDAB_kuesa_layers");
 const QLatin1String KEY_MSFT_DDS_EXTENSION = QLatin1String("MSFT_texture_dds");
 const QLatin1String KEY_KUESA_LAYERS = QLatin1String("layers");
 const QLatin1String KEY_CAMERAS = QLatin1String("cameras");
@@ -107,6 +107,15 @@ const QLatin1String KEY_OUTPUT = QLatin1String("output");
 const QLatin1String KEY_INTERPOLATION = QLatin1String("interpolation");
 const QLatin1String KEY_PATH = QLatin1String("path");
 const QLatin1String KEY_NODE = QLatin1String("node");
+const QLatin1String KEY_MATRIX = QLatin1String("matrix");
+const QLatin1String KEY_TRANSLATION = QLatin1String("translation");
+const QLatin1String KEY_ROTATION = QLatin1String("rotation");
+const QLatin1String KEY_SCALE = QLatin1String("scale");
+const QLatin1String KEY_MESH = QLatin1String("mesh");
+const QLatin1String KEY_CAMERA = QLatin1String("camera");
+const QLatin1String KEY_SKIN = QLatin1String("skin");
+const QLatin1String KEY_CHILDREN = QLatin1String("children");
+const QLatin1String KEY_NODE_KUESA_LAYERS = QLatin1String("layers");
 
 } // namespace GLTF2Import
 } // namespace Kuesa
