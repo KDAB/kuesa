@@ -40,6 +40,7 @@
 #include <Qt3DRender/qrendertarget.h>
 #include <Qt3DRender/qrendertargetselector.h>
 #include <Qt3DRender/qblitframebuffer.h>
+#include <Qt3DRender/qlayer.h>
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 #include <Qt3DRender/qdebugoverlay.h>
 #endif
@@ -906,6 +907,50 @@ void ForwardRenderer::setShowDebugOverlay(bool showDebugOverlay)
 #endif
 }
 
+
+/*!
+    Adds \a layer to the list of layers used for rendering. When no layer is
+    set, everything gets rendered. As soon as you starting adding a layer, only
+    the entities that match the layers will be rendered.
+
+    \since Kuesa 1.2
+*/
+void ForwardRenderer::addLayer(Qt3DRender::QLayer *layer)
+{
+    if (layer) {
+        Q_ASSERT(!m_layers.contains(layer));
+        auto connection = QObject::connect(layer, &Qt3DCore::QNode::nodeDestroyed,
+                                           this, [this, layer] { removeLayer(layer); });
+        m_layers.push_back(layer);
+        m_layerDestructionConnections.push_back(connection);
+        reconfigureStages();
+    }
+}
+
+/*!
+    Removes the \a layer from the layers used for rendering.
+    \since Kuesa 1.2
+*/
+void ForwardRenderer::removeLayer(Qt3DRender::QLayer *layer)
+{
+    const int idx = m_layers.indexOf(layer);
+    if (idx >= 0) {
+        m_layers.removeAt(idx);
+        const auto connection = m_layerDestructionConnections.takeAt(idx);
+        QObject::disconnect(connection);
+        reconfigureStages();
+    }
+}
+
+/*!
+    Returns the layers used for rendering.
+    \since Kuesa 1.2
+*/
+QVector<Qt3DRender::QLayer *> ForwardRenderer::layers() const
+{
+    return m_layers;
+}
+
 /*!
  * \internal
  *
@@ -1170,42 +1215,44 @@ void ForwardRenderer::reconfigureFrameGraph()
 // of the actual gltf scene
 void ForwardRenderer::reconfigureStages()
 {
-    if (m_sceneStages.empty()) {
-        m_sceneStages.resize(2);
-        for (SceneStagesPtr &sceneStage : m_sceneStages) {
-            sceneStage = SceneStagesPtr::create();
-            sceneStage->init();
-        }
+    // The total number of stages me need is:
+    // No layers
+    //    2 (culled, non culled) to handle the non layered elements
+    // Layers
+    //    2 (culled, non culler) per layer
+    const int actualSceneStagesCount = m_sceneStages.size();
+    const bool hasLayers = m_layers.size() > 0;
+    const int requiredSceneStagesCount = std::max(2, m_layers.size() * 2);
+
+    m_sceneStages.resize(requiredSceneStagesCount);
+    for (int i = actualSceneStagesCount; i < requiredSceneStagesCount; ++i) {
+        SceneStagesPtr &sceneStage = m_sceneStages[i];
+        sceneStage = SceneStagesPtr::create();
+        sceneStage->init();
     }
 
     // Update SceneStages and unparent
-    for (int i = 0, m = m_sceneStages.size(); i < m; ++i) {
+    for (int i = 0; i < requiredSceneStagesCount; ++i) {
+        Qt3DRender::QLayer *layer = hasLayers ? m_layers.at(i / 2) : nullptr;
         SceneStagesPtr &sceneStage = m_sceneStages[i];
         sceneStage->setZFilling(m_zfilling);
+        sceneStage->setLayer(layer);
         sceneStage->setBackToFrontSorting(m_backToFrontSorting);
         sceneStage->unParent();
     }
 
     // Insert ZFilling/Opaque branches
     // Root Nodes into which we have to perform the Render Stages to draw the glTF Scene
-    Qt3DRender::QFrameGraphNode *opaqueStageRoots[] = {
-        m_frustumCullingOpaqueTechniqueFilter,
-        m_noFrustumCullingOpaqueTechniqueFilter
+    const std::pair<Qt3DRender::QFrameGraphNode *, Qt3DRender::QFrameGraphNode *> stageRoots[] = {
+       { m_frustumCullingOpaqueTechniqueFilter, m_frustumCullingTransparentTechniqueFilter },
+       { m_noFrustumCullingOpaqueTechniqueFilter, m_noFrustumCullingTransparentTechniqueFilter }
     };
-    for (int i = 0, m = m_sceneStages.size(); i < m; ++i) {
-        SceneStagesPtr &sceneStage = m_sceneStages[i];
-        sceneStage->insertZFillAndOpaqueStages(opaqueStageRoots[i]);
-    }
 
-    // Insert Transparent Branches
-    // Root Nodes into which we have to perform the Render Stages to draw the glTF Scene
-    Qt3DRender::QFrameGraphNode *transparentStageRoots[] = {
-        m_frustumCullingTransparentTechniqueFilter,
-        m_noFrustumCullingTransparentTechniqueFilter
-    };
-    for (int i = 0, m = m_sceneStages.size(); i < m; ++i) {
-        SceneStagesPtr &sceneStage = m_sceneStages[i];
-        sceneStage->insertTransparentStage(transparentStageRoots[i]);
+    for (int i = 0; i < requiredSceneStagesCount;) {
+        for (const auto &rootPair : stageRoots) {
+            SceneStagesPtr &sceneStage = m_sceneStages[i++];
+            sceneStage->setParent(std::get<0>(rootPair), std::get<1>(rootPair));
+        }
     }
 }
 
@@ -1288,7 +1335,9 @@ void ForwardRenderer::setViewportRect(const QRectF &viewportRect)
     \internal
  */
 ForwardRenderer::SceneStages::SceneStages()
-    : m_opaqueStage(nullptr)
+    : m_opaqueStagesRoot(nullptr)
+    , m_transparentStagesRoot(nullptr)
+    , m_opaqueStage(nullptr)
     , m_transparentStage(nullptr)
     , m_zFillStage(nullptr)
 {
@@ -1296,9 +1345,8 @@ ForwardRenderer::SceneStages::SceneStages()
 
 ForwardRenderer::SceneStages::~SceneStages()
 {
-    delete m_opaqueStage;
-    delete m_transparentStage;
-    delete m_zFillStage;
+    delete m_opaqueStagesRoot;
+    delete m_transparentStagesRoot;
 }
 
 /*!
@@ -1306,13 +1354,12 @@ ForwardRenderer::SceneStages::~SceneStages()
  */
 void ForwardRenderer::SceneStages::init()
 {
-    m_opaqueStage = new OpaqueRenderStage();
-    m_transparentStage = new TransparentRenderStage();
-
-    QObject::connect(m_opaqueStage, &Qt3DCore::QNode::nodeDestroyed,
-                     m_opaqueStage, [this] { m_opaqueStage = nullptr; });
-    QObject::connect(m_transparentStage, &Qt3DCore::QNode::nodeDestroyed,
-                     m_transparentStage, [this] { m_transparentStage = nullptr; });
+    m_opaqueStagesRoot = new Qt3DRender::QLayerFilter();
+    m_transparentStagesRoot = new Qt3DRender::QLayerFilter();
+    m_opaqueStage = new OpaqueRenderStage(m_opaqueStagesRoot);
+    m_transparentStage = new TransparentRenderStage(m_transparentStagesRoot);
+    m_opaqueStagesRoot->setFilterMode(Qt3DRender::QLayerFilter::AcceptAllMatchingLayers);
+    m_transparentStagesRoot->setFilterMode(Qt3DRender::QLayerFilter::AcceptAllMatchingLayers);
 }
 
 /*!
@@ -1330,6 +1377,9 @@ void ForwardRenderer::SceneStages::setZFilling(bool zFilling)
             m_zFillStage = new ZFillRenderStage();
             m_zFillDestroyedConnection = QObject::connect(m_zFillStage, &Qt3DCore::QNode::nodeDestroyed,
                                                           m_zFillStage, [this] { m_zFillStage = nullptr; });
+            m_opaqueStage->setParent(Q_NODE_NULLPTR);
+            m_zFillStage->setParent(m_opaqueStagesRoot);
+            m_opaqueStage->setParent(m_opaqueStagesRoot);
         }
         m_opaqueStage->setZFilling(zFilling);
     }
@@ -1342,6 +1392,27 @@ void ForwardRenderer::SceneStages::setBackToFrontSorting(bool backToFrontSorting
 {
     if (backToFrontSorting != m_transparentStage->backToFrontSorting())
         m_transparentStage->setBackToFrontSorting(backToFrontSorting);
+}
+
+/*!
+    \internal
+ */
+void ForwardRenderer::SceneStages::setLayer(Qt3DRender::QLayer *l)
+{
+    Qt3DRender::QLayer *oldLayer = layer();
+
+    if (oldLayer) {
+        m_opaqueStagesRoot->removeLayer(oldLayer);
+        m_transparentStagesRoot->removeLayer(oldLayer);
+    }
+
+    if (l) {
+        m_opaqueStagesRoot->addLayer(l);
+        m_transparentStagesRoot->addLayer(l);
+    }
+
+    m_opaqueStagesRoot->setEnabled(l != nullptr);
+    m_transparentStagesRoot->setEnabled(l != nullptr);
 }
 
 /*!
@@ -1360,33 +1431,70 @@ bool ForwardRenderer::SceneStages::backToFrontSorting()
     return m_transparentStage->backToFrontSorting();
 }
 
+Qt3DRender::QLayer *ForwardRenderer::SceneStages::layer() const
+{
+    if (m_opaqueStagesRoot->layers().size() > 0)
+        return m_opaqueStagesRoot->layers().first();
+    return nullptr;
+}
+
 /*!
     \internal
  */
 void ForwardRenderer::SceneStages::unParent()
 {
-    if (zFilling())
-        m_zFillStage->setParent(Q_NODE_NULLPTR);
-    m_opaqueStage->setParent(Q_NODE_NULLPTR);
-    m_transparentStage->setParent(Q_NODE_NULLPTR);
+    m_opaqueStagesRoot->setParent(Q_NODE_NULLPTR);
+    m_transparentStagesRoot->setParent(Q_NODE_NULLPTR);
 }
 
 /*!
     \internal
  */
-void ForwardRenderer::SceneStages::insertZFillAndOpaqueStages(Qt3DCore::QNode *root)
+void ForwardRenderer::SceneStages::setParent(Qt3DCore::QNode *opaqueRoot,
+                                             Qt3DCore::QNode *transparentRoot)
 {
-    if (zFilling())
-        m_zFillStage->setParent(root);
-    m_opaqueStage->setParent(root);
+    m_opaqueStagesRoot->setParent(opaqueRoot);
+    m_transparentStagesRoot->setParent(transparentRoot);
 }
 
 /*!
     \internal
  */
-void ForwardRenderer::SceneStages::insertTransparentStage(Qt3DCore::QNode *root)
+Qt3DRender::QLayerFilter *ForwardRenderer::SceneStages::opaqueStagesRoot() const
 {
-    m_transparentStage->setParent(root);
+    return m_opaqueStagesRoot;
+}
+
+/*!
+    \internal
+ */
+Qt3DRender::QLayerFilter *ForwardRenderer::SceneStages::transparentStagesRoot() const
+{
+    return m_transparentStagesRoot;
+}
+
+/*!
+    \internal
+ */
+OpaqueRenderStage *ForwardRenderer::SceneStages::opaqueStage() const
+{
+    return m_opaqueStage;
+}
+
+/*!
+    \internal
+ */
+ZFillRenderStage *ForwardRenderer::SceneStages::zFillStage() const
+{
+    return m_zFillStage;
+}
+
+/*!
+    \internal
+ */
+TransparentRenderStage *ForwardRenderer::SceneStages::transparentStage() const
+{
+    return  m_transparentStage;
 }
 
 QT_END_NAMESPACE

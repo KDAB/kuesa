@@ -44,6 +44,8 @@
 #include <Qt3DRender/QRenderTargetSelector>
 #include <Qt3DRender/QRenderTargetOutput>
 #include <Qt3DRender/QFrustumCulling>
+#include <Qt3DRender/QLayerFilter>
+#include <Qt3DRender/QLayer>
 #include <QWindow>
 #include <QOffscreenSurface>
 
@@ -495,7 +497,7 @@ private Q_SLOTS:
         QCOMPARE(fx1Texture->height(), 64);
     }
 
-    void testRenderStages()
+    void testRenderStagesNoLayers()
     {
         // GIVEN
         Kuesa::ForwardRenderer renderer;
@@ -504,14 +506,18 @@ private Q_SLOTS:
         QCOMPARE(renderer.m_sceneStages.size(), 2);
 
         Kuesa::ForwardRenderer::SceneStagesPtr sceneStage = renderer.m_sceneStages.first();
+        QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->opaqueStagesRoot()->parent()) != nullptr);
+        QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->transparentStagesRoot()->parent()) != nullptr);
 
-        Kuesa::OpaqueRenderStage *opaqueStage = sceneStage->m_opaqueStage;
-        Kuesa::TransparentRenderStage *transparentStage = sceneStage->m_transparentStage;
-        QVERIFY(sceneStage->m_zFillStage == nullptr);
+        Kuesa::OpaqueRenderStage *opaqueStage = sceneStage->opaqueStage();
+        Kuesa::TransparentRenderStage *transparentStage = sceneStage->transparentStage();
+        QVERIFY(sceneStage->zFillStage() == nullptr);
 
-        QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(opaqueStage->parent()) != nullptr);
-        QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(transparentStage->parent()) != nullptr);
+        QVERIFY(qobject_cast<Qt3DRender::QLayerFilter *>(opaqueStage->parent()) != nullptr);
+        QVERIFY(qobject_cast<Qt3DRender::QLayerFilter *>(transparentStage->parent()) != nullptr);
 
+        QVERIFY(!sceneStage->opaqueStagesRoot()->isEnabled());
+        QVERIFY(!sceneStage->transparentStagesRoot()->isEnabled());
 
         QCOMPARE(opaqueStage->zFilling(), false);
         QCOMPARE(transparentStage->backToFrontSorting(), true);
@@ -529,12 +535,12 @@ private Q_SLOTS:
         // THEN
         sceneStage = renderer.m_sceneStages.first();
 
-        QVERIFY(sceneStage->m_zFillStage != nullptr);
+        QVERIFY(sceneStage->zFillStage() != nullptr);
         QCOMPARE(opaqueStage->zFilling(), true);
         QCOMPARE(transparentStage->backToFrontSorting(), false);
 
-        QCOMPARE(sceneStage->m_opaqueStage, opaqueStage);
-        QCOMPARE(sceneStage->m_transparentStage, transparentStage);
+        QCOMPARE(sceneStage->opaqueStage(), opaqueStage);
+        QCOMPARE(sceneStage->transparentStage(), transparentStage);
 
         // WHEN
         renderer.setZFilling(false);
@@ -542,10 +548,53 @@ private Q_SLOTS:
         // THEN
         sceneStage = renderer.m_sceneStages.first();
 
-        QVERIFY(sceneStage->m_zFillStage == nullptr);
-        QCOMPARE(sceneStage->m_opaqueStage, opaqueStage);
-        QCOMPARE(sceneStage->m_transparentStage, transparentStage);
+        QVERIFY(sceneStage->zFillStage() == nullptr);
+        QCOMPARE(sceneStage->opaqueStage(), opaqueStage);
+        QCOMPARE(sceneStage->transparentStage(), transparentStage);
     }
+
+    void testRenderStagesWidthLayers()
+    {
+        // GIVEN
+        Kuesa::ForwardRenderer renderer;
+        QScopedPointer<Qt3DRender::QLayer> layer1(new Qt3DRender::QLayer());
+        QScopedPointer<Qt3DRender::QLayer> layer2(new Qt3DRender::QLayer());
+
+        // WHEN
+        renderer.addLayer(layer1.data());
+        renderer.addLayer(layer2.data());
+
+        // THEN
+        QCOMPARE(renderer.m_sceneStages.size(), 4);
+
+        QVector<Qt3DRender::QLayer *> expectedLayers = {
+            layer1.data(),
+            layer1.data(),
+            layer2.data(),
+            layer2.data()
+        };
+
+        for (int i = 0, m = expectedLayers.size(); i < m; ++i) {
+            Qt3DRender::QLayer *expectedLayer = expectedLayers.at(i);
+            Kuesa::ForwardRenderer::SceneStagesPtr sceneStage = renderer.m_sceneStages.first();
+
+            QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->opaqueStagesRoot()->parent()) != nullptr);
+            QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->transparentStagesRoot()->parent()) != nullptr);
+
+            QVERIFY(sceneStage->opaqueStagesRoot()->isEnabled());
+            QCOMPARE(sceneStage->opaqueStagesRoot()->layers(), { expectedLayer });
+            QVERIFY(sceneStage->transparentStagesRoot()->isEnabled());
+            QCOMPARE(sceneStage->opaqueStagesRoot()->layers(), { expectedLayer });
+        }
+
+        // WHEN
+        layer1.reset();
+
+        // THEN
+        QCOMPARE(renderer.m_sceneStages.size(), 2);
+    }
+
+
 
 private:
     template<class T>

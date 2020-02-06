@@ -54,6 +54,7 @@ class QBlitFramebuffer;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 class QDebugOverlay;
 #endif
+class QLayerFilter;
 } // namespace Qt3DRender
 
 namespace Kuesa {
@@ -116,6 +117,10 @@ public Q_SLOTS:
     void setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
     void setShowDebugOverlay(bool showDebugOverlay);
 
+    void addLayer(Qt3DRender::QLayer *layer);
+    void removeLayer(Qt3DRender::QLayer *layer);
+    QVector<Qt3DRender::QLayer *> layers() const;
+
 Q_SIGNALS:
     void renderSurfaceChanged(QObject *renderSurface);
     void viewportRectChanged(const QRectF &viewportRect);
@@ -172,8 +177,11 @@ private:
     Qt3DRender::QDebugOverlay *m_debugOverlay;
 #endif
     bool m_fgTreeRebuiltScheduled;
+    QVector<Qt3DRender::QLayer *> m_layers;
+    QVector<QMetaObject::Connection> m_layerDestructionConnections;
 
-    struct Q_AUTOTEST_EXPORT SceneStages {
+    class Q_AUTOTEST_EXPORT SceneStages {
+    public:
         SceneStages();
         ~SceneStages();
 
@@ -182,15 +190,25 @@ private:
         void init();
         void setZFilling(bool zFilling);
         void setBackToFrontSorting(bool backToFrontSorting);
+        void setLayer(Qt3DRender::QLayer *layer);
 
         bool zFilling();
         bool backToFrontSorting();
+        Qt3DRender::QLayer *layer() const;
 
         void unParent();
+        void setParent(QNode *opaqueRoot, QNode *transparentRoot);
 
-        void insertZFillAndOpaqueStages(QNode *root);
-        void insertTransparentStage(QNode *root);
+        Qt3DRender::QLayerFilter *opaqueStagesRoot() const;
+        Qt3DRender::QLayerFilter *transparentStagesRoot() const;
 
+        OpaqueRenderStage *opaqueStage() const;
+        ZFillRenderStage *zFillStage() const;
+        TransparentRenderStage *transparentStage() const;
+
+    private:
+        Qt3DRender::QLayerFilter *m_opaqueStagesRoot;
+        Qt3DRender::QLayerFilter *m_transparentStagesRoot;
         OpaqueRenderStage *m_opaqueStage;
         TransparentRenderStage *m_transparentStage;
         ZFillRenderStage *m_zFillStage;

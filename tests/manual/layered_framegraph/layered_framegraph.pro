@@ -1,9 +1,9 @@
-# manual.pro
+# layered_framegraph.pro
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Kevin Ottens <kevin.ottens@kdab.com>
+# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,22 +24,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = subdirs
+TEMPLATE = app
 
-qtHaveModule(widgets) {
-    SUBDIRS += \
-        forwardrenderer_scene \
-        metallicroughnessmaterial
-}
+QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa
 
-qtHaveModule(quick) {
-    SUBDIRS += \
-        gltf2importer \
-        multiple_animations \
-        mapped_animations \
-        KDAB_custom_material \
-        IroDiffuseMaterial \
-        IroGlassAddMaterial \
-        layered_framegraph
-}
+SOURCES += \
+    main.cpp
 
+RESOURCES += \
+    main.qrc
+
+DEFINES += ASSETS=\\\"$$KUESA_ROOT/tests/\\\"
