@@ -287,7 +287,7 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
 
     m_dofTexture = new Qt3DRender::QTexture2D;
 
-    auto blurRenderTarget = new Qt3DRender::QRenderTarget(this);
+    auto blurRenderTarget = new Qt3DRender::QRenderTarget;
     auto dofOutput = new Qt3DRender::QRenderTargetOutput;
     dofOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
     dofOutput->setTexture(m_dofTexture);
