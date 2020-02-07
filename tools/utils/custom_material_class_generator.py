@@ -75,7 +75,7 @@ QT_END_NAMESPACE
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -155,7 +155,7 @@ Qt3DRender::QShaderData *%sProperties::shaderData() const
     shaderDataClassHeaderContent = """
 class %sShaderData : public Qt3DRender::QShaderData
 {
-   Q_OBJECT
+    Q_OBJECT
 %s
 public:
     explicit %sShaderData(Qt3DCore::QNode *parent = nullptr);
