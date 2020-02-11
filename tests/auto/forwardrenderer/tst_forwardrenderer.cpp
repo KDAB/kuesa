@@ -376,7 +376,7 @@ private Q_SLOTS:
         QCoreApplication::processEvents();
 
         // THEN
-        // QVERIFY(renderer.frameGraphSubtreeForPostProcessingEffect(&fx) != nullptr);
+        QVERIFY(renderer.frameGraphSubtreeForPostProcessingEffect(&fx) != nullptr);
         QCOMPARE(spy.size(), 1);
         spy.clear();
 
@@ -386,7 +386,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(renderer.postProcessingEffects().size(), 0);
-        // QVERIFY(renderer.frameGraphSubtreeForPostProcessingEffect(&fx) == nullptr);
+        QVERIFY(renderer.frameGraphSubtreeForPostProcessingEffect(&fx) == nullptr);
     }
 
     void testAddingMultipleEffects()
@@ -576,15 +576,17 @@ private Q_SLOTS:
 
         for (int i = 0, m = expectedLayers.size(); i < m; ++i) {
             Qt3DRender::QLayer *expectedLayer = expectedLayers.at(i);
-            Kuesa::ForwardRenderer::SceneStagesPtr sceneStage = renderer.m_sceneStages.first();
+            Kuesa::ForwardRenderer::SceneStagesPtr sceneStage = renderer.m_sceneStages.at(i);
 
             QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->opaqueStagesRoot()->parent()) != nullptr);
             QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->transparentStagesRoot()->parent()) != nullptr);
 
             QVERIFY(sceneStage->opaqueStagesRoot()->isEnabled());
-            QCOMPARE(sceneStage->opaqueStagesRoot()->layers(), { expectedLayer });
+            QCOMPARE(sceneStage->opaqueStagesRoot()->layers().size(), 1);
+            QCOMPARE(sceneStage->opaqueStagesRoot()->layers().first(), expectedLayer);
             QVERIFY(sceneStage->transparentStagesRoot()->isEnabled());
-            QCOMPARE(sceneStage->opaqueStagesRoot()->layers(), { expectedLayer });
+            QCOMPARE(sceneStage->transparentStagesRoot()->layers().size(), 1);
+            QCOMPARE(sceneStage->transparentStagesRoot()->layers().first(), expectedLayer);
         }
 
         // WHEN

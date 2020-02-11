@@ -753,11 +753,9 @@ void ForwardRenderer::addPostProcessingEffect(AbstractPostProcessingEffect *effe
  */
 void ForwardRenderer::removePostProcessingEffect(AbstractPostProcessingEffect *effect)
 {
-    if (!m_userPostProcessingEffects.contains(effect))
-        return;
-
     // Remove effect entry
-    m_userPostProcessingEffects.removeAll(effect);
+    if (m_userPostProcessingEffects.removeAll(effect) <= 0)
+        return;
 
     // unparent FG subtree associated with Effect.
     m_effectFGSubtrees.take(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
@@ -918,6 +916,13 @@ void ForwardRenderer::setShowDebugOverlay(bool showDebugOverlay)
 void ForwardRenderer::addLayer(Qt3DRender::QLayer *layer)
 {
     if (layer) {
+
+        // Parent it to the FG if they have no parent
+        // We want to avoid them ever being parented to the SceneStages
+        // As those might be destroyed when rebuilding the FG
+        if (!layer->parent())
+            layer->setParent(this);
+
         Q_ASSERT(!m_layers.contains(layer));
         auto connection = QObject::connect(layer, &Qt3DCore::QNode::nodeDestroyed,
                                            this, [this, layer] { removeLayer(layer); });
@@ -1049,11 +1054,15 @@ void ForwardRenderer::reconfigureFrameGraph()
     // subtree framegraph including any render target selectors.
     // It's easier just to re-create the tree below
     for (AbstractPostProcessingEffect *effect : qAsConst(m_userPostProcessingEffects))
-        m_effectFGSubtrees.value(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+        m_effectFGSubtrees.value(effect)->setParent(Q_NODE_NULLPTR);
     for (AbstractPostProcessingEffect *effect : qAsConst(m_internalPostProcessingEffects))
-        m_effectFGSubtrees.value(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+        m_effectFGSubtrees.value(effect)->setParent(Q_NODE_NULLPTR);
     for (const SceneStagesPtr &stage : qAsConst(m_sceneStages))
         stage->unParent();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    m_debugOverlay->setParent(Q_NODE_NULLPTR);
+#endif
+
     delete m_effectsRootNode;
     m_effectsRootNode = nullptr;
 
