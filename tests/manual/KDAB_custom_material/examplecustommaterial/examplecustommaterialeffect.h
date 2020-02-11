@@ -40,7 +40,7 @@ namespace Kuesa {
 
 class ExampleCustomMaterialTechnique;
 
-class KUESASHARED_EXPORT ExampleCustomMaterialEffect : public Qt3DRender::QEffect
+class ExampleCustomMaterialEffect : public Qt3DRender::QEffect
 {
     Q_OBJECT
     Q_PROPERTY(bool doubleSided READ isDoubleSided WRITE setDoubleSided NOTIFY doubleSidedChanged)

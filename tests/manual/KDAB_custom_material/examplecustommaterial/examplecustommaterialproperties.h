@@ -41,7 +41,7 @@ namespace Kuesa {
 
 class ExampleCustomMaterialShaderData;
 
-class KUESASHARED_EXPORT ExampleCustomMaterialProperties : public GLTF2MaterialProperties
+class ExampleCustomMaterialProperties : public GLTF2MaterialProperties
 {
     Q_OBJECT
     Q_PROPERTY(float modulator READ modulator WRITE setModulator NOTIFY modulatorChanged)

@@ -41,7 +41,7 @@ namespace Kuesa {
 class ExampleCustomMaterialProperties;
 class GLTF2MaterialProperties;
 
-class KUESASHARED_EXPORT ExampleCustomMaterialMaterial : public GLTF2Material
+class ExampleCustomMaterialMaterial : public GLTF2Material
 {
     Q_OBJECT
     Q_PROPERTY(Kuesa::ExampleCustomMaterialProperties *materialProperties READ materialProperties WRITE setMaterialProperties NOTIFY materialPropertiesChanged)

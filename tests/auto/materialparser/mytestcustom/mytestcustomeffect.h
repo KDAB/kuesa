@@ -40,7 +40,7 @@ namespace Kuesa {
 
 class MyTestCustomTechnique;
 
-class KUESASHARED_EXPORT MyTestCustomEffect : public Qt3DRender::QEffect
+class MyTestCustomEffect : public Qt3DRender::QEffect
 {
     Q_OBJECT
     Q_PROPERTY(bool doubleSided READ isDoubleSided WRITE setDoubleSided NOTIFY doubleSidedChanged)

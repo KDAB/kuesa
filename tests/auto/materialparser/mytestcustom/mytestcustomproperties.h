@@ -43,7 +43,7 @@ namespace Kuesa {
 
 class MyTestCustomShaderData;
 
-class KUESASHARED_EXPORT MyTestCustomProperties : public GLTF2MaterialProperties
+class MyTestCustomProperties : public GLTF2MaterialProperties
 {
     Q_OBJECT
     Q_PROPERTY(QVector4D customVec4Parameter READ customVec4Parameter WRITE setCustomVec4Parameter NOTIFY customVec4ParameterChanged)

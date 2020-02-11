@@ -41,7 +41,7 @@ namespace Kuesa {
 class MyTestCustomProperties;
 class GLTF2MaterialProperties;
 
-class KUESASHARED_EXPORT MyTestCustomMaterial : public GLTF2Material
+class MyTestCustomMaterial : public GLTF2Material
 {
     Q_OBJECT
     Q_PROPERTY(Kuesa::MyTestCustomProperties *materialProperties READ materialProperties WRITE setMaterialProperties NOTIFY materialPropertiesChanged)
