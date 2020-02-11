@@ -85,6 +85,7 @@ const QLatin1String KEY_KHR_MATERIALS_UNLIT = QLatin1String("KHR_materials_unlit
 const QLatin1String KEY_KDAB_CUSTOM_MATERIAL = QLatin1String("KDAB_custom_material");
 const QLatin1String KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION = QLatin1String("KHR_lights_punctual");
 const QLatin1String KEY_KHR_PUNCTUAL_LIGHTS = QLatin1String("lights");
+const QLatin1String KEY_KHR_PUNCTUAL_LIGHT = QLatin1String("light");
 const QLatin1String KEY_BUFFERVIEWTARGET = QLatin1String("target");
 const QLatin1String KEY_COMPONENTTYPE = QLatin1String("componentType");
 const QLatin1String KEY_COUNT = QLatin1String("count");

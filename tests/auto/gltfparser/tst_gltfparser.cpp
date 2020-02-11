@@ -788,7 +788,7 @@ private Q_SLOTS:
         QVERIFY(res != nullptr);
         QCOMPARE(parser.context()->requiredExtensions().size(), 1);
         QCOMPARE(parser.context()->usedExtension().size(), 1);
-        QCOMPARE(parser.context()->usedExtension().front(), QLatin1String("KDAB_Kuesa_Layers"));
+        QCOMPARE(parser.context()->usedExtension().front(), QLatin1String("KDAB_kuesa_layers"));
     }
 
     void checkLayers_data()

@@ -171,7 +171,7 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
         }
     } else if (nodeExtensions.contains(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION)) {
         const QJsonObject lightObject = nodeExtensions.value(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION).toObject();
-        node.lightIdx = lightObject.value(KEY_KHR_PUNCTUAL_LIGHTS).toInt(-1);
+        node.lightIdx = lightObject.value(KEY_KHR_PUNCTUAL_LIGHT).toInt(-1);
     }
 
     const QJsonArray morphTargetWeights = nodeObj.value(KEY_WEIGHTS).toArray();
