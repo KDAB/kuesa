@@ -594,6 +594,9 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::toneMappingAlgorithmChanged, this, &ForwardRenderer::toneMappingAlgorithmChanged);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     m_debugOverlay->setEnabled(false);
+    // Add a NoDraw to the debug overlay FG branch to ensure nothing but the
+    // overlay will be drawn
+    new Qt3DRender::QNoDraw(m_debugOverlay);
     connect(m_debugOverlay, &Qt3DRender::QDebugOverlay::enabledChanged, this, &ForwardRenderer::showDebugOverlayChanged);
 #endif
 
@@ -1214,15 +1217,11 @@ void ForwardRenderer::reconfigureFrameGraph()
 
             previousRenderTargetIndex = currentRenderTargetIndex;
         }
+    }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-        m_debugOverlay->setParent(static_cast<Qt3DCore::QNode *>(lastEffectFG->parentFrameGraphNode()));
-        lastEffectFG->setParent(m_debugOverlay);
-    } else {
-        m_debugOverlay->setParent(static_cast<Qt3DCore::QNode *>(m_frustumCullingTransparentTechniqueFilter->parentFrameGraphNode()));
-        m_frustumCullingTransparentTechniqueFilter->setParent(m_debugOverlay);
+        m_debugOverlay->setParent(m_viewport);
 #endif
-    }
 
     const bool blocked = blockNotifications(true);
     emit frameGraphTreeReconfigured();
