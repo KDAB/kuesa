@@ -1070,12 +1070,19 @@ void ForwardRenderer::reconfigureFrameGraph()
     delete m_renderToTextureRootNode;
     m_renderToTextureRootNode = nullptr;
 
-    delete m_renderTargets[0];
-    delete m_renderTargets[1];
-    delete m_multisampleTarget;
-    m_renderTargets[0] = nullptr;
-    m_renderTargets[1] = nullptr;
-    m_multisampleTarget = nullptr;
+    // Render Targets are owned by the FrameGraph itself There should be no
+    // reasons that requires them to be recreatd when the FrameGraph tree has
+    // to be rebuild. Resize of the attachments when the surface size changes
+    // is handled by handleSurfaceChange and updateTextureSizes
+    const bool recreateRenderTargets = false;
+    if (recreateRenderTargets) {
+        delete m_renderTargets[0];
+        delete m_renderTargets[1];
+        delete m_multisampleTarget;
+        m_renderTargets[0] = nullptr;
+        m_renderTargets[1] = nullptr;
+        m_multisampleTarget = nullptr;
+    }
 
     Qt3DRender::QAbstractTexture *depthTex = nullptr;
 
@@ -1134,10 +1141,12 @@ void ForwardRenderer::reconfigureFrameGraph()
         const int samples = QSurfaceFormat::defaultFormat().samples();
         if (glFeatures.hasMultisampledFBO && samples > 1) {
             // Render Into MSAA FBO
-            m_multisampleTarget = createRenderTarget(baseRenderTargetFlags | RenderTargetFlag::Multisampled | RenderTargetFlag::IncludeDepth,
-                                                     this,
-                                                     surfaceSize,
-                                                     samples);
+            if (!m_multisampleTarget) {
+                m_multisampleTarget = createRenderTarget(baseRenderTargetFlags | RenderTargetFlag::Multisampled | RenderTargetFlag::IncludeDepth,
+                                                         this,
+                                                         surfaceSize,
+                                                         samples);
+            }
 
             // Blit into regular Tex2D FBO
             m_blitFramebufferNode = new Qt3DRender::QBlitFramebuffer(sceneTargetSelector);
