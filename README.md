@@ -10,11 +10,23 @@ Kuesa is a module for Qt 3D which provides:
 * Custom forward renderer for adding effects
 * A Qt Creator template for quickly creating new Kuesa based projects
 
+It is the developer facing part of a larger 3D design and integration workflow.
+
+The designer facing part of Kuesa resides in glTF 2 exporters and Kuesa specific
+glTF extensions available for major 3D design softwares:
+* [Kuesa for Blender](https://github.com/KDAB/kuesa-blender)
+* [Kuesa for 3ds Max](https://github.com/KDAB/kuesa-3dsmax)
+* Kuesa for Maya (coming soon)
+
+
 ## Requirements
 
 **Note:** this repository requires [git-lfs](https://git-lfs.github.com) support.
 
-Kuesa requires Qt 3D from Qt 5.12.5, Qt 5.13.1 or later.
+Kuesa requires Qt 3D from Qt 5.12.8, Qt 5.14.2 or Qt 5.15.
+
+Earlier Qt 3D versions can still be used but might be suffering from bugs
+that have been identified and fixed since.
 
 ### Hardware
 
