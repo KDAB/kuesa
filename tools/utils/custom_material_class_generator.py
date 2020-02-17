@@ -236,6 +236,8 @@ public:
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
         : QTechnique(parent)
         , m_backFaceCulling(new QCullFace(this))
+        , m_blendEquation(new Qt3DRender::QBlendEquation(this))
+        , m_blendArguments(new Qt3DRender::QBlendEquationArguments(this))
         , m_renderShaderBuilder(new QShaderProgramBuilder(this))
         , m_zfillShaderBuilder(new QShaderProgramBuilder(this))
         , m_renderShader(new QShaderProgram(this))
@@ -363,8 +365,16 @@ public:
         transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
         transparentFilterKey->setValue(QStringLiteral("Transparent"));
 
+        m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::%s);
+        m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::%s);
+        m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::%s);
+        m_blendArguments->setDestinationRgb(Qt3DRender::QBlendEquationArguments::%s);
+        m_blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::%s);
+
         m_transparentRenderPass->setShaderProgram(m_renderShader);
         m_transparentRenderPass->addRenderState(m_backFaceCulling);
+        m_transparentRenderPass->addRenderState(m_blendEquation);
+        m_transparentRenderPass->addRenderState(m_blendArguments);
         m_transparentRenderPass->addFilterKey(transparentFilterKey);
         m_transparentRenderPass->setEnabled(false);
         addRenderPass(m_transparentRenderPass);
@@ -405,6 +415,8 @@ public:
 
 private:
     Qt3DRender::QCullFace *m_backFaceCulling;
+    Qt3DRender::QBlendEquation *m_blendEquation;
+    Qt3DRender::QBlendEquationArguments *m_blendArguments;
     Qt3DRender::QShaderProgramBuilder *m_renderShaderBuilder;
     Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
     Qt3DRender::QShaderProgram *m_renderShader;
@@ -994,6 +1006,13 @@ HEADERS += \\
         matName = self.rawJson.get("type", "")
         className = matName + "Effect"
 
+        blending_obj = self.rawJson.get("blending", {})
+        blendFunction = blending_obj.get("function", "Add")
+        blendSourceRGB = blending_obj.get("sourceRGB", "SourceAlpha")
+        blendSourceAlpha = blending_obj.get("sourceAlpha", "SourceAlpha")
+        blendDestinationRGB = blending_obj.get("destinationRGB", "OneMinusSourceAlpha")
+        blendDestinationAlpha = blending_obj.get("destinationAlpha", "One")
+
         def generateHeader():
             content = CustomMaterialGenerator.effectClassHeaderContent % (matName,
                                                                           matName,
@@ -1028,6 +1047,8 @@ HEADERS += \\
             es3FragmentShaderGraph = ""
             gl3VertexShaderGraph = ""
             gl3FragmentShaderGraph = ""
+
+
 
             shaders = self.rawJson.get("shaders", [])
             for shader in shaders:
@@ -1087,6 +1108,11 @@ HEADERS += \\
                                                                        gl3GeometryCode,
                                                                        es3GeometryCode,
                                                                        es2GeometryCode,
+                                                                       blendFunction,
+                                                                       blendSourceRGB,
+                                                                       blendSourceAlpha,
+                                                                       blendDestinationRGB,
+                                                                       blendDestinationAlpha,
                                                                        doc,
                                                                        matName,
                                                                        matName,
@@ -1115,6 +1141,8 @@ HEADERS += \\
             includes += "#include <Qt3DRender/QShaderProgram>\n"
             includes += "#include <Qt3DRender/QShaderProgramBuilder>\n"
             includes += "#include <Qt3DRender/QGraphicsApiFilter>\n"
+            includes += "#include <Qt3DRender/QBlendEquation>\n"
+            includes += "#include <Qt3DRender/QBlendEquationArguments>\n"
             includes += "#include \"%s.h\"\n" % (className.lower())
 
             self.generateCppFile(content,

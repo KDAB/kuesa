@@ -36,6 +36,8 @@
 #include <Qt3DRender/QShaderProgram>
 #include <Qt3DRender/QShaderProgramBuilder>
 #include <Qt3DRender/QGraphicsApiFilter>
+#include <Qt3DRender/QBlendEquation>
+#include <Qt3DRender/QBlendEquationArguments>
 #include "irodiffusehemieffect.h"
 
 
@@ -57,6 +59,8 @@ public:
     explicit IroDiffuseHemiTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
         : QTechnique(parent)
         , m_backFaceCulling(new QCullFace(this))
+        , m_blendEquation(new Qt3DRender::QBlendEquation(this))
+        , m_blendArguments(new Qt3DRender::QBlendEquationArguments(this))
         , m_renderShaderBuilder(new QShaderProgramBuilder(this))
         , m_zfillShaderBuilder(new QShaderProgramBuilder(this))
         , m_renderShader(new QShaderProgram(this))
@@ -184,8 +188,16 @@ public:
         transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
         transparentFilterKey->setValue(QStringLiteral("Transparent"));
 
+        m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::Add);
+        m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::SourceAlpha);
+        m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::SourceAlpha);
+        m_blendArguments->setDestinationRgb(Qt3DRender::QBlendEquationArguments::OneMinusSourceAlpha);
+        m_blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::One);
+
         m_transparentRenderPass->setShaderProgram(m_renderShader);
         m_transparentRenderPass->addRenderState(m_backFaceCulling);
+        m_transparentRenderPass->addRenderState(m_blendEquation);
+        m_transparentRenderPass->addRenderState(m_blendArguments);
         m_transparentRenderPass->addFilterKey(transparentFilterKey);
         m_transparentRenderPass->setEnabled(false);
         addRenderPass(m_transparentRenderPass);
@@ -226,6 +238,8 @@ public:
 
 private:
     Qt3DRender::QCullFace *m_backFaceCulling;
+    Qt3DRender::QBlendEquation *m_blendEquation;
+    Qt3DRender::QBlendEquationArguments *m_blendArguments;
     Qt3DRender::QShaderProgramBuilder *m_renderShaderBuilder;
     Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
     Qt3DRender::QShaderProgram *m_renderShader;

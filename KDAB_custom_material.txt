@@ -45,6 +45,13 @@ KDAB_custom_material extension
         { "name": "diffuseOuterFilter", "type": "vec4" },
         { "name": "diffuseMap", "type": "texture2d" }
     ],
+    "blending": {
+        "function": "Add",
+        "sourceRGB": "SourceAlpha",
+        "sourceAlpha": "SourceAlpha",
+        "destinationRGB": "OneMinusSourceAlpha",
+        "destinationAlpha": "One"
+    },
     "shaders": [
          {
             "format": {

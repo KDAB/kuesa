@@ -30,9 +30,9 @@
 #ifndef KUESA_IRODIFFUSESHADERDATA_P_H
 #define KUESA_IRODIFFUSESHADERDATA_P_H
 
-#include <Qt3DRender/QAbstractTexture>
-#include <QVector2D>
 #include <QVector3D>
+#include <QVector2D>
+#include <Qt3DRender/QAbstractTexture>
 #include <Qt3DRender/QShaderData>
 
 QT_BEGIN_NAMESPACE
@@ -41,7 +41,7 @@ namespace Kuesa {
 
 class IroDiffuseShaderData : public Qt3DRender::QShaderData
 {
-   Q_OBJECT
+    Q_OBJECT
     Q_PROPERTY(QVector3D normalScaling READ normalScaling WRITE setNormalScaling NOTIFY normalScalingChanged)
     Q_PROPERTY(QVector2D normalDisturb READ normalDisturb WRITE setNormalDisturb NOTIFY normalDisturbChanged)
     Q_PROPERTY(float postVertexColor READ postVertexColor WRITE setPostVertexColor NOTIFY postVertexColorChanged)
