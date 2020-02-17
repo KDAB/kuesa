@@ -1,0 +1,194 @@
+{
+    "edges": [
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{1874c4ac-63c0-4bc7-91f4-c9f3d6e6a4f5}",
+            "targetPort": "coord",
+            "targetUuid": "{df563139-c9a8-46e5-9cbd-2dc23bc06c03}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{17985a00-d524-47f5-893b-eb9b57d18eb7}",
+            "targetPort": "texture",
+            "targetUuid": "{df563139-c9a8-46e5-9cbd-2dc23bc06c03}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "color",
+            "sourceUuid": "{df563139-c9a8-46e5-9cbd-2dc23bc06c03}",
+            "targetPort": "fragColor",
+            "targetUuid": "{79209dcc-510d-4db2-9817-5725477751fa}"
+        }
+    ],
+    "nodes": [
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "texCoord",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "input",
+            "uuid": "{1874c4ac-63c0-4bc7-91f4-c9f3d6e6a4f5}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "type": "fragColor",
+            "uuid": "{79209dcc-510d-4db2-9817-5725477751fa}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "skyboxTexture",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Uniform"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::SamplerCube"
+                }
+            },
+            "type": "input",
+            "uuid": "{17985a00-d524-47f5-893b-eb9b57d18eb7}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "type": "sampleCubeTexture",
+            "uuid": "{df563139-c9a8-46e5-9cbd-2dc23bc06c03}"
+        }
+    ],
+    "prototypes": {
+        "fragColor": {
+            "inputs": [
+                "fragColor"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "gl_FragColor = $fragColor;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out highp vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
+                }
+            ]
+        },
+        "input": {
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "name": "defaultName",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier highp $type $name;"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
+                }
+            ]
+        },
+        "sampleCubeTexture": {
+            "inputs": [
+                "coord",
+                "texture"
+            ],
+            "outputs": [
+                "color"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp vec4 $color = textureCube($texture, $coord);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "highp vec4 $color = texture($texture, $coord);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "vec4 $color = texture($texture, $coord);"
+                }
+            ]
+        }
+    }
+}

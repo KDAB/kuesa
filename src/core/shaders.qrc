@@ -1,15 +1,11 @@
 <RCC>
     <qresource prefix="/kuesa">
-        <file>shaders/es2/skybox.frag</file>
-        <file>shaders/es2/skybox.vert</file>
         <file>shaders/es3/simple.vert</file>
         <file>shaders/es3/skinned.vert</file>
         <file>shaders/es3/passthrough.vert</file>
         <file>shaders/gl3/passthrough.vert</file>
         <file>shaders/gl3/simple.vert</file>
         <file>shaders/gl3/skinned.vert</file>
-        <file>shaders/gl3/skybox.frag</file>
-        <file>shaders/gl3/skybox.vert</file>
         <file>shaders/graphs/metallicroughness.frag.json</file>
         <file>shaders/gl3/kuesa_metalrough.inc.frag</file>
         <file>shaders/gl3/light.inc.frag</file>
@@ -77,5 +73,7 @@
         <file>shaders/es3/kuesa_iroDiffuseHemiShaderData.inc.frag</file>
         <file>shaders/graphs/irodiffusehemi.frag.json</file>
         <file>shaders/graphs/irodiffusehemi.vert.json</file>
+        <file>shaders/graphs/skybox.frag.json</file>
+        <file>shaders/graphs/skybox.vert.json</file>
     </qresource>
 </RCC>

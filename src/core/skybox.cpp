@@ -42,6 +42,7 @@
 #include <Qt3DRender/qgraphicsapifilter.h>
 #include <Qt3DRender/qseamlesscubemap.h>
 #include <Qt3DRender/qshaderprogram.h>
+#include <Qt3DRender/qshaderprogrambuilder.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -139,18 +140,21 @@ Skybox::Skybox(QNode *parent)
         { QGraphicsApiFilter::OpenGL,
           QGraphicsApiFilter::CoreProfile,
           3, 3,
-          QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/skybox.vert")),
-          QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/skybox.frag")) },
-        { QGraphicsApiFilter::OpenGL,
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.vert.json")),
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json"))
+        },
+        { QGraphicsApiFilter::OpenGLES,
           QGraphicsApiFilter::NoProfile,
-          2, 0,
-          QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.vert")),
-          QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.frag")) },
+          3, 0,
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.vert.json")),
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json"))
+        },
         { QGraphicsApiFilter::OpenGLES,
           QGraphicsApiFilter::NoProfile,
           2, 0,
-          QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.vert")),
-          QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/skybox.frag")) }
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.vert.json")),
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json"))
+        }
     };
 
     auto effect = new QEffect();
@@ -182,9 +186,11 @@ Skybox::Skybox(QNode *parent)
         auto shader = new QShaderProgram();
         auto technique = new QTechnique();
         auto renderPass = new QRenderPass();
+        auto shaderBuilder = new QShaderProgramBuilder(renderPass);
 
-        shader->setVertexShaderCode(QShaderProgram::loadSource(description.vertexShaderUrl));
-        shader->setFragmentShaderCode(QShaderProgram::loadSource(description.fragmentShaderUrl));
+        shaderBuilder->setShaderProgram(shader);
+        shaderBuilder->setVertexShaderGraph(description.vertexShaderUrl);
+        shaderBuilder->setFragmentShaderGraph(description.fragmentShaderUrl);
         technique->graphicsApiFilter()->setApi(description.api);
         technique->graphicsApiFilter()->setProfile(description.profile);
         technique->graphicsApiFilter()->setMajorVersion(description.majorV);
