@@ -262,7 +262,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "factors",
+                "name": "normalScaling",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -502,7 +502,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "disturbation",
+                "name": "normalDisturb",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec2"

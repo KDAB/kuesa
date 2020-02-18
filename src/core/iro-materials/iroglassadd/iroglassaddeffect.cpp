@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -36,6 +36,8 @@
 #include <Qt3DRender/QShaderProgram>
 #include <Qt3DRender/QShaderProgramBuilder>
 #include <Qt3DRender/QGraphicsApiFilter>
+#include <Qt3DRender/QBlendEquation>
+#include <Qt3DRender/QBlendEquationArguments>
 #include "iroglassaddeffect.h"
 
 
@@ -57,13 +59,6 @@ public:
     explicit IroGlassAddTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
         : QTechnique(parent)
         , m_backFaceCulling(new QCullFace(this))
-        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
-        , m_zfillShaderBuilder(new QShaderProgramBuilder(this))
-        , m_renderShader(new QShaderProgram(this))
-        , m_zfillShader(new QShaderProgram(this))
-        , m_zfillRenderPass(new QRenderPass(this))
-        , m_opaqueRenderPass(new QRenderPass(this))
-        , m_transparentRenderPass(new QRenderPass(this))
         , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
     {
         struct ApiFilterInfo {
@@ -84,129 +79,175 @@ public:
         graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
         graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
 
-        const QUrl vertexShaderGraph[] = {
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"))
-        };
-
-        const QUrl fragmentShaderGraph[] = {
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json")),
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json")),
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json"))
-        };
-
-        const QByteArray zFillFragmentShaderCode[] = {
-            QByteArray(R"(
-                       #version 330
-                       void main() { }
-                       )"),
-            QByteArray(R"(
-                       #version 300 es
-                       void main() { }
-                       )"),
-            QByteArray(R"(
-                       #version 100
-                       void main() { }
-                       )")
-        };
-
-        const QByteArray renderableVertexShaderCode[] = {
-            QByteArray(R"()"),
-            QByteArray(R"()"),
-            QByteArray(R"()")
-        };
-
-        const QByteArray renderableFragmentShaderCode[] = {
-            QByteArray(R"()"),
-            QByteArray(R"()"),
-            QByteArray(R"()")
-        };
-
-         const QByteArray renderableGeometryShaderCode[] = {
-            QByteArray(R"()"),
-            QByteArray(R"()"),
-            QByteArray(R"()")
-        };
-
-        // Use default vertex shader graph if no vertex shader code was specified
-        if (renderableVertexShaderCode[version].isEmpty()) {
-            m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
-
-            m_zfillShaderBuilder->setShaderProgram(m_zfillShader);
-            m_zfillShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
-        } else {
-            m_renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
-            m_zfillShader->setVertexShaderCode(renderableVertexShaderCode[version]);
-        }
-
-        if (renderableFragmentShaderCode[version].isEmpty()) {
-            m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
-        } else {
-            m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
-        }
-        m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
-
-         // Set geometry shader code if one was specified
-        m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
-        m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
+        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
+        m_techniqueAllowFrustumCullingFilterKey->setValue(true);
+        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
 
         auto filterKey = new QFilterKey(this);
         filterKey->setName(QStringLiteral("renderingStyle"));
         filterKey->setValue(QStringLiteral("forward"));
         addFilterKey(filterKey);
+        {
+            const QUrl vertexShaderGraph[] = {
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"))
+            };
 
-        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
-        m_techniqueAllowFrustumCullingFilterKey->setValue(true);
-        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
+            const QUrl fragmentShaderGraph[] = {
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassmult.frag.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassmult.frag.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassmult.frag.json"))
+            };
 
-        auto zfillFilterKey = new Qt3DRender::QFilterKey(this);
-        zfillFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-        zfillFilterKey->setValue(QStringLiteral("ZFill"));
+            const QByteArray renderableVertexShaderCode[] = {
+                QByteArray(R"()"),
+                QByteArray(R"()"),
+                QByteArray(R"()")
+            };
 
-        m_zfillRenderPass->setShaderProgram(m_zfillShader);
-        m_zfillRenderPass->addRenderState(m_backFaceCulling);
-        m_zfillRenderPass->addFilterKey(zfillFilterKey);
-        addRenderPass(m_zfillRenderPass);
+            const QByteArray renderableFragmentShaderCode[] = {
+                QByteArray(R"()"),
+                QByteArray(R"()"),
+                QByteArray(R"()")
+            };
 
-        auto opaqueFilterKey = new Qt3DRender::QFilterKey(this);
-        opaqueFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-        opaqueFilterKey->setValue(QStringLiteral("Opaque"));
+            const QByteArray renderableGeometryShaderCode[] = {
+                QByteArray(R"()"),
+                QByteArray(R"()"),
+                QByteArray(R"()")
+            };
 
-        m_opaqueRenderPass->setShaderProgram(m_renderShader);
-        m_opaqueRenderPass->addRenderState(m_backFaceCulling);
-        m_opaqueRenderPass->addFilterKey(opaqueFilterKey);
-        addRenderPass(m_opaqueRenderPass);
+            auto renderShaderBuilder = new QShaderProgramBuilder(this);
+            auto renderShader = new QShaderProgram(this);
+            auto transparentRenderPass = new QRenderPass(this);
 
-        auto transparentFilterKey = new Qt3DRender::QFilterKey(this);
-        transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-        transparentFilterKey->setValue(QStringLiteral("Transparent"));
+            // Use default vertex shader graph if no vertex shader code was specified
+            if (renderableVertexShaderCode[version].isEmpty()) {
+                renderShaderBuilder->setShaderProgram(renderShader);
+                renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
+            } else {
+                renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
+            }
 
-        m_transparentRenderPass->setShaderProgram(m_renderShader);
-        m_transparentRenderPass->addRenderState(m_backFaceCulling);
-        m_transparentRenderPass->addFilterKey(transparentFilterKey);
-        m_transparentRenderPass->setEnabled(false);
-        addRenderPass(m_transparentRenderPass);
+            if (renderableFragmentShaderCode[version].isEmpty()) {
+                renderShaderBuilder->setShaderProgram(renderShader);
+                renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
+            } else {
+                renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
+            }
+
+            // Set geometry shader code if one was specified
+            renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
+            transparentRenderPass->setShaderProgram(renderShader);
+
+            auto blendEquation = new Qt3DRender::QBlendEquation(this);
+            blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::Add);
+
+            auto blendArguments = new Qt3DRender::QBlendEquationArguments(this);
+            blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::Zero);
+            blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::Zero);
+            blendArguments->setDestinationRgb(Qt3DRender::QBlendEquationArguments::SourceColor);
+            blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::SourceColor);
+
+            transparentRenderPass->addRenderState(m_backFaceCulling);
+            transparentRenderPass->addRenderState(blendEquation);
+            transparentRenderPass->addRenderState(blendArguments);
+
+            auto transparentFilterKey = new Qt3DRender::QFilterKey(this);
+            transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
+            transparentFilterKey->setValue(QStringLiteral("Transparent"));
+            transparentRenderPass->addFilterKey(transparentFilterKey);
+
+            addRenderPass(transparentRenderPass);
+        }
+        {
+            const QUrl vertexShaderGraph[] = {
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"))
+            };
+
+            const QUrl fragmentShaderGraph[] = {
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json"))
+            };
+
+            const QByteArray renderableVertexShaderCode[] = {
+                QByteArray(R"()"),
+                QByteArray(R"()"),
+                QByteArray(R"()")
+            };
+
+            const QByteArray renderableFragmentShaderCode[] = {
+                QByteArray(R"()"),
+                QByteArray(R"()"),
+                QByteArray(R"()")
+            };
+
+            const QByteArray renderableGeometryShaderCode[] = {
+                QByteArray(R"()"),
+                QByteArray(R"()"),
+                QByteArray(R"()")
+            };
+
+            auto renderShaderBuilder = new QShaderProgramBuilder(this);
+            auto renderShader = new QShaderProgram(this);
+            auto transparentRenderPass = new QRenderPass(this);
+
+            // Use default vertex shader graph if no vertex shader code was specified
+            if (renderableVertexShaderCode[version].isEmpty()) {
+                renderShaderBuilder->setShaderProgram(renderShader);
+                renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
+            } else {
+                renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
+            }
+
+            if (renderableFragmentShaderCode[version].isEmpty()) {
+                renderShaderBuilder->setShaderProgram(renderShader);
+                renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
+            } else {
+                renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
+            }
+
+            // Set geometry shader code if one was specified
+            renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
+            transparentRenderPass->setShaderProgram(renderShader);
+
+            auto blendEquation = new Qt3DRender::QBlendEquation(this);
+            blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::Add);
+
+            auto blendArguments = new Qt3DRender::QBlendEquationArguments(this);
+            blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::One);
+            blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::Zero);
+            blendArguments->setDestinationRgb(Qt3DRender::QBlendEquationArguments::One);
+            blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::One);
+
+            transparentRenderPass->addRenderState(m_backFaceCulling);
+            transparentRenderPass->addRenderState(blendEquation);
+            transparentRenderPass->addRenderState(blendArguments);
+
+            auto transparentFilterKey = new Qt3DRender::QFilterKey(this);
+            transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
+            transparentFilterKey->setValue(QStringLiteral("Transparent-Pass2"));
+            transparentRenderPass->addFilterKey(transparentFilterKey);
+
+            addRenderPass(transparentRenderPass);
+        }
     }
 
     QStringList enabledLayers() const
     {
-        return m_renderShaderBuilder->enabledLayers();
+        return {};
     }
 
-    void setEnabledLayers(const QStringList &layers)
+    void setEnabledLayers(const QStringList &)
     {
-        m_renderShaderBuilder->setEnabledLayers(layers);
-        m_zfillShaderBuilder->setEnabledLayers(layers);
     }
 
-    void setOpaque(bool opaque)
+    void setOpaque(bool)
     {
-        m_zfillRenderPass->setEnabled(opaque);
-        m_opaqueRenderPass->setEnabled(opaque);
-        m_transparentRenderPass->setEnabled(!opaque);
     }
 
     void setCullingMode(QCullFace::CullingMode mode)
@@ -226,13 +267,6 @@ public:
 
 private:
     Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QShaderProgramBuilder *m_renderShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
-    Qt3DRender::QShaderProgram *m_renderShader;
-    Qt3DRender::QShaderProgram *m_zfillShader;
-    Qt3DRender::QRenderPass *m_zfillRenderPass;
-    Qt3DRender::QRenderPass *m_opaqueRenderPass;
-    Qt3DRender::QRenderPass *m_transparentRenderPass;
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 

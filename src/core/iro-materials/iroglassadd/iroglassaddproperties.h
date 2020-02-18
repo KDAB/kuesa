@@ -46,16 +46,16 @@ class IroGlassAddShaderData;
 class KUESASHARED_EXPORT IroGlassAddProperties : public GLTF2MaterialProperties
 {
     Q_OBJECT
-    Q_PROPERTY(QVector3D factors READ factors WRITE setFactors NOTIFY factorsChanged)
-    Q_PROPERTY(QVector2D disturbation READ disturbation WRITE setDisturbation NOTIFY disturbationChanged)
+    Q_PROPERTY(QVector3D normalScaling READ normalScaling WRITE setNormalScaling NOTIFY normalScalingChanged)
+    Q_PROPERTY(QVector2D normalDisturb READ normalDisturb WRITE setNormalDisturb NOTIFY normalDisturbChanged)
     Q_PROPERTY(float postVertexColor READ postVertexColor WRITE setPostVertexColor NOTIFY postVertexColorChanged)
     Q_PROPERTY(float postGain READ postGain WRITE setPostGain NOTIFY postGainChanged)
-    Q_PROPERTY(float semGain READ semGain WRITE setSemGain NOTIFY semGainChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * sem READ sem WRITE setSem NOTIFY semChanged)
-    Q_PROPERTY(QVector3D semInnerFilter READ semInnerFilter WRITE setSemInnerFilter NOTIFY semInnerFilterChanged)
-    Q_PROPERTY(QVector3D semOuterFilter READ semOuterFilter WRITE setSemOuterFilter NOTIFY semOuterFilterChanged)
-    Q_PROPERTY(float semInnerAlpha READ semInnerAlpha WRITE setSemInnerAlpha NOTIFY semInnerAlphaChanged)
-    Q_PROPERTY(float semOuterAlpha READ semOuterAlpha WRITE setSemOuterAlpha NOTIFY semOuterAlphaChanged)
+    Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture * reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
+    Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
+    Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
+    Q_PROPERTY(float reflectionInnerAlpha READ reflectionInnerAlpha WRITE setReflectionInnerAlpha NOTIFY reflectionInnerAlphaChanged)
+    Q_PROPERTY(float reflectionOuterAlpha READ reflectionOuterAlpha WRITE setReflectionOuterAlpha NOTIFY reflectionOuterAlphaChanged)
     Q_PROPERTY(QVector3D glassInnerFilter READ glassInnerFilter WRITE setGlassInnerFilter NOTIFY glassInnerFilterChanged)
     Q_PROPERTY(QVector3D glassOuterFilter READ glassOuterFilter WRITE setGlassOuterFilter NOTIFY glassOuterFilterChanged)
 
@@ -64,44 +64,44 @@ public:
     ~IroGlassAddProperties();
 
     Qt3DRender::QShaderData *shaderData() const override;
-    QVector3D factors() const;
-    QVector2D disturbation() const;
+    QVector3D normalScaling() const;
+    QVector2D normalDisturb() const;
     float postVertexColor() const;
     float postGain() const;
-    float semGain() const;
-    Qt3DRender::QAbstractTexture * sem() const;
-    QVector3D semInnerFilter() const;
-    QVector3D semOuterFilter() const;
-    float semInnerAlpha() const;
-    float semOuterAlpha() const;
+    float reflectionGain() const;
+    Qt3DRender::QAbstractTexture * reflectionMap() const;
+    QVector3D reflectionInnerFilter() const;
+    QVector3D reflectionOuterFilter() const;
+    float reflectionInnerAlpha() const;
+    float reflectionOuterAlpha() const;
     QVector3D glassInnerFilter() const;
     QVector3D glassOuterFilter() const;
 
 public Q_SLOTS:
-    void setFactors(const QVector3D &factors);
-    void setDisturbation(const QVector2D &disturbation);
+    void setNormalScaling(const QVector3D &normalScaling);
+    void setNormalDisturb(const QVector2D &normalDisturb);
     void setPostVertexColor(float postVertexColor);
     void setPostGain(float postGain);
-    void setSemGain(float semGain);
-    void setSem(Qt3DRender::QAbstractTexture * sem);
-    void setSemInnerFilter(const QVector3D &semInnerFilter);
-    void setSemOuterFilter(const QVector3D &semOuterFilter);
-    void setSemInnerAlpha(float semInnerAlpha);
-    void setSemOuterAlpha(float semOuterAlpha);
+    void setReflectionGain(float reflectionGain);
+    void setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap);
+    void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
+    void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
+    void setReflectionInnerAlpha(float reflectionInnerAlpha);
+    void setReflectionOuterAlpha(float reflectionOuterAlpha);
     void setGlassInnerFilter(const QVector3D &glassInnerFilter);
     void setGlassOuterFilter(const QVector3D &glassOuterFilter);
 
 Q_SIGNALS:
-    void factorsChanged(QVector3D);
-    void disturbationChanged(QVector2D);
+    void normalScalingChanged(QVector3D);
+    void normalDisturbChanged(QVector2D);
     void postVertexColorChanged(float);
     void postGainChanged(float);
-    void semGainChanged(float);
-    void semChanged(Qt3DRender::QAbstractTexture *);
-    void semInnerFilterChanged(QVector3D);
-    void semOuterFilterChanged(QVector3D);
-    void semInnerAlphaChanged(float);
-    void semOuterAlphaChanged(float);
+    void reflectionGainChanged(float);
+    void reflectionMapChanged(Qt3DRender::QAbstractTexture *);
+    void reflectionInnerFilterChanged(QVector3D);
+    void reflectionOuterFilterChanged(QVector3D);
+    void reflectionInnerAlphaChanged(float);
+    void reflectionOuterAlphaChanged(float);
     void glassInnerFilterChanged(QVector3D);
     void glassOuterFilterChanged(QVector3D);
 

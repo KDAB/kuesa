@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -61,16 +61,16 @@ IroGlassAddProperties::IroGlassAddProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_shaderData(new IroGlassAddShaderData(this))
 {
-    QObject::connect(m_shaderData, &IroGlassAddShaderData::factorsChanged, this, &IroGlassAddProperties::factorsChanged);
-    QObject::connect(m_shaderData, &IroGlassAddShaderData::disturbationChanged, this, &IroGlassAddProperties::disturbationChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::normalScalingChanged, this, &IroGlassAddProperties::normalScalingChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::normalDisturbChanged, this, &IroGlassAddProperties::normalDisturbChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::postVertexColorChanged, this, &IroGlassAddProperties::postVertexColorChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::postGainChanged, this, &IroGlassAddProperties::postGainChanged);
-    QObject::connect(m_shaderData, &IroGlassAddShaderData::semGainChanged, this, &IroGlassAddProperties::semGainChanged);
-    QObject::connect(m_shaderData, &IroGlassAddShaderData::semChanged, this, &IroGlassAddProperties::semChanged);
-    QObject::connect(m_shaderData, &IroGlassAddShaderData::semInnerFilterChanged, this, &IroGlassAddProperties::semInnerFilterChanged);
-    QObject::connect(m_shaderData, &IroGlassAddShaderData::semOuterFilterChanged, this, &IroGlassAddProperties::semOuterFilterChanged);
-    QObject::connect(m_shaderData, &IroGlassAddShaderData::semInnerAlphaChanged, this, &IroGlassAddProperties::semInnerAlphaChanged);
-    QObject::connect(m_shaderData, &IroGlassAddShaderData::semOuterAlphaChanged, this, &IroGlassAddProperties::semOuterAlphaChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionGainChanged, this, &IroGlassAddProperties::reflectionGainChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionMapChanged, this, &IroGlassAddProperties::reflectionMapChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionInnerFilterChanged, this, &IroGlassAddProperties::reflectionInnerFilterChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionOuterFilterChanged, this, &IroGlassAddProperties::reflectionOuterFilterChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionInnerAlphaChanged, this, &IroGlassAddProperties::reflectionInnerAlphaChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionOuterAlphaChanged, this, &IroGlassAddProperties::reflectionOuterAlphaChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::glassInnerFilterChanged, this, &IroGlassAddProperties::glassInnerFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::glassOuterFilterChanged, this, &IroGlassAddProperties::glassOuterFilterChanged);
 
@@ -83,14 +83,14 @@ Qt3DRender::QShaderData *IroGlassAddProperties::shaderData() const
     return m_shaderData;
 }
 
-void IroGlassAddProperties::setFactors(const QVector3D &factors)
+void IroGlassAddProperties::setNormalScaling(const QVector3D &normalScaling)
 {
-    m_shaderData->setFactors(factors);
+    m_shaderData->setNormalScaling(normalScaling);
 }
 
-void IroGlassAddProperties::setDisturbation(const QVector2D &disturbation)
+void IroGlassAddProperties::setNormalDisturb(const QVector2D &normalDisturb)
 {
-    m_shaderData->setDisturbation(disturbation);
+    m_shaderData->setNormalDisturb(normalDisturb);
 }
 
 void IroGlassAddProperties::setPostVertexColor(float postVertexColor)
@@ -103,34 +103,34 @@ void IroGlassAddProperties::setPostGain(float postGain)
     m_shaderData->setPostGain(postGain);
 }
 
-void IroGlassAddProperties::setSemGain(float semGain)
+void IroGlassAddProperties::setReflectionGain(float reflectionGain)
 {
-    m_shaderData->setSemGain(semGain);
+    m_shaderData->setReflectionGain(reflectionGain);
 }
 
-void IroGlassAddProperties::setSem(Qt3DRender::QAbstractTexture * sem)
+void IroGlassAddProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
 {
-    m_shaderData->setSem(sem);
+    m_shaderData->setReflectionMap(reflectionMap);
 }
 
-void IroGlassAddProperties::setSemInnerFilter(const QVector3D &semInnerFilter)
+void IroGlassAddProperties::setReflectionInnerFilter(const QVector3D &reflectionInnerFilter)
 {
-    m_shaderData->setSemInnerFilter(semInnerFilter);
+    m_shaderData->setReflectionInnerFilter(reflectionInnerFilter);
 }
 
-void IroGlassAddProperties::setSemOuterFilter(const QVector3D &semOuterFilter)
+void IroGlassAddProperties::setReflectionOuterFilter(const QVector3D &reflectionOuterFilter)
 {
-    m_shaderData->setSemOuterFilter(semOuterFilter);
+    m_shaderData->setReflectionOuterFilter(reflectionOuterFilter);
 }
 
-void IroGlassAddProperties::setSemInnerAlpha(float semInnerAlpha)
+void IroGlassAddProperties::setReflectionInnerAlpha(float reflectionInnerAlpha)
 {
-    m_shaderData->setSemInnerAlpha(semInnerAlpha);
+    m_shaderData->setReflectionInnerAlpha(reflectionInnerAlpha);
 }
 
-void IroGlassAddProperties::setSemOuterAlpha(float semOuterAlpha)
+void IroGlassAddProperties::setReflectionOuterAlpha(float reflectionOuterAlpha)
 {
-    m_shaderData->setSemOuterAlpha(semOuterAlpha);
+    m_shaderData->setReflectionOuterAlpha(reflectionOuterAlpha);
 }
 
 void IroGlassAddProperties::setGlassInnerFilter(const QVector3D &glassInnerFilter)
@@ -145,29 +145,29 @@ void IroGlassAddProperties::setGlassOuterFilter(const QVector3D &glassOuterFilte
 
 
 /*!
-    \qmlproperty QVector3D IroGlassAddProperties::factors
+    \qmlproperty QVector3D IroGlassAddProperties::normalScaling
     Specifies a factor to be applied to the normal.
 */
 /*!
-    \property IroGlassAddProperties::factors
+    \property IroGlassAddProperties::normalScaling
     Specifies a factor to be applied to the normal.
 */
-QVector3D IroGlassAddProperties::factors() const
+QVector3D IroGlassAddProperties::normalScaling() const
 {
-    return m_shaderData->factors();
+    return m_shaderData->normalScaling();
 }
 
 /*!
-    \qmlproperty QVector2D IroGlassAddProperties::disturbation
+    \qmlproperty QVector2D IroGlassAddProperties::normalDisturb
     Specifies a disturbance factor that will be added to the normal
 */
 /*!
-    \property IroGlassAddProperties::disturbation
+    \property IroGlassAddProperties::normalDisturb
     Specifies a disturbance factor that will be added to the normal
 */
-QVector2D IroGlassAddProperties::disturbation() const
+QVector2D IroGlassAddProperties::normalDisturb() const
 {
-    return m_shaderData->disturbation();
+    return m_shaderData->normalDisturb();
 }
 
 /*!
@@ -197,81 +197,81 @@ float IroGlassAddProperties::postGain() const
 }
 
 /*!
-    \qmlproperty float IroGlassAddProperties::semGain
+    \qmlproperty float IroGlassAddProperties::reflectionGain
     Specifies the gain factor to be applied to the spherical environment map lookup.
 */
 /*!
-    \property IroGlassAddProperties::semGain
+    \property IroGlassAddProperties::reflectionGain
     Specifies the gain factor to be applied to the spherical environment map lookup.
 */
-float IroGlassAddProperties::semGain() const
+float IroGlassAddProperties::reflectionGain() const
 {
-    return m_shaderData->semGain();
+    return m_shaderData->reflectionGain();
 }
 
 /*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroGlassAddProperties::sem
+    \qmlproperty Qt3DRender::QAbstractTexture * IroGlassAddProperties::reflectionMap
     Specifies the spherical environment map to use. It is expected to be in sRGB color space.
 */
 /*!
-    \property IroGlassAddProperties::sem
+    \property IroGlassAddProperties::reflectionMap
     Specifies the spherical environment map to use. It is expected to be in sRGB color space.
 */
-Qt3DRender::QAbstractTexture * IroGlassAddProperties::sem() const
+Qt3DRender::QAbstractTexture * IroGlassAddProperties::reflectionMap() const
 {
-    return m_shaderData->sem();
+    return m_shaderData->reflectionMap();
 }
 
 /*!
-    \qmlproperty QVector3D IroGlassAddProperties::semInnerFilter
+    \qmlproperty QVector3D IroGlassAddProperties::reflectionInnerFilter
     Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup.
 */
 /*!
-    \property IroGlassAddProperties::semInnerFilter
+    \property IroGlassAddProperties::reflectionInnerFilter
     Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup.
 */
-QVector3D IroGlassAddProperties::semInnerFilter() const
+QVector3D IroGlassAddProperties::reflectionInnerFilter() const
 {
-    return m_shaderData->semInnerFilter();
+    return m_shaderData->reflectionInnerFilter();
 }
 
 /*!
-    \qmlproperty QVector3D IroGlassAddProperties::semOuterFilter
+    \qmlproperty QVector3D IroGlassAddProperties::reflectionOuterFilter
     Specifies the outer color filter to be applied based on fresnel on the spherical environment map lookup.
 */
 /*!
-    \property IroGlassAddProperties::semOuterFilter
+    \property IroGlassAddProperties::reflectionOuterFilter
     Specifies the outer color filter to be applied based on fresnel on the spherical environment map lookup.
 */
-QVector3D IroGlassAddProperties::semOuterFilter() const
+QVector3D IroGlassAddProperties::reflectionOuterFilter() const
 {
-    return m_shaderData->semOuterFilter();
+    return m_shaderData->reflectionOuterFilter();
 }
 
 /*!
-    \qmlproperty float IroGlassAddProperties::semInnerAlpha
+    \qmlproperty float IroGlassAddProperties::reflectionInnerAlpha
     Specifies the inner alpha filter to be applied based on fresnel on the spherical environment map lookup.
 */
 /*!
-    \property IroGlassAddProperties::semInnerAlpha
+    \property IroGlassAddProperties::reflectionInnerAlpha
     Specifies the inner alpha filter to be applied based on fresnel on the spherical environment map lookup.
 */
-float IroGlassAddProperties::semInnerAlpha() const
+float IroGlassAddProperties::reflectionInnerAlpha() const
 {
-    return m_shaderData->semInnerAlpha();
+    return m_shaderData->reflectionInnerAlpha();
 }
 
 /*!
-    \qmlproperty float IroGlassAddProperties::semOuterAlpha
+    \qmlproperty float IroGlassAddProperties::reflectionOuterAlpha
     Specifies the outer alpha filter to be applied based on fresnel on the spherical environment map lookup.
 */
 /*!
-    \property IroGlassAddProperties::semOuterAlpha
+    \property IroGlassAddProperties::reflectionOuterAlpha
     Specifies the outer alpha filter to be applied based on fresnel on the spherical environment map lookup.
 */
-float IroGlassAddProperties::semOuterAlpha() const
+float IroGlassAddProperties::reflectionOuterAlpha() const
 {
-    return m_shaderData->semOuterAlpha();
+    return m_shaderData->reflectionOuterAlpha();
 }
 
 /*!

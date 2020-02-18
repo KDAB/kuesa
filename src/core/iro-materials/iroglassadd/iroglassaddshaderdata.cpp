@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -39,30 +39,30 @@ namespace Kuesa {
 
 IroGlassAddShaderData::IroGlassAddShaderData(Qt3DCore::QNode *parent)
     : Qt3DRender::QShaderData(parent)
-    , m_factors()
-    , m_disturbation()
+    , m_normalScaling()
+    , m_normalDisturb()
     , m_postVertexColor()
     , m_postGain()
-    , m_semGain()
-    , m_sem(nullptr)
-    , m_semInnerFilter()
-    , m_semOuterFilter()
-    , m_semInnerAlpha()
-    , m_semOuterAlpha()
+    , m_reflectionGain()
+    , m_reflectionMap(nullptr)
+    , m_reflectionInnerFilter()
+    , m_reflectionOuterFilter()
+    , m_reflectionInnerAlpha()
+    , m_reflectionOuterAlpha()
     , m_glassInnerFilter()
     , m_glassOuterFilter()
 {}
 
 IroGlassAddShaderData::~IroGlassAddShaderData() = default;
 
-QVector3D IroGlassAddShaderData::factors() const
+QVector3D IroGlassAddShaderData::normalScaling() const
 {
-    return m_factors;
+    return m_normalScaling;
 }
 
-QVector2D IroGlassAddShaderData::disturbation() const
+QVector2D IroGlassAddShaderData::normalDisturb() const
 {
-    return m_disturbation;
+    return m_normalDisturb;
 }
 
 float IroGlassAddShaderData::postVertexColor() const
@@ -75,34 +75,34 @@ float IroGlassAddShaderData::postGain() const
     return m_postGain;
 }
 
-float IroGlassAddShaderData::semGain() const
+float IroGlassAddShaderData::reflectionGain() const
 {
-    return m_semGain;
+    return m_reflectionGain;
 }
 
-Qt3DRender::QAbstractTexture * IroGlassAddShaderData::sem() const
+Qt3DRender::QAbstractTexture * IroGlassAddShaderData::reflectionMap() const
 {
-    return m_sem;
+    return m_reflectionMap;
 }
 
-QVector3D IroGlassAddShaderData::semInnerFilter() const
+QVector3D IroGlassAddShaderData::reflectionInnerFilter() const
 {
-    return m_semInnerFilter;
+    return m_reflectionInnerFilter;
 }
 
-QVector3D IroGlassAddShaderData::semOuterFilter() const
+QVector3D IroGlassAddShaderData::reflectionOuterFilter() const
 {
-    return m_semOuterFilter;
+    return m_reflectionOuterFilter;
 }
 
-float IroGlassAddShaderData::semInnerAlpha() const
+float IroGlassAddShaderData::reflectionInnerAlpha() const
 {
-    return m_semInnerAlpha;
+    return m_reflectionInnerAlpha;
 }
 
-float IroGlassAddShaderData::semOuterAlpha() const
+float IroGlassAddShaderData::reflectionOuterAlpha() const
 {
-    return m_semOuterAlpha;
+    return m_reflectionOuterAlpha;
 }
 
 QVector3D IroGlassAddShaderData::glassInnerFilter() const
@@ -116,20 +116,20 @@ QVector3D IroGlassAddShaderData::glassOuterFilter() const
 }
 
 
-void IroGlassAddShaderData::setFactors(const QVector3D &factors)
+void IroGlassAddShaderData::setNormalScaling(const QVector3D &normalScaling)
 {
-    if (m_factors == factors)
+    if (m_normalScaling == normalScaling)
         return;
-    m_factors = factors;
-    emit factorsChanged(factors);
+    m_normalScaling = normalScaling;
+    emit normalScalingChanged(normalScaling);
 }
 
-void IroGlassAddShaderData::setDisturbation(const QVector2D &disturbation)
+void IroGlassAddShaderData::setNormalDisturb(const QVector2D &normalDisturb)
 {
-    if (m_disturbation == disturbation)
+    if (m_normalDisturb == normalDisturb)
         return;
-    m_disturbation = disturbation;
-    emit disturbationChanged(disturbation);
+    m_normalDisturb = normalDisturb;
+    emit normalDisturbChanged(normalDisturb);
 }
 
 void IroGlassAddShaderData::setPostVertexColor(float postVertexColor)
@@ -148,61 +148,61 @@ void IroGlassAddShaderData::setPostGain(float postGain)
     emit postGainChanged(postGain);
 }
 
-void IroGlassAddShaderData::setSemGain(float semGain)
+void IroGlassAddShaderData::setReflectionGain(float reflectionGain)
 {
-    if (m_semGain == semGain)
+    if (m_reflectionGain == reflectionGain)
         return;
-    m_semGain = semGain;
-    emit semGainChanged(semGain);
+    m_reflectionGain = reflectionGain;
+    emit reflectionGainChanged(reflectionGain);
 }
 
-void IroGlassAddShaderData::setSem(Qt3DRender::QAbstractTexture * sem)
+void IroGlassAddShaderData::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
 {
-    if (m_sem == sem)
+    if (m_reflectionMap == reflectionMap)
         return;
 
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    if (m_sem != nullptr)
-        d->unregisterDestructionHelper(m_sem);
-    m_sem = sem;
-    if (m_sem != nullptr) {
-        if (m_sem->parent() == nullptr)
-            m_sem->setParent(this);
-        d->registerDestructionHelper(m_sem, &IroGlassAddShaderData::setSem, m_sem);
+    if (m_reflectionMap != nullptr)
+        d->unregisterDestructionHelper(m_reflectionMap);
+    m_reflectionMap = reflectionMap;
+    if (m_reflectionMap != nullptr) {
+        if (m_reflectionMap->parent() == nullptr)
+            m_reflectionMap->setParent(this);
+        d->registerDestructionHelper(m_reflectionMap, &IroGlassAddShaderData::setReflectionMap, m_reflectionMap);
     }
-    emit semChanged(m_sem);
+    emit reflectionMapChanged(m_reflectionMap);
 }
 
-void IroGlassAddShaderData::setSemInnerFilter(const QVector3D &semInnerFilter)
+void IroGlassAddShaderData::setReflectionInnerFilter(const QVector3D &reflectionInnerFilter)
 {
-    if (m_semInnerFilter == semInnerFilter)
+    if (m_reflectionInnerFilter == reflectionInnerFilter)
         return;
-    m_semInnerFilter = semInnerFilter;
-    emit semInnerFilterChanged(semInnerFilter);
+    m_reflectionInnerFilter = reflectionInnerFilter;
+    emit reflectionInnerFilterChanged(reflectionInnerFilter);
 }
 
-void IroGlassAddShaderData::setSemOuterFilter(const QVector3D &semOuterFilter)
+void IroGlassAddShaderData::setReflectionOuterFilter(const QVector3D &reflectionOuterFilter)
 {
-    if (m_semOuterFilter == semOuterFilter)
+    if (m_reflectionOuterFilter == reflectionOuterFilter)
         return;
-    m_semOuterFilter = semOuterFilter;
-    emit semOuterFilterChanged(semOuterFilter);
+    m_reflectionOuterFilter = reflectionOuterFilter;
+    emit reflectionOuterFilterChanged(reflectionOuterFilter);
 }
 
-void IroGlassAddShaderData::setSemInnerAlpha(float semInnerAlpha)
+void IroGlassAddShaderData::setReflectionInnerAlpha(float reflectionInnerAlpha)
 {
-    if (m_semInnerAlpha == semInnerAlpha)
+    if (m_reflectionInnerAlpha == reflectionInnerAlpha)
         return;
-    m_semInnerAlpha = semInnerAlpha;
-    emit semInnerAlphaChanged(semInnerAlpha);
+    m_reflectionInnerAlpha = reflectionInnerAlpha;
+    emit reflectionInnerAlphaChanged(reflectionInnerAlpha);
 }
 
-void IroGlassAddShaderData::setSemOuterAlpha(float semOuterAlpha)
+void IroGlassAddShaderData::setReflectionOuterAlpha(float reflectionOuterAlpha)
 {
-    if (m_semOuterAlpha == semOuterAlpha)
+    if (m_reflectionOuterAlpha == reflectionOuterAlpha)
         return;
-    m_semOuterAlpha = semOuterAlpha;
-    emit semOuterAlphaChanged(semOuterAlpha);
+    m_reflectionOuterAlpha = reflectionOuterAlpha;
+    emit reflectionOuterAlphaChanged(reflectionOuterAlpha);
 }
 
 void IroGlassAddShaderData::setGlassInnerFilter(const QVector3D &glassInnerFilter)

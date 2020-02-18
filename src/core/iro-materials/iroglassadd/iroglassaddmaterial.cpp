@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -48,6 +48,7 @@ namespace Kuesa {
     \since Kuesa 1.2
 
     \brief Kuesa::IroGlassAddMaterial is a simple material in terms of rendering that relies on a 2d spherical environment map to render transparent, glass like material.
+It performs 2 render passes, the first one performs multiplicative blending and the second one additive blending.
 */
 
 /*!
@@ -57,6 +58,7 @@ namespace Kuesa {
     \since Kuesa 1.2
 
     \brief Kuesa::IroGlassAddMaterial is a simple material in terms of rendering that relies on a 2d spherical environment map to render transparent, glass like material.
+It performs 2 render passes, the first one performs multiplicative blending and the second one additive blending.
 */
 
 IroGlassAddMaterial::IroGlassAddMaterial(Qt3DCore::QNode *parent)

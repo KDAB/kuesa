@@ -27,16 +27,16 @@
 */
 
 struct MaterialProperties {
-    vec3 factors;
-    vec2 disturbation;
+    vec3 normalScaling;
+    vec2 normalDisturb;
     float postVertexColor;
     float postGain;
-    sampler2D sem;
-    float semGain;
-    vec3 semInnerFilter;
-    vec3 semOuterFilter;
-    float semInnerAlpha;
-    float semOuterAlpha;
+    sampler2D reflectionMap;
+    float reflectionGain;
+    vec3 reflectionInnerFilter;
+    vec3 reflectionOuterFilter;
+    float reflectionInnerAlpha;
+    float reflectionOuterAlpha;
     vec3 glassInnerFilter;
     vec3 glassOuterFilter;
 };

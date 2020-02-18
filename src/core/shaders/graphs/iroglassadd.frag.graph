@@ -816,7 +816,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "sem",
+                "name": "reflectionMap",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Sampler2D"
@@ -932,7 +932,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "semGain",
+                "name": "reflectionGain",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Float"
@@ -1063,7 +1063,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "semOuterAlpha",
+                "name": "reflectionOuterAlpha",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Float"
@@ -1087,7 +1087,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "semInnerAlpha",
+                "name": "reflectionInnerAlpha",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Float"
@@ -1111,7 +1111,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "semInnerFilter",
+                "name": "reflectionInnerFilter",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -1135,7 +1135,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "semOuterFilter",
+                "name": "reflectionOuterFilter",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -1262,10 +1262,10 @@
     ],
     "project": {
         "position": {
-            "x": 1271.7452090393265,
-            "y": 101.12346215875641
+            "x": 1194.3111111111116,
+            "y": -140.53737373737363
         },
-        "scale": 0.375
+        "scale": 0.75
     },
     "prototypes": {
         "add": {
