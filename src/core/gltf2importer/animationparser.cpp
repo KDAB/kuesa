@@ -558,7 +558,7 @@ bool AnimationParser::checkChannelInfo(const ChannelInfo &channelInfo) const
     }
 
     const AnimationTarget &target = channelInfo.target;
-    if (target.type == Unknown) {
+    if (target.type == AnimationTarget::UnknownType) {
         qCWarning(kuesa, "Missing target for animation channel");
         return false;
     }
@@ -769,7 +769,7 @@ AnimationTarget::TargetType targetTypeFromName(const QString &name)
         return AnimationTarget::Light;
     if (name == QLatin1String("cameras"))
         return AnimationTarget::Camera;
-    return AnimationTarget::Unknown;
+    return AnimationTarget::UnknownType;
 }
 
 } // namespace

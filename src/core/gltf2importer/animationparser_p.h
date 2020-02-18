@@ -67,7 +67,7 @@ struct AnimationTarget {
         Material,
         Light,
         Camera,
-        Unknown
+        UnknownType
     };
     TargetType type;
     qint32 targetNodeId;
