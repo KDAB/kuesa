@@ -34,7 +34,7 @@ using namespace Kuesa;
 using namespace Qt3DRender;
 
 AbstractRenderStage::AbstractRenderStage(Qt3DCore::QNode *parent)
-    : QRenderPassFilter(parent)
+    : QFrameGraphNode(parent)
 {
 }
 

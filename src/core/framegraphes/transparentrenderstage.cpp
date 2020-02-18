@@ -43,10 +43,6 @@ TransparentRenderStage::TransparentRenderStage(Qt3DCore::QNode *parent)
     : AbstractRenderStage(parent)
 {
     setObjectName(QStringLiteral("KuesaTransparentRenderStage"));
-    auto filterKey = new Qt3DRender::QFilterKey(this);
-    filterKey->setName(QStringLiteral("KuesaDrawStage"));
-    filterKey->setValue(QStringLiteral("Transparent"));
-    addMatch(filterKey);
 
     // TODO these should probably be only enabled if back face culling is on
     // Though we can't have GL_ALWAYS and if we have a transparent object fully
@@ -74,6 +70,27 @@ TransparentRenderStage::TransparentRenderStage(Qt3DCore::QNode *parent)
 #endif
                                     });
     connect(m_alphaSortPolicy, &Qt3DRender::QSortPolicy::enabledChanged, this, &TransparentRenderStage::backToFrontSortingChanged);
+
+    // Pass for single pass material of first pass of multi pass materials
+    {
+        auto filterKey = new Qt3DRender::QFilterKey(this);
+        filterKey->setName(QStringLiteral("KuesaDrawStage"));
+        filterKey->setValue(QStringLiteral("Transparent"));
+
+        // Pass for single pass materials (PBR, Unlit)
+        auto passFilter = new Qt3DRender::QRenderPassFilter(m_alphaSortPolicy);
+        passFilter->addMatch(filterKey);
+    }
+    // Second Pass for multi pass materials
+    {
+        auto filterKey = new Qt3DRender::QFilterKey(this);
+        filterKey->setName(QStringLiteral("KuesaDrawStage"));
+        filterKey->setValue(QStringLiteral("Transparent-Pass2"));
+
+        auto iroPassFilter = new Qt3DRender::QRenderPassFilter(m_alphaSortPolicy);
+        iroPassFilter->addMatch(filterKey);
+    }
+
 }
 
 TransparentRenderStage::~TransparentRenderStage()

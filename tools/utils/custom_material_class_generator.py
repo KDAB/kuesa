@@ -223,8 +223,7 @@ private:
 };
 """
 
-    effectClassCppContent = """
-class %sTechnique : public Qt3DRender::QTechnique
+    techniqueOpaqueAndTransparent = """class %sTechnique : public Qt3DRender::QTechnique
 {
 public:
     enum Version {
@@ -426,7 +425,492 @@ private:
     Qt3DRender::QRenderPass *m_transparentRenderPass;
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
+"""
 
+    techniqueOpaqueOnly = """class %sTechnique : public Qt3DRender::QTechnique
+{
+public:
+    enum Version {
+        GL3 = 0,
+        ES3,
+        ES2
+    };
+
+    explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
+        : QTechnique(parent)
+        , m_backFaceCulling(new QCullFace(this))
+        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
+        , m_zfillShaderBuilder(new QShaderProgramBuilder(this))
+        , m_renderShader(new QShaderProgram(this))
+        , m_zfillShader(new QShaderProgram(this))
+        , m_zfillRenderPass(new QRenderPass(this))
+        , m_opaqueRenderPass(new QRenderPass(this))
+        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
+    {
+        struct ApiFilterInfo {
+            int major;
+            int minor;
+            QGraphicsApiFilter::Api api;
+            QGraphicsApiFilter::OpenGLProfile profile;
+        };
+
+        const ApiFilterInfo apiFilterInfos[] = {
+            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
+            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+        };
+
+        graphicsApiFilter()->setApi(apiFilterInfos[version].api);
+        graphicsApiFilter()->setProfile(apiFilterInfos[version].profile);
+        graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
+        graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
+
+        const QUrl vertexShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s"))
+        };
+
+        const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s"))
+        };
+
+        const QByteArray zFillFragmentShaderCode[] = {
+            QByteArray(R"(
+                       #version 330
+                       void main() { }
+                       )"),
+            QByteArray(R"(
+                       #version 300 es
+                       void main() { }
+                       )"),
+            QByteArray(R"(
+                       #version 100
+                       void main() { }
+                       )")
+        };
+
+        const QByteArray renderableVertexShaderCode[] = {
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)")
+        };
+
+        const QByteArray renderableFragmentShaderCode[] = {
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)")
+        };
+
+         const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)")
+        };
+
+        // Use default vertex shader graph if no vertex shader code was specified
+        if (renderableVertexShaderCode[version].isEmpty()) {
+            m_renderShaderBuilder->setShaderProgram(m_renderShader);
+            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
+
+            m_zfillShaderBuilder->setShaderProgram(m_zfillShader);
+            m_zfillShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
+        } else {
+            m_renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
+            m_zfillShader->setVertexShaderCode(renderableVertexShaderCode[version]);
+        }
+
+        if (renderableFragmentShaderCode[version].isEmpty()) {
+            m_renderShaderBuilder->setShaderProgram(m_renderShader);
+            m_renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
+        } else {
+            m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
+        }
+        m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
+
+         // Set geometry shader code if one was specified
+        m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
+        m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
+
+        auto filterKey = new QFilterKey(this);
+        filterKey->setName(QStringLiteral("renderingStyle"));
+        filterKey->setValue(QStringLiteral("forward"));
+        addFilterKey(filterKey);
+
+        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
+        m_techniqueAllowFrustumCullingFilterKey->setValue(true);
+        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
+
+        auto zfillFilterKey = new Qt3DRender::QFilterKey(this);
+        zfillFilterKey->setName(QStringLiteral("KuesaDrawStage"));
+        zfillFilterKey->setValue(QStringLiteral("ZFill"));
+
+        m_zfillRenderPass->setShaderProgram(m_zfillShader);
+        m_zfillRenderPass->addRenderState(m_backFaceCulling);
+        m_zfillRenderPass->addFilterKey(zfillFilterKey);
+        addRenderPass(m_zfillRenderPass);
+
+        auto opaqueFilterKey = new Qt3DRender::QFilterKey(this);
+        opaqueFilterKey->setName(QStringLiteral("KuesaDrawStage"));
+        opaqueFilterKey->setValue(QStringLiteral("Opaque"));
+
+        m_opaqueRenderPass->setShaderProgram(m_renderShader);
+        m_opaqueRenderPass->addRenderState(m_backFaceCulling);
+        m_opaqueRenderPass->addFilterKey(opaqueFilterKey);
+        addRenderPass(m_opaqueRenderPass);
+    }
+
+    QStringList enabledLayers() const
+    {
+        return m_renderShaderBuilder->enabledLayers();
+    }
+
+    void setEnabledLayers(const QStringList &layers)
+    {
+        m_renderShaderBuilder->setEnabledLayers(layers);
+        m_zfillShaderBuilder->setEnabledLayers(layers);
+    }
+
+    void setOpaque(bool)
+    {
+    }
+
+    void setCullingMode(QCullFace::CullingMode mode)
+    {
+        m_backFaceCulling->setMode(mode);
+    }
+
+    QCullFace::CullingMode cullingMode() const
+    {
+        return m_backFaceCulling->mode();
+    }
+
+    void setAllowCulling(bool allowCulling)
+    {
+        m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
+    }
+
+private:
+    Qt3DRender::QCullFace *m_backFaceCulling;
+    Qt3DRender::QShaderProgramBuilder *m_renderShaderBuilder;
+    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
+    Qt3DRender::QShaderProgram *m_renderShader;
+    Qt3DRender::QShaderProgram *m_zfillShader;
+    Qt3DRender::QRenderPass *m_zfillRenderPass;
+    Qt3DRender::QRenderPass *m_opaqueRenderPass;
+    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
+};
+"""
+
+    techniqueTransparentOnly = """class %sTechnique : public Qt3DRender::QTechnique
+{
+public:
+    enum Version {
+        GL3 = 0,
+        ES3,
+        ES2
+    };
+
+    explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
+        : QTechnique(parent)
+        , m_backFaceCulling(new QCullFace(this))
+        , m_blendEquation(new Qt3DRender::QBlendEquation(this))
+        , m_blendArguments(new Qt3DRender::QBlendEquationArguments(this))
+        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
+        , m_renderShader(new QShaderProgram(this))
+        , m_transparentRenderPass(new QRenderPass(this))
+        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
+    {
+        struct ApiFilterInfo {
+            int major;
+            int minor;
+            QGraphicsApiFilter::Api api;
+            QGraphicsApiFilter::OpenGLProfile profile;
+        };
+
+        const ApiFilterInfo apiFilterInfos[] = {
+            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
+            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+        };
+
+        graphicsApiFilter()->setApi(apiFilterInfos[version].api);
+        graphicsApiFilter()->setProfile(apiFilterInfos[version].profile);
+        graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
+        graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
+
+        const QUrl vertexShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s"))
+        };
+
+        const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s"))
+        };
+
+        const QByteArray renderableVertexShaderCode[] = {
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)")
+        };
+
+        const QByteArray renderableFragmentShaderCode[] = {
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)")
+        };
+
+         const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)")
+        };
+
+        // Use default vertex shader graph if no vertex shader code was specified
+        if (renderableVertexShaderCode[version].isEmpty()) {
+            m_renderShaderBuilder->setShaderProgram(m_renderShader);
+            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
+        } else {
+            m_renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
+        }
+
+        if (renderableFragmentShaderCode[version].isEmpty()) {
+            m_renderShaderBuilder->setShaderProgram(m_renderShader);
+            m_renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
+        } else {
+            m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
+        }
+
+         // Set geometry shader code if one was specified
+        m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
+
+        auto filterKey = new QFilterKey(this);
+        filterKey->setName(QStringLiteral("renderingStyle"));
+        filterKey->setValue(QStringLiteral("forward"));
+        addFilterKey(filterKey);
+
+        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
+        m_techniqueAllowFrustumCullingFilterKey->setValue(true);
+        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
+
+        auto transparentFilterKey = new Qt3DRender::QFilterKey(this);
+        transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
+        transparentFilterKey->setValue(QStringLiteral("Transparent"));
+
+        m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::%s);
+        m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::%s);
+        m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::%s);
+        m_blendArguments->setDestinationRgb(Qt3DRender::QBlendEquationArguments::%s);
+        m_blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::%s);
+
+        m_transparentRenderPass->setShaderProgram(m_renderShader);
+        m_transparentRenderPass->addRenderState(m_backFaceCulling);
+        m_transparentRenderPass->addRenderState(m_blendEquation);
+        m_transparentRenderPass->addRenderState(m_blendArguments);
+        m_transparentRenderPass->addFilterKey(transparentFilterKey);
+        addRenderPass(m_transparentRenderPass);
+    }
+
+    QStringList enabledLayers() const
+    {
+        return m_renderShaderBuilder->enabledLayers();
+    }
+
+    void setEnabledLayers(const QStringList &layers)
+    {
+        m_renderShaderBuilder->setEnabledLayers(layers);
+    }
+
+    void setOpaque(bool)
+    {
+    }
+
+    void setCullingMode(QCullFace::CullingMode mode)
+    {
+        m_backFaceCulling->setMode(mode);
+    }
+
+    QCullFace::CullingMode cullingMode() const
+    {
+        return m_backFaceCulling->mode();
+    }
+
+    void setAllowCulling(bool allowCulling)
+    {
+        m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
+    }
+
+private:
+    Qt3DRender::QCullFace *m_backFaceCulling;
+    Qt3DRender::QBlendEquation *m_blendEquation;
+    Qt3DRender::QBlendEquationArguments *m_blendArguments;
+    Qt3DRender::QShaderProgramBuilder *m_renderShaderBuilder;
+    Qt3DRender::QShaderProgram *m_renderShader;
+    Qt3DRender::QRenderPass *m_transparentRenderPass;
+    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
+};
+"""
+
+    techniqueMultiTransparentInnerPass = """
+        {
+            const QUrl vertexShaderGraph[] = {
+                QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s"))
+            };
+
+            const QUrl fragmentShaderGraph[] = {
+                QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s"))
+            };
+
+            const QByteArray renderableVertexShaderCode[] = {
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)")
+            };
+
+            const QByteArray renderableFragmentShaderCode[] = {
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)")
+            };
+
+            const QByteArray renderableGeometryShaderCode[] = {
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)")
+            };
+
+            auto renderShaderBuilder = new QShaderProgramBuilder(this);
+            auto renderShader = new QShaderProgram(this);
+            auto transparentRenderPass = new QRenderPass(this);
+
+            // Use default vertex shader graph if no vertex shader code was specified
+            if (renderableVertexShaderCode[version].isEmpty()) {
+                renderShaderBuilder->setShaderProgram(renderShader);
+                renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
+            } else {
+                renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
+            }
+
+            if (renderableFragmentShaderCode[version].isEmpty()) {
+                renderShaderBuilder->setShaderProgram(renderShader);
+                renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
+            } else {
+                renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
+            }
+
+            // Set geometry shader code if one was specified
+            renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
+            transparentRenderPass->setShaderProgram(renderShader);
+
+            auto blendEquation = new Qt3DRender::QBlendEquation(this);
+            blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::%s);
+
+            auto blendArguments = new Qt3DRender::QBlendEquationArguments(this);
+            blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::%s);
+            blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::%s);
+            blendArguments->setDestinationRgb(Qt3DRender::QBlendEquationArguments::%s);
+            blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::%s);
+
+            transparentRenderPass->addRenderState(m_backFaceCulling);
+            transparentRenderPass->addRenderState(blendEquation);
+            transparentRenderPass->addRenderState(blendArguments);
+
+            auto transparentFilterKey = new Qt3DRender::QFilterKey(this);
+            transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
+            transparentFilterKey->setValue(QStringLiteral("Transparent%s"));
+            transparentRenderPass->addFilterKey(transparentFilterKey);
+
+            addRenderPass(transparentRenderPass);
+        }"""
+
+    techniqueMultiTransparent = """class %sTechnique : public Qt3DRender::QTechnique
+{
+public:
+    enum Version {
+        GL3 = 0,
+        ES3,
+        ES2
+    };
+
+    explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
+        : QTechnique(parent)
+        , m_backFaceCulling(new QCullFace(this))
+        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
+    {
+        struct ApiFilterInfo {
+            int major;
+            int minor;
+            QGraphicsApiFilter::Api api;
+            QGraphicsApiFilter::OpenGLProfile profile;
+        };
+
+        const ApiFilterInfo apiFilterInfos[] = {
+            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
+            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+        };
+
+        graphicsApiFilter()->setApi(apiFilterInfos[version].api);
+        graphicsApiFilter()->setProfile(apiFilterInfos[version].profile);
+        graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
+        graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
+
+        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
+        m_techniqueAllowFrustumCullingFilterKey->setValue(true);
+        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
+
+        auto filterKey = new QFilterKey(this);
+        filterKey->setName(QStringLiteral("renderingStyle"));
+        filterKey->setValue(QStringLiteral("forward"));
+        addFilterKey(filterKey);%s
+    }
+
+    QStringList enabledLayers() const
+    {
+        return {};
+    }
+
+    void setEnabledLayers(const QStringList &)
+    {
+    }
+
+    void setOpaque(bool)
+    {
+    }
+
+    void setCullingMode(QCullFace::CullingMode mode)
+    {
+        m_backFaceCulling->setMode(mode);
+    }
+
+    QCullFace::CullingMode cullingMode() const
+    {
+        return m_backFaceCulling->mode();
+    }
+
+    void setAllowCulling(bool allowCulling)
+    {
+        m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
+    }
+
+private:
+    Qt3DRender::QCullFace *m_backFaceCulling;
+    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
+};
+"""
+
+
+    effectClassCppContent = """
+%s
 %s
 
 %sEffect::%sEffect(Qt3DCore::QNode *parent)
@@ -1006,13 +1490,6 @@ HEADERS += \\
         matName = self.rawJson.get("type", "")
         className = matName + "Effect"
 
-        blending_obj = self.rawJson.get("blending", {})
-        blendFunction = blending_obj.get("function", "Add")
-        blendSourceRGB = blending_obj.get("sourceRGB", "SourceAlpha")
-        blendSourceAlpha = blending_obj.get("sourceAlpha", "SourceAlpha")
-        blendDestinationRGB = blending_obj.get("destinationRGB", "OneMinusSourceAlpha")
-        blendDestinationAlpha = blending_obj.get("destinationAlpha", "One")
-
         def generateHeader():
             content = CustomMaterialGenerator.effectClassHeaderContent % (matName,
                                                                           matName,
@@ -1031,88 +1508,220 @@ HEADERS += \\
             doc = self.docForClass(className,
                                    "Qt3DRender::QEffect",
                                    "is the effect for the %sMaterial class" % (matName))
+            passes = self.rawJson.get("passes", [])
+            passes_info = []
 
-            gl3FragCode = ""
-            es3FragCode = ""
-            es2FragCode = ""
-            gl3VertCode = ""
-            es3VertCode = ""
-            es2VertCode = ""
-            gl3GeometryCode = ""
-            es3GeometryCode = ""
-            es2GeometryCode = ""
-            es2VertexShaderGraph = ""
-            es2FragmentShaderGraph = ""
-            es3VertexShaderGraph = ""
-            es3FragmentShaderGraph = ""
-            gl3VertexShaderGraph = ""
-            gl3FragmentShaderGraph = ""
+            class PassInfo:
+                gl3FragCode = ""
+                es3FragCode = ""
+                es2FragCode = ""
+                gl3VertCode = ""
+                es3VertCode = ""
+                es2VertCode = ""
+                gl3GeometryCode = ""
+                es3GeometryCode = ""
+                es2GeometryCode = ""
+                es2VertexShaderGraph = ""
+                es2FragmentShaderGraph = ""
+                es3VertexShaderGraph = ""
+                es3FragmentShaderGraph = ""
+                gl3VertexShaderGraph = ""
+                gl3FragmentShaderGraph = ""
+                blendFunction = ""
+                blendSourceRGB = ""
+                blendSourceAlpha = ""
+                blendDestinationRGB = ""
+                blendDestinationAlpha = ""
+                pass_type = ""
+
+            # Retrieve Pass information
+            for render_pass in passes:
+                pass_info = PassInfo()
+
+                # Blending
+                blending_obj = render_pass.get("blending", {})
+                pass_info.blendFunction = blending_obj.get("function", "Add")
+                pass_info.blendSourceRGB = blending_obj.get("sourceRGB", "SourceAlpha")
+                pass_info.blendSourceAlpha = blending_obj.get("sourceAlpha", "SourceAlpha")
+                pass_info.blendDestinationRGB = blending_obj.get("destinationRGB", "OneMinusSourceAlpha")
+                pass_info.blendDestinationAlpha = blending_obj.get("destinationAlpha", "One")
+
+                # Pass Type
+                pass_info.pass_type = render_pass.get("type", "TransparentAndOpaque")
+
+                # Shaders
+                shaders =render_pass.get("shaders", [])
+                for shader in shaders:
+                    shaderType = shader.get("type", "")
+                    shaderFormat = shader.get("format", {})
+                    majorVersion = shaderFormat.get("major", 0)
+                    api = shaderFormat.get("api", "")
+                    code = shader.get("code", "")
+                    graph = shader.get("graph", "")
+                    if shaderType == "Fragment":
+                        if api == "OpenGLES":
+                            if majorVersion == 3:
+                                pass_info.es3FragCode = code
+                                pass_info.es3FragmentShaderGraph = graph
+                            elif majorVersion == 2:
+                                pass_info.es2FragCode = code
+                                pass_info.es2FragmentShaderGraph = graph
+                        elif api == "OpenGL":
+                            if majorVersion == 3:
+                                pass_info.gl3FragCode = code
+                                pass_info.gl3FragmentShaderGraph = graph
+                    elif shaderType == "Vertex":
+                        if api == "OpenGLES":
+                            if majorVersion == 3:
+                                pass_info.es3VertCode = code
+                                pass_info.es3VertexShaderGraph = graph
+                            elif majorVersion == 2:
+                                pass_info.es2VertCode = code
+                                pass_info.es2VertexShaderGraph = graph
+                        elif api == "OpenGL":
+                            if majorVersion == 3:
+                                pass_info.gl3VertCode = code
+                                pass_info.gl3VertexShaderGraph = graph
+                    elif shaderType == "Geometry":
+                        if api == "OpenGLES":
+                            if majorVersion == 3:
+                                pass_info.es3GeometryCode = code
+                            # ES2 has no geometry shader support
+                        elif api == "OpenGL":
+                            if majorVersion == 3:
+                                pass_info.gl3GeometryCode = code
+                passes_info.append(pass_info)
 
 
+            # Find out what type of technique we need to create based on our passes info
 
-            shaders = self.rawJson.get("shaders", [])
-            for shader in shaders:
-                shaderType = shader.get("type", "")
-                shaderFormat = shader.get("format", {})
-                majorVersion = shaderFormat.get("major", 0)
-                api = shaderFormat.get("api", "")
-                code = shader.get("code", "")
-                graph = shader.get("graph", "")
-                if shaderType == "Fragment":
-                    if api == "OpenGLES":
-                        if majorVersion == 3:
-                            es3FragCode = code
-                            es3FragmentShaderGraph = graph
-                        elif majorVersion == 2:
-                            es2FragCode = code
-                            es2FragmentShaderGraph = graph
-                    elif api == "OpenGL":
-                        if majorVersion == 3:
-                            gl3FragCode = code
-                            gl3FragmentShaderGraph = graph
-                elif shaderType == "Vertex":
-                    if api == "OpenGLES":
-                        if majorVersion == 3:
-                            es3VertCode = code
-                            es3VertexShaderGraph = graph
-                        elif majorVersion == 2:
-                            es2VertCode = code
-                            es2VertexShaderGraph = graph
-                    elif api == "OpenGL":
-                        if majorVersion == 3:
-                            gl3VertCode = code
-                            gl3VertexShaderGraph = graph
-                elif shaderType == "Geometry":
-                    if api == "OpenGLES":
-                        if majorVersion == 3:
-                            es3GeometryCode = code
-                        # ES2 has no geometry shader support
-                    elif api == "OpenGL":
-                        if majorVersion == 3:
-                            gl3GeometryCode = code
+            if len(passes_info) == 0:
+                print("No passes found in Material description")
+                return
+            if len(passes_info) != 1:
+                for pass_info in passes_info:
+                    if pass_info.pass_type != "MultiPassTransparent":
+                        print("Generator only handle Multiple Passes of type MultiPassTransparent")
+                        return
 
-            content = CustomMaterialGenerator.effectClassCppContent % (matName,
-                                                                       matName,
-                                                                       gl3VertexShaderGraph,
-                                                                       es3VertexShaderGraph,
-                                                                       es2VertexShaderGraph,
-                                                                       gl3FragmentShaderGraph,
-                                                                       es3FragmentShaderGraph,
-                                                                       es2FragmentShaderGraph,
-                                                                       gl3VertCode,
-                                                                       es3VertCode,
-                                                                       es2VertCode,
-                                                                       gl3FragCode,
-                                                                       es3FragCode,
-                                                                       es2FragCode,
-                                                                       gl3GeometryCode,
-                                                                       es3GeometryCode,
-                                                                       es2GeometryCode,
-                                                                       blendFunction,
-                                                                       blendSourceRGB,
-                                                                       blendSourceAlpha,
-                                                                       blendDestinationRGB,
-                                                                       blendDestinationAlpha,
+            def transparentAndOpaqueTechnique(passes_info):
+                pass_info = passes_info[0]
+                return CustomMaterialGenerator.techniqueOpaqueAndTransparent % (matName,
+                                                                                matName,
+                                                                                pass_info.gl3VertexShaderGraph,
+                                                                                pass_info.es3VertexShaderGraph,
+                                                                                pass_info.es2VertexShaderGraph,
+                                                                                pass_info.gl3FragmentShaderGraph,
+                                                                                pass_info.es3FragmentShaderGraph,
+                                                                                pass_info.es2FragmentShaderGraph,
+                                                                                pass_info.gl3VertCode,
+                                                                                pass_info.es3VertCode,
+                                                                                pass_info.es2VertCode,
+                                                                                pass_info.gl3FragCode,
+                                                                                pass_info.es3FragCode,
+                                                                                pass_info.es2FragCode,
+                                                                                pass_info.gl3GeometryCode,
+                                                                                pass_info.es3GeometryCode,
+                                                                                pass_info.es2GeometryCode,
+                                                                                pass_info.blendFunction,
+                                                                                pass_info.blendSourceRGB,
+                                                                                pass_info.blendSourceAlpha,
+                                                                                pass_info.blendDestinationRGB,
+                                                                                pass_info.blendDestinationAlpha)
+
+            def transparentOnlyTechnique(passes_info):
+                pass_info = passes_info[0]
+                return CustomMaterialGenerator.techniqueTransparentOnly % (matName,
+                                                                           matName,
+                                                                           pass_info.gl3VertexShaderGraph,
+                                                                           pass_info.es3VertexShaderGraph,
+                                                                           pass_info.es2VertexShaderGraph,
+                                                                           pass_info.gl3FragmentShaderGraph,
+                                                                           pass_info.es3FragmentShaderGraph,
+                                                                           pass_info.es2FragmentShaderGraph,
+                                                                           pass_info.gl3VertCode,
+                                                                           pass_info.es3VertCode,
+                                                                           pass_info.es2VertCode,
+                                                                           pass_info.gl3FragCode,
+                                                                           pass_info.es3FragCode,
+                                                                           pass_info.es2FragCode,
+                                                                           pass_info.gl3GeometryCode,
+                                                                           pass_info.es3GeometryCode,
+                                                                           pass_info.es2GeometryCode,
+                                                                           pass_info.blendFunction,
+                                                                           pass_info.blendSourceRGB,
+                                                                           pass_info.blendSourceAlpha,
+                                                                           pass_info.blendDestinationRGB,
+                                                                           pass_info.blendDestinationAlpha)
+
+
+            def opaqueOnlyTechnique(passes_info):
+                pass_info = passes_info[0]
+                return CustomMaterialGenerator.techniqueOpaqueOnly % (matName,
+                                                                      matName,
+                                                                      pass_info.gl3VertexShaderGraph,
+                                                                      pass_info.es3VertexShaderGraph,
+                                                                      pass_info.es2VertexShaderGraph,
+                                                                      pass_info.gl3FragmentShaderGraph,
+                                                                      pass_info.es3FragmentShaderGraph,
+                                                                      pass_info.es2FragmentShaderGraph,
+                                                                      pass_info.gl3VertCode,
+                                                                      pass_info.es3VertCode,
+                                                                      pass_info.es2VertCode,
+                                                                      pass_info.gl3FragCode,
+                                                                      pass_info.es3FragCode,
+                                                                      pass_info.es2FragCode,
+                                                                      pass_info.gl3GeometryCode,
+                                                                      pass_info.es3GeometryCode,
+                                                                      pass_info.es2GeometryCode)
+
+
+            def multiTransparentTechnique(passes_info):
+                innerPassContent = ""
+
+                for idx, pass_info in enumerate(passes_info):
+                    innerPassContent +=  CustomMaterialGenerator.techniqueMultiTransparentInnerPass % (pass_info.gl3VertexShaderGraph,
+                                                                                                       pass_info.es3VertexShaderGraph,
+                                                                                                       pass_info.es2VertexShaderGraph,
+                                                                                                       pass_info.gl3FragmentShaderGraph,
+                                                                                                       pass_info.es3FragmentShaderGraph,
+                                                                                                       pass_info.es2FragmentShaderGraph,
+                                                                                                       pass_info.gl3VertCode,
+                                                                                                       pass_info.es3VertCode,
+                                                                                                       pass_info.es2VertCode,
+                                                                                                       pass_info.gl3FragCode,
+                                                                                                       pass_info.es3FragCode,
+                                                                                                       pass_info.es2FragCode,
+                                                                                                       pass_info.gl3GeometryCode,
+                                                                                                       pass_info.es3GeometryCode,
+                                                                                                       pass_info.es2GeometryCode,
+                                                                                                       pass_info.blendFunction,
+                                                                                                       pass_info.blendSourceRGB,
+                                                                                                       pass_info.blendSourceAlpha,
+                                                                                                       pass_info.blendDestinationRGB,
+                                                                                                       pass_info.blendDestinationAlpha,
+                                                                                                       "-Pass%s" % (idx + 1) if idx > 0 else "")
+                return CustomMaterialGenerator.techniqueMultiTransparent % (matName,
+                                                                            matName,
+                                                                            innerPassContent)
+
+
+            def generateTechnique(passes_info):
+                switcher = {
+                    "Opaque": opaqueOnlyTechnique,
+                    "Transparent": transparentOnlyTechnique,
+                    "TransparentAndOpaque": transparentAndOpaqueTechnique,
+                    "MultiPassTransparent": multiTransparentTechnique
+                }
+                pass_type = passes_info[0].pass_type
+                if pass_type not in switcher:
+                    print("Unhandled pass type")
+                    return
+                return switcher[pass_type](passes_info)
+
+
+            technique_content = generateTechnique(passes_info)
+            content = CustomMaterialGenerator.effectClassCppContent % (technique_content,
                                                                        doc,
                                                                        matName,
                                                                        matName,

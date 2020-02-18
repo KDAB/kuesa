@@ -1,6 +1,7 @@
 {
-    "type": "IroGlassAdd",
-    "doc": "is a simple material in terms of rendering that relies on a 2d spherical environment map to render transparent, glass like material.",
+    "type": "IroGlass",
+    "doc": "is a simple material in terms of rendering that relies on a 2d spherical environment map to render transparent, glass like material.\n
+It performs 2 render passes, the first one performs multiplicative blending and the second one additive blending.",
     "properties": [
         { "name": "factors", "type": "vec3", "doc": "Specifies a factor to be applied to the normal." },
         { "name": "disturbation", "type": "vec2", "doc": "Specifies a disturbance factor that will be added to the normal" },
@@ -8,43 +9,97 @@
         { "name": "postGain", "type": "float", "doc": "Specifies the factor to be applied to the vertex color." },
         { "name": "semGain", "type": "float", "doc": "Specifies the gain factor to be applied to the spherical environment map lookup." },
         { "name": "sem", "type": "texture2d", "doc": "Specifies the spherical environment map to use. It is expected to be in sRGB color space." },
-        { "name": "semInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup." },
-        { "name": "semOuterFilter", "type": "vec3", "doc": "Specifies the outer color filter to be applied based on fresnel on the spherical environment map lookup." },
-        { "name": "semInnerAlpha", "type": "float", "doc": "Specifies the inner alpha filter to be applied based on fresnel on the spherical environment map lookup." },
-        { "name": "semOuterAlpha", "type": "float", "doc": "Specifies the outer alpha filter to be applied based on fresnel on the spherical environment map lookup." },
+        { "name": "reflectionInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup." },
+        { "name": "reflectionOuterFilter", "type": "vec3", "doc": "Specifies the outer color filter to be applied based on fresnel on the spherical environment map lookup." },
+        { "name": "reflectionInnerAlpha", "type": "float", "doc": "Specifies the inner alpha filter to be applied based on fresnel on the spherical environment map lookup." },
+        { "name": "reflectionOuterAlpha", "type": "float", "doc": "Specifies the outer alpha filter to be applied based on fresnel on the spherical environment map lookup." },
         { "name": "glassInnerFilter", "type": "vec3", "doc": "Specifies the glass inner color filter to be applied based on fresnel." },
         { "name": "glassOuterFilter", "type": "vec3", "doc": "Specifies the glass outer color filter to be applied based on fresnel." }
     ],
-    "shaders": [
+    "passes": [
         {
-            "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
-            "type": "Vertex",
-            "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"
+            "type": "MultiPassTransparent",
+            "blending": {
+                "function": "Add",
+                "sourceRGB": "Zero",
+                "sourceAlpha": "Zero",
+                "destinationRGB": "SourceColor",
+                "destinationAlpha": "SourceColor"
+            },
+            "shaders": [
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.frag.json"
+                }
+            ]
         },
         {
-            "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
-            "type": "Vertex",
-            "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"
-        },
-        {
-            "format": { "api": "OpenGL", "major": 3, "minor": 2 },
-            "type": "Vertex",
-            "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"
-        },
-        {
-            "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
-            "type": "Fragment",
-            "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.frag.json"
-        },
-        {
-            "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
-            "type": "Fragment",
-            "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.frag.json"
-        },
-        {
-            "format": { "api": "OpenGL", "major": 3, "minor": 2 },
-            "type": "Fragment",
-            "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.frag.json"
+            "type": "MultiPassTransparent",
+            "blending": {
+                "function": "Add",
+                "sourceRGB": "One",
+                "sourceAlpha": "Zero",
+                "destinationRGB": "One",
+                "destinationAlpha": "One"
+            },
+            "shaders": [
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassmult.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassmult.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/iroglassmult.frag.json"
+                }
+            ]
         }
     ]
 }

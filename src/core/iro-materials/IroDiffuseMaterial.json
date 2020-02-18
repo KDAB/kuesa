@@ -16,36 +16,41 @@
         { "name": "diffuseFactor", "type": "vec3", "doc": "Specifies the diffuse color to use in case no diffuse map was specified." },
         { "name": "usesDiffuseMap", "type": "bool", "doc": "Specifies whether we use a diffuse map or not." }
     ],
-    "shaders": [
+    "passes": [
         {
-            "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
-            "type": "Vertex",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.vert.json"
-        },
-        {
-            "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
-            "type": "Vertex",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.vert.json"
-        },
-        {
-            "format": { "api": "OpenGL", "major": 3, "minor": 2 },
-            "type": "Vertex",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.vert.json"
-        },
-        {
-            "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
-            "type": "Fragment",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.frag.json"
-        },
-        {
-            "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
-            "type": "Fragment",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.frag.json"
-        },
-        {
-            "format": { "api": "OpenGL", "major": 3, "minor": 2 },
-            "type": "Fragment",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.frag.json"
+            "type": "Opaque",
+            "shaders": [
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffuse.frag.json"
+                }
+            ]
         }
     ]
 }

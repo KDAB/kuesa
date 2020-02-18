@@ -16,36 +16,41 @@
         { "name": "diffuseInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the diffuse map lookup." },
         { "name": "diffuseOuterFilter", "type": "vec3", "doc": "Specifies the outer color filter to be applied based on fresnel on the diffuse map lookup." }
     ],
-    "shaders": [
+    "passes": [
         {
-            "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
-            "type": "Vertex",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.vert.json"
-        },
-        {
-            "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
-            "type": "Vertex",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.vert.json"
-        },
-        {
-            "format": { "api": "OpenGL", "major": 3, "minor": 2 },
-            "type": "Vertex",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.vert.json"
-        },
-        {
-            "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
-            "type": "Fragment",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.frag.json"
-        },
-        {
-            "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
-            "type": "Fragment",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.frag.json"
-        },
-        {
-            "format": { "api": "OpenGL", "major": 3, "minor": 2 },
-            "type": "Fragment",
-            "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.frag.json"
+            "type": "Opaque",
+            "shaders": [
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.frag.json"
+                }
+            ]
         }
     ]
 }

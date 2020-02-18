@@ -45,26 +45,30 @@ KDAB_custom_material extension
         { "name": "diffuseOuterFilter", "type": "vec4" },
         { "name": "diffuseMap", "type": "texture2d" }
     ],
-    "blending": {
-        "function": "Add",
-        "sourceRGB": "SourceAlpha",
-        "sourceAlpha": "SourceAlpha",
-        "destinationRGB": "OneMinusSourceAlpha",
-        "destinationAlpha": "One"
-    },
-    "shaders": [
-         {
-            "format": {
-                "api": "OpenGLES",
-                "major": 2,
-                "minor": 0
+    passes: [
+        {
+            "blending": {
+                "function": "Add",
+                "sourceRGB": "SourceAlpha",
+                "sourceAlpha": "SourceAlpha",
+                "destinationRGB": "OneMinusSourceAlpha",
+                "destinationAlpha": "One"
             },
-            "type": "Fragment",
-            "code": "#version ..."
-            "graph": "qrc:/path/to/graph"
-         }
+            "type": "Transparent|Opaque|TransparentAndOpaque|MultiPassTransparent"
+            "shaders": [
+                 {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "type": "Fragment",
+                    "code": "#version ..."
+                    "graph": "qrc:/path/to/graph"
+                 }
+            ]
+        }
     ]
-
 }
 
 # The generator will generate SemDiffuseMaterial, SemDiffuseProperties,
