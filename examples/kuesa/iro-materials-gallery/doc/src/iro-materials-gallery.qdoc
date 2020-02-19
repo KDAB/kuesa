@@ -1,0 +1,92 @@
+/*
+    iro-materials-gallery.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \example iro-materials-gallery
+    \title Kuesa Iro-Materials-Gallery QML Example
+    \ingroup kuesa-examples-qml
+
+    \brief Demonstrates the appearance of the different \l {Kuesa Iro Materials}
+    that can be bundled in a glTF file.
+
+    \image iro-materials-gallery-example.jpg
+
+    \section1 QtQuick and Qt3D integration
+
+    The iro-materials-gallery relies on the regular QtQuick and Qt 3D APIs to
+    instantiate a QtQuick based application that combines Qt 3D based content
+    with a 2D UI overlay.
+
+
+    \snippet iro-materials-gallery/qml/main.qml 0
+    \dots 8
+
+    \section1 SceneEntity
+
+    Kuesa provides the \l [QML] {SceneEntity} element which holds collections
+    of Qt 3D assets accessible by name.
+
+    \snippet iro-materials-gallery/qml/MainScene.qml 0
+
+    \section1 Importing a glTF2 File
+
+    In order to load a glTF2 file, Kuesa provides the \l {GLTF2Importer}
+    element. If the \a sceneEntity property is set to a valid \l [QML]
+    {SceneEntity} instance, Qt 3D assets generated while parsing the file will
+    be automatically added to the various asset collections.
+
+    The  \l {GLTF2Importer} takes care of intantiating the \l {Kuesa Iro Materials}
+
+    \snippet iro-materials-gallery/qml/MainScene.qml 1
+
+    \section1 Extracting Assets from Collections
+
+    Usually, you will want to interact with some elements of your scene.
+    The \l {Asset} element allows to retrieve an asset by name. If the asset
+    for a given name really exist in the specified \a collection, the \a node
+    property allows you to access the underlying asset instance.
+
+    You can use the \l {gltfEditor} to instrospect a glTF2 scene files and find
+    the names of the various assets it contains.
+
+    For instance you might want to select a Camera by name.
+    \snippet iro-materials-gallery/qml/MainScene.qml 2.1
+
+    Once retrieved, you can create binding on some of the Camera properties.
+    \snippet iro-materials-gallery/qml/MainScene.qml 2.2
+
+    \section1 Handling Picking
+
+    We want to display the material properties of the sphere on which we click.
+    To do that, we can simply use the ObjectPicker element provided by Qt3D.
+
+    \snippet iro-materials-gallery/qml/MainScene.qml 3
+
+    We can react to the clicked signal and call some C++ function to perform
+    some introspection and retrieve material properties.
+*/
