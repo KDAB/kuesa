@@ -34,11 +34,13 @@ struct MaterialProperties {
     float reflectionGain;
     vec3 reflectionInnerFilter;
     vec3 reflectionOuterFilter;
+    bool usesReflectionMap;
 
     sampler2D diffuseMap;
     float diffuseGain;
     vec3 diffuseInnerFilter;
     vec3 diffuseOuterFilter;
+    bool usesDiffuseMap;
 
     vec3 postHemiFilter;
     float postVertexColor;

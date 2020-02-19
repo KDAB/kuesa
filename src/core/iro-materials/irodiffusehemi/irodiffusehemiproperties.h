@@ -55,10 +55,12 @@ class KUESASHARED_EXPORT IroDiffuseHemiProperties : public GLTF2MaterialProperti
     Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * diffuseMap READ diffuseMap WRITE setDiffuseMap NOTIFY diffuseMapChanged)
-    Q_PROPERTY(float diffuseGain READ diffuseGain WRITE setDiffuseGain NOTIFY diffuseGainChanged)
+    Q_PROPERTY(bool usesReflectionMap READ usesReflectionMap WRITE setUsesReflectionMap NOTIFY usesReflectionMapChanged)
     Q_PROPERTY(QVector3D diffuseInnerFilter READ diffuseInnerFilter WRITE setDiffuseInnerFilter NOTIFY diffuseInnerFilterChanged)
     Q_PROPERTY(QVector3D diffuseOuterFilter READ diffuseOuterFilter WRITE setDiffuseOuterFilter NOTIFY diffuseOuterFilterChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture * diffuseMap READ diffuseMap WRITE setDiffuseMap NOTIFY diffuseMapChanged)
+    Q_PROPERTY(float diffuseGain READ diffuseGain WRITE setDiffuseGain NOTIFY diffuseGainChanged)
+    Q_PROPERTY(bool usesDiffuseMap READ usesDiffuseMap WRITE setUsesDiffuseMap NOTIFY usesDiffuseMapChanged)
 
 public:
     Q_INVOKABLE explicit IroDiffuseHemiProperties(Qt3DCore::QNode *parent = nullptr);
@@ -74,10 +76,12 @@ public:
     float reflectionGain() const;
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
-    Qt3DRender::QAbstractTexture * diffuseMap() const;
-    float diffuseGain() const;
+    bool usesReflectionMap() const;
     QVector3D diffuseInnerFilter() const;
     QVector3D diffuseOuterFilter() const;
+    Qt3DRender::QAbstractTexture * diffuseMap() const;
+    float diffuseGain() const;
+    bool usesDiffuseMap() const;
 
 public Q_SLOTS:
     void setNormalScaling(const QVector3D &normalScaling);
@@ -89,10 +93,12 @@ public Q_SLOTS:
     void setReflectionGain(float reflectionGain);
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
-    void setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap);
-    void setDiffuseGain(float diffuseGain);
+    void setUsesReflectionMap(bool usesReflectionMap);
     void setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter);
     void setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter);
+    void setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap);
+    void setDiffuseGain(float diffuseGain);
+    void setUsesDiffuseMap(bool usesDiffuseMap);
 
 Q_SIGNALS:
     void normalScalingChanged(QVector3D);
@@ -104,10 +110,12 @@ Q_SIGNALS:
     void reflectionGainChanged(float);
     void reflectionInnerFilterChanged(QVector3D);
     void reflectionOuterFilterChanged(QVector3D);
-    void diffuseMapChanged(Qt3DRender::QAbstractTexture *);
-    void diffuseGainChanged(float);
+    void usesReflectionMapChanged(bool);
     void diffuseInnerFilterChanged(QVector3D);
     void diffuseOuterFilterChanged(QVector3D);
+    void diffuseMapChanged(Qt3DRender::QAbstractTexture *);
+    void diffuseGainChanged(float);
+    void usesDiffuseMapChanged(bool);
 
 private:
     IroDiffuseHemiShaderData *m_shaderData;

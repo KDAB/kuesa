@@ -48,10 +48,12 @@ IroDiffuseHemiShaderData::IroDiffuseHemiShaderData(Qt3DCore::QNode *parent)
     , m_reflectionGain()
     , m_reflectionInnerFilter()
     , m_reflectionOuterFilter()
-    , m_diffuseMap(nullptr)
-    , m_diffuseGain()
+    , m_usesReflectionMap()
     , m_diffuseInnerFilter()
     , m_diffuseOuterFilter()
+    , m_diffuseMap(nullptr)
+    , m_diffuseGain()
+    , m_usesDiffuseMap()
 {}
 
 IroDiffuseHemiShaderData::~IroDiffuseHemiShaderData() = default;
@@ -101,14 +103,9 @@ QVector3D IroDiffuseHemiShaderData::reflectionOuterFilter() const
     return m_reflectionOuterFilter;
 }
 
-Qt3DRender::QAbstractTexture * IroDiffuseHemiShaderData::diffuseMap() const
+bool IroDiffuseHemiShaderData::usesReflectionMap() const
 {
-    return m_diffuseMap;
-}
-
-float IroDiffuseHemiShaderData::diffuseGain() const
-{
-    return m_diffuseGain;
+    return m_usesReflectionMap;
 }
 
 QVector3D IroDiffuseHemiShaderData::diffuseInnerFilter() const
@@ -119,6 +116,21 @@ QVector3D IroDiffuseHemiShaderData::diffuseInnerFilter() const
 QVector3D IroDiffuseHemiShaderData::diffuseOuterFilter() const
 {
     return m_diffuseOuterFilter;
+}
+
+Qt3DRender::QAbstractTexture * IroDiffuseHemiShaderData::diffuseMap() const
+{
+    return m_diffuseMap;
+}
+
+float IroDiffuseHemiShaderData::diffuseGain() const
+{
+    return m_diffuseGain;
+}
+
+bool IroDiffuseHemiShaderData::usesDiffuseMap() const
+{
+    return m_usesDiffuseMap;
 }
 
 
@@ -203,6 +215,30 @@ void IroDiffuseHemiShaderData::setReflectionOuterFilter(const QVector3D &reflect
     emit reflectionOuterFilterChanged(reflectionOuterFilter);
 }
 
+void IroDiffuseHemiShaderData::setUsesReflectionMap(bool usesReflectionMap)
+{
+    if (m_usesReflectionMap == usesReflectionMap)
+        return;
+    m_usesReflectionMap = usesReflectionMap;
+    emit usesReflectionMapChanged(usesReflectionMap);
+}
+
+void IroDiffuseHemiShaderData::setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter)
+{
+    if (m_diffuseInnerFilter == diffuseInnerFilter)
+        return;
+    m_diffuseInnerFilter = diffuseInnerFilter;
+    emit diffuseInnerFilterChanged(diffuseInnerFilter);
+}
+
+void IroDiffuseHemiShaderData::setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter)
+{
+    if (m_diffuseOuterFilter == diffuseOuterFilter)
+        return;
+    m_diffuseOuterFilter = diffuseOuterFilter;
+    emit diffuseOuterFilterChanged(diffuseOuterFilter);
+}
+
 void IroDiffuseHemiShaderData::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
 {
     if (m_diffuseMap == diffuseMap)
@@ -228,20 +264,12 @@ void IroDiffuseHemiShaderData::setDiffuseGain(float diffuseGain)
     emit diffuseGainChanged(diffuseGain);
 }
 
-void IroDiffuseHemiShaderData::setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter)
+void IroDiffuseHemiShaderData::setUsesDiffuseMap(bool usesDiffuseMap)
 {
-    if (m_diffuseInnerFilter == diffuseInnerFilter)
+    if (m_usesDiffuseMap == usesDiffuseMap)
         return;
-    m_diffuseInnerFilter = diffuseInnerFilter;
-    emit diffuseInnerFilterChanged(diffuseInnerFilter);
-}
-
-void IroDiffuseHemiShaderData::setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter)
-{
-    if (m_diffuseOuterFilter == diffuseOuterFilter)
-        return;
-    m_diffuseOuterFilter = diffuseOuterFilter;
-    emit diffuseOuterFilterChanged(diffuseOuterFilter);
+    m_usesDiffuseMap = usesDiffuseMap;
+    emit usesDiffuseMapChanged(usesDiffuseMap);
 }
 
 

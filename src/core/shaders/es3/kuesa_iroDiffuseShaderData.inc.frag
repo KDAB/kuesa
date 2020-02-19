@@ -29,17 +29,21 @@
 struct MaterialProperties {
     highp vec3 normalScaling;
     highp vec2 normalDisturb;
-    highp float postVertexColor;
-    highp float postGain;
+
     highp sampler2D reflectionMap;
     highp float reflectionGain;
     highp vec3 reflectionInnerFilter;
     highp vec3 reflectionOuterFilter;
+    bool usesReflectionMap;
+
+    highp sampler2D diffuseMap;
     highp vec3 diffuseInnerFilter;
     highp vec3 diffuseOuterFilter;
-    highp sampler2D diffuseMap;
-    highp vec3 diffuseFactor;
+    highp float diffuseGain;
     bool usesDiffuseMap;
+
+    highp float postVertexColor;
+    highp float postGain;
 };
 
 uniform MaterialProperties properties;

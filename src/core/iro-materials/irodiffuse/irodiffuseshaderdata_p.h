@@ -62,10 +62,11 @@ class IroDiffuseShaderData : public Qt3DRender::QShaderData
     Q_PROPERTY(Qt3DRender::QAbstractTexture * reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
+    Q_PROPERTY(bool usesReflectionMap READ usesReflectionMap WRITE setUsesReflectionMap NOTIFY usesReflectionMapChanged)
     Q_PROPERTY(QVector3D diffuseInnerFilter READ diffuseInnerFilter WRITE setDiffuseInnerFilter NOTIFY diffuseInnerFilterChanged)
     Q_PROPERTY(QVector3D diffuseOuterFilter READ diffuseOuterFilter WRITE setDiffuseOuterFilter NOTIFY diffuseOuterFilterChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture * diffuseMap READ diffuseMap WRITE setDiffuseMap NOTIFY diffuseMapChanged)
-    Q_PROPERTY(QVector3D diffuseFactor READ diffuseFactor WRITE setDiffuseFactor NOTIFY diffuseFactorChanged)
+    Q_PROPERTY(float diffuseGain READ diffuseGain WRITE setDiffuseGain NOTIFY diffuseGainChanged)
     Q_PROPERTY(bool usesDiffuseMap READ usesDiffuseMap WRITE setUsesDiffuseMap NOTIFY usesDiffuseMapChanged)
 
 public:
@@ -79,10 +80,11 @@ public:
     Qt3DRender::QAbstractTexture * reflectionMap() const;
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
+    bool usesReflectionMap() const;
     QVector3D diffuseInnerFilter() const;
     QVector3D diffuseOuterFilter() const;
     Qt3DRender::QAbstractTexture * diffuseMap() const;
-    QVector3D diffuseFactor() const;
+    float diffuseGain() const;
     bool usesDiffuseMap() const;
 
 public Q_SLOTS:
@@ -94,10 +96,11 @@ public Q_SLOTS:
     void setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap);
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
+    void setUsesReflectionMap(bool usesReflectionMap);
     void setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter);
     void setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter);
     void setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap);
-    void setDiffuseFactor(const QVector3D &diffuseFactor);
+    void setDiffuseGain(float diffuseGain);
     void setUsesDiffuseMap(bool usesDiffuseMap);
 
 Q_SIGNALS:
@@ -109,10 +112,11 @@ Q_SIGNALS:
     void reflectionMapChanged(Qt3DRender::QAbstractTexture *);
     void reflectionInnerFilterChanged(QVector3D);
     void reflectionOuterFilterChanged(QVector3D);
+    void usesReflectionMapChanged(bool);
     void diffuseInnerFilterChanged(QVector3D);
     void diffuseOuterFilterChanged(QVector3D);
     void diffuseMapChanged(Qt3DRender::QAbstractTexture *);
-    void diffuseFactorChanged(QVector3D);
+    void diffuseGainChanged(float);
     void usesDiffuseMapChanged(bool);
 
 private:
@@ -124,10 +128,11 @@ private:
     Qt3DRender::QAbstractTexture * m_reflectionMap;
     QVector3D m_reflectionInnerFilter;
     QVector3D m_reflectionOuterFilter;
+    bool m_usesReflectionMap;
     QVector3D m_diffuseInnerFilter;
     QVector3D m_diffuseOuterFilter;
     Qt3DRender::QAbstractTexture * m_diffuseMap;
-    QVector3D m_diffuseFactor;
+    float m_diffuseGain;
     bool m_usesDiffuseMap;
 
 };

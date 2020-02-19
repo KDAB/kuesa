@@ -123,14 +123,6 @@
         {
             "layers": [
             ],
-            "sourcePort": "output",
-            "sourceUuid": "{d7a9bf30-ea15-4fa4-9944-fc9e9d599ca3}",
-            "targetPort": "first",
-            "targetUuid": "{7f9e4f7b-0e54-4335-84ca-bf93dc7eef63}"
-        },
-        {
-            "layers": [
-            ],
             "sourcePort": "product",
             "sourceUuid": "{7f9e4f7b-0e54-4335-84ca-bf93dc7eef63}",
             "targetPort": "first",
@@ -347,14 +339,6 @@
         {
             "layers": [
             ],
-            "sourcePort": "output",
-            "sourceUuid": "{8cda0b21-d68d-4227-a591-0c99e39216e5}",
-            "targetPort": "first",
-            "targetUuid": "{f054eb8f-5b8e-47ab-b25a-cb260f61d513}"
-        },
-        {
-            "layers": [
-            ],
             "sourcePort": "product",
             "sourceUuid": "{39a76b94-54a7-43dc-a5b1-8d4b3ac5e3e4}",
             "targetPort": "first",
@@ -407,6 +391,86 @@
             "sourceUuid": "{58dbb4e6-749c-4d54-8b6c-d56b9a484045}",
             "targetPort": "second",
             "targetUuid": "{53471c60-54bf-4d5b-b082-f6f8bf994b58}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{ae3e3f37-adf5-4429-bc85-365764e9a244}",
+            "targetPort": "first",
+            "targetUuid": "{f054eb8f-5b8e-47ab-b25a-cb260f61d513}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{33b148bb-5e2a-4834-a5e2-c137c2c04dd7}",
+            "targetPort": "shaderData",
+            "targetUuid": "{a60ed9cb-7858-4c7f-924a-39488ee8a77d}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{a60ed9cb-7858-4c7f-924a-39488ee8a77d}",
+            "targetPort": "condition",
+            "targetUuid": "{ae3e3f37-adf5-4429-bc85-365764e9a244}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{8cda0b21-d68d-4227-a591-0c99e39216e5}",
+            "targetPort": "true",
+            "targetUuid": "{ae3e3f37-adf5-4429-bc85-365764e9a244}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{ef0af3a2-4161-492c-8424-dc8933e07c06}",
+            "targetPort": "false",
+            "targetUuid": "{ae3e3f37-adf5-4429-bc85-365764e9a244}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{ef0af3a2-4161-492c-8424-dc8933e07c06}",
+            "targetPort": "false",
+            "targetUuid": "{882ef0e2-9398-4557-a508-0b21527fe205}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{33b148bb-5e2a-4834-a5e2-c137c2c04dd7}",
+            "targetPort": "shaderData",
+            "targetUuid": "{424f4f1b-81bd-4656-b8e7-989187b7bf6e}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{424f4f1b-81bd-4656-b8e7-989187b7bf6e}",
+            "targetPort": "condition",
+            "targetUuid": "{882ef0e2-9398-4557-a508-0b21527fe205}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{882ef0e2-9398-4557-a508-0b21527fe205}",
+            "targetPort": "first",
+            "targetUuid": "{7f9e4f7b-0e54-4335-84ca-bf93dc7eef63}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{d7a9bf30-ea15-4fa4-9944-fc9e9d599ca3}",
+            "targetPort": "true",
+            "targetUuid": "{882ef0e2-9398-4557-a508-0b21527fe205}"
         }
     ],
     "groups": [
@@ -496,8 +560,8 @@
                 }
             },
             "position": {
-                "x": 3417,
-                "y": 507
+                "x": 3876,
+                "y": 459
             },
             "type": "input",
             "uuid": "{d8f77a87-65c4-4db5-83a8-8aa2d6208e70}"
@@ -547,8 +611,8 @@
                 }
             },
             "position": {
-                "x": 4207,
-                "y": 623
+                "x": 4666,
+                "y": 575
             },
             "type": "output",
             "uuid": "{743993f1-f7d2-4e14-8cdc-49844676b722}"
@@ -902,8 +966,8 @@
                 }
             },
             "position": {
-                "x": 2240,
-                "y": 619
+                "x": 2107,
+                "y": 622
             },
             "type": "swizzle",
             "uuid": "{d7a9bf30-ea15-4fa4-9944-fc9e9d599ca3}"
@@ -934,8 +998,8 @@
                 }
             },
             "position": {
-                "x": 2495,
-                "y": 658
+                "x": 2998,
+                "y": 680
             },
             "type": "multiply",
             "uuid": "{7f9e4f7b-0e54-4335-84ca-bf93dc7eef63}"
@@ -966,8 +1030,8 @@
                 }
             },
             "position": {
-                "x": 2835,
-                "y": 622
+                "x": 3294,
+                "y": 574
             },
             "type": "multiply",
             "uuid": "{23fd3e72-8e78-440b-bcb7-33c7f38ba079}"
@@ -990,8 +1054,8 @@
                 }
             },
             "position": {
-                "x": 2446,
-                "y": 804
+                "x": 2960,
+                "y": 766
             },
             "type": "kuesa_ShaderDataInput",
             "uuid": "{4eaa9bdd-23cf-420c-adbb-eb89550fe1ca}"
@@ -1022,8 +1086,8 @@
                 }
             },
             "position": {
-                "x": 3429,
-                "y": 620
+                "x": 3888,
+                "y": 572
             },
             "type": "join2",
             "uuid": "{bf688074-3dff-44cd-9fce-9a9d8b28c1ec}"
@@ -1045,8 +1109,8 @@
                 }
             },
             "position": {
-                "x": 3236,
-                "y": 661
+                "x": 3695,
+                "y": 613
             },
             "type": "constant",
             "uuid": "{5bb30f72-010f-4d3c-9da8-6fa8e8f4f43f}"
@@ -1077,8 +1141,8 @@
                 }
             },
             "position": {
-                "x": 3778,
-                "y": 610
+                "x": 4237,
+                "y": 562
             },
             "type": "multiply",
             "uuid": "{86332063-822b-425c-97ea-d5f21869c7e8}"
@@ -1101,8 +1165,8 @@
                 }
             },
             "position": {
-                "x": 3203,
-                "y": 594
+                "x": 3662,
+                "y": 546
             },
             "type": "add",
             "uuid": "{e1d93e2b-84c4-4d9e-9c69-fc052cbf01c6}"
@@ -1360,8 +1424,8 @@
             "parameters": {
             },
             "position": {
-                "x": 2471,
-                "y": 546
+                "x": 2464,
+                "y": 493
             },
             "type": "mix",
             "uuid": "{2bdccab4-4a25-473b-b0f0-d60651c8019d}"
@@ -1413,8 +1477,8 @@
                 }
             },
             "position": {
-                "x": 2874,
-                "y": 450
+                "x": 3333,
+                "y": 402
             },
             "type": "multiply",
             "uuid": "{39a76b94-54a7-43dc-a5b1-8d4b3ac5e3e4}"
@@ -1437,8 +1501,8 @@
                 }
             },
             "position": {
-                "x": 2431,
-                "y": 893
+                "x": 2941,
+                "y": 855
             },
             "type": "kuesa_ShaderDataInput",
             "uuid": "{7bee04c5-1d10-41b8-895e-d3684a72d5cf}"
@@ -1469,8 +1533,8 @@
                 }
             },
             "position": {
-                "x": 3978,
-                "y": 638
+                "x": 4437,
+                "y": 590
             },
             "type": "multiply",
             "uuid": "{53471c60-54bf-4d5b-b082-f6f8bf994b58}"
@@ -1496,19 +1560,148 @@
                 }
             },
             "position": {
-                "x": 3572,
-                "y": 756
+                "x": 4031,
+                "y": 708
             },
             "type": "input",
             "uuid": "{58dbb4e6-749c-4d54-8b6c-d56b9a484045}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "if",
+            "group": -1,
+            "id": 54,
+            "inputValues": {
+                "condition": "",
+                "false": "",
+                "true": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "conditionType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 2131,
+                "y": 304
+            },
+            "type": "if",
+            "uuid": "{ae3e3f37-adf5-4429-bc85-365764e9a244}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "kuesa_ShaderDataInput",
+            "group": -1,
+            "id": 55,
+            "inputValues": {
+                "shaderData": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "name": "usesDiffuseMap",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            },
+            "position": {
+                "x": 1424,
+                "y": 200
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{a60ed9cb-7858-4c7f-924a-39488ee8a77d}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "constant",
+            "group": -1,
+            "id": 56,
+            "inputValues": {
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "1.0,1.0,1.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 1799,
+                "y": 86
+            },
+            "type": "constant",
+            "uuid": "{ef0af3a2-4161-492c-8424-dc8933e07c06}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "if",
+            "group": -1,
+            "id": 57,
+            "inputValues": {
+                "condition": "",
+                "false": "",
+                "true": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "conditionType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "position": {
+                "x": 2426,
+                "y": 625
+            },
+            "type": "if",
+            "uuid": "{882ef0e2-9398-4557-a508-0b21527fe205}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "kuesa_ShaderDataInput",
+            "group": -1,
+            "id": 58,
+            "inputValues": {
+                "shaderData": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "name": "usesReflectionMap",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            },
+            "position": {
+                "x": 1382,
+                "y": 1071
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{424f4f1b-81bd-4656-b8e7-989187b7bf6e}"
         }
     ],
     "project": {
         "position": {
-            "x": 1393.4319920523712,
-            "y": 284.0000000000002
+            "x": 1978.1097125097126,
+            "y": 126.33069153069187
         },
-        "scale": 0.3125
+        "scale": 0.75
     },
     "prototypes": {
         "add": {

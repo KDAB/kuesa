@@ -70,10 +70,12 @@ IroDiffuseHemiProperties::IroDiffuseHemiProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::reflectionGainChanged, this, &IroDiffuseHemiProperties::reflectionGainChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::reflectionInnerFilterChanged, this, &IroDiffuseHemiProperties::reflectionInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::reflectionOuterFilterChanged, this, &IroDiffuseHemiProperties::reflectionOuterFilterChanged);
-    QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseMapChanged, this, &IroDiffuseHemiProperties::diffuseMapChanged);
-    QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseGainChanged, this, &IroDiffuseHemiProperties::diffuseGainChanged);
+    QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::usesReflectionMapChanged, this, &IroDiffuseHemiProperties::usesReflectionMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseInnerFilterChanged, this, &IroDiffuseHemiProperties::diffuseInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseOuterFilterChanged, this, &IroDiffuseHemiProperties::diffuseOuterFilterChanged);
+    QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseMapChanged, this, &IroDiffuseHemiProperties::diffuseMapChanged);
+    QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseGainChanged, this, &IroDiffuseHemiProperties::diffuseGainChanged);
+    QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::usesDiffuseMapChanged, this, &IroDiffuseHemiProperties::usesDiffuseMapChanged);
 
 }
 
@@ -129,14 +131,9 @@ void IroDiffuseHemiProperties::setReflectionOuterFilter(const QVector3D &reflect
     m_shaderData->setReflectionOuterFilter(reflectionOuterFilter);
 }
 
-void IroDiffuseHemiProperties::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
+void IroDiffuseHemiProperties::setUsesReflectionMap(bool usesReflectionMap)
 {
-    m_shaderData->setDiffuseMap(diffuseMap);
-}
-
-void IroDiffuseHemiProperties::setDiffuseGain(float diffuseGain)
-{
-    m_shaderData->setDiffuseGain(diffuseGain);
+    m_shaderData->setUsesReflectionMap(usesReflectionMap);
 }
 
 void IroDiffuseHemiProperties::setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter)
@@ -147,6 +144,21 @@ void IroDiffuseHemiProperties::setDiffuseInnerFilter(const QVector3D &diffuseInn
 void IroDiffuseHemiProperties::setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter)
 {
     m_shaderData->setDiffuseOuterFilter(diffuseOuterFilter);
+}
+
+void IroDiffuseHemiProperties::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
+{
+    m_shaderData->setDiffuseMap(diffuseMap);
+}
+
+void IroDiffuseHemiProperties::setDiffuseGain(float diffuseGain)
+{
+    m_shaderData->setDiffuseGain(diffuseGain);
+}
+
+void IroDiffuseHemiProperties::setUsesDiffuseMap(bool usesDiffuseMap)
+{
+    m_shaderData->setUsesDiffuseMap(usesDiffuseMap);
 }
 
 
@@ -268,29 +280,16 @@ QVector3D IroDiffuseHemiProperties::reflectionOuterFilter() const
 }
 
 /*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroDiffuseHemiProperties::diffuseMap
-    Specifies the diffuse map to use. It is expected to be in sRGB color space.
+    \qmlproperty bool IroDiffuseHemiProperties::usesReflectionMap
+    Specifies whether we use a reflection map or not.
 */
 /*!
-    \property IroDiffuseHemiProperties::diffuseMap
-    Specifies the diffuse map to use. It is expected to be in sRGB color space.
+    \property IroDiffuseHemiProperties::usesReflectionMap
+    Specifies whether we use a reflection map or not.
 */
-Qt3DRender::QAbstractTexture * IroDiffuseHemiProperties::diffuseMap() const
+bool IroDiffuseHemiProperties::usesReflectionMap() const
 {
-    return m_shaderData->diffuseMap();
-}
-
-/*!
-    \qmlproperty float IroDiffuseHemiProperties::diffuseGain
-    Specifies the gain factor to be applied to the diffuse map lookup.
-*/
-/*!
-    \property IroDiffuseHemiProperties::diffuseGain
-    Specifies the gain factor to be applied to the diffuse map lookup.
-*/
-float IroDiffuseHemiProperties::diffuseGain() const
-{
-    return m_shaderData->diffuseGain();
+    return m_shaderData->usesReflectionMap();
 }
 
 /*!
@@ -317,6 +316,45 @@ QVector3D IroDiffuseHemiProperties::diffuseInnerFilter() const
 QVector3D IroDiffuseHemiProperties::diffuseOuterFilter() const
 {
     return m_shaderData->diffuseOuterFilter();
+}
+
+/*!
+    \qmlproperty Qt3DRender::QAbstractTexture * IroDiffuseHemiProperties::diffuseMap
+    Specifies the diffuse map to use. It is expected to be in sRGB color space.
+*/
+/*!
+    \property IroDiffuseHemiProperties::diffuseMap
+    Specifies the diffuse map to use. It is expected to be in sRGB color space.
+*/
+Qt3DRender::QAbstractTexture * IroDiffuseHemiProperties::diffuseMap() const
+{
+    return m_shaderData->diffuseMap();
+}
+
+/*!
+    \qmlproperty float IroDiffuseHemiProperties::diffuseGain
+    Specifies the gain factor to be applied to the diffuse map lookup.
+*/
+/*!
+    \property IroDiffuseHemiProperties::diffuseGain
+    Specifies the gain factor to be applied to the diffuse map lookup.
+*/
+float IroDiffuseHemiProperties::diffuseGain() const
+{
+    return m_shaderData->diffuseGain();
+}
+
+/*!
+    \qmlproperty bool IroDiffuseHemiProperties::usesDiffuseMap
+    Specifies whether we use a diffuse map or not.
+*/
+/*!
+    \property IroDiffuseHemiProperties::usesDiffuseMap
+    Specifies whether we use a diffuse map or not.
+*/
+bool IroDiffuseHemiProperties::usesDiffuseMap() const
+{
+    return m_shaderData->usesDiffuseMap();
 }
 
 

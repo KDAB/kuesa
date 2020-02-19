@@ -34,11 +34,13 @@ struct MaterialProperties {
     highp float reflectionGain;
     highp vec3 reflectionInnerFilter;
     highp vec3 reflectionOuterFilter;
+    bool usesReflectionMap;
 
     highp sampler2D diffuseMap;
     highp float diffuseGain;
     highp vec3 diffuseInnerFilter;
     highp vec3 diffuseOuterFilter;
+    bool usesDiffuseMap;
 
     highp vec3 postHemiFilter;
     highp float postVertexColor;

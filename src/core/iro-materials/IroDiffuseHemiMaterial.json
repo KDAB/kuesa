@@ -11,10 +11,12 @@
         { "name": "reflectionGain", "type": "float", "doc": "Specifies the gain factor to be applied to the spherical environment map lookup." },
         { "name": "reflectionInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup." },
         { "name": "reflectionOuterFilter", "type": "vec3", "doc": "Specifies the outer color filter to be applied based on fresnel on the spherical environment map lookup." },
+        { "name": "usesReflectionMap", "type": "bool", "doc": "Specifies whether we use a reflection map or not." },
+        { "name": "diffuseInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the diffuse map lookup." },
+        { "name": "diffuseOuterFilter", "type": "vec3", "doc": "Specifies the outer color filter to be applied based on fresnel on the diffuse map lookup." },
         { "name": "diffuseMap", "type": "texture2d", "doc": "Specifies the diffuse map to use. It is expected to be in sRGB color space." },
         { "name": "diffuseGain", "type": "float", "doc": "Specifies the gain factor to be applied to the diffuse map lookup." },
-        { "name": "diffuseInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the diffuse map lookup." },
-        { "name": "diffuseOuterFilter", "type": "vec3", "doc": "Specifies the outer color filter to be applied based on fresnel on the diffuse map lookup." }
+        { "name": "usesDiffuseMap", "type": "bool", "doc": "Specifies whether we use a diffuse map or not." }
     ],
     "passes": [
         {

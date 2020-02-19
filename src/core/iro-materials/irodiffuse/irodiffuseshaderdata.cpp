@@ -47,10 +47,11 @@ IroDiffuseShaderData::IroDiffuseShaderData(Qt3DCore::QNode *parent)
     , m_reflectionMap(nullptr)
     , m_reflectionInnerFilter()
     , m_reflectionOuterFilter()
+    , m_usesReflectionMap()
     , m_diffuseInnerFilter()
     , m_diffuseOuterFilter()
     , m_diffuseMap(nullptr)
-    , m_diffuseFactor()
+    , m_diffuseGain()
     , m_usesDiffuseMap()
 {}
 
@@ -96,6 +97,11 @@ QVector3D IroDiffuseShaderData::reflectionOuterFilter() const
     return m_reflectionOuterFilter;
 }
 
+bool IroDiffuseShaderData::usesReflectionMap() const
+{
+    return m_usesReflectionMap;
+}
+
 QVector3D IroDiffuseShaderData::diffuseInnerFilter() const
 {
     return m_diffuseInnerFilter;
@@ -111,9 +117,9 @@ Qt3DRender::QAbstractTexture * IroDiffuseShaderData::diffuseMap() const
     return m_diffuseMap;
 }
 
-QVector3D IroDiffuseShaderData::diffuseFactor() const
+float IroDiffuseShaderData::diffuseGain() const
 {
-    return m_diffuseFactor;
+    return m_diffuseGain;
 }
 
 bool IroDiffuseShaderData::usesDiffuseMap() const
@@ -195,6 +201,14 @@ void IroDiffuseShaderData::setReflectionOuterFilter(const QVector3D &reflectionO
     emit reflectionOuterFilterChanged(reflectionOuterFilter);
 }
 
+void IroDiffuseShaderData::setUsesReflectionMap(bool usesReflectionMap)
+{
+    if (m_usesReflectionMap == usesReflectionMap)
+        return;
+    m_usesReflectionMap = usesReflectionMap;
+    emit usesReflectionMapChanged(usesReflectionMap);
+}
+
 void IroDiffuseShaderData::setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter)
 {
     if (m_diffuseInnerFilter == diffuseInnerFilter)
@@ -228,12 +242,12 @@ void IroDiffuseShaderData::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseM
     emit diffuseMapChanged(m_diffuseMap);
 }
 
-void IroDiffuseShaderData::setDiffuseFactor(const QVector3D &diffuseFactor)
+void IroDiffuseShaderData::setDiffuseGain(float diffuseGain)
 {
-    if (m_diffuseFactor == diffuseFactor)
+    if (m_diffuseGain == diffuseGain)
         return;
-    m_diffuseFactor = diffuseFactor;
-    emit diffuseFactorChanged(diffuseFactor);
+    m_diffuseGain = diffuseGain;
+    emit diffuseGainChanged(diffuseGain);
 }
 
 void IroDiffuseShaderData::setUsesDiffuseMap(bool usesDiffuseMap)
