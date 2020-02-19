@@ -30,8 +30,8 @@
 #ifndef KUESA_IRODIFFUSEHEMIPROPERTIES_H
 #define KUESA_IRODIFFUSEHEMIPROPERTIES_H
 
-#include <QVector3D>
 #include <QVector2D>
+#include <QVector3D>
 #include <Qt3DRender/QAbstractTexture>
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>

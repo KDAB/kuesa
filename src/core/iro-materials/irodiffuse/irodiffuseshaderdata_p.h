@@ -30,8 +30,20 @@
 #ifndef KUESA_IRODIFFUSESHADERDATA_P_H
 #define KUESA_IRODIFFUSESHADERDATA_P_H
 
-#include <QVector3D>
+
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the Kuesa API.  It exists for the convenience
+// of other Kuesa classes.  This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
+//
+
 #include <QVector2D>
+#include <QVector3D>
 #include <Qt3DRender/QAbstractTexture>
 #include <Qt3DRender/QShaderData>
 

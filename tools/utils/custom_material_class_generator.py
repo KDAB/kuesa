@@ -24,6 +24,20 @@ class CustomMaterialGenerator:
                               'color' : '#include <QColor>',
                               'texture2d' : '#include <Qt3DRender/QAbstractTexture>' }
 
+    headerPrivateWarning = """
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the Kuesa API.  It exists for the convenience
+// of other Kuesa classes.  This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
+//
+
+"""
+
     headerContent = """
 /*
     %s.h
@@ -56,7 +70,7 @@ class CustomMaterialGenerator:
 #ifndef KUESA_%s_H
 #define KUESA_%s_H
 
-%s
+%s%s
 
 QT_BEGIN_NAMESPACE
 
@@ -1322,7 +1336,7 @@ HEADERS += \\
             incl = CustomMaterialGenerator.includesForPropertyType[jsonPropType] if jsonPropType in CustomMaterialGenerator.includesForPropertyType else ""
             if len(incl) > 0:
                 uniqueIncludes.add(incl)
-        for inc in uniqueIncludes:
+        for inc in sorted(uniqueIncludes):
             content += "%s\n" % (inc)
         return content
 
@@ -1363,6 +1377,7 @@ HEADERS += \\
         headerFileContent = CustomMaterialGenerator.headerContent % (headerFileName,
                                                                      includeGuardName,
                                                                      includeGuardName,
+                                                                     CustomMaterialGenerator.headerPrivateWarning if privateHeader else "",
                                                                      includes,
                                                                      content,
                                                                      includeGuardName)
