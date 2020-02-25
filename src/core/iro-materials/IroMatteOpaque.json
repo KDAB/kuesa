@@ -1,0 +1,49 @@
+{
+    "type": "IroMatteOpaque",
+    "doc": "is a simple material in terms of rendering that perform lookups on a 2d map blended optionally with the per vertex color input.",
+    "properties": [
+        { "name": "postVertexColor", "type": "float", "doc": "Specifies the factor which controls how much of the per vertex color we want to transmit." },
+        { "name": "postGain", "type": "float", "doc": "Specifies the factor to be applied to the vertex color." },
+        { "name": "matteMap", "type": "texture2d", "doc": "Specifies the matte map to use. It is expected to be in sRGB color space." },
+        { "name": "usesMatteMap", "type": "bool", "doc": "Specifies whether we use a matte map or not." },
+        { "name": "matteFilter", "type": "vec3", "doc": "Specifies the color filter to be applied on the matte map lookup." },
+        { "name": "matteGain", "type": "float", "doc": "Specifies the gain applied to the rgb components of the matte map lookup." }
+    ],
+    "passes": [
+        {
+            "type": "Opaque",
+            "shaders": [
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/iromatteopaque.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/iromatteopaque.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/iromatteopaque.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/iromatteopaque.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/iromatteopaque.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/iromatteopaque.frag.json"
+                }
+            ]
+        }
+    ]
+}

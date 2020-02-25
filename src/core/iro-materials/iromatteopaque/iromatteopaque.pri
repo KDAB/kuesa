@@ -1,4 +1,5 @@
-# iro-materials.pri
+
+# iromatteopaque.pri
 #
 # This file is part of Kuesa.
 #
@@ -24,15 +25,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 INCLUDEPATH += $$PWD
 
-include(irodiffuse/irodiffuse.pri)
-include(irodiffusehemi/irodiffusehemi.pri)
-include(iroglassadd/iroglassadd.pri)
-include(iromatteopaque/iromatteopaque.pri)
+QT += 3dcore-private
 
-SOURCES += $$PWD/iro-materials.cpp
-HEADERS += $$PWD/iro-materials_p.h
+SOURCES += \
+    $$PWD/iromatteopaquematerial.cpp \
+    $$PWD/iromatteopaqueeffect.cpp \
+    $$PWD/iromatteopaqueproperties.cpp \
+    $$PWD/iromatteopaqueshaderdata.cpp
 
-OTHER_FILES += $$PWD/*.json
+HEADERS += \
+    $$PWD/iromatteopaquematerial.h \
+    $$PWD/iromatteopaqueeffect.h \
+    $$PWD/iromatteopaqueproperties.h \
+    $$PWD/iromatteopaqueshaderdata_p.h

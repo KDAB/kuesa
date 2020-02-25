@@ -37,6 +37,9 @@
 #include <Kuesa/IroGlassAddMaterial>
 #include <Kuesa/IroGlassAddEffect>
 #include <Kuesa/IroGlassAddProperties>
+#include <Kuesa/IroMatteOpaqueMaterial>
+#include <Kuesa/IroMatteOpaqueEffect>
+#include <Kuesa/IroMatteOpaqueProperties>
 
 QT_BEGIN_NAMESPACE
 
@@ -49,6 +52,7 @@ void registerIroMaterials()
     GLTF2Importer::registerCustomMaterial<IroDiffuseMaterial, IroDiffuseProperties, IroDiffuseEffect>(QStringLiteral("IroDiffuse"));
     GLTF2Importer::registerCustomMaterial<IroDiffuseHemiMaterial, IroDiffuseHemiProperties, IroDiffuseHemiEffect>(QStringLiteral("IroDiffuseHemi"));
     GLTF2Importer::registerCustomMaterial<IroGlassAddMaterial, IroGlassAddProperties, IroGlassAddEffect>(QStringLiteral("IroGlassAdd"));
+    GLTF2Importer::registerCustomMaterial<IroMatteOpaqueMaterial, IroMatteOpaqueProperties, IroMatteOpaqueEffect>(QStringLiteral("IroMatteOpaque"));
 }
 
 // This will call registerIroMaterials on startup automatically
