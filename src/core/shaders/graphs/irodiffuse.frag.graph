@@ -155,14 +155,6 @@
         {
             "layers": [
             ],
-            "sourcePort": "product",
-            "sourceUuid": "{86332063-822b-425c-97ea-d5f21869c7e8}",
-            "targetPort": "value",
-            "targetUuid": "{743993f1-f7d2-4e14-8cdc-49844676b722}"
-        },
-        {
-            "layers": [
-            ],
             "sourcePort": "output",
             "sourceUuid": "{bf688074-3dff-44cd-9fce-9a9d8b28c1ec}",
             "targetPort": "second",
@@ -455,6 +447,14 @@
             "sourceUuid": "{cee9aff5-085f-443a-a034-27b3ab59fe1a}",
             "targetPort": "first",
             "targetUuid": "{7f9e4f7b-0e54-4335-84ca-bf93dc7eef63}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{86332063-822b-425c-97ea-d5f21869c7e8}",
+            "targetPort": "fragColor",
+            "targetUuid": "{2011a08a-cd97-4658-9673-f30420cdd002}"
         }
     ],
     "groups": [
@@ -576,30 +576,6 @@
             },
             "type": "input",
             "uuid": "{1731c3d9-1880-4a30-a4ba-bd45ce65ae7e}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "output",
-            "group": -1,
-            "id": 4,
-            "inputValues": {
-                "value": ""
-            },
-            "layers": [
-            ],
-            "parameters": {
-                "name": "fragColor",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "position": {
-                "x": 4327,
-                "y": 629
-            },
-            "type": "output",
-            "uuid": "{743993f1-f7d2-4e14-8cdc-49844676b722}"
         },
         {
             "collapsed": true,
@@ -1619,14 +1595,33 @@
             },
             "type": "kuesa_ShaderDataInput",
             "uuid": "{cdc7617e-4c49-47c9-b8d1-e9ba9ceede30}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "fragColor",
+            "group": -1,
+            "id": 54,
+            "inputValues": {
+                "fragColor": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "position": {
+                "x": 4362,
+                "y": 609
+            },
+            "type": "fragColor",
+            "uuid": "{2011a08a-cd97-4658-9673-f30420cdd002}"
         }
     ],
     "project": {
         "position": {
-            "x": 2019.344373655548,
-            "y": 44.69257409257307
+            "x": 3671.9999999999995,
+            "y": 138.66666666666674
         },
-        "scale": 0.375
+        "scale": 1.125
     },
     "prototypes": {
         "add": {

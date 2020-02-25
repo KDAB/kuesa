@@ -379,14 +379,6 @@
         {
             "layers": [
             ],
-            "sourcePort": "product",
-            "sourceUuid": "{53471c60-54bf-4d5b-b082-f6f8bf994b58}",
-            "targetPort": "value",
-            "targetUuid": "{743993f1-f7d2-4e14-8cdc-49844676b722}"
-        },
-        {
-            "layers": [
-            ],
             "sourcePort": "value",
             "sourceUuid": "{58dbb4e6-749c-4d54-8b6c-d56b9a484045}",
             "targetPort": "second",
@@ -471,6 +463,14 @@
             "sourceUuid": "{d7a9bf30-ea15-4fa4-9944-fc9e9d599ca3}",
             "targetPort": "true",
             "targetUuid": "{882ef0e2-9398-4557-a508-0b21527fe205}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{53471c60-54bf-4d5b-b082-f6f8bf994b58}",
+            "targetPort": "fragColor",
+            "targetUuid": "{bf0f709c-10e1-41aa-8902-d67814e9e380}"
         }
     ],
     "groups": [
@@ -592,30 +592,6 @@
             },
             "type": "input",
             "uuid": "{1731c3d9-1880-4a30-a4ba-bd45ce65ae7e}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "output",
-            "group": -1,
-            "id": 4,
-            "inputValues": {
-                "value": ""
-            },
-            "layers": [
-            ],
-            "parameters": {
-                "name": "fragColor",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "position": {
-                "x": 4666,
-                "y": 575
-            },
-            "type": "output",
-            "uuid": "{743993f1-f7d2-4e14-8cdc-49844676b722}"
         },
         {
             "collapsed": true,
@@ -1694,14 +1670,33 @@
             },
             "type": "kuesa_ShaderDataInput",
             "uuid": "{424f4f1b-81bd-4656-b8e7-989187b7bf6e}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "fragColor",
+            "group": -1,
+            "id": 59,
+            "inputValues": {
+                "fragColor": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "position": {
+                "x": 4675,
+                "y": 587
+            },
+            "type": "fragColor",
+            "uuid": "{bf0f709c-10e1-41aa-8902-d67814e9e380}"
         }
     ],
     "project": {
         "position": {
-            "x": 1978.1097125097126,
-            "y": 126.33069153069187
+            "x": 3781.333333333333,
+            "y": 148.16666666666674
         },
-        "scale": 0.75
+        "scale": 1
     },
     "prototypes": {
         "add": {
@@ -2629,6 +2624,46 @@
                     },
                     "headerSnippets": [
                         "#pragma include :/kuesa/shaders/gl3/kuesa_iroDiffuseHemiShaderData.inc.frag"
+                    ],
+                    "substitution": "MaterialProperties $shaderData = properties;"
+                }
+            ]
+        },
+        "kuesa_iroDiffuseShaderData": {
+            "outputs": [
+                "shaderData"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es2/kuesa_iroDiffuseShaderData.inc.frag"
+                    ],
+                    "substitution": "MaterialProperties $shaderData = properties;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es3/kuesa_iroDiffuseShaderData.inc.frag"
+                    ],
+                    "substitution": "MaterialProperties $shaderData = properties;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl3/kuesa_iroDiffuseShaderData.inc.frag"
                     ],
                     "substitution": "MaterialProperties $shaderData = properties;"
                 }

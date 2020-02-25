@@ -155,14 +155,6 @@
         {
             "layers": [
             ],
-            "sourcePort": "product",
-            "sourceUuid": "{86332063-822b-425c-97ea-d5f21869c7e8}",
-            "targetPort": "value",
-            "targetUuid": "{743993f1-f7d2-4e14-8cdc-49844676b722}"
-        },
-        {
-            "layers": [
-            ],
             "sourcePort": "output",
             "sourceUuid": "{bf688074-3dff-44cd-9fce-9a9d8b28c1ec}",
             "targetPort": "second",
@@ -455,6 +447,14 @@
             "sourceUuid": "{cee9aff5-085f-443a-a034-27b3ab59fe1a}",
             "targetPort": "first",
             "targetUuid": "{7f9e4f7b-0e54-4335-84ca-bf93dc7eef63}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{86332063-822b-425c-97ea-d5f21869c7e8}",
+            "targetPort": "fragColor",
+            "targetUuid": "{2011a08a-cd97-4658-9673-f30420cdd002}"
         }
     ],
     "nodes": [
@@ -516,19 +516,6 @@
             },
             "type": "input",
             "uuid": "{1731c3d9-1880-4a30-a4ba-bd45ce65ae7e}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "fragColor",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "type": "output",
-            "uuid": "{743993f1-f7d2-4e14-8cdc-49844676b722}"
         },
         {
             "layers": [
@@ -1092,6 +1079,14 @@
             },
             "type": "kuesa_ShaderDataInput",
             "uuid": "{cdc7617e-4c49-47c9-b8d1-e9ba9ceede30}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "type": "fragColor",
+            "uuid": "{2011a08a-cd97-4658-9673-f30420cdd002}"
         }
     ],
     "prototypes": {
@@ -1192,6 +1187,43 @@
                         "minor": 0
                     },
                     "substitution": "$outputType $value = dot($first, $second);"
+                }
+            ]
+        },
+        "fragColor": {
+            "inputs": [
+                "fragColor"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "gl_FragColor = $fragColor;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out highp vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
                 }
             ]
         },
@@ -1528,53 +1560,6 @@
                         "minor": 0
                     },
                     "substitution": "$type $output = normalize($input);"
-                }
-            ]
-        },
-        "output": {
-            "inputs": [
-                "value"
-            ],
-            "parameters": {
-                "name": "defaultName",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "varying highp $type $name;"
-                    ],
-                    "substitution": "$name = $value;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "out highp $type $name;"
-                    ],
-                    "substitution": "$name = $value;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "out $type $name;"
-                    ],
-                    "substitution": "$name = $value;"
                 }
             ]
         },
