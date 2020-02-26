@@ -85,9 +85,9 @@ public:
         graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
 
         const QUrl vertexShaderGraph[] = {
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iromattealpha.vert.json")),
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iromattealpha.vert.json")),
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iromattealpha.vert.json"))
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json"))
         };
 
         const QUrl fragmentShaderGraph[] = {

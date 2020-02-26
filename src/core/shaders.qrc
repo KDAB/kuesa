@@ -76,5 +76,6 @@
         <file>shaders/graphs/skybox.frag.json</file>
         <file>shaders/graphs/skybox.vert.json</file>
         <file>shaders/graphs/iroglassmult.frag.json</file>
+        <file>shaders/graphs/iroattributepassthrough.vert.json</file>
     </qresource>
 </RCC>
