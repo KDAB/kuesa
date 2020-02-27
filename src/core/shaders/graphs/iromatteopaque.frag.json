@@ -1,0 +1,734 @@
+{
+    "nodes": [
+        {
+            "layers": [],
+            "parameters": {},
+            "type": "TEX_COORD",
+            "uuid": "{e9066a42-04f1-4a10-be8e-0e669d81caa9}"
+        },
+        {
+            "layers": [],
+            "parameters": {
+                "operation": "*",
+                "firstType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                "outputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "BINARY_MATH_OPERATION",
+            "uuid": "{50e49623-dfcb-41ef-899f-8aa0475a593c}"
+        },
+        {
+            "layers": [],
+            "parameters": {
+                "operation": "*",
+                "firstType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "outputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "BINARY_MATH_OPERATION",
+            "uuid": "{b48761b8-e0e0-46cc-ba77-e8ab7243ab86}"
+        },
+        {
+            "layers": [],
+            "parameters": {
+                "operation": "*",
+                "firstType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                "outputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "BINARY_MATH_OPERATION",
+            "uuid": "{ebd5d3ce-20ff-4160-a049-bdce27b79907}"
+        },
+        {
+            "layers": [],
+            "parameters": {},
+            "type": "MATERIAL_OUTPUT",
+            "uuid": "{b12de33e-d9ae-4093-a5a1-2b7e1e3b5978}"
+        },
+        {
+            "layers": [],
+            "parameters": {},
+            "type": "VERTEX_COLOR",
+            "uuid": "{2f2eb4a7-7c5e-462e-8989-14159c8f2333}"
+        },
+        {
+            "layers": [],
+            "parameters": {
+                "defaultColor": "1.0, 1.0, 1.0, 1.0",
+                "name": "matteMap",
+                "condition": "usesMatteMap",
+                "linearizer": "sRGBtoLinear"
+            },
+            "type": "TEX_IMAGE",
+            "uuid": "{eea2fec3-5bc0-49b3-a2ff-9702fce95d28}"
+        },
+        {
+            "layers": [],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "MIX",
+            "uuid": "{486b6ede-b7b3-436d-8a16-09cff18861bd}"
+        },
+        {
+            "layers": [],
+            "parameters": {},
+            "type": "MATERIAL_PROPERTIES",
+            "uuid": "{059dbf43-4319-4b95-9b22-ef62c3b74c3e}"
+        }
+    ],
+    "edges": [
+        {
+            "layers": [],
+            "sourceUuid": "{2f2eb4a7-7c5e-462e-8989-14159c8f2333}",
+            "sourcePort": "color",
+            "targetUuid": "{486b6ede-b7b3-436d-8a16-09cff18861bd}",
+            "targetPort": "input2"
+        },
+        {
+            "layers": [],
+            "sourceUuid": "{486b6ede-b7b3-436d-8a16-09cff18861bd}",
+            "sourcePort": "mixed",
+            "targetUuid": "{ebd5d3ce-20ff-4160-a049-bdce27b79907}",
+            "targetPort": "input0"
+        },
+        {
+            "layers": [],
+            "sourceUuid": "{50e49623-dfcb-41ef-899f-8aa0475a593c}",
+            "sourcePort": "output0",
+            "targetUuid": "{b48761b8-e0e0-46cc-ba77-e8ab7243ab86}",
+            "targetPort": "input1"
+        },
+        {
+            "layers": [],
+            "sourceUuid": "{ebd5d3ce-20ff-4160-a049-bdce27b79907}",
+            "sourcePort": "output0",
+            "targetUuid": "{b12de33e-d9ae-4093-a5a1-2b7e1e3b5978}",
+            "targetPort": "color"
+        },
+        {
+            "layers": [],
+            "sourceUuid": "{059dbf43-4319-4b95-9b22-ef62c3b74c3e}",
+            "sourcePort": "matteGain",
+            "targetUuid": "{50e49623-dfcb-41ef-899f-8aa0475a593c}",
+            "targetPort": "input1"
+        },
+        {
+            "layers": [],
+            "sourceUuid": "{059dbf43-4319-4b95-9b22-ef62c3b74c3e}",
+            "sourcePort": "postVertexColor",
+            "targetUuid": "{486b6ede-b7b3-436d-8a16-09cff18861bd}",
+            "targetPort": "fac"
+        },
+        {
+            "layers": [],
+            "sourceUuid": "{059dbf43-4319-4b95-9b22-ef62c3b74c3e}",
+            "sourcePort": "postGain",
+            "targetUuid": "{ebd5d3ce-20ff-4160-a049-bdce27b79907}",
+            "targetPort": "input1"
+        },
+        {
+            "layers": [],
+            "sourceUuid": "{e9066a42-04f1-4a10-be8e-0e669d81caa9}",
+            "sourcePort": "generated",
+            "targetUuid": "{eea2fec3-5bc0-49b3-a2ff-9702fce95d28}",
+            "targetPort": "vector"
+        },
+        {
+            "layers": [],
+            "sourceUuid": "{eea2fec3-5bc0-49b3-a2ff-9702fce95d28}",
+            "sourcePort": "color",
+            "targetUuid": "{b48761b8-e0e0-46cc-ba77-e8ab7243ab86}",
+            "targetPort": "input0"
+        },
+        {
+            "layers": [],
+            "sourceUuid": "{b48761b8-e0e0-46cc-ba77-e8ab7243ab86}",
+            "sourcePort": "output0",
+            "targetUuid": "{486b6ede-b7b3-436d-8a16-09cff18861bd}",
+            "targetPort": "input1"
+        },
+        {
+            "layers": [],
+            "sourceUuid": "{059dbf43-4319-4b95-9b22-ef62c3b74c3e}",
+            "sourcePort": "matteFilter",
+            "targetUuid": "{50e49623-dfcb-41ef-899f-8aa0475a593c}",
+            "targetPort": "input0"
+        },
+        {
+            "sourceUuid": "{059dbf43-4319-4b95-9b22-ef62c3b74c3e}",
+            "sourcePort": "usesMatteMap",
+            "targetUuid": "{eea2fec3-5bc0-49b3-a2ff-9702fce95d28}",
+            "targetPort": "useTexture"
+        },
+        {
+            "sourceUuid": "{059dbf43-4319-4b95-9b22-ef62c3b74c3e}",
+            "sourcePort": "matteMap",
+            "targetUuid": "{eea2fec3-5bc0-49b3-a2ff-9702fce95d28}",
+            "targetPort": "texture"
+        }
+    ],
+    "prototypes": {
+        "BINARY_MATH_FUNCTION": {
+            "inputs": [
+                "input0",
+                "input1"
+            ],
+            "outputs": [
+                "output0"
+            ],
+            "parameters": {
+                "firstType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                "operation": "min",
+                "outputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp $outputType $output0 = $operation($input0, $input1);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "$outputType $output0 = $operation($input0, $input1);"
+                }
+            ]
+        },
+        "BINARY_MATH_OPERATION": {
+            "inputs": [
+                "input0",
+                "input1"
+            ],
+            "outputs": [
+                "output0"
+            ],
+            "parameters": {
+                "firstType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                "operation": "+",
+                "outputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp $outputType $output0 = ($input0) $operation ($input1);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "$outputType $output0 = ($input0) $operation ($input1);"
+                }
+            ]
+        },
+        "BSDF_TRANSPARENT": {
+            "inputs": [
+                "color"
+            ],
+            "outputs": [
+                "bsdf"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp vec4 $bsdf = vec4($color.rgb, 1 - ($color.r + $color.g + $color.b) / 3);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "vec4 $bsdf = vec4($color.rgb, 1 - ($color.r + $color.g + $color.b) / 3);"
+                }
+            ]
+        },
+        "COMBRGB": {
+            "inputs": [
+                "r",
+                "g",
+                "b"
+            ],
+            "outputs": [
+                "image"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp vec4 $image = vec4($r, $g, $b, 1.0);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "vec4 $image = vec4($r, $g, $b, 1.0);"
+                }
+            ]
+        },
+        "COMBXYZ": {
+            "inputs": [
+                "x",
+                "y",
+                "z"
+            ],
+            "outputs": [
+                "vector"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp vec3 $vector = vec3($x, $y, $z);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "vec3 $vector = vec3($x, $y, $z);"
+                }
+            ]
+        },
+        "MATERIAL_OUTPUT": {
+            "inputs": [
+                "color"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "gl_FragColor = clamp($color, 0.0, 1.0);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out highp vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = clamp($color, 0.0, 1.0);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = clamp($color, 0.0, 1.0);"
+                }
+            ]
+        },
+        "MIX": {
+            "inputs": [
+                "fac",
+                "input1",
+                "input2"
+            ],
+            "outputs": [
+                "mixed"
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp $type $mixed = mix($input1, $input2, $fac);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "$type $mixed = mix($input1, $input2, $fac);"
+                }
+            ]
+        },
+        "NEW_GEOMETRY": {
+            "outputs": [
+                "position",
+                "normal",
+                "tangent"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "varying highp vec3 vertexPos;",
+                        "varying highp vec3 vertexNorm;",
+                        "varying highp vec3 vertexTan;"
+                    ],
+                    "substitution": "highp vec3 $position = vertexPos;highp vec3 $normal = vertexNorm;highp vec3 $tangent = vertexTan;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "in vec3 vertexPos;",
+                        "in vec3 vertexNorm;",
+                        "in vec3 vertexTan;"
+                    ],
+                    "substitution": "vec3 $position = vertexPos;vec3 $normal = vertexNorm;vec3 $tangent = vertexTan;"
+                }
+            ]
+        },
+        "SEPRGB": {
+            "inputs": [
+                "color"
+            ],
+            "outputs": [
+                "r",
+                "g",
+                "b",
+                "a"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp float $r = $color.r;highp float $g = $color.g;highp float $b = $color.b;highp float $a = $color.a;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "float $r = $color.r;float $g = $color.g;float $b = $color.b;float $a = $color.a;"
+                }
+            ]
+        },
+        "SEPXYZ": {
+            "inputs": [
+                "vector"
+            ],
+            "outputs": [
+                "x",
+                "y",
+                "z"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp float $x = $vector.x;highp float $y = $vector.y;highp float $z = $vector.z;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "float $x = $vector.x;float $y = $vector.y;float $z = $vector.z;"
+                }
+            ]
+        },
+        "TEX_COORD": {
+            "outputs": [
+                "generated"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "varying highp vec3 texCoord;"
+                    ],
+                    "substitution": "highp vec3 $generated = texCoord;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "in vec3 texCoord;"
+                    ],
+                    "substitution": "vec3 $generated = texCoord;"
+                }
+            ]
+        },
+        "TEX_IMAGE": {
+            "inputs": [
+                "texture",
+                "useTexture",
+                "vector"
+            ],
+            "outputs": [
+                "color",
+                "alpha",
+                "inter"
+            ],
+            "parameters": {
+                "defaultColor": "1.0, 1.0, 1.0, 1.0",
+                "condition": "false",
+                "name": "",
+                "linearizer": ""
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "highp vec3 sRGBtoLinear(highp vec3 srgb) { return pow(srgb, vec3(2.2)); }"
+                    ],
+                    "substitution": "highp vec4 $inter = $useTexture ? texture($texture, $vector.xy) : vec4($defaultColor);highp vec4 $color = vec4($linearizer($inter.rgb), $inter.a);highp float $alpha = $inter.a;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "vec3 sRGBtoLinear(vec3 srgb) { return pow(srgb, vec3(2.2)); }"
+                    ],
+                    "substitution": "vec4 $inter = $useTexture ? texture($texture, $vector.xy) : vec4($defaultColor);vec4 $color = vec4($linearizer($inter.rgb), $inter.a);float $alpha = $inter.a;"
+                }
+            ]
+        },
+        "UNARY_MATH_FUNCTION": {
+            "inputs": [
+                "input0"
+            ],
+            "outputs": [
+                "output0"
+            ],
+            "parameters": {
+                "firstType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                "operation": "round",
+                "outputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp $outputType $output0 = $operation($input0);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "$outputType $output0 = $operation($input0);"
+                }
+            ]
+        },
+        "VERTEX_COLOR": {
+            "outputs": [
+                "color",
+                "alpha"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "varying highp vec4 vertexCol;"
+                    ],
+                    "substitution": "highp vec4 $color = vertexCol;highp float $alpha = vertexCol.a;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "in vec4 vertexCol;"
+                    ],
+                    "substitution": "vec4 $color = vertexCol;float $alpha = vertexCol.a;"
+                }
+            ]
+        },
+        "constant": {
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "constant": "0.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp $type $value = $type($constant);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "$type $value = $type($constant);"
+                }
+            ]
+        },
+        "MATERIAL_PROPERTIES": {
+            "outputs": [
+                "usesMatteMap",
+                "matteMap",
+                "matteGain",
+                "postVertexColor",
+                "postGain",
+                "matteFilter"
+            ],
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "struct MaterialProperties {\n    bool usesMatteMap;\n    highp sampler2D matteMap;\n    highp float matteGain;\n    highp float postVertexColor;\n    highp float postGain;\n    highp vec4 matteFilter;\n};\nuniform MaterialProperties properties;"
+                    ],
+                    "substitution": "MaterialProperties $properties = properties;bool $usesMatteMap = properties.usesMatteMap;highp sampler2D $matteMap = properties.matteMap;highp float $matteGain = properties.matteGain;highp float $postVertexColor = properties.postVertexColor;highp float $postGain = properties.postGain;highp vec4 $matteFilter = properties.matteFilter;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "struct MaterialProperties {\n    bool usesMatteMap;\n    sampler2D matteMap;\n    float matteGain;\n    float postVertexColor;\n    float postGain;\n    vec4 matteFilter;\n};\nuniform MaterialProperties properties;"
+                    ],
+                    "substitution": "MaterialProperties $properties = properties;bool $usesMatteMap = properties.usesMatteMap;sampler2D $matteMap = properties.matteMap;float $matteGain = properties.matteGain;float $postVertexColor = properties.postVertexColor;float $postGain = properties.postGain;vec4 $matteFilter = properties.matteFilter;"
+                }
+            ]
+        }
+    }
+}
