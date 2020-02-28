@@ -282,7 +282,7 @@ void registerDefaultAnimatables()
     AnimationParser::registerAnimatableProperty(QStringLiteral("pbrMetallicRoughness/metallicFactor"), 1, QStringLiteral("metallicFactor"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("pbrMetallicRoughness/roughnessFactor"), 1, QStringLiteral("roughnessFactor"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("alphaCutoff"), 1, QStringLiteral("alphaCutoff"), &mappingsForGenericTargetNode);
-    AnimationParser::registerAnimatableProperty(QStringLiteral("emissiveFactor"), 1, QStringLiteral("emissiveFactor"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("emissiveFactor"), 3, QStringLiteral("emissiveFactor"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("normalTexture/scale"), 1, QStringLiteral("normalScale"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("occlusionTexture/strength"), 1, QStringLiteral("occlusionStrength"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("intensity"), 1, QStringLiteral("intensity"), &mappingsForGenericTargetNode);
