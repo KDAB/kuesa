@@ -699,10 +699,6 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
 
         QVector<ChannelInfo> channelsInfo;
 
-        // Parse regular Channels
-        for (const QJsonValue &channelValue : channelsArray) {
-            channelsInfo.push_back(channelInfoFromJson(channelValue.toObject()));
-        }
 
         // Parse EXT_property_animation channels
         const QJsonObject extensionsObj = animationObject.value(KEY_EXTENSIONS).toObject();
@@ -714,6 +710,18 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
                 return false;
             }
             channelsInfo += propertyAnimationParser.channelsInfo();
+        }
+
+        // Parse regular Channels
+        for (const QJsonValue &channelValue : channelsArray) {
+            const ChannelInfo channelInfo = channelInfoFromJson(channelValue.toObject());
+            // If the regular channel uses the same sampler as one of the extension channels,
+            // we will ignore it
+            const auto it = std::find_if(channelsInfo.cbegin(), channelsInfo.cend(), [&channelInfo] (const ChannelInfo &a) {
+                return a.sampler == channelInfo.sampler;
+            });
+            if (it == channelsInfo.cend())
+                channelsInfo.push_back(channelInfo);
         }
 
         // Check Channel Objects have a correct structure
