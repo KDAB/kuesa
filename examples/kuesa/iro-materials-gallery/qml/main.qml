@@ -50,7 +50,15 @@ Item {
             // Root Scene Entity
             MainScene {
                 id: sceneContent
+                onClickedAt: {
+                    inspectorView.x = x
+                    inspectorView.y = y
+                }
             }
         }
+    }
+
+    MaterialInspector {
+        id: inspectorView
     }
 }

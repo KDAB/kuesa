@@ -38,6 +38,7 @@ import Kuesa.Effects 1.1 as KuesaFX
 
 Kuesa.SceneEntity {
     id: root3D
+    signal clickedAt(int x, int y)
 //! [0]
 
     components: [
@@ -56,6 +57,7 @@ Kuesa.SceneEntity {
         ObjectPicker {
             onClicked: {
                 _materialInspector.inspect(pick)
+                root3D.clickedAt(pick.position.x, pick.position.y)
             }
         }
 //! [3]

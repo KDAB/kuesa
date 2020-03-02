@@ -1,5 +1,5 @@
 /*
-    materialinspector.h
+    MaterialInspector.qml
 
     This file is part of Kuesa.
 
@@ -26,46 +26,30 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef MATERIALINSPECTOR_H
-#define MATERIALINSPECTOR_H
+import QtQuick 2.12
 
-#include<QObject>
+Item {
+    readonly property int _margins: 25
+    width: contentText.implicitWidth + _margins
+    height: contentText.implicitHeight + _margins
 
-namespace Qt3DCore {
-class QEntity;
+    visible: contentText.text !== ""
+
+    Rectangle {
+        opacity: 0.4
+        color: "black"
+        anchors.fill: parent
+        radius: 15
+        border {
+            color: "white"
+            width: 1
+        }
+    }
+
+    Text {
+        color: "white"
+        anchors.centerIn: parent
+        id: contentText
+        text: _materialInspector.description
+    }
 }
-
-namespace Qt3DRender {
-class QPickEvent;
-}
-
-namespace Kuesa {
-class GLTF2Material;
-}
-
-class MaterialInspector : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(Kuesa::GLTF2Material *material READ material NOTIFY materialChanged)
-    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
-public:
-    explicit MaterialInspector(QObject *parent = nullptr);
-
-    Kuesa::GLTF2Material *material() const;
-    QString description() const;
-
-    Q_INVOKABLE void inspect(Qt3DRender::QPickEvent *pick);
-
-signals:
-    void materialChanged();
-    void descriptionChanged();
-
-private:
-    void setMaterial(Kuesa::GLTF2Material *material);
-    void introspect();
-
-    Kuesa::GLTF2Material *m_material;
-    QString m_description;
-};
-
-#endif // MATERIALINSPECTOR_H
