@@ -111,5 +111,5 @@ private:
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-
+Q_DECLARE_METATYPE(Kuesa::IroGlassAddProperties*)
 #endif // KUESA_IROGLASSADDPROPERTIES_H

@@ -90,5 +90,5 @@ private:
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-
+Q_DECLARE_METATYPE(Kuesa::IroMatteAlphaProperties*)
 #endif // KUESA_IROMATTEALPHAPROPERTIES_H

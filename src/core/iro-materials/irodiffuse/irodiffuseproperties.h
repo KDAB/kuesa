@@ -119,5 +119,5 @@ private:
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-
+Q_DECLARE_METATYPE(Kuesa::IroDiffuseProperties*)
 #endif // KUESA_IRODIFFUSEPROPERTIES_H

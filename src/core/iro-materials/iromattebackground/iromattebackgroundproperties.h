@@ -86,5 +86,5 @@ private:
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-
+Q_DECLARE_METATYPE(Kuesa::IroMatteBackgroundProperties*)
 #endif // KUESA_IROMATTEBACKGROUNDPROPERTIES_H

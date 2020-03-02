@@ -79,7 +79,7 @@ namespace Kuesa {
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-
+%s
 #endif // KUESA_%s_H
 """
 
@@ -1371,15 +1371,17 @@ HEADERS += \\
                          className,
                          docContent)
 
-    def generateHeaderFile(self, content, className, includes = "", privateHeader = False):
+    def generateHeaderFile(self, content, className, includes = "", privateHeader = False, declare_metatype = False):
         headerFileName = className.lower() + ("_p" if privateHeader else "")
         includeGuardName = className.upper() + ("_P" if privateHeader else "")
+        declareMetaType = "Q_DECLARE_METATYPE(Kuesa::%s*)" % (className)
         headerFileContent = CustomMaterialGenerator.headerContent % (headerFileName,
                                                                      includeGuardName,
                                                                      includeGuardName,
                                                                      CustomMaterialGenerator.headerPrivateWarning if privateHeader else "",
                                                                      includes,
                                                                      content,
+                                                                     declareMetaType if declare_metatype else "",
                                                                      includeGuardName)
         with open(headerFileName + ".h", 'w') as f:
             f.write(headerFileContent)
@@ -1463,7 +1465,8 @@ HEADERS += \\
 
             self.generateHeaderFile(content,
                                     className,
-                                    includes)
+                                    includes,
+                                    declare_metatype=True)
         generateHeader()
 
         def generateCpp():
