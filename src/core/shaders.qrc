@@ -80,5 +80,6 @@
         <file>shaders/graphs/iromattebackground.vert.json</file>
         <file>shaders/graphs/iromattealpha.frag.json</file>
         <file>shaders/graphs/iromatteopaque.frag.json</file>
+        <file>shaders/graphs/iromatteskybox.vert.json</file>
     </qresource>
 </RCC>
