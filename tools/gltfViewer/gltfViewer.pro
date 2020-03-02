@@ -7,10 +7,10 @@ include($$KUESA_ROOT/kuesa-global.pri)
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
-    ../gltfEditor/orbitcameracontroller.cpp
+    orbitcameracontroller.cpp
 
 HEADERS += \
-    ../gltfEditor/orbitcameracontroller.h
+    orbitcameracontroller.h
 
 RESOURCES += qml.qrc \
     ../../resources/resources.qrc \

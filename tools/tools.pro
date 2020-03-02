@@ -36,17 +36,5 @@ QT_FOR_CONFIG += kuesa
 qtConfig(kuesa-tools) {
 
 !uikit: SUBDIRS += \
-    assetprocessor \
     gltfViewer
-
-!cross_compile: {
-    SUBDIRS += \
-        gltfEditor \
-        ddspreviewer
-
-    !macos {
-        SUBDIRS += \
-            cubemaptooctahedralmap
-    }
-}
 }
