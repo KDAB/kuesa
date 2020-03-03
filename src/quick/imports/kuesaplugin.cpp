@@ -54,6 +54,18 @@
 #include <Kuesa/IroGlassAddMaterial>
 #include <Kuesa/IroGlassAddEffect>
 #include <Kuesa/IroGlassAddProperties>
+#include <Kuesa/IroMatteOpaqueMaterial>
+#include <Kuesa/IroMatteOpaqueEffect>
+#include <Kuesa/IroMatteOpaqueProperties>
+#include <Kuesa/IroMatteAlphaMaterial>
+#include <Kuesa/IroMatteAlphaEffect>
+#include <Kuesa/IroMatteAlphaProperties>
+#include <Kuesa/IroMatteSkyboxMaterial>
+#include <Kuesa/IroMatteSkyboxEffect>
+#include <Kuesa/IroMatteSkyboxProperties>
+#include <Kuesa/IroMatteBackgroundMaterial>
+#include <Kuesa/IroMatteBackgroundEffect>
+#include <Kuesa/IroMatteBackgroundProperties>
 #include <QtQml/qqml.h>
 
 QT_BEGIN_NAMESPACE
@@ -126,6 +138,22 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::IroGlassAddMaterial>("Kuesa.Iro", 1, 2, "IroGlassAddMaterial");
     qmlRegisterType<Kuesa::IroGlassAddProperties>("Kuesa.Iro", 1, 2, "IroGlassAddProperties");
     qmlRegisterType<Kuesa::IroGlassAddEffect>("Kuesa.Iro", 1, 2, "IroGlassAddEffect");
+
+    qmlRegisterType<Kuesa::IroMatteOpaqueMaterial>("Kuesa.Iro", 1, 2, "IroMatteOpaqueMaterial");
+    qmlRegisterType<Kuesa::IroMatteOpaqueProperties>("Kuesa.Iro", 1, 2, "IroMatteOpaqueProperties");
+    qmlRegisterType<Kuesa::IroMatteOpaqueEffect>("Kuesa.Iro", 1, 2, "IroMatteOpaqueEffect");
+
+    qmlRegisterType<Kuesa::IroMatteAlphaMaterial>("Kuesa.Iro", 1, 2, "IroMatteAlphaMaterial");
+    qmlRegisterType<Kuesa::IroMatteAlphaProperties>("Kuesa.Iro", 1, 2, "IroMatteAlphaProperties");
+    qmlRegisterType<Kuesa::IroMatteAlphaEffect>("Kuesa.Iro", 1, 2, "IroMatteAlphaEffect");
+
+    qmlRegisterType<Kuesa::IroMatteSkyboxMaterial>("Kuesa.Iro", 1, 2, "IroMatteSkyboxMaterial");
+    qmlRegisterType<Kuesa::IroMatteSkyboxProperties>("Kuesa.Iro", 1, 2, "IroMatteSkyboxProperties");
+    qmlRegisterType<Kuesa::IroMatteSkyboxEffect>("Kuesa.Iro", 1, 2, "IroMatteSkyboxEffect");
+
+    qmlRegisterType<Kuesa::IroMatteBackgroundMaterial>("Kuesa.Iro", 1, 2, "IroMatteBackgroundMaterial");
+    qmlRegisterType<Kuesa::IroMatteBackgroundProperties>("Kuesa.Iro", 1, 2, "IroMatteBackgroundProperties");
+    qmlRegisterType<Kuesa::IroMatteBackgroundEffect>("Kuesa.Iro", 1, 2, "IroMatteBackgroundEffect");
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));
