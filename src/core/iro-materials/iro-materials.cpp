@@ -52,6 +52,9 @@
 #include <Kuesa/IroMatteAddMaterial>
 #include <Kuesa/IroMatteAddEffect>
 #include <Kuesa/IroMatteAddProperties>
+#include <Kuesa/IroMatteMultMaterial>
+#include <Kuesa/IroMatteMultEffect>
+#include <Kuesa/IroMatteMultProperties>
 
 QT_BEGIN_NAMESPACE
 
@@ -69,6 +72,7 @@ void registerIroMaterials()
     GLTF2Importer::registerCustomMaterial<IroMatteSkyboxMaterial, IroMatteSkyboxProperties, IroMatteSkyboxEffect>(QStringLiteral("IroMatteSkybox"));
     GLTF2Importer::registerCustomMaterial<IroMatteBackgroundMaterial, IroMatteBackgroundProperties, IroMatteBackgroundEffect>(QStringLiteral("IroMatteBackground"));
     GLTF2Importer::registerCustomMaterial<IroMatteAddMaterial, IroMatteAddProperties, IroMatteAddEffect>(QStringLiteral("IroMatteAdd"));
+    GLTF2Importer::registerCustomMaterial<IroMatteMultMaterial, IroMatteMultProperties, IroMatteMultEffect>(QStringLiteral("IroMatteMult"));
 }
 
 // This will call registerIroMaterials on startup automatically
