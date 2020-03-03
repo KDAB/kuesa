@@ -66,6 +66,9 @@
 #include <Kuesa/IroMatteBackgroundMaterial>
 #include <Kuesa/IroMatteBackgroundEffect>
 #include <Kuesa/IroMatteBackgroundProperties>
+#include <Kuesa/IroMatteAddMaterial>
+#include <Kuesa/IroMatteAddEffect>
+#include <Kuesa/IroMatteAddProperties>
 #include <QtQml/qqml.h>
 
 QT_BEGIN_NAMESPACE
@@ -154,6 +157,10 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::IroMatteBackgroundMaterial>("Kuesa.Iro", 1, 2, "IroMatteBackgroundMaterial");
     qmlRegisterType<Kuesa::IroMatteBackgroundProperties>("Kuesa.Iro", 1, 2, "IroMatteBackgroundProperties");
     qmlRegisterType<Kuesa::IroMatteBackgroundEffect>("Kuesa.Iro", 1, 2, "IroMatteBackgroundEffect");
+
+    qmlRegisterType<Kuesa::IroMatteAddMaterial>("Kuesa.Iro", 1, 2, "IroMatteAddMaterial");
+    qmlRegisterType<Kuesa::IroMatteAddProperties>("Kuesa.Iro", 1, 2, "IroMatteAddProperties");
+    qmlRegisterType<Kuesa::IroMatteAddEffect>("Kuesa.Iro", 1, 2, "IroMatteAddEffect");
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));
