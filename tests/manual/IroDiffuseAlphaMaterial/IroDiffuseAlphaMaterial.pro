@@ -1,8 +1,8 @@
-# iro-materials.pri
+# IroDiffuseAlphaMaterial.pro
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -24,21 +24,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+TEMPLATE = app
 
-INCLUDEPATH += $$PWD
+QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa
 
-include(irodiffuse/irodiffuse.pri)
-include(irodiffusehemi/irodiffusehemi.pri)
-include(iroglassadd/iroglassadd.pri)
-include(iromatteopaque/iromatteopaque.pri)
-include(iromattealpha/iromattealpha.pri)
-include(iromatteskybox/iromatteskybox.pri)
-include(iromattebackground/iromattebackground.pri)
-include(iromatteadd/iromatteadd.pri)
-include(iromattemult/iromattemult.pri)
-include(irodiffusealpha/irodiffusealpha.pri)
+SOURCES += \
+    main.cpp
 
-SOURCES += $$PWD/iro-materials.cpp
-HEADERS += $$PWD/iro-materials_p.h
+RESOURCES += \
+    main.qrc
 
-OTHER_FILES += $$PWD/*.json
+DEFINES += ASSETS=\\\"$$KUESA_ROOT/tests/\\\"

@@ -72,6 +72,10 @@
 #include <Kuesa/IroMatteMultMaterial>
 #include <Kuesa/IroMatteMultEffect>
 #include <Kuesa/IroMatteMultProperties>
+#include <Kuesa/IroDiffuseAlphaMaterial>
+#include <Kuesa/IroDiffuseAlphaEffect>
+#include <Kuesa/IroDiffuseAlphaProperties>
+
 #include <QtQml/qqml.h>
 
 QT_BEGIN_NAMESPACE
@@ -168,6 +172,10 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::IroMatteMultMaterial>("Kuesa.Iro", 1, 2, "IroMatteMultMaterial");
     qmlRegisterType<Kuesa::IroMatteMultProperties>("Kuesa.Iro", 1, 2, "IroMatteMultProperties");
     qmlRegisterType<Kuesa::IroMatteMultEffect>("Kuesa.Iro", 1, 2, "IroMatteMultEffect");
+
+    qmlRegisterType<Kuesa::IroDiffuseAlphaMaterial>("Kuesa.Iro", 1, 2, "IroDiffuseAlphaMaterial");
+    qmlRegisterType<Kuesa::IroDiffuseAlphaProperties>("Kuesa.Iro", 1, 2, "IroDiffuseAlphaProperties");
+    qmlRegisterType<Kuesa::IroDiffuseAlphaEffect>("Kuesa.Iro", 1, 2, "IroDiffuseAlphaEffect");
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));

@@ -55,6 +55,9 @@
 #include <Kuesa/IroMatteMultMaterial>
 #include <Kuesa/IroMatteMultEffect>
 #include <Kuesa/IroMatteMultProperties>
+#include <Kuesa/IroDiffuseAlphaMaterial>
+#include <Kuesa/IroDiffuseAlphaEffect>
+#include <Kuesa/IroDiffuseAlphaProperties>
 
 QT_BEGIN_NAMESPACE
 
@@ -73,6 +76,7 @@ void registerIroMaterials()
     GLTF2Importer::registerCustomMaterial<IroMatteBackgroundMaterial, IroMatteBackgroundProperties, IroMatteBackgroundEffect>(QStringLiteral("IroMatteBackground"));
     GLTF2Importer::registerCustomMaterial<IroMatteAddMaterial, IroMatteAddProperties, IroMatteAddEffect>(QStringLiteral("IroMatteAdd"));
     GLTF2Importer::registerCustomMaterial<IroMatteMultMaterial, IroMatteMultProperties, IroMatteMultEffect>(QStringLiteral("IroMatteMult"));
+    GLTF2Importer::registerCustomMaterial<IroDiffuseAlphaMaterial, IroDiffuseAlphaProperties, IroDiffuseAlphaEffect>(QStringLiteral("IroDiffuseAlpha"));
 }
 
 // This will call registerIroMaterials on startup automatically

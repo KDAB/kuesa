@@ -47,6 +47,7 @@ qtHaveModule(quick) {
         IroMatteBackgroundMaterial \
         IroMatteAddMaterial \
         IroMatteMultMaterial \
+        IroDiffuseAlphaMaterial \
         layered_framegraph
 }
 
