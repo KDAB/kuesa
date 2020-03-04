@@ -53,6 +53,30 @@ Kuesa.SceneEntity {
             pickingSettings.pickMethod: PickingSettings.TrianglePicking
         },
         InputSettings { },
+        EnvironmentLight {
+            irradiance: TextureLoader {
+                source: _assetsPrefix + "pink_sunrise_16f_irradiance" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+
+                minificationFilter: Texture.LinearMipMapLinear
+                magnificationFilter: Texture.Linear
+                wrapMode {
+                    x: WrapMode.ClampToEdge
+                    y: WrapMode.ClampToEdge
+                }
+                generateMipMaps: false
+            }
+            specular: TextureLoader {
+                source: _assetsPrefix + "pink_sunrise_16f_specular" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+
+                minificationFilter: Texture.LinearMipMapLinear
+                magnificationFilter: Texture.Linear
+                wrapMode {
+                    x: WrapMode.ClampToEdge
+                    y: WrapMode.ClampToEdge
+                }
+                generateMipMaps: false
+            }
+        },
 //! [3]
         ObjectPicker {
             onClicked: {

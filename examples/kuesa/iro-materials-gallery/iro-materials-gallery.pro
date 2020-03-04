@@ -43,30 +43,38 @@ RESOURCES += \
 
 gltf_dir = ../assets/models/iro-materials/
 gltf.files = \
-    $${helmet_dir}/iro-materials-gallery.bin \
-    $${helmet_dir}/iro-materials-gallery.gltf \
-    $${helmet_dir}/carpaint.png
+    $${gltf_dir}/iro-materials-gallery.bin \
+    $${gltf_dir}/iro-materials-gallery.gltf \
+    $${gltf_dir}/carpaint.png
+
+envmaps_dir = ../assets/envmaps/pink_sunrise
+envmaps.files = \
+    $${envmaps_dir}/pink_sunrise_16f_irradiance.dds \
+    $${envmaps_dir}/pink_sunrise_16f_radiance.dds \
+    $${envmaps_dir}/pink_sunrise_16f_specular.dds \
+    $${envmaps_dir}/pink_sunrise_skybox.dds
 
 android {
     gltf.path = /assets
-    INSTALLS += gltf
+    INSTALLS += gltf envmaps
     DISTFILES += android/AndroidManifest.xml
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 } else:ios {
     gltf.path = "/Library/Application Support"
-    QMAKE_BUNDLE_DATA += gltf
+    QMAKE_BUNDLE_DATA += gltf envmaps
     OTHER_FILES += Info-ios.plist
     QMAKE_INFO_PLIST = Info-ios.plist
     OBJECTIVE_SOURCES += ios/iosutils.mm
     QMAKE_ASSET_CATALOGS += ios/Images.xcassets
 } else:osx {
     gltf.path = "/Contents/Resources"
-    QMAKE_BUNDLE_DATA += helmet envmaps
+    QMAKE_BUNDLE_DATA += gltf envmaps
     ICON = ../shared-utils/kuesa.icns
     OTHER_FILES += Info-macos.plist
     QMAKE_INFO_PLIST = Info-macos.plist
 } else {
     RCC_BINARY_SOURCES += \
+        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc \
         ../assets/models/iro-materials/gltf.qrc
 
     windows {
@@ -84,6 +92,8 @@ android {
 
     ext_resources.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
     ext_resources.files = $$OUT_PWD/resources
+
+    INSTALLS += ext_resources
 }
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
