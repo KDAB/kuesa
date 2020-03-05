@@ -51,6 +51,9 @@
 #include <Kuesa/IroDiffuseMaterial>
 #include <Kuesa/IroDiffuseEffect>
 #include <Kuesa/IroDiffuseProperties>
+#include <Kuesa/IroDiffuseHemiMaterial>
+#include <Kuesa/IroDiffuseHemiEffect>
+#include <Kuesa/IroDiffuseHemiProperties>
 #include <Kuesa/IroGlassAddMaterial>
 #include <Kuesa/IroGlassAddEffect>
 #include <Kuesa/IroGlassAddProperties>
@@ -144,6 +147,10 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::IroDiffuseMaterial>("Kuesa.Iro", 1, 2, "IroDiffuseMaterial");
     qmlRegisterType<Kuesa::IroDiffuseProperties>("Kuesa.Iro", 1, 2, "IroDiffuseProperties");
     qmlRegisterType<Kuesa::IroDiffuseEffect>("Kuesa.Iro", 1, 2, "IroDiffuseEffect");
+
+    qmlRegisterType<Kuesa::IroDiffuseHemiMaterial>("Kuesa.Iro", 1, 2, "IroDiffuseHemiMaterial");
+    qmlRegisterType<Kuesa::IroDiffuseHemiProperties>("Kuesa.Iro", 1, 2, "IroDiffuseHemiProperties");
+    qmlRegisterType<Kuesa::IroDiffuseHemiEffect>("Kuesa.Iro", 1, 2, "IroDiffuseHemiEffect");
 
     qmlRegisterType<Kuesa::IroGlassAddMaterial>("Kuesa.Iro", 1, 2, "IroGlassAddMaterial");
     qmlRegisterType<Kuesa::IroGlassAddProperties>("Kuesa.Iro", 1, 2, "IroGlassAddProperties");
