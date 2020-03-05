@@ -50,6 +50,6 @@ Item {
         color: "white"
         anchors.centerIn: parent
         id: contentText
-        text: _materialInspector.description
+        text: _materialInspector ? _materialInspector.description : ""
     }
 }
