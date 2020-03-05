@@ -89,9 +89,9 @@ public:
         addFilterKey(filterKey);
         {
             const QUrl vertexShaderGraph[] = {
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"))
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json"))
             };
 
             const QUrl fragmentShaderGraph[] = {
@@ -146,9 +146,9 @@ public:
 
             auto blendArguments = new Qt3DRender::QBlendEquationArguments(this);
             blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::Zero);
-            blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::Zero);
+            blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::One);
             blendArguments->setDestinationRgb(Qt3DRender::QBlendEquationArguments::SourceColor);
-            blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::SourceColor);
+            blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::Zero);
 
             transparentRenderPass->addRenderState(m_backFaceCulling);
             transparentRenderPass->addRenderState(blendEquation);
@@ -163,15 +163,15 @@ public:
         }
         {
             const QUrl vertexShaderGraph[] = {
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.vert.json"))
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json"))
             };
 
             const QUrl fragmentShaderGraph[] = {
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassadd.frag.json"))
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffusealpha.frag.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffusealpha.frag.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffusealpha.frag.json"))
             };
 
             const QByteArray renderableVertexShaderCode[] = {

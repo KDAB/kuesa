@@ -69,10 +69,12 @@ IroGlassAddProperties::IroGlassAddProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionMapChanged, this, &IroGlassAddProperties::reflectionMapChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionInnerFilterChanged, this, &IroGlassAddProperties::reflectionInnerFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionOuterFilterChanged, this, &IroGlassAddProperties::reflectionOuterFilterChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::usesReflectionMapChanged, this, &IroGlassAddProperties::usesReflectionMapChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionInnerAlphaChanged, this, &IroGlassAddProperties::reflectionInnerAlphaChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionOuterAlphaChanged, this, &IroGlassAddProperties::reflectionOuterAlphaChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::glassInnerFilterChanged, this, &IroGlassAddProperties::glassInnerFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::glassOuterFilterChanged, this, &IroGlassAddProperties::glassOuterFilterChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::alphaGainChanged, this, &IroGlassAddProperties::alphaGainChanged);
 
 }
 
@@ -123,6 +125,11 @@ void IroGlassAddProperties::setReflectionOuterFilter(const QVector3D &reflection
     m_shaderData->setReflectionOuterFilter(reflectionOuterFilter);
 }
 
+void IroGlassAddProperties::setUsesReflectionMap(bool usesReflectionMap)
+{
+    m_shaderData->setUsesReflectionMap(usesReflectionMap);
+}
+
 void IroGlassAddProperties::setReflectionInnerAlpha(float reflectionInnerAlpha)
 {
     m_shaderData->setReflectionInnerAlpha(reflectionInnerAlpha);
@@ -141,6 +148,11 @@ void IroGlassAddProperties::setGlassInnerFilter(const QVector3D &glassInnerFilte
 void IroGlassAddProperties::setGlassOuterFilter(const QVector3D &glassOuterFilter)
 {
     m_shaderData->setGlassOuterFilter(glassOuterFilter);
+}
+
+void IroGlassAddProperties::setAlphaGain(float alphaGain)
+{
+    m_shaderData->setAlphaGain(alphaGain);
 }
 
 
@@ -249,6 +261,19 @@ QVector3D IroGlassAddProperties::reflectionOuterFilter() const
 }
 
 /*!
+    \qmlproperty bool IroGlassAddProperties::usesReflectionMap
+    Specifies whether we use a reflection map or not.
+*/
+/*!
+    \property IroGlassAddProperties::usesReflectionMap
+    Specifies whether we use a reflection map or not.
+*/
+bool IroGlassAddProperties::usesReflectionMap() const
+{
+    return m_shaderData->usesReflectionMap();
+}
+
+/*!
     \qmlproperty float IroGlassAddProperties::reflectionInnerAlpha
     Specifies the inner alpha filter to be applied based on fresnel on the spherical environment map lookup.
 */
@@ -298,6 +323,19 @@ QVector3D IroGlassAddProperties::glassInnerFilter() const
 QVector3D IroGlassAddProperties::glassOuterFilter() const
 {
     return m_shaderData->glassOuterFilter();
+}
+
+/*!
+    \qmlproperty float IroGlassAddProperties::alphaGain
+    Specifies the gain applied to the alpha.
+*/
+/*!
+    \property IroGlassAddProperties::alphaGain
+    Specifies the gain applied to the alpha.
+*/
+float IroGlassAddProperties::alphaGain() const
+{
+    return m_shaderData->alphaGain();
 }
 
 

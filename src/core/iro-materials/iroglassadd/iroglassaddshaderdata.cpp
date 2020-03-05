@@ -47,10 +47,12 @@ IroGlassAddShaderData::IroGlassAddShaderData(Qt3DCore::QNode *parent)
     , m_reflectionMap(nullptr)
     , m_reflectionInnerFilter()
     , m_reflectionOuterFilter()
+    , m_usesReflectionMap()
     , m_reflectionInnerAlpha()
     , m_reflectionOuterAlpha()
     , m_glassInnerFilter()
     , m_glassOuterFilter()
+    , m_alphaGain()
 {}
 
 IroGlassAddShaderData::~IroGlassAddShaderData() = default;
@@ -95,6 +97,11 @@ QVector3D IroGlassAddShaderData::reflectionOuterFilter() const
     return m_reflectionOuterFilter;
 }
 
+bool IroGlassAddShaderData::usesReflectionMap() const
+{
+    return m_usesReflectionMap;
+}
+
 float IroGlassAddShaderData::reflectionInnerAlpha() const
 {
     return m_reflectionInnerAlpha;
@@ -113,6 +120,11 @@ QVector3D IroGlassAddShaderData::glassInnerFilter() const
 QVector3D IroGlassAddShaderData::glassOuterFilter() const
 {
     return m_glassOuterFilter;
+}
+
+float IroGlassAddShaderData::alphaGain() const
+{
+    return m_alphaGain;
 }
 
 
@@ -189,6 +201,14 @@ void IroGlassAddShaderData::setReflectionOuterFilter(const QVector3D &reflection
     emit reflectionOuterFilterChanged(reflectionOuterFilter);
 }
 
+void IroGlassAddShaderData::setUsesReflectionMap(bool usesReflectionMap)
+{
+    if (m_usesReflectionMap == usesReflectionMap)
+        return;
+    m_usesReflectionMap = usesReflectionMap;
+    emit usesReflectionMapChanged(usesReflectionMap);
+}
+
 void IroGlassAddShaderData::setReflectionInnerAlpha(float reflectionInnerAlpha)
 {
     if (m_reflectionInnerAlpha == reflectionInnerAlpha)
@@ -219,6 +239,14 @@ void IroGlassAddShaderData::setGlassOuterFilter(const QVector3D &glassOuterFilte
         return;
     m_glassOuterFilter = glassOuterFilter;
     emit glassOuterFilterChanged(glassOuterFilter);
+}
+
+void IroGlassAddShaderData::setAlphaGain(float alphaGain)
+{
+    if (m_alphaGain == alphaGain)
+        return;
+    m_alphaGain = alphaGain;
+    emit alphaGainChanged(alphaGain);
 }
 
 

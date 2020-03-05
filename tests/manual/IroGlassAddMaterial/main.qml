@@ -42,7 +42,7 @@ Kuesa.SceneEntity {
             activeFrameGraph: Kuesa.ForwardRenderer {
                 id: frameGraph
                 camera: mainCamera
-                clearColor: "white"
+                clearColor: "grey"
             }
         },
         InputSettings { }
@@ -65,7 +65,7 @@ Kuesa.SceneEntity {
     Kuesa.GLTF2Importer {
         id: gltf2importer
         sceneEntity: scene
-        source: "file:///" + ASSETS + "manual/assets/IroMaterials/IroGlassAddMaterial/sphere.gltf"
+        source: "file:///" + ASSETS + "manual/assets/IroMaterials/IroGlassAddMaterial/iroglassadd.gltf"
     }
 
     onLoadingDone: {
