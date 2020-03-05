@@ -30,6 +30,11 @@
 #include <Kuesa/SceneEntity>
 #include <Kuesa/AbstractAssetCollection>
 
+#include "assetproperty_p.h"
+
+#include <QMetaProperty>
+#include <QMetaMethod>
+
 QT_USE_NAMESPACE
 using namespace Kuesa;
 
@@ -173,6 +178,52 @@ void Asset::setNode(Qt3DCore::QNode *node)
 {
     if (m_node != node) {
         m_node = node;
+
+        qDeleteAll(m_assetProperties);
+        m_assetProperties.clear();
+        QObject::disconnect(m_releaseAssetPropertiesConnection);
+
+        // Get only the Kuesa.Asset user defined properties. We are not interested in default properties!
+        // Iterate on the metaObject properties of this and forward node properties to metaObject properties
+        if (node != nullptr) {
+            const QString &className = metaObject()->className();
+
+            // The Kuesa.Asset has been extended with some properties! This is the case we are interested in!
+            if (className.contains(QStringLiteral("_QML_"))) {
+                const auto propertyOffset = this->metaObject()->propertyOffset();
+                const auto nbProperties = this->metaObject()->propertyCount();
+                for (int propertyIdx = propertyOffset; propertyIdx < nbProperties; ++propertyIdx) {
+                    const QMetaProperty property = metaObject()->property(propertyIdx);
+                    qDebug() << property.name();
+
+                    // Check if current node has a property with this name
+                    const auto nodePropertyId = m_node->metaObject()->indexOfProperty(property.name());
+                    if (nodePropertyId != -1) {
+                        // node has a property with this name. Forward signals and slots
+                        const QMetaProperty nodeProperty = m_node->metaObject()->property(nodePropertyId);
+                        if (nodeProperty.hasNotifySignal()) {
+                            AssetProperty *assetProperty = new AssetProperty(this);
+                            assetProperty->node = m_node;
+                            assetProperty->nodeProperty = nodeProperty;
+                            assetProperty->qmlProperty = property;
+                            QObject::connect(this,
+                                             property.notifySignal(),
+                                             assetProperty,
+                                             assetProperty->metaObject()->method(assetProperty->metaObject()->indexOfMethod("setNodeProperty()")));
+                            QObject::connect(m_node,
+                                             nodeProperty.notifySignal(),
+                                             assetProperty,
+                                             assetProperty->metaObject()->method(assetProperty->metaObject()->indexOfMethod("setQmlProperty()")));
+                            assetProperty->setQmlProperty();
+                            m_assetProperties.push_back(assetProperty);
+                        }
+                    }
+                }
+            }
+            m_releaseAssetPropertiesConnection = QObject::connect(m_node, &QNode::nodeDestroyed, [this]() {
+                setNode(nullptr);
+            });
+        }
         emit nodeChanged(m_node);
     }
 }

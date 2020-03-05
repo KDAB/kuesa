@@ -37,6 +37,8 @@ namespace Kuesa {
 class SceneEntity;
 class AbstractAssetCollection;
 
+class AssetProperty;
+
 class Asset : public Qt3DCore::QNode
 {
     Q_OBJECT
@@ -44,6 +46,7 @@ class Asset : public Qt3DCore::QNode
     Q_PROPERTY(Kuesa::AbstractAssetCollection *collection READ collection WRITE setCollection NOTIFY collectionChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(Qt3DCore::QNode *node READ node NOTIFY nodeChanged)
+
 public:
     Asset(Qt3DCore::QNode *parent = nullptr);
 
@@ -69,10 +72,13 @@ private:
     QString m_name;
     Qt3DCore::QNode *m_node;
     QHash<QNode *, QMetaObject::Connection> m_destructionConnections;
+    QMetaObject::Connection m_releaseAssetPropertiesConnection;
 
     void setNode(Qt3DCore::QNode *node);
     void findAsset();
     void updateSceneFromParent(Qt3DCore::QNode *parent);
+
+    std::vector<AssetProperty *> m_assetProperties;
 };
 
 } // namespace Kuesa

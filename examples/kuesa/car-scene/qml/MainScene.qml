@@ -58,7 +58,7 @@ Kuesa.SceneEntity {
     property double exposure: 0.0
     property bool useOpacityMask: false
     property bool useBloomEffect: false
-    property color carBaseColorFactor: "white"
+    property color carBaseColorFactor: "black"
     property bool es2: _isES2
     property alias bloomEffect: bloomFx
 
@@ -81,21 +81,23 @@ Kuesa.SceneEntity {
         }
     }
 
-//![2.4]
-    QQ2.Binding {
-        target: carMaterial.node
-        property: "baseColorFactor"
-        value: scene.carBaseColorFactor
-    }
-//![2.4]
-
 //![2.3]
+    // We create a baseColorFactor property. If the property exists in the node, it will be a proxy of the node property
+    // When we set the qml property, the node property will be updated accordingly
+    // When the node property is updated in C++, the qml property will be updated
+    // As soon as the node is changed, the qml property is updated if it has a C++ equivalent
     Kuesa.Asset {
+        property color baseColorFactor: scene.carBaseColorFactor
         id: carMaterial
         collection: scene.materials
         name: "Mat_CarPaint"
-        onNodeChanged: scene.carBaseColorFactor = node.baseColorFactor
+        onBaseColorFactorChanged: console.log("Binding 1 works. Color: " + baseColorFactor)
+        onNodeChanged: scene.carBaseColorFactor = carMaterial.baseColorFactor
     }
+
+    property var baseColorFactorProp: carMaterial.baseColorFactor
+    onBaseColorFactorPropChanged: console.log("Binding 2 works. Color: " + baseColorFactorProp)
+
 //![2.3]
 
 //! [4.1]
