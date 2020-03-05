@@ -61,6 +61,7 @@ android {
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 } else:ios {
     gltf.path = "/Library/Application Support"
+    envmaps.path = "/Library/Application Support"
     QMAKE_BUNDLE_DATA += gltf envmaps
     OTHER_FILES += Info-ios.plist
     QMAKE_INFO_PLIST = Info-ios.plist
@@ -68,6 +69,7 @@ android {
     QMAKE_ASSET_CATALOGS += ios/Images.xcassets
 } else:osx {
     gltf.path = "/Contents/Resources"
+    envmaps.path = "/Contents/Resources"
     QMAKE_BUNDLE_DATA += gltf envmaps
     ICON = ../shared-utils/kuesa.icns
     OTHER_FILES += Info-macos.plist
