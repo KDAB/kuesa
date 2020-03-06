@@ -86,9 +86,9 @@ public:
         graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
 
         const QUrl vertexShaderGraph[] = {
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json"))
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"))
         };
 
         const QUrl fragmentShaderGraph[] = {

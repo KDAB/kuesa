@@ -89,9 +89,9 @@ public:
         addFilterKey(filterKey);
         {
             const QUrl vertexShaderGraph[] = {
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json"))
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"))
             };
 
             const QUrl fragmentShaderGraph[] = {
@@ -163,9 +163,9 @@ public:
         }
         {
             const QUrl vertexShaderGraph[] = {
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroattributepassthrough.vert.json"))
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"))
             };
 
             const QUrl fragmentShaderGraph[] = {

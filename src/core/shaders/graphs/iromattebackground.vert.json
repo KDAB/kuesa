@@ -151,7 +151,7 @@
                 },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec2"
                 }
             },
             "type": "input",
@@ -269,7 +269,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "vertexCol",
+                "name": "color",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec4"
@@ -285,7 +285,7 @@
                 "name": "texCoord",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec2"
                 }
             },
             "type": "output",
@@ -295,7 +295,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "vertexNorm",
+                "name": "worldNormal",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -332,7 +332,7 @@
                 },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec4"
                 }
             },
             "type": "input",
@@ -342,10 +342,10 @@
             "layers": [
             ],
             "parameters": {
-                "name": "vertexTan",
+                "name": "worldTangent",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec4"
                 }
             },
             "type": "output",

@@ -68,14 +68,6 @@
             "layers": [
             ],
             "sourcePort": "value",
-            "sourceUuid": "{0b59e4be-97be-4a98-9f53-df1081f19791}",
-            "targetPort": "value",
-            "targetUuid": "{43a0231d-a27e-4fed-8439-284131d634b8}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
             "sourceUuid": "{1357e61f-4d8f-4638-8501-2f69e7bb1bf6}",
             "targetPort": "second",
             "targetUuid": "{00c30ec0-689d-4f9c-8e85-ba11b102e938}"
@@ -95,6 +87,22 @@
             "sourceUuid": "{9083907f-ad8b-4933-8a6d-96764fb14b0c}",
             "targetPort": "position",
             "targetUuid": "{b750802b-b2c6-4ba3-9f59-9ce6d4155802}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{0b59e4be-97be-4a98-9f53-df1081f19791}",
+            "targetPort": "input",
+            "targetUuid": "{4ce29caa-a9c7-4cf9-a580-226596352f21}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{4ce29caa-a9c7-4cf9-a580-226596352f21}",
+            "targetPort": "value",
+            "targetUuid": "{43a0231d-a27e-4fed-8439-284131d634b8}"
         }
     ],
     "groups": [
@@ -425,7 +433,7 @@
                 "name": "texCoord",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec2"
                 }
             },
             "position": {
@@ -457,14 +465,42 @@
             },
             "type": "constant",
             "uuid": "{1357e61f-4d8f-4638-8501-2f69e7bb1bf6}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "swizzle",
+            "group": -1,
+            "id": 14,
+            "inputValues": {
+                "input": ""
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "fields": "xy",
+                "inputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            },
+            "position": {
+                "x": 1203,
+                "y": 1130
+            },
+            "type": "swizzle",
+            "uuid": "{4ce29caa-a9c7-4cf9-a580-226596352f21}"
         }
     ],
     "project": {
         "position": {
-            "x": 1132.0484404484403,
-            "y": 386.47827727827814
+            "x": 413.8678210678204,
+            "y": 338.9841269841272
         },
-        "scale": 0.75
+        "scale": 0.6875
     },
     "prototypes": {
         "add": {
@@ -530,6 +566,47 @@
                         "minor": 0
                     },
                     "substitution": "$type $output = $input1 && $input2;"
+                }
+            ]
+        },
+        "arrayInput": {
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "name": "defaultName",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                "size": "1",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier highp $type $name[$size];"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier $type $name[$size];"
+                    ],
+                    "substitution": "$type $value = $name;"
                 }
             ]
         },
