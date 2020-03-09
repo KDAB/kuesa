@@ -64,22 +64,6 @@
 
     \snippet iro-materials-gallery/qml/MainScene.qml 1
 
-    \section1 Extracting Assets from Collections
-
-    Usually, you will want to interact with some elements of your scene.
-    The \l {Asset} element allows to retrieve an asset by name. If the asset
-    for a given name really exist in the specified \a collection, the \a node
-    property allows you to access the underlying asset instance.
-
-    You can use the \l {gltfEditor} to instrospect a glTF2 scene files and find
-    the names of the various assets it contains.
-
-    For instance you might want to select a Camera by name.
-    \snippet iro-materials-gallery/qml/MainScene.qml 2.1
-
-    Once retrieved, you can create binding on some of the Camera properties.
-    \snippet iro-materials-gallery/qml/MainScene.qml 2.2
-
     \section1 Handling Picking
 
     We want to display the material properties of the sphere on which we click.

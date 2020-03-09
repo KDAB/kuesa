@@ -46,7 +46,7 @@ Kuesa.SceneEntity {
 //! [2.2]
             activeFrameGraph: Kuesa.ForwardRenderer {
                 id: frameGraph
-                camera: cameraAsset.node
+                camera: camera
                 clearColor: Qt.rgba(0.1, 0.1, 0.1, 1.0)
             }
 //! [2.2]
@@ -87,19 +87,17 @@ Kuesa.SceneEntity {
 //! [3]
     ]
 
-    OrbitCameraController {
-        camera: cameraAsset.node
+//! [2.1]
+    Camera {
+        id: camera
+        position: Qt.vector3d(15.0, 5.0, 15)
+        upVector: Qt.vector3d(0.0, 1.0, 0.0)
+        viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
+        aspectRatio: _view.width / _view.height
     }
 
-//! [2.1]
-    Kuesa.Asset {
-        id: cameraAsset
-        name: root3D.cameras.names.length ? root3D.cameras.names[0] : ""
-        collection: root3D.cameras
-        onNodeChanged: {
-            if (node)
-                node.aspectRatio = _view.width / _view.height
-        }
+    OrbitCameraController {
+        camera: camera
     }
 //! [2.1]
 
