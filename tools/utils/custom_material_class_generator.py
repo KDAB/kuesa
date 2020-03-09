@@ -890,11 +890,19 @@ public:
 
     QStringList enabledLayers() const
     {
+        const auto shaderBuilder = findChild<Qt3DRender::QShaderProgramBuilder *>();
+        if (shaderBuilder != nullptr)
+            return shaderBuilder->enabledLayers();
         return {};
     }
 
-    void setEnabledLayers(const QStringList &)
+    void setEnabledLayers(const QStringList &layers)
     {
+        const auto shaderBuilders = findChildren<Qt3DRender::QShaderProgramBuilder *>();
+        for (auto shaderBuilder : shaderBuilders) {
+            if (shaderBuilder != nullptr)
+                shaderBuilder->setEnabledLayers(layers);
+        }
     }
 
     void setOpaque(bool)
