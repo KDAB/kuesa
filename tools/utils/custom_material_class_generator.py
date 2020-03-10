@@ -198,42 +198,23 @@ private:
     effectClassHeaderContent = """
 class %sTechnique;
 
-class KUESASHARED_EXPORT %sEffect : public Qt3DRender::QEffect
+class KUESASHARED_EXPORT %sEffect : public GLTF2MaterialEffect
 {
     Q_OBJECT
-    Q_PROPERTY(bool doubleSided READ isDoubleSided WRITE setDoubleSided NOTIFY doubleSidedChanged)
-    Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
-    Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
-    Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
 
 public:
     Q_INVOKABLE explicit %sEffect(Qt3DCore::QNode *parent = nullptr);
     ~%sEffect();
 
-    bool isDoubleSided() const;
-    bool useSkinning() const;
-    bool isOpaque() const;
-    bool isAlphaCutoffEnabled() const;
-
-public Q_SLOTS:
-    void setDoubleSided(bool doubleSided);
-    void setUseSkinning(bool useSkinning);
-    void setOpaque(bool opaque);
-    void setAlphaCutoffEnabled(bool enabled);
-
-Q_SIGNALS:
-    void doubleSidedChanged(bool doubleSided);
-    void useSkinningChanged(bool useSkinning);
-    void opaqueChanged(bool opaque);
-    void alphaCutoffEnabledChanged(bool enabled);
-
 private:
-    bool m_useSkinning;
-    bool m_opaque;
-    bool m_alphaCutoffEnabled;
     %sTechnique *m_gl3Technique;
     %sTechnique *m_es3Technique;
     %sTechnique *m_es2Technique;
+
+    void updateDoubleSided(bool doubleSided);
+    void updateSkinning(bool useSkinning);
+    void updateOpaque(bool opaque);
+    void updateAlphaCutoffEnabled(bool enabled);
 };
 """
 
@@ -936,55 +917,31 @@ private:
 %s
 
 %sEffect::%sEffect(Qt3DCore::QNode *parent)
-    : QEffect(parent)
-    , m_useSkinning(false)
-    , m_opaque(true)
-    , m_alphaCutoffEnabled(false)
+    : GLTF2MaterialEffect(parent)
 {
-    const auto enabledLayers = QStringList{
-            // Vertex Shader layers
-            QStringLiteral("no-skinning"),
-            // Fragment Shader layers
-            QStringLiteral("noHasAlphaCutoff")
-    };
-
     m_gl3Technique = new %sTechnique(%sTechnique::GL3, this);
-    m_gl3Technique->setEnabledLayers(enabledLayers);
-
     m_es3Technique = new %sTechnique(%sTechnique::ES3, this);
-    m_es3Technique->setEnabledLayers(enabledLayers);
-
     m_es2Technique = new %sTechnique(%sTechnique::ES2, this);
-    m_es2Technique->setEnabledLayers(enabledLayers);
 
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
+
+    QObject::connect(this, &GLTF2MaterialEffect::alphaCutoffEnabledChanged, this, &%sEffect::updateAlphaCutoffEnabled);
+    QObject::connect(this, &GLTF2MaterialEffect::opaqueChanged, this, &%sEffect::updateOpaque);
+    QObject::connect(this, &GLTF2MaterialEffect::doubleSidedChanged, this, &%sEffect::updateDoubleSided);
+    QObject::connect(this, &GLTF2MaterialEffect::useSkinningChanged, this, &%sEffect::updateSkinning);
+
+    updateOpaque(GLTF2MaterialEffect::isOpaque());
+    updateSkinning(GLTF2MaterialEffect::useSkinning());
+    updateDoubleSided(GLTF2MaterialEffect::isDoubleSided());
+    updateAlphaCutoffEnabled(GLTF2MaterialEffect::isAlphaCutoffEnabled());
 }
 
 %sEffect::~%sEffect() = default;
 
-bool %sEffect::isDoubleSided() const
-{
-    return m_gl3Technique->cullingMode() == QCullFace::NoCulling;
-}
 
-bool %sEffect::useSkinning() const
-{
-    return m_useSkinning;
-}
-
-bool %sEffect::isOpaque() const
-{
-    return m_opaque;
-}
-
-bool %sEffect::isAlphaCutoffEnabled() const
-{
-    return m_alphaCutoffEnabled;
-}
-
-void %sEffect::setDoubleSided(bool doubleSided)
+void %sEffect::updateDoubleSided(bool doubleSided)
 {
     const auto cullingMode = doubleSided ? QCullFace::NoCulling : QCullFace::Back;
     m_gl3Technique->setCullingMode(cullingMode);
@@ -992,52 +949,35 @@ void %sEffect::setDoubleSided(bool doubleSided)
     m_es2Technique->setCullingMode(cullingMode);
 }
 
-void %sEffect::setUseSkinning(bool useSkinning)
+void %sEffect::updateSkinning(bool useSkinning)
 {
-    if (useSkinning == m_useSkinning)
-        return;
-    m_useSkinning = useSkinning;
-    emit useSkinningChanged(m_useSkinning);
-
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();
-    if (m_useSkinning) {
+    if (useSkinning) {
         layers.removeAll(QStringLiteral("no-skinning"));
         layers.append(QStringLiteral("skinning"));
     } else {
-        layers.removeAll(QStringLiteral("no-skinning"));
-        layers.append(QStringLiteral("skinning"));
+        layers.removeAll(QStringLiteral("skinning"));
+        layers.append(QStringLiteral("no-skinning"));
     }
 
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-    m_gl3Technique->setAllowCulling(!m_useSkinning);
-    m_es3Technique->setAllowCulling(!m_useSkinning);
-    m_es2Technique->setAllowCulling(!m_useSkinning);
-
+    m_gl3Technique->setAllowCulling(!useSkinning);
+    m_es3Technique->setAllowCulling(!useSkinning);
+    m_es2Technique->setAllowCulling(!useSkinning);
 }
 
-void %sEffect::setOpaque(bool opaque)
+void %sEffect::updateOpaque(bool opaque)
 {
-    if (opaque == m_opaque)
-        return;
-    m_opaque = opaque;
     m_gl3Technique->setOpaque(opaque);
     m_es3Technique->setOpaque(opaque);
     m_es2Technique->setOpaque(opaque);
-
-    if (opaque)
-        setAlphaCutoffEnabled(false);
-
-    emit opaqueChanged(opaque);
 }
 
-void %sEffect::setAlphaCutoffEnabled(bool enabled)
+void %sEffect::updateAlphaCutoffEnabled(bool enabled)
 {
-    if (m_alphaCutoffEnabled == enabled)
-        return;
-
     auto layers = m_gl3Technique->enabledLayers();
     if (enabled) {
         layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
@@ -1046,11 +986,9 @@ void %sEffect::setAlphaCutoffEnabled(bool enabled)
         layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
     }
-    m_alphaCutoffEnabled = enabled;
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-    emit alphaCutoffEnabledChanged(enabled);
 }
 """
 
@@ -1526,7 +1464,7 @@ HEADERS += \\
                                                                           matName)
             self.generateHeaderFile(content,
                                     className,
-                                    "#include <Qt3DRender/QEffect>\n#include <Kuesa/kuesa_global.h>\n")
+                                    "#include <Kuesa/gltf2materialeffect.h>\n#include <Kuesa/kuesa_global.h>\n")
         generateHeader()
 
 

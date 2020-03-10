@@ -30,7 +30,7 @@
 #define KUESA_UNLITEFFECT_H
 
 #include <QtGui/qcolor.h>
-#include <Qt3DRender/qeffect.h>
+#include <Kuesa/gltf2materialeffect.h>
 #include <Kuesa/kuesa_global.h>
 
 QT_BEGIN_NAMESPACE
@@ -46,15 +46,11 @@ class QRenderPass;
 namespace Kuesa {
 class UnlitTechnique;
 
-class KUESASHARED_EXPORT UnlitEffect : public Qt3DRender::QEffect
+class KUESASHARED_EXPORT UnlitEffect : public GLTF2MaterialEffect
 {
     Q_OBJECT
     Q_PROPERTY(bool baseColorMapEnabled READ isBaseColorMapEnabled WRITE setBaseColorMapEnabled NOTIFY baseColorMapEnabledChanged)
     Q_PROPERTY(bool usingColorAttribute READ isUsingColorAttribute WRITE setUsingColorAttribute NOTIFY usingColorAttributeChanged)
-    Q_PROPERTY(bool doubleSided READ isDoubleSided WRITE setDoubleSided NOTIFY doubleSidedChanged)
-    Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
-    Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
-    Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
 
 public:
     explicit UnlitEffect(Qt3DCore::QNode *parent = nullptr);
@@ -62,37 +58,27 @@ public:
 
     bool isBaseColorMapEnabled() const;
     bool isUsingColorAttribute() const;
-    bool isDoubleSided() const;
-    bool useSkinning() const;
-    bool isOpaque() const;
-    bool isAlphaCutoffEnabled() const;
 
 public Q_SLOTS:
     void setBaseColorMapEnabled(bool enabled);
     void setUsingColorAttribute(bool usingColorAttribute);
-    void setDoubleSided(bool doubleSided);
-    void setUseSkinning(bool useSkinning);
-    void setOpaque(bool opaque);
-    void setAlphaCutoffEnabled(bool enabled);
 
 Q_SIGNALS:
     void baseColorMapEnabledChanged(bool enabled);
     void usingColorAttributeChanged(bool usingColorAttribute);
-    void doubleSidedChanged(bool doubleSided);
-    void useSkinningChanged(bool useSkinning);
-    void opaqueChanged(bool opaque);
-    void alphaCutoffEnabledChanged(bool enabled);
 
 private:
     bool m_baseColorMapEnabled;
     bool m_usingColorAttribute;
-    bool m_useSkinning;
-    bool m_opaque;
-    bool m_alphaCutoffEnabled;
 
     UnlitTechnique *m_unlitGL3Technique;
     UnlitTechnique *m_unlitES3Technique;
     UnlitTechnique *m_unlitES2Technique;
+
+    void updateDoubleSided(bool doubleSided);
+    void updateSkinning(bool useSkinning);
+    void updateOpaque(bool opaque);
+    void updateAlphaCutoffEnabled(bool enabled);
 };
 
 } // namespace Kuesa

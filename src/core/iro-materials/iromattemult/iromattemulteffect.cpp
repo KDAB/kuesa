@@ -220,55 +220,31 @@ private:
 
 
 IroMatteMultEffect::IroMatteMultEffect(Qt3DCore::QNode *parent)
-    : QEffect(parent)
-    , m_useSkinning(false)
-    , m_opaque(true)
-    , m_alphaCutoffEnabled(false)
+    : GLTF2MaterialEffect(parent)
 {
-    const auto enabledLayers = QStringList{
-            // Vertex Shader layers
-            QStringLiteral("no-skinning"),
-            // Fragment Shader layers
-            QStringLiteral("noHasAlphaCutoff")
-    };
-
     m_gl3Technique = new IroMatteMultTechnique(IroMatteMultTechnique::GL3, this);
-    m_gl3Technique->setEnabledLayers(enabledLayers);
-
     m_es3Technique = new IroMatteMultTechnique(IroMatteMultTechnique::ES3, this);
-    m_es3Technique->setEnabledLayers(enabledLayers);
-
     m_es2Technique = new IroMatteMultTechnique(IroMatteMultTechnique::ES2, this);
-    m_es2Technique->setEnabledLayers(enabledLayers);
 
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
+
+    QObject::connect(this, &GLTF2MaterialEffect::alphaCutoffEnabledChanged, this, &IroMatteMultEffect::updateAlphaCutoffEnabled);
+    QObject::connect(this, &GLTF2MaterialEffect::opaqueChanged, this, &IroMatteMultEffect::updateOpaque);
+    QObject::connect(this, &GLTF2MaterialEffect::doubleSidedChanged, this, &IroMatteMultEffect::updateDoubleSided);
+    QObject::connect(this, &GLTF2MaterialEffect::useSkinningChanged, this, &IroMatteMultEffect::updateSkinning);
+
+    updateOpaque(GLTF2MaterialEffect::isOpaque());
+    updateSkinning(GLTF2MaterialEffect::useSkinning());
+    updateDoubleSided(GLTF2MaterialEffect::isDoubleSided());
+    updateAlphaCutoffEnabled(GLTF2MaterialEffect::isAlphaCutoffEnabled());
 }
 
 IroMatteMultEffect::~IroMatteMultEffect() = default;
 
-bool IroMatteMultEffect::isDoubleSided() const
-{
-    return m_gl3Technique->cullingMode() == QCullFace::NoCulling;
-}
 
-bool IroMatteMultEffect::useSkinning() const
-{
-    return m_useSkinning;
-}
-
-bool IroMatteMultEffect::isOpaque() const
-{
-    return m_opaque;
-}
-
-bool IroMatteMultEffect::isAlphaCutoffEnabled() const
-{
-    return m_alphaCutoffEnabled;
-}
-
-void IroMatteMultEffect::setDoubleSided(bool doubleSided)
+void IroMatteMultEffect::updateDoubleSided(bool doubleSided)
 {
     const auto cullingMode = doubleSided ? QCullFace::NoCulling : QCullFace::Back;
     m_gl3Technique->setCullingMode(cullingMode);
@@ -276,52 +252,35 @@ void IroMatteMultEffect::setDoubleSided(bool doubleSided)
     m_es2Technique->setCullingMode(cullingMode);
 }
 
-void IroMatteMultEffect::setUseSkinning(bool useSkinning)
+void IroMatteMultEffect::updateSkinning(bool useSkinning)
 {
-    if (useSkinning == m_useSkinning)
-        return;
-    m_useSkinning = useSkinning;
-    emit useSkinningChanged(m_useSkinning);
-
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();
-    if (m_useSkinning) {
+    if (useSkinning) {
         layers.removeAll(QStringLiteral("no-skinning"));
         layers.append(QStringLiteral("skinning"));
     } else {
-        layers.removeAll(QStringLiteral("no-skinning"));
-        layers.append(QStringLiteral("skinning"));
+        layers.removeAll(QStringLiteral("skinning"));
+        layers.append(QStringLiteral("no-skinning"));
     }
 
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-    m_gl3Technique->setAllowCulling(!m_useSkinning);
-    m_es3Technique->setAllowCulling(!m_useSkinning);
-    m_es2Technique->setAllowCulling(!m_useSkinning);
-
+    m_gl3Technique->setAllowCulling(!useSkinning);
+    m_es3Technique->setAllowCulling(!useSkinning);
+    m_es2Technique->setAllowCulling(!useSkinning);
 }
 
-void IroMatteMultEffect::setOpaque(bool opaque)
+void IroMatteMultEffect::updateOpaque(bool opaque)
 {
-    if (opaque == m_opaque)
-        return;
-    m_opaque = opaque;
     m_gl3Technique->setOpaque(opaque);
     m_es3Technique->setOpaque(opaque);
     m_es2Technique->setOpaque(opaque);
-
-    if (opaque)
-        setAlphaCutoffEnabled(false);
-
-    emit opaqueChanged(opaque);
 }
 
-void IroMatteMultEffect::setAlphaCutoffEnabled(bool enabled)
+void IroMatteMultEffect::updateAlphaCutoffEnabled(bool enabled)
 {
-    if (m_alphaCutoffEnabled == enabled)
-        return;
-
     auto layers = m_gl3Technique->enabledLayers();
     if (enabled) {
         layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
@@ -330,11 +289,9 @@ void IroMatteMultEffect::setAlphaCutoffEnabled(bool enabled)
         layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
     }
-    m_alphaCutoffEnabled = enabled;
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-    emit alphaCutoffEnabledChanged(enabled);
 }
 
 } // namespace Kuesa

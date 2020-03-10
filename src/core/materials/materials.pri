@@ -28,6 +28,7 @@ INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/gltf2material.cpp \
+    $$PWD/gltf2materialeffect.cpp \
     $$PWD/gltf2materialproperties.cpp \
     $$PWD/metallicroughnesseffect.cpp \
     $$PWD/metallicroughnessmaterial.cpp \
@@ -42,6 +43,7 @@ SOURCES += \
 HEADERS += \
     $$PWD/effectproperties.h \
     $$PWD/gltf2material.h \
+    $$PWD/gltf2materialeffect.h \
     $$PWD/gltf2materialproperties.h \
     $$PWD/metallicroughnesseffect.h \
     $$PWD/metallicroughnessmaterial.h \

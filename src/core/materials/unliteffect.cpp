@@ -258,12 +258,9 @@ void UnlitTechnique::setAllowCulling(bool allowCulling)
 
 
 UnlitEffect::UnlitEffect(Qt3DCore::QNode *parent)
-    : QEffect(parent)
+    : GLTF2MaterialEffect(parent)
     , m_baseColorMapEnabled(false)
     , m_usingColorAttribute(false)
-    , m_useSkinning(false)
-    , m_opaque(true)
-    , m_alphaCutoffEnabled(false)
 {
 
     const auto enabledLayers = QStringList{
@@ -287,6 +284,11 @@ UnlitEffect::UnlitEffect(Qt3DCore::QNode *parent)
     addTechnique(m_unlitGL3Technique);
     addTechnique(m_unlitES3Technique);
     addTechnique(m_unlitES2Technique);
+
+    QObject::connect(this, &GLTF2MaterialEffect::alphaCutoffEnabledChanged, this, &UnlitEffect::updateAlphaCutoffEnabled);
+    QObject::connect(this, &GLTF2MaterialEffect::opaqueChanged, this, &UnlitEffect::updateOpaque);
+    QObject::connect(this, &GLTF2MaterialEffect::doubleSidedChanged, this, &UnlitEffect::updateDoubleSided);
+    QObject::connect(this, &GLTF2MaterialEffect::useSkinningChanged, this, &UnlitEffect::updateSkinning);
 }
 
 UnlitEffect::~UnlitEffect()
@@ -301,26 +303,6 @@ bool UnlitEffect::isBaseColorMapEnabled() const
 bool UnlitEffect::isUsingColorAttribute() const
 {
     return m_usingColorAttribute;
-}
-
-bool UnlitEffect::isDoubleSided() const
-{
-    return m_unlitGL3Technique->cullingMode() == QCullFace::NoCulling;
-}
-
-bool UnlitEffect::useSkinning() const
-{
-    return m_useSkinning;
-}
-
-bool UnlitEffect::isOpaque() const
-{
-    return m_opaque;
-}
-
-bool UnlitEffect::isAlphaCutoffEnabled() const
-{
-    return m_alphaCutoffEnabled;
 }
 
 void UnlitEffect::setBaseColorMapEnabled(bool enabled)
@@ -363,7 +345,7 @@ void UnlitEffect::setUsingColorAttribute(bool usingColorAttribute)
     emit usingColorAttributeChanged(usingColorAttribute);
 }
 
-void UnlitEffect::setDoubleSided(bool doubleSided)
+void UnlitEffect::updateDoubleSided(bool doubleSided)
 {
     const auto cullingMode = doubleSided ? QCullFace::NoCulling : QCullFace::Back;
     m_unlitGL3Technique->setCullingMode(cullingMode);
@@ -371,16 +353,11 @@ void UnlitEffect::setDoubleSided(bool doubleSided)
     m_unlitES2Technique->setCullingMode(cullingMode);
 }
 
-void UnlitEffect::setUseSkinning(bool useSkinning)
+void UnlitEffect::updateSkinning(bool useSkinning)
 {
-    if (useSkinning == m_useSkinning)
-        return;
-    m_useSkinning = useSkinning;
-    emit useSkinningChanged(m_useSkinning);
-
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_unlitGL3Technique->enabledLayers();
-    if (m_useSkinning) {
+    if (useSkinning) {
         layers.removeAll(QStringLiteral("no-skinning"));
         layers.append(QStringLiteral("skinning"));
     } else {
@@ -391,32 +368,20 @@ void UnlitEffect::setUseSkinning(bool useSkinning)
     m_unlitGL3Technique->setEnabledLayers(layers);
     m_unlitES3Technique->setEnabledLayers(layers);
     m_unlitES2Technique->setEnabledLayers(layers);
-    m_unlitGL3Technique->setAllowCulling(!m_useSkinning);
-    m_unlitES3Technique->setAllowCulling(!m_useSkinning);
-    m_unlitES2Technique->setAllowCulling(!m_useSkinning);
-
+    m_unlitGL3Technique->setAllowCulling(!useSkinning);
+    m_unlitES3Technique->setAllowCulling(!useSkinning);
+    m_unlitES2Technique->setAllowCulling(!useSkinning);
 }
 
-void UnlitEffect::setOpaque(bool opaque)
+void UnlitEffect::updateOpaque(bool opaque)
 {
-    if (opaque == m_opaque)
-        return;
-    m_opaque = opaque;
     m_unlitGL3Technique->setOpaque(opaque);
     m_unlitES3Technique->setOpaque(opaque);
     m_unlitES2Technique->setOpaque(opaque);
-
-    if (opaque)
-        setAlphaCutoffEnabled(false);
-
-    emit opaqueChanged(opaque);
 }
 
-void UnlitEffect::setAlphaCutoffEnabled(bool enabled)
+void UnlitEffect::updateAlphaCutoffEnabled(bool enabled)
 {
-    if (m_alphaCutoffEnabled == enabled)
-        return;
-
     auto layers = m_unlitGL3Technique->enabledLayers();
     if (enabled) {
         layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
@@ -425,11 +390,9 @@ void UnlitEffect::setAlphaCutoffEnabled(bool enabled)
         layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
     }
-    m_alphaCutoffEnabled = enabled;
     m_unlitGL3Technique->setEnabledLayers(layers);
     m_unlitES3Technique->setEnabledLayers(layers);
     m_unlitES2Technique->setEnabledLayers(layers);
-    emit alphaCutoffEnabledChanged(enabled);
 }
 
 } // namespace Kuesa

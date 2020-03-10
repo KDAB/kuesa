@@ -30,7 +30,7 @@
 #define KUESA_METALLICROUGHNESSEFFECT_H
 
 #include <QtGui/qcolor.h>
-#include <Qt3DRender/qeffect.h>
+#include <Kuesa/gltf2materialeffect.h>
 #include <Kuesa/kuesa_global.h>
 
 QT_BEGIN_NAMESPACE
@@ -42,7 +42,7 @@ class QAbstractTexture;
 namespace Kuesa {
 class MetallicRoughnessTechnique;
 
-class KUESASHARED_EXPORT MetallicRoughnessEffect : public Qt3DRender::QEffect
+class KUESASHARED_EXPORT MetallicRoughnessEffect : public GLTF2MaterialEffect
 {
     Q_OBJECT
     Q_PROPERTY(bool baseColorMapEnabled READ isBaseColorMapEnabled WRITE setBaseColorMapEnabled NOTIFY baseColorMapEnabledChanged)
@@ -51,10 +51,6 @@ class KUESASHARED_EXPORT MetallicRoughnessEffect : public Qt3DRender::QEffect
     Q_PROPERTY(bool ambientOcclusionMapEnabled READ isAmbientOcclusionMapEnabled WRITE setAmbientOcclusionMapEnabled NOTIFY ambientOcclusionMapEnabledChanged)
     Q_PROPERTY(bool emissiveMapEnabled READ isEmissiveMapEnabled WRITE setEmissiveMapEnabled NOTIFY emissiveMapEnabledChanged)
     Q_PROPERTY(bool usingColorAttribute READ isUsingColorAttribute WRITE setUsingColorAttribute NOTIFY usingColorAttributeChanged)
-    Q_PROPERTY(bool doubleSided READ isDoubleSided WRITE setDoubleSided NOTIFY doubleSidedChanged)
-    Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
-    Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
-    Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLUT READ brdfLUT WRITE setBrdfLUT NOTIFY brdfLUTChanged REVISION 1)
 
 public:
@@ -67,10 +63,6 @@ public:
     bool isAmbientOcclusionMapEnabled() const;
     bool isEmissiveMapEnabled() const;
     bool isUsingColorAttribute() const;
-    bool isDoubleSided() const;
-    bool useSkinning() const;
-    bool isOpaque() const;
-    bool isAlphaCutoffEnabled() const;
     Qt3DRender::QAbstractTexture *brdfLUT() const;
 
 public Q_SLOTS:
@@ -80,10 +72,6 @@ public Q_SLOTS:
     void setAmbientOcclusionMapEnabled(bool enabled);
     void setEmissiveMapEnabled(bool enabled);
     void setUsingColorAttribute(bool usingColorAttribute);
-    void setDoubleSided(bool doubleSided);
-    void setUseSkinning(bool useSkinning);
-    void setOpaque(bool opaque);
-    void setAlphaCutoffEnabled(bool enabled);
     void setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT);
 
 Q_SIGNALS:
@@ -93,10 +81,6 @@ Q_SIGNALS:
     void ambientOcclusionMapEnabledChanged(bool enabled);
     void emissiveMapEnabledChanged(bool enabled);
     void usingColorAttributeChanged(bool usingColorAttribute);
-    void doubleSidedChanged(bool doubleSided);
-    void useSkinningChanged(bool useSkinning);
-    void opaqueChanged(bool opaque);
-    void alphaCutoffEnabledChanged(bool enabled);
     void brdfLUTChanged(Qt3DRender::QAbstractTexture *brdfLUT);
 
 private:
@@ -106,15 +90,16 @@ private:
     bool m_ambientOcclusionMapEnabled;
     bool m_emissiveMapEnabled;
     bool m_usingColorAttribute;
-    bool m_doubleSided;
-    bool m_useSkinning;
-    bool m_opaque;
-    bool m_alphaCutoffEnabled;
 
     MetallicRoughnessTechnique *m_metalRoughGL3Technique;
     MetallicRoughnessTechnique *m_metalRoughES3Technique;
     MetallicRoughnessTechnique *m_metalRoughES2Technique;
     Qt3DRender::QParameter *m_brdfLUTParameter;
+
+    void updateDoubleSided(bool doubleSided);
+    void updateSkinning(bool useSkinning);
+    void updateOpaque(bool opaque);
+    void updateAlphaCutoffEnabled(bool enabled);
 };
 
 } // namespace Kuesa

@@ -30,7 +30,7 @@
 #ifndef KUESA_IROMATTEMULTEFFECT_H
 #define KUESA_IROMATTEMULTEFFECT_H
 
-#include <Qt3DRender/QEffect>
+#include <Kuesa/gltf2materialeffect.h>
 #include <Kuesa/kuesa_global.h>
 
 
@@ -40,42 +40,23 @@ namespace Kuesa {
 
 class IroMatteMultTechnique;
 
-class KUESASHARED_EXPORT IroMatteMultEffect : public Qt3DRender::QEffect
+class KUESASHARED_EXPORT IroMatteMultEffect : public GLTF2MaterialEffect
 {
     Q_OBJECT
-    Q_PROPERTY(bool doubleSided READ isDoubleSided WRITE setDoubleSided NOTIFY doubleSidedChanged)
-    Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
-    Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
-    Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
 
 public:
     Q_INVOKABLE explicit IroMatteMultEffect(Qt3DCore::QNode *parent = nullptr);
     ~IroMatteMultEffect();
 
-    bool isDoubleSided() const;
-    bool useSkinning() const;
-    bool isOpaque() const;
-    bool isAlphaCutoffEnabled() const;
-
-public Q_SLOTS:
-    void setDoubleSided(bool doubleSided);
-    void setUseSkinning(bool useSkinning);
-    void setOpaque(bool opaque);
-    void setAlphaCutoffEnabled(bool enabled);
-
-Q_SIGNALS:
-    void doubleSidedChanged(bool doubleSided);
-    void useSkinningChanged(bool useSkinning);
-    void opaqueChanged(bool opaque);
-    void alphaCutoffEnabledChanged(bool enabled);
-
 private:
-    bool m_useSkinning;
-    bool m_opaque;
-    bool m_alphaCutoffEnabled;
     IroMatteMultTechnique *m_gl3Technique;
     IroMatteMultTechnique *m_es3Technique;
     IroMatteMultTechnique *m_es2Technique;
+
+    void updateDoubleSided(bool doubleSided);
+    void updateSkinning(bool useSkinning);
+    void updateOpaque(bool opaque);
+    void updateAlphaCutoffEnabled(bool enabled);
 };
 
 } // namespace Kuesa

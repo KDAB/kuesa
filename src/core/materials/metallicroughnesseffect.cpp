@@ -416,17 +416,13 @@ void MetallicRoughnessTechnique::setAllowCulling(bool allowCulling)
 
 
 MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
-    : QEffect(parent)
+    : GLTF2MaterialEffect(parent)
     , m_baseColorMapEnabled(false)
     , m_metalRoughMapEnabled(false)
     , m_normalMapEnabled(false)
     , m_ambientOcclusionMapEnabled(false)
     , m_emissiveMapEnabled(false)
     , m_usingColorAttribute(false)
-    , m_doubleSided(false)
-    , m_useSkinning(false)
-    , m_opaque(true)
-    , m_alphaCutoffEnabled(false)
     , m_brdfLUTParameter(new QParameter(this))
 {
     const auto enabledLayers = QStringList{
@@ -469,6 +465,16 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
 
     m_brdfLUTParameter->setName(QLatin1String("brdfLUT"));
     addParameter(m_brdfLUTParameter);
+
+    QObject::connect(this, &GLTF2MaterialEffect::alphaCutoffEnabledChanged, this, &MetallicRoughnessEffect::updateAlphaCutoffEnabled);
+    QObject::connect(this, &GLTF2MaterialEffect::opaqueChanged, this, &MetallicRoughnessEffect::updateOpaque);
+    QObject::connect(this, &GLTF2MaterialEffect::doubleSidedChanged, this, &MetallicRoughnessEffect::updateDoubleSided);
+    QObject::connect(this, &GLTF2MaterialEffect::useSkinningChanged, this, &MetallicRoughnessEffect::updateSkinning);
+
+    updateOpaque(GLTF2MaterialEffect::isOpaque());
+    updateSkinning(GLTF2MaterialEffect::useSkinning());
+    updateDoubleSided(GLTF2MaterialEffect::isDoubleSided());
+    updateAlphaCutoffEnabled(GLTF2MaterialEffect::isAlphaCutoffEnabled());
 }
 
 MetallicRoughnessEffect::~MetallicRoughnessEffect()
@@ -503,26 +509,6 @@ bool MetallicRoughnessEffect::isEmissiveMapEnabled() const
 bool MetallicRoughnessEffect::isUsingColorAttribute() const
 {
     return m_usingColorAttribute;
-}
-
-bool MetallicRoughnessEffect::isDoubleSided() const
-{
-    return m_doubleSided;
-}
-
-bool MetallicRoughnessEffect::useSkinning() const
-{
-    return m_useSkinning;
-}
-
-bool MetallicRoughnessEffect::isOpaque() const
-{
-    return m_opaque;
-}
-
-bool MetallicRoughnessEffect::isAlphaCutoffEnabled() const
-{
-    return m_alphaCutoffEnabled;
 }
 
 void MetallicRoughnessEffect::setBaseColorMapEnabled(bool enabled)
@@ -645,11 +631,8 @@ void MetallicRoughnessEffect::setUsingColorAttribute(bool usingColorAttribute)
     emit usingColorAttributeChanged(usingColorAttribute);
 }
 
-void MetallicRoughnessEffect::setDoubleSided(bool doubleSided)
+void MetallicRoughnessEffect::updateDoubleSided(bool doubleSided)
 {
-    if (m_doubleSided == doubleSided)
-        return;
-
     auto layers = m_metalRoughGL3Technique->enabledLayers();
     if (doubleSided) {
         layers.removeAll(QStringLiteral("noDoubleSided"));
@@ -658,7 +641,6 @@ void MetallicRoughnessEffect::setDoubleSided(bool doubleSided)
         layers.removeAll(QStringLiteral("doubleSided"));
         layers.append(QStringLiteral("noDoubleSided"));
     }
-    m_doubleSided = doubleSided;
     m_metalRoughGL3Technique->setEnabledLayers(layers);
     m_metalRoughES3Technique->setEnabledLayers(layers);
     m_metalRoughES2Technique->setEnabledLayers(layers);
@@ -666,19 +648,13 @@ void MetallicRoughnessEffect::setDoubleSided(bool doubleSided)
     m_metalRoughGL3Technique->setCullingMode(cullingMode);
     m_metalRoughES3Technique->setCullingMode(cullingMode);
     m_metalRoughES2Technique->setCullingMode(cullingMode);
-    emit doubleSidedChanged(doubleSided);
 }
 
-void MetallicRoughnessEffect::setUseSkinning(bool useSkinning)
+void MetallicRoughnessEffect::updateSkinning(bool useSkinning)
 {
-    if (useSkinning == m_useSkinning)
-        return;
-    m_useSkinning = useSkinning;
-    emit useSkinningChanged(m_useSkinning);
-
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_metalRoughGL3Technique->enabledLayers();
-    if (m_useSkinning) {
+    if (useSkinning) {
         layers.removeAll(QStringLiteral("no-skinning"));
         layers.append(QStringLiteral("skinning"));
     } else {
@@ -689,30 +665,20 @@ void MetallicRoughnessEffect::setUseSkinning(bool useSkinning)
     m_metalRoughGL3Technique->setEnabledLayers(layers);
     m_metalRoughES3Technique->setEnabledLayers(layers);
     m_metalRoughES2Technique->setEnabledLayers(layers);
-    m_metalRoughGL3Technique->setAllowCulling(!m_useSkinning);
-    m_metalRoughES3Technique->setAllowCulling(!m_useSkinning);
-    m_metalRoughES2Technique->setAllowCulling(!m_useSkinning);
+    m_metalRoughGL3Technique->setAllowCulling(!useSkinning);
+    m_metalRoughES3Technique->setAllowCulling(!useSkinning);
+    m_metalRoughES2Technique->setAllowCulling(!useSkinning);
 }
 
-void MetallicRoughnessEffect::setOpaque(bool opaque)
+void MetallicRoughnessEffect::updateOpaque(bool opaque)
 {
-    if (opaque == m_opaque)
-        return;
-    m_opaque = opaque;
     m_metalRoughGL3Technique->setOpaque(opaque);
     m_metalRoughES3Technique->setOpaque(opaque);
     m_metalRoughES2Technique->setOpaque(opaque);
-    if (opaque)
-        setAlphaCutoffEnabled(false);
-
-    emit opaqueChanged(opaque);
 }
 
-void MetallicRoughnessEffect::setAlphaCutoffEnabled(bool enabled)
+void MetallicRoughnessEffect::updateAlphaCutoffEnabled(bool enabled)
 {
-    if (m_alphaCutoffEnabled == enabled)
-        return;
-
     auto layers = m_metalRoughGL3Technique->enabledLayers();
     if (enabled) {
         layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
@@ -721,11 +687,9 @@ void MetallicRoughnessEffect::setAlphaCutoffEnabled(bool enabled)
         layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
     }
-    m_alphaCutoffEnabled = enabled;
     m_metalRoughGL3Technique->setEnabledLayers(layers);
     m_metalRoughES3Technique->setEnabledLayers(layers);
     m_metalRoughES2Technique->setEnabledLayers(layers);
-    emit alphaCutoffEnabledChanged(enabled);
 }
 
 Qt3DRender::QAbstractTexture *MetallicRoughnessEffect::brdfLUT() const
