@@ -1006,7 +1006,7 @@
             "name": "no-skinning"
         },
         {
-            "enabled": true,
+            "enabled": false,
             "name": "skinning"
         }
     ],
@@ -1117,7 +1117,7 @@
                 },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec4"
                 }
             },
             "position": {
@@ -1446,7 +1446,7 @@
                 "name": "color",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec4"
                 }
             },
             "position": {
@@ -3448,10 +3448,10 @@
     ],
     "project": {
         "position": {
-            "x": -90.66666666666674,
-            "y": 1402.6666666666665
+            "x": 466.00288600288593,
+            "y": 737.7835497835499
         },
-        "scale": 0.5625
+        "scale": 0.375
     },
     "prototypes": {
         "add": {
