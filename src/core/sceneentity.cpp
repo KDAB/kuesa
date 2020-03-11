@@ -106,6 +106,7 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     , m_textures(new TextureCollection(this))
     , m_cameras(new CameraCollection(this))
     , m_entities(new EntityCollection(this))
+    , m_transforms(new TransformCollection(this))
     , m_textureImages(new TextureImageCollection(this))
     , m_animationMappings(new AnimationMappingCollection(this))
 {
@@ -297,6 +298,27 @@ EntityCollection *SceneEntity::entities() const
 Qt3DCore::QEntity *SceneEntity::entity(const QString &name) const
 {
     return m_entities->find(name);
+}
+
+/*!
+    Returns instance of collection of Qt3DCore::QTransform assets
+
+    \since Kuesa 1.2
+ */
+TransformCollection *SceneEntity::transforms() const
+{
+    return m_transforms;
+}
+
+/*!
+    Utility method returning an instance of Qt3DCore::QTransform matching \a name
+    (or nullptr if not found)
+
+    \since Kuesa 1.2
+ */
+Qt3DCore::QTransform *SceneEntity::transform(const QString &name) const
+{
+    return m_transforms->find(name);
 }
 
 /*!

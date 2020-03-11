@@ -40,7 +40,8 @@ SOURCES += \
     $$PWD/cameracollection.cpp \
     $$PWD/entitycollection.cpp \
     $$PWD/textureimagecollection.cpp \
-    $$PWD/animationmappingcollection.cpp
+    $$PWD/animationmappingcollection.cpp \
+    $$PWD/transformcollection.cpp
 
 HEADERS += \
     $$PWD/layercollection.h \
@@ -56,4 +57,5 @@ HEADERS += \
     $$PWD/cameracollection.h \
     $$PWD/entitycollection.h \
     $$PWD/textureimagecollection.h \
-    $$PWD/animationmappingcollection.h
+    $$PWD/animationmappingcollection.h \
+    $$PWD/transformcollection.h

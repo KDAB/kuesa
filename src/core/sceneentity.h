@@ -41,6 +41,7 @@
 #include <Kuesa/texturecollection.h>
 #include <Kuesa/cameracollection.h>
 #include <Kuesa/entitycollection.h>
+#include <Kuesa/transformcollection.h>
 #include <Kuesa/textureimagecollection.h>
 #include <Kuesa/animationmappingcollection.h>
 #include <Kuesa/kuesa_global.h>
@@ -75,6 +76,7 @@ class KUESASHARED_EXPORT SceneEntity : public Qt3DCore::QEntity
     Q_PROPERTY(Kuesa::AnimationMappingCollection *animationMappings READ animationMappings NOTIFY loadingDone)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLut READ brdfLut CONSTANT)
     Q_PROPERTY(Kuesa::LightCollection *lights READ lights NOTIFY loadingDone)
+    Q_PROPERTY(Kuesa::TransformCollection *transforms READ transforms NOTIFY loadingDone REVISION 2)
 
 public:
     SceneEntity(Qt3DCore::QNode *parent = nullptr);
@@ -111,6 +113,9 @@ public:
     EntityCollection *entities() const;
     Q_INVOKABLE Qt3DCore::QEntity *entity(const QString &name) const;
 
+    Q_REVISION(2) TransformCollection *transforms() const;
+    Q_REVISION(2) Q_INVOKABLE Qt3DCore::QTransform *transform(const QString &name) const;
+
     TextureImageCollection *textureImages() const;
     Q_INVOKABLE Qt3DRender::QAbstractTextureImage *textureImage(const QString &name);
 
@@ -143,6 +148,7 @@ private:
     TextureCollection *m_textures;
     CameraCollection *m_cameras;
     EntityCollection *m_entities;
+    TransformCollection *m_transforms;
     TextureImageCollection *m_textureImages;
     AnimationMappingCollection *m_animationMappings;
 

@@ -544,6 +544,12 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
                     auto light = componentFromEntity<Qt3DRender::QAbstractLight>(treeNode.entity);
                     if (light)
                         addToCollectionWithUniqueName(m_sceneEntity->lights(), light->objectName(), light);
+
+                    if (m_sceneEntity->transforms()) {
+                        Qt3DCore::QTransform *transform = qobject_cast<Qt3DCore::QTransform *>(m_sceneEntity->transformForEntity(treeNode.name));
+                        Q_ASSERT(transform != nullptr);
+                        addToCollectionWithUniqueName(m_sceneEntity->transforms(), treeNode.name, transform);
+                    }
                 }
             }
 
