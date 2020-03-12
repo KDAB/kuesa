@@ -11,6 +11,7 @@
         { "name": "reflectionInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup." },
         { "name": "reflectionOuterFilter", "type": "vec3", "doc": "Specifies the outer color filter to be applied based on fresnel on the spherical environment map lookup." },
         { "name": "usesReflectionMap", "type": "bool", "doc": "Specifies whether we use a reflection map or not." },
+        { "name": "projectReflectionMap", "type": "bool", "doc": "Specifies whether equirectangular projection should be used for lookups on the reflection map." },
         { "name": "reflectionInnerAlpha", "type": "float", "doc": "Specifies the inner alpha factor to be applied." },
         { "name": "reflectionOuterAlpha", "type": "float", "doc": "Specifies the outer alpha factor to be applied." },
         { "name": "alphaGain", "type": "float", "doc": "Specifies the gain to apply to the alpha of the reflection map lookup." }

@@ -49,6 +49,7 @@ IroDiffuseHemiShaderData::IroDiffuseHemiShaderData(Qt3DCore::QNode *parent)
     , m_reflectionInnerFilter()
     , m_reflectionOuterFilter()
     , m_usesReflectionMap()
+    , m_projectReflectionMap()
     , m_diffuseInnerFilter()
     , m_diffuseOuterFilter()
     , m_diffuseMap(nullptr)
@@ -106,6 +107,11 @@ QVector3D IroDiffuseHemiShaderData::reflectionOuterFilter() const
 bool IroDiffuseHemiShaderData::usesReflectionMap() const
 {
     return m_usesReflectionMap;
+}
+
+bool IroDiffuseHemiShaderData::projectReflectionMap() const
+{
+    return m_projectReflectionMap;
 }
 
 QVector3D IroDiffuseHemiShaderData::diffuseInnerFilter() const
@@ -221,6 +227,14 @@ void IroDiffuseHemiShaderData::setUsesReflectionMap(bool usesReflectionMap)
         return;
     m_usesReflectionMap = usesReflectionMap;
     emit usesReflectionMapChanged(usesReflectionMap);
+}
+
+void IroDiffuseHemiShaderData::setProjectReflectionMap(bool projectReflectionMap)
+{
+    if (m_projectReflectionMap == projectReflectionMap)
+        return;
+    m_projectReflectionMap = projectReflectionMap;
+    emit projectReflectionMapChanged(projectReflectionMap);
 }
 
 void IroDiffuseHemiShaderData::setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter)

@@ -48,6 +48,7 @@ IroDiffuseAlphaShaderData::IroDiffuseAlphaShaderData(Qt3DCore::QNode *parent)
     , m_reflectionInnerFilter()
     , m_reflectionOuterFilter()
     , m_usesReflectionMap()
+    , m_projectReflectionMap()
     , m_reflectionInnerAlpha()
     , m_reflectionOuterAlpha()
     , m_alphaGain()
@@ -98,6 +99,11 @@ QVector3D IroDiffuseAlphaShaderData::reflectionOuterFilter() const
 bool IroDiffuseAlphaShaderData::usesReflectionMap() const
 {
     return m_usesReflectionMap;
+}
+
+bool IroDiffuseAlphaShaderData::projectReflectionMap() const
+{
+    return m_projectReflectionMap;
 }
 
 float IroDiffuseAlphaShaderData::reflectionInnerAlpha() const
@@ -195,6 +201,14 @@ void IroDiffuseAlphaShaderData::setUsesReflectionMap(bool usesReflectionMap)
         return;
     m_usesReflectionMap = usesReflectionMap;
     emit usesReflectionMapChanged(usesReflectionMap);
+}
+
+void IroDiffuseAlphaShaderData::setProjectReflectionMap(bool projectReflectionMap)
+{
+    if (m_projectReflectionMap == projectReflectionMap)
+        return;
+    m_projectReflectionMap = projectReflectionMap;
+    emit projectReflectionMapChanged(projectReflectionMap);
 }
 
 void IroDiffuseAlphaShaderData::setReflectionInnerAlpha(float reflectionInnerAlpha)

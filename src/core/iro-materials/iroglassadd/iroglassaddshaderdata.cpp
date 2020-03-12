@@ -48,6 +48,7 @@ IroGlassAddShaderData::IroGlassAddShaderData(Qt3DCore::QNode *parent)
     , m_reflectionInnerFilter()
     , m_reflectionOuterFilter()
     , m_usesReflectionMap()
+    , m_projectReflectionMap()
     , m_reflectionInnerAlpha()
     , m_reflectionOuterAlpha()
     , m_glassInnerFilter()
@@ -100,6 +101,11 @@ QVector3D IroGlassAddShaderData::reflectionOuterFilter() const
 bool IroGlassAddShaderData::usesReflectionMap() const
 {
     return m_usesReflectionMap;
+}
+
+bool IroGlassAddShaderData::projectReflectionMap() const
+{
+    return m_projectReflectionMap;
 }
 
 float IroGlassAddShaderData::reflectionInnerAlpha() const
@@ -207,6 +213,14 @@ void IroGlassAddShaderData::setUsesReflectionMap(bool usesReflectionMap)
         return;
     m_usesReflectionMap = usesReflectionMap;
     emit usesReflectionMapChanged(usesReflectionMap);
+}
+
+void IroGlassAddShaderData::setProjectReflectionMap(bool projectReflectionMap)
+{
+    if (m_projectReflectionMap == projectReflectionMap)
+        return;
+    m_projectReflectionMap = projectReflectionMap;
+    emit projectReflectionMapChanged(projectReflectionMap);
 }
 
 void IroGlassAddShaderData::setReflectionInnerAlpha(float reflectionInnerAlpha)

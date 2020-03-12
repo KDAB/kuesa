@@ -55,6 +55,7 @@ class KUESASHARED_EXPORT IroGlassAddProperties : public GLTF2MaterialProperties
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
     Q_PROPERTY(bool usesReflectionMap READ usesReflectionMap WRITE setUsesReflectionMap NOTIFY usesReflectionMapChanged)
+    Q_PROPERTY(bool projectReflectionMap READ projectReflectionMap WRITE setProjectReflectionMap NOTIFY projectReflectionMapChanged)
     Q_PROPERTY(float reflectionInnerAlpha READ reflectionInnerAlpha WRITE setReflectionInnerAlpha NOTIFY reflectionInnerAlphaChanged)
     Q_PROPERTY(float reflectionOuterAlpha READ reflectionOuterAlpha WRITE setReflectionOuterAlpha NOTIFY reflectionOuterAlphaChanged)
     Q_PROPERTY(QVector3D glassInnerFilter READ glassInnerFilter WRITE setGlassInnerFilter NOTIFY glassInnerFilterChanged)
@@ -75,6 +76,7 @@ public:
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
     bool usesReflectionMap() const;
+    bool projectReflectionMap() const;
     float reflectionInnerAlpha() const;
     float reflectionOuterAlpha() const;
     QVector3D glassInnerFilter() const;
@@ -91,6 +93,7 @@ public Q_SLOTS:
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
     void setUsesReflectionMap(bool usesReflectionMap);
+    void setProjectReflectionMap(bool projectReflectionMap);
     void setReflectionInnerAlpha(float reflectionInnerAlpha);
     void setReflectionOuterAlpha(float reflectionOuterAlpha);
     void setGlassInnerFilter(const QVector3D &glassInnerFilter);
@@ -107,6 +110,7 @@ Q_SIGNALS:
     void reflectionInnerFilterChanged(QVector3D);
     void reflectionOuterFilterChanged(QVector3D);
     void usesReflectionMapChanged(bool);
+    void projectReflectionMapChanged(bool);
     void reflectionInnerAlphaChanged(float);
     void reflectionOuterAlphaChanged(float);
     void glassInnerFilterChanged(QVector3D);

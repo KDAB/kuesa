@@ -70,6 +70,7 @@ IroDiffuseProperties::IroDiffuseProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseShaderData::reflectionInnerFilterChanged, this, &IroDiffuseProperties::reflectionInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::reflectionOuterFilterChanged, this, &IroDiffuseProperties::reflectionOuterFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::usesReflectionMapChanged, this, &IroDiffuseProperties::usesReflectionMapChanged);
+    QObject::connect(m_shaderData, &IroDiffuseShaderData::projectReflectionMapChanged, this, &IroDiffuseProperties::projectReflectionMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseInnerFilterChanged, this, &IroDiffuseProperties::diffuseInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseOuterFilterChanged, this, &IroDiffuseProperties::diffuseOuterFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseMapChanged, this, &IroDiffuseProperties::diffuseMapChanged);
@@ -128,6 +129,11 @@ void IroDiffuseProperties::setReflectionOuterFilter(const QVector3D &reflectionO
 void IroDiffuseProperties::setUsesReflectionMap(bool usesReflectionMap)
 {
     m_shaderData->setUsesReflectionMap(usesReflectionMap);
+}
+
+void IroDiffuseProperties::setProjectReflectionMap(bool projectReflectionMap)
+{
+    m_shaderData->setProjectReflectionMap(projectReflectionMap);
 }
 
 void IroDiffuseProperties::setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter)
@@ -271,6 +277,19 @@ QVector3D IroDiffuseProperties::reflectionOuterFilter() const
 bool IroDiffuseProperties::usesReflectionMap() const
 {
     return m_shaderData->usesReflectionMap();
+}
+
+/*!
+    \qmlproperty bool IroDiffuseProperties::projectReflectionMap
+    Specifies whether equirectangular projection should be used for lookups on the reflection map.
+*/
+/*!
+    \property IroDiffuseProperties::projectReflectionMap
+    Specifies whether equirectangular projection should be used for lookups on the reflection map.
+*/
+bool IroDiffuseProperties::projectReflectionMap() const
+{
+    return m_shaderData->projectReflectionMap();
 }
 
 /*!

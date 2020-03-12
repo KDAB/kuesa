@@ -11,6 +11,7 @@
         { "name": "reflectionInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup." },
         { "name": "reflectionOuterFilter", "type": "vec3", "doc": "Specifies the outer color filter to be applied based on fresnel on the spherical environment map lookup." },
         { "name": "usesReflectionMap", "type": "bool", "doc": "Specifies whether we use a reflection map or not." },
+        { "name": "projectReflectionMap", "type": "bool", "doc": "Specifies whether equirectangular projection should be used for lookups on the reflection map." },
         { "name": "diffuseInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the diffuse map lookup." },
         { "name": "diffuseOuterFilter", "type": "vec3", "doc": "Specifies the outer color filter to be applied based on fresnel on the diffuse map lookup." },
         { "name": "diffuseMap", "type": "texture2d", "doc": "Specifies the diffuse map to use. It is expected to be in sRGB color space." },

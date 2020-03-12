@@ -70,6 +70,7 @@ IroGlassAddProperties::IroGlassAddProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionInnerFilterChanged, this, &IroGlassAddProperties::reflectionInnerFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionOuterFilterChanged, this, &IroGlassAddProperties::reflectionOuterFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::usesReflectionMapChanged, this, &IroGlassAddProperties::usesReflectionMapChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::projectReflectionMapChanged, this, &IroGlassAddProperties::projectReflectionMapChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionInnerAlphaChanged, this, &IroGlassAddProperties::reflectionInnerAlphaChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionOuterAlphaChanged, this, &IroGlassAddProperties::reflectionOuterAlphaChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::glassInnerFilterChanged, this, &IroGlassAddProperties::glassInnerFilterChanged);
@@ -128,6 +129,11 @@ void IroGlassAddProperties::setReflectionOuterFilter(const QVector3D &reflection
 void IroGlassAddProperties::setUsesReflectionMap(bool usesReflectionMap)
 {
     m_shaderData->setUsesReflectionMap(usesReflectionMap);
+}
+
+void IroGlassAddProperties::setProjectReflectionMap(bool projectReflectionMap)
+{
+    m_shaderData->setProjectReflectionMap(projectReflectionMap);
 }
 
 void IroGlassAddProperties::setReflectionInnerAlpha(float reflectionInnerAlpha)
@@ -271,6 +277,19 @@ QVector3D IroGlassAddProperties::reflectionOuterFilter() const
 bool IroGlassAddProperties::usesReflectionMap() const
 {
     return m_shaderData->usesReflectionMap();
+}
+
+/*!
+    \qmlproperty bool IroGlassAddProperties::projectReflectionMap
+    Specifies whether equirectangular projection should be used for lookups on the reflection map.
+*/
+/*!
+    \property IroGlassAddProperties::projectReflectionMap
+    Specifies whether equirectangular projection should be used for lookups on the reflection map.
+*/
+bool IroGlassAddProperties::projectReflectionMap() const
+{
+    return m_shaderData->projectReflectionMap();
 }
 
 /*!

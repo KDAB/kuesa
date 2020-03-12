@@ -63,6 +63,7 @@ class IroDiffuseShaderData : public Qt3DRender::QShaderData
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
     Q_PROPERTY(bool usesReflectionMap READ usesReflectionMap WRITE setUsesReflectionMap NOTIFY usesReflectionMapChanged)
+    Q_PROPERTY(bool projectReflectionMap READ projectReflectionMap WRITE setProjectReflectionMap NOTIFY projectReflectionMapChanged)
     Q_PROPERTY(QVector3D diffuseInnerFilter READ diffuseInnerFilter WRITE setDiffuseInnerFilter NOTIFY diffuseInnerFilterChanged)
     Q_PROPERTY(QVector3D diffuseOuterFilter READ diffuseOuterFilter WRITE setDiffuseOuterFilter NOTIFY diffuseOuterFilterChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture * diffuseMap READ diffuseMap WRITE setDiffuseMap NOTIFY diffuseMapChanged)
@@ -81,6 +82,7 @@ public:
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
     bool usesReflectionMap() const;
+    bool projectReflectionMap() const;
     QVector3D diffuseInnerFilter() const;
     QVector3D diffuseOuterFilter() const;
     Qt3DRender::QAbstractTexture * diffuseMap() const;
@@ -97,6 +99,7 @@ public Q_SLOTS:
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
     void setUsesReflectionMap(bool usesReflectionMap);
+    void setProjectReflectionMap(bool projectReflectionMap);
     void setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter);
     void setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter);
     void setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap);
@@ -113,6 +116,7 @@ Q_SIGNALS:
     void reflectionInnerFilterChanged(QVector3D);
     void reflectionOuterFilterChanged(QVector3D);
     void usesReflectionMapChanged(bool);
+    void projectReflectionMapChanged(bool);
     void diffuseInnerFilterChanged(QVector3D);
     void diffuseOuterFilterChanged(QVector3D);
     void diffuseMapChanged(Qt3DRender::QAbstractTexture *);
@@ -129,6 +133,7 @@ private:
     QVector3D m_reflectionInnerFilter;
     QVector3D m_reflectionOuterFilter;
     bool m_usesReflectionMap;
+    bool m_projectReflectionMap;
     QVector3D m_diffuseInnerFilter;
     QVector3D m_diffuseOuterFilter;
     Qt3DRender::QAbstractTexture * m_diffuseMap;

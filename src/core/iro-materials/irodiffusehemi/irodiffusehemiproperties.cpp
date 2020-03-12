@@ -71,6 +71,7 @@ IroDiffuseHemiProperties::IroDiffuseHemiProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::reflectionInnerFilterChanged, this, &IroDiffuseHemiProperties::reflectionInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::reflectionOuterFilterChanged, this, &IroDiffuseHemiProperties::reflectionOuterFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::usesReflectionMapChanged, this, &IroDiffuseHemiProperties::usesReflectionMapChanged);
+    QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::projectReflectionMapChanged, this, &IroDiffuseHemiProperties::projectReflectionMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseInnerFilterChanged, this, &IroDiffuseHemiProperties::diffuseInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseOuterFilterChanged, this, &IroDiffuseHemiProperties::diffuseOuterFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseMapChanged, this, &IroDiffuseHemiProperties::diffuseMapChanged);
@@ -134,6 +135,11 @@ void IroDiffuseHemiProperties::setReflectionOuterFilter(const QVector3D &reflect
 void IroDiffuseHemiProperties::setUsesReflectionMap(bool usesReflectionMap)
 {
     m_shaderData->setUsesReflectionMap(usesReflectionMap);
+}
+
+void IroDiffuseHemiProperties::setProjectReflectionMap(bool projectReflectionMap)
+{
+    m_shaderData->setProjectReflectionMap(projectReflectionMap);
 }
 
 void IroDiffuseHemiProperties::setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter)
@@ -290,6 +296,19 @@ QVector3D IroDiffuseHemiProperties::reflectionOuterFilter() const
 bool IroDiffuseHemiProperties::usesReflectionMap() const
 {
     return m_shaderData->usesReflectionMap();
+}
+
+/*!
+    \qmlproperty bool IroDiffuseHemiProperties::projectReflectionMap
+    Specifies whether equirectangular projection should be used for lookups on the reflection map.
+*/
+/*!
+    \property IroDiffuseHemiProperties::projectReflectionMap
+    Specifies whether equirectangular projection should be used for lookups on the reflection map.
+*/
+bool IroDiffuseHemiProperties::projectReflectionMap() const
+{
+    return m_shaderData->projectReflectionMap();
 }
 
 /*!

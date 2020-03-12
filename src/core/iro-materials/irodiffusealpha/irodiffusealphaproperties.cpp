@@ -70,6 +70,7 @@ IroDiffuseAlphaProperties::IroDiffuseAlphaProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionInnerFilterChanged, this, &IroDiffuseAlphaProperties::reflectionInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionOuterFilterChanged, this, &IroDiffuseAlphaProperties::reflectionOuterFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::usesReflectionMapChanged, this, &IroDiffuseAlphaProperties::usesReflectionMapChanged);
+    QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::projectReflectionMapChanged, this, &IroDiffuseAlphaProperties::projectReflectionMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionInnerAlphaChanged, this, &IroDiffuseAlphaProperties::reflectionInnerAlphaChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionOuterAlphaChanged, this, &IroDiffuseAlphaProperties::reflectionOuterAlphaChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::alphaGainChanged, this, &IroDiffuseAlphaProperties::alphaGainChanged);
@@ -126,6 +127,11 @@ void IroDiffuseAlphaProperties::setReflectionOuterFilter(const QVector3D &reflec
 void IroDiffuseAlphaProperties::setUsesReflectionMap(bool usesReflectionMap)
 {
     m_shaderData->setUsesReflectionMap(usesReflectionMap);
+}
+
+void IroDiffuseAlphaProperties::setProjectReflectionMap(bool projectReflectionMap)
+{
+    m_shaderData->setProjectReflectionMap(projectReflectionMap);
 }
 
 void IroDiffuseAlphaProperties::setReflectionInnerAlpha(float reflectionInnerAlpha)
@@ -259,6 +265,19 @@ QVector3D IroDiffuseAlphaProperties::reflectionOuterFilter() const
 bool IroDiffuseAlphaProperties::usesReflectionMap() const
 {
     return m_shaderData->usesReflectionMap();
+}
+
+/*!
+    \qmlproperty bool IroDiffuseAlphaProperties::projectReflectionMap
+    Specifies whether equirectangular projection should be used for lookups on the reflection map.
+*/
+/*!
+    \property IroDiffuseAlphaProperties::projectReflectionMap
+    Specifies whether equirectangular projection should be used for lookups on the reflection map.
+*/
+bool IroDiffuseAlphaProperties::projectReflectionMap() const
+{
+    return m_shaderData->projectReflectionMap();
 }
 
 /*!
