@@ -1006,7 +1006,7 @@
             "name": "no-skinning"
         },
         {
-            "enabled": false,
+            "enabled": true,
             "name": "skinning"
         }
     ],
@@ -3448,10 +3448,10 @@
     ],
     "project": {
         "position": {
-            "x": 466.00288600288593,
-            "y": 737.7835497835499
+            "x": 740.6222222222214,
+            "y": -153.11111111111086
         },
-        "scale": 0.375
+        "scale": 0.25
     },
     "prototypes": {
         "add": {
