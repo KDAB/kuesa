@@ -92,13 +92,8 @@
     \endlist
 
     \section2 Kuesa Tools
-    A set of tools to preview scenes
-    \list
-    \li \l {gltfEditor}
-    \li \l {gltfViewer}
-    \li \l {ddspreviewer}
-    \li \l {cubemaptooctahedralmap}
-    \endlist
+
+    The Kuesa-Runtime comes with the {gltfViewer} tools to preview scenes.
 
     \l {Kuesa Overview} {Read More}
 
