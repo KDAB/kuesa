@@ -33,7 +33,7 @@ import Qt3D.Input 2.0
 import Qt3D.Extras 2.10
 import Kuesa 1.1 as Kuesa
 import Kuesa.Effects 1.1
-import Controllers 1.0 as Controllers
+import Kuesa.Utils 1.3 as KuesaUtils
 
 Entity {
     id: scene
@@ -74,7 +74,7 @@ Entity {
         threshold: _controller.threshold
     }
 
-    BlurEffect{
+    BlurEffect {
         id: blurComponent
         blurPassCount: _controller.blurPassCount
     }
@@ -104,8 +104,9 @@ Entity {
         viewCenter: Qt.vector3d(0, 0, 0)
     }
 
-    Controllers.OrbitCameraController {
+    KuesaUtils.OrbitCameraController {
         camera: mainCamera
+        windowSize: Qt.size(_view.width, _view.height)
     }
 
     EntityLoader {

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,7 +29,7 @@
 #ifndef ORBITCAMERACONTROLLER_H
 #define ORBITCAMERACONTROLLER_H
 
-#include <Kuesa/kuesa_global.h>
+#include <KuesaUtils/kuesa_utils_global.h>
 #include <Qt3DCore/QEntity>
 #include <QPoint>
 #include <QSize>
@@ -55,9 +55,11 @@ namespace Qt3DLogic {
 class QFrameAction;
 }
 
+namespace KuesaUtils {
+
 class OrbitCameraControllerPrivate;
 
-class OrbitCameraController : public Qt3DCore::QEntity
+class KUESAUTILS_SHARED_EXPORT OrbitCameraController : public Qt3DCore::QEntity
 {
     Q_OBJECT
     Q_PROPERTY(Qt3DRender::QCamera *camera READ camera WRITE setCamera NOTIFY cameraChanged)
@@ -123,7 +125,6 @@ private:
 
     Qt3DInput::QMouseDevice *m_mouseDevice;
     Qt3DInput::QKeyboardDevice *m_keyboardDevice;
-    Qt3DInput::QMouseHandler *m_mouseHandler;
     Qt3DInput::QLogicalDevice *m_logicalDevice;
     Qt3DLogic::QFrameAction *m_frameAction;
 
@@ -142,7 +143,10 @@ private:
 
     // holds whether the mouse buttons are set for panning to be active.
     bool m_isTranslationActive;
+    bool m_isOrbitingActive;
 };
+
+} // namespace KuesaUtils
 
 QT_END_NAMESPACE
 

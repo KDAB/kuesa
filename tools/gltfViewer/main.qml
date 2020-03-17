@@ -32,7 +32,7 @@ import Qt3D.Animation 2.12
 import Qt3D.Input 2.12
 import Qt3D.Extras 2.12
 import Kuesa 1.1 as Kuesa
-import KuesaViewer 1.0 as KuesaViewer
+import Kuesa.Utils 1.3 as KuesaUtils
 
 Kuesa.SceneEntity {
     id: root
@@ -93,7 +93,7 @@ Kuesa.SceneEntity {
         aspectRatio: _winSize.width / _winSize.height
     }
 
-    KuesaViewer.OrbitCameraController {
+    KuesaUtils.OrbitCameraController {
         id: controller
         camera: frameGraph.camera
         windowSize: _winSize

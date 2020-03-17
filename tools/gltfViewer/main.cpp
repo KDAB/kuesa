@@ -33,11 +33,11 @@
 #include <QQmlEngine>
 #include <QQmlContext>
 #include <QMimeData>
+#include <Qt3DRender/QCamera>
 #include <Qt3DQuick/QQmlAspectEngine>
 #include <Qt3DAnimation/QAnimationAspect>
 #include <Qt3DQuickExtras/Qt3DQuickWindow>
 #include <Kuesa/GLTF2Importer>
-#include "orbitcameracontroller.h"
 
 class ViewerApplication : public QGuiApplication
 {
@@ -180,8 +180,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("kdab.com");
     QCoreApplication::setOrganizationName("KDAB");
     QCoreApplication::setApplicationVersion(QStringLiteral("1.0"));
-
-    qmlRegisterType<OrbitCameraController>("KuesaViewer", 1, 0, "OrbitCameraController");
 
     ViewerApplication app(argc, argv);
 

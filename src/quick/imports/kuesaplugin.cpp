@@ -78,6 +78,7 @@
 #include <Kuesa/IroDiffuseAlphaMaterial>
 #include <Kuesa/IroDiffuseAlphaEffect>
 #include <Kuesa/IroDiffuseAlphaProperties>
+#include <KuesaUtils/orbitcameracontroller.h>
 
 #include <QtQml/qqml.h>
 
@@ -195,6 +196,9 @@ void KuesaPlugin::registerTypes(const char *uri)
 
     qRegisterMetaType<Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping>("ToneMappingAndGammaCorrectionEffect::ToneMapping");
     qmlRegisterType<Kuesa::ToneMappingAndGammaCorrectionEffect>("Kuesa.Effects", 1, 1, "ToneMappingAndGammaCorrectionEffect");
+
+    // Utils
+    qmlRegisterType<KuesaUtils::OrbitCameraController>("Kuesa.Utils", 1, 3, "OrbitCameraController");
 }
 
 QT_END_NAMESPACE

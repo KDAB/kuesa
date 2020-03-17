@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -50,6 +50,8 @@
 
 QT_BEGIN_NAMESPACE
 
+using namespace KuesaUtils;
+
 OrbitCameraController::OrbitCameraController(Qt3DCore::QNode *parent)
     : Qt3DCore::QEntity(parent)
     , m_camera(nullptr)
@@ -68,7 +70,6 @@ OrbitCameraController::OrbitCameraController(Qt3DCore::QNode *parent)
     , m_mouseWheelAxis(new Qt3DInput::QAxis())
     , m_mouseDevice(new Qt3DInput::QMouseDevice())
     , m_keyboardDevice(new Qt3DInput::QKeyboardDevice())
-    , m_mouseHandler(new Qt3DInput::QMouseHandler())
     , m_logicalDevice(new Qt3DInput::QLogicalDevice())
     , m_frameAction(new Qt3DLogic::QFrameAction())
     , m_windowSize(QSize(1920, 1080))
@@ -77,6 +78,7 @@ OrbitCameraController::OrbitCameraController(Qt3DCore::QNode *parent)
     , m_rotationSpeed(1.0)
     , m_zoomCameraLimit(0.0)
     , m_isTranslationActive(false)
+    , m_isOrbitingActive(false)
 {
     //// Actions
 
@@ -208,6 +210,8 @@ OrbitCameraController::OrbitCameraController(Qt3DCore::QNode *parent)
 
     QObject::connect(mouseHandler, &Qt3DInput::QMouseHandler::pressed,
                      this, [this](Qt3DInput::QMouseEvent *pressedEvent) {
+                         if (!isEnabled())
+                             return;
                          pressedEvent->setAccepted(true);
                          this->m_mousePressedPosition = QPoint(pressedEvent->x(),
                                                                pressedEvent->y());
@@ -221,17 +225,21 @@ OrbitCameraController::OrbitCameraController(Qt3DCore::QNode *parent)
                              pressedEvent->modifiers() == Qt3DInput::QMouseEvent::MetaModifier)
                              this->m_isTranslationActive = true;
 #endif
+                         m_isOrbitingActive = pressedEvent->buttons() == Qt3DInput::QMouseEvent::LeftButton;
                      });
 
     QObject::connect(mouseHandler, &Qt3DInput::QMouseHandler::released,
                      this, [this](Qt3DInput::QMouseEvent *released) {
                          // turn off translation when any button is released.
                          this->m_isTranslationActive = false;
+                         this->m_isOrbitingActive = false;
                          released->setAccepted(true);
                      });
 
     QObject::connect(mouseHandler, &Qt3DInput::QMouseHandler::positionChanged,
                      this, [this](Qt3DInput::QMouseEvent *positionChangedEvent) {
+                         if (!isEnabled())
+                             return;
                          positionChangedEvent->setAccepted(true);
                          this->m_mouseCurrentPosition = QPoint(positionChangedEvent->x(),
                                                                positionChangedEvent->y());
@@ -268,9 +276,13 @@ OrbitCameraController::OrbitCameraController(Qt3DCore::QNode *parent)
                              m_camera->viewAll();
                      });
 
-    // Disable the logical device when the entity is disabled
-    QObject::connect(this, &Qt3DCore::QEntity::enabledChanged,
-                     m_logicalDevice, &Qt3DInput::QLogicalDevice::setEnabled);
+    // Disable the controller when the entity is disabled
+    std::vector<Qt3DCore::QNode *> nodes = { m_mouseDevice, m_keyboardDevice, mouseHandler,
+                                             m_mouseAxisX, m_mouseAxisY, m_keyboardAxisX, m_keyboardAxisY, m_keyboardAxisZ, m_mouseWheelAxis,
+                                             m_logicalDevice, m_frameAction };
+    for (auto node : nodes)
+        QObject::connect(this, &Qt3DCore::QEntity::enabledChanged,
+                         node, &Qt3DCore::QNode::setEnabled);
 
     addComponent(m_frameAction);
     addComponent(m_logicalDevice);
@@ -387,7 +399,7 @@ void OrbitCameraController::setWindowSize(const QSize &v)
 
 bool OrbitCameraController::isMouseOrbiting() const
 {
-    return m_leftMouseButtonAction->isActive();
+    return m_isOrbitingActive;
 }
 
 bool OrbitCameraController::isMouseTranslating() const
@@ -479,7 +491,7 @@ void OrbitCameraController::translateCameraXYByPercentOfScreen(const QVector3D &
 
 void OrbitCameraController::onTriggered(float dt)
 {
-    if (m_camera == nullptr)
+    if (m_camera == nullptr || !isEnabled())
         return;
 
     // By default all zooming leaves view center.  Shift key enables moving view center.
@@ -499,7 +511,8 @@ void OrbitCameraController::onTriggered(float dt)
         const float yAxisRotationAmt = -mouseDelta.x() / m_windowSize.width() * m_rotationSpeed * 180.0f;
         const float elevationRotationAmt = mouseDelta.y() / m_windowSize.height() * m_rotationSpeed * 180.0f;
         const QVector3D origViewVector = m_camera->viewCenter() - m_pressedCameraPosition;
-        rotateCamera(yAxisRotationAmt, elevationRotationAmt, origViewVector);
+        if (!origViewVector.isNull())
+            rotateCamera(yAxisRotationAmt, elevationRotationAmt, origViewVector);
         return;
     }
 

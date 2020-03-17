@@ -29,7 +29,7 @@ TARGET = quickkuesaplugin
 TARGETPATH = Kuesa
 IMPORT_VERSION = 1.0
 
-QT += kuesa qml
+QT += kuesa kuesautils qml
 
 SOURCES += \
     animationplayeritem.cpp \

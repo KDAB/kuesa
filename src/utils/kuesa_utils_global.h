@@ -1,10 +1,10 @@
 /*
-    main.cpp
+    kuesa_global.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Jim Albamont <jim.albamont@kdab.com>
+    Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,39 +26,23 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <Kuesa/bloomeffect.h>
-#include <Kuesa/gaussianblureffect.h>
-#include <Kuesa/thresholdeffect.h>
+#ifndef KUESA_KUESA_UTILS_GLOBAL_H
+#define KUESA_KUESA_UTILS_GLOBAL_H
 
-#include <Qt3DQuickExtras/qt3dquickwindow.h>
-#include <QQmlAspectEngine>
-#include <QApplication>
-#include <QQmlContext>
+#include <QtCore/qglobal.h>
 
-#include "controllerwidget.h"
-#include "scenecontroller.h"
+QT_BEGIN_NAMESPACE
 
-using namespace Kuesa;
+#if defined(QT_SHARED) || !defined(QT_STATIC)
+#if defined(QT_BUILD_KUESAUTILS_LIB)
+#define KUESAUTILS_SHARED_EXPORT Q_DECL_EXPORT
+#else
+#define KUESAUTILS_SHARED_EXPORT Q_DECL_IMPORT
+#endif
+#else
+#define KUESAUTILS_SHARED_EXPORT
+#endif
 
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
+QT_END_NAMESPACE
 
-    SceneController controller;
-    ControllerWidget controllerWidget(&controller);
-    controllerWidget.move(0, 0);
-    controllerWidget.show();
-
-    Qt3DExtras::Quick::Qt3DQuickWindow view;
-    auto context = view.engine()->qmlEngine()->rootContext();
-    context->setContextProperty("_controller", &controller);
-    context->setContextProperty("_view", &view);
-
-    view.setSource(QUrl("qrc:/main.qml"));
-    view.resize(1920, 1080);
-    view.show();
-
-    controllerWidget.raise();
-
-    return app.exec();
-}
+#endif // KUESA_KUESA_UTILS_GLOBAL_H

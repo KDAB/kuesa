@@ -1,9 +1,9 @@
-# src.pro
+# core.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Kevin Ottens <kevin.ottens@kdab.com>
+# Author: Mike Krus <mike.krus@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,22 +24,25 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = subdirs
+TARGET     = KuesaUtils
+MODULE     = kuesautils
 
-src_core.subdir = $$PWD/core
-src_core.target = sub-core
+# Kuesa is free of Q_FOREACH - make sure it stays that way:
+DEFINES += QT_NO_FOREACH
+DEFINES += QT_BUILD_KUESA_UTILS_LIB
 
-src_utils.subdir = $$PWD/utils
-src_utils.target = sub-utils
+# Avoid windows defines
+win32:DEFINES += WIN32_LEAN_AND_MEAN
 
-qtHaveModule(quick) {
-    src_quick_imports.file = $$PWD/quick/imports/imports.pro
-    src_quick_imports.target = sub-quick
-    src_quick_imports.depends = src_core src_utils
-}
+QT += kuesa
 
-SUBDIRS += src_core doc src_utils
+HEADERS += \
+    kuesa_utils_global.h \
+    orbitcameracontroller.h
 
-qtHaveModule(quick) {
-    SUBDIRS += src_quick_imports
-}
+SOURCES += \
+    orbitcameracontroller.cpp
+
+include($$KUESA_ROOT/kuesa-global.pri)
+
+load(qt_module)

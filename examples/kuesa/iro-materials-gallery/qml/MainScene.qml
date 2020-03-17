@@ -35,6 +35,7 @@ import QtQuick 2.12
 
 import Kuesa 1.2 as Kuesa
 import Kuesa.Effects 1.1 as KuesaFX
+import Kuesa.Utils 1.3 as KuesaUtils
 
 Kuesa.SceneEntity {
     id: root3D
@@ -96,8 +97,9 @@ Kuesa.SceneEntity {
         aspectRatio: _view.width / _view.height
     }
 
-    OrbitCameraController {
+    KuesaUtils.OrbitCameraController {
         camera: camera
+        windowSize: Qt.size(_view.width, _view.height)
     }
 //! [2.1]
 

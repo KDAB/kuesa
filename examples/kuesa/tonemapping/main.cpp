@@ -42,8 +42,6 @@
 #include <QOpenGLContext>
 #endif
 
-#include "../../../tools/gltfViewer/orbitcameracontroller.h"
-
 int main(int ac, char **av)
 {
     bool isES2 = false;
@@ -81,8 +79,6 @@ int main(int ac, char **av)
     parser.setApplicationDescription("KDAB Kuesa Demo");
     parser.addHelpOption();
     parser.addVersionOption();
-
-    qmlRegisterType<OrbitCameraController>("KuesaDemo", 1, 0, "OrbitCameraController");
 
     QCommandLineOption cursorDisableOption(QStringList() << "no-cursor"
                                                          << "cursor visibility",

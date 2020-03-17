@@ -29,11 +29,7 @@ TEMPLATE = app
 QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa
 QT_FOR_CONFIG += kuesa
 
-SOURCES += main.cpp \
-    ../../../tools/gltfViewer/orbitcameracontroller.cpp
-
-HEADERS += \
-    ../../../tools/gltfViewer/orbitcameracontroller.h
+SOURCES += main.cpp
 
 include(../shared-utils/shared-utils.pri)
 
