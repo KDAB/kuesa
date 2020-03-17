@@ -229,16 +229,6 @@ IroMatteAddEffect::IroMatteAddEffect(Qt3DCore::QNode *parent)
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
-
-    QObject::connect(this, &GLTF2MaterialEffect::alphaCutoffEnabledChanged, this, &IroMatteAddEffect::updateAlphaCutoffEnabled);
-    QObject::connect(this, &GLTF2MaterialEffect::opaqueChanged, this, &IroMatteAddEffect::updateOpaque);
-    QObject::connect(this, &GLTF2MaterialEffect::doubleSidedChanged, this, &IroMatteAddEffect::updateDoubleSided);
-    QObject::connect(this, &GLTF2MaterialEffect::useSkinningChanged, this, &IroMatteAddEffect::updateSkinning);
-
-    updateOpaque(GLTF2MaterialEffect::isOpaque());
-    updateSkinning(GLTF2MaterialEffect::useSkinning());
-    updateDoubleSided(GLTF2MaterialEffect::isDoubleSided());
-    updateAlphaCutoffEnabled(GLTF2MaterialEffect::isAlphaCutoffEnabled());
 }
 
 IroMatteAddEffect::~IroMatteAddEffect() = default;

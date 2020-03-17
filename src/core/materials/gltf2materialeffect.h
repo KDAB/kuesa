@@ -59,6 +59,12 @@ public Q_SLOTS:
     void setOpaque(bool opaque);
     void setAlphaCutoffEnabled(bool enabled);
 
+protected:
+    virtual void updateDoubleSided(bool doubleSided);
+    virtual void updateSkinning(bool useSkinning);
+    virtual void updateOpaque(bool opaque);
+    virtual void updateAlphaCutoffEnabled(bool enabled);
+
 Q_SIGNALS:
     void doubleSidedChanged(bool doubleSided);
     void useSkinningChanged(bool useSkinning);
@@ -70,6 +76,8 @@ private:
     bool m_opaque;
     bool m_alphaCutoffEnabled;
     bool m_doubleSided;
+
+    void initialize();
 };
 
 } // Kuesa

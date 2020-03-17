@@ -254,16 +254,6 @@ IroMatteSkyboxEffect::IroMatteSkyboxEffect(Qt3DCore::QNode *parent)
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
-
-    QObject::connect(this, &GLTF2MaterialEffect::alphaCutoffEnabledChanged, this, &IroMatteSkyboxEffect::updateAlphaCutoffEnabled);
-    QObject::connect(this, &GLTF2MaterialEffect::opaqueChanged, this, &IroMatteSkyboxEffect::updateOpaque);
-    QObject::connect(this, &GLTF2MaterialEffect::doubleSidedChanged, this, &IroMatteSkyboxEffect::updateDoubleSided);
-    QObject::connect(this, &GLTF2MaterialEffect::useSkinningChanged, this, &IroMatteSkyboxEffect::updateSkinning);
-
-    updateOpaque(GLTF2MaterialEffect::isOpaque());
-    updateSkinning(GLTF2MaterialEffect::useSkinning());
-    updateDoubleSided(GLTF2MaterialEffect::isDoubleSided());
-    updateAlphaCutoffEnabled(GLTF2MaterialEffect::isAlphaCutoffEnabled());
 }
 
 IroMatteSkyboxEffect::~IroMatteSkyboxEffect() = default;

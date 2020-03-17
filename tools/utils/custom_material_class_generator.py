@@ -211,10 +211,10 @@ private:
     %sTechnique *m_es3Technique;
     %sTechnique *m_es2Technique;
 
-    void updateDoubleSided(bool doubleSided);
-    void updateSkinning(bool useSkinning);
-    void updateOpaque(bool opaque);
-    void updateAlphaCutoffEnabled(bool enabled);
+    void updateDoubleSided(bool doubleSided) override;
+    void updateSkinning(bool useSkinning) override;
+    void updateOpaque(bool opaque) override;
+    void updateAlphaCutoffEnabled(bool enabled) override;
 };
 """
 
@@ -926,16 +926,6 @@ private:
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
-
-    QObject::connect(this, &GLTF2MaterialEffect::alphaCutoffEnabledChanged, this, &%sEffect::updateAlphaCutoffEnabled);
-    QObject::connect(this, &GLTF2MaterialEffect::opaqueChanged, this, &%sEffect::updateOpaque);
-    QObject::connect(this, &GLTF2MaterialEffect::doubleSidedChanged, this, &%sEffect::updateDoubleSided);
-    QObject::connect(this, &GLTF2MaterialEffect::useSkinningChanged, this, &%sEffect::updateSkinning);
-
-    updateOpaque(GLTF2MaterialEffect::isOpaque());
-    updateSkinning(GLTF2MaterialEffect::useSkinning());
-    updateDoubleSided(GLTF2MaterialEffect::isDoubleSided());
-    updateAlphaCutoffEnabled(GLTF2MaterialEffect::isAlphaCutoffEnabled());
 }
 
 %sEffect::~%sEffect() = default;
@@ -1687,10 +1677,6 @@ HEADERS += \\
             technique_content = generateTechnique(passes_info)
             content = CustomMaterialGenerator.effectClassCppContent % (technique_content,
                                                                        doc,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
                                                                        matName,
                                                                        matName,
                                                                        matName,

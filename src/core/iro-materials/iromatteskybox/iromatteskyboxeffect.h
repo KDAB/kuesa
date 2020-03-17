@@ -53,10 +53,10 @@ private:
     IroMatteSkyboxTechnique *m_es3Technique;
     IroMatteSkyboxTechnique *m_es2Technique;
 
-    void updateDoubleSided(bool doubleSided);
-    void updateSkinning(bool useSkinning);
-    void updateOpaque(bool opaque);
-    void updateAlphaCutoffEnabled(bool enabled);
+    void updateDoubleSided(bool doubleSided) override;
+    void updateSkinning(bool useSkinning) override;
+    void updateOpaque(bool opaque) override;
+    void updateAlphaCutoffEnabled(bool enabled) override;
 };
 
 } // namespace Kuesa

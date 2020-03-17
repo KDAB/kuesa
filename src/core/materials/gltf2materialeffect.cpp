@@ -27,6 +27,7 @@
 */
 
 #include "gltf2materialeffect.h"
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 
@@ -140,8 +141,10 @@ GLTF2MaterialEffect::GLTF2MaterialEffect(Qt3DCore::QNode *parent)
     , m_useSkinning(false)
     , m_opaque(true)
     , m_alphaCutoffEnabled(false)
-    , m_doubleSided(true)
+    , m_doubleSided(false)
 {
+    // Call the update methods once the subclass instances has been created
+    QTimer::singleShot(0, this, &GLTF2MaterialEffect::initialize);
 }
 
 GLTF2MaterialEffect::~GLTF2MaterialEffect()
@@ -174,6 +177,8 @@ void GLTF2MaterialEffect::setDoubleSided(bool doubleSided)
         return;
     m_doubleSided = doubleSided;
     emit doubleSidedChanged(doubleSided);
+
+    updateDoubleSided(m_doubleSided);
 }
 
 void GLTF2MaterialEffect::setUseSkinning(bool useSkinning)
@@ -182,6 +187,8 @@ void GLTF2MaterialEffect::setUseSkinning(bool useSkinning)
         return;
     m_useSkinning = useSkinning;
     emit useSkinningChanged(m_useSkinning);
+
+    updateSkinning(m_useSkinning);
 }
 
 void GLTF2MaterialEffect::setOpaque(bool opaque)
@@ -193,6 +200,8 @@ void GLTF2MaterialEffect::setOpaque(bool opaque)
 
     if (opaque)
         setAlphaCutoffEnabled(false);
+
+    updateOpaque(m_opaque);
 }
 
 void GLTF2MaterialEffect::setAlphaCutoffEnabled(bool enabled)
@@ -201,6 +210,36 @@ void GLTF2MaterialEffect::setAlphaCutoffEnabled(bool enabled)
         return;
     m_alphaCutoffEnabled = enabled;
     emit alphaCutoffEnabledChanged(m_alphaCutoffEnabled);
+
+    updateAlphaCutoffEnabled(m_alphaCutoffEnabled);
+}
+
+void GLTF2MaterialEffect::updateDoubleSided(bool doubleSided)
+{
+    Q_UNUSED(doubleSided);
+}
+
+void GLTF2MaterialEffect::updateSkinning(bool useSkinning)
+{
+    Q_UNUSED(useSkinning);
+}
+
+void GLTF2MaterialEffect::updateOpaque(bool opaque)
+{
+    Q_UNUSED(opaque);
+}
+
+void GLTF2MaterialEffect::updateAlphaCutoffEnabled(bool enabled)
+{
+    Q_UNUSED(enabled);
+}
+
+void GLTF2MaterialEffect::initialize()
+{
+    updateOpaque(GLTF2MaterialEffect::isOpaque());
+    updateSkinning(GLTF2MaterialEffect::useSkinning());
+    updateDoubleSided(GLTF2MaterialEffect::isDoubleSided());
+    updateAlphaCutoffEnabled(GLTF2MaterialEffect::isAlphaCutoffEnabled());
 }
 
 } // Kuesa
