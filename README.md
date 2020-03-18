@@ -163,6 +163,9 @@ in the ``src/python`` and the sample application in ``examples/kuesa/python``.
 
 Please file issues [here](https://github.com/KDAB/Kuesa/issues)
 
+KDAB will happily accept external contributions; however, **all**
+contributions will require a signed Contributor License Agreement.
+
 ## About KDAB
 
 Kuesa is maintained by Klarälvdalens Datakonsult AB (KDAB).
