@@ -103,6 +103,14 @@
             "sourceUuid": "{4ce29caa-a9c7-4cf9-a580-226596352f21}",
             "targetPort": "value",
             "targetUuid": "{43a0231d-a27e-4fed-8439-284131d634b8}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{6a8287cd-5f77-4357-8006-d40aea9ec762}",
+            "targetPort": "value",
+            "targetUuid": "{ea6dec60-87b9-45ab-a6e1-fb1e0b55eb7c}"
         }
     ],
     "nodes": [
@@ -336,6 +344,36 @@
             },
             "type": "swizzle",
             "uuid": "{4ce29caa-a9c7-4cf9-a580-226596352f21}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "vertexColor",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "input",
+            "uuid": "{6a8287cd-5f77-4357-8006-d40aea9ec762}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "color",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "output",
+            "uuid": "{ea6dec60-87b9-45ab-a6e1-fb1e0b55eb7c}"
         }
     ],
     "prototypes": {
