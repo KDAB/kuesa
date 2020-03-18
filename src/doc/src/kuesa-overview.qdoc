@@ -106,15 +106,9 @@
     Checkout out our \l {https://www.youtube.com/watch?v=dIdrQMkGVPI} {video
     tutorial} on creating an interactive 3D application with Kuesa.
 
-    \section2 Kuesa Tools
-    A set of tools to preview scenes
-    \list
-    \li \l {gltfEditor}
-    \li \l {gltfViewer}
-    \li \l {ddspreviewer}
-    \li \l {cubemaptooctahedralmap}
-    \endlist
+    \section3 Tools
 
+    The Kuesa-Runtime comes with the gltfViewer tool to preview scenes.
 
     \section1 Kuesa Runtime Features
 

@@ -69,8 +69,8 @@
     for a given name really exist in the specified \a collection, the \a node
     property allows you to access the underlying asset instance.
 
-    You can use the \l {gltfEditor} to instrospect a glTF2 scene files and find
-    the names of the various assets it contains.
+    You can use the Kuesa Studio gltfEditor to introspect a glTF2 scene files
+    and find the names of the various assets it contains.
 
     For instance you might want to select a Camera by name.
     \snippet car-scene/qml/MainScene.qml 2.1

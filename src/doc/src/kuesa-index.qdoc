@@ -74,12 +74,21 @@
 
     It is composed of 3 components:
 
-    \section2 Kuesa Digital Content Creation Plugins
+    \section2 Kuesa Studio
+
+    \section3 Kuesa Digital Content Creation Plugins
 
     \list
     \li \l {https://github.com/KDAB/kuesa-blender} {Kuesa Blender glTF2 Exporter plugin}
     \li \l {https://github.com/KDAB/kuesa-3dsmax} {Kuesa 3ds Max glTF2 Exporter plugin}
     \endlist
+
+    \section3 Kuesa Studio Tools
+
+    The Kuesa-Studio comes with a gltf tool to preview scenes.
+
+    It also provides tools to condition assets to integrate as part of the
+    build process.
 
     \section2 Kuesa Runtime
     Libraries on top of Qt 3D that provide:
@@ -91,9 +100,9 @@
     \li Post Processing Effects
     \endlist
 
-    \section2 Kuesa Tools
+    \section3 Tools
 
-    The Kuesa-Runtime comes with the {gltfViewer} tools to preview scenes.
+    The Kuesa-Runtime comes with the gltfViewer tool to preview scenes.
 
     \l {Kuesa Overview} {Read More}
 
