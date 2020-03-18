@@ -169,9 +169,9 @@ public:
             };
 
             const QUrl fragmentShaderGraph[] = {
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffusealpha.frag.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffusealpha.frag.json")),
-                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffusealpha.frag.json"))
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffuse.frag.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffuse.frag.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffuse.frag.json"))
             };
 
             const QByteArray renderableVertexShaderCode[] = {

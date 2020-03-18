@@ -49,11 +49,8 @@ IroGlassAddShaderData::IroGlassAddShaderData(Qt3DCore::QNode *parent)
     , m_reflectionOuterFilter()
     , m_usesReflectionMap()
     , m_projectReflectionMap()
-    , m_reflectionInnerAlpha()
-    , m_reflectionOuterAlpha()
     , m_glassInnerFilter()
     , m_glassOuterFilter()
-    , m_alphaGain()
 {}
 
 IroGlassAddShaderData::~IroGlassAddShaderData() = default;
@@ -108,16 +105,6 @@ bool IroGlassAddShaderData::projectReflectionMap() const
     return m_projectReflectionMap;
 }
 
-float IroGlassAddShaderData::reflectionInnerAlpha() const
-{
-    return m_reflectionInnerAlpha;
-}
-
-float IroGlassAddShaderData::reflectionOuterAlpha() const
-{
-    return m_reflectionOuterAlpha;
-}
-
 QVector3D IroGlassAddShaderData::glassInnerFilter() const
 {
     return m_glassInnerFilter;
@@ -126,11 +113,6 @@ QVector3D IroGlassAddShaderData::glassInnerFilter() const
 QVector3D IroGlassAddShaderData::glassOuterFilter() const
 {
     return m_glassOuterFilter;
-}
-
-float IroGlassAddShaderData::alphaGain() const
-{
-    return m_alphaGain;
 }
 
 
@@ -223,22 +205,6 @@ void IroGlassAddShaderData::setProjectReflectionMap(bool projectReflectionMap)
     emit projectReflectionMapChanged(projectReflectionMap);
 }
 
-void IroGlassAddShaderData::setReflectionInnerAlpha(float reflectionInnerAlpha)
-{
-    if (m_reflectionInnerAlpha == reflectionInnerAlpha)
-        return;
-    m_reflectionInnerAlpha = reflectionInnerAlpha;
-    emit reflectionInnerAlphaChanged(reflectionInnerAlpha);
-}
-
-void IroGlassAddShaderData::setReflectionOuterAlpha(float reflectionOuterAlpha)
-{
-    if (m_reflectionOuterAlpha == reflectionOuterAlpha)
-        return;
-    m_reflectionOuterAlpha = reflectionOuterAlpha;
-    emit reflectionOuterAlphaChanged(reflectionOuterAlpha);
-}
-
 void IroGlassAddShaderData::setGlassInnerFilter(const QVector3D &glassInnerFilter)
 {
     if (m_glassInnerFilter == glassInnerFilter)
@@ -253,14 +219,6 @@ void IroGlassAddShaderData::setGlassOuterFilter(const QVector3D &glassOuterFilte
         return;
     m_glassOuterFilter = glassOuterFilter;
     emit glassOuterFilterChanged(glassOuterFilter);
-}
-
-void IroGlassAddShaderData::setAlphaGain(float alphaGain)
-{
-    if (m_alphaGain == alphaGain)
-        return;
-    m_alphaGain = alphaGain;
-    emit alphaGainChanged(alphaGain);
 }
 
 
