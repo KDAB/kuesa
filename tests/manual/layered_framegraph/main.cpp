@@ -41,7 +41,8 @@ int main(int argc, char *argv[])
 {
     QSurfaceFormat format = QSurfaceFormat::defaultFormat();
     format.setVersion(4, 6);
-    format.setSamples(16);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+    format.setSamples(8);
     QSurfaceFormat::setDefaultFormat(format);
 
     QGuiApplication app(argc, argv);
