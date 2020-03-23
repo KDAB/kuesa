@@ -56,6 +56,7 @@ class GLTF2MaterialProperties;
 namespace GLTF2Import {
 
 class GLTF2Context;
+class AnimationParser;
 
 struct TextureInfo {
     qint32 index = -1;
