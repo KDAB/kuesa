@@ -1,0 +1,100 @@
+#version 430 core
+
+/*
+    particleemit.comp
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Mauro Persano <mauro.persano@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+#pragma include particle.inc
+
+layout (local_size_x=128) in;
+
+uniform sampler2D randomBuffer;
+uniform float time;
+uniform uint maxParticlesEmittedPerFrame;
+uniform vec3 emitterPosition;
+uniform vec3 emitterPositionRandom;
+uniform vec3 emitterVelocity;
+uniform vec3 emitterVelocityRandom;
+uniform float particleLifespan;
+uniform float particleLifespanRandom;
+uniform float initialAngle;
+uniform float initialAngleRandom;
+uniform float rotationRate;
+uniform float rotationRateRandom;
+
+uniform mat4 modelMatrix;
+uniform mat3 modelNormalMatrix;
+
+layout (std430, binding=0) buffer particleBuffer
+{
+    Particle particles[];
+};
+
+layout (std430, binding=1) buffer deadListBuffer
+{
+    uint count;
+    uint head;
+    uint particles[];
+} deadList;
+
+void main(void)
+{
+    if (gl_GlobalInvocationID.x == 0)
+        deadList.head = 0;
+    barrier();
+
+    if (gl_GlobalInvocationID.x >= deadList.count || gl_GlobalInvocationID.x >= maxParticlesEmittedPerFrame)
+        return;
+
+    vec4 random0 = texture(randomBuffer, vec2(float(gl_GlobalInvocationID.x) / 1024.0, time));
+    random0 = 2.0 * random0 - vec4(1.0);
+
+    vec4 random1 = texture(randomBuffer, vec2(float(gl_GlobalInvocationID.x + 1) / 1024.0, time));
+    random1 = 2.0 * random1 - vec4(1.0);
+
+    vec4 random2 = texture(randomBuffer, vec2(float(gl_GlobalInvocationID.x + 2) / 1024.0, time));
+    random2 = 2.0 * random2 - vec4(1.0);
+
+    vec3 position = emitterPosition;
+    position += random0.xyz * emitterPositionRandom;
+    position = (modelMatrix * vec4(position, 1.0)).xyz;
+
+    vec3 velocity = emitterVelocity;
+    velocity += random1.xyz * emitterVelocityRandom;
+    velocity = modelNormalMatrix * velocity;
+
+    Particle p;
+    p.position = vec4(position, 1.0);
+    p.velocity = vec4(velocity, 0.0);
+    p.lifespan = particleLifespan + random0.w * particleLifespanRandom;
+    p.age = p.lifespan;
+    p.rotation = initialAngle + random1.w * initialAngleRandom;
+    p.rotationRate = rotationRate + random2.w * rotationRateRandom;
+
+    uint particleIndex = deadList.particles[atomicAdd(deadList.head, 1)];
+    particles[particleIndex] = p;
+}

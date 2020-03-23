@@ -49,9 +49,11 @@
 #include <QOffscreenSurface>
 #include <QOpenGLContext>
 #include <Kuesa/abstractpostprocessingeffect.h>
+#include <Kuesa/particles.h>
 #include "zfillrenderstage_p.h"
 #include "opaquerenderstage_p.h"
 #include "transparentrenderstage_p.h"
+#include "particlerenderstage_p.h"
 #include "tonemappingandgammacorrectioneffect.h"
 #include "kuesa_p.h"
 #include <cmath>
@@ -561,6 +563,8 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_debugOverlay(new Qt3DRender::QDebugOverlay)
 #endif
     , m_fgTreeRebuiltScheduled(false)
+    , m_particlesEnabled(false)
+    , m_particleRenderStage(new ParticleRenderStage())
     , m_gammaCorrectionFX(new ToneMappingAndGammaCorrectionEffect())
 {
     m_renderTargets[0] = nullptr;
@@ -627,6 +631,7 @@ ForwardRenderer::~ForwardRenderer()
         framegraph->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
     m_effectFGSubtrees.clear();
     m_sceneStages.clear();
+    delete m_particleRenderStage;
 }
 
 /*!
@@ -720,6 +725,11 @@ bool ForwardRenderer::showDebugOverlay() const
 ToneMappingAndGammaCorrectionEffect::ToneMapping ForwardRenderer::toneMappingAlgorithm() const
 {
     return m_gammaCorrectionFX->toneMappingAlgorithm();
+}
+
+bool ForwardRenderer::particlesEnabled() const
+{
+    return m_particlesEnabled;
 }
 
 /*!
@@ -921,6 +931,14 @@ void ForwardRenderer::setShowDebugOverlay(bool showDebugOverlay)
 #endif
 }
 
+void ForwardRenderer::setParticlesEnabled(bool enabled)
+{
+    if (enabled == m_particlesEnabled)
+        return;
+    m_particlesEnabled = enabled;
+    scheduleFGTreeRebuild();
+    emit particlesEnabledChanged(enabled);
+}
 
 /*!
     Adds \a layer to the list of layers used for rendering. When no layer is
@@ -1061,6 +1079,9 @@ void ForwardRenderer::reconfigureFrameGraph()
 
     // Skinned tranparent
     m_noFrustumCullingTransparentTechniqueFilter->setParent(m_cameraSelector);
+
+    // Particles
+    m_particleRenderStage->setParent(m_particlesEnabled ? m_cameraSelector : Q_NODE_NULLPTR);
 
     // Temporarily reparent effect subtrees and other nodes, then delete the node that held the last
     // subtree framegraph including any render target selectors.

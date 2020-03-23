@@ -30,7 +30,12 @@ SOURCES += \
     $$PWD/sceneentity.cpp \
     $$PWD/animationplayer.cpp \
     $$PWD/skybox.cpp \
-    $$PWD/morphcontroller.cpp
+    $$PWD/morphcontroller.cpp \
+    $$PWD/particlemesh.cpp \
+    $$PWD/particlegeometry.cpp \
+    $$PWD/particlematerial.cpp \
+    $$PWD/noisetextureimage.cpp \
+    $$PWD/particles.cpp
 
 HEADERS += \
     $$PWD/sceneentity.h \
@@ -41,7 +46,12 @@ HEADERS += \
     $$PWD/kuesa_utils_p.h \
     $$PWD/animationplayer.h \
     $$PWD/skybox.h \
-    $$PWD/morphcontroller.h
+    $$PWD/morphcontroller.h \
+    $$PWD/particlemesh_p.h \
+    $$PWD/particlegeometry_p.h \
+    $$PWD/particlematerial_p.h \
+    $$PWD/noisetextureimage_p.h \
+    $$PWD/particles.h
 
 qtConfig(draco) {
     HEADERS += $$PWD/draco_prefix_p.h

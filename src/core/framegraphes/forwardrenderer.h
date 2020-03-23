@@ -64,6 +64,7 @@ class AbstractRenderStage;
 class OpaqueRenderStage;
 class TransparentRenderStage;
 class ZFillRenderStage;
+class ParticleRenderStage;
 
 class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QRenderSurfaceSelector
 {
@@ -80,6 +81,8 @@ class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QRenderSurfaceSele
     Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged REVISION 1)
     Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged REVISION 1)
     Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay WRITE setShowDebugOverlay NOTIFY showDebugOverlayChanged REVISION 2)
+    Q_PROPERTY(bool particlesEnabled READ particlesEnabled WRITE setParticlesEnabled NOTIFY particlesEnabledChanged REVISION 3)
+
 public:
     ForwardRenderer(Qt3DCore::QNode *parent = nullptr);
     ~ForwardRenderer();
@@ -96,6 +99,7 @@ public:
     float gamma() const;
     ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
     bool showDebugOverlay() const;
+    bool particlesEnabled() const;
 
     Q_INVOKABLE void addPostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
     Q_INVOKABLE void removePostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
@@ -117,6 +121,7 @@ public Q_SLOTS:
     void setExposure(float exposure);
     void setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
     void setShowDebugOverlay(bool showDebugOverlay);
+    void setParticlesEnabled(bool enabled);
 
     void addLayer(Qt3DRender::QLayer *layer);
     void removeLayer(Qt3DRender::QLayer *layer);
@@ -136,6 +141,7 @@ Q_SIGNALS:
     void exposureChanged(float exposure);
     void toneMappingAlgorithmChanged(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
     void showDebugOverlayChanged(bool showDebugOverlay);
+    void particlesEnabledChanged(bool enabled);
 
 private:
     void updateTextureSizes();
@@ -219,6 +225,10 @@ private:
 
     //For controlling render stages
     QVector<SceneStagesPtr> m_sceneStages;
+
+    // Particles
+    bool m_particlesEnabled;
+    ParticleRenderStage *m_particleRenderStage;
 
     // GammaCorrection
     ToneMappingAndGammaCorrectionEffect *m_gammaCorrectionFX;

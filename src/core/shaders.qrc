@@ -80,5 +80,12 @@
         <file>shaders/graphs/iromattemult.frag.json</file>
         <file>shaders/graphs/iromatteadd.frag.json</file>
         <file>shaders/graphs/irodiffusealpha.frag.json</file>
+        <file>shaders/gl3/particle.inc</file>
+        <file>shaders/gl3/particleemit.comp</file>
+        <file>shaders/gl3/particlesimulate.comp</file>
+        <file>shaders/gl3/particlesort.comp</file>
+        <file>shaders/gl3/particle.vert</file>
+        <file>shaders/gl3/particle.geom</file>
+        <file>shaders/gl3/particle.frag</file>
     </qresource>
 </RCC>

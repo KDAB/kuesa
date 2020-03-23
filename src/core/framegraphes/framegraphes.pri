@@ -31,12 +31,13 @@ SOURCES += \
     $$PWD/abstractrenderstage.cpp \
     $$PWD/zfillrenderstage.cpp \
     $$PWD/opaquerenderstage.cpp \
-    $$PWD/transparentrenderstage.cpp
+    $$PWD/transparentrenderstage.cpp \
+    $$PWD/particlerenderstage.cpp
 
 HEADERS += \
     $$PWD/forwardrenderer.h \
     $$PWD/abstractrenderstage_p.h \
     $$PWD/zfillrenderstage_p.h \
     $$PWD/opaquerenderstage_p.h \
-    $$PWD/transparentrenderstage_p.h
-
+    $$PWD/transparentrenderstage_p.h \
+    $$PWD/particlerenderstage_p.h

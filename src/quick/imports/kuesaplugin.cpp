@@ -79,6 +79,7 @@
 #include <Kuesa/IroDiffuseAlphaEffect>
 #include <Kuesa/IroDiffuseAlphaProperties>
 #include <KuesaUtils/orbitcameracontroller.h>
+#include <Kuesa/Particles>
 
 #include <QtQml/qqml.h>
 
@@ -116,6 +117,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterExtendedType<Kuesa::ForwardRenderer, Kuesa::PostFXListExtension>(uri, 1, 0, "ForwardRenderer");
     qmlRegisterRevision<Kuesa::ForwardRenderer, 1>(uri, 1, 1);
     qmlRegisterRevision<Kuesa::ForwardRenderer, 2>(uri, 1, 2);
+    qmlRegisterRevision<Kuesa::ForwardRenderer, 3>(uri, 1, 3);
 
     // Lights
     qmlRegisterType<Kuesa::DirectionalLight>(uri, 1, 1, "DirectionalLight");
@@ -199,6 +201,8 @@ void KuesaPlugin::registerTypes(const char *uri)
 
     // Utils
     qmlRegisterType<KuesaUtils::OrbitCameraController>("Kuesa.Utils", 1, 3, "OrbitCameraController");
+    // Particles
+    qmlRegisterType<Kuesa::Particles>(uri, 1, 3, "Particles");
 }
 
 QT_END_NAMESPACE
