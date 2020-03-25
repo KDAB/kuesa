@@ -330,13 +330,6 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
              SkinParser parser;
              return parser.parse(array, m_context);
          } },
-        { KEY_ANIMATIONS, [this](const QJsonValue &value) {
-             const QJsonArray array = value.toArray();
-             if (array.size() == 0)
-                 return true;
-             AnimationParser parser;
-             return parser.parse(array, m_context);
-         } },
         { KEY_MATERIALS, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
@@ -367,7 +360,14 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
              if (value.isUndefined())
                  return true;
              return traverseGLTF(extensionParsers, value.toObject());
-         } }
+         } },
+        { KEY_ANIMATIONS, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             AnimationParser parser;
+             return parser.parse(array, m_context);
+         } },
     };
 }
 
