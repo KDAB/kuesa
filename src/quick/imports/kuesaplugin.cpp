@@ -186,6 +186,7 @@ void KuesaPlugin::registerTypes(const char *uri)
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));
+    qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 2, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));
     qmlRegisterType<Kuesa::BloomEffect>("Kuesa.Effects", 1, 0, "BloomEffect");
     qmlRegisterType<Kuesa::DepthOfFieldEffect>("Kuesa.Effects", 1, 0, "DepthOfFieldEffect");
     qmlRegisterType<Kuesa::ThresholdEffect>("Kuesa.Effects", 1, 0, "ThresholdEffect");
