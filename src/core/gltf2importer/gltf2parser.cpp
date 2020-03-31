@@ -146,6 +146,55 @@ void extractPositionViewDirAndUpVectorFromViewMatrix(const QMatrix4x4 &viewMatri
                          viewMatrix.row(2)[3]);
 }
 
+using Path = QVector<const HierarchyNode *>;
+const HierarchyNode *multiLCA(const Path &nodes)
+{
+    if (nodes.empty())
+        return nullptr;
+
+    // Create reverse path hierarchies from leaf to root
+    QVector<Path> paths(nodes.size());
+    for (int i = 0; i < nodes.size(); ++i) {
+        auto n = nodes[i];
+        paths[i].reserve(n->nodeIdx > 0 ? std::log(n->nodeIdx) : 1);
+        paths[i].push_back(n);
+        while ((n = n->parent) != nullptr)
+            paths[i].push_back(n);
+    }
+
+    // Record length of shortest path
+    QVector<Path::const_reverse_iterator> iterators;
+    iterators.reserve(nodes.size());
+    const HierarchyNode *firstNodeRoot = paths[0].back();
+    int min_length = paths[0].length();
+    for (const Path& path : paths) {
+        // Sanity check : are we in the same tree
+        if (path.back() != firstNodeRoot)
+            return nullptr;
+
+        min_length = std::min(min_length, path.length());
+        iterators.push_back(path.crbegin());
+    }
+
+    // Return lowest common ancestor
+    for (int i = 0; i < min_length; ++i) {
+        const HierarchyNode *firstNode = *iterators[0];
+
+        // Check each branch's first node against firstNode
+        // and advance all iterators if it's the same
+        for (auto& it : iterators) {
+            if ((*it) != firstNode)
+                return firstNode->parent;
+            ++it;
+        }
+
+        if (i == min_length - 1)
+            return firstNode;
+    }
+
+    return nullptr;
+}
+
 } // namespace
 
 GLTF2Parser::GLTF2Parser(SceneEntity *sceneEntity, bool assignNames)
@@ -794,6 +843,27 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
         branchRoot.isRootNode = true;
     }
 
+    for (HierarchyNode *leaf : leafNodes) {
+        bool subtreeHasJoints = false;
+        while (leaf) {
+            // If branch already processed and hasJoints
+            if (leaf->hasJoints)
+                break;
+
+            if (subtreeHasJoints) {
+                leaf->hasJoints = subtreeHasJoints;
+            } else {
+                // Is this node a Joint
+                for (int skinId = 0, m = m_context->skinsCount(); skinId < m && !subtreeHasJoints; ++skinId) {
+                    const Skin &skin = m_context->skin(skinId);
+                    leaf->hasJoints = skin.jointsIndices.contains(leaf->nodeIdx);
+                    subtreeHasJoints |= leaf->hasJoints;
+                }
+            }
+            leaf = leaf->parent;
+        }
+    }
+
     int skinsCount = m_context->skinsCount();
     for (int i = 0, m = m_context->treeNodeCount(); i < m; ++i) {
         TreeNode &treeNode = m_context->treeNode(i);
@@ -803,14 +873,47 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
     // Assign QJoint to treenodes used as joints
     m_gltfJointIdxToSkeletonJointIdxPerSkeleton.resize(m_context->skinsCount());
     for (int skinId = 0, m = m_context->skinsCount(); skinId < m; ++skinId) {
-        const Skin skin = m_context->skin(skinId);
+        Skin &skin = m_context->skin(skinId);
 
-        int jointAccessor = 0;
+        // Find the LCA of the joints
+        QVector<const HierarchyNode *> jointNodes;
+        jointNodes.reserve(skin.jointsIndices.size());
+        for (auto jointId : skin.jointsIndices)
+            jointNodes.push_back(&tree[jointId]);
+        const HierarchyNode *lcaNode = ::multiLCA(jointNodes);
 
-        const HierarchyNode *skeletonRootHNode = tree.data() + skin.skeletonIdx;
-        if (skin.jointsIndices.contains(skin.skeletonIdx))
-            m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinId][skin.jointsIndices.indexOf(skin.skeletonIdx)] = jointAccessor;
-        buildJointHierarchy(skeletonRootHNode, jointAccessor, skin, skinId);
+        // If the LCA exists we use that as the rootJoint for the skin
+        if (lcaNode) {
+            skin.rootJoint.jointNodeIdx = lcaNode->nodeIdx;
+            int jointAccessor = 0;
+            const HierarchyNode *skeletonRootHNode = tree.data() + skin.rootJoint.jointNodeIdx;
+            skin.rootJoint.skeletonNode = m_context->treeNode(lcaNode->nodeIdx).entity->parentEntity();
+
+            // Is the LCA a joint itself?
+            if (skin.jointsIndices.contains(lcaNode->nodeIdx))
+                m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinId][skin.jointsIndices.indexOf(skin.rootJoint.jointNodeIdx)] = jointAccessor;
+            buildJointHierarchy(skeletonRootHNode, jointAccessor, skin, skinId);
+        } else {
+            // If we dont have a LCA, we have one or more joints that doesn't create a tree, but they create subtrees. Look for the roots of those subtrees
+            QVector<int> rootJoints;
+            for (const auto joint : qAsConst(skin.jointsIndices)) {
+                const HierarchyNode &node = tree[joint];
+                if (!node.parent)
+                    rootJoints.push_back(joint);
+            }
+
+            // All this subtrees are going to be parented to a dummy QJoint that will act as the rootJoint
+            Qt3DCore::QJoint *joint = new Qt3DCore::QJoint;
+            skin.rootJoint.joint = joint;
+            int jointAccessor = 1;
+            for (const auto rootJointId : rootJoints) {
+                const HierarchyNode *skeletonRootHNode = tree.data() + rootJointId;
+                if (skin.jointsIndices.contains(rootJointId))
+                    m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinId][skin.jointsIndices.indexOf(rootJointId)] = jointAccessor;
+                buildJointHierarchy(skeletonRootHNode, jointAccessor, skin, skinId);
+                joint->addChildJoint(m_context->treeNode(rootJointId).joints[skinId]);
+            }
+        }
     }
 }
 
@@ -826,10 +929,10 @@ void GLTF2Parser::buildJointHierarchy(const HierarchyNode *node, int &jointAcces
     joint->setInverseBindMatrix(QMatrix4x4());
 
     for (const HierarchyNode *childNode : node->children) {
-        if (skin.jointsIndices.contains(childNode->nodeIdx)) {
+        if (skin.jointsIndices.contains(childNode->nodeIdx))
             m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinIdx][skin.jointsIndices.indexOf(childNode->nodeIdx)] = jointAccessor;
+        if (childNode->hasJoints)
             buildJointHierarchy(childNode, jointAccessor, skin, skinIdx, joint);
-        }
     }
 }
 
@@ -967,10 +1070,10 @@ void GLTF2Parser::generateTreeNodeContent()
                         const Skin &skin = m_context->skin(skinId);
                         Qt3DCore::QSkeleton *skeleton = skin.skeleton;
                         armature->setSkeleton(skeleton);
-                        const TreeNode skeletonNode = m_context->treeNode(skin.skeletonIdx);
-                        skinRootJointEntity = skeletonNode.entity->parentEntity();
-                        if (!skinRootJointEntity)
-                            skinRootJointEntity = skeletonNode.entity;
+                        if (!skin.rootJoint.joint && skin.rootJoint.skeletonNode)
+                            skinRootJointEntity = skin.rootJoint.skeletonNode;
+                        else
+                            skinRootJointEntity = m_contentRootEntity;
 
                         // We need to get the skeleton index buffer and adapt the joints it refers to
                         for (const auto &primitive : qAsConst(meshData.meshPrimitives)) {
@@ -1146,7 +1249,7 @@ void GLTF2Parser::generateTreeNodeContent()
                         // (in other words, our parent is the entity that
                         // corresponds to the node to which the root joint is
                         // assigned)
-                        primitiveEntity->setParent(skinRootJointEntity->parentEntity() ? skinRootJointEntity->parentEntity() : m_contentRootEntity);
+                        primitiveEntity->setParent(skinRootJointEntity);
                     } else {
                         // We set the parent to entity so that transform is applied
                         primitiveEntity->setParent(entity);
@@ -1200,17 +1303,11 @@ void GLTF2Parser::generateSkeletonContent()
         }
 
         // Set root joint on skeleton
-        int rootJointId = skin.skeletonIdx;
-        if (rootJointId < 0) {
-            // Use the scene's root
-            const Scene defaultScene = m_context->scene(m_defaultSceneIdx);
-            // Find first root node of type Joint
-            const QVector<int> rootNodeIndices = defaultScene.rootNodeIndices;
-            rootJointId = rootNodeIndices.first();
-        }
+        Qt3DCore::QJoint *rootJoint = skin.rootJoint.joint;
+        if (!rootJoint)
+            rootJoint = m_context->treeNode(skin.rootJoint.jointNodeIdx).joints[skinId];
 
         Qt3DCore::QSkeleton *skeleton = new Qt3DCore::QSkeleton();
-        Qt3DCore::QJoint *rootJoint = m_context->treeNode(rootJointId).joints[skinId];
         Q_ASSERT(rootJoint);
         skeleton->setRootJoint(rootJoint);
         skin.skeleton = skeleton;

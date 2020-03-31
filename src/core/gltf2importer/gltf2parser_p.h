@@ -74,6 +74,7 @@ struct HierarchyNode {
     int nodeIdx = -1;
     HierarchyNode *parent = nullptr;
     QVector<HierarchyNode *> children;
+    bool hasJoints = false;
 };
 
 class SceneRootEntity : public Qt3DCore::QEntity

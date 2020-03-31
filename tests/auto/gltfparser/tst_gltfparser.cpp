@@ -682,8 +682,7 @@ private Q_SLOTS:
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<QVector<QString>>("expectedNames");
 
-        QVector<QString> expectedNames = { "Armature",
-                                           "Armature_Hip",
+        QVector<QString> expectedNames = { "Armature_Hip",
                                            "Armature_Chest",
                                            "Armature_Shoulder.R",
                                            "Armature_Arm.R",
