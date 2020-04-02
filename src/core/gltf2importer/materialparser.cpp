@@ -61,12 +61,8 @@ const QLatin1String KEY_TEXCOORD = QLatin1String("texCoord");
 const QLatin1String KEY_NORMAL_TEXTURE = QLatin1String("normalTexture");
 const QLatin1String KEY_OCCLUSION_TEXTURE = QLatin1String("occlusionTexture");
 const QLatin1String KEY_EMISSIVE_TEXTURE = QLatin1String("emissiveTexture");
-const QLatin1String KEY_SCALE = QLatin1String("scale");
 const QLatin1String KEY_EMISSIVE_FACTOR = QLatin1String("emissiveFactor");
-const QLatin1String KEY_TYPE = QLatin1String("type");
 const QLatin1String KEY_PROPERTIES = QLatin1String("properties");
-const QLatin1String KEY_VALUE = QLatin1String("value");
-const QLatin1String KEY_NAME = QLatin1String("name");
 
 QVector<Qt3DAnimation::QChannelMapping *> iroMappingGenerator(const GLTF2Context *ctx,
                                                               const ChannelMapping &mapping)
@@ -149,7 +145,7 @@ QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
         return QVariant::fromValue(rawValue.toInt());
     } else if (typeId == qMetaTypeId<bool>()) {
         return QVariant::fromValue(rawValue.toBool());
-    } else if (typeId == qMetaTypeId<Qt3DRender::QAbstractTexture*>()) {
+    } else if (typeId == qMetaTypeId<Qt3DRender::QAbstractTexture *>()) {
         TextureInfo info;
         parseTextureInfo(info, rawValue.toObject());
         return QVariant::fromValue(info);
@@ -161,105 +157,104 @@ QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
 void registerMaterialExtensionAnimatableProperties()
 {
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/diffuseGain"),
-                           1,
-                           QStringLiteral("diffuseGain"),
-                           ::iroMappingGenerator);
+                                                1,
+                                                QStringLiteral("diffuseGain"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/diffuseInnerFilter"),
-                           3,
-                           QStringLiteral("diffuseInnerFilter"),
-                           ::iroMappingGenerator);
+                                                3,
+                                                QStringLiteral("diffuseInnerFilter"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/diffuseOuterFilter"),
-                           3,
-                           QStringLiteral("diffuseOuterFilter"),
-                           ::iroMappingGenerator);
+                                                3,
+                                                QStringLiteral("diffuseOuterFilter"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/normalScaling"),
-                           3,
-                           QStringLiteral("normalScaling"),
-                           ::iroMappingGenerator);
+                                                3,
+                                                QStringLiteral("normalScaling"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/normalDisturb"),
-                           2,
-                           QStringLiteral("normalDisturb"),
-                           ::iroMappingGenerator);
+                                                2,
+                                                QStringLiteral("normalDisturb"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/reflectionGain"),
-                           1,
-                           QStringLiteral("reflectionGain"),
-                           ::iroMappingGenerator);
+                                                1,
+                                                QStringLiteral("reflectionGain"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/reflectionInnerFilter"),
-                           3,
-                           QStringLiteral("reflectionInnerFilter"),
-                           ::iroMappingGenerator);
+                                                3,
+                                                QStringLiteral("reflectionInnerFilter"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/reflectionOuterFilter"),
-                           3,
-                           QStringLiteral("reflectionOuterFilter"),
-                           ::iroMappingGenerator);
+                                                3,
+                                                QStringLiteral("reflectionOuterFilter"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/postVertexColor"),
-                           1,
-                           QStringLiteral("postVertexColor"),
-                           ::iroMappingGenerator);
+                                                1,
+                                                QStringLiteral("postVertexColor"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/postGain"),
-                           1,
-                           QStringLiteral("postGain"),
-                           ::iroMappingGenerator);
+                                                1,
+                                                QStringLiteral("postGain"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/postHemiFilter"),
-                           3,
-                           QStringLiteral("postHemiFilter"),
-                           ::iroMappingGenerator);
+                                                3,
+                                                QStringLiteral("postHemiFilter"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/matteAlphaGain"),
-                           1,
-                           QStringLiteral("matteAlphaGain"),
-                           ::iroMappingGenerator);
+                                                1,
+                                                QStringLiteral("matteAlphaGain"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/matteGain"),
-                           1,
-                           QStringLiteral("matteGain"),
-                           ::iroMappingGenerator);
+                                                1,
+                                                QStringLiteral("matteGain"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/matteFilter"),
-                           3,
-                           QStringLiteral("matteFilter"),
-                           ::iroMappingGenerator);
+                                                3,
+                                                QStringLiteral("matteFilter"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/alphaGain"),
-                           1,
-                           QStringLiteral("alphaGain"),
-                           ::iroMappingGenerator);
+                                                1,
+                                                QStringLiteral("alphaGain"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/reflectionInnerAlpha"),
-                           1,
-                           QStringLiteral("reflectionInnerAlpha"),
-                           ::iroMappingGenerator);
+                                                1,
+                                                QStringLiteral("reflectionInnerAlpha"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/reflectionOuterAlpha"),
-                           1,
-                           QStringLiteral("reflectionOuterAlpha"),
-                           ::iroMappingGenerator);
+                                                1,
+                                                QStringLiteral("reflectionOuterAlpha"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/glassInnerFilter"),
-                           3,
-                           QStringLiteral("glassInnerFilter"),
-                           ::iroMappingGenerator);
+                                                3,
+                                                QStringLiteral("glassInnerFilter"),
+                                                ::iroMappingGenerator);
 
     AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/glassOuterFilter"),
-                           3,
-                           QStringLiteral("glassOuterFilter"),
-                           ::iroMappingGenerator);
+                                                3,
+                                                QStringLiteral("glassOuterFilter"),
+                                                ::iroMappingGenerator);
 }
 
 } // namespace
 
 Q_CONSTRUCTOR_FUNCTION(registerMaterialExtensionAnimatableProperties)
-
 
 bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
 {
@@ -373,7 +368,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
                     mat.customMaterial.propertiesClassMetaObject = it.value().propertiesClassMetaObject;
                     mat.customMaterial.effectClassMetaObject = it.value().effectClassMetaObject;
 
-                    auto findPropertyTypeFromMetaObject = [&mat] (const QByteArray &propertyName) {
+                    auto findPropertyTypeFromMetaObject = [&mat](const QByteArray &propertyName) {
                         for (int i = 0, m = mat.customMaterial.propertiesClassMetaObject->propertyCount(); i < m; ++i) {
                             const QMetaProperty p = mat.customMaterial.propertiesClassMetaObject->property(i);
                             if (p.name() == propertyName)
