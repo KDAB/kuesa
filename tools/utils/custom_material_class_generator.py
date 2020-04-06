@@ -821,7 +821,7 @@ private:
 
             auto transparentFilterKey = new Qt3DRender::QFilterKey(this);
             transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-            transparentFilterKey->setValue(QStringLiteral("Transparent%s"));
+            transparentFilterKey->setValue(QStringLiteral("Transparent"));
             transparentRenderPass->addFilterKey(transparentFilterKey);
 
             addRenderPass(transparentRenderPass);
@@ -1653,8 +1653,7 @@ HEADERS += \\
                                                                                                        pass_info.blendSourceRGB,
                                                                                                        pass_info.blendSourceAlpha,
                                                                                                        pass_info.blendDestinationRGB,
-                                                                                                       pass_info.blendDestinationAlpha,
-                                                                                                       "-Pass%s" % (idx + 1) if idx > 0 else "")
+                                                                                                       pass_info.blendDestinationAlpha)
                 return CustomMaterialGenerator.techniqueMultiTransparent % (matName,
                                                                             matName,
                                                                             innerPassContent)

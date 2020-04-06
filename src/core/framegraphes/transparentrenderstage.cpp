@@ -71,26 +71,12 @@ TransparentRenderStage::TransparentRenderStage(Qt3DCore::QNode *parent)
                                     });
     connect(m_alphaSortPolicy, &Qt3DRender::QSortPolicy::enabledChanged, this, &TransparentRenderStage::backToFrontSortingChanged);
 
-    // Pass for single pass material of first pass of multi pass materials
-    {
-        auto filterKey = new Qt3DRender::QFilterKey(this);
-        filterKey->setName(QStringLiteral("KuesaDrawStage"));
-        filterKey->setValue(QStringLiteral("Transparent"));
+    auto passFilter = new Qt3DRender::QRenderPassFilter(m_alphaSortPolicy);
+    auto filterKey = new Qt3DRender::QFilterKey(this);
+    filterKey->setName(QStringLiteral("KuesaDrawStage"));
+    filterKey->setValue(QStringLiteral("Transparent"));
 
-        // Pass for single pass materials (PBR, Unlit)
-        auto passFilter = new Qt3DRender::QRenderPassFilter(m_alphaSortPolicy);
-        passFilter->addMatch(filterKey);
-    }
-    // Second Pass for multi pass materials
-    {
-        auto filterKey = new Qt3DRender::QFilterKey(this);
-        filterKey->setName(QStringLiteral("KuesaDrawStage"));
-        filterKey->setValue(QStringLiteral("Transparent-Pass2"));
-
-        auto iroPassFilter = new Qt3DRender::QRenderPassFilter(m_alphaSortPolicy);
-        iroPassFilter->addMatch(filterKey);
-    }
-
+    passFilter->addMatch(filterKey);
 }
 
 TransparentRenderStage::~TransparentRenderStage()

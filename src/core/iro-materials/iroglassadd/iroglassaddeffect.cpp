@@ -230,7 +230,7 @@ public:
 
             auto transparentFilterKey = new Qt3DRender::QFilterKey(this);
             transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-            transparentFilterKey->setValue(QStringLiteral("Transparent-Pass2"));
+            transparentFilterKey->setValue(QStringLiteral("Transparent"));
             transparentRenderPass->addFilterKey(transparentFilterKey);
 
             addRenderPass(transparentRenderPass);
