@@ -83,14 +83,6 @@
         {
             "layers": [
             ],
-            "sourcePort": "product",
-            "sourceUuid": "{9083907f-ad8b-4933-8a6d-96764fb14b0c}",
-            "targetPort": "position",
-            "targetUuid": "{b750802b-b2c6-4ba3-9f59-9ce6d4155802}"
-        },
-        {
-            "layers": [
-            ],
             "sourcePort": "value",
             "sourceUuid": "{0b59e4be-97be-4a98-9f53-df1081f19791}",
             "targetPort": "input",
@@ -111,6 +103,22 @@
             "sourceUuid": "{6a8287cd-5f77-4357-8006-d40aea9ec762}",
             "targetPort": "value",
             "targetUuid": "{ea6dec60-87b9-45ab-a6e1-fb1e0b55eb7c}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{9083907f-ad8b-4933-8a6d-96764fb14b0c}",
+            "targetPort": "input",
+            "targetUuid": "{8dae1328-145f-42bb-998c-0bb17be6c636}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{8dae1328-145f-42bb-998c-0bb17be6c636}",
+            "targetPort": "position",
+            "targetUuid": "{b750802b-b2c6-4ba3-9f59-9ce6d4155802}"
         }
     ],
     "groups": [
@@ -552,14 +560,42 @@
             },
             "type": "output",
             "uuid": "{ea6dec60-87b9-45ab-a6e1-fb1e0b55eb7c}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "swizzle",
+            "group": -1,
+            "id": 17,
+            "inputValues": {
+                "input": "0.0,0.0,0.0"
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "fields": "xyww",
+                "inputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "position": {
+                "x": 1740,
+                "y": 852
+            },
+            "type": "swizzle",
+            "uuid": "{8dae1328-145f-42bb-998c-0bb17be6c636}"
         }
     ],
     "project": {
         "position": {
-            "x": 196.75011655011667,
-            "y": 711.9733377733374
+            "x": 328.07512487512486,
+            "y": 795.8592074592075
         },
-        "scale": 0.8125
+        "scale": 0.5625
     },
     "prototypes": {
         "BINARY_MATH_FUNCTION": {
@@ -3216,7 +3252,7 @@
         },
         "subgraph": {
             "parameters": {
-                "Path": "/path/to/file"
+                "Path": "/"
             }
         },
         "subtract": {

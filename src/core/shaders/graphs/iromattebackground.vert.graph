@@ -365,7 +365,7 @@
             "layers": [
             ],
             "parameters": {
-                "constant": "0.0,1.0",
+                "constant": "1.0,1.0",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec2"
@@ -531,8 +531,8 @@
     ],
     "project": {
         "position": {
-            "x": 224.91832611832672,
-            "y": -496.18585858585857
+            "x": 277.624242424243,
+            "y": -292.9212121212122
         },
         "scale": 0.6875
     },
@@ -1881,7 +1881,7 @@
         },
         "subgraph": {
             "parameters": {
-                "Path": "/path/to/file"
+                "Path": "/"
             }
         },
         "subtract": {

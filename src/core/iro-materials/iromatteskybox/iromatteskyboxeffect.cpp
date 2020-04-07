@@ -36,8 +36,6 @@
 #include <Qt3DRender/QShaderProgram>
 #include <Qt3DRender/QShaderProgramBuilder>
 #include <Qt3DRender/QGraphicsApiFilter>
-#include <Qt3DRender/QBlendEquation>
-#include <Qt3DRender/QBlendEquationArguments>
 #include "iromatteskyboxeffect.h"
 
 

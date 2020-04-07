@@ -83,14 +83,6 @@
         {
             "layers": [
             ],
-            "sourcePort": "product",
-            "sourceUuid": "{9083907f-ad8b-4933-8a6d-96764fb14b0c}",
-            "targetPort": "position",
-            "targetUuid": "{b750802b-b2c6-4ba3-9f59-9ce6d4155802}"
-        },
-        {
-            "layers": [
-            ],
             "sourcePort": "value",
             "sourceUuid": "{0b59e4be-97be-4a98-9f53-df1081f19791}",
             "targetPort": "input",
@@ -111,6 +103,14 @@
             "sourceUuid": "{6a8287cd-5f77-4357-8006-d40aea9ec762}",
             "targetPort": "value",
             "targetUuid": "{ea6dec60-87b9-45ab-a6e1-fb1e0b55eb7c}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{9083907f-ad8b-4933-8a6d-96764fb14b0c}",
+            "targetPort": "position",
+            "targetUuid": "{b750802b-b2c6-4ba3-9f59-9ce6d4155802}"
         }
     ],
     "nodes": [
@@ -332,7 +332,7 @@
             "layers": [
             ],
             "parameters": {
-                "fields": "xy",
+                "fields": "xz",
                 "inputType": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"

@@ -256,7 +256,7 @@
             "layers": [
             ],
             "parameters": {
-                "constant": "0.0,1.0",
+                "constant": "1.0,1.0",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec2"

@@ -599,6 +599,153 @@ private:
 };
 """
 
+    techniqueBackgroundOnly = """class %sTechnique : public Qt3DRender::QTechnique
+{
+public:
+    enum Version {
+        GL3 = 0,
+        ES3,
+        ES2
+    };
+
+    explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
+        : QTechnique(parent)
+        , m_backFaceCulling(new QCullFace(this))
+        , m_noDepthMask(new QNoDepthMask(this))
+        , m_depthTest(new QDepthTest(this))
+        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
+        , m_renderShader(new QShaderProgram(this))
+        , m_backgroundRenderPass(new QRenderPass(this))
+        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
+    {
+        struct ApiFilterInfo {
+            int major;
+            int minor;
+            QGraphicsApiFilter::Api api;
+            QGraphicsApiFilter::OpenGLProfile profile;
+        };
+
+        const ApiFilterInfo apiFilterInfos[] = {
+            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
+            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+        };
+
+        graphicsApiFilter()->setApi(apiFilterInfos[version].api);
+        graphicsApiFilter()->setProfile(apiFilterInfos[version].profile);
+        graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
+        graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
+
+        const QUrl vertexShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s"))
+        };
+
+        const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s"))
+        };
+
+        const QByteArray renderableVertexShaderCode[] = {
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)")
+        };
+
+        const QByteArray renderableFragmentShaderCode[] = {
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)")
+        };
+
+         const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
+            QByteArray(R"(%s)")
+        };
+
+        // Use default vertex shader graph if no vertex shader code was specified
+        if (renderableVertexShaderCode[version].isEmpty()) {
+            m_renderShaderBuilder->setShaderProgram(m_renderShader);
+            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
+        } else {
+            m_renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
+        }
+
+        if (renderableFragmentShaderCode[version].isEmpty()) {
+            m_renderShaderBuilder->setShaderProgram(m_renderShader);
+            m_renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
+        } else {
+            m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
+        }
+
+         // Set geometry shader code if one was specified
+        m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
+
+        auto filterKey = new QFilterKey(this);
+        filterKey->setName(QStringLiteral("renderingStyle"));
+        filterKey->setValue(QStringLiteral("forward"));
+        addFilterKey(filterKey);
+
+        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
+        m_techniqueAllowFrustumCullingFilterKey->setValue(false);
+        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
+
+        auto opaqueFilterKey = new Qt3DRender::QFilterKey(this);
+        opaqueFilterKey->setName(QStringLiteral("KuesaDrawStage"));
+        opaqueFilterKey->setValue(QStringLiteral("Opaque"));
+
+        m_depthTest->setDepthFunction(QDepthTest::LessOrEqual);
+
+        m_backgroundRenderPass->setShaderProgram(m_renderShader);
+        m_backgroundRenderPass->addRenderState(m_backFaceCulling);
+        m_backgroundRenderPass->addFilterKey(opaqueFilterKey);
+        m_backgroundRenderPass->addRenderState(m_noDepthMask);
+        m_backgroundRenderPass->addRenderState(m_depthTest);
+        addRenderPass(m_backgroundRenderPass);
+    }
+
+    QStringList enabledLayers() const
+    {
+        return m_renderShaderBuilder->enabledLayers();
+    }
+
+    void setEnabledLayers(const QStringList &layers)
+    {
+        m_renderShaderBuilder->setEnabledLayers(layers);
+    }
+
+    void setOpaque(bool)
+    {
+    }
+
+    void setCullingMode(QCullFace::CullingMode mode)
+    {
+        m_backFaceCulling->setMode(mode);
+    }
+
+    QCullFace::CullingMode cullingMode() const
+    {
+        return m_backFaceCulling->mode();
+    }
+
+    void setAllowCulling(bool)
+    {
+    }
+
+private:
+    Qt3DRender::QCullFace *m_backFaceCulling;
+    Qt3DRender::QNoDepthMask *m_noDepthMask;
+    Qt3DRender::QDepthTest *m_depthTest;
+    Qt3DRender::QShaderProgramBuilder *m_renderShaderBuilder;
+    Qt3DRender::QShaderProgram *m_renderShader;
+    Qt3DRender::QRenderPass *m_backgroundRenderPass;
+    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
+};
+"""
+
     techniqueTransparentOnly = """class %sTechnique : public Qt3DRender::QTechnique
 {
 public:
@@ -1658,9 +1805,30 @@ HEADERS += \\
                                                                             matName,
                                                                             innerPassContent)
 
+            def backgroundTechnique(passes_info):
+                pass_info = passes_info[0]
+                return CustomMaterialGenerator.techniqueBackgroundOnly % (matName,
+                                                                          matName,
+                                                                          pass_info.gl3VertexShaderGraph,
+                                                                          pass_info.es3VertexShaderGraph,
+                                                                          pass_info.es2VertexShaderGraph,
+                                                                          pass_info.gl3FragmentShaderGraph,
+                                                                          pass_info.es3FragmentShaderGraph,
+                                                                          pass_info.es2FragmentShaderGraph,
+                                                                          pass_info.gl3VertCode,
+                                                                          pass_info.es3VertCode,
+                                                                          pass_info.es2VertCode,
+                                                                          pass_info.gl3FragCode,
+                                                                          pass_info.es3FragCode,
+                                                                          pass_info.es2FragCode,
+                                                                          pass_info.gl3GeometryCode,
+                                                                          pass_info.es3GeometryCode,
+                                                                          pass_info.es2GeometryCode)
+
 
             def generateTechnique(passes_info):
                 switcher = {
+                    "Background": backgroundTechnique,
                     "Opaque": opaqueOnlyTechnique,
                     "Transparent": transparentOnlyTechnique,
                     "TransparentAndOpaque": transparentAndOpaqueTechnique,
@@ -1670,10 +1838,10 @@ HEADERS += \\
                 if pass_type not in switcher:
                     print("Unhandled pass type")
                     return
-                return switcher[pass_type](passes_info)
+                return switcher[pass_type](passes_info), pass_type
 
 
-            technique_content = generateTechnique(passes_info)
+            technique_content, technique_name = generateTechnique(passes_info)
             content = CustomMaterialGenerator.effectClassCppContent % (technique_content,
                                                                        doc,
                                                                        matName,
@@ -1699,8 +1867,15 @@ HEADERS += \\
             includes += "#include <Qt3DRender/QShaderProgram>\n"
             includes += "#include <Qt3DRender/QShaderProgramBuilder>\n"
             includes += "#include <Qt3DRender/QGraphicsApiFilter>\n"
-            includes += "#include <Qt3DRender/QBlendEquation>\n"
-            includes += "#include <Qt3DRender/QBlendEquationArguments>\n"
+
+            if technique_name in ["Transparent", "TransparentAndOpaque", "MultiPassTransparent"]:
+                includes += "#include <Qt3DRender/QBlendEquation>\n"
+                includes += "#include <Qt3DRender/QBlendEquationArguments>\n"
+
+            if technique_name == "Background":
+                includes += "#include <Qt3DRender/QNoDepthMask>\n"
+                includes += "#include <Qt3DRender/QDepthTest>\n"
+
             includes += "#include \"%s.h\"\n" % (className.lower())
 
             self.generateCppFile(content,
