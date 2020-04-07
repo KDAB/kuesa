@@ -67,6 +67,7 @@ class IroDiffuseAlphaShaderData : public Qt3DRender::QShaderData
     Q_PROPERTY(float reflectionInnerAlpha READ reflectionInnerAlpha WRITE setReflectionInnerAlpha NOTIFY reflectionInnerAlphaChanged)
     Q_PROPERTY(float reflectionOuterAlpha READ reflectionOuterAlpha WRITE setReflectionOuterAlpha NOTIFY reflectionOuterAlphaChanged)
     Q_PROPERTY(float alphaGain READ alphaGain WRITE setAlphaGain NOTIFY alphaGainChanged)
+    Q_PROPERTY(bool gltfYUp READ gltfYUp WRITE setGltfYUp NOTIFY gltfYUpChanged)
 
 public:
     explicit IroDiffuseAlphaShaderData(Qt3DCore::QNode *parent = nullptr);
@@ -84,6 +85,7 @@ public:
     float reflectionInnerAlpha() const;
     float reflectionOuterAlpha() const;
     float alphaGain() const;
+    bool gltfYUp() const;
 
 public Q_SLOTS:
     void setNormalScaling(const QVector3D &normalScaling);
@@ -99,6 +101,7 @@ public Q_SLOTS:
     void setReflectionInnerAlpha(float reflectionInnerAlpha);
     void setReflectionOuterAlpha(float reflectionOuterAlpha);
     void setAlphaGain(float alphaGain);
+    void setGltfYUp(bool gltfYUp);
 
 Q_SIGNALS:
     void normalScalingChanged(QVector3D);
@@ -114,6 +117,7 @@ Q_SIGNALS:
     void reflectionInnerAlphaChanged(float);
     void reflectionOuterAlphaChanged(float);
     void alphaGainChanged(float);
+    void gltfYUpChanged(bool);
 
 private:
     QVector3D m_normalScaling;
@@ -129,6 +133,7 @@ private:
     float m_reflectionInnerAlpha;
     float m_reflectionOuterAlpha;
     float m_alphaGain;
+    bool m_gltfYUp;
 
 };
 

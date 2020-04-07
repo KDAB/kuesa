@@ -58,6 +58,7 @@ class KUESASHARED_EXPORT IroGlassAddProperties : public GLTF2MaterialProperties
     Q_PROPERTY(bool projectReflectionMap READ projectReflectionMap WRITE setProjectReflectionMap NOTIFY projectReflectionMapChanged)
     Q_PROPERTY(QVector3D glassInnerFilter READ glassInnerFilter WRITE setGlassInnerFilter NOTIFY glassInnerFilterChanged)
     Q_PROPERTY(QVector3D glassOuterFilter READ glassOuterFilter WRITE setGlassOuterFilter NOTIFY glassOuterFilterChanged)
+    Q_PROPERTY(bool gltfYUp READ gltfYUp WRITE setGltfYUp NOTIFY gltfYUpChanged)
 
 public:
     Q_INVOKABLE explicit IroGlassAddProperties(Qt3DCore::QNode *parent = nullptr);
@@ -76,6 +77,7 @@ public:
     bool projectReflectionMap() const;
     QVector3D glassInnerFilter() const;
     QVector3D glassOuterFilter() const;
+    bool gltfYUp() const;
 
 public Q_SLOTS:
     void setNormalScaling(const QVector3D &normalScaling);
@@ -90,6 +92,7 @@ public Q_SLOTS:
     void setProjectReflectionMap(bool projectReflectionMap);
     void setGlassInnerFilter(const QVector3D &glassInnerFilter);
     void setGlassOuterFilter(const QVector3D &glassOuterFilter);
+    void setGltfYUp(bool gltfYUp);
 
 Q_SIGNALS:
     void normalScalingChanged(QVector3D);
@@ -104,6 +107,7 @@ Q_SIGNALS:
     void projectReflectionMapChanged(bool);
     void glassInnerFilterChanged(QVector3D);
     void glassOuterFilterChanged(QVector3D);
+    void gltfYUpChanged(bool);
 
 private:
     IroGlassAddShaderData *m_shaderData;

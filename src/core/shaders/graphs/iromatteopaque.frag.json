@@ -4,7 +4,7 @@
    "layers": [],
    "parameters": {},
    "type": "MATERIAL_PROPERTIES",
-   "uuid": "{96dc2034-7713-4619-905e-f79e856fc3c0}"
+   "uuid": "{603ab7f9-2700-42c3-989e-dba5086f22f4}"
   },
   {
    "layers": [],
@@ -15,7 +15,7 @@
     }
    },
    "type": "MIX",
-   "uuid": "{a8c40202-5274-42cc-85cb-668f0cf5c509}"
+   "uuid": "{7face3d3-6179-40d9-8d41-dacee0988fa2}"
   },
   {
    "layers": [],
@@ -35,19 +35,19 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{88235140-b239-414d-b24a-68c923bf70c7}"
+   "uuid": "{91edfcfb-2cbc-439c-b4b4-606aca981b30}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "VERTEX_COLOR",
-   "uuid": "{015fdd9e-a82e-4265-83d4-6161e8b6088e}"
+   "uuid": "{84eb6e3e-ecdf-4216-94cc-d78d228f5d7f}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "TEX_COORD",
-   "uuid": "{bf8bd68b-5281-4fb9-a0f1-8911c2e0c6a1}"
+   "uuid": "{c711ad9a-e19a-4e58-b342-243309dad2e3}"
   },
   {
    "layers": [],
@@ -67,13 +67,13 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{1657fc72-8c35-4194-a83c-d6263bf15f3d}"
+   "uuid": "{5da32201-f949-4721-b4d8-a1e8c6252701}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "MATERIAL_OUTPUT",
-   "uuid": "{c922bf87-0353-4275-b9ab-c4fc2292451c}"
+   "uuid": "{b048022a-07d2-4355-9d65-782be1a703a5}"
   },
   {
    "layers": [],
@@ -93,7 +93,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{1319d5bd-4dbb-4192-891e-7ba7b06a20c8}"
+   "uuid": "{fec2b359-9d4a-4fe4-9f95-0fe64d09f669}"
   },
   {
    "layers": [],
@@ -104,7 +104,7 @@
     "linearizer": "sRGBtoLinear"
    },
    "type": "TEX_IMAGE",
-   "uuid": "{43bca36b-0909-46da-8141-1b07cea5abaf}"
+   "uuid": "{08129374-3842-42b9-82db-5e305b0ddb72}"
   },
   {
    "layers": [],
@@ -124,13 +124,13 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{21a30a27-80bb-4924-80b0-1827619b2e1e}"
+   "uuid": "{5bd21066-9e1f-4cd2-a5e1-144b0441b0e6}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "COLOR_TO_SHADER",
-   "uuid": "{12f1e980-7a91-491e-9a3e-7fef1af13e2e}"
+   "uuid": "{dd14a4e8-97b5-4f3e-9e6d-b72997a8516c}"
   },
   {
    "layers": [],
@@ -142,118 +142,118 @@
     }
    },
    "type": "constant",
-   "uuid": "{356f42bc-25aa-4025-9105-2c00b9f59d9d}"
+   "uuid": "{387e3573-a88a-4a0a-9bf3-8870161134fc}"
   }
  ],
  "edges": [
   {
    "layers": [],
-   "sourceUuid": "{015fdd9e-a82e-4265-83d4-6161e8b6088e}",
+   "sourceUuid": "{84eb6e3e-ecdf-4216-94cc-d78d228f5d7f}",
    "sourcePort": "color",
-   "targetUuid": "{a8c40202-5274-42cc-85cb-668f0cf5c509}",
+   "targetUuid": "{7face3d3-6179-40d9-8d41-dacee0988fa2}",
    "targetPort": "input2"
   },
   {
    "layers": [],
-   "sourceUuid": "{a8c40202-5274-42cc-85cb-668f0cf5c509}",
+   "sourceUuid": "{7face3d3-6179-40d9-8d41-dacee0988fa2}",
    "sourcePort": "mixed",
-   "targetUuid": "{88235140-b239-414d-b24a-68c923bf70c7}",
+   "targetUuid": "{91edfcfb-2cbc-439c-b4b4-606aca981b30}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{1657fc72-8c35-4194-a83c-d6263bf15f3d}",
+   "sourceUuid": "{5da32201-f949-4721-b4d8-a1e8c6252701}",
    "sourcePort": "output0",
-   "targetUuid": "{1319d5bd-4dbb-4192-891e-7ba7b06a20c8}",
+   "targetUuid": "{fec2b359-9d4a-4fe4-9f95-0fe64d09f669}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{96dc2034-7713-4619-905e-f79e856fc3c0}",
+   "sourceUuid": "{603ab7f9-2700-42c3-989e-dba5086f22f4}",
    "sourcePort": "matteGain",
-   "targetUuid": "{1657fc72-8c35-4194-a83c-d6263bf15f3d}",
+   "targetUuid": "{5da32201-f949-4721-b4d8-a1e8c6252701}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{96dc2034-7713-4619-905e-f79e856fc3c0}",
+   "sourceUuid": "{603ab7f9-2700-42c3-989e-dba5086f22f4}",
    "sourcePort": "postVertexColor",
-   "targetUuid": "{a8c40202-5274-42cc-85cb-668f0cf5c509}",
+   "targetUuid": "{7face3d3-6179-40d9-8d41-dacee0988fa2}",
    "targetPort": "fac"
   },
   {
    "layers": [],
-   "sourceUuid": "{96dc2034-7713-4619-905e-f79e856fc3c0}",
+   "sourceUuid": "{603ab7f9-2700-42c3-989e-dba5086f22f4}",
    "sourcePort": "postGain",
-   "targetUuid": "{88235140-b239-414d-b24a-68c923bf70c7}",
+   "targetUuid": "{91edfcfb-2cbc-439c-b4b4-606aca981b30}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{96dc2034-7713-4619-905e-f79e856fc3c0}",
+   "sourceUuid": "{603ab7f9-2700-42c3-989e-dba5086f22f4}",
    "sourcePort": "matteFilter",
-   "targetUuid": "{1657fc72-8c35-4194-a83c-d6263bf15f3d}",
+   "targetUuid": "{5da32201-f949-4721-b4d8-a1e8c6252701}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{1319d5bd-4dbb-4192-891e-7ba7b06a20c8}",
+   "sourceUuid": "{fec2b359-9d4a-4fe4-9f95-0fe64d09f669}",
    "sourcePort": "output0",
-   "targetUuid": "{21a30a27-80bb-4924-80b0-1827619b2e1e}",
+   "targetUuid": "{5bd21066-9e1f-4cd2-a5e1-144b0441b0e6}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{88235140-b239-414d-b24a-68c923bf70c7}",
+   "sourceUuid": "{91edfcfb-2cbc-439c-b4b4-606aca981b30}",
    "sourcePort": "output0",
-   "targetUuid": "{21a30a27-80bb-4924-80b0-1827619b2e1e}",
+   "targetUuid": "{5bd21066-9e1f-4cd2-a5e1-144b0441b0e6}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{43bca36b-0909-46da-8141-1b07cea5abaf}",
+   "sourceUuid": "{08129374-3842-42b9-82db-5e305b0ddb72}",
    "sourcePort": "color",
-   "targetUuid": "{1319d5bd-4dbb-4192-891e-7ba7b06a20c8}",
+   "targetUuid": "{fec2b359-9d4a-4fe4-9f95-0fe64d09f669}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{bf8bd68b-5281-4fb9-a0f1-8911c2e0c6a1}",
+   "sourceUuid": "{c711ad9a-e19a-4e58-b342-243309dad2e3}",
    "sourcePort": "uv",
-   "targetUuid": "{43bca36b-0909-46da-8141-1b07cea5abaf}",
+   "targetUuid": "{08129374-3842-42b9-82db-5e305b0ddb72}",
    "targetPort": "vector"
   },
   {
    "layers": [],
-   "sourceUuid": "{21a30a27-80bb-4924-80b0-1827619b2e1e}",
+   "sourceUuid": "{5bd21066-9e1f-4cd2-a5e1-144b0441b0e6}",
    "sourcePort": "output0",
-   "targetUuid": "{12f1e980-7a91-491e-9a3e-7fef1af13e2e}",
+   "targetUuid": "{dd14a4e8-97b5-4f3e-9e6d-b72997a8516c}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{12f1e980-7a91-491e-9a3e-7fef1af13e2e}",
+   "sourceUuid": "{dd14a4e8-97b5-4f3e-9e6d-b72997a8516c}",
    "sourcePort": "shader",
-   "targetUuid": "{c922bf87-0353-4275-b9ab-c4fc2292451c}",
+   "targetUuid": "{b048022a-07d2-4355-9d65-782be1a703a5}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{356f42bc-25aa-4025-9105-2c00b9f59d9d}",
+   "sourceUuid": "{387e3573-a88a-4a0a-9bf3-8870161134fc}",
    "sourcePort": "value",
-   "targetUuid": "{a8c40202-5274-42cc-85cb-668f0cf5c509}",
+   "targetUuid": "{7face3d3-6179-40d9-8d41-dacee0988fa2}",
    "targetPort": "input1"
   },
   {
-   "sourceUuid": "{96dc2034-7713-4619-905e-f79e856fc3c0}",
+   "sourceUuid": "{603ab7f9-2700-42c3-989e-dba5086f22f4}",
    "sourcePort": "usesMatteMap",
-   "targetUuid": "{43bca36b-0909-46da-8141-1b07cea5abaf}",
+   "targetUuid": "{08129374-3842-42b9-82db-5e305b0ddb72}",
    "targetPort": "useTexture"
   },
   {
-   "sourceUuid": "{96dc2034-7713-4619-905e-f79e856fc3c0}",
+   "sourceUuid": "{603ab7f9-2700-42c3-989e-dba5086f22f4}",
    "sourcePort": "matteMap",
-   "targetUuid": "{43bca36b-0909-46da-8141-1b07cea5abaf}",
+   "targetUuid": "{08129374-3842-42b9-82db-5e305b0ddb72}",
    "targetPort": "texture"
   }
  ],
@@ -758,6 +758,33 @@
       "#endif"
      ],
      "substitution": "vec2 $uv = texCoord;vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);"
+    }
+   ]
+  },
+  "GLTF_YUP_CORRECTION": {
+   "inputs": [
+    "gltfYUp",
+    "input"
+   ],
+   "outputs": [
+    "output"
+   ],
+   "rules": [
+    {
+     "format": {
+      "api": "OpenGLES",
+      "major": 2,
+      "minor": 0
+     },
+     "substitution": "highp vec3 $output = $gltfYUp ? vec3($input.x, -$input.z, $input.y) : $input;"
+    },
+    {
+     "format": {
+      "api": "OpenGLCoreProfile",
+      "major": 3,
+      "minor": 0
+     },
+     "substitution": "vec3 $output = $gltfYUp ? vec3($input.x, -$input.z, $input.y) : $input;"
     }
    ]
   },

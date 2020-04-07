@@ -61,6 +61,7 @@ class KUESASHARED_EXPORT IroDiffuseProperties : public GLTF2MaterialProperties
     Q_PROPERTY(Qt3DRender::QAbstractTexture * diffuseMap READ diffuseMap WRITE setDiffuseMap NOTIFY diffuseMapChanged)
     Q_PROPERTY(float diffuseGain READ diffuseGain WRITE setDiffuseGain NOTIFY diffuseGainChanged)
     Q_PROPERTY(bool usesDiffuseMap READ usesDiffuseMap WRITE setUsesDiffuseMap NOTIFY usesDiffuseMapChanged)
+    Q_PROPERTY(bool gltfYUp READ gltfYUp WRITE setGltfYUp NOTIFY gltfYUpChanged)
 
 public:
     Q_INVOKABLE explicit IroDiffuseProperties(Qt3DCore::QNode *parent = nullptr);
@@ -82,6 +83,7 @@ public:
     Qt3DRender::QAbstractTexture * diffuseMap() const;
     float diffuseGain() const;
     bool usesDiffuseMap() const;
+    bool gltfYUp() const;
 
 public Q_SLOTS:
     void setNormalScaling(const QVector3D &normalScaling);
@@ -99,6 +101,7 @@ public Q_SLOTS:
     void setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap);
     void setDiffuseGain(float diffuseGain);
     void setUsesDiffuseMap(bool usesDiffuseMap);
+    void setGltfYUp(bool gltfYUp);
 
 Q_SIGNALS:
     void normalScalingChanged(QVector3D);
@@ -116,6 +119,7 @@ Q_SIGNALS:
     void diffuseMapChanged(Qt3DRender::QAbstractTexture *);
     void diffuseGainChanged(float);
     void usesDiffuseMapChanged(bool);
+    void gltfYUpChanged(bool);
 
 private:
     IroDiffuseShaderData *m_shaderData;

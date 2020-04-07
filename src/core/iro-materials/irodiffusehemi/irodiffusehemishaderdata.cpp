@@ -55,6 +55,7 @@ IroDiffuseHemiShaderData::IroDiffuseHemiShaderData(Qt3DCore::QNode *parent)
     , m_diffuseMap(nullptr)
     , m_diffuseGain()
     , m_usesDiffuseMap()
+    , m_gltfYUp()
 {}
 
 IroDiffuseHemiShaderData::~IroDiffuseHemiShaderData() = default;
@@ -137,6 +138,11 @@ float IroDiffuseHemiShaderData::diffuseGain() const
 bool IroDiffuseHemiShaderData::usesDiffuseMap() const
 {
     return m_usesDiffuseMap;
+}
+
+bool IroDiffuseHemiShaderData::gltfYUp() const
+{
+    return m_gltfYUp;
 }
 
 
@@ -284,6 +290,14 @@ void IroDiffuseHemiShaderData::setUsesDiffuseMap(bool usesDiffuseMap)
         return;
     m_usesDiffuseMap = usesDiffuseMap;
     emit usesDiffuseMapChanged(usesDiffuseMap);
+}
+
+void IroDiffuseHemiShaderData::setGltfYUp(bool gltfYUp)
+{
+    if (m_gltfYUp == gltfYUp)
+        return;
+    m_gltfYUp = gltfYUp;
+    emit gltfYUpChanged(gltfYUp);
 }
 
 

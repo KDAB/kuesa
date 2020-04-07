@@ -77,6 +77,7 @@ IroDiffuseHemiProperties::IroDiffuseHemiProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseMapChanged, this, &IroDiffuseHemiProperties::diffuseMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseGainChanged, this, &IroDiffuseHemiProperties::diffuseGainChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::usesDiffuseMapChanged, this, &IroDiffuseHemiProperties::usesDiffuseMapChanged);
+    QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::gltfYUpChanged, this, &IroDiffuseHemiProperties::gltfYUpChanged);
 
 }
 
@@ -165,6 +166,11 @@ void IroDiffuseHemiProperties::setDiffuseGain(float diffuseGain)
 void IroDiffuseHemiProperties::setUsesDiffuseMap(bool usesDiffuseMap)
 {
     m_shaderData->setUsesDiffuseMap(usesDiffuseMap);
+}
+
+void IroDiffuseHemiProperties::setGltfYUp(bool gltfYUp)
+{
+    m_shaderData->setGltfYUp(gltfYUp);
 }
 
 
@@ -374,6 +380,19 @@ float IroDiffuseHemiProperties::diffuseGain() const
 bool IroDiffuseHemiProperties::usesDiffuseMap() const
 {
     return m_shaderData->usesDiffuseMap();
+}
+
+/*!
+    \qmlproperty bool IroDiffuseHemiProperties::gltfYUp
+    Specifies whether this material should consider the Y and Z axis as being inverted.
+*/
+/*!
+    \property IroDiffuseHemiProperties::gltfYUp
+    Specifies whether this material should consider the Y and Z axis as being inverted.
+*/
+bool IroDiffuseHemiProperties::gltfYUp() const
+{
+    return m_shaderData->gltfYUp();
 }
 
 

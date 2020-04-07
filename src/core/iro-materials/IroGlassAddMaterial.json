@@ -13,7 +13,8 @@
         { "name": "usesReflectionMap", "type": "bool", "doc": "Specifies whether we use a reflection map or not." },
         { "name": "projectReflectionMap", "type": "bool", "doc": "Specifies whether equirectangular projection should be used for lookups on the reflection map." },
         { "name": "glassInnerFilter", "type": "vec3", "doc": "Specifies the glass inner color filter to be applied based on fresnel." },
-        { "name": "glassOuterFilter", "type": "vec3", "doc": "Specifies the glass outer color filter to be applied based on fresnel." }
+        { "name": "glassOuterFilter", "type": "vec3", "doc": "Specifies the glass outer color filter to be applied based on fresnel." },
+        { "name": "gltfYUp", "type": "bool", "doc": "Specifies whether this material should consider the Y and Z axis as being inverted." }
     ],
     "passes": [
         {

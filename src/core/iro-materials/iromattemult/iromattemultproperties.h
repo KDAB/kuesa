@@ -51,6 +51,7 @@ class KUESASHARED_EXPORT IroMatteMultProperties : public GLTF2MaterialProperties
     Q_PROPERTY(bool usesMatteMap READ usesMatteMap WRITE setUsesMatteMap NOTIFY usesMatteMapChanged)
     Q_PROPERTY(QVector3D matteFilter READ matteFilter WRITE setMatteFilter NOTIFY matteFilterChanged)
     Q_PROPERTY(float matteGain READ matteGain WRITE setMatteGain NOTIFY matteGainChanged)
+    Q_PROPERTY(bool gltfYUp READ gltfYUp WRITE setGltfYUp NOTIFY gltfYUpChanged)
 
 public:
     Q_INVOKABLE explicit IroMatteMultProperties(Qt3DCore::QNode *parent = nullptr);
@@ -63,6 +64,7 @@ public:
     bool usesMatteMap() const;
     QVector3D matteFilter() const;
     float matteGain() const;
+    bool gltfYUp() const;
 
 public Q_SLOTS:
     void setPostVertexColor(float postVertexColor);
@@ -71,6 +73,7 @@ public Q_SLOTS:
     void setUsesMatteMap(bool usesMatteMap);
     void setMatteFilter(const QVector3D &matteFilter);
     void setMatteGain(float matteGain);
+    void setGltfYUp(bool gltfYUp);
 
 Q_SIGNALS:
     void postVertexColorChanged(float);
@@ -79,6 +82,7 @@ Q_SIGNALS:
     void usesMatteMapChanged(bool);
     void matteFilterChanged(QVector3D);
     void matteGainChanged(float);
+    void gltfYUpChanged(bool);
 
 private:
     IroMatteMultShaderData *m_shaderData;

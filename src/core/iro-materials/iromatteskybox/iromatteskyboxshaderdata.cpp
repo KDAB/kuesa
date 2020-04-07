@@ -45,6 +45,7 @@ IroMatteSkyboxShaderData::IroMatteSkyboxShaderData(Qt3DCore::QNode *parent)
     , m_usesMatteMap()
     , m_matteFilter()
     , m_matteGain()
+    , m_gltfYUp()
 {}
 
 IroMatteSkyboxShaderData::~IroMatteSkyboxShaderData() = default;
@@ -77,6 +78,11 @@ QVector3D IroMatteSkyboxShaderData::matteFilter() const
 float IroMatteSkyboxShaderData::matteGain() const
 {
     return m_matteGain;
+}
+
+bool IroMatteSkyboxShaderData::gltfYUp() const
+{
+    return m_gltfYUp;
 }
 
 
@@ -135,6 +141,14 @@ void IroMatteSkyboxShaderData::setMatteGain(float matteGain)
         return;
     m_matteGain = matteGain;
     emit matteGainChanged(matteGain);
+}
+
+void IroMatteSkyboxShaderData::setGltfYUp(bool gltfYUp)
+{
+    if (m_gltfYUp == gltfYUp)
+        return;
+    m_gltfYUp = gltfYUp;
+    emit gltfYUpChanged(gltfYUp);
 }
 
 

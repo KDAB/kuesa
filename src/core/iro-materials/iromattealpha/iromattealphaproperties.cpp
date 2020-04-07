@@ -68,6 +68,7 @@ IroMatteAlphaProperties::IroMatteAlphaProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroMatteAlphaShaderData::matteFilterChanged, this, &IroMatteAlphaProperties::matteFilterChanged);
     QObject::connect(m_shaderData, &IroMatteAlphaShaderData::matteGainChanged, this, &IroMatteAlphaProperties::matteGainChanged);
     QObject::connect(m_shaderData, &IroMatteAlphaShaderData::matteAlphaGainChanged, this, &IroMatteAlphaProperties::matteAlphaGainChanged);
+    QObject::connect(m_shaderData, &IroMatteAlphaShaderData::gltfYUpChanged, this, &IroMatteAlphaProperties::gltfYUpChanged);
 
 }
 
@@ -111,6 +112,11 @@ void IroMatteAlphaProperties::setMatteGain(float matteGain)
 void IroMatteAlphaProperties::setMatteAlphaGain(float matteAlphaGain)
 {
     m_shaderData->setMatteAlphaGain(matteAlphaGain);
+}
+
+void IroMatteAlphaProperties::setGltfYUp(bool gltfYUp)
+{
+    m_shaderData->setGltfYUp(gltfYUp);
 }
 
 
@@ -203,6 +209,19 @@ float IroMatteAlphaProperties::matteGain() const
 float IroMatteAlphaProperties::matteAlphaGain() const
 {
     return m_shaderData->matteAlphaGain();
+}
+
+/*!
+    \qmlproperty bool IroMatteAlphaProperties::gltfYUp
+    Specifies whether this material should consider the Y and Z axis as being inverted.
+*/
+/*!
+    \property IroMatteAlphaProperties::gltfYUp
+    Specifies whether this material should consider the Y and Z axis as being inverted.
+*/
+bool IroMatteAlphaProperties::gltfYUp() const
+{
+    return m_shaderData->gltfYUp();
 }
 
 

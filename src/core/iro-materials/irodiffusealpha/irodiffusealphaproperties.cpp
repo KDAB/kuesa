@@ -74,6 +74,7 @@ IroDiffuseAlphaProperties::IroDiffuseAlphaProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionInnerAlphaChanged, this, &IroDiffuseAlphaProperties::reflectionInnerAlphaChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionOuterAlphaChanged, this, &IroDiffuseAlphaProperties::reflectionOuterAlphaChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::alphaGainChanged, this, &IroDiffuseAlphaProperties::alphaGainChanged);
+    QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::gltfYUpChanged, this, &IroDiffuseAlphaProperties::gltfYUpChanged);
 
 }
 
@@ -147,6 +148,11 @@ void IroDiffuseAlphaProperties::setReflectionOuterAlpha(float reflectionOuterAlp
 void IroDiffuseAlphaProperties::setAlphaGain(float alphaGain)
 {
     m_shaderData->setAlphaGain(alphaGain);
+}
+
+void IroDiffuseAlphaProperties::setGltfYUp(bool gltfYUp)
+{
+    m_shaderData->setGltfYUp(gltfYUp);
 }
 
 
@@ -317,6 +323,19 @@ float IroDiffuseAlphaProperties::reflectionOuterAlpha() const
 float IroDiffuseAlphaProperties::alphaGain() const
 {
     return m_shaderData->alphaGain();
+}
+
+/*!
+    \qmlproperty bool IroDiffuseAlphaProperties::gltfYUp
+    Specifies whether this material should consider the Y and Z axis as being inverted.
+*/
+/*!
+    \property IroDiffuseAlphaProperties::gltfYUp
+    Specifies whether this material should consider the Y and Z axis as being inverted.
+*/
+bool IroDiffuseAlphaProperties::gltfYUp() const
+{
+    return m_shaderData->gltfYUp();
 }
 
 

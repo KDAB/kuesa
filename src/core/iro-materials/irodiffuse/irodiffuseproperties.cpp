@@ -76,6 +76,7 @@ IroDiffuseProperties::IroDiffuseProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseMapChanged, this, &IroDiffuseProperties::diffuseMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseGainChanged, this, &IroDiffuseProperties::diffuseGainChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::usesDiffuseMapChanged, this, &IroDiffuseProperties::usesDiffuseMapChanged);
+    QObject::connect(m_shaderData, &IroDiffuseShaderData::gltfYUpChanged, this, &IroDiffuseProperties::gltfYUpChanged);
 
 }
 
@@ -159,6 +160,11 @@ void IroDiffuseProperties::setDiffuseGain(float diffuseGain)
 void IroDiffuseProperties::setUsesDiffuseMap(bool usesDiffuseMap)
 {
     m_shaderData->setUsesDiffuseMap(usesDiffuseMap);
+}
+
+void IroDiffuseProperties::setGltfYUp(bool gltfYUp)
+{
+    m_shaderData->setGltfYUp(gltfYUp);
 }
 
 
@@ -355,6 +361,19 @@ float IroDiffuseProperties::diffuseGain() const
 bool IroDiffuseProperties::usesDiffuseMap() const
 {
     return m_shaderData->usesDiffuseMap();
+}
+
+/*!
+    \qmlproperty bool IroDiffuseProperties::gltfYUp
+    Specifies whether this material should consider the Y and Z axis as being inverted.
+*/
+/*!
+    \property IroDiffuseProperties::gltfYUp
+    Specifies whether this material should consider the Y and Z axis as being inverted.
+*/
+bool IroDiffuseProperties::gltfYUp() const
+{
+    return m_shaderData->gltfYUp();
 }
 
 
