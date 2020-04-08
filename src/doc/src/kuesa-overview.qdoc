@@ -99,6 +99,7 @@
     \list
     \li \l [CPP]{Kuesa::GLTF2Importer} {glTF2 compliant importer that generates a Qt 3D based scene}
     \li \l [CPP]{Kuesa::MetallicRoughnessMaterial} {Custom PBR materials}
+    \li \l {Kuesa Iro Materials} {A library of simple and efficient materials to extend glTF}
     \li Asset collections to retrieve assets by name
     \li Post Processing Effects
     \endlist

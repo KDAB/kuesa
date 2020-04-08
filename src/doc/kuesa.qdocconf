@@ -8,8 +8,8 @@ version                 = 1.2
 buildversion            = "Kuesa Runtime 1.2 Reference Documentation"
 includepaths            =  . \
                            .. \
-                           $$[QT_INSTALL_HEADERS] \
-                           $$[QT_INSTALL_HEADERS]/Kuesa
+                           $QT_INSTALL_HEADERS \
+                           $QT_INSTALL_HEADERS/Kuesa
 
 outputformats = HTML
 indexes = $QT_INSTALL_DOCS/html/qt.index
@@ -107,7 +107,7 @@ HTML.footer = \
     "</div>\n" \
     "<div class=\"footer\">\n" \
     "   <p>\n" \
-    "   <acronym title=\"Copyright\">&copy;</acronym> 2019 KDAB.\n" \
+    "   <acronym title=\"Copyright\">&copy;</acronym> 2020 KDAB.\n" \
     "   Documentation contributions included herein are the copyrights of\n" \
     "   their respective owners.<br/>" \
     "   The documentation provided herein is licensed under the terms of the" \
