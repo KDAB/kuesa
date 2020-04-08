@@ -1,18 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- gltf2importer.cpp -->
-  <title>GLTF2Importer QML Type | Kuesa 1.1</title>
+  <title>GLTF2Importer QML Type | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-qml.html">QML Types</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>QML Types</li>
 <li>GLTF2Importer QML Type</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -34,7 +33,7 @@
 <p>Imports glTF 2 scenes into a Qt 3D Scene. <a href="#details">More...</a></p>
 <!-- @@@GLTF2Importer -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  .</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-gltf2importer.html"><a href="kuesa-gltf2importer.html">GLTF2Importer</a></td></tr></table></div><ul>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-gltf2importer.html"><a href="kuesa-gltf2importer.html">GLTF2Importer</a></td></tr></table></div><ul>
 <li><a href="qml-gltf2importer-members.html">List of all members, including inherited members</a></li>
 </ul>
 <a name="properties"></a>
@@ -51,7 +50,7 @@
 <!-- $$$GLTF2Importer-description -->
 <a name="details"></a>
 <h2 id="details">Detailed Description</h2>
-<p><a href="qml-gltf2importer.html">GLTF2Importer</a> imports glTF 2 scenes into a Qt 3D scene.</p>
+<p>GLTF2Importer imports glTF 2 scenes into a Qt 3D scene.</p>
 <pre class="cpp plain">
 
   import Kuesa 1.1 as Kuesa
@@ -89,71 +88,71 @@
 <!-- $$$activeSceneIndex -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="activeSceneIndex-prop">
 <td class="tblQmlPropNode"><p>
 <a name="activeSceneIndex-prop"></a><span class="name">activeSceneIndex</span> : <span class="type">int</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies which glTF scene should be loaded. Defaults to index <a href="qml-gltf2importer.html">GLTF2Importer</a>.DefaultScene.</p>
+</table></div></div>
+<div class="qmldoc"><p>Specifies which glTF scene should be loaded. Defaults to index <a href="qml-gltf2importer.html">GLTF2Importer</a>.DefaultScene.</p>
 </div></div><!-- @@@activeSceneIndex -->
 <br/>
 <!-- $$$assignNames -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="assignNames-prop">
 <td class="tblQmlPropNode"><p>
 <a name="assignNames-prop"></a><span class="name">assignNames</span> : <span class="type">bool</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>if true, assets with no names will be added to collections with default names (default is false)</p>
+</table></div></div>
+<div class="qmldoc"><p>if true, assets with no names will be added to collections with default names (default is false)</p>
 </div></div><!-- @@@assignNames -->
 <br/>
 <!-- $$$availableScenes -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="availableScenes-prop">
 <td class="tblQmlPropNode"><p>
 <a name="availableScenes-prop"></a><span class="name">availableScenes</span> : <span class="type">list</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Holds the names of the available glTF scenes.</p>
+</table></div></div>
+<div class="qmldoc"><p>Holds the names of the available glTF scenes.</p>
 </div></div><!-- @@@availableScenes -->
 <br/>
 <!-- $$$options -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="options-prop">
 <td class="tblQmlPropNode"><p>
 <a name="options-prop"></a><span class="name">options</span> : <span class="type">Kuesa</span>.<span class="type"><a href="qml-gltf2options.html">GLTF2Options</a></span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Holds the Kuesa.<a href="qml-gltf2options.html">GLTF2Options</a> used to select what to import/generate</p>
+</table></div></div>
+<div class="qmldoc"><p>Holds the Kuesa.<a href="qml-gltf2options.html">GLTF2Options</a> used to select what to import/generate</p>
 </div></div><!-- @@@options -->
 <br/>
 <!-- $$$sceneEntity -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="sceneEntity-prop">
 <td class="tblQmlPropNode"><p>
 <a name="sceneEntity-prop"></a><span class="name">sceneEntity</span> : <span class="type">Kuesa</span>.<span class="type"><a href="qml-sceneentity.html">SceneEntity</a></span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>pointer to the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> with which assets will be registered as they are loaded from the glTF file.</p>
+</table></div></div>
+<div class="qmldoc"><p>pointer to the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> with which assets will be registered as they are loaded from the glTF file.</p>
 </div></div><!-- @@@sceneEntity -->
 <br/>
 <!-- $$$source -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="source-prop">
 <td class="tblQmlPropNode"><p>
 <a name="source-prop"></a><span class="name">source</span> : <span class="type">url</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>the source of the glTF file</p>
+</table></div></div>
+<div class="qmldoc"><p>the source of the glTF file</p>
 </div></div><!-- @@@source -->
 <br/>
 <!-- $$$status -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="status-prop">
 <td class="tblQmlPropNode"><p>
 <a name="status-prop"></a><span class="name">status</span> : <span class="type">GLTF2Importer::Status</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>the current status of the importer</p>
+</table></div></div>
+<div class="qmldoc"><p>the current status of the importer</p>
 </div></div><!-- @@@status -->
 <br/>
         </div>
@@ -163,7 +162,7 @@
 </div>
 <div class="footer">
    <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
    Documentation contributions included herein are the copyrights of
    their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>

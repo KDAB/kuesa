@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- manyducks.qdoc -->
-  <title>Kuesa Many Ducks C++ Example | Kuesa 1.1</title>
+  <title>Kuesa Many Ducks C++ Example | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Many Ducks C++ Example</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -83,19 +82,19 @@
   <span class="keyword">inline</span> ComponentType <span class="operator">*</span>componentFromEntity(<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>e)
   {
   <span class="preprocessor">#if QT_VERSION &gt;= QT_VERSION_CHECK(5, 13, 0)</span>
-     <span class="keyword">const</span> <span class="keyword">auto</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>componentsOfType<span class="operator">&lt;</span>ComponentType<span class="operator">&gt;</span>();
-     <span class="keyword">return</span> cmps<span class="operator">.</span>size() <span class="operator">&gt;</span> <span class="number">0</span> <span class="operator">?</span> cmps<span class="operator">.</span>first() : nullptr;
+      <span class="keyword">const</span> <span class="keyword">auto</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>componentsOfType<span class="operator">&lt;</span>ComponentType<span class="operator">&gt;</span>();
+      <span class="keyword">return</span> cmps<span class="operator">.</span>size() <span class="operator">&gt;</span> <span class="number">0</span> <span class="operator">?</span> cmps<span class="operator">.</span>first() : nullptr;
   <span class="preprocessor">#else</span>
-     ComponentType <span class="operator">*</span>typedComponent <span class="operator">=</span> nullptr;
-     <span class="keyword">const</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponentVector</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>components();
+      ComponentType <span class="operator">*</span>typedComponent <span class="operator">=</span> nullptr;
+      <span class="keyword">const</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponentVector</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>components();
 
-     <span class="keyword">for</span> (<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponent</span> <span class="operator">*</span>c : cmps) {
-         typedComponent <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>ComponentType <span class="operator">*</span><span class="operator">&gt;</span>(c);
-         <span class="keyword">if</span> (typedComponent <span class="operator">!</span><span class="operator">=</span> nullptr)
-             <span class="keyword">break</span>;
-     }
+      <span class="keyword">for</span> (<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponent</span> <span class="operator">*</span>c : cmps) {
+          typedComponent <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>ComponentType <span class="operator">*</span><span class="operator">&gt;</span>(c);
+          <span class="keyword">if</span> (typedComponent <span class="operator">!</span><span class="operator">=</span> nullptr)
+              <span class="keyword">break</span>;
+      }
 
-     <span class="keyword">return</span> typedComponent;
+      <span class="keyword">return</span> typedComponent;
   <span class="preprocessor">#endif</span>
   }
 
@@ -121,13 +120,7 @@
 
   <span class="keyword">static</span> <span class="type">QString</span> envmap(<span class="type">QString</span> name)
   {
-      <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:///pink_sunrise_%1%2&quot;</span>)
-  <span class="preprocessor">#if defined(Q_OS_MACOS)</span>
-              <span class="operator">.</span>arg(<span class="string">&quot;16f_&quot;</span>)
-  <span class="preprocessor">#else</span>
-              <span class="operator">.</span>arg(<span class="string">&quot;&quot;</span>)
-  <span class="preprocessor">#endif</span>
-              <span class="operator">.</span>arg(name);
+      <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:///pink_sunrise_16f_%1&quot;</span>)<span class="operator">.</span>arg(name);
   }
 
   } <span class="comment">// namespace</span>
@@ -200,8 +193,8 @@
           skybox<span class="operator">-</span><span class="operator">&gt;</span>setExtension(<span class="string">&quot;.dds&quot;</span>);
 
           <span class="comment">// Depth-of-field</span>
-          <span class="keyword">auto</span> dof <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>DepthOfFieldEffect;
-          dof<span class="operator">-</span><span class="operator">&gt;</span>setRadius(<span class="number">35.0f</span>);
+          <span class="keyword">auto</span> dof <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>DepthOfFieldEffect();
+          dof<span class="operator">-</span><span class="operator">&gt;</span>setRadius(<span class="number">15.0f</span>);
           dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusRange(<span class="number">2.0f</span>);
           dof<span class="operator">-</span><span class="operator">&gt;</span>setFocusDistance(<span class="number">6.5f</span>);
           fg<span class="operator">-</span><span class="operator">&gt;</span>addPostProcessingEffect(dof);
@@ -279,11 +272,7 @@
       <span class="type">QGuiApplication</span> app(argc<span class="operator">,</span> argv);
 
       initializeAssetResources({ <span class="type">QStringLiteral</span>(<span class="string">&quot;Duck.qrb&quot;</span>) });
-  <span class="preprocessor">#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_ANDROID)</span>
       initializeAssetResources({ <span class="type">QStringLiteral</span>(<span class="string">&quot;envmap-pink-sunrise-16f.qrb&quot;</span>) });
-  <span class="preprocessor">#else</span>
-      initializeAssetResources({ <span class="type">QStringLiteral</span>(<span class="string">&quot;envmap-pink-sunrise.qrb&quot;</span>) });
-  <span class="preprocessor">#endif</span>
 
   <span class="preprocessor">#ifdef Q_OS_ANDROID</span>
       <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;assets:/&quot;</span>);

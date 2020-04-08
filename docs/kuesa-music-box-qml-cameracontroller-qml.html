@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- music-box.qdoc -->
-  <title>Kuesa Music Box QML Example | Kuesa 1.1</title>
+  <title>Kuesa Music Box QML Example | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Music Box QML Example</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -85,7 +84,7 @@
           QQ2.Behavior on <span class="name">dz</span> { <span class="type">QQ2</span>.NumberAnimation { <span class="name">duration</span>: <span class="number">250</span>; <span class="name">easing</span>.type: <span class="name">QQ2</span>.<span class="name">Easing</span>.<span class="name">OutCubic</span> } }
       }
 
-      <span class="keyword">function</span> <span class="name">rotateCamera</span>(dx, dy) {
+      <span class="keyword">function </span><span class="name">rotateCamera</span>(dx, dy) {
           <span class="name">camera</span>.<span class="name">panAboutViewCenter</span>(-<span class="name">dx</span>, <span class="name">d</span>.<span class="name">firstPersonUp</span>)
 
           <span class="comment">// avoid going upside down</span>
@@ -126,7 +125,7 @@
           <span class="name">camera</span>.<span class="name">upVector</span> <span class="operator">=</span> <span class="name">d</span>.<span class="name">firstPersonUp</span>
       }
 
-      <span class="keyword">function</span> <span class="name">zoomCamera</span>(dz) {
+      <span class="keyword">function </span><span class="name">zoomCamera</span>(dz) {
           var cameraToCenter = <span class="name">camera</span>.<span class="name">position</span>.<span class="name">minus</span>(<span class="name">camera</span>.<span class="name">viewCenter</span>)
 
           var distance = <span class="name">cameraToCenter</span>.<span class="name">length</span>()

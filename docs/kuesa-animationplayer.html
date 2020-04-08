@@ -1,18 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- animationplayer.cpp -->
-  <title>AnimationPlayer Class | Kuesa 1.1</title>
+  <title>AnimationPlayer Class | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>C++ Classes</li>
 <li>AnimationPlayer</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -33,13 +32,13 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">AnimationPlayer Class</h1>
-<span class="small-subtitle">(<a href="qml-animationplayer.html">Kuesa::AnimationPlayer</a>)<br/></span>
+<span class="small-subtitle">class <a href="kuesa.html">Kuesa</a>::AnimationPlayer</span>
 <!-- $$$AnimationPlayer-brief -->
 <p>Play animations defined in glTF files. <a href="#details">More...</a></p>
 <!-- @@@AnimationPlayer -->
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/AnimationPlayer&gt;</span>
-</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-animationplayer.html">AnimationPlayer</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.0.</p>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-animationplayer.html">AnimationPlayer</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
 <ul>
 <li><a href="kuesa-animationplayer-members.html">List of all members, including inherited members</a></li>
 </ul>
@@ -54,6 +53,7 @@
 <tr><td class="topAlign"><ul>
 <li class="fn"><b><a href="kuesa-animationplayer.html#clip-prop">clip</a></b> : QString</li>
 <li class="fn"><b><a href="kuesa-animationplayer.html#clock-prop">clock</a></b> : Qt3DAnimation::QClock*</li>
+<li class="fn"><b><a href="kuesa-animationplayer.html#duration-prop">duration</a></b> : const float</li>
 <li class="fn"><b><a href="kuesa-animationplayer.html#loops-prop">loops</a></b> : int</li>
 <li class="fn"><b><a href="kuesa-animationplayer.html#mapper-prop">mapper</a></b> : QString</li>
 </ul></td><td class="topAlign"><ul>
@@ -70,6 +70,7 @@
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#addTarget">addTarget</a></b>(Qt3DCore::QNode *<i>target</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clip-prop">clip</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DAnimation::QClock *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clock-prop">clock</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#duration-prop">duration</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#running-prop">isRunning</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#loops-prop">loopCount</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#mapper-prop">mapper</a></b>() const</td></tr>
@@ -97,6 +98,7 @@
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clip-prop">clipChanged</a></b>(const QString &amp;<i>clip</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clock-prop">clockChanged</a></b>(Qt3DAnimation::QClock *<i>clock</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#duration-prop">durationChanged</a></b>(float <i>duration</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#loops-prop">loopCountChanged</a></b>(int <i>loops</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#mapper-prop">mapperChanged</a></b>(const QString &amp;<i>mapper</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#normalizedTime-prop">normalizedTimeChanged</a></b>(float <i>index</i>)</td></tr>
@@ -108,10 +110,10 @@
 <!-- $$$AnimationPlayer-description -->
 <div class="descr">
 <h2 id="details">Detailed Description</h2>
-<p><a href="kuesa-animationplayer.html">AnimationPlayer</a> is a utility class designed to easily control animations where the clip and mapping data is stored in a collections (typically loaded from glTF files).</p>
+<p>AnimationPlayer is a utility class designed to easily control animations where the clip and mapping data is stored in a collections (typically loaded from glTF files).</p>
 <p>Clip and mapper data are referenced by name. These will be used to look up actual assets in the appropriate collection.</p>
-<p><a href="kuesa-animationplayer.html">AnimationPlayer</a> internally uses an instance of Qt3DAnimation::QClipAnimator and mirrors it's api.</p>
-<p>Additionally, <a href="kuesa-animationplayer.html">AnimationPlayer</a> can be used to map clip data to other target objects than those specified in a mapper. For example, an animation where the clip data affect transformation properties, can be applied to any Qt3DCore::QTransform instance, not just the one specified in the mapper data.</p>
+<p>AnimationPlayer internally uses an instance of Qt3DAnimation::QClipAnimator and mirrors it's api.</p>
+<p>Additionally, AnimationPlayer can be used to map clip data to other target objects than those specified in a mapper. For example, an animation where the clip data affect transformation properties, can be applied to any Qt3DCore::QTransform instance, not just the one specified in the mapper data.</p>
 </div>
 <!-- @@@AnimationPlayer -->
 <div class="types">
@@ -157,6 +159,19 @@
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>clockChanged</b></span>(Qt3DAnimation::QClock *<i>clock</i>)</td></tr>
 </table></div>
 <!-- @@@clock -->
+<!-- $$$duration-prop$$$duration$$$durationChangedfloat -->
+<h3 class="fn" id="duration-prop"><a name="duration-prop"></a><span class="name">duration</span> : const <span class="type">float</span></h3>
+<p>duration of the animation in secconds</p>
+<p>This property was introduced in Qt 1.1.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>duration</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>durationChanged</b></span>(float <i>duration</i>)</td></tr>
+</table></div>
+<!-- @@@duration -->
 <!-- $$$loops-prop$$$loopCount$$$setLoopCountint$$$loopCountChangedint -->
 <h3 class="fn" id="loops-prop"><a name="loops-prop"></a><span class="name">loops</span> : <span class="type">int</span></h3>
 <p>controls the number of time the animation should repeat.</p>
@@ -280,7 +295,7 @@
 </div>
 <div class="footer">
    <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
    Documentation contributions included herein are the copyrights of
    their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>

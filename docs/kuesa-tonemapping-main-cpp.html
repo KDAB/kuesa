@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- tonemapping.qdoc -->
-  <title>Kuesa ToneMapping QML Example | Kuesa 1.1</title>
+  <title>Kuesa ToneMapping QML Example | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa ToneMapping QML Example</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -66,12 +65,10 @@
   <span class="preprocessor">#include &lt;QOpenGLContext&gt;</span>
   <span class="preprocessor">#endif</span>
 
-  <span class="preprocessor">#include &quot;../../../tools/gltfEditor/orbitcameracontroller.h&quot;</span>
+  <span class="preprocessor">#include &quot;../../../tools/gltfViewer/orbitcameracontroller.h&quot;</span>
 
   <span class="type">int</span> main(<span class="type">int</span> ac<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>av)
   {
-      Q_INIT_RESOURCE(shared_utils);
-
       bool isES2 <span class="operator">=</span> <span class="keyword">false</span>;
       {
           <span class="comment">// Set OpenGL requirements</span>

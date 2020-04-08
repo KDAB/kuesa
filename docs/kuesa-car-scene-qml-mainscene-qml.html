@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- car-scene.qdoc -->
-  <title>Kuesa Car-Scene QML Example | Kuesa 1.1</title>
+  <title>Kuesa Car-Scene QML Example | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Car-Scene QML Example</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -57,7 +56,7 @@
   import Qt3D.Animation 2.10
   import QtQuick 2.11 as QQ2
 
-  import Kuesa 1.1 as <a href="kuesa.html">Kuesa</a>
+  import Kuesa 1.2 as <a href="kuesa.html">Kuesa</a>
   import Kuesa.Effects 1.1 as Effects
 
   <span class="type">Kuesa</span>.SceneEntity {
@@ -79,16 +78,15 @@
       property <span class="type">double</span> <span class="name">exposure</span>: <span class="number">0.0</span>
       property <span class="type">bool</span> <span class="name">useOpacityMask</span>: <span class="number">false</span>
       property <span class="type">bool</span> <span class="name">useBloomEffect</span>: <span class="number">false</span>
-      property <span class="type">color</span> <span class="name">carBaseColorFactor</span>: <span class="string">&quot;white&quot;</span>
+      property <span class="type">color</span> <span class="name">carBaseColorFactor</span>: <span class="string">&quot;black&quot;</span>
       property <span class="type">bool</span> <span class="name">es2</span>: <span class="name">_isES2</span>
       property <span class="type">alias</span> <span class="name">bloomEffect</span>: <span class="name">bloomFx</span>
 
       <span class="type">Entity</span> {
           <span class="name">id</span>: <span class="name">d</span>
-          property <span class="type">string</span> <span class="name">envMapFormat</span>: (<span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;osx&quot;</span> <span class="operator">||</span> <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;ios&quot;</span> <span class="operator">||</span> <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;android&quot;</span> <span class="operator">||</span> <span class="name">es2</span>) ? <span class="string">&quot;_16f&quot;</span> : <span class="string">&quot;&quot;</span>
           property <span class="type">Camera</span> <span class="name">sweepCam</span>: <span class="number">null</span>
 
-          <span class="keyword">function</span> <span class="name">flipAnimation</span>(open, animation) {
+          <span class="keyword">function </span><span class="name">flipAnimation</span>(open, animation) {
               <span class="keyword">if</span> (<span class="name">open</span>) {
                   <span class="name">animation</span>.<span class="name">clock</span>.<span class="name">playbackRate</span> <span class="operator">=</span> <span class="number">1</span>
                   <span class="keyword">if</span> (<span class="name">animation</span>.<span class="name">normalizedTime</span> <span class="operator">&gt;</span> <span class="number">0</span>)
@@ -103,18 +101,22 @@
           }
       }
 
-      <span class="type">QQ2</span>.Binding {
-          <span class="name">target</span>: <span class="name">carMaterial</span>.<span class="name">node</span>
-          <span class="name">property</span>: <span class="string">&quot;baseColorFactor&quot;</span>
-          <span class="name">value</span>: <span class="name">scene</span>.<span class="name">carBaseColorFactor</span>
-      }
-
+      <span class="comment">// We create a baseColorFactor property. If the property exists in the node, it will be a proxy of the node property</span>
+      <span class="comment">// When we set the qml property, the node property will be updated accordingly</span>
+      <span class="comment">// When the node property is updated in C++, the qml property will be updated</span>
+      <span class="comment">// As soon as the node is changed, the qml property is updated if it has a C++ equivalent</span>
       <span class="type">Kuesa</span>.Asset {
+          property <span class="type">color</span> <span class="name">baseColorFactor</span>: <span class="name">scene</span>.<span class="name">carBaseColorFactor</span>
           <span class="name">id</span>: <span class="name">carMaterial</span>
           <span class="name">collection</span>: <span class="name">scene</span>.<span class="name">materials</span>
           <span class="name">name</span>: <span class="string">&quot;Mat_CarPaint&quot;</span>
-          <span class="name">onNodeChanged</span>: <span class="name">scene</span>.<span class="name">carBaseColorFactor</span> <span class="operator">=</span> <span class="name">node</span>.<span class="name">baseColorFactor</span>
+          <span class="name">onBaseColorFactorChanged</span>: <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Binding 1 works. Color: &quot;</span> <span class="operator">+</span> <span class="name">baseColorFactor</span>)
+          <span class="name">onNodeChanged</span>: <span class="name">scene</span>.<span class="name">carBaseColorFactor</span> <span class="operator">=</span> <span class="name">carMaterial</span>.<span class="name">baseColorFactor</span>
       }
+
+      property <span class="type">var</span> <span class="name">baseColorFactorProp</span>: <span class="name">carMaterial</span>.<span class="name">baseColorFactor</span>
+      <span class="name">onBaseColorFactorPropChanged</span>: <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Binding 2 works. Color: &quot;</span> <span class="operator">+</span> <span class="name">baseColorFactorProp</span>)
+
 
       <span class="type">Kuesa</span>.AnimationPlayer {
           <span class="name">id</span>: <span class="name">hoodAnimator</span>
@@ -217,12 +219,13 @@
                   }
                   <span class="name">backToFrontSorting</span>: <span class="number">true</span>
                   <span class="name">toneMappingAlgorithm</span>: <span class="name">Effects</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Reinhard</span>
+  <span class="comment">//                showDebugOverlay: true</span>
               }
           },
           <span class="type">InputSettings</span> { },
           <span class="type">EnvironmentLight</span> {
               <span class="name">irradiance</span>: <span class="name">TextureLoader</span> {
-                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="name">environmentMap</span> <span class="operator">+</span> <span class="name">d</span>.<span class="name">envMapFormat</span> <span class="operator">+</span> <span class="string">&quot;_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="name">environmentMap</span> <span class="operator">+</span> <span class="string">&quot;_16f_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
                   <span class="type">wrapMode</span> {
                       <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
                       <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
@@ -230,7 +233,7 @@
                   <span class="name">generateMipMaps</span>: <span class="number">false</span>
               }
               <span class="name">specular</span>: <span class="name">TextureLoader</span> {
-                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="name">environmentMap</span> <span class="operator">+</span> <span class="name">d</span>.<span class="name">envMapFormat</span> <span class="operator">+</span> <span class="string">&quot;_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="name">environmentMap</span> <span class="operator">+</span> <span class="string">&quot;_16f_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
                   <span class="type">wrapMode</span> {
                       <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
                       <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>

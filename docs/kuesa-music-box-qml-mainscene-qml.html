@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- music-box.qdoc -->
-  <title>Kuesa Music Box QML Example | Kuesa 1.1</title>
+  <title>Kuesa Music Box QML Example | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Music Box QML Example</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -68,7 +67,6 @@
 
       <span class="type">QtObject</span> {
           <span class="name">id</span>: <span class="name">d</span>
-          property <span class="type">string</span> <span class="name">envMapFormat</span>: (<span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;osx&quot;</span> <span class="operator">||</span> <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;ios&quot;</span> <span class="operator">||</span> <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">==</span> <span class="string">&quot;android&quot;</span> <span class="operator">||</span> <span class="name">_isES2</span>) ? <span class="string">&quot;_16f&quot;</span> : <span class="string">&quot;&quot;</span>
 
           readonly property <span class="type">var</span> <span class="name">robotArmAnimations</span>: [
               <span class="string">'ArmTopAction'</span>,
@@ -218,7 +216,7 @@
           },
           <span class="type">EnvironmentLight</span> {
               <span class="name">irradiance</span>: <span class="name">TextureLoader</span> {
-                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise&quot;</span> <span class="operator">+</span> <span class="name">d</span>.<span class="name">envMapFormat</span> <span class="operator">+</span> <span class="string">&quot;_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_16f_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
                   <span class="type">wrapMode</span> {
                       <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
                       <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
@@ -226,7 +224,7 @@
                   <span class="name">generateMipMaps</span>: <span class="number">false</span>
               }
               <span class="name">specular</span>: <span class="name">TextureLoader</span> {
-                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise&quot;</span> <span class="operator">+</span> <span class="name">d</span>.<span class="name">envMapFormat</span> <span class="operator">+</span> <span class="string">&quot;_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_16f_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
                   <span class="type">wrapMode</span> {
                       <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
                       <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>

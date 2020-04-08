@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- car-scene.qdoc -->
-  <title>Kuesa Car-Scene QML Example | Kuesa 1.1</title>
+  <title>Kuesa Car-Scene QML Example | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Car-Scene QML Example</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -75,7 +74,13 @@
       $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_16f_irradiance.dds \
       $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_16f_radiance.dds \
       $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_16f_specular.dds \
-      $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_skybox.dds
+      $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_skybox.dds \
+      $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_16f_specular_es2.dds \
+      $${envmaps_dir}/kdab-studiosky-small/kdab-studiosky-small_16f_irradiance_es2.dds \
+      $${envmaps_dir}/neuer_zollhof/neuer_zollhof_16f_specular_es2.dds \
+      $${envmaps_dir}/neuer_zollhof/neuer_zollhof_16f_irradiance_es2.dds \
+      $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_specular_es2.dds \
+      $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_irradiance_es2.dds
 
   car_dir = ../assets/models/car
   car.files = \
@@ -128,7 +133,7 @@
 
       QMAKE_BUNDLE_DATA += car envmaps
 
-      ICON = ../../../resources/kuesa.icns
+      ICON = ../shared-utils/kuesa.icns
       OTHER_FILES += Info-macos.plist
       QMAKE_INFO_PLIST = Info-macos.plist
   } else {
@@ -144,19 +149,12 @@
       }
 
       RCC_BINARY_SOURCES += \
-          ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc \
-          ../assets/envmaps/neuer_zollhof/envmap-neuer-zollhof.qrc \
-          ../assets/envmaps/kdab-studiosky-small/envmap-kdab-studiosky-small.qrc
-
-      qtConfig(opengles2) {
-          RCC_BINARY_SOURCES += \
-              ../assets/envmaps/kdab-studiosky-small/envmap-kdab-studiosky-small-16f.qrc \
-              ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc \
-              ../assets/envmaps/neuer_zollhof/envmap-neuer-zollhof-16f.qrc
-      }
+          ../assets/envmaps/kdab-studiosky-small/envmap-kdab-studiosky-small-16f.qrc \
+          ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc \
+          ../assets/envmaps/neuer_zollhof/envmap-neuer-zollhof-16f.qrc
 
       windows {
-          RC_ICONS = ../../../resources/kuesa.ico
+          RC_ICONS = ../shared-utils/kuesa.ico
           DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
       }
 
@@ -176,6 +174,7 @@
   }
 
   target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+  target.files = $$PWD/*
   INSTALLS += target
 
   OTHER_FILES += doc/src/*

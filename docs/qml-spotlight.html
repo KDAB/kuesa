@@ -1,18 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- spotlight.cpp -->
-  <title>SpotLight QML Type | Kuesa 1.1</title>
+  <title>SpotLight QML Type | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-qml.html">QML Types</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>QML Types</li>
 <li>SpotLight QML Type</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -34,7 +33,7 @@
 <p>Encapsulate a Spot Light object in a Qt 3D scene. <a href="#details">More...</a></p>
 <!-- @@@SpotLight -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  .</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-spotlight.html"><a href="kuesa-spotlight.html">SpotLight</a></td></tr></table></div><ul>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-spotlight.html"><a href="kuesa-spotlight.html">SpotLight</a></td></tr></table></div><ul>
 <li><a href="qml-spotlight-members.html">List of all members, including inherited members</a></li>
 </ul>
 <a name="properties"></a>
@@ -53,41 +52,41 @@
 <!-- $$$innerConeAngle -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="innerConeAngle-prop">
 <td class="tblQmlPropNode"><p>
 <a name="innerConeAngle-prop"></a><span class="name">innerConeAngle</span> : <span class="type">float</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies the angle from center of the spot light where light begins to fall off. The value must be greater than or equal to 0 and less than <a href="qml-spotlight.html#outerConeAngle-prop">outerConeAngle</a>.</p>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the angle from center of the spot light where light begins to fall off. The value must be greater than or equal to 0 and less than <a href="qml-spotlight.html#outerConeAngle-prop">outerConeAngle</a>.</p>
 </div></div><!-- @@@innerConeAngle -->
 <br/>
 <!-- $$$localDirection -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="localDirection-prop">
 <td class="tblQmlPropNode"><p>
 <a name="localDirection-prop"></a><span class="name">localDirection</span> : <span class="type">vector3d</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies the local direction of the spot light. Local direction is affected by parent transform rotations.</p>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the local direction of the spot light. Local direction is affected by parent transform rotations.</p>
 </div></div><!-- @@@localDirection -->
 <br/>
 <!-- $$$outerConeAngle -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="outerConeAngle-prop">
 <td class="tblQmlPropNode"><p>
 <a name="outerConeAngle-prop"></a><span class="name">outerConeAngle</span> : <span class="type">float</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies the cut off angle of the spot light. Objects outside this angle receives no light from the <a href="qml-spotlight.html">SpotLight</a>. The value must be greater than <a href="qml-spotlight.html#innerConeAngle-prop">innerConeAngle</a> and less than or equal to 180.</p>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the cut off angle of the spot light. Objects outside this angle receives no light from the <a href="qml-spotlight.html">SpotLight</a>. The value must be greater than <a href="qml-spotlight.html#innerConeAngle-prop">innerConeAngle</a> and less than or equal to 180.</p>
 </div></div><!-- @@@outerConeAngle -->
 <br/>
 <!-- $$$range -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="range-prop">
 <td class="tblQmlPropNode"><p>
 <a name="range-prop"></a><span class="name">range</span> : <span class="type">float</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies the destance at which the light intensity may be considered to have reached zero and has no effect. A range of 0 (default) indicates infinite range</p>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the destance at which the light intensity may be considered to have reached zero and has no effect. A range of 0 (default) indicates infinite range</p>
 </div></div><!-- @@@range -->
 <br/>
         </div>
@@ -97,7 +96,7 @@
 </div>
 <div class="footer">
    <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
    Documentation contributions included herein are the copyrights of
    their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>

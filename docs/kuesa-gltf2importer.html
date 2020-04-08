@@ -1,18 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- gltf2importer.cpp -->
-  <title>GLTF2Importer Class | Kuesa 1.1</title>
+  <title>GLTF2Importer Class | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>C++ Classes</li>
 <li>GLTF2Importer</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -33,13 +32,13 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">GLTF2Importer Class</h1>
-<span class="small-subtitle">(<a href="qml-gltf2importer.html">Kuesa::GLTF2Importer</a>)<br/></span>
+<span class="small-subtitle">class <a href="kuesa.html">Kuesa</a>::GLTF2Importer</span>
 <!-- $$$GLTF2Importer-brief -->
 <p>Imports glTF 2 scenes into a Qt 3D Scene. <a href="#details">More...</a></p>
 <!-- @@@GLTF2Importer -->
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/GLTF2Importer&gt;</span>
-</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-gltf2importer.html">GLTF2Importer</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.0.</p>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-gltf2importer.html">GLTF2Importer</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
 <ul>
 <li><a href="kuesa-gltf2importer-members.html">List of all members, including inherited members</a></li>
 </ul>
@@ -70,8 +69,8 @@
 <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#activeSceneIndex-prop">activeSceneIndex</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#assignNames">assignNames</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#availableScenes-prop">availableScenes</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#options-prop">options</a></b>()</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> const int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#options-prop">options</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::GLTF2Import::GLTF2Options *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#options-prop">options</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> const Kuesa::GLTF2Import::GLTF2Options *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#options-prop">options</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Kuesa::SceneEntity *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#sceneEntity">sceneEntity</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QUrl </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#source">source</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> GLTF2Importer::Status </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#status">status</a></b>() const</td></tr>
@@ -98,7 +97,7 @@
 <!-- $$$GLTF2Importer-description -->
 <div class="descr">
 <h2 id="details">Detailed Description</h2>
-<p><a href="kuesa-gltf2importer.html">GLTF2Importer</a> imports glTF 2 scenes into a Qt 3D scene.</p>
+<p>GLTF2Importer imports glTF 2 scenes into a Qt 3D scene.</p>
 <pre class="cpp plain">
 
   #include &lt;GLTF2Importer&gt;
@@ -196,8 +195,8 @@
 <p>Holds the <a href="kuesa-gltf2import-gltf2options.html">Kuesa::GLTF2Import::GLTF2Options</a> used to select what to import/generate</p>
 <p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> int *</td><td class="memItemRight bottomAlign"><span class="name"><b>options</b></span>()</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> const int *</td><td class="memItemRight bottomAlign"><span class="name"><b>options</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::GLTF2Import::GLTF2Options *</td><td class="memItemRight bottomAlign"><span class="name"><b>options</b></span>()</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> const Kuesa::GLTF2Import::GLTF2Options *</td><td class="memItemRight bottomAlign"><span class="name"><b>options</b></span>() const</td></tr>
 </table></div>
 <!-- @@@options -->
 <!-- $$$sceneEntity-prop$$$sceneEntity$$$setSceneEntityKuesa::SceneEntity*$$$sceneEntityChangedKuesa::SceneEntity* -->
@@ -285,7 +284,7 @@
 </div>
 <div class="footer">
    <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
    Documentation contributions included herein are the copyrights of
    their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>

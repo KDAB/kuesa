@@ -1,18 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- spotlight.cpp -->
-  <title>SpotLight Class | Kuesa 1.1</title>
+  <title>SpotLight Class | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>C++ Classes</li>
 <li>SpotLight</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -32,13 +31,13 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">SpotLight Class</h1>
-<span class="small-subtitle">(<a href="qml-spotlight.html">Kuesa::SpotLight</a>)<br/></span>
+<span class="small-subtitle">class <a href="kuesa.html">Kuesa</a>::SpotLight</span>
 <!-- $$$SpotLight-brief -->
 <p>Encapsulate a Spot Light object in a Qt 3D scene. <a href="#details">More...</a></p>
 <!-- @@@SpotLight -->
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;SpotLight&gt;</span>
-</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-spotlight.html">SpotLight</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.1.</p>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-spotlight.html">SpotLight</a></td></tr></table></div><p>This class was introduced in Kuesa 1.1.</p>
 <ul>
 <li><a href="kuesa-spotlight-members.html">List of all members, including inherited members</a></li>
 </ul>
@@ -53,7 +52,7 @@
 <a name="public-functions"></a>
 <h2 id="public-functions">Public Functions</h2>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#SpotLight">SpotLight</a></b>(int *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#SpotLight">SpotLight</a></b>(Qt3DCore::QNode *<i>parent</i> = nullptr)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#innerConeAngle-prop">innerConeAngle</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#localDirection-prop">localDirection</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#outerConeAngle-prop">outerConeAngle</a></b>() const</td></tr>
@@ -138,9 +137,9 @@
 </div>
 <div class="func">
 <h2>Member Function Documentation</h2>
-<!-- $$$SpotLight[overload1]$$$SpotLightint* -->
-<h3 class="fn" id="SpotLight"><a name="SpotLight"></a>SpotLight::<span class="name">SpotLight</span>(<span class="type">int</span> *<i>parent</i> = nullptr)</h3>
-<p>Constructs a new <a href="kuesa-spotlight.html">SpotLight</a> with the specified <i>parent</i>. The <a href="kuesa-spotlight.html">SpotLight</a> will be positioned and rotated according to transform of its containing Entity.</p>
+<!-- $$$SpotLight[overload1]$$$SpotLightQt3DCore::QNode* -->
+<h3 class="fn" id="SpotLight"><a name="SpotLight"></a>SpotLight::<span class="name">SpotLight</span>(<span class="type">Qt3DCore::QNode</span> *<i>parent</i> = nullptr)</h3>
+<p>Constructs a new SpotLight with the specified <i>parent</i>. The SpotLight will be positioned and rotated according to transform of its containing Entity.</p>
 <!-- @@@SpotLight -->
 </div>
         </div>
@@ -150,7 +149,7 @@
 </div>
 <div class="footer">
    <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
    Documentation contributions included herein are the copyrights of
    their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>

@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- tonemapping.qdoc -->
-  <title>Kuesa ToneMapping QML Example | Kuesa 1.1</title>
+  <title>Kuesa ToneMapping QML Example | Kuesa Runtime 1.2</title>
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
 </head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa ToneMapping QML Example</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
         </tr></table>
       </div>
     </div>
@@ -54,10 +53,10 @@
   QT_FOR_CONFIG += kuesa
 
   SOURCES += main.cpp \
-      ../../../tools/gltfEditor/orbitcameracontroller.cpp
+      ../../../tools/gltfViewer/orbitcameracontroller.cpp
 
   HEADERS += \
-      ../../../tools/gltfEditor/orbitcameracontroller.h
+      ../../../tools/gltfViewer/orbitcameracontroller.h
 
   include(../shared-utils/shared-utils.pri)
   include($$KUESA_ROOT/kuesa-global.pri)
@@ -107,23 +106,16 @@
 
       QMAKE_BUNDLE_DATA += helmet envmaps
 
-      ICON = ../../../resources/kuesa.icns
+      ICON = ../shared-utils/kuesa.icns
       OTHER_FILES += Info-macos.plist
       QMAKE_INFO_PLIST = Info-macos.plist
   } else {
       RCC_BINARY_SOURCES += \
-          ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc
-
-      RCC_BINARY_SOURCES += \
-          ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
-
-      qtConfig(opengles2) {
-          RCC_BINARY_SOURCES += \
-              ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
-      }
+          ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc \
+          ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 
       windows {
-          RC_ICONS = ../../../resources/kuesa.ico
+          RC_ICONS = ../shared-utils/kuesa.ico
           DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
       }
 
@@ -142,11 +134,11 @@
 
       OTHER_FILES += \
           ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc \
-          ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc \
           ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
   }
 
   target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+  target.files = $$PWD/*
   INSTALLS += target
 
   OTHER_FILES += doc/src/*
