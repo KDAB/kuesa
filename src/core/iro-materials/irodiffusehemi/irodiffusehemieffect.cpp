@@ -229,7 +229,7 @@ private:
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroDiffuseHemiEffect is the effect for the IroDiffuseHemiMaterial class
+    \brief Kuesa::IroDiffuseHemiEffect is the effect for the IroDiffuseHemiMaterial class.
 */
 
 /*!
@@ -238,7 +238,7 @@ private:
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroDiffuseHemiEffect is the effect for the IroDiffuseHemiMaterial class
+    \brief Kuesa::IroDiffuseHemiEffect is the effect for the IroDiffuseHemiMaterial class.
 */
 
 

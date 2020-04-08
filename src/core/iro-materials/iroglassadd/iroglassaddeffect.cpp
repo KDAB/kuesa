@@ -286,7 +286,7 @@ private:
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroGlassAddEffect is the effect for the IroGlassAddMaterial class
+    \brief Kuesa::IroGlassAddEffect is the effect for the IroGlassAddMaterial class.
 */
 
 /*!
@@ -295,7 +295,7 @@ private:
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroGlassAddEffect is the effect for the IroGlassAddMaterial class
+    \brief Kuesa::IroGlassAddEffect is the effect for the IroGlassAddMaterial class.
 */
 
 

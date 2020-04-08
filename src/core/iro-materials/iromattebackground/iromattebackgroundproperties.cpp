@@ -45,7 +45,7 @@ namespace Kuesa {
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteBackgroundProperties holds the properties controlling the visual appearance of a IroMatteBackgroundMaterial instance
+    \brief Kuesa::IroMatteBackgroundProperties holds the properties controlling the visual appearance of a IroMatteBackgroundMaterial instance.
 */
 
 /*!
@@ -54,7 +54,7 @@ namespace Kuesa {
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteBackgroundProperties holds the properties controlling the visual appearance of a IroMatteBackgroundMaterial instance
+    \brief Kuesa::IroMatteBackgroundProperties holds the properties controlling the visual appearance of a IroMatteBackgroundMaterial instance.
 */
 
 IroMatteBackgroundProperties::IroMatteBackgroundProperties(Qt3DCore::QNode *parent)

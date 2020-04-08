@@ -201,7 +201,7 @@ private:
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteSkyboxEffect is the effect for the IroMatteSkyboxMaterial class
+    \brief Kuesa::IroMatteSkyboxEffect is the effect for the IroMatteSkyboxMaterial class.
 */
 
 /*!
@@ -210,7 +210,7 @@ private:
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteSkyboxEffect is the effect for the IroMatteSkyboxMaterial class
+    \brief Kuesa::IroMatteSkyboxEffect is the effect for the IroMatteSkyboxMaterial class.
 */
 
 

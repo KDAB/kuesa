@@ -45,7 +45,7 @@ namespace Kuesa {
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteAddProperties holds the properties controlling the visual appearance of a IroMatteAddMaterial instance
+    \brief Kuesa::IroMatteAddProperties holds the properties controlling the visual appearance of a IroMatteAddMaterial instance.
 */
 
 /*!
@@ -54,7 +54,7 @@ namespace Kuesa {
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteAddProperties holds the properties controlling the visual appearance of a IroMatteAddMaterial instance
+    \brief Kuesa::IroMatteAddProperties holds the properties controlling the visual appearance of a IroMatteAddMaterial instance.
 */
 
 IroMatteAddProperties::IroMatteAddProperties(Qt3DCore::QNode *parent)

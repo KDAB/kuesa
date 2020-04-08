@@ -1567,7 +1567,7 @@ HEADERS += \\
 
             doc = self.docForClass(className,
                                    "Kuesa::GLTF2MaterialProperties",
-                                   "holds the properties controlling the visual appearance of a %sMaterial instance" % (matName))
+                                   "holds the properties controlling the visual appearance of a %sMaterial instance." % (matName))
 
             content = CustomMaterialGenerator.propertiesClassCppContent % (doc,
                                                                            matName,
@@ -1608,7 +1608,7 @@ HEADERS += \\
         def generateCpp():
             doc = self.docForClass(className,
                                    "Qt3DRender::QEffect",
-                                   "is the effect for the %sMaterial class" % (matName))
+                                   "is the effect for the %sMaterial class." % (matName))
             passes = self.rawJson.get("passes", [])
             passes_info = []
 

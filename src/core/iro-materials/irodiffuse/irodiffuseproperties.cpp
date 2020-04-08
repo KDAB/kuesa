@@ -45,7 +45,7 @@ namespace Kuesa {
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroDiffuseProperties holds the properties controlling the visual appearance of a IroDiffuseMaterial instance
+    \brief Kuesa::IroDiffuseProperties holds the properties controlling the visual appearance of a IroDiffuseMaterial instance.
 */
 
 /*!
@@ -54,7 +54,7 @@ namespace Kuesa {
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroDiffuseProperties holds the properties controlling the visual appearance of a IroDiffuseMaterial instance
+    \brief Kuesa::IroDiffuseProperties holds the properties controlling the visual appearance of a IroDiffuseMaterial instance.
 */
 
 IroDiffuseProperties::IroDiffuseProperties(Qt3DCore::QNode *parent)

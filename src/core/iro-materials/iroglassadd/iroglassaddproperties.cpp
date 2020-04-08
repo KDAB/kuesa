@@ -45,7 +45,7 @@ namespace Kuesa {
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroGlassAddProperties holds the properties controlling the visual appearance of a IroGlassAddMaterial instance
+    \brief Kuesa::IroGlassAddProperties holds the properties controlling the visual appearance of a IroGlassAddMaterial instance.
 */
 
 /*!
@@ -54,7 +54,7 @@ namespace Kuesa {
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroGlassAddProperties holds the properties controlling the visual appearance of a IroGlassAddMaterial instance
+    \brief Kuesa::IroGlassAddProperties holds the properties controlling the visual appearance of a IroGlassAddMaterial instance.
 */
 
 IroGlassAddProperties::IroGlassAddProperties(Qt3DCore::QNode *parent)

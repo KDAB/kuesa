@@ -206,7 +206,7 @@ private:
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroDiffuseAlphaEffect is the effect for the IroDiffuseAlphaMaterial class
+    \brief Kuesa::IroDiffuseAlphaEffect is the effect for the IroDiffuseAlphaMaterial class.
 */
 
 /*!
@@ -215,7 +215,7 @@ private:
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroDiffuseAlphaEffect is the effect for the IroDiffuseAlphaMaterial class
+    \brief Kuesa::IroDiffuseAlphaEffect is the effect for the IroDiffuseAlphaMaterial class.
 */
 
 

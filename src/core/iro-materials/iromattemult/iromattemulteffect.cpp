@@ -206,7 +206,7 @@ private:
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteMultEffect is the effect for the IroMatteMultMaterial class
+    \brief Kuesa::IroMatteMultEffect is the effect for the IroMatteMultMaterial class.
 */
 
 /*!
@@ -215,7 +215,7 @@ private:
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteMultEffect is the effect for the IroMatteMultMaterial class
+    \brief Kuesa::IroMatteMultEffect is the effect for the IroMatteMultMaterial class.
 */
 
 

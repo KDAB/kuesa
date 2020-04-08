@@ -229,7 +229,7 @@ private:
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteOpaqueEffect is the effect for the IroMatteOpaqueMaterial class
+    \brief Kuesa::IroMatteOpaqueEffect is the effect for the IroMatteOpaqueMaterial class.
 */
 
 /*!
@@ -238,7 +238,7 @@ private:
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteOpaqueEffect is the effect for the IroMatteOpaqueMaterial class
+    \brief Kuesa::IroMatteOpaqueEffect is the effect for the IroMatteOpaqueMaterial class.
 */
 
 

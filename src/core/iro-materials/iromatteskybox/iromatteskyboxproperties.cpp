@@ -45,7 +45,7 @@ namespace Kuesa {
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteSkyboxProperties holds the properties controlling the visual appearance of a IroMatteSkyboxMaterial instance
+    \brief Kuesa::IroMatteSkyboxProperties holds the properties controlling the visual appearance of a IroMatteSkyboxMaterial instance.
 */
 
 /*!
@@ -54,7 +54,7 @@ namespace Kuesa {
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteSkyboxProperties holds the properties controlling the visual appearance of a IroMatteSkyboxMaterial instance
+    \brief Kuesa::IroMatteSkyboxProperties holds the properties controlling the visual appearance of a IroMatteSkyboxMaterial instance.
 */
 
 IroMatteSkyboxProperties::IroMatteSkyboxProperties(Qt3DCore::QNode *parent)

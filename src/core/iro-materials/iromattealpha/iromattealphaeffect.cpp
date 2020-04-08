@@ -206,7 +206,7 @@ private:
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteAlphaEffect is the effect for the IroMatteAlphaMaterial class
+    \brief Kuesa::IroMatteAlphaEffect is the effect for the IroMatteAlphaMaterial class.
 */
 
 /*!
@@ -215,7 +215,7 @@ private:
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteAlphaEffect is the effect for the IroMatteAlphaMaterial class
+    \brief Kuesa::IroMatteAlphaEffect is the effect for the IroMatteAlphaMaterial class.
 */
 
 
