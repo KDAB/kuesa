@@ -51,14 +51,6 @@
         {
             "layers": [
             ],
-            "sourcePort": "value",
-            "sourceUuid": "{0b59e4be-97be-4a98-9f53-df1081f19791}",
-            "targetPort": "first",
-            "targetUuid": "{00c30ec0-689d-4f9c-8e85-ba11b102e938}"
-        },
-        {
-            "layers": [
-            ],
             "sourcePort": "product",
             "sourceUuid": "{6e38b553-3aed-4f06-911b-55f5a79f42b0}",
             "targetPort": "first",
@@ -84,22 +76,6 @@
             "layers": [
             ],
             "sourcePort": "value",
-            "sourceUuid": "{0b59e4be-97be-4a98-9f53-df1081f19791}",
-            "targetPort": "input",
-            "targetUuid": "{4ce29caa-a9c7-4cf9-a580-226596352f21}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{4ce29caa-a9c7-4cf9-a580-226596352f21}",
-            "targetPort": "value",
-            "targetUuid": "{43a0231d-a27e-4fed-8439-284131d634b8}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
             "sourceUuid": "{6a8287cd-5f77-4357-8006-d40aea9ec762}",
             "targetPort": "value",
             "targetUuid": "{ea6dec60-87b9-45ab-a6e1-fb1e0b55eb7c}"
@@ -119,6 +95,22 @@
             "sourceUuid": "{8dae1328-145f-42bb-998c-0bb17be6c636}",
             "targetPort": "position",
             "targetUuid": "{b750802b-b2c6-4ba3-9f59-9ce6d4155802}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{0b59e4be-97be-4a98-9f53-df1081f19791}",
+            "targetPort": "first",
+            "targetUuid": "{00c30ec0-689d-4f9c-8e85-ba11b102e938}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{a52e2790-c970-4c17-97f8-53c4669b104d}",
+            "targetPort": "value",
+            "targetUuid": "{43a0231d-a27e-4fed-8439-284131d634b8}"
         }
     ],
     "groups": [
@@ -147,8 +139,8 @@
                 }
             },
             "position": {
-                "x": 158,
-                "y": 1004
+                "x": 167,
+                "y": 1019
             },
             "type": "input",
             "uuid": "{0b59e4be-97be-4a98-9f53-df1081f19791}"
@@ -397,8 +389,8 @@
                 }
             },
             "position": {
-                "x": 707,
-                "y": 1035
+                "x": 1186,
+                "y": 849
             },
             "type": "join2",
             "uuid": "{00c30ec0-689d-4f9c-8e85-ba11b102e938}"
@@ -453,8 +445,8 @@
                 }
             },
             "position": {
-                "x": 1810,
-                "y": 1180
+                "x": 1213,
+                "y": 1200
             },
             "type": "output",
             "uuid": "{43a0231d-a27e-4fed-8439-284131d634b8}"
@@ -476,39 +468,11 @@
                 }
             },
             "position": {
-                "x": 450,
-                "y": 1157
+                "x": 872,
+                "y": 993
             },
             "type": "constant",
             "uuid": "{1357e61f-4d8f-4638-8501-2f69e7bb1bf6}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "swizzle",
-            "group": -1,
-            "id": 14,
-            "inputValues": {
-                "input": ""
-            },
-            "layers": [
-            ],
-            "parameters": {
-                "fields": "xy",
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
-            },
-            "position": {
-                "x": 1203,
-                "y": 1130
-            },
-            "type": "swizzle",
-            "uuid": "{4ce29caa-a9c7-4cf9-a580-226596352f21}"
         },
         {
             "collapsed": false,
@@ -588,12 +552,39 @@
             },
             "type": "swizzle",
             "uuid": "{8dae1328-145f-42bb-998c-0bb17be6c636}"
+        },
+        {
+            "collapsed": false,
+            "displayName": "input",
+            "group": -1,
+            "id": 20,
+            "inputValues": {
+            },
+            "layers": [
+            ],
+            "parameters": {
+                "name": "vertexTexCoord",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            },
+            "position": {
+                "x": 158,
+                "y": 1167
+            },
+            "type": "input",
+            "uuid": "{a52e2790-c970-4c17-97f8-53c4669b104d}"
         }
     ],
     "project": {
         "position": {
-            "x": 328.07512487512486,
-            "y": 795.8592074592075
+            "x": 328.35842588783726,
+            "y": 498.823260399731
         },
         "scale": 0.5625
     },

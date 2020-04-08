@@ -11,7 +11,7 @@
     ],
     "passes": [
         {
-            "type": "Opaque",
+            "type": "Background",
             "shaders": [
                 {
                     "format": { "api": "OpenGLES", "major": 2, "minor": 0 },

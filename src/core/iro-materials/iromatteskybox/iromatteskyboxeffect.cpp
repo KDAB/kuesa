@@ -36,6 +36,8 @@
 #include <Qt3DRender/QShaderProgram>
 #include <Qt3DRender/QShaderProgramBuilder>
 #include <Qt3DRender/QGraphicsApiFilter>
+#include <Qt3DRender/QNoDepthMask>
+#include <Qt3DRender/QDepthTest>
 #include "iromatteskyboxeffect.h"
 
 
@@ -57,12 +59,11 @@ public:
     explicit IroMatteSkyboxTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
         : QTechnique(parent)
         , m_backFaceCulling(new QCullFace(this))
+        , m_noDepthMask(new QNoDepthMask(this))
+        , m_depthTest(new QDepthTest(this))
         , m_renderShaderBuilder(new QShaderProgramBuilder(this))
-        , m_zfillShaderBuilder(new QShaderProgramBuilder(this))
         , m_renderShader(new QShaderProgram(this))
-        , m_zfillShader(new QShaderProgram(this))
-        , m_zfillRenderPass(new QRenderPass(this))
-        , m_opaqueRenderPass(new QRenderPass(this))
+        , m_backgroundRenderPass(new QRenderPass(this))
         , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
     {
         struct ApiFilterInfo {
@@ -95,21 +96,6 @@ public:
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iromatteopaque.frag.json"))
         };
 
-        const QByteArray zFillFragmentShaderCode[] = {
-            QByteArray(R"(
-                       #version 330
-                       void main() { }
-                       )"),
-            QByteArray(R"(
-                       #version 300 es
-                       void main() { }
-                       )"),
-            QByteArray(R"(
-                       #version 100
-                       void main() { }
-                       )")
-        };
-
         const QByteArray renderableVertexShaderCode[] = {
             QByteArray(R"()"),
             QByteArray(R"()"),
@@ -132,12 +118,8 @@ public:
         if (renderableVertexShaderCode[version].isEmpty()) {
             m_renderShaderBuilder->setShaderProgram(m_renderShader);
             m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
-
-            m_zfillShaderBuilder->setShaderProgram(m_zfillShader);
-            m_zfillShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
         } else {
             m_renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
-            m_zfillShader->setVertexShaderCode(renderableVertexShaderCode[version]);
         }
 
         if (renderableFragmentShaderCode[version].isEmpty()) {
@@ -146,11 +128,9 @@ public:
         } else {
             m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
         }
-        m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
          // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
-        m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
         auto filterKey = new QFilterKey(this);
         filterKey->setName(QStringLiteral("renderingStyle"));
@@ -158,26 +138,21 @@ public:
         addFilterKey(filterKey);
 
         m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
-        m_techniqueAllowFrustumCullingFilterKey->setValue(true);
+        m_techniqueAllowFrustumCullingFilterKey->setValue(false);
         addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
-
-        auto zfillFilterKey = new Qt3DRender::QFilterKey(this);
-        zfillFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-        zfillFilterKey->setValue(QStringLiteral("ZFill"));
-
-        m_zfillRenderPass->setShaderProgram(m_zfillShader);
-        m_zfillRenderPass->addRenderState(m_backFaceCulling);
-        m_zfillRenderPass->addFilterKey(zfillFilterKey);
-        addRenderPass(m_zfillRenderPass);
 
         auto opaqueFilterKey = new Qt3DRender::QFilterKey(this);
         opaqueFilterKey->setName(QStringLiteral("KuesaDrawStage"));
         opaqueFilterKey->setValue(QStringLiteral("Opaque"));
 
-        m_opaqueRenderPass->setShaderProgram(m_renderShader);
-        m_opaqueRenderPass->addRenderState(m_backFaceCulling);
-        m_opaqueRenderPass->addFilterKey(opaqueFilterKey);
-        addRenderPass(m_opaqueRenderPass);
+        m_depthTest->setDepthFunction(QDepthTest::LessOrEqual);
+
+        m_backgroundRenderPass->setShaderProgram(m_renderShader);
+        m_backgroundRenderPass->addRenderState(m_backFaceCulling);
+        m_backgroundRenderPass->addFilterKey(opaqueFilterKey);
+        m_backgroundRenderPass->addRenderState(m_noDepthMask);
+        m_backgroundRenderPass->addRenderState(m_depthTest);
+        addRenderPass(m_backgroundRenderPass);
     }
 
     QStringList enabledLayers() const
@@ -188,7 +163,6 @@ public:
     void setEnabledLayers(const QStringList &layers)
     {
         m_renderShaderBuilder->setEnabledLayers(layers);
-        m_zfillShaderBuilder->setEnabledLayers(layers);
     }
 
     void setOpaque(bool)
@@ -205,19 +179,17 @@ public:
         return m_backFaceCulling->mode();
     }
 
-    void setAllowCulling(bool allowCulling)
+    void setAllowCulling(bool)
     {
-        m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
     }
 
 private:
     Qt3DRender::QCullFace *m_backFaceCulling;
+    Qt3DRender::QNoDepthMask *m_noDepthMask;
+    Qt3DRender::QDepthTest *m_depthTest;
     Qt3DRender::QShaderProgramBuilder *m_renderShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
     Qt3DRender::QShaderProgram *m_renderShader;
-    Qt3DRender::QShaderProgram *m_zfillShader;
-    Qt3DRender::QRenderPass *m_zfillRenderPass;
-    Qt3DRender::QRenderPass *m_opaqueRenderPass;
+    Qt3DRender::QRenderPass *m_backgroundRenderPass;
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
