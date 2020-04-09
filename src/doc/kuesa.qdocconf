@@ -76,28 +76,42 @@ navigation.landingpage = "Kuesa Runtime"
 navigation.cppclassespage = "Kuesa Runtime C++ Classes"
 navigation.qmltypespage = "Kuesa Runtime QML Types"
 
-HTML.headerstyles = "<link rel=\"stylesheet\" type=\"text/css\" href=\"style/style.css\">\n" \
-                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"style/bootstrap.min.css\">\n"
-HTML.stylesheets =  ./style/style.css \
-                    ./style/bootstrap.min.css
-HTML.extraimages += ./images/kdab_background.png \
-                    ./images/kdabLogo.png
+HTML.headerstyles = "<link rel='stylesheet' href='style/bootstrap.min.css'>" \
+                    "<link rel='stylesheet' href='style/dracula.css'>" \
+                    "<link rel='stylesheet' href='style/style.css'>"
 
-qhp.extraFiles = style/style.css \
-                      style/boostrap.min.css \
-                      images/kdab_background.png \
-                      images/kdabLogo.png
+HTML.headerscripts = "<script type='text/javascript' src='scripts/jquery.slim.min.js'></script>" \
+                     "<script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script>" \
+                     "<script type='text/javascript' src='scripts/highlight.pack.js'></script>" \
+                     "<script type='text/javascript' src='scripts/clipboard.min.js'></script>" \
+                     "<script type='text/javascript' src='scripts/script.js'></script>"
+
+HTML.stylesheets = ./style/style.css \
+                   ./style/dracula.css \
+                   ./style/bootstrap.min.css
+
+HTML.scripts = ./scripts/jquery.slim.min.js \
+               ./scripts/bootstrap.bundle.min.js \
+               ./scripts/highlight.pack.js \
+               ./scripts/clipboard.min.js \
+               ./scripts/script.js
+
+HTML.extraimages += ./images/kdab-background.png \
+                    ./images/kdab-logo.png
 
 HTML.postheader = "<div id=\"title\">" \
                     "<div class=\"logo\">" \
                         "<a href=\"https://www.kdab.com\" target=\”_blank\” class=\"ui-link\">" \
-                            "<img src=\"images/kdabLogo.png\" alt=\"KDAB Logo\">" \
+                            "<img src=\"images/kdab-logo.png\" alt=\"KDAB Logo\">" \
                         "</a>" \
                     "</div>" \
                     "<div class=\"header\">" \
-                        "<h1>Kuesa</h1>" \
+                        "<h1>Kuesa Runtime</h1>" \
                     "</div>" \
-                  "</div>"
+                  "</div>" \
+                  "<div id=\"breadcrumbs\"><ul>"
+
+HTML.postpostheader = "</ul></div><div class='doc-content'>"
 
 HTML.footer = \
     "        </div>\n" \
@@ -106,7 +120,7 @@ HTML.footer = \
     "   </div>\n" \
     "</div>\n" \
     "<div class=\"footer\">\n" \
-    "   <p>\n" \
+    "   <p class=\"text-center\">\n" \
     "   <acronym title=\"Copyright\">&copy;</acronym> 2020 KDAB.\n" \
     "   Documentation contributions included herein are the copyrights of\n" \
     "   their respective owners.<br/>" \
