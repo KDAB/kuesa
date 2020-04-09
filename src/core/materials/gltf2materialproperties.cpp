@@ -31,10 +31,31 @@
 #include <Qt3DRender/QMaterial>
 #include <Qt3DRender/QTexture>
 #include <Qt3DCore/private/qnode_p.h>
+#include <Qt3DCore/private/qchangearbiter_p.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+
+// Qt < 5.14 has a bug where change messages will not be
+// delivered to frontend nodes if these don't have a
+// backend equivalent. This prevents animation changes
+// from being delivered to the frontend.
+//
+// Work around this by creating a dummy observer
+
+class DummyObserver : public Qt3DCore::QObserverInterface
+{
+public:
+    DummyObserver() {}
+    ~DummyObserver() override;
+    void sceneChangeEvent(const Qt3DCore::QSceneChangePtr &) override {}
+};
+
+DummyObserver::~DummyObserver() = default;
+#endif
 
 /*!
     \class Kuesa::GLTF2MaterialProperties
@@ -99,7 +120,6 @@ namespace Kuesa {
     result. For alphaCutoff to have any effect, it must be activated.
  */
 
-
 /*!
     \qmlproperty matrix3 GLTF2MaterialProperties::textureTransform
 
@@ -113,13 +133,26 @@ GLTF2MaterialProperties::GLTF2MaterialProperties(Qt3DCore::QNode *parent)
     , m_usesTexCoord1(false)
     , m_baseColorTexture(nullptr)
     , m_baseColorFactor(QColor("gray"))
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    , m_dummyObserver(nullptr)
+#endif
 {
+    setDefaultPropertyTrackingMode(QNode::TrackAllValues);
 }
 
 GLTF2MaterialProperties::~GLTF2MaterialProperties()
 {
     for (auto &connection : m_connections)
         QObject::disconnect(connection);
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    if (m_dummyObserver) {
+        auto d = Qt3DCore::QNodePrivate::get(this);
+        Q_ASSERT(d->m_changeArbiter);
+        static_cast<Qt3DCore::QChangeArbiter *>(d->m_changeArbiter)->unregisterObserver(m_dummyObserver, id());
+        delete m_dummyObserver;
+    }
+#endif
 }
 
 void GLTF2MaterialProperties::addClientMaterial(Qt3DRender::QMaterial *material)
@@ -192,7 +225,7 @@ void GLTF2MaterialProperties::setBaseColorMap(Qt3DRender::QAbstractTexture *base
 
 void GLTF2MaterialProperties::setAlphaCutoff(float alphaCutoff)
 {
-    if (m_alphaCutOff == alphaCutoff)
+    if (qFuzzyCompare(m_alphaCutOff, alphaCutoff))
         return;
     m_alphaCutOff = alphaCutoff;
     emit alphaCutoffChanged(m_alphaCutOff);
@@ -206,6 +239,21 @@ void GLTF2MaterialProperties::setTextureTransform(const QMatrix3x3 &textureTrans
     emit textureTransformChanged(m_textureTransform);
 }
 
-} // Kuesa
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+Qt3DCore::QNodeCreatedChangeBasePtr GLTF2MaterialProperties::createNodeCreationChange() const
+{
+    if (m_dummyObserver == nullptr) {
+        // do this now since the change arbiter is not set yet when in the constructor
+        m_dummyObserver = new DummyObserver;
+        auto d = Qt3DCore::QNodePrivate::get(const_cast<Qt3DCore::QNode *>(static_cast<const Qt3DCore::QNode *>(this)));
+        Q_ASSERT(d->m_changeArbiter);
+        static_cast<Qt3DCore::QChangeArbiter *>(d->m_changeArbiter)->registerObserver(m_dummyObserver, id());
+    }
+
+    return Qt3DCore::QNodeCreatedChangeBasePtr::create(this);
+}
+#endif
+
+} // namespace Kuesa
 
 QT_END_NAMESPACE
