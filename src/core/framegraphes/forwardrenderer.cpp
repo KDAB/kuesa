@@ -459,8 +459,18 @@ GLFeatures checkGLFeatures()
         features.hasMultisampledFBO = (ctx.isOpenGLES() ? (format.majorVersion() >= 3 && format.minorVersion() >= 1)
                                                         : format.majorVersion() >= 3);
 #endif
+        const bool forceMultisampledFBO = qgetenv("KUESA_FORCE_MULTISAMPLING").length() > 0;
+        features.hasMultisampledFBO |= forceMultisampledFBO;
+
         ctx.doneCurrent();
     }
+
+    qCDebug(kuesa) << "GL Features:\n"
+                   << "hasHalfFloatTexture" << features.hasHalfFloatTexture << "\n"
+                   << "hasHalfFloatRenderable" << features.hasHalfFloatRenderable << "\n"
+                   << "hasMultisampledTexture" << features.hasMultisampledTexture << "\n"
+                   << "hasMultisampledFBO" << features.hasMultisampledFBO;
+
     return features;
 }
 GLFeatures const *_glFeatures = nullptr;
