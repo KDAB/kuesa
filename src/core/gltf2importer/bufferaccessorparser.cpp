@@ -34,8 +34,6 @@
 #include <QJsonObject>
 #include <QLoggingCategory>
 
-#include <QOpenGLContext>
-
 #include "gltf2context_p.h"
 #include "gltf2keys_p.h"
 #include "gltf2utils_p.h"

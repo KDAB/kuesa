@@ -33,8 +33,6 @@
 #include <Qt3DRender/QAttribute>
 #include <QLoggingCategory>
 
-#include <QOpenGLContext>
-
 #include "gltf2context_p.h"
 
 QT_BEGIN_NAMESPACE
