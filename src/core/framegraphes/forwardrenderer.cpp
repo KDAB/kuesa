@@ -1171,7 +1171,7 @@ void ForwardRenderer::reconfigureFrameGraph()
             m_blitFramebufferNode->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
             m_blitFramebufferNode->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
 
-            const QRect blitRect(QPoint(), currentSurfaceSize());
+            const QRect blitRect(QPoint(), surfaceSize);
             m_blitFramebufferNode->setSourceRect(blitRect);
             m_blitFramebufferNode->setDestinationRect(blitRect);
 
@@ -1187,7 +1187,6 @@ void ForwardRenderer::reconfigureFrameGraph()
         m_effectsRootNode->setObjectName(QStringLiteral("KuesaPostProcessingEffects"));
 
         // Gather the different effect types
-        const auto targetSize = currentSurfaceSize();
         int previousRenderTargetIndex = 0;
         Qt3DRender::QFrameGraphNode *lastEffectFG = nullptr;
 
@@ -1205,7 +1204,7 @@ void ForwardRenderer::reconfigureFrameGraph()
             effect->setInputTexture(findRenderTargetTexture(previousRenderTarget, Qt3DRender::QRenderTargetOutput::Color0));
             effect->setDepthTexture(depthTex);
             effect->setCamera(this->camera());
-            effect->setSceneSize(targetSize);
+            effect->setSceneSize(surfaceSize);
 
             // add the layers from the effect to block them from being rendered in the main scene
             const auto &layers = effect->layers();
