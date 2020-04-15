@@ -148,8 +148,8 @@ GLTF2MaterialProperties::~GLTF2MaterialProperties()
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     if (m_dummyObserver) {
         auto d = Qt3DCore::QNodePrivate::get(this);
-        Q_ASSERT(d->m_changeArbiter);
-        static_cast<Qt3DCore::QChangeArbiter *>(d->m_changeArbiter)->unregisterObserver(m_dummyObserver, id());
+        if (d->m_changeArbiter)
+            static_cast<Qt3DCore::QChangeArbiter *>(d->m_changeArbiter)->unregisterObserver(m_dummyObserver, id());
         delete m_dummyObserver;
     }
 #endif
