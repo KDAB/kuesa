@@ -598,6 +598,7 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     connect(m_viewport, &Qt3DRender::QViewport::normalizedRectChanged, this, &ForwardRenderer::viewportRectChanged);
     connect(this, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::renderSurfaceChanged);
     connect(this, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::handleSurfaceChange);
+    connect(this, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::updateTextureSizes);
     connect(m_frustumCullingOpaque, &Qt3DRender::QFrustumCulling::enabledChanged, this, &ForwardRenderer::frustumCullingChanged);
     connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::gammaChanged, this, &ForwardRenderer::gammaChanged);
     connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::exposureChanged, this, &ForwardRenderer::exposureChanged);
@@ -1015,10 +1016,6 @@ void ForwardRenderer::handleSurfaceChange()
     if (auto window = qobject_cast<QWindow *>(currentSurface)) {
         m_resizeConnections.push_back(connect(window, &QWindow::widthChanged, this, &ForwardRenderer::updateTextureSizes));
         m_resizeConnections.push_back(connect(window, &QWindow::heightChanged, this, &ForwardRenderer::updateTextureSizes));
-    } else if (qobject_cast<QOffscreenSurface *>(currentSurface)) {
-        m_resizeConnections.push_back(connect(this, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::updateTextureSizes));
-    } else {
-        qCWarning(kuesa) << Q_FUNC_INFO << "Unexpected surface type for surface " << currentSurface;
     }
     updateTextureSizes();
 }
@@ -1310,15 +1307,16 @@ bool ForwardRenderer::hasHalfFloatRenderable()
  */
 QSize ForwardRenderer::currentSurfaceSize() const
 {
-    QSize size;
-    auto currentSurface = surface();
+    QSize size = externalRenderTargetSize();
 
-    if (auto window = qobject_cast<QWindow *>(currentSurface))
-        size = window->size() * window->screen()->devicePixelRatio();
-    else if (qobject_cast<QOffscreenSurface *>(currentSurface))
-        size = externalRenderTargetSize();
-    else
-        qCWarning(kuesa) << Q_FUNC_INFO << "Unexpected surface type for surface " << currentSurface;
+    if (!size.isValid()) {
+        auto currentSurface = surface();
+        if (auto window = qobject_cast<QWindow *>(currentSurface))
+            size = window->size() * window->screen()->devicePixelRatio();
+    }
+
+    if (!size.isValid())
+        qCWarning(kuesa) << Q_FUNC_INFO << "Unexpected surface size" << size;
 
     return size;
 }
