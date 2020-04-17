@@ -1,11 +1,11 @@
 {
     "type": "IroGlassAdd",
-    "doc": "is a simple material in terms of rendering that relies on a 2d spherical environment map to render transparent, glass like material.\nIt performs 2 render passes, the first one performs multiplicative blending and the second one additive blending.",
+    "doc": "is a simple material in terms of rendering that relies on a 2d spherical environment map to render transparent, glass like material.\nIt performs 2 render passes. The first one performs multiplicative blending using the glass filter simulating the tint of the glass. The second pass performs additive blending for the reflections.",
     "properties": [
         { "name": "normalScaling", "type": "vec3", "doc": "Specifies a factor to be applied to the normal." },
         { "name": "normalDisturb", "type": "vec2", "doc": "Specifies a disturbance factor that will be added to the normal" },
         { "name": "postVertexColor", "type": "float", "doc": "Specifies the factor which controls how much of the per vertex color we want to transmit." },
-        { "name": "postGain", "type": "float", "doc": "Specifies the factor to be applied to the vertex color." },
+        { "name": "postGain", "type": "float", "doc": "Specifies the gain factor to be applied to the final result." },
         { "name": "reflectionGain", "type": "float", "doc": "Specifies the gain factor to be applied to the spherical environment map lookup." },
         { "name": "reflectionMap", "type": "texture2d", "doc": "Specifies the spherical environment map to use. It is expected to be in sRGB color space." },
         { "name": "reflectionInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup." },

@@ -129,11 +129,11 @@ float IroMatteSkyboxProperties::postVertexColor() const
 
 /*!
     \qmlproperty float IroMatteSkyboxProperties::postGain
-    Specifies the factor to be applied to the vertex color.
+    Specifies the gain factor to be applied to the final result.
 */
 /*!
     \property IroMatteSkyboxProperties::postGain
-    Specifies the factor to be applied to the vertex color.
+    Specifies the gain factor to be applied to the final result.
 */
 float IroMatteSkyboxProperties::postGain() const
 {

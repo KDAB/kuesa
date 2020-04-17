@@ -185,11 +185,11 @@ float IroGlassAddProperties::postVertexColor() const
 
 /*!
     \qmlproperty float IroGlassAddProperties::postGain
-    Specifies the factor to be applied to the vertex color.
+    Specifies the gain factor to be applied to the final result.
 */
 /*!
     \property IroGlassAddProperties::postGain
-    Specifies the factor to be applied to the vertex color.
+    Specifies the gain factor to be applied to the final result.
 */
 float IroGlassAddProperties::postGain() const
 {

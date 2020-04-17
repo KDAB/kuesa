@@ -203,11 +203,11 @@ float IroDiffuseProperties::postVertexColor() const
 
 /*!
     \qmlproperty float IroDiffuseProperties::postGain
-    Specifies the factor to be applied to the vertex color.
+    Specifies the gain factor to be applied to the final result.
 */
 /*!
     \property IroDiffuseProperties::postGain
-    Specifies the factor to be applied to the vertex color.
+    Specifies the gain factor to be applied to the final result.
 */
 float IroDiffuseProperties::postGain() const
 {

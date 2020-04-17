@@ -48,7 +48,7 @@ namespace Kuesa {
     \since Kuesa 1.2
 
     \brief Kuesa::IroGlassAddMaterial is a simple material in terms of rendering that relies on a 2d spherical environment map to render transparent, glass like material.
-It performs 2 render passes, the first one performs multiplicative blending and the second one additive blending.
+It performs 2 render passes. The first one performs multiplicative blending using the glass filter simulating the tint of the glass. The second pass performs additive blending for the reflections.
 */
 
 /*!
@@ -58,7 +58,7 @@ It performs 2 render passes, the first one performs multiplicative blending and 
     \since Kuesa 1.2
 
     \brief Kuesa::IroGlassAddMaterial is a simple material in terms of rendering that relies on a 2d spherical environment map to render transparent, glass like material.
-It performs 2 render passes, the first one performs multiplicative blending and the second one additive blending.
+It performs 2 render passes. The first one performs multiplicative blending using the glass filter simulating the tint of the glass. The second pass performs additive blending for the reflections.
 */
 
 IroGlassAddMaterial::IroGlassAddMaterial(Qt3DCore::QNode *parent)

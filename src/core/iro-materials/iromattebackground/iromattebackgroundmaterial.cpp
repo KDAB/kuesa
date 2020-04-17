@@ -47,7 +47,7 @@ namespace Kuesa {
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteBackgroundMaterial is a simple material in terms of rendering that allows to render an arbitrary meshes as a background by projecting the vertices in screen space
+    \brief Kuesa::IroMatteBackgroundMaterial is a simple material in terms of rendering that allows to render an arbitrary meshes as a background by projecting the vertices in screen space.
 */
 
 /*!
@@ -56,7 +56,7 @@ namespace Kuesa {
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteBackgroundMaterial is a simple material in terms of rendering that allows to render an arbitrary meshes as a background by projecting the vertices in screen space
+    \brief Kuesa::IroMatteBackgroundMaterial is a simple material in terms of rendering that allows to render an arbitrary meshes as a background by projecting the vertices in screen space.
 */
 
 IroMatteBackgroundMaterial::IroMatteBackgroundMaterial(Qt3DCore::QNode *parent)

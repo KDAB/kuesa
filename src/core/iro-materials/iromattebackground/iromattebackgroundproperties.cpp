@@ -129,11 +129,11 @@ float IroMatteBackgroundProperties::postVertexColor() const
 
 /*!
     \qmlproperty float IroMatteBackgroundProperties::postGain
-    Specifies the factor to be applied to the vertex color.
+    Specifies the gain factor to be applied to the final result.
 */
 /*!
     \property IroMatteBackgroundProperties::postGain
-    Specifies the factor to be applied to the vertex color.
+    Specifies the gain factor to be applied to the final result.
 */
 float IroMatteBackgroundProperties::postGain() const
 {

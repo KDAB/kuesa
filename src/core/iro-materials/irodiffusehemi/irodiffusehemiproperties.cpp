@@ -228,11 +228,11 @@ QVector3D IroDiffuseHemiProperties::postHemiFilter() const
 
 /*!
     \qmlproperty float IroDiffuseHemiProperties::postGain
-    Specifies the factor to be applied to the vertex color.
+    Specifies the gain factor to be applied to the final result.
 */
 /*!
     \property IroDiffuseHemiProperties::postGain
-    Specifies the factor to be applied to the vertex color.
+    Specifies the gain factor to be applied to the final result.
 */
 float IroDiffuseHemiProperties::postGain() const
 {
