@@ -1007,6 +1007,7 @@ void GLTF2Parser::generateTreeNodeContent()
                     if (layer.layer) {
                         // Make it recursive so it affects subentities and in particular primitive entities
                         layer.layer->setRecursive(true);
+                        layer.layer->setParent(m_contentRootEntity);
                         entity->addComponent(layer.layer);
                     }
                 }
@@ -1019,13 +1020,13 @@ void GLTF2Parser::generateTreeNodeContent()
                 if (light == nullptr) {
                     switch (lightDefinition.type) {
                     case Qt3DRender::QAbstractLight::PointLight: {
-                        auto pointLight = new PointLight;
+                        auto pointLight = new PointLight(m_contentRootEntity);
                         pointLight->setRange(lightDefinition.range.toFloat());
                         light = pointLight;
                         break;
                     }
                     case Qt3DRender::QAbstractLight::SpotLight: {
-                        auto spotLight = new SpotLight;
+                        auto spotLight = new SpotLight(m_contentRootEntity);
                         spotLight->setInnerConeAngle(qRadiansToDegrees(lightDefinition.innerConeAngleRadians));
                         spotLight->setOuterConeAngle(qRadiansToDegrees(lightDefinition.outerConeAngleRadians));
                         spotLight->setLocalDirection({ 0.0, 0.0, -1.0 });
@@ -1034,7 +1035,7 @@ void GLTF2Parser::generateTreeNodeContent()
                         break;
                     }
                     case Qt3DRender::QAbstractLight::DirectionalLight: {
-                        auto directionalLight = new DirectionalLight;
+                        auto directionalLight = new DirectionalLight(m_contentRootEntity);
                         directionalLight->setDirection({ 0.0, 0.0, -1.0 });
                         directionalLight->setDirectionMode(DirectionalLight::Local);
                         light = directionalLight;
@@ -1066,7 +1067,7 @@ void GLTF2Parser::generateTreeNodeContent()
                 // Create armature if node references a skin
                 {
                     if (isSkinned) {
-                        armature = new Qt3DCore::QArmature();
+                        armature = new Qt3DCore::QArmature(m_contentRootEntity);
                         const Skin &skin = m_context->skin(skinId);
                         Qt3DCore::QSkeleton *skeleton = skin.skeleton;
                         armature->setSkeleton(skeleton);
@@ -1121,7 +1122,7 @@ void GLTF2Parser::generateTreeNodeContent()
                             qCWarning(kuesa) << "Kuesa only supports up to 8 morph targets per mesh";
 
                         // node Default Weights have priority over the mesh ones
-                        morphController = new MorphController();
+                        morphController = new MorphController(m_contentRootEntity);
                         morphController->setCount(morphTargetCount);
 
                         QVariantList defaultWeights;
@@ -1142,6 +1143,7 @@ void GLTF2Parser::generateTreeNodeContent()
 
                     // If the mesh is skinned, the parent of the primitiveEntity wont be the treeNode
                     // Store this Entity to Entity map so we can use it later on the animation generation
+                    primitiveData.primitiveRenderer->setParent(m_contentRootEntity);
                     m_context->addPrimitiveEntityToEntity(node.entity, primitiveEntity);
                     primitiveEntity->addComponent(primitiveData.primitiveRenderer);
 
@@ -1235,6 +1237,7 @@ void GLTF2Parser::generateTreeNodeContent()
                                                                    meshData.name, materialName);
                         }
                         // TODO assign brdfLut on effect creation on the library
+                        material->setParent(m_contentRootEntity);
                         material->setEffect(effect);
                         setBrdfLutOnEffect(material);
                         if (hasMorphTargets)

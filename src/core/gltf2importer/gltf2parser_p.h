@@ -86,6 +86,8 @@ public:
         : Qt3DCore::QEntity(parent)
         , m_rootNodes(rootNodes)
     {
+        for (Qt3DCore::QEntity *e : qAsConst(m_rootNodes))
+            e->setParent(this);
     }
 
     void makeActive()
