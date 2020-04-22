@@ -4,7 +4,7 @@
    "layers": [],
    "parameters": {},
    "type": "MATERIAL_PROPERTIES",
-   "uuid": "{6b8ed50b-4b44-4865-876e-ccc1cd425191}"
+   "uuid": "{39f9fe6a-22a6-4d63-8f08-5ab123d94bfc}"
   },
   {
    "layers": [],
@@ -15,7 +15,7 @@
     }
    },
    "type": "MIX",
-   "uuid": "{1a06fc2c-0a4e-4d97-a585-3f3d985cdaaa}"
+   "uuid": "{92302797-c685-476e-9a29-4c968877f947}"
   },
   {
    "layers": [],
@@ -35,19 +35,19 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{fed51e0d-269b-492e-a8f9-c174a94e3165}"
+   "uuid": "{966cd9ef-bdee-44bf-b110-048d4e56b568}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "VERTEX_COLOR",
-   "uuid": "{897182ec-9eee-4f52-88ee-8478165d0426}"
+   "uuid": "{ac37c83b-6a3c-4bdf-ac32-8aba79668566}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "TEX_COORD",
-   "uuid": "{c2c986eb-31de-4c6e-a9d3-ca96955e1861}"
+   "uuid": "{bb24d8e3-2868-42bd-ae37-88a273d7032a}"
   },
   {
    "layers": [],
@@ -67,13 +67,13 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{ae1c5053-1d43-40e3-beeb-a347b18f90c5}"
+   "uuid": "{93748960-740c-4952-9700-31780bb28910}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "MATERIAL_OUTPUT",
-   "uuid": "{9fc9fe2d-6363-4ad7-8e0a-8f38ce5914c9}"
+   "uuid": "{dc2131dc-ff2d-45f0-b221-61a045f22b1d}"
   },
   {
    "layers": [],
@@ -93,7 +93,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{83255352-9582-4187-baa6-0bf95a19583e}"
+   "uuid": "{750439a0-1f77-4725-b6ad-cdb54f02ed0a}"
   },
   {
    "layers": [],
@@ -104,7 +104,7 @@
     "linearizer": "sRGBtoLinear"
    },
    "type": "TEX_IMAGE",
-   "uuid": "{0d750891-34e3-4a96-90e5-50240ace7e9d}"
+   "uuid": "{fdb86d27-89b6-414e-94a9-4fc4a4390bfa}"
   },
   {
    "layers": [],
@@ -124,13 +124,13 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{a905f49e-632e-4223-b85d-c518d0de213f}"
+   "uuid": "{24c713a4-06b2-4fe7-a4e9-25f3b522e85a}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "COLOR_TO_SHADER",
-   "uuid": "{94b3aa0b-cdcf-440e-94d3-a0091c944ab8}"
+   "uuid": "{1f99ca64-6737-41f6-a7af-5435b0c535e3}"
   },
   {
    "layers": [],
@@ -142,118 +142,118 @@
     }
    },
    "type": "constant",
-   "uuid": "{a371d5c9-e847-46b6-a678-5286a1ebbc13}"
+   "uuid": "{aeb999e4-0285-4e54-9f55-49e75e8dc900}"
   }
  ],
  "edges": [
   {
    "layers": [],
-   "sourceUuid": "{897182ec-9eee-4f52-88ee-8478165d0426}",
+   "sourceUuid": "{ac37c83b-6a3c-4bdf-ac32-8aba79668566}",
    "sourcePort": "color",
-   "targetUuid": "{1a06fc2c-0a4e-4d97-a585-3f3d985cdaaa}",
+   "targetUuid": "{92302797-c685-476e-9a29-4c968877f947}",
    "targetPort": "input2"
   },
   {
    "layers": [],
-   "sourceUuid": "{1a06fc2c-0a4e-4d97-a585-3f3d985cdaaa}",
+   "sourceUuid": "{92302797-c685-476e-9a29-4c968877f947}",
    "sourcePort": "mixed",
-   "targetUuid": "{fed51e0d-269b-492e-a8f9-c174a94e3165}",
+   "targetUuid": "{966cd9ef-bdee-44bf-b110-048d4e56b568}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{ae1c5053-1d43-40e3-beeb-a347b18f90c5}",
+   "sourceUuid": "{93748960-740c-4952-9700-31780bb28910}",
    "sourcePort": "output0",
-   "targetUuid": "{83255352-9582-4187-baa6-0bf95a19583e}",
+   "targetUuid": "{750439a0-1f77-4725-b6ad-cdb54f02ed0a}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{6b8ed50b-4b44-4865-876e-ccc1cd425191}",
+   "sourceUuid": "{39f9fe6a-22a6-4d63-8f08-5ab123d94bfc}",
    "sourcePort": "matteGain",
-   "targetUuid": "{ae1c5053-1d43-40e3-beeb-a347b18f90c5}",
+   "targetUuid": "{93748960-740c-4952-9700-31780bb28910}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{6b8ed50b-4b44-4865-876e-ccc1cd425191}",
+   "sourceUuid": "{39f9fe6a-22a6-4d63-8f08-5ab123d94bfc}",
    "sourcePort": "postVertexColor",
-   "targetUuid": "{1a06fc2c-0a4e-4d97-a585-3f3d985cdaaa}",
+   "targetUuid": "{92302797-c685-476e-9a29-4c968877f947}",
    "targetPort": "fac"
   },
   {
    "layers": [],
-   "sourceUuid": "{6b8ed50b-4b44-4865-876e-ccc1cd425191}",
+   "sourceUuid": "{39f9fe6a-22a6-4d63-8f08-5ab123d94bfc}",
    "sourcePort": "postGain",
-   "targetUuid": "{fed51e0d-269b-492e-a8f9-c174a94e3165}",
+   "targetUuid": "{966cd9ef-bdee-44bf-b110-048d4e56b568}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{6b8ed50b-4b44-4865-876e-ccc1cd425191}",
+   "sourceUuid": "{39f9fe6a-22a6-4d63-8f08-5ab123d94bfc}",
    "sourcePort": "matteFilter",
-   "targetUuid": "{ae1c5053-1d43-40e3-beeb-a347b18f90c5}",
+   "targetUuid": "{93748960-740c-4952-9700-31780bb28910}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{83255352-9582-4187-baa6-0bf95a19583e}",
+   "sourceUuid": "{750439a0-1f77-4725-b6ad-cdb54f02ed0a}",
    "sourcePort": "output0",
-   "targetUuid": "{a905f49e-632e-4223-b85d-c518d0de213f}",
+   "targetUuid": "{24c713a4-06b2-4fe7-a4e9-25f3b522e85a}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{fed51e0d-269b-492e-a8f9-c174a94e3165}",
+   "sourceUuid": "{966cd9ef-bdee-44bf-b110-048d4e56b568}",
    "sourcePort": "output0",
-   "targetUuid": "{a905f49e-632e-4223-b85d-c518d0de213f}",
+   "targetUuid": "{24c713a4-06b2-4fe7-a4e9-25f3b522e85a}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{0d750891-34e3-4a96-90e5-50240ace7e9d}",
+   "sourceUuid": "{fdb86d27-89b6-414e-94a9-4fc4a4390bfa}",
    "sourcePort": "color",
-   "targetUuid": "{83255352-9582-4187-baa6-0bf95a19583e}",
+   "targetUuid": "{750439a0-1f77-4725-b6ad-cdb54f02ed0a}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{c2c986eb-31de-4c6e-a9d3-ca96955e1861}",
+   "sourceUuid": "{bb24d8e3-2868-42bd-ae37-88a273d7032a}",
    "sourcePort": "uv",
-   "targetUuid": "{0d750891-34e3-4a96-90e5-50240ace7e9d}",
+   "targetUuid": "{fdb86d27-89b6-414e-94a9-4fc4a4390bfa}",
    "targetPort": "vector"
   },
   {
    "layers": [],
-   "sourceUuid": "{a905f49e-632e-4223-b85d-c518d0de213f}",
+   "sourceUuid": "{24c713a4-06b2-4fe7-a4e9-25f3b522e85a}",
    "sourcePort": "output0",
-   "targetUuid": "{94b3aa0b-cdcf-440e-94d3-a0091c944ab8}",
+   "targetUuid": "{1f99ca64-6737-41f6-a7af-5435b0c535e3}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{94b3aa0b-cdcf-440e-94d3-a0091c944ab8}",
+   "sourceUuid": "{1f99ca64-6737-41f6-a7af-5435b0c535e3}",
    "sourcePort": "shader",
-   "targetUuid": "{9fc9fe2d-6363-4ad7-8e0a-8f38ce5914c9}",
+   "targetUuid": "{dc2131dc-ff2d-45f0-b221-61a045f22b1d}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{a371d5c9-e847-46b6-a678-5286a1ebbc13}",
+   "sourceUuid": "{aeb999e4-0285-4e54-9f55-49e75e8dc900}",
    "sourcePort": "value",
-   "targetUuid": "{1a06fc2c-0a4e-4d97-a585-3f3d985cdaaa}",
+   "targetUuid": "{92302797-c685-476e-9a29-4c968877f947}",
    "targetPort": "input1"
   },
   {
-   "sourceUuid": "{6b8ed50b-4b44-4865-876e-ccc1cd425191}",
+   "sourceUuid": "{39f9fe6a-22a6-4d63-8f08-5ab123d94bfc}",
    "sourcePort": "usesMatteMap",
-   "targetUuid": "{0d750891-34e3-4a96-90e5-50240ace7e9d}",
+   "targetUuid": "{fdb86d27-89b6-414e-94a9-4fc4a4390bfa}",
    "targetPort": "useTexture"
   },
   {
-   "sourceUuid": "{6b8ed50b-4b44-4865-876e-ccc1cd425191}",
+   "sourceUuid": "{39f9fe6a-22a6-4d63-8f08-5ab123d94bfc}",
    "sourcePort": "matteMap",
-   "targetUuid": "{0d750891-34e3-4a96-90e5-50240ace7e9d}",
+   "targetUuid": "{fdb86d27-89b6-414e-94a9-4fc4a4390bfa}",
    "targetPort": "texture"
   }
  ],
@@ -755,7 +755,7 @@
       "uniform highp vec3 eyePosition;",
       "#endif"
      ],
-     "substitution": "highp vec2 $uv = texCoord;highp vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);"
+     "substitution": "highp vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);highp vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);"
     },
     {
      "format": {
@@ -773,7 +773,7 @@
       "uniform highp vec3 eyePosition;",
       "#endif"
      ],
-     "substitution": "highp vec2 $uv = texCoord;highp vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);"
+     "substitution": "highp vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);highp vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);"
     },
     {
      "format": {
@@ -791,7 +791,7 @@
       "uniform vec3 eyePosition;",
       "#endif"
      ],
-     "substitution": "vec2 $uv = texCoord;vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);"
+     "substitution": "vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);"
     }
    ]
   },
@@ -852,7 +852,7 @@
       "highp vec3 sRGBtoLinear(highp vec3 srgb) { return pow(srgb, vec3(2.2)); }",
       "#endif"
      ],
-     "substitution": "highp vec4 $inter = $useTexture ? texture2D($texture, $vector.xy) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
+     "substitution": "highp vec4 $inter = $useTexture ? texture2D($texture, vec2($vector.x, 1.0 - $vector.y)) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
     },
     {
      "format": {
@@ -866,7 +866,7 @@
       "highp vec3 sRGBtoLinear(highp vec3 srgb) { return pow(srgb, vec3(2.2)); }",
       "#endif"
      ],
-     "substitution": "highp vec4 $inter = $useTexture ? texture($texture, $vector.xy) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
+     "substitution": "highp vec4 $inter = $useTexture ? texture($texture, vec2($vector.x, 1.0 - $vector.y)) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
     },
     {
      "format": {
@@ -880,7 +880,7 @@
       "vec3 sRGBtoLinear(vec3 srgb) { return pow(srgb, vec3(2.2)); }",
       "#endif"
      ],
-     "substitution": "vec4 $inter = $useTexture ? texture($texture, $vector.xy) : vec4($defaultColor);vec3 $color = $linearizer($inter.rgb);float $alpha = $inter.a;"
+     "substitution": "vec4 $inter = $useTexture ? texture($texture, vec2($vector.x, 1.0 - $vector.y)) : vec4($defaultColor); vec3 $color = $linearizer($inter.rgb); float $alpha = $inter.a;"
     }
    ]
   },
@@ -921,7 +921,7 @@
       "highp vec2 equiRectangular(highp vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
       "#endif"
      ],
-     "substitution": "highp vec4 $inter = $useTexture ? texture2D($texture, $projectTexture ? $projection($position) : $uv.xy) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
+     "substitution": "highp vec4 $inter = $useTexture ? texture2D($texture, $projectTexture ? $projection($position) : vec2($uv.x, 1.0-$uv.y)) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
     },
     {
      "format": {
@@ -939,7 +939,7 @@
       "highp vec2 equiRectangular(highp vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
       "#endif"
      ],
-     "substitution": "highp vec4 $inter = $useTexture ? texture($texture, $projectTexture ? $projection($position) : $uv.xy) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
+     "substitution": "highp vec4 $inter = $useTexture ? texture($texture, $projectTexture ? $projection($position) : vec2($uv.x, 1.0 - $uv.y)) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
     },
     {
      "format": {
@@ -957,7 +957,7 @@
       "vec2 equiRectangular(vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
       "#endif"
      ],
-     "substitution": "vec4 $inter = $useTexture ? texture($texture, $projectTexture ? $projection($position) : $uv.xy) : vec4($defaultColor);vec3 $color = $linearizer($inter.rgb);float $alpha = $inter.a;"
+     "substitution": "vec4 $inter = $useTexture ? texture($texture, $projectTexture ? $projection($position) : vec2($uv.x, 1.0 - $uv.y)) : vec4($defaultColor);vec3 $color = $linearizer($inter.rgb);float $alpha = $inter.a;"
     }
    ]
   },
