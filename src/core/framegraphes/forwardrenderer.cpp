@@ -916,6 +916,8 @@ void ForwardRenderer::setShowDebugOverlay(bool showDebugOverlay)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     m_debugOverlay->setEnabled(showDebugOverlay);
+#else
+    Q_UNUSED(showDebugOverlay)
 #endif
 }
 
