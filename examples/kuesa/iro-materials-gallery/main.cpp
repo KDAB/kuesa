@@ -69,15 +69,6 @@ int main(int ac, char **av)
     QQuickView view;
 #ifdef Q_OS_ANDROID
     const QString assetsPrefix = QStringLiteral("assets:/");
-
-    // Qt builds for android may not define QT_OPENGL_ES_3
-    // Therefore we need a runtime check to see whether we can use ES 3.0 or not
-    QOpenGLContext ctx;
-    ctx.setFormat(QSurfaceFormat::defaultFormat());
-    if (ctx.create()) {
-        const QSurfaceFormat androidFormat = ctx.format();
-        isES2 = (androidFormat.majorVersion() == 2);
-    }
 #elif defined(Q_OS_IOS)
     const QString assetsPrefix = QString(QStringLiteral("file://%1/Library/Application Support/")).arg(QGuiApplication::applicationDirPath());
 #elif defined(Q_OS_OSX)
