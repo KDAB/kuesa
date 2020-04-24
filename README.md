@@ -31,6 +31,8 @@ More information about Kuesa Studio can be found [here](https://www.kdab.com/kue
 
 Kuesa Runtime requires Qt 3D from Qt 5.12.8, Qt 5.14.2 or Qt 5.15.
 
+Note: not all features are working with Qt 5.12.8.
+
 Earlier Qt 3D versions can still be used but might be suffering from bugs
 that have been identified and fixed since.
 
