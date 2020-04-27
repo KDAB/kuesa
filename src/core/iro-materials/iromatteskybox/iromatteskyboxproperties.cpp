@@ -67,7 +67,6 @@ IroMatteSkyboxProperties::IroMatteSkyboxProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::usesMatteMapChanged, this, &IroMatteSkyboxProperties::usesMatteMapChanged);
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::matteFilterChanged, this, &IroMatteSkyboxProperties::matteFilterChanged);
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::matteGainChanged, this, &IroMatteSkyboxProperties::matteGainChanged);
-    QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::gltfYUpChanged, this, &IroMatteSkyboxProperties::gltfYUpChanged);
 
 }
 
@@ -106,11 +105,6 @@ void IroMatteSkyboxProperties::setMatteFilter(const QVector3D &matteFilter)
 void IroMatteSkyboxProperties::setMatteGain(float matteGain)
 {
     m_shaderData->setMatteGain(matteGain);
-}
-
-void IroMatteSkyboxProperties::setGltfYUp(bool gltfYUp)
-{
-    m_shaderData->setGltfYUp(gltfYUp);
 }
 
 
@@ -190,19 +184,6 @@ QVector3D IroMatteSkyboxProperties::matteFilter() const
 float IroMatteSkyboxProperties::matteGain() const
 {
     return m_shaderData->matteGain();
-}
-
-/*!
-    \qmlproperty bool IroMatteSkyboxProperties::gltfYUp
-    Specifies whether this material should consider the Y and Z axis as being inverted.
-*/
-/*!
-    \property IroMatteSkyboxProperties::gltfYUp
-    Specifies whether this material should consider the Y and Z axis as being inverted.
-*/
-bool IroMatteSkyboxProperties::gltfYUp() const
-{
-    return m_shaderData->gltfYUp();
 }
 
 

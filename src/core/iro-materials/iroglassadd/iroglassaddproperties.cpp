@@ -73,7 +73,6 @@ IroGlassAddProperties::IroGlassAddProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroGlassAddShaderData::projectReflectionMapChanged, this, &IroGlassAddProperties::projectReflectionMapChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::glassInnerFilterChanged, this, &IroGlassAddProperties::glassInnerFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::glassOuterFilterChanged, this, &IroGlassAddProperties::glassOuterFilterChanged);
-    QObject::connect(m_shaderData, &IroGlassAddShaderData::gltfYUpChanged, this, &IroGlassAddProperties::gltfYUpChanged);
 
 }
 
@@ -142,11 +141,6 @@ void IroGlassAddProperties::setGlassInnerFilter(const QVector3D &glassInnerFilte
 void IroGlassAddProperties::setGlassOuterFilter(const QVector3D &glassOuterFilter)
 {
     m_shaderData->setGlassOuterFilter(glassOuterFilter);
-}
-
-void IroGlassAddProperties::setGltfYUp(bool gltfYUp)
-{
-    m_shaderData->setGltfYUp(gltfYUp);
 }
 
 
@@ -304,19 +298,6 @@ QVector3D IroGlassAddProperties::glassInnerFilter() const
 QVector3D IroGlassAddProperties::glassOuterFilter() const
 {
     return m_shaderData->glassOuterFilter();
-}
-
-/*!
-    \qmlproperty bool IroGlassAddProperties::gltfYUp
-    Specifies whether this material should consider the Y and Z axis as being inverted.
-*/
-/*!
-    \property IroGlassAddProperties::gltfYUp
-    Specifies whether this material should consider the Y and Z axis as being inverted.
-*/
-bool IroGlassAddProperties::gltfYUp() const
-{
-    return m_shaderData->gltfYUp();
 }
 
 

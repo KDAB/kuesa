@@ -52,7 +52,6 @@ IroDiffuseAlphaShaderData::IroDiffuseAlphaShaderData(Qt3DCore::QNode *parent)
     , m_reflectionInnerAlpha()
     , m_reflectionOuterAlpha()
     , m_alphaGain()
-    , m_gltfYUp()
 {}
 
 IroDiffuseAlphaShaderData::~IroDiffuseAlphaShaderData() = default;
@@ -120,11 +119,6 @@ float IroDiffuseAlphaShaderData::reflectionOuterAlpha() const
 float IroDiffuseAlphaShaderData::alphaGain() const
 {
     return m_alphaGain;
-}
-
-bool IroDiffuseAlphaShaderData::gltfYUp() const
-{
-    return m_gltfYUp;
 }
 
 
@@ -239,14 +233,6 @@ void IroDiffuseAlphaShaderData::setAlphaGain(float alphaGain)
         return;
     m_alphaGain = alphaGain;
     emit alphaGainChanged(alphaGain);
-}
-
-void IroDiffuseAlphaShaderData::setGltfYUp(bool gltfYUp)
-{
-    if (m_gltfYUp == gltfYUp)
-        return;
-    m_gltfYUp = gltfYUp;
-    emit gltfYUpChanged(gltfYUp);
 }
 
 

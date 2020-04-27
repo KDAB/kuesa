@@ -51,7 +51,6 @@ IroGlassAddShaderData::IroGlassAddShaderData(Qt3DCore::QNode *parent)
     , m_projectReflectionMap()
     , m_glassInnerFilter()
     , m_glassOuterFilter()
-    , m_gltfYUp()
 {}
 
 IroGlassAddShaderData::~IroGlassAddShaderData() = default;
@@ -114,11 +113,6 @@ QVector3D IroGlassAddShaderData::glassInnerFilter() const
 QVector3D IroGlassAddShaderData::glassOuterFilter() const
 {
     return m_glassOuterFilter;
-}
-
-bool IroGlassAddShaderData::gltfYUp() const
-{
-    return m_gltfYUp;
 }
 
 
@@ -225,14 +219,6 @@ void IroGlassAddShaderData::setGlassOuterFilter(const QVector3D &glassOuterFilte
         return;
     m_glassOuterFilter = glassOuterFilter;
     emit glassOuterFilterChanged(glassOuterFilter);
-}
-
-void IroGlassAddShaderData::setGltfYUp(bool gltfYUp)
-{
-    if (m_gltfYUp == gltfYUp)
-        return;
-    m_gltfYUp = gltfYUp;
-    emit gltfYUpChanged(gltfYUp);
 }
 
 

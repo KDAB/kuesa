@@ -14,8 +14,7 @@
         { "name": "projectReflectionMap", "type": "bool", "doc": "Specifies whether equirectangular projection should be used for lookups on the reflection map." },
         { "name": "reflectionInnerAlpha", "type": "float", "doc": "Specifies the inner alpha factor to be applied." },
         { "name": "reflectionOuterAlpha", "type": "float", "doc": "Specifies the outer alpha factor to be applied." },
-        { "name": "alphaGain", "type": "float", "doc": "Specifies the gain to apply to the alpha of the reflection map lookup." },
-        { "name": "gltfYUp", "type": "bool", "doc": "Specifies whether this material should consider the Y and Z axis as being inverted." }
+        { "name": "alphaGain", "type": "float", "doc": "Specifies the gain to apply to the alpha of the reflection map lookup." }
     ],
     "passes": [
         {

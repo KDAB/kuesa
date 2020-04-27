@@ -45,7 +45,6 @@ IroMatteMultShaderData::IroMatteMultShaderData(Qt3DCore::QNode *parent)
     , m_usesMatteMap()
     , m_matteFilter()
     , m_matteGain()
-    , m_gltfYUp()
 {}
 
 IroMatteMultShaderData::~IroMatteMultShaderData() = default;
@@ -78,11 +77,6 @@ QVector3D IroMatteMultShaderData::matteFilter() const
 float IroMatteMultShaderData::matteGain() const
 {
     return m_matteGain;
-}
-
-bool IroMatteMultShaderData::gltfYUp() const
-{
-    return m_gltfYUp;
 }
 
 
@@ -141,14 +135,6 @@ void IroMatteMultShaderData::setMatteGain(float matteGain)
         return;
     m_matteGain = matteGain;
     emit matteGainChanged(matteGain);
-}
-
-void IroMatteMultShaderData::setGltfYUp(bool gltfYUp)
-{
-    if (m_gltfYUp == gltfYUp)
-        return;
-    m_gltfYUp = gltfYUp;
-    emit gltfYUpChanged(gltfYUp);
 }
 
 

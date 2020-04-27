@@ -67,7 +67,6 @@ IroMatteOpaqueProperties::IroMatteOpaqueProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroMatteOpaqueShaderData::usesMatteMapChanged, this, &IroMatteOpaqueProperties::usesMatteMapChanged);
     QObject::connect(m_shaderData, &IroMatteOpaqueShaderData::matteFilterChanged, this, &IroMatteOpaqueProperties::matteFilterChanged);
     QObject::connect(m_shaderData, &IroMatteOpaqueShaderData::matteGainChanged, this, &IroMatteOpaqueProperties::matteGainChanged);
-    QObject::connect(m_shaderData, &IroMatteOpaqueShaderData::gltfYUpChanged, this, &IroMatteOpaqueProperties::gltfYUpChanged);
 
 }
 
@@ -106,11 +105,6 @@ void IroMatteOpaqueProperties::setMatteFilter(const QVector3D &matteFilter)
 void IroMatteOpaqueProperties::setMatteGain(float matteGain)
 {
     m_shaderData->setMatteGain(matteGain);
-}
-
-void IroMatteOpaqueProperties::setGltfYUp(bool gltfYUp)
-{
-    m_shaderData->setGltfYUp(gltfYUp);
 }
 
 
@@ -190,19 +184,6 @@ QVector3D IroMatteOpaqueProperties::matteFilter() const
 float IroMatteOpaqueProperties::matteGain() const
 {
     return m_shaderData->matteGain();
-}
-
-/*!
-    \qmlproperty bool IroMatteOpaqueProperties::gltfYUp
-    Specifies whether this material should consider the Y and Z axis as being inverted.
-*/
-/*!
-    \property IroMatteOpaqueProperties::gltfYUp
-    Specifies whether this material should consider the Y and Z axis as being inverted.
-*/
-bool IroMatteOpaqueProperties::gltfYUp() const
-{
-    return m_shaderData->gltfYUp();
 }
 
 

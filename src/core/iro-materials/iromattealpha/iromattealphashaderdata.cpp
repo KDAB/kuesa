@@ -46,7 +46,6 @@ IroMatteAlphaShaderData::IroMatteAlphaShaderData(Qt3DCore::QNode *parent)
     , m_matteFilter()
     , m_matteGain()
     , m_matteAlphaGain()
-    , m_gltfYUp()
 {}
 
 IroMatteAlphaShaderData::~IroMatteAlphaShaderData() = default;
@@ -84,11 +83,6 @@ float IroMatteAlphaShaderData::matteGain() const
 float IroMatteAlphaShaderData::matteAlphaGain() const
 {
     return m_matteAlphaGain;
-}
-
-bool IroMatteAlphaShaderData::gltfYUp() const
-{
-    return m_gltfYUp;
 }
 
 
@@ -155,14 +149,6 @@ void IroMatteAlphaShaderData::setMatteAlphaGain(float matteAlphaGain)
         return;
     m_matteAlphaGain = matteAlphaGain;
     emit matteAlphaGainChanged(matteAlphaGain);
-}
-
-void IroMatteAlphaShaderData::setGltfYUp(bool gltfYUp)
-{
-    if (m_gltfYUp == gltfYUp)
-        return;
-    m_gltfYUp = gltfYUp;
-    emit gltfYUpChanged(gltfYUp);
 }
 
 
