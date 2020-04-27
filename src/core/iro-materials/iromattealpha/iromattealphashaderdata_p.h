@@ -42,6 +42,7 @@
 // We mean it.
 //
 
+#include <QVector2D>
 #include <QVector3D>
 #include <Qt3DRender/QAbstractTexture>
 #include <Qt3DRender/QShaderData>
@@ -60,6 +61,7 @@ class IroMatteAlphaShaderData : public Qt3DRender::QShaderData
     Q_PROPERTY(QVector3D matteFilter READ matteFilter WRITE setMatteFilter NOTIFY matteFilterChanged)
     Q_PROPERTY(float matteGain READ matteGain WRITE setMatteGain NOTIFY matteGainChanged)
     Q_PROPERTY(float matteAlphaGain READ matteAlphaGain WRITE setMatteAlphaGain NOTIFY matteAlphaGainChanged)
+    Q_PROPERTY(QVector2D uvOffset READ uvOffset WRITE setUvOffset NOTIFY uvOffsetChanged)
 
 public:
     explicit IroMatteAlphaShaderData(Qt3DCore::QNode *parent = nullptr);
@@ -71,6 +73,7 @@ public:
     QVector3D matteFilter() const;
     float matteGain() const;
     float matteAlphaGain() const;
+    QVector2D uvOffset() const;
 
 public Q_SLOTS:
     void setPostVertexColor(float postVertexColor);
@@ -80,6 +83,7 @@ public Q_SLOTS:
     void setMatteFilter(const QVector3D &matteFilter);
     void setMatteGain(float matteGain);
     void setMatteAlphaGain(float matteAlphaGain);
+    void setUvOffset(const QVector2D &uvOffset);
 
 Q_SIGNALS:
     void postVertexColorChanged(float);
@@ -89,6 +93,7 @@ Q_SIGNALS:
     void matteFilterChanged(QVector3D);
     void matteGainChanged(float);
     void matteAlphaGainChanged(float);
+    void uvOffsetChanged(QVector2D);
 
 private:
     float m_postVertexColor;
@@ -98,6 +103,7 @@ private:
     QVector3D m_matteFilter;
     float m_matteGain;
     float m_matteAlphaGain;
+    QVector2D m_uvOffset;
 
 };
 

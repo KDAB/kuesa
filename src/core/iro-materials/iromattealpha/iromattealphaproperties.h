@@ -30,6 +30,7 @@
 #ifndef KUESA_IROMATTEALPHAPROPERTIES_H
 #define KUESA_IROMATTEALPHAPROPERTIES_H
 
+#include <QVector2D>
 #include <QVector3D>
 #include <Qt3DRender/QAbstractTexture>
 #include <Kuesa/GLTF2MaterialProperties>
@@ -52,6 +53,7 @@ class KUESASHARED_EXPORT IroMatteAlphaProperties : public GLTF2MaterialPropertie
     Q_PROPERTY(QVector3D matteFilter READ matteFilter WRITE setMatteFilter NOTIFY matteFilterChanged)
     Q_PROPERTY(float matteGain READ matteGain WRITE setMatteGain NOTIFY matteGainChanged)
     Q_PROPERTY(float matteAlphaGain READ matteAlphaGain WRITE setMatteAlphaGain NOTIFY matteAlphaGainChanged)
+    Q_PROPERTY(QVector2D uvOffset READ uvOffset WRITE setUvOffset NOTIFY uvOffsetChanged)
 
 public:
     Q_INVOKABLE explicit IroMatteAlphaProperties(Qt3DCore::QNode *parent = nullptr);
@@ -65,6 +67,7 @@ public:
     QVector3D matteFilter() const;
     float matteGain() const;
     float matteAlphaGain() const;
+    QVector2D uvOffset() const;
 
 public Q_SLOTS:
     void setPostVertexColor(float postVertexColor);
@@ -74,6 +77,7 @@ public Q_SLOTS:
     void setMatteFilter(const QVector3D &matteFilter);
     void setMatteGain(float matteGain);
     void setMatteAlphaGain(float matteAlphaGain);
+    void setUvOffset(const QVector2D &uvOffset);
 
 Q_SIGNALS:
     void postVertexColorChanged(float);
@@ -83,6 +87,7 @@ Q_SIGNALS:
     void matteFilterChanged(QVector3D);
     void matteGainChanged(float);
     void matteAlphaGainChanged(float);
+    void uvOffsetChanged(QVector2D);
 
 private:
     IroMatteAlphaShaderData *m_shaderData;

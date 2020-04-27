@@ -45,6 +45,7 @@ IroMatteOpaqueShaderData::IroMatteOpaqueShaderData(Qt3DCore::QNode *parent)
     , m_usesMatteMap()
     , m_matteFilter()
     , m_matteGain()
+    , m_uvOffset()
 {}
 
 IroMatteOpaqueShaderData::~IroMatteOpaqueShaderData() = default;
@@ -77,6 +78,11 @@ QVector3D IroMatteOpaqueShaderData::matteFilter() const
 float IroMatteOpaqueShaderData::matteGain() const
 {
     return m_matteGain;
+}
+
+QVector2D IroMatteOpaqueShaderData::uvOffset() const
+{
+    return m_uvOffset;
 }
 
 
@@ -135,6 +141,14 @@ void IroMatteOpaqueShaderData::setMatteGain(float matteGain)
         return;
     m_matteGain = matteGain;
     emit matteGainChanged(matteGain);
+}
+
+void IroMatteOpaqueShaderData::setUvOffset(const QVector2D &uvOffset)
+{
+    if (m_uvOffset == uvOffset)
+        return;
+    m_uvOffset = uvOffset;
+    emit uvOffsetChanged(uvOffset);
 }
 
 

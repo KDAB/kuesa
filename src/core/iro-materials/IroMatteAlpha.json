@@ -8,7 +8,8 @@
         { "name": "usesMatteMap", "type": "bool", "doc": "Specifies whether we use a matte map or not." },
         { "name": "matteFilter", "type": "vec3", "doc": "Specifies the color filter to be applied on the matte map lookup." },
         { "name": "matteGain", "type": "float", "doc": "Specifies the gain applied to the rgb components of the matte map lookup." },
-        { "name": "matteAlphaGain", "type": "float", "doc": "Specifies the gain applied to the alpha of the matte map lookup." }
+        { "name": "matteAlphaGain", "type": "float", "doc": "Specifies the gain applied to the alpha of the matte map lookup." },
+        { "name": "uvOffset", "type": "vec2", "doc": "Applies an offset to texture lookup." }
     ],
     "passes": [
         {

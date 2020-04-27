@@ -67,6 +67,7 @@ IroMatteOpaqueProperties::IroMatteOpaqueProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroMatteOpaqueShaderData::usesMatteMapChanged, this, &IroMatteOpaqueProperties::usesMatteMapChanged);
     QObject::connect(m_shaderData, &IroMatteOpaqueShaderData::matteFilterChanged, this, &IroMatteOpaqueProperties::matteFilterChanged);
     QObject::connect(m_shaderData, &IroMatteOpaqueShaderData::matteGainChanged, this, &IroMatteOpaqueProperties::matteGainChanged);
+    QObject::connect(m_shaderData, &IroMatteOpaqueShaderData::uvOffsetChanged, this, &IroMatteOpaqueProperties::uvOffsetChanged);
 
 }
 
@@ -105,6 +106,11 @@ void IroMatteOpaqueProperties::setMatteFilter(const QVector3D &matteFilter)
 void IroMatteOpaqueProperties::setMatteGain(float matteGain)
 {
     m_shaderData->setMatteGain(matteGain);
+}
+
+void IroMatteOpaqueProperties::setUvOffset(const QVector2D &uvOffset)
+{
+    m_shaderData->setUvOffset(uvOffset);
 }
 
 
@@ -184,6 +190,19 @@ QVector3D IroMatteOpaqueProperties::matteFilter() const
 float IroMatteOpaqueProperties::matteGain() const
 {
     return m_shaderData->matteGain();
+}
+
+/*!
+    \qmlproperty QVector2D IroMatteOpaqueProperties::uvOffset
+    Applies an offset to texture lookup.
+*/
+/*!
+    \property IroMatteOpaqueProperties::uvOffset
+    Applies an offset to texture lookup.
+*/
+QVector2D IroMatteOpaqueProperties::uvOffset() const
+{
+    return m_shaderData->uvOffset();
 }
 
 
