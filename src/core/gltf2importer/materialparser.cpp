@@ -250,6 +250,11 @@ void registerMaterialExtensionAnimatableProperties()
                                                 3,
                                                 QStringLiteral("glassOuterFilter"),
                                                 ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/uvOffset"),
+                                                2,
+                                                QStringLiteral("uvOffset"),
+                                                ::iroMappingGenerator);
 }
 
 } // namespace
