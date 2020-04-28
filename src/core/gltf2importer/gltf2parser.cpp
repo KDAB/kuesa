@@ -1167,7 +1167,7 @@ void GLTF2Parser::generateTreeNodeContent()
                                                                          const QString &primitiveName, const QString &materialName) {
                             MetallicRoughnessMaterial *metalRoughMat = qobject_cast<MetallicRoughnessMaterial *>(m);
                             // When we have a normal map on a MetalRoughMetarial, make sure we have a tangent attribute
-                            if (metalRoughMat != nullptr && metalRoughMat->metallicRoughnessProperties()->normalMap() != nullptr) {
+                            if (metalRoughMat != nullptr && metalRoughMat->materialProperties()->normalMap() != nullptr) {
                                 Q_ASSERT(renderer->geometry());
                                 const QVector<Qt3DRender::QAttribute *> attributes = renderer->geometry()->attributes();
                                 bool hasTangentAttribute = std::find_if(attributes.cbegin(),
@@ -1225,13 +1225,13 @@ void GLTF2Parser::generateTreeNodeContent()
                             auto materialProperties = static_cast<Kuesa::UnlitProperties *>(mat.materialProperties());
                             materialProperties->setParent(m_contentRootEntity);
 
-                            specificMaterial->setUnlitProperties(materialProperties);
+                            specificMaterial->setMaterialProperties(materialProperties);
                         } else {
                             auto *specificMaterial = new MetallicRoughnessMaterial;
                             material = specificMaterial;
                             auto materialProperties = static_cast<MetallicRoughnessProperties *>(mat.materialProperties());
                             materialProperties->setParent(m_contentRootEntity);
-                            specificMaterial->setMetallicRoughnessProperties(materialProperties);
+                            specificMaterial->setMaterialProperties(materialProperties);
 
                             checkMaterialIsCompatibleWithPrimitive(specificMaterial, primitiveData.primitiveRenderer,
                                                                    meshData.name, materialName);

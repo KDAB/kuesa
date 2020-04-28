@@ -72,11 +72,11 @@ namespace Kuesa {
 */
 
 /*!
-    \property MetallicRoughnessMaterial::metallicRoughnessProperties
+    \property MetallicRoughnessMaterial::materialProperties
 
     The properties defining the appearance of the material.
 
-    \since Kuesa 1.1
+    \since Kuesa 1.2
  */
 
 /*!
@@ -106,17 +106,17 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty MetallicRoughnessProperties MetallicRoughnessMaterial::metallicRoughnessProperties
+    \qmlproperty MetallicRoughnessProperties MetallicRoughnessMaterial::materialProperties
 
     The properties defining the appearance of the material.
 
-    \since Kuesa 1.1
+    \since Kuesa 1.2
  */
 
 
 MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     : GLTF2Material(parent)
-    , m_metallicRoughnessProperties(nullptr)
+    , m_materialProperties(nullptr)
     , m_metallicRoughnessShaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("metallicRoughness"), {}))
 {
     addParameter(m_metallicRoughnessShaderDataParameter);
@@ -126,26 +126,26 @@ MetallicRoughnessMaterial::~MetallicRoughnessMaterial()
 {
 }
 
-MetallicRoughnessProperties *MetallicRoughnessMaterial::metallicRoughnessProperties() const
+MetallicRoughnessProperties *MetallicRoughnessMaterial::materialProperties() const
 {
-    return m_metallicRoughnessProperties;
+    return m_materialProperties;
 }
 
-void MetallicRoughnessMaterial::setMetallicRoughnessProperties(MetallicRoughnessProperties *metallicRoughnessProperties)
+void MetallicRoughnessMaterial::setMaterialProperties(MetallicRoughnessProperties *metallicRoughnessProperties)
 {
-    if (m_metallicRoughnessProperties != metallicRoughnessProperties) {
+    if (m_materialProperties != metallicRoughnessProperties) {
 
-        if (m_metallicRoughnessProperties)
+        if (m_materialProperties)
             QObject::disconnect(m_textureTransformChangedConnection);
 
-        m_metallicRoughnessProperties = metallicRoughnessProperties;
-        emit metallicRoughnessPropertiesChanged(metallicRoughnessProperties);
+        m_materialProperties = metallicRoughnessProperties;
+        emit materialPropertiesChanged(metallicRoughnessProperties);
 
-        if (m_metallicRoughnessProperties) {
+        if (m_materialProperties) {
             m_metallicRoughnessShaderDataParameter->setValue(QVariant::fromValue(metallicRoughnessProperties->shaderData()));
             metallicRoughnessProperties->addClientMaterial(this);
 
-            m_textureTransformChangedConnection = QObject::connect(m_metallicRoughnessProperties,
+            m_textureTransformChangedConnection = QObject::connect(m_materialProperties,
                                                                    &MetallicRoughnessProperties::textureTransformChanged,
                                                                    this,
                                                                    [this] (const QMatrix3x3 &m) {

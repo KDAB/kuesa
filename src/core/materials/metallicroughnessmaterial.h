@@ -55,22 +55,22 @@ class KUESASHARED_EXPORT MetallicRoughnessMaterial : public GLTF2Material
 {
     Q_OBJECT
 
-    Q_PROPERTY(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties READ metallicRoughnessProperties WRITE setMetallicRoughnessProperties NOTIFY metallicRoughnessPropertiesChanged)
+    Q_PROPERTY(Kuesa::MetallicRoughnessProperties *materialProperties READ materialProperties WRITE setMaterialProperties NOTIFY materialPropertiesChanged)
 
 public:
     explicit MetallicRoughnessMaterial(Qt3DCore::QNode *parent = nullptr);
     ~MetallicRoughnessMaterial();
 
-    MetallicRoughnessProperties *metallicRoughnessProperties() const;
+    MetallicRoughnessProperties *materialProperties() const;
 
 public Q_SLOTS:
-    void setMetallicRoughnessProperties(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties);
+    void setMaterialProperties(Kuesa::MetallicRoughnessProperties *materialProperties);
 
 Q_SIGNALS:
-    void metallicRoughnessPropertiesChanged(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties);
+    void materialPropertiesChanged(Kuesa::MetallicRoughnessProperties *materialProperties);
 
 private:
-    MetallicRoughnessProperties *m_metallicRoughnessProperties;
+    MetallicRoughnessProperties *m_materialProperties;
     Qt3DRender::QParameter *m_metallicRoughnessShaderDataParameter;
     QMetaObject::Connection m_textureTransformChangedConnection;
 };

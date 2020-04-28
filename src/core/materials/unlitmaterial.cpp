@@ -60,9 +60,11 @@ namespace Kuesa {
 */
 
 /*!
-    \property UnlitMaterial::unlitProperties
+    \property UnlitMaterial::materialProperties
 
     The properties defining the appearance of the material.
+
+    \since 1.2
  */
 
 /*!
@@ -95,14 +97,16 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty UnlitProperties UnlitMaterial::unlitProperties
+    \qmlproperty UnlitProperties UnlitMaterial::materialProperties
 
     The properties defining the appearance of the material.
+
+    \since 1.2
  */
 
 UnlitMaterial::UnlitMaterial(Qt3DCore::QNode *parent)
     : GLTF2Material(parent)
-    , m_unlitProperties(nullptr)
+    , m_materialProperties(nullptr)
     , m_unlitShaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("unlit"), {}))
 {
     addParameter(m_unlitShaderDataParameter);
@@ -112,26 +116,26 @@ UnlitMaterial::~UnlitMaterial()
 {
 }
 
-UnlitProperties *UnlitMaterial::unlitProperties() const
+UnlitProperties *UnlitMaterial::materialProperties() const
 {
-    return m_unlitProperties;
+    return m_materialProperties;
 }
 
-void UnlitMaterial::setUnlitProperties(UnlitProperties *unlitProperties)
+void UnlitMaterial::setMaterialProperties(UnlitProperties *unlitProperties)
 {
-    if (m_unlitProperties != unlitProperties) {
+    if (m_materialProperties != unlitProperties) {
 
-        if (m_unlitProperties)
+        if (m_materialProperties)
             QObject::disconnect(m_textureTransformChangedConnection);
 
-        m_unlitProperties = unlitProperties;
-        emit unlitPropertiesChanged(unlitProperties);
+        m_materialProperties = unlitProperties;
+        emit materialPropertiesChanged(unlitProperties);
 
-        if (m_unlitProperties) {
-            m_unlitShaderDataParameter->setValue(QVariant::fromValue(m_unlitProperties->shaderData()));
-            m_unlitProperties->addClientMaterial(this);
+        if (m_materialProperties) {
+            m_unlitShaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));
+            m_materialProperties->addClientMaterial(this);
 
-            m_textureTransformChangedConnection = QObject::connect(m_unlitProperties,
+            m_textureTransformChangedConnection = QObject::connect(m_materialProperties,
                                                                    &UnlitProperties::textureTransformChanged,
                                                                    this,
                                                                    [this](const QMatrix3x3 &m) {
