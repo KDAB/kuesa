@@ -7,9 +7,7 @@ description             = Kuesa Runtime Reference Documentation
 version                 = 1.2
 buildversion            = "Kuesa Runtime 1.2 Reference Documentation"
 includepaths            =  . \
-                           .. \
-                           $QT_INSTALL_HEADERS \
-                           $QT_INSTALL_HEADERS/Kuesa
+                           ..
 
 outputformats = HTML
 indexes = $QT_INSTALL_DOCS/html/qt.index
