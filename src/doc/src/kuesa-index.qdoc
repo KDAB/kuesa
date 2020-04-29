@@ -29,18 +29,19 @@
 /*!
     \page index.html
 
-    \e{Kuesa} is a module for Qt 3D which provides:
+    \e{Kuesa Runtime} is a module for Qt 3D which provides:
     \list
     \li Support for glTF 2 importing
     \li Helpers for accessing and manipulating loaded content
-    \li Custom PBR material
+    \li PBR and custom material support
     \li Custom forward renderer for adding effects
     \li A Qt Creator template for quickly creating new Kuesa based projects
     \endlist
 
+    It is the developer facing part of the Kuesa 3D design and integration workflow.
+
     \annotatedlist kuesa-module
 
-    Application side features provided by Kuesa reside in the Kuesa Qt module.
 
     \section1 Getting Started
 
@@ -61,7 +62,7 @@
 
     QML:
     \badcode
-    import Kuesa 1.0
+    import Kuesa 1.2
     \endcode
 
     \section1 Quick Overview
@@ -72,46 +73,35 @@
     Kuesa provides an easy, integrated and unified workflow without any
     compromises for designers and developers based on the glTF 2 format.
 
-    It is composed of 3 components:
+    It is composed of 2 components:
 
-    \section2 Kuesa Studio
-
-    \section3 Kuesa Digital Content Creation Plugins
-
-    \list
-    \li \l {https://github.com/KDAB/kuesa-blender} {Kuesa Blender glTF2 Exporter plugin}
-    \li \l {https://github.com/KDAB/kuesa-3dsmax} {Kuesa 3ds Max glTF2 Exporter plugin}
-    \endlist
-
-    \section3 Kuesa Studio Tools
-
-    The Kuesa-Studio comes with a gltf tool to preview scenes.
-
-    It also provides tools to condition assets to integrate as part of the
-    build process.
-
-    \section2 Kuesa Runtime
-    Libraries on top of Qt 3D that provide:
-    \list
-    \li \l [CPP]{Kuesa::GLTF2Importer} {glTF2 compliant importer that generates a Qt 3D based scene}
-    \li \l [CPP]{Kuesa::MetallicRoughnessMaterial} {Custom PBR materials}
-    \li \l {Kuesa Iro Materials} {A library of simple and efficient materials to extend glTF}
-    \li Asset collections to retrieve assets by name
-    \li Post Processing Effects
-    \endlist
-
-    \section3 Tools
-
-    The Kuesa-Runtime comes with the gltfViewer tool to preview scenes.
+    \include kuesa-components.qdocinc
 
     \l {Kuesa Overview} {Read More}
 
     \section1 Requirements
 
+    Kuesa relies on the Qt framework:
     \list
-    \li Kuesa requires the base Qt 5.12 requirements and OpenGL supports.
-    \li Kuesa requires Qt 3D from Qt 5.12.5, Qt 5.13.1 or later.
-    \li Instructions on how to build Qt from source can be found \l {https://wiki.qt.io/Building_Qt_5_from_Git} {here}.
+    \li Kuesa requires the base \l {https://doc.qt.io/qt-5.12/supported-platforms.html} {Qt 5.12 requirements} and OpenGL supports.
+    \li Kuesa requires Qt 3D from Qt 5.12.8 or Qt 5.15
+    \endlist
+
+    \note Earlier Qt 3D versions can still be used but might be suffering from bugs
+    that have been identified and fixed since.
+
+    \warning not all features are working with Qt 5.12.8.
+
+    Qt 3D suffers from a regression that prevents optional aspects (animations, logic) from running
+    A \l {https://codereview.qt-project.org/c/qt/qt3d/+/297123} {patch} fixes this
+
+    It can be installed by doing the following:
+    \list
+    \li Download and install Qt 5.12.8
+    \li clone Qt3D: git clone git@github.com:qt/qt3d.git
+    \li go to 5.12 branch: git checkout -t origin/5.12
+    \li open a console with Qt setup (should be installed with Qt)
+    \li go to the Qt3D directory, and type: qmake && make - j4 && make install (or qmake; jom; jom install on Windows)
     \endlist
 
     \section2 OpenGL requirements
@@ -161,12 +151,37 @@
     Note that Kuesa has last been tested with Draco at commit
     8833cf878e6fd43c5a3fd6e4231212e25e25e632.
 
-    The glTF editor, provided with Kuesa, is able to compress existing glTF 2.0
-    assets with Draco.
-
     \section1 Installation
 
-    Kuesa builds as a Qt module and will be installed alongside Qt.
+    Kuesa builds as a Qt module and will be installed alongside Qt. The main
+    advantage is that once installed, using Kuesa in your projects is as easy
+    as adding
+
+    \badcode
+    QT += kuesa
+    \endcode
+
+    to your project file. The down side is that building Kuesa from source can
+    be a little more complicated if you're not used to building Qt itself
+    already.
+
+    \note you DO NOT have to build Qt from source, building Kuesa against a
+    pre-installed version of Qt should work fine.
+
+    But building a module means that Kuesa has dependencies that are similar to
+    those that apply when building Qt from source (Instructions on how to build
+    Qt from source can be found
+    \l {https://wiki.qt.io/Building_Qt_5_from_Git} {here}.
+
+    In particular:
+    \list
+    \li perl must be installed and included in the PATH
+    \li if you have downloaded Kuesa as an archive from github, you must create an empty ``.git`` folder at the
+    root of the kuesa source directory.
+    \endlist
+
+    Once these are installed, `syncqt` will be able to generate the module headers at
+    build time. Simply run:
 
     \badcode
         qmake
