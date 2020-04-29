@@ -1969,5 +1969,6 @@ if __name__ == "__main__":
         print("Usage " + sys.argv[0] + " material description file")
         sys.exit()
 
-    generator = CustomMaterialGenerator(sys.argv[1])
-    generator.generate()
+    for f in sys.argv[1:]:
+        generator = CustomMaterialGenerator(f)
+        generator.generate()
