@@ -73,6 +73,8 @@ IroGlassAddProperties::IroGlassAddProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroGlassAddShaderData::projectReflectionMapChanged, this, &IroGlassAddProperties::projectReflectionMapChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::glassInnerFilterChanged, this, &IroGlassAddProperties::glassInnerFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::glassOuterFilterChanged, this, &IroGlassAddProperties::glassOuterFilterChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::diffuseInnerFilterChanged, this, &IroGlassAddProperties::diffuseInnerFilterChanged);
+    QObject::connect(m_shaderData, &IroGlassAddShaderData::diffuseOuterFilterChanged, this, &IroGlassAddProperties::diffuseOuterFilterChanged);
 
 }
 
@@ -141,6 +143,16 @@ void IroGlassAddProperties::setGlassInnerFilter(const QVector3D &glassInnerFilte
 void IroGlassAddProperties::setGlassOuterFilter(const QVector3D &glassOuterFilter)
 {
     m_shaderData->setGlassOuterFilter(glassOuterFilter);
+}
+
+void IroGlassAddProperties::setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter)
+{
+    m_shaderData->setDiffuseInnerFilter(diffuseInnerFilter);
+}
+
+void IroGlassAddProperties::setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter)
+{
+    m_shaderData->setDiffuseOuterFilter(diffuseOuterFilter);
 }
 
 
@@ -298,6 +310,32 @@ QVector3D IroGlassAddProperties::glassInnerFilter() const
 QVector3D IroGlassAddProperties::glassOuterFilter() const
 {
     return m_shaderData->glassOuterFilter();
+}
+
+/*!
+    \qmlproperty QVector3D IroGlassAddProperties::diffuseInnerFilter
+    Specifies the inner color filter to be applied based on fresnel on the diffuse map lookup.
+*/
+/*!
+    \property IroGlassAddProperties::diffuseInnerFilter
+    Specifies the inner color filter to be applied based on fresnel on the diffuse map lookup.
+*/
+QVector3D IroGlassAddProperties::diffuseInnerFilter() const
+{
+    return m_shaderData->diffuseInnerFilter();
+}
+
+/*!
+    \qmlproperty QVector3D IroGlassAddProperties::diffuseOuterFilter
+    Specifies the outer color filter to be applied based on fresnel on the diffuse map lookup.
+*/
+/*!
+    \property IroGlassAddProperties::diffuseOuterFilter
+    Specifies the outer color filter to be applied based on fresnel on the diffuse map lookup.
+*/
+QVector3D IroGlassAddProperties::diffuseOuterFilter() const
+{
+    return m_shaderData->diffuseOuterFilter();
 }
 
 

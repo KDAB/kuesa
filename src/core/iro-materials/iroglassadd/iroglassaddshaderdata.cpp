@@ -51,6 +51,8 @@ IroGlassAddShaderData::IroGlassAddShaderData(Qt3DCore::QNode *parent)
     , m_projectReflectionMap()
     , m_glassInnerFilter()
     , m_glassOuterFilter()
+    , m_diffuseInnerFilter()
+    , m_diffuseOuterFilter()
 {}
 
 IroGlassAddShaderData::~IroGlassAddShaderData() = default;
@@ -113,6 +115,16 @@ QVector3D IroGlassAddShaderData::glassInnerFilter() const
 QVector3D IroGlassAddShaderData::glassOuterFilter() const
 {
     return m_glassOuterFilter;
+}
+
+QVector3D IroGlassAddShaderData::diffuseInnerFilter() const
+{
+    return m_diffuseInnerFilter;
+}
+
+QVector3D IroGlassAddShaderData::diffuseOuterFilter() const
+{
+    return m_diffuseOuterFilter;
 }
 
 
@@ -219,6 +231,22 @@ void IroGlassAddShaderData::setGlassOuterFilter(const QVector3D &glassOuterFilte
         return;
     m_glassOuterFilter = glassOuterFilter;
     emit glassOuterFilterChanged(glassOuterFilter);
+}
+
+void IroGlassAddShaderData::setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter)
+{
+    if (m_diffuseInnerFilter == diffuseInnerFilter)
+        return;
+    m_diffuseInnerFilter = diffuseInnerFilter;
+    emit diffuseInnerFilterChanged(diffuseInnerFilter);
+}
+
+void IroGlassAddShaderData::setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter)
+{
+    if (m_diffuseOuterFilter == diffuseOuterFilter)
+        return;
+    m_diffuseOuterFilter = diffuseOuterFilter;
+    emit diffuseOuterFilterChanged(diffuseOuterFilter);
 }
 
 

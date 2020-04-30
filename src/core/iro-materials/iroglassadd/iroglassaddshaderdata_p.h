@@ -66,6 +66,8 @@ class IroGlassAddShaderData : public Qt3DRender::QShaderData
     Q_PROPERTY(bool projectReflectionMap READ projectReflectionMap WRITE setProjectReflectionMap NOTIFY projectReflectionMapChanged)
     Q_PROPERTY(QVector3D glassInnerFilter READ glassInnerFilter WRITE setGlassInnerFilter NOTIFY glassInnerFilterChanged)
     Q_PROPERTY(QVector3D glassOuterFilter READ glassOuterFilter WRITE setGlassOuterFilter NOTIFY glassOuterFilterChanged)
+    Q_PROPERTY(QVector3D diffuseInnerFilter READ diffuseInnerFilter WRITE setDiffuseInnerFilter NOTIFY diffuseInnerFilterChanged)
+    Q_PROPERTY(QVector3D diffuseOuterFilter READ diffuseOuterFilter WRITE setDiffuseOuterFilter NOTIFY diffuseOuterFilterChanged)
 
 public:
     explicit IroGlassAddShaderData(Qt3DCore::QNode *parent = nullptr);
@@ -82,6 +84,8 @@ public:
     bool projectReflectionMap() const;
     QVector3D glassInnerFilter() const;
     QVector3D glassOuterFilter() const;
+    QVector3D diffuseInnerFilter() const;
+    QVector3D diffuseOuterFilter() const;
 
 public Q_SLOTS:
     void setNormalScaling(const QVector3D &normalScaling);
@@ -96,6 +100,8 @@ public Q_SLOTS:
     void setProjectReflectionMap(bool projectReflectionMap);
     void setGlassInnerFilter(const QVector3D &glassInnerFilter);
     void setGlassOuterFilter(const QVector3D &glassOuterFilter);
+    void setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter);
+    void setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter);
 
 Q_SIGNALS:
     void normalScalingChanged(QVector3D);
@@ -110,6 +116,8 @@ Q_SIGNALS:
     void projectReflectionMapChanged(bool);
     void glassInnerFilterChanged(QVector3D);
     void glassOuterFilterChanged(QVector3D);
+    void diffuseInnerFilterChanged(QVector3D);
+    void diffuseOuterFilterChanged(QVector3D);
 
 private:
     QVector3D m_normalScaling;
@@ -124,6 +132,8 @@ private:
     bool m_projectReflectionMap;
     QVector3D m_glassInnerFilter;
     QVector3D m_glassOuterFilter;
+    QVector3D m_diffuseInnerFilter;
+    QVector3D m_diffuseOuterFilter;
 
 };
 
