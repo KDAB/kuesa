@@ -1214,7 +1214,7 @@ void %sMaterial::setMaterialProperties(Kuesa::GLTF2MaterialProperties *materialP
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
