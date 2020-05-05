@@ -219,9 +219,18 @@ bool GLTF2Parser::parse(const QString &filePath)
         return false;
     }
 
-    QFileInfo finfo(filePath);
+    QString cleanedFilePath = filePath;
+    QString prefix;
+#if defined(Q_OS_ANDROID)
+    static const QLatin1String assetsPrefix("assets:");
+    if (filePath.startsWith(assetsPrefix)) {
+        cleanedFilePath = filePath.mid(assetsPrefix.size());
+        prefix = assetsPrefix;
+    }
+#endif
+    QFileInfo finfo(cleanedFilePath);
     QByteArray data = f.readAll();
-    return parse(data, finfo.absolutePath(), finfo.fileName());
+    return parse(data, prefix + finfo.absolutePath(), finfo.fileName());
 }
 
 /*!
