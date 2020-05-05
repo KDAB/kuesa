@@ -35,6 +35,6 @@ CONFIG(BUILD_FOR_MARKET): {
 QT_FOR_CONFIG += kuesa
 qtConfig(kuesa-tools) {
 
-!uikit: SUBDIRS += \
+!uikit:!android: SUBDIRS += \
     gltfViewer
 }
