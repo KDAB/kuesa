@@ -101,7 +101,7 @@ private Q_SLOTS:
             auto mesh = ctx.mesh(0);
 
             QVERIFY(mesh.meshPrimitives.size() == 1);
-            Qt3DRender::QGeometryRenderer *meshRenderer = mesh.meshPrimitives[0].primitiveRenderer;
+            QGeometryRenderer *meshRenderer = mesh.meshPrimitives[0].primitiveRenderer;
 
             QVERIFY(Kuesa::GLTF2Import::MeshParserUtils::needsNormalAttribute(meshRenderer->geometry(),
                                                                               meshRenderer->primitiveType()));

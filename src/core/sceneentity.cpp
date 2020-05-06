@@ -216,7 +216,7 @@ GLTF2MaterialProperties *SceneEntity::material(const QString &name) const
 }
 
 /*!
-    Returns instance of collection of Qt3DRender::QGeometryRenderer assets
+    Returns instance of collection of QGeometryRenderer assets
  */
 MeshCollection *SceneEntity::meshes() const
 {
@@ -224,7 +224,7 @@ MeshCollection *SceneEntity::meshes() const
 }
 
 /*!
-    Utility method returning an instance of Qt3DRender::QGeometryRenderer
+    Utility method returning an instance of QGeometryRenderer
     matching \a name (or nullptr if not found)
  */
 Qt3DRender::QGeometryRenderer *SceneEntity::mesh(const QString &name) const

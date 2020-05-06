@@ -32,6 +32,7 @@
 #include "kuesa_p.h"
 #include <private/gltf2utils_p.h>
 #include <private/kuesa_utils_p.h>
+#include <private/kuesa_global_p.h>
 
 #include <QJsonValue>
 #include <QJsonObject>
@@ -51,6 +52,7 @@
 QT_BEGIN_NAMESPACE
 
 using namespace Kuesa::GLTF2Import;
+using namespace Qt3DGeometry;
 
 namespace {
 
@@ -328,20 +330,20 @@ std::tuple<int, std::vector<float>> AnimationParser::animationChannelDataFromDat
     }
 
     switch (outputAccessor.type) {
-    case Qt3DRender::QAttribute::Float:
+    case QAttribute::Float:
         channelData.resize(static_cast<size_t>(outputRawData.size()) / sizeof(float));
         std::memcpy(channelData.data(), outputRawData.constData(), static_cast<size_t>(outputRawData.size()));
         break;
-    case Qt3DRender::QAttribute::Byte:
+    case QAttribute::Byte:
         channelData = normalizeTypedChannelData<qint8>(outputRawData);
         break;
-    case Qt3DRender::QAttribute::UnsignedByte:
+    case QAttribute::UnsignedByte:
         channelData = normalizeTypedChannelData<quint8>(outputRawData);
         break;
-    case Qt3DRender::QAttribute::Short:
+    case QAttribute::Short:
         channelData = normalizeTypedChannelData<qint16>(outputRawData);
         break;
-    case Qt3DRender::QAttribute::UnsignedShort:
+    case QAttribute::UnsignedShort:
         channelData = normalizeTypedChannelData<quint16>(outputRawData);
         break;
     default:
@@ -361,7 +363,7 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const Ch
     auto channel = Qt3DAnimation::QChannel(channelName);
     const Accessor inputAccessor = m_context->accessor(sampler.inputAccessor);
 
-    if (inputAccessor.type != Qt3DRender::QAttribute::Float) {
+    if (inputAccessor.type != QAttribute::Float) {
         qCWarning(kuesa, "Input accessor have a float component type");
         return channel;
     }

@@ -28,7 +28,6 @@
 
 #include "directionallight.h"
 #include "directionallight_p.h"
-#include <Qt3DCore/qpropertyupdatedchange.h>
 #include <Qt3DRender/private/shaderdata_p.h>
 
 QT_BEGIN_NAMESPACE

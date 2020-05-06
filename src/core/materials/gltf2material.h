@@ -31,11 +31,11 @@
 
 #include <Qt3DRender/qmaterial.h>
 #include <Kuesa/kuesa_global.h>
+#include <Kuesa/morphcontroller.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
-class QAbstractTexture;
 class QParameter;
 } // namespace Qt3DRender
 

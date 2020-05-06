@@ -32,12 +32,9 @@
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/GLTF2MaterialProperties>
 #include <QColor>
+#include <Qt3DRender/qabstracttexture.h>
 
 QT_BEGIN_NAMESPACE
-
-namespace Qt3DRender {
-class QAbstractTexture;
-}
 
 namespace Kuesa {
 class MetallicRoughnessMaterial;

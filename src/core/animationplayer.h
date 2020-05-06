@@ -31,16 +31,16 @@
 
 #include <Qt3DCore/QNode>
 #include <Kuesa/kuesa_global.h>
+#include <Kuesa/SceneEntity>
+#include <Qt3DAnimation/qclock.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DAnimation {
 class QClipAnimator;
-class QClock;
 } // namespace Qt3DAnimation
 
 namespace Kuesa {
-class SceneEntity;
 
 class KUESASHARED_EXPORT AnimationPlayer : public Qt3DCore::QNode
 {

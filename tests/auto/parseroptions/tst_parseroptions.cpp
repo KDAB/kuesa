@@ -39,10 +39,17 @@
 #include <Kuesa/private/kuesa_utils_p.h>
 #include <Kuesa/GLTF2Options>
 #include <Kuesa/GLTF2Importer>
+#include <Kuesa/private/kuesa_global_p.h>
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QAttribute>
+#else
 #include <Qt3DRender/QAttribute>
+#endif
 
 using namespace Kuesa;
 using namespace GLTF2Import;
+using namespace Qt3DGeometry;
 
 class tst_ParserOptions : public QObject
 {
@@ -111,8 +118,8 @@ private Q_SLOTS:
         auto cube0 = sceneEntity.mesh("Cube_0");
         const auto &attributes = cube0->geometry()->attributes();
         // Look for the tangents attribute
-        const auto attrIt = std::find_if(std::begin(attributes), std::end(attributes), [](const Qt3DRender::QAttribute *attr) {
-            return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
+        const auto attrIt = std::find_if(std::begin(attributes), std::end(attributes), [](const QAttribute *attr) {
+            return attr->name() == QAttribute::defaultTangentAttributeName();
         });
 
         QVERIFY((attrIt != std::end(attributes)) == generateTangents);

@@ -39,6 +39,7 @@
 
 #include <Kuesa/private/draco_prefix_p.h>
 #include <qtkuesa-config.h>
+#include <kuesa_global_p.h>
 #include <draco/compression/encode.h>
 #include <memory>
 #include <vector>
@@ -50,9 +51,6 @@ class EncoderBuffer;
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DRender {
-class QGeometry;
-}
 namespace Kuesa {
 class GLTF2ExportConfiguration;
 namespace DracoCompression {
@@ -62,7 +60,7 @@ struct CompressedMesh {
     std::vector<std::pair<QString, int>> attributes;
 };
 
-CompressedMesh compressMesh(const Qt3DRender::QGeometry &geometry, const GLTF2ExportConfiguration &);
+CompressedMesh compressMesh(const Qt3DGeometry::QGeometry &geometry, const GLTF2ExportConfiguration &);
 } // namespace DracoCompression
 } // namespace Kuesa
 

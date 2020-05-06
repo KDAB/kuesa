@@ -32,13 +32,13 @@
 
 #include <Kuesa/GLTF2Material>
 #include <Kuesa/kuesa_global.h>
+#include <Kuesa/IroGlassAddProperties>
 
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-class IroGlassAddProperties;
 class GLTF2MaterialProperties;
 
 class KUESASHARED_EXPORT IroGlassAddMaterial : public GLTF2Material

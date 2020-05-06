@@ -44,6 +44,7 @@
 #include <QMap>
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/private/kuesa_global_p.h>
+#include <Kuesa/SceneEntity>
 
 QT_BEGIN_NAMESPACE
 
@@ -52,8 +53,6 @@ class GLTF2Importer;
 namespace GLTF2Import {
 class GLTF2Context;
 }
-class SceneEntity;
-
 class KUESA_PRIVATE_EXPORT GLTF2ExportConfiguration
 {
 public:

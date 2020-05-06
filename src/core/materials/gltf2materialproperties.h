@@ -34,13 +34,13 @@
 #include <QVector>
 #include <QColor>
 #include <QtGui/QMatrix3x3>
+#include <Qt3DRender/QAbstractTexture>
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
 class QMaterial;
 class QShaderData;
-class QAbstractTexture;
 } // namespace Qt3DRender
 
 namespace Kuesa {

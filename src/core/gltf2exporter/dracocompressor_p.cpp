@@ -34,9 +34,17 @@
 #include <draco/io/mesh_io.h>
 #include "dracocompressor_p.h"
 #include "gltf2exporter_p.h"
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QBuffer>
+#include <Qt3DCore/QGeometry>
+#include <Qt3DCore/QAttribute>
+#else
+#include <Qt3DRender/QBuffer>
 #include <Qt3DRender/QGeometry>
 #include <Qt3DRender/QAttribute>
-#include <Qt3DRender/QBuffer>
+#endif
+
 #include <QVector>
 #include <QFile>
 #include <QLoggingCategory>
@@ -47,6 +55,9 @@
 
 QT_BEGIN_NAMESPACE
 Q_LOGGING_CATEGORY(dracocompressor, "DracoCompressor")
+
+using namespace Qt3DGeometry;
+
 namespace Kuesa {
 namespace DracoCompression {
 namespace {
@@ -54,23 +65,23 @@ draco::GeometryAttribute::Type attributeTypeFromName(const QString &attributeNam
 {
     auto type = draco::GeometryAttribute::Type::INVALID;
 
-    if (attributeName == Qt3DRender::QAttribute::defaultPositionAttributeName())
+    if (attributeName == QAttribute::defaultPositionAttributeName())
         type = draco::GeometryAttribute::Type::POSITION;
-    else if (attributeName == Qt3DRender::QAttribute::defaultNormalAttributeName())
+    else if (attributeName == QAttribute::defaultNormalAttributeName())
         type = draco::GeometryAttribute::Type::NORMAL;
-    else if (attributeName == Qt3DRender::QAttribute::defaultColorAttributeName())
+    else if (attributeName == QAttribute::defaultColorAttributeName())
         type = draco::GeometryAttribute::Type::COLOR;
-    else if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName())
+    else if (attributeName == QAttribute::defaultTextureCoordinateAttributeName())
         type = draco::GeometryAttribute::Type::TEX_COORD;
-    else if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName())
+    else if (attributeName == QAttribute::defaultTextureCoordinate1AttributeName())
         type = draco::GeometryAttribute::Type::TEX_COORD;
-    else if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinate2AttributeName())
+    else if (attributeName == QAttribute::defaultTextureCoordinate2AttributeName())
         type = draco::GeometryAttribute::Type::TEX_COORD;
-    else if (attributeName == Qt3DRender::QAttribute::defaultTangentAttributeName())
+    else if (attributeName == QAttribute::defaultTangentAttributeName())
         type = draco::GeometryAttribute::Type::GENERIC;
-    else if (attributeName == Qt3DRender::QAttribute::defaultJointWeightsAttributeName())
+    else if (attributeName == QAttribute::defaultJointWeightsAttributeName())
         type = draco::GeometryAttribute::Type::GENERIC;
-    else if (attributeName == Qt3DRender::QAttribute::defaultJointIndicesAttributeName())
+    else if (attributeName == QAttribute::defaultJointIndicesAttributeName())
         type = draco::GeometryAttribute::Type::GENERIC;
 
     return type;
@@ -151,37 +162,37 @@ QByteArray packedDataInBuffer(const QByteArray &inputBuffer,
     return outputBuffer;
 }
 
-QString semanticNameFromAttribute(const Qt3DRender::QAttribute &attribute)
+QString semanticNameFromAttribute(const QAttribute &attribute)
 {
     auto str = attribute.property("semanticName").toString();
     if (!str.isEmpty()) {
         return str;
     } else {
         const auto name = attribute.name();
-        if (name == Qt3DRender::QAttribute::defaultPositionAttributeName())
+        if (name == QAttribute::defaultPositionAttributeName())
             return QStringLiteral("TANGENT");
-        if (name == Qt3DRender::QAttribute::defaultNormalAttributeName())
+        if (name == QAttribute::defaultNormalAttributeName())
             return QStringLiteral("NORMAL");
-        if (name == Qt3DRender::QAttribute::defaultTangentAttributeName())
+        if (name == QAttribute::defaultTangentAttributeName())
             return QStringLiteral("TANGENT");
-        if (name == Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName())
+        if (name == QAttribute::defaultTextureCoordinateAttributeName())
             return QStringLiteral("TEXCOORD_0");
-        if (name == Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName())
+        if (name == QAttribute::defaultTextureCoordinate1AttributeName())
             return QStringLiteral("TEXCOORD_1");
-        if (name == Qt3DRender::QAttribute::defaultTextureCoordinate2AttributeName())
+        if (name == QAttribute::defaultTextureCoordinate2AttributeName())
             return QStringLiteral("TEXCOORD_2");
-        if (name == Qt3DRender::QAttribute::defaultColorAttributeName())
+        if (name == QAttribute::defaultColorAttributeName())
             return QStringLiteral("COLOR_0");
-        if (name == Qt3DRender::QAttribute::defaultJointIndicesAttributeName())
+        if (name == QAttribute::defaultJointIndicesAttributeName())
             return QStringLiteral("JOINTS_0");
-        if (name == Qt3DRender::QAttribute::defaultJointWeightsAttributeName())
+        if (name == QAttribute::defaultJointWeightsAttributeName())
             return QStringLiteral("WEIGHTS_0");
         return name;
     }
 }
 
 template<typename T>
-std::pair<QString, int> addAttributeToMesh(const Qt3DRender::QAttribute &attribute, draco::Mesh &mesh)
+std::pair<QString, int> addAttributeToMesh(const QAttribute &attribute, draco::Mesh &mesh)
 {
     const auto dracoAttributeType = attributeTypeFromName(attribute.name());
     const auto dracoDataType = attribute_type_trait<T>::type;
@@ -216,7 +227,7 @@ std::pair<QString, int> addAttributeToMesh(const Qt3DRender::QAttribute &attribu
 }
 
 template<typename T>
-QVector<draco::PointIndex> createIndicesVectorFromAttribute(const Qt3DRender::QAttribute &attribute)
+QVector<draco::PointIndex> createIndicesVectorFromAttribute(const QAttribute &attribute)
 {
     const auto byteOffset = attribute.byteOffset();
     const auto data = attribute.buffer()->data().mid(int(byteOffset));
@@ -243,7 +254,7 @@ void addFacesToMesh(const QVector<draco::PointIndex> &indices, draco::Mesh &drac
 
 template<typename T>
 bool compressAttribute(
-        const Qt3DRender::QAttribute &attribute,
+        const QAttribute &attribute,
         draco::Mesh &dracoMesh,
         std::vector<std::pair<QString, int>> &attributes)
 {
@@ -276,7 +287,7 @@ draco::GeometryAttribute::Type dracoAttribute(GLTF2ExportConfiguration::MeshAttr
 } // namespace
 
 CompressedMesh compressMesh(
-        const Qt3DRender::QGeometry &geometry,
+        const QGeometry &geometry,
         const GLTF2ExportConfiguration &conf)
 {
     std::unique_ptr<draco::EncoderBuffer> compressBuffer(new draco::EncoderBuffer);
@@ -285,64 +296,64 @@ CompressedMesh compressMesh(
 
     // Convert Qt3D geometry to draco mesh
     const auto geometryAttributes = geometry.attributes();
-    const Qt3DRender::QAttribute *indicesAttribute = nullptr;
+    const QAttribute *indicesAttribute = nullptr;
 
     for (const auto *attribute : geometryAttributes) {
-        if (attribute->name() == Qt3DRender::QAttribute::defaultPositionAttributeName()) {
+        if (attribute->name() == QAttribute::defaultPositionAttributeName()) {
             dracoMesh.set_num_points(attribute->count());
             break;
         }
     }
 
     for (const auto *attribute : geometryAttributes) {
-        if (attribute->attributeType() == Qt3DRender::QAttribute::IndexAttribute) {
+        if (attribute->attributeType() == QAttribute::IndexAttribute) {
             indicesAttribute = attribute;
             continue;
         }
 
         switch (attribute->vertexBaseType()) {
-        case Qt3DRender::QAttribute::VertexBaseType::Float: {
+        case QAttribute::VertexBaseType::Float: {
             if (!compressAttribute<float>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
-        case Qt3DRender::QAttribute::VertexBaseType::Byte: {
+        case QAttribute::VertexBaseType::Byte: {
             static_assert (std::numeric_limits<qint8>::min() < 0, "This code only works on platforms with signed char");
             if (!compressAttribute<qint8>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
-        case Qt3DRender::QAttribute::VertexBaseType::UnsignedByte: {
+        case QAttribute::VertexBaseType::UnsignedByte: {
             if (!compressAttribute<quint8>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
-        case Qt3DRender::QAttribute::VertexBaseType::Short: {
+        case QAttribute::VertexBaseType::Short: {
             if (!compressAttribute<qint16>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
-        case Qt3DRender::QAttribute::VertexBaseType::UnsignedShort: {
+        case QAttribute::VertexBaseType::UnsignedShort: {
             if (!compressAttribute<quint16>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
-        case Qt3DRender::QAttribute::VertexBaseType::Int: {
+        case QAttribute::VertexBaseType::Int: {
             if (!compressAttribute<qint32>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
-        case Qt3DRender::QAttribute::VertexBaseType::UnsignedInt: {
+        case QAttribute::VertexBaseType::UnsignedInt: {
             if (!compressAttribute<quint32>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
-        case Qt3DRender::QAttribute::VertexBaseType::Double: {
+        case QAttribute::VertexBaseType::Double: {
             if (!compressAttribute<double>(*attribute, dracoMesh, attributes))
                 return {};
             break;
         }
-        case Qt3DRender::QAttribute::VertexBaseType::HalfFloat:
+        case QAttribute::VertexBaseType::HalfFloat:
         default:
             qCWarning(dracocompressor) << "Warning: skipping attribute" << attribute->name() << "of unhandled type" << attribute->vertexBaseType();
             break;
@@ -351,22 +362,22 @@ CompressedMesh compressMesh(
 
     if (indicesAttribute != nullptr) {
         switch (indicesAttribute->vertexBaseType()) {
-        case Qt3DRender::QAttribute::VertexBaseType::Byte:
+        case QAttribute::VertexBaseType::Byte:
             addFacesToMesh(createIndicesVectorFromAttribute<qint8>(*indicesAttribute), dracoMesh);
             break;
-        case Qt3DRender::QAttribute::VertexBaseType::UnsignedByte:
+        case QAttribute::VertexBaseType::UnsignedByte:
             addFacesToMesh(createIndicesVectorFromAttribute<quint8>(*indicesAttribute), dracoMesh);
             break;
-        case Qt3DRender::QAttribute::VertexBaseType::Short:
+        case QAttribute::VertexBaseType::Short:
             addFacesToMesh(createIndicesVectorFromAttribute<qint16>(*indicesAttribute), dracoMesh);
             break;
-        case Qt3DRender::QAttribute::VertexBaseType::UnsignedShort:
+        case QAttribute::VertexBaseType::UnsignedShort:
             addFacesToMesh(createIndicesVectorFromAttribute<quint16>(*indicesAttribute), dracoMesh);
             break;
-        case Qt3DRender::QAttribute::VertexBaseType::Int:
+        case QAttribute::VertexBaseType::Int:
             addFacesToMesh(createIndicesVectorFromAttribute<qint32>(*indicesAttribute), dracoMesh);
             break;
-        case Qt3DRender::QAttribute::VertexBaseType::UnsignedInt:
+        case QAttribute::VertexBaseType::UnsignedInt:
             addFacesToMesh(createIndicesVectorFromAttribute<quint32>(*indicesAttribute), dracoMesh);
             break;
         default:

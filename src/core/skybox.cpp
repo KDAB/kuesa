@@ -43,6 +43,7 @@
 #include <Qt3DRender/qseamlesscubemap.h>
 #include <Qt3DRender/qshaderprogram.h>
 #include <Qt3DRender/qshaderprogrambuilder.h>
+#include <Qt3DRender/qgeometryrenderer.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -216,7 +217,13 @@ Skybox::Skybox(QNode *parent)
     mesh->setXZMeshResolution(QSize(2, 2));
     mesh->setYZMeshResolution(QSize(2, 2));
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    auto renderer = new QGeometryRenderer;
+    renderer->setView(mesh);
+    addComponent(renderer);
+#else
     addComponent(mesh);
+#endif
     addComponent(material);
 }
 

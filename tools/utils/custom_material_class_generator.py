@@ -1131,7 +1131,6 @@ void %sEffect::updateAlphaCutoffEnabled(bool enabled)
 
 
     materialClassHeaderContent = """
-class %sProperties;
 class GLTF2MaterialProperties;
 
 class KUESASHARED_EXPORT %sMaterial : public GLTF2Material
@@ -1895,11 +1894,10 @@ HEADERS += \\
                                                                             matName,
                                                                             matName,
                                                                             matName,
-                                                                            matName,
                                                                             matName)
             self.generateHeaderFile(content,
                                     className,
-                                    "#include <Kuesa/GLTF2Material>\n#include <Kuesa/kuesa_global.h>\n")
+                                    "#include <Kuesa/GLTF2Material>\n#include <Kuesa/kuesa_global.h>\n#include <Kuesa/%sProperties>\n" % matName)
         generateHeader()
 
         def generateCpp():

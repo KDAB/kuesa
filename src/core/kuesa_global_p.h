@@ -46,6 +46,14 @@ QT_BEGIN_NAMESPACE
 
 #define KUESA_PRIVATE_EXPORT KUESASHARED_EXPORT
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QGeometry>
+namespace Qt3DGeometry = Qt3DCore;
+#else
+#include <Qt3DRender/QGeometry>
+namespace Qt3DGeometry = Qt3DRender;
+#endif
+
 QT_END_NAMESPACE
 
 #endif // KUESA_KUESA_GLOBAL_P_H

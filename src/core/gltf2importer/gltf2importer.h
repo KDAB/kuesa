@@ -32,13 +32,13 @@
 #include <Kuesa/kuesa_global.h>
 #include <QUrl>
 #include <QHash>
-#include <Qt3DCore/QNode>
+#include <Qt3DCore/QEntity>
 #include <Kuesa/GLTF2Options>
+#include <Kuesa/SceneEntity>
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-class SceneEntity;
 class GLTF2Exporter;
 
 namespace GLTF2Import {

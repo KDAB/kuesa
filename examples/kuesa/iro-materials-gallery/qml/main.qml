@@ -28,7 +28,6 @@
 
 import QtQuick.Scene3D 2.12
 import QtQuick 2.12
-import QtQuick.Controls 1.4
 
 //! [0]
 Item {

@@ -30,6 +30,7 @@
 #define MATERIALINSPECTOR_H
 
 #include<QObject>
+#include <Kuesa/GLTF2Material>
 
 namespace Qt3DCore {
 class QEntity;
@@ -37,10 +38,6 @@ class QEntity;
 
 namespace Qt3DRender {
 class QPickEvent;
-}
-
-namespace Kuesa {
-class GLTF2Material;
 }
 
 class MaterialInspector : public QObject

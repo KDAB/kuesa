@@ -38,10 +38,21 @@
 //
 
 #include <QByteArray>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QBuffer>
+#include <Qt3DCore/QAttribute>
+#else
 #include <Qt3DRender/QBuffer>
 #include <Qt3DRender/QAttribute>
+#endif
 
 QT_BEGIN_NAMESPACE
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+namespace Qt3DGeometry = Qt3DCore;
+#else
+namespace Qt3DGeometry = Qt3DRender;
+#endif
 
 namespace Kuesa {
 namespace GLTF2Import {
@@ -51,7 +62,7 @@ class GLTF2Context;
 struct Accessor {
     qint32 bufferViewIndex = -1;
     QByteArray bufferData;
-    Qt3DRender::QAttribute::VertexBaseType type = Qt3DRender::QAttribute::Float;
+    Qt3DGeometry::QAttribute::VertexBaseType type = Qt3DGeometry::QAttribute::Float;
     quint8 dataSize = 0;
     quint32 count = 0;
     quint32 offset = 0;
@@ -63,7 +74,7 @@ struct Accessor {
     struct SparseIndices {
         int bufferViewIndex = -1;
         int offset = 0;
-        Qt3DRender::QAttribute::VertexBaseType type = Qt3DRender::QAttribute::Float;
+        Qt3DGeometry::QAttribute::VertexBaseType type = Qt3DGeometry::QAttribute::Float;
     } sparseIndices;
     struct SparseValues {
         int bufferViewIndex = -1;

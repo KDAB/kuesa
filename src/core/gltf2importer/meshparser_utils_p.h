@@ -42,10 +42,8 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DRender {
-class QGeometry;
-class QAttribute;
-} // namespace Qt3DRender
+using namespace Qt3DCore;
+using namespace Qt3DRender;
 
 namespace Kuesa {
 namespace GLTF2Import {
@@ -54,18 +52,18 @@ class GLTF2Context;
 
 namespace MeshParserUtils {
 
-KUESASHARED_EXPORT void createTangentForGeometry(Qt3DRender::QGeometry *geometry, Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
-KUESASHARED_EXPORT bool needsTangentAttribute(const Qt3DRender::QGeometry *geometry,
-                                              Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
-KUESASHARED_EXPORT void createNormalsForGeometry(Qt3DRender::QGeometry *geometry,
-                                                 Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
-KUESASHARED_EXPORT bool needsNormalAttribute(const Qt3DRender::QGeometry *geometry,
-                                             Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType);
-KUESASHARED_EXPORT bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
+KUESASHARED_EXPORT void createTangentForGeometry(QGeometry *geometry, QGeometryRenderer::PrimitiveType primitiveType);
+KUESASHARED_EXPORT bool needsTangentAttribute(const QGeometry *geometry,
+                                              QGeometryRenderer::PrimitiveType primitiveType);
+KUESASHARED_EXPORT void createNormalsForGeometry(QGeometry *geometry,
+                                                 QGeometryRenderer::PrimitiveType primitiveType);
+KUESASHARED_EXPORT bool needsNormalAttribute(const QGeometry *geometry,
+                                             QGeometryRenderer::PrimitiveType primitiveType);
+KUESASHARED_EXPORT bool generatePrecomputedTangentAttribute(QGeometryRenderer *mesh,
                                                             GLTF2Context *context);
-KUESASHARED_EXPORT bool generatePrecomputedNormalAttribute(Qt3DRender::QGeometryRenderer *mesh,
+KUESASHARED_EXPORT bool generatePrecomputedNormalAttribute(QGeometryRenderer *mesh,
                                                            GLTF2Context *context);
-bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry);
+bool geometryIsGLTF2Valid(QGeometry *geometry);
 
 } // namespace MeshParserUtils
 } // namespace GLTF2Import

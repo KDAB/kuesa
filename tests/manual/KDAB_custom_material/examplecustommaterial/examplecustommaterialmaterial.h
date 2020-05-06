@@ -32,14 +32,11 @@
 
 #include <Kuesa/GLTF2Material>
 #include <Kuesa/kuesa_global.h>
-
+#include "examplecustommaterialproperties.h"
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-
-class ExampleCustomMaterialProperties;
-class GLTF2MaterialProperties;
 
 class ExampleCustomMaterialMaterial : public GLTF2Material
 {

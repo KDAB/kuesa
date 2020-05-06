@@ -32,12 +32,11 @@
 #include <Kuesa/gltf2material.h>
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/UnlitEffect>
+#include <Kuesa/UnlitProperties>
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-
-class UnlitProperties;
 
 class KUESASHARED_EXPORT UnlitMaterial : public GLTF2Material
 {

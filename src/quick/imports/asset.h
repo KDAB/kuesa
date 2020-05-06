@@ -30,12 +30,12 @@
 #define KUESA_ASSET_H
 
 #include <Qt3DCore/QNode>
+#include <Kuesa/SceneEntity>
+#include <Kuesa/AbstractAssetCollection>
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-class SceneEntity;
-class AbstractAssetCollection;
 
 class AssetProperty;
 

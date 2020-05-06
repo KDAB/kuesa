@@ -39,23 +39,29 @@
 
 #include <QtCore/qglobal.h>
 #include <QtCore/QVector>
-
+#include <Kuesa/private/kuesa_global_p.h>
 #include <qtkuesa-config.h>
 #include "bufferaccessorparser_p.h"
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QBuffer>
+#include <Qt3DCore/QGeometry>
+#else
+#include <Qt3DRender/QBuffer>
+#include <Qt3DRender/QGeometry>
+#endif
+#include <Qt3DRender/QGeometryRenderer>
+
 QT_BEGIN_NAMESPACE
+
 
 #if defined(KUESA_DRACO_COMPRESSION)
 namespace draco {
 class PointCloud;
-};
+}
 #endif
 
 class QJsonArray;
-namespace Qt3DRender {
-class QGeometryRenderer;
-class QGeometry;
-} // namespace Qt3DRender
 
 namespace Kuesa {
 namespace GLTF2Import {
@@ -96,20 +102,20 @@ public:
     bool parse(const QJsonArray &meshArray, GLTF2Context *context);
 
 private:
-    Qt3DRender::QAttribute *createAttribute(qint32 accessorIndex,
-                                            const QString &attributeName,
-                                            const QString &semanticName);
-    bool geometryFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, bool &hasColorAttr);
-    bool geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, QStringList existingAttributes, bool &hasColorAttr);
-    std::tuple<bool, QVector<MorphTarget>> geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json);
+    Qt3DGeometry::QAttribute *createAttribute(qint32 accessorIndex,
+                                const QString &attributeName,
+                                const QString &semanticName);
+    bool geometryFromJSON(Qt3DGeometry::QGeometry *geometry, const QJsonObject &json, bool &hasColorAttr);
+    bool geometryAttributesFromJSON(Qt3DGeometry::QGeometry *geometry, const QJsonObject &json, QStringList existingAttributes, bool &hasColorAttr);
+    std::tuple<bool, QVector<MorphTarget>> geometryMorphTargetsFromJSON(Qt3DGeometry::QGeometry *geometry, const QJsonObject &json);
 #if defined(KUESA_DRACO_COMPRESSION)
-    bool geometryDracoFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, bool &hasColorAttr);
-    bool geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry, const QJsonObject &json, const draco::PointCloud *pointCloud, QStringList &existingAttributes, bool &hasColorAttr);
+    bool geometryDracoFromJSON(Qt3DGeometry::QGeometry *geometry, const QJsonObject &json, bool &hasColorAttr);
+    bool geometryAttributesDracoFromJSON(Qt3DGeometry::QGeometry *geometry, const QJsonObject &json, const draco::PointCloud *pointCloud, QStringList &existingAttributes, bool &hasColorAttr);
 #endif
 
     GLTF2Context *m_context;
-    QHash<qint32, Qt3DRender::QBuffer *> m_qViewBuffers;
-    QHash<qint32, Qt3DRender::QBuffer *> m_qAccessorBuffers;
+    QHash<qint32, Qt3DGeometry::QBuffer *> m_qViewBuffers;
+    QHash<qint32, Qt3DGeometry::QBuffer *> m_qAccessorBuffers;
 };
 
 } // namespace GLTF2Import

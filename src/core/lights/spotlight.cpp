@@ -31,7 +31,6 @@
 #include <qmath.h>
 #include <cmath>
 #include <Qt3DRender/private/shaderdata_p.h>
-#include <Qt3DCore/qpropertyupdatedchange.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -77,9 +77,24 @@
 #include <Qt3DAnimation/QChannelMapper>
 #include <Qt3DAnimation/QSkeletonMapping>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QBuffer>
+#include <Qt3DCore/QAttribute>
+#else
+#include <Qt3DRender/QBuffer>
+#include <Qt3DRender/QAttribute>
+#endif
+
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 using namespace GLTF2Import;
+using namespace Qt3DGeometry;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+using namespace Qt3DCore;
+#else
+using namespace Qt3DRender;
+#endif
 
 namespace {
 
@@ -292,7 +307,7 @@ bool GLTF2Parser::isBinaryGLTF(const QByteArray &data, bool &isValid)
 }
 
 template<class T>
-void GLTF2Parser::updateDataForJointsAttr(Qt3DRender::QAttribute *attr, int skinId)
+void GLTF2Parser::updateDataForJointsAttr(QAttribute *attr, int skinId)
 {
     auto bufferData = attr->buffer()->data();
     auto data = bufferData.data() + attr->byteOffset();
@@ -1087,11 +1102,11 @@ void GLTF2Parser::generateTreeNodeContent()
 
                         // We need to get the skeleton index buffer and adapt the joints it refers to
                         for (const auto &primitive : qAsConst(meshData.meshPrimitives)) {
-                            Qt3DRender::QGeometry *geometry = primitive.primitiveRenderer->geometry();
-                            Qt3DRender::QAttribute *jointIndicesAttr = nullptr;
+                            QGeometry *geometry = primitive.primitiveRenderer->geometry();
+                            QAttribute *jointIndicesAttr = nullptr;
                             const auto attributes = geometry->attributes();
                             for (auto attr : attributes) {
-                                if (attr->name() == Qt3DRender::QAttribute::defaultJointIndicesAttributeName()) {
+                                if (attr->name() == QAttribute::defaultJointIndicesAttributeName()) {
                                     jointIndicesAttr = attr;
                                     break;
                                 }
@@ -1103,10 +1118,10 @@ void GLTF2Parser::generateTreeNodeContent()
                             }
 
                             switch (jointIndicesAttr->vertexBaseType()) {
-                            case Qt3DRender::QAttribute::UnsignedByte:
+                            case QAttribute::UnsignedByte:
                                 updateDataForJointsAttr<unsigned char>(jointIndicesAttr, skinId);
                                 break;
-                            case Qt3DRender::QAttribute::UnsignedShort:
+                            case QAttribute::UnsignedShort:
                                 updateDataForJointsAttr<unsigned short>(jointIndicesAttr, skinId);
                                 break;
                             default:
@@ -1178,11 +1193,11 @@ void GLTF2Parser::generateTreeNodeContent()
                             // When we have a normal map on a MetalRoughMetarial, make sure we have a tangent attribute
                             if (metalRoughMat != nullptr && metalRoughMat->materialProperties()->normalMap() != nullptr) {
                                 Q_ASSERT(renderer->geometry());
-                                const QVector<Qt3DRender::QAttribute *> attributes = renderer->geometry()->attributes();
+                                const QVector<QAttribute *> attributes = renderer->geometry()->attributes();
                                 bool hasTangentAttribute = std::find_if(attributes.cbegin(),
                                                                         attributes.cend(),
-                                                                        [](Qt3DRender::QAttribute *attr) {
-                                                                            return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
+                                                                        [](QAttribute *attr) {
+                                                                            return attr->name() == QAttribute::defaultTangentAttributeName();
                                                                         }) != attributes.cend();
                                 if (!hasTangentAttribute)
                                     qWarning() << QStringLiteral("Primitive %1 is trying to use Material %2 which does normal mapping even though it defines no tangent attribute. This can result in incorrect rendering, please consider generating tangents.")

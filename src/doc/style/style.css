@@ -1,3 +1,6 @@
+img {
+    max-width: 100%; height: auto;
+}
 body {
     font-family: 'Open Sans', Arial, Helvetica;
     text-align: left;

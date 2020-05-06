@@ -33,12 +33,18 @@
 #include <QString>
 #include <Kuesa/private/bufferparser_p.h>
 #include <Kuesa/private/gltf2context_p.h>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QBuffer>
+#include <Qt3DCore/QGeometry>
+#else
+#include <Qt3DRender/QBuffer>
 #include <Qt3DRender/QGeometry>
+#endif
 #include <Qt3DRender/QGeometryRenderer>
-#include <Qt3DRender/QAttribute>
 
 using namespace Kuesa;
 using namespace GLTF2Import;
+using namespace Qt3DGeometry;
 
 class tst_MeshParser : public QObject
 {
@@ -122,7 +128,7 @@ private Q_SLOTS:
 
         Accessor indicesAccessor;
         indicesAccessor.dataSize = 1;
-        indicesAccessor.type = Qt3DRender::QAttribute::VertexBaseType::UnsignedShort;
+        indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
 
         context.addAccessor(normalAccessor);
         context.addAccessor(positionAccessor);
@@ -164,7 +170,7 @@ private Q_SLOTS:
 
         Accessor indicesAccessor;
         indicesAccessor.dataSize = 1;
-        indicesAccessor.type = Qt3DRender::QAttribute::VertexBaseType::UnsignedShort;
+        indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
 
         context.addAccessor(normalAccessor);
         context.addAccessor(positionAccessor);

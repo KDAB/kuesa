@@ -37,9 +37,20 @@
 // modified without notice
 //
 #include <QtGlobal>
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QAttribute>
+#else
 #include <Qt3DRender/QAttribute>
+#endif
 
 QT_BEGIN_NAMESPACE
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+namespace Qt3DGeometry = Qt3DCore;
+#else
+namespace Qt3DGeometry = Qt3DRender;
+#endif
 
 class QJsonObject;
 class QJsonArray;
@@ -54,7 +65,7 @@ void replaceJsonArray(QJsonObject &m_root, QLatin1String k, QJsonArray &arr);
 
 int addToJsonChildArray(QJsonObject &object, const QString &name, const QJsonObject &toInsert);
 
-quint8 accessorDataTypeToBytes(Qt3DRender::QAttribute::VertexBaseType type);
+quint8 accessorDataTypeToBytes(Qt3DGeometry::QAttribute::VertexBaseType type);
 
 } // namespace Kuesa
 QT_END_NAMESPACE

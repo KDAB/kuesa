@@ -36,6 +36,8 @@
 #include <Kuesa/private/bufferaccessorparser_p.h>
 #include <Kuesa/private/gltf2context_p.h>
 
+using namespace Qt3DGeometry;
+
 class tst_BufferAccessorParser : public QObject
 {
     Q_OBJECT
@@ -65,7 +67,7 @@ private Q_SLOTS:
 
         const Kuesa::GLTF2Import::Accessor accessor = context.accessor(0);
         QCOMPARE(accessor.bufferViewIndex, 0);
-        QCOMPARE(accessor.type, Qt3DRender::QAttribute::Float);
+        QCOMPARE(accessor.type, QAttribute::Float);
         QCOMPARE(accessor.count, 0U);
         QCOMPARE(accessor.dataSize, 1);
         QCOMPARE(accessor.offset, 0U);
@@ -157,22 +159,22 @@ private Q_SLOTS:
     void shouldHandleComponentTypes_data()
     {
         QTest::addColumn<int>("componentType");
-        QTest::addColumn<Qt3DRender::QAttribute::VertexBaseType>("expectedType");
+        QTest::addColumn<QAttribute::VertexBaseType>("expectedType");
 
-        QTest::addRow("byte") << GL_BYTE << Qt3DRender::QAttribute::Byte;
-        QTest::addRow("unsignedByte") << GL_UNSIGNED_BYTE << Qt3DRender::QAttribute::UnsignedByte;
-        QTest::addRow("short") << GL_SHORT << Qt3DRender::QAttribute::Short;
-        QTest::addRow("unsignedShort") << GL_UNSIGNED_SHORT << Qt3DRender::QAttribute::UnsignedShort;
-        QTest::addRow("unsiginedInt") << GL_UNSIGNED_INT << Qt3DRender::QAttribute::UnsignedInt;
-        QTest::addRow("float") << GL_FLOAT << Qt3DRender::QAttribute::Float;
-        QTest::addRow("invalid") << 0 << Qt3DRender::QAttribute::Float;
+        QTest::addRow("byte") << GL_BYTE << QAttribute::Byte;
+        QTest::addRow("unsignedByte") << GL_UNSIGNED_BYTE << QAttribute::UnsignedByte;
+        QTest::addRow("short") << GL_SHORT << QAttribute::Short;
+        QTest::addRow("unsignedShort") << GL_UNSIGNED_SHORT << QAttribute::UnsignedShort;
+        QTest::addRow("unsiginedInt") << GL_UNSIGNED_INT << QAttribute::UnsignedInt;
+        QTest::addRow("float") << GL_FLOAT << QAttribute::Float;
+        QTest::addRow("invalid") << 0 << QAttribute::Float;
     }
 
     void shouldHandleComponentTypes()
     {
         // GIVEN
         QFETCH(int, componentType);
-        QFETCH(Qt3DRender::QAttribute::VertexBaseType, expectedType);
+        QFETCH(QAttribute::VertexBaseType, expectedType);
 
         QJsonObject json;
         json["componentType"] = componentType;
@@ -281,7 +283,7 @@ private Q_SLOTS:
         QCOMPARE(firstAccessor.dataSize, 2);
         QCOMPARE(firstAccessor.bufferViewIndex, 1);
         QCOMPARE(firstAccessor.count, 128U);
-        QCOMPARE(firstAccessor.type, Qt3DRender::QAttribute::Float);
+        QCOMPARE(firstAccessor.type, QAttribute::Float);
         QCOMPARE(firstAccessor.offset, 32U);
         QCOMPARE(firstAccessor.max.size(), 2);
         QCOMPARE(firstAccessor.min.size(), 2);
@@ -322,7 +324,7 @@ private Q_SLOTS:
         QCOMPARE(context.accessorCount(), 1);
 
         const Kuesa::GLTF2Import::Accessor firstAccessor = context.accessor(0);
-        QCOMPARE(firstAccessor.type, Qt3DRender::QAttribute::Float);
+        QCOMPARE(firstAccessor.type, QAttribute::Float);
         QCOMPARE(firstAccessor.dataSize, 2);
         QCOMPARE(firstAccessor.count, 128U);
 

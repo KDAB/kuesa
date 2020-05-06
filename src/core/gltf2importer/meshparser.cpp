@@ -44,8 +44,12 @@
 #include <QDebug>
 #include <QElapsedTimer>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QAttribute>
+#else
 #include <Qt3DRender/QAttribute>
-#include <Qt3DRender/QGeometry>
+#endif
+
 #include <Qt3DRender/QGeometryRenderer>
 #include <private/gltf2keys_p.h>
 #include <QtGui/qopengl.h>
@@ -53,6 +57,7 @@
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 using namespace GLTF2Import;
+using namespace Qt3DGeometry;
 
 namespace {
 
@@ -64,32 +69,32 @@ QString standardAttributeNameFromSemantic(const QString &semantic)
 {
     // Standard Attributes
     if (semantic.startsWith(QLatin1String("POSITION")))
-        return Qt3DRender::QAttribute::defaultPositionAttributeName();
+        return QAttribute::defaultPositionAttributeName();
     if (semantic.startsWith(QLatin1String("NORMAL")))
-        return Qt3DRender::QAttribute::defaultNormalAttributeName();
+        return QAttribute::defaultNormalAttributeName();
     if (semantic.startsWith(QLatin1String("TANGENT")))
-        return Qt3DRender::QAttribute::defaultTangentAttributeName();
+        return QAttribute::defaultTangentAttributeName();
     if (semantic.startsWith(QLatin1String("TEXCOORD_0")))
-        return Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName();
+        return QAttribute::defaultTextureCoordinateAttributeName();
     if (semantic.startsWith(QLatin1String("TEXCOORD_1")))
-        return Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName();
+        return QAttribute::defaultTextureCoordinate1AttributeName();
     if (semantic.startsWith(QLatin1String("TEXCOORD_2")))
-        return Qt3DRender::QAttribute::defaultTextureCoordinate2AttributeName();
+        return QAttribute::defaultTextureCoordinate2AttributeName();
     if (semantic.startsWith(QLatin1String("COLOR_0")))
-        return Qt3DRender::QAttribute::defaultColorAttributeName();
+        return QAttribute::defaultColorAttributeName();
     if (semantic.startsWith(QLatin1String("JOINTS_0")))
-        return Qt3DRender::QAttribute::defaultJointIndicesAttributeName();
+        return QAttribute::defaultJointIndicesAttributeName();
     if (semantic.startsWith(QLatin1String("WEIGHTS_0")))
-        return Qt3DRender::QAttribute::defaultJointWeightsAttributeName();
+        return QAttribute::defaultJointWeightsAttributeName();
 
     return QString();
 }
 
 #if defined(KUESA_DRACO_COMPRESSION)
-template<typename ValueType, Qt3DRender::QAttribute::VertexBaseType ComponentType>
-Qt3DRender::QAttribute *decodeAttribute(const draco::PointCloud *pointCould,
-                                        const draco::PointAttribute *dracoAttribute,
-                                        QString attributeName)
+template<typename ValueType, QAttribute::VertexBaseType ComponentType>
+QAttribute *decodeAttribute(const draco::PointCloud *pointCould,
+                            const draco::PointAttribute *dracoAttribute,
+                            QString attributeName)
 {
     using namespace draco;
 
@@ -109,9 +114,9 @@ Qt3DRender::QAttribute *decodeAttribute(const draco::PointCloud *pointCould,
             bufferData[entry_id++] = values[j];
     }
 
-    Qt3DRender::QBuffer *buffer = new Qt3DRender::QBuffer();
+    Qt3DGeometry::QBuffer *buffer = new Qt3DGeometry::QBuffer();
     buffer->setData(qbuffer);
-    Qt3DRender::QAttribute *attribute = new Qt3DRender::QAttribute(buffer,
+    QAttribute *attribute = new QAttribute(buffer,
                                                                    attributeName,
                                                                    ComponentType,
                                                                    static_cast<uint>(components),
@@ -164,7 +169,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             const QJsonObject &primitivesObject = primitivesArray[primitiveId].toObject();
 
             bool hasColorAttr = false;
-            auto geometry = std::unique_ptr<Qt3DRender::QGeometry>(new Qt3DRender::QGeometry);
+            auto geometry = std::unique_ptr<QGeometry>(new QGeometry);
 
 #if defined(KUESA_DRACO_COMPRESSION)
             const QJsonObject extensions = primitivesObject.value(KEY_EXTENSIONS).toObject();
@@ -207,12 +212,12 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
                 return false;
             }
 
-            auto primitiveType = static_cast<Qt3DRender::QGeometryRenderer::PrimitiveType>(primitivesObject.value(KEY_MODE).toInt(GL_TRIANGLES));
+            auto primitiveType = static_cast<QGeometryRenderer::PrimitiveType>(primitivesObject.value(KEY_MODE).toInt(GL_TRIANGLES));
             if (m_context->options()->generateNormals()) {
                 if (MeshParserUtils::needsNormalAttribute(geometry.get(), primitiveType)) {
                     Kuesa::GLTF2Import::MeshParserUtils::createNormalsForGeometry(geometry.get(), primitiveType);
                     // The generation of normal forces the primitive type to be Triangles
-                    primitiveType = Qt3DRender::QGeometryRenderer::Triangles;
+                    primitiveType = QGeometryRenderer::Triangles;
                 }
             }
             if (m_context->options()->generateTangents()) {
@@ -220,7 +225,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
                     Kuesa::GLTF2Import::MeshParserUtils::createTangentForGeometry(geometry.get(), primitiveType);
             }
 
-            Qt3DRender::QGeometryRenderer *renderer = new Qt3DRender::QGeometryRenderer;
+            QGeometryRenderer *renderer = new QGeometryRenderer;
             renderer->setPrimitiveType(primitiveType);
             renderer->setGeometry(geometry.release());
             primitive.primitiveRenderer = renderer;
@@ -304,7 +309,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
     return meshSize > 0;
 }
 
-bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
+bool MeshParser::geometryFromJSON(QGeometry *geometry,
                                   const QJsonObject &json,
                                   bool &hasColorAttr)
 {
@@ -320,30 +325,30 @@ bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
         const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
         const int byteStride = (!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
 
-        Qt3DRender::QBuffer *buffer = nullptr;
+        Qt3DGeometry::QBuffer *buffer = nullptr;
         if (accessor.sparseCount) {
             buffer = m_qAccessorBuffers.value(accessorIndex, nullptr);
             if (buffer == nullptr) {
-                buffer = new Qt3DRender::QBuffer;
+                buffer = new Qt3DGeometry::QBuffer;
                 buffer->setData(accessor.bufferData);
                 m_qAccessorBuffers.insert(accessorIndex, buffer);
             }
         } else {
             buffer = m_qViewBuffers.value(accessor.bufferViewIndex, nullptr);
             if (buffer == nullptr) {
-                buffer = new Qt3DRender::QBuffer;
+                buffer = new Qt3DGeometry::QBuffer;
                 buffer->setData(accessor.bufferData);
                 m_qViewBuffers.insert(accessor.bufferViewIndex, buffer);
             }
         }
 
-        Qt3DRender::QAttribute *attribute = new Qt3DRender::QAttribute(buffer,
+        QAttribute *attribute = new QAttribute(buffer,
                                                                        accessor.type,
                                                                        accessor.dataSize,
                                                                        accessor.count,
                                                                        accessor.offset,
                                                                        static_cast<uint>(byteStride));
-        attribute->setAttributeType(Qt3DRender::QAttribute::IndexAttribute);
+        attribute->setAttributeType(QAttribute::IndexAttribute);
         // store some GLTF metadata for glTF editor
         attribute->setProperty("bufferIndex", viewData.bufferIdx);
         attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
@@ -355,14 +360,14 @@ bool MeshParser::geometryFromJSON(Qt3DRender::QGeometry *geometry,
 }
 
 std::tuple<bool, QVector<MorphTarget>>
-MeshParser::geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry,
+MeshParser::geometryMorphTargetsFromJSON(QGeometry *geometry,
                                          const QJsonObject &json)
 {
     const QJsonArray &morphTargetsJsonArray = json.value(KEY_TARGETS).toArray();
 
     const auto morphAttribNamesCbeg = std::begin(morphTargetAttributeNames);
     const auto morphAttribNamesCend = std::end(morphTargetAttributeNames);
-    const QVector<Qt3DRender::QAttribute *> primitiveAttributes =
+    const QVector<QAttribute *> primitiveAttributes =
             geometry->attributes();
 
     QVector<MorphTarget> morphTargets;
@@ -406,8 +411,8 @@ MeshParser::geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry,
             const QString standardAttributeName =
                     standardAttributeNameFromSemantic(morphTargetAttributeName);
 
-            Qt3DRender::QAttribute *referenceAttributeInPrimitive = nullptr;
-            for (Qt3DRender::QAttribute *attribute : primitiveAttributes) {
+            QAttribute *referenceAttributeInPrimitive = nullptr;
+            for (QAttribute *attribute : primitiveAttributes) {
                 if (attribute->name() == standardAttributeName) {
                     referenceAttributeInPrimitive = attribute;
                     break;
@@ -482,7 +487,7 @@ MeshParser::geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry,
             const QString attributeName = QStringLiteral("%1_%2")
                                                   .arg(standardAttributeNameFromSemantic(semanticName))
                                                   .arg(i + 1);
-            Qt3DRender::QAttribute *attribute = createAttribute(morphTargetAttribute.accessorIdx,
+            QAttribute *attribute = createAttribute(morphTargetAttribute.accessorIdx,
                                                                 attributeName,
                                                                 semanticName);
             geometry->addAttribute(attribute);
@@ -491,7 +496,7 @@ MeshParser::geometryMorphTargetsFromJSON(Qt3DRender::QGeometry *geometry,
     return std::make_tuple(true, morphTargets);
 }
 
-bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
+bool MeshParser::geometryAttributesFromJSON(QGeometry *geometry,
                                             const QJsonObject &json,
                                             QStringList existingAttributes,
                                             bool &hasColorAttr)
@@ -512,11 +517,11 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
         if (existingAttributes.contains(attributeName))
             continue;
 
-        if (attributeName == Qt3DRender::QAttribute::defaultColorAttributeName())
+        if (attributeName == QAttribute::defaultColorAttributeName())
             hasColorAttr = true;
 
         const qint32 accessorIdx = it.value().toInt(-1);
-        Qt3DRender::QAttribute *attribute = createAttribute(accessorIdx,
+        QAttribute *attribute = createAttribute(accessorIdx,
                                                             attributeName,
                                                             attrName);
         geometry->addAttribute(attribute);
@@ -525,7 +530,7 @@ bool MeshParser::geometryAttributesFromJSON(Qt3DRender::QGeometry *geometry,
     return true;
 }
 
-Qt3DRender::QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
+QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
                                                     const QString &attributeName,
                                                     const QString &semanticName)
 {
@@ -542,31 +547,31 @@ Qt3DRender::QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
         bufferIdx = viewData.bufferIdx;
     }
 
-    Qt3DRender::QBuffer *buffer = nullptr;
+    Qt3DGeometry::QBuffer *buffer = nullptr;
     if (accessor.sparseCount) {
         buffer = m_qAccessorBuffers.value(accessorIndex, nullptr);
         if (buffer == nullptr) {
-            buffer = new Qt3DRender::QBuffer;
+            buffer = new Qt3DGeometry::QBuffer;
             buffer->setData(accessor.bufferData);
             m_qAccessorBuffers.insert(accessor.bufferViewIndex, buffer);
         }
     } else {
         buffer = m_qViewBuffers.value(accessor.bufferViewIndex, nullptr);
         if (buffer == nullptr) {
-            buffer = new Qt3DRender::QBuffer;
+            buffer = new Qt3DGeometry::QBuffer;
             buffer->setData(accessor.bufferData);
             m_qViewBuffers.insert(accessor.bufferViewIndex, buffer);
         }
     }
 
-    Qt3DRender::QAttribute *attribute = new Qt3DRender::QAttribute(buffer,
+    QAttribute *attribute = new QAttribute(buffer,
                                                                    attributeName,
                                                                    accessor.type,
                                                                    accessor.dataSize,
                                                                    quint32(accessor.count),
                                                                    quint32(accessor.offset),
                                                                    byteStride);
-    attribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+    attribute->setAttributeType(QAttribute::VertexAttribute);
     // store some GLTF metadata for glTF editor
     attribute->setProperty("bufferIndex", bufferIdx);
     attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
@@ -578,7 +583,7 @@ Qt3DRender::QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
 }
 
 #if defined(KUESA_DRACO_COMPRESSION)
-bool MeshParser::geometryDracoFromJSON(Qt3DRender::QGeometry *geometry,
+bool MeshParser::geometryDracoFromJSON(QGeometry *geometry,
                                        const QJsonObject &json,
                                        bool &hasColorAttr)
 {
@@ -646,15 +651,15 @@ bool MeshParser::geometryDracoFromJSON(Qt3DRender::QGeometry *geometry,
             bufferData[i * 3 + 2] = face[2].value();
         }
 
-        Qt3DRender::QBuffer *buffer = new Qt3DRender::QBuffer();
+        Qt3DGeometry::QBuffer *buffer = new Qt3DGeometry::QBuffer();
         buffer->setData(qbuffer);
-        Qt3DRender::QAttribute *attribute = new Qt3DRender::QAttribute(buffer,
-                                                                       Qt3DRender::QAttribute::UnsignedInt,
+        QAttribute *attribute = new QAttribute(buffer,
+                                                                       QAttribute::UnsignedInt,
                                                                        1,
                                                                        mesh->num_faces() * 3,
                                                                        0,
                                                                        0);
-        attribute->setAttributeType(Qt3DRender::QAttribute::IndexAttribute);
+        attribute->setAttributeType(QAttribute::IndexAttribute);
         geometry->addAttribute(attribute);
     }
 
@@ -666,7 +671,7 @@ bool MeshParser::geometryDracoFromJSON(Qt3DRender::QGeometry *geometry,
     return true;
 }
 
-bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry,
+bool MeshParser::geometryAttributesDracoFromJSON(QGeometry *geometry,
                                                  const QJsonObject &json,
                                                  const draco::PointCloud *pointCloud,
                                                  QStringList &existingAttributes,
@@ -690,40 +695,40 @@ bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry
         if (attributeName.isEmpty())
             attributeName = attrName;
 
-        if (attributeName == Qt3DRender::QAttribute::defaultColorAttributeName())
+        if (attributeName == QAttribute::defaultColorAttributeName())
             hasColorAttr = true;
 
         existingAttributes << attributeName;
 
         // Get Draco attribute
-        Qt3DRender::QAttribute *attribute = nullptr;
+        QAttribute *attribute = nullptr;
         const int attributeId = dracoAttrs.value(attrName).toInt(-1);
         const draco::PointAttribute *dracoAttribute = attributeId < 0 ? nullptr : pointCloud->GetAttributeByUniqueId(static_cast<uint32_t>(attributeId));
         if (dracoAttribute) {
             switch (dracoAttribute->data_type()) {
             case draco::DT_INT8:
-                attribute = decodeAttribute<qint8, Qt3DRender::QAttribute::Byte>(pointCloud, dracoAttribute, attributeName);
+                attribute = decodeAttribute<qint8, QAttribute::Byte>(pointCloud, dracoAttribute, attributeName);
                 break;
             case draco::DT_UINT8:
-                attribute = decodeAttribute<quint8, Qt3DRender::QAttribute::UnsignedByte>(pointCloud, dracoAttribute, attributeName);
+                attribute = decodeAttribute<quint8, QAttribute::UnsignedByte>(pointCloud, dracoAttribute, attributeName);
                 break;
             case draco::DT_INT16:
-                attribute = decodeAttribute<qint16, Qt3DRender::QAttribute::Short>(pointCloud, dracoAttribute, attributeName);
+                attribute = decodeAttribute<qint16, QAttribute::Short>(pointCloud, dracoAttribute, attributeName);
                 break;
             case draco::DT_UINT16:
-                attribute = decodeAttribute<quint16, Qt3DRender::QAttribute::UnsignedShort>(pointCloud, dracoAttribute, attributeName);
+                attribute = decodeAttribute<quint16, QAttribute::UnsignedShort>(pointCloud, dracoAttribute, attributeName);
                 break;
             case draco::DT_INT32:
-                attribute = decodeAttribute<qint32, Qt3DRender::QAttribute::Int>(pointCloud, dracoAttribute, attributeName);
+                attribute = decodeAttribute<qint32, QAttribute::Int>(pointCloud, dracoAttribute, attributeName);
                 break;
             case draco::DT_UINT32:
-                attribute = decodeAttribute<quint32, Qt3DRender::QAttribute::UnsignedInt>(pointCloud, dracoAttribute, attributeName);
+                attribute = decodeAttribute<quint32, QAttribute::UnsignedInt>(pointCloud, dracoAttribute, attributeName);
                 break;
             case draco::DT_FLOAT32:
-                attribute = decodeAttribute<float, Qt3DRender::QAttribute::Float>(pointCloud, dracoAttribute, attributeName);
+                attribute = decodeAttribute<float, QAttribute::Float>(pointCloud, dracoAttribute, attributeName);
                 break;
             case draco::DT_FLOAT64:
-                attribute = decodeAttribute<double, Qt3DRender::QAttribute::Double>(pointCloud, dracoAttribute, attributeName);
+                attribute = decodeAttribute<double, QAttribute::Double>(pointCloud, dracoAttribute, attributeName);
                 break;
             default:
                 qCWarning(kuesa) << "unsupported data type:" << dracoAttribute->data_type();
@@ -737,7 +742,7 @@ bool MeshParser::geometryAttributesDracoFromJSON(Qt3DRender::QGeometry *geometry
         const int accessorIndex = it.value().toInt();
         const Accessor accessor = m_context->accessor(accessorIndex);
 
-        attribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+        attribute->setAttributeType(QAttribute::VertexAttribute);
         // store some GLTF metadata for glTF editor
         attribute->setProperty("bufferIndex", -1);
         attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);

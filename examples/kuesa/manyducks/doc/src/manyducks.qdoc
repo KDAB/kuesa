@@ -98,7 +98,7 @@
     We can therefore retrieve it with:
     \snippet manyducks/main.cpp 1.1
 
-    In turn, using Qt3D Component API, we can retrieve the Qt3DRender::QGeometry,
+    In turn, using Qt3D Component API, we can retrieve the QGeometry,
     Qt3DRender::QMaterial components of the previously retrieved entity.
     \snippet manyducks/main.cpp 1.2
 

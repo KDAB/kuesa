@@ -139,7 +139,7 @@ private:
     void generateAnimationContent();
 
     template<class T>
-    void updateDataForJointsAttr(Qt3DRender::QAttribute *attr, int skinId);
+    void updateDataForJointsAttr(Qt3DGeometry::QAttribute *attr, int skinId);
 
     template<typename Asset>
     void addAssetsIntoCollection(std::function<void(const Asset &, int)> namedAdd,

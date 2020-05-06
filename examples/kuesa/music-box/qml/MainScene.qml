@@ -36,7 +36,7 @@ import QtQml 2.2
 import QtQuick 2.12
 
 //![0]
-import Kuesa 1.1 as Kuesa
+import Kuesa 1.2 as Kuesa
 import Kuesa.Effects 1.1 as KuesaFX
 import MusicBox 1.0 as MusicBox
 

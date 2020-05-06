@@ -32,14 +32,11 @@
 
 #include <Kuesa/GLTF2Material>
 #include <Kuesa/kuesa_global.h>
-
+#include "mytestcustomproperties.h"
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-
-class MyTestCustomProperties;
-class GLTF2MaterialProperties;
 
 class MyTestCustomMaterial : public GLTF2Material
 {

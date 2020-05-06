@@ -30,6 +30,7 @@
 #define KUESA_SCENEENTITY_H
 
 #include <Qt3DCore/qentity.h>
+#include <Qt3DRender/qabstracttexture.h>
 #include <Kuesa/animationclipcollection.h>
 #include <Kuesa/armaturecollection.h>
 #include <Kuesa/effectcollection.h>
@@ -49,7 +50,7 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace QtDRender {
+namespace Qt3DRender {
 class QTextureLoader;
 }
 

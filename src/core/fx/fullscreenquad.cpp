@@ -33,6 +33,7 @@
 #include <Qt3DCore/qtransform.h>
 #include <Qt3DRender/qcamera.h>
 #include <Qt3DRender/qcameralens.h>
+#include <Qt3DRender/qgeometryrenderer.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -75,7 +76,13 @@ FullScreenQuad::FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode 
     xform->setRotationX(90);
 
     addComponent(m_layer);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    Qt3DRender::QGeometryRenderer *renderer = new Qt3DRender::QGeometryRenderer();
+    renderer->setView(planeMesh);
+    addComponent(renderer);
+#else
     addComponent(planeMesh);
+#endif
     addComponent(xform);
     addComponent(material);
 }

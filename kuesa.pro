@@ -24,7 +24,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-lessThan(QT_MAJOR_VERSION, 5) | lessThan(QT_MINOR_VERSION, 12): error("This project requires Qt 5.12")
+lessThan(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 12): error("This project requires Qt 5.12")
 requires(qtHaveModule(3drender):qtHaveModule(3danimation))
 
 OTHER_FILES += \

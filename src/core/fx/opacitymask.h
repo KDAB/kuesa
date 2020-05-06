@@ -31,12 +31,12 @@
 
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
+#include <Qt3DRender/qabstracttexture.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
 class QLayer;
-class QAbstractTexture;
 class QParameter;
 class QShaderProgramBuilder;
 class QShaderProgram;

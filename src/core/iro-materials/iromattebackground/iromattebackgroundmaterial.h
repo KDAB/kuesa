@@ -32,13 +32,13 @@
 
 #include <Kuesa/GLTF2Material>
 #include <Kuesa/kuesa_global.h>
+#include <Kuesa/IroMatteBackgroundProperties>
 
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-class IroMatteBackgroundProperties;
 class GLTF2MaterialProperties;
 
 class KUESASHARED_EXPORT IroMatteBackgroundMaterial : public GLTF2Material

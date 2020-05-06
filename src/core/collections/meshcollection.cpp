@@ -34,12 +34,12 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::MeshCollection
  * \inheaderfile Kuesa/MeshCollection
- * \brief A collection of assets of type Qt3DRender::QGeometryRenderer.
+ * \brief A collection of assets of type QGeometryRenderer.
  * \inmodule Kuesa
  * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
- * Kuesa::MeshCollection manages a set of Qt3DRender::QGeometryRenderer assets.
+ * Kuesa::MeshCollection manages a set of QGeometryRenderer assets.
  */
 
 /*!

@@ -36,6 +36,7 @@
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 using namespace GLTF2Import;
+using namespace Qt3DGeometry;
 
 namespace {
 
@@ -105,7 +106,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
                 qCWarning(kuesa, "InverseBindMatrix Accessor's count differs from number of joints");
                 return false;
             }
-            if (accessor.dataSize != 16 || accessor.type != Qt3DRender::QAttribute::Float) {
+            if (accessor.dataSize != 16 || accessor.type != QAttribute::Float) {
                 qCWarning(kuesa, "InverseBindMatrix Accessor types or datasize inappropriate");
                 return false;
             }

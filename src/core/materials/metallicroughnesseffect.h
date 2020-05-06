@@ -32,6 +32,7 @@
 #include <QtGui/qcolor.h>
 #include <Kuesa/gltf2materialeffect.h>
 #include <Kuesa/kuesa_global.h>
+#include <Qt3DRender/qabstracttexture.h>
 
 QT_BEGIN_NAMESPACE
 

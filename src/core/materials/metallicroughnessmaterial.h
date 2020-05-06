@@ -33,6 +33,7 @@
 #include <Kuesa/gltf2material.h>
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/metallicroughnesseffect.h>
+#include <Kuesa/metallicroughnessproperties.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -49,13 +50,11 @@ class QCullFace;
 
 namespace Kuesa {
 
-class MetallicRoughnessProperties;
-
 class KUESASHARED_EXPORT MetallicRoughnessMaterial : public GLTF2Material
 {
     Q_OBJECT
 
-    Q_PROPERTY(Kuesa::MetallicRoughnessProperties *materialProperties READ materialProperties WRITE setMaterialProperties NOTIFY materialPropertiesChanged)
+    Q_PROPERTY(MetallicRoughnessProperties *materialProperties READ materialProperties WRITE setMaterialProperties NOTIFY materialPropertiesChanged)
 
 public:
     explicit MetallicRoughnessMaterial(Qt3DCore::QNode *parent = nullptr);
