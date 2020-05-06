@@ -43,6 +43,10 @@ body {
         font-size: xx-large;
         font-family: "Open Sans";
 }
+img {
+    max-width: 100%;
+    height: auto;
+}
 .tables {
     display: flex;
     flex-direction: row;
