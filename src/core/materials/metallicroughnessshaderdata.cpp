@@ -107,6 +107,11 @@ Qt3DRender::QAbstractTexture *MetallicRoughnessShaderData::metalRoughMap() const
     return m_metalRoughMap;
 }
 
+QMatrix3x3 MetallicRoughnessShaderData::metalRoughMapTextureTransform() const
+{
+    return m_metalRoughMapTextureTransform;
+}
+
 float MetallicRoughnessShaderData::normalScale() const
 {
     return m_normalScale;
@@ -117,9 +122,19 @@ Qt3DRender::QAbstractTexture *MetallicRoughnessShaderData::normalMap() const
     return m_normalMap;
 }
 
+QMatrix3x3 MetallicRoughnessShaderData::normalMapTextureTransform() const
+{
+    return m_normalMapTextureTransform;
+}
+
 Qt3DRender::QAbstractTexture *MetallicRoughnessShaderData::ambientOcclusionMap() const
 {
     return m_ambientOcclusionMap;
+}
+
+QMatrix3x3 MetallicRoughnessShaderData::ambientOcclusionMapTextureTransform() const
+{
+    return m_ambientOcclusionMapTextureTransform;
 }
 
 QColor MetallicRoughnessShaderData::emissiveFactor() const
@@ -130,6 +145,11 @@ QColor MetallicRoughnessShaderData::emissiveFactor() const
 Qt3DRender::QAbstractTexture *MetallicRoughnessShaderData::emissiveMap() const
 {
     return m_emissiveMap;
+}
+
+QMatrix3x3 MetallicRoughnessShaderData::emissiveMapTextureTransform() const
+{
+    return m_emissiveMapTextureTransform;
 }
 
 float MetallicRoughnessShaderData::alphaCutoff() const
@@ -232,6 +252,15 @@ void MetallicRoughnessShaderData::setBaseColorMap(Qt3DRender::QAbstractTexture *
                   isSRGB)
 }
 
+void MetallicRoughnessShaderData::setBaseColorMapTextureTransform(const QMatrix3x3 &m)
+{
+    if (m_baseColorMapTextureTransform != m)
+    {
+        m_baseColorMapTextureTransform = m;
+        emit baseColorMapTextureTransform();
+    }
+}
+
 void MetallicRoughnessShaderData::setEmissiveMap(Qt3DRender::QAbstractTexture *emissiveMap)
 {
 #ifndef QT_OPENGL_ES_2
@@ -246,6 +275,15 @@ void MetallicRoughnessShaderData::setEmissiveMap(Qt3DRender::QAbstractTexture *e
                   isSRGB)
 }
 
+void MetallicRoughnessShaderData::setEmissiveMapTextureTransform(const QMatrix3x3 &m)
+{
+    if (m_emissiveMapTextureTransform != m)
+    {
+        m_emissiveMapTextureTransform = m;
+        emit emissiveMapTextureTransform();
+    }
+}
+
 void MetallicRoughnessShaderData::setMetalRoughMap(Qt3DRender::QAbstractTexture *metalRoughMap)
 {
     SET_MAP_VALUE(metalRoughMap,
@@ -253,6 +291,15 @@ void MetallicRoughnessShaderData::setMetalRoughMap(Qt3DRender::QAbstractTexture 
                   MetallicRoughnessShaderData::setMetalRoughMap,
                   metalRoughMapChanged,
                   false)
+}
+
+void MetallicRoughnessShaderData::setMetalRoughMapTextureTransform(const QMatrix3x3 &m)
+{
+    if (m_metalRoughMapTextureTransform != m)
+    {
+        m_metalRoughMapTextureTransform = m;
+        emit metalRoughMapTextureTransform();
+    }
 }
 
 void MetallicRoughnessShaderData::setNormalMap(Qt3DRender::QAbstractTexture *normalMap)
@@ -264,6 +311,15 @@ void MetallicRoughnessShaderData::setNormalMap(Qt3DRender::QAbstractTexture *nor
                   false)
 }
 
+void MetallicRoughnessShaderData::setNormalMapTextureTransform(const QMatrix3x3 &m)
+{
+    if (m_normalMapTextureTransform != m)
+    {
+        m_normalMapTextureTransform = m;
+        emit normalMapTextureTransform();
+    }
+}
+
 void MetallicRoughnessShaderData::setAmbientOcclusionMap(Qt3DRender::QAbstractTexture *ambientOcclusionMap)
 {
     SET_MAP_VALUE(ambientOcclusionMap,
@@ -271,6 +327,15 @@ void MetallicRoughnessShaderData::setAmbientOcclusionMap(Qt3DRender::QAbstractTe
                   MetallicRoughnessShaderData::setAmbientOcclusionMap,
                   ambientOcclusionMapChanged,
                   false)
+}
+
+void MetallicRoughnessShaderData::setAmbientOcclusionMapTextureTransform(const QMatrix3x3 &m)
+{
+    if (m_ambientOcclusionMapTextureTransform != m)
+    {
+        m_ambientOcclusionMapTextureTransform = m;
+        emit ambientOcclusionMapTextureTransform();
+    }
 }
 
 #undef SET_MAP_VALUE
@@ -297,6 +362,11 @@ void MetallicRoughnessShaderData::setAlphaCutoff(float alphaCutoff)
         return;
     m_alphaCutoff = alphaCutoff;
     emit alphaCutoffChanged(alphaCutoff);
+}
+
+QMatrix3x3 Kuesa::MetallicRoughnessShaderData::baseColorMapTextureTransform() const
+{
+    return m_baseColorMapTextureTransform;
 }
 
 } // namespace Kuesa

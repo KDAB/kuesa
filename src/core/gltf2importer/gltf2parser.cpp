@@ -486,7 +486,8 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
             KEY_KHR_MATERIALS_UNLIT,
             KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION,
             KEY_KDAB_CUSTOM_MATERIAL,
-            KEY_EXT_PROPERTY_ANIMATION_EXTENSION
+            KEY_EXT_PROPERTY_ANIMATION_EXTENSION,
+            KEY_KHR_TEXTURE_TRANSFORM
         };
         for (const auto &e : qAsConst(extensions)) {
             if (supportedExtensions.contains(e))

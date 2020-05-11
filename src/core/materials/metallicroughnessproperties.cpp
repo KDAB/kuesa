@@ -51,19 +51,22 @@ namespace Kuesa {
     \list
     \li baseColorFactor: Base color of the material
     \li baseColorMap: A texture specifying the base color of the material
+    \li baseColorMapTextureTransform: Texture transform for the base color map
     \li metallicFactor: The metalness of the material
     \li roughnessFactor: The roughness of the material
     \li metalRoughMap: A texture specifying both metalness and roughness of the
     material
+    \li metalRoughMapTextureTransform: Texture transform for the metalRough map
     \li normalMap: Normal texture for normal mapping. This allows to simulate
     very detailed surfaces without too many triangle
+    \li normalMapTextureTransform: Texture transform for the normal map
     \li normalScale: A scale factor for the normal map
     \li ambientOcclusionMap: An ambient occlusion map. This allows to simulate
     ambient occlusion and shadow zones that otherwise will be too bright
+    \li ambientOcclusionMapTextureTransform: Texture transform for the ambient occlusion map
     \li emissiveFactor: The emissive strength of the material
     \li emissiveMap: A texture specifying the emissive property of the material
-    \li textureTransform: Allows to transform (scale, translate, rotate) a
-    texture.
+    \li emissiveMapTextureTransform: Texture transform for the emissive map
     \endlist
 
     For a particular point of an object, the base color is computed as
@@ -220,19 +223,22 @@ namespace Kuesa {
     \list
     \li baseColorFactor: Base color of the material
     \li baseColorMap: A texture specifying the base color of the material
+    \li baseColorMapTextureTransform: Texture transform for the base color map
     \li metallicFactor: The metalness of the material
     \li roughnessFactor: The roughness of the material
     \li metalRoughMap: A texture specifying both metalness and roughness of the
     material
+    \li metalRoughMapTextureTransform: Texture transform for the metalRough map
     \li normalMap: Normal texture for normal mapping. This allows to simulate
     very detailed surfaces without too many triangle
+    \li normalMapTextureTransform: Texture transform for the normal map
     \li normalScale: A scale factor for the normal map
     \li ambientOcclusionMap: An ambient occlusion map. This allows to simulate
     ambient occlusion and shadow zones that otherwise will be too bright
+    \li ambientOcclusionMapTextureTransform: Texture transform for the ambient occlusion map
     \li emissiveFactor: The emissive strength of the material
     \li emissiveMap: A texture specifying the emissive property of the material
-    \li textureTransform: Allows to transform (scale, translate, rotate) a
-    texture.
+    \li emissiveMapTextureTransform: Texture transform for the emissive map
     \endlist
 
     For a particular point of an object, the base color is computed as
@@ -372,45 +378,61 @@ namespace Kuesa {
 MetallicRoughnessProperties::MetallicRoughnessProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_metallicRoughnessShaderData(new MetallicRoughnessShaderData(this))
+    , m_baseColorMapTextureTransform(new Kuesa::TextureTransform(this))
+    , m_metalRoughMapTextureTransform(new Kuesa::TextureTransform(this))
+    , m_normalMapTextureTransform(new Kuesa::TextureTransform(this))
+    , m_ambientOcclusionMapTextureTransform(new Kuesa::TextureTransform(this))
+    , m_emissiveMapTextureTransform(new Kuesa::TextureTransform(this))
 
 {
     QObject::connect(this, &GLTF2MaterialProperties::baseColorMapChanged,
-                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorMap);
+             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorMap);
     QObject::connect(this, &GLTF2MaterialProperties::baseColorFactorChanged,
-                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorFactor);
+             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorFactor);
     QObject::connect(this, &GLTF2MaterialProperties::baseColorUsesTexCoord1Changed,
-                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorUsesTexCoord1);
+             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorUsesTexCoord1);
     QObject::connect(this, &GLTF2MaterialProperties::alphaCutoffChanged,
-                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setAlphaCutoff);
+             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setAlphaCutoff);
 
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::metallicRoughnessUsesTexCoord1Changed,
-                     this, &MetallicRoughnessProperties::metallicRoughnessUsesTexCoord1Changed);
+             this, &MetallicRoughnessProperties::metallicRoughnessUsesTexCoord1Changed);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::normalUsesTexCoord1Changed,
-                     this, &MetallicRoughnessProperties::normalUsesTexCoord1Changed);
+             this, &MetallicRoughnessProperties::normalUsesTexCoord1Changed);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::aoUsesTexCoord1Changed,
-                     this, &MetallicRoughnessProperties::aoUsesTexCoord1Changed);
+             this, &MetallicRoughnessProperties::aoUsesTexCoord1Changed);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::emissiveUsesTexCoord1Changed,
-                     this, &MetallicRoughnessProperties::emissiveUsesTexCoord1Changed);
+             this, &MetallicRoughnessProperties::emissiveUsesTexCoord1Changed);
 
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::metallicFactorChanged,
-                     this, &MetallicRoughnessProperties::metallicFactorChanged);
+             this, &MetallicRoughnessProperties::metallicFactorChanged);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::roughnessFactorChanged,
-                     this, &MetallicRoughnessProperties::roughnessFactorChanged);
+             this, &MetallicRoughnessProperties::roughnessFactorChanged);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::metalRoughMapChanged,
-                     this, &MetallicRoughnessProperties::metalRoughMapChanged);
+             this, &MetallicRoughnessProperties::metalRoughMapChanged);
 
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::normalScaleChanged,
-                     this, &MetallicRoughnessProperties::normalScaleChanged);
+             this, &MetallicRoughnessProperties::normalScaleChanged);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::normalMapChanged,
-                     this, &MetallicRoughnessProperties::normalMapChanged);
+             this, &MetallicRoughnessProperties::normalMapChanged);
 
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::ambientOcclusionMapChanged,
-                     this, &MetallicRoughnessProperties::ambientOcclusionMapChanged);
+             this, &MetallicRoughnessProperties::ambientOcclusionMapChanged);
 
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::emissiveFactorChanged,
-                     this, &MetallicRoughnessProperties::emissiveFactorChanged);
+             this, &MetallicRoughnessProperties::emissiveFactorChanged);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::emissiveMapChanged,
-                     this, &MetallicRoughnessProperties::emissiveMapChanged);
+             this, &MetallicRoughnessProperties::emissiveMapChanged);
+
+    QObject::connect(m_baseColorMapTextureTransform, &Kuesa::TextureTransform::matrixChanged,
+             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorMapTextureTransform);
+    QObject::connect(m_metalRoughMapTextureTransform, &Kuesa::TextureTransform::matrixChanged,
+             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setMetalRoughMapTextureTransform);
+    QObject::connect(m_normalMapTextureTransform, &Kuesa::TextureTransform::matrixChanged,
+             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setNormalMapTextureTransform);
+    QObject::connect(m_ambientOcclusionMapTextureTransform, &Kuesa::TextureTransform::matrixChanged,
+             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setAmbientOcclusionMapTextureTransform);
+    QObject::connect(m_emissiveMapTextureTransform, &Kuesa::TextureTransform::matrixChanged,
+             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setEmissiveMapTextureTransform);
 }
 
 MetallicRoughnessProperties::~MetallicRoughnessProperties() = default;
@@ -479,6 +501,32 @@ Qt3DRender::QAbstractTexture *MetallicRoughnessProperties::emissiveMap() const
 {
     return m_metallicRoughnessShaderData->emissiveMap();
 }
+
+Kuesa::TextureTransform *MetallicRoughnessProperties::baseColorMapTextureTransform() const
+{
+    return m_baseColorMapTextureTransform;
+}
+
+Kuesa::TextureTransform *MetallicRoughnessProperties::metalRoughMapTextureTransform() const
+{
+    return m_metalRoughMapTextureTransform;
+}
+
+Kuesa::TextureTransform *MetallicRoughnessProperties::normalMapTextureTransform() const
+{
+    return m_normalMapTextureTransform;
+}
+
+Kuesa::TextureTransform *MetallicRoughnessProperties::ambientOcclusionMapTextureTransform() const
+{
+    return m_ambientOcclusionMapTextureTransform;
+}
+
+Kuesa::TextureTransform *MetallicRoughnessProperties::emissiveMapTextureTransform() const
+{
+    return m_emissiveMapTextureTransform;
+}
+
 void MetallicRoughnessProperties::setMetallicRoughnessUsesTexCoord1(bool metallicRoughnessUsesTexCoord1)
 {
     m_metallicRoughnessShaderData->setMetallicRoughnessUsesTexCoord1(metallicRoughnessUsesTexCoord1);

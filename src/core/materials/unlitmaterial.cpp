@@ -125,22 +125,12 @@ void UnlitMaterial::setMaterialProperties(UnlitProperties *unlitProperties)
 {
     if (m_materialProperties != unlitProperties) {
 
-        if (m_materialProperties)
-            QObject::disconnect(m_textureTransformChangedConnection);
-
         m_materialProperties = unlitProperties;
         emit materialPropertiesChanged(unlitProperties);
 
         if (m_materialProperties) {
             m_unlitShaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));
             m_materialProperties->addClientMaterial(this);
-
-            m_textureTransformChangedConnection = QObject::connect(m_materialProperties,
-                                                                   &UnlitProperties::textureTransformChanged,
-                                                                   this,
-                                                                   [this](const QMatrix3x3 &m) {
-                                                                       m_textureTransformParameter->setValue(QVariant::fromValue(m));
-                                                                   });
         }
     }
 }

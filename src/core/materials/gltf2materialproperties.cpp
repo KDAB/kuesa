@@ -49,9 +49,9 @@ namespace Kuesa {
 class DummyObserver : public Qt3DCore::QObserverInterface
 {
 public:
-    DummyObserver() {}
+    DummyObserver() { }
     ~DummyObserver() override;
-    void sceneChangeEvent(const Qt3DCore::QSceneChangePtr &) override {}
+    void sceneChangeEvent(const Qt3DCore::QSceneChangePtr &) override { }
 };
 
 DummyObserver::~DummyObserver() = default;
@@ -120,22 +120,15 @@ DummyObserver::~DummyObserver() = default;
     result. For alphaCutoff to have any effect, it must be activated.
  */
 
-/*!
-    \qmlproperty matrix3 GLTF2MaterialProperties::textureTransform
-
-    Specifies the transform of the texture. This allows to scale, transform or
-    rotate the textures of the material.
- */
-
 GLTF2MaterialProperties::GLTF2MaterialProperties(Qt3DCore::QNode *parent)
     : Qt3DCore::QNode(parent)
     , m_alphaCutOff(0.0f)
     , m_usesTexCoord1(false)
     , m_baseColorTexture(nullptr)
     , m_baseColorFactor(QColor("gray"))
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     , m_dummyObserver(nullptr)
-#endif
+    #endif
 {
     setDefaultPropertyTrackingMode(QNode::TrackAllValues);
 }
@@ -159,9 +152,9 @@ void GLTF2MaterialProperties::addClientMaterial(Qt3DRender::QMaterial *material)
 {
     m_clientMaterials.push_back(material);
     m_connections.push_back(QObject::connect(material, &Qt3DRender::QMaterial::nodeDestroyed,
-                                             [this, material]() {
-                                                 m_clientMaterials.removeAll(material);
-                                             }));
+                         [this, material]() {
+        m_clientMaterials.removeAll(material);
+    }));
 }
 
 QVector<Qt3DRender::QMaterial *> GLTF2MaterialProperties::clientMaterials() const
@@ -187,11 +180,6 @@ Qt3DRender::QAbstractTexture *GLTF2MaterialProperties::baseColorMap() const
 float GLTF2MaterialProperties::alphaCutoff() const
 {
     return m_alphaCutOff;
-}
-
-QMatrix3x3 GLTF2MaterialProperties::textureTransform() const
-{
-    return m_textureTransform;
 }
 
 void GLTF2MaterialProperties::setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1)
@@ -229,14 +217,6 @@ void GLTF2MaterialProperties::setAlphaCutoff(float alphaCutoff)
         return;
     m_alphaCutOff = alphaCutoff;
     emit alphaCutoffChanged(m_alphaCutOff);
-}
-
-void GLTF2MaterialProperties::setTextureTransform(const QMatrix3x3 &textureTransform)
-{
-    if (m_textureTransform == textureTransform)
-        return;
-    m_textureTransform = textureTransform;
-    emit textureTransformChanged(m_textureTransform);
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)

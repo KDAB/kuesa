@@ -27,6 +27,12 @@
 */
 
 struct MetallicRoughness {
+    highp mat3 baseColorMapTextureTransform;
+    highp mat3 metalRoughMapTextureTransform;
+    highp mat3 normalMapTextureTransform;
+    highp mat3 ambientOcclusionMapTextureTransform;
+    highp mat3 emissiveMapTextureTransform;
+
     highp vec4 baseColorFactor;
     highp vec4 emissiveFactor;
 

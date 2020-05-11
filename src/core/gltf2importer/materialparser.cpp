@@ -63,6 +63,10 @@ const QLatin1String KEY_OCCLUSION_TEXTURE = QLatin1String("occlusionTexture");
 const QLatin1String KEY_EMISSIVE_TEXTURE = QLatin1String("emissiveTexture");
 const QLatin1String KEY_EMISSIVE_FACTOR = QLatin1String("emissiveFactor");
 const QLatin1String KEY_PROPERTIES = QLatin1String("properties");
+const QLatin1String KEY_KHR_TEXTURE_TRANSFORM = QLatin1String("KHR_texture_transform");
+const QLatin1String KEY_KHR_TEXTURE_TRANSFORM_OFFSET = QLatin1String("offset");
+const QLatin1String KEY_KHR_TEXTURE_TRANSFORM_SCALE = QLatin1String("scale");
+const QLatin1String KEY_KHR_TEXTURE_TRANSFORM_ROTATION = QLatin1String("rotation");
 
 QVector<Qt3DAnimation::QChannelMapping *> iroMappingGenerator(const GLTF2Context *ctx,
                                                               const ChannelMapping &mapping)
@@ -87,6 +91,26 @@ void parseTextureInfo(TextureInfo &info, const QJsonObject &textureInfoObj)
 {
     info.index = textureInfoObj.value(KEY_INDEX).toInt(-1);
     info.texCoord = std::max(textureInfoObj.value(KEY_TEXCOORD).toInt(0), 0);
+    const auto &extensionsObject = textureInfoObj[KEY_EXTENSIONS];
+    if (!extensionsObject.isUndefined()) {
+        const auto &khr_texture_transformObject = extensionsObject[KEY_KHR_TEXTURE_TRANSFORM];
+        if (!khr_texture_transformObject.isUndefined()) {
+            const auto &offsetArray = khr_texture_transformObject[KEY_KHR_TEXTURE_TRANSFORM_OFFSET].toArray({0.0,0.0});
+            const auto &rotationObject = khr_texture_transformObject[KEY_KHR_TEXTURE_TRANSFORM_ROTATION];
+            const auto &scaleArray = khr_texture_transformObject[KEY_KHR_TEXTURE_TRANSFORM_SCALE].toArray({1.0,1.0});
+            const auto &indexObject = khr_texture_transformObject[KEY_TEXCOORD];
+
+            if (!indexObject.isUndefined())
+                info.texCoord = indexObject.toInt();
+
+            // TODO add checks
+            info.khr_texture_transform = TextureInfo::KHR_texture_transform{QVector2D(static_cast<float>(offsetArray[0].toDouble()),
+                                                                                      static_cast<float>(offsetArray[1].toDouble())),
+                                                                            static_cast<float>(rotationObject.toDouble(0.0)),
+                                                                            QVector2D(static_cast<float>(scaleArray[0].toDouble()),
+                                                                                      static_cast<float>(scaleArray[1].toDouble()))};
+        }
+    }
 }
 
 template<typename T>
@@ -484,33 +508,54 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
 
         const qint32 baseColorTextureIdx = pbr.baseColorTexture.index;
         if (baseColorTextureIdx > -1) {
+            TextureInfo texInfo = pbr.baseColorTexture;
             materialProperties->setBaseColorMap(context.texture(baseColorTextureIdx).texture);
             materialProperties->setBaseColorUsesTexCoord1(pbr.baseColorTexture.texCoord == 1);
+            materialProperties->baseColorMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
+            materialProperties->baseColorMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
+            materialProperties->baseColorMapTextureTransform()->setRotation(texInfo.khr_texture_transform.rotation);
         }
 
         const qint32 metallicRoughnessTextureIdx = pbr.metallicRoughnessTexture.index;
         if (metallicRoughnessTextureIdx > -1) {
+            TextureInfo texInfo = pbr.metallicRoughnessTexture;
             materialProperties->setMetalRoughMap(context.texture(metallicRoughnessTextureIdx).texture);
             materialProperties->setMetallicRoughnessUsesTexCoord1(pbr.metallicRoughnessTexture.texCoord == 1);
+            materialProperties->metalRoughMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
+            materialProperties->metalRoughMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
+            materialProperties->metalRoughMapTextureTransform()->setRotation(texInfo.khr_texture_transform.rotation);
         }
 
         const qint32 normalMapTextureIdx = normalTexture.index;
         if (normalMapTextureIdx > -1) {
+            TextureInfo texInfo = normalTexture;
             materialProperties->setNormalMap(context.texture(normalMapTextureIdx).texture);
             materialProperties->setNormalUsesTexCoord1(normalTexture.texCoord == 1);
+            materialProperties->normalMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
+            materialProperties->normalMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
+            materialProperties->normalMapTextureTransform()->setRotation(texInfo.khr_texture_transform.rotation);
         }
 
         const qint32 emissiveMapTextureIdx = emissiveTexture.index;
         if (emissiveMapTextureIdx > -1) {
+            TextureInfo texInfo = emissiveTexture;
             materialProperties->setEmissiveMap(context.texture(emissiveMapTextureIdx).texture);
             materialProperties->setEmissiveUsesTexCoord1(emissiveTexture.index == 1);
+            materialProperties->emissiveMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
+            materialProperties->emissiveMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
+            materialProperties->emissiveMapTextureTransform()->setRotation(texInfo.khr_texture_transform.rotation);
         }
 
         const qint32 occulsionMapTextureIdx = occlusionTexture.index;
         if (occulsionMapTextureIdx > -1) {
+            TextureInfo texInfo = occlusionTexture;
             materialProperties->setAmbientOcclusionMap(context.texture(occulsionMapTextureIdx).texture);
             materialProperties->setAOUsesTexCoord1(occlusionTexture.texCoord == 1);
+            materialProperties->ambientOcclusionMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
+            materialProperties->ambientOcclusionMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
+            materialProperties->ambientOcclusionMapTextureTransform()->setRotation(texInfo.khr_texture_transform.rotation);
         }
+
 
         materialProperties->setAlphaCutoff(alpha.alphaCutoff);
 

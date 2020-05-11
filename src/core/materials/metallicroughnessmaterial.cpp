@@ -1,4 +1,4 @@
-﻿/*
+/*
     metallicroughnessmaterial.cpp
 
     This file is part of Kuesa.
@@ -134,23 +134,12 @@ MetallicRoughnessProperties *MetallicRoughnessMaterial::materialProperties() con
 void MetallicRoughnessMaterial::setMaterialProperties(MetallicRoughnessProperties *metallicRoughnessProperties)
 {
     if (m_materialProperties != metallicRoughnessProperties) {
-
-        if (m_materialProperties)
-            QObject::disconnect(m_textureTransformChangedConnection);
-
         m_materialProperties = metallicRoughnessProperties;
         emit materialPropertiesChanged(metallicRoughnessProperties);
 
         if (m_materialProperties) {
             m_metallicRoughnessShaderDataParameter->setValue(QVariant::fromValue(metallicRoughnessProperties->shaderData()));
             metallicRoughnessProperties->addClientMaterial(this);
-
-            m_textureTransformChangedConnection = QObject::connect(m_materialProperties,
-                                                                   &MetallicRoughnessProperties::textureTransformChanged,
-                                                                   this,
-                                                                   [this] (const QMatrix3x3 &m) {
-                m_textureTransformParameter->setValue(QVariant::fromValue(m));
-            });
         }
     }
 }

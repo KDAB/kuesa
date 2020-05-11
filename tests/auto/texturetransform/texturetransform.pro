@@ -1,9 +1,9 @@
-# materials.pri
+# metallicroughnessproperties.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# Author: Juan Casafranca  <juan.casafranca@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,35 +24,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-INCLUDEPATH += $$PWD
+TEMPLATE = app
 
-SOURCES += \
-    $$PWD/gltf2material.cpp \
-    $$PWD/gltf2materialeffect.cpp \
-    $$PWD/gltf2materialproperties.cpp \
-    $$PWD/metallicroughnesseffect.cpp \
-    $$PWD/metallicroughnessmaterial.cpp \
-    $$PWD/metallicroughnessshaderdata.cpp \
-    $$PWD/metallicroughnessproperties.cpp \
-    $$PWD/texturetransform.cpp \
-    $$PWD/unliteffect.cpp \
-    $$PWD/unlitmaterial.cpp \
-    $$PWD/unlitshaderdata.cpp \
-    $$PWD/unlitproperties.cpp \
-    $$PWD/effectslibrary.cpp
+TARGET = tst_texturetransform
 
-HEADERS += \
-    $$PWD/effectproperties.h \
-    $$PWD/gltf2material.h \
-    $$PWD/gltf2materialeffect.h \
-    $$PWD/gltf2materialproperties.h \
-    $$PWD/metallicroughnesseffect.h \
-    $$PWD/metallicroughnessmaterial.h \
-    $$PWD/metallicroughnessshaderdata_p.h \
-    $$PWD/metallicroughnessproperties.h \
-    $$PWD/texturetransform.h \
-    $$PWD/unliteffect.h \
-    $$PWD/unlitmaterial.h \
-    $$PWD/unlitproperties.h \
-    $$PWD/unlitshaderdata_p.h \
-    $$PWD/effectslibrary_p.h
+QT += testlib kuesa kuesa-private
+
+CONFIG += testcase
+
+SOURCES += tst_texturetransform.cpp
+
+include(../assets/assets.pri)

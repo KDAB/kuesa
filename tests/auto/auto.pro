@@ -75,5 +75,6 @@ qtConfig(private_tests) {
         meshparser_utils \
         normalgenerator \
         gltf2material \
-        effectslibrary
+        effectslibrary \
+        texturetransform
 }

@@ -52,7 +52,6 @@ class DummyObserver;
 class KUESASHARED_EXPORT GLTF2MaterialProperties : public Qt3DCore::QNode
 {
     Q_OBJECT
-    Q_PROPERTY(QMatrix3x3 textureTransform READ textureTransform WRITE setTextureTransform NOTIFY textureTransformChanged)
     Q_PROPERTY(bool baseColorUsesTexCoord1 READ isBaseColorUsingTexCoord1 WRITE setBaseColorUsesTexCoord1 NOTIFY baseColorUsesTexCoord1Changed)
     Q_PROPERTY(QColor baseColorFactor READ baseColorFactor WRITE setBaseColorFactor NOTIFY baseColorFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *baseColorMap READ baseColorMap WRITE setBaseColorMap NOTIFY baseColorMapChanged)
@@ -66,7 +65,6 @@ public:
     QColor baseColorFactor() const;
     Qt3DRender::QAbstractTexture *baseColorMap() const;
     float alphaCutoff() const;
-    QMatrix3x3 textureTransform() const;
 
     void addClientMaterial(Qt3DRender::QMaterial *material);
     QVector<Qt3DRender::QMaterial *> clientMaterials() const;
@@ -78,14 +76,12 @@ public Q_SLOTS:
     void setBaseColorFactor(const QColor &baseColorFactor);
     void setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap);
     void setAlphaCutoff(float alphaCutoff);
-    void setTextureTransform(const QMatrix3x3 &textureTransform);
 
 Q_SIGNALS:
     void baseColorUsesTexCoord1Changed(bool);
     void baseColorFactorChanged(const QColor &baseColorFactor);
     void baseColorMapChanged(Qt3DRender::QAbstractTexture *baseColorMap);
     void alphaCutoffChanged(float alphaCutoff);
-    void textureTransformChanged(const QMatrix3x3 &textureTransform);
 
 private:
     QVector<Qt3DRender::QMaterial *> m_clientMaterials;
@@ -95,7 +91,6 @@ private:
     bool m_usesTexCoord1;
     Qt3DRender::QAbstractTexture *m_baseColorTexture;
     QColor m_baseColorFactor;
-    QMatrix3x3 m_textureTransform;
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     mutable DummyObserver *m_dummyObserver;

@@ -64,7 +64,8 @@ class MyGLTF2MaterialProperties : public GLTF2MaterialProperties
 public:
     explicit MyGLTF2MaterialProperties(Qt3DCore::QNode *parent = nullptr)
         : GLTF2MaterialProperties(parent)
-    {}
+    {
+    }
 
     // GLTF2MaterialProperties interface
 public:
@@ -88,27 +89,10 @@ private Q_SLOTS:
         MyGLTF2MaterialProperties mat;
 
         // THEN
-        QCOMPARE(mat.textureTransform(), QMatrix3x3{});
         QCOMPARE(mat.isBaseColorUsingTexCoord1(), false);
         QCOMPARE(mat.alphaCutoff(), 0.0f);
         QCOMPARE(mat.baseColorFactor(), QColor("gray"));
         QVERIFY(mat.baseColorMap() == nullptr);
-    }
-
-    void checkTextureTransform()
-    {
-        // GIVEN
-        MyGLTF2MaterialProperties mat;
-
-        QMatrix3x3 matrix;
-        matrix.fill(5.0);
-
-        // THEN
-        ::testProperty(&mat,
-                       &MyGLTF2MaterialProperties::setTextureTransform,
-                       &MyGLTF2MaterialProperties::textureTransform,
-                       &MyGLTF2MaterialProperties::textureTransformChanged,
-                       QMatrix3x3{}, matrix);
     }
 
     void checkAlphaCutoff()
@@ -148,7 +132,7 @@ private Q_SLOTS:
                        &MyGLTF2MaterialProperties::setBaseColorMap,
                        &MyGLTF2MaterialProperties::baseColorMap,
                        &MyGLTF2MaterialProperties::baseColorMapChanged,
-                       static_cast<Qt3DRender::QAbstractTexture*>(nullptr),
+                       static_cast<Qt3DRender::QAbstractTexture *>(nullptr),
                        t);
     }
 
@@ -181,7 +165,6 @@ private Q_SLOTS:
         // THEN
         QVERIFY(mat.baseColorMap() == nullptr);
     }
-
 };
 
 QTEST_APPLESS_MAIN(tst_GLTF2MaterialProperties)

@@ -39,6 +39,7 @@
 
 #include <QVector4D>
 #include <QVector3D>
+#include <QVector2D>
 #include <QString>
 
 #include <Kuesa/private/effectslibrary_p.h>
@@ -61,6 +62,14 @@ class AnimationParser;
 struct TextureInfo {
     qint32 index = -1;
     qint32 texCoord = 0; // Attribute will be TEXCOORD_<texCoord>
+
+    struct KHR_texture_transform {
+        QVector2D offset = {0.0f, 0.0f};
+        float rotation = 0.0f;
+        QVector2D scale = {1.0f, 1.0f};
+    };
+
+    KHR_texture_transform khr_texture_transform;
 };
 
 class Material

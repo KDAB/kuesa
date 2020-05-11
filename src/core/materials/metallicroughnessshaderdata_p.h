@@ -44,6 +44,8 @@
 #include <Qt3DRender/QShaderData>
 #include <Qt3DRender/QAbstractTexture>
 
+#include <QMatrix3x3>
+
 #include <Kuesa/kuesa_global.h>
 
 QT_BEGIN_NAMESPACE
@@ -62,17 +64,22 @@ class MetallicRoughnessShaderData : public Qt3DRender::QShaderData
 
     Q_PROPERTY(QColor baseColorFactor READ baseColorFactor WRITE setBaseColorFactor NOTIFY baseColorFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *baseColorMap READ baseColorMap WRITE setBaseColorMap NOTIFY baseColorMapChanged)
+    Q_PROPERTY(QMatrix3x3 baseColorMapTextureTransform READ baseColorMapTextureTransform WRITE setBaseColorMapTextureTransform NOTIFY baseColorMapTextureTransformChanged)
     Q_PROPERTY(float metallicFactor READ metallicFactor WRITE setMetallicFactor NOTIFY metallicFactorChanged)
     Q_PROPERTY(float roughnessFactor READ roughnessFactor WRITE setRoughnessFactor NOTIFY roughnessFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *metalRoughMap READ metalRoughMap WRITE setMetalRoughMap NOTIFY metalRoughMapChanged)
+    Q_PROPERTY(QMatrix3x3 metalRoughMapTextureTransform READ metalRoughMapTextureTransform WRITE setMetalRoughMapTextureTransform NOTIFY metalRoughMapTextureTransformChanged)
 
     Q_PROPERTY(float normalScale READ normalScale WRITE setNormalScale NOTIFY normalScaleChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
+    Q_PROPERTY(QMatrix3x3 normalMapTextureTransform READ normalMapTextureTransform WRITE setNormalMapTextureTransform NOTIFY normalMapTextureTransformChanged)
 
     Q_PROPERTY(Qt3DRender::QAbstractTexture *ambientOcclusionMap READ ambientOcclusionMap WRITE setAmbientOcclusionMap NOTIFY ambientOcclusionMapChanged)
+    Q_PROPERTY(QMatrix3x3 ambientOcclusionMapTextureTransform READ ambientOcclusionMapTextureTransform WRITE setAmbientOcclusionMapTextureTransform NOTIFY ambientOcclusionMapTextureTransformChanged)
 
     Q_PROPERTY(QColor emissiveFactor READ emissiveFactor WRITE setEmissiveFactor NOTIFY emissiveFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *emissiveMap READ emissiveMap WRITE setEmissiveMap NOTIFY emissiveMapChanged)
+    Q_PROPERTY(QMatrix3x3 emissiveMapTextureTransform READ emissiveMapTextureTransform WRITE setEmissiveMapTextureTransform NOTIFY emissiveMapTextureTransformChanged)
 
     Q_PROPERTY(float alphaCutoff READ alphaCutoff WRITE setAlphaCutoff NOTIFY alphaCutoffChanged)
 
@@ -88,18 +95,23 @@ public:
 
     QColor baseColorFactor() const;
     Qt3DRender::QAbstractTexture *baseColorMap() const;
+    QMatrix3x3 baseColorMapTextureTransform() const;
 
     float metallicFactor() const;
     float roughnessFactor() const;
     Qt3DRender::QAbstractTexture *metalRoughMap() const;
+    QMatrix3x3 metalRoughMapTextureTransform() const;
 
     float normalScale() const;
     Qt3DRender::QAbstractTexture *normalMap() const;
+    QMatrix3x3 normalMapTextureTransform() const;
 
     Qt3DRender::QAbstractTexture *ambientOcclusionMap() const;
+    QMatrix3x3 ambientOcclusionMapTextureTransform() const;
 
     QColor emissiveFactor() const;
     Qt3DRender::QAbstractTexture *emissiveMap() const;
+    QMatrix3x3 emissiveMapTextureTransform() const;
 
     float alphaCutoff() const;
 
@@ -112,18 +124,23 @@ public Q_SLOTS:
 
     void setBaseColorFactor(const QColor &baseColorFactor);
     void setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap);
+    void setBaseColorMapTextureTransform(const QMatrix3x3 &m);
 
     void setMetallicFactor(float metallicFactor);
     void setRoughnessFactor(float roughnessFactor);
     void setMetalRoughMap(Qt3DRender::QAbstractTexture *metalRoughMap);
+    void setMetalRoughMapTextureTransform(const QMatrix3x3 &m);
 
     void setNormalScale(float normalScale);
     void setNormalMap(Qt3DRender::QAbstractTexture *normalMap);
+    void setNormalMapTextureTransform(const QMatrix3x3 &m);
 
     void setAmbientOcclusionMap(Qt3DRender::QAbstractTexture *ambientOcclusionMap);
+    void setAmbientOcclusionMapTextureTransform(const QMatrix3x3 &m);
 
     void setEmissiveFactor(const QColor &emissiveFactor);
     void setEmissiveMap(Qt3DRender::QAbstractTexture *emissiveMap);
+    void setEmissiveMapTextureTransform(const QMatrix3x3 &m);
 
     void setAlphaCutoff(float alphaCutoff);
 
@@ -136,18 +153,23 @@ Q_SIGNALS:
 
     void baseColorFactorChanged(const QColor &baseColorFactor);
     void baseColorMapChanged(Qt3DRender::QAbstractTexture *baseColorMap);
+    void baseColorMapTextureTransformChanged(const QMatrix3x3 &m);
 
     void metallicFactorChanged(float metallicFactor);
     void roughnessFactorChanged(float roughnessFactor);
     void metalRoughMapChanged(Qt3DRender::QAbstractTexture *metalRoughMap);
+    void metalRoughMapTextureTransformChanged(const QMatrix3x3 &m);
 
     void normalScaleChanged(float normalScale);
     void normalMapChanged(Qt3DRender::QAbstractTexture *normalMapChanged);
+    void normalMapTextureTransformChanged(const QMatrix3x3 &m);
 
     void ambientOcclusionMapChanged(Qt3DRender::QAbstractTexture *ambientOcclusionMap);
+    void ambientOcclusionMapTextureTransformChanged(const QMatrix3x3 &m);
 
     void emissiveFactorChanged(const QColor &emissiveFactor);
     void emissiveMapChanged(Qt3DRender::QAbstractTexture *emissiveMap);
+    void emissiveMapTextureTransformChanged(const QMatrix3x3 &m);
 
     void alphaCutoffChanged(float alphaCutoff);
 
@@ -160,18 +182,23 @@ private:
 
     QColor m_baseColorFactor;
     Qt3DRender::QAbstractTexture *m_baseColorMap;
+    QMatrix3x3 m_baseColorMapTextureTransform;
 
     float m_metallicFactor;
     float m_roughnessFactor;
     Qt3DRender::QAbstractTexture *m_metalRoughMap;
+    QMatrix3x3 m_metalRoughMapTextureTransform;
 
     float m_normalScale;
     Qt3DRender::QAbstractTexture *m_normalMap;
+    QMatrix3x3 m_normalMapTextureTransform;
 
     Qt3DRender::QAbstractTexture *m_ambientOcclusionMap;
+    QMatrix3x3 m_ambientOcclusionMapTextureTransform;
 
     QColor m_emissiveFactor;
     Qt3DRender::QAbstractTexture *m_emissiveMap;
+    QMatrix3x3 m_emissiveMapTextureTransform;
 
     float m_alphaCutoff;
 };

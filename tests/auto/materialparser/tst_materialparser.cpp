@@ -179,6 +179,63 @@ private Q_SLOTS:
         QCOMPARE(int(context.material(0).alpha.mode), expectedBlendMode);
     }
 
+    void checkKHR_texture_transform_data()
+    {
+        QTest::addColumn<QString>("filePath");
+        QTest::addColumn<QVector2D>("offset");
+        QTest::addColumn<float>("rotation");
+        QTest::addColumn<QVector2D>("scale");
+        QTest::addColumn<int>("texCoord");
+
+        QTest::newRow("hasTexCoord") << QStringLiteral(ASSETS "KHR_texture_transform_texCoord.gltf")
+                                     << QVector2D(0.5, 0.6)
+                                     << 0.1f
+                                     << QVector2D(0.3, 0.4)
+                                     << 2;
+        QTest::newRow("noHasTexCoord") << QStringLiteral(ASSETS "KHR_texture_transform_noTexCoord.gltf")
+                                       << QVector2D(0.5, 0.6)
+                                       << 0.1f
+                                       << QVector2D(0.3, 0.4)
+                                       << 0;
+        QTest::newRow("defaults") << QStringLiteral(ASSETS "KHR_texture_transform_defaults.gltf")
+                                  << QVector2D(0.0, 0.0)
+                                  << 0.0f
+                                  << QVector2D(1.0, 1.0)
+                                  << 0;
+    }
+
+    void checkKHR_texture_transform()
+    {
+        QFETCH(QString, filePath);
+        QFETCH(QVector2D, offset);
+        QFETCH(float, rotation);
+        QFETCH(QVector2D, scale);
+        QFETCH(int, texCoord);
+
+        // GIVEN
+        GLTF2Context context;
+        MaterialParser parser;
+        QFile file(filePath);
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        // WHEN
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        // THEN
+        QVERIFY(!json.isNull() && json.isArray());
+
+        // WHEN
+        bool success = parser.parse(json.array(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.materialsCount(), 1);
+        QCOMPARE(context.material(0).pbr.baseColorTexture.khr_texture_transform.offset, offset);
+        QCOMPARE(context.material(0).pbr.baseColorTexture.khr_texture_transform.rotation, rotation);
+        QCOMPARE(context.material(0).pbr.baseColorTexture.khr_texture_transform.scale, scale);
+        QCOMPARE(context.material(0).pbr.baseColorTexture.texCoord, texCoord);
+    }
+
     void checkUnlit()
     {
         // GIVEN
