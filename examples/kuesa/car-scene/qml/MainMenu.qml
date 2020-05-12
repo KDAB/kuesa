@@ -27,7 +27,6 @@
 */
 
 import QtQuick 2.12
-import QtQuick.Controls 1.4
 import QtQuick.Controls 2.12 as QQC2
 import "controls" as Controls
 import QtGraphicalEffects 1.0
@@ -269,7 +268,7 @@ Item {
                             width: menu.expandedWidth
                             spacing: parent.spacing
 
-                            ExclusiveGroup { id: radioButonsGroup }
+                            QQC2.ButtonGroup { id: radioButonsGroup }
 
                             Controls.LabeledRadioButton {
                                 id: envPinkSunrise

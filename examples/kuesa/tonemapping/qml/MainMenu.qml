@@ -27,13 +27,13 @@
 */
 
 import QtQuick 2.12
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.12
 import "controls" as Controls
 import QtGraphicalEffects 1.0
 
 Item {
     id: root
-    readonly property string toneMappingAlgorithmName: radioButtonsGroup.current && radioButtonsGroup.current.parent ? radioButtonsGroup.current.parent.text : "None"
+    property string toneMappingAlgorithmName: "None"
     property alias toggleRotation: rotationToggleSwitch.checked
     property alias toggleLightRotation: lightToggleSwitch.checked
     property alias exposure: exposureSlider.value
@@ -165,29 +165,46 @@ Item {
                             color: "#70ffffff"
                         }
 
-                        ExclusiveGroup { id: radioButtonsGroup }
+                        ButtonGroup { id: radioButtonsGroup
+                        }
 
                         Controls.HorizontalLabeledSwitch {
                             exclusiveGroup: radioButtonsGroup
                             text: "None"
+                            onCheckedChanged: {
+                                if (checked)
+                                    toneMappingAlgorithmName = text
+                            }
                         }
 
                         Controls.HorizontalLabeledSwitch {
                             checked: true
                             exclusiveGroup: radioButtonsGroup
                             text: "Reinhard"
+                            onCheckedChanged: {
+                                if (checked)
+                                    toneMappingAlgorithmName = text
+                            }
                         }
 
                         Controls.HorizontalLabeledSwitch {
                             id: filmicEffectToneMappingSwitch
                             exclusiveGroup: radioButtonsGroup
                             text: "Filmic"
+                            onCheckedChanged: {
+                                if (checked)
+                                    toneMappingAlgorithmName = text
+                            }
                         }
 
                         Controls.HorizontalLabeledSwitch {
                             id: unchartedEffectToneMappingSwitch
                             exclusiveGroup: radioButtonsGroup
                             text: "Uncharted"
+                            onCheckedChanged: {
+                                if (checked)
+                                    toneMappingAlgorithmName = text
+                            }
                         }
 
                         Item {

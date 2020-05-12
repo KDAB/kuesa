@@ -27,8 +27,7 @@
 */
 
 import QtQuick 2.12
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 2.12
 
 BorderImage {
     id: sliderN
@@ -39,21 +38,21 @@ BorderImage {
     border.top: 20; border.bottom: 20
 
     property bool radio: false
-    property bool checked: false
-    property ExclusiveGroup exclusiveGroup: null
+    property alias checked: innerButton.checked
+    property ButtonGroup exclusiveGroup: null
     enabled: !(radio && checked)
 
     onExclusiveGroupChanged: {
         if (exclusiveGroup)
-            exclusiveGroup.bindCheckable(sliderN)
+            exclusiveGroup.addButton(innerButton)
     }
 
     readonly property bool interactive: width >= height + 4
 
-    MouseArea {
-        id: controller
+    AbstractButton {
+        id: innerButton
         anchors.fill: parent
-        onClicked: checked = !checked
+        checkable: true
     }
 
     // visual items shadows and edges
@@ -64,7 +63,7 @@ BorderImage {
         anchors.rightMargin: 5
         anchors.leftMargin: anchors.rightMargin
         scale: radio && !enabled ? 0.8 : 1
-        opacity: controller.pressed || checked ? 0 : 1
+        opacity: innerButton.pressed || checked ? 0 : 1
         Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
         Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad } }
         states: [
@@ -104,7 +103,7 @@ BorderImage {
     Image {
         source: "knobImageRasterActive.png"
         anchors.fill: handle
-        opacity: controller.pressed||checked ? 1 : 0
+        opacity: innerButton.pressed||checked ? 1 : 0
         Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 400 } }
         scale: handle.scale
     }
