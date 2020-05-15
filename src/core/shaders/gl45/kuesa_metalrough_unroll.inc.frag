@@ -27,6 +27,7 @@
 */
 
 #pragma include light_unroll.inc.frag
+#pragma include kuesa_shadowmap.inc.frag
 
 const float M_PI = 3.141592653589793;
 
@@ -200,6 +201,9 @@ vec3 pbrModel(const in Light light,
     // Obtain final intensity as reflectance (BRDF) scaled by the energy of the light (cosine law)
     vec3 color = att * sDotN * light.intensity * light.color
                  * (diffuseContrib + specularContrib);
+
+    float shadowCoverage = light.castsShadows ? shadowMapCoverage(light, wPosition, wNormal, wView) : 1.0;
+    color *= shadowCoverage;
 
     return color;
 }

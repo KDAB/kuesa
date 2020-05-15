@@ -52,6 +52,7 @@
 #include <private/kuesa_utils_p.h>
 #include <private/kuesa_p.h>
 #include <private/scenestages_p.h>
+#include <private/shadowmapstages_p.h>
 #include <private/effectsstages_p.h>
 #include <private/reflectionstages_p.h>
 #include <private/particlerenderstage_p.h>
@@ -451,6 +452,7 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
 View::View(Qt3DCore::QNode *parent)
     : Qt3DRender::QFrameGraphNode(parent)
     , m_sceneStages(SceneStagesPtr::create())
+    , m_shadowMapStages(ShadowMapStagesPtr::create())
     , m_reflectionStages(ReflectionStagesPtr::create())
     , m_fxStages(EffectsStagesPtr::create())
     , m_internalFXStages(EffectsStagesPtr::create())
@@ -463,6 +465,9 @@ View::View(Qt3DCore::QNode *parent)
     QObject::connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::toneMappingAlgorithmChanged, this, &View::toneMappingAlgorithmChanged);
     QObject::connect(m_reflectionStages.data(), &ReflectionStages::reflectionTextureChanged,
                      this, &View::reflectionTextureChanged);
+
+    connect(m_shadowMapStages.get(), &ShadowMapStages::shadowMapsChanged, this, &View::shadowMapsChanged);
+    connect(m_shadowMapStages.get(), &ShadowMapStages::shadowMapsChanged, this, &View::scheduleFGTreeRebuild);
 
     // Setup Internal PostFXs
     {
@@ -636,7 +641,6 @@ QSize View::reflectionTextureSize() const
     Qt3DRender::QAbstractTexture *t = m_reflectionStages->reflectionTexture();
     return {t->width(), t->height()};
 }
-
 /*!
  * Returns the color used to clear the screen at the start of each frame. The
  * color is returned in sRGB color space.
@@ -1108,15 +1112,22 @@ void View::reconfigureStages()
     m_sceneStages->setCamera(m_camera);
     m_sceneStages->setCullingMode(Qt3DRender::QCullFace::Back);
 
+    // Shadowmap Stages
+    m_shadowMapStages->setSkinning(useSkinning);
+    m_shadowMapStages->setFrustumCulling(useFrustumCulling);
+
     // Update layers on sceneStages
     // Remove old layers
     const QVector<Qt3DRender::QLayer *> oldLayers = m_sceneStages->layers();
-    for (Qt3DRender::QLayer *l : oldLayers)
+    for (Qt3DRender::QLayer *l : oldLayers) {
         m_sceneStages->removeLayer(l);
-
+        m_shadowMapStages->removeLayer(l);
+    }
     // Add new ones
-    for (Qt3DRender::QLayer *l : m_layers)
+    for (Qt3DRender::QLayer *l : m_layers) {
         m_sceneStages->addLayer(l);
+        m_shadowMapStages->addLayer(l);
+    }
 
     // FX
     m_fxStages->setCamera(m_camera);
@@ -1170,6 +1181,13 @@ void View::reconfigureFrameGraphHelper(Qt3DRender::QFrameGraphNode *fgRoot)
 {
     // Reconfigure our FG
     m_fg->reconfigure(fgRoot);
+    m_shadowMapStages->setParent(Q_NODE_NULLPTR);
+
+    // Put shadowmap render passes first.  There is one pass per shadow-casting light.
+    // These passes renderer the scene with simple z-fill shader from the light's perspective
+    // into shadowmaps which are passed into the regular render passes defined below.
+    if (m_shadowMapStages->shadowMaps().count() > 0)
+        m_shadowMapStages->setParent(fgRoot);
 
     const bool blocked = blockNotifications(true);
     emit frameGraphTreeReconfigured();
@@ -1211,6 +1229,32 @@ View *View::rootView() const
     return const_cast<View *>(this);
 }
 
-} // Kuesa
+void View::setShadowMapManager(ShadowMapManager *shadowMapManager)
+{
+    if (shadowMapManager == m_shadowMapManager)
+        return;
+
+    m_shadowMapManager = shadowMapManager;
+    connect(shadowMapManager, &ShadowMapManager::shadowMapsChanged, this, &View::setShadowMaps);
+    emit shadowMapManagerChanged(shadowMapManager);
+}
+
+ShadowMapManager *View::shadowMapManager() const
+{
+    return m_shadowMapManager;
+}
+
+void View::setShadowMaps(const QVector<ShadowMapPtr> &activeShadowMaps)
+{
+    m_shadowMapStages->setShadowMaps(activeShadowMaps);
+}
+
+QVector<ShadowMapPtr> View::shadowMaps() const
+{
+    return m_shadowMapStages->shadowMaps();
+}
+
+
+} // namespace Kuesa
 
 QT_END_NAMESPACE

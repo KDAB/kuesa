@@ -61,6 +61,7 @@ class MetallicRoughnessShaderData : public Qt3DRender::QShaderData
     Q_PROPERTY(bool normalUsesTexCoord1 READ isNormalUsingTexCoord1 WRITE setNormalUsesTexCoord1 NOTIFY normalUsesTexCoord1Changed)
     Q_PROPERTY(bool aoUsesTexCoord1 READ isAOUsingTexCoord1 WRITE setAOUsesTexCoord1 NOTIFY aoUsesTexCoord1Changed)
     Q_PROPERTY(bool emissiveUsesTexCoord1 READ isEmissiveUsingTexCoord1 WRITE setEmissiveUsesTexCoord1 NOTIFY emissiveUsesTexCoord1Changed)
+    Q_PROPERTY(bool receivesShadows READ receivesShadows WRITE setReceivesShadows NOTIFY receivesShadowsChanged)
 
     Q_PROPERTY(QColor baseColorFactor READ baseColorFactor WRITE setBaseColorFactor NOTIFY baseColorFactorChanged)
     Q_PROPERTY(QMatrix3x3 baseColorMapTextureTransform READ baseColorMapTextureTransform WRITE setBaseColorMapTextureTransform NOTIFY baseColorMapTextureTransformChanged)
@@ -110,6 +111,8 @@ public:
 
     float alphaCutoff() const;
 
+    bool receivesShadows() const;
+
 public Q_SLOTS:
     void setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1);
     void setMetallicRoughnessUsesTexCoord1(bool metallicRoughnessUsesTexCoord1);
@@ -133,6 +136,8 @@ public Q_SLOTS:
     void setEmissiveMapTextureTransform(const QMatrix3x3 &m);
 
     void setAlphaCutoff(float alphaCutoff);
+
+    void setReceivesShadows(bool receivesShadows);
 
 Q_SIGNALS:
     void baseColorUsesTexCoord1Changed(bool);
@@ -158,6 +163,8 @@ Q_SIGNALS:
 
     void alphaCutoffChanged(float alphaCutoff);
 
+    void receivesShadowsChanged(bool receivesShadows);
+
 private:
     bool m_baseColorUsesTexCoord1;
     bool m_metallicRoughnessUsesTexCoord1;
@@ -181,6 +188,7 @@ private:
     QMatrix3x3 m_emissiveMapTextureTransform;
 
     float m_alphaCutoff;
+    bool m_receivesShadows;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

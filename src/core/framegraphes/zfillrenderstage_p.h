@@ -58,8 +58,13 @@ public:
     void setCullingMode(Qt3DRender::QCullFace::CullingMode mode);
     Qt3DRender::QCullFace::CullingMode cullingMode() const;
 
+    void setFilterKeyValue(const QString &value);
+    void addParameter(Qt3DRender::QParameter *parameter);
+
 private:
     Qt3DRender::QCullFace *m_cullFace;
+    Qt3DRender::QRenderPassFilter *m_passFilter = nullptr;
+    Qt3DRender::QFilterKey *m_filterKey = nullptr;
 };
 } // namespace Kuesa
 

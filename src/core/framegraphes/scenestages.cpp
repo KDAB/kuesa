@@ -89,6 +89,11 @@ bool SceneFeaturedRenderStageBase::particlesEnabled() const
     return m_features & Particles;
 }
 
+bool SceneFeaturedRenderStageBase::cubeShadowMap() const
+{
+    return m_features & CubeShadowMap;
+}
+
 SceneFeaturedRenderStageBase::Features SceneFeaturedRenderStageBase::features() const
 {
     return m_features;
@@ -134,10 +139,19 @@ void SceneFeaturedRenderStageBase::setParticlesEnabled(bool enabled)
     reconfigure(m_features);
 }
 
+void SceneFeaturedRenderStageBase::setCubeShadowMap(bool cubeShadowMap)
+{
+    if (cubeShadowMap == bool(m_features & CubeShadowMap))
+        return;
+    m_features.setFlag(CubeShadowMap, cubeShadowMap);
+    reconfigure(m_features);
+}
+
+
 /*!
     \internal
 
-    This represent one pass of rendering for the scene (ZFill or Opaque or Transparent)
+    This represent one pass of rendering for the scene (ZFill, Opaque, Transparent, or Shadowmap)
 
     This takes care of performing the selected pass type for both non skinned and skinned
     meshes (if enabled)
@@ -196,6 +210,11 @@ ScenePass::ScenePass(ScenePass::SceneStageType type, Qt3DRender::QFrameGraphNode
         m_skinnedStage = new ZFillRenderStage();
         break;
     }
+    case ShadowMap: {
+        m_nonSkinnedStage = new ZFillRenderStage();
+        m_skinnedStage = new ZFillRenderStage();
+        break;
+    }
     }
 
     // Force initial configuration
@@ -248,6 +267,7 @@ void ScenePass::reconfigure(const Features features)
     const bool useZFilling = bool(features & ZFilling);
     const bool sortBackToFront = bool(features & BackToFrontSorting);
     const bool useFrustumCulling = bool(features & FrustumCulling);
+    const bool cubeShadowMap = bool(features & CubeShadowMap);
 
     // Unparent all nodes
     m_nonSkinnedStage->setParent(Q_NODE_NULLPTR);
@@ -274,6 +294,12 @@ void ScenePass::reconfigure(const Features features)
     case ZFill: {
         static_cast<ZFillRenderStage *>(m_nonSkinnedStage)->setCullingMode(m_cullingMode);
         static_cast<ZFillRenderStage *>(m_skinnedStage)->setCullingMode(m_cullingMode);
+        break;
+    }
+    case ShadowMap: {
+        const auto zFillType = cubeShadowMap ? QStringLiteral("CubeShadowMap") : QStringLiteral("ZFill");
+        static_cast<ZFillRenderStage *>(m_nonSkinnedStage)->setFilterKeyValue(zFillType);
+        static_cast<ZFillRenderStage *>(m_skinnedStage)->setFilterKeyValue(zFillType);
         break;
     }
     default:

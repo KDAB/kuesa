@@ -169,6 +169,8 @@ void AbstractAssetCollection::addAsset(const QString &name, Qt3DCore::QNode *ass
 
     if (!nameExists)
         emit namesChanged();
+
+    emit assetAdded(name);
 }
 
 void AbstractAssetCollection::handleAssetDestruction(const QString &name)
@@ -184,12 +186,12 @@ void AbstractAssetCollection::addDestructionConnection(const QString &name, Qt3D
 {
     // Remove destroyed nodes from our collection so we don't keep dangling pointer
     auto f = [this, name]() { handleAssetDestruction(name); };
-    m_destructionConnections.insert({name, asset}, connect(asset, &Qt3DCore::QNode::nodeDestroyed, this, f));
+    m_destructionConnections.insert({ name, asset }, connect(asset, &Qt3DCore::QNode::nodeDestroyed, this, f));
 }
 
 void AbstractAssetCollection::removeDestructionConnection(const QString &name, Qt3DCore::QNode *asset)
 {
-    QObject::disconnect(m_destructionConnections.take({name, asset}));
+    QObject::disconnect(m_destructionConnections.take({ name, asset }));
 }
 
 void AbstractAssetCollection::clearDestructionConnections()

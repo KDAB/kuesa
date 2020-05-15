@@ -86,22 +86,16 @@ namespace Kuesa {
  */
 
 DirectionalLightPrivate::DirectionalLightPrivate()
-    : QAbstractLightPrivate(Qt3DRender::QAbstractLight::DirectionalLight)
+    : ShadowCastingLightPrivate(Qt3DRender::QAbstractLight::DirectionalLight)
 {
-    // Set all light uniforms, including ones that don't apply to this light type
-    // TODO: Move this into common class when adding shadows
-    m_shaderData->setProperty("direction", QVector3D(0.0f, -1.0f, 0.0f));
     m_shaderData->setProperty("directionTransformed", Qt3DRender::Render::ShaderData::NoTransform);
-    m_shaderData->setProperty("range", 0.0f);
-    m_shaderData->setProperty("lightAngleScale", 0);
-    m_shaderData->setProperty("lightAngleOffset", 0);
 }
 
 /*!
     Constructs a new DirectionalLight with the specified \a parent.
  */
 DirectionalLight::DirectionalLight(QNode *parent)
-    : QAbstractLight(*new DirectionalLightPrivate, parent)
+    : ShadowCastingLight(*new DirectionalLightPrivate, parent)
 {
 }
 
@@ -112,7 +106,7 @@ DirectionalLight::~DirectionalLight()
 
 /*! \internal */
 DirectionalLight::DirectionalLight(DirectionalLightPrivate &dd, QNode *parent)
-    : QAbstractLight(dd, parent)
+    : ShadowCastingLight(dd, parent)
 {
 }
 

@@ -61,8 +61,13 @@ Q_SIGNALS:
 protected:
     explicit GLTF2Material(Qt3DCore::QNode *parent = nullptr);
 
+    void setShadowMapDepthTexture(Qt3DRender::QAbstractTexture *depthTexture);
+    void setShadowMapCubeDepthTexture(Qt3DRender::QAbstractTexture *cubeDepthTexture);
+
     Qt3DRender::QParameter *m_morphControllerParameter;
     Qt3DRender::QParameter *m_textureTransformParameter;
+    Qt3DRender::QParameter *m_shadowMapDepthTextureParameter;
+    Qt3DRender::QParameter *m_shadowMapCubeDepthTextureParameter;
 };
 
 } // namespace Kuesa

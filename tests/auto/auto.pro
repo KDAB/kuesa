@@ -68,6 +68,7 @@ qtConfig(private_tests) {
         gltfexporter \
         layerparser \
         lightparser \
+        shadowparser \
         imageparser \
         tangentgenerator \
         texturesamplerparser \

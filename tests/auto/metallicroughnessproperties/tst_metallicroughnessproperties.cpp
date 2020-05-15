@@ -324,6 +324,19 @@ private Q_SLOTS:
                        0.0f, 0.5f);
     }
 
+    void checkReceivesShadows()
+    {
+        // GIVEN
+        Kuesa::MetallicRoughnessProperties mat;
+
+        // THEN
+        ::testProperty(&mat,
+                       &MetallicRoughnessProperties::setReceivesShadows,
+                       &MetallicRoughnessProperties::receivesShadows,
+                       &MetallicRoughnessProperties::receivesShadowsChanged,
+                       false, true);
+    }
+
     void checkTextureBookeeping()
     {
         // Given

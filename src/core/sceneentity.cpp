@@ -118,6 +118,16 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     m_brdfLUT->setObjectName(QLatin1String("_kuesa_brdfLUT"));
     m_brdfLUT->setSource(QUrl(QLatin1String("qrc:/kuesa/shaders/brdfLUT.png")));
     m_brdfLUT->setWrapMode(Qt3DRender::QTextureWrapMode(Qt3DRender::QTextureWrapMode::ClampToEdge));
+
+    // Add ShadowMap backend light info gatherer entity to scene.
+    m_lights->shadowMapManager()->setSceneEntity(this);
+
+    connect(m_materials, &AbstractAssetCollection::assetAdded, [this](const QString &name) {
+        const auto material = qobject_cast<GLTF2MaterialProperties *>(m_materials->findAsset(name));
+        Q_ASSERT(material);
+        material->setShadowMapDepthTexture(m_lights->shadowMapManager()->depthTexture());
+        material->setShadowMapCubeDepthTexture(m_lights->shadowMapManager()->cubeDepthTexture());
+    });
 }
 
 SceneEntity::~SceneEntity() = default;
@@ -364,6 +374,11 @@ Kuesa::LightCollection *SceneEntity::lights() const
 Qt3DRender::QAbstractLight *SceneEntity::light(const QString &name) const
 {
     return m_lights->find(name);
+}
+
+ShadowMapManager *SceneEntity::shadowMapManager() const
+{
+    return m_lights->shadowMapManager();
 }
 
 Kuesa::ReflectionPlaneCollection *SceneEntity::reflectionPlanes() const

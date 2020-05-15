@@ -162,6 +162,10 @@ void MetallicRoughnessMaterial::setMaterialProperties(MetallicRoughnessPropertie
                              this, [this](Qt3DRender::QAbstractTexture *t) { m_metalRoughMapParameter->setValue(QVariant::fromValue(t)); });
             QObject::connect(m_materialProperties, &MetallicRoughnessProperties::ambientOcclusionMapChanged,
                              this, [this](Qt3DRender::QAbstractTexture *t) { m_ambientOcclusionMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &MetallicRoughnessProperties::shadowMapDepthTextureChanged,
+                             this, &MetallicRoughnessMaterial::setShadowMapDepthTexture);
+            QObject::connect(m_materialProperties, &MetallicRoughnessProperties::shadowMapCubeDepthTextureChanged,
+                             this, &MetallicRoughnessMaterial::setShadowMapCubeDepthTexture);
 
             // Enforce sRGB for baseColorMap and emissiveMap
             QObject::connect(m_materialProperties, &MetallicRoughnessProperties::baseColorMapChanged, this, &MetallicRoughnessMaterial::enforceSRGBOnTexture);
@@ -178,6 +182,9 @@ void MetallicRoughnessMaterial::setMaterialProperties(MetallicRoughnessPropertie
 
             m_metallicRoughnessShaderDataParameter->setValue(QVariant::fromValue(metallicRoughnessProperties->shaderData()));
             metallicRoughnessProperties->addClientMaterial(this);
+
+            setShadowMapDepthTexture(m_materialProperties->shadowMapDepthTexture());
+            setShadowMapCubeDepthTexture(m_materialProperties->shadowMapCubeDepthTexture());
         }
     }
 }

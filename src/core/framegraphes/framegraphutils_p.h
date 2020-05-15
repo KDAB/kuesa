@@ -63,10 +63,13 @@ public:
         bool hasHalfFloatRenderable = false;
         bool hasMultisampledTexture = false;
         bool hasMultisampledFBO = false;
+
+        bool hasCubeMapArrayTextures = false;
     };
 
     static RenderingFeatures checkRenderingFeatures();
     static bool hasHalfFloatRenderable();
+    static bool hasCubeMapArrayTextures();
 
     enum RenderTargetFlag {
         IncludeDepth = (1 << 0),

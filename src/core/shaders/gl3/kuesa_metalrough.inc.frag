@@ -27,6 +27,7 @@
 */
 
 #pragma include light.inc.frag
+#pragma include kuesa_shadowmap.inc.frag
 
 const float M_PI = 3.141592653589793;
 
@@ -122,7 +123,8 @@ vec3 pbrModel(const in int lightIndex,
               const in vec3 baseColor,
               const in float metalness,
               const in float alpha,
-              const in float ambientOcclusion)
+              const in float ambientOcclusion,
+              const in bool receivesShadows)
 {
     // Calculate some useful quantities
     vec3 n = wNormal;
@@ -201,6 +203,9 @@ vec3 pbrModel(const in int lightIndex,
     vec3 color = att * sDotN * lights[lightIndex].intensity * lights[lightIndex].color
                  * (diffuseContrib + specularContrib);
 
+    float shadowCoverage = light.castsShadows && receivesShadows ? shadowMapCoverage(light, wPosition, wNormal, wView) : 1.0;
+    color *= shadowCoverage;
+
     return color;
 }
 
@@ -266,7 +271,8 @@ vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                               const in vec4 emissive,
                               const in vec3 worldPosition,
                               const in vec3 worldView,
-                              const in vec3 worldNormal)
+                              const in vec3 worldNormal,
+                              const in bool receivesShadows)
 {
     vec3 cLinear = vec3(0.0);
 
@@ -292,7 +298,8 @@ vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                             baseColor.rgb,
                             metalness,
                             alpha,
-                            ambientOcclusion);
+                            ambientOcclusion,
+                            receivesShadows);
     }
 
     // Apply ambient occlusion and emissive channels

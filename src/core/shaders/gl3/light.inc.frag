@@ -34,11 +34,17 @@ struct Light {
     int type;
     vec3 position;
     vec3 color;
-    float intensity;
     vec3 direction;
+    float intensity;
     float range;
     float lightAngleScale;
     float lightAngleOffset;
+    float shadowBias;
+    bool castsShadows;
+    bool usePCF;
+    mat4 lightProjectionMatrix;
+    vec2 nearFarPlanes;
+    int depthArrayIndex;
 };
 uniform Light lights[MAX_LIGHTS];
 uniform int lightCount;

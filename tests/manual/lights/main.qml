@@ -32,70 +32,199 @@ import Qt3D.Input 2.0
 import Qt3D.Extras 2.10
 import Qt3D.Animation 2.10
 import QtQuick 2.10 as QQ2
-import Kuesa 1.1 as Kuesa
+import Kuesa 1.3 as Kuesa
 import Kuesa.Utils 1.3 as KuesaUtils
 
 Kuesa.SceneEntity {
     id: scene
 
-    property int lightType: 0;
+    property int sourceNo: 0;
+    readonly property bool bigScene: sourceNo == 3
+    readonly property var sources: [
+        "file:///" + ASSETS + "manual/assets/Duck/glTF/Duck.gltf",
+        "file:///" + ASSETS + "auto/assets/simple_cube.gltf",
+        "file:///" + ASSETS + "manual/assets/Box/glTF/Box.gltf",
+        "file:///" + ASSETS + "manual/assets/AntiqueCamera/glTF-Binary/AntiqueCamera.glb",
+    ]
+
     property real lightRotation: 0;
-    readonly property real lightDist: 2;
-    readonly property vector3d lightPos: Qt.vector3d( lightDist * Math.sin(lightRotation * Math.PI/180), lightDist, lightDist * Math.cos(lightRotation * Math.PI/180))
+    readonly property real lightDist: bigScene ? 3 : 1;
+    property bool softShadows: true
+    property bool showEnvironmentLight: true
+    property bool showShadowCoverage: false
+    readonly property int numLights: 6
+    property var lightArray: [pointLight, directionalLight, spotLight, pointLight2, directionalLight2, spotLight2];
+    readonly property size textureSize: bigScene ? Qt.size(1024, 1024) : Qt.size(512, 512)
+
+    function calculateLightPos(lightIndex)
+    {
+        var rotationAmt = lightRotation + lightIndex * 360/numLights;
+        return Qt.vector3d( 1.5 * lightDist * Math.sin(rotationAmt * Math.PI/180), 2 * lightDist, .75 *lightDist * Math.cos(rotationAmt * Math.PI/180))
+    }
+
+
 
     Entity {
         components: [
             Transform {
-                translation: lightPos
+                translation: calculateLightPos(pointLight.lightIndex)
             },
             Kuesa.PointLight{
                 id: pointLight
-                color: "#ffffff"
-                intensity: 5;
-                enabled: lightType == 0
+                readonly property int lightIndex: 0
+                intensity: 5 * lightDist;
+                castsShadows: true
+                softShadows: scene.softShadows
+                textureSize: scene.textureSize
             }
         ]
     }
     Entity {
         components: [
             Transform {
-                rotationY: lightRotation
+                translation: calculateLightPos(pointLight2.lightIndex)
             },
-            Kuesa.DirectionalLight{
-                id: directionalLight
-                color: "#ffffff"
-                intensity: 5;
-                enabled: lightType == 1
-                direction: lightPos.times(-1);
-            }
-        ]
-    }
-    Entity {
-        components: [
-            Transform {
-                translation: lightPos
-            },
-            Kuesa.SpotLight{
-                id: spotLight
-                color: "#ffffff"
-                intensity: 5;
-                enabled: lightType == 2
-                outerConeAngle: 5
-                localDirection:  lightPos.times(-1);
+            Kuesa.PointLight{
+                id: pointLight2
+                readonly property int lightIndex: 3
+                intensity: pointLight.intensity
+                castsShadows: true
+                softShadows: pointLight.softShadows
+                textureSize: scene.textureSize
             }
         ]
     }
 
+
+    Entity {
+        components: [
+            Kuesa.DirectionalLight{
+                id: directionalLight
+                readonly property int lightIndex: 1
+                intensity: 5;
+                direction: calculateLightPos(lightIndex).times(-1);
+                castsShadows: true
+                softShadows: scene.softShadows
+                textureSize: scene.textureSize
+            }
+        ]
+    }
+    Entity {
+        components: [
+            Kuesa.DirectionalLight{
+                id: directionalLight2
+                readonly property int lightIndex: 4
+                intensity: directionalLight.intensity;
+                direction: calculateLightPos(lightIndex).times(-1);
+                castsShadows: true
+                softShadows: directionalLight.softShadows
+                textureSize: scene.textureSize
+            }
+        ]
+    }
+
+    Entity {
+        components: [
+            Transform {
+                translation: calculateLightPos(spotLight.lightIndex)
+            },
+            Kuesa.SpotLight{
+                id: spotLight
+                readonly property int lightIndex: 2
+                intensity: 5 * lightDist;
+                outerConeAngle: 45
+                localDirection: calculateLightPos(lightIndex).times(-1)
+                castsShadows: true
+                softShadows: scene.softShadows
+                textureSize: scene.textureSize
+            }
+        ]
+    }
+    Entity {
+        components: [
+            Transform {
+                translation: calculateLightPos(spotLight2.lightIndex)
+             },
+            Kuesa.SpotLight{
+                id: spotLight2
+                readonly property int lightIndex: 5
+                intensity: 5 * lightDist;
+                outerConeAngle: spotLight.outerConeAngle
+                localDirection: calculateLightPos(lightIndex).times(-1)
+                castsShadows: true
+                softShadows: spotLight.softShadows
+                textureSize: scene.textureSize
+            }
+        ]
+    }
+
+    Entity {
+        id: plane
+        components: [
+            PlaneMesh {
+                width: bigScene ? 15 : 7
+                height: bigScene ? 15 : 7
+            },
+            Transform {
+                translation: Qt.vector3d(0, -.1, 0)
+            },
+            Kuesa.MetallicRoughnessMaterial {
+                id: planeMat
+                effect: Kuesa.MetallicRoughnessEffect {
+                    usingNormalAttribute: true
+                }
+                materialProperties: Kuesa.MetallicRoughnessProperties {
+                    id: planeMatProperties
+                    baseColorFactor: Qt.rgba(1.0, 1.0, 1.0)
+                    metallicFactor: .75
+                    roughnessFactor: .2
+                    receivesShadows: true
+                }
+            }
+        ]
+    }
+    NodeInstantiator
+    {
+        model: lightArray.length
+        delegate: Entity {
+            id: lightSphere
+            enabled: lightArray[model.index].enabled
+            components: [
+                SphereMesh{
+                    radius: .1
+                    slices: 10
+                    rings: 10
+                },
+                Transform {
+                    translation: calculateLightPos(model.index)
+                },
+                Kuesa.MetallicRoughnessMaterial {
+                    id: sphereMat
+                    effect: Kuesa.MetallicRoughnessEffect {
+                        usingNormalAttribute: true
+                    }
+                    materialProperties: Kuesa.MetallicRoughnessProperties {
+                        baseColorFactor: model.index % 3 == 0 ? Qt.rgba(1.0, 0.0, 0.0) : model.index % 3 == 1 ? Qt.rgba(0.0, 1.0, 0.0) : Qt.rgba(0.0, 0.0, 1.0)
+                        metallicFactor: .75
+                        roughnessFactor: .2
+                    }
+                }
+            ]
+        }
+    }
     components: [
         RenderSettings {
             activeFrameGraph: Kuesa.ForwardRenderer {
                 id: frameGraph
                 camera: mainCamera
                 clearColor: "black"
+                shadowMapManager: scene.shadowMapManager
             }
         },
         InputSettings { },
         EnvironmentLight {
+            id: environmentLight
+            enabled: showEnvironmentLight
             irradiance: TextureLoader {
                 source: "qrc:/wobbly_bridge_16f_irradiance.dds"
                 wrapMode {
@@ -121,7 +250,7 @@ Kuesa.SceneEntity {
         from: 0
         to: 360
         running: true
-        duration: 6000
+        duration: 12000
     }
 
 
@@ -141,10 +270,20 @@ Kuesa.SceneEntity {
     Kuesa.GLTF2Importer {
         id: gltf2importer
         sceneEntity: scene
-        source: "file:///" + ASSETS + "manual/assets/Duck/glTF/Duck.gltf"
+        source: scene.sources[0]
     }
 
     onLoadingDone: {
+        for (var i = 1; i< lightArray.length; i++) {
+            lightArray[i].enabled = false;
+       }
+        scene.lights.add("point light", pointLight);
+        scene.lights.add("point light 2", pointLight2);
+        scene.lights.add("directional light", directionalLight);
+        scene.lights.add("directional light 2", directionalLight2);
+        scene.lights.add("spotlight", spotLight);
+        scene.lights.add("spotlight 2", spotLight2);
+        scene.materials.add("planeMaterial", planeMatProperties);
         mainCamera.viewAll()
     }
 
@@ -152,19 +291,27 @@ Kuesa.SceneEntity {
     KeyboardHandler {
         sourceDevice: kb
         focus: true
-        onSpacePressed: lightAnimation.running = !lightAnimation.running
-
-        onDigit1Pressed: {
-            scene.lightType = 0;
-        }
-        onDigit2Pressed: {
-            scene.lightType = 1;
-        }
-        onDigit3Pressed: {
-            scene.lightType = 2;
-        }
-        onDigit4Pressed: {
-            scene.lightType = 4;
+        onSpacePressed: lightAnimation.paused = !lightAnimation.paused
+        onPressed: {
+            if (event.key == Qt.Key_E)
+                scene.showEnvironmentLight = !showEnvironmentLight;
+            else if (event.key == Qt.Key_S)
+            {
+                ++scene.sourceNo;
+                gltf2importer.source = scene.sources[sourceNo%sources.length];
+            }
+            else if (event.key == Qt.Key_Plus)
+                ++scene.lightDist;
+            else if (event.key == Qt.Key_Minus)
+                --scene.lightDist;
+            else if (event.key == Qt.Key_P)
+                scene.softShadows = !scene.softShadows;
+            else if (event.key >= Qt.Key_1 && event.key <= Qt.Key_6)
+            {
+                var light = lightArray[event.key - Qt.Key_1];
+                light.enabled = !light.enabled;
+                console.log("light "+ light + " enabled = " + light.enabled);
+            }
         }
     }
 }

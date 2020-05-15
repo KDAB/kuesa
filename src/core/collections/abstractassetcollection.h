@@ -61,6 +61,7 @@ protected:
 Q_SIGNALS:
     void namesChanged();
     void sizeChanged();
+    void assetAdded(const QString &name);
 
 private:
     void handleAssetDestruction(const QString &name);
@@ -79,7 +80,7 @@ QT_END_NAMESPACE
 #define KUESA_ASSET_COLLECTION_IMPLEMENTATION(AssetType)                       \
 public:                                                                        \
     using ContentType = AssetType;                                             \
-    void add(const QString &name, AssetType *asset) { addAsset(name, asset); } \
+    Q_INVOKABLE void add(const QString &name, AssetType *asset) { addAsset(name, asset); } \
     Q_INVOKABLE AssetType *find(const QString &name) { return static_cast<AssetType *>(findAsset(name)); }
 
 #endif // KUESA_ABSTRACTASSETCOLLECTION_H

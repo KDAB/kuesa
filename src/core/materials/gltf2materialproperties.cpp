@@ -100,10 +100,25 @@ namespace Kuesa {
     result. For alphaCutoff to have any effect, it must be activated.
  */
 
+/*!
+    \qmlproperty bool GLTF2MaterialProperties::receivesShadows
+
+    Specifies whether a surface should show any shadows that are cast on it.  This
+    Default is true
+ */
+
+/*!
+    \property GLTF2MaterialProperties::receivesShadows
+
+    Specifies whether a surface should show any shadows that are cast on it.  This
+    Default is true
+ */
+
 GLTF2MaterialProperties::GLTF2MaterialProperties(Qt3DCore::QNode *parent)
     : Qt3DCore::QNode(parent)
     , m_alphaCutOff(0.0f)
     , m_usesTexCoord1(false)
+    , m_receivesShadows(true)
     , m_baseColorTexture(nullptr)
     , m_baseColorFactor(QColor("gray"))
 {
@@ -127,6 +142,39 @@ void GLTF2MaterialProperties::addClientMaterial(Qt3DRender::QMaterial *material)
 QVector<Qt3DRender::QMaterial *> GLTF2MaterialProperties::clientMaterials() const
 {
     return m_clientMaterials;
+}
+
+void GLTF2MaterialProperties::setShadowMapDepthTexture(Qt3DRender::QAbstractTexture *depthTexture)
+{
+    if (m_shadowMapTexture == depthTexture)
+        return;
+
+    m_shadowMapTexture = depthTexture;
+    emit shadowMapDepthTextureChanged(m_shadowMapTexture);
+}
+
+void GLTF2MaterialProperties::setShadowMapCubeDepthTexture(Qt3DRender::QAbstractTexture *cubeMapDepthTexture)
+{
+    if (m_shadowMapCubeTexture == cubeMapDepthTexture)
+        return;
+
+    m_shadowMapCubeTexture = cubeMapDepthTexture;
+    emit shadowMapCubeDepthTextureChanged(m_shadowMapCubeTexture);
+}
+
+Qt3DRender::QAbstractTexture *GLTF2MaterialProperties::shadowMapDepthTexture() const
+{
+    return m_shadowMapTexture;
+}
+
+Qt3DRender::QAbstractTexture *GLTF2MaterialProperties::shadowMapCubeDepthTexture() const
+{
+    return m_shadowMapCubeTexture;
+}
+
+bool GLTF2MaterialProperties::receivesShadows() const
+{
+    return m_receivesShadows;
 }
 
 bool GLTF2MaterialProperties::isBaseColorUsingTexCoord1() const
@@ -184,6 +232,15 @@ void GLTF2MaterialProperties::setAlphaCutoff(float alphaCutoff)
         return;
     m_alphaCutOff = alphaCutoff;
     emit alphaCutoffChanged(m_alphaCutOff);
+}
+
+void Kuesa::GLTF2MaterialProperties::setReceivesShadows(bool receivesShadows)
+{
+    if (m_receivesShadows == receivesShadows)
+        return;
+
+    m_receivesShadows = receivesShadows;
+    emit receivesShadowsChanged(m_receivesShadows);
 }
 
 } // namespace Kuesa

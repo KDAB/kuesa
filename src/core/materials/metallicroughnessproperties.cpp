@@ -395,6 +395,8 @@ MetallicRoughnessProperties::MetallicRoughnessProperties(Qt3DCore::QNode *parent
              m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorUsesTexCoord1);
     QObject::connect(this, &GLTF2MaterialProperties::alphaCutoffChanged,
              m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setAlphaCutoff);
+    QObject::connect(this, &GLTF2MaterialProperties::receivesShadowsChanged,
+                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setReceivesShadows);
 
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::metallicRoughnessUsesTexCoord1Changed,
              this, &MetallicRoughnessProperties::metallicRoughnessUsesTexCoord1Changed);

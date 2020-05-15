@@ -77,11 +77,13 @@ private:
     Qt3DRender::QBlendEquationArguments *m_blendArguments;
     Qt3DRender::QShaderProgramBuilder *m_metalRoughShaderBuilder;
     Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
+    Qt3DRender::QShaderProgramBuilder *m_cubeMapShadowShaderBuilder;
     Qt3DRender::QShaderProgram *m_metalRoughShader;
     Qt3DRender::QShaderProgram *m_zfillShader;
     Qt3DRender::QRenderPass *m_zfillRenderPass;
     Qt3DRender::QRenderPass *m_opaqueRenderPass;
     Qt3DRender::QRenderPass *m_transparentRenderPass;
+    Qt3DRender::QRenderPass *m_cubeMapShadowRenderPass;
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
@@ -150,6 +152,7 @@ private:
     void updateUsingTexCoordAttribute(bool enabled) override;
     void updateUsingTexCoord1Attribute(bool enabled) override;
     void updateUsingMorphTargets(bool usingMorphTargets) override;
+    void updateUsingCubeMapArrays(bool usingCubeMapArrays) override;
 };
 
 } // namespace Kuesa

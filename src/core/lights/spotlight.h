@@ -29,14 +29,13 @@
 #ifndef KUESA_SPOTLIGHT_H
 #define KUESA_SPOTLIGHT_H
 
-#include <QAbstractLight>
+#include <Kuesa/shadowcastinglight.h>
 #include <Kuesa/kuesa_global.h>
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 class SpotLightPrivate;
-class KUESASHARED_EXPORT SpotLight : public Qt3DRender::QAbstractLight
+class KUESASHARED_EXPORT SpotLight : public ShadowCastingLight
 {
     Q_OBJECT
     Q_PROPERTY(QVector3D localDirection READ localDirection WRITE setLocalDirection NOTIFY localDirectionChanged)

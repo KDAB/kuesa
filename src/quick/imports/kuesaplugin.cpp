@@ -84,6 +84,7 @@
 #include <Kuesa/IroDiffuseAlphaMaterial>
 #include <Kuesa/IroDiffuseAlphaEffect>
 #include <Kuesa/IroDiffuseAlphaProperties>
+#include <Kuesa/ShadowMap>
 #include <KuesaUtils/orbitcameracontroller.h>
 #include <KuesaUtils/boundingvolumerenderer.h>
 #include <KuesaUtils/view3dscene.h>
@@ -134,6 +135,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::AnimationClipCollection>(uri, 1, 0, "AnimationClipCollection", QStringLiteral("You are not supposed to create an AnimationClipCollection"));
     qmlRegisterUncreatableType<Kuesa::TransformCollection>(uri, 1, 0, "TransformCollection", QStringLiteral("You are not supposed to create a TransformCollection"));
     qmlRegisterUncreatableType<Kuesa::ReflectionPlaneCollection>(uri, 1, 0, "ReflectionPlaneCollection", QStringLiteral("You are not supposed to create a ReflectionPlaneCollection"));
+    qmlRegisterUncreatableType<Kuesa::LightCollection>(uri, 1, 3, "LightCollection", QStringLiteral("You are not supposed to create an LightCollection"));
 
     // FrameGraphs
     Qt3DCore::Quick::registerExtendedType<Kuesa::ReflectionPlane, Kuesa::ReflectionPlaneExtension>("ReflectionPlane", "Kuesa/ReflectionPlane", uri, 1, 0, "ReflectionPlane");
@@ -141,6 +143,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     Qt3DCore::Quick::registerExtendedType<Kuesa::ForwardRenderer, Kuesa::ForwardRendererExtension>("ForwardRenderer", "Kuesa/ForwardRenderer", uri, 1, 0, "ForwardRenderer");
 
     // Lights
+    qmlRegisterUncreatableType<Kuesa::ShadowCastingLight>(uri, 1, 3, "ShadowCastingLight", QStringLiteral("ShadowCastingLight is abstract"));
     qmlRegisterType<Kuesa::DirectionalLight>(uri, 1, 0, "DirectionalLight");
     qmlRegisterType<Kuesa::PointLight>(uri, 1, 0, "PointLight");
     qmlRegisterType<Kuesa::SpotLight>(uri, 1, 0, "SpotLight");

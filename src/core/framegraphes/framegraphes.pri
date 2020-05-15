@@ -34,6 +34,7 @@ SOURCES += \
     $$PWD/framegraphutils.cpp \
     $$PWD/reflectionplane.cpp \
     $$PWD/reflectionstages.cpp \
+    $$PWD/shadowmapstages.cpp \
     $$PWD/scenestages.cpp \
     $$PWD/view.cpp \
     $$PWD/viewresolver.cpp \
@@ -50,6 +51,7 @@ HEADERS += \
     $$PWD/framegraphutils_p.h \
     $$PWD/reflectionplane.h \
     $$PWD/reflectionstages_p.h \
+    $$PWD/shadowmapstages_p.h \
     $$PWD/scenestages_p.h \
     $$PWD/view.h \
     $$PWD/viewresolver_p.h \

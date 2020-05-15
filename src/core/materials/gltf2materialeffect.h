@@ -89,6 +89,9 @@ protected:
     virtual void updateUsingTexCoord1Attribute(bool enabled) = 0;
     virtual void updateUsingMorphTargets(bool usingMorphTargets) = 0;
 
+    // Todo: make this pure virtual and implement in iro materials
+    virtual void updateUsingCubeMapArrays(bool usingCubeMapArrays);
+
 Q_SIGNALS:
     void doubleSidedChanged(bool doubleSided);
     void usingSkinningChanged(bool useSkinning);

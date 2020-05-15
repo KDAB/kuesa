@@ -107,15 +107,9 @@ namespace Kuesa {
  */
 
 SpotLightPrivate::SpotLightPrivate()
-    : QAbstractLightPrivate(Qt3DRender::QAbstractLight::SpotLight)
+    : ShadowCastingLightPrivate(Qt3DRender::QAbstractLight::SpotLight)
 {
-    // Set all light uniforms, including ones that don't apply to this light type
-    // TODO: Move this into common class when adding shadows
-    m_shaderData->setProperty("direction", QVector3D(0.0f, -1.0f, 0.0f));
     m_shaderData->setProperty("directionTransformed", Qt3DRender::Render::ShaderData::ModelToWorldDirection);
-    m_shaderData->setProperty("range", 0.0f);
-    m_shaderData->setProperty("lightAngleScale", 0);
-    m_shaderData->setProperty("lightAngleOffset", 0);
 }
 
 /*!
@@ -124,7 +118,7 @@ SpotLightPrivate::SpotLightPrivate()
     of its containing Entity.
  */
 SpotLight::SpotLight(QNode *parent)
-    : QAbstractLight(*new SpotLightPrivate, parent)
+    : ShadowCastingLight(*new SpotLightPrivate, parent)
     , m_innerConeAngle(90.0f)
     , m_outerConeAngle(90.0f)
 {
@@ -138,7 +132,7 @@ SpotLight::~SpotLight()
 
 /*! \internal */
 SpotLight::SpotLight(SpotLightPrivate &dd, QNode *parent)
-    : QAbstractLight(dd, parent)
+    : ShadowCastingLight(dd, parent)
 {
 }
 

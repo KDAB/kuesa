@@ -37,7 +37,7 @@
 // modified without notice
 //
 
-#include <Qt3DRender/private/qabstractlight_p.h>
+#include <Kuesa/private/shadowcastinglight_p.h>
 #include <Kuesa/private/kuesa_global_p.h>
 
 QT_BEGIN_NAMESPACE
@@ -46,7 +46,7 @@ namespace Kuesa {
 
 class PointLight;
 
-class KUESA_PRIVATE_EXPORT PointLightPrivate : public Qt3DRender::QAbstractLightPrivate
+class KUESA_PRIVATE_EXPORT PointLightPrivate : public ShadowCastingLightPrivate
 {
 public:
     PointLightPrivate();

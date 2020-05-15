@@ -591,6 +591,7 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
         QStringList unsupportedExtensions;
         const QStringList supportedExtensions = {
             KEY_KDAB_KUESA_LAYER_EXTENSION,
+            KEY_KDAB_KUESA_SHADOWS_EXTENSION,
             KEY_MSFT_DDS_EXTENSION,
 #if defined(KUESA_DRACO_COMPRESSION)
             KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION,
@@ -686,7 +687,7 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
                     if (treeNode.cameraIdx >= 0)
                         addToCollectionWithUniqueName(m_sceneEntity->cameras(), treeNode.name, qobject_cast<Qt3DRender::QCamera *>(treeNode.entity));
 
-                    auto light = componentFromEntity<Qt3DRender::QAbstractLight>(treeNode.entity);
+                    auto light = componentFromEntity<ShadowCastingLight>(treeNode.entity);
                     if (light)
                         addToCollectionWithUniqueName(m_sceneEntity->lights(), light->objectName(), light);
 
@@ -711,7 +712,7 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
                         if (treeNode.cameraIdx >= 0)
                             addToCollectionWithUniqueName(m_sceneEntity->cameras(), QStringLiteral("KuesaCamera_%1").arg(j), qobject_cast<Qt3DRender::QCamera *>(treeNode.entity));
 
-                        auto light = componentFromEntity<Qt3DRender::QAbstractLight>(treeNode.entity);
+                        auto light = componentFromEntity<ShadowCastingLight>(treeNode.entity);
                         if (light)
                             addToCollectionWithUniqueName(m_sceneEntity->lights(), QStringLiteral("KuesaLight_%1").arg(j), light);
 
@@ -1490,7 +1491,7 @@ void GLTF2Parser::createLight(const TreeNode &node)
     // If the node references Light (KHR_lights_punctual extension), add them
     if (node.lightIdx != -1 && node.lightIdx < qint32(m_context->lightCount())) {
         const Light lightDefinition = m_context->light(node.lightIdx);
-        Qt3DRender::QAbstractLight *light = lightDefinition.lightComponent;
+        auto light = qobject_cast<ShadowCastingLight *>(lightDefinition.lightComponent);
         if (light == nullptr) {
             switch (lightDefinition.type) {
             case Qt3DRender::QAbstractLight::PointLight: {
@@ -1518,6 +1519,11 @@ void GLTF2Parser::createLight(const TreeNode &node)
             light->setObjectName(lightDefinition.name);
             light->setColor(lightDefinition.color);
             light->setIntensity(lightDefinition.intensity);
+            light->setCastsShadows(lightDefinition.castsShadows);
+            light->setSoftShadows(lightDefinition.softShadows);
+            light->setTextureSize(lightDefinition.shadowMapTextureSize);
+            light->setShadowMapBias(lightDefinition.shadowMapBias);
+            light->setNearPlane(lightDefinition.nearPlane);
 
             // Record component into light
             Light &l = m_context->light(node.lightIdx);

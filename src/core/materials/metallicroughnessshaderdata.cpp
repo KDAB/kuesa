@@ -45,6 +45,7 @@ MetallicRoughnessShaderData::MetallicRoughnessShaderData(Qt3DCore::QNode *parent
     , m_normalScale(1.0f)
     , m_emissiveFactor(QColor("black"))
     , m_alphaCutoff(0.0f)
+    , m_receivesShadows(true)
 {
 }
 
@@ -125,6 +126,11 @@ QMatrix3x3 MetallicRoughnessShaderData::emissiveMapTextureTransform() const
 float MetallicRoughnessShaderData::alphaCutoff() const
 {
     return m_alphaCutoff;
+}
+
+bool MetallicRoughnessShaderData::receivesShadows() const
+{
+    return m_receivesShadows;
 }
 
 void MetallicRoughnessShaderData::setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1)
@@ -258,6 +264,14 @@ void MetallicRoughnessShaderData::setAlphaCutoff(float alphaCutoff)
         return;
     m_alphaCutoff = alphaCutoff;
     emit alphaCutoffChanged(alphaCutoff);
+}
+
+void MetallicRoughnessShaderData::setReceivesShadows(bool receivesShadows)
+{
+    if (m_receivesShadows == receivesShadows)
+        return;
+    m_receivesShadows = receivesShadows;
+    emit receivesShadowsChanged(receivesShadows);
 }
 
 QMatrix3x3 Kuesa::MetallicRoughnessShaderData::baseColorMapTextureTransform() const

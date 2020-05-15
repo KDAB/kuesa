@@ -40,6 +40,7 @@
 #include <QJsonArray>
 #include <Qt3DRender/QAbstractLight>
 #include <qmath.h>
+#include <QSize>
 
 QT_BEGIN_NAMESPACE
 
@@ -61,6 +62,11 @@ struct Light {
     QVariant range;
     float innerConeAngleRadians = 0.0;
     float outerConeAngleRadians = (float)M_PI_4;
+    bool castsShadows = false;
+    bool softShadows = false;
+    float shadowMapBias = .005f;
+    float nearPlane = 0.0f;
+    QSize shadowMapTextureSize = { 512, 512 };
 
     Qt3DRender::QAbstractLight *lightComponent = nullptr;
 };

@@ -47,6 +47,7 @@ struct MetallicRoughness {
     bool normalUsesTexCoord1;
     bool aoUsesTexCoord1;
     bool emissiveUsesTexCoord1;
+    bool receivesShadows;
 };
 
 uniform MetallicRoughness metallicRoughness;

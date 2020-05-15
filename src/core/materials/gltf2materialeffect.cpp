@@ -27,6 +27,7 @@
 */
 
 #include "gltf2materialeffect.h"
+#include <Kuesa/private/framegraphutils_p.h>
 #include <QTimer>
 
 QT_BEGIN_NAMESPACE
@@ -412,6 +413,11 @@ void GLTF2MaterialEffect::setUsingMorphTargets(bool usingMorphTargets)
     updateUsingMorphTargets(m_usingMorphTargets);
 }
 
+void GLTF2MaterialEffect::updateUsingCubeMapArrays(bool usingCubeMapArrays)
+{
+    Q_UNUSED(usingCubeMapArrays);
+}
+
 void GLTF2MaterialEffect::initialize()
 {
     updateOpaque(GLTF2MaterialEffect::isOpaque());
@@ -424,6 +430,9 @@ void GLTF2MaterialEffect::initialize()
     updateUsingTexCoordAttribute(GLTF2MaterialEffect::isUsingTexCoordAttribute());
     updateUsingTexCoord1Attribute(GLTF2MaterialEffect::isUsingTexCoord1Attribute());
     updateUsingMorphTargets(GLTF2MaterialEffect::isUsingMorphTargets());
+
+    // whether to use cubeMapArrays is only set once at startup and does change
+    updateUsingCubeMapArrays(FrameGraphUtils::hasCubeMapArrayTextures());
 }
 
 } // Kuesa

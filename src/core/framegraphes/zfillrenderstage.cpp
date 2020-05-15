@@ -41,15 +41,14 @@ ZFillRenderStage::ZFillRenderStage(Qt3DRender::QFrameGraphNode *parent)
     : AbstractRenderStage(parent)
 {
     setObjectName(QStringLiteral("KuesaZFillRenderStage"));
-    auto passFilter = new Qt3DRender::QRenderPassFilter(this);
+    m_passFilter = new Qt3DRender::QRenderPassFilter(this);
 
+    m_filterKey = new Qt3DRender::QFilterKey(this);
+    m_filterKey->setName(QStringLiteral("KuesaDrawStage"));
+    m_filterKey->setValue(QStringLiteral("ZFill"));
+    m_passFilter->addMatch(m_filterKey);
 
-    auto filterKey = new Qt3DRender::QFilterKey(this);
-    filterKey->setName(QStringLiteral("KuesaDrawStage"));
-    filterKey->setValue(QStringLiteral("ZFill"));
-    passFilter->addMatch(filterKey);
-
-    auto states = new Qt3DRender::QRenderStateSet(passFilter);
+    auto states = new Qt3DRender::QRenderStateSet(m_passFilter);
     auto colorMask = new Qt3DRender::QColorMask;
     colorMask->setRedMasked(false);
     colorMask->setGreenMasked(false);
@@ -78,4 +77,14 @@ void ZFillRenderStage::setCullingMode(Qt3DRender::QCullFace::CullingMode mode)
 Qt3DRender::QCullFace::CullingMode ZFillRenderStage::cullingMode() const
 {
     return m_cullFace->mode();
+}
+
+void ZFillRenderStage::setFilterKeyValue(const QString &value)
+{
+    m_filterKey->setValue(value);
+}
+
+void ZFillRenderStage::addParameter(Qt3DRender::QParameter *parameter)
+{
+    m_passFilter->addParameter(parameter);
 }

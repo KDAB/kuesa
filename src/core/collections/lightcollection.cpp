@@ -28,6 +28,7 @@
 
 #include "lightcollection.h"
 #include <Qt3DCore/QEntity>
+#include <Kuesa/shadowcastinglight.h>
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
@@ -65,7 +66,26 @@ using namespace Kuesa;
 
 LightCollection::LightCollection(Qt3DCore::QNode *parent)
     : AbstractAssetCollection(parent)
+    , m_shadowMapManager(new ShadowMapManager(this))
 {
+    connect(this, &AbstractAssetCollection::namesChanged, this, &LightCollection::updateLights);
+}
+
+ShadowMapManager *LightCollection::shadowMapManager() const
+{
+    return m_shadowMapManager;
+}
+
+void LightCollection::updateLights()
+{
+    const auto lightNames = names();
+    QVector<ShadowCastingLight *> lights;
+    lights.reserve(lightNames.size());
+    std::transform(lightNames.cbegin(), lightNames.cend(), std::back_inserter(lights),
+                   [this](const QString &lightName) {
+                       return find(lightName);
+                   });
+    m_shadowMapManager->setLights(lights);
 }
 
 LightCollection::~LightCollection() = default;

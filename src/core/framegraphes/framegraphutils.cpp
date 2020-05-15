@@ -87,6 +87,13 @@ FrameGraphUtils::RenderingFeatures FrameGraphUtils::checkRenderingFeatures()
             const bool forceMultisampledFBO = qgetenv("KUESA_FORCE_MULTISAMPLING").length() > 0;
             features.hasMultisampledFBO |= forceMultisampledFBO;
 
+            // cubeMapArray textures were broken in Qt3D prior to 5.15.2 and in 6.0.0
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 2) && QT_VERSION != QT_VERSION_CHECK(6, 0, 0)
+            // Since ES 3.2, GL 4.0 or extension
+            features.hasCubeMapArrayTextures = (ctx.isOpenGLES() ? (format.majorVersion() >= 3 && format.minorVersion() >= 2)
+                                                                 : format.majorVersion() >= 4) ||
+                    ctx.hasExtension(QByteArray("ARB_texture_cube_map_array"));
+#endif
             ctx.doneCurrent();
         }
     } else {
@@ -97,6 +104,7 @@ FrameGraphUtils::RenderingFeatures FrameGraphUtils::checkRenderingFeatures()
         features.hasHalfFloatRenderable = true;
         features.hasMultisampledTexture = true;
         features.hasMultisampledFBO = true;
+        features.hasCubeMapArrayTextures = true;
 #endif
     }
 
@@ -107,7 +115,8 @@ FrameGraphUtils::RenderingFeatures FrameGraphUtils::checkRenderingFeatures()
                    << "hasHalfFloatTexture" << features.hasHalfFloatTexture << "\n"
                    << "hasHalfFloatRenderable" << features.hasHalfFloatRenderable << "\n"
                    << "hasMultisampledTexture" << features.hasMultisampledTexture << "\n"
-                   << "hasMultisampledFBO" << features.hasMultisampledFBO;
+                   << "hasMultisampledFBO" << features.hasMultisampledFBO << "\n"
+                   << "hasCubeMapArrayTextures" << features.hasCubeMapArrayTextures;
 
     return features;
 }
@@ -116,6 +125,12 @@ bool FrameGraphUtils::hasHalfFloatRenderable()
 {
     const FrameGraphUtils::RenderingFeatures features = FrameGraphUtils::checkRenderingFeatures();
     return features.hasHalfFloatRenderable;
+}
+
+bool FrameGraphUtils::hasCubeMapArrayTextures()
+{
+    const FrameGraphUtils::RenderingFeatures features = FrameGraphUtils::checkRenderingFeatures();
+    return features.hasCubeMapArrayTextures;
 }
 
 Qt3DRender::QRenderTarget *FrameGraphUtils::createRenderTarget(RenderTargetFlags flags,

@@ -53,6 +53,7 @@
         <file>shaders/es3/light_unroll.inc.frag</file>
         <file>shaders/es3/kuesa_metalrough_unroll.inc.frag</file>
         <file>shaders/gl3/kuesa_metalrough_unroll.inc.frag</file>
+        <file>shaders/gl3/kuesa_shadowmap.inc.frag</file>
         <file>shaders/gl3/light_unroll.inc.frag</file>
         <file>shaders/gl3/kuesa_iroDiffuseShaderData.inc.frag</file>
         <file>shaders/es2/kuesa_iroDiffuseShaderData.inc.frag</file>
@@ -111,6 +112,7 @@
         <file>shaders/gl3/kuesa_reflectedViewMatrix.inc</file>
         <file>shaders/gl45/kuesa_reflectedViewMatrix.inc</file>
         <file>shaders/gl45/fboresolver.frag</file>
+        <file>shaders/gl3/shadow_cube.geom</file>
         <file>shaders/graphs/iro2diffusesem.frag.json</file>
         <file>shaders/graphs/iro2diffuseequirect.frag.json</file>
         <file>shaders/graphs/iro2alphaequirect.frag.json</file>
@@ -121,7 +123,17 @@
         <file>shaders/graphs/iro2reflectionequirect.frag.json</file>
         <file>shaders/graphs/iro2reflectionsem.frag.json</file>
         <file>shaders/gl45/kuesa_unlitShaderData.inc.frag</file>
-        <file>shaders/graphs/iro2planarreflectionsem.frag.json</file>
-        <file>shaders/graphs/iro2planarreflectionequirect.frag.json</file>
+        <file>shaders/graphs/iro2diffusesem.frag.json</file>
+        <file>shaders/graphs/iro2diffuseequirect.frag.json</file>
+        <file>shaders/graphs/iro2alphaequirect.frag.json</file>
+        <file>shaders/graphs/iro2alphasem.frag.json</file>
+        <file>shaders/graphs/iro2glassequirect.frag.json</file>
+        <file>shaders/graphs/iro2glasssem.frag.json</file>
+        <file>shaders/graphs/iro2mattealpha.frag.json</file>
+        <file>shaders/graphs/iro2reflectionequirect.frag.json</file>
+        <file>shaders/graphs/iro2reflectionsem.frag.json</file>
+        <file>shaders/gl45/kuesa_unlitShaderData.inc.frag</file>
+        <file>shaders/gl45/kuesa_shadowmap.inc.frag</file>
+        <file>shaders/gl45/shadow_cube.geom</file>
     </qresource>
 </RCC>

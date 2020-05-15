@@ -91,6 +91,7 @@ public:
         FrustumCulling     = (1 << 2),
         ZFilling           = (1 << 3),
         Particles          = (1 << 4),
+        CubeShadowMap      = (1 << 5),
     };
     Q_DECLARE_FLAGS(Features, Feature)
 
@@ -111,6 +112,9 @@ public:
     void setParticlesEnabled(bool enabled);
     bool particlesEnabled() const;
 
+    void setCubeShadowMap(bool cubeShadowMap);
+    bool cubeShadowMap() const;
+
 private:
     Features m_features;
 
@@ -125,7 +129,8 @@ public:
     enum SceneStageType {
         ZFill,
         Opaque,
-        Transparent
+        Transparent,
+        ShadowMap
     };
     Q_ENUM(SceneStageType)
 
@@ -154,7 +159,6 @@ private:
     Qt3DRender::QCullFace::CullingMode m_cullingMode = Qt3DRender::QCullFace::NoCulling;
 };
 using ScenePassPtr = QSharedPointer<ScenePass>;
-
 
 class KUESA_PRIVATE_EXPORT SceneStages : public SceneFeaturedRenderStageBase
 {

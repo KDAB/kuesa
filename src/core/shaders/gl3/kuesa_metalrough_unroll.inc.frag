@@ -27,6 +27,7 @@
 */
 
 #pragma include light_unroll.inc.frag
+#pragma include kuesa_shadowmap.inc.frag
 
 const float M_PI = 3.141592653589793;
 
@@ -122,7 +123,8 @@ vec3 pbrModel(const in Light light,
               const in vec3 baseColor,
               const in float metalness,
               const in float alpha,
-              const in float ambientOcclusion)
+              const in float ambientOcclusion,
+              const in bool receivesShadows)
 {
     // Calculate some useful quantities
     vec3 n = wNormal;
@@ -201,6 +203,9 @@ vec3 pbrModel(const in Light light,
     vec3 color = att * sDotN * light.intensity * light.color
                  * (diffuseContrib + specularContrib);
 
+    float shadowCoverage = light.castsShadows && receivesShadows ? shadowMapCoverage(light, wPosition, wNormal, wView) : 1.0;
+    color *= shadowCoverage;
+
     return color;
 }
 
@@ -266,7 +271,8 @@ vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                               const in vec4 emissive,
                               const in vec3 worldPosition,
                               const in vec3 worldView,
-                              const in vec3 worldNormal)
+                              const in vec3 worldNormal,
+                              const in bool receivesShadows)
 {
     vec3 cLinear = vec3(0.0);
 
@@ -292,7 +298,8 @@ vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                             baseColor.rgb,
                             metalness,
                             alpha,
-                            ambientOcclusion);
+                            ambientOcclusion,
+                            receivesShadows);
 
     if (lightCount > 1)
         cLinear += pbrModel(light_1,
@@ -302,7 +309,8 @@ vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                             baseColor.rgb,
                             metalness,
                             alpha,
-                            ambientOcclusion);
+                            ambientOcclusion,
+                            receivesShadows);
     if (lightCount > 2)
         cLinear += pbrModel(light_2,
                             worldPosition,
@@ -311,7 +319,8 @@ vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                             baseColor.rgb,
                             metalness,
                             alpha,
-                            ambientOcclusion);
+                            ambientOcclusion,
+                            receivesShadows);
     if (lightCount > 3)
         cLinear += pbrModel(light_3,
                             worldPosition,
@@ -320,7 +329,8 @@ vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                             baseColor.rgb,
                             metalness,
                             alpha,
-                            ambientOcclusion);
+                            ambientOcclusion,
+                            receivesShadows);
     if (lightCount > 4)
         cLinear += pbrModel(light_4,
                             worldPosition,
@@ -329,7 +339,8 @@ vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                             baseColor.rgb,
                             metalness,
                             alpha,
-                            ambientOcclusion);
+                            ambientOcclusion,
+                            receivesShadows);
     if (lightCount > 5)
         cLinear += pbrModel(light_5,
                             worldPosition,
@@ -338,7 +349,8 @@ vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                             baseColor.rgb,
                             metalness,
                             alpha,
-                            ambientOcclusion);
+                            ambientOcclusion,
+                            receivesShadows);
     if (lightCount > 6)
         cLinear += pbrModel(light_6,
                             worldPosition,
@@ -347,7 +359,8 @@ vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                             baseColor.rgb,
                             metalness,
                             alpha,
-                            ambientOcclusion);
+                            ambientOcclusion,
+                            receivesShadows);
     if (lightCount > 7)
         cLinear += pbrModel(light_7,
                             worldPosition,
@@ -356,7 +369,8 @@ vec3 kuesa_metalRoughFunction(const in vec4 baseColor,
                             baseColor.rgb,
                             metalness,
                             alpha,
-                            ambientOcclusion);
+                            ambientOcclusion,
+                            receivesShadows);
 
     // Apply ambient occlusion and emissive channels
     cLinear *= ambientOcclusion;

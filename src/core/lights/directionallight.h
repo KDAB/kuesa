@@ -29,14 +29,15 @@
 #ifndef KUESA_DIRECTIONALLIGHT_H
 #define KUESA_DIRECTIONALLIGHT_H
 
-#include <QAbstractLight>
+#include <Kuesa/shadowcastinglight.h>
 #include <Kuesa/kuesa_global.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 class DirectionalLightPrivate;
-class KUESASHARED_EXPORT DirectionalLight : public Qt3DRender::QAbstractLight
+
+class KUESASHARED_EXPORT DirectionalLight : public ShadowCastingLight
 {
     Q_OBJECT
     Q_PROPERTY(QVector3D direction READ direction WRITE setDirection NOTIFY directionChanged)
@@ -75,5 +76,6 @@ private:
 } // namespace Kuesa
 
 QT_END_NAMESPACE
+Q_DECLARE_METATYPE(Kuesa::DirectionalLight *)
 
 #endif // KUESA_DIRECTIONALLIGHT_H

@@ -27,11 +27,17 @@
 INCLUDEPATH += $$PWD
 
 SOURCES += \
+    $$PWD/shadowmap.cpp \
+    $$PWD/shadowmapmanager.cpp \
+    $$PWD/shadowcastinglight.cpp \
     $$PWD/directionallight.cpp \
     $$PWD/pointlight.cpp \
     $$PWD/spotlight.cpp
 
 HEADERS += \
+    $$PWD/shadowmap.h \
+    $$PWD/shadowmapmanager.h \
+    $$PWD/shadowcastinglight.h \
     $$PWD/directionallight.h \
     $$PWD/directionallight_p.h \
     $$PWD/pointlight.h \

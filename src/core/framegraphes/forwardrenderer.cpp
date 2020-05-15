@@ -280,6 +280,11 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     m_clearBuffers->setObjectName(QStringLiteral("ForwardRenderer ClearBuffers"));
     new Qt3DRender::QNoDraw(m_clearBuffers);
 
+    connect(this, &View::shadowMapsChanged, this, [this](const QVector<ShadowMapPtr> &shadowMaps) {
+        for (auto view : m_views)
+            view->setShadowMaps(shadowMaps);
+        scheduleFGTreeRebuild();
+    });
     connect(m_clearBuffers, &Qt3DRender::QClearBuffers::clearColorChanged, this, &ForwardRenderer::clearColorChanged);
     connect(m_clearBuffers, &Qt3DRender::QClearBuffers::buffersChanged, this, &ForwardRenderer::clearBuffersChanged);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::renderSurfaceChanged);
@@ -352,6 +357,9 @@ void ForwardRenderer::addView(View *view)
 
     auto d = Qt3DCore::QNodePrivate::get(this);
     d->registerDestructionHelper(view, &ForwardRenderer::removeView, m_views);
+
+    view->setShadowMaps(shadowMaps());
+
     m_views.push_back(view);
     reconfigureFrameGraph();
 }

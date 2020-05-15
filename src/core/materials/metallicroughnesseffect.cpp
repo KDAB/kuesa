@@ -55,11 +55,13 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     , m_blendArguments(new Qt3DRender::QBlendEquationArguments(this))
     , m_metalRoughShaderBuilder(new QShaderProgramBuilder(this))
     , m_zfillShaderBuilder(new QShaderProgramBuilder(this))
+    , m_cubeMapShadowShaderBuilder(new QShaderProgramBuilder(this))
     , m_metalRoughShader(new QShaderProgram(this))
     , m_zfillShader(new QShaderProgram(this))
     , m_zfillRenderPass(new QRenderPass(this))
     , m_opaqueRenderPass(new QRenderPass(this))
     , m_transparentRenderPass(new QRenderPass(this))
+    , m_cubeMapShadowRenderPass(new QRenderPass(this))
     , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
 {
     struct ApiFilterInfo {
@@ -162,6 +164,22 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     m_transparentRenderPass->addFilterKey(transparentPassFilterKey);
     m_transparentRenderPass->setEnabled(false);
     addRenderPass(m_transparentRenderPass);
+
+    auto cubeShadowShaderProg = new Qt3DRender::QShaderProgram(this);
+    m_cubeMapShadowShaderBuilder->setShaderProgram(cubeShadowShaderProg);
+    m_cubeMapShadowShaderBuilder->setVertexShaderGraph(vertexShaderGraph);
+    cubeShadowShaderProg->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl("qrc:/kuesa/shaders/gl3/shadow_cube.geom")));
+    cubeShadowShaderProg->setFragmentShaderCode(zFillFragmentShaderCode[version]);
+
+    m_cubeMapShadowRenderPass->setShaderProgram(cubeShadowShaderProg);
+
+    auto cubeShadowMapFilterKey = new Qt3DRender::QFilterKey(this);
+    cubeShadowMapFilterKey->setName(QStringLiteral("KuesaDrawStage"));
+    cubeShadowMapFilterKey->setValue(QStringLiteral("CubeShadowMap"));
+    m_cubeMapShadowRenderPass->addFilterKey(cubeShadowMapFilterKey);
+    m_cubeMapShadowRenderPass->addRenderState(m_backFaceCulling);
+
+    addRenderPass(m_cubeMapShadowRenderPass);
 }
 
 QStringList MetallicRoughnessTechnique::enabledLayers() const
@@ -173,11 +191,13 @@ void MetallicRoughnessTechnique::setEnabledLayers(const QStringList &layers)
 {
     m_metalRoughShaderBuilder->setEnabledLayers(layers);
     m_zfillShaderBuilder->setEnabledLayers(layers);
+    m_cubeMapShadowShaderBuilder->setEnabledLayers(layers);
 }
 
 void MetallicRoughnessTechnique::setOpaque(bool opaque)
 {
     m_zfillRenderPass->setEnabled(opaque);
+    m_cubeMapShadowRenderPass->setEnabled(opaque);
     m_opaqueRenderPass->setEnabled(opaque);
     m_transparentRenderPass->setEnabled(!opaque);
 }
@@ -685,6 +705,17 @@ void MetallicRoughnessEffect::updateUsingMorphTargets(bool usingMorphTargets)
     layers.removeAll(QStringLiteral("morphtargets"));
     if (usingMorphTargets)
         layers.append(QStringLiteral("morphtargets"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void MetallicRoughnessEffect::updateUsingCubeMapArrays(bool usingCubeMapArrays)
+{
+    auto layers = m_metalRoughGL3Technique->enabledLayers();
+    //    layers.removeAll(QStringLiteral("noCubeMapArrays"));
+    layers.removeAll(QStringLiteral("useCubeMapArrays"));
+    if (usingCubeMapArrays)
+        layers.append(QStringLiteral("useCubeMapArrays"));
 
     updateLayersOnTechniques(layers);
 }

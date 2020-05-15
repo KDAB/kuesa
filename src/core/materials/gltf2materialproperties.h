@@ -52,6 +52,7 @@ class KUESASHARED_EXPORT GLTF2MaterialProperties : public Qt3DCore::QNode
     Q_PROPERTY(QColor baseColorFactor READ baseColorFactor WRITE setBaseColorFactor NOTIFY baseColorFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *baseColorMap READ baseColorMap WRITE setBaseColorMap NOTIFY baseColorMapChanged)
     Q_PROPERTY(float alphaCutoff READ alphaCutoff WRITE setAlphaCutoff NOTIFY alphaCutoffChanged)
+    Q_PROPERTY(bool receivesShadows READ receivesShadows WRITE setReceivesShadows NOTIFY receivesShadowsChanged)
 
 public:
     explicit GLTF2MaterialProperties(Qt3DCore::QNode *parent = nullptr);
@@ -67,17 +68,28 @@ public:
 
     virtual Qt3DRender::QShaderData *shaderData() const = 0;
 
+    bool receivesShadows() const;
+    Qt3DRender::QAbstractTexture *shadowMapDepthTexture() const;
+    Qt3DRender::QAbstractTexture *shadowMapCubeDepthTexture() const;
+
 public Q_SLOTS:
     void setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1);
     void setBaseColorFactor(const QColor &baseColorFactor);
     void setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap);
     void setAlphaCutoff(float alphaCutoff);
 
+    void setReceivesShadows(bool receivesShadows);
+    void setShadowMapDepthTexture(Qt3DRender::QAbstractTexture *depthTexture);
+    void setShadowMapCubeDepthTexture(Qt3DRender::QAbstractTexture *cubeMapDepthTexture);
+
 Q_SIGNALS:
     void baseColorUsesTexCoord1Changed(bool);
     void baseColorFactorChanged(const QColor &baseColorFactor);
     void baseColorMapChanged(Qt3DRender::QAbstractTexture *baseColorMap);
     void alphaCutoffChanged(float alphaCutoff);
+    void receivesShadowsChanged(bool receivesShadows);
+    void shadowMapDepthTextureChanged(Qt3DRender::QAbstractTexture *depthTexture);
+    void shadowMapCubeDepthTextureChanged(Qt3DRender::QAbstractTexture *cubeMapDepthTexture);
 
 private:
     QVector<Qt3DRender::QMaterial *> m_clientMaterials;
@@ -85,8 +97,12 @@ private:
 
     float m_alphaCutOff;
     bool m_usesTexCoord1;
+    bool m_receivesShadows;
     Qt3DRender::QAbstractTexture *m_baseColorTexture;
     QColor m_baseColorFactor;
+
+    Qt3DRender::QAbstractTexture *m_shadowMapTexture = nullptr;
+    Qt3DRender::QAbstractTexture *m_shadowMapCubeTexture = nullptr;
 };
 } // namespace Kuesa
 
