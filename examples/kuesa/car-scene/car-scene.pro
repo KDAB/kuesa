@@ -26,7 +26,7 @@
 
 TEMPLATE = app
 
-QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa
+QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa quickcontrols2
 QT_FOR_CONFIG += kuesa
 
 SOURCES += main.cpp
@@ -39,8 +39,6 @@ macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
 else:windows:APP_PWD=$$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 else: APP_PWD=$$OUT_PWD
 RES_PWD=$$APP_PWD/resources
-
-include(../shared-utils/shared-utils.pri)
 
 envmaps_dir = ../assets/envmaps
 envmaps.files = \
@@ -154,7 +152,7 @@ android {
 }
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-target.files = $$PWD/*
+!android: target.files = $$PWD/*
 INSTALLS += target
 
 OTHER_FILES += doc/src/*

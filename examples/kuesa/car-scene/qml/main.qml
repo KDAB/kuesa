@@ -26,15 +26,18 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick.Scene3D 2.0
-import QtQuick 2.11
-import "controls" as Controls
+import QtQuick.Scene3D 2.12
+import QtQuick 2.12
+import QtQuick.Controls.Material 2.12
 
 //! [0]
 Item {
     id: mainRoot
 
     // 3D Content
+
+    Material.theme: Material.Dark
+    Material.accent: Material.Blue
 
     Item {
         id: baseUI

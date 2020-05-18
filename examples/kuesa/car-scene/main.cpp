@@ -37,6 +37,7 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QResource>
+#include <QQuickStyle>
 
 #ifdef Q_OS_ANDROID
 #include <QOpenGLContext>
@@ -64,6 +65,7 @@ int main(int ac, char **av)
         QSurfaceFormat::setDefaultFormat(format);
     }
 
+    QQuickStyle::setStyle("Material");
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(ac, av);
 

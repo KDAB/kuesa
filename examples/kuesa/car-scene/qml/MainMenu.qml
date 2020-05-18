@@ -27,9 +27,9 @@
 */
 
 import QtQuick 2.12
-import QtQuick.Controls 2.12 as QQC2
-import "controls" as Controls
-import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.12
+import QtQuick.Controls.Material 2.12
+import QtQuick.Layouts 1.12
 
 Item {
     id: root
@@ -54,6 +54,8 @@ Item {
     property color carBaseColorFactor: "white"
     property alias idleAnimationRunning: idleAnimation.running
 
+
+    readonly property real largeFontSize: 15.0
 
     function reset() {
         speedC.value = 0
@@ -80,78 +82,6 @@ Item {
 
         Behavior on width { NumberAnimation {duration: 500; easing.type: Easing.InOutQuad } }
 
-        Component {
-            id: blurBg
-
-            Item {
-                Rectangle {
-                    id: cliper
-
-                    property real scaleReducer: 2.5
-                    width: menu.expandedWidth / scaleReducer
-                    height: mainRoot.height / scaleReducer
-                    clip: true
-
-                    ShaderEffectSource {
-                        id: copy3D
-                        width: baseUI.width / cliper.scaleReducer
-                        height: baseUI.height / cliper.scaleReducer
-                        sourceItem: baseUI
-                        textureSize: Qt.size(width / cliper.scaleReducer, height / cliper.scaleReducer)
-                        sourceRect : Qt.rect(0, 0, width * cliper.scaleReducer, height * cliper.scaleReducer)
-                        samples: 1
-                        mipmap: false
-                    }
-                }
-
-                FastBlur {
-                    anchors.fill: cliper
-                    source: cliper
-                    radius: 140/cliper.scaleReducer
-                    transform: Scale {
-                        origin.x: 0
-                        origin.y: 0
-                        xScale: mainRoot.height / cliper.height
-                        yScale: xScale
-                    }
-
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#40202020"
-                    }
-                }
-
-                Image {
-                    fillMode: Image.Tile
-                    source: "noise.png"
-                    width: cliper.width * (mainRoot.height / cliper.height)
-                    height: mainRoot.height
-                    opacity: 0.8
-                }
-            }
-        }
-
-        Component {
-            id: noiseBg
-
-            Rectangle {
-                anchors.fill: parent
-                color: "#33ffffff"
-
-                Image {
-                    fillMode: Image.Tile
-                    source: "noise.png"
-                    anchors.fill: parent
-                    opacity: 0.6
-                }
-            }
-        }
-
-        Loader {
-            anchors.fill: parent
-            sourceComponent: blurBg
-        }
-
         MouseArea {
             width: childrenRect.width
             height: parent.height
@@ -166,265 +96,204 @@ Item {
 
                 interactive: height < contentHeight
 
-                Column {
-                    x: 1
-                    width: parent.width - 2
+                ColumnLayout {
                     id: controlArea
+                    spacing: 5
+                    anchors.horizontalCenter: parent.horizontalCenter
 
-                    Controls.GroupBox {
-                        width: parent.width
-
-                        Controls.StyledLabel {
+                    GroupBox {
+                        label: Label {
                             text: "Car Control"
                             font.weight: Font.ExtraLight
-                            font.pixelSize: Controls.SharedAttributes.largeFontSize
+                            font.pixelSize: largeFontSize
                         }
 
-                        Rectangle {
-                            width: parent.width
-                            height: 1
-                            color: "#70ffffff"
-                        }
+                        ColumnLayout {
 
-                        Controls.LabeledSlider {
-                            id: speedC
-                            text: "Car Wheels Speed"
-                            width: parent.width
-                            minimumValue: 0
-                            maximumValue: 8
-                        }
-
-                        Item {
-                            id: spacer
-                            height: 1
-                            width: 1
-                        }
-
-                        Flow {
-                            width: menu.expandedWidth
-                            spacing: parent.spacing
-
-                            Controls.LabeledSwitch {
-                                id: openHoodSwitch
-                                text: "Open Hood"
-                                checked: false
-                            }
-
-                            Controls.LabeledSwitch {
-                                id: openLeftDoorSwitch
-                                text: "Left Door"
-                                checked: false
-                            }
-
-                            Controls.LabeledSwitch {
-                                id: openRightDoorSwitch
-                                text: "Right Door"
-                                checked: false
-                            }
-                        }
-                    }
-
-                    Item {
-                        height: 10
-                        width: 1
-                    }
-
-                    Controls.GroupBox {
-                        width: parent.width
-
-                        Controls.StyledLabel {
-                            text: "Scene Control"
-                            font.pixelSize: Controls.SharedAttributes.largeFontSize
-                            font.weight: Font.ExtraLight
-                        }
-
-                        Rectangle {
-                            width: parent.width
-                            height: 1
-                            color: "#70ffffff"
-                        }
-
-                        Controls.LabeledSlider {
-                            id: exposureSlider
-                            text: "Exposure: " + parseFloat(Math.round(exposureSlider.value * 100) / 100).toFixed(2)
-                            minimumValue: -5.0
-                            maximumValue: 5
-                            value: 1.0
-                            width: parent.width
-
-                        }
-
-                        Item {
-                            id: spacer2
-                            height: 1
-                            width: 1
-                        }
-
-                        Controls.StyledLabel {
-                            text: "Environment"
-                        }
-
-                        Flow {
-                            width: menu.expandedWidth
-                            spacing: parent.spacing
-
-                            QQC2.ButtonGroup { id: radioButonsGroup }
-
-                            Controls.LabeledRadioButton {
-                                id: envPinkSunrise
-
-                                text: "Pink Sunrise"
-                                exclusiveGroup: radioButonsGroup
-                                checked: true
-                            }
-
-                            Controls.LabeledRadioButton {
-                                id: envNeuerZollhof
-
-                                text: "Neuer Zollhof"
-                                exclusiveGroup: radioButonsGroup
-                            }
-
-                            Controls.LabeledRadioButton {
-                                id: envStudioSmall04
-
-                                text: "KDAB Studio"
-                                exclusiveGroup: radioButonsGroup
-                            }
-                        }
-
-                        Row {
-                            spacing: parent.spacing
-                            Controls.LabeledSwitch {
-                                id: showSkyboxSwitch
-                                text: "Show Skybox"
-                                checked: false
-                                width: menu.switchWidth
-                            }
-
-                            Controls.LabeledSwitch {
-                                id: useOpacityMaskSwitch
-                                text: "Use OpacityMask"
-                                checked: false
-                                width: menu.switchWidth
-                            }
-                        }
-                    }
-
-                    Item {
-                        height: 10
-                        width: 1
-                    }
-
-                    Controls.GroupBox {
-                        width: parent.width
-
-                        Controls.StyledLabel {
-                            text: "Car Color"
-                            font.pixelSize: Controls.SharedAttributes.largeFontSize
-                            font.weight: Font.ExtraLight
-                        }
-
-                        Rectangle {
-                            width: parent.width
-                            height: 1
-                            color: "#70ffffff"
-                        }
-
-                        Controls.LabeledSlider {
-                            id: redColor
-                            text: "Red: " + parseFloat(Math.round(redColor.value * 255).toFixed(2))
-                            value: sceneContent.carBaseColorFactor.r
-                            onValueChanged: if (value !== sceneContent.carBaseColorFactor.r)
-                                                sceneContent.carBaseColorFactor = Qt.rgba(redColor.value, greenColor.value, blueColor.value)
-                            width: parent.width
-                        }
-
-                        Controls.LabeledSlider {
-                            id: greenColor
-                            text: "Green: " + parseFloat(Math.round(greenColor.value * 255).toFixed(2))
-                            value: sceneContent.carBaseColorFactor.g
-                            onValueChanged: if (value !== sceneContent.carBaseColorFactor.g)
-                                                sceneContent.carBaseColorFactor = Qt.rgba(redColor.value, greenColor.value, blueColor.value)
-                            width: parent.width
-                        }
-
-                        Controls.LabeledSlider {
-                            id: blueColor
-                            text: "Blue: " + parseFloat(Math.round(blueColor.value * 255).toFixed(2))
-                            value: sceneContent.carBaseColorFactor.b
-                            onValueChanged: if (value !== sceneContent.carBaseColorFactor.b)
-                                                sceneContent.carBaseColorFactor = Qt.rgba(redColor.value, greenColor.value, blueColor.value)
-                            width: parent.width
-                        }
-                    }
-
-                    Item {
-                        height: 10
-                        width: 1
-                    }
-
-                    Controls.GroupBox {
-                        width: parent.width
-
-                        Item {
-                            height: useBloomEffectSwitch.implicitHeight
-                            width: parent.width
-
-                            Controls.StyledLabel {
-                                text: "Bloom effect"
-                                font.pixelSize: Controls.SharedAttributes.largeFontSize
+                            Label {
+                                text: "Car Wheels Speed"
                                 font.weight: Font.ExtraLight
-                                anchors {
-                                    left: parent.left
-                                    verticalCenter: parent.verticalCenter
-                                }
+                                font.pixelSize: largeFontSize
                             }
 
-                            Controls.StyledSwitch {
-                                id: useBloomEffectSwitch
-                                checked: false
-                                width: menu.switchWidth
-                                anchors {
-                                    right: parent.right
-                                    bottom: parent.bottom
+                            Slider {
+                                id: speedC
+                                width: parent.width
+                                from: 0
+                                to: 8
+                            }
+
+                            Flow {
+                                width: parent.width
+                                spacing: parent.spacing
+
+                                Switch {
+                                    id: openHoodSwitch
+                                    text: "Open Hood"
+                                    checked: false
+                                }
+
+                                Switch {
+                                    id: openLeftDoorSwitch
+                                    text: "Left Door"
+                                    checked: false
+                                }
+
+                                Switch {
+                                    id: openRightDoorSwitch
+                                    text: "Right Door"
+                                    checked: false
                                 }
                             }
-                        }
-
-                        Rectangle {
-                            width: parent.width
-                            height: 1
-                            color: "#70ffffff"
-                        }
-
-                        Controls.LabeledSlider {
-                            id: bloomThreshold
-                            text: "th: " + parseFloat(bloomThreshold.value).toFixed(2)
-                            value: sceneContent.bloomEffect.threshold
-                            onValueChanged: if (value !== sceneContent.bloomEffect.threshold)
-                                                sceneContent.bloomEffect.threshold = bloomThreshold.value
-                            width: parent.width
-                        }
-
-                        Controls.LabeledSlider {
-                            id: bloomPasses
-                            text: "pass: " + bloomPasses.value
-                            minimumValue: 0
-                            maximumValue: 8
-                            stepSize: 1
-                            snapMode: QQC2.Slider.SnapAlways
-                            value: sceneContent.bloomEffect.blurPassCount
-                            onValueChanged: if (value !== sceneContent.bloomEffect.blurPassCount)
-                                                sceneContent.bloomEffect.blurPassCount = bloomPasses.value
-                            width: parent.width
                         }
                     }
 
+                    GroupBox {
+                        label: Label {
+                            text: "Scene Control"
+                            font.weight: Font.ExtraLight
+                            font.pixelSize: largeFontSize
+                        }
+                        ColumnLayout {
+                            Label {
+                                text: "Exposure: " + parseFloat(Math.round(exposureSlider.value * 100) / 100).toFixed(2)
+                                font.weight: Font.ExtraLight
+                                font.pixelSize: largeFontSize
+                            }
+                            Slider {
+                                id: exposureSlider
+                                from: -5.0
+                                to: 5
+                                value: 1.0
+                                width: parent.width
+                            }
+                            Label {
+                                text: "Environment"
+                            }
+                            Flow {
+                                width: parent.width
+                                spacing: parent.spacing
 
-                    Item {
-                        height: 10
-                        width: 1
+                                ButtonGroup { id: radioButonsGroup }
+
+                                RadioButton {
+                                    id: envPinkSunrise
+
+                                    text: "Pink Sunrise"
+                                    ButtonGroup.group: radioButonsGroup
+                                    checked: true
+                                }
+
+                                RadioButton {
+                                    id: envNeuerZollhof
+
+                                    text: "Neuer Zollhof"
+                                    ButtonGroup.group: radioButonsGroup
+                                }
+
+                                RadioButton {
+                                    id: envStudioSmall04
+
+                                    text: "KDAB Studio"
+                                    ButtonGroup.group: radioButonsGroup
+                                }
+                            }
+                            Flow {
+                                width: parent.width
+                                spacing: parent.spacing
+                                Switch {
+                                    id: showSkyboxSwitch
+                                    text: "Show Skybox"
+                                    checked: false
+                                }
+                                Switch {
+                                    id: useOpacityMaskSwitch
+                                    text: "Use OpacityMask"
+                                    checked: false
+                                }
+                            }
+                        }
+                    }
+
+                    GroupBox {
+                        label: Label {
+                            text: "Car Color"
+                            font.weight: Font.ExtraLight
+                            font.pixelSize: largeFontSize
+                        }
+                        ColumnLayout {
+                            Label {
+                                text: "Red: " + parseFloat(Math.round(redColor.value * 255).toFixed(2))
+                                font.weight: Font.ExtraLight
+                                font.pixelSize: largeFontSize
+                            }
+                            Slider {
+                                id: redColor
+                                value: sceneContent.carBaseColorFactor.r
+                                onValueChanged: if (value !== sceneContent.carBaseColorFactor.r)
+                                                    sceneContent.carBaseColorFactor = Qt.rgba(redColor.value, greenColor.value, blueColor.value)
+                            }
+                            Label {
+                                text: "Green: " + parseFloat(Math.round(greenColor.value * 255).toFixed(2))
+                                font.weight: Font.ExtraLight
+                                font.pixelSize: largeFontSize
+                            }
+                            Slider {
+                                id: greenColor
+                                value: sceneContent.carBaseColorFactor.g
+                                onValueChanged: if (value !== sceneContent.carBaseColorFactor.g)
+                                                    sceneContent.carBaseColorFactor = Qt.rgba(redColor.value, greenColor.value, blueColor.value)
+                            }
+                            Label {
+                                text: "Blue: " + parseFloat(Math.round(blueColor.value * 255).toFixed(2))
+                                font.weight: Font.ExtraLight
+                                font.pixelSize: largeFontSize
+                            }
+                            Slider {
+                                id: blueColor
+                                value: sceneContent.carBaseColorFactor.b
+                                onValueChanged: if (value !== sceneContent.carBaseColorFactor.b)
+                                                    sceneContent.carBaseColorFactor = Qt.rgba(redColor.value, greenColor.value, blueColor.value)
+                            }
+                        }
+                    }
+
+                    GroupBox {
+                        label: Switch {
+                            id: useBloomEffectSwitch
+                            text: "Bloom effect"
+                            checked: false
+                        }
+
+                        ColumnLayout {
+
+                            Label {
+                                text: "th: " + parseFloat(bloomThreshold.value).toFixed(2)
+                                font.weight: Font.ExtraLight
+                                font.pixelSize: largeFontSize
+                            }
+                            Slider {
+                                id: bloomThreshold
+                                value: sceneContent.bloomEffect.threshold
+                                onValueChanged: if (value !== sceneContent.bloomEffect.threshold)
+                                                    sceneContent.bloomEffect.threshold = bloomThreshold.value
+                            }
+                            Label {
+                                text: "pass: " + bloomPasses.value
+                                font.weight: Font.ExtraLight
+                                font.pixelSize: largeFontSize
+                            }
+                            Slider {
+                                id: bloomPasses
+                                from: 0
+                                to: 8
+                                stepSize: 1
+                                snapMode: Slider.SnapAlways
+                                value: sceneContent.bloomEffect.blurPassCount
+                                onValueChanged: if (value !== sceneContent.bloomEffect.blurPassCount)
+                                                    sceneContent.bloomEffect.blurPassCount = bloomPasses.value
+                            }
+                        }
                     }
                 }
             }
