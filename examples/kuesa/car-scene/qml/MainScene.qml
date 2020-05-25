@@ -94,11 +94,12 @@ Kuesa.SceneEntity {
         onBaseColorFactorChanged: console.log("Binding 1 works. Color: " + baseColorFactor)
         onNodeChanged: scene.carBaseColorFactor = carMaterial.baseColorFactor
     }
+//![2.3]
 
+//![2.4]
     property var baseColorFactorProp: carMaterial.baseColorFactor
     onBaseColorFactorPropChanged: console.log("Binding 2 works. Color: " + baseColorFactorProp)
-
-//![2.3]
+//![2.4]
 
 //! [4.1]
     Kuesa.AnimationPlayer {

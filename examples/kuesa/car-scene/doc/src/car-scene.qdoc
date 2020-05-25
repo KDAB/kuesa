@@ -97,7 +97,7 @@
     First you need to instantiate the effects you want to use.
     \snippet car-scene/qml/MainScene.qml 3.1
 
-    Once you have create the effects, they need to be added to the \l
+    Once you have created the effects, they need to be added to the \l
     {ForwardRenderer} FrameGraph. The order in which they are added dictates
     the order in which they are applied.
     \snippet car-scene/qml/MainScene.qml 3.2
