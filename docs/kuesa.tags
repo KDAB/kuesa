@@ -167,6 +167,7 @@
     <compound kind="namespace">
         <name>Kuesa</name>
         <filename>kuesa.html</filename>
+        <class>Kuesa::AnimationPlayer</class>
         <class>Kuesa::AbstractAssetCollection</class>
         <class>Kuesa::AnimationClipCollection</class>
         <class>Kuesa::ArmatureCollection</class>
@@ -185,7 +186,6 @@
         <class>Kuesa::AnimationMappingCollection</class>
         <namespace>Kuesa::GLTF2Import</namespace>
         <class>Kuesa::SceneEntity</class>
-        <class>Kuesa::AnimationPlayer</class>
         <class>Kuesa::AbstractPostProcessingEffect</class>
         <class>Kuesa::ToneMappingAndGammaCorrectionEffect</class>
         <class>Kuesa::ForwardRenderer</class>
@@ -196,48 +196,48 @@
         <class>Kuesa::DepthOfFieldEffect</class>
         <class>Kuesa::OpacityMask</class>
         <class>Kuesa::GLTF2Importer</class>
-        <class>Kuesa::MorphController</class>
         <class>Kuesa::GLTF2Material</class>
-        <class>Kuesa::IroDiffuseProperties</class>
         <class>Kuesa::IroDiffuseMaterial</class>
         <class>Kuesa::GLTF2MaterialEffect</class>
         <class>Kuesa::IroDiffuseEffect</class>
-        <class>Kuesa::IroDiffuseHemiProperties</class>
+        <class>Kuesa::IroDiffuseProperties</class>
         <class>Kuesa::IroDiffuseHemiMaterial</class>
         <class>Kuesa::IroDiffuseHemiEffect</class>
-        <class>Kuesa::IroGlassAddProperties</class>
+        <class>Kuesa::IroDiffuseHemiProperties</class>
         <class>Kuesa::IroGlassAddMaterial</class>
         <class>Kuesa::IroGlassAddEffect</class>
-        <class>Kuesa::IroMatteOpaqueProperties</class>
+        <class>Kuesa::IroGlassAddProperties</class>
         <class>Kuesa::IroMatteOpaqueMaterial</class>
         <class>Kuesa::IroMatteOpaqueEffect</class>
-        <class>Kuesa::IroMatteAlphaProperties</class>
+        <class>Kuesa::IroMatteOpaqueProperties</class>
         <class>Kuesa::IroMatteAlphaMaterial</class>
         <class>Kuesa::IroMatteAlphaEffect</class>
-        <class>Kuesa::IroMatteSkyboxProperties</class>
+        <class>Kuesa::IroMatteAlphaProperties</class>
         <class>Kuesa::IroMatteSkyboxMaterial</class>
         <class>Kuesa::IroMatteSkyboxEffect</class>
-        <class>Kuesa::IroMatteBackgroundProperties</class>
+        <class>Kuesa::IroMatteSkyboxProperties</class>
         <class>Kuesa::IroMatteBackgroundMaterial</class>
         <class>Kuesa::IroMatteBackgroundEffect</class>
-        <class>Kuesa::IroMatteAddProperties</class>
+        <class>Kuesa::IroMatteBackgroundProperties</class>
         <class>Kuesa::IroMatteAddMaterial</class>
         <class>Kuesa::IroMatteAddEffect</class>
-        <class>Kuesa::IroMatteMultProperties</class>
+        <class>Kuesa::IroMatteAddProperties</class>
         <class>Kuesa::IroMatteMultMaterial</class>
         <class>Kuesa::IroMatteMultEffect</class>
-        <class>Kuesa::IroDiffuseAlphaProperties</class>
+        <class>Kuesa::IroMatteMultProperties</class>
         <class>Kuesa::IroDiffuseAlphaMaterial</class>
         <class>Kuesa::IroDiffuseAlphaEffect</class>
+        <class>Kuesa::IroDiffuseAlphaProperties</class>
         <class>Kuesa::DirectionalLight</class>
         <class>Kuesa::PointLight</class>
         <class>Kuesa::SpotLight</class>
         <class>Kuesa::MetallicRoughnessEffect</class>
         <class>Kuesa::UnlitEffect</class>
-        <class>Kuesa::MetallicRoughnessProperties</class>
+        <class>Kuesa::MorphController</class>
         <class>Kuesa::MetallicRoughnessMaterial</class>
-        <class>Kuesa::UnlitProperties</class>
+        <class>Kuesa::MetallicRoughnessProperties</class>
         <class>Kuesa::UnlitMaterial</class>
+        <class>Kuesa::UnlitProperties</class>
         <class>Kuesa::Skybox</class>
     </compound>
     <compound kind="class">
@@ -4941,7 +4941,7 @@
         <name>Kuesa::MetallicRoughnessMaterial</name>
         <filename>kuesa-metallicroughnessmaterial.html</filename>
         <base>GLTF2Material</base>
-        <member kind="property" type="MetallicRoughnessProperties*">
+        <member kind="property" type="Kuesa::MetallicRoughnessProperties*">
             <name>materialProperties</name>
             <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
             <anchor>materialProperties-prop</anchor>

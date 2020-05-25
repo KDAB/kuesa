@@ -35,15 +35,40 @@
 
     \since Kuesa 1.2
 
-    The Kuesa Iro Materials are a set of simplified materials that can be used
-    to extend glTF files. They are in most cases replacement for the glTF PBR
-    material. There are specifically developped for embedded targets where the
-    use of the more complex PBR material would harm performances.
+    Iro Materials are, in most cases, a replacement for the glTF PBR material.
+    They are specifically developed for embedded targets where the use of the
+    more complex PBR material would harm performances.
 
+    The main advantages is that the Iro Materials offer a lighter material
+    option where reflections are still possible, but not as expensive to run.
     These materials have been implemented through the \l {Kuesa Custom
-    Materials} {Kuesa custom material glTF extension mecanism} . The Kuesa
-    Addon for Blender 2.8 allows to create, preview and export the Iro
-    materials.
+    Materials} {Kuesa custom material glTF extension mecanism}. Second, they
+    are easier to edit and work with. This is especially true when using the
+    the Blender addon provided by Kuesa Studio which gives artists a real time
+    preview of the IroMaterials.
+
+    Note: You can get imperfect reflections when viewing your model from under,
+    if your application allows the user to fully orbit around the model.
+
+
+    \table 100%
+        \row
+            \li First of all, create your material reflection map (swatch)
+                \image sphereplacement.png "Sphere placement"
+                \caption Sphere Placement
+        \row
+            \li Here's the result from the previous image
+                \image material.png "Material result"
+                \caption Material Result
+        \row
+            \li Here is how the material looks, once it's applied
+                \image iro.png "Iro-Material"
+                \caption Iro-Material
+        \row
+            \li and a PBR version for comparison
+                \image PBR.png "PBR comparison"
+                \caption PBR Comparison
+    \endtable
 
     \section1 Available Iro Materials
 

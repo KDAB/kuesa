@@ -44,7 +44,6 @@
  <span class="preprocessor">#define MATERIALINSPECTOR_H</span>
 
  <span class="preprocessor">#include&lt;QObject&gt;</span>
- <span class="preprocessor">#include &lt;Kuesa/GLTF2Material&gt;</span>
 
  <span class="keyword">namespace</span> <span class="type">Qt3DCore</span> {
  <span class="keyword">class</span> <span class="type">QEntity</span>;
@@ -52,6 +51,10 @@
 
  <span class="keyword">namespace</span> <span class="type">Qt3DRender</span> {
  <span class="keyword">class</span> <span class="type">QPickEvent</span>;
+ }
+
+ <span class="keyword">namespace</span> Kuesa {
+ <span class="keyword">class</span> GLTF2Material;
  }
 
  <span class="keyword">class</span> MaterialInspector : <span class="keyword">public</span> <span class="type">QObject</span>
