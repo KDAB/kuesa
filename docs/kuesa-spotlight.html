@@ -14,10 +14,6 @@
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
 <ul>
-<li class="level1"><a href="#properties">Properties</a></li>
-<li class="level1"><a href="#public-functions">Public Functions</a></li>
-<li class="level1"><a href="#public-slots">Public Slots</a></li>
-<li class="level1"><a href="#signals">Signals</a></li>
 <li class="level1"><a href="#details">Detailed Description</a></li>
 </ul>
 </div>
@@ -28,112 +24,16 @@
 <p>Encapsulate a Spot Light object in a Qt 3D scene. <a href="#details">More...</a></p>
 <!-- @@@SpotLight -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;SpotLight&gt;</span>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;SpotLight&gt;</span>
 </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-spotlight.html">SpotLight</a></td></tr></table></div><p>This class was introduced in Kuesa 1.1.</p>
 <ul>
-<li><a href="kuesa-spotlight-members.html">List of all members, including inherited members</a></li>
 </ul>
-<a name="properties"></a>
-<h2 id="properties">Properties</h2>
-<ul>
-<li class="fn"><b><a href="kuesa-spotlight.html#innerConeAngle-prop">innerConeAngle</a></b> : float</li>
-<li class="fn"><b><a href="kuesa-spotlight.html#localDirection-prop">localDirection</a></b> : QVector3D</li>
-<li class="fn"><b><a href="kuesa-spotlight.html#outerConeAngle-prop">outerConeAngle</a></b> : float</li>
-<li class="fn"><b><a href="kuesa-spotlight.html#range-prop">range</a></b> : float</li>
-</ul>
-<a name="public-functions"></a>
-<h2 id="public-functions">Public Functions</h2>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#SpotLight">SpotLight</a></b>(Qt3DCore::QNode *<i>parent</i> = nullptr)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#innerConeAngle-prop">innerConeAngle</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#localDirection-prop">localDirection</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#outerConeAngle-prop">outerConeAngle</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#range-prop">range</a></b>() const</td></tr>
-</table></div>
-<a name="public-slots"></a>
-<h2 id="public-slots">Public Slots</h2>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#innerConeAngle-prop">setInnerConeAngle</a></b>(float <i>innerConeAngle</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#localDirection-prop">setLocalDirection</a></b>(const QVector3D &amp;<i>localDirection</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#outerConeAngle-prop">setOuterConeAngle</a></b>(float <i>outerConeAngle</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#range-prop">setRange</a></b>(float <i>range</i>)</td></tr>
-</table></div>
-<a name="signals"></a>
-<h2 id="signals">Signals</h2>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#innerConeAngle-prop">innerConeAngleChanged</a></b>(float <i>innerConeAngle</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#localDirection-prop">localDirectionChanged</a></b>(const QVector3D &amp;<i>localDirection</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#outerConeAngle-prop">outerConeAngleChanged</a></b>(float <i>outerConeAngle</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-spotlight.html#range-prop">rangeChanged</a></b>(float <i>range</i>)</td></tr>
-</table></div>
 <a name="details"></a>
 <!-- $$$SpotLight-description -->
 <div class="descr">
 <h2 id="details">Detailed Description</h2>
 </div>
 <!-- @@@SpotLight -->
-<div class="prop">
-<h2>Property Documentation</h2>
-<!-- $$$innerConeAngle-prop$$$innerConeAngle$$$setInnerConeAnglefloat$$$innerConeAngleChangedfloat -->
-<h3 class="fn" id="innerConeAngle-prop"><a name="innerConeAngle-prop"></a><span class="name">innerConeAngle</span> : <span class="type">float</span></h3>
-<p>Specifies the angle from center of the spot light where light begins to fall off. The value must be greater than or equal to 0 and less than <a href="kuesa-spotlight.html#outerConeAngle-prop">outerConeAngle</a>.</p>
-<p><b>Access functions:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>innerConeAngle</b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setInnerConeAngle</b></span>(float <i>innerConeAngle</i>)</td></tr>
-</table></div>
-<p><b>Notifier signal:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>innerConeAngleChanged</b></span>(float <i>innerConeAngle</i>)</td></tr>
-</table></div>
-<!-- @@@innerConeAngle -->
-<!-- $$$localDirection-prop$$$localDirection$$$setLocalDirectionconstQVector3D&$$$localDirectionChangedconstQVector3D& -->
-<h3 class="fn" id="localDirection-prop"><a name="localDirection-prop"></a><span class="name">localDirection</span> : <span class="type">QVector3D</span></h3>
-<p>Specifies the local direction of the spot light. Local direction is affected by parent transform rotations.</p>
-<p><b>Access functions:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>localDirection</b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setLocalDirection</b></span>(const QVector3D &amp;<i>localDirection</i>)</td></tr>
-</table></div>
-<p><b>Notifier signal:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>localDirectionChanged</b></span>(const QVector3D &amp;<i>localDirection</i>)</td></tr>
-</table></div>
-<!-- @@@localDirection -->
-<!-- $$$outerConeAngle-prop$$$outerConeAngle$$$setOuterConeAnglefloat$$$outerConeAngleChangedfloat -->
-<h3 class="fn" id="outerConeAngle-prop"><a name="outerConeAngle-prop"></a><span class="name">outerConeAngle</span> : <span class="type">float</span></h3>
-<p>Specifies the cut off angle of the spot light. Objects outside this angle receives no light from the <a href="kuesa-spotlight.html">SpotLight</a>. The value must be greater than <a href="kuesa-spotlight.html#innerConeAngle-prop">innerConeAngle</a> and less than or equal to 180.</p>
-<p><b>Access functions:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>outerConeAngle</b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setOuterConeAngle</b></span>(float <i>outerConeAngle</i>)</td></tr>
-</table></div>
-<p><b>Notifier signal:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>outerConeAngleChanged</b></span>(float <i>outerConeAngle</i>)</td></tr>
-</table></div>
-<!-- @@@outerConeAngle -->
-<!-- $$$range-prop$$$range$$$setRangefloat$$$rangeChangedfloat -->
-<h3 class="fn" id="range-prop"><a name="range-prop"></a><span class="name">range</span> : <span class="type">float</span></h3>
-<p>Specifies the destance at which the light intensity may be considered to have reached zero and has no effect. A range of 0 (default) indicates infinite range</p>
-<p><b>Access functions:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>range</b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setRange</b></span>(float <i>range</i>)</td></tr>
-</table></div>
-<p><b>Notifier signal:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>rangeChanged</b></span>(float <i>range</i>)</td></tr>
-</table></div>
-<!-- @@@range -->
-</div>
-<div class="func">
-<h2>Member Function Documentation</h2>
-<!-- $$$SpotLight[overload1]$$$SpotLightQt3DCore::QNode* -->
-<h3 class="fn" id="SpotLight"><a name="SpotLight"></a>SpotLight::<span class="name">SpotLight</span>(<span class="type">Qt3DCore::QNode</span> *<i>parent</i> = nullptr)</h3>
-<p>Constructs a new SpotLight with the specified <i>parent</i>. The SpotLight will be positioned and rotated according to transform of its containing Entity.</p>
-<!-- @@@SpotLight -->
-</div>
         </div>
        </div>
    </div>

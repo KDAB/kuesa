@@ -28,19 +28,15 @@
 <h2 id="using-post-processing-effects">Using post-processing effects</h2>
 <p>Effects are provided by the following import:</p>
 <pre class="qml">
-
-  import Kuesa.Effects 1.1
-
+ import Kuesa.Effects 1.2
 </pre>
 <p>They can be added to postProcessingEffects in Kuesa.<a href="qml-forwardrenderer.html">ForwardRenderer</a>. For example, the following example first applies a threshold effect to the scene, followed by a bloom.</p>
 <pre class="qml">
-
-  Kuesa.ForwardRenderer {
-      postProcessingEffects: [ thresholdFx, bloomFx ]
-  }
-  BloomEffect { id: bloom }
-  ThresholdEffect { id: threshold }
-
+ Kuesa.ForwardRenderer {
+     postProcessingEffects: [ thresholdFx, bloomFx ]
+ }
+ BloomEffect { id: bloom }
+ ThresholdEffect { id: threshold }
 </pre>
 <a name="effect-gallery"></a>
 <h2 id="effect-gallery">Effect gallery</h2>

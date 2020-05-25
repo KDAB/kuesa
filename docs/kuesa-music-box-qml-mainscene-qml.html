@@ -12,451 +12,449 @@
 </ul></div><div class='doc-content'><h1 class="title">Kuesa Music Box QML Example</h1>
 <span class="subtitle"></span>
 <pre class="qml">
+ <span class="comment">/*
+     MainScene.qml
 
-  <span class="comment">/*
-      MainScene.qml
+     This file is part of Kuesa.
 
-      This file is part of Kuesa.
+     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Mauro Persano &lt;mauro.persano@kdab.com&gt;
 
-      Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-      Author: Mauro Persano &lt;mauro.persano@kdab.com&gt;
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
 
-      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-      LICENSE.KUESA.ENTERPRISE file.
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
 
-      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
 
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU Affero General Public License as
-      published by the Free Software Foundation, either version 3 of the
-      License, or (at your option) any later version.
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
 
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU Affero General Public License for more details.
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 
-      You should have received a copy of the GNU Affero General Public License
-      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-  */</span>
+ import Qt3D.Core 2.12
+ import Qt3D.Render 2.12
+ import Qt3D.Input 2.12
+ import Qt3D.Logic 2.12
+ import Qt3D.Extras 2.12
+ import Qt3D.Animation 2.12
+ import QtQml 2.2
+ import QtQuick 2.12
 
-  import Qt3D.Core 2.12
-  import Qt3D.Render 2.12
-  import Qt3D.Input 2.12
-  import Qt3D.Logic 2.12
-  import Qt3D.Extras 2.12
-  import Qt3D.Animation 2.12
-  import QtQml 2.2
-  import QtQuick 2.12
+ import Kuesa 1.2 as <a href="kuesa.html">Kuesa</a>
+ import Kuesa.Effects 1.1 as KuesaFX
+ import MusicBox 1.0 as MusicBox
 
-  import Kuesa 1.1 as <a href="kuesa.html">Kuesa</a>
-  import Kuesa.Effects 1.1 as KuesaFX
-  import MusicBox 1.0 as MusicBox
+ <span class="type">Kuesa</span>.SceneEntity {
+     <span class="name">id</span>: <span class="name">scene</span>
 
-  <span class="type">Kuesa</span>.SceneEntity {
-      <span class="name">id</span>: <span class="name">scene</span>
+     <span class="type">QtObject</span> {
+         <span class="name">id</span>: <span class="name">d</span>
 
-      <span class="type">QtObject</span> {
-          <span class="name">id</span>: <span class="name">d</span>
+         readonly property <span class="type">var</span> <span class="name">robotArmAnimations</span>: [
+             <span class="string">'ArmTopAction'</span>,
+             <span class="string">'FingerBase3Action'</span>,
+             <span class="string">'armBottomBottomAction'</span>,
+             <span class="string">'armBottomBottomGauge.001Action'</span>,
+             <span class="string">'armBottomBottomGaugeAction'</span>,
+             <span class="string">'armBottomTopAction'</span>,
+             <span class="string">'cogAction'</span>,
+             <span class="string">'elbowPivotAction'</span>,
+             <span class="string">'elbowPivotBaseAction'</span>,
+             <span class="string">'fingerBase2Action'</span>,
+             <span class="string">'fingerKnuckle1Action'</span>,
+             <span class="string">'fingerPivot1.001Action'</span>,
+             <span class="string">'fingerPivot2Action'</span>,
+             <span class="string">'fingerTop1Action'</span>,
+             <span class="string">'fingerTop2Action'</span>,
+             <span class="string">'fingerTop3Action'</span>,
+             <span class="string">'handleAction.001'</span>,
+             <span class="string">'handleCoverAction'</span>,
+             <span class="string">'musicBarrelAction'</span>,
+             <span class="string">'shoulderPivotAction'</span>,
+             <span class="string">'shoulderPivotBaseAction'</span>,
+             <span class="string">'thumbBaseBottomAction'</span>,
+             <span class="string">'thumbKnuckleAction'</span>,
+             <span class="string">'thumbPivotAction'</span>,
+             <span class="string">'thumbTopAction'</span>,
+             <span class="string">'wristPivotAction'</span>
+         ]
 
-          readonly property <span class="type">var</span> <span class="name">robotArmAnimations</span>: [
-              <span class="string">'ArmTopAction'</span>,
-              <span class="string">'FingerBase3Action'</span>,
-              <span class="string">'armBottomBottomAction'</span>,
-              <span class="string">'armBottomBottomGauge.001Action'</span>,
-              <span class="string">'armBottomBottomGaugeAction'</span>,
-              <span class="string">'armBottomTopAction'</span>,
-              <span class="string">'cogAction'</span>,
-              <span class="string">'elbowPivotAction'</span>,
-              <span class="string">'elbowPivotBaseAction'</span>,
-              <span class="string">'fingerBase2Action'</span>,
-              <span class="string">'fingerKnuckle1Action'</span>,
-              <span class="string">'fingerPivot1.001Action'</span>,
-              <span class="string">'fingerPivot2Action'</span>,
-              <span class="string">'fingerTop1Action'</span>,
-              <span class="string">'fingerTop2Action'</span>,
-              <span class="string">'fingerTop3Action'</span>,
-              <span class="string">'handleAction.001'</span>,
-              <span class="string">'handleCoverAction'</span>,
-              <span class="string">'musicBarrelAction'</span>,
-              <span class="string">'shoulderPivotAction'</span>,
-              <span class="string">'shoulderPivotBaseAction'</span>,
-              <span class="string">'thumbBaseBottomAction'</span>,
-              <span class="string">'thumbKnuckleAction'</span>,
-              <span class="string">'thumbPivotAction'</span>,
-              <span class="string">'thumbTopAction'</span>,
-              <span class="string">'wristPivotAction'</span>
-          ]
+         readonly property <span class="type">var</span> <span class="name">musicRows</span>: [
+             <span class="string">'........x.....................'</span>,
+             <span class="string">'...x................x.........'</span>,
+             <span class="string">'................x.............'</span>,
+             <span class="string">'............x.................'</span>,
+             <span class="string">'........x.....................'</span>,
+             <span class="string">'....x.................x.......'</span>,
+             <span class="string">'................x.............'</span>,
+             <span class="string">'..............x...............'</span>,
+             <span class="string">'........x.....................'</span>,
+             <span class="string">'.....x....x............x......'</span>,
+             <span class="string">'..................x...........'</span>,
+             <span class="string">'......x........x..............'</span>,
+             <span class="string">'.......x......................'</span>,
+             <span class="string">'......x...x.............x.....'</span>,
+             <span class="string">'..................x...........'</span>,
+             <span class="string">'................x.............'</span>,
+             <span class="string">'........x.....................'</span>,
+             <span class="string">'.........x...............x....'</span>,
+             <span class="string">'.......x.........x..x.........'</span>,
+             <span class="string">'.....x......x..x..............'</span>,
+             <span class="string">'...x..........................'</span>,
+             <span class="string">'....x.................x.......'</span>,
+             <span class="string">'......x.......x..x.x..........'</span>,
+             <span class="string">'........x..x..x...............'</span>,
+             <span class="string">'.........x....................'</span>,
+             <span class="string">'........x.........x.......x...'</span>,
+             <span class="string">'..................x...x.......'</span>,
+             <span class="string">'................x.x...........'</span>,
+             <span class="string">'..........x...................'</span>,
+             <span class="string">'....x.x.x.......x.......x.....'</span>,
+             <span class="string">'................x..x..x.......'</span>,
+             <span class="string">'............x..x..............'</span>,
+             <span class="string">'.......x......................'</span>,
+             <span class="string">'..x....x.x.........x......x...'</span>,
+             <span class="string">'...................x...x......'</span>,
+             <span class="string">'...........x...x.x.x..........'</span>,
+             <span class="string">'.......x......................'</span>,
+             <span class="string">'...x...x..x.........x......x..'</span>,
+             <span class="string">'....................x..x......'</span>,
+             <span class="string">'...............x....x..x......'</span>,
+             <span class="string">'.......x......................'</span>,
+             <span class="string">'....x....x.x..........x.....x.'</span>,
+             <span class="string">'.................x.x..x.......'</span>,
+             <span class="string">'.....x...x.x..x..x.x..........'</span>,
+             <span class="string">'......x..x.x.....x.x..x.......'</span>,
+             <span class="string">'.....x...x...x.........x.....x'</span>,
+             <span class="string">'.................x...x...x....'</span>,
+             <span class="string">'...............x.x............'</span>,
+             <span class="string">'.......x......................'</span>,
+             <span class="string">'........x...............x.....'</span>,
+             <span class="string">'......x.........x..x..........'</span>,
+             <span class="string">'....x......x..x...............'</span>,
+             <span class="string">'..x...........................'</span>,
+             <span class="string">'.x................x..x........'</span>,
+             <span class="string">'x.............................'</span>,
+             <span class="string">'...x.................x.x......'</span>,
+             <span class="string">'.....x........................'</span>,
+             <span class="string">'....x..x...x..............x...'</span>,
+             <span class="string">'...................x..........'</span>,
+             <span class="string">'.......x...x...x.......x......'</span>,
+             <span class="string">'.........................x....'</span>,
+             <span class="string">'...........x.....x.x......x...'</span>,
+             <span class="string">'.............................x'</span>,
+             <span class="string">'..........................x...'</span>
+         ]
 
-          readonly property <span class="type">var</span> <span class="name">musicRows</span>: [
-              <span class="string">'........x.....................'</span>,
-              <span class="string">'...x................x.........'</span>,
-              <span class="string">'................x.............'</span>,
-              <span class="string">'............x.................'</span>,
-              <span class="string">'........x.....................'</span>,
-              <span class="string">'....x.................x.......'</span>,
-              <span class="string">'................x.............'</span>,
-              <span class="string">'..............x...............'</span>,
-              <span class="string">'........x.....................'</span>,
-              <span class="string">'.....x....x............x......'</span>,
-              <span class="string">'..................x...........'</span>,
-              <span class="string">'......x........x..............'</span>,
-              <span class="string">'.......x......................'</span>,
-              <span class="string">'......x...x.............x.....'</span>,
-              <span class="string">'..................x...........'</span>,
-              <span class="string">'................x.............'</span>,
-              <span class="string">'........x.....................'</span>,
-              <span class="string">'.........x...............x....'</span>,
-              <span class="string">'.......x.........x..x.........'</span>,
-              <span class="string">'.....x......x..x..............'</span>,
-              <span class="string">'...x..........................'</span>,
-              <span class="string">'....x.................x.......'</span>,
-              <span class="string">'......x.......x..x.x..........'</span>,
-              <span class="string">'........x..x..x...............'</span>,
-              <span class="string">'.........x....................'</span>,
-              <span class="string">'........x.........x.......x...'</span>,
-              <span class="string">'..................x...x.......'</span>,
-              <span class="string">'................x.x...........'</span>,
-              <span class="string">'..........x...................'</span>,
-              <span class="string">'....x.x.x.......x.......x.....'</span>,
-              <span class="string">'................x..x..x.......'</span>,
-              <span class="string">'............x..x..............'</span>,
-              <span class="string">'.......x......................'</span>,
-              <span class="string">'..x....x.x.........x......x...'</span>,
-              <span class="string">'...................x...x......'</span>,
-              <span class="string">'...........x...x.x.x..........'</span>,
-              <span class="string">'.......x......................'</span>,
-              <span class="string">'...x...x..x.........x......x..'</span>,
-              <span class="string">'....................x..x......'</span>,
-              <span class="string">'...............x....x..x......'</span>,
-              <span class="string">'.......x......................'</span>,
-              <span class="string">'....x....x.x..........x.....x.'</span>,
-              <span class="string">'.................x.x..x.......'</span>,
-              <span class="string">'.....x...x.x..x..x.x..........'</span>,
-              <span class="string">'......x..x.x.....x.x..x.......'</span>,
-              <span class="string">'.....x...x...x.........x.....x'</span>,
-              <span class="string">'.................x...x...x....'</span>,
-              <span class="string">'...............x.x............'</span>,
-              <span class="string">'.......x......................'</span>,
-              <span class="string">'........x...............x.....'</span>,
-              <span class="string">'......x.........x..x..........'</span>,
-              <span class="string">'....x......x..x...............'</span>,
-              <span class="string">'..x...........................'</span>,
-              <span class="string">'.x................x..x........'</span>,
-              <span class="string">'x.............................'</span>,
-              <span class="string">'...x.................x.x......'</span>,
-              <span class="string">'.....x........................'</span>,
-              <span class="string">'....x..x...x..............x...'</span>,
-              <span class="string">'...................x..........'</span>,
-              <span class="string">'.......x...x...x.......x......'</span>,
-              <span class="string">'.........................x....'</span>,
-              <span class="string">'...........x.....x.x......x...'</span>,
-              <span class="string">'.............................x'</span>,
-              <span class="string">'..........................x...'</span>
-          ]
+         readonly property <span class="type">var</span> <span class="name">prongAnimations</span>: [
+             <span class="name">prong29Action</span>,
+             <span class="name">prong28Action</span>,
+             <span class="name">prong27Action</span>,
+             <span class="name">prong26Action</span>,
+             <span class="name">prong25Action</span>,
+             <span class="name">prong24Action</span>,
+             <span class="name">prong23Action</span>,
+             <span class="name">prong22Action</span>,
+             <span class="name">prong21Action</span>,
+             <span class="name">prong20Action</span>,
+             <span class="name">prong19Action</span>,
+             <span class="name">prong18Action</span>,
+             <span class="name">prong17Action</span>,
+             <span class="name">prong16Action</span>,
+             <span class="name">prong15Action</span>,
+             <span class="name">prong14Action</span>,
+             <span class="name">prong13Action</span>,
+             <span class="name">prong12Action</span>,
+             <span class="name">prong11Action</span>,
+             <span class="name">prong10Action</span>,
+             <span class="name">prong09Action</span>,
+             <span class="name">prong08Action</span>,
+             <span class="name">prong07Action</span>,
+             <span class="name">prong06Action</span>,
+             <span class="name">prong05Action</span>,
+             <span class="name">prong04Action</span>,
+             <span class="name">prong03Action</span>,
+             <span class="name">prong02Action</span>,
+             <span class="name">prong01Action</span>,
+             <span class="name">prong00Action</span>,
+         ]
 
-          readonly property <span class="type">var</span> <span class="name">prongAnimations</span>: [
-              <span class="name">prong29Action</span>,
-              <span class="name">prong28Action</span>,
-              <span class="name">prong27Action</span>,
-              <span class="name">prong26Action</span>,
-              <span class="name">prong25Action</span>,
-              <span class="name">prong24Action</span>,
-              <span class="name">prong23Action</span>,
-              <span class="name">prong22Action</span>,
-              <span class="name">prong21Action</span>,
-              <span class="name">prong20Action</span>,
-              <span class="name">prong19Action</span>,
-              <span class="name">prong18Action</span>,
-              <span class="name">prong17Action</span>,
-              <span class="name">prong16Action</span>,
-              <span class="name">prong15Action</span>,
-              <span class="name">prong14Action</span>,
-              <span class="name">prong13Action</span>,
-              <span class="name">prong12Action</span>,
-              <span class="name">prong11Action</span>,
-              <span class="name">prong10Action</span>,
-              <span class="name">prong09Action</span>,
-              <span class="name">prong08Action</span>,
-              <span class="name">prong07Action</span>,
-              <span class="name">prong06Action</span>,
-              <span class="name">prong05Action</span>,
-              <span class="name">prong04Action</span>,
-              <span class="name">prong03Action</span>,
-              <span class="name">prong02Action</span>,
-              <span class="name">prong01Action</span>,
-              <span class="name">prong00Action</span>,
-          ]
+         property <span class="type">bool</span> <span class="name">animationRunning</span>: <span class="number">false</span>
+     }
 
-          property <span class="type">bool</span> <span class="name">animationRunning</span>: <span class="number">false</span>
-      }
+     <span class="name">components</span>: [
+         <span class="type">RenderSettings</span> {
+             <span class="name">activeFrameGraph</span>: <span class="name">Kuesa</span>.ForwardRenderer {
+                 <span class="name">id</span>: <span class="name">frameGraph</span>
+                 <span class="name">camera</span>: <span class="name">mainCamera</span>
+                 <span class="name">backToFrontSorting</span>: <span class="number">true</span>
+                 <span class="name">toneMappingAlgorithm</span>: <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Reinhard</span>
+             }
+         },
+         <span class="type">InputSettings</span> { },
+         <span class="type">Kuesa</span>.DirectionalLight {
+             <span class="name">direction</span>: <span class="name">frameGraph</span>.<span class="name">camera</span> ? <span class="name">frameGraph</span>.<span class="name">camera</span>.<span class="name">viewVector</span> : <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, -<span class="number">1</span>, <span class="number">0</span>)
+             <span class="name">intensity</span>: <span class="number">0.05</span>
+         },
+         <span class="type">EnvironmentLight</span> {
+             <span class="name">irradiance</span>: <span class="name">TextureLoader</span> {
+                 <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_16f_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+                 <span class="type">wrapMode</span> {
+                     <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                     <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                 }
+                 <span class="name">generateMipMaps</span>: <span class="number">false</span>
+             }
+             <span class="name">specular</span>: <span class="name">TextureLoader</span> {
+                 <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_16f_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+                 <span class="type">wrapMode</span> {
+                     <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                     <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                 }
+                 <span class="name">generateMipMaps</span>: <span class="number">false</span>
+             }
+         },
+         <span class="type">FrameAction</span> {
+             property <span class="type">var</span> <span class="name">curRow</span>: -<span class="number">1</span>;
+             readonly property <span class="type">var</span> <span class="name">prongAngleOffset</span>: <span class="number">0.5</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">PI</span>;
+             <span class="name">onTriggered</span>: {
+                 <span class="keyword">if</span> (!<span class="name">d</span>.<span class="name">animationRunning</span>)
+                     <span class="keyword">return</span>;
 
-      <span class="name">components</span>: [
-          <span class="type">RenderSettings</span> {
-              <span class="name">activeFrameGraph</span>: <span class="name">Kuesa</span>.ForwardRenderer {
-                  <span class="name">id</span>: <span class="name">frameGraph</span>
-                  <span class="name">camera</span>: <span class="name">mainCamera</span>
-                  <span class="name">backToFrontSorting</span>: <span class="number">true</span>
-                  <span class="name">toneMappingAlgorithm</span>: <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Reinhard</span>
-              }
-          },
-          <span class="type">InputSettings</span> { },
-          <span class="type">Kuesa</span>.DirectionalLight {
-              <span class="name">direction</span>: <span class="name">frameGraph</span>.<span class="name">camera</span> ? <span class="name">frameGraph</span>.<span class="name">camera</span>.<span class="name">viewVector</span> : <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, -<span class="number">1</span>, <span class="number">0</span>)
-              <span class="name">intensity</span>: <span class="number">0.05</span>
-          },
-          <span class="type">EnvironmentLight</span> {
-              <span class="name">irradiance</span>: <span class="name">TextureLoader</span> {
-                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_16f_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
-                  <span class="type">wrapMode</span> {
-                      <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
-                      <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
-                  }
-                  <span class="name">generateMipMaps</span>: <span class="number">false</span>
-              }
-              <span class="name">specular</span>: <span class="name">TextureLoader</span> {
-                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_16f_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
-                  <span class="type">wrapMode</span> {
-                      <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
-                      <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
-                  }
-                  <span class="name">generateMipMaps</span>: <span class="number">false</span>
-              }
-          },
-          <span class="type">FrameAction</span> {
-              property <span class="type">var</span> <span class="name">curRow</span>: -<span class="number">1</span>;
-              readonly property <span class="type">var</span> <span class="name">prongAngleOffset</span>: <span class="number">0.5</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">PI</span>;
-              <span class="name">onTriggered</span>: {
-                  <span class="keyword">if</span> (!<span class="name">d</span>.<span class="name">animationRunning</span>)
-                      <span class="keyword">return</span>;
+                 var matrix = <span class="name">scene</span>.<span class="name">transformForEntity</span>(<span class="string">'musicBarrel'</span>).<span class="name">matrix</span>;
+                 var c = <span class="name">matrix</span>.<span class="name">m22</span>; <span class="comment">// cosine</span>
+                 var s = <span class="name">matrix</span>.<span class="name">m32</span>; <span class="comment">// sine</span>
+                 var angle = -<span class="name">Math</span>.<span class="name">atan2</span>(<span class="name">s</span>, <span class="name">c</span>);
+                 <span class="keyword">if</span> (<span class="name">angle</span> <span class="operator">&lt;</span> <span class="number">0</span>)
+                     <span class="name">angle</span> <span class="operator">+=</span> <span class="number">2</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">PI</span>;
 
-                  var matrix = <span class="name">scene</span>.<span class="name">transformForEntity</span>(<span class="string">'musicBarrel'</span>).<span class="name">matrix</span>;
-                  var c = <span class="name">matrix</span>.<span class="name">m22</span>; <span class="comment">// cosine</span>
-                  var s = <span class="name">matrix</span>.<span class="name">m32</span>; <span class="comment">// sine</span>
-                  var angle = -<span class="name">Math</span>.<span class="name">atan2</span>(<span class="name">s</span>, <span class="name">c</span>);
-                  <span class="keyword">if</span> (<span class="name">angle</span> <span class="operator">&lt;</span> <span class="number">0</span>)
-                      <span class="name">angle</span> <span class="operator">+=</span> <span class="number">2</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">PI</span>;
+                 var prongAngle = <span class="name">angle</span> <span class="operator">+</span> <span class="name">prongAngleOffset</span>;
 
-                  var prongAngle = <span class="name">angle</span> <span class="operator">+</span> <span class="name">prongAngleOffset</span>;
+                 var row = <span class="name">Math</span>.<span class="name">floor</span>(<span class="name">prongAngle</span> <span class="operator">*</span> <span class="name">d</span>.<span class="name">musicRows</span>.<span class="name">length</span> <span class="operator">/</span> (<span class="number">2</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">PI</span>)) <span class="operator">%</span> <span class="name">d</span>.<span class="name">musicRows</span>.<span class="name">length</span>;
+                 <span class="keyword">if</span> (<span class="name">row</span> <span class="operator">!=</span> <span class="name">curRow</span>) {
+                     <span class="name">curRow</span> <span class="operator">=</span> <span class="name">row</span>;
+                     var rowNotes = <span class="name">d</span>.<span class="name">musicRows</span>[<span class="name">curRow</span>];
+                     <span class="keyword">for</span> (var i = 0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="name">d</span>.<span class="name">prongAnimations</span>.<span class="name">length</span>; ++<span class="name">i</span>) {
+                         <span class="keyword">if</span> (<span class="name">rowNotes</span>.<span class="name">charAt</span>(<span class="name">i</span>) <span class="operator">==</span> <span class="string">'x'</span>) {
+                             var animation = <span class="name">d</span>.<span class="name">prongAnimations</span>[<span class="name">i</span>];
+                             <span class="name">animation</span>.<span class="name">setNormalizedTime</span>(<span class="number">0</span>);
+                             <span class="name">animation</span>.<span class="name">start</span>();
+                             <span class="name">sampler</span>.<span class="name">note</span>(<span class="name">i</span>, <span class="number">0.5</span>);
+                         }
+                     }
+                 }
+             }
+         }
+     ]
 
-                  var row = <span class="name">Math</span>.<span class="name">floor</span>(<span class="name">prongAngle</span> <span class="operator">*</span> <span class="name">d</span>.<span class="name">musicRows</span>.<span class="name">length</span> <span class="operator">/</span> (<span class="number">2</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">PI</span>)) <span class="operator">%</span> <span class="name">d</span>.<span class="name">musicRows</span>.<span class="name">length</span>;
-                  <span class="keyword">if</span> (<span class="name">row</span> <span class="operator">!=</span> <span class="name">curRow</span>) {
-                      <span class="name">curRow</span> <span class="operator">=</span> <span class="name">row</span>;
-                      var rowNotes = <span class="name">d</span>.<span class="name">musicRows</span>[<span class="name">curRow</span>];
-                      <span class="keyword">for</span> (var i = 0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="name">d</span>.<span class="name">prongAnimations</span>.<span class="name">length</span>; ++<span class="name">i</span>) {
-                          <span class="keyword">if</span> (<span class="name">rowNotes</span>.<span class="name">charAt</span>(<span class="name">i</span>) <span class="operator">==</span> <span class="string">'x'</span>) {
-                              var animation = <span class="name">d</span>.<span class="name">prongAnimations</span>[<span class="name">i</span>];
-                              <span class="name">animation</span>.<span class="name">setNormalizedTime</span>(<span class="number">0</span>);
-                              <span class="name">animation</span>.<span class="name">start</span>();
-                              <span class="name">sampler</span>.<span class="name">note</span>(<span class="name">i</span>, <span class="number">0.5</span>);
-                          }
-                      }
-                  }
-              }
-          }
-      ]
+     <span class="type">Camera</span> {
+         <span class="name">id</span>: <span class="name">mainCamera</span>
+         <span class="name">fieldOfView</span>: <span class="number">35</span>
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">3</span>, <span class="number">2</span>, -<span class="number">3</span>)
+         <span class="name">upVector</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)
+         <span class="name">viewCenter</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">1.37</span>, -<span class="number">0.112</span>, <span class="number">1.964</span>) <span class="comment">// center of music box</span>
+     }
 
-      <span class="type">Camera</span> {
-          <span class="name">id</span>: <span class="name">mainCamera</span>
-          <span class="name">fieldOfView</span>: <span class="number">35</span>
-          <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">3</span>, <span class="number">2</span>, -<span class="number">3</span>)
-          <span class="name">upVector</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)
-          <span class="name">viewCenter</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">1.37</span>, -<span class="number">0.112</span>, <span class="number">1.964</span>) <span class="comment">// center of music box</span>
-      }
+     <span class="type">CameraController</span> {
+         <span class="name">camera</span>: <span class="name">mainCamera</span>
+     }
 
-      <span class="type">CameraController</span> {
-          <span class="name">camera</span>: <span class="name">mainCamera</span>
-      }
+     <span class="type">Kuesa</span>.GLTF2Importer {
+         <span class="name">id</span>: <span class="name">importer</span>
+         <span class="name">sceneEntity</span>: <span class="name">scene</span>
+         <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;RobotArm.gltf&quot;</span>
+         <span class="name">onStatusChanged</span>: {
+             <span class="keyword">if</span> (<span class="name">status</span> <span class="operator">==</span> <span class="name">Kuesa</span>.<span class="name">GLTF2Importer</span>.<span class="name">Ready</span>) {
+                 <span class="comment">// start robot arm animation</span>
+                 <span class="name">actionPlayers</span>.<span class="name">model</span> <span class="operator">=</span> <span class="name">d</span>.<span class="name">robotArmAnimations</span>;
 
-      <span class="type">Kuesa</span>.GLTF2Importer {
-          <span class="name">id</span>: <span class="name">importer</span>
-          <span class="name">sceneEntity</span>: <span class="name">scene</span>
-          <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;RobotArm.gltf&quot;</span>
-          <span class="name">onStatusChanged</span>: {
-              <span class="keyword">if</span> (<span class="name">status</span> <span class="operator">==</span> <span class="name">Kuesa</span>.<span class="name">GLTF2Importer</span>.<span class="name">Ready</span>) {
-                  <span class="comment">// start robot arm animation</span>
-                  <span class="name">actionPlayers</span>.<span class="name">model</span> <span class="operator">=</span> <span class="name">d</span>.<span class="name">robotArmAnimations</span>;
+                 <span class="comment">// get transforms for music barrel</span>
+                 var musicBarrelTransform = <span class="name">scene</span>.<span class="name">transformForEntity</span>(<span class="string">'musicBarrel'</span>);
+                 <span class="name">musicBarrelTransform</span>.<span class="name">defaultPropertyTrackingMode</span> <span class="operator">=</span> <span class="name">Node</span>.<span class="name">TrackAllValues</span>;
 
-                  <span class="comment">// get transforms for music barrel</span>
-                  var musicBarrelTransform = <span class="name">scene</span>.<span class="name">transformForEntity</span>(<span class="string">'musicBarrel'</span>);
-                  <span class="name">musicBarrelTransform</span>.<span class="name">defaultPropertyTrackingMode</span> <span class="operator">=</span> <span class="name">Node</span>.<span class="name">TrackAllValues</span>;
+                 <span class="name">d</span>.<span class="name">animationRunning</span> <span class="operator">=</span> <span class="number">true</span>
+             }
+         }
+     }
 
-                  <span class="name">d</span>.<span class="name">animationRunning</span> <span class="operator">=</span> <span class="number">true</span>
-              }
-          }
-      }
+     <span class="type">Kuesa</span>.Skybox {
+         <span class="name">id</span>: <span class="name">skybox</span>
+         <span class="name">baseName</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_skybox&quot;</span>
+         <span class="name">extension</span>: <span class="string">&quot;.dds&quot;</span>
+     }
 
-      <span class="type">Kuesa</span>.Skybox {
-          <span class="name">id</span>: <span class="name">skybox</span>
-          <span class="name">baseName</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_skybox&quot;</span>
-          <span class="name">extension</span>: <span class="string">&quot;.dds&quot;</span>
-      }
+     <span class="comment">// robot arm animation</span>
+     <span class="type">NodeInstantiator</span> {
+         <span class="name">id</span>: <span class="name">actionPlayers</span>
+         <span class="name">model</span>: []
+         <span class="name">delegate</span>: <span class="name">Kuesa</span>.AnimationPlayer {
+             <span class="name">sceneEntity</span>: <span class="name">scene</span>
+             <span class="name">clip</span>: <span class="name">modelData</span>
+             <span class="name">loops</span>: <span class="name">Kuesa</span>.<span class="name">AnimationPlayer</span>.<span class="name">Infinite</span>
+             <span class="name">running</span>: <span class="name">d</span>.<span class="name">animationRunning</span>
+         }
+     }
 
-      <span class="comment">// robot arm animation</span>
-      <span class="type">NodeInstantiator</span> {
-          <span class="name">id</span>: <span class="name">actionPlayers</span>
-          <span class="name">model</span>: []
-          <span class="name">delegate</span>: <span class="name">Kuesa</span>.AnimationPlayer {
-              <span class="name">sceneEntity</span>: <span class="name">scene</span>
-              <span class="name">clip</span>: <span class="name">modelData</span>
-              <span class="name">loops</span>: <span class="name">Kuesa</span>.<span class="name">AnimationPlayer</span>.<span class="name">Infinite</span>
-              <span class="name">running</span>: <span class="name">d</span>.<span class="name">animationRunning</span>
-          }
-      }
+     <span class="comment">// prong animations</span>
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong00Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong00Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong01Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong01Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong02Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong02Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong03Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong03Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong04Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong04Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong05Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong05Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong06Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong06Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong07Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong07Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong08Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong08Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong09Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong09Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong10Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong10Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong11Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong11Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong12Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong12Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong13Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong13Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong14Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong14Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong15Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong15Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong16Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong16Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong17Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong17Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong18Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong18Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong19Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong19Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong20Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong20Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong21Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong21Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong22Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong22Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong23Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong23Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong24Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong24Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong25Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong25Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong26Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong26Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong27Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong27Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong28Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong28Action'</span> }
+     <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong29Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong29Action'</span> }
 
-      <span class="comment">// prong animations</span>
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong00Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong00Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong01Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong01Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong02Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong02Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong03Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong03Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong04Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong04Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong05Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong05Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong06Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong06Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong07Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong07Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong08Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong08Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong09Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong09Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong10Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong10Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong11Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong11Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong12Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong12Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong13Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong13Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong14Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong14Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong15Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong15Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong16Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong16Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong17Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong17Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong18Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong18Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong19Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong19Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong20Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong20Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong21Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong21Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong22Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong22Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong23Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong23Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong24Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong24Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong25Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong25Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong26Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong26Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong27Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong27Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong28Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong28Action'</span> }
-      <span class="type">Kuesa</span>.AnimationPlayer { <span class="name">id</span>: <span class="name">prong29Action</span>; <span class="name">sceneEntity</span>: <span class="name">scene</span>; <span class="name">clip</span>: <span class="string">'Prong29Action'</span> }
+     <span class="type">MusicBox</span>.Sampler {
+         <span class="name">id</span>: <span class="name">sampler</span>
+         <span class="name">notes</span>: [
+             <span class="string">&quot;samples/114.wav&quot;</span>,
+             <span class="string">&quot;samples/112.wav&quot;</span>,
+             <span class="string">&quot;samples/110.wav&quot;</span>,
+             <span class="string">&quot;samples/109.wav&quot;</span>,
+             <span class="string">&quot;samples/107.wav&quot;</span>,
+             <span class="string">&quot;samples/105.wav&quot;</span>,
+             <span class="string">&quot;samples/103.wav&quot;</span>,
+             <span class="string">&quot;samples/102.wav&quot;</span>,
+             <span class="string">&quot;samples/100.wav&quot;</span>,
+             <span class="string">&quot;samples/98.wav&quot;</span>,
+             <span class="string">&quot;samples/97.wav&quot;</span>,
+             <span class="string">&quot;samples/95.wav&quot;</span>,
+             <span class="string">&quot;samples/94.wav&quot;</span>,
+             <span class="string">&quot;samples/93.wav&quot;</span>,
+             <span class="string">&quot;samples/91.wav&quot;</span>,
+             <span class="string">&quot;samples/90.wav&quot;</span>,
+             <span class="string">&quot;samples/88.wav&quot;</span>,
+             <span class="string">&quot;samples/86.wav&quot;</span>,
+             <span class="string">&quot;samples/85.wav&quot;</span>,
+             <span class="string">&quot;samples/83.wav&quot;</span>,
+             <span class="string">&quot;samples/82.wav&quot;</span>,
+             <span class="string">&quot;samples/81.wav&quot;</span>,
+             <span class="string">&quot;samples/79.wav&quot;</span>,
+             <span class="string">&quot;samples/78.wav&quot;</span>,
+             <span class="string">&quot;samples/76.wav&quot;</span>,
+             <span class="string">&quot;samples/74.wav&quot;</span>,
+             <span class="string">&quot;samples/71.wav&quot;</span>,
+             <span class="string">&quot;samples/70.wav&quot;</span>,
+             <span class="string">&quot;samples/67.wav&quot;</span>,
+             <span class="string">&quot;samples/66.wav&quot;</span>
+         ]
 
-      <span class="type">MusicBox</span>.Sampler {
-          <span class="name">id</span>: <span class="name">sampler</span>
-          <span class="name">notes</span>: [
-              <span class="string">&quot;samples/114.wav&quot;</span>,
-              <span class="string">&quot;samples/112.wav&quot;</span>,
-              <span class="string">&quot;samples/110.wav&quot;</span>,
-              <span class="string">&quot;samples/109.wav&quot;</span>,
-              <span class="string">&quot;samples/107.wav&quot;</span>,
-              <span class="string">&quot;samples/105.wav&quot;</span>,
-              <span class="string">&quot;samples/103.wav&quot;</span>,
-              <span class="string">&quot;samples/102.wav&quot;</span>,
-              <span class="string">&quot;samples/100.wav&quot;</span>,
-              <span class="string">&quot;samples/98.wav&quot;</span>,
-              <span class="string">&quot;samples/97.wav&quot;</span>,
-              <span class="string">&quot;samples/95.wav&quot;</span>,
-              <span class="string">&quot;samples/94.wav&quot;</span>,
-              <span class="string">&quot;samples/93.wav&quot;</span>,
-              <span class="string">&quot;samples/91.wav&quot;</span>,
-              <span class="string">&quot;samples/90.wav&quot;</span>,
-              <span class="string">&quot;samples/88.wav&quot;</span>,
-              <span class="string">&quot;samples/86.wav&quot;</span>,
-              <span class="string">&quot;samples/85.wav&quot;</span>,
-              <span class="string">&quot;samples/83.wav&quot;</span>,
-              <span class="string">&quot;samples/82.wav&quot;</span>,
-              <span class="string">&quot;samples/81.wav&quot;</span>,
-              <span class="string">&quot;samples/79.wav&quot;</span>,
-              <span class="string">&quot;samples/78.wav&quot;</span>,
-              <span class="string">&quot;samples/76.wav&quot;</span>,
-              <span class="string">&quot;samples/74.wav&quot;</span>,
-              <span class="string">&quot;samples/71.wav&quot;</span>,
-              <span class="string">&quot;samples/70.wav&quot;</span>,
-              <span class="string">&quot;samples/67.wav&quot;</span>,
-              <span class="string">&quot;samples/66.wav&quot;</span>
-          ]
+         property <span class="type">real</span> <span class="name">previousRms</span>:<span class="number">0.</span>;
+         property <span class="type">real</span> <span class="name">previousPeak</span>: <span class="number">0.</span>;
+         <span class="name">onAudioSignal</span>: {
+             <span class="comment">// Minimal low-pass filtering</span>
+             var newRms = <span class="name">Math</span>.<span class="name">log</span>(<span class="number">1.</span> <span class="operator">+</span> <span class="name">rms</span> <span class="operator">*</span> <span class="name">previousRms</span>) <span class="operator">/</span> <span class="number">200.</span>
+             var newPeak = <span class="name">Math</span>.<span class="name">log</span>(<span class="number">1.</span> <span class="operator">+</span> <span class="name">peak</span> <span class="operator">*</span> <span class="name">previousPeak</span>) <span class="operator">/</span> <span class="number">200.</span>
+             <span class="name">previousRms</span> <span class="operator">=</span> <span class="name">rms</span>
+             <span class="name">previousPeak</span> <span class="operator">=</span> <span class="name">peak</span>
 
-          property <span class="type">real</span> <span class="name">previousRms</span>:<span class="number">0.</span>;
-          property <span class="type">real</span> <span class="name">previousPeak</span>: <span class="number">0.</span>;
-          <span class="name">onAudioSignal</span>: {
-              <span class="comment">// Minimal low-pass filtering</span>
-              var newRms = <span class="name">Math</span>.<span class="name">log</span>(<span class="number">1.</span> <span class="operator">+</span> <span class="name">rms</span> <span class="operator">*</span> <span class="name">previousRms</span>) <span class="operator">/</span> <span class="number">200.</span>
-              var newPeak = <span class="name">Math</span>.<span class="name">log</span>(<span class="number">1.</span> <span class="operator">+</span> <span class="name">peak</span> <span class="operator">*</span> <span class="name">previousPeak</span>) <span class="operator">/</span> <span class="number">200.</span>
-              <span class="name">previousRms</span> <span class="operator">=</span> <span class="name">rms</span>
-              <span class="name">previousPeak</span> <span class="operator">=</span> <span class="name">peak</span>
+             <span class="name">soundFxRadius</span> <span class="operator">=</span> <span class="name">newRms</span>
+         }
+     }
 
-              <span class="name">soundFxRadius</span> <span class="operator">=</span> <span class="name">newRms</span>
-          }
-      }
+     property <span class="type">real</span> <span class="name">soundFxRadius</span>: <span class="number">0.</span>
+     <span class="type">Kuesa</span>.MetallicRoughnessMaterial {
+         <span class="name">id</span>: <span class="name">material</span>
+         <span class="name">effect</span>: <span class="name">Kuesa</span>.MetallicRoughnessEffect { }
+         <span class="name">metallicRoughnessProperties</span>: <span class="name">Kuesa</span>.MetallicRoughnessProperties {
+             <span class="name">baseColorFactor</span>: <span class="string">&quot;gray&quot;</span>
+         }
+     }
 
-      property <span class="type">real</span> <span class="name">soundFxRadius</span>: <span class="number">0.</span>
-      <span class="type">Kuesa</span>.MetallicRoughnessMaterial {
-          <span class="name">id</span>: <span class="name">material</span>
-          <span class="name">effect</span>: <span class="name">Kuesa</span>.MetallicRoughnessEffect { }
-          <span class="name">metallicRoughnessProperties</span>: <span class="name">Kuesa</span>.MetallicRoughnessProperties {
-              <span class="name">baseColorFactor</span>: <span class="string">&quot;gray&quot;</span>
-          }
-      }
+     <span class="type">Entity</span> {
+         <span class="type">Transform</span> {
+             <span class="name">id</span>: <span class="name">torus1Transform</span>
+             <span class="name">translation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">0.6</span>, <span class="number">0.35</span>, <span class="number">1.95</span>)
+             <span class="name">scale3D</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">300.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">300.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">300.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>)
 
-      <span class="type">Entity</span> {
-          <span class="type">Transform</span> {
-              <span class="name">id</span>: <span class="name">torus1Transform</span>
-              <span class="name">translation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">0.6</span>, <span class="number">0.35</span>, <span class="number">1.95</span>)
-              <span class="name">scale3D</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">300.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">300.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">300.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>)
+             Behavior on <span class="name">scale3D</span> {
+                 <span class="type">Vector3dAnimation</span> { }
+             }
 
-              Behavior on <span class="name">scale3D</span> {
-                  <span class="type">Vector3dAnimation</span> { }
-              }
+             <span class="name">rotationY</span>: <span class="number">100</span>
+         }
+         <span class="type">TorusMesh</span> {
+             <span class="name">id</span>: <span class="name">torus1Mesh</span>
+             <span class="name">radius</span>: <span class="number">0.1</span>
+             <span class="name">minorRadius</span>: <span class="number">0.01</span>
+             <span class="name">rings</span>: <span class="number">100</span>
+             <span class="name">slices</span>: <span class="number">20</span>
+         }
+         <span class="name">components</span>: [ <span class="name">torus1Mesh</span>, <span class="name">material</span>, <span class="name">torus1Transform</span> ]
+     }
+     <span class="type">Entity</span> {
+         <span class="type">Transform</span> {
+             <span class="name">id</span>: <span class="name">torus2Transform</span>
+             <span class="name">translation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">0.7</span>, <span class="number">0.35</span>, <span class="number">1.95</span>)
+             <span class="name">scale3D</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">200.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">200.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">200.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>)
 
-              <span class="name">rotationY</span>: <span class="number">100</span>
-          }
-          <span class="type">TorusMesh</span> {
-              <span class="name">id</span>: <span class="name">torus1Mesh</span>
-              <span class="name">radius</span>: <span class="number">0.1</span>
-              <span class="name">minorRadius</span>: <span class="number">0.01</span>
-              <span class="name">rings</span>: <span class="number">100</span>
-              <span class="name">slices</span>: <span class="number">20</span>
-          }
-          <span class="name">components</span>: [ <span class="name">torus1Mesh</span>, <span class="name">material</span>, <span class="name">torus1Transform</span> ]
-      }
-      <span class="type">Entity</span> {
-          <span class="type">Transform</span> {
-              <span class="name">id</span>: <span class="name">torus2Transform</span>
-              <span class="name">translation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">0.7</span>, <span class="number">0.35</span>, <span class="number">1.95</span>)
-              <span class="name">scale3D</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">200.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">200.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">200.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>)
+             Behavior on <span class="name">scale3D</span> {
+                 <span class="type">Vector3dAnimation</span> { }
+             }
 
-              Behavior on <span class="name">scale3D</span> {
-                  <span class="type">Vector3dAnimation</span> { }
-              }
+             <span class="name">rotationY</span>: <span class="number">100</span>
+         }
+         <span class="type">TorusMesh</span> {
+             <span class="name">id</span>: <span class="name">torus2Mesh</span>
+             <span class="name">radius</span>: <span class="number">0.1</span>
+             <span class="name">minorRadius</span>: <span class="number">0.02</span>
+             <span class="name">rings</span>: <span class="number">100</span>
+             <span class="name">slices</span>: <span class="number">20</span>
+         }
+         <span class="name">components</span>: [ <span class="name">torus2Mesh</span>, <span class="name">material</span>, <span class="name">torus2Transform</span> ]
+     }
+     <span class="type">Entity</span> {
+         <span class="type">Transform</span> {
+             <span class="name">id</span>: <span class="name">torus3transform</span>
+             <span class="name">translation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">.8</span>, <span class="number">0.35</span>, <span class="number">1.95</span>)
+             <span class="name">scale3D</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">100.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">100.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">100.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>)
 
-              <span class="name">rotationY</span>: <span class="number">100</span>
-          }
-          <span class="type">TorusMesh</span> {
-              <span class="name">id</span>: <span class="name">torus2Mesh</span>
-              <span class="name">radius</span>: <span class="number">0.1</span>
-              <span class="name">minorRadius</span>: <span class="number">0.02</span>
-              <span class="name">rings</span>: <span class="number">100</span>
-              <span class="name">slices</span>: <span class="number">20</span>
-          }
-          <span class="name">components</span>: [ <span class="name">torus2Mesh</span>, <span class="name">material</span>, <span class="name">torus2Transform</span> ]
-      }
-      <span class="type">Entity</span> {
-          <span class="type">Transform</span> {
-              <span class="name">id</span>: <span class="name">torus3transform</span>
-              <span class="name">translation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">.8</span>, <span class="number">0.35</span>, <span class="number">1.95</span>)
-              <span class="name">scale3D</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">100.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">100.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>, <span class="number">100.</span> <span class="operator">*</span> <span class="name">soundFxRadius</span>)
+             Behavior on <span class="name">scale3D</span> {
+                 <span class="type">Vector3dAnimation</span> { }
+             }
 
-              Behavior on <span class="name">scale3D</span> {
-                  <span class="type">Vector3dAnimation</span> { }
-              }
-
-              <span class="name">rotationY</span>: <span class="number">100</span>
-          }
-          <span class="type">TorusMesh</span> {
-              <span class="name">id</span>: <span class="name">torus3Mesh</span>
-              <span class="name">radius</span>: <span class="number">0.1</span>
-              <span class="name">minorRadius</span>: <span class="number">0.05</span>
-              <span class="name">rings</span>: <span class="number">100</span>
-              <span class="name">slices</span>: <span class="number">20</span>
-          }
-          <span class="name">components</span>: [ <span class="name">torus3Mesh</span>, <span class="name">material</span>, <span class="name">torus3transform</span> ]
-      }
-  }
-
+             <span class="name">rotationY</span>: <span class="number">100</span>
+         }
+         <span class="type">TorusMesh</span> {
+             <span class="name">id</span>: <span class="name">torus3Mesh</span>
+             <span class="name">radius</span>: <span class="number">0.1</span>
+             <span class="name">minorRadius</span>: <span class="number">0.05</span>
+             <span class="name">rings</span>: <span class="number">100</span>
+             <span class="name">slices</span>: <span class="number">20</span>
+         }
+         <span class="name">components</span>: [ <span class="name">torus3Mesh</span>, <span class="name">material</span>, <span class="name">torus3transform</span> ]
+     }
+ }
 </pre>

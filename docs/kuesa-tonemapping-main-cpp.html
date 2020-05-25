@@ -12,164 +12,162 @@
 </ul></div><div class='doc-content'><h1 class="title">Kuesa ToneMapping QML Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
+ <span class="comment">/*
+     main.cpp
 
-  <span class="comment">/*
-      main.cpp
+     This file is part of Kuesa.
 
-      This file is part of Kuesa.
+     Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Robert Brock &lt;robert.krus@kdab.com&gt;
 
-      Copyright (C) 2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-      Author: Robert Brock &lt;robert.krus@kdab.com&gt;
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
 
-      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-      LICENSE.KUESA.ENTERPRISE file.
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
 
-      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
 
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU Affero General Public License as
-      published by the Free Software Foundation, either version 3 of the
-      License, or (at your option) any later version.
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
 
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU Affero General Public License for more details.
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 
-      You should have received a copy of the GNU Affero General Public License
-      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-  */</span>
+ <span class="preprocessor">#include &lt;qtkuesa-config.h&gt;</span>
+ <span class="preprocessor">#include &lt;QGuiApplication&gt;</span>
+ <span class="preprocessor">#include &lt;QQuickView&gt;</span>
+ <span class="preprocessor">#include &lt;QQmlEngine&gt;</span>
+ <span class="preprocessor">#include &lt;QQmlContext&gt;</span>
+ <span class="preprocessor">#include &lt;QCommandLineParser&gt;</span>
+ <span class="preprocessor">#include &lt;QCommandLineOption&gt;</span>
+ <span class="preprocessor">#include &lt;QStandardPaths&gt;</span>
+ <span class="preprocessor">#include &lt;QDir&gt;</span>
+ <span class="preprocessor">#include &lt;QDirIterator&gt;</span>
+ <span class="preprocessor">#include &lt;QResource&gt;</span>
 
-  <span class="preprocessor">#include &lt;qtkuesa-config.h&gt;</span>
-  <span class="preprocessor">#include &lt;QGuiApplication&gt;</span>
-  <span class="preprocessor">#include &lt;QQuickView&gt;</span>
-  <span class="preprocessor">#include &lt;QQmlEngine&gt;</span>
-  <span class="preprocessor">#include &lt;QQmlContext&gt;</span>
-  <span class="preprocessor">#include &lt;QCommandLineParser&gt;</span>
-  <span class="preprocessor">#include &lt;QCommandLineOption&gt;</span>
-  <span class="preprocessor">#include &lt;QStandardPaths&gt;</span>
-  <span class="preprocessor">#include &lt;QDir&gt;</span>
-  <span class="preprocessor">#include &lt;QDirIterator&gt;</span>
-  <span class="preprocessor">#include &lt;QResource&gt;</span>
+ <span class="preprocessor">#ifdef Q_OS_ANDROID</span>
+ <span class="preprocessor">#include &lt;QOpenGLContext&gt;</span>
+ <span class="preprocessor">#endif</span>
 
-  <span class="preprocessor">#ifdef Q_OS_ANDROID</span>
-  <span class="preprocessor">#include &lt;QOpenGLContext&gt;</span>
-  <span class="preprocessor">#endif</span>
+ <span class="preprocessor">#include &quot;../../../tools/gltfViewer/orbitcameracontroller.h&quot;</span>
 
-  <span class="preprocessor">#include &quot;../../../tools/gltfViewer/orbitcameracontroller.h&quot;</span>
+ <span class="type">int</span> main(<span class="type">int</span> ac<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>av)
+ {
+     bool isES2 <span class="operator">=</span> <span class="keyword">false</span>;
+     {
+         <span class="comment">// Set OpenGL requirements</span>
+         <span class="type">QSurfaceFormat</span> format <span class="operator">=</span> <span class="type">QSurfaceFormat</span><span class="operator">::</span>defaultFormat();
+ <span class="preprocessor">#ifndef QT_OPENGL_ES_2</span>
+         format<span class="operator">.</span>setVersion(<span class="number">4</span><span class="operator">,</span> <span class="number">1</span>);
+         format<span class="operator">.</span>setProfile(<span class="type">QSurfaceFormat</span><span class="operator">::</span>CoreProfile);
+ <span class="preprocessor">#else</span>
+ <span class="preprocessor">#ifndef QT_OPENGL_ES_3</span>
+         isES2 <span class="operator">=</span> <span class="keyword">true</span>;
+ <span class="preprocessor">#endif</span>
+         format<span class="operator">.</span>setVersion(<span class="number">3</span><span class="operator">,</span> <span class="number">0</span>);
+         format<span class="operator">.</span>setProfile(<span class="type">QSurfaceFormat</span><span class="operator">::</span>NoProfile);
+         format<span class="operator">.</span>setRenderableType(<span class="type">QSurfaceFormat</span><span class="operator">::</span>OpenGLES);
+ <span class="preprocessor">#endif</span>
+         <span class="type">QSurfaceFormat</span><span class="operator">::</span>setDefaultFormat(format);
+     }
 
-  <span class="type">int</span> main(<span class="type">int</span> ac<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>av)
-  {
-      bool isES2 <span class="operator">=</span> <span class="keyword">false</span>;
-      {
-          <span class="comment">// Set OpenGL requirements</span>
-          <span class="type">QSurfaceFormat</span> format <span class="operator">=</span> <span class="type">QSurfaceFormat</span><span class="operator">::</span>defaultFormat();
-  <span class="preprocessor">#ifndef QT_OPENGL_ES_2</span>
-          format<span class="operator">.</span>setVersion(<span class="number">4</span><span class="operator">,</span> <span class="number">1</span>);
-          format<span class="operator">.</span>setProfile(<span class="type">QSurfaceFormat</span><span class="operator">::</span>CoreProfile);
-  <span class="preprocessor">#else</span>
-  <span class="preprocessor">#ifndef QT_OPENGL_ES_3</span>
-          isES2 <span class="operator">=</span> <span class="keyword">true</span>;
-  <span class="preprocessor">#endif</span>
-          format<span class="operator">.</span>setVersion(<span class="number">3</span><span class="operator">,</span> <span class="number">0</span>);
-          format<span class="operator">.</span>setProfile(<span class="type">QSurfaceFormat</span><span class="operator">::</span>NoProfile);
-          format<span class="operator">.</span>setRenderableType(<span class="type">QSurfaceFormat</span><span class="operator">::</span>OpenGLES);
-  <span class="preprocessor">#endif</span>
-          <span class="type">QSurfaceFormat</span><span class="operator">::</span>setDefaultFormat(format);
-      }
+     <span class="type">QGuiApplication</span><span class="operator">::</span>setAttribute(<span class="type">Qt</span><span class="operator">::</span>AA_EnableHighDpiScaling);
+     <span class="type">QGuiApplication</span> app(ac<span class="operator">,</span> av);
 
-      <span class="type">QGuiApplication</span><span class="operator">::</span>setAttribute(<span class="type">Qt</span><span class="operator">::</span>AA_EnableHighDpiScaling);
-      <span class="type">QGuiApplication</span> app(ac<span class="operator">,</span> av);
+     <span class="type">QDir</span> resourceDir(app<span class="operator">.</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/resources&quot;</span>));
+     <span class="type">QDirIterator</span> it(resourceDir<span class="operator">,</span> <span class="type">QDirIterator</span><span class="operator">::</span>IteratorFlag<span class="operator">::</span>NoIteratorFlags);
+     <span class="keyword">while</span> (it<span class="operator">.</span>hasNext()) {
+         <span class="type">QString</span> path <span class="operator">=</span> it<span class="operator">.</span>next();
+         <span class="keyword">if</span> (<span class="operator">!</span><span class="type">QResource</span><span class="operator">::</span>registerResource(path))
+             qWarning() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Failed to load binary resources: &quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> path;
+         <span class="keyword">else</span>
+             qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Loaded binary resources: &quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> path;
+     }
 
-      <span class="type">QDir</span> resourceDir(app<span class="operator">.</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/resources&quot;</span>));
-      <span class="type">QDirIterator</span> it(resourceDir<span class="operator">,</span> <span class="type">QDirIterator</span><span class="operator">::</span>IteratorFlag<span class="operator">::</span>NoIteratorFlags);
-      <span class="keyword">while</span> (it<span class="operator">.</span>hasNext()) {
-          <span class="type">QString</span> path <span class="operator">=</span> it<span class="operator">.</span>next();
-          <span class="keyword">if</span> (<span class="operator">!</span><span class="type">QResource</span><span class="operator">::</span>registerResource(path))
-              qWarning() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Failed to load binary resources: &quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> path;
-          <span class="keyword">else</span>
-              qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Loaded binary resources: &quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> path;
-      }
+     <span class="type">QCommandLineParser</span> parser;
+     parser<span class="operator">.</span>setApplicationDescription(<span class="string">&quot;KDAB Kuesa Demo&quot;</span>);
+     parser<span class="operator">.</span>addHelpOption();
+     parser<span class="operator">.</span>addVersionOption();
 
-      <span class="type">QCommandLineParser</span> parser;
-      parser<span class="operator">.</span>setApplicationDescription(<span class="string">&quot;KDAB Kuesa Demo&quot;</span>);
-      parser<span class="operator">.</span>addHelpOption();
-      parser<span class="operator">.</span>addVersionOption();
+     qmlRegisterType<span class="operator">&lt;</span>OrbitCameraController<span class="operator">&gt;</span>(<span class="string">&quot;KuesaDemo&quot;</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="string">&quot;OrbitCameraController&quot;</span>);
 
-      qmlRegisterType<span class="operator">&lt;</span>OrbitCameraController<span class="operator">&gt;</span>(<span class="string">&quot;KuesaDemo&quot;</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="string">&quot;OrbitCameraController&quot;</span>);
+     <span class="type">QCommandLineOption</span> cursorDisableOption(<span class="type">QStringList</span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;no-cursor&quot;</span>
+                                                          <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;cursor visibility&quot;</span><span class="operator">,</span>
+                                            <span class="string">&quot;Make sure no pointer is hidden.&quot;</span>);
+     parser<span class="operator">.</span>addOption(cursorDisableOption);
 
-      <span class="type">QCommandLineOption</span> cursorDisableOption(<span class="type">QStringList</span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;no-cursor&quot;</span>
-                                                           <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;cursor visibility&quot;</span><span class="operator">,</span>
-                                             <span class="string">&quot;Make sure no pointer is hidden.&quot;</span>);
-      parser<span class="operator">.</span>addOption(cursorDisableOption);
+     <span class="type">QCommandLineOption</span> fullscreenOption(<span class="type">QStringList</span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;fullscreen&quot;</span>
+                                                       <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Fullscreen option&quot;</span><span class="operator">,</span>
+                                         <span class="string">&quot;Open the demo in fullscreen&quot;</span>);
+     parser<span class="operator">.</span>addOption(fullscreenOption);
 
-      <span class="type">QCommandLineOption</span> fullscreenOption(<span class="type">QStringList</span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;fullscreen&quot;</span>
-                                                        <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Fullscreen option&quot;</span><span class="operator">,</span>
-                                          <span class="string">&quot;Open the demo in fullscreen&quot;</span>);
-      parser<span class="operator">.</span>addOption(fullscreenOption);
+     <span class="type">QCommandLineOption</span> heightScaleOption(<span class="type">QStringList</span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;screenHeightScale&quot;</span>
+                                                        <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Height Scale UI&quot;</span><span class="operator">,</span>
+                                          <span class="string">&quot;Scale UI based on screen height rather than DPI (default on iOS and Android)&quot;</span>);
+     parser<span class="operator">.</span>addOption(heightScaleOption);
 
-      <span class="type">QCommandLineOption</span> heightScaleOption(<span class="type">QStringList</span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;screenHeightScale&quot;</span>
-                                                         <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Height Scale UI&quot;</span><span class="operator">,</span>
-                                           <span class="string">&quot;Scale UI based on screen height rather than DPI (default on iOS and Android)&quot;</span>);
-      parser<span class="operator">.</span>addOption(heightScaleOption);
+     parser<span class="operator">.</span>process(app);
 
-      parser<span class="operator">.</span>process(app);
+     <span class="keyword">if</span> (parser<span class="operator">.</span>isSet(cursorDisableOption))
+         app<span class="operator">.</span>setOverrideCursor(<span class="type">QCursor</span>(<span class="type">Qt</span><span class="operator">::</span>BlankCursor));
 
-      <span class="keyword">if</span> (parser<span class="operator">.</span>isSet(cursorDisableOption))
-          app<span class="operator">.</span>setOverrideCursor(<span class="type">QCursor</span>(<span class="type">Qt</span><span class="operator">::</span>BlankCursor));
+     <span class="type">QQuickView</span> view;
+ <span class="preprocessor">#ifdef Q_OS_ANDROID</span>
+     <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;assets:/&quot;</span>);
 
-      <span class="type">QQuickView</span> view;
-  <span class="preprocessor">#ifdef Q_OS_ANDROID</span>
-      <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;assets:/&quot;</span>);
+     <span class="comment">// Qt builds for android may not define QT_OPENGL_ES_3</span>
+     <span class="comment">// Therefore we need a runtime check to see whether we can use ES 3.0 or not</span>
+     <span class="type">QOpenGLContext</span> ctx;
+     ctx<span class="operator">.</span>setFormat(<span class="type">QSurfaceFormat</span><span class="operator">::</span>defaultFormat());
+     <span class="keyword">if</span> (ctx<span class="operator">.</span>create()) {
+         <span class="keyword">const</span> <span class="type">QSurfaceFormat</span> androidFormat <span class="operator">=</span> ctx<span class="operator">.</span>format();
+         isES2 <span class="operator">=</span> (androidFormat<span class="operator">.</span>majorVersion() <span class="operator">=</span><span class="operator">=</span> <span class="number">2</span>);
+     }
+ <span class="preprocessor">#elif defined(Q_OS_IOS)</span>
+     <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QString</span>(<span class="type">QStringLiteral</span>(<span class="string">&quot;file://%1/Library/Application Support/&quot;</span>))<span class="operator">.</span>arg(<span class="type">QGuiApplication</span><span class="operator">::</span>applicationDirPath());
+ <span class="preprocessor">#elif defined(Q_OS_OSX)</span>
+     <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QString</span>(<span class="type">QStringLiteral</span>(<span class="string">&quot;file://%1/../Resources/&quot;</span>))<span class="operator">.</span>arg(<span class="type">QGuiApplication</span><span class="operator">::</span>applicationDirPath());
+ <span class="preprocessor">#else</span>
+     <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/&quot;</span>);
+ <span class="preprocessor">#endif</span>
 
-      <span class="comment">// Qt builds for android may not define QT_OPENGL_ES_3</span>
-      <span class="comment">// Therefore we need a runtime check to see whether we can use ES 3.0 or not</span>
-      <span class="type">QOpenGLContext</span> ctx;
-      ctx<span class="operator">.</span>setFormat(<span class="type">QSurfaceFormat</span><span class="operator">::</span>defaultFormat());
-      <span class="keyword">if</span> (ctx<span class="operator">.</span>create()) {
-          <span class="keyword">const</span> <span class="type">QSurfaceFormat</span> androidFormat <span class="operator">=</span> ctx<span class="operator">.</span>format();
-          isES2 <span class="operator">=</span> (androidFormat<span class="operator">.</span>majorVersion() <span class="operator">=</span><span class="operator">=</span> <span class="number">2</span>);
-      }
-  <span class="preprocessor">#elif defined(Q_OS_IOS)</span>
-      <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QString</span>(<span class="type">QStringLiteral</span>(<span class="string">&quot;file://%1/Library/Application Support/&quot;</span>))<span class="operator">.</span>arg(<span class="type">QGuiApplication</span><span class="operator">::</span>applicationDirPath());
-  <span class="preprocessor">#elif defined(Q_OS_OSX)</span>
-      <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QString</span>(<span class="type">QStringLiteral</span>(<span class="string">&quot;file://%1/../Resources/&quot;</span>))<span class="operator">.</span>arg(<span class="type">QGuiApplication</span><span class="operator">::</span>applicationDirPath());
-  <span class="preprocessor">#else</span>
-      <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/&quot;</span>);
-  <span class="preprocessor">#endif</span>
+     <span class="keyword">const</span> <span class="type">QString</span> modelSuffix <span class="operator">=</span> {};
 
-      <span class="keyword">const</span> <span class="type">QString</span> modelSuffix <span class="operator">=</span> {};
+ <span class="preprocessor">#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)</span>
+     bool screenHeightScale <span class="operator">=</span> <span class="keyword">true</span>;
+ <span class="preprocessor">#else</span>
+     bool screenHeightScale <span class="operator">=</span> parser<span class="operator">.</span>isSet(heightScaleOption);
+ <span class="preprocessor">#endif</span>
 
-  <span class="preprocessor">#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)</span>
-      bool screenHeightScale <span class="operator">=</span> <span class="keyword">true</span>;
-  <span class="preprocessor">#else</span>
-      bool screenHeightScale <span class="operator">=</span> parser<span class="operator">.</span>isSet(heightScaleOption);
-  <span class="preprocessor">#endif</span>
+ <span class="preprocessor">#ifdef KUESA_BUILD_ROOT</span>
+     view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>addImportPath(<span class="type">QStringLiteral</span>(KUESA_BUILD_ROOT <span class="string">&quot;/qml&quot;</span>));
+ <span class="preprocessor">#endif</span>
+     view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_isES2&quot;</span>)<span class="operator">,</span> isES2);
+     view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_view&quot;</span>)<span class="operator">,</span> <span class="operator">&amp;</span>view);
+     view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_screenHeightScale&quot;</span>)<span class="operator">,</span> screenHeightScale);
+     view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_isFullScreen&quot;</span>)<span class="operator">,</span> parser<span class="operator">.</span>isSet(fullscreenOption));
+     view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_assetsPrefix&quot;</span>)<span class="operator">,</span> assetsPrefix);
+     view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_modelSuffix&quot;</span>)<span class="operator">,</span> modelSuffix);
 
-  <span class="preprocessor">#ifdef KUESA_BUILD_ROOT</span>
-      view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>addImportPath(<span class="type">QStringLiteral</span>(KUESA_BUILD_ROOT <span class="string">&quot;/qml&quot;</span>));
-  <span class="preprocessor">#endif</span>
-      view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_isES2&quot;</span>)<span class="operator">,</span> isES2);
-      view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_view&quot;</span>)<span class="operator">,</span> <span class="operator">&amp;</span>view);
-      view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_screenHeightScale&quot;</span>)<span class="operator">,</span> screenHeightScale);
-      view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_isFullScreen&quot;</span>)<span class="operator">,</span> parser<span class="operator">.</span>isSet(fullscreenOption));
-      view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_assetsPrefix&quot;</span>)<span class="operator">,</span> assetsPrefix);
-      view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_modelSuffix&quot;</span>)<span class="operator">,</span> modelSuffix);
+ <span class="preprocessor">#ifdef Q_OS_IOS</span>
+     view<span class="operator">.</span>setFlags(view<span class="operator">.</span>flags() <span class="operator">|</span> <span class="type">Qt</span><span class="operator">::</span>MaximizeUsingFullscreenGeometryHint);
+ <span class="preprocessor">#endif</span>
+     view<span class="operator">.</span>setResizeMode(<span class="type">QQuickView</span><span class="operator">::</span>SizeRootObjectToView);
+     view<span class="operator">.</span>setSource(<span class="type">QUrl</span>(<span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/main.qml&quot;</span>)));
+     view<span class="operator">.</span>resize(<span class="number">1920</span><span class="operator">,</span> <span class="number">1080</span>);
+     <span class="keyword">if</span> (parser<span class="operator">.</span>isSet(fullscreenOption)) {
+         view<span class="operator">.</span>showFullScreen();
+     } <span class="keyword">else</span> {
+         view<span class="operator">.</span>show();
+     }
 
-  <span class="preprocessor">#ifdef Q_OS_IOS</span>
-      view<span class="operator">.</span>setFlags(view<span class="operator">.</span>flags() <span class="operator">|</span> <span class="type">Qt</span><span class="operator">::</span>MaximizeUsingFullscreenGeometryHint);
-  <span class="preprocessor">#endif</span>
-      view<span class="operator">.</span>setResizeMode(<span class="type">QQuickView</span><span class="operator">::</span>SizeRootObjectToView);
-      view<span class="operator">.</span>setSource(<span class="type">QUrl</span>(<span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/main.qml&quot;</span>)));
-      view<span class="operator">.</span>resize(<span class="number">1920</span><span class="operator">,</span> <span class="number">1080</span>);
-      <span class="keyword">if</span> (parser<span class="operator">.</span>isSet(fullscreenOption)) {
-          view<span class="operator">.</span>showFullScreen();
-      } <span class="keyword">else</span> {
-          view<span class="operator">.</span>show();
-      }
-
-      <span class="keyword">return</span> app<span class="operator">.</span>exec();
-  }
-
+     <span class="keyword">return</span> app<span class="operator">.</span>exec();
+ }
 </pre>

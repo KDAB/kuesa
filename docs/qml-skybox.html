@@ -38,7 +38,8 @@
 <a name="details"></a>
 <h2 id="details">Detailed Description</h2>
 <p>Be sure to disable frustum culling in the FrameGraph through which the skybox rendering happens.</p>
-<p><b>Note: </b>Please note that you shouldn't try to render a skybox with an orthographic projection.</p><p>Kuesa.Skybox uses a <a href="qml-skybox.html#baseName-prop">baseName</a> and an extension for the textures that will be used for the skybox. Depending on the skybox extension, Kuesa will create different textures to be used as skybox.</p>
+<p><b>Note: </b>Please note that you shouldn't try to render a skybox with an orthographic projection.</p>
+<p>Kuesa.Skybox uses a <a href="qml-skybox.html#baseName-prop">baseName</a> and an extension for the textures that will be used for the skybox. Depending on the skybox extension, Kuesa will create different textures to be used as skybox.</p>
 <ul>
 <li>*.dds Kuesa tries to load a texture called <a href="qml-skybox.html#baseName-prop">baseName</a> + extension and uses a Qt3D.Render.QTextureLoader to generate the texture</li>
 <li>Anything else: Kuesa tries to load 6 different textures and creates a Qt3D.Render.TextureCubeMap from them<ul>

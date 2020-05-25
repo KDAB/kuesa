@@ -31,25 +31,27 @@
 <a name="properties"></a>
 <h2 id="properties">Properties</h2>
 <ul>
-<li class="fn"><b><b><a href="qml-metallicroughnessmaterial.html#metallicRoughnessProperties-prop">metallicRoughnessProperties</a></b></b> : MetallicRoughnessProperties</li>
+<li class="fn"><b><b><a href="qml-metallicroughnessmaterial.html#materialProperties-prop">materialProperties</a></b></b> : MetallicRoughnessProperties</li>
 </ul>
 <!-- $$$MetallicRoughnessMaterial-description -->
 <a name="details"></a>
 <h2 id="details">Detailed Description</h2>
 <p>It is configured through the set of properties held on the <a href="qml-metallicroughnessproperties.html">MetallicRoughnessProperties</a> instance it can receive.</p>
-<p><b>Note: </b>Kuesa.MetallicRoughnessMaterial is implemented using a custom shader graph. Some changes in the properties will activate or deactivate some nodes of the shader graph and will trigger a recompilation of the shader. It is recommended to create the variations of the material that you need once up front at application initialisation time.</p><p><b>Note: </b>The effect behind this material needs a brdfLut texture. If the brdfLut texture in the effect is not set and the material is added to a subtree of a Kuesa.<a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a>, it will look for the Kuesa.<a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> and will use the brdfLut texture in the texture collection.</p><p><b>See also </b><a href="qml-metallicroughnessproperties.html">Kuesa::MetallicRoughnessProperties</a>.</p>
+<p><b>Note: </b>Kuesa.MetallicRoughnessMaterial is implemented using a custom shader graph. Some changes in the properties will activate or deactivate some nodes of the shader graph and will trigger a recompilation of the shader. It is recommended to create the variations of the material that you need once up front at application initialisation time.</p>
+<p><b>Note: </b>The effect behind this material needs a brdfLut texture. If the brdfLut texture in the effect is not set and the material is added to a subtree of a Kuesa.<a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a>, it will look for the Kuesa.<a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> and will use the brdfLut texture in the texture collection.</p>
+<p><b>See also </b><a href="qml-metallicroughnessproperties.html">Kuesa::MetallicRoughnessProperties</a>.</p>
 <!-- @@@MetallicRoughnessMaterial -->
 <h2>Property Documentation</h2>
-<!-- $$$metallicRoughnessProperties -->
+<!-- $$$materialProperties -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="metallicRoughnessProperties-prop">
+<tr valign="top" class="odd" id="materialProperties-prop">
 <td class="tblQmlPropNode"><p>
-<a name="metallicRoughnessProperties-prop"></a><span class="name">metallicRoughnessProperties</span> : <span class="type"><a href="qml-metallicroughnessproperties.html">MetallicRoughnessProperties</a></span></p></td></tr>
+<a name="materialProperties-prop"></a><span class="name">materialProperties</span> : <span class="type"><a href="qml-metallicroughnessproperties.html">MetallicRoughnessProperties</a></span></p></td></tr>
 </table></div></div>
 <div class="qmldoc"><p>The properties defining the appearance of the material.</p>
-<p>This property was introduced in Kuesa 1.1.</p>
-</div></div><!-- @@@metallicRoughnessProperties -->
+<p>This property was introduced in Kuesa 1.2.</p>
+</div></div><!-- @@@materialProperties -->
 <br/>
         </div>
        </div>

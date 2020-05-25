@@ -31,116 +31,104 @@
 <h4 id="qtquick-and-qt3d-integration">QtQuick and Qt3D integration</h4>
 <p>The music-box example relies on the regular QtQuick and Qt 3D APIs to instantiate a QtQuick based application that combines Qt 3D based content with a 2D UI overlay.</p>
 <pre class="qml">
+ import QtQuick 2.11
+ import QtQuick.Scene3D 2.0
 
-  import QtQuick 2.11
-  import QtQuick.Scene3D 2.0
+ <span class="type">Scene3D</span> {
+     <span class="name">id</span>: <span class="name">scene3D</span>
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+     <span class="name">multisample</span>: <span class="number">true</span>
+     <span class="name">aspects</span>: [<span class="string">&quot;input&quot;</span>, <span class="string">&quot;animation&quot;</span>, <span class="string">&quot;logic&quot;</span>]
 
-  <span class="type">Scene3D</span> {
-      <span class="name">id</span>: <span class="name">scene3D</span>
-      <span class="name">anchors</span>.fill: <span class="name">parent</span>
-      <span class="name">multisample</span>: <span class="number">true</span>
-      <span class="name">aspects</span>: [<span class="string">&quot;input&quot;</span>, <span class="string">&quot;animation&quot;</span>, <span class="string">&quot;logic&quot;</span>]
-
-      <span class="type">MainScene</span> { }
-  }
-
+     <span class="type">MainScene</span> { }
+ }
 </pre>
 <a name="sceneentity"></a>
 <h4 id="sceneentity">SceneEntity</h4>
 <p>Kuesa provides the <a href="qml-sceneentity.html">SceneEntity</a> element which holds collections of Qt 3D assets accessible by name.</p>
 <pre class="qml">
+ import Kuesa 1.2 as <a href="kuesa.html">Kuesa</a>
+ import Kuesa.Effects 1.1 as KuesaFX
+ import MusicBox 1.0 as MusicBox
 
-  import Kuesa 1.1 as <a href="kuesa.html">Kuesa</a>
-  import Kuesa.Effects 1.1 as KuesaFX
-  import MusicBox 1.0 as MusicBox
-
-  <span class="type">Kuesa</span>.SceneEntity {
-      <span class="name">id</span>: <span class="name">scene</span>
-
+ <span class="type">Kuesa</span>.SceneEntity {
+     <span class="name">id</span>: <span class="name">scene</span>
 </pre>
 <a name="importing-a-gltf2-file"></a>
 <h4 id="importing-a-gltf2-file">Importing a glTF2 File</h4>
 <p>In order to load a glTF2 file, Kuesa provides the <a href="qml-gltf2importer.html">GLTF2Importer</a> element. If the <i>sceneEntity</i> property is set to a valid <a href="qml-sceneentity.html">SceneEntity</a> instance, Qt 3D assets generated while parsing the file will be automatically added to the various asset collections.</p>
 <pre class="qml">
-
-      <span class="type">Kuesa</span>.GLTF2Importer {
-          <span class="name">id</span>: <span class="name">importer</span>
-          <span class="name">sceneEntity</span>: <span class="name">scene</span>
-          <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;RobotArm.gltf&quot;</span>
-      ...
-
+     <span class="type">Kuesa</span>.GLTF2Importer {
+         <span class="name">id</span>: <span class="name">importer</span>
+         <span class="name">sceneEntity</span>: <span class="name">scene</span>
+         <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;RobotArm.gltf&quot;</span>
+     ...
 </pre>
 <a name="extracting-and-running-animations"></a>
 <h4 id="extracting-and-running-animations">Extracting and running Animations</h4>
 <p>We know in advance the name of the animations bundled in the glTF2 file. If you haven't authored the file yourself, you can use the Kuesa Studio gltfEditor to introspect it, list the animations and preview them.</p>
 <p>Given a list of animation names:</p>
 <pre class="qml">
+     <span class="type">QtObject</span> {
+         <span class="name">id</span>: <span class="name">d</span>
 
-      <span class="type">QtObject</span> {
-          <span class="name">id</span>: <span class="name">d</span>
-
-          readonly property <span class="type">var</span> <span class="name">robotArmAnimations</span>: [
-              <span class="string">'ArmTopAction'</span>,
-              <span class="string">'FingerBase3Action'</span>,
-              <span class="string">'armBottomBottomAction'</span>,
-              <span class="string">'armBottomBottomGauge.001Action'</span>,
-              <span class="string">'armBottomBottomGaugeAction'</span>,
-              <span class="string">'armBottomTopAction'</span>,
-              <span class="string">'cogAction'</span>,
-              <span class="string">'elbowPivotAction'</span>,
-              <span class="string">'elbowPivotBaseAction'</span>,
-              <span class="string">'fingerBase2Action'</span>,
-              <span class="string">'fingerKnuckle1Action'</span>,
-              <span class="string">'fingerPivot1.001Action'</span>,
-              <span class="string">'fingerPivot2Action'</span>,
-              <span class="string">'fingerTop1Action'</span>,
-              <span class="string">'fingerTop2Action'</span>,
-              <span class="string">'fingerTop3Action'</span>,
-              <span class="string">'handleAction.001'</span>,
-              <span class="string">'handleCoverAction'</span>,
-              <span class="string">'musicBarrelAction'</span>,
-              <span class="string">'shoulderPivotAction'</span>,
-              <span class="string">'shoulderPivotBaseAction'</span>,
-              <span class="string">'thumbBaseBottomAction'</span>,
-              <span class="string">'thumbKnuckleAction'</span>,
-              <span class="string">'thumbPivotAction'</span>,
-              <span class="string">'thumbTopAction'</span>,
-              <span class="string">'wristPivotAction'</span>
-          ]
-      ...
-
+         readonly property <span class="type">var</span> <span class="name">robotArmAnimations</span>: [
+             <span class="string">'ArmTopAction'</span>,
+             <span class="string">'FingerBase3Action'</span>,
+             <span class="string">'armBottomBottomAction'</span>,
+             <span class="string">'armBottomBottomGauge.001Action'</span>,
+             <span class="string">'armBottomBottomGaugeAction'</span>,
+             <span class="string">'armBottomTopAction'</span>,
+             <span class="string">'cogAction'</span>,
+             <span class="string">'elbowPivotAction'</span>,
+             <span class="string">'elbowPivotBaseAction'</span>,
+             <span class="string">'fingerBase2Action'</span>,
+             <span class="string">'fingerKnuckle1Action'</span>,
+             <span class="string">'fingerPivot1.001Action'</span>,
+             <span class="string">'fingerPivot2Action'</span>,
+             <span class="string">'fingerTop1Action'</span>,
+             <span class="string">'fingerTop2Action'</span>,
+             <span class="string">'fingerTop3Action'</span>,
+             <span class="string">'handleAction.001'</span>,
+             <span class="string">'handleCoverAction'</span>,
+             <span class="string">'musicBarrelAction'</span>,
+             <span class="string">'shoulderPivotAction'</span>,
+             <span class="string">'shoulderPivotBaseAction'</span>,
+             <span class="string">'thumbBaseBottomAction'</span>,
+             <span class="string">'thumbKnuckleAction'</span>,
+             <span class="string">'thumbPivotAction'</span>,
+             <span class="string">'thumbTopAction'</span>,
+             <span class="string">'wristPivotAction'</span>
+         ]
+     ...
 </pre>
 <p>We can generate <a href="qml-animationplayer.html">AnimationPlayer</a> to control them.</p>
 <pre class="qml">
-
-      <span class="type">NodeInstantiator</span> {
-          <span class="name">id</span>: <span class="name">actionPlayers</span>
-          <span class="name">model</span>: []
-          <span class="name">delegate</span>: <span class="name">Kuesa</span>.AnimationPlayer {
-              <span class="name">sceneEntity</span>: <span class="name">scene</span>
-              <span class="name">clip</span>: <span class="name">modelData</span>
-              <span class="name">loops</span>: <span class="name">Kuesa</span>.<span class="name">AnimationPlayer</span>.<span class="name">Infinite</span>
-              <span class="name">running</span>: <span class="name">d</span>.<span class="name">animationRunning</span>
-          }
-      }
-
+     <span class="type">NodeInstantiator</span> {
+         <span class="name">id</span>: <span class="name">actionPlayers</span>
+         <span class="name">model</span>: []
+         <span class="name">delegate</span>: <span class="name">Kuesa</span>.AnimationPlayer {
+             <span class="name">sceneEntity</span>: <span class="name">scene</span>
+             <span class="name">clip</span>: <span class="name">modelData</span>
+             <span class="name">loops</span>: <span class="name">Kuesa</span>.<span class="name">AnimationPlayer</span>.<span class="name">Infinite</span>
+             <span class="name">running</span>: <span class="name">d</span>.<span class="name">animationRunning</span>
+         }
+     }
 </pre>
 <p>Upon importing the glTF file, we can rely on the status change to trigger the animation playback.</p>
 <pre class="qml">
+         <span class="name">onStatusChanged</span>: {
+             <span class="keyword">if</span> (<span class="name">status</span> <span class="operator">==</span> <span class="name">Kuesa</span>.<span class="name">GLTF2Importer</span>.<span class="name">Ready</span>) {
+                 <span class="comment">// start robot arm animation</span>
+                 <span class="name">actionPlayers</span>.<span class="name">model</span> <span class="operator">=</span> <span class="name">d</span>.<span class="name">robotArmAnimations</span>;
 
-          <span class="name">onStatusChanged</span>: {
-              <span class="keyword">if</span> (<span class="name">status</span> <span class="operator">==</span> <span class="name">Kuesa</span>.<span class="name">GLTF2Importer</span>.<span class="name">Ready</span>) {
-                  <span class="comment">// start robot arm animation</span>
-                  <span class="name">actionPlayers</span>.<span class="name">model</span> <span class="operator">=</span> <span class="name">d</span>.<span class="name">robotArmAnimations</span>;
+                 <span class="comment">// get transforms for music barrel</span>
+                 var musicBarrelTransform = <span class="name">scene</span>.<span class="name">transformForEntity</span>(<span class="string">'musicBarrel'</span>);
+                 <span class="name">musicBarrelTransform</span>.<span class="name">defaultPropertyTrackingMode</span> <span class="operator">=</span> <span class="name">Node</span>.<span class="name">TrackAllValues</span>;
 
-                  <span class="comment">// get transforms for music barrel</span>
-                  var musicBarrelTransform = <span class="name">scene</span>.<span class="name">transformForEntity</span>(<span class="string">'musicBarrel'</span>);
-                  <span class="name">musicBarrelTransform</span>.<span class="name">defaultPropertyTrackingMode</span> <span class="operator">=</span> <span class="name">Node</span>.<span class="name">TrackAllValues</span>;
-
-                  <span class="name">d</span>.<span class="name">animationRunning</span> <span class="operator">=</span> <span class="number">true</span>
-              }
-          }
-
+                 <span class="name">d</span>.<span class="name">animationRunning</span> <span class="operator">=</span> <span class="number">true</span>
+             }
+         }
 </pre>
 <p>Files:</p>
 <ul>

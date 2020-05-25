@@ -44,17 +44,15 @@
 <h2 id="details">Detailed Description</h2>
 <p>GLTF2Importer imports glTF 2 scenes into a Qt 3D scene.</p>
 <pre class="cpp plain">
+ import Kuesa 1.1 as Kuesa
 
-  import Kuesa 1.1 as Kuesa
-
-  Kuesa.SceneEntity {
-      id: scene
-      Kuesa.GLTF2Importer {
-          sceneEntity: scene
-          source: &quot;file:///source.gltf&quot;
-      }
-  }
-
+ Kuesa.SceneEntity {
+     id: scene
+     Kuesa.GLTF2Importer {
+         sceneEntity: scene
+         source: &quot;file:///source.gltf&quot;
+     }
+ }
 </pre>
 <p>If a <a href="qml-sceneentity.html">Kuesa::SceneEntity</a> has been set on the importer, various Qt 3D resources generated upon import will be registered into named collections. If no name is specified and <a href="qml-gltf2importer.html#assignNames-prop">assignNames</a> is true, a default name will be assigned to the asset. If several assets of the same type share the same name, subsequent assets will be given unique names by appending an index.</p>
 <p>Below is a list of Qt 3D resources currently registered into collections:</p>

@@ -27,7 +27,7 @@
 <p><a href="qml-unlitmaterial.html">Kuesa::UnlitMaterial</a> is a simple material without shading. It implements the KHR_materials_unlit extension from glTF 2.0&#x2e; <a href="#details">More...</a></p>
 <!-- @@@UnlitMaterial -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/UnlitMaterial&gt;</span>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/UnlitMaterial&gt;</span>
 </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-unlitmaterial.html">UnlitMaterial</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-gltf2material.html">Kuesa::GLTF2Material</a></td></tr></table></div><p>This class was introduced in Kuesa 1.1.</p>
 <ul>
 <li><a href="kuesa-unlitmaterial-members.html">List of all members, including inherited members</a></li>
@@ -35,42 +35,44 @@
 <a name="properties"></a>
 <h2 id="properties">Properties</h2>
 <ul>
-<li class="fn"><b><a href="kuesa-unlitmaterial.html#unlitProperties-prop">unlitProperties</a></b> : Kuesa::UnlitProperties*</li>
+<li class="fn"><b><a href="kuesa-unlitmaterial.html#materialProperties-prop">materialProperties</a></b> : Kuesa::UnlitProperties*</li>
 </ul>
 <a name="public-functions"></a>
 <h2 id="public-functions">Public Functions</h2>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-unlitmaterial.html#unlitProperties-prop">setUnlitProperties</a></b>(Kuesa::UnlitProperties *<i>unlitProperties</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::UnlitProperties *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-unlitmaterial.html#unlitProperties-prop">unlitProperties</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::UnlitProperties *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-unlitmaterial.html#materialProperties-prop">materialProperties</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-unlitmaterial.html#materialProperties-prop">setMaterialProperties</a></b>(Kuesa::UnlitProperties *<i>materialProperties</i>)</td></tr>
 </table></div>
 <a name="signals"></a>
 <h2 id="signals">Signals</h2>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-unlitmaterial.html#unlitProperties-prop">unlitPropertiesChanged</a></b>(Kuesa::UnlitProperties *<i>properties</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-unlitmaterial.html#materialProperties-prop">materialPropertiesChanged</a></b>(Kuesa::UnlitProperties *<i>properties</i>)</td></tr>
 </table></div>
 <a name="details"></a>
 <!-- $$$UnlitMaterial-description -->
 <div class="descr">
 <h2 id="details">Detailed Description</h2>
 <p>It is configured through the set of properties held on the <a href="kuesa-unlitproperties.html">UnlitProperties</a> instance it can receive.</p>
-<p><b>Note: </b><a href="qml-unlitmaterial.html">Kuesa::UnlitMaterial</a> is implemented using a custom shader graph. Some changes in the properties will activate or deactivate some nodes of the shader graph and will trigger a recompilation of the shader. It is recommended to create the variations of the material that you need once up front at application initialisation time.</p></div>
+<p><b>Note: </b><a href="qml-unlitmaterial.html">Kuesa::UnlitMaterial</a> is implemented using a custom shader graph. Some changes in the properties will activate or deactivate some nodes of the shader graph and will trigger a recompilation of the shader. It is recommended to create the variations of the material that you need once up front at application initialisation time.</p>
+</div>
 <p><b>See also </b><a href="qml-unlitproperties.html">Kuesa::UnlitProperties</a>.</p>
 <!-- @@@UnlitMaterial -->
 <div class="prop">
 <h2>Property Documentation</h2>
-<!-- $$$unlitProperties-prop$$$unlitProperties$$$setUnlitPropertiesKuesa::UnlitProperties*$$$unlitPropertiesChangedKuesa::UnlitProperties* -->
-<h3 class="fn" id="unlitProperties-prop"><a name="unlitProperties-prop"></a><span class="name">unlitProperties</span> : <span class="type"><a href="kuesa-unlitproperties.html">Kuesa::UnlitProperties</a></span>*</h3>
+<!-- $$$materialProperties-prop$$$materialProperties$$$setMaterialPropertiesKuesa::UnlitProperties*$$$materialPropertiesChangedKuesa::UnlitProperties* -->
+<h3 class="fn" id="materialProperties-prop"><a name="materialProperties-prop"></a><span class="name">materialProperties</span> : <span class="type"><a href="kuesa-unlitproperties.html">Kuesa::UnlitProperties</a></span>*</h3>
 <p>The properties defining the appearance of the material.</p>
+<p>This property was introduced in Qt 1.2.</p>
 <p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::UnlitProperties *</td><td class="memItemRight bottomAlign"><span class="name"><b>unlitProperties</b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setUnlitProperties</b></span>(Kuesa::UnlitProperties *<i>unlitProperties</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::UnlitProperties *</td><td class="memItemRight bottomAlign"><span class="name"><b>materialProperties</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMaterialProperties</b></span>(Kuesa::UnlitProperties *<i>materialProperties</i>)</td></tr>
 </table></div>
 <p><b>Notifier signal:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>unlitPropertiesChanged</b></span>(Kuesa::UnlitProperties *<i>properties</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>materialPropertiesChanged</b></span>(Kuesa::UnlitProperties *<i>properties</i>)</td></tr>
 </table></div>
-<!-- @@@unlitProperties -->
+<!-- @@@materialProperties -->
 </div>
         </div>
        </div>

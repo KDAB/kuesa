@@ -31,93 +31,85 @@
 <h4 id="qtquick-and-qt3d-integration">QtQuick and Qt3D integration</h4>
 <p>The tonemapping example relies on the regular QtQuick and Qt 3D APIs to instantiate a QtQuick based application that combines Qt 3D based content with a 2D UI overlay.</p>
 <pre class="qml">
+ <span class="type">Item</span> {
+     <span class="name">id</span>: <span class="name">root</span>
 
-  <span class="type">Item</span> {
-      <span class="name">id</span>: <span class="name">root</span>
+     <span class="type">Item</span> {
+         <span class="name">id</span>: <span class="name">baseUI</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
 
-      <span class="type">Item</span> {
-          <span class="name">id</span>: <span class="name">baseUI</span>
-          <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="type">Scene3D</span> {
+             <span class="name">id</span>: <span class="name">scene3d</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">focus</span>: <span class="number">true</span>
+             <span class="name">multisample</span>: <span class="number">true</span>
+             <span class="name">aspects</span>: [<span class="string">&quot;render&quot;</span>, <span class="string">&quot;input&quot;</span>, <span class="string">&quot;logic&quot;</span>, <span class="string">&quot;animation&quot;</span>]
 
-          <span class="type">Scene3D</span> {
-              <span class="name">id</span>: <span class="name">scene3d</span>
-              <span class="name">anchors</span>.fill: <span class="name">parent</span>
-              <span class="name">focus</span>: <span class="number">true</span>
-              <span class="name">multisample</span>: <span class="number">true</span>
-              <span class="name">aspects</span>: [<span class="string">&quot;render&quot;</span>, <span class="string">&quot;input&quot;</span>, <span class="string">&quot;logic&quot;</span>, <span class="string">&quot;animation&quot;</span>]
-
-              <span class="type">MainScene</span> {
-                  <span class="name">id</span>: <span class="name">sceneEntity</span>
-                  <span class="name">screenWidth</span>: <span class="name">scene3d</span>.<span class="name">width</span>
-                  <span class="name">screenHeight</span>: <span class="name">scene3d</span>.<span class="name">height</span>
-                  <span class="name">exposure</span>: <span class="name">menu</span>.<span class="name">exposure</span>
-                  <span class="name">rotating</span>: <span class="name">menu</span>.<span class="name">toggleRotation</span>
-                  <span class="name">lightRotating</span>: <span class="name">menu</span>.<span class="name">toggleLightRotation</span>
-                  <span class="name">toneMappingAlgorithmName</span>: <span class="name">menu</span>.<span class="name">toneMappingAlgorithmName</span>
-              }
-          }
-      }
-      ...
-
+             <span class="type">MainScene</span> {
+                 <span class="name">id</span>: <span class="name">sceneEntity</span>
+                 <span class="name">screenWidth</span>: <span class="name">scene3d</span>.<span class="name">width</span>
+                 <span class="name">screenHeight</span>: <span class="name">scene3d</span>.<span class="name">height</span>
+                 <span class="name">exposure</span>: <span class="name">menu</span>.<span class="name">exposure</span>
+                 <span class="name">rotating</span>: <span class="name">menu</span>.<span class="name">toggleRotation</span>
+                 <span class="name">lightRotating</span>: <span class="name">menu</span>.<span class="name">toggleLightRotation</span>
+                 <span class="name">toneMappingAlgorithmName</span>: <span class="name">menu</span>.<span class="name">toneMappingAlgorithmName</span>
+             }
+         }
+     }
+     ...
 </pre>
 <a name="sceneentity"></a>
 <h4 id="sceneentity">SceneEntity</h4>
 <p>Kuesa provides the <a href="qml-sceneentity.html">SceneEntity</a> element which holds collections of Qt 3D assets accessible by name.</p>
 <pre class="qml">
+ import Qt3D.Core 2.12
+ import Qt3D.Render 2.12
+ import Qt3D.Input 2.12
+ import Qt3D.Extras 2.12
+ import QtQuick 2.12
 
-  import Qt3D.Core 2.12
-  import Qt3D.Render 2.12
-  import Qt3D.Input 2.12
-  import Qt3D.Extras 2.12
-  import QtQuick 2.12
+ import Kuesa 1.1 as <a href="kuesa.html">Kuesa</a>
+ import Kuesa.Effects 1.1 as KuesaFX
+ import KuesaDemo 1.0 as KuesaDemo
 
-  import Kuesa 1.1 as <a href="kuesa.html">Kuesa</a>
-  import Kuesa.Effects 1.1 as KuesaFX
-  import KuesaDemo 1.0 as KuesaDemo
+ <span class="type">Kuesa</span>.SceneEntity {
+     <span class="name">id</span>: <span class="name">root3D</span>
 
-  <span class="type">Kuesa</span>.SceneEntity {
-      <span class="name">id</span>: <span class="name">root3D</span>
-
-      property <span class="type">string</span> <span class="name">toneMappingAlgorithmName</span>: <span class="string">&quot;None&quot;</span>
-      ...
-
+     property <span class="type">string</span> <span class="name">toneMappingAlgorithmName</span>: <span class="string">&quot;None&quot;</span>
+     ...
 </pre>
 <a name="importing-a-gltf2-file"></a>
 <h4 id="importing-a-gltf2-file">Importing a glTF2 File</h4>
 <p>In order to load a glTF2 file, Kuesa provides the <a href="qml-gltf2importer.html">GLTF2Importer</a> element. If the <i>sceneEntity</i> property is set to a valid <a href="qml-sceneentity.html">SceneEntity</a> instance, Qt 3D assets generated while parsing the file will be automatically added to the various asset collections.</p>
 <pre class="qml">
-
-      <span class="type">Kuesa</span>.GLTF2Importer {
-          <span class="name">id</span>: <span class="name">gltf2importer</span>
-          <span class="name">sceneEntity</span>: <span class="name">root3D</span>
-          <span class="name">assignNames</span>: <span class="number">true</span>
-          <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;RotatingHelmet.gltf&quot;</span>
-          <span class="name">options</span>.generateTangents: <span class="number">true</span>
-      }
-
+     <span class="type">Kuesa</span>.GLTF2Importer {
+         <span class="name">id</span>: <span class="name">gltf2importer</span>
+         <span class="name">sceneEntity</span>: <span class="name">root3D</span>
+         <span class="name">assignNames</span>: <span class="number">true</span>
+         <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;RotatingHelmet.gltf&quot;</span>
+         <span class="name">options</span>.generateTangents: <span class="number">true</span>
+     }
 </pre>
 <a name="controlling-the-exposure-and-tone-mapping"></a>
 <h4 id="controlling-the-exposure-and-tone-mapping">Controlling the Exposure and Tone Mapping</h4>
 <p>We use a <a href="qml-forwardrenderer.html">ForwardRenderer</a> FrameGraph to render our scene. This FrameGraph has properties to control the exposure as well as the tone mapping algorithm we want to use.</p>
 <p>Therefore we can create a binding on the <i>toneMappingAlgorithm</i> property of our <a href="qml-forwardrenderer.html">ForwardRenderer</a> FrameGraph to control the tonemapping algorithm used</p>
 <pre class="qml">
-
-  <span class="name">activeFrameGraph</span>: <span class="name">Kuesa</span>.ForwardRenderer {
-      <span class="name">id</span>: <span class="name">frameGraph</span>
-      <span class="name">camera</span>: <span class="name">cameraAsset</span>.<span class="name">node</span> ? <span class="name">cameraAsset</span>.<span class="name">node</span> : <span class="name">fallbackCamera</span>
-      <span class="name">clearColor</span>: <span class="name">Qt</span>.<span class="name">rgba</span>(<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">1.0</span>)
-      <span class="name">exposure</span>: <span class="name">root3D</span>.<span class="name">exposure</span>
-      <span class="name">toneMappingAlgorithm</span>: {
-          <span class="keyword">if</span> (<span class="name">toneMappingAlgorithmName</span> <span class="operator">==</span> <span class="string">&quot;Filmic&quot;</span>)
-              <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Filmic</span>
-          <span class="keyword">if</span> (<span class="name">toneMappingAlgorithmName</span> <span class="operator">==</span> <span class="string">&quot;Reinhard&quot;</span>)
-              <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Reinhard</span>
-          <span class="keyword">if</span> (<span class="name">toneMappingAlgorithmName</span> <span class="operator">==</span> <span class="string">&quot;Uncharted&quot;</span>)
-              <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Uncharted</span>
-          <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">None</span>
-      }
-  }
-
+ <span class="name">activeFrameGraph</span>: <span class="name">Kuesa</span>.ForwardRenderer {
+     <span class="name">id</span>: <span class="name">frameGraph</span>
+     <span class="name">camera</span>: <span class="name">cameraAsset</span>.<span class="name">node</span> ? <span class="name">cameraAsset</span>.<span class="name">node</span> : <span class="name">fallbackCamera</span>
+     <span class="name">clearColor</span>: <span class="name">Qt</span>.<span class="name">rgba</span>(<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">1.0</span>)
+     <span class="name">exposure</span>: <span class="name">root3D</span>.<span class="name">exposure</span>
+     <span class="name">toneMappingAlgorithm</span>: {
+         <span class="keyword">if</span> (<span class="name">toneMappingAlgorithmName</span> <span class="operator">==</span> <span class="string">&quot;Filmic&quot;</span>)
+             <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Filmic</span>
+         <span class="keyword">if</span> (<span class="name">toneMappingAlgorithmName</span> <span class="operator">==</span> <span class="string">&quot;Reinhard&quot;</span>)
+             <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Reinhard</span>
+         <span class="keyword">if</span> (<span class="name">toneMappingAlgorithmName</span> <span class="operator">==</span> <span class="string">&quot;Uncharted&quot;</span>)
+             <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Uncharted</span>
+         <span class="keyword">return</span> <span class="name">KuesaFX</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">None</span>
+     }
+ }
 </pre>
 <p>Files:</p>
 <ul>

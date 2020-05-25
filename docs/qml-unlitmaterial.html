@@ -31,7 +31,7 @@
 <a name="properties"></a>
 <h2 id="properties">Properties</h2>
 <ul>
-<li class="fn"><b><b><a href="qml-unlitmaterial.html#unlitProperties-prop">unlitProperties</a></b></b> : UnlitProperties</li>
+<li class="fn"><b><b><a href="qml-unlitmaterial.html#materialProperties-prop">materialProperties</a></b></b> : UnlitProperties</li>
 </ul>
 <!-- $$$UnlitMaterial-description -->
 <a name="details"></a>
@@ -43,18 +43,20 @@
 <li>textureTransform: Allows to transform (scale, translate, rotate) a texture.</li>
 </ul>
 <p>It is configured through the set of properties held on the <a href="qml-unlitproperties.html">UnlitProperties</a> instance it can receive.</p>
-<p><b>Note: </b>Kuesa.UnlitMaterial is implemented using a custom shader graph. Some changes in the properties will activate or deactivate some nodes of the shader graph and will trigger a recompilation of the shader. It is recommended to create the variations of the material that you need once up front at application initialisation time.</p><p><b>See also </b><a href="qml-unlitproperties.html">Kuesa::UnlitProperties</a>.</p>
+<p><b>Note: </b>Kuesa.UnlitMaterial is implemented using a custom shader graph. Some changes in the properties will activate or deactivate some nodes of the shader graph and will trigger a recompilation of the shader. It is recommended to create the variations of the material that you need once up front at application initialisation time.</p>
+<p><b>See also </b><a href="qml-unlitproperties.html">Kuesa::UnlitProperties</a>.</p>
 <!-- @@@UnlitMaterial -->
 <h2>Property Documentation</h2>
-<!-- $$$unlitProperties -->
+<!-- $$$materialProperties -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="unlitProperties-prop">
+<tr valign="top" class="odd" id="materialProperties-prop">
 <td class="tblQmlPropNode"><p>
-<a name="unlitProperties-prop"></a><span class="name">unlitProperties</span> : <span class="type"><a href="qml-unlitproperties.html">UnlitProperties</a></span></p></td></tr>
+<a name="materialProperties-prop"></a><span class="name">materialProperties</span> : <span class="type"><a href="qml-unlitproperties.html">UnlitProperties</a></span></p></td></tr>
 </table></div></div>
 <div class="qmldoc"><p>The properties defining the appearance of the material.</p>
-</div></div><!-- @@@unlitProperties -->
+<p>This property was introduced in Qt 1.2.</p>
+</div></div><!-- @@@materialProperties -->
 <br/>
         </div>
        </div>

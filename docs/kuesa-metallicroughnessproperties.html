@@ -28,7 +28,7 @@
 <p><a href="qml-metallicroughnessproperties.html">Kuesa::MetallicRoughnessProperties</a> hold the properties of a physically based rendering (PBR) material based on the glTF 2.0 material description. <a href="#details">More...</a></p>
 <!-- @@@MetallicRoughnessProperties -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/MetallicRoughnessProperties&gt;</span>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/MetallicRoughnessProperties&gt;</span>
 </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-metallicroughnessproperties.html">MetallicRoughnessProperties</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-gltf2materialproperties.html">Kuesa::GLTF2MaterialProperties</a></td></tr></table></div><p>This class was introduced in Kuesa 1.1.</p>
 <ul>
 <li><a href="kuesa-metallicroughnessproperties-members.html">List of all members, including inherited members</a></li>
@@ -131,7 +131,8 @@
 <!-- $$$ambientOcclusionMap-prop$$$ambientOcclusionMap$$$setAmbientOcclusionMapQt3DRender::QAbstractTexture*$$$ambientOcclusionMapChangedQt3DRender::QAbstractTexture* -->
 <h3 class="fn" id="ambientOcclusionMap-prop"><a name="ambientOcclusionMap-prop"></a><span class="name">ambientOcclusionMap</span> : <span class="type">Qt3DRender::QAbstractTexture</span>*</h3>
 <p>Specifies a texture to be used for ambient occlusion. The content of the texture is expected to be a single R channel in linear space. This offers a way of combining the <a href="kuesa-metallicroughnessproperties.html#metalRoughMap-prop">metalRoughMap</a>'s G and B channels in the same texture as the ambientOcclusionMap.</p>
-<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p><p><b>Access functions:</b></p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p>
+<p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><span class="name"><b>ambientOcclusionMap</b></span>() const</td></tr>
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setAmbientOcclusionMap</b></span>(Qt3DRender::QAbstractTexture *<i>ambientOcclusionMap</i>)</td></tr>
@@ -170,7 +171,8 @@
 <!-- $$$emissiveMap-prop$$$emissiveMap$$$setEmissiveMapQt3DRender::QAbstractTexture*$$$emissiveMapChangedQt3DRender::QAbstractTexture* -->
 <h3 class="fn" id="emissiveMap-prop"><a name="emissiveMap-prop"></a><span class="name">emissiveMap</span> : <span class="type">Qt3DRender::QAbstractTexture</span>*</h3>
 <p>Specifies a texture to be used for emissive surfaces. The content of the texture is expected to be in sRGB color space.</p>
-<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p><p><b>Access functions:</b></p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p>
+<p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><span class="name"><b>emissiveMap</b></span>() const</td></tr>
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setEmissiveMap</b></span>(Qt3DRender::QAbstractTexture *<i>emissiveMap</i>)</td></tr>
@@ -196,7 +198,8 @@
 <!-- $$$metalRoughMap-prop$$$metalRoughMap$$$setMetalRoughMapQt3DRender::QAbstractTexture*$$$metalRoughMapChangedQt3DRender::QAbstractTexture* -->
 <h3 class="fn" id="metalRoughMap-prop"><a name="metalRoughMap-prop"></a><span class="name">metalRoughMap</span> : <span class="type">Qt3DRender::QAbstractTexture</span>*</h3>
 <p>Specifies a texture to be used as metallic and roughness factor. The metallic factor is sampled for the B channel of the texture, while the roughness factor is sampled from the G channel. R and A channel are unused. This offers a way of combining the <a href="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop">ambientOcclusionMap</a>'s R channel in the same texture as the metalRoughMap. The content of the texture is expected to be in linear RGB color space.</p>
-<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p><p><b>Access functions:</b></p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p>
+<p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><span class="name"><b>metalRoughMap</b></span>() const</td></tr>
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMetalRoughMap</b></span>(Qt3DRender::QAbstractTexture *<i>metalRoughMap</i>)</td></tr>
@@ -235,7 +238,8 @@
 <!-- $$$normalMap-prop$$$normalMap$$$setNormalMapQt3DRender::QAbstractTexture*$$$normalMapChangedQt3DRender::QAbstractTexture* -->
 <h3 class="fn" id="normalMap-prop"><a name="normalMap-prop"></a><span class="name">normalMap</span> : <span class="type">Qt3DRender::QAbstractTexture</span>*</h3>
 <p>Specifies a normal map for the material. This allows to simulate very detailed surfaces without a huge number of triangles. The content of the texture is expected to be in linear RGB color space.</p>
-<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p><p><b>Access functions:</b></p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p>
+<p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><span class="name"><b>normalMap</b></span>() const</td></tr>
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNormalMap</b></span>(Qt3DRender::QAbstractTexture *<i>normalMap</i>)</td></tr>

@@ -38,25 +38,23 @@
 <h2 id="details">Detailed Description</h2>
 <p>ThresholdEffect is a post-processing effect that passes through any pixel above a certain brightness value and sets all others to black.</p>
 <pre class="cpp plain">
+ import Kuesa 1.1 as Kuesa
 
-  import Kuesa 1.1 as Kuesa
-
-  Kuesa.SceneEnity {
-      id: root
-      components: [
-          RenderSettings {
-               Kuesa.ForwardRenderer {
-                   postProcessingEffects: [
-                       ThresholdEffect {
-                           threshold: 0.5
-                       }
-                   ]
-               }
-          }
-      ]
-     ..&#x2e;
-  }
-
+ Kuesa.SceneEnity {
+     id: root
+     components: [
+         RenderSettings {
+              Kuesa.ForwardRenderer {
+                  postProcessingEffects: [
+                      ThresholdEffect {
+                          threshold: 0.5
+                      }
+                  ]
+              }
+         }
+     ]
+    ..&#x2e;
+ }
 </pre>
 <!-- @@@ThresholdEffect -->
 <h2>Property Documentation</h2>

@@ -29,7 +29,7 @@
 <p>Play animations defined in glTF files. <a href="#details">More...</a></p>
 <!-- @@@AnimationPlayer -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/AnimationPlayer&gt;</span>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/AnimationPlayer&gt;</span>
 </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-animationplayer.html">AnimationPlayer</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
 <ul>
 <li><a href="kuesa-animationplayer-members.html">List of all members, including inherited members</a></li>
@@ -267,7 +267,9 @@
 <p>AnimationPlayer::addTarget adds a node <i>target</i> as a target for the animation</p>
 <p>If targets are added to the list, the mapping defined by the <a href="kuesa-animationplayer.html#mapper-prop">AnimationPlayer::mapper</a> property will be ignored and the clip data will be mapped to the specified target nodes.</p>
 <p>The target node needs to have properties which match the ones defined by the clips.</p>
-<p><b>Note: </b>When specifying targets, a valid object matching the specified <a href="kuesa-animationplayer.html#mapper-prop">AnimationPlayer::mapper</a> property must exist (even though it won't be affected by the animation) as it will contain information required to establish valid mappings for the new targets.</p><p><b>Note: </b><a href="kuesa-sceneentity.html#transformForEntity">Kuesa::SceneEntity::transformForEntity</a> can be useful to map animations that control transformations from one entity to another. The returned transform can be used as a target for the animation.</p><p><b>See also </b><a href="kuesa-animationplayer.html#removeTarget">AnimationPlayer::removeTarget</a>.</p>
+<p><b>Note: </b>When specifying targets, a valid object matching the specified <a href="kuesa-animationplayer.html#mapper-prop">AnimationPlayer::mapper</a> property must exist (even though it won't be affected by the animation) as it will contain information required to establish valid mappings for the new targets.</p>
+<p><b>Note: </b><a href="kuesa-sceneentity.html#transformForEntity">Kuesa::SceneEntity::transformForEntity</a> can be useful to map animations that control transformations from one entity to another. The returned transform can be used as a target for the animation.</p>
+<p><b>See also </b><a href="kuesa-animationplayer.html#removeTarget">AnimationPlayer::removeTarget</a>.</p>
 <!-- @@@addTarget -->
 <!-- $$$removeTarget[overload1]$$$removeTargetQt3DCore::QNode* -->
 <h3 class="fn" id="removeTarget"><a name="removeTarget"></a><span class="type">void</span> AnimationPlayer::<span class="name">removeTarget</span>(<span class="type">Qt3DCore::QNode</span> *<i>target</i>)</h3>

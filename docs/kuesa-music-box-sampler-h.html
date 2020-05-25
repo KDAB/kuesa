@@ -12,67 +12,65 @@
 </ul></div><div class='doc-content'><h1 class="title">Kuesa Music Box QML Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
+ <span class="comment">/*
+     sampler.h
 
-  <span class="comment">/*
-      sampler.h
+     This file is part of Kuesa.
 
-      This file is part of Kuesa.
+     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Jean-Michaël Celerier &lt;jean-michael.celerier@kdab.com&gt;
 
-      Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-      Author: Jean-Michaël Celerier &lt;jean-michael.celerier@kdab.com&gt;
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
 
-      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-      LICENSE.KUESA.ENTERPRISE file.
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
 
-      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
 
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU Affero General Public License as
-      published by the Free Software Foundation, either version 3 of the
-      License, or (at your option) any later version.
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
 
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU Affero General Public License for more details.
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 
-      You should have received a copy of the GNU Affero General Public License
-      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-  */</span>
+ <span class="preprocessor">#ifndef KUESA_MUSIC_BOX_SAMPLER_H</span>
+ <span class="preprocessor">#define KUESA_MUSIC_BOX_SAMPLER_H</span>
+ <span class="preprocessor">#include &lt;QObject&gt;</span>
+ <span class="preprocessor">#include &lt;QVariantMap&gt;</span>
 
-  <span class="preprocessor">#ifndef KUESA_MUSIC_BOX_SAMPLER_H</span>
-  <span class="preprocessor">#define KUESA_MUSIC_BOX_SAMPLER_H</span>
-  <span class="preprocessor">#include &lt;QObject&gt;</span>
-  <span class="preprocessor">#include &lt;QVariantMap&gt;</span>
+ <span class="keyword">class</span> SamplerPrivate;
+ <span class="keyword">class</span> Sampler : <span class="keyword">public</span> <span class="type">QObject</span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type">QStringList</span> notes READ notes WRITE setNotes NOTIFY notesChanged)
+ <span class="keyword">public</span>:
+     Sampler(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+     <span class="operator">~</span>Sampler();
 
-  <span class="keyword">class</span> SamplerPrivate;
-  <span class="keyword">class</span> Sampler : <span class="keyword">public</span> <span class="type">QObject</span>
-  {
-      Q_OBJECT
-      Q_PROPERTY(<span class="type">QStringList</span> notes READ notes WRITE setNotes NOTIFY notesChanged)
-  <span class="keyword">public</span>:
-      Sampler(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
-      <span class="operator">~</span>Sampler();
+     Q_INVOKABLE <span class="type">void</span> note(<span class="type">int</span> sample<span class="operator">,</span> <span class="type">float</span> volume);
 
-      Q_INVOKABLE <span class="type">void</span> note(<span class="type">int</span> sample<span class="operator">,</span> <span class="type">float</span> volume);
+     <span class="type">QStringList</span> notes() <span class="keyword">const</span>;
 
-      <span class="type">QStringList</span> notes() <span class="keyword">const</span>;
+ <span class="keyword">public</span> <span class="keyword">slots</span>:
+     <span class="type">void</span> setNotes(<span class="type">QStringList</span> note);
 
-  <span class="keyword">public</span> <span class="keyword">slots</span>:
-      <span class="type">void</span> setNotes(<span class="type">QStringList</span> note);
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> notesChanged(<span class="type">QStringList</span> notes);
+     <span class="type">void</span> audioSignal(<span class="type">float</span> rms<span class="operator">,</span> <span class="type">float</span> peak);
 
-  <span class="keyword">signals</span>:
-      <span class="type">void</span> notesChanged(<span class="type">QStringList</span> notes);
-      <span class="type">void</span> audioSignal(<span class="type">float</span> rms<span class="operator">,</span> <span class="type">float</span> peak);
+ <span class="keyword">private</span>:
+     Q_DECLARE_PRIVATE(Sampler)
+     Q_DISABLE_COPY(Sampler)
+     <span class="type">QScopedPointer</span><span class="operator">&lt;</span>SamplerPrivate<span class="operator">&gt;</span> d_ptr;
+     <span class="type">QStringList</span> m_notes;
+ };
 
-  <span class="keyword">private</span>:
-      Q_DECLARE_PRIVATE(Sampler)
-      Q_DISABLE_COPY(Sampler)
-      <span class="type">QScopedPointer</span><span class="operator">&lt;</span>SamplerPrivate<span class="operator">&gt;</span> d_ptr;
-      <span class="type">QStringList</span> m_notes;
-  };
-
-  <span class="preprocessor">#endif</span>
-
+ <span class="preprocessor">#endif</span>
 </pre>

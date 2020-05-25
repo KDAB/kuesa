@@ -12,212 +12,210 @@
 </ul></div><div class='doc-content'><h1 class="title">Kuesa Iro-Materials-Gallery QML Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
+ <span class="comment">/*
+     materialinspector.cpp
 
-  <span class="comment">/*
-      materialinspector.cpp
+     This file is part of Kuesa.
 
-      This file is part of Kuesa.
+     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
 
-      Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-      Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
 
-      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-      LICENSE.KUESA.ENTERPRISE file.
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
 
-      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
 
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU Affero General Public License as
-      published by the Free Software Foundation, either version 3 of the
-      License, or (at your option) any later version.
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
 
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU Affero General Public License for more details.
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 
-      You should have received a copy of the GNU Affero General Public License
-      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-  */</span>
+ <span class="preprocessor">#include &lt;Qt3DRender/QMaterial&gt;</span>
+ <span class="preprocessor">#include &lt;Qt3DRender/QPickEvent&gt;</span>
+ <span class="preprocessor">#include &lt;Qt3DRender/QAbstractTexture&gt;</span>
+ <span class="preprocessor">#include &lt;Qt3DCore/QEntity&gt;</span>
+ <span class="preprocessor">#include &lt;Qt3DCore/QComponent&gt;</span>
+ <span class="preprocessor">#include &lt;QDebug&gt;</span>
+ <span class="preprocessor">#include &lt;Kuesa/GLTF2Material&gt;</span>
+ <span class="preprocessor">#include &lt;Kuesa/GLTF2MaterialProperties&gt;</span>
+ <span class="preprocessor">#include &quot;materialinspector.h&quot;</span>
+ <span class="preprocessor">#include &lt;QMetaProperty&gt;</span>
+ <span class="preprocessor">#include &lt;QVector2D&gt;</span>
+ <span class="preprocessor">#include &lt;QVector3D&gt;</span>
+ <span class="preprocessor">#include &lt;QVector4D&gt;</span>
 
-  <span class="preprocessor">#include &lt;Qt3DRender/QMaterial&gt;</span>
-  <span class="preprocessor">#include &lt;Qt3DRender/QPickEvent&gt;</span>
-  <span class="preprocessor">#include &lt;Qt3DRender/QAbstractTexture&gt;</span>
-  <span class="preprocessor">#include &lt;Qt3DCore/QEntity&gt;</span>
-  <span class="preprocessor">#include &lt;Qt3DCore/QComponent&gt;</span>
-  <span class="preprocessor">#include &lt;QDebug&gt;</span>
-  <span class="preprocessor">#include &lt;Kuesa/GLTF2Material&gt;</span>
-  <span class="preprocessor">#include &lt;Kuesa/GLTF2MaterialProperties&gt;</span>
-  <span class="preprocessor">#include &quot;materialinspector.h&quot;</span>
-  <span class="preprocessor">#include &lt;QMetaProperty&gt;</span>
-  <span class="preprocessor">#include &lt;QVector2D&gt;</span>
-  <span class="preprocessor">#include &lt;QVector3D&gt;</span>
-  <span class="preprocessor">#include &lt;QVector4D&gt;</span>
+ <span class="keyword">namespace</span> {
 
-  <span class="keyword">namespace</span> {
+ <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> ComponentType<span class="operator">&gt;</span>
+ <span class="keyword">inline</span> ComponentType <span class="operator">*</span>componentFromEntity(<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>e)
+ {
+ <span class="preprocessor">#if QT_VERSION &gt;= QT_VERSION_CHECK(5, 13, 0)</span>
+     <span class="keyword">const</span> <span class="keyword">auto</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>componentsOfType<span class="operator">&lt;</span>ComponentType<span class="operator">&gt;</span>();
+     <span class="keyword">return</span> cmps<span class="operator">.</span>size() <span class="operator">&gt;</span> <span class="number">0</span> <span class="operator">?</span> cmps<span class="operator">.</span>first() : nullptr;
+ <span class="preprocessor">#else</span>
+     ComponentType <span class="operator">*</span>typedComponent <span class="operator">=</span> nullptr;
+     <span class="keyword">const</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponentVector</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>components();
 
-  <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> ComponentType<span class="operator">&gt;</span>
-  <span class="keyword">inline</span> ComponentType <span class="operator">*</span>componentFromEntity(<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>e)
-  {
-  <span class="preprocessor">#if QT_VERSION &gt;= QT_VERSION_CHECK(5, 13, 0)</span>
-      <span class="keyword">const</span> <span class="keyword">auto</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>componentsOfType<span class="operator">&lt;</span>ComponentType<span class="operator">&gt;</span>();
-      <span class="keyword">return</span> cmps<span class="operator">.</span>size() <span class="operator">&gt;</span> <span class="number">0</span> <span class="operator">?</span> cmps<span class="operator">.</span>first() : nullptr;
-  <span class="preprocessor">#else</span>
-      ComponentType <span class="operator">*</span>typedComponent <span class="operator">=</span> nullptr;
-      <span class="keyword">const</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponentVector</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>components();
+     <span class="keyword">for</span> (<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponent</span> <span class="operator">*</span>c : cmps) {
+         typedComponent <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>ComponentType <span class="operator">*</span><span class="operator">&gt;</span>(c);
+         <span class="keyword">if</span> (typedComponent <span class="operator">!</span><span class="operator">=</span> nullptr)
+             <span class="keyword">break</span>;
+     }
 
-      <span class="keyword">for</span> (<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponent</span> <span class="operator">*</span>c : cmps) {
-          typedComponent <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>ComponentType <span class="operator">*</span><span class="operator">&gt;</span>(c);
-          <span class="keyword">if</span> (typedComponent <span class="operator">!</span><span class="operator">=</span> nullptr)
-              <span class="keyword">break</span>;
-      }
+     <span class="keyword">return</span> typedComponent;
+ <span class="preprocessor">#endif</span>
+ }
 
-      <span class="keyword">return</span> typedComponent;
-  <span class="preprocessor">#endif</span>
-  }
+ <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> ComponentType<span class="operator">&gt;</span>
+ ComponentType <span class="operator">*</span>findFirstComponentInstanceInHierarchy(<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>root)
+ {
+     ComponentType <span class="operator">*</span>cmp <span class="operator">=</span> componentFromEntity<span class="operator">&lt;</span>ComponentType<span class="operator">&gt;</span>(root);
 
-  <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> ComponentType<span class="operator">&gt;</span>
-  ComponentType <span class="operator">*</span>findFirstComponentInstanceInHierarchy(<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>root)
-  {
-      ComponentType <span class="operator">*</span>cmp <span class="operator">=</span> componentFromEntity<span class="operator">&lt;</span>ComponentType<span class="operator">&gt;</span>(root);
+     <span class="keyword">if</span> (cmp)
+         <span class="keyword">return</span> cmp;
 
-      <span class="keyword">if</span> (cmp)
-          <span class="keyword">return</span> cmp;
+     <span class="keyword">const</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QNodeVector</span> children <span class="operator">=</span> root<span class="operator">-</span><span class="operator">&gt;</span>childNodes();
+     <span class="keyword">for</span> (<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QNode</span> <span class="operator">*</span>child : children) {
+         <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>e <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span><span class="operator">&gt;</span>(child);
+         <span class="keyword">if</span> (e) {
+             cmp <span class="operator">=</span> findFirstComponentInstanceInHierarchy<span class="operator">&lt;</span>ComponentType<span class="operator">&gt;</span>(e);
+             <span class="keyword">if</span> (cmp)
+                 <span class="keyword">return</span> cmp;
+         }
+     }
 
-      <span class="keyword">const</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QNodeVector</span> children <span class="operator">=</span> root<span class="operator">-</span><span class="operator">&gt;</span>childNodes();
-      <span class="keyword">for</span> (<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QNode</span> <span class="operator">*</span>child : children) {
-          <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>e <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span><span class="operator">&gt;</span>(child);
-          <span class="keyword">if</span> (e) {
-              cmp <span class="operator">=</span> findFirstComponentInstanceInHierarchy<span class="operator">&lt;</span>ComponentType<span class="operator">&gt;</span>(e);
-              <span class="keyword">if</span> (cmp)
-                  <span class="keyword">return</span> cmp;
-          }
-      }
+     <span class="keyword">return</span> nullptr;
+ }
 
-      <span class="keyword">return</span> nullptr;
-  }
+ <span class="type">QString</span> valueIntrospector(<span class="keyword">const</span> <span class="type">QVariant</span> <span class="operator">&amp;</span>value)
+ {
+     <span class="keyword">switch</span> (value<span class="operator">.</span>userType()) {
+     <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Bool:
+         <span class="keyword">return</span> value<span class="operator">.</span>toBool() <span class="operator">?</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;true&quot;</span>) : <span class="type">QStringLiteral</span>(<span class="string">&quot;false&quot;</span>);
+     <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Double:
+     <span class="keyword">case</span> <span class="type">QMetaType</span><span class="operator">::</span>Float:
+         <span class="keyword">return</span> <span class="type">QString</span><span class="operator">::</span>number(value<span class="operator">.</span>toDouble());
+     <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Int:
+     <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>UInt:
+         <span class="keyword">return</span> <span class="type">QString</span><span class="operator">::</span>number(value<span class="operator">.</span>toInt());
+     <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Color: {
+         <span class="keyword">const</span> <span class="type">QColor</span> color <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type">QColor</span><span class="operator">&gt;</span>();
+         <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;[%1, %2, %3, %4]&quot;</span>)
+                 <span class="operator">.</span>arg(color<span class="operator">.</span>redF())
+                 <span class="operator">.</span>arg(color<span class="operator">.</span>greenF())
+                 <span class="operator">.</span>arg(color<span class="operator">.</span>blueF())
+                 <span class="operator">.</span>arg(color<span class="operator">.</span>alphaF());
+     }
+     <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Vector2D: {
+         <span class="keyword">const</span> QVector4D v2 <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span>QVector2D<span class="operator">&gt;</span>();
+         <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;[%1, %2]&quot;</span>)
+                 <span class="operator">.</span>arg(v2<span class="operator">.</span>x())
+                 <span class="operator">.</span>arg(v2<span class="operator">.</span>y());
+     }
+     <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Vector3D: {
+         <span class="keyword">const</span> QVector4D v3 <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span>QVector3D<span class="operator">&gt;</span>();
+         <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;[%1, %2, %3]&quot;</span>)
+                 <span class="operator">.</span>arg(v3<span class="operator">.</span>x())
+                 <span class="operator">.</span>arg(v3<span class="operator">.</span>y())
+                 <span class="operator">.</span>arg(v3<span class="operator">.</span>z());
+     }
+     <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Vector4D: {
+         <span class="keyword">const</span> QVector4D v4 <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span>QVector4D<span class="operator">&gt;</span>();
+         <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;[%1, %2, %3, %4]&quot;</span>)
+                 <span class="operator">.</span>arg(v4<span class="operator">.</span>x())
+                 <span class="operator">.</span>arg(v4<span class="operator">.</span>y())
+                 <span class="operator">.</span>arg(v4<span class="operator">.</span>z())
+                 <span class="operator">.</span>arg(v4<span class="operator">.</span>w());
+     }
+     <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Matrix4x4:
+         <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;Matrix&quot;</span>);
+     }
 
-  <span class="type">QString</span> valueIntrospector(<span class="keyword">const</span> <span class="type">QVariant</span> <span class="operator">&amp;</span>value)
-  {
-      <span class="keyword">switch</span> (value<span class="operator">.</span>userType()) {
-      <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Bool:
-          <span class="keyword">return</span> value<span class="operator">.</span>toBool() <span class="operator">?</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;true&quot;</span>) : <span class="type">QStringLiteral</span>(<span class="string">&quot;false&quot;</span>);
-      <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Double:
-      <span class="keyword">case</span> <span class="type">QMetaType</span><span class="operator">::</span>Float:
-          <span class="keyword">return</span> <span class="type">QString</span><span class="operator">::</span>number(value<span class="operator">.</span>toDouble());
-      <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Int:
-      <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>UInt:
-          <span class="keyword">return</span> <span class="type">QString</span><span class="operator">::</span>number(value<span class="operator">.</span>toInt());
-      <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Color: {
-          <span class="keyword">const</span> <span class="type">QColor</span> color <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type">QColor</span><span class="operator">&gt;</span>();
-          <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;[%1, %2, %3, %4]&quot;</span>)
-                  <span class="operator">.</span>arg(color<span class="operator">.</span>redF())
-                  <span class="operator">.</span>arg(color<span class="operator">.</span>greenF())
-                  <span class="operator">.</span>arg(color<span class="operator">.</span>blueF())
-                  <span class="operator">.</span>arg(color<span class="operator">.</span>alphaF());
-      }
-      <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Vector2D: {
-          <span class="keyword">const</span> QVector4D v2 <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span>QVector2D<span class="operator">&gt;</span>();
-          <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;[%1, %2]&quot;</span>)
-                  <span class="operator">.</span>arg(v2<span class="operator">.</span>x())
-                  <span class="operator">.</span>arg(v2<span class="operator">.</span>y());
-      }
-      <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Vector3D: {
-          <span class="keyword">const</span> QVector4D v3 <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span>QVector3D<span class="operator">&gt;</span>();
-          <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;[%1, %2, %3]&quot;</span>)
-                  <span class="operator">.</span>arg(v3<span class="operator">.</span>x())
-                  <span class="operator">.</span>arg(v3<span class="operator">.</span>y())
-                  <span class="operator">.</span>arg(v3<span class="operator">.</span>z());
-      }
-      <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Vector4D: {
-          <span class="keyword">const</span> QVector4D v4 <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span>QVector4D<span class="operator">&gt;</span>();
-          <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;[%1, %2, %3, %4]&quot;</span>)
-                  <span class="operator">.</span>arg(v4<span class="operator">.</span>x())
-                  <span class="operator">.</span>arg(v4<span class="operator">.</span>y())
-                  <span class="operator">.</span>arg(v4<span class="operator">.</span>z())
-                  <span class="operator">.</span>arg(v4<span class="operator">.</span>w());
-      }
-      <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Matrix4x4:
-          <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;Matrix&quot;</span>);
-      }
+     <span class="keyword">if</span> (value<span class="operator">.</span>userType() <span class="operator">=</span><span class="operator">=</span> qMetaTypeId<span class="operator">&lt;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QAbstractTexture</span> <span class="operator">*</span><span class="operator">&gt;</span>()) {
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Texture&quot;</span>);
+     }
 
-      <span class="keyword">if</span> (value<span class="operator">.</span>userType() <span class="operator">=</span><span class="operator">=</span> qMetaTypeId<span class="operator">&lt;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QAbstractTexture</span> <span class="operator">*</span><span class="operator">&gt;</span>()) {
-          <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Texture&quot;</span>);
-      }
+     <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Unknown&quot;</span>);
+ }
 
-      <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Unknown&quot;</span>);
-  }
+ } <span class="comment">// anonymous</span>
 
-  } <span class="comment">// anonymous</span>
+ MaterialInspector<span class="operator">::</span>MaterialInspector(<span class="type">QObject</span> <span class="operator">*</span>parent)
+     : <span class="type">QObject</span>(parent)
+     <span class="operator">,</span> m_material(nullptr)
+ {
+ }
 
-  MaterialInspector<span class="operator">::</span>MaterialInspector(<span class="type">QObject</span> <span class="operator">*</span>parent)
-      : <span class="type">QObject</span>(parent)
-      <span class="operator">,</span> m_material(nullptr)
-  {
-  }
+ Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>MaterialInspector<span class="operator">::</span>material() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span>  m_material;
+ }
 
-  Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>MaterialInspector<span class="operator">::</span>material() <span class="keyword">const</span>
-  {
-      <span class="keyword">return</span>  m_material;
-  }
+ <span class="type">QString</span> MaterialInspector<span class="operator">::</span>description() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_description;
+ }
 
-  <span class="type">QString</span> MaterialInspector<span class="operator">::</span>description() <span class="keyword">const</span>
-  {
-      <span class="keyword">return</span> m_description;
-  }
+ <span class="type">void</span> MaterialInspector<span class="operator">::</span>inspect(<span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QPickEvent</span> <span class="operator">*</span>pick)
+ {
+ <span class="preprocessor">#if QT_VERSION &lt; QT_VERSION_CHECK(5, 14, 0)</span>
+     qWarning() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Picking materials only available since 5.14&quot;</span>;
+     <span class="keyword">return</span>;
+ <span class="preprocessor">#else</span>
+     <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>entity <span class="operator">=</span> pick<span class="operator">-</span><span class="operator">&gt;</span>entity();
 
-  <span class="type">void</span> MaterialInspector<span class="operator">::</span>inspect(<span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QPickEvent</span> <span class="operator">*</span>pick)
-  {
-  <span class="preprocessor">#if QT_VERSION &lt; QT_VERSION_CHECK(5, 14, 0)</span>
-      qWarning() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Picking materials only available since 5.14&quot;</span>;
-      <span class="keyword">return</span>;
-  <span class="preprocessor">#else</span>
-      <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>entity <span class="operator">=</span> pick<span class="operator">-</span><span class="operator">&gt;</span>entity();
+     <span class="keyword">if</span> (entity <span class="operator">=</span><span class="operator">=</span> nullptr) {
+         setMaterial(nullptr);
+         <span class="keyword">return</span>;
+     }
 
-      <span class="keyword">if</span> (entity <span class="operator">=</span><span class="operator">=</span> nullptr) {
-          setMaterial(nullptr);
-          <span class="keyword">return</span>;
-      }
+     Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material <span class="operator">=</span> findFirstComponentInstanceInHierarchy<span class="operator">&lt;</span>Kuesa<span class="operator">::</span>GLTF2Material<span class="operator">&gt;</span>(entity);
+     setMaterial(material);
+ <span class="preprocessor">#endif</span>
+ }
 
-      Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material <span class="operator">=</span> findFirstComponentInstanceInHierarchy<span class="operator">&lt;</span>Kuesa<span class="operator">::</span>GLTF2Material<span class="operator">&gt;</span>(entity);
-      setMaterial(material);
-  <span class="preprocessor">#endif</span>
-  }
+ <span class="type">void</span> MaterialInspector<span class="operator">::</span>setMaterial(Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material)
+ {
+     <span class="keyword">if</span> (m_material <span class="operator">=</span><span class="operator">=</span> material)
+         <span class="keyword">return</span>;
+     m_material <span class="operator">=</span> material;
+     <span class="keyword">emit</span> materialChanged();
+     introspect();
+ }
 
-  <span class="type">void</span> MaterialInspector<span class="operator">::</span>setMaterial(Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material)
-  {
-      <span class="keyword">if</span> (m_material <span class="operator">=</span><span class="operator">=</span> material)
-          <span class="keyword">return</span>;
-      m_material <span class="operator">=</span> material;
-      <span class="keyword">emit</span> materialChanged();
-      introspect();
-  }
+ <span class="type">void</span> MaterialInspector<span class="operator">::</span>introspect()
+ {
+     m_description<span class="operator">.</span>clear();
 
-  <span class="type">void</span> MaterialInspector<span class="operator">::</span>introspect()
-  {
-      m_description<span class="operator">.</span>clear();
+     <span class="keyword">if</span> (m_material) {
+         Kuesa<span class="operator">::</span>GLTF2MaterialProperties <span class="operator">*</span>materialProperties <span class="operator">=</span> nullptr;
+         <span class="keyword">const</span> <span class="type">QMetaObject</span> <span class="operator">*</span>materialMetaObj <span class="operator">=</span> m_material<span class="operator">-</span><span class="operator">&gt;</span>metaObject();
+         <span class="type">QString</span> descriptionString <span class="operator">=</span> <span class="type">QString</span>(<span class="string">&quot;%1:\n&quot;</span>)<span class="operator">.</span>arg(materialMetaObj<span class="operator">-</span><span class="operator">&gt;</span>className());
+         <span class="type">QString</span> propertyDescription <span class="operator">=</span> <span class="type">QString</span>(<span class="string">&quot;%1: %2\n&quot;</span>);
+         <span class="keyword">const</span> <span class="type">int</span> materialPropertiesIdx <span class="operator">=</span> materialMetaObj<span class="operator">-</span><span class="operator">&gt;</span>indexOfProperty(<span class="string">&quot;materialProperties&quot;</span>);
+         <span class="keyword">if</span> (materialPropertiesIdx <span class="operator">!</span><span class="operator">=</span> <span class="operator">-</span><span class="number">1</span>) {
+             materialProperties <span class="operator">=</span> m_material<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;materialProperties&quot;</span>)<span class="operator">.</span>value<span class="operator">&lt;</span>Kuesa<span class="operator">::</span>GLTF2MaterialProperties <span class="operator">*</span><span class="operator">&gt;</span>();
 
-      <span class="keyword">if</span> (m_material) {
-          Kuesa<span class="operator">::</span>GLTF2MaterialProperties <span class="operator">*</span>materialProperties <span class="operator">=</span> nullptr;
-          <span class="keyword">const</span> <span class="type">QMetaObject</span> <span class="operator">*</span>materialMetaObj <span class="operator">=</span> m_material<span class="operator">-</span><span class="operator">&gt;</span>metaObject();
-          <span class="type">QString</span> descriptionString <span class="operator">=</span> <span class="type">QString</span>(<span class="string">&quot;%1:\n&quot;</span>)<span class="operator">.</span>arg(materialMetaObj<span class="operator">-</span><span class="operator">&gt;</span>className());
-          <span class="type">QString</span> propertyDescription <span class="operator">=</span> <span class="type">QString</span>(<span class="string">&quot;%1: %2\n&quot;</span>);
-          <span class="keyword">const</span> <span class="type">int</span> materialPropertiesIdx <span class="operator">=</span> materialMetaObj<span class="operator">-</span><span class="operator">&gt;</span>indexOfProperty(<span class="string">&quot;materialProperties&quot;</span>);
-          <span class="keyword">if</span> (materialPropertiesIdx <span class="operator">!</span><span class="operator">=</span> <span class="operator">-</span><span class="number">1</span>) {
-              materialProperties <span class="operator">=</span> m_material<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;materialProperties&quot;</span>)<span class="operator">.</span>value<span class="operator">&lt;</span>Kuesa<span class="operator">::</span>GLTF2MaterialProperties <span class="operator">*</span><span class="operator">&gt;</span>();
-
-              <span class="comment">// Introspect properties</span>
-              <span class="keyword">const</span> <span class="type">QMetaObject</span> <span class="operator">*</span>propertiesMetaObj <span class="operator">=</span> materialProperties<span class="operator">-</span><span class="operator">&gt;</span>metaObject();
-              <span class="keyword">const</span> <span class="type">int</span> defaultPropertiesOffset <span class="operator">=</span> <span class="number">5</span>; <span class="comment">// Offset of properties on the meta object we don't care about (e.g objectName ...)</span>
-              <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> defaultPropertiesOffset<span class="operator">,</span> m <span class="operator">=</span> propertiesMetaObj<span class="operator">-</span><span class="operator">&gt;</span>propertyCount(); i <span class="operator">&lt;</span> m; <span class="operator">+</span><span class="operator">+</span>i) {
-                  <span class="keyword">const</span> <span class="type">QMetaProperty</span> metaProp <span class="operator">=</span> propertiesMetaObj<span class="operator">-</span><span class="operator">&gt;</span>property(i);
-                  descriptionString <span class="operator">+</span><span class="operator">=</span> propertyDescription<span class="operator">.</span>arg(metaProp<span class="operator">.</span>name()<span class="operator">,</span> valueIntrospector(metaProp<span class="operator">.</span>read(materialProperties)));
-              }
-          }
-          m_description <span class="operator">=</span> descriptionString;
-      }
-      <span class="keyword">emit</span> descriptionChanged();
-  }
-
+             <span class="comment">// Introspect properties</span>
+             <span class="keyword">const</span> <span class="type">QMetaObject</span> <span class="operator">*</span>propertiesMetaObj <span class="operator">=</span> materialProperties<span class="operator">-</span><span class="operator">&gt;</span>metaObject();
+             <span class="keyword">const</span> <span class="type">int</span> defaultPropertiesOffset <span class="operator">=</span> <span class="number">5</span>; <span class="comment">// Offset of properties on the meta object we don't care about (e.g objectName ...)</span>
+             <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> defaultPropertiesOffset<span class="operator">,</span> m <span class="operator">=</span> propertiesMetaObj<span class="operator">-</span><span class="operator">&gt;</span>propertyCount(); i <span class="operator">&lt;</span> m; <span class="operator">+</span><span class="operator">+</span>i) {
+                 <span class="keyword">const</span> <span class="type">QMetaProperty</span> metaProp <span class="operator">=</span> propertiesMetaObj<span class="operator">-</span><span class="operator">&gt;</span>property(i);
+                 descriptionString <span class="operator">+</span><span class="operator">=</span> propertyDescription<span class="operator">.</span>arg(metaProp<span class="operator">.</span>name()<span class="operator">,</span> valueIntrospector(metaProp<span class="operator">.</span>read(materialProperties)));
+             }
+         }
+         m_description <span class="operator">=</span> descriptionString;
+     }
+     <span class="keyword">emit</span> descriptionChanged();
+ }
 </pre>

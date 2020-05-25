@@ -168,77 +168,77 @@
         <name>Kuesa</name>
         <filename>kuesa.html</filename>
         <class>Kuesa::AbstractAssetCollection</class>
-        <class>Kuesa::AbstractPostProcessingEffect</class>
         <class>Kuesa::AnimationClipCollection</class>
-        <class>Kuesa::AnimationMappingCollection</class>
-        <class>Kuesa::AnimationPlayer</class>
         <class>Kuesa::ArmatureCollection</class>
-        <class>Kuesa::BloomEffect</class>
-        <class>Kuesa::CameraCollection</class>
-        <class>Kuesa::DepthOfFieldEffect</class>
-        <class>Kuesa::DirectionalLight</class>
         <class>Kuesa::EffectCollection</class>
-        <class>Kuesa::EntityCollection</class>
-        <class>Kuesa::ToneMappingAndGammaCorrectionEffect</class>
-        <class>Kuesa::ForwardRenderer</class>
-        <class>Kuesa::FullScreenQuad</class>
-        <class>Kuesa::GaussianBlurEffect</class>
-        <namespace>Kuesa::GLTF2Import</namespace>
-        <class>Kuesa::GLTF2Importer</class>
-        <class>Kuesa::GLTF2Material</class>
-        <class>Kuesa::GLTF2MaterialEffect</class>
-        <class>Kuesa::GLTF2MaterialProperties</class>
-        <class>Kuesa::IroDiffuseAlphaEffect</class>
-        <class>Kuesa::IroDiffuseAlphaMaterial</class>
-        <class>Kuesa::IroDiffuseAlphaProperties</class>
-        <class>Kuesa::IroDiffuseEffect</class>
-        <class>Kuesa::IroDiffuseHemiEffect</class>
-        <class>Kuesa::IroDiffuseHemiMaterial</class>
-        <class>Kuesa::IroDiffuseHemiProperties</class>
-        <class>Kuesa::IroDiffuseMaterial</class>
-        <class>Kuesa::IroDiffuseProperties</class>
-        <class>Kuesa::IroGlassAddEffect</class>
-        <class>Kuesa::IroGlassAddMaterial</class>
-        <class>Kuesa::IroGlassAddProperties</class>
-        <class>Kuesa::IroMatteAddEffect</class>
-        <class>Kuesa::IroMatteAddMaterial</class>
-        <class>Kuesa::IroMatteAddProperties</class>
-        <class>Kuesa::IroMatteAlphaEffect</class>
-        <class>Kuesa::IroMatteAlphaMaterial</class>
-        <class>Kuesa::IroMatteAlphaProperties</class>
-        <class>Kuesa::IroMatteBackgroundEffect</class>
-        <class>Kuesa::IroMatteBackgroundMaterial</class>
-        <class>Kuesa::IroMatteBackgroundProperties</class>
-        <class>Kuesa::IroMatteMultEffect</class>
-        <class>Kuesa::IroMatteMultMaterial</class>
-        <class>Kuesa::IroMatteMultProperties</class>
-        <class>Kuesa::IroMatteOpaqueEffect</class>
-        <class>Kuesa::IroMatteOpaqueMaterial</class>
-        <class>Kuesa::IroMatteOpaqueProperties</class>
-        <class>Kuesa::IroMatteSkyboxEffect</class>
-        <class>Kuesa::IroMatteSkyboxMaterial</class>
-        <class>Kuesa::IroMatteSkyboxProperties</class>
         <class>Kuesa::LayerCollection</class>
         <class>Kuesa::LightCollection</class>
+        <class>Kuesa::GLTF2MaterialProperties</class>
         <class>Kuesa::MaterialCollection</class>
         <class>Kuesa::MeshCollection</class>
-        <class>Kuesa::MetallicRoughnessEffect</class>
-        <class>Kuesa::MetallicRoughnessMaterial</class>
-        <class>Kuesa::MetallicRoughnessProperties</class>
-        <class>Kuesa::MorphController</class>
-        <class>Kuesa::OpacityMask</class>
-        <class>Kuesa::PointLight</class>
         <class>Kuesa::SkeletonCollection</class>
         <class>Kuesa::TextureCollection</class>
+        <class>Kuesa::CameraCollection</class>
+        <class>Kuesa::EntityCollection</class>
         <class>Kuesa::TransformCollection</class>
         <class>Kuesa::TextureImageCollection</class>
+        <class>Kuesa::AnimationMappingCollection</class>
+        <namespace>Kuesa::GLTF2Import</namespace>
         <class>Kuesa::SceneEntity</class>
-        <class>Kuesa::Skybox</class>
-        <class>Kuesa::SpotLight</class>
+        <class>Kuesa::AnimationPlayer</class>
+        <class>Kuesa::AbstractPostProcessingEffect</class>
+        <class>Kuesa::ToneMappingAndGammaCorrectionEffect</class>
+        <class>Kuesa::ForwardRenderer</class>
+        <class>Kuesa::BloomEffect</class>
+        <class>Kuesa::GaussianBlurEffect</class>
         <class>Kuesa::ThresholdEffect</class>
+        <class>Kuesa::FullScreenQuad</class>
+        <class>Kuesa::DepthOfFieldEffect</class>
+        <class>Kuesa::OpacityMask</class>
+        <class>Kuesa::GLTF2Importer</class>
+        <class>Kuesa::MorphController</class>
+        <class>Kuesa::GLTF2Material</class>
+        <class>Kuesa::IroDiffuseProperties</class>
+        <class>Kuesa::IroDiffuseMaterial</class>
+        <class>Kuesa::GLTF2MaterialEffect</class>
+        <class>Kuesa::IroDiffuseEffect</class>
+        <class>Kuesa::IroDiffuseHemiProperties</class>
+        <class>Kuesa::IroDiffuseHemiMaterial</class>
+        <class>Kuesa::IroDiffuseHemiEffect</class>
+        <class>Kuesa::IroGlassAddProperties</class>
+        <class>Kuesa::IroGlassAddMaterial</class>
+        <class>Kuesa::IroGlassAddEffect</class>
+        <class>Kuesa::IroMatteOpaqueProperties</class>
+        <class>Kuesa::IroMatteOpaqueMaterial</class>
+        <class>Kuesa::IroMatteOpaqueEffect</class>
+        <class>Kuesa::IroMatteAlphaProperties</class>
+        <class>Kuesa::IroMatteAlphaMaterial</class>
+        <class>Kuesa::IroMatteAlphaEffect</class>
+        <class>Kuesa::IroMatteSkyboxProperties</class>
+        <class>Kuesa::IroMatteSkyboxMaterial</class>
+        <class>Kuesa::IroMatteSkyboxEffect</class>
+        <class>Kuesa::IroMatteBackgroundProperties</class>
+        <class>Kuesa::IroMatteBackgroundMaterial</class>
+        <class>Kuesa::IroMatteBackgroundEffect</class>
+        <class>Kuesa::IroMatteAddProperties</class>
+        <class>Kuesa::IroMatteAddMaterial</class>
+        <class>Kuesa::IroMatteAddEffect</class>
+        <class>Kuesa::IroMatteMultProperties</class>
+        <class>Kuesa::IroMatteMultMaterial</class>
+        <class>Kuesa::IroMatteMultEffect</class>
+        <class>Kuesa::IroDiffuseAlphaProperties</class>
+        <class>Kuesa::IroDiffuseAlphaMaterial</class>
+        <class>Kuesa::IroDiffuseAlphaEffect</class>
+        <class>Kuesa::DirectionalLight</class>
+        <class>Kuesa::PointLight</class>
+        <class>Kuesa::SpotLight</class>
+        <class>Kuesa::MetallicRoughnessEffect</class>
         <class>Kuesa::UnlitEffect</class>
-        <class>Kuesa::UnlitMaterial</class>
+        <class>Kuesa::MetallicRoughnessProperties</class>
+        <class>Kuesa::MetallicRoughnessMaterial</class>
         <class>Kuesa::UnlitProperties</class>
+        <class>Kuesa::UnlitMaterial</class>
+        <class>Kuesa::Skybox</class>
     </compound>
     <compound kind="class">
         <name>Kuesa::AbstractAssetCollection</name>
@@ -264,27 +264,6 @@
             <arglist>()</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>contains</name>
-            <anchorfile>kuesa-abstractassetcollection.html</anchorfile>
-            <anchor>contains</anchor>
-            <arglist>(const QString &amp;name) const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>remove</name>
-            <anchorfile>kuesa-abstractassetcollection.html</anchorfile>
-            <anchor>remove</anchor>
-            <arglist>(const QString &amp;name)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>clear</name>
-            <anchorfile>kuesa-abstractassetcollection.html</anchorfile>
-            <anchor>clear</anchor>
-            <arglist>()</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
             <name>namesChanged</name>
             <anchorfile>kuesa-abstractassetcollection.html</anchorfile>
@@ -302,26 +281,12 @@
     <compound kind="class">
         <name>Kuesa::AbstractPostProcessingEffect</name>
         <filename>kuesa-abstractpostprocessingeffect.html</filename>
-        <member kind="function" protection="public" virtualness="pure" static="no">
-            <type>virtual Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr</type>
-            <name>frameGraphSubTree</name>
-            <anchorfile>kuesa-abstractpostprocessingeffect.html</anchorfile>
-            <anchor>frameGraphSubTree</anchor>
-            <arglist>() const const = 0</arglist>
-        </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>Kuesa::AbstractPostProcessingEffect::Type</type>
             <name>type</name>
             <anchorfile>kuesa-abstractpostprocessingeffect.html</anchorfile>
             <anchor>type</anchor>
             <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="pure" static="no">
-            <type>virtual void</type>
-            <name>setInputTexture</name>
-            <anchorfile>kuesa-abstractpostprocessingeffect.html</anchorfile>
-            <anchor>setInputTexture</anchor>
-            <arglist>(Qt3DRender::QAbstractTexture *texture) = 0</arglist>
         </member>
         <member kind="function" protection="public" virtualness="virtual" static="no">
             <type>virtual void</type>
@@ -343,13 +308,6 @@
             <anchorfile>kuesa-abstractpostprocessingeffect.html</anchorfile>
             <anchor>setSceneSize</anchor>
             <arglist>(const QSize &amp;size)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="pure" static="no">
-            <type>virtual QVector&lt;Qt3DRender::QLayer *&gt;</type>
-            <name>layers</name>
-            <anchorfile>kuesa-abstractpostprocessingeffect.html</anchorfile>
-            <anchor>layers</anchor>
-            <arglist>() const const = 0</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -839,67 +797,6 @@
     <compound kind="class">
         <name>Kuesa::DirectionalLight</name>
         <filename>kuesa-directionallight.html</filename>
-        <member kind="property" type="QVector3D">
-            <name>direction</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>direction-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="Kuesa::DirectionalLight::DirectionMode">
-            <name>directionMode</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>directionMode-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type></type>
-            <name>DirectionalLight</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>DirectionalLight</anchor>
-            <arglist>(Qt3DCore::QNode *parent)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>QVector3D</type>
-            <name>direction</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>direction-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>Kuesa::DirectionalLight::DirectionMode</type>
-            <name>directionMode</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>directionMode-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setDirection</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>direction-prop</anchor>
-            <arglist>(const QVector3D &amp;direction)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setDirectionMode</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>directionMode-prop</anchor>
-            <arglist>(Kuesa::DirectionalLight::DirectionMode directionMode)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>directionChanged</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>direction-prop</anchor>
-            <arglist>(const QVector3D &amp;direction)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>directionModeChanged</name>
-            <anchorfile>kuesa-directionallight.html</anchorfile>
-            <anchor>directionMode-prop</anchor>
-            <arglist>(Kuesa::DirectionalLight::DirectionMode directionMode)</arglist>
-        </member>
     </compound>
     <compound kind="class">
         <name>Kuesa::EffectCollection</name>
@@ -2019,12 +1916,6 @@
             <anchor>alphaGain-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="bool">
-            <name>gltfYUp</name>
-            <anchorfile>kuesa-irodiffusealphaproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist></arglist>
-        </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>QVector3D</type>
             <name>normalScaling</name>
@@ -2107,13 +1998,6 @@
             <name>alphaGain</name>
             <anchorfile>kuesa-irodiffusealphaproperties.html</anchorfile>
             <anchor>alphaGain-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>gltfYUp</name>
-            <anchorfile>kuesa-irodiffusealphaproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -2202,13 +2086,6 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setGltfYUp</name>
-            <anchorfile>kuesa-irodiffusealphaproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool gltfYUp)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
             <name>normalScalingChanged</name>
             <anchorfile>kuesa-irodiffusealphaproperties.html</anchorfile>
             <anchor>normalScaling-prop</anchor>
@@ -2290,13 +2167,6 @@
             <anchorfile>kuesa-irodiffusealphaproperties.html</anchorfile>
             <anchor>alphaGain-prop</anchor>
             <arglist>(float )</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>gltfYUpChanged</name>
-            <anchorfile>kuesa-irodiffusealphaproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool )</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -2879,12 +2749,6 @@
             <anchor>usesDiffuseMap-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="bool">
-            <name>gltfYUp</name>
-            <anchorfile>kuesa-irodiffuseproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist></arglist>
-        </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>QVector3D</type>
             <name>normalScaling</name>
@@ -2974,13 +2838,6 @@
             <name>usesDiffuseMap</name>
             <anchorfile>kuesa-irodiffuseproperties.html</anchorfile>
             <anchor>usesDiffuseMap-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>gltfYUp</name>
-            <anchorfile>kuesa-irodiffuseproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -3076,13 +2933,6 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setGltfYUp</name>
-            <anchorfile>kuesa-irodiffuseproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool gltfYUp)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
             <name>normalScalingChanged</name>
             <anchorfile>kuesa-irodiffuseproperties.html</anchorfile>
             <anchor>normalScaling-prop</anchor>
@@ -3170,13 +3020,6 @@
             <name>usesDiffuseMapChanged</name>
             <anchorfile>kuesa-irodiffuseproperties.html</anchorfile>
             <anchor>usesDiffuseMap-prop</anchor>
-            <arglist>(bool )</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>gltfYUpChanged</name>
-            <anchorfile>kuesa-irodiffuseproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
             <arglist>(bool )</arglist>
         </member>
     </compound>
@@ -3294,10 +3137,16 @@
             <anchor>glassOuterFilter-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="bool">
-            <name>gltfYUp</name>
+        <member kind="property" type="QVector3D">
+            <name>diffuseInnerFilter</name>
             <anchorfile>kuesa-iroglassaddproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>diffuseInnerFilter-prop</anchor>
+            <arglist></arglist>
+        </member>
+        <member kind="property" type="QVector3D">
+            <name>diffuseOuterFilter</name>
+            <anchorfile>kuesa-iroglassaddproperties.html</anchorfile>
+            <anchor>diffuseOuterFilter-prop</anchor>
             <arglist></arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -3378,10 +3227,17 @@
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>gltfYUp</name>
+            <type>QVector3D</type>
+            <name>diffuseInnerFilter</name>
             <anchorfile>kuesa-iroglassaddproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>diffuseInnerFilter-prop</anchor>
+            <arglist>() const const</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>QVector3D</type>
+            <name>diffuseOuterFilter</name>
+            <anchorfile>kuesa-iroglassaddproperties.html</anchorfile>
+            <anchor>diffuseOuterFilter-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -3463,10 +3319,17 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setGltfYUp</name>
+            <name>setDiffuseInnerFilter</name>
             <anchorfile>kuesa-iroglassaddproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool gltfYUp)</arglist>
+            <anchor>diffuseInnerFilter-prop</anchor>
+            <arglist>(const QVector3D &amp;diffuseInnerFilter)</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>setDiffuseOuterFilter</name>
+            <anchorfile>kuesa-iroglassaddproperties.html</anchorfile>
+            <anchor>diffuseOuterFilter-prop</anchor>
+            <arglist>(const QVector3D &amp;diffuseOuterFilter)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
@@ -3547,10 +3410,17 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>gltfYUpChanged</name>
+            <name>diffuseInnerFilterChanged</name>
             <anchorfile>kuesa-iroglassaddproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool )</arglist>
+            <anchor>diffuseInnerFilter-prop</anchor>
+            <arglist>(QVector3D )</arglist>
+        </member>
+        <member kind="function" protection="public" virtualness="non" static="no">
+            <type>void</type>
+            <name>diffuseOuterFilterChanged</name>
+            <anchorfile>kuesa-iroglassaddproperties.html</anchorfile>
+            <anchor>diffuseOuterFilter-prop</anchor>
+            <arglist>(QVector3D )</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -3631,10 +3501,10 @@
             <anchor>matteGain-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="bool">
-            <name>gltfYUp</name>
+        <member kind="property" type="QVector2D">
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromatteaddproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist></arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -3673,10 +3543,10 @@
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>gltfYUp</name>
+            <type>QVector2D</type>
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromatteaddproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -3716,10 +3586,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setGltfYUp</name>
+            <name>setUvOffset</name>
             <anchorfile>kuesa-iromatteaddproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool gltfYUp)</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(const QVector2D &amp;uvOffset)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
@@ -3758,10 +3628,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>gltfYUpChanged</name>
+            <name>uvOffsetChanged</name>
             <anchorfile>kuesa-iromatteaddproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool )</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(QVector2D )</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -3848,10 +3718,10 @@
             <anchor>matteAlphaGain-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="bool">
-            <name>gltfYUp</name>
+        <member kind="property" type="QVector2D">
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromattealphaproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist></arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -3897,10 +3767,10 @@
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>gltfYUp</name>
+            <type>QVector2D</type>
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromattealphaproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -3947,10 +3817,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setGltfYUp</name>
+            <name>setUvOffset</name>
             <anchorfile>kuesa-iromattealphaproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool gltfYUp)</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(const QVector2D &amp;uvOffset)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
@@ -3996,10 +3866,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>gltfYUpChanged</name>
+            <name>uvOffsetChanged</name>
             <anchorfile>kuesa-iromattealphaproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool )</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(QVector2D )</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -4080,10 +3950,10 @@
             <anchor>matteGain-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="bool">
-            <name>gltfYUp</name>
+        <member kind="property" type="QVector2D">
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromattebackgroundproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist></arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -4122,10 +3992,10 @@
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>gltfYUp</name>
+            <type>QVector2D</type>
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromattebackgroundproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -4165,10 +4035,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setGltfYUp</name>
+            <name>setUvOffset</name>
             <anchorfile>kuesa-iromattebackgroundproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool gltfYUp)</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(const QVector2D &amp;uvOffset)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
@@ -4207,10 +4077,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>gltfYUpChanged</name>
+            <name>uvOffsetChanged</name>
             <anchorfile>kuesa-iromattebackgroundproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool )</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(QVector2D )</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -4291,10 +4161,10 @@
             <anchor>matteGain-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="bool">
-            <name>gltfYUp</name>
+        <member kind="property" type="QVector2D">
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromattemultproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist></arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -4333,10 +4203,10 @@
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>gltfYUp</name>
+            <type>QVector2D</type>
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromattemultproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -4376,10 +4246,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setGltfYUp</name>
+            <name>setUvOffset</name>
             <anchorfile>kuesa-iromattemultproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool gltfYUp)</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(const QVector2D &amp;uvOffset)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
@@ -4418,10 +4288,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>gltfYUpChanged</name>
+            <name>uvOffsetChanged</name>
             <anchorfile>kuesa-iromattemultproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool )</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(QVector2D )</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -4502,10 +4372,10 @@
             <anchor>matteGain-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="bool">
-            <name>gltfYUp</name>
+        <member kind="property" type="QVector2D">
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromatteopaqueproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist></arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -4544,10 +4414,10 @@
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>gltfYUp</name>
+            <type>QVector2D</type>
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromatteopaqueproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -4587,10 +4457,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setGltfYUp</name>
+            <name>setUvOffset</name>
             <anchorfile>kuesa-iromatteopaqueproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool gltfYUp)</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(const QVector2D &amp;uvOffset)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
@@ -4629,10 +4499,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>gltfYUpChanged</name>
+            <name>uvOffsetChanged</name>
             <anchorfile>kuesa-iromatteopaqueproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool )</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(QVector2D )</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -4713,10 +4583,10 @@
             <anchor>matteGain-prop</anchor>
             <arglist></arglist>
         </member>
-        <member kind="property" type="bool">
-            <name>gltfYUp</name>
+        <member kind="property" type="QVector2D">
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromatteskyboxproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist></arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -4755,10 +4625,10 @@
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
-            <type>bool</type>
-            <name>gltfYUp</name>
+            <type>QVector2D</type>
+            <name>uvOffset</name>
             <anchorfile>kuesa-iromatteskyboxproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
+            <anchor>uvOffset-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
@@ -4798,10 +4668,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setGltfYUp</name>
+            <name>setUvOffset</name>
             <anchorfile>kuesa-iromatteskyboxproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool gltfYUp)</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(const QVector2D &amp;uvOffset)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
@@ -4840,10 +4710,10 @@
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>gltfYUpChanged</name>
+            <name>uvOffsetChanged</name>
             <anchorfile>kuesa-iromatteskyboxproperties.html</anchorfile>
-            <anchor>gltfYUp-prop</anchor>
-            <arglist>(bool )</arglist>
+            <anchor>uvOffset-prop</anchor>
+            <arglist>(QVector2D )</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -5071,32 +4941,32 @@
         <name>Kuesa::MetallicRoughnessMaterial</name>
         <filename>kuesa-metallicroughnessmaterial.html</filename>
         <base>GLTF2Material</base>
-        <member kind="property" type="Kuesa::MetallicRoughnessProperties*">
-            <name>metallicRoughnessProperties</name>
+        <member kind="property" type="MetallicRoughnessProperties*">
+            <name>materialProperties</name>
             <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
-            <anchor>metallicRoughnessProperties-prop</anchor>
+            <anchor>materialProperties-prop</anchor>
             <arglist></arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>Kuesa::MetallicRoughnessProperties *</type>
-            <name>metallicRoughnessProperties</name>
+            <name>materialProperties</name>
             <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
-            <anchor>metallicRoughnessProperties-prop</anchor>
+            <anchor>materialProperties-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setMetallicRoughnessProperties</name>
+            <name>setMaterialProperties</name>
             <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
-            <anchor>metallicRoughnessProperties-prop</anchor>
-            <arglist>(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties)</arglist>
+            <anchor>materialProperties-prop</anchor>
+            <arglist>(Kuesa::MetallicRoughnessProperties *materialProperties)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>metallicRoughnessPropertiesChanged</name>
+            <name>materialPropertiesChanged</name>
             <anchorfile>kuesa-metallicroughnessmaterial.html</anchorfile>
-            <anchor>metallicRoughnessProperties-prop</anchor>
-            <arglist>(Kuesa::MetallicRoughnessProperties *metallicRoughnessProperties)</arglist>
+            <anchor>materialProperties-prop</anchor>
+            <arglist>(Kuesa::MetallicRoughnessProperties *materialProperties)</arglist>
         </member>
     </compound>
     <compound kind="class">
@@ -6047,121 +5917,6 @@
     <compound kind="class">
         <name>Kuesa::SpotLight</name>
         <filename>kuesa-spotlight.html</filename>
-        <member kind="property" type="QVector3D">
-            <name>localDirection</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>localDirection-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>innerConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>innerConeAngle-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>outerConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>outerConeAngle-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="property" type="float">
-            <name>range</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>range-prop</anchor>
-            <arglist></arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type></type>
-            <name>SpotLight</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>SpotLight</anchor>
-            <arglist>(Qt3DCore::QNode *parent)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>QVector3D</type>
-            <name>localDirection</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>localDirection-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>innerConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>innerConeAngle-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>outerConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>outerConeAngle-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>float</type>
-            <name>range</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>range-prop</anchor>
-            <arglist>() const const</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setLocalDirection</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>localDirection-prop</anchor>
-            <arglist>(const QVector3D &amp;localDirection)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setInnerConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>innerConeAngle-prop</anchor>
-            <arglist>(float innerConeAngle)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setOuterConeAngle</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>outerConeAngle-prop</anchor>
-            <arglist>(float outerConeAngle)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>setRange</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>range-prop</anchor>
-            <arglist>(float range)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>localDirectionChanged</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>localDirection-prop</anchor>
-            <arglist>(const QVector3D &amp;localDirection)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>innerConeAngleChanged</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>innerConeAngle-prop</anchor>
-            <arglist>(float innerConeAngle)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>outerConeAngleChanged</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>outerConeAngle-prop</anchor>
-            <arglist>(float outerConeAngle)</arglist>
-        </member>
-        <member kind="function" protection="public" virtualness="non" static="no">
-            <type>void</type>
-            <name>rangeChanged</name>
-            <anchorfile>kuesa-spotlight.html</anchorfile>
-            <anchor>range-prop</anchor>
-            <arglist>(float range)</arglist>
-        </member>
     </compound>
     <compound kind="class">
         <name>Kuesa::TextureCollection</name>
@@ -6405,30 +6160,30 @@
         <filename>kuesa-unlitmaterial.html</filename>
         <base>GLTF2Material</base>
         <member kind="property" type="Kuesa::UnlitProperties*">
-            <name>unlitProperties</name>
+            <name>materialProperties</name>
             <anchorfile>kuesa-unlitmaterial.html</anchorfile>
-            <anchor>unlitProperties-prop</anchor>
+            <anchor>materialProperties-prop</anchor>
             <arglist></arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>Kuesa::UnlitProperties *</type>
-            <name>unlitProperties</name>
+            <name>materialProperties</name>
             <anchorfile>kuesa-unlitmaterial.html</anchorfile>
-            <anchor>unlitProperties-prop</anchor>
+            <anchor>materialProperties-prop</anchor>
             <arglist>() const const</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>setUnlitProperties</name>
+            <name>setMaterialProperties</name>
             <anchorfile>kuesa-unlitmaterial.html</anchorfile>
-            <anchor>unlitProperties-prop</anchor>
-            <arglist>(Kuesa::UnlitProperties *unlitProperties)</arglist>
+            <anchor>materialProperties-prop</anchor>
+            <arglist>(Kuesa::UnlitProperties *materialProperties)</arglist>
         </member>
         <member kind="function" protection="public" virtualness="non" static="no">
             <type>void</type>
-            <name>unlitPropertiesChanged</name>
+            <name>materialPropertiesChanged</name>
             <anchorfile>kuesa-unlitmaterial.html</anchorfile>
-            <anchor>unlitProperties-prop</anchor>
+            <anchor>materialProperties-prop</anchor>
             <arglist>(Kuesa::UnlitProperties *properties)</arglist>
         </member>
     </compound>

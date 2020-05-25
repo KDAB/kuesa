@@ -12,276 +12,273 @@
 </ul></div><div class='doc-content'><h1 class="title">Kuesa Car-Scene QML Example</h1>
 <span class="subtitle"></span>
 <pre class="qml">
+ <span class="comment">/*
+     MainScene.qml
 
-  <span class="comment">/*
-      MainScene.qml
+     This file is part of Kuesa.
 
-      This file is part of Kuesa.
+     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Mike Krus &lt;mike.krus@kdab.com&gt;
 
-      Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-      Author: Mike Krus &lt;mike.krus@kdab.com&gt;
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
 
-      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-      LICENSE.KUESA.ENTERPRISE file.
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
 
-      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
 
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU Affero General Public License as
-      published by the Free Software Foundation, either version 3 of the
-      License, or (at your option) any later version.
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
 
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU Affero General Public License for more details.
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 
-      You should have received a copy of the GNU Affero General Public License
-      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-  */</span>
+ import Qt3D.Core 2.10
+ import Qt3D.Render 2.11
+ import Qt3D.Input 2.0
+ import Qt3D.Extras 2.11
+ import Qt3D.Animation 2.10
+ import QtQuick 2.11 as QQ2
 
-  import Qt3D.Core 2.10
-  import Qt3D.Render 2.11
-  import Qt3D.Input 2.0
-  import Qt3D.Extras 2.11
-  import Qt3D.Animation 2.10
-  import QtQuick 2.11 as QQ2
+ import Kuesa 1.2 as <a href="kuesa.html">Kuesa</a>
+ import Kuesa.Effects 1.1 as Effects
 
-  import Kuesa 1.2 as <a href="kuesa.html">Kuesa</a>
-  import Kuesa.Effects 1.1 as Effects
+ <span class="type">Kuesa</span>.SceneEntity {
+     <span class="name">id</span>: <span class="name">scene</span>
 
-  <span class="type">Kuesa</span>.SceneEntity {
-      <span class="name">id</span>: <span class="name">scene</span>
+     property <span class="type">int</span> <span class="name">screenWidth</span>
+     property <span class="type">int</span> <span class="name">screenHeight</span>
 
-      property <span class="type">int</span> <span class="name">screenWidth</span>
-      property <span class="type">int</span> <span class="name">screenHeight</span>
+     property <span class="type">bool</span> <span class="name">animated</span>: <span class="number">false</span>
+     property <span class="type">bool</span> <span class="name">explodedView</span>
+     property <span class="type">int</span> <span class="name">carSpeed</span>
+     property <span class="type">bool</span> <span class="name">openLeftDoor</span>
+     property <span class="type">bool</span> <span class="name">openRightDoor</span>
+     property <span class="type">bool</span> <span class="name">openHood</span>
+     property <span class="type">bool</span> <span class="name">enableClipping</span>
+     property <span class="type">string</span> <span class="name">environmentMap</span>: <span class="string">&quot;pink_sunrise&quot;</span>
+     property <span class="type">double</span> <span class="name">environmentExposure</span>: <span class="number">0.0</span>
+     property <span class="type">alias</span> <span class="name">showSkybox</span>: <span class="name">skybox</span>.<span class="name">enabled</span>
+     property <span class="type">double</span> <span class="name">exposure</span>: <span class="number">0.0</span>
+     property <span class="type">bool</span> <span class="name">useOpacityMask</span>: <span class="number">false</span>
+     property <span class="type">bool</span> <span class="name">useBloomEffect</span>: <span class="number">false</span>
+     property <span class="type">color</span> <span class="name">carBaseColorFactor</span>: <span class="string">&quot;black&quot;</span>
+     property <span class="type">bool</span> <span class="name">es2</span>: <span class="name">_isES2</span>
+     property <span class="type">alias</span> <span class="name">bloomEffect</span>: <span class="name">bloomFx</span>
 
-      property <span class="type">bool</span> <span class="name">animated</span>: <span class="number">false</span>
-      property <span class="type">bool</span> <span class="name">explodedView</span>
-      property <span class="type">int</span> <span class="name">carSpeed</span>
-      property <span class="type">bool</span> <span class="name">openLeftDoor</span>
-      property <span class="type">bool</span> <span class="name">openRightDoor</span>
-      property <span class="type">bool</span> <span class="name">openHood</span>
-      property <span class="type">bool</span> <span class="name">enableClipping</span>
-      property <span class="type">string</span> <span class="name">environmentMap</span>: <span class="string">&quot;pink_sunrise&quot;</span>
-      property <span class="type">double</span> <span class="name">environmentExposure</span>: <span class="number">0.0</span>
-      property <span class="type">alias</span> <span class="name">showSkybox</span>: <span class="name">skybox</span>.<span class="name">enabled</span>
-      property <span class="type">double</span> <span class="name">exposure</span>: <span class="number">0.0</span>
-      property <span class="type">bool</span> <span class="name">useOpacityMask</span>: <span class="number">false</span>
-      property <span class="type">bool</span> <span class="name">useBloomEffect</span>: <span class="number">false</span>
-      property <span class="type">color</span> <span class="name">carBaseColorFactor</span>: <span class="string">&quot;black&quot;</span>
-      property <span class="type">bool</span> <span class="name">es2</span>: <span class="name">_isES2</span>
-      property <span class="type">alias</span> <span class="name">bloomEffect</span>: <span class="name">bloomFx</span>
+     <span class="type">Entity</span> {
+         <span class="name">id</span>: <span class="name">d</span>
+         property <span class="type">Camera</span> <span class="name">sweepCam</span>: <span class="number">null</span>
 
-      <span class="type">Entity</span> {
-          <span class="name">id</span>: <span class="name">d</span>
-          property <span class="type">Camera</span> <span class="name">sweepCam</span>: <span class="number">null</span>
+         <span class="keyword">function </span><span class="name">flipAnimation</span>(open, animation) {
+             <span class="keyword">if</span> (<span class="name">open</span>) {
+                 <span class="name">animation</span>.<span class="name">clock</span>.<span class="name">playbackRate</span> <span class="operator">=</span> <span class="number">1</span>
+                 <span class="keyword">if</span> (<span class="name">animation</span>.<span class="name">normalizedTime</span> <span class="operator">&gt;</span> <span class="number">0</span>)
+                     <span class="name">animation</span>.<span class="name">normalizedTime</span> <span class="operator">=</span> <span class="number">1</span> <span class="operator">-</span> <span class="name">animation</span>.<span class="name">normalizedTime</span>
+                 <span class="name">animation</span>.<span class="name">start</span>()
+             } <span class="keyword">else</span> {
+                 <span class="name">animation</span>.<span class="name">clock</span>.<span class="name">playbackRate</span> <span class="operator">=</span> -<span class="number">1</span>
+                 <span class="keyword">if</span> (<span class="name">animation</span>.<span class="name">normalizedTime</span> <span class="operator">&gt;</span> <span class="number">0</span> <span class="operator">&amp;&amp;</span> <span class="name">animation</span>.<span class="name">normalizedTime</span> <span class="operator">&lt;</span> <span class="number">1</span>)
+                     <span class="name">animation</span>.<span class="name">normalizedTime</span> <span class="operator">=</span> <span class="number">1</span> <span class="operator">-</span> <span class="name">animation</span>.<span class="name">normalizedTime</span>
+                 <span class="name">animation</span>.<span class="name">start</span>()
+             }
+         }
+     }
 
-          <span class="keyword">function </span><span class="name">flipAnimation</span>(open, animation) {
-              <span class="keyword">if</span> (<span class="name">open</span>) {
-                  <span class="name">animation</span>.<span class="name">clock</span>.<span class="name">playbackRate</span> <span class="operator">=</span> <span class="number">1</span>
-                  <span class="keyword">if</span> (<span class="name">animation</span>.<span class="name">normalizedTime</span> <span class="operator">&gt;</span> <span class="number">0</span>)
-                      <span class="name">animation</span>.<span class="name">normalizedTime</span> <span class="operator">=</span> <span class="number">1</span> <span class="operator">-</span> <span class="name">animation</span>.<span class="name">normalizedTime</span>
-                  <span class="name">animation</span>.<span class="name">start</span>()
-              } <span class="keyword">else</span> {
-                  <span class="name">animation</span>.<span class="name">clock</span>.<span class="name">playbackRate</span> <span class="operator">=</span> -<span class="number">1</span>
-                  <span class="keyword">if</span> (<span class="name">animation</span>.<span class="name">normalizedTime</span> <span class="operator">&gt;</span> <span class="number">0</span> <span class="operator">&amp;&amp;</span> <span class="name">animation</span>.<span class="name">normalizedTime</span> <span class="operator">&lt;</span> <span class="number">1</span>)
-                      <span class="name">animation</span>.<span class="name">normalizedTime</span> <span class="operator">=</span> <span class="number">1</span> <span class="operator">-</span> <span class="name">animation</span>.<span class="name">normalizedTime</span>
-                  <span class="name">animation</span>.<span class="name">start</span>()
-              }
-          }
-      }
+     <span class="comment">// We create a baseColorFactor property. If the property exists in the node, it will be a proxy of the node property</span>
+     <span class="comment">// When we set the qml property, the node property will be updated accordingly</span>
+     <span class="comment">// When the node property is updated in C++, the qml property will be updated</span>
+     <span class="comment">// As soon as the node is changed, the qml property is updated if it has a C++ equivalent</span>
+     <span class="type">Kuesa</span>.Asset {
+         property <span class="type">color</span> <span class="name">baseColorFactor</span>: <span class="name">scene</span>.<span class="name">carBaseColorFactor</span>
+         <span class="name">id</span>: <span class="name">carMaterial</span>
+         <span class="name">collection</span>: <span class="name">scene</span>.<span class="name">materials</span>
+         <span class="name">name</span>: <span class="string">&quot;Mat_CarPaint&quot;</span>
+         <span class="name">onBaseColorFactorChanged</span>: <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Binding 1 works. Color: &quot;</span> <span class="operator">+</span> <span class="name">baseColorFactor</span>)
+         <span class="name">onNodeChanged</span>: <span class="name">scene</span>.<span class="name">carBaseColorFactor</span> <span class="operator">=</span> <span class="name">carMaterial</span>.<span class="name">baseColorFactor</span>
+     }
 
-      <span class="comment">// We create a baseColorFactor property. If the property exists in the node, it will be a proxy of the node property</span>
-      <span class="comment">// When we set the qml property, the node property will be updated accordingly</span>
-      <span class="comment">// When the node property is updated in C++, the qml property will be updated</span>
-      <span class="comment">// As soon as the node is changed, the qml property is updated if it has a C++ equivalent</span>
-      <span class="type">Kuesa</span>.Asset {
-          property <span class="type">color</span> <span class="name">baseColorFactor</span>: <span class="name">scene</span>.<span class="name">carBaseColorFactor</span>
-          <span class="name">id</span>: <span class="name">carMaterial</span>
-          <span class="name">collection</span>: <span class="name">scene</span>.<span class="name">materials</span>
-          <span class="name">name</span>: <span class="string">&quot;Mat_CarPaint&quot;</span>
-          <span class="name">onBaseColorFactorChanged</span>: <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Binding 1 works. Color: &quot;</span> <span class="operator">+</span> <span class="name">baseColorFactor</span>)
-          <span class="name">onNodeChanged</span>: <span class="name">scene</span>.<span class="name">carBaseColorFactor</span> <span class="operator">=</span> <span class="name">carMaterial</span>.<span class="name">baseColorFactor</span>
-      }
+     property <span class="type">var</span> <span class="name">baseColorFactorProp</span>: <span class="name">carMaterial</span>.<span class="name">baseColorFactor</span>
+     <span class="name">onBaseColorFactorPropChanged</span>: <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Binding 2 works. Color: &quot;</span> <span class="operator">+</span> <span class="name">baseColorFactorProp</span>)
 
-      property <span class="type">var</span> <span class="name">baseColorFactorProp</span>: <span class="name">carMaterial</span>.<span class="name">baseColorFactor</span>
-      <span class="name">onBaseColorFactorPropChanged</span>: <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Binding 2 works. Color: &quot;</span> <span class="operator">+</span> <span class="name">baseColorFactorProp</span>)
+     <span class="type">Kuesa</span>.AnimationPlayer {
+         <span class="name">id</span>: <span class="name">hoodAnimator</span>
+         <span class="name">sceneEntity</span>: <span class="name">scene</span>
+         <span class="name">clock</span>: <span class="name">Clock</span> { }
+         <span class="name">clip</span>: <span class="string">&quot;HoodAction&quot;</span>
+     }
 
+     <span class="type">Kuesa</span>.AnimationPlayer {
+         <span class="name">id</span>: <span class="name">leftDoorAnimator</span>
+         <span class="name">sceneEntity</span>: <span class="name">scene</span>
+         <span class="name">clock</span>: <span class="name">Clock</span> { }
+         <span class="name">clip</span>: <span class="string">&quot;DoorLAction&quot;</span>
+     }
 
-      <span class="type">Kuesa</span>.AnimationPlayer {
-          <span class="name">id</span>: <span class="name">hoodAnimator</span>
-          <span class="name">sceneEntity</span>: <span class="name">scene</span>
-          <span class="name">clock</span>: <span class="name">Clock</span> { }
-          <span class="name">clip</span>: <span class="string">&quot;HoodAction&quot;</span>
-      }
+     <span class="type">Kuesa</span>.AnimationPlayer {
+         <span class="name">id</span>: <span class="name">rightDoorAnimator</span>
+         <span class="name">sceneEntity</span>: <span class="name">scene</span>
+         <span class="name">clock</span>: <span class="name">Clock</span> { }
+         <span class="name">clip</span>: <span class="string">&quot;DoorRAction&quot;</span>
+     }
 
-      <span class="type">Kuesa</span>.AnimationPlayer {
-          <span class="name">id</span>: <span class="name">leftDoorAnimator</span>
-          <span class="name">sceneEntity</span>: <span class="name">scene</span>
-          <span class="name">clock</span>: <span class="name">Clock</span> { }
-          <span class="name">clip</span>: <span class="string">&quot;DoorLAction&quot;</span>
-      }
+     <span class="type">Kuesa</span>.AnimationPlayer {
+         <span class="name">id</span>: <span class="name">sweepCamCenterAnimation</span>
+         <span class="name">sceneEntity</span>: <span class="name">scene</span>
+         <span class="name">clip</span>: <span class="string">&quot;SweepCamCenterAction&quot;</span>
+         <span class="name">loops</span>: <span class="name">Kuesa</span>.<span class="name">AnimationPlayer</span>.<span class="name">Infinite</span>
+         <span class="name">running</span>: <span class="name">scene</span>.<span class="name">animated</span>
+     }
+     <span class="type">Kuesa</span>.AnimationPlayer {
+         <span class="name">id</span>: <span class="name">sweepCamPitchAnimation</span>
+         <span class="name">sceneEntity</span>: <span class="name">scene</span>
+         <span class="name">clip</span>: <span class="string">&quot;SweepCamPitchAction&quot;</span>
+         <span class="name">loops</span>: <span class="name">Kuesa</span>.<span class="name">AnimationPlayer</span>.<span class="name">Infinite</span>
+         <span class="name">running</span>: <span class="name">scene</span>.<span class="name">animated</span>
+     }
 
-      <span class="type">Kuesa</span>.AnimationPlayer {
-          <span class="name">id</span>: <span class="name">rightDoorAnimator</span>
-          <span class="name">sceneEntity</span>: <span class="name">scene</span>
-          <span class="name">clock</span>: <span class="name">Clock</span> { }
-          <span class="name">clip</span>: <span class="string">&quot;DoorRAction&quot;</span>
-      }
+     <span class="type">NodeInstantiator</span> {
+         <span class="name">id</span>: <span class="name">wheelAnimators</span>
+         property <span class="type">var</span> <span class="name">clock</span>: <span class="name">Clock</span> { <span class="name">playbackRate</span>: <span class="name">scene</span>.<span class="name">carSpeed</span> <span class="operator">/</span> <span class="number">2</span> }
 
-      <span class="type">Kuesa</span>.AnimationPlayer {
-          <span class="name">id</span>: <span class="name">sweepCamCenterAnimation</span>
-          <span class="name">sceneEntity</span>: <span class="name">scene</span>
-          <span class="name">clip</span>: <span class="string">&quot;SweepCamCenterAction&quot;</span>
-          <span class="name">loops</span>: <span class="name">Kuesa</span>.<span class="name">AnimationPlayer</span>.<span class="name">Infinite</span>
-          <span class="name">running</span>: <span class="name">scene</span>.<span class="name">animated</span>
-      }
-      <span class="type">Kuesa</span>.AnimationPlayer {
-          <span class="name">id</span>: <span class="name">sweepCamPitchAnimation</span>
-          <span class="name">sceneEntity</span>: <span class="name">scene</span>
-          <span class="name">clip</span>: <span class="string">&quot;SweepCamPitchAction&quot;</span>
-          <span class="name">loops</span>: <span class="name">Kuesa</span>.<span class="name">AnimationPlayer</span>.<span class="name">Infinite</span>
-          <span class="name">running</span>: <span class="name">scene</span>.<span class="name">animated</span>
-      }
+         <span class="name">model</span>: [ <span class="string">&quot;WheelFLDriveAction&quot;</span>, <span class="string">&quot;WheelFRDriveAction&quot;</span>, <span class="string">&quot;WheelBLDriveAction&quot;</span>, <span class="string">&quot;WheelBRDriveAction&quot;</span> ]
 
-      <span class="type">NodeInstantiator</span> {
-          <span class="name">id</span>: <span class="name">wheelAnimators</span>
-          property <span class="type">var</span> <span class="name">clock</span>: <span class="name">Clock</span> { <span class="name">playbackRate</span>: <span class="name">scene</span>.<span class="name">carSpeed</span> <span class="operator">/</span> <span class="number">2</span> }
+         <span class="name">delegate</span>: <span class="name">Kuesa</span>.AnimationPlayer {
+             <span class="name">sceneEntity</span>: <span class="name">scene</span>
+             <span class="name">clip</span>: <span class="name">modelData</span>
+             <span class="name">clock</span>: <span class="name">wheelAnimators</span>.<span class="name">clock</span>
+             <span class="name">running</span>: <span class="name">scene</span>.<span class="name">carSpeed</span> <span class="operator">&gt;</span> <span class="number">0</span>
+             <span class="name">loops</span>: <span class="name">Kuesa</span>.<span class="name">AnimationPlayer</span>.<span class="name">Infinite</span>
+         }
+     }
 
-          <span class="name">model</span>: [ <span class="string">&quot;WheelFLDriveAction&quot;</span>, <span class="string">&quot;WheelFRDriveAction&quot;</span>, <span class="string">&quot;WheelBLDriveAction&quot;</span>, <span class="string">&quot;WheelBRDriveAction&quot;</span> ]
+     <span class="type">Kuesa</span>.Asset {
+         <span class="name">id</span>: <span class="name">sweepCam</span>
+         <span class="name">collection</span>: <span class="name">scene</span>.<span class="name">cameras</span>
+         <span class="name">name</span>: <span class="string">&quot;SweepCam&quot;</span>
+     }
 
-          <span class="name">delegate</span>: <span class="name">Kuesa</span>.AnimationPlayer {
-              <span class="name">sceneEntity</span>: <span class="name">scene</span>
-              <span class="name">clip</span>: <span class="name">modelData</span>
-              <span class="name">clock</span>: <span class="name">wheelAnimators</span>.<span class="name">clock</span>
-              <span class="name">running</span>: <span class="name">scene</span>.<span class="name">carSpeed</span> <span class="operator">&gt;</span> <span class="number">0</span>
-              <span class="name">loops</span>: <span class="name">Kuesa</span>.<span class="name">AnimationPlayer</span>.<span class="name">Infinite</span>
-          }
-      }
+     <span class="type">QQ2</span>.Binding {
+         <span class="name">target</span>: <span class="name">sweepCam</span>.<span class="name">node</span>
+         <span class="name">property</span>: <span class="string">&quot;aspectRatio&quot;</span>
+         <span class="name">value</span>: <span class="name">mainCamera</span>.<span class="name">aspectRatio</span>
+     }
 
-      <span class="type">Kuesa</span>.Asset {
-          <span class="name">id</span>: <span class="name">sweepCam</span>
-          <span class="name">collection</span>: <span class="name">scene</span>.<span class="name">cameras</span>
-          <span class="name">name</span>: <span class="string">&quot;SweepCam&quot;</span>
-      }
+     <span class="name">onOpenHoodChanged</span>: {
+         <span class="name">d</span>.<span class="name">flipAnimation</span>(<span class="name">openHood</span>, <span class="name">hoodAnimator</span>)
+     }
 
-      <span class="type">QQ2</span>.Binding {
-          <span class="name">target</span>: <span class="name">sweepCam</span>.<span class="name">node</span>
-          <span class="name">property</span>: <span class="string">&quot;aspectRatio&quot;</span>
-          <span class="name">value</span>: <span class="name">mainCamera</span>.<span class="name">aspectRatio</span>
-      }
+     <span class="name">onOpenLeftDoorChanged</span>: {
+         <span class="name">d</span>.<span class="name">flipAnimation</span>(<span class="name">openLeftDoor</span>, <span class="name">leftDoorAnimator</span>)
+     }
 
-      <span class="name">onOpenHoodChanged</span>: {
-          <span class="name">d</span>.<span class="name">flipAnimation</span>(<span class="name">openHood</span>, <span class="name">hoodAnimator</span>)
-      }
+     <span class="name">onOpenRightDoorChanged</span>: {
+         <span class="name">d</span>.<span class="name">flipAnimation</span>(<span class="name">openRightDoor</span>, <span class="name">rightDoorAnimator</span>)
+     }
 
-      <span class="name">onOpenLeftDoorChanged</span>: {
-          <span class="name">d</span>.<span class="name">flipAnimation</span>(<span class="name">openLeftDoor</span>, <span class="name">leftDoorAnimator</span>)
-      }
+     <span class="comment">// let this point light wander around with the camera to create some shiny lighting</span>
+     <span class="type">Entity</span> {
+         <span class="name">id</span>: <span class="name">pointLightEntity</span>
+         <span class="name">parent</span>: <span class="name">frameGraph</span>.<span class="name">camera</span>
+         <span class="name">components</span>: [
+             <span class="type">Kuesa</span>.PointLight {
+             }
+         ]
+     }
 
-      <span class="name">onOpenRightDoorChanged</span>: {
-          <span class="name">d</span>.<span class="name">flipAnimation</span>(<span class="name">openRightDoor</span>, <span class="name">rightDoorAnimator</span>)
-      }
+     <span class="name">components</span>: [
+         <span class="type">RenderSettings</span> {
+             <span class="comment">// FrameGraph</span>
+             <span class="name">activeFrameGraph</span>: <span class="name">Kuesa</span>.ForwardRenderer {
+                 <span class="name">id</span>: <span class="name">frameGraph</span>
+                 <span class="name">camera</span>: <span class="name">scene</span>.<span class="name">animated</span> <span class="operator">&amp;&amp;</span> <span class="name">sweepCam</span>.<span class="name">node</span> ? <span class="name">sweepCam</span>.<span class="name">node</span> : <span class="name">mainCamera</span>
+                 <span class="name">postProcessingEffects</span>: {
+                     var effects = []
+                     <span class="keyword">if</span> (<span class="name">useBloomEffect</span>)
+                         <span class="name">effects</span>.<span class="name">push</span>(<span class="name">bloomFx</span>)
+                     <span class="keyword">if</span> (<span class="name">useOpacityMask</span>)
+                         <span class="name">effects</span>.<span class="name">push</span>(<span class="name">opacityMaskEffect</span>)
+                     <span class="keyword">return</span> <span class="name">effects</span>
+                 }
+                 <span class="name">backToFrontSorting</span>: <span class="number">true</span>
+                 <span class="name">toneMappingAlgorithm</span>: <span class="name">Effects</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Reinhard</span>
+ <span class="comment">//                showDebugOverlay: true</span>
+             }
+         },
+         <span class="type">InputSettings</span> { },
+         <span class="type">EnvironmentLight</span> {
+             <span class="name">irradiance</span>: <span class="name">TextureLoader</span> {
+                 <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="name">environmentMap</span> <span class="operator">+</span> <span class="string">&quot;_16f_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+                 <span class="type">wrapMode</span> {
+                     <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                     <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                 }
+                 <span class="name">generateMipMaps</span>: <span class="number">false</span>
+             }
+             <span class="name">specular</span>: <span class="name">TextureLoader</span> {
+                 <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="name">environmentMap</span> <span class="operator">+</span> <span class="string">&quot;_16f_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+                 <span class="type">wrapMode</span> {
+                     <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                     <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
+                 }
+                 <span class="name">generateMipMaps</span>: <span class="number">false</span>
+             }
+         }
+     ]
 
-      <span class="comment">// let this point light wander around with the camera to create some shiny lighting</span>
-      <span class="type">Entity</span> {
-          <span class="name">id</span>: <span class="name">pointLightEntity</span>
-          <span class="name">parent</span>: <span class="name">frameGraph</span>.<span class="name">camera</span>
-          <span class="name">components</span>: [
-              <span class="type">Kuesa</span>.PointLight {
-              }
-          ]
-      }
+     <span class="type">Effects</span>.OpacityMask {
+         <span class="name">id</span>: <span class="name">opacityMaskEffect</span>
+         <span class="name">mask</span>: <span class="name">TextureLoader</span> {
+             <span class="name">source</span>: <span class="string">&quot;qrc:/opacity_mask.png&quot;</span>;
+             <span class="name">generateMipMaps</span>: <span class="number">false</span>
+         }
+         <span class="name">premultipliedAlpha</span>: <span class="number">true</span> <span class="comment">// This is what Scene3D/QtQuick expects</span>
+     }
 
-      <span class="name">components</span>: [
-          <span class="type">RenderSettings</span> {
-              <span class="comment">// FrameGraph</span>
-              <span class="name">activeFrameGraph</span>: <span class="name">Kuesa</span>.ForwardRenderer {
-                  <span class="name">id</span>: <span class="name">frameGraph</span>
-                  <span class="name">camera</span>: <span class="name">scene</span>.<span class="name">animated</span> <span class="operator">&amp;&amp;</span> <span class="name">sweepCam</span>.<span class="name">node</span> ? <span class="name">sweepCam</span>.<span class="name">node</span> : <span class="name">mainCamera</span>
-                  <span class="name">postProcessingEffects</span>: {
-                      var effects = []
-                      <span class="keyword">if</span> (<span class="name">useBloomEffect</span>)
-                          <span class="name">effects</span>.<span class="name">push</span>(<span class="name">bloomFx</span>)
-                      <span class="keyword">if</span> (<span class="name">useOpacityMask</span>)
-                          <span class="name">effects</span>.<span class="name">push</span>(<span class="name">opacityMaskEffect</span>)
-                      <span class="keyword">return</span> <span class="name">effects</span>
-                  }
-                  <span class="name">backToFrontSorting</span>: <span class="number">true</span>
-                  <span class="name">toneMappingAlgorithm</span>: <span class="name">Effects</span>.<span class="name">ToneMappingAndGammaCorrectionEffect</span>.<span class="name">Reinhard</span>
-  <span class="comment">//                showDebugOverlay: true</span>
-              }
-          },
-          <span class="type">InputSettings</span> { },
-          <span class="type">EnvironmentLight</span> {
-              <span class="name">irradiance</span>: <span class="name">TextureLoader</span> {
-                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="name">environmentMap</span> <span class="operator">+</span> <span class="string">&quot;_16f_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
-                  <span class="type">wrapMode</span> {
-                      <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
-                      <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
-                  }
-                  <span class="name">generateMipMaps</span>: <span class="number">false</span>
-              }
-              <span class="name">specular</span>: <span class="name">TextureLoader</span> {
-                  <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="name">environmentMap</span> <span class="operator">+</span> <span class="string">&quot;_16f_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
-                  <span class="type">wrapMode</span> {
-                      <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
-                      <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
-                  }
-                  <span class="name">generateMipMaps</span>: <span class="number">false</span>
-              }
-          }
-      ]
+     <span class="type">Effects</span>.BloomEffect {
+         <span class="name">id</span>: <span class="name">bloomFx</span>
+         <span class="name">threshold</span>: <span class="number">0.34</span>
+         <span class="name">blurPassCount</span>: <span class="number">2</span>
+     }
 
-      <span class="type">Effects</span>.OpacityMask {
-          <span class="name">id</span>: <span class="name">opacityMaskEffect</span>
-          <span class="name">mask</span>: <span class="name">TextureLoader</span> {
-              <span class="name">source</span>: <span class="string">&quot;qrc:/opacity_mask.png&quot;</span>;
-              <span class="name">generateMipMaps</span>: <span class="number">false</span>
-          }
-          <span class="name">premultipliedAlpha</span>: <span class="number">true</span> <span class="comment">// This is what Scene3D/QtQuick expects</span>
-      }
+     <span class="type">QQ2</span>.Binding {
+         <span class="name">target</span>: <span class="name">frameGraph</span>
+         <span class="name">property</span>: <span class="string">&quot;exposure&quot;</span>
+         <span class="name">value</span>: <span class="name">scene</span>.<span class="name">exposure</span> <span class="operator">+</span> <span class="name">scene</span>.<span class="name">environmentExposure</span>
+     }
 
-      <span class="type">Effects</span>.BloomEffect {
-          <span class="name">id</span>: <span class="name">bloomFx</span>
-          <span class="name">threshold</span>: <span class="number">0.34</span>
-          <span class="name">blurPassCount</span>: <span class="number">2</span>
-      }
+     <span class="type">Camera</span> {
+         <span class="name">id</span>: <span class="name">mainCamera</span>
+         <span class="name">fieldOfView</span>: <span class="name">scene</span>.<span class="name">explodedView</span> ? <span class="number">55</span> : <span class="number">35</span>
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">4.5</span>, <span class="number">1.5</span>, <span class="number">4.5</span>)
+         <span class="name">upVector</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)
+         <span class="name">viewCenter</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">.5</span>, <span class="number">0</span>)
 
-      <span class="type">QQ2</span>.Binding {
-          <span class="name">target</span>: <span class="name">frameGraph</span>
-          <span class="name">property</span>: <span class="string">&quot;exposure&quot;</span>
-          <span class="name">value</span>: <span class="name">scene</span>.<span class="name">exposure</span> <span class="operator">+</span> <span class="name">scene</span>.<span class="name">environmentExposure</span>
-      }
+         QQ2.Behavior on <span class="name">fieldOfView</span> { <span class="type">QQ2</span>.NumberAnimation { <span class="name">duration</span>: <span class="number">750</span>; <span class="name">easing</span>.type: <span class="name">QQ2</span>.<span class="name">Easing</span>.<span class="name">OutQuad</span> } }
+     }
 
-      <span class="type">Camera</span> {
-          <span class="name">id</span>: <span class="name">mainCamera</span>
-          <span class="name">fieldOfView</span>: <span class="name">scene</span>.<span class="name">explodedView</span> ? <span class="number">55</span> : <span class="number">35</span>
-          <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">4.5</span>, <span class="number">1.5</span>, <span class="number">4.5</span>)
-          <span class="name">upVector</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)
-          <span class="name">viewCenter</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">.5</span>, <span class="number">0</span>)
+     <span class="type">CarCameraController</span> {
+         <span class="name">camera</span>: <span class="name">mainCamera</span>
+         <span class="name">enabled</span>: !<span class="name">scene</span>.<span class="name">animated</span>
+     }
 
-          QQ2.Behavior on <span class="name">fieldOfView</span> { <span class="type">QQ2</span>.NumberAnimation { <span class="name">duration</span>: <span class="number">750</span>; <span class="name">easing</span>.type: <span class="name">QQ2</span>.<span class="name">Easing</span>.<span class="name">OutQuad</span> } }
-      }
+     <span class="comment">// Loads GLTF 2.0 asset</span>
+     <span class="type">Kuesa</span>.GLTF2Importer {
+         <span class="name">sceneEntity</span>: <span class="name">scene</span>
+         <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;DodgeViper&quot;</span> <span class="operator">+</span> <span class="name">_modelSuffix</span> <span class="operator">+</span> <span class="string">&quot;.gltf&quot;</span>
+     }
 
-      <span class="type">CarCameraController</span> {
-          <span class="name">camera</span>: <span class="name">mainCamera</span>
-          <span class="name">enabled</span>: !<span class="name">scene</span>.<span class="name">animated</span>
-      }
-
-      <span class="comment">// Loads GLTF 2.0 asset</span>
-      <span class="type">Kuesa</span>.GLTF2Importer {
-          <span class="name">sceneEntity</span>: <span class="name">scene</span>
-          <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;DodgeViper&quot;</span> <span class="operator">+</span> <span class="name">_modelSuffix</span> <span class="operator">+</span> <span class="string">&quot;.gltf&quot;</span>
-      }
-
-      <span class="type">Kuesa</span>.Skybox {
-          <span class="name">id</span>: <span class="name">skybox</span>
-          <span class="name">baseName</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="name">environmentMap</span> <span class="operator">+</span> <span class="string">&quot;_skybox&quot;</span>
-          <span class="name">extension</span>: <span class="string">&quot;.dds&quot;</span>
-      }
-  }
-
+     <span class="type">Kuesa</span>.Skybox {
+         <span class="name">id</span>: <span class="name">skybox</span>
+         <span class="name">baseName</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="name">environmentMap</span> <span class="operator">+</span> <span class="string">&quot;_skybox&quot;</span>
+         <span class="name">extension</span>: <span class="string">&quot;.dds&quot;</span>
+     }
+ }
 </pre>

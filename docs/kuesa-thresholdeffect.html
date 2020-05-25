@@ -29,7 +29,7 @@
 <p>Post-processing effect showing only pixels brighter than a specified value. <a href="#details">More...</a></p>
 <!-- @@@ThresholdEffect -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/ThresholdEffect&gt;</span>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/ThresholdEffect&gt;</span>
 </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-abstractpostprocessingeffect.html">Kuesa::AbstractPostProcessingEffect</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
 <ul>
 <li><a href="kuesa-thresholdeffect-members.html">List of all members, including inherited members</a></li>
@@ -66,26 +66,24 @@
 <h2 id="details">Detailed Description</h2>
 <p>ThresholdEffect is a post-processing effect that passes through any pixel above a certain brightness value and sets all others to black.</p>
 <pre class="cpp plain">
+ #include &lt;Qt3DExtras/Qt3DWindow&gt;
+ #include &lt;ForwardRenderer&gt;
+ #include &lt;SceneEntity&gt;
+ #include &lt;ThresholdEffect&gt;
 
-  #include &lt;Qt3DExtras/Qt3DWindow&gt;
-  #include &lt;ForwardRenderer&gt;
-  #include &lt;SceneEntity&gt;
-  #include &lt;ThresholdEffect&gt;
+ Qt3DExtras::Qt3DWindow win;
+ Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+ Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+ Kuesa::ThresholdEffect *thresholdEffect = new Kuesa::ThresholdEffect();
 
-  Qt3DExtras::Qt3DWindow win;
-  Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
-  Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
-  Kuesa::ThresholdEffect *thresholdEffect = new Kuesa::ThresholdEffect();
+ thresholdEffect-&gt;setThreshold(0.5f);
 
-  thresholdEffect-&gt;setThreshold(0.5f);
+ frameGraph-&gt;addPostProcessingEffect(thresholdEffect);
 
-  frameGraph-&gt;addPostProcessingEffect(thresholdEffect);
+ win-&gt;setRootEntity(root);
+ win-&gt;setActiveFrameGraph(forwardRenderer);
 
-  win-&gt;setRootEntity(root);
-  win-&gt;setActiveFrameGraph(forwardRenderer);
-
-  ..&#x2e;
-
+ ..&#x2e;
 </pre>
 </div>
 <!-- @@@ThresholdEffect -->
@@ -115,24 +113,24 @@
 <!-- $$$setThreshold -->
 <h3 class="fn" id="setThreshold"><a name="setThreshold"></a><code>[slot] </code><span class="type">void</span> ThresholdEffect::<span class="name">setThreshold</span>(<span class="type">float</span> <i>threshold</i>)</h3>
 <p>Sets the threshold value to <i>threshold</i>.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-thresholdeffect.html#threshold-prop">threshold</a>. </p><p><b>See also </b><a href="kuesa-thresholdeffect.html#threshold">ThresholdEffect::threshold</a>.</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-thresholdeffect.html#threshold">threshold</a>. </p>
+<p><b>See also </b><a href="kuesa-thresholdeffect.html#threshold">ThresholdEffect::threshold</a>.</p>
 <!-- @@@setThreshold -->
 <!-- $$$frameGraphSubTree[overload1]$$$frameGraphSubTree -->
 <h3 class="fn" id="frameGraphSubTree"><a name="frameGraphSubTree"></a><code>[override virtual] </code><span class="type">Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr</span> ThresholdEffect::<span class="name">frameGraphSubTree</span>() const</h3>
-<p>Reimplements: <a href="kuesa-abstractpostprocessingeffect.html#frameGraphSubTree">AbstractPostProcessingEffect::frameGraphSubTree</a>() const.</p>
 <p>Returns the frame graph subtree corresponding to the effect's implementation.</p>
-<p><b>See also </b><a href="kuesa-abstractpostprocessingeffect.html#frameGraphSubTree">AbstractPostProcessingEffect::frameGraphSubTree</a>.</p>
+<p><b>See also </b>AbstractPostProcessingEffect::frameGraphSubTree.</p>
 <!-- @@@frameGraphSubTree -->
 <!-- $$$setInputTexture[overload1]$$$setInputTextureQt3DRender::QAbstractTexture* -->
 <h3 class="fn" id="setInputTexture"><a name="setInputTexture"></a><code>[override virtual] </code><span class="type">void</span> ThresholdEffect::<span class="name">setInputTexture</span>(<span class="type">Qt3DRender::QAbstractTexture</span> *<i>texture</i>)</h3>
-<p>Reimplements: <a href="kuesa-abstractpostprocessingeffect.html#setInputTexture">AbstractPostProcessingEffect::setInputTexture</a>(Qt3DRender::QAbstractTexture *texture).</p>
 <p>Sets the input texture for the effect to <i>texture</i>.</p>
-<p><b>See also </b><a href="kuesa-abstractpostprocessingeffect.html#setInputTexture">AbstractPostProcessingEffect::setInputTexture</a>().</p>
+<p><b>See also </b>AbstractPostProcessingEffect::setInputTexture().</p>
 <!-- @@@setInputTexture -->
 <!-- $$$threshold -->
 <h3 class="fn" id="threshold"><a name="threshold"></a><span class="type">float</span> ThresholdEffect::<span class="name">threshold</span>() const</h3>
 <p>Returns the current threshold.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-thresholdeffect.html#threshold-prop">threshold</a>. </p><p><b>See also </b><a href="kuesa-thresholdeffect.html#setThreshold">ThresholdEffect::setThreshold</a>.</p>
+<p><b>Note: </b>Getter function for property threshold. </p>
+<p><b>See also </b><a href="kuesa-thresholdeffect.html#setThreshold">ThresholdEffect::setThreshold</a>.</p>
 <!-- @@@threshold -->
 </div>
         </div>

@@ -16,7 +16,7 @@
 <li class="level1"><a href="#kuesa-s-workflow">Kuesa's workflow</a></li>
 <li class="level1"><a href="#kuesa-s-strengths">Kuesa's strengths</a></li>
 <li class="level1"><a href="#kuesa-components">Kuesa components</a></li>
-<li class="level2"><a href="#kuesa-digital-content-creation-plugins">Kuesa Digital Content Creation Plugins</a></li>
+<li class="level2"><a href="#kuesa-studio">Kuesa Studio</a></li>
 <li class="level2"><a href="#kuesa-runtime">Kuesa Runtime</a></li>
 <li class="level1"><a href="#kuesa-runtime-features">Kuesa Runtime Features</a></li>
 <li class="level2"><a href="#gltf-2-importer">glTF 2 Importer</a></li>
@@ -55,27 +55,44 @@
 </ul>
 <a name="kuesa-components"></a>
 <h2 id="kuesa-components">Kuesa components</h2>
-<p class="centerAlign"><img src="images/pipeline-diagram.png" alt="" /></p><a name="kuesa-digital-content-creation-plugins"></a>
-<h3 id="kuesa-digital-content-creation-plugins">Kuesa Digital Content Creation Plugins</h3>
+<p class="centerAlign"><img src="images/pipeline-diagram.png" alt="" /></p><a name="kuesa-studio"></a>
+<h3 id="kuesa-studio">Kuesa Studio</h3>
+<p>Kuesa Studio is only available as a commercial package. It is the designer facing part of the Kuesa workflow.</p>
+<a name="kuesa-digital-content-creation-plugins"></a>
+<h4 id="kuesa-digital-content-creation-plugins">Kuesa Digital Content Creation Plugins</h4>
 <ul>
-<li><a href="https://github.com/KDAB/kuesa-blender">Kuesa Blender glTF2 Exporter plugin</a></li>
+<li>Blender 2.80<ul>
+<li><a href="https://github.com/KhronosGroup/glTF-Blender-IO"> Blender 2.8 comes with an official glTF 2.0 export </a></li>
+<li>Kuesa add-on for Iro Materials support and dedicated glTF extensions for animations ..&#x2e;</li>
+</ul>
+</li>
+<li>Blender 2.79 (deprecated)<ul>
+<li><a href="https://github.com/KDAB/kuesa-blender">Kuesa Blender 2.79 glTF2 Exporter plugin</a></li>
+</ul>
+</li>
+<li>Other 3D Design softwares<ul>
 <li><a href="https://github.com/KDAB/kuesa-3dsmax">Kuesa 3ds Max glTF2 Exporter plugin</a></li>
 </ul>
-<p>Checkout out our <a href="https://www.youtube.com/watch?v=6W3gMEk_PbE">video tutorial</a> on how prepare your assets for Kuesa with 3ds max.</p>
+</li>
+</ul>
+<a name="kuesa-studio-tools"></a>
+<h4 id="kuesa-studio-tools">Kuesa Studio Tools</h4>
+<p>The Kuesa-Studio comes with a gltf tool to preview and introspect scenes.</p>
+<p>It also provides tools to condition assets to integrate as part of the build process.</p>
 <a name="kuesa-runtime"></a>
 <h3 id="kuesa-runtime">Kuesa Runtime</h3>
-<p>The Kuesa Runtime provides C++ and QML APIs to ease incorporation of 3D content into Qt 3D based applications.</p>
+<p>It is the developer facing part of the Kuesa workflow. It is materialized as a library on top of Qt 3D that provides:</p>
 <ul>
 <li><a href="kuesa-gltf2importer.html">glTF2 compliant importer that generates a Qt 3D based scene</a></li>
 <li><a href="kuesa-metallicroughnessmaterial.html">Custom PBR materials</a></li>
-<li><a href="kuesa-iro-materials.html">A library of simple and efficient materials to extend glTF</a></li>
-<li>Asset collections to retrieve assets by name</li>
-<li>Post Processing Effects</li>
+<li><a href="kuesa-iro-materials.html">Iro Materials</a></li>
+<li><a href="kuesa-overview.html#asset-collections">Asset collections to retrieve assets by name</a></li>
+<li><a href="kuesa-fx.html">Post Processing Effects</a></li>
 </ul>
-<p>Checkout out our <a href="https://www.youtube.com/watch?v=dIdrQMkGVPI">video tutorial</a> on creating an interactive 3D application with Kuesa.</p>
 <a name="tools"></a>
 <h4 id="tools">Tools</h4>
 <p>The Kuesa-Runtime comes with the <a href="gltfviewer.html">gltfViewer</a> tool to preview scenes.</p>
+<p>Checkout out our <a href="https://www.youtube.com/watch?v=dIdrQMkGVPI">video tutorial</a> on creating an interactive 3D application with Kuesa.</p>
 <a name="kuesa-runtime-features"></a>
 <h2 id="kuesa-runtime-features">Kuesa Runtime Features</h2>
 <a name="gltf-2-importer"></a>
@@ -83,12 +100,22 @@
 <p>The class <a href="kuesa-gltf2importer.html">GLTF2Importer</a> is a Qt3DCore::QNode based class that allows loading glTF 2 files. glTF 2 files from any exporter should work, note however that the Kuesa specific exporter allow the use of additional features, namely:</p>
 <ul>
 <li>Qt 3D compatible <a href="kuesa-metallicroughnessmaterial.html">PBR Material</a> support</li>
-<li>Qt 3D layer export</li>
-<li>Face wireframe export</li>
+<li>glTF 2.0 Extensions<ul>
+<li><a href="https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_unlit">KHR_materials_unlit</a></li>
+<li><a href="https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_lights_punctual">KHR_lights_punctual</a></li>
+<li><a href="https://github.com/KhronosGroup/glTF/pull/1301/files/c72ffabee4b801ce30c77277bba37fa4179185bd">EXT_property_animation</a></li>
+<li><a href="https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_draco_mesh_compression/README.md">KHR_draco_mesh_compression</a></li>
+<li>KDAB_custom_material for <a href="kuesa-iro-materials.html">Iro Materials</a> export</li>
+<li>KDAB_kuesa_layers for <a href="kuesa-layers.html">Qt 3D layer</a> export</li>
 </ul>
+</li>
+</ul>
+<a name="asset-collections"></a>
+<h4 id="asset-collections">Asset Collections</h4>
 <p>Once a file has been loaded through the use of the glTF 2 importer, name based collections are populated. Kuesa provides the following collections for:</p>
 <ul>
 <li><a href="kuesa-entitycollection.html">Entities</a></li>
+<li><a href="kuesa-transformcollection.html">Transforms</a></li>
 <li><a href="kuesa-animationclipcollection.html">Animation Clips</a></li>
 <li><a href="kuesa-animationmappingcollection.html">Animation Mappings</a></li>
 <li><a href="kuesa-cameracollection.html">Cameras</a></li>

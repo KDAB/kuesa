@@ -28,7 +28,7 @@
 <p><a href="qml-metallicroughnessmaterial.html">Kuesa::MetallicRoughnessMaterial</a> is a ready to use physically based rendering (PBR) material based on the glTF 2.0 material description. <a href="#details">More...</a></p>
 <!-- @@@MetallicRoughnessMaterial -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/MetallicRoughnessMaterial&gt;</span>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/MetallicRoughnessMaterial&gt;</span>
 </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-metallicroughnessmaterial.html">MetallicRoughnessMaterial</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-gltf2material.html">Kuesa::GLTF2Material</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
 <ul>
 <li><a href="kuesa-metallicroughnessmaterial-members.html">List of all members, including inherited members</a></li>
@@ -36,47 +36,49 @@
 <a name="properties"></a>
 <h2 id="properties">Properties</h2>
 <ul>
-<li class="fn"><b><a href="kuesa-metallicroughnessmaterial.html#metallicRoughnessProperties-prop">metallicRoughnessProperties</a></b> : Kuesa::MetallicRoughnessProperties*</li>
+<li class="fn"><b><a href="kuesa-metallicroughnessmaterial.html#materialProperties-prop">materialProperties</a></b> : MetallicRoughnessProperties*</li>
 </ul>
 <a name="public-functions"></a>
 <h2 id="public-functions">Public Functions</h2>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::MetallicRoughnessProperties *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessmaterial.html#metallicRoughnessProperties-prop">metallicRoughnessProperties</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::MetallicRoughnessProperties *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessmaterial.html#materialProperties-prop">materialProperties</a></b>() const</td></tr>
 </table></div>
 <a name="public-slots"></a>
 <h2 id="public-slots">Public Slots</h2>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessmaterial.html#metallicRoughnessProperties-prop">setMetallicRoughnessProperties</a></b>(Kuesa::MetallicRoughnessProperties *<i>metallicRoughnessProperties</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessmaterial.html#materialProperties-prop">setMaterialProperties</a></b>(Kuesa::MetallicRoughnessProperties *<i>materialProperties</i>)</td></tr>
 </table></div>
 <a name="signals"></a>
 <h2 id="signals">Signals</h2>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessmaterial.html#metallicRoughnessProperties-prop">metallicRoughnessPropertiesChanged</a></b>(Kuesa::MetallicRoughnessProperties *<i>metallicRoughnessProperties</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnessmaterial.html#materialProperties-prop">materialPropertiesChanged</a></b>(Kuesa::MetallicRoughnessProperties *<i>materialProperties</i>)</td></tr>
 </table></div>
 <a name="details"></a>
 <!-- $$$MetallicRoughnessMaterial-description -->
 <div class="descr">
 <h2 id="details">Detailed Description</h2>
 <p>It is configured through the set of properties held on the <a href="kuesa-metallicroughnessproperties.html">MetallicRoughnessProperties</a> instance it can receive.</p>
-<p><b>Note: </b><a href="qml-metallicroughnessmaterial.html">Kuesa::MetallicRoughnessMaterial</a> is implemented using a custom shader graph. Some changes in the properties will activate or deactivate some nodes of the shader graph and will trigger a recompilation of the shader. It is recommended to create the variations of the material that you need once up front at application initialisation time.</p><p><b>Note: </b>The effect behind this material needs a brdfLut texture. If the brdfLut texture in the effect is not set and the material is added to a subtree of a <a href="qml-sceneentity.html">Kuesa::SceneEntity</a>, it will look for the <a href="qml-sceneentity.html">Kuesa::SceneEntity</a> and will use the brdfLut texture in the texture collection.</p></div>
+<p><b>Note: </b><a href="qml-metallicroughnessmaterial.html">Kuesa::MetallicRoughnessMaterial</a> is implemented using a custom shader graph. Some changes in the properties will activate or deactivate some nodes of the shader graph and will trigger a recompilation of the shader. It is recommended to create the variations of the material that you need once up front at application initialisation time.</p>
+<p><b>Note: </b>The effect behind this material needs a brdfLut texture. If the brdfLut texture in the effect is not set and the material is added to a subtree of a <a href="qml-sceneentity.html">Kuesa::SceneEntity</a>, it will look for the <a href="qml-sceneentity.html">Kuesa::SceneEntity</a> and will use the brdfLut texture in the texture collection.</p>
+</div>
 <p><b>See also </b><a href="qml-metallicroughnessproperties.html">Kuesa::MetallicRoughnessProperties</a>.</p>
 <!-- @@@MetallicRoughnessMaterial -->
 <div class="prop">
 <h2>Property Documentation</h2>
-<!-- $$$metallicRoughnessProperties-prop$$$metallicRoughnessProperties$$$setMetallicRoughnessPropertiesKuesa::MetallicRoughnessProperties*$$$metallicRoughnessPropertiesChangedKuesa::MetallicRoughnessProperties* -->
-<h3 class="fn" id="metallicRoughnessProperties-prop"><a name="metallicRoughnessProperties-prop"></a><span class="name">metallicRoughnessProperties</span> : <span class="type"><a href="kuesa-metallicroughnessproperties.html">Kuesa::MetallicRoughnessProperties</a></span>*</h3>
+<!-- $$$materialProperties-prop$$$materialProperties$$$setMaterialPropertiesKuesa::MetallicRoughnessProperties*$$$materialPropertiesChangedKuesa::MetallicRoughnessProperties* -->
+<h3 class="fn" id="materialProperties-prop"><a name="materialProperties-prop"></a><span class="name">materialProperties</span> : <span class="type"><a href="kuesa-metallicroughnessproperties.html">MetallicRoughnessProperties</a></span>*</h3>
 <p>The properties defining the appearance of the material.</p>
-<p>This property was introduced in Kuesa 1.1.</p>
+<p>This property was introduced in Kuesa 1.2.</p>
 <p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::MetallicRoughnessProperties *</td><td class="memItemRight bottomAlign"><span class="name"><b>metallicRoughnessProperties</b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMetallicRoughnessProperties</b></span>(Kuesa::MetallicRoughnessProperties *<i>metallicRoughnessProperties</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::MetallicRoughnessProperties *</td><td class="memItemRight bottomAlign"><span class="name"><b>materialProperties</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMaterialProperties</b></span>(Kuesa::MetallicRoughnessProperties *<i>materialProperties</i>)</td></tr>
 </table></div>
 <p><b>Notifier signal:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>metallicRoughnessPropertiesChanged</b></span>(Kuesa::MetallicRoughnessProperties *<i>metallicRoughnessProperties</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>materialPropertiesChanged</b></span>(Kuesa::MetallicRoughnessProperties *<i>materialProperties</i>)</td></tr>
 </table></div>
-<!-- @@@metallicRoughnessProperties -->
+<!-- @@@materialProperties -->
 </div>
         </div>
        </div>

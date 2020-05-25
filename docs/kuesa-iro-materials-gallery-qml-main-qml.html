@@ -12,69 +12,66 @@
 </ul></div><div class='doc-content'><h1 class="title">Kuesa Iro-Materials-Gallery QML Example</h1>
 <span class="subtitle"></span>
 <pre class="qml">
+ <span class="comment">/*
+     main.qml
 
-  <span class="comment">/*
-      main.qml
+     This file is part of Kuesa.
 
-      This file is part of Kuesa.
+     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
 
-      Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-      Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
 
-      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-      LICENSE.KUESA.ENTERPRISE file.
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
 
-      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
 
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU Affero General Public License as
-      published by the Free Software Foundation, either version 3 of the
-      License, or (at your option) any later version.
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
 
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU Affero General Public License for more details.
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 
-      You should have received a copy of the GNU Affero General Public License
-      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-  */</span>
+ import QtQuick.Scene3D 2.12
+ import QtQuick 2.12
 
-  import QtQuick.Scene3D 2.12
-  import QtQuick 2.12
-  import QtQuick.Controls 1.4
+ <span class="type">Item</span> {
+     <span class="name">id</span>: <span class="name">mainRoot</span>
 
-  <span class="type">Item</span> {
-      <span class="name">id</span>: <span class="name">mainRoot</span>
+     <span class="comment">// 3D Content</span>
 
-      <span class="comment">// 3D Content</span>
+     <span class="type">Item</span> {
+         <span class="name">id</span>: <span class="name">baseUI</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
 
-      <span class="type">Item</span> {
-          <span class="name">id</span>: <span class="name">baseUI</span>
-          <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="type">Scene3D</span> {
+             <span class="name">id</span>: <span class="name">scene3D</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">focus</span>: <span class="number">true</span>
+             <span class="name">multisample</span>: <span class="number">true</span>
+             <span class="name">aspects</span>: [<span class="string">&quot;input&quot;</span>, <span class="string">&quot;animation&quot;</span>, <span class="string">&quot;logic&quot;</span>]
 
-          <span class="type">Scene3D</span> {
-              <span class="name">id</span>: <span class="name">scene3D</span>
-              <span class="name">anchors</span>.fill: <span class="name">parent</span>
-              <span class="name">focus</span>: <span class="number">true</span>
-              <span class="name">multisample</span>: <span class="number">true</span>
-              <span class="name">aspects</span>: [<span class="string">&quot;input&quot;</span>, <span class="string">&quot;animation&quot;</span>, <span class="string">&quot;logic&quot;</span>]
+             <span class="comment">// Root Scene Entity</span>
+             <span class="type">MainScene</span> {
+                 <span class="name">id</span>: <span class="name">sceneContent</span>
+                 <span class="name">onClickedAt</span>: {
+                     <span class="name">inspectorView</span>.<span class="name">x</span> <span class="operator">=</span> <span class="name">x</span>
+                     <span class="name">inspectorView</span>.<span class="name">y</span> <span class="operator">=</span> <span class="name">y</span>
+                 }
+             }
+         }
+     }
 
-              <span class="comment">// Root Scene Entity</span>
-              <span class="type">MainScene</span> {
-                  <span class="name">id</span>: <span class="name">sceneContent</span>
-                  <span class="name">onClickedAt</span>: {
-                      <span class="name">inspectorView</span>.<span class="name">x</span> <span class="operator">=</span> <span class="name">x</span>
-                      <span class="name">inspectorView</span>.<span class="name">y</span> <span class="operator">=</span> <span class="name">y</span>
-                  }
-              }
-          }
-      }
-
-      <span class="type">MaterialInspector</span> {
-          <span class="name">id</span>: <span class="name">inspectorView</span>
-      }
-  }
-
+     <span class="type">MaterialInspector</span> {
+         <span class="name">id</span>: <span class="name">inspectorView</span>
+     }
+ }
 </pre>

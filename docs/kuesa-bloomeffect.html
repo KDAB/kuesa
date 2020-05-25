@@ -29,7 +29,7 @@
 <p>Post-processing effect for blurring the bright parts of a scene. <a href="#details">More...</a></p>
 <!-- @@@BloomEffect -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/BloomEffect&gt;</span>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/BloomEffect&gt;</span>
 </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-abstractpostprocessingeffect.html">Kuesa::AbstractPostProcessingEffect</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
 <ul>
 <li><a href="kuesa-bloomeffect-members.html">List of all members, including inherited members</a></li>
@@ -73,27 +73,25 @@
 <p>The effect can be configured to change the threshold defining the bright parts of the scene and the amount of blurring to apply.</p>
 <p>The BloomEffect is a combination of the <a href="kuesa-thresholdeffect.html">ThresholdEffect</a> and the <a href="kuesa-gaussianblureffect.html">GaussianBlurEffect</a>.</p>
 <pre class="cpp plain">
+ #include &lt;Qt3DExtras/Qt3DWindow&gt;
+ #include &lt;ForwardRenderer&gt;
+ #include &lt;SceneEntity&gt;
+ #include &lt;BloomEffect&gt;
 
-  #include &lt;Qt3DExtras/Qt3DWindow&gt;
-  #include &lt;ForwardRenderer&gt;
-  #include &lt;SceneEntity&gt;
-  #include &lt;BloomEffect&gt;
+ Qt3DExtras::Qt3DWindow win;
+ Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+ Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+ Kuesa::BloomEffect *bloomEffect = new Kuesa::BloomEffect();
 
-  Qt3DExtras::Qt3DWindow win;
-  Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
-  Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
-  Kuesa::BloomEffect *bloomEffect = new Kuesa::BloomEffect();
+ bloomEffect-&gt;setThreshold(0.5f);
+ bloomEffect-&gt;setBlurPassCount(2);
 
-  bloomEffect-&gt;setThreshold(0.5f);
-  bloomEffect-&gt;setBlurPassCount(2);
+ frameGraph-&gt;addPostProcessingEffect(bloomEffect);
 
-  frameGraph-&gt;addPostProcessingEffect(bloomEffect);
+ win-&gt;setRootEntity(root);
+ win-&gt;setActiveFrameGraph(forwardRenderer);
 
-  win-&gt;setRootEntity(root);
-  win-&gt;setActiveFrameGraph(forwardRenderer);
-
-  ..&#x2e;
-
+ ..&#x2e;
 </pre>
 </div>
 <!-- @@@BloomEffect -->
@@ -135,29 +133,30 @@
 <!-- $$$setBlurPassCount -->
 <h3 class="fn" id="setBlurPassCount"><a name="setBlurPassCount"></a><code>[slot] </code><span class="type">void</span> BloomEffect::<span class="name">setBlurPassCount</span>(<span class="type">int</span> <i>blurPassCount</i>)</h3>
 <p>Sets the number of blur passes to apply to <i>blurPassCount</i>.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-bloomeffect.html#blurPassCount-prop">blurPassCount</a>. </p><p><b>See also </b><a href="kuesa-bloomeffect.html#blurPassCount">BloomEffect::blurPassCount</a>.</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-bloomeffect.html#blurPassCount">blurPassCount</a>. </p>
+<p><b>See also </b><a href="kuesa-bloomeffect.html#blurPassCount">BloomEffect::blurPassCount</a>.</p>
 <!-- @@@setBlurPassCount -->
 <!-- $$$setThreshold -->
 <h3 class="fn" id="setThreshold"><a name="setThreshold"></a><code>[slot] </code><span class="type">void</span> BloomEffect::<span class="name">setThreshold</span>(<span class="type">float</span> <i>threshold</i>)</h3>
 <p>Sets the threshold value to <i>threshold</i>.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-bloomeffect.html#threshold-prop">threshold</a>. </p><p><b>See also </b><a href="kuesa-bloomeffect.html#threshold">BloomEffect::threshold</a>.</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-bloomeffect.html#threshold">threshold</a>. </p>
+<p><b>See also </b><a href="kuesa-bloomeffect.html#threshold">BloomEffect::threshold</a>.</p>
 <!-- @@@setThreshold -->
 <!-- $$$blurPassCount -->
 <h3 class="fn" id="blurPassCount"><a name="blurPassCount"></a><span class="type">int</span> BloomEffect::<span class="name">blurPassCount</span>() const</h3>
 <p>Returns the number of blur passes to apply.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-bloomeffect.html#blurPassCount-prop">blurPassCount</a>. </p><p><b>See also </b><a href="kuesa-bloomeffect.html#setBlurPassCount">BloomEffect::setBlurPassCount</a>.</p>
+<p><b>Note: </b>Getter function for property blurPassCount. </p>
+<p><b>See also </b><a href="kuesa-bloomeffect.html#setBlurPassCount">BloomEffect::setBlurPassCount</a>.</p>
 <!-- @@@blurPassCount -->
 <!-- $$$frameGraphSubTree[overload1]$$$frameGraphSubTree -->
 <h3 class="fn" id="frameGraphSubTree"><a name="frameGraphSubTree"></a><code>[override virtual] </code><span class="type">Kuesa::AbstractPostProcessingEffect::FrameGraphNodePtr</span> BloomEffect::<span class="name">frameGraphSubTree</span>() const</h3>
-<p>Reimplements: <a href="kuesa-abstractpostprocessingeffect.html#frameGraphSubTree">AbstractPostProcessingEffect::frameGraphSubTree</a>() const.</p>
 <p>Returns the frame graph subtree corresponding to the effect's implementation.</p>
-<p><b>See also </b><a href="kuesa-abstractpostprocessingeffect.html#frameGraphSubTree">AbstractPostProcessingEffect::frameGraphSubTree</a>.</p>
+<p><b>See also </b>AbstractPostProcessingEffect::frameGraphSubTree.</p>
 <!-- @@@frameGraphSubTree -->
 <!-- $$$setInputTexture[overload1]$$$setInputTextureQt3DRender::QAbstractTexture* -->
 <h3 class="fn" id="setInputTexture"><a name="setInputTexture"></a><code>[override virtual] </code><span class="type">void</span> BloomEffect::<span class="name">setInputTexture</span>(<span class="type">Qt3DRender::QAbstractTexture</span> *<i>texture</i>)</h3>
-<p>Reimplements: <a href="kuesa-abstractpostprocessingeffect.html#setInputTexture">AbstractPostProcessingEffect::setInputTexture</a>(Qt3DRender::QAbstractTexture *texture).</p>
 <p>Sets the input texture for the effect to <i>texture</i>.</p>
-<p><b>See also </b><a href="kuesa-abstractpostprocessingeffect.html#setInputTexture">AbstractPostProcessingEffect::setInputTexture</a>.</p>
+<p><b>See also </b>AbstractPostProcessingEffect::setInputTexture.</p>
 <!-- @@@setInputTexture -->
 <!-- $$$setSceneSize[overload1]$$$setSceneSizeconstQSize& -->
 <h3 class="fn" id="setSceneSize"><a name="setSceneSize"></a><code>[override virtual] </code><span class="type">void</span> BloomEffect::<span class="name">setSceneSize</span>(const <span class="type">QSize</span> &amp;<i>size</i>)</h3>
@@ -168,7 +167,8 @@
 <!-- $$$threshold -->
 <h3 class="fn" id="threshold"><a name="threshold"></a><span class="type">float</span> BloomEffect::<span class="name">threshold</span>() const</h3>
 <p>Returns the threshold value.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-bloomeffect.html#threshold-prop">threshold</a>. </p><p><b>See also </b><a href="kuesa-bloomeffect.html#setThreshold">BloomEffect::setThreshold</a>.</p>
+<p><b>Note: </b>Getter function for property threshold. </p>
+<p><b>See also </b><a href="kuesa-bloomeffect.html#setThreshold">BloomEffect::setThreshold</a>.</p>
 <!-- @@@threshold -->
 </div>
         </div>

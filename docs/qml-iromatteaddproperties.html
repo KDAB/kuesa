@@ -31,28 +31,18 @@
 <a name="properties"></a>
 <h2 id="properties">Properties</h2>
 <ul>
-<li class="fn"><b><b><a href="qml-iromatteaddproperties.html#gltfYUp-prop">gltfYUp</a></b></b> : bool</li>
 <li class="fn"><b><b><a href="qml-iromatteaddproperties.html#matteFilter-prop">matteFilter</a></b></b> : QVector3D</li>
 <li class="fn"><b><b><a href="qml-iromatteaddproperties.html#matteGain-prop">matteGain</a></b></b> : float</li>
 <li class="fn"><b><b><a href="qml-iromatteaddproperties.html#postGain-prop">postGain</a></b></b> : float</li>
 <li class="fn"><b><b><a href="qml-iromatteaddproperties.html#postVertexColor-prop">postVertexColor</a></b></b> : float</li>
 <li class="fn"><b><b><a href="qml-iromatteaddproperties.html#usesMatteMap-prop">usesMatteMap</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-iromatteaddproperties.html#uvOffset-prop">uvOffset</a></b></b> : QVector2D</li>
 </ul>
 <!-- $$$IroMatteAddProperties-description -->
 <a name="details"></a>
 <h2 id="details">Detailed Description</h2>
 <!-- @@@IroMatteAddProperties -->
 <h2>Property Documentation</h2>
-<!-- $$$gltfYUp -->
-<div class="qmlitem"><div class="qmlproto">
-<div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="gltfYUp-prop">
-<td class="tblQmlPropNode"><p>
-<a name="gltfYUp-prop"></a><span class="name">gltfYUp</span> : <span class="type">bool</span></p></td></tr>
-</table></div></div>
-<div class="qmldoc"><p>Specifies whether this material should consider the Y and Z axis as being inverted.</p>
-</div></div><!-- @@@gltfYUp -->
-<br/>
 <!-- $$$matteFilter -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
@@ -80,7 +70,7 @@
 <td class="tblQmlPropNode"><p>
 <a name="postGain-prop"></a><span class="name">postGain</span> : <span class="type">float</span></p></td></tr>
 </table></div></div>
-<div class="qmldoc"><p>Specifies the factor to be applied to the vertex color.</p>
+<div class="qmldoc"><p>Specifies the gain factor to be applied to the final result.</p>
 </div></div><!-- @@@postGain -->
 <br/>
 <!-- $$$postVertexColor -->
@@ -102,6 +92,16 @@
 </table></div></div>
 <div class="qmldoc"><p>Specifies whether we use a matte map or not.</p>
 </div></div><!-- @@@usesMatteMap -->
+<br/>
+<!-- $$$uvOffset -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="uvOffset-prop">
+<td class="tblQmlPropNode"><p>
+<a name="uvOffset-prop"></a><span class="name">uvOffset</span> : <span class="type">QVector2D</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Applies an offset to texture lookup.</p>
+</div></div><!-- @@@uvOffset -->
 <br/>
         </div>
        </div>

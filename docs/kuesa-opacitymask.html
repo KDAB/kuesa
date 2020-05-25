@@ -27,7 +27,7 @@
 <p>Masks onscreen content based on the alpha color value of a mask texture. <a href="#details">More...</a></p>
 <!-- @@@OpacityMask -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;OpacityMask&gt;</span>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;OpacityMask&gt;</span>
 </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-abstractpostprocessingeffect.html">Kuesa::AbstractPostProcessingEffect</a></td></tr></table></div><ul>
 <li><a href="kuesa-opacitymask-members.html">List of all members, including inherited members</a></li>
 </ul>
@@ -57,38 +57,32 @@
 <h2 id="details">Detailed Description</h2>
 <p>Given an RGBA mask texture, content of the backbuffer will be rendered as:</p>
 <pre class="cpp plain">
-
-  vec4 pixelColor = vec4(inputColor.rgb, inputColor.a * maskColor.a)
-
+ vec4 pixelColor = vec4(inputColor.rgb, inputColor.a * maskColor.a)
 </pre>
 <p class="centerAlign"><img src="images/noalpha.png" alt="" /></p><p>A premultiplied alpha variant of the algorithm is also available which can be of use when combining Qt 3D / Kuesa content with 2D QtQuick content (Scene3D). It performs rendering doing:</p>
 <pre class="cpp plain">
-
-  vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
-
+ vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
 </pre>
 <pre class="cpp plain">
+ #include &lt;Qt3DExtras/Qt3DWindow&gt;
+ #include &lt;ForwardRenderer&gt;
+ #include &lt;SceneEntity&gt;
+ #include &lt;OpacityMask&gt;
 
-  #include &lt;Qt3DExtras/Qt3DWindow&gt;
-  #include &lt;ForwardRenderer&gt;
-  #include &lt;SceneEntity&gt;
-  #include &lt;OpacityMask&gt;
+ Qt3DExtras::Qt3DWindow win;
+ Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+ Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+ Kuesa::OpacityMask *opacityMask = new Kuesa::OpacityMask();
 
-  Qt3DExtras::Qt3DWindow win;
-  Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
-  Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
-  Kuesa::OpacityMask *opacityMask = new Kuesa::OpacityMask();
+ Qt3DRender::QTextureLoader *texture = new Qt3DRender::QTextureLoader();
+ texture-&gt;setSource(QUrl(&quot;file:///opacityMask.png&quot;));
+ opacityMask-&gt;setMask(texture);
 
-  Qt3DRender::QTextureLoader *texture = new Qt3DRender::QTextureLoader();
-  texture-&gt;setSource(QUrl(&quot;file:///opacityMask.png&quot;));
-  opacityMask-&gt;setMask(texture);
+ frameGraph-&gt;addPostProcessingEffect(opacityMask);
 
-  frameGraph-&gt;addPostProcessingEffect(opacityMask);
-
-  win-&gt;setRootEntity(root);
-  win-&gt;setActiveFrameGraph(forwardRenderer);
-  ..&#x2e;
-
+ win-&gt;setRootEntity(root);
+ win-&gt;setActiveFrameGraph(forwardRenderer);
+ ..&#x2e;
 </pre>
 <p class="centerAlign"><img src="images/alpha.png" alt="" /></p></div>
 <!-- @@@OpacityMask -->

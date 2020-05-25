@@ -38,39 +38,33 @@
 <h2 id="details">Detailed Description</h2>
 <p>Given an RGBA mask texture, content of the backbuffer will be rendered as:</p>
 <pre class="cpp plain">
-
-  vec4 pixelColor = vec4(inputColor.rgb, inputColor.a * maskColor.a)
-
+ vec4 pixelColor = vec4(inputColor.rgb, inputColor.a * maskColor.a)
 </pre>
 <p class="centerAlign"><img src="images/noalpha.png" alt="" /></p><p>A premultiplied alpha variant of the algorithm is also available which can be of use when combining Qt 3D / Kuesa content with 2D QtQuick content (Scene3D). It performs rendering doing:</p>
 <pre class="cpp plain">
-
-  vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
-
+ vec4 pixelColor = vec4(inputColor.rgb / maskColor.a, inputColor.a * maskColor.a);
 </pre>
 <pre class="cpp plain">
+ import Kuesa 1.1 as Kuesa
 
-  import Kuesa 1.1 as Kuesa
-
-  Kuesa.SceneEnity {
-      id: root
-      components: [
-          RenderSettings {
-              Kuesa.ForwardRenderer {
-                  postProcessingEffects: [
-                      OpacityMask {
-                          mask: TextureLoader {
-                              source: &quot;:/opacity_mask.png&quot;;
-                              generateMipMaps: false
-                          }
-                      }
-                  ]
-              }
-          }
-      ]
-      ..&#x2e;
-  }
-
+ Kuesa.SceneEnity {
+     id: root
+     components: [
+         RenderSettings {
+             Kuesa.ForwardRenderer {
+                 postProcessingEffects: [
+                     OpacityMask {
+                         mask: TextureLoader {
+                             source: &quot;:/opacity_mask.png&quot;;
+                             generateMipMaps: false
+                         }
+                     }
+                 ]
+             }
+         }
+     ]
+     ..&#x2e;
+ }
 </pre>
 <p class="centerAlign"><img src="images/alpha.png" alt="" /></p><!-- @@@OpacityMask -->
 <h2>Property Documentation</h2>

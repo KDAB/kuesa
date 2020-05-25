@@ -31,9 +31,10 @@
 <a name="properties"></a>
 <h2 id="properties">Properties</h2>
 <ul>
+<li class="fn"><b><b><a href="qml-iroglassaddproperties.html#diffuseInnerFilter-prop">diffuseInnerFilter</a></b></b> : QVector3D</li>
+<li class="fn"><b><b><a href="qml-iroglassaddproperties.html#diffuseOuterFilter-prop">diffuseOuterFilter</a></b></b> : QVector3D</li>
 <li class="fn"><b><b><a href="qml-iroglassaddproperties.html#glassInnerFilter-prop">glassInnerFilter</a></b></b> : QVector3D</li>
 <li class="fn"><b><b><a href="qml-iroglassaddproperties.html#glassOuterFilter-prop">glassOuterFilter</a></b></b> : QVector3D</li>
-<li class="fn"><b><b><a href="qml-iroglassaddproperties.html#gltfYUp-prop">gltfYUp</a></b></b> : bool</li>
 <li class="fn"><b><b><a href="qml-iroglassaddproperties.html#normalDisturb-prop">normalDisturb</a></b></b> : QVector2D</li>
 <li class="fn"><b><b><a href="qml-iroglassaddproperties.html#normalScaling-prop">normalScaling</a></b></b> : QVector3D</li>
 <li class="fn"><b><b><a href="qml-iroglassaddproperties.html#postGain-prop">postGain</a></b></b> : float</li>
@@ -49,6 +50,26 @@
 <h2 id="details">Detailed Description</h2>
 <!-- @@@IroGlassAddProperties -->
 <h2>Property Documentation</h2>
+<!-- $$$diffuseInnerFilter -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="diffuseInnerFilter-prop">
+<td class="tblQmlPropNode"><p>
+<a name="diffuseInnerFilter-prop"></a><span class="name">diffuseInnerFilter</span> : <span class="type">QVector3D</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the inner color filter to be applied based on fresnel on the diffuse map lookup.</p>
+</div></div><!-- @@@diffuseInnerFilter -->
+<br/>
+<!-- $$$diffuseOuterFilter -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="diffuseOuterFilter-prop">
+<td class="tblQmlPropNode"><p>
+<a name="diffuseOuterFilter-prop"></a><span class="name">diffuseOuterFilter</span> : <span class="type">QVector3D</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the outer color filter to be applied based on fresnel on the diffuse map lookup.</p>
+</div></div><!-- @@@diffuseOuterFilter -->
+<br/>
 <!-- $$$glassInnerFilter -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
@@ -68,16 +89,6 @@
 </table></div></div>
 <div class="qmldoc"><p>Specifies the glass outer color filter to be applied based on fresnel.</p>
 </div></div><!-- @@@glassOuterFilter -->
-<br/>
-<!-- $$$gltfYUp -->
-<div class="qmlitem"><div class="qmlproto">
-<div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="gltfYUp-prop">
-<td class="tblQmlPropNode"><p>
-<a name="gltfYUp-prop"></a><span class="name">gltfYUp</span> : <span class="type">bool</span></p></td></tr>
-</table></div></div>
-<div class="qmldoc"><p>Specifies whether this material should consider the Y and Z axis as being inverted.</p>
-</div></div><!-- @@@gltfYUp -->
 <br/>
 <!-- $$$normalDisturb -->
 <div class="qmlitem"><div class="qmlproto">
@@ -106,7 +117,7 @@
 <td class="tblQmlPropNode"><p>
 <a name="postGain-prop"></a><span class="name">postGain</span> : <span class="type">float</span></p></td></tr>
 </table></div></div>
-<div class="qmldoc"><p>Specifies the factor to be applied to the vertex color.</p>
+<div class="qmldoc"><p>Specifies the gain factor to be applied to the final result.</p>
 </div></div><!-- @@@postGain -->
 <br/>
 <!-- $$$postVertexColor -->

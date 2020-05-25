@@ -12,77 +12,72 @@
 </ul></div><div class='doc-content'><h1 class="title">Kuesa Iro-Materials-Gallery QML Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
+ <span class="comment">/*
+     materialinspector.h
 
-  <span class="comment">/*
-      materialinspector.h
+     This file is part of Kuesa.
 
-      This file is part of Kuesa.
+     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
 
-      Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-      Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
 
-      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-      LICENSE.KUESA.ENTERPRISE file.
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
 
-      Contact info@kdab.com if any conditions of this licensing are not clear to you.
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
 
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU Affero General Public License as
-      published by the Free Software Foundation, either version 3 of the
-      License, or (at your option) any later version.
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
 
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU Affero General Public License for more details.
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 
-      You should have received a copy of the GNU Affero General Public License
-      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-  */</span>
+ <span class="preprocessor">#ifndef MATERIALINSPECTOR_H</span>
+ <span class="preprocessor">#define MATERIALINSPECTOR_H</span>
 
-  <span class="preprocessor">#ifndef MATERIALINSPECTOR_H</span>
-  <span class="preprocessor">#define MATERIALINSPECTOR_H</span>
+ <span class="preprocessor">#include&lt;QObject&gt;</span>
+ <span class="preprocessor">#include &lt;Kuesa/GLTF2Material&gt;</span>
 
-  <span class="preprocessor">#include&lt;QObject&gt;</span>
+ <span class="keyword">namespace</span> <span class="type">Qt3DCore</span> {
+ <span class="keyword">class</span> <span class="type">QEntity</span>;
+ }
 
-  <span class="keyword">namespace</span> <span class="type">Qt3DCore</span> {
-  <span class="keyword">class</span> <span class="type">QEntity</span>;
-  }
+ <span class="keyword">namespace</span> <span class="type">Qt3DRender</span> {
+ <span class="keyword">class</span> <span class="type">QPickEvent</span>;
+ }
 
-  <span class="keyword">namespace</span> <span class="type">Qt3DRender</span> {
-  <span class="keyword">class</span> <span class="type">QPickEvent</span>;
-  }
+ <span class="keyword">class</span> MaterialInspector : <span class="keyword">public</span> <span class="type">QObject</span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material READ material NOTIFY materialChanged)
+     Q_PROPERTY(<span class="type">QString</span> description READ description NOTIFY descriptionChanged)
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> MaterialInspector(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
 
-  <span class="keyword">namespace</span> Kuesa {
-  <span class="keyword">class</span> GLTF2Material;
-  }
+     Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material() <span class="keyword">const</span>;
+     <span class="type">QString</span> description() <span class="keyword">const</span>;
 
-  <span class="keyword">class</span> MaterialInspector : <span class="keyword">public</span> <span class="type">QObject</span>
-  {
-      Q_OBJECT
-      Q_PROPERTY(Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material READ material NOTIFY materialChanged)
-      Q_PROPERTY(<span class="type">QString</span> description READ description NOTIFY descriptionChanged)
-  <span class="keyword">public</span>:
-      <span class="keyword">explicit</span> MaterialInspector(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+     Q_INVOKABLE <span class="type">void</span> inspect(<span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QPickEvent</span> <span class="operator">*</span>pick);
 
-      Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material() <span class="keyword">const</span>;
-      <span class="type">QString</span> description() <span class="keyword">const</span>;
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> materialChanged();
+     <span class="type">void</span> descriptionChanged();
 
-      Q_INVOKABLE <span class="type">void</span> inspect(<span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QPickEvent</span> <span class="operator">*</span>pick);
+ <span class="keyword">private</span>:
+     <span class="type">void</span> setMaterial(Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material);
+     <span class="type">void</span> introspect();
 
-  <span class="keyword">signals</span>:
-      <span class="type">void</span> materialChanged();
-      <span class="type">void</span> descriptionChanged();
+     Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>m_material;
+     <span class="type">QString</span> m_description;
+ };
 
-  <span class="keyword">private</span>:
-      <span class="type">void</span> setMaterial(Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material);
-      <span class="type">void</span> introspect();
-
-      Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>m_material;
-      <span class="type">QString</span> m_description;
-  };
-
-  <span class="preprocessor">#endif // MATERIALINSPECTOR_H</span>
-
+ <span class="preprocessor">#endif // MATERIALINSPECTOR_H</span>
 </pre>

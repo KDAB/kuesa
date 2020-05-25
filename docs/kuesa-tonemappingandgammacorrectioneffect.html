@@ -29,7 +29,7 @@
 <p>Perform conversion from linear color space to sRGB space. <a href="#details">More...</a></p>
 <!-- @@@ToneMappingAndGammaCorrectionEffect -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;ToneMappingAndGammaCorrectionEffect&gt;</span>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;ToneMappingAndGammaCorrectionEffect&gt;</span>
 </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-abstractpostprocessingeffect.html">Kuesa::AbstractPostProcessingEffect</a></td></tr></table></div><p>This class was introduced in Kuesa 1.1.</p>
 <ul>
 <li><a href="kuesa-tonemappingandgammacorrectioneffect-members.html">List of all members, including inherited members</a></li>
@@ -73,7 +73,8 @@
 <h2 id="details">Detailed Description</h2>
 <p>This effects performs exposure correction, tone mapping and gamma correction in this order.</p>
 <p>It uses a gamma of 2.2 to perform the correction, but this can be overridden if required.</p>
-<p><b>Note: </b>If using the <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> FrameGraph, this effect is automatically added as the last step of the pipeline, after any user defined post processing effect. Therefore, you shouldn't need to instantiate this effect yourself if using that FrameGraph.</p><p>If you care about Tone Mapping implementation details, the algorithms in use are detailly explained <a href="http://filmicworlds.com/blog/filmic-tonemapping-operators/">here</a>.</p>
+<p><b>Note: </b>If using the <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> FrameGraph, this effect is automatically added as the last step of the pipeline, after any user defined post processing effect. Therefore, you shouldn't need to instantiate this effect yourself if using that FrameGraph.</p>
+<p>If you care about Tone Mapping implementation details, the algorithms in use are detailly explained <a href="http://filmicworlds.com/blog/filmic-tonemapping-operators/">here</a>.</p>
 </div>
 <!-- @@@ToneMappingAndGammaCorrectionEffect -->
 <div class="types">
@@ -136,14 +137,16 @@
 <!-- $$$setToneMappingAlgorithm -->
 <h3 class="fn" id="setToneMappingAlgorithm"><a name="setToneMappingAlgorithm"></a><code>[slot] </code><span class="type">void</span> ToneMappingAndGammaCorrectionEffect::<span class="name">setToneMappingAlgorithm</span>(<span class="type"><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping</a></span> <i>algorithm</i>)</h3>
 <p>Sets the tone mapping algorithm to <i>algorithm</i>,</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-tonemappingandgammacorrectioneffect.html#toneMappingAlgorithm">toneMappingAlgorithm</a>. </p>
 <p>This function was introduced in Kuesa 1.1.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-tonemappingandgammacorrectioneffect.html#toneMappingAlgorithm-prop">toneMappingAlgorithm</a>. </p><p><b>See also </b><a href="kuesa-tonemappingandgammacorrectioneffect.html#toneMappingAlgorithm">toneMappingAlgorithm</a>().</p>
+<p><b>See also </b><a href="kuesa-tonemappingandgammacorrectioneffect.html#toneMappingAlgorithm">toneMappingAlgorithm</a>().</p>
 <!-- @@@setToneMappingAlgorithm -->
 <!-- $$$toneMappingAlgorithm -->
 <h3 class="fn" id="toneMappingAlgorithm"><a name="toneMappingAlgorithm"></a><span class="type"><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping</a></span> ToneMappingAndGammaCorrectionEffect::<span class="name">toneMappingAlgorithm</span>() const</h3>
 <p>Returns the tone mapping algorithm used by the shader.</p>
+<p><b>Note: </b>Getter function for property toneMappingAlgorithm. </p>
 <p>This function was introduced in Kuesa 1.1.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-tonemappingandgammacorrectioneffect.html#toneMappingAlgorithm-prop">toneMappingAlgorithm</a>. </p><p><b>See also </b><a href="kuesa-tonemappingandgammacorrectioneffect.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a>().</p>
+<p><b>See also </b><a href="kuesa-tonemappingandgammacorrectioneffect.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a>().</p>
 <!-- @@@toneMappingAlgorithm -->
 </div>
         </div>

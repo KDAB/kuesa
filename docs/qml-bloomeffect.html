@@ -41,26 +41,24 @@
 <p>The effect can be configured to change the threshold defining the bright parts of the scene and the amount of blurring to apply.</p>
 <p>The BloomEffect is a combination of the <a href="qml-thresholdeffect.html">ThresholdEffect</a> and the <a href="qml-gaussianblureffect.html">GaussianBlurEffect</a>.</p>
 <pre class="cpp plain">
+ import Kuesa 1.1 as Kuesa
 
-  import Kuesa 1.1 as Kuesa
-
-  Kuesa.SceneEnity {
-      id: root
-      components: [
-          RenderSettings {
-               Kuesa.ForwardRenderer {
-                   postProcessingEffects: [
-                       BloomEffect {
-                           threshold: 0.5
-                           blurPassCount: 2
-                       }
-                   ]
-               }
-          }
-      ]
-     ..&#x2e;
-  }
-
+ Kuesa.SceneEnity {
+     id: root
+     components: [
+         RenderSettings {
+              Kuesa.ForwardRenderer {
+                  postProcessingEffects: [
+                      BloomEffect {
+                          threshold: 0.5
+                          blurPassCount: 2
+                      }
+                  ]
+              }
+         }
+     ]
+    ..&#x2e;
+ }
 </pre>
 <!-- @@@BloomEffect -->
 <h2>Property Documentation</h2>

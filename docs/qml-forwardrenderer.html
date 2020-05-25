@@ -60,35 +60,33 @@
 <p>In some case, an optimization technique known as an early z-filling pass can provide a significant performance gain. This is especially true for large scenes using complex rendering materials. The idea consist in filling the depth buffer with a low complexity shader so that subsequent passes incorporating more detailed rendering techniques only render fragments for the depth previously recorded. The optional z-fill pass can be enabled by setting the <a href="qml-forwardrenderer.html#zFilling-prop">zFilling</a> property to true. All Entities having a Material with a compatible RenderPass that has a FilterKey KuesaDrawStage with a value set to ZFill will be rendered. This will take place before the Opaque and Transparent pass. Only Opaque objects should be used to fill the depth buffer.</p>
 <p>The pipeline steps, from materials to post processing effects are working in linear color space. This ForwardRenderer adds a final gamma correction to perform the final conversion to sRGB, through the use of the GammaCorrectionEffect, as the last step of this pipeline.</p>
 <pre class="cpp plain">
+ import Kuesa 1.1 as Kuesa
+ import Qt3D.Core 2.12
+ import Qt3D.Render 2.12
 
-  import Kuesa 1.1 as Kuesa
-  import Qt3D.Core 2.12
-  import Qt3D.Render 2.12
+ Kuesa.SceneEnity {
+     id: root
 
-  Kuesa.SceneEnity {
-      id: root
+     Camera { id: sceneCamera }
 
-      Camera { id: sceneCamera }
-
-      components: [
-          RenderSettings {
-               Kuesa.ForwardRenderer {
-                   clearColor: &quot;red&quot;
-                   camera: sceneCamera
-                   frustumCulling: true
-                   backToFrontSorting: true
-                   postProcessingEffects: [
-                       BloomEffect {
-                           threshold: 0.5
-                           blurPassCount: 2
-                       }
-                   ]
-               }
-          }
-      ]
-     ..&#x2e;
-  }
-
+     components: [
+         RenderSettings {
+              Kuesa.ForwardRenderer {
+                  clearColor: &quot;red&quot;
+                  camera: sceneCamera
+                  frustumCulling: true
+                  backToFrontSorting: true
+                  postProcessingEffects: [
+                      BloomEffect {
+                          threshold: 0.5
+                          blurPassCount: 2
+                      }
+                  ]
+              }
+         }
+     ]
+    ..&#x2e;
+ }
 </pre>
 <!-- @@@ForwardRenderer -->
 <h2>Property Documentation</h2>

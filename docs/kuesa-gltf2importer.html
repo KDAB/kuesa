@@ -29,7 +29,7 @@
 <p>Imports glTF 2 scenes into a Qt 3D Scene. <a href="#details">More...</a></p>
 <!-- @@@GLTF2Importer -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/GLTF2Importer&gt;</span>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/GLTF2Importer&gt;</span>
 </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-gltf2importer.html">GLTF2Importer</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
 <ul>
 <li><a href="kuesa-gltf2importer-members.html">List of all members, including inherited members</a></li>
@@ -91,15 +91,13 @@
 <h2 id="details">Detailed Description</h2>
 <p>GLTF2Importer imports glTF 2 scenes into a Qt 3D scene.</p>
 <pre class="cpp plain">
+ #include &lt;GLTF2Importer&gt;
 
-  #include &lt;GLTF2Importer&gt;
+ Kuesa::SceneEntity *scene = new Kuesa::SceneEntity();
+ Kuesa::GLTF2Importer *importer = new Kuesa::GLTF2Importer(scene);
 
-  Kuesa::SceneEntity *scene = new Kuesa::SceneEntity();
-  Kuesa::GLTF2Importer *importer = new Kuesa::GLTF2Importer(scene);
-
-  importer-&gt;setSceneEntity(scene);
-  importer-&gt;setSource(QUrl(&quot;file:///source.gltf&quot;));
-
+ importer-&gt;setSceneEntity(scene);
+ importer-&gt;setSource(QUrl(&quot;file:///source.gltf&quot;));
 </pre>
 <p>If a <a href="qml-sceneentity.html">Kuesa::SceneEntity</a> has been set on the importer, various Qt 3D resources generated upon import will be registered into named collections. If no name is specified and <a href="kuesa-gltf2importer.html#assignNames">assignNames</a> is true, a default name will be assigned to the asset. If several assets of the same type share the same name, subsequent assets will be given unique names by appending an index.</p>
 <p>Below is a list of Qt 3D resources currently registered into collections:</p>
@@ -237,37 +235,45 @@
 <h3 class="fn" id="setAssignNames"><a name="setAssignNames"></a><code>[slot] </code><span class="type">void</span> GLTF2Importer::<span class="name">setAssignNames</span>(<span class="type">bool</span> <i>assignNames</i>)</h3>
 <p>If <i>assignNames</i> is true, assets with no names will be added to collections with default names.</p>
 <p>Otherwise, assets will not be added to collections.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-gltf2importer.html#assignNames-prop">assignNames</a>. </p><p><b>See also </b><a href="kuesa-gltf2importer.html#assignNames">assignNames</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-gltf2importer.html#assignNames">assignNames</a>. </p>
+<p><b>See also </b><a href="kuesa-gltf2importer.html#assignNames">assignNames</a>().</p>
 <!-- @@@setAssignNames -->
 <!-- $$$setSceneEntity -->
 <h3 class="fn" id="setSceneEntity"><a name="setSceneEntity"></a><code>[slot] </code><span class="type">void</span> GLTF2Importer::<span class="name">setSceneEntity</span>(<span class="type"><a href="kuesa-sceneentity.html">Kuesa::SceneEntity</a></span> *<i>sceneEntity</i>)</h3>
 <p>Set the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> instance which should be used to access the collections loaded assets will be registered with to <i>sceneEntity</i>.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-gltf2importer.html#sceneEntity-prop">sceneEntity</a>. </p><p><b>See also </b><a href="kuesa-gltf2importer.html#sceneEntity">sceneEntity</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-tonemapping-example.html#sceneentity">sceneEntity</a>. </p>
+<p><b>See also </b><a href="kuesa-gltf2importer.html#sceneEntity">sceneEntity</a>().</p>
 <!-- @@@setSceneEntity -->
 <!-- $$$setSource -->
 <h3 class="fn" id="setSource"><a name="setSource"></a><code>[slot] </code><span class="type">void</span> GLTF2Importer::<span class="name">setSource</span>(const <span class="type">QUrl</span> &amp;<i>source</i>)</h3>
 <p>Load the glTF file from the given url <i>source</i>.</p>
-<p><b>Note: </b>The loading is asynchronous. When loading is complete the status property will change.</p><p><b>Note:</b> Setter function for property <a href="kuesa-gltf2importer.html#source-prop">source</a>. </p><p><b>See also </b><a href="kuesa-gltf2importer.html#source">source</a>().</p>
+<p><b>Note: </b>The loading is asynchronous. When loading is complete the status property will change.</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-gltf2importer.html#source">source</a>. </p>
+<p><b>See also </b><a href="kuesa-gltf2importer.html#source">source</a>().</p>
 <!-- @@@setSource -->
 <!-- $$$assignNames -->
 <h3 class="fn" id="assignNames"><a name="assignNames"></a><span class="type">bool</span> GLTF2Importer::<span class="name">assignNames</span>() const</h3>
 <p>Returns <code>true</code> if assets with no names should be added to collections</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-gltf2importer.html#assignNames-prop">assignNames</a>. </p><p><b>See also </b><a href="kuesa-gltf2importer.html#setAssignNames">setAssignNames</a>().</p>
+<p><b>Note: </b>Getter function for property assignNames. </p>
+<p><b>See also </b><a href="kuesa-gltf2importer.html#setAssignNames">setAssignNames</a>().</p>
 <!-- @@@assignNames -->
 <!-- $$$sceneEntity -->
 <h3 class="fn" id="sceneEntity"><a name="sceneEntity"></a><span class="type"><a href="kuesa-sceneentity.html">Kuesa::SceneEntity</a></span> *GLTF2Importer::<span class="name">sceneEntity</span>() const</h3>
 <p>Returns the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> used to access asset collections</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-gltf2importer.html#sceneEntity-prop">sceneEntity</a>. </p><p><b>See also </b><a href="kuesa-gltf2importer.html#setSceneEntity">setSceneEntity</a>().</p>
+<p><b>Note: </b>Getter function for property <a href="kuesa-tonemapping-example.html#sceneentity">sceneEntity</a>. </p>
+<p><b>See also </b><a href="kuesa-gltf2importer.html#setSceneEntity">setSceneEntity</a>().</p>
 <!-- @@@sceneEntity -->
 <!-- $$$source -->
 <h3 class="fn" id="source"><a name="source"></a><span class="type">QUrl</span> GLTF2Importer::<span class="name">source</span>() const</h3>
 <p>Returns the url of the glTF file</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-gltf2importer.html#source-prop">source</a>. </p><p><b>See also </b><a href="kuesa-gltf2importer.html#setSource">setSource</a>().</p>
+<p><b>Note: </b>Getter function for property source. </p>
+<p><b>See also </b><a href="kuesa-gltf2importer.html#setSource">setSource</a>().</p>
 <!-- @@@source -->
 <!-- $$$status -->
 <h3 class="fn" id="status"><a name="status"></a><span class="type"><a href="kuesa-gltf2importer.html#Status-enum">GLTF2Importer::Status</a></span> GLTF2Importer::<span class="name">status</span>() const</h3>
 <p>Return the current state of the importer</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-gltf2importer.html#status-prop">status</a>. </p><!-- @@@status -->
+<p><b>Note: </b>Getter function for property status. </p>
+<!-- @@@status -->
 </div>
         </div>
        </div>
