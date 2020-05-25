@@ -167,11 +167,20 @@ in the ``src/python`` and the sample application in ``examples/kuesa/python``.
 
 Please file issues [here](https://github.com/KDAB/Kuesa/issues)
 
+KDAB will happily accept external contributions; however, **all**
+contributions will require a signed Contributor License Agreement.
+
 ## About KDAB
 
 Kuesa is maintained by Klarälvdalens Datakonsult AB (KDAB).
 
-KDAB, the Qt experts, provide consulting and mentoring for developing
-Qt applications from scratch and in porting from all popular and legacy
-frameworks to Qt. We continue to help develop parts of Qt and are one
-of the major contributors to the Qt Project. KDAB is also behind the development effort of the Qt 3D module. We can give advanced or standard trainings anywhere around the globe.
+The KDAB Group is the global No.1 software consultancy for Qt, C++ and
+OpenGL applications across desktop, embedded and mobile platforms.
+
+The KDAB Group provides consulting and mentoring for developing Qt applications
+from scratch and in porting from all popular and legacy frameworks to Qt.
+We continue to help develop parts of Qt and are one of the major contributors
+to the Qt Project. We can give advanced or standard trainings anywhere
+around the globe on Qt as well as C++, OpenGL, 3D and more.
+
+Please visit https://www.kdab.com to meet the people who write code like this.

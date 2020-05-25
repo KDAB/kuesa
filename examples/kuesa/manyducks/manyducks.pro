@@ -36,10 +36,6 @@ macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
 else: APP_PWD=$$OUT_PWD
 RES_PWD=$$APP_PWD/resources
 
-target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-target.files += $$RES_PWD
-INSTALLS += target
-
 include($$KUESA_ROOT/kuesa-global.pri)
 
 android {

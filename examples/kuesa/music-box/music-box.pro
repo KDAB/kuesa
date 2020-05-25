@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Mauro Persano <mauro.persano@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -42,11 +42,6 @@ RESOURCES += \
 macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
 else: APP_PWD=$$OUT_PWD
 RES_PWD=$$APP_PWD/resources
-
-
-target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-target.files += $$RES_PWD
-INSTALLS += target
 
 install_music_samples.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 install_music_samples.files = $$PWD/assets/samples
