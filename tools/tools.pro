@@ -35,18 +35,6 @@ CONFIG(BUILD_FOR_MARKET): {
 QT_FOR_CONFIG += kuesa
 qtConfig(kuesa-tools) {
 
-!uikit: SUBDIRS += \
-    assetprocessor \
+!uikit:!android: SUBDIRS += \
     gltfViewer
-
-!cross_compile: {
-    SUBDIRS += \
-        gltfEditor \
-        ddspreviewer
-
-    !macos {
-        SUBDIRS += \
-            cubemaptooctahedralmap
-    }
-}
 }

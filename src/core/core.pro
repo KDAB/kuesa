@@ -29,7 +29,6 @@ MODULE     = kuesa
 
 # Kuesa is free of Q_FOREACH - make sure it stays that way:
 DEFINES += QT_NO_FOREACH
-
 DEFINES += QT_BUILD_KUESA_LIB
 
 # Avoid windows defines
@@ -44,6 +43,8 @@ qtConfig(draco) {
 }
 
 include(core.pri)
+include(materials/materials.pri)
+include(iro-materials/iro-materials.pri)
 include(collections/collections.pri)
 include(gltf2importer/gltf2importer.pri)
 include(gltf2exporter/gltf2exporter.pri)
@@ -56,8 +57,6 @@ RESOURCES += \
     shaders.qrc
 
 OTHER_FILES += \
-    shaders/gl3/simple.vert \
-    shaders/graphs/metallicroughness.graph \
     configure.pri \
     configure.json
 

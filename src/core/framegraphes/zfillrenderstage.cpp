@@ -41,12 +41,15 @@ ZFillRenderStage::ZFillRenderStage(Qt3DCore::QNode *parent)
     : AbstractRenderStage(parent)
 {
     setObjectName(QStringLiteral("KuesaZFillRenderStage"));
+    auto passFilter = new Qt3DRender::QRenderPassFilter(this);
+
+
     auto filterKey = new Qt3DRender::QFilterKey(this);
     filterKey->setName(QStringLiteral("KuesaDrawStage"));
     filterKey->setValue(QStringLiteral("ZFill"));
-    addMatch(filterKey);
+    passFilter->addMatch(filterKey);
 
-    auto states = new Qt3DRender::QRenderStateSet(this);
+    auto states = new Qt3DRender::QRenderStateSet(passFilter);
     auto colorMask = new Qt3DRender::QColorMask;
     colorMask->setRedMasked(false);
     colorMask->setGreenMasked(false);

@@ -35,6 +35,11 @@
 #include <Kuesa/private/gltf2context_p.h>
 #include <Kuesa/metallicroughnessmaterial.h>
 #include <Kuesa/metallicroughnesseffect.h>
+#include <Kuesa/GLTF2Importer>
+
+#include "mytestcustommaterial.h"
+#include "mytestcustomproperties.h"
+#include "mytestcustomeffect.h"
 
 using namespace Kuesa;
 using namespace GLTF2Import;
@@ -90,10 +95,18 @@ private Q_SLOTS:
         QTest::newRow("KHR_materials_unlit") << QStringLiteral(ASSETS "materialparser_KHR_materials_unlit.gltf")
                                              << true
                                              << 1;
+
+        QTest::newRow("KDAB_custom_material") << QStringLiteral(ASSETS "materialparser_KDAB_custom_material.gltf")
+                                              << true
+                                              << 1;
     }
 
     void checkParse()
     {
+        GLTF2Importer::registerCustomMaterial<MyTestCustomMaterial,
+                                              MyTestCustomProperties,
+                                              MyTestCustomEffect>(QStringLiteral("MyTestCustom"));
+
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
         QFETCH(int, materialCount);
@@ -181,6 +194,27 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(context.material(0).extensions.KHR_materials_unlit == true);
+    }
+
+    void checkCustomMaterial()
+    {
+        // GIVEN
+        GLTF2Importer::registerCustomMaterial<MyTestCustomMaterial,
+                                              MyTestCustomProperties,
+                                              MyTestCustomEffect>(QStringLiteral("MyTestCustom"));
+        GLTF2Context context;
+        MaterialParser parser;
+
+        QFile file(QStringLiteral(ASSETS "materialparser_KDAB_custom_material.gltf"));
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        // WHEN
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        parser.parse(json.array(), &context);
+
+        // THEN
+        QVERIFY(context.material(0).extensions.KDAB_custom_material == true);
     }
 };
 

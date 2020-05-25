@@ -45,17 +45,32 @@ QT_BEGIN_NAMESPACE
 
 class QJsonArray;
 
+namespace Qt3DCore {
+class QSkeleton;
+class QJoint;
+class QEntity;
+}
+
 namespace Kuesa {
 namespace GLTF2Import {
 
 class GLTF2Context;
 
 struct Skin {
+
+    struct RootJoint {
+        qint32 jointNodeIdx = -1;
+        Qt3DCore::QJoint *joint = nullptr;
+        Qt3DCore::QEntity *skeletonNode = nullptr;
+    };
+
     qint32 inverseBindMatricesAccessorIdx = -1;
     qint32 skeletonIdx = -1;
+    RootJoint rootJoint;
     QVector<qint32> jointsIndices;
     QString name;
     QVector<QMatrix4x4> inverseBindMatrices;
+    Qt3DCore::QSkeleton *skeleton = nullptr;
 };
 
 class Q_AUTOTEST_EXPORT SkinParser

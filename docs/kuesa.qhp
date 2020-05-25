@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QtHelpProject version="1.0">
-    <namespace>com.kdab.kuesa.1.1</namespace>
+    <namespace>com.kdab.kuesa.1.2</namespace>
     <virtualFolder>kuesa</virtualFolder>
-    <metaData name="version" value="1.1"/>
+    <metaData name="version" value="1.2"/>
     <filterSection>
         <toc>
             <section ref="index.html" title="Kuesa">
-                <section ref="kuesa-cpp.html" title="C++ Classes">
+                <section ref="" title="C++ Classes">
                     <section ref="kuesa-abstractassetcollection.html" title="Kuesa::AbstractAssetCollection Class Reference">
                         <section ref="kuesa-abstractassetcollection-members.html" title="List of all members"/>
                     </section>
@@ -34,9 +34,7 @@
                     <section ref="kuesa-depthoffieldeffect.html" title="Kuesa::DepthOfFieldEffect Class Reference">
                         <section ref="kuesa-depthoffieldeffect-members.html" title="List of all members"/>
                     </section>
-                    <section ref="kuesa-directionallight.html" title="Kuesa::DirectionalLight Class Reference">
-                        <section ref="kuesa-directionallight-members.html" title="List of all members"/>
-                    </section>
+                    <section ref="kuesa-directionallight.html" title="Kuesa::DirectionalLight Class Reference"/>
                     <section ref="kuesa-effectcollection.html" title="Kuesa::EffectCollection Class Reference">
                         <section ref="kuesa-effectcollection-members.html" title="List of all members"/>
                     </section>
@@ -58,11 +56,104 @@
                     <section ref="kuesa-gltf2material.html" title="Kuesa::GLTF2Material Class Reference">
                         <section ref="kuesa-gltf2material-members.html" title="List of all members"/>
                     </section>
+                    <section ref="kuesa-gltf2materialeffect.html" title="Kuesa::GLTF2MaterialEffect Class Reference">
+                        <section ref="kuesa-gltf2materialeffect-members.html" title="List of all members"/>
+                    </section>
                     <section ref="kuesa-gltf2materialproperties.html" title="Kuesa::GLTF2MaterialProperties Class Reference">
                         <section ref="kuesa-gltf2materialproperties-members.html" title="List of all members"/>
                     </section>
                     <section ref="kuesa-gaussianblureffect.html" title="Kuesa::GaussianBlurEffect Class Reference">
                         <section ref="kuesa-gaussianblureffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-irodiffusealphaeffect.html" title="Kuesa::IroDiffuseAlphaEffect Class Reference">
+                        <section ref="kuesa-irodiffusealphaeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-irodiffusealphamaterial.html" title="Kuesa::IroDiffuseAlphaMaterial Class Reference">
+                        <section ref="kuesa-irodiffusealphamaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-irodiffusealphaproperties.html" title="Kuesa::IroDiffuseAlphaProperties Class Reference">
+                        <section ref="kuesa-irodiffusealphaproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-irodiffuseeffect.html" title="Kuesa::IroDiffuseEffect Class Reference">
+                        <section ref="kuesa-irodiffuseeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-irodiffusehemieffect.html" title="Kuesa::IroDiffuseHemiEffect Class Reference">
+                        <section ref="kuesa-irodiffusehemieffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-irodiffusehemimaterial.html" title="Kuesa::IroDiffuseHemiMaterial Class Reference">
+                        <section ref="kuesa-irodiffusehemimaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-irodiffusehemiproperties.html" title="Kuesa::IroDiffuseHemiProperties Class Reference">
+                        <section ref="kuesa-irodiffusehemiproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-irodiffusematerial.html" title="Kuesa::IroDiffuseMaterial Class Reference">
+                        <section ref="kuesa-irodiffusematerial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-irodiffuseproperties.html" title="Kuesa::IroDiffuseProperties Class Reference">
+                        <section ref="kuesa-irodiffuseproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iroglassaddeffect.html" title="Kuesa::IroGlassAddEffect Class Reference">
+                        <section ref="kuesa-iroglassaddeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iroglassaddmaterial.html" title="Kuesa::IroGlassAddMaterial Class Reference">
+                        <section ref="kuesa-iroglassaddmaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iroglassaddproperties.html" title="Kuesa::IroGlassAddProperties Class Reference">
+                        <section ref="kuesa-iroglassaddproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromatteaddeffect.html" title="Kuesa::IroMatteAddEffect Class Reference">
+                        <section ref="kuesa-iromatteaddeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromatteaddmaterial.html" title="Kuesa::IroMatteAddMaterial Class Reference">
+                        <section ref="kuesa-iromatteaddmaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromatteaddproperties.html" title="Kuesa::IroMatteAddProperties Class Reference">
+                        <section ref="kuesa-iromatteaddproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromattealphaeffect.html" title="Kuesa::IroMatteAlphaEffect Class Reference">
+                        <section ref="kuesa-iromattealphaeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromattealphamaterial.html" title="Kuesa::IroMatteAlphaMaterial Class Reference">
+                        <section ref="kuesa-iromattealphamaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromattealphaproperties.html" title="Kuesa::IroMatteAlphaProperties Class Reference">
+                        <section ref="kuesa-iromattealphaproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromattebackgroundeffect.html" title="Kuesa::IroMatteBackgroundEffect Class Reference">
+                        <section ref="kuesa-iromattebackgroundeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromattebackgroundmaterial.html" title="Kuesa::IroMatteBackgroundMaterial Class Reference">
+                        <section ref="kuesa-iromattebackgroundmaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromattebackgroundproperties.html" title="Kuesa::IroMatteBackgroundProperties Class Reference">
+                        <section ref="kuesa-iromattebackgroundproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromattemulteffect.html" title="Kuesa::IroMatteMultEffect Class Reference">
+                        <section ref="kuesa-iromattemulteffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromattemultmaterial.html" title="Kuesa::IroMatteMultMaterial Class Reference">
+                        <section ref="kuesa-iromattemultmaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromattemultproperties.html" title="Kuesa::IroMatteMultProperties Class Reference">
+                        <section ref="kuesa-iromattemultproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromatteopaqueeffect.html" title="Kuesa::IroMatteOpaqueEffect Class Reference">
+                        <section ref="kuesa-iromatteopaqueeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromatteopaquematerial.html" title="Kuesa::IroMatteOpaqueMaterial Class Reference">
+                        <section ref="kuesa-iromatteopaquematerial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromatteopaqueproperties.html" title="Kuesa::IroMatteOpaqueProperties Class Reference">
+                        <section ref="kuesa-iromatteopaqueproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromatteskyboxeffect.html" title="Kuesa::IroMatteSkyboxEffect Class Reference">
+                        <section ref="kuesa-iromatteskyboxeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromatteskyboxmaterial.html" title="Kuesa::IroMatteSkyboxMaterial Class Reference">
+                        <section ref="kuesa-iromatteskyboxmaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-iromatteskyboxproperties.html" title="Kuesa::IroMatteSkyboxProperties Class Reference">
+                        <section ref="kuesa-iromatteskyboxproperties-members.html" title="List of all members"/>
                     </section>
                     <section ref="kuesa-layercollection.html" title="Kuesa::LayerCollection Class Reference">
                         <section ref="kuesa-layercollection-members.html" title="List of all members"/>
@@ -103,9 +194,7 @@
                     <section ref="kuesa-skybox.html" title="Kuesa::Skybox Class Reference">
                         <section ref="kuesa-skybox-members.html" title="List of all members"/>
                     </section>
-                    <section ref="kuesa-spotlight.html" title="Kuesa::SpotLight Class Reference">
-                        <section ref="kuesa-spotlight-members.html" title="List of all members"/>
-                    </section>
+                    <section ref="kuesa-spotlight.html" title="Kuesa::SpotLight Class Reference"/>
                     <section ref="kuesa-texturecollection.html" title="Kuesa::TextureCollection Class Reference">
                         <section ref="kuesa-texturecollection-members.html" title="List of all members"/>
                     </section>
@@ -118,6 +207,9 @@
                     <section ref="kuesa-tonemappingandgammacorrectioneffect.html" title="Kuesa::ToneMappingAndGammaCorrectionEffect Class Reference">
                         <section ref="kuesa-tonemappingandgammacorrectioneffect-members.html" title="List of all members"/>
                     </section>
+                    <section ref="kuesa-transformcollection.html" title="Kuesa::TransformCollection Class Reference">
+                        <section ref="kuesa-transformcollection-members.html" title="List of all members"/>
+                    </section>
                     <section ref="kuesa-unliteffect.html" title="Kuesa::UnlitEffect Class Reference">
                         <section ref="kuesa-unliteffect-members.html" title="List of all members"/>
                     </section>
@@ -128,7 +220,7 @@
                         <section ref="kuesa-unlitproperties-members.html" title="List of all members"/>
                     </section>
                 </section>
-                <section ref="kuesa-qml.html" title="QML Types">
+                <section ref="" title="QML Types">
                     <section ref="qml-animationplayer.html" title="AnimationPlayer Type Reference">
                         <section ref="qml-animationplayer-members.html" title="List of all members"/>
                     </section>
@@ -153,11 +245,104 @@
                     <section ref="qml-gltf2material.html" title="GLTF2Material Type Reference">
                         <section ref="qml-gltf2material-members.html" title="List of all members"/>
                     </section>
+                    <section ref="qml-gltf2materialeffect.html" title="GLTF2MaterialEffect Type Reference">
+                        <section ref="qml-gltf2materialeffect-members.html" title="List of all members"/>
+                    </section>
                     <section ref="qml-gltf2options.html" title="GLTF2Options Type Reference">
                         <section ref="qml-gltf2options-members.html" title="List of all members"/>
                     </section>
                     <section ref="qml-gaussianblureffect.html" title="GaussianBlurEffect Type Reference">
                         <section ref="qml-gaussianblureffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-irodiffusealphaeffect.html" title="IroDiffuseAlphaEffect Type Reference">
+                        <section ref="qml-irodiffusealphaeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-irodiffusealphamaterial.html" title="IroDiffuseAlphaMaterial Type Reference">
+                        <section ref="qml-irodiffusealphamaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-irodiffusealphaproperties.html" title="IroDiffuseAlphaProperties Type Reference">
+                        <section ref="qml-irodiffusealphaproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-irodiffuseeffect.html" title="IroDiffuseEffect Type Reference">
+                        <section ref="qml-irodiffuseeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-irodiffusehemieffect.html" title="IroDiffuseHemiEffect Type Reference">
+                        <section ref="qml-irodiffusehemieffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-irodiffusehemimaterial.html" title="IroDiffuseHemiMaterial Type Reference">
+                        <section ref="qml-irodiffusehemimaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-irodiffusehemiproperties.html" title="IroDiffuseHemiProperties Type Reference">
+                        <section ref="qml-irodiffusehemiproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-irodiffusematerial.html" title="IroDiffuseMaterial Type Reference">
+                        <section ref="qml-irodiffusematerial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-irodiffuseproperties.html" title="IroDiffuseProperties Type Reference">
+                        <section ref="qml-irodiffuseproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iroglassaddeffect.html" title="IroGlassAddEffect Type Reference">
+                        <section ref="qml-iroglassaddeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iroglassaddmaterial.html" title="IroGlassAddMaterial Type Reference">
+                        <section ref="qml-iroglassaddmaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iroglassaddproperties.html" title="IroGlassAddProperties Type Reference">
+                        <section ref="qml-iroglassaddproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromatteaddeffect.html" title="IroMatteAddEffect Type Reference">
+                        <section ref="qml-iromatteaddeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromatteaddmaterial.html" title="IroMatteAddMaterial Type Reference">
+                        <section ref="qml-iromatteaddmaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromatteaddproperties.html" title="IroMatteAddProperties Type Reference">
+                        <section ref="qml-iromatteaddproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromattealphaeffect.html" title="IroMatteAlphaEffect Type Reference">
+                        <section ref="qml-iromattealphaeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromattealphamaterial.html" title="IroMatteAlphaMaterial Type Reference">
+                        <section ref="qml-iromattealphamaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromattealphaproperties.html" title="IroMatteAlphaProperties Type Reference">
+                        <section ref="qml-iromattealphaproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromattebackgroundeffect.html" title="IroMatteBackgroundEffect Type Reference">
+                        <section ref="qml-iromattebackgroundeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromattebackgroundmaterial.html" title="IroMatteBackgroundMaterial Type Reference">
+                        <section ref="qml-iromattebackgroundmaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromattebackgroundproperties.html" title="IroMatteBackgroundProperties Type Reference">
+                        <section ref="qml-iromattebackgroundproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromattemulteffect.html" title="IroMatteMultEffect Type Reference">
+                        <section ref="qml-iromattemulteffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromattemultmaterial.html" title="IroMatteMultMaterial Type Reference">
+                        <section ref="qml-iromattemultmaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromattemultproperties.html" title="IroMatteMultProperties Type Reference">
+                        <section ref="qml-iromattemultproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromatteopaqueeffect.html" title="IroMatteOpaqueEffect Type Reference">
+                        <section ref="qml-iromatteopaqueeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromatteopaquematerial.html" title="IroMatteOpaqueMaterial Type Reference">
+                        <section ref="qml-iromatteopaquematerial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromatteopaqueproperties.html" title="IroMatteOpaqueProperties Type Reference">
+                        <section ref="qml-iromatteopaqueproperties-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromatteskyboxeffect.html" title="IroMatteSkyboxEffect Type Reference">
+                        <section ref="qml-iromatteskyboxeffect-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromatteskyboxmaterial.html" title="IroMatteSkyboxMaterial Type Reference">
+                        <section ref="qml-iromatteskyboxmaterial-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-iromatteskyboxproperties.html" title="IroMatteSkyboxProperties Type Reference">
+                        <section ref="qml-iromatteskyboxproperties-members.html" title="List of all members"/>
                     </section>
                     <section ref="qml-metallicroughnesseffect.html" title="MetallicRoughnessEffect Type Reference">
                         <section ref="qml-metallicroughnesseffect-members.html" title="List of all members"/>
@@ -202,7 +387,13 @@
                         <section ref="qml-unlitproperties-members.html" title="List of all members"/>
                     </section>
                 </section>
-                <section ref="kuesa-examples.html" title="Examples"/>
+                <section ref="" title="Examples">
+                    <section ref="kuesa-car-scene-example.html" title="Kuesa Car-Scene QML Example"/>
+                    <section ref="kuesa-iro-materials-gallery-example.html" title="Kuesa Iro-Materials-Gallery QML Example"/>
+                    <section ref="kuesa-manyducks-example.html" title="Kuesa Many Ducks C++ Example"/>
+                    <section ref="kuesa-music-box-example.html" title="Kuesa Music Box QML Example"/>
+                    <section ref="kuesa-tonemapping-example.html" title="Kuesa ToneMapping QML Example"/>
+                </section>
             </section>
         </toc>
         <keywords>
@@ -245,14 +436,79 @@
             <keyword name="GLTF2Importer::Status" id="GLTF2Importer::Status" ref="kuesa-gltf2importer.html#Status-enum"/>
             <keyword name="GLTF2Material" id="Kuesa::GLTF2Material" ref="kuesa-gltf2material.html"/>
             <keyword name="GLTF2Material" id="QML.GLTF2Material" ref="qml-gltf2material.html"/>
+            <keyword name="GLTF2MaterialEffect" id="Kuesa::GLTF2MaterialEffect" ref="kuesa-gltf2materialeffect.html"/>
+            <keyword name="GLTF2MaterialEffect" id="QML.GLTF2MaterialEffect" ref="qml-gltf2materialeffect.html"/>
             <keyword name="GLTF2MaterialProperties" id="Kuesa::GLTF2MaterialProperties" ref="kuesa-gltf2materialproperties.html"/>
             <keyword name="GLTF2Options" id="GLTF2Import::GLTF2Options" ref="kuesa-gltf2import-gltf2options.html"/>
             <keyword name="GLTF2Options" id="QML.GLTF2Options" ref="qml-gltf2options.html"/>
             <keyword name="GaussianBlurEffect" id="Kuesa::GaussianBlurEffect" ref="kuesa-gaussianblureffect.html"/>
             <keyword name="GaussianBlurEffect" id="QML.GaussianBlurEffect" ref="qml-gaussianblureffect.html"/>
+            <keyword name="IroDiffuseAlphaEffect" id="Kuesa::IroDiffuseAlphaEffect" ref="kuesa-irodiffusealphaeffect.html"/>
+            <keyword name="IroDiffuseAlphaEffect" id="QML.IroDiffuseAlphaEffect" ref="qml-irodiffusealphaeffect.html"/>
+            <keyword name="IroDiffuseAlphaMaterial" id="Kuesa::IroDiffuseAlphaMaterial" ref="kuesa-irodiffusealphamaterial.html"/>
+            <keyword name="IroDiffuseAlphaMaterial" id="QML.IroDiffuseAlphaMaterial" ref="qml-irodiffusealphamaterial.html"/>
+            <keyword name="IroDiffuseAlphaProperties" id="Kuesa::IroDiffuseAlphaProperties" ref="kuesa-irodiffusealphaproperties.html"/>
+            <keyword name="IroDiffuseAlphaProperties" id="QML.IroDiffuseAlphaProperties" ref="qml-irodiffusealphaproperties.html"/>
+            <keyword name="IroDiffuseEffect" id="Kuesa::IroDiffuseEffect" ref="kuesa-irodiffuseeffect.html"/>
+            <keyword name="IroDiffuseEffect" id="QML.IroDiffuseEffect" ref="qml-irodiffuseeffect.html"/>
+            <keyword name="IroDiffuseHemiEffect" id="Kuesa::IroDiffuseHemiEffect" ref="kuesa-irodiffusehemieffect.html"/>
+            <keyword name="IroDiffuseHemiEffect" id="QML.IroDiffuseHemiEffect" ref="qml-irodiffusehemieffect.html"/>
+            <keyword name="IroDiffuseHemiMaterial" id="Kuesa::IroDiffuseHemiMaterial" ref="kuesa-irodiffusehemimaterial.html"/>
+            <keyword name="IroDiffuseHemiMaterial" id="QML.IroDiffuseHemiMaterial" ref="qml-irodiffusehemimaterial.html"/>
+            <keyword name="IroDiffuseHemiProperties" id="Kuesa::IroDiffuseHemiProperties" ref="kuesa-irodiffusehemiproperties.html"/>
+            <keyword name="IroDiffuseHemiProperties" id="QML.IroDiffuseHemiProperties" ref="qml-irodiffusehemiproperties.html"/>
+            <keyword name="IroDiffuseMaterial" id="Kuesa::IroDiffuseMaterial" ref="kuesa-irodiffusematerial.html"/>
+            <keyword name="IroDiffuseMaterial" id="QML.IroDiffuseMaterial" ref="qml-irodiffusematerial.html"/>
+            <keyword name="IroDiffuseProperties" id="Kuesa::IroDiffuseProperties" ref="kuesa-irodiffuseproperties.html"/>
+            <keyword name="IroDiffuseProperties" id="QML.IroDiffuseProperties" ref="qml-irodiffuseproperties.html"/>
+            <keyword name="IroGlassAddEffect" id="Kuesa::IroGlassAddEffect" ref="kuesa-iroglassaddeffect.html"/>
+            <keyword name="IroGlassAddEffect" id="QML.IroGlassAddEffect" ref="qml-iroglassaddeffect.html"/>
+            <keyword name="IroGlassAddMaterial" id="Kuesa::IroGlassAddMaterial" ref="kuesa-iroglassaddmaterial.html"/>
+            <keyword name="IroGlassAddMaterial" id="QML.IroGlassAddMaterial" ref="qml-iroglassaddmaterial.html"/>
+            <keyword name="IroGlassAddProperties" id="Kuesa::IroGlassAddProperties" ref="kuesa-iroglassaddproperties.html"/>
+            <keyword name="IroGlassAddProperties" id="QML.IroGlassAddProperties" ref="qml-iroglassaddproperties.html"/>
+            <keyword name="IroMatteAddEffect" id="Kuesa::IroMatteAddEffect" ref="kuesa-iromatteaddeffect.html"/>
+            <keyword name="IroMatteAddEffect" id="QML.IroMatteAddEffect" ref="qml-iromatteaddeffect.html"/>
+            <keyword name="IroMatteAddMaterial" id="Kuesa::IroMatteAddMaterial" ref="kuesa-iromatteaddmaterial.html"/>
+            <keyword name="IroMatteAddMaterial" id="QML.IroMatteAddMaterial" ref="qml-iromatteaddmaterial.html"/>
+            <keyword name="IroMatteAddProperties" id="Kuesa::IroMatteAddProperties" ref="kuesa-iromatteaddproperties.html"/>
+            <keyword name="IroMatteAddProperties" id="QML.IroMatteAddProperties" ref="qml-iromatteaddproperties.html"/>
+            <keyword name="IroMatteAlphaEffect" id="Kuesa::IroMatteAlphaEffect" ref="kuesa-iromattealphaeffect.html"/>
+            <keyword name="IroMatteAlphaEffect" id="QML.IroMatteAlphaEffect" ref="qml-iromattealphaeffect.html"/>
+            <keyword name="IroMatteAlphaMaterial" id="Kuesa::IroMatteAlphaMaterial" ref="kuesa-iromattealphamaterial.html"/>
+            <keyword name="IroMatteAlphaMaterial" id="QML.IroMatteAlphaMaterial" ref="qml-iromattealphamaterial.html"/>
+            <keyword name="IroMatteAlphaProperties" id="Kuesa::IroMatteAlphaProperties" ref="kuesa-iromattealphaproperties.html"/>
+            <keyword name="IroMatteAlphaProperties" id="QML.IroMatteAlphaProperties" ref="qml-iromattealphaproperties.html"/>
+            <keyword name="IroMatteBackgroundEffect" id="Kuesa::IroMatteBackgroundEffect" ref="kuesa-iromattebackgroundeffect.html"/>
+            <keyword name="IroMatteBackgroundEffect" id="QML.IroMatteBackgroundEffect" ref="qml-iromattebackgroundeffect.html"/>
+            <keyword name="IroMatteBackgroundMaterial" id="Kuesa::IroMatteBackgroundMaterial" ref="kuesa-iromattebackgroundmaterial.html"/>
+            <keyword name="IroMatteBackgroundMaterial" id="QML.IroMatteBackgroundMaterial" ref="qml-iromattebackgroundmaterial.html"/>
+            <keyword name="IroMatteBackgroundProperties" id="Kuesa::IroMatteBackgroundProperties" ref="kuesa-iromattebackgroundproperties.html"/>
+            <keyword name="IroMatteBackgroundProperties" id="QML.IroMatteBackgroundProperties" ref="qml-iromattebackgroundproperties.html"/>
+            <keyword name="IroMatteMultEffect" id="Kuesa::IroMatteMultEffect" ref="kuesa-iromattemulteffect.html"/>
+            <keyword name="IroMatteMultEffect" id="QML.IroMatteMultEffect" ref="qml-iromattemulteffect.html"/>
+            <keyword name="IroMatteMultMaterial" id="Kuesa::IroMatteMultMaterial" ref="kuesa-iromattemultmaterial.html"/>
+            <keyword name="IroMatteMultMaterial" id="QML.IroMatteMultMaterial" ref="qml-iromattemultmaterial.html"/>
+            <keyword name="IroMatteMultProperties" id="Kuesa::IroMatteMultProperties" ref="kuesa-iromattemultproperties.html"/>
+            <keyword name="IroMatteMultProperties" id="QML.IroMatteMultProperties" ref="qml-iromattemultproperties.html"/>
+            <keyword name="IroMatteOpaqueEffect" id="Kuesa::IroMatteOpaqueEffect" ref="kuesa-iromatteopaqueeffect.html"/>
+            <keyword name="IroMatteOpaqueEffect" id="QML.IroMatteOpaqueEffect" ref="qml-iromatteopaqueeffect.html"/>
+            <keyword name="IroMatteOpaqueMaterial" id="Kuesa::IroMatteOpaqueMaterial" ref="kuesa-iromatteopaquematerial.html"/>
+            <keyword name="IroMatteOpaqueMaterial" id="QML.IroMatteOpaqueMaterial" ref="qml-iromatteopaquematerial.html"/>
+            <keyword name="IroMatteOpaqueProperties" id="Kuesa::IroMatteOpaqueProperties" ref="kuesa-iromatteopaqueproperties.html"/>
+            <keyword name="IroMatteOpaqueProperties" id="QML.IroMatteOpaqueProperties" ref="qml-iromatteopaqueproperties.html"/>
+            <keyword name="IroMatteSkyboxEffect" id="Kuesa::IroMatteSkyboxEffect" ref="kuesa-iromatteskyboxeffect.html"/>
+            <keyword name="IroMatteSkyboxEffect" id="QML.IroMatteSkyboxEffect" ref="qml-iromatteskyboxeffect.html"/>
+            <keyword name="IroMatteSkyboxMaterial" id="Kuesa::IroMatteSkyboxMaterial" ref="kuesa-iromatteskyboxmaterial.html"/>
+            <keyword name="IroMatteSkyboxMaterial" id="QML.IroMatteSkyboxMaterial" ref="qml-iromatteskyboxmaterial.html"/>
+            <keyword name="IroMatteSkyboxProperties" id="Kuesa::IroMatteSkyboxProperties" ref="kuesa-iromatteskyboxproperties.html"/>
+            <keyword name="IroMatteSkyboxProperties" id="QML.IroMatteSkyboxProperties" ref="qml-iromatteskyboxproperties.html"/>
             <keyword name="Kuesa" id="Kuesa" ref="kuesa.html"/>
             <keyword name="Kuesa C++ Classes" id="Kuesa C++ Classes" ref="kuesa-cpp.html"/>
+            <keyword name="Kuesa Custom Materials" id="Kuesa Custom Materials" ref="kuesa-custom-materials.html"/>
             <keyword name="Kuesa Examples" id="Kuesa Examples" ref="kuesa-examples.html"/>
+            <keyword name="Kuesa Iro Materials" id="Kuesa Iro Materials" ref="kuesa-iro-materials.html"/>
+            <keyword name="Kuesa Layers" id="Kuesa Layers" ref="kuesa-layers.html"/>
             <keyword name="Kuesa Overview" id="Kuesa Overview" ref="kuesa-overview.html"/>
             <keyword name="Kuesa QML Types" id="Kuesa QML Types" ref="kuesa-qml.html"/>
             <keyword name="Kuesa Tools" id="Kuesa Tools" ref="tools.html"/>
@@ -271,7 +527,6 @@
             <keyword name="MorphController" id="QML.MorphController" ref="qml-morphcontroller.html"/>
             <keyword name="OpacityMask" id="Kuesa::OpacityMask" ref="kuesa-opacitymask.html"/>
             <keyword name="OpacityMask" id="QML.OpacityMask" ref="qml-opacitymask.html"/>
-            <keyword name="OpenGL Image (gli)" id="OpenGL Image (gli)" ref="kuesa-attribution-gli.html"/>
             <keyword name="PointLight" id="Kuesa::PointLight" ref="kuesa-pointlight.html"/>
             <keyword name="PointLight" id="QML.PointLight" ref="qml-pointlight.html"/>
             <keyword name="SceneEntity" id="Kuesa::SceneEntity" ref="kuesa-sceneentity.html"/>
@@ -293,6 +548,7 @@
             <keyword name="ToneMappingAndGammaCorrectionEffect::Reinhard" id="ToneMappingAndGammaCorrectionEffect::Reinhard" ref="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum"/>
             <keyword name="ToneMappingAndGammaCorrectionEffect::ToneMapping" id="ToneMappingAndGammaCorrectionEffect::ToneMapping" ref="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum"/>
             <keyword name="ToneMappingAndGammaCorrectionEffect::Uncharted" id="ToneMappingAndGammaCorrectionEffect::Uncharted" ref="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum"/>
+            <keyword name="TransformCollection" id="Kuesa::TransformCollection" ref="kuesa-transformcollection.html"/>
             <keyword name="UnlitEffect" id="Kuesa::UnlitEffect" ref="kuesa-unliteffect.html"/>
             <keyword name="UnlitEffect" id="QML.UnlitEffect" ref="qml-unliteffect.html"/>
             <keyword name="UnlitMaterial" id="Kuesa::UnlitMaterial" ref="kuesa-unlitmaterial.html"/>
@@ -309,15 +565,19 @@
             <keyword name="add" id="TextureCollection::add" ref="kuesa-texturecollection.html#add"/>
             <keyword name="add" id="TextureImageCollection::add" ref="kuesa-textureimagecollection.html#add"/>
             <keyword name="addEffect" id="EffectCollection::addEffect" ref="kuesa-effectcollection.html#addEffect"/>
+            <keyword name="addLayer" id="ForwardRenderer::addLayer" ref="kuesa-forwardrenderer.html#addLayer"/>
             <keyword name="addPostProcessingEffect" id="ForwardRenderer::addPostProcessingEffect" ref="kuesa-forwardrenderer.html#addPostProcessingEffect"/>
             <keyword name="addTarget" id="AnimationPlayer::addTarget" ref="kuesa-animationplayer.html#addTarget"/>
+            <keyword name="alphaCutOffEnabled" id="GLTF2MaterialEffect::alphaCutOffEnabled" ref="qml-gltf2materialeffect.html#alphaCutOffEnabled-prop"/>
             <keyword name="alphaCutoff" id="GLTF2MaterialProperties::alphaCutoff" ref="kuesa-gltf2materialproperties.html#alphaCutoff-prop"/>
             <keyword name="alphaCutoff" id="GLTF2MaterialProperties::alphaCutoff" ref="kuesa-gltf2materialproperties.html#alphaCutoff-prop"/>
             <keyword name="alphaCutoffChanged" id="GLTF2MaterialProperties::alphaCutoffChanged" ref="kuesa-gltf2materialproperties.html#alphaCutoff-prop"/>
-            <keyword name="alphaCutoffEnabled" id="MetallicRoughnessEffect::alphaCutoffEnabled" ref="kuesa-metallicroughnesseffect.html#alphaCutoffEnabled-prop"/>
             <keyword name="alphaCutoffEnabled" id="MetallicRoughnessEffect::alphaCutoffEnabled" ref="qml-metallicroughnesseffect.html#alphaCutoffEnabled-prop"/>
-            <keyword name="alphaCutoffEnabledChanged" id="MetallicRoughnessEffect::alphaCutoffEnabledChanged" ref="kuesa-metallicroughnesseffect.html#alphaCutoffEnabled-prop"/>
-            <keyword name="alphaCutoffEnabledChanged" id="UnlitEffect::alphaCutoffEnabledChanged" ref="kuesa-unliteffect.html#alphaCutoffEnabled-prop"/>
+            <keyword name="alphaCutoffEnabledChanged" id="GLTF2MaterialEffect::alphaCutoffEnabledChanged" ref="kuesa-gltf2materialeffect.html#alphaCutoffEnabled-prop"/>
+            <keyword name="alphaGain" id="IroDiffuseAlphaProperties::alphaGain" ref="kuesa-irodiffusealphaproperties.html#alphaGain-prop"/>
+            <keyword name="alphaGain" id="IroDiffuseAlphaProperties::alphaGain" ref="kuesa-irodiffusealphaproperties.html#alphaGain-prop"/>
+            <keyword name="alphaGain" id="IroDiffuseAlphaProperties::alphaGain" ref="qml-irodiffusealphaproperties.html#alphaGain-prop"/>
+            <keyword name="alphaGainChanged" id="IroDiffuseAlphaProperties::alphaGainChanged" ref="kuesa-irodiffusealphaproperties.html#alphaGain-prop"/>
             <keyword name="ambientOcclusionMap" id="MetallicRoughnessProperties::ambientOcclusionMap" ref="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop"/>
             <keyword name="ambientOcclusionMap" id="MetallicRoughnessProperties::ambientOcclusionMap" ref="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop"/>
             <keyword name="ambientOcclusionMap" id="MetallicRoughnessProperties::ambientOcclusionMap" ref="qml-metallicroughnessproperties.html#ambientOcclusionMap-prop"/>
@@ -368,6 +628,7 @@
             <keyword name="blurPassCount" id="GaussianBlurEffect::blurPassCount" ref="qml-gaussianblureffect.html#blurPassCount-prop"/>
             <keyword name="blurPassCountChanged" id="BloomEffect::blurPassCountChanged" ref="kuesa-bloomeffect.html#blurPassCount-prop"/>
             <keyword name="blurPassCountChanged" id="GaussianBlurEffect::blurPassCountChanged" ref="kuesa-gaussianblureffect.html#blurPassCount-prop"/>
+            <keyword name="bob_dass_equirectangular_env_map" id="bob_dass_equirectangular_env_map" ref="kuesa-attribution-bob-dass-equirectangular-env-map.html"/>
             <keyword name="brdfLUT" id="MetallicRoughnessEffect::brdfLUT" ref="kuesa-metallicroughnesseffect.html#brdfLUT-prop"/>
             <keyword name="brdfLUT" id="MetallicRoughnessEffect::brdfLUT" ref="kuesa-metallicroughnesseffect.html#brdfLUT-prop"/>
             <keyword name="brdfLUT" id="MetallicRoughnessEffect::brdfLUT" ref="qml-metallicroughnesseffect.html#brdfLUT-prop"/>
@@ -379,7 +640,6 @@
             <keyword name="camera" id="SceneEntity::camera" ref="kuesa-sceneentity.html#camera"/>
             <keyword name="cameraChanged" id="ForwardRenderer::cameraChanged" ref="kuesa-forwardrenderer.html#camera-prop"/>
             <keyword name="cameras" id="SceneEntity::cameras" ref="kuesa-sceneentity.html#cameras"/>
-            <keyword name="clear" id="AbstractAssetCollection::clear" ref="kuesa-abstractassetcollection.html#clear"/>
             <keyword name="clearBuffers" id="ForwardRenderer::clearBuffers" ref="kuesa-forwardrenderer.html#clearBuffers"/>
             <keyword name="clearBuffers" id="ForwardRenderer::clearBuffers" ref="kuesa-forwardrenderer.html#clearBuffers-prop"/>
             <keyword name="clearBuffers" id="ForwardRenderer::clearBuffers" ref="qml-forwardrenderer.html#clearBuffers-prop"/>
@@ -398,25 +658,53 @@
             <keyword name="clock" id="AnimationPlayer::clock" ref="qml-animationplayer.html#clock-prop"/>
             <keyword name="clockChanged" id="AnimationPlayer::clockChanged" ref="kuesa-animationplayer.html#clock-prop"/>
             <keyword name="collection" id="Asset::collection" ref="qml-asset.html#collection-prop"/>
-            <keyword name="contains" id="AbstractAssetCollection::contains" ref="kuesa-abstractassetcollection.html#contains"/>
             <keyword name="count" id="MorphController::count" ref="kuesa-morphcontroller.html#count-prop"/>
             <keyword name="count" id="MorphController::count" ref="kuesa-morphcontroller.html#count-prop"/>
             <keyword name="count" id="MorphController::count" ref="qml-morphcontroller.html#count-prop"/>
             <keyword name="countChanged" id="MorphController::countChanged" ref="kuesa-morphcontroller.html#count-prop"/>
-            <keyword name="dds-loader-python" id="dds-loader-python" ref="kuesa-attribution-dds-loader-python.html"/>
-            <keyword name="direction" id="DirectionalLight::direction" ref="kuesa-directionallight.html#direction-prop"/>
-            <keyword name="direction" id="DirectionalLight::direction" ref="kuesa-directionallight.html#direction-prop"/>
+            <keyword name="diffuseGain" id="IroDiffuseHemiProperties::diffuseGain" ref="kuesa-irodiffusehemiproperties.html#diffuseGain-prop"/>
+            <keyword name="diffuseGain" id="IroDiffuseHemiProperties::diffuseGain" ref="kuesa-irodiffusehemiproperties.html#diffuseGain-prop"/>
+            <keyword name="diffuseGain" id="IroDiffuseHemiProperties::diffuseGain" ref="qml-irodiffusehemiproperties.html#diffuseGain-prop"/>
+            <keyword name="diffuseGain" id="IroDiffuseProperties::diffuseGain" ref="kuesa-irodiffuseproperties.html#diffuseGain-prop"/>
+            <keyword name="diffuseGain" id="IroDiffuseProperties::diffuseGain" ref="kuesa-irodiffuseproperties.html#diffuseGain-prop"/>
+            <keyword name="diffuseGain" id="IroDiffuseProperties::diffuseGain" ref="qml-irodiffuseproperties.html#diffuseGain-prop"/>
+            <keyword name="diffuseGainChanged" id="IroDiffuseHemiProperties::diffuseGainChanged" ref="kuesa-irodiffusehemiproperties.html#diffuseGain-prop"/>
+            <keyword name="diffuseGainChanged" id="IroDiffuseProperties::diffuseGainChanged" ref="kuesa-irodiffuseproperties.html#diffuseGain-prop"/>
+            <keyword name="diffuseInnerFilter" id="IroDiffuseHemiProperties::diffuseInnerFilter" ref="kuesa-irodiffusehemiproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseInnerFilter" id="IroDiffuseHemiProperties::diffuseInnerFilter" ref="kuesa-irodiffusehemiproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseInnerFilter" id="IroDiffuseHemiProperties::diffuseInnerFilter" ref="qml-irodiffusehemiproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseInnerFilter" id="IroDiffuseProperties::diffuseInnerFilter" ref="kuesa-irodiffuseproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseInnerFilter" id="IroDiffuseProperties::diffuseInnerFilter" ref="kuesa-irodiffuseproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseInnerFilter" id="IroDiffuseProperties::diffuseInnerFilter" ref="qml-irodiffuseproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseInnerFilter" id="IroGlassAddProperties::diffuseInnerFilter" ref="kuesa-iroglassaddproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseInnerFilter" id="IroGlassAddProperties::diffuseInnerFilter" ref="kuesa-iroglassaddproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseInnerFilter" id="IroGlassAddProperties::diffuseInnerFilter" ref="qml-iroglassaddproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseInnerFilterChanged" id="IroDiffuseHemiProperties::diffuseInnerFilterChanged" ref="kuesa-irodiffusehemiproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseInnerFilterChanged" id="IroDiffuseProperties::diffuseInnerFilterChanged" ref="kuesa-irodiffuseproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseInnerFilterChanged" id="IroGlassAddProperties::diffuseInnerFilterChanged" ref="kuesa-iroglassaddproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseOuterFilter" id="IroDiffuseHemiProperties::diffuseOuterFilter" ref="kuesa-irodiffusehemiproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="diffuseOuterFilter" id="IroDiffuseHemiProperties::diffuseOuterFilter" ref="kuesa-irodiffusehemiproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="diffuseOuterFilter" id="IroDiffuseHemiProperties::diffuseOuterFilter" ref="qml-irodiffusehemiproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="diffuseOuterFilter" id="IroDiffuseProperties::diffuseOuterFilter" ref="kuesa-irodiffuseproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="diffuseOuterFilter" id="IroDiffuseProperties::diffuseOuterFilter" ref="kuesa-irodiffuseproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="diffuseOuterFilter" id="IroDiffuseProperties::diffuseOuterFilter" ref="qml-irodiffuseproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="diffuseOuterFilter" id="IroGlassAddProperties::diffuseOuterFilter" ref="kuesa-iroglassaddproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="diffuseOuterFilter" id="IroGlassAddProperties::diffuseOuterFilter" ref="kuesa-iroglassaddproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="diffuseOuterFilter" id="IroGlassAddProperties::diffuseOuterFilter" ref="qml-iroglassaddproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="diffuseOuterFilterChanged" id="IroDiffuseHemiProperties::diffuseOuterFilterChanged" ref="kuesa-irodiffusehemiproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="diffuseOuterFilterChanged" id="IroDiffuseProperties::diffuseOuterFilterChanged" ref="kuesa-irodiffuseproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="diffuseOuterFilterChanged" id="IroGlassAddProperties::diffuseOuterFilterChanged" ref="kuesa-iroglassaddproperties.html#diffuseOuterFilter-prop"/>
             <keyword name="direction" id="DirectionalLight::direction" ref="qml-directionallight.html#direction-prop"/>
-            <keyword name="directionChanged" id="DirectionalLight::directionChanged" ref="kuesa-directionallight.html#direction-prop"/>
-            <keyword name="directionMode" id="DirectionalLight::directionMode" ref="kuesa-directionallight.html#directionMode-prop"/>
-            <keyword name="directionMode" id="DirectionalLight::directionMode" ref="kuesa-directionallight.html#directionMode-prop"/>
             <keyword name="directionMode" id="DirectionalLight::directionMode" ref="qml-directionallight.html#directionMode-prop"/>
-            <keyword name="directionModeChanged" id="DirectionalLight::directionModeChanged" ref="kuesa-directionallight.html#directionMode-prop"/>
-            <keyword name="doubleSided" id="MetallicRoughnessEffect::doubleSided" ref="kuesa-metallicroughnesseffect.html#doubleSided-prop"/>
+            <keyword name="doubleSided" id="GLTF2MaterialEffect::doubleSided" ref="kuesa-gltf2materialeffect.html#doubleSided-prop"/>
+            <keyword name="doubleSided" id="GLTF2MaterialEffect::doubleSided" ref="qml-gltf2materialeffect.html#doubleSided-prop"/>
             <keyword name="doubleSided" id="MetallicRoughnessEffect::doubleSided" ref="qml-metallicroughnesseffect.html#doubleSided-prop"/>
-            <keyword name="doubleSidedChanged" id="MetallicRoughnessEffect::doubleSidedChanged" ref="kuesa-metallicroughnesseffect.html#doubleSided-prop"/>
-            <keyword name="doubleSidedChanged" id="UnlitEffect::doubleSidedChanged" ref="kuesa-unliteffect.html#doubleSided-prop"/>
+            <keyword name="doubleSidedChanged" id="GLTF2MaterialEffect::doubleSidedChanged" ref="kuesa-gltf2materialeffect.html#doubleSided-prop"/>
             <keyword name="dr_wav" id="dr_wav" ref="kuesa-attribution-dr-wav.html"/>
+            <keyword name="duration" id="AnimationPlayer::duration" ref="kuesa-animationplayer.html#duration-prop"/>
+            <keyword name="duration" id="AnimationPlayer::duration" ref="kuesa-animationplayer.html#duration-prop"/>
+            <keyword name="duration" id="AnimationPlayer::duration" ref="qml-animationplayer.html#duration-prop"/>
+            <keyword name="durationChanged" id="AnimationPlayer::durationChanged" ref="kuesa-animationplayer.html#duration-prop"/>
             <keyword name="effect" id="SceneEntity::effect" ref="kuesa-sceneentity.html#effect"/>
             <keyword name="emissiveFactor" id="MetallicRoughnessProperties::emissiveFactor" ref="kuesa-metallicroughnessproperties.html#emissiveFactor-prop"/>
             <keyword name="emissiveFactor" id="MetallicRoughnessProperties::emissiveFactor" ref="kuesa-metallicroughnessproperties.html#emissiveFactor-prop"/>
@@ -472,42 +760,45 @@
             <keyword name="generateNormalsChanged" id="GLTF2Options::generateNormalsChanged" ref="kuesa-gltf2import-gltf2options.html#generateNormals-prop"/>
             <keyword name="generateTangents" id="GLTF2Options::generateTangents" ref="kuesa-gltf2import-gltf2options.html#generateTangents-prop"/>
             <keyword name="generateTangentsChanged" id="GLTF2Options::generateTangentsChanged" ref="kuesa-gltf2import-gltf2options.html#generateTangents-prop"/>
-            <keyword name="gltfEditor" id="gltfEditor" ref="gltfeditor.html"/>
+            <keyword name="glassInnerFilter" id="IroGlassAddProperties::glassInnerFilter" ref="kuesa-iroglassaddproperties.html#glassInnerFilter-prop"/>
+            <keyword name="glassInnerFilter" id="IroGlassAddProperties::glassInnerFilter" ref="kuesa-iroglassaddproperties.html#glassInnerFilter-prop"/>
+            <keyword name="glassInnerFilter" id="IroGlassAddProperties::glassInnerFilter" ref="qml-iroglassaddproperties.html#glassInnerFilter-prop"/>
+            <keyword name="glassInnerFilterChanged" id="IroGlassAddProperties::glassInnerFilterChanged" ref="kuesa-iroglassaddproperties.html#glassInnerFilter-prop"/>
+            <keyword name="glassOuterFilter" id="IroGlassAddProperties::glassOuterFilter" ref="kuesa-iroglassaddproperties.html#glassOuterFilter-prop"/>
+            <keyword name="glassOuterFilter" id="IroGlassAddProperties::glassOuterFilter" ref="kuesa-iroglassaddproperties.html#glassOuterFilter-prop"/>
+            <keyword name="glassOuterFilter" id="IroGlassAddProperties::glassOuterFilter" ref="qml-iroglassaddproperties.html#glassOuterFilter-prop"/>
+            <keyword name="glassOuterFilterChanged" id="IroGlassAddProperties::glassOuterFilterChanged" ref="kuesa-iroglassaddproperties.html#glassOuterFilter-prop"/>
             <keyword name="gltfViewer" id="gltfViewer" ref="gltfviewer.html"/>
-            <keyword name="innerConeAngle" id="SpotLight::innerConeAngle" ref="kuesa-spotlight.html#innerConeAngle-prop"/>
-            <keyword name="innerConeAngle" id="SpotLight::innerConeAngle" ref="kuesa-spotlight.html#innerConeAngle-prop"/>
+            <keyword name="gltfYUp" id="IroDiffuseHemiProperties::gltfYUp" ref="kuesa-irodiffusehemiproperties.html#gltfYUp-prop"/>
+            <keyword name="gltfYUp" id="IroDiffuseHemiProperties::gltfYUp" ref="kuesa-irodiffusehemiproperties.html#gltfYUp-prop"/>
+            <keyword name="gltfYUp" id="IroDiffuseHemiProperties::gltfYUp" ref="qml-irodiffusehemiproperties.html#gltfYUp-prop"/>
+            <keyword name="gltfYUpChanged" id="IroDiffuseHemiProperties::gltfYUpChanged" ref="kuesa-irodiffusehemiproperties.html#gltfYUp-prop"/>
             <keyword name="innerConeAngle" id="SpotLight::innerConeAngle" ref="qml-spotlight.html#innerConeAngle-prop"/>
-            <keyword name="innerConeAngleChanged" id="SpotLight::innerConeAngleChanged" ref="kuesa-spotlight.html#innerConeAngle-prop"/>
             <keyword name="isAOUsingTexCoord1" id="MetallicRoughnessProperties::isAOUsingTexCoord1" ref="kuesa-metallicroughnessproperties.html#aoUsesTexCoord1-prop"/>
-            <keyword name="isAlphaCutoffEnabled" id="MetallicRoughnessEffect::isAlphaCutoffEnabled" ref="kuesa-metallicroughnesseffect.html#alphaCutoffEnabled-prop"/>
-            <keyword name="isAlphaCutoffEnabled" id="UnlitEffect::isAlphaCutoffEnabled" ref="kuesa-unliteffect.html#alphaCutoffEnabled-prop"/>
+            <keyword name="isAlphaCutoffEnabled" id="GLTF2MaterialEffect::isAlphaCutoffEnabled" ref="kuesa-gltf2materialeffect.html#alphaCutoffEnabled-prop"/>
             <keyword name="isAmbientOcclusionMapEnabled" id="MetallicRoughnessEffect::isAmbientOcclusionMapEnabled" ref="kuesa-metallicroughnesseffect.html#ambientOcclusionMapEnabled-prop"/>
             <keyword name="isBaseColorMapEnabled" id="MetallicRoughnessEffect::isBaseColorMapEnabled" ref="kuesa-metallicroughnesseffect.html#baseColorMapEnabled-prop"/>
             <keyword name="isBaseColorMapEnabled" id="UnlitEffect::isBaseColorMapEnabled" ref="kuesa-unliteffect.html#baseColorMapEnabled-prop"/>
             <keyword name="isBaseColorUsingTexCoord1" id="GLTF2MaterialProperties::isBaseColorUsingTexCoord1" ref="kuesa-gltf2materialproperties.html#baseColorUsesTexCoord1-prop"/>
-            <keyword name="isDoubleSided" id="MetallicRoughnessEffect::isDoubleSided" ref="kuesa-metallicroughnesseffect.html#doubleSided-prop"/>
-            <keyword name="isDoubleSided" id="UnlitEffect::isDoubleSided" ref="kuesa-unliteffect.html#doubleSided-prop"/>
+            <keyword name="isDoubleSided" id="GLTF2MaterialEffect::isDoubleSided" ref="kuesa-gltf2materialeffect.html#doubleSided-prop"/>
             <keyword name="isEmissiveMapEnabled" id="MetallicRoughnessEffect::isEmissiveMapEnabled" ref="kuesa-metallicroughnesseffect.html#emissiveMapEnabled-prop"/>
             <keyword name="isEmissiveUsingTexCoord1" id="MetallicRoughnessProperties::isEmissiveUsingTexCoord1" ref="kuesa-metallicroughnessproperties.html#emissiveUsesTexCoord1-prop"/>
             <keyword name="isMetalRoughMapEnabled" id="MetallicRoughnessEffect::isMetalRoughMapEnabled" ref="kuesa-metallicroughnesseffect.html#metalRoughMapEnabled-prop"/>
             <keyword name="isMetallicRoughnessUsingTexCoord1" id="MetallicRoughnessProperties::isMetallicRoughnessUsingTexCoord1" ref="kuesa-metallicroughnessproperties.html#metallicRoughnessUsesTexCoord1-prop"/>
             <keyword name="isNormalMapEnabled" id="MetallicRoughnessEffect::isNormalMapEnabled" ref="kuesa-metallicroughnesseffect.html#normalMapEnabled-prop"/>
             <keyword name="isNormalUsingTexCoord1" id="MetallicRoughnessProperties::isNormalUsingTexCoord1" ref="kuesa-metallicroughnessproperties.html#normalUsesTexCoord1-prop"/>
-            <keyword name="isOpaque" id="MetallicRoughnessEffect::isOpaque" ref="kuesa-metallicroughnesseffect.html#opaque-prop"/>
-            <keyword name="isOpaque" id="UnlitEffect::isOpaque" ref="kuesa-unliteffect.html#opaque-prop"/>
+            <keyword name="isOpaque" id="GLTF2MaterialEffect::isOpaque" ref="kuesa-gltf2materialeffect.html#opaque-prop"/>
             <keyword name="isRunning" id="AnimationPlayer::isRunning" ref="kuesa-animationplayer.html#running-prop"/>
             <keyword name="isUsingColorAttribute" id="MetallicRoughnessEffect::isUsingColorAttribute" ref="kuesa-metallicroughnesseffect.html#usingColorAttribute-prop"/>
             <keyword name="isUsingColorAttribute" id="UnlitEffect::isUsingColorAttribute" ref="kuesa-unliteffect.html#usingColorAttribute-prop"/>
             <keyword name="layer" id="FullScreenQuad::layer" ref="kuesa-fullscreenquad.html#layer"/>
             <keyword name="layer" id="SceneEntity::layer" ref="kuesa-sceneentity.html#layer"/>
+            <keyword name="layers" id="ForwardRenderer::layers" ref="kuesa-forwardrenderer.html#layers"/>
             <keyword name="layers" id="SceneEntity::layers" ref="kuesa-sceneentity.html#layers"/>
             <keyword name="lights" id="SceneEntity::lights" ref="kuesa-sceneentity.html#lights-prop"/>
             <keyword name="loadingDone" id="SceneEntity::loadingDone" ref="kuesa-sceneentity.html#loadingDone"/>
             <keyword name="loadingDone" id="SceneEntity::loadingDone" ref="qml-sceneentity.html#loadingDone-signal"/>
-            <keyword name="localDirection" id="SpotLight::localDirection" ref="kuesa-spotlight.html#localDirection-prop"/>
-            <keyword name="localDirection" id="SpotLight::localDirection" ref="kuesa-spotlight.html#localDirection-prop"/>
             <keyword name="localDirection" id="SpotLight::localDirection" ref="qml-spotlight.html#localDirection-prop"/>
-            <keyword name="localDirectionChanged" id="SpotLight::localDirectionChanged" ref="kuesa-spotlight.html#localDirection-prop"/>
             <keyword name="loopCount" id="AnimationPlayer::loopCount" ref="kuesa-animationplayer.html#loops-prop"/>
             <keyword name="loopCountChanged" id="AnimationPlayer::loopCountChanged" ref="kuesa-animationplayer.html#loops-prop"/>
             <keyword name="loops" id="AnimationPlayer::loops" ref="kuesa-animationplayer.html#loops-prop"/>
@@ -521,7 +812,107 @@
             <keyword name="mask" id="OpacityMask::mask" ref="qml-opacitymask.html#mask-prop"/>
             <keyword name="maskChanged" id="OpacityMask::maskChanged" ref="kuesa-opacitymask.html#mask-prop"/>
             <keyword name="material" id="SceneEntity::material" ref="kuesa-sceneentity.html#material"/>
+            <keyword name="materialProperties" id="IroDiffuseAlphaMaterial::materialProperties" ref="kuesa-irodiffusealphamaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroDiffuseAlphaMaterial::materialProperties" ref="kuesa-irodiffusealphamaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroDiffuseAlphaMaterial::materialProperties" ref="qml-irodiffusealphamaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroDiffuseHemiMaterial::materialProperties" ref="kuesa-irodiffusehemimaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroDiffuseHemiMaterial::materialProperties" ref="kuesa-irodiffusehemimaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroDiffuseHemiMaterial::materialProperties" ref="qml-irodiffusehemimaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroDiffuseMaterial::materialProperties" ref="kuesa-irodiffusematerial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroDiffuseMaterial::materialProperties" ref="kuesa-irodiffusematerial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroDiffuseMaterial::materialProperties" ref="qml-irodiffusematerial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroGlassAddMaterial::materialProperties" ref="kuesa-iroglassaddmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroGlassAddMaterial::materialProperties" ref="kuesa-iroglassaddmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroGlassAddMaterial::materialProperties" ref="qml-iroglassaddmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteAddMaterial::materialProperties" ref="kuesa-iromatteaddmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteAddMaterial::materialProperties" ref="kuesa-iromatteaddmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteAddMaterial::materialProperties" ref="qml-iromatteaddmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteAlphaMaterial::materialProperties" ref="kuesa-iromattealphamaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteAlphaMaterial::materialProperties" ref="kuesa-iromattealphamaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteAlphaMaterial::materialProperties" ref="qml-iromattealphamaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteBackgroundMaterial::materialProperties" ref="kuesa-iromattebackgroundmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteBackgroundMaterial::materialProperties" ref="kuesa-iromattebackgroundmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteBackgroundMaterial::materialProperties" ref="qml-iromattebackgroundmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteMultMaterial::materialProperties" ref="kuesa-iromattemultmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteMultMaterial::materialProperties" ref="kuesa-iromattemultmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteMultMaterial::materialProperties" ref="qml-iromattemultmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteOpaqueMaterial::materialProperties" ref="kuesa-iromatteopaquematerial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteOpaqueMaterial::materialProperties" ref="kuesa-iromatteopaquematerial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteOpaqueMaterial::materialProperties" ref="qml-iromatteopaquematerial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteSkyboxMaterial::materialProperties" ref="kuesa-iromatteskyboxmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteSkyboxMaterial::materialProperties" ref="kuesa-iromatteskyboxmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="IroMatteSkyboxMaterial::materialProperties" ref="qml-iromatteskyboxmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="MetallicRoughnessMaterial::materialProperties" ref="kuesa-metallicroughnessmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="MetallicRoughnessMaterial::materialProperties" ref="kuesa-metallicroughnessmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="MetallicRoughnessMaterial::materialProperties" ref="qml-metallicroughnessmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="UnlitMaterial::materialProperties" ref="kuesa-unlitmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="UnlitMaterial::materialProperties" ref="kuesa-unlitmaterial.html#materialProperties-prop"/>
+            <keyword name="materialProperties" id="UnlitMaterial::materialProperties" ref="qml-unlitmaterial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="IroDiffuseAlphaMaterial::materialPropertiesChanged" ref="kuesa-irodiffusealphamaterial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="IroDiffuseHemiMaterial::materialPropertiesChanged" ref="kuesa-irodiffusehemimaterial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="IroDiffuseMaterial::materialPropertiesChanged" ref="kuesa-irodiffusematerial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="IroGlassAddMaterial::materialPropertiesChanged" ref="kuesa-iroglassaddmaterial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="IroMatteAddMaterial::materialPropertiesChanged" ref="kuesa-iromatteaddmaterial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="IroMatteAlphaMaterial::materialPropertiesChanged" ref="kuesa-iromattealphamaterial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="IroMatteBackgroundMaterial::materialPropertiesChanged" ref="kuesa-iromattebackgroundmaterial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="IroMatteMultMaterial::materialPropertiesChanged" ref="kuesa-iromattemultmaterial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="IroMatteOpaqueMaterial::materialPropertiesChanged" ref="kuesa-iromatteopaquematerial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="IroMatteSkyboxMaterial::materialPropertiesChanged" ref="kuesa-iromatteskyboxmaterial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="MetallicRoughnessMaterial::materialPropertiesChanged" ref="kuesa-metallicroughnessmaterial.html#materialProperties-prop"/>
+            <keyword name="materialPropertiesChanged" id="UnlitMaterial::materialPropertiesChanged" ref="kuesa-unlitmaterial.html#materialProperties-prop"/>
             <keyword name="materials" id="SceneEntity::materials" ref="kuesa-sceneentity.html#materials"/>
+            <keyword name="matteAlphaGain" id="IroMatteAlphaProperties::matteAlphaGain" ref="kuesa-iromattealphaproperties.html#matteAlphaGain-prop"/>
+            <keyword name="matteAlphaGain" id="IroMatteAlphaProperties::matteAlphaGain" ref="kuesa-iromattealphaproperties.html#matteAlphaGain-prop"/>
+            <keyword name="matteAlphaGain" id="IroMatteAlphaProperties::matteAlphaGain" ref="qml-iromattealphaproperties.html#matteAlphaGain-prop"/>
+            <keyword name="matteAlphaGainChanged" id="IroMatteAlphaProperties::matteAlphaGainChanged" ref="kuesa-iromattealphaproperties.html#matteAlphaGain-prop"/>
+            <keyword name="matteFilter" id="IroMatteAddProperties::matteFilter" ref="kuesa-iromatteaddproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteAddProperties::matteFilter" ref="kuesa-iromatteaddproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteAddProperties::matteFilter" ref="qml-iromatteaddproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteAlphaProperties::matteFilter" ref="kuesa-iromattealphaproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteAlphaProperties::matteFilter" ref="kuesa-iromattealphaproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteAlphaProperties::matteFilter" ref="qml-iromattealphaproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteBackgroundProperties::matteFilter" ref="kuesa-iromattebackgroundproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteBackgroundProperties::matteFilter" ref="kuesa-iromattebackgroundproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteBackgroundProperties::matteFilter" ref="qml-iromattebackgroundproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteMultProperties::matteFilter" ref="kuesa-iromattemultproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteMultProperties::matteFilter" ref="kuesa-iromattemultproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteMultProperties::matteFilter" ref="qml-iromattemultproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteOpaqueProperties::matteFilter" ref="kuesa-iromatteopaqueproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteOpaqueProperties::matteFilter" ref="kuesa-iromatteopaqueproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteOpaqueProperties::matteFilter" ref="qml-iromatteopaqueproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteSkyboxProperties::matteFilter" ref="kuesa-iromatteskyboxproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteSkyboxProperties::matteFilter" ref="kuesa-iromatteskyboxproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilter" id="IroMatteSkyboxProperties::matteFilter" ref="qml-iromatteskyboxproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilterChanged" id="IroMatteAddProperties::matteFilterChanged" ref="kuesa-iromatteaddproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilterChanged" id="IroMatteAlphaProperties::matteFilterChanged" ref="kuesa-iromattealphaproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilterChanged" id="IroMatteBackgroundProperties::matteFilterChanged" ref="kuesa-iromattebackgroundproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilterChanged" id="IroMatteMultProperties::matteFilterChanged" ref="kuesa-iromattemultproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilterChanged" id="IroMatteOpaqueProperties::matteFilterChanged" ref="kuesa-iromatteopaqueproperties.html#matteFilter-prop"/>
+            <keyword name="matteFilterChanged" id="IroMatteSkyboxProperties::matteFilterChanged" ref="kuesa-iromatteskyboxproperties.html#matteFilter-prop"/>
+            <keyword name="matteGain" id="IroMatteAddProperties::matteGain" ref="kuesa-iromatteaddproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteAddProperties::matteGain" ref="kuesa-iromatteaddproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteAddProperties::matteGain" ref="qml-iromatteaddproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteAlphaProperties::matteGain" ref="kuesa-iromattealphaproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteAlphaProperties::matteGain" ref="kuesa-iromattealphaproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteAlphaProperties::matteGain" ref="qml-iromattealphaproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteBackgroundProperties::matteGain" ref="kuesa-iromattebackgroundproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteBackgroundProperties::matteGain" ref="kuesa-iromattebackgroundproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteBackgroundProperties::matteGain" ref="qml-iromattebackgroundproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteMultProperties::matteGain" ref="kuesa-iromattemultproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteMultProperties::matteGain" ref="kuesa-iromattemultproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteMultProperties::matteGain" ref="qml-iromattemultproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteOpaqueProperties::matteGain" ref="kuesa-iromatteopaqueproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteOpaqueProperties::matteGain" ref="kuesa-iromatteopaqueproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteOpaqueProperties::matteGain" ref="qml-iromatteopaqueproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteSkyboxProperties::matteGain" ref="kuesa-iromatteskyboxproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteSkyboxProperties::matteGain" ref="kuesa-iromatteskyboxproperties.html#matteGain-prop"/>
+            <keyword name="matteGain" id="IroMatteSkyboxProperties::matteGain" ref="qml-iromatteskyboxproperties.html#matteGain-prop"/>
+            <keyword name="matteGainChanged" id="IroMatteAddProperties::matteGainChanged" ref="kuesa-iromatteaddproperties.html#matteGain-prop"/>
+            <keyword name="matteGainChanged" id="IroMatteAlphaProperties::matteGainChanged" ref="kuesa-iromattealphaproperties.html#matteGain-prop"/>
+            <keyword name="matteGainChanged" id="IroMatteBackgroundProperties::matteGainChanged" ref="kuesa-iromattebackgroundproperties.html#matteGain-prop"/>
+            <keyword name="matteGainChanged" id="IroMatteMultProperties::matteGainChanged" ref="kuesa-iromattemultproperties.html#matteGain-prop"/>
+            <keyword name="matteGainChanged" id="IroMatteOpaqueProperties::matteGainChanged" ref="kuesa-iromatteopaqueproperties.html#matteGain-prop"/>
+            <keyword name="matteGainChanged" id="IroMatteSkyboxProperties::matteGainChanged" ref="kuesa-iromatteskyboxproperties.html#matteGain-prop"/>
             <keyword name="mesh" id="SceneEntity::mesh" ref="kuesa-sceneentity.html#mesh"/>
             <keyword name="meshes" id="SceneEntity::meshes" ref="kuesa-sceneentity.html#meshes"/>
             <keyword name="metalRoughMap" id="MetallicRoughnessProperties::metalRoughMap" ref="kuesa-metallicroughnessproperties.html#metalRoughMap-prop"/>
@@ -535,10 +926,6 @@
             <keyword name="metallicFactor" id="MetallicRoughnessProperties::metallicFactor" ref="kuesa-metallicroughnessproperties.html#metallicFactor-prop"/>
             <keyword name="metallicFactor" id="MetallicRoughnessProperties::metallicFactor" ref="qml-metallicroughnessproperties.html#metallicFactor-prop"/>
             <keyword name="metallicFactorChanged" id="MetallicRoughnessProperties::metallicFactorChanged" ref="kuesa-metallicroughnessproperties.html#metallicFactor-prop"/>
-            <keyword name="metallicRoughnessProperties" id="MetallicRoughnessMaterial::metallicRoughnessProperties" ref="kuesa-metallicroughnessmaterial.html#metallicRoughnessProperties-prop"/>
-            <keyword name="metallicRoughnessProperties" id="MetallicRoughnessMaterial::metallicRoughnessProperties" ref="kuesa-metallicroughnessmaterial.html#metallicRoughnessProperties-prop"/>
-            <keyword name="metallicRoughnessProperties" id="MetallicRoughnessMaterial::metallicRoughnessProperties" ref="qml-metallicroughnessmaterial.html#metallicRoughnessProperties-prop"/>
-            <keyword name="metallicRoughnessPropertiesChanged" id="MetallicRoughnessMaterial::metallicRoughnessPropertiesChanged" ref="kuesa-metallicroughnessmaterial.html#metallicRoughnessProperties-prop"/>
             <keyword name="metallicRoughnessUsesTexCoord1" id="MetallicRoughnessProperties::metallicRoughnessUsesTexCoord1" ref="kuesa-metallicroughnessproperties.html#metallicRoughnessUsesTexCoord1-prop"/>
             <keyword name="metallicRoughnessUsesTexCoord1" id="MetallicRoughnessProperties::metallicRoughnessUsesTexCoord1" ref="qml-metallicroughnessproperties.html#metallicRoughnessUsesTexCoord1-prop"/>
             <keyword name="metallicRoughnessUsesTexCoord1Changed" id="MetallicRoughnessProperties::metallicRoughnessUsesTexCoord1Changed" ref="kuesa-metallicroughnessproperties.html#metallicRoughnessUsesTexCoord1-prop"/>
@@ -551,6 +938,22 @@
             <keyword name="names" id="AbstractAssetCollection::names" ref="kuesa-abstractassetcollection.html#names-prop"/>
             <keyword name="namesChanged" id="AbstractAssetCollection::namesChanged" ref="kuesa-abstractassetcollection.html#names-prop"/>
             <keyword name="node" id="Asset::node" ref="qml-asset.html#node-prop"/>
+            <keyword name="normalDisturb" id="IroDiffuseAlphaProperties::normalDisturb" ref="kuesa-irodiffusealphaproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturb" id="IroDiffuseAlphaProperties::normalDisturb" ref="kuesa-irodiffusealphaproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturb" id="IroDiffuseAlphaProperties::normalDisturb" ref="qml-irodiffusealphaproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturb" id="IroDiffuseHemiProperties::normalDisturb" ref="kuesa-irodiffusehemiproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturb" id="IroDiffuseHemiProperties::normalDisturb" ref="kuesa-irodiffusehemiproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturb" id="IroDiffuseHemiProperties::normalDisturb" ref="qml-irodiffusehemiproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturb" id="IroDiffuseProperties::normalDisturb" ref="kuesa-irodiffuseproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturb" id="IroDiffuseProperties::normalDisturb" ref="kuesa-irodiffuseproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturb" id="IroDiffuseProperties::normalDisturb" ref="qml-irodiffuseproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturb" id="IroGlassAddProperties::normalDisturb" ref="kuesa-iroglassaddproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturb" id="IroGlassAddProperties::normalDisturb" ref="kuesa-iroglassaddproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturb" id="IroGlassAddProperties::normalDisturb" ref="qml-iroglassaddproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturbChanged" id="IroDiffuseAlphaProperties::normalDisturbChanged" ref="kuesa-irodiffusealphaproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturbChanged" id="IroDiffuseHemiProperties::normalDisturbChanged" ref="kuesa-irodiffusehemiproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturbChanged" id="IroDiffuseProperties::normalDisturbChanged" ref="kuesa-irodiffuseproperties.html#normalDisturb-prop"/>
+            <keyword name="normalDisturbChanged" id="IroGlassAddProperties::normalDisturbChanged" ref="kuesa-iroglassaddproperties.html#normalDisturb-prop"/>
             <keyword name="normalMap" id="MetallicRoughnessProperties::normalMap" ref="kuesa-metallicroughnessproperties.html#normalMap-prop"/>
             <keyword name="normalMap" id="MetallicRoughnessProperties::normalMap" ref="kuesa-metallicroughnessproperties.html#normalMap-prop"/>
             <keyword name="normalMap" id="MetallicRoughnessProperties::normalMap" ref="qml-metallicroughnessproperties.html#normalMap-prop"/>
@@ -562,6 +965,22 @@
             <keyword name="normalScale" id="MetallicRoughnessProperties::normalScale" ref="kuesa-metallicroughnessproperties.html#normalScale-prop"/>
             <keyword name="normalScale" id="MetallicRoughnessProperties::normalScale" ref="qml-metallicroughnessproperties.html#normalScale-prop"/>
             <keyword name="normalScaleChanged" id="MetallicRoughnessProperties::normalScaleChanged" ref="kuesa-metallicroughnessproperties.html#normalScale-prop"/>
+            <keyword name="normalScaling" id="IroDiffuseAlphaProperties::normalScaling" ref="kuesa-irodiffusealphaproperties.html#normalScaling-prop"/>
+            <keyword name="normalScaling" id="IroDiffuseAlphaProperties::normalScaling" ref="kuesa-irodiffusealphaproperties.html#normalScaling-prop"/>
+            <keyword name="normalScaling" id="IroDiffuseAlphaProperties::normalScaling" ref="qml-irodiffusealphaproperties.html#normalScaling-prop"/>
+            <keyword name="normalScaling" id="IroDiffuseHemiProperties::normalScaling" ref="kuesa-irodiffusehemiproperties.html#normalScaling-prop"/>
+            <keyword name="normalScaling" id="IroDiffuseHemiProperties::normalScaling" ref="kuesa-irodiffusehemiproperties.html#normalScaling-prop"/>
+            <keyword name="normalScaling" id="IroDiffuseHemiProperties::normalScaling" ref="qml-irodiffusehemiproperties.html#normalScaling-prop"/>
+            <keyword name="normalScaling" id="IroDiffuseProperties::normalScaling" ref="kuesa-irodiffuseproperties.html#normalScaling-prop"/>
+            <keyword name="normalScaling" id="IroDiffuseProperties::normalScaling" ref="kuesa-irodiffuseproperties.html#normalScaling-prop"/>
+            <keyword name="normalScaling" id="IroDiffuseProperties::normalScaling" ref="qml-irodiffuseproperties.html#normalScaling-prop"/>
+            <keyword name="normalScaling" id="IroGlassAddProperties::normalScaling" ref="kuesa-iroglassaddproperties.html#normalScaling-prop"/>
+            <keyword name="normalScaling" id="IroGlassAddProperties::normalScaling" ref="kuesa-iroglassaddproperties.html#normalScaling-prop"/>
+            <keyword name="normalScaling" id="IroGlassAddProperties::normalScaling" ref="qml-iroglassaddproperties.html#normalScaling-prop"/>
+            <keyword name="normalScalingChanged" id="IroDiffuseAlphaProperties::normalScalingChanged" ref="kuesa-irodiffusealphaproperties.html#normalScaling-prop"/>
+            <keyword name="normalScalingChanged" id="IroDiffuseHemiProperties::normalScalingChanged" ref="kuesa-irodiffusehemiproperties.html#normalScaling-prop"/>
+            <keyword name="normalScalingChanged" id="IroDiffuseProperties::normalScalingChanged" ref="kuesa-irodiffuseproperties.html#normalScaling-prop"/>
+            <keyword name="normalScalingChanged" id="IroGlassAddProperties::normalScalingChanged" ref="kuesa-iroglassaddproperties.html#normalScaling-prop"/>
             <keyword name="normalUsesTexCoord1" id="MetallicRoughnessProperties::normalUsesTexCoord1" ref="kuesa-metallicroughnessproperties.html#normalUsesTexCoord1-prop"/>
             <keyword name="normalUsesTexCoord1" id="MetallicRoughnessProperties::normalUsesTexCoord1" ref="qml-metallicroughnessproperties.html#normalUsesTexCoord1-prop"/>
             <keyword name="normalUsesTexCoord1Changed" id="MetallicRoughnessProperties::normalUsesTexCoord1Changed" ref="kuesa-metallicroughnessproperties.html#normalUsesTexCoord1-prop"/>
@@ -569,23 +988,120 @@
             <keyword name="normalizedTime" id="AnimationPlayer::normalizedTime" ref="kuesa-animationplayer.html#normalizedTime-prop"/>
             <keyword name="normalizedTime" id="AnimationPlayer::normalizedTime" ref="qml-animationplayer.html#normalizedTime-prop"/>
             <keyword name="normalizedTimeChanged" id="AnimationPlayer::normalizedTimeChanged" ref="kuesa-animationplayer.html#normalizedTime-prop"/>
-            <keyword name="opaque" id="MetallicRoughnessEffect::opaque" ref="kuesa-metallicroughnesseffect.html#opaque-prop"/>
+            <keyword name="opaque" id="GLTF2MaterialEffect::opaque" ref="kuesa-gltf2materialeffect.html#opaque-prop"/>
+            <keyword name="opaque" id="GLTF2MaterialEffect::opaque" ref="qml-gltf2materialeffect.html#opaque-prop"/>
             <keyword name="opaque" id="MetallicRoughnessEffect::opaque" ref="qml-metallicroughnesseffect.html#opaque-prop"/>
-            <keyword name="opaqueChanged" id="MetallicRoughnessEffect::opaqueChanged" ref="kuesa-metallicroughnesseffect.html#opaque-prop"/>
-            <keyword name="opaqueChanged" id="UnlitEffect::opaqueChanged" ref="kuesa-unliteffect.html#opaque-prop"/>
+            <keyword name="opaqueChanged" id="GLTF2MaterialEffect::opaqueChanged" ref="kuesa-gltf2materialeffect.html#opaque-prop"/>
             <keyword name="options" id="GLTF2Importer::options" ref="kuesa-gltf2importer.html#options-prop"/>
             <keyword name="options" id="GLTF2Importer::options" ref="kuesa-gltf2importer.html#options-prop"/>
             <keyword name="options" id="GLTF2Importer::options" ref="qml-gltf2importer.html#options-prop"/>
-            <keyword name="outerConeAngle" id="SpotLight::outerConeAngle" ref="kuesa-spotlight.html#outerConeAngle-prop"/>
-            <keyword name="outerConeAngle" id="SpotLight::outerConeAngle" ref="kuesa-spotlight.html#outerConeAngle-prop"/>
             <keyword name="outerConeAngle" id="SpotLight::outerConeAngle" ref="qml-spotlight.html#outerConeAngle-prop"/>
-            <keyword name="outerConeAngleChanged" id="SpotLight::outerConeAngleChanged" ref="kuesa-spotlight.html#outerConeAngle-prop"/>
+            <keyword name="postGain" id="IroDiffuseAlphaProperties::postGain" ref="kuesa-irodiffusealphaproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroDiffuseAlphaProperties::postGain" ref="kuesa-irodiffusealphaproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroDiffuseAlphaProperties::postGain" ref="qml-irodiffusealphaproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroDiffuseHemiProperties::postGain" ref="kuesa-irodiffusehemiproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroDiffuseHemiProperties::postGain" ref="kuesa-irodiffusehemiproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroDiffuseHemiProperties::postGain" ref="qml-irodiffusehemiproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroDiffuseProperties::postGain" ref="kuesa-irodiffuseproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroDiffuseProperties::postGain" ref="kuesa-irodiffuseproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroDiffuseProperties::postGain" ref="qml-irodiffuseproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroGlassAddProperties::postGain" ref="kuesa-iroglassaddproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroGlassAddProperties::postGain" ref="kuesa-iroglassaddproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroGlassAddProperties::postGain" ref="qml-iroglassaddproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteAddProperties::postGain" ref="kuesa-iromatteaddproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteAddProperties::postGain" ref="kuesa-iromatteaddproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteAddProperties::postGain" ref="qml-iromatteaddproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteAlphaProperties::postGain" ref="kuesa-iromattealphaproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteAlphaProperties::postGain" ref="kuesa-iromattealphaproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteAlphaProperties::postGain" ref="qml-iromattealphaproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteBackgroundProperties::postGain" ref="kuesa-iromattebackgroundproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteBackgroundProperties::postGain" ref="kuesa-iromattebackgroundproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteBackgroundProperties::postGain" ref="qml-iromattebackgroundproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteMultProperties::postGain" ref="kuesa-iromattemultproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteMultProperties::postGain" ref="kuesa-iromattemultproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteMultProperties::postGain" ref="qml-iromattemultproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteOpaqueProperties::postGain" ref="kuesa-iromatteopaqueproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteOpaqueProperties::postGain" ref="kuesa-iromatteopaqueproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteOpaqueProperties::postGain" ref="qml-iromatteopaqueproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteSkyboxProperties::postGain" ref="kuesa-iromatteskyboxproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteSkyboxProperties::postGain" ref="kuesa-iromatteskyboxproperties.html#postGain-prop"/>
+            <keyword name="postGain" id="IroMatteSkyboxProperties::postGain" ref="qml-iromatteskyboxproperties.html#postGain-prop"/>
+            <keyword name="postGainChanged" id="IroDiffuseAlphaProperties::postGainChanged" ref="kuesa-irodiffusealphaproperties.html#postGain-prop"/>
+            <keyword name="postGainChanged" id="IroDiffuseHemiProperties::postGainChanged" ref="kuesa-irodiffusehemiproperties.html#postGain-prop"/>
+            <keyword name="postGainChanged" id="IroDiffuseProperties::postGainChanged" ref="kuesa-irodiffuseproperties.html#postGain-prop"/>
+            <keyword name="postGainChanged" id="IroGlassAddProperties::postGainChanged" ref="kuesa-iroglassaddproperties.html#postGain-prop"/>
+            <keyword name="postGainChanged" id="IroMatteAddProperties::postGainChanged" ref="kuesa-iromatteaddproperties.html#postGain-prop"/>
+            <keyword name="postGainChanged" id="IroMatteAlphaProperties::postGainChanged" ref="kuesa-iromattealphaproperties.html#postGain-prop"/>
+            <keyword name="postGainChanged" id="IroMatteBackgroundProperties::postGainChanged" ref="kuesa-iromattebackgroundproperties.html#postGain-prop"/>
+            <keyword name="postGainChanged" id="IroMatteMultProperties::postGainChanged" ref="kuesa-iromattemultproperties.html#postGain-prop"/>
+            <keyword name="postGainChanged" id="IroMatteOpaqueProperties::postGainChanged" ref="kuesa-iromatteopaqueproperties.html#postGain-prop"/>
+            <keyword name="postGainChanged" id="IroMatteSkyboxProperties::postGainChanged" ref="kuesa-iromatteskyboxproperties.html#postGain-prop"/>
+            <keyword name="postHemiFilter" id="IroDiffuseHemiProperties::postHemiFilter" ref="kuesa-irodiffusehemiproperties.html#postHemiFilter-prop"/>
+            <keyword name="postHemiFilter" id="IroDiffuseHemiProperties::postHemiFilter" ref="kuesa-irodiffusehemiproperties.html#postHemiFilter-prop"/>
+            <keyword name="postHemiFilter" id="IroDiffuseHemiProperties::postHemiFilter" ref="qml-irodiffusehemiproperties.html#postHemiFilter-prop"/>
+            <keyword name="postHemiFilterChanged" id="IroDiffuseHemiProperties::postHemiFilterChanged" ref="kuesa-irodiffusehemiproperties.html#postHemiFilter-prop"/>
             <keyword name="postProcessingEffects" id="ForwardRenderer::postProcessingEffects" ref="kuesa-forwardrenderer.html#postProcessingEffects"/>
             <keyword name="postProcessingEffects" id="ForwardRenderer::postProcessingEffects" ref="qml-forwardrenderer.html#postProcessingEffects-prop"/>
+            <keyword name="postVertexColor" id="IroDiffuseAlphaProperties::postVertexColor" ref="kuesa-irodiffusealphaproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroDiffuseAlphaProperties::postVertexColor" ref="kuesa-irodiffusealphaproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroDiffuseAlphaProperties::postVertexColor" ref="qml-irodiffusealphaproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroDiffuseHemiProperties::postVertexColor" ref="kuesa-irodiffusehemiproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroDiffuseHemiProperties::postVertexColor" ref="kuesa-irodiffusehemiproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroDiffuseHemiProperties::postVertexColor" ref="qml-irodiffusehemiproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroDiffuseProperties::postVertexColor" ref="kuesa-irodiffuseproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroDiffuseProperties::postVertexColor" ref="kuesa-irodiffuseproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroDiffuseProperties::postVertexColor" ref="qml-irodiffuseproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroGlassAddProperties::postVertexColor" ref="kuesa-iroglassaddproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroGlassAddProperties::postVertexColor" ref="kuesa-iroglassaddproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroGlassAddProperties::postVertexColor" ref="qml-iroglassaddproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteAddProperties::postVertexColor" ref="kuesa-iromatteaddproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteAddProperties::postVertexColor" ref="kuesa-iromatteaddproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteAddProperties::postVertexColor" ref="qml-iromatteaddproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteAlphaProperties::postVertexColor" ref="kuesa-iromattealphaproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteAlphaProperties::postVertexColor" ref="kuesa-iromattealphaproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteAlphaProperties::postVertexColor" ref="qml-iromattealphaproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteBackgroundProperties::postVertexColor" ref="kuesa-iromattebackgroundproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteBackgroundProperties::postVertexColor" ref="kuesa-iromattebackgroundproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteBackgroundProperties::postVertexColor" ref="qml-iromattebackgroundproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteMultProperties::postVertexColor" ref="kuesa-iromattemultproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteMultProperties::postVertexColor" ref="kuesa-iromattemultproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteMultProperties::postVertexColor" ref="qml-iromattemultproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteOpaqueProperties::postVertexColor" ref="kuesa-iromatteopaqueproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteOpaqueProperties::postVertexColor" ref="kuesa-iromatteopaqueproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteOpaqueProperties::postVertexColor" ref="qml-iromatteopaqueproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteSkyboxProperties::postVertexColor" ref="kuesa-iromatteskyboxproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteSkyboxProperties::postVertexColor" ref="kuesa-iromatteskyboxproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColor" id="IroMatteSkyboxProperties::postVertexColor" ref="qml-iromatteskyboxproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColorChanged" id="IroDiffuseAlphaProperties::postVertexColorChanged" ref="kuesa-irodiffusealphaproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColorChanged" id="IroDiffuseHemiProperties::postVertexColorChanged" ref="kuesa-irodiffusehemiproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColorChanged" id="IroDiffuseProperties::postVertexColorChanged" ref="kuesa-irodiffuseproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColorChanged" id="IroGlassAddProperties::postVertexColorChanged" ref="kuesa-iroglassaddproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColorChanged" id="IroMatteAddProperties::postVertexColorChanged" ref="kuesa-iromatteaddproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColorChanged" id="IroMatteAlphaProperties::postVertexColorChanged" ref="kuesa-iromattealphaproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColorChanged" id="IroMatteBackgroundProperties::postVertexColorChanged" ref="kuesa-iromattebackgroundproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColorChanged" id="IroMatteMultProperties::postVertexColorChanged" ref="kuesa-iromattemultproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColorChanged" id="IroMatteOpaqueProperties::postVertexColorChanged" ref="kuesa-iromatteopaqueproperties.html#postVertexColor-prop"/>
+            <keyword name="postVertexColorChanged" id="IroMatteSkyboxProperties::postVertexColorChanged" ref="kuesa-iromatteskyboxproperties.html#postVertexColor-prop"/>
             <keyword name="premultipliedAlpha" id="OpacityMask::premultipliedAlpha" ref="kuesa-opacitymask.html#premultipliedAlpha-prop"/>
             <keyword name="premultipliedAlpha" id="OpacityMask::premultipliedAlpha" ref="kuesa-opacitymask.html#premultipliedAlpha-prop"/>
             <keyword name="premultipliedAlpha" id="OpacityMask::premultipliedAlpha" ref="qml-opacitymask.html#premultipliedAlpha-prop"/>
             <keyword name="premultipliedAlphaChanged" id="OpacityMask::premultipliedAlphaChanged" ref="kuesa-opacitymask.html#premultipliedAlpha-prop"/>
+            <keyword name="projectReflectionMap" id="IroDiffuseAlphaProperties::projectReflectionMap" ref="kuesa-irodiffusealphaproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMap" id="IroDiffuseAlphaProperties::projectReflectionMap" ref="kuesa-irodiffusealphaproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMap" id="IroDiffuseAlphaProperties::projectReflectionMap" ref="qml-irodiffusealphaproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMap" id="IroDiffuseHemiProperties::projectReflectionMap" ref="kuesa-irodiffusehemiproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMap" id="IroDiffuseHemiProperties::projectReflectionMap" ref="kuesa-irodiffusehemiproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMap" id="IroDiffuseHemiProperties::projectReflectionMap" ref="qml-irodiffusehemiproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMap" id="IroDiffuseProperties::projectReflectionMap" ref="kuesa-irodiffuseproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMap" id="IroDiffuseProperties::projectReflectionMap" ref="kuesa-irodiffuseproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMap" id="IroDiffuseProperties::projectReflectionMap" ref="qml-irodiffuseproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMap" id="IroGlassAddProperties::projectReflectionMap" ref="kuesa-iroglassaddproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMap" id="IroGlassAddProperties::projectReflectionMap" ref="kuesa-iroglassaddproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMap" id="IroGlassAddProperties::projectReflectionMap" ref="qml-iroglassaddproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMapChanged" id="IroDiffuseAlphaProperties::projectReflectionMapChanged" ref="kuesa-irodiffusealphaproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMapChanged" id="IroDiffuseHemiProperties::projectReflectionMapChanged" ref="kuesa-irodiffusehemiproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMapChanged" id="IroDiffuseProperties::projectReflectionMapChanged" ref="kuesa-irodiffuseproperties.html#projectReflectionMap-prop"/>
+            <keyword name="projectReflectionMapChanged" id="IroGlassAddProperties::projectReflectionMapChanged" ref="kuesa-iroglassaddproperties.html#projectReflectionMap-prop"/>
             <keyword name="radius" id="DepthOfFieldEffect::radius" ref="kuesa-depthoffieldeffect.html#radius-prop"/>
             <keyword name="radius" id="DepthOfFieldEffect::radius" ref="kuesa-depthoffieldeffect.html#radius-prop"/>
             <keyword name="radius" id="DepthOfFieldEffect::radius" ref="qml-depthoffieldeffect.html#radius-prop"/>
@@ -593,14 +1109,67 @@
             <keyword name="range" id="PointLight::range" ref="kuesa-pointlight.html#range-prop"/>
             <keyword name="range" id="PointLight::range" ref="kuesa-pointlight.html#range-prop"/>
             <keyword name="range" id="PointLight::range" ref="qml-pointlight.html#range-prop"/>
-            <keyword name="range" id="SpotLight::range" ref="kuesa-spotlight.html#range-prop"/>
-            <keyword name="range" id="SpotLight::range" ref="kuesa-spotlight.html#range-prop"/>
             <keyword name="range" id="SpotLight::range" ref="qml-spotlight.html#range-prop"/>
             <keyword name="rangeChanged" id="PointLight::rangeChanged" ref="kuesa-pointlight.html#range-prop"/>
-            <keyword name="rangeChanged" id="SpotLight::rangeChanged" ref="kuesa-spotlight.html#range-prop"/>
             <keyword name="readerwriterqueue" id="readerwriterqueue" ref="kuesa-attribution-readerwriterqueue.html"/>
+            <keyword name="reflectionGain" id="IroDiffuseAlphaProperties::reflectionGain" ref="kuesa-irodiffusealphaproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGain" id="IroDiffuseAlphaProperties::reflectionGain" ref="kuesa-irodiffusealphaproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGain" id="IroDiffuseAlphaProperties::reflectionGain" ref="qml-irodiffusealphaproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGain" id="IroDiffuseHemiProperties::reflectionGain" ref="kuesa-irodiffusehemiproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGain" id="IroDiffuseHemiProperties::reflectionGain" ref="kuesa-irodiffusehemiproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGain" id="IroDiffuseHemiProperties::reflectionGain" ref="qml-irodiffusehemiproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGain" id="IroDiffuseProperties::reflectionGain" ref="kuesa-irodiffuseproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGain" id="IroDiffuseProperties::reflectionGain" ref="kuesa-irodiffuseproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGain" id="IroDiffuseProperties::reflectionGain" ref="qml-irodiffuseproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGain" id="IroGlassAddProperties::reflectionGain" ref="kuesa-iroglassaddproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGain" id="IroGlassAddProperties::reflectionGain" ref="kuesa-iroglassaddproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGain" id="IroGlassAddProperties::reflectionGain" ref="qml-iroglassaddproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGainChanged" id="IroDiffuseAlphaProperties::reflectionGainChanged" ref="kuesa-irodiffusealphaproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGainChanged" id="IroDiffuseHemiProperties::reflectionGainChanged" ref="kuesa-irodiffusehemiproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGainChanged" id="IroDiffuseProperties::reflectionGainChanged" ref="kuesa-irodiffuseproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionGainChanged" id="IroGlassAddProperties::reflectionGainChanged" ref="kuesa-iroglassaddproperties.html#reflectionGain-prop"/>
+            <keyword name="reflectionInnerAlpha" id="IroDiffuseAlphaProperties::reflectionInnerAlpha" ref="kuesa-irodiffusealphaproperties.html#reflectionInnerAlpha-prop"/>
+            <keyword name="reflectionInnerAlpha" id="IroDiffuseAlphaProperties::reflectionInnerAlpha" ref="kuesa-irodiffusealphaproperties.html#reflectionInnerAlpha-prop"/>
+            <keyword name="reflectionInnerAlpha" id="IroDiffuseAlphaProperties::reflectionInnerAlpha" ref="qml-irodiffusealphaproperties.html#reflectionInnerAlpha-prop"/>
+            <keyword name="reflectionInnerAlphaChanged" id="IroDiffuseAlphaProperties::reflectionInnerAlphaChanged" ref="kuesa-irodiffusealphaproperties.html#reflectionInnerAlpha-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroDiffuseAlphaProperties::reflectionInnerFilter" ref="kuesa-irodiffusealphaproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroDiffuseAlphaProperties::reflectionInnerFilter" ref="kuesa-irodiffusealphaproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroDiffuseAlphaProperties::reflectionInnerFilter" ref="qml-irodiffusealphaproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroDiffuseHemiProperties::reflectionInnerFilter" ref="kuesa-irodiffusehemiproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroDiffuseHemiProperties::reflectionInnerFilter" ref="kuesa-irodiffusehemiproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroDiffuseHemiProperties::reflectionInnerFilter" ref="qml-irodiffusehemiproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroDiffuseProperties::reflectionInnerFilter" ref="kuesa-irodiffuseproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroDiffuseProperties::reflectionInnerFilter" ref="kuesa-irodiffuseproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroDiffuseProperties::reflectionInnerFilter" ref="qml-irodiffuseproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroGlassAddProperties::reflectionInnerFilter" ref="kuesa-iroglassaddproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroGlassAddProperties::reflectionInnerFilter" ref="kuesa-iroglassaddproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilter" id="IroGlassAddProperties::reflectionInnerFilter" ref="qml-iroglassaddproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilterChanged" id="IroDiffuseAlphaProperties::reflectionInnerFilterChanged" ref="kuesa-irodiffusealphaproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilterChanged" id="IroDiffuseHemiProperties::reflectionInnerFilterChanged" ref="kuesa-irodiffusehemiproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilterChanged" id="IroDiffuseProperties::reflectionInnerFilterChanged" ref="kuesa-irodiffuseproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionInnerFilterChanged" id="IroGlassAddProperties::reflectionInnerFilterChanged" ref="kuesa-iroglassaddproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionOuterAlpha" id="IroDiffuseAlphaProperties::reflectionOuterAlpha" ref="kuesa-irodiffusealphaproperties.html#reflectionOuterAlpha-prop"/>
+            <keyword name="reflectionOuterAlpha" id="IroDiffuseAlphaProperties::reflectionOuterAlpha" ref="kuesa-irodiffusealphaproperties.html#reflectionOuterAlpha-prop"/>
+            <keyword name="reflectionOuterAlpha" id="IroDiffuseAlphaProperties::reflectionOuterAlpha" ref="qml-irodiffusealphaproperties.html#reflectionOuterAlpha-prop"/>
+            <keyword name="reflectionOuterAlphaChanged" id="IroDiffuseAlphaProperties::reflectionOuterAlphaChanged" ref="kuesa-irodiffusealphaproperties.html#reflectionOuterAlpha-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroDiffuseAlphaProperties::reflectionOuterFilter" ref="kuesa-irodiffusealphaproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroDiffuseAlphaProperties::reflectionOuterFilter" ref="kuesa-irodiffusealphaproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroDiffuseAlphaProperties::reflectionOuterFilter" ref="qml-irodiffusealphaproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroDiffuseHemiProperties::reflectionOuterFilter" ref="kuesa-irodiffusehemiproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroDiffuseHemiProperties::reflectionOuterFilter" ref="kuesa-irodiffusehemiproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroDiffuseHemiProperties::reflectionOuterFilter" ref="qml-irodiffusehemiproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroDiffuseProperties::reflectionOuterFilter" ref="kuesa-irodiffuseproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroDiffuseProperties::reflectionOuterFilter" ref="kuesa-irodiffuseproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroDiffuseProperties::reflectionOuterFilter" ref="qml-irodiffuseproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroGlassAddProperties::reflectionOuterFilter" ref="kuesa-iroglassaddproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroGlassAddProperties::reflectionOuterFilter" ref="kuesa-iroglassaddproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilter" id="IroGlassAddProperties::reflectionOuterFilter" ref="qml-iroglassaddproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilterChanged" id="IroDiffuseAlphaProperties::reflectionOuterFilterChanged" ref="kuesa-irodiffusealphaproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilterChanged" id="IroDiffuseHemiProperties::reflectionOuterFilterChanged" ref="kuesa-irodiffusehemiproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilterChanged" id="IroDiffuseProperties::reflectionOuterFilterChanged" ref="kuesa-irodiffuseproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="reflectionOuterFilterChanged" id="IroGlassAddProperties::reflectionOuterFilterChanged" ref="kuesa-iroglassaddproperties.html#reflectionOuterFilter-prop"/>
             <keyword name="registerType" id="EffectCollection::registerType" ref="kuesa-effectcollection.html#registerType"/>
-            <keyword name="remove" id="AbstractAssetCollection::remove" ref="kuesa-abstractassetcollection.html#remove"/>
+            <keyword name="removeLayer" id="ForwardRenderer::removeLayer" ref="kuesa-forwardrenderer.html#removeLayer"/>
             <keyword name="removePostProcessingEffect" id="ForwardRenderer::removePostProcessingEffect" ref="kuesa-forwardrenderer.html#removePostProcessingEffect"/>
             <keyword name="removeTarget" id="AnimationPlayer::removeTarget" ref="kuesa-animationplayer.html#removeTarget"/>
             <keyword name="renderSurface" id="ForwardRenderer::renderSurface" ref="kuesa-forwardrenderer.html#renderSurface"/>
@@ -626,8 +1195,8 @@
             <keyword name="setAOUsesTexCoord1" id="MetallicRoughnessProperties::setAOUsesTexCoord1" ref="kuesa-metallicroughnessproperties.html#aoUsesTexCoord1-prop"/>
             <keyword name="setActiveSceneIndex" id="GLTF2Importer::setActiveSceneIndex" ref="kuesa-gltf2importer.html#activeSceneIndex-prop"/>
             <keyword name="setAlphaCutoff" id="GLTF2MaterialProperties::setAlphaCutoff" ref="kuesa-gltf2materialproperties.html#alphaCutoff-prop"/>
-            <keyword name="setAlphaCutoffEnabled" id="MetallicRoughnessEffect::setAlphaCutoffEnabled" ref="kuesa-metallicroughnesseffect.html#alphaCutoffEnabled-prop"/>
-            <keyword name="setAlphaCutoffEnabled" id="UnlitEffect::setAlphaCutoffEnabled" ref="kuesa-unliteffect.html#alphaCutoffEnabled-prop"/>
+            <keyword name="setAlphaCutoffEnabled" id="GLTF2MaterialEffect::setAlphaCutoffEnabled" ref="kuesa-gltf2materialeffect.html#alphaCutoffEnabled-prop"/>
+            <keyword name="setAlphaGain" id="IroDiffuseAlphaProperties::setAlphaGain" ref="kuesa-irodiffusealphaproperties.html#alphaGain-prop"/>
             <keyword name="setAmbientOcclusionMap" id="MetallicRoughnessProperties::setAmbientOcclusionMap" ref="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop"/>
             <keyword name="setAmbientOcclusionMapEnabled" id="MetallicRoughnessEffect::setAmbientOcclusionMapEnabled" ref="kuesa-metallicroughnesseffect.html#ambientOcclusionMapEnabled-prop"/>
             <keyword name="setAssignNames" id="GLTF2Importer::setAssignNames" ref="kuesa-gltf2importer.html#setAssignNames"/>
@@ -648,10 +1217,15 @@
             <keyword name="setClip" id="AnimationPlayer::setClip" ref="kuesa-animationplayer.html#clip-prop"/>
             <keyword name="setClock" id="AnimationPlayer::setClock" ref="kuesa-animationplayer.html#clock-prop"/>
             <keyword name="setDepthTexture" id="AbstractPostProcessingEffect::setDepthTexture" ref="kuesa-abstractpostprocessingeffect.html#setDepthTexture"/>
-            <keyword name="setDirection" id="DirectionalLight::setDirection" ref="kuesa-directionallight.html#direction-prop"/>
-            <keyword name="setDirectionMode" id="DirectionalLight::setDirectionMode" ref="kuesa-directionallight.html#directionMode-prop"/>
-            <keyword name="setDoubleSided" id="MetallicRoughnessEffect::setDoubleSided" ref="kuesa-metallicroughnesseffect.html#doubleSided-prop"/>
-            <keyword name="setDoubleSided" id="UnlitEffect::setDoubleSided" ref="kuesa-unliteffect.html#doubleSided-prop"/>
+            <keyword name="setDiffuseGain" id="IroDiffuseHemiProperties::setDiffuseGain" ref="kuesa-irodiffusehemiproperties.html#diffuseGain-prop"/>
+            <keyword name="setDiffuseGain" id="IroDiffuseProperties::setDiffuseGain" ref="kuesa-irodiffuseproperties.html#diffuseGain-prop"/>
+            <keyword name="setDiffuseInnerFilter" id="IroDiffuseHemiProperties::setDiffuseInnerFilter" ref="kuesa-irodiffusehemiproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="setDiffuseInnerFilter" id="IroDiffuseProperties::setDiffuseInnerFilter" ref="kuesa-irodiffuseproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="setDiffuseInnerFilter" id="IroGlassAddProperties::setDiffuseInnerFilter" ref="kuesa-iroglassaddproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="setDiffuseOuterFilter" id="IroDiffuseHemiProperties::setDiffuseOuterFilter" ref="kuesa-irodiffusehemiproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="setDiffuseOuterFilter" id="IroDiffuseProperties::setDiffuseOuterFilter" ref="kuesa-irodiffuseproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="setDiffuseOuterFilter" id="IroGlassAddProperties::setDiffuseOuterFilter" ref="kuesa-iroglassaddproperties.html#diffuseOuterFilter-prop"/>
+            <keyword name="setDoubleSided" id="GLTF2MaterialEffect::setDoubleSided" ref="kuesa-gltf2materialeffect.html#doubleSided-prop"/>
             <keyword name="setEmissiveFactor" id="MetallicRoughnessProperties::setEmissiveFactor" ref="kuesa-metallicroughnessproperties.html#emissiveFactor-prop"/>
             <keyword name="setEmissiveMap" id="MetallicRoughnessProperties::setEmissiveMap" ref="kuesa-metallicroughnessproperties.html#emissiveMap-prop"/>
             <keyword name="setEmissiveMapEnabled" id="MetallicRoughnessEffect::setEmissiveMapEnabled" ref="kuesa-metallicroughnesseffect.html#emissiveMapEnabled-prop"/>
@@ -666,31 +1240,100 @@
             <keyword name="setGamma" id="ToneMappingAndGammaCorrectionEffect::setGamma" ref="kuesa-tonemappingandgammacorrectioneffect.html#gamma-prop"/>
             <keyword name="setGenerateNormals" id="GLTF2Options::setGenerateNormals" ref="kuesa-gltf2import-gltf2options.html#generateNormals-prop"/>
             <keyword name="setGenerateTangents" id="GLTF2Options::setGenerateTangents" ref="kuesa-gltf2import-gltf2options.html#generateTangents-prop"/>
-            <keyword name="setInnerConeAngle" id="SpotLight::setInnerConeAngle" ref="kuesa-spotlight.html#innerConeAngle-prop"/>
+            <keyword name="setGlassInnerFilter" id="IroGlassAddProperties::setGlassInnerFilter" ref="kuesa-iroglassaddproperties.html#glassInnerFilter-prop"/>
+            <keyword name="setGlassOuterFilter" id="IroGlassAddProperties::setGlassOuterFilter" ref="kuesa-iroglassaddproperties.html#glassOuterFilter-prop"/>
+            <keyword name="setGltfYUp" id="IroDiffuseHemiProperties::setGltfYUp" ref="kuesa-irodiffusehemiproperties.html#gltfYUp-prop"/>
             <keyword name="setInputTexture" id="BloomEffect::setInputTexture" ref="kuesa-bloomeffect.html#setInputTexture"/>
             <keyword name="setInputTexture" id="GaussianBlurEffect::setInputTexture" ref="kuesa-gaussianblureffect.html#setInputTexture"/>
             <keyword name="setInputTexture" id="ThresholdEffect::setInputTexture" ref="kuesa-thresholdeffect.html#setInputTexture"/>
-            <keyword name="setLocalDirection" id="SpotLight::setLocalDirection" ref="kuesa-spotlight.html#localDirection-prop"/>
             <keyword name="setLoopCount" id="AnimationPlayer::setLoopCount" ref="kuesa-animationplayer.html#loops-prop"/>
             <keyword name="setMapper" id="AnimationPlayer::setMapper" ref="kuesa-animationplayer.html#mapper-prop"/>
             <keyword name="setMask" id="OpacityMask::setMask" ref="kuesa-opacitymask.html#mask-prop"/>
+            <keyword name="setMaterialProperties" id="IroDiffuseAlphaMaterial::setMaterialProperties" ref="kuesa-irodiffusealphamaterial.html#materialProperties-prop"/>
+            <keyword name="setMaterialProperties" id="IroDiffuseHemiMaterial::setMaterialProperties" ref="kuesa-irodiffusehemimaterial.html#materialProperties-prop"/>
+            <keyword name="setMaterialProperties" id="IroDiffuseMaterial::setMaterialProperties" ref="kuesa-irodiffusematerial.html#materialProperties-prop"/>
+            <keyword name="setMaterialProperties" id="IroGlassAddMaterial::setMaterialProperties" ref="kuesa-iroglassaddmaterial.html#materialProperties-prop"/>
+            <keyword name="setMaterialProperties" id="IroMatteAddMaterial::setMaterialProperties" ref="kuesa-iromatteaddmaterial.html#materialProperties-prop"/>
+            <keyword name="setMaterialProperties" id="IroMatteAlphaMaterial::setMaterialProperties" ref="kuesa-iromattealphamaterial.html#materialProperties-prop"/>
+            <keyword name="setMaterialProperties" id="IroMatteBackgroundMaterial::setMaterialProperties" ref="kuesa-iromattebackgroundmaterial.html#materialProperties-prop"/>
+            <keyword name="setMaterialProperties" id="IroMatteMultMaterial::setMaterialProperties" ref="kuesa-iromattemultmaterial.html#materialProperties-prop"/>
+            <keyword name="setMaterialProperties" id="IroMatteOpaqueMaterial::setMaterialProperties" ref="kuesa-iromatteopaquematerial.html#materialProperties-prop"/>
+            <keyword name="setMaterialProperties" id="IroMatteSkyboxMaterial::setMaterialProperties" ref="kuesa-iromatteskyboxmaterial.html#materialProperties-prop"/>
+            <keyword name="setMaterialProperties" id="MetallicRoughnessMaterial::setMaterialProperties" ref="kuesa-metallicroughnessmaterial.html#materialProperties-prop"/>
+            <keyword name="setMaterialProperties" id="UnlitMaterial::setMaterialProperties" ref="kuesa-unlitmaterial.html#materialProperties-prop"/>
+            <keyword name="setMatteAlphaGain" id="IroMatteAlphaProperties::setMatteAlphaGain" ref="kuesa-iromattealphaproperties.html#matteAlphaGain-prop"/>
+            <keyword name="setMatteFilter" id="IroMatteAddProperties::setMatteFilter" ref="kuesa-iromatteaddproperties.html#matteFilter-prop"/>
+            <keyword name="setMatteFilter" id="IroMatteAlphaProperties::setMatteFilter" ref="kuesa-iromattealphaproperties.html#matteFilter-prop"/>
+            <keyword name="setMatteFilter" id="IroMatteBackgroundProperties::setMatteFilter" ref="kuesa-iromattebackgroundproperties.html#matteFilter-prop"/>
+            <keyword name="setMatteFilter" id="IroMatteMultProperties::setMatteFilter" ref="kuesa-iromattemultproperties.html#matteFilter-prop"/>
+            <keyword name="setMatteFilter" id="IroMatteOpaqueProperties::setMatteFilter" ref="kuesa-iromatteopaqueproperties.html#matteFilter-prop"/>
+            <keyword name="setMatteFilter" id="IroMatteSkyboxProperties::setMatteFilter" ref="kuesa-iromatteskyboxproperties.html#matteFilter-prop"/>
+            <keyword name="setMatteGain" id="IroMatteAddProperties::setMatteGain" ref="kuesa-iromatteaddproperties.html#matteGain-prop"/>
+            <keyword name="setMatteGain" id="IroMatteAlphaProperties::setMatteGain" ref="kuesa-iromattealphaproperties.html#matteGain-prop"/>
+            <keyword name="setMatteGain" id="IroMatteBackgroundProperties::setMatteGain" ref="kuesa-iromattebackgroundproperties.html#matteGain-prop"/>
+            <keyword name="setMatteGain" id="IroMatteMultProperties::setMatteGain" ref="kuesa-iromattemultproperties.html#matteGain-prop"/>
+            <keyword name="setMatteGain" id="IroMatteOpaqueProperties::setMatteGain" ref="kuesa-iromatteopaqueproperties.html#matteGain-prop"/>
+            <keyword name="setMatteGain" id="IroMatteSkyboxProperties::setMatteGain" ref="kuesa-iromatteskyboxproperties.html#matteGain-prop"/>
             <keyword name="setMetalRoughMap" id="MetallicRoughnessProperties::setMetalRoughMap" ref="kuesa-metallicroughnessproperties.html#metalRoughMap-prop"/>
             <keyword name="setMetalRoughMapEnabled" id="MetallicRoughnessEffect::setMetalRoughMapEnabled" ref="kuesa-metallicroughnesseffect.html#metalRoughMapEnabled-prop"/>
             <keyword name="setMetallicFactor" id="MetallicRoughnessProperties::setMetallicFactor" ref="kuesa-metallicroughnessproperties.html#metallicFactor-prop"/>
-            <keyword name="setMetallicRoughnessProperties" id="MetallicRoughnessMaterial::setMetallicRoughnessProperties" ref="kuesa-metallicroughnessmaterial.html#metallicRoughnessProperties-prop"/>
             <keyword name="setMetallicRoughnessUsesTexCoord1" id="MetallicRoughnessProperties::setMetallicRoughnessUsesTexCoord1" ref="kuesa-metallicroughnessproperties.html#metallicRoughnessUsesTexCoord1-prop"/>
+            <keyword name="setNormalDisturb" id="IroDiffuseAlphaProperties::setNormalDisturb" ref="kuesa-irodiffusealphaproperties.html#normalDisturb-prop"/>
+            <keyword name="setNormalDisturb" id="IroDiffuseHemiProperties::setNormalDisturb" ref="kuesa-irodiffusehemiproperties.html#normalDisturb-prop"/>
+            <keyword name="setNormalDisturb" id="IroDiffuseProperties::setNormalDisturb" ref="kuesa-irodiffuseproperties.html#normalDisturb-prop"/>
+            <keyword name="setNormalDisturb" id="IroGlassAddProperties::setNormalDisturb" ref="kuesa-iroglassaddproperties.html#normalDisturb-prop"/>
             <keyword name="setNormalMap" id="MetallicRoughnessProperties::setNormalMap" ref="kuesa-metallicroughnessproperties.html#normalMap-prop"/>
             <keyword name="setNormalMapEnabled" id="MetallicRoughnessEffect::setNormalMapEnabled" ref="kuesa-metallicroughnesseffect.html#normalMapEnabled-prop"/>
             <keyword name="setNormalScale" id="MetallicRoughnessProperties::setNormalScale" ref="kuesa-metallicroughnessproperties.html#normalScale-prop"/>
+            <keyword name="setNormalScaling" id="IroDiffuseAlphaProperties::setNormalScaling" ref="kuesa-irodiffusealphaproperties.html#normalScaling-prop"/>
+            <keyword name="setNormalScaling" id="IroDiffuseHemiProperties::setNormalScaling" ref="kuesa-irodiffusehemiproperties.html#normalScaling-prop"/>
+            <keyword name="setNormalScaling" id="IroDiffuseProperties::setNormalScaling" ref="kuesa-irodiffuseproperties.html#normalScaling-prop"/>
+            <keyword name="setNormalScaling" id="IroGlassAddProperties::setNormalScaling" ref="kuesa-iroglassaddproperties.html#normalScaling-prop"/>
             <keyword name="setNormalUsesTexCoord1" id="MetallicRoughnessProperties::setNormalUsesTexCoord1" ref="kuesa-metallicroughnessproperties.html#normalUsesTexCoord1-prop"/>
             <keyword name="setNormalizedTime" id="AnimationPlayer::setNormalizedTime" ref="kuesa-animationplayer.html#normalizedTime-prop"/>
-            <keyword name="setOpaque" id="MetallicRoughnessEffect::setOpaque" ref="kuesa-metallicroughnesseffect.html#opaque-prop"/>
-            <keyword name="setOpaque" id="UnlitEffect::setOpaque" ref="kuesa-unliteffect.html#opaque-prop"/>
-            <keyword name="setOuterConeAngle" id="SpotLight::setOuterConeAngle" ref="kuesa-spotlight.html#outerConeAngle-prop"/>
+            <keyword name="setOpaque" id="GLTF2MaterialEffect::setOpaque" ref="kuesa-gltf2materialeffect.html#opaque-prop"/>
+            <keyword name="setPostGain" id="IroDiffuseAlphaProperties::setPostGain" ref="kuesa-irodiffusealphaproperties.html#postGain-prop"/>
+            <keyword name="setPostGain" id="IroDiffuseHemiProperties::setPostGain" ref="kuesa-irodiffusehemiproperties.html#postGain-prop"/>
+            <keyword name="setPostGain" id="IroDiffuseProperties::setPostGain" ref="kuesa-irodiffuseproperties.html#postGain-prop"/>
+            <keyword name="setPostGain" id="IroGlassAddProperties::setPostGain" ref="kuesa-iroglassaddproperties.html#postGain-prop"/>
+            <keyword name="setPostGain" id="IroMatteAddProperties::setPostGain" ref="kuesa-iromatteaddproperties.html#postGain-prop"/>
+            <keyword name="setPostGain" id="IroMatteAlphaProperties::setPostGain" ref="kuesa-iromattealphaproperties.html#postGain-prop"/>
+            <keyword name="setPostGain" id="IroMatteBackgroundProperties::setPostGain" ref="kuesa-iromattebackgroundproperties.html#postGain-prop"/>
+            <keyword name="setPostGain" id="IroMatteMultProperties::setPostGain" ref="kuesa-iromattemultproperties.html#postGain-prop"/>
+            <keyword name="setPostGain" id="IroMatteOpaqueProperties::setPostGain" ref="kuesa-iromatteopaqueproperties.html#postGain-prop"/>
+            <keyword name="setPostGain" id="IroMatteSkyboxProperties::setPostGain" ref="kuesa-iromatteskyboxproperties.html#postGain-prop"/>
+            <keyword name="setPostHemiFilter" id="IroDiffuseHemiProperties::setPostHemiFilter" ref="kuesa-irodiffusehemiproperties.html#postHemiFilter-prop"/>
+            <keyword name="setPostVertexColor" id="IroDiffuseAlphaProperties::setPostVertexColor" ref="kuesa-irodiffusealphaproperties.html#postVertexColor-prop"/>
+            <keyword name="setPostVertexColor" id="IroDiffuseHemiProperties::setPostVertexColor" ref="kuesa-irodiffusehemiproperties.html#postVertexColor-prop"/>
+            <keyword name="setPostVertexColor" id="IroDiffuseProperties::setPostVertexColor" ref="kuesa-irodiffuseproperties.html#postVertexColor-prop"/>
+            <keyword name="setPostVertexColor" id="IroGlassAddProperties::setPostVertexColor" ref="kuesa-iroglassaddproperties.html#postVertexColor-prop"/>
+            <keyword name="setPostVertexColor" id="IroMatteAddProperties::setPostVertexColor" ref="kuesa-iromatteaddproperties.html#postVertexColor-prop"/>
+            <keyword name="setPostVertexColor" id="IroMatteAlphaProperties::setPostVertexColor" ref="kuesa-iromattealphaproperties.html#postVertexColor-prop"/>
+            <keyword name="setPostVertexColor" id="IroMatteBackgroundProperties::setPostVertexColor" ref="kuesa-iromattebackgroundproperties.html#postVertexColor-prop"/>
+            <keyword name="setPostVertexColor" id="IroMatteMultProperties::setPostVertexColor" ref="kuesa-iromattemultproperties.html#postVertexColor-prop"/>
+            <keyword name="setPostVertexColor" id="IroMatteOpaqueProperties::setPostVertexColor" ref="kuesa-iromatteopaqueproperties.html#postVertexColor-prop"/>
+            <keyword name="setPostVertexColor" id="IroMatteSkyboxProperties::setPostVertexColor" ref="kuesa-iromatteskyboxproperties.html#postVertexColor-prop"/>
             <keyword name="setPremultipliedAlpha" id="OpacityMask::setPremultipliedAlpha" ref="kuesa-opacitymask.html#premultipliedAlpha-prop"/>
+            <keyword name="setProjectReflectionMap" id="IroDiffuseAlphaProperties::setProjectReflectionMap" ref="kuesa-irodiffusealphaproperties.html#projectReflectionMap-prop"/>
+            <keyword name="setProjectReflectionMap" id="IroDiffuseHemiProperties::setProjectReflectionMap" ref="kuesa-irodiffusehemiproperties.html#projectReflectionMap-prop"/>
+            <keyword name="setProjectReflectionMap" id="IroDiffuseProperties::setProjectReflectionMap" ref="kuesa-irodiffuseproperties.html#projectReflectionMap-prop"/>
+            <keyword name="setProjectReflectionMap" id="IroGlassAddProperties::setProjectReflectionMap" ref="kuesa-iroglassaddproperties.html#projectReflectionMap-prop"/>
             <keyword name="setRadius" id="DepthOfFieldEffect::setRadius" ref="kuesa-depthoffieldeffect.html#setRadius"/>
             <keyword name="setRange" id="PointLight::setRange" ref="kuesa-pointlight.html#range-prop"/>
-            <keyword name="setRange" id="SpotLight::setRange" ref="kuesa-spotlight.html#range-prop"/>
+            <keyword name="setReflectionGain" id="IroDiffuseAlphaProperties::setReflectionGain" ref="kuesa-irodiffusealphaproperties.html#reflectionGain-prop"/>
+            <keyword name="setReflectionGain" id="IroDiffuseHemiProperties::setReflectionGain" ref="kuesa-irodiffusehemiproperties.html#reflectionGain-prop"/>
+            <keyword name="setReflectionGain" id="IroDiffuseProperties::setReflectionGain" ref="kuesa-irodiffuseproperties.html#reflectionGain-prop"/>
+            <keyword name="setReflectionGain" id="IroGlassAddProperties::setReflectionGain" ref="kuesa-iroglassaddproperties.html#reflectionGain-prop"/>
+            <keyword name="setReflectionInnerAlpha" id="IroDiffuseAlphaProperties::setReflectionInnerAlpha" ref="kuesa-irodiffusealphaproperties.html#reflectionInnerAlpha-prop"/>
+            <keyword name="setReflectionInnerFilter" id="IroDiffuseAlphaProperties::setReflectionInnerFilter" ref="kuesa-irodiffusealphaproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="setReflectionInnerFilter" id="IroDiffuseHemiProperties::setReflectionInnerFilter" ref="kuesa-irodiffusehemiproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="setReflectionInnerFilter" id="IroDiffuseProperties::setReflectionInnerFilter" ref="kuesa-irodiffuseproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="setReflectionInnerFilter" id="IroGlassAddProperties::setReflectionInnerFilter" ref="kuesa-iroglassaddproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="setReflectionOuterAlpha" id="IroDiffuseAlphaProperties::setReflectionOuterAlpha" ref="kuesa-irodiffusealphaproperties.html#reflectionOuterAlpha-prop"/>
+            <keyword name="setReflectionOuterFilter" id="IroDiffuseAlphaProperties::setReflectionOuterFilter" ref="kuesa-irodiffusealphaproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="setReflectionOuterFilter" id="IroDiffuseHemiProperties::setReflectionOuterFilter" ref="kuesa-irodiffusehemiproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="setReflectionOuterFilter" id="IroDiffuseProperties::setReflectionOuterFilter" ref="kuesa-irodiffuseproperties.html#reflectionOuterFilter-prop"/>
+            <keyword name="setReflectionOuterFilter" id="IroGlassAddProperties::setReflectionOuterFilter" ref="kuesa-iroglassaddproperties.html#reflectionOuterFilter-prop"/>
             <keyword name="setRenderSurface" id="ForwardRenderer::setRenderSurface" ref="kuesa-forwardrenderer.html#setRenderSurface"/>
             <keyword name="setRoughnessFactor" id="MetallicRoughnessProperties::setRoughnessFactor" ref="kuesa-metallicroughnessproperties.html#roughnessFactor-prop"/>
             <keyword name="setRunning" id="AnimationPlayer::setRunning" ref="kuesa-animationplayer.html#running-prop"/>
@@ -699,17 +1342,34 @@
             <keyword name="setSceneSize" id="AbstractPostProcessingEffect::setSceneSize" ref="kuesa-abstractpostprocessingeffect.html#setSceneSize"/>
             <keyword name="setSceneSize" id="BloomEffect::setSceneSize" ref="kuesa-bloomeffect.html#setSceneSize"/>
             <keyword name="setSceneSize" id="GaussianBlurEffect::setSceneSize" ref="kuesa-gaussianblureffect.html#setSceneSize"/>
+            <keyword name="setShowDebugOverlay" id="ForwardRenderer::setShowDebugOverlay" ref="kuesa-forwardrenderer.html#showDebugOverlay-prop"/>
             <keyword name="setSource" id="GLTF2Importer::setSource" ref="kuesa-gltf2importer.html#setSource"/>
             <keyword name="setTextureTransform" id="GLTF2MaterialProperties::setTextureTransform" ref="kuesa-gltf2materialproperties.html#textureTransform-prop"/>
             <keyword name="setThreshold" id="BloomEffect::setThreshold" ref="kuesa-bloomeffect.html#setThreshold"/>
             <keyword name="setThreshold" id="ThresholdEffect::setThreshold" ref="kuesa-thresholdeffect.html#setThreshold"/>
             <keyword name="setToneMappingAlgorithm" id="ForwardRenderer::setToneMappingAlgorithm" ref="kuesa-forwardrenderer.html#setToneMappingAlgorithm"/>
             <keyword name="setToneMappingAlgorithm" id="ToneMappingAndGammaCorrectionEffect::setToneMappingAlgorithm" ref="kuesa-tonemappingandgammacorrectioneffect.html#setToneMappingAlgorithm"/>
-            <keyword name="setUnlitProperties" id="UnlitMaterial::setUnlitProperties" ref="kuesa-unlitmaterial.html#unlitProperties-prop"/>
-            <keyword name="setUseSkinning" id="MetallicRoughnessEffect::setUseSkinning" ref="kuesa-metallicroughnesseffect.html#useSkinning-prop"/>
-            <keyword name="setUseSkinning" id="UnlitEffect::setUseSkinning" ref="kuesa-unliteffect.html#useSkinning-prop"/>
+            <keyword name="setUseSkinning" id="GLTF2MaterialEffect::setUseSkinning" ref="kuesa-gltf2materialeffect.html#useSkinning-prop"/>
+            <keyword name="setUsesDiffuseMap" id="IroDiffuseHemiProperties::setUsesDiffuseMap" ref="kuesa-irodiffusehemiproperties.html#usesDiffuseMap-prop"/>
+            <keyword name="setUsesDiffuseMap" id="IroDiffuseProperties::setUsesDiffuseMap" ref="kuesa-irodiffuseproperties.html#usesDiffuseMap-prop"/>
+            <keyword name="setUsesMatteMap" id="IroMatteAddProperties::setUsesMatteMap" ref="kuesa-iromatteaddproperties.html#usesMatteMap-prop"/>
+            <keyword name="setUsesMatteMap" id="IroMatteAlphaProperties::setUsesMatteMap" ref="kuesa-iromattealphaproperties.html#usesMatteMap-prop"/>
+            <keyword name="setUsesMatteMap" id="IroMatteBackgroundProperties::setUsesMatteMap" ref="kuesa-iromattebackgroundproperties.html#usesMatteMap-prop"/>
+            <keyword name="setUsesMatteMap" id="IroMatteMultProperties::setUsesMatteMap" ref="kuesa-iromattemultproperties.html#usesMatteMap-prop"/>
+            <keyword name="setUsesMatteMap" id="IroMatteOpaqueProperties::setUsesMatteMap" ref="kuesa-iromatteopaqueproperties.html#usesMatteMap-prop"/>
+            <keyword name="setUsesMatteMap" id="IroMatteSkyboxProperties::setUsesMatteMap" ref="kuesa-iromatteskyboxproperties.html#usesMatteMap-prop"/>
+            <keyword name="setUsesReflectionMap" id="IroDiffuseAlphaProperties::setUsesReflectionMap" ref="kuesa-irodiffusealphaproperties.html#usesReflectionMap-prop"/>
+            <keyword name="setUsesReflectionMap" id="IroDiffuseHemiProperties::setUsesReflectionMap" ref="kuesa-irodiffusehemiproperties.html#usesReflectionMap-prop"/>
+            <keyword name="setUsesReflectionMap" id="IroDiffuseProperties::setUsesReflectionMap" ref="kuesa-irodiffuseproperties.html#usesReflectionMap-prop"/>
+            <keyword name="setUsesReflectionMap" id="IroGlassAddProperties::setUsesReflectionMap" ref="kuesa-iroglassaddproperties.html#usesReflectionMap-prop"/>
             <keyword name="setUsingColorAttribute" id="MetallicRoughnessEffect::setUsingColorAttribute" ref="kuesa-metallicroughnesseffect.html#usingColorAttribute-prop"/>
             <keyword name="setUsingColorAttribute" id="UnlitEffect::setUsingColorAttribute" ref="kuesa-unliteffect.html#usingColorAttribute-prop"/>
+            <keyword name="setUvOffset" id="IroMatteAddProperties::setUvOffset" ref="kuesa-iromatteaddproperties.html#uvOffset-prop"/>
+            <keyword name="setUvOffset" id="IroMatteAlphaProperties::setUvOffset" ref="kuesa-iromattealphaproperties.html#uvOffset-prop"/>
+            <keyword name="setUvOffset" id="IroMatteBackgroundProperties::setUvOffset" ref="kuesa-iromattebackgroundproperties.html#uvOffset-prop"/>
+            <keyword name="setUvOffset" id="IroMatteMultProperties::setUvOffset" ref="kuesa-iromattemultproperties.html#uvOffset-prop"/>
+            <keyword name="setUvOffset" id="IroMatteOpaqueProperties::setUvOffset" ref="kuesa-iromatteopaqueproperties.html#uvOffset-prop"/>
+            <keyword name="setUvOffset" id="IroMatteSkyboxProperties::setUvOffset" ref="kuesa-iromatteskyboxproperties.html#uvOffset-prop"/>
             <keyword name="setViewportRect" id="ForwardRenderer::setViewportRect" ref="kuesa-forwardrenderer.html#setViewportRect"/>
             <keyword name="setWeight0" id="MorphController::setWeight0" ref="kuesa-morphcontroller.html#weight0-prop"/>
             <keyword name="setWeight1" id="MorphController::setWeight1" ref="kuesa-morphcontroller.html#weight1-prop"/>
@@ -720,6 +1380,8 @@
             <keyword name="setWeight6" id="MorphController::setWeight6" ref="kuesa-morphcontroller.html#weight6-prop"/>
             <keyword name="setWeight7" id="MorphController::setWeight7" ref="kuesa-morphcontroller.html#weight7-prop"/>
             <keyword name="setZFilling" id="ForwardRenderer::setZFilling" ref="kuesa-forwardrenderer.html#setZFilling"/>
+            <keyword name="showDebugOverlay" id="ForwardRenderer::showDebugOverlay" ref="kuesa-forwardrenderer.html#showDebugOverlay-prop"/>
+            <keyword name="showDebugOverlayChanged" id="ForwardRenderer::showDebugOverlayChanged" ref="kuesa-forwardrenderer.html#showDebugOverlay-prop"/>
             <keyword name="size" id="AbstractAssetCollection::size" ref="kuesa-abstractassetcollection.html#size-prop"/>
             <keyword name="sizeChanged" id="AbstractAssetCollection::sizeChanged" ref="kuesa-abstractassetcollection.html#size-prop"/>
             <keyword name="skeleton" id="SceneEntity::skeleton" ref="kuesa-sceneentity.html#skeleton"/>
@@ -762,23 +1424,92 @@
             <keyword name="toneMappingAlgorithmChanged" id="ForwardRenderer::toneMappingAlgorithmChanged" ref="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop"/>
             <keyword name="toneMappingAlgorithmChanged" id="ToneMappingAndGammaCorrectionEffect::toneMappingAlgorithmChanged" ref="kuesa-tonemappingandgammacorrectioneffect.html#toneMappingAlgorithm-prop"/>
             <keyword name="toneMappingAlgoritm" id="ToneMappingAndGammaCorrectionEffect::toneMappingAlgoritm" ref="qml-tonemappingandgammacorrectioneffect.html#toneMappingAlgoritm-prop"/>
+            <keyword name="transform" id="SceneEntity::transform" ref="kuesa-sceneentity.html#transform"/>
             <keyword name="transformForEntity" id="SceneEntity::transformForEntity" ref="kuesa-sceneentity.html#transformForEntity"/>
+            <keyword name="transforms" id="SceneEntity::transforms" ref="kuesa-sceneentity.html#transforms"/>
             <keyword name="type" id="AbstractPostProcessingEffect::type" ref="kuesa-abstractpostprocessingeffect.html#type"/>
-            <keyword name="unlitProperties" id="UnlitMaterial::unlitProperties" ref="kuesa-unlitmaterial.html#unlitProperties-prop"/>
-            <keyword name="unlitProperties" id="UnlitMaterial::unlitProperties" ref="kuesa-unlitmaterial.html#unlitProperties-prop"/>
-            <keyword name="unlitProperties" id="UnlitMaterial::unlitProperties" ref="qml-unlitmaterial.html#unlitProperties-prop"/>
-            <keyword name="unlitPropertiesChanged" id="UnlitMaterial::unlitPropertiesChanged" ref="kuesa-unlitmaterial.html#unlitProperties-prop"/>
             <keyword name="unregisterType" id="EffectCollection::unregisterType" ref="kuesa-effectcollection.html#unregisterType"/>
-            <keyword name="useSkinning" id="MetallicRoughnessEffect::useSkinning" ref="kuesa-metallicroughnesseffect.html#useSkinning-prop"/>
-            <keyword name="useSkinning" id="MetallicRoughnessEffect::useSkinning" ref="kuesa-metallicroughnesseffect.html#useSkinning-prop"/>
+            <keyword name="useSkinning" id="GLTF2MaterialEffect::useSkinning" ref="kuesa-gltf2materialeffect.html#useSkinning-prop"/>
+            <keyword name="useSkinning" id="GLTF2MaterialEffect::useSkinning" ref="kuesa-gltf2materialeffect.html#useSkinning-prop"/>
+            <keyword name="useSkinning" id="GLTF2MaterialEffect::useSkinning" ref="qml-gltf2materialeffect.html#useSkinning-prop"/>
             <keyword name="useSkinning" id="MetallicRoughnessEffect::useSkinning" ref="qml-metallicroughnesseffect.html#useSkinning-prop"/>
-            <keyword name="useSkinning" id="UnlitEffect::useSkinning" ref="kuesa-unliteffect.html#useSkinning-prop"/>
-            <keyword name="useSkinningChanged" id="MetallicRoughnessEffect::useSkinningChanged" ref="kuesa-metallicroughnesseffect.html#useSkinning-prop"/>
-            <keyword name="useSkinningChanged" id="UnlitEffect::useSkinningChanged" ref="kuesa-unliteffect.html#useSkinning-prop"/>
+            <keyword name="useSkinningChanged" id="GLTF2MaterialEffect::useSkinningChanged" ref="kuesa-gltf2materialeffect.html#useSkinning-prop"/>
+            <keyword name="usesDiffuseMap" id="IroDiffuseHemiProperties::usesDiffuseMap" ref="kuesa-irodiffusehemiproperties.html#usesDiffuseMap-prop"/>
+            <keyword name="usesDiffuseMap" id="IroDiffuseHemiProperties::usesDiffuseMap" ref="kuesa-irodiffusehemiproperties.html#usesDiffuseMap-prop"/>
+            <keyword name="usesDiffuseMap" id="IroDiffuseHemiProperties::usesDiffuseMap" ref="qml-irodiffusehemiproperties.html#usesDiffuseMap-prop"/>
+            <keyword name="usesDiffuseMap" id="IroDiffuseProperties::usesDiffuseMap" ref="kuesa-irodiffuseproperties.html#usesDiffuseMap-prop"/>
+            <keyword name="usesDiffuseMap" id="IroDiffuseProperties::usesDiffuseMap" ref="kuesa-irodiffuseproperties.html#usesDiffuseMap-prop"/>
+            <keyword name="usesDiffuseMap" id="IroDiffuseProperties::usesDiffuseMap" ref="qml-irodiffuseproperties.html#usesDiffuseMap-prop"/>
+            <keyword name="usesDiffuseMapChanged" id="IroDiffuseHemiProperties::usesDiffuseMapChanged" ref="kuesa-irodiffusehemiproperties.html#usesDiffuseMap-prop"/>
+            <keyword name="usesDiffuseMapChanged" id="IroDiffuseProperties::usesDiffuseMapChanged" ref="kuesa-irodiffuseproperties.html#usesDiffuseMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteAddProperties::usesMatteMap" ref="kuesa-iromatteaddproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteAddProperties::usesMatteMap" ref="kuesa-iromatteaddproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteAddProperties::usesMatteMap" ref="qml-iromatteaddproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteAlphaProperties::usesMatteMap" ref="kuesa-iromattealphaproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteAlphaProperties::usesMatteMap" ref="kuesa-iromattealphaproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteAlphaProperties::usesMatteMap" ref="qml-iromattealphaproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteBackgroundProperties::usesMatteMap" ref="kuesa-iromattebackgroundproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteBackgroundProperties::usesMatteMap" ref="kuesa-iromattebackgroundproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteBackgroundProperties::usesMatteMap" ref="qml-iromattebackgroundproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteMultProperties::usesMatteMap" ref="kuesa-iromattemultproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteMultProperties::usesMatteMap" ref="kuesa-iromattemultproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteMultProperties::usesMatteMap" ref="qml-iromattemultproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteOpaqueProperties::usesMatteMap" ref="kuesa-iromatteopaqueproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteOpaqueProperties::usesMatteMap" ref="kuesa-iromatteopaqueproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteOpaqueProperties::usesMatteMap" ref="qml-iromatteopaqueproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteSkyboxProperties::usesMatteMap" ref="kuesa-iromatteskyboxproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteSkyboxProperties::usesMatteMap" ref="kuesa-iromatteskyboxproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMap" id="IroMatteSkyboxProperties::usesMatteMap" ref="qml-iromatteskyboxproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMapChanged" id="IroMatteAddProperties::usesMatteMapChanged" ref="kuesa-iromatteaddproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMapChanged" id="IroMatteAlphaProperties::usesMatteMapChanged" ref="kuesa-iromattealphaproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMapChanged" id="IroMatteBackgroundProperties::usesMatteMapChanged" ref="kuesa-iromattebackgroundproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMapChanged" id="IroMatteMultProperties::usesMatteMapChanged" ref="kuesa-iromattemultproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMapChanged" id="IroMatteOpaqueProperties::usesMatteMapChanged" ref="kuesa-iromatteopaqueproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesMatteMapChanged" id="IroMatteSkyboxProperties::usesMatteMapChanged" ref="kuesa-iromatteskyboxproperties.html#usesMatteMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroDiffuseAlphaProperties::usesReflectionMap" ref="kuesa-irodiffusealphaproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroDiffuseAlphaProperties::usesReflectionMap" ref="kuesa-irodiffusealphaproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroDiffuseAlphaProperties::usesReflectionMap" ref="qml-irodiffusealphaproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroDiffuseHemiProperties::usesReflectionMap" ref="kuesa-irodiffusehemiproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroDiffuseHemiProperties::usesReflectionMap" ref="kuesa-irodiffusehemiproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroDiffuseHemiProperties::usesReflectionMap" ref="qml-irodiffusehemiproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroDiffuseProperties::usesReflectionMap" ref="kuesa-irodiffuseproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroDiffuseProperties::usesReflectionMap" ref="kuesa-irodiffuseproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroDiffuseProperties::usesReflectionMap" ref="qml-irodiffuseproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroGlassAddProperties::usesReflectionMap" ref="kuesa-iroglassaddproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroGlassAddProperties::usesReflectionMap" ref="kuesa-iroglassaddproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMap" id="IroGlassAddProperties::usesReflectionMap" ref="qml-iroglassaddproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMapChanged" id="IroDiffuseAlphaProperties::usesReflectionMapChanged" ref="kuesa-irodiffusealphaproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMapChanged" id="IroDiffuseHemiProperties::usesReflectionMapChanged" ref="kuesa-irodiffusehemiproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMapChanged" id="IroDiffuseProperties::usesReflectionMapChanged" ref="kuesa-irodiffuseproperties.html#usesReflectionMap-prop"/>
+            <keyword name="usesReflectionMapChanged" id="IroGlassAddProperties::usesReflectionMapChanged" ref="kuesa-iroglassaddproperties.html#usesReflectionMap-prop"/>
             <keyword name="usingColorAttribute" id="MetallicRoughnessEffect::usingColorAttribute" ref="kuesa-metallicroughnesseffect.html#usingColorAttribute-prop"/>
             <keyword name="usingColorAttribute" id="MetallicRoughnessEffect::usingColorAttribute" ref="qml-metallicroughnesseffect.html#usingColorAttribute-prop"/>
             <keyword name="usingColorAttributeChanged" id="MetallicRoughnessEffect::usingColorAttributeChanged" ref="kuesa-metallicroughnesseffect.html#usingColorAttribute-prop"/>
             <keyword name="usingColorAttributeChanged" id="UnlitEffect::usingColorAttributeChanged" ref="kuesa-unliteffect.html#usingColorAttribute-prop"/>
+            <keyword name="uvOffset" id="IroMatteAddProperties::uvOffset" ref="kuesa-iromatteaddproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteAddProperties::uvOffset" ref="kuesa-iromatteaddproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteAddProperties::uvOffset" ref="qml-iromatteaddproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteAlphaProperties::uvOffset" ref="kuesa-iromattealphaproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteAlphaProperties::uvOffset" ref="kuesa-iromattealphaproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteAlphaProperties::uvOffset" ref="qml-iromattealphaproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteBackgroundProperties::uvOffset" ref="kuesa-iromattebackgroundproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteBackgroundProperties::uvOffset" ref="kuesa-iromattebackgroundproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteBackgroundProperties::uvOffset" ref="qml-iromattebackgroundproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteMultProperties::uvOffset" ref="kuesa-iromattemultproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteMultProperties::uvOffset" ref="kuesa-iromattemultproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteMultProperties::uvOffset" ref="qml-iromattemultproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteOpaqueProperties::uvOffset" ref="kuesa-iromatteopaqueproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteOpaqueProperties::uvOffset" ref="kuesa-iromatteopaqueproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteOpaqueProperties::uvOffset" ref="qml-iromatteopaqueproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteSkyboxProperties::uvOffset" ref="kuesa-iromatteskyboxproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteSkyboxProperties::uvOffset" ref="kuesa-iromatteskyboxproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffset" id="IroMatteSkyboxProperties::uvOffset" ref="qml-iromatteskyboxproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffsetChanged" id="IroMatteAddProperties::uvOffsetChanged" ref="kuesa-iromatteaddproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffsetChanged" id="IroMatteAlphaProperties::uvOffsetChanged" ref="kuesa-iromattealphaproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffsetChanged" id="IroMatteBackgroundProperties::uvOffsetChanged" ref="kuesa-iromattebackgroundproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffsetChanged" id="IroMatteMultProperties::uvOffsetChanged" ref="kuesa-iromattemultproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffsetChanged" id="IroMatteOpaqueProperties::uvOffsetChanged" ref="kuesa-iromatteopaqueproperties.html#uvOffset-prop"/>
+            <keyword name="uvOffsetChanged" id="IroMatteSkyboxProperties::uvOffsetChanged" ref="kuesa-iromatteskyboxproperties.html#uvOffset-prop"/>
             <keyword name="viewportRect" id="ForwardRenderer::viewportRect" ref="kuesa-forwardrenderer.html#viewportRect"/>
             <keyword name="viewportRect" id="ForwardRenderer::viewportRect" ref="kuesa-forwardrenderer.html#viewportRect-prop"/>
             <keyword name="viewportRect" id="ForwardRenderer::viewportRect" ref="qml-forwardrenderer.html#viewportRect-prop"/>
@@ -821,11 +1552,16 @@
             <keyword name="zFillingChanged" id="ForwardRenderer::zFillingChanged" ref="kuesa-forwardrenderer.html#zFilling-prop"/>
         </keywords>
         <files>
-            <file>gltfeditor.html</file>
             <file>gltfviewer.html</file>
             <file>images/alpha.png</file>
+            <file>images/arrow_bc.png</file>
+            <file>images/bgrContent.png</file>
             <file>images/bloom.png</file>
             <file>images/blur.png</file>
+            <file>images/btn_next.png</file>
+            <file>images/btn_prev.png</file>
+            <file>images/bullet_dn.png</file>
+            <file>images/bullet_sq.png</file>
             <file>images/car-scene-example.jpg</file>
             <file>images/dof_distance_5.png</file>
             <file>images/dof_distance_8.png</file>
@@ -833,10 +1569,13 @@
             <file>images/dof_radius_42.png</file>
             <file>images/dof_range_2.png</file>
             <file>images/dof_range_8.png</file>
-            <file>images/gltfEditor.jpg</file>
             <file>images/gltfViewer.jpg</file>
-            <file>images/kdabLogo.png</file>
-            <file>images/kdab_background.png</file>
+            <file>images/home.png</file>
+            <file>images/ico_note.png</file>
+            <file>images/ico_note_attention.png</file>
+            <file>images/ico_out.png</file>
+            <file>images/iro-materials-gallery-example.jpg</file>
+            <file>images/logo.png</file>
             <file>images/manyducks-example.jpg</file>
             <file>images/music-box-example.jpg</file>
             <file>images/noalpha.png</file>
@@ -876,6 +1615,10 @@
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</file>
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</file>
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png</file>
+            <file>images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png</file>
+            <file>images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</file>
+            <file>images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</file>
+            <file>images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png</file>
             <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png</file>
             <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</file>
             <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</file>
@@ -922,11 +1665,10 @@
             <file>kuesa-animationplayer.html</file>
             <file>kuesa-armaturecollection-members.html</file>
             <file>kuesa-armaturecollection.html</file>
-            <file>kuesa-attribution-dds-loader-python.html</file>
+            <file>kuesa-attribution-bob-dass-equirectangular-env-map.html</file>
             <file>kuesa-attribution-dr-wav.html</file>
             <file>kuesa-attribution-draco.html</file>
             <file>kuesa-attribution-freeverb.html</file>
-            <file>kuesa-attribution-gli.html</file>
             <file>kuesa-attribution-mikktspace.html</file>
             <file>kuesa-attribution-readerwriterqueue.html</file>
             <file>kuesa-bloomeffect-members.html</file>
@@ -946,9 +1688,9 @@
             <file>kuesa-car-scene-qml-qml-qrc.html</file>
             <file>kuesa-car-scene-qml-wind-qml.html</file>
             <file>kuesa-cpp.html</file>
+            <file>kuesa-custom-materials.html</file>
             <file>kuesa-depthoffieldeffect-members.html</file>
             <file>kuesa-depthoffieldeffect.html</file>
-            <file>kuesa-directionallight-members.html</file>
             <file>kuesa-directionallight.html</file>
             <file>kuesa-effectcollection-members.html</file>
             <file>kuesa-effectcollection.html</file>
@@ -969,10 +1711,83 @@
             <file>kuesa-gltf2importer.html</file>
             <file>kuesa-gltf2material-members.html</file>
             <file>kuesa-gltf2material.html</file>
+            <file>kuesa-gltf2materialeffect-members.html</file>
+            <file>kuesa-gltf2materialeffect.html</file>
             <file>kuesa-gltf2materialproperties-members.html</file>
             <file>kuesa-gltf2materialproperties.html</file>
+            <file>kuesa-iro-materials-gallery-example.html</file>
+            <file>kuesa-iro-materials-gallery-iro-materials-gallery-pro.html</file>
+            <file>kuesa-iro-materials-gallery-main-cpp.html</file>
+            <file>kuesa-iro-materials-gallery-materialinspector-cpp.html</file>
+            <file>kuesa-iro-materials-gallery-materialinspector-h.html</file>
+            <file>kuesa-iro-materials-gallery-qml-main-qml.html</file>
+            <file>kuesa-iro-materials-gallery-qml-mainscene-qml.html</file>
+            <file>kuesa-iro-materials-gallery-qml-materialinspector-qml.html</file>
+            <file>kuesa-iro-materials-gallery-qml-qml-qrc.html</file>
+            <file>kuesa-iro-materials.html</file>
+            <file>kuesa-irodiffusealphaeffect-members.html</file>
+            <file>kuesa-irodiffusealphaeffect.html</file>
+            <file>kuesa-irodiffusealphamaterial-members.html</file>
+            <file>kuesa-irodiffusealphamaterial.html</file>
+            <file>kuesa-irodiffusealphaproperties-members.html</file>
+            <file>kuesa-irodiffusealphaproperties.html</file>
+            <file>kuesa-irodiffuseeffect-members.html</file>
+            <file>kuesa-irodiffuseeffect.html</file>
+            <file>kuesa-irodiffusehemieffect-members.html</file>
+            <file>kuesa-irodiffusehemieffect.html</file>
+            <file>kuesa-irodiffusehemimaterial-members.html</file>
+            <file>kuesa-irodiffusehemimaterial.html</file>
+            <file>kuesa-irodiffusehemiproperties-members.html</file>
+            <file>kuesa-irodiffusehemiproperties.html</file>
+            <file>kuesa-irodiffusematerial-members.html</file>
+            <file>kuesa-irodiffusematerial.html</file>
+            <file>kuesa-irodiffuseproperties-members.html</file>
+            <file>kuesa-irodiffuseproperties.html</file>
+            <file>kuesa-iroglassaddeffect-members.html</file>
+            <file>kuesa-iroglassaddeffect.html</file>
+            <file>kuesa-iroglassaddmaterial-members.html</file>
+            <file>kuesa-iroglassaddmaterial.html</file>
+            <file>kuesa-iroglassaddproperties-members.html</file>
+            <file>kuesa-iroglassaddproperties.html</file>
+            <file>kuesa-iromatteaddeffect-members.html</file>
+            <file>kuesa-iromatteaddeffect.html</file>
+            <file>kuesa-iromatteaddmaterial-members.html</file>
+            <file>kuesa-iromatteaddmaterial.html</file>
+            <file>kuesa-iromatteaddproperties-members.html</file>
+            <file>kuesa-iromatteaddproperties.html</file>
+            <file>kuesa-iromattealphaeffect-members.html</file>
+            <file>kuesa-iromattealphaeffect.html</file>
+            <file>kuesa-iromattealphamaterial-members.html</file>
+            <file>kuesa-iromattealphamaterial.html</file>
+            <file>kuesa-iromattealphaproperties-members.html</file>
+            <file>kuesa-iromattealphaproperties.html</file>
+            <file>kuesa-iromattebackgroundeffect-members.html</file>
+            <file>kuesa-iromattebackgroundeffect.html</file>
+            <file>kuesa-iromattebackgroundmaterial-members.html</file>
+            <file>kuesa-iromattebackgroundmaterial.html</file>
+            <file>kuesa-iromattebackgroundproperties-members.html</file>
+            <file>kuesa-iromattebackgroundproperties.html</file>
+            <file>kuesa-iromattemulteffect-members.html</file>
+            <file>kuesa-iromattemulteffect.html</file>
+            <file>kuesa-iromattemultmaterial-members.html</file>
+            <file>kuesa-iromattemultmaterial.html</file>
+            <file>kuesa-iromattemultproperties-members.html</file>
+            <file>kuesa-iromattemultproperties.html</file>
+            <file>kuesa-iromatteopaqueeffect-members.html</file>
+            <file>kuesa-iromatteopaqueeffect.html</file>
+            <file>kuesa-iromatteopaquematerial-members.html</file>
+            <file>kuesa-iromatteopaquematerial.html</file>
+            <file>kuesa-iromatteopaqueproperties-members.html</file>
+            <file>kuesa-iromatteopaqueproperties.html</file>
+            <file>kuesa-iromatteskyboxeffect-members.html</file>
+            <file>kuesa-iromatteskyboxeffect.html</file>
+            <file>kuesa-iromatteskyboxmaterial-members.html</file>
+            <file>kuesa-iromatteskyboxmaterial.html</file>
+            <file>kuesa-iromatteskyboxproperties-members.html</file>
+            <file>kuesa-iromatteskyboxproperties.html</file>
             <file>kuesa-layercollection-members.html</file>
             <file>kuesa-layercollection.html</file>
+            <file>kuesa-layers.html</file>
             <file>kuesa-lightcollection-members.html</file>
             <file>kuesa-lightcollection.html</file>
             <file>kuesa-manyducks-example.html</file>
@@ -1016,7 +1831,6 @@
             <file>kuesa-skeletoncollection.html</file>
             <file>kuesa-skybox-members.html</file>
             <file>kuesa-skybox.html</file>
-            <file>kuesa-spotlight-members.html</file>
             <file>kuesa-spotlight.html</file>
             <file>kuesa-texturecollection-members.html</file>
             <file>kuesa-texturecollection.html</file>
@@ -1035,6 +1849,8 @@
             <file>kuesa-tonemapping-tonemapping-pro.html</file>
             <file>kuesa-tonemappingandgammacorrectioneffect-members.html</file>
             <file>kuesa-tonemappingandgammacorrectioneffect.html</file>
+            <file>kuesa-transformcollection-members.html</file>
+            <file>kuesa-transformcollection.html</file>
             <file>kuesa-unliteffect-members.html</file>
             <file>kuesa-unliteffect.html</file>
             <file>kuesa-unlitmaterial-members.html</file>
@@ -1060,8 +1876,70 @@
             <file>qml-gltf2importer.html</file>
             <file>qml-gltf2material-members.html</file>
             <file>qml-gltf2material.html</file>
+            <file>qml-gltf2materialeffect-members.html</file>
+            <file>qml-gltf2materialeffect.html</file>
             <file>qml-gltf2options-members.html</file>
             <file>qml-gltf2options.html</file>
+            <file>qml-irodiffusealphaeffect-members.html</file>
+            <file>qml-irodiffusealphaeffect.html</file>
+            <file>qml-irodiffusealphamaterial-members.html</file>
+            <file>qml-irodiffusealphamaterial.html</file>
+            <file>qml-irodiffusealphaproperties-members.html</file>
+            <file>qml-irodiffusealphaproperties.html</file>
+            <file>qml-irodiffuseeffect-members.html</file>
+            <file>qml-irodiffuseeffect.html</file>
+            <file>qml-irodiffusehemieffect-members.html</file>
+            <file>qml-irodiffusehemieffect.html</file>
+            <file>qml-irodiffusehemimaterial-members.html</file>
+            <file>qml-irodiffusehemimaterial.html</file>
+            <file>qml-irodiffusehemiproperties-members.html</file>
+            <file>qml-irodiffusehemiproperties.html</file>
+            <file>qml-irodiffusematerial-members.html</file>
+            <file>qml-irodiffusematerial.html</file>
+            <file>qml-irodiffuseproperties-members.html</file>
+            <file>qml-irodiffuseproperties.html</file>
+            <file>qml-iroglassaddeffect-members.html</file>
+            <file>qml-iroglassaddeffect.html</file>
+            <file>qml-iroglassaddmaterial-members.html</file>
+            <file>qml-iroglassaddmaterial.html</file>
+            <file>qml-iroglassaddproperties-members.html</file>
+            <file>qml-iroglassaddproperties.html</file>
+            <file>qml-iromatteaddeffect-members.html</file>
+            <file>qml-iromatteaddeffect.html</file>
+            <file>qml-iromatteaddmaterial-members.html</file>
+            <file>qml-iromatteaddmaterial.html</file>
+            <file>qml-iromatteaddproperties-members.html</file>
+            <file>qml-iromatteaddproperties.html</file>
+            <file>qml-iromattealphaeffect-members.html</file>
+            <file>qml-iromattealphaeffect.html</file>
+            <file>qml-iromattealphamaterial-members.html</file>
+            <file>qml-iromattealphamaterial.html</file>
+            <file>qml-iromattealphaproperties-members.html</file>
+            <file>qml-iromattealphaproperties.html</file>
+            <file>qml-iromattebackgroundeffect-members.html</file>
+            <file>qml-iromattebackgroundeffect.html</file>
+            <file>qml-iromattebackgroundmaterial-members.html</file>
+            <file>qml-iromattebackgroundmaterial.html</file>
+            <file>qml-iromattebackgroundproperties-members.html</file>
+            <file>qml-iromattebackgroundproperties.html</file>
+            <file>qml-iromattemulteffect-members.html</file>
+            <file>qml-iromattemulteffect.html</file>
+            <file>qml-iromattemultmaterial-members.html</file>
+            <file>qml-iromattemultmaterial.html</file>
+            <file>qml-iromattemultproperties-members.html</file>
+            <file>qml-iromattemultproperties.html</file>
+            <file>qml-iromatteopaqueeffect-members.html</file>
+            <file>qml-iromatteopaqueeffect.html</file>
+            <file>qml-iromatteopaquematerial-members.html</file>
+            <file>qml-iromatteopaquematerial.html</file>
+            <file>qml-iromatteopaqueproperties-members.html</file>
+            <file>qml-iromatteopaqueproperties.html</file>
+            <file>qml-iromatteskyboxeffect-members.html</file>
+            <file>qml-iromatteskyboxeffect.html</file>
+            <file>qml-iromatteskyboxmaterial-members.html</file>
+            <file>qml-iromatteskyboxmaterial.html</file>
+            <file>qml-iromatteskyboxproperties-members.html</file>
+            <file>qml-iromatteskyboxproperties.html</file>
             <file>qml-metallicroughnesseffect-members.html</file>
             <file>qml-metallicroughnesseffect.html</file>
             <file>qml-metallicroughnessmaterial-members.html</file>
@@ -1090,8 +1968,8 @@
             <file>qml-unlitmaterial.html</file>
             <file>qml-unlitproperties-members.html</file>
             <file>qml-unlitproperties.html</file>
-            <file>style/boostrap.min.css</file>
-            <file>style/style.css</file>
+            <file>style/offline-simple.css</file>
+            <file>style/offline.css</file>
             <file>tools.html</file>
         </files>
     </filterSection>

@@ -34,7 +34,7 @@
 #include <QQmlAspectEngine>
 #include <QApplication>
 #include <QQmlContext>
-#include "../../../tools/gltfEditor/orbitcameracontroller.h"
+#include "../../../tools/gltfViewer/orbitcameracontroller.h"
 
 #include "controllerwidget.h"
 #include "scenecontroller.h"

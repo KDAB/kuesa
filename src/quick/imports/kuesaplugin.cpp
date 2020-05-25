@@ -48,6 +48,36 @@
 #include <Kuesa/MetallicRoughnessProperties>
 #include <Kuesa/UnlitProperties>
 #include <Kuesa/EffectProperties>
+#include <Kuesa/IroDiffuseMaterial>
+#include <Kuesa/IroDiffuseEffect>
+#include <Kuesa/IroDiffuseProperties>
+#include <Kuesa/IroDiffuseHemiMaterial>
+#include <Kuesa/IroDiffuseHemiEffect>
+#include <Kuesa/IroDiffuseHemiProperties>
+#include <Kuesa/IroGlassAddMaterial>
+#include <Kuesa/IroGlassAddEffect>
+#include <Kuesa/IroGlassAddProperties>
+#include <Kuesa/IroMatteOpaqueMaterial>
+#include <Kuesa/IroMatteOpaqueEffect>
+#include <Kuesa/IroMatteOpaqueProperties>
+#include <Kuesa/IroMatteAlphaMaterial>
+#include <Kuesa/IroMatteAlphaEffect>
+#include <Kuesa/IroMatteAlphaProperties>
+#include <Kuesa/IroMatteSkyboxMaterial>
+#include <Kuesa/IroMatteSkyboxEffect>
+#include <Kuesa/IroMatteSkyboxProperties>
+#include <Kuesa/IroMatteBackgroundMaterial>
+#include <Kuesa/IroMatteBackgroundEffect>
+#include <Kuesa/IroMatteBackgroundProperties>
+#include <Kuesa/IroMatteAddMaterial>
+#include <Kuesa/IroMatteAddEffect>
+#include <Kuesa/IroMatteAddProperties>
+#include <Kuesa/IroMatteMultMaterial>
+#include <Kuesa/IroMatteMultEffect>
+#include <Kuesa/IroMatteMultProperties>
+#include <Kuesa/IroDiffuseAlphaMaterial>
+#include <Kuesa/IroDiffuseAlphaEffect>
+#include <Kuesa/IroDiffuseAlphaProperties>
 
 #include <QtQml/qqml.h>
 
@@ -64,6 +94,8 @@ KuesaPlugin::~KuesaPlugin()
 
 void KuesaPlugin::registerTypes(const char *uri)
 {
+    // Make latest Kuesa import available (even if no new types are registered)
+    qmlRegisterModule(uri, 1, 2);
 
     // Collections
     qmlRegisterUncreatableType<Kuesa::AbstractAssetCollection>(uri, 1, 0, "AbstractAssetCollection", QStringLiteral("You are not supposed to create an EntityCollection"));
@@ -82,6 +114,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     // FrameGraphs
     qmlRegisterExtendedType<Kuesa::ForwardRenderer, Kuesa::PostFXListExtension>(uri, 1, 0, "ForwardRenderer");
     qmlRegisterRevision<Kuesa::ForwardRenderer, 1>(uri, 1, 1);
+    qmlRegisterRevision<Kuesa::ForwardRenderer, 2>(uri, 1, 2);
 
     // Lights
     qmlRegisterType<Kuesa::DirectionalLight>(uri, 1, 1, "DirectionalLight");
@@ -110,8 +143,50 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::EffectProperties>(uri, 1, 1, "EffectProperties", QStringLiteral("Cannot be instantiated"));
     qRegisterMetaType<Kuesa::EffectProperties::Properties>("EffectProperties::Properties");
 
+    // Custom Simple Materials
+    qmlRegisterType<Kuesa::IroDiffuseMaterial>("Kuesa.Iro", 1, 2, "IroDiffuseMaterial");
+    qmlRegisterType<Kuesa::IroDiffuseProperties>("Kuesa.Iro", 1, 2, "IroDiffuseProperties");
+    qmlRegisterType<Kuesa::IroDiffuseEffect>("Kuesa.Iro", 1, 2, "IroDiffuseEffect");
+
+    qmlRegisterType<Kuesa::IroDiffuseHemiMaterial>("Kuesa.Iro", 1, 2, "IroDiffuseHemiMaterial");
+    qmlRegisterType<Kuesa::IroDiffuseHemiProperties>("Kuesa.Iro", 1, 2, "IroDiffuseHemiProperties");
+    qmlRegisterType<Kuesa::IroDiffuseHemiEffect>("Kuesa.Iro", 1, 2, "IroDiffuseHemiEffect");
+
+    qmlRegisterType<Kuesa::IroGlassAddMaterial>("Kuesa.Iro", 1, 2, "IroGlassAddMaterial");
+    qmlRegisterType<Kuesa::IroGlassAddProperties>("Kuesa.Iro", 1, 2, "IroGlassAddProperties");
+    qmlRegisterType<Kuesa::IroGlassAddEffect>("Kuesa.Iro", 1, 2, "IroGlassAddEffect");
+
+    qmlRegisterType<Kuesa::IroMatteOpaqueMaterial>("Kuesa.Iro", 1, 2, "IroMatteOpaqueMaterial");
+    qmlRegisterType<Kuesa::IroMatteOpaqueProperties>("Kuesa.Iro", 1, 2, "IroMatteOpaqueProperties");
+    qmlRegisterType<Kuesa::IroMatteOpaqueEffect>("Kuesa.Iro", 1, 2, "IroMatteOpaqueEffect");
+
+    qmlRegisterType<Kuesa::IroMatteAlphaMaterial>("Kuesa.Iro", 1, 2, "IroMatteAlphaMaterial");
+    qmlRegisterType<Kuesa::IroMatteAlphaProperties>("Kuesa.Iro", 1, 2, "IroMatteAlphaProperties");
+    qmlRegisterType<Kuesa::IroMatteAlphaEffect>("Kuesa.Iro", 1, 2, "IroMatteAlphaEffect");
+
+    qmlRegisterType<Kuesa::IroMatteSkyboxMaterial>("Kuesa.Iro", 1, 2, "IroMatteSkyboxMaterial");
+    qmlRegisterType<Kuesa::IroMatteSkyboxProperties>("Kuesa.Iro", 1, 2, "IroMatteSkyboxProperties");
+    qmlRegisterType<Kuesa::IroMatteSkyboxEffect>("Kuesa.Iro", 1, 2, "IroMatteSkyboxEffect");
+
+    qmlRegisterType<Kuesa::IroMatteBackgroundMaterial>("Kuesa.Iro", 1, 2, "IroMatteBackgroundMaterial");
+    qmlRegisterType<Kuesa::IroMatteBackgroundProperties>("Kuesa.Iro", 1, 2, "IroMatteBackgroundProperties");
+    qmlRegisterType<Kuesa::IroMatteBackgroundEffect>("Kuesa.Iro", 1, 2, "IroMatteBackgroundEffect");
+
+    qmlRegisterType<Kuesa::IroMatteAddMaterial>("Kuesa.Iro", 1, 2, "IroMatteAddMaterial");
+    qmlRegisterType<Kuesa::IroMatteAddProperties>("Kuesa.Iro", 1, 2, "IroMatteAddProperties");
+    qmlRegisterType<Kuesa::IroMatteAddEffect>("Kuesa.Iro", 1, 2, "IroMatteAddEffect");
+
+    qmlRegisterType<Kuesa::IroMatteMultMaterial>("Kuesa.Iro", 1, 2, "IroMatteMultMaterial");
+    qmlRegisterType<Kuesa::IroMatteMultProperties>("Kuesa.Iro", 1, 2, "IroMatteMultProperties");
+    qmlRegisterType<Kuesa::IroMatteMultEffect>("Kuesa.Iro", 1, 2, "IroMatteMultEffect");
+
+    qmlRegisterType<Kuesa::IroDiffuseAlphaMaterial>("Kuesa.Iro", 1, 2, "IroDiffuseAlphaMaterial");
+    qmlRegisterType<Kuesa::IroDiffuseAlphaProperties>("Kuesa.Iro", 1, 2, "IroDiffuseAlphaProperties");
+    qmlRegisterType<Kuesa::IroDiffuseAlphaEffect>("Kuesa.Iro", 1, 2, "IroDiffuseAlphaEffect");
+
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));
+    qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 2, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));
     qmlRegisterType<Kuesa::BloomEffect>("Kuesa.Effects", 1, 0, "BloomEffect");
     qmlRegisterType<Kuesa::DepthOfFieldEffect>("Kuesa.Effects", 1, 0, "DepthOfFieldEffect");
     qmlRegisterType<Kuesa::ThresholdEffect>("Kuesa.Effects", 1, 0, "ThresholdEffect");

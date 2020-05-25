@@ -1,25 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- sceneentity.cpp -->
-  <title>SceneEntity Class | Kuesa 1.1</title>
-<link rel="stylesheet" type="text/css" href="style/style.css">
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
-</head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+  <title>SceneEntity Class | Kuesa Runtime 1.2</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>C++ Classes</li>
 <li>SceneEntity</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
-        </tr></table>
-      </div>
-    </div>
-<div class="content">
-<div class="line">
-<div class="content mainContent">
-<div class="sidebar">
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
 <ul>
@@ -30,13 +21,13 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">SceneEntity Class</h1>
-<span class="small-subtitle">(<a href="qml-sceneentity.html">Kuesa::SceneEntity</a>)<br/></span>
+<span class="small-subtitle">class <a href="kuesa.html">Kuesa</a>::SceneEntity</span>
 <!-- $$$SceneEntity-brief -->
 <p>Root entity for Kuesa runtime. <a href="#details">More...</a></p>
 <!-- @@@SceneEntity -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;Kuesa/SceneEntity&gt;</span>
-</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-sceneentity.html">SceneEntity</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.0.</p>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/SceneEntity&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-sceneentity.html">SceneEntity</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
 <ul>
 <li><a href="kuesa-sceneentity-members.html">List of all members, including inherited members</a></li>
 </ul>
@@ -45,32 +36,34 @@
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DAnimation::QAbstractAnimationClip *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#animationClip">animationClip</a></b>(const QString &amp;<i>name</i>) const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Kuesa::AnimationClipCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#animationClips">animationClips</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#animationMapping">animationMapping</a></b>(<i>const QString &amp;</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#animationMappings">animationMappings</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DAnimation::QChannelMapper *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#animationMapping">animationMapping</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::AnimationMappingCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#animationMappings">animationMappings</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DCore::QArmature *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#armature">armature</a></b>(const QString &amp;<i>name</i>) const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Kuesa::ArmatureCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#armatures">armatures</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#brdfLut">brdfLut</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#camera">camera</a></b>(<i>const QString &amp;</i>) const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#cameras">cameras</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QCamera *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#camera">camera</a></b>(const QString &amp;<i>name</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::CameraCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#cameras">cameras</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#clearCollections">clearCollections</a></b>()</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QEffect *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#effect">effect</a></b>(const QString &amp;<i>name</i>) const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QEffect *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#effect-1">effect</a></b>(int <i>effectPropertyFlags</i>) const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#entities">entities</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::EntityCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#entities">entities</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DCore::QEntity *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#entity">entity</a></b>(const QString &amp;<i>name</i>) const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QLayer *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#layer">layer</a></b>(const QString &amp;<i>name</i>) const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Kuesa::LayerCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#layers">layers</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Kuesa::LightCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#lights-prop">lights</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Kuesa::GLTF2MaterialProperties *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#material">material</a></b>(const QString &amp;<i>name</i>) const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Kuesa::MaterialCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#materials">materials</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#mesh">mesh</a></b>(<i>const QString &amp;</i>) const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#meshes">meshes</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QGeometryRenderer *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#mesh">mesh</a></b>(const QString &amp;<i>name</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::MeshCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#meshes">meshes</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DCore::QAbstractSkeleton *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#skeleton">skeleton</a></b>(const QString &amp;<i>name</i>) const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#skeletons">skeletons</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::SkeletonCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#skeletons">skeletons</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#texture">texture</a></b>(const QString &amp;<i>name</i>) const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#textureImage">textureImage</a></b>(<i>const QString &amp;</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#textureImages">textureImages</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#textures">textures</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QAbstractTextureImage *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#textureImage">textureImage</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::TextureImageCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#textureImages">textureImages</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::TextureCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#textures">textures</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DCore::QTransform *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#transform">transform</a></b>(const QString &amp;<i>name</i>) const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DCore::QNode *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#transformForEntity">transformForEntity</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::TransformCollection *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-sceneentity.html#transforms">transforms</a></b>() const</td></tr>
 </table></div>
 <a name="signals"></a>
 <h2 id="signals">Signals</h2>
@@ -81,8 +74,8 @@
 <!-- $$$SceneEntity-description -->
 <div class="descr">
 <h2 id="details">Detailed Description</h2>
-<p><a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> provides support for the runtime behaviour of various classes in Kuesa. It's main purpose is to create instances of various asset collections which will be populated if the scene entity is registered with the glTF importer.</p>
-<p>The <a href="kuesa-animationplayer.html">AnimationPlayer</a> classes will also use the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> to access the collections and find assets.</p>
+<p>SceneEntity provides support for the runtime behaviour of various classes in Kuesa. It's main purpose is to create instances of various asset collections which will be populated if the scene entity is registered with the glTF importer.</p>
+<p>The <a href="kuesa-animationplayer.html">AnimationPlayer</a> classes will also use the SceneEntity to access the collections and find assets.</p>
 </div>
 <p><b>See also </b><a href="kuesa-animationplayer.html">AnimationPlayer</a> and <a href="kuesa-gltf2importer.html">GLTF2Importer</a>.</p>
 <!-- @@@SceneEntity -->
@@ -96,16 +89,18 @@
 <!-- $$$animationClips -->
 <h3 class="fn" id="animationClips"><a name="animationClips"></a><span class="type"><a href="kuesa-animationclipcollection.html">Kuesa::AnimationClipCollection</a></span> *SceneEntity::<span class="name">animationClips</span>() const</h3>
 <p>Returns instance of collection of Qt3DAnimation::QAbstractAnimationClip assets</p>
-<p><b>Note:</b> Getter function for property <a href="">animationClips</a>. </p><!-- @@@animationClips -->
+<p><b>Note: </b>Getter function for property animationClips. </p>
+<!-- @@@animationClips -->
 <!-- $$$animationMapping[overload1]$$$animationMappingconstQString& -->
-<h3 class="fn" id="animationMapping"><a name="animationMapping"></a><span class="type">int</span> *SceneEntity::<span class="name">animationMapping</span>(<i>const QString &amp;</i>)</h3>
+<h3 class="fn" id="animationMapping"><a name="animationMapping"></a><span class="type">Qt3DAnimation::QChannelMapper</span> *SceneEntity::<span class="name">animationMapping</span>(const <span class="type">QString</span> &amp;<i>name</i>)</h3>
 <p>Utility method returning an instance of Qt3DAnimation::QChannelMapper matching <i>name</i> (or nullptr if not found)</p>
 <p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
 <!-- @@@animationMapping -->
 <!-- $$$animationMappings -->
-<h3 class="fn" id="animationMappings"><a name="animationMappings"></a><span class="type">int</span> *SceneEntity::<span class="name">animationMappings</span>() const</h3>
+<h3 class="fn" id="animationMappings"><a name="animationMappings"></a><span class="type"><a href="kuesa-animationmappingcollection.html">Kuesa::AnimationMappingCollection</a></span> *SceneEntity::<span class="name">animationMappings</span>() const</h3>
 <p>Returns instance of collection of Qt3DAnimation::QChannelMapper assets</p>
-<p><b>Note:</b> Getter function for property <a href="">animationMappings</a>. </p><!-- @@@animationMappings -->
+<p><b>Note: </b>Getter function for property animationMappings. </p>
+<!-- @@@animationMappings -->
 <!-- $$$armature[overload1]$$$armatureconstQString& -->
 <h3 class="fn" id="armature"><a name="armature"></a><span class="type">Qt3DCore::QArmature</span> *SceneEntity::<span class="name">armature</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
 <p>Utility method returning an instance of Qt3DCore::QArmature matching <i>name</i> (or nullptr if not found)</p>
@@ -114,27 +109,31 @@
 <!-- $$$armatures -->
 <h3 class="fn" id="armatures"><a name="armatures"></a><span class="type"><a href="kuesa-armaturecollection.html">Kuesa::ArmatureCollection</a></span> *SceneEntity::<span class="name">armatures</span>() const</h3>
 <p>Returns instance of collection of Qt3DCore::QArmature assets</p>
-<p><b>Note:</b> Getter function for property <a href="">armatures</a>. </p><!-- @@@armatures -->
+<p><b>Note: </b>Getter function for property armatures. </p>
+<!-- @@@armatures -->
 <!-- $$$brdfLut -->
 <h3 class="fn" id="brdfLut"><a name="brdfLut"></a><span class="type">Qt3DRender::QAbstractTexture</span> *SceneEntity::<span class="name">brdfLut</span>() const</h3>
 <p>SceneEntity::brdfLut Returns the brdfLut texture stored in the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a></p>
 <p>The brdfLut is used as a lookup texture and is needed for the metallic roughness effect instances. The metallic roughness effect will use the brdfLut texture stored in the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> if the user doesn't provide another one. This allows to share the same texture instance between all the instances of the metallic roughness effect.</p>
 <p><a href="https://learnopengl.com/PBR/IBL/Specular-IBL">https://learnopengl.com/PBR/IBL/Specular-IBL</a></p>
 <p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
-<p><b>Note:</b> Getter function for property <a href="">brdfLut</a>. </p><!-- @@@brdfLut -->
+<p><b>Note: </b>Getter function for property brdfLut. </p>
+<!-- @@@brdfLut -->
 <!-- $$$camera[overload1]$$$cameraconstQString& -->
-<h3 class="fn" id="camera"><a name="camera"></a><span class="type">int</span> *SceneEntity::<span class="name">camera</span>(<i>const QString &amp;</i>) const</h3>
+<h3 class="fn" id="camera"><a name="camera"></a><span class="type">Qt3DRender::QCamera</span> *SceneEntity::<span class="name">camera</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
 <p>Utility method returning an instance of Qt3DRender::QCamera matching <i>name</i> (or nullptr if not found)</p>
 <p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
 <!-- @@@camera -->
 <!-- $$$cameras -->
-<h3 class="fn" id="cameras"><a name="cameras"></a><span class="type">int</span> *SceneEntity::<span class="name">cameras</span>() const</h3>
+<h3 class="fn" id="cameras"><a name="cameras"></a><span class="type"><a href="kuesa-cameracollection.html">Kuesa::CameraCollection</a></span> *SceneEntity::<span class="name">cameras</span>() const</h3>
 <p>Returns instance of collection of Qt3DRender::QCamera assets</p>
-<p><b>Note:</b> Getter function for property <a href="">cameras</a>. </p><!-- @@@cameras -->
+<p><b>Note: </b>Getter function for property cameras. </p>
+<!-- @@@cameras -->
 <!-- $$$clearCollections[overload1]$$$clearCollections -->
 <h3 class="fn" id="clearCollections"><a name="clearCollections"></a><span class="type">void</span> SceneEntity::<span class="name">clearCollections</span>()</h3>
 <p>Removes all assets from all the collections.</p>
-<p><b>Note: </b>Assets which are parented with the collection will be deleted.</p><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
+<p><b>Note: </b>Assets which are parented with the collection will be deleted.</p>
+<p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
 <!-- @@@clearCollections -->
 <!-- $$$effect[overload1]$$$effectconstQString& -->
 <h3 class="fn" id="effect"><a name="effect"></a><span class="type">Qt3DRender::QEffect</span> *SceneEntity::<span class="name">effect</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
@@ -147,9 +146,10 @@
 <p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
 <!-- @@@effect -->
 <!-- $$$entities -->
-<h3 class="fn" id="entities"><a name="entities"></a><span class="type">int</span> *SceneEntity::<span class="name">entities</span>() const</h3>
+<h3 class="fn" id="entities"><a name="entities"></a><span class="type"><a href="kuesa-entitycollection.html">Kuesa::EntityCollection</a></span> *SceneEntity::<span class="name">entities</span>() const</h3>
 <p>Returns instance of collection of Qt3DCore::QEntity assets</p>
-<p><b>Note:</b> Getter function for property <a href="">entities</a>. </p><!-- @@@entities -->
+<p><b>Note: </b>Getter function for property entities. </p>
+<!-- @@@entities -->
 <!-- $$$entity[overload1]$$$entityconstQString& -->
 <h3 class="fn" id="entity"><a name="entity"></a><span class="type">Qt3DCore::QEntity</span> *SceneEntity::<span class="name">entity</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
 <p>Utility method returning an instance of Qt3DCore::QEntity matching <i>name</i> (or nullptr if not found)</p>
@@ -163,7 +163,8 @@
 <!-- $$$layers -->
 <h3 class="fn" id="layers"><a name="layers"></a><span class="type"><a href="kuesa-layercollection.html">Kuesa::LayerCollection</a></span> *SceneEntity::<span class="name">layers</span>() const</h3>
 <p>Returns instance of collection of Qt3DRender::QLayer assets</p>
-<p><b>Note:</b> Getter function for property <a href="">layers</a>. </p><!-- @@@layers -->
+<p><b>Note: </b>Getter function for property layers. </p>
+<!-- @@@layers -->
 <!-- $$$material[overload1]$$$materialconstQString& -->
 <h3 class="fn" id="material"><a name="material"></a><span class="type"><a href="kuesa-gltf2materialproperties.html">Kuesa::GLTF2MaterialProperties</a></span> *SceneEntity::<span class="name">material</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
 <p>Utility method returning an instance of the Qt3DRender::GLTF2MaterialProperties subclass matching <i>name</i> (or nullptr if not found)</p>
@@ -172,49 +173,66 @@
 <!-- $$$materials -->
 <h3 class="fn" id="materials"><a name="materials"></a><span class="type"><a href="kuesa-materialcollection.html">Kuesa::MaterialCollection</a></span> *SceneEntity::<span class="name">materials</span>() const</h3>
 <p>Returns instance of collection of Qt3DRender::QMaterial assets</p>
-<p><b>Note:</b> Getter function for property <a href="">materials</a>. </p><!-- @@@materials -->
+<p><b>Note: </b>Getter function for property materials. </p>
+<!-- @@@materials -->
 <!-- $$$mesh[overload1]$$$meshconstQString& -->
-<h3 class="fn" id="mesh"><a name="mesh"></a><span class="type">int</span> *SceneEntity::<span class="name">mesh</span>(<i>const QString &amp;</i>) const</h3>
-<p>Utility method returning an instance of Qt3DRender::QGeometryRenderer matching <i>name</i> (or nullptr if not found)</p>
+<h3 class="fn" id="mesh"><a name="mesh"></a><span class="type">Qt3DRender::QGeometryRenderer</span> *SceneEntity::<span class="name">mesh</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
+<p>Utility method returning an instance of QGeometryRenderer matching <i>name</i> (or nullptr if not found)</p>
 <p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
 <!-- @@@mesh -->
 <!-- $$$meshes -->
-<h3 class="fn" id="meshes"><a name="meshes"></a><span class="type">int</span> *SceneEntity::<span class="name">meshes</span>() const</h3>
-<p>Returns instance of collection of Qt3DRender::QGeometryRenderer assets</p>
-<p><b>Note:</b> Getter function for property <a href="">meshes</a>. </p><!-- @@@meshes -->
+<h3 class="fn" id="meshes"><a name="meshes"></a><span class="type"><a href="kuesa-meshcollection.html">Kuesa::MeshCollection</a></span> *SceneEntity::<span class="name">meshes</span>() const</h3>
+<p>Returns instance of collection of QGeometryRenderer assets</p>
+<p><b>Note: </b>Getter function for property meshes. </p>
+<!-- @@@meshes -->
 <!-- $$$skeleton[overload1]$$$skeletonconstQString& -->
 <h3 class="fn" id="skeleton"><a name="skeleton"></a><span class="type">Qt3DCore::QAbstractSkeleton</span> *SceneEntity::<span class="name">skeleton</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
 <p>Utility method returning an instance of Qt3DCore::QAbstractSkeleton matching <i>name</i> (or nullptr if not found)</p>
 <p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
 <!-- @@@skeleton -->
 <!-- $$$skeletons -->
-<h3 class="fn" id="skeletons"><a name="skeletons"></a><span class="type">int</span> *SceneEntity::<span class="name">skeletons</span>() const</h3>
+<h3 class="fn" id="skeletons"><a name="skeletons"></a><span class="type"><a href="kuesa-skeletoncollection.html">Kuesa::SkeletonCollection</a></span> *SceneEntity::<span class="name">skeletons</span>() const</h3>
 <p>Returns instance of collection of Qt3DCore::QAbstractSkeleton assets</p>
-<p><b>Note:</b> Getter function for property <a href="">skeletons</a>. </p><!-- @@@skeletons -->
+<p><b>Note: </b>Getter function for property skeletons. </p>
+<!-- @@@skeletons -->
 <!-- $$$texture[overload1]$$$textureconstQString& -->
 <h3 class="fn" id="texture"><a name="texture"></a><span class="type">Qt3DRender::QAbstractTexture</span> *SceneEntity::<span class="name">texture</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
 <p>Utility method returning an instance of Qt3DRender::QAbstractTexture matching <i>name</i> (or nullptr if not found)</p>
 <p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
 <!-- @@@texture -->
 <!-- $$$textureImage[overload1]$$$textureImageconstQString& -->
-<h3 class="fn" id="textureImage"><a name="textureImage"></a><span class="type">int</span> *SceneEntity::<span class="name">textureImage</span>(<i>const QString &amp;</i>)</h3>
+<h3 class="fn" id="textureImage"><a name="textureImage"></a><span class="type">Qt3DRender::QAbstractTextureImage</span> *SceneEntity::<span class="name">textureImage</span>(const <span class="type">QString</span> &amp;<i>name</i>)</h3>
 <p>Utility method returning an instance of Qt3DRender::QAbstractTextureImage matching <i>name</i> (or nullptr if not found)</p>
 <p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
 <!-- @@@textureImage -->
 <!-- $$$textureImages -->
-<h3 class="fn" id="textureImages"><a name="textureImages"></a><span class="type">int</span> *SceneEntity::<span class="name">textureImages</span>() const</h3>
+<h3 class="fn" id="textureImages"><a name="textureImages"></a><span class="type"><a href="kuesa-textureimagecollection.html">Kuesa::TextureImageCollection</a></span> *SceneEntity::<span class="name">textureImages</span>() const</h3>
 <p>Returns instance of collection of Qt3DRender::QAbstractTextureImage assets</p>
-<p><b>Note:</b> Getter function for property <a href="">textureImages</a>. </p><!-- @@@textureImages -->
+<p><b>Note: </b>Getter function for property textureImages. </p>
+<!-- @@@textureImages -->
 <!-- $$$textures -->
-<h3 class="fn" id="textures"><a name="textures"></a><span class="type">int</span> *SceneEntity::<span class="name">textures</span>() const</h3>
+<h3 class="fn" id="textures"><a name="textures"></a><span class="type"><a href="kuesa-texturecollection.html">Kuesa::TextureCollection</a></span> *SceneEntity::<span class="name">textures</span>() const</h3>
 <p>Returns instance of collection of Qt3DRender::QAbstractTexture assets</p>
-<p><b>Note:</b> Getter function for property <a href="">textures</a>. </p><!-- @@@textures -->
+<p><b>Note: </b>Getter function for property textures. </p>
+<!-- @@@textures -->
+<!-- $$$transform[overload1]$$$transformconstQString& -->
+<h3 class="fn" id="transform"><a name="transform"></a><span class="type">Qt3DCore::QTransform</span> *SceneEntity::<span class="name">transform</span>(const <span class="type">QString</span> &amp;<i>name</i>) const</h3>
+<p>Utility method returning an instance of Qt3DCore::QTransform matching <i>name</i> (or nullptr if not found)</p>
+<p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
+<p>This function was introduced in Kuesa 1.2.</p>
+<!-- @@@transform -->
 <!-- $$$transformForEntity[overload1]$$$transformForEntityconstQString& -->
 <h3 class="fn" id="transformForEntity"><a name="transformForEntity"></a><span class="type">Qt3DCore::QNode</span> *SceneEntity::<span class="name">transformForEntity</span>(const <span class="type">QString</span> &amp;<i>name</i>)</h3>
 <p>SceneEntity::transformForEntity returns the transform component of the specified entity identified by <i>name</i>.</p>
 <p>This is a utility method which will look for an entity in the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a>'s <a href="kuesa-entitycollection.html">EntityCollection</a> and return the Qt3DCore::QTransform component if it exists.</p>
 <p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See Q_INVOKABLE.</p>
 <!-- @@@transformForEntity -->
+<!-- $$$transforms -->
+<h3 class="fn" id="transforms"><a name="transforms"></a><span class="type"><a href="kuesa-transformcollection.html">Kuesa::TransformCollection</a></span> *SceneEntity::<span class="name">transforms</span>() const</h3>
+<p>Returns instance of collection of Qt3DCore::QTransform assets</p>
+<p><b>Note: </b>Getter function for property transforms. </p>
+<p>This function was introduced in Kuesa 1.2.</p>
+<!-- @@@transforms -->
 </div>
         </div>
        </div>
@@ -222,8 +240,8 @@
    </div>
 </div>
 <div class="footer">
-   <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
    Documentation contributions included herein are the copyrights of
    their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>

@@ -1,0 +1,141 @@
+/*
+    kuesa-custom-materials.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \page kuesa-custom-materials.html
+    \title Kuesa Custom Materials
+
+    \brief Kuesa provides a mecanism to extend the type of materials available
+    in glTF files.
+
+    \since Kuesa 1.2
+
+    Kuesa provides a mecanism to extend the type of materials available
+    in glTF files. This mecanism relies on 2 parts:
+    \list 1
+    \li Generating C++ Classes for the custom Material
+    \li Registering the material classes against the glTF importer
+    \endlist
+
+    \section1 Generating Material Classes
+
+    The process of generating C++ Qt3D compatible material classes has been
+    simplified in Kuesa through the use of a class generator.
+
+    This generator expects a JSON based description of the material.
+    It expects you to define:
+
+    \list
+    \li The Name of the material
+    \li The Documentation of the material
+    \li A set of properties the material will expose to control its appearance
+    \li A list of shaders for various OpenGL versions, providing the shader
+    code or the path to a shader graph. If both a code and a path are provided,
+    the code has priority over the graph.
+    \endlist
+
+    \badcode
+    {
+        "type": "CustomPainting",
+        "doc": "Description of what the material does"
+        "properties": [
+            { "name": "color", "type": "vec3", "doc": "Specifies the output color" },
+         ],
+        "shaders": [
+            {
+                "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                "type": "Vertex",
+                "code": "..."
+            },
+            {
+                "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                "type": "Vertex",
+                "code": "..."
+            },
+            {
+                "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                "type": "Vertex",
+                "graph": "qrc:/..."
+            },
+            {
+                "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                "type": "Fragment",
+                "code": "..."
+            },
+            {
+                "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                "type": "Fragment",
+                "code": "..."
+            },
+            {
+                "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                "type": "Fragment",
+                "graph": "qrc:/..."
+            }
+        ]
+    }
+    \endcode
+
+    Once the description file has been created, the C++ classes can be generated
+    by calling the script file custom_material_class_generator.py
+
+    \badcode
+    custom_material_class_generator.py CustomPainting.json
+    \endcode
+
+    This will generate a sub directory custompainting containing a .pri file.
+    That .pri file should be included to the project's .pro to get the material
+    classes built.
+
+    \section1 Registering new Material Classes
+
+    The second step to adding a new custom material to Kuesa is to register it
+    with the glTF importer.
+
+    To do so, you'll have to call GLTF2Importer::registerCustomMaterial
+    providing the material, properties and effect classes as well as the name
+    of the glTF material it maps to.
+
+    \badcode
+
+    #include <Kuesa/GLTF2Importer>
+
+    ...
+
+    GLTF2Importer::registerCustomMaterial<CustomPaintingMaterial, CustomPaintingProperties, CustomPaintingEffect>(QStringLiteral("CustomPainting"));
+
+    \endcode
+
+    Please note that this needs to be done prior to any importing.
+
+    \section2 Registering with QML
+
+    If you wish to be able to instantiate the Material classes on the QML side
+    or access them by retrieving them from the load glTF tree, you'll also have
+    to register the C++ classes using the usual qmlRegisterType function.
+*/

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- iro-materials-gallery.qdoc -->
+  <title>Kuesa Iro-Materials-Gallery QML Example | Kuesa Runtime 1.2</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>Kuesa Iro-Materials-Gallery QML Example</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#qtquick-and-qt3d-integration">QtQuick and Qt3D integration</a></li>
+<li class="level1"><a href="#sceneentity">SceneEntity</a></li>
+<li class="level1"><a href="#importing-a-gltf2-file">Importing a glTF2 File</a></li>
+<li class="level1"><a href="#handling-picking">Handling Picking</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Kuesa Iro-Materials-Gallery QML Example</h1>
+<span class="subtitle"></span>
+<!-- $$$iro-materials-gallery-brief -->
+<p>Demonstrates the appearance of the different <a href="kuesa-iro-materials.html">Kuesa Iro Materials</a> that can be bundled in a glTF file.</p>
+<!-- @@@iro-materials-gallery -->
+<!-- $$$iro-materials-gallery-description -->
+<div class="descr"> <a name="details"></a>
+<p class="centerAlign"><img src="images/iro-materials-gallery-example.jpg" alt="" /></p><a name="qtquick-and-qt3d-integration"></a>
+<h4 id="qtquick-and-qt3d-integration">QtQuick and Qt3D integration</h4>
+<p>The iro-materials-gallery relies on the regular QtQuick and Qt 3D APIs to instantiate a QtQuick based application that combines Qt 3D based content with a 2D UI overlay.</p>
+<pre class="qml">
+ <span class="type">Item</span> {
+     <span class="name">id</span>: <span class="name">mainRoot</span>
+
+     <span class="comment">// 3D Content</span>
+
+     <span class="type">Item</span> {
+         <span class="name">id</span>: <span class="name">baseUI</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="type">Scene3D</span> {
+             <span class="name">id</span>: <span class="name">scene3D</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">focus</span>: <span class="number">true</span>
+             <span class="name">multisample</span>: <span class="number">true</span>
+             <span class="name">aspects</span>: [<span class="string">&quot;input&quot;</span>, <span class="string">&quot;animation&quot;</span>, <span class="string">&quot;logic&quot;</span>]
+
+             <span class="comment">// Root Scene Entity</span>
+             <span class="type">MainScene</span> {
+                 <span class="name">id</span>: <span class="name">sceneContent</span>
+                 <span class="name">onClickedAt</span>: {
+                     <span class="name">inspectorView</span>.<span class="name">x</span> <span class="operator">=</span> <span class="name">x</span>
+                     <span class="name">inspectorView</span>.<span class="name">y</span> <span class="operator">=</span> <span class="name">y</span>
+                 }
+             }
+         }
+     }
+
+     <span class="type">MaterialInspector</span> {
+         <span class="name">id</span>: <span class="name">inspectorView</span>
+     }
+ }
+         ...
+</pre>
+<a name="sceneentity"></a>
+<h4 id="sceneentity">SceneEntity</h4>
+<p>Kuesa provides the <a href="qml-sceneentity.html">SceneEntity</a> element which holds collections of Qt 3D assets accessible by name.</p>
+<pre class="qml">
+ import Qt3D.Core 2.12
+ import Qt3D.Render 2.12
+ import Qt3D.Input 2.12
+ import Qt3D.Extras 2.12
+ import QtQuick 2.12
+
+ import Kuesa 1.2 as <a href="kuesa.html">Kuesa</a>
+ import Kuesa.Effects 1.1 as KuesaFX
+
+ <span class="type">Kuesa</span>.SceneEntity {
+     <span class="name">id</span>: <span class="name">root3D</span>
+     signal <span class="type">clickedAt</span>(int x, int y)
+</pre>
+<a name="importing-a-gltf2-file"></a>
+<h4 id="importing-a-gltf2-file">Importing a glTF2 File</h4>
+<p>In order to load a glTF2 file, Kuesa provides the <a href="qml-gltf2importer.html">GLTF2Importer</a> element. If the <i>sceneEntity</i> property is set to a valid <a href="qml-sceneentity.html">SceneEntity</a> instance, Qt 3D assets generated while parsing the file will be automatically added to the various asset collections.</p>
+<p>The <a href="qml-gltf2importer.html">GLTF2Importer</a> takes care of intantiating the <a href="kuesa-iro-materials.html">Kuesa Iro Materials</a></p>
+<pre class="qml">
+     <span class="type">Kuesa</span>.GLTF2Importer {
+         <span class="name">id</span>: <span class="name">gltf2importer</span>
+         <span class="name">sceneEntity</span>: <span class="name">root3D</span>
+         <span class="name">assignNames</span>: <span class="number">true</span>
+         <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;iro-materials-gallery.gltf&quot;</span>
+         <span class="name">options</span>.generateTangents: <span class="number">true</span>
+     }
+</pre>
+<a name="handling-picking"></a>
+<h4 id="handling-picking">Handling Picking</h4>
+<p>We want to display the material properties of the sphere on which we click. To do that, we can simply use the ObjectPicker element provided by Qt3D.</p>
+<pre class="qml">
+         <span class="type">ObjectPicker</span> {
+             <span class="name">onClicked</span>: {
+                 <span class="name">_materialInspector</span>.<span class="name">inspect</span>(<span class="name">pick</span>)
+                 <span class="name">root3D</span>.<span class="name">clickedAt</span>(<span class="name">pick</span>.<span class="name">position</span>.<span class="name">x</span>, <span class="name">pick</span>.<span class="name">position</span>.<span class="name">y</span>)
+             }
+         }
+</pre>
+<p>We can react to the clicked signal and call some C++ function to perform some introspection and retrieve material properties.</p>
+<p>Files:</p>
+<ul>
+<li><a href="kuesa-iro-materials-gallery-iro-materials-gallery-pro.html">iro-materials-gallery/iro-materials-gallery.pro</a></li>
+<li><a href="kuesa-iro-materials-gallery-main-cpp.html">iro-materials-gallery/main.cpp</a></li>
+<li><a href="kuesa-iro-materials-gallery-materialinspector-cpp.html">iro-materials-gallery/materialinspector.cpp</a></li>
+<li><a href="kuesa-iro-materials-gallery-materialinspector-h.html">iro-materials-gallery/materialinspector.h</a></li>
+<li><a href="kuesa-iro-materials-gallery-qml-mainscene-qml.html">iro-materials-gallery/qml/MainScene.qml</a></li>
+<li><a href="kuesa-iro-materials-gallery-qml-materialinspector-qml.html">iro-materials-gallery/qml/MaterialInspector.qml</a></li>
+<li><a href="kuesa-iro-materials-gallery-qml-main-qml.html">iro-materials-gallery/qml/main.qml</a></li>
+<li><a href="kuesa-iro-materials-gallery-qml-qml-qrc.html">iro-materials-gallery/qml/qml.qrc</a></li>
+</ul>
+<p>Images:</p>
+<ul>
+<li><a href="images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png">iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png</a></li>
+<li><a href="images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png">iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</a></li>
+<li><a href="images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png">iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</a></li>
+<li><a href="images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png">iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png</a></li>
+</ul>
+</div>
+<!-- @@@iro-materials-gallery -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

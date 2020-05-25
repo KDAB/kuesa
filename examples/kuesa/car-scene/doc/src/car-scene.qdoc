@@ -69,8 +69,8 @@
     for a given name really exist in the specified \a collection, the \a node
     property allows you to access the underlying asset instance.
 
-    You can use the \l {gltfEditor} to instrospect a glTF2 scene files and find
-    the names of the various assets it contains.
+    You can use the Kuesa Studio gltfEditor to introspect a glTF2 scene files
+    and find the names of the various assets it contains.
 
     For instance you might want to select a Camera by name.
     \snippet car-scene/qml/MainScene.qml 2.1
@@ -97,7 +97,7 @@
     First you need to instantiate the effects you want to use.
     \snippet car-scene/qml/MainScene.qml 3.1
 
-    Once you have create the effects, they need to be added to the \l
+    Once you have created the effects, they need to be added to the \l
     {ForwardRenderer} FrameGraph. The order in which they are added dictates
     the order in which they are applied.
     \snippet car-scene/qml/MainScene.qml 3.2

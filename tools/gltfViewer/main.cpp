@@ -37,7 +37,7 @@
 #include <Qt3DAnimation/QAnimationAspect>
 #include <Qt3DQuickExtras/Qt3DQuickWindow>
 #include <Kuesa/GLTF2Importer>
-#include "../gltfEditor/orbitcameracontroller.h"
+#include "orbitcameracontroller.h"
 
 class ViewerApplication : public QGuiApplication
 {

@@ -1,30 +1,3 @@
-{
-    "asset" : {
-        "generator" : "Khronos Blender glTF 2.0 exporter",
-        "version" : "2.0"
-    },
-    "extensions" : {
-        "KDAB_Kuesa_Layers" : {
-            "layers" : [
-                "vl1", "vl2", "vl3"
-            ]
-        }
-    },
-    "extensionsUsed" : [
-        "KDAB_Kuesa_Layers"
-    ],
-    "nodes" : [
-        {
-            "name" : "entity"
-        }
-    ],
-    "scene" : 0,
-    "scenes" : [
-        {
-            "name" : "Scene",
-            "nodes" : [
-                0
-            ]
-        }
-    ]
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ae478813190566a71b9979d686ed28ab939df331c429993be52240d8a1b6c3d0
+size 536

@@ -33,12 +33,14 @@ QT += kuesa qml
 
 SOURCES += \
     animationplayeritem.cpp \
+    assetproperty.cpp \
     kuesaplugin.cpp \
     asset.cpp \
     postfxlistextension.cpp
 
 HEADERS += \
     animationplayeritem.h \
+    assetproperty_p.h \
     kuesaplugin.h \
     asset.h \
     postfxlistextension.h

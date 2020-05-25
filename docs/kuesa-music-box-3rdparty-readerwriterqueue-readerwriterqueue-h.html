@@ -1,915 +1,904 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- music-box.qdoc -->
-  <title>Kuesa Music Box QML Example | Kuesa 1.1</title>
-<link rel="stylesheet" type="text/css" href="style/style.css">
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
-</head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
+  <title>Kuesa Music Box QML Example | Kuesa Runtime 1.2</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Music Box QML Example</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
-        </tr></table>
-      </div>
-    </div>
-<div class="content">
-<div class="line">
-<div class="content mainContent">
-<h1 class="title">Kuesa Music Box QML Example</h1>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><h1 class="title">Kuesa Music Box QML Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
-
-  <span class="comment">// ©2013-2016 Cameron Desrochers.</span>
-  <span class="comment">// Distributed under the simplified BSD license (see the license file that</span>
-  <span class="comment">// should have come with this header).</span>
-
-  <span class="preprocessor">#pragma once</span>
-
-  <span class="preprocessor">#include &quot;atomicops.h&quot;</span>
-  <span class="preprocessor">#include &lt;type_traits&gt;</span>
-  <span class="preprocessor">#include &lt;utility&gt;</span>
-  <span class="preprocessor">#include &lt;cassert&gt;</span>
-  <span class="preprocessor">#include &lt;stdexcept&gt;</span>
-  <span class="preprocessor">#include &lt;new&gt;</span>
-  <span class="preprocessor">#include &lt;cstdint&gt;</span>
-  <span class="preprocessor">#include &lt;cstdlib&gt;              // For malloc/free/abort &amp; size_t</span>
-  <span class="preprocessor">#include &lt;memory&gt;</span>
-  <span class="preprocessor">#if __cplusplus &gt; 199711L || _MSC_VER &gt;= 1700 // C++11 or VS2012</span>
-  <span class="preprocessor">#include &lt;chrono&gt;</span>
-  <span class="preprocessor">#endif</span>
-
-  <span class="comment">// A lock-free queue for a single-consumer, single-producer architecture.</span>
-  <span class="comment">// The queue is also wait-free in the common path (except if more memory</span>
-  <span class="comment">// needs to be allocated, in which case malloc is called).</span>
-  <span class="comment">// Allocates memory sparingly (O(lg(n) times, amortized), and only once if</span>
-  <span class="comment">// the original maximum size estimate is never exceeded.</span>
-  <span class="comment">// Tested on x86/x64 processors, but semantics should be correct for all</span>
-  <span class="comment">// architectures (given the right implementations in atomicops.h), provided</span>
-  <span class="comment">// that aligned integer and pointer accesses are naturally atomic.</span>
-  <span class="comment">// Note that there should only be one consumer thread and producer thread;</span>
-  <span class="comment">// Switching roles of the threads, or using multiple consecutive threads for</span>
-  <span class="comment">// one role, is not safe unless properly synchronized.</span>
-  <span class="comment">// Using the queue exclusively from one thread is fine, though a bit silly.</span>
-
-  <span class="preprocessor">#ifndef MOODYCAMEL_CACHE_LINE_SIZE</span>
-  <span class="preprocessor">#define MOODYCAMEL_CACHE_LINE_SIZE 64</span>
-  <span class="preprocessor">#endif</span>
-
-  <span class="preprocessor">#ifndef MOODYCAMEL_EXCEPTIONS_ENABLED</span>
-  <span class="preprocessor">#if (defined(_MSC_VER) &amp;&amp; defined(_CPPUNWIND)) || (defined(__GNUC__) &amp;&amp; defined(__EXCEPTIONS)) || (!defined(_MSC_VER) &amp;&amp; !defined(__GNUC__))</span>
-  <span class="preprocessor">#define MOODYCAMEL_EXCEPTIONS_ENABLED</span>
-  <span class="preprocessor">#endif</span>
-  <span class="preprocessor">#endif</span>
-
-  <span class="preprocessor">#ifndef MOODYCAMEL_HAS_EMPLACE</span>
-  <span class="preprocessor">#if !defined(_MSC_VER) || _MSC_VER &gt;= 1800 // variadic templates: either a non-MS compiler or VS &gt;= 2013</span>
-  <span class="preprocessor">#define MOODYCAMEL_HAS_EMPLACE    1</span>
-  <span class="preprocessor">#endif</span>
-  <span class="preprocessor">#endif</span>
-
-  <span class="preprocessor">#ifdef AE_VCPP</span>
-  <span class="preprocessor">#pragma warning(push)</span>
-  <span class="preprocessor">#pragma warning(disable: 4324)  // structure was padded due to __declspec(align())</span>
-  <span class="preprocessor">#pragma warning(disable: 4820)  // padding was added</span>
-  <span class="preprocessor">#pragma warning(disable: 4127)  // conditional expression is constant</span>
-  <span class="preprocessor">#endif</span>
-
-  <span class="keyword">namespace</span> moodycamel {
-
-  <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> T<span class="operator">,</span> size_t MAX_BLOCK_SIZE <span class="operator">=</span> <span class="number">512</span><span class="operator">&gt;</span>
-  <span class="keyword">class</span> ReaderWriterQueue
-  {
-          <span class="comment">// Design: Based on a queue-of-queues. The low-level queues are just</span>
-          <span class="comment">// circular buffers with front and tail indices indicating where the</span>
-          <span class="comment">// next element to dequeue is and where the next element can be enqueued,</span>
-          <span class="comment">// respectively. Each low-level queue is called a &quot;block&quot;. Each block</span>
-          <span class="comment">// wastes exactly one element's worth of space to keep the design simple</span>
-          <span class="comment">// (if front == tail then the queue is empty, and can't be full).</span>
-          <span class="comment">// The high-level queue is a circular linked list of blocks; again there</span>
-          <span class="comment">// is a front and tail, but this time they are pointers to the blocks.</span>
-          <span class="comment">// The front block is where the next element to be dequeued is, provided</span>
-          <span class="comment">// the block is not empty. The back block is where elements are to be</span>
-          <span class="comment">// enqueued, provided the block is not full.</span>
-          <span class="comment">// The producer thread owns all the tail indices/pointers. The consumer</span>
-          <span class="comment">// thread owns all the front indices/pointers. Both threads read each</span>
-          <span class="comment">// other's variables, but only the owning thread updates them. E.g. After</span>
-          <span class="comment">// the consumer reads the producer's tail, the tail may change before the</span>
-          <span class="comment">// consumer is done dequeuing an object, but the consumer knows the tail</span>
-          <span class="comment">// will never go backwards, only forwards.</span>
-          <span class="comment">// If there is no room to enqueue an object, an additional block (of</span>
-          <span class="comment">// equal size to the last block) is added. Blocks are never removed.</span>
-
-  <span class="keyword">public</span>:
-          <span class="keyword">typedef</span> T value_type;
-
-          <span class="comment">// Constructs a queue that can hold maxSize elements without further</span>
-          <span class="comment">// allocations. If more than MAX_BLOCK_SIZE elements are requested,</span>
-          <span class="comment">// then several blocks of MAX_BLOCK_SIZE each are reserved (including</span>
-          <span class="comment">// at least one extra buffer block).</span>
-          AE_NO_TSAN <span class="keyword">explicit</span> ReaderWriterQueue(size_t maxSize <span class="operator">=</span> <span class="number">15</span>)
-  <span class="preprocessor">#ifndef NDEBUG</span>
-                  : enqueuing(<span class="keyword">false</span>)
-                  <span class="operator">,</span>dequeuing(<span class="keyword">false</span>)
-  <span class="preprocessor">#endif</span>
-          {
-                  assert(maxSize <span class="operator">&gt;</span> <span class="number">0</span>);
-                  assert(MAX_BLOCK_SIZE <span class="operator">=</span><span class="operator">=</span> ceilToPow2(MAX_BLOCK_SIZE) <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="string">&quot;MAX_BLOCK_SIZE must be a power of 2&quot;</span>);
-                  assert(MAX_BLOCK_SIZE <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">2</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="string">&quot;MAX_BLOCK_SIZE must be at least 2&quot;</span>);
-
-                  Block<span class="operator">*</span> firstBlock <span class="operator">=</span> nullptr;
-
-                  largestBlockSize <span class="operator">=</span> ceilToPow2(maxSize <span class="operator">+</span> <span class="number">1</span>);             <span class="comment">// We need a spare slot to fit maxSize elements in the block</span>
-                  <span class="keyword">if</span> (largestBlockSize <span class="operator">&gt;</span> MAX_BLOCK_SIZE <span class="operator">*</span> <span class="number">2</span>) {
-                          <span class="comment">// We need a spare block in case the producer is writing to a different block the consumer is reading from, and</span>
-                          <span class="comment">// wants to enqueue the maximum number of elements. We also need a spare element in each block to avoid the ambiguity</span>
-                          <span class="comment">// between front == tail meaning &quot;empty&quot; and &quot;full&quot;.</span>
-                          <span class="comment">// So the effective number of slots that are guaranteed to be usable at any time is the block size - 1 times the</span>
-                          <span class="comment">// number of blocks - 1. Solving for maxSize and applying a ceiling to the division gives us (after simplifying):</span>
-                          size_t initialBlockCount <span class="operator">=</span> (maxSize <span class="operator">+</span> MAX_BLOCK_SIZE <span class="operator">*</span> <span class="number">2</span> <span class="operator">-</span> <span class="number">3</span>) <span class="operator">/</span> (MAX_BLOCK_SIZE <span class="operator">-</span> <span class="number">1</span>);
-                          largestBlockSize <span class="operator">=</span> MAX_BLOCK_SIZE;
-                          Block<span class="operator">*</span> lastBlock <span class="operator">=</span> nullptr;
-                          <span class="keyword">for</span> (size_t i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">!</span><span class="operator">=</span> initialBlockCount; <span class="operator">+</span><span class="operator">+</span>i) {
-                                  <span class="keyword">auto</span> block <span class="operator">=</span> make_block(largestBlockSize);
-                                  <span class="keyword">if</span> (block <span class="operator">=</span><span class="operator">=</span> nullptr) {
-  <span class="preprocessor">#ifdef MOODYCAMEL_EXCEPTIONS_ENABLED</span>
-                                          <span class="keyword">throw</span> std<span class="operator">::</span>bad_alloc();
-  <span class="preprocessor">#else</span>
-                                          abort();
-  <span class="preprocessor">#endif</span>
-                                  }
-                                  <span class="keyword">if</span> (firstBlock <span class="operator">=</span><span class="operator">=</span> nullptr) {
-                                          firstBlock <span class="operator">=</span> block;
-                                  }
-                                  <span class="keyword">else</span> {
-                                          lastBlock<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> block;
-                                  }
-                                  lastBlock <span class="operator">=</span> block;
-                                  block<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> firstBlock;
-                          }
-                  }
-                  <span class="keyword">else</span> {
-                          firstBlock <span class="operator">=</span> make_block(largestBlockSize);
-                          <span class="keyword">if</span> (firstBlock <span class="operator">=</span><span class="operator">=</span> nullptr) {
-  <span class="preprocessor">#ifdef MOODYCAMEL_EXCEPTIONS_ENABLED</span>
-                                  <span class="keyword">throw</span> std<span class="operator">::</span>bad_alloc();
-  <span class="preprocessor">#else</span>
-                                  abort();
-  <span class="preprocessor">#endif</span>
-                          }
-                          firstBlock<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> firstBlock;
-                  }
-                  frontBlock <span class="operator">=</span> firstBlock;
-                  tailBlock <span class="operator">=</span> firstBlock;
-
-                  <span class="comment">// Make sure the reader/writer threads will have the initialized memory setup above:</span>
-                  fence(memory_order_sync);
-          }
-
-          <span class="comment">// Note: The queue should not be accessed concurrently while it's</span>
-          <span class="comment">// being moved. It's up to the user to synchronize this.</span>
-          AE_NO_TSAN ReaderWriterQueue(ReaderWriterQueue<span class="operator">&amp;</span><span class="operator">&amp;</span> other)
-                  : frontBlock(other<span class="operator">.</span>frontBlock<span class="operator">.</span>load())<span class="operator">,</span>
-                  tailBlock(other<span class="operator">.</span>tailBlock<span class="operator">.</span>load())<span class="operator">,</span>
-                  largestBlockSize(other<span class="operator">.</span>largestBlockSize)
-  <span class="preprocessor">#ifndef NDEBUG</span>
-                  <span class="operator">,</span>enqueuing(<span class="keyword">false</span>)
-                  <span class="operator">,</span>dequeuing(<span class="keyword">false</span>)
-  <span class="preprocessor">#endif</span>
-          {
-                  other<span class="operator">.</span>largestBlockSize <span class="operator">=</span> <span class="number">32</span>;
-                  Block<span class="operator">*</span> b <span class="operator">=</span> other<span class="operator">.</span>make_block(other<span class="operator">.</span>largestBlockSize);
-                  <span class="keyword">if</span> (b <span class="operator">=</span><span class="operator">=</span> nullptr) {
-  <span class="preprocessor">#ifdef MOODYCAMEL_EXCEPTIONS_ENABLED</span>
-                          <span class="keyword">throw</span> std<span class="operator">::</span>bad_alloc();
-  <span class="preprocessor">#else</span>
-                          abort();
-  <span class="preprocessor">#endif</span>
-                  }
-                  b<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> b;
-                  other<span class="operator">.</span>frontBlock <span class="operator">=</span> b;
-                  other<span class="operator">.</span>tailBlock <span class="operator">=</span> b;
-          }
-
-          <span class="comment">// Note: The queue should not be accessed concurrently while it's</span>
-          <span class="comment">// being moved. It's up to the user to synchronize this.</span>
-          ReaderWriterQueue<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(ReaderWriterQueue<span class="operator">&amp;</span><span class="operator">&amp;</span> other) AE_NO_TSAN
-          {
-                  Block<span class="operator">*</span> b <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
-                  frontBlock <span class="operator">=</span> other<span class="operator">.</span>frontBlock<span class="operator">.</span>load();
-                  other<span class="operator">.</span>frontBlock <span class="operator">=</span> b;
-                  b <span class="operator">=</span> tailBlock<span class="operator">.</span>load();
-                  tailBlock <span class="operator">=</span> other<span class="operator">.</span>tailBlock<span class="operator">.</span>load();
-                  other<span class="operator">.</span>tailBlock <span class="operator">=</span> b;
-                  std<span class="operator">::</span>swap(largestBlockSize<span class="operator">,</span> other<span class="operator">.</span>largestBlockSize);
-                  <span class="keyword">return</span> <span class="operator">*</span><span class="keyword">this</span>;
-          }
-
-          <span class="comment">// Note: The queue should not be accessed concurrently while it's</span>
-          <span class="comment">// being deleted. It's up to the user to synchronize this.</span>
-          AE_NO_TSAN <span class="operator">~</span>ReaderWriterQueue()
-          {
-                  <span class="comment">// Make sure we get the latest version of all variables from other CPUs:</span>
-                  fence(memory_order_sync);
-
-                  <span class="comment">// Destroy any remaining objects in queue and free memory</span>
-                  Block<span class="operator">*</span> frontBlock_ <span class="operator">=</span> frontBlock;
-                  Block<span class="operator">*</span> block <span class="operator">=</span> frontBlock_;
-                  <span class="keyword">do</span> {
-                          Block<span class="operator">*</span> nextBlock <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>next;
-                          size_t blockFront <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>front;
-                          size_t blockTail <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>tail;
-
-                          <span class="keyword">for</span> (size_t i <span class="operator">=</span> blockFront; i <span class="operator">!</span><span class="operator">=</span> blockTail; i <span class="operator">=</span> (i <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> block<span class="operator">-</span><span class="operator">&gt;</span>sizeMask) {
-                                  <span class="keyword">auto</span> element <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(block<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> i <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
-                                  element<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>T();
-                                  (<span class="type">void</span>)element;
-                          }
-
-                          <span class="keyword">auto</span> rawBlock <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>rawThis;
-                          block<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>Block();
-                          std<span class="operator">::</span>free(rawBlock);
-                          block <span class="operator">=</span> nextBlock;
-                  } <span class="keyword">while</span> (block <span class="operator">!</span><span class="operator">=</span> frontBlock_);
-          }
-
-          <span class="comment">// Enqueues a copy of element if there is room in the queue.</span>
-          <span class="comment">// Returns true if the element was enqueued, false otherwise.</span>
-          <span class="comment">// Does not allocate memory.</span>
-          AE_FORCEINLINE bool try_enqueue(T <span class="keyword">const</span><span class="operator">&amp;</span> element) AE_NO_TSAN
-          {
-                  <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CannotAlloc<span class="operator">&gt;</span>(element);
-          }
-
-          <span class="comment">// Enqueues a moved copy of element if there is room in the queue.</span>
-          <span class="comment">// Returns true if the element was enqueued, false otherwise.</span>
-          <span class="comment">// Does not allocate memory.</span>
-          AE_FORCEINLINE bool try_enqueue(T<span class="operator">&amp;</span><span class="operator">&amp;</span> element) AE_NO_TSAN
-          {
-                  <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CannotAlloc<span class="operator">&gt;</span>(std<span class="operator">::</span>forward<span class="operator">&lt;</span>T<span class="operator">&gt;</span>(element));
-          }
-
-  <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
-          <span class="comment">// Like try_enqueue() but with emplace semantics (i.e. construct-in-place).</span>
-          <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> Args<span class="operator">&gt;</span>
-          AE_FORCEINLINE bool try_emplace(Args<span class="operator">&amp;</span><span class="operator">&amp;</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> args) AE_NO_TSAN
-          {
-                  <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CannotAlloc<span class="operator">&gt;</span>(std<span class="operator">::</span>forward<span class="operator">&lt;</span>Args<span class="operator">&gt;</span>(args)<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>);
-          }
-  <span class="preprocessor">#endif</span>
-
-          <span class="comment">// Enqueues a copy of element on the queue.</span>
-          <span class="comment">// Allocates an additional block of memory if needed.</span>
-          <span class="comment">// Only fails (returns false) if memory allocation fails.</span>
-          AE_FORCEINLINE bool enqueue(T <span class="keyword">const</span><span class="operator">&amp;</span> element) AE_NO_TSAN
-          {
-                  <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CanAlloc<span class="operator">&gt;</span>(element);
-          }
-
-          <span class="comment">// Enqueues a moved copy of element on the queue.</span>
-          <span class="comment">// Allocates an additional block of memory if needed.</span>
-          <span class="comment">// Only fails (returns false) if memory allocation fails.</span>
-          AE_FORCEINLINE bool enqueue(T<span class="operator">&amp;</span><span class="operator">&amp;</span> element) AE_NO_TSAN
-          {
-                  <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CanAlloc<span class="operator">&gt;</span>(std<span class="operator">::</span>forward<span class="operator">&lt;</span>T<span class="operator">&gt;</span>(element));
-          }
-
-  <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
-          <span class="comment">// Like enqueue() but with emplace semantics (i.e. construct-in-place).</span>
-          <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> Args<span class="operator">&gt;</span>
-          AE_FORCEINLINE bool emplace(Args<span class="operator">&amp;</span><span class="operator">&amp;</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> args) AE_NO_TSAN
-          {
-                  <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CanAlloc<span class="operator">&gt;</span>(std<span class="operator">::</span>forward<span class="operator">&lt;</span>Args<span class="operator">&gt;</span>(args)<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>);
-          }
-  <span class="preprocessor">#endif</span>
-
-          <span class="comment">// Attempts to dequeue an element; if the queue is empty,</span>
-          <span class="comment">// returns false instead. If the queue has at least one element,</span>
-          <span class="comment">// moves front to result using operator=, then returns true.</span>
-          <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">&gt;</span>
-          bool try_dequeue(U<span class="operator">&amp;</span> result) AE_NO_TSAN
-          {
-  <span class="preprocessor">#ifndef NDEBUG</span>
-                  ReentrantGuard guard(<span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>dequeuing);
-  <span class="preprocessor">#endif</span>
-
-                  <span class="comment">// High-level pseudocode:</span>
-                  <span class="comment">// Remember where the tail block is</span>
-                  <span class="comment">// If the front block has an element in it, dequeue it</span>
-                  <span class="comment">// Else</span>
-                  <span class="comment">//     If front block was the tail block when we entered the function, return false</span>
-                  <span class="comment">//     Else advance to next block and dequeue the item there</span>
-
-                  <span class="comment">// Note that we have to use the value of the tail block from before we check if the front</span>
-                  <span class="comment">// block is full or not, in case the front block is empty and then, before we check if the</span>
-                  <span class="comment">// tail block is at the front block or not, the producer fills up the front block *and</span>
-                  <span class="comment">// moves on*, which would make us skip a filled block. Seems unlikely, but was consistently</span>
-                  <span class="comment">// reproducible in practice.</span>
-                  <span class="comment">// In order to avoid overhead in the common case, though, we do a double-checked pattern</span>
-                  <span class="comment">// where we have the fast path if the front block is not empty, then read the tail block,</span>
-                  <span class="comment">// then re-read the front block and check if it's not empty again, then check if the tail</span>
-                  <span class="comment">// block has advanced.</span>
-
-                  Block<span class="operator">*</span> frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
-                  size_t blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail;
-                  size_t blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
-
-                  <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail <span class="operator">|</span><span class="operator">|</span> blockFront <span class="operator">!</span><span class="operator">=</span> (frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load())) {
-                          fence(memory_order_acquire);
-
-                  non_empty_front_block:
-                          <span class="comment">// Front block not empty, dequeue from here</span>
-                          <span class="keyword">auto</span> element <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> blockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
-                          result <span class="operator">=</span> std<span class="operator">::</span>move(<span class="operator">*</span>element);
-                          element<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>T();
-
-                          blockFront <span class="operator">=</span> (blockFront <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
-
-                          fence(memory_order_release);
-                          frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front <span class="operator">=</span> blockFront;
-                  }
-                  <span class="keyword">else</span> <span class="keyword">if</span> (frontBlock_ <span class="operator">!</span><span class="operator">=</span> tailBlock<span class="operator">.</span>load()) {
-                          fence(memory_order_acquire);
-
-                          frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
-                          blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
-                          blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
-                          fence(memory_order_acquire);
-
-                          <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail) {
-                                  <span class="comment">// Oh look, the front block isn't empty after all</span>
-                                  <span class="keyword">goto</span> non_empty_front_block;
-                          }
-
-                          <span class="comment">// Front block is empty but there's another block ahead, advance to it</span>
-                          Block<span class="operator">*</span> nextBlock <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>next;
-                          <span class="comment">// Don't need an acquire fence here since next can only ever be set on the tailBlock,</span>
-                          <span class="comment">// and we're not the tailBlock, and we did an acquire earlier after reading tailBlock which</span>
-                          <span class="comment">// ensures next is up-to-date on this CPU in case we recently were at tailBlock.</span>
-
-                          size_t nextBlockFront <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
-                          size_t nextBlockTail <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
-                          fence(memory_order_acquire);
-
-                          <span class="comment">// Since the tailBlock is only ever advanced after being written to,</span>
-                          <span class="comment">// we know there's for sure an element to dequeue on it</span>
-                          assert(nextBlockFront <span class="operator">!</span><span class="operator">=</span> nextBlockTail);
-                          AE_UNUSED(nextBlockTail);
-
-                          <span class="comment">// We're done with this block, let the producer use it if it needs</span>
-                          fence(memory_order_release);            <span class="comment">// Expose possibly pending changes to frontBlock-&gt;front from last dequeue</span>
-                          frontBlock <span class="operator">=</span> frontBlock_ <span class="operator">=</span> nextBlock;
-
-                          compiler_fence(memory_order_release);   <span class="comment">// Not strictly needed</span>
-
-                          <span class="keyword">auto</span> element <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> nextBlockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
-
-                          result <span class="operator">=</span> std<span class="operator">::</span>move(<span class="operator">*</span>element);
-                          element<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>T();
-
-                          nextBlockFront <span class="operator">=</span> (nextBlockFront <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
-
-                          fence(memory_order_release);
-                          frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front <span class="operator">=</span> nextBlockFront;
-                  }
-                  <span class="keyword">else</span> {
-                          <span class="comment">// No elements in current block and no other block to advance to</span>
-                          <span class="keyword">return</span> <span class="keyword">false</span>;
-                  }
-
-                  <span class="keyword">return</span> <span class="keyword">true</span>;
-          }
-
-          <span class="comment">// Returns a pointer to the front element in the queue (the one that</span>
-          <span class="comment">// would be removed next by a call to `try_dequeue` or `pop`). If the</span>
-          <span class="comment">// queue appears empty at the time the method is called, nullptr is</span>
-          <span class="comment">// returned instead.</span>
-          <span class="comment">// Must be called only from the consumer thread.</span>
-          T<span class="operator">*</span> peek() AE_NO_TSAN
-          {
-  <span class="preprocessor">#ifndef NDEBUG</span>
-                  ReentrantGuard guard(<span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>dequeuing);
-  <span class="preprocessor">#endif</span>
-                  <span class="comment">// See try_dequeue() for reasoning</span>
-
-                  Block<span class="operator">*</span> frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
-                  size_t blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail;
-                  size_t blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
-
-                  <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail <span class="operator">|</span><span class="operator">|</span> blockFront <span class="operator">!</span><span class="operator">=</span> (frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load())) {
-                          fence(memory_order_acquire);
-                  non_empty_front_block:
-                          <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> blockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
-                  }
-                  <span class="keyword">else</span> <span class="keyword">if</span> (frontBlock_ <span class="operator">!</span><span class="operator">=</span> tailBlock<span class="operator">.</span>load()) {
-                          fence(memory_order_acquire);
-                          frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
-                          blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
-                          blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
-                          fence(memory_order_acquire);
-
-                          <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail) {
-                                  <span class="keyword">goto</span> non_empty_front_block;
-                          }
-
-                          Block<span class="operator">*</span> nextBlock <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>next;
-
-                          size_t nextBlockFront <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
-                          fence(memory_order_acquire);
-
-                          assert(nextBlockFront <span class="operator">!</span><span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load());
-                          <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(nextBlock<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> nextBlockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
-                  }
-
-                  <span class="keyword">return</span> nullptr;
-          }
-
-          <span class="comment">// Removes the front element from the queue, if any, without returning it.</span>
-          <span class="comment">// Returns true on success, or false if the queue appeared empty at the time</span>
-          <span class="comment">// `pop` was called.</span>
-          bool pop() AE_NO_TSAN
-          {
-  <span class="preprocessor">#ifndef NDEBUG</span>
-                  ReentrantGuard guard(<span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>dequeuing);
-  <span class="preprocessor">#endif</span>
-                  <span class="comment">// See try_dequeue() for reasoning</span>
-
-                  Block<span class="operator">*</span> frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
-                  size_t blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail;
-                  size_t blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
-
-                  <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail <span class="operator">|</span><span class="operator">|</span> blockFront <span class="operator">!</span><span class="operator">=</span> (frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load())) {
-                          fence(memory_order_acquire);
-
-                  non_empty_front_block:
-                          <span class="keyword">auto</span> element <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> blockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
-                          element<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>T();
-
-                          blockFront <span class="operator">=</span> (blockFront <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
-
-                          fence(memory_order_release);
-                          frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front <span class="operator">=</span> blockFront;
-                  }
-                  <span class="keyword">else</span> <span class="keyword">if</span> (frontBlock_ <span class="operator">!</span><span class="operator">=</span> tailBlock<span class="operator">.</span>load()) {
-                          fence(memory_order_acquire);
-                          frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
-                          blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
-                          blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
-                          fence(memory_order_acquire);
-
-                          <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail) {
-                                  <span class="keyword">goto</span> non_empty_front_block;
-                          }
-
-                          <span class="comment">// Front block is empty but there's another block ahead, advance to it</span>
-                          Block<span class="operator">*</span> nextBlock <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>next;
-
-                          size_t nextBlockFront <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
-                          size_t nextBlockTail <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
-                          fence(memory_order_acquire);
-
-                          assert(nextBlockFront <span class="operator">!</span><span class="operator">=</span> nextBlockTail);
-                          AE_UNUSED(nextBlockTail);
-
-                          fence(memory_order_release);
-                          frontBlock <span class="operator">=</span> frontBlock_ <span class="operator">=</span> nextBlock;
-
-                          compiler_fence(memory_order_release);
-
-                          <span class="keyword">auto</span> element <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> nextBlockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
-                          element<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>T();
-
-                          nextBlockFront <span class="operator">=</span> (nextBlockFront <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
-
-                          fence(memory_order_release);
-                          frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front <span class="operator">=</span> nextBlockFront;
-                  }
-                  <span class="keyword">else</span> {
-                          <span class="comment">// No elements in current block and no other block to advance to</span>
-                          <span class="keyword">return</span> <span class="keyword">false</span>;
-                  }
-
-                  <span class="keyword">return</span> <span class="keyword">true</span>;
-          }
-
-          <span class="comment">// Returns the approximate number of items currently in the queue.</span>
-          <span class="comment">// Safe to call from both the producer and consumer threads.</span>
-          <span class="keyword">inline</span> size_t size_approx() <span class="keyword">const</span> AE_NO_TSAN
-          {
-                  size_t result <span class="operator">=</span> <span class="number">0</span>;
-                  Block<span class="operator">*</span> frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
-                  Block<span class="operator">*</span> block <span class="operator">=</span> frontBlock_;
-                  <span class="keyword">do</span> {
-                          fence(memory_order_acquire);
-                          size_t blockFront <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
-                          size_t blockTail <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
-                          result <span class="operator">+</span><span class="operator">=</span> (blockTail <span class="operator">-</span> blockFront) <span class="operator">&amp;</span> block<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
-                          block <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>next<span class="operator">.</span>load();
-                  } <span class="keyword">while</span> (block <span class="operator">!</span><span class="operator">=</span> frontBlock_);
-                  <span class="keyword">return</span> result;
-          }
-
-  <span class="keyword">private</span>:
-          <span class="keyword">enum</span> AllocationMode { CanAlloc<span class="operator">,</span> CannotAlloc };
-
-  <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
-          <span class="keyword">template</span><span class="operator">&lt;</span>AllocationMode canAlloc<span class="operator">,</span> <span class="keyword">typename</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> Args<span class="operator">&gt;</span>
-          bool inner_enqueue(Args<span class="operator">&amp;</span><span class="operator">&amp;</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> args) AE_NO_TSAN
-  <span class="preprocessor">#else</span>
-          <span class="keyword">template</span><span class="operator">&lt;</span>AllocationMode canAlloc<span class="operator">,</span> <span class="keyword">typename</span> U<span class="operator">&gt;</span>
-          bool inner_enqueue(U<span class="operator">&amp;</span><span class="operator">&amp;</span> element) AE_NO_TSAN
-  <span class="preprocessor">#endif</span>
-          {
-  <span class="preprocessor">#ifndef NDEBUG</span>
-                  ReentrantGuard guard(<span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>enqueuing);
-  <span class="preprocessor">#endif</span>
-
-                  <span class="comment">// High-level pseudocode (assuming we're allowed to alloc a new block):</span>
-                  <span class="comment">// If room in tail block, add to tail</span>
-                  <span class="comment">// Else check next block</span>
-                  <span class="comment">//     If next block is not the head block, enqueue on next block</span>
-                  <span class="comment">//     Else create a new block and enqueue there</span>
-                  <span class="comment">//     Advance tail to the block we just enqueued to</span>
-
-                  Block<span class="operator">*</span> tailBlock_ <span class="operator">=</span> tailBlock<span class="operator">.</span>load();
-                  size_t blockFront <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>localFront;
-                  size_t blockTail <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
-
-                  size_t nextBlockTail <span class="operator">=</span> (blockTail <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
-                  <span class="keyword">if</span> (nextBlockTail <span class="operator">!</span><span class="operator">=</span> blockFront <span class="operator">|</span><span class="operator">|</span> nextBlockTail <span class="operator">!</span><span class="operator">=</span> (tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>localFront <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load())) {
-                          fence(memory_order_acquire);
-                          <span class="comment">// This block has room for at least one more element</span>
-                          <span class="type">char</span><span class="operator">*</span> location <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> blockTail <span class="operator">*</span> <span class="keyword">sizeof</span>(T);
-  <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
-                          <span class="keyword">new</span> (location) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>Args<span class="operator">&gt;</span>(args)<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>);
-  <span class="preprocessor">#else</span>
-                          <span class="keyword">new</span> (location) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>U<span class="operator">&gt;</span>(element));
-  <span class="preprocessor">#endif</span>
-
-                          fence(memory_order_release);
-                          tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail <span class="operator">=</span> nextBlockTail;
-                  }
-                  <span class="keyword">else</span> {
-                          fence(memory_order_acquire);
-                          <span class="keyword">if</span> (tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>next<span class="operator">.</span>load() <span class="operator">!</span><span class="operator">=</span> frontBlock) {
-                                  <span class="comment">// Note that the reason we can't advance to the frontBlock and start adding new entries there</span>
-                                  <span class="comment">// is because if we did, then dequeue would stay in that block, eventually reading the new values,</span>
-                                  <span class="comment">// instead of advancing to the next full block (whose values were enqueued first and so should be</span>
-                                  <span class="comment">// consumed first).</span>
-
-                                  fence(memory_order_acquire);            <span class="comment">// Ensure we get latest writes if we got the latest frontBlock</span>
-
-                                  <span class="comment">// tailBlock is full, but there's a free block ahead, use it</span>
-                                  Block<span class="operator">*</span> tailBlockNext <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>next<span class="operator">.</span>load();
-                                  size_t nextBlockFront <span class="operator">=</span> tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>localFront <span class="operator">=</span> tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
-                                  nextBlockTail <span class="operator">=</span> tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
-                                  fence(memory_order_acquire);
-
-                                  <span class="comment">// This block must be empty since it's not the head block and we</span>
-                                  <span class="comment">// go through the blocks in a circle</span>
-                                  assert(nextBlockFront <span class="operator">=</span><span class="operator">=</span> nextBlockTail);
-                                  tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>localFront <span class="operator">=</span> nextBlockFront;
-
-                                  <span class="type">char</span><span class="operator">*</span> location <span class="operator">=</span> tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> nextBlockTail <span class="operator">*</span> <span class="keyword">sizeof</span>(T);
-  <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
-                                  <span class="keyword">new</span> (location) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>Args<span class="operator">&gt;</span>(args)<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>);
-  <span class="preprocessor">#else</span>
-                                  <span class="keyword">new</span> (location) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>U<span class="operator">&gt;</span>(element));
-  <span class="preprocessor">#endif</span>
-
-                                  tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>tail <span class="operator">=</span> (nextBlockTail <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
-
-                                  fence(memory_order_release);
-                                  tailBlock <span class="operator">=</span> tailBlockNext;
-                          }
-                          <span class="keyword">else</span> <span class="keyword">if</span> (canAlloc <span class="operator">=</span><span class="operator">=</span> CanAlloc) {
-                                  <span class="comment">// tailBlock is full and there's no free block ahead; create a new block</span>
-                                  <span class="keyword">auto</span> newBlockSize <span class="operator">=</span> largestBlockSize <span class="operator">&gt;</span><span class="operator">=</span> MAX_BLOCK_SIZE <span class="operator">?</span> largestBlockSize : largestBlockSize <span class="operator">*</span> <span class="number">2</span>;
-                                  <span class="keyword">auto</span> newBlock <span class="operator">=</span> make_block(newBlockSize);
-                                  <span class="keyword">if</span> (newBlock <span class="operator">=</span><span class="operator">=</span> nullptr) {
-                                          <span class="comment">// Could not allocate a block!</span>
-                                          <span class="keyword">return</span> <span class="keyword">false</span>;
-                                  }
-                                  largestBlockSize <span class="operator">=</span> newBlockSize;
-
-  <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
-                                  <span class="keyword">new</span> (newBlock<span class="operator">-</span><span class="operator">&gt;</span>data) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>Args<span class="operator">&gt;</span>(args)<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>);
-  <span class="preprocessor">#else</span>
-                                  <span class="keyword">new</span> (newBlock<span class="operator">-</span><span class="operator">&gt;</span>data) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>U<span class="operator">&gt;</span>(element));
-  <span class="preprocessor">#endif</span>
-                                  assert(newBlock<span class="operator">-</span><span class="operator">&gt;</span>front <span class="operator">=</span><span class="operator">=</span> <span class="number">0</span>);
-                                  newBlock<span class="operator">-</span><span class="operator">&gt;</span>tail <span class="operator">=</span> newBlock<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> <span class="number">1</span>;
-
-                                  newBlock<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>next<span class="operator">.</span>load();
-                                  tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> newBlock;
-
-                                  <span class="comment">// Might be possible for the dequeue thread to see the new tailBlock-&gt;next</span>
-                                  <span class="comment">// *without* seeing the new tailBlock value, but this is OK since it can't</span>
-                                  <span class="comment">// advance to the next block until tailBlock is set anyway (because the only</span>
-                                  <span class="comment">// case where it could try to read the next is if it's already at the tailBlock,</span>
-                                  <span class="comment">// and it won't advance past tailBlock in any circumstance).</span>
-
-                                  fence(memory_order_release);
-                                  tailBlock <span class="operator">=</span> newBlock;
-                          }
-                          <span class="keyword">else</span> <span class="keyword">if</span> (canAlloc <span class="operator">=</span><span class="operator">=</span> CannotAlloc) {
-                                  <span class="comment">// Would have had to allocate a new block to enqueue, but not allowed</span>
-                                  <span class="keyword">return</span> <span class="keyword">false</span>;
-                          }
-                          <span class="keyword">else</span> {
-                                  assert(<span class="keyword">false</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="string">&quot;Should be unreachable code&quot;</span>);
-                                  <span class="keyword">return</span> <span class="keyword">false</span>;
-                          }
-                  }
-
-                  <span class="keyword">return</span> <span class="keyword">true</span>;
-          }
-
-          <span class="comment">// Disable copying</span>
-          ReaderWriterQueue(ReaderWriterQueue <span class="keyword">const</span><span class="operator">&amp;</span>) {  }
-
-          <span class="comment">// Disable assignment</span>
-          ReaderWriterQueue<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(ReaderWriterQueue <span class="keyword">const</span><span class="operator">&amp;</span>) {  }
-
-          AE_FORCEINLINE <span class="keyword">static</span> size_t ceilToPow2(size_t x)
-          {
-                  <span class="comment">// From http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2</span>
-                  <span class="operator">-</span><span class="operator">-</span>x;
-                  x <span class="operator">|</span><span class="operator">=</span> x <span class="operator">&gt;</span><span class="operator">&gt;</span> <span class="number">1</span>;
-                  x <span class="operator">|</span><span class="operator">=</span> x <span class="operator">&gt;</span><span class="operator">&gt;</span> <span class="number">2</span>;
-                  x <span class="operator">|</span><span class="operator">=</span> x <span class="operator">&gt;</span><span class="operator">&gt;</span> <span class="number">4</span>;
-                  <span class="keyword">for</span> (size_t i <span class="operator">=</span> <span class="number">1</span>; i <span class="operator">&lt;</span> <span class="keyword">sizeof</span>(size_t); i <span class="operator">&lt;</span><span class="operator">&lt;</span><span class="operator">=</span> <span class="number">1</span>) {
-                          x <span class="operator">|</span><span class="operator">=</span> x <span class="operator">&gt;</span><span class="operator">&gt;</span> (i <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="number">3</span>);
-                  }
-                  <span class="operator">+</span><span class="operator">+</span>x;
-                  <span class="keyword">return</span> x;
-          }
-
-          <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">&gt;</span>
-          <span class="keyword">static</span> AE_FORCEINLINE <span class="type">char</span><span class="operator">*</span> align_for(<span class="type">char</span><span class="operator">*</span> ptr) AE_NO_TSAN
-          {
-                  <span class="keyword">const</span> std<span class="operator">::</span>size_t alignment <span class="operator">=</span> std<span class="operator">::</span>alignment_of<span class="operator">&lt;</span>U<span class="operator">&gt;</span><span class="operator">::</span>value;
-                  <span class="keyword">return</span> ptr <span class="operator">+</span> (alignment <span class="operator">-</span> (<span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>std<span class="operator">::</span>uintptr_t<span class="operator">&gt;</span>(ptr) <span class="operator">%</span> alignment)) <span class="operator">%</span> alignment;
-          }
-  <span class="keyword">private</span>:
-  <span class="preprocessor">#ifndef NDEBUG</span>
-          <span class="keyword">struct</span> ReentrantGuard
-          {
-                  AE_NO_TSAN ReentrantGuard(bool<span class="operator">&amp;</span> _inSection)
-                          : inSection(_inSection)
-                  {
-                          assert(<span class="operator">!</span>inSection <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="string">&quot;Concurrent (or re-entrant) enqueue or dequeue operation detected (only one thread at a time may hold the producer or consumer role)&quot;</span>);
-                          inSection <span class="operator">=</span> <span class="keyword">true</span>;
-                  }
-
-                  AE_NO_TSAN <span class="operator">~</span>ReentrantGuard() { inSection <span class="operator">=</span> <span class="keyword">false</span>; }
-
-          <span class="keyword">private</span>:
-                  ReentrantGuard<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(ReentrantGuard <span class="keyword">const</span><span class="operator">&amp;</span>);
-
-          <span class="keyword">private</span>:
-                  bool<span class="operator">&amp;</span> inSection;
-          };
-  <span class="preprocessor">#endif</span>
-
-          <span class="keyword">struct</span> Block
-          {
-                  <span class="comment">// Avoid false-sharing by putting highly contended variables on their own cache lines</span>
-                  weak_atomic<span class="operator">&lt;</span>size_t<span class="operator">&gt;</span> front;      <span class="comment">// (Atomic) Elements are read from here</span>
-                  size_t localTail;                       <span class="comment">// An uncontended shadow copy of tail, owned by the consumer</span>
-
-                  <span class="type">char</span> cachelineFiller0<span class="operator">[</span>MOODYCAMEL_CACHE_LINE_SIZE <span class="operator">-</span> <span class="keyword">sizeof</span>(weak_atomic<span class="operator">&lt;</span>size_t<span class="operator">&gt;</span>) <span class="operator">-</span> <span class="keyword">sizeof</span>(size_t)<span class="operator">]</span>;
-                  weak_atomic<span class="operator">&lt;</span>size_t<span class="operator">&gt;</span> tail;       <span class="comment">// (Atomic) Elements are enqueued here</span>
-                  size_t localFront;
-
-                  <span class="type">char</span> cachelineFiller1<span class="operator">[</span>MOODYCAMEL_CACHE_LINE_SIZE <span class="operator">-</span> <span class="keyword">sizeof</span>(weak_atomic<span class="operator">&lt;</span>size_t<span class="operator">&gt;</span>) <span class="operator">-</span> <span class="keyword">sizeof</span>(size_t)<span class="operator">]</span>;       <span class="comment">// next isn't very contended, but we don't want it on the same cache line as tail (which is)</span>
-                  weak_atomic<span class="operator">&lt;</span>Block<span class="operator">*</span><span class="operator">&gt;</span> next;       <span class="comment">// (Atomic)</span>
-
-                  <span class="type">char</span><span class="operator">*</span> data;             <span class="comment">// Contents (on heap) are aligned to T's alignment</span>
-
-                  <span class="keyword">const</span> size_t sizeMask;
-
-                  <span class="comment">// size must be a power of two (and greater than 0)</span>
-                  AE_NO_TSAN Block(size_t <span class="keyword">const</span><span class="operator">&amp;</span> _size<span class="operator">,</span> <span class="type">char</span><span class="operator">*</span> _rawThis<span class="operator">,</span> <span class="type">char</span><span class="operator">*</span> _data)
-                          : front(<span class="number">0</span>)<span class="operator">,</span> localTail(<span class="number">0</span>)<span class="operator">,</span> tail(<span class="number">0</span>)<span class="operator">,</span> localFront(<span class="number">0</span>)<span class="operator">,</span> next(nullptr)<span class="operator">,</span> data(_data)<span class="operator">,</span> sizeMask(_size <span class="operator">-</span> <span class="number">1</span>)<span class="operator">,</span> rawThis(_rawThis)
-                  {
-                  }
-
-          <span class="keyword">private</span>:
-                  <span class="comment">// C4512 - Assignment operator could not be generated</span>
-                  Block<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(Block <span class="keyword">const</span><span class="operator">&amp;</span>);
-
-          <span class="keyword">public</span>:
-                  <span class="type">char</span><span class="operator">*</span> rawThis;
-          };
-
-          <span class="keyword">static</span> Block<span class="operator">*</span> make_block(size_t capacity) AE_NO_TSAN
-          {
-                  <span class="comment">// Allocate enough memory for the block itself, as well as all the elements it will contain</span>
-                  <span class="keyword">auto</span> size <span class="operator">=</span> <span class="keyword">sizeof</span>(Block) <span class="operator">+</span> std<span class="operator">::</span>alignment_of<span class="operator">&lt;</span>Block<span class="operator">&gt;</span><span class="operator">::</span>value <span class="operator">-</span> <span class="number">1</span>;
-                  size <span class="operator">+</span><span class="operator">=</span> <span class="keyword">sizeof</span>(T) <span class="operator">*</span> capacity <span class="operator">+</span> std<span class="operator">::</span>alignment_of<span class="operator">&lt;</span>T<span class="operator">&gt;</span><span class="operator">::</span>value <span class="operator">-</span> <span class="number">1</span>;
-                  <span class="keyword">auto</span> newBlockRaw <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">char</span><span class="operator">*</span><span class="operator">&gt;</span>(std<span class="operator">::</span>malloc(size));
-                  <span class="keyword">if</span> (newBlockRaw <span class="operator">=</span><span class="operator">=</span> nullptr) {
-                          <span class="keyword">return</span> nullptr;
-                  }
-
-                  <span class="keyword">auto</span> newBlockAligned <span class="operator">=</span> align_for<span class="operator">&lt;</span>Block<span class="operator">&gt;</span>(newBlockRaw);
-                  <span class="keyword">auto</span> newBlockData <span class="operator">=</span> align_for<span class="operator">&lt;</span>T<span class="operator">&gt;</span>(newBlockAligned <span class="operator">+</span> <span class="keyword">sizeof</span>(Block));
-                  <span class="keyword">return</span> <span class="keyword">new</span> (newBlockAligned) Block(capacity<span class="operator">,</span> newBlockRaw<span class="operator">,</span> newBlockData);
-          }
-
-  <span class="keyword">private</span>:
-          weak_atomic<span class="operator">&lt;</span>Block<span class="operator">*</span><span class="operator">&gt;</span> frontBlock;         <span class="comment">// (Atomic) Elements are enqueued to this block</span>
-
-          <span class="type">char</span> cachelineFiller<span class="operator">[</span>MOODYCAMEL_CACHE_LINE_SIZE <span class="operator">-</span> <span class="keyword">sizeof</span>(weak_atomic<span class="operator">&lt;</span>Block<span class="operator">*</span><span class="operator">&gt;</span>)<span class="operator">]</span>;
-          weak_atomic<span class="operator">&lt;</span>Block<span class="operator">*</span><span class="operator">&gt;</span> tailBlock;          <span class="comment">// (Atomic) Elements are dequeued from this block</span>
-
-          size_t largestBlockSize;
-
-  <span class="preprocessor">#ifndef NDEBUG</span>
-          bool enqueuing;
-          bool dequeuing;
-  <span class="preprocessor">#endif</span>
-  };
-
-  <span class="comment">// Like ReaderWriterQueue, but also providees blocking operations</span>
-  <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> T<span class="operator">,</span> size_t MAX_BLOCK_SIZE <span class="operator">=</span> <span class="number">512</span><span class="operator">&gt;</span>
-  <span class="keyword">class</span> BlockingReaderWriterQueue
-  {
-  <span class="keyword">private</span>:
-          <span class="keyword">typedef</span> <span class="operator">::</span>moodycamel<span class="operator">::</span>ReaderWriterQueue<span class="operator">&lt;</span>T<span class="operator">,</span> MAX_BLOCK_SIZE<span class="operator">&gt;</span> ReaderWriterQueue;
-
-  <span class="keyword">public</span>:
-          <span class="keyword">explicit</span> BlockingReaderWriterQueue(size_t maxSize <span class="operator">=</span> <span class="number">15</span>) AE_NO_TSAN
-                  : inner(maxSize)<span class="operator">,</span> sema(<span class="keyword">new</span> spsc_sema<span class="operator">::</span>LightweightSemaphore())
-          { }
-
-          BlockingReaderWriterQueue(BlockingReaderWriterQueue<span class="operator">&amp;</span><span class="operator">&amp;</span> other) AE_NO_TSAN
-                  : inner(std<span class="operator">::</span>move(other<span class="operator">.</span>inner))<span class="operator">,</span> sema(std<span class="operator">::</span>move(other<span class="operator">.</span>sema))
-          { }
-
-          BlockingReaderWriterQueue<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(BlockingReaderWriterQueue<span class="operator">&amp;</span><span class="operator">&amp;</span> other) AE_NO_TSAN
-          {
-                  std<span class="operator">::</span>swap(sema<span class="operator">,</span> other<span class="operator">.</span>sema);
-                  std<span class="operator">::</span>swap(inner<span class="operator">,</span> other<span class="operator">.</span>inner);
-                  <span class="keyword">return</span> <span class="operator">*</span><span class="keyword">this</span>;
-          }
-
-          <span class="comment">// Enqueues a copy of element if there is room in the queue.</span>
-          <span class="comment">// Returns true if the element was enqueued, false otherwise.</span>
-          <span class="comment">// Does not allocate memory.</span>
-          AE_FORCEINLINE bool try_enqueue(T <span class="keyword">const</span><span class="operator">&amp;</span> element) AE_NO_TSAN
-          {
-                  <span class="keyword">if</span> (inner<span class="operator">.</span>try_enqueue(element)) {
-                          sema<span class="operator">-</span><span class="operator">&gt;</span>signal();
-                          <span class="keyword">return</span> <span class="keyword">true</span>;
-                  }
-                  <span class="keyword">return</span> <span class="keyword">false</span>;
-          }
-
-          <span class="comment">// Enqueues a moved copy of element if there is room in the queue.</span>
-          <span class="comment">// Returns true if the element was enqueued, false otherwise.</span>
-          <span class="comment">// Does not allocate memory.</span>
-          AE_FORCEINLINE bool try_enqueue(T<span class="operator">&amp;</span><span class="operator">&amp;</span> element) AE_NO_TSAN
-          {
-                  <span class="keyword">if</span> (inner<span class="operator">.</span>try_enqueue(std<span class="operator">::</span>forward<span class="operator">&lt;</span>T<span class="operator">&gt;</span>(element))) {
-                          sema<span class="operator">-</span><span class="operator">&gt;</span>signal();
-                          <span class="keyword">return</span> <span class="keyword">true</span>;
-                  }
-                  <span class="keyword">return</span> <span class="keyword">false</span>;
-          }
-
-          <span class="comment">// Enqueues a copy of element on the queue.</span>
-          <span class="comment">// Allocates an additional block of memory if needed.</span>
-          <span class="comment">// Only fails (returns false) if memory allocation fails.</span>
-          AE_FORCEINLINE bool enqueue(T <span class="keyword">const</span><span class="operator">&amp;</span> element) AE_NO_TSAN
-          {
-                  <span class="keyword">if</span> (inner<span class="operator">.</span>enqueue(element)) {
-                          sema<span class="operator">-</span><span class="operator">&gt;</span>signal();
-                          <span class="keyword">return</span> <span class="keyword">true</span>;
-                  }
-                  <span class="keyword">return</span> <span class="keyword">false</span>;
-          }
-
-          <span class="comment">// Enqueues a moved copy of element on the queue.</span>
-          <span class="comment">// Allocates an additional block of memory if needed.</span>
-          <span class="comment">// Only fails (returns false) if memory allocation fails.</span>
-          AE_FORCEINLINE bool enqueue(T<span class="operator">&amp;</span><span class="operator">&amp;</span> element) AE_NO_TSAN
-          {
-                  <span class="keyword">if</span> (inner<span class="operator">.</span>enqueue(std<span class="operator">::</span>forward<span class="operator">&lt;</span>T<span class="operator">&gt;</span>(element))) {
-                          sema<span class="operator">-</span><span class="operator">&gt;</span>signal();
-                          <span class="keyword">return</span> <span class="keyword">true</span>;
-                  }
-                  <span class="keyword">return</span> <span class="keyword">false</span>;
-          }
-
-          <span class="comment">// Attempts to dequeue an element; if the queue is empty,</span>
-          <span class="comment">// returns false instead. If the queue has at least one element,</span>
-          <span class="comment">// moves front to result using operator=, then returns true.</span>
-          <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">&gt;</span>
-          bool try_dequeue(U<span class="operator">&amp;</span> result) AE_NO_TSAN
-          {
-                  <span class="keyword">if</span> (sema<span class="operator">-</span><span class="operator">&gt;</span>tryWait()) {
-                          bool success <span class="operator">=</span> inner<span class="operator">.</span>try_dequeue(result);
-                          assert(success);
-                          AE_UNUSED(success);
-                          <span class="keyword">return</span> <span class="keyword">true</span>;
-                  }
-                  <span class="keyword">return</span> <span class="keyword">false</span>;
-          }
-
-          <span class="comment">// Attempts to dequeue an element; if the queue is empty,</span>
-          <span class="comment">// waits until an element is available, then dequeues it.</span>
-          <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">&gt;</span>
-          <span class="type">void</span> wait_dequeue(U<span class="operator">&amp;</span> result) AE_NO_TSAN
-          {
-                  sema<span class="operator">-</span><span class="operator">&gt;</span>wait();
-                  bool success <span class="operator">=</span> inner<span class="operator">.</span>try_dequeue(result);
-                  AE_UNUSED(result);
-                  assert(success);
-                  AE_UNUSED(success);
-          }
-
-          <span class="comment">// Attempts to dequeue an element; if the queue is empty,</span>
-          <span class="comment">// waits until an element is available up to the specified timeout,</span>
-          <span class="comment">// then dequeues it and returns true, or returns false if the timeout</span>
-          <span class="comment">// expires before an element can be dequeued.</span>
-          <span class="comment">// Using a negative timeout indicates an indefinite timeout,</span>
-          <span class="comment">// and is thus functionally equivalent to calling wait_dequeue.</span>
-          <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">&gt;</span>
-          bool wait_dequeue_timed(U<span class="operator">&amp;</span> result<span class="operator">,</span> std<span class="operator">::</span>int64_t timeout_usecs) AE_NO_TSAN
-          {
-                  <span class="keyword">if</span> (<span class="operator">!</span>sema<span class="operator">-</span><span class="operator">&gt;</span>wait(timeout_usecs)) {
-                          <span class="keyword">return</span> <span class="keyword">false</span>;
-                  }
-                  bool success <span class="operator">=</span> inner<span class="operator">.</span>try_dequeue(result);
-                  AE_UNUSED(result);
-                  assert(success);
-                  AE_UNUSED(success);
-                  <span class="keyword">return</span> <span class="keyword">true</span>;
-          }
-
-  <span class="preprocessor">#if __cplusplus &gt; 199711L || _MSC_VER &gt;= 1700</span>
-          <span class="comment">// Attempts to dequeue an element; if the queue is empty,</span>
-          <span class="comment">// waits until an element is available up to the specified timeout,</span>
-          <span class="comment">// then dequeues it and returns true, or returns false if the timeout</span>
-          <span class="comment">// expires before an element can be dequeued.</span>
-          <span class="comment">// Using a negative timeout indicates an indefinite timeout,</span>
-          <span class="comment">// and is thus functionally equivalent to calling wait_dequeue.</span>
-          <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">,</span> <span class="keyword">typename</span> Rep<span class="operator">,</span> <span class="keyword">typename</span> Period<span class="operator">&gt;</span>
-          <span class="keyword">inline</span> bool wait_dequeue_timed(U<span class="operator">&amp;</span> result<span class="operator">,</span> std<span class="operator">::</span>chrono<span class="operator">::</span>duration<span class="operator">&lt;</span>Rep<span class="operator">,</span> Period<span class="operator">&gt;</span> <span class="keyword">const</span><span class="operator">&amp;</span> timeout) AE_NO_TSAN
-          {
-          <span class="keyword">return</span> wait_dequeue_timed(result<span class="operator">,</span> std<span class="operator">::</span>chrono<span class="operator">::</span>duration_cast<span class="operator">&lt;</span>std<span class="operator">::</span>chrono<span class="operator">::</span>microseconds<span class="operator">&gt;</span>(timeout)<span class="operator">.</span>count());
-          }
-  <span class="preprocessor">#endif</span>
-
-          <span class="comment">// Returns a pointer to the front element in the queue (the one that</span>
-          <span class="comment">// would be removed next by a call to `try_dequeue` or `pop`). If the</span>
-          <span class="comment">// queue appears empty at the time the method is called, nullptr is</span>
-          <span class="comment">// returned instead.</span>
-          <span class="comment">// Must be called only from the consumer thread.</span>
-          AE_FORCEINLINE T<span class="operator">*</span> peek() AE_NO_TSAN
-          {
-                  <span class="keyword">return</span> inner<span class="operator">.</span>peek();
-          }
-
-          <span class="comment">// Removes the front element from the queue, if any, without returning it.</span>
-          <span class="comment">// Returns true on success, or false if the queue appeared empty at the time</span>
-          <span class="comment">// `pop` was called.</span>
-          AE_FORCEINLINE bool pop() AE_NO_TSAN
-          {
-                  <span class="keyword">if</span> (sema<span class="operator">-</span><span class="operator">&gt;</span>tryWait()) {
-                          bool result <span class="operator">=</span> inner<span class="operator">.</span>pop();
-                          assert(result);
-                          AE_UNUSED(result);
-                          <span class="keyword">return</span> <span class="keyword">true</span>;
-                  }
-                  <span class="keyword">return</span> <span class="keyword">false</span>;
-          }
-
-          <span class="comment">// Returns the approximate number of items currently in the queue.</span>
-          <span class="comment">// Safe to call from both the producer and consumer threads.</span>
-          AE_FORCEINLINE size_t size_approx() <span class="keyword">const</span> AE_NO_TSAN
-          {
-                  <span class="keyword">return</span> sema<span class="operator">-</span><span class="operator">&gt;</span>availableApprox();
-          }
-
-  <span class="keyword">private</span>:
-          <span class="comment">// Disable copying &amp; assignment</span>
-          BlockingReaderWriterQueue(BlockingReaderWriterQueue <span class="keyword">const</span><span class="operator">&amp;</span>) {  }
-          BlockingReaderWriterQueue<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(BlockingReaderWriterQueue <span class="keyword">const</span><span class="operator">&amp;</span>) {  }
-
-  <span class="keyword">private</span>:
-          ReaderWriterQueue inner;
-          std<span class="operator">::</span>unique_ptr<span class="operator">&lt;</span>spsc_sema<span class="operator">::</span>LightweightSemaphore<span class="operator">&gt;</span> sema;
-  };
-
-  }    <span class="comment">// end namespace moodycamel</span>
-
-  <span class="preprocessor">#ifdef AE_VCPP</span>
-  <span class="preprocessor">#pragma warning(pop)</span>
-  <span class="preprocessor">#endif</span>
-
+ <span class="comment">// ©2013-2016 Cameron Desrochers.</span>
+ <span class="comment">// Distributed under the simplified BSD license (see the license file that</span>
+ <span class="comment">// should have come with this header).</span>
+
+ <span class="preprocessor">#pragma once</span>
+
+ <span class="preprocessor">#include &quot;atomicops.h&quot;</span>
+ <span class="preprocessor">#include &lt;type_traits&gt;</span>
+ <span class="preprocessor">#include &lt;utility&gt;</span>
+ <span class="preprocessor">#include &lt;cassert&gt;</span>
+ <span class="preprocessor">#include &lt;stdexcept&gt;</span>
+ <span class="preprocessor">#include &lt;new&gt;</span>
+ <span class="preprocessor">#include &lt;cstdint&gt;</span>
+ <span class="preprocessor">#include &lt;cstdlib&gt;              // For malloc/free/abort &amp; size_t</span>
+ <span class="preprocessor">#include &lt;memory&gt;</span>
+ <span class="preprocessor">#if __cplusplus &gt; 199711L || _MSC_VER &gt;= 1700 // C++11 or VS2012</span>
+ <span class="preprocessor">#include &lt;chrono&gt;</span>
+ <span class="preprocessor">#endif</span>
+
+ <span class="comment">// A lock-free queue for a single-consumer, single-producer architecture.</span>
+ <span class="comment">// The queue is also wait-free in the common path (except if more memory</span>
+ <span class="comment">// needs to be allocated, in which case malloc is called).</span>
+ <span class="comment">// Allocates memory sparingly (O(lg(n) times, amortized), and only once if</span>
+ <span class="comment">// the original maximum size estimate is never exceeded.</span>
+ <span class="comment">// Tested on x86/x64 processors, but semantics should be correct for all</span>
+ <span class="comment">// architectures (given the right implementations in atomicops.h), provided</span>
+ <span class="comment">// that aligned integer and pointer accesses are naturally atomic.</span>
+ <span class="comment">// Note that there should only be one consumer thread and producer thread;</span>
+ <span class="comment">// Switching roles of the threads, or using multiple consecutive threads for</span>
+ <span class="comment">// one role, is not safe unless properly synchronized.</span>
+ <span class="comment">// Using the queue exclusively from one thread is fine, though a bit silly.</span>
+
+ <span class="preprocessor">#ifndef MOODYCAMEL_CACHE_LINE_SIZE</span>
+ <span class="preprocessor">#define MOODYCAMEL_CACHE_LINE_SIZE 64</span>
+ <span class="preprocessor">#endif</span>
+
+ <span class="preprocessor">#ifndef MOODYCAMEL_EXCEPTIONS_ENABLED</span>
+ <span class="preprocessor">#if (defined(_MSC_VER) &amp;&amp; defined(_CPPUNWIND)) || (defined(__GNUC__) &amp;&amp; defined(__EXCEPTIONS)) || (!defined(_MSC_VER) &amp;&amp; !defined(__GNUC__))</span>
+ <span class="preprocessor">#define MOODYCAMEL_EXCEPTIONS_ENABLED</span>
+ <span class="preprocessor">#endif</span>
+ <span class="preprocessor">#endif</span>
+
+ <span class="preprocessor">#ifndef MOODYCAMEL_HAS_EMPLACE</span>
+ <span class="preprocessor">#if !defined(_MSC_VER) || _MSC_VER &gt;= 1800 // variadic templates: either a non-MS compiler or VS &gt;= 2013</span>
+ <span class="preprocessor">#define MOODYCAMEL_HAS_EMPLACE    1</span>
+ <span class="preprocessor">#endif</span>
+ <span class="preprocessor">#endif</span>
+
+ <span class="preprocessor">#ifdef AE_VCPP</span>
+ <span class="preprocessor">#pragma warning(push)</span>
+ <span class="preprocessor">#pragma warning(disable: 4324)  // structure was padded due to __declspec(align())</span>
+ <span class="preprocessor">#pragma warning(disable: 4820)  // padding was added</span>
+ <span class="preprocessor">#pragma warning(disable: 4127)  // conditional expression is constant</span>
+ <span class="preprocessor">#endif</span>
+
+ <span class="keyword">namespace</span> moodycamel {
+
+ <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> T<span class="operator">,</span> size_t MAX_BLOCK_SIZE <span class="operator">=</span> <span class="number">512</span><span class="operator">&gt;</span>
+ <span class="keyword">class</span> ReaderWriterQueue
+ {
+         <span class="comment">// Design: Based on a queue-of-queues. The low-level queues are just</span>
+         <span class="comment">// circular buffers with front and tail indices indicating where the</span>
+         <span class="comment">// next element to dequeue is and where the next element can be enqueued,</span>
+         <span class="comment">// respectively. Each low-level queue is called a &quot;block&quot;. Each block</span>
+         <span class="comment">// wastes exactly one element's worth of space to keep the design simple</span>
+         <span class="comment">// (if front == tail then the queue is empty, and can't be full).</span>
+         <span class="comment">// The high-level queue is a circular linked list of blocks; again there</span>
+         <span class="comment">// is a front and tail, but this time they are pointers to the blocks.</span>
+         <span class="comment">// The front block is where the next element to be dequeued is, provided</span>
+         <span class="comment">// the block is not empty. The back block is where elements are to be</span>
+         <span class="comment">// enqueued, provided the block is not full.</span>
+         <span class="comment">// The producer thread owns all the tail indices/pointers. The consumer</span>
+         <span class="comment">// thread owns all the front indices/pointers. Both threads read each</span>
+         <span class="comment">// other's variables, but only the owning thread updates them. E.g. After</span>
+         <span class="comment">// the consumer reads the producer's tail, the tail may change before the</span>
+         <span class="comment">// consumer is done dequeuing an object, but the consumer knows the tail</span>
+         <span class="comment">// will never go backwards, only forwards.</span>
+         <span class="comment">// If there is no room to enqueue an object, an additional block (of</span>
+         <span class="comment">// equal size to the last block) is added. Blocks are never removed.</span>
+
+ <span class="keyword">public</span>:
+         <span class="keyword">typedef</span> T value_type;
+
+         <span class="comment">// Constructs a queue that can hold maxSize elements without further</span>
+         <span class="comment">// allocations. If more than MAX_BLOCK_SIZE elements are requested,</span>
+         <span class="comment">// then several blocks of MAX_BLOCK_SIZE each are reserved (including</span>
+         <span class="comment">// at least one extra buffer block).</span>
+         AE_NO_TSAN <span class="keyword">explicit</span> ReaderWriterQueue(size_t maxSize <span class="operator">=</span> <span class="number">15</span>)
+ <span class="preprocessor">#ifndef NDEBUG</span>
+                 : enqueuing(<span class="keyword">false</span>)
+                 <span class="operator">,</span>dequeuing(<span class="keyword">false</span>)
+ <span class="preprocessor">#endif</span>
+         {
+                 assert(maxSize <span class="operator">&gt;</span> <span class="number">0</span>);
+                 assert(MAX_BLOCK_SIZE <span class="operator">=</span><span class="operator">=</span> ceilToPow2(MAX_BLOCK_SIZE) <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="string">&quot;MAX_BLOCK_SIZE must be a power of 2&quot;</span>);
+                 assert(MAX_BLOCK_SIZE <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">2</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="string">&quot;MAX_BLOCK_SIZE must be at least 2&quot;</span>);
+
+                 Block<span class="operator">*</span> firstBlock <span class="operator">=</span> nullptr;
+
+                 largestBlockSize <span class="operator">=</span> ceilToPow2(maxSize <span class="operator">+</span> <span class="number">1</span>);             <span class="comment">// We need a spare slot to fit maxSize elements in the block</span>
+                 <span class="keyword">if</span> (largestBlockSize <span class="operator">&gt;</span> MAX_BLOCK_SIZE <span class="operator">*</span> <span class="number">2</span>) {
+                         <span class="comment">// We need a spare block in case the producer is writing to a different block the consumer is reading from, and</span>
+                         <span class="comment">// wants to enqueue the maximum number of elements. We also need a spare element in each block to avoid the ambiguity</span>
+                         <span class="comment">// between front == tail meaning &quot;empty&quot; and &quot;full&quot;.</span>
+                         <span class="comment">// So the effective number of slots that are guaranteed to be usable at any time is the block size - 1 times the</span>
+                         <span class="comment">// number of blocks - 1. Solving for maxSize and applying a ceiling to the division gives us (after simplifying):</span>
+                         size_t initialBlockCount <span class="operator">=</span> (maxSize <span class="operator">+</span> MAX_BLOCK_SIZE <span class="operator">*</span> <span class="number">2</span> <span class="operator">-</span> <span class="number">3</span>) <span class="operator">/</span> (MAX_BLOCK_SIZE <span class="operator">-</span> <span class="number">1</span>);
+                         largestBlockSize <span class="operator">=</span> MAX_BLOCK_SIZE;
+                         Block<span class="operator">*</span> lastBlock <span class="operator">=</span> nullptr;
+                         <span class="keyword">for</span> (size_t i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">!</span><span class="operator">=</span> initialBlockCount; <span class="operator">+</span><span class="operator">+</span>i) {
+                                 <span class="keyword">auto</span> block <span class="operator">=</span> make_block(largestBlockSize);
+                                 <span class="keyword">if</span> (block <span class="operator">=</span><span class="operator">=</span> nullptr) {
+ <span class="preprocessor">#ifdef MOODYCAMEL_EXCEPTIONS_ENABLED</span>
+                                         <span class="keyword">throw</span> std<span class="operator">::</span>bad_alloc();
+ <span class="preprocessor">#else</span>
+                                         abort();
+ <span class="preprocessor">#endif</span>
+                                 }
+                                 <span class="keyword">if</span> (firstBlock <span class="operator">=</span><span class="operator">=</span> nullptr) {
+                                         firstBlock <span class="operator">=</span> block;
+                                 }
+                                 <span class="keyword">else</span> {
+                                         lastBlock<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> block;
+                                 }
+                                 lastBlock <span class="operator">=</span> block;
+                                 block<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> firstBlock;
+                         }
+                 }
+                 <span class="keyword">else</span> {
+                         firstBlock <span class="operator">=</span> make_block(largestBlockSize);
+                         <span class="keyword">if</span> (firstBlock <span class="operator">=</span><span class="operator">=</span> nullptr) {
+ <span class="preprocessor">#ifdef MOODYCAMEL_EXCEPTIONS_ENABLED</span>
+                                 <span class="keyword">throw</span> std<span class="operator">::</span>bad_alloc();
+ <span class="preprocessor">#else</span>
+                                 abort();
+ <span class="preprocessor">#endif</span>
+                         }
+                         firstBlock<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> firstBlock;
+                 }
+                 frontBlock <span class="operator">=</span> firstBlock;
+                 tailBlock <span class="operator">=</span> firstBlock;
+
+                 <span class="comment">// Make sure the reader/writer threads will have the initialized memory setup above:</span>
+                 fence(memory_order_sync);
+         }
+
+         <span class="comment">// Note: The queue should not be accessed concurrently while it's</span>
+         <span class="comment">// being moved. It's up to the user to synchronize this.</span>
+         AE_NO_TSAN ReaderWriterQueue(ReaderWriterQueue<span class="operator">&amp;</span><span class="operator">&amp;</span> other)
+                 : frontBlock(other<span class="operator">.</span>frontBlock<span class="operator">.</span>load())<span class="operator">,</span>
+                 tailBlock(other<span class="operator">.</span>tailBlock<span class="operator">.</span>load())<span class="operator">,</span>
+                 largestBlockSize(other<span class="operator">.</span>largestBlockSize)
+ <span class="preprocessor">#ifndef NDEBUG</span>
+                 <span class="operator">,</span>enqueuing(<span class="keyword">false</span>)
+                 <span class="operator">,</span>dequeuing(<span class="keyword">false</span>)
+ <span class="preprocessor">#endif</span>
+         {
+                 other<span class="operator">.</span>largestBlockSize <span class="operator">=</span> <span class="number">32</span>;
+                 Block<span class="operator">*</span> b <span class="operator">=</span> other<span class="operator">.</span>make_block(other<span class="operator">.</span>largestBlockSize);
+                 <span class="keyword">if</span> (b <span class="operator">=</span><span class="operator">=</span> nullptr) {
+ <span class="preprocessor">#ifdef MOODYCAMEL_EXCEPTIONS_ENABLED</span>
+                         <span class="keyword">throw</span> std<span class="operator">::</span>bad_alloc();
+ <span class="preprocessor">#else</span>
+                         abort();
+ <span class="preprocessor">#endif</span>
+                 }
+                 b<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> b;
+                 other<span class="operator">.</span>frontBlock <span class="operator">=</span> b;
+                 other<span class="operator">.</span>tailBlock <span class="operator">=</span> b;
+         }
+
+         <span class="comment">// Note: The queue should not be accessed concurrently while it's</span>
+         <span class="comment">// being moved. It's up to the user to synchronize this.</span>
+         ReaderWriterQueue<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(ReaderWriterQueue<span class="operator">&amp;</span><span class="operator">&amp;</span> other) AE_NO_TSAN
+         {
+                 Block<span class="operator">*</span> b <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
+                 frontBlock <span class="operator">=</span> other<span class="operator">.</span>frontBlock<span class="operator">.</span>load();
+                 other<span class="operator">.</span>frontBlock <span class="operator">=</span> b;
+                 b <span class="operator">=</span> tailBlock<span class="operator">.</span>load();
+                 tailBlock <span class="operator">=</span> other<span class="operator">.</span>tailBlock<span class="operator">.</span>load();
+                 other<span class="operator">.</span>tailBlock <span class="operator">=</span> b;
+                 std<span class="operator">::</span>swap(largestBlockSize<span class="operator">,</span> other<span class="operator">.</span>largestBlockSize);
+                 <span class="keyword">return</span> <span class="operator">*</span><span class="keyword">this</span>;
+         }
+
+         <span class="comment">// Note: The queue should not be accessed concurrently while it's</span>
+         <span class="comment">// being deleted. It's up to the user to synchronize this.</span>
+         AE_NO_TSAN <span class="operator">~</span>ReaderWriterQueue()
+         {
+                 <span class="comment">// Make sure we get the latest version of all variables from other CPUs:</span>
+                 fence(memory_order_sync);
+
+                 <span class="comment">// Destroy any remaining objects in queue and free memory</span>
+                 Block<span class="operator">*</span> frontBlock_ <span class="operator">=</span> frontBlock;
+                 Block<span class="operator">*</span> block <span class="operator">=</span> frontBlock_;
+                 <span class="keyword">do</span> {
+                         Block<span class="operator">*</span> nextBlock <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>next;
+                         size_t blockFront <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>front;
+                         size_t blockTail <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>tail;
+
+                         <span class="keyword">for</span> (size_t i <span class="operator">=</span> blockFront; i <span class="operator">!</span><span class="operator">=</span> blockTail; i <span class="operator">=</span> (i <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> block<span class="operator">-</span><span class="operator">&gt;</span>sizeMask) {
+                                 <span class="keyword">auto</span> element <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(block<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> i <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
+                                 element<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>T();
+                                 (<span class="type">void</span>)element;
+                         }
+
+                         <span class="keyword">auto</span> rawBlock <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>rawThis;
+                         block<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>Block();
+                         std<span class="operator">::</span>free(rawBlock);
+                         block <span class="operator">=</span> nextBlock;
+                 } <span class="keyword">while</span> (block <span class="operator">!</span><span class="operator">=</span> frontBlock_);
+         }
+
+         <span class="comment">// Enqueues a copy of element if there is room in the queue.</span>
+         <span class="comment">// Returns true if the element was enqueued, false otherwise.</span>
+         <span class="comment">// Does not allocate memory.</span>
+         AE_FORCEINLINE bool try_enqueue(T <span class="keyword">const</span><span class="operator">&amp;</span> element) AE_NO_TSAN
+         {
+                 <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CannotAlloc<span class="operator">&gt;</span>(element);
+         }
+
+         <span class="comment">// Enqueues a moved copy of element if there is room in the queue.</span>
+         <span class="comment">// Returns true if the element was enqueued, false otherwise.</span>
+         <span class="comment">// Does not allocate memory.</span>
+         AE_FORCEINLINE bool try_enqueue(T<span class="operator">&amp;</span><span class="operator">&amp;</span> element) AE_NO_TSAN
+         {
+                 <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CannotAlloc<span class="operator">&gt;</span>(std<span class="operator">::</span>forward<span class="operator">&lt;</span>T<span class="operator">&gt;</span>(element));
+         }
+
+ <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
+         <span class="comment">// Like try_enqueue() but with emplace semantics (i.e. construct-in-place).</span>
+         <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> Args<span class="operator">&gt;</span>
+         AE_FORCEINLINE bool try_emplace(Args<span class="operator">&amp;</span><span class="operator">&amp;</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> args) AE_NO_TSAN
+         {
+                 <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CannotAlloc<span class="operator">&gt;</span>(std<span class="operator">::</span>forward<span class="operator">&lt;</span>Args<span class="operator">&gt;</span>(args)<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>);
+         }
+ <span class="preprocessor">#endif</span>
+
+         <span class="comment">// Enqueues a copy of element on the queue.</span>
+         <span class="comment">// Allocates an additional block of memory if needed.</span>
+         <span class="comment">// Only fails (returns false) if memory allocation fails.</span>
+         AE_FORCEINLINE bool enqueue(T <span class="keyword">const</span><span class="operator">&amp;</span> element) AE_NO_TSAN
+         {
+                 <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CanAlloc<span class="operator">&gt;</span>(element);
+         }
+
+         <span class="comment">// Enqueues a moved copy of element on the queue.</span>
+         <span class="comment">// Allocates an additional block of memory if needed.</span>
+         <span class="comment">// Only fails (returns false) if memory allocation fails.</span>
+         AE_FORCEINLINE bool enqueue(T<span class="operator">&amp;</span><span class="operator">&amp;</span> element) AE_NO_TSAN
+         {
+                 <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CanAlloc<span class="operator">&gt;</span>(std<span class="operator">::</span>forward<span class="operator">&lt;</span>T<span class="operator">&gt;</span>(element));
+         }
+
+ <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
+         <span class="comment">// Like enqueue() but with emplace semantics (i.e. construct-in-place).</span>
+         <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> Args<span class="operator">&gt;</span>
+         AE_FORCEINLINE bool emplace(Args<span class="operator">&amp;</span><span class="operator">&amp;</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> args) AE_NO_TSAN
+         {
+                 <span class="keyword">return</span> inner_enqueue<span class="operator">&lt;</span>CanAlloc<span class="operator">&gt;</span>(std<span class="operator">::</span>forward<span class="operator">&lt;</span>Args<span class="operator">&gt;</span>(args)<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>);
+         }
+ <span class="preprocessor">#endif</span>
+
+         <span class="comment">// Attempts to dequeue an element; if the queue is empty,</span>
+         <span class="comment">// returns false instead. If the queue has at least one element,</span>
+         <span class="comment">// moves front to result using operator=, then returns true.</span>
+         <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">&gt;</span>
+         bool try_dequeue(U<span class="operator">&amp;</span> result) AE_NO_TSAN
+         {
+ <span class="preprocessor">#ifndef NDEBUG</span>
+                 ReentrantGuard guard(<span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>dequeuing);
+ <span class="preprocessor">#endif</span>
+
+                 <span class="comment">// High-level pseudocode:</span>
+                 <span class="comment">// Remember where the tail block is</span>
+                 <span class="comment">// If the front block has an element in it, dequeue it</span>
+                 <span class="comment">// Else</span>
+                 <span class="comment">//     If front block was the tail block when we entered the function, return false</span>
+                 <span class="comment">//     Else advance to next block and dequeue the item there</span>
+
+                 <span class="comment">// Note that we have to use the value of the tail block from before we check if the front</span>
+                 <span class="comment">// block is full or not, in case the front block is empty and then, before we check if the</span>
+                 <span class="comment">// tail block is at the front block or not, the producer fills up the front block *and</span>
+                 <span class="comment">// moves on*, which would make us skip a filled block. Seems unlikely, but was consistently</span>
+                 <span class="comment">// reproducible in practice.</span>
+                 <span class="comment">// In order to avoid overhead in the common case, though, we do a double-checked pattern</span>
+                 <span class="comment">// where we have the fast path if the front block is not empty, then read the tail block,</span>
+                 <span class="comment">// then re-read the front block and check if it's not empty again, then check if the tail</span>
+                 <span class="comment">// block has advanced.</span>
+
+                 Block<span class="operator">*</span> frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
+                 size_t blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail;
+                 size_t blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
+
+                 <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail <span class="operator">|</span><span class="operator">|</span> blockFront <span class="operator">!</span><span class="operator">=</span> (frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load())) {
+                         fence(memory_order_acquire);
+
+                 non_empty_front_block:
+                         <span class="comment">// Front block not empty, dequeue from here</span>
+                         <span class="keyword">auto</span> element <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> blockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
+                         result <span class="operator">=</span> std<span class="operator">::</span>move(<span class="operator">*</span>element);
+                         element<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>T();
+
+                         blockFront <span class="operator">=</span> (blockFront <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
+
+                         fence(memory_order_release);
+                         frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front <span class="operator">=</span> blockFront;
+                 }
+                 <span class="keyword">else</span> <span class="keyword">if</span> (frontBlock_ <span class="operator">!</span><span class="operator">=</span> tailBlock<span class="operator">.</span>load()) {
+                         fence(memory_order_acquire);
+
+                         frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
+                         blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
+                         blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
+                         fence(memory_order_acquire);
+
+                         <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail) {
+                                 <span class="comment">// Oh look, the front block isn't empty after all</span>
+                                 <span class="keyword">goto</span> non_empty_front_block;
+                         }
+
+                         <span class="comment">// Front block is empty but there's another block ahead, advance to it</span>
+                         Block<span class="operator">*</span> nextBlock <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>next;
+                         <span class="comment">// Don't need an acquire fence here since next can only ever be set on the tailBlock,</span>
+                         <span class="comment">// and we're not the tailBlock, and we did an acquire earlier after reading tailBlock which</span>
+                         <span class="comment">// ensures next is up-to-date on this CPU in case we recently were at tailBlock.</span>
+
+                         size_t nextBlockFront <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
+                         size_t nextBlockTail <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
+                         fence(memory_order_acquire);
+
+                         <span class="comment">// Since the tailBlock is only ever advanced after being written to,</span>
+                         <span class="comment">// we know there's for sure an element to dequeue on it</span>
+                         assert(nextBlockFront <span class="operator">!</span><span class="operator">=</span> nextBlockTail);
+                         AE_UNUSED(nextBlockTail);
+
+                         <span class="comment">// We're done with this block, let the producer use it if it needs</span>
+                         fence(memory_order_release);            <span class="comment">// Expose possibly pending changes to frontBlock-&gt;front from last dequeue</span>
+                         frontBlock <span class="operator">=</span> frontBlock_ <span class="operator">=</span> nextBlock;
+
+                         compiler_fence(memory_order_release);   <span class="comment">// Not strictly needed</span>
+
+                         <span class="keyword">auto</span> element <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> nextBlockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
+
+                         result <span class="operator">=</span> std<span class="operator">::</span>move(<span class="operator">*</span>element);
+                         element<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>T();
+
+                         nextBlockFront <span class="operator">=</span> (nextBlockFront <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
+
+                         fence(memory_order_release);
+                         frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front <span class="operator">=</span> nextBlockFront;
+                 }
+                 <span class="keyword">else</span> {
+                         <span class="comment">// No elements in current block and no other block to advance to</span>
+                         <span class="keyword">return</span> <span class="keyword">false</span>;
+                 }
+
+                 <span class="keyword">return</span> <span class="keyword">true</span>;
+         }
+
+         <span class="comment">// Returns a pointer to the front element in the queue (the one that</span>
+         <span class="comment">// would be removed next by a call to `try_dequeue` or `pop`). If the</span>
+         <span class="comment">// queue appears empty at the time the method is called, nullptr is</span>
+         <span class="comment">// returned instead.</span>
+         <span class="comment">// Must be called only from the consumer thread.</span>
+         T<span class="operator">*</span> peek() AE_NO_TSAN
+         {
+ <span class="preprocessor">#ifndef NDEBUG</span>
+                 ReentrantGuard guard(<span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>dequeuing);
+ <span class="preprocessor">#endif</span>
+                 <span class="comment">// See try_dequeue() for reasoning</span>
+
+                 Block<span class="operator">*</span> frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
+                 size_t blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail;
+                 size_t blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
+
+                 <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail <span class="operator">|</span><span class="operator">|</span> blockFront <span class="operator">!</span><span class="operator">=</span> (frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load())) {
+                         fence(memory_order_acquire);
+                 non_empty_front_block:
+                         <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> blockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
+                 }
+                 <span class="keyword">else</span> <span class="keyword">if</span> (frontBlock_ <span class="operator">!</span><span class="operator">=</span> tailBlock<span class="operator">.</span>load()) {
+                         fence(memory_order_acquire);
+                         frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
+                         blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
+                         blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
+                         fence(memory_order_acquire);
+
+                         <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail) {
+                                 <span class="keyword">goto</span> non_empty_front_block;
+                         }
+
+                         Block<span class="operator">*</span> nextBlock <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>next;
+
+                         size_t nextBlockFront <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
+                         fence(memory_order_acquire);
+
+                         assert(nextBlockFront <span class="operator">!</span><span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load());
+                         <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(nextBlock<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> nextBlockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
+                 }
+
+                 <span class="keyword">return</span> nullptr;
+         }
+
+         <span class="comment">// Removes the front element from the queue, if any, without returning it.</span>
+         <span class="comment">// Returns true on success, or false if the queue appeared empty at the time</span>
+         <span class="comment">// `pop` was called.</span>
+         bool pop() AE_NO_TSAN
+         {
+ <span class="preprocessor">#ifndef NDEBUG</span>
+                 ReentrantGuard guard(<span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>dequeuing);
+ <span class="preprocessor">#endif</span>
+                 <span class="comment">// See try_dequeue() for reasoning</span>
+
+                 Block<span class="operator">*</span> frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
+                 size_t blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail;
+                 size_t blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
+
+                 <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail <span class="operator">|</span><span class="operator">|</span> blockFront <span class="operator">!</span><span class="operator">=</span> (frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load())) {
+                         fence(memory_order_acquire);
+
+                 non_empty_front_block:
+                         <span class="keyword">auto</span> element <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> blockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
+                         element<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>T();
+
+                         blockFront <span class="operator">=</span> (blockFront <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
+
+                         fence(memory_order_release);
+                         frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front <span class="operator">=</span> blockFront;
+                 }
+                 <span class="keyword">else</span> <span class="keyword">if</span> (frontBlock_ <span class="operator">!</span><span class="operator">=</span> tailBlock<span class="operator">.</span>load()) {
+                         fence(memory_order_acquire);
+                         frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
+                         blockTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
+                         blockFront <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
+                         fence(memory_order_acquire);
+
+                         <span class="keyword">if</span> (blockFront <span class="operator">!</span><span class="operator">=</span> blockTail) {
+                                 <span class="keyword">goto</span> non_empty_front_block;
+                         }
+
+                         <span class="comment">// Front block is empty but there's another block ahead, advance to it</span>
+                         Block<span class="operator">*</span> nextBlock <span class="operator">=</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>next;
+
+                         size_t nextBlockFront <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
+                         size_t nextBlockTail <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> nextBlock<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
+                         fence(memory_order_acquire);
+
+                         assert(nextBlockFront <span class="operator">!</span><span class="operator">=</span> nextBlockTail);
+                         AE_UNUSED(nextBlockTail);
+
+                         fence(memory_order_release);
+                         frontBlock <span class="operator">=</span> frontBlock_ <span class="operator">=</span> nextBlock;
+
+                         compiler_fence(memory_order_release);
+
+                         <span class="keyword">auto</span> element <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>T<span class="operator">*</span><span class="operator">&gt;</span>(frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> nextBlockFront <span class="operator">*</span> <span class="keyword">sizeof</span>(T));
+                         element<span class="operator">-</span><span class="operator">&gt;</span><span class="operator">~</span>T();
+
+                         nextBlockFront <span class="operator">=</span> (nextBlockFront <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
+
+                         fence(memory_order_release);
+                         frontBlock_<span class="operator">-</span><span class="operator">&gt;</span>front <span class="operator">=</span> nextBlockFront;
+                 }
+                 <span class="keyword">else</span> {
+                         <span class="comment">// No elements in current block and no other block to advance to</span>
+                         <span class="keyword">return</span> <span class="keyword">false</span>;
+                 }
+
+                 <span class="keyword">return</span> <span class="keyword">true</span>;
+         }
+
+         <span class="comment">// Returns the approximate number of items currently in the queue.</span>
+         <span class="comment">// Safe to call from both the producer and consumer threads.</span>
+         <span class="keyword">inline</span> size_t size_approx() <span class="keyword">const</span> AE_NO_TSAN
+         {
+                 size_t result <span class="operator">=</span> <span class="number">0</span>;
+                 Block<span class="operator">*</span> frontBlock_ <span class="operator">=</span> frontBlock<span class="operator">.</span>load();
+                 Block<span class="operator">*</span> block <span class="operator">=</span> frontBlock_;
+                 <span class="keyword">do</span> {
+                         fence(memory_order_acquire);
+                         size_t blockFront <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
+                         size_t blockTail <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
+                         result <span class="operator">+</span><span class="operator">=</span> (blockTail <span class="operator">-</span> blockFront) <span class="operator">&amp;</span> block<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
+                         block <span class="operator">=</span> block<span class="operator">-</span><span class="operator">&gt;</span>next<span class="operator">.</span>load();
+                 } <span class="keyword">while</span> (block <span class="operator">!</span><span class="operator">=</span> frontBlock_);
+                 <span class="keyword">return</span> result;
+         }
+
+ <span class="keyword">private</span>:
+         <span class="keyword">enum</span> AllocationMode { CanAlloc<span class="operator">,</span> CannotAlloc };
+
+ <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
+         <span class="keyword">template</span><span class="operator">&lt;</span>AllocationMode canAlloc<span class="operator">,</span> <span class="keyword">typename</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> Args<span class="operator">&gt;</span>
+         bool inner_enqueue(Args<span class="operator">&amp;</span><span class="operator">&amp;</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> args) AE_NO_TSAN
+ <span class="preprocessor">#else</span>
+         <span class="keyword">template</span><span class="operator">&lt;</span>AllocationMode canAlloc<span class="operator">,</span> <span class="keyword">typename</span> U<span class="operator">&gt;</span>
+         bool inner_enqueue(U<span class="operator">&amp;</span><span class="operator">&amp;</span> element) AE_NO_TSAN
+ <span class="preprocessor">#endif</span>
+         {
+ <span class="preprocessor">#ifndef NDEBUG</span>
+                 ReentrantGuard guard(<span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>enqueuing);
+ <span class="preprocessor">#endif</span>
+
+                 <span class="comment">// High-level pseudocode (assuming we're allowed to alloc a new block):</span>
+                 <span class="comment">// If room in tail block, add to tail</span>
+                 <span class="comment">// Else check next block</span>
+                 <span class="comment">//     If next block is not the head block, enqueue on next block</span>
+                 <span class="comment">//     Else create a new block and enqueue there</span>
+                 <span class="comment">//     Advance tail to the block we just enqueued to</span>
+
+                 Block<span class="operator">*</span> tailBlock_ <span class="operator">=</span> tailBlock<span class="operator">.</span>load();
+                 size_t blockFront <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>localFront;
+                 size_t blockTail <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
+
+                 size_t nextBlockTail <span class="operator">=</span> (blockTail <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
+                 <span class="keyword">if</span> (nextBlockTail <span class="operator">!</span><span class="operator">=</span> blockFront <span class="operator">|</span><span class="operator">|</span> nextBlockTail <span class="operator">!</span><span class="operator">=</span> (tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>localFront <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load())) {
+                         fence(memory_order_acquire);
+                         <span class="comment">// This block has room for at least one more element</span>
+                         <span class="type">char</span><span class="operator">*</span> location <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> blockTail <span class="operator">*</span> <span class="keyword">sizeof</span>(T);
+ <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
+                         <span class="keyword">new</span> (location) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>Args<span class="operator">&gt;</span>(args)<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>);
+ <span class="preprocessor">#else</span>
+                         <span class="keyword">new</span> (location) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>U<span class="operator">&gt;</span>(element));
+ <span class="preprocessor">#endif</span>
+
+                         fence(memory_order_release);
+                         tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>tail <span class="operator">=</span> nextBlockTail;
+                 }
+                 <span class="keyword">else</span> {
+                         fence(memory_order_acquire);
+                         <span class="keyword">if</span> (tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>next<span class="operator">.</span>load() <span class="operator">!</span><span class="operator">=</span> frontBlock) {
+                                 <span class="comment">// Note that the reason we can't advance to the frontBlock and start adding new entries there</span>
+                                 <span class="comment">// is because if we did, then dequeue would stay in that block, eventually reading the new values,</span>
+                                 <span class="comment">// instead of advancing to the next full block (whose values were enqueued first and so should be</span>
+                                 <span class="comment">// consumed first).</span>
+
+                                 fence(memory_order_acquire);            <span class="comment">// Ensure we get latest writes if we got the latest frontBlock</span>
+
+                                 <span class="comment">// tailBlock is full, but there's a free block ahead, use it</span>
+                                 Block<span class="operator">*</span> tailBlockNext <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>next<span class="operator">.</span>load();
+                                 size_t nextBlockFront <span class="operator">=</span> tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>localFront <span class="operator">=</span> tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>front<span class="operator">.</span>load();
+                                 nextBlockTail <span class="operator">=</span> tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>tail<span class="operator">.</span>load();
+                                 fence(memory_order_acquire);
+
+                                 <span class="comment">// This block must be empty since it's not the head block and we</span>
+                                 <span class="comment">// go through the blocks in a circle</span>
+                                 assert(nextBlockFront <span class="operator">=</span><span class="operator">=</span> nextBlockTail);
+                                 tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>localFront <span class="operator">=</span> nextBlockFront;
+
+                                 <span class="type">char</span><span class="operator">*</span> location <span class="operator">=</span> tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>data <span class="operator">+</span> nextBlockTail <span class="operator">*</span> <span class="keyword">sizeof</span>(T);
+ <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
+                                 <span class="keyword">new</span> (location) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>Args<span class="operator">&gt;</span>(args)<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>);
+ <span class="preprocessor">#else</span>
+                                 <span class="keyword">new</span> (location) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>U<span class="operator">&gt;</span>(element));
+ <span class="preprocessor">#endif</span>
+
+                                 tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>tail <span class="operator">=</span> (nextBlockTail <span class="operator">+</span> <span class="number">1</span>) <span class="operator">&amp;</span> tailBlockNext<span class="operator">-</span><span class="operator">&gt;</span>sizeMask;
+
+                                 fence(memory_order_release);
+                                 tailBlock <span class="operator">=</span> tailBlockNext;
+                         }
+                         <span class="keyword">else</span> <span class="keyword">if</span> (canAlloc <span class="operator">=</span><span class="operator">=</span> CanAlloc) {
+                                 <span class="comment">// tailBlock is full and there's no free block ahead; create a new block</span>
+                                 <span class="keyword">auto</span> newBlockSize <span class="operator">=</span> largestBlockSize <span class="operator">&gt;</span><span class="operator">=</span> MAX_BLOCK_SIZE <span class="operator">?</span> largestBlockSize : largestBlockSize <span class="operator">*</span> <span class="number">2</span>;
+                                 <span class="keyword">auto</span> newBlock <span class="operator">=</span> make_block(newBlockSize);
+                                 <span class="keyword">if</span> (newBlock <span class="operator">=</span><span class="operator">=</span> nullptr) {
+                                         <span class="comment">// Could not allocate a block!</span>
+                                         <span class="keyword">return</span> <span class="keyword">false</span>;
+                                 }
+                                 largestBlockSize <span class="operator">=</span> newBlockSize;
+
+ <span class="preprocessor">#if MOODYCAMEL_HAS_EMPLACE</span>
+                                 <span class="keyword">new</span> (newBlock<span class="operator">-</span><span class="operator">&gt;</span>data) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>Args<span class="operator">&gt;</span>(args)<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>);
+ <span class="preprocessor">#else</span>
+                                 <span class="keyword">new</span> (newBlock<span class="operator">-</span><span class="operator">&gt;</span>data) T(std<span class="operator">::</span>forward<span class="operator">&lt;</span>U<span class="operator">&gt;</span>(element));
+ <span class="preprocessor">#endif</span>
+                                 assert(newBlock<span class="operator">-</span><span class="operator">&gt;</span>front <span class="operator">=</span><span class="operator">=</span> <span class="number">0</span>);
+                                 newBlock<span class="operator">-</span><span class="operator">&gt;</span>tail <span class="operator">=</span> newBlock<span class="operator">-</span><span class="operator">&gt;</span>localTail <span class="operator">=</span> <span class="number">1</span>;
+
+                                 newBlock<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>next<span class="operator">.</span>load();
+                                 tailBlock_<span class="operator">-</span><span class="operator">&gt;</span>next <span class="operator">=</span> newBlock;
+
+                                 <span class="comment">// Might be possible for the dequeue thread to see the new tailBlock-&gt;next</span>
+                                 <span class="comment">// *without* seeing the new tailBlock value, but this is OK since it can't</span>
+                                 <span class="comment">// advance to the next block until tailBlock is set anyway (because the only</span>
+                                 <span class="comment">// case where it could try to read the next is if it's already at the tailBlock,</span>
+                                 <span class="comment">// and it won't advance past tailBlock in any circumstance).</span>
+
+                                 fence(memory_order_release);
+                                 tailBlock <span class="operator">=</span> newBlock;
+                         }
+                         <span class="keyword">else</span> <span class="keyword">if</span> (canAlloc <span class="operator">=</span><span class="operator">=</span> CannotAlloc) {
+                                 <span class="comment">// Would have had to allocate a new block to enqueue, but not allowed</span>
+                                 <span class="keyword">return</span> <span class="keyword">false</span>;
+                         }
+                         <span class="keyword">else</span> {
+                                 assert(<span class="keyword">false</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="string">&quot;Should be unreachable code&quot;</span>);
+                                 <span class="keyword">return</span> <span class="keyword">false</span>;
+                         }
+                 }
+
+                 <span class="keyword">return</span> <span class="keyword">true</span>;
+         }
+
+         <span class="comment">// Disable copying</span>
+         ReaderWriterQueue(ReaderWriterQueue <span class="keyword">const</span><span class="operator">&amp;</span>) {  }
+
+         <span class="comment">// Disable assignment</span>
+         ReaderWriterQueue<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(ReaderWriterQueue <span class="keyword">const</span><span class="operator">&amp;</span>) {  }
+
+         AE_FORCEINLINE <span class="keyword">static</span> size_t ceilToPow2(size_t x)
+         {
+                 <span class="comment">// From http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2</span>
+                 <span class="operator">-</span><span class="operator">-</span>x;
+                 x <span class="operator">|</span><span class="operator">=</span> x <span class="operator">&gt;</span><span class="operator">&gt;</span> <span class="number">1</span>;
+                 x <span class="operator">|</span><span class="operator">=</span> x <span class="operator">&gt;</span><span class="operator">&gt;</span> <span class="number">2</span>;
+                 x <span class="operator">|</span><span class="operator">=</span> x <span class="operator">&gt;</span><span class="operator">&gt;</span> <span class="number">4</span>;
+                 <span class="keyword">for</span> (size_t i <span class="operator">=</span> <span class="number">1</span>; i <span class="operator">&lt;</span> <span class="keyword">sizeof</span>(size_t); i <span class="operator">&lt;</span><span class="operator">&lt;</span><span class="operator">=</span> <span class="number">1</span>) {
+                         x <span class="operator">|</span><span class="operator">=</span> x <span class="operator">&gt;</span><span class="operator">&gt;</span> (i <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="number">3</span>);
+                 }
+                 <span class="operator">+</span><span class="operator">+</span>x;
+                 <span class="keyword">return</span> x;
+         }
+
+         <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">&gt;</span>
+         <span class="keyword">static</span> AE_FORCEINLINE <span class="type">char</span><span class="operator">*</span> align_for(<span class="type">char</span><span class="operator">*</span> ptr) AE_NO_TSAN
+         {
+                 <span class="keyword">const</span> std<span class="operator">::</span>size_t alignment <span class="operator">=</span> std<span class="operator">::</span>alignment_of<span class="operator">&lt;</span>U<span class="operator">&gt;</span><span class="operator">::</span>value;
+                 <span class="keyword">return</span> ptr <span class="operator">+</span> (alignment <span class="operator">-</span> (<span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>std<span class="operator">::</span>uintptr_t<span class="operator">&gt;</span>(ptr) <span class="operator">%</span> alignment)) <span class="operator">%</span> alignment;
+         }
+ <span class="keyword">private</span>:
+ <span class="preprocessor">#ifndef NDEBUG</span>
+         <span class="keyword">struct</span> ReentrantGuard
+         {
+                 AE_NO_TSAN ReentrantGuard(bool<span class="operator">&amp;</span> _inSection)
+                         : inSection(_inSection)
+                 {
+                         assert(<span class="operator">!</span>inSection <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="string">&quot;Concurrent (or re-entrant) enqueue or dequeue operation detected (only one thread at a time may hold the producer or consumer role)&quot;</span>);
+                         inSection <span class="operator">=</span> <span class="keyword">true</span>;
+                 }
+
+                 AE_NO_TSAN <span class="operator">~</span>ReentrantGuard() { inSection <span class="operator">=</span> <span class="keyword">false</span>; }
+
+         <span class="keyword">private</span>:
+                 ReentrantGuard<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(ReentrantGuard <span class="keyword">const</span><span class="operator">&amp;</span>);
+
+         <span class="keyword">private</span>:
+                 bool<span class="operator">&amp;</span> inSection;
+         };
+ <span class="preprocessor">#endif</span>
+
+         <span class="keyword">struct</span> Block
+         {
+                 <span class="comment">// Avoid false-sharing by putting highly contended variables on their own cache lines</span>
+                 weak_atomic<span class="operator">&lt;</span>size_t<span class="operator">&gt;</span> front;      <span class="comment">// (Atomic) Elements are read from here</span>
+                 size_t localTail;                       <span class="comment">// An uncontended shadow copy of tail, owned by the consumer</span>
+
+                 <span class="type">char</span> cachelineFiller0<span class="operator">[</span>MOODYCAMEL_CACHE_LINE_SIZE <span class="operator">-</span> <span class="keyword">sizeof</span>(weak_atomic<span class="operator">&lt;</span>size_t<span class="operator">&gt;</span>) <span class="operator">-</span> <span class="keyword">sizeof</span>(size_t)<span class="operator">]</span>;
+                 weak_atomic<span class="operator">&lt;</span>size_t<span class="operator">&gt;</span> tail;       <span class="comment">// (Atomic) Elements are enqueued here</span>
+                 size_t localFront;
+
+                 <span class="type">char</span> cachelineFiller1<span class="operator">[</span>MOODYCAMEL_CACHE_LINE_SIZE <span class="operator">-</span> <span class="keyword">sizeof</span>(weak_atomic<span class="operator">&lt;</span>size_t<span class="operator">&gt;</span>) <span class="operator">-</span> <span class="keyword">sizeof</span>(size_t)<span class="operator">]</span>;       <span class="comment">// next isn't very contended, but we don't want it on the same cache line as tail (which is)</span>
+                 weak_atomic<span class="operator">&lt;</span>Block<span class="operator">*</span><span class="operator">&gt;</span> next;       <span class="comment">// (Atomic)</span>
+
+                 <span class="type">char</span><span class="operator">*</span> data;             <span class="comment">// Contents (on heap) are aligned to T's alignment</span>
+
+                 <span class="keyword">const</span> size_t sizeMask;
+
+                 <span class="comment">// size must be a power of two (and greater than 0)</span>
+                 AE_NO_TSAN Block(size_t <span class="keyword">const</span><span class="operator">&amp;</span> _size<span class="operator">,</span> <span class="type">char</span><span class="operator">*</span> _rawThis<span class="operator">,</span> <span class="type">char</span><span class="operator">*</span> _data)
+                         : front(<span class="number">0</span>)<span class="operator">,</span> localTail(<span class="number">0</span>)<span class="operator">,</span> tail(<span class="number">0</span>)<span class="operator">,</span> localFront(<span class="number">0</span>)<span class="operator">,</span> next(nullptr)<span class="operator">,</span> data(_data)<span class="operator">,</span> sizeMask(_size <span class="operator">-</span> <span class="number">1</span>)<span class="operator">,</span> rawThis(_rawThis)
+                 {
+                 }
+
+         <span class="keyword">private</span>:
+                 <span class="comment">// C4512 - Assignment operator could not be generated</span>
+                 Block<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(Block <span class="keyword">const</span><span class="operator">&amp;</span>);
+
+         <span class="keyword">public</span>:
+                 <span class="type">char</span><span class="operator">*</span> rawThis;
+         };
+
+         <span class="keyword">static</span> Block<span class="operator">*</span> make_block(size_t capacity) AE_NO_TSAN
+         {
+                 <span class="comment">// Allocate enough memory for the block itself, as well as all the elements it will contain</span>
+                 <span class="keyword">auto</span> size <span class="operator">=</span> <span class="keyword">sizeof</span>(Block) <span class="operator">+</span> std<span class="operator">::</span>alignment_of<span class="operator">&lt;</span>Block<span class="operator">&gt;</span><span class="operator">::</span>value <span class="operator">-</span> <span class="number">1</span>;
+                 size <span class="operator">+</span><span class="operator">=</span> <span class="keyword">sizeof</span>(T) <span class="operator">*</span> capacity <span class="operator">+</span> std<span class="operator">::</span>alignment_of<span class="operator">&lt;</span>T<span class="operator">&gt;</span><span class="operator">::</span>value <span class="operator">-</span> <span class="number">1</span>;
+                 <span class="keyword">auto</span> newBlockRaw <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">char</span><span class="operator">*</span><span class="operator">&gt;</span>(std<span class="operator">::</span>malloc(size));
+                 <span class="keyword">if</span> (newBlockRaw <span class="operator">=</span><span class="operator">=</span> nullptr) {
+                         <span class="keyword">return</span> nullptr;
+                 }
+
+                 <span class="keyword">auto</span> newBlockAligned <span class="operator">=</span> align_for<span class="operator">&lt;</span>Block<span class="operator">&gt;</span>(newBlockRaw);
+                 <span class="keyword">auto</span> newBlockData <span class="operator">=</span> align_for<span class="operator">&lt;</span>T<span class="operator">&gt;</span>(newBlockAligned <span class="operator">+</span> <span class="keyword">sizeof</span>(Block));
+                 <span class="keyword">return</span> <span class="keyword">new</span> (newBlockAligned) Block(capacity<span class="operator">,</span> newBlockRaw<span class="operator">,</span> newBlockData);
+         }
+
+ <span class="keyword">private</span>:
+         weak_atomic<span class="operator">&lt;</span>Block<span class="operator">*</span><span class="operator">&gt;</span> frontBlock;         <span class="comment">// (Atomic) Elements are enqueued to this block</span>
+
+         <span class="type">char</span> cachelineFiller<span class="operator">[</span>MOODYCAMEL_CACHE_LINE_SIZE <span class="operator">-</span> <span class="keyword">sizeof</span>(weak_atomic<span class="operator">&lt;</span>Block<span class="operator">*</span><span class="operator">&gt;</span>)<span class="operator">]</span>;
+         weak_atomic<span class="operator">&lt;</span>Block<span class="operator">*</span><span class="operator">&gt;</span> tailBlock;          <span class="comment">// (Atomic) Elements are dequeued from this block</span>
+
+         size_t largestBlockSize;
+
+ <span class="preprocessor">#ifndef NDEBUG</span>
+         bool enqueuing;
+         bool dequeuing;
+ <span class="preprocessor">#endif</span>
+ };
+
+ <span class="comment">// Like ReaderWriterQueue, but also providees blocking operations</span>
+ <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> T<span class="operator">,</span> size_t MAX_BLOCK_SIZE <span class="operator">=</span> <span class="number">512</span><span class="operator">&gt;</span>
+ <span class="keyword">class</span> BlockingReaderWriterQueue
+ {
+ <span class="keyword">private</span>:
+         <span class="keyword">typedef</span> <span class="operator">::</span>moodycamel<span class="operator">::</span>ReaderWriterQueue<span class="operator">&lt;</span>T<span class="operator">,</span> MAX_BLOCK_SIZE<span class="operator">&gt;</span> ReaderWriterQueue;
+
+ <span class="keyword">public</span>:
+         <span class="keyword">explicit</span> BlockingReaderWriterQueue(size_t maxSize <span class="operator">=</span> <span class="number">15</span>) AE_NO_TSAN
+                 : inner(maxSize)<span class="operator">,</span> sema(<span class="keyword">new</span> spsc_sema<span class="operator">::</span>LightweightSemaphore())
+         { }
+
+         BlockingReaderWriterQueue(BlockingReaderWriterQueue<span class="operator">&amp;</span><span class="operator">&amp;</span> other) AE_NO_TSAN
+                 : inner(std<span class="operator">::</span>move(other<span class="operator">.</span>inner))<span class="operator">,</span> sema(std<span class="operator">::</span>move(other<span class="operator">.</span>sema))
+         { }
+
+         BlockingReaderWriterQueue<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(BlockingReaderWriterQueue<span class="operator">&amp;</span><span class="operator">&amp;</span> other) AE_NO_TSAN
+         {
+                 std<span class="operator">::</span>swap(sema<span class="operator">,</span> other<span class="operator">.</span>sema);
+                 std<span class="operator">::</span>swap(inner<span class="operator">,</span> other<span class="operator">.</span>inner);
+                 <span class="keyword">return</span> <span class="operator">*</span><span class="keyword">this</span>;
+         }
+
+         <span class="comment">// Enqueues a copy of element if there is room in the queue.</span>
+         <span class="comment">// Returns true if the element was enqueued, false otherwise.</span>
+         <span class="comment">// Does not allocate memory.</span>
+         AE_FORCEINLINE bool try_enqueue(T <span class="keyword">const</span><span class="operator">&amp;</span> element) AE_NO_TSAN
+         {
+                 <span class="keyword">if</span> (inner<span class="operator">.</span>try_enqueue(element)) {
+                         sema<span class="operator">-</span><span class="operator">&gt;</span>signal();
+                         <span class="keyword">return</span> <span class="keyword">true</span>;
+                 }
+                 <span class="keyword">return</span> <span class="keyword">false</span>;
+         }
+
+         <span class="comment">// Enqueues a moved copy of element if there is room in the queue.</span>
+         <span class="comment">// Returns true if the element was enqueued, false otherwise.</span>
+         <span class="comment">// Does not allocate memory.</span>
+         AE_FORCEINLINE bool try_enqueue(T<span class="operator">&amp;</span><span class="operator">&amp;</span> element) AE_NO_TSAN
+         {
+                 <span class="keyword">if</span> (inner<span class="operator">.</span>try_enqueue(std<span class="operator">::</span>forward<span class="operator">&lt;</span>T<span class="operator">&gt;</span>(element))) {
+                         sema<span class="operator">-</span><span class="operator">&gt;</span>signal();
+                         <span class="keyword">return</span> <span class="keyword">true</span>;
+                 }
+                 <span class="keyword">return</span> <span class="keyword">false</span>;
+         }
+
+         <span class="comment">// Enqueues a copy of element on the queue.</span>
+         <span class="comment">// Allocates an additional block of memory if needed.</span>
+         <span class="comment">// Only fails (returns false) if memory allocation fails.</span>
+         AE_FORCEINLINE bool enqueue(T <span class="keyword">const</span><span class="operator">&amp;</span> element) AE_NO_TSAN
+         {
+                 <span class="keyword">if</span> (inner<span class="operator">.</span>enqueue(element)) {
+                         sema<span class="operator">-</span><span class="operator">&gt;</span>signal();
+                         <span class="keyword">return</span> <span class="keyword">true</span>;
+                 }
+                 <span class="keyword">return</span> <span class="keyword">false</span>;
+         }
+
+         <span class="comment">// Enqueues a moved copy of element on the queue.</span>
+         <span class="comment">// Allocates an additional block of memory if needed.</span>
+         <span class="comment">// Only fails (returns false) if memory allocation fails.</span>
+         AE_FORCEINLINE bool enqueue(T<span class="operator">&amp;</span><span class="operator">&amp;</span> element) AE_NO_TSAN
+         {
+                 <span class="keyword">if</span> (inner<span class="operator">.</span>enqueue(std<span class="operator">::</span>forward<span class="operator">&lt;</span>T<span class="operator">&gt;</span>(element))) {
+                         sema<span class="operator">-</span><span class="operator">&gt;</span>signal();
+                         <span class="keyword">return</span> <span class="keyword">true</span>;
+                 }
+                 <span class="keyword">return</span> <span class="keyword">false</span>;
+         }
+
+         <span class="comment">// Attempts to dequeue an element; if the queue is empty,</span>
+         <span class="comment">// returns false instead. If the queue has at least one element,</span>
+         <span class="comment">// moves front to result using operator=, then returns true.</span>
+         <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">&gt;</span>
+         bool try_dequeue(U<span class="operator">&amp;</span> result) AE_NO_TSAN
+         {
+                 <span class="keyword">if</span> (sema<span class="operator">-</span><span class="operator">&gt;</span>tryWait()) {
+                         bool success <span class="operator">=</span> inner<span class="operator">.</span>try_dequeue(result);
+                         assert(success);
+                         AE_UNUSED(success);
+                         <span class="keyword">return</span> <span class="keyword">true</span>;
+                 }
+                 <span class="keyword">return</span> <span class="keyword">false</span>;
+         }
+
+         <span class="comment">// Attempts to dequeue an element; if the queue is empty,</span>
+         <span class="comment">// waits until an element is available, then dequeues it.</span>
+         <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">&gt;</span>
+         <span class="type">void</span> wait_dequeue(U<span class="operator">&amp;</span> result) AE_NO_TSAN
+         {
+                 sema<span class="operator">-</span><span class="operator">&gt;</span>wait();
+                 bool success <span class="operator">=</span> inner<span class="operator">.</span>try_dequeue(result);
+                 AE_UNUSED(result);
+                 assert(success);
+                 AE_UNUSED(success);
+         }
+
+         <span class="comment">// Attempts to dequeue an element; if the queue is empty,</span>
+         <span class="comment">// waits until an element is available up to the specified timeout,</span>
+         <span class="comment">// then dequeues it and returns true, or returns false if the timeout</span>
+         <span class="comment">// expires before an element can be dequeued.</span>
+         <span class="comment">// Using a negative timeout indicates an indefinite timeout,</span>
+         <span class="comment">// and is thus functionally equivalent to calling wait_dequeue.</span>
+         <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">&gt;</span>
+         bool wait_dequeue_timed(U<span class="operator">&amp;</span> result<span class="operator">,</span> std<span class="operator">::</span>int64_t timeout_usecs) AE_NO_TSAN
+         {
+                 <span class="keyword">if</span> (<span class="operator">!</span>sema<span class="operator">-</span><span class="operator">&gt;</span>wait(timeout_usecs)) {
+                         <span class="keyword">return</span> <span class="keyword">false</span>;
+                 }
+                 bool success <span class="operator">=</span> inner<span class="operator">.</span>try_dequeue(result);
+                 AE_UNUSED(result);
+                 assert(success);
+                 AE_UNUSED(success);
+                 <span class="keyword">return</span> <span class="keyword">true</span>;
+         }
+
+ <span class="preprocessor">#if __cplusplus &gt; 199711L || _MSC_VER &gt;= 1700</span>
+         <span class="comment">// Attempts to dequeue an element; if the queue is empty,</span>
+         <span class="comment">// waits until an element is available up to the specified timeout,</span>
+         <span class="comment">// then dequeues it and returns true, or returns false if the timeout</span>
+         <span class="comment">// expires before an element can be dequeued.</span>
+         <span class="comment">// Using a negative timeout indicates an indefinite timeout,</span>
+         <span class="comment">// and is thus functionally equivalent to calling wait_dequeue.</span>
+         <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> U<span class="operator">,</span> <span class="keyword">typename</span> Rep<span class="operator">,</span> <span class="keyword">typename</span> Period<span class="operator">&gt;</span>
+         <span class="keyword">inline</span> bool wait_dequeue_timed(U<span class="operator">&amp;</span> result<span class="operator">,</span> std<span class="operator">::</span>chrono<span class="operator">::</span>duration<span class="operator">&lt;</span>Rep<span class="operator">,</span> Period<span class="operator">&gt;</span> <span class="keyword">const</span><span class="operator">&amp;</span> timeout) AE_NO_TSAN
+         {
+         <span class="keyword">return</span> wait_dequeue_timed(result<span class="operator">,</span> std<span class="operator">::</span>chrono<span class="operator">::</span>duration_cast<span class="operator">&lt;</span>std<span class="operator">::</span>chrono<span class="operator">::</span>microseconds<span class="operator">&gt;</span>(timeout)<span class="operator">.</span>count());
+         }
+ <span class="preprocessor">#endif</span>
+
+         <span class="comment">// Returns a pointer to the front element in the queue (the one that</span>
+         <span class="comment">// would be removed next by a call to `try_dequeue` or `pop`). If the</span>
+         <span class="comment">// queue appears empty at the time the method is called, nullptr is</span>
+         <span class="comment">// returned instead.</span>
+         <span class="comment">// Must be called only from the consumer thread.</span>
+         AE_FORCEINLINE T<span class="operator">*</span> peek() AE_NO_TSAN
+         {
+                 <span class="keyword">return</span> inner<span class="operator">.</span>peek();
+         }
+
+         <span class="comment">// Removes the front element from the queue, if any, without returning it.</span>
+         <span class="comment">// Returns true on success, or false if the queue appeared empty at the time</span>
+         <span class="comment">// `pop` was called.</span>
+         AE_FORCEINLINE bool pop() AE_NO_TSAN
+         {
+                 <span class="keyword">if</span> (sema<span class="operator">-</span><span class="operator">&gt;</span>tryWait()) {
+                         bool result <span class="operator">=</span> inner<span class="operator">.</span>pop();
+                         assert(result);
+                         AE_UNUSED(result);
+                         <span class="keyword">return</span> <span class="keyword">true</span>;
+                 }
+                 <span class="keyword">return</span> <span class="keyword">false</span>;
+         }
+
+         <span class="comment">// Returns the approximate number of items currently in the queue.</span>
+         <span class="comment">// Safe to call from both the producer and consumer threads.</span>
+         AE_FORCEINLINE size_t size_approx() <span class="keyword">const</span> AE_NO_TSAN
+         {
+                 <span class="keyword">return</span> sema<span class="operator">-</span><span class="operator">&gt;</span>availableApprox();
+         }
+
+ <span class="keyword">private</span>:
+         <span class="comment">// Disable copying &amp; assignment</span>
+         BlockingReaderWriterQueue(BlockingReaderWriterQueue <span class="keyword">const</span><span class="operator">&amp;</span>) {  }
+         BlockingReaderWriterQueue<span class="operator">&amp;</span> <span class="keyword">operator</span><span class="operator">=</span>(BlockingReaderWriterQueue <span class="keyword">const</span><span class="operator">&amp;</span>) {  }
+
+ <span class="keyword">private</span>:
+         ReaderWriterQueue inner;
+         std<span class="operator">::</span>unique_ptr<span class="operator">&lt;</span>spsc_sema<span class="operator">::</span>LightweightSemaphore<span class="operator">&gt;</span> sema;
+ };
+
+ }    <span class="comment">// end namespace moodycamel</span>
+
+ <span class="preprocessor">#ifdef AE_VCPP</span>
+ <span class="preprocessor">#pragma warning(pop)</span>
+ <span class="preprocessor">#endif</span>
 </pre>

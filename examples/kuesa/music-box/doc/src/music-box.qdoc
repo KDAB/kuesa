@@ -64,8 +64,8 @@
     \section1 Extracting and running Animations
 
     We know in advance the name of the animations bundled in the glTF2 file. If
-    you haven't authored the file yourself, you can use the \l {gltfEditor} to
-    introspect it, list the animations and preview them.
+    you haven't authored the file yourself, you can use the Kuesa Studio
+    gltfEditor to introspect it, list the animations and preview them.
 
     Given a list of animation names:
     \snippet music-box/qml/MainScene.qml 2.1

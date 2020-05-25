@@ -81,40 +81,10 @@
 
     \image pipeline-diagram.png
 
-    \section2 Kuesa Digital Content Creation Plugins
-
-    \list
-    \li \l {https://github.com/KDAB/kuesa-blender} {Kuesa Blender glTF2 Exporter plugin}
-    \li \l {https://github.com/KDAB/kuesa-3dsmax} {Kuesa 3ds Max glTF2 Exporter plugin}
-    \endlist
-
-    Checkout out our \l {https://www.youtube.com/watch?v=6W3gMEk_PbE} {video
-    tutorial} on how prepare your assets for Kuesa with 3ds max.
-
-    \section2 Kuesa Runtime
-
-    The Kuesa Runtime provides C++ and QML APIs to ease incorporation of 3D
-    content into Qt 3D based applications.
-
-    \list
-    \li \l [CPP]{Kuesa::GLTF2Importer} {glTF2 compliant importer that generates a Qt 3D based scene}
-    \li \l [CPP]{Kuesa::MetallicRoughnessMaterial} {Custom PBR materials}
-    \li Asset collections to retrieve assets by name
-    \li Post Processing Effects
-    \endlist
+    \include kuesa-components.qdocinc
 
     Checkout out our \l {https://www.youtube.com/watch?v=dIdrQMkGVPI} {video
     tutorial} on creating an interactive 3D application with Kuesa.
-
-    \section2 Kuesa Tools
-    A set of tools to preview scenes
-    \list
-    \li \l {gltfEditor}
-    \li \l {gltfViewer}
-    \li \l {ddspreviewer}
-    \li \l {cubemaptooctahedralmap}
-    \endlist
-
 
     \section1 Kuesa Runtime Features
 
@@ -126,16 +96,24 @@
     exporter allow the use of additional features, namely:
 
     \list
-    \li Qt 3D compatible \l [CPP] {Kuesa::MetallicRoughnessMaterial} {PBR Material}
-    support
-    \li Qt 3D layer export
-    \li Face wireframe export
+    \li Qt 3D compatible \l [CPP] {Kuesa::MetallicRoughnessMaterial} {PBR Material} support
+    \li glTF 2.0 Extensions
+        \list
+        \li \l {https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_unlit} {KHR_materials_unlit}
+        \li \l {https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_lights_punctual} {KHR_lights_punctual}
+        \li \l {https://github.com/KhronosGroup/glTF/pull/1301/files/c72ffabee4b801ce30c77277bba37fa4179185bd} {EXT_property_animation}
+        \li \l {https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_draco_mesh_compression/README.md} {KHR_draco_mesh_compression}
+        \li KDAB_custom_material for \l {Kuesa Iro Materials} {Iro Materials} export
+        \li KDAB_kuesa_layers for \l {Kuesa Layers} {Qt 3D layer} export
+        \endlist
     \endlist
 
+    \section3 Asset Collections
     Once a file has been loaded through the use of the glTF 2 importer, name based
     collections are populated. Kuesa provides the following collections for:
     \list
     \li \l [CPP]{Kuesa::EntityCollection} {Entities}
+    \li \l [CPP]{Kuesa::TransformCollection} {Transforms}
     \li \l [CPP]{Kuesa::AnimationClipCollection} {Animation Clips}
     \li \l [CPP]{Kuesa::AnimationMappingCollection} {Animation Mappings}
     \li \l [CPP]{Kuesa::CameraCollection} {Cameras}

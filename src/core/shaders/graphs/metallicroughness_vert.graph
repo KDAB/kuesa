@@ -1117,7 +1117,7 @@
                 },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec4"
                 }
             },
             "position": {
@@ -1446,7 +1446,7 @@
                 "name": "color",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec4"
                 }
             },
             "position": {
@@ -2098,7 +2098,7 @@
         },
         {
             "collapsed": false,
-            "displayName": "input",
+            "displayName": "arrayInput",
             "group": -1,
             "id": 42,
             "inputValues": {
@@ -2107,11 +2107,12 @@
                 "skinning"
             ],
             "parameters": {
-                "name": "skinningPalette[100]",
+                "name": "skinningPalette",
                 "qualifier": {
                     "type": "QShaderLanguage::StorageQualifier",
                     "value": "QShaderLanguage::Uniform"
                 },
+                "size": "100",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Mat4"
@@ -2121,7 +2122,7 @@
                 "x": 328,
                 "y": -975
             },
-            "type": "input",
+            "type": "arrayInput",
             "uuid": "{65f7a909-500b-42a9-ba68-387d57752b4f}"
         },
         {
@@ -3447,10 +3448,10 @@
     ],
     "project": {
         "position": {
-            "x": -90.66666666666674,
-            "y": 1402.6666666666665
+            "x": 740.6222222222214,
+            "y": -153.11111111111086
         },
-        "scale": 0.5625
+        "scale": 0.25
     },
     "prototypes": {
         "add": {
@@ -3516,6 +3517,47 @@
                         "minor": 0
                     },
                     "substitution": "$type $output = $input1 && $input2;"
+                }
+            ]
+        },
+        "arrayInput": {
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "name": "defaultName",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                "size": "1",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier highp $type $name[$size];"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier $type $name[$size];"
+                    ],
+                    "substitution": "$type $value = $name;"
                 }
             ]
         },
@@ -3651,7 +3693,10 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output; if ($condition) discard; $output = $value;"
+                    "headerSnippets": [
+                        "highp $type discard_if_$type(bool shouldDiscard, highp $type value) { if (shouldDiscard) discard; return value; }"
+                    ],
+                    "substitution": "highp $type $output = discard_if_$type($condition, $value);"
                 },
                 {
                     "format": {
@@ -3659,7 +3704,10 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output; if ($condition) discard; $output = $value;"
+                    "headerSnippets": [
+                        "$type discard_if_$type(bool shouldDiscard, $type value) { if (shouldDiscard) discard; return value; }"
+                    ],
+                    "substitution": "$type $output = discard_if_$type($condition, $value);"
                 }
             ]
         },
@@ -3938,7 +3986,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output; if ($condition) $output = $true; else $output = $false;"
+                    "substitution": "highp $type $output = ($condition) ? $true : $false;"
                 },
                 {
                     "format": {
@@ -3946,7 +3994,7 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output; if ($condition) $output = $true; else $output = $false;"
+                    "substitution": "$type $output = ($condition) ? $true : $false;"
                 }
             ]
         },
@@ -4811,7 +4859,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output = $input.$fields;"
+                    "substitution": "highp $type $output = ($input).$fields;"
                 },
                 {
                     "format": {
@@ -4819,7 +4867,7 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output = $input.$fields;"
+                    "substitution": "$type $output = ($input).$fields;"
                 }
             ]
         },

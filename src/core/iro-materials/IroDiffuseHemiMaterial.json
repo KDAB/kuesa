@@ -1,0 +1,60 @@
+{
+    "type": "IroDiffuseHemi",
+    "doc": "is a simple material in terms of rendering that relies on a 2d spherical environment map and a 2d diffuse map to render semi glossy like finishes like clear coated paint. It additionally shades the lower hemisphere by the color set in postHemiFilter.",
+    "properties": [
+        { "name": "normalScaling", "type": "vec3", "doc": "Specifies a factor to be applied to the normal." },
+        { "name": "normalDisturb", "type": "vec2", "doc": "Specifies a disturbance factor that will be added to the normal" },
+        { "name": "postVertexColor", "type": "float", "doc": "Specifies the factor which controls how much of the per vertex color we want to transmit." },
+        { "name": "postHemiFilter", "type": "vec3", "doc": "Specifies the color to be applied to the lower hemisphere. It is multiplied like a negative diffuse light coming from below." },
+        { "name": "postGain", "type": "float", "doc": "Specifies the gain factor to be applied to the final result." },
+        { "name": "reflectionMap", "type": "texture2d", "doc": "Specifies the spherical environment map to use. It is expected to be in sRGB color space." },
+        { "name": "reflectionGain", "type": "float", "doc": "Specifies the gain factor to be applied to the spherical environment map lookup." },
+        { "name": "reflectionInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup." },
+        { "name": "reflectionOuterFilter", "type": "vec3", "doc": "Specifies the outer color filter to be applied based on fresnel on the spherical environment map lookup." },
+        { "name": "usesReflectionMap", "type": "bool", "doc": "Specifies whether we use a reflection map or not." },
+        { "name": "projectReflectionMap", "type": "bool", "doc": "Specifies whether equirectangular projection should be used for lookups on the reflection map." },
+        { "name": "diffuseInnerFilter", "type": "vec3", "doc": "Specifies the inner color filter to be applied based on fresnel on the diffuse map lookup." },
+        { "name": "diffuseOuterFilter", "type": "vec3", "doc": "Specifies the outer color filter to be applied based on fresnel on the diffuse map lookup." },
+        { "name": "diffuseMap", "type": "texture2d", "doc": "Specifies the diffuse map to use. It is expected to be in sRGB color space." },
+        { "name": "diffuseGain", "type": "float", "doc": "Specifies the gain factor to be applied to the diffuse map lookup." },
+        { "name": "usesDiffuseMap", "type": "bool", "doc": "Specifies whether we use a diffuse map or not." },
+        { "name": "gltfYUp", "type": "bool", "doc": "Specifies whether this material should consider the Y and Z axis as being inverted." }
+    ],
+    "passes": [
+        {
+            "type": "Opaque",
+            "shaders": [
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGLES", "major": 3, "minor": 0 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.frag.json"
+                },
+                {
+                    "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/irodiffusehemi.frag.json"
+                }
+            ]
+        }
+    ]
+}

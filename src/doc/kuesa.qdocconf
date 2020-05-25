@@ -3,13 +3,11 @@ include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
 
 
 project                 = Kuesa
-description             = Kuesa Reference Documentation
-version                 = 1.1
-buildversion            = "Kuesa 1.1 Reference Documentation"
+description             = Kuesa Runtime Reference Documentation
+version                 = 1.2
+buildversion            = "Kuesa Runtime 1.2 Reference Documentation"
 includepaths            =  . \
-                           .. \
-                           $$[QT_INSTALL_HEADERS] \
-                           $$[QT_INSTALL_HEADERS]/Kuesa
+                           ..
 
 outputformats = HTML
 indexes = $QT_INSTALL_DOCS/html/qt.index
@@ -19,28 +17,28 @@ examplesinstallpath       = kuesa
 
 qhp.projects              = Kuesa
 qhp.Kuesa.file            = kuesa.qhp
-qhp.Kuesa.namespace       = com.kdab.kuesa.1.1
+qhp.Kuesa.namespace       = com.kdab.kuesa.1.2
 qhp.Kuesa.virtualFolder   = kuesa
 qhp.Kuesa.indexTitle      = Kuesa
 qhp.Kuesa.subprojects     = classes qmltypes examples
 qhp.Kuesa.indexRoot       =
 
 qhp.Kuesa.subprojects.classes.title       = C++ Classes
-qhp.Kuesa.subprojects.classes.indexTitle  = Kuesa C++ Classes
+qhp.Kuesa.subprojects.classes.indexTitle  = Kuesa Runtime C++ Classes
 qhp.Kuesa.subprojects.classes.selectors   = class doc:headerfile
 qhp.Kuesa.subprojects.classes.sortPages   = true
 
 qhp.Kuesa.subprojects.qmltypes.title      = QML Types
-qhp.Kuesa.subprojects.qmltypes.indexTitle = Kuesa QML Types
+qhp.Kuesa.subprojects.qmltypes.indexTitle = Kuesa Runtime QML Types
 qhp.Kuesa.subprojects.qmltypes.selectors  = qmlclass
 qhp.Kuesa.subprojects.qmltypes.sortPages  = true
 
 qhp.Kuesa.subprojects.examples.title      = Examples
-qhp.Kuesa.subprojects.examples.indexTitle = Kuesa Examples
+qhp.Kuesa.subprojects.examples.indexTitle = Kuesa Runtime Examples
 qhp.Kuesa.subprojects.examples.selectors  = doc:example
 qhp.Kuesa.subprojects.examples.sortPages  = true
 
-navigation.hometitle = "Kuesa 1.1"
+navigation.hometitle = "Kuesa Runtime 1.2"
 dita.metadata.default.publisher   = KDAB
 dita.metadata.default.copyrholder = KDAB
 dita.metadata.default.author = KDAB
@@ -72,32 +70,46 @@ examples.imageextensions      += "*.png *.jpg"
 Cpp.ignoretokens                         += KUESASHARED_EXPORT Q_INVOKABLE
 Cpp.ignoredirectives                     += Q_DECLARE_LOGGING_CATEGORY Q_INVOKABLE
 
-navigation.landingpage = "Kuesa"
-navigation.cppclassespage = "Kuesa C++ Classes"
-navigation.qmltypespage = "Kuesa QML Types"
+navigation.landingpage = "Kuesa Runtime"
+navigation.cppclassespage = "Kuesa Runtime C++ Classes"
+navigation.qmltypespage = "Kuesa Runtime QML Types"
 
-HTML.headerstyles = "<link rel=\"stylesheet\" type=\"text/css\" href=\"style/style.css\">\n" \
-                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"style/bootstrap.min.css\">\n"
-HTML.stylesheets =  ./style/style.css \
-                    ./style/bootstrap.min.css
-HTML.extraimages += ./images/kdab_background.png \
-                    ./images/kdabLogo.png
+HTML.headerstyles = "<link rel='stylesheet' href='style/bootstrap.min.css'>" \
+                    "<link rel='stylesheet' href='style/dracula.css'>" \
+                    "<link rel='stylesheet' href='style/style.css'>"
 
-qhp.extraFiles = style/style.css \
-                      style/boostrap.min.css \
-                      images/kdab_background.png \
-                      images/kdabLogo.png
+HTML.headerscripts = "<script type='text/javascript' src='scripts/jquery.slim.min.js'></script>" \
+                     "<script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script>" \
+                     "<script type='text/javascript' src='scripts/highlight.pack.js'></script>" \
+                     "<script type='text/javascript' src='scripts/clipboard.min.js'></script>" \
+                     "<script type='text/javascript' src='scripts/script.js'></script>"
+
+HTML.stylesheets = ./style/style.css \
+                   ./style/dracula.css \
+                   ./style/bootstrap.min.css
+
+HTML.scripts = ./scripts/jquery.slim.min.js \
+               ./scripts/bootstrap.bundle.min.js \
+               ./scripts/highlight.pack.js \
+               ./scripts/clipboard.min.js \
+               ./scripts/script.js
+
+HTML.extraimages += ./images/kdab-background.png \
+                    ./images/kdab-logo.png
 
 HTML.postheader = "<div id=\"title\">" \
                     "<div class=\"logo\">" \
                         "<a href=\"https://www.kdab.com\" target=\”_blank\” class=\"ui-link\">" \
-                            "<img src=\"images/kdabLogo.png\" alt=\"KDAB Logo\">" \
+                            "<img src=\"images/kdab-logo.png\" alt=\"KDAB Logo\">" \
                         "</a>" \
                     "</div>" \
                     "<div class=\"header\">" \
-                        "<h1>Kuesa</h1>" \
+                        "<h1>Kuesa Runtime</h1>" \
                     "</div>" \
-                  "</div>"
+                  "</div>" \
+                  "<div id=\"breadcrumbs\"><ul>"
+
+HTML.postpostheader = "</ul></div><div class='doc-content'>"
 
 HTML.footer = \
     "        </div>\n" \
@@ -106,8 +118,8 @@ HTML.footer = \
     "   </div>\n" \
     "</div>\n" \
     "<div class=\"footer\">\n" \
-    "   <p>\n" \
-    "   <acronym title=\"Copyright\">&copy;</acronym> 2019 KDAB.\n" \
+    "   <p class=\"text-center\">\n" \
+    "   <acronym title=\"Copyright\">&copy;</acronym> 2020 KDAB.\n" \
     "   Documentation contributions included herein are the copyrights of\n" \
     "   their respective owners.<br/>" \
     "   The documentation provided herein is licensed under the terms of the" \

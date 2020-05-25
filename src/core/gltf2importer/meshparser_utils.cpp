@@ -844,14 +844,17 @@ quint32 indexValueAt(Qt3DRender::QAttribute::VertexBaseType type, const char *ra
 {
     switch (type) {
     case Qt3DRender::QAttribute::UnsignedInt:
+        return *reinterpret_cast<const quint32*>(rawValue);
     case Qt3DRender::QAttribute::Int:
-        return static_cast<quint32>(*rawValue);
+        return *reinterpret_cast<const qint32*>(rawValue);
     case Qt3DRender::QAttribute::UnsignedShort:
+        return *reinterpret_cast<const quint16*>(rawValue);
     case Qt3DRender::QAttribute::Short:
-        return static_cast<quint16>(*rawValue);
+        return *reinterpret_cast<const qint16*>(rawValue);
     case Qt3DRender::QAttribute::UnsignedByte:
+        return *reinterpret_cast<const quint8*>(rawValue);
     case Qt3DRender::QAttribute::Byte:
-        return static_cast<quint8>(*rawValue);
+        return *reinterpret_cast<const qint8*>(rawValue);
     default:
         Q_UNREACHABLE();
     }

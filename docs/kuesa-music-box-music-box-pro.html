@@ -1,183 +1,169 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- music-box.qdoc -->
-  <title>Kuesa Music Box QML Example | Kuesa 1.1</title>
-<link rel="stylesheet" type="text/css" href="style/style.css">
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
-</head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
+  <title>Kuesa Music Box QML Example | Kuesa Runtime 1.2</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Music Box QML Example</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
-        </tr></table>
-      </div>
-    </div>
-<div class="content">
-<div class="line">
-<div class="content mainContent">
-<h1 class="title">Kuesa Music Box QML Example</h1>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><h1 class="title">Kuesa Music Box QML Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
+ # music-box.pro
+ #
+ # This file is part of Kuesa.
+ #
+ # Copyright (C) 2018-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+ # Author: Mauro Persano &lt;mauro.persano@kdab.com&gt;
+ #
+ # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+ # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+ # LICENSE.KUESA.ENTERPRISE file.
+ #
+ # Contact info@kdab.com if any conditions of this licensing are not clear to you.
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as
+ # published by the Free Software Foundation, either version 3 of the
+ # License, or (at your option) any later version.
+ #
+ # This program is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
 
-  # music-box.pro
-  #
-  # This file is part of Kuesa.
-  #
-  # Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-  # Author: Mauro Persano &lt;mauro.persano@kdab.com&gt;
-  #
-  # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-  # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-  # LICENSE.KUESA.ENTERPRISE file.
-  #
-  # Contact info@kdab.com if any conditions of this licensing are not clear to you.
-  #
-  # This program is free software: you can redistribute it and/or modify
-  # it under the terms of the GNU Affero General Public License as
-  # published by the Free Software Foundation, either version 3 of the
-  # License, or (at your option) any later version.
-  #
-  # This program is distributed in the hope that it will be useful,
-  # but WITHOUT ANY WARRANTY; without even the implied warranty of
-  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  # GNU Affero General Public License for more details.
-  #
-  # You should have received a copy of the GNU Affero General Public License
-  # along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ TEMPLATE = app
 
-  TEMPLATE = app
+ TARGET = music-box
 
-  TARGET = music-box
+ QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa
+ SOURCES += \
+     main.cpp \
+     sampler.cpp
 
-  QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa
-  SOURCES += \
-      main.cpp \
-      sampler.cpp
+ HEADERS += \
+     sampler.h
 
-  HEADERS += \
-      sampler.h
+ RESOURCES += \
+     qml/qml.qrc \
 
-  RESOURCES += \
-      qml/qml.qrc \
+ macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
+ else: APP_PWD=$$OUT_PWD
+ RES_PWD=$$APP_PWD/resources
 
-  macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
-  else: APP_PWD=$$OUT_PWD
-  RES_PWD=$$APP_PWD/resources
+ target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+ target.files += $$RES_PWD
+ INSTALLS += target
 
-  target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-  target.files += $$RES_PWD
-  INSTALLS += target
+ install_music_samples.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+ install_music_samples.files = $$PWD/assets/samples
 
-  install_music_samples.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-  install_music_samples.files = $$PWD/assets/samples
+ INSTALLS += install_music_samples
 
-  INSTALLS += install_music_samples
+ include($$KUESA_ROOT/kuesa-global.pri)
 
-  include($$KUESA_ROOT/kuesa-global.pri)
+ android {
+     envmaps_dir = ../assets/envmaps
+     envmaps.files = \
+         $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_irradiance.dds \
+         $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_radiance.dds \
+         $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_specular.dds \
+         $${envmaps_dir}/pink_sunrise/pink_sunrise_skybox.dds
 
-  android {
-      envmaps_dir = ../assets/envmaps
-      envmaps.files = \
-          $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_irradiance.dds \
-          $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_radiance.dds \
-          $${envmaps_dir}/pink_sunrise/pink_sunrise_16f_specular.dds \
-          $${envmaps_dir}/pink_sunrise/pink_sunrise_skybox.dds
+     model_dir = ../assets/models/music-box
+     model.files = \
+         $${model_dir}/RobotArm.gltf \
+         $${model_dir}/RobotArm.bin \
+         $${model_dir}/armBottomBottomTex.png \
+         $${model_dir}/arrowsArm.png \
+         $${model_dir}/elbowMove.png \
+         $${model_dir}/FiingerTop1Tex.png \
+         $${model_dir}/fingerKnuckle1Tex.png \
+         $${model_dir}/FingerKnuckle2Tex.png \
+         $${model_dir}/FingerKnuckle3Tex.png \
+         $${model_dir}/fingerPivot1Tex.png \
+         $${model_dir}/FingerPivot2Tex.png \
+         $${model_dir}/fingerPivot3Tex.png \
+         $${model_dir}/FingerTop2Tex.png \
+         $${model_dir}/FingerTop3Tex.png \
+         $${model_dir}/robotArmBottomTopTex.png \
+         $${model_dir}/robotArmTopTex.png \
+         $${model_dir}/RobotBaseTex.png \
+         $${model_dir}/shoulderBaseTex.png \
+         $${model_dir}/shoulderMoveTex.png \
+         $${model_dir}/thumbBaseBottomTex.png \
+         $${model_dir}/thumbKnuckleTex.png \
+         $${model_dir}/thumbPivotTex.png \
+         $${model_dir}/thumbTopTex.png \
+         $${model_dir}/WoodTextureBake.png \
+         $${model_dir}/woodTextureCylinderBake.png \
+         $${model_dir}/woodTextureCylinderFarBake.png \
+         $${model_dir}/wristTex.png \
+         $${model_dir}/GroundPlane.png
 
-      model_dir = ../assets/models/music-box
-      model.files = \
-          $${model_dir}/RobotArm.gltf \
-          $${model_dir}/RobotArm.bin \
-          $${model_dir}/armBottomBottomTex.png \
-          $${model_dir}/arrowsArm.png \
-          $${model_dir}/elbowMove.png \
-          $${model_dir}/FiingerTop1Tex.png \
-          $${model_dir}/fingerKnuckle1Tex.png \
-          $${model_dir}/FingerKnuckle2Tex.png \
-          $${model_dir}/FingerKnuckle3Tex.png \
-          $${model_dir}/fingerPivot1Tex.png \
-          $${model_dir}/FingerPivot2Tex.png \
-          $${model_dir}/fingerPivot3Tex.png \
-          $${model_dir}/FingerTop2Tex.png \
-          $${model_dir}/FingerTop3Tex.png \
-          $${model_dir}/robotArmBottomTopTex.png \
-          $${model_dir}/robotArmTopTex.png \
-          $${model_dir}/RobotBaseTex.png \
-          $${model_dir}/shoulderBaseTex.png \
-          $${model_dir}/shoulderMoveTex.png \
-          $${model_dir}/thumbBaseBottomTex.png \
-          $${model_dir}/thumbKnuckleTex.png \
-          $${model_dir}/thumbPivotTex.png \
-          $${model_dir}/thumbTopTex.png \
-          $${model_dir}/WoodTextureBake.png \
-          $${model_dir}/woodTextureCylinderBake.png \
-          $${model_dir}/woodTextureCylinderFarBake.png \
-          $${model_dir}/wristTex.png \
-          $${model_dir}/GroundPlane.png
+     envmaps.path = /assets
+     install_music_samples.path = /assets
+     model.path = /assets
 
-      envmaps.path = /assets
-      install_music_samples.path = /assets
-      model.path = /assets
+     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+     DISTFILES += android/AndroidManifest.xml
+     INSTALLS += envmaps model
+ } else {
+     RCC_BINARY_SOURCES += \
+         ../assets/models/music-box/music-box.qrc \
+         ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 
-      ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-      DISTFILES += android/AndroidManifest.xml
-      INSTALLS += envmaps model
-  } else {
-      RCC_BINARY_SOURCES += \
-          ../assets/models/music-box/music-box.qrc
+     asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
+     asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
+     asset_builder.input = RCC_BINARY_SOURCES
+     asset_builder.output = $$RES_PWD/${QMAKE_FILE_IN_BASE}.qrb
+     asset_builder.CONFIG += no_link target_predeps
+     QMAKE_EXTRA_COMPILERS += asset_builder
 
-      ios|macos {
-          RCC_BINARY_SOURCES += \
-              ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
-      } else {
-          RCC_BINARY_SOURCES += \
-              ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
-      }
+     windows {
+         QMAKE_POST_LINK += $$quote(cmd /c copy /y \&quot;$$PWD/assets/samples\&quot; \&quot;$$RES_PWD/\&quot; $$escape_expand(\n\t))
+         RC_ICONS = ../shared-utils/kuesa.ico
+         DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
+     } else:ios {
+         envmaps_dir = ../assets/envmaps
+         resfiles.files = \
+             $$RES_PWD/music-box.qrb \
+             $$RES_PWD/envmap-pink-sunrise-16f.qrb
+         resfiles.path = &quot;/Library/Application Support&quot;
 
-      asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
-      asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
-      asset_builder.input = RCC_BINARY_SOURCES
-      asset_builder.output = $$RES_PWD/${QMAKE_FILE_IN_BASE}.qrb
-      asset_builder.CONFIG += no_link target_predeps
-      QMAKE_EXTRA_COMPILERS += asset_builder
+         QMAKE_BUNDLE_DATA += resfiles
 
-      windows {
-          QMAKE_POST_LINK += $$quote(cmd /c copy /y \&quot;$$PWD/assets/samples\&quot; \&quot;$$RES_PWD/\&quot; $$escape_expand(\n\t))
-          RC_ICONS = ../../../resources/kuesa.ico
-          DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
-      } else:ios {
-          envmaps_dir = ../assets/envmaps
-          resfiles.files = \
-              $$RES_PWD/music-box.qrb \
-              $$RES_PWD/envmap-pink-sunrise-16f.qrb
-          resfiles.path = &quot;/Library/Application Support&quot;
+         OTHER_FILES += Info-ios.plist
+         QMAKE_INFO_PLIST = Info-ios.plist
 
-          QMAKE_BUNDLE_DATA += resfiles
+         OBJECTIVE_SOURCES += ios/iosutils.mm
+         QMAKE_ASSET_CATALOGS += ios/Images.xcassets
+     } else:macos {
+         ICON = ../shared-utils/kuesa.icns
+         OTHER_FILES += Info-macos.plist
+         QMAKE_INFO_PLIST = Info-macos.plist
+     } else {
+         QMAKE_POST_LINK += $$quote(cp -rf $$PWD/assets/samples $$RES_PWD $$escape_expand(\n\t))
+     }
+ }
 
-          OTHER_FILES += Info-ios.plist
-          QMAKE_INFO_PLIST = Info-ios.plist
+ packagesExist(portaudio-2.0) {
+     CONFIG += link_pkgconfig
+     PKGCONFIG += portaudio-2.0
+     DEFINES += KUESA_HAS_AUDIO=1
+ }
 
-          OBJECTIVE_SOURCES += ios/iosutils.mm
-          QMAKE_ASSET_CATALOGS += ios/Images.xcassets
-      } else:macos {
-          ICON = ../../../resources/kuesa.icns
-          OTHER_FILES += Info-macos.plist
-          QMAKE_INFO_PLIST = Info-macos.plist
-      } else {
-          QMAKE_POST_LINK += $$quote(cp -rf $$PWD/assets/samples $$RES_PWD $$escape_expand(\n\t))
-      }
-  }
+ target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+ target.files = $$PWD/*
+ INSTALLS += target
 
-  packagesExist(portaudio-2.0) {
-      CONFIG += link_pkgconfig
-      PKGCONFIG += portaudio-2.0
-      DEFINES += KUESA_HAS_AUDIO=1
-  }
-
-  OTHER_FILES += doc/src/* \
-      ../assets/models/music-box/music-box.qrc \
-      ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc
-
+ OTHER_FILES += doc/src/* \
+     ../assets/models/music-box/music-box.qrc \
+     ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 </pre>

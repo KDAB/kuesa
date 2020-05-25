@@ -32,7 +32,7 @@ SOURCES += \
     main.cpp \
     scenecontroller.cpp \
     controllerwidget.cpp \
-   ../../../tools/gltfEditor/orbitcameracontroller.cpp
+   ../../../tools/gltfViewer/orbitcameracontroller.cpp
 
 OTHER_FILES += \
     main.qml
@@ -43,7 +43,7 @@ RESOURCES += \
 HEADERS += \
     scenecontroller.h \
     controllerwidget.h \
-    ../../../tools/gltfEditor/orbitcameracontroller.h
+    ../../../tools/gltfViewer/orbitcameracontroller.h
 
 FORMS += \
     controllerwidget.ui

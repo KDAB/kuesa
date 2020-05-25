@@ -1069,7 +1069,7 @@
                 },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec4"
                 }
             },
             "type": "input",
@@ -1279,7 +1279,7 @@
                 "name": "color",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec4"
                 }
             },
             "type": "output",
@@ -1616,8 +1616,6 @@
         },
         {
             "layers": [
-                "no-skinning",
-                "skinning"
             ],
             "parameters": {
                 "constant": "1.0",
@@ -1631,8 +1629,6 @@
         },
         {
             "layers": [
-                "no-skinning",
-                "skinning"
             ],
             "parameters": {
                 "constant": "0.0",
@@ -1685,17 +1681,18 @@
                 "skinning"
             ],
             "parameters": {
-                "name": "skinningPalette[100]",
+                "name": "skinningPalette",
                 "qualifier": {
                     "type": "QShaderLanguage::StorageQualifier",
                     "value": "QShaderLanguage::Uniform"
                 },
+                "size": "100",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Mat4"
                 }
             },
-            "type": "input",
+            "type": "arrayInput",
             "uuid": "{65f7a909-500b-42a9-ba68-387d57752b4f}"
         },
         {
@@ -1742,7 +1739,6 @@
         },
         {
             "layers": [
-                "skinning"
             ],
             "parameters": {
                 "constant": "0",
@@ -1756,7 +1752,6 @@
         },
         {
             "layers": [
-                "skinning"
             ],
             "parameters": {
                 "constant": "1",
@@ -1770,7 +1765,6 @@
         },
         {
             "layers": [
-                "skinning"
             ],
             "parameters": {
                 "constant": "2",
@@ -1784,7 +1778,6 @@
         },
         {
             "layers": [
-                "skinning"
             ],
             "parameters": {
                 "constant": "3",
@@ -2543,6 +2536,47 @@
                 }
             ]
         },
+        "arrayInput": {
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "name": "defaultName",
+                "qualifier": {
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                "size": "1",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier highp $type $name[$size];"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier $type $name[$size];"
+                    ],
+                    "substitution": "$type $value = $name;"
+                }
+            ]
+        },
         "atIndex": {
             "inputs": [
                 "index",
@@ -3084,7 +3118,7 @@
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output = $input.$fields;"
+                    "substitution": "highp $type $output = ($input).$fields;"
                 },
                 {
                     "format": {
@@ -3092,7 +3126,7 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output = $input.$fields;"
+                    "substitution": "$type $output = ($input).$fields;"
                 }
             ]
         }

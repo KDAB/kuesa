@@ -1,25 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- forwardrenderer.cpp -->
-  <title>ForwardRenderer Class | Kuesa 1.1</title>
-<link rel="stylesheet" type="text/css" href="style/style.css">
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
-</head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+  <title>ForwardRenderer Class | Kuesa Runtime 1.2</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>C++ Classes</li>
 <li>ForwardRenderer</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
-        </tr></table>
-      </div>
-    </div>
-<div class="content">
-<div class="line">
-<div class="content mainContent">
-<div class="sidebar">
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
 <ul>
@@ -32,13 +23,13 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">ForwardRenderer Class</h1>
-<span class="small-subtitle">(<a href="qml-forwardrenderer.html">Kuesa::ForwardRenderer</a>)<br/></span>
+<span class="small-subtitle">class <a href="kuesa.html">Kuesa</a>::ForwardRenderer</span>
 <!-- $$$ForwardRenderer-brief -->
 <p>Implements a simple forward rendering FrameGraph. <a href="#details">More...</a></p>
 <!-- @@@ForwardRenderer -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;ForwardRenderer&gt;</span>
-</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-forwardrenderer.html">ForwardRenderer</a></td></tr></table></div><p>This class was introduced in  Kuesa 1.0.</p>
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;ForwardRenderer&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-forwardrenderer.html">ForwardRenderer</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
 <ul>
 <li><a href="kuesa-forwardrenderer-members.html">List of all members, including inherited members</a></li>
 </ul>
@@ -67,7 +58,7 @@
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#addPostProcessingEffect">addPostProcessingEffect</a></b>(Kuesa::AbstractPostProcessingEffect *<i>effect</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#backToFrontSorting">backToFrontSorting</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DCore::QEntity *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#camera">camera</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QClearBuffers::BufferType </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QColor </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearColor">clearColor</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#exposure">exposure</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#frustumCulling">frustumCulling</a></b>() const</td></tr>
@@ -75,22 +66,27 @@
 <tr><td class="memItemLeft rightAlign topAlign"> QVector&lt;Kuesa::AbstractPostProcessingEffect *&gt; </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#postProcessingEffects">postProcessingEffects</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#removePostProcessingEffect">removePostProcessingEffect</a></b>(Kuesa::AbstractPostProcessingEffect *<i>effect</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QObject *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#renderSurface">renderSurface</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#showDebugOverlay-prop">showDebugOverlay</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> ToneMappingAndGammaCorrectionEffect::ToneMapping </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#viewportRect">viewportRect</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#zFilling">zFilling</a></b>() const</td></tr>
 </table></div>
 <a name="public-slots"></a>
 <h2 id="public-slots">Public Slots</h2>
 <div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#addLayer">addLayer</a></b>(Qt3DRender::QLayer *<i>layer</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector&lt;Qt3DRender::QLayer *&gt; </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#layers">layers</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#removeLayer">removeLayer</a></b>(Qt3DRender::QLayer *<i>layer</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setBackToFrontSorting">setBackToFrontSorting</a></b>(bool <i>backToFrontSorting</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setCamera">setCamera</a></b>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a></b>(int <i>clearBuffers</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a></b>(Qt3DRender::QClearBuffers::BufferType <i>clearBuffers</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setClearColor">setClearColor</a></b>(const QColor &amp;<i>clearColor</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setExposure">setExposure</a></b>(float <i>exposure</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setFrustumCulling">setFrustumCulling</a></b>(bool <i>frustumCulling</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setGamma">setGamma</a></b>(float <i>gamma</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setRenderSurface">setRenderSurface</a></b>(QObject *<i>renderSurface</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a></b>(int <i>toneMappingAlgorithm</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#showDebugOverlay-prop">setShowDebugOverlay</a></b>(bool <i>showDebugOverlay</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a></b>(ToneMappingAndGammaCorrectionEffect::ToneMapping <i>toneMappingAlgorithm</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setViewportRect">setViewportRect</a></b>(const QRectF &amp;<i>viewportRect</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#setZFilling">setZFilling</a></b>(bool <i>zfilling</i>)</td></tr>
 </table></div>
@@ -99,13 +95,14 @@
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#backToFrontSorting-prop">backToFrontSortingChanged</a></b>(bool <i>backToFrontSorting</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#camera-prop">cameraChanged</a></b>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffersChanged</a></b>(int <i>clearBuffers</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffersChanged</a></b>(Qt3DRender::QClearBuffers::BufferType <i>clearBuffers</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#clearColor-prop">clearColorChanged</a></b>(const QColor &amp;<i>clearColor</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#exposure-prop">exposureChanged</a></b>(float <i>exposure</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#frustumCulling-prop">frustumCullingChanged</a></b>(bool <i>frustumCulling</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#gamma-prop">gammaChanged</a></b>(float <i>gamma</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#renderSurface-prop">renderSurfaceChanged</a></b>(QObject *<i>renderSurface</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithmChanged</a></b>(int <i>toneMappingAlgorithm</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#showDebugOverlay-prop">showDebugOverlayChanged</a></b>(bool <i>showDebugOverlay</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithmChanged</a></b>(ToneMappingAndGammaCorrectionEffect::ToneMapping <i>toneMappingAlgorithm</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#viewportRect-prop">viewportRectChanged</a></b>(const QRectF &amp;<i>viewportRect</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-forwardrenderer.html#zFilling-prop">zFillingChanged</a></b>(bool <i>zFilling</i>)</td></tr>
 </table></div>
@@ -124,31 +121,29 @@
 <p>Transparent objects are rendered second: select all Entities having a Material with a compatible RenderPass that has a FilterKey KuesaDrawStage with a value set to Transparent will be rendered.</p>
 <p>Scenes containing materials with transparency need to be drawn from back-to-front in relation to the Camera for the blending to work correctly. This sorting can be expensive and is disabled by default. It can be enabled by calling ForwardRender::setBackToFrontSorting.</p>
 <p>In some case, an optimization technique known as an early z-filling pass can provide a significant performance gain. This is especially true for large scenes using complex rendering materials. The idea consist in filling the depth buffer with a low complexity shader so that subsequent passes incorporating more detailed rendering techniques only render fragments for the depth previously recorded. The optional z-fill pass can be enabled by calling ForwardRender::setZFilling. All Entities having a Material with a compatible RenderPass that has a FilterKey KuesaDrawStage with a value set to ZFill will be rendered. This will take place before the Opaque and Transparent pass. Only Opaque objects should be used to fill the depth buffer.</p>
-<p>The pipeline steps, from materials to post processing effects are working in linear color space. This <a href="kuesa-forwardrenderer.html">ForwardRenderer</a> adds a final gamma correction to perform the final conversion to sRGB, through the use of the GammaCorrectionEffect, as the last step of this pipeline.</p>
+<p>The pipeline steps, from materials to post processing effects are working in linear color space. This ForwardRenderer adds a final gamma correction to perform the final conversion to sRGB, through the use of the GammaCorrectionEffect, as the last step of this pipeline.</p>
 <pre class="cpp plain">
+ #include &lt;Qt3DExtras/Qt3DWindow&gt;
+ #include &lt;Qt3DRender/QCamera&gt;
+ #include &lt;ForwardRenderer&gt;
+ #include &lt;SceneEntity&gt;
+ #include &lt;BloomEffect&gt;
 
-  #include &lt;Qt3DExtras/Qt3DWindow&gt;
-  #include &lt;Qt3DRender/QCamera&gt;
-  #include &lt;ForwardRenderer&gt;
-  #include &lt;SceneEntity&gt;
-  #include &lt;BloomEffect&gt;
+ Qt3DExtras::Qt3DWindow win;
+ Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+ Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+ Kuesa::BloomEffect *bloomEffect = new Kuesa::BloomEffect();
+ Qt3DRender::QCamera *camera = new Qt3DRender::QCamera();
 
-  Qt3DExtras::Qt3DWindow win;
-  Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
-  Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
-  Kuesa::BloomEffect *bloomEffect = new Kuesa::BloomEffect();
-  Qt3DRender::QCamera *camera = new Qt3DRender::QCamera();
+ frameGraph-&gt;setCamera(camera);
+ frameGraph-&gt;setFrustumCulling(true);
+ frameGraph-&gt;setClearColor(QColor(Qt::red));
+ frameGraph-&gt;addPostProcessingEffect(bloomEffect);
 
-  frameGraph-&gt;setCamera(camera);
-  frameGraph-&gt;setFrustumCulling(true);
-  frameGraph-&gt;setClearColor(QColor(Qt::red));
-  frameGraph-&gt;addPostProcessingEffect(bloomEffect);
+ win-&gt;setRootEntity(root);
+ win-&gt;setActiveFrameGraph(forwardRenderer);
 
-  win-&gt;setRootEntity(root);
-  win-&gt;setActiveFrameGraph(forwardRenderer);
-
-  ..&#x2e;
-
+ ..&#x2e;
 </pre>
 </div>
 <!-- @@@ForwardRenderer -->
@@ -180,17 +175,17 @@
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>cameraChanged</b></span>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
 </table></div>
 <!-- @@@camera -->
-<!-- $$$clearBuffers-prop$$$clearBuffers$$$setClearBuffersint$$$clearBuffersChangedint -->
+<!-- $$$clearBuffers-prop$$$clearBuffers$$$setClearBuffersQt3DRender::QClearBuffers::BufferType$$$clearBuffersChangedQt3DRender::QClearBuffers::BufferType -->
 <h3 class="fn" id="clearBuffers-prop"><a name="clearBuffers-prop"></a><span class="name">clearBuffers</span> : <span class="type">Qt3DRender::QClearBuffers::BufferType</span></h3>
 <p>Holds which buffers will be cleared at the start of each frame.</p>
 <p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a></b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a></b></span>(int <i>clearBuffers</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QClearBuffers::BufferType </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a></b></span>(Qt3DRender::QClearBuffers::BufferType <i>clearBuffers</i>)</td></tr>
 </table></div>
 <p><b>Notifier signal:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>clearBuffersChanged</b></span>(int <i>clearBuffers</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>clearBuffersChanged</b></span>(Qt3DRender::QClearBuffers::BufferType <i>clearBuffers</i>)</td></tr>
 </table></div>
 <!-- @@@clearBuffers -->
 <!-- $$$clearColor-prop$$$clearColor$$$setClearColorconstQColor&$$$clearColorChangedconstQColor& -->
@@ -209,7 +204,7 @@
 <!-- $$$exposure-prop$$$exposure$$$setExposurefloat$$$exposureChangedfloat -->
 <h3 class="fn" id="exposure-prop"><a name="exposure-prop"></a><span class="name">exposure</span> : <span class="type">float</span></h3>
 <p>Exposure correction factor used before the linear to sRGB conversion.</p>
-<p>This property was introduced in  Kuesa 1.1.</p>
+<p>This property was introduced in Kuesa 1.1.</p>
 <p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#exposure">exposure</a></b></span>() const</td></tr>
@@ -236,7 +231,7 @@
 <!-- $$$gamma-prop$$$gamma$$$setGammafloat$$$gammaChangedfloat -->
 <h3 class="fn" id="gamma-prop"><a name="gamma-prop"></a><span class="name">gamma</span> : <span class="type">float</span></h3>
 <p>Holds the gamma value to use for gamma correction that brings linear colors to sRGB colors.</p>
-<p>This property was introduced in  Kuesa 1.1.</p>
+<p>This property was introduced in Kuesa 1.1.</p>
 <p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#gamma">gamma</a></b></span>() const</td></tr>
@@ -260,18 +255,18 @@
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>renderSurfaceChanged</b></span>(QObject *<i>renderSurface</i>)</td></tr>
 </table></div>
 <!-- @@@renderSurface -->
-<!-- $$$toneMappingAlgorithm-prop$$$toneMappingAlgorithm$$$setToneMappingAlgorithmint$$$toneMappingAlgorithmChangedint -->
+<!-- $$$toneMappingAlgorithm-prop$$$toneMappingAlgorithm$$$setToneMappingAlgorithmToneMappingAndGammaCorrectionEffect::ToneMapping$$$toneMappingAlgorithmChangedToneMappingAndGammaCorrectionEffect::ToneMapping -->
 <h3 class="fn" id="toneMappingAlgorithm-prop"><a name="toneMappingAlgorithm-prop"></a><span class="name">toneMappingAlgorithm</span> : <span class="type"><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">ToneMappingAndGammaCorrectionEffect::ToneMapping</a></span></h3>
 <p>Tone mapping specifies how we perform color conversion from HDR (high dynamic range) content to LDR (low dynamic range) content which our monitor displays.</p>
-<p>This property was introduced in  Kuesa 1.1.</p>
+<p>This property was introduced in Kuesa 1.1.</p>
 <p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a></b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a></b></span>(int <i>toneMappingAlgorithm</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> ToneMappingAndGammaCorrectionEffect::ToneMapping </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a></b></span>(ToneMappingAndGammaCorrectionEffect::ToneMapping <i>toneMappingAlgorithm</i>)</td></tr>
 </table></div>
 <p><b>Notifier signal:</b></p>
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>toneMappingAlgorithmChanged</b></span>(int <i>toneMappingAlgorithm</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>toneMappingAlgorithmChanged</b></span>(ToneMappingAndGammaCorrectionEffect::ToneMapping <i>toneMappingAlgorithm</i>)</td></tr>
 </table></div>
 <!-- @@@toneMappingAlgorithm -->
 <!-- $$$viewportRect-prop$$$viewportRect$$$setViewportRectconstQRectF&$$$viewportRectChangedconstQRectF& -->
@@ -289,7 +284,7 @@
 <!-- @@@viewportRect -->
 <!-- $$$zFilling-prop$$$zFilling$$$setZFillingbool$$$zFillingChangedbool -->
 <h3 class="fn" id="zFilling-prop"><a name="zFilling-prop"></a><span class="name">zFilling</span> : <span class="type">bool</span></h3>
-<p>Holds whether multi-pass <a href="kuesa-forwardrenderer.html#zFilling">zFilling</a> support is enabled. Disabled by default.</p>
+<p>Holds whether multi-pass zFilling support is enabled. Disabled by default.</p>
 <p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-forwardrenderer.html#zFilling">zFilling</a></b></span>() const</td></tr>
@@ -303,62 +298,88 @@
 </div>
 <div class="func">
 <h2>Member Function Documentation</h2>
+<!-- $$$addLayer[overload1]$$$addLayerQt3DRender::QLayer* -->
+<h3 class="fn" id="addLayer"><a name="addLayer"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">addLayer</span>(<span class="type">Qt3DRender::QLayer</span> *<i>layer</i>)</h3>
+<p>Adds <i>layer</i> to the list of layers used for rendering. When no layer is set, everything gets rendered. As soon as you starting adding a layer, only the entities that match the layers will be rendered.</p>
+<p>This function was introduced in Kuesa 1.2.</p>
+<!-- @@@addLayer -->
+<!-- $$$layers[overload1]$$$layers -->
+<h3 class="fn" id="layers"><a name="layers"></a><code>[slot] </code><span class="type">QVector</span>&lt;<span class="type">Qt3DRender::QLayer</span> *&gt; ForwardRenderer::<span class="name">layers</span>() const</h3>
+<p>Returns the layers used for rendering.</p>
+<p>This function was introduced in Kuesa 1.2.</p>
+<!-- @@@layers -->
+<!-- $$$removeLayer[overload1]$$$removeLayerQt3DRender::QLayer* -->
+<h3 class="fn" id="removeLayer"><a name="removeLayer"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">removeLayer</span>(<span class="type">Qt3DRender::QLayer</span> *<i>layer</i>)</h3>
+<p>Removes the <i>layer</i> from the layers used for rendering.</p>
+<p>This function was introduced in Kuesa 1.2.</p>
+<!-- @@@removeLayer -->
 <!-- $$$setBackToFrontSorting -->
 <h3 class="fn" id="setBackToFrontSorting"><a name="setBackToFrontSorting"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setBackToFrontSorting</span>(<span class="type">bool</span> <i>backToFrontSorting</i>)</h3>
 <p>Activates or desactivates back-to-front sorting which may be required for correct alpha blending rendering with <i>backToFrontSorting</i>. This is true by default.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#backToFrontSorting-prop">backToFrontSorting</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#backToFrontSorting">backToFrontSorting</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-forwardrenderer.html#backToFrontSorting">backToFrontSorting</a>. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#backToFrontSorting">backToFrontSorting</a>().</p>
 <!-- @@@setBackToFrontSorting -->
 <!-- $$$setCamera -->
 <h3 class="fn" id="setCamera"><a name="setCamera"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setCamera</span>(<span class="type">Qt3DCore::QEntity</span> *<i>camera</i>)</h3>
 <p>Sets the <i>camera</i> used to view the scene.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#camera-prop">camera</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#camera">camera</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-forwardrenderer.html#camera">camera</a>. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#camera">camera</a>().</p>
 <!-- @@@setCamera -->
 <!-- $$$setClearBuffers -->
-<h3 class="fn" id="setClearBuffers"><a name="setClearBuffers"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setClearBuffers</span>(<span class="type">int</span> <i>clearBuffers</i>)</h3>
+<h3 class="fn" id="setClearBuffers"><a name="setClearBuffers"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setClearBuffers</span>(<span class="type">Qt3DRender::QClearBuffers::BufferType</span> <i>clearBuffers</i>)</h3>
 <p>Sets which <i>clearBuffers</i> will be cleared at the start of each frame.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffers</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a>. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#clearBuffers">clearBuffers</a>().</p>
 <!-- @@@setClearBuffers -->
 <!-- $$$setClearColor -->
 <h3 class="fn" id="setClearColor"><a name="setClearColor"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setClearColor</span>(const <span class="type">QColor</span> &amp;<i>clearColor</i>)</h3>
 <p>Sets the <i>clearColor</i> used to clear the screen at the start of each frame. The color is expected to be in sRGB color space.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#clearColor-prop">clearColor</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#clearColor">clearColor</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-forwardrenderer.html#clearColor">clearColor</a>. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#clearColor">clearColor</a>().</p>
 <!-- @@@setClearColor -->
 <!-- $$$setExposure -->
 <h3 class="fn" id="setExposure"><a name="setExposure"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setExposure</span>(<span class="type">float</span> <i>exposure</i>)</h3>
 <p>Sets the <i>exposure</i> value to use for exposure correction</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#exposure-prop">exposure</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#exposure">exposure</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-forwardrenderer.html#exposure">exposure</a>. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#exposure">exposure</a>().</p>
 <!-- @@@setExposure -->
 <!-- $$$setFrustumCulling -->
 <h3 class="fn" id="setFrustumCulling"><a name="setFrustumCulling"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setFrustumCulling</span>(<span class="type">bool</span> <i>frustumCulling</i>)</h3>
 <p>Activates <i>frustumCulling</i> of geometries which lie outside of the view frustum.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#frustumCulling-prop">frustumCulling</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#frustumCulling">frustumCulling</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-forwardrenderer.html#frustumCulling">frustumCulling</a>. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#frustumCulling">frustumCulling</a>().</p>
 <!-- @@@setFrustumCulling -->
 <!-- $$$setGamma -->
 <h3 class="fn" id="setGamma"><a name="setGamma"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setGamma</span>(<span class="type">float</span> <i>gamma</i>)</h3>
 <p>Sets the <i>gamma</i> value to use for gamma correction that brings linear colors to sRGB colors.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#gamma-prop">gamma</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#gamma">gamma</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-forwardrenderer.html#gamma">gamma</a>. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#gamma">gamma</a>().</p>
 <!-- @@@setGamma -->
 <!-- $$$setRenderSurface -->
 <h3 class="fn" id="setRenderSurface"><a name="setRenderSurface"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setRenderSurface</span>(<span class="type">QObject</span> *<i>renderSurface</i>)</h3>
 <p>Sets the surface where rendering will occur to <i>renderSurface</i>. This can be an offscreen surface or a window surface.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#renderSurface-prop">renderSurface</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#renderSurface">renderSurface</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-forwardrenderer.html#renderSurface">renderSurface</a>. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#renderSurface">renderSurface</a>().</p>
 <!-- @@@setRenderSurface -->
 <!-- $$$setToneMappingAlgorithm -->
-<h3 class="fn" id="setToneMappingAlgorithm"><a name="setToneMappingAlgorithm"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setToneMappingAlgorithm</span>(<span class="type">int</span> <i>toneMappingAlgorithm</i>)</h3>
+<h3 class="fn" id="setToneMappingAlgorithm"><a name="setToneMappingAlgorithm"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setToneMappingAlgorithm</span>(<span class="type"><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">ToneMappingAndGammaCorrectionEffect::ToneMapping</a></span> <i>toneMappingAlgorithm</i>)</h3>
 <p>Sets the tone mapping algorithm to <i>toneMappingAlgorithm</i>.</p>
-<p>This function was introduced in  Kuesa 1.1.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithm</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a>. </p>
+<p>This function was introduced in Kuesa 1.1.</p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#toneMappingAlgorithm">toneMappingAlgorithm</a>().</p>
 <!-- @@@setToneMappingAlgorithm -->
 <!-- $$$setViewportRect -->
 <h3 class="fn" id="setViewportRect"><a name="setViewportRect"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setViewportRect</span>(const <span class="type">QRectF</span> &amp;<i>viewportRect</i>)</h3>
 <p>Sets the dimensions of the viewport where rendering will occur to <i>viewportRect</i>. Dimensions are in normalized coordinates.</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#viewportRect-prop">viewportRect</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#viewportRect">viewportRect</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-forwardrenderer.html#viewportRect">viewportRect</a>. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#viewportRect">viewportRect</a>().</p>
 <!-- @@@setViewportRect -->
 <!-- $$$setZFilling -->
 <h3 class="fn" id="setZFilling"><a name="setZFilling"></a><code>[slot] </code><span class="type">void</span> ForwardRenderer::<span class="name">setZFilling</span>(<span class="type">bool</span> <i>zfilling</i>)</h3>
 <p>Activates multi-pass <i>zfilling</i> support.</p>
 <p>If activated, opaque objects in the scene will be rendered first with a simple fragment shader to fill the depth buffer. Then opaque objects will be rendered again with the normal shader and finally transparent objects will be rendered (back to front if back to front sorting is enabled).</p>
-<p><b>Note:</b> Setter function for property <a href="kuesa-forwardrenderer.html#zFilling-prop">zFilling</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#zFilling">zFilling</a>().</p>
+<p><b>Note: </b>Setter function for property <a href="kuesa-forwardrenderer.html#zFilling">zFilling</a>. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#zFilling">zFilling</a>().</p>
 <!-- @@@setZFilling -->
 <!-- $$$addPostProcessingEffect[overload1]$$$addPostProcessingEffectKuesa::AbstractPostProcessingEffect* -->
 <h3 class="fn" id="addPostProcessingEffect"><a name="addPostProcessingEffect"></a><span class="type">void</span> ForwardRenderer::<span class="name">addPostProcessingEffect</span>(<span class="type"><a href="kuesa-abstractpostprocessingeffect.html">Kuesa::AbstractPostProcessingEffect</a></span> *<i>effect</i>)</h3>
@@ -371,38 +392,45 @@
 <!-- $$$backToFrontSorting -->
 <h3 class="fn" id="backToFrontSorting"><a name="backToFrontSorting"></a><span class="type">bool</span> ForwardRenderer::<span class="name">backToFrontSorting</span>() const</h3>
 <p>Returns whether alpha blending support is enabled or not.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#backToFrontSorting-prop">backToFrontSorting</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setBackToFrontSorting">setBackToFrontSorting</a>().</p>
+<p><b>Note: </b>Getter function for property backToFrontSorting. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#setBackToFrontSorting">setBackToFrontSorting</a>().</p>
 <!-- @@@backToFrontSorting -->
 <!-- $$$camera -->
 <h3 class="fn" id="camera"><a name="camera"></a><span class="type">Qt3DCore::QEntity</span> *ForwardRenderer::<span class="name">camera</span>() const</h3>
 <p>Returns the camera used to render the scene.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#camera-prop">camera</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setCamera">setCamera</a>().</p>
+<p><b>Note: </b>Getter function for property camera. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#setCamera">setCamera</a>().</p>
 <!-- @@@camera -->
 <!-- $$$clearBuffers -->
-<h3 class="fn" id="clearBuffers"><a name="clearBuffers"></a><span class="type">int</span> ForwardRenderer::<span class="name">clearBuffers</span>() const</h3>
+<h3 class="fn" id="clearBuffers"><a name="clearBuffers"></a><span class="type">Qt3DRender::QClearBuffers::BufferType</span> ForwardRenderer::<span class="name">clearBuffers</span>() const</h3>
 <p>Returns which buffers are cleared at the start of each frame.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#clearBuffers-prop">clearBuffers</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a>().</p>
+<p><b>Note: </b>Getter function for property clearBuffers. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#setClearBuffers">setClearBuffers</a>().</p>
 <!-- @@@clearBuffers -->
 <!-- $$$clearColor -->
 <h3 class="fn" id="clearColor"><a name="clearColor"></a><span class="type">QColor</span> ForwardRenderer::<span class="name">clearColor</span>() const</h3>
 <p>Returns the color used to clear the screen at the start of each frame. The color is returned in sRGB color space.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#clearColor-prop">clearColor</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setClearColor">setClearColor</a>().</p>
+<p><b>Note: </b>Getter function for property clearColor. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#setClearColor">setClearColor</a>().</p>
 <!-- @@@clearColor -->
 <!-- $$$exposure -->
 <h3 class="fn" id="exposure"><a name="exposure"></a><span class="type">float</span> ForwardRenderer::<span class="name">exposure</span>() const</h3>
 <p>Exposure correction factor used before the linear to sRGB conversion.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#exposure-prop">exposure</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setExposure">setExposure</a>().</p>
+<p><b>Note: </b>Getter function for property exposure. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#setExposure">setExposure</a>().</p>
 <!-- @@@exposure -->
 <!-- $$$frustumCulling -->
 <h3 class="fn" id="frustumCulling"><a name="frustumCulling"></a><span class="type">bool</span> ForwardRenderer::<span class="name">frustumCulling</span>() const</h3>
 <p>Returns whether frustum culling is enabled or not.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#frustumCulling-prop">frustumCulling</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setFrustumCulling">setFrustumCulling</a>().</p>
+<p><b>Note: </b>Getter function for property frustumCulling. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#setFrustumCulling">setFrustumCulling</a>().</p>
 <!-- @@@frustumCulling -->
 <!-- $$$gamma -->
 <h3 class="fn" id="gamma"><a name="gamma"></a><span class="type">float</span> ForwardRenderer::<span class="name">gamma</span>() const</h3>
 <p>Gamma correction value used for the linear to sRGB conversion.</p>
-<p>This function was introduced in  Kuesa 1.1.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#gamma-prop">gamma</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setGamma">setGamma</a>().</p>
+<p><b>Note: </b>Getter function for property gamma. </p>
+<p>This function was introduced in Kuesa 1.1.</p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#setGamma">setGamma</a>().</p>
 <!-- @@@gamma -->
 <!-- $$$postProcessingEffects[overload1]$$$postProcessingEffects -->
 <h3 class="fn" id="postProcessingEffects"><a name="postProcessingEffects"></a><span class="type">QVector</span>&lt;<span class="type"><a href="kuesa-abstractpostprocessingeffect.html">Kuesa::AbstractPostProcessingEffect</a></span> *&gt; ForwardRenderer::<span class="name">postProcessingEffects</span>() const</h3>
@@ -417,23 +445,27 @@
 <!-- $$$renderSurface -->
 <h3 class="fn" id="renderSurface"><a name="renderSurface"></a><span class="type">QObject</span> *ForwardRenderer::<span class="name">renderSurface</span>() const</h3>
 <p>Returns the surface where rendering will occur.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#renderSurface-prop">renderSurface</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setRenderSurface">setRenderSurface</a>().</p>
+<p><b>Note: </b>Getter function for property renderSurface. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#setRenderSurface">setRenderSurface</a>().</p>
 <!-- @@@renderSurface -->
 <!-- $$$toneMappingAlgorithm -->
-<h3 class="fn" id="toneMappingAlgorithm"><a name="toneMappingAlgorithm"></a><span class="type">int</span> ForwardRenderer::<span class="name">toneMappingAlgorithm</span>() const</h3>
+<h3 class="fn" id="toneMappingAlgorithm"><a name="toneMappingAlgorithm"></a><span class="type"><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">ToneMappingAndGammaCorrectionEffect::ToneMapping</a></span> ForwardRenderer::<span class="name">toneMappingAlgorithm</span>() const</h3>
 <p>Returns the tone mapping algorithm used by the shader.</p>
-<p>This function was introduced in  Kuesa 1.1.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#toneMappingAlgorithm-prop">toneMappingAlgorithm</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a>().</p>
+<p><b>Note: </b>Getter function for property toneMappingAlgorithm. </p>
+<p>This function was introduced in Kuesa 1.1.</p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#setToneMappingAlgorithm">setToneMappingAlgorithm</a>().</p>
 <!-- @@@toneMappingAlgorithm -->
 <!-- $$$viewportRect -->
 <h3 class="fn" id="viewportRect"><a name="viewportRect"></a><span class="type">QRectF</span> ForwardRenderer::<span class="name">viewportRect</span>() const</h3>
 <p>Returns the viewport rectangle in normalized coordinates.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#viewportRect-prop">viewportRect</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setViewportRect">setViewportRect</a>().</p>
+<p><b>Note: </b>Getter function for property viewportRect. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#setViewportRect">setViewportRect</a>().</p>
 <!-- @@@viewportRect -->
 <!-- $$$zFilling -->
 <h3 class="fn" id="zFilling"><a name="zFilling"></a><span class="type">bool</span> ForwardRenderer::<span class="name">zFilling</span>() const</h3>
 <p>Returns whether zfill passes are enabled or not.</p>
-<p><b>Note:</b> Getter function for property <a href="kuesa-forwardrenderer.html#zFilling-prop">zFilling</a>. </p><p><b>See also </b><a href="kuesa-forwardrenderer.html#setZFilling">setZFilling</a>().</p>
+<p><b>Note: </b>Getter function for property zFilling. </p>
+<p><b>See also </b><a href="kuesa-forwardrenderer.html#setZFilling">setZFilling</a>().</p>
 <!-- @@@zFilling -->
 </div>
         </div>
@@ -442,8 +474,8 @@
    </div>
 </div>
 <div class="footer">
-   <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
    Documentation contributions included herein are the copyrights of
    their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>

@@ -146,6 +146,55 @@ void extractPositionViewDirAndUpVectorFromViewMatrix(const QMatrix4x4 &viewMatri
                          viewMatrix.row(2)[3]);
 }
 
+using Path = QVector<const HierarchyNode *>;
+const HierarchyNode *multiLCA(const Path &nodes)
+{
+    if (nodes.empty())
+        return nullptr;
+
+    // Create reverse path hierarchies from leaf to root
+    QVector<Path> paths(nodes.size());
+    for (int i = 0; i < nodes.size(); ++i) {
+        auto n = nodes[i];
+        paths[i].reserve(n->nodeIdx > 0 ? std::log(n->nodeIdx) : 1);
+        paths[i].push_back(n);
+        while ((n = n->parent) != nullptr)
+            paths[i].push_back(n);
+    }
+
+    // Record length of shortest path
+    QVector<Path::const_reverse_iterator> iterators;
+    iterators.reserve(nodes.size());
+    const HierarchyNode *firstNodeRoot = paths[0].back();
+    int min_length = paths[0].length();
+    for (const Path& path : paths) {
+        // Sanity check : are we in the same tree
+        if (path.back() != firstNodeRoot)
+            return nullptr;
+
+        min_length = std::min(min_length, path.length());
+        iterators.push_back(path.crbegin());
+    }
+
+    // Return lowest common ancestor
+    for (int i = 0; i < min_length; ++i) {
+        const HierarchyNode *firstNode = *iterators[0];
+
+        // Check each branch's first node against firstNode
+        // and advance all iterators if it's the same
+        for (auto& it : iterators) {
+            if ((*it) != firstNode)
+                return firstNode->parent;
+            ++it;
+        }
+
+        if (i == min_length - 1)
+            return firstNode;
+    }
+
+    return nullptr;
+}
+
 } // namespace
 
 GLTF2Parser::GLTF2Parser(SceneEntity *sceneEntity, bool assignNames)
@@ -170,9 +219,18 @@ bool GLTF2Parser::parse(const QString &filePath)
         return false;
     }
 
-    QFileInfo finfo(filePath);
+    QString cleanedFilePath = filePath;
+    QString prefix;
+#if defined(Q_OS_ANDROID)
+    static const QLatin1String assetsPrefix("assets:");
+    if (filePath.startsWith(assetsPrefix)) {
+        cleanedFilePath = filePath.mid(assetsPrefix.size());
+        prefix = assetsPrefix;
+    }
+#endif
+    QFileInfo finfo(cleanedFilePath);
     QByteArray data = f.readAll();
-    return parse(data, finfo.absolutePath(), finfo.fileName());
+    return parse(data, prefix + finfo.absolutePath(), finfo.fileName());
 }
 
 /*!
@@ -330,13 +388,6 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
              SkinParser parser;
              return parser.parse(array, m_context);
          } },
-        { KEY_ANIMATIONS, [this](const QJsonValue &value) {
-             const QJsonArray array = value.toArray();
-             if (array.size() == 0)
-                 return true;
-             AnimationParser parser;
-             return parser.parse(array, m_context);
-         } },
         { KEY_MATERIALS, [this](const QJsonValue &value) {
              const QJsonArray array = value.toArray();
              if (array.size() == 0)
@@ -367,7 +418,14 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
              if (value.isUndefined())
                  return true;
              return traverseGLTF(extensionParsers, value.toObject());
-         } }
+         } },
+        { KEY_ANIMATIONS, [this](const QJsonValue &value) {
+             const QJsonArray array = value.toArray();
+             if (array.size() == 0)
+                 return true;
+             AnimationParser parser;
+             return parser.parse(array, m_context);
+         } },
     };
 }
 
@@ -384,11 +442,6 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
     m_context->setFilename(filename);
     m_context->setBasePath(basePath);
     m_basePath = basePath;
-
-    m_animators.clear();
-    m_treeNodes.clear();
-    m_skeletons.clear();
-    m_gltfJointIdxToSkeletonJointIdxPerSkeleton.clear();
 
     const QJsonObject rootObject = jsonDocument.object();
 
@@ -416,7 +469,9 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
             KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION,
 #endif
             KEY_KHR_MATERIALS_UNLIT,
-            KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION
+            KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION,
+            KEY_KDAB_CUSTOM_MATERIAL,
+            KEY_EXT_PROPERTY_ANIMATION_EXTENSION
         };
         for (const auto &e : qAsConst(extensions)) {
             if (supportedExtensions.contains(e))
@@ -450,10 +505,6 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
         }
     }
 
-    // Build vector of tree nodes
-    for (int i = 0, m = m_context->treeNodeCount(); i < m; ++i)
-        m_treeNodes.push_back(m_context->treeNode(i));
-
     // Build hierarchies for Entities and QJoints
     buildEntitiesAndJointsGraph();
 
@@ -477,7 +528,9 @@ void GLTF2Parser::moveToThread(QThread *targetThread)
     QObject::moveToThread(targetThread);
     if (m_contentRootEntity)
         m_contentRootEntity->moveToThread(targetThread);
-    for (auto &anim : m_animators) {
+
+    for (int i = 0, n = m_context->animationsCount(); i < n; ++i) {
+        const Animation &anim = m_context->animation(i);
         anim.clip->moveToThread(targetThread);
         anim.mapper->moveToThread(targetThread);
     }
@@ -487,7 +540,7 @@ void GLTF2Parser::moveToThread(QThread *targetThread)
         const QVector<int> toRetrieveNodes = scene.rootNodeIndices;
 
         for (int j = 0, m = toRetrieveNodes.size(); j < m; ++j) {
-            const TreeNode node = m_treeNodes[toRetrieveNodes.at(j)];
+            const TreeNode node = m_context->treeNode(toRetrieveNodes.at(j));
             if (node.entity != nullptr)
                 node.entity->moveToThread(targetThread);
             for (auto &joint : node.joints)
@@ -538,7 +591,8 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
 
         // For TreeNode we use our local copy and not the entries on the context
         if (m_sceneEntity->entities()) {
-            for (const TreeNode &treeNode : qAsConst(m_treeNodes)) {
+            const QVector<TreeNode> threeNodes = m_context->treeNodes();
+            for (const TreeNode &treeNode : threeNodes) {
                 if (treeNode.entity != nullptr && !treeNode.name.isEmpty()) {
                     addToCollectionWithUniqueName(m_sceneEntity->entities(), treeNode.name, treeNode.entity);
 
@@ -548,12 +602,19 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
                     auto light = componentFromEntity<Qt3DRender::QAbstractLight>(treeNode.entity);
                     if (light)
                         addToCollectionWithUniqueName(m_sceneEntity->lights(), light->objectName(), light);
+
+                    if (m_sceneEntity->transforms()) {
+                        Qt3DCore::QTransform *transform = qobject_cast<Qt3DCore::QTransform *>(m_sceneEntity->transformForEntity(treeNode.name));
+                        Q_ASSERT(transform != nullptr);
+                        addToCollectionWithUniqueName(m_sceneEntity->transforms(), treeNode.name, transform);
+                    }
                 }
             }
 
             if (m_assignNames) {
                 int j = 0;
-                for (const TreeNode &treeNode : qAsConst(m_treeNodes)) {
+                const QVector<TreeNode> threeNodes = m_context->treeNodes();
+                for (const TreeNode &treeNode : threeNodes) {
                     if (treeNode.entity != nullptr && treeNode.name.isEmpty()) {
                         addToCollectionWithUniqueName(m_sceneEntity->entities(), QStringLiteral("KuesaEntity_%1").arg(j), treeNode.entity);
 
@@ -591,13 +652,13 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
 
         if (m_sceneEntity->animationClips())
             addAssetsIntoCollection<Animation>(
-                    [this](const Animation &animation, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationClips(), animation.name, m_animators.at(i).clip); },
-                    [this](const Animation &, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationClips(), QStringLiteral("KuesaAnimation_%1").arg(i), m_animators.at(i).clip); });
+                    [this](const Animation &animation, int) { addToCollectionWithUniqueName(m_sceneEntity->animationClips(), animation.name, animation.clip); },
+                    [this](const Animation &animation, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationClips(), QStringLiteral("KuesaAnimation_%1").arg(i), animation.clip); });
 
         if (m_sceneEntity->animationMappings())
             addAssetsIntoCollection<Animation>(
-                    [this](const Animation &animation, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationMappings(), animation.name, m_animators.at(i).mapper); },
-                    [this](const Animation &, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationMappings(), QStringLiteral("KuesaAnimation_%1").arg(i), m_animators.at(i).mapper); });
+                    [this](const Animation &animation, int) { addToCollectionWithUniqueName(m_sceneEntity->animationMappings(), animation.name, animation.mapper); },
+                    [this](const Animation &animation, int i) { addToCollectionWithUniqueName(m_sceneEntity->animationMappings(), QStringLiteral("KuesaAnimation_%1").arg(i), animation.mapper); });
 
         if (m_sceneEntity->materials())
             addAssetsIntoCollection<Material>(
@@ -610,8 +671,8 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
 
         if (m_sceneEntity->skeletons())
             addAssetsIntoCollection<Skin>(
-                    [this](const Skin &skin, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), skin.name, m_skeletons.at(i)); },
-                    [this](const Skin &, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), QStringLiteral("KuesaSkeleton_%1").arg(i), m_skeletons.at(i)); });
+                    [this](const Skin &skin, int) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), skin.name, skin.skeleton); },
+                    [this](const Skin &skin, int i) { addToCollectionWithUniqueName(m_sceneEntity->skeletons(), QStringLiteral("KuesaSkeleton_%1").arg(i), skin.skeleton); });
 
         if (m_sceneEntity->effects()) {
             const auto effectsHash = m_context->effectLibrary()->effects();
@@ -643,7 +704,7 @@ void GLTF2Parser::buildSceneRootEntities()
         QVector<Qt3DCore::QEntity *> rootNodeEntities;
 
         for (int j = 0, m = toRetrieveNodes.size(); j < m; ++j) {
-            const TreeNode node = m_treeNodes[toRetrieveNodes.at(j)];
+            const TreeNode node = m_context->treeNode(toRetrieveNodes.at(j));
             // Specs specify that scene nodes have to be root nodes
             Q_ASSERT(node.isRootNode);
             rootNodeEntities.push_back(node.entity);
@@ -740,7 +801,7 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
         HierarchyNode *hierarchyNode = tree.data() + nodeId;
         hierarchyNode->nodeIdx = nodeId;
 
-        const TreeNode treeNode = m_treeNodes.at(nodeId);
+        const TreeNode treeNode = m_context->treeNode(nodeId);
         const QVector<int> childrenIndices = treeNode.childrenIndices;
 
         if (childrenIndices.size() > 0) {
@@ -763,7 +824,7 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
         Qt3DCore::QEntity *lastChild = nullptr;
         HierarchyNode *root = leaf;
         while (leaf) {
-            TreeNode &node = m_treeNodes[leaf->nodeIdx];
+            TreeNode &node = m_context->treeNode(leaf->nodeIdx);
             const bool entityAlreadyCreated = (node.entity != nullptr);
             if (!entityAlreadyCreated) {
                 // If we are dealing with a Camera, we instantiate a QCamera
@@ -787,25 +848,81 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
             leaf = leaf->parent;
         }
         // Root is at this point the root of the branch
-        TreeNode &branchRoot = m_treeNodes[root->nodeIdx];
+        TreeNode &branchRoot = m_context->treeNode(root->nodeIdx);
         branchRoot.isRootNode = true;
     }
 
+    for (HierarchyNode *leaf : leafNodes) {
+        bool subtreeHasJoints = false;
+        while (leaf) {
+            // If branch already processed and hasJoints
+            if (leaf->hasJoints)
+                break;
+
+            if (subtreeHasJoints) {
+                leaf->hasJoints = subtreeHasJoints;
+            } else {
+                // Is this node a Joint
+                for (int skinId = 0, m = m_context->skinsCount(); skinId < m && !subtreeHasJoints; ++skinId) {
+                    const Skin &skin = m_context->skin(skinId);
+                    leaf->hasJoints = skin.jointsIndices.contains(leaf->nodeIdx);
+                    subtreeHasJoints |= leaf->hasJoints;
+                }
+            }
+            leaf = leaf->parent;
+        }
+    }
+
     int skinsCount = m_context->skinsCount();
-    for (auto &treeNode : m_treeNodes)
+    for (int i = 0, m = m_context->treeNodeCount(); i < m; ++i) {
+        TreeNode &treeNode = m_context->treeNode(i);
         treeNode.joints.resize(skinsCount);
+    }
 
     // Assign QJoint to treenodes used as joints
     m_gltfJointIdxToSkeletonJointIdxPerSkeleton.resize(m_context->skinsCount());
     for (int skinId = 0, m = m_context->skinsCount(); skinId < m; ++skinId) {
-        const Skin skin = m_context->skin(skinId);
+        Skin &skin = m_context->skin(skinId);
 
-        int jointAccessor = 0;
+        // Find the LCA of the joints
+        QVector<const HierarchyNode *> jointNodes;
+        jointNodes.reserve(skin.jointsIndices.size());
+        for (auto jointId : skin.jointsIndices)
+            jointNodes.push_back(&tree[jointId]);
+        const HierarchyNode *lcaNode = ::multiLCA(jointNodes);
 
-        const HierarchyNode *skeletonRootHNode = tree.data() + skin.skeletonIdx;
-        if (skin.jointsIndices.contains(skin.skeletonIdx))
-            m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinId][skin.jointsIndices.indexOf(skin.skeletonIdx)] = jointAccessor;
-        buildJointHierarchy(skeletonRootHNode, jointAccessor, skin, skinId);
+        // If the LCA exists we use that as the rootJoint for the skin
+        if (lcaNode) {
+            skin.rootJoint.jointNodeIdx = lcaNode->nodeIdx;
+            int jointAccessor = 0;
+            const HierarchyNode *skeletonRootHNode = tree.data() + skin.rootJoint.jointNodeIdx;
+            skin.rootJoint.skeletonNode = m_context->treeNode(lcaNode->nodeIdx).entity->parentEntity();
+
+            // Is the LCA a joint itself?
+            if (skin.jointsIndices.contains(lcaNode->nodeIdx))
+                m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinId][skin.jointsIndices.indexOf(skin.rootJoint.jointNodeIdx)] = jointAccessor;
+            buildJointHierarchy(skeletonRootHNode, jointAccessor, skin, skinId);
+        } else {
+            // If we dont have a LCA, we have one or more joints that doesn't create a tree, but they create subtrees. Look for the roots of those subtrees
+            QVector<int> rootJoints;
+            for (const auto joint : qAsConst(skin.jointsIndices)) {
+                const HierarchyNode &node = tree[joint];
+                if (!node.parent)
+                    rootJoints.push_back(joint);
+            }
+
+            // All this subtrees are going to be parented to a dummy QJoint that will act as the rootJoint
+            Qt3DCore::QJoint *joint = new Qt3DCore::QJoint;
+            skin.rootJoint.joint = joint;
+            int jointAccessor = 1;
+            for (const auto rootJointId : rootJoints) {
+                const HierarchyNode *skeletonRootHNode = tree.data() + rootJointId;
+                if (skin.jointsIndices.contains(rootJointId))
+                    m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinId][skin.jointsIndices.indexOf(rootJointId)] = jointAccessor;
+                buildJointHierarchy(skeletonRootHNode, jointAccessor, skin, skinId);
+                joint->addChildJoint(m_context->treeNode(rootJointId).joints[skinId]);
+            }
+        }
     }
 }
 
@@ -814,16 +931,17 @@ void GLTF2Parser::buildJointHierarchy(const HierarchyNode *node, int &jointAcces
     Qt3DCore::QJoint *joint = new Qt3DCore::QJoint;
     if (parentJoint != nullptr)
         parentJoint->addChildJoint(joint);
-    m_treeNodes[node->nodeIdx].joints[skinIdx] = joint;
+    TreeNode &treeNode = m_context->treeNode(node->nodeIdx);
+    treeNode.joints[skinIdx] = joint;
     jointAccessor++;
-    joint->setName(m_treeNodes[node->nodeIdx].name);
+    joint->setName(treeNode.name);
     joint->setInverseBindMatrix(QMatrix4x4());
 
     for (const HierarchyNode *childNode : node->children) {
-        if (skin.jointsIndices.contains(childNode->nodeIdx)) {
+        if (skin.jointsIndices.contains(childNode->nodeIdx))
             m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinIdx][skin.jointsIndices.indexOf(childNode->nodeIdx)] = jointAccessor;
+        if (childNode->hasJoints)
             buildJointHierarchy(childNode, jointAccessor, skin, skinIdx, joint);
-        }
     }
 }
 
@@ -832,7 +950,8 @@ void GLTF2Parser::generateTreeNodeContent()
     m_contentRootEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
     m_contentRootEntity->setObjectName(QStringLiteral("GLTF2Scene"));
 
-    for (TreeNode &node : m_treeNodes) {
+    for (int i = 0, m = m_context->treeNodeCount(); i < m; ++i) {
+        TreeNode &node = m_context->treeNode(i);
         // Build Entity Content
         if (node.entity) {
             Qt3DCore::QEntity *entity = node.entity;
@@ -897,6 +1016,7 @@ void GLTF2Parser::generateTreeNodeContent()
                     if (layer.layer) {
                         // Make it recursive so it affects subentities and in particular primitive entities
                         layer.layer->setRecursive(true);
+                        layer.layer->setParent(m_contentRootEntity);
                         entity->addComponent(layer.layer);
                     }
                 }
@@ -904,34 +1024,40 @@ void GLTF2Parser::generateTreeNodeContent()
 
             // If the node references Light (KHR_lights_punctual extension), add them
             if (node.lightIdx != -1 && node.lightIdx < m_context->lightCount()) {
-                const auto lightDefinition = m_context->light(node.lightIdx);
-                Qt3DRender::QAbstractLight *light = nullptr;
-                switch (lightDefinition.type) {
-                case Qt3DRender::QAbstractLight::PointLight: {
-                    auto pointLight = new PointLight;
-                    pointLight->setRange(lightDefinition.range.toFloat());
-                    light = pointLight;
-                    break;
+                const Light lightDefinition = m_context->light(node.lightIdx);
+                Qt3DRender::QAbstractLight *light = lightDefinition.lightComponent;
+                if (light == nullptr) {
+                    switch (lightDefinition.type) {
+                    case Qt3DRender::QAbstractLight::PointLight: {
+                        auto pointLight = new PointLight(m_contentRootEntity);
+                        pointLight->setRange(lightDefinition.range.toFloat());
+                        light = pointLight;
+                        break;
+                    }
+                    case Qt3DRender::QAbstractLight::SpotLight: {
+                        auto spotLight = new SpotLight(m_contentRootEntity);
+                        spotLight->setInnerConeAngle(qRadiansToDegrees(lightDefinition.innerConeAngleRadians));
+                        spotLight->setOuterConeAngle(qRadiansToDegrees(lightDefinition.outerConeAngleRadians));
+                        spotLight->setLocalDirection({ 0.0, 0.0, -1.0 });
+                        spotLight->setRange(lightDefinition.range.toFloat());
+                        light = spotLight;
+                        break;
+                    }
+                    case Qt3DRender::QAbstractLight::DirectionalLight: {
+                        auto directionalLight = new DirectionalLight(m_contentRootEntity);
+                        directionalLight->setDirection({ 0.0, 0.0, -1.0 });
+                        directionalLight->setDirectionMode(DirectionalLight::Local);
+                        light = directionalLight;
+                    }
+                    }
+                    light->setObjectName(lightDefinition.name);
+                    light->setColor(lightDefinition.color);
+                    light->setIntensity(lightDefinition.intensity);
+
+                    // Record component into light
+                    Light &l = m_context->light(node.lightIdx);
+                    l.lightComponent = light;
                 }
-                case Qt3DRender::QAbstractLight::SpotLight: {
-                    auto spotLight = new SpotLight;
-                    spotLight->setInnerConeAngle(qRadiansToDegrees(lightDefinition.innerConeAngleRadians));
-                    spotLight->setOuterConeAngle(qRadiansToDegrees(lightDefinition.outerConeAngleRadians));
-                    spotLight->setLocalDirection({ 0.0, 0.0, -1.0 });
-                    spotLight->setRange(lightDefinition.range.toFloat());
-                    light = spotLight;
-                    break;
-                }
-                case Qt3DRender::QAbstractLight::DirectionalLight: {
-                    auto directionalLight = new DirectionalLight;
-                    directionalLight->setDirection({ 0.0, 0.0, -1.0 });
-                    directionalLight->setDirectionMode(DirectionalLight::Local);
-                    light = directionalLight;
-                }
-                }
-                light->setObjectName(lightDefinition.name);
-                light->setColor(lightDefinition.color);
-                light->setIntensity(lightDefinition.intensity);
                 entity->addComponent(light);
             }
 
@@ -950,13 +1076,14 @@ void GLTF2Parser::generateTreeNodeContent()
                 // Create armature if node references a skin
                 {
                     if (isSkinned) {
-                        armature = new Qt3DCore::QArmature();
+                        armature = new Qt3DCore::QArmature(m_contentRootEntity);
                         const Skin &skin = m_context->skin(skinId);
-                        Qt3DCore::QSkeleton *skeleton = m_skeletons.at(skinId);
+                        Qt3DCore::QSkeleton *skeleton = skin.skeleton;
                         armature->setSkeleton(skeleton);
-                        skinRootJointEntity = m_treeNodes[skin.skeletonIdx].entity->parentEntity();
-                        if (!skinRootJointEntity)
-                            skinRootJointEntity = m_treeNodes[skin.skeletonIdx].entity;
+                        if (!skin.rootJoint.joint && skin.rootJoint.skeletonNode)
+                            skinRootJointEntity = skin.rootJoint.skeletonNode;
+                        else
+                            skinRootJointEntity = m_contentRootEntity;
 
                         // We need to get the skeleton index buffer and adapt the joints it refers to
                         for (const auto &primitive : qAsConst(meshData.meshPrimitives)) {
@@ -1004,7 +1131,7 @@ void GLTF2Parser::generateTreeNodeContent()
                             qCWarning(kuesa) << "Kuesa only supports up to 8 morph targets per mesh";
 
                         // node Default Weights have priority over the mesh ones
-                        morphController = new MorphController();
+                        morphController = new MorphController(m_contentRootEntity);
                         morphController->setCount(morphTargetCount);
 
                         QVariantList defaultWeights;
@@ -1025,11 +1152,8 @@ void GLTF2Parser::generateTreeNodeContent()
 
                     // If the mesh is skinned, the parent of the primitiveEntity wont be the treeNode
                     // Store this Entity to Entity map so we can use it later on the animation generation
-                    auto mapVectorIt = m_treeNodeIdToPrimitiveEntities.find(node.entity);
-                    if (mapVectorIt == m_treeNodeIdToPrimitiveEntities.end())
-                        mapVectorIt = m_treeNodeIdToPrimitiveEntities.insert(node.entity, {});
-                    mapVectorIt->push_back(primitiveEntity);
-
+                    primitiveData.primitiveRenderer->setParent(m_contentRootEntity);
+                    m_context->addPrimitiveEntityToEntity(node.entity, primitiveEntity);
                     primitiveEntity->addComponent(primitiveData.primitiveRenderer);
 
                     // Add morph controller if it is not null
@@ -1052,7 +1176,7 @@ void GLTF2Parser::generateTreeNodeContent()
                                                                          const QString &primitiveName, const QString &materialName) {
                             MetallicRoughnessMaterial *metalRoughMat = qobject_cast<MetallicRoughnessMaterial *>(m);
                             // When we have a normal map on a MetalRoughMetarial, make sure we have a tangent attribute
-                            if (metalRoughMat != nullptr && metalRoughMat->metallicRoughnessProperties()->normalMap() != nullptr) {
+                            if (metalRoughMat != nullptr && metalRoughMat->materialProperties()->normalMap() != nullptr) {
                                 Q_ASSERT(renderer->geometry());
                                 const QVector<Qt3DRender::QAttribute *> attributes = renderer->geometry()->attributes();
                                 bool hasTangentAttribute = std::find_if(attributes.cbegin(),
@@ -1080,30 +1204,49 @@ void GLTF2Parser::generateTreeNodeContent()
                             effectProperties |= EffectProperties::Skinning;
                         if (primitiveData.hasColorAttr)
                             effectProperties |= EffectProperties::VertexColor;
-                        auto *effect = m_context->effectLibrary()->getOrCreateEffect(effectProperties,
-                                                                                     m_contentRootEntity);
+                        Qt3DRender::QEffect *effect = nullptr;
+
+                        if (mat.extensions.KDAB_custom_material)
+                            effect = m_context->effectLibrary()->getOrCreateCustomEffect({ mat.customMaterial.effectClassMetaObject, effectProperties },
+                                                                                         m_contentRootEntity);
+                        else
+                            effect = m_context->effectLibrary()->getOrCreateEffect(effectProperties,
+                                                                                   m_contentRootEntity);
 
                         Kuesa::GLTF2Material *material = nullptr;
                         auto materialName = mat.name;
 
-                        if (mat.extensions.KHR_materials_unlit) {
+                        if (mat.extensions.KDAB_custom_material) {
+                            GLTF2Material *specificMaterial = qobject_cast<GLTF2Material *>(
+                                    mat.customMaterial.materialClassMetaObject->newInstance());
+                            Q_ASSERT(specificMaterial);
+                            material = specificMaterial;
+                            Kuesa::GLTF2MaterialProperties *materialProperties = mat.materialProperties();
+                            materialProperties->setParent(m_contentRootEntity);
+                            // Set material properties on material
+                            QMetaObject::invokeMethod(specificMaterial,
+                                                      "setMaterialProperties",
+                                                      Qt::DirectConnection,
+                                                      Q_ARG(Kuesa::GLTF2MaterialProperties *, materialProperties));
+                        } else if (mat.extensions.KHR_materials_unlit) {
                             auto *specificMaterial = new Kuesa::UnlitMaterial;
                             material = specificMaterial;
                             auto materialProperties = static_cast<Kuesa::UnlitProperties *>(mat.materialProperties());
                             materialProperties->setParent(m_contentRootEntity);
 
-                            specificMaterial->setUnlitProperties(materialProperties);
+                            specificMaterial->setMaterialProperties(materialProperties);
                         } else {
                             auto *specificMaterial = new MetallicRoughnessMaterial;
                             material = specificMaterial;
                             auto materialProperties = static_cast<MetallicRoughnessProperties *>(mat.materialProperties());
                             materialProperties->setParent(m_contentRootEntity);
-                            specificMaterial->setMetallicRoughnessProperties(materialProperties);
+                            specificMaterial->setMaterialProperties(materialProperties);
 
                             checkMaterialIsCompatibleWithPrimitive(specificMaterial, primitiveData.primitiveRenderer,
                                                                    meshData.name, materialName);
                         }
                         // TODO assign brdfLut on effect creation on the library
+                        material->setParent(m_contentRootEntity);
                         material->setEffect(effect);
                         setBrdfLutOnEffect(material);
                         if (hasMorphTargets)
@@ -1118,7 +1261,7 @@ void GLTF2Parser::generateTreeNodeContent()
                         // (in other words, our parent is the entity that
                         // corresponds to the node to which the root joint is
                         // assigned)
-                        primitiveEntity->setParent(skinRootJointEntity->parentEntity() ? skinRootJointEntity->parentEntity() : m_contentRootEntity);
+                        primitiveEntity->setParent(skinRootJointEntity);
                     } else {
                         // We set the parent to entity so that transform is applied
                         primitiveEntity->setParent(entity);
@@ -1157,7 +1300,7 @@ void GLTF2Parser::generateTreeNodeContent()
 void GLTF2Parser::generateSkeletonContent()
 {
     for (int skinId = 0, m = m_context->skinsCount(); skinId < m; ++skinId) {
-        const Skin skin = m_context->skin(skinId);
+        Skin &skin = m_context->skin(skinId);
 
         const bool bindMatrixDataSpecified = skin.inverseBindMatricesAccessorIdx >= 0;
         // Bind Matrix data is specified
@@ -1166,91 +1309,39 @@ void GLTF2Parser::generateSkeletonContent()
             // Update Joints inverseBindMatrix
             int matrixIdx = 0;
             for (int jointId : skin.jointsIndices) {
-                TreeNode &jointNode = m_treeNodes[jointId];
+                TreeNode &jointNode = m_context->treeNode(jointId);
                 jointNode.joints[skinId]->setInverseBindMatrix(skin.inverseBindMatrices[matrixIdx++]);
             }
         }
 
         // Set root joint on skeleton
-        int rootJointId = skin.skeletonIdx;
-        if (rootJointId < 0) {
-            // Use the scene's root
-            const Scene defaultScene = m_context->scene(m_defaultSceneIdx);
-            // Find first root node of type Joint
-            const QVector<int> rootNodeIndices = defaultScene.rootNodeIndices;
-            rootJointId = rootNodeIndices.first();
-        }
+        Qt3DCore::QJoint *rootJoint = skin.rootJoint.joint;
+        if (!rootJoint)
+            rootJoint = m_context->treeNode(skin.rootJoint.jointNodeIdx).joints[skinId];
 
         Qt3DCore::QSkeleton *skeleton = new Qt3DCore::QSkeleton();
-        Qt3DCore::QJoint *rootJoint = m_treeNodes.at(rootJointId).joints[skinId];
         Q_ASSERT(rootJoint);
         skeleton->setRootJoint(rootJoint);
-        m_skeletons.push_back(skeleton);
+        skin.skeleton = skeleton;
     }
 }
 
 void GLTF2Parser::generateAnimationContent()
 {
     for (int animationId = 0, m = m_context->animationsCount(); animationId < m; ++animationId) {
-        Animation animation = m_context->animation(animationId);
+        Animation &animation = m_context->animation(animationId);
 
         auto *channelMapper = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DAnimation::QChannelMapper>("QChannelMapper");
         auto *clip = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DAnimation::QAnimationClip>("QAnimationClip");
         clip->setClipData(animation.clipData);
-        m_animators.push_back({ clip, channelMapper });
+        animation.clip = clip;
+        animation.mapper = channelMapper;
 
         for (const ChannelMapping &mapping : qAsConst(animation.mappings)) {
-            const TreeNode targetNode = m_treeNodes[mapping.targetNodeId];
-
-            // Map channel to joint
-            for (auto &joint : targetNode.joints) {
-                if (joint) {
-                    auto channelMapping = new Qt3DAnimation::QChannelMapping();
-                    channelMapping->setTarget(joint);
-                    channelMapping->setChannelName(mapping.name);
-                    channelMapping->setProperty(mapping.property == QStringLiteral("scale3D") ? QStringLiteral("scale") : mapping.property);
-                    channelMapper->addMapping(channelMapping);
-                }
-            }
-
-            // Map channel to entity transform or morphcontroller
-            if (targetNode.entity != nullptr) {
-                const bool isMorphWeightProperty = (mapping.property == QStringLiteral("morphWeights"));
-
-                if (!isMorphWeightProperty) {
-                    auto transformComponent = componentFromEntity<Qt3DCore::QTransform>(targetNode.entity);
-                    if (!transformComponent) {
-                        qCWarning(kuesa, "Target node doesn't have a transform component");
-                        continue;
-                    }
-                    auto channelMapping = new Qt3DAnimation::QChannelMapping();
-                    channelMapping->setTarget(transformComponent);
-                    channelMapping->setChannelName(mapping.name);
-                    channelMapping->setProperty(mapping.property);
-                    channelMapper->addMapping(channelMapping);
-                } else {
-                    // The actual entities to animate are those which render the
-                    // primitive not the Node Entity
-
-                    const auto primitiveEntities = m_treeNodeIdToPrimitiveEntities.find(targetNode.entity);
-                    Q_ASSERT(primitiveEntities != m_treeNodeIdToPrimitiveEntities.end());
-
-                    for (Qt3DCore::QEntity *primitiveEntity : qAsConst(*primitiveEntities)) {
-                        MorphController *morphControllerComponent =
-                                componentFromEntity<Kuesa::MorphController>(primitiveEntity);
-                        if (!morphControllerComponent) {
-                            qCWarning(kuesa) << "Target node doesn't have a morph "
-                                                "controller component to animate";
-                            continue;
-                        }
-                        auto channelMapping = new Qt3DAnimation::QChannelMapping();
-                        channelMapping->setTarget(morphControllerComponent);
-                        channelMapping->setChannelName(mapping.name);
-                        channelMapping->setProperty(mapping.property);
-                        channelMapper->addMapping(channelMapping);
-                    }
-                }
-            }
+            const QVector<Qt3DAnimation::QChannelMapping *> channelMappings = mapping.generator(m_context,
+                                                                                                mapping);
+            for (Qt3DAnimation::QChannelMapping *m : channelMappings)
+                channelMapper->addMapping(m);
         }
     }
 }

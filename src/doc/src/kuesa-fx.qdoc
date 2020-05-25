@@ -40,7 +40,7 @@
 
     Effects are provided by the following import:
     \qml
-    import Kuesa.Effects 1.1
+    import Kuesa.Effects 1.2
     \endqml
     They can be added to postProcessingEffects in Kuesa.ForwardRenderer.
     For example, the following example first applies a threshold effect to the scene,

@@ -36,6 +36,19 @@ qtHaveModule(quick) {
     SUBDIRS += \
         gltf2importer \
         multiple_animations \
-        mapped_animations
+        mapped_animations \
+        KDAB_custom_material \
+        IroDiffuseMaterial \
+        IroDiffuseEquiRectangularMaterial \
+        IroDiffuseHemiMaterial \
+        IroGlassAddMaterial \
+        IroMatteOpaqueMaterial \
+        IroMatteAlphaMaterial \
+        IroMatteSkyboxMaterial \
+        IroMatteBackgroundMaterial \
+        IroMatteAddMaterial \
+        IroMatteMultMaterial \
+        IroDiffuseAlphaMaterial \
+        layered_framegraph
 }
 

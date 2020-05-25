@@ -1,25 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- animationplayer.cpp -->
-  <title>AnimationPlayer QML Type | Kuesa 1.1</title>
-<link rel="stylesheet" type="text/css" href="style/style.css">
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
-</head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-qml.html">QML Types</a></li>
+  <title>AnimationPlayer QML Type | Kuesa Runtime 1.2</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>QML Types</li>
 <li>AnimationPlayer QML Type</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
-        </tr></table>
-      </div>
-    </div>
-<div class="content">
-<div class="line">
-<div class="content mainContent">
-<div class="sidebar">
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
 <ul>
@@ -34,7 +25,7 @@
 <p>Play animations defined in glTF files. <a href="#details">More...</a></p>
 <!-- @@@AnimationPlayer -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  .</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-animationplayer.html"><a href="kuesa-animationplayer.html">AnimationPlayer</a></td></tr></table></div><ul>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-animationplayer.html"><a href="kuesa-animationplayer.html">AnimationPlayer</a></td></tr></table></div><ul>
 <li><a href="qml-animationplayer-members.html">List of all members, including inherited members</a></li>
 </ul>
 <a name="properties"></a>
@@ -42,6 +33,7 @@
 <ul>
 <li class="fn"><b><b><a href="qml-animationplayer.html#clip-prop">clip</a></b></b> : string</li>
 <li class="fn"><b><b><a href="qml-animationplayer.html#clock-prop">clock</a></b></b> : Clock</li>
+<li class="fn"><b><b><a href="qml-animationplayer.html#duration-prop">duration</a></b></b> : float</li>
 <li class="fn"><b><b><a href="qml-animationplayer.html#loops-prop">loops</a></b></b> : int</li>
 <li class="fn"><b><b><a href="qml-animationplayer.html#mapper-prop">mapper</a></b></b> : string</li>
 <li class="fn"><b><b><a href="qml-animationplayer.html#normalizedTime-prop">normalizedTime</a></b></b> : float</li>
@@ -52,43 +44,54 @@
 <!-- $$$AnimationPlayer-description -->
 <a name="details"></a>
 <h2 id="details">Detailed Description</h2>
-<p><a href="qml-animationplayer.html">AnimationPlayer</a> is a utility class designed to easily control animations where the clip and mapping data is stored in a collections (typically loaded from glTF files).</p>
+<p>AnimationPlayer is a utility class designed to easily control animations where the clip and mapping data is stored in a collections (typically loaded from glTF files).</p>
 <p>Clip and mapper data are referenced by name. These will be used to look up actual assets in the appropriate collection.</p>
-<p><a href="qml-animationplayer.html">AnimationPlayer</a> internally uses an instance of Qt3DAnimation::QClipAnimator and mirrors it's api.</p>
-<p>Additionally, <a href="qml-animationplayer.html">AnimationPlayer</a> can be used to map clip data to other target objects than those specified in a mapper. For example, an animation where the clip data affect transformation properties, can be applied to any Qt3DCore::QTransform instance, not just the one specified in the mapper data.</p>
+<p>AnimationPlayer internally uses an instance of Qt3DAnimation::QClipAnimator and mirrors it's api.</p>
+<p>Additionally, AnimationPlayer can be used to map clip data to other target objects than those specified in a mapper. For example, an animation where the clip data affect transformation properties, can be applied to any Qt3DCore::QTransform instance, not just the one specified in the mapper data.</p>
 <!-- @@@AnimationPlayer -->
 <h2>Property Documentation</h2>
 <!-- $$$clip -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="clip-prop">
 <td class="tblQmlPropNode"><p>
 <a name="clip-prop"></a><span class="name">clip</span> : <span class="type">string</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>the name of the clip asset.</p>
+</table></div></div>
+<div class="qmldoc"><p>the name of the clip asset.</p>
 <p>This will be used to lookup the asset in the AnimationClipCollection instance of the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a>.</p>
 </div></div><!-- @@@clip -->
 <br/>
 <!-- $$$clock -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="clock-prop">
 <td class="tblQmlPropNode"><p>
 <a name="clock-prop"></a><span class="name">clock</span> : <span class="type">Clock</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>intense of Qt3DAnimation::QClock used to control animation speed and direction</p>
+</table></div></div>
+<div class="qmldoc"><p>intense of Qt3DAnimation::QClock used to control animation speed and direction</p>
 <p>A Qt3DAnimation::QClock can be used to control the speed (by setting the playBackRate) and direction (like reversing by setting negative playBackRate values) of the animation.</p>
 <p>This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.</p>
 </div></div><!-- @@@clock -->
 <br/>
+<!-- $$$duration -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="duration-prop">
+<td class="tblQmlPropNode"><p>
+<a name="duration-prop"></a><span class="name">duration</span> : <span class="type">float</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>duration of the animation in secconds</p>
+<p>This property was introduced in Qt 1.1.</p>
+</div></div><!-- @@@duration -->
+<br/>
 <!-- $$$loops -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="loops-prop">
 <td class="tblQmlPropNode"><p>
 <a name="loops-prop"></a><span class="name">loops</span> : <span class="type">int</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>controls the number of time the animation should repeat.</p>
+</table></div></div>
+<div class="qmldoc"><p>controls the number of time the animation should repeat.</p>
 <p>If the value is 0 (default), the animation will run only once.</p>
 <p>If the value is AnimationPlayer::Infinite, the animation will loop indefinitly until explicitly stopped.</p>
 <p>Otherwise, it will repeat the specified number of times.</p>
@@ -98,11 +101,11 @@
 <!-- $$$mapper -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="mapper-prop">
 <td class="tblQmlPropNode"><p>
 <a name="mapper-prop"></a><span class="name">mapper</span> : <span class="type">string</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>the name of the mapper asset.</p>
+</table></div></div>
+<div class="qmldoc"><p>the name of the mapper asset.</p>
 <p>This will be used to lookup the asset in the AnimationMappingCollection instance of the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a>.</p>
 <p>If empty (default), the name of the clip will be used as it is a common convention that they should match.</p>
 </div></div><!-- @@@mapper -->
@@ -110,43 +113,43 @@
 <!-- $$$normalizedTime -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="normalizedTime-prop">
 <td class="tblQmlPropNode"><p>
 <a name="normalizedTime-prop"></a><span class="name">normalizedTime</span> : <span class="type">float</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>progress of the animation as a uniform value between 0. and 1.</p>
+</table></div></div>
+<div class="qmldoc"><p>progress of the animation as a uniform value between 0. and 1.</p>
 <p>This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.</p>
 </div></div><!-- @@@normalizedTime -->
 <br/>
 <!-- $$$running -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="running-prop">
 <td class="tblQmlPropNode"><p>
 <a name="running-prop"></a><span class="name">running</span> : <span class="type">bool</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>controls if the animation is running or not</p>
+</table></div></div>
+<div class="qmldoc"><p>controls if the animation is running or not</p>
 <p>This reflects the state of the internal Qt3DAnimation::QClipAnimator instance.</p>
 </div></div><!-- @@@running -->
 <br/>
 <!-- $$$sceneEntity -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="sceneEntity-prop">
 <td class="tblQmlPropNode"><p>
 <a name="sceneEntity-prop"></a><span class="name">sceneEntity</span> : <span class="type">Entity</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>pointer to the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> which contains the collections used to look up clip and mapper data</p>
+</table></div></div>
+<div class="qmldoc"><p>pointer to the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> which contains the collections used to look up clip and mapper data</p>
 </div></div><!-- @@@sceneEntity -->
 <br/>
 <!-- $$$status -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="status-prop">
 <td class="tblQmlPropNode"><p>
 <a name="status-prop"></a><span class="name">status</span> : <span class="type">enumeration</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>the current status of the player</p>
+</table></div></div>
+<div class="qmldoc"><p>the current status of the player</p>
 <ul>
 <li>None Unknown state (default).</li>
 <li>Ready Both clip and mapper data have been found and are valid (included target nodes if they have been defined).</li>
@@ -160,8 +163,8 @@
    </div>
 </div>
 <div class="footer">
-   <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
    Documentation contributions included herein are the copyrights of
    their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>

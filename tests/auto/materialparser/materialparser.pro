@@ -35,3 +35,4 @@ CONFIG += testcase
 SOURCES += tst_materialparser.cpp
 
 include(../assets/assets.pri)
+include(mytestcustom/mytestcustom.pri)

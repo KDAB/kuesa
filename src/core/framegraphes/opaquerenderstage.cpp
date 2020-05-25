@@ -45,9 +45,10 @@ OpaqueRenderStage::OpaqueRenderStage(Qt3DCore::QNode *parent)
     auto filterKey = new Qt3DRender::QFilterKey(this);
     filterKey->setName(QStringLiteral("KuesaDrawStage"));
     filterKey->setValue(QStringLiteral("Opaque"));
-    addMatch(filterKey);
+    auto passFilter = new Qt3DRender::QRenderPassFilter(this);
+    passFilter->addMatch(filterKey);
 
-    m_states = new Qt3DRender::QRenderStateSet(this);
+    m_states = new Qt3DRender::QRenderStateSet(passFilter);
     m_depthTest = new Qt3DRender::QDepthTest;
     m_depthTest->setDepthFunction(Qt3DRender::QDepthTest::Less);
     m_states->addRenderState(m_depthTest);

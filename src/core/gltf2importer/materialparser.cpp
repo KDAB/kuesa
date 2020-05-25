@@ -27,14 +27,19 @@
 */
 
 #include "materialparser_p.h"
+#include "animationparser_p.h"
 #include "kuesa_p.h"
 #include "gltf2keys_p.h"
 #include <QJsonObject>
 #include <QJsonArray>
 #include "gltf2context_p.h"
+#include "gltf2importer.h"
 
 #include "metallicroughnessproperties.h"
 #include "unlitproperties.h"
+#include <QMetaProperty>
+
+#include <Qt3DAnimation/QChannelMapping>
 
 QT_BEGIN_NAMESPACE
 
@@ -56,8 +61,27 @@ const QLatin1String KEY_TEXCOORD = QLatin1String("texCoord");
 const QLatin1String KEY_NORMAL_TEXTURE = QLatin1String("normalTexture");
 const QLatin1String KEY_OCCLUSION_TEXTURE = QLatin1String("occlusionTexture");
 const QLatin1String KEY_EMISSIVE_TEXTURE = QLatin1String("emissiveTexture");
-const QLatin1String KEY_SCALE = QLatin1String("scale");
 const QLatin1String KEY_EMISSIVE_FACTOR = QLatin1String("emissiveFactor");
+const QLatin1String KEY_PROPERTIES = QLatin1String("properties");
+
+QVector<Qt3DAnimation::QChannelMapping *> iroMappingGenerator(const GLTF2Context *ctx,
+                                                              const ChannelMapping &mapping)
+{
+    Qt3DCore::QNode *target = nullptr;
+    const Material &mat = ctx->material(mapping.target.targetNodeId);
+    // For materials, we animate the material's properties class instance
+    target = mat.materialProperties();
+
+    if (!target)
+        return {};
+
+    auto channelMapping = new Qt3DAnimation::QChannelMapping();
+    channelMapping->setTarget(target);
+    channelMapping->setChannelName(mapping.name);
+    channelMapping->setProperty(mapping.property);
+
+    return { channelMapping };
+}
 
 void parseTextureInfo(TextureInfo &info, const QJsonObject &textureInfoObj)
 {
@@ -89,7 +113,153 @@ bool parseFloatArray(Vector &v,
     return true;
 }
 
+QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
+{
+    if (typeId == qMetaTypeId<QVector4D>() || typeId == qMetaTypeId<QColor>()) {
+        QVector4D v;
+        if (!parseFloatArray(v, rawValue.toArray(),
+                             4, 4,
+                             std::numeric_limits<float>::lowest(),
+                             std::numeric_limits<float>::max()))
+            qCWarning(kuesa()) << "Failed to parse value of type vec4 with" << rawValue;
+        return QVariant::fromValue(v);
+    } else if (typeId == qMetaTypeId<QVector3D>()) {
+        QVector3D v;
+        if (!parseFloatArray(v, rawValue.toArray(),
+                             3, 3,
+                             std::numeric_limits<float>::lowest(),
+                             std::numeric_limits<float>::max()))
+            qCWarning(kuesa()) << "Failed to parse value of type vec3 with" << rawValue;
+        return QVariant::fromValue(v);
+    } else if (typeId == qMetaTypeId<QVector2D>()) {
+        QVector2D v;
+        if (!parseFloatArray(v, rawValue.toArray(),
+                             2, 2,
+                             std::numeric_limits<float>::lowest(),
+                             std::numeric_limits<float>::max()))
+            qCWarning(kuesa()) << "Failed to parse value of type vec2 with" << rawValue;
+        return QVariant::fromValue(v);
+    } else if (typeId == qMetaTypeId<float>() || typeId == qMetaTypeId<double>()) {
+        return QVariant::fromValue(rawValue.toDouble());
+    } else if (typeId == qMetaTypeId<int>() || typeId == qMetaTypeId<uint>()) {
+        return QVariant::fromValue(rawValue.toInt());
+    } else if (typeId == qMetaTypeId<bool>()) {
+        return QVariant::fromValue(rawValue.toBool());
+    } else if (typeId == qMetaTypeId<Qt3DRender::QAbstractTexture *>()) {
+        TextureInfo info;
+        parseTextureInfo(info, rawValue.toObject());
+        return QVariant::fromValue(info);
+    }
+    qCWarning(kuesa()) << "Failed to parse value of typeId" << typeId << "with" << rawValue;
+    return QVariant();
+}
+
+void registerMaterialExtensionAnimatableProperties()
+{
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/diffuseGain"),
+                                                1,
+                                                QStringLiteral("diffuseGain"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/diffuseInnerFilter"),
+                                                3,
+                                                QStringLiteral("diffuseInnerFilter"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/diffuseOuterFilter"),
+                                                3,
+                                                QStringLiteral("diffuseOuterFilter"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/normalScaling"),
+                                                3,
+                                                QStringLiteral("normalScaling"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/normalDisturb"),
+                                                2,
+                                                QStringLiteral("normalDisturb"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/reflectionGain"),
+                                                1,
+                                                QStringLiteral("reflectionGain"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/reflectionInnerFilter"),
+                                                3,
+                                                QStringLiteral("reflectionInnerFilter"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/reflectionOuterFilter"),
+                                                3,
+                                                QStringLiteral("reflectionOuterFilter"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/postVertexColor"),
+                                                1,
+                                                QStringLiteral("postVertexColor"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/postGain"),
+                                                1,
+                                                QStringLiteral("postGain"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/postHemiFilter"),
+                                                3,
+                                                QStringLiteral("postHemiFilter"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/matteAlphaGain"),
+                                                1,
+                                                QStringLiteral("matteAlphaGain"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/matteGain"),
+                                                1,
+                                                QStringLiteral("matteGain"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/matteFilter"),
+                                                3,
+                                                QStringLiteral("matteFilter"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/alphaGain"),
+                                                1,
+                                                QStringLiteral("alphaGain"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/reflectionInnerAlpha"),
+                                                1,
+                                                QStringLiteral("reflectionInnerAlpha"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/reflectionOuterAlpha"),
+                                                1,
+                                                QStringLiteral("reflectionOuterAlpha"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/glassInnerFilter"),
+                                                3,
+                                                QStringLiteral("glassInnerFilter"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/glassOuterFilter"),
+                                                3,
+                                                QStringLiteral("glassOuterFilter"),
+                                                ::iroMappingGenerator);
+
+    AnimationParser::registerAnimatableProperty(QStringLiteral("extensions/KDAB_custom_material/properties/uvOffset"),
+                                                2,
+                                                QStringLiteral("uvOffset"),
+                                                ::iroMappingGenerator);
+}
+
 } // namespace
+
+Q_CONSTRUCTOR_FUNCTION(registerMaterialExtensionAnimatableProperties)
 
 bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
 {
@@ -189,6 +359,53 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
         {
             const QJsonObject extensionsObject = materialObject.value(KEY_EXTENSIONS).toObject();
             mat.extensions.KHR_materials_unlit = extensionsObject.contains(KEY_KHR_MATERIALS_UNLIT);
+            mat.extensions.KDAB_custom_material = extensionsObject.contains(KEY_KDAB_CUSTOM_MATERIAL);
+
+            // Parse KDAB_custom_material
+            if (mat.extensions.KDAB_custom_material) {
+                const QJsonObject customMaterialExtensionObject = extensionsObject.value(KEY_KDAB_CUSTOM_MATERIAL).toObject();
+                mat.customMaterial.type = customMaterialExtensionObject.value(KEY_TYPE).toString();
+                auto &materialCache = GLTF2Importer::CustomMaterialCache::instance();
+                auto it = materialCache.m_registeredCustomMaterial.find(mat.customMaterial.type);
+                // Do we have a registed custom material for that class?
+                if (it != materialCache.m_registeredCustomMaterial.end()) {
+                    mat.customMaterial.materialClassMetaObject = it.value().materialClassMetaObject;
+                    mat.customMaterial.propertiesClassMetaObject = it.value().propertiesClassMetaObject;
+                    mat.customMaterial.effectClassMetaObject = it.value().effectClassMetaObject;
+
+                    auto findPropertyTypeFromMetaObject = [&mat](const QByteArray &propertyName) {
+                        for (int i = 0, m = mat.customMaterial.propertiesClassMetaObject->propertyCount(); i < m; ++i) {
+                            const QMetaProperty p = mat.customMaterial.propertiesClassMetaObject->property(i);
+                            if (p.name() == propertyName)
+                                return p.userType();
+                        }
+                        return int(QVariant::Invalid);
+                    };
+
+                    // Parse custom material properties
+                    const QJsonObject propertiesObject = customMaterialExtensionObject.value(KEY_PROPERTIES).toObject();
+                    auto it = propertiesObject.constBegin();
+                    const auto end = propertiesObject.constEnd();
+                    while (it != end) {
+                        const QString propName = it.key();
+                        const int typeId = findPropertyTypeFromMetaObject(propName.toLatin1());
+
+                        // Ignore property who's type we were unable to deduce
+                        if (typeId == QVariant::Invalid) {
+                            qWarning() << "No such property" << propName << "on custom material" << mat.customMaterial.type;
+                            ++it;
+                            continue;
+                        }
+                        const QJsonValue rawValue = it.value();
+                        const QVariant propValue = customPropertyValue(typeId, rawValue);
+                        mat.customMaterial.properties.push_back({ propName, propValue });
+                        ++it;
+                    }
+                } else {
+                    qCWarning(kuesa) << "No custom material registered for" << mat.customMaterial.type;
+                    return false;
+                }
+            }
         }
 
         mat.materialProperties(*context);
@@ -203,7 +420,36 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
     if (m_materialProperties)
         return m_materialProperties;
 
-    if (extensions.KHR_materials_unlit) {
+    if (extensions.KDAB_custom_material) { // Custom Material
+
+        // Check if we find a registered custom material that matches
+        const QByteArray className = QByteArray(customMaterial.propertiesClassMetaObject->className());
+        if (className.isEmpty())
+            return nullptr;
+
+        GLTF2MaterialProperties *materialProperties = qobject_cast<GLTF2MaterialProperties *>(
+                customMaterial.propertiesClassMetaObject->newInstance());
+        Q_ASSERT(materialProperties);
+
+        // Fill materialProperty class
+        for (const KDABCustomMaterial::Property &prop : customMaterial.properties) {
+
+            // Is property a texture
+            static const int textureInfoTypeId = qMetaTypeId<TextureInfo>();
+            const QByteArray propName = prop.name.toLatin1();
+            if (prop.value.userType() == textureInfoTypeId) {
+                const TextureInfo info = prop.value.value<TextureInfo>();
+                const qint32 textureIdx = info.index;
+                if (textureIdx > -1)
+                    materialProperties->setProperty(propName,
+                                                    QVariant::fromValue(context.texture(textureIdx).texture));
+                // TO DO: Use the specified texCoords
+            } else {
+                materialProperties->setProperty(propName, prop.value);
+            }
+        }
+        m_materialProperties = materialProperties;
+    } else if (extensions.KHR_materials_unlit) { // Unlit Material
         auto *materialProperties = new Kuesa::UnlitProperties();
         materialProperties->setBaseColorFactor(QColor::fromRgbF(
                 pbr.baseColorFactor[0],
@@ -220,7 +466,7 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
         materialProperties->setAlphaCutoff(alpha.alphaCutoff);
 
         m_materialProperties = materialProperties;
-    } else {
+    } else { // PBR Material
 
         auto *materialProperties = new Kuesa::MetallicRoughnessProperties;
         materialProperties->setMetallicFactor(pbr.metallicFactor);
@@ -283,7 +529,9 @@ Kuesa::EffectProperties::Properties Material::effectPropertiesFromMaterial(const
 {
     Kuesa::EffectProperties::Properties effectProperties = {};
 
-    if (material.extensions.KHR_materials_unlit)
+    if (material.extensions.KDAB_custom_material)
+        effectProperties |= Kuesa::EffectProperties::Custom;
+    else if (material.extensions.KHR_materials_unlit)
         effectProperties |= Kuesa::EffectProperties::Unlit;
     else
         effectProperties |= Kuesa::EffectProperties::MetallicRoughness;

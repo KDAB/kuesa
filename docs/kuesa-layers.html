@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- kuesa-layers.qdoc -->
+  <title>Kuesa Layers | Kuesa Runtime 1.2</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>Kuesa Layers</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#creating-and-exporting-layers">Creating and Exporting Layers</a></li>
+<li class="level2"><a href="#using-blender-and-the-gltf-exporter">Using Blender and the gltf Exporter</a></li>
+<li class="level1"><a href="#using-layers-to-filter-content">Using layers to filter content</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Kuesa Layers</h1>
+<span class="subtitle"></span>
+<!-- $$$kuesa-layers.html-description -->
+<div class="descr"> <a name="details"></a>
+<p>Kuesa is running on top of Qt 3D which allows it to fully benefit from all of its features. Qt 3D offers a way to filter part of the scene at render time using instances of the Qt3DRender::QLayer class. Kuesa incorporates support for such layers at several differnent levels.</p>
+<a name="creating-and-exporting-layers"></a>
+<h2 id="creating-and-exporting-layers">Creating and Exporting Layers</h2>
+<a name="using-blender-and-the-gltf-exporter"></a>
+<h3 id="using-blender-and-the-gltf-exporter">Using Blender and the gltf Exporter</h3>
+<p>In Blender, since version 2.80, nodes and geometries are now distributed accross collections. If you export using the glTF exporter and the Kuesa Layer extension is enabled, each Collection will result in a distinct layer.</p>
+<a name="using-layers-to-filter-content"></a>
+<h2 id="using-layers-to-filter-content">Using layers to filter content</h2>
+<p>In some cases it might be useful to disable part of the scene or making sure some elements are being draw prior to some others. That's were layers will come in handy.</p>
+<p>The [<a href="qml-forwardrenderer.html">ForwardRenderer</a>] framegraph allows to specify a set of layers. When specified, each layer added will ensure that all elements referencing said layer are drawn before elements referencing the next layer in the list.</p>
+<p>If no layers are specified, everything will be drawn. As soon as you start specifying layers however, only the elements that match one or more layers will be rendered.</p>
+<p>Keep in mind that the more layers you have and request to be filtered, the more work Qt 3D and Kuesa will be doing.</p>
+</div>
+<!-- @@@kuesa-layers.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

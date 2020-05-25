@@ -1,33 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- kuesa-overview.qdoc -->
-  <title>Kuesa Overview | Kuesa 1.1</title>
-<link rel="stylesheet" type="text/css" href="style/style.css">
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
-</head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
+  <title>Kuesa Overview | Kuesa Runtime 1.2</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Overview</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
-        </tr></table>
-      </div>
-    </div>
-<div class="content">
-<div class="line">
-<div class="content mainContent">
-<div class="sidebar">
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
 <ul>
 <li class="level1"><a href="#kuesa-s-workflow">Kuesa's workflow</a></li>
 <li class="level1"><a href="#kuesa-s-strengths">Kuesa's strengths</a></li>
 <li class="level1"><a href="#kuesa-components">Kuesa components</a></li>
-<li class="level2"><a href="#kuesa-digital-content-creation-plugins">Kuesa Digital Content Creation Plugins</a></li>
+<li class="level2"><a href="#kuesa-studio">Kuesa Studio</a></li>
 <li class="level2"><a href="#kuesa-runtime">Kuesa Runtime</a></li>
-<li class="level2"><a href="#kuesa-tools">Kuesa Tools</a></li>
 <li class="level1"><a href="#kuesa-runtime-features">Kuesa Runtime Features</a></li>
 <li class="level2"><a href="#gltf-2-importer">glTF 2 Importer</a></li>
 <li class="level2"><a href="#kuesa-optimized-frame-graph">Kuesa Optimized Frame Graph</a></li>
@@ -65,32 +55,44 @@
 </ul>
 <a name="kuesa-components"></a>
 <h2 id="kuesa-components">Kuesa components</h2>
-<p class="centerAlign"><img src="images/pipeline-diagram.png" alt="" /></p><a name="kuesa-digital-content-creation-plugins"></a>
-<h3 id="kuesa-digital-content-creation-plugins">Kuesa Digital Content Creation Plugins</h3>
+<p class="centerAlign"><img src="images/pipeline-diagram.png" alt="" /></p><a name="kuesa-studio"></a>
+<h3 id="kuesa-studio">Kuesa Studio</h3>
+<p>Kuesa Studio is only available as a commercial package. It is the designer facing part of the Kuesa workflow.</p>
+<a name="kuesa-digital-content-creation-plugins"></a>
+<h4 id="kuesa-digital-content-creation-plugins">Kuesa Digital Content Creation Plugins</h4>
 <ul>
-<li><a href="https://github.com/KDAB/kuesa-blender">Kuesa Blender glTF2 Exporter plugin</a></li>
+<li>Blender 2.80<ul>
+<li><a href="https://github.com/KhronosGroup/glTF-Blender-IO"> Blender 2.8 comes with an official glTF 2.0 export </a></li>
+<li>Kuesa add-on for Iro Materials support and dedicated glTF extensions for animations ..&#x2e;</li>
+</ul>
+</li>
+<li>Blender 2.79 (deprecated)<ul>
+<li><a href="https://github.com/KDAB/kuesa-blender">Kuesa Blender 2.79 glTF2 Exporter plugin</a></li>
+</ul>
+</li>
+<li>Other 3D Design softwares<ul>
 <li><a href="https://github.com/KDAB/kuesa-3dsmax">Kuesa 3ds Max glTF2 Exporter plugin</a></li>
 </ul>
-<p>Checkout out our <a href="https://www.youtube.com/watch?v=6W3gMEk_PbE">video tutorial</a> on how prepare your assets for Kuesa with 3ds max.</p>
+</li>
+</ul>
+<a name="kuesa-studio-tools"></a>
+<h4 id="kuesa-studio-tools">Kuesa Studio Tools</h4>
+<p>The Kuesa-Studio comes with a gltf tool to preview and introspect scenes.</p>
+<p>It also provides tools to condition assets to integrate as part of the build process.</p>
 <a name="kuesa-runtime"></a>
 <h3 id="kuesa-runtime">Kuesa Runtime</h3>
-<p>The Kuesa Runtime provides C++ and QML APIs to ease incorporation of 3D content into Qt 3D based applications.</p>
+<p>It is the developer facing part of the Kuesa workflow. It is materialized as a library on top of Qt 3D that provides:</p>
 <ul>
 <li><a href="kuesa-gltf2importer.html">glTF2 compliant importer that generates a Qt 3D based scene</a></li>
 <li><a href="kuesa-metallicroughnessmaterial.html">Custom PBR materials</a></li>
-<li>Asset collections to retrieve assets by name</li>
-<li>Post Processing Effects</li>
+<li><a href="kuesa-iro-materials.html">Iro Materials</a></li>
+<li><a href="kuesa-overview.html#asset-collections">Asset collections to retrieve assets by name</a></li>
+<li><a href="kuesa-fx.html">Post Processing Effects</a></li>
 </ul>
+<a name="tools"></a>
+<h4 id="tools">Tools</h4>
+<p>The Kuesa-Runtime comes with the <a href="gltfviewer.html">gltfViewer</a> tool to preview scenes.</p>
 <p>Checkout out our <a href="https://www.youtube.com/watch?v=dIdrQMkGVPI">video tutorial</a> on creating an interactive 3D application with Kuesa.</p>
-<a name="kuesa-tools"></a>
-<h3 id="kuesa-tools">Kuesa Tools</h3>
-<p>A set of tools to preview scenes</p>
-<ul>
-<li><a href="gltfeditor.html">gltfEditor</a></li>
-<li><a href="gltfviewer.html">gltfViewer</a></li>
-<li>ddspreviewer</li>
-<li>cubemaptooctahedralmap</li>
-</ul>
 <a name="kuesa-runtime-features"></a>
 <h2 id="kuesa-runtime-features">Kuesa Runtime Features</h2>
 <a name="gltf-2-importer"></a>
@@ -98,12 +100,22 @@
 <p>The class <a href="kuesa-gltf2importer.html">GLTF2Importer</a> is a Qt3DCore::QNode based class that allows loading glTF 2 files. glTF 2 files from any exporter should work, note however that the Kuesa specific exporter allow the use of additional features, namely:</p>
 <ul>
 <li>Qt 3D compatible <a href="kuesa-metallicroughnessmaterial.html">PBR Material</a> support</li>
-<li>Qt 3D layer export</li>
-<li>Face wireframe export</li>
+<li>glTF 2.0 Extensions<ul>
+<li><a href="https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_unlit">KHR_materials_unlit</a></li>
+<li><a href="https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_lights_punctual">KHR_lights_punctual</a></li>
+<li><a href="https://github.com/KhronosGroup/glTF/pull/1301/files/c72ffabee4b801ce30c77277bba37fa4179185bd">EXT_property_animation</a></li>
+<li><a href="https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_draco_mesh_compression/README.md">KHR_draco_mesh_compression</a></li>
+<li>KDAB_custom_material for <a href="kuesa-iro-materials.html">Iro Materials</a> export</li>
+<li>KDAB_kuesa_layers for <a href="kuesa-layers.html">Qt 3D layer</a> export</li>
 </ul>
+</li>
+</ul>
+<a name="asset-collections"></a>
+<h4 id="asset-collections">Asset Collections</h4>
 <p>Once a file has been loaded through the use of the glTF 2 importer, name based collections are populated. Kuesa provides the following collections for:</p>
 <ul>
 <li><a href="kuesa-entitycollection.html">Entities</a></li>
+<li><a href="kuesa-transformcollection.html">Transforms</a></li>
 <li><a href="kuesa-animationclipcollection.html">Animation Clips</a></li>
 <li><a href="kuesa-animationmappingcollection.html">Animation Mappings</a></li>
 <li><a href="kuesa-cameracollection.html">Cameras</a></li>
@@ -137,8 +149,8 @@
    </div>
 </div>
 <div class="footer">
-   <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
    Documentation contributions included herein are the copyrights of
    their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>

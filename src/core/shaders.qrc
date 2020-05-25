@@ -1,15 +1,11 @@
 <RCC>
     <qresource prefix="/kuesa">
-        <file>shaders/es2/skybox.frag</file>
-        <file>shaders/es2/skybox.vert</file>
         <file>shaders/es3/simple.vert</file>
         <file>shaders/es3/skinned.vert</file>
         <file>shaders/es3/passthrough.vert</file>
         <file>shaders/gl3/passthrough.vert</file>
         <file>shaders/gl3/simple.vert</file>
         <file>shaders/gl3/skinned.vert</file>
-        <file>shaders/gl3/skybox.frag</file>
-        <file>shaders/gl3/skybox.vert</file>
         <file>shaders/graphs/metallicroughness.frag.json</file>
         <file>shaders/gl3/kuesa_metalrough.inc.frag</file>
         <file>shaders/gl3/light.inc.frag</file>
@@ -26,9 +22,12 @@
         <file>shaders/es2/kuesa_metalrough.inc.frag</file>
         <file>shaders/es2/light.inc.frag</file>
         <file>shaders/brdfLUT.png</file>
-        <file>shaders/gl3/dof.frag</file>
-        <file>shaders/es2/dof.frag</file>
-        <file>shaders/es3/dof.frag</file>
+        <file>shaders/gl3/dof_blur.frag</file>
+        <file>shaders/gl3/dof_composite.frag</file>
+        <file>shaders/es2/dof_blur.frag</file>
+        <file>shaders/es2/dof_composite.frag</file>
+        <file>shaders/es3/dof_blur.frag</file>
+        <file>shaders/es3/dof_composite.frag</file>
         <file>shaders/graphs/metallicroughness.vert.json</file>
         <file>shaders/gl3/kuesa_morphtargets_normal.inc.vert</file>
         <file>shaders/gl3/kuesa_morphtargets_position.inc.vert</file>
@@ -52,5 +51,34 @@
         <file>shaders/es2/passthrough.vert</file>
         <file>shaders/graphs/gammacorrection.frag.json</file>
         <file>shaders/es2/kuesa_gaussianblur.inc.frag</file>
+        <file>shaders/es2/light_unroll.inc.frag</file>
+        <file>shaders/es2/kuesa_metalrough_unroll.inc.frag</file>
+        <file>shaders/es3/light_unroll.inc.frag</file>
+        <file>shaders/es3/kuesa_metalrough_unroll.inc.frag</file>
+        <file>shaders/gl3/kuesa_metalrough_unroll.inc.frag</file>
+        <file>shaders/gl3/light_unroll.inc.frag</file>
+        <file>shaders/graphs/metallicroughness_unroll.frag.json</file>
+        <file>shaders/gl3/kuesa_iroDiffuseShaderData.inc.frag</file>
+        <file>shaders/es2/kuesa_iroDiffuseShaderData.inc.frag</file>
+        <file>shaders/es3/kuesa_iroDiffuseShaderData.inc.frag</file>
+        <file>shaders/graphs/irodiffuse.frag.json</file>
+        <file>shaders/gl3/kuesa_iroGlassAddShaderData.inc.frag</file>
+        <file>shaders/es2/kuesa_iroGlassAddShaderData.inc.frag</file>
+        <file>shaders/es3/kuesa_iroGlassAddShaderData.inc.frag</file>
+        <file>shaders/graphs/iroglassadd.frag.json</file>
+        <file>shaders/gl3/kuesa_iroDiffuseHemiShaderData.inc.frag</file>
+        <file>shaders/es2/kuesa_iroDiffuseHemiShaderData.inc.frag</file>
+        <file>shaders/es3/kuesa_iroDiffuseHemiShaderData.inc.frag</file>
+        <file>shaders/graphs/irodiffusehemi.frag.json</file>
+        <file>shaders/graphs/skybox.frag.json</file>
+        <file>shaders/graphs/skybox.vert.json</file>
+        <file>shaders/graphs/iroglassmult.frag.json</file>
+        <file>shaders/graphs/iromattebackground.vert.json</file>
+        <file>shaders/graphs/iromattealpha.frag.json</file>
+        <file>shaders/graphs/iromatteopaque.frag.json</file>
+        <file>shaders/graphs/iromatteskybox.vert.json</file>
+        <file>shaders/graphs/iromattemult.frag.json</file>
+        <file>shaders/graphs/iromatteadd.frag.json</file>
+        <file>shaders/graphs/irodiffusealpha.frag.json</file>
     </qresource>
 </RCC>

@@ -31,7 +31,8 @@ qtHaveModule(quick) {
         car-scene \
         tonemapping \
         manyducks \
-        music-box
+        music-box \
+        iro-materials-gallery
 }
 
 demo_assets.path = $$[QT_INSTALL_EXAMPLES]/kuesa/assets

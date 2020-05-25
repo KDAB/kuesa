@@ -36,7 +36,6 @@ SUBDIRS = \
     effectcollection \
     sceneentity \
     textureimagecollection \
-    gltfEditor \
     morphcontroller \
     gltf2importer \
     gltf2options \

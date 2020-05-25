@@ -47,7 +47,7 @@
 #include <Qt3DRender/QAttribute>
 #include <Qt3DRender/QGeometry>
 #include <Qt3DRender/QGeometryRenderer>
-
+#include <private/gltf2keys_p.h>
 #include <QtGui/qopengl.h>
 
 QT_BEGIN_NAMESPACE
@@ -55,20 +55,6 @@ using namespace Kuesa;
 using namespace GLTF2Import;
 
 namespace {
-
-const QLatin1String KEY_PRIMITIVES = QLatin1String("primitives");
-const QLatin1String KEY_ATTRIBUTES = QLatin1String("attributes");
-const QLatin1String KEY_INDICES = QLatin1String("indices");
-const QLatin1String KEY_MATERIAL = QLatin1String("material");
-const QLatin1String KEY_MODE = QLatin1String("mode");
-const QLatin1String KEY_NAME = QLatin1String("name");
-const QLatin1String KEY_TARGETS = QLatin1String("targets");
-const QLatin1String KEY_WEIGHTS = QLatin1String("weights");
-#if defined(KUESA_DRACO_COMPRESSION)
-const QLatin1String KEY_EXTENSIONS = QLatin1String("extensions");
-const QLatin1String KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION = QLatin1String("KHR_draco_mesh_compression");
-const QLatin1String KEY_BUFFERVIEW = QLatin1String("bufferView");
-#endif
 
 const QString morphTargetAttributeNames[]{ QStringLiteral("POSITION"),
                                            QStringLiteral("NORMAL"),

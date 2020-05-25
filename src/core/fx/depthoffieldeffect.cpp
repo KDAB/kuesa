@@ -27,8 +27,10 @@
 */
 
 #include "depthoffieldeffect.h"
-#include "gaussianblureffect.h"
 #include "fullscreenquad.h"
+#include "fx/fxutils_p.h"
+#include "forwardrenderer.h"
+
 #include <Qt3DRender/qcameraselector.h>
 #include <Qt3DRender/qrendersurfaceselector.h>
 #include <Qt3DRender/qfilterkey.h>
@@ -267,7 +269,6 @@ using namespace Kuesa;
 DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     : AbstractPostProcessingEffect(parent)
     , m_layer(nullptr)
-    , m_thresholdParameter(new Qt3DRender::QParameter(QStringLiteral("threshold"), 1.0f))
     , m_textureParam(new Qt3DRender::QParameter(QStringLiteral("textureSampler"), nullptr))
     , m_textureSizeParam(new Qt3DRender::QParameter(QStringLiteral("textureSize"), nullptr))
     , m_depthParam(new Qt3DRender::QParameter(QStringLiteral("depthTexture"), nullptr))
@@ -276,52 +277,46 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     , m_focusRangeParam(new Qt3DRender::QParameter(QStringLiteral("focusRange"), nullptr))
     , m_focusDistanceParam(new Qt3DRender::QParameter(QStringLiteral("focusDistance"), nullptr))
     , m_radiusParam(new Qt3DRender::QParameter(QStringLiteral("bokehRadius"), nullptr))
+    , m_dofTextureParam(new Qt3DRender::QParameter(QStringLiteral("dofTexture"), nullptr))
 {
     setFocusRange(3.f);
     setFocusDistance(8.f);
     setRadius(6.f);
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode);
-    m_rootFrameGraphNode->setObjectName(QStringLiteral("Threshold Effect"));
+    m_rootFrameGraphNode->setObjectName(QStringLiteral("DoF Effect"));
 
-    // Set up Threshold Material
-    auto thresholdMaterial = new Qt3DRender::QMaterial(m_rootFrameGraphNode.data());
+    m_dofTexture = new Qt3DRender::QTexture2D;
+
+    auto blurRenderTarget = new Qt3DRender::QRenderTarget;
+    auto dofOutput = new Qt3DRender::QRenderTargetOutput;
+    dofOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+    dofOutput->setTexture(m_dofTexture);
+    m_dofTexture->setFormat(ForwardRenderer::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F : Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+    m_dofTexture->setSize(512, 512);
+    m_dofTexture->setGenerateMipMaps(false);
+    blurRenderTarget->addOutput(dofOutput);
+
+    m_dofTextureParam->setValue(QVariant::fromValue(m_dofTexture));
+
+    // Set up DoF Material
+    auto dofMaterial = new Qt3DRender::QMaterial(m_rootFrameGraphNode.data());
 
     auto effect = new Qt3DRender::QEffect;
-    thresholdMaterial->setEffect(effect);
+    dofMaterial->setEffect(effect);
 
-    auto setup_technique = [&](Qt3DRender::QGraphicsApiFilter::Api api, int major, int minor,
-                               Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile,
-                               const QUrl &vertex, const QUrl &fragment) {
-        Q_UNUSED(vertex);
-        Q_UNUSED(fragment);
+    const QString passFilterName = QStringLiteral("passName");
+    const QString dofBlurPassName = QStringLiteral("KuesaDOFBlurPass");
+    const QString dofCompositionPassName = QStringLiteral("KuesaDOFCompositionPass");
 
-        auto technique = new Qt3DRender::QTechnique;
-        effect->addTechnique(technique);
-
-        technique->graphicsApiFilter()->setApi(api);
-        technique->graphicsApiFilter()->setMajorVersion(major);
-        technique->graphicsApiFilter()->setMinorVersion(minor);
-        technique->graphicsApiFilter()->setProfile(profile);
-
-        auto techniqueFilterKey = new Qt3DRender::QFilterKey;
-        techniqueFilterKey->setName(QStringLiteral("renderingStyle"));
-        techniqueFilterKey->setValue(QStringLiteral("forward"));
-        technique->addFilterKey(techniqueFilterKey);
-
-        auto renderPass = new Qt3DRender::QRenderPass;
+    auto createRenderPass = [&](const QUrl &vertex, const QUrl &fragment, const QString &passName) {
+        auto renderPass = FXUtils::createRenderPass(passFilterName, passName);
         auto shaderProg = new Qt3DRender::QShaderProgram(renderPass);
         shaderProg->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(vertex));
         shaderProg->setFragmentShaderCode(Qt3DRender::QShaderProgram::loadSource(fragment));
-
         renderPass->setShaderProgram(shaderProg);
-
-        auto passFilterKey = new Qt3DRender::QFilterKey;
-        passFilterKey->setName(QStringLiteral("KuesaDOFPass"));
-        renderPass->addFilterKey(passFilterKey);
 
         renderPass->addParameter(m_textureParam);
         renderPass->addParameter(m_depthParam);
-        renderPass->addParameter(m_thresholdParameter);
         renderPass->addParameter(m_nearPlaneParam);
         renderPass->addParameter(m_farPlaneParam);
         renderPass->addParameter(m_textureSizeParam);
@@ -329,34 +324,68 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
         renderPass->addParameter(m_focusDistanceParam);
         renderPass->addParameter(m_radiusParam);
 
-        technique->addRenderPass(renderPass);
+        if (passName == dofCompositionPassName)
+            renderPass->addParameter(m_dofTextureParam);
+
+        return renderPass;
     };
 
-    setup_technique(Qt3DRender::QGraphicsApiFilter::OpenGL, 3, 2,
-                    Qt3DRender::QGraphicsApiFilter::CoreProfile,
-                    QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert")),
-                    QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/dof.frag")));
-    setup_technique(Qt3DRender::QGraphicsApiFilter::OpenGLES, 2, 0,
-                    Qt3DRender::QGraphicsApiFilter::NoProfile,
-                    QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert")),
-                    QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/dof.frag")));
-    setup_technique(Qt3DRender::QGraphicsApiFilter::OpenGLES, 3, 0,
-                    Qt3DRender::QGraphicsApiFilter::CoreProfile,
-                    QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert")),
-                    QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/dof.frag")));
+    auto gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL, 3, 2,
+                                               Qt3DRender::QGraphicsApiFilter::CoreProfile);
+    gl3Technique->addRenderPass(createRenderPass(
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/dof_blur.frag")),
+            dofBlurPassName));
 
-    auto thresholdQuad = new FullScreenQuad(thresholdMaterial, m_rootFrameGraphNode.data());
-    m_layer = thresholdQuad->layer();
+    gl3Technique->addRenderPass(createRenderPass(
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/dof_composite.frag")),
+            dofCompositionPassName));
+
+    effect->addTechnique(gl3Technique);
+
+    auto es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES, 2, 0,
+                                               Qt3DRender::QGraphicsApiFilter::NoProfile);
+    es2Technique->addRenderPass(createRenderPass(
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/dof_blur.frag")),
+            dofBlurPassName));
+
+    es2Technique->addRenderPass(createRenderPass(
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/dof_composite.frag")),
+            dofCompositionPassName));
+
+    effect->addTechnique(es2Technique);
+
+    auto es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES, 3, 0,
+                                               Qt3DRender::QGraphicsApiFilter::CoreProfile);
+    es3Technique->addRenderPass(createRenderPass(
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/dof_blur.frag")),
+            dofBlurPassName));
+
+    es3Technique->addRenderPass(createRenderPass(
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/dof_composite.frag")),
+            dofCompositionPassName));
+
+    effect->addTechnique(es3Technique);
+
+    auto dofQuad = new FullScreenQuad(dofMaterial, m_rootFrameGraphNode.data());
+    m_layer = dofQuad->layer();
 
     //
     //  FrameGraph Construction
     //
     auto layerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
-    layerFilter->addLayer(thresholdQuad->layer());
-    auto renderPassFilter = new Qt3DRender::QRenderPassFilter(layerFilter);
-    auto filterKey = new Qt3DRender::QFilterKey;
-    filterKey->setName(QStringLiteral("KuesaDOFPass"));
-    renderPassFilter->addMatch(filterKey);
+    layerFilter->addLayer(dofQuad->layer());
+
+    auto blurTargetSelector = new Qt3DRender::QRenderTargetSelector(layerFilter);
+    blurTargetSelector->setTarget(blurRenderTarget);
+
+    auto blurPassFilter = FXUtils::createRenderPassFilter(passFilterName, dofBlurPassName, blurTargetSelector);
+    auto compositePassFilter = FXUtils::createRenderPassFilter(passFilterName, dofCompositionPassName, layerFilter);
 }
 
 DepthOfFieldEffect::~DepthOfFieldEffect()
@@ -452,6 +481,7 @@ void DepthOfFieldEffect::setFocusDistance(float focusDistance)
 void DepthOfFieldEffect::setSceneSize(const QSize &size)
 {
     m_textureSizeParam->setValue(QSizeF(size));
+    m_dofTexture->setSize(size.width(), size.height());
 }
 
 QT_END_NAMESPACE

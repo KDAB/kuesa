@@ -167,10 +167,10 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode);
     m_rootFrameGraphNode->setObjectName(QLatin1String("Gaussian Blur Effect"));
 
-    //make blurTargets children of this, otherwise they'll automatically be parented
-    //to the blur pass nodes which get deleted when changing # of passes
-    m_blurTarget1->setParent(this);
-    m_blurTarget2->setParent(this);
+    //make blurTargets children of m_rootFrameGraphNode, otherwise they'll automatically
+    //be parented to the blur pass nodes which get deleted when changing # of passes
+    m_blurTarget1->setParent(m_rootFrameGraphNode.get());
+    m_blurTarget2->setParent(m_rootFrameGraphNode.get());
 
     // set up blur render targets.
     // Target 1 has no texture yet since we'll use the input texture

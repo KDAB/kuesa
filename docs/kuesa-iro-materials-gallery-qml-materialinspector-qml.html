@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- iro-materials-gallery.qdoc -->
+  <title>Kuesa Iro-Materials-Gallery QML Example | Kuesa Runtime 1.2</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>Kuesa Iro-Materials-Gallery QML Example</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><h1 class="title">Kuesa Iro-Materials-Gallery QML Example</h1>
+<span class="subtitle"></span>
+<pre class="qml">
+ <span class="comment">/*
+     MaterialInspector.qml
+
+     This file is part of Kuesa.
+
+     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
+
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
+
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
+
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
+
+ import QtQuick 2.12
+
+ <span class="type">Item</span> {
+     readonly property <span class="type">int</span> <span class="name">_margins</span>: <span class="number">25</span>
+     <span class="name">width</span>: <span class="name">contentText</span>.<span class="name">implicitWidth</span> <span class="operator">+</span> <span class="name">_margins</span>
+     <span class="name">height</span>: <span class="name">contentText</span>.<span class="name">implicitHeight</span> <span class="operator">+</span> <span class="name">_margins</span>
+
+     <span class="name">visible</span>: <span class="name">contentText</span>.<span class="name">text</span> <span class="operator">!==</span> <span class="string">&quot;&quot;</span>
+
+     <span class="type">Rectangle</span> {
+         <span class="name">opacity</span>: <span class="number">0.4</span>
+         <span class="name">color</span>: <span class="string">&quot;black&quot;</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">radius</span>: <span class="number">15</span>
+         <span class="type">border</span> {
+             <span class="name">color</span>: <span class="string">&quot;white&quot;</span>
+             <span class="name">width</span>: <span class="number">1</span>
+         }
+     }
+
+     <span class="type">Text</span> {
+         <span class="name">color</span>: <span class="string">&quot;white&quot;</span>
+         <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+         <span class="name">id</span>: <span class="name">contentText</span>
+         <span class="name">text</span>: <span class="name">_materialInspector</span> ? <span class="name">_materialInspector</span>.<span class="name">description</span> : <span class="string">&quot;&quot;</span>
+     }
+ }
+</pre>

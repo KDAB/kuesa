@@ -51,6 +51,10 @@ class QNoDraw;
 class QSortPolicy;
 class QRenderTarget;
 class QBlitFramebuffer;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+class QDebugOverlay;
+#endif
+class QLayerFilter;
 } // namespace Qt3DRender
 
 namespace Kuesa {
@@ -74,7 +78,7 @@ class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QRenderSurfaceSele
     Q_PROPERTY(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
     Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged REVISION 1)
     Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged REVISION 1)
-
+    Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay WRITE setShowDebugOverlay NOTIFY showDebugOverlayChanged REVISION 2)
 public:
     ForwardRenderer(Qt3DCore::QNode *parent = nullptr);
     ~ForwardRenderer();
@@ -90,6 +94,7 @@ public:
     float exposure() const;
     float gamma() const;
     ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
+    bool showDebugOverlay() const;
 
     Q_INVOKABLE void addPostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
     Q_INVOKABLE void removePostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
@@ -110,6 +115,11 @@ public Q_SLOTS:
     void setGamma(float gamma);
     void setExposure(float exposure);
     void setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
+    void setShowDebugOverlay(bool showDebugOverlay);
+
+    void addLayer(Qt3DRender::QLayer *layer);
+    void removeLayer(Qt3DRender::QLayer *layer);
+    QVector<Qt3DRender::QLayer *> layers() const;
 
 Q_SIGNALS:
     void renderSurfaceChanged(QObject *renderSurface);
@@ -124,6 +134,7 @@ Q_SIGNALS:
     void gammaChanged(float gamma);
     void exposureChanged(float exposure);
     void toneMappingAlgorithmChanged(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
+    void showDebugOverlayChanged(bool showDebugOverlay);
 
 private:
     void updateTextureSizes();
@@ -162,9 +173,15 @@ private:
     Qt3DRender::QRenderTarget *m_renderTargets[2];
     Qt3DRender::QRenderTarget *m_multisampleTarget;
     Qt3DRender::QBlitFramebuffer *m_blitFramebufferNode;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    Qt3DRender::QDebugOverlay *m_debugOverlay;
+#endif
     bool m_fgTreeRebuiltScheduled;
+    QVector<Qt3DRender::QLayer *> m_layers;
+    QVector<QMetaObject::Connection> m_layerDestructionConnections;
 
-    struct Q_AUTOTEST_EXPORT SceneStages {
+    class Q_AUTOTEST_EXPORT SceneStages {
+    public:
         SceneStages();
         ~SceneStages();
 
@@ -173,15 +190,25 @@ private:
         void init();
         void setZFilling(bool zFilling);
         void setBackToFrontSorting(bool backToFrontSorting);
+        void setLayer(Qt3DRender::QLayer *layer);
 
         bool zFilling();
         bool backToFrontSorting();
+        Qt3DRender::QLayer *layer() const;
 
         void unParent();
+        void setParent(QNode *opaqueRoot, QNode *transparentRoot);
 
-        void insertZFillAndOpaqueStages(QNode *root);
-        void insertTransparentStage(QNode *root);
+        Qt3DRender::QLayerFilter *opaqueStagesRoot() const;
+        Qt3DRender::QLayerFilter *transparentStagesRoot() const;
 
+        OpaqueRenderStage *opaqueStage() const;
+        ZFillRenderStage *zFillStage() const;
+        TransparentRenderStage *transparentStage() const;
+
+    private:
+        Qt3DRender::QLayerFilter *m_opaqueStagesRoot;
+        Qt3DRender::QLayerFilter *m_transparentStagesRoot;
         OpaqueRenderStage *m_opaqueStage;
         TransparentRenderStage *m_transparentStage;
         ZFillRenderStage *m_zFillStage;

@@ -31,6 +31,7 @@
 
 #include <Kuesa/kuesa_global.h>
 #include <QUrl>
+#include <QHash>
 #include <Qt3DCore/QNode>
 #include <Kuesa/GLTF2Options>
 
@@ -43,6 +44,7 @@ class GLTF2Exporter;
 namespace GLTF2Import {
 class GLTF2Context;
 class GLTF2Parser;
+class MaterialParser;
 class SceneRootEntity;
 }
 
@@ -83,6 +85,16 @@ public:
     int activeSceneIndex() const;
     QStringList availableScenes() const;
 
+    template<class MaterialClass, class PropertiesClass, class EffectClass>
+    static void registerCustomMaterial(const QString &name)
+    {
+        auto &cache = CustomMaterialCache::instance();
+
+        cache.m_registeredCustomMaterial.insert(name, { &MaterialClass::staticMetaObject,
+                                                        &PropertiesClass::staticMetaObject,
+                                                        &EffectClass::staticMetaObject });
+    }
+
 public Q_SLOTS:
     void setSource(const QUrl &source);
     void setSceneEntity(Kuesa::SceneEntity *sceneEntity);
@@ -121,6 +133,23 @@ private:
     Kuesa::GLTF2Import::GLTF2Options m_options;
     int m_activeSceneIndex;
     QStringList m_availableScenes;
+
+    friend class Kuesa::GLTF2Import::MaterialParser;
+    struct CustomMaterialClassesTypeInfo {
+        const QMetaObject *materialClassMetaObject;
+        const QMetaObject *propertiesClassMetaObject;
+        const QMetaObject *effectClassMetaObject;
+    };
+
+    struct CustomMaterialCache {
+        QHash<QString, CustomMaterialClassesTypeInfo> m_registeredCustomMaterial;
+
+        static CustomMaterialCache &instance()
+        {
+            static CustomMaterialCache c;
+            return c;
+        }
+    };
 };
 
 } // namespace Kuesa

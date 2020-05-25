@@ -1,0 +1,108 @@
+{
+    "channels": [
+         {
+             "sampler": 26,
+             "target": "/nodes/1/translation"
+         },
+         {
+             "sampler": 25,
+             "target": "/nodes/2/rotation"
+         },
+         {
+             "sampler": 24,
+             "target": "/nodes/3/scale"
+         },
+         {
+             "sampler": 23,
+             "target": "/cameras/4/orthographic/xmag"
+         },
+         {
+             "sampler": 22,
+             "target": "/cameras/5/orthographic/ymag"
+         },
+         {
+             "sampler": 21,
+             "target": "/cameras/6/orthographic/zfar"
+         },
+         {
+             "sampler": 20,
+             "target": "/cameras/7/orthographic/znear"
+         },
+         {
+             "sampler": 19,
+             "target": "/cameras/8/perspective/aspectRatio"
+         },
+         {
+             "sampler": 18,
+             "target": "/cameras/9/perspective/yfov"
+         },
+         {
+             "sampler": 17,
+             "target": "/cameras/10/perspective/zfar"
+         },
+         {
+             "sampler": 16,
+             "target": "/cameras/11/perspective/znear"
+         },
+         {
+             "sampler": 15,
+             "target": "/materials/12/pbrMetallicRoughness/baseColorFactor"
+         },
+         {
+             "sampler": 14,
+             "target": "/materials/13/pbrMetallicRoughness/metallicFactor"
+         },
+         {
+             "sampler": 13,
+             "target": "/materials/14/pbrMetallicRoughness/roughnessFactor"
+         },
+         {
+             "sampler": 12,
+             "target": "/materials/15/alphaCutoff"
+         },
+         {
+             "sampler": 11,
+             "target": "/materials/16/emissiveFactor"
+         },
+         {
+             "sampler": 10,
+             "target": "/materials/17/normalTexture/scale"
+         },
+         {
+             "sampler": 9,
+             "target": "/materials/18/occlusionTexture/strength"
+         },
+         {
+             "sampler": 8,
+             "target": "/materials/19/extensions/KHR_materials_pbrSpecularGlossiness/diffuseFactor"
+         },
+         {
+             "sampler": 7,
+             "target": "/materials/20/extensions/KHR_materials_pbrSpecularGlossiness/specularFactor"
+         },
+         {
+             "sampler": 6,
+             "target": "/materials/21/extensions/KHR_materials_pbrSpecularGlossiness/glossinessFactor"
+         },
+         {
+             "sampler": 5,
+             "target": "/extensions/KHR_lights/lights/22/color"
+         },
+         {
+             "sampler": 4,
+             "target": "/extensions/KHR_lights/lights/23/intensity"
+         },
+         {
+             "sampler": 3,
+             "target": "/extensions/KHR_lights/lights/24/innerConeAngle"
+         },
+         {
+             "sampler": 2,
+             "target": "/extensions/KHR_lights/lights/25/outerConeAngle"
+         },
+         {
+             "sampler": 1,
+             "target": "/nodes/26/extensions/AVR_lights_static/strength"
+         }
+    ]
+}

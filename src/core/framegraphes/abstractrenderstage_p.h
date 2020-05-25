@@ -46,7 +46,7 @@
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-class KUESASHARED_EXPORT AbstractRenderStage : public Qt3DRender::QRenderPassFilter
+class KUESASHARED_EXPORT AbstractRenderStage : public Qt3DRender::QFrameGraphNode
 {
     Q_OBJECT
 public:

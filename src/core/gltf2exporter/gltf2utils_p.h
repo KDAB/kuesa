@@ -37,6 +37,7 @@
 // modified without notice
 //
 #include <QtGlobal>
+#include <Qt3DRender/QAttribute>
 
 QT_BEGIN_NAMESPACE
 
@@ -52,6 +53,8 @@ void addExtension(QJsonObject &rootObject, const QString &where, const QString &
 void replaceJsonArray(QJsonObject &m_root, QLatin1String k, QJsonArray &arr);
 
 int addToJsonChildArray(QJsonObject &object, const QString &name, const QJsonObject &toInsert);
+
+quint8 accessorDataTypeToBytes(Qt3DRender::QAttribute::VertexBaseType type);
 
 } // namespace Kuesa
 QT_END_NAMESPACE

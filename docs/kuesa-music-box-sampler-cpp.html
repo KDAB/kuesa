@@ -1,438 +1,427 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- music-box.qdoc -->
-  <title>Kuesa Music Box QML Example | Kuesa 1.1</title>
-<link rel="stylesheet" type="text/css" href="style/style.css">
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
-</head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
+  <title>Kuesa Music Box QML Example | Kuesa Runtime 1.2</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Music Box QML Example</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
-        </tr></table>
-      </div>
-    </div>
-<div class="content">
-<div class="line">
-<div class="content mainContent">
-<h1 class="title">Kuesa Music Box QML Example</h1>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><h1 class="title">Kuesa Music Box QML Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
-
-  <span class="comment">/*
-      sampler.cpp
-
-      This file is part of Kuesa.
-
-      Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-      Author: Jean-Michaël Celerier &lt;jean-michael.celerier@kdab.com&gt;
-
-      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-      accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-      LICENSE.KUESA.ENTERPRISE file.
-
-      Contact info@kdab.com if any conditions of this licensing are not clear to you.
-
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU Affero General Public License as
-      published by the Free Software Foundation, either version 3 of the
-      License, or (at your option) any later version.
-
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU Affero General Public License for more details.
-
-      You should have received a copy of the GNU Affero General Public License
-      along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-  */</span>
-
-  <span class="preprocessor">#include &quot;sampler.h&quot;</span>
-
-  <span class="preprocessor">#if KUESA_HAS_AUDIO</span>
-  <span class="preprocessor">#include &lt;portaudio.h&gt;</span>
-
-  <span class="preprocessor">#include &lt;QFile&gt;</span>
-  <span class="preprocessor">#include &lt;QDebug&gt;</span>
-  <span class="preprocessor">#include &lt;QTimer&gt;</span>
-  <span class="preprocessor">#include &lt;QDir&gt;</span>
-  <span class="preprocessor">#include &lt;QGuiApplication&gt;</span>
-
-  <span class="preprocessor">#include &lt;array&gt;</span>
-  <span class="preprocessor">#define DR_WAV_IMPLEMENTATION</span>
-  <span class="preprocessor">#define DR_WAV_NO_STDIO</span>
-  <span class="preprocessor">#define DR_WAV_NO_CONVERSION_API</span>
-  <span class="preprocessor">#include &quot;3rdparty/dr_wav.h&quot;</span>
-  <span class="preprocessor">#include &quot;3rdparty/freeverb.h&quot;</span>
-  <span class="preprocessor">#include &quot;3rdparty/readerwriterqueue/readerwriterqueue.h&quot;</span>
-
-  <span class="keyword">static</span> constexpr <span class="type">int</span> maxSampleCount <span class="operator">=</span> <span class="number">127</span>;
-  <span class="keyword">static</span> constexpr <span class="type">unsigned</span> <span class="type">int</span> sampleRate <span class="operator">=</span> <span class="number">44100</span>;
-  <span class="keyword">static</span> constexpr <span class="type">unsigned</span> <span class="type">int</span> channels <span class="operator">=</span> <span class="number">2</span>;
-  static_assert(channels <span class="operator">=</span><span class="operator">=</span> <span class="number">2</span><span class="operator">,</span> <span class="string">&quot;The code needs some adjustment if you want use more than two channels&quot;</span>);
-
-  <span class="comment">// Represents a wave file associated to multiple playheads</span>
-  <span class="keyword">class</span> Note
-  {
-  <span class="keyword">public</span>:
-      Note()
-      {
-          played<span class="operator">.</span>reserve(<span class="number">32</span>);
-      }
-
-      Note(<span class="keyword">const</span> Note <span class="operator">&amp;</span>) <span class="operator">=</span> <span class="keyword">delete</span>;
-      Note <span class="operator">&amp;</span><span class="keyword">operator</span><span class="operator">=</span>(<span class="keyword">const</span> Note <span class="operator">&amp;</span>) <span class="operator">=</span> <span class="keyword">delete</span>;
-
-      Note(Note <span class="operator">&amp;</span><span class="operator">&amp;</span>other)
-          : wave{ other<span class="operator">.</span>wave }
-          <span class="operator">,</span> played{ std<span class="operator">::</span>move(other<span class="operator">.</span>played) }
-      {
-          other<span class="operator">.</span>wave <span class="operator">=</span> nullptr;
-          other<span class="operator">.</span>played<span class="operator">.</span>clear();
-      }
-
-      Note <span class="operator">&amp;</span><span class="keyword">operator</span><span class="operator">=</span>(Note <span class="operator">&amp;</span><span class="operator">&amp;</span>other)
-      {
-          wave <span class="operator">=</span> other<span class="operator">.</span>wave;
-          played <span class="operator">=</span> std<span class="operator">::</span>move(other<span class="operator">.</span>played);
-          other<span class="operator">.</span>wave <span class="operator">=</span> nullptr;
-          other<span class="operator">.</span>played<span class="operator">.</span>clear();
-          <span class="keyword">return</span> <span class="operator">*</span><span class="keyword">this</span>;
-      }
-
-      <span class="operator">~</span>Note()
-      {
-          <span class="keyword">if</span> (wave)
-              drwav_close(wave);
-      }
-
-      <span class="keyword">struct</span> PlayedNote {
-          <span class="type">int</span> position; <span class="comment">// The position in the sample.</span>
-          <span class="type">float</span> volume;
-      };
-
-      drwav <span class="operator">*</span>wave{};
-      std<span class="operator">::</span>vector<span class="operator">&lt;</span>PlayedNote<span class="operator">&gt;</span> played{};
-  };
-
-  <span class="comment">// The UI sends this to the audio engine</span>
-  <span class="keyword">struct</span> NoteRequest {
-      <span class="type">int</span> note;
-      <span class="type">float</span> volume;
-  };
-
-  <span class="comment">// A set of memory-mapped samples</span>
-  <span class="keyword">struct</span> SampleSet {
-      std<span class="operator">::</span>array<span class="operator">&lt;</span><span class="type">QFile</span><span class="operator">,</span> maxSampleCount<span class="operator">&gt;</span> files;
-      std<span class="operator">::</span>array<span class="operator">&lt;</span>Note<span class="operator">,</span> maxSampleCount<span class="operator">&gt;</span> notes;
-
-      <span class="type">void</span> initFile(<span class="type">int</span> i<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>name)
-      {
-          <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/resources&quot;</span>));
-          files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>setFileName(resourceDir<span class="operator">.</span>path() <span class="operator">+</span> <span class="type">QDir</span><span class="operator">::</span>separator() <span class="operator">+</span> name);
-          bool ok <span class="operator">=</span> files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>ReadOnly);
-          Q_ASSERT(ok);
-
-          <span class="keyword">auto</span> mem <span class="operator">=</span> files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>map(<span class="number">0</span><span class="operator">,</span> files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>size());
-          <span class="keyword">if</span> (mem) {
-              <span class="keyword">auto</span> <span class="operator">&amp;</span>w <span class="operator">=</span> notes<span class="operator">[</span>i<span class="operator">]</span>;
-              w<span class="operator">.</span>wave <span class="operator">=</span> drwav_open_memory(mem<span class="operator">,</span> files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>size());
-
-              Q_ASSERT(w<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>bitsPerSample <span class="operator">=</span><span class="operator">=</span> <span class="number">16</span>);
-              Q_ASSERT(w<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>channels <span class="operator">=</span><span class="operator">=</span> <span class="number">1</span> <span class="operator">|</span><span class="operator">|</span> w<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>channels <span class="operator">=</span><span class="operator">=</span> <span class="number">2</span>);
-              Q_ASSERT(w<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>sampleRate <span class="operator">=</span><span class="operator">=</span> <span class="number">44100</span>);
-              Q_ASSERT(w<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>formatTag <span class="operator">=</span><span class="operator">=</span> <span class="number">1</span>); <span class="comment">// PCM</span>
-          }
-      }
-  };
-
-  <span class="keyword">class</span> SamplerPrivate
-  {
-      Q_DISABLE_COPY(SamplerPrivate)
-
-  <span class="keyword">public</span>:
-      SamplerPrivate(Sampler <span class="operator">&amp;</span>s)
-          : m_sampler{ s }
-      {
-          m_reverb<span class="operator">.</span>init(sampleRate);
-          m_reverb<span class="operator">.</span>setDryWet(<span class="number">0.3</span>);
-          m_reverb<span class="operator">.</span>setRoomSize(<span class="number">0.7</span>);
-
-          <span class="comment">// Start audio playback</span>
-          Pa_Initialize();
-          <span class="keyword">auto</span> err <span class="operator">=</span> Pa_OpenDefaultStream(<span class="operator">&amp;</span>stream<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> channels<span class="operator">,</span> paInt16<span class="operator">,</span> sampleRate<span class="operator">,</span> paFramesPerBufferUnspecified<span class="operator">,</span> audioCallback<span class="operator">,</span> <span class="keyword">this</span>);
-          <span class="keyword">if</span> (err <span class="operator">=</span><span class="operator">=</span> paNoError) {
-              err <span class="operator">=</span> Pa_StartStream(stream);
-          }
-
-          <span class="keyword">if</span> (err <span class="operator">!</span><span class="operator">=</span> paNoError) {
-              qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;PortAudio error: &quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> Pa_GetErrorText(err);
-              <span class="keyword">if</span> (stream) {
-                  Pa_CloseStream(stream);
-                  stream <span class="operator">=</span> nullptr;
-              }
-          }
-      }
-
-      <span class="operator">~</span>SamplerPrivate()
-      {
-          <span class="keyword">if</span> (stream)
-              Pa_StopStream(stream);
-
-          Pa_Terminate();
-          garbageCollectSamples();
-          {
-              SampleSet <span class="operator">*</span>top{};
-              <span class="keyword">while</span> (m_nextSamples<span class="operator">.</span>try_dequeue(top)) {
-                  <span class="keyword">delete</span> top;
-              }
-          }
-          <span class="keyword">delete</span> m_current;
-      }
-
-      <span class="type">void</span> reloadNotes(<span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>notes)
-      {
-          <span class="keyword">auto</span> samples <span class="operator">=</span> <span class="keyword">new</span> SampleSet;
-          <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> notes<span class="operator">.</span>size(); i<span class="operator">+</span><span class="operator">+</span>) {
-              samples<span class="operator">-</span><span class="operator">&gt;</span>initFile(i<span class="operator">,</span> notes<span class="operator">[</span>i<span class="operator">]</span>);
-          }
-
-          m_nextSamples<span class="operator">.</span>enqueue(samples);
-
-          <span class="type">QTimer</span><span class="operator">::</span>singleShot(<span class="number">1000</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span> { garbageCollectSamples(); });
-      }
-
-      moodycamel<span class="operator">::</span>ReaderWriterQueue<span class="operator">&lt;</span>NoteRequest<span class="operator">&gt;</span> notesRequests{ <span class="number">512</span> };
-
-  <span class="keyword">private</span>:
-      <span class="type">void</span>
-      garbageCollectSamples()
-      {
-          SampleSet <span class="operator">*</span>sample{};
-          <span class="keyword">while</span> (m_oldSamples<span class="operator">.</span>try_dequeue(sample)) {
-              <span class="keyword">delete</span> sample;
-          }
-      }
-
-      <span class="keyword">static</span> PaError audioCallback(
-              <span class="keyword">const</span> <span class="type">void</span> <span class="operator">*</span><span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>output<span class="operator">,</span>
-              <span class="type">unsigned</span> <span class="type">long</span> frameCount<span class="operator">,</span>
-              <span class="keyword">const</span> PaStreamCallbackTimeInfo <span class="operator">*</span><span class="operator">,</span>
-              PaStreamCallbackFlags<span class="operator">,</span>
-              <span class="type">void</span> <span class="operator">*</span>userData)
-      {
-          <span class="keyword">auto</span> <span class="operator">&amp;</span>self <span class="operator">=</span> <span class="operator">*</span><span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>SamplerPrivate <span class="operator">*</span><span class="operator">&gt;</span>(userData);
-          <span class="keyword">const</span> <span class="keyword">auto</span> out <span class="operator">=</span> (int16_t <span class="operator">*</span>)output;
-
-          <span class="comment">// Zero-out our buffer</span>
-          std<span class="operator">::</span>fill_n(out<span class="operator">,</span> channels <span class="operator">*</span> frameCount<span class="operator">,</span> <span class="number">0</span>);
-
-          <span class="comment">// If we have to use new samples we perform a swap.</span>
-          {
-              SampleSet <span class="operator">*</span>top{};
-              <span class="keyword">while</span> (self<span class="operator">.</span>m_nextSamples<span class="operator">.</span>try_dequeue(top)) {
-                  self<span class="operator">.</span>m_oldSamples<span class="operator">.</span>enqueue(self<span class="operator">.</span>m_current);
-                  self<span class="operator">.</span>m_current <span class="operator">=</span> top;
-              }
-          }
-
-          <span class="comment">// No set of samples - just dequeue the requests</span>
-          <span class="keyword">if</span> (<span class="operator">!</span>self<span class="operator">.</span>m_current) {
-              NoteRequest nr;
-              <span class="keyword">while</span> (self<span class="operator">.</span>notesRequests<span class="operator">.</span>try_dequeue(nr))
-                  ;
-              <span class="keyword">return</span> <span class="number">0</span>;
-          }
-
-          <span class="keyword">auto</span> <span class="operator">&amp;</span>notes <span class="operator">=</span> self<span class="operator">.</span>m_current<span class="operator">-</span><span class="operator">&gt;</span>notes;
-
-          <span class="type">int</span> max_dequeue <span class="operator">=</span> maxSampleCount;
-          <span class="comment">// Dequeue all the notes requested by the UI</span>
-          NoteRequest nr;
-          <span class="keyword">while</span> (self<span class="operator">.</span>notesRequests<span class="operator">.</span>try_dequeue(nr) <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">-</span><span class="operator">-</span>max_dequeue <span class="operator">&gt;</span> <span class="number">0</span>) {
-              <span class="keyword">if</span> (nr<span class="operator">.</span>note <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">0</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> nr<span class="operator">.</span>note <span class="operator">&lt;</span> notes<span class="operator">.</span>size())
-                  notes<span class="operator">[</span>nr<span class="operator">.</span>note<span class="operator">]</span><span class="operator">.</span>played<span class="operator">.</span>push_back(Note<span class="operator">::</span>PlayedNote{ nr<span class="operator">.</span>note<span class="operator">,</span> nr<span class="operator">.</span>volume });
-          }
-
-          <span class="keyword">if</span> (frameCount <span class="operator">=</span><span class="operator">=</span> <span class="number">0</span>)
-              <span class="keyword">return</span> paBufferTooSmall;
-
-          <span class="comment">// Playback all running notes</span>
-          <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="operator">&amp;</span>n : notes) {
-              <span class="keyword">if</span> (<span class="operator">!</span>n<span class="operator">.</span>wave)
-                  <span class="keyword">continue</span>;
-
-              <span class="keyword">switch</span> (n<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>channels) {
-              <span class="keyword">case</span> <span class="number">1</span>: {
-                  <span class="comment">// Mono samples are duplicated on both channels</span>
-                  <span class="keyword">for</span> (<span class="keyword">auto</span> it <span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>begin(); it <span class="operator">!</span><span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>end();) {
-                      <span class="keyword">auto</span> <span class="operator">&amp;</span>p <span class="operator">=</span> <span class="operator">*</span>it;
-                      <span class="comment">// Load sample data</span>
-                      <span class="keyword">auto</span> data <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>int16_t <span class="operator">*</span><span class="operator">&gt;</span>(alloca(<span class="keyword">sizeof</span>(int16_t) <span class="operator">*</span> frameCount));
-
-                      drwav_seek_to_pcm_frame(n<span class="operator">.</span>wave<span class="operator">,</span> p<span class="operator">.</span>position);
-                      <span class="keyword">const</span> drwav_uint64 max <span class="operator">=</span> drwav_read_pcm_frames(n<span class="operator">.</span>wave<span class="operator">,</span> frameCount<span class="operator">,</span> data);
-
-                      <span class="comment">// Blit it to the sound card output</span>
-                      <span class="keyword">for</span> (drwav_uint64 i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> max; <span class="operator">+</span><span class="operator">+</span>i) {
-                          out<span class="operator">[</span>channels <span class="operator">*</span> i<span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> data<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">*</span> p<span class="operator">.</span>volume;
-                          out<span class="operator">[</span>channels <span class="operator">*</span> i <span class="operator">+</span> <span class="number">1</span><span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> data<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">*</span> p<span class="operator">.</span>volume;
-                      }
-
-                      <span class="keyword">if</span> (max <span class="operator">&lt;</span> frameCount) {
-                          <span class="comment">// If we have read up to the end of the file...</span>
-                          it <span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>erase(it);
-                      } <span class="keyword">else</span> {
-                          <span class="comment">// Continue reading</span>
-                          p<span class="operator">.</span>position <span class="operator">+</span><span class="operator">=</span> frameCount;
-                          <span class="operator">+</span><span class="operator">+</span>it;
-                      }
-                  }
-                  <span class="keyword">break</span>;
-              }
-              <span class="keyword">case</span> <span class="number">2</span>: {
-                  <span class="keyword">for</span> (<span class="keyword">auto</span> it <span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>begin(); it <span class="operator">!</span><span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>end();) {
-                      <span class="keyword">auto</span> <span class="operator">&amp;</span>p <span class="operator">=</span> <span class="operator">*</span>it;
-                      <span class="comment">// Load sample data</span>
-                      <span class="keyword">auto</span> data <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>int16_t <span class="operator">*</span><span class="operator">&gt;</span>(alloca(<span class="keyword">sizeof</span>(int16_t) <span class="operator">*</span> frameCount <span class="operator">*</span> <span class="number">2</span>));
-
-                      drwav_seek_to_pcm_frame(n<span class="operator">.</span>wave<span class="operator">,</span> p<span class="operator">.</span>position);
-                      <span class="keyword">const</span> drwav_uint64 max <span class="operator">=</span> drwav_read_pcm_frames(n<span class="operator">.</span>wave<span class="operator">,</span> frameCount<span class="operator">,</span> data);
-
-                      <span class="comment">// Blit it to the sound card output</span>
-                      <span class="keyword">for</span> (drwav_uint64 i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> <span class="number">2</span> <span class="operator">*</span> max; i<span class="operator">+</span><span class="operator">+</span>) {
-                          out<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> data<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">*</span> p<span class="operator">.</span>volume;
-                      }
-
-                      <span class="keyword">if</span> (max <span class="operator">&lt;</span> frameCount) {
-                          <span class="comment">// If we have read up to the end of the file...</span>
-                          it <span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>erase(it);
-                      } <span class="keyword">else</span> {
-                          <span class="comment">// Continue reading</span>
-                          p<span class="operator">.</span>position <span class="operator">+</span><span class="operator">=</span> frameCount;
-                          <span class="operator">+</span><span class="operator">+</span>it;
-                      }
-                  }
-                  <span class="keyword">break</span>;
-              }
-              <span class="keyword">default</span>:
-                  <span class="keyword">break</span>;
-              }
-          }
-
-          <span class="keyword">const</span> <span class="keyword">auto</span> int_to_float <span class="operator">=</span> <span class="operator">[</span><span class="operator">]</span>(int16_t v) <span class="operator">-</span><span class="operator">&gt;</span> <span class="type">float</span> {
-              <span class="keyword">return</span> v <span class="operator">/</span> <span class="type">float</span>(INT16_MAX);
-          };
-          <span class="keyword">const</span> <span class="keyword">auto</span> float_to_int <span class="operator">=</span> <span class="operator">[</span><span class="operator">]</span>(<span class="type">float</span> f) <span class="operator">-</span><span class="operator">&gt;</span> int16_t {
-              int32_t v <span class="operator">=</span> (f <span class="operator">*</span> <span class="type">float</span>(INT16_MAX));
-              <span class="keyword">return</span> (v <span class="operator">&lt;</span> INT16_MIN)
-                      <span class="operator">?</span> INT16_MIN
-                      : ((v <span class="operator">&gt;</span> INT16_MAX)
-                                 <span class="operator">?</span> INT16_MAX
-                                 : v);
-          };
-
-          <span class="comment">// Reverb pass</span>
-          <span class="keyword">if</span> (self<span class="operator">.</span>m_enableReverb) {
-              <span class="type">float</span> <span class="operator">*</span>reverb_in<span class="operator">[</span>channels<span class="operator">]</span>;
-              <span class="keyword">for</span> (std<span class="operator">::</span>size_t i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> channels; i<span class="operator">+</span><span class="operator">+</span>) {
-                  reverb_in<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">=</span> (<span class="type">float</span> <span class="operator">*</span>)alloca(<span class="keyword">sizeof</span>(<span class="type">float</span>) <span class="operator">*</span> frameCount);
-              }
-              <span class="keyword">for</span> (std<span class="operator">::</span>size_t i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> frameCount; i<span class="operator">+</span><span class="operator">+</span>) {
-                  <span class="keyword">for</span> (std<span class="operator">::</span>size_t c <span class="operator">=</span> <span class="number">0</span>; c <span class="operator">&lt;</span> channels; c<span class="operator">+</span><span class="operator">+</span>) {
-                      reverb_in<span class="operator">[</span>c<span class="operator">]</span><span class="operator">[</span>i<span class="operator">]</span> <span class="operator">=</span> int_to_float(out<span class="operator">[</span>channels <span class="operator">*</span> i <span class="operator">+</span> c<span class="operator">]</span>);
-                  }
-              }
-
-              self<span class="operator">.</span>m_reverb<span class="operator">.</span>compute(frameCount<span class="operator">,</span> reverb_in<span class="operator">,</span> reverb_in);
-
-              <span class="keyword">for</span> (std<span class="operator">::</span>size_t i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> frameCount; i<span class="operator">+</span><span class="operator">+</span>) {
-                  <span class="keyword">for</span> (std<span class="operator">::</span>size_t c <span class="operator">=</span> <span class="number">0</span>; c <span class="operator">&lt;</span> channels; c<span class="operator">+</span><span class="operator">+</span>) {
-                      out<span class="operator">[</span>channels <span class="operator">*</span> i <span class="operator">+</span> c<span class="operator">]</span> <span class="operator">=</span> float_to_int(reverb_in<span class="operator">[</span>c<span class="operator">]</span><span class="operator">[</span>i<span class="operator">]</span>);
-                  }
-              }
-          }
-
-          <span class="comment">// Compute RMS and peak values for the first channel</span>
-          int64_t rms <span class="operator">=</span> <span class="number">0</span>;
-          int16_t peak <span class="operator">=</span> <span class="number">0</span>;
-          <span class="keyword">for</span> (std<span class="operator">::</span>size_t i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> frameCount; i<span class="operator">+</span><span class="operator">+</span>) {
-              <span class="keyword">const</span> int16_t val <span class="operator">=</span> out<span class="operator">[</span>channels <span class="operator">*</span> i<span class="operator">]</span>;
-              peak <span class="operator">=</span> std<span class="operator">::</span>max(val<span class="operator">,</span> peak);
-              rms <span class="operator">+</span><span class="operator">=</span> val <span class="operator">*</span> val;
-          }
-
-          self<span class="operator">.</span>m_sampler<span class="operator">.</span>audioSignal(std<span class="operator">::</span>sqrt((<span class="type">float</span>(rms) <span class="operator">/</span> <span class="type">float</span>(INT16_MAX)) <span class="operator">/</span> frameCount)<span class="operator">,</span> int_to_float(peak));
-
-          <span class="keyword">return</span> paNoError;
-      }
-
-      Sampler <span class="operator">&amp;</span>m_sampler;
-      SampleSet <span class="operator">*</span>m_current{};
-
-      moodycamel<span class="operator">::</span>ReaderWriterQueue<span class="operator">&lt;</span>SampleSet <span class="operator">*</span><span class="operator">&gt;</span> m_nextSamples<span class="operator">,</span> m_oldSamples;
-
-      PaStream <span class="operator">*</span>stream{};
-
-      mydsp m_reverb;
-      bool m_enableReverb{ <span class="keyword">true</span> };
-  };
-  <span class="preprocessor">#else</span>
-  <span class="comment">// Dummy class needed for Sampler::d_ptr</span>
-  <span class="keyword">class</span> SamplerPrivate final
-  {
-  };
-  <span class="preprocessor">#endif</span>
-
-  Sampler<span class="operator">::</span>Sampler(<span class="type">QObject</span> <span class="operator">*</span>parent)
-      : <span class="type">QObject</span>(parent)
-  <span class="preprocessor">#if KUESA_HAS_AUDIO</span>
-      <span class="operator">,</span> d_ptr(<span class="keyword">new</span> SamplerPrivate{ <span class="operator">*</span><span class="keyword">this</span> })
-  <span class="preprocessor">#else</span>
-      <span class="operator">,</span> d_ptr(nullptr)
-  <span class="preprocessor">#endif</span>
-
-  {
-  }
-
-  Sampler<span class="operator">::</span><span class="operator">~</span>Sampler()
-  {
-  }
-
-  <span class="type">void</span> Sampler<span class="operator">::</span>note(<span class="type">int</span> sample<span class="operator">,</span> <span class="type">float</span> volume)
-  {
-  <span class="preprocessor">#if KUESA_HAS_AUDIO</span>
-      Q_D(Sampler);
-      <span class="keyword">if</span> (sample <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">0</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> sample <span class="operator">&lt;</span> m_notes<span class="operator">.</span>size()) {
-          d<span class="operator">-</span><span class="operator">&gt;</span>notesRequests<span class="operator">.</span>enqueue(NoteRequest{ sample<span class="operator">,</span> <span class="number">0.1f</span> <span class="operator">*</span> volume });
-      }
-  <span class="preprocessor">#else</span>
-      Q_UNUSED(sample);
-      Q_UNUSED(volume);
-  <span class="preprocessor">#endif</span>
-  }
-
-  <span class="type">QStringList</span> Sampler<span class="operator">::</span>notes() <span class="keyword">const</span>
-  {
-      <span class="keyword">return</span> m_notes;
-  }
-
-  <span class="type">void</span> Sampler<span class="operator">::</span>setNotes(<span class="type">QStringList</span> notes)
-  {
-      <span class="keyword">if</span> (m_notes <span class="operator">=</span><span class="operator">=</span> notes)
-          <span class="keyword">return</span>;
-
-      m_notes <span class="operator">=</span> std<span class="operator">::</span>move(notes);
-
-  <span class="preprocessor">#if KUESA_HAS_AUDIO</span>
-      Q_D(Sampler);
-      d<span class="operator">-</span><span class="operator">&gt;</span>reloadNotes(m_notes);
-  <span class="preprocessor">#endif</span>
-
-      <span class="keyword">emit</span> notesChanged(m_notes);
-  }
-
+ <span class="comment">/*
+     sampler.cpp
+
+     This file is part of Kuesa.
+
+     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Jean-Michaël Celerier &lt;jean-michael.celerier@kdab.com&gt;
+
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
+
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
+
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
+
+ <span class="preprocessor">#include &quot;sampler.h&quot;</span>
+
+ <span class="preprocessor">#if KUESA_HAS_AUDIO</span>
+ <span class="preprocessor">#include &lt;portaudio.h&gt;</span>
+
+ <span class="preprocessor">#include &lt;QFile&gt;</span>
+ <span class="preprocessor">#include &lt;QDebug&gt;</span>
+ <span class="preprocessor">#include &lt;QTimer&gt;</span>
+ <span class="preprocessor">#include &lt;QDir&gt;</span>
+ <span class="preprocessor">#include &lt;QGuiApplication&gt;</span>
+
+ <span class="preprocessor">#include &lt;array&gt;</span>
+ <span class="preprocessor">#define DR_WAV_IMPLEMENTATION</span>
+ <span class="preprocessor">#define DR_WAV_NO_STDIO</span>
+ <span class="preprocessor">#define DR_WAV_NO_CONVERSION_API</span>
+ <span class="preprocessor">#include &quot;3rdparty/dr_wav.h&quot;</span>
+ <span class="preprocessor">#include &quot;3rdparty/freeverb.h&quot;</span>
+ <span class="preprocessor">#include &quot;3rdparty/readerwriterqueue/readerwriterqueue.h&quot;</span>
+
+ <span class="keyword">static</span> constexpr <span class="type">int</span> maxSampleCount <span class="operator">=</span> <span class="number">127</span>;
+ <span class="keyword">static</span> constexpr <span class="type">unsigned</span> <span class="type">int</span> sampleRate <span class="operator">=</span> <span class="number">44100</span>;
+ <span class="keyword">static</span> constexpr <span class="type">unsigned</span> <span class="type">int</span> channels <span class="operator">=</span> <span class="number">2</span>;
+ static_assert(channels <span class="operator">=</span><span class="operator">=</span> <span class="number">2</span><span class="operator">,</span> <span class="string">&quot;The code needs some adjustment if you want use more than two channels&quot;</span>);
+
+ <span class="comment">// Represents a wave file associated to multiple playheads</span>
+ <span class="keyword">class</span> Note
+ {
+ <span class="keyword">public</span>:
+     Note()
+     {
+         played<span class="operator">.</span>reserve(<span class="number">32</span>);
+     }
+
+     Note(<span class="keyword">const</span> Note <span class="operator">&amp;</span>) <span class="operator">=</span> <span class="keyword">delete</span>;
+     Note <span class="operator">&amp;</span><span class="keyword">operator</span><span class="operator">=</span>(<span class="keyword">const</span> Note <span class="operator">&amp;</span>) <span class="operator">=</span> <span class="keyword">delete</span>;
+
+     Note(Note <span class="operator">&amp;</span><span class="operator">&amp;</span>other)
+         : wave{ other<span class="operator">.</span>wave }
+         <span class="operator">,</span> played{ std<span class="operator">::</span>move(other<span class="operator">.</span>played) }
+     {
+         other<span class="operator">.</span>wave <span class="operator">=</span> nullptr;
+         other<span class="operator">.</span>played<span class="operator">.</span>clear();
+     }
+
+     Note <span class="operator">&amp;</span><span class="keyword">operator</span><span class="operator">=</span>(Note <span class="operator">&amp;</span><span class="operator">&amp;</span>other)
+     {
+         wave <span class="operator">=</span> other<span class="operator">.</span>wave;
+         played <span class="operator">=</span> std<span class="operator">::</span>move(other<span class="operator">.</span>played);
+         other<span class="operator">.</span>wave <span class="operator">=</span> nullptr;
+         other<span class="operator">.</span>played<span class="operator">.</span>clear();
+         <span class="keyword">return</span> <span class="operator">*</span><span class="keyword">this</span>;
+     }
+
+     <span class="operator">~</span>Note()
+     {
+         <span class="keyword">if</span> (wave)
+             drwav_close(wave);
+     }
+
+     <span class="keyword">struct</span> PlayedNote {
+         <span class="type">int</span> position; <span class="comment">// The position in the sample.</span>
+         <span class="type">float</span> volume;
+     };
+
+     drwav <span class="operator">*</span>wave{};
+     std<span class="operator">::</span>vector<span class="operator">&lt;</span>PlayedNote<span class="operator">&gt;</span> played{};
+ };
+
+ <span class="comment">// The UI sends this to the audio engine</span>
+ <span class="keyword">struct</span> NoteRequest {
+     <span class="type">int</span> note;
+     <span class="type">float</span> volume;
+ };
+
+ <span class="comment">// A set of memory-mapped samples</span>
+ <span class="keyword">struct</span> SampleSet {
+     std<span class="operator">::</span>array<span class="operator">&lt;</span><span class="type">QFile</span><span class="operator">,</span> maxSampleCount<span class="operator">&gt;</span> files;
+     std<span class="operator">::</span>array<span class="operator">&lt;</span>Note<span class="operator">,</span> maxSampleCount<span class="operator">&gt;</span> notes;
+
+     <span class="type">void</span> initFile(<span class="type">int</span> i<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>name)
+     {
+         <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/resources&quot;</span>));
+         files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>setFileName(resourceDir<span class="operator">.</span>path() <span class="operator">+</span> <span class="type">QDir</span><span class="operator">::</span>separator() <span class="operator">+</span> name);
+         bool ok <span class="operator">=</span> files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>ReadOnly);
+         Q_ASSERT(ok);
+
+         <span class="keyword">auto</span> mem <span class="operator">=</span> files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>map(<span class="number">0</span><span class="operator">,</span> files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>size());
+         <span class="keyword">if</span> (mem) {
+             <span class="keyword">auto</span> <span class="operator">&amp;</span>w <span class="operator">=</span> notes<span class="operator">[</span>i<span class="operator">]</span>;
+             w<span class="operator">.</span>wave <span class="operator">=</span> drwav_open_memory(mem<span class="operator">,</span> files<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>size());
+
+             Q_ASSERT(w<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>bitsPerSample <span class="operator">=</span><span class="operator">=</span> <span class="number">16</span>);
+             Q_ASSERT(w<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>channels <span class="operator">=</span><span class="operator">=</span> <span class="number">1</span> <span class="operator">|</span><span class="operator">|</span> w<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>channels <span class="operator">=</span><span class="operator">=</span> <span class="number">2</span>);
+             Q_ASSERT(w<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>sampleRate <span class="operator">=</span><span class="operator">=</span> <span class="number">44100</span>);
+             Q_ASSERT(w<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>formatTag <span class="operator">=</span><span class="operator">=</span> <span class="number">1</span>); <span class="comment">// PCM</span>
+         }
+     }
+ };
+
+ <span class="keyword">class</span> SamplerPrivate
+ {
+     Q_DISABLE_COPY(SamplerPrivate)
+
+ <span class="keyword">public</span>:
+     SamplerPrivate(Sampler <span class="operator">&amp;</span>s)
+         : m_sampler{ s }
+     {
+         m_reverb<span class="operator">.</span>init(sampleRate);
+         m_reverb<span class="operator">.</span>setDryWet(<span class="number">0.3</span>);
+         m_reverb<span class="operator">.</span>setRoomSize(<span class="number">0.7</span>);
+
+         <span class="comment">// Start audio playback</span>
+         Pa_Initialize();
+         <span class="keyword">auto</span> err <span class="operator">=</span> Pa_OpenDefaultStream(<span class="operator">&amp;</span>stream<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> channels<span class="operator">,</span> paInt16<span class="operator">,</span> sampleRate<span class="operator">,</span> paFramesPerBufferUnspecified<span class="operator">,</span> audioCallback<span class="operator">,</span> <span class="keyword">this</span>);
+         <span class="keyword">if</span> (err <span class="operator">=</span><span class="operator">=</span> paNoError) {
+             err <span class="operator">=</span> Pa_StartStream(stream);
+         }
+
+         <span class="keyword">if</span> (err <span class="operator">!</span><span class="operator">=</span> paNoError) {
+             qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;PortAudio error: &quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> Pa_GetErrorText(err);
+             <span class="keyword">if</span> (stream) {
+                 Pa_CloseStream(stream);
+                 stream <span class="operator">=</span> nullptr;
+             }
+         }
+     }
+
+     <span class="operator">~</span>SamplerPrivate()
+     {
+         <span class="keyword">if</span> (stream)
+             Pa_StopStream(stream);
+
+         Pa_Terminate();
+         garbageCollectSamples();
+         {
+             SampleSet <span class="operator">*</span>top{};
+             <span class="keyword">while</span> (m_nextSamples<span class="operator">.</span>try_dequeue(top)) {
+                 <span class="keyword">delete</span> top;
+             }
+         }
+         <span class="keyword">delete</span> m_current;
+     }
+
+     <span class="type">void</span> reloadNotes(<span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>notes)
+     {
+         <span class="keyword">auto</span> samples <span class="operator">=</span> <span class="keyword">new</span> SampleSet;
+         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> notes<span class="operator">.</span>size(); i<span class="operator">+</span><span class="operator">+</span>) {
+             samples<span class="operator">-</span><span class="operator">&gt;</span>initFile(i<span class="operator">,</span> notes<span class="operator">[</span>i<span class="operator">]</span>);
+         }
+
+         m_nextSamples<span class="operator">.</span>enqueue(samples);
+
+         <span class="type">QTimer</span><span class="operator">::</span>singleShot(<span class="number">1000</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span> { garbageCollectSamples(); });
+     }
+
+     moodycamel<span class="operator">::</span>ReaderWriterQueue<span class="operator">&lt;</span>NoteRequest<span class="operator">&gt;</span> notesRequests{ <span class="number">512</span> };
+
+ <span class="keyword">private</span>:
+     <span class="type">void</span>
+     garbageCollectSamples()
+     {
+         SampleSet <span class="operator">*</span>sample{};
+         <span class="keyword">while</span> (m_oldSamples<span class="operator">.</span>try_dequeue(sample)) {
+             <span class="keyword">delete</span> sample;
+         }
+     }
+
+     <span class="keyword">static</span> PaError audioCallback(
+             <span class="keyword">const</span> <span class="type">void</span> <span class="operator">*</span><span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>output<span class="operator">,</span>
+             <span class="type">unsigned</span> <span class="type">long</span> frameCount<span class="operator">,</span>
+             <span class="keyword">const</span> PaStreamCallbackTimeInfo <span class="operator">*</span><span class="operator">,</span>
+             PaStreamCallbackFlags<span class="operator">,</span>
+             <span class="type">void</span> <span class="operator">*</span>userData)
+     {
+         <span class="keyword">auto</span> <span class="operator">&amp;</span>self <span class="operator">=</span> <span class="operator">*</span><span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>SamplerPrivate <span class="operator">*</span><span class="operator">&gt;</span>(userData);
+         <span class="keyword">const</span> <span class="keyword">auto</span> out <span class="operator">=</span> (int16_t <span class="operator">*</span>)output;
+
+         <span class="comment">// Zero-out our buffer</span>
+         std<span class="operator">::</span>fill_n(out<span class="operator">,</span> channels <span class="operator">*</span> frameCount<span class="operator">,</span> <span class="number">0</span>);
+
+         <span class="comment">// If we have to use new samples we perform a swap.</span>
+         {
+             SampleSet <span class="operator">*</span>top{};
+             <span class="keyword">while</span> (self<span class="operator">.</span>m_nextSamples<span class="operator">.</span>try_dequeue(top)) {
+                 self<span class="operator">.</span>m_oldSamples<span class="operator">.</span>enqueue(self<span class="operator">.</span>m_current);
+                 self<span class="operator">.</span>m_current <span class="operator">=</span> top;
+             }
+         }
+
+         <span class="comment">// No set of samples - just dequeue the requests</span>
+         <span class="keyword">if</span> (<span class="operator">!</span>self<span class="operator">.</span>m_current) {
+             NoteRequest nr;
+             <span class="keyword">while</span> (self<span class="operator">.</span>notesRequests<span class="operator">.</span>try_dequeue(nr))
+                 ;
+             <span class="keyword">return</span> <span class="number">0</span>;
+         }
+
+         <span class="keyword">auto</span> <span class="operator">&amp;</span>notes <span class="operator">=</span> self<span class="operator">.</span>m_current<span class="operator">-</span><span class="operator">&gt;</span>notes;
+
+         <span class="type">int</span> max_dequeue <span class="operator">=</span> maxSampleCount;
+         <span class="comment">// Dequeue all the notes requested by the UI</span>
+         NoteRequest nr;
+         <span class="keyword">while</span> (self<span class="operator">.</span>notesRequests<span class="operator">.</span>try_dequeue(nr) <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">-</span><span class="operator">-</span>max_dequeue <span class="operator">&gt;</span> <span class="number">0</span>) {
+             <span class="keyword">if</span> (nr<span class="operator">.</span>note <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">0</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> nr<span class="operator">.</span>note <span class="operator">&lt;</span> notes<span class="operator">.</span>size())
+                 notes<span class="operator">[</span>nr<span class="operator">.</span>note<span class="operator">]</span><span class="operator">.</span>played<span class="operator">.</span>push_back(Note<span class="operator">::</span>PlayedNote{ nr<span class="operator">.</span>note<span class="operator">,</span> nr<span class="operator">.</span>volume });
+         }
+
+         <span class="keyword">if</span> (frameCount <span class="operator">=</span><span class="operator">=</span> <span class="number">0</span>)
+             <span class="keyword">return</span> paBufferTooSmall;
+
+         <span class="comment">// Playback all running notes</span>
+         <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="operator">&amp;</span>n : notes) {
+             <span class="keyword">if</span> (<span class="operator">!</span>n<span class="operator">.</span>wave)
+                 <span class="keyword">continue</span>;
+
+             <span class="keyword">switch</span> (n<span class="operator">.</span>wave<span class="operator">-</span><span class="operator">&gt;</span>fmt<span class="operator">.</span>channels) {
+             <span class="keyword">case</span> <span class="number">1</span>: {
+                 <span class="comment">// Mono samples are duplicated on both channels</span>
+                 <span class="keyword">for</span> (<span class="keyword">auto</span> it <span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>begin(); it <span class="operator">!</span><span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>end();) {
+                     <span class="keyword">auto</span> <span class="operator">&amp;</span>p <span class="operator">=</span> <span class="operator">*</span>it;
+                     <span class="comment">// Load sample data</span>
+                     <span class="keyword">auto</span> data <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>int16_t <span class="operator">*</span><span class="operator">&gt;</span>(alloca(<span class="keyword">sizeof</span>(int16_t) <span class="operator">*</span> frameCount));
+
+                     drwav_seek_to_pcm_frame(n<span class="operator">.</span>wave<span class="operator">,</span> p<span class="operator">.</span>position);
+                     <span class="keyword">const</span> drwav_uint64 max <span class="operator">=</span> drwav_read_pcm_frames(n<span class="operator">.</span>wave<span class="operator">,</span> frameCount<span class="operator">,</span> data);
+
+                     <span class="comment">// Blit it to the sound card output</span>
+                     <span class="keyword">for</span> (drwav_uint64 i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> max; <span class="operator">+</span><span class="operator">+</span>i) {
+                         out<span class="operator">[</span>channels <span class="operator">*</span> i<span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> data<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">*</span> p<span class="operator">.</span>volume;
+                         out<span class="operator">[</span>channels <span class="operator">*</span> i <span class="operator">+</span> <span class="number">1</span><span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> data<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">*</span> p<span class="operator">.</span>volume;
+                     }
+
+                     <span class="keyword">if</span> (max <span class="operator">&lt;</span> frameCount) {
+                         <span class="comment">// If we have read up to the end of the file...</span>
+                         it <span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>erase(it);
+                     } <span class="keyword">else</span> {
+                         <span class="comment">// Continue reading</span>
+                         p<span class="operator">.</span>position <span class="operator">+</span><span class="operator">=</span> frameCount;
+                         <span class="operator">+</span><span class="operator">+</span>it;
+                     }
+                 }
+                 <span class="keyword">break</span>;
+             }
+             <span class="keyword">case</span> <span class="number">2</span>: {
+                 <span class="keyword">for</span> (<span class="keyword">auto</span> it <span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>begin(); it <span class="operator">!</span><span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>end();) {
+                     <span class="keyword">auto</span> <span class="operator">&amp;</span>p <span class="operator">=</span> <span class="operator">*</span>it;
+                     <span class="comment">// Load sample data</span>
+                     <span class="keyword">auto</span> data <span class="operator">=</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span>int16_t <span class="operator">*</span><span class="operator">&gt;</span>(alloca(<span class="keyword">sizeof</span>(int16_t) <span class="operator">*</span> frameCount <span class="operator">*</span> <span class="number">2</span>));
+
+                     drwav_seek_to_pcm_frame(n<span class="operator">.</span>wave<span class="operator">,</span> p<span class="operator">.</span>position);
+                     <span class="keyword">const</span> drwav_uint64 max <span class="operator">=</span> drwav_read_pcm_frames(n<span class="operator">.</span>wave<span class="operator">,</span> frameCount<span class="operator">,</span> data);
+
+                     <span class="comment">// Blit it to the sound card output</span>
+                     <span class="keyword">for</span> (drwav_uint64 i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> <span class="number">2</span> <span class="operator">*</span> max; i<span class="operator">+</span><span class="operator">+</span>) {
+                         out<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> data<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">*</span> p<span class="operator">.</span>volume;
+                     }
+
+                     <span class="keyword">if</span> (max <span class="operator">&lt;</span> frameCount) {
+                         <span class="comment">// If we have read up to the end of the file...</span>
+                         it <span class="operator">=</span> n<span class="operator">.</span>played<span class="operator">.</span>erase(it);
+                     } <span class="keyword">else</span> {
+                         <span class="comment">// Continue reading</span>
+                         p<span class="operator">.</span>position <span class="operator">+</span><span class="operator">=</span> frameCount;
+                         <span class="operator">+</span><span class="operator">+</span>it;
+                     }
+                 }
+                 <span class="keyword">break</span>;
+             }
+             <span class="keyword">default</span>:
+                 <span class="keyword">break</span>;
+             }
+         }
+
+         <span class="keyword">const</span> <span class="keyword">auto</span> int_to_float <span class="operator">=</span> <span class="operator">[</span><span class="operator">]</span>(int16_t v) <span class="operator">-</span><span class="operator">&gt;</span> <span class="type">float</span> {
+             <span class="keyword">return</span> v <span class="operator">/</span> <span class="type">float</span>(INT16_MAX);
+         };
+         <span class="keyword">const</span> <span class="keyword">auto</span> float_to_int <span class="operator">=</span> <span class="operator">[</span><span class="operator">]</span>(<span class="type">float</span> f) <span class="operator">-</span><span class="operator">&gt;</span> int16_t {
+             int32_t v <span class="operator">=</span> (f <span class="operator">*</span> <span class="type">float</span>(INT16_MAX));
+             <span class="keyword">return</span> (v <span class="operator">&lt;</span> INT16_MIN)
+                     <span class="operator">?</span> INT16_MIN
+                     : ((v <span class="operator">&gt;</span> INT16_MAX)
+                                <span class="operator">?</span> INT16_MAX
+                                : v);
+         };
+
+         <span class="comment">// Reverb pass</span>
+         <span class="keyword">if</span> (self<span class="operator">.</span>m_enableReverb) {
+             <span class="type">float</span> <span class="operator">*</span>reverb_in<span class="operator">[</span>channels<span class="operator">]</span>;
+             <span class="keyword">for</span> (std<span class="operator">::</span>size_t i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> channels; i<span class="operator">+</span><span class="operator">+</span>) {
+                 reverb_in<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">=</span> (<span class="type">float</span> <span class="operator">*</span>)alloca(<span class="keyword">sizeof</span>(<span class="type">float</span>) <span class="operator">*</span> frameCount);
+             }
+             <span class="keyword">for</span> (std<span class="operator">::</span>size_t i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> frameCount; i<span class="operator">+</span><span class="operator">+</span>) {
+                 <span class="keyword">for</span> (std<span class="operator">::</span>size_t c <span class="operator">=</span> <span class="number">0</span>; c <span class="operator">&lt;</span> channels; c<span class="operator">+</span><span class="operator">+</span>) {
+                     reverb_in<span class="operator">[</span>c<span class="operator">]</span><span class="operator">[</span>i<span class="operator">]</span> <span class="operator">=</span> int_to_float(out<span class="operator">[</span>channels <span class="operator">*</span> i <span class="operator">+</span> c<span class="operator">]</span>);
+                 }
+             }
+
+             self<span class="operator">.</span>m_reverb<span class="operator">.</span>compute(frameCount<span class="operator">,</span> reverb_in<span class="operator">,</span> reverb_in);
+
+             <span class="keyword">for</span> (std<span class="operator">::</span>size_t i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> frameCount; i<span class="operator">+</span><span class="operator">+</span>) {
+                 <span class="keyword">for</span> (std<span class="operator">::</span>size_t c <span class="operator">=</span> <span class="number">0</span>; c <span class="operator">&lt;</span> channels; c<span class="operator">+</span><span class="operator">+</span>) {
+                     out<span class="operator">[</span>channels <span class="operator">*</span> i <span class="operator">+</span> c<span class="operator">]</span> <span class="operator">=</span> float_to_int(reverb_in<span class="operator">[</span>c<span class="operator">]</span><span class="operator">[</span>i<span class="operator">]</span>);
+                 }
+             }
+         }
+
+         <span class="comment">// Compute RMS and peak values for the first channel</span>
+         int64_t rms <span class="operator">=</span> <span class="number">0</span>;
+         int16_t peak <span class="operator">=</span> <span class="number">0</span>;
+         <span class="keyword">for</span> (std<span class="operator">::</span>size_t i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> frameCount; i<span class="operator">+</span><span class="operator">+</span>) {
+             <span class="keyword">const</span> int16_t val <span class="operator">=</span> out<span class="operator">[</span>channels <span class="operator">*</span> i<span class="operator">]</span>;
+             peak <span class="operator">=</span> std<span class="operator">::</span>max(val<span class="operator">,</span> peak);
+             rms <span class="operator">+</span><span class="operator">=</span> val <span class="operator">*</span> val;
+         }
+
+         self<span class="operator">.</span>m_sampler<span class="operator">.</span>audioSignal(std<span class="operator">::</span>sqrt((<span class="type">float</span>(rms) <span class="operator">/</span> <span class="type">float</span>(INT16_MAX)) <span class="operator">/</span> frameCount)<span class="operator">,</span> int_to_float(peak));
+
+         <span class="keyword">return</span> paNoError;
+     }
+
+     Sampler <span class="operator">&amp;</span>m_sampler;
+     SampleSet <span class="operator">*</span>m_current{};
+
+     moodycamel<span class="operator">::</span>ReaderWriterQueue<span class="operator">&lt;</span>SampleSet <span class="operator">*</span><span class="operator">&gt;</span> m_nextSamples<span class="operator">,</span> m_oldSamples;
+
+     PaStream <span class="operator">*</span>stream{};
+
+     mydsp m_reverb;
+     bool m_enableReverb{ <span class="keyword">true</span> };
+ };
+ <span class="preprocessor">#else</span>
+ <span class="comment">// Dummy class needed for Sampler::d_ptr</span>
+ <span class="keyword">class</span> SamplerPrivate final
+ {
+ };
+ <span class="preprocessor">#endif</span>
+
+ Sampler<span class="operator">::</span>Sampler(<span class="type">QObject</span> <span class="operator">*</span>parent)
+     : <span class="type">QObject</span>(parent)
+ <span class="preprocessor">#if KUESA_HAS_AUDIO</span>
+     <span class="operator">,</span> d_ptr(<span class="keyword">new</span> SamplerPrivate{ <span class="operator">*</span><span class="keyword">this</span> })
+ <span class="preprocessor">#else</span>
+     <span class="operator">,</span> d_ptr(nullptr)
+ <span class="preprocessor">#endif</span>
+
+ {
+ }
+
+ Sampler<span class="operator">::</span><span class="operator">~</span>Sampler()
+ {
+ }
+
+ <span class="type">void</span> Sampler<span class="operator">::</span>note(<span class="type">int</span> sample<span class="operator">,</span> <span class="type">float</span> volume)
+ {
+ <span class="preprocessor">#if KUESA_HAS_AUDIO</span>
+     Q_D(Sampler);
+     <span class="keyword">if</span> (sample <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">0</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> sample <span class="operator">&lt;</span> m_notes<span class="operator">.</span>size()) {
+         d<span class="operator">-</span><span class="operator">&gt;</span>notesRequests<span class="operator">.</span>enqueue(NoteRequest{ sample<span class="operator">,</span> <span class="number">0.1f</span> <span class="operator">*</span> volume });
+     }
+ <span class="preprocessor">#else</span>
+     Q_UNUSED(sample);
+     Q_UNUSED(volume);
+ <span class="preprocessor">#endif</span>
+ }
+
+ <span class="type">QStringList</span> Sampler<span class="operator">::</span>notes() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_notes;
+ }
+
+ <span class="type">void</span> Sampler<span class="operator">::</span>setNotes(<span class="type">QStringList</span> notes)
+ {
+     <span class="keyword">if</span> (m_notes <span class="operator">=</span><span class="operator">=</span> notes)
+         <span class="keyword">return</span>;
+
+     m_notes <span class="operator">=</span> std<span class="operator">::</span>move(notes);
+
+ <span class="preprocessor">#if KUESA_HAS_AUDIO</span>
+     Q_D(Sampler);
+     d<span class="operator">-</span><span class="operator">&gt;</span>reloadNotes(m_notes);
+ <span class="preprocessor">#endif</span>
+
+     <span class="keyword">emit</span> notesChanged(m_notes);
+ }
 </pre>

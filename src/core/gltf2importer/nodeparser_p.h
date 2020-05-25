@@ -74,7 +74,7 @@ struct TreeNode {
         QVector3D scale3D;
         QQuaternion rotation;
         QVector3D translation;
-        TransformBits bits = 0x0;
+        TransformBits bits;
     };
 
     QString name;

@@ -56,6 +56,7 @@ class GLTF2MaterialProperties;
 namespace GLTF2Import {
 
 class GLTF2Context;
+class AnimationParser;
 
 struct TextureInfo {
     qint32 index = -1;
@@ -100,7 +101,21 @@ public:
 
     struct Extensions {
         bool KHR_materials_unlit = false;
+        bool KDAB_custom_material = false;
     } extensions;
+
+    struct KDABCustomMaterial {
+        QString type;
+        const QMetaObject *materialClassMetaObject;
+        const QMetaObject *propertiesClassMetaObject;
+        const QMetaObject *effectClassMetaObject;
+
+        struct Property {
+            QString name;
+            QVariant value;
+        };
+        QVector<Property> properties;
+    } customMaterial;
 
     Kuesa::GLTF2MaterialProperties *materialProperties(const GLTF2Context &context);
     Kuesa::GLTF2MaterialProperties *materialProperties() const;
@@ -122,5 +137,7 @@ public:
 } // namespace Kuesa
 
 QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE(Kuesa::GLTF2Import::TextureInfo)
 
 #endif // KUESA_GLTF2IMPORT_MATERIALPARSER_P_H

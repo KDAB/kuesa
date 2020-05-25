@@ -1,25 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 <!-- metallicroughnessproperties.cpp -->
-  <title>MetallicRoughnessProperties QML Type | Kuesa 1.1</title>
-<link rel="stylesheet" type="text/css" href="style/style.css">
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
-</head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdabLogo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa</h1> </div> </div><li><a href="index.html">Kuesa 1.1</a></li>
-<li><a href="kuesa.html">Kuesa</a></li>
-<li><a href="kuesa-qml.html">QML Types</a></li>
+  <title>MetallicRoughnessProperties QML Type | Kuesa Runtime 1.2</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>QML Types</li>
 <li>MetallicRoughnessProperties QML Type</li>
-<li id="buildversion"><a href="kuesa.html">Kuesa 1.1 Reference Documentation</a></li>
-        </tr></table>
-      </div>
-    </div>
-<div class="content">
-<div class="line">
-<div class="content mainContent">
-<div class="sidebar">
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
 <ul>
@@ -34,7 +25,7 @@
 <p><a href="qml-metallicroughnessproperties.html">Kuesa::MetallicRoughnessProperties</a> hold the properties of a physically based rendering (PBR) material based on the glTF 2.0 material description. <a href="#details">More...</a></p>
 <!-- @@@MetallicRoughnessProperties -->
 <div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  .</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-metallicroughnessproperties.html"><a href="kuesa-metallicroughnessproperties.html">MetallicRoughnessProperties</a></td></tr></table></div><ul>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.1</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-metallicroughnessproperties.html"><a href="kuesa-metallicroughnessproperties.html">MetallicRoughnessProperties</a></td></tr></table></div><ul>
 <li><a href="qml-metallicroughnessproperties-members.html">List of all members, including inherited members</a></li>
 </ul>
 <a name="properties"></a>
@@ -57,7 +48,7 @@
 <a name="details"></a>
 <h2 id="details">Detailed Description</h2>
 <p>The material properties are defined using a common set of parameter that define how light interacts with it. This allows to use a common description of the material so they are rendered consistently across platforms and 3D software and can be described by an intuitive set of parameters.</p>
-<p>The <a href="qml-metallicroughnessproperties.html">MetallicRoughnessProperties</a> consists of the following properties:</p>
+<p>The MetallicRoughnessProperties consists of the following properties:</p>
 <ul>
 <li>baseColorFactor: Base color of the material</li>
 <li>baseColorMap: A texture specifying the base color of the material</li>
@@ -80,121 +71,125 @@
 <!-- $$$ambientOcclusionMap -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="ambientOcclusionMap-prop">
 <td class="tblQmlPropNode"><p>
 <a name="ambientOcclusionMap-prop"></a><span class="name">ambientOcclusionMap</span> : <span class="type">Qt3DRender</span>.<span class="type">AbstractTexture</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies a texture to be used for ambient occlusion. The content of the texture is expected to be a single R channel in linear space. This offers a way of combining the <a href="qml-metallicroughnessproperties.html#metalRoughMap-prop">metalRoughMap</a>'s G and B channels in the same texture as the ambientOcclusionMap.</p>
-<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p></div></div><!-- @@@ambientOcclusionMap -->
+</table></div></div>
+<div class="qmldoc"><p>Specifies a texture to be used for ambient occlusion. The content of the texture is expected to be a single R channel in linear space. This offers a way of combining the <a href="qml-metallicroughnessproperties.html#metalRoughMap-prop">metalRoughMap</a>'s G and B channels in the same texture as the ambientOcclusionMap.</p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p>
+</div></div><!-- @@@ambientOcclusionMap -->
 <br/>
 <!-- $$$aoUsesTexCoord1 -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="aoUsesTexCoord1-prop">
 <td class="tblQmlPropNode"><p>
 <a name="aoUsesTexCoord1-prop"></a><span class="name">aoUsesTexCoord1</span> : <span class="type">bool</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
+</table></div></div>
+<div class="qmldoc"><p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
 </div></div><!-- @@@aoUsesTexCoord1 -->
 <br/>
 <!-- $$$emissiveFactor -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="emissiveFactor-prop">
 <td class="tblQmlPropNode"><p>
 <a name="emissiveFactor-prop"></a><span class="name">emissiveFactor</span> : <span class="type">color</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies an emissive factor to be used for emissive surfaces.</p>
+</table></div></div>
+<div class="qmldoc"><p>Specifies an emissive factor to be used for emissive surfaces.</p>
 </div></div><!-- @@@emissiveFactor -->
 <br/>
 <!-- $$$emissiveMap -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="emissiveMap-prop">
 <td class="tblQmlPropNode"><p>
 <a name="emissiveMap-prop"></a><span class="name">emissiveMap</span> : <span class="type">Qt3DRender</span>.<span class="type">AbstractTexture</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies a texture to be used for emissive surfaces. The content of the texture is expected to be in sRGB color space.</p>
-<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p></div></div><!-- @@@emissiveMap -->
+</table></div></div>
+<div class="qmldoc"><p>Specifies a texture to be used for emissive surfaces. The content of the texture is expected to be in sRGB color space.</p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p>
+</div></div><!-- @@@emissiveMap -->
 <br/>
 <!-- $$$emissiveUsesTexCoord1 -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="emissiveUsesTexCoord1-prop">
 <td class="tblQmlPropNode"><p>
 <a name="emissiveUsesTexCoord1-prop"></a><span class="name">emissiveUsesTexCoord1</span> : <span class="type">bool</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
+</table></div></div>
+<div class="qmldoc"><p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
 </div></div><!-- @@@emissiveUsesTexCoord1 -->
 <br/>
 <!-- $$$metalRoughMap -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="metalRoughMap-prop">
 <td class="tblQmlPropNode"><p>
 <a name="metalRoughMap-prop"></a><span class="name">metalRoughMap</span> : <span class="type">Qt3DRender</span>.<span class="type">AbstractTexture</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies a texture to be used as metallic and roughness factor. The metallic factor is sampled for the B channel of the texture, while the roughness factor is sampled from the G channel. R and A channel are unused. This offers a way of combining the <a href="qml-metallicroughnessproperties.html#ambientOcclusionMap-prop">ambientOcclusionMap</a>'s R channel in the same texture as the metalRoughMap. The content of the texture is expected to be in linear RGB color space.</p>
-<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p></div></div><!-- @@@metalRoughMap -->
+</table></div></div>
+<div class="qmldoc"><p>Specifies a texture to be used as metallic and roughness factor. The metallic factor is sampled for the B channel of the texture, while the roughness factor is sampled from the G channel. R and A channel are unused. This offers a way of combining the <a href="qml-metallicroughnessproperties.html#ambientOcclusionMap-prop">ambientOcclusionMap</a>'s R channel in the same texture as the metalRoughMap. The content of the texture is expected to be in linear RGB color space.</p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p>
+</div></div><!-- @@@metalRoughMap -->
 <br/>
 <!-- $$$metallicFactor -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="metallicFactor-prop">
 <td class="tblQmlPropNode"><p>
 <a name="metallicFactor-prop"></a><span class="name">metallicFactor</span> : <span class="type">float</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies the metallic factor of the material. Set the value between 0.0 and 1.0 to modulate how metallic the material is.</p>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the metallic factor of the material. Set the value between 0.0 and 1.0 to modulate how metallic the material is.</p>
 </div></div><!-- @@@metallicFactor -->
 <br/>
 <!-- $$$metallicRoughnessUsesTexCoord1 -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="metallicRoughnessUsesTexCoord1-prop">
 <td class="tblQmlPropNode"><p>
 <a name="metallicRoughnessUsesTexCoord1-prop"></a><span class="name">metallicRoughnessUsesTexCoord1</span> : <span class="type">bool</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
+</table></div></div>
+<div class="qmldoc"><p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
 </div></div><!-- @@@metallicRoughnessUsesTexCoord1 -->
 <br/>
 <!-- $$$normalMap -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="normalMap-prop">
 <td class="tblQmlPropNode"><p>
 <a name="normalMap-prop"></a><span class="name">normalMap</span> : <span class="type">Qt3DRender</span>.<span class="type">AbstractTexture</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies a normal map for the material. This allows to simulate very detailed surfaces without a huge number of triangles. The content of the texture is expected to be in linear RGB color space.</p>
-<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p></div></div><!-- @@@normalMap -->
+</table></div></div>
+<div class="qmldoc"><p>Specifies a normal map for the material. This allows to simulate very detailed surfaces without a huge number of triangles. The content of the texture is expected to be in linear RGB color space.</p>
+<p><b>Note: </b>If this property is nullptr and is set to a non nullptr value or viceverse, it will trigger a recompilation of the shader.</p>
+</div></div><!-- @@@normalMap -->
 <br/>
 <!-- $$$normalScale -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="normalScale-prop">
 <td class="tblQmlPropNode"><p>
 <a name="normalScale-prop"></a><span class="name">normalScale</span> : <span class="type">float</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies a scale for the normal map calculations. A bigger number is used to simulated bigger bumps in the surface</p>
+</table></div></div>
+<div class="qmldoc"><p>Specifies a scale for the normal map calculations. A bigger number is used to simulated bigger bumps in the surface</p>
 </div></div><!-- @@@normalScale -->
 <br/>
 <!-- $$$normalUsesTexCoord1 -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="normalUsesTexCoord1-prop">
 <td class="tblQmlPropNode"><p>
 <a name="normalUsesTexCoord1-prop"></a><span class="name">normalUsesTexCoord1</span> : <span class="type">bool</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
+</table></div></div>
+<div class="qmldoc"><p>False if the map must use the 0th texture coordinate set, binded to 'defaultTextureCoordinateName' attribute. True if the map must use the 1st texture coordinate set, binded to 'defaultTextureCoordinate1Name' attribute.</p>
 </div></div><!-- @@@normalUsesTexCoord1 -->
 <br/>
 <!-- $$$roughnessFactor -->
 <div class="qmlitem"><div class="qmlproto">
 <div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="">
+<tr valign="top" class="odd" id="roughnessFactor-prop">
 <td class="tblQmlPropNode"><p>
 <a name="roughnessFactor-prop"></a><span class="name">roughnessFactor</span> : <span class="type">float</span></p></td></tr>
-</table></div>
-</div><div class="qmldoc"><p>Specifies the roughness factor of the material. Set the value between 0.0 and 1.0 to modulate how rough the material is.</p>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the roughness factor of the material. Set the value between 0.0 and 1.0 to modulate how rough the material is.</p>
 </div></div><!-- @@@roughnessFactor -->
 <br/>
         </div>
@@ -203,8 +198,8 @@
    </div>
 </div>
 <div class="footer">
-   <p>
-   <acronym title="Copyright">&copy;</acronym> 2019 KDAB.
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2020 KDAB.
    Documentation contributions included herein are the copyrights of
    their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
    of their respective owners. </p>

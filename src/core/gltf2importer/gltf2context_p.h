@@ -112,6 +112,8 @@ public:
     int treeNodeCount() const;
     void addTreeNode(const TreeNode &treeNode);
     const TreeNode treeNode(qint32 id) const;
+    TreeNode &treeNode(qint32 id);
+    const QVector<TreeNode> &treeNodes() const;
 
     int layersCount() const;
     void addLayer(const Layer &layer);
@@ -132,6 +134,7 @@ public:
     int animationsCount() const;
     void addAnimation(const Animation &animation);
     const Animation animation(qint32 id) const;
+    Animation &animation(qint32 id);
 
     int scenesCount() const;
     void addScene(const Scene &scene);
@@ -148,10 +151,12 @@ public:
     int skinsCount() const;
     void addSkin(const Skin &skin);
     const Skin skin(qint32 id) const;
+    Skin &skin(qint32 id);
 
     int lightCount() const;
     void addLight(const Light &light);
     const Light light(qint32 id) const;
+    Light &light(qint32 id);
 
     QStringList usedExtension() const;
     void setUsedExtensions(const QStringList &usedExtensions);
@@ -182,7 +187,8 @@ public:
 
     EffectsLibrary *effectLibrary() const;
 
-
+    QVector<Qt3DCore::QEntity *> primitiveEntitiesForEntity(Qt3DCore::QEntity *e) const;
+    void addPrimitiveEntityToEntity(Qt3DCore::QEntity *e, Qt3DCore::QEntity *primitive);
 
 private:
     QVector<Accessor> m_accessors;
@@ -211,6 +217,8 @@ private:
     Kuesa::GLTF2Import::GLTF2Options m_options;
     qint32 m_defaultScene;
     QScopedPointer<EffectsLibrary> m_effectLibrary;
+
+    QHash<Qt3DCore::QEntity *, QVector<Qt3DCore::QEntity *>> m_treeNodeIdToPrimitiveEntities;
 };
 
 template<>

@@ -1,20 +1,49 @@
-# Kuesa module for Qt 3D
+# Kuesa Runtime module for Qt 3D
+
+**Note**: The `master` branch contains the last stable release. The `dev` branch contain the upcoming release. `dev` might be in an unstable or even broken state during development. Please use [releases][github-release] or `master` to get a stable version.
 
 ![alt text](https://github.com/KDAB/kuesa/blob/dev/examples/kuesa/assets/misc/kuesa_carscene.png)
 
 
-Kuesa is a module for Qt 3D which provides:
+### Kuesa Runtime is a module for Qt 3D which provides:
 * Support for glTF 2 importing
 * Helpers for accessing and manipulating loaded content
-* Custom PBR material
+* PBR and custom material support
 * Custom forward renderer for adding effects
 * A Qt Creator template for quickly creating new Kuesa based projects
+
+It is the developer facing part of the Kuesa 3D design and integration workflow.
+
+### Kuesa Studio is the designer facing part of Kuesa.
+
+It provides:
+
+* glTF2 exporters and Kuesa specific glTF extensions for major 3D design softwares:
+    * Kuesa for Blender
+    * Kuesa for 3ds Max
+    * Kuesa for Maya (coming soon)
+* A library of real time materials that can be exported to glTF and previewed in Blender
+* Tooling around asset conditionning to decrease asset size and optimize for embedded use cases.
+
+More information about Kuesa Studio can be found [here](https://www.kdab.com/kuesa/).
 
 ## Requirements
 
 **Note:** this repository requires [git-lfs](https://git-lfs.github.com) support.
 
-Kuesa requires Qt 3D from Qt 5.12.5, Qt 5.13.1 or later.
+Kuesa Runtime requires Qt 3D from Qt 5.12.8, Qt 5.14.2 or Qt 5.15.
+
+### Note: not all features are working with Qt 5.12.8.
+* Qt 3D suffers from a regression that prevents optional aspects (animations, logic) from running
+  * https://codereview.qt-project.org/c/qt/qt3d/+/297123 fixes this
+    * Download and install Qt 5.12.8
+    * clone Qt3D: git clone git@github.com:qt/qt3d.git
+    * go to 5.12 branch: git checkout -t origin/5.12
+    * open a console with Qt setup (should be installed with Qt)
+    * go to the Qt3D directory, and type: qmake && make - j4 && make install (or qmake; jom; jom install on Windows)
+
+Earlier Qt 3D versions can still be used but might be suffering from bugs
+that have been identified and fixed since.
 
 ### Hardware
 
@@ -36,7 +65,7 @@ Here's a list of Chipsets/Devices Kuesa has successfully been tested on:
 * NVidia Tegra K1 (embedded Linux)
 * iMX8 (embedded Linux)
 
-Kuesa supports anything with OpenGL ES 3.2 or above.
+Kuesa Runtime supports anything with OpenGL ES 3.2 or above.
 
 OpenGL ES 3.1 or lower is supported but with a limited feature set depending on available OpenGL extensions.
 * For HDR support, GL_OES_texture_half_float is required
@@ -75,35 +104,10 @@ assets with Draco.
 
 ## Components
 
-Kuesa is composed of:
+Kuesa Runtime is composed of:
 * A Qt module with core classes
 * A QML plugin
-* The gltfEditor tool to preview and process glTF 2.0 files
-* The assetprocessor, a command line tool to compress meshes, embed or extract binary assets, etc
-* A simple glTFViewer application to view files, including selecting cameras and animations
-* The cubemaptooctahedralmap tool to convert cube maps to octahedral maps
-  to enable PBR rendering on ES 2 platforms
-
-### glTF Editor
-
-![glTF Editor](https://github.com/KDAB/kuesa/blob/dev/examples/kuesa/assets/misc/kuesa_ape.png)
-
-The glTF Editor can be used both by the designer and developer in order
-to preview and pre-process the content of glTF files.
-
-The designers will use the editor to check the rendering of the scene,
-verify that materials are correct, preview animations, etc.
-
-The developers will also use the editor check model properties such as sizes,
-asset names, etc.
-
-The editor can also be used to compress meshes, embed (or extract) binary assets, etc.
-
-In the 3d view, use the mouse to click on meshes to select them in the collection browser.
-Use:
-* Simple click to select meshes
-* Shift-click to select materials
-* Alt-click to select entities
+* The gltfViewer tool to preview glTF 2.0 files, including selecting cameras and animations
 
 ## Installation
 

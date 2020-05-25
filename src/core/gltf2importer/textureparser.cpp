@@ -49,10 +49,13 @@ const QLatin1String KEY_MSFT_DDS_EXTENSION = QLatin1String("MSFT_texture_dds");
 class EmbeddedTextureImageFunctor : public Qt3DRender::QTextureImageDataGenerator
 {
 public:
+    QT_WARNING_PUSH
+    QT_WARNING_DISABLE_DEPRECATED
     EmbeddedTextureImageFunctor(const QImage &image)
         : m_image(image)
     {
     }
+    QT_WARNING_POP
 
     Qt3DRender::QTextureImageDataPtr operator()() override
     {
@@ -67,7 +70,10 @@ public:
         return (otherFunctor != nullptr && otherFunctor->m_image == m_image);
     }
 
+    QT_WARNING_PUSH
+    QT_WARNING_DISABLE_DEPRECATED
     QT3D_FUNCTOR(EmbeddedTextureImageFunctor)
+    QT_WARNING_POP
 
 private:
     QImage m_image;

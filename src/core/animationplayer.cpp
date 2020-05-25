@@ -260,6 +260,8 @@ AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
     , m_animator(new Qt3DAnimation::QClipAnimator(this))
     , m_running(false)
 {
+    // For Qt < 5.14 we need to make sure we track normalizedTime on the frontend
+    m_animator->setPropertyTracking(QStringLiteral("normalizedTime"), Qt3DCore::QNode::TrackAllValues);
     updateSceneFromParent(parent);
     connect(this, &Qt3DCore::QNode::parentChanged, this, [this](QObject *parent) {
         auto parentNode = qobject_cast<Qt3DCore::QNode *>(parent);

@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>main.qml</file>
-        <file>FlatOctahedronEntity.qml</file>
-        <file>OctahedralMapPreview.qml</file>
-        <file>OctahedralSkybox.qml</file>
-        <file>CopyOutputToSSBO.qml</file>
-    </qresource>
-</RCC>

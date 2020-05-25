@@ -48,10 +48,6 @@ class QCamera;
 
 namespace Kuesa {
 
-class ThresholdEffect;
-class GaussianBlurEffect;
-class BloomMaterial;
-
 class KUESASHARED_EXPORT DepthOfFieldEffect : public AbstractPostProcessingEffect
 {
     Q_OBJECT
@@ -87,7 +83,6 @@ private:
     FrameGraphNodePtr m_rootFrameGraphNode;
     Qt3DRender::QLayer *m_layer;
 
-    Qt3DRender::QParameter *m_thresholdParameter;
     Qt3DRender::QParameter *m_textureParam;
     Qt3DRender::QParameter *m_textureSizeParam;
     Qt3DRender::QParameter *m_depthParam;
@@ -101,6 +96,9 @@ private:
     float m_focusRange;
     float m_radius;
     float m_focusDistance;
+
+    Qt3DRender::QParameter *m_dofTextureParam;
+    Qt3DRender::QAbstractTexture *m_dofTexture = nullptr;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

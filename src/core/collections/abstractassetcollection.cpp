@@ -29,7 +29,7 @@
 #include "abstractassetcollection.h"
 #include "kuesa_p.h"
 
-Q_LOGGING_CATEGORY(kuesa, "Kuesa")
+Q_LOGGING_CATEGORY(kuesa, "Kuesa", QtWarningMsg)
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;

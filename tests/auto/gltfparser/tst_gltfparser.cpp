@@ -682,8 +682,7 @@ private Q_SLOTS:
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<QVector<QString>>("expectedNames");
 
-        QVector<QString> expectedNames = { "Armature",
-                                           "Armature_Hip",
+        QVector<QString> expectedNames = { "Armature_Hip",
                                            "Armature_Chest",
                                            "Armature_Shoulder.R",
                                            "Armature_Arm.R",
@@ -786,9 +785,10 @@ private Q_SLOTS:
         // THEN
         QVERIFY(parsingSuccesful);
         QVERIFY(res != nullptr);
-        QCOMPARE(parser.context()->requiredExtensions().size(), 1);
-        QCOMPARE(parser.context()->usedExtension().size(), 1);
-        QCOMPARE(parser.context()->usedExtension().front(), QLatin1String("KDAB_Kuesa_Layers"));
+        QCOMPARE(parser.context()->requiredExtensions().size(), 2);
+        QCOMPARE(parser.context()->usedExtension().size(), 2);
+        QCOMPARE(parser.context()->usedExtension().front(), QLatin1String("KDAB_kuesa_layers"));
+        QCOMPARE(parser.context()->usedExtension().back(), QLatin1String("EXT_property_animation"));
     }
 
     void checkLayers_data()
