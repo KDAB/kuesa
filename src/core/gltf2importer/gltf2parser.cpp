@@ -1193,7 +1193,7 @@ void GLTF2Parser::generateTreeNodeContent()
                         const qint32 materialId = primitiveData.materialIdx;
                         Material mat;
                         // Check if the mesh references a material and fetch it
-                        // If it doesnt reference a valid material, create a default shader data
+                        // If it doesn't reference a valid material, create a default shader data
                         if (materialId >= 0 && materialId < m_context->materialsCount()) {
                             mat = m_context->material(materialId);
                         } else {

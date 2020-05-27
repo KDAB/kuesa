@@ -27,17 +27,16 @@
 */
 
 #include <qtkuesa-config.h>
-#if defined(KUESA_DRACO_COMPRESSION)
-#include <Kuesa/private/draco_prefix_p.h>
-#include <draco/compression/decode.h>
-#endif
-
 #include "meshparser_p.h"
 #include "bufferviewsparser_p.h"
 #include "gltf2context_p.h"
 #include "kuesa_p.h"
-
 #include "meshparser_utils_p.h"
+
+#if defined(KUESA_DRACO_COMPRESSION)
+#include <Kuesa/private/draco_prefix_p.h>
+#include <draco/compression/decode.h>
+#endif
 
 #include <QJsonObject>
 #include <QJsonArray>

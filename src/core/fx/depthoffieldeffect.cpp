@@ -53,7 +53,7 @@
 QT_BEGIN_NAMESPACE
 /**
  * Useful resources:
- * http://on-demand.gputechconf.com/gtc/2014/presentations/S4385-order-independent-transparency-opengl.pdf
+ * https://on-demand.gputechconf.com/gtc/2014/presentations/S4385-order-independent-transparency-opengl.pdf
  *
  * Evenly spaced points computed with Vogel's method:
  * https://www.arl.army.mil/arlreports/2015/ARL-TR-7333.pdf
@@ -61,11 +61,11 @@ QT_BEGIN_NAMESPACE
  * https://catlikecoding.com/unity/tutorials/advanced-rendering/depth-of-field/
  * https://www.slideshare.net/TiagoAlexSousa/graphics-gems-from-cryengine-3-siggraph-2013
  *
- * http://fileadmin.cs.lth.se/cs/education/edan35/lectures/12dof.pdf
+ * https://fileadmin.cs.lth.se/cs/education/edan35/lectures/12dof.pdf
  * https://en.wikibooks.org/wiki/OpenGL_Programming/Depth_of_Field
  * https://developer.nvidia.com/gpugems/GPUGems/gpugems_ch23.html (a bit old ?)
  * https://bartwronski.com/2014/04/07/bokeh-depth-of-field-going-insane-part-1/ (fairly advanced)
- * http://gpupro.blogspot.com/2013/09/gpu-pro-4-skylanders-depth-of-field.html
+ * https://gpupro.blogspot.com/2013/09/gpu-pro-4-skylanders-depth-of-field.html
  * https://www.guerrilla-games.com/read/killzone-shadow-fall-demo-postmortem
  * https://www.slideshare.net/DAMSIGNUP/so4-flexible-shadermanagmentandpostprocessing
  */

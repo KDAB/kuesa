@@ -26,14 +26,16 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <Kuesa/private/draco_prefix_p.h>
 #include <qtkuesa-config.h>
+#include "dracocompressor_p.h"
+#include "gltf2exporter_p.h"
+
+#include <Kuesa/private/draco_prefix_p.h>
 #include <draco/mesh/mesh.h>
 #include <draco/attributes/geometry_attribute.h>
 #include <draco/attributes/geometry_indices.h>
 #include <draco/io/mesh_io.h>
-#include "dracocompressor_p.h"
-#include "gltf2exporter_p.h"
+
 #include <Qt3DRender/QGeometry>
 #include <Qt3DRender/QAttribute>
 #include <Qt3DRender/QBuffer>
@@ -41,6 +43,7 @@
 #include <QFile>
 #include <QLoggingCategory>
 #include <QDataStream>
+
 #include <fstream>
 #include <iterator>
 #include <iostream>
