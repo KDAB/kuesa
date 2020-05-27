@@ -14,6 +14,8 @@ EXCLUDE style
 
 #no need to check 3rdparty stuff
 SKIP /3rdparty/
+SKIP /src/python/utils/utils\.py
+SKIP /src/python/utils/pyside2_config\.py
 
 #more stuff to skip
 #skip templates
