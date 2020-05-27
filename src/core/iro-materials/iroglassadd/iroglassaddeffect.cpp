@@ -27,6 +27,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "iroglassaddeffect.h"
+
 #include <Qt3DRender/QEffect>
 #include <Qt3DRender/QTechnique>
 #include <Qt3DRender/QCullFace>
@@ -38,8 +40,6 @@
 #include <Qt3DRender/QGraphicsApiFilter>
 #include <Qt3DRender/QBlendEquation>
 #include <Qt3DRender/QBlendEquationArguments>
-#include "iroglassaddeffect.h"
-
 
 QT_BEGIN_NAMESPACE
 
