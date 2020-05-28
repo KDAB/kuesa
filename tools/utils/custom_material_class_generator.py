@@ -1882,7 +1882,9 @@ HEADERS += \\
                                                                        matName,
                                                                        matName,
                                                                        matName)
-            includes = "#include <Qt3DRender/QEffect>\n"
+
+            includes = "#include \"%s.h\"\n\n" % (className.lower())
+            includes += "#include <Qt3DRender/QEffect>\n"
             includes += "#include <Qt3DRender/QTechnique>\n"
             includes += "#include <Qt3DRender/QCullFace>\n"
             includes += "#include <Qt3DRender/QFilterKey>\n"
@@ -1890,17 +1892,17 @@ HEADERS += \\
             includes += "#include <Qt3DRender/QRenderPass>\n"
             includes += "#include <Qt3DRender/QShaderProgram>\n"
             includes += "#include <Qt3DRender/QShaderProgramBuilder>\n"
-            includes += "#include <Qt3DRender/QGraphicsApiFilter>\n"
+            includes += "#include <Qt3DRender/QGraphicsApiFilter>"
 
             if technique_name in ["Transparent", "TransparentAndOpaque", "MultiPassTransparent"]:
+                includes += "\n"
                 includes += "#include <Qt3DRender/QBlendEquation>\n"
-                includes += "#include <Qt3DRender/QBlendEquationArguments>\n"
+                includes += "#include <Qt3DRender/QBlendEquationArguments>"
 
             if technique_name == "Background":
+                includes += "\n"
                 includes += "#include <Qt3DRender/QNoDepthMask>\n"
-                includes += "#include <Qt3DRender/QDepthTest>\n"
-
-            includes += "#include \"%s.h\"\n" % (className.lower())
+                includes += "#include <Qt3DRender/QDepthTest>"
 
             self.generateCppFile(content,
                                  className,
