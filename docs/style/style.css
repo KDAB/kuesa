@@ -61,10 +61,10 @@ body {
 p + p {
     margin-top: 15px;
 }
-
 img {
+    width: 100%;
     margin-left: 0px;
-    max-width: 100%;
+    max-width: 512px;
     height: auto;
 }
 .doc-content {
@@ -223,12 +223,11 @@ h2:target {
 }
 
 h3 {
-    font-size: 20px;
-    padding: 4px;
+    font: 500 14px/1.2 Arial;
+    font-weight: 100;
+    text-decoration: underline;
+    margin-bottom: 30px;
     margin-top: 30px;
-    border-bottom: #E0E0DE 1px solid;
-    max-width: 99%;
-    color: #0077C8;
 }
 
 h3.fn, span.fn {
@@ -256,14 +255,6 @@ h3.fn code {
 }
 h3.fn:target {
     background-color: #F6F6D6;
-}
-
-h4 {
-    font-size: 20px;
-    padding: 4px;
-    margin-top: 20px;
-    max-width: 99%;
-    color: #0077C8;
 }
 
 .name:not(span) {
@@ -599,9 +590,6 @@ div.multi-column div {
             list-style: none;
             padding-left: 0;
             margin: 0;
-        }
-        .sidebar .toc ul li .level2 {
-            padding-left: 10px;
         }
         .sidebar .toc ul li a {
             display: block;
