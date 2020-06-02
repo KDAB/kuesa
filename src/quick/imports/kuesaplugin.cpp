@@ -95,7 +95,7 @@ KuesaPlugin::~KuesaPlugin()
 void KuesaPlugin::registerTypes(const char *uri)
 {
     // Make latest Kuesa import available (even if no new types are registered)
-    qmlRegisterModule(uri, 1, 2);
+    qmlRegisterModule(uri, 1, 3);
 
     // Collections
     qmlRegisterUncreatableType<Kuesa::AbstractAssetCollection>(uri, 1, 0, "AbstractAssetCollection", QStringLiteral("You are not supposed to create an EntityCollection"));
