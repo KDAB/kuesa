@@ -33,10 +33,9 @@ SOURCES += \
     main.cpp
 
 macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
+else:windows:APP_PWD=$$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 else: APP_PWD=$$OUT_PWD
 RES_PWD=$$APP_PWD/resources
-
-include($$KUESA_ROOT/kuesa-global.pri)
 
 android {
     envmaps_dir = ../assets/envmaps
@@ -70,7 +69,7 @@ android {
 
     windows {
         RC_ICONS = ../shared-utils/kuesa.ico
-        DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
+        DESTDIR = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
     } else:ios {
         envmaps_dir = ../assets/envmaps
         resfiles.files = \

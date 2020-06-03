@@ -35,8 +35,12 @@ RESOURCES += \
     assets/assets.qrc \
     qml/qml.qrc \
 
+macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
+else:windows:APP_PWD=$$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+else: APP_PWD=$$OUT_PWD
+RES_PWD=$$APP_PWD/resources
+
 include(../shared-utils/shared-utils.pri)
-include($$KUESA_ROOT/kuesa-global.pri)
 
 envmaps_dir = ../assets/envmaps
 envmaps.files = \
@@ -132,20 +136,19 @@ android {
 
     windows {
         RC_ICONS = ../shared-utils/kuesa.ico
-        DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
+        DESTDIR = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
     }
 
     # Build resources as external files
-    RES_DIR = $${OUT_PWD}/resources
     asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
     asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
     asset_builder.input = RCC_BINARY_SOURCES
-    asset_builder.output = $$RES_DIR/${QMAKE_FILE_IN_BASE}.qrb
+    asset_builder.output = $$RES_PWD/${QMAKE_FILE_IN_BASE}.qrb
     asset_builder.CONFIG += no_link target_predeps
     QMAKE_EXTRA_COMPILERS += asset_builder
 
     ext_resources.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-    ext_resources.files = $$RES_DIR
+    ext_resources.files = $$RES_PWD
 
     INSTALLS += ext_resources
 }

@@ -40,6 +40,7 @@ RESOURCES += \
     qml/qml.qrc \
 
 macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
+else:windows:APP_PWD=$$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 else: APP_PWD=$$OUT_PWD
 RES_PWD=$$APP_PWD/resources
 
@@ -47,8 +48,6 @@ install_music_samples.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 install_music_samples.files = $$PWD/assets/samples
 
 INSTALLS += install_music_samples
-
-include($$KUESA_ROOT/kuesa-global.pri)
 
 android {
     envmaps_dir = ../assets/envmaps
@@ -111,7 +110,7 @@ android {
     windows {
         QMAKE_POST_LINK += $$quote(cmd /c copy /y \"$$PWD/assets/samples\" \"$$RES_PWD/\" $$escape_expand(\n\t))
         RC_ICONS = ../shared-utils/kuesa.ico
-        DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
+        DESTDIR = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
     } else:ios {
         envmaps_dir = ../assets/envmaps
         resfiles.files = \
