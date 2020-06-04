@@ -79,6 +79,7 @@
 #include <Kuesa/IroDiffuseAlphaEffect>
 #include <Kuesa/IroDiffuseAlphaProperties>
 #include <KuesaUtils/orbitcameracontroller.h>
+#include <KuesaUtils/boundingvolumerenderer.h>
 #include <Kuesa/Particles>
 
 #include <QtQml/qqml.h>
@@ -200,7 +201,9 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::ToneMappingAndGammaCorrectionEffect>("Kuesa.Effects", 1, 1, "ToneMappingAndGammaCorrectionEffect");
 
     // Utils
+    qmlRegisterType<KuesaUtils::BoundingVolumeRenderer>("Kuesa.Utils", 1, 3, "BoundingVolumeRenderer");
     qmlRegisterType<KuesaUtils::OrbitCameraController>("Kuesa.Utils", 1, 3, "OrbitCameraController");
+
     // Particles
     qmlRegisterType<Kuesa::Particles>(uri, 1, 3, "Particles");
 }

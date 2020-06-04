@@ -34,14 +34,19 @@ DEFINES += QT_BUILD_KUESA_UTILS_LIB
 # Avoid windows defines
 win32:DEFINES += WIN32_LEAN_AND_MEAN
 
-QT += kuesa
+QT += kuesa kuesa-private
 
 HEADERS += \
+    boundingvolumerenderer.h \
     kuesa_utils_global.h \
     orbitcameracontroller.h
 
 SOURCES += \
+    boundingvolumerenderer.cpp \
     orbitcameracontroller.cpp
+
+RESOURCES += \
+    utils.qrc
 
 include($$KUESA_ROOT/kuesa-global.pri)
 

@@ -31,6 +31,7 @@ src_core.target = sub-core
 
 src_utils.subdir = $$PWD/utils
 src_utils.target = sub-utils
+src_utils.depends = src_core
 
 qtHaveModule(quick) {
     src_quick_imports.file = $$PWD/quick/imports/imports.pro

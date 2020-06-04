@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>shaders/selection_flatlines.frag</file>
+        <file>shaders/selection_flatlines.vert</file>
+    </qresource>
+</RCC>
