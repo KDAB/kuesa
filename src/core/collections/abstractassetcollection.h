@@ -47,6 +47,7 @@ public:
     QStringList names();
     int size();
     bool contains(const QString &name) const;
+    bool contains(Qt3DCore::QNode *asset) const;
     Qt3DCore::QNode *findAsset(const QString &name);
 
     void remove(const QString &name);

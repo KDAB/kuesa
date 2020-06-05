@@ -107,6 +107,17 @@ bool AbstractAssetCollection::contains(const QString &name) const
 }
 
 /*!
+ * Returns true if the asset \a asset exists in the collection
+ */
+bool AbstractAssetCollection::contains(Qt3DCore::QNode *asset) const
+{
+    for (const auto a : m_assets)
+        if (a == asset)
+            return true;
+    return false;
+}
+
+/*!
  * Removes the asset corresponding to \a name, if it exists
  */
 void AbstractAssetCollection::remove(const QString &name)
