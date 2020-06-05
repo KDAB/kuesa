@@ -117,7 +117,7 @@
 
     \section2 Optional Dependencies
 
-    Kuesa can optionnally use the \l {https://github.com/google/draco} {Draco}
+    Kuesa can optionally use the \l {https://github.com/google/draco} {Draco}
     mesh compression library, either through an embedded version, or a version
     present on the system. Draco can be used to dramatically decrease the size
     of glTF files.

@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef ASSEETPROPERTY_P_H
-#define ASSEETPROPERTY_P_H
+#ifndef ASSETPROPERTY_P_H
+#define ASSETPROPERTY_P_H
 
 //
 //  W A R N I N G
@@ -63,4 +63,4 @@ public:
 };
 } // namespace Kuesa
 
-#endif // ASSEETPROPERTY_P_H
+#endif // ASSETPROPERTY_P_H

@@ -27,6 +27,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "iromatteskyboxeffect.h"
+
 #include <Qt3DRender/QEffect>
 #include <Qt3DRender/QTechnique>
 #include <Qt3DRender/QCullFace>
@@ -38,8 +40,6 @@
 #include <Qt3DRender/QGraphicsApiFilter>
 #include <Qt3DRender/QNoDepthMask>
 #include <Qt3DRender/QDepthTest>
-#include "iromatteskyboxeffect.h"
-
 
 QT_BEGIN_NAMESPACE
 

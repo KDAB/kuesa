@@ -86,7 +86,7 @@
     You can use the Kuesa Studio gltfEditor to introspect a glTF2 scene files
     and find the names of the various assets it contains.
 
-    Upon successfull loading of our glTF2 file, we will be able to proceed with
+    Upon successful loading of our glTF2 file, we will be able to proceed with
     asset retrieval.
     \snippet manyducks/main.cpp 1
 

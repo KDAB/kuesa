@@ -1331,7 +1331,7 @@ QAttribute *generateNormalsForMorphTarget(const QAttribute *positionAttribute, c
 
     // Iterate over position attribute and compute normals
     // We need to update the position according to the morph target
-    // And we need to substract the original normal to the deformed normal to have the morphtarget
+    // And we need to subtract the original normal to the deformed normal to have the morphtarget
     // (Only handle vec3 types for now)
     Q_ASSERT(positionAttribute->count() % 3 == 0);
     for (int i = 0; i < positionAttribute->count(); i += 3) {

@@ -107,7 +107,7 @@
 <h4 id="extracting-assets-from-collections">Extracting Assets from Collections</h4>
 <p>Usually, you will want to interact with some elements of your scene.</p>
 <p>You can use the Kuesa Studio gltfEditor to introspect a glTF2 scene files and find the names of the various assets it contains.</p>
-<p>Upon successfull loading of our glTF2 file, we will be able to proceed with asset retrieval.</p>
+<p>Upon successful loading of our glTF2 file, we will be able to proceed with asset retrieval.</p>
 <pre class="cpp">
  <span class="type">void</span> on_sceneLoaded(Kuesa<span class="operator">::</span>GLTF2Importer<span class="operator">::</span>Status status)
  {
@@ -122,7 +122,7 @@
  <span class="comment">// Gotten from gammaray</span>
  <span class="keyword">auto</span> parent <span class="operator">=</span> m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_0&quot;</span>);
 </pre>
-<p>In turn, using Qt3D Component API, we can retrieve the QGeometry, Qt3DRender::QMaterial components of the previously retrieved entity.</p>
+<p>In turn, using Qt3D Component API, we can retrieve the Qt3DRender::QGeometry, Qt3DRender::QMaterial components of the previously retrieved entity.</p>
 <pre class="cpp">
  <span class="keyword">auto</span> <span class="operator">*</span>orig_entity <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span><span class="operator">&gt;</span>(m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_2&quot;</span>)<span class="operator">-</span><span class="operator">&gt;</span>childNodes()<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>);
  <span class="keyword">auto</span> <span class="operator">*</span>orig_geometry <span class="operator">=</span> componentFromEntity<span class="operator">&lt;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QGeometryRenderer</span><span class="operator">&gt;</span>(orig_entity);

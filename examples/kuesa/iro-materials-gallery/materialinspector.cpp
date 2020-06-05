@@ -26,15 +26,18 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "materialinspector.h"
+
+#include <Kuesa/GLTF2Material>
+#include <Kuesa/GLTF2MaterialProperties>
+
 #include <Qt3DRender/QMaterial>
 #include <Qt3DRender/QPickEvent>
 #include <Qt3DRender/QAbstractTexture>
 #include <Qt3DCore/QEntity>
 #include <Qt3DCore/QComponent>
+
 #include <QDebug>
-#include <Kuesa/GLTF2Material>
-#include <Kuesa/GLTF2MaterialProperties>
-#include "materialinspector.h"
 #include <QMetaProperty>
 #include <QVector2D>
 #include <QVector3D>

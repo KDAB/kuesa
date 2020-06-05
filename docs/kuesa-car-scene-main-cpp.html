@@ -66,7 +66,6 @@
  <span class="preprocessor">#ifndef QT_OPENGL_ES_2</span>
          format<span class="operator">.</span>setVersion(<span class="number">4</span><span class="operator">,</span> <span class="number">1</span>);
          format<span class="operator">.</span>setProfile(<span class="type">QSurfaceFormat</span><span class="operator">::</span>CoreProfile);
-         format<span class="operator">.</span>setSamples(<span class="number">4</span>);
  <span class="preprocessor">#else</span>
  <span class="preprocessor">#ifndef QT_OPENGL_ES_3</span>
          isES2 <span class="operator">=</span> <span class="keyword">true</span>;
@@ -75,6 +74,7 @@
          format<span class="operator">.</span>setProfile(<span class="type">QSurfaceFormat</span><span class="operator">::</span>NoProfile);
          format<span class="operator">.</span>setRenderableType(<span class="type">QSurfaceFormat</span><span class="operator">::</span>OpenGLES);
  <span class="preprocessor">#endif</span>
+         format<span class="operator">.</span>setSamples(<span class="number">4</span>);
          <span class="type">QSurfaceFormat</span><span class="operator">::</span>setDefaultFormat(format);
      }
 
