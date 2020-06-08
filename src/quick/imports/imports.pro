@@ -27,7 +27,7 @@
 CXX_MODULE = qml
 TARGET = quickkuesaplugin
 TARGETPATH = Kuesa
-IMPORT_VERSION = 1.0
+IMPORT_VERSION = 1.3
 
 QT += kuesa kuesautils qml
 
