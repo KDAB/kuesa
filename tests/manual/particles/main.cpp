@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     view.setSource(QUrl("qrc:/main_qt6.qml"));
-#elif
+#else
     view.setSource(QUrl("qrc:/main_qt5.qml"));
 #endif
     view.resize(1024, 512);
