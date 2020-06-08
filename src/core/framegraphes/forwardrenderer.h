@@ -35,6 +35,7 @@
 #include <Qt3DRender/qrendersurfaceselector.h>
 #include <Qt3DRender/qclearbuffers.h>
 #include <Qt3DRender/qrendertargetoutput.h>
+#include <Qt3DRender/QLayer>
 #include <QVector>
 
 class tst_ForwardRenderer;
