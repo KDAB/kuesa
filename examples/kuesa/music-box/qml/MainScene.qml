@@ -384,7 +384,7 @@ Kuesa.SceneEntity {
     Kuesa.MetallicRoughnessMaterial {
         id: material
         effect: Kuesa.MetallicRoughnessEffect { }
-        metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+        materialProperties: Kuesa.MetallicRoughnessProperties {
             baseColorFactor: "gray"
         }
     }
