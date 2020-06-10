@@ -126,11 +126,13 @@ GLTF2MaterialProperties::GLTF2MaterialProperties(Qt3DCore::QNode *parent)
     , m_usesTexCoord1(false)
     , m_baseColorTexture(nullptr)
     , m_baseColorFactor(QColor("gray"))
-    #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     , m_dummyObserver(nullptr)
-    #endif
 {
     setDefaultPropertyTrackingMode(QNode::TrackAllValues);
+#else
+{
+#endif
 }
 
 GLTF2MaterialProperties::~GLTF2MaterialProperties()

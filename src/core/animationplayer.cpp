@@ -261,7 +261,9 @@ AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
     , m_running(false)
 {
     // For Qt < 5.14 we need to make sure we track normalizedTime on the frontend
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     m_animator->setPropertyTracking(QStringLiteral("normalizedTime"), Qt3DCore::QNode::TrackAllValues);
+#endif
     updateSceneFromParent(parent);
     connect(this, &Qt3DCore::QNode::parentChanged, this, [this](QObject *parent) {
         auto parentNode = qobject_cast<Qt3DCore::QNode *>(parent);
