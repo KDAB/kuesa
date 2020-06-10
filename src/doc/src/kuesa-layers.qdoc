@@ -44,7 +44,7 @@
     \section2 Using Blender and the gltf Exporter
 
     In Blender, since version 2.80, nodes and geometries are now distributed
-    accross collections. If you export using the glTF exporter and the Kuesa
+    across collections. If you export using the glTF exporter and the Kuesa
     Layer extension is enabled, each Collection will result in a distinct
     layer.
 

@@ -27,22 +27,22 @@
 */
 
 #include <qtkuesa-config.h>
+#include "gltf2exporter_p.h"
+#include "gltf2context_p.h"
+#include "gltf2uri_p.h"
+#include "gltf2keys_p.h"
+#include "kuesa_p.h"
+#include "embedexportpass_p.h"
+#include "separateexportpass_p.h"
+#include "copyexportpass_p.h"
+#include "gltf2importer.h"
+
 #if defined(KUESA_DRACO_COMPRESSION)
 #include <Kuesa/private/draco_prefix_p.h>
 #include <draco/compression/encode.h>
 #include "dracocompressor_p.h"
 #include "dracoexportpass_p.h"
 #endif
-#include "embedexportpass_p.h"
-#include "separateexportpass_p.h"
-#include "copyexportpass_p.h"
-
-#include "gltf2importer.h"
-#include "gltf2exporter_p.h"
-#include "gltf2context_p.h"
-#include "gltf2uri_p.h"
-#include "gltf2keys_p.h"
-#include "kuesa_p.h"
 
 #include <QFile>
 QT_BEGIN_NAMESPACE

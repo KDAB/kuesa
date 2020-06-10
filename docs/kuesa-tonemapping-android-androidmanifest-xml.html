@@ -14,7 +14,7 @@
 <pre class="cpp">
  &lt;?xml version=&quot;1.0&quot;?&gt;
  &lt;manifest package=&quot;com.kdab.tonemapping&quot; xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:versionName=&quot;1.0&quot; android:versionCode=&quot;1&quot; android:installLocation=&quot;auto&quot;&gt;
-     &lt;application android:hardwareAccelerated=&quot;true&quot; android:name=&quot;org.qtproject.qt5.android.bindings.QtApplication&quot; android:icon=&quot;@drawable/icon&quot; android:label=&quot;Kuesa ToneMapping&quot; android:theme=&quot;@android:style/Theme.NoTitleBar.Fullscreen&quot;&gt;
+     &lt;application android:hardwareAccelerated=&quot;true&quot; android:name=&quot;org.qtproject.qt5.android.bindings.QtApplication&quot; android:icon=&quot;@drawable/icon&quot; android:label=&quot;Kuesa ToneMapping&quot; android:theme=&quot;@android:style/Theme.NoTitleBar.Fullscreen&quot; android:extractNativeLibs=&quot;true&quot;&gt;
          &lt;activity android:configChanges=&quot;orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density&quot; android:name=&quot;org.qtproject.qt5.android.bindings.QtActivity&quot; android:label=&quot;ToneMapping&quot; android:screenOrientation=&quot;landscape&quot; android:launchMode=&quot;singleTop&quot;&gt;
              &lt;intent-filter&gt;
                  &lt;action android:name=&quot;android.intent.action.MAIN&quot;/&gt;
@@ -28,11 +28,9 @@
              &lt;meta-data android:name=&quot;android.app.qt_libs_resource_id&quot; android:resource=&quot;@array/qt_libs&quot;/&gt;
              &lt;meta-data android:name=&quot;android.app.bundled_libs_resource_id&quot; android:resource=&quot;@array/bundled_libs&quot;/&gt;
              &lt;meta-data android:name=&quot;android.app.bundle_local_qt_libs&quot; android:value=&quot;1&quot;/&gt;
-             &lt;meta-data android:name=&quot;android.app.bundled_in_lib_resource_id&quot; android:resource=&quot;@array/bundled_in_lib&quot;/&gt;
-             &lt;meta-data android:name=&quot;android.app.bundled_in_assets_resource_id&quot; android:resource=&quot;@array/bundled_in_assets&quot;/&gt;
              &lt;meta-data android:name=&quot;android.app.use_local_qt_libs&quot; android:value=&quot;1&quot;/&gt;
              &lt;meta-data android:name=&quot;android.app.libs_prefix&quot; android:value=&quot;/data/local/tmp/qt/&quot;/&gt;
-             &lt;meta-data android:name=&quot;android.app.load_local_libs&quot; android:value=&quot;plugins/platforms/android/libqtforandroid.so:plugins/bearer/libqandroidbearer.so:lib/libQt5QuickParticles.so&quot;/&gt;
+             &lt;meta-data android:name=&quot;android.app.load_local_libs_resource_id&quot; android:resource=&quot;@array/load_local_libs&quot;/&gt;
              &lt;meta-data android:name=&quot;android.app.load_local_jars&quot; android:value=&quot;jar/QtAndroid.jar:jar/QtAndroidBearer.jar&quot;/&gt;
              &lt;meta-data android:name=&quot;android.app.static_init_classes&quot; android:value=&quot;&quot;/&gt;
              &lt;meta-data android:value=&quot;@string/ministro_not_found_msg&quot; android:name=&quot;android.app.ministro_not_found_msg&quot;/&gt;

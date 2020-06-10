@@ -367,7 +367,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
                 mat.customMaterial.type = customMaterialExtensionObject.value(KEY_TYPE).toString();
                 auto &materialCache = GLTF2Importer::CustomMaterialCache::instance();
                 auto it = materialCache.m_registeredCustomMaterial.find(mat.customMaterial.type);
-                // Do we have a registed custom material for that class?
+                // Do we have a registered custom material for that class?
                 if (it != materialCache.m_registeredCustomMaterial.end()) {
                     mat.customMaterial.materialClassMetaObject = it.value().materialClassMetaObject;
                     mat.customMaterial.propertiesClassMetaObject = it.value().propertiesClassMetaObject;

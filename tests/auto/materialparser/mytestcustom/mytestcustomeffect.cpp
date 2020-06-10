@@ -27,6 +27,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "mytestcustomeffect.h"
+
 #include <Qt3DRender/QEffect>
 #include <Qt3DRender/QTechnique>
 #include <Qt3DRender/QCullFace>
@@ -36,8 +38,6 @@
 #include <Qt3DRender/QShaderProgram>
 #include <Qt3DRender/QShaderProgramBuilder>
 #include <Qt3DRender/QGraphicsApiFilter>
-#include "mytestcustomeffect.h"
-
 
 QT_BEGIN_NAMESPACE
 

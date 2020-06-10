@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ## Copyright (C) 2019 The Qt Company Ltd.
-## Contact: http://www.qt.io/licensing/
+## Contact: https://www.qt.io/licensing/
 ##
 ## This file is part of the Qt for Python examples of the Qt Toolkit.
 ##

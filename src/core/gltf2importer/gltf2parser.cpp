@@ -918,7 +918,7 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
                 m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinId][skin.jointsIndices.indexOf(skin.rootJoint.jointNodeIdx)] = jointAccessor;
             buildJointHierarchy(skeletonRootHNode, jointAccessor, skin, skinId);
         } else {
-            // If we dont have a LCA, we have one or more joints that doesn't create a tree, but they create subtrees. Look for the roots of those subtrees
+            // If we don't have a LCA, we have one or more joints that doesn't create a tree, but they create subtrees. Look for the roots of those subtrees
             QVector<int> rootJoints;
             for (const auto joint : qAsConst(skin.jointsIndices)) {
                 const HierarchyNode &node = tree[joint];
@@ -1208,7 +1208,7 @@ void GLTF2Parser::generateTreeNodeContent()
                         const qint32 materialId = primitiveData.materialIdx;
                         Material mat;
                         // Check if the mesh references a material and fetch it
-                        // If it doesnt reference a valid material, create a default shader data
+                        // If it doesn't reference a valid material, create a default shader data
                         if (materialId >= 0 && materialId < m_context->materialsCount()) {
                             mat = m_context->material(materialId);
                         } else {
