@@ -29,37 +29,12 @@
 #include <QQuickView>
 #include <QQmlEngine>
 #include <QQmlContext>
-#include <QResource>
-#include <QDir>
 
 #include "sampler.h"
 
 #ifdef Q_OS_ANDROID
 #include <QOpenGLContext>
 #endif
-
-namespace {
-
-bool initializeAssetResources(const QVector<QString> &fileNames)
-{
-#ifdef Q_OS_MACOS
-    QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/../Resources"));
-#elif defined(Q_OS_IOS)
-    QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/Library/Application Support"));
-#else
-    QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/resources"));
-#endif
-    bool b = true;
-    for (const auto &fileName : fileNames) {
-        auto f = resourceDir.path() + QDir::separator() + fileName;
-        b &= QResource::registerResource(f);
-        if (!b)
-            qDebug() << "Failed to load assets from" << f;
-    }
-    return b;
-}
-
-} // namespace
 
 int main(int argc, char *argv[])
 {
@@ -84,8 +59,6 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    initializeAssetResources({ QStringLiteral("music-box.qrb") });
-    initializeAssetResources({ QStringLiteral("envmap-pink-sunrise-16f.qrb") });
     qmlRegisterType<Sampler>("MusicBox", 1, 0, "Sampler");
 
     QQuickView view;
@@ -98,7 +71,6 @@ int main(int argc, char *argv[])
 
 
 #ifdef Q_OS_ANDROID
-    const QString assetsPrefix = QStringLiteral("assets:/");
     // Qt builds for android may not define QT_OPENGL_ES_3
     // Therefore we need a runtime check to see whether we can use ES 3.0 or not
     QOpenGLContext ctx;
@@ -107,11 +79,8 @@ int main(int argc, char *argv[])
         const QSurfaceFormat androidFormat = ctx.format();
         isES2 = (androidFormat.majorVersion() == 2);
     }
-#else
-    const QString assetsPrefix = QStringLiteral("qrc:/");
 #endif
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_isES2"), isES2);
-    view.engine()->rootContext()->setContextProperty(QStringLiteral("_assetsPrefix"), assetsPrefix);
 
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));

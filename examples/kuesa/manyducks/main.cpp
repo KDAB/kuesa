@@ -45,8 +45,6 @@
 
 // Qt & std
 #include <QGuiApplication>
-#include <QResource>
-#include <QDir>
 #include <QTimer>
 #include <array>
 #ifdef Q_OS_ANDROID
@@ -73,26 +71,6 @@ inline ComponentType *componentFromEntity(Qt3DCore::QEntity *e)
 
     return typedComponent;
 #endif
-}
-
-// Helper to load .qrb files, used for large environment maps
-bool initializeAssetResources(const QVector<QString> &fileNames)
-{
-#ifdef Q_OS_MACOS
-    QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/../Resources"));
-#elif defined(Q_OS_IOS)
-    QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/Library/Application Support"));
-#else
-    QDir resourceDir(qApp->applicationDirPath() + QStringLiteral("/resources"));
-#endif
-    bool b = true;
-    for (const auto &fileName : fileNames) {
-        auto f = resourceDir.path() + QDir::separator() + fileName;
-        b &= QResource::registerResource(f);
-        if (!b)
-            qDebug() << "Failed to load assets from" << f;
-    }
-    return b;
 }
 
 static QString envmap(QString name)
@@ -273,22 +251,6 @@ int main(int argc, char *argv[])
     }
 
     QGuiApplication app(argc, argv);
-
-    initializeAssetResources({ QStringLiteral("Duck.qrb") });
-    initializeAssetResources({ QStringLiteral("envmap-pink-sunrise-16f.qrb") });
-
-#ifdef Q_OS_ANDROID
-    const QString assetsPrefix = QStringLiteral("assets:/");
-    // Qt builds for android may not define QT_OPENGL_ES_3
-    // Therefore we need a runtime check to see whether we can use ES 3.0 or not
-    QOpenGLContext ctx;
-    ctx.setFormat(QSurfaceFormat::defaultFormat());
-    if (ctx.create())
-        const QSurfaceFormat androidFormat = ctx.format();
-#else
-    const QString assetsPrefix = QStringLiteral("qrc:/");
-#endif
-
     Window window;
 
     window.show();

@@ -30,9 +30,6 @@
 #include <QQuickView>
 #include <QQmlEngine>
 #include <QQmlContext>
-#include <QDir>
-#include <QDirIterator>
-#include <QResource>
 #include "materialinspector.h"
 
 int main(int ac, char **av)
@@ -55,35 +52,13 @@ int main(int ac, char **av)
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(ac, av);
 
-    // Load external resources
-    QDir resourceDir(app.applicationDirPath() + QStringLiteral("/resources"));
-    QDirIterator it(resourceDir, QDirIterator::IteratorFlag::NoIteratorFlags);
-    while (it.hasNext()) {
-        QString path = it.next();
-        if (!QResource::registerResource(path))
-            qWarning() << "Failed to load binary resources: " << path;
-        else
-            qDebug() << "Loaded binary resources: " << path;
-    }
-
     QQuickView view;
-#ifdef Q_OS_ANDROID
-    const QString assetsPrefix = QStringLiteral("assets:/");
-#elif defined(Q_OS_IOS)
-    const QString assetsPrefix = QString(QStringLiteral("file://%1/Library/Application Support/")).arg(QGuiApplication::applicationDirPath());
-#elif defined(Q_OS_OSX)
-    const QString assetsPrefix = QString(QStringLiteral("file://%1/../Resources/")).arg(QGuiApplication::applicationDirPath());
-#else
-    const QString assetsPrefix = QStringLiteral("qrc:/");
-#endif
-
 #ifdef KUESA_BUILD_ROOT
     view.engine()->addImportPath(QStringLiteral(KUESA_BUILD_ROOT "/qml"));
 #endif
 
     MaterialInspector inspector;
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_materialInspector"), &inspector);
-    view.engine()->rootContext()->setContextProperty(QStringLiteral("_assetsPrefix"), assetsPrefix);
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_view"), &view);
 
     view.setResizeMode(QQuickView::SizeRootObjectToView);

@@ -2,5 +2,10 @@
     <qresource prefix="/">
         <file>DodgeViper-draco.bin</file>
         <file>DodgeViper-draco.gltf</file>
+        <file>hex-base.png.png</file>
+        <file>hex-normal.png.png</file>
+        <file>KDAB.png.png</file>
+        <file>KDABnormal.png.png</file>
+        <file>shadow-plane.png.png</file>
     </qresource>
 </RCC>

@@ -197,7 +197,7 @@ Kuesa.SceneEntity {
         },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise_16f_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")
+                source: "pink_sunrise_16f_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -205,7 +205,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise_16f_specular" + ((!scene.es2) ? ".dds" : "_es2.dds")
+                source: "pink_sunrise_16f_specular" + ((!scene.es2) ? ".dds" : "_es2.dds")
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -262,7 +262,7 @@ Kuesa.SceneEntity {
     Kuesa.GLTF2Importer {
         id: importer
         sceneEntity: scene
-        source: _assetsPrefix + "RobotArm.gltf"
+        source: "RobotArm.gltf"
 //!    [1]
 //!    [2.3]
         onStatusChanged: {
@@ -282,7 +282,7 @@ Kuesa.SceneEntity {
 
     Kuesa.Skybox {
         id: skybox
-        baseName: _assetsPrefix + "pink_sunrise_skybox"
+        baseName: "qrc:/pink_sunrise_skybox"
         extension: ".dds"
     }
 

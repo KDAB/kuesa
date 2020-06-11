@@ -216,7 +216,7 @@ Kuesa.SceneEntity {
         InputSettings { },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: _assetsPrefix + environmentMap + "_16f_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")
+                source: "qrc:/" + environmentMap + "_16f_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -224,7 +224,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: _assetsPrefix + environmentMap + "_16f_specular" + ((!scene.es2) ? ".dds" : "_es2.dds")
+                source: "qrc:/" + environmentMap + "_16f_specular" + ((!scene.es2) ? ".dds" : "_es2.dds")
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -276,13 +276,13 @@ Kuesa.SceneEntity {
     // Loads GLTF 2.0 asset
     Kuesa.GLTF2Importer {
         sceneEntity: scene
-        source: _assetsPrefix + "DodgeViper" + _modelSuffix + ".gltf"
+        source: "DodgeViper" + _modelSuffix + ".gltf"
     }
 //! [1]
 
     Kuesa.Skybox {
         id: skybox
-        baseName: _assetsPrefix + environmentMap + "_skybox"
+        baseName: "qrc:/" + environmentMap + "_skybox"
         extension: ".dds"
     }
 }

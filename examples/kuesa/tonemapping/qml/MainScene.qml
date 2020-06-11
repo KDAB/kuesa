@@ -53,7 +53,7 @@ Kuesa.SceneEntity {
 
     Kuesa.Skybox {
         // Optional: Use the irradiance instead of the radiance for a simple blurry background
-        baseName: _assetsPrefix + "pink_sunrise_16f_radiance"
+        baseName: "qrc:/pink_sunrise_16f_radiance"
         extension: ".dds"
     }
 
@@ -80,7 +80,7 @@ Kuesa.SceneEntity {
         InputSettings { },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise_16f_irradiance" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+                source: "pink_sunrise_16f_irradiance" + ((!root3D.es2) ? ".dds" : "_es2.dds")
 
                 minificationFilter: Texture.LinearMipMapLinear
                 magnificationFilter: Texture.Linear
@@ -91,7 +91,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise_16f_specular" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+                source: "pink_sunrise_16f_specular" + ((!root3D.es2) ? ".dds" : "_es2.dds")
 
                 minificationFilter: Texture.LinearMipMapLinear
                 magnificationFilter: Texture.Linear
@@ -181,7 +181,7 @@ Kuesa.SceneEntity {
         id: gltf2importer
         sceneEntity: root3D
         assignNames: true
-        source: _assetsPrefix + "RotatingHelmet.gltf"
+        source: "RotatingHelmet.gltf"
         options.generateTangents: true
     }
 //! [1]

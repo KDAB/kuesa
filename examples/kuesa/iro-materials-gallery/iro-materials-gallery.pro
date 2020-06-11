@@ -37,69 +37,9 @@ SOURCES += \
     materialinspector.cpp
 
 RESOURCES += \
-    qml/qml.qrc
-
-macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
-else:windows:APP_PWD=$$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-else: APP_PWD=$$OUT_PWD
-RES_PWD=$$APP_PWD/resources
-
-gltf_dir = ../assets/models/iro-materials/
-gltf.files = \
-    $${gltf_dir}/iro-materials-gallery.bin \
-    $${gltf_dir}/iro-materials-gallery.gltf \
-    $${gltf_dir}/carpaint.png
-
-envmaps_dir = ../assets/envmaps/pink_sunrise
-envmaps.files = \
-    $${envmaps_dir}/pink_sunrise_16f_irradiance.dds \
-    $${envmaps_dir}/pink_sunrise_16f_radiance.dds \
-    $${envmaps_dir}/pink_sunrise_16f_specular.dds \
-    $${envmaps_dir}/pink_sunrise_skybox.dds
-
-android {
-    gltf.path = /assets
-    INSTALLS += gltf envmaps
-    DISTFILES += android/AndroidManifest.xml
-    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-} else:ios {
-    gltf.path = "/Library/Application Support"
-    envmaps.path = "/Library/Application Support"
-    QMAKE_BUNDLE_DATA += gltf envmaps
-    OTHER_FILES += Info-ios.plist
-    QMAKE_INFO_PLIST = Info-ios.plist
-    OBJECTIVE_SOURCES += ios/iosutils.mm
-    QMAKE_ASSET_CATALOGS += ios/Images.xcassets
-} else:osx {
-    gltf.path = "/Contents/Resources"
-    envmaps.path = "/Contents/Resources"
-    QMAKE_BUNDLE_DATA += gltf envmaps
-    ICON = ../shared-utils/kuesa.icns
-    OTHER_FILES += Info-macos.plist
-    QMAKE_INFO_PLIST = Info-macos.plist
-} else {
-    RCC_BINARY_SOURCES += \
-        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc \
-        ../assets/models/iro-materials/gltf.qrc
-
-    windows {
-        RC_ICONS = ../shared-utils/kuesa.ico
-        DESTDIR = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-    }
-
-    # Build resources as external files
-    asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
-    asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
-    asset_builder.input = RCC_BINARY_SOURCES
-    asset_builder.output = $$RES_PWD/${QMAKE_FILE_IN_BASE}.qrb
-    asset_builder.CONFIG += no_link target_predeps
-    QMAKE_EXTRA_COMPILERS += asset_builder
-
-    ext_resources.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-    ext_resources.files = $$RES_PWD
-
-    INSTALLS += ext_resources
-}
+    qml/qml.qrc \
+    ../assets/models/iro-materials/gltf.qrc \
+    ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 target.files = $$PWD/*
