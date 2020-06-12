@@ -526,7 +526,6 @@ Qt3DRender::QRenderTarget *createRenderTarget(RenderTargetFlags flags,
         } else {
             depthTexture = new Qt3DRender::QTexture2D;
         }
-        depthTexture->setFormat(Qt3DRender::QAbstractTexture::DepthFormat);
         depthTexture->setSize(surfaceSize.width(), surfaceSize.height());
         depthTexture->setGenerateMipMaps(false);
         depthTexture->setFormat(Qt3DRender::QAbstractTexture::D24);
@@ -1102,20 +1101,6 @@ void ForwardRenderer::reconfigureFrameGraph()
     // delete the extra nodes to render main scene to texture.  Will recreate if needed
     delete m_renderToTextureRootNode;
     m_renderToTextureRootNode = nullptr;
-
-    // Render Targets are owned by the FrameGraph itself There should be no
-    // reasons that requires them to be recreatd when the FrameGraph tree has
-    // to be rebuild. Resize of the attachments when the surface size changes
-    // is handled by handleSurfaceChange and updateTextureSizes
-    const bool recreateRenderTargets = false;
-    if (recreateRenderTargets) {
-        delete m_renderTargets[0];
-        delete m_renderTargets[1];
-        delete m_multisampleTarget;
-        m_renderTargets[0] = nullptr;
-        m_renderTargets[1] = nullptr;
-        m_multisampleTarget = nullptr;
-    }
 
     Qt3DRender::QAbstractTexture *depthTex = nullptr;
 
