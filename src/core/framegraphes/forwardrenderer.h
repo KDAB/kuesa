@@ -82,6 +82,7 @@ class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QRenderSurfaceSele
     Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged REVISION 1)
     Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay WRITE setShowDebugOverlay NOTIFY showDebugOverlayChanged REVISION 2)
     Q_PROPERTY(bool particlesEnabled READ particlesEnabled WRITE setParticlesEnabled NOTIFY particlesEnabledChanged REVISION 3)
+    Q_PROPERTY(bool usesStencilMask READ usesStencilMask WRITE setUsesStencilMask NOTIFY usesStencilMaskChanged REVISION 3)
 
 public:
     ForwardRenderer(Qt3DCore::QNode *parent = nullptr);
@@ -100,6 +101,7 @@ public:
     ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
     bool showDebugOverlay() const;
     bool particlesEnabled() const;
+    bool usesStencilMask() const;
 
     Q_INVOKABLE void addPostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
     Q_INVOKABLE void removePostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
@@ -122,6 +124,7 @@ public Q_SLOTS:
     void setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
     void setShowDebugOverlay(bool showDebugOverlay);
     void setParticlesEnabled(bool enabled);
+    void setUsesStencilMask(bool usesStencilMask);
 
     void addLayer(Qt3DRender::QLayer *layer);
     void removeLayer(Qt3DRender::QLayer *layer);
@@ -142,6 +145,7 @@ Q_SIGNALS:
     void toneMappingAlgorithmChanged(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
     void showDebugOverlayChanged(bool showDebugOverlay);
     void particlesEnabledChanged(bool enabled);
+    void usesStencilMaskChanged(bool usesStencilMask);
 
 private:
     void updateTextureSizes();
@@ -179,7 +183,8 @@ private:
     Qt3DRender::QFrameGraphNode *m_effectsRootNode;
     Qt3DRender::QRenderTarget *m_renderTargets[2];
     Qt3DRender::QRenderTarget *m_multisampleTarget;
-    Qt3DRender::QBlitFramebuffer *m_blitFramebufferNode;
+    Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromMSToFBO0;
+    Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromFBO0ToFBO1;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     Qt3DRender::QDebugOverlay *m_debugOverlay;
 #endif
@@ -229,6 +234,8 @@ private:
     // Particles
     bool m_particlesEnabled;
     ParticleRenderStage *m_particleRenderStage;
+
+    bool m_usesStencilMask;
 
     // GammaCorrection
     ToneMappingAndGammaCorrectionEffect *m_gammaCorrectionFX;

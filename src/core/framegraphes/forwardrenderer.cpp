@@ -418,6 +418,26 @@ using namespace Kuesa;
     \default ToneMappingAndGammaCorrectionEffect.None
  */
 
+/*!
+    \property bool Kuesa::ForwardRenderer::usesStencilMask
+
+    Enables/disables stencil buffers. If true, stencil operations be used during the render phase to modify the stencil buffer.
+    The resulting stencil buffer can later be used to apply post process effect to only part of the scene
+
+    \since Kuesa 1.3
+    \default False
+ */
+
+/*!
+    \qmlproperty bool Kuesa::ForwardRenderer::usesStencilMask
+
+    Enables/disables stencil buffers. If true, stencil operations be used during the render phase to modify the stencil buffer.
+    The resulting stencil buffer can later be used to apply post process effect to only part of the scene
+
+    \since Kuesa 1.3
+    \default False
+ */
+
 namespace {
 
 struct GLFeatures {
@@ -481,6 +501,7 @@ enum RenderTargetFlag {
     IncludeDepth = (1 << 0),
     Multisampled = (1 << 1),
     HalfFloatAttachments = (1 << 2),
+    IncludeStencil = (1 << 3)
 };
 Q_DECLARE_FLAGS(RenderTargetFlags, RenderTargetFlag)
 
@@ -518,24 +539,58 @@ Qt3DRender::QRenderTarget *createRenderTarget(RenderTargetFlags flags,
     colorOutput->setTexture(colorTexture);
     renderTarget->addOutput(colorOutput);
 
-    if (flags & RenderTargetFlag::IncludeDepth) {
-        Qt3DRender::QAbstractTexture *depthTexture = nullptr;
-        if (flags & RenderTargetFlag::Multisampled) {
-            depthTexture = new Qt3DRender::QTexture2DMultisample;
-            depthTexture->setSamples(samples);
-        } else {
-            depthTexture = new Qt3DRender::QTexture2D;
+    // Three options:
+    // Depth is requested
+    // Stencil is requested
+    // Depth and stencil is requested
+
+    const auto depthStencilFlags = flags & (RenderTargetFlag::IncludeDepth | RenderTargetFlag::IncludeStencil);
+    if (depthStencilFlags) {
+        Qt3DRender::QAbstractTexture::TextureFormat textureFormat;
+        Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint;
+        if (depthStencilFlags == RenderTargetFlag::IncludeDepth) {
+            textureFormat = Qt3DRender::QAbstractTexture::D24;
+            attachmentPoint = Qt3DRender::QRenderTargetOutput::Depth;
         }
-        depthTexture->setSize(surfaceSize.width(), surfaceSize.height());
-        depthTexture->setGenerateMipMaps(false);
-        depthTexture->setFormat(Qt3DRender::QAbstractTexture::D24);
-        auto depthOutput = new Qt3DRender::QRenderTargetOutput;
-        depthOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Depth);
-        depthOutput->setTexture(depthTexture);
-        renderTarget->addOutput(depthOutput);
+        if (depthStencilFlags == RenderTargetFlag::IncludeStencil) {
+            textureFormat = Qt3DRender::QAbstractTexture::D24S8;
+            attachmentPoint = Qt3DRender::QRenderTargetOutput::Stencil;
+        }
+        if (depthStencilFlags == (RenderTargetFlag::IncludeDepth | RenderTargetFlag::IncludeStencil)) {
+            textureFormat = Qt3DRender::QAbstractTexture::D24S8;
+            attachmentPoint = Qt3DRender::QRenderTargetOutput::DepthStencil;
+        }
+
+        Qt3DRender::QAbstractTexture *texture = nullptr;
+        if (flags & RenderTargetFlag::Multisampled) {
+            texture = new Qt3DRender::QTexture2DMultisample;
+            texture->setSamples(samples);
+        } else {
+            texture = new Qt3DRender::QTexture2D;
+        }
+        texture->setSize(surfaceSize.width(), surfaceSize.height());
+        texture->setGenerateMipMaps(false);
+        texture->setFormat(textureFormat);
+        auto depthStencilOutput = new Qt3DRender::QRenderTargetOutput;
+        depthStencilOutput->setAttachmentPoint(attachmentPoint);
+        depthStencilOutput->setTexture(texture);
+        renderTarget->addOutput(depthStencilOutput);
     }
 
     return renderTarget;
+}
+
+bool renderTargetHasAttachmentOfType(const Qt3DRender::QRenderTarget *target,
+                                     const Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentType)
+{
+    if (!target)
+        return false;
+    const auto &outputs = target->outputs();
+    for (const Qt3DRender::QRenderTargetOutput *output : outputs) {
+        if (output->attachmentPoint() == attachmentType)
+            return true;
+    }
+    return false;
 }
 
 } // namespace
@@ -557,13 +612,15 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_renderToTextureRootNode(nullptr)
     , m_effectsRootNode(nullptr)
     , m_multisampleTarget(nullptr)
-    , m_blitFramebufferNode(nullptr)
+    , m_blitFramebufferNodeFromMSToFBO0(nullptr)
+    , m_blitFramebufferNodeFromFBO0ToFBO1(nullptr)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     , m_debugOverlay(new Qt3DRender::QDebugOverlay)
 #endif
     , m_fgTreeRebuiltScheduled(false)
     , m_particlesEnabled(false)
     , m_particleRenderStage(new ParticleRenderStage())
+    , m_usesStencilMask(false)
     , m_gammaCorrectionFX(new ToneMappingAndGammaCorrectionEffect())
 {
     m_renderTargets[0] = nullptr;
@@ -593,7 +650,7 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
         m_noFrustumCullingTransparentTechniqueFilter->addMatch(filterKey);
     }
 
-    m_clearBuffers->setBuffers(Qt3DRender::QClearBuffers::ColorDepthBuffer);
+    m_clearBuffers->setBuffers(Qt3DRender::QClearBuffers::ColorDepthStencilBuffer);
 
     connect(m_cameraSelector, &Qt3DRender::QCameraSelector::cameraChanged, this, &ForwardRenderer::cameraChanged);
     connect(m_clearBuffers, &Qt3DRender::QClearBuffers::clearColorChanged, this, &ForwardRenderer::clearColorChanged);
@@ -729,6 +786,11 @@ ToneMappingAndGammaCorrectionEffect::ToneMapping ForwardRenderer::toneMappingAlg
 bool ForwardRenderer::particlesEnabled() const
 {
     return m_particlesEnabled;
+}
+
+bool ForwardRenderer::usesStencilMask() const
+{
+    return m_usesStencilMask;
 }
 
 /*!
@@ -940,6 +1002,22 @@ void ForwardRenderer::setParticlesEnabled(bool enabled)
 }
 
 /*!
+    Allows to use stencil buffer during the render phase. The resulting
+    stencil buffer is then accesible from the post processing effects.
+    This allows to apply post process effects only to part of the scene.
+
+    \since Kuesa 1.3
+*/
+void ForwardRenderer::setUsesStencilMask(bool usesStencilMask)
+{
+    if (usesStencilMask == m_usesStencilMask)
+        return;
+    m_usesStencilMask = usesStencilMask;
+    scheduleFGTreeRebuild();
+    emit usesStencilMaskChanged(m_usesStencilMask);
+}
+
+/*!
     Adds \a layer to the list of layers used for rendering. When no layer is
     set, everything gets rendered. As soon as you starting adding a layer, only
     the entities that match the layers will be rendered.
@@ -1006,9 +1084,16 @@ void ForwardRenderer::updateTextureSizes()
     if (m_multisampleTarget != nullptr) {
         outputs += m_multisampleTarget->outputs();
         const QRect blitRect(QPoint(), targetSize);
-        m_blitFramebufferNode->setSourceRect(blitRect);
-        m_blitFramebufferNode->setDestinationRect(blitRect);
+        m_blitFramebufferNodeFromMSToFBO0->setSourceRect(blitRect);
+        m_blitFramebufferNodeFromMSToFBO0->setDestinationRect(blitRect);
     }
+
+    if (m_blitFramebufferNodeFromFBO0ToFBO1) {
+        const QRect blitRect(QPoint(), targetSize);
+        m_blitFramebufferNodeFromFBO0ToFBO1->setSourceRect(blitRect);
+        m_blitFramebufferNodeFromFBO0ToFBO1->setDestinationRect(blitRect);
+    }
+
     for (auto output : qAsConst(outputs))
         output->texture()->setSize(targetSize.width(), targetSize.height());
     for (auto effect : qAsConst(m_userPostProcessingEffects))
@@ -1102,6 +1187,26 @@ void ForwardRenderer::reconfigureFrameGraph()
     delete m_renderToTextureRootNode;
     m_renderToTextureRootNode = nullptr;
 
+    // Render Targets are owned by the FrameGraph itself There should be few
+    // reasons that requires them to be recreatd when the FrameGraph tree has
+    // to be rebuild. One of them is when we need to add a Stencil Attachment.
+    // Resize of the attachments when the surface size changes is handled by
+    // handleSurfaceChange and updateTextureSizes
+    const bool fboHasStencilAttachment =
+            (renderTargetHasAttachmentOfType(m_renderTargets[0], Qt3DRender::QRenderTargetOutput::Stencil) ||
+            renderTargetHasAttachmentOfType(m_renderTargets[0], Qt3DRender::QRenderTargetOutput::DepthStencil));
+    const bool recreateRenderTargets = (m_usesStencilMask != fboHasStencilAttachment);
+    if (recreateRenderTargets) {
+        delete m_renderTargets[0];
+        delete m_renderTargets[1];
+        delete m_multisampleTarget;
+        delete m_blitFramebufferNodeFromFBO0ToFBO1;
+        m_renderTargets[0] = nullptr;
+        m_renderTargets[1] = nullptr;
+        m_multisampleTarget = nullptr;
+        m_blitFramebufferNodeFromFBO0ToFBO1 = nullptr;
+    }
+
     Qt3DRender::QAbstractTexture *depthTex = nullptr;
 
     // Configure effects
@@ -1111,6 +1216,10 @@ void ForwardRenderer::reconfigureFrameGraph()
 
         if (glFeatures.hasHalfFloatRenderable)
             baseRenderTargetFlags |= RenderTargetFlag::HalfFloatAttachments;
+
+        if (m_usesStencilMask)
+            baseRenderTargetFlags |= RenderTargetFlag::IncludeStencil;
+
 
         const QSize surfaceSize = currentSurfaceSize();
         if (!m_renderTargets[0]) {
@@ -1127,8 +1236,11 @@ void ForwardRenderer::reconfigureFrameGraph()
         }
 
         const auto &target0outputs = m_renderTargets[0]->outputs();
-        if (!target0outputs.empty())
-            depthTex = target0outputs.back()->texture();
+        // Output #0 is the color
+        // Output #1 is the depth
+        if (!target0outputs.empty()) {
+            depthTex = target0outputs[1]->texture();
+        }
 
         // Remove cameraSelector subtree
         m_cameraSelector->setParent(Q_NODE_NULLPTR);
@@ -1145,7 +1257,7 @@ void ForwardRenderer::reconfigureFrameGraph()
         auto sceneTargetSelector = new Qt3DRender::QRenderTargetSelector(mainSceneFilter);
 
         auto clearScreen = new Qt3DRender::QClearBuffers(sceneTargetSelector);
-        clearScreen->setBuffers(Qt3DRender::QClearBuffers::ColorDepthBuffer);
+        clearScreen->setBuffers(Qt3DRender::QClearBuffers::ColorDepthStencilBuffer);
         clearScreen->setClearColor(m_clearBuffers->clearColor());
         connect(m_clearBuffers, &Qt3DRender::QClearBuffers::clearColorChanged,
                 clearScreen, &Qt3DRender::QClearBuffers::setClearColor);
@@ -1167,24 +1279,40 @@ void ForwardRenderer::reconfigureFrameGraph()
             }
 
             // Blit into regular Tex2D FBO
-            m_blitFramebufferNode = new Qt3DRender::QBlitFramebuffer(sceneTargetSelector);
+            m_blitFramebufferNodeFromMSToFBO0 = new Qt3DRender::QBlitFramebuffer(sceneTargetSelector);
 
             sceneTargetSelector->setTarget(m_multisampleTarget);
 
-            m_blitFramebufferNode->setSource(m_multisampleTarget);
-            m_blitFramebufferNode->setDestination(m_renderTargets[0]);
-            m_blitFramebufferNode->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
-            m_blitFramebufferNode->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+            m_blitFramebufferNodeFromMSToFBO0->setSource(m_multisampleTarget);
+            m_blitFramebufferNodeFromMSToFBO0->setDestination(m_renderTargets[0]);
+            m_blitFramebufferNodeFromMSToFBO0->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+            m_blitFramebufferNodeFromMSToFBO0->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
 
             const QRect blitRect(QPoint(), surfaceSize);
-            m_blitFramebufferNode->setSourceRect(blitRect);
-            m_blitFramebufferNode->setDestinationRect(blitRect);
+            m_blitFramebufferNodeFromMSToFBO0->setSourceRect(blitRect);
+            m_blitFramebufferNodeFromMSToFBO0->setDestinationRect(blitRect);
 
-            new Qt3DRender::QNoDraw(m_blitFramebufferNode);
-
+            auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromMSToFBO0);
         } else {
             // Render into non MSAA FBO directly
             sceneTargetSelector->setTarget(m_renderTargets[0]);
+        }
+
+        // Blit FBO 0 to FBO 1 to be able to access stencil of the render in post fx
+        if (m_renderTargets[1] && m_usesStencilMask && m_blitFramebufferNodeFromFBO0ToFBO1 == nullptr) {
+            m_blitFramebufferNodeFromFBO0ToFBO1 = new Qt3DRender::QBlitFramebuffer(sceneTargetSelector);
+
+            m_blitFramebufferNodeFromFBO0ToFBO1->setSource(m_renderTargets[0]);
+            m_blitFramebufferNodeFromFBO0ToFBO1->setDestination(m_renderTargets[1]);
+            m_blitFramebufferNodeFromFBO0ToFBO1->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+            m_blitFramebufferNodeFromFBO0ToFBO1->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+
+            const QRect blitRect(QPoint(), surfaceSize);
+            m_blitFramebufferNodeFromFBO0ToFBO1->setSourceRect(blitRect);
+            m_blitFramebufferNodeFromFBO0ToFBO1->setDestinationRect(blitRect);
+
+            auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromFBO0ToFBO1);
+
         }
 
         // create a node to hold all the effect subtrees, under the main viewport. They don't need camera, alpha, frustum, etc.
