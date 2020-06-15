@@ -1,30 +1,3 @@
-[
-    {
-        "emissiveFactor": [
-            0.0,
-            0.0,
-            0.0
-        ],
-        "name": "Material",
-        "pbrMetallicRoughness": {
-            "baseColorFactor": [
-                0.64000004529953,
-                0.64000004529953,
-                0.64000004529953,
-                1.0
-            ],
-            "baseColorTexture": {
-                "index": 0,
-                "extensions": {
-                    "KHR_texture_transform": {
-                        "offset": [0.5, 0.6],
-                        "rotation": 0.1,
-                        "scale": [0.3, 0.4]
-                    }
-                }
-            },
-            "metallicFactor": 0.0,
-            "roughnessFactor": 1.0
-        }
-    }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:6fc0e66a0ac2cf5da2197827533ce4b66b160f056ea791b4fda53dfc846e9557
+size 744
