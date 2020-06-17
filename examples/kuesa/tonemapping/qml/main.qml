@@ -27,9 +27,8 @@
 */
 
 import QtQuick 2.12
-import QtQuick.Controls 2.0
-import QtQuick.Scene3D 2.0
-import "controls" as Controls
+import QtQuick.Scene3D 2.12
+import QtQuick.Controls.Material 2.12
 
 //! [0]
 Item {
@@ -68,7 +67,7 @@ Item {
     // Logos
     Image {
         id: kdabLogoBottomRight
-        width: Controls.SharedAttributes.ldpi * 1.3
+        width: parent.width/13
         mipmap: true
         smooth: true
         antialiasing: true
@@ -76,8 +75,8 @@ Item {
         source: "/kdab_logo_white.png"
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        anchors.bottomMargin: Controls.SharedAttributes.ldpi / 5
-        anchors.rightMargin: Controls.SharedAttributes.ldpi / 5
+        anchors.bottomMargin: width/4
+        anchors.rightMargin: width/4
         fillMode: Image.PreserveAspectFit
 
         MouseArea {
@@ -91,8 +90,8 @@ Item {
         property bool kuesaLogo: true
         anchors.verticalCenter: kdabLogoBottomRight.verticalCenter
         anchors.right: kdabLogoBottomRight.left
-        anchors.rightMargin: Controls.SharedAttributes.ldpi / 3
-        width: Controls.SharedAttributes.ldpi * (kuesaLogo ? 2.3 : 1.8)
+        anchors.rightMargin: kdabLogoBottomRight.anchors.rightMargin/1.3
+        width: parent.width/15* (kuesaLogo ? 2.3 : 1.8)
         mipmap: true
         smooth: true
         antialiasing: true

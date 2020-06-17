@@ -28,8 +28,8 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import "controls" as Controls
-import QtGraphicalEffects 1.0
+import QtQuick.Controls.Material 2.12
+import QtQuick.Layouts 1.12
 
 Item {
     id: root
@@ -37,6 +37,8 @@ Item {
     property alias toggleRotation: rotationToggleSwitch.checked
     property alias toggleLightRotation: lightToggleSwitch.checked
     property alias exposure: exposureSlider.value
+
+    readonly property real largeFontSize: 15.0
 
     function reset() {
         speedC.value = 0
@@ -48,9 +50,8 @@ Item {
     Item {
         id: menu
 
-        property int expandedWidth: Math.min(Controls.SharedAttributes.ldpi * 3, root.width / 3)
-        property real switchWidth: Math.floor( Math.min((expandedWidth - Controls.SharedAttributes.defaultSpacing * 4) / 3, Controls.SharedAttributes.ldpi * 1.3) ) - 1
-        property real radioButtonWidth: Math.floor( Math.min( (expandedWidth - Controls.SharedAttributes.defaultSpacing * 4) / 3, Controls.SharedAttributes.ldpi * 1.3) ) - 10
+        property int expandedWidth: 260
+        property real switchWidth: 90
 
         width: menuIcon.expanded ? expandedWidth : 0
         height: parent.height
@@ -59,117 +60,34 @@ Item {
 
         Behavior on width { NumberAnimation {duration: 500; easing.type: Easing.InOutQuad } }
 
-        Component {
-            id: blurBg
+        Flickable {
+            y: 55
+            width: menu.expandedWidth - 10
+            x: 5
+            height: parent.height - y
+            clip: true
+            contentHeight: controlArea.height
 
-            Item {
-                Rectangle {
-                    id: cliper
+            interactive: height < contentHeight
 
-                    property real scaleReducer: 2.5
-                    width: menu.expandedWidth / scaleReducer
-                    height: root.height / scaleReducer
-                    clip: true
+            ColumnLayout {
+                id: controlArea
+                spacing: 5
+                anchors.horizontalCenter: parent.horizontalCenter
 
-                    ShaderEffectSource {
-                        id: copy3D
-                        width: baseUI.width / cliper.scaleReducer
-                        height: baseUI.height / cliper.scaleReducer
-                        sourceItem: baseUI
-                        textureSize: Qt.size(width / cliper.scaleReducer, height / cliper.scaleReducer)
-                        sourceRect : Qt.rect(0, 0, width * cliper.scaleReducer, height * cliper.scaleReducer)
-                        samples: 1
-                        mipmap: false
-                    }
-                }
-
-                FastBlur {
-                    anchors.fill: cliper
-                    source: cliper
-                    radius: 140/cliper.scaleReducer
-                    transform: Scale {
-                        origin.x: 0
-                        origin.y: 0
-                        xScale: root.height / cliper.height
-                        yScale: xScale
+                GroupBox {
+                    label: Label {
+                        text: "Tone Mapping Effect"
+                        font.weight: Font.ExtraLight
+                        font.pixelSize: largeFontSize
                     }
 
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#40202020"
-                    }
-                }
+                    ColumnLayout {
 
-                Image {
-                    fillMode: Image.Tile
-                    source: "noise.png"
-                    width: cliper.width * (root.height / cliper.height)
-                    height: root.height
-                    opacity: 0.8
-                }
-            }
-        }
+                        ButtonGroup { id: radioButtonsGroup}
 
-        Component {
-            id: noiseBg
-
-            Rectangle {
-                anchors.fill: parent
-                color: "#33000000"
-
-                Image {
-                    fillMode: Image.Tile
-                    source: "noise.png"
-                    anchors.fill: parent
-                    opacity: 0.8
-                }
-            }
-        }
-
-        Loader {
-            anchors.fill: parent
-            sourceComponent: blurBg
-        }
-
-        MouseArea {
-            width: childrenRect.width
-            height: parent.height
-
-            Flickable {
-                y: Controls.SharedAttributes.ldpi * 0.75
-                width: menu.expandedWidth - Math.ceil(Controls.SharedAttributes.ldpi / 10) * 2
-                x: Math.ceil(Controls.SharedAttributes.ldpi / 10)
-                height: parent.height - y
-                clip: true
-                contentHeight: controlArea.height
-
-                interactive: height < contentHeight
-
-                Column {
-                    x: 1
-                    width: parent.width - 2
-                    id: controlArea
-
-                    Controls.GroupBox {
-                        width: parent.width
-
-                        Controls.StyledLabel {
-                            text: "Tone Mapping Effect"
-                            font.weight: Font.ExtraLight
-                            font.pixelSize: Controls.SharedAttributes.largeFontSize
-                        }
-
-                        Rectangle{
-                            width: parent.width
-                            height: Math.ceil(Controls.SharedAttributes.ldpi / 150)
-                            color: "#70ffffff"
-                        }
-
-                        ButtonGroup { id: radioButtonsGroup
-                        }
-
-                        Controls.HorizontalLabeledSwitch {
-                            exclusiveGroup: radioButtonsGroup
+                        RadioButton {
+                            ButtonGroup.group: radioButtonsGroup
                             text: "None"
                             onCheckedChanged: {
                                 if (checked)
@@ -177,9 +95,9 @@ Item {
                             }
                         }
 
-                        Controls.HorizontalLabeledSwitch {
+                        RadioButton {
                             checked: true
-                            exclusiveGroup: radioButtonsGroup
+                            ButtonGroup.group: radioButtonsGroup
                             text: "Reinhard"
                             onCheckedChanged: {
                                 if (checked)
@@ -187,9 +105,9 @@ Item {
                             }
                         }
 
-                        Controls.HorizontalLabeledSwitch {
+                        RadioButton {
                             id: filmicEffectToneMappingSwitch
-                            exclusiveGroup: radioButtonsGroup
+                            ButtonGroup.group: radioButtonsGroup
                             text: "Filmic"
                             onCheckedChanged: {
                                 if (checked)
@@ -197,65 +115,56 @@ Item {
                             }
                         }
 
-                        Controls.HorizontalLabeledSwitch {
+                        RadioButton {
                             id: unchartedEffectToneMappingSwitch
-                            exclusiveGroup: radioButtonsGroup
+                            ButtonGroup.group: radioButtonsGroup
                             text: "Uncharted"
                             onCheckedChanged: {
                                 if (checked)
                                     toneMappingAlgorithmName = text
                             }
                         }
+                    }
+                }
 
-                        Item {
-                            height: Controls.SharedAttributes.defaultSpacing
-                            width: 1
-                        }
+                GroupBox {
+                    label: Label {
+                        text: "Effects Control"
+                        font.weight: Font.ExtraLight
+                        font.pixelSize: largeFontSize
+                    }
 
-                        Controls.StyledLabel {
-                            text: "Effects Control"
-                            font.weight: Font.ExtraLight
-                            font.pixelSize: Controls.SharedAttributes.largeFontSize
-                        }
+                    ColumnLayout {
+                        spacing: 5
 
-                        Rectangle{
-                            width: parent.width
-                            height: Math.ceil(Controls.SharedAttributes.ldpi / 150)
-                            color: "#70ffffff"
-                        }
-
-                        Controls.LabeledSlider {
-                            id: exposureSlider
+                        Label {
                             text: "Exposure: " + parseFloat(Math.round(exposureSlider.value * 100) / 100).toFixed(2)
-                            minimumValue: -5.0
-                            maximumValue: 5
-                            value: 1.7
+                            font.weight: Font.ExtraLight
+                            font.pixelSize: largeFontSize
+                        }
+                        Slider {
+                            id: exposureSlider
+                            from: -5.0
+                            to: 5
+                            value: 1.0
                             width: parent.width
                         }
 
                         Flow {
-                            width: menu.expandedWidth
+                            width: parent.width
                             spacing: parent.spacing
-
-                            Controls.LabeledSwitch {
+                            Switch {
                                 id: lightToggleSwitch
                                 text: "Light Paused"
                                 checked: false
-                                width: menu.switchWidth
                             }
 
-                            Controls.LabeledSwitch {
+                            Switch {
                                 id: rotationToggleSwitch
                                 text: "Helmet Rotation"
                                 checked: false
-                                width: menu.switchWidth
                             }
                         }
-                    }
-
-                    Item {
-                        height: Controls.SharedAttributes.ldpi / 10
-                        width: 1
                     }
                 }
             }
@@ -272,7 +181,7 @@ Item {
 
     Item {
         id: menuIcon
-        width: Math.ceil(Controls.SharedAttributes.ldpi / 3.5)
+        width: 30
         height: Math.ceil(width * 0.9)
         x: width / 2
         y: Math.ceil(width * 0.75)
@@ -292,7 +201,7 @@ Item {
             height:  Math.ceil(width / 6)
             radius: height
             color: "#cccccc"
-            rotation: parent.expanded? -0.25 * Controls.SharedAttributes.ldpi : 0
+            rotation: parent.expanded? -24 : 0
 
             Behavior on rotation { NumberAnimation {duration: 250; easing.type: Easing.OutCirc } }
         }
