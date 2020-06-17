@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>stencileffect.frag</file>
+        <file>scene.gltf</file>
+    </qresource>
+</RCC>
