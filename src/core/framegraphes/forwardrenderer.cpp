@@ -1324,7 +1324,7 @@ QSize ForwardRenderer::currentSurfaceSize() const
     }
 
     if (!size.isValid())
-        qCWarning(kuesa) << Q_FUNC_INFO << "Unexpected surface size" << size;
+        qCWarning(Kuesa::kuesa) << Q_FUNC_INFO << "Unexpected surface size" << size;
 
     return size;
 }

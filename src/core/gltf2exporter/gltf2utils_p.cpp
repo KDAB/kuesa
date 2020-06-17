@@ -103,7 +103,7 @@ quint8 accessorDataTypeToBytes(QAttribute::VertexBaseType type)
     case QAttribute::Double:
         return 8;
     default:
-        qCWarning(kuesa, "Invalid data type");
+        qCWarning(Kuesa::kuesa, "Invalid data type");
         return 0;
     }
 }

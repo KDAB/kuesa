@@ -56,12 +56,12 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
         const auto &bufferViewValue = imageObject.value(KEY_BUFFER_VIEW);
 
         if (uriValue.isUndefined() && bufferViewValue.isUndefined()) {
-            qCWarning(kuesa, "An image needs an uri or a bufferView");
+            qCWarning(Kuesa::kuesa, "An image needs an uri or a bufferView");
             return false;
         }
 
         if (!uriValue.isUndefined() && !bufferViewValue.isUndefined()) {
-            qCWarning(kuesa, "An image needs only a bufferView or an uri");
+            qCWarning(Kuesa::kuesa, "An image needs only a bufferView or an uri");
             return false;
         }
 
@@ -89,7 +89,7 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
 
             const auto &mimeTypeValue = imageObject.value(KEY_MIMETYPE);
             if (mimeTypeValue.isUndefined()) {
-                qCWarning(kuesa, "Missing mime type for image buffer");
+                qCWarning(Kuesa::kuesa, "Missing mime type for image buffer");
                 return false;
             }
             image.mimeType = mimeTypeValue.toString();

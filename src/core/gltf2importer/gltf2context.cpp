@@ -56,7 +56,7 @@ const QByteArray GLTF2Context::buffer(qint32 id) const
     if (id >= 0 && id < m_buffers.size())
         return m_buffers.at(id);
 
-    qCWarning(kuesa, "Invalid buffer id");
+    qCWarning(Kuesa::kuesa, "Invalid buffer id");
     return QByteArray();
 }
 
@@ -75,7 +75,7 @@ const BufferView GLTF2Context::bufferView(qint32 id) const
     if (id >= 0 && id < m_bufferViews.size())
         return m_bufferViews.at(id);
 
-    qCWarning(kuesa, "Invalid buffer view id");
+    qCWarning(Kuesa::kuesa, "Invalid buffer view id");
     return BufferView();
 }
 
@@ -94,7 +94,7 @@ const Camera GLTF2Context::camera(qint32 id) const
     if (id >= 0 && id < m_cameras.size())
         return m_cameras.at(id);
 
-    qCWarning(kuesa, "Invalid camera id");
+    qCWarning(Kuesa::kuesa, "Invalid camera id");
     return {};
 }
 
@@ -113,7 +113,7 @@ const TreeNode GLTF2Context::treeNode(qint32 id) const
     if (id >= 0 && id < m_treeNodes.size())
         return m_treeNodes.at(id);
 
-    qCWarning(kuesa, "Invalid tree node id");
+    qCWarning(Kuesa::kuesa, "Invalid tree node id");
     return {};
 }
 
@@ -148,7 +148,7 @@ const Image GLTF2Context::image(qint32 id) const
     if (id >= 0 && id < m_images.size())
         return m_images.at(id);
 
-    qCWarning(kuesa, "Invalid image id");
+    qCWarning(Kuesa::kuesa, "Invalid image id");
     return Image();
 }
 
@@ -167,7 +167,7 @@ const TextureSampler GLTF2Context::textureSampler(qint32 id) const
     if (id >= 0 && id < m_textureSamplers.size())
         return m_textureSamplers.at(id);
 
-    qCWarning(kuesa, "Invalid texture sampler id");
+    qCWarning(Kuesa::kuesa, "Invalid texture sampler id");
     return TextureSampler();
 }
 
@@ -186,7 +186,7 @@ const Texture GLTF2Context::texture(qint32 id) const
     if (id >= 0 && id < m_textures.size())
         return m_textures.at(id);
 
-    qCWarning(kuesa, "Invalid texture id");
+    qCWarning(Kuesa::kuesa, "Invalid texture id");
     return Texture();
 }
 
@@ -205,7 +205,7 @@ const Animation GLTF2Context::animation(qint32 id) const
     if (id >= 0 && id < m_animations.size())
         return m_animations.at(id);
 
-    qCWarning(kuesa, "Invalid animation id");
+    qCWarning(Kuesa::kuesa, "Invalid animation id");
     return Animation();
 }
 
@@ -231,7 +231,7 @@ const Material GLTF2Context::material(qint32 id) const
     if (id >= 0 && id < m_materials.size())
         return m_materials.at(id);
 
-    qCWarning(kuesa, "Invalid material id");
+    qCWarning(Kuesa::kuesa, "Invalid material id");
     return Material();
 }
 
@@ -250,7 +250,7 @@ const Accessor GLTF2Context::accessor(qint32 id) const
     if (id >= 0 && id < m_accessors.size())
         return m_accessors.at(id);
 
-    qCWarning(kuesa, "Invalid accessor id");
+    qCWarning(Kuesa::kuesa, "Invalid accessor id");
     return Accessor();
 }
 
@@ -274,7 +274,7 @@ const Mesh GLTF2Context::mesh(qint32 id) const
     if (id >= 0 && id < m_meshes.size())
         return m_meshes.at(id);
 
-    qCWarning(kuesa, "Invalid mesh id");
+    qCWarning(Kuesa::kuesa, "Invalid mesh id");
     return Mesh();
 }
 
@@ -300,7 +300,7 @@ Layer GLTF2Context::layer(qint32 id) const
     if (id >= 0 && id < m_layers.size())
         return m_layers.at(id);
 
-    qCWarning(kuesa, "Invalid layer id");
+    qCWarning(Kuesa::kuesa, "Invalid layer id");
     return {};
 }
 
@@ -319,7 +319,7 @@ const Scene GLTF2Context::scene(qint32 id) const
     if (id >= 0 && id < m_scenes.size())
         return m_scenes.at(id);
 
-    qCWarning(kuesa, "Invalid scene id");
+    qCWarning(Kuesa::kuesa, "Invalid scene id");
     return {};
 }
 
@@ -348,7 +348,7 @@ const Skin GLTF2Context::skin(qint32 id) const
     if (id >= 0 && id < m_skins.size())
         return m_skins.at(id);
 
-    qCWarning(kuesa, "Invalid skin id");
+    qCWarning(Kuesa::kuesa, "Invalid skin id");
     return Skin();
 }
 
@@ -373,7 +373,7 @@ const Light GLTF2Context::light(qint32 id) const
     if (id >= 0 && id < m_lights.size())
         return m_lights.at(id);
 
-    qCWarning(kuesa, "Invalid light id");
+    qCWarning(Kuesa::kuesa, "Invalid light id");
     return Light();
 }
 

@@ -1,10 +1,10 @@
 /*
-    kuesa_p.h
+    logging.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Mike Krus <mike.krus@kdab.com>
+    Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,20 +26,15 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_P_H
-#define KUESA_P_H
+#include "logging_p.h"
 
-//
-//  W A R N I N G
-//  -------------
-//
-// This file is not part of the Kuesa API.  It exists for the convenience
-// of other Kuesa classes.  This header file may change from version to
-// version without notice, or even be removed.
-//
-// We mean it.
-//
+QT_BEGIN_NAMESPACE
 
-#include <logging_p.h>
+namespace Kuesa {
 
-#endif // KUESA_P_H
+Q_LOGGING_CATEGORY(kuesa, "Kuesa", QtWarningMsg)
+Q_LOGGING_CATEGORY(gltf2_parser_profiling, "Kuesa.Profiling.GLTF2", QtWarningMsg)
+
+}
+
+QT_END_NAMESPACE

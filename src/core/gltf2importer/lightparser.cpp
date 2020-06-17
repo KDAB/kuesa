@@ -65,7 +65,7 @@ bool Kuesa::GLTF2Import::LightParser::parse(const QJsonArray &lights, Kuesa::GLT
         else if (typeValue == KEY_LIGHT_SPOT)
             light.type = Qt3DRender::QAbstractLight::SpotLight;
         else {
-            qCWarning(kuesa) << "unknown KHR_lights_punctual light type: " << typeValue.toString();
+            qCWarning(Kuesa::kuesa) << "unknown KHR_lights_punctual light type: " << typeValue.toString();
             continue;
         }
 
@@ -94,9 +94,9 @@ bool Kuesa::GLTF2Import::LightParser::parse(const QJsonArray &lights, Kuesa::GLT
             light.innerConeAngleRadians = spotObject.value(KEY_INNER_CONE_ANGLE).toDouble(light.innerConeAngleRadians);
             light.outerConeAngleRadians = spotObject.value(KEY_OUTER_CONE_ANGLE).toDouble(light.outerConeAngleRadians);
             if (light.innerConeAngleRadians >= light.outerConeAngleRadians || light.innerConeAngleRadians < 0)
-                qCWarning(kuesa) << "KHR_lights_punctual SpotLight innerConeAngle must be between 0 and outerConeAngle. Invalid light: " << light.name;
+                qCWarning(Kuesa::kuesa) << "KHR_lights_punctual SpotLight innerConeAngle must be between 0 and outerConeAngle. Invalid light: " << light.name;
             if (light.outerConeAngleRadians > static_cast<float>(M_PI_2))
-                qCWarning(kuesa) << "KHR_lights_punctual SpotLight outerConeAngle must be less than PI/2. Invalid light: " << light.name;
+                qCWarning(Kuesa::kuesa) << "KHR_lights_punctual SpotLight outerConeAngle must be less than PI/2. Invalid light: " << light.name;
         }
 
         context->addLight(light);

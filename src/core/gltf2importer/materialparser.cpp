@@ -126,7 +126,7 @@ bool parseFloatArray(Vector &v,
                      float minValue, float maxValue)
 {
     if (array.size() < minItems || array.size() > maxItems) {
-        qCWarning(kuesa) << "array size doesn't satisfy min/maximum requirements";
+        qCWarning(Kuesa::kuesa) << "array size doesn't satisfy min/maximum requirements";
         return false;
     }
 
@@ -145,7 +145,7 @@ QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
                              4, 4,
                              std::numeric_limits<float>::lowest(),
                              std::numeric_limits<float>::max()))
-            qCWarning(kuesa()) << "Failed to parse value of type vec4 with" << rawValue;
+            qCWarning(Kuesa::kuesa) << "Failed to parse value of type vec4 with" << rawValue;
         return QVariant::fromValue(v);
     } else if (typeId == qMetaTypeId<QVector3D>()) {
         QVector3D v;
@@ -153,7 +153,7 @@ QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
                              3, 3,
                              std::numeric_limits<float>::lowest(),
                              std::numeric_limits<float>::max()))
-            qCWarning(kuesa()) << "Failed to parse value of type vec3 with" << rawValue;
+            qCWarning(Kuesa::kuesa) << "Failed to parse value of type vec3 with" << rawValue;
         return QVariant::fromValue(v);
     } else if (typeId == qMetaTypeId<QVector2D>()) {
         QVector2D v;
@@ -161,7 +161,7 @@ QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
                              2, 2,
                              std::numeric_limits<float>::lowest(),
                              std::numeric_limits<float>::max()))
-            qCWarning(kuesa()) << "Failed to parse value of type vec2 with" << rawValue;
+            qCWarning(Kuesa::kuesa) << "Failed to parse value of type vec2 with" << rawValue;
         return QVariant::fromValue(v);
     } else if (typeId == qMetaTypeId<float>() || typeId == qMetaTypeId<double>()) {
         return QVariant::fromValue(rawValue.toDouble());
@@ -174,7 +174,7 @@ QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
         parseTextureInfo(info, rawValue.toObject());
         return QVariant::fromValue(info);
     }
-    qCWarning(kuesa()) << "Failed to parse value of typeId" << typeId << "with" << rawValue;
+    qCWarning(Kuesa::kuesa) << "Failed to parse value of typeId" << typeId << "with" << rawValue;
     return QVariant();
 }
 
@@ -313,7 +313,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
         {
             const QString modeStr = materialObject.value(KEY_ALPHA_MODE).toString();
             if (!modeStr.isEmpty() && !modeEnumMap.contains(modeStr)) {
-                qCWarning(kuesa) << "Invalid material alpha mode";
+                qCWarning(Kuesa::kuesa) << "Invalid material alpha mode";
                 return false;
             }
 
@@ -426,7 +426,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
                         ++it;
                     }
                 } else {
-                    qCWarning(kuesa) << "No custom material registered for" << mat.customMaterial.type;
+                    qCWarning(Kuesa::kuesa) << "No custom material registered for" << mat.customMaterial.type;
                     return false;
                 }
             }

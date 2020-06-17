@@ -27,6 +27,7 @@
 INCLUDEPATH += $$PWD
 
 SOURCES += \
+    $$PWD/logging.cpp \
     $$PWD/sceneentity.cpp \
     $$PWD/animationplayer.cpp \
     $$PWD/skybox.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
     $$PWD/particles.cpp
 
 HEADERS += \
+    $$PWD/logging_p.h \
     $$PWD/sceneentity.h \
     $$PWD/factory.h \
     $$PWD/kuesa_p.h \

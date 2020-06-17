@@ -131,14 +131,19 @@ bool traverseGLTF(const QVector<KeyParserFuncPair> &parsers,
     auto parserIt = parsers.cbegin();
     const auto parserEnd = parsers.cend();
 
+    QElapsedTimer t;
+    t.start();
+    qint64 elapsedSinceLastCall = 0;
     while (parserIt != parserEnd) {
         const QJsonValue value = rootObject.value((*parserIt).first);
         const bool success = value.isUndefined() || (*parserIt).second(value);
         if (!success) {
-            qCWarning(kuesa()) << "Failed to parse" << (*parserIt).first;
+            qCWarning(Kuesa::kuesa) << "Failed to parse" << (*parserIt).first;
             return false;
         }
+        qCDebug(gltf2_parser_profiling) << "GLTF2 Traversed" << parserIt->first << " in (" << t.elapsed() - elapsedSinceLastCall << "ms)";
         ++parserIt;
+        elapsedSinceLastCall = t.elapsed();
     }
     return true;
 }
@@ -230,7 +235,7 @@ bool GLTF2Parser::parse(const QString &filePath)
     QFile f(filePath);
     f.open(QIODevice::ReadOnly);
     if (!f.isOpen()) {
-        qCWarning(kuesa()) << "Can't read file" << filePath;
+        qCWarning(Kuesa::kuesa) << "Can't read file" << filePath;
         return false;
     }
 
@@ -260,9 +265,16 @@ bool GLTF2Parser::parse(const QString &filePath)
  */
 bool GLTF2Parser::parse(const QByteArray &data, const QString &basePath, const QString &filename)
 {
+    QElapsedTimer t;
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Parsing starting";
+    t.start();
     const bool isValid = detectTypeAndParse(data, basePath, filename);
+    const qint64 elapsedAfterParsing = t.elapsed();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Parsing completed (" << elapsedAfterParsing << "ms)";
     if (isValid)
         addResourcesToSceneEntityCollections();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Resources added to collection (" << t.elapsed() - elapsedAfterParsing << "ms)";
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Parsing total (" << t.elapsed() << "ms)";
     return isValid;
 }
 
@@ -295,10 +307,10 @@ bool GLTF2Parser::isBinaryGLTF(const QByteArray &data, bool &isValid)
         isBinary = false;
     } else {
         if (glbHeader->version != 2) {
-            qCWarning(kuesa()) << "Unsupported glb version" << glbHeader->version;
+            qCWarning(Kuesa::kuesa) << "Unsupported glb version" << glbHeader->version;
             isValid = false;
         } else if (glbHeader->length != data.size()) {
-            qCWarning(kuesa()) << "Unexpected glb file size" << data.size() << ". Was expecting" << glbHeader->length;
+            qCWarning(Kuesa::kuesa) << "Unexpected glb file size" << data.size() << ". Was expecting" << glbHeader->length;
             isValid = false;
         }
     }
@@ -448,7 +460,7 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
 {
     QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonData);
     if (jsonDocument.isNull() || !jsonDocument.isObject()) {
-        qCWarning(kuesa()) << "File is not a valid json document";
+        qCWarning(Kuesa::kuesa) << "File is not a valid json document";
         return false;
     }
 
@@ -497,7 +509,7 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
         }
 
         if (!allRequiredAreSupported) {
-            qCWarning(kuesa) << "File contains unsupported extensions: " << unsupportedExtensions;
+            qCWarning(Kuesa::kuesa) << "File contains unsupported extensions: " << unsupportedExtensions;
             return false;
         }
     }
@@ -516,26 +528,41 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
         m_context->setDefaultScene(m_defaultSceneIdx);
 
         if (m_defaultSceneIdx < 0 || m_defaultSceneIdx > m_context->scenesCount()) {
-            qCWarning(kuesa) << "Invalid default scene reference";
+            qCWarning(Kuesa::kuesa) << "Invalid default scene reference";
             return false;
         }
     }
 
+    QElapsedTimer t;
+    qint64 elapsed = 0;
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Scene contruction starting";
+    t.start();
+
     // Build hierarchies for Entities and QJoints
     buildEntitiesAndJointsGraph();
+    elapsed = t.elapsed();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Entities and Joints Graphes in (" << elapsed << "ms)";
 
     // Generate Qt3D content for skeletons
     generateSkeletonContent();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Skeleton in (" << t.elapsed() - elapsed << "ms)";
+    elapsed = t.elapsed();
 
     // Generate Qt3D data for the nodes based on their type
     generateTreeNodeContent();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Entities Tree Content in (" << t.elapsed() - elapsed << "ms)";
+    elapsed = t.elapsed();
 
     // Generate Qt3D content for animations
     generateAnimationContent();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Animation Content in (" << t.elapsed() - elapsed << "ms)";
+    elapsed = t.elapsed();
 
     // Build Scene Roots
     buildSceneRootEntities();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Scene Roots in (" << t.elapsed() - elapsed << "ms)";
 
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Content generated in (" << t.elapsed() << "ms)";
     return true;
 }
 
@@ -750,7 +777,7 @@ bool GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
         };
 
         if ((endOffset - currentOffset) < sizeof(ChunkHeader)) {
-            qCWarning(kuesa()) << "Malformed chunck in glb file";
+            qCWarning(Kuesa::kuesa) << "Malformed chunck in glb file";
             return false;
         }
 
@@ -759,7 +786,7 @@ bool GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
         currentOffset += sizeof(ChunkHeader);
 
         if ((endOffset - currentOffset) < chunkHeader->chunkLength) {
-            qCWarning(kuesa()) << "Malformed chunck in glb file";
+            qCWarning(Kuesa::kuesa) << "Malformed chunck in glb file";
             return false;
         }
 
@@ -768,7 +795,7 @@ bool GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
             if (jsonData.isEmpty()) {
                 jsonData = QByteArray::fromRawData(current, chunkHeader->chunkLength);
             } else {
-                qCWarning(kuesa()) << "Multiple JSON chunks in glb file";
+                qCWarning(Kuesa::kuesa) << "Multiple JSON chunks in glb file";
                 return false;
             }
         } else if (chunkHeader->chunkType == GLTF_CHUNCK_BIN) {
@@ -776,12 +803,12 @@ bool GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
             if (m_context->bufferChunk().isEmpty()) {
                 m_context->setBufferChunk(QByteArray::fromRawData(current, chunkHeader->chunkLength));
             } else {
-                qCWarning(kuesa()) << "Multiple BIN chunks in glb file";
+                qCWarning(Kuesa::kuesa) << "Multiple BIN chunks in glb file";
                 return false;
             }
         } else {
             // skip chunck
-            qCWarning(kuesa()) << "Ignoring unhandled chunck type in glb file:" << chunkHeader->chunkType;
+            qCWarning(Kuesa::kuesa) << "Ignoring unhandled chunck type in glb file:" << chunkHeader->chunkType;
         }
 
         current += chunkHeader->chunkLength;
@@ -789,7 +816,7 @@ bool GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
     }
 
     if (jsonData.isEmpty()) {
-        qCWarning(kuesa()) << "Missing JSON chunk in glb file";
+        qCWarning(Kuesa::kuesa) << "Missing JSON chunk in glb file";
         return false;
     }
 
@@ -823,7 +850,7 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
         if (childrenIndices.size() > 0) {
             for (const int childId : childrenIndices) {
                 if (childId < 0 || childId > nbNodes) {
-                    qCWarning(kuesa) << "Encountered invalid child node reference while building hierarchy";
+                    qCWarning(Kuesa::kuesa) << "Encountered invalid child node reference while building hierarchy";
                     continue;
                 }
                 HierarchyNode *childHierarchyNode = tree.data() + childId;
@@ -1114,7 +1141,7 @@ void GLTF2Parser::generateTreeNodeContent()
                             }
 
                             if (jointIndicesAttr == nullptr) {
-                                qCWarning(kuesa) << "You are using a skinned mesh without joints buffer";
+                                qCWarning(Kuesa::kuesa) << "You are using a skinned mesh without joints buffer";
                                 continue;
                             }
 
@@ -1126,7 +1153,7 @@ void GLTF2Parser::generateTreeNodeContent()
                                 updateDataForJointsAttr<unsigned short>(jointIndicesAttr, skinId);
                                 break;
                             default:
-                                qCWarning(kuesa, "Joint indices buffer component type should be UnsignedByte or UnsignedShort");
+                                qCWarning(Kuesa::kuesa, "Joint indices buffer component type should be UnsignedByte or UnsignedShort");
                                 Q_UNREACHABLE();
                             }
                         }
@@ -1144,7 +1171,7 @@ void GLTF2Parser::generateTreeNodeContent()
                         const quint8 morphTargetCount = std::min(meshData.morphTargetCount, quint8(8));
 
                         if (meshData.morphTargetCount > 8)
-                            qCWarning(kuesa) << "Kuesa only supports up to 8 morph targets per mesh";
+                            qCWarning(Kuesa::kuesa) << "Kuesa only supports up to 8 morph targets per mesh";
 
                         // node Default Weights have priority over the mesh ones
                         morphController = new MorphController(m_contentRootEntity);
@@ -1410,7 +1437,7 @@ void ThreadedGLTF2Parser::parse(const QString &path)
         QFile f(path);
         f.open(QIODevice::ReadOnly);
         if (!f.isOpen()) {
-            qCWarning(kuesa()) << "Can't read file" << path;
+            qCWarning(Kuesa::kuesa) << "Can't read file" << path;
             return;
         }
 

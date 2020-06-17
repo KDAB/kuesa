@@ -81,7 +81,7 @@ Qt3DRender::QEffect *createEffectWithKey(Kuesa::EffectProperties::Properties pro
         return createMetallicRoughnessEffectWithKey(properties);
     }
 
-    qCWarning(kuesa, "Trying to create an effect with invalid key");
+    qCWarning(Kuesa::kuesa, "Trying to create an effect with invalid key");
     return nullptr;
 }
 } // namespace

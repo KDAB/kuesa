@@ -46,7 +46,6 @@ const QLatin1String KEY_BYTELENGTH = QLatin1String("byteLength");
 const QLatin1String KEY_BYTESTRIDE = QLatin1String("byteStride");
 } // namespace
 
-Q_LOGGING_CATEGORY(bufferviewsparser, "BufferViewsParser")
 
 BufferView::BufferView()
     : byteStride(-1)

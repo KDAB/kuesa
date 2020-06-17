@@ -522,7 +522,7 @@ void GLTF2Importer::setupActiveScene()
     // Retrieve new scene tree
     if (m_activeSceneIndex > m_sceneRootEntities.size() ||
         m_activeSceneIndex < 0) {
-        qCWarning(kuesa) << "Unable to load glTF scene for index" << m_activeSceneIndex;
+        qCWarning(Kuesa::kuesa) << "Unable to load glTF scene for index" << m_activeSceneIndex;
         return;
     }
 

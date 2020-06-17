@@ -52,7 +52,7 @@ bool SceneParser::parse(const QJsonArray &scenesArray, GLTF2Context *context) co
 
         const QJsonArray nodesArray = sceneObj.value(KEY_NODES).toArray();
         if (nodesArray.size() < 1) {
-            qCWarning(kuesa, "A scene must define at least one root node");
+            qCWarning(Kuesa::kuesa, "A scene must define at least one root node");
             return false;
         }
         QVector<qint32> rootIndices;
@@ -60,11 +60,11 @@ bool SceneParser::parse(const QJsonArray &scenesArray, GLTF2Context *context) co
         for (const QJsonValue &nodeValue : nodesArray) {
             const qint32 nodeIdx = nodeValue.toInt(-1);
             if (nodeIdx < 0 || nodeIdx > context->treeNodeCount()) {
-                qCWarning(kuesa, "Scene root node references invalid node");
+                qCWarning(Kuesa::kuesa, "Scene root node references invalid node");
                 return false;
             }
             if (rootIndices.contains(nodeIdx)) {
-                qCWarning(kuesa) << "Scene root node declared more than once";
+                qCWarning(Kuesa::kuesa) << "Scene root node declared more than once";
                 return false;
             }
             rootIndices.push_back(nodeIdx);

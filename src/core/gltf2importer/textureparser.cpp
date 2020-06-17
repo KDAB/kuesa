@@ -119,14 +119,14 @@ bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context
         }
 
         if (sourceValue.isUndefined()) {
-            qCWarning(kuesa, "Unknown image source for texture");
+            qCWarning(Kuesa::kuesa, "Unknown image source for texture");
             context->addTexture(texture);
             continue;
         }
 
         const auto image = context->image(sourceValue.toInt());
         if (image.url.isEmpty() && image.data.isEmpty()) {
-            qCWarning(kuesa) << "Invalid image source index for texture:" << sourceValue.toInt();
+            qCWarning(Kuesa::kuesa) << "Invalid image source index for texture:" << sourceValue.toInt();
             return false; // Not a valid image
         }
 
@@ -138,7 +138,7 @@ bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context
                 textureLoader->setSource(image.url);
             } else {
                 // embedded DDS images not supported for now
-                qCWarning(kuesa) << "Embedded DDS images are not currently supported";
+                qCWarning(Kuesa::kuesa) << "Embedded DDS images are not currently supported";
                 return false;
             }
         } else {
@@ -154,7 +154,7 @@ bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context
                 } else {
                     QImage qimage;
                     if (!qimage.loadFromData(image.data)) {
-                        qCWarning(kuesa) << "Failed to decode image " << sourceValue.toInt() << "from buffer";
+                        qCWarning(Kuesa::kuesa) << "Failed to decode image " << sourceValue.toInt() << "from buffer";
                         return false;
                     }
                     textureImage = new EmbeddedTextureImage(qimage);
@@ -167,7 +167,7 @@ bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context
             if (ensureImageIsCompatibleWithTexture(textureImage, texture2d.get()))
                 texture2d->addTextureImage(textureImage);
             else
-                qCWarning(kuesa) << "Image with source" << image.url << "is incompatbile with texture" << texture2d->objectName();
+                qCWarning(Kuesa::kuesa) << "Image with source" << image.url << "is incompatbile with texture" << texture2d->objectName();
         }
 
         const auto &samplerValue = textureObject[KEY_SAMPLER];
@@ -211,7 +211,7 @@ bool TextureParser::ensureImageIsCompatibleWithTexture(Qt3DRender::QAbstractText
         std::find(std::begin(arrayTargets),
                   std::end(arrayTargets),
                   texture->target()) == std::end(arrayTargets)) {
-        qCWarning(kuesa) << "Using an image with layer specified for a non array texture" << texture->objectName();
+        qCWarning(Kuesa::kuesa) << "Using an image with layer specified for a non array texture" << texture->objectName();
         return false;
     } else {
         const auto textureImages = texture->textureImages();
@@ -220,7 +220,7 @@ bool TextureParser::ensureImageIsCompatibleWithTexture(Qt3DRender::QAbstractText
             if (img->layer() == image->layer() &&
                 img->mipLevel() == image->mipLevel() &&
                 img->face() == image->face()) {
-                qCWarning(kuesa) << "Texture contains two images for the same layer and mipmap level";
+                qCWarning(Kuesa::kuesa) << "Texture contains two images for the same layer and mipmap level";
                 break;
             }
         }

@@ -57,7 +57,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
 
         // Joints is the only required property for a skin
         if (jointsArray.size() < 1) {
-            qCWarning(kuesa, "A skin must define an array of joint indices with a least one entry");
+            qCWarning(Kuesa::kuesa, "A skin must define an array of joint indices with a least one entry");
             return false;
         }
 
@@ -66,11 +66,11 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
         for (const QJsonValue &jointValue : jointsArray) {
             const qint32 nodeIdx = jointValue.toInt(-1);
             if (nodeIdx < 0 || nodeIdx > context->treeNodeCount()) {
-                qCWarning(kuesa, "Skin joints references invalid node");
+                qCWarning(Kuesa::kuesa, "Skin joints references invalid node");
                 return false;
             }
             if (jointsIdx.contains(nodeIdx)) {
-                qCWarning(kuesa) << "Skin joints references" << jointsIdx << "more than once";
+                qCWarning(Kuesa::kuesa) << "Skin joints references" << jointsIdx << "more than once";
                 return false;
             }
             jointsIdx.push_back(nodeIdx);
@@ -85,7 +85,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
         if (!skeletonValue.isUndefined()) {
             const qint32 skeletonIdx = skeletonValue.toInt(-1);
             if (skeletonIdx < 0 || skeletonIdx > context->treeNodeCount()) {
-                qCWarning(kuesa, "Skin skeleton references invalid node");
+                qCWarning(Kuesa::kuesa, "Skin skeleton references invalid node");
                 return false;
             }
             skin.skeletonIdx = skeletonIdx;
@@ -95,7 +95,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
         if (!inverseBindMatricesValue.isUndefined()) {
             const qint32 inverseBindMatricesIdx = inverseBindMatricesValue.toInt(-1);
             if (inverseBindMatricesIdx < 0 || inverseBindMatricesIdx > context->accessorCount()) {
-                qCWarning(kuesa, "Skin inverseBindMatrices references invalid accessor");
+                qCWarning(Kuesa::kuesa, "Skin inverseBindMatrices references invalid accessor");
                 return false;
             }
             skin.inverseBindMatricesAccessorIdx = inverseBindMatricesIdx;
@@ -103,11 +103,11 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
             const Accessor &accessor = context->accessor(inverseBindMatricesIdx);
 
             if (accessor.count != static_cast<quint32>(skin.jointsIndices.size())) {
-                qCWarning(kuesa, "InverseBindMatrix Accessor's count differs from number of joints");
+                qCWarning(Kuesa::kuesa, "InverseBindMatrix Accessor's count differs from number of joints");
                 return false;
             }
             if (accessor.dataSize != 16 || accessor.type != QAttribute::Float) {
-                qCWarning(kuesa, "InverseBindMatrix Accessor types or datasize inappropriate");
+                qCWarning(Kuesa::kuesa, "InverseBindMatrix Accessor types or datasize inappropriate");
                 return false;
             }
 
@@ -117,7 +117,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
             const quint32 byteStride = (!bufferViewData.bufferData.isEmpty() && bufferViewData.byteStride > 0 ? bufferViewData.byteStride : accessor.dataSize * elemByteSize);
 
             if (byteStride < accessor.dataSize * elemByteSize) {
-                qCWarning(kuesa, "InverseBindMatrix Buffer data byteStride doesn't match accessor dataSize and byte size for type");
+                qCWarning(Kuesa::kuesa, "InverseBindMatrix Buffer data byteStride doesn't match accessor dataSize and byte size for type");
                 return false;
             }
 
@@ -125,7 +125,7 @@ bool SkinParser::parse(const QJsonArray &skinsArray, GLTF2Context *context) cons
             const QByteArray bufferData = accessor.bufferData;
 
             if (byteOffset + accessor.count * byteStride > static_cast<quint32>(bufferData.size())) {
-                qCWarning(kuesa, "InverseBindMatrix Buffer data is too small");
+                qCWarning(Kuesa::kuesa, "InverseBindMatrix Buffer data is too small");
                 return false;
             }
 

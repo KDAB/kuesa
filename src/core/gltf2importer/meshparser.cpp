@@ -177,7 +177,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             if (extensions.contains(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION)) {
                 if (!geometryDracoFromJSON(geometry.get(), primitivesObject, hasColorAttr) &&
                     geometry->attributes().isEmpty()) {
-                    qCWarning(kuesa) << "Failed to parse draco compressed mesh primitive";
+                    qCWarning(Kuesa::kuesa) << "Failed to parse draco compressed mesh primitive";
                     return false;
                 }
             } else
@@ -185,7 +185,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             {
                 if (!geometryFromJSON(geometry.get(), primitivesObject, hasColorAttr) &&
                     geometry->attributes().isEmpty()) {
-                    qCWarning(kuesa) << "Failed to parse mesh primitive";
+                    qCWarning(Kuesa::kuesa) << "Failed to parse mesh primitive";
                     return false;
                 }
 
@@ -198,7 +198,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
                             geometryMorphTargetsFromJSON(geometry.get(),
                                                          primitivesObject);
                     if (!morphTargetsAreValid) {
-                        qCWarning(kuesa) << "Failed to parse Mesh Primitive morph targets";
+                        qCWarning(Kuesa::kuesa) << "Failed to parse Mesh Primitive morph targets";
                         return false;
                     }
 
@@ -207,7 +207,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             }
 
             if (!Kuesa::GLTF2Import::MeshParserUtils::geometryIsGLTF2Valid(geometry.get())) {
-                qCWarning(kuesa) << QLatin1String("Geometry doesn't meet glTF 2.0 requirements");
+                qCWarning(Kuesa::kuesa) << QLatin1String("Geometry doesn't meet glTF 2.0 requirements");
                 return false;
             }
 
@@ -503,7 +503,7 @@ bool MeshParser::geometryAttributesFromJSON(QGeometry *geometry,
     const QJsonObject &attrs = json.value(KEY_ATTRIBUTES).toObject();
 
     if (attrs.size() == 0) {
-        qCWarning(kuesa) << "Mesh primitive doesn't define any attribute";
+        qCWarning(Kuesa::kuesa) << "Mesh primitive doesn't define any attribute";
         return false;
     }
 
@@ -592,7 +592,7 @@ bool MeshParser::geometryDracoFromJSON(QGeometry *geometry,
     // Get the compressed data
     qint32 bufferViewIndex = dracoExtensionObject.value(KEY_BUFFERVIEW).toInt(-1);
     if (bufferViewIndex == -1) {
-        qCWarning(kuesa) << "Draco extension referencing invalid buffer view";
+        qCWarning(Kuesa::kuesa) << "Draco extension referencing invalid buffer view";
         return false;
     }
 
@@ -603,12 +603,12 @@ bool MeshParser::geometryDracoFromJSON(QGeometry *geometry,
     // Check data
     const draco::StatusOr<draco::EncodedGeometryType> geom_type = draco::Decoder::GetEncodedGeometryType(&dBuffer);
     if (!geom_type.ok()) {
-        qCWarning(kuesa) << geom_type.status().error_msg();
+        qCWarning(Kuesa::kuesa) << geom_type.status().error_msg();
         return false;
     }
 
     if (geom_type.value() != draco::TRIANGULAR_MESH && geom_type.value() != draco::POINT_CLOUD) {
-        qCWarning(kuesa) << QLatin1String("Draco data is not a mesh nor a point cloud");
+        qCWarning(Kuesa::kuesa) << QLatin1String("Draco data is not a mesh nor a point cloud");
         return false;
     }
 
@@ -623,7 +623,7 @@ bool MeshParser::geometryDracoFromJSON(QGeometry *geometry,
         geometryData = decoder.DecodePointCloudFromBuffer(&dBuffer).value();
 
     if (!geometryData) {
-        qCWarning(kuesa) << "Failed to decode Draco geometry";
+        qCWarning(Kuesa::kuesa) << "Failed to decode Draco geometry";
         return false;
     }
 
@@ -682,7 +682,7 @@ bool MeshParser::geometryAttributesDracoFromJSON(QGeometry *geometry,
     const QJsonObject dracoAttrs = dracoExtensionObject.value(KEY_ATTRIBUTES).toObject();
 
     if (attrs.size() == 0 || dracoAttrs.size() == 0) {
-        qCWarning(kuesa) << "Draco primitive not referencing any attributes";
+        qCWarning(Kuesa::kuesa) << "Draco primitive not referencing any attributes";
         return false;
     }
 
@@ -730,11 +730,11 @@ bool MeshParser::geometryAttributesDracoFromJSON(QGeometry *geometry,
                 attribute = decodeAttribute<double, QAttribute::Double>(pointCloud, dracoAttribute, attributeName);
                 break;
             default:
-                qCWarning(kuesa) << "unsupported data type:" << dracoAttribute->data_type();
+                qCWarning(Kuesa::kuesa) << "unsupported data type:" << dracoAttribute->data_type();
                 break;
             }
         } else {
-            qCWarning(kuesa) << "Failed to parse draco attribute";
+            qCWarning(Kuesa::kuesa) << "Failed to parse draco attribute";
             return false;
         }
 

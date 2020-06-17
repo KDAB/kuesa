@@ -591,7 +591,7 @@ int addJsonBuffer(QJsonObject &rootObject,
 {
     QFile bufferFile(pathPrefix + bufferFileName);
     if (!bufferFile.open(QFile::WriteOnly)) {
-        qCWarning(kuesa) << "Can't open" << bufferFile.fileName() << "for writing tangent buffer";
+        qCWarning(Kuesa::kuesa) << "Can't open" << bufferFile.fileName() << "for writing tangent buffer";
         return -1;
     }
     bufferFile.write(data);
@@ -763,7 +763,7 @@ bool generatePrecomputedTangentAttribute(QGeometryRenderer *mesh,
     if (!getMeshGLTFInformation(mesh, context, gltfMesh, primitiveNumber))
         return false;
     if (gltfMesh.meshIdx < 0) {
-        qCWarning(kuesa) << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
+        qCWarning(Kuesa::kuesa) << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
         return false;
     }
 
@@ -786,7 +786,7 @@ bool generatePrecomputedTangentAttribute(QGeometryRenderer *mesh,
                                         bufferFileName,
                                         basePath + QDir::separator());
     if (bufferIdx < 0) {
-        qCWarning(kuesa) << "unable to insert new buffer";
+        qCWarning(Kuesa::kuesa) << "unable to insert new buffer";
         return false;
     }
     context->addLocalFile(bufferFileName);
@@ -1248,7 +1248,7 @@ QAttribute *generateNormalsForBaseMesh(const QAttribute *positionAttribute)
 {
     if (positionAttribute->vertexBaseType() != QAttribute::Float ||
         positionAttribute->vertexSize() != 3) {
-        qCWarning(kuesa) << "Currently only vec3 positions are supported, unable to generate normals.";
+        qCWarning(Kuesa::kuesa) << "Currently only vec3 positions are supported, unable to generate normals.";
         return nullptr;
     }
 
@@ -1395,7 +1395,7 @@ void generateNormals(QGeometry *geometry)
                                                                 geometry);
 
     if (positionAttribute == nullptr) {
-        qCWarning(kuesa) << "No position attribute found on geometry, unable to generate normals.";
+        qCWarning(Kuesa::kuesa) << "No position attribute found on geometry, unable to generate normals.";
         Q_UNREACHABLE();
     }
 
@@ -1449,7 +1449,7 @@ bool generatePrecomputedNormalAttribute(QGeometryRenderer *mesh, GLTF2Context *c
     if (!getMeshGLTFInformation(mesh, context, gltfMesh, primitiveNumber))
         return false;
     if (gltfMesh.meshIdx < 0) {
-        qCWarning(kuesa) << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
+        qCWarning(Kuesa::kuesa) << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
         return false;
     }
 
@@ -1500,7 +1500,7 @@ bool generatePrecomputedNormalAttribute(QGeometryRenderer *mesh, GLTF2Context *c
                                               bufferFileName,
                                               basePath + QDir::separator());
                     if (bufferIdx < 0) {
-                        qCWarning(kuesa) << "unable to insert new buffer";
+                        qCWarning(Kuesa::kuesa) << "unable to insert new buffer";
                         return false;
                     }
                     context->addLocalFile(bufferFileName);
@@ -1536,7 +1536,7 @@ bool generatePrecomputedNormalAttribute(QGeometryRenderer *mesh, GLTF2Context *c
                                             bufferFileName,
                                             basePath + QDir::separator());
         if (bufferIdx < 0) {
-            qCWarning(kuesa) << "unable to insert new buffer";
+            qCWarning(Kuesa::kuesa) << "unable to insert new buffer";
             return false;
         }
         context->addLocalFile(bufferFileName);
