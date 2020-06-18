@@ -92,7 +92,11 @@ SOURCES += \
   $$DRACO_SRC/draco/metadata/metadata_decoder.cc \
   $$DRACO_SRC/draco/metadata/metadata_encoder.cc \
   $$DRACO_SRC/draco/point_cloud/point_cloud.cc \
-  $$DRACO_SRC/draco/point_cloud/point_cloud_builder.cc
+  $$DRACO_SRC/draco/point_cloud/point_cloud_builder.cc \
+  $$DRACO_SRC/draco/io/file_reader_factory.cc \
+  $$DRACO_SRC/draco/io/file_writer_factory.cc \
+  $$DRACO_SRC/draco/io/stdio_file_reader.cc \
+  $$DRACO_SRC/draco/io/stdio_file_writer.cc
 
 HEADERS += \
   $$DRACO_SRC/draco/animation/keyframe_animation.h \
@@ -282,7 +286,13 @@ HEADERS += \
   $$DRACO_SRC/draco/metadata/metadata_decoder.h \
   $$DRACO_SRC/draco/metadata/metadata_encoder.h \
   $$DRACO_SRC/draco/point_cloud/point_cloud.h \
-  $$DRACO_SRC/draco/point_cloud/point_cloud_builder.h
+  $$DRACO_SRC/draco/point_cloud/point_cloud_builder.h \
+  $$DRACO_SRC/draco/io/file_reader_factory.h \
+  $$DRACO_SRC/draco/io/file_reader_interface.h \
+  $$DRACO_SRC/draco/io/file_writer_factory.h \
+  $$DRACO_SRC/draco/io/file_writer_interface.h \
+  $$DRACO_SRC/draco/io/stdio_file_reader.h \
+  $$DRACO_SRC/draco/io/stdio_file_writer.h
 
 SOURCES += \
   $$PWD/generated/draco/draco_version.cc

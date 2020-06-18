@@ -212,12 +212,10 @@ std::pair<QString, int> addAttributeToMesh(const QAttribute &attribute, draco::M
 
     draco::PointAttribute meshAttribute;
     meshAttribute.Init(attributeTypeFromName(attribute.name()),
-                       nullptr,
                        static_cast<qint8>(attribute.vertexSize()),
                        dracoDataType,
                        false,
-                       actualStride<T>(attribute.byteStride(), attribute.vertexSize()),
-                       0);
+                       actualStride<T>(attribute.byteStride(), attribute.vertexSize()));
 
     auto attId = mesh.AddAttribute(meshAttribute, true, attribute.count());
     if (attId == -1)
