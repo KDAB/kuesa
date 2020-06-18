@@ -39,6 +39,7 @@ SOURCES += \
     $$PWD/layerparser.cpp \
     $$PWD/lightparser.cpp \
     $$PWD/imageparser.cpp \
+    $$PWD/textureinfoparser.cpp \
     $$PWD/texturesamplerparser.cpp \
     $$PWD/textureparser.cpp \
     $$PWD/animationparser.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
     $$PWD/layerparser_p.h \
     $$PWD/lightparser_p.h \
     $$PWD/imageparser_p.h \
+    $$PWD/textureinfoparser_p.h \
     $$PWD/texturesamplerparser_p.h \
     $$PWD/textureparser_p.h \
     $$PWD/animationparser_p.h \

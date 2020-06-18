@@ -56,17 +56,11 @@ const QLatin1String KEY_BASE_COLOR_TEXTURE = QLatin1String("baseColorTexture");
 const QLatin1String KEY_ROUGHNESS_FACTOR = QLatin1String("roughnessFactor");
 const QLatin1String KEY_ROUGHNESS_TEXTURE = QLatin1String("metallicRoughnessTexture");
 const QLatin1String KEY_METALLIC_FACTOR = QLatin1String("metallicFactor");
-const QLatin1String KEY_INDEX = QLatin1String("index");
-const QLatin1String KEY_TEXCOORD = QLatin1String("texCoord");
 const QLatin1String KEY_NORMAL_TEXTURE = QLatin1String("normalTexture");
 const QLatin1String KEY_OCCLUSION_TEXTURE = QLatin1String("occlusionTexture");
 const QLatin1String KEY_EMISSIVE_TEXTURE = QLatin1String("emissiveTexture");
 const QLatin1String KEY_EMISSIVE_FACTOR = QLatin1String("emissiveFactor");
 const QLatin1String KEY_PROPERTIES = QLatin1String("properties");
-const QLatin1String KEY_KHR_TEXTURE_TRANSFORM = QLatin1String("KHR_texture_transform");
-const QLatin1String KEY_KHR_TEXTURE_TRANSFORM_OFFSET = QLatin1String("offset");
-const QLatin1String KEY_KHR_TEXTURE_TRANSFORM_SCALE = QLatin1String("scale");
-const QLatin1String KEY_KHR_TEXTURE_TRANSFORM_ROTATION = QLatin1String("rotation");
 
 QVector<Qt3DAnimation::QChannelMapping *> iroMappingGenerator(const GLTF2Context *ctx,
                                                               const ChannelMapping &mapping)
@@ -87,31 +81,6 @@ QVector<Qt3DAnimation::QChannelMapping *> iroMappingGenerator(const GLTF2Context
     return { channelMapping };
 }
 
-void parseTextureInfo(TextureInfo &info, const QJsonObject &textureInfoObj)
-{
-    info.index = textureInfoObj.value(KEY_INDEX).toInt(-1);
-    info.texCoord = std::max(textureInfoObj.value(KEY_TEXCOORD).toInt(0), 0);
-    const auto &extensionsObject = textureInfoObj[KEY_EXTENSIONS];
-    if (!extensionsObject.isUndefined()) {
-        const auto &khr_texture_transformObject = extensionsObject[KEY_KHR_TEXTURE_TRANSFORM];
-        if (!khr_texture_transformObject.isUndefined()) {
-            const auto &offsetArray = khr_texture_transformObject[KEY_KHR_TEXTURE_TRANSFORM_OFFSET].toArray({0.0,0.0});
-            const auto &rotationObject = khr_texture_transformObject[KEY_KHR_TEXTURE_TRANSFORM_ROTATION];
-            const auto &scaleArray = khr_texture_transformObject[KEY_KHR_TEXTURE_TRANSFORM_SCALE].toArray({1.0,1.0});
-            const auto &indexObject = khr_texture_transformObject[KEY_TEXCOORD];
-
-            if (!indexObject.isUndefined())
-                info.texCoord = indexObject.toInt();
-
-            // TODO add checks
-            info.khr_texture_transform = TextureInfo::KHR_texture_transform{QVector2D(static_cast<float>(offsetArray[0].toDouble()),
-                                                                                      static_cast<float>(offsetArray[1].toDouble())),
-                                                                            static_cast<float>(rotationObject.toDouble(0.0)),
-                                                                            QVector2D(static_cast<float>(scaleArray[0].toDouble()),
-                                                                                      static_cast<float>(scaleArray[1].toDouble()))};
-        }
-    }
-}
 
 template<typename T>
 T clamp(T val, T min, T max)
@@ -170,8 +139,7 @@ QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
     } else if (typeId == qMetaTypeId<bool>()) {
         return QVariant::fromValue(rawValue.toBool());
     } else if (typeId == qMetaTypeId<Qt3DRender::QAbstractTexture *>()) {
-        TextureInfo info;
-        parseTextureInfo(info, rawValue.toObject());
+        TextureInfo info = TextureInfo::parse(rawValue.toObject());
         return QVariant::fromValue(info);
     }
     qCWarning(Kuesa::kuesa) << "Failed to parse value of typeId" << typeId << "with" << rawValue;
@@ -330,11 +298,11 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
 
             const QJsonObject baseColorTextureObject = pbrMetallicRoughnessObject.value(KEY_BASE_COLOR_TEXTURE).toObject();
             if (!baseColorTextureObject.isEmpty())
-                parseTextureInfo(mat.pbr.baseColorTexture, baseColorTextureObject);
+                mat.pbr.baseColorTexture = TextureInfo::parse(baseColorTextureObject);
 
             const QJsonObject metallicRoughnessTextureObject = pbrMetallicRoughnessObject.value(KEY_ROUGHNESS_TEXTURE).toObject();
             if (!metallicRoughnessTextureObject.isEmpty())
-                parseTextureInfo(mat.pbr.metallicRoughnessTexture, metallicRoughnessTextureObject);
+                mat.pbr.metallicRoughnessTexture = TextureInfo::parse(metallicRoughnessTextureObject);
 
             const QJsonValue baseColorFactors = pbrMetallicRoughnessObject.value(KEY_BASE_COLOR_FACTOR);
             if (!baseColorFactors.isUndefined()) {
@@ -349,7 +317,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
         {
             const QJsonObject normalTextureObject = materialObject.value(KEY_NORMAL_TEXTURE).toObject();
             if (!normalTextureObject.isEmpty()) {
-                parseTextureInfo(mat.normalTexture, normalTextureObject);
+                mat.normalTexture = TextureInfo::parse(normalTextureObject);
                 mat.normalTexture.scale = static_cast<float>(normalTextureObject.value(KEY_SCALE).toDouble(0.25));
             }
         }
@@ -358,7 +326,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
         {
             const QJsonObject emissiveTextureObject = materialObject.value(KEY_EMISSIVE_TEXTURE).toObject();
             if (!emissiveTextureObject.isEmpty())
-                parseTextureInfo(mat.emissiveTexture, emissiveTextureObject);
+                mat.emissiveTexture = TextureInfo::parse(emissiveTextureObject);
 
             const QJsonValue emissiveFactors = materialObject.value(KEY_EMISSIVE_FACTOR);
             if (!emissiveFactors.isUndefined()) {
@@ -374,7 +342,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
             const QJsonObject occlusionTextureObject = materialObject.value(KEY_OCCLUSION_TEXTURE).toObject();
 
             if (!occlusionTextureObject.isEmpty()) {
-                parseTextureInfo(mat.occlusionTexture, occlusionTextureObject);
+                mat.occlusionTexture = TextureInfo::parse(occlusionTextureObject);
                 mat.occlusionTexture.strength = clamp(float(occlusionTextureObject.value(KEY_SCALE).toDouble(1.0)), 0.0f, 1.0f);
             }
         }

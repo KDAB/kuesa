@@ -43,6 +43,7 @@
 #include <QString>
 
 #include <Kuesa/private/effectslibrary_p.h>
+#include <Kuesa/private/textureinfoparser_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -59,19 +60,6 @@ namespace GLTF2Import {
 class GLTF2Context;
 class AnimationParser;
 
-struct TextureInfo {
-    qint32 index = -1;
-    qint32 texCoord = 0; // Attribute will be TEXCOORD_<texCoord>
-
-    struct KHR_texture_transform {
-        QVector2D offset = {0.0f, 0.0f};
-        float rotation = 0.0f;
-        QVector2D scale = {1.0f, 1.0f};
-    };
-
-    KHR_texture_transform khr_texture_transform;
-};
-
 class Material
 {
 public:
@@ -87,14 +75,23 @@ public:
     } pbr;
 
     struct NormalTextureInfo : public TextureInfo {
+        NormalTextureInfo() = default;
+        NormalTextureInfo (const TextureInfo &t)
+            : TextureInfo(t) {}
         float scale = 0.25f;
     } normalTexture;
 
     struct OcclusionTextureInfo : public TextureInfo {
+        OcclusionTextureInfo() = default;
+        OcclusionTextureInfo (const TextureInfo &t)
+            : TextureInfo(t) {}
         float strength = 1.0f;
     } occlusionTexture;
 
     struct EmissiveTextureInfo : public TextureInfo {
+        EmissiveTextureInfo() = default;
+        EmissiveTextureInfo (const TextureInfo &t)
+            : TextureInfo(t) {}
         QVector3D emissiveFactor = QVector3D(0.0f, 0.0f, 0.0f);
     } emissiveTexture;
 
@@ -147,6 +144,5 @@ public:
 
 QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(Kuesa::GLTF2Import::TextureInfo)
 
 #endif // KUESA_GLTF2IMPORT_MATERIALPARSER_P_H
