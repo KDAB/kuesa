@@ -29,6 +29,10 @@
 #include "texturetransform.h"
 #include <cmath>
 
+QT_BEGIN_NAMESPACE
+
+namespace Kuesa {
+
 /*!
     \class Kuesa::TextureTransform
     \inheaderfile Kuesa/TextureTransform
@@ -103,7 +107,7 @@
     \since Kuesa 1.3
  */
 
-Kuesa::TextureTransform::TextureTransform(Qt3DCore::QNode *parent)
+TextureTransform::TextureTransform(Qt3DCore::QNode *parent)
     : Qt3DCore::QNode(parent)
     , m_offset(QVector2D(0.0f, 0.0f))
     , m_scale(QVector2D(1.0f ,1.0f))
@@ -112,22 +116,22 @@ Kuesa::TextureTransform::TextureTransform(Qt3DCore::QNode *parent)
 }
 
 
-const QVector2D &Kuesa::TextureTransform::offset() const
+const QVector2D &TextureTransform::offset() const
 {
     return m_offset;
 }
 
-const QVector2D &Kuesa::TextureTransform::scale() const
+const QVector2D &TextureTransform::scale() const
 {
     return m_scale;
 }
 
-float Kuesa::TextureTransform::rotation() const
+float TextureTransform::rotation() const
 {
     return m_rotation;
 }
 
-QMatrix3x3 Kuesa::TextureTransform::matrix() const
+QMatrix3x3 TextureTransform::matrix() const
 {
     QMatrix3x3 mat;
     QMatrix3x3 translation;
@@ -147,7 +151,7 @@ QMatrix3x3 Kuesa::TextureTransform::matrix() const
     return translation * rotation * scale;
 }
 
-void Kuesa::TextureTransform::setOffset(const QVector2D &offset)
+void TextureTransform::setOffset(const QVector2D &offset)
 {
     if (m_offset != offset) {
         m_offset = offset;
@@ -156,7 +160,7 @@ void Kuesa::TextureTransform::setOffset(const QVector2D &offset)
     }
 }
 
-void Kuesa::TextureTransform::setScale(const QVector2D &scale)
+void TextureTransform::setScale(const QVector2D &scale)
 {
     if (m_scale != scale) {
         m_scale = scale;
@@ -165,7 +169,7 @@ void Kuesa::TextureTransform::setScale(const QVector2D &scale)
     }
 }
 
-void Kuesa::TextureTransform::setRotation(float rotation)
+void TextureTransform::setRotation(float rotation)
 {
     if (m_rotation != rotation) {
         m_rotation = rotation;
@@ -173,3 +177,7 @@ void Kuesa::TextureTransform::setRotation(float rotation)
         emit matrixChanged(matrix());
     }
 }
+
+} // Kuesa
+
+QT_END_NAMESPACE
