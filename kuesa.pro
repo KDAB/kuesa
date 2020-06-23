@@ -39,3 +39,8 @@ load(qt_parts)
 
 PACKAGE_NAME=KuesaRuntime
 include(package.pri)
+
+CONFIG(gcov): {
+    QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+    QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage
+}
