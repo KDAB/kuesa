@@ -39,6 +39,7 @@
 
 #include <Kuesa/kuesa_global.h>
 #include <QJsonObject>
+#include <QVector2D>
 
 QT_BEGIN_NAMESPACE
 
