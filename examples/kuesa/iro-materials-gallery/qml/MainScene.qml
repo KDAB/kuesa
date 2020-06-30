@@ -108,7 +108,7 @@ Kuesa.SceneEntity {
         id: gltf2importer
         sceneEntity: root3D
         assignNames: true
-        source: "iro-materials-gallery.gltf"
+        source: "qrc:/iro-materials-gallery.gltf"
         options.generateTangents: true
     }
 //! [1]

@@ -181,7 +181,7 @@ Kuesa.SceneEntity {
         id: gltf2importer
         sceneEntity: root3D
         assignNames: true
-        source: "RotatingHelmet.gltf"
+        source: "qrc:/RotatingHelmet.gltf"
         options.generateTangents: true
     }
 //! [1]

@@ -276,7 +276,7 @@ Kuesa.SceneEntity {
     // Loads GLTF 2.0 asset
     Kuesa.GLTF2Importer {
         sceneEntity: scene
-        source: "DodgeViper" + _modelSuffix + ".gltf"
+        source: "qrc:/DodgeViper" + _modelSuffix + ".gltf"
     }
 //! [1]
 
