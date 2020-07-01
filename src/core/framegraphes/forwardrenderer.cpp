@@ -454,37 +454,39 @@ GLFeatures checkGLFeatures()
     QOffscreenSurface offscreen;
     QOpenGLContext ctx;
 
-    offscreen.setFormat(QSurfaceFormat::defaultFormat());
-    offscreen.create();
-    Q_ASSERT_X(offscreen.isValid(), Q_FUNC_INFO, "Unable to create offscreen surface to gather capabilities");
+    if (qgetenv("QT3D_RENDERER") != QByteArray("rhi")) {
+        offscreen.setFormat(QSurfaceFormat::defaultFormat());
+        offscreen.create();
+        Q_ASSERT_X(offscreen.isValid(), Q_FUNC_INFO, "Unable to create offscreen surface to gather capabilities");
 
-    ctx.setFormat(QSurfaceFormat::defaultFormat());
-    if (ctx.create()) {
-        ctx.makeCurrent(&offscreen);
-        const QSurfaceFormat format = ctx.format();
-        // Since ES 3.0 or GL 3.0
-        features.hasHalfFloatTexture = (format.majorVersion() >= 3 || ctx.hasExtension(QByteArray("GL_OES_texture_half_float")));
-        // Since GL 3.0 or ES 3.2 or extension
-        features.hasHalfFloatRenderable = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 2)
-                                                            : format.majorVersion() >= 3) ||
-                ctx.hasExtension(QByteArray("GL_EXT_color_buffer_half_float"));
-        // Since ES 3.1, GL 3.0 or extension
-        features.hasMultisampledTexture = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 1)
-                                                            : (format.majorVersion() >= 3)) ||
-                ctx.hasExtension(QByteArray("ARB_texture_multisample"));
+        ctx.setFormat(QSurfaceFormat::defaultFormat());
+        if (ctx.create()) {
+            ctx.makeCurrent(&offscreen);
+            const QSurfaceFormat format = ctx.format();
+            // Since ES 3.0 or GL 3.0
+            features.hasHalfFloatTexture = (format.majorVersion() >= 3 || ctx.hasExtension(QByteArray("GL_OES_texture_half_float")));
+            // Since GL 3.0 or ES 3.2 or extension
+            features.hasHalfFloatRenderable = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 2)
+                                                                : format.majorVersion() >= 3) ||
+                    ctx.hasExtension(QByteArray("GL_EXT_color_buffer_half_float"));
+            // Since ES 3.1, GL 3.0 or extension
+            features.hasMultisampledTexture = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 1)
+                                                                : (format.majorVersion() >= 3)) ||
+                    ctx.hasExtension(QByteArray("ARB_texture_multisample"));
 #if QT_VERSION <= QT_VERSION_CHECK(5, 12, 5) || (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0) && QT_VERSION <= QT_VERSION_CHECK(5, 13, 1))
-        // Blitting bug in Qt3D prevents correct depth blitting with multisampled FBO
-        // Fixed for 5.12.6/5.13/2 with https://codereview.qt-project.org/c/qt/qt3d/+/276774
+            // Blitting bug in Qt3D prevents correct depth blitting with multisampled FBO
+            // Fixed for 5.12.6/5.13/2 with https://codereview.qt-project.org/c/qt/qt3d/+/276774
 #else
-        // Since ES 3.1, GL 3.0 or extension
-        // TO DO: Find how to support that on ES
-        features.hasMultisampledFBO = (ctx.isOpenGLES() ? (format.majorVersion() >= 3 && format.minorVersion() >= 1)
-                                                        : format.majorVersion() >= 3);
+            // Since ES 3.1, GL 3.0 or extension
+            // TO DO: Find how to support that on ES
+            features.hasMultisampledFBO = (ctx.isOpenGLES() ? (format.majorVersion() >= 3 && format.minorVersion() >= 1)
+                                                            : format.majorVersion() >= 3);
 #endif
-        const bool forceMultisampledFBO = qgetenv("KUESA_FORCE_MULTISAMPLING").length() > 0;
-        features.hasMultisampledFBO |= forceMultisampledFBO;
+            const bool forceMultisampledFBO = qgetenv("KUESA_FORCE_MULTISAMPLING").length() > 0;
+            features.hasMultisampledFBO |= forceMultisampledFBO;
 
-        ctx.doneCurrent();
+            ctx.doneCurrent();
+        }
     }
 
     qCDebug(kuesa) << "GL Features:\n"
