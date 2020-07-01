@@ -95,6 +95,9 @@ private:
     MetallicRoughnessTechnique *m_metalRoughGL3Technique;
     MetallicRoughnessTechnique *m_metalRoughES3Technique;
     MetallicRoughnessTechnique *m_metalRoughES2Technique;
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    MetallicRoughnessTechnique *m_metalRoughRHITechnique;
+#endif
     Qt3DRender::QParameter *m_brdfLUTParameter;
 
     void updateDoubleSided(bool doubleSided);

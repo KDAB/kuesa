@@ -55,7 +55,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit UnlitTechnique(Version version, Qt3DCore::QNode *parent = nullptr);
@@ -144,6 +145,9 @@ UnlitTechnique::UnlitTechnique(UnlitTechnique::Version version, Qt3DCore::QNode 
         { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
         { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
         { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+    #if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+        { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+    #endif
     };
 
     graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -165,6 +169,10 @@ UnlitTechnique::UnlitTechnique(UnlitTechnique::Version version, Qt3DCore::QNode 
                    )"),
         QByteArray(R"(
                    #version 100
+                   void main() { }
+                   )"),
+        QByteArray(R"(
+                   #version 450
                    void main() { }
                    )")
     };
@@ -285,6 +293,13 @@ UnlitEffect::UnlitEffect(Qt3DCore::QNode *parent)
     addTechnique(m_unlitES3Technique);
     addTechnique(m_unlitES2Technique);
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique = new UnlitTechnique(UnlitTechnique::RHI, this);
+    m_unlitRHITechnique->setEnabledLayers(enabledLayers);
+
+    addTechnique(m_unlitRHITechnique);
+#endif
+
     QObject::connect(this, &GLTF2MaterialEffect::alphaCutoffEnabledChanged, this, &UnlitEffect::updateAlphaCutoffEnabled);
     QObject::connect(this, &GLTF2MaterialEffect::opaqueChanged, this, &UnlitEffect::updateOpaque);
     QObject::connect(this, &GLTF2MaterialEffect::doubleSidedChanged, this, &UnlitEffect::updateDoubleSided);
@@ -322,6 +337,9 @@ void UnlitEffect::setBaseColorMapEnabled(bool enabled)
     m_unlitGL3Technique->setEnabledLayers(layers);
     m_unlitES3Technique->setEnabledLayers(layers);
     m_unlitES2Technique->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setEnabledLayers(layers);
+#endif
     emit baseColorMapEnabledChanged(enabled);
 }
 
@@ -342,6 +360,9 @@ void UnlitEffect::setUsingColorAttribute(bool usingColorAttribute)
     m_unlitGL3Technique->setEnabledLayers(layers);
     m_unlitES3Technique->setEnabledLayers(layers);
     m_unlitES2Technique->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setEnabledLayers(layers);
+#endif
     emit usingColorAttributeChanged(usingColorAttribute);
 }
 
@@ -351,6 +372,9 @@ void UnlitEffect::updateDoubleSided(bool doubleSided)
     m_unlitGL3Technique->setCullingMode(cullingMode);
     m_unlitES3Technique->setCullingMode(cullingMode);
     m_unlitES2Technique->setCullingMode(cullingMode);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setCullingMode(cullingMode);
+#endif
 }
 
 void UnlitEffect::updateSkinning(bool useSkinning)
@@ -371,6 +395,11 @@ void UnlitEffect::updateSkinning(bool useSkinning)
     m_unlitGL3Technique->setAllowCulling(!useSkinning);
     m_unlitES3Technique->setAllowCulling(!useSkinning);
     m_unlitES2Technique->setAllowCulling(!useSkinning);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setEnabledLayers(layers);
+    m_unlitRHITechnique->setAllowCulling(!useSkinning);
+#endif
 }
 
 void UnlitEffect::updateOpaque(bool opaque)
@@ -378,6 +407,9 @@ void UnlitEffect::updateOpaque(bool opaque)
     m_unlitGL3Technique->setOpaque(opaque);
     m_unlitES3Technique->setOpaque(opaque);
     m_unlitES2Technique->setOpaque(opaque);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setOpaque(opaque);
+#endif
 }
 
 void UnlitEffect::updateAlphaCutoffEnabled(bool enabled)
@@ -393,6 +425,9 @@ void UnlitEffect::updateAlphaCutoffEnabled(bool enabled)
     m_unlitGL3Technique->setEnabledLayers(layers);
     m_unlitES3Technique->setEnabledLayers(layers);
     m_unlitES2Technique->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setEnabledLayers(layers);
+#endif
 }
 
 } // namespace Kuesa
