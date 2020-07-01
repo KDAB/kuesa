@@ -23,7 +23,7 @@ It provides:
     * Kuesa for 3ds Max
     * Kuesa for Maya (coming soon)
 * A library of real time materials that can be exported to glTF and previewed in Blender
-* Tooling around asset conditionning to decrease asset size and optimize for embedded use cases.
+* Tooling around asset conditioning to decrease asset size and optimize for embedded use cases.
 
 More information about Kuesa Studio can be found [here](https://www.kdab.com/kuesa/).
 
@@ -73,7 +73,7 @@ OpenGL ES 3.1 or lower is supported but with a limited feature set depending on 
 
 ## Optional Dependencies
 
-Kuesa can optionnally use the [Draco](https://github.com/google/draco) mesh compression library,
+Kuesa can optionally use the [Draco](https://github.com/google/draco) mesh compression library,
 either through an embedded version, or a version present on the system.
 Draco can be used to dramatically decrease the size of glTF files.
 
