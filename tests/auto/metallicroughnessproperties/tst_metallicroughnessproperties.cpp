@@ -57,15 +57,15 @@ void testProperty(Kuesa::MetallicRoughnessProperties *mat,
     QCOMPARE(spy.takeFirst().value(0).value<PropType>(), newValue);
 }
 
+} // namespace
+
 bool operator==(const TextureTransform &a, const TextureTransform &b)
 {
     return a.scale() == b.scale() &&
-            a.rotation() == b.rotation() &&
+            qFuzzyCompare(a.rotation(), b.rotation()) &&
             a.offset() == b.offset() &&
             a.matrix() == b.matrix();
 }
-
-} // namespace
 
 class tst_MetallicRoughnessProperties : public QObject
 {
