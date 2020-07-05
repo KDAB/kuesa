@@ -35,6 +35,11 @@
 #include <Kuesa/sceneentity.h>
 #include <Kuesa/gltf2importer.h>
 #include <Kuesa/forwardrenderer.h>
+#include <Kuesa/animationplayer.h>
+
+#include <Qt3DAnimation/qclock.h>
+
+#include <vector>
 
 QT_BEGIN_NAMESPACE
 
@@ -58,12 +63,22 @@ public:
     QString cameraName() const;
     bool showDebugOverlay() const;
 
+    void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
+    void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);
+    void clearAnimationPlayers();
+
 public Q_SLOTS:
     void setSource(const QUrl &source);
     void setCameraName(const QString &cameraName);
     void setShowDebugOverlay(bool showDebugOverlay);
 
     void adoptNode(QObject *object);
+
+    void start();
+    void stop();
+    void gotoNormalizedTime(float time);
+    void gotoStart();
+    void gotoEnd();
 
 Q_SIGNALS:
     void sourceChanged(const QUrl &source);
@@ -76,6 +91,8 @@ private:
     Kuesa::GLTF2Importer *m_importer;
     Kuesa::ForwardRenderer *m_frameGraph;
     QString m_cameraName;
+    std::vector<Kuesa::AnimationPlayer *> m_animations;
+    Qt3DAnimation::QClock *m_clock;
 };
 
 } // namespace KuesaUtils

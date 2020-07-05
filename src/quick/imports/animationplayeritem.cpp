@@ -34,6 +34,20 @@ using namespace Kuesa;
 AnimationPlayerItem::AnimationPlayerItem(QObject *parent)
     : QObject(parent)
 {
+    Q_ASSERT(parentAnimationPlayer());
+    connect(parentAnimationPlayer(), &AnimationPlayer::clipChanged, this, &AnimationPlayerItem::nameChanged);
+}
+
+AnimationPlayerItem::~AnimationPlayerItem() = default;
+
+QString AnimationPlayerItem::name() const
+{
+    return parentAnimationPlayer()->clip();
+}
+
+void AnimationPlayerItem::setName(const QString &name)
+{
+    parentAnimationPlayer()->setClip(name);
 }
 
 QQmlListProperty<Qt3DCore::QNode> AnimationPlayerItem::targetList()

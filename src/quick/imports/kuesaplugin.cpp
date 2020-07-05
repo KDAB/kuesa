@@ -29,6 +29,9 @@
 #include "kuesaplugin.h"
 #include "animationplayeritem.h"
 #include "asset.h"
+#include "view3dsceneitem.h"
+#include "postfxlistextension.h"
+
 #include <Kuesa/SceneEntity>
 #include <Kuesa/GLTF2Importer>
 #include <Kuesa/ForwardRenderer>
@@ -44,7 +47,6 @@
 #include <Kuesa/DirectionalLight>
 #include <Kuesa/SpotLight>
 #include <Kuesa/PointLight>
-#include "postfxlistextension.h"
 #include <Kuesa/MetallicRoughnessProperties>
 #include <Kuesa/UnlitProperties>
 #include <Kuesa/EffectProperties>
@@ -204,7 +206,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     // Utils
     qmlRegisterType<KuesaUtils::BoundingVolumeRenderer>("Kuesa.Utils", 1, 3, "BoundingVolumeRenderer");
     qmlRegisterType<KuesaUtils::OrbitCameraController>("Kuesa.Utils", 1, 3, "OrbitCameraController");
-    qmlRegisterType<KuesaUtils::View3DScene>("Kuesa.Utils", 1, 3, "View3DScene");
+    qmlRegisterExtendedType<KuesaUtils::View3DScene, KuesaUtils::View3DSceneItem>("Kuesa.Utils", 1, 3, "View3DScene");
 
     // Particles
     qmlRegisterType<Kuesa::Particles>(uri, 1, 3, "Particles");

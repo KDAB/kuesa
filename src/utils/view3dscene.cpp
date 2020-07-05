@@ -36,6 +36,7 @@
 #include <Kuesa/forwardrenderer.h>
 #include <Kuesa/gltf2importer.h>
 
+#include <Qt3DCore/private/qnode_p.h>
 #include <Qt3DRender/qrendersettings.h>
 #include <Qt3DInput/qinputsettings.h>
 
@@ -48,6 +49,7 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     : Kuesa::SceneEntity(parent)
     , m_importer(new GLTF2Importer(this))
     , m_frameGraph(new ForwardRenderer)
+    , m_clock(nullptr)
 {
     m_importer->setSceneEntity(this);
 
@@ -110,4 +112,61 @@ void View3DScene::onSceneLoaded()
         if (camera)
             m_frameGraph->setCamera(camera);
     }
+}
+
+void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
+{
+    if (nullptr == m_clock)
+        m_clock = new Qt3DAnimation::QClock(this);
+    if (std::find(std::begin(m_animations), std::end(m_animations), animation) == std::end(m_animations)) {
+        Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+        d->registerDestructionHelper(animation, &View3DScene::removeAnimationPlayer, animation);
+        if (animation->parentNode() == nullptr)
+            animation->setParent(this);
+        m_animations.push_back(animation);
+        animation->setClock(m_clock);
+    }
+}
+
+void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
+{
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    d->unregisterDestructionHelper(animation);
+    m_animations.erase(std::remove_if(std::begin(m_animations), std::end(m_animations), [animation](AnimationPlayer *a) {
+                           return a == animation;
+                       }),
+                       std::end(m_animations));
+}
+
+void View3DScene::clearAnimationPlayers()
+{
+    m_animations.clear();
+}
+
+void View3DScene::start()
+{
+    for (auto a : m_animations)
+        a->start();
+}
+
+void View3DScene::stop()
+{
+    for (auto a : m_animations)
+        a->stop();
+}
+
+void View3DScene::gotoNormalizedTime(float time)
+{
+    for (auto a : m_animations)
+        a->setNormalizedTime(time);
+}
+
+void View3DScene::gotoStart()
+{
+    gotoNormalizedTime(0.f);
+}
+
+void View3DScene::gotoEnd()
+{
+    gotoNormalizedTime(1.f);
 }

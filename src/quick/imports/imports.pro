@@ -36,14 +36,16 @@ SOURCES += \
     assetproperty.cpp \
     kuesaplugin.cpp \
     asset.cpp \
-    postfxlistextension.cpp
+    postfxlistextension.cpp \
+    view3dsceneitem.cpp
 
 HEADERS += \
     animationplayeritem.h \
     assetproperty_p.h \
     kuesaplugin.h \
     asset.h \
-    postfxlistextension.h
+    postfxlistextension.h \
+    view3dsceneitem.h
 
 QML_FILES += \
     View3D.qml

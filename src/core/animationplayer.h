@@ -93,6 +93,8 @@ public Q_SLOTS:
 
     void start();
     void stop();
+    void reset();
+    void restart();
 
 Q_SIGNALS:
     void sceneEntityChanged(const Kuesa::SceneEntity *sceneEntity);

@@ -475,6 +475,25 @@ void AnimationPlayer::stop()
     m_animator->stop();
 }
 
+/*!
+ * \brief Stops the animation and resets the normalised time to 0. The next time the
+ * animation plays it will start from 0 rather than the current normalised time.
+ */
+void AnimationPlayer::reset()
+{
+    m_animator->setNormalizedTime(0.f);
+    m_animator->stop();
+}
+
+/*!
+ * \brief Sets the normalised to 0 and runs the animation.
+ */
+void AnimationPlayer::restart()
+{
+    m_animator->setNormalizedTime(0.f);
+    m_animator->start();
+}
+
 void AnimationPlayer::matchClipAndTargets()
 {
     if (m_sceneEntity == nullptr) {

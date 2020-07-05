@@ -1,5 +1,5 @@
 /*
-    animationplayeritem.h
+    viewscene3ditem.h
 
     This file is part of Kuesa.
 
@@ -26,49 +26,43 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef ANIMATIONPLAYERITEM_H
-#define ANIMATIONPLAYERITEM_H
+#ifndef VIEW3DSCENEITEM_H
+#define VIEW3DSCENEITEM_H
 
 #include <QObject>
 #include <QtQml/QQmlListProperty>
-#include <Qt3DCore/QNode>
-#include <Kuesa/AnimationPlayer>
+#include <KuesaUtils/view3dscene.h>
+#include <Kuesa/animationplayer.h>
+
+#include <vector>
 
 QT_BEGIN_NAMESPACE
 
-namespace Kuesa {
+namespace KuesaUtils {
 
-class AnimationPlayerItem : public QObject
+class View3DSceneItem : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QQmlListProperty<Qt3DCore::QNode> targets READ targetList CONSTANT)
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(QQmlListProperty<Kuesa::AnimationPlayer> animations READ animations CONSTANT)
 public:
-    AnimationPlayerItem(QObject *parent = nullptr);
-    ~AnimationPlayerItem();
+    explicit View3DSceneItem(QObject *parent = nullptr);
+    ~View3DSceneItem();
 
-    QString name() const;
+    QQmlListProperty<Kuesa::AnimationPlayer> animations();
 
-    QQmlListProperty<Qt3DCore::QNode> targetList();
-
-    AnimationPlayer *parentAnimationPlayer() const { return qobject_cast<AnimationPlayer *>(parent()); }
-
-public Q_SLOTS:
-    void setName(const QString &name);
-
-Q_SIGNALS:
-    void nameChanged(const QString &name);
+    View3DScene *parent3DScene() const { return qobject_cast<View3DScene *>(parent()); }
 
 private:
-    static void qmlAppendTarget(QQmlListProperty<Qt3DCore::QNode> *list, Qt3DCore::QNode *node);
-    static Qt3DCore::QNode *qmlTargetAt(QQmlListProperty<Qt3DCore::QNode> *list, int index);
-    static int qmlTargetCount(QQmlListProperty<Qt3DCore::QNode> *list);
-    static void qmlClearTargets(QQmlListProperty<Qt3DCore::QNode> *list);
+    static void qmlAppendAnimation(QQmlListProperty<Kuesa::AnimationPlayer> *list, Kuesa::AnimationPlayer *node);
+    static Kuesa::AnimationPlayer *qmlAnimationAt(QQmlListProperty<Kuesa::AnimationPlayer> *list, int index);
+    static int qmlAnimationCount(QQmlListProperty<Kuesa::AnimationPlayer> *list);
+    static void qmlClearAnimations(QQmlListProperty<Kuesa::AnimationPlayer> *list);
 
-    QVector<Qt3DCore::QNode *> m_managedTargets;
+    std::vector<Kuesa::AnimationPlayer *> m_managedAnimations;
 };
-} // namespace Kuesa
+
+} // namespace KuesaUtils
 
 QT_END_NAMESPACE
 
-#endif // ANIMATIONPLAYERITEM_H
+#endif // VIEW3DSCENEITEM_H

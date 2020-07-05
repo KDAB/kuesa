@@ -41,6 +41,7 @@ Scene3D {
     readonly property Entity activeCamera: scene.frameGraph.camera
     property alias components: scene.components
     property alias showDebugOverlay: scene.showDebugOverlay
+    property alias animations: scene.animations
     default property alias children: scene.data
 
     signal loadingDone()
@@ -54,6 +55,12 @@ Scene3D {
             scene.frameGraph.camera = camera
         }
     }
+
+    function start() { scene.start() }
+    function stop() { scene.stop() }
+    function gotoNormalizedTime(t) { scene.gotoNormalizedTime(t) }
+    function gotoStart(run) { scene.gotoStart() }
+    function gotoEnd(run) { scene.gotoEnd() }
 
     KuesaUtils.View3DScene {
         id: scene

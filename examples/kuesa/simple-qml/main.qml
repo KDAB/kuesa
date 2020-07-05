@@ -27,6 +27,8 @@
 */
 
 import QtQuick 2.12
+import QtQuick.Controls 2.12
+
 import Qt3D.Core 2.12
 import Qt3D.Render 2.12
 import Qt3D.Extras 2.12
@@ -46,6 +48,60 @@ Item {
 
         source: "qrc:/car.gltf"
         camera: "CamSweep_Orientation"
+
+        // Adding animation
+        property bool running: true
+        animations: [
+            Kuesa.AnimationPlayer { name: "MatMotorBlockAction"; loops: Kuesa.AnimationPlayer.Infinite; running: scene3D.running; id: mainAnimation },
+            Kuesa.AnimationPlayer { name: "TriggerMotorInfoAction"; loops: Kuesa.AnimationPlayer.Infinite; running: scene3D.running },
+            Kuesa.AnimationPlayer { name: "DoorLeftAction"; loops: Kuesa.AnimationPlayer.Infinite; running: scene3D.running },
+            Kuesa.AnimationPlayer { name: "DoorRightAction"; loops: Kuesa.AnimationPlayer.Infinite; running: scene3D.running },
+            Kuesa.AnimationPlayer { name: "HoodAction"; loops: Kuesa.AnimationPlayer.Infinite; running: scene3D.running },
+            Kuesa.AnimationPlayer { name: "SweepCamAction"; loops: Kuesa.AnimationPlayer.Infinite; running: scene3D.running },
+            Kuesa.AnimationPlayer { name: "SweepCamCenterAction"; loops: Kuesa.AnimationPlayer.Infinite; running: scene3D.running },
+            Kuesa.AnimationPlayer { name: "SweepCamPitchAction"; loops: Kuesa.AnimationPlayer.Infinite; running: scene3D.running }
+        ]
+    }
+
+    Row {
+        anchors.horizontalCenter: parent.horizontalCenter
+        spacing: 5
+        y: 20
+
+        Button {
+            text: "|<"
+            onClicked: {
+                scene3D.stop()
+                scene3D.gotoStart()
+                scene3D.running = false
+            }
+        }
+
+        Button {
+            text: scene3D.running ? "Stop" : "Resume"
+            onClicked: scene3D.running = !scene3D.running
+        }
+
+        Button {
+            text: ">|"
+            onClicked: {
+                scene3D.stop()
+                scene3D.gotoEnd()
+                scene3D.running = false
+            }
+        }
+
+        Slider {
+            id: slider
+            from: 0
+            to: 1
+            value: mainAnimation.normalizedTime
+            onMoved: {
+                scene3D.stop()
+                scene3D.gotoNormalizedTime(value)
+            }
+            width: mainRoot.width * .2
+        }
     }
 
     // Logos

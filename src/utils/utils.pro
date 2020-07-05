@@ -34,7 +34,7 @@ DEFINES += QT_BUILD_KUESA_UTILS_LIB
 # Avoid windows defines
 win32:DEFINES += WIN32_LEAN_AND_MEAN
 
-QT += kuesa kuesa-private
+QT += kuesa kuesa-private 3dcore-private
 
 HEADERS += \
     boundingvolumerenderer.h \
