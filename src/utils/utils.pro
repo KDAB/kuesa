@@ -39,11 +39,13 @@ QT += kuesa kuesa-private
 HEADERS += \
     boundingvolumerenderer.h \
     kuesa_utils_global.h \
-    orbitcameracontroller.h
+    orbitcameracontroller.h \
+    view3dscene.h
 
 SOURCES += \
     boundingvolumerenderer.cpp \
-    orbitcameracontroller.cpp
+    orbitcameracontroller.cpp \
+    view3dscene.cpp
 
 RESOURCES += \
     utils.qrc

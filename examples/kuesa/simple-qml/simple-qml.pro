@@ -1,9 +1,9 @@
-# imports.pro
+# simple-qml.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# Author: Mike Krus <mike.krus@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,32 +24,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-CXX_MODULE = qml
-TARGET = quickkuesaplugin
-TARGETPATH = Kuesa
-IMPORT_VERSION = 1.3
+TEMPLATE = app
 
-QT += kuesa kuesautils qml quick
+QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa quickcontrols2
 
-SOURCES += \
-    animationplayeritem.cpp \
-    assetproperty.cpp \
-    kuesaplugin.cpp \
-    asset.cpp \
-    postfxlistextension.cpp
+SOURCES += main.cpp
 
-HEADERS += \
-    animationplayeritem.h \
-    assetproperty_p.h \
-    kuesaplugin.h \
-    asset.h \
-    postfxlistextension.h
+RESOURCES += \
+    asset/asset.qrc \
+    simple-qml.qrc
 
-QML_FILES += \
-    View3D.qml
-
-OTHER_FILES += \
-    qmldir \
-    View3D.qml
-
-load(qml_plugin)
+target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+target.files = $$PWD/*
+INSTALLS += target

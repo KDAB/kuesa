@@ -80,6 +80,7 @@
 #include <Kuesa/IroDiffuseAlphaProperties>
 #include <KuesaUtils/orbitcameracontroller.h>
 #include <KuesaUtils/boundingvolumerenderer.h>
+#include <KuesaUtils/view3dscene.h>
 #include <Kuesa/Particles>
 
 #include <QtQml/qqml.h>
@@ -203,6 +204,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     // Utils
     qmlRegisterType<KuesaUtils::BoundingVolumeRenderer>("Kuesa.Utils", 1, 3, "BoundingVolumeRenderer");
     qmlRegisterType<KuesaUtils::OrbitCameraController>("Kuesa.Utils", 1, 3, "OrbitCameraController");
+    qmlRegisterType<KuesaUtils::View3DScene>("Kuesa.Utils", 1, 3, "View3DScene");
 
     // Particles
     qmlRegisterType<Kuesa::Particles>(uri, 1, 3, "Particles");

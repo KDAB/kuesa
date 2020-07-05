@@ -37,8 +37,7 @@ RESOURCES += \
     ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc \
     ../assets/envmaps/wobbly_bridge/envmap-wobbly-bridge-16f.qrc \
     ../assets/envmaps/neuer_zollhof/envmap-neuer-zollhof-16f.qrc \
-    ../assets/envmaps/kdab-studiosky-small/envmap-kdab-studiosky-small-16f.qrc \
-    ../assets/envmaps/kdab-studiosky-small/envmap-kdab-studiosky-small-16f.qrc \
+    ../assets/envmaps/kdab-studiosky-small/envmap-kdab-studiosky-small-16f.qrc
 
 qtConfig(draco) {
     RESOURCES += ../assets/models/car/car-draco.qrc

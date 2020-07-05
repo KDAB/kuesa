@@ -32,7 +32,8 @@ qtHaveModule(quick) {
         tonemapping \
         manyducks \
         music-box \
-        iro-materials-gallery
+        iro-materials-gallery \
+        simple-qml
 }
 
 demo_assets.path = $$[QT_INSTALL_EXAMPLES]/kuesa/assets
