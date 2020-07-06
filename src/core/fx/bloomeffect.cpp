@@ -275,7 +275,7 @@ Qt3DRender::QRenderTarget *BloomEffect::createRenderTarget(Qt3DRender::QAbstract
     auto output = new Qt3DRender::QRenderTargetOutput;
     output->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
     renderTarget->addOutput(output);
-    texture->setFormat(ForwardRenderer::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8U);
+    texture->setFormat(ForwardRenderer::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8_UNorm);
     texture->setSize(512, 512);
     texture->setGenerateMipMaps(false);
     output->setTexture(texture);
