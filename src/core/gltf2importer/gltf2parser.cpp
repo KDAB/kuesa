@@ -54,6 +54,8 @@
 #include "directionallight.h"
 #include "pointlight.h"
 #include "spotlight.h"
+
+#include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonDocument>
