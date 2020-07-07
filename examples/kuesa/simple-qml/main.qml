@@ -61,6 +61,10 @@ Item {
             Kuesa.AnimationPlayer { name: "SweepCamCenterAction"; loops: Kuesa.AnimationPlayer.Infinite; running: scene3D.running },
             Kuesa.AnimationPlayer { name: "SweepCamPitchAction"; loops: Kuesa.AnimationPlayer.Infinite; running: scene3D.running }
         ]
+
+        transformTrackers: [
+            Kuesa.TransformTracker { id: motorTracker; name: "TriggerMotorInfo" }
+        ]
     }
 
     Row {
@@ -101,6 +105,31 @@ Item {
                 scene3D.gotoNormalizedTime(value)
             }
             width: mainRoot.width * .2
+        }
+    }
+
+    Text {
+        id: innerText
+
+        // Bind position and opacity to motorLabelScreenPosition and motorLabelOpacity
+        readonly property point position: motorTracker.screenPosition
+        x: position.x - implicitWidth * 0.5
+        y: position.y - implicitHeight * 0.5
+        opacity: 0.5 * motorTracker.translation.y
+
+        font.bold: true
+
+        color: "white"
+        text: "Overheating"
+        style: Text.Sunken
+        styleColor: "red"
+
+        // Animate the size of the text
+        NumberAnimation on scale {
+            from: 2; to: 4
+            duration: 700
+            easing.type: Easing.InOutCubic
+            loops: Animation.Infinite
         }
     }
 

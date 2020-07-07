@@ -73,3 +73,40 @@ void View3DSceneItem::qmlClearAnimations(QQmlListProperty<Kuesa::AnimationPlayer
     self->parent3DScene()->clearAnimationPlayers();
     self->m_managedAnimations.clear();
 }
+
+QQmlListProperty<Kuesa::TransformTracker> View3DSceneItem::transformTrackers()
+{
+    return QQmlListProperty<Kuesa::TransformTracker>(this, nullptr,
+                                                     View3DSceneItem::qmlAppendTrackers,
+                                                     View3DSceneItem::qmlTrackersCount,
+                                                     View3DSceneItem::qmlTrackersAt,
+                                                     View3DSceneItem::qmlClearTrackers);
+}
+
+void View3DSceneItem::qmlAppendTrackers(QQmlListProperty<Kuesa::TransformTracker> *list, Kuesa::TransformTracker *node)
+{
+    if (node == nullptr)
+        return;
+    View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
+    self->m_managedTrackers.push_back(node);
+    self->parent3DScene()->addTransformTracker(node);
+}
+
+Kuesa::TransformTracker *View3DSceneItem::qmlTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, int index)
+{
+    View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
+    return self->m_managedTrackers.at(size_t(index));
+}
+
+int View3DSceneItem::qmlTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list)
+{
+    View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
+    return int(self->m_managedTrackers.size());
+}
+
+void View3DSceneItem::qmlClearTrackers(QQmlListProperty<Kuesa::TransformTracker> *list)
+{
+    View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
+    self->parent3DScene()->clearAnimationPlayers();
+    self->m_managedTrackers.clear();
+}

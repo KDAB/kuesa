@@ -33,6 +33,7 @@
 #include <QtQml/QQmlListProperty>
 #include <KuesaUtils/view3dscene.h>
 #include <Kuesa/animationplayer.h>
+#include <Kuesa/transformtracker.h>
 
 #include <vector>
 
@@ -44,11 +45,13 @@ class View3DSceneItem : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QQmlListProperty<Kuesa::AnimationPlayer> animations READ animations CONSTANT)
+    Q_PROPERTY(QQmlListProperty<Kuesa::TransformTracker> transformTrackers READ transformTrackers CONSTANT)
 public:
     explicit View3DSceneItem(QObject *parent = nullptr);
     ~View3DSceneItem();
 
     QQmlListProperty<Kuesa::AnimationPlayer> animations();
+    QQmlListProperty<Kuesa::TransformTracker> transformTrackers();
 
     View3DScene *parent3DScene() const { return qobject_cast<View3DScene *>(parent()); }
 
@@ -57,8 +60,13 @@ private:
     static Kuesa::AnimationPlayer *qmlAnimationAt(QQmlListProperty<Kuesa::AnimationPlayer> *list, int index);
     static int qmlAnimationCount(QQmlListProperty<Kuesa::AnimationPlayer> *list);
     static void qmlClearAnimations(QQmlListProperty<Kuesa::AnimationPlayer> *list);
+    static void qmlAppendTrackers(QQmlListProperty<Kuesa::TransformTracker> *list, Kuesa::TransformTracker *node);
+    static Kuesa::TransformTracker *qmlTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, int index);
+    static int qmlTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list);
+    static void qmlClearTrackers(QQmlListProperty<Kuesa::TransformTracker> *list);
 
     std::vector<Kuesa::AnimationPlayer *> m_managedAnimations;
+    std::vector<Kuesa::TransformTracker *> m_managedTrackers;
 };
 
 } // namespace KuesaUtils

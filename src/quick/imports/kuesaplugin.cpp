@@ -33,6 +33,7 @@
 #include "postfxlistextension.h"
 
 #include <Kuesa/SceneEntity>
+#include <Kuesa/TransformTracker>
 #include <Kuesa/GLTF2Importer>
 #include <Kuesa/ForwardRenderer>
 #include <Kuesa/MetallicRoughnessMaterial>
@@ -149,6 +150,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::GLTF2Import::GLTF2Options>(uri, 1, 1, "GLTF2Options", QStringLiteral("You are not supposed to create a GLTF2Options instance"));
     qmlRegisterUncreatableType<Kuesa::EffectProperties>(uri, 1, 1, "EffectProperties", QStringLiteral("Cannot be instantiated"));
     qRegisterMetaType<Kuesa::EffectProperties::Properties>("EffectProperties::Properties");
+    qmlRegisterType<Kuesa::TransformTracker>(uri, 1, 3, "TransformTracker");
 
     // Custom Simple Materials
     qmlRegisterType<Kuesa::IroDiffuseMaterial>("Kuesa.Iro", 1, 2, "IroDiffuseMaterial");

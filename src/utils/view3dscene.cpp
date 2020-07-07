@@ -60,6 +60,7 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
 
     connect(m_importer, &GLTF2Importer::sourceChanged, this, &View3DScene::sourceChanged);
     connect(m_frameGraph, &ForwardRenderer::showDebugOverlayChanged, this, &View3DScene::showDebugOverlayChanged);
+    connect(m_frameGraph, &ForwardRenderer::cameraChanged, this, &View3DScene::updateTrackers);
     connect(this, &SceneEntity::loadingDone, this, &View3DScene::onSceneLoaded);
 }
 
@@ -93,6 +94,20 @@ bool View3DScene::showDebugOverlay() const
     return m_frameGraph->showDebugOverlay();
 }
 
+QSize View3DScene::screenSize() const
+{
+    return m_screenSize;
+}
+
+void View3DScene::setScreenSize(const QSize &screenSize)
+{
+    if (m_screenSize != screenSize) {
+        m_screenSize = screenSize;
+        emit screenSizeChanged(m_screenSize);
+        updateTrackers();
+    }
+}
+
 void View3DScene::setShowDebugOverlay(bool showDebugOverlay)
 {
     m_frameGraph->setShowDebugOverlay(showDebugOverlay);
@@ -111,6 +126,14 @@ void View3DScene::onSceneLoaded()
         auto camera = SceneEntity::camera(m_cameraName);
         if (camera)
             m_frameGraph->setCamera(camera);
+    }
+}
+
+void View3DScene::updateTrackers()
+{
+    for (auto t : m_trackers) {
+        t->setScreenSize(m_screenSize);
+        t->setCamera(m_frameGraph->camera());
     }
 }
 
@@ -141,6 +164,33 @@ void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
 void View3DScene::clearAnimationPlayers()
 {
     m_animations.clear();
+}
+
+void View3DScene::addTransformTracker(TransformTracker *tracker)
+{
+    if (std::find(std::begin(m_trackers), std::end(m_trackers), tracker) == std::end(m_trackers)) {
+        Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+        d->registerDestructionHelper(tracker, &View3DScene::removeTransformTracker, tracker);
+        if (tracker->parentNode() == nullptr)
+            tracker->setParent(this);
+        m_trackers.push_back(tracker);
+        updateTrackers();
+    }
+}
+
+void View3DScene::removeTransformTracker(TransformTracker *tracker)
+{
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    d->unregisterDestructionHelper(tracker);
+    m_trackers.erase(std::remove_if(std::begin(m_trackers), std::end(m_trackers), [tracker](TransformTracker *t) {
+                         return t == tracker;
+                     }),
+                     std::end(m_trackers));
+}
+
+void View3DScene::clearTransformTrackers()
+{
+    m_trackers.clear();
 }
 
 void View3DScene::start()

@@ -42,6 +42,7 @@ Scene3D {
     property alias components: scene.components
     property alias showDebugOverlay: scene.showDebugOverlay
     property alias animations: scene.animations
+    property alias transformTrackers: scene.transformTrackers
     default property alias children: scene.data
 
     signal loadingDone()
@@ -64,6 +65,8 @@ Scene3D {
 
     KuesaUtils.View3DScene {
         id: scene
+
+        screenSize: Qt.size(root.width, root.height)
 
         Binding {
             target: root.activeCamera

@@ -36,6 +36,7 @@
 #include <Kuesa/gltf2importer.h>
 #include <Kuesa/forwardrenderer.h>
 #include <Kuesa/animationplayer.h>
+#include <Kuesa/transformtracker.h>
 
 #include <Qt3DAnimation/qclock.h>
 
@@ -53,6 +54,7 @@ class KUESAUTILS_SHARED_EXPORT View3DScene : public Kuesa::SceneEntity
     Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(QString cameraName READ cameraName WRITE setCameraName NOTIFY cameraNameChanged)
     Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay WRITE setShowDebugOverlay NOTIFY showDebugOverlayChanged)
+    Q_PROPERTY(QSize screenSize READ screenSize WRITE setScreenSize NOTIFY screenSizeChanged)
 public:
     explicit View3DScene(Qt3DCore::QNode *parent = nullptr);
     ~View3DScene();
@@ -62,15 +64,21 @@ public:
     QUrl source() const;
     QString cameraName() const;
     bool showDebugOverlay() const;
+    QSize screenSize() const;
 
     void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void clearAnimationPlayers();
 
+    void addTransformTracker(Kuesa::TransformTracker *tracker);
+    void removeTransformTracker(Kuesa::TransformTracker *tracker);
+    void clearTransformTrackers();
+
 public Q_SLOTS:
     void setSource(const QUrl &source);
     void setCameraName(const QString &cameraName);
     void setShowDebugOverlay(bool showDebugOverlay);
+    void setScreenSize(const QSize &screenSize);
 
     void adoptNode(QObject *object);
 
@@ -84,15 +92,19 @@ Q_SIGNALS:
     void sourceChanged(const QUrl &source);
     void cameraNameChanged(const QString &cameraName);
     void showDebugOverlayChanged(bool showDebugOverlay);
+    void screenSizeChanged(const QSize &screenSize);
 
 private:
     void onSceneLoaded();
+    void updateTrackers();
 
     Kuesa::GLTF2Importer *m_importer;
     Kuesa::ForwardRenderer *m_frameGraph;
     QString m_cameraName;
     std::vector<Kuesa::AnimationPlayer *> m_animations;
+    std::vector<Kuesa::TransformTracker *> m_trackers;
     Qt3DAnimation::QClock *m_clock;
+    QSize m_screenSize;
 };
 
 } // namespace KuesaUtils
