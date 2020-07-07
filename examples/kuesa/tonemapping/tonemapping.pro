@@ -40,7 +40,6 @@ RESOURCES += \
     ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-target.files = $$PWD/*
 INSTALLS += target
 
 OTHER_FILES += doc/src/*
