@@ -27,6 +27,7 @@
 INCLUDEPATH += $$PWD
 
 SOURCES += \
+    $$PWD/entitytransformwatcher.cpp \
     $$PWD/logging.cpp \
     $$PWD/sceneentity.cpp \
     $$PWD/animationplayer.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
     $$PWD/particles.cpp
 
 HEADERS += \
+    $$PWD/entitytransformwatcher_p.h \
     $$PWD/logging_p.h \
     $$PWD/sceneentity.h \
     $$PWD/factory.h \

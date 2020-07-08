@@ -76,5 +76,6 @@ qtConfig(private_tests) {
         normalgenerator \
         gltf2material \
         effectslibrary \
-        texturetransform
+        texturetransform \
+        entitytransformwatcher
 }
