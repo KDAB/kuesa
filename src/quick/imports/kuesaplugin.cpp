@@ -117,6 +117,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::TextureImageCollection>(uri, 1, 0, "TextureImageCollection", QStringLiteral("You are not supposed to create a TextureImageCollection"));
     qmlRegisterUncreatableType<Kuesa::AnimationMappingCollection>(uri, 1, 0, "AnimationMappingCollection", QStringLiteral("You are not supposed to create an AnimationMappingCollection"));
     qmlRegisterUncreatableType<Kuesa::AnimationClipCollection>(uri, 1, 0, "AnimationClipCollection", QStringLiteral("You are not supposed to create an AnimationClipCollection"));
+    qmlRegisterUncreatableType<Kuesa::TransformCollection>(uri, 1, 3, "TransformCollection", QStringLiteral("You are not supposed to create an TransformCollection"));
 
     // FrameGraphs
     qmlRegisterExtendedType<Kuesa::ForwardRenderer, Kuesa::PostFXListExtension>(uri, 1, 0, "ForwardRenderer");
@@ -132,6 +133,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     // Misc
     qmlRegisterType<Kuesa::GLTF2Importer>(uri, 1, 0, "GLTF2Importer");
     qmlRegisterType<Kuesa::SceneEntity>(uri, 1, 0, "SceneEntity");
+    qmlRegisterRevision<Kuesa::SceneEntity, 2>(uri, 1, 2);
     qmlRegisterUncreatableType<Kuesa::GLTF2Material>(uri, 1, 1, "GLTF2Material", QStringLiteral("GLTF2Material is abstract"));
     qmlRegisterUncreatableType<Kuesa::GLTF2MaterialProperties>(uri, 1, 1, "GLTF2MaterialProperties", QStringLiteral("GLTF2MaterialProperties is abstract"));
     qmlRegisterType<Kuesa::MetallicRoughnessMaterial>(uri, 1, 0, "MetallicRoughnessMaterial");

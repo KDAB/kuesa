@@ -43,6 +43,19 @@ Scene3D {
     property alias showDebugOverlay: scene.showDebugOverlay
     property alias animations: scene.animations
     property alias transformTrackers: scene.transformTrackers
+    property alias animationClips: scene.animationClips
+    property alias armatures: scene.armatures
+    property alias layers: scene.layers
+    property alias materials: scene.materials
+    property alias meshes: scene.meshes
+    property alias skeletons: scene.skeletons
+    property alias textures: scene.textures
+    property alias cameras: scene.cameras
+    property alias entities: scene.entities
+    property alias textureImages: scene.textureImages
+    property alias animationMappings: scene.animationMappings
+    property alias lights: scene.lights
+//    property alias transforms: scene.transforms
     default property alias children: scene.data
 
     signal loadingDone()

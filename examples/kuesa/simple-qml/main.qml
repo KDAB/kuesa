@@ -65,6 +65,23 @@ Item {
         transformTrackers: [
             Kuesa.TransformTracker { id: motorTracker; name: "TriggerMotorInfo" }
         ]
+
+        Kuesa.QuickSceneMaterial {
+            name: "MatScreen"
+            collection: scene3D.materials
+
+            Item {
+                width: 512
+                height: 512
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "Hello! I'm a QtQuick Text Item"
+                    font.pixelSize: 36
+                    color: "white"
+                }
+            }
+        }
     }
 
     Row {

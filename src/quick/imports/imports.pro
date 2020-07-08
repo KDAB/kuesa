@@ -48,10 +48,12 @@ HEADERS += \
     view3dsceneitem.h
 
 QML_FILES += \
+    QuickSceneMaterial.qml \
     View3D.qml
 
 OTHER_FILES += \
     qmldir \
+    QuickSceneMaterial.qml \
     View3D.qml
 
 load(qml_plugin)
