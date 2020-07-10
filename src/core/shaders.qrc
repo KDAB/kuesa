@@ -86,5 +86,19 @@
         <file>shaders/gl3/particle.vert</file>
         <file>shaders/gl3/particle.geom</file>
         <file>shaders/gl3/particle.frag</file>
+        <file>shaders/gl45/kuesa_metallicRoughnessShaderData.inc.frag</file>
+        <file>shaders/gl45/kuesa_morphtargets_weights.inc.vert</file>
+        <file>shaders/gl45/dof.frag</file>
+        <file>shaders/gl45/generate-shaders.sh</file>
+        <file>shaders/gl45/kuesa_morphtargets_normal.inc.vert</file>
+        <file>shaders/gl45/kuesa_morphtargets_position.inc.vert</file>
+        <file>shaders/gl45/kuesa_morphtargets_tangent.inc.vert</file>
+        <file>shaders/gl45/kuesa_metalrough_unroll.inc.frag</file>
+        <file>shaders/gl45/light_unroll.inc.frag</file>
+        <file>shaders/gl45/passthrough.vert</file>
+        <file>shaders/gl45/qt3d_default_uniforms.inc</file>
+        <file>shaders/gl3/qt3d_default_uniforms.inc</file>
+        <file>shaders/es3/qt3d_default_uniforms.inc</file>
+        <file>shaders/es2/qt3d_default_uniforms.inc</file>
     </qresource>
 </RCC>

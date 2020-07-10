@@ -1,10 +1,10 @@
 /*
-    kuesa_metallicRoughnessShaderData.inc.frag
+    kuesa_morphtargets_weights.inc.vert
 
     This file is part of Kuesa.
 
     Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Juan Casafranca <juan.casafranca@kdab.com>
+    Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,27 +26,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-struct MetallicRoughness {
-    mat3 baseColorMapTextureTransform;
-    mat3 metalRoughMapTextureTransform;
-    mat3 normalMapTextureTransform;
-    mat3 ambientOcclusionMapTextureTransform;
-    mat3 emissiveMapTextureTransform;
-
-    vec4 baseColorFactor;
-    vec4 emissiveFactor;
-
-
-    float metallicFactor;
-    float roughnessFactor;
-    float normalScale;
-    float alphaCutoff;
-
-    bool baseColorUsesTexCoord1;
-    bool metallicRoughnessUsesTexCoord1;
-    bool normalUsesTexCoord1;
-    bool aoUsesTexCoord1;
-    bool emissiveUsesTexCoord1;
+struct MorphWeights {
+    float morphWeights[8];
 };
 
-uniform MetallicRoughness metallicRoughness;
+layout(std140, binding = auto) uniform MorphWeightsBlock {
+    MorphWeights morphWeights;
+};

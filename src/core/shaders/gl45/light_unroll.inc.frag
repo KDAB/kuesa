@@ -1,10 +1,10 @@
 /*
-    kuesa_metallicRoughnessShaderData.inc.frag
+    light.inc.frag
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Juan Casafranca <juan.casafranca@kdab.com>
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,27 +26,34 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-struct MetallicRoughness {
-    mat3 baseColorMapTextureTransform;
-    mat3 metalRoughMapTextureTransform;
-    mat3 normalMapTextureTransform;
-    mat3 ambientOcclusionMapTextureTransform;
-    mat3 emissiveMapTextureTransform;
-
-    vec4 baseColorFactor;
-    vec4 emissiveFactor;
-
-
-    float metallicFactor;
-    float roughnessFactor;
-    float normalScale;
-    float alphaCutoff;
-
-    bool baseColorUsesTexCoord1;
-    bool metallicRoughnessUsesTexCoord1;
-    bool normalUsesTexCoord1;
-    bool aoUsesTexCoord1;
-    bool emissiveUsesTexCoord1;
+const int MAX_LIGHTS = 8;
+const int TYPE_POINT = 0;
+const int TYPE_DIRECTIONAL = 1;
+const int TYPE_SPOT = 2;
+struct Light {
+    int type;
+    vec3 position;
+    vec3 color;
+    float intensity;
+    vec3 direction;
+    float range;
+    float lightAngleScale;
+    float lightAngleOffset;
 };
 
-uniform MetallicRoughness metallicRoughness;
+layout(std140, binding = auto) uniform LightBlock {
+    Light light_0;
+    Light light_1;
+    Light light_2;
+    Light light_3;
+    Light light_4;
+    Light light_5;
+    Light light_6;
+    Light light_7;
+    int lightCount;
+    int envLightCount;
+};
+
+// Pre-convolved environment maps
+layout(binding = auto) uniform samplerCube envLightIrradiance; // For diffuse contribution
+layout(binding = auto) uniform samplerCube envLightSpecular; // For specular contribution

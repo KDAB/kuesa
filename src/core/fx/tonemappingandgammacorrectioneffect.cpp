@@ -171,6 +171,9 @@ QString shaderGraphLayerForToneMappingAlgorithm(ToneMappingAndGammaCorrectionEff
 ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCore::QNode *parent)
     : AbstractPostProcessingEffect(parent)
     , m_layer(nullptr)
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    , m_rhiShaderBuilder(nullptr)
+#endif
     , m_gl3ShaderBuilder(nullptr)
     , m_es3ShaderBuilder(nullptr)
     , m_es2ShaderBuilder(nullptr)
@@ -232,6 +235,22 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
                                                     m_es2ShaderBuilder,
                                                     passName, passFilterValue);
         effect->addTechnique(es2Technique);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        m_rhiShaderBuilder = new Qt3DRender::QShaderProgramBuilder();
+        m_rhiShaderBuilder->setEnabledLayers(enabledShaderLayers);
+        m_rhiShaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/gammacorrection.frag.json")));
+
+        auto *rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI,
+                                                    1, 0,
+                                                    Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                                    QStringLiteral("qrc:/kuesa/shaders/gl45/passthrough.vert"),
+                                                    m_rhiShaderBuilder,
+                                                    passName, passFilterValue);
+        effect->addTechnique(rhiTechnique);
+#endif
+
+
         effect->addParameter(m_gammaParameter);
         effect->addParameter(m_inputTextureParameter);
         effect->addParameter(m_exposureParameter);
@@ -318,6 +337,9 @@ void ToneMappingAndGammaCorrectionEffect::setToneMappingAlgorithm(ToneMappingAnd
     m_es2ShaderBuilder->setEnabledLayers(layers);
     m_es3ShaderBuilder->setEnabledLayers(layers);
     m_gl3ShaderBuilder->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_rhiShaderBuilder->setEnabledLayers(layers);
+#endif
 
     m_toneMappingAlgorithm = algorithm;
     emit toneMappingAlgorithmChanged(algorithm);

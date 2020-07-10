@@ -69,9 +69,16 @@ Q_SIGNALS:
     void materialPropertiesChanged(Kuesa::MetallicRoughnessProperties *materialProperties);
 
 private:
+    void enforceSRGBOnTexture(Qt3DRender::QAbstractTexture *t) const;
+
     MetallicRoughnessProperties *m_materialProperties;
     Qt3DRender::QParameter *m_metallicRoughnessShaderDataParameter;
     QMetaObject::Connection m_textureTransformChangedConnection;
+    Qt3DRender::QParameter *m_baseColorMapParameter;
+    Qt3DRender::QParameter *m_normalMapParameter;
+    Qt3DRender::QParameter *m_emissiveMapParameter;
+    Qt3DRender::QParameter *m_ambientOcclusionMapParameter;
+    Qt3DRender::QParameter *m_metalRoughMapParameter;
 };
 
 } // namespace Kuesa

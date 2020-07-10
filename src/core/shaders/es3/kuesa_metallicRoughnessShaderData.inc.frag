@@ -36,12 +36,6 @@ struct MetallicRoughness {
     highp vec4 baseColorFactor;
     highp vec4 emissiveFactor;
 
-    highp sampler2D baseColorMap;
-    highp sampler2D metalRoughMap;
-    highp sampler2D normalMap;
-    highp sampler2D ambientOcclusionMap;
-    highp sampler2D emissiveMap;
-
     highp float metallicFactor;
     highp float roughnessFactor;
     highp float normalScale;

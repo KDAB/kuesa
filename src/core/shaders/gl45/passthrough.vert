@@ -1,10 +1,12 @@
+#version 450
+
 /*
-    kuesa_metallicRoughnessShaderData.inc.frag
+    passthrough.vert
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Juan Casafranca <juan.casafranca@kdab.com>
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,27 +28,29 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-struct MetallicRoughness {
-    mat3 baseColorMapTextureTransform;
-    mat3 metalRoughMapTextureTransform;
-    mat3 normalMapTextureTransform;
-    mat3 ambientOcclusionMapTextureTransform;
-    mat3 emissiveMapTextureTransform;
+layout(location = 0) in vec3 vertexPosition;
+layout(location = 1) in vec2 vertexTexCoord;
+layout(location = 2) in vec2 vertexTexCoord1;
 
-    vec4 baseColorFactor;
-    vec4 emissiveFactor;
+layout(location = 0) out vec2 texCoord;
+layout(location = 1) out vec2 texCoord1;
 
-
-    float metallicFactor;
-    float roughnessFactor;
-    float normalScale;
-    float alphaCutoff;
-
-    bool baseColorUsesTexCoord1;
-    bool metallicRoughnessUsesTexCoord1;
-    bool normalUsesTexCoord1;
-    bool aoUsesTexCoord1;
-    bool emissiveUsesTexCoord1;
+layout(std140, binding = 1) uniform qt3d_command_uniforms {
+  mat4 modelMatrix;
+  mat4 inverseModelMatrix;
+  mat4 modelViewMatrix;
+  mat3 modelNormalMatrix;
+  mat4 inverseModelViewMatrix;
+  mat4 modelViewProjection;
+  mat4 inverseModelViewProjectionMatrix;
 };
 
-uniform MetallicRoughness metallicRoughness;
+void main()
+{
+    // Pass through the texture coords
+    texCoord = vertexTexCoord;
+    texCoord1 = vertexTexCoord1;
+
+    // Calculate the clip-space coordinates
+    gl_Position = modelViewProjection * vec4(vertexPosition, 1.0);
+}

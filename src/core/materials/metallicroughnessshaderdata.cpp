@@ -40,15 +40,10 @@ MetallicRoughnessShaderData::MetallicRoughnessShaderData(Qt3DCore::QNode *parent
     , m_aoUsesTexCoord1(false)
     , m_emissiveUsesTexCoord1(false)
     , m_baseColorFactor(QColor("gray"))
-    , m_baseColorMap(nullptr)
     , m_metallicFactor(0.0f)
     , m_roughnessFactor(0.0f)
-    , m_metalRoughMap(nullptr)
     , m_normalScale(1.0f)
-    , m_normalMap(nullptr)
-    , m_ambientOcclusionMap(nullptr)
     , m_emissiveFactor(QColor("black"))
-    , m_emissiveMap(nullptr)
     , m_alphaCutoff(0.0f)
 {
 }
@@ -87,11 +82,6 @@ QColor MetallicRoughnessShaderData::baseColorFactor() const
     return m_baseColorFactor;
 }
 
-Qt3DRender::QAbstractTexture *MetallicRoughnessShaderData::baseColorMap() const
-{
-    return m_baseColorMap;
-}
-
 float MetallicRoughnessShaderData::metallicFactor() const
 {
     return m_metallicFactor;
@@ -100,11 +90,6 @@ float MetallicRoughnessShaderData::metallicFactor() const
 float MetallicRoughnessShaderData::roughnessFactor() const
 {
     return m_roughnessFactor;
-}
-
-Qt3DRender::QAbstractTexture *MetallicRoughnessShaderData::metalRoughMap() const
-{
-    return m_metalRoughMap;
 }
 
 QMatrix3x3 MetallicRoughnessShaderData::metalRoughMapTextureTransform() const
@@ -117,19 +102,9 @@ float MetallicRoughnessShaderData::normalScale() const
     return m_normalScale;
 }
 
-Qt3DRender::QAbstractTexture *MetallicRoughnessShaderData::normalMap() const
-{
-    return m_normalMap;
-}
-
 QMatrix3x3 MetallicRoughnessShaderData::normalMapTextureTransform() const
 {
     return m_normalMapTextureTransform;
-}
-
-Qt3DRender::QAbstractTexture *MetallicRoughnessShaderData::ambientOcclusionMap() const
-{
-    return m_ambientOcclusionMap;
 }
 
 QMatrix3x3 MetallicRoughnessShaderData::ambientOcclusionMapTextureTransform() const
@@ -140,11 +115,6 @@ QMatrix3x3 MetallicRoughnessShaderData::ambientOcclusionMapTextureTransform() co
 QColor MetallicRoughnessShaderData::emissiveFactor() const
 {
     return m_emissiveFactor;
-}
-
-Qt3DRender::QAbstractTexture *MetallicRoughnessShaderData::emissiveMap() const
-{
-    return m_emissiveMap;
 }
 
 QMatrix3x3 MetallicRoughnessShaderData::emissiveMapTextureTransform() const
@@ -221,37 +191,6 @@ void MetallicRoughnessShaderData::setRoughnessFactor(float roughnessFactor)
     emit roughnessFactorChanged(roughnessFactor);
 }
 
-#define SET_MAP_VALUE(Var, Member, Func, Signal, isSRG) \
-    if (Member == Var)\
-        return;\
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);\
-    if (Member != nullptr)\
-        d->unregisterDestructionHelper(Member);\
-    Member = Var;\
-    if (Member != nullptr) {\
-        if (isSRG)\
-            Member->setFormat(Qt3DRender::QAbstractTexture::TextureFormat::SRGB8_Alpha8);\
-        if (Member->parent() == nullptr)\
-            Member->setParent(this);\
-        d->registerDestructionHelper(Member, &Func, Member);\
-    }\
-    emit Signal(Member);
-
-
-void MetallicRoughnessShaderData::setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap)
-{
-#ifndef QT_OPENGL_ES_2
-    const bool isSRGB = true;
-#else
-    const bool isSRGB = false;
-#endif
-    SET_MAP_VALUE(baseColorMap,
-                  m_baseColorMap,
-                  MetallicRoughnessShaderData::setBaseColorMap,
-                  baseColorMapChanged,
-                  isSRGB)
-}
-
 void MetallicRoughnessShaderData::setBaseColorMapTextureTransform(const QMatrix3x3 &m)
 {
     if (m_baseColorMapTextureTransform != m)
@@ -259,20 +198,6 @@ void MetallicRoughnessShaderData::setBaseColorMapTextureTransform(const QMatrix3
         m_baseColorMapTextureTransform = m;
         emit baseColorMapTextureTransform();
     }
-}
-
-void MetallicRoughnessShaderData::setEmissiveMap(Qt3DRender::QAbstractTexture *emissiveMap)
-{
-#ifndef QT_OPENGL_ES_2
-    const bool isSRGB = true;
-#else
-    const bool isSRGB = false;
-#endif
-    SET_MAP_VALUE(emissiveMap,
-                  m_emissiveMap,
-                  MetallicRoughnessShaderData::setEmissiveMap,
-                  emissiveMapChanged,
-                  isSRGB)
 }
 
 void MetallicRoughnessShaderData::setEmissiveMapTextureTransform(const QMatrix3x3 &m)
@@ -284,15 +209,6 @@ void MetallicRoughnessShaderData::setEmissiveMapTextureTransform(const QMatrix3x
     }
 }
 
-void MetallicRoughnessShaderData::setMetalRoughMap(Qt3DRender::QAbstractTexture *metalRoughMap)
-{
-    SET_MAP_VALUE(metalRoughMap,
-                  m_metalRoughMap,
-                  MetallicRoughnessShaderData::setMetalRoughMap,
-                  metalRoughMapChanged,
-                  false)
-}
-
 void MetallicRoughnessShaderData::setMetalRoughMapTextureTransform(const QMatrix3x3 &m)
 {
     if (m_metalRoughMapTextureTransform != m)
@@ -300,15 +216,6 @@ void MetallicRoughnessShaderData::setMetalRoughMapTextureTransform(const QMatrix
         m_metalRoughMapTextureTransform = m;
         emit metalRoughMapTextureTransform();
     }
-}
-
-void MetallicRoughnessShaderData::setNormalMap(Qt3DRender::QAbstractTexture *normalMap)
-{
-    SET_MAP_VALUE(normalMap,
-                  m_normalMap,
-                  MetallicRoughnessShaderData::setNormalMap,
-                  normalMapChanged,
-                  false)
 }
 
 void MetallicRoughnessShaderData::setNormalMapTextureTransform(const QMatrix3x3 &m)
@@ -320,15 +227,6 @@ void MetallicRoughnessShaderData::setNormalMapTextureTransform(const QMatrix3x3 
     }
 }
 
-void MetallicRoughnessShaderData::setAmbientOcclusionMap(Qt3DRender::QAbstractTexture *ambientOcclusionMap)
-{
-    SET_MAP_VALUE(ambientOcclusionMap,
-                  m_ambientOcclusionMap,
-                  MetallicRoughnessShaderData::setAmbientOcclusionMap,
-                  ambientOcclusionMapChanged,
-                  false)
-}
-
 void MetallicRoughnessShaderData::setAmbientOcclusionMapTextureTransform(const QMatrix3x3 &m)
 {
     if (m_ambientOcclusionMapTextureTransform != m)
@@ -337,8 +235,6 @@ void MetallicRoughnessShaderData::setAmbientOcclusionMapTextureTransform(const Q
         emit ambientOcclusionMapTextureTransform();
     }
 }
-
-#undef SET_MAP_VALUE
 
 void MetallicRoughnessShaderData::setNormalScale(float normalScale)
 {

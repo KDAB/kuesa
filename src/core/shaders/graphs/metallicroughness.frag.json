@@ -4,120 +4,137 @@
             "layers": [
             ],
             "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000001}",
+            "sourceUuid": "{b4efdaa3-5c04-4c1d-bfce-b35566e45b85}",
+            "targetPort": "first",
+            "targetUuid": "{60f02f4c-5ef1-4100-aa1a-771cc6a2a0e0}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{a94cf7ac-728f-4bc3-85d4-f00de021ea9d}",
+            "targetPort": "first",
+            "targetUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{78881898-4063-4427-9116-d9b693a69a9e}",
+            "targetPort": "second",
+            "targetUuid": "{a7d7973a-2f44-4f51-80b8-c8c662a49c46}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{a8be6180-b775-4def-addb-cd81836315cb}",
             "targetPort": "subtrahend",
             "targetUuid": "{00000000-0000-0000-0000-000000000019}"
         },
         {
             "layers": [
             ],
-            "sourcePort": "eyePosition",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000002}",
-            "targetPort": "minuend",
-            "targetUuid": "{00000000-0000-0000-0000-000000000019}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "difference",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000019}",
+            "sourcePort": "value",
+            "sourceUuid": "{2cf84cfd-b0bc-4f69-91eb-ff7788e3c359}",
             "targetPort": "input",
-            "targetUuid": "{00000000-0000-0000-0000-000000000020}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000003}",
-            "targetPort": "worldNormal",
-            "targetUuid": "{00000000-0000-0000-0000-000000000021}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000004}",
-            "targetPort": "worldTangent",
-            "targetUuid": "{00000000-0000-0000-0000-000000000021}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000023}",
-            "targetPort": "input",
-            "targetUuid": "{00000000-0000-0000-0000-000000000028}"
-        },
-        {
-            "layers": [
-                "noBaseColorMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{604bed2b-e8b8-44a7-8a81-763c0cdae7b3}",
-            "targetPort": "first",
-            "targetUuid": "{60f02f4c-5ef1-4100-aa1a-771cc6a2a0e0}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{144fff21-ceb5-4626-b2c2-cbad2be6ac34}",
-            "targetPort": "first",
-            "targetUuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}"
+            "targetUuid": "{8d4f938f-9d7a-4487-b4de-366206faea13}"
         },
         {
             "layers": [
             ],
             "sourcePort": "value",
-            "sourceUuid": "{4207ae73-bdc5-4cde-8086-6371d6beef9e}",
-            "targetPort": "first",
-            "targetUuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{f019ce7d-1757-424b-af6f-0e002231199a}",
-            "targetPort": "first",
-            "targetUuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}"
+            "sourceUuid": "{574e1e0e-7db1-4765-afde-ce5f127da8a7}",
+            "targetPort": "value",
+            "targetUuid": "{8d0e8185-312f-44db-81f2-d92f5a947939}"
         },
         {
             "layers": [
             ],
             "sourcePort": "value",
-            "sourceUuid": "{1fa6403f-edad-4a0d-8bda-b694bcca4b1f}",
-            "targetPort": "first",
-            "targetUuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}"
+            "sourceUuid": "{ac4ef559-bcb9-43e8-84e0-0e909cb38c87}",
+            "targetPort": "second",
+            "targetUuid": "{a49789fd-1e00-4f9b-846d-55d436a43272}"
         },
         {
             "layers": [
             ],
             "sourcePort": "value",
-            "sourceUuid": "{7c4ae51b-6cec-4f34-af35-b3e052e32c1d}",
-            "targetPort": "first",
-            "targetUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}"
+            "sourceUuid": "{d504ecec-a423-4138-8f00-c06f81dd969a}",
+            "targetPort": "fragColor",
+            "targetUuid": "{a62ff8d2-694b-46b4-a3cf-e15b2660ac28}"
         },
         {
             "layers": [
-                "noNormalMap"
             ],
             "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000003}",
-            "targetPort": "input",
-            "targetUuid": "{00000000-0000-0000-0000-000000000028}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{60f02f4c-5ef1-4100-aa1a-771cc6a2a0e0}",
-            "targetPort": "first",
+            "sourceUuid": "{4eab697d-c875-4350-9cd5-71ba645d1ad5}",
+            "targetPort": "second",
             "targetUuid": "{3ab1a915-4a49-4a23-9a7d-aa1df544e466}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{d3d4b9c8-0b2e-4263-a6d8-1e1a60328bfa}",
+            "targetPort": "first",
+            "targetUuid": "{222bc118-7466-453b-a5ee-7b8edae2c0e6}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{80c8447f-6f58-405a-859b-9c9ed1ada0a7}",
+            "targetPort": "first",
+            "targetUuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{80c18ff4-8e5f-400b-911d-fe97f427cb4b}",
+            "targetPort": "first",
+            "targetUuid": "{2541a5a6-dcf0-4f3d-a800-6f53330ca78b}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{805f4408-6fd2-4a6c-8b17-46cf20cd9a41}",
+            "targetPort": "subtrahend",
+            "targetUuid": "{64f36d2a-1039-480e-8604-424bc8e7d407}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{b856ee9b-34ce-4c55-ab0b-a039095fe5a8}",
+            "targetPort": "input",
+            "targetUuid": "{00000000-0000-0000-0000-000000000028}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{dfde3603-add2-4f0b-99d4-4b6b38026975}",
+            "targetPort": "first",
+            "targetUuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{0eb7cb5f-b4be-46e0-9ccd-f6f444062966}",
+            "targetPort": "first",
+            "targetUuid": "{35733ff4-190c-41fb-8a6c-2e03c971f3d2}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{11be8ec7-9992-4377-b911-c2295f7f2a7a}",
+            "targetPort": "second",
+            "targetUuid": "{35733ff4-190c-41fb-8a6c-2e03c971f3d2}"
         },
         {
             "layers": [
@@ -130,110 +147,21 @@
         },
         {
             "layers": [
+                "noBaseColorMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{604bed2b-e8b8-44a7-8a81-763c0cdae7b3}",
+            "targetPort": "first",
+            "targetUuid": "{60f02f4c-5ef1-4100-aa1a-771cc6a2a0e0}"
+        },
+        {
+            "layers": [
                 "noHasColorAttr"
             ],
             "sourcePort": "value",
             "sourceUuid": "{bcc2abdd-2459-48cb-8dea-eba19d1257b1}",
             "targetPort": "second",
             "targetUuid": "{3ab1a915-4a49-4a23-9a7d-aa1df544e466}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{b662d1c9-b092-49c6-af12-7d4167017eb6}",
-            "targetPort": "second",
-            "targetUuid": "{a7d7973a-2f44-4f51-80b8-c8c662a49c46}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{a7d7973a-2f44-4f51-80b8-c8c662a49c46}",
-            "targetPort": "minuend",
-            "targetUuid": "{64f36d2a-1039-480e-8604-424bc8e7d407}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{d32c210f-1d98-43cd-95dd-e897e1ecb4cc}",
-            "targetPort": "subtrahend",
-            "targetUuid": "{64f36d2a-1039-480e-8604-424bc8e7d407}"
-        },
-        {
-            "layers": [
-                "doubleSided"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000028}",
-            "targetPort": "first",
-            "targetUuid": "{2541a5a6-dcf0-4f3d-a800-6f53330ca78b}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{26158412-77a9-472e-b9bf-6753a1422f6d}",
-            "targetPort": "first",
-            "targetUuid": "{6762e255-63ad-4c7e-9a75-18d1e99e3f57}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{6762e255-63ad-4c7e-9a75-18d1e99e3f57}",
-            "targetPort": "minuend",
-            "targetUuid": "{185048bb-18e3-4cd8-b4d9-b0dd6f0f932d}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{c41dc4e9-fc89-46a1-84fe-661ad93305f4}",
-            "targetPort": "subtrahend",
-            "targetUuid": "{185048bb-18e3-4cd8-b4d9-b0dd6f0f932d}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "difference",
-            "sourceUuid": "{185048bb-18e3-4cd8-b4d9-b0dd6f0f932d}",
-            "targetPort": "second",
-            "targetUuid": "{2541a5a6-dcf0-4f3d-a800-6f53330ca78b}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{db5de60d-99a4-4203-8958-02842448747f}",
-            "targetPort": "second",
-            "targetUuid": "{6762e255-63ad-4c7e-9a75-18d1e99e3f57}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{3e9a711a-d681-43d0-b014-dd7ae3617763}",
-            "targetPort": "input",
-            "targetUuid": "{db5de60d-99a4-4203-8958-02842448747f}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "matrix",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000021}",
-            "targetPort": "second",
-            "targetUuid": "{00000000-0000-0000-0000-000000000023}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{b52b84a4-03ae-43d4-af30-13486cc1f114}",
-            "targetPort": "first",
-            "targetUuid": "{222bc118-7466-453b-a5ee-7b8edae2c0e6}"
         },
         {
             "layers": [
@@ -246,11 +174,12 @@
         },
         {
             "layers": [
+                "baseColorMap"
             ],
-            "sourcePort": "difference",
-            "sourceUuid": "{64f36d2a-1039-480e-8604-424bc8e7d407}",
-            "targetPort": "first",
-            "targetUuid": "{35733ff4-190c-41fb-8a6c-2e03c971f3d2}"
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000005}",
+            "targetPort": "false",
+            "targetUuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}"
         },
         {
             "layers": [
@@ -263,12 +192,39 @@
         },
         {
             "layers": [
-                "normalMap"
+                "baseColorMap"
             ],
-            "sourcePort": "product",
-            "sourceUuid": "{35733ff4-190c-41fb-8a6c-2e03c971f3d2}",
-            "targetPort": "input",
-            "targetUuid": "{469109ec-b4e0-4a1d-91a2-f9b120b12128}"
+            "sourcePort": "value",
+            "sourceUuid": "{e47d2058-9a45-4aeb-a5f0-117d871348fb}",
+            "targetPort": "texture",
+            "targetUuid": "{1d1ffe9c-1ad8-4552-b034-e8ce82ba706f}"
+        },
+        {
+            "layers": [
+                "hasAlphaCutoff"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{8d4f938f-9d7a-4487-b4de-366206faea13}",
+            "targetPort": "input2",
+            "targetUuid": "{5dd3d862-88da-4941-a71f-e3850ccb6cd0}"
+        },
+        {
+            "layers": [
+                "ambientOcclusionMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}",
+            "targetPort": "true",
+            "targetUuid": "{dbe8d79a-079c-47a1-bc06-3d305b71b2e8}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}",
+            "targetPort": "true",
+            "targetUuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}"
         },
         {
             "layers": [
@@ -283,279 +239,9 @@
             "layers": [
             ],
             "sourcePort": "value",
-            "sourceUuid": "{8144a361-cc51-4d99-8f72-8d28ece98491}",
-            "targetPort": "second",
-            "targetUuid": "{a49789fd-1e00-4f9b-846d-55d436a43272}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{961e430d-5760-405d-992c-046dc1967635}",
-            "targetPort": "first",
-            "targetUuid": "{a7d7973a-2f44-4f51-80b8-c8c662a49c46}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{3ab1a915-4a49-4a23-9a7d-aa1df544e466}",
-            "targetPort": "input",
-            "targetUuid": "{8d4f938f-9d7a-4487-b4de-366206faea13}"
-        },
-        {
-            "layers": [
-                "hasAlphaCutoff"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{5dd3d862-88da-4941-a71f-e3850ccb6cd0}",
-            "targetPort": "condition",
-            "targetUuid": "{8d0e8185-312f-44db-81f2-d92f5a947939}"
-        },
-        {
-            "layers": [
-                "hasAlphaCutoff"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}",
-            "targetPort": "value",
-            "targetUuid": "{8d0e8185-312f-44db-81f2-d92f5a947939}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{8d4f938f-9d7a-4487-b4de-366206faea13}",
-            "targetPort": "second",
-            "targetUuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000020}",
-            "targetPort": "worldView",
-            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000001}",
-            "targetPort": "worldPosition",
-            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
-        },
-        {
-            "layers": [
-                "noDoubleSided"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000028}",
-            "targetPort": "worldNormal",
-            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
-        },
-        {
-            "layers": [
-                "doubleSided"
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{2541a5a6-dcf0-4f3d-a800-6f53330ca78b}",
-            "targetPort": "worldNormal",
-            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction"
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}",
-            "targetPort": "roughness",
-            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction"
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}",
-            "targetPort": "metalness",
-            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction"
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{3ab1a915-4a49-4a23-9a7d-aa1df544e466}",
-            "targetPort": "baseColor",
-            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000016}",
-            "targetPort": "ambientOcclusion",
-            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000014}",
-            "targetPort": "ambientOcclusion",
-            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction"
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}",
-            "targetPort": "emissive",
-            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000005}",
-            "targetPort": "false",
-            "targetUuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}",
-            "targetPort": "true",
-            "targetUuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000005}",
-            "targetPort": "false",
-            "targetUuid": "{88ba4c76-cb47-4267-b41a-bd7f4c3c2d42}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}",
-            "targetPort": "true",
-            "targetUuid": "{88ba4c76-cb47-4267-b41a-bd7f4c3c2d42}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000005}",
-            "targetPort": "false",
-            "targetUuid": "{dbe8d79a-079c-47a1-bc06-3d305b71b2e8}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}",
-            "targetPort": "true",
-            "targetUuid": "{dbe8d79a-079c-47a1-bc06-3d305b71b2e8}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}",
-            "targetPort": "true",
-            "targetUuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000005}",
-            "targetPort": "false",
-            "targetUuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000005}",
-            "targetPort": "false",
-            "targetUuid": "{1ceda485-199f-46b1-b952-3bfd871126ae}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}",
-            "targetPort": "true",
-            "targetUuid": "{1ceda485-199f-46b1-b952-3bfd871126ae}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{99378309-7a6b-4e4e-86bc-8eee17972eab}",
-            "targetPort": "second",
-            "targetUuid": "{60f02f4c-5ef1-4100-aa1a-771cc6a2a0e0}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{99378309-7a6b-4e4e-86bc-8eee17972eab}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{1bc9c6da-4e78-4f8f-ac12-4188872649e7}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
             "sourceUuid": "{1bc9c6da-4e78-4f8f-ac12-4188872649e7}",
             "targetPort": "second",
             "targetUuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{a1f36c4a-05e8-4cdf-b678-59145d8730be}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{a1f36c4a-05e8-4cdf-b678-59145d8730be}",
-            "targetPort": "second",
-            "targetUuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}"
         },
         {
             "layers": [
@@ -564,73 +250,6 @@
             "sourceUuid": "{1c551861-5f2f-42ce-a529-6a2d8b2bfdb1}",
             "targetPort": "second",
             "targetUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{1c551861-5f2f-42ce-a529-6a2d8b2bfdb1}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{1051ac23-1558-42f3-a060-a4d484a28980}",
-            "targetPort": "second",
-            "targetUuid": "{222bc118-7466-453b-a5ee-7b8edae2c0e6}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{1051ac23-1558-42f3-a060-a4d484a28980}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{bf4e9e46-b752-45fb-9e18-2a69c1b37b59}",
-            "targetPort": "condition",
-            "targetUuid": "{88ba4c76-cb47-4267-b41a-bd7f4c3c2d42}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{bf4e9e46-b752-45fb-9e18-2a69c1b37b59}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{0230f824-4552-4e29-bc60-ee2ac900ac76}",
-            "targetPort": "condition",
-            "targetUuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{0230f824-4552-4e29-bc60-ee2ac900ac76}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{cd87010e-0fe5-4834-b460-116391fb99a1}",
-            "targetPort": "condition",
-            "targetUuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}"
         },
         {
             "layers": [
@@ -644,430 +263,10 @@
         {
             "layers": [
             ],
-            "sourcePort": "value",
-            "sourceUuid": "{0c81494a-0bbf-49b8-8f96-a93e72757749}",
-            "targetPort": "condition",
-            "targetUuid": "{dbe8d79a-079c-47a1-bc06-3d305b71b2e8}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{0c81494a-0bbf-49b8-8f96-a93e72757749}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{097bbbe8-84ad-486e-81bb-610b74526c1d}",
-            "targetPort": "condition",
-            "targetUuid": "{1ceda485-199f-46b1-b952-3bfd871126ae}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{097bbbe8-84ad-486e-81bb-610b74526c1d}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{8c4e62e0-c4fc-4353-bcbc-9aa7a272548a}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{54dd9b2d-20be-4815-a32e-ada9453dbe66}",
-            "targetPort": "texture",
-            "targetUuid": "{2b6bf9dc-8dc8-4455-9ea6-c19429019e51}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "sourcePort": "color",
-            "sourceUuid": "{2b6bf9dc-8dc8-4455-9ea6-c19429019e51}",
-            "targetPort": "sRGB",
-            "targetUuid": "{af150315-224e-420b-927b-5c562a1f9a96}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{54dd9b2d-20be-4815-a32e-ada9453dbe66}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "color",
-            "sourceUuid": "{4b92de8b-c36d-405a-9bde-b96a38e87241}",
-            "targetPort": "input",
-            "targetUuid": "{144fff21-ceb5-4626-b2c2-cbad2be6ac34}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "color",
-            "sourceUuid": "{4b92de8b-c36d-405a-9bde-b96a38e87241}",
-            "targetPort": "input",
-            "targetUuid": "{f019ce7d-1757-424b-af6f-0e002231199a}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{e00eea0a-5feb-416f-b56c-8552df5d989c}",
-            "targetPort": "texture",
-            "targetUuid": "{4b92de8b-c36d-405a-9bde-b96a38e87241}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{e00eea0a-5feb-416f-b56c-8552df5d989c}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{c948b3d8-0a18-4a00-b3d3-b05652f0bea6}",
-            "targetPort": "texture",
-            "targetUuid": "{dc74626a-0a2e-40da-b8ea-81cc5524204e}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "sourcePort": "color",
-            "sourceUuid": "{dc74626a-0a2e-40da-b8ea-81cc5524204e}",
-            "targetPort": "input",
-            "targetUuid": "{00000000-0000-0000-0000-000000000016}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{c948b3d8-0a18-4a00-b3d3-b05652f0bea6}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "color",
-            "sourceUuid": "{3ef2a145-df5e-4bf3-b019-69a0c8df9823}",
-            "targetPort": "input",
-            "targetUuid": "{961e430d-5760-405d-992c-046dc1967635}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{298d8720-bcc8-4dc1-a4b1-99ae972e5578}",
-            "targetPort": "texture",
-            "targetUuid": "{3ef2a145-df5e-4bf3-b019-69a0c8df9823}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{298d8720-bcc8-4dc1-a4b1-99ae972e5578}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "linear",
-            "sourceUuid": "{af150315-224e-420b-927b-5c562a1f9a96}",
-            "targetPort": "first",
-            "targetUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "sourcePort": "linear",
-            "sourceUuid": "{a453ddda-91a2-47bb-b830-4a3e2e5e776a}",
-            "targetPort": "first",
-            "targetUuid": "{60f02f4c-5ef1-4100-aa1a-771cc6a2a0e0}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "sourcePort": "color",
-            "sourceUuid": "{1d1ffe9c-1ad8-4552-b034-e8ce82ba706f}",
-            "targetPort": "sRGB",
-            "targetUuid": "{a453ddda-91a2-47bb-b830-4a3e2e5e776a}"
-        },
-        {
-            "layers": [
-                "hasAlphaCutoff"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{8d4f938f-9d7a-4487-b4de-366206faea13}",
-            "targetPort": "input2",
-            "targetUuid": "{5dd3d862-88da-4941-a71f-e3850ccb6cd0}"
-        },
-        {
-            "layers": [
-                "hasAlphaCutoff"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{d7b43291-2e50-45ed-adca-30d8082704be}",
-            "targetPort": "input1",
-            "targetUuid": "{5dd3d862-88da-4941-a71f-e3850ccb6cd0}"
-        },
-        {
-            "layers": [
-                "hasAlphaCutoff"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{d7b43291-2e50-45ed-adca-30d8082704be}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{88ba4c76-cb47-4267-b41a-bd7f4c3c2d42}",
-            "targetPort": "texCoord",
-            "targetUuid": "{32e179c5-4417-4030-9c24-e35a592e93dd}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "transformed",
-            "sourceUuid": "{32e179c5-4417-4030-9c24-e35a592e93dd}",
-            "targetPort": "coord",
-            "targetUuid": "{4b92de8b-c36d-405a-9bde-b96a38e87241}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "sourcePort": "transformed",
-            "sourceUuid": "{7be88380-f2ac-4c1d-a479-c7bfbbb0c05a}",
-            "targetPort": "coord",
-            "targetUuid": "{2b6bf9dc-8dc8-4455-9ea6-c19429019e51}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}",
-            "targetPort": "texCoord",
-            "targetUuid": "{7be88380-f2ac-4c1d-a479-c7bfbbb0c05a}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{1ceda485-199f-46b1-b952-3bfd871126ae}",
-            "targetPort": "texCoord",
-            "targetUuid": "{ef9bb085-28eb-47bf-809f-6e1906896909}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "sourcePort": "transformed",
-            "sourceUuid": "{ef9bb085-28eb-47bf-809f-6e1906896909}",
-            "targetPort": "coord",
-            "targetUuid": "{3ef2a145-df5e-4bf3-b019-69a0c8df9823}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{dbe8d79a-079c-47a1-bc06-3d305b71b2e8}",
-            "targetPort": "texCoord",
-            "targetUuid": "{98bf8b54-5af3-4991-9fc5-21ea115b44da}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "sourcePort": "transformed",
-            "sourceUuid": "{98bf8b54-5af3-4991-9fc5-21ea115b44da}",
-            "targetPort": "coord",
-            "targetUuid": "{dc74626a-0a2e-40da-b8ea-81cc5524204e}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{8c4e62e0-c4fc-4353-bcbc-9aa7a272548a}",
-            "targetPort": "texture",
-            "targetUuid": "{1d1ffe9c-1ad8-4552-b034-e8ce82ba706f}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}",
-            "targetPort": "texCoord",
-            "targetUuid": "{4e622b90-5d17-4fdd-822c-737ef5e26667}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "sourcePort": "transformed",
-            "sourceUuid": "{4e622b90-5d17-4fdd-822c-737ef5e26667}",
-            "targetPort": "coord",
-            "targetUuid": "{1d1ffe9c-1ad8-4552-b034-e8ce82ba706f}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "outputColor",
-            "sourceUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}",
-            "targetPort": "first",
-            "targetUuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction_unroll"
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}",
-            "targetPort": "roughness",
-            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction_unroll"
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}",
-            "targetPort": "metalness",
-            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction_unroll"
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}",
-            "targetPort": "emissive",
-            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction_unroll"
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{3ab1a915-4a49-4a23-9a7d-aa1df544e466}",
-            "targetPort": "baseColor",
-            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction_unroll"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000020}",
-            "targetPort": "worldView",
-            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction_unroll"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000001}",
-            "targetPort": "worldPosition",
-            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
-        },
-        {
-            "layers": [
-                "noDoubleSided"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000028}",
-            "targetPort": "worldNormal",
-            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
-        },
-        {
-            "layers": [
-                "doubleSided"
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{2541a5a6-dcf0-4f3d-a800-6f53330ca78b}",
-            "targetPort": "worldNormal",
-            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction_unroll"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000014}",
-            "targetPort": "ambientOcclusion",
-            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction_unroll"
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{00000000-0000-0000-0000-000000000016}",
-            "targetPort": "ambientOcclusion",
-            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{53b1d0fc-c1e4-4d04-94bf-e782f6a77f3f}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{53b1d0fc-c1e4-4d04-94bf-e782f6a77f3f}",
-            "targetPort": "matrix",
-            "targetUuid": "{32e179c5-4417-4030-9c24-e35a592e93dd}"
+            "sourcePort": "difference",
+            "sourceUuid": "{185048bb-18e3-4cd8-b4d9-b0dd6f0f932d}",
+            "targetPort": "second",
+            "targetUuid": "{2541a5a6-dcf0-4f3d-a800-6f53330ca78b}"
         },
         {
             "layers": [
@@ -1080,30 +279,38 @@
         },
         {
             "layers": [
-                "emissiveMap"
-            ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{7bd89d78-10e4-4d8a-ac18-db6520ff091c}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
+                "metalRoughMap"
             ],
             "sourcePort": "value",
-            "sourceUuid": "{5321de3d-73b1-4dfb-bc98-c5edfaf85306}",
-            "targetPort": "matrix",
-            "targetUuid": "{4e622b90-5d17-4fdd-822c-737ef5e26667}"
+            "sourceUuid": "{00000000-0000-0000-0000-000000000005}",
+            "targetPort": "false",
+            "targetUuid": "{88ba4c76-cb47-4267-b41a-bd7f4c3c2d42}"
         },
         {
             "layers": [
-                "baseColorMap"
             ],
-            "sourcePort": "shaderData",
-            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
-            "targetPort": "shaderData",
-            "targetUuid": "{5321de3d-73b1-4dfb-bc98-c5edfaf85306}"
+            "sourcePort": "value",
+            "sourceUuid": "{a1f36c4a-05e8-4cdf-b678-59145d8730be}",
+            "targetPort": "second",
+            "targetUuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{8e37d564-7cef-4f2b-8a2c-b0dba45183f7}",
+            "targetPort": "texture",
+            "targetUuid": "{2b6bf9dc-8dc8-4455-9ea6-c19429019e51}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000014}",
+            "targetPort": "ambientOcclusion",
+            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
         },
         {
             "layers": [
@@ -1113,6 +320,15 @@
             "sourceUuid": "{6bc872fe-4b34-4568-b308-cc697ab262d5}",
             "targetPort": "matrix",
             "targetUuid": "{98bf8b54-5af3-4991-9fc5-21ea115b44da}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000003}",
+            "targetPort": "worldNormal",
+            "targetUuid": "{00000000-0000-0000-0000-000000000021}"
         },
         {
             "layers": [
@@ -1127,10 +343,159 @@
             "layers": [
                 "normalMap"
             ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{1051ac23-1558-42f3-a060-a4d484a28980}"
+        },
+        {
+            "layers": [
+            ],
             "sourcePort": "value",
-            "sourceUuid": "{892a7a91-1525-4cd0-b89d-afeb22537de3}",
-            "targetPort": "matrix",
-            "targetUuid": "{ef9bb085-28eb-47bf-809f-6e1906896909}"
+            "sourceUuid": "{0230f824-4552-4e29-bc60-ee2ac900ac76}",
+            "targetPort": "condition",
+            "targetUuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{53b1d0fc-c1e4-4d04-94bf-e782f6a77f3f}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}",
+            "targetPort": "true",
+            "targetUuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}"
+        },
+        {
+            "layers": [
+                "doubleSided"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{2541a5a6-dcf0-4f3d-a800-6f53330ca78b}",
+            "targetPort": "worldNormal",
+            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{7bd89d78-10e4-4d8a-ac18-db6520ff091c}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}",
+            "targetPort": "true",
+            "targetUuid": "{1ceda485-199f-46b1-b952-3bfd871126ae}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000005}",
+            "targetPort": "false",
+            "targetUuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}"
+        },
+        {
+            "layers": [
+                "hasAlphaCutoff"
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{d7b43291-2e50-45ed-adca-30d8082704be}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}",
+            "targetPort": "emissive",
+            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "eyePosition",
+            "sourceUuid": "{3f783b71-ced3-4e14-a1b0-fa98e55913fd}",
+            "targetPort": "minuend",
+            "targetUuid": "{00000000-0000-0000-0000-000000000019}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{3ab1a915-4a49-4a23-9a7d-aa1df544e466}",
+            "targetPort": "input",
+            "targetUuid": "{8d4f938f-9d7a-4487-b4de-366206faea13}"
+        },
+        {
+            "layers": [
+                "noDoubleSided"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000028}",
+            "targetPort": "worldNormal",
+            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
+        },
+        {
+            "layers": [
+                "hasAlphaCutoff"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{5dd3d862-88da-4941-a71f-e3850ccb6cd0}",
+            "targetPort": "condition",
+            "targetUuid": "{8d0e8185-312f-44db-81f2-d92f5a947939}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}",
+            "targetPort": "metalness",
+            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{35733ff4-190c-41fb-8a6c-2e03c971f3d2}",
+            "targetPort": "input",
+            "targetUuid": "{469109ec-b4e0-4a1d-91a2-f9b120b12128}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{99378309-7a6b-4e4e-86bc-8eee17972eab}",
+            "targetPort": "second",
+            "targetUuid": "{60f02f4c-5ef1-4100-aa1a-771cc6a2a0e0}"
+        },
+        {
+            "layers": [
+                "noNormalMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000003}",
+            "targetPort": "input",
+            "targetUuid": "{00000000-0000-0000-0000-000000000028}"
         },
         {
             "layers": [
@@ -1140,6 +505,40 @@
             "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
             "targetPort": "shaderData",
             "targetUuid": "{892a7a91-1525-4cd0-b89d-afeb22537de3}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{8d4f938f-9d7a-4487-b4de-366206faea13}",
+            "targetPort": "second",
+            "targetUuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000005}",
+            "targetPort": "false",
+            "targetUuid": "{1ceda485-199f-46b1-b952-3bfd871126ae}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{bf4e9e46-b752-45fb-9e18-2a69c1b37b59}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "outputColor",
+            "sourceUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}",
+            "targetPort": "first",
+            "targetUuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}"
         },
         {
             "layers": [
@@ -1160,216 +559,681 @@
         },
         {
             "layers": [
+                "baseColorMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{5321de3d-73b1-4dfb-bc98-c5edfaf85306}",
+            "targetPort": "matrix",
+            "targetUuid": "{4e622b90-5d17-4fdd-822c-737ef5e26667}"
+        },
+        {
+            "layers": [
+                "hasAlphaCutoff"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{d7b43291-2e50-45ed-adca-30d8082704be}",
+            "targetPort": "input1",
+            "targetUuid": "{5dd3d862-88da-4941-a71f-e3850ccb6cd0}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "sourcePort": "linear",
+            "sourceUuid": "{a453ddda-91a2-47bb-b830-4a3e2e5e776a}",
+            "targetPort": "first",
+            "targetUuid": "{60f02f4c-5ef1-4100-aa1a-771cc6a2a0e0}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{0c81494a-0bbf-49b8-8f96-a93e72757749}",
+            "targetPort": "condition",
+            "targetUuid": "{dbe8d79a-079c-47a1-bc06-3d305b71b2e8}"
+        },
+        {
+            "layers": [
                 "noHasAlphaCutoff"
             ],
             "sourcePort": "output",
             "sourceUuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}",
             "targetPort": "fragColor",
             "targetUuid": "{a62ff8d2-694b-46b4-a3cf-e15b2660ac28}"
-        }
-    ],
-    "nodes": [
-        {
-            "layers": [
-                "metalRoughFunction",
-                "metalRoughFunction_unroll"
-            ],
-            "parameters": {
-                "name": "worldPosition",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "input",
-            "uuid": "{00000000-0000-0000-0000-000000000001}"
         },
         {
             "layers": [
+                "metalRoughMap"
             ],
-            "parameters": {
-            },
-            "type": "eyePosition",
-            "uuid": "{00000000-0000-0000-0000-000000000002}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "worldNormal",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "input",
-            "uuid": "{00000000-0000-0000-0000-000000000003}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "name": "worldTangent",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "type": "input",
-            "uuid": "{00000000-0000-0000-0000-000000000004}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap",
-                "baseColorMap",
-                "emissiveMap",
-                "metalRoughMap",
-                "normalMap"
-            ],
-            "parameters": {
-                "name": "texCoord",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
-            },
-            "type": "input",
-            "uuid": "{00000000-0000-0000-0000-000000000005}"
-        },
-        {
-            "layers": [
-                "noAmbientOcclusionMap"
-            ],
-            "parameters": {
-                "constant": "1.0",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "constant",
-            "uuid": "{00000000-0000-0000-0000-000000000014}"
+            "sourcePort": "value",
+            "sourceUuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}",
+            "targetPort": "true",
+            "targetUuid": "{88ba4c76-cb47-4267-b41a-bd7f4c3c2d42}"
         },
         {
             "layers": [
                 "ambientOcclusionMap"
             ],
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000005}",
+            "targetPort": "false",
+            "targetUuid": "{dbe8d79a-079c-47a1-bc06-3d305b71b2e8}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{6762e255-63ad-4c7e-9a75-18d1e99e3f57}",
+            "targetPort": "minuend",
+            "targetUuid": "{185048bb-18e3-4cd8-b4d9-b0dd6f0f932d}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{1ceda485-199f-46b1-b952-3bfd871126ae}",
+            "targetPort": "texCoord",
+            "targetUuid": "{ef9bb085-28eb-47bf-809f-6e1906896909}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "sourcePort": "color",
+            "sourceUuid": "{4b92de8b-c36d-405a-9bde-b96a38e87241}",
+            "targetPort": "input",
+            "targetUuid": "{f019ce7d-1757-424b-af6f-0e002231199a}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{88ba4c76-cb47-4267-b41a-bd7f4c3c2d42}",
+            "targetPort": "texCoord",
+            "targetUuid": "{32e179c5-4417-4030-9c24-e35a592e93dd}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000020}",
+            "targetPort": "worldView",
+            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{3e9a711a-d681-43d0-b014-dd7ae3617763}",
+            "targetPort": "input",
+            "targetUuid": "{db5de60d-99a4-4203-8958-02842448747f}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{0230f824-4552-4e29-bc60-ee2ac900ac76}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{1c551861-5f2f-42ce-a529-6a2d8b2bfdb1}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{961e430d-5760-405d-992c-046dc1967635}",
+            "targetPort": "first",
+            "targetUuid": "{a7d7973a-2f44-4f51-80b8-c8c662a49c46}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{3ab1a915-4a49-4a23-9a7d-aa1df544e466}",
+            "targetPort": "baseColor",
+            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}",
+            "targetPort": "emissive",
+            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000016}",
+            "targetPort": "ambientOcclusion",
+            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "transformed",
+            "sourceUuid": "{ef9bb085-28eb-47bf-809f-6e1906896909}",
+            "targetPort": "coord",
+            "targetUuid": "{3ef2a145-df5e-4bf3-b019-69a0c8df9823}"
+        },
+        {
+            "layers": [
+                "doubleSided"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000028}",
+            "targetPort": "first",
+            "targetUuid": "{2541a5a6-dcf0-4f3d-a800-6f53330ca78b}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000001}",
+            "targetPort": "subtrahend",
+            "targetUuid": "{00000000-0000-0000-0000-000000000019}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000001}",
+            "targetPort": "worldPosition",
+            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{a1f36c4a-05e8-4cdf-b678-59145d8730be}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{097bbbe8-84ad-486e-81bb-610b74526c1d}",
+            "targetPort": "condition",
+            "targetUuid": "{1ceda485-199f-46b1-b952-3bfd871126ae}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "sourcePort": "transformed",
+            "sourceUuid": "{32e179c5-4417-4030-9c24-e35a592e93dd}",
+            "targetPort": "coord",
+            "targetUuid": "{4b92de8b-c36d-405a-9bde-b96a38e87241}"
+        },
+        {
+            "layers": [
+                "ambientOcclusionMap"
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{0c81494a-0bbf-49b8-8f96-a93e72757749}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}",
+            "targetPort": "metalness",
+            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{1051ac23-1558-42f3-a060-a4d484a28980}",
+            "targetPort": "second",
+            "targetUuid": "{222bc118-7466-453b-a5ee-7b8edae2c0e6}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{cd87010e-0fe5-4834-b460-116391fb99a1}",
+            "targetPort": "condition",
+            "targetUuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "linear",
+            "sourceUuid": "{af150315-224e-420b-927b-5c562a1f9a96}",
+            "targetPort": "first",
+            "targetUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "sourcePort": "color",
+            "sourceUuid": "{4b92de8b-c36d-405a-9bde-b96a38e87241}",
+            "targetPort": "input",
+            "targetUuid": "{144fff21-ceb5-4626-b2c2-cbad2be6ac34}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{53b1d0fc-c1e4-4d04-94bf-e782f6a77f3f}",
+            "targetPort": "matrix",
+            "targetUuid": "{32e179c5-4417-4030-9c24-e35a592e93dd}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{c41dc4e9-fc89-46a1-84fe-661ad93305f4}",
+            "targetPort": "subtrahend",
+            "targetUuid": "{185048bb-18e3-4cd8-b4d9-b0dd6f0f932d}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{bf4e9e46-b752-45fb-9e18-2a69c1b37b59}",
+            "targetPort": "condition",
+            "targetUuid": "{88ba4c76-cb47-4267-b41a-bd7f4c3c2d42}"
+        },
+        {
+            "layers": [
+                "doubleSided"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{2541a5a6-dcf0-4f3d-a800-6f53330ca78b}",
+            "targetPort": "worldNormal",
+            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{db5de60d-99a4-4203-8958-02842448747f}",
+            "targetPort": "second",
+            "targetUuid": "{6762e255-63ad-4c7e-9a75-18d1e99e3f57}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}",
+            "targetPort": "texCoord",
+            "targetUuid": "{7be88380-f2ac-4c1d-a479-c7bfbbb0c05a}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000020}",
+            "targetPort": "worldView",
+            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "difference",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000019}",
+            "targetPort": "input",
+            "targetUuid": "{00000000-0000-0000-0000-000000000020}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{1fa6403f-edad-4a0d-8bda-b694bcca4b1f}",
+            "targetPort": "first",
+            "targetUuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "color",
+            "sourceUuid": "{3ef2a145-df5e-4bf3-b019-69a0c8df9823}",
+            "targetPort": "input",
+            "targetUuid": "{961e430d-5760-405d-992c-046dc1967635}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{278b7ea6-a10a-4c05-987e-891a28a518dd}",
+            "targetPort": "texture",
+            "targetUuid": "{3ef2a145-df5e-4bf3-b019-69a0c8df9823}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "matrix",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000021}",
+            "targetPort": "second",
+            "targetUuid": "{00000000-0000-0000-0000-000000000023}"
+        },
+        {
+            "layers": [
+                "ambientOcclusionMap"
+            ],
+            "sourcePort": "color",
+            "sourceUuid": "{dc74626a-0a2e-40da-b8ea-81cc5524204e}",
+            "targetPort": "input",
+            "targetUuid": "{00000000-0000-0000-0000-000000000016}"
+        },
+        {
+            "layers": [
+                "noDoubleSided"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000028}",
+            "targetPort": "worldNormal",
+            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
+        },
+        {
+            "layers": [
+                "ambientOcclusionMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{bbe6409d-d1df-4705-8f29-99bf82376e87}",
+            "targetPort": "texture",
+            "targetUuid": "{dc74626a-0a2e-40da-b8ea-81cc5524204e}"
+        },
+        {
+            "layers": [
+                "hasAlphaCutoff"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}",
+            "targetPort": "value",
+            "targetUuid": "{8d0e8185-312f-44db-81f2-d92f5a947939}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000001}",
+            "targetPort": "worldPosition",
+            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{5321de3d-73b1-4dfb-bc98-c5edfaf85306}"
+        },
+        {
+            "layers": [
+                "ambientOcclusionMap"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{dbe8d79a-079c-47a1-bc06-3d305b71b2e8}",
+            "targetPort": "texCoord",
+            "targetUuid": "{98bf8b54-5af3-4991-9fc5-21ea115b44da}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}",
+            "targetPort": "texCoord",
+            "targetUuid": "{4e622b90-5d17-4fdd-822c-737ef5e26667}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "sourcePort": "transformed",
+            "sourceUuid": "{7be88380-f2ac-4c1d-a479-c7bfbbb0c05a}",
+            "targetPort": "coord",
+            "targetUuid": "{2b6bf9dc-8dc8-4455-9ea6-c19429019e51}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{26158412-77a9-472e-b9bf-6753a1422f6d}",
+            "targetPort": "first",
+            "targetUuid": "{6762e255-63ad-4c7e-9a75-18d1e99e3f57}"
+        },
+        {
+            "layers": [
+                "ambientOcclusionMap"
+            ],
+            "sourcePort": "transformed",
+            "sourceUuid": "{98bf8b54-5af3-4991-9fc5-21ea115b44da}",
+            "targetPort": "coord",
+            "targetUuid": "{dc74626a-0a2e-40da-b8ea-81cc5524204e}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}",
+            "targetPort": "roughness",
+            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "difference",
+            "sourceUuid": "{64f36d2a-1039-480e-8604-424bc8e7d407}",
+            "targetPort": "first",
+            "targetUuid": "{35733ff4-190c-41fb-8a6c-2e03c971f3d2}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "sourcePort": "color",
+            "sourceUuid": "{1d1ffe9c-1ad8-4552-b034-e8ce82ba706f}",
+            "targetPort": "sRGB",
+            "targetUuid": "{a453ddda-91a2-47bb-b830-4a3e2e5e776a}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "sourcePort": "transformed",
+            "sourceUuid": "{4e622b90-5d17-4fdd-822c-737ef5e26667}",
+            "targetPort": "coord",
+            "targetUuid": "{1d1ffe9c-1ad8-4552-b034-e8ce82ba706f}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "sourcePort": "color",
+            "sourceUuid": "{2b6bf9dc-8dc8-4455-9ea6-c19429019e51}",
+            "targetPort": "sRGB",
+            "targetUuid": "{af150315-224e-420b-927b-5c562a1f9a96}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{4207ae73-bdc5-4cde-8086-6371d6beef9e}",
+            "targetPort": "first",
+            "targetUuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{f019ce7d-1757-424b-af6f-0e002231199a}",
+            "targetPort": "first",
+            "targetUuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{3ab1a915-4a49-4a23-9a7d-aa1df544e466}",
+            "targetPort": "baseColor",
+            "targetUuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{892a7a91-1525-4cd0-b89d-afeb22537de3}",
+            "targetPort": "matrix",
+            "targetUuid": "{ef9bb085-28eb-47bf-809f-6e1906896909}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{097bbbe8-84ad-486e-81bb-610b74526c1d}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000004}",
+            "targetPort": "worldTangent",
+            "targetUuid": "{00000000-0000-0000-0000-000000000021}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{60f02f4c-5ef1-4100-aa1a-771cc6a2a0e0}",
+            "targetPort": "first",
+            "targetUuid": "{3ab1a915-4a49-4a23-9a7d-aa1df544e466}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{1bc9c6da-4e78-4f8f-ac12-4188872649e7}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "shaderData",
+            "sourceUuid": "{894c7898-ab67-4825-af39-cc387d71de66}",
+            "targetPort": "shaderData",
+            "targetUuid": "{99378309-7a6b-4e4e-86bc-8eee17972eab}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000016}",
+            "targetPort": "ambientOcclusion",
+            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{a7d7973a-2f44-4f51-80b8-c8c662a49c46}",
+            "targetPort": "minuend",
+            "targetUuid": "{64f36d2a-1039-480e-8604-424bc8e7d407}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000023}",
+            "targetPort": "input",
+            "targetUuid": "{00000000-0000-0000-0000-000000000028}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll"
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}",
+            "targetPort": "roughness",
+            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{7c4ae51b-6cec-4f34-af35-b3e052e32c1d}",
+            "targetPort": "first",
+            "targetUuid": "{861963f1-5d4f-46e5-9dfc-8b916ba19e32}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{00000000-0000-0000-0000-000000000014}",
+            "targetPort": "ambientOcclusion",
+            "targetUuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{9e1f456f-6985-41ee-9475-fd2e66e01cd1}",
+            "targetPort": "texture",
+            "targetUuid": "{4b92de8b-c36d-405a-9bde-b96a38e87241}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{144fff21-ceb5-4626-b2c2-cbad2be6ac34}",
+            "targetPort": "first",
+            "targetUuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}"
+        }
+    ],
+    "nodes": [
+        {
+            "layers": [
+            ],
             "parameters": {
-                "fields": "r",
-                "inputType": {
+                "firstType": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec4"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "swizzle",
-            "uuid": "{00000000-0000-0000-0000-000000000016}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "subtract",
-            "uuid": "{00000000-0000-0000-0000-000000000019}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction",
-                "metalRoughFunction_unroll"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "normalize",
-            "uuid": "{00000000-0000-0000-0000-000000000020}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-            },
-            "type": "worldSpaceToTangentSpaceMatrix",
-            "uuid": "{00000000-0000-0000-0000-000000000021}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Mat3"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "multiply",
-            "uuid": "{00000000-0000-0000-0000-000000000023}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction",
-                "metalRoughFunction_unroll"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "normalize",
-            "uuid": "{00000000-0000-0000-0000-000000000028}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-            },
-            "type": "fragColor",
-            "uuid": "{a62ff8d2-694b-46b4-a3cf-e15b2660ac28}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
                 },
                 "secondType": {
                     "type": "QShaderLanguage::VariableType",
@@ -1385,136 +1249,55 @@
         },
         {
             "layers": [
-                "noBaseColorMap"
+                "noHasColorAttr",
+                "hasColorAttr",
+                "normalMap",
+                "noEmissiveMap",
+                "doubleSided",
+                "noHasAlphaCutoff",
+                "metalRoughMap",
+                "useReinhardToneMap",
+                "metalRoughFunction_unroll",
+                "metalRoughFunction",
+                "useFilmicToneMap",
+                "noAmbientOcclusionMap",
+                "noMetalRoughMap",
+                "emissiveMap",
+                "ambientOcclusionMap",
+                "noNormalMap",
+                "hasAlphaCutoff",
+                "noDoubleSided"
             ],
             "parameters": {
-                "constant": "1.0,1.0,1.0,1.0",
+                "constant": "",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec4"
                 }
             },
             "type": "constant",
-            "uuid": "{604bed2b-e8b8-44a7-8a81-763c0cdae7b3}"
+            "uuid": "{b4efdaa3-5c04-4c1d-bfce-b35566e45b85}"
         },
         {
             "layers": [
                 "metalRoughMap"
             ],
             "parameters": {
-                "fields": "b",
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                },
+                "name": "metalRoughMap",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
+                    "value": "QShaderLanguage::Sampler2D"
                 }
             },
-            "type": "swizzle",
-            "uuid": "{144fff21-ceb5-4626-b2c2-cbad2be6ac34}"
+            "type": "textureInput",
+            "uuid": "{9e1f456f-6985-41ee-9475-fd2e66e01cd1}"
         },
         {
             "layers": [
-                "metalRoughMap"
+                "metalRoughFunction_unroll",
+                "metalRoughFunction"
             ],
             "parameters": {
-                "fields": "g",
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "swizzle",
-            "uuid": "{f019ce7d-1757-424b-af6f-0e002231199a}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction",
-                "metalRoughFunction_unroll"
-            ],
-            "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "multiply",
-            "uuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}"
-        },
-        {
-            "layers": [
-                "noMetalRoughMap"
-            ],
-            "parameters": {
-                "constant": "1.0",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "constant",
-            "uuid": "{4207ae73-bdc5-4cde-8086-6371d6beef9e}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction",
-                "metalRoughFunction_unroll"
-            ],
-            "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "multiply",
-            "uuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}"
-        },
-        {
-            "layers": [
-                "noMetalRoughMap"
-            ],
-            "parameters": {
-                "constant": "1.0",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "constant",
-            "uuid": "{1fa6403f-edad-4a0d-8bda-b694bcca4b1f}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction",
-                "metalRoughFunction_unroll"
-            ],
-            "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
                 "secondType": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec4"
@@ -1529,88 +1312,25 @@
         },
         {
             "layers": [
-                "noEmissiveMap"
             ],
             "parameters": {
-                "constant": "1.0,0.0,0.0,0.0",
+                "constant": "",
                 "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "type": "constant",
-            "uuid": "{7c4ae51b-6cec-4f34-af35-b3e052e32c1d}"
-        },
-        {
-            "layers": [
-                "hasColorAttr"
-            ],
-            "parameters": {
-                "name": "color",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "type": "input",
-            "uuid": "{0050769e-ab6d-47a4-9785-7f77e1c6536c}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction",
-                "metalRoughFunction_unroll"
-            ],
-            "parameters": {
-                "firstType": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
-                },
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "type": "multiply",
-            "uuid": "{3ab1a915-4a49-4a23-9a7d-aa1df544e466}"
-        },
-        {
-            "layers": [
-                "noHasColorAttr"
-            ],
-            "parameters": {
-                "constant": "1,1,1,1",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
                 }
             },
             "type": "constant",
-            "uuid": "{bcc2abdd-2459-48cb-8dea-eba19d1257b1}"
+            "uuid": "{a94cf7ac-728f-4bc3-85d4-f00de021ea9d}"
         },
         {
             "layers": [
                 "normalMap"
             ],
             "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
                 "secondType": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Float"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
                 }
             },
             "type": "multiply",
@@ -1618,7 +1338,6 @@
         },
         {
             "layers": [
-                "normalMap"
             ],
             "parameters": {
                 "constant": "2.0",
@@ -1628,589 +1347,69 @@
                 }
             },
             "type": "constant",
-            "uuid": "{b662d1c9-b092-49c6-af12-7d4167017eb6}"
+            "uuid": "{78881898-4063-4427-9116-d9b693a69a9e}"
         },
         {
             "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "subtract",
-            "uuid": "{64f36d2a-1039-480e-8604-424bc8e7d407}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "constant": "1,1,1",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "constant",
-            "uuid": "{d32c210f-1d98-43cd-95dd-e897e1ecb4cc}"
-        },
-        {
-            "layers": [
-                "doubleSided"
-            ],
-            "parameters": {
-                "name": "gl_FrontFacing",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::BuiltIn"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                }
-            },
-            "type": "input",
-            "uuid": "{3e9a711a-d681-43d0-b014-dd7ae3617763}"
-        },
-        {
-            "layers": [
-                "doubleSided"
-            ],
-            "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "multiply",
-            "uuid": "{2541a5a6-dcf0-4f3d-a800-6f53330ca78b}"
-        },
-        {
-            "layers": [
-                "doubleSided"
-            ],
-            "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "multiply",
-            "uuid": "{6762e255-63ad-4c7e-9a75-18d1e99e3f57}"
-        },
-        {
-            "layers": [
-                "doubleSided"
-            ],
-            "parameters": {
-                "constant": "2.0",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "constant",
-            "uuid": "{26158412-77a9-472e-b9bf-6753a1422f6d}"
-        },
-        {
-            "layers": [
-                "doubleSided"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "subtract",
-            "uuid": "{185048bb-18e3-4cd8-b4d9-b0dd6f0f932d}"
-        },
-        {
-            "layers": [
-                "doubleSided"
-            ],
-            "parameters": {
-                "constant": "1",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "constant",
-            "uuid": "{c41dc4e9-fc89-46a1-84fe-661ad93305f4}"
-        },
-        {
-            "layers": [
-                "doubleSided"
-            ],
-            "parameters": {
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "cast",
-            "uuid": "{db5de60d-99a4-4203-8958-02842448747f}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "fields": "rgb",
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "swizzle",
-            "uuid": "{961e430d-5760-405d-992c-046dc1967635}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction",
-                "metalRoughFunction_unroll"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                },
-                "typeOfFirst": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "typeOfSecond": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "join2",
-            "uuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "fields": "a",
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "swizzle",
-            "uuid": "{8d4f938f-9d7a-4487-b4de-366206faea13}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "constant": "1.0,1.0,0.0",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "constant",
-            "uuid": "{b52b84a4-03ae-43d4-af30-13486cc1f114}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "multiply",
-            "uuid": "{222bc118-7466-453b-a5ee-7b8edae2c0e6}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "add",
-            "uuid": "{a49789fd-1e00-4f9b-846d-55d436a43272}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "multiply",
-            "uuid": "{35733ff4-190c-41fb-8a6c-2e03c971f3d2}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "normalize",
-            "uuid": "{469109ec-b4e0-4a1d-91a2-f9b120b12128}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "constant": "0.0,0.0,1",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "type": "constant",
-            "uuid": "{8144a361-cc51-4d99-8f72-8d28ece98491}"
-        },
-        {
-            "layers": [
-                "hasAlphaCutoff"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                },
-                "valueType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "greater",
-            "uuid": "{5dd3d862-88da-4941-a71f-e3850ccb6cd0}"
-        },
-        {
-            "layers": [
-                "hasAlphaCutoff"
-            ],
-            "parameters": {
-                "conditionType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "type": "discard_if",
-            "uuid": "{8d0e8185-312f-44db-81f2-d92f5a947939}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction"
             ],
             "parameters": {
             },
-            "type": "kuesa_metalRoughFunction",
-            "uuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
+            "type": "subtract",
+            "uuid": "{00000000-0000-0000-0000-000000000019}"
         },
         {
             "layers": [
-                "ambientOcclusionMap",
-                "baseColorMap",
-                "emissiveMap",
-                "metalRoughMap",
-                "normalMap"
-            ],
-            "parameters": {
-                "name": "texCoord1",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
-            },
-            "type": "input",
-            "uuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "parameters": {
-                "conditionType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
-            },
-            "type": "if",
-            "uuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "parameters": {
-                "conditionType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
-            },
-            "type": "if",
-            "uuid": "{88ba4c76-cb47-4267-b41a-bd7f4c3c2d42}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "parameters": {
-                "conditionType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
-            },
-            "type": "if",
-            "uuid": "{dbe8d79a-079c-47a1-bc06-3d305b71b2e8}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "parameters": {
-                "conditionType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
-            },
-            "type": "if",
-            "uuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "conditionType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
-            },
-            "type": "if",
-            "uuid": "{1ceda485-199f-46b1-b952-3bfd871126ae}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "baseColorFactor",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{99378309-7a6b-4e4e-86bc-8eee17972eab}"
-        },
-        {
-            "layers": [
-                "hasAlphaCutoff",
+                "noHasColorAttr",
+                "hasColorAttr",
+                "normalMap",
                 "noBaseColorMap",
                 "noEmissiveMap",
+                "doubleSided",
                 "noHasAlphaCutoff",
+                "metalRoughMap",
+                "useReinhardToneMap",
+                "baseColorMap",
+                "useFilmicToneMap",
+                "noAmbientOcclusionMap",
                 "noMetalRoughMap",
-                "noNormalMap"
+                "emissiveMap",
+                "ambientOcclusionMap",
+                "noNormalMap",
+                "hasAlphaCutoff",
+                "noDoubleSided"
             ],
             "parameters": {
-            },
-            "type": "kuesa_metallicRoughnessShaderData",
-            "uuid": "{894c7898-ab67-4825-af39-cc387d71de66}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "roughnessFactor",
+                "constant": "",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
+                    "value": "QShaderLanguage::Vec3"
                 }
             },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{1bc9c6da-4e78-4f8f-ac12-4188872649e7}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "metallicFactor",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{a1f36c4a-05e8-4cdf-b678-59145d8730be}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "emissiveFactor",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{1c551861-5f2f-42ce-a529-6a2d8b2bfdb1}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "name": "normalScale",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{1051ac23-1558-42f3-a060-a4d484a28980}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "parameters": {
-                "name": "metallicRoughnessUsesTexCoord1",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{bf4e9e46-b752-45fb-9e18-2a69c1b37b59}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "parameters": {
-                "name": "emissiveUsesTexCoord1",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{0230f824-4552-4e29-bc60-ee2ac900ac76}"
+            "type": "constant",
+            "uuid": "{a8be6180-b775-4def-addb-cd81836315cb}"
         },
         {
             "layers": [
                 "baseColorMap"
             ],
             "parameters": {
-                "name": "baseColorUsesTexCoord1",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                }
             },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{cd87010e-0fe5-4834-b460-116391fb99a1}"
+            "type": "sRGBtoLinear",
+            "uuid": "{a453ddda-91a2-47bb-b830-4a3e2e5e776a}"
         },
         {
             "layers": [
                 "ambientOcclusionMap"
             ],
             "parameters": {
-                "name": "aoUsesTexCoord1",
+                "name": "ambientOcclusionMap",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
+                    "value": "QShaderLanguage::Sampler2D"
                 }
             },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{0c81494a-0bbf-49b8-8f96-a93e72757749}"
+            "type": "textureInput",
+            "uuid": "{bbe6409d-d1df-4705-8f29-99bf82376e87}"
         },
         {
             "layers": [
@@ -2225,207 +1424,6 @@
             },
             "type": "kuesa_ShaderDataInput",
             "uuid": "{097bbbe8-84ad-486e-81bb-610b74526c1d}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "parameters": {
-            },
-            "type": "kuesa_sampleTexture",
-            "uuid": "{1d1ffe9c-1ad8-4552-b034-e8ce82ba706f}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "parameters": {
-                "name": "baseColorMap",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Sampler2D"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{8c4e62e0-c4fc-4353-bcbc-9aa7a272548a}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "parameters": {
-                "name": "emissiveMap",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Sampler2D"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{54dd9b2d-20be-4815-a32e-ada9453dbe66}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "parameters": {
-            },
-            "type": "kuesa_sampleTexture",
-            "uuid": "{2b6bf9dc-8dc8-4455-9ea6-c19429019e51}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "parameters": {
-            },
-            "type": "sRGBtoLinear",
-            "uuid": "{af150315-224e-420b-927b-5c562a1f9a96}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "parameters": {
-                "name": "metalRoughMap",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Sampler2D"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{e00eea0a-5feb-416f-b56c-8552df5d989c}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "parameters": {
-            },
-            "type": "kuesa_sampleTexture",
-            "uuid": "{4b92de8b-c36d-405a-9bde-b96a38e87241}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "parameters": {
-                "name": "ambientOcclusionMap",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Sampler2D"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{c948b3d8-0a18-4a00-b3d3-b05652f0bea6}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "parameters": {
-            },
-            "type": "kuesa_sampleTexture",
-            "uuid": "{dc74626a-0a2e-40da-b8ea-81cc5524204e}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-                "name": "normalMap",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Sampler2D"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{298d8720-bcc8-4dc1-a4b1-99ae972e5578}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-            },
-            "type": "kuesa_sampleTexture",
-            "uuid": "{3ef2a145-df5e-4bf3-b019-69a0c8df9823}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "parameters": {
-            },
-            "type": "sRGBtoLinear",
-            "uuid": "{a453ddda-91a2-47bb-b830-4a3e2e5e776a}"
-        },
-        {
-            "layers": [
-                "hasAlphaCutoff"
-            ],
-            "parameters": {
-                "name": "alphaCutoff",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "kuesa_ShaderDataInput",
-            "uuid": "{d7b43291-2e50-45ed-adca-30d8082704be}"
-        },
-        {
-            "layers": [
-                "metalRoughMap"
-            ],
-            "parameters": {
-            },
-            "type": "KHR_texture_transform",
-            "uuid": "{32e179c5-4417-4030-9c24-e35a592e93dd}"
-        },
-        {
-            "layers": [
-                "emissiveMap"
-            ],
-            "parameters": {
-            },
-            "type": "KHR_texture_transform",
-            "uuid": "{7be88380-f2ac-4c1d-a479-c7bfbbb0c05a}"
-        },
-        {
-            "layers": [
-                "normalMap"
-            ],
-            "parameters": {
-            },
-            "type": "KHR_texture_transform",
-            "uuid": "{ef9bb085-28eb-47bf-809f-6e1906896909}"
-        },
-        {
-            "layers": [
-                "ambientOcclusionMap"
-            ],
-            "parameters": {
-            },
-            "type": "KHR_texture_transform",
-            "uuid": "{98bf8b54-5af3-4991-9fc5-21ea115b44da}"
-        },
-        {
-            "layers": [
-                "baseColorMap"
-            ],
-            "parameters": {
-            },
-            "type": "KHR_texture_transform",
-            "uuid": "{4e622b90-5d17-4fdd-822c-737ef5e26667}"
-        },
-        {
-            "layers": [
-                "metalRoughFunction_unroll"
-            ],
-            "parameters": {
-            },
-            "type": "kuesa_metalRoughFunction_unroll",
-            "uuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
         },
         {
             "layers": [
@@ -2457,17 +1455,384 @@
         },
         {
             "layers": [
-                "baseColorMap"
+                "hasAlphaCutoff"
             ],
             "parameters": {
-                "name": "baseColorMapTextureTransform",
+                "name": "alphaCutoff",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{d7b43291-2e50-45ed-adca-30d8082704be}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+                "name": "normalMapTextureTransform",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Mat3"
                 }
             },
             "type": "kuesa_ShaderDataInput",
-            "uuid": "{5321de3d-73b1-4dfb-bc98-c5edfaf85306}"
+            "uuid": "{892a7a91-1525-4cd0-b89d-afeb22537de3}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+            },
+            "type": "kuesa_sampleTexture",
+            "uuid": "{3ef2a145-df5e-4bf3-b019-69a0c8df9823}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "type": "qt3d_default_uniforms",
+            "uuid": "{3f783b71-ced3-4e14-a1b0-fa98e55913fd}"
+        },
+        {
+            "layers": [
+                "ambientOcclusionMap"
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            },
+            "type": "if",
+            "uuid": "{dbe8d79a-079c-47a1-bc06-3d305b71b2e8}"
+        },
+        {
+            "layers": [
+                "ambientOcclusionMap"
+            ],
+            "parameters": {
+            },
+            "type": "KHR_texture_transform",
+            "uuid": "{98bf8b54-5af3-4991-9fc5-21ea115b44da}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "parameters": {
+                "name": "emissiveUsesTexCoord1",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{0230f824-4552-4e29-bc60-ee2ac900ac76}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "parameters": {
+            },
+            "type": "kuesa_sampleTexture",
+            "uuid": "{2b6bf9dc-8dc8-4455-9ea6-c19429019e51}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+            },
+            "type": "KHR_texture_transform",
+            "uuid": "{ef9bb085-28eb-47bf-809f-6e1906896909}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            },
+            "type": "if",
+            "uuid": "{7d0a9038-3d59-402c-82cc-9aef74ecb82f}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "parameters": {
+            },
+            "type": "KHR_texture_transform",
+            "uuid": "{4e622b90-5d17-4fdd-822c-737ef5e26667}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "fields": "a",
+                "inputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "swizzle",
+            "uuid": "{8d4f938f-9d7a-4487-b4de-366206faea13}"
+        },
+        {
+            "layers": [
+                "noHasColorAttr",
+                "hasColorAttr",
+                "normalMap",
+                "noBaseColorMap",
+                "noEmissiveMap",
+                "doubleSided",
+                "noHasAlphaCutoff",
+                "metalRoughMap",
+                "useReinhardToneMap",
+                "baseColorMap",
+                "useFilmicToneMap",
+                "noAmbientOcclusionMap",
+                "noMetalRoughMap",
+                "emissiveMap",
+                "ambientOcclusionMap",
+                "noNormalMap",
+                "hasAlphaCutoff",
+                "noDoubleSided"
+            ],
+            "parameters": {
+                "constant": "",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "constant",
+            "uuid": "{2cf84cfd-b0bc-4f69-91eb-ff7788e3c359}"
+        },
+        {
+            "layers": [
+                "noEmissiveMap"
+            ],
+            "parameters": {
+                "constant": "1.0,0.0,0.0,0.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "constant",
+            "uuid": "{7c4ae51b-6cec-4f34-af35-b3e052e32c1d}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "parameters": {
+            },
+            "type": "kuesa_sampleTexture",
+            "uuid": "{1d1ffe9c-1ad8-4552-b034-e8ce82ba706f}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "parameters": {
+                "fields": "b",
+                "inputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "swizzle",
+            "uuid": "{144fff21-ceb5-4626-b2c2-cbad2be6ac34}"
+        },
+        {
+            "layers": [
+                "metalRoughMap",
+                "baseColorMap",
+                "emissiveMap",
+                "normalMap",
+                "ambientOcclusionMap"
+            ],
+            "parameters": {
+                "location": "5",
+                "name": "texCoord1",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            },
+            "type": "input",
+            "uuid": "{a7843be5-3dcc-4ca3-9585-48240b4455a9}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "baseColorFactor",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{99378309-7a6b-4e4e-86bc-8eee17972eab}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "parameters": {
+            },
+            "type": "sRGBtoLinear",
+            "uuid": "{af150315-224e-420b-927b-5c562a1f9a96}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "emissiveFactor",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{1c551861-5f2f-42ce-a529-6a2d8b2bfdb1}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+                "name": "normalScale",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{1051ac23-1558-42f3-a060-a4d484a28980}"
+        },
+        {
+            "layers": [
+                "noAmbientOcclusionMap"
+            ],
+            "parameters": {
+                "constant": "1.0"
+            },
+            "type": "constant",
+            "uuid": "{00000000-0000-0000-0000-000000000014}"
+        },
+        {
+            "layers": [
+                "doubleSided"
+            ],
+            "parameters": {
+                "constant": "1"
+            },
+            "type": "constant",
+            "uuid": "{c41dc4e9-fc89-46a1-84fe-661ad93305f4}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll"
+            ],
+            "parameters": {
+            },
+            "type": "kuesa_metalRoughFunction_unroll",
+            "uuid": "{ed5ff766-adde-488a-a408-e0f383ab44ce}"
+        },
+        {
+            "layers": [
+                "noMetalRoughMap"
+            ],
+            "parameters": {
+                "constant": "1.0"
+            },
+            "type": "constant",
+            "uuid": "{1fa6403f-edad-4a0d-8bda-b694bcca4b1f}"
+        },
+        {
+            "layers": [
+                "noBaseColorMap"
+            ],
+            "parameters": {
+                "constant": "1.0,1.0,1.0,1.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "constant",
+            "uuid": "{604bed2b-e8b8-44a7-8a81-763c0cdae7b3}"
+        },
+        {
+            "layers": [
+                "doubleSided"
+            ],
+            "parameters": {
+                "inputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "cast",
+            "uuid": "{db5de60d-99a4-4203-8958-02842448747f}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "parameters": {
+            },
+            "type": "KHR_texture_transform",
+            "uuid": "{7be88380-f2ac-4c1d-a479-c7bfbbb0c05a}"
+        },
+        {
+            "layers": [
+                "doubleSided"
+            ],
+            "parameters": {
+                "constant": "2.0"
+            },
+            "type": "constant",
+            "uuid": "{26158412-77a9-472e-b9bf-6753a1422f6d}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "parameters": {
+                "name": "emissiveMap",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Sampler2D"
+                }
+            },
+            "type": "textureInput",
+            "uuid": "{8e37d564-7cef-4f2b-8a2c-b0dba45183f7}"
         },
         {
             "layers": [
@@ -2488,14 +1853,809 @@
                 "normalMap"
             ],
             "parameters": {
-                "name": "normalMapTextureTransform",
+            },
+            "type": "normalize",
+            "uuid": "{469109ec-b4e0-4a1d-91a2-f9b120b12128}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "parameters": {
+                "name": "baseColorMap",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Sampler2D"
+                }
+            },
+            "type": "textureInput",
+            "uuid": "{e47d2058-9a45-4aeb-a5f0-117d871348fb}"
+        },
+        {
+            "layers": [
+                "hasAlphaCutoff"
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "discard_if",
+            "uuid": "{8d0e8185-312f-44db-81f2-d92f5a947939}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "constant",
+            "uuid": "{574e1e0e-7db1-4765-afde-ce5f127da8a7}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+                "fields": "rgb",
+                "inputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "swizzle",
+            "uuid": "{961e430d-5760-405d-992c-046dc1967635}"
+        },
+        {
+            "layers": [
+                "doubleSided"
+            ],
+            "parameters": {
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            },
+            "type": "multiply",
+            "uuid": "{6762e255-63ad-4c7e-9a75-18d1e99e3f57}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll",
+                "metalRoughFunction"
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "typeOfFirst": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "join2",
+            "uuid": "{66e5ee17-7780-4513-8ed5-61ee8d3210ba}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+            },
+            "type": "add",
+            "uuid": "{a49789fd-1e00-4f9b-846d-55d436a43272}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "0.0,0.0,1.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "constant",
+            "uuid": "{ac4ef559-bcb9-43e8-84e0-0e909cb38c87}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "parameters": {
+            },
+            "type": "KHR_texture_transform",
+            "uuid": "{32e179c5-4417-4030-9c24-e35a592e93dd}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "type": "fragColor",
+            "uuid": "{a62ff8d2-694b-46b4-a3cf-e15b2660ac28}"
+        },
+        {
+            "layers": [
+                "noHasColorAttr",
+                "hasColorAttr",
+                "normalMap",
+                "noBaseColorMap",
+                "noEmissiveMap",
+                "doubleSided",
+                "noHasAlphaCutoff",
+                "metalRoughMap",
+                "useReinhardToneMap",
+                "metalRoughFunction_unroll",
+                "baseColorMap",
+                "metalRoughFunction",
+                "useFilmicToneMap",
+                "noAmbientOcclusionMap",
+                "noMetalRoughMap",
+                "emissiveMap",
+                "ambientOcclusionMap",
+                "noNormalMap",
+                "noDoubleSided"
+            ],
+            "parameters": {
+                "constant": "",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "constant",
+            "uuid": "{d504ecec-a423-4138-8f00-c06f81dd969a}"
+        },
+        {
+            "layers": [
+                "doubleSided"
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "subtract",
+            "uuid": "{185048bb-18e3-4cd8-b4d9-b0dd6f0f932d}"
+        },
+        {
+            "layers": [
+                "noHasColorAttr"
+            ],
+            "parameters": {
+                "constant": "1,1,1,1",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "constant",
+            "uuid": "{bcc2abdd-2459-48cb-8dea-eba19d1257b1}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "parameters": {
+                "name": "baseColorMapTextureTransform",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Mat3"
                 }
             },
             "type": "kuesa_ShaderDataInput",
-            "uuid": "{892a7a91-1525-4cd0-b89d-afeb22537de3}"
+            "uuid": "{5321de3d-73b1-4dfb-bc98-c5edfaf85306}"
+        },
+        {
+            "layers": [
+                "doubleSided"
+            ],
+            "parameters": {
+                "name": "gl_FrontFacing",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            },
+            "type": "builtinInput",
+            "uuid": "{3e9a711a-d681-43d0-b014-dd7ae3617763}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll",
+                "metalRoughFunction"
+            ],
+            "parameters": {
+                "location": "4",
+                "name": "worldPosition"
+            },
+            "type": "input",
+            "uuid": "{00000000-0000-0000-0000-000000000001}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll",
+                "metalRoughFunction"
+            ],
+            "parameters": {
+                "firstType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "multiply",
+            "uuid": "{3ab1a915-4a49-4a23-9a7d-aa1df544e466}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "constant",
+            "uuid": "{4eab697d-c875-4350-9cd5-71ba645d1ad5}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            },
+            "type": "if",
+            "uuid": "{1ceda485-199f-46b1-b952-3bfd871126ae}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+                "name": "normalMap",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Sampler2D"
+                }
+            },
+            "type": "textureInput",
+            "uuid": "{278b7ea6-a10a-4c05-987e-891a28a518dd}"
+        },
+        {
+            "layers": [
+                "noHasAlphaCutoff",
+                "noMetalRoughMap",
+                "noNormalMap",
+                "hasAlphaCutoff",
+                "noEmissiveMap",
+                "noBaseColorMap"
+            ],
+            "parameters": {
+            },
+            "type": "kuesa_metallicRoughnessShaderData",
+            "uuid": "{894c7898-ab67-4825-af39-cc387d71de66}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll",
+                "metalRoughFunction"
+            ],
+            "parameters": {
+            },
+            "type": "normalize",
+            "uuid": "{00000000-0000-0000-0000-000000000020}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "parameters": {
+                "fields": "g",
+                "inputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "swizzle",
+            "uuid": "{f019ce7d-1757-424b-af6f-0e002231199a}"
+        },
+        {
+            "layers": [
+                "emissiveMap"
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            },
+            "type": "if",
+            "uuid": "{37f933fe-604d-4b52-a7bf-3c159370f165}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "multiply",
+            "uuid": "{222bc118-7466-453b-a5ee-7b8edae2c0e6}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "1.0,1.0,0.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "constant",
+            "uuid": "{d3d4b9c8-0b2e-4263-a6d8-1e1a60328bfa}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll",
+                "metalRoughFunction"
+            ],
+            "parameters": {
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "multiply",
+            "uuid": "{47d4e3b3-a25e-4630-962a-2e50afc9396b}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "0.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "constant",
+            "uuid": "{80c8447f-6f58-405a-859b-9c9ed1ada0a7}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+            },
+            "type": "worldSpaceToTangentSpaceMatrix",
+            "uuid": "{00000000-0000-0000-0000-000000000021}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "parameters": {
+                "name": "metallicRoughnessUsesTexCoord1",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{bf4e9e46-b752-45fb-9e18-2a69c1b37b59}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "parameters": {
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            },
+            "type": "if",
+            "uuid": "{88ba4c76-cb47-4267-b41a-bd7f4c3c2d42}"
+        },
+        {
+            "layers": [
+                "hasAlphaCutoff"
+            ],
+            "parameters": {
+                "valueType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "greater",
+            "uuid": "{5dd3d862-88da-4941-a71f-e3850ccb6cd0}"
+        },
+        {
+            "layers": [
+                "doubleSided"
+            ],
+            "parameters": {
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "multiply",
+            "uuid": "{2541a5a6-dcf0-4f3d-a800-6f53330ca78b}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "constant",
+            "uuid": "{80c18ff4-8e5f-400b-911d-fe97f427cb4b}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+            },
+            "type": "subtract",
+            "uuid": "{64f36d2a-1039-480e-8604-424bc8e7d407}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "1.0,1.0,1.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "constant",
+            "uuid": "{805f4408-6fd2-4a6c-8b17-46cf20cd9a41}"
+        },
+        {
+            "layers": [
+                "metalRoughMap"
+            ],
+            "parameters": {
+            },
+            "type": "kuesa_sampleTexture",
+            "uuid": "{4b92de8b-c36d-405a-9bde-b96a38e87241}"
+        },
+        {
+            "layers": [
+                "noMetalRoughMap"
+            ],
+            "parameters": {
+                "constant": "1.0"
+            },
+            "type": "constant",
+            "uuid": "{4207ae73-bdc5-4cde-8086-6371d6beef9e}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll",
+                "metalRoughFunction"
+            ],
+            "parameters": {
+            },
+            "type": "normalize",
+            "uuid": "{00000000-0000-0000-0000-000000000028}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "constant",
+            "uuid": "{b856ee9b-34ce-4c55-ab0b-a039095fe5a8}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Mat3"
+                }
+            },
+            "type": "multiply",
+            "uuid": "{00000000-0000-0000-0000-000000000023}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction_unroll",
+                "metalRoughFunction"
+            ],
+            "parameters": {
+                "secondType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "multiply",
+            "uuid": "{57ab65a4-17e7-4886-bc17-b79f823b091d}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "0.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "constant",
+            "uuid": "{dfde3603-add2-4f0b-99d4-4b6b38026975}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "location": "3",
+                "name": "worldNormal"
+            },
+            "type": "input",
+            "uuid": "{00000000-0000-0000-0000-000000000003}"
+        },
+        {
+            "layers": [
+                "metalRoughFunction"
+            ],
+            "parameters": {
+            },
+            "type": "kuesa_metalRoughFunction",
+            "uuid": "{68968ad4-924a-4938-bbdb-4e8de60565eb}"
+        },
+        {
+            "layers": [
+                "ambientOcclusionMap"
+            ],
+            "parameters": {
+                "fields": "r",
+                "inputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "swizzle",
+            "uuid": "{00000000-0000-0000-0000-000000000016}"
+        },
+        {
+            "layers": [
+                "hasColorAttr"
+            ],
+            "parameters": {
+                "location": "1",
+                "name": "color",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "input",
+            "uuid": "{0050769e-ab6d-47a4-9785-7f77e1c6536c}"
+        },
+        {
+            "layers": [
+                "ambientOcclusionMap"
+            ],
+            "parameters": {
+            },
+            "type": "kuesa_sampleTexture",
+            "uuid": "{dc74626a-0a2e-40da-b8ea-81cc5524204e}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "metallicFactor",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{a1f36c4a-05e8-4cdf-b678-59145d8730be}"
+        },
+        {
+            "layers": [
+                "ambientOcclusionMap"
+            ],
+            "parameters": {
+                "name": "aoUsesTexCoord1",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{0c81494a-0bbf-49b8-8f96-a93e72757749}"
+        },
+        {
+            "layers": [
+                "normalMap"
+            ],
+            "parameters": {
+                "location": "2",
+                "name": "worldTangent",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "input",
+            "uuid": "{00000000-0000-0000-0000-000000000004}"
+        },
+        {
+            "layers": [
+                "baseColorMap"
+            ],
+            "parameters": {
+                "name": "baseColorUsesTexCoord1",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{cd87010e-0fe5-4834-b460-116391fb99a1}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "roughnessFactor"
+            },
+            "type": "kuesa_ShaderDataInput",
+            "uuid": "{1bc9c6da-4e78-4f8f-ac12-4188872649e7}"
+        },
+        {
+            "layers": [
+                "metalRoughMap",
+                "baseColorMap",
+                "emissiveMap",
+                "normalMap",
+                "ambientOcclusionMap"
+            ],
+            "parameters": {
+                "name": "texCoord",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            },
+            "type": "input",
+            "uuid": "{00000000-0000-0000-0000-000000000005}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "type": "multiply",
+            "uuid": "{35733ff4-190c-41fb-8a6c-2e03c971f3d2}"
+        },
+        {
+            "layers": [
+                "noHasColorAttr",
+                "hasColorAttr",
+                "noBaseColorMap",
+                "noEmissiveMap",
+                "doubleSided",
+                "noHasAlphaCutoff",
+                "metalRoughMap",
+                "useReinhardToneMap",
+                "metalRoughFunction_unroll",
+                "baseColorMap",
+                "metalRoughFunction",
+                "useFilmicToneMap",
+                "noAmbientOcclusionMap",
+                "noMetalRoughMap",
+                "emissiveMap",
+                "ambientOcclusionMap",
+                "noNormalMap",
+                "hasAlphaCutoff",
+                "noDoubleSided"
+            ],
+            "parameters": {
+                "constant": "",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "constant",
+            "uuid": "{0eb7cb5f-b4be-46e0-9ccd-f6f444062966}"
+        },
+        {
+            "layers": [
+                "noHasColorAttr",
+                "hasColorAttr",
+                "noBaseColorMap",
+                "noEmissiveMap",
+                "doubleSided",
+                "noHasAlphaCutoff",
+                "metalRoughMap",
+                "useReinhardToneMap",
+                "metalRoughFunction_unroll",
+                "baseColorMap",
+                "metalRoughFunction",
+                "useFilmicToneMap",
+                "noAmbientOcclusionMap",
+                "noMetalRoughMap",
+                "emissiveMap",
+                "ambientOcclusionMap",
+                "noNormalMap",
+                "hasAlphaCutoff",
+                "noDoubleSided"
+            ],
+            "parameters": {
+                "constant": "",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "constant",
+            "uuid": "{11be8ec7-9992-4377-b911-c2295f7f2a7a}"
         }
     ],
     "prototypes": {
@@ -2504,9 +2664,12 @@
                 "matrix",
                 "texCoord"
             ],
+            "name": "KHR_texture_transform",
             "outputs": [
                 "transformed"
             ],
+            "parameters": {
+            },
             "rules": [
                 {
                     "format": {
@@ -2514,6 +2677,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp vec2 $transformed = ($matrix * vec3($texCoord, 1.0)).xy;"
                 },
                 {
@@ -2522,6 +2687,8 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp vec2 $transformed = ($matrix * vec3($texCoord, 1.0)).xy;"
                 },
                 {
@@ -2530,6 +2697,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "vec2 $transformed = ($matrix * vec3($texCoord, 1.0)).xy;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "vec2 $transformed = ($matrix * vec3($texCoord, 1.0)).xy;"
                 }
             ]
@@ -2539,6 +2718,7 @@
                 "first",
                 "second"
             ],
+            "name": "add",
             "outputs": [
                 "sum"
             ],
@@ -2555,6 +2735,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $sum = $first + $second;"
                 },
                 {
@@ -2563,7 +2745,69 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $sum = $first + $second;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $sum = $first + $second;"
+                }
+            ]
+        },
+        "builtinInput": {
+            "inputs": [
+            ],
+            "name": "builtinInput",
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "name": {
+                    "type": "QString",
+                    "value": "defaultName"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $value = $name;"
                 }
             ]
         },
@@ -2571,6 +2815,7 @@
             "inputs": [
                 "input"
             ],
+            "name": "cast",
             "outputs": [
                 "output"
             ],
@@ -2591,6 +2836,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $output = $type($input);"
                 },
                 {
@@ -2599,16 +2846,34 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $type($input);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $output = $type($input);"
                 }
             ]
         },
         "constant": {
+            "inputs": [
+            ],
+            "name": "constant",
             "outputs": [
                 "value"
             ],
             "parameters": {
-                "constant": "0.0",
+                "constant": {
+                    "type": "QString",
+                    "value": "0.0"
+                },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Float"
@@ -2621,6 +2886,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $value = $type($constant);"
                 },
                 {
@@ -2629,6 +2896,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $value = $type($constant);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $value = $type($constant);"
                 }
             ]
@@ -2638,6 +2917,7 @@
                 "condition",
                 "value"
             ],
+            "name": "discard_if",
             "outputs": [
                 "output"
             ],
@@ -2673,35 +2953,17 @@
                         "$type discard_if_$type(bool shouldDiscard, $type value) { if (shouldDiscard) discard; return value; }"
                     ],
                     "substitution": "$type $output = discard_if_$type($condition, $value);"
-                }
-            ]
-        },
-        "eyePosition": {
-            "outputs": [
-                "eyePosition"
-            ],
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "uniform highp vec3 eyePosition;"
-                    ],
-                    "substitution": "highp vec3 $eyePosition = eyePosition;"
                 },
                 {
                     "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
+                        "api": "RHI",
+                        "major": 1,
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "uniform vec3 eyePosition;"
+                        "$type discard_if_$type(bool shouldDiscard, $type value) { if (shouldDiscard) discard; return value; }"
                     ],
-                    "substitution": "vec3 $eyePosition = eyePosition;"
+                    "substitution": "$type $output = discard_if_$type($condition, $value);"
                 }
             ]
         },
@@ -2709,6 +2971,11 @@
             "inputs": [
                 "fragColor"
             ],
+            "name": "fragColor",
+            "outputs": [
+            ],
+            "parameters": {
+            },
             "rules": [
                 {
                     "format": {
@@ -2716,6 +2983,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "gl_FragColor = $fragColor;"
                 },
                 {
@@ -2739,6 +3008,17 @@
                         "out vec4 fragColor;"
                     ],
                     "substitution": "fragColor = $fragColor;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "layout(location = 0) out vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
                 }
             ]
         },
@@ -2747,6 +3027,7 @@
                 "input1",
                 "input2"
             ],
+            "name": "greater",
             "outputs": [
                 "output"
             ],
@@ -2767,6 +3048,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $output = $input1 > $input2;"
                 },
                 {
@@ -2775,6 +3058,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 > $input2;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $output = $input1 > $input2;"
                 }
             ]
@@ -2782,9 +3077,10 @@
         "if": {
             "inputs": [
                 "condition",
-                "false",
-                "true"
+                "true",
+                "false"
             ],
+            "name": "if",
             "outputs": [
                 "output"
             ],
@@ -2805,6 +3101,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $output = ($condition) ? $true : $false;"
                 },
                 {
@@ -2813,19 +3111,37 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = ($condition) ? $true : $false;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $output = ($condition) ? $true : $false;"
                 }
             ]
         },
         "input": {
+            "inputs": [
+            ],
+            "name": "input",
             "outputs": [
                 "value"
             ],
             "parameters": {
-                "name": "defaultName",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
+                "location": {
+                    "type": "QString",
+                    "value": "0"
+                },
+                "name": {
+                    "type": "QString",
+                    "value": "defaultName"
                 },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
@@ -2840,7 +3156,18 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "$qualifier highp $type $name;"
+                        "attribute highp $type $name;"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "in highp $type $name;"
                     ],
                     "substitution": "highp $type $value = $name;"
                 },
@@ -2851,7 +3178,18 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "$qualifier $type $name;"
+                        "in $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "layout(location = $location) in $type $name;"
                     ],
                     "substitution": "$type $value = $name;"
                 }
@@ -2862,6 +3200,7 @@
                 "first",
                 "second"
             ],
+            "name": "join2",
             "outputs": [
                 "output"
             ],
@@ -2886,6 +3225,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $output = $type($first, $second);"
                 },
                 {
@@ -2894,6 +3235,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $type($first, $second);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $output = $type($first, $second);"
                 }
             ]
@@ -2902,11 +3255,15 @@
             "inputs": [
                 "shaderData"
             ],
+            "name": "kuesa_ShaderDataInput",
             "outputs": [
                 "value"
             ],
             "parameters": {
-                "name": "defaultName",
+                "name": {
+                    "type": "QString",
+                    "value": "defaultName"
+                },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -2919,6 +3276,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $value = $shaderData.$name;"
                 },
                 {
@@ -2927,6 +3286,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $value = $shaderData.$name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $value = $shaderData.$name;"
                 }
             ]
@@ -2942,9 +3313,12 @@
                 "worldPosition",
                 "worldView"
             ],
+            "name": "kuesa_metalRoughFunction",
             "outputs": [
                 "outputColor"
             ],
+            "parameters": {
+            },
             "rules": [
                 {
                     "format": {
@@ -2978,6 +3352,17 @@
                         "#pragma include :/kuesa/shaders/es3/kuesa_metalrough.inc.frag"
                     ],
                     "substitution": "highp vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $emissive, $worldPosition, $worldView, $worldNormal);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl45/kuesa_metalrough.inc.frag"
+                    ],
+                    "substitution": "vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $emissive, $worldPosition, $worldView, $worldNormal);"
                 }
             ]
         },
@@ -2992,9 +3377,12 @@
                 "worldPosition",
                 "worldView"
             ],
+            "name": "kuesa_metalRoughFunction_unroll",
             "outputs": [
                 "outputColor"
             ],
+            "parameters": {
+            },
             "rules": [
                 {
                     "format": {
@@ -3028,13 +3416,29 @@
                         "#pragma include :/kuesa/shaders/es3/kuesa_metalrough_unroll.inc.frag"
                     ],
                     "substitution": "highp vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $emissive, $worldPosition, $worldView, $worldNormal);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl45/kuesa_metalrough_unroll.inc.frag"
+                    ],
+                    "substitution": "vec3 $outputColor = kuesa_metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $emissive, $worldPosition, $worldView, $worldNormal);"
                 }
             ]
         },
         "kuesa_metallicRoughnessShaderData": {
+            "inputs": [
+            ],
+            "name": "kuesa_metallicRoughnessShaderData",
             "outputs": [
                 "shaderData"
             ],
+            "parameters": {
+            },
             "rules": [
                 {
                     "format": {
@@ -3068,6 +3472,17 @@
                         "#pragma include :/kuesa/shaders/gl3/kuesa_metallicRoughnessShaderData.inc.frag"
                     ],
                     "substitution": "MetallicRoughness $shaderData = metallicRoughness;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl45/kuesa_metallicRoughnessShaderData.inc.frag"
+                    ],
+                    "substitution": "MetallicRoughness $shaderData = metallicRoughness;"
                 }
             ]
         },
@@ -3076,9 +3491,12 @@
                 "coord",
                 "texture"
             ],
+            "name": "kuesa_sampleTexture",
             "outputs": [
                 "color"
             ],
+            "parameters": {
+            },
             "rules": [
                 {
                     "format": {
@@ -3086,6 +3504,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp vec4 $color = texture2D($texture, $coord);"
                 },
                 {
@@ -3094,6 +3514,8 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp vec4 $color = texture($texture, $coord);"
                 },
                 {
@@ -3102,6 +3524,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "vec4 $color = texture($texture, $coord);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "vec4 $color = texture($texture, $coord);"
                 }
             ]
@@ -3111,6 +3545,7 @@
                 "first",
                 "second"
             ],
+            "name": "multiply",
             "outputs": [
                 "product"
             ],
@@ -3135,6 +3570,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $product = $first * $second;"
                 },
                 {
@@ -3143,6 +3580,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $product = $first * $second;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $product = $first * $second;"
                 }
             ]
@@ -3151,6 +3600,7 @@
             "inputs": [
                 "input"
             ],
+            "name": "normalize",
             "outputs": [
                 "output"
             ],
@@ -3167,6 +3617,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $output = normalize($input);"
                 },
                 {
@@ -3175,17 +3627,48 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = normalize($input);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $output = normalize($input);"
                 }
             ]
         },
-        "sRGBtoLinear": {
+        "qt3d_default_uniforms": {
             "inputs": [
-                "sRGB"
             ],
+            "name": "qt3d_default_uniforms",
             "outputs": [
-                "linear"
+                "viewMatrix",
+                "projectionMatrix",
+                "viewProjectionMatrix",
+                "inverseViewMatrix",
+                "inverseProjectionMatrix",
+                "inverseViewProjectionMatrix",
+                "textureTransformMatrix",
+                "eyePosition",
+                "aspectRatio",
+                "gamma",
+                "exposure",
+                "time",
+                "modelMatrix",
+                "inverseModelMatrix",
+                "modelViewMatrix",
+                "modelNormalMatrix",
+                "mvp",
+                "inverseModelViewProjectionMatrix"
             ],
+            "parameters": {
+            },
             "rules": [
                 {
                     "format": {
@@ -3193,6 +3676,65 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es2/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "\n                        highp mat4 $viewMatrix = viewMatrix;\n                        highp mat4 $projectionMatrix = projectionMatrix;\n                        highp mat4 $viewProjectionMatrix = viewProjectionMatrix;\n                        highp mat4 $inverseViewMatrix = inverseViewMatrix;\n                        highp mat4 $inverseProjectionMatrix = inverseProjectionMatrix;\n                        highp mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;\n                        highp mat4 $viewportMatrix = viewportMatrix;\n                        highp mat4 $inverseViewportMatrix = inverseViewportMatrix;\n                        highp vec4 $textureTransformMatrix = textureTransformMatrix;\n                        highp vec3 $eyePosition = eyePosition;\n                        highp float $aspectRatio = aspectRatio;\n                        highp float $gamma = gamma;\n                        highp float $exposure = exposure;\n                        highp float $time = time;\n                        highp mat4 $modelMatrix = modelMatrix;\n                        highp mat4 $inverseModelMatrix = inverseModelMatrix;\n                        highp mat4 $modelViewMatrix = modelViewMatrix;\n                        highp mat3 $modelNormalMatrix = modelNormalMatrix;\n                        highp mat4 $inverseModelViewMatrix = inverseModelViewMatrix;\n                        highp mat4 $mvp = mvp;\n                        highp mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es3/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "\n                        highp mat4 $viewMatrix = viewMatrix;\n                        highp mat4 $projectionMatrix = projectionMatrix;\n                        highp mat4 $viewProjectionMatrix = viewProjectionMatrix;\n                        highp mat4 $inverseViewMatrix = inverseViewMatrix;\n                        highp mat4 $inverseProjectionMatrix = inverseProjectionMatrix;\n                        highp mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;\n                        highp mat4 $viewportMatrix = viewportMatrix;\n                        highp mat4 $inverseViewportMatrix = inverseViewportMatrix;\n                        highp vec4 $textureTransformMatrix = textureTransformMatrix;\n                        highp vec3 $eyePosition = eyePosition;\n                        highp float $aspectRatio = aspectRatio;\n                        highp float $gamma = gamma;\n                        highp float $exposure = exposure;\n                        highp float $time = time;\n                        highp mat4 $modelMatrix = modelMatrix;\n                        highp mat4 $inverseModelMatrix = inverseModelMatrix;\n                        highp mat4 $modelViewMatrix = modelViewMatrix;\n                        highp mat3 $modelNormalMatrix = modelNormalMatrix;\n                        highp mat4 $inverseModelViewMatrix = inverseModelViewMatrix;\n                        highp mat4 $mvp = mvp;\n                        highp mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl3/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "\n                        mat4 $viewMatrix = viewMatrix;\n                        mat4 $projectionMatrix = projectionMatrix;\n                        mat4 $viewProjectionMatrix = viewProjectionMatrix;\n                        mat4 $inverseViewMatrix = inverseViewMatrix;\n                        mat4 $inverseProjectionMatrix = inverseProjectionMatrix;\n                        mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;\n                        mat4 $viewportMatrix = viewportMatrix;\n                        mat4 $inverseViewportMatrix = inverseViewportMatrix;\n                        vec4 $textureTransformMatrix = textureTransformMatrix;\n                        vec3 $eyePosition = eyePosition;\n                        float $aspectRatio = aspectRatio;\n                        float $gamma = gamma;\n                        float $exposure = exposure;\n                        float $time = time;\n                        mat4 $modelMatrix = modelMatrix;\n                        mat4 $inverseModelMatrix = inverseModelMatrix;\n                        mat4 $modelViewMatrix = modelViewMatrix;\n                        mat3 $modelNormalMatrix = modelNormalMatrix;\n                        mat4 $inverseModelViewMatrix = inverseModelViewMatrix;\n                        mat4 $mvp = mvp;\n                        mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl45/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "\n                        mat4 $viewMatrix = viewMatrix;\n                        mat4 $projectionMatrix = projectionMatrix;\n                        mat4 $viewProjectionMatrix = viewProjectionMatrix;\n                        mat4 $inverseViewMatrix = inverseViewMatrix;\n                        mat4 $inverseProjectionMatrix = inverseProjectionMatrix;\n                        mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;\n                        mat4 $viewportMatrix = viewportMatrix;\n                        mat4 $inverseViewportMatrix = inverseViewportMatrix;\n                        vec4 $textureTransformMatrix = textureTransformMatrix;\n                        vec3 $eyePosition = eyePosition;\n                        float $aspectRatio = aspectRatio;\n                        float $gamma = gamma;\n                        float $exposure = exposure;\n                        float $time = time;\n                        mat4 $modelMatrix = modelMatrix;\n                        mat4 $inverseModelMatrix = inverseModelMatrix;\n                        mat4 $modelViewMatrix = modelViewMatrix;\n                        mat3 $modelNormalMatrix = modelNormalMatrix;\n                        mat4 $inverseModelViewMatrix = inverseModelViewMatrix;\n                        mat4 $mvp = mvp;\n                        mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
+                }
+            ]
+        },
+        "sRGBtoLinear": {
+            "inputs": [
+                "sRGB"
+            ],
+            "name": "sRGBtoLinear",
+            "outputs": [
+                "linear"
+            ],
+            "parameters": {
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp vec4 $linear = vec4(pow($sRGB.rgb, vec3(2.2)), $sRGB.a);"
                 },
                 {
@@ -3201,6 +3743,8 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp vec4 $linear = vec4(pow($sRGB.rgb, vec3(2.2)), $sRGB.a);"
                 },
                 {
@@ -3209,6 +3753,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "vec4 $linear = $sRGB;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "vec4 $linear = $sRGB;"
                 }
             ]
@@ -3218,6 +3774,7 @@
                 "minuend",
                 "subtrahend"
             ],
+            "name": "subtract",
             "outputs": [
                 "difference"
             ],
@@ -3234,6 +3791,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $difference = $minuend - $subtrahend;"
                 },
                 {
@@ -3242,6 +3801,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $difference = $minuend - $subtrahend;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $difference = $minuend - $subtrahend;"
                 }
             ]
@@ -3250,11 +3821,15 @@
             "inputs": [
                 "input"
             ],
+            "name": "swizzle",
             "outputs": [
                 "output"
             ],
             "parameters": {
-                "fields": "x",
+                "fields": {
+                    "type": "QString",
+                    "value": "xyz"
+                },
                 "inputType": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -3271,6 +3846,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $output = ($input).$fields;"
                 },
                 {
@@ -3279,7 +3856,72 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $output = ($input).$fields;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = ($input).$fields;"
+                }
+            ]
+        },
+        "textureInput": {
+            "inputs": [
+            ],
+            "name": "textureInput",
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "name": {
+                    "type": "QString",
+                    "value": "defaultName"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "uniform highp $type $name;"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "uniform $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "add-sampler $type $name"
+                    ],
+                    "substitution": "$type $value = $name;"
                 }
             ]
         },
@@ -3288,9 +3930,12 @@
                 "worldNormal",
                 "worldTangent"
             ],
+            "name": "worldSpaceToTangentSpaceMatrix",
             "outputs": [
                 "matrix"
             ],
+            "parameters": {
+            },
             "rules": [
                 {
                     "format": {
@@ -3318,6 +3963,17 @@
                     "format": {
                         "api": "OpenGLCoreProfile",
                         "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/shaders/gl3/coordinatesystems.inc"
+                    ],
+                    "substitution": "mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
                         "minor": 0
                     },
                     "headerSnippets": [

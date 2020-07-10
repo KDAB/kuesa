@@ -36,7 +36,6 @@ struct MetallicRoughness {
     vec4 baseColorFactor;
     vec4 emissiveFactor;
 
-
     float metallicFactor;
     float roughnessFactor;
     float normalScale;
@@ -49,4 +48,6 @@ struct MetallicRoughness {
     bool emissiveUsesTexCoord1;
 };
 
-uniform MetallicRoughness metallicRoughness;
+layout(std140, binding = auto) uniform MetallicRoughnessBlock {
+    MetallicRoughness metallicRoughness;
+};
