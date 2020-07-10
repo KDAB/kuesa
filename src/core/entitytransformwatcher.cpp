@@ -87,14 +87,12 @@ void EntityTransformWatcher::updateWorldMatrix()
 
     if (m_target) {
         Qt3DCore::QEntity *e = m_target;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 18, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
         Qt3DCore::QTransform *transform = nullptr;
         while (transform == nullptr && e != nullptr) {
             transform = Kuesa::componentFromEntity<Qt3DCore::QTransform>(e);
             e = e->parentEntity();
         }
-        if (transform)
-            return transform->worldMatrix();
 #else
         // We need to tranverse back through all the Entity hierarchy of the Camera and build the worldMatrix ourselves
         while (e != nullptr) {
