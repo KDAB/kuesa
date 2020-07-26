@@ -46,7 +46,7 @@ class KUESASHARED_EXPORT TextureTransform : public Qt3DCore::QNode
     Q_PROPERTY(QMatrix3x3 matrix READ matrix)
 
 public:
-     explicit TextureTransform(Qt3DCore::QNode *parent = nullptr);
+    explicit TextureTransform(Qt3DCore::QNode *parent = nullptr);
     ~TextureTransform() = default;
 
     const QVector2D &offset() const;
@@ -70,6 +70,8 @@ private:
     QVector2D m_scale;
     float m_rotation;
 };
-}
+} // namespace Kuesa
 
-#endif  // KUESA_TEXTURETRANSFORM_H
+QT_END_NAMESPACE
+
+#endif // KUESA_TEXTURETRANSFORM_H

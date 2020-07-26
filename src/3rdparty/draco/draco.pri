@@ -200,7 +200,6 @@ HEADERS += \
   $$DRACO_SRC/draco/compression/entropy/symbol_encoding.h \
   $$DRACO_SRC/draco/compression/expert_encode.h \
   $$DRACO_SRC/draco/compression/mesh/mesh_decoder.h \
-  $$DRACO_SRC/draco/compression/mesh/mesh_decoder_helpers.h \
   $$DRACO_SRC/draco/compression/mesh/mesh_edgebreaker_decoder.h \
   $$DRACO_SRC/draco/compression/mesh/mesh_edgebreaker_decoder_impl.h \
   $$DRACO_SRC/draco/compression/mesh/mesh_edgebreaker_decoder_impl_interface.h \
@@ -215,7 +214,6 @@ HEADERS += \
   $$DRACO_SRC/draco/compression/mesh/mesh_edgebreaker_traversal_valence_decoder.h \
   $$DRACO_SRC/draco/compression/mesh/mesh_edgebreaker_traversal_valence_encoder.h \
   $$DRACO_SRC/draco/compression/mesh/mesh_encoder.h \
-  $$DRACO_SRC/draco/compression/mesh/mesh_encoder_helpers.h \
   $$DRACO_SRC/draco/compression/mesh/mesh_sequential_decoder.h \
   $$DRACO_SRC/draco/compression/mesh/mesh_sequential_encoder.h \
   $$DRACO_SRC/draco/compression/mesh/traverser/depth_first_traverser.h \
