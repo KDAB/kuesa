@@ -194,7 +194,7 @@ const HierarchyNode *multiLCA(const Path &nodes)
         if (path.back() != firstNodeRoot)
             return nullptr;
 
-        min_length = std::min(min_length, path.length());
+        min_length = std::min(min_length, int(path.length()));
         iterators.push_back(path.crbegin());
     }
 

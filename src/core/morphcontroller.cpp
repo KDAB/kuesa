@@ -367,7 +367,7 @@ void MorphController::setMorphWeights(const QVariantList &morphWeights)
     };
 
     m_shouldEmitMorphWeights = false;
-    for (int i = 0, m = std::min(morphWeights.size(), m_count); i < m; ++i) {
+    for (int i = 0, m = std::min(int(morphWeights.size()), m_count); i < m; ++i) {
         const float w = morphWeights.at(i).toFloat();
         (this->*weightSetterFuncs[i])(w);
     }

@@ -1381,7 +1381,7 @@ void ForwardRenderer::reconfigureStages()
     //    2 (culled, non culler) per layer
     const int actualSceneStagesCount = m_sceneStages.size();
     const bool hasLayers = m_layers.size() > 0;
-    const int requiredSceneStagesCount = std::max(2, m_layers.size() * 2);
+    const int requiredSceneStagesCount = std::max(2, int(m_layers.size()) * 2);
 
     m_sceneStages.resize(requiredSceneStagesCount);
     for (int i = actualSceneStagesCount; i < requiredSceneStagesCount; ++i) {
