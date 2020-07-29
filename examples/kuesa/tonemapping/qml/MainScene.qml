@@ -80,7 +80,7 @@ Kuesa.SceneEntity {
         InputSettings { },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: "pink_sunrise_16f_irradiance" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+                source: "qrc:/pink_sunrise_16f_irradiance" + ((!root3D.es2) ? ".dds" : "_es2.dds")
 
                 minificationFilter: Texture.LinearMipMapLinear
                 magnificationFilter: Texture.Linear
@@ -91,7 +91,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: "pink_sunrise_16f_specular" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+                source: "qrc:/pink_sunrise_16f_specular" + ((!root3D.es2) ? ".dds" : "_es2.dds")
 
                 minificationFilter: Texture.LinearMipMapLinear
                 magnificationFilter: Texture.Linear

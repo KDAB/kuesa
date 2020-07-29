@@ -72,7 +72,7 @@ Item {
         smooth: true
         antialiasing: true
 
-        source: "/kdab_logo_white.png"
+        source: "kdab_logo_white.png"
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.bottomMargin: width/4
@@ -95,7 +95,7 @@ Item {
         mipmap: true
         smooth: true
         antialiasing: true
-        source: kuesaLogo ? "/Kuesa-logo-black.png" : "/Qt-logo.png"
+        source: kuesaLogo ? "Kuesa-logo-black.png" : "Qt-logo.png"
         fillMode: Image.PreserveAspectFit
 
         MouseArea {
