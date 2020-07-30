@@ -155,7 +155,15 @@ Skybox::Skybox(QNode *parent)
           2, 0,
           QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.vert.json")),
           QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json"))
+        },
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+        { QGraphicsApiFilter::RHI,
+          QGraphicsApiFilter::NoProfile,
+          1, 0,
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.vert.json")),
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json"))
         }
+#endif
     };
 
     auto effect = new QEffect();
