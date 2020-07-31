@@ -19,6 +19,8 @@
 #include <Qt3DCore/QTransform>
 #include <Kuesa/private/kuesa_utils_p.h>
 #include <Kuesa/private/entitytransformwatcher_p.h>
+#include <Qt3DCore/private/qnode_p.h>
+#include <Qt3DCore/private/qtransform_p.h>
 
 using namespace Kuesa;
 
@@ -33,7 +35,7 @@ public:
         QObject::connect(this, &StubTransform::matrixChanged,
                          this, [this] {
                              // Compute worldTransform manually (as that's done by the Qt3D backend)
-                             QMatrix4x4 worldMatrix = matrix();
+                             QMatrix4x4 worldMatrix = QMatrix4x4();
                              Qt3DCore::QEntity *e = qobject_cast<Qt3DCore::QEntity *>(parentNode());
                              while (e != nullptr) {
                                  const Qt3DCore::QTransform *transform = Kuesa::componentFromEntity<Qt3DCore::QTransform>(e);
@@ -41,7 +43,9 @@ public:
                                      worldMatrix = transform->matrix() * worldMatrix;
                                  e = e->parentEntity();
                              }
-                             emit worldMatrixChanged(worldMatrix);
+                             Qt3DCore::QTransformPrivate *dNode =
+                                     static_cast<Qt3DCore::QTransformPrivate *>(Qt3DCore::QNodePrivate::get(this));
+                             dNode->setWorldMatrix(worldMatrix);
 
                              // Call matrixChanged on any child transform to force them to update their worldTransform
                              e = qobject_cast<Qt3DCore::QEntity *>(parentNode());
