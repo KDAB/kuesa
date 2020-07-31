@@ -533,11 +533,11 @@ void MetallicRoughnessEffect::setBaseColorMapEnabled(bool enabled)
         return;
 
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noBaseColorMap"));
+    layers.removeAll(QStringLiteral("baseColorMap"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noBaseColorMap"));
         layers.append(QStringLiteral("baseColorMap"));
     } else {
-        layers.removeAll(QStringLiteral("baseColorMap"));
         layers.append(QStringLiteral("noBaseColorMap"));
     }
     m_baseColorMapEnabled = enabled;
@@ -556,11 +556,11 @@ void MetallicRoughnessEffect::setMetalRoughMapEnabled(bool enabled)
         return;
 
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noMetalRoughMap"));
+    layers.removeAll(QStringLiteral("metalRoughMap"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noMetalRoughMap"));
         layers.append(QStringLiteral("metalRoughMap"));
     } else {
-        layers.removeAll(QStringLiteral("metalRoughMap"));
         layers.append(QStringLiteral("noMetalRoughMap"));
     }
     m_metalRoughMapEnabled = enabled;
@@ -579,11 +579,11 @@ void MetallicRoughnessEffect::setNormalMapEnabled(bool enabled)
         return;
 
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noNormalMap"));
+    layers.removeAll(QStringLiteral("normalMap"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noNormalMap"));
         layers.append(QStringLiteral("normalMap"));
     } else {
-        layers.removeAll(QStringLiteral("normalMap"));
         layers.append(QStringLiteral("noNormalMap"));
     }
     m_normalMapEnabled = enabled;
@@ -602,11 +602,11 @@ void MetallicRoughnessEffect::setAmbientOcclusionMapEnabled(bool enabled)
         return;
 
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noAmbientOcclusionMap"));
+    layers.removeAll(QStringLiteral("ambientOcclusionMap"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noAmbientOcclusionMap"));
         layers.append(QStringLiteral("ambientOcclusionMap"));
     } else {
-        layers.removeAll(QStringLiteral("ambientOcclusionMap"));
         layers.append(QStringLiteral("noAmbientOcclusionMap"));
     }
     m_ambientOcclusionMapEnabled = enabled;
@@ -625,11 +625,11 @@ void MetallicRoughnessEffect::setEmissiveMapEnabled(bool enabled)
         return;
 
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noEmissiveMap"));
+    layers.removeAll(QStringLiteral("emissiveMap"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noEmissiveMap"));
         layers.append(QStringLiteral("emissiveMap"));
     } else {
-        layers.removeAll(QStringLiteral("emissiveMap"));
         layers.append(QStringLiteral("noEmissiveMap"));
     }
     m_emissiveMapEnabled = enabled;
@@ -648,11 +648,11 @@ void MetallicRoughnessEffect::setUsingColorAttribute(bool usingColorAttribute)
         return;
 
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noHasColorAttr"));
+    layers.removeAll(QStringLiteral("hasColorAttr"));
     if (usingColorAttribute) {
-        layers.removeAll(QStringLiteral("noHasColorAttr"));
         layers.append(QStringLiteral("hasColorAttr"));
     } else {
-        layers.removeAll(QStringLiteral("hasColorAttr"));
         layers.append(QStringLiteral("noHasColorAttr"));
     }
     m_usingColorAttribute = usingColorAttribute;
@@ -668,11 +668,11 @@ void MetallicRoughnessEffect::setUsingColorAttribute(bool usingColorAttribute)
 void MetallicRoughnessEffect::updateDoubleSided(bool doubleSided)
 {
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noDoubleSided"));
+    layers.removeAll(QStringLiteral("doubleSided"));
     if (doubleSided) {
-        layers.removeAll(QStringLiteral("noDoubleSided"));
         layers.append(QStringLiteral("doubleSided"));
     } else {
-        layers.removeAll(QStringLiteral("doubleSided"));
         layers.append(QStringLiteral("noDoubleSided"));
     }
     m_metalRoughGL3Technique->setEnabledLayers(layers);
@@ -693,11 +693,11 @@ void MetallicRoughnessEffect::updateSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("no-skinning"));
+    layers.removeAll(QStringLiteral("skinning"));
     if (useSkinning) {
-        layers.removeAll(QStringLiteral("no-skinning"));
         layers.append(QStringLiteral("skinning"));
     } else {
-        layers.removeAll(QStringLiteral("skinning"));
         layers.append(QStringLiteral("no-skinning"));
     }
 
@@ -727,11 +727,11 @@ void MetallicRoughnessEffect::updateOpaque(bool opaque)
 void MetallicRoughnessEffect::updateAlphaCutoffEnabled(bool enabled)
 {
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
+    layers.removeAll(QStringLiteral("hasAlphaCutoff"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
         layers.append(QStringLiteral("hasAlphaCutoff"));
     } else {
-        layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
     }
     m_metalRoughGL3Technique->setEnabledLayers(layers);
