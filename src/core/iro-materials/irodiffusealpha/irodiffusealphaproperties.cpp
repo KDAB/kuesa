@@ -29,6 +29,7 @@
 
 #include "irodiffusealphaproperties.h"
 #include "irodiffusealphashaderdata_p.h"
+#include <Qt3DCore/private/qnode_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -60,13 +61,13 @@ namespace Kuesa {
 IroDiffuseAlphaProperties::IroDiffuseAlphaProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_shaderData(new IroDiffuseAlphaShaderData(this))
+    , m_reflectionMap(nullptr)
 {
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::normalScalingChanged, this, &IroDiffuseAlphaProperties::normalScalingChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::normalDisturbChanged, this, &IroDiffuseAlphaProperties::normalDisturbChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::postVertexColorChanged, this, &IroDiffuseAlphaProperties::postVertexColorChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::postGainChanged, this, &IroDiffuseAlphaProperties::postGainChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionGainChanged, this, &IroDiffuseAlphaProperties::reflectionGainChanged);
-    QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionMapChanged, this, &IroDiffuseAlphaProperties::reflectionMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionInnerFilterChanged, this, &IroDiffuseAlphaProperties::reflectionInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionOuterFilterChanged, this, &IroDiffuseAlphaProperties::reflectionOuterFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::usesReflectionMapChanged, this, &IroDiffuseAlphaProperties::usesReflectionMapChanged);
@@ -109,11 +110,6 @@ void IroDiffuseAlphaProperties::setReflectionGain(float reflectionGain)
     m_shaderData->setReflectionGain(reflectionGain);
 }
 
-void IroDiffuseAlphaProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
-{
-    m_shaderData->setReflectionMap(reflectionMap);
-}
-
 void IroDiffuseAlphaProperties::setReflectionInnerFilter(const QVector3D &reflectionInnerFilter)
 {
     m_shaderData->setReflectionInnerFilter(reflectionInnerFilter);
@@ -147,6 +143,23 @@ void IroDiffuseAlphaProperties::setReflectionOuterAlpha(float reflectionOuterAlp
 void IroDiffuseAlphaProperties::setAlphaGain(float alphaGain)
 {
     m_shaderData->setAlphaGain(alphaGain);
+}
+
+void IroDiffuseAlphaProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
+{
+    if (m_reflectionMap == reflectionMap)
+        return;
+
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_reflectionMap != nullptr)
+        d->unregisterDestructionHelper(m_reflectionMap);
+    m_reflectionMap = reflectionMap;
+    if (m_reflectionMap != nullptr) {
+        if (m_reflectionMap->parent() == nullptr)
+            m_reflectionMap->setParent(this);
+        d->registerDestructionHelper(m_reflectionMap, &IroDiffuseAlphaProperties::setReflectionMap, m_reflectionMap);
+    }
+    emit reflectionMapChanged(m_reflectionMap);
 }
 
 
@@ -213,19 +226,6 @@ float IroDiffuseAlphaProperties::postGain() const
 float IroDiffuseAlphaProperties::reflectionGain() const
 {
     return m_shaderData->reflectionGain();
-}
-
-/*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroDiffuseAlphaProperties::reflectionMap
-    Specifies the spherical environment map to use. It is expected to be in sRGB color space.
-*/
-/*!
-    \property IroDiffuseAlphaProperties::reflectionMap
-    Specifies the spherical environment map to use. It is expected to be in sRGB color space.
-*/
-Qt3DRender::QAbstractTexture * IroDiffuseAlphaProperties::reflectionMap() const
-{
-    return m_shaderData->reflectionMap();
 }
 
 /*!
@@ -317,6 +317,11 @@ float IroDiffuseAlphaProperties::reflectionOuterAlpha() const
 float IroDiffuseAlphaProperties::alphaGain() const
 {
     return m_shaderData->alphaGain();
+}
+
+Qt3DRender::QAbstractTexture * IroDiffuseAlphaProperties::reflectionMap() const
+{
+    return m_reflectionMap;
 }
 
 

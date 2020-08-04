@@ -44,7 +44,6 @@
 
 #include <QVector2D>
 #include <QVector3D>
-#include <Qt3DRender/QAbstractTexture>
 #include <Qt3DRender/QShaderData>
 
 QT_BEGIN_NAMESPACE
@@ -59,7 +58,6 @@ class IroGlassAddShaderData : public Qt3DRender::QShaderData
     Q_PROPERTY(float postVertexColor READ postVertexColor WRITE setPostVertexColor NOTIFY postVertexColorChanged)
     Q_PROPERTY(float postGain READ postGain WRITE setPostGain NOTIFY postGainChanged)
     Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
     Q_PROPERTY(bool usesReflectionMap READ usesReflectionMap WRITE setUsesReflectionMap NOTIFY usesReflectionMapChanged)
@@ -77,7 +75,6 @@ public:
     float postVertexColor() const;
     float postGain() const;
     float reflectionGain() const;
-    Qt3DRender::QAbstractTexture * reflectionMap() const;
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
     bool usesReflectionMap() const;
@@ -93,7 +90,6 @@ public Q_SLOTS:
     void setPostVertexColor(float postVertexColor);
     void setPostGain(float postGain);
     void setReflectionGain(float reflectionGain);
-    void setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap);
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
     void setUsesReflectionMap(bool usesReflectionMap);
@@ -109,7 +105,6 @@ Q_SIGNALS:
     void postVertexColorChanged(float);
     void postGainChanged(float);
     void reflectionGainChanged(float);
-    void reflectionMapChanged(Qt3DRender::QAbstractTexture *);
     void reflectionInnerFilterChanged(QVector3D);
     void reflectionOuterFilterChanged(QVector3D);
     void usesReflectionMapChanged(bool);
@@ -125,7 +120,6 @@ private:
     float m_postVertexColor;
     float m_postGain;
     float m_reflectionGain;
-    Qt3DRender::QAbstractTexture * m_reflectionMap;
     QVector3D m_reflectionInnerFilter;
     QVector3D m_reflectionOuterFilter;
     bool m_usesReflectionMap;

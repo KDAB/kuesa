@@ -115,6 +115,8 @@ Q_SIGNALS:
 
 private:
     IroGlassAddShaderData *m_shaderData;
+    Qt3DRender::QAbstractTexture * m_reflectionMap;
+
 };
 } // namespace Kuesa
 

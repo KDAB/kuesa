@@ -28,7 +28,6 @@
 */
 
 #include "iromattealphashaderdata_p.h"
-#include <Qt3DCore/private/qnode_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -41,7 +40,6 @@ IroMatteAlphaShaderData::IroMatteAlphaShaderData(Qt3DCore::QNode *parent)
     : Qt3DRender::QShaderData(parent)
     , m_postVertexColor()
     , m_postGain()
-    , m_matteMap(nullptr)
     , m_usesMatteMap()
     , m_matteFilter()
     , m_matteGain()
@@ -59,11 +57,6 @@ float IroMatteAlphaShaderData::postVertexColor() const
 float IroMatteAlphaShaderData::postGain() const
 {
     return m_postGain;
-}
-
-Qt3DRender::QAbstractTexture * IroMatteAlphaShaderData::matteMap() const
-{
-    return m_matteMap;
 }
 
 bool IroMatteAlphaShaderData::usesMatteMap() const
@@ -106,23 +99,6 @@ void IroMatteAlphaShaderData::setPostGain(float postGain)
         return;
     m_postGain = postGain;
     emit postGainChanged(postGain);
-}
-
-void IroMatteAlphaShaderData::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
-{
-    if (m_matteMap == matteMap)
-        return;
-
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    if (m_matteMap != nullptr)
-        d->unregisterDestructionHelper(m_matteMap);
-    m_matteMap = matteMap;
-    if (m_matteMap != nullptr) {
-        if (m_matteMap->parent() == nullptr)
-            m_matteMap->setParent(this);
-        d->registerDestructionHelper(m_matteMap, &IroMatteAlphaShaderData::setMatteMap, m_matteMap);
-    }
-    emit matteMapChanged(m_matteMap);
 }
 
 void IroMatteAlphaShaderData::setUsesMatteMap(bool usesMatteMap)

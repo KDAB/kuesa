@@ -62,6 +62,9 @@ Q_SIGNALS:
 private:
     IroDiffuseProperties *m_materialProperties = nullptr;
     Qt3DRender::QParameter *m_shaderDataParameter;
+    Qt3DRender::QParameter *m_reflectionMapParameter;
+    Qt3DRender::QParameter *m_diffuseMapParameter;
+
 };
 
 } // namespace Kuesa

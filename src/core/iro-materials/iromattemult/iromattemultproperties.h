@@ -87,6 +87,8 @@ Q_SIGNALS:
 
 private:
     IroMatteMultShaderData *m_shaderData;
+    Qt3DRender::QAbstractTexture * m_matteMap;
+
 };
 } // namespace Kuesa
 

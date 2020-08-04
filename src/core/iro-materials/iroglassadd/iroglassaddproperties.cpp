@@ -29,6 +29,7 @@
 
 #include "iroglassaddproperties.h"
 #include "iroglassaddshaderdata_p.h"
+#include <Qt3DCore/private/qnode_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -60,13 +61,13 @@ namespace Kuesa {
 IroGlassAddProperties::IroGlassAddProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_shaderData(new IroGlassAddShaderData(this))
+    , m_reflectionMap(nullptr)
 {
     QObject::connect(m_shaderData, &IroGlassAddShaderData::normalScalingChanged, this, &IroGlassAddProperties::normalScalingChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::normalDisturbChanged, this, &IroGlassAddProperties::normalDisturbChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::postVertexColorChanged, this, &IroGlassAddProperties::postVertexColorChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::postGainChanged, this, &IroGlassAddProperties::postGainChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionGainChanged, this, &IroGlassAddProperties::reflectionGainChanged);
-    QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionMapChanged, this, &IroGlassAddProperties::reflectionMapChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionInnerFilterChanged, this, &IroGlassAddProperties::reflectionInnerFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::reflectionOuterFilterChanged, this, &IroGlassAddProperties::reflectionOuterFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::usesReflectionMapChanged, this, &IroGlassAddProperties::usesReflectionMapChanged);
@@ -110,11 +111,6 @@ void IroGlassAddProperties::setReflectionGain(float reflectionGain)
     m_shaderData->setReflectionGain(reflectionGain);
 }
 
-void IroGlassAddProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
-{
-    m_shaderData->setReflectionMap(reflectionMap);
-}
-
 void IroGlassAddProperties::setReflectionInnerFilter(const QVector3D &reflectionInnerFilter)
 {
     m_shaderData->setReflectionInnerFilter(reflectionInnerFilter);
@@ -153,6 +149,23 @@ void IroGlassAddProperties::setDiffuseInnerFilter(const QVector3D &diffuseInnerF
 void IroGlassAddProperties::setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter)
 {
     m_shaderData->setDiffuseOuterFilter(diffuseOuterFilter);
+}
+
+void IroGlassAddProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
+{
+    if (m_reflectionMap == reflectionMap)
+        return;
+
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_reflectionMap != nullptr)
+        d->unregisterDestructionHelper(m_reflectionMap);
+    m_reflectionMap = reflectionMap;
+    if (m_reflectionMap != nullptr) {
+        if (m_reflectionMap->parent() == nullptr)
+            m_reflectionMap->setParent(this);
+        d->registerDestructionHelper(m_reflectionMap, &IroGlassAddProperties::setReflectionMap, m_reflectionMap);
+    }
+    emit reflectionMapChanged(m_reflectionMap);
 }
 
 
@@ -219,19 +232,6 @@ float IroGlassAddProperties::postGain() const
 float IroGlassAddProperties::reflectionGain() const
 {
     return m_shaderData->reflectionGain();
-}
-
-/*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroGlassAddProperties::reflectionMap
-    Specifies the spherical environment map to use. It is expected to be in sRGB color space.
-*/
-/*!
-    \property IroGlassAddProperties::reflectionMap
-    Specifies the spherical environment map to use. It is expected to be in sRGB color space.
-*/
-Qt3DRender::QAbstractTexture * IroGlassAddProperties::reflectionMap() const
-{
-    return m_shaderData->reflectionMap();
 }
 
 /*!
@@ -336,6 +336,11 @@ QVector3D IroGlassAddProperties::diffuseInnerFilter() const
 QVector3D IroGlassAddProperties::diffuseOuterFilter() const
 {
     return m_shaderData->diffuseOuterFilter();
+}
+
+Qt3DRender::QAbstractTexture * IroGlassAddProperties::reflectionMap() const
+{
+    return m_reflectionMap;
 }
 
 

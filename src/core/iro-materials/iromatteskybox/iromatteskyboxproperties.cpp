@@ -29,6 +29,7 @@
 
 #include "iromatteskyboxproperties.h"
 #include "iromatteskyboxshaderdata_p.h"
+#include <Qt3DCore/private/qnode_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -60,10 +61,10 @@ namespace Kuesa {
 IroMatteSkyboxProperties::IroMatteSkyboxProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_shaderData(new IroMatteSkyboxShaderData(this))
+    , m_matteMap(nullptr)
 {
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::postVertexColorChanged, this, &IroMatteSkyboxProperties::postVertexColorChanged);
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::postGainChanged, this, &IroMatteSkyboxProperties::postGainChanged);
-    QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::matteMapChanged, this, &IroMatteSkyboxProperties::matteMapChanged);
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::usesMatteMapChanged, this, &IroMatteSkyboxProperties::usesMatteMapChanged);
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::matteFilterChanged, this, &IroMatteSkyboxProperties::matteFilterChanged);
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::matteGainChanged, this, &IroMatteSkyboxProperties::matteGainChanged);
@@ -88,11 +89,6 @@ void IroMatteSkyboxProperties::setPostGain(float postGain)
     m_shaderData->setPostGain(postGain);
 }
 
-void IroMatteSkyboxProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
-{
-    m_shaderData->setMatteMap(matteMap);
-}
-
 void IroMatteSkyboxProperties::setUsesMatteMap(bool usesMatteMap)
 {
     m_shaderData->setUsesMatteMap(usesMatteMap);
@@ -111,6 +107,23 @@ void IroMatteSkyboxProperties::setMatteGain(float matteGain)
 void IroMatteSkyboxProperties::setUvOffset(const QVector2D &uvOffset)
 {
     m_shaderData->setUvOffset(uvOffset);
+}
+
+void IroMatteSkyboxProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
+{
+    if (m_matteMap == matteMap)
+        return;
+
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_matteMap != nullptr)
+        d->unregisterDestructionHelper(m_matteMap);
+    m_matteMap = matteMap;
+    if (m_matteMap != nullptr) {
+        if (m_matteMap->parent() == nullptr)
+            m_matteMap->setParent(this);
+        d->registerDestructionHelper(m_matteMap, &IroMatteSkyboxProperties::setMatteMap, m_matteMap);
+    }
+    emit matteMapChanged(m_matteMap);
 }
 
 
@@ -138,19 +151,6 @@ float IroMatteSkyboxProperties::postVertexColor() const
 float IroMatteSkyboxProperties::postGain() const
 {
     return m_shaderData->postGain();
-}
-
-/*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroMatteSkyboxProperties::matteMap
-    Specifies the matte map to use. It is expected to be in sRGB color space.
-*/
-/*!
-    \property IroMatteSkyboxProperties::matteMap
-    Specifies the matte map to use. It is expected to be in sRGB color space.
-*/
-Qt3DRender::QAbstractTexture * IroMatteSkyboxProperties::matteMap() const
-{
-    return m_shaderData->matteMap();
 }
 
 /*!
@@ -203,6 +203,11 @@ float IroMatteSkyboxProperties::matteGain() const
 QVector2D IroMatteSkyboxProperties::uvOffset() const
 {
     return m_shaderData->uvOffset();
+}
+
+Qt3DRender::QAbstractTexture * IroMatteSkyboxProperties::matteMap() const
+{
+    return m_matteMap;
 }
 
 

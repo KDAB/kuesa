@@ -168,13 +168,14 @@ Q_SIGNALS:
 %s
 private:
     %sShaderData *m_shaderData;
+%s
 };"""
 
     propertiesClassCppContent = """
 %s
 %sProperties::%sProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
-    , m_shaderData(new %sShaderData(this))
+    , m_shaderData(new %sShaderData(this))%s
 {
 %s
 }
@@ -1254,16 +1255,17 @@ Q_SIGNALS:
 private:
     %sProperties *m_materialProperties = nullptr;
     Qt3DRender::QParameter *m_shaderDataParameter;
+%s
 };
 """
 
     materialClassCppContent = """
 %s
 %sMaterial::%sMaterial(Qt3DCore::QNode *parent)
-    : GLTF2Material(parent),
-    m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral(\"properties\"), {}))
+    : GLTF2Material(parent)
+    , m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral(\"properties\"), {}))%s
 {
-    addParameter(m_shaderDataParameter);
+    addParameter(m_shaderDataParameter);%s
 }
 
 %sMaterial::~%sMaterial() = default;
@@ -1292,10 +1294,15 @@ Kuesa::%sProperties *%sMaterial::materialProperties() const
 void %sMaterial::setMaterialProperties(Kuesa::%sProperties *materialProperties)
 {
     if (m_materialProperties != materialProperties) {
+        if (m_materialProperties)
+            m_materialProperties->disconnect(this);
+
         m_materialProperties = materialProperties;
         emit materialPropertiesChanged(materialProperties);
 
-        if (m_materialProperties) {
+        if (m_materialProperties) {%s
+            %s
+
             m_shaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));
             m_materialProperties->addClientMaterial(this);
         }
@@ -1364,30 +1371,27 @@ HEADERS += \\
         except IOError as e:
             print("Couldn't open file (%s)." % e)
 
-    def propertySetters(self, properties, declarationOnly = True, className = ""):
-        content = ""
-
+    def propertySetter(self, prop, declarationOnly = True, className = ""):
         doNotConvertToRefTypes = ["float", "int", "bool", "texture2d"]
-
-        for prop in properties:
-            rawPropType = prop.get("type", "")
-            propType = CustomMaterialGenerator.propertyTypesToQtType[rawPropType]
-            paramType = ("%s " if rawPropType in doNotConvertToRefTypes else "const %s &") % (propType)
-            propName = prop.get("name", "")
-            if declarationOnly:
-                content += " " * 4 + "void set%s(%s%s);\n" % (propName[0].upper() + propName[1:],
-                                                              paramType,
-                                                              propName)
-            else:
-                setterName = "%s::set%s" % (className, propName[0].upper() + propName[1:])
-                contentStr = "void %s(%s%s)\n{\n    if (m_%s == %s)\n        return;\n"
-                content += contentStr % (setterName,
-                                         paramType,
-                                         propName,
-                                         propName,
-                                         propName)
-                if rawPropType.startswith("texture"):
-                    contentStr = """
+        content = ""
+        rawPropType = prop.get("type", "")
+        propType = CustomMaterialGenerator.propertyTypesToQtType[rawPropType]
+        paramType = ("%s " if rawPropType in doNotConvertToRefTypes else "const %s &") % (propType)
+        propName = prop.get("name", "")
+        if declarationOnly:
+            content += " " * 4 + "void set%s(%s%s);\n" % (propName[0].upper() + propName[1:],
+                                                          paramType,
+                                                          propName)
+        else:
+            setterName = "%s::set%s" % (className, propName[0].upper() + propName[1:])
+            contentStr = "void %s(%s%s)\n{\n    if (m_%s == %s)\n        return;\n"
+            content += contentStr % (setterName,
+                                        paramType,
+                                        propName,
+                                        propName,
+                                        propName)
+            if rawPropType.startswith("texture"):
+                contentStr = """
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
     if (m_%s != nullptr)
         d->unregisterDestructionHelper(m_%s);
@@ -1401,22 +1405,29 @@ HEADERS += \\
 }
 
 """
-                    content += contentStr % (propName,
-                                             propName,
-                                             propName,
-                                             propName,
-                                             propName,
-                                             propName,
-                                             propName,
-                                             propName,
-                                             setterName,
-                                             propName,
-                                             propName,
-                                             propName)
+                content += contentStr % (propName,
+                                            propName,
+                                            propName,
+                                            propName,
+                                            propName,
+                                            propName,
+                                            propName,
+                                            propName,
+                                            setterName,
+                                            propName,
+                                            propName,
+                                            propName)
 
-                else:
-                    contentStr = " " * 4 + "m_%s = %s;\n    emit %sChanged(%s);\n}\n\n"
-                    content += contentStr % (propName, propName, propName, propName)
+            else:
+                contentStr = " " * 4 + "m_%s = %s;\n    emit %sChanged(%s);\n}\n\n"
+                content += contentStr % (propName, propName, propName, propName)
+        return content
+
+    def propertySetters(self, properties, declarationOnly = True, className = ""):
+        content = ""
+
+        for prop in properties:
+            content += self.propertySetter(prop, declarationOnly, className)
         return content
 
     def propertySettersShaderDataForwarding(self, properties, className = ""):
@@ -1431,30 +1442,36 @@ HEADERS += \\
                 propName = prop.get("name", "")
                 setterSig = "set%s" % (propName[0].upper() + propName[1:])
                 content += "void %s::%s(%s%s)\n{\n    m_shaderData->%s(%s);\n}\n\n" % (className,
-                                                                                       setterSig,
-                                                                                       paramType,
-                                                                                       propName,
-                                                                                       setterSig,
-                                                                                       propName)
+                                                                                    setterSig,
+                                                                                    paramType,
+                                                                                    propName,
+                                                                                    setterSig,
+                                                                                    propName)
             return content
+
+    def propertyGetter(self, prop, declarationOnly = True, className = ""):
+        content = ""
+        propName = prop.get("name", "")
+        propType = CustomMaterialGenerator.propertyTypesToQtType.get(prop.get("type", ""), "")
+        if declarationOnly:
+            content += " " * 4 + "%s %s() const;\n" % (propType, propName)
+        else:
+            contentStr = "%s %s::%s() const\n{\n    return m_%s;\n}\n\n"
+            content += contentStr % (propType, className, propName, propName)
+        return content
 
     def propertyGetters(self, properties, declarationOnly = True, className = ""):
         content = ""
         for prop in properties:
-            propName = prop.get("name", "")
-            propType = CustomMaterialGenerator.propertyTypesToQtType.get(prop.get("type", ""), "")
-            if declarationOnly:
-                content += " " * 4 + "%s %s() const;\n" % (propType, propName)
-            else:
-                contentStr = "%s %s::%s() const\n{\n    return m_%s;\n}\n\n"
-                content += contentStr % (propType, className, propName, propName)
+            content += self.propertyGetter(prop, declarationOnly, className)
         return content
 
     def propertyGettersShaderDataForwarding(self, properties, className):
         content = ""
         for prop in properties:
             propName = prop.get("name", "")
-            propType = CustomMaterialGenerator.propertyTypesToQtType.get(prop.get("type", ""), "")
+            rawPropType = prop.get("type", "")
+            propType = CustomMaterialGenerator.propertyTypesToQtType.get(rawPropType, "")
             doc = prop.get("doc", "")
             qmlDocStr = "/*!\n    \\qmlproperty %s %s::%s\n    %s\n*/\n" % (propType,
                                                                             className,
@@ -1463,13 +1480,19 @@ HEADERS += \\
             cppDocStr = "/*!\n    \\property %s::%s\n    %s\n*/\n" % (className,
                                                                       propName,
                                                                       doc)
-            contentStr = "%s%s%s %s::%s() const\n{\n    return m_shaderData->%s();\n}\n\n"
-            content += contentStr % (qmlDocStr,
-                                     cppDocStr,
-                                     propType,
-                                     className,
-                                     propName,
-                                     propName)
+
+            # We don't forward texture properties to the shader data
+            # as UBO can't have sampler based members
+            if rawPropType.startswith("texture"):
+                content += self.propertyGetter(prop, False, className)
+            else:
+                contentStr = "%s%s%s %s::%s() const\n{\n    return m_shaderData->%s();\n}\n\n"
+                content += contentStr % (qmlDocStr,
+                                        cppDocStr,
+                                        propType,
+                                        className,
+                                        propName,
+                                        propName)
         return content
 
 
@@ -1582,6 +1605,9 @@ HEADERS += \\
         matName = self.rawJson.get("type", "")
         className = matName + "ShaderData"
 
+        # Remove texture from props as ShaderData should only contain the scalar properties
+        props = [p for p in props if not p.get("type", "").startswith("texture")]
+
         def generateHeader():
             setters = self.propertySetters(props, True)
             getters = self.propertyGetters(props, True)
@@ -1609,7 +1635,6 @@ HEADERS += \\
             setters = self.propertySetters(props, False, className)
             getters = self.propertyGetters(props, False, className)
             includes = "#include \"%s\"\n" % (className.lower() + "_p.h")
-            includes += "#include <Qt3DCore/private/qnode_p.h>\n"
             content = CustomMaterialGenerator.shaderDataClassCppContent % (matName,
                                                                            matName,
                                                                            initializations,
@@ -1627,11 +1652,15 @@ HEADERS += \\
         matName = self.rawJson.get("type", "")
         className = matName + "Properties"
 
+        # Texture props are not stored in the shaderData
+        texture_props = [p for p in props if p.get("type", "").startswith("texture")]
+
         def generateHeader():
             setters = self.propertySetters(props, True)
             getters = self.propertyGetters(props, True)
             signals = self.propertySignals(props)
             propDeclarations = self.propertyDeclarations(props)
+            texture_members = self.propertyMembers(texture_props)
             content = CustomMaterialGenerator.propertiesClassHeaderContent % (matName,
                                                                               matName,
                                                                               propDeclarations,
@@ -1640,7 +1669,8 @@ HEADERS += \\
                                                                               getters,
                                                                               setters,
                                                                               signals,
-                                                                              matName)
+                                                                              matName,
+                                                                              texture_members)
             includes = self.includesForProperties(props)
             includes += "#include <Kuesa/GLTF2MaterialProperties>\n"
             includes += "#include <Kuesa/kuesa_global.h>\n"
@@ -1652,12 +1682,19 @@ HEADERS += \\
         generateHeader()
 
         def generateCpp():
-            setters = self.propertySettersShaderDataForwarding(props, className)
-            getters = self.propertyGettersShaderDataForwarding(props, className)
+            # We don't forward texture properties to the shader data
+            # as UBO can't have sampler based members
+
+            texture_props = [p for p in props if p.get("type", "").startswith("texture")]
+            shaderdata_props = [p for p in props if not p.get("type", "").startswith("texture")]
+
+            setters = self.propertySettersShaderDataForwarding(shaderdata_props, className) + self.propertySetters(texture_props, False, className)
+            getters = self.propertyGettersShaderDataForwarding(shaderdata_props, className) + self.propertyGetters(texture_props, False, className)
+            initializations = self.memberInitializations(texture_props)
 
             connectionStatements = ""
             connectionStatementsStr = "    QObject::connect(m_shaderData, &%sShaderData::%sChanged, this, &%sProperties::%sChanged);\n"
-            for p in props:
+            for p in shaderdata_props:
                 propName = p.get("name", "")
                 connectionStatements += connectionStatementsStr % (matName,
                                                                    propName,
@@ -1672,6 +1709,7 @@ HEADERS += \\
                                                                            matName,
                                                                            matName,
                                                                            matName,
+                                                                           initializations,
                                                                            connectionStatements,
                                                                            matName,
                                                                            matName,
@@ -1680,6 +1718,7 @@ HEADERS += \\
                                                                            getters)
             includes = "#include \"%sproperties.h\"\n" % (matName.lower())
             includes += "#include \"%sshaderdata_p.h\"\n" % (matName.lower())
+            includes += "#include <Qt3DCore/private/qnode_p.h>\n"
 
             self.generateCppFile(content,
                                  className,
@@ -2031,8 +2070,52 @@ HEADERS += \\
     def generateMaterial(self):
         matName = self.rawJson.get("type", "")
         className = matName + "Material"
+        props = self.rawJson.get("properties", [])
+        texture_props = [p for p in props if p.get("type", "").startswith("texture")]
+
+        def generateTextureParameters(properties):
+            content = ""
+            param_str = 4 * ' ' + "Qt3DRender::QParameter *m_%sParameter;\n"
+            for p in properties:
+                content += param_str % p.get("name", "")
+            return content
+
+        def generateInitializeParameters(properties):
+            content = ""
+            param_str = '\n' + 4 * ' ' + ", m_%sParameter(new Qt3DRender::QParameter(QStringLiteral(\"%s\"), {}))"
+            for p in properties:
+                name =  p.get("name", "")
+                content += param_str % (name, name)
+            return content
+
+        def generateAddParameters(properties):
+            content = ""
+            param_str = '\n' + 4 * ' ' + "addParameter(m_%sParameter);"
+            for p in properties:
+                content += param_str % p.get("name", "")
+            return content
+
+        def generateParametersConnection(properties, propertiesClassName):
+            content = ""
+            connect_str = '\n' + 12 * ' ' + "QObject::connect(m_materialProperties, &%s::%sChanged, this, [this] (%s t) { m_%sParameter->setValue(QVariant::fromValue(t)); });"
+            for p in properties:
+                name =  p.get("name", "")
+                propType = CustomMaterialGenerator.propertyTypesToQtType.get(p.get("type", ""), "")
+                content += connect_str % (propertiesClassName, name, propType, name)
+            return content
+
+        def generateParameterSetValues(properties):
+            content = ""
+            set_str = '\n' + 12 * ' ' + "m_%sParameter->setValue(QVariant::fromValue(m_materialProperties->%s()));"
+            for p in properties:
+                name =  p.get("name", "")
+                content += set_str % (name, name)
+            return content
+
 
         def generateHeader():
+            texture_parameters = generateTextureParameters(texture_props)
+
             content = CustomMaterialGenerator.materialClassHeaderContent % (matName,
                                                                             matName,
                                                                             matName,
@@ -2040,7 +2123,8 @@ HEADERS += \\
                                                                             matName,
                                                                             matName,
                                                                             matName,
-                                                                            matName)
+                                                                            matName,
+                                                                            texture_parameters)
             self.generateHeaderFile(content,
                                     className,
                                     "#include <Kuesa/GLTF2Material>\n#include <Kuesa/kuesa_global.h>\n#include <Kuesa/%sProperties>\n" % matName)
@@ -2049,9 +2133,15 @@ HEADERS += \\
         def generateCpp():
             matName = self.rawJson.get("type", "")
             doc = self.docForClass(className, "Kuesa::GLTF2Material", self.rawJson.get("doc", ""))
+            parameters_init = generateInitializeParameters(texture_props)
+            add_parameters = generateAddParameters(texture_props)
+            param_connections = generateParametersConnection(texture_props, matName + "Properties")
+            param_setValues = generateParameterSetValues(texture_props)
             content = CustomMaterialGenerator.materialClassCppContent % (doc,
                                                                          matName,
                                                                          matName,
+                                                                         parameters_init,
+                                                                         add_parameters,
                                                                          matName,
                                                                          matName,
                                                                          matName,
@@ -2061,6 +2151,8 @@ HEADERS += \\
                                                                          matName,
                                                                          matName,
                                                                          matName,
+                                                                         param_connections,
+                                                                         param_setValues,
                                                                          matName,
                                                                          matName)
             includes = "#include \"%smaterial.h\"\n" % (matName.lower())

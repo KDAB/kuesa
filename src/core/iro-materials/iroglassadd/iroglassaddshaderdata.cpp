@@ -28,7 +28,6 @@
 */
 
 #include "iroglassaddshaderdata_p.h"
-#include <Qt3DCore/private/qnode_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -44,7 +43,6 @@ IroGlassAddShaderData::IroGlassAddShaderData(Qt3DCore::QNode *parent)
     , m_postVertexColor()
     , m_postGain()
     , m_reflectionGain()
-    , m_reflectionMap(nullptr)
     , m_reflectionInnerFilter()
     , m_reflectionOuterFilter()
     , m_usesReflectionMap()
@@ -80,11 +78,6 @@ float IroGlassAddShaderData::postGain() const
 float IroGlassAddShaderData::reflectionGain() const
 {
     return m_reflectionGain;
-}
-
-Qt3DRender::QAbstractTexture * IroGlassAddShaderData::reflectionMap() const
-{
-    return m_reflectionMap;
 }
 
 QVector3D IroGlassAddShaderData::reflectionInnerFilter() const
@@ -166,23 +159,6 @@ void IroGlassAddShaderData::setReflectionGain(float reflectionGain)
         return;
     m_reflectionGain = reflectionGain;
     emit reflectionGainChanged(reflectionGain);
-}
-
-void IroGlassAddShaderData::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
-{
-    if (m_reflectionMap == reflectionMap)
-        return;
-
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    if (m_reflectionMap != nullptr)
-        d->unregisterDestructionHelper(m_reflectionMap);
-    m_reflectionMap = reflectionMap;
-    if (m_reflectionMap != nullptr) {
-        if (m_reflectionMap->parent() == nullptr)
-            m_reflectionMap->setParent(this);
-        d->registerDestructionHelper(m_reflectionMap, &IroGlassAddShaderData::setReflectionMap, m_reflectionMap);
-    }
-    emit reflectionMapChanged(m_reflectionMap);
 }
 
 void IroGlassAddShaderData::setReflectionInnerFilter(const QVector3D &reflectionInnerFilter)

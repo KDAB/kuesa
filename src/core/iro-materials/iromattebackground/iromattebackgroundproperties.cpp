@@ -29,6 +29,7 @@
 
 #include "iromattebackgroundproperties.h"
 #include "iromattebackgroundshaderdata_p.h"
+#include <Qt3DCore/private/qnode_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -60,10 +61,10 @@ namespace Kuesa {
 IroMatteBackgroundProperties::IroMatteBackgroundProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_shaderData(new IroMatteBackgroundShaderData(this))
+    , m_matteMap(nullptr)
 {
     QObject::connect(m_shaderData, &IroMatteBackgroundShaderData::postVertexColorChanged, this, &IroMatteBackgroundProperties::postVertexColorChanged);
     QObject::connect(m_shaderData, &IroMatteBackgroundShaderData::postGainChanged, this, &IroMatteBackgroundProperties::postGainChanged);
-    QObject::connect(m_shaderData, &IroMatteBackgroundShaderData::matteMapChanged, this, &IroMatteBackgroundProperties::matteMapChanged);
     QObject::connect(m_shaderData, &IroMatteBackgroundShaderData::usesMatteMapChanged, this, &IroMatteBackgroundProperties::usesMatteMapChanged);
     QObject::connect(m_shaderData, &IroMatteBackgroundShaderData::matteFilterChanged, this, &IroMatteBackgroundProperties::matteFilterChanged);
     QObject::connect(m_shaderData, &IroMatteBackgroundShaderData::matteGainChanged, this, &IroMatteBackgroundProperties::matteGainChanged);
@@ -88,11 +89,6 @@ void IroMatteBackgroundProperties::setPostGain(float postGain)
     m_shaderData->setPostGain(postGain);
 }
 
-void IroMatteBackgroundProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
-{
-    m_shaderData->setMatteMap(matteMap);
-}
-
 void IroMatteBackgroundProperties::setUsesMatteMap(bool usesMatteMap)
 {
     m_shaderData->setUsesMatteMap(usesMatteMap);
@@ -111,6 +107,23 @@ void IroMatteBackgroundProperties::setMatteGain(float matteGain)
 void IroMatteBackgroundProperties::setUvOffset(const QVector2D &uvOffset)
 {
     m_shaderData->setUvOffset(uvOffset);
+}
+
+void IroMatteBackgroundProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
+{
+    if (m_matteMap == matteMap)
+        return;
+
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_matteMap != nullptr)
+        d->unregisterDestructionHelper(m_matteMap);
+    m_matteMap = matteMap;
+    if (m_matteMap != nullptr) {
+        if (m_matteMap->parent() == nullptr)
+            m_matteMap->setParent(this);
+        d->registerDestructionHelper(m_matteMap, &IroMatteBackgroundProperties::setMatteMap, m_matteMap);
+    }
+    emit matteMapChanged(m_matteMap);
 }
 
 
@@ -138,19 +151,6 @@ float IroMatteBackgroundProperties::postVertexColor() const
 float IroMatteBackgroundProperties::postGain() const
 {
     return m_shaderData->postGain();
-}
-
-/*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroMatteBackgroundProperties::matteMap
-    Specifies the matte map to use. It is expected to be in sRGB color space.
-*/
-/*!
-    \property IroMatteBackgroundProperties::matteMap
-    Specifies the matte map to use. It is expected to be in sRGB color space.
-*/
-Qt3DRender::QAbstractTexture * IroMatteBackgroundProperties::matteMap() const
-{
-    return m_shaderData->matteMap();
 }
 
 /*!
@@ -203,6 +203,11 @@ float IroMatteBackgroundProperties::matteGain() const
 QVector2D IroMatteBackgroundProperties::uvOffset() const
 {
     return m_shaderData->uvOffset();
+}
+
+Qt3DRender::QAbstractTexture * IroMatteBackgroundProperties::matteMap() const
+{
+    return m_matteMap;
 }
 
 

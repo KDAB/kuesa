@@ -111,6 +111,8 @@ Q_SIGNALS:
 
 private:
     IroDiffuseAlphaShaderData *m_shaderData;
+    Qt3DRender::QAbstractTexture * m_reflectionMap;
+
 };
 } // namespace Kuesa
 

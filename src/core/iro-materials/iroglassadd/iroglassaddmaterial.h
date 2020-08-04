@@ -62,6 +62,8 @@ Q_SIGNALS:
 private:
     IroGlassAddProperties *m_materialProperties = nullptr;
     Qt3DRender::QParameter *m_shaderDataParameter;
+    Qt3DRender::QParameter *m_reflectionMapParameter;
+
 };
 
 } // namespace Kuesa

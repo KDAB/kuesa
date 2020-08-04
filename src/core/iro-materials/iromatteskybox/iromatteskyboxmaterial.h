@@ -62,6 +62,8 @@ Q_SIGNALS:
 private:
     IroMatteSkyboxProperties *m_materialProperties = nullptr;
     Qt3DRender::QParameter *m_shaderDataParameter;
+    Qt3DRender::QParameter *m_matteMapParameter;
+
 };
 
 } // namespace Kuesa

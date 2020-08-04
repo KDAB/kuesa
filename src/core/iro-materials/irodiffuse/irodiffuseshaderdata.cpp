@@ -28,7 +28,6 @@
 */
 
 #include "irodiffuseshaderdata_p.h"
-#include <Qt3DCore/private/qnode_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -44,14 +43,12 @@ IroDiffuseShaderData::IroDiffuseShaderData(Qt3DCore::QNode *parent)
     , m_postVertexColor()
     , m_postGain()
     , m_reflectionGain()
-    , m_reflectionMap(nullptr)
     , m_reflectionInnerFilter()
     , m_reflectionOuterFilter()
     , m_usesReflectionMap()
     , m_projectReflectionMap()
     , m_diffuseInnerFilter()
     , m_diffuseOuterFilter()
-    , m_diffuseMap(nullptr)
     , m_diffuseGain()
     , m_usesDiffuseMap()
 {}
@@ -83,11 +80,6 @@ float IroDiffuseShaderData::reflectionGain() const
     return m_reflectionGain;
 }
 
-Qt3DRender::QAbstractTexture * IroDiffuseShaderData::reflectionMap() const
-{
-    return m_reflectionMap;
-}
-
 QVector3D IroDiffuseShaderData::reflectionInnerFilter() const
 {
     return m_reflectionInnerFilter;
@@ -116,11 +108,6 @@ QVector3D IroDiffuseShaderData::diffuseInnerFilter() const
 QVector3D IroDiffuseShaderData::diffuseOuterFilter() const
 {
     return m_diffuseOuterFilter;
-}
-
-Qt3DRender::QAbstractTexture * IroDiffuseShaderData::diffuseMap() const
-{
-    return m_diffuseMap;
 }
 
 float IroDiffuseShaderData::diffuseGain() const
@@ -174,23 +161,6 @@ void IroDiffuseShaderData::setReflectionGain(float reflectionGain)
     emit reflectionGainChanged(reflectionGain);
 }
 
-void IroDiffuseShaderData::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
-{
-    if (m_reflectionMap == reflectionMap)
-        return;
-
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    if (m_reflectionMap != nullptr)
-        d->unregisterDestructionHelper(m_reflectionMap);
-    m_reflectionMap = reflectionMap;
-    if (m_reflectionMap != nullptr) {
-        if (m_reflectionMap->parent() == nullptr)
-            m_reflectionMap->setParent(this);
-        d->registerDestructionHelper(m_reflectionMap, &IroDiffuseShaderData::setReflectionMap, m_reflectionMap);
-    }
-    emit reflectionMapChanged(m_reflectionMap);
-}
-
 void IroDiffuseShaderData::setReflectionInnerFilter(const QVector3D &reflectionInnerFilter)
 {
     if (m_reflectionInnerFilter == reflectionInnerFilter)
@@ -237,23 +207,6 @@ void IroDiffuseShaderData::setDiffuseOuterFilter(const QVector3D &diffuseOuterFi
         return;
     m_diffuseOuterFilter = diffuseOuterFilter;
     emit diffuseOuterFilterChanged(diffuseOuterFilter);
-}
-
-void IroDiffuseShaderData::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
-{
-    if (m_diffuseMap == diffuseMap)
-        return;
-
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    if (m_diffuseMap != nullptr)
-        d->unregisterDestructionHelper(m_diffuseMap);
-    m_diffuseMap = diffuseMap;
-    if (m_diffuseMap != nullptr) {
-        if (m_diffuseMap->parent() == nullptr)
-            m_diffuseMap->setParent(this);
-        d->registerDestructionHelper(m_diffuseMap, &IroDiffuseShaderData::setDiffuseMap, m_diffuseMap);
-    }
-    emit diffuseMapChanged(m_diffuseMap);
 }
 
 void IroDiffuseShaderData::setDiffuseGain(float diffuseGain)

@@ -29,6 +29,7 @@
 
 #include "irodiffuseproperties.h"
 #include "irodiffuseshaderdata_p.h"
+#include <Qt3DCore/private/qnode_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -60,20 +61,20 @@ namespace Kuesa {
 IroDiffuseProperties::IroDiffuseProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_shaderData(new IroDiffuseShaderData(this))
+    , m_reflectionMap(nullptr)
+    , m_diffuseMap(nullptr)
 {
     QObject::connect(m_shaderData, &IroDiffuseShaderData::normalScalingChanged, this, &IroDiffuseProperties::normalScalingChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::normalDisturbChanged, this, &IroDiffuseProperties::normalDisturbChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::postVertexColorChanged, this, &IroDiffuseProperties::postVertexColorChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::postGainChanged, this, &IroDiffuseProperties::postGainChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::reflectionGainChanged, this, &IroDiffuseProperties::reflectionGainChanged);
-    QObject::connect(m_shaderData, &IroDiffuseShaderData::reflectionMapChanged, this, &IroDiffuseProperties::reflectionMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::reflectionInnerFilterChanged, this, &IroDiffuseProperties::reflectionInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::reflectionOuterFilterChanged, this, &IroDiffuseProperties::reflectionOuterFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::usesReflectionMapChanged, this, &IroDiffuseProperties::usesReflectionMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::projectReflectionMapChanged, this, &IroDiffuseProperties::projectReflectionMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseInnerFilterChanged, this, &IroDiffuseProperties::diffuseInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseOuterFilterChanged, this, &IroDiffuseProperties::diffuseOuterFilterChanged);
-    QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseMapChanged, this, &IroDiffuseProperties::diffuseMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseGainChanged, this, &IroDiffuseProperties::diffuseGainChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::usesDiffuseMapChanged, this, &IroDiffuseProperties::usesDiffuseMapChanged);
 
@@ -111,11 +112,6 @@ void IroDiffuseProperties::setReflectionGain(float reflectionGain)
     m_shaderData->setReflectionGain(reflectionGain);
 }
 
-void IroDiffuseProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
-{
-    m_shaderData->setReflectionMap(reflectionMap);
-}
-
 void IroDiffuseProperties::setReflectionInnerFilter(const QVector3D &reflectionInnerFilter)
 {
     m_shaderData->setReflectionInnerFilter(reflectionInnerFilter);
@@ -146,11 +142,6 @@ void IroDiffuseProperties::setDiffuseOuterFilter(const QVector3D &diffuseOuterFi
     m_shaderData->setDiffuseOuterFilter(diffuseOuterFilter);
 }
 
-void IroDiffuseProperties::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
-{
-    m_shaderData->setDiffuseMap(diffuseMap);
-}
-
 void IroDiffuseProperties::setDiffuseGain(float diffuseGain)
 {
     m_shaderData->setDiffuseGain(diffuseGain);
@@ -159,6 +150,40 @@ void IroDiffuseProperties::setDiffuseGain(float diffuseGain)
 void IroDiffuseProperties::setUsesDiffuseMap(bool usesDiffuseMap)
 {
     m_shaderData->setUsesDiffuseMap(usesDiffuseMap);
+}
+
+void IroDiffuseProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
+{
+    if (m_reflectionMap == reflectionMap)
+        return;
+
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_reflectionMap != nullptr)
+        d->unregisterDestructionHelper(m_reflectionMap);
+    m_reflectionMap = reflectionMap;
+    if (m_reflectionMap != nullptr) {
+        if (m_reflectionMap->parent() == nullptr)
+            m_reflectionMap->setParent(this);
+        d->registerDestructionHelper(m_reflectionMap, &IroDiffuseProperties::setReflectionMap, m_reflectionMap);
+    }
+    emit reflectionMapChanged(m_reflectionMap);
+}
+
+void IroDiffuseProperties::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
+{
+    if (m_diffuseMap == diffuseMap)
+        return;
+
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_diffuseMap != nullptr)
+        d->unregisterDestructionHelper(m_diffuseMap);
+    m_diffuseMap = diffuseMap;
+    if (m_diffuseMap != nullptr) {
+        if (m_diffuseMap->parent() == nullptr)
+            m_diffuseMap->setParent(this);
+        d->registerDestructionHelper(m_diffuseMap, &IroDiffuseProperties::setDiffuseMap, m_diffuseMap);
+    }
+    emit diffuseMapChanged(m_diffuseMap);
 }
 
 
@@ -225,19 +250,6 @@ float IroDiffuseProperties::postGain() const
 float IroDiffuseProperties::reflectionGain() const
 {
     return m_shaderData->reflectionGain();
-}
-
-/*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroDiffuseProperties::reflectionMap
-    Specifies the spherical environment map to use. It is expected to be in sRGB color space.
-*/
-/*!
-    \property IroDiffuseProperties::reflectionMap
-    Specifies the spherical environment map to use. It is expected to be in sRGB color space.
-*/
-Qt3DRender::QAbstractTexture * IroDiffuseProperties::reflectionMap() const
-{
-    return m_shaderData->reflectionMap();
 }
 
 /*!
@@ -319,19 +331,6 @@ QVector3D IroDiffuseProperties::diffuseOuterFilter() const
 }
 
 /*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroDiffuseProperties::diffuseMap
-    Specifies the diffuse map to use. It is expected to be in sRGB color space.
-*/
-/*!
-    \property IroDiffuseProperties::diffuseMap
-    Specifies the diffuse map to use. It is expected to be in sRGB color space.
-*/
-Qt3DRender::QAbstractTexture * IroDiffuseProperties::diffuseMap() const
-{
-    return m_shaderData->diffuseMap();
-}
-
-/*!
     \qmlproperty float IroDiffuseProperties::diffuseGain
     Specifies the gain to apply to the diffuse color.
 */
@@ -355,6 +354,16 @@ float IroDiffuseProperties::diffuseGain() const
 bool IroDiffuseProperties::usesDiffuseMap() const
 {
     return m_shaderData->usesDiffuseMap();
+}
+
+Qt3DRender::QAbstractTexture * IroDiffuseProperties::reflectionMap() const
+{
+    return m_reflectionMap;
+}
+
+Qt3DRender::QAbstractTexture * IroDiffuseProperties::diffuseMap() const
+{
+    return m_diffuseMap;
 }
 
 

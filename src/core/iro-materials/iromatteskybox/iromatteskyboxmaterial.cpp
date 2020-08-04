@@ -60,10 +60,12 @@ namespace Kuesa {
 */
 
 IroMatteSkyboxMaterial::IroMatteSkyboxMaterial(Qt3DCore::QNode *parent)
-    : GLTF2Material(parent),
-    m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("properties"), {}))
+    : GLTF2Material(parent)
+    , m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("properties"), {}))
+    , m_matteMapParameter(new Qt3DRender::QParameter(QStringLiteral("matteMap"), {}))
 {
     addParameter(m_shaderDataParameter);
+    addParameter(m_matteMapParameter);
 }
 
 IroMatteSkyboxMaterial::~IroMatteSkyboxMaterial() = default;
@@ -92,10 +94,17 @@ Kuesa::IroMatteSkyboxProperties *IroMatteSkyboxMaterial::materialProperties() co
 void IroMatteSkyboxMaterial::setMaterialProperties(Kuesa::IroMatteSkyboxProperties *materialProperties)
 {
     if (m_materialProperties != materialProperties) {
+        if (m_materialProperties)
+            m_materialProperties->disconnect(this);
+
         m_materialProperties = materialProperties;
         emit materialPropertiesChanged(materialProperties);
 
         if (m_materialProperties) {
+            QObject::connect(m_materialProperties, &IroMatteSkyboxProperties::matteMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_matteMapParameter->setValue(QVariant::fromValue(t)); });
+            
+            m_matteMapParameter->setValue(QVariant::fromValue(m_materialProperties->matteMap()));
+
             m_shaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));
             m_materialProperties->addClientMaterial(this);
         }
