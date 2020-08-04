@@ -38,6 +38,11 @@
                     "graph": "qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"
                 },
                 {
+                    "format": { "api": "RHI", "major": 1, "minor": 0 },
+                    "type": "Vertex",
+                    "graph": "qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"
+                },
+                {
                     "format": { "api": "OpenGLES", "major": 2, "minor": 0 },
                     "type": "Fragment",
                     "graph": "qrc:/kuesa/shaders/graphs/iromattealpha.frag.json"
@@ -49,6 +54,11 @@
                 },
                 {
                     "format": { "api": "OpenGL", "major": 3, "minor": 2 },
+                    "type": "Fragment",
+                    "graph": "qrc:/kuesa/shaders/graphs/iromattealpha.frag.json"
+                },
+                {
+                    "format": { "api": "RHI", "major": 1, "minor": 0 },
                     "type": "Fragment",
                     "graph": "qrc:/kuesa/shaders/graphs/iromattealpha.frag.json"
                 }

@@ -234,6 +234,9 @@ private:
     %sTechnique *m_gl3Technique;
     %sTechnique *m_es3Technique;
     %sTechnique *m_es2Technique;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    %sTechnique *m_rhiTechnique;
+#endif
 
     void updateDoubleSided(bool doubleSided) override;
     void updateSkinning(bool useSkinning) override;
@@ -248,7 +251,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -276,6 +280,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -286,10 +293,12 @@ public:
         const QUrl vertexShaderGraph[] = {
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
         };
 
         const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
@@ -307,10 +316,15 @@ public:
             QByteArray(R"(
                        #version 100
                        void main() { }
-                       )")
+                       )"),
+            QByteArray(R"(
+                       #version 450
+                       void main() { }
+                       )"),
         };
 
         const QByteArray renderableVertexShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -319,10 +333,12 @@ public:
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
          const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -452,7 +468,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -477,6 +494,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -487,10 +507,12 @@ public:
         const QUrl vertexShaderGraph[] = {
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
         };
 
         const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
@@ -508,10 +530,15 @@ public:
             QByteArray(R"(
                        #version 100
                        void main() { }
+                       )"),
+            QByteArray(R"(
+                       #version 450
+                       void main() { }
                        )")
         };
 
         const QByteArray renderableVertexShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -520,10 +547,12 @@ public:
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
          const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -629,7 +658,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -653,6 +683,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -663,10 +696,12 @@ public:
         const QUrl vertexShaderGraph[] = {
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
         };
 
         const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
@@ -675,16 +710,19 @@ public:
         const QByteArray renderableVertexShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
          const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -776,7 +814,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -800,6 +839,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -810,10 +852,12 @@ public:
         const QUrl vertexShaderGraph[] = {
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
         };
 
         const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
@@ -822,16 +866,19 @@ public:
         const QByteArray renderableVertexShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
          const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -927,10 +974,12 @@ private:
             const QUrl vertexShaderGraph[] = {
                 QUrl(QStringLiteral("%s")),
                 QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s")),
                 QUrl(QStringLiteral("%s"))
             };
 
             const QUrl fragmentShaderGraph[] = {
+                QUrl(QStringLiteral("%s")),
                 QUrl(QStringLiteral("%s")),
                 QUrl(QStringLiteral("%s")),
                 QUrl(QStringLiteral("%s"))
@@ -939,16 +988,19 @@ private:
             const QByteArray renderableVertexShaderCode[] = {
                 QByteArray(R"(%s)"),
                 QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
                 QByteArray(R"(%s)")
             };
 
             const QByteArray renderableFragmentShaderCode[] = {
                 QByteArray(R"(%s)"),
                 QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
                 QByteArray(R"(%s)")
             };
 
             const QByteArray renderableGeometryShaderCode[] = {
+                QByteArray(R"(%s)"),
                 QByteArray(R"(%s)"),
                 QByteArray(R"(%s)"),
                 QByteArray(R"(%s)")
@@ -1004,7 +1056,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -1023,6 +1076,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -1097,6 +1153,11 @@ private:
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique = new %sTechnique(%sTechnique::RHI, this);
+    addTechnique(m_rhiTechnique);
+#endif
 }
 
 %sEffect::~%sEffect() = default;
@@ -1108,6 +1169,9 @@ void %sEffect::updateDoubleSided(bool doubleSided)
     m_gl3Technique->setCullingMode(cullingMode);
     m_es3Technique->setCullingMode(cullingMode);
     m_es2Technique->setCullingMode(cullingMode);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setCullingMode(cullingMode);
+#endif
 }
 
 void %sEffect::updateSkinning(bool useSkinning)
@@ -1128,6 +1192,11 @@ void %sEffect::updateSkinning(bool useSkinning)
     m_gl3Technique->setAllowCulling(!useSkinning);
     m_es3Technique->setAllowCulling(!useSkinning);
     m_es2Technique->setAllowCulling(!useSkinning);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setEnabledLayers(layers);
+    m_rhiTechnique->setAllowCulling(!useSkinning);
+#endif
 }
 
 void %sEffect::updateOpaque(bool opaque)
@@ -1135,6 +1204,10 @@ void %sEffect::updateOpaque(bool opaque)
     m_gl3Technique->setOpaque(opaque);
     m_es3Technique->setOpaque(opaque);
     m_es2Technique->setOpaque(opaque);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setOpaque(opaque);
+#endif
 }
 
 void %sEffect::updateAlphaCutoffEnabled(bool enabled)
@@ -1150,6 +1223,9 @@ void %sEffect::updateAlphaCutoffEnabled(bool enabled)
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setEnabledLayers(layers);
+#endif
 }
 """
 
@@ -1621,6 +1697,7 @@ HEADERS += \\
                                                                           matName,
                                                                           matName,
                                                                           matName,
+                                                                          matName,
                                                                           matName)
             self.generateHeaderFile(content,
                                     className,
@@ -1639,18 +1716,23 @@ HEADERS += \\
                 gl3FragCode = ""
                 es3FragCode = ""
                 es2FragCode = ""
+                rhiFragCode = ""
                 gl3VertCode = ""
                 es3VertCode = ""
                 es2VertCode = ""
+                rhiVertCode = ""
                 gl3GeometryCode = ""
                 es3GeometryCode = ""
                 es2GeometryCode = ""
+                rhiGeometryCode = ""
                 es2VertexShaderGraph = ""
                 es2FragmentShaderGraph = ""
                 es3VertexShaderGraph = ""
+                rhiVertexShaderGraph = ""
                 es3FragmentShaderGraph = ""
                 gl3VertexShaderGraph = ""
                 gl3FragmentShaderGraph = ""
+                rhiFragmentShaderGraph = ""
                 blendFunction = ""
                 blendSourceRGB = ""
                 blendSourceAlpha = ""
@@ -1694,6 +1776,10 @@ HEADERS += \\
                             if majorVersion == 3:
                                 pass_info.gl3FragCode = code
                                 pass_info.gl3FragmentShaderGraph = graph
+                        elif api == "RHI":
+                            if majorVersion == 1:
+                                pass_info.rhiFragCode = code
+                                pass_info.rhiFragmentShaderGraph = graph
                     elif shaderType == "Vertex":
                         if api == "OpenGLES":
                             if majorVersion == 3:
@@ -1706,6 +1792,10 @@ HEADERS += \\
                             if majorVersion == 3:
                                 pass_info.gl3VertCode = code
                                 pass_info.gl3VertexShaderGraph = graph
+                        elif api == "RHI":
+                            if majorVersion == 1:
+                                pass_info.rhiVertCode = code
+                                pass_info.rhiVertexShaderGraph = graph
                     elif shaderType == "Geometry":
                         if api == "OpenGLES":
                             if majorVersion == 3:
@@ -1714,6 +1804,9 @@ HEADERS += \\
                         elif api == "OpenGL":
                             if majorVersion == 3:
                                 pass_info.gl3GeometryCode = code
+                        elif api == "RHI":
+                            if majorVersion == 1:
+                                pass_info.rhiGeometryCode = code
                 passes_info.append(pass_info)
 
 
@@ -1735,18 +1828,23 @@ HEADERS += \\
                                                                                 pass_info.gl3VertexShaderGraph,
                                                                                 pass_info.es3VertexShaderGraph,
                                                                                 pass_info.es2VertexShaderGraph,
+                                                                                pass_info.rhiVertexShaderGraph,
                                                                                 pass_info.gl3FragmentShaderGraph,
                                                                                 pass_info.es3FragmentShaderGraph,
                                                                                 pass_info.es2FragmentShaderGraph,
+                                                                                pass_info.rhiFragmentShaderGraph,
                                                                                 pass_info.gl3VertCode,
                                                                                 pass_info.es3VertCode,
                                                                                 pass_info.es2VertCode,
+                                                                                pass_info.rhiVertCode,
                                                                                 pass_info.gl3FragCode,
                                                                                 pass_info.es3FragCode,
                                                                                 pass_info.es2FragCode,
+                                                                                pass_info.rhiFragCode,
                                                                                 pass_info.gl3GeometryCode,
                                                                                 pass_info.es3GeometryCode,
                                                                                 pass_info.es2GeometryCode,
+                                                                                pass_info.rhiGeometryCode,
                                                                                 pass_info.blendFunction,
                                                                                 pass_info.blendSourceRGB,
                                                                                 pass_info.blendSourceAlpha,
@@ -1760,18 +1858,23 @@ HEADERS += \\
                                                                            pass_info.gl3VertexShaderGraph,
                                                                            pass_info.es3VertexShaderGraph,
                                                                            pass_info.es2VertexShaderGraph,
+                                                                           pass_info.rhiVertexShaderGraph,
                                                                            pass_info.gl3FragmentShaderGraph,
                                                                            pass_info.es3FragmentShaderGraph,
                                                                            pass_info.es2FragmentShaderGraph,
+                                                                           pass_info.rhiFragmentShaderGraph,
                                                                            pass_info.gl3VertCode,
                                                                            pass_info.es3VertCode,
                                                                            pass_info.es2VertCode,
+                                                                           pass_info.rhiVertCode,
                                                                            pass_info.gl3FragCode,
                                                                            pass_info.es3FragCode,
                                                                            pass_info.es2FragCode,
+                                                                           pass_info.rhiFragCode,
                                                                            pass_info.gl3GeometryCode,
                                                                            pass_info.es3GeometryCode,
                                                                            pass_info.es2GeometryCode,
+                                                                           pass_info.rhiGeometryCode,
                                                                            pass_info.blendFunction,
                                                                            pass_info.blendSourceRGB,
                                                                            pass_info.blendSourceAlpha,
@@ -1786,18 +1889,23 @@ HEADERS += \\
                                                                       pass_info.gl3VertexShaderGraph,
                                                                       pass_info.es3VertexShaderGraph,
                                                                       pass_info.es2VertexShaderGraph,
+                                                                      pass_info.rhiVertexShaderGraph,
                                                                       pass_info.gl3FragmentShaderGraph,
                                                                       pass_info.es3FragmentShaderGraph,
                                                                       pass_info.es2FragmentShaderGraph,
+                                                                      pass_info.rhiFragmentShaderGraph,
                                                                       pass_info.gl3VertCode,
                                                                       pass_info.es3VertCode,
                                                                       pass_info.es2VertCode,
+                                                                      pass_info.rhiVertCode,
                                                                       pass_info.gl3FragCode,
                                                                       pass_info.es3FragCode,
                                                                       pass_info.es2FragCode,
+                                                                      pass_info.rhiFragCode,
                                                                       pass_info.gl3GeometryCode,
                                                                       pass_info.es3GeometryCode,
-                                                                      pass_info.es2GeometryCode)
+                                                                      pass_info.es2GeometryCode,
+                                                                      pass_info.rhiGeometryCode)
 
 
             def multiTransparentTechnique(passes_info):
@@ -1807,18 +1915,23 @@ HEADERS += \\
                     innerPassContent +=  CustomMaterialGenerator.techniqueMultiTransparentInnerPass % (pass_info.gl3VertexShaderGraph,
                                                                                                        pass_info.es3VertexShaderGraph,
                                                                                                        pass_info.es2VertexShaderGraph,
+                                                                                                       pass_info.rhiVertexShaderGraph,
                                                                                                        pass_info.gl3FragmentShaderGraph,
                                                                                                        pass_info.es3FragmentShaderGraph,
                                                                                                        pass_info.es2FragmentShaderGraph,
+                                                                                                       pass_info.rhiFragmentShaderGraph,
                                                                                                        pass_info.gl3VertCode,
                                                                                                        pass_info.es3VertCode,
                                                                                                        pass_info.es2VertCode,
+                                                                                                       pass_info.rhiVertCode,
                                                                                                        pass_info.gl3FragCode,
                                                                                                        pass_info.es3FragCode,
                                                                                                        pass_info.es2FragCode,
+                                                                                                       pass_info.rhiFragCode,
                                                                                                        pass_info.gl3GeometryCode,
                                                                                                        pass_info.es3GeometryCode,
                                                                                                        pass_info.es2GeometryCode,
+                                                                                                       pass_info.rhiGeometryCode,
                                                                                                        pass_info.blendFunction,
                                                                                                        pass_info.blendSourceRGB,
                                                                                                        pass_info.blendSourceAlpha,
@@ -1835,18 +1948,23 @@ HEADERS += \\
                                                                           pass_info.gl3VertexShaderGraph,
                                                                           pass_info.es3VertexShaderGraph,
                                                                           pass_info.es2VertexShaderGraph,
+                                                                          pass_info.rhiVertexShaderGraph,
                                                                           pass_info.gl3FragmentShaderGraph,
                                                                           pass_info.es3FragmentShaderGraph,
                                                                           pass_info.es2FragmentShaderGraph,
+                                                                          pass_info.rhiFragmentShaderGraph,
                                                                           pass_info.gl3VertCode,
                                                                           pass_info.es3VertCode,
                                                                           pass_info.es2VertCode,
+                                                                          pass_info.rhiVertCode,
                                                                           pass_info.gl3FragCode,
                                                                           pass_info.es3FragCode,
                                                                           pass_info.es2FragCode,
+                                                                          pass_info.rhiFragCode,
                                                                           pass_info.gl3GeometryCode,
                                                                           pass_info.es3GeometryCode,
-                                                                          pass_info.es2GeometryCode)
+                                                                          pass_info.es2GeometryCode,
+                                                                          pass_info.rhiGeometryCode)
 
 
             def generateTechnique(passes_info):
@@ -1867,6 +1985,8 @@ HEADERS += \\
             technique_content, technique_name = generateTechnique(passes_info)
             content = CustomMaterialGenerator.effectClassCppContent % (technique_content,
                                                                        doc,
+                                                                       matName,
+                                                                       matName,
                                                                        matName,
                                                                        matName,
                                                                        matName,

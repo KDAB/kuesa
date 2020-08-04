@@ -53,7 +53,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit IroGlassAddTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -72,6 +73,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -91,10 +95,12 @@ public:
             const QUrl vertexShaderGraph[] = {
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"))
             };
 
             const QUrl fragmentShaderGraph[] = {
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassmult.frag.json")),
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassmult.frag.json")),
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassmult.frag.json")),
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iroglassmult.frag.json"))
@@ -103,16 +109,19 @@ public:
             const QByteArray renderableVertexShaderCode[] = {
                 QByteArray(R"()"),
                 QByteArray(R"()"),
+                QByteArray(R"()"),
                 QByteArray(R"()")
             };
 
             const QByteArray renderableFragmentShaderCode[] = {
                 QByteArray(R"()"),
                 QByteArray(R"()"),
+                QByteArray(R"()"),
                 QByteArray(R"()")
             };
 
             const QByteArray renderableGeometryShaderCode[] = {
+                QByteArray(R"()"),
                 QByteArray(R"()"),
                 QByteArray(R"()"),
                 QByteArray(R"()")
@@ -165,10 +174,12 @@ public:
             const QUrl vertexShaderGraph[] = {
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"))
             };
 
             const QUrl fragmentShaderGraph[] = {
+                QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffuse.frag.json")),
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffuse.frag.json")),
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffuse.frag.json")),
                 QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffuse.frag.json"))
@@ -177,16 +188,19 @@ public:
             const QByteArray renderableVertexShaderCode[] = {
                 QByteArray(R"()"),
                 QByteArray(R"()"),
+                QByteArray(R"()"),
                 QByteArray(R"()")
             };
 
             const QByteArray renderableFragmentShaderCode[] = {
                 QByteArray(R"()"),
                 QByteArray(R"()"),
+                QByteArray(R"()"),
                 QByteArray(R"()")
             };
 
             const QByteArray renderableGeometryShaderCode[] = {
+                QByteArray(R"()"),
                 QByteArray(R"()"),
                 QByteArray(R"()"),
                 QByteArray(R"()")
@@ -309,6 +323,11 @@ IroGlassAddEffect::IroGlassAddEffect(Qt3DCore::QNode *parent)
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique = new IroGlassAddTechnique(IroGlassAddTechnique::RHI, this);
+    addTechnique(m_rhiTechnique);
+#endif
 }
 
 IroGlassAddEffect::~IroGlassAddEffect() = default;
@@ -320,6 +339,9 @@ void IroGlassAddEffect::updateDoubleSided(bool doubleSided)
     m_gl3Technique->setCullingMode(cullingMode);
     m_es3Technique->setCullingMode(cullingMode);
     m_es2Technique->setCullingMode(cullingMode);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setCullingMode(cullingMode);
+#endif
 }
 
 void IroGlassAddEffect::updateSkinning(bool useSkinning)
@@ -340,6 +362,11 @@ void IroGlassAddEffect::updateSkinning(bool useSkinning)
     m_gl3Technique->setAllowCulling(!useSkinning);
     m_es3Technique->setAllowCulling(!useSkinning);
     m_es2Technique->setAllowCulling(!useSkinning);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setEnabledLayers(layers);
+    m_rhiTechnique->setAllowCulling(!useSkinning);
+#endif
 }
 
 void IroGlassAddEffect::updateOpaque(bool opaque)
@@ -347,6 +374,10 @@ void IroGlassAddEffect::updateOpaque(bool opaque)
     m_gl3Technique->setOpaque(opaque);
     m_es3Technique->setOpaque(opaque);
     m_es2Technique->setOpaque(opaque);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setOpaque(opaque);
+#endif
 }
 
 void IroGlassAddEffect::updateAlphaCutoffEnabled(bool enabled)
@@ -362,6 +393,9 @@ void IroGlassAddEffect::updateAlphaCutoffEnabled(bool enabled)
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setEnabledLayers(layers);
+#endif
 }
 
 } // namespace Kuesa

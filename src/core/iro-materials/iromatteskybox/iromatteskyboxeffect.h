@@ -52,6 +52,9 @@ private:
     IroMatteSkyboxTechnique *m_gl3Technique;
     IroMatteSkyboxTechnique *m_es3Technique;
     IroMatteSkyboxTechnique *m_es2Technique;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    IroMatteSkyboxTechnique *m_rhiTechnique;
+#endif
 
     void updateDoubleSided(bool doubleSided) override;
     void updateSkinning(bool useSkinning) override;

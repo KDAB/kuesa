@@ -52,6 +52,9 @@ private:
     IroMatteAddTechnique *m_gl3Technique;
     IroMatteAddTechnique *m_es3Technique;
     IroMatteAddTechnique *m_es2Technique;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    IroMatteAddTechnique *m_rhiTechnique;
+#endif
 
     void updateDoubleSided(bool doubleSided) override;
     void updateSkinning(bool useSkinning) override;
