@@ -69,7 +69,7 @@ public:
     {
     public:
         EmbeddedTextureImage(const QImage &image, QNode *parent = nullptr);
-        Qt3DRender::QTextureImageDataGeneratorPtr dataGenerator() const;
+        Qt3DRender::QTextureImageDataGeneratorPtr dataGenerator() const override;
 
         QImage image();
 
