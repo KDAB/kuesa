@@ -184,6 +184,9 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     , m_gl3ShaderBuilder(nullptr)
     , m_es3ShaderBuilder(nullptr)
     , m_es2ShaderBuilder(nullptr)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    , m_rhiShaderBuilder(nullptr)
+#endif
     , m_maskParameter(new Qt3DRender::QParameter(QStringLiteral("maskTexture"), nullptr))
     , m_inputTextureParameter(new Qt3DRender::QParameter(QStringLiteral("inputTexture"), nullptr))
 {
@@ -234,6 +237,20 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
                                                 m_es2ShaderBuilder,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es2Technique);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiShaderBuilder = new Qt3DRender::QShaderProgramBuilder();
+    m_rhiShaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/opacitymask.frag.json")));
+    m_rhiShaderBuilder->setEnabledLayers(QStringList() << QStringLiteral("regular"));
+
+    auto *rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI,
+                                                1, 0,
+                                                Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                                QStringLiteral("qrc:/kuesa/shaders/gl45/passthrough.vert"),
+                                                m_rhiShaderBuilder,
+                                                passFilterName, passFilterValue);
+    effect->addTechnique(rhiTechnique);
+#endif
 
     effect->addParameter(m_maskParameter);
     effect->addParameter(m_inputTextureParameter);
@@ -306,6 +323,9 @@ void OpacityMask::setPremultipliedAlpha(bool premultipliedAlpha)
     const QString layer = m_premultipliedAlpha ? QStringLiteral("premultiplied_alpha") : QStringLiteral("regular");
     m_gl3ShaderBuilder->setEnabledLayers({ layer });
     m_es3ShaderBuilder->setEnabledLayers({ layer });
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiShaderBuilder->setEnabledLayers({ layer });
+#endif
     m_blendRenderState->setEnabled(!m_premultipliedAlpha);
 }
 

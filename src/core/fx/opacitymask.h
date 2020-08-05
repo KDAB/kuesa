@@ -74,6 +74,9 @@ private:
     Qt3DRender::QShaderProgramBuilder *m_gl3ShaderBuilder;
     Qt3DRender::QShaderProgramBuilder *m_es3ShaderBuilder;
     Qt3DRender::QShaderProgramBuilder *m_es2ShaderBuilder;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    Qt3DRender::QShaderProgramBuilder *m_rhiShaderBuilder;
+#endif
     Qt3DRender::QRenderStateSet *m_mainRenderState;
     Qt3DRender::QRenderStateSet *m_blendRenderState;
     Qt3DRender::QParameter *m_maskParameter;
