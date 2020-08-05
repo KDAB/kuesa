@@ -372,6 +372,23 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
 
     effect->addTechnique(es3Technique);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    auto rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI, 1, 0,
+                                               Qt3DRender::QGraphicsApiFilter::NoProfile);
+    rhiTechnique->addRenderPass(createRenderPass(
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/dof_blur.frag")),
+            dofBlurPassName));
+
+    rhiTechnique->addRenderPass(createRenderPass(
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/dof_composite.frag")),
+            dofCompositionPassName));
+
+    effect->addTechnique(rhiTechnique);
+#endif
+
+
     auto dofQuad = new FullScreenQuad(dofMaterial, m_rootFrameGraphNode.data());
     m_layer = dofQuad->layer();
 
