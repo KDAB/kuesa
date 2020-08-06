@@ -33,7 +33,7 @@ import QtQuick.Layouts 1.12
 
 Item {
     id: root
-    property string toneMappingAlgorithmName: "None"
+    property string toneMappingAlgorithmName: "Reinhard"
     property alias toggleRotation: rotationToggleSwitch.checked
     property alias toggleLightRotation: lightToggleSwitch.checked
     property alias exposure: exposureSlider.value
