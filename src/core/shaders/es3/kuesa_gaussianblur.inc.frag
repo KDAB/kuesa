@@ -36,6 +36,8 @@ const float weight[samples] = float[]( 0.2270270270,
                                        0.0540540541,
                                        0.0162162162 );
 
+uniform highp sampler2D textureSampler;
+
 vec4 kuesa_gaussianBlur(const in int pass,
                         const in float width,
                         const in float height,

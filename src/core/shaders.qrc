@@ -101,5 +101,6 @@
         <file>shaders/es2/qt3d_default_uniforms.inc</file>
         <file>shaders/gl45/dof_blur.frag</file>
         <file>shaders/gl45/dof_composite.frag</file>
+        <file>shaders/gl45/kuesa_gaussianblur.inc.frag</file>
     </qresource>
 </RCC>

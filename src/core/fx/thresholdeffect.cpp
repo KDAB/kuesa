@@ -195,6 +195,18 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es2Technique);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    auto rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI,
+                                               1, 0,
+                                               Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                               QStringLiteral("qrc:/kuesa/shaders/gl45/passthrough.vert"),
+                                               graphPath,
+                                               passFilterName, passFilterValue);
+
+    effect->addTechnique(rhiTechnique);
+#endif
+
+
     effect->addParameter(m_textureParam);
     effect->addParameter(m_thresholdParameter);
 

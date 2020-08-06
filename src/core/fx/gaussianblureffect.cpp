@@ -243,6 +243,14 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
 
     effect->addTechnique(es2Technique);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    auto rhiTechnique = makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI, 1, 0,
+                                      Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                      QStringLiteral("qrc:/kuesa/shaders/gl45/passthrough.vert"));
+
+    effect->addTechnique(rhiTechnique);
+#endif
+
     blurMaterial->addParameter(m_widthParameter);
     blurMaterial->addParameter(m_heightParameter);
 

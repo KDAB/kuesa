@@ -31,6 +31,8 @@ precision highp float;
 // Use non-filtered texture fetches
 const int samples = 5;
 
+uniform highp sampler2D textureSampler;
+
 vec4 kuesa_gaussianBlur(const in int pass,
                         const in float width,
                         const in float height,
