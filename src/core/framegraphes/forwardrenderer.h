@@ -65,6 +65,7 @@ class OpaqueRenderStage;
 class TransparentRenderStage;
 class ZFillRenderStage;
 class ParticleRenderStage;
+class MSAAFBOResolver;
 
 class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QRenderSurfaceSelector
 {
@@ -185,6 +186,7 @@ private:
     Qt3DRender::QRenderTarget *m_multisampleTarget;
     Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromMSToFBO0;
     Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromFBO0ToFBO1;
+    MSAAFBOResolver *m_msaaResolver;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     Qt3DRender::QDebugOverlay *m_debugOverlay;
 #endif

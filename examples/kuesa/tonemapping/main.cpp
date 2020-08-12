@@ -49,6 +49,7 @@ int main(int ac, char **av)
 #ifndef QT_OPENGL_ES_2
         format.setVersion(4, 1);
         format.setProfile(QSurfaceFormat::CoreProfile);
+        format.setSamples(4);
 #else
 #ifndef QT_OPENGL_ES_3
         isES2 = true;

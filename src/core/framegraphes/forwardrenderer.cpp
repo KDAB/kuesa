@@ -43,6 +43,7 @@
 #include <Qt3DRender/qlayer.h>
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 #include <Qt3DRender/qdebugoverlay.h>
+#include <private/qrhi_p.h>
 #endif
 #include <QWindow>
 #include <QScreen>
@@ -55,6 +56,7 @@
 #include "transparentrenderstage_p.h"
 #include "particlerenderstage_p.h"
 #include "tonemappingandgammacorrectioneffect.h"
+#include "msaafboresolver_p.h"
 #include "kuesa_p.h"
 #include <cmath>
 
@@ -440,7 +442,7 @@ using namespace Kuesa;
 
 namespace {
 
-struct GLFeatures {
+struct RenderingFeatures {
     bool hasHalfFloatTexture = false;
     bool hasHalfFloatRenderable = false;
     bool hasMultisampledTexture = false;
@@ -448,9 +450,9 @@ struct GLFeatures {
 };
 
 // Check supported GL Features
-GLFeatures checkGLFeatures()
+RenderingFeatures checkGLFeatures()
 {
-    GLFeatures features;
+    RenderingFeatures features;
     QOffscreenSurface offscreen;
     QOpenGLContext ctx;
 
@@ -487,9 +489,18 @@ GLFeatures checkGLFeatures()
 
             ctx.doneCurrent();
         }
+    } else {
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        // TO DO: Update QRenderCapabilities and use that instead
+        features.hasHalfFloatTexture = true;
+        features.hasHalfFloatRenderable = true;
+        features.hasMultisampledTexture = true;
+        features.hasMultisampledFBO = true;
+#endif
     }
 
-    qCDebug(kuesa) << "GL Features:\n"
+    qCDebug(kuesa) << "Rendering Features:\n"
                    << "hasHalfFloatTexture" << features.hasHalfFloatTexture << "\n"
                    << "hasHalfFloatRenderable" << features.hasHalfFloatRenderable << "\n"
                    << "hasMultisampledTexture" << features.hasMultisampledTexture << "\n"
@@ -497,7 +508,7 @@ GLFeatures checkGLFeatures()
 
     return features;
 }
-GLFeatures const *_glFeatures = nullptr;
+RenderingFeatures const *_glFeatures = nullptr;
 
 enum RenderTargetFlag {
     IncludeDepth = (1 << 0),
@@ -1086,8 +1097,10 @@ void ForwardRenderer::updateTextureSizes()
     if (m_multisampleTarget != nullptr) {
         outputs += m_multisampleTarget->outputs();
         const QRect blitRect(QPoint(), targetSize);
-        m_blitFramebufferNodeFromMSToFBO0->setSourceRect(blitRect);
-        m_blitFramebufferNodeFromMSToFBO0->setDestinationRect(blitRect);
+        if (m_blitFramebufferNodeFromMSToFBO0) {
+            m_blitFramebufferNodeFromMSToFBO0->setSourceRect(blitRect);
+            m_blitFramebufferNodeFromMSToFBO0->setDestinationRect(blitRect);
+        }
     }
 
     if (m_blitFramebufferNodeFromFBO0ToFBO1) {
@@ -1136,7 +1149,7 @@ void ForwardRenderer::reconfigureFrameGraph()
     // Based on the effect types, reorder elements from the FrameGraph in the correct order
     // e.g We want Bloom to happen after DoF...
     //     We may need to render the scene into a texture first ...
-    static const GLFeatures glFeatures = checkGLFeatures();
+    static const RenderingFeatures glFeatures = checkGLFeatures();
     _glFeatures = &glFeatures;
 
     m_viewport->setParent(this);
@@ -1203,10 +1216,12 @@ void ForwardRenderer::reconfigureFrameGraph()
         delete m_renderTargets[1];
         delete m_multisampleTarget;
         delete m_blitFramebufferNodeFromFBO0ToFBO1;
+        delete m_msaaResolver;
         m_renderTargets[0] = nullptr;
         m_renderTargets[1] = nullptr;
         m_multisampleTarget = nullptr;
         m_blitFramebufferNodeFromFBO0ToFBO1 = nullptr;
+        m_msaaResolver = nullptr;
     }
 
     Qt3DRender::QAbstractTexture *depthTex = nullptr;
@@ -1280,21 +1295,29 @@ void ForwardRenderer::reconfigureFrameGraph()
                                                          samples);
             }
 
-            // Blit into regular Tex2D FBO
-            m_blitFramebufferNodeFromMSToFBO0 = new Qt3DRender::QBlitFramebuffer(sceneTargetSelector);
-
             sceneTargetSelector->setTarget(m_multisampleTarget);
+            const bool usesRHI = qgetenv("QT3D_RENDERER") == QByteArray("rhi");
+            // RHI has no Blit operations so we manually resolve the multisampled
+            // FBO into renderTarget[0]
+            if (usesRHI) {
+                m_msaaResolver = new MSAAFBOResolver(sceneTargetSelector);
+                m_msaaResolver->setSource(findRenderTargetTexture(m_multisampleTarget, Qt3DRender::QRenderTargetOutput::Color0));
+                m_msaaResolver->setDestination(m_renderTargets[0]);
+            } else {
+                // Blit into regular Tex2D FBO
+                m_blitFramebufferNodeFromMSToFBO0 = new Qt3DRender::QBlitFramebuffer(sceneTargetSelector);
 
-            m_blitFramebufferNodeFromMSToFBO0->setSource(m_multisampleTarget);
-            m_blitFramebufferNodeFromMSToFBO0->setDestination(m_renderTargets[0]);
-            m_blitFramebufferNodeFromMSToFBO0->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
-            m_blitFramebufferNodeFromMSToFBO0->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+                m_blitFramebufferNodeFromMSToFBO0->setSource(m_multisampleTarget);
+                m_blitFramebufferNodeFromMSToFBO0->setDestination(m_renderTargets[0]);
+                m_blitFramebufferNodeFromMSToFBO0->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+                m_blitFramebufferNodeFromMSToFBO0->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
 
-            const QRect blitRect(QPoint(), surfaceSize);
-            m_blitFramebufferNodeFromMSToFBO0->setSourceRect(blitRect);
-            m_blitFramebufferNodeFromMSToFBO0->setDestinationRect(blitRect);
+                const QRect blitRect(QPoint(), surfaceSize);
+                m_blitFramebufferNodeFromMSToFBO0->setSourceRect(blitRect);
+                m_blitFramebufferNodeFromMSToFBO0->setDestinationRect(blitRect);
 
-            auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromMSToFBO0);
+                auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromMSToFBO0);
+            }
         } else {
             // Render into non MSAA FBO directly
             sceneTargetSelector->setTarget(m_renderTargets[0]);

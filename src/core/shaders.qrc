@@ -102,5 +102,7 @@
         <file>shaders/gl45/dof_blur.frag</file>
         <file>shaders/gl45/dof_composite.frag</file>
         <file>shaders/gl45/kuesa_gaussianblur.inc.frag</file>
+        <file>shaders/gl45/msaaresolver.vert</file>
+        <file>shaders/gl45/msaaresolver.frag</file>
     </qresource>
 </RCC>
