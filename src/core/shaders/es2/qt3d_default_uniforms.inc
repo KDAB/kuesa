@@ -12,6 +12,8 @@ uniform highp float aspectRatio;
 uniform highp float gamma;
 uniform highp float exposure;
 uniform highp float time;
+uniform highp float yUpInNDC;
+uniform highp float yUpInFBO;
 
 uniform highp mat4 modelMatrix;
 uniform highp mat4 inverseModelMatrix;

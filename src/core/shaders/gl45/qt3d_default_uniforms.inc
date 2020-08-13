@@ -13,6 +13,8 @@ layout(std140, binding = auto) uniform qt3d_render_view_uniforms {
   float gamma;
   float exposure;
   float time;
+  float yUpInNDC;
+  float yUpInFBO;
 };
 
 layout(std140, binding = auto) uniform qt3d_command_uniforms {
