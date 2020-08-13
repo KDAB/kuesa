@@ -559,8 +559,8 @@ Qt3DRender::QRenderTarget *createRenderTarget(RenderTargetFlags flags,
 
     const auto depthStencilFlags = flags & (RenderTargetFlag::IncludeDepth | RenderTargetFlag::IncludeStencil);
     if (depthStencilFlags) {
-        Qt3DRender::QAbstractTexture::TextureFormat textureFormat;
-        Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint;
+        Qt3DRender::QAbstractTexture::TextureFormat textureFormat = Qt3DRender::QAbstractTexture::NoFormat;
+        Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint = Qt3DRender::QRenderTargetOutput::Color0;
         if (depthStencilFlags == RenderTargetFlag::IncludeDepth) {
             textureFormat = Qt3DRender::QAbstractTexture::D24;
             attachmentPoint = Qt3DRender::QRenderTargetOutput::Depth;
@@ -573,6 +573,9 @@ Qt3DRender::QRenderTarget *createRenderTarget(RenderTargetFlags flags,
             textureFormat = Qt3DRender::QAbstractTexture::D24S8;
             attachmentPoint = Qt3DRender::QRenderTargetOutput::DepthStencil;
         }
+
+        Q_ASSERT(textureFormat != Qt3DRender::QAbstractTexture::NoFormat);
+        Q_ASSERT(attachmentPoint != Qt3DRender::QRenderTargetOutput::Color0);
 
         Qt3DRender::QAbstractTexture *texture = nullptr;
         if (flags & RenderTargetFlag::Multisampled) {
@@ -913,9 +916,9 @@ void ForwardRenderer::setCamera(Qt3DCore::QEntity *camera)
 void ForwardRenderer::setClearColor(const QColor &clearColor)
 {
     // Convert QColor from sRGB to Linear
-    const QColor linearColor = QColor::fromRgbF(powf(clearColor.redF(), 2.2f),
-                                                powf(clearColor.greenF(), 2.2f),
-                                                powf(clearColor.blueF(), 2.2f),
+    const QColor linearColor = QColor::fromRgbF(std::pow(clearColor.redF(), 2.2),
+                                                std::pow(clearColor.greenF(), 2.2),
+                                                std::pow(clearColor.blueF(), 2.2),
                                                 clearColor.alphaF());
     m_clearBuffers->setClearColor(linearColor);
 }
@@ -1062,7 +1065,7 @@ void ForwardRenderer::addLayer(Qt3DRender::QLayer *layer)
 */
 void ForwardRenderer::removeLayer(Qt3DRender::QLayer *layer)
 {
-    const int idx = m_layers.indexOf(layer);
+    const auto idx = m_layers.indexOf(layer);
     if (idx >= 0) {
         m_layers.removeAt(idx);
         const auto connection = m_layerDestructionConnections.takeAt(idx);
@@ -1209,7 +1212,7 @@ void ForwardRenderer::reconfigureFrameGraph()
     // handleSurfaceChange and updateTextureSizes
     const bool fboHasStencilAttachment =
             (renderTargetHasAttachmentOfType(m_renderTargets[0], Qt3DRender::QRenderTargetOutput::Stencil) ||
-            renderTargetHasAttachmentOfType(m_renderTargets[0], Qt3DRender::QRenderTargetOutput::DepthStencil));
+             renderTargetHasAttachmentOfType(m_renderTargets[0], Qt3DRender::QRenderTargetOutput::DepthStencil));
     const bool recreateRenderTargets = (m_usesStencilMask != fboHasStencilAttachment);
     if (recreateRenderTargets) {
         delete m_renderTargets[0];
@@ -1237,15 +1240,14 @@ void ForwardRenderer::reconfigureFrameGraph()
         if (m_usesStencilMask)
             baseRenderTargetFlags |= RenderTargetFlag::IncludeStencil;
 
-
         const QSize surfaceSize = currentSurfaceSize();
         if (!m_renderTargets[0]) {
             // create a render target for main scene
             m_renderTargets[0] = createRenderTarget(baseRenderTargetFlags | RenderTargetFlag::IncludeDepth,
                                                     this, surfaceSize);
         }
-        const int userFXCount = m_userPostProcessingEffects.size();
-        const int totalFXCount = userFXCount + m_internalPostProcessingEffects.size();
+        const auto userFXCount = m_userPostProcessingEffects.size();
+        const auto totalFXCount = userFXCount + m_internalPostProcessingEffects.size();
         if (totalFXCount > 1 && !m_renderTargets[1]) {
             m_renderTargets[1] = createRenderTarget(baseRenderTargetFlags, this, surfaceSize);
             // create a secondary render target to do ping-pong when we have
@@ -1317,6 +1319,7 @@ void ForwardRenderer::reconfigureFrameGraph()
                 m_blitFramebufferNodeFromMSToFBO0->setDestinationRect(blitRect);
 
                 auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromMSToFBO0);
+                Q_UNUSED(noDraw);
             }
         } else {
             // Render into non MSAA FBO directly
@@ -1337,7 +1340,7 @@ void ForwardRenderer::reconfigureFrameGraph()
             m_blitFramebufferNodeFromFBO0ToFBO1->setDestinationRect(blitRect);
 
             auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromFBO0ToFBO1);
-
+            Q_UNUSED(noDraw);
         }
 
         // create a node to hold all the effect subtrees, under the main viewport. They don't need camera, alpha, frustum, etc.
@@ -1387,7 +1390,7 @@ void ForwardRenderer::reconfigureFrameGraph()
     }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-        m_debugOverlay->setParent(m_viewport);
+    m_debugOverlay->setParent(m_viewport);
 #endif
 
     const bool blocked = blockNotifications(true);
@@ -1404,12 +1407,12 @@ void ForwardRenderer::reconfigureStages()
     //    2 (culled, non culled) to handle the non layered elements
     // Layers
     //    2 (culled, non culler) per layer
-    const int actualSceneStagesCount = m_sceneStages.size();
+    const auto actualSceneStagesCount = m_sceneStages.size();
     const bool hasLayers = m_layers.size() > 0;
     const int requiredSceneStagesCount = std::max(2, int(m_layers.size()) * 2);
 
     m_sceneStages.resize(requiredSceneStagesCount);
-    for (int i = actualSceneStagesCount; i < requiredSceneStagesCount; ++i) {
+    for (auto i = actualSceneStagesCount; i < requiredSceneStagesCount; ++i) {
         SceneStagesPtr &sceneStage = m_sceneStages[i];
         sceneStage = SceneStagesPtr::create();
         sceneStage->init();
@@ -1428,8 +1431,8 @@ void ForwardRenderer::reconfigureStages()
     // Insert ZFilling/Opaque branches
     // Root Nodes into which we have to perform the Render Stages to draw the glTF Scene
     const std::pair<Qt3DRender::QFrameGraphNode *, Qt3DRender::QFrameGraphNode *> stageRoots[] = {
-       { m_frustumCullingOpaqueTechniqueFilter, m_frustumCullingTransparentTechniqueFilter },
-       { m_noFrustumCullingOpaqueTechniqueFilter, m_noFrustumCullingTransparentTechniqueFilter }
+        { m_frustumCullingOpaqueTechniqueFilter, m_frustumCullingTransparentTechniqueFilter },
+        { m_noFrustumCullingOpaqueTechniqueFilter, m_noFrustumCullingTransparentTechniqueFilter }
     };
 
     for (int i = 0; i < requiredSceneStagesCount;) {
@@ -1679,7 +1682,7 @@ ZFillRenderStage *ForwardRenderer::SceneStages::zFillStage() const
  */
 TransparentRenderStage *ForwardRenderer::SceneStages::transparentStage() const
 {
-    return  m_transparentStage;
+    return m_transparentStage;
 }
 
 QT_END_NAMESPACE

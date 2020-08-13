@@ -171,7 +171,7 @@ QString shaderGraphLayerForToneMappingAlgorithm(ToneMappingAndGammaCorrectionEff
 ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCore::QNode *parent)
     : AbstractPostProcessingEffect(parent)
     , m_layer(nullptr)
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     , m_rhiShaderBuilder(nullptr)
 #endif
     , m_gl3ShaderBuilder(nullptr)
@@ -249,7 +249,6 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
                                                     passName, passFilterValue);
         effect->addTechnique(rhiTechnique);
 #endif
-
 
         effect->addParameter(m_gammaParameter);
         effect->addParameter(m_inputTextureParameter);
@@ -337,7 +336,7 @@ void ToneMappingAndGammaCorrectionEffect::setToneMappingAlgorithm(ToneMappingAnd
     m_es2ShaderBuilder->setEnabledLayers(layers);
     m_es3ShaderBuilder->setEnabledLayers(layers);
     m_gl3ShaderBuilder->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_rhiShaderBuilder->setEnabledLayers(layers);
 #endif
 

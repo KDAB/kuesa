@@ -153,15 +153,15 @@ void MetallicRoughnessMaterial::setMaterialProperties(MetallicRoughnessPropertie
 
         if (m_materialProperties) {
             QObject::connect(m_materialProperties, &MetallicRoughnessProperties::baseColorMapChanged,
-                             this, [this] (Qt3DRender::QAbstractTexture *t) { m_baseColorMapParameter->setValue(QVariant::fromValue(t)); });
+                             this, [this](Qt3DRender::QAbstractTexture *t) { m_baseColorMapParameter->setValue(QVariant::fromValue(t)); });
             QObject::connect(m_materialProperties, &MetallicRoughnessProperties::emissiveMapChanged,
-                             this, [this] (Qt3DRender::QAbstractTexture *t) { m_emissiveMapParameter->setValue(QVariant::fromValue(t)); });
+                             this, [this](Qt3DRender::QAbstractTexture *t) { m_emissiveMapParameter->setValue(QVariant::fromValue(t)); });
             QObject::connect(m_materialProperties, &MetallicRoughnessProperties::normalMapChanged,
-                             this, [this] (Qt3DRender::QAbstractTexture *t) { m_normalMapParameter->setValue(QVariant::fromValue(t)); });
+                             this, [this](Qt3DRender::QAbstractTexture *t) { m_normalMapParameter->setValue(QVariant::fromValue(t)); });
             QObject::connect(m_materialProperties, &MetallicRoughnessProperties::metalRoughMapChanged,
-                             this, [this] (Qt3DRender::QAbstractTexture *t) { m_metalRoughMapParameter->setValue(QVariant::fromValue(t)); });
+                             this, [this](Qt3DRender::QAbstractTexture *t) { m_metalRoughMapParameter->setValue(QVariant::fromValue(t)); });
             QObject::connect(m_materialProperties, &MetallicRoughnessProperties::ambientOcclusionMapChanged,
-                             this, [this] (Qt3DRender::QAbstractTexture *t) { m_ambientOcclusionMapParameter->setValue(QVariant::fromValue(t)); });
+                             this, [this](Qt3DRender::QAbstractTexture *t) { m_ambientOcclusionMapParameter->setValue(QVariant::fromValue(t)); });
 
             // Enforce sRGB for baseColorMap and emissiveMap
             QObject::connect(m_materialProperties, &MetallicRoughnessProperties::baseColorMapChanged, this, &MetallicRoughnessMaterial::enforceSRGBOnTexture);

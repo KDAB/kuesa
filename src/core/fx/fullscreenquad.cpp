@@ -88,7 +88,7 @@ FullScreenQuad::FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode 
         QVector3D pos;
         QVector2D tCoord;
     };
-    static_assert (sizeof(V) == 5 * sizeof(float), "Unexpected size for struct V");
+    static_assert(sizeof(V) == 5 * sizeof(float), "Unexpected size for struct V");
 
     positionAttribute->setName(Qt3DGeometry::QAttribute::defaultPositionAttributeName());
     positionAttribute->setAttributeType(Qt3DGeometry::QAttribute::VertexAttribute);
@@ -117,12 +117,12 @@ FullScreenQuad::FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode 
     rawData.resize(6 * sizeof(V));
 
     V *vertices = reinterpret_cast<V *>(rawData.data());
-    vertices[0] = {{ -1.0, 1.0, 0.0 }, { 0.0, 1.0 }};
-    vertices[1] = {{ -1.0, -1.0, 0.0 }, { 0.0, 0.0 }};
-    vertices[2] = {{ 1.0, 1.0, 0.0 }, { 1.0, 1.0 }};
-    vertices[3] = {{ 1.0, 1.0, 0.0 }, { 1.0, 1.0 }};
-    vertices[4] = {{ -1.0, -1.0, 0.0 }, { 0.0, 0.0 }};
-    vertices[5] = {{ 1.0, -1.0, 0.0 }, { 1.0, 0.0 }};
+    vertices[0] = { { -1.0, 1.0, 0.0 }, { 0.0, 1.0 } };
+    vertices[1] = { { -1.0, -1.0, 0.0 }, { 0.0, 0.0 } };
+    vertices[2] = { { 1.0, 1.0, 0.0 }, { 1.0, 1.0 } };
+    vertices[3] = { { 1.0, 1.0, 0.0 }, { 1.0, 1.0 } };
+    vertices[4] = { { -1.0, -1.0, 0.0 }, { 0.0, 0.0 } };
+    vertices[5] = { { 1.0, -1.0, 0.0 }, { 1.0, 0.0 } };
 
     buffer->setData(rawData);
 

@@ -189,7 +189,7 @@ const HierarchyNode *multiLCA(const Path &nodes)
     iterators.reserve(nodes.size());
     const HierarchyNode *firstNodeRoot = paths[0].back();
     int min_length = paths[0].length();
-    for (const Path& path : paths) {
+    for (const Path &path : paths) {
         // Sanity check : are we in the same tree
         if (path.back() != firstNodeRoot)
             return nullptr;
@@ -204,7 +204,7 @@ const HierarchyNode *multiLCA(const Path &nodes)
 
         // Check each branch's first node against firstNode
         // and advance all iterators if it's the same
-        for (auto& it : iterators) {
+        for (auto &it : iterators) {
             if ((*it) != firstNode)
                 return firstNode->parent;
             ++it;
@@ -331,9 +331,8 @@ void GLTF2Parser::updateDataForJointsAttr(QAttribute *attr, int skinId)
 
     updatedData.resize(static_cast<int>(nbJoints * sizeof(T)));
     T *updatedJointIndices = reinterpret_cast<T *>(updatedData.data());
-    for (size_t jointId = 0; jointId < nbJoints; ++jointId) {
+    for (size_t jointId = 0; jointId < nbJoints; ++jointId)
         updatedJointIndices[jointId] = static_cast<T>(m_gltfJointIdxToSkeletonJointIdxPerSkeleton[skinId][typedData[jointId]]);
-    }
     attr->buffer()->updateData(static_cast<int>(attr->byteOffset()), updatedData);
 }
 
@@ -1202,9 +1201,8 @@ void GLTF2Parser::generateTreeNodeContent()
                     primitiveEntity->addComponent(primitiveData.primitiveRenderer);
 
                     // Add morph controller if it is not null
-                    if (morphController != nullptr) {
+                    if (morphController != nullptr)
                         primitiveEntity->addComponent(morphController);
-                    }
 
                     // Add material for mesh
                     {
@@ -1239,11 +1237,10 @@ void GLTF2Parser::generateTreeNodeContent()
                         Material mat;
                         // Check if the mesh references a material and fetch it
                         // If it doesn't reference a valid material, create a default shader data
-                        if (materialId >= 0 && materialId < m_context->materialsCount()) {
+                        if (materialId >= 0 && materialId < m_context->materialsCount())
                             mat = m_context->material(materialId);
-                        } else {
+                        else
                             mat.materialProperties(*m_context);
-                        }
                         auto effectProperties = Material::effectPropertiesFromMaterial(mat);
                         if (isSkinned)
                             effectProperties |= EffectProperties::Skinning;
@@ -1449,11 +1446,10 @@ void ThreadedGLTF2Parser::parse(const QString &path)
 
         m_parser.moveToThread(this->thread());
 
-        if (isValid) {
+        if (isValid)
             QMetaObject::invokeMethod(this, &ThreadedGLTF2Parser::on_parsingFinished);
-        } else {
+        else
             emit parsingFinished(nullptr);
-        }
         return;
     });
 }
@@ -1465,11 +1461,10 @@ void ThreadedGLTF2Parser::parse(const QByteArray &data, const QString &basePath,
 
         m_parser.moveToThread(this->thread());
 
-        if (isValid) {
+        if (isValid)
             QMetaObject::invokeMethod(this, &ThreadedGLTF2Parser::on_parsingFinished);
-        } else {
+        else
             emit parsingFinished(nullptr);
-        }
     });
 }
 

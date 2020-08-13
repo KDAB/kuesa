@@ -110,7 +110,6 @@ using namespace Kuesa;
  \caption Depth-of-field effect applied on a Kuesa scene.
 */
 
-
 /*!
  \property DepthOfFieldEffect::focusRange
 
@@ -206,7 +205,6 @@ using namespace Kuesa;
  \image fx/dof/dof_distance_5.png
  \caption Depth-of-field effect applied on a Kuesa scene.
 */
-
 
 /*!
  \qmlproperty float DepthOfFieldEffect::focusRange
@@ -388,7 +386,6 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     effect->addTechnique(rhiTechnique);
 #endif
 
-
     auto dofQuad = new FullScreenQuad(dofMaterial, m_rootFrameGraphNode.data());
     m_layer = dofQuad->layer();
 
@@ -403,6 +400,8 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
 
     auto blurPassFilter = FXUtils::createRenderPassFilter(passFilterName, dofBlurPassName, blurTargetSelector);
     auto compositePassFilter = FXUtils::createRenderPassFilter(passFilterName, dofCompositionPassName, layerFilter);
+    Q_UNUSED(compositePassFilter);
+    Q_UNUSED(blurPassFilter);
 }
 
 DepthOfFieldEffect::~DepthOfFieldEffect()
