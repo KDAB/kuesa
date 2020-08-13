@@ -1517,7 +1517,7 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "out vec4 fragColor;"
+                        "layout(location=0) out vec4 fragColor;"
                     ],
                     "substitution": "fragColor = $fragColor;"
                 }
