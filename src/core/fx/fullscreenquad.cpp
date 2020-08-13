@@ -34,6 +34,9 @@
 #include <Qt3DRender/qcamera.h>
 #include <Qt3DRender/qcameralens.h>
 #include <Qt3DRender/qgeometryrenderer.h>
+#include <Kuesa/private/kuesa_global_p.h> // For Qt3DGeometry namespace alias
+#include <QVector3D>
+#include <QVector2D>
 
 QT_BEGIN_NAMESPACE
 
@@ -67,17 +70,56 @@ FullScreenQuad::FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode 
 {
     m_layer = new Qt3DRender::QLayer(this);
 
-    auto planeMesh = new Qt3DExtras::QPlaneMesh(this);
-    planeMesh->setMirrored(true);
-    planeMesh->setWidth(2.0f);
-    planeMesh->setHeight(2.0f);
+    auto *geometryRenderer = new Qt3DRender::QGeometryRenderer();
+    auto *geometry = new Qt3DGeometry::QGeometry();
+    auto *buffer = new Qt3DGeometry::QBuffer();
+    auto *positionAttribute = new Qt3DGeometry::QAttribute();
+    auto *texCoordAttribute = new Qt3DGeometry::QAttribute();
 
-    auto xform = new Qt3DCore::QTransform(this);
-    xform->setRotationX(90);
+    struct V {
+        QVector3D pos;
+        QVector2D tCoord;
+    };
+    static_assert (sizeof(V) == 5 * sizeof(float), "Unexpected size for struct V");
+
+    positionAttribute->setName(Qt3DGeometry::QAttribute::defaultPositionAttributeName());
+    positionAttribute->setAttributeType(Qt3DGeometry::QAttribute::VertexAttribute);
+    positionAttribute->setVertexBaseType(Qt3DGeometry::QAttribute::Float);
+    positionAttribute->setVertexSize(3);
+    positionAttribute->setByteStride(sizeof(V));
+    positionAttribute->setByteOffset(0);
+    positionAttribute->setBuffer(buffer);
+    positionAttribute->setCount(6);
+
+    texCoordAttribute->setName(Qt3DGeometry::QAttribute::defaultTextureCoordinateAttributeName());
+    texCoordAttribute->setAttributeType(Qt3DGeometry::QAttribute::VertexAttribute);
+    texCoordAttribute->setVertexBaseType(Qt3DGeometry::QAttribute::Float);
+    texCoordAttribute->setVertexSize(2);
+    texCoordAttribute->setByteStride(sizeof(V));
+    texCoordAttribute->setByteOffset(sizeof(QVector3D));
+    texCoordAttribute->setBuffer(buffer);
+    texCoordAttribute->setCount(6);
+
+    geometry->addAttribute(positionAttribute);
+    geometry->addAttribute(texCoordAttribute);
+
+    geometryRenderer->setGeometry(geometry);
+
+    QByteArray rawData;
+    rawData.resize(6 * sizeof(V));
+
+    V *vertices = reinterpret_cast<V *>(rawData.data());
+    vertices[0] = {{ -1.0, 1.0, 0.0 }, { 0.0, 1.0 }};
+    vertices[1] = {{ -1.0, -1.0, 0.0 }, { 0.0, 0.0 }};
+    vertices[2] = {{ 1.0, 1.0, 0.0 }, { 1.0, 1.0 }};
+    vertices[3] = {{ 1.0, 1.0, 0.0 }, { 1.0, 1.0 }};
+    vertices[4] = {{ -1.0, -1.0, 0.0 }, { 0.0, 0.0 }};
+    vertices[5] = {{ 1.0, -1.0, 0.0 }, { 1.0, 0.0 }};
+
+    buffer->setData(rawData);
 
     addComponent(m_layer);
-    addComponent(planeMesh);
-    addComponent(xform);
+    addComponent(geometryRenderer);
     addComponent(material);
 }
 
