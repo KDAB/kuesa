@@ -39,7 +39,7 @@ layout(location = 0) in vec2 texCoord;
 layout(location = 0) out vec4 fragColor;
 
 layout(std140, binding = 2) uniform DofCompositeBlock {
-    vec2 textureSize;
+    vec2 texSize;
     float focusDistance;
     float focusRange;
     float bokehRadius;

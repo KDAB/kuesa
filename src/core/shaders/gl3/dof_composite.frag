@@ -37,7 +37,6 @@ uniform sampler2D depthTexture;
 uniform float focusDistance;
 uniform float focusRange;
 uniform float bokehRadius;
-uniform vec2 textureSize;
 uniform sampler2D textureSampler;
 uniform sampler2D dofTexture;
 in vec2 texCoord;

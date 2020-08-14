@@ -39,7 +39,6 @@ uniform highp sampler2D depthTexture;
 uniform highp float focusDistance;
 uniform highp float focusRange;
 uniform highp float bokehRadius;
-uniform highp vec2 textureSize;
 uniform highp sampler2D textureSampler;
 uniform highp sampler2D dofTexture;
 

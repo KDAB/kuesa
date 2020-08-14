@@ -40,7 +40,7 @@ uniform highp sampler2D depthTexture;
 uniform highp float focusDistance;
 uniform highp float focusRange;
 uniform highp float bokehRadius;
-uniform highp vec2 textureSize;
+uniform highp vec2 texSize;
 uniform highp sampler2D textureSampler;
 
 in highp vec2 texCoord;
@@ -87,7 +87,7 @@ highp vec4 depthOfField()
     {
         highp vec2 sampledPoint = _451[k] * bokehRadius;
         highp float radius = length(sampledPoint);
-        sampledPoint /= textureSize;
+        sampledPoint /= texSize;
         highp vec4 s = texture(textureSampler, texCoord + sampledPoint);
 
         //Find CoC of sampled point. if it's > CoC at this point it will contribute

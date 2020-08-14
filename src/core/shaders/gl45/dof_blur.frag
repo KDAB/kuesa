@@ -39,7 +39,7 @@ layout(location = 0) in vec2 texCoord;
 layout(location = 0) out vec4 fragColor;
 
 layout(std140, binding = 2) uniform DofBlurBlock {
-    vec2 textureSize;
+    vec2 texSize;
     float focusDistance;
     float focusRange;
     float bokehRadius;
@@ -88,7 +88,7 @@ vec4 depthOfField()
     {
         vec2 sampledPoint = _451[k] * bokehRadius;
         float radius = length(sampledPoint);
-        sampledPoint /= textureSize;
+        sampledPoint /= texSize;
         vec4 s = texture(textureSampler, texCoord + sampledPoint);
 
         //Find CoC of sampled point. if it's > CoC at this point it will contribute
