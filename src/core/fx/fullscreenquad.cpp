@@ -38,6 +38,14 @@
 #include <QVector3D>
 #include <QVector2D>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QAttribute>
+#include <Qt3DCore/QBuffer>
+#else
+#include <Qt3DRender/QAttribute>
+#include <Qt3DRender/QBuffer>
+#endif
+
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
