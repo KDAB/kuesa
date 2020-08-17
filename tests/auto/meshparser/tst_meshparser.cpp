@@ -33,6 +33,7 @@
 #include <QString>
 #include <Kuesa/private/bufferparser_p.h>
 #include <Kuesa/private/gltf2context_p.h>
+#include <Kuesa/private/bufferviewsparser_p.h>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <Qt3DCore/QBuffer>
 #include <Qt3DCore/QGeometry>
@@ -205,6 +206,253 @@ private Q_SLOTS:
                 }
             }
         }
+    }
+
+    void checkNoBufferSplittingOnSmallAccessorOffsets()
+    {
+        // GIVEN
+        GLTF2Context context;
+
+        QByteArray fakeVertexData(2400, '\0');
+        QByteArray fakeIndexData(256, '1');
+
+        BufferView view;
+        view.bufferData = fakeVertexData;
+        view.byteStride = 24;
+        view.byteOffset = 0;
+
+        Accessor positionAccessor;
+        positionAccessor.dataSize = 3;
+        positionAccessor.bufferData = fakeVertexData;
+        positionAccessor.offset = 0;
+        positionAccessor.count = 100;
+        positionAccessor.bufferViewIndex = 0;
+
+        Accessor normalAccessor;
+        normalAccessor.dataSize = 3;
+        normalAccessor.bufferData = fakeVertexData;
+        normalAccessor.offset = 12;
+        normalAccessor.count = 100;
+        normalAccessor.bufferViewIndex = 0;
+
+        Accessor indicesAccessor;
+        indicesAccessor.dataSize = 1;
+        indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
+        indicesAccessor.bufferData = fakeIndexData;
+        indicesAccessor.offset = 0;
+        indicesAccessor.count = 128;
+
+        context.addBufferView(view);
+        context.addAccessor(positionAccessor);
+        context.addAccessor(normalAccessor);
+        context.addAccessor(indicesAccessor);
+
+        const QByteArray json = QByteArrayLiteral("["
+                                                  "    {"
+                                                  "        \"primitives\": [{"
+                                                  "             \"attributes\": {"
+                                                  "                 \"POSITION\": 0,"
+                                                  "                 \"NORMAL\": 1"
+                                                  "             },"
+                                                  "             \"indices\": 2"
+                                                  "        }]"
+                                                  "    }"
+                                                  "]");
+        // THEN
+        const QJsonArray meshesArray =  QJsonDocument::fromJson(json).array();
+        QVERIFY(!meshesArray.empty());
+
+        // WHEN
+        MeshParser parser;
+        const bool success = parser.parse(meshesArray, &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.meshesCount(), 1);
+
+        const Mesh &mesh = context.mesh(0);
+        QCOMPARE(mesh.meshPrimitives.size(), 1);
+
+        const Primitive &p = mesh.meshPrimitives.first();
+        QCOMPARE(p.hasColorAttr, false);
+        QCOMPARE(p.materialIdx, -1);
+        QVERIFY(p.primitiveRenderer != nullptr);
+
+        Qt3DRender::QGeometryRenderer *renderer = p.primitiveRenderer;
+        QVERIFY(renderer->geometry() != nullptr);
+
+        Qt3DGeometry::QGeometry *geometry = renderer->geometry();
+        QCOMPARE(geometry->attributes().size(), 3);
+
+        auto findAttribute = [&geometry] (const QString &name) -> Qt3DGeometry::QAttribute* {
+            const auto &attributes = geometry->attributes();
+            auto it = std::find_if(attributes.begin(), attributes.end(),
+                         [&name] (const Qt3DGeometry::QAttribute *a) {
+                return a->name() == name;
+            });
+            if (it != attributes.end())
+                return *it;
+            return nullptr;
+        };
+
+        const Qt3DGeometry::QAttribute *positionAttribute = findAttribute(Qt3DGeometry::QAttribute::defaultPositionAttributeName());
+        const Qt3DGeometry::QAttribute *normalAttribute = findAttribute(Qt3DGeometry::QAttribute::defaultNormalAttributeName());
+        const Qt3DGeometry::QAttribute *indexAttribute = findAttribute({});
+
+        QCOMPARE(positionAttribute->name(), Qt3DGeometry::QAttribute::defaultPositionAttributeName());
+        QCOMPARE(positionAttribute->attributeType(), Qt3DGeometry::QAttribute::VertexAttribute);
+        QCOMPARE(positionAttribute->vertexBaseType(), Qt3DGeometry::QAttribute::Float);
+        QCOMPARE(positionAttribute->vertexSize(), 3U);
+        QCOMPARE(positionAttribute->byteStride(), 24U);
+        QCOMPARE(positionAttribute->byteOffset(), 0U);
+        QCOMPARE(positionAttribute->count(), 100U);
+
+        QCOMPARE(normalAttribute->name(), Qt3DGeometry::QAttribute::defaultNormalAttributeName());
+        QCOMPARE(normalAttribute->attributeType(), Qt3DGeometry::QAttribute::VertexAttribute);
+        QCOMPARE(normalAttribute->vertexBaseType(), Qt3DGeometry::QAttribute::Float);
+        QCOMPARE(normalAttribute->vertexSize(), 3U);
+        QCOMPARE(normalAttribute->byteStride(), 24U);
+        QCOMPARE(normalAttribute->byteOffset(), 12U);
+        QCOMPARE(normalAttribute->count(), 100U);
+
+        QCOMPARE(positionAttribute->buffer(), normalAttribute->buffer());
+        QCOMPARE(positionAttribute->buffer()->data(), fakeVertexData);
+
+        QVERIFY(indexAttribute->name().isEmpty());
+        QCOMPARE(indexAttribute->attributeType(), Qt3DGeometry::QAttribute::IndexAttribute);
+        QCOMPARE(indexAttribute->vertexBaseType(), Qt3DGeometry::QAttribute::UnsignedShort);
+        QCOMPARE(indexAttribute->vertexSize(), 1U);
+        QCOMPARE(indexAttribute->byteStride(), 0U);
+        QCOMPARE(indexAttribute->byteOffset(), 0U);
+        QCOMPARE(indexAttribute->buffer()->data(), fakeIndexData);
+        QCOMPARE(indexAttribute->count(), 128);
+
+    }
+
+    void checkBufferSplittingForLargetAccessorOffsets()
+    {
+        GLTF2Context context;
+
+        QByteArray fakeVertexData(4800, '\0');
+        QByteArray fakeIndexData(2856, '1');
+
+        BufferView view;
+        view.bufferData = fakeVertexData;
+        view.byteStride = 0;
+        view.byteOffset = 0;
+
+        Accessor positionAccessor;
+        positionAccessor.dataSize = 3;
+        positionAccessor.bufferData = fakeVertexData;
+        positionAccessor.offset = 2400;
+        positionAccessor.count = 100;
+        positionAccessor.bufferViewIndex = 0;
+
+        Accessor normalAccessor;
+        normalAccessor.dataSize = 3;
+        normalAccessor.bufferData = fakeVertexData;
+        normalAccessor.offset = 0;
+        normalAccessor.count = 100;
+        normalAccessor.bufferViewIndex = 0;
+
+        Accessor indicesAccessor;
+        indicesAccessor.dataSize = 1;
+        indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
+        indicesAccessor.bufferData = fakeIndexData;
+        indicesAccessor.offset = 2500;
+        indicesAccessor.count = 128;
+
+        context.addBufferView(view);
+        context.addAccessor(positionAccessor);
+        context.addAccessor(normalAccessor);
+        context.addAccessor(indicesAccessor);
+
+        const QByteArray json = QByteArrayLiteral("["
+                                                  "    {"
+                                                  "        \"primitives\": [{"
+                                                  "             \"attributes\": {"
+                                                  "                 \"POSITION\": 0,"
+                                                  "                 \"NORMAL\": 1"
+                                                  "             },"
+                                                  "             \"indices\": 2"
+                                                  "        }]"
+                                                  "    }"
+                                                  "]");
+        // THEN
+        const QJsonArray meshesArray =  QJsonDocument::fromJson(json).array();
+        QVERIFY(!meshesArray.empty());
+
+        // WHEN
+        MeshParser parser;
+        const bool success = parser.parse(meshesArray, &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.meshesCount(), 1);
+
+        const Mesh &mesh = context.mesh(0);
+        QCOMPARE(mesh.meshPrimitives.size(), 1);
+
+        const Primitive &p = mesh.meshPrimitives.first();
+        QCOMPARE(p.hasColorAttr, false);
+        QCOMPARE(p.materialIdx, -1);
+        QVERIFY(p.primitiveRenderer != nullptr);
+
+        Qt3DRender::QGeometryRenderer *renderer = p.primitiveRenderer;
+        QVERIFY(renderer->geometry() != nullptr);
+
+        Qt3DGeometry::QGeometry *geometry = renderer->geometry();
+        QCOMPARE(geometry->attributes().size(), 3);
+
+        auto findAttribute = [&geometry] (const QString &name) -> Qt3DGeometry::QAttribute* {
+            const auto &attributes = geometry->attributes();
+            auto it = std::find_if(attributes.begin(), attributes.end(),
+                         [&name] (const Qt3DGeometry::QAttribute *a) {
+                return a->name() == name;
+            });
+            if (it != attributes.end())
+                return *it;
+            return nullptr;
+        };
+
+        const Qt3DGeometry::QAttribute *positionAttribute = findAttribute(Qt3DGeometry::QAttribute::defaultPositionAttributeName());
+        const Qt3DGeometry::QAttribute *normalAttribute = findAttribute(Qt3DGeometry::QAttribute::defaultNormalAttributeName());
+        const Qt3DGeometry::QAttribute *indexAttribute = findAttribute({});
+
+        QCOMPARE(positionAttribute->name(), Qt3DGeometry::QAttribute::defaultPositionAttributeName());
+        QCOMPARE(positionAttribute->attributeType(), Qt3DGeometry::QAttribute::VertexAttribute);
+        QCOMPARE(positionAttribute->vertexBaseType(), Qt3DGeometry::QAttribute::Float);
+        QCOMPARE(positionAttribute->vertexSize(), 3U);
+        QCOMPARE(positionAttribute->byteStride(), 0U);
+        QCOMPARE(positionAttribute->byteOffset(), 0U);
+        QCOMPARE(positionAttribute->count(), 100U);
+
+        QCOMPARE(normalAttribute->name(), Qt3DGeometry::QAttribute::defaultNormalAttributeName());
+        QCOMPARE(normalAttribute->attributeType(), Qt3DGeometry::QAttribute::VertexAttribute);
+        QCOMPARE(normalAttribute->vertexBaseType(), Qt3DGeometry::QAttribute::Float);
+        QCOMPARE(normalAttribute->vertexSize(), 3U);
+        QCOMPARE(normalAttribute->byteStride(), 0U);
+        QCOMPARE(normalAttribute->byteOffset(), 0U);
+        QCOMPARE(normalAttribute->count(), 100U);
+
+        QVERIFY(positionAttribute->buffer() != normalAttribute->buffer());
+
+        QCOMPARE(normalAttribute->buffer()->data(), fakeVertexData);
+        QCOMPARE(normalAttribute->buffer()->data().size(), 4800);
+
+        QCOMPARE(positionAttribute->buffer()->data().size(), 2400);
+        QCOMPARE(positionAttribute->buffer()->data(), fakeVertexData.mid(2400));
+
+        QVERIFY(indexAttribute->name().isEmpty());
+        QCOMPARE(indexAttribute->attributeType(), Qt3DGeometry::QAttribute::IndexAttribute);
+        QCOMPARE(indexAttribute->vertexBaseType(), Qt3DGeometry::QAttribute::UnsignedShort);
+        QCOMPARE(indexAttribute->vertexSize(), 1U);
+        QCOMPARE(indexAttribute->byteStride(), 0U);
+        QCOMPARE(indexAttribute->byteOffset(), 0U);
+        QCOMPARE(indexAttribute->buffer()->data(), fakeIndexData.mid(2500));
+        QCOMPARE(indexAttribute->buffer()->data().size(), 356);
+        QCOMPARE(indexAttribute->count(), 128);
+
     }
 };
 

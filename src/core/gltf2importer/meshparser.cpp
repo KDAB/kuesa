@@ -319,41 +319,9 @@ bool MeshParser::geometryFromJSON(QGeometry *geometry,
     // Index attribute
     const QJsonValue &indices = json.value(KEY_INDICES);
     if (!indices.isUndefined()) {
-        const qint32 accessorIndex = indices.toInt();
-        const Accessor &accessor = m_context->accessor(accessorIndex);
-        const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
-        const int byteStride = (!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
-
-        Qt3DGeometry::QBuffer *buffer = nullptr;
-        if (accessor.sparseCount) {
-            buffer = m_qAccessorBuffers.value(accessorIndex, nullptr);
-            if (buffer == nullptr) {
-                buffer = new Qt3DGeometry::QBuffer;
-                buffer->setData(accessor.bufferData);
-                m_qAccessorBuffers.insert(accessorIndex, buffer);
-            }
-        } else {
-            buffer = m_qViewBuffers.value(accessor.bufferViewIndex, nullptr);
-            if (buffer == nullptr) {
-                buffer = new Qt3DGeometry::QBuffer;
-                buffer->setData(accessor.bufferData);
-                m_qViewBuffers.insert(accessor.bufferViewIndex, buffer);
-            }
-        }
-
-        QAttribute *attribute = new QAttribute(buffer,
-                                                                       accessor.type,
-                                                                       accessor.dataSize,
-                                                                       accessor.count,
-                                                                       accessor.offset,
-                                                                       static_cast<uint>(byteStride));
-        attribute->setAttributeType(QAttribute::IndexAttribute);
-        // store some GLTF metadata for glTF editor
-        attribute->setProperty("bufferIndex", viewData.bufferIdx);
-        attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
-        attribute->setProperty("bufferViewOffset", viewData.byteOffset);
-        attribute->setProperty("bufferName", accessor.name);
-        geometry->addAttribute(attribute);
+        QAttribute *indexAttribute = createAttribute(indices.toInt(-1), {}, {});
+        indexAttribute->setAttributeType(QAttribute::IndexAttribute);
+        geometry->addAttribute(indexAttribute);
     }
     return true;
 }
@@ -536,13 +504,14 @@ QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
     const Accessor &accessor = m_context->accessor(accessorIndex);
 
     quint32 byteStride = 0;
-    quint32 byteOffset = 0;
+    quint32 byteOffset = accessor.offset;
+    quint32 bufferViewByteOffset = 0;
     qint32 bufferIdx = -1;
 
     if (accessor.bufferViewIndex >= 0) {
         const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
         byteStride = static_cast<quint32>(!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
-        byteOffset = static_cast<quint32>(viewData.byteOffset);
+        bufferViewByteOffset = static_cast<quint32>(viewData.byteOffset);
         bufferIdx = viewData.bufferIdx;
     }
 
@@ -556,7 +525,14 @@ QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
         }
     } else {
         buffer = m_qViewBuffers.value(accessor.bufferViewIndex, nullptr);
-        if (buffer == nullptr) {
+        // Some rendering APIs don't support large attribute offsets
+        if (byteOffset > 2048) {
+            // In such cases we create a new buffer and copy data
+            buffer = new Qt3DGeometry::QBuffer;
+            buffer->setData(accessor.bufferData.mid(byteOffset));
+            byteOffset = 0;
+            qCWarning(kuesa) << "Accessor byteOffset too large, consider splitting bufferViews";
+        } else if (buffer == nullptr) {
             buffer = new Qt3DGeometry::QBuffer;
             buffer->setData(accessor.bufferData);
             m_qViewBuffers.insert(accessor.bufferViewIndex, buffer);
@@ -564,17 +540,19 @@ QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
     }
 
     QAttribute *attribute = new QAttribute(buffer,
-                                                                   attributeName,
-                                                                   accessor.type,
-                                                                   accessor.dataSize,
-                                                                   quint32(accessor.count),
-                                                                   quint32(accessor.offset),
-                                                                   byteStride);
-    attribute->setAttributeType(QAttribute::VertexAttribute);
+                                           attributeName,
+                                           accessor.type,
+                                           accessor.dataSize,
+                                           quint32(accessor.count),
+                                           byteOffset,
+                                           byteStride);
+    attribute->setAttributeType(attributeName.isEmpty()
+                                ? QAttribute::IndexAttribute
+                                : QAttribute::VertexAttribute);
     // store some GLTF metadata for glTF editor
     attribute->setProperty("bufferIndex", bufferIdx);
     attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
-    attribute->setProperty("bufferViewOffset", byteOffset);
+    attribute->setProperty("bufferViewOffset", bufferViewByteOffset);
     attribute->setProperty("bufferName", accessor.name);
     attribute->setProperty("semanticName", semanticName);
 

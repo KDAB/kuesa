@@ -65,7 +65,7 @@ class GLTF2Context;
  * An invalid BufferView can be constructed if the data referenced by the buffer view does not exist.
  * In this case, the \a bufferData property will be a default constructed QByteArray and the rest of properties will be -1.
  */
-struct BufferView {
+struct Q_AUTOTEST_EXPORT BufferView {
     BufferView();
 
     QByteArray bufferData;
