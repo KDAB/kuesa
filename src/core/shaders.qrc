@@ -102,7 +102,10 @@
         <file>shaders/gl45/dof_blur.frag</file>
         <file>shaders/gl45/dof_composite.frag</file>
         <file>shaders/gl45/kuesa_gaussianblur.inc.frag</file>
-        <file>shaders/gl45/msaaresolver.vert</file>
         <file>shaders/gl45/msaaresolver.frag</file>
+        <file>shaders/es2/fullscreen.vert</file>
+        <file>shaders/es3/fullscreen.vert</file>
+        <file>shaders/gl3/fullscreen.vert</file>
+        <file>shaders/gl45/fullscreen.vert</file>
     </qresource>
 </RCC>

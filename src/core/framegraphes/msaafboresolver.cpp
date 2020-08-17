@@ -66,7 +66,7 @@ MSAAFBOResolver::MSAAFBOResolver(Qt3DCore::QNode *parent)
     Qt3DRender::QShaderProgram *shader = new Qt3DRender::QShaderProgram();
 
     shader->setShaderCode(Qt3DRender::QShaderProgram::Vertex,
-                          Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/msaaresolver.vert"))));
+                          Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"))));
     shader->setShaderCode(Qt3DRender::QShaderProgram::Fragment,
                           Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/msaaresolver.frag"))));
 

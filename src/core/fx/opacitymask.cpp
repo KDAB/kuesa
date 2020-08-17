@@ -217,7 +217,7 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     auto *gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
                                                 3, 2,
                                                 Qt3DRender::QGraphicsApiFilter::CoreProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert"),
                                                 m_gl3ShaderBuilder,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(gl3Technique);
@@ -225,7 +225,7 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     auto *es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                 3, 0,
                                                 Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert"),
                                                 m_es3ShaderBuilder,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es3Technique);
@@ -233,7 +233,7 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     auto *es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                 2, 0,
                                                 Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert"),
                                                 m_es2ShaderBuilder,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es2Technique);
@@ -246,7 +246,7 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     auto *rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI,
                                                 1, 0,
                                                 Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/gl45/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"),
                                                 m_rhiShaderBuilder,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(rhiTechnique);

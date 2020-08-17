@@ -333,12 +333,12 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     auto gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL, 3, 2,
                                                Qt3DRender::QGraphicsApiFilter::CoreProfile);
     gl3Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/dof_blur.frag")),
             dofBlurPassName));
 
     gl3Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/dof_composite.frag")),
             dofCompositionPassName));
 
@@ -347,12 +347,12 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     auto es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES, 2, 0,
                                                Qt3DRender::QGraphicsApiFilter::NoProfile);
     es2Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/dof_blur.frag")),
             dofBlurPassName));
 
     es2Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/dof_composite.frag")),
             dofCompositionPassName));
 
@@ -361,12 +361,12 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     auto es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES, 3, 0,
                                                Qt3DRender::QGraphicsApiFilter::CoreProfile);
     es3Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/dof_blur.frag")),
             dofBlurPassName));
 
     es3Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/dof_composite.frag")),
             dofCompositionPassName));
 
@@ -376,12 +376,12 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     auto rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI, 1, 0,
                                                Qt3DRender::QGraphicsApiFilter::NoProfile);
     rhiTechnique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/dof_blur.frag")),
             dofBlurPassName));
 
     rhiTechnique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/dof_composite.frag")),
             dofCompositionPassName));
 

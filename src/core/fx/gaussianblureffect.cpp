@@ -225,28 +225,28 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     auto *gl3Technique = makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
                                        3, 2,
                                        Qt3DRender::QGraphicsApiFilter::CoreProfile,
-                                       QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"));
+                                       QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert"));
 
     effect->addTechnique(gl3Technique);
 
     auto *es3Technique = makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                        3, 0,
                                        Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                       QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"));
+                                       QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert"));
 
     effect->addTechnique(es3Technique);
 
     auto *es2Technique = makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                        2, 0,
                                        Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                       QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"));
+                                       QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert"));
 
     effect->addTechnique(es2Technique);
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     auto rhiTechnique = makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI, 1, 0,
                                       Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                      QStringLiteral("qrc:/kuesa/shaders/gl45/passthrough.vert"));
+                                      QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"));
 
     effect->addTechnique(rhiTechnique);
 #endif

@@ -207,7 +207,7 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     auto *gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
                                                 3, 2,
                                                 Qt3DRender::QGraphicsApiFilter::CoreProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert"),
                                                 graphPath,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(gl3Technique);
@@ -215,7 +215,7 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     auto *es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                 3, 0,
                                                 Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert"),
                                                 graphPath,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es3Technique);
@@ -223,7 +223,7 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     auto *es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                 2, 0,
                                                 Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert"),
                                                 graphPath,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es2Technique);
@@ -231,7 +231,7 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     auto rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI, 1, 0,
                                                Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                               QStringLiteral("qrc:/kuesa/shaders/gl45/passthrough.vert"),
+                                               QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"),
                                                graphPath,
                                                passFilterName, passFilterValue);
     effect->addTechnique(rhiTechnique);
