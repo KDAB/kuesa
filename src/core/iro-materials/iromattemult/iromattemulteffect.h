@@ -55,11 +55,17 @@ private:
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     IroMatteMultTechnique *m_rhiTechnique;
 #endif
+    void updateLayersOnTechniques(const QStringList &layers);
 
     void updateDoubleSided(bool doubleSided) override;
     void updateSkinning(bool useSkinning) override;
     void updateOpaque(bool opaque) override;
     void updateAlphaCutoffEnabled(bool enabled) override;
+    void updateUsingColorAttribute(bool enabled) override;
+    void updateUsingNormalAttribute(bool enabled) override;
+    void updateUsingTangentAttribute(bool enabled) override;
+    void updateUsingTexCoordAttribute(bool enabled) override;
+    void updateUsingTexCoord1Attribute(bool enabled) override;
 };
 
 } // namespace Kuesa

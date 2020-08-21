@@ -35,63 +35,74 @@
 
 QT_BEGIN_NAMESPACE
 
+namespace Kuesa {
+
 namespace {
 
-Qt3DRender::QEffect *createUnlitEffectWithKey(Kuesa::EffectProperties::Properties properties)
+UnlitEffect *createUnlitEffectWithKey(EffectProperties::Properties properties)
 {
-    Kuesa::UnlitEffect *effect = new Kuesa::UnlitEffect;
+    UnlitEffect *effect = new UnlitEffect;
 
-    effect->setBaseColorMapEnabled(properties & Kuesa::EffectProperties::BaseColorMap);
-    effect->setOpaque(!(properties & Kuesa::EffectProperties::Blend));
-    effect->setAlphaCutoffEnabled(properties & Kuesa::EffectProperties::Mask);
-    effect->setDoubleSided(properties & Kuesa::EffectProperties::DoubleSided);
-    effect->setUsingColorAttribute(properties & Kuesa::EffectProperties::VertexColor);
-    effect->setUseSkinning(properties & Kuesa::EffectProperties::Skinning);
+    effect->setBaseColorMapEnabled(properties & EffectProperties::BaseColorMap);
+    effect->setOpaque(!(properties & EffectProperties::Blend));
+    effect->setAlphaCutoffEnabled(properties & EffectProperties::Mask);
+    effect->setDoubleSided(properties & EffectProperties::DoubleSided);
+    effect->setUsingColorAttribute(properties & EffectProperties::VertexColor);
+    effect->setUsingNormalAttribute(properties & EffectProperties::VertexNormal);
+    effect->setUsingTangentAttribute(properties & EffectProperties::VertexTangent);
+    effect->setUsingTexCoordAttribute(properties & EffectProperties::VertexTexCoord);
+    effect->setUsingTexCoord1Attribute(properties & EffectProperties::VertexTexCoord1);
+
+    effect->setUseSkinning(properties & EffectProperties::Skinning);
 
     return effect;
 }
 
-Qt3DRender::QEffect *createMetallicRoughnessEffectWithKey(Kuesa::EffectProperties::Properties properties)
+MetallicRoughnessEffect *createMetallicRoughnessEffectWithKey(EffectProperties::Properties properties)
 {
-    Kuesa::MetallicRoughnessEffect *effect = new Kuesa::MetallicRoughnessEffect;
+    MetallicRoughnessEffect *effect = new MetallicRoughnessEffect;
 
-    effect->setBaseColorMapEnabled(properties & Kuesa::EffectProperties::BaseColorMap);
-    effect->setMetalRoughMapEnabled(properties & Kuesa::EffectProperties::MetalRoughnessMap);
-    effect->setAmbientOcclusionMapEnabled(properties & Kuesa::EffectProperties::AOMap);
-    effect->setNormalMapEnabled(properties & Kuesa::EffectProperties::NormalMap);
-    effect->setEmissiveMapEnabled(properties & Kuesa::EffectProperties::EmissiveMap);
-    effect->setOpaque(!(properties & Kuesa::EffectProperties::Blend));
-    effect->setAlphaCutoffEnabled(properties & Kuesa::EffectProperties::Mask);
-    effect->setDoubleSided(properties & Kuesa::EffectProperties::DoubleSided);
-    effect->setUsingColorAttribute(properties & Kuesa::EffectProperties::VertexColor);
-    effect->setUseSkinning(properties & Kuesa::EffectProperties::Skinning);
+    effect->setBaseColorMapEnabled(properties & EffectProperties::BaseColorMap);
+    effect->setMetalRoughMapEnabled(properties & EffectProperties::MetalRoughnessMap);
+    effect->setAmbientOcclusionMapEnabled(properties & EffectProperties::AOMap);
+    effect->setNormalMapEnabled(properties & EffectProperties::NormalMap);
+    effect->setEmissiveMapEnabled(properties & EffectProperties::EmissiveMap);
+    effect->setOpaque(!(properties & EffectProperties::Blend));
+    effect->setAlphaCutoffEnabled(properties & EffectProperties::Mask);
+    effect->setDoubleSided(properties & EffectProperties::DoubleSided);
+    effect->setUsingColorAttribute(properties & EffectProperties::VertexColor);
+    effect->setUsingNormalAttribute(properties & EffectProperties::VertexNormal);
+    effect->setUsingTangentAttribute(properties & EffectProperties::VertexTangent);
+    effect->setUsingTexCoordAttribute(properties & EffectProperties::VertexTexCoord);
+    effect->setUsingTexCoord1Attribute(properties & EffectProperties::VertexTexCoord1);
+    effect->setUseSkinning(properties & EffectProperties::Skinning);
 
     return effect;
 }
 
-Qt3DRender::QEffect *createEffectWithKey(Kuesa::EffectProperties::Properties properties)
+GLTF2MaterialEffect *createEffectWithKey(EffectProperties::Properties properties)
 {
-    Q_ASSERT(!(properties & Kuesa::EffectProperties::Custom));
+    Q_ASSERT(!(properties & EffectProperties::Custom));
 
-    if (properties & Kuesa::EffectProperties::Unlit) {
+    if (properties & EffectProperties::Unlit) {
         return createUnlitEffectWithKey(properties);
     }
 
-    if (properties & Kuesa::EffectProperties::MetallicRoughness) {
+    if (properties & EffectProperties::MetallicRoughness) {
         return createMetallicRoughnessEffectWithKey(properties);
     }
 
-    qCWarning(Kuesa::kuesa, "Trying to create an effect with invalid key");
+    qCWarning(kuesa, "Trying to create an effect with invalid key");
     return nullptr;
 }
 } // namespace
 
-Kuesa::EffectsLibrary::EffectsLibrary()
+EffectsLibrary::EffectsLibrary()
 {
 }
 
-Qt3DRender::QEffect *Kuesa::EffectsLibrary::getOrCreateCustomEffect(Kuesa::EffectsLibrary::CustomEffectKey customEffectKey,
-                                                                    Qt3DCore::QNode *effectOwner)
+GLTF2MaterialEffect *EffectsLibrary::getOrCreateCustomEffect(EffectsLibrary::CustomEffectKey customEffectKey,
+                                                             Qt3DCore::QNode *effectOwner)
 {
     auto customEffectKeyIsEqual = [customEffectKey] (const CustomEffectKeyPair &a) {
         return std::get<0>(a) == customEffectKey;
@@ -102,21 +113,26 @@ Qt3DRender::QEffect *Kuesa::EffectsLibrary::getOrCreateCustomEffect(Kuesa::Effec
     if (it != m_customEffects.cend())
         return std::get<1>(*it);
 
-    Qt3DRender::QEffect *effect = qobject_cast<Qt3DRender::QEffect *>(
+    GLTF2MaterialEffect *effect = qobject_cast<GLTF2MaterialEffect *>(
                 customEffectKey.effectClassMetaObject->newInstance(
                     Q_ARG(Qt3DCore::QNode *, effectOwner)));
     Q_ASSERT(effect);
     const EffectProperties::Properties properties = customEffectKey.properties;
-    effect->setProperty("opaque", !(properties & Kuesa::EffectProperties::Blend));
-    effect->setProperty("alphaCutoffEnabled", bool(properties & Kuesa::EffectProperties::Mask));
-    effect->setProperty("doubleSided", bool(properties & Kuesa::EffectProperties::DoubleSided));
-    effect->setProperty("useSkinning", bool(properties & Kuesa::EffectProperties::Skinning));
+    effect->setOpaque(!(properties & EffectProperties::Blend));
+    effect->setAlphaCutoffEnabled(properties & EffectProperties::Mask);
+    effect->setDoubleSided(properties & EffectProperties::DoubleSided);
+    effect->setUsingColorAttribute(properties & EffectProperties::VertexColor);
+    effect->setUsingNormalAttribute(properties & EffectProperties::VertexNormal);
+    effect->setUsingTangentAttribute(properties & EffectProperties::VertexTangent);
+    effect->setUsingTexCoordAttribute(properties & EffectProperties::VertexTexCoord);
+    effect->setUsingTexCoord1Attribute(properties & EffectProperties::VertexTexCoord1);
+    effect->setUseSkinning(properties & EffectProperties::Skinning);
     m_customEffects.push_back({customEffectKey, effect});
     return effect;
 }
 
-Qt3DRender::QEffect *Kuesa::EffectsLibrary::getOrCreateEffect(Kuesa::EffectProperties::Properties properties,
-                                                              Qt3DCore::QNode *effectOwner)
+GLTF2MaterialEffect *EffectsLibrary::getOrCreateEffect(EffectProperties::Properties properties,
+                                                       Qt3DCore::QNode *effectOwner)
 {
     auto effectIt = m_effects.find(properties);
     if (effectIt == m_effects.end()) {
@@ -130,31 +146,33 @@ Qt3DRender::QEffect *Kuesa::EffectsLibrary::getOrCreateEffect(Kuesa::EffectPrope
     return effectIt.value();
 }
 
-int Kuesa::EffectsLibrary::count() const
+int EffectsLibrary::count() const
 {
     return m_effects.size() + m_customEffects.size();
 }
 
-void Kuesa::EffectsLibrary::clear()
+void EffectsLibrary::clear()
 {
     m_effects.clear();
     m_customEffects.clear();
 }
 
-QHash<Kuesa::EffectProperties::Properties, Qt3DRender::QEffect *> Kuesa::EffectsLibrary::effects() const
+QHash<EffectProperties::Properties, GLTF2MaterialEffect *> EffectsLibrary::effects() const
 {
     return m_effects;
 }
 
-QVector<std::pair<Kuesa::EffectsLibrary::CustomEffectKey, Qt3DRender::QEffect *> > Kuesa::EffectsLibrary::customEffects() const
+QVector<std::pair<EffectsLibrary::CustomEffectKey, GLTF2MaterialEffect *> > EffectsLibrary::customEffects() const
 {
     return m_customEffects;
 }
 
-bool Kuesa::operator ==(const Kuesa::EffectsLibrary::CustomEffectKey &a, const Kuesa::EffectsLibrary::CustomEffectKey &b)
+bool operator ==(const EffectsLibrary::CustomEffectKey &a, const EffectsLibrary::CustomEffectKey &b)
 {
     return a.effectClassMetaObject == b.effectClassMetaObject &&
            a.properties == b.properties;
 }
+
+} // Kuesa
 
 QT_END_NAMESPACE

@@ -299,11 +299,6 @@ UnlitEffect::UnlitEffect(Qt3DCore::QNode *parent)
 
     addTechnique(m_unlitRHITechnique);
 #endif
-
-    QObject::connect(this, &GLTF2MaterialEffect::alphaCutoffEnabledChanged, this, &UnlitEffect::updateAlphaCutoffEnabled);
-    QObject::connect(this, &GLTF2MaterialEffect::opaqueChanged, this, &UnlitEffect::updateOpaque);
-    QObject::connect(this, &GLTF2MaterialEffect::doubleSidedChanged, this, &UnlitEffect::updateDoubleSided);
-    QObject::connect(this, &GLTF2MaterialEffect::useSkinningChanged, this, &UnlitEffect::updateSkinning);
 }
 
 UnlitEffect::~UnlitEffect()
@@ -422,6 +417,71 @@ void UnlitEffect::updateAlphaCutoffEnabled(bool enabled)
         layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
     }
+    m_unlitGL3Technique->setEnabledLayers(layers);
+    m_unlitES3Technique->setEnabledLayers(layers);
+    m_unlitES2Technique->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setEnabledLayers(layers);
+#endif
+}
+
+void UnlitEffect::updateUsingColorAttribute(bool usingColorAttribute)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noHasColorAttr"));
+    layers.removeAll(QStringLiteral("hasColorAttr"));
+    layers.removeAll(QStringLiteral("hasVertexColor"));
+    if (usingColorAttribute) {
+        layers.append(QStringLiteral("hasColorAttr"));
+        layers.append(QStringLiteral("hasVertexColor"));
+    } else {
+        layers.append(QStringLiteral("noHasColorAttr"));
+    }
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateUsingNormalAttribute(bool usingNormalAttribute)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexNormal"));
+    if (usingNormalAttribute)
+        layers.append(QStringLiteral("hasVertexNormal"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateUsingTangentAttribute(bool usingTangentAttribute)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexTangent"));
+    if (usingTangentAttribute)
+        layers.append(QStringLiteral("hasVertexTangent"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord"));
+    if (usingTexCoordAttribute)
+        layers.append(QStringLiteral("hasTexCoord"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord1"));
+    if (usingTexCoord1Attribute)
+        layers.append(QStringLiteral("hasTexCoord1"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateLayersOnTechniques(const QStringList &layers)
+{
     m_unlitGL3Technique->setEnabledLayers(layers);
     m_unlitES3Technique->setEnabledLayers(layers);
     m_unlitES2Technique->setEnabledLayers(layers);

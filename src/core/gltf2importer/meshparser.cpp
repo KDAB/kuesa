@@ -167,7 +167,6 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             Primitive &primitive = mesh.meshPrimitives[primitiveId];
             const QJsonObject &primitivesObject = primitivesArray[primitiveId].toObject();
 
-            bool hasColorAttr = false;
             auto geometry = std::unique_ptr<QGeometry>(new QGeometry);
 
 #if defined(KUESA_DRACO_COMPRESSION)
@@ -175,7 +174,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
 
             // Draco Extensions
             if (extensions.contains(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION)) {
-                if (!geometryDracoFromJSON(geometry.get(), primitivesObject, hasColorAttr) &&
+                if (!geometryDracoFromJSON(geometry.get(), primitivesObject, primitive) &&
                     geometry->attributes().isEmpty()) {
                     qCWarning(Kuesa::kuesa) << "Failed to parse draco compressed mesh primitive";
                     return false;
@@ -183,7 +182,7 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             } else
 #endif
             {
-                if (!geometryFromJSON(geometry.get(), primitivesObject, hasColorAttr) &&
+                if (!geometryFromJSON(geometry.get(), primitivesObject, primitive) &&
                     geometry->attributes().isEmpty()) {
                     qCWarning(Kuesa::kuesa) << "Failed to parse mesh primitive";
                     return false;
@@ -217,11 +216,14 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
                     Kuesa::GLTF2Import::MeshParserUtils::createNormalsForGeometry(geometry.get(), primitiveType);
                     // The generation of normal forces the primitive type to be Triangles
                     primitiveType = QGeometryRenderer::Triangles;
+                    primitive.hasNormalAttr = true;
                 }
             }
             if (m_context->options()->generateTangents()) {
-                if (MeshParserUtils::needsTangentAttribute(geometry.get(), primitiveType))
+                if (MeshParserUtils::needsTangentAttribute(geometry.get(), primitiveType)) {
                     Kuesa::GLTF2Import::MeshParserUtils::createTangentForGeometry(geometry.get(), primitiveType);
+                    primitive.hasTangentAttr = true;
+                }
             }
 
             QGeometryRenderer *renderer = new QGeometryRenderer;
@@ -229,7 +231,6 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             renderer->setGeometry(geometry.release());
             primitive.primitiveRenderer = renderer;
             primitive.materialIdx = primitivesObject.value(KEY_MATERIAL).toInt(-1);
-            primitive.hasColorAttr = hasColorAttr;
         }
 
         // All primitives in a mesh are required to declare the same number of
@@ -310,10 +311,10 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
 
 bool MeshParser::geometryFromJSON(QGeometry *geometry,
                                   const QJsonObject &json,
-                                  bool &hasColorAttr)
+                                  Primitive &primitive)
 {
     // Parse vertex attributes
-    if (!geometryAttributesFromJSON(geometry, json, {}, hasColorAttr))
+    if (!geometryAttributesFromJSON(geometry, json, {}, primitive))
         return false;
 
     // Index attribute
@@ -466,7 +467,7 @@ MeshParser::geometryMorphTargetsFromJSON(QGeometry *geometry,
 bool MeshParser::geometryAttributesFromJSON(QGeometry *geometry,
                                             const QJsonObject &json,
                                             QStringList existingAttributes,
-                                            bool &hasColorAttr)
+                                            Primitive &primitive)
 {
     const QJsonObject &attrs = json.value(KEY_ATTRIBUTES).toObject();
 
@@ -485,7 +486,15 @@ bool MeshParser::geometryAttributesFromJSON(QGeometry *geometry,
             continue;
 
         if (attributeName == QAttribute::defaultColorAttributeName())
-            hasColorAttr = true;
+            primitive.hasColorAttr = true;
+        else if (attributeName == QAttribute::defaultNormalAttributeName())
+            primitive.hasNormalAttr = true;
+        else if (attributeName == QAttribute::defaultTangentAttributeName())
+            primitive.hasTangentAttr = true;
+        else if (attributeName == QAttribute::defaultTextureCoordinateAttributeName())
+            primitive.hasTexCoordAttr = true;
+        else if (attributeName == QAttribute::defaultTextureCoordinate1AttributeName())
+            primitive.hasTexCoord1Attr = true;
 
         const qint32 accessorIdx = it.value().toInt(-1);
         QAttribute *attribute = createAttribute(accessorIdx,
@@ -498,8 +507,8 @@ bool MeshParser::geometryAttributesFromJSON(QGeometry *geometry,
 }
 
 QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
-                                                    const QString &attributeName,
-                                                    const QString &semanticName)
+                                        const QString &attributeName,
+                                        const QString &semanticName)
 {
     const Accessor &accessor = m_context->accessor(accessorIndex);
 
@@ -562,7 +571,7 @@ QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
 #if defined(KUESA_DRACO_COMPRESSION)
 bool MeshParser::geometryDracoFromJSON(QGeometry *geometry,
                                        const QJsonObject &json,
-                                       bool &hasColorAttr)
+                                       Primitive &primitive)
 {
     const QJsonObject extensions = json.value(KEY_EXTENSIONS).toObject();
     const QJsonObject dracoExtensionObject = extensions.value(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION).toObject();
@@ -612,7 +621,7 @@ bool MeshParser::geometryDracoFromJSON(QGeometry *geometry,
                                          json,
                                          geometryData.get(),
                                          existingAttributes,
-                                         hasColorAttr))
+                                         primitive))
         return false;
 
     // Create Index attribute if we are dealing with a triangular mesh
@@ -643,7 +652,7 @@ bool MeshParser::geometryDracoFromJSON(QGeometry *geometry,
     // Parse any additional non draco vertex attributes that may be present
     const QJsonObject &attrs = json.value(KEY_ATTRIBUTES).toObject();
     if (attrs.size() != 0)
-        return geometryAttributesFromJSON(geometry, json, existingAttributes, hasColorAttr);
+        return geometryAttributesFromJSON(geometry, json, existingAttributes, primitive);
 
     return true;
 }
@@ -652,7 +661,7 @@ bool MeshParser::geometryAttributesDracoFromJSON(QGeometry *geometry,
                                                  const QJsonObject &json,
                                                  const draco::PointCloud *pointCloud,
                                                  QStringList &existingAttributes,
-                                                 bool &hasColorAttr)
+                                                 Primitive &primitive)
 {
     const QJsonObject extensions = json.value(KEY_EXTENSIONS).toObject();
     const QJsonObject dracoExtensionObject = extensions.value(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION).toObject();
@@ -673,7 +682,15 @@ bool MeshParser::geometryAttributesDracoFromJSON(QGeometry *geometry,
             attributeName = attrName;
 
         if (attributeName == QAttribute::defaultColorAttributeName())
-            hasColorAttr = true;
+            primitive.hasColorAttr = true;
+        else if (attributeName == QAttribute::defaultNormalAttributeName())
+            primitive.hasNormalAttr = true;
+        else if (attributeName == QAttribute::defaultTangentAttributeName())
+            primitive.hasTangentAttr = true;
+        else if (attributeName == QAttribute::defaultTextureCoordinateAttributeName())
+            primitive.hasTexCoordAttr = true;
+        else if (attributeName == QAttribute::defaultTextureCoordinate1AttributeName())
+            primitive.hasTexCoord1Attr = true;
 
         existingAttributes << attributeName;
 

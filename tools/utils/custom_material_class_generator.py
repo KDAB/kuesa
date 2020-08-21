@@ -238,11 +238,17 @@ private:
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     %sTechnique *m_rhiTechnique;
 #endif
+    void updateLayersOnTechniques(const QStringList &layers);
 
     void updateDoubleSided(bool doubleSided) override;
     void updateSkinning(bool useSkinning) override;
     void updateOpaque(bool opaque) override;
     void updateAlphaCutoffEnabled(bool enabled) override;
+    void updateUsingColorAttribute(bool enabled) override;
+    void updateUsingNormalAttribute(bool enabled) override;
+    void updateUsingTangentAttribute(bool enabled) override;
+    void updateUsingTexCoordAttribute(bool enabled) override;
+    void updateUsingTexCoord1Attribute(bool enabled) override;
 };
 """
 
@@ -1141,31 +1147,31 @@ private:
 
 
     effectClassCppContent = """
-%s
-%s
+{0}
+{1}
 
-%sEffect::%sEffect(Qt3DCore::QNode *parent)
+{2}Effect::{2}Effect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
-{
-    m_gl3Technique = new %sTechnique(%sTechnique::GL3, this);
-    m_es3Technique = new %sTechnique(%sTechnique::ES3, this);
-    m_es2Technique = new %sTechnique(%sTechnique::ES2, this);
+{{
+    m_gl3Technique = new {2}Technique({2}Technique::GL3, this);
+    m_es3Technique = new {2}Technique({2}Technique::ES3, this);
+    m_es2Technique = new {2}Technique({2}Technique::ES2, this);
 
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    m_rhiTechnique = new %sTechnique(%sTechnique::RHI, this);
+    m_rhiTechnique = new {2}Technique({2}Technique::RHI, this);
     addTechnique(m_rhiTechnique);
 #endif
-}
+}}
 
-%sEffect::~%sEffect() = default;
+{2}Effect::~{2}Effect() = default;
 
 
-void %sEffect::updateDoubleSided(bool doubleSided)
-{
+void {2}Effect::updateDoubleSided(bool doubleSided)
+{{
     const auto cullingMode = doubleSided ? QCullFace::NoCulling : QCullFace::Back;
     m_gl3Technique->setCullingMode(cullingMode);
     m_es3Technique->setCullingMode(cullingMode);
@@ -1173,35 +1179,33 @@ void %sEffect::updateDoubleSided(bool doubleSided)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     m_rhiTechnique->setCullingMode(cullingMode);
 #endif
-}
+}}
 
-void %sEffect::updateSkinning(bool useSkinning)
-{
+void {2}Effect::updateSkinning(bool useSkinning)
+{{
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();
-    if (useSkinning) {
+    if (useSkinning) {{
         layers.removeAll(QStringLiteral("no-skinning"));
         layers.append(QStringLiteral("skinning"));
-    } else {
+    }} else {{
         layers.removeAll(QStringLiteral("skinning"));
         layers.append(QStringLiteral("no-skinning"));
-    }
+    }}
 
-    m_gl3Technique->setEnabledLayers(layers);
-    m_es3Technique->setEnabledLayers(layers);
-    m_es2Technique->setEnabledLayers(layers);
+    updateLayersOnTechniques(layers);
+
     m_gl3Technique->setAllowCulling(!useSkinning);
     m_es3Technique->setAllowCulling(!useSkinning);
     m_es2Technique->setAllowCulling(!useSkinning);
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    m_rhiTechnique->setEnabledLayers(layers);
     m_rhiTechnique->setAllowCulling(!useSkinning);
 #endif
-}
+}}
 
-void %sEffect::updateOpaque(bool opaque)
-{
+void {2}Effect::updateOpaque(bool opaque)
+{{
     m_gl3Technique->setOpaque(opaque);
     m_es3Technique->setOpaque(opaque);
     m_es2Technique->setOpaque(opaque);
@@ -1209,25 +1213,86 @@ void %sEffect::updateOpaque(bool opaque)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     m_rhiTechnique->setOpaque(opaque);
 #endif
-}
+}}
 
-void %sEffect::updateAlphaCutoffEnabled(bool enabled)
-{
+void {2}Effect::updateAlphaCutoffEnabled(bool enabled)
+{{
     auto layers = m_gl3Technique->enabledLayers();
-    if (enabled) {
+    if (enabled) {{
         layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
         layers.append(QStringLiteral("hasAlphaCutoff"));
-    } else {
+    }} else {{
         layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
-    }
+    }}
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingColorAttribute(bool usingColorAttribute)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noHasColorAttr"));
+    layers.removeAll(QStringLiteral("hasColorAttr"));
+    layers.removeAll(QStringLiteral("hasVertexColor"));
+    if (usingColorAttribute) {{
+        layers.append(QStringLiteral("hasColorAttr"));
+        layers.append(QStringLiteral("hasVertexColor"));
+    }} else {{
+        layers.append(QStringLiteral("noHasColorAttr"));
+    }}
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingNormalAttribute(bool usingNormalAttribute)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexNormal"));
+    if (usingNormalAttribute)
+        layers.append(QStringLiteral("hasVertexNormal"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingTangentAttribute(bool usingTangentAttribute)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTangentNormal"));
+    if (usingTangentAttribute)
+        layers.append(QStringLiteral("hasTangentNormal"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord"));
+    if (usingTexCoordAttribute)
+        layers.append(QStringLiteral("hasTexCoord"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord1"));
+    if (usingTexCoord1Attribute)
+        layers.append(QStringLiteral("hasTexCoord1"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateLayersOnTechniques(const QStringList &layers)
+{{
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
     m_rhiTechnique->setEnabledLayers(layers);
 #endif
-}
+}}
+
 """
 
 
@@ -2022,24 +2087,7 @@ HEADERS += \\
 
 
             technique_content, technique_name = generateTechnique(passes_info)
-            content = CustomMaterialGenerator.effectClassCppContent % (technique_content,
-                                                                       doc,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName)
+            content = CustomMaterialGenerator.effectClassCppContent.format(technique_content, doc, matName)
 
             includes = "#include \"%s.h\"\n\n" % (className.lower())
             includes += "#include <Qt3DRender/QEffect>\n"

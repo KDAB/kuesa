@@ -1257,7 +1257,15 @@ void GLTF2Parser::generateTreeNodeContent()
                             effectProperties |= EffectProperties::Skinning;
                         if (primitiveData.hasColorAttr)
                             effectProperties |= EffectProperties::VertexColor;
-                        Qt3DRender::QEffect *effect = nullptr;
+                        if (primitiveData.hasNormalAttr)
+                            effectProperties |= EffectProperties::VertexNormal;
+                        if (primitiveData.hasTangentAttr)
+                            effectProperties |= EffectProperties::VertexTangent;
+                        if (primitiveData.hasTexCoordAttr)
+                            effectProperties |= EffectProperties::VertexTexCoord;
+                        if (primitiveData.hasTexCoord1Attr)
+                            effectProperties |= EffectProperties::VertexTexCoord1;
+                        GLTF2MaterialEffect *effect = nullptr;
 
                         if (mat.extensions.KDAB_custom_material)
                             effect = m_context->effectLibrary()->getOrCreateCustomEffect({ mat.customMaterial.effectClassMetaObject, effectProperties },

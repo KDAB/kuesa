@@ -43,6 +43,11 @@ class KUESASHARED_EXPORT GLTF2MaterialEffect : public Qt3DRender::QEffect
     Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
     Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
     Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
+    Q_PROPERTY(bool usingColorAttribute READ isUsingColorAttribute WRITE setUsingColorAttribute NOTIFY usingColorAttributeChanged REVISION 3)
+    Q_PROPERTY(bool usingNormalAttribute READ isUsingNormalAttribute WRITE setUsingNormalAttribute NOTIFY usingNormalAttributeChanged REVISION 3)
+    Q_PROPERTY(bool usingTangentAttribute READ isUsingTangentAttribute WRITE setUsingTangentAttribute NOTIFY usingTangentAttributeChanged REVISION 3)
+    Q_PROPERTY(bool usingTexCoordAttribute READ isUsingTexCoordAttribute WRITE setUsingTexCoordAttribute NOTIFY usingTexCoordAttributeChanged REVISION 3)
+    Q_PROPERTY(bool usingTexCoord1Attribute READ isUsingTexCoord1Attribute WRITE setUsingTexCoord1Attribute NOTIFY usingTexCoord1AttributeChanged REVISION 3)
 
 public:
     explicit GLTF2MaterialEffect(Qt3DCore::QNode *parent = nullptr);
@@ -52,30 +57,55 @@ public:
     bool useSkinning() const;
     bool isOpaque() const;
     bool isAlphaCutoffEnabled() const;
+    bool isUsingColorAttribute() const;
+    bool isUsingNormalAttribute() const;
+    bool isUsingTangentAttribute() const;
+    bool isUsingTexCoordAttribute() const;
+    bool isUsingTexCoord1Attribute() const;
 
 public Q_SLOTS:
     void setDoubleSided(bool doubleSided);
     void setUseSkinning(bool useSkinning);
     void setOpaque(bool opaque);
     void setAlphaCutoffEnabled(bool enabled);
+    void setUsingColorAttribute(bool usingColorAttribute);
+    void setUsingNormalAttribute(bool usingNormalAttribute);
+    void setUsingTangentAttribute(bool usingTangentAttribute);
+    void setUsingTexCoordAttribute(bool usingTexCoordAttribute);
+    void setUsingTexCoord1Attribute(bool usingTexCoord1Attribute);
 
 protected:
     virtual void updateDoubleSided(bool doubleSided);
     virtual void updateSkinning(bool useSkinning);
     virtual void updateOpaque(bool opaque);
     virtual void updateAlphaCutoffEnabled(bool enabled);
+    virtual void updateUsingColorAttribute(bool enabled) = 0;
+    virtual void updateUsingNormalAttribute(bool enabled) = 0;
+    virtual void updateUsingTangentAttribute(bool enabled) = 0;
+    virtual void updateUsingTexCoordAttribute(bool enabled) = 0;
+    virtual void updateUsingTexCoord1Attribute(bool enabled) = 0;
 
 Q_SIGNALS:
     void doubleSidedChanged(bool doubleSided);
     void useSkinningChanged(bool useSkinning);
     void opaqueChanged(bool opaque);
     void alphaCutoffEnabledChanged(bool enabled);
+    void usingColorAttributeChanged(bool usingColorAttribute);
+    void usingNormalAttributeChanged(bool usingNormalAttribute);
+    void usingTangentAttributeChanged(bool usingTangentAttribute);
+    void usingTexCoordAttributeChanged(bool usingTexCoordAttribute);
+    void usingTexCoord1AttributeChanged(bool usingTexCoord1Attribute);
 
 private:
     bool m_useSkinning;
     bool m_opaque;
     bool m_alphaCutoffEnabled;
     bool m_doubleSided;
+    bool m_usingColorAttribute;
+    bool m_usingNormalAttribute;
+    bool m_usingTangentAttribute;
+    bool m_usingTexCoordAttribute;
+    bool m_usingTexCoord1Attribute;
 
     void initialize();
 };

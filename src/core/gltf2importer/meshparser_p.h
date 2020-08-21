@@ -82,6 +82,10 @@ struct Primitive {
     Qt3DRender::QGeometryRenderer *primitiveRenderer = nullptr;
     qint32 materialIdx = -1;
     bool hasColorAttr = false;
+    bool hasNormalAttr = false;
+    bool hasTangentAttr = false;
+    bool hasTexCoordAttr = false;
+    bool hasTexCoord1Attr = false;
 
     QVector<MorphTarget> morphTargets;
 };
@@ -105,12 +109,24 @@ private:
     Qt3DGeometry::QAttribute *createAttribute(qint32 accessorIndex,
                                 const QString &attributeName,
                                 const QString &semanticName);
-    bool geometryFromJSON(Qt3DGeometry::QGeometry *geometry, const QJsonObject &json, bool &hasColorAttr);
-    bool geometryAttributesFromJSON(Qt3DGeometry::QGeometry *geometry, const QJsonObject &json, QStringList existingAttributes, bool &hasColorAttr);
-    std::tuple<bool, QVector<MorphTarget>> geometryMorphTargetsFromJSON(Qt3DGeometry::QGeometry *geometry, const QJsonObject &json);
+    bool geometryFromJSON(Qt3DGeometry::QGeometry *geometry,
+                          const QJsonObject &json,
+                          Primitive &primitive);
+    bool geometryAttributesFromJSON(Qt3DGeometry::QGeometry *geometry,
+                                    const QJsonObject &json,
+                                    QStringList existingAttributes,
+                                    Primitive &primitive);
+    std::tuple<bool, QVector<MorphTarget>> geometryMorphTargetsFromJSON(Qt3DGeometry::QGeometry *geometry,
+                                                                        const QJsonObject &json);
 #if defined(KUESA_DRACO_COMPRESSION)
-    bool geometryDracoFromJSON(Qt3DGeometry::QGeometry *geometry, const QJsonObject &json, bool &hasColorAttr);
-    bool geometryAttributesDracoFromJSON(Qt3DGeometry::QGeometry *geometry, const QJsonObject &json, const draco::PointCloud *pointCloud, QStringList &existingAttributes, bool &hasColorAttr);
+    bool geometryDracoFromJSON(Qt3DGeometry::QGeometry *geometry,
+                               const QJsonObject &json,
+                               Primitive &primitive);
+    bool geometryAttributesDracoFromJSON(Qt3DGeometry::QGeometry *geometry,
+                                         const QJsonObject &json,
+                                         const draco::PointCloud *pointCloud,
+                                         QStringList &existingAttributes,
+                                         Primitive &primitive);
 #endif
 
     GLTF2Context *m_context;

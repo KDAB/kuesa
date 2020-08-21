@@ -124,6 +124,10 @@ private Q_SLOTS:
         QCOMPARE(effect.isAmbientOcclusionMapEnabled(), false);
         QCOMPARE(effect.isEmissiveMapEnabled(), false);
         QCOMPARE(effect.isUsingColorAttribute(), false);
+        QCOMPARE(effect.isUsingNormalAttribute(), false);
+        QCOMPARE(effect.isUsingTangentAttribute(), false);
+        QCOMPARE(effect.isUsingTexCoordAttribute(), false);
+        QCOMPARE(effect.isUsingTexCoord1Attribute(), false);
         QCOMPARE(effect.isDoubleSided(), false);
         QCOMPARE(effect.useSkinning(), false);
         QCOMPARE(effect.isOpaque(), true);
@@ -142,11 +146,31 @@ private Q_SLOTS:
         QSignalSpy ambientOcclusionMapSpy(&effect, &Kuesa::MetallicRoughnessEffect::ambientOcclusionMapEnabledChanged);
         QSignalSpy emissiveMapSpy(&effect, &Kuesa::MetallicRoughnessEffect::emissiveMapEnabledChanged);
         QSignalSpy usingColorAttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingColorAttributeChanged);
+        QSignalSpy usingNormalAttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingNormalAttributeChanged);
+        QSignalSpy usingTangentAttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingTangentAttributeChanged);
+        QSignalSpy usingTexCoordAttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingTexCoordAttributeChanged);
+        QSignalSpy usingTexCoord1AttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingTexCoord1AttributeChanged);
         QSignalSpy doubleSidedSpy(&effect, &Kuesa::MetallicRoughnessEffect::doubleSidedChanged);
         QSignalSpy useSkinningSpy(&effect, &Kuesa::MetallicRoughnessEffect::useSkinningChanged);
         QSignalSpy opaqueSpy(&effect, &Kuesa::MetallicRoughnessEffect::opaqueChanged);
         QSignalSpy alphaCutoffSpy(&effect, &Kuesa::MetallicRoughnessEffect::alphaCutoffEnabledChanged);
         QSignalSpy brdfLUTSpy(&effect, &Kuesa::MetallicRoughnessEffect::brdfLUTChanged);
+
+        // THEN
+        QVERIFY(baseColorMapSpy.isValid());
+        QVERIFY(metalRoughMapSpy.isValid());
+        QVERIFY(normalMapSpy.isValid());
+        QVERIFY(ambientOcclusionMapSpy.isValid());
+        QVERIFY(usingColorAttributeSpy.isValid());
+        QVERIFY(usingNormalAttributeSpy.isValid());
+        QVERIFY(usingTangentAttributeSpy.isValid());
+        QVERIFY(usingTexCoordAttributeSpy.isValid());
+        QVERIFY(usingTexCoord1AttributeSpy.isValid());
+        QVERIFY(doubleSidedSpy.isValid());
+        QVERIFY(useSkinningSpy.isValid());
+        QVERIFY(opaqueSpy.isValid());
+        QVERIFY(alphaCutoffSpy.isValid());
+        QVERIFY(brdfLUTSpy.isValid());
 
         {
             // WHEN
@@ -212,6 +236,50 @@ private Q_SLOTS:
             // THEN
             QCOMPARE(effect.isUsingColorAttribute(), true);
             QCOMPARE(usingColorAttributeSpy.count(), 1);
+        }
+
+        {
+            // WHEN
+            effect.setUsingNormalAttribute(false);
+            effect.setUsingNormalAttribute(true);
+            effect.setUsingNormalAttribute(true);
+
+            // THEN
+            QCOMPARE(effect.isUsingNormalAttribute(), true);
+            QCOMPARE(usingNormalAttributeSpy.count(), 1);
+        }
+
+        {
+            // WHEN
+            effect.setUsingTangentAttribute(false);
+            effect.setUsingTangentAttribute(true);
+            effect.setUsingTangentAttribute(true);
+
+            // THEN
+            QCOMPARE(effect.isUsingTangentAttribute(), true);
+            QCOMPARE(usingTangentAttributeSpy.count(), 1);
+        }
+
+        {
+            // WHEN
+            effect.setUsingTexCoordAttribute(false);
+            effect.setUsingTexCoordAttribute(true);
+            effect.setUsingTexCoordAttribute(true);
+
+            // THEN
+            QCOMPARE(effect.isUsingTexCoordAttribute(), true);
+            QCOMPARE(usingTexCoordAttributeSpy.count(), 1);
+        }
+
+        {
+            // WHEN
+            effect.setUsingTexCoord1Attribute(false);
+            effect.setUsingTexCoord1Attribute(true);
+            effect.setUsingTexCoord1Attribute(true);
+
+            // THEN
+            QCOMPARE(effect.isUsingTexCoord1Attribute(), true);
+            QCOMPARE(usingTexCoord1AttributeSpy.count(), 1);
         }
 
         {

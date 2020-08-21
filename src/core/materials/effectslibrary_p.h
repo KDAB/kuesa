@@ -48,11 +48,9 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DRender {
-class QEffect;
-};
-
 namespace Kuesa {
+
+class GLTF2MaterialEffect;
 
 class KUESA_PRIVATE_EXPORT EffectsLibrary
 {
@@ -64,21 +62,21 @@ public:
         const QMetaObject *effectClassMetaObject;
         EffectProperties::Properties properties;
     };
-    using CustomEffectKeyPair = std::pair<CustomEffectKey, Qt3DRender::QEffect *>;
+    using CustomEffectKeyPair = std::pair<CustomEffectKey, GLTF2MaterialEffect *>;
 
-    Qt3DRender::QEffect *getOrCreateCustomEffect(CustomEffectKey customEffectKey,
+    GLTF2MaterialEffect *getOrCreateCustomEffect(CustomEffectKey customEffectKey,
                                                  Qt3DCore::QNode *effectOwner);
 
-    Qt3DRender::QEffect *getOrCreateEffect(EffectProperties::Properties properties,
+    GLTF2MaterialEffect *getOrCreateEffect(EffectProperties::Properties properties,
                                            Qt3DCore::QNode *effectOwner);
     int count() const;
     void clear();
 
-    QHash<EffectProperties::Properties, Qt3DRender::QEffect *> effects() const;
+    QHash<EffectProperties::Properties, GLTF2MaterialEffect *> effects() const;
     QVector<CustomEffectKeyPair> customEffects() const;
 
 private:
-    QHash<EffectProperties::Properties, Qt3DRender::QEffect *> m_effects;
+    QHash<EffectProperties::Properties, GLTF2MaterialEffect *> m_effects;
     QVector<CustomEffectKeyPair> m_customEffects;
 };
 

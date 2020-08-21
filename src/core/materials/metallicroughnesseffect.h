@@ -93,7 +93,6 @@ class KUESASHARED_EXPORT MetallicRoughnessEffect : public GLTF2MaterialEffect
     Q_PROPERTY(bool normalMapEnabled READ isNormalMapEnabled WRITE setNormalMapEnabled NOTIFY normalMapEnabledChanged)
     Q_PROPERTY(bool ambientOcclusionMapEnabled READ isAmbientOcclusionMapEnabled WRITE setAmbientOcclusionMapEnabled NOTIFY ambientOcclusionMapEnabledChanged)
     Q_PROPERTY(bool emissiveMapEnabled READ isEmissiveMapEnabled WRITE setEmissiveMapEnabled NOTIFY emissiveMapEnabledChanged)
-    Q_PROPERTY(bool usingColorAttribute READ isUsingColorAttribute WRITE setUsingColorAttribute NOTIFY usingColorAttributeChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLUT READ brdfLUT WRITE setBrdfLUT NOTIFY brdfLUTChanged REVISION 1)
 
 public:
@@ -105,7 +104,6 @@ public:
     bool isNormalMapEnabled() const;
     bool isAmbientOcclusionMapEnabled() const;
     bool isEmissiveMapEnabled() const;
-    bool isUsingColorAttribute() const;
     Qt3DRender::QAbstractTexture *brdfLUT() const;
 
 public Q_SLOTS:
@@ -114,7 +112,6 @@ public Q_SLOTS:
     void setNormalMapEnabled(bool enabled);
     void setAmbientOcclusionMapEnabled(bool enabled);
     void setEmissiveMapEnabled(bool enabled);
-    void setUsingColorAttribute(bool usingColorAttribute);
     void setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT);
 
 Q_SIGNALS:
@@ -123,7 +120,6 @@ Q_SIGNALS:
     void normalMapEnabledChanged(bool enabled);
     void ambientOcclusionMapEnabledChanged(bool enabled);
     void emissiveMapEnabledChanged(bool enabled);
-    void usingColorAttributeChanged(bool usingColorAttribute);
     void brdfLUTChanged(Qt3DRender::QAbstractTexture *brdfLUT);
 
 private:
@@ -132,7 +128,7 @@ private:
     bool m_normalMapEnabled;
     bool m_ambientOcclusionMapEnabled;
     bool m_emissiveMapEnabled;
-    bool m_usingColorAttribute;
+
 
     MetallicRoughnessTechnique *m_metalRoughGL3Technique;
     MetallicRoughnessTechnique *m_metalRoughES3Technique;
@@ -142,10 +138,17 @@ private:
 #endif
     Qt3DRender::QParameter *m_brdfLUTParameter;
 
+    void updateLayersOnTechniques(const QStringList &layers);
+
     void updateDoubleSided(bool doubleSided) override;
     void updateSkinning(bool useSkinning) override;
     void updateOpaque(bool opaque) override;
     void updateAlphaCutoffEnabled(bool enabled) override;
+    void updateUsingColorAttribute(bool enabled) override;
+    void updateUsingNormalAttribute(bool enabled) override;
+    void updateUsingTangentAttribute(bool enabled) override;
+    void updateUsingTexCoordAttribute(bool enabled) override;
+    void updateUsingTexCoord1Attribute(bool enabled) override;
 };
 
 } // namespace Kuesa

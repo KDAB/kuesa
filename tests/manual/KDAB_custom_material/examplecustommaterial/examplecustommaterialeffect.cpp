@@ -247,10 +247,7 @@ private:
 
 
 ExampleCustomMaterialEffect::ExampleCustomMaterialEffect(Qt3DCore::QNode *parent)
-    : QEffect(parent)
-    , m_useSkinning(false)
-    , m_opaque(true)
-    , m_alphaCutoffEnabled(false)
+    : GLTF2MaterialEffect(parent)
 {
     const auto enabledLayers = QStringList{
             // Vertex Shader layers
@@ -275,27 +272,7 @@ ExampleCustomMaterialEffect::ExampleCustomMaterialEffect(Qt3DCore::QNode *parent
 
 ExampleCustomMaterialEffect::~ExampleCustomMaterialEffect() = default;
 
-bool ExampleCustomMaterialEffect::isDoubleSided() const
-{
-    return m_gl3Technique->cullingMode() == QCullFace::NoCulling;
-}
-
-bool ExampleCustomMaterialEffect::useSkinning() const
-{
-    return m_useSkinning;
-}
-
-bool ExampleCustomMaterialEffect::isOpaque() const
-{
-    return m_opaque;
-}
-
-bool ExampleCustomMaterialEffect::isAlphaCutoffEnabled() const
-{
-    return m_alphaCutoffEnabled;
-}
-
-void ExampleCustomMaterialEffect::setDoubleSided(bool doubleSided)
+void ExampleCustomMaterialEffect::updateDoubleSided(bool doubleSided)
 {
     const auto cullingMode = doubleSided ? QCullFace::NoCulling : QCullFace::Back;
     m_gl3Technique->setCullingMode(cullingMode);
@@ -303,16 +280,11 @@ void ExampleCustomMaterialEffect::setDoubleSided(bool doubleSided)
     m_es2Technique->setCullingMode(cullingMode);
 }
 
-void ExampleCustomMaterialEffect::setUseSkinning(bool useSkinning)
+void ExampleCustomMaterialEffect::updateSkinning(bool useSkinning)
 {
-    if (useSkinning == m_useSkinning)
-        return;
-    m_useSkinning = useSkinning;
-    emit useSkinningChanged(m_useSkinning);
-
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();
-    if (m_useSkinning) {
+    if (useSkinning) {
         layers.removeAll(QStringLiteral("no-skinning"));
         layers.append(QStringLiteral("skinning"));
     } else {
@@ -323,45 +295,56 @@ void ExampleCustomMaterialEffect::setUseSkinning(bool useSkinning)
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-    m_gl3Technique->setAllowCulling(!m_useSkinning);
-    m_es3Technique->setAllowCulling(!m_useSkinning);
-    m_es2Technique->setAllowCulling(!m_useSkinning);
-
+    m_gl3Technique->setAllowCulling(!useSkinning);
+    m_es3Technique->setAllowCulling(!useSkinning);
+    m_es2Technique->setAllowCulling(!useSkinning);
 }
 
-void ExampleCustomMaterialEffect::setOpaque(bool opaque)
+void ExampleCustomMaterialEffect::updateOpaque(bool opaque)
 {
-    if (opaque == m_opaque)
-        return;
-    m_opaque = opaque;
     m_gl3Technique->setOpaque(opaque);
     m_es3Technique->setOpaque(opaque);
     m_es2Technique->setOpaque(opaque);
-
-    if (opaque)
-        setAlphaCutoffEnabled(false);
-
-    emit opaqueChanged(opaque);
 }
 
-void ExampleCustomMaterialEffect::setAlphaCutoffEnabled(bool enabled)
+void ExampleCustomMaterialEffect::updateAlphaCutoffEnabled(bool enabled)
 {
-    if (m_alphaCutoffEnabled == enabled)
-        return;
-
     auto layers = m_gl3Technique->enabledLayers();
-    if (enabled) {
-        layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
+    layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
+    layers.removeAll(QStringLiteral("hasAlphaCutoff"));
+
+    if (enabled)
         layers.append(QStringLiteral("hasAlphaCutoff"));
-    } else {
-        layers.removeAll(QStringLiteral("hasAlphaCutoff"));
+    else
         layers.append(QStringLiteral("noHasAlphaCutoff"));
-    }
-    m_alphaCutoffEnabled = enabled;
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-    emit alphaCutoffEnabledChanged(enabled);
+}
+
+void ExampleCustomMaterialEffect::updateUsingColorAttribute(bool enabled)
+{
+    Q_UNUSED(enabled)
+}
+
+void ExampleCustomMaterialEffect::updateUsingNormalAttribute(bool enabled)
+{
+    Q_UNUSED(enabled)
+}
+
+void ExampleCustomMaterialEffect::updateUsingTangentAttribute(bool enabled)
+{
+    Q_UNUSED(enabled)
+}
+
+void ExampleCustomMaterialEffect::updateUsingTexCoordAttribute(bool enabled)
+{
+    Q_UNUSED(enabled)
+}
+
+void ExampleCustomMaterialEffect::updateUsingTexCoord1Attribute(bool enabled)
+{
+    Q_UNUSED(enabled)
 }
 
 } // namespace Kuesa

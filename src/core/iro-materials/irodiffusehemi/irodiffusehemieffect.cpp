@@ -298,15 +298,13 @@ void IroDiffuseHemiEffect::updateSkinning(bool useSkinning)
         layers.append(QStringLiteral("no-skinning"));
     }
 
-    m_gl3Technique->setEnabledLayers(layers);
-    m_es3Technique->setEnabledLayers(layers);
-    m_es2Technique->setEnabledLayers(layers);
+    updateLayersOnTechniques(layers);
+
     m_gl3Technique->setAllowCulling(!useSkinning);
     m_es3Technique->setAllowCulling(!useSkinning);
     m_es2Technique->setAllowCulling(!useSkinning);
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    m_rhiTechnique->setEnabledLayers(layers);
     m_rhiTechnique->setAllowCulling(!useSkinning);
 #endif
 }
@@ -332,13 +330,74 @@ void IroDiffuseHemiEffect::updateAlphaCutoffEnabled(bool enabled)
         layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
     }
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseHemiEffect::updateUsingColorAttribute(bool usingColorAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noHasColorAttr"));
+    layers.removeAll(QStringLiteral("hasColorAttr"));
+    layers.removeAll(QStringLiteral("hasVertexColor"));
+    if (usingColorAttribute) {
+        layers.append(QStringLiteral("hasColorAttr"));
+        layers.append(QStringLiteral("hasVertexColor"));
+    } else {
+        layers.append(QStringLiteral("noHasColorAttr"));
+    }
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseHemiEffect::updateUsingNormalAttribute(bool usingNormalAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexNormal"));
+    if (usingNormalAttribute)
+        layers.append(QStringLiteral("hasVertexNormal"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseHemiEffect::updateUsingTangentAttribute(bool usingTangentAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexTangent"));
+    if (usingTangentAttribute)
+        layers.append(QStringLiteral("hasVertexTangent"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseHemiEffect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord"));
+    if (usingTexCoordAttribute)
+        layers.append(QStringLiteral("hasTexCoord"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseHemiEffect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord1"));
+    if (usingTexCoord1Attribute)
+        layers.append(QStringLiteral("hasTexCoord1"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseHemiEffect::updateLayersOnTechniques(const QStringList &layers)
+{
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
     m_rhiTechnique->setEnabledLayers(layers);
 #endif
 }
+
 
 } // namespace Kuesa
 
