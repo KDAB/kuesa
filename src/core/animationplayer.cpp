@@ -515,10 +515,11 @@ void AnimationPlayer::matchClipAndTargets()
     }
 
     Qt3DAnimation::QAnimationClip *clip = qobject_cast<Qt3DAnimation::QAnimationClip *>(m_sceneEntity->animationClip(m_clip));
-    Qt3DAnimation::QChannelMapper *mapper = m_sceneEntity->animationMapping(m_mapper.isEmpty() ? m_clip : m_mapper);
+    const QString mapperName = m_mapper.isEmpty() ? m_clip : m_mapper;
+    Qt3DAnimation::QChannelMapper *mapper = m_sceneEntity->animationMapping(mapperName);
 
     if (!clip || !mapper) {
-        qCWarning(kuesa, "Undefined clip or mapper in AnimationPlayer");
+        qCWarning(kuesa) << "Undefined clip or mapper in AnimationPlayer for clip:" << m_clip << "and mapper:" << mapperName;
         setStatus(Error);
         if (m_animator->clip()) {
             m_animator->setClip(nullptr);
