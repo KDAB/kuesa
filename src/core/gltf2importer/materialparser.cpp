@@ -99,7 +99,7 @@ bool parseFloatArray(Vector &v,
         return false;
     }
 
-    const qint32 entryCount = std::min(maxItems, array.size());
+    const qint32 entryCount = std::min(maxItems, qint32(array.size()));
     for (qint32 i = 0; i < entryCount; ++i)
         v[i] = clamp(float(array.at(i).toDouble(v[i])), minValue, maxValue);
 

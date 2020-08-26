@@ -32,6 +32,7 @@
 #include <Qt3DCore/QComponent>
 #include <Qt3DRender/QShaderData>
 #include <Kuesa/kuesa_global.h>
+#include <QtCore/QVariant>
 
 QT_BEGIN_NAMESPACE
 
