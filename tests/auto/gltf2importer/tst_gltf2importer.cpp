@@ -40,6 +40,21 @@ class tst_GLTF2Importer : public QObject
 
 private Q_SLOTS:
 
+    void checkDefaults()
+    {
+        // GIVEN
+        GLTF2Importer importer;
+
+        // THEN
+        QVERIFY(importer.sceneEntity() == nullptr);
+        QCOMPARE(importer.status(), GLTF2Importer::None);
+        QCOMPARE(importer.assignNames(), true);
+        QCOMPARE(importer.activeSceneIndex(), GLTF2Importer::DefaultScene);
+        QCOMPARE(importer.options()->generateTangents(), false);
+        QCOMPARE(importer.options()->generateNormals(), false);
+        QVERIFY(importer.availableScenes().empty());
+    }
+
     void checkStatus()
     {
         // GIVEN
@@ -125,6 +140,26 @@ private Q_SLOTS:
             QCOMPARE(importer.availableScenes().size(), 3);
             QCOMPARE(importer.availableScenes(), expectedSceneNames);
             QCOMPARE(importer.activeSceneIndex(), 0);
+        }
+    }
+
+    void checkAutoSetSceneEntityIfParentIsASceneEntity()
+    {
+        {
+            // GIVEN
+            SceneEntity s;
+            GLTF2Importer importer(&s);
+
+            // THEN
+            QVERIFY(importer.sceneEntity() == &s);
+        }
+        {
+            // GIVEN
+            Qt3DCore::QEntity e;
+            GLTF2Importer importer(&e);
+
+            // THEN
+            QVERIFY(importer.sceneEntity() == nullptr);
         }
     }
 };

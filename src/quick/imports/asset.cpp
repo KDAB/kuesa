@@ -40,7 +40,7 @@ using namespace Kuesa;
 
 /*!
     \qmltype Asset
-    \inherits QtObject
+    \inherits KuesaNode
     \inqmlmodule Kuesa
 
     \brief Asset is to access names nodes loaded from a glTF 2 file in a
@@ -58,11 +58,6 @@ using namespace Kuesa;
     asset matching the name.
 
     \sa Kuesa::SceneEntity, Kuesa::AbstractAssetCollection
- */
-
-/*!
-    \qmlproperty Kuesa::SceneEntity Asset::sceneEntity
-    The scene in which assets are loaded.
  */
 
 /*!
@@ -87,54 +82,16 @@ using namespace Kuesa;
  */
 
 Asset::Asset(Qt3DCore::QNode *parent)
-    : Qt3DCore::QNode(parent)
-    , m_scene(nullptr)
+    : KuesaNode(parent)
     , m_collection(nullptr)
     , m_node(nullptr)
 {
-    updateSceneFromParent(parent);
-    connect(this, &Qt3DCore::QNode::parentChanged, this, [this](QObject *parent) {
-        auto parentNode = qobject_cast<Qt3DCore::QNode *>(parent);
-        this->updateSceneFromParent(parentNode);
-    });
-}
-
-void Asset::updateSceneFromParent(Qt3DCore::QNode *parent)
-{
-    if (m_scene)
-        return;
-
-    while (parent) {
-        auto scene = qobject_cast<SceneEntity *>(parent);
-        if (scene) {
-            setSceneEntity(scene);
-            break;
-        }
-        parent = parent->parentNode();
-    }
-}
-
-SceneEntity *Asset::sceneEntity() const
-{
-    return m_scene;
-}
-
-void Asset::setSceneEntity(SceneEntity *sceneEntity)
-{
-    if (m_scene != sceneEntity) {
-        if (m_scene) {
-            QObject::disconnect(m_destructionConnections.take(m_scene));
-            disconnect(m_scene, &SceneEntity::loadingDone, this, &Asset::findAsset);
-        }
-        m_scene = sceneEntity;
-        emit sceneEntityChanged(m_scene);
-        if (m_scene) {
-            auto f = [this]() { setSceneEntity(nullptr); };
-            m_destructionConnections.insert(m_scene, connect(m_scene, &Qt3DCore::QNode::nodeDestroyed, this, f));
-            connect(m_scene, &SceneEntity::loadingDone, this, &Asset::findAsset);
-        }
+    QObject::connect(this, &KuesaNode::sceneEntityChanged,
+                     this, [this] {
+        disconnect(m_loadingDoneConnection);
+        m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone, this, &Asset::findAsset);
         findAsset();
-    }
+    });
 }
 
 AbstractAssetCollection *Asset::collection() const
@@ -235,7 +192,7 @@ Qt3DCore::QNode *Asset::node() const
 
 void Asset::findAsset()
 {
-    if ((nullptr == m_collection && nullptr == m_scene) || m_name.isEmpty()) {
+    if ((nullptr == m_collection && nullptr == m_sceneEntity) || m_name.isEmpty()) {
         setNode(nullptr);
         return;
     }
@@ -244,18 +201,18 @@ void Asset::findAsset()
     if (m_collection) {
         collections << m_collection;
     } else {
-        collections << m_scene->animationClips()
-                    << m_scene->armatures()
-                    << m_scene->effects()
-                    << m_scene->layers()
-                    << m_scene->materials()
-                    << m_scene->meshes()
-                    << m_scene->skeletons()
-                    << m_scene->textures()
-                    << m_scene->cameras()
-                    << m_scene->entities()
-                    << m_scene->textureImages()
-                    << m_scene->animationMappings();
+        collections << m_sceneEntity->animationClips()
+                    << m_sceneEntity->armatures()
+                    << m_sceneEntity->effects()
+                    << m_sceneEntity->layers()
+                    << m_sceneEntity->materials()
+                    << m_sceneEntity->meshes()
+                    << m_sceneEntity->skeletons()
+                    << m_sceneEntity->textures()
+                    << m_sceneEntity->cameras()
+                    << m_sceneEntity->entities()
+                    << m_sceneEntity->textureImages()
+                    << m_sceneEntity->animationMappings();
     }
 
     for (AbstractAssetCollection *c : qAsConst(collections)) {

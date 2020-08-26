@@ -32,6 +32,7 @@
 #include <Qt3DCore/QNode>
 #include <Kuesa/SceneEntity>
 #include <Kuesa/AbstractAssetCollection>
+#include <Kuesa/KuesaNode>
 
 QT_BEGIN_NAMESPACE
 
@@ -39,10 +40,9 @@ namespace Kuesa {
 
 class AssetProperty;
 
-class Asset : public Qt3DCore::QNode
+class Asset : public KuesaNode
 {
     Q_OBJECT
-    Q_PROPERTY(Kuesa::SceneEntity *sceneEntity READ sceneEntity WRITE setSceneEntity NOTIFY sceneEntityChanged)
     Q_PROPERTY(Kuesa::AbstractAssetCollection *collection READ collection WRITE setCollection NOTIFY collectionChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(Qt3DCore::QNode *node READ node NOTIFY nodeChanged)
@@ -50,33 +50,29 @@ class Asset : public Qt3DCore::QNode
 public:
     Asset(Qt3DCore::QNode *parent = nullptr);
 
-    SceneEntity *sceneEntity() const;
     AbstractAssetCollection *collection() const;
     QString name() const;
     Qt3DCore::QNode *node() const;
 
 public Q_SLOTS:
-    void setSceneEntity(Kuesa::SceneEntity *sceneEntity);
     void setCollection(Kuesa::AbstractAssetCollection *collection);
     void setName(const QString &name);
 
 Q_SIGNALS:
-    void sceneEntityChanged(Kuesa::SceneEntity *sceneEntity);
     void collectionChanged(Kuesa::AbstractAssetCollection *collection);
     void nameChanged(QString name);
     void nodeChanged(Qt3DCore::QNode *node);
 
 private:
-    SceneEntity *m_scene;
     AbstractAssetCollection *m_collection;
     QString m_name;
     Qt3DCore::QNode *m_node;
-    QHash<QNode *, QMetaObject::Connection> m_destructionConnections;
+    QHash<Qt3DCore::QNode *, QMetaObject::Connection> m_destructionConnections;
     QMetaObject::Connection m_releaseAssetPropertiesConnection;
+    QMetaObject::Connection m_loadingDoneConnection;
 
     void setNode(Qt3DCore::QNode *node);
     void findAsset();
-    void updateSceneFromParent(Qt3DCore::QNode *parent);
 
     std::vector<AssetProperty *> m_assetProperties;
 };

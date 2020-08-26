@@ -85,6 +85,7 @@
 #include <KuesaUtils/boundingvolumerenderer.h>
 #include <KuesaUtils/view3dscene.h>
 #include <Kuesa/Particles>
+#include <Kuesa/KuesaNode>
 
 #include <QtQml/qqml.h>
 
@@ -131,6 +132,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::SpotLight>(uri, 1, 1, "SpotLight");
 
     // Misc
+    qmlRegisterUncreatableType<Kuesa::KuesaNode>(uri, 1, 0, "KuesaNode", QStringLiteral("KuesaNode should only be subclassed"));
     qmlRegisterType<Kuesa::GLTF2Importer>(uri, 1, 0, "GLTF2Importer");
     qmlRegisterType<Kuesa::SceneEntity>(uri, 1, 0, "SceneEntity");
     qmlRegisterRevision<Kuesa::SceneEntity, 2>(uri, 1, 2);

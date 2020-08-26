@@ -67,6 +67,7 @@ using namespace Kuesa;
  * \class Kuesa::GLTF2Importer
  * \inheaderfile Kuesa/GLTF2Importer
  * \inmodule Kuesa
+ * \inherits KuesaNode
  * \since Kuesa 1.0
  * \brief Imports glTF 2 scenes into a Qt 3D Scene.
  *
@@ -121,6 +122,7 @@ using namespace Kuesa;
  * \qmltype GLTF2Importer
  * \instantiates Kuesa::GLTF2Importer
  * \inqmlmodule Kuesa
+ * \inherits KuesaNode
  * \since Kuesa 1.0
  * \brief Imports glTF 2 scenes into a Qt 3D Scene.
  *
@@ -198,13 +200,6 @@ using namespace Kuesa;
  */
 
 /*!
-    \property Kuesa::GLTF2Importer::sceneEntity
-
-    \brief pointer to the SceneEntity with which assets will be registered as
-    they are loaded from the glTF file.
- */
-
-/*!
     \property Kuesa::GLTF2Importer::assignNames
 
     \brief if true, assets with no names will be added to collections with
@@ -279,12 +274,11 @@ using namespace Kuesa;
  */
 
 GLTF2Importer::GLTF2Importer(Qt3DCore::QNode *parent)
-    : Qt3DCore::QNode(parent)
+    : KuesaNode(parent)
     , m_context(new GLTF2Import::GLTF2Context)
     , m_root(nullptr)
     , m_currentSceneEntity(nullptr)
     , m_status(None)
-    , m_sceneEntity(nullptr)
     , m_assignNames(true)
     , m_activeSceneIndex(DefaultScene)
 {
@@ -339,35 +333,6 @@ void GLTF2Importer::setStatus(Status status)
         m_status = status;
         emit statusChanged(status);
     }
-}
-
-/*!
- * Returns the SceneEntity used to access asset collections
- */
-SceneEntity *GLTF2Importer::sceneEntity() const
-{
-    return m_sceneEntity;
-}
-
-/*!
- * Set the SceneEntity instance which should be used to access the collections
- * loaded assets will be registered with to \a sceneEntity.
- */
-void GLTF2Importer::setSceneEntity(SceneEntity *sceneEntity)
-{
-    if (m_sceneEntity == sceneEntity)
-        return;
-
-    if (m_sceneEntity)
-        disconnect(m_sceneEntityDestructionConnection);
-
-    m_sceneEntity = sceneEntity;
-    if (m_sceneEntity) {
-        auto f = [this]() { setSceneEntity(nullptr); };
-        m_sceneEntityDestructionConnection = connect(m_sceneEntity, &Qt3DCore::QNode::nodeDestroyed, this, f);
-    }
-
-    emit sceneEntityChanged(m_sceneEntity);
 }
 
 /*!

@@ -39,7 +39,8 @@ SUBDIRS = \
     morphcontroller \
     gltf2importer \
     gltf2options \
-    tonemappingandgammacorrectioneffect
+    tonemappingandgammacorrectioneffect \
+    kuesanode
 
 #installed_cmake.depends = cmake
 

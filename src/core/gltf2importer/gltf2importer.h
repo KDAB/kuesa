@@ -35,6 +35,7 @@
 #include <Qt3DCore/QEntity>
 #include <Kuesa/GLTF2Options>
 #include <Kuesa/SceneEntity>
+#include <Kuesa/KuesaNode>
 
 QT_BEGIN_NAMESPACE
 
@@ -48,12 +49,11 @@ class MaterialParser;
 class SceneRootEntity;
 }
 
-class KUESASHARED_EXPORT GLTF2Importer : public Qt3DCore::QNode
+class KUESASHARED_EXPORT GLTF2Importer : public KuesaNode
 {
     Q_OBJECT
     Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(Kuesa::GLTF2Importer::Status status READ status NOTIFY statusChanged)
-    Q_PROPERTY(Kuesa::SceneEntity *sceneEntity READ sceneEntity WRITE setSceneEntity NOTIFY sceneEntityChanged)
     Q_PROPERTY(bool assignNames READ assignNames WRITE setAssignNames NOTIFY assignNamesChanged)
     Q_PROPERTY(Kuesa::GLTF2Import::GLTF2Options *options READ options CONSTANT)
     Q_PROPERTY(int activeSceneIndex READ activeSceneIndex WRITE setActiveSceneIndex NOTIFY activeSceneIndexChanged)
@@ -78,7 +78,6 @@ public:
 
     QUrl source() const;
     GLTF2Importer::Status status() const;
-    Kuesa::SceneEntity *sceneEntity() const;
     bool assignNames() const;
     Kuesa::GLTF2Import::GLTF2Options *options();
     const Kuesa::GLTF2Import::GLTF2Options *options() const;
@@ -97,7 +96,6 @@ public:
 
 public Q_SLOTS:
     void setSource(const QUrl &source);
-    void setSceneEntity(Kuesa::SceneEntity *sceneEntity);
     void setAssignNames(bool assignNames);
     void setOptions(const Kuesa::GLTF2Import::GLTF2Options &options);
     void setActiveSceneIndex(int index);
@@ -106,7 +104,6 @@ public Q_SLOTS:
 Q_SIGNALS:
     void sourceChanged(const QUrl &source);
     void statusChanged(const Kuesa::GLTF2Importer::Status status);
-    void sceneEntityChanged(Kuesa::SceneEntity *sceneEntity);
     void assignNamesChanged(bool assignNames);
     void activeSceneIndexChanged(int activeSceneIndex);
     void availableScenesChanged(const QStringList &availableScenes);
@@ -128,8 +125,6 @@ private:
     GLTF2Import::SceneRootEntity *m_currentSceneEntity;
     QVector<GLTF2Import::SceneRootEntity *> m_sceneRootEntities;
     Status m_status;
-    Kuesa::SceneEntity *m_sceneEntity;
-    QMetaObject::Connection m_sceneEntityDestructionConnection;
     bool m_assignNames;
     Kuesa::GLTF2Import::GLTF2Options m_options;
     int m_activeSceneIndex;
