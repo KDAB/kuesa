@@ -28,6 +28,7 @@
 
 #include "metallicroughnessproperties.h"
 #include "metallicroughnessshaderdata_p.h"
+#include <Qt3DCore/private/qnode_p.h>
 
 namespace Kuesa {
 
@@ -554,7 +555,15 @@ void MetallicRoughnessProperties::setMetalRoughMap(Qt3DRender::QAbstractTexture 
 {
     if (metalRoughMap == m_metalRoughMap)
         return;
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_metalRoughMap != nullptr)
+        d->unregisterDestructionHelper(m_metalRoughMap);
     m_metalRoughMap = metalRoughMap;
+    if (m_metalRoughMap != nullptr) {
+        if (m_metalRoughMap->parent() == nullptr)
+            m_metalRoughMap->setParent(this);
+        d->registerDestructionHelper(m_metalRoughMap, &MetallicRoughnessProperties::setMetalRoughMap, m_metalRoughMap);
+    }
     emit metalRoughMapChanged(m_metalRoughMap);
 }
 
@@ -562,7 +571,15 @@ void MetallicRoughnessProperties::setNormalMap(Qt3DRender::QAbstractTexture *nor
 {
     if (normalMap == m_normalMap)
         return;
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_normalMap != nullptr)
+        d->unregisterDestructionHelper(m_normalMap);
     m_normalMap = normalMap;
+    if (m_normalMap != nullptr) {
+        if (m_normalMap->parent() == nullptr)
+            m_normalMap->setParent(this);
+        d->registerDestructionHelper(m_normalMap, &MetallicRoughnessProperties::setNormalMap, m_normalMap);
+    }
     emit normalMapChanged(m_normalMap);
 }
 
@@ -575,7 +592,15 @@ void MetallicRoughnessProperties::setAmbientOcclusionMap(Qt3DRender::QAbstractTe
 {
     if (ambientOcclusionMap == m_ambientOcclusionMap)
         return;
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_ambientOcclusionMap != nullptr)
+        d->unregisterDestructionHelper(m_ambientOcclusionMap);
     m_ambientOcclusionMap = ambientOcclusionMap;
+    if (m_ambientOcclusionMap != nullptr) {
+        if (m_ambientOcclusionMap->parent() == nullptr)
+            m_ambientOcclusionMap->setParent(this);
+        d->registerDestructionHelper(m_ambientOcclusionMap, &MetallicRoughnessProperties::setAmbientOcclusionMap, m_ambientOcclusionMap);
+    }
     emit ambientOcclusionMapChanged(m_ambientOcclusionMap);
 }
 
@@ -588,7 +613,15 @@ void MetallicRoughnessProperties::setEmissiveMap(Qt3DRender::QAbstractTexture *e
 {
     if (emissiveMap == m_emissiveMap)
         return;
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_emissiveMap != nullptr)
+        d->unregisterDestructionHelper(m_emissiveMap);
     m_emissiveMap = emissiveMap;
+    if (m_emissiveMap != nullptr) {
+        if (m_emissiveMap->parent() == nullptr)
+            m_emissiveMap->setParent(this);
+        d->registerDestructionHelper(m_emissiveMap, &MetallicRoughnessProperties::setEmissiveMap, m_emissiveMap);
+    }
     emit emissiveMapChanged(m_emissiveMap);
 }
 
