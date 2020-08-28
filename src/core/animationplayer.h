@@ -31,7 +31,7 @@
 
 #include <Qt3DCore/QNode>
 #include <Kuesa/kuesa_global.h>
-#include <Kuesa/SceneEntity>
+#include <Kuesa/KuesaNode>
 #include <Qt3DAnimation/qclock.h>
 
 QT_BEGIN_NAMESPACE
@@ -42,10 +42,9 @@ class QClipAnimator;
 
 namespace Kuesa {
 
-class KUESASHARED_EXPORT AnimationPlayer : public Qt3DCore::QNode
+class KUESASHARED_EXPORT AnimationPlayer : public KuesaNode
 {
     Q_OBJECT
-    Q_PROPERTY(Kuesa::SceneEntity *sceneEntity READ sceneEntity WRITE setSceneEntity NOTIFY sceneEntityChanged)
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString clip READ clip WRITE setClip NOTIFY clipChanged)
     Q_PROPERTY(QString mapper READ mapper WRITE setMapper NOTIFY mapperChanged)
@@ -68,7 +67,6 @@ public:
     explicit AnimationPlayer(Qt3DCore::QNode *parent = nullptr);
     ~AnimationPlayer();
 
-    SceneEntity *sceneEntity() const;
     Status status() const;
     QString clip() const;
     QString mapper() const;
@@ -83,7 +81,6 @@ public:
     void removeTarget(Qt3DCore::QNode *target);
 
 public Q_SLOTS:
-    void setSceneEntity(Kuesa::SceneEntity *sceneEntity);
     void setClip(const QString &clip);
     void setMapper(const QString &mapper);
     void setRunning(bool running);
@@ -97,7 +94,6 @@ public Q_SLOTS:
     void restart();
 
 Q_SIGNALS:
-    void sceneEntityChanged(const Kuesa::SceneEntity *sceneEntity);
     void statusChanged(Kuesa::AnimationPlayer::Status status);
     void clipChanged(const QString &clip);
     void mapperChanged(const QString &mapper);
@@ -112,13 +108,13 @@ private:
     void setStatus(Status status);
     void updateSceneFromParent(Qt3DCore::QNode *parent);
 
-    SceneEntity *m_sceneEntity;
     Status m_status;
     QString m_clip;
     QString m_mapper;
     QVector<Qt3DCore::QNode *> m_targets;
     Qt3DAnimation::QClipAnimator *m_animator;
     bool m_running;
+    QMetaObject::Connection m_loadingDoneConnection;
 };
 
 } // namespace Kuesa

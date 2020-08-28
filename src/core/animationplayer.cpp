@@ -65,7 +65,7 @@ using namespace Qt3DAnimation;
 
 /*!
     \qmltype AnimationPlayer
-    \inherits Kuesa::AnimationPlayer
+    \inherits Kuesa::KuesaNode
     \inqmlmodule Kuesa
     \since Kuesa 1.0
     \instantiates Kuesa::AnimationPlayer
@@ -97,18 +97,6 @@ using namespace Qt3DAnimation;
                     if they have been defined).
     \value Error  An error occurred when looking for assets or trying to match clip and mapper properties.
 */
-
-/*!
-    \property AnimationPlayer::sceneEntity
-    \brief pointer to the SceneEntity which contains the collections used to look up clip and mapper data
-
-    \sa GLTF2Importer::sceneEntity()
- */
-
-/*!
-    \qmlproperty Entity AnimationPlayer::sceneEntity
-    \brief pointer to the SceneEntity which contains the collections used to look up clip and mapper data
- */
 
 /*!
     \property AnimationPlayer::status
@@ -254,8 +242,7 @@ using namespace Qt3DAnimation;
 */
 
 AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
-    : Qt3DCore::QNode(parent)
-    , m_sceneEntity(nullptr)
+    : KuesaNode(parent)
     , m_status(None)
     , m_animator(new Qt3DAnimation::QClipAnimator(this))
     , m_running(false)
@@ -264,16 +251,17 @@ AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     m_animator->setPropertyTracking(QStringLiteral("normalizedTime"), Qt3DCore::QNode::TrackAllValues);
 #endif
-    updateSceneFromParent(parent);
-    connect(this, &Qt3DCore::QNode::parentChanged, this, [this](QObject *parent) {
-        auto parentNode = qobject_cast<Qt3DCore::QNode *>(parent);
-        this->updateSceneFromParent(parentNode);
-    });
 
     connect(m_animator, &QClipAnimator::runningChanged, this, &AnimationPlayer::runningChanged);
     connect(m_animator, &QClipAnimator::loopCountChanged, this, &AnimationPlayer::loopCountChanged);
     connect(m_animator, &QClipAnimator::clockChanged, this, &AnimationPlayer::clockChanged);
     connect(m_animator, &QClipAnimator::normalizedTimeChanged, this, &AnimationPlayer::normalizedTimeChanged);
+    QObject::connect(this, &KuesaNode::sceneEntityChanged,
+                     this, [this] {
+        disconnect(m_loadingDoneConnection);
+        m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone, this, &AnimationPlayer::matchClipAndTargets);
+        matchClipAndTargets();
+    });
 }
 
 AnimationPlayer::~AnimationPlayer()
@@ -291,41 +279,6 @@ void AnimationPlayer::setStatus(AnimationPlayer::Status status)
         m_status = status;
         emit statusChanged(m_status);
     }
-}
-
-void AnimationPlayer::updateSceneFromParent(Qt3DCore::QNode *parent)
-{
-    if (m_sceneEntity)
-        return;
-
-    while (parent) {
-        auto scene = qobject_cast<SceneEntity *>(parent);
-        if (scene) {
-            setSceneEntity(scene);
-            break;
-        }
-        parent = parent->parentNode();
-    }
-}
-
-SceneEntity *AnimationPlayer::sceneEntity() const
-{
-    return m_sceneEntity;
-}
-
-void AnimationPlayer::setSceneEntity(SceneEntity *sceneEntity)
-{
-    if (sceneEntity == m_sceneEntity)
-        return;
-
-    if (m_sceneEntity)
-        disconnect(m_sceneEntity, &SceneEntity::loadingDone, this, &AnimationPlayer::matchClipAndTargets);
-
-    m_sceneEntity = sceneEntity;
-    connect(m_sceneEntity, &SceneEntity::loadingDone, this, &AnimationPlayer::matchClipAndTargets);
-
-    emit sceneEntityChanged(sceneEntity);
-    matchClipAndTargets();
 }
 
 QString AnimationPlayer::clip() const
