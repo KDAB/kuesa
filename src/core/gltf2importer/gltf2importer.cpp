@@ -432,6 +432,19 @@ void GLTF2Importer::setActiveSceneIndex(int index)
     }
 }
 
+/*!
+ * Reloads the current glTF file.
+ */
+void GLTF2Importer::reload()
+{
+    // Deletes the scene and reset it to nullptr
+    clear();
+
+    // Load only if the path is non empty
+    if (!m_source.isEmpty())
+        load();
+}
+
 void GLTF2Importer::load()
 {
     if (status() == Status::Loading)

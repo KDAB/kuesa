@@ -101,6 +101,7 @@ public Q_SLOTS:
     void setAssignNames(bool assignNames);
     void setOptions(const Kuesa::GLTF2Import::GLTF2Options &options);
     void setActiveSceneIndex(int index);
+    void reload();
 
 Q_SIGNALS:
     void sourceChanged(const QUrl &source);
