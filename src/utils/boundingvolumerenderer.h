@@ -81,6 +81,9 @@ public:
     Q_INVOKABLE void deselect(Qt3DCore::QEntity *entity);
     Q_INVOKABLE void clearSelection();
 
+    QColor color() const;
+    void setColor(const QColor &color);
+
 private:
     struct SelectionDetails {
         Qt3DCore::QNodeId m_id;

@@ -403,3 +403,14 @@ void BoundingVolumeRenderer::deselect(const QNodeId &id)
                           }),
                           std::end(m_selectionData));
 }
+
+QColor BoundingVolumeRenderer::color() const
+{
+    return m_color;
+}
+
+void BoundingVolumeRenderer::setColor(const QColor &color)
+{
+    m_color = color;
+    m_colorParameter->setValue(m_color);
+}
