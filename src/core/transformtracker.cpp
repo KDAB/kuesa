@@ -58,8 +58,7 @@ inline QMatrix4x4 computeWorldMatrix(Qt3DCore::QTransform *transformComponent)
 } // namespace
 
 TransformTracker::TransformTracker(Qt3DCore::QNode *parent)
-    : Qt3DCore::QNode(parent)
-    , m_sceneEntity(nullptr)
+    : KuesaNode(parent)
     , m_camera(nullptr)
     , m_cameraWatcher(nullptr)
     , m_cameraTransform(nullptr)
@@ -67,35 +66,15 @@ TransformTracker::TransformTracker(Qt3DCore::QNode *parent)
     , m_node(nullptr)
     , m_nodeWatcher(nullptr)
 {
-    updateSceneFromParent(parent);
-    connect(this, &Qt3DCore::QNode::parentChanged, this, [this](QObject *parent) {
-        auto parentNode = qobject_cast<Qt3DCore::QNode *>(parent);
-        this->updateSceneFromParent(parentNode);
-    });
+    connect(this, &KuesaNode::sceneEntityChanged,
+            this, [this] {
+                disconnect(m_loadingDoneConnection);
+                if (m_sceneEntity)
+                    m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone, this, &TransformTracker::matchNode);
+            });
 }
 
 TransformTracker::~TransformTracker() = default;
-
-SceneEntity *TransformTracker::sceneEntity() const
-{
-    return m_sceneEntity;
-}
-
-void TransformTracker::setSceneEntity(SceneEntity *sceneEntity)
-{
-    if (sceneEntity == m_sceneEntity)
-        return;
-
-    if (m_sceneEntity)
-        disconnect(m_sceneEntity, &SceneEntity::loadingDone, this, &TransformTracker::matchNode);
-
-    m_sceneEntity = sceneEntity;
-    connect(m_sceneEntity, &SceneEntity::loadingDone, this, &TransformTracker::matchNode);
-    connect(m_sceneEntity, &Qt3DCore::QNode::nodeDestroyed, this, [this] { setSceneEntity(nullptr); });
-
-    emit sceneEntityChanged(sceneEntity);
-    matchNode();
-}
 
 Qt3DCore::QEntity *TransformTracker::camera() const
 {
@@ -134,6 +113,11 @@ QSize TransformTracker::screenSize() const
     return m_screenSize;
 }
 
+QRectF TransformTracker::viewportRect() const
+{
+    return m_viewportRect;
+}
+
 void TransformTracker::setScreenSize(const QSize &screenSize)
 {
     if (screenSize != m_screenSize) {
@@ -141,6 +125,20 @@ void TransformTracker::setScreenSize(const QSize &screenSize)
         emit screenSizeChanged(m_screenSize);
         updateScreenProjection();
     }
+}
+
+void TransformTracker::setViewportRect(QRectF viewportRect)
+{
+    if (m_viewportRect == viewportRect)
+        return;
+
+    m_viewportRect = viewportRect;
+    emit viewportRectChanged(m_viewportRect);
+}
+
+void TransformTracker::setViewportRect(qreal x, qreal y, qreal width, qreal height)
+{
+    setViewportRect({ x, y, width, height });
 }
 
 QString TransformTracker::name() const
@@ -207,21 +205,6 @@ QPointF TransformTracker::screenPosition() const
     return m_screenPosition;
 }
 
-void TransformTracker::updateSceneFromParent(Qt3DCore::QNode *parent)
-{
-    if (m_sceneEntity)
-        return;
-
-    while (parent) {
-        auto scene = qobject_cast<SceneEntity *>(parent);
-        if (scene) {
-            setSceneEntity(scene);
-            break;
-        }
-        parent = parent->parentNode();
-    }
-}
-
 void TransformTracker::matchNode()
 {
     if (!m_sceneEntity)
@@ -267,12 +250,20 @@ void TransformTracker::updateScreenProjection()
     QMatrix4x4 worldMatrix = m_nodeWatcher->worldMatrix();
     QMatrix4x4 invertedCameraMatrix = m_cameraWatcher->worldMatrix().inverted();
 
+    QRect viewport{ 0, 0, m_screenSize.width(), m_screenSize.height() };
+    if (m_viewportRect.isValid()) {
+        viewport.setX(int(qreal(m_screenSize.width()) * m_viewportRect.x()));
+        viewport.setY(int(qreal(m_screenSize.height()) * m_viewportRect.y()));
+        viewport.setWidth(int(qreal(m_screenSize.width()) * m_viewportRect.width()));
+        viewport.setHeight(int(qreal(m_screenSize.height()) * m_viewportRect.height()));
+    }
+
     const QMatrix4x4 projectionMatrix = (m_cameraLens) ? m_cameraLens->projectionMatrix() : QMatrix4x4{};
     const QMatrix4x4 viewMatrix = (m_cameraTransform) ? invertedCameraMatrix : QMatrix4x4{};
     const QVector3D projectedPoint = QVector3D().project(viewMatrix * worldMatrix,
                                                          projectionMatrix,
-                                                         QRect(0, 0, m_screenSize.width(), m_screenSize.height()));
+                                                         viewport);
 
-    m_screenPosition = QPointF(qreal(projectedPoint.x()), qreal(m_screenSize.height()) - qreal(projectedPoint.y()));
+    m_screenPosition = QPointF(qreal(projectedPoint.x()), qreal(viewport.height()) - qreal(projectedPoint.y()));
     emit screenPositionChanged(m_screenPosition);
 }

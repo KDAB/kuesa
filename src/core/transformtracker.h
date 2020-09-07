@@ -33,6 +33,7 @@
 #include <Qt3DCore/qtransform.h>
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/sceneentity.h>
+#include <Kuesa/kuesanode.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -40,13 +41,13 @@ namespace Kuesa {
 
 class EntityTransformWatcher;
 
-class KUESASHARED_EXPORT TransformTracker : public Qt3DCore::QNode
+class KUESASHARED_EXPORT TransformTracker : public KuesaNode
 {
     Q_OBJECT
-    Q_PROPERTY(Kuesa::SceneEntity *sceneEntity READ sceneEntity WRITE setSceneEntity NOTIFY sceneEntityChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(Qt3DCore::QEntity *camera READ camera WRITE setCamera NOTIFY cameraChanged)
     Q_PROPERTY(QSize screenSize READ screenSize WRITE setScreenSize NOTIFY screenSizeChanged)
+    Q_PROPERTY(QRectF viewportRect READ viewportRect WRITE setViewportRect NOTIFY viewportRectChanged)
     Q_PROPERTY(QMatrix4x4 matrix READ matrix NOTIFY matrixChanged)
     Q_PROPERTY(QMatrix4x4 worldMatrix READ worldMatrix NOTIFY worldMatrixChanged)
     Q_PROPERTY(QQuaternion rotation READ rotation NOTIFY rotationChanged)
@@ -61,9 +62,9 @@ public:
     explicit TransformTracker(Qt3DCore::QNode *parent = nullptr);
     ~TransformTracker();
 
-    SceneEntity *sceneEntity() const;
     Qt3DCore::QEntity *camera() const;
     QSize screenSize() const;
+    QRectF viewportRect() const;
     QString name() const;
     QMatrix4x4 matrix() const;
     QMatrix4x4 worldMatrix() const;
@@ -78,13 +79,13 @@ public:
 
 public Q_SLOTS:
     void setName(const QString &name);
-    void setSceneEntity(SceneEntity *sceneEntity);
     void setCamera(Qt3DCore::QEntity *camera);
     void setScreenSize(const QSize &screenSize);
+    void setViewportRect(QRectF viewportRect);
+    void setViewportRect(qreal x, qreal y, qreal width, qreal height);
 
 Q_SIGNALS:
     void nameChanged(const QString &name);
-    void sceneEntityChanged(const Kuesa::SceneEntity *sceneEntity);
     void cameraChanged(Qt3DCore::QEntity *camera);
     void screenSizeChanged(const QSize &screenSize);
     void scaleChanged(float scale);
@@ -98,21 +99,23 @@ Q_SIGNALS:
     void worldMatrixChanged(const QMatrix4x4 &worldMatrix);
     void screenPositionChanged(const QPointF &screenPosition);
 
+    void viewportRectChanged(QRectF viewportRect);
+
 private:
-    void updateSceneFromParent(Qt3DCore::QNode *parent);
     void matchNode();
     void updateScreenProjection();
 
-    SceneEntity *m_sceneEntity;
     Qt3DCore::QEntity *m_camera;
     EntityTransformWatcher *m_cameraWatcher;
     Qt3DCore::QTransform *m_cameraTransform;
     Qt3DRender::QCameraLens *m_cameraLens;
     QSize m_screenSize;
+    QRectF m_viewportRect;
     QString m_name;
     Qt3DCore::QTransform *m_node;
     EntityTransformWatcher *m_nodeWatcher;
     QPointF m_screenPosition;
+    QMetaObject::Connection m_loadingDoneConnection;
 };
 
 } // namespace Kuesa

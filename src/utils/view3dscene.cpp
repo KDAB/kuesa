@@ -137,6 +137,31 @@ void View3DScene::updateTrackers()
     }
 }
 
+void View3DScene::addTransformTracker(TransformTracker *tracker)
+{
+    if (std::find(std::begin(m_trackers), std::end(m_trackers), tracker) == std::end(m_trackers)) {
+        Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+        d->registerDestructionHelper(tracker, &View3DScene::removeTransformTracker, tracker);
+        if (tracker->parentNode() == nullptr)
+            tracker->setParent(this);
+        m_trackers.push_back(tracker);
+        updateTrackers();
+    }
+}
+
+void View3DScene::removeTransformTracker(TransformTracker *tracker)
+{
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    d->unregisterDestructionHelper(tracker);
+    m_trackers.erase(std::remove(std::begin(m_trackers), std::end(m_trackers), tracker),
+                     std::end(m_trackers));
+}
+
+void View3DScene::clearTransformTrackers()
+{
+    m_trackers.clear();
+}
+
 void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
 {
     if (nullptr == m_clock)
@@ -164,33 +189,6 @@ void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
 void View3DScene::clearAnimationPlayers()
 {
     m_animations.clear();
-}
-
-void View3DScene::addTransformTracker(TransformTracker *tracker)
-{
-    if (std::find(std::begin(m_trackers), std::end(m_trackers), tracker) == std::end(m_trackers)) {
-        Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-        d->registerDestructionHelper(tracker, &View3DScene::removeTransformTracker, tracker);
-        if (tracker->parentNode() == nullptr)
-            tracker->setParent(this);
-        m_trackers.push_back(tracker);
-        updateTrackers();
-    }
-}
-
-void View3DScene::removeTransformTracker(TransformTracker *tracker)
-{
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    d->unregisterDestructionHelper(tracker);
-    m_trackers.erase(std::remove_if(std::begin(m_trackers), std::end(m_trackers), [tracker](TransformTracker *t) {
-                         return t == tracker;
-                     }),
-                     std::end(m_trackers));
-}
-
-void View3DScene::clearTransformTrackers()
-{
-    m_trackers.clear();
 }
 
 void View3DScene::start()
