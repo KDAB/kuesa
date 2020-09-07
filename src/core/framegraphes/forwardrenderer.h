@@ -127,9 +127,12 @@ public Q_SLOTS:
     void setParticlesEnabled(bool enabled);
     void setUsesStencilMask(bool usesStencilMask);
 
-    void addLayer(Qt3DRender::QLayer *layer);
-    void removeLayer(Qt3DRender::QLayer *layer);
+    void addLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera = nullptr, QRectF viewport = QRectF{});
+    void addLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, qreal left, qreal top, qreal width, qreal height);
+    void removeLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera = nullptr, QRectF viewport = QRectF{});
+    void removeLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, qreal left, qreal top, qreal width, qreal height);
     QVector<Qt3DRender::QLayer *> layers() const;
+    void clearLayers();
 
 Q_SIGNALS:
     void renderSurfaceChanged(QObject *renderSurface);
@@ -165,8 +168,10 @@ private:
     Qt3DRender::QTechniqueFilter *m_frustumCullingOpaqueTechniqueFilter;
     Qt3DRender::QTechniqueFilter *m_noFrustumCullingTransparentTechniqueFilter;
     Qt3DRender::QTechniqueFilter *m_frustumCullingTransparentTechniqueFilter;
-    Qt3DRender::QViewport *m_viewport;
-    Qt3DRender::QCameraSelector *m_cameraSelector;
+    QRectF m_viewport;
+    Qt3DRender::QViewport *m_effectsViewport;
+    Qt3DRender::QFrameGraphNode *m_stagesRoot;
+    Qt3DCore::QEntity *m_camera;
     Qt3DRender::QClearBuffers *m_clearBuffers;
     Qt3DRender::QNoDraw *m_noDrawClearBuffer;
     Qt3DRender::QFrustumCulling *m_frustumCullingOpaque;
@@ -191,10 +196,17 @@ private:
     Qt3DRender::QDebugOverlay *m_debugOverlay;
 #endif
     bool m_fgTreeRebuiltScheduled;
-    QVector<Qt3DRender::QLayer *> m_layers;
-    QVector<QMetaObject::Connection> m_layerDestructionConnections;
 
-    class Q_AUTOTEST_EXPORT SceneStages {
+    struct LayerConfiguration {
+        Qt3DRender::QLayer *m_layer = nullptr;
+        Qt3DCore::QEntity *m_camera = nullptr;
+        QRectF m_viewport;
+        QMetaObject::Connection m_layerDestructionConnection;
+    };
+    std::vector<LayerConfiguration> m_layers;
+
+    class Q_AUTOTEST_EXPORT SceneStages
+    {
     public:
         SceneStages();
         ~SceneStages();
@@ -204,7 +216,7 @@ private:
         void init();
         void setZFilling(bool zFilling);
         void setBackToFrontSorting(bool backToFrontSorting);
-        void setLayer(Qt3DRender::QLayer *layer);
+        void reconfigure(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, QRectF viewport);
 
         bool zFilling();
         bool backToFrontSorting();
@@ -221,8 +233,13 @@ private:
         TransparentRenderStage *transparentStage() const;
 
     private:
-        Qt3DRender::QLayerFilter *m_opaqueStagesRoot;
-        Qt3DRender::QLayerFilter *m_transparentStagesRoot;
+        struct StageConfiguration {
+            Qt3DRender::QLayerFilter *m_root = nullptr;
+            Qt3DRender::QCameraSelector *m_cameraSelector = nullptr;
+            Qt3DRender::QViewport *m_viewport = nullptr;
+        };
+        StageConfiguration m_opaqueStagesConfiguration;
+        StageConfiguration m_transparentStagesConfiguration;
         OpaqueRenderStage *m_opaqueStage;
         TransparentRenderStage *m_transparentStage;
         ZFillRenderStage *m_zFillStage;

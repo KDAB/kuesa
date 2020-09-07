@@ -617,8 +617,10 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_frustumCullingOpaqueTechniqueFilter(new Qt3DRender::QTechniqueFilter())
     , m_noFrustumCullingTransparentTechniqueFilter(new Qt3DRender::QTechniqueFilter())
     , m_frustumCullingTransparentTechniqueFilter(new Qt3DRender::QTechniqueFilter())
-    , m_viewport(new Qt3DRender::QViewport())
-    , m_cameraSelector(new Qt3DRender::QCameraSelector())
+    , m_viewport(0., 0., 1., 1.)
+    , m_effectsViewport(new Qt3DRender::QViewport())
+    , m_stagesRoot(new Qt3DRender::QFrameGraphNode())
+    , m_camera(nullptr)
     , m_clearBuffers(new Qt3DRender::QClearBuffers())
     , m_noDrawClearBuffer(new Qt3DRender::QNoDraw())
     , m_frustumCullingOpaque(new Qt3DRender::QFrustumCulling())
@@ -640,6 +642,14 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_usesStencilMask(false)
     , m_gammaCorrectionFX(new ToneMappingAndGammaCorrectionEffect())
 {
+    m_effectsViewport->setObjectName(QLatin1String("KuesaPostProcessing"));
+    m_stagesRoot->setObjectName(QLatin1String("KuesaStagesRoot"));
+
+    m_frustumCullingOpaque->setObjectName(QLatin1String("KuesaFrustrumCullingOpaque"));
+    m_noFrustumCullingOpaqueTechniqueFilter->setObjectName(QLatin1String("KuesaNoFrustrumCullingOpaque"));
+    m_frustumCullingTransparentTechniqueFilter->setObjectName(QLatin1String("KuesaFrustrumCullingTransparent"));
+    m_noFrustumCullingTransparentTechniqueFilter->setObjectName(QLatin1String("KuesaNoFrustrumCullingTransparent"));
+
     m_renderTargets[0] = nullptr;
     m_renderTargets[1] = nullptr;
 
@@ -669,10 +679,9 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
 
     m_clearBuffers->setBuffers(Qt3DRender::QClearBuffers::ColorDepthStencilBuffer);
 
-    connect(m_cameraSelector, &Qt3DRender::QCameraSelector::cameraChanged, this, &ForwardRenderer::cameraChanged);
     connect(m_clearBuffers, &Qt3DRender::QClearBuffers::clearColorChanged, this, &ForwardRenderer::clearColorChanged);
     connect(m_clearBuffers, &Qt3DRender::QClearBuffers::buffersChanged, this, &ForwardRenderer::clearBuffersChanged);
-    connect(m_viewport, &Qt3DRender::QViewport::normalizedRectChanged, this, &ForwardRenderer::viewportRectChanged);
+    connect(m_effectsViewport, &Qt3DRender::QViewport::normalizedRectChanged, this, &ForwardRenderer::viewportRectChanged);
     connect(this, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::renderSurfaceChanged);
     connect(this, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::handleSurfaceChange);
     connect(this, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::updateTextureSizes);
@@ -712,7 +721,7 @@ ForwardRenderer::~ForwardRenderer()
  */
 Qt3DCore::QEntity *ForwardRenderer::camera() const
 {
-    return m_cameraSelector->camera();
+    return m_camera;
 }
 
 /*!
@@ -899,7 +908,7 @@ QObject *ForwardRenderer::renderSurface() const
  */
 QRectF ForwardRenderer::viewportRect() const
 {
-    return m_viewport->normalizedRect();
+    return m_viewport;
 }
 
 /*!
@@ -907,7 +916,11 @@ QRectF ForwardRenderer::viewportRect() const
  */
 void ForwardRenderer::setCamera(Qt3DCore::QEntity *camera)
 {
-    m_cameraSelector->setCamera(camera);
+    if (m_camera != camera) {
+        m_camera = camera;
+        emit cameraChanged(m_camera);
+        reconfigureStages();
+    }
 }
 
 /*!
@@ -1039,40 +1052,68 @@ void ForwardRenderer::setUsesStencilMask(bool usesStencilMask)
     set, everything gets rendered. As soon as you starting adding a layer, only
     the entities that match the layers will be rendered.
 
-    \since Kuesa 1.2
+    Since 1.3, an optional camera and viewport can be provided.
+
+    If passing a valid camera and/or viewport (in normalized coordinates), those will
+    be selected when rendering. This can be used to display different objects in
+    different portions of the screen.
+
+    If no camera is specified, then the main default camera will be used. If no
+    viewport is specified, then the main default viewport will be used.
+
+\since Kuesa 1.3
 */
-void ForwardRenderer::addLayer(Qt3DRender::QLayer *layer)
+void ForwardRenderer::addLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, QRectF viewport)
 {
     if (layer) {
-
         // Parent it to the FG if they have no parent
         // We want to avoid them ever being parented to the SceneStages
         // As those might be destroyed when rebuilding the FG
         if (!layer->parent())
             layer->setParent(this);
 
-        Q_ASSERT(!m_layers.contains(layer));
         auto connection = QObject::connect(layer, &Qt3DCore::QNode::nodeDestroyed,
                                            this, [this, layer] { removeLayer(layer); });
-        m_layers.push_back(layer);
-        m_layerDestructionConnections.push_back(connection);
+        m_layers.push_back({ layer, camera, viewport, connection });
         reconfigureStages();
-    }
+    } else
+        qCWarning(Kuesa::kuesa) << Q_FUNC_INFO << "called with null layer";
+}
+
+/*!
+    This is an overloaded method to add a layer and specify the associated camera and / or viewport.
+
+\since Kuesa 1.3
+*/
+void ForwardRenderer::addLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, qreal left, qreal top, qreal width, qreal height)
+{
+    addLayer(layer, camera, { left, top, width, height });
 }
 
 /*!
     Removes the \a layer from the layers used for rendering.
     \since Kuesa 1.2
 */
-void ForwardRenderer::removeLayer(Qt3DRender::QLayer *layer)
+void ForwardRenderer::removeLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, QRectF viewport)
 {
-    const auto idx = m_layers.indexOf(layer);
-    if (idx >= 0) {
-        m_layers.removeAt(idx);
-        const auto connection = m_layerDestructionConnections.takeAt(idx);
-        QObject::disconnect(connection);
+    auto it = std::find_if(std::begin(m_layers), std::end(m_layers), [layer, camera, viewport](const LayerConfiguration &c) {
+        return c.m_layer == layer && c.m_camera == camera && c.m_viewport == viewport;
+    });
+    if (it != std::end(m_layers)) {
+        QObject::disconnect((*it).m_layerDestructionConnection);
+        m_layers.erase(it);
         reconfigureStages();
     }
+}
+
+/*!
+    This is an overloaded method to remove a layer with the associated camera and / or viewport.
+
+\since Kuesa 1.3
+        */
+void ForwardRenderer::removeLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, qreal left, qreal top, qreal width, qreal height)
+{
+    removeLayer(layer, camera, { left, top, width, height });
 }
 
 /*!
@@ -1081,7 +1122,15 @@ void ForwardRenderer::removeLayer(Qt3DRender::QLayer *layer)
 */
 QVector<Qt3DRender::QLayer *> ForwardRenderer::layers() const
 {
-    return m_layers;
+    QVector<Qt3DRender::QLayer *> res;
+    std::transform(std::begin(m_layers), std::end(m_layers), std::back_inserter(res), [](const LayerConfiguration &c) { return c.m_layer; });
+    return res;
+}
+
+void ForwardRenderer::clearLayers()
+{
+    m_layers.clear();
+    reconfigureStages();
 }
 
 /*!
@@ -1156,35 +1205,36 @@ void ForwardRenderer::reconfigureFrameGraph()
     static const RenderingFeatures glFeatures = checkGLFeatures();
     _glFeatures = &glFeatures;
 
-    m_viewport->setParent(this);
-    m_clearBuffers->setParent(m_viewport);
+    m_effectsViewport->setParent(Q_NODE_NULLPTR);
+
+    m_clearBuffers->setParent(this);
     m_noDrawClearBuffer->setParent(m_clearBuffers);
 
     // Camera selector hold the root FG node to render the gltf Scene
-    // It might get reparented to something else than m_viewport
+    // It might get reparented to something else than this
     // in case rendering into FBO is required
-    m_cameraSelector->setParent(m_viewport);
+    m_stagesRoot->setParent(this);
 
     // Skinned Meshes are not checked against frustum culling as the skinning
     // could actually make them still be in the view frustum even if their
     // transform technically makes them out of sight
 
     // Non skinned opaque
-    m_frustumCullingOpaque->setParent(m_cameraSelector);
+    m_frustumCullingOpaque->setParent(m_stagesRoot);
     m_frustumCullingOpaqueTechniqueFilter->setParent(m_frustumCullingOpaque);
 
     // Skinned opaque
-    m_noFrustumCullingOpaqueTechniqueFilter->setParent(m_cameraSelector);
+    m_noFrustumCullingOpaqueTechniqueFilter->setParent(m_stagesRoot);
 
     // Non skinned transparent
-    m_frustumCullingTransparent->setParent(m_cameraSelector);
+    m_frustumCullingTransparent->setParent(m_stagesRoot);
     m_frustumCullingTransparentTechniqueFilter->setParent(m_frustumCullingTransparent);
 
     // Skinned tranparent
-    m_noFrustumCullingTransparentTechniqueFilter->setParent(m_cameraSelector);
+    m_noFrustumCullingTransparentTechniqueFilter->setParent(m_stagesRoot);
 
     // Particles
-    m_particleRenderStage->setParent(m_particlesEnabled ? m_cameraSelector : Q_NODE_NULLPTR);
+    m_particleRenderStage->setParent(m_particlesEnabled ? m_stagesRoot : Q_NODE_NULLPTR);
 
     // Temporarily reparent effect subtrees and other nodes, then delete the node that held the last
     // subtree framegraph including any render target selectors.
@@ -1258,17 +1308,16 @@ void ForwardRenderer::reconfigureFrameGraph()
         const auto &target0outputs = m_renderTargets[0]->outputs();
         // Output #0 is the color
         // Output #1 is the depth
-        if (!target0outputs.empty()) {
+        if (!target0outputs.empty())
             depthTex = target0outputs[1]->texture();
-        }
 
-        // Remove cameraSelector subtree
-        m_cameraSelector->setParent(Q_NODE_NULLPTR);
+        // Remove stages subtree
+        m_stagesRoot->setParent(Q_NODE_NULLPTR);
 
-        // create a subtree under m_viewport to render the main scene into a texture
+        // create a subtree under this to render the main scene into a texture
         // Effectively taking the place of where the CameraSelector node was in the
         // tree
-        m_renderToTextureRootNode = new Qt3DRender::QFrameGraphNode(m_viewport);
+        m_renderToTextureRootNode = new Qt3DRender::QFrameGraphNode(this);
         m_renderToTextureRootNode->setObjectName(QStringLiteral("KuesaMainScene"));
 
         // need to exclude the effects layers from being drawn in the main scene
@@ -1283,8 +1332,8 @@ void ForwardRenderer::reconfigureFrameGraph()
                 clearScreen, &Qt3DRender::QClearBuffers::setClearColor);
         new Qt3DRender::QNoDraw(clearScreen);
 
-        // Reparent cameraSelectror to sceneTargetSelector
-        m_cameraSelector->setParent(sceneTargetSelector);
+        // Reparent stages to sceneTargetSelector
+        m_stagesRoot->setParent(sceneTargetSelector);
 
         // If we support MSAA FBO -> Then render into it and Blit into regular non FBO
         // for post FX
@@ -1351,7 +1400,8 @@ void ForwardRenderer::reconfigureFrameGraph()
         }
 
         // create a node to hold all the effect subtrees, under the main viewport. They don't need camera, alpha, frustum, etc.
-        m_effectsRootNode = new Qt3DRender::QFrameGraphNode(m_viewport);
+        m_effectsViewport->setParent(this);
+        m_effectsRootNode = new Qt3DRender::QFrameGraphNode(m_effectsViewport);
         m_effectsRootNode->setObjectName(QStringLiteral("KuesaPostProcessingEffects"));
 
         // Gather the different effect types
@@ -1397,7 +1447,7 @@ void ForwardRenderer::reconfigureFrameGraph()
     }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-    m_debugOverlay->setParent(m_viewport);
+    m_debugOverlay->setParent(this);
 #endif
 
     const bool blocked = blockNotifications(true);
@@ -1413,10 +1463,14 @@ void ForwardRenderer::reconfigureStages()
     // No layers
     //    2 (culled, non culled) to handle the non layered elements
     // Layers
-    //    2 (culled, non culler) per layer
+    //    2 (culled, non culled) per layer
     const auto actualSceneStagesCount = m_sceneStages.size();
     const bool hasLayers = m_layers.size() > 0;
     const int requiredSceneStagesCount = std::max(2, int(m_layers.size()) * 2);
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    m_debugOverlay->setParent(Q_NODE_NULLPTR);
+#endif
 
     m_sceneStages.resize(requiredSceneStagesCount);
     for (auto i = actualSceneStagesCount; i < requiredSceneStagesCount; ++i) {
@@ -1427,10 +1481,21 @@ void ForwardRenderer::reconfigureStages()
 
     // Update SceneStages and unparent
     for (int i = 0; i < requiredSceneStagesCount; ++i) {
-        Qt3DRender::QLayer *layer = hasLayers ? m_layers.at(i / 2) : nullptr;
+        Qt3DRender::QLayer *layer = nullptr;
+        Qt3DCore::QEntity *camera = m_camera;
+        QRectF viewport = m_viewport;
+        if (hasLayers) {
+            const auto &layerConfig = m_layers[size_t(i / 2)];
+            layer = layerConfig.m_layer;
+            if (layerConfig.m_camera)
+                camera = layerConfig.m_camera;
+            if (layerConfig.m_viewport.isValid())
+                viewport = layerConfig.m_viewport;
+        }
+
         SceneStagesPtr &sceneStage = m_sceneStages[i];
         sceneStage->setZFilling(m_zfilling);
-        sceneStage->setLayer(layer);
+        sceneStage->reconfigure(layer, camera, viewport);
         sceneStage->setBackToFrontSorting(m_backToFrontSorting);
         sceneStage->unParent();
     }
@@ -1448,6 +1513,10 @@ void ForwardRenderer::reconfigureStages()
             sceneStage->setParent(std::get<0>(rootPair), std::get<1>(rootPair));
         }
     }
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    m_debugOverlay->setParent(this);
+#endif
 }
 
 /*!
@@ -1523,16 +1592,18 @@ void ForwardRenderer::setRenderSurface(QObject *renderSurface)
  */
 void ForwardRenderer::setViewportRect(const QRectF &viewportRect)
 {
-    m_viewport->setNormalizedRect(viewportRect);
+    if (m_viewport != viewportRect) {
+        m_viewport = viewportRect;
+        m_effectsViewport->setNormalizedRect(viewportRect);
+        reconfigureStages();
+    }
 }
 
 /*!
     \internal
  */
 ForwardRenderer::SceneStages::SceneStages()
-    : m_opaqueStagesRoot(nullptr)
-    , m_transparentStagesRoot(nullptr)
-    , m_opaqueStage(nullptr)
+    : m_opaqueStage(nullptr)
     , m_transparentStage(nullptr)
     , m_zFillStage(nullptr)
 {
@@ -1540,8 +1611,8 @@ ForwardRenderer::SceneStages::SceneStages()
 
 ForwardRenderer::SceneStages::~SceneStages()
 {
-    delete m_opaqueStagesRoot;
-    delete m_transparentStagesRoot;
+    delete m_opaqueStagesConfiguration.m_root;
+    delete m_transparentStagesConfiguration.m_root;
 }
 
 /*!
@@ -1549,12 +1620,16 @@ ForwardRenderer::SceneStages::~SceneStages()
  */
 void ForwardRenderer::SceneStages::init()
 {
-    m_opaqueStagesRoot = new Qt3DRender::QLayerFilter();
-    m_transparentStagesRoot = new Qt3DRender::QLayerFilter();
-    m_opaqueStage = new OpaqueRenderStage(m_opaqueStagesRoot);
-    m_transparentStage = new TransparentRenderStage(m_transparentStagesRoot);
-    m_opaqueStagesRoot->setFilterMode(Qt3DRender::QLayerFilter::AcceptAllMatchingLayers);
-    m_transparentStagesRoot->setFilterMode(Qt3DRender::QLayerFilter::AcceptAllMatchingLayers);
+    m_opaqueStagesConfiguration.m_root = new Qt3DRender::QLayerFilter();
+    m_opaqueStagesConfiguration.m_cameraSelector = new Qt3DRender::QCameraSelector(m_opaqueStagesConfiguration.m_root);
+    m_opaqueStagesConfiguration.m_viewport = new Qt3DRender::QViewport(m_opaqueStagesConfiguration.m_cameraSelector);
+    m_transparentStagesConfiguration.m_root = new Qt3DRender::QLayerFilter();
+    m_transparentStagesConfiguration.m_cameraSelector = new Qt3DRender::QCameraSelector(m_transparentStagesConfiguration.m_root);
+    m_transparentStagesConfiguration.m_viewport = new Qt3DRender::QViewport(m_transparentStagesConfiguration.m_cameraSelector);
+    m_opaqueStage = new OpaqueRenderStage(m_opaqueStagesConfiguration.m_viewport);
+    m_transparentStage = new TransparentRenderStage(m_transparentStagesConfiguration.m_viewport);
+    m_opaqueStagesConfiguration.m_root->setFilterMode(Qt3DRender::QLayerFilter::AcceptAllMatchingLayers);
+    m_transparentStagesConfiguration.m_root->setFilterMode(Qt3DRender::QLayerFilter::AcceptAllMatchingLayers);
 }
 
 /*!
@@ -1573,8 +1648,8 @@ void ForwardRenderer::SceneStages::setZFilling(bool zFilling)
             m_zFillDestroyedConnection = QObject::connect(m_zFillStage, &Qt3DCore::QNode::nodeDestroyed,
                                                           m_zFillStage, [this] { m_zFillStage = nullptr; });
             m_opaqueStage->setParent(Q_NODE_NULLPTR);
-            m_zFillStage->setParent(m_opaqueStagesRoot);
-            m_opaqueStage->setParent(m_opaqueStagesRoot);
+            m_zFillStage->setParent(m_opaqueStagesConfiguration.m_viewport);
+            m_opaqueStage->setParent(m_opaqueStagesConfiguration.m_viewport);
         }
         m_opaqueStage->setZFilling(zFilling);
     }
@@ -1592,22 +1667,32 @@ void ForwardRenderer::SceneStages::setBackToFrontSorting(bool backToFrontSorting
 /*!
     \internal
  */
-void ForwardRenderer::SceneStages::setLayer(Qt3DRender::QLayer *l)
+void ForwardRenderer::SceneStages::reconfigure(Qt3DRender::QLayer *l, Qt3DCore::QEntity *camera, QRectF viewport)
 {
     Qt3DRender::QLayer *oldLayer = layer();
 
     if (oldLayer) {
-        m_opaqueStagesRoot->removeLayer(oldLayer);
-        m_transparentStagesRoot->removeLayer(oldLayer);
+        m_opaqueStagesConfiguration.m_root->removeLayer(oldLayer);
+        m_opaqueStagesConfiguration.m_root->setObjectName(QLatin1String("Opaque Stages Root"));
+        m_transparentStagesConfiguration.m_root->removeLayer(oldLayer);
+        m_transparentStagesConfiguration.m_root->setObjectName(QLatin1String("Transparent Stages Root"));
     }
 
     if (l) {
-        m_opaqueStagesRoot->addLayer(l);
-        m_transparentStagesRoot->addLayer(l);
+        m_opaqueStagesConfiguration.m_root->addLayer(l);
+        m_opaqueStagesConfiguration.m_root->setObjectName(QString(QLatin1String("Opaque Stages Root (%1)")).arg(l->objectName()));
+        m_transparentStagesConfiguration.m_root->addLayer(l);
+        m_transparentStagesConfiguration.m_root->setObjectName(QString(QLatin1String("Transparent Stages Root (%1)")).arg(l->objectName()));
     }
 
-    m_opaqueStagesRoot->setEnabled(l != nullptr);
-    m_transparentStagesRoot->setEnabled(l != nullptr);
+    m_opaqueStagesConfiguration.m_root->setEnabled(l != nullptr);
+    m_transparentStagesConfiguration.m_root->setEnabled(l != nullptr);
+
+    m_opaqueStagesConfiguration.m_cameraSelector->setCamera(camera);
+    m_transparentStagesConfiguration.m_cameraSelector->setCamera(camera);
+
+    m_opaqueStagesConfiguration.m_viewport->setNormalizedRect(viewport);
+    m_transparentStagesConfiguration.m_viewport->setNormalizedRect(viewport);
 }
 
 /*!
@@ -1628,8 +1713,8 @@ bool ForwardRenderer::SceneStages::backToFrontSorting()
 
 Qt3DRender::QLayer *ForwardRenderer::SceneStages::layer() const
 {
-    if (m_opaqueStagesRoot->layers().size() > 0)
-        return m_opaqueStagesRoot->layers().first();
+    if (m_opaqueStagesConfiguration.m_root->layers().size() > 0)
+        return m_opaqueStagesConfiguration.m_root->layers().first();
     return nullptr;
 }
 
@@ -1638,8 +1723,8 @@ Qt3DRender::QLayer *ForwardRenderer::SceneStages::layer() const
  */
 void ForwardRenderer::SceneStages::unParent()
 {
-    m_opaqueStagesRoot->setParent(Q_NODE_NULLPTR);
-    m_transparentStagesRoot->setParent(Q_NODE_NULLPTR);
+    m_opaqueStagesConfiguration.m_root->setParent(Q_NODE_NULLPTR);
+    m_transparentStagesConfiguration.m_root->setParent(Q_NODE_NULLPTR);
 }
 
 /*!
@@ -1648,8 +1733,8 @@ void ForwardRenderer::SceneStages::unParent()
 void ForwardRenderer::SceneStages::setParent(Qt3DCore::QNode *opaqueRoot,
                                              Qt3DCore::QNode *transparentRoot)
 {
-    m_opaqueStagesRoot->setParent(opaqueRoot);
-    m_transparentStagesRoot->setParent(transparentRoot);
+    m_opaqueStagesConfiguration.m_root->setParent(opaqueRoot);
+    m_transparentStagesConfiguration.m_root->setParent(transparentRoot);
 }
 
 /*!
@@ -1657,7 +1742,7 @@ void ForwardRenderer::SceneStages::setParent(Qt3DCore::QNode *opaqueRoot,
  */
 Qt3DRender::QLayerFilter *ForwardRenderer::SceneStages::opaqueStagesRoot() const
 {
-    return m_opaqueStagesRoot;
+    return m_opaqueStagesConfiguration.m_root;
 }
 
 /*!
@@ -1665,7 +1750,7 @@ Qt3DRender::QLayerFilter *ForwardRenderer::SceneStages::opaqueStagesRoot() const
  */
 Qt3DRender::QLayerFilter *ForwardRenderer::SceneStages::transparentStagesRoot() const
 {
-    return m_transparentStagesRoot;
+    return m_transparentStagesConfiguration.m_root;
 }
 
 /*!
