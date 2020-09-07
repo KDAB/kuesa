@@ -37,6 +37,7 @@
 #include <Kuesa/gltf2importer.h>
 
 #include <Qt3DCore/private/qnode_p.h>
+#include <Qt3DCore/private/qabstractnodefactory_p.h>
 #include <Qt3DRender/qrendersettings.h>
 #include <Qt3DInput/qinputsettings.h>
 
@@ -48,9 +49,10 @@ using namespace Qt3DRender;
 View3DScene::View3DScene(Qt3DCore::QNode *parent)
     : Kuesa::SceneEntity(parent)
     , m_importer(new GLTF2Importer(this))
-    , m_frameGraph(new ForwardRenderer)
+    , m_frameGraph(nullptr)
     , m_clock(nullptr)
 {
+    m_frameGraph = Qt3DCore::QAbstractNodeFactory::createNode<Kuesa::ForwardRenderer>("ForwardRenderer");
     m_importer->setSceneEntity(this);
 
     auto renderSettings = new QRenderSettings;

@@ -89,6 +89,8 @@
 
 #include <QtQml/qqml.h>
 
+#include <Qt3DQuick/private/qt3dquick_global_p.h>
+
 QT_BEGIN_NAMESPACE
 
 KuesaPlugin::KuesaPlugin(QObject *parent)
@@ -121,7 +123,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::TransformCollection>(uri, 1, 3, "TransformCollection", QStringLiteral("You are not supposed to create an TransformCollection"));
 
     // FrameGraphs
-    qmlRegisterExtendedType<Kuesa::ForwardRenderer, Kuesa::ForwardRendererExtension>(uri, 1, 0, "ForwardRenderer");
+    Qt3DCore::Quick::registerExtendedType<Kuesa::ForwardRenderer, Kuesa::ForwardRendererExtension>("ForwardRenderer", "Kuesa/ForwardRenderer", uri, 1, 0, "ForwardRenderer");
     qmlRegisterRevision<Kuesa::ForwardRenderer, 1>(uri, 1, 1);
     qmlRegisterRevision<Kuesa::ForwardRenderer, 2>(uri, 1, 2);
     qmlRegisterRevision<Kuesa::ForwardRenderer, 3>(uri, 1, 3);

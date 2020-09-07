@@ -31,6 +31,7 @@ import QtQuick.Scene3D 2.12
 import Qt3D.Core 2.12
 import Qt3D.Render 2.12
 import Qt3D.Extras 2.12
+import Kuesa 1.3 as Kuesa
 import Kuesa.Utils 1.3 as KuesaUtils
 
 Scene3D {
@@ -38,6 +39,8 @@ Scene3D {
     property alias source: scene.source
     property var camera: ""
     readonly property real aspectRatio: width / Math.max(1, height)
+    readonly property var scene: scene
+    readonly property var frameGraph: scene.frameGraph
     readonly property Entity activeCamera: scene.frameGraph.camera
     property alias components: scene.components
     property alias showDebugOverlay: scene.showDebugOverlay
@@ -70,6 +73,10 @@ Scene3D {
         }
     }
 
+    function transformForEntity(entity) {
+        return scene.transformForEntity(entity)
+    }
+
     function start() { scene.start() }
     function stop() { scene.stop() }
     function gotoNormalizedTime(t) { scene.gotoNormalizedTime(t) }
@@ -82,6 +89,7 @@ Scene3D {
         screenSize: Qt.size(root.width, root.height)
 
         Binding {
+            when: root.cameraAspectRatioMode == Scene3D.AutomaticAspectRatio
             target: root.activeCamera
             property: "aspectRatio"
             value: root.aspectRatio
