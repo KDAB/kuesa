@@ -1,5 +1,5 @@
 /*
-    postfxlistextension.cpp
+    forwardrenderextension.cpp
 
     This file is part of Kuesa.
 
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "postfxlistextension.h"
+#include "forwardrendererextension.h"
 #include <Kuesa/forwardrenderer.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
 
@@ -45,7 +45,7 @@ ForwardRenderer *kuesaFrameGraph(QObject *parent)
 } // namespace
 
 /*!
- * \class PostFXListExtension
+ * \class ForwardRendererExtension
  * \internal
  */
 
@@ -55,59 +55,59 @@ ForwardRenderer *kuesaFrameGraph(QObject *parent)
     List of postprocessing effects to perform. They are executed in the order
     of declaration
 */
-PostFXListExtension::PostFXListExtension(QObject *parent)
+ForwardRendererExtension::ForwardRendererExtension(QObject *parent)
     : QObject(parent)
 {
 }
 
-QQmlListProperty<AbstractPostProcessingEffect> PostFXListExtension::postProcessingEffects()
+QQmlListProperty<AbstractPostProcessingEffect> ForwardRendererExtension::postProcessingEffects()
 {
     return QQmlListProperty<AbstractPostProcessingEffect>(this, 0,
-                                                          PostFXListExtension::appendFX,
-                                                          PostFXListExtension::fxCount,
-                                                          PostFXListExtension::fxAt,
-                                                          PostFXListExtension::clearFx);
+                                                          ForwardRendererExtension::appendFX,
+                                                          ForwardRendererExtension::fxCount,
+                                                          ForwardRendererExtension::fxAt,
+                                                          ForwardRendererExtension::clearFx);
 }
 
-QQmlListProperty<Qt3DRender::QLayer> PostFXListExtension::layers()
+QQmlListProperty<Qt3DRender::QLayer> ForwardRendererExtension::layers()
 {
     return QQmlListProperty<Qt3DRender::QLayer>(this, 0,
-                                                PostFXListExtension::appendLayer,
-                                                PostFXListExtension::layersCount,
-                                                PostFXListExtension::layerAt,
-                                                PostFXListExtension::clearLayers);
+                                                ForwardRendererExtension::appendLayer,
+                                                ForwardRendererExtension::layersCount,
+                                                ForwardRendererExtension::layerAt,
+                                                ForwardRendererExtension::clearLayers);
 }
 
-void PostFXListExtension::appendFX(QQmlListProperty<AbstractPostProcessingEffect> *list, AbstractPostProcessingEffect *fx)
+void ForwardRendererExtension::appendFX(QQmlListProperty<AbstractPostProcessingEffect> *list, AbstractPostProcessingEffect *fx)
 {
-    PostFXListExtension *self = static_cast<PostFXListExtension *>(list->object);
+    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
     if (fx == nullptr || kuesaFG == nullptr)
         return;
     kuesaFG->addPostProcessingEffect(fx);
 }
 
-AbstractPostProcessingEffect *PostFXListExtension::fxAt(QQmlListProperty<AbstractPostProcessingEffect> *list, int index)
+AbstractPostProcessingEffect *ForwardRendererExtension::fxAt(QQmlListProperty<AbstractPostProcessingEffect> *list, int index)
 {
-    PostFXListExtension *self = static_cast<PostFXListExtension *>(list->object);
+    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
     if (kuesaFG == nullptr)
         return nullptr;
     return kuesaFG->postProcessingEffects().at(index);
 }
 
-int PostFXListExtension::fxCount(QQmlListProperty<AbstractPostProcessingEffect> *list)
+int ForwardRendererExtension::fxCount(QQmlListProperty<AbstractPostProcessingEffect> *list)
 {
-    PostFXListExtension *self = static_cast<PostFXListExtension *>(list->object);
+    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
     if (kuesaFG == nullptr)
         return 0;
     return kuesaFG->postProcessingEffects().size();
 }
 
-void PostFXListExtension::clearFx(QQmlListProperty<AbstractPostProcessingEffect> *list)
+void ForwardRendererExtension::clearFx(QQmlListProperty<AbstractPostProcessingEffect> *list)
 {
-    PostFXListExtension *self = static_cast<PostFXListExtension *>(list->object);
+    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
     if (kuesaFG == nullptr)
         return;
@@ -116,41 +116,41 @@ void PostFXListExtension::clearFx(QQmlListProperty<AbstractPostProcessingEffect>
         kuesaFG->removePostProcessingEffect(fx);
 }
 
-void PostFXListExtension::appendLayer(QQmlListProperty<Qt3DRender::QLayer> *list, Qt3DRender::QLayer *layer)
+void ForwardRendererExtension::appendLayer(QQmlListProperty<Qt3DRender::QLayer> *list, Qt3DRender::QLayer *layer)
 {
-    PostFXListExtension *self = static_cast<PostFXListExtension *>(list->object);
+    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
     if (kuesaFG == nullptr)
         return;
     return kuesaFG->addLayer(layer);
 }
 
-Qt3DRender::QLayer *PostFXListExtension::layerAt(QQmlListProperty<Qt3DRender::QLayer> *list, int index)
+Qt3DRender::QLayer *ForwardRendererExtension::layerAt(QQmlListProperty<Qt3DRender::QLayer> *list, int index)
 {
-    PostFXListExtension *self = static_cast<PostFXListExtension *>(list->object);
+    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
     if (kuesaFG == nullptr)
         return nullptr;
     return kuesaFG->layers().at(index);
 }
 
-int PostFXListExtension::layersCount(QQmlListProperty<Qt3DRender::QLayer> *list)
+int ForwardRendererExtension::layersCount(QQmlListProperty<Qt3DRender::QLayer> *list)
 {
-    PostFXListExtension *self = static_cast<PostFXListExtension *>(list->object);
+    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
     if (kuesaFG == nullptr)
         return 0;
     return kuesaFG->layers().count();
 }
 
-void PostFXListExtension::clearLayers(QQmlListProperty<Qt3DRender::QLayer> *list)
+void ForwardRendererExtension::clearLayers(QQmlListProperty<Qt3DRender::QLayer> *list)
 {
-    PostFXListExtension *self = static_cast<PostFXListExtension *>(list->object);
+    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
     if (kuesaFG == nullptr)
         return;
     const QVector<Qt3DRender::QLayer *> effects = kuesaFG->layers();
-    for (Qt3DRender::QLayer *layer: effects)
+    for (Qt3DRender::QLayer *layer : effects)
         kuesaFG->removeLayer(layer);
 }
 

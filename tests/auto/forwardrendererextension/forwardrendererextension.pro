@@ -26,10 +26,10 @@
 
 TEMPLATE = app
 
-TARGET = tst_postfxlistextension
+TARGET = tst_forwardrendererextension
 
 QT += testlib kuesa kuesa-private
 
 CONFIG += testcase
 
-SOURCES += tst_postfxlistextension.cpp
+SOURCES += tst_forwardrendererextension.cpp

@@ -1,5 +1,5 @@
 /*
-    postfxlistextension.h
+    forwardrenderextension.h
 
     This file is part of Kuesa.
 
@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_POSTFXLISTEXTENSION_H
-#define KUESA_POSTFXLISTEXTENSION_H
+#ifndef KUESA_FORWARDRENDERER_EXTENSION_H
+#define KUESA_FORWARDRENDERER_EXTENSION_H
 
 #include <QObject>
 #include <QtQml/QQmlListProperty>
@@ -42,13 +42,13 @@ namespace Kuesa {
 
 class AbstractPostProcessingEffect;
 
-class PostFXListExtension : public QObject
+class ForwardRendererExtension : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QQmlListProperty<Kuesa::AbstractPostProcessingEffect> postProcessingEffects READ postProcessingEffects CONSTANT)
     Q_PROPERTY(QQmlListProperty<Qt3DRender::QLayer> layers READ layers CONSTANT)
 public:
-    explicit PostFXListExtension(QObject *parent = nullptr);
+    explicit ForwardRendererExtension(QObject *parent = nullptr);
 
     QQmlListProperty<Kuesa::AbstractPostProcessingEffect> postProcessingEffects();
     QQmlListProperty<Qt3DRender::QLayer> layers();
@@ -69,4 +69,4 @@ private:
 
 QT_END_NAMESPACE
 
-#endif // KUESA_POSTFXLISTEXTENSION_H
+#endif // KUESA_FORWARDRENDERER_EXTENSION_H

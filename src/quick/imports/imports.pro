@@ -34,17 +34,17 @@ QT += kuesa kuesautils qml quick
 SOURCES += \
     animationplayeritem.cpp \
     assetproperty.cpp \
+    forwardrendererextension.cpp \
     kuesaplugin.cpp \
     asset.cpp \
-    postfxlistextension.cpp \
     view3dsceneitem.cpp
 
 HEADERS += \
     animationplayeritem.h \
     assetproperty_p.h \
+    forwardrendererextension.h \
     kuesaplugin.h \
     asset.h \
-    postfxlistextension.h \
     view3dsceneitem.h
 
 QML_FILES += \

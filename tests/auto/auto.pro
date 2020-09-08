@@ -64,7 +64,7 @@ qtConfig(private_tests) {
         sceneparser \
         materialparser \
         skinparser \
-        postfxlistextension \
+        forwardrendererextension \
         assetitem \
         forwardrenderer \
         uri \

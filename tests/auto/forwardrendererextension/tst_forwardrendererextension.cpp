@@ -1,5 +1,5 @@
 /*
-    tst_postfxlistextension.cpp
+    tst_forwardrendererextension.cpp
 
     This file is part of Kuesa.
 
@@ -34,7 +34,7 @@
 #include <QQmlComponent>
 #include <QQmlEngine>
 
-class tst_PostFXListExtension : public QObject
+class tst_ForwardRendererExtension : public QObject
 {
     Q_OBJECT
 
@@ -181,6 +181,6 @@ private Q_SLOTS:
     }
 };
 
-QTEST_MAIN(tst_PostFXListExtension)
+QTEST_MAIN(tst_ForwardRendererExtension)
 
-#include "tst_postfxlistextension.moc"
+#include "tst_forwardrendererextension.moc"
