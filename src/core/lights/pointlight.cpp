@@ -28,6 +28,7 @@
 
 #include "pointlight.h"
 #include "pointlight_p.h"
+#include <Qt3DRender/private/shaderdata_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -66,7 +67,13 @@ namespace Kuesa {
 PointLightPrivate::PointLightPrivate()
     : QAbstractLightPrivate(Qt3DRender::QAbstractLight::PointLight)
 {
+    // Set all light uniforms, including ones that don't apply to this light type
+    // TODO: Move this into common class when adding shadows
+    m_shaderData->setProperty("direction", QVector3D(0.0f, -1.0f, 0.0f));
+    m_shaderData->setProperty("directionTransformed", Qt3DRender::Render::ShaderData::ModelToWorldDirection);
     m_shaderData->setProperty("range", 0.0f);
+    m_shaderData->setProperty("lightAngleScale", 0);
+    m_shaderData->setProperty("lightAngleOffset", 0);
 }
 
 /*!
