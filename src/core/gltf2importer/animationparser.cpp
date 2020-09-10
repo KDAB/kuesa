@@ -30,6 +30,7 @@
 
 #include "gltf2context_p.h"
 #include "kuesa_p.h"
+#include "fovadaptor_p.h"
 #include <private/gltf2utils_p.h>
 #include <private/kuesa_utils_p.h>
 #include <private/kuesa_global_p.h>
@@ -232,6 +233,34 @@ QVector<Qt3DAnimation::QChannelMapping *> mappingsForMorphTargetWeights(const GL
     return mappings;
 }
 
+QVector<Qt3DAnimation::QChannelMapping *> mappingForFieldOfView(const GLTF2Context *ctx,
+                                                                const ChannelMapping &mapping)
+{
+    Qt3DCore::QNode *target = nullptr;
+    switch (mapping.target.type) {
+    case AnimationTarget::Camera: {
+        const Camera &cam = ctx->camera(mapping.target.targetNodeId);
+        FOVAdaptor *adaptor = new FOVAdaptor(cam.lens);
+        target = adaptor;
+        QObject::connect(adaptor, &FOVAdaptor::degreesChanged,
+                         cam.lens, &QCameraLens::setFieldOfView);
+        break;
+    }
+    default:
+        break;
+    }
+
+    if (!target)
+        return {};
+
+    auto channelMapping = new Qt3DAnimation::QChannelMapping();
+    channelMapping->setTarget(target);
+    channelMapping->setChannelName(mapping.name);
+    channelMapping->setProperty(QLatin1String("radians"));
+
+    return { channelMapping };
+}
+
 QVector<Qt3DAnimation::QChannelMapping *> mappingsForGenericTargetNode(const GLTF2Context *ctx,
                                                                        const ChannelMapping &mapping)
 {
@@ -281,7 +310,7 @@ void registerDefaultAnimatables()
     AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/zfar"), 1, QStringLiteral("farPlane"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/znear"), 1, QStringLiteral("nearPlane"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/aspectRatio"), 1, QStringLiteral("aspectRatio"), &mappingsForGenericTargetNode);
-    AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/yfov"), 1, QStringLiteral("fieldOfView"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/yfov"), 1, QStringLiteral("fieldOfView"), &mappingForFieldOfView);
     AnimationParser::registerAnimatableProperty(QStringLiteral("pbrMetallicRoughness/baseColorFactor"), 4, QStringLiteral("baseColorFactor"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("pbrMetallicRoughness/metallicFactor"), 1, QStringLiteral("metallicFactor"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("pbrMetallicRoughness/roughnessFactor"), 1, QStringLiteral("roughnessFactor"), &mappingsForGenericTargetNode);

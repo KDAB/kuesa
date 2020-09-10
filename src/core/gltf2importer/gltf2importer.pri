@@ -30,6 +30,7 @@ SOURCES += \
     $$PWD/bufferparser.cpp \
     $$PWD/bufferviewsparser.cpp \
     $$PWD/cameraparser.cpp \
+    $$PWD/fovadaptor.cpp \
     $$PWD/gltf2context.cpp \
     $$PWD/bufferaccessorparser.cpp \
     $$PWD/meshparser.cpp \
@@ -54,6 +55,7 @@ HEADERS += \
     $$PWD/bufferparser_p.h \
     $$PWD/bufferviewsparser_p.h \
     $$PWD/cameraparser_p.h \
+    $$PWD/fovadaptor_p.h \
     $$PWD/gltf2context_p.h \
     $$PWD/bufferaccessorparser_p.h \
     $$PWD/meshparser_p.h \
