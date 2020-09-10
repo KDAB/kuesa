@@ -65,6 +65,7 @@
 #include <functional>
 
 #include <Qt3DCore/private/qabstractnodefactory_p.h>
+#include <Qt3DRender/private/qcamera_p.h>
 #include <Qt3DCore/QEntity>
 #include <Qt3DCore/QJoint>
 #include <Qt3DCore/QTransform>
@@ -1021,16 +1022,25 @@ void GLTF2Parser::generateTreeNodeContent()
                     const Camera cam = m_context->camera(cameraId);
                     // Note: we need to keep the lens in cam around as that one will be added
                     // into the collection
-                    camera->lens()->setProjectionType(cam.lens->projectionType());
-                    if (cam.lens->projectionType() == Qt3DRender::QCameraLens::PerspectiveProjection) {
-                        camera->lens()->setAspectRatio(cam.lens->aspectRatio());
-                        camera->lens()->setNearPlane(cam.lens->nearPlane());
-                        camera->lens()->setFarPlane(cam.lens->farPlane());
-                        camera->lens()->setFieldOfView(cam.lens->fieldOfView());
-                    } else {
-                        // Custom Projection Matrix
-                        camera->lens()->setProjectionMatrix(cam.lens->projectionMatrix());
-                    }
+                    auto lenses = camera->componentsOfType<Qt3DRender::QCameraLens>();
+                    qDeleteAll(lenses);
+                    auto cameraPrivate = static_cast<Qt3DRender::QCameraPrivate*>(QCameraPrivate::get(camera));
+                    cameraPrivate->m_lens = cam.lens;
+
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::projectionTypeChanged, camera, &Qt3DRender::QCamera::projectionTypeChanged);
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::nearPlaneChanged, camera, &Qt3DRender::QCamera::nearPlaneChanged);
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::farPlaneChanged, camera, &Qt3DRender::QCamera::farPlaneChanged);
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::fieldOfViewChanged, camera, &Qt3DRender::QCamera::fieldOfViewChanged);
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::aspectRatioChanged, camera, &Qt3DRender::QCamera::aspectRatioChanged);
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::leftChanged, camera, &Qt3DRender::QCamera::leftChanged);
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::rightChanged, camera, &Qt3DRender::QCamera::rightChanged);
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::bottomChanged, camera, &Qt3DRender::QCamera::bottomChanged);
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::topChanged, camera, &Qt3DRender::QCamera::topChanged);
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::projectionMatrixChanged, camera, &Qt3DRender::QCamera::projectionMatrixChanged);
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::exposureChanged, camera, &Qt3DRender::QCamera::exposureChanged);
+                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::viewSphere, camera, &Qt3DRender::QCamera::viewSphere);
+
+                    camera->addComponent(cam.lens);
 
                     QVector3D position, up, viewDir;
                     // Extract local position, direction and upVector from
