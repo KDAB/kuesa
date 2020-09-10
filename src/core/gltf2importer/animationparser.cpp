@@ -246,6 +246,7 @@ QVector<Qt3DAnimation::QChannelMapping *> mappingsForGenericTargetNode(const GLT
     case AnimationTarget::Camera: {
         const Camera &cam = ctx->camera(mapping.target.targetNodeId);
         target = cam.lens;
+        break;
     }
     case AnimationTarget::Light: {
         const Light &light = ctx->light(mapping.target.targetNodeId);
