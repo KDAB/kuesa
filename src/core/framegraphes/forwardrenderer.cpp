@@ -630,6 +630,7 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_multisampleTarget(nullptr)
     , m_blitFramebufferNodeFromMSToFBO0(nullptr)
     , m_blitFramebufferNodeFromFBO0ToFBO1(nullptr)
+    , m_msaaResolver(nullptr)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     , m_debugOverlay(new Qt3DRender::QDebugOverlay)
 #endif
