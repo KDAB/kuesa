@@ -1025,7 +1025,7 @@ void GLTF2Parser::generateTreeNodeContent()
                     auto lenses = componentsFromEntity<Qt3DRender::QCameraLens>(camera);
                     qDeleteAll(lenses);
 
-                    auto cameraPrivate = static_cast<Qt3DRender::QCameraPrivate *>(QCameraPrivate::get(camera));
+                    auto cameraPrivate = static_cast<Qt3DRender::QCameraPrivate *>(Qt3DRender::QCameraPrivate::get(camera));
                     cameraPrivate->m_lens = cam.lens;
 
                     QObject::connect(cam.lens, &Qt3DRender::QCameraLens::projectionTypeChanged, camera, &Qt3DRender::QCamera::projectionTypeChanged);
