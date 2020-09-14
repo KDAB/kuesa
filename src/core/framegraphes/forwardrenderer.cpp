@@ -1303,7 +1303,8 @@ void ForwardRenderer::reconfigureFrameGraph()
             // RHI has no Blit operations so we manually resolve the multisampled
             // FBO into renderTarget[0]
             if (usesRHI) {
-                m_msaaResolver = new MSAAFBOResolver(sceneTargetSelector);
+                m_msaaResolver = new MSAAFBOResolver();
+                m_msaaResolver->setParent(sceneTargetSelector);
                 m_msaaResolver->setSource(findRenderTargetTexture(m_multisampleTarget, Qt3DRender::QRenderTargetOutput::Color0));
                 m_msaaResolver->setDestination(m_renderTargets[0]);
             } else {
