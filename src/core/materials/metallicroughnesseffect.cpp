@@ -29,7 +29,6 @@
 #include "metallicroughnesseffect.h"
 
 #include <Qt3DCore/private/qnode_p.h>
-#include <Qt3DRender/qcullface.h>
 #include <Qt3DRender/qfilterkey.h>
 #include <Qt3DRender/qgraphicsapifilter.h>
 #include <Qt3DRender/qparameter.h>
@@ -48,38 +47,6 @@ QT_BEGIN_NAMESPACE
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
-class MetallicRoughnessTechnique : public Qt3DRender::QTechnique
-{
-public:
-    enum Version {
-        GL3 = 0,
-        ES3,
-        ES2,
-        RHI
-    };
-
-    explicit MetallicRoughnessTechnique(Version version, Qt3DCore::QNode *parent = nullptr);
-
-    QStringList enabledLayers() const;
-    void setEnabledLayers(const QStringList &layers);
-    void setOpaque(bool opaque);
-    void setCullingMode(QCullFace::CullingMode mode);
-    void setAllowCulling(bool allowCulling);
-
-private:
-    Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QBlendEquation *m_blendEquation;
-    Qt3DRender::QBlendEquationArguments *m_blendArguments;
-    Qt3DRender::QShaderProgramBuilder *m_metalRoughShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
-    Qt3DRender::QShaderProgram *m_metalRoughShader;
-    Qt3DRender::QShaderProgram *m_zfillShader;
-    Qt3DRender::QRenderPass *m_zfillRenderPass;
-    Qt3DRender::QRenderPass *m_opaqueRenderPass;
-    Qt3DRender::QRenderPass *m_transparentRenderPass;
-    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
-};
 
 MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore::QNode *parent)
     : QTechnique(parent)
@@ -218,6 +185,11 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
 void MetallicRoughnessTechnique::setAllowCulling(bool allowCulling)
 {
     m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
+}
+
+QShaderProgramBuilder *MetallicRoughnessTechnique::metalRoughShaderBuilder() const
+{
+    return m_metalRoughShaderBuilder;
 }
 
 /*!

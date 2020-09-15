@@ -33,15 +33,57 @@
 #include <Kuesa/gltf2materialeffect.h>
 #include <Kuesa/kuesa_global.h>
 #include <Qt3DRender/qabstracttexture.h>
+#include <Qt3DRender/qcullface.h>
+#include <Qt3DRender/qtechnique.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
 class QAbstractTexture;
+class QBlendEquation;
+class QBlendEquationArguments;
+class QShaderProgramBuilder;
+class QShaderProgram;
+class QRenderPass;
+class QFilterKey;
 } // namespace Qt3DRender
 
 namespace Kuesa {
-class MetallicRoughnessTechnique;
+
+class Q_AUTOTEST_EXPORT MetallicRoughnessTechnique : public Qt3DRender::QTechnique
+{
+    Q_OBJECT
+public:
+    enum Version {
+        GL3 = 0,
+        ES3,
+        ES2,
+        RHI
+    };
+
+    explicit MetallicRoughnessTechnique(Version version, Qt3DCore::QNode *parent = nullptr);
+
+    QStringList enabledLayers() const;
+    void setEnabledLayers(const QStringList &layers);
+    void setOpaque(bool opaque);
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode);
+    void setAllowCulling(bool allowCulling);
+
+    Qt3DRender::QShaderProgramBuilder *metalRoughShaderBuilder() const;
+
+private:
+    Qt3DRender::QCullFace *m_backFaceCulling;
+    Qt3DRender::QBlendEquation *m_blendEquation;
+    Qt3DRender::QBlendEquationArguments *m_blendArguments;
+    Qt3DRender::QShaderProgramBuilder *m_metalRoughShaderBuilder;
+    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
+    Qt3DRender::QShaderProgram *m_metalRoughShader;
+    Qt3DRender::QShaderProgram *m_zfillShader;
+    Qt3DRender::QRenderPass *m_zfillRenderPass;
+    Qt3DRender::QRenderPass *m_opaqueRenderPass;
+    Qt3DRender::QRenderPass *m_transparentRenderPass;
+    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
+};
 
 class KUESASHARED_EXPORT MetallicRoughnessEffect : public GLTF2MaterialEffect
 {
