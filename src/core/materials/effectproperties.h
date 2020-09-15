@@ -69,6 +69,7 @@ public:
     };
     Q_DECLARE_FLAGS(Properties, Property)
     Q_FLAG(Properties)
+    Q_ENUM(Property)
 };
 
 } // namespace Kuesa

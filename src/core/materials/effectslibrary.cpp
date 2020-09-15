@@ -37,9 +37,7 @@ QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-namespace {
-
-UnlitEffect *createUnlitEffectWithKey(EffectProperties::Properties properties)
+UnlitEffect *EffectsLibrary::createUnlitEffectWithKey(EffectProperties::Properties properties)
 {
     UnlitEffect *effect = new UnlitEffect;
 
@@ -58,7 +56,7 @@ UnlitEffect *createUnlitEffectWithKey(EffectProperties::Properties properties)
     return effect;
 }
 
-MetallicRoughnessEffect *createMetallicRoughnessEffectWithKey(EffectProperties::Properties properties)
+MetallicRoughnessEffect *EffectsLibrary::createMetallicRoughnessEffectWithKey(EffectProperties::Properties properties)
 {
     MetallicRoughnessEffect *effect = new MetallicRoughnessEffect;
 
@@ -80,22 +78,21 @@ MetallicRoughnessEffect *createMetallicRoughnessEffectWithKey(EffectProperties::
     return effect;
 }
 
-GLTF2MaterialEffect *createEffectWithKey(EffectProperties::Properties properties)
+GLTF2MaterialEffect *EffectsLibrary::createEffectWithKey(EffectProperties::Properties properties)
 {
     Q_ASSERT(!(properties & EffectProperties::Custom));
 
     if (properties & EffectProperties::Unlit) {
-        return createUnlitEffectWithKey(properties);
+        return EffectsLibrary::createUnlitEffectWithKey(properties);
     }
 
     if (properties & EffectProperties::MetallicRoughness) {
-        return createMetallicRoughnessEffectWithKey(properties);
+        return EffectsLibrary::createMetallicRoughnessEffectWithKey(properties);
     }
 
     qCWarning(kuesa, "Trying to create an effect with invalid key");
     return nullptr;
 }
-} // namespace
 
 EffectsLibrary::EffectsLibrary()
 {

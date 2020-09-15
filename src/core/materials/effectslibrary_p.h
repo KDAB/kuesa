@@ -51,6 +51,8 @@ QT_BEGIN_NAMESPACE
 namespace Kuesa {
 
 class GLTF2MaterialEffect;
+class MetallicRoughnessEffect;
+class UnlitEffect;
 
 class KUESA_PRIVATE_EXPORT EffectsLibrary
 {
@@ -74,6 +76,10 @@ public:
 
     QHash<EffectProperties::Properties, GLTF2MaterialEffect *> effects() const;
     QVector<CustomEffectKeyPair> customEffects() const;
+
+    static GLTF2MaterialEffect *createEffectWithKey(EffectProperties::Properties properties);
+    static MetallicRoughnessEffect *createMetallicRoughnessEffectWithKey(EffectProperties::Properties properties);
+    static UnlitEffect *createUnlitEffectWithKey(EffectProperties::Properties properties);
 
 private:
     QHash<EffectProperties::Properties, GLTF2MaterialEffect *> m_effects;

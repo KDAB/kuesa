@@ -28,6 +28,9 @@
 
 #include <QtTest/QtTest>
 #include <Kuesa/private/effectslibrary_p.h>
+#include <Kuesa/metallicroughnesseffect.h>
+#include <Kuesa/unliteffect.h>
+#include <Kuesa/irodiffuseeffect.h>
 
 using namespace Kuesa;
 
@@ -80,6 +83,164 @@ private Q_SLOTS:
             // THEN
             QCOMPARE(tmpEffect, effects3);
         }
+    }
+
+    void checkCreateMetallicRoughnessEffectWithKey_data()
+    {
+        QTest::addColumn<EffectProperties::Properties>("props");
+
+        QTest::newRow("BaseColorMap") << EffectProperties::Properties(EffectProperties::BaseColorMap);
+        QTest::newRow("MetalRoughnessMap") << EffectProperties::Properties(EffectProperties::MetalRoughnessMap);
+        QTest::newRow("AmbientOcclusionMap") << EffectProperties::Properties(EffectProperties::AOMap);
+        QTest::newRow("NormalMap") << EffectProperties::Properties(EffectProperties::NormalMap);
+        QTest::newRow("EmissiveMap") << EffectProperties::Properties(EffectProperties::EmissiveMap);
+        QTest::newRow("Blend") << EffectProperties::Properties(EffectProperties::Blend);
+        QTest::newRow("Mask") << EffectProperties::Properties(EffectProperties::Mask);
+        QTest::newRow("DoubleSided") << EffectProperties::Properties(EffectProperties::DoubleSided);
+        QTest::newRow("VertexColor") << EffectProperties::Properties(EffectProperties::VertexColor);
+        QTest::newRow("VertexNormal") << EffectProperties::Properties(EffectProperties::VertexNormal);
+        QTest::newRow("VertexTangent") << EffectProperties::Properties(EffectProperties::VertexTangent);
+        QTest::newRow("VertexTexCoord") << EffectProperties::Properties(EffectProperties::VertexTexCoord);
+        QTest::newRow("VertexTexCoord1") << EffectProperties::Properties(EffectProperties::VertexTexCoord1);
+        QTest::newRow("Skinning") << EffectProperties::Properties(EffectProperties::Skinning);
+    }
+
+    void checkCreateMetallicRoughnessEffectWithKey()
+    {
+        // GIVEN
+        QFETCH(EffectProperties::Properties, props);
+
+        // WHEN
+        MetallicRoughnessEffect *e = EffectsLibrary::createMetallicRoughnessEffectWithKey(props);
+
+        // THEN
+        QCOMPARE(e->isBaseColorMapEnabled(), (props & EffectProperties::BaseColorMap) != 0);
+        QCOMPARE(e->isMetalRoughMapEnabled(), (props & EffectProperties::MetalRoughnessMap) != 0);
+        QCOMPARE(e->isAmbientOcclusionMapEnabled(), (props & EffectProperties::AOMap) != 0);
+        QCOMPARE(e->isNormalMapEnabled(), (props & EffectProperties::NormalMap) != 0);
+        QCOMPARE(e->isEmissiveMapEnabled(), (props & EffectProperties::EmissiveMap) != 0);
+        QCOMPARE(e->isOpaque(), !(props & EffectProperties::Blend));
+        QCOMPARE(e->isAlphaCutoffEnabled(), (props & EffectProperties::Mask) != 0);
+        QCOMPARE(e->isDoubleSided(), (props & EffectProperties::DoubleSided) != 0);
+        QCOMPARE(e->isUsingColorAttribute(), (props & EffectProperties::VertexColor) != 0);
+        QCOMPARE(e->isUsingNormalAttribute(), (props & EffectProperties::VertexNormal) != 0);
+        QCOMPARE(e->isUsingTangentAttribute(), (props & EffectProperties::VertexTangent) != 0);
+        QCOMPARE(e->isUsingTexCoordAttribute(), (props & EffectProperties::VertexTexCoord) != 0);
+        QCOMPARE(e->isUsingTexCoord1Attribute(), (props & EffectProperties::VertexTexCoord1) != 0);
+        QCOMPARE(e->useSkinning(), (props & EffectProperties::Skinning) != 0);
+
+        delete e;
+    }
+
+    void checkCreateUnlitEffectWithKey_data()
+    {
+        QTest::addColumn<EffectProperties::Properties>("props");
+
+        QTest::newRow("BaseColorMap") << EffectProperties::Properties(EffectProperties::BaseColorMap);
+        QTest::newRow("Blend") << EffectProperties::Properties(EffectProperties::Blend);
+        QTest::newRow("Mask") << EffectProperties::Properties(EffectProperties::Mask);
+        QTest::newRow("DoubleSided") << EffectProperties::Properties(EffectProperties::DoubleSided);
+        QTest::newRow("VertexColor") << EffectProperties::Properties(EffectProperties::VertexColor);
+        QTest::newRow("VertexNormal") << EffectProperties::Properties(EffectProperties::VertexNormal);
+        QTest::newRow("VertexTangent") << EffectProperties::Properties(EffectProperties::VertexTangent);
+        QTest::newRow("VertexTexCoord") << EffectProperties::Properties(EffectProperties::VertexTexCoord);
+        QTest::newRow("VertexTexCoord1") << EffectProperties::Properties(EffectProperties::VertexTexCoord1);
+        QTest::newRow("Skinning") << EffectProperties::Properties(EffectProperties::Skinning);
+
+    }
+
+    void checkCreateUnlitEffectWithKey()
+    {
+        // GIVEN
+        QFETCH(EffectProperties::Properties, props);
+
+        // WHEN
+        UnlitEffect *e = EffectsLibrary::createUnlitEffectWithKey(props);
+
+        // THEN
+        QCOMPARE(e->isBaseColorMapEnabled(), (props & EffectProperties::BaseColorMap) != 0);
+        QCOMPARE(e->isOpaque(), !(props & EffectProperties::Blend));
+        QCOMPARE(e->isAlphaCutoffEnabled(), (props & EffectProperties::Mask) != 0);
+        QCOMPARE(e->isDoubleSided(), (props & EffectProperties::DoubleSided) != 0);
+        QCOMPARE(e->isUsingColorAttribute(), (props & EffectProperties::VertexColor) != 0);
+        QCOMPARE(e->isUsingNormalAttribute(), (props & EffectProperties::VertexNormal) != 0);
+        QCOMPARE(e->isUsingTangentAttribute(), (props & EffectProperties::VertexTangent) != 0);
+        QCOMPARE(e->isUsingTexCoordAttribute(), (props & EffectProperties::VertexTexCoord) != 0);
+        QCOMPARE(e->isUsingTexCoord1Attribute(), (props & EffectProperties::VertexTexCoord1) != 0);
+        QCOMPARE(e->useSkinning(), (props & EffectProperties::Skinning) != 0);
+
+        delete e;
+    }
+
+    void checkCreateEffectWithKey()
+    {
+        // GIVEN
+        EffectProperties::Properties props;
+        props.setFlag(EffectProperties::MetallicRoughness);
+
+        // WHEN
+        GLTF2MaterialEffect *e = EffectsLibrary::createEffectWithKey(props);
+
+        // THEN
+        QVERIFY(qobject_cast<MetallicRoughnessEffect *>(e) != nullptr);
+        QVERIFY(qobject_cast<UnlitEffect *>(e) == nullptr);
+        delete e;
+
+        // WHEN
+        props.setFlag(EffectProperties::MetallicRoughness, false);
+        props.setFlag(EffectProperties::Unlit);
+        e = EffectsLibrary::createEffectWithKey(props);
+
+        // THEN
+        QVERIFY(qobject_cast<MetallicRoughnessEffect *>(e) == nullptr);
+        QVERIFY(qobject_cast<UnlitEffect *>(e) != nullptr);
+        delete e;
+    }
+
+    void checkCreateCustomEffectWithKey_data()
+    {
+        QTest::addColumn<EffectProperties::Properties>("props");
+
+        QTest::newRow("BaseColorMap") << EffectProperties::Properties(EffectProperties::BaseColorMap);
+        QTest::newRow("Blend") << EffectProperties::Properties(EffectProperties::Blend);
+        QTest::newRow("Mask") << EffectProperties::Properties(EffectProperties::Mask);
+        QTest::newRow("DoubleSided") << EffectProperties::Properties(EffectProperties::DoubleSided);
+        QTest::newRow("VertexColor") << EffectProperties::Properties(EffectProperties::VertexColor);
+        QTest::newRow("VertexNormal") << EffectProperties::Properties(EffectProperties::VertexNormal);
+        QTest::newRow("VertexTangent") << EffectProperties::Properties(EffectProperties::VertexTangent);
+        QTest::newRow("VertexTexCoord") << EffectProperties::Properties(EffectProperties::VertexTexCoord);
+        QTest::newRow("VertexTexCoord1") << EffectProperties::Properties(EffectProperties::VertexTexCoord1);
+        QTest::newRow("Skinning") << EffectProperties::Properties(EffectProperties::Skinning);
+
+    }
+
+    void checkCreateCustomEffectWithKey()
+    {
+        // GIVEN
+        EffectsLibrary library;
+        QFETCH(EffectProperties::Properties, props);
+
+        // WHEN
+
+        GLTF2MaterialEffect *e = library.getOrCreateCustomEffect({
+                                                                     &IroDiffuseEffect::staticMetaObject,
+                                                                     EffectProperties::Custom|props
+                                                                 }, nullptr);
+
+        // THEN
+        QVERIFY(e);
+        QVERIFY(qobject_cast<IroDiffuseEffect *>(e) != nullptr);
+        QCOMPARE(e->isOpaque(), !(props & EffectProperties::Blend));
+        QCOMPARE(e->isAlphaCutoffEnabled(), (props & EffectProperties::Mask) != 0);
+        QCOMPARE(e->isDoubleSided(), (props & EffectProperties::DoubleSided) != 0);
+        QCOMPARE(e->isUsingColorAttribute(), (props & EffectProperties::VertexColor) != 0);
+        QCOMPARE(e->isUsingNormalAttribute(), (props & EffectProperties::VertexNormal) != 0);
+        QCOMPARE(e->isUsingTangentAttribute(), (props & EffectProperties::VertexTangent) != 0);
+        QCOMPARE(e->isUsingTexCoordAttribute(), (props & EffectProperties::VertexTexCoord) != 0);
+        QCOMPARE(e->isUsingTexCoord1Attribute(), (props & EffectProperties::VertexTexCoord1) != 0);
+        QCOMPARE(e->useSkinning(), (props & EffectProperties::Skinning) != 0);
+
+        delete e;
     }
 };
 
