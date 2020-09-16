@@ -36,6 +36,8 @@
 
 using namespace Kuesa;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+
 namespace {
 
 class FakeRenderer : public Qt3DRender::Render::AbstractRenderer
@@ -102,6 +104,8 @@ protected:
 };
 
 } // anonymous
+
+#endif
 
 class tst_MetallicRoughnessEffect : public QObject
 {
@@ -267,6 +271,7 @@ private Q_SLOTS:
         }
     }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     void checkShaderGeneration_data()
     {
         QTest::addColumn<EffectProperties::Properties>("props");
@@ -321,6 +326,7 @@ private Q_SLOTS:
             builder.generateCode(Qt3DRender::QShaderProgram::Fragment);
         }
     }
+#endif
 };
 
 QTEST_MAIN(tst_MetallicRoughnessEffect)
