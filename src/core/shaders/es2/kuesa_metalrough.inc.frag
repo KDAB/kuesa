@@ -102,7 +102,7 @@ FP float alphaToMipLevel(FP float alpha)
     // TODO: Optimize by doing this on CPU and set as
     // uniform int envLightSpecularMipLevels say (if present in shader).
     // Lookup the number of mips in the specular envmap
-    int mipLevels = mipLevelCount(envLightSpecular, envLightSpecularSize);
+    int mipLevels = mipLevelCount(envLight.specular, envLight.specularSize);
 
     // Offset of smallest miplevel we should use (corresponds to specular
     // power of 1). I.e. in the 32x32 sized mip.

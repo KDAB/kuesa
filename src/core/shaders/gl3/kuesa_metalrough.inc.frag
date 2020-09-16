@@ -67,7 +67,7 @@ float alphaToMipLevel(float alpha)
     // TODO: Optimize by doing this on CPU and set as
     // uniform int envLightSpecularMipLevels say (if present in shader).
     // Lookup the number of mips in the specular envmap
-    int mipLevels = mipLevelCount(envLightSpecular);
+    int mipLevels = mipLevelCount(envLight.specular);
 
     // Offset of smallest miplevel we should use (corresponds to specular
     // power of 1). I.e. in the 32x32 sized mip.
@@ -230,7 +230,7 @@ vec3 pbrIblModel(const in vec3 wNormal,
     vec2 brdfUV = clamp(vec2(vDotN, 1.0 - sqrt(alpha)), vec2(0.0), vec2(1.0));
     vec2 brdf = texture(brdfLUT, brdfUV).rg;
 
-    vec3 diffuseLight = texture(envLightIrradiance, l).rgb;
+    vec3 diffuseLight = texture(envLight.irradiance, l).rgb;
     float lod = alphaToMipLevel(alpha);
 //#define DEBUG_SPECULAR_LODS
 #ifdef DEBUG_SPECULAR_LODS
@@ -251,7 +251,7 @@ vec3 pbrIblModel(const in vec3 wNormal,
     else if (lod > 0.0)
         return vec3(1.0, 0.0, 1.0);
 #endif
-    vec3 specularLight = textureLod(envLightSpecular, l, lod).rgb;
+    vec3 specularLight = textureLod(envLight.specular, l, lod).rgb;
 
     vec3 diffuse = diffuseLight * diffuseColor;
     vec3 specular = specularLight * (F0 * brdf.x + brdf.y);
