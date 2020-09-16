@@ -31,19 +31,7 @@ More information about Kuesa Studio can be found [here](https://www.kdab.com/kue
 
 **Note:** this repository requires [git-lfs](https://git-lfs.github.com) support.
 
-Kuesa Runtime requires Qt 3D from Qt 5.12.8, Qt 5.14.2 or Qt 5.15.
-
-### Note: not all features are working with Qt 5.12.8.
-* Qt 3D suffers from a regression that prevents optional aspects (animations, logic) from running
-  * https://codereview.qt-project.org/c/qt/qt3d/+/297123 fixes this
-    * Download and install Qt 5.12.8
-    * clone Qt3D: git clone git@github.com:qt/qt3d.git
-    * go to 5.12 branch: git checkout -t origin/5.12
-    * open a console with Qt setup (should be installed with Qt)
-    * go to the Qt3D directory, and type: qmake && make - j4 && make install (or qmake; jom; jom install on Windows)
-
-Earlier Qt 3D versions can still be used but might be suffering from bugs
-that have been identified and fixed since.
+Kuesa Runtime 1.3 requires Qt 3D from Qt 5.15 or Qt 6.0.
 
 ### Hardware
 
@@ -149,7 +137,7 @@ The reference documentation is available at: https://kdab.github.io/kuesa/
 
 ## 3rd-party
 Kuesa uses the following 3rd-party software:
-* Qt 5.12 or later, licensed under LGPLv3
+* Qt 5.15 or later, licensed under LGPLv3
 www.qt.io
 
 * Draco, licensed under Apache License 2.0 and authored by Google Inc.
