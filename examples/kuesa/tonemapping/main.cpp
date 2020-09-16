@@ -62,7 +62,9 @@ int main(int ac, char **av)
     }
 
     QQuickStyle::setStyle("Material");
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
     QGuiApplication app(ac, av);
 
     QCommandLineParser parser;

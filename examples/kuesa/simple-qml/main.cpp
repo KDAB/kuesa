@@ -53,7 +53,9 @@ int main(int ac, char **av)
         QSurfaceFormat::setDefaultFormat(format);
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
     QGuiApplication app(ac, av);
 
     QQuickView view;
