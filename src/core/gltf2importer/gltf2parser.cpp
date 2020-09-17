@@ -1391,8 +1391,8 @@ void GLTF2Parser::generateAnimationContent()
         animation.mapper = channelMapper;
 
         for (const ChannelMapping &mapping : qAsConst(animation.mappings)) {
-            const QVector<Qt3DAnimation::QChannelMapping *> channelMappings = mapping.generator(m_context,
-                                                                                                mapping);
+            const std::vector<Qt3DAnimation::QChannelMapping *> channelMappings = mapping.generator(m_context,
+                                                                                                    mapping);
             for (Qt3DAnimation::QChannelMapping *m : channelMappings)
                 channelMapper->addMapping(m);
         }

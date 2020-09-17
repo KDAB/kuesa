@@ -168,11 +168,11 @@ quint8 expectedComponentsCountForChannel(const ChannelInfo &channelInfo)
     return componentCount;
 }
 
-QVector<Qt3DAnimation::QChannelMapping *> mappingsForTransformTargetNode(const GLTF2Context *ctx,
-                                                                         const ChannelMapping &mapping)
+std::vector<Qt3DAnimation::QChannelMapping *> mappingsForTransformTargetNode(const GLTF2Context *ctx,
+                                                                             const ChannelMapping &mapping)
 {
     const TreeNode targetNode = ctx->treeNode(mapping.target.targetNodeId);
-    QVector<Qt3DAnimation::QChannelMapping *> mappings;
+    std::vector<Qt3DAnimation::QChannelMapping *> mappings;
 
     // Map channel to joint
     for (auto &joint : targetNode.joints) {
@@ -201,11 +201,11 @@ QVector<Qt3DAnimation::QChannelMapping *> mappingsForTransformTargetNode(const G
     return mappings;
 }
 
-QVector<Qt3DAnimation::QChannelMapping *> mappingsForMorphTargetWeights(const GLTF2Context *ctx,
-                                                                        const ChannelMapping &mapping)
+std::vector<Qt3DAnimation::QChannelMapping *> mappingsForMorphTargetWeights(const GLTF2Context *ctx,
+                                                                            const ChannelMapping &mapping)
 {
     const TreeNode targetNode = ctx->treeNode(mapping.target.targetNodeId);
-    QVector<Qt3DAnimation::QChannelMapping *> mappings;
+    std::vector<Qt3DAnimation::QChannelMapping *> mappings;
 
     if (targetNode.entity != nullptr) {
         // The actual entities to animate are those which render the
@@ -233,8 +233,8 @@ QVector<Qt3DAnimation::QChannelMapping *> mappingsForMorphTargetWeights(const GL
     return mappings;
 }
 
-QVector<Qt3DAnimation::QChannelMapping *> mappingForFieldOfView(const GLTF2Context *ctx,
-                                                                const ChannelMapping &mapping)
+std::vector<Qt3DAnimation::QChannelMapping *> mappingForFieldOfView(const GLTF2Context *ctx,
+                                                                    const ChannelMapping &mapping)
 {
     Qt3DCore::QNode *target = nullptr;
     switch (mapping.target.type) {
@@ -261,8 +261,8 @@ QVector<Qt3DAnimation::QChannelMapping *> mappingForFieldOfView(const GLTF2Conte
     return { channelMapping };
 }
 
-QVector<Qt3DAnimation::QChannelMapping *> mappingsForGenericTargetNode(const GLTF2Context *ctx,
-                                                                       const ChannelMapping &mapping)
+std::vector<Qt3DAnimation::QChannelMapping *> mappingsForGenericTargetNode(const GLTF2Context *ctx,
+                                                                           const ChannelMapping &mapping)
 {
     Qt3DCore::QNode *target = nullptr;
     switch (mapping.target.type) {

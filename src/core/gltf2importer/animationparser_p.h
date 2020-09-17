@@ -80,7 +80,7 @@ struct ChannelInfo {
 };
 
 struct ChannelMapping;
-using AnimatableMappingsGenerator = std::function<QVector<Qt3DAnimation::QChannelMapping *>(const GLTF2Context *, const ChannelMapping &)>;
+using AnimatableMappingsGenerator = std::function<std::vector<Qt3DAnimation::QChannelMapping *>(const GLTF2Context *, const ChannelMapping &)>;
 
 struct ChannelMapping {
     AnimationTarget target;

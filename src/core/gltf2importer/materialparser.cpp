@@ -62,8 +62,8 @@ const QLatin1String KEY_EMISSIVE_TEXTURE = QLatin1String("emissiveTexture");
 const QLatin1String KEY_EMISSIVE_FACTOR = QLatin1String("emissiveFactor");
 const QLatin1String KEY_PROPERTIES = QLatin1String("properties");
 
-QVector<Qt3DAnimation::QChannelMapping *> iroMappingGenerator(const GLTF2Context *ctx,
-                                                              const ChannelMapping &mapping)
+std::vector<Qt3DAnimation::QChannelMapping *> iroMappingGenerator(const GLTF2Context *ctx,
+                                                                  const ChannelMapping &mapping)
 {
     Qt3DCore::QNode *target = nullptr;
     const Material &mat = ctx->material(mapping.target.targetNodeId);
