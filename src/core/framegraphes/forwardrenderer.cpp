@@ -1299,7 +1299,11 @@ void ForwardRenderer::reconfigureFrameGraph()
             }
 
             sceneTargetSelector->setTarget(m_multisampleTarget);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
             const bool usesRHI = qgetenv("QT3D_RENDERER") == QByteArray("rhi");
+#else
+            const bool usesRHI = false;
+#endif
             // RHI has no Blit operations so we manually resolve the multisampled
             // FBO into renderTarget[0]
             if (usesRHI) {
