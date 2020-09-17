@@ -61,10 +61,12 @@ public:
 
     void setSource(Qt3DRender::QAbstractTexture *source);
     void setDestination(Qt3DRender::QRenderTarget *destination);
+    void setYFlip(bool yFlip);
 
 private:
     Qt3DRender::QMaterial *m_material = nullptr;
     Qt3DRender::QParameter *m_sourceTextureParameter = nullptr;
+    Qt3DRender::QParameter *m_yFlipTextureParameter = nullptr;
 };
 
 } // namespace Kuesa

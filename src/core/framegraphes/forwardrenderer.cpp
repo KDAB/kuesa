@@ -1311,6 +1311,7 @@ void ForwardRenderer::reconfigureFrameGraph()
                 m_msaaResolver->setParent(sceneTargetSelector);
                 m_msaaResolver->setSource(findRenderTargetTexture(m_multisampleTarget, Qt3DRender::QRenderTargetOutput::Color0));
                 m_msaaResolver->setDestination(m_renderTargets[0]);
+                m_msaaResolver->setYFlip(totalFXCount % 2 != 0);
             } else {
                 // Blit into regular Tex2D FBO
                 m_blitFramebufferNodeFromMSToFBO0 = new Qt3DRender::QBlitFramebuffer(sceneTargetSelector);

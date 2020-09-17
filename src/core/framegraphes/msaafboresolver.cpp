@@ -50,6 +50,7 @@ MSAAFBOResolver::MSAAFBOResolver(Qt3DCore::QNode *parent)
     : Qt3DRender::QRenderTargetSelector(parent)
     , m_material(new Qt3DRender::QMaterial(this))
     , m_sourceTextureParameter(new Qt3DRender::QParameter(this))
+    , m_yFlipTextureParameter(new Qt3DRender::QParameter(QStringLiteral("yFlip"), 0.0f, this))
 {
     m_sourceTextureParameter->setName(QStringLiteral("source"));
 
@@ -82,6 +83,7 @@ MSAAFBOResolver::MSAAFBOResolver(Qt3DCore::QNode *parent)
 
     m_material->setEffect(effect);
     m_material->addParameter(m_sourceTextureParameter);
+    m_material->addParameter(m_yFlipTextureParameter);
 
     FullScreenQuad *fsQuad = new FullScreenQuad(m_material, this);
 
@@ -97,6 +99,11 @@ void MSAAFBOResolver::setSource(Qt3DRender::QAbstractTexture *source)
 void MSAAFBOResolver::setDestination(Qt3DRender::QRenderTarget *destination)
 {
     setTarget(destination);
+}
+
+void MSAAFBOResolver::setYFlip(bool yFlip)
+{
+    m_yFlipTextureParameter->setValue(yFlip ? 1.0f : 0.0f);
 }
 
 } // namespace Kuesa
