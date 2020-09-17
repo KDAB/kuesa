@@ -303,7 +303,7 @@ bool GLTF2Parser::isBinaryGLTF(const QByteArray &data, bool &isValid)
     bool isBinary = true;
     isValid = true;
 
-    if (data.size() < sizeof(GLBHeader))
+    if (size_t(data.size()) < sizeof(GLBHeader))
         return false;
     const GLBHeader *glbHeader = reinterpret_cast<const GLBHeader *>(data.constData());
     if (glbHeader->magic != GLTF_BINARY_MAGIC) {
@@ -778,7 +778,7 @@ bool GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
             quint32 chunkType;
         };
 
-        if ((endOffset - currentOffset) < sizeof(ChunkHeader)) {
+        if (size_t(endOffset - currentOffset) < sizeof(ChunkHeader)) {
             qCWarning(Kuesa::kuesa) << "Malformed chunck in glb file";
             return false;
         }
@@ -787,7 +787,7 @@ bool GLTF2Parser::parseBinary(const QByteArray &data, const QString &basePath, c
         current += sizeof(ChunkHeader);
         currentOffset += sizeof(ChunkHeader);
 
-        if ((endOffset - currentOffset) < chunkHeader->chunkLength) {
+        if (size_t(endOffset - currentOffset) < chunkHeader->chunkLength) {
             qCWarning(Kuesa::kuesa) << "Malformed chunck in glb file";
             return false;
         }
