@@ -243,7 +243,7 @@ std::vector<Qt3DAnimation::QChannelMapping *> mappingForFieldOfView(const GLTF2C
         FOVAdaptor *adaptor = new FOVAdaptor(cam.lens);
         target = adaptor;
         QObject::connect(adaptor, &FOVAdaptor::degreesChanged,
-                         cam.lens, &QCameraLens::setFieldOfView);
+                         cam.lens, &Qt3DRender::QCameraLens::setFieldOfView);
         break;
     }
     default:
