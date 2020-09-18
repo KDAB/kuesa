@@ -262,7 +262,7 @@ Kuesa.SceneEntity {
     Kuesa.GLTF2Importer {
         id: importer
         sceneEntity: scene
-        source: "RobotArm.gltf"
+        source: "qrc:/RobotArm.gltf"
 //!    [1]
 //!    [2.3]
         onStatusChanged: {
