@@ -1,11 +1,9 @@
 <RCC>
     <qresource prefix="/kuesa">
         <file>shaders/es3/simple.vert</file>
-        <file>shaders/es3/skinned.vert</file>
         <file>shaders/es3/passthrough.vert</file>
         <file>shaders/gl3/passthrough.vert</file>
         <file>shaders/gl3/simple.vert</file>
-        <file>shaders/gl3/skinned.vert</file>
         <file>shaders/graphs/metallicroughness.frag.json</file>
         <file>shaders/gl3/kuesa_metalrough.inc.frag</file>
         <file>shaders/gl3/light.inc.frag</file>
@@ -18,7 +16,6 @@
         <file>shaders/gl3/kuesa_gaussianblur.inc.frag</file>
         <file>shaders/graphs/gaussianblur.frag.json</file>
         <file>shaders/es2/simple.vert</file>
-        <file>shaders/es2/skinned.vert</file>
         <file>shaders/es2/kuesa_metalrough.inc.frag</file>
         <file>shaders/es2/light.inc.frag</file>
         <file>shaders/brdfLUT.png</file>
