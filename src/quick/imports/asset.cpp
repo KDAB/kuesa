@@ -88,10 +88,11 @@ Asset::Asset(Qt3DCore::QNode *parent)
 {
     QObject::connect(this, &KuesaNode::sceneEntityChanged,
                      this, [this] {
-        disconnect(m_loadingDoneConnection);
-        m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone, this, &Asset::findAsset);
-        findAsset();
-    });
+                         disconnect(m_loadingDoneConnection);
+                         if (m_sceneEntity)
+                             m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone, this, &Asset::findAsset);
+                         findAsset();
+                     });
 }
 
 AbstractAssetCollection *Asset::collection() const

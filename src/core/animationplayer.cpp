@@ -258,10 +258,11 @@ AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
     connect(m_animator, &QClipAnimator::normalizedTimeChanged, this, &AnimationPlayer::normalizedTimeChanged);
     QObject::connect(this, &KuesaNode::sceneEntityChanged,
                      this, [this] {
-        disconnect(m_loadingDoneConnection);
-        m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone, this, &AnimationPlayer::matchClipAndTargets);
-        matchClipAndTargets();
-    });
+                         disconnect(m_loadingDoneConnection);
+                         if (m_sceneEntity)
+                             m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone, this, &AnimationPlayer::matchClipAndTargets);
+                         matchClipAndTargets();
+                     });
 }
 
 AnimationPlayer::~AnimationPlayer()
