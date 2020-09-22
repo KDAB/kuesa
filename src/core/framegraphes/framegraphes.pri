@@ -30,6 +30,8 @@ SOURCES += \
     $$PWD/forwardrenderer.cpp \
     $$PWD/abstractrenderstage.cpp \
     $$PWD/msaafboresolver.cpp \
+    $$PWD/reflectionstages.cpp \
+    $$PWD/scenestages.cpp \
     $$PWD/zfillrenderstage.cpp \
     $$PWD/opaquerenderstage.cpp \
     $$PWD/transparentrenderstage.cpp \
@@ -39,6 +41,8 @@ HEADERS += \
     $$PWD/forwardrenderer.h \
     $$PWD/abstractrenderstage_p.h \
     $$PWD/msaafboresolver_p.h \
+    $$PWD/reflectionstages_p.h \
+    $$PWD/scenestages_p.h \
     $$PWD/zfillrenderstage_p.h \
     $$PWD/opaquerenderstage_p.h \
     $$PWD/transparentrenderstage_p.h \

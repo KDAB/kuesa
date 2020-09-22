@@ -1,0 +1,75 @@
+{
+    "prototypes": [
+        {
+            "name": "kuesa_reflectedViewMatrix",
+            "inputs": [
+                { "name": "planeEquation", "type": "QShaderLanguage::Vec4" },
+                { "name": "viewMatrix", "type": "QShaderLanguage::Mat4" },
+                { "name": "enabled", "type": "QShaderLanguage::Bool" }
+            ],
+            "outputs": [
+                { "name": "reflectedViewMatrix", "type": "QShaderLanguage::Mat4" }
+            ],
+            "parameters": [
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#ifndef REFLECT_VIEW_MATRIX",
+                        "#define REFLECT_VIEW_MATRIX",
+                        "#pragma include :/kuesa/shaders/es2/kuesa_reflectedViewMatrix.inc",
+                        "#endif"
+                    ],
+                    "substitution": "highp mat4 $reflectedViewMatrix = kuesa_reflectedViewMatrix($viewMatrix, $planeEquation, $enabled);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#ifndef REFLECT_VIEW_MATRIX",
+                        "#define REFLECT_VIEW_MATRIX",
+                        "#pragma include :/kuesa/shaders/es3/kuesa_reflectedViewMatrix.inc",
+                        "#endif"
+                    ],
+                    "substitution": "highp mat4 $reflectedViewMatrix = kuesa_reflectedViewMatrix($viewMatrix, $planeEquation, $enabled);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [
+                        "#ifndef REFLECT_VIEW_MATRIX",
+                        "#define REFLECT_VIEW_MATRIX",
+                        "#pragma include :/kuesa/shaders/gl3/kuesa_reflectedViewMatrix.inc",
+                        "#endif"
+                    ],
+                    "substitution": "mat4 $reflectedViewMatrix = kuesa_reflectedViewMatrix($viewMatrix, $planeEquation, $enabled);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#ifndef REFLECT_VIEW_MATRIX",
+                        "#define REFLECT_VIEW_MATRIX",
+                        "#pragma include :/kuesa/shaders/gl45/kuesa_reflectedViewMatrix.inc",
+                        "#endif"
+                    ],
+                    "substitution": "mat4 $reflectedViewMatrix = kuesa_reflectedViewMatrix($viewMatrix, $planeEquation, $enabled);"
+                }
+            ]
+        }
+    ]
+}

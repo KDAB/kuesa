@@ -37,6 +37,7 @@
 #include <Qt3DRender/qrendertargetoutput.h>
 #include <Qt3DRender/QLayer>
 #include <QVector>
+#include <QVector4D>
 
 class tst_ForwardRenderer;
 
@@ -44,6 +45,7 @@ QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
 class QTechniqueFilter;
+class QRenderPassFilter;
 class QViewport;
 class QCameraSelector;
 class QRenderSurfaceSelector;
@@ -60,12 +62,13 @@ class QLayerFilter;
 
 namespace Kuesa {
 
-class AbstractRenderStage;
-class OpaqueRenderStage;
-class TransparentRenderStage;
-class ZFillRenderStage;
 class ParticleRenderStage;
 class MSAAFBOResolver;
+class SceneStages;
+class ReflectionStages;
+
+using SceneStagesPtr = QSharedPointer<SceneStages>;
+using ReflectionStagesPtr = QSharedPointer<ReflectionStages>;
 
 class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QRenderSurfaceSelector
 {
@@ -133,6 +136,10 @@ public Q_SLOTS:
     void removeLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, qreal left, qreal top, qreal width, qreal height);
     QVector<Qt3DRender::QLayer *> layers() const;
     void clearLayers();
+
+    void addReflectionPlane(const QVector4D &equation, Qt3DRender::QLayer *layer = nullptr);
+    QVector<QVector4D> reflectionPlanes() const;
+    void clearReflectionPlanes();
 
 Q_SIGNALS:
     void renderSurfaceChanged(QObject *renderSurface);
@@ -205,50 +212,17 @@ private:
     };
     std::vector<LayerConfiguration> m_layers;
 
-    class Q_AUTOTEST_EXPORT SceneStages
-    {
-    public:
-        SceneStages();
-        ~SceneStages();
+    //For controlling scene render stages
+    std::vector<SceneStagesPtr> m_sceneStages;
 
-        SceneStages(const SceneStages &) = delete;
+    // For controller reflection render stages
+    std::vector<ReflectionStagesPtr> m_reflectionStages;
 
-        void init();
-        void setZFilling(bool zFilling);
-        void setBackToFrontSorting(bool backToFrontSorting);
-        void reconfigure(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, QRectF viewport);
-
-        bool zFilling();
-        bool backToFrontSorting();
-        Qt3DRender::QLayer *layer() const;
-
-        void unParent();
-        void setParent(QNode *opaqueRoot, QNode *transparentRoot);
-
-        Qt3DRender::QLayerFilter *opaqueStagesRoot() const;
-        Qt3DRender::QLayerFilter *transparentStagesRoot() const;
-
-        OpaqueRenderStage *opaqueStage() const;
-        ZFillRenderStage *zFillStage() const;
-        TransparentRenderStage *transparentStage() const;
-
-    private:
-        struct StageConfiguration {
-            Qt3DRender::QLayerFilter *m_root = nullptr;
-            Qt3DRender::QCameraSelector *m_cameraSelector = nullptr;
-            Qt3DRender::QViewport *m_viewport = nullptr;
-        };
-        StageConfiguration m_opaqueStagesConfiguration;
-        StageConfiguration m_transparentStagesConfiguration;
-        OpaqueRenderStage *m_opaqueStage;
-        TransparentRenderStage *m_transparentStage;
-        ZFillRenderStage *m_zFillStage;
-        QMetaObject::Connection m_zFillDestroyedConnection;
+    struct ReflectionPlane {
+        QVector4D equation;
+        Qt3DRender::QLayer *visibleLayer = nullptr;
     };
-    using SceneStagesPtr = QSharedPointer<SceneStages>;
-
-    //For controlling render stages
-    QVector<SceneStagesPtr> m_sceneStages;
+    std::vector<ReflectionPlane> m_reflectionPlanes;
 
     // Particles
     bool m_particlesEnabled;

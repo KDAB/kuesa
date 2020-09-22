@@ -33,6 +33,8 @@
 #include <Kuesa/private/opaquerenderstage_p.h>
 #include <Kuesa/private/zfillrenderstage_p.h>
 #include <Kuesa/private/transparentrenderstage_p.h>
+#include <Kuesa/private/scenestages_p.h>
+#include <Kuesa/private/reflectionstages_p.h>
 #include <Qt3DRender/QViewport>
 #include <Qt3DRender/QCameraSelector>
 #include <Qt3DRender/QCamera>
@@ -505,7 +507,7 @@ private Q_SLOTS:
         // THEN
         QCOMPARE(renderer.m_sceneStages.size(), 2);
 
-        Kuesa::ForwardRenderer::SceneStagesPtr sceneStage = renderer.m_sceneStages.first();
+        Kuesa::SceneStagesPtr sceneStage = renderer.m_sceneStages.front();
         QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->opaqueStagesRoot()->parent()) != nullptr);
         QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->transparentStagesRoot()->parent()) != nullptr);
 
@@ -513,8 +515,8 @@ private Q_SLOTS:
         Kuesa::TransparentRenderStage *transparentStage = sceneStage->transparentStage();
         QVERIFY(sceneStage->zFillStage() == nullptr);
 
-        QVERIFY(qobject_cast<Qt3DRender::QLayerFilter *>(opaqueStage->parent()) != nullptr);
-        QVERIFY(qobject_cast<Qt3DRender::QLayerFilter *>(transparentStage->parent()) != nullptr);
+        QVERIFY(qobject_cast<Qt3DRender::QViewport *>(opaqueStage->parent()) != nullptr);
+        QVERIFY(qobject_cast<Qt3DRender::QViewport *>(transparentStage->parent()) != nullptr);
 
         QVERIFY(!sceneStage->opaqueStagesRoot()->isEnabled());
         QVERIFY(!sceneStage->transparentStagesRoot()->isEnabled());
@@ -533,7 +535,7 @@ private Q_SLOTS:
         renderer.setZFilling(true);
 
         // THEN
-        sceneStage = renderer.m_sceneStages.first();
+        sceneStage = renderer.m_sceneStages.front();
 
         QVERIFY(sceneStage->zFillStage() != nullptr);
         QCOMPARE(opaqueStage->zFilling(), true);
@@ -546,14 +548,14 @@ private Q_SLOTS:
         renderer.setZFilling(false);
 
         // THEN
-        sceneStage = renderer.m_sceneStages.first();
+        sceneStage = renderer.m_sceneStages.front();
 
         QVERIFY(sceneStage->zFillStage() == nullptr);
         QCOMPARE(sceneStage->opaqueStage(), opaqueStage);
         QCOMPARE(sceneStage->transparentStage(), transparentStage);
     }
 
-    void testRenderStagesWidthLayers()
+    void testRenderStagesWithLayers()
     {
         // GIVEN
         Kuesa::ForwardRenderer renderer;
@@ -576,7 +578,7 @@ private Q_SLOTS:
 
         for (int i = 0, m = expectedLayers.size(); i < m; ++i) {
             Qt3DRender::QLayer *expectedLayer = expectedLayers.at(i);
-            Kuesa::ForwardRenderer::SceneStagesPtr sceneStage = renderer.m_sceneStages.at(i);
+            Kuesa::SceneStagesPtr sceneStage = renderer.m_sceneStages.at(i);
 
             QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->opaqueStagesRoot()->parent()) != nullptr);
             QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->transparentStagesRoot()->parent()) != nullptr);
@@ -596,6 +598,22 @@ private Q_SLOTS:
         QCOMPARE(renderer.m_sceneStages.size(), 2);
     }
 
+    void testReflectionStages()
+    {
+        // GIVEN
+        Kuesa::ForwardRenderer renderer;
+
+        // THEN
+        QCOMPARE(renderer.m_reflectionStages.size(), 0U);
+
+        // WHEN
+        renderer.addReflectionPlane({0.0f, 1.0f, 0.0f, 0.0f}, nullptr);
+
+        // THEN
+        QCOMPARE(renderer.reflectionPlanes().size(), 1);
+        QCOMPARE(renderer.reflectionPlanes().first(), QVector4D(0.0f, 1.0f, 0.0f, 0.0f));
+        QCOMPARE(renderer.m_reflectionStages.size(), 1U);
+    }
 
 
 private:
