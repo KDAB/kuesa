@@ -78,5 +78,8 @@ qtConfig(private_tests) {
         gltf2material \
         effectslibrary \
         texturetransform \
-        entitytransformwatcher
+        entitytransformwatcher \
+        opaquestage \
+        transparentstage \
+        zfillstage
 }

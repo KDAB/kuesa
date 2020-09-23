@@ -53,7 +53,6 @@ namespace Kuesa {
 class Q_AUTOTEST_EXPORT TransparentRenderStage : public AbstractRenderStage
 {
     Q_OBJECT
-    Q_PROPERTY(bool backToFrontSorting READ backToFrontSorting WRITE setBackToFrontSorting NOTIFY backToFrontSortingChanged)
 
 public:
     TransparentRenderStage(Qt3DCore::QNode *parent = nullptr);
@@ -61,9 +60,6 @@ public:
 
     bool backToFrontSorting() const;
     void setBackToFrontSorting(bool backToFrontSorting);
-
-Q_SIGNALS:
-    void backToFrontSortingChanged(bool backToFrontSorting);
 
 private:
     Qt3DRender::QSortPolicy *m_alphaSortPolicy;

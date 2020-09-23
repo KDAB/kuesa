@@ -39,6 +39,18 @@ QT_USE_NAMESPACE
 
 using namespace Kuesa;
 
+namespace {
+
+QVector<Qt3DRender::QSortPolicy::SortType> sortTypes(bool backToFrontSorting)
+{
+    if (backToFrontSorting)
+        return { Qt3DRender::QSortPolicy::BackToFront, Qt3DRender::QSortPolicy::Material, Qt3DRender::QSortPolicy::Texture };
+    return { Qt3DRender::QSortPolicy::Material, Qt3DRender::QSortPolicy::Texture };
+}
+
+} // anonymous
+
+
 TransparentRenderStage::TransparentRenderStage(Qt3DCore::QNode *parent)
     : AbstractRenderStage(parent)
 {
@@ -60,16 +72,8 @@ TransparentRenderStage::TransparentRenderStage(Qt3DCore::QNode *parent)
     states->addRenderState(msaa);
     states->addRenderState(noDepthWrite);
 
-
     m_alphaSortPolicy = new Qt3DRender::QSortPolicy(states);
-    m_alphaSortPolicy->setSortTypes(QVector<Qt3DRender::QSortPolicy::SortType>
-                                    { Qt3DRender::QSortPolicy::BackToFront,
-                                      Qt3DRender::QSortPolicy::Material
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-                                      , Qt3DRender::QSortPolicy::Texture
-#endif
-                                    });
-    connect(m_alphaSortPolicy, &Qt3DRender::QSortPolicy::enabledChanged, this, &TransparentRenderStage::backToFrontSortingChanged);
+    m_alphaSortPolicy->setSortTypes(sortTypes(true));
 
     auto passFilter = new Qt3DRender::QRenderPassFilter(m_alphaSortPolicy);
     auto filterKey = new Qt3DRender::QFilterKey(this);
@@ -85,10 +89,12 @@ TransparentRenderStage::~TransparentRenderStage()
 
 bool TransparentRenderStage::backToFrontSorting() const
 {
-    return m_alphaSortPolicy->isEnabled();
+    return m_alphaSortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::BackToFront);
 }
 
-void TransparentRenderStage::setBackToFrontSorting(bool backToFrontSorting)
+void TransparentRenderStage::setBackToFrontSorting(bool enabled)
 {
-    m_alphaSortPolicy->setEnabled(backToFrontSorting);
+    if (enabled == backToFrontSorting())
+        return;
+    m_alphaSortPolicy->setSortTypes(sortTypes(enabled));
 }
