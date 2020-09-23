@@ -82,5 +82,6 @@ qtConfig(private_tests) {
         entitytransformwatcher \
         opaquestage \
         transparentstage \
-        zfillstage
+        zfillstage \
+        view
 }

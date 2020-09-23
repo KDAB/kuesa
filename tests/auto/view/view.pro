@@ -1,9 +1,9 @@
-# framegraphes.pri
+# view.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Mike Krus <mike.krus@kdab.com>
+# Author: Jim Albamont <jim.albamont@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,28 +24,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-INCLUDEPATH += $$PWD
+TEMPLATE = app
 
-SOURCES += \
-    $$PWD/forwardrenderer.cpp \
-    $$PWD/abstractrenderstage.cpp \
-    $$PWD/msaafboresolver.cpp \
-    $$PWD/reflectionstages.cpp \
-    $$PWD/scenestages.cpp \
-    $$PWD/view.cpp \
-    $$PWD/zfillrenderstage.cpp \
-    $$PWD/opaquerenderstage.cpp \
-    $$PWD/transparentrenderstage.cpp \
-    $$PWD/particlerenderstage.cpp
+TARGET = tst_view
 
-HEADERS += \
-    $$PWD/forwardrenderer.h \
-    $$PWD/abstractrenderstage_p.h \
-    $$PWD/msaafboresolver_p.h \
-    $$PWD/reflectionstages_p.h \
-    $$PWD/scenestages_p.h \
-    $$PWD/view.h \
-    $$PWD/zfillrenderstage_p.h \
-    $$PWD/opaquerenderstage_p.h \
-    $$PWD/transparentrenderstage_p.h \
-    $$PWD/particlerenderstage_p.h
+QT += testlib kuesa kuesa-private 3dcore 3drender
+
+CONFIG += testcase
+
+SOURCES += tst_view.cpp

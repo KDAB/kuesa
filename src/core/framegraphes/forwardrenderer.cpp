@@ -76,7 +76,7 @@ using namespace Kuesa;
  * Techniques having a FilterKey with the name "renderingStyle" set to the
  * string value "forward".
  *
- * The rendering will be made on a single viewport whose dimensions can be set
+ * The rendering will be made on a main viewport whose dimensions can be set
  * with normalized coordinates by calling ForwardRender::setViewportRect.
  *
  * The screen will be cleared with the color set by calling

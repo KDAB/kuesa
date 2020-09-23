@@ -43,6 +43,8 @@
 #include <QtCore/QtGlobal>
 #include <QtCore/QVector>
 #include <Qt3DCore/QEntity>
+#include <vector>
+#include <algorithm>
 
 QT_BEGIN_NAMESPACE
 
@@ -87,6 +89,28 @@ inline QVector<ComponentType *> componentsFromEntity(const Qt3DCore::QEntity *e)
     return res;
 #endif
 }
+
+namespace Utils {
+
+template<typename T, typename U>
+bool contains(const std::vector<T>& destination, const U& element) noexcept
+{
+    return std::find(destination.begin(), destination.end(), element) != destination.end();
+}
+
+template<typename T, typename U>
+size_t removeAll(std::vector<T>& destination, const U& element) noexcept
+{
+    auto it = std::remove(destination.begin(), destination.end(), element);
+    if (it == destination.end())
+        return 0;
+    const size_t elementsRemoved = std::distance(it, destination.end());
+    destination.erase(it, destination.end());
+    return elementsRemoved;
+}
+
+} // namespace Utils
+
 
 } // namespace Kuesa
 
