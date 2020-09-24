@@ -40,17 +40,18 @@
 // We mean it.
 //
 
+#include <Kuesa/private/kuesa_global_p.h>
 #include "abstractrenderstage_p.h"
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-class Q_AUTOTEST_EXPORT ZFillRenderStage : public AbstractRenderStage
+class KUESA_PRIVATE_EXPORT ZFillRenderStage : public AbstractRenderStage
 {
     Q_OBJECT
 public:
-    ZFillRenderStage(Qt3DCore::QNode *parent = nullptr);
+    explicit ZFillRenderStage(Qt3DRender::QFrameGraphNode *parent = nullptr);
     ~ZFillRenderStage();
 };
 } // namespace Kuesa

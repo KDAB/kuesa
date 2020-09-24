@@ -51,6 +51,7 @@ namespace Kuesa {
 class ThresholdEffect;
 class GaussianBlurEffect;
 class BloomMaterial;
+class FullScreenQuad;
 
 class KUESASHARED_EXPORT BloomEffect : public AbstractPostProcessingEffect
 {
@@ -65,8 +66,9 @@ public:
     FrameGraphNodePtr frameGraphSubTree() const override;
     QVector<Qt3DRender::QLayer *> layers() const override;
 
-    void setSceneSize(const QSize &size) override;
+    void setWindowSize(const QSize &sceneSize) override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
+    void setViewportRect(const QRectF &vp) override;
 
     float threshold() const;
     int blurPassCount() const;
@@ -94,6 +96,7 @@ private:
 
     Qt3DRender::QParameter *m_sceneTextureParam;
     Qt3DRender::QParameter *m_blurredBrightTextureParam;
+    FullScreenQuad *m_fsQuad;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

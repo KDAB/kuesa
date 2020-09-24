@@ -31,6 +31,7 @@
 
 #include <Kuesa/kuesa_global.h>
 #include <Qt3DCore/QEntity>
+#include <QRectF>
 
 QT_BEGIN_NAMESPACE
 
@@ -38,6 +39,7 @@ namespace Qt3DRender {
 class QLayer;
 class QCamera;
 class QMaterial;
+class QBuffer;
 } // namespace Qt3DRender
 
 namespace Kuesa {
@@ -50,9 +52,16 @@ public:
     ~FullScreenQuad();
 
     Qt3DRender::QLayer *layer() const;
+    virtual void setViewportRect(const QRectF &vp);
+    QRectF viewportRect() const;
+    Qt3DRender::QBuffer *buffer() const;
 
 private:
+    Qt3DRender::QBuffer *m_buffer;
     Qt3DRender::QLayer *m_layer;
+    QRectF m_viewportRect;
+
+    void updateBufferData();
 };
 
 } // namespace Kuesa

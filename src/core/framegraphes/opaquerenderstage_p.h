@@ -40,6 +40,7 @@
 // We mean it.
 //
 
+#include <Kuesa/private/kuesa_global_p.h>
 #include "abstractrenderstage_p.h"
 
 QT_BEGIN_NAMESPACE
@@ -53,11 +54,11 @@ class QSortPolicy;
 
 namespace Kuesa {
 
-class Q_AUTOTEST_EXPORT OpaqueRenderStage : public AbstractRenderStage
+class KUESA_PRIVATE_EXPORT OpaqueRenderStage : public AbstractRenderStage
 {
     Q_OBJECT
 public:
-    OpaqueRenderStage(Qt3DCore::QNode *parent = nullptr);
+    explicit OpaqueRenderStage(Qt3DRender::QFrameGraphNode *parent = nullptr);
     ~OpaqueRenderStage();
 
     void setZFilling(bool zFill);

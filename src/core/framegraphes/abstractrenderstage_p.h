@@ -50,7 +50,7 @@ class KUESASHARED_EXPORT AbstractRenderStage : public Qt3DRender::QFrameGraphNod
 {
     Q_OBJECT
 public:
-    AbstractRenderStage(Qt3DCore::QNode *parent = nullptr);
+    explicit AbstractRenderStage(Qt3DRender::QFrameGraphNode *parent = nullptr);
     ~AbstractRenderStage();
 };
 } // namespace Kuesa

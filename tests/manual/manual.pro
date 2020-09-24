@@ -53,6 +53,8 @@ qtHaveModule(quick) {
         lights \
         particles \
         stencil \
-        PlanarReflections
+        PlanarReflections \
+        multi-views \
+        multi-views-with-effects
 }
 

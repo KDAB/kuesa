@@ -140,15 +140,6 @@ void ReflectionPlane::removeLayer(Qt3DRender::QLayer *layer)
     }
 }
 
-
-/*!
-    \qmlproperty list Kuesa::ReflectionPlane::layers
-
-    The list of visible layers that are used to select what is
-    reflected. If no layers are specified, uses the same set of layers as the
-    view.
-*/
-
 /*!
     Returns the list of visible layers that are used to select what is
     reflected. If no layers are specified, uses the same set of layers as the

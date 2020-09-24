@@ -51,7 +51,7 @@ QVector<Qt3DRender::QSortPolicy::SortType> sortTypes(bool backToFrontSorting)
 } // anonymous
 
 
-TransparentRenderStage::TransparentRenderStage(Qt3DCore::QNode *parent)
+TransparentRenderStage::TransparentRenderStage(Qt3DRender::QFrameGraphNode *parent)
     : AbstractRenderStage(parent)
 {
     setObjectName(QStringLiteral("KuesaTransparentRenderStage"));

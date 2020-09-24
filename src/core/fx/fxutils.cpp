@@ -108,6 +108,7 @@ Qt3DRender::QRenderPass *createRenderPass(const QString &passName, const QVarian
 Qt3DRender::QRenderPassFilter *createRenderPassFilter(const QString &name, const QVariant &value, Qt3DCore::QNode *parent)
 {
     auto filter = new Qt3DRender::QRenderPassFilter(parent);
+    filter->setObjectName(QLatin1String("Pass: %1").arg(value.toString()));
     auto filterKey = new Qt3DRender::QFilterKey;
     filterKey->setName(name);
     filterKey->setValue(value);

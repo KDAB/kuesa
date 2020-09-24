@@ -41,6 +41,7 @@
 //
 
 #include <Kuesa/private/kuesa_global_p.h>
+#include <Kuesa/private/scenestages_p.h>
 #include <QRectF>
 #include <QMetaObject>
 #include <QSharedPointer>
@@ -75,51 +76,19 @@ class OpaqueRenderStage;
 class TransparentRenderStage;
 class ZFillRenderStage;
 
-class KUESA_PRIVATE_EXPORT ReflectionStages
+class KUESA_PRIVATE_EXPORT ReflectionStages : public SceneStages
 {
+    Q_OBJECT
 public:
-    ReflectionStages();
+    explicit ReflectionStages(Qt3DRender::QFrameGraphNode *parent = nullptr);
     ~ReflectionStages();
-
-    ReflectionStages(const ReflectionStages &) = delete;
-
-    void init();
-    void setZFilling(bool zFilling);
-    void setBackToFrontSorting(bool backToFrontSorting);
-    void reconfigure(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, QRectF viewport);
-
-    bool zFilling();
-    bool backToFrontSorting();
-    Qt3DRender::QLayer *layer() const;
-
-    void unParent();
-    void setParent(Qt3DCore::QNode *stageRoot);
-
-    Qt3DRender::QFrameGraphNode *opaqueStagesRoot() const;
-    Qt3DRender::QFrameGraphNode *transparentStagesRoot() const;
-
-    OpaqueRenderStage *opaqueStage() const;
-    ZFillRenderStage *zFillStage() const;
-    TransparentRenderStage *transparentStage() const;
 
     void setReflectivePlaneEquation(const QVector4D &planeEquation);
 
 private:
-    struct StageConfiguration {
-        Qt3DRender::QTechniqueFilter *m_reflectiveTechniqueFilter = nullptr;
-        Qt3DRender::QLayerFilter *m_layerFilter = nullptr;
-        Qt3DRender::QCameraSelector *m_cameraSelector = nullptr;
-        Qt3DRender::QViewport *m_viewport = nullptr;
-    };
-    StageConfiguration m_opaqueStagesConfiguration;
-    StageConfiguration m_transparentStagesConfiguration;
-    OpaqueRenderStage *m_opaqueStage;
-    TransparentRenderStage *m_transparentStage;
-    ZFillRenderStage *m_zFillStage;
-    Qt3DRender::QParameter *m_reflectiveEnabledParameter;
-    Qt3DRender::QParameter *m_reflectivePlaneParameter;
+    void reconfigure(const Features features) override;
+
     Qt3DRender::QClearBuffers *m_clearDepth;
-    QMetaObject::Connection m_zFillDestroyedConnection;
 };
 using ReflectionStagesPtr = QSharedPointer<ReflectionStages>;
 

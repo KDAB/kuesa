@@ -109,12 +109,22 @@ void AbstractPostProcessingEffect::setCamera(Qt3DCore::QEntity *camera)
 }
 
 /*!
- * Sets the \a size of the rendered scene (in pixels) that the effect will be
- * applied to. This is necessary for effects to render correctly.
+ * Sets the \a size of the rendered scene (in pixels) that the effect
+ * will be applied to. This is necessary for effects to render correctly.
  */
-void AbstractPostProcessingEffect::setSceneSize(const QSize &size)
+void AbstractPostProcessingEffect::setWindowSize(const QSize &sceneSize)
 {
-    Q_UNUSED(size);
+    Q_UNUSED(sceneSize);
+}
+
+/*!
+ * Sets the normalized viewport rect \a vp. This can be useful to know
+ * when rendering effects for a subset of the screen to adjust things
+ * like texture coordinates for instance.
+ */
+void AbstractPostProcessingEffect::setViewportRect(const QRectF &vp)
+{
+    Q_UNUSED(vp);
 }
 
 } // namespace Kuesa

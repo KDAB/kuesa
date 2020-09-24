@@ -27,9 +27,10 @@
 */
 
 #include "gaussianblureffect.h"
-#include "forwardrenderer.h"
 #include "fullscreenquad.h"
 #include "fxutils_p.h"
+#include "framegraphutils_p.h"
+
 #include <Qt3DRender/qtexture.h>
 #include <Qt3DRender/qrendertarget.h>
 #include <Qt3DRender/qmaterial.h>
@@ -163,6 +164,7 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     , m_blurTextureParam2(new Qt3DRender::QParameter(QStringLiteral("textureSampler"), nullptr))
     , m_widthParameter(new Qt3DRender::QParameter(QStringLiteral("width"), 1))
     , m_heightParameter(new Qt3DRender::QParameter(QStringLiteral("height"), 1))
+    , m_fsQuad(nullptr)
 {
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode);
     m_rootFrameGraphNode->setObjectName(QLatin1String("Gaussian Blur Effect"));
@@ -182,7 +184,7 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     m_blurTarget2->addOutput(blurOutput2);
 
     m_blurTexture2 = new Qt3DRender::QTexture2D;
-    m_blurTexture2->setFormat(ForwardRenderer::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+    m_blurTexture2->setFormat(FrameGraphUtils::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8_UNorm);
     m_blurTexture2->setGenerateMipMaps(false);
     m_blurTexture2->setSize(512, 512);
     blurOutput2->setTexture(m_blurTexture2);
@@ -254,11 +256,11 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     blurMaterial->addParameter(m_widthParameter);
     blurMaterial->addParameter(m_heightParameter);
 
-    auto blurQuad = new FullScreenQuad(blurMaterial, m_rootFrameGraphNode.data());
-    m_layer = blurQuad->layer();
+    m_fsQuad = new FullScreenQuad(blurMaterial, m_rootFrameGraphNode.data());
+    m_layer = m_fsQuad->layer();
 
     auto blurLayerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
-    blurLayerFilter->addLayer(blurQuad->layer());
+    blurLayerFilter->addLayer(m_fsQuad->layer());
 
     m_blurPassRoot = new Qt3DRender::QFrameGraphNode(blurLayerFilter);
 
@@ -297,6 +299,13 @@ void GaussianBlurEffect::createBlurPasses()
     blurPassFilterB->setParent(m_blurPassRoot);
 }
 
+void GaussianBlurEffect::updateTextureSizeParam(const QSize &sceneSize,
+                                                const QRectF &normalizedVP)
+{
+    m_heightParameter->setValue(sceneSize.height() * normalizedVP.height());
+    m_widthParameter->setValue(sceneSize.width() * normalizedVP.width());
+}
+
 /*!
  * Returns the frame graph subtree corresponding to the effect's implementation.
  *
@@ -331,13 +340,12 @@ void GaussianBlurEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
  *
  * \sa AbstractPostProcessingEffect::setSceneSize
  */
-void GaussianBlurEffect::setSceneSize(const QSize &size)
+void GaussianBlurEffect::setWindowSize(const QSize &size)
 {
-    m_heightParameter->setValue(size.height());
-    m_widthParameter->setValue(size.width());
     // only need to resize texture 2.
     // texture 1 is passed as "input texture" so should be resized elsewhere
     m_blurTexture2->setSize(size.width(), size.height());
+    updateTextureSizeParam(size, m_fsQuad->viewportRect());
 }
 
 /*!
@@ -348,6 +356,18 @@ void GaussianBlurEffect::setSceneSize(const QSize &size)
 int GaussianBlurEffect::blurPassCount() const
 {
     return m_blurPassCount;
+}
+
+/*!
+ * Sets the normalized viewport rect to \a vp.
+ *
+ * \sa AbstractPostProcessingEffect::setViewportRect
+ */
+void GaussianBlurEffect::setViewportRect(const QRectF &vp)
+{
+    m_fsQuad->setViewportRect(vp);
+    updateTextureSizeParam({m_blurTexture2->width(), m_blurTexture2->height()},
+                           vp);
 }
 
 /*!

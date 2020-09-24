@@ -45,6 +45,8 @@ class QRenderStateSet;
 
 namespace Kuesa {
 
+class FullScreenQuad;
+
 class KUESASHARED_EXPORT OpacityMask : public AbstractPostProcessingEffect
 {
     Q_OBJECT
@@ -56,6 +58,7 @@ public:
     FrameGraphNodePtr frameGraphSubTree() const override;
     QVector<Qt3DRender::QLayer *> layers() const override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
+    void setViewportRect(const QRectF &vp) override;
 
     void setMask(Qt3DRender::QAbstractTexture *mask);
     Qt3DRender::QAbstractTexture *mask() const;
@@ -81,6 +84,7 @@ private:
     Qt3DRender::QRenderStateSet *m_blendRenderState;
     Qt3DRender::QParameter *m_maskParameter;
     Qt3DRender::QParameter *m_inputTextureParameter;
+    FullScreenQuad *m_fsQuad;
 };
 
 } // namespace Kuesa

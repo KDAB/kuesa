@@ -30,7 +30,7 @@
 #define KUESA_FORWARDRENDERER_H
 
 #include <Kuesa/kuesa_global.h>
-#include <Kuesa/abstractpostprocessingeffect.h>
+#include <Kuesa/view.h>
 #include <Kuesa/tonemappingandgammacorrectioneffect.h>
 #include <Qt3DRender/qrendersurfaceselector.h>
 #include <Qt3DRender/qclearbuffers.h>
@@ -49,6 +49,7 @@ class QRenderPassFilter;
 class QViewport;
 class QCameraSelector;
 class QRenderSurfaceSelector;
+class QRenderTargetSelector;
 class QFrustumCulling;
 class QNoDraw;
 class QSortPolicy;
@@ -66,90 +67,57 @@ class ParticleRenderStage;
 class MSAAFBOResolver;
 class SceneStages;
 class ReflectionStages;
+class View;
 
 using SceneStagesPtr = QSharedPointer<SceneStages>;
 using ReflectionStagesPtr = QSharedPointer<ReflectionStages>;
 
-class KUESASHARED_EXPORT ForwardRenderer : public Qt3DRender::QRenderSurfaceSelector
+class KUESASHARED_EXPORT ForwardRenderer : public View
 {
     Q_OBJECT
     Q_PROPERTY(QObject *renderSurface READ renderSurface WRITE setRenderSurface NOTIFY renderSurfaceChanged)
-    Q_PROPERTY(QRectF viewportRect READ viewportRect WRITE setViewportRect NOTIFY viewportRectChanged)
-    Q_PROPERTY(Qt3DCore::QEntity *camera READ camera WRITE setCamera NOTIFY cameraChanged)
     Q_PROPERTY(QColor clearColor READ clearColor WRITE setClearColor NOTIFY clearColorChanged)
     Q_PROPERTY(Qt3DRender::QClearBuffers::BufferType clearBuffers READ clearBuffers WRITE setClearBuffers NOTIFY clearBuffersChanged)
-    Q_PROPERTY(bool frustumCulling READ frustumCulling WRITE setFrustumCulling NOTIFY frustumCullingChanged)
-    Q_PROPERTY(bool backToFrontSorting READ backToFrontSorting WRITE setBackToFrontSorting NOTIFY backToFrontSortingChanged)
-    Q_PROPERTY(bool zFilling READ zFilling WRITE setZFilling NOTIFY zFillingChanged)
     Q_PROPERTY(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
     Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged REVISION 1)
     Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged REVISION 1)
     Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay WRITE setShowDebugOverlay NOTIFY showDebugOverlayChanged REVISION 2)
-    Q_PROPERTY(bool particlesEnabled READ particlesEnabled WRITE setParticlesEnabled NOTIFY particlesEnabledChanged REVISION 3)
     Q_PROPERTY(bool usesStencilMask READ usesStencilMask WRITE setUsesStencilMask NOTIFY usesStencilMaskChanged REVISION 3)
 
 public:
-    ForwardRenderer(Qt3DCore::QNode *parent = nullptr);
+    explicit ForwardRenderer(Qt3DCore::QNode *parent = nullptr);
     ~ForwardRenderer();
 
     QObject *renderSurface() const;
-    QRectF viewportRect() const;
-    Qt3DCore::QEntity *camera() const;
     QColor clearColor() const;
     Qt3DRender::QClearBuffers::BufferType clearBuffers() const;
-    bool frustumCulling() const;
-    bool backToFrontSorting() const;
-    bool zFilling() const;
     float exposure() const;
     float gamma() const;
     ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
     bool showDebugOverlay() const;
-    bool particlesEnabled() const;
     bool usesStencilMask() const;
 
-    Q_INVOKABLE void addPostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
-    Q_INVOKABLE void removePostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
-    QVector<AbstractPostProcessingEffect *> postProcessingEffects() const;
-
-    static Qt3DRender::QAbstractTexture *findRenderTargetTexture(Qt3DRender::QRenderTarget *target, Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint);
-    static bool hasHalfFloatRenderable();
+    const std::vector<View *> &views() const;
 
 public Q_SLOTS:
     void setRenderSurface(QObject *renderSurface);
-    void setViewportRect(const QRectF &viewportRect);
-    void setCamera(Qt3DCore::QEntity *camera);
     void setClearColor(const QColor &clearColor);
     void setClearBuffers(Qt3DRender::QClearBuffers::BufferType clearBuffers);
-    void setFrustumCulling(bool frustumCulling);
-    void setBackToFrontSorting(bool backToFrontSorting);
-    void setZFilling(bool zfilling);
     void setGamma(float gamma);
     void setExposure(float exposure);
     void setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
     void setShowDebugOverlay(bool showDebugOverlay);
-    void setParticlesEnabled(bool enabled);
     void setUsesStencilMask(bool usesStencilMask);
 
-    void addLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera = nullptr, QRectF viewport = QRectF{});
-    void addLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, qreal left, qreal top, qreal width, qreal height);
-    void removeLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera = nullptr, QRectF viewport = QRectF{});
-    void removeLayer(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, qreal left, qreal top, qreal width, qreal height);
-    QVector<Qt3DRender::QLayer *> layers() const;
-    void clearLayers();
+    void addView(View *view);
+    void removeView(View *view);
 
-    void addReflectionPlane(const QVector4D &equation, Qt3DRender::QLayer *layer = nullptr);
-    QVector<QVector4D> reflectionPlanes() const;
-    void clearReflectionPlanes();
+    void dump();
 
 Q_SIGNALS:
     void renderSurfaceChanged(QObject *renderSurface);
-    void viewportRectChanged(const QRectF &viewportRect);
-    void cameraChanged(Qt3DCore::QEntity *camera);
     void clearColorChanged(const QColor &clearColor);
     void clearBuffersChanged(Qt3DRender::QClearBuffers::BufferType clearBuffers);
-    void frustumCullingChanged(bool frustumCulling);
-    void backToFrontSortingChanged(bool backToFrontSorting);
-    void zFillingChanged(bool zFilling);
     void frameGraphTreeReconfigured();
     void gammaChanged(float gamma);
     void exposureChanged(float exposure);
@@ -157,76 +125,47 @@ Q_SIGNALS:
     void showDebugOverlayChanged(bool showDebugOverlay);
     void particlesEnabledChanged(bool enabled);
     void usesStencilMaskChanged(bool usesStencilMask);
+    void externalRenderTargetSizeChanged(const QSize &renderTargetSize);
 
 private:
     void updateTextureSizes();
     void handleSurfaceChange();
     QSize currentSurfaceSize() const;
 
-    void scheduleFGTreeRebuild();
-    void rebuildFGTree();
+    void reconfigureFrameGraph() override;
 
-    void reconfigureFrameGraph();
-    void reconfigureStages();
+    void setupRenderTargets(Qt3DRender::QRenderTargetSelector *sceneTargetSelector,
+                            size_t fxCount);
 
-    AbstractPostProcessingEffect::FrameGraphNodePtr frameGraphSubtreeForPostProcessingEffect(AbstractPostProcessingEffect *effect) const;
-
-    Qt3DRender::QTechniqueFilter *m_noFrustumCullingOpaqueTechniqueFilter;
-    Qt3DRender::QTechniqueFilter *m_frustumCullingOpaqueTechniqueFilter;
-    Qt3DRender::QTechniqueFilter *m_noFrustumCullingTransparentTechniqueFilter;
-    Qt3DRender::QTechniqueFilter *m_frustumCullingTransparentTechniqueFilter;
-    QRectF m_viewport;
+    Qt3DRender::QRenderSurfaceSelector *m_surfaceSelector;
     Qt3DRender::QViewport *m_effectsViewport;
     Qt3DRender::QFrameGraphNode *m_stagesRoot;
     Qt3DCore::QEntity *m_camera;
     Qt3DRender::QClearBuffers *m_clearBuffers;
-    Qt3DRender::QNoDraw *m_noDrawClearBuffer;
-    Qt3DRender::QFrustumCulling *m_frustumCullingOpaque;
-    Qt3DRender::QFrustumCulling *m_frustumCullingTransparent;
-    bool m_backToFrontSorting;
-    bool m_zfilling;
-    QVector<AbstractPostProcessingEffect *> m_userPostProcessingEffects;
-    QVector<AbstractPostProcessingEffect *> m_internalPostProcessingEffects;
-    QHash<AbstractPostProcessingEffect *, AbstractPostProcessingEffect::FrameGraphNodePtr> m_effectFGSubtrees;
+    Qt3DRender::QClearBuffers *m_clearRT0;
+    EffectsStagesPtr m_internalFXStages;
 
     QVector<QMetaObject::Connection> m_resizeConnections;
 
     //For rendering scene when useing post-processing effects
-    Qt3DRender::QFrameGraphNode *m_renderToTextureRootNode;
-    Qt3DRender::QFrameGraphNode *m_effectsRootNode;
+    Qt3DRender::QRenderTargetSelector *m_renderToTextureRootNode;
+    Qt3DRender::QLayerFilter *m_mainSceneLayerFilter;
     Qt3DRender::QRenderTarget *m_renderTargets[2];
     Qt3DRender::QRenderTarget *m_multisampleTarget;
     Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromMSToFBO0;
     Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromFBO0ToFBO1;
+
     MSAAFBOResolver *m_msaaResolver;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     Qt3DRender::QDebugOverlay *m_debugOverlay;
 #endif
     bool m_fgTreeRebuiltScheduled;
 
-    struct LayerConfiguration {
-        Qt3DRender::QLayer *m_layer = nullptr;
-        Qt3DCore::QEntity *m_camera = nullptr;
-        QRectF m_viewport;
-        QMetaObject::Connection m_layerDestructionConnection;
-    };
-    std::vector<LayerConfiguration> m_layers;
-
-    //For controlling scene render stages
-    std::vector<SceneStagesPtr> m_sceneStages;
-
-    // For controller reflection render stages
-    std::vector<ReflectionStagesPtr> m_reflectionStages;
-
-    struct ReflectionPlane {
-        QVector4D equation;
-        Qt3DRender::QLayer *visibleLayer = nullptr;
-    };
-    std::vector<ReflectionPlane> m_reflectionPlanes;
+    std::vector<View *> m_views;
 
     // Particles
-    bool m_particlesEnabled;
-    ParticleRenderStage *m_particleRenderStage;
+//    bool m_particlesEnabled;
+//    ParticleRenderStage *m_particleRenderStage;
 
     bool m_usesStencilMask;
 

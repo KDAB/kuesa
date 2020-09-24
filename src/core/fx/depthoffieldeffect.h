@@ -48,6 +48,8 @@ class QCamera;
 
 namespace Kuesa {
 
+class FullScreenQuad;
+
 class KUESASHARED_EXPORT DepthOfFieldEffect : public AbstractPostProcessingEffect
 {
     Q_OBJECT
@@ -61,6 +63,7 @@ public:
     float focusRange() const;
     float radius() const;
     float focusDistance() const;
+    void setViewportRect(const QRectF &vp) override;
 
 public Q_SLOTS:
     void setFocusRange(float focusRange);
@@ -79,6 +82,8 @@ private:
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
     void setDepthTexture(Qt3DRender::QAbstractTexture *texture) override;
     void setCamera(Qt3DCore::QEntity *camera) override;
+    void updateTextureSizeParam(const QSize &s,
+                                const QRectF &normalizedVP);
 
     FrameGraphNodePtr m_rootFrameGraphNode;
     Qt3DRender::QLayer *m_layer;
@@ -91,14 +96,14 @@ private:
     Qt3DRender::QParameter *m_focusRangeParam;
     Qt3DRender::QParameter *m_focusDistanceParam;
     Qt3DRender::QParameter *m_radiusParam;
-    Qt3DCore::QEntity *m_camera;
-    void setSceneSize(const QSize &size) override;
+    void setWindowSize(const QSize &sceneSize) override;
     float m_focusRange;
     float m_radius;
     float m_focusDistance;
 
     Qt3DRender::QParameter *m_dofTextureParam;
     Qt3DRender::QAbstractTexture *m_dofTexture = nullptr;
+    FullScreenQuad *m_fsQuad = nullptr;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

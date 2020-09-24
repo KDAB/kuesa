@@ -1,5 +1,5 @@
 /*
-    tst_forwardrenderer.cpp
+    tst_view.cpp
 
     This file is part of Kuesa.
 
@@ -29,12 +29,15 @@
 #include <QtTest/QtTest>
 
 #include <Kuesa/view.h>
+#include <Kuesa/reflectionplane.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
 #include <Kuesa/private/opaquerenderstage_p.h>
 #include <Kuesa/private/zfillrenderstage_p.h>
 #include <Kuesa/private/transparentrenderstage_p.h>
 #include <Kuesa/private/scenestages_p.h>
+#include <Kuesa/private/effectsstages_p.h>
 #include <Kuesa/private/reflectionstages_p.h>
+#include <Kuesa/private/framegraphutils_p.h>
 #include <Qt3DRender/QViewport>
 #include <Qt3DRender/QCameraSelector>
 #include <Qt3DRender/QCamera>
@@ -86,13 +89,13 @@ public:
         return m_inputTexture;
     }
 
-    void setSceneSize(const QSize &size) override
+    void setWindowSize(const QSize &size) override
     {
-        emit sceneSizeChanged(size);
+        emit windowSizeChanged(size);
     }
 
 Q_SIGNALS:
-    void sceneSizeChanged(const QSize &size);
+    void windowSizeChanged(const QSize &size);
 
 private:
     FrameGraphNodePtr m_rootNode;
@@ -359,13 +362,13 @@ private Q_SLOTS:
             QCoreApplication::processEvents();
 
             // THEN
-            QCOMPARE(view.postProcessingEffects().size(), 1);
+            QCOMPARE(view.postProcessingEffects().size(), 1U);
             QCOMPARE(view.postProcessingEffects().front(), &fx);
         }
         QCoreApplication::processEvents();
 
         // THEN
-        QCOMPARE(view.postProcessingEffects().size(), 0);
+        QCOMPARE(view.postProcessingEffects().size(), 0U);
     }
 
     void testUnregisterPostProcessingEffect()
@@ -382,7 +385,7 @@ private Q_SLOTS:
         QCoreApplication::processEvents();
 
         // THEN
-        QCOMPARE(view.postProcessingEffects().size(), 0);
+        QCOMPARE(view.postProcessingEffects().size(), 0U);
     }
 
     void testAddingMultipleEffects()
@@ -398,7 +401,7 @@ private Q_SLOTS:
         QCoreApplication::processEvents();
 
         // THEN
-        QCOMPARE(view.postProcessingEffects().size(), 3);
+        QCOMPARE(view.postProcessingEffects().size(), size_t(3));
         QCOMPARE(view.postProcessingEffects().at(0), &fx3);
         QCOMPARE(view.postProcessingEffects().at(1), &fx1);
         QCOMPARE(view.postProcessingEffects().at(2), &fx2);
@@ -407,81 +410,208 @@ private Q_SLOTS:
         view.removePostProcessingEffect(&fx3);
 
         // THEN
-        QCOMPARE(view.postProcessingEffects().size(), 2);
+        QCOMPARE(view.postProcessingEffects().size(), size_t(2));
 
         // WHEN - re-adding fx3
         view.addPostProcessingEffect(&fx3);
         QCoreApplication::processEvents();
 
         // THEN - fx3 should go at end and order should now be 1, 2, 3
-        QCOMPARE(view.postProcessingEffects().size(), 3);
+        QCOMPARE(view.postProcessingEffects().size(), size_t(3));
         QCOMPARE(view.postProcessingEffects().at(0), &fx1);
         QCOMPARE(view.postProcessingEffects().at(1), &fx2);
         QCOMPARE(view.postProcessingEffects().at(2), &fx3);
-
-//        // THEN - fx1 should have a valid input texture (main scene)
-//        QVERIFY(fx1.inputTexture());
-
-//        // THEN - fx1 is rendered into a texture which is used for input texture for fx2.
-//        auto renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx1.frameGraphSubTree().data());
-//        QVERIFY(renderTargetSelector);
-
-//        auto outputTexture = Kuesa::ForwardRenderer::findRenderTargetTexture(renderTargetSelector->target(), Qt3DRender::QRenderTargetOutput::Color0);
-//        QVERIFY(outputTexture);
-//        QCOMPARE(outputTexture, fx2.inputTexture());
-
-//        // THEN - fx2 is rendered into a texture which is used for input texture for fx3.
-//        renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx2.frameGraphSubTree().data());
-//        QVERIFY(renderTargetSelector);
-
-//        outputTexture = Kuesa::ForwardRenderer::findRenderTargetTexture(renderTargetSelector->target(), Qt3DRender::QRenderTargetOutput::Color0);
-//        QVERIFY(outputTexture);
-//        QCOMPARE(outputTexture, fx3.inputTexture());
-
-//        // THEN - fx3 is rendered into a texture which will be used as the input for the final tone mapping / gamma correction
-//        renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx3.frameGraphSubTree().data());
-//        QVERIFY(renderTargetSelector != nullptr);
     }
 
-
-    void testReflectionStages()
+    void testSingleReflectionPlanes()
     {
         // GIVEN
         Kuesa::View view;
 
         // THEN
-        QCOMPARE(view.m_reflectionPlanes.size(), 0U);
+        QCOMPARE(view.reflectionPlanes().size(), 0U);
 
         // WHEN
-        view.addReflectionPlane({0.0f, 1.0f, 0.0f, 0.0f}, nullptr);
+        {
+            Kuesa::ReflectionPlane p;
+            view.addReflectionPlane(&p);
+
+            // THEN
+            QCOMPARE(view.reflectionPlanes().size(), 1U);
+            QCOMPARE(view.reflectionPlanes().front(), &p);
+        }
+
+        // WHEN -> Plane destroyed
 
         // THEN
-        QCOMPARE(view.reflectionPlanes().size(), 1);
-        QCOMPARE(view.reflectionPlanes().front(), QVector4D(0.0f, 1.0f, 0.0f, 0.0f));
+         QCOMPARE(view.reflectionPlanes().size(), 0U);
+    }
+
+    void testMultipleReflectionPlanes()
+    {
+        // GIVEN
+        Kuesa::View view;
+
+        {
+            // WHEN
+            Kuesa::ReflectionPlane p1, p2, p3;
+
+            view.addReflectionPlane(&p1);
+            view.addReflectionPlane(&p2);
+            view.addReflectionPlane(&p3);
+            QCoreApplication::processEvents();
+
+            // THEN
+            QCOMPARE(view.reflectionPlanes().size(), size_t(3));
+            QCOMPARE(view.reflectionPlanes().at(0), &p1);
+            QCOMPARE(view.reflectionPlanes().at(1), &p2);
+            QCOMPARE(view.reflectionPlanes().at(2), &p3);
+
+            // WHEN - removing p3
+            view.removeReflectionPlane(&p3);
+
+            // THEN
+            QCOMPARE(view.reflectionPlanes().size(), size_t(2));
+
+            // WHEN - re-adding p3
+            view.addReflectionPlane(&p3);
+            QCoreApplication::processEvents();
+
+            // THEN - fx3 should go at end and order should now be 1, 2, 3
+            QCOMPARE(view.reflectionPlanes().size(), size_t(3));
+            QCOMPARE(view.reflectionPlanes().at(0), &p1);
+            QCOMPARE(view.reflectionPlanes().at(1), &p2);
+            QCOMPARE(view.reflectionPlanes().at(2), &p3);
+        }
+
+        // THEN -> Removed and doesn't crash
+         QCOMPARE(view.reflectionPlanes().size(), size_t(0));
     }
 
     void checkGeneratedFrameGraphTree()
     {
         {
             // GIVEN
+            Kuesa::View v;
             // WHEN -> No Effects, No Reflection, No Layer
 
             // THEN
+            QCOMPARE(v.children().size(), 1);
+            Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
+            QVERIFY(child);
+
+            QVERIFY(v.m_fxStages->parent() == nullptr);
+            QCOMPARE(v.m_fxStages->effects().size(), size_t(0));
+            QCOMPARE(v.m_fxs.size(), size_t(0));
         }
         {
             // GIVEN
+            Kuesa::View v;
 
-            // WHEN -> Reflections No Layer, No Layer, No Effects
+            {
+                // WHEN -> Reflections, No Layer, No Effects
+                Kuesa::ReflectionPlane plane;
+                v.addReflectionPlane(&plane);
+
+                // THEN
+                QCOMPARE(v.children().size(), 3);
+
+                // We parent plane if it has no parent
+                QCOMPARE(v.children()[0], &plane);
+                Kuesa::ReflectionStages *child1 = qobject_cast<Kuesa::ReflectionStages *>(v.children()[1]);
+                Kuesa::SceneStages *child2 = qobject_cast<Kuesa::SceneStages *>(v.children()[2]);
+                QVERIFY(child1);
+                QVERIFY(child2);
+            }
+
+            // THEN
+            QCOMPARE(v.children().size(), 1);
+            QVERIFY(qobject_cast<Kuesa::SceneStages *>(v.children()[0]));
         }
         {
             // GIVEN
+            Kuesa::View v;
+            tst_FX fx;
 
-            // WHEN -> Reflections Layer, No Layer, No Effects
+            // WHEN -> No Reflections Layer, No Layer, Effects
+            v.addPostProcessingEffect(&fx);
+
+            // THEN
+            QCoreApplication::processEvents();
+
+            QCOMPARE(v.children().size(), 1);
+            Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
+            QVERIFY(child);
+
+            QCOMPARE(v.m_fxStages->effects().size(), size_t(1));
+            QCOMPARE(v.m_fxs.size(), size_t(1));
+            QCOMPARE(v.m_fxStages->children().size(), 1);
+
+            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(v.m_fxStages->children().first());
+            QVERIFY(vp);
+        }
+    }
+
+    void checkRootView()
+    {
+
+        {
+            // GIVEN
+            Kuesa::View root;
+
+            // WHEN
+            Kuesa::View *rV = root.rootView();
+
+            // THEN
+            QCOMPARE(rV, &root);
         }
         {
             // GIVEN
+            Kuesa::View root;
+            Kuesa::View *child = new Kuesa::View;
 
-            // WHEN -> Reflections Layer, No Layer, No Effects
+            // WHEN
+            child->setParent(&root);
+            Kuesa::View *rV = child->rootView();
+
+            // THEN
+            QCOMPARE(rV, &root);
+        }
+        {
+            // GIVEN
+            Kuesa::View root;
+            Kuesa::View *childL1 = new Kuesa::View;
+            Kuesa::View *childL2 = new Kuesa::View;
+            Kuesa::View *childL3 = new Kuesa::View;
+
+            // WHEN
+            childL3->setParent(childL2);
+            childL2->setParent(childL1);
+            childL1->setParent(&root);
+            Kuesa::View *rV = childL3->rootView();
+
+            // THEN
+            QCOMPARE(rV, &root);
+        }
+        {
+            // GIVEN
+            Kuesa::View root;
+            Kuesa::View *childL1 = new Kuesa::View;
+            Qt3DCore::QNode *childL2 = new Kuesa::View;
+            Kuesa::View *childL3 = new Kuesa::View;
+            Qt3DCore::QNode *childL4 = new Kuesa::View;
+            Kuesa::View *childL5 = new Kuesa::View;
+
+            // WHEN
+            childL5->setParent(childL4);
+            childL4->setParent(childL3);
+            childL3->setParent(childL2);
+            childL2->setParent(childL1);
+            childL1->setParent(&root);
+            Kuesa::View *rV = childL5->rootView();
+
+            // THEN
+            QCOMPARE(rV, &root);
         }
     }
 

@@ -37,7 +37,7 @@ QT_USE_NAMESPACE
 
 using namespace Kuesa;
 
-ZFillRenderStage::ZFillRenderStage(Qt3DCore::QNode *parent)
+ZFillRenderStage::ZFillRenderStage(Qt3DRender::QFrameGraphNode *parent)
     : AbstractRenderStage(parent)
 {
     setObjectName(QStringLiteral("KuesaZFillRenderStage"));

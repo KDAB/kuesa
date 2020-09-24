@@ -29,9 +29,10 @@
 #include "bloomeffect.h"
 #include "gaussianblureffect.h"
 #include "thresholdeffect.h"
-#include "forwardrenderer.h"
 #include "fullscreenquad.h"
 #include "fxutils_p.h"
+#include "framegraphutils_p.h"
+
 #include <Qt3DRender/qcameraselector.h>
 #include <Qt3DRender/qrendersurfaceselector.h>
 #include <Qt3DRender/qfilterkey.h>
@@ -49,6 +50,7 @@
 #include <Qt3DRender/qlayerfilter.h>
 #include <Qt3DRender/qrenderpassfilter.h>
 #include <Qt3DRender/qrendertarget.h>
+#include "framegraphutils_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -175,6 +177,7 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     : AbstractPostProcessingEffect(parent)
     , m_sceneTextureParam(new Qt3DRender::QParameter(QStringLiteral("texture0"), nullptr))
     , m_blurredBrightTextureParam(new Qt3DRender::QParameter(QStringLiteral("texture1"), nullptr))
+    , m_fsQuad(nullptr)
 {
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode);
     m_rootFrameGraphNode->setObjectName(QStringLiteral("Bloom Effect"));
@@ -241,8 +244,8 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     effect->addParameter(m_sceneTextureParam);
     effect->addParameter(m_blurredBrightTextureParam);
 
-    auto bloomQuad = new FullScreenQuad(bloomMaterial, m_rootFrameGraphNode.data());
-    m_layers.push_back(bloomQuad->layer());
+    m_fsQuad = new FullScreenQuad(bloomMaterial, m_rootFrameGraphNode.data());
+    m_layers.push_back(m_fsQuad->layer());
 
     connect(m_thresholdEffect, &ThresholdEffect::thresholdChanged, this, &BloomEffect::thresholdChanged);
     connect(m_blurEffect, &GaussianBlurEffect::blurPassCountChanged, this, &BloomEffect::blurPassCountChanged);
@@ -265,7 +268,7 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
 
     // Bloom Pass
     auto bloomLayerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
-    bloomLayerFilter->addLayer(bloomQuad->layer());
+    bloomLayerFilter->addLayer(m_fsQuad->layer());
 
     //create RenderPassFilter parented to layerFilter
     FXUtils::createRenderPassFilter(passFilterName, passFilterValue, bloomLayerFilter);
@@ -284,7 +287,7 @@ Qt3DRender::QRenderTarget *BloomEffect::createRenderTarget(Qt3DRender::QAbstract
     auto output = new Qt3DRender::QRenderTargetOutput;
     output->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
     renderTarget->addOutput(output);
-    texture->setFormat(ForwardRenderer::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+    texture->setFormat(FrameGraphUtils::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8_UNorm);
     texture->setSize(512, 512);
     texture->setGenerateMipMaps(false);
     output->setTexture(texture);
@@ -306,10 +309,10 @@ AbstractPostProcessingEffect::FrameGraphNodePtr BloomEffect::frameGraphSubTree()
  *
  * \sa AbstractPostProcessingEffect::setSceneSize
  */
-void BloomEffect::setSceneSize(const QSize &size)
+void BloomEffect::setWindowSize(const QSize &size)
 {
-    m_blurEffect->setSceneSize(size);
-    m_thresholdEffect->setSceneSize(size);
+    m_blurEffect->setWindowSize(size);
+    m_thresholdEffect->setWindowSize(size);
     m_brightTexture->setSize(size.width(), size.height());
     m_blurredBrightTexture->setSize(size.width(), size.height());
 }
@@ -323,6 +326,18 @@ void BloomEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
 {
     m_thresholdEffect->setInputTexture(texture);
     m_sceneTextureParam->setValue(QVariant::fromValue(texture));
+}
+
+/*!
+ * Sets the normalized viewport rect to \a vp.
+ *
+ * \sa AbstractPostProcessingEffect::setViewportRect
+ */
+void BloomEffect::setViewportRect(const QRectF &vp)
+{
+    m_fsQuad->setViewportRect(vp);
+    m_blurEffect->setViewportRect(vp);
+    m_thresholdEffect->setViewportRect(vp);
 }
 
 QVector<Qt3DRender::QLayer *> BloomEffect::layers() const

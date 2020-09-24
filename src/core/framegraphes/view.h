@@ -34,8 +34,10 @@
 #include <QFlags>
 #include <QRectF>
 #include <QVector4D>
+#include <Qt3DCore/QEntity>
 
 class tst_View;
+class tst_ForwardRenderer;
 
 QT_BEGIN_NAMESPACE
 
@@ -44,9 +46,12 @@ namespace Kuesa {
 class AbstractPostProcessingEffect;
 class SceneStages;
 class ReflectionStages;
+class EffectsStages;
+class ReflectionPlane;
 
 using SceneStagesPtr = QSharedPointer<SceneStages>;
 using ReflectionStagesPtr = QSharedPointer<ReflectionStages>;
+using EffectsStagesPtr = QSharedPointer<EffectsStages>;
 
 class KUESASHARED_EXPORT View : public Qt3DRender::QFrameGraphNode
 {
@@ -71,9 +76,9 @@ public:
     bool zFilling() const;
     bool particlesEnabled() const;
 
-    std::vector<AbstractPostProcessingEffect *> postProcessingEffects() const;
-    std::vector<Qt3DRender::QLayer *> layers() const;
-    std::vector<QVector4D> reflectionPlanes() const;
+    const std::vector<AbstractPostProcessingEffect *> &postProcessingEffects() const;
+    const std::vector<Qt3DRender::QLayer *> &layers() const;
+    const std::vector<ReflectionPlane *> &reflectionPlanes() const;
 
 public Q_SLOTS:
     void setViewportRect(const QRectF &viewportRect);
@@ -90,8 +95,8 @@ public Q_SLOTS:
     void addLayer(Qt3DRender::QLayer *layer);
     void removeLayer(Qt3DRender::QLayer *layer);
 
-    void addReflectionPlane(const QVector4D &equation, Qt3DRender::QLayer *layer = nullptr);
-    void clearReflectionPlanes();
+    void addReflectionPlane(ReflectionPlane *plane);
+    void removeReflectionPlane(ReflectionPlane *plane);
 
 Q_SIGNALS:
     void viewportRectChanged(const QRectF &viewportRect);
@@ -109,6 +114,10 @@ protected:
     virtual void reconfigureStages();
     virtual void reconfigureFrameGraph();
 
+    View *rootView() const;
+
+    AbstractPostProcessingEffect::FrameGraphNodePtr frameGraphSubtreeForPostProcessingEffect(AbstractPostProcessingEffect *effect) const;
+
     enum Feature {
         BackToFrontSorting = (1 << 0),
         Skinning           = (1 << 1),
@@ -118,8 +127,10 @@ protected:
     };
     Q_DECLARE_FLAGS(Features, Feature)
 
+private:
     SceneStagesPtr m_sceneStages;
     ReflectionStagesPtr m_reflectionStages;
+    EffectsStagesPtr m_fxStages;
 
     Qt3DCore::QEntity *m_camera = nullptr;
     QRectF m_viewport = QRectF(0.0f, 0.0f, 1.0f, 1.0f);
@@ -128,22 +139,15 @@ protected:
     std::vector<AbstractPostProcessingEffect *> m_fxs;
     QHash<AbstractPostProcessingEffect *, AbstractPostProcessingEffect::FrameGraphNodePtr> m_effectFGSubtrees;
 
-
-    // TO DO: Create a real type for that
-    struct ReflectionPlane {
-        QVector4D equation;
-        Qt3DRender::QLayer *visibleLayer = nullptr;
-    };
-    std::vector<ReflectionPlane> m_reflectionPlanes;
+    std::vector<ReflectionPlane *> m_reflectionPlanes;
 
     Features m_features = Features(FrustumCulling|Skinning);
+    bool m_fgTreeRebuiltScheduled = false;
 
     friend class ::tst_View;
-
-private:
-    bool m_fgTreeRebuiltScheduled = false;
+    friend class ::tst_ForwardRenderer;
+    friend class ForwardRenderer;
 };
-
 
 } // Kuesa
 

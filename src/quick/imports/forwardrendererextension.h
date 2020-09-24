@@ -34,35 +34,24 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DRender {
-class QLayer;
-}
-
 namespace Kuesa {
 
-class AbstractPostProcessingEffect;
+class View;
 
 class ForwardRendererExtension : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QQmlListProperty<Kuesa::AbstractPostProcessingEffect> postProcessingEffects READ postProcessingEffects CONSTANT)
-    Q_PROPERTY(QQmlListProperty<Qt3DRender::QLayer> layers READ layers CONSTANT)
+    Q_PROPERTY(QQmlListProperty<Kuesa::View> views READ views CONSTANT)
 public:
     explicit ForwardRendererExtension(QObject *parent = nullptr);
 
-    QQmlListProperty<Kuesa::AbstractPostProcessingEffect> postProcessingEffects();
-    QQmlListProperty<Qt3DRender::QLayer> layers();
+    QQmlListProperty<Kuesa::View> views();
 
 private:
-    static void appendFX(QQmlListProperty<AbstractPostProcessingEffect> *list, AbstractPostProcessingEffect *fx);
-    static AbstractPostProcessingEffect *fxAt(QQmlListProperty<AbstractPostProcessingEffect> *list, int index);
-    static int fxCount(QQmlListProperty<AbstractPostProcessingEffect> *list);
-    static void clearFx(QQmlListProperty<AbstractPostProcessingEffect> *list);
-
-    static void appendLayer(QQmlListProperty<Qt3DRender::QLayer> *list, Qt3DRender::QLayer *layer);
-    static Qt3DRender::QLayer *layerAt(QQmlListProperty<Qt3DRender::QLayer> *list, int index);
-    static int layersCount(QQmlListProperty<Qt3DRender::QLayer> *list);
-    static void clearLayers(QQmlListProperty<Qt3DRender::QLayer> *list);
+    static void appendView(QQmlListProperty<Kuesa::View> *list, Kuesa::View *layer);
+    static Kuesa::View *viewAt(QQmlListProperty<Kuesa::View> *list, int index);
+    static int viewCount(QQmlListProperty<Kuesa::View> *list);
+    static void clearViews(QQmlListProperty<Kuesa::View> *list);
 };
 
 } // namespace Kuesa

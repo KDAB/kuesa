@@ -27,8 +27,12 @@
 */
 
 #include "view.h"
+#include <Kuesa/reflectionplane.h>
 #include <private/kuesa_utils_p.h>
 #include <private/kuesa_p.h>
+#include <private/scenestages_p.h>
+#include <private/effectsstages_p.h>
+#include <private/reflectionstages_p.h>
 #include <Qt3DCore/private/qnode_p.h>
 
 #include <Qt3DRender/QLayer>
@@ -109,7 +113,11 @@ namespace Kuesa {
 
 View::View(Qt3DCore::QNode *parent)
     : Qt3DRender::QFrameGraphNode(parent)
+    , m_sceneStages(SceneStagesPtr::create())
+    , m_reflectionStages(ReflectionStagesPtr::create())
+    , m_fxStages(EffectsStagesPtr::create())
 {
+    rebuildFGTree();
 }
 
 View::~View()
@@ -238,22 +246,39 @@ bool View::particlesEnabled() const
     return m_features & Particles;
 }
 
-std::vector<AbstractPostProcessingEffect *> View::postProcessingEffects() const
+
+/*!
+    \qmlproperty list<AbstractPostProcessingEffect> Kuesa::ForwardRenderer::postProcessingEffects
+
+    Holds the list of post processing effects.
+
+    In essence this will complete the FrameGraph tree with a
+    dedicated subtree provided by the effect.
+
+    Lifetime of the subtree will be entirely managed by the ForwardRenderer.
+
+    Be aware that registering several effects of the same type might have
+    unexpected behavior. It is advised against unless explicitly documented in
+    the effect.
+
+    The FrameGraph tree is reconfigured upon replacing the list of effects.
+*/
+const std::vector<AbstractPostProcessingEffect *> &View::postProcessingEffects() const
 {
     return m_fxs;
 }
 
-std::vector<Qt3DRender::QLayer *> View::layers() const
+/*!
+ * Returns all layers used by the view.
+ */
+const std::vector<Qt3DRender::QLayer *> &View::layers() const
 {
     return m_layers;
 }
 
-std::vector<QVector4D> View::reflectionPlanes() const
+const std::vector<ReflectionPlane *> &View::reflectionPlanes() const
 {
-    std::vector<QVector4D> equations(m_reflectionPlanes.size());
-    for (size_t i = 0; i < equations.size(); ++i)
-        equations[i] = m_reflectionPlanes[i].equation;
-    return equations;
+    return m_reflectionPlanes;
 }
 
 /*!
@@ -284,13 +309,8 @@ void View::addPostProcessingEffect(AbstractPostProcessingEffect *effect)
     auto d = Qt3DCore::QNodePrivate::get(this);
     d->registerDestructionHelper(effect, &View::removePostProcessingEffect, m_fxs);
 
-    // Add FrameGraph subtree to dedicated subtree of effects
-    auto effectFGSubtree = effect->frameGraphSubTree();
-    if (!effectFGSubtree.isNull()) {
-        // Register FrameGraph Subtree
-        m_effectFGSubtrees.insert(effect, effectFGSubtree);
-        scheduleFGTreeRebuild();
-    }
+    // Request FG Tree rebuild
+    rebuildFGTree();
 }
 
 /*!
@@ -305,15 +325,12 @@ void View::removePostProcessingEffect(AbstractPostProcessingEffect *effect)
     if (Utils::removeAll(m_fxs, effect) <= 0)
         return;
 
-    // unparent FG subtree associated with Effect.
-    m_effectFGSubtrees.take(effect)->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
-
     // Stop watching for effect destruction
     auto d = Qt3DCore::QNodePrivate::get(this);
     d->unregisterDestructionHelper(effect);
 
-    // Reconfigure FrameGraph Tree
-    scheduleFGTreeRebuild();
+    // Request FG Tree rebuild
+    rebuildFGTree();
 }
 
 void View::addLayer(Qt3DRender::QLayer *layer)
@@ -329,8 +346,7 @@ void View::addLayer(Qt3DRender::QLayer *layer)
         d->registerDestructionHelper(layer, &View::removeLayer, m_layers);
         m_layers.push_back(layer);
         reconfigureStages();
-    } else
-        qCWarning(Kuesa::kuesa) << Q_FUNC_INFO << "called with null layer";
+    }
 }
 
 void View::removeLayer(Qt3DRender::QLayer *layer)
@@ -341,6 +357,39 @@ void View::removeLayer(Qt3DRender::QLayer *layer)
         d->unregisterDestructionHelper(layer);
         m_layers.erase(it);
         reconfigureStages();
+    }
+}
+
+void View::addReflectionPlane(ReflectionPlane *plane)
+{
+    if (plane) {
+        // Parent it to the View if they have no parent
+        // We want to avoid them ever being parented to the SceneStages
+        // As those might be destroyed when rebuilding the FG
+        if (!plane->parent())
+            plane->setParent(this);
+
+        auto d = Qt3DCore::QNodePrivate::get(this);
+        d->registerDestructionHelper(plane, &View::removeReflectionPlane, m_reflectionPlanes);
+        m_reflectionPlanes.push_back(plane);
+        rebuildFGTree();
+
+        QObject::connect(plane, &ReflectionPlane::equationChanged,
+                         this, &View::rebuildFGTree);
+        QObject::connect(plane, &ReflectionPlane::layersChanged,
+                         this, &View::rebuildFGTree);
+    }
+}
+
+void View::removeReflectionPlane(ReflectionPlane *plane)
+{
+    auto it = std::find(std::begin(m_reflectionPlanes), std::end(m_reflectionPlanes), plane);
+    if (it != std::end(m_reflectionPlanes)) {
+        auto d = Qt3DCore::QNodePrivate::get(this);
+        d->unregisterDestructionHelper(plane);
+        m_reflectionPlanes.erase(it);
+        rebuildFGTree();
+        plane->disconnect(this);
     }
 }
 
@@ -370,7 +419,9 @@ void View::setCamera(Qt3DCore::QEntity *camera)
         d->registerDestructionHelper(m_camera, &View::setCamera, m_camera);
     }
 
+    const bool blocked = blockNotifications(true);
     emit cameraChanged(m_camera);
+    blockNotifications(blocked);
     reconfigureStages();
 }
 
@@ -379,7 +430,9 @@ void View::setFrustumCulling(bool frustumCulling)
     if (frustumCulling == bool(m_features & FrustumCulling))
         return;
     m_features.setFlag(FrustumCulling, frustumCulling);
+    const bool blocked = blockNotifications(true);
     emit frustumCullingChanged(frustumCulling);
+    blockNotifications(blocked);
     reconfigureStages();
 }
 
@@ -388,7 +441,9 @@ void View::setSkinning(bool skinning)
     if (skinning == bool(m_features & Skinning))
         return;
     m_features.setFlag(Skinning, skinning);
+    const bool blocked = blockNotifications(true);
     emit skinningChanged(skinning);
+    blockNotifications(blocked);
     reconfigureStages();
 }
 
@@ -397,7 +452,9 @@ void View::setBackToFrontSorting(bool backToFrontSorting)
     if (backToFrontSorting == bool(m_features & BackToFrontSorting))
         return;
     m_features.setFlag(BackToFrontSorting, backToFrontSorting);
+    const bool blocked = blockNotifications(true);
     emit backToFrontSortingChanged(backToFrontSorting);
+    blockNotifications(blocked);
     reconfigureStages();
 }
 
@@ -406,7 +463,9 @@ void View::setZFilling(bool zfilling)
     if (zfilling == bool(m_features & ZFilling))
         return;
     m_features.setFlag(ZFilling, zfilling);
+    const bool blocked = blockNotifications(true);
     emit zFillingChanged(zfilling);
+    blockNotifications(blocked);
     reconfigureStages();
 }
 
@@ -415,18 +474,10 @@ void View::setParticlesEnabled(bool enabled)
     if (enabled == bool(m_features & Particles))
         return;
     m_features.setFlag(Particles, enabled);
+    const bool blocked = blockNotifications(true);
     emit particlesEnabledChanged(enabled);
+    blockNotifications(blocked);
     reconfigureStages();
-}
-
-void View::addReflectionPlane(const QVector4D &equation, Qt3DRender::QLayer *layer)
-{
-    m_reflectionPlanes.push_back({equation, layer});
-}
-
-void View::clearReflectionPlanes()
-{
-    m_reflectionPlanes.clear();
 }
 
 void View::scheduleFGTreeRebuild()
@@ -441,33 +492,117 @@ void View::rebuildFGTree()
 {
     m_fgTreeRebuiltScheduled = false;
     // Reconfigure FrameGraph Tree
-    reconfigureFrameGraph();
     reconfigureStages();
+    reconfigureFrameGraph();
+}
+
+/*!
+ * \internal
+ *
+ * Returns the root pointer of the FrameGraph subtree registered by the \a
+ * effect. nullptr will be returned if no subtree has been registered or if the
+ * effect is invalid.
+ */
+AbstractPostProcessingEffect::FrameGraphNodePtr View::frameGraphSubtreeForPostProcessingEffect(AbstractPostProcessingEffect *effect) const
+{
+    return m_effectFGSubtrees.value(effect, nullptr);
 }
 
 void View::reconfigureStages()
 {
-    // If no Effect:
-    // -> * Reflection Stages  (Layer filter: reflection visible layer)
-    // -> 1 SceneStage (Layer filter: view specified layers)
+    const bool useSkinning = bool(m_features & Skinning);
+    const bool useZFilling = bool(m_features & ZFilling);
+    const bool sortBackToFront = bool(m_features & BackToFrontSorting);
+    const bool useFrustumCulling = bool(m_features & FrustumCulling);
 
-    // If Effect:
-    // FBO [0]
-    // -> * Reflection Stages (Layer filter: reflection visible layer)
-    // -> 1 SceneStage (Layer filter: view specified layers)
-    // If effects count > 1 ? FBO[1] otherwise output to current render target
-    // -> (FBO[0] as input) -> Effect[0] -> outputs to FBO[1]
-    // -> (FBO[1] as input) -> Effect[1] -> outputs to FBO[0]
-    // ...
-    // Blit FBO against parent render target
+    // Scene Stages
+    m_sceneStages->setBackToFrontSorting(sortBackToFront);
+    m_sceneStages->setSkinning(useSkinning);
+    m_sceneStages->setZFilling(useZFilling);
+    m_sceneStages->setFrustumCulling(useFrustumCulling);
+    m_sceneStages->setCamera(m_camera);
+    m_sceneStages->setViewport(m_viewport);
+
+    // Update layers on sceneStages
+    // Remove old layers
+    const QVector<Qt3DRender::QLayer *> oldLayers = m_sceneStages->layers();
+    for (Qt3DRender::QLayer *l : oldLayers)
+        m_sceneStages->removeLayer(l);
+
+    // Add new ones
+    for (Qt3DRender::QLayer *l : m_layers)
+        m_sceneStages->addLayer(l);
+
+    // FX
+    m_fxStages->setCamera(m_camera);
+    m_fxStages->setViewport(m_viewport);
+
+    // Update fxs on effectsStages
+    const std::vector<Kuesa::AbstractPostProcessingEffect *> oldFXs = m_fxStages->effects();
+    for (Kuesa::AbstractPostProcessingEffect *fx : oldFXs)
+        m_fxStages->removeEffect(fx);
+
+    for (Kuesa::AbstractPostProcessingEffect *fx : m_fxs) {
+        m_fxStages->addEffect(fx);
+        fx->setViewportRect(m_viewport);
+    }
+
+    // Reflections Stages
+    m_reflectionStages->setBackToFrontSorting(sortBackToFront);
+    m_reflectionStages->setSkinning(useSkinning);
+    m_reflectionStages->setZFilling(useZFilling);
+    m_reflectionStages->setFrustumCulling(useFrustumCulling);
+    m_reflectionStages->setCamera(m_camera);
+    m_reflectionStages->setViewport(m_viewport);
+
+    const bool needsReflections = m_reflectionPlanes.size() > 0;
+    if (needsReflections) {
+        // Remove layers
+        const QVector<Qt3DRender::QLayer *> oldReflectionLayers = m_reflectionStages->layers();
+        for (Qt3DRender::QLayer *l : oldLayers)
+            m_reflectionStages->removeLayer(l);
+        const std::vector<Qt3DRender::QLayer *> &reflectionVisibleLayers =
+                m_reflectionPlanes[0]->layers().size() > 0 ? m_reflectionPlanes[0]->layers() : m_layers;
+        // Readd layers
+        for (Qt3DRender::QLayer *l : reflectionVisibleLayers)
+            m_reflectionStages->addLayer(l);
+        // Set equation
+        m_reflectionStages->setReflectivePlaneEquation(m_reflectionPlanes[0]->equation());
+    }
 }
 
 void View::reconfigureFrameGraph()
 {
-    // When using fxs, we need to render into a set of textures
-    if (m_fxs.size() > 0) {
+    m_sceneStages->setParent(Q_NODE_NULLPTR);
+    m_reflectionStages->setParent(Q_NODE_NULLPTR);
 
+    // We draw reflections prior to drawing the scene
+    const bool needsReflections = m_reflectionPlanes.size() > 0;
+    if (needsReflections)
+        m_reflectionStages->setParent(this);
+
+    m_sceneStages->setParent(this);
+
+    // FXs
+    // Those are handled by the ForwardRenderer
+    // which takes care of adding the EffectStage FG node
+    // at the proper place in the FG tree
+}
+
+View *View::rootView() const
+{
+    Qt3DCore::QNode *parent = parentNode();
+    View *parentView = qobject_cast<View *>(parent);
+
+    // Find nearest parent that is a parent view
+    while (parent != nullptr && parentView == nullptr) {
+        parent = parentNode();
+        parentView = qobject_cast<View *>(parent);
     }
+
+    if (parentView)
+        return parentView->rootView();
+    return const_cast<View *>(this);
 }
 
 } // Kuesa

@@ -41,7 +41,12 @@ SUBDIRS = \
     gltf2options \
     tonemappingandgammacorrectioneffect \
     kuesanode \
+    fullscreenquad \
     reflectionplane
+
+qtHaveModule(quick) {
+    SUBDIRS += qml
+}
 
 #installed_cmake.depends = cmake
 
@@ -83,5 +88,9 @@ qtConfig(private_tests) {
         opaquestage \
         transparentstage \
         zfillstage \
-        view
+        view \
+        scenestages \
+        framegraphutils \
+        effectsstages \
+        reflectionstages
 }

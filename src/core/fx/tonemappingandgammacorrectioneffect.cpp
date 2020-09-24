@@ -182,6 +182,7 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
     , m_gammaParameter(new Qt3DRender::QParameter(QStringLiteral("gamma"), 2.2f))
     , m_inputTextureParameter(new Qt3DRender::QParameter(QStringLiteral("inputTexture"), nullptr))
     , m_toneMappingAlgorithm(ToneMapping::None)
+    , m_fsQuad(nullptr)
 {
     QObject::connect(m_gammaParameter, &Qt3DRender::QParameter::valueChanged,
                      this, [this](QVariant value) { emit gammaChanged(value.toFloat()); });
@@ -257,8 +258,8 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
 
     // Set up FrameGraph
     {
-        auto fullScreenQuad = new FullScreenQuad(gammaCorrectionMaterial, m_rootFrameGraphNode.data());
-        m_layer = fullScreenQuad->layer();
+        m_fsQuad = new FullScreenQuad(gammaCorrectionMaterial, m_rootFrameGraphNode.data());
+        m_layer = m_fsQuad->layer();
 
         // Set up FrameGraph
         auto layerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
@@ -301,6 +302,16 @@ void ToneMappingAndGammaCorrectionEffect::setInputTexture(Qt3DRender::QAbstractT
 QVector<Qt3DRender::QLayer *> ToneMappingAndGammaCorrectionEffect::layers() const
 {
     return { m_layer };
+}
+
+/*!
+ * Sets the normalized viewport rect to \a vp.
+ *
+ * \sa AbstractPostProcessingEffect::setViewportRect
+ */
+void ToneMappingAndGammaCorrectionEffect::setViewportRect(const QRectF &vp)
+{
+    m_fsQuad->setViewportRect(vp);
 }
 
 void ToneMappingAndGammaCorrectionEffect::setExposure(float exposure)

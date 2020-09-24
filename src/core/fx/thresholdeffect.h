@@ -42,6 +42,8 @@ class QFrameGraphNode;
 
 namespace Kuesa {
 
+class FullScreenQuad;
+
 class KUESASHARED_EXPORT ThresholdEffect : public AbstractPostProcessingEffect
 {
     Q_OBJECT
@@ -54,6 +56,7 @@ public:
     FrameGraphNodePtr frameGraphSubTree() const override;
     QVector<Qt3DRender::QLayer *> layers() const override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
+    void setViewportRect(const QRectF &vp) override;
 
     float threshold() const;
 
@@ -69,6 +72,7 @@ private:
 
     Qt3DRender::QParameter *m_thresholdParameter;
     Qt3DRender::QParameter *m_textureParam;
+    FullScreenQuad *m_fsQuad;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

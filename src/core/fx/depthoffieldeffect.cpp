@@ -29,7 +29,7 @@
 #include "depthoffieldeffect.h"
 #include "fullscreenquad.h"
 #include "fx/fxutils_p.h"
-#include "forwardrenderer.h"
+#include "framegraphutils_p.h"
 
 #include <Qt3DRender/qcameraselector.h>
 #include <Qt3DRender/qrendersurfaceselector.h>
@@ -276,6 +276,7 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     , m_focusDistanceParam(new Qt3DRender::QParameter(QStringLiteral("focusDistance"), nullptr))
     , m_radiusParam(new Qt3DRender::QParameter(QStringLiteral("bokehRadius"), nullptr))
     , m_dofTextureParam(new Qt3DRender::QParameter(QStringLiteral("dofTexture"), nullptr))
+    , m_fsQuad(nullptr)
 {
     setFocusRange(3.f);
     setFocusDistance(8.f);
@@ -289,7 +290,7 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     auto dofOutput = new Qt3DRender::QRenderTargetOutput;
     dofOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
     dofOutput->setTexture(m_dofTexture);
-    m_dofTexture->setFormat(ForwardRenderer::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F : Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+    m_dofTexture->setFormat(FrameGraphUtils::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F : Qt3DRender::QAbstractTexture::RGBA8_UNorm);
     m_dofTexture->setSize(512, 512);
     m_dofTexture->setGenerateMipMaps(false);
     blurRenderTarget->addOutput(dofOutput);
@@ -386,14 +387,14 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     effect->addTechnique(rhiTechnique);
 #endif
 
-    auto dofQuad = new FullScreenQuad(dofMaterial, m_rootFrameGraphNode.data());
-    m_layer = dofQuad->layer();
+    m_fsQuad = new FullScreenQuad(dofMaterial, m_rootFrameGraphNode.data());
+    m_layer = m_fsQuad->layer();
 
     //
     //  FrameGraph Construction
     //
     auto layerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
-    layerFilter->addLayer(dofQuad->layer());
+    layerFilter->addLayer(m_fsQuad->layer());
 
     auto blurTargetSelector = new Qt3DRender::QRenderTargetSelector(layerFilter);
     blurTargetSelector->setTarget(blurRenderTarget);
@@ -430,6 +431,8 @@ void DepthOfFieldEffect::setDepthTexture(Qt3DRender::QAbstractTexture *texture)
 
 void DepthOfFieldEffect::setCamera(Qt3DCore::QEntity *camera)
 {
+    if (camera == nullptr)
+        return;
     m_nearPlaneParam->setValue(camera->property("nearPlane").toFloat());
     m_farPlaneParam->setValue(camera->property("farPlane").toFloat());
 }
@@ -447,6 +450,26 @@ float DepthOfFieldEffect::radius() const
 float DepthOfFieldEffect::focusDistance() const
 {
     return m_focusDistance;
+}
+
+void DepthOfFieldEffect::updateTextureSizeParam(const QSize &sceneSize,
+                                                const QRectF &normalizedVP)
+{
+    m_textureSizeParam->setValue(QSize(sceneSize.width() * normalizedVP.width(),
+                                       sceneSize.height() * normalizedVP.height()));
+}
+
+
+/*!
+ * Sets the normalized viewport rect to \a vp.
+ *
+ * \sa AbstractPostProcessingEffect::setViewportRect
+ */
+void DepthOfFieldEffect::setViewportRect(const QRectF &vp)
+{
+    m_fsQuad->setViewportRect(vp);
+    updateTextureSizeParam({m_dofTexture->width(), m_dofTexture->height()},
+                           vp);
 }
 
 /*!
@@ -494,10 +517,10 @@ void DepthOfFieldEffect::setFocusDistance(float focusDistance)
     emit focusDistanceChanged(m_focusDistance);
 }
 
-void DepthOfFieldEffect::setSceneSize(const QSize &size)
+void DepthOfFieldEffect::setWindowSize(const QSize &size)
 {
-    m_textureSizeParam->setValue(QSizeF(size));
     m_dofTexture->setSize(size.width(), size.height());
+    updateTextureSizeParam(size, m_fsQuad->viewportRect());
 }
 
 QT_END_NAMESPACE

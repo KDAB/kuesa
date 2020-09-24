@@ -62,9 +62,9 @@ public:
     virtual void setInputTexture(Qt3DRender::QAbstractTexture *texture) = 0;
     virtual void setDepthTexture(Qt3DRender::QAbstractTexture *texture);
     virtual void setCamera(Qt3DCore::QEntity *camera);
-
-    virtual void setSceneSize(const QSize &size);
+    virtual void setWindowSize(const QSize &sceneSize);
     virtual QVector<Qt3DRender::QLayer *> layers() const = 0;
+    virtual void setViewportRect(const QRectF &vp);
 
 protected:
     explicit AbstractPostProcessingEffect(Qt3DCore::QNode *parent = nullptr, Type = Custom);

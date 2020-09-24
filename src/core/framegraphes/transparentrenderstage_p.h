@@ -40,6 +40,7 @@
 // We mean it.
 //
 
+#include <Kuesa/private/kuesa_global_p.h>
 #include "abstractrenderstage_p.h"
 
 QT_BEGIN_NAMESPACE
@@ -50,12 +51,12 @@ class QSortPolicy;
 
 namespace Kuesa {
 
-class Q_AUTOTEST_EXPORT TransparentRenderStage : public AbstractRenderStage
+class KUESA_PRIVATE_EXPORT TransparentRenderStage : public AbstractRenderStage
 {
     Q_OBJECT
 
 public:
-    TransparentRenderStage(Qt3DCore::QNode *parent = nullptr);
+    explicit TransparentRenderStage(Qt3DRender::QFrameGraphNode *parent = nullptr);
     ~TransparentRenderStage();
 
     bool backToFrontSorting() const;

@@ -36,7 +36,7 @@ QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-ParticleRenderStage::ParticleRenderStage(Qt3DCore::QNode *parent)
+ParticleRenderStage::ParticleRenderStage(Qt3DRender::QFrameGraphNode *parent)
     : AbstractRenderStage(parent)
 {
     setObjectName(QStringLiteral("KuesaParticleRenderStage"));

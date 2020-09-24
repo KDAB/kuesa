@@ -73,22 +73,28 @@ namespace Kuesa {
  *
  * \param parent The parent node for the quad entity.
  */
+
+namespace {
+
+struct V {
+    QVector3D pos;
+    QVector2D tCoord;
+};
+static_assert(sizeof(V) == 5 * sizeof(float), "Unexpected size for struct V");
+
+} // anonymous
+
 FullScreenQuad::FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode *parent)
     : Qt3DCore::QEntity(parent)
+    , m_buffer(new Qt3DRender::QBuffer())
+    , m_viewportRect(QRectF(0.0f, 0.0f, 1.0f, 1.0f))
 {
     m_layer = new Qt3DRender::QLayer(this);
 
     auto *geometryRenderer = new Qt3DRender::QGeometryRenderer();
     auto *geometry = new Qt3DGeometry::QGeometry();
-    auto *buffer = new Qt3DGeometry::QBuffer();
     auto *positionAttribute = new Qt3DGeometry::QAttribute();
     auto *texCoordAttribute = new Qt3DGeometry::QAttribute();
-
-    struct V {
-        QVector3D pos;
-        QVector2D tCoord;
-    };
-    static_assert(sizeof(V) == 5 * sizeof(float), "Unexpected size for struct V");
 
     positionAttribute->setName(Qt3DGeometry::QAttribute::defaultPositionAttributeName());
     positionAttribute->setAttributeType(Qt3DGeometry::QAttribute::VertexAttribute);
@@ -96,7 +102,7 @@ FullScreenQuad::FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode 
     positionAttribute->setVertexSize(3);
     positionAttribute->setByteStride(sizeof(V));
     positionAttribute->setByteOffset(0);
-    positionAttribute->setBuffer(buffer);
+    positionAttribute->setBuffer(m_buffer);
     positionAttribute->setCount(6);
 
     texCoordAttribute->setName(Qt3DGeometry::QAttribute::defaultTextureCoordinateAttributeName());
@@ -105,7 +111,7 @@ FullScreenQuad::FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode 
     texCoordAttribute->setVertexSize(2);
     texCoordAttribute->setByteStride(sizeof(V));
     texCoordAttribute->setByteOffset(sizeof(QVector3D));
-    texCoordAttribute->setBuffer(buffer);
+    texCoordAttribute->setBuffer(m_buffer);
     texCoordAttribute->setCount(6);
 
     geometry->addAttribute(positionAttribute);
@@ -113,18 +119,7 @@ FullScreenQuad::FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode 
 
     geometryRenderer->setGeometry(geometry);
 
-    QByteArray rawData;
-    rawData.resize(6 * sizeof(V));
-
-    V *vertices = reinterpret_cast<V *>(rawData.data());
-    vertices[0] = { { -1.0, 1.0, 0.0 }, { 0.0, 1.0 } };
-    vertices[1] = { { -1.0, -1.0, 0.0 }, { 0.0, 0.0 } };
-    vertices[2] = { { 1.0, 1.0, 0.0 }, { 1.0, 1.0 } };
-    vertices[3] = { { 1.0, 1.0, 0.0 }, { 1.0, 1.0 } };
-    vertices[4] = { { -1.0, -1.0, 0.0 }, { 0.0, 0.0 } };
-    vertices[5] = { { 1.0, -1.0, 0.0 }, { 1.0, 0.0 } };
-
-    buffer->setData(rawData);
+    updateBufferData();
 
     addComponent(m_layer);
     addComponent(geometryRenderer);
@@ -145,6 +140,52 @@ FullScreenQuad::~FullScreenQuad()
 Qt3DRender::QLayer *FullScreenQuad::layer() const
 {
     return m_layer;
+}
+
+/*!
+ *
+ * Specifies the normalized coordinate rectangle subset of the input texture
+ * on which to apply the material. This usually should match the viewport
+ * rect used to render the scene.
+ */
+void FullScreenQuad::setViewportRect(const QRectF &vp)
+{
+    if (vp != m_viewportRect) {
+        m_viewportRect = vp;//QRectF(0.0f, 0.5f, 0.5f, 0.5f);
+        updateBufferData();
+    }
+}
+
+QRectF FullScreenQuad::viewportRect() const
+{
+    return m_viewportRect;
+}
+
+Qt3DRender::QBuffer *FullScreenQuad::buffer() const
+{
+    return m_buffer;
+}
+
+void FullScreenQuad::updateBufferData()
+{
+    QByteArray rawData;
+    rawData.resize(6 * sizeof(V));
+
+    V *vertices = reinterpret_cast<V *>(rawData.data());
+
+    const float tX0 = m_viewportRect.x();
+    const float tY0 = 1.0f - (m_viewportRect.y() + m_viewportRect.width());
+    const float tX1 = m_viewportRect.x() + m_viewportRect.width();
+    const float tY1 = tY0 + m_viewportRect.height();
+
+    vertices[0] = { { -1.0, 1.0, 0.0 }, { tX0, tY1 } };
+    vertices[1] = { { -1.0, -1.0, 0.0 }, { tX0, tY0 } };
+    vertices[2] = { { 1.0, 1.0, 0.0 }, { tX1, tY1 } };
+    vertices[3] = { { 1.0, 1.0, 0.0 }, { tX1, tY1 } };
+    vertices[4] = { { -1.0, -1.0, 0.0 }, { tX0, tY0 } };
+    vertices[5] = { { 1.0, -1.0, 0.0 }, { tX1, tY0 } };
+
+    m_buffer->setData(rawData);
 }
 
 } // namespace Kuesa

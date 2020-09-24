@@ -43,6 +43,7 @@
 #include <Kuesa/private/kuesa_global_p.h>
 #include <QRectF>
 #include <QSharedPointer>
+#include <private/abstractrenderstage_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -63,6 +64,8 @@ class QBlitFramebuffer;
 class QLayerFilter;
 class QClearBuffers;
 class QLayer;
+class QFrustumCulling;
+
 } // namespace Qt3DRender
 
 namespace Kuesa {
@@ -72,45 +75,108 @@ class OpaqueRenderStage;
 class TransparentRenderStage;
 class ZFillRenderStage;
 
-class KUESA_PRIVATE_EXPORT SceneStages
+class KUESA_PRIVATE_EXPORT SceneFeaturedRenderStageBase : public AbstractRenderStage
 {
+    Q_OBJECT
 public:
-    SceneStages();
-    ~SceneStages();
+    explicit SceneFeaturedRenderStageBase(Qt3DRender::QFrameGraphNode *parent = nullptr);
 
-    SceneStages(const SceneStages &) = delete;
+    enum Feature {
+        BackToFrontSorting = (1 << 0),
+        Skinning           = (1 << 1),
+        FrustumCulling     = (1 << 2),
+        ZFilling           = (1 << 3),
+    };
+    Q_DECLARE_FLAGS(Features, Feature)
 
-    void init();
+    Features features() const;
+
+    void setSkinning(bool skinning);
+    bool skinning() const;
+
     void setZFilling(bool zFilling);
+    bool zFilling() const;
+
+    void setFrustumCulling(bool culling);
+    bool frustumCulling() const;
+
     void setBackToFrontSorting(bool backToFrontSorting);
-    void reconfigure(Qt3DRender::QLayer *layer, Qt3DCore::QEntity *camera, QRectF viewport);
-
-    bool zFilling();
-    bool backToFrontSorting();
-    Qt3DRender::QLayer *layer() const;
-
-    void unParent();
-    void setParent(Qt3DCore::QNode *opaqueRoot, Qt3DCore::QNode *transparentRoot);
-
-    Qt3DRender::QLayerFilter *opaqueStagesRoot() const;
-    Qt3DRender::QLayerFilter *transparentStagesRoot() const;
-
-    OpaqueRenderStage *opaqueStage() const;
-    ZFillRenderStage *zFillStage() const;
-    TransparentRenderStage *transparentStage() const;
+    bool backToFrontSorting() const;
 
 private:
-    struct StageConfiguration {
-        Qt3DRender::QLayerFilter *m_root = nullptr;
-        Qt3DRender::QCameraSelector *m_cameraSelector = nullptr;
-        Qt3DRender::QViewport *m_viewport = nullptr;
+    Features m_features;
+
+private:
+    virtual void reconfigure(const Features features) = 0;
+};
+
+class KUESA_PRIVATE_EXPORT ScenePass : public SceneFeaturedRenderStageBase
+{
+    Q_OBJECT
+public:
+    enum SceneStageType {
+        ZFill,
+        Opaque,
+        Transparent
     };
-    StageConfiguration m_opaqueStagesConfiguration;
-    StageConfiguration m_transparentStagesConfiguration;
-    OpaqueRenderStage *m_opaqueStage;
-    TransparentRenderStage *m_transparentStage;
-    ZFillRenderStage *m_zFillStage;
-    QMetaObject::Connection m_zFillDestroyedConnection;
+    Q_ENUM(SceneStageType)
+
+    explicit ScenePass(SceneStageType type, Qt3DRender::QFrameGraphNode *parent = nullptr);
+    ~ScenePass();
+
+    SceneStageType type() const;
+
+    void addParameter(Qt3DRender::QParameter *parameter);
+    void removeParameter(Qt3DRender::QParameter *parameter);
+
+private:
+    void reconfigure(const Features features) override;
+
+    Qt3DRender::QTechniqueFilter *m_nonSkinnedTechniqueFilter = nullptr;
+    Qt3DRender::QTechniqueFilter *m_skinnedTechniqueFilter = nullptr;
+    Qt3DRender::QFrustumCulling *m_frustumCulling = nullptr;
+
+    AbstractRenderStage *m_nonSkinnedStage = nullptr;
+    AbstractRenderStage *m_skinnedStage = nullptr;
+
+    const SceneStageType m_type;
+};
+using ScenePassPtr = QSharedPointer<ScenePass>;
+
+
+class KUESA_PRIVATE_EXPORT SceneStages : public SceneFeaturedRenderStageBase
+{
+    Q_OBJECT
+public:
+    explicit SceneStages(Qt3DRender::QFrameGraphNode *parent = nullptr);
+    ~SceneStages();
+
+    void setCamera(Qt3DCore::QEntity *camera);
+    Qt3DCore::QEntity *camera() const;
+
+    void setViewport(const QRectF &vp);
+    QRectF viewport() const;
+
+    QVector<Qt3DRender::QLayer *> layers() const;
+
+public Q_SLOTS:
+    void addLayer(Qt3DRender::QLayer *layer);
+    void removeLayer(Qt3DRender::QLayer *layer);
+
+protected:
+    void reconfigure(const Features features) override;
+
+    Qt3DRender::QViewport *m_viewport = nullptr;
+    Qt3DRender::QCameraSelector *m_cameraSelector = nullptr;
+    Qt3DRender::QLayerFilter *m_layerFilter = nullptr;
+
+    ScenePassPtr m_zFillStage;
+    ScenePassPtr m_opaqueStage;
+    ScenePassPtr m_transparentStage;
+
+    Qt3DRender::QParameter *m_reflectiveEnabledParameter = nullptr;
+    Qt3DRender::QParameter *m_reflectivePlaneParameter = nullptr;
+
 };
 using SceneStagesPtr = QSharedPointer<SceneStages>;
 

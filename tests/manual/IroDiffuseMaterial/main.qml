@@ -43,6 +43,7 @@ Kuesa.SceneEntity {
                 id: frameGraph
                 camera: mainCamera
                 clearColor: "white"
+                showDebugOverlay: true
             }
         },
         InputSettings { }

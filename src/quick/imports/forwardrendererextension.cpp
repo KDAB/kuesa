@@ -50,108 +50,60 @@ ForwardRenderer *kuesaFrameGraph(QObject *parent)
  */
 
 /*!
-    \qmlproperty list<AbstractPostProcessingEffect>  Kuesa::Forward::childNodes
+    \qmlproperty list<View>  Kuesa::ForwardRenderer::views
 
-    List of postprocessing effects to perform. They are executed in the order
-    of declaration
+    List of sub views of the scene to be rendered.
 */
 ForwardRendererExtension::ForwardRendererExtension(QObject *parent)
     : QObject(parent)
 {
 }
 
-QQmlListProperty<AbstractPostProcessingEffect> ForwardRendererExtension::postProcessingEffects()
+QQmlListProperty<Kuesa::View> ForwardRendererExtension::views()
 {
-    return QQmlListProperty<AbstractPostProcessingEffect>(this, 0,
-                                                          ForwardRendererExtension::appendFX,
-                                                          ForwardRendererExtension::fxCount,
-                                                          ForwardRendererExtension::fxAt,
-                                                          ForwardRendererExtension::clearFx);
+    return QQmlListProperty<Kuesa::View>(this, 0,
+                                         ForwardRendererExtension::appendView,
+                                         ForwardRendererExtension::viewCount,
+                                         ForwardRendererExtension::viewAt,
+                                         ForwardRendererExtension::clearViews);
 }
 
-QQmlListProperty<Qt3DRender::QLayer> ForwardRendererExtension::layers()
-{
-    return QQmlListProperty<Qt3DRender::QLayer>(this, 0,
-                                                ForwardRendererExtension::appendLayer,
-                                                ForwardRendererExtension::layersCount,
-                                                ForwardRendererExtension::layerAt,
-                                                ForwardRendererExtension::clearLayers);
-}
-
-void ForwardRendererExtension::appendFX(QQmlListProperty<AbstractPostProcessingEffect> *list, AbstractPostProcessingEffect *fx)
+void ForwardRendererExtension::appendView(QQmlListProperty<Kuesa::View> *list, Kuesa::View *view)
 {
     ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
-    if (fx == nullptr || kuesaFG == nullptr)
+    if (kuesaFG == nullptr)
         return;
-    kuesaFG->addPostProcessingEffect(fx);
+    return kuesaFG->addView(view);
 }
 
-AbstractPostProcessingEffect *ForwardRendererExtension::fxAt(QQmlListProperty<AbstractPostProcessingEffect> *list, int index)
+Kuesa::View *ForwardRendererExtension::viewAt(QQmlListProperty<Kuesa::View> *list, int index)
 {
     ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
     if (kuesaFG == nullptr)
         return nullptr;
-    return kuesaFG->postProcessingEffects().at(index);
+    return kuesaFG->views().at(index);
 }
 
-int ForwardRendererExtension::fxCount(QQmlListProperty<AbstractPostProcessingEffect> *list)
+int ForwardRendererExtension::viewCount(QQmlListProperty<Kuesa::View> *list)
 {
     ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
     if (kuesaFG == nullptr)
         return 0;
-    return kuesaFG->postProcessingEffects().size();
+    return int(kuesaFG->views().size());
 }
 
-void ForwardRendererExtension::clearFx(QQmlListProperty<AbstractPostProcessingEffect> *list)
+void ForwardRendererExtension::clearViews(QQmlListProperty<Kuesa::View> *list)
 {
     ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
     if (kuesaFG == nullptr)
         return;
-    const QVector<AbstractPostProcessingEffect *> effects = kuesaFG->postProcessingEffects();
-    for (AbstractPostProcessingEffect *fx : effects)
-        kuesaFG->removePostProcessingEffect(fx);
-}
-
-void ForwardRendererExtension::appendLayer(QQmlListProperty<Qt3DRender::QLayer> *list, Qt3DRender::QLayer *layer)
-{
-    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
-    auto kuesaFG = kuesaFrameGraph(self->parent());
-    if (kuesaFG == nullptr)
-        return;
-    return kuesaFG->addLayer(layer);
-}
-
-Qt3DRender::QLayer *ForwardRendererExtension::layerAt(QQmlListProperty<Qt3DRender::QLayer> *list, int index)
-{
-    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
-    auto kuesaFG = kuesaFrameGraph(self->parent());
-    if (kuesaFG == nullptr)
-        return nullptr;
-    return kuesaFG->layers().at(index);
-}
-
-int ForwardRendererExtension::layersCount(QQmlListProperty<Qt3DRender::QLayer> *list)
-{
-    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
-    auto kuesaFG = kuesaFrameGraph(self->parent());
-    if (kuesaFG == nullptr)
-        return 0;
-    return kuesaFG->layers().count();
-}
-
-void ForwardRendererExtension::clearLayers(QQmlListProperty<Qt3DRender::QLayer> *list)
-{
-    ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
-    auto kuesaFG = kuesaFrameGraph(self->parent());
-    if (kuesaFG == nullptr)
-        return;
-    const QVector<Qt3DRender::QLayer *> effects = kuesaFG->layers();
-    for (Qt3DRender::QLayer *layer : effects)
-        kuesaFG->removeLayer(layer);
+    const std::vector<Kuesa::View *> views = kuesaFG->views();
+    for (Kuesa::View *view : views)
+        kuesaFG->removeView(view);
 }
 
 } // namespace Kuesa

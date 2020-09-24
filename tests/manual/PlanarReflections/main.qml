@@ -44,6 +44,12 @@ Kuesa.SceneEntity {
                 camera: mainCamera
                 clearColor: "white"
                 showDebugOverlay: true
+                reflectionPlanes: [
+                    Kuesa.ReflectionPlane {
+                        equation: Qt.vector4d(0, 1, 0, 0)
+                        layers: [sphereLayer.node]
+                    }
+                ]
             }
         },
         InputSettings { }
@@ -58,11 +64,11 @@ Kuesa.SceneEntity {
         farPlane: 1000.0
     }
 
-//    Kuesa.Asset {
-//        id: mainCamera
-//        collection: scene.cameras
-//        name: "Camera_Orientation"
-//    }
+    Kuesa.Asset {
+        id: sphereLayer
+        collection: scene.layers
+        name: "SphereCollection"
+    }
 
     OrbitCameraController {
         id: controller
@@ -79,6 +85,5 @@ Kuesa.SceneEntity {
 
     onLoadingDone: {
         mainCamera.viewAll()
-        frameGraph.addReflectionPlane(Qt.vector4d(0, 1, 0, 0), scene.layer("SphereCollection"))
     }
 }

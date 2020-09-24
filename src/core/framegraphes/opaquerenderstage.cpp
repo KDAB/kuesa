@@ -38,7 +38,7 @@ QT_USE_NAMESPACE
 
 using namespace Kuesa;
 
-OpaqueRenderStage::OpaqueRenderStage(Qt3DCore::QNode *parent)
+OpaqueRenderStage::OpaqueRenderStage(Qt3DRender::QFrameGraphNode *parent)
     : AbstractRenderStage(parent)
 {
     setObjectName(QStringLiteral("KuesaOpaqueRenderStage"));

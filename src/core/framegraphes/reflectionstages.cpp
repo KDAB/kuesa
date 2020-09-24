@@ -46,164 +46,39 @@ QT_BEGIN_NAMESPACE
 
 using namespace Kuesa;
 
-ReflectionStages::ReflectionStages()
-    : m_opaqueStage(nullptr)
-    , m_transparentStage(nullptr)
-    , m_zFillStage(nullptr)
-    , m_reflectiveEnabledParameter(nullptr)
-    , m_reflectivePlaneParameter(nullptr)
+ReflectionStages::ReflectionStages(Qt3DRender::QFrameGraphNode *parent)
+    : SceneStages(parent)
     , m_clearDepth(nullptr)
 {
-}
-
-ReflectionStages::~ReflectionStages()
-{
-    delete m_opaqueStagesConfiguration.m_reflectiveTechniqueFilter;
-    delete m_transparentStagesConfiguration.m_reflectiveTechniqueFilter;
-}
-
-void ReflectionStages::init()
-{
-    m_opaqueStagesConfiguration.m_reflectiveTechniqueFilter = new Qt3DRender::QTechniqueFilter();
-    m_opaqueStagesConfiguration.m_layerFilter = new Qt3DRender::QLayerFilter(m_opaqueStagesConfiguration.m_reflectiveTechniqueFilter);
-    m_opaqueStagesConfiguration.m_cameraSelector = new Qt3DRender::QCameraSelector(m_opaqueStagesConfiguration.m_layerFilter);
-    m_opaqueStagesConfiguration.m_viewport = new Qt3DRender::QViewport(m_opaqueStagesConfiguration.m_cameraSelector);
-
-    m_transparentStagesConfiguration.m_reflectiveTechniqueFilter = new Qt3DRender::QTechniqueFilter();
-    m_transparentStagesConfiguration.m_layerFilter = new Qt3DRender::QLayerFilter(m_transparentStagesConfiguration.m_reflectiveTechniqueFilter);
-    m_transparentStagesConfiguration.m_cameraSelector = new Qt3DRender::QCameraSelector(m_transparentStagesConfiguration.m_layerFilter);
-    m_transparentStagesConfiguration.m_viewport = new Qt3DRender::QViewport(m_transparentStagesConfiguration.m_cameraSelector);
-
-    m_opaqueStage = new OpaqueRenderStage(m_opaqueStagesConfiguration.m_viewport);
-    m_transparentStage = new TransparentRenderStage(m_transparentStagesConfiguration.m_viewport);
-
-    m_opaqueStagesConfiguration.m_layerFilter->setFilterMode(Qt3DRender::QLayerFilter::AcceptAllMatchingLayers);
-    m_transparentStagesConfiguration.m_layerFilter->setFilterMode(Qt3DRender::QLayerFilter::AcceptAllMatchingLayers);
-
-    m_reflectiveEnabledParameter = new Qt3DRender::QParameter(QStringLiteral("isReflective"), true);
-    m_reflectivePlaneParameter = new Qt3DRender::QParameter(QStringLiteral("reflectionPlane"), QVector4D());
-
-    m_transparentStagesConfiguration.m_reflectiveTechniqueFilter->addParameter(m_reflectiveEnabledParameter);
-    m_transparentStagesConfiguration.m_reflectiveTechniqueFilter->addParameter(m_reflectivePlaneParameter);
-
-    m_opaqueStagesConfiguration.m_reflectiveTechniqueFilter->addParameter(m_reflectiveEnabledParameter);
-    m_opaqueStagesConfiguration.m_reflectiveTechniqueFilter->addParameter(m_reflectivePlaneParameter);
+    // Enable Reflections on the SceneStages
+    m_reflectiveEnabledParameter->setValue(true);
 
     m_clearDepth = new Qt3DRender::QClearBuffers();
     m_clearDepth->setBuffers(Qt3DRender::QClearBuffers::DepthBuffer);
     new Qt3DRender::QNoDraw(m_clearDepth);
+
+    // Force initial configuration
+    reconfigure(SceneFeaturedRenderStageBase::features());
 }
 
-void ReflectionStages::setZFilling(bool zFilling)
+ReflectionStages::~ReflectionStages()
 {
-    const bool hasZillStage = m_zFillStage != nullptr;
-    if (hasZillStage != zFilling) {
-        if (hasZillStage) {
-            QObject::disconnect(m_zFillDestroyedConnection);
-            delete m_zFillStage;
-            m_zFillStage = nullptr;
-        } else {
-            m_zFillStage = new ZFillRenderStage();
-            m_zFillDestroyedConnection = QObject::connect(m_zFillStage, &Qt3DCore::QNode::nodeDestroyed,
-                                                          m_zFillStage, [this] { m_zFillStage = nullptr; });
-            m_opaqueStage->setParent(Q_NODE_NULLPTR);
-            m_zFillStage->setParent(m_opaqueStagesConfiguration.m_viewport);
-            m_opaqueStage->setParent(m_opaqueStagesConfiguration.m_viewport);
-        }
-        m_opaqueStage->setZFilling(zFilling);
-    }
 }
 
-void ReflectionStages::setBackToFrontSorting(bool backToFrontSorting)
+void ReflectionStages::reconfigure(const Features features)
 {
-    if (backToFrontSorting != m_transparentStage->backToFrontSorting())
-        m_transparentStage->setBackToFrontSorting(backToFrontSorting);
-}
+    // We force disable frustum culling
+    Features editedFeatures = features;
+    editedFeatures.setFlag(FrustumCulling, false);
 
-void ReflectionStages::reconfigure(Qt3DRender::QLayer *l, Qt3DCore::QEntity *camera, QRectF viewport)
-{
-    Qt3DRender::QLayer *oldLayer = layer();
-
-    qDebug() << Q_FUNC_INFO << l;
-
-    if (oldLayer) {
-        m_opaqueStagesConfiguration.m_reflectiveTechniqueFilter->setObjectName(QLatin1String("Opaque Stages Root"));
-        m_transparentStagesConfiguration.m_reflectiveTechniqueFilter->setObjectName(QLatin1String("Transparent Stages Root"));
-        m_opaqueStagesConfiguration.m_layerFilter->removeLayer(oldLayer);
-        m_transparentStagesConfiguration.m_layerFilter->removeLayer(oldLayer);
-    }
-
-    if (l) {
-        m_opaqueStagesConfiguration.m_reflectiveTechniqueFilter->setObjectName(QString(QLatin1String("Opaque Stages Root (%1)")).arg(l->objectName()));
-        m_transparentStagesConfiguration.m_reflectiveTechniqueFilter->setObjectName(QString(QLatin1String("Transparent Stages Root (%1)")).arg(l->objectName()));
-        m_opaqueStagesConfiguration.m_layerFilter->addLayer(l);
-        m_transparentStagesConfiguration.m_layerFilter->addLayer(l);
-
-        qDebug() << Q_FUNC_INFO << l;
-
-    }
-
-    m_opaqueStagesConfiguration.m_cameraSelector->setCamera(camera);
-    m_transparentStagesConfiguration.m_cameraSelector->setCamera(camera);
-
-    m_opaqueStagesConfiguration.m_viewport->setNormalizedRect(viewport);
-    m_transparentStagesConfiguration.m_viewport->setNormalizedRect(viewport);
-}
-
-bool ReflectionStages::zFilling()
-{
-    return m_zFillStage != nullptr;
-}
-
-bool ReflectionStages::backToFrontSorting()
-{
-    return m_transparentStage->backToFrontSorting();
-}
-
-Qt3DRender::QLayer *ReflectionStages::layer() const
-{
-    if (m_opaqueStagesConfiguration.m_layerFilter->layers().size() > 0)
-        return m_opaqueStagesConfiguration.m_layerFilter->layers().first();
-    return nullptr;
-}
-
-void ReflectionStages::unParent()
-{
-    m_opaqueStagesConfiguration.m_reflectiveTechniqueFilter->setParent(Q_NODE_NULLPTR);
-    m_transparentStagesConfiguration.m_reflectiveTechniqueFilter->setParent(Q_NODE_NULLPTR);
+    // Remove Clear Node from hierarchy
     m_clearDepth->setParent(Q_NODE_NULLPTR);
-}
 
-void ReflectionStages::setParent(Qt3DCore::QNode *stageRoot)
-{
-    m_opaqueStagesConfiguration.m_reflectiveTechniqueFilter->setParent(stageRoot);
-    m_transparentStagesConfiguration.m_reflectiveTechniqueFilter->setParent(stageRoot);
-    m_clearDepth->setParent(stageRoot);
-}
+    // Rebuild FG hierarchy based on set features
+    SceneStages::reconfigure(editedFeatures);
 
-Qt3DRender::QFrameGraphNode *ReflectionStages::opaqueStagesRoot() const
-{
-    return m_opaqueStagesConfiguration.m_reflectiveTechniqueFilter;
-}
-
-Qt3DRender::QFrameGraphNode *ReflectionStages::transparentStagesRoot() const
-{
-    return m_transparentStagesConfiguration.m_reflectiveTechniqueFilter;
-}
-
-OpaqueRenderStage *ReflectionStages::opaqueStage() const
-{
-    return m_opaqueStage;
-}
-
-ZFillRenderStage *ReflectionStages::zFillStage() const
-{
-    return m_zFillStage;
-}
-
-TransparentRenderStage *ReflectionStages::transparentStage() const
-{
-    return m_transparentStage;
+    // Insert Clear Node again so as to clear Depth after having drawn reflections
+    m_clearDepth->setParent(this);
 }
 
 void ReflectionStages::setReflectivePlaneEquation(const QVector4D &planeEquation)

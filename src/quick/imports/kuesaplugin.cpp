@@ -31,6 +31,8 @@
 #include "asset.h"
 #include "view3dsceneitem.h"
 #include "forwardrendererextension.h"
+#include "viewextension.h"
+#include "reflectionplaneextension.h"
 
 #include <Kuesa/SceneEntity>
 #include <Kuesa/TransformTracker>
@@ -86,6 +88,8 @@
 #include <KuesaUtils/view3dscene.h>
 #include <Kuesa/Particles>
 #include <Kuesa/KuesaNode>
+#include <Kuesa/View>
+#include <Kuesa/ReflectionPlane>
 
 #include <QtQml/qqml.h>
 
@@ -106,6 +110,9 @@ void KuesaPlugin::registerTypes(const char *uri)
 {
     // Make latest Kuesa import available (even if no new types are registered)
     qmlRegisterModule(uri, 1, 3);
+    qmlRegisterModule("Kuesa.Effects", 1, 3);
+    qmlRegisterModule("Kuesa.Iro", 1, 3);
+    qmlRegisterModule("Kuesa.Utils", 1, 3);
 
     // Collections
     qmlRegisterUncreatableType<Kuesa::AbstractAssetCollection>(uri, 1, 0, "AbstractAssetCollection", QStringLiteral("You are not supposed to create an EntityCollection"));
@@ -123,6 +130,8 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::TransformCollection>(uri, 1, 3, "TransformCollection", QStringLiteral("You are not supposed to create an TransformCollection"));
 
     // FrameGraphs
+    Qt3DCore::Quick::registerExtendedType<Kuesa::ReflectionPlane, Kuesa::ReflectionPlaneExtension>("ReflectionPlane", "Kuesa/ReflectionPlane", uri, 1, 3, "ReflectionPlane");
+    Qt3DCore::Quick::registerExtendedType<Kuesa::View, Kuesa::ViewExtension>("View", "Kuesa/View", uri, 1, 3, "View");
     Qt3DCore::Quick::registerExtendedType<Kuesa::ForwardRenderer, Kuesa::ForwardRendererExtension>("ForwardRenderer", "Kuesa/ForwardRenderer", uri, 1, 0, "ForwardRenderer");
     qmlRegisterRevision<Kuesa::ForwardRenderer, 1>(uri, 1, 1);
     qmlRegisterRevision<Kuesa::ForwardRenderer, 2>(uri, 1, 2);

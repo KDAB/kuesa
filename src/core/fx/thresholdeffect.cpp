@@ -157,6 +157,7 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
     , m_layer(nullptr)
     , m_thresholdParameter(new Qt3DRender::QParameter(QStringLiteral("threshold"), 1.0f))
     , m_textureParam(new Qt3DRender::QParameter(QStringLiteral("textureSampler"), nullptr))
+    , m_fsQuad(nullptr)
 {
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode);
     m_rootFrameGraphNode->setObjectName(QStringLiteral("Threshold Effect"));
@@ -210,14 +211,14 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
     effect->addParameter(m_textureParam);
     effect->addParameter(m_thresholdParameter);
 
-    auto thresholdQuad = new FullScreenQuad(thresholdMaterial, m_rootFrameGraphNode.data());
-    m_layer = thresholdQuad->layer();
+    m_fsQuad = new FullScreenQuad(thresholdMaterial, m_rootFrameGraphNode.data());
+    m_layer = m_fsQuad->layer();
 
     //
     //  FrameGraph Construction
     //
     auto thresholdLayerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
-    thresholdLayerFilter->addLayer(thresholdQuad->layer());
+    thresholdLayerFilter->addLayer(m_fsQuad->layer());
 
     //create RenderPassFilter parented to layerFilter
     FXUtils::createRenderPassFilter(passFilterName, passFilterValue, thresholdLayerFilter);
@@ -270,6 +271,16 @@ QVector<Qt3DRender::QLayer *> ThresholdEffect::layers() const
 void ThresholdEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
 {
     m_textureParam->setValue(QVariant::fromValue(texture));
+}
+
+/*!
+ * Sets the normalized viewport rect to \a vp.
+ *
+ * \sa AbstractPostProcessingEffect::setViewportRect
+ */
+void ThresholdEffect::setViewportRect(const QRectF &vp)
+{
+    m_fsQuad->setViewportRect(vp);
 }
 
 QT_END_NAMESPACE

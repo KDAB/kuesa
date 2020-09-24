@@ -47,6 +47,7 @@ class QFrameGraphNode;
 namespace Kuesa {
 
 class GaussianBlurMaterial;
+class FullScreenQuad;
 
 class KUESASHARED_EXPORT GaussianBlurEffect : public AbstractPostProcessingEffect
 {
@@ -60,8 +61,9 @@ public:
     QVector<Qt3DRender::QLayer *> layers() const override;
 
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
-    void setSceneSize(const QSize &size) override;
+    void setWindowSize(const QSize &size) override;
     int blurPassCount() const;
+    void setViewportRect(const QRectF &vp) override;
 
 public Q_SLOTS:
     void setBlurPassCount(int blurPassCount);
@@ -71,6 +73,8 @@ Q_SIGNALS:
 
 private:
     void createBlurPasses();
+    void updateTextureSizeParam(const QSize &s,
+                                const QRectF &normalizedVP);
     QString passName() const;
 
     FrameGraphNodePtr m_rootFrameGraphNode;
@@ -92,6 +96,7 @@ private:
     Qt3DRender::QParameter *m_blurTextureParam2;
     Qt3DRender::QParameter *m_widthParameter;
     Qt3DRender::QParameter *m_heightParameter;
+    FullScreenQuad *m_fsQuad;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

@@ -189,6 +189,7 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
 #endif
     , m_maskParameter(new Qt3DRender::QParameter(QStringLiteral("maskTexture"), nullptr))
     , m_inputTextureParameter(new Qt3DRender::QParameter(QStringLiteral("inputTexture"), nullptr))
+    , m_fsQuad(nullptr)
 {
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode());
     m_rootFrameGraphNode->setObjectName(QStringLiteral("Opacity Mask Effect"));
@@ -255,8 +256,8 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     effect->addParameter(m_maskParameter);
     effect->addParameter(m_inputTextureParameter);
 
-    auto fullScreenQuad = new FullScreenQuad(opacityMaskMaterial, m_rootFrameGraphNode.data());
-    m_layer = fullScreenQuad->layer();
+    m_fsQuad = new FullScreenQuad(opacityMaskMaterial, m_rootFrameGraphNode.data());
+    m_layer = m_fsQuad->layer();
 
     // Set up FrameGraph
     auto layerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
@@ -298,6 +299,16 @@ QVector<Qt3DRender::QLayer *> OpacityMask::layers() const
 void OpacityMask::setInputTexture(Qt3DRender::QAbstractTexture *texture)
 {
     m_inputTextureParameter->setValue(QVariant::fromValue(texture));
+}
+
+/*!
+ * Sets the normalized viewport rect to \a vp.
+ *
+ * \sa AbstractPostProcessingEffect::setViewportRect
+ */
+void OpacityMask::setViewportRect(const QRectF &vp)
+{
+    m_fsQuad->setViewportRect(vp);
 }
 
 void OpacityMask::setMask(Qt3DRender::QAbstractTexture *mask)

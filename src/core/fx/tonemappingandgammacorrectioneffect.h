@@ -43,6 +43,8 @@ class QShaderProgramBuilder;
 
 namespace Kuesa {
 
+class FullScreenQuad;
+
 class KUESASHARED_EXPORT ToneMappingAndGammaCorrectionEffect : public AbstractPostProcessingEffect
 {
     Q_OBJECT
@@ -70,6 +72,7 @@ public:
     FrameGraphNodePtr frameGraphSubTree() const override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
     QVector<Qt3DRender::QLayer *> layers() const override;
+    void setViewportRect(const QRectF &vp) override;
 
 public Q_SLOTS:
     void setExposure(float exposure);
@@ -94,6 +97,7 @@ private:
     Qt3DRender::QParameter *m_gammaParameter;
     Qt3DRender::QParameter *m_inputTextureParameter;
     ToneMapping m_toneMappingAlgorithm;
+    FullScreenQuad *m_fsQuad;
 };
 
 } // namespace Kuesa

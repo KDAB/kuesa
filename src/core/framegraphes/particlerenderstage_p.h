@@ -40,17 +40,18 @@
 // We mean it.
 //
 
+#include <Kuesa/private/kuesa_global_p.h>
 #include "abstractrenderstage_p.h"
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-class ParticleRenderStage : public AbstractRenderStage
+class KUESA_PRIVATE_EXPORT ParticleRenderStage : public AbstractRenderStage
 {
     Q_OBJECT
 public:
-    explicit ParticleRenderStage(Qt3DCore::QNode *parent = nullptr);
+    explicit ParticleRenderStage(Qt3DRender::QFrameGraphNode *parent = nullptr);
 };
 
 } // namespace Kuesa

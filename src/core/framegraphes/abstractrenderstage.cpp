@@ -33,7 +33,7 @@ QT_USE_NAMESPACE
 using namespace Kuesa;
 using namespace Qt3DRender;
 
-AbstractRenderStage::AbstractRenderStage(Qt3DCore::QNode *parent)
+AbstractRenderStage::AbstractRenderStage(Qt3DRender::QFrameGraphNode *parent)
     : QFrameGraphNode(parent)
 {
 }

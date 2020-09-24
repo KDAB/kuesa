@@ -37,7 +37,9 @@ SOURCES += \
     forwardrendererextension.cpp \
     kuesaplugin.cpp \
     asset.cpp \
-    view3dsceneitem.cpp
+    reflectionplaneextension.cpp \
+    view3dsceneitem.cpp \
+    viewextension.cpp
 
 HEADERS += \
     animationplayeritem.h \
@@ -45,7 +47,9 @@ HEADERS += \
     forwardrendererextension.h \
     kuesaplugin.h \
     asset.h \
-    view3dsceneitem.h
+    reflectionplaneextension.h \
+    view3dsceneitem.h \
+    viewextension.h
 
 QML_FILES += \
     QuickSceneMaterial.qml \
