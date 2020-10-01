@@ -152,7 +152,6 @@ void Asset::setNode(Qt3DCore::QNode *node)
                 const auto nbProperties = this->metaObject()->propertyCount();
                 for (int propertyIdx = propertyOffset; propertyIdx < nbProperties; ++propertyIdx) {
                     const QMetaProperty property = metaObject()->property(propertyIdx);
-                    qDebug() << property.name();
 
                     // Check if current node has a property with this name
                     const auto nodePropertyId = m_node->metaObject()->indexOfProperty(property.name());
