@@ -141,6 +141,54 @@ void TransformTracker::setViewportRect(qreal x, qreal y, qreal width, qreal heig
     setViewportRect({ x, y, width, height });
 }
 
+void TransformTracker::setMatrix(const QMatrix4x4 &matrix)
+{
+    if (m_node)
+        m_node->setMatrix(matrix);
+}
+
+void TransformTracker::setRotation(const QQuaternion &rotation)
+{
+    if (m_node)
+        m_node->setRotation(rotation);
+}
+
+void TransformTracker::setRotationX(float rotationX)
+{
+    if (m_node)
+        m_node->setRotationX(rotationX);
+}
+
+void TransformTracker::setRotationY(float rotationY)
+{
+    if (m_node)
+        m_node->setRotationY(rotationY);
+}
+
+void TransformTracker::setRotationZ(float rotationZ)
+{
+    if (m_node)
+        m_node->setRotationZ(rotationZ);
+}
+
+void TransformTracker::setScale(float scale)
+{
+    if (m_node)
+        m_node->setScale(scale);
+}
+
+void TransformTracker::setScale3D(const QVector3D &scale3D)
+{
+    if (m_node)
+        m_node->setScale3D(scale3D);
+}
+
+void TransformTracker::setTranslation(const QVector3D &translation)
+{
+    if (m_node)
+        m_node->setTranslation(translation);
+}
+
 QString TransformTracker::name() const
 {
     return m_name;

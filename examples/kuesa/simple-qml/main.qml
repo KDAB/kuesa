@@ -63,7 +63,8 @@ Item {
         ]
 
         transformTrackers: [
-            Kuesa.TransformTracker { id: motorTracker; name: "TriggerMotorInfo" }
+            Kuesa.TransformTracker { id: motorTracker; name: "TriggerMotorInfo" },
+            Kuesa.TransformTracker { id: motorEntityTracker; name: "MotorBlock" }
         ]
 
         Kuesa.QuickSceneMaterial {
@@ -81,6 +82,12 @@ Item {
                     color: "white"
                 }
             }
+        }
+
+        Kuesa.Asset {
+            id: carAsset
+            name: "CAR"
+            collection: scene3D.scene.transforms
         }
     }
 
@@ -123,6 +130,11 @@ Item {
             }
             width: mainRoot.width * .2
         }
+
+        Button {
+            text: "Bump!"
+            onClicked: carAnimation.start()
+        }
     }
 
     Text {
@@ -147,6 +159,48 @@ Item {
             duration: 700
             easing.type: Easing.InOutCubic
             loops: Animation.Infinite
+        }
+    }
+
+    SequentialAnimation {
+        running: motorTracker.translation.y > 0
+        loops: NumberAnimation.Infinite
+
+        NumberAnimation {
+            target: motorEntityTracker
+            property: "scale"
+            from: 1
+            to: 1.02
+            duration: 250
+        }
+        NumberAnimation {
+            target: motorEntityTracker
+            property: "scale"
+            from: 1.02
+            to: 1
+            duration: 250
+        }
+
+        onStopped: motorEntityTracker.scale = 1
+    }
+
+    SequentialAnimation {
+        id: carAnimation
+
+        NumberAnimation {
+            target: carAsset.node
+            property: "scale"
+            duration: 200
+            easing.type: Easing.InOutQuad
+            to: 1.2
+        }
+
+        NumberAnimation {
+            target: carAsset.node
+            property: "scale"
+            duration: 100
+            easing.type: Easing.OutQuad
+            to: 1
         }
     }
 

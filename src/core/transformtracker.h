@@ -48,15 +48,15 @@ class KUESASHARED_EXPORT TransformTracker : public KuesaNode
     Q_PROPERTY(Qt3DCore::QEntity *camera READ camera WRITE setCamera NOTIFY cameraChanged)
     Q_PROPERTY(QSize screenSize READ screenSize WRITE setScreenSize NOTIFY screenSizeChanged)
     Q_PROPERTY(QRectF viewportRect READ viewportRect WRITE setViewportRect NOTIFY viewportRectChanged)
-    Q_PROPERTY(QMatrix4x4 matrix READ matrix NOTIFY matrixChanged)
+    Q_PROPERTY(QMatrix4x4 matrix READ matrix WRITE setMatrix NOTIFY matrixChanged)
     Q_PROPERTY(QMatrix4x4 worldMatrix READ worldMatrix NOTIFY worldMatrixChanged)
-    Q_PROPERTY(QQuaternion rotation READ rotation NOTIFY rotationChanged)
-    Q_PROPERTY(float rotationX READ rotationX NOTIFY rotationXChanged)
-    Q_PROPERTY(float rotationY READ rotationY NOTIFY rotationYChanged)
-    Q_PROPERTY(float rotationZ READ rotationZ NOTIFY rotationZChanged)
-    Q_PROPERTY(float scale READ scale NOTIFY scaleChanged)
-    Q_PROPERTY(QVector3D scale3D READ scale3D NOTIFY scale3DChanged)
-    Q_PROPERTY(QVector3D translation READ translation NOTIFY translationChanged)
+    Q_PROPERTY(QQuaternion rotation READ rotation WRITE setRotation NOTIFY rotationChanged)
+    Q_PROPERTY(float rotationX READ rotationX WRITE setRotationX NOTIFY rotationXChanged)
+    Q_PROPERTY(float rotationY READ rotationY WRITE setRotationY NOTIFY rotationYChanged)
+    Q_PROPERTY(float rotationZ READ rotationZ WRITE setRotationZ NOTIFY rotationZChanged)
+    Q_PROPERTY(float scale READ scale WRITE setScale NOTIFY scaleChanged)
+    Q_PROPERTY(QVector3D scale3D READ scale3D WRITE setScale3D NOTIFY scale3DChanged)
+    Q_PROPERTY(QVector3D translation READ translation WRITE setTranslation NOTIFY translationChanged)
     Q_PROPERTY(QPointF screenPosition READ screenPosition NOTIFY screenPositionChanged)
 public:
     explicit TransformTracker(Qt3DCore::QNode *parent = nullptr);
@@ -83,6 +83,14 @@ public Q_SLOTS:
     void setScreenSize(const QSize &screenSize);
     void setViewportRect(QRectF viewportRect);
     void setViewportRect(qreal x, qreal y, qreal width, qreal height);
+    void setMatrix(const QMatrix4x4 &matrix);
+    void setRotation(const QQuaternion &rotation);
+    void setRotationX(float rotationX);
+    void setRotationY(float rotationY);
+    void setRotationZ(float rotationZ);
+    void setScale(float scale);
+    void setScale3D(const QVector3D &scale3D);
+    void setTranslation(const QVector3D &translation);
 
 Q_SIGNALS:
     void nameChanged(const QString &name);
