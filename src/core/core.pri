@@ -64,3 +64,8 @@ HEADERS += \
 qtConfig(draco) {
     HEADERS += $$PWD/draco_prefix_p.h
 }
+
+qtConfig(ktx) {
+    HEADERS += $$PWD/ktxtexture.h
+    SOURCES += $$PWD/ktxtexture.cpp
+}

@@ -42,6 +42,11 @@ qtConfig(draco) {
     include(../3rdparty/draco/draco_dependency.pri)
 }
 
+qtConfig(ktx) {
+    QMAKE_USE_PRIVATE += ktx
+    include(../3rdparty/ktx/ktx.pri)
+}
+
 include(core.pri)
 include(materials/materials.pri)
 include(iro-materials/iro-materials.pri)
@@ -59,5 +64,6 @@ RESOURCES += \
 OTHER_FILES += \
     configure.pri \
     configure.json
+
 
 load(qt_module)
