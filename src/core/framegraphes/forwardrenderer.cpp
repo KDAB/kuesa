@@ -1141,7 +1141,10 @@ void ForwardRenderer::clearLayers()
  */
 void ForwardRenderer::updateTextureSizes()
 {
-    const QSize targetSize = currentSurfaceSize();
+    QSize targetSize = currentSurfaceSize();
+    if (!targetSize.isValid())
+        targetSize = QSize(512, 512);
+
     QVector<Qt3DRender::QRenderTargetOutput *> outputs;
     for (auto target : m_renderTargets) {
         if (target != nullptr)
@@ -1554,9 +1557,6 @@ QSize ForwardRenderer::currentSurfaceSize() const
         if (auto window = qobject_cast<QWindow *>(currentSurface))
             size = window->size() * window->screen()->devicePixelRatio();
     }
-
-    if (!size.isValid())
-        qCWarning(Kuesa::kuesa) << Q_FUNC_INFO << "Unexpected surface size" << size;
 
     return size;
 }
