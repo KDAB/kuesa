@@ -47,7 +47,7 @@ private Q_SLOTS:
         // GIVEN
         Kuesa::ToneMappingAndGammaCorrectionEffect effect;
 
-        QCOMPARE(effect.exposure(), 1.0f);
+        QCOMPARE(effect.exposure(), 0.0f);
         QCOMPARE(effect.gamma(), 2.2f);
         QCOMPARE(effect.toneMappingAlgorithm(), Kuesa::ToneMappingAndGammaCorrectionEffect::None);
     }
@@ -79,16 +79,16 @@ private Q_SLOTS:
             QSignalSpy signalSpy(&effect, &Kuesa::ToneMappingAndGammaCorrectionEffect::exposureChanged);
 
             // WHEN
-            effect.setExposure(0.0f);
+            effect.setExposure(1.0f);
 
             // THEN
-            QCOMPARE(effect.exposure(), 0.0f);
+            QCOMPARE(effect.exposure(), 1.0f);
             QCOMPARE(signalSpy.count(), 1);
 
             signalSpy.clear();
 
             // WHEN
-            effect.setExposure(0.0f);
+            effect.setExposure(1.0f);
 
             // THEN
             QCOMPARE(signalSpy.count(), 0);

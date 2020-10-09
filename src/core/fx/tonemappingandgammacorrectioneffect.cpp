@@ -178,7 +178,7 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
     , m_es3ShaderBuilder(nullptr)
     , m_es2ShaderBuilder(nullptr)
     // Purposely use finalExposure (because Qt3D also defines a per camera exposure uniform)
-    , m_exposureParameter(new Qt3DRender::QParameter(QStringLiteral("finalExposure"), 1.0f))
+    , m_exposureParameter(new Qt3DRender::QParameter(QStringLiteral("finalExposure"), 0.0f))
     , m_gammaParameter(new Qt3DRender::QParameter(QStringLiteral("gamma"), 2.2f))
     , m_inputTextureParameter(new Qt3DRender::QParameter(QStringLiteral("inputTexture"), nullptr))
     , m_toneMappingAlgorithm(ToneMapping::None)
