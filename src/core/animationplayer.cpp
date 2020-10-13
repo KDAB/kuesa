@@ -261,7 +261,8 @@ AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
                          disconnect(m_loadingDoneConnection);
                          if (m_sceneEntity)
                              m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone, this, &AnimationPlayer::matchClipAndTargets);
-                         matchClipAndTargets();
+                         if (!m_sceneEntity || m_sceneEntity->animationClips()->size() != 0)
+                             matchClipAndTargets(); // cleanup or setup
                      });
 }
 
@@ -374,8 +375,10 @@ bool AnimationPlayer::isRunning() const
 
 void AnimationPlayer::setRunning(bool running)
 {
-    m_animator->setRunning(running);
-    m_running = running;
+    if (m_animator->clip()) {
+       m_animator->setRunning(running);
+       m_running = running;
+    }
 }
 
 int AnimationPlayer::loopCount() const
@@ -418,7 +421,9 @@ void AnimationPlayer::setNormalizedTime(float timeFraction)
  */
 void AnimationPlayer::start()
 {
-    m_animator->start();
+    if (m_animator->clip())
+        m_animator->start();
+    m_running = true;
 }
 
 /*!
@@ -426,7 +431,9 @@ void AnimationPlayer::start()
  */
 void AnimationPlayer::stop()
 {
-    m_animator->stop();
+    if (m_animator->clip())
+        m_animator->stop();
+    m_running = false;
 }
 
 /*!
@@ -436,7 +443,9 @@ void AnimationPlayer::stop()
 void AnimationPlayer::reset()
 {
     m_animator->setNormalizedTime(0.f);
-    m_animator->stop();
+    if (m_animator->clip())
+        m_animator->stop();
+    m_running = false;
 }
 
 /*!
@@ -445,13 +454,14 @@ void AnimationPlayer::reset()
 void AnimationPlayer::restart()
 {
     m_animator->setNormalizedTime(0.f);
-    m_animator->start();
+    if (m_animator->clip())
+        m_animator->start();
+    m_running = true;
 }
 
 void AnimationPlayer::matchClipAndTargets()
 {
     if (m_sceneEntity == nullptr) {
-        setStatus(Error);
         if (m_animator->clip()) {
             m_animator->setClip(nullptr);
             emit durationChanged(0.f);
