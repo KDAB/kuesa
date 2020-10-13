@@ -375,10 +375,9 @@ bool AnimationPlayer::isRunning() const
 
 void AnimationPlayer::setRunning(bool running)
 {
-    if (m_animator->clip()) {
+    if (m_animator->clip())
        m_animator->setRunning(running);
-       m_running = running;
-    }
+    m_running = running;
 }
 
 int AnimationPlayer::loopCount() const
