@@ -38,6 +38,7 @@ Scene3D {
     id: root
     property alias source: scene.source
     property var camera: ""
+    property color backgroundColor: "white"
     readonly property real aspectRatio: width / Math.max(1, height)
     readonly property var scene: scene
     readonly property var frameGraph: scene.frameGraph
@@ -94,6 +95,12 @@ Scene3D {
             target: root.activeCamera
             property: "aspectRatio"
             value: root.aspectRatio
+        }
+
+        Binding {
+            target: scene.frameGraph
+            property: "clearColor"
+            value: root.backgroundColor
         }
 
         onLoadingDone: {
