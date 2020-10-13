@@ -255,7 +255,7 @@ AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
     connect(m_animator, &QClipAnimator::runningChanged, this, &AnimationPlayer::runningChanged);
     connect(m_animator, &QClipAnimator::loopCountChanged, this, &AnimationPlayer::loopCountChanged);
     connect(m_animator, &QClipAnimator::clockChanged, this, &AnimationPlayer::clockChanged);
-    connect(m_animator, &QClipAnimator::normalizedTimeChanged, this, &AnimationPlayer::normalizedTimeChanged);
+    connect(m_animator, &QClipAnimator::normalizedTimeChanged, this, &AnimationPlayer::updateNormalizedTime);
     QObject::connect(this, &KuesaNode::sceneEntityChanged,
                      this, [this] {
                          disconnect(m_loadingDoneConnection);
@@ -412,6 +412,7 @@ float AnimationPlayer::duration() const
 
 void AnimationPlayer::setNormalizedTime(float timeFraction)
 {
+    m_runToTimeFraction = -1;
     m_animator->setNormalizedTime(timeFraction);
 }
 
@@ -420,6 +421,7 @@ void AnimationPlayer::setNormalizedTime(float timeFraction)
  */
 void AnimationPlayer::start()
 {
+    m_runToTimeFraction = -1;
     if (m_animator->clip())
         m_animator->start();
     m_running = true;
@@ -430,6 +432,7 @@ void AnimationPlayer::start()
  */
 void AnimationPlayer::stop()
 {
+    m_runToTimeFraction = -1;
     if (m_animator->clip())
         m_animator->stop();
     m_running = false;
@@ -441,6 +444,7 @@ void AnimationPlayer::stop()
  */
 void AnimationPlayer::reset()
 {
+    m_runToTimeFraction = -1;
     m_animator->setNormalizedTime(0.f);
     if (m_animator->clip())
         m_animator->stop();
@@ -452,11 +456,25 @@ void AnimationPlayer::reset()
  */
 void AnimationPlayer::restart()
 {
+    m_runToTimeFraction = -1;
     m_animator->setNormalizedTime(0.f);
     if (m_animator->clip())
         m_animator->start();
     m_running = true;
 }
+
+/*!
+ * \brief Run the animation from fromTimeFraction to toTimeFraction. Both times are normalized time.
+ */
+void AnimationPlayer::run(float fromTimeFraction, float toTimeFraction)
+{
+    m_runToTimeFraction = toTimeFraction;
+    m_animator->setNormalizedTime(fromTimeFraction);
+    if (m_animator->clip())
+        m_animator->start();
+    m_running = true;
+}
+
 
 void AnimationPlayer::matchClipAndTargets()
 {
@@ -563,4 +581,15 @@ void AnimationPlayer::matchClipAndTargets()
 
     m_animator->setRunning(m_running);
     setStatus(Ready);
+}
+
+
+void AnimationPlayer::updateNormalizedTime(float index)
+{
+    if (m_running && m_runToTimeFraction > 0. && index >= m_runToTimeFraction) {
+        if (m_animator->clip())
+            m_animator->stop();
+        m_runToTimeFraction = -1;
+    }
+    emit normalizedTimeChanged(index);
 }

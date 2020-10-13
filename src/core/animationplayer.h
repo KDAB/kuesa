@@ -92,6 +92,7 @@ public Q_SLOTS:
     void stop();
     void reset();
     void restart();
+    void run(float fromTimeFraction, float toTimeFraction);
 
 Q_SIGNALS:
     void statusChanged(Kuesa::AnimationPlayer::Status status);
@@ -107,6 +108,7 @@ private:
     void matchClipAndTargets();
     void setStatus(Status status);
     void updateSceneFromParent(Qt3DCore::QNode *parent);
+    void updateNormalizedTime(float index);
 
     Status m_status;
     QString m_clip;
@@ -114,6 +116,7 @@ private:
     QVector<Qt3DCore::QNode *> m_targets;
     Qt3DAnimation::QClipAnimator *m_animator;
     bool m_running;
+    float m_runToTimeFraction = -1;
     QMetaObject::Connection m_loadingDoneConnection;
 };
 
