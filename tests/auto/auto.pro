@@ -40,7 +40,8 @@ SUBDIRS = \
     gltf2importer \
     gltf2options \
     tonemappingandgammacorrectioneffect \
-    kuesanode
+    kuesanode \
+    reflectionplane
 
 #installed_cmake.depends = cmake
 
