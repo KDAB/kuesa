@@ -199,6 +199,12 @@ void View3DScene::start()
         a->start();
 }
 
+void View3DScene::restart()
+{
+    for (auto a : m_animations)
+        a->restart();
+}
+
 void View3DScene::stop()
 {
     for (auto a : m_animations)

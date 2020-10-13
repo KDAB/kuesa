@@ -78,6 +78,7 @@ Scene3D {
     }
 
     function start() { scene.start() }
+    function restart() { scene.restart() }
     function stop() { scene.stop() }
     function gotoNormalizedTime(t) { scene.gotoNormalizedTime(t) }
     function gotoStart(run) { scene.gotoStart() }

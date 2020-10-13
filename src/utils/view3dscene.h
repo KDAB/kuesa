@@ -83,6 +83,7 @@ public Q_SLOTS:
     void adoptNode(QObject *object);
 
     void start();
+    void restart();
     void stop();
     void gotoNormalizedTime(float time);
     void gotoStart();
