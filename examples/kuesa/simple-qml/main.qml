@@ -204,6 +204,20 @@ Item {
         }
     }
 
+    // Loading animation
+    Rectangle {
+        anchors.fill: parent
+        visible: !scene3D.ready
+
+        BusyIndicator {
+            anchors.centerIn: parent
+
+            height: parent.height * .5
+            width: height
+            running: parent.visible
+        }
+    }
+
     // Logos
     Image {
         id: kdabLogoBottomRight

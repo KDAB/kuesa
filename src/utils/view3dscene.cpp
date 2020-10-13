@@ -51,6 +51,8 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     , m_importer(new GLTF2Importer(this))
     , m_frameGraph(nullptr)
     , m_clock(nullptr)
+    , m_ready(false)
+    , m_frameCount(0)
 {
     m_frameGraph = Qt3DCore::QAbstractNodeFactory::createNode<Kuesa::ForwardRenderer>("ForwardRenderer");
     m_importer->setSceneEntity(this);
@@ -59,6 +61,11 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     renderSettings->setActiveFrameGraph(m_frameGraph);
     addComponent(renderSettings);
     addComponent(new Qt3DInput::QInputSettings);
+
+    m_frameAction = new Qt3DLogic::QFrameAction;
+    addComponent(m_frameAction);
+    connect(m_frameAction, &Qt3DLogic::QFrameAction::triggered, this, &View3DScene::updateFrame);
+    m_frameAction->setEnabled(false);
 
     connect(m_importer, &GLTF2Importer::sourceChanged, this, &View3DScene::sourceChanged);
     connect(m_frameGraph, &ForwardRenderer::showDebugOverlayChanged, this, &View3DScene::showDebugOverlayChanged);
@@ -76,6 +83,11 @@ QUrl View3DScene::source() const
 void View3DScene::setSource(const QUrl &source)
 {
     m_importer->setSource(source);
+    m_ready = false;
+    m_frameCount = 0;
+    emit readyChanged(false);
+    emit loadedChanged(false);
+    m_frameAction->setEnabled(true);
 }
 
 QString View3DScene::cameraName() const
@@ -129,6 +141,8 @@ void View3DScene::onSceneLoaded()
         if (camera)
             m_frameGraph->setCamera(camera);
     }
+
+    emit loadedChanged(true);
 }
 
 void View3DScene::updateTrackers()
@@ -136,6 +150,41 @@ void View3DScene::updateTrackers()
     for (auto t : m_trackers) {
         t->setScreenSize(m_screenSize);
         t->setCamera(m_frameGraph->camera());
+    }
+}
+
+void View3DScene::updateFrame(float dt)
+{
+    Q_UNUSED(dt);
+
+    if (m_ready)
+        return;
+
+    if (m_frameCount == 0) {
+        bool allReady = true;
+        const auto& textures = textureImages()->names();
+        for (const auto &textureName: textures) {
+            auto texture = textureImage(textureName);
+            auto textureImage = qobject_cast<Qt3DRender::QTextureImage *>(texture);
+            if (!textureImage)
+                continue;
+
+            if (textureImage->status() != Qt3DRender::QTextureImage::Ready) {
+                allReady = false;
+                break;
+            }
+        }
+
+        if (allReady)
+            m_frameCount = 1;
+    } else {
+        m_frameCount++;
+    }
+
+    if (m_frameCount == 2) {
+        m_ready = true;
+        emit readyChanged(true);
+        m_frameAction->setEnabled(false);
     }
 }
 
@@ -162,6 +211,16 @@ void View3DScene::removeTransformTracker(TransformTracker *tracker)
 void View3DScene::clearTransformTrackers()
 {
     m_trackers.clear();
+}
+
+bool View3DScene::isReady() const
+{
+    return m_ready;
+}
+
+bool View3DScene::isLoaded() const
+{
+    return m_importer->status() == GLTF2Importer::Ready;
 }
 
 void View3DScene::addAnimationPlayer(AnimationPlayer *animation)

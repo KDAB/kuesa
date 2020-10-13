@@ -40,9 +40,11 @@ Scene3D {
     property var camera: ""
     property color backgroundColor: "white"
     readonly property real aspectRatio: width / Math.max(1, height)
-    readonly property var scene: scene
-    readonly property var frameGraph: scene.frameGraph
+    readonly property KuesaUtils.View3DScene scene: scene
+    readonly property Kuesa.ForwardRenderer frameGraph: scene.frameGraph
     readonly property Entity activeCamera: scene.frameGraph.camera
+    readonly property bool loaded: scene.importer.status === Kuesa.GLTF2Importer.Ready
+    readonly property bool ready: scene.ready
     property alias components: scene.components
     property alias showDebugOverlay: scene.showDebugOverlay
     property alias animations: scene.animations

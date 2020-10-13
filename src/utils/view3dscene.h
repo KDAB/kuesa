@@ -39,6 +39,7 @@
 #include <Kuesa/transformtracker.h>
 
 #include <Qt3DAnimation/qclock.h>
+#include <Qt3DLogic/qframeaction.h>
 
 #include <vector>
 
@@ -55,6 +56,8 @@ class KUESAUTILS_SHARED_EXPORT View3DScene : public Kuesa::SceneEntity
     Q_PROPERTY(QString cameraName READ cameraName WRITE setCameraName NOTIFY cameraNameChanged)
     Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay WRITE setShowDebugOverlay NOTIFY showDebugOverlayChanged)
     Q_PROPERTY(QSize screenSize READ screenSize WRITE setScreenSize NOTIFY screenSizeChanged)
+    Q_PROPERTY(bool ready READ isReady NOTIFY readyChanged)
+    Q_PROPERTY(bool loaded READ isLoaded NOTIFY loadedChanged)
 public:
     explicit View3DScene(Qt3DCore::QNode *parent = nullptr);
     ~View3DScene();
@@ -73,6 +76,9 @@ public:
     void addTransformTracker(Kuesa::TransformTracker *tracker);
     void removeTransformTracker(Kuesa::TransformTracker *tracker);
     void clearTransformTrackers();
+
+    bool isReady() const;
+    bool isLoaded() const;
 
 public Q_SLOTS:
     void setSource(const QUrl &source);
@@ -94,10 +100,13 @@ Q_SIGNALS:
     void cameraNameChanged(const QString &cameraName);
     void showDebugOverlayChanged(bool showDebugOverlay);
     void screenSizeChanged(const QSize &screenSize);
+    void readyChanged(bool ready);
+    void loadedChanged(bool loaded);
 
 private:
     void onSceneLoaded();
     void updateTrackers();
+    void updateFrame(float dt);
 
     Kuesa::GLTF2Importer *m_importer;
     Kuesa::ForwardRenderer *m_frameGraph;
@@ -106,6 +115,10 @@ private:
     std::vector<Kuesa::TransformTracker *> m_trackers;
     Qt3DAnimation::QClock *m_clock;
     QSize m_screenSize;
+
+    bool m_ready;
+    int m_frameCount;
+    Qt3DLogic::QFrameAction *m_frameAction;
 };
 
 } // namespace KuesaUtils
