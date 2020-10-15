@@ -163,10 +163,6 @@ private:
 
     std::vector<View *> m_views;
 
-    // Particles
-//    bool m_particlesEnabled;
-//    ParticleRenderStage *m_particleRenderStage;
-
     bool m_usesStencilMask;
 
     // GammaCorrection

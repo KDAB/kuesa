@@ -33,6 +33,7 @@
 #include <private/scenestages_p.h>
 #include <private/effectsstages_p.h>
 #include <private/reflectionstages_p.h>
+#include <private/particlerenderstage_p.h>
 #include <Qt3DCore/private/qnode_p.h>
 
 #include <Qt3DRender/QLayer>
@@ -115,6 +116,7 @@ View::View(Qt3DCore::QNode *parent)
     : Qt3DRender::QFrameGraphNode(parent)
     , m_sceneStages(SceneStagesPtr::create())
     , m_reflectionStages(ReflectionStagesPtr::create())
+    , m_particleRenderStage(ParticleRenderStagePtr::create())
     , m_fxStages(EffectsStagesPtr::create())
 {
     rebuildFGTree();
@@ -477,7 +479,7 @@ void View::setParticlesEnabled(bool enabled)
     const bool blocked = blockNotifications(true);
     emit particlesEnabledChanged(enabled);
     blockNotifications(blocked);
-    reconfigureStages();
+    rebuildFGTree();
 }
 
 void View::scheduleFGTreeRebuild()
@@ -573,15 +575,27 @@ void View::reconfigureStages()
 
 void View::reconfigureFrameGraph()
 {
+    reconfigureFrameGraphHelper(this);
+}
+
+void View::reconfigureFrameGraphHelper(Qt3DRender::QFrameGraphNode *stageRoot)
+{
     m_sceneStages->setParent(Q_NODE_NULLPTR);
     m_reflectionStages->setParent(Q_NODE_NULLPTR);
+    m_particleRenderStage->setParent(Q_NODE_NULLPTR);
 
     // We draw reflections prior to drawing the scene
     const bool needsReflections = m_reflectionPlanes.size() > 0;
     if (needsReflections)
-        m_reflectionStages->setParent(this);
+        m_reflectionStages->setParent(stageRoot);
 
-    m_sceneStages->setParent(this);
+    // Draw scene
+    m_sceneStages->setParent(stageRoot);
+
+    // Draw particles if enabled
+    const bool useParticles = bool(m_features & Particles);
+    if (useParticles)
+        m_particleRenderStage->setParent(stageRoot);
 
     // FXs
     // Those are handled by the ForwardRenderer

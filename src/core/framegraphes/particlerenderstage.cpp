@@ -31,6 +31,10 @@
 #include <Qt3DRender/QFilterKey>
 #include <Qt3DRender/QMemoryBarrier>
 #include <Qt3DRender/QDispatchCompute>
+#include <Qt3DRender/QRenderStateSet>
+#include <Qt3DRender/QNoDepthMask>
+#include <Qt3DRender/QDepthTest>
+#include <Qt3DRender/QMultiSampleAntiAliasing>
 
 QT_BEGIN_NAMESPACE
 
@@ -94,6 +98,17 @@ ParticleRenderStage::ParticleRenderStage(Qt3DRender::QFrameGraphNode *parent)
 
         auto *memoryBarrier = new Qt3DRender::QMemoryBarrier(passFilter);
         memoryBarrier->setWaitOperations(Qt3DRender::QMemoryBarrier::Operations(Qt3DRender::QMemoryBarrier::VertexAttributeArray | Qt3DRender::QMemoryBarrier::ShaderStorage));
+
+        auto states = new Qt3DRender::QRenderStateSet(memoryBarrier);
+
+        auto depthTest = new Qt3DRender::QDepthTest;
+        depthTest->setDepthFunction(Qt3DRender::QDepthTest::LessOrEqual);
+        auto msaa = new Qt3DRender::QMultiSampleAntiAliasing;
+        auto noDepthWrite = new Qt3DRender::QNoDepthMask;
+
+        states->addRenderState(depthTest);
+        states->addRenderState(msaa);
+        states->addRenderState(noDepthWrite);
     }
 }
 

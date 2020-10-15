@@ -731,9 +731,12 @@ void ForwardRenderer::reconfigureFrameGraph()
     for (Qt3DRender::QLayer *l : fxLayers)
         m_mainSceneLayerFilter->removeLayer(l);
 
-    // Scene Stages
-    m_reflectionStages->setParent(Q_NODE_NULLPTR);
+    // Unparent stages for the ForwardRenderer View
     m_sceneStages->setParent(Q_NODE_NULLPTR);
+    m_reflectionStages->setParent(Q_NODE_NULLPTR);
+    m_particleRenderStage->setParent(Q_NODE_NULLPTR);
+
+    // Scene Stages
     for (View *v : m_views)
         v->setParent(Q_NODE_NULLPTR);
 
@@ -750,8 +753,6 @@ void ForwardRenderer::reconfigureFrameGraph()
     m_fxStages->setParent(Q_NODE_NULLPTR);
     m_internalFXStages->setParent(Q_NODE_NULLPTR);
 
-    // Particles
-    //    m_particleRenderStage->setParent(m_particlesEnabled ? m_stagesRoot : Q_NODE_NULLPTR);
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     m_debugOverlay->setParent(Q_NODE_NULLPTR);
@@ -775,9 +776,7 @@ void ForwardRenderer::reconfigureFrameGraph()
     m_stagesRoot->setParent(m_mainSceneLayerFilter);
 
     if (m_views.empty()) {
-        if (m_reflectionPlanes.size() > 0)
-            m_reflectionStages->setParent(m_stagesRoot);
-        m_sceneStages->setParent(m_stagesRoot);
+        View::reconfigureFrameGraphHelper(m_stagesRoot);
     } else {
         for (View *v : m_views)
             v->setParent(m_stagesRoot);

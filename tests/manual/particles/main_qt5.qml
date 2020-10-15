@@ -83,7 +83,7 @@ Scene3D {
                     height: 4
                 },
                 Transform {
-                    translation: Qt.vector3d(0, -0.5, 0)
+                    translation: Qt.vector3d(0, -1.5, 0)
                 },
                 Kuesa.MetallicRoughnessMaterial {
                     effect: Kuesa.MetallicRoughnessEffect { }

@@ -48,10 +48,12 @@ class SceneStages;
 class ReflectionStages;
 class EffectsStages;
 class ReflectionPlane;
+class ParticleRenderStage;
 
 using SceneStagesPtr = QSharedPointer<SceneStages>;
 using ReflectionStagesPtr = QSharedPointer<ReflectionStages>;
 using EffectsStagesPtr = QSharedPointer<EffectsStages>;
+using ParticleRenderStagePtr = QSharedPointer<ParticleRenderStage>;
 
 class KUESASHARED_EXPORT View : public Qt3DRender::QFrameGraphNode
 {
@@ -62,7 +64,7 @@ class KUESASHARED_EXPORT View : public Qt3DRender::QFrameGraphNode
     Q_PROPERTY(bool skinning READ skinning WRITE setSkinning NOTIFY skinningChanged)
     Q_PROPERTY(bool backToFrontSorting READ backToFrontSorting WRITE setBackToFrontSorting NOTIFY backToFrontSortingChanged)
     Q_PROPERTY(bool zFilling READ zFilling WRITE setZFilling NOTIFY zFillingChanged)
-    Q_PROPERTY(bool particlesEnabled READ particlesEnabled WRITE setParticlesEnabled NOTIFY particlesEnabledChanged REVISION 3)
+    Q_PROPERTY(bool particlesEnabled READ particlesEnabled WRITE setParticlesEnabled NOTIFY particlesEnabledChanged)
 
 public:
     explicit View(Qt3DCore::QNode *parent = nullptr);
@@ -128,8 +130,11 @@ protected:
     Q_DECLARE_FLAGS(Features, Feature)
 
 private:
+    void reconfigureFrameGraphHelper(Qt3DRender::QFrameGraphNode *stageRoot);
+
     SceneStagesPtr m_sceneStages;
     ReflectionStagesPtr m_reflectionStages;
+    ParticleRenderStagePtr m_particleRenderStage;
     EffectsStagesPtr m_fxStages;
 
     Qt3DCore::QEntity *m_camera = nullptr;

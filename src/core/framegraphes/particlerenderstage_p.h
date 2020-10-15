@@ -54,6 +54,8 @@ public:
     explicit ParticleRenderStage(Qt3DRender::QFrameGraphNode *parent = nullptr);
 };
 
+using ParticleRenderStagePtr = QSharedPointer<ParticleRenderStage>;
+
 } // namespace Kuesa
 
 QT_END_NAMESPACE

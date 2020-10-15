@@ -37,6 +37,7 @@
 #include <Kuesa/private/scenestages_p.h>
 #include <Kuesa/private/effectsstages_p.h>
 #include <Kuesa/private/reflectionstages_p.h>
+#include <Kuesa/private/particlerenderstage_p.h>
 #include <Kuesa/private/framegraphutils_p.h>
 #include <Qt3DRender/QViewport>
 #include <Qt3DRender/QCameraSelector>
@@ -488,68 +489,148 @@ private Q_SLOTS:
          QCOMPARE(view.reflectionPlanes().size(), size_t(0));
     }
 
-    void checkGeneratedFrameGraphTree()
+    void checkGeneratedFrameGraphTreeNoFxNoReflectionNoLayer()
     {
+        // GIVEN
+        Kuesa::View v;
+        // WHEN -> No Effects, No Reflection, No Layer
+
+        // THEN
+        QCOMPARE(v.children().size(), 1);
+        Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
+        QVERIFY(child);
+
+        QVERIFY(v.m_fxStages->parent() == nullptr);
+        QCOMPARE(v.m_fxStages->effects().size(), size_t(0));
+        QCOMPARE(v.m_fxs.size(), size_t(0));
+    }
+
+    void checkGeneratedFrameGraphTreeNoFxNoReflectionLayer()
+    {
+        // GIVEN
+        Kuesa::View v;
+
+        // WHEN
         {
-            // GIVEN
-            Kuesa::View v;
-            // WHEN -> No Effects, No Reflection, No Layer
+            Qt3DRender::QLayer l;
+            v.addLayer(&l);
 
             // THEN
-            QCOMPARE(v.children().size(), 1);
+            QCOMPARE(v.children().size(), 2);
             Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
             QVERIFY(child);
-
-            QVERIFY(v.m_fxStages->parent() == nullptr);
-            QCOMPARE(v.m_fxStages->effects().size(), size_t(0));
-            QCOMPARE(v.m_fxs.size(), size_t(0));
+            QCOMPARE(v.children().last(), &l);
         }
+
+        // THEN
+        QCOMPARE(v.children().size(), 1);
+        Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
+        QVERIFY(child);
+
+        QVERIFY(v.m_fxStages->parent() == nullptr);
+        QCOMPARE(v.m_fxStages->effects().size(), size_t(0));
+        QCOMPARE(v.m_fxs.size(), size_t(0));
+    }
+
+
+    void checkGeneratedFrameGraphTreeNoFxReflectionNoLayer()
+    {
+        // GIVEN
+        Kuesa::View v;
+
         {
-            // GIVEN
-            Kuesa::View v;
-
-            {
-                // WHEN -> Reflections, No Layer, No Effects
-                Kuesa::ReflectionPlane plane;
-                v.addReflectionPlane(&plane);
-
-                // THEN
-                QCOMPARE(v.children().size(), 3);
-
-                // We parent plane if it has no parent
-                QCOMPARE(v.children()[0], &plane);
-                Kuesa::ReflectionStages *child1 = qobject_cast<Kuesa::ReflectionStages *>(v.children()[1]);
-                Kuesa::SceneStages *child2 = qobject_cast<Kuesa::SceneStages *>(v.children()[2]);
-                QVERIFY(child1);
-                QVERIFY(child2);
-            }
+            // WHEN -> Reflections, No Layer, No Effects
+            Kuesa::ReflectionPlane plane;
+            v.addReflectionPlane(&plane);
 
             // THEN
-            QCOMPARE(v.children().size(), 1);
-            QVERIFY(qobject_cast<Kuesa::SceneStages *>(v.children()[0]));
+            QCOMPARE(v.children().size(), 3);
+
+            // We parent plane if it has no parent
+            QCOMPARE(v.children()[0], &plane);
+            Kuesa::ReflectionStages *child1 = qobject_cast<Kuesa::ReflectionStages *>(v.children()[1]);
+            Kuesa::SceneStages *child2 = qobject_cast<Kuesa::SceneStages *>(v.children()[2]);
+            QVERIFY(child1);
+            QVERIFY(child2);
         }
-        {
-            // GIVEN
-            Kuesa::View v;
-            tst_FX fx;
 
-            // WHEN -> No Reflections Layer, No Layer, Effects
-            v.addPostProcessingEffect(&fx);
+        // THEN
+        QCOMPARE(v.children().size(), 1);
+        QVERIFY(qobject_cast<Kuesa::SceneStages *>(v.children()[0]));
+    }
 
-            // THEN
-            QCoreApplication::processEvents();
+    void checkGeneratedFrameGraphTreeFxRNoeflectionNoLayer()
+    {
+        // GIVEN
+        Kuesa::View v;
+        tst_FX fx;
 
-            QCOMPARE(v.children().size(), 1);
-            Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
-            QVERIFY(child);
+        // WHEN -> No Reflections Layer, No Layer, Effects
+        v.addPostProcessingEffect(&fx);
 
-            QCOMPARE(v.m_fxStages->effects().size(), size_t(1));
-            QCOMPARE(v.m_fxs.size(), size_t(1));
-            QCOMPARE(v.m_fxStages->children().size(), 1);
+        // THEN
+        QCoreApplication::processEvents();
 
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(v.m_fxStages->children().first());
-            QVERIFY(vp);
-        }
+        QCOMPARE(v.children().size(), 1);
+        Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
+        QVERIFY(child);
+
+        QCOMPARE(v.m_fxStages->effects().size(), size_t(1));
+        QCOMPARE(v.m_fxs.size(), size_t(1));
+        QCOMPARE(v.m_fxStages->children().size(), 1);
+
+        Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(v.m_fxStages->children().first());
+        QVERIFY(vp);
+    }
+
+    void checkGeneratedFrameGraphTreeParticlesNoFxNoReflectionNoLayer()
+    {
+        // GIVEN
+        Kuesa::View v;
+
+        // WHEN
+        v.setParticlesEnabled(true);
+
+        // THEN
+        QCoreApplication::processEvents();
+
+        QCOMPARE(v.children().size(), 2);
+        Kuesa::SceneStages *child0 = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
+        Kuesa::ParticleRenderStage *child1 = qobject_cast<Kuesa::ParticleRenderStage *>(v.children()[1]);
+        QVERIFY(child0);
+        QVERIFY(child1);
+    }
+
+    void checkGeneratedFrameGraphTreeParticlesFxReflectionNoLayer()
+    {
+        // GIVEN
+        Kuesa::View v;
+        tst_FX fx;
+        Kuesa::ReflectionPlane plane;
+
+        // WHEN
+        v.setParticlesEnabled(true);
+        v.addReflectionPlane(&plane);
+        v.addPostProcessingEffect(&fx);
+
+        // THEN
+        QCoreApplication::processEvents();
+
+        QCOMPARE(v.children().size(), 4);
+        QCOMPARE(v.children()[0], &plane);
+        Kuesa::ReflectionStages *child1 = qobject_cast<Kuesa::ReflectionStages *>(v.children()[1]);
+        Kuesa::SceneStages *child2 = qobject_cast<Kuesa::SceneStages *>(v.children()[2]);
+        Kuesa::ParticleRenderStage *child3 = qobject_cast<Kuesa::ParticleRenderStage *>(v.children()[3]);
+        QVERIFY(child1);
+        QVERIFY(child2);
+        QVERIFY(child3);
+
+        QCOMPARE(v.m_fxStages->effects().size(), size_t(1));
+        QCOMPARE(v.m_fxs.size(), size_t(1));
+        QCOMPARE(v.m_fxStages->children().size(), 1);
+
+        Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(v.m_fxStages->children().first());
+        QVERIFY(vp);
     }
 
     void checkRootView()

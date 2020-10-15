@@ -92,5 +92,6 @@ qtConfig(private_tests) {
         scenestages \
         framegraphutils \
         effectsstages \
-        reflectionstages
+        reflectionstages \
+        particlerenderstage
 }
