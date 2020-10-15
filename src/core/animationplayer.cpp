@@ -247,11 +247,6 @@ AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
     , m_animator(new Qt3DAnimation::QClipAnimator(this))
     , m_running(false)
 {
-    // For Qt < 5.14 we need to make sure we track normalizedTime on the frontend
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    m_animator->setPropertyTracking(QStringLiteral("normalizedTime"), Qt3DCore::QNode::TrackAllValues);
-#endif
-
     connect(m_animator, &QClipAnimator::runningChanged, this, &AnimationPlayer::runningChanged);
     connect(m_animator, &QClipAnimator::loopCountChanged, this, &AnimationPlayer::loopCountChanged);
     connect(m_animator, &QClipAnimator::clockChanged, this, &AnimationPlayer::clockChanged);

@@ -31,7 +31,6 @@ public:
     explicit StubTransform(Qt3DCore::QNode *parent = nullptr)
         : Qt3DCore::QTransform(parent)
     {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
         QObject::connect(this, &StubTransform::matrixChanged,
                          this, [this] {
                              // Compute worldTransform manually (as that's done by the Qt3D backend)
@@ -60,7 +59,6 @@ public:
                                      transform->matrixChanged();
                              }
                          });
-#endif
     }
 };
 

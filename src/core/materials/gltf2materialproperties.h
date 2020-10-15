@@ -45,10 +45,6 @@ class QShaderData;
 
 namespace Kuesa {
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-class DummyObserver;
-#endif
-
 class KUESASHARED_EXPORT GLTF2MaterialProperties : public Qt3DCore::QNode
 {
     Q_OBJECT
@@ -91,11 +87,6 @@ private:
     bool m_usesTexCoord1;
     Qt3DRender::QAbstractTexture *m_baseColorTexture;
     QColor m_baseColorFactor;
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    mutable DummyObserver *m_dummyObserver;
-    Qt3DCore::QNodeCreatedChangeBasePtr createNodeCreationChange() const override;
-#endif
 };
 } // namespace Kuesa
 

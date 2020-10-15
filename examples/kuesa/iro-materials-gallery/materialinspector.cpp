@@ -48,21 +48,8 @@ namespace {
 template<typename ComponentType>
 inline ComponentType *componentFromEntity(Qt3DCore::QEntity *e)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
     const auto cmps = e->componentsOfType<ComponentType>();
     return cmps.size() > 0 ? cmps.first() : nullptr;
-#else
-    ComponentType *typedComponent = nullptr;
-    const Qt3DCore::QComponentVector cmps = e->components();
-
-    for (Qt3DCore::QComponent *c : cmps) {
-        typedComponent = qobject_cast<ComponentType *>(c);
-        if (typedComponent != nullptr)
-            break;
-    }
-
-    return typedComponent;
-#endif
 }
 
 template<typename ComponentType>
@@ -157,10 +144,6 @@ QString MaterialInspector::description() const
 
 void MaterialInspector::inspect(Qt3DRender::QPickEvent *pick)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    qWarning() << "Picking materials only available since 5.14";
-    return;
-#else
     Qt3DCore::QEntity *entity = pick->entity();
 
     if (entity == nullptr) {
@@ -170,7 +153,6 @@ void MaterialInspector::inspect(Qt3DRender::QPickEvent *pick)
 
     Kuesa::GLTF2Material *material = findFirstComponentInstanceInHierarchy<Kuesa::GLTF2Material>(entity);
     setMaterial(material);
-#endif
 }
 
 void MaterialInspector::setMaterial(Kuesa::GLTF2Material *material)

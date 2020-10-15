@@ -39,20 +39,7 @@ inline QMatrix4x4 computeWorldMatrix(Qt3DCore::QTransform *transformComponent)
     if (!transformComponent || transformComponent->entities().empty())
         return {};
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     return transformComponent->worldMatrix();
-#else
-    QMatrix4x4 worldMatrix;
-    Q_ASSERT(transformComponent->entities().size() == 1);
-    auto p = transformComponent->entities().front();
-    while (p) {
-        const auto &tl = Kuesa::componentsFromEntity<Qt3DCore::QTransform>(p);
-        if (tl.size())
-            worldMatrix = tl.front()->matrix() * worldMatrix;
-        p = p->parentEntity();
-    }
-    return worldMatrix;
-#endif
 }
 
 } // namespace
@@ -274,9 +261,7 @@ void TransformTracker::matchNode()
     connect(m_node, &Qt3DCore::QTransform::rotationYChanged, this, &TransformTracker::rotationYChanged);
     connect(m_node, &Qt3DCore::QTransform::rotationZChanged, this, &TransformTracker::rotationZChanged);
     connect(m_node, &Qt3DCore::QTransform::matrixChanged, this, &TransformTracker::matrixChanged);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     connect(m_node, &Qt3DCore::QTransform::worldMatrixChanged, this, &TransformTracker::worldMatrixChanged);
-#endif
     connect(m_node, &Qt3DCore::QNode::nodeDestroyed, this, [this] {
         m_node = nullptr;
         delete m_nodeWatcher;

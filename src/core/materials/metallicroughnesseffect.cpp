@@ -398,11 +398,7 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
         QStringLiteral("noHasColorAttr"),
         QStringLiteral("noDoubleSided"),
         QStringLiteral("noHasAlphaCutoff"),
-#if (QT_VERSION >= QT_VERSION_CHECK(5,13,2))
         QStringLiteral("metalRoughFunction_unroll")
-#else
-        QStringLiteral("metalRoughFunction")
-#endif
     };
 
     m_metalRoughGL3Technique = new MetallicRoughnessTechnique(MetallicRoughnessTechnique::GL3, this);
@@ -431,11 +427,6 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     // don't try to sample from them.
     // Can probably go away once we generate the shaders and deal in this
     // case in a better way.
-#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
-    addParameter(new QParameter(QStringLiteral("envLight.irradiance"), new QTexture2D));
-    addParameter(new QParameter(QStringLiteral("envLight.specular"), new QTexture2D));
-#endif
-
     m_brdfLUTParameter->setName(QLatin1String("brdfLUT"));
     addParameter(m_brdfLUTParameter);
 }

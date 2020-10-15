@@ -62,9 +62,6 @@ BoundingVolumeRenderer::BoundingVolumeRenderer(Qt3DCore::QNode *parent)
     , m_color(Qt::yellow)
     , m_updateScheduled(false)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
-    qWarning() << "BoundingVolumeRenderer required Qt 5.13 or better";
-#endif
     initRendering();
 }
 
@@ -83,7 +80,6 @@ void BoundingVolumeRenderer::select(QEntity *entity, SelectionModes mode)
     if (mode & Replace)
         clearSelection();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
     std::vector<Qt3DCore::QEntity *> workList = { entity };
     bool updatedBV = false;
     while (1) {
@@ -107,29 +103,18 @@ void BoundingVolumeRenderer::select(QEntity *entity, SelectionModes mode)
                             if (tl.size()) {
                                 workTransform = tl.front();
                                 transformsToWatch.push_back(workTransform);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
                                 workMatrix = workTransform->worldMatrix();
                                 break;
-#else
-                                workMatrix = workTransform->matrix() * workMatrix;
-#endif
                             }
                             p = p->parentEntity();
                         }
 
                         SelectionDetails record;
                         record.m_id = e->id();
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-                        record.m_entity = e;
-#endif
                         record.m_transform = workTransform;
                         record.m_geometry = geometry;
                         for (auto tr : transformsToWatch) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
                             record.m_changeTrackers.push_back(QObject::connect(tr, &Qt3DCore::QTransform::worldMatrixChanged, this, [this, e]() { updateRecord(e); }));
-#else
-                            record.m_changeTrackers.push_back(QObject::connect(tr, &Qt3DCore::QTransform::matrixChanged, this, [this, e]() { updateRecord(e); }));
-#endif
                             record.m_changeTrackers.push_back(QObject::connect(tr, &Qt3DCore::QNode::nodeDestroyed, this, [this, e]() { deselect(e); }));
                         }
                         record.m_changeTrackers.push_back(QObject::connect(geometry, &Qt3DGeometry::QGeometry::minExtentChanged, this, [this, e]() { updateRecord(e); }));
@@ -162,7 +147,6 @@ void BoundingVolumeRenderer::select(QEntity *entity, SelectionModes mode)
 
     if (updatedBV)
         scheduleBufferUpdate();
-#endif
 }
 
 void BoundingVolumeRenderer::deselect(QEntity *entity)
@@ -348,7 +332,7 @@ void BoundingVolumeRenderer::updateRecord(BoundingVolumeRenderer::SelectionDetai
         return;
     }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+    // TODO: Qt6 update to use reall BV instead of geometry always
     QMatrix4x4 n;
     auto minExtent = record.m_geometry->minExtent();
     auto maxExtent = record.m_geometry->maxExtent();
@@ -357,22 +341,10 @@ void BoundingVolumeRenderer::updateRecord(BoundingVolumeRenderer::SelectionDetai
     n.translate(center);
     n.scale(scale);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     record.m_matrix = record.m_transform->worldMatrix() * n;
-#else
-    auto p = record.m_entity;
-    record.m_matrix = n;
-    while (p) {
-        const auto &tl = Kuesa::componentsFromEntity<Qt3DCore::QTransform>(p);
-        if (tl.size())
-            record.m_matrix = tl.front()->matrix() * record.m_matrix;
-        p = p->parentEntity();
-    }
-#endif
 
     if (updateBuffer)
         scheduleBufferUpdate();
-#endif
 }
 
 void BoundingVolumeRenderer::scheduleBufferUpdate()

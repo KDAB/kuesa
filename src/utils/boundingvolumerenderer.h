@@ -88,9 +88,6 @@ private:
     struct SelectionDetails {
         Qt3DCore::QNodeId m_id;
         QMatrix4x4 m_matrix;
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-        Qt3DCore::QEntity *m_entity;
-#endif
         Qt3DCore::QTransform *m_transform;
         Qt3DGeometry::QGeometry *m_geometry;
         std::vector<QMetaObject::Connection> m_changeTrackers;

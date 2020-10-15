@@ -13,21 +13,8 @@ namespace {
 template<typename ComponentType>
 ComponentType *componentFromEntity(Qt3DCore::QEntity *e)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
     const auto cmps = e->componentsOfType<ComponentType>();
     return cmps.size() > 0 ? cmps.first() : nullptr;
-#else
-    ComponentType *typedComponent = nullptr;
-    const Qt3DCore::QComponentVector cmps = e->components();
-
-    for (Qt3DCore::QComponent *c : cmps) {
-        typedComponent = qobject_cast<ComponentType *>(c);
-        if (typedComponent != nullptr)
-            break;
-    }
-
-    return typedComponent;
-#endif
 }
 }
 
