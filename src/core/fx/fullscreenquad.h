@@ -39,8 +39,17 @@ namespace Qt3DRender {
 class QLayer;
 class QCamera;
 class QMaterial;
-class QBuffer;
 } // namespace Qt3DRender
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+namespace Qt3DGeometry = Qt3DCore;
+namespace Qt3DCore {
+#else
+namespace Qt3DGeometry = Qt3DRender;
+namespace Qt3DRender {
+#endif
+class QBuffer;
+}
 
 namespace Kuesa {
 
@@ -54,10 +63,10 @@ public:
     Qt3DRender::QLayer *layer() const;
     virtual void setViewportRect(const QRectF &vp);
     QRectF viewportRect() const;
-    Qt3DRender::QBuffer *buffer() const;
+    Qt3DGeometry::QBuffer *buffer() const;
 
 private:
-    Qt3DRender::QBuffer *m_buffer;
+    Qt3DGeometry::QBuffer *m_buffer;
     Qt3DRender::QLayer *m_layer;
     QRectF m_viewportRect;
 

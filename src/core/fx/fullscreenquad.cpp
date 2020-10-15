@@ -86,7 +86,7 @@ static_assert(sizeof(V) == 5 * sizeof(float), "Unexpected size for struct V");
 
 FullScreenQuad::FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode *parent)
     : Qt3DCore::QEntity(parent)
-    , m_buffer(new Qt3DRender::QBuffer())
+    , m_buffer(new Qt3DGeometry::QBuffer())
     , m_viewportRect(QRectF(0.0f, 0.0f, 1.0f, 1.0f))
 {
     m_layer = new Qt3DRender::QLayer(this);
@@ -161,7 +161,7 @@ QRectF FullScreenQuad::viewportRect() const
     return m_viewportRect;
 }
 
-Qt3DRender::QBuffer *FullScreenQuad::buffer() const
+Qt3DGeometry::QBuffer *FullScreenQuad::buffer() const
 {
     return m_buffer;
 }
