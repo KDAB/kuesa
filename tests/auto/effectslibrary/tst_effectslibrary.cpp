@@ -92,7 +92,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(e.isDoubleSided(), false);
-        QCOMPARE(e.useSkinning(), false);
+        QCOMPARE(e.isUsingSkinning(), false);
         QCOMPARE(e.isOpaque(), true);
         QCOMPARE(e.isAlphaCutoffEnabled(), false);
         QCOMPARE(e.isUsingColorAttribute(), false);
@@ -151,7 +151,7 @@ private Q_SLOTS:
         QCOMPARE(e->isUsingTangentAttribute(), (props & EffectProperties::VertexTangent) != 0);
         QCOMPARE(e->isUsingTexCoordAttribute(), (props & EffectProperties::VertexTexCoord) != 0);
         QCOMPARE(e->isUsingTexCoord1Attribute(), (props & EffectProperties::VertexTexCoord1) != 0);
-        QCOMPARE(e->useSkinning(), (props & EffectProperties::Skinning) != 0);
+        QCOMPARE(e->isUsingSkinning(), (props & EffectProperties::Skinning) != 0);
         QCOMPARE(e->isUsingMorphTargets(), (props & EffectProperties::MorphTargets) != 0);
 
         delete e;
@@ -164,7 +164,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(e.isDoubleSided(), false);
-        QCOMPARE(e.useSkinning(), false);
+        QCOMPARE(e.isUsingSkinning(), false);
         QCOMPARE(e.isOpaque(), true);
         QCOMPARE(e.isAlphaCutoffEnabled(), false);
         QCOMPARE(e.isUsingColorAttribute(), false);
@@ -212,7 +212,7 @@ private Q_SLOTS:
         QCOMPARE(e->isUsingTangentAttribute(), (props & EffectProperties::VertexTangent) != 0);
         QCOMPARE(e->isUsingTexCoordAttribute(), (props & EffectProperties::VertexTexCoord) != 0);
         QCOMPARE(e->isUsingTexCoord1Attribute(), (props & EffectProperties::VertexTexCoord1) != 0);
-        QCOMPARE(e->useSkinning(), (props & EffectProperties::Skinning) != 0);
+        QCOMPARE(e->isUsingSkinning(), (props & EffectProperties::Skinning) != 0);
         QCOMPARE(e->isUsingMorphTargets(), (props & EffectProperties::MorphTargets) != 0);
 
         delete e;
@@ -284,7 +284,7 @@ private Q_SLOTS:
         QCOMPARE(e->isUsingTangentAttribute(), (props & EffectProperties::VertexTangent) != 0);
         QCOMPARE(e->isUsingTexCoordAttribute(), (props & EffectProperties::VertexTexCoord) != 0);
         QCOMPARE(e->isUsingTexCoord1Attribute(), (props & EffectProperties::VertexTexCoord1) != 0);
-        QCOMPARE(e->useSkinning(), (props & EffectProperties::Skinning) != 0);
+        QCOMPARE(e->isUsingSkinning(), (props & EffectProperties::Skinning) != 0);
         QCOMPARE(e->isUsingMorphTargets(), (props & EffectProperties::MorphTargets) != 0);
 
         delete e;

@@ -628,7 +628,7 @@ void MetallicRoughnessEffect::updateDoubleSided(bool doubleSided)
 #endif
 }
 
-void MetallicRoughnessEffect::updateSkinning(bool useSkinning)
+void MetallicRoughnessEffect::updateUsingSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_metalRoughGL3Technique->enabledLayers();

@@ -53,7 +53,7 @@ namespace Kuesa {
 */
 
 /*!
-    \property GLTF2MaterialEffect::useSkinning
+    \property GLTF2MaterialEffect::usingSkinning
 
     Returns whether vertex skinning is enabled or not.
 
@@ -155,7 +155,7 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty bool GLTF2MaterialEffect::useSkinning
+    \qmlproperty bool GLTF2MaterialEffect::usingSkinning
 
     Returns whether vertex skinning is enabled or not.
 
@@ -238,7 +238,7 @@ namespace Kuesa {
 
 GLTF2MaterialEffect::GLTF2MaterialEffect(Qt3DCore::QNode *parent)
     : Qt3DRender::QEffect(parent)
-    , m_useSkinning(false)
+    , m_usingSkinning(false)
     , m_opaque(true)
     , m_alphaCutoffEnabled(false)
     , m_doubleSided(false)
@@ -262,9 +262,9 @@ bool GLTF2MaterialEffect::isDoubleSided() const
     return m_doubleSided;
 }
 
-bool GLTF2MaterialEffect::useSkinning() const
+bool GLTF2MaterialEffect::isUsingSkinning() const
 {
-    return m_useSkinning;
+    return m_usingSkinning;
 }
 
 bool GLTF2MaterialEffect::isOpaque() const
@@ -318,14 +318,14 @@ void GLTF2MaterialEffect::setDoubleSided(bool doubleSided)
     updateDoubleSided(m_doubleSided);
 }
 
-void GLTF2MaterialEffect::setUseSkinning(bool useSkinning)
+void GLTF2MaterialEffect::setUsingSkinning(bool useSkinning)
 {
-    if (useSkinning == m_useSkinning)
+    if (useSkinning == m_usingSkinning)
         return;
-    m_useSkinning = useSkinning;
-    emit useSkinningChanged(m_useSkinning);
+    m_usingSkinning = useSkinning;
+    emit usingSkinningChanged(m_usingSkinning);
 
-    updateSkinning(m_useSkinning);
+    updateUsingSkinning(m_usingSkinning);
 }
 
 void GLTF2MaterialEffect::setOpaque(bool opaque)
@@ -412,30 +412,10 @@ void GLTF2MaterialEffect::setUsingMorphTargets(bool usingMorphTargets)
     updateUsingMorphTargets(m_usingMorphTargets);
 }
 
-void GLTF2MaterialEffect::updateDoubleSided(bool doubleSided)
-{
-    Q_UNUSED(doubleSided);
-}
-
-void GLTF2MaterialEffect::updateSkinning(bool useSkinning)
-{
-    Q_UNUSED(useSkinning);
-}
-
-void GLTF2MaterialEffect::updateOpaque(bool opaque)
-{
-    Q_UNUSED(opaque);
-}
-
-void GLTF2MaterialEffect::updateAlphaCutoffEnabled(bool enabled)
-{
-    Q_UNUSED(enabled);
-}
-
 void GLTF2MaterialEffect::initialize()
 {
     updateOpaque(GLTF2MaterialEffect::isOpaque());
-    updateSkinning(GLTF2MaterialEffect::useSkinning());
+    updateUsingSkinning(GLTF2MaterialEffect::isUsingSkinning());
     updateDoubleSided(GLTF2MaterialEffect::isDoubleSided());
     updateAlphaCutoffEnabled(GLTF2MaterialEffect::isAlphaCutoffEnabled());
     updateUsingColorAttribute(GLTF2MaterialEffect::isUsingColorAttribute());

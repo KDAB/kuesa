@@ -80,7 +80,7 @@ private:
     void updateLayersOnTechniques(const QStringList &layers);
 
     void updateDoubleSided(bool doubleSided) override;
-    void updateSkinning(bool useSkinning) override;
+    void updateUsingSkinning(bool useSkinning) override;
     void updateOpaque(bool opaque) override;
     void updateAlphaCutoffEnabled(bool enabled) override;
     void updateUsingColorAttribute(bool enabled) override;

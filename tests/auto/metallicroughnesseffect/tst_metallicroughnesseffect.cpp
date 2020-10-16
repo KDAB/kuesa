@@ -129,7 +129,7 @@ private Q_SLOTS:
         QCOMPARE(effect.isUsingTexCoordAttribute(), false);
         QCOMPARE(effect.isUsingTexCoord1Attribute(), false);
         QCOMPARE(effect.isDoubleSided(), false);
-        QCOMPARE(effect.useSkinning(), false);
+        QCOMPARE(effect.isUsingSkinning(), false);
         QCOMPARE(effect.isOpaque(), true);
         QCOMPARE(effect.isAlphaCutoffEnabled(), false);
         QCOMPARE(effect.brdfLUT(), nullptr);
@@ -151,7 +151,7 @@ private Q_SLOTS:
         QSignalSpy usingTexCoordAttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingTexCoordAttributeChanged);
         QSignalSpy usingTexCoord1AttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingTexCoord1AttributeChanged);
         QSignalSpy doubleSidedSpy(&effect, &Kuesa::MetallicRoughnessEffect::doubleSidedChanged);
-        QSignalSpy useSkinningSpy(&effect, &Kuesa::MetallicRoughnessEffect::useSkinningChanged);
+        QSignalSpy useSkinningSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingSkinningChanged);
         QSignalSpy useMorphTargetsSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingMorphTargetsChanged);
         QSignalSpy opaqueSpy(&effect, &Kuesa::MetallicRoughnessEffect::opaqueChanged);
         QSignalSpy alphaCutoffSpy(&effect, &Kuesa::MetallicRoughnessEffect::alphaCutoffEnabledChanged);
@@ -297,12 +297,12 @@ private Q_SLOTS:
 
         {
             // WHEN
-            effect.setUseSkinning(false);
-            effect.setUseSkinning(true);
-            effect.setUseSkinning(true);
+            effect.setUsingSkinning(false);
+            effect.setUsingSkinning(true);
+            effect.setUsingSkinning(true);
 
             // THEN
-            QCOMPARE(effect.useSkinning(), true);
+            QCOMPARE(effect.isUsingSkinning(), true);
             QCOMPARE(useSkinningSpy.count(), 1);
         }
 

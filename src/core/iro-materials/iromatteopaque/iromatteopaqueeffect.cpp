@@ -286,7 +286,7 @@ void IroMatteOpaqueEffect::updateDoubleSided(bool doubleSided)
 #endif
 }
 
-void IroMatteOpaqueEffect::updateSkinning(bool useSkinning)
+void IroMatteOpaqueEffect::updateUsingSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();

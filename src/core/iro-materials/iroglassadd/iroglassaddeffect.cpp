@@ -344,7 +344,7 @@ void IroGlassAddEffect::updateDoubleSided(bool doubleSided)
 #endif
 }
 
-void IroGlassAddEffect::updateSkinning(bool useSkinning)
+void IroGlassAddEffect::updateUsingSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();

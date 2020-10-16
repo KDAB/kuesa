@@ -280,7 +280,7 @@ void ExampleCustomMaterialEffect::updateDoubleSided(bool doubleSided)
     m_es2Technique->setCullingMode(cullingMode);
 }
 
-void ExampleCustomMaterialEffect::updateSkinning(bool useSkinning)
+void ExampleCustomMaterialEffect::updateUsingSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();

@@ -372,7 +372,7 @@ void UnlitEffect::updateDoubleSided(bool doubleSided)
 #endif
 }
 
-void UnlitEffect::updateSkinning(bool useSkinning)
+void UnlitEffect::updateUsingSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_unlitGL3Technique->enabledLayers();

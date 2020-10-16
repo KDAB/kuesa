@@ -241,7 +241,7 @@ private:
     void updateLayersOnTechniques(const QStringList &layers);
 
     void updateDoubleSided(bool doubleSided) override;
-    void updateSkinning(bool useSkinning) override;
+    void updateUsingSkinning(bool useSkinning) override;
     void updateOpaque(bool opaque) override;
     void updateAlphaCutoffEnabled(bool enabled) override;
     void updateUsingColorAttribute(bool enabled) override;
@@ -1182,7 +1182,7 @@ void {2}Effect::updateDoubleSided(bool doubleSided)
 #endif
 }}
 
-void {2}Effect::updateSkinning(bool useSkinning)
+void {2}Effect::updateUsingSkinning(bool useSkinning)
 {{
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();

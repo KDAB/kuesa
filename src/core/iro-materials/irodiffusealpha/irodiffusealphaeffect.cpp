@@ -259,7 +259,7 @@ void IroDiffuseAlphaEffect::updateDoubleSided(bool doubleSided)
 #endif
 }
 
-void IroDiffuseAlphaEffect::updateSkinning(bool useSkinning)
+void IroDiffuseAlphaEffect::updateUsingSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();

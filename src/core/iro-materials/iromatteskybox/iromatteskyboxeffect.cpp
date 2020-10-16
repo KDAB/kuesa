@@ -254,7 +254,7 @@ void IroMatteSkyboxEffect::updateDoubleSided(bool doubleSided)
 #endif
 }
 
-void IroMatteSkyboxEffect::updateSkinning(bool useSkinning)
+void IroMatteSkyboxEffect::updateUsingSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();

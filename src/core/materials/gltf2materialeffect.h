@@ -40,7 +40,7 @@ class KUESASHARED_EXPORT GLTF2MaterialEffect : public Qt3DRender::QEffect
 {
     Q_OBJECT
     Q_PROPERTY(bool doubleSided READ isDoubleSided WRITE setDoubleSided NOTIFY doubleSidedChanged)
-    Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
+    Q_PROPERTY(bool usingSkinning READ isUsingSkinning WRITE setUsingSkinning NOTIFY usingSkinningChanged)
     Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
     Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
     Q_PROPERTY(bool usingColorAttribute READ isUsingColorAttribute WRITE setUsingColorAttribute NOTIFY usingColorAttributeChanged REVISION 3)
@@ -55,7 +55,7 @@ public:
     ~GLTF2MaterialEffect();
 
     bool isDoubleSided() const;
-    bool useSkinning() const;
+    bool isUsingSkinning() const;
     bool isOpaque() const;
     bool isAlphaCutoffEnabled() const;
     bool isUsingColorAttribute() const;
@@ -67,7 +67,7 @@ public:
 
 public Q_SLOTS:
     void setDoubleSided(bool doubleSided);
-    void setUseSkinning(bool useSkinning);
+    void setUsingSkinning(bool useSkinning);
     void setOpaque(bool opaque);
     void setAlphaCutoffEnabled(bool enabled);
     void setUsingColorAttribute(bool usingColorAttribute);
@@ -78,10 +78,10 @@ public Q_SLOTS:
     void setUsingMorphTargets(bool usingMorphTargets);
 
 protected:
-    virtual void updateDoubleSided(bool doubleSided);
-    virtual void updateSkinning(bool useSkinning);
-    virtual void updateOpaque(bool opaque);
-    virtual void updateAlphaCutoffEnabled(bool enabled);
+    virtual void updateDoubleSided(bool doubleSided) = 0;
+    virtual void updateUsingSkinning(bool enabled) = 0;
+    virtual void updateOpaque(bool opaque) = 0;
+    virtual void updateAlphaCutoffEnabled(bool enabled) = 0;
     virtual void updateUsingColorAttribute(bool enabled) = 0;
     virtual void updateUsingNormalAttribute(bool enabled) = 0;
     virtual void updateUsingTangentAttribute(bool enabled) = 0;
@@ -91,7 +91,7 @@ protected:
 
 Q_SIGNALS:
     void doubleSidedChanged(bool doubleSided);
-    void useSkinningChanged(bool useSkinning);
+    void usingSkinningChanged(bool useSkinning);
     void opaqueChanged(bool opaque);
     void alphaCutoffEnabledChanged(bool enabled);
     void usingColorAttributeChanged(bool usingColorAttribute);
@@ -102,7 +102,7 @@ Q_SIGNALS:
     void usingMorphTargetsChanged(bool usingMorphTargets);
 
 private:
-    bool m_useSkinning;
+    bool m_usingSkinning;
     bool m_opaque;
     bool m_alphaCutoffEnabled;
     bool m_doubleSided;
