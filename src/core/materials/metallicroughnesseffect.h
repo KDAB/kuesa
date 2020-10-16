@@ -149,6 +149,7 @@ private:
     void updateUsingTangentAttribute(bool enabled) override;
     void updateUsingTexCoordAttribute(bool enabled) override;
     void updateUsingTexCoord1Attribute(bool enabled) override;
+    void updateUsingMorphTargets(bool usingMorphTargets) override;
 };
 
 } // namespace Kuesa

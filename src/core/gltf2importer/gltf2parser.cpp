@@ -1255,6 +1255,8 @@ void GLTF2Parser::generateTreeNodeContent()
                         auto effectProperties = Material::effectPropertiesFromMaterial(mat);
                         if (isSkinned)
                             effectProperties |= EffectProperties::Skinning;
+                        if (hasMorphTargets)
+                            effectProperties |= EffectProperties::MorphTargets;
                         if (primitiveData.hasColorAttr)
                             effectProperties |= EffectProperties::VertexColor;
                         if (primitiveData.hasNormalAttr)

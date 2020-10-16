@@ -25,16 +25,20 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
+#ifdef LAYER_morphtargets
 layout(location = 9) in vec3 vertexPosition_1;
 layout(location = 10) in vec3 vertexPosition_2;
 // Note: it is assumed the morphWeights structure uniform has been defined
 // elsewhere and included prior to this
+#endif
 
 vec3 kuesa_morphPosition(const in vec3 vPosition)
 {
     vec3 pos = vPosition;
+#ifdef LAYER_morphtargets
     pos += vertexPosition_1 * morphWeights.morphWeights[0];
     pos += vertexPosition_2 * morphWeights.morphWeights[1];
+#endif
     return pos;
 }
+

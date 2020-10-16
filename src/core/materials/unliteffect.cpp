@@ -480,6 +480,16 @@ void UnlitEffect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
     updateLayersOnTechniques(layers);
 }
 
+void UnlitEffect::updateUsingMorphTargets(bool usingMorphTargets)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("morphtargets"));
+    if (usingMorphTargets)
+        layers.append(QStringLiteral("morphtargets"));
+
+    updateLayersOnTechniques(layers);
+}
+
 void UnlitEffect::updateLayersOnTechniques(const QStringList &layers)
 {
     m_unlitGL3Technique->setEnabledLayers(layers);

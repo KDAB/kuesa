@@ -249,6 +249,7 @@ private:
     void updateUsingTangentAttribute(bool enabled) override;
     void updateUsingTexCoordAttribute(bool enabled) override;
     void updateUsingTexCoord1Attribute(bool enabled) override;
+    void updateUsingMorphTargets(bool enabled) override;
 };
 """
 
@@ -1279,6 +1280,16 @@ void {2}Effect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
     layers.removeAll(QStringLiteral("hasTexCoord1"));
     if (usingTexCoord1Attribute)
         layers.append(QStringLiteral("hasTexCoord1"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingMorphTargets(bool usingMorphTargets)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("morphtargets"));
+    if (usingMorphTargets)
+        layers.append(QStringLiteral("morphtargets"));
 
     updateLayersOnTechniques(layers);
 }}

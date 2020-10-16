@@ -26,18 +26,22 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifdef LAYER_morphtargets
 layout(location = 11) in vec3 vertexNormal_1;
 layout(location = 12) in vec3 vertexNormal_2;
 
 // Note: it is assumed the morphWeights structure uniform has been defined
 // elsewhere and included prior to this
+#endif
 
 vec3 kuesa_morphNormal(const in vec3 vNormal)
 {
     vec3 norm = vNormal;
+#ifdef LAYER_morphtargets
     norm += vertexNormal_1 * morphWeights.morphWeights[0];
     norm += vertexNormal_2 * morphWeights.morphWeights[1];
     norm = normalize(norm);
+#endif
     return norm;
 }
 

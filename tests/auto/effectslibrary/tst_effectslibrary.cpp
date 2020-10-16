@@ -85,6 +85,29 @@ private Q_SLOTS:
         }
     }
 
+    void checkMetallicRoughnessEffectInitialState()
+    {
+        // GIVEN
+        Kuesa::MetallicRoughnessEffect e;
+
+        // THEN
+        QCOMPARE(e.isDoubleSided(), false);
+        QCOMPARE(e.useSkinning(), false);
+        QCOMPARE(e.isOpaque(), true);
+        QCOMPARE(e.isAlphaCutoffEnabled(), false);
+        QCOMPARE(e.isUsingColorAttribute(), false);
+        QCOMPARE(e.isUsingNormalAttribute(), false);
+        QCOMPARE(e.isUsingTangentAttribute(), false);
+        QCOMPARE(e.isUsingTexCoordAttribute(), false);
+        QCOMPARE(e.isUsingTexCoord1Attribute(), false);
+        QCOMPARE(e.isUsingMorphTargets(), false);
+        QCOMPARE(e.isBaseColorMapEnabled(), false);
+        QCOMPARE(e.isMetalRoughMapEnabled(), false);
+        QCOMPARE(e.isNormalMapEnabled(), false);
+        QCOMPARE(e.isAmbientOcclusionMapEnabled(), false);
+        QCOMPARE(e.isEmissiveMapEnabled(), false);
+    }
+
     void checkCreateMetallicRoughnessEffectWithKey_data()
     {
         QTest::addColumn<EffectProperties::Properties>("props");
@@ -103,6 +126,7 @@ private Q_SLOTS:
         QTest::newRow("VertexTexCoord") << EffectProperties::Properties(EffectProperties::VertexTexCoord);
         QTest::newRow("VertexTexCoord1") << EffectProperties::Properties(EffectProperties::VertexTexCoord1);
         QTest::newRow("Skinning") << EffectProperties::Properties(EffectProperties::Skinning);
+        QTest::newRow("MorphTargets") << EffectProperties::Properties(EffectProperties::MorphTargets);
     }
 
     void checkCreateMetallicRoughnessEffectWithKey()
@@ -128,8 +152,29 @@ private Q_SLOTS:
         QCOMPARE(e->isUsingTexCoordAttribute(), (props & EffectProperties::VertexTexCoord) != 0);
         QCOMPARE(e->isUsingTexCoord1Attribute(), (props & EffectProperties::VertexTexCoord1) != 0);
         QCOMPARE(e->useSkinning(), (props & EffectProperties::Skinning) != 0);
+        QCOMPARE(e->isUsingMorphTargets(), (props & EffectProperties::MorphTargets) != 0);
 
         delete e;
+    }
+
+    void checkUnlitEffectInitialState()
+    {
+        // GIVEN
+        Kuesa::UnlitEffect e;
+
+        // THEN
+        QCOMPARE(e.isDoubleSided(), false);
+        QCOMPARE(e.useSkinning(), false);
+        QCOMPARE(e.isOpaque(), true);
+        QCOMPARE(e.isAlphaCutoffEnabled(), false);
+        QCOMPARE(e.isUsingColorAttribute(), false);
+        QCOMPARE(e.isUsingNormalAttribute(), false);
+        QCOMPARE(e.isUsingTangentAttribute(), false);
+        QCOMPARE(e.isUsingTexCoordAttribute(), false);
+        QCOMPARE(e.isUsingTexCoord1Attribute(), false);
+        QCOMPARE(e.isUsingMorphTargets(), false);
+        QCOMPARE(e.isBaseColorMapEnabled(), false);
+        QCOMPARE(e.isUsingColorAttribute(), false);
     }
 
     void checkCreateUnlitEffectWithKey_data()
@@ -146,7 +191,7 @@ private Q_SLOTS:
         QTest::newRow("VertexTexCoord") << EffectProperties::Properties(EffectProperties::VertexTexCoord);
         QTest::newRow("VertexTexCoord1") << EffectProperties::Properties(EffectProperties::VertexTexCoord1);
         QTest::newRow("Skinning") << EffectProperties::Properties(EffectProperties::Skinning);
-
+        QTest::newRow("MorphTargets") << EffectProperties::Properties(EffectProperties::MorphTargets);
     }
 
     void checkCreateUnlitEffectWithKey()
@@ -168,6 +213,7 @@ private Q_SLOTS:
         QCOMPARE(e->isUsingTexCoordAttribute(), (props & EffectProperties::VertexTexCoord) != 0);
         QCOMPARE(e->isUsingTexCoord1Attribute(), (props & EffectProperties::VertexTexCoord1) != 0);
         QCOMPARE(e->useSkinning(), (props & EffectProperties::Skinning) != 0);
+        QCOMPARE(e->isUsingMorphTargets(), (props & EffectProperties::MorphTargets) != 0);
 
         delete e;
     }
@@ -211,7 +257,7 @@ private Q_SLOTS:
         QTest::newRow("VertexTexCoord") << EffectProperties::Properties(EffectProperties::VertexTexCoord);
         QTest::newRow("VertexTexCoord1") << EffectProperties::Properties(EffectProperties::VertexTexCoord1);
         QTest::newRow("Skinning") << EffectProperties::Properties(EffectProperties::Skinning);
-
+        QTest::newRow("MorphTargets") << EffectProperties::Properties(EffectProperties::MorphTargets);
     }
 
     void checkCreateCustomEffectWithKey()
@@ -239,6 +285,7 @@ private Q_SLOTS:
         QCOMPARE(e->isUsingTexCoordAttribute(), (props & EffectProperties::VertexTexCoord) != 0);
         QCOMPARE(e->isUsingTexCoord1Attribute(), (props & EffectProperties::VertexTexCoord1) != 0);
         QCOMPARE(e->useSkinning(), (props & EffectProperties::Skinning) != 0);
+        QCOMPARE(e->isUsingMorphTargets(), (props & EffectProperties::MorphTargets) != 0);
 
         delete e;
     }

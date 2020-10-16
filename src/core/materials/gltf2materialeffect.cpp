@@ -126,6 +126,14 @@ namespace Kuesa {
     \since Kuesa 1.3
  */
 
+/*!
+    \property MetallicRoughnessEffect::usingMorphTargets
+
+    If true, the morphtarget support is enabled.
+
+    \since Kuesa 1.3
+ */
+
 
 /*!
     \qmltype GLTF2MaterialEffect
@@ -220,6 +228,13 @@ namespace Kuesa {
     \since Kuesa 1.3
  */
 
+/*!
+    \qmlproperty bool MetallicRoughnessEffect::usingMorphTargets
+
+    If true, the morphtarget support is enabled.
+
+    \since Kuesa 1.3
+ */
 
 GLTF2MaterialEffect::GLTF2MaterialEffect(Qt3DCore::QNode *parent)
     : Qt3DRender::QEffect(parent)
@@ -232,6 +247,7 @@ GLTF2MaterialEffect::GLTF2MaterialEffect(Qt3DCore::QNode *parent)
     , m_usingTangentAttribute(false)
     , m_usingTexCoordAttribute(false)
     , m_usingTexCoord1Attribute(false)
+    , m_usingMorphTargets(false)
 {
     // Call the update methods once the subclass instances has been created
     QTimer::singleShot(0, this, &GLTF2MaterialEffect::initialize);
@@ -284,6 +300,11 @@ bool GLTF2MaterialEffect::isUsingTexCoordAttribute() const
 bool GLTF2MaterialEffect::isUsingTexCoord1Attribute() const
 {
     return m_usingTexCoord1Attribute;
+}
+
+bool GLTF2MaterialEffect::isUsingMorphTargets() const
+{
+    return m_usingMorphTargets;
 }
 
 
@@ -381,6 +402,16 @@ void GLTF2MaterialEffect::setUsingTexCoord1Attribute(bool usingTexCoord1Attribut
     updateUsingTexCoord1Attribute(m_usingTexCoord1Attribute);
 }
 
+void GLTF2MaterialEffect::setUsingMorphTargets(bool usingMorphTargets)
+{
+    if (m_usingMorphTargets == usingMorphTargets)
+        return;
+    m_usingMorphTargets = usingMorphTargets;
+    emit usingMorphTargetsChanged(usingMorphTargets);
+
+    updateUsingMorphTargets(m_usingMorphTargets);
+}
+
 void GLTF2MaterialEffect::updateDoubleSided(bool doubleSided)
 {
     Q_UNUSED(doubleSided);
@@ -412,6 +443,7 @@ void GLTF2MaterialEffect::initialize()
     updateUsingTangentAttribute(GLTF2MaterialEffect::isUsingTangentAttribute());
     updateUsingTexCoordAttribute(GLTF2MaterialEffect::isUsingTexCoordAttribute());
     updateUsingTexCoord1Attribute(GLTF2MaterialEffect::isUsingTexCoord1Attribute());
+    updateUsingMorphTargets(GLTF2MaterialEffect::isUsingMorphTargets());
 }
 
 } // Kuesa

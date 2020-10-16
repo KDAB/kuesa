@@ -152,6 +152,7 @@ private Q_SLOTS:
         QSignalSpy usingTexCoord1AttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingTexCoord1AttributeChanged);
         QSignalSpy doubleSidedSpy(&effect, &Kuesa::MetallicRoughnessEffect::doubleSidedChanged);
         QSignalSpy useSkinningSpy(&effect, &Kuesa::MetallicRoughnessEffect::useSkinningChanged);
+        QSignalSpy useMorphTargetsSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingMorphTargetsChanged);
         QSignalSpy opaqueSpy(&effect, &Kuesa::MetallicRoughnessEffect::opaqueChanged);
         QSignalSpy alphaCutoffSpy(&effect, &Kuesa::MetallicRoughnessEffect::alphaCutoffEnabledChanged);
         QSignalSpy brdfLUTSpy(&effect, &Kuesa::MetallicRoughnessEffect::brdfLUTChanged);
@@ -168,6 +169,7 @@ private Q_SLOTS:
         QVERIFY(usingTexCoord1AttributeSpy.isValid());
         QVERIFY(doubleSidedSpy.isValid());
         QVERIFY(useSkinningSpy.isValid());
+        QVERIFY(useMorphTargetsSpy.isValid());
         QVERIFY(opaqueSpy.isValid());
         QVERIFY(alphaCutoffSpy.isValid());
         QVERIFY(brdfLUTSpy.isValid());
@@ -306,6 +308,17 @@ private Q_SLOTS:
 
         {
             // WHEN
+            effect.setUsingMorphTargets(false);
+            effect.setUsingMorphTargets(true);
+            effect.setUsingMorphTargets(true);
+
+            // THEN
+            QCOMPARE(effect.isUsingMorphTargets(), true);
+            QCOMPARE(useMorphTargetsSpy.count(), 1);
+        }
+
+        {
+            // WHEN
             effect.setOpaque(true);
             effect.setOpaque(false);
             effect.setOpaque(false);
@@ -358,6 +371,7 @@ private Q_SLOTS:
         QTest::newRow("VertexTexCoord") << EffectProperties::Properties(EffectProperties::VertexTexCoord);
         QTest::newRow("VertexTexCoord1") << EffectProperties::Properties(EffectProperties::VertexTexCoord1);
         QTest::newRow("Skinning") << EffectProperties::Properties(EffectProperties::Skinning);
+        QTest::newRow("MorphTargets") << EffectProperties::Properties(EffectProperties::MorphTargets);
         QTest::newRow("NoSkinningWithBaseEmissiveAndNormalMaps") << EffectProperties::Properties(EffectProperties::BaseColorMap|
                                                                                                  EffectProperties::MetalRoughnessMap|
                                                                                                  EffectProperties::NormalMap|

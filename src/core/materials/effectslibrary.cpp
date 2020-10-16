@@ -50,8 +50,8 @@ UnlitEffect *EffectsLibrary::createUnlitEffectWithKey(EffectProperties::Properti
     effect->setUsingTangentAttribute(properties & EffectProperties::VertexTangent);
     effect->setUsingTexCoordAttribute(properties & EffectProperties::VertexTexCoord);
     effect->setUsingTexCoord1Attribute(properties & EffectProperties::VertexTexCoord1);
-
     effect->setUseSkinning(properties & EffectProperties::Skinning);
+    effect->setUsingMorphTargets(properties & EffectProperties::MorphTargets);
 
     return effect;
 }
@@ -74,6 +74,7 @@ MetallicRoughnessEffect *EffectsLibrary::createMetallicRoughnessEffectWithKey(Ef
     effect->setUsingTexCoordAttribute(properties & EffectProperties::VertexTexCoord);
     effect->setUsingTexCoord1Attribute(properties & EffectProperties::VertexTexCoord1);
     effect->setUseSkinning(properties & EffectProperties::Skinning);
+    effect->setUsingMorphTargets(properties & EffectProperties::MorphTargets);
 
     return effect;
 }
@@ -124,6 +125,7 @@ GLTF2MaterialEffect *EffectsLibrary::getOrCreateCustomEffect(EffectsLibrary::Cus
     effect->setUsingTexCoordAttribute(properties & EffectProperties::VertexTexCoord);
     effect->setUsingTexCoord1Attribute(properties & EffectProperties::VertexTexCoord1);
     effect->setUseSkinning(properties & EffectProperties::Skinning);
+    effect->setUsingMorphTargets(properties & EffectProperties::MorphTargets);
     m_customEffects.push_back({customEffectKey, effect});
     return effect;
 }

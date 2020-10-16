@@ -674,6 +674,16 @@ void MetallicRoughnessEffect::updateAlphaCutoffEnabled(bool enabled)
     updateLayersOnTechniques(layers);
 }
 
+void MetallicRoughnessEffect::updateUsingMorphTargets(bool usingMorphTargets)
+{
+    auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("morphtargets"));
+    if (usingMorphTargets)
+        layers.append(QStringLiteral("morphtargets"));
+
+    updateLayersOnTechniques(layers);
+}
+
 Qt3DRender::QAbstractTexture *MetallicRoughnessEffect::brdfLUT() const
 {
     return m_brdfLUTParameter->value().value<Qt3DRender::QAbstractTexture *>();

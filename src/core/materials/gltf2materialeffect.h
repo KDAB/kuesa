@@ -48,6 +48,7 @@ class KUESASHARED_EXPORT GLTF2MaterialEffect : public Qt3DRender::QEffect
     Q_PROPERTY(bool usingTangentAttribute READ isUsingTangentAttribute WRITE setUsingTangentAttribute NOTIFY usingTangentAttributeChanged REVISION 3)
     Q_PROPERTY(bool usingTexCoordAttribute READ isUsingTexCoordAttribute WRITE setUsingTexCoordAttribute NOTIFY usingTexCoordAttributeChanged REVISION 3)
     Q_PROPERTY(bool usingTexCoord1Attribute READ isUsingTexCoord1Attribute WRITE setUsingTexCoord1Attribute NOTIFY usingTexCoord1AttributeChanged REVISION 3)
+    Q_PROPERTY(bool usingMorphTargets READ isUsingMorphTargets WRITE setUsingMorphTargets NOTIFY usingMorphTargetsChanged REVISION 3)
 
 public:
     explicit GLTF2MaterialEffect(Qt3DCore::QNode *parent = nullptr);
@@ -62,6 +63,7 @@ public:
     bool isUsingTangentAttribute() const;
     bool isUsingTexCoordAttribute() const;
     bool isUsingTexCoord1Attribute() const;
+    bool isUsingMorphTargets() const;
 
 public Q_SLOTS:
     void setDoubleSided(bool doubleSided);
@@ -73,6 +75,7 @@ public Q_SLOTS:
     void setUsingTangentAttribute(bool usingTangentAttribute);
     void setUsingTexCoordAttribute(bool usingTexCoordAttribute);
     void setUsingTexCoord1Attribute(bool usingTexCoord1Attribute);
+    void setUsingMorphTargets(bool usingMorphTargets);
 
 protected:
     virtual void updateDoubleSided(bool doubleSided);
@@ -84,6 +87,7 @@ protected:
     virtual void updateUsingTangentAttribute(bool enabled) = 0;
     virtual void updateUsingTexCoordAttribute(bool enabled) = 0;
     virtual void updateUsingTexCoord1Attribute(bool enabled) = 0;
+    virtual void updateUsingMorphTargets(bool usingMorphTargets) = 0;
 
 Q_SIGNALS:
     void doubleSidedChanged(bool doubleSided);
@@ -95,6 +99,7 @@ Q_SIGNALS:
     void usingTangentAttributeChanged(bool usingTangentAttribute);
     void usingTexCoordAttributeChanged(bool usingTexCoordAttribute);
     void usingTexCoord1AttributeChanged(bool usingTexCoord1Attribute);
+    void usingMorphTargetsChanged(bool usingMorphTargets);
 
 private:
     bool m_useSkinning;
@@ -106,6 +111,7 @@ private:
     bool m_usingTangentAttribute;
     bool m_usingTexCoordAttribute;
     bool m_usingTexCoord1Attribute;
+    bool m_usingMorphTargets;
 
     void initialize();
 };

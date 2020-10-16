@@ -26,17 +26,21 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifdef LAYER_morphtargets
 layout(location = 13) in vec3 vertexTangent_1;
 layout(location = 14) in vec3 vertexTangent_2;
 
 // Note: it is assumed the morphWeights structure uniform has been defined
 // elsewhere and included prior to this
+#endif
 
 vec4 kuesa_morphTangent(const in vec4 vTangent)
 {
     vec4 tangent = vTangent;
+#ifdef LAYER_morphtargets
     tangent.xyz += vertexTangent_1 * morphWeights.morphWeights[0];
     tangent.xyz += vertexTangent_2 * morphWeights.morphWeights[1];
     tangent.xyz = normalize(tangent.xyz);
+#endif
     return tangent;
 }

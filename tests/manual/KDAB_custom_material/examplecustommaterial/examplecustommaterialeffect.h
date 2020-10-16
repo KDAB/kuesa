@@ -58,6 +58,7 @@ private:
     void updateUsingTangentAttribute(bool enabled) override;
     void updateUsingTexCoordAttribute(bool enabled) override;
     void updateUsingTexCoord1Attribute(bool enabled) override;
+    void updateUsingMorphTargets(bool enabled) override;
 
     ExampleCustomMaterialTechnique *m_gl3Technique;
     ExampleCustomMaterialTechnique *m_es3Technique;

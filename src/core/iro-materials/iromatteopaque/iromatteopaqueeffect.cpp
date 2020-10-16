@@ -361,9 +361,9 @@ void IroMatteOpaqueEffect::updateUsingNormalAttribute(bool usingNormalAttribute)
 void IroMatteOpaqueEffect::updateUsingTangentAttribute(bool usingTangentAttribute)
 {
     auto layers = m_gl3Technique->enabledLayers();
-    layers.removeAll(QStringLiteral("hasVertexTangent"));
+    layers.removeAll(QStringLiteral("hasTangentNormal"));
     if (usingTangentAttribute)
-        layers.append(QStringLiteral("hasVertexTangent"));
+        layers.append(QStringLiteral("hasTangentNormal"));
 
     updateLayersOnTechniques(layers);
 }
@@ -384,6 +384,16 @@ void IroMatteOpaqueEffect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attr
     layers.removeAll(QStringLiteral("hasTexCoord1"));
     if (usingTexCoord1Attribute)
         layers.append(QStringLiteral("hasTexCoord1"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroMatteOpaqueEffect::updateUsingMorphTargets(bool usingMorphTargets)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("morphtargets"));
+    if (usingMorphTargets)
+        layers.append(QStringLiteral("morphtargets"));
 
     updateLayersOnTechniques(layers);
 }

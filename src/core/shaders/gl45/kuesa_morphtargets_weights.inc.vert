@@ -1,3 +1,4 @@
+#ifdef LAYER_morphtargets
 /*
     kuesa_morphtargets_weights.inc.vert
 
@@ -33,3 +34,4 @@ struct MorphWeights {
 layout(std140, binding = auto) uniform MorphWeightsBlock {
     MorphWeights morphWeights;
 };
+#endif

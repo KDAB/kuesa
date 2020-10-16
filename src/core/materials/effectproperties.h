@@ -65,7 +65,8 @@ public:
         VertexNormal = 1 << 15,
         VertexTangent = 1 << 16,
         VertexTexCoord = 1 << 17,
-        VertexTexCoord1 = 1 << 18
+        VertexTexCoord1 = 1 << 18,
+        MorphTargets = 1 << 19,
     };
     Q_DECLARE_FLAGS(Properties, Property)
     Q_FLAG(Properties)

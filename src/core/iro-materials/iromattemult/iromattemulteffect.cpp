@@ -334,9 +334,9 @@ void IroMatteMultEffect::updateUsingNormalAttribute(bool usingNormalAttribute)
 void IroMatteMultEffect::updateUsingTangentAttribute(bool usingTangentAttribute)
 {
     auto layers = m_gl3Technique->enabledLayers();
-    layers.removeAll(QStringLiteral("hasVertexTangent"));
+    layers.removeAll(QStringLiteral("hasTangentNormal"));
     if (usingTangentAttribute)
-        layers.append(QStringLiteral("hasVertexTangent"));
+        layers.append(QStringLiteral("hasTangentNormal"));
 
     updateLayersOnTechniques(layers);
 }
@@ -357,6 +357,16 @@ void IroMatteMultEffect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attrib
     layers.removeAll(QStringLiteral("hasTexCoord1"));
     if (usingTexCoord1Attribute)
         layers.append(QStringLiteral("hasTexCoord1"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroMatteMultEffect::updateUsingMorphTargets(bool usingMorphTargets)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("morphtargets"));
+    if (usingMorphTargets)
+        layers.append(QStringLiteral("morphtargets"));
 
     updateLayersOnTechniques(layers);
 }

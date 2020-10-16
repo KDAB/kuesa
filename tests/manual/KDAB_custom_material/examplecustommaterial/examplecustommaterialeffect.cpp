@@ -347,6 +347,11 @@ void ExampleCustomMaterialEffect::updateUsingTexCoord1Attribute(bool enabled)
     Q_UNUSED(enabled)
 }
 
+void ExampleCustomMaterialEffect::updateUsingMorphTargets(bool enabled)
+{
+    Q_UNUSED(enabled)
+}
+
 } // namespace Kuesa
 
 QT_END_NAMESPACE
