@@ -50,7 +50,7 @@ class QFilterKey;
 
 namespace Kuesa {
 
-class Q_AUTOTEST_EXPORT MetallicRoughnessTechnique : public Qt3DRender::QTechnique
+class KUESASHARED_EXPORT MetallicRoughnessTechnique : public Qt3DRender::QTechnique
 {
     Q_OBJECT
 public:
