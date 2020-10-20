@@ -27,6 +27,7 @@
 INCLUDEPATH += $$PWD
 
 SOURCES += \
+    $$PWD/empty2dtexture.cpp \
     $$PWD/entitytransformwatcher.cpp \
     $$PWD/kuesanode.cpp \
     $$PWD/logging.cpp \
@@ -42,6 +43,7 @@ SOURCES += \
     $$PWD/transformtracker.cpp
 
 HEADERS += \
+    $$PWD/empty2dtexture_p.h \
     $$PWD/entitytransformwatcher_p.h \
     $$PWD/kuesanode.h \
     $$PWD/logging_p.h \

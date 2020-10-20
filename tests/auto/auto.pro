@@ -93,5 +93,6 @@ qtConfig(private_tests) {
         framegraphutils \
         effectsstages \
         reflectionstages \
-        particlerenderstage
+        particlerenderstage \
+        empty2dtexture
 }
