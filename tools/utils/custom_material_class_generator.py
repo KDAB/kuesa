@@ -1768,6 +1768,15 @@ HEADERS += \\
             getters = self.propertyGettersShaderDataForwarding(shaderdata_props, className) + self.propertyGetters(texture_props, False, className)
             initializations = self.memberInitializations(texture_props)
 
+            def setDefaultEmptyTextures(props):
+                content = ""
+                for texture_prop in props:
+                    propName = texture_prop.get("name", "")
+                    content += "\n    set%s(new Empty2DTexture());" % (propName[0].upper() + propName[1:])
+                return content
+
+            default_textures = setDefaultEmptyTextures(texture_props)
+
             connectionStatements = ""
             connectionStatementsStr = "    QObject::connect(m_shaderData, &%sShaderData::%sChanged, this, &%sProperties::%sChanged);\n"
             for p in shaderdata_props:
@@ -1786,7 +1795,7 @@ HEADERS += \\
                                                                            matName,
                                                                            matName,
                                                                            initializations,
-                                                                           connectionStatements,
+                                                                           connectionStatements + default_textures,
                                                                            matName,
                                                                            matName,
                                                                            matName,
@@ -1795,6 +1804,8 @@ HEADERS += \\
             includes = "#include \"%sproperties.h\"\n" % (matName.lower())
             includes += "#include \"%sshaderdata_p.h\"\n" % (matName.lower())
             includes += "#include <Qt3DCore/private/qnode_p.h>\n"
+            if len(texture_props) > 0:
+                includes += "#include <Kuesa/private/empty2dtexture_p.h>\n"
 
             self.generateCppFile(content,
                                  className,

@@ -30,6 +30,7 @@
 #include "irodiffusehemiproperties.h"
 #include "irodiffusehemishaderdata_p.h"
 #include <Qt3DCore/private/qnode_p.h>
+#include <Kuesa/private/empty2dtexture_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -80,6 +81,8 @@ IroDiffuseHemiProperties::IroDiffuseHemiProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::usesDiffuseMapChanged, this, &IroDiffuseHemiProperties::usesDiffuseMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::gltfYUpChanged, this, &IroDiffuseHemiProperties::gltfYUpChanged);
 
+    setReflectionMap(new Empty2DTexture());
+    setDiffuseMap(new Empty2DTexture());
 }
 
 IroDiffuseHemiProperties::~IroDiffuseHemiProperties() = default;

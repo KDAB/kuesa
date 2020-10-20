@@ -30,6 +30,7 @@
 #include "irodiffusealphaproperties.h"
 #include "irodiffusealphashaderdata_p.h"
 #include <Qt3DCore/private/qnode_p.h>
+#include <Kuesa/private/empty2dtexture_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -76,6 +77,7 @@ IroDiffuseAlphaProperties::IroDiffuseAlphaProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionOuterAlphaChanged, this, &IroDiffuseAlphaProperties::reflectionOuterAlphaChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::alphaGainChanged, this, &IroDiffuseAlphaProperties::alphaGainChanged);
 
+    setReflectionMap(new Empty2DTexture());
 }
 
 IroDiffuseAlphaProperties::~IroDiffuseAlphaProperties() = default;

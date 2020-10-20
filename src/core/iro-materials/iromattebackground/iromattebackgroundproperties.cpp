@@ -30,6 +30,7 @@
 #include "iromattebackgroundproperties.h"
 #include "iromattebackgroundshaderdata_p.h"
 #include <Qt3DCore/private/qnode_p.h>
+#include <Kuesa/private/empty2dtexture_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -70,6 +71,7 @@ IroMatteBackgroundProperties::IroMatteBackgroundProperties(Qt3DCore::QNode *pare
     QObject::connect(m_shaderData, &IroMatteBackgroundShaderData::matteGainChanged, this, &IroMatteBackgroundProperties::matteGainChanged);
     QObject::connect(m_shaderData, &IroMatteBackgroundShaderData::uvOffsetChanged, this, &IroMatteBackgroundProperties::uvOffsetChanged);
 
+    setMatteMap(new Empty2DTexture());
 }
 
 IroMatteBackgroundProperties::~IroMatteBackgroundProperties() = default;

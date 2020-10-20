@@ -30,6 +30,7 @@
 #include "iroglassaddproperties.h"
 #include "iroglassaddshaderdata_p.h"
 #include <Qt3DCore/private/qnode_p.h>
+#include <Kuesa/private/empty2dtexture_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -77,6 +78,7 @@ IroGlassAddProperties::IroGlassAddProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroGlassAddShaderData::diffuseInnerFilterChanged, this, &IroGlassAddProperties::diffuseInnerFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::diffuseOuterFilterChanged, this, &IroGlassAddProperties::diffuseOuterFilterChanged);
 
+    setReflectionMap(new Empty2DTexture());
 }
 
 IroGlassAddProperties::~IroGlassAddProperties() = default;

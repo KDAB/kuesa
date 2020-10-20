@@ -30,6 +30,7 @@
 #include "iromatteopaqueproperties.h"
 #include "iromatteopaqueshaderdata_p.h"
 #include <Qt3DCore/private/qnode_p.h>
+#include <Kuesa/private/empty2dtexture_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -70,6 +71,7 @@ IroMatteOpaqueProperties::IroMatteOpaqueProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroMatteOpaqueShaderData::matteGainChanged, this, &IroMatteOpaqueProperties::matteGainChanged);
     QObject::connect(m_shaderData, &IroMatteOpaqueShaderData::uvOffsetChanged, this, &IroMatteOpaqueProperties::uvOffsetChanged);
 
+    setMatteMap(new Empty2DTexture());
 }
 
 IroMatteOpaqueProperties::~IroMatteOpaqueProperties() = default;

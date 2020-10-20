@@ -30,6 +30,7 @@
 #include "iromatteskyboxproperties.h"
 #include "iromatteskyboxshaderdata_p.h"
 #include <Qt3DCore/private/qnode_p.h>
+#include <Kuesa/private/empty2dtexture_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -70,6 +71,7 @@ IroMatteSkyboxProperties::IroMatteSkyboxProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::matteGainChanged, this, &IroMatteSkyboxProperties::matteGainChanged);
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::uvOffsetChanged, this, &IroMatteSkyboxProperties::uvOffsetChanged);
 
+    setMatteMap(new Empty2DTexture());
 }
 
 IroMatteSkyboxProperties::~IroMatteSkyboxProperties() = default;
