@@ -277,7 +277,11 @@ void TransformTracker::matchNode()
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     connect(m_node, &Qt3DCore::QTransform::worldMatrixChanged, this, &TransformTracker::worldMatrixChanged);
 #endif
-    connect(m_node, &Qt3DCore::QNode::nodeDestroyed, this, [this] { matchNode(); });
+    connect(m_node, &Qt3DCore::QNode::nodeDestroyed, this, [this] {
+        m_node = nullptr;
+        delete m_nodeWatcher;
+        m_nodeWatcher = nullptr;
+    });
 
     delete m_nodeWatcher;
     m_nodeWatcher = nullptr;
