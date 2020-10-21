@@ -100,7 +100,7 @@ Q_SIGNALS:
     void scale3DChanged(const QVector3D &scale);
     void rotationChanged(const QQuaternion &rotation);
     void translationChanged(const QVector3D &translation);
-    void matrixChanged();
+    void matrixChanged(const QMatrix4x4 &matrix);
     void rotationXChanged(float rotationX);
     void rotationYChanged(float rotationY);
     void rotationZChanged(float rotationZ);
@@ -114,14 +114,12 @@ private:
     void updateScreenProjection();
 
     Qt3DCore::QEntity *m_camera;
-    EntityTransformWatcher *m_cameraWatcher;
     Qt3DCore::QTransform *m_cameraTransform;
     Qt3DRender::QCameraLens *m_cameraLens;
     QSize m_screenSize;
     QRectF m_viewportRect;
     QString m_name;
     Qt3DCore::QTransform *m_node;
-    EntityTransformWatcher *m_nodeWatcher;
     QPointF m_screenPosition;
     QMetaObject::Connection m_loadingDoneConnection;
 };

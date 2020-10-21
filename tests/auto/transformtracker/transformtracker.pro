@@ -1,9 +1,9 @@
-# core.pri
+# transformtracker.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# Author: Jim Albamont <jim.albamont@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,43 +24,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-INCLUDEPATH += $$PWD
+TEMPLATE = app
 
-SOURCES += \
-    $$PWD/empty2dtexture.cpp \
-    $$PWD/kuesanode.cpp \
-    $$PWD/logging.cpp \
-    $$PWD/sceneentity.cpp \
-    $$PWD/animationplayer.cpp \
-    $$PWD/skybox.cpp \
-    $$PWD/morphcontroller.cpp \
-    $$PWD/particlemesh.cpp \
-    $$PWD/particlegeometry.cpp \
-    $$PWD/particlematerial.cpp \
-    $$PWD/noisetextureimage.cpp \
-    $$PWD/particles.cpp \
-    $$PWD/transformtracker.cpp
+TARGET = tst_transformtracker
 
-HEADERS += \
-    $$PWD/empty2dtexture_p.h \
-    $$PWD/kuesanode.h \
-    $$PWD/logging_p.h \
-    $$PWD/sceneentity.h \
-    $$PWD/factory.h \
-    $$PWD/kuesa_p.h \
-    $$PWD/kuesa_global.h \
-    $$PWD/kuesa_global_p.h \
-    $$PWD/kuesa_utils_p.h \
-    $$PWD/animationplayer.h \
-    $$PWD/skybox.h \
-    $$PWD/morphcontroller.h \
-    $$PWD/particlemesh_p.h \
-    $$PWD/particlegeometry_p.h \
-    $$PWD/particlematerial_p.h \
-    $$PWD/noisetextureimage_p.h \
-    $$PWD/particles.h \
-    $$PWD/transformtracker.h
+QT += testlib kuesa 3dcore 3drender 3dcore-private
 
-qtConfig(draco) {
-    HEADERS += $$PWD/draco_prefix_p.h
-}
+CONFIG += testcase
+
+SOURCES += tst_transformtracker.cpp

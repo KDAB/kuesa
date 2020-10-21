@@ -84,7 +84,6 @@ qtConfig(private_tests) {
         gltf2material \
         effectslibrary \
         texturetransform \
-        entitytransformwatcher \
         opaquestage \
         transparentstage \
         zfillstage \
@@ -94,5 +93,6 @@ qtConfig(private_tests) {
         effectsstages \
         reflectionstages \
         particlerenderstage \
-        empty2dtexture
+        empty2dtexture \
+        transformtracker
 }
