@@ -31,6 +31,10 @@
 #include "gltf2importer.h"
 #include "effectslibrary_p.h"
 
+#include "metallicroughnessproperties.h"
+#include "unlitproperties.h"
+#include "embeddedtextureimage_p.h"
+
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 using namespace GLTF2Import;
@@ -568,6 +572,9 @@ void GLTF2Context::addPrimitiveEntityToEntity(Qt3DCore::QEntity *e, Qt3DCore::QE
 void GLTF2Context::reset(SceneEntity *sceneEntity)
 {
     // Resets everything but the options;
+    m_sharedImages.setSceneEntity(sceneEntity); // so that they don't get deleted with the scene graph
+    m_effectLibrary->reset();
+
     m_accessors.clear();
     m_buffers.clear();
     m_bufferViews.clear();
@@ -589,7 +596,6 @@ void GLTF2Context::reset(SceneEntity *sceneEntity)
     m_json = {};
     m_localFiles.clear();
     m_bufferChunk.clear();
-    m_effectLibrary->clear();
     m_treeNodes.clear();
     m_treeNodeIdToPrimitiveEntities.clear();
 }
@@ -597,6 +603,95 @@ void GLTF2Context::reset(SceneEntity *sceneEntity)
 GLTF2Context *GLTF2Context::fromImporter(GLTF2Importer *importer)
 {
     return importer->m_context;
+}
+
+Qt3DRender::QAbstractTexture *GLTF2Context::getOrAllocateTexture(qint32 id)
+{
+    if (id < 0 || id >= m_textures.size())
+        return nullptr;
+    return getOrAllocateTexture(m_textures[id]);
+}
+
+Qt3DRender::QAbstractTexture *GLTF2Context::getOrAllocateTexture(Texture &texture)
+{
+    if (texture.texture)
+        return texture.texture;
+
+    const auto image = this->image(texture.sourceImage);
+    if (image.url.isEmpty() && image.data.isEmpty())
+        return nullptr;
+
+    auto texture2d = std::unique_ptr<Qt3DRender::QAbstractTexture>(nullptr);
+    if (texture.isDDSTexture) {
+        if (image.data.isEmpty()) {
+            auto textureLoader = new Qt3DRender::QTextureLoader;
+            texture2d.reset(textureLoader);
+            textureLoader->setSource(image.url);
+        }
+    } else {
+        texture2d.reset(new Qt3DRender::QTexture2D);
+        auto *textureImage = m_sharedImages.getResourceFromCache(image);
+
+        if (textureImage == nullptr) {
+            if (image.data.isEmpty()) {
+                auto ti = new Qt3DRender::QTextureImage();
+                ti->setSource(image.url);
+                ti->setMirrored(false);
+                textureImage = ti;
+            } else {
+                QImage qimage;
+                if (!qimage.loadFromData(image.data)) {
+                    qCWarning(Kuesa::kuesa) << "Failed to decode image" << texture.sourceImage << "from buffer";
+                    return nullptr;
+                }
+                textureImage = new EmbeddedTextureImage(qimage);
+            }
+            if (!image.key.isEmpty())
+                m_sharedImages.addResourceToCache(image, textureImage);
+        } else {
+            textureImage->setParent(Q_NODE_NULLPTR); // so that shared images moves into the scene graph
+        }
+
+        // Add Image to Texture if compatible
+        if (TextureParser::ensureImageIsCompatibleWithTexture(textureImage, texture2d.get()))
+            texture2d->addTextureImage(textureImage);
+        else
+            qCWarning(Kuesa::kuesa) << "Image with source" << image.url << "is incompatbile with texture" << texture2d->objectName();
+    }
+
+    texture2d->setObjectName(texture.name);
+
+    if (texture.sampler == -1) {
+        // Repeat wrappring and auto filtering should be used
+        texture2d->setWrapMode(Qt3DRender::QTextureWrapMode(Qt3DRender::QTextureWrapMode::Repeat));
+        texture2d->setGenerateMipMaps(true);
+        texture2d->setMinificationFilter(Qt3DRender::QAbstractTexture::LinearMipMapLinear);
+        texture2d->setMagnificationFilter(Qt3DRender::QAbstractTexture::Linear);
+    } else {
+        const auto sampler = textureSampler(texture.sampler);
+        if (!sampler.textureWrapMode)
+            return nullptr; // We could use default wrapping, but the file is wrong, so we reject it
+
+        texture2d->setWrapMode(*sampler.textureWrapMode.get());
+        texture2d->setMinificationFilter(sampler.minificationFilter);
+        texture2d->setMagnificationFilter(sampler.magnificationFilter);
+    }
+
+    texture.texture = texture2d.release();
+    return texture.texture;
+}
+
+GLTF2MaterialProperties *GLTF2Context::getOrAllocateMaterial(qint32 id)
+{
+    if (id < 0 || id >= m_materials.size())
+        return nullptr;
+    return getOrAllocateMaterial(m_materials[id]);
+}
+
+GLTF2MaterialProperties *GLTF2Context::getOrAllocateMaterial(Material &material)
+{
+    material.getOrAllocateProperties(*this);
+    return material.m_materialProperties;
 }
 
 QT_END_NAMESPACE

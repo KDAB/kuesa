@@ -1,10 +1,10 @@
 /*
-    textureparser_p.h
+    embeddedtextureimage_p.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_GLTF2IMPORT_TEXTUREPARSER_P_H
-#define KUESA_GLTF2IMPORT_TEXTUREPARSER_P_H
+#ifndef KUESA_GLTF2IMPORT_EMBEDDEDTEXTUREIMAGE_P_H
+#define KUESA_GLTF2IMPORT_EMBEDDEDTEXTUREIMAGE_P_H
 
 //
 //  NOTICE
@@ -37,36 +37,26 @@
 // modified without notice
 //
 
-#include <QJsonArray>
-#include <Qt3DRender/QAbstractTextureImage>
+#include <Kuesa/private/kuesa_global_p.h>
+
+#include <Qt3DRender/qabstracttextureimage.h>
 
 QT_BEGIN_NAMESPACE
-
-namespace Qt3DRender {
-class QAbstractTexture;
-} // namespace Qt3DRender
 
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2Context;
-
-struct Texture {
-    Qt3DRender::QAbstractTexture *texture = nullptr;
-    QString name;
-    int sourceImage = -1;
-    int sampler = -1;
-    bool isDDSTexture = false;
-};
-
-class Q_AUTOTEST_EXPORT TextureParser
+class KUESA_PRIVATE_EXPORT EmbeddedTextureImage : public Qt3DRender::QAbstractTextureImage
 {
 public:
-    TextureParser() = default;
+    EmbeddedTextureImage(const QImage &image, QNode *parent = nullptr);
+    ~EmbeddedTextureImage();
 
-    bool parse(const QJsonArray &texturesArray, GLTF2Context *context) const;
-    static bool ensureImageIsCompatibleWithTexture(Qt3DRender::QAbstractTextureImage *image,
-                                                   Qt3DRender::QAbstractTexture *texture);
+    Qt3DRender::QTextureImageDataGeneratorPtr dataGenerator() const override;
+    QImage image();
+
+private:
+    QImage m_image;
 };
 
 } // namespace GLTF2Import
@@ -74,4 +64,4 @@ public:
 
 QT_END_NAMESPACE
 
-#endif // KUESA_GLTF2IMPORT_TEXTUREPARSER_P_H
+#endif // KUESA_GLTF2IMPORT_EMBEDDEDTEXTUREIMAGE_P_H

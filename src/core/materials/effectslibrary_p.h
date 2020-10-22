@@ -58,9 +58,9 @@ class KUESA_PRIVATE_EXPORT EffectsLibrary
 {
 public:
     EffectsLibrary();
+    ~EffectsLibrary();
 
-    struct CustomEffectKey
-    {
+    struct CustomEffectKey {
         const QMetaObject *effectClassMetaObject;
         EffectProperties::Properties properties;
     };
@@ -74,6 +74,9 @@ public:
     int count() const;
     void clear();
 
+    void reset();
+    void cleanUp();
+
     QHash<EffectProperties::Properties, GLTF2MaterialEffect *> effects() const;
     QVector<CustomEffectKeyPair> customEffects() const;
 
@@ -82,11 +85,12 @@ public:
     static UnlitEffect *createUnlitEffectWithKey(EffectProperties::Properties properties);
 
 private:
+    Qt3DCore::QNode *m_dummyRootNode;
     QHash<EffectProperties::Properties, GLTF2MaterialEffect *> m_effects;
     QVector<CustomEffectKeyPair> m_customEffects;
 };
 
-bool operator ==(const EffectsLibrary::CustomEffectKey &a, const EffectsLibrary::CustomEffectKey &b);
+bool operator==(const EffectsLibrary::CustomEffectKey &a, const EffectsLibrary::CustomEffectKey &b);
 
 } // namespace Kuesa
 

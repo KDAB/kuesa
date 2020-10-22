@@ -55,6 +55,7 @@
 #include "sceneparser_p.h"
 #include "materialparser_p.h"
 #include "skinparser_p.h"
+#include "assetcache_p.h"
 
 #include "gltf2options.h"
 
@@ -131,6 +132,8 @@ public:
     int texturesCount() const;
     void addTexture(const Texture &texture);
     const Texture texture(qint32 id) const;
+    Qt3DRender::QAbstractTexture *getOrAllocateTexture(qint32 id);
+    Qt3DRender::QAbstractTexture *getOrAllocateTexture(Texture &texture);
 
     int animationsCount() const;
     void addAnimation(const Animation &animation);
@@ -148,6 +151,8 @@ public:
     void addMaterial(const Material &material);
     const Material material(qint32 id) const;
     Material &material(qint32 id);
+    Kuesa::GLTF2MaterialProperties *getOrAllocateMaterial(qint32 id);
+    Kuesa::GLTF2MaterialProperties *getOrAllocateMaterial(Material &material);
 
     int skinsCount() const;
     void addSkin(const Skin &skin);
@@ -220,6 +225,9 @@ private:
     QScopedPointer<EffectsLibrary> m_effectLibrary;
 
     QHash<Qt3DCore::QEntity *, QVector<Qt3DCore::QEntity *>> m_treeNodeIdToPrimitiveEntities;
+
+    // Caches to avoid recreating assets
+    AssetCache<Image, Qt3DRender::QAbstractTextureImage> m_sharedImages;
 };
 
 template<>

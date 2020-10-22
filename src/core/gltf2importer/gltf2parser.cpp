@@ -114,6 +114,9 @@ struct GLBHeader {
 template<class CollectionType>
 void addToCollectionWithUniqueName(CollectionType *collection, const QString &basename, typename CollectionType::ContentType *asset)
 {
+    if (!asset)
+        return;
+
     Q_ASSERT(!basename.isEmpty());
     QString currentName = basename;
     for (int i = 1;; ++i) {
@@ -564,6 +567,8 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
     buildSceneRootEntities();
     qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Scene Roots in (" << t.elapsed() - elapsed << "ms)";
 
+    m_context->effectLibrary()->cleanUp();
+
     qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Content generated in (" << t.elapsed() << "ms)";
     return true;
 }
@@ -999,338 +1004,10 @@ void GLTF2Parser::generateTreeNodeContent()
         TreeNode &node = m_context->treeNode(i);
         // Build Entity Content
         if (node.entity) {
-            Qt3DCore::QEntity *entity = node.entity;
-            Qt3DRender::QCamera *camera = qobject_cast<Qt3DRender::QCamera *>(node.entity);
-            Qt3DCore::QTransform *transform = camera ? camera->transform() : new Qt3DCore::QTransform();
-
-            // Set transform properties
-            if (node.transformInfo.bits & TreeNode::TransformInfo::MatrixSet) {
-                transform->setMatrix(node.transformInfo.matrix);
-            } else {
-                if (node.transformInfo.bits & TreeNode::TransformInfo::ScaleSet)
-                    transform->setScale3D(node.transformInfo.scale3D);
-                if (node.transformInfo.bits & TreeNode::TransformInfo::RotationSet)
-                    transform->setRotation(node.transformInfo.rotation);
-                if (node.transformInfo.bits & TreeNode::TransformInfo::TranslationSet)
-                    transform->setTranslation(node.transformInfo.translation);
-            }
-
-            // The QCamera node already contains a lens + transform components
-            if (camera != nullptr) {
-                const qint32 cameraId = node.cameraIdx;
-                if (cameraId >= 0 && cameraId < m_context->cameraCount()) {
-                    const Camera cam = m_context->camera(cameraId);
-                    // Note: we need to keep the lens in cam around as that one will be added
-                    // into the collection
-                    auto lenses = componentsFromEntity<Qt3DRender::QCameraLens>(camera);
-                    qDeleteAll(lenses);
-
-                    auto cameraPrivate = static_cast<Qt3DRender::QCameraPrivate *>(Qt3DRender::QCameraPrivate::get(camera));
-                    cameraPrivate->m_lens = cam.lens;
-
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::projectionTypeChanged, camera, &Qt3DRender::QCamera::projectionTypeChanged);
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::nearPlaneChanged, camera, &Qt3DRender::QCamera::nearPlaneChanged);
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::farPlaneChanged, camera, &Qt3DRender::QCamera::farPlaneChanged);
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::fieldOfViewChanged, camera, &Qt3DRender::QCamera::fieldOfViewChanged);
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::aspectRatioChanged, camera, &Qt3DRender::QCamera::aspectRatioChanged);
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::leftChanged, camera, &Qt3DRender::QCamera::leftChanged);
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::rightChanged, camera, &Qt3DRender::QCamera::rightChanged);
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::bottomChanged, camera, &Qt3DRender::QCamera::bottomChanged);
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::topChanged, camera, &Qt3DRender::QCamera::topChanged);
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::projectionMatrixChanged, camera, &Qt3DRender::QCamera::projectionMatrixChanged);
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::exposureChanged, camera, &Qt3DRender::QCamera::exposureChanged);
-                    QObject::connect(cam.lens, &Qt3DRender::QCameraLens::viewSphere, camera, &Qt3DRender::QCamera::viewSphere);
-
-                    camera->addComponent(cam.lens);
-
-                    QVector3D position, up, viewDir;
-                    // Extract local position, direction and upVector from
-                    // transform->matrix which is our local view matrix in this
-                    // case So as to have sensible values set in the QCamera
-                    // which can the be used with camera controllers
-                    extractPositionViewDirAndUpVectorFromViewMatrix(transform->matrix(),
-                                                                    position,
-                                                                    viewDir,
-                                                                    up);
-                    camera->setPosition(position);
-                    camera->setUpVector(up);
-                    // Choose random center along viewDir line
-                    camera->setViewCenter(position + viewDir * 25.0f);
-                }
-            } else {
-                // Don't forget to add transform as a component
-                // if we aren't a QCamera
-                entity->addComponent(transform);
-            }
-
-            // If the node references Kuesa Layers, add them
-            const QVector<int> layerIds = node.layerIndices;
-            for (const qint32 layerId : layerIds) {
-                if (layerId >= 0 && layerId < m_context->layersCount()) {
-                    const Layer layer = m_context->layer(layerId);
-                    if (layer.layer) {
-                        // Make it recursive so it affects subentities and in particular primitive entities
-                        layer.layer->setRecursive(true);
-                        layer.layer->setParent(m_contentRootEntity);
-                        entity->addComponent(layer.layer);
-                    }
-                }
-            }
-
-            // If the node references Light (KHR_lights_punctual extension), add them
-            if (node.lightIdx != -1 && node.lightIdx < m_context->lightCount()) {
-                const Light lightDefinition = m_context->light(node.lightIdx);
-                Qt3DRender::QAbstractLight *light = lightDefinition.lightComponent;
-                if (light == nullptr) {
-                    switch (lightDefinition.type) {
-                    case Qt3DRender::QAbstractLight::PointLight: {
-                        auto pointLight = new PointLight(m_contentRootEntity);
-                        pointLight->setRange(lightDefinition.range.toFloat());
-                        light = pointLight;
-                        break;
-                    }
-                    case Qt3DRender::QAbstractLight::SpotLight: {
-                        auto spotLight = new SpotLight(m_contentRootEntity);
-                        spotLight->setInnerConeAngle(qRadiansToDegrees(lightDefinition.innerConeAngleRadians));
-                        spotLight->setOuterConeAngle(qRadiansToDegrees(lightDefinition.outerConeAngleRadians));
-                        spotLight->setLocalDirection({ 0.0, 0.0, -1.0 });
-                        spotLight->setRange(lightDefinition.range.toFloat());
-                        light = spotLight;
-                        break;
-                    }
-                    case Qt3DRender::QAbstractLight::DirectionalLight: {
-                        auto directionalLight = new DirectionalLight(m_contentRootEntity);
-                        directionalLight->setDirection({ 0.0, 0.0, -1.0 });
-                        directionalLight->setDirectionMode(DirectionalLight::Local);
-                        light = directionalLight;
-                    }
-                    }
-                    light->setObjectName(lightDefinition.name);
-                    light->setColor(lightDefinition.color);
-                    light->setIntensity(lightDefinition.intensity);
-
-                    // Record component into light
-                    Light &l = m_context->light(node.lightIdx);
-                    l.lightComponent = light;
-                }
-                entity->addComponent(light);
-            }
-
-            // If the node has a mesh, add it
-            const qint32 meshId = node.meshIdx;
-            if (meshId >= 0 && meshId < m_context->meshesCount()) {
-                const qint32 skinId = node.skinIdx;
-                const Mesh &meshData = m_context->mesh(meshId);
-                const bool isSkinned = skinId >= 0 && skinId < m_context->skinsCount();
-                const bool hasMorphTargets = meshData.morphTargetCount > 0;
-
-                Qt3DCore::QArmature *armature = nullptr;
-                Qt3DCore::QEntity *skinRootJointEntity = nullptr;
-                MorphController *morphController = nullptr;
-
-                // Create armature if node references a skin
-                {
-                    if (isSkinned) {
-                        armature = new Qt3DCore::QArmature(m_contentRootEntity);
-                        const Skin &skin = m_context->skin(skinId);
-                        Qt3DCore::QSkeleton *skeleton = skin.skeleton;
-                        armature->setSkeleton(skeleton);
-                        if (!skin.rootJoint.joint && skin.rootJoint.skeletonNode)
-                            skinRootJointEntity = skin.rootJoint.skeletonNode;
-                        else
-                            skinRootJointEntity = m_contentRootEntity;
-
-                        // We need to get the skeleton index buffer and adapt the joints it refers to
-                        for (const auto &primitive : qAsConst(meshData.meshPrimitives)) {
-                            QGeometry *geometry = primitive.primitiveRenderer->geometry();
-                            QAttribute *jointIndicesAttr = nullptr;
-                            const auto attributes = geometry->attributes();
-                            for (auto attr : attributes) {
-                                if (attr->name() == QAttribute::defaultJointIndicesAttributeName()) {
-                                    jointIndicesAttr = attr;
-                                    break;
-                                }
-                            }
-
-                            if (jointIndicesAttr == nullptr) {
-                                qCWarning(Kuesa::kuesa) << "You are using a skinned mesh without joints buffer";
-                                continue;
-                            }
-
-                            switch (jointIndicesAttr->vertexBaseType()) {
-                            case QAttribute::UnsignedByte:
-                                updateDataForJointsAttr<unsigned char>(jointIndicesAttr, skinId);
-                                break;
-                            case QAttribute::UnsignedShort:
-                                updateDataForJointsAttr<unsigned short>(jointIndicesAttr, skinId);
-                                break;
-                            default:
-                                qCWarning(Kuesa::kuesa, "Joint indices buffer component type should be UnsignedByte or UnsignedShort");
-                                Q_UNREACHABLE();
-                            }
-                        }
-
-                        Q_ASSERT(skinRootJointEntity);
-                    }
-                }
-
-                // Create a Morph Controller if we have morph targets
-                {
-                    if (hasMorphTargets) {
-                        // Initiliaze the Morph Controller with the default weights
-                        const QVector<float> nodeDefaultWeight = node.morphTargetWeights;
-                        const QVector<float> meshDefaultWeights = meshData.morphTargetWeights;
-                        const quint8 morphTargetCount = std::min(meshData.morphTargetCount, quint8(8));
-
-                        if (meshData.morphTargetCount > 8)
-                            qCWarning(Kuesa::kuesa) << "Kuesa only supports up to 8 morph targets per mesh";
-
-                        // node Default Weights have priority over the mesh ones
-                        morphController = new MorphController(m_contentRootEntity);
-                        morphController->setCount(morphTargetCount);
-
-                        QVariantList defaultWeights;
-                        defaultWeights.reserve(morphTargetCount);
-
-                        for (int i = 0, m = morphTargetCount; i < m; ++i) {
-                            const float defaultWeight = (i < nodeDefaultWeight.size()) ? nodeDefaultWeight.at(i) : meshDefaultWeights.at(i);
-                            defaultWeights.push_back(defaultWeight);
-                        }
-
-                        morphController->setMorphWeights(defaultWeights);
-                    }
-                }
-
-                // Generate one Entity per primitive (1 primitive == 1 geometry renderer)
-                for (const Primitive &primitiveData : meshData.meshPrimitives) {
-                    Qt3DCore::QEntity *primitiveEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
-
-                    // If the mesh is skinned, the parent of the primitiveEntity wont be the treeNode
-                    // Store this Entity to Entity map so we can use it later on the animation generation
-                    primitiveData.primitiveRenderer->setParent(m_contentRootEntity);
-                    m_context->addPrimitiveEntityToEntity(node.entity, primitiveEntity);
-                    primitiveEntity->addComponent(primitiveData.primitiveRenderer);
-
-                    // Add morph controller if it is not null
-                    if (morphController != nullptr)
-                        primitiveEntity->addComponent(morphController);
-
-                    // Add material for mesh
-                    {
-                        // TO DO: generate proper morph target vertex shader based
-                        // on meshData.morphTargetCount and primitiveData.morphTargets
-
-                        auto setBrdfLutOnEffect = [this](Qt3DRender::QMaterial *m) {
-                            auto effect = qobject_cast<MetallicRoughnessEffect *>(m->effect());
-                            if (effect && m_sceneEntity)
-                                effect->setBrdfLUT(m_sceneEntity->brdfLut());
-                        };
-
-                        auto checkMaterialIsCompatibleWithPrimitive = [](Qt3DRender::QMaterial *m, Qt3DRender::QGeometryRenderer *renderer,
-                                                                         const QString &primitiveName, const QString &materialName) {
-                            MetallicRoughnessMaterial *metalRoughMat = qobject_cast<MetallicRoughnessMaterial *>(m);
-                            // When we have a normal map on a MetalRoughMetarial, make sure we have a tangent attribute
-                            if (metalRoughMat != nullptr && metalRoughMat->materialProperties()->normalMap() != nullptr) {
-                                Q_ASSERT(renderer->geometry());
-                                const QVector<QAttribute *> attributes = renderer->geometry()->attributes();
-                                bool hasTangentAttribute = std::find_if(attributes.cbegin(),
-                                                                        attributes.cend(),
-                                                                        [](QAttribute *attr) {
-                                                                            return attr->name() == QAttribute::defaultTangentAttributeName();
-                                                                        }) != attributes.cend();
-                                if (!hasTangentAttribute)
-                                    qWarning() << QStringLiteral("Primitive %1 is trying to use Material %2 which does normal mapping even though it defines no tangent attribute. This can result in incorrect rendering, please consider generating tangents.")
-                                                          .arg(primitiveName, materialName);
-                            }
-                        };
-
-                        const qint32 materialId = primitiveData.materialIdx;
-                        Material mat;
-                        // Check if the mesh references a material and fetch it
-                        // If it doesn't reference a valid material, create a default shader data
-                        if (materialId >= 0 && materialId < m_context->materialsCount())
-                            mat = m_context->material(materialId);
-                        else
-                            mat.materialProperties(*m_context);
-                        auto effectProperties = Material::effectPropertiesFromMaterial(mat);
-                        if (isSkinned)
-                            effectProperties |= EffectProperties::Skinning;
-                        if (hasMorphTargets)
-                            effectProperties |= EffectProperties::MorphTargets;
-                        if (primitiveData.hasColorAttr)
-                            effectProperties |= EffectProperties::VertexColor;
-                        if (primitiveData.hasNormalAttr)
-                            effectProperties |= EffectProperties::VertexNormal;
-                        if (primitiveData.hasTangentAttr)
-                            effectProperties |= EffectProperties::VertexTangent;
-                        if (primitiveData.hasTexCoordAttr)
-                            effectProperties |= EffectProperties::VertexTexCoord;
-                        if (primitiveData.hasTexCoord1Attr)
-                            effectProperties |= EffectProperties::VertexTexCoord1;
-                        GLTF2MaterialEffect *effect = nullptr;
-
-                        if (mat.extensions.KDAB_custom_material)
-                            effect = m_context->effectLibrary()->getOrCreateCustomEffect({ mat.customMaterial.effectClassMetaObject, effectProperties },
-                                                                                         m_contentRootEntity);
-                        else
-                            effect = m_context->effectLibrary()->getOrCreateEffect(effectProperties,
-                                                                                   m_contentRootEntity);
-
-                        Kuesa::GLTF2Material *material = nullptr;
-                        auto materialName = mat.name;
-
-                        if (mat.extensions.KDAB_custom_material) {
-                            GLTF2Material *specificMaterial = qobject_cast<GLTF2Material *>(
-                                    mat.customMaterial.materialClassMetaObject->newInstance());
-                            Q_ASSERT(specificMaterial);
-                            material = specificMaterial;
-                            Kuesa::GLTF2MaterialProperties *materialProperties = mat.materialProperties();
-                            materialProperties->setParent(m_contentRootEntity);
-                            // Set material properties on material
-                            QMetaObject::invokeMethod(specificMaterial,
-                                                      "setMaterialProperties",
-                                                      Qt::DirectConnection,
-                                                      Q_ARG(Kuesa::GLTF2MaterialProperties *, materialProperties));
-                        } else if (mat.extensions.KHR_materials_unlit) {
-                            auto *specificMaterial = new Kuesa::UnlitMaterial;
-                            material = specificMaterial;
-                            auto materialProperties = static_cast<Kuesa::UnlitProperties *>(mat.materialProperties());
-                            materialProperties->setParent(m_contentRootEntity);
-
-                            specificMaterial->setMaterialProperties(materialProperties);
-                        } else {
-                            auto *specificMaterial = new MetallicRoughnessMaterial;
-                            material = specificMaterial;
-                            auto materialProperties = static_cast<MetallicRoughnessProperties *>(mat.materialProperties());
-                            materialProperties->setParent(m_contentRootEntity);
-                            specificMaterial->setMaterialProperties(materialProperties);
-
-                            checkMaterialIsCompatibleWithPrimitive(specificMaterial, primitiveData.primitiveRenderer,
-                                                                   meshData.name, materialName);
-                        }
-                        // TODO assign brdfLut on effect creation on the library
-                        material->setParent(m_contentRootEntity);
-                        material->setEffect(effect);
-                        setBrdfLutOnEffect(material);
-                        if (hasMorphTargets)
-                            material->setMorphController(morphController);
-
-                        primitiveEntity->addComponent(material);
-                    }
-                    // Add armature if it is not null
-                    if (armature != nullptr) {
-                        primitiveEntity->addComponent(armature);
-                        // We set the parent to the skeleton root's transform
-                        // (in other words, our parent is the entity that
-                        // corresponds to the node to which the root joint is
-                        // assigned)
-                        primitiveEntity->setParent(skinRootJointEntity);
-                    } else {
-                        // We set the parent to entity so that transform is applied
-                        primitiveEntity->setParent(entity);
-                    }
-                }
-            }
+            createTransform(node);
+            createLayers(node);
+            createLight(node);
+            createMesh(node);
         }
 
         // Build Joint Content
@@ -1406,6 +1083,386 @@ void GLTF2Parser::generateAnimationContent()
             for (Qt3DAnimation::QChannelMapping *m : channelMappings)
                 channelMapper->addMapping(m);
         }
+    }
+}
+
+void GLTF2Parser::createTransform(const TreeNode &node)
+{
+    Qt3DCore::QEntity *entity = node.entity;
+    Qt3DRender::QCamera *camera = qobject_cast<Qt3DRender::QCamera *>(node.entity);
+    Qt3DCore::QTransform *transform = camera ? camera->transform() : new Qt3DCore::QTransform();
+
+    // Set transform properties
+    if (node.transformInfo.bits & TreeNode::TransformInfo::MatrixSet) {
+        transform->setMatrix(node.transformInfo.matrix);
+    } else {
+        if (node.transformInfo.bits & TreeNode::TransformInfo::ScaleSet)
+            transform->setScale3D(node.transformInfo.scale3D);
+        if (node.transformInfo.bits & TreeNode::TransformInfo::RotationSet)
+            transform->setRotation(node.transformInfo.rotation);
+        if (node.transformInfo.bits & TreeNode::TransformInfo::TranslationSet)
+            transform->setTranslation(node.transformInfo.translation);
+    }
+
+    // The QCamera node already contains a lens + transform components
+    if (camera != nullptr) {
+        const qint32 cameraId = node.cameraIdx;
+        if (cameraId >= 0 && cameraId < m_context->cameraCount()) {
+            const Camera cam = m_context->camera(cameraId);
+            // Note: we need to keep the lens in cam around as that one will be added
+            // into the collection
+            auto lenses = componentsFromEntity<Qt3DRender::QCameraLens>(camera);
+            qDeleteAll(lenses);
+
+            auto cameraPrivate = static_cast<Qt3DRender::QCameraPrivate *>(Qt3DRender::QCameraPrivate::get(camera));
+            cameraPrivate->m_lens = cam.lens;
+
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::projectionTypeChanged, camera, &Qt3DRender::QCamera::projectionTypeChanged);
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::nearPlaneChanged, camera, &Qt3DRender::QCamera::nearPlaneChanged);
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::farPlaneChanged, camera, &Qt3DRender::QCamera::farPlaneChanged);
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::fieldOfViewChanged, camera, &Qt3DRender::QCamera::fieldOfViewChanged);
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::aspectRatioChanged, camera, &Qt3DRender::QCamera::aspectRatioChanged);
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::leftChanged, camera, &Qt3DRender::QCamera::leftChanged);
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::rightChanged, camera, &Qt3DRender::QCamera::rightChanged);
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::bottomChanged, camera, &Qt3DRender::QCamera::bottomChanged);
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::topChanged, camera, &Qt3DRender::QCamera::topChanged);
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::projectionMatrixChanged, camera, &Qt3DRender::QCamera::projectionMatrixChanged);
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::exposureChanged, camera, &Qt3DRender::QCamera::exposureChanged);
+            QObject::connect(cam.lens, &Qt3DRender::QCameraLens::viewSphere, camera, &Qt3DRender::QCamera::viewSphere);
+
+            camera->addComponent(cam.lens);
+
+            QVector3D position, up, viewDir;
+            // Extract local position, direction and upVector from
+            // transform->matrix which is our local view matrix in this
+            // case So as to have sensible values set in the QCamera
+            // which can the be used with camera controllers
+            extractPositionViewDirAndUpVectorFromViewMatrix(transform->matrix(),
+                                                            position,
+                                                            viewDir,
+                                                            up);
+            camera->setPosition(position);
+            camera->setUpVector(up);
+            // Choose random center along viewDir line
+            camera->setViewCenter(position + viewDir * 25.0f);
+        }
+    } else {
+        // Don't forget to add transform as a component
+        // if we aren't a QCamera
+        entity->addComponent(transform);
+    }
+}
+
+void GLTF2Parser::createLayers(const TreeNode &node)
+{
+    Qt3DCore::QEntity *entity = node.entity;
+
+    // If the node references Kuesa Layers, add them
+    const QVector<int> layerIds = node.layerIndices;
+    for (const qint32 layerId : layerIds) {
+        if (layerId >= 0 && layerId < m_context->layersCount()) {
+            const Layer layer = m_context->layer(layerId);
+            if (layer.layer) {
+                // Make it recursive so it affects subentities and in particular primitive entities
+                layer.layer->setRecursive(true);
+                layer.layer->setParent(m_contentRootEntity);
+                entity->addComponent(layer.layer);
+            }
+        }
+    }
+}
+
+void GLTF2Parser::createMesh(const TreeNode &node)
+{
+    Qt3DCore::QEntity *entity = node.entity;
+
+    // If the node has a mesh, add it
+    const qint32 meshId = node.meshIdx;
+    if (meshId >= 0 && meshId < m_context->meshesCount()) {
+        const Mesh &meshData = m_context->mesh(meshId);
+        const qint32 skinId = node.skinIdx;
+        const bool isSkinned = skinId >= 0 && skinId < m_context->skinsCount();
+        const bool hasMorphTargets = meshData.morphTargetCount > 0;
+
+        Qt3DCore::QArmature *armature = nullptr;
+        Qt3DCore::QEntity *skinRootJointEntity = nullptr;
+        MorphController *morphController = nullptr;
+
+        // Create armature if node references a skin
+        if (isSkinned)
+            createSkin(node, &armature, &skinRootJointEntity);
+
+        // Create a Morph Controller if we have morph targets
+        if (hasMorphTargets)
+            morphController = createMorphTarget(node);
+
+        // Generate one Entity per primitive (1 primitive == 1 geometry renderer)
+        for (const Primitive &primitiveData : meshData.meshPrimitives) {
+            Qt3DCore::QEntity *primitiveEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
+
+            // If the mesh is skinned, the parent of the primitiveEntity wont be the treeNode
+            // Store this Entity to Entity map so we can use it later on the animation generation
+            primitiveData.primitiveRenderer->setParent(m_contentRootEntity);
+            m_context->addPrimitiveEntityToEntity(node.entity, primitiveEntity);
+            primitiveEntity->addComponent(primitiveData.primitiveRenderer);
+
+            // Add morph controller if it is not null
+            if (morphController != nullptr)
+                primitiveEntity->addComponent(morphController);
+
+            // Add material for mesh
+            GLTF2Material *material = createMaterial(meshData, primitiveData,
+                                                     isSkinned, hasMorphTargets);
+            if (hasMorphTargets)
+                material->setMorphController(morphController);
+
+            primitiveEntity->addComponent(material);
+
+            // Add armature if it is not null
+            if (armature != nullptr) {
+                primitiveEntity->addComponent(armature);
+                // We set the parent to the skeleton root's transform
+                // (in other words, our parent is the entity that
+                // corresponds to the node to which the root joint is
+                // assigned)
+                primitiveEntity->setParent(skinRootJointEntity);
+            } else {
+                // We set the parent to entity so that transform is applied
+                primitiveEntity->setParent(entity);
+            }
+        }
+    }
+}
+
+void GLTF2Parser::createSkin(const TreeNode &node,
+                             Qt3DCore::QArmature **armaturePtr,
+                             Qt3DCore::QEntity **skinRootJointEntityPtr)
+{
+    const qint32 meshId = node.meshIdx;
+    const qint32 skinId = node.skinIdx;
+    const Mesh &meshData = m_context->mesh(meshId);
+    const Skin &skin = m_context->skin(skinId);
+    Qt3DCore::QArmature *armature = new Qt3DCore::QArmature(m_contentRootEntity);
+    Qt3DCore::QEntity *skinRootJointEntity = nullptr;
+    Qt3DCore::QSkeleton *skeleton = skin.skeleton;
+    armature->setSkeleton(skeleton);
+    if (!skin.rootJoint.joint && skin.rootJoint.skeletonNode)
+        skinRootJointEntity = skin.rootJoint.skeletonNode;
+    else
+        skinRootJointEntity = m_contentRootEntity;
+
+    // We need to get the skeleton index buffer and adapt the joints it refers to
+    for (const auto &primitive : qAsConst(meshData.meshPrimitives)) {
+        QGeometry *geometry = primitive.primitiveRenderer->geometry();
+        QAttribute *jointIndicesAttr = nullptr;
+        const auto attributes = geometry->attributes();
+        for (auto attr : attributes) {
+            if (attr->name() == QAttribute::defaultJointIndicesAttributeName()) {
+                jointIndicesAttr = attr;
+                break;
+            }
+        }
+
+        if (jointIndicesAttr == nullptr) {
+            qCWarning(Kuesa::kuesa) << "You are using a skinned mesh without joints buffer";
+            continue;
+        }
+
+        switch (jointIndicesAttr->vertexBaseType()) {
+        case QAttribute::UnsignedByte:
+            updateDataForJointsAttr<unsigned char>(jointIndicesAttr, skinId);
+            break;
+        case QAttribute::UnsignedShort:
+            updateDataForJointsAttr<unsigned short>(jointIndicesAttr, skinId);
+            break;
+        default:
+            qCWarning(Kuesa::kuesa, "Joint indices buffer component type should be UnsignedByte or UnsignedShort");
+            Q_UNREACHABLE();
+        }
+    }
+
+    Q_ASSERT(skinRootJointEntity);
+    *armaturePtr = armature;
+    *skinRootJointEntityPtr = skinRootJointEntity;
+}
+
+MorphController *GLTF2Parser::createMorphTarget(const TreeNode &node)
+{
+    // Initiliaze the Morph Controller with the default weights
+    const qint32 meshId = node.meshIdx;
+    const Mesh &meshData = m_context->mesh(meshId);
+    const QVector<float> nodeDefaultWeight = node.morphTargetWeights;
+    const QVector<float> meshDefaultWeights = meshData.morphTargetWeights;
+    const quint8 morphTargetCount = std::min(meshData.morphTargetCount, quint8(8));
+
+    if (meshData.morphTargetCount > 8)
+        qCWarning(Kuesa::kuesa) << "Kuesa only supports up to 8 morph targets per mesh";
+
+    // node Default Weights have priority over the mesh ones
+    MorphController *morphController = new MorphController(m_contentRootEntity);
+    morphController->setCount(morphTargetCount);
+
+    QVariantList defaultWeights;
+    defaultWeights.reserve(morphTargetCount);
+
+    for (int i = 0, m = morphTargetCount; i < m; ++i) {
+        const float defaultWeight = (i < nodeDefaultWeight.size()) ? nodeDefaultWeight.at(i) : meshDefaultWeights.at(i);
+        defaultWeights.push_back(defaultWeight);
+    }
+
+    morphController->setMorphWeights(defaultWeights);
+
+    return morphController;
+}
+
+GLTF2Material *GLTF2Parser::createMaterial(const Mesh &meshData,
+                                           const Primitive &primitiveData,
+                                           bool isSkinned,
+                                           bool hasMorphTargets)
+{
+    auto setBrdfLutOnEffect = [this](Qt3DRender::QMaterial *m) {
+        auto effect = qobject_cast<MetallicRoughnessEffect *>(m->effect());
+        if (effect && m_sceneEntity)
+            effect->setBrdfLUT(m_sceneEntity->brdfLut());
+    };
+
+    auto checkMaterialIsCompatibleWithPrimitive = [](Qt3DRender::QMaterial *m, Qt3DRender::QGeometryRenderer *renderer,
+                                                     const QString &primitiveName, const QString &materialName) {
+        MetallicRoughnessMaterial *metalRoughMat = qobject_cast<MetallicRoughnessMaterial *>(m);
+        // When we have a normal map on a MetalRoughMetarial, make sure we have a tangent attribute
+        if (metalRoughMat != nullptr && metalRoughMat->materialProperties()->normalMap() != nullptr) {
+            Q_ASSERT(renderer->geometry());
+            const QVector<QAttribute *> attributes = renderer->geometry()->attributes();
+            bool hasTangentAttribute = std::find_if(attributes.cbegin(),
+                                                    attributes.cend(),
+                                                    [](QAttribute *attr) {
+                                                        return attr->name() == QAttribute::defaultTangentAttributeName();
+                                                    }) != attributes.cend();
+            if (!hasTangentAttribute)
+                qWarning() << QStringLiteral("Primitive %1 is trying to use Material %2 which does normal mapping even though it defines no tangent attribute. This can result in incorrect rendering, please consider generating tangents.")
+                                      .arg(primitiveName, materialName);
+        }
+    };
+
+    auto createMaterialAndProperties = [&] (Material &mat) {
+        auto effectProperties = Material::effectPropertiesFromMaterial(mat);
+        if (isSkinned)
+            effectProperties |= EffectProperties::Skinning;
+        if (hasMorphTargets)
+            effectProperties |= EffectProperties::MorphTargets;
+        if (primitiveData.hasColorAttr)
+            effectProperties |= EffectProperties::VertexColor;
+        if (primitiveData.hasNormalAttr)
+            effectProperties |= EffectProperties::VertexNormal;
+        if (primitiveData.hasTangentAttr)
+            effectProperties |= EffectProperties::VertexTangent;
+        if (primitiveData.hasTexCoordAttr)
+            effectProperties |= EffectProperties::VertexTexCoord;
+        if (primitiveData.hasTexCoord1Attr)
+            effectProperties |= EffectProperties::VertexTexCoord1;
+
+        GLTF2MaterialEffect *effect = nullptr;
+        if (mat.extensions.KDAB_custom_material)
+            effect = m_context->effectLibrary()->getOrCreateCustomEffect({ mat.customMaterial.effectClassMetaObject, effectProperties },
+                                                                         m_contentRootEntity);
+        else
+            effect = m_context->effectLibrary()->getOrCreateEffect(effectProperties, m_contentRootEntity);
+
+        Kuesa::GLTF2MaterialProperties *materialProperties = m_context->getOrAllocateMaterial(mat);
+        Kuesa::GLTF2Material *material = nullptr;
+        auto materialName = mat.name;
+
+        if (mat.extensions.KDAB_custom_material) {
+            GLTF2Material *specificMaterial = qobject_cast<GLTF2Material *>(
+                        mat.customMaterial.materialClassMetaObject->newInstance());
+            Q_ASSERT(specificMaterial);
+            material = specificMaterial;
+            materialProperties->setParent(m_contentRootEntity);
+            // Set material properties on material
+            QMetaObject::invokeMethod(specificMaterial,
+                                      "setMaterialProperties",
+                                      Qt::DirectConnection,
+                                      Q_ARG(Kuesa::GLTF2MaterialProperties *, materialProperties));
+        } else if (mat.extensions.KHR_materials_unlit) {
+            auto *specificMaterial = new Kuesa::UnlitMaterial;
+            material = specificMaterial;
+            auto specificMaterialProperties = static_cast<Kuesa::UnlitProperties *>(materialProperties);
+            specificMaterialProperties->setParent(m_contentRootEntity);
+
+            specificMaterial->setMaterialProperties(specificMaterialProperties);
+        } else {
+            auto *specificMaterial = new MetallicRoughnessMaterial;
+            material = specificMaterial;
+            auto specificMaterialProperties = static_cast<MetallicRoughnessProperties *>(materialProperties);
+            specificMaterialProperties->setParent(m_contentRootEntity);
+            specificMaterial->setMaterialProperties(specificMaterialProperties);
+
+            checkMaterialIsCompatibleWithPrimitive(specificMaterial, primitiveData.primitiveRenderer,
+                                                   meshData.name, materialName);
+        }
+
+        // TODO assign brdfLut on effect creation on the library
+        material->setParent(m_contentRootEntity);
+        material->setEffect(effect);
+        setBrdfLutOnEffect(material);
+
+        return material;
+    };
+
+
+    const qint32 materialId = primitiveData.materialIdx;
+    const bool hasMaterial = materialId >= 0 && materialId < m_context->materialsCount();
+    if (hasMaterial) {
+        Material &m = m_context->material(materialId);
+        return createMaterialAndProperties(m);
+    }
+
+    // Otherwise create a default material
+    Material m;
+    return createMaterialAndProperties(m);
+}
+
+void GLTF2Parser::createLight(const TreeNode &node)
+{
+    Qt3DCore::QEntity *entity = node.entity;
+
+    // If the node references Light (KHR_lights_punctual extension), add them
+    if (node.lightIdx != -1 && node.lightIdx < m_context->lightCount()) {
+        const Light lightDefinition = m_context->light(node.lightIdx);
+        Qt3DRender::QAbstractLight *light = lightDefinition.lightComponent;
+        if (light == nullptr) {
+            switch (lightDefinition.type) {
+            case Qt3DRender::QAbstractLight::PointLight: {
+                auto pointLight = new PointLight(m_contentRootEntity);
+                pointLight->setRange(lightDefinition.range.toFloat());
+                light = pointLight;
+                break;
+            }
+            case Qt3DRender::QAbstractLight::SpotLight: {
+                auto spotLight = new SpotLight(m_contentRootEntity);
+                spotLight->setInnerConeAngle(qRadiansToDegrees(lightDefinition.innerConeAngleRadians));
+                spotLight->setOuterConeAngle(qRadiansToDegrees(lightDefinition.outerConeAngleRadians));
+                spotLight->setLocalDirection({ 0.0, 0.0, -1.0 });
+                spotLight->setRange(lightDefinition.range.toFloat());
+                light = spotLight;
+                break;
+            }
+            case Qt3DRender::QAbstractLight::DirectionalLight: {
+                auto directionalLight = new DirectionalLight(m_contentRootEntity);
+                directionalLight->setDirection({ 0.0, 0.0, -1.0 });
+                directionalLight->setDirectionMode(DirectionalLight::Local);
+                light = directionalLight;
+            }
+            }
+            light->setObjectName(lightDefinition.name);
+            light->setColor(lightDefinition.color);
+            light->setIntensity(lightDefinition.intensity);
+
+            // Record component into light
+            Light &l = m_context->light(node.lightIdx);
+            l.lightComponent = light;
+        }
+        entity->addComponent(light);
     }
 }
 

@@ -81,7 +81,6 @@ std::vector<Qt3DAnimation::QChannelMapping *> iroMappingGenerator(const GLTF2Con
     return { channelMapping };
 }
 
-
 template<typename T>
 T clamp(T val, T min, T max)
 {
@@ -269,7 +268,6 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
         if (materialObject.isEmpty()) {
             // Having an empty object is allowed
             // Skip parsing and use default material values if that happens
-            mat.materialProperties(*context);
             context->addMaterial(mat);
             continue;
         }
@@ -400,20 +398,18 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
             }
         }
 
-        mat.materialProperties(*context);
         context->addMaterial(mat);
     }
 
     return materials.size() > 0;
 }
 
-Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context &context)
+Kuesa::GLTF2MaterialProperties *Material::getOrAllocateProperties(GLTF2Context &context)
 {
     if (m_materialProperties)
         return m_materialProperties;
 
     if (extensions.KDAB_custom_material) { // Custom Material
-
         // Check if we find a registered custom material that matches
         const QByteArray className = QByteArray(customMaterial.propertiesClassMetaObject->className());
         if (className.isEmpty())
@@ -425,7 +421,6 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
 
         // Fill materialProperty class
         for (const KDABCustomMaterial::Property &prop : customMaterial.properties) {
-
             // Is property a texture
             static const int textureInfoTypeId = qMetaTypeId<TextureInfo>();
             const QByteArray propName = prop.name.toLatin1();
@@ -434,7 +429,7 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
                 const qint32 textureIdx = info.index;
                 if (textureIdx > -1)
                     materialProperties->setProperty(propName,
-                                                    QVariant::fromValue(context.texture(textureIdx).texture));
+                                                    QVariant::fromValue(context.getOrAllocateTexture(textureIdx)));
                 // TO DO: Use the specified texCoords
             } else {
                 materialProperties->setProperty(propName, prop.value);
@@ -451,7 +446,7 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
 
         const qint32 baseColorTextureIdx = pbr.baseColorTexture.index;
         if (baseColorTextureIdx > -1) {
-            materialProperties->setBaseColorMap(context.texture(baseColorTextureIdx).texture);
+            materialProperties->setBaseColorMap(context.getOrAllocateTexture(baseColorTextureIdx));
             materialProperties->setBaseColorUsesTexCoord1(pbr.baseColorTexture.texCoord == 1);
         }
 
@@ -459,7 +454,6 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
 
         m_materialProperties = materialProperties;
     } else { // PBR Material
-
         auto *materialProperties = new Kuesa::MetallicRoughnessProperties;
         materialProperties->setMetallicFactor(pbr.metallicFactor);
         materialProperties->setRoughnessFactor(pbr.roughtnessFactor);
@@ -477,7 +471,7 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
         const qint32 baseColorTextureIdx = pbr.baseColorTexture.index;
         if (baseColorTextureIdx > -1) {
             TextureInfo texInfo = pbr.baseColorTexture;
-            materialProperties->setBaseColorMap(context.texture(baseColorTextureIdx).texture);
+            materialProperties->setBaseColorMap(context.getOrAllocateTexture(baseColorTextureIdx));
             materialProperties->setBaseColorUsesTexCoord1(pbr.baseColorTexture.texCoord == 1);
             materialProperties->baseColorMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
             materialProperties->baseColorMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
@@ -487,7 +481,7 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
         const qint32 metallicRoughnessTextureIdx = pbr.metallicRoughnessTexture.index;
         if (metallicRoughnessTextureIdx > -1) {
             TextureInfo texInfo = pbr.metallicRoughnessTexture;
-            materialProperties->setMetalRoughMap(context.texture(metallicRoughnessTextureIdx).texture);
+            materialProperties->setMetalRoughMap(context.getOrAllocateTexture(metallicRoughnessTextureIdx));
             materialProperties->setMetallicRoughnessUsesTexCoord1(pbr.metallicRoughnessTexture.texCoord == 1);
             materialProperties->metalRoughMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
             materialProperties->metalRoughMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
@@ -497,7 +491,7 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
         const qint32 normalMapTextureIdx = normalTexture.index;
         if (normalMapTextureIdx > -1) {
             TextureInfo texInfo = normalTexture;
-            materialProperties->setNormalMap(context.texture(normalMapTextureIdx).texture);
+            materialProperties->setNormalMap(context.getOrAllocateTexture(normalMapTextureIdx));
             materialProperties->setNormalUsesTexCoord1(normalTexture.texCoord == 1);
             materialProperties->normalMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
             materialProperties->normalMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
@@ -507,7 +501,7 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
         const qint32 emissiveMapTextureIdx = emissiveTexture.index;
         if (emissiveMapTextureIdx > -1) {
             TextureInfo texInfo = emissiveTexture;
-            materialProperties->setEmissiveMap(context.texture(emissiveMapTextureIdx).texture);
+            materialProperties->setEmissiveMap(context.getOrAllocateTexture(emissiveMapTextureIdx));
             materialProperties->setEmissiveUsesTexCoord1(emissiveTexture.index == 1);
             materialProperties->emissiveMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
             materialProperties->emissiveMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
@@ -517,13 +511,12 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
         const qint32 occulsionMapTextureIdx = occlusionTexture.index;
         if (occulsionMapTextureIdx > -1) {
             TextureInfo texInfo = occlusionTexture;
-            materialProperties->setAmbientOcclusionMap(context.texture(occulsionMapTextureIdx).texture);
+            materialProperties->setAmbientOcclusionMap(context.getOrAllocateTexture(occulsionMapTextureIdx));
             materialProperties->setAOUsesTexCoord1(occlusionTexture.texCoord == 1);
             materialProperties->ambientOcclusionMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
             materialProperties->ambientOcclusionMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
             materialProperties->ambientOcclusionMapTextureTransform()->setRotation(texInfo.khr_texture_transform.rotation);
         }
-
 
         materialProperties->setAlphaCutoff(alpha.alphaCutoff);
 

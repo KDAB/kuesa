@@ -64,11 +64,14 @@ class QChannelMapper;
 namespace Kuesa {
 class SceneEntity;
 class AbstractAssetCollection;
+class MorphController;
+class GLTF2Material;
 
 namespace GLTF2Import {
 
 struct TreeNode;
 struct Mesh;
+struct Primitive;
 
 struct HierarchyNode {
     int nodeIdx = -1;
@@ -137,6 +140,20 @@ private:
     void generateTreeNodeContent();
     void generateSkeletonContent();
     void generateAnimationContent();
+
+    void createTransform(const TreeNode &node);
+    void createLayers(const TreeNode &node);
+    void createLight(const TreeNode &node);
+    void createMesh(const TreeNode &node);
+
+    void createSkin(const TreeNode &node,
+                    Qt3DCore::QArmature **armaturePtr,
+                    Qt3DCore::QEntity **skinRootJointEntityPtr);
+    MorphController *createMorphTarget(const TreeNode &node);
+    GLTF2Material *createMaterial(const Mesh &meshData,
+                                  const Primitive &primitiveData,
+                                  bool isSkinned,
+                                  bool hasMorphTarget);
 
     template<class T>
     void updateDataForJointsAttr(Qt3DGeometry::QAttribute *attr, int skinId);

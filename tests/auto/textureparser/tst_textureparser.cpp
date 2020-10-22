@@ -119,8 +119,15 @@ private Q_SLOTS:
         // THEN
         QCOMPARE(success, succeeded);
         QCOMPARE(context.texturesCount(), texturesCount);
-        if (texturesCount > 0 && shouldHaveImage)
+        if (texturesCount > 0 && shouldHaveImage) {
+            QVERIFY(!context.texture(0).texture);
+
+            // WHEN
+            context.getOrAllocateTexture(0);
+
+            // THEN
             QVERIFY(context.texture(0).texture->textureImages()[0]);
+        }
     }
 
     void checkTextureImageSharing()
@@ -157,6 +164,15 @@ private Q_SLOTS:
         // THEN
         QVERIFY(success);
         QCOMPARE(context.texturesCount(), 2);
+
+        QVERIFY(!context.texture(0).texture);
+        QVERIFY(!context.texture(1).texture);
+
+        // WHEN
+        context.getOrAllocateTexture(0);
+        context.getOrAllocateTexture(1);
+
+        // THEN
         QCOMPARE(context.texture(0).texture->textureImages().size(),
                  context.texture(1).texture->textureImages().size());
         QCOMPARE(context.texture(0).texture->textureImages()[0],
@@ -191,6 +207,6 @@ private Q_SLOTS:
     }
 };
 
-QTEST_APPLESS_MAIN(tst_TextureParser)
+QTEST_MAIN(tst_TextureParser)
 
 #include "tst_textureparser.moc"

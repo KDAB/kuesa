@@ -96,23 +96,33 @@ GLTF2MaterialEffect *EffectsLibrary::createEffectWithKey(EffectProperties::Prope
 }
 
 EffectsLibrary::EffectsLibrary()
+    : m_dummyRootNode(new Qt3DCore::QNode)
 {
+}
+
+EffectsLibrary::~EffectsLibrary()
+{
+    delete m_dummyRootNode;
+    m_dummyRootNode = nullptr;
 }
 
 GLTF2MaterialEffect *EffectsLibrary::getOrCreateCustomEffect(EffectsLibrary::CustomEffectKey customEffectKey,
                                                              Qt3DCore::QNode *effectOwner)
 {
-    auto customEffectKeyIsEqual = [customEffectKey] (const CustomEffectKeyPair &a) {
+    auto customEffectKeyIsEqual = [customEffectKey](const CustomEffectKeyPair &a) {
         return std::get<0>(a) == customEffectKey;
     };
     const auto it = std::find_if(m_customEffects.cbegin(),
                                  m_customEffects.cend(),
                                  customEffectKeyIsEqual);
-    if (it != m_customEffects.cend())
-        return std::get<1>(*it);
+    if (it != m_customEffects.cend()) {
+        auto res = std::get<1>(*it);
+        res->setParent(effectOwner);
+        return res;
+    }
 
     GLTF2MaterialEffect *effect = qobject_cast<GLTF2MaterialEffect *>(
-                customEffectKey.effectClassMetaObject->newInstance(
+            customEffectKey.effectClassMetaObject->newInstance(
                     Q_ARG(Qt3DCore::QNode *, effectOwner)));
     Q_ASSERT(effect);
     const EffectProperties::Properties properties = customEffectKey.properties;
@@ -126,7 +136,7 @@ GLTF2MaterialEffect *EffectsLibrary::getOrCreateCustomEffect(EffectsLibrary::Cus
     effect->setUsingTexCoord1Attribute(properties & EffectProperties::VertexTexCoord1);
     effect->setUsingSkinning(properties & EffectProperties::Skinning);
     effect->setUsingMorphTargets(properties & EffectProperties::MorphTargets);
-    m_customEffects.push_back({customEffectKey, effect});
+    m_customEffects.push_back({ customEffectKey, effect });
     return effect;
 }
 
@@ -142,7 +152,10 @@ GLTF2MaterialEffect *EffectsLibrary::getOrCreateEffect(EffectProperties::Propert
         }
         return effect;
     }
-    return effectIt.value();
+
+    auto effect = effectIt.value();
+    effect->setParent(effectOwner);
+    return effect;
 }
 
 int EffectsLibrary::count() const
@@ -156,22 +169,47 @@ void EffectsLibrary::clear()
     m_customEffects.clear();
 }
 
+void EffectsLibrary::reset()
+{
+    for (auto effect : m_effects)
+        effect->setParent(m_dummyRootNode);
+    for (auto effectKeyPair : m_customEffects)
+        effectKeyPair.second->setParent(m_dummyRootNode);
+}
+
+void EffectsLibrary::cleanUp()
+{
+    {
+        auto it = std::remove_if(std::begin(m_effects), std::end(m_effects), [this](GLTF2MaterialEffect *effect) {
+            return effect->parentNode() == m_dummyRootNode;
+        });
+        while (it != m_effects.end())
+            it = m_effects.erase(it);
+    }
+    {
+        auto it = std::remove_if(std::begin(m_customEffects), std::end(m_customEffects), [this](const CustomEffectKeyPair &effectKey) {
+            return effectKey.second->parentNode() == m_dummyRootNode;
+        });
+        while (it != m_customEffects.end())
+            it = m_customEffects.erase(it);
+    }
+}
+
 QHash<EffectProperties::Properties, GLTF2MaterialEffect *> EffectsLibrary::effects() const
 {
     return m_effects;
 }
 
-QVector<std::pair<EffectsLibrary::CustomEffectKey, GLTF2MaterialEffect *> > EffectsLibrary::customEffects() const
+QVector<std::pair<EffectsLibrary::CustomEffectKey, GLTF2MaterialEffect *>> EffectsLibrary::customEffects() const
 {
     return m_customEffects;
 }
 
-bool operator ==(const EffectsLibrary::CustomEffectKey &a, const EffectsLibrary::CustomEffectKey &b)
+bool operator==(const EffectsLibrary::CustomEffectKey &a, const EffectsLibrary::CustomEffectKey &b)
 {
-    return a.effectClassMetaObject == b.effectClassMetaObject &&
-           a.properties == b.properties;
+    return a.effectClassMetaObject == b.effectClassMetaObject && a.properties == b.properties;
 }
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
