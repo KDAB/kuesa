@@ -50,7 +50,7 @@ class KUESASHARED_EXPORT ToneMappingAndGammaCorrectionEffect : public AbstractPo
     Q_OBJECT
     Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
     Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged)
-    Q_PROPERTY(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
+    Q_PROPERTY(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged)
 
 public:
     enum ToneMapping {

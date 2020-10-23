@@ -50,26 +50,21 @@ class KUESASHARED_EXPORT UnlitEffect : public GLTF2MaterialEffect
 {
     Q_OBJECT
     Q_PROPERTY(bool baseColorMapEnabled READ isBaseColorMapEnabled WRITE setBaseColorMapEnabled NOTIFY baseColorMapEnabledChanged)
-    Q_PROPERTY(bool usingColorAttribute READ isUsingColorAttribute WRITE setUsingColorAttribute NOTIFY usingColorAttributeChanged)
 
 public:
     explicit UnlitEffect(Qt3DCore::QNode *parent = nullptr);
     ~UnlitEffect();
 
     bool isBaseColorMapEnabled() const;
-    bool isUsingColorAttribute() const;
 
 public Q_SLOTS:
     void setBaseColorMapEnabled(bool enabled);
-    void setUsingColorAttribute(bool usingColorAttribute);
 
 Q_SIGNALS:
     void baseColorMapEnabledChanged(bool enabled);
-    void usingColorAttributeChanged(bool usingColorAttribute);
 
 private:
     bool m_baseColorMapEnabled;
-    bool m_usingColorAttribute;
 
     UnlitTechnique *m_unlitGL3Technique;
     UnlitTechnique *m_unlitES3Technique;

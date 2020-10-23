@@ -43,12 +43,12 @@ class KUESASHARED_EXPORT GLTF2MaterialEffect : public Qt3DRender::QEffect
     Q_PROPERTY(bool usingSkinning READ isUsingSkinning WRITE setUsingSkinning NOTIFY usingSkinningChanged)
     Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
     Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
-    Q_PROPERTY(bool usingColorAttribute READ isUsingColorAttribute WRITE setUsingColorAttribute NOTIFY usingColorAttributeChanged REVISION 3)
-    Q_PROPERTY(bool usingNormalAttribute READ isUsingNormalAttribute WRITE setUsingNormalAttribute NOTIFY usingNormalAttributeChanged REVISION 3)
-    Q_PROPERTY(bool usingTangentAttribute READ isUsingTangentAttribute WRITE setUsingTangentAttribute NOTIFY usingTangentAttributeChanged REVISION 3)
-    Q_PROPERTY(bool usingTexCoordAttribute READ isUsingTexCoordAttribute WRITE setUsingTexCoordAttribute NOTIFY usingTexCoordAttributeChanged REVISION 3)
-    Q_PROPERTY(bool usingTexCoord1Attribute READ isUsingTexCoord1Attribute WRITE setUsingTexCoord1Attribute NOTIFY usingTexCoord1AttributeChanged REVISION 3)
-    Q_PROPERTY(bool usingMorphTargets READ isUsingMorphTargets WRITE setUsingMorphTargets NOTIFY usingMorphTargetsChanged REVISION 3)
+    Q_PROPERTY(bool usingColorAttribute READ isUsingColorAttribute WRITE setUsingColorAttribute NOTIFY usingColorAttributeChanged)
+    Q_PROPERTY(bool usingNormalAttribute READ isUsingNormalAttribute WRITE setUsingNormalAttribute NOTIFY usingNormalAttributeChanged)
+    Q_PROPERTY(bool usingTangentAttribute READ isUsingTangentAttribute WRITE setUsingTangentAttribute NOTIFY usingTangentAttributeChanged)
+    Q_PROPERTY(bool usingTexCoordAttribute READ isUsingTexCoordAttribute WRITE setUsingTexCoordAttribute NOTIFY usingTexCoordAttributeChanged)
+    Q_PROPERTY(bool usingTexCoord1Attribute READ isUsingTexCoord1Attribute WRITE setUsingTexCoord1Attribute NOTIFY usingTexCoord1AttributeChanged)
+    Q_PROPERTY(bool usingMorphTargets READ isUsingMorphTargets WRITE setUsingMorphTargets NOTIFY usingMorphTargetsChanged)
 
 public:
     explicit GLTF2MaterialEffect(Qt3DCore::QNode *parent = nullptr);

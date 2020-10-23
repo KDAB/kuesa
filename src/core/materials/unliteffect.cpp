@@ -268,7 +268,6 @@ void UnlitTechnique::setAllowCulling(bool allowCulling)
 UnlitEffect::UnlitEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
     , m_baseColorMapEnabled(false)
-    , m_usingColorAttribute(false)
 {
 
     const auto enabledLayers = QStringList{
@@ -310,11 +309,6 @@ bool UnlitEffect::isBaseColorMapEnabled() const
     return m_baseColorMapEnabled;
 }
 
-bool UnlitEffect::isUsingColorAttribute() const
-{
-    return m_usingColorAttribute;
-}
-
 void UnlitEffect::setBaseColorMapEnabled(bool enabled)
 {
     if (m_baseColorMapEnabled == enabled)
@@ -336,29 +330,6 @@ void UnlitEffect::setBaseColorMapEnabled(bool enabled)
     m_unlitRHITechnique->setEnabledLayers(layers);
 #endif
     emit baseColorMapEnabledChanged(enabled);
-}
-
-void UnlitEffect::setUsingColorAttribute(bool usingColorAttribute)
-{
-    if (m_usingColorAttribute == usingColorAttribute)
-        return;
-
-    auto layers = m_unlitGL3Technique->enabledLayers();
-    if (usingColorAttribute) {
-        layers.removeAll(QStringLiteral("noHasColorAttr"));
-        layers.append(QStringLiteral("hasColorAttr"));
-    } else {
-        layers.removeAll(QStringLiteral("hasColorAttr"));
-        layers.append(QStringLiteral("noHasColorAttr"));
-    }
-    m_usingColorAttribute = usingColorAttribute;
-    m_unlitGL3Technique->setEnabledLayers(layers);
-    m_unlitES3Technique->setEnabledLayers(layers);
-    m_unlitES2Technique->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-    m_unlitRHITechnique->setEnabledLayers(layers);
-#endif
-    emit usingColorAttributeChanged(usingColorAttribute);
 }
 
 void UnlitEffect::updateDoubleSided(bool doubleSided)

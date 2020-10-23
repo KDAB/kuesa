@@ -52,7 +52,7 @@ class KUESASHARED_EXPORT AnimationPlayer : public KuesaNode
     Q_PROPERTY(int loops READ loopCount WRITE setLoopCount NOTIFY loopCountChanged)
     Q_PROPERTY(Qt3DAnimation::QClock *clock READ clock WRITE setClock NOTIFY clockChanged)
     Q_PROPERTY(float normalizedTime READ normalizedTime WRITE setNormalizedTime NOTIFY normalizedTimeChanged)
-    Q_PROPERTY(float duration READ duration NOTIFY durationChanged REVISION 1)
+    Q_PROPERTY(float duration READ duration NOTIFY durationChanged)
 public:
     enum Loops { Infinite = -1 };
     Q_ENUM(Loops) // LCOV_EXCL_LINE
