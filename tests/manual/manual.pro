@@ -26,6 +26,8 @@
 
 TEMPLATE = subdirs
 
+QT_FOR_CONFIG += kuesa
+
 qtHaveModule(widgets) {
     SUBDIRS += \
         forwardrenderer_scene \
@@ -56,5 +58,9 @@ qtHaveModule(quick) {
         PlanarReflections \
         multi-views \
         multi-views-with-effects
+}
+
+qtConfig(ktx) {
+    SUBDIRS += KTXTextures
 }
 

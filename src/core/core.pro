@@ -36,7 +36,6 @@ win32:DEFINES += WIN32_LEAN_AND_MEAN
 
 QT += qml 3dcore 3dcore-private 3drender 3drender-private 3dquickextras 3danimation
 
-include($$OUT_PWD/qtkuesa-config.pri)
 qtConfig(draco) {
     win32:CONFIG -= precompile_header
     include(../3rdparty/draco/draco_dependency.pri)

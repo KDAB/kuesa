@@ -90,6 +90,7 @@
 #include <Kuesa/KuesaNode>
 #include <Kuesa/View>
 #include <Kuesa/ReflectionPlane>
+#include <qtkuesa-config.h>
 #ifdef KUESA_KTX
 #include <Kuesa/KTXTexture>
 #endif
