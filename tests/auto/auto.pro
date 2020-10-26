@@ -44,7 +44,7 @@ SUBDIRS = \
     fullscreenquad \
     reflectionplane
 
-qtHaveModule(quick) {
+qtHaveModule(quick):lessThan(QT_MAJOR_VERSION, 6) {
     SUBDIRS += qml
 }
 
