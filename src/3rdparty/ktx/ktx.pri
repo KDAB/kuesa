@@ -1,0 +1,3 @@
+HEADERS += $$PWD/*.h
+
+INCLUDEPATH += $$PWD

@@ -15,6 +15,13 @@
             "sources": [
                 { "type": "draco", "libs": "-ldraco" }
             ]
+        },
+	"ktx": {
+            "label": "KTX Library",
+            "test": "ktx",
+            "sources": [
+                "-lktx"
+            ]
         }
     },
 
@@ -38,7 +45,16 @@
                 "publicFeature",
                 { "type": "define", "name": "KUESA_DRACO_COMPRESSION" }
             ]
-        }
+        },
+	"ktx": {
+	    "label": "System LibKTX",
+	    "condition": "libs.ktx",
+            "autoDetect": "!config.android && !config.winrt",
+	    "output": [
+                "publicFeature",
+                { "type": "define", "name": "KUESA_KTX" }
+	    ]
+	}
     },
 
     "report": [
@@ -49,7 +65,8 @@
             "section": "Kuesa Runtime",
             "entries": [
                 "draco",
-                "system-draco"
+                "system-draco",
+		"ktx"
             ]
         }
     ]
