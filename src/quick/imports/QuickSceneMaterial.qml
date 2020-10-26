@@ -22,7 +22,7 @@ Entity {
 
     Kuesa.Asset {
         id: asset
-        onNodeChanged: {
+        onNodeChanged: if (node) {
             node.diffuseMap = offscreenTexture
             offscreenTexture.width = node.diffuseMap.width
             offscreenTexture.height = node.diffuseMap.height
