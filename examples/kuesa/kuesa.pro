@@ -33,7 +33,8 @@ qtHaveModule(quick) {
         manyducks \
         music-box \
         iro-materials-gallery \
-        simple-qml
+        simple-qml \
+        multi-scene
 }
 
 demo_assets.path = $$[QT_INSTALL_EXAMPLES]/kuesa/assets

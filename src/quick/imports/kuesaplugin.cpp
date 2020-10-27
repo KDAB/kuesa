@@ -30,6 +30,7 @@
 #include "animationplayeritem.h"
 #include "asset.h"
 #include "view3dsceneitem.h"
+#include "sceneconfigurationitem.h"
 #include "forwardrendererextension.h"
 #include "viewextension.h"
 #include "reflectionplaneextension.h"
@@ -229,6 +230,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<KuesaUtils::BoundingVolumeRenderer>("Kuesa.Utils", 1, 0, "BoundingVolumeRenderer");
     qmlRegisterType<KuesaUtils::OrbitCameraController>("Kuesa.Utils", 1, 0, "OrbitCameraController");
     qmlRegisterExtendedType<KuesaUtils::View3DScene, KuesaUtils::View3DSceneItem>("Kuesa.Utils", 1, 0, "View3DScene");
+    qmlRegisterExtendedType<KuesaUtils::SceneConfiguration, KuesaUtils::SceneConfigurationItem>(uri, 1, 0, "SceneConfiguration");
 
     // Particles
     qmlRegisterType<Kuesa::Particles>(uri, 1, 0, "Particles");

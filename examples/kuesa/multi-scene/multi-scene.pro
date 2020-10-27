@@ -1,4 +1,4 @@
-# core.pro
+# multi-scene.pro
 #
 # This file is part of Kuesa.
 #
@@ -24,34 +24,17 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TARGET     = KuesaUtils
-MODULE     = kuesautils
+TEMPLATE = app
 
-# Kuesa is free of Q_FOREACH - make sure it stays that way:
-DEFINES += QT_NO_FOREACH
-DEFINES += QT_BUILD_KUESA_UTILS_LIB
+QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa quickcontrols2
+CONFIG += resources_big
 
-# Avoid windows defines
-win32:DEFINES += WIN32_LEAN_AND_MEAN
-
-QT += kuesa kuesa-private 3dcore-private
-
-HEADERS += \
-    boundingvolumerenderer.h \
-    kuesa_utils_global.h \
-    orbitcameracontroller.h \
-    sceneconfiguration.h \
-    view3dscene.h
-
-SOURCES += \
-    boundingvolumerenderer.cpp \
-    orbitcameracontroller.cpp \
-    sceneconfiguration.cpp \
-    view3dscene.cpp
+SOURCES += main.cpp
 
 RESOURCES += \
-    utils.qrc
+    asset/asset.qrc \
+    multi-scene.qrc
 
-include($$KUESA_ROOT/kuesa-global.pri)
-
-load(qt_module)
+target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+target.files = $$PWD/*
+INSTALLS += target

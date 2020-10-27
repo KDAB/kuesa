@@ -31,6 +31,7 @@
 
 #include <QObject>
 #include <KuesaUtils/kuesa_utils_global.h>
+#include <KuesaUtils/sceneconfiguration.h>
 
 #include <Kuesa/sceneentity.h>
 #include <Kuesa/gltf2importer.h>
@@ -59,7 +60,7 @@ class KUESAUTILS_SHARED_EXPORT View3DScene : public Kuesa::SceneEntity
     Q_PROPERTY(bool ready READ isReady NOTIFY readyChanged)
     Q_PROPERTY(bool loaded READ isLoaded NOTIFY loadedChanged)
     Q_PROPERTY(bool asynchronous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
-
+    Q_PROPERTY(KuesaUtils::SceneConfiguration *activeScene READ activeScene WRITE setActiveScene NOTIFY activeSceneChanged)
 public:
     explicit View3DScene(Qt3DCore::QNode *parent = nullptr);
     ~View3DScene();
@@ -80,6 +81,8 @@ public:
     void removeTransformTracker(Kuesa::TransformTracker *tracker);
     void clearTransformTrackers();
 
+    SceneConfiguration *activeScene() const;
+
     bool isReady() const;
     bool isLoaded() const;
 
@@ -89,6 +92,8 @@ public Q_SLOTS:
     void setShowDebugOverlay(bool showDebugOverlay);
     void setScreenSize(const QSize &screenSize);
     void setAsynchronous(bool asynchronous);
+
+    void setActiveScene(SceneConfiguration *scene);
 
     void adoptNode(QObject *object);
 
@@ -107,6 +112,7 @@ Q_SIGNALS:
     void readyChanged(bool ready);
     void loadedChanged(bool loaded);
     void asynchronousChanged(bool asynchronous);
+    void activeSceneChanged(SceneConfiguration *activeScene);
 
 private:
     void onSceneLoaded();
@@ -120,6 +126,7 @@ private:
     std::vector<Kuesa::TransformTracker *> m_trackers;
     Qt3DAnimation::QClock *m_clock;
     QSize m_screenSize;
+    SceneConfiguration *m_activeScene;
 
     bool m_ready;
     int m_frameCount;

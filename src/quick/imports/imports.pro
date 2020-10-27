@@ -39,7 +39,8 @@ SOURCES += \
     asset.cpp \
     reflectionplaneextension.cpp \
     view3dsceneitem.cpp \
-    viewextension.cpp
+    viewextension.cpp \
+    sceneconfigurationitem.cpp
 
 HEADERS += \
     animationplayeritem.h \
@@ -49,7 +50,8 @@ HEADERS += \
     asset.h \
     reflectionplaneextension.h \
     view3dsceneitem.h \
-    viewextension.h
+    viewextension.h \
+    sceneconfigurationitem.h
 
 QML_FILES += \
     QuickSceneMaterial.qml \

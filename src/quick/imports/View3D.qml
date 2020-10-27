@@ -45,6 +45,7 @@ Scene3D {
     readonly property Entity activeCamera: scene.frameGraph.camera
     readonly property bool loaded: scene.importer.status === Kuesa.GLTF2Importer.Ready
     readonly property bool ready: scene.ready
+    property alias activeScene: scene.activeScene
     property alias components: scene.components
     property alias showDebugOverlay: scene.showDebugOverlay
     property alias animations: scene.animations

@@ -51,6 +51,7 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     , m_importer(new GLTF2Importer(this))
     , m_frameGraph(nullptr)
     , m_clock(nullptr)
+    , m_activeScene(nullptr)
     , m_ready(false)
     , m_frameCount(0)
 {
@@ -173,8 +174,8 @@ void View3DScene::updateFrame(float dt)
 
     if (m_frameCount == 0) {
         bool allReady = true;
-        const auto& textures = textureImages()->names();
-        for (const auto &textureName: textures) {
+        const auto &textures = textureImages()->names();
+        for (const auto &textureName : textures) {
             auto texture = textureImage(textureName);
             auto textureImage = qobject_cast<Qt3DRender::QTextureImage *>(texture);
             if (!textureImage)
@@ -224,16 +225,6 @@ void View3DScene::clearTransformTrackers()
     m_trackers.clear();
 }
 
-bool View3DScene::isReady() const
-{
-    return m_ready;
-}
-
-bool View3DScene::isLoaded() const
-{
-    return m_importer->status() == GLTF2Importer::Ready;
-}
-
 void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
 {
     if (nullptr == m_clock)
@@ -261,6 +252,49 @@ void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
 void View3DScene::clearAnimationPlayers()
 {
     m_animations.clear();
+}
+
+SceneConfiguration *View3DScene::activeScene() const
+{
+    return m_activeScene;
+}
+
+void View3DScene::setActiveScene(SceneConfiguration *scene)
+{
+    if (m_activeScene != scene) {
+        m_activeScene = scene;
+        emit activeSceneChanged(m_activeScene);
+
+        if (m_activeScene) {
+            setSource(m_activeScene->source());
+            setCameraName(m_activeScene->cameraName());
+
+            clearAnimationPlayers();
+            const auto &newAnimations = m_activeScene->animations();
+            for (auto a : newAnimations) {
+                a->setParent(this);
+                addAnimationPlayer(a);
+            }
+
+            clearTransformTrackers();
+            const auto newTrackers = m_activeScene->transformTrackers();
+            for (auto t : newTrackers) {
+                t->setParent(this);
+                addTransformTracker(t);
+            }
+            updateTrackers();
+        }
+    }
+}
+
+bool View3DScene::isReady() const
+{
+    return m_ready;
+}
+
+bool View3DScene::isLoaded() const
+{
+    return m_importer->status() == GLTF2Importer::Ready;
 }
 
 void View3DScene::start()
