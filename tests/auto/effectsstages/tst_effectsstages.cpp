@@ -170,6 +170,50 @@ private Q_SLOTS:
         QCOMPARE(e.effects().size(), 0U);
     }
 
+    void checkHandleDestructionOfRenderTargets()
+    {
+        // GIVEN
+        Kuesa::EffectsStages e;
+
+        // WHEN
+        {
+            Qt3DRender::QRenderTarget a;
+
+            {
+                Qt3DRender::QRenderTarget b;
+
+                e.setRenderTargets(&a, &b);
+
+                // THEN
+                QVERIFY(std::get<0>(e.renderTargets()) == &a);
+                QVERIFY(std::get<1>(e.renderTargets()) == &b);
+            }
+            // THEN
+            QVERIFY(std::get<0>(e.renderTargets()) == &a);
+            QVERIFY(std::get<1>(e.renderTargets()) == nullptr);
+        }
+        // THEN
+        QVERIFY(std::get<0>(e.renderTargets()) == nullptr);
+        QVERIFY(std::get<1>(e.renderTargets()) == nullptr);
+    }
+
+    void checkHandleDestructionOfDepthTexture()
+    {
+        // GIVEN
+        Kuesa::EffectsStages e;
+
+        // WHEN
+        {
+            Qt3DRender::QTexture2D depthTextures;
+            e.setDepthTexture(&depthTextures);
+
+            // THEN
+            QCOMPARE(e.depthTexture(), &depthTextures);
+        }
+        // THEN
+        QVERIFY(e.depthTexture() == nullptr);
+    }
+
     void checkFrameGraph()
     {
         // GIVEN

@@ -33,6 +33,7 @@
 #include <Qt3DRender/QRenderTargetSelector>
 #include <Qt3DRender/QBlitFramebuffer>
 #include <Qt3DRender/QNoDraw>
+#include <Qt3DRender/QRenderTarget>
 
 #include <Qt3DCore/private/qnode_p.h>
 #include <private/kuesa_utils_p.h>
@@ -159,8 +160,19 @@ void EffectsStages::setRenderTargets(Qt3DRender::QRenderTarget *rtA, Qt3DRender:
 {
     if (rtA == m_rt[0] && rtB == m_rt[1])
         return;
+
+    disconnect(m_rt[0]);
+    disconnect(m_rt[1]);
+
     m_rt[0] = rtA;
     m_rt[1] = rtB;
+
+    if (m_rt[0])
+        QObject::connect(m_rt[0], &Qt3DRender::QRenderTarget::nodeDestroyed, this, [this] { m_rt[0] = nullptr; reconfigure(); });
+
+    if (m_rt[1])
+        QObject::connect(m_rt[1], &Qt3DRender::QRenderTarget::nodeDestroyed, this, [this] { m_rt[1] = nullptr; reconfigure(); });
+
     reconfigure();
 }
 
@@ -173,7 +185,10 @@ void EffectsStages::setDepthTexture(Qt3DRender::QAbstractTexture *depthTexture)
 {
     if (depthTexture == m_depthTexture)
         return;
+    disconnect(m_depthTexture);
     m_depthTexture = depthTexture;
+    if (m_depthTexture)
+        QObject::connect(m_depthTexture, &Qt3DRender::QRenderTarget::nodeDestroyed, this, [this] { setDepthTexture(nullptr); });
     reconfigure();
 }
 
