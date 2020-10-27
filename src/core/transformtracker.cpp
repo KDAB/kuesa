@@ -44,7 +44,6 @@ inline QMatrix4x4 computeWorldMatrix(Qt3DCore::QTransform *transformComponent)
 
 } // namespace
 
-
 /*!
     \class Kuesa::TransformTracker
     \brief TransformTracker allows watching a transform for change and computing
@@ -154,18 +153,19 @@ void TransformTracker::setCamera(Qt3DCore::QEntity *camera)
             if (m_cameraTransform)
                 QObject::disconnect(m_cameraTransform, &Qt3DCore::QTransform::worldMatrixChanged,
                                     this, &TransformTracker::updateScreenProjection);
-
             if (m_cameraLens)
                 QObject::disconnect(m_cameraLens, &Qt3DRender::QCameraLens::projectionMatrixChanged,
                                     this, &TransformTracker::updateScreenProjection);
+
             d->unregisterDestructionHelper(m_camera);
+            m_cameraLens = nullptr;
+            m_cameraTransform = nullptr;
         }
 
         m_camera = camera;
         emit cameraChanged(m_camera);
 
         if (m_camera) {
-
             if (!m_camera->parent())
                 m_camera->setParent(this);
             d->registerDestructionHelper(m_camera, &TransformTracker::setCamera, m_camera);
@@ -573,7 +573,7 @@ void TransformTracker::updateScreenProjection()
 
     const QPointF orientationCorrectScreenPos = QPointF(qreal(projectedPoint.x()),
                                                         m_screenSize.height() - qreal(projectedPoint.y()));
-    auto clamp = [] (float n, float low, float high) {
+    auto clamp = [](float n, float low, float high) {
         return std::max(low, std::min(n, high));
     };
     m_screenPosition = QPointF(clamp(orientationCorrectScreenPos.x(), viewport.x(), viewport.x() + viewport.width()),
