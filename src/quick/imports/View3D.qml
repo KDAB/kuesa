@@ -61,7 +61,7 @@ Scene3D {
     property alias textureImages: scene.textureImages
     property alias animationMappings: scene.animationMappings
     property alias lights: scene.lights
-//    property alias transforms: scene.transforms
+    property alias transforms: scene.transforms
     default property alias children: scene.data
 
     signal loadingDone()
