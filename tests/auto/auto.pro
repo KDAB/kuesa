@@ -94,7 +94,8 @@ qtConfig(private_tests) {
         reflectionstages \
         particlerenderstage \
         empty2dtexture \
-        transformtracker
+        transformtracker \
+        fovadapter
 
     greaterThan(QT_MAJOR_VERSION, 5):
         SUBDIRS += fboresolver

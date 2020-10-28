@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef FOVADAPTOR_P_H
-#define FOVADAPTOR_P_H
+#ifndef KUESA_FOVADAPTOR_P_H
+#define KUESA_FOVADAPTOR_P_H
 
 //
 //  NOTICE
@@ -38,19 +38,34 @@
 //
 
 #include <Qt3DCore/QNode>
+#include <Kuesa/private/kuesa_global_p.h>
 
-class FOVAdaptor : public Qt3DCore::QNode
+QT_BEGIN_NAMESPACE
+
+namespace Kuesa {
+
+class KUESA_PRIVATE_EXPORT FOVAdaptor : public Qt3DCore::QNode
 {
     Q_OBJECT
-    Q_PROPERTY(float radians READ radians WRITE setRadians)
+    Q_PROPERTY(float radians READ radians WRITE setRadians NOTIFY radiansChanged)
+    Q_PROPERTY(float degrees READ degrees NOTIFY degreesChanged)
 public:
     explicit FOVAdaptor(Qt3DCore::QNode *parent = nullptr);
 
+    float degrees() const;
     float radians() const;
     void setRadians(float radians);
 
 Q_SIGNALS:
     void degreesChanged(float degrees);
+    void radiansChanged(float radians);
+
+private:
+    float m_radians = 0.0f;
 };
 
-#endif // FOVADAPTOR_H
+} // Kuesa
+
+QT_END_NAMESPACE
+
+#endif // KUESA_FOVADAPTOR_P_H
