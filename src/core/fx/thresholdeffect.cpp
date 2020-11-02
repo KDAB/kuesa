@@ -157,6 +157,7 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
     , m_layer(nullptr)
     , m_thresholdParameter(new Qt3DRender::QParameter(QStringLiteral("threshold"), 1.0f))
     , m_textureParam(new Qt3DRender::QParameter(QStringLiteral("textureSampler"), nullptr))
+    , m_yFlipParam(new Qt3DRender::QParameter(QStringLiteral("yFlip"), 0.0f))
     , m_fsQuad(nullptr)
 {
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode);
@@ -210,6 +211,7 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
 
     effect->addParameter(m_textureParam);
     effect->addParameter(m_thresholdParameter);
+    effect->addParameter(m_yFlipParam);
 
     m_fsQuad = new FullScreenQuad(thresholdMaterial, m_rootFrameGraphNode.data());
     m_layer = m_fsQuad->layer();
@@ -242,6 +244,16 @@ AbstractPostProcessingEffect::FrameGraphNodePtr ThresholdEffect::frameGraphSubTr
 float ThresholdEffect::threshold() const
 {
     return m_thresholdParameter->value().toFloat();
+}
+
+void ThresholdEffect::setYFlip(bool yFlip)
+{
+    m_yFlipParam->setValue(yFlip ? 1.0f : 0.0f);
+}
+
+bool ThresholdEffect::yFlip() const
+{
+    return m_yFlipParam->value().toFloat() == 1.0f;
 }
 
 /*!

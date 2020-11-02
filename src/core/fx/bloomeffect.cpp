@@ -192,6 +192,12 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     m_thresholdEffect = new ThresholdEffect(this);
     m_layers += m_thresholdEffect->layers();
 
+    // Threshold is a single pass -> so by default, it flips content (with VK backend of vulkan)
+    // Gaussian Blue is n * 2 passes -> so content is in the same flip state as after the threshold step
+    // Bloom will merge an input texture with the blurred threshold texture. Therefore we need to make
+    // sure that the blurred threshold texture is flipped properly to match the input texture
+    m_thresholdEffect->setYFlip(true);
+
     // Set up Gaussian Blur
     m_blurEffect = new GaussianBlurEffect(this);
     m_blurEffect->setInputTexture(m_brightTexture);
