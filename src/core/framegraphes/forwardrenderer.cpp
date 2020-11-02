@@ -448,7 +448,6 @@ ForwardRenderer::~ForwardRenderer()
         framegraph->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
     m_effectFGSubtrees.clear();
     m_sceneStages.clear();
-//    delete m_particleRenderStage;
 }
 
 /*!
