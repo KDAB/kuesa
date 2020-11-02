@@ -108,5 +108,6 @@
         <file>shaders/es3/kuesa_reflectedViewMatrix.inc</file>
         <file>shaders/gl3/kuesa_reflectedViewMatrix.inc</file>
         <file>shaders/gl45/kuesa_reflectedViewMatrix.inc</file>
+        <file>shaders/gl45/fboresolver.frag</file>
     </qresource>
 </RCC>

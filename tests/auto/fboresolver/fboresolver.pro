@@ -1,9 +1,9 @@
-# framegraphes.pri
+# fboresolver.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Mike Krus <mike.krus@kdab.com>
+# Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,34 +24,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-INCLUDEPATH += $$PWD
+TEMPLATE = app
 
-SOURCES += \
-    $$PWD/effectsstages.cpp \
-    $$PWD/fboresolver.cpp \
-    $$PWD/forwardrenderer.cpp \
-    $$PWD/abstractrenderstage.cpp \
-    $$PWD/framegraphutils.cpp \
-    $$PWD/reflectionplane.cpp \
-    $$PWD/reflectionstages.cpp \
-    $$PWD/scenestages.cpp \
-    $$PWD/view.cpp \
-    $$PWD/zfillrenderstage.cpp \
-    $$PWD/opaquerenderstage.cpp \
-    $$PWD/transparentrenderstage.cpp \
-    $$PWD/particlerenderstage.cpp
+TARGET = tst_fboresolver
 
-HEADERS += \
-    $$PWD/effectsstages_p.h \
-    $$PWD/fboresolver_p.h \
-    $$PWD/forwardrenderer.h \
-    $$PWD/abstractrenderstage_p.h \
-    $$PWD/framegraphutils_p.h \
-    $$PWD/reflectionplane.h \
-    $$PWD/reflectionstages_p.h \
-    $$PWD/scenestages_p.h \
-    $$PWD/view.h \
-    $$PWD/zfillrenderstage_p.h \
-    $$PWD/opaquerenderstage_p.h \
-    $$PWD/transparentrenderstage_p.h \
-    $$PWD/particlerenderstage_p.h
+QT += testlib kuesa kuesa-private
+
+CONFIG += testcase
+
+SOURCES += tst_fboresolver.cpp

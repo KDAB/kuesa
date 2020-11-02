@@ -95,4 +95,7 @@ qtConfig(private_tests) {
         particlerenderstage \
         empty2dtexture \
         transformtracker
+
+    greaterThan(QT_MAJOR_VERSION, 5):
+        SUBDIRS += fboresolver
 }

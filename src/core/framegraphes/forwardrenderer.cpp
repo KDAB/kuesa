@@ -53,7 +53,7 @@
 #include <Kuesa/particles.h>
 #include "particlerenderstage_p.h"
 #include "tonemappingandgammacorrectioneffect.h"
-#include "msaafboresolver_p.h"
+#include "fboresolver_p.h"
 #include "kuesa_p.h"
 #include <cmath>
 
@@ -390,6 +390,7 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     , m_blitFramebufferNodeFromMSToFBO0(nullptr)
     , m_blitFramebufferNodeFromFBO0ToFBO1(nullptr)
     , m_msaaResolver(nullptr)
+    , m_rt0rt1Resolver(nullptr)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     , m_debugOverlay(new Qt3DRender::QDebugOverlay)
 #endif
@@ -915,6 +916,12 @@ void ForwardRenderer::setupRenderTargets(Qt3DRender::QRenderTargetSelector *scen
     const int samples = QSurfaceFormat::defaultFormat().samples();
     const bool useMSAA = glFeatures.hasMultisampledFBO && samples > 1;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    const bool usesRHI = qgetenv("QT3D_RENDERER") == QByteArray("rhi");
+#else
+    const bool usesRHI = false;
+#endif
+
     // If we support MSAA FBO -> Then render into it and Blit into regular non FBO
     // for post FX
     if (useMSAA) {
@@ -923,16 +930,11 @@ void ForwardRenderer::setupRenderTargets(Qt3DRender::QRenderTargetSelector *scen
                                                                       this,
                                                                       surfaceSize,
                                                                       samples);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-        const bool usesRHI = qgetenv("QT3D_RENDERER") == QByteArray("rhi");
-#else
-        const bool usesRHI = false;
-#endif
         // RHI has no Blit operations so we manually resolve the multisampled
         // FBO into renderTarget[0]
         if (usesRHI) {
             if (!m_msaaResolver)
-                m_msaaResolver = new MSAAFBOResolver();
+                m_msaaResolver = new FBOResolver();
             m_msaaResolver->setParent(sceneTargetSelector);
             m_msaaResolver->setSource(FrameGraphUtils::findRenderTargetTexture(m_multisampleTarget, Qt3DRender::QRenderTargetOutput::Color0));
             m_msaaResolver->setDestination(m_renderTargets[0]);
@@ -962,24 +964,35 @@ void ForwardRenderer::setupRenderTargets(Qt3DRender::QRenderTargetSelector *scen
         sceneTargetSelector->setTarget(m_renderTargets[0]);
     }
 
-    // Stencil Buffer Blitting (To be tested with RHI)
-    if (m_renderTargets[1]/* && m_usesStencilMask*/) {
-        // Blit FBO 0 to FBO 1 to be able to access stencil of the render in post fx
-        if (!m_blitFramebufferNodeFromFBO0ToFBO1) {
-            m_blitFramebufferNodeFromFBO0ToFBO1 = new Qt3DRender::QBlitFramebuffer();
-            auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromFBO0ToFBO1);
-            Q_UNUSED(noDraw);
+    // Blit RT0 into RT1
+    if (m_renderTargets[1]) {
+        if (usesRHI) {
+            if (!m_rt0rt1Resolver)
+                m_rt0rt1Resolver = new FBOResolver();
+            m_rt0rt1Resolver->setParent(sceneTargetSelector);
+            m_rt0rt1Resolver->setSource(FrameGraphUtils::findRenderTargetTexture(m_renderTargets[0], Qt3DRender::QRenderTargetOutput::Color0));
+            m_rt0rt1Resolver->setDestination(m_renderTargets[1]);
+            // Set flip based on msaaResolver if used, otherwise we flip by default
+            // so that rt0 and rt1 contain exactly the same thing
+            m_rt0rt1Resolver->setYFlip(useMSAA ? m_msaaResolver->yFlip() : true);
+        } else {
+            // Blit FBO 0 to FBO 1 to be able to access stencil of the render in post fx
+            if (!m_blitFramebufferNodeFromFBO0ToFBO1) {
+                m_blitFramebufferNodeFromFBO0ToFBO1 = new Qt3DRender::QBlitFramebuffer();
+                auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromFBO0ToFBO1);
+                Q_UNUSED(noDraw);
+            }
+
+            m_blitFramebufferNodeFromFBO0ToFBO1->setParent(sceneTargetSelector);
+            m_blitFramebufferNodeFromFBO0ToFBO1->setSource(m_renderTargets[0]);
+            m_blitFramebufferNodeFromFBO0ToFBO1->setDestination(m_renderTargets[1]);
+            m_blitFramebufferNodeFromFBO0ToFBO1->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+            m_blitFramebufferNodeFromFBO0ToFBO1->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
+
+            const QRect blitRect(QPoint(), surfaceSize);
+            m_blitFramebufferNodeFromFBO0ToFBO1->setSourceRect(blitRect);
+            m_blitFramebufferNodeFromFBO0ToFBO1->setDestinationRect(blitRect);
         }
-
-        m_blitFramebufferNodeFromFBO0ToFBO1->setParent(sceneTargetSelector);
-        m_blitFramebufferNodeFromFBO0ToFBO1->setSource(m_renderTargets[0]);
-        m_blitFramebufferNodeFromFBO0ToFBO1->setDestination(m_renderTargets[1]);
-        m_blitFramebufferNodeFromFBO0ToFBO1->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
-        m_blitFramebufferNodeFromFBO0ToFBO1->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
-
-        const QRect blitRect(QPoint(), surfaceSize);
-        m_blitFramebufferNodeFromFBO0ToFBO1->setSourceRect(blitRect);
-        m_blitFramebufferNodeFromFBO0ToFBO1->setDestinationRect(blitRect);
     }
 }
 

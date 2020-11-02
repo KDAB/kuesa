@@ -1,5 +1,5 @@
 /*
-    msaafboresolver.cpp
+    fboresolver.cpp
 
     This file is part of Kuesa.
 
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "msaafboresolver_p.h"
+#include "fboresolver_p.h"
 #include <QUrl>
 #include <Qt3DRender/qlayer.h>
 #include <Qt3DRender/qlayerfilter.h>
@@ -46,11 +46,12 @@ QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-MSAAFBOResolver::MSAAFBOResolver(Qt3DCore::QNode *parent)
+FBOResolver::FBOResolver(Qt3DCore::QNode *parent)
     : Qt3DRender::QRenderTargetSelector(parent)
     , m_material(new Qt3DRender::QMaterial(this))
     , m_sourceTextureParameter(new Qt3DRender::QParameter(this))
     , m_yFlipTextureParameter(new Qt3DRender::QParameter(QStringLiteral("yFlip"), 0.0f, this))
+    , m_shader(new Qt3DRender::QShaderProgram())
 {
     m_sourceTextureParameter->setName(QStringLiteral("source"));
 
@@ -64,19 +65,18 @@ MSAAFBOResolver::MSAAFBOResolver(Qt3DCore::QNode *parent)
     rhiTechnique->graphicsApiFilter()->setProfile(Qt3DRender::QGraphicsApiFilter::NoProfile);
 
     Qt3DRender::QRenderPass *pass = new Qt3DRender::QRenderPass();
-    Qt3DRender::QShaderProgram *shader = new Qt3DRender::QShaderProgram();
 
-    shader->setShaderCode(Qt3DRender::QShaderProgram::Vertex,
+    m_shader->setShaderCode(Qt3DRender::QShaderProgram::Vertex,
                           Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"))));
-    shader->setShaderCode(Qt3DRender::QShaderProgram::Fragment,
-                          Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/msaaresolver.frag"))));
+
+    updateFragmentShader();
 
     Qt3DRender::QDepthTest *depthTest = new Qt3DRender::QDepthTest();
     depthTest->setDepthFunction(Qt3DRender::QDepthTest::Always);
     pass->addRenderState(new Qt3DRender::QNoDepthMask());
     pass->addRenderState(depthTest);
 
-    pass->setShaderProgram(shader);
+    pass->setShaderProgram(m_shader);
     rhiTechnique->addRenderPass(pass);
     effect->addTechnique(rhiTechnique);
 #endif
@@ -91,19 +91,54 @@ MSAAFBOResolver::MSAAFBOResolver(Qt3DCore::QNode *parent)
     layerFilter->addLayer(fsQuad->layer());
 }
 
-void MSAAFBOResolver::setSource(Qt3DRender::QAbstractTexture *source)
+void FBOResolver::setSource(Qt3DRender::QAbstractTexture *source)
 {
     m_sourceTextureParameter->setValue(QVariant::fromValue(source));
+
+    // Check and if needed update the shader
+    updateFragmentShader();
 }
 
-void MSAAFBOResolver::setDestination(Qt3DRender::QRenderTarget *destination)
+void FBOResolver::setDestination(Qt3DRender::QRenderTarget *destination)
 {
     setTarget(destination);
 }
 
-void MSAAFBOResolver::setYFlip(bool yFlip)
+void FBOResolver::setYFlip(bool yFlip)
 {
     m_yFlipTextureParameter->setValue(yFlip ? 1.0f : 0.0f);
+}
+
+Qt3DRender::QAbstractTexture *FBOResolver::source() const
+{
+    return m_sourceTextureParameter->value().value<Qt3DRender::QAbstractTexture *>();
+}
+
+Qt3DRender::QRenderTarget *FBOResolver::destination() const
+{
+    return Qt3DRender::QRenderTargetSelector:: target();
+}
+
+bool FBOResolver::yFlip() const
+{
+    return m_yFlipTextureParameter->value().toFloat() != 0.0f;
+}
+
+bool FBOResolver::targetHasSamples() const
+{
+    Qt3DRender::QAbstractTexture *target = m_sourceTextureParameter->value().value<Qt3DRender::QAbstractTexture *>();
+    if (!target)
+        return false;
+
+    return target->target() == Qt3DRender::QAbstractTexture::Target2DMultisample;
+}
+
+void FBOResolver::updateFragmentShader()
+{
+    const bool hasSamples = targetHasSamples();
+    m_shader->setShaderCode(Qt3DRender::QShaderProgram::Fragment,
+                            hasSamples ? Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/msaaresolver.frag")))
+                                       : Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fboresolver.frag"))));
 }
 
 } // namespace Kuesa

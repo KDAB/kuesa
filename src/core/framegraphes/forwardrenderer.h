@@ -64,7 +64,7 @@ class QLayerFilter;
 namespace Kuesa {
 
 class ParticleRenderStage;
-class MSAAFBOResolver;
+class FBOResolver;
 class SceneStages;
 class ReflectionStages;
 class View;
@@ -155,7 +155,8 @@ private:
     Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromMSToFBO0;
     Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromFBO0ToFBO1;
 
-    MSAAFBOResolver *m_msaaResolver;
+    FBOResolver *m_msaaResolver;
+    FBOResolver *m_rt0rt1Resolver;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     Qt3DRender::QDebugOverlay *m_debugOverlay;
 #endif

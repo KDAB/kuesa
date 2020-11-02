@@ -1,5 +1,5 @@
 /*
-    msaafboresolver_p.h
+    fboresolver_p.h
 
     This file is part of Kuesa.
 
@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_MSAAFBORESOLVER_P_H
-#define KUESA_MSAAFBORESOLVER_P_H
+#ifndef KUESA_FBORESOLVER_P_H
+#define KUESA_FBORESOLVER_P_H
 
 //
 //  W A R N I N G
@@ -49,27 +49,36 @@ namespace Qt3DRender {
 class QMaterial;
 class QParameter;
 class QAbstractTexture;
+class QShaderProgram;
 }
 
 namespace Kuesa {
 
-class KUESA_PRIVATE_EXPORT MSAAFBOResolver : public Qt3DRender::QRenderTargetSelector
+class KUESA_PRIVATE_EXPORT FBOResolver : public Qt3DRender::QRenderTargetSelector
 {
     Q_OBJECT
 public:
-    explicit MSAAFBOResolver(Qt3DCore::QNode *parent = nullptr);
+    explicit FBOResolver(Qt3DCore::QNode *parent = nullptr);
 
     void setSource(Qt3DRender::QAbstractTexture *source);
     void setDestination(Qt3DRender::QRenderTarget *destination);
     void setYFlip(bool yFlip);
 
+    Qt3DRender::QAbstractTexture *source() const;
+    Qt3DRender::QRenderTarget *destination() const;
+    bool yFlip() const;
+    bool targetHasSamples() const;
+
 private:
     Qt3DRender::QMaterial *m_material = nullptr;
     Qt3DRender::QParameter *m_sourceTextureParameter = nullptr;
     Qt3DRender::QParameter *m_yFlipTextureParameter = nullptr;
+    Qt3DRender::QShaderProgram *m_shader = nullptr;
+
+    void updateFragmentShader();
 };
 
 } // namespace Kuesa
 QT_END_NAMESPACE
 
-#endif // KUESA_MSAAFBORESOLVER_P_H
+#endif // KUESA_FBORESOLVER_P_H
