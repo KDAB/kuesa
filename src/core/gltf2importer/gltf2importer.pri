@@ -52,6 +52,7 @@ SOURCES += \
     $$PWD/gltf2options.cpp
 
 HEADERS += \
+    $$PWD/assetcache_p.h \
     $$PWD/bufferparser_p.h \
     $$PWD/bufferviewsparser_p.h \
     $$PWD/cameraparser_p.h \
