@@ -228,6 +228,7 @@ private:
 
     // Caches to avoid recreating assets
     AssetCache<Image, Qt3DRender::QAbstractTextureImage> m_sharedImages;
+    AssetCache<Texture, Qt3DRender::QAbstractTexture> m_sharedTextures;
 };
 
 template<>

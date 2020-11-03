@@ -54,6 +54,7 @@ class GLTF2Context;
 struct Texture {
     Qt3DRender::QAbstractTexture *texture = nullptr;
     QString name;
+    QString key;
     int sourceImage = -1;
     int sampler = -1;
     bool isDDSTexture = false;

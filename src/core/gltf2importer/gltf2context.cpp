@@ -573,6 +573,7 @@ void GLTF2Context::reset(SceneEntity *sceneEntity)
 {
     // Resets everything but the options;
     m_sharedImages.setSceneEntity(sceneEntity); // so that they don't get deleted with the scene graph
+    m_sharedTextures.setSceneEntity(sceneEntity);
     m_effectLibrary->reset();
 
     m_accessors.clear();
@@ -621,7 +622,17 @@ Qt3DRender::QAbstractTexture *GLTF2Context::getOrAllocateTexture(Texture &textur
     if (image.url.isEmpty() && image.data.isEmpty())
         return nullptr;
 
-    auto texture2d = std::unique_ptr<Qt3DRender::QAbstractTexture>(nullptr);
+    // TODO: Fix this, use a proper gltf extension to set the key
+    texture.key = image.key;
+
+    auto texture2d = std::unique_ptr<Qt3DRender::QAbstractTexture>(m_sharedTextures.getResourceFromCache(texture));
+
+    // Use cached resource if it existed
+    if (texture2d) {
+        texture.texture = texture2d.release();
+        return texture.texture;
+    }
+
     if (texture.isDDSTexture) {
         if (image.data.isEmpty()) {
             auto textureLoader = new Qt3DRender::QTextureLoader;
@@ -646,10 +657,7 @@ Qt3DRender::QAbstractTexture *GLTF2Context::getOrAllocateTexture(Texture &textur
                 }
                 textureImage = new EmbeddedTextureImage(qimage);
             }
-            if (!image.key.isEmpty())
-                m_sharedImages.addResourceToCache(image, textureImage);
-        } else {
-            textureImage->setParent(Q_NODE_NULLPTR); // so that shared images moves into the scene graph
+            m_sharedImages.addResourceToCache(image, textureImage);
         }
 
         // Add Image to Texture if compatible
@@ -678,6 +686,8 @@ Qt3DRender::QAbstractTexture *GLTF2Context::getOrAllocateTexture(Texture &textur
     }
 
     texture.texture = texture2d.release();
+
+    m_sharedTextures.addResourceToCache(texture, texture.texture);
     return texture.texture;
 }
 
