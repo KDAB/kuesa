@@ -67,6 +67,14 @@ private Q_SLOTS:
         importer.setSource(QUrl("file:///" ASSETS "Box.gltf"));
         QCoreApplication::processEvents();
 
+        // THEN -> No SceneEntity
+        QCOMPARE(importer.status(), GLTF2Importer::Error);
+
+        // WHEN
+        SceneEntity e;
+        importer.setSceneEntity(&e);
+        importer.reload();
+
         // THEN
         QCOMPARE(importer.status(), GLTF2Importer::Ready);
 
@@ -95,9 +103,11 @@ private Q_SLOTS:
 
         {
             // GIVEN
+            SceneEntity scene;
             GLTF2Importer importer;
 
             // WHEN
+            importer.setSceneEntity(&scene);
             importer.setActiveSceneIndex(GLTF2Importer::DefaultScene);
             importer.setSource(QUrl("file:///" ASSETS "BoxMultipleScenes.gltf"));
             QCoreApplication::processEvents();
@@ -111,9 +121,11 @@ private Q_SLOTS:
         }
         {
             // GIVEN
+            SceneEntity scene;
             GLTF2Importer importer;
 
             // WHEN
+            importer.setSceneEntity(&scene);
             importer.setActiveSceneIndex(GLTF2Importer::EmptyScene);
             importer.setSource(QUrl("file:///" ASSETS "BoxMultipleScenes.gltf"));
             QCoreApplication::processEvents();
@@ -127,9 +139,11 @@ private Q_SLOTS:
         }
         {
             // GIVEN
+            SceneEntity scene;
             GLTF2Importer importer;
 
             // WHEN
+            importer.setSceneEntity(&scene);
             importer.setActiveSceneIndex(0);
             importer.setSource(QUrl("file:///" ASSETS "BoxMultipleScenes.gltf"));
             QCoreApplication::processEvents();

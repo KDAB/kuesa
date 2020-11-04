@@ -416,6 +416,13 @@ void GLTF2Importer::load()
         return;
 
     setStatus(GLTF2Importer::Status::Loading);
+
+    if (m_sceneEntity == nullptr) {
+        qCWarning(kuesa) << "No SceneEntity set on GLTF2Importer, aborting";
+        setStatus(GLTF2Importer::Status::Error);
+        return;
+    }
+
     // Reset context (except options)
     m_context->reset();
 
