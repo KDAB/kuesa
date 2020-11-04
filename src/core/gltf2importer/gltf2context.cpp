@@ -565,7 +565,7 @@ void GLTF2Context::addPrimitiveEntityToEntity(Qt3DCore::QEntity *e, Qt3DCore::QE
     mapVectorIt->push_back(primitive);
 }
 
-void GLTF2Context::reset()
+void GLTF2Context::reset(SceneEntity *sceneEntity)
 {
     // Resets everything but the options;
     m_accessors.clear();

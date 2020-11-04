@@ -306,7 +306,7 @@ private Q_SLOTS:
         {
             QVERIFY(exported.success());
 
-            ctx.reset();
+            ctx.reset(&scene);
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
             parser.addResourcesToSceneEntityCollections();
             const auto res = parser.contentRoot();
@@ -384,7 +384,7 @@ private Q_SLOTS:
             QVERIFY(comp_info.size() < 1024 * 1024);
 
             // Check that we can reload the mesh properly
-            ctx.reset();
+            ctx.reset(&scene);
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
 
             auto res = parser.contentRoot();
@@ -441,7 +441,7 @@ private Q_SLOTS:
             QVERIFY(tmp.count() == 0);
 
             // Check that we can reload the mesh properly
-            ctx.reset();
+            ctx.reset(&scene);
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
             parser.addResourcesToSceneEntityCollections();
             auto res = parser.contentRoot();
@@ -553,7 +553,7 @@ private Q_SLOTS:
             QVERIFY(!sub.exists("Box0.bin"));
             QCOMPARE(sub.count(), 1U);
 
-            ctx.reset();
+            ctx.reset(&scene);
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), sub.absolutePath(), QStringLiteral("test.gltf"));
             parser.addResourcesToSceneEntityCollections();
             auto res = parser.contentRoot();

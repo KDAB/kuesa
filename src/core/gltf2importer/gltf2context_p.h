@@ -68,6 +68,7 @@ namespace Kuesa {
 
 class GLTF2Importer;
 class EffectsLibrary;
+class SceneEntity;
 
 namespace GLTF2Import {
 
@@ -181,7 +182,7 @@ public:
     Kuesa::GLTF2Import::GLTF2Options *options();
     const Kuesa::GLTF2Import::GLTF2Options *options() const;
 
-    void reset();
+    void reset(Kuesa::SceneEntity *sceneEntity);
 
     static GLTF2Context *fromImporter(GLTF2Importer *importer);
 

@@ -424,7 +424,7 @@ void GLTF2Importer::load()
     }
 
     // Reset context (except options)
-    m_context->reset();
+    m_context->reset(m_sceneEntity);
 
     // Clear list of available scenes
     m_availableScenes.clear();
@@ -518,6 +518,7 @@ void GLTF2Importer::setupActiveScene()
 
 void GLTF2Importer::clear()
 {
+    m_context->reset(m_sceneEntity);
     if (m_root != nullptr) {
         for (GLTF2Import::SceneRootEntity *sceneRoot : qAsConst(m_sceneRootEntities))
             sceneRoot->deleteLater();
