@@ -78,9 +78,10 @@ IroDiffuseProperties::IroDiffuseProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseOuterFilterChanged, this, &IroDiffuseProperties::diffuseOuterFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::diffuseGainChanged, this, &IroDiffuseProperties::diffuseGainChanged);
     QObject::connect(m_shaderData, &IroDiffuseShaderData::usesDiffuseMapChanged, this, &IroDiffuseProperties::usesDiffuseMapChanged);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     setReflectionMap(new Empty2DTexture());
     setDiffuseMap(new Empty2DTexture());
+#endif
 }
 
 IroDiffuseProperties::~IroDiffuseProperties() = default;

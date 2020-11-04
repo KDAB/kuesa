@@ -70,8 +70,9 @@ IroMatteAddProperties::IroMatteAddProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroMatteAddShaderData::matteFilterChanged, this, &IroMatteAddProperties::matteFilterChanged);
     QObject::connect(m_shaderData, &IroMatteAddShaderData::matteGainChanged, this, &IroMatteAddProperties::matteGainChanged);
     QObject::connect(m_shaderData, &IroMatteAddShaderData::uvOffsetChanged, this, &IroMatteAddProperties::uvOffsetChanged);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     setMatteMap(new Empty2DTexture());
+#endif
 }
 
 IroMatteAddProperties::~IroMatteAddProperties() = default;

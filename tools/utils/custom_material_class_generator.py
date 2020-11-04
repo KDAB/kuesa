@@ -1769,10 +1769,13 @@ HEADERS += \\
             initializations = self.memberInitializations(texture_props)
 
             def setDefaultEmptyTextures(props):
-                content = ""
+                if len(props) == 0:
+                    return ""
+                content = "#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)"
                 for texture_prop in props:
                     propName = texture_prop.get("name", "")
                     content += "\n    set%s(new Empty2DTexture());" % (propName[0].upper() + propName[1:])
+                content += "\n#endif"
                 return content
 
             default_textures = setDefaultEmptyTextures(texture_props)

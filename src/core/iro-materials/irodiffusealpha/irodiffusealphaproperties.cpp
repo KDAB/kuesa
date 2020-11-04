@@ -76,8 +76,9 @@ IroDiffuseAlphaProperties::IroDiffuseAlphaProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionInnerAlphaChanged, this, &IroDiffuseAlphaProperties::reflectionInnerAlphaChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::reflectionOuterAlphaChanged, this, &IroDiffuseAlphaProperties::reflectionOuterAlphaChanged);
     QObject::connect(m_shaderData, &IroDiffuseAlphaShaderData::alphaGainChanged, this, &IroDiffuseAlphaProperties::alphaGainChanged);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     setReflectionMap(new Empty2DTexture());
+#endif
 }
 
 IroDiffuseAlphaProperties::~IroDiffuseAlphaProperties() = default;

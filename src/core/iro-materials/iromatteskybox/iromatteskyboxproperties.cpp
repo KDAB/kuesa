@@ -70,8 +70,9 @@ IroMatteSkyboxProperties::IroMatteSkyboxProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::matteFilterChanged, this, &IroMatteSkyboxProperties::matteFilterChanged);
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::matteGainChanged, this, &IroMatteSkyboxProperties::matteGainChanged);
     QObject::connect(m_shaderData, &IroMatteSkyboxShaderData::uvOffsetChanged, this, &IroMatteSkyboxProperties::uvOffsetChanged);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     setMatteMap(new Empty2DTexture());
+#endif
 }
 
 IroMatteSkyboxProperties::~IroMatteSkyboxProperties() = default;

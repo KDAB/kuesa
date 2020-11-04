@@ -80,9 +80,10 @@ IroDiffuseHemiProperties::IroDiffuseHemiProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseGainChanged, this, &IroDiffuseHemiProperties::diffuseGainChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::usesDiffuseMapChanged, this, &IroDiffuseHemiProperties::usesDiffuseMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::gltfYUpChanged, this, &IroDiffuseHemiProperties::gltfYUpChanged);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     setReflectionMap(new Empty2DTexture());
     setDiffuseMap(new Empty2DTexture());
+#endif
 }
 
 IroDiffuseHemiProperties::~IroDiffuseHemiProperties() = default;

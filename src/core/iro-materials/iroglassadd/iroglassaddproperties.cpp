@@ -77,8 +77,9 @@ IroGlassAddProperties::IroGlassAddProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroGlassAddShaderData::glassOuterFilterChanged, this, &IroGlassAddProperties::glassOuterFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::diffuseInnerFilterChanged, this, &IroGlassAddProperties::diffuseInnerFilterChanged);
     QObject::connect(m_shaderData, &IroGlassAddShaderData::diffuseOuterFilterChanged, this, &IroGlassAddProperties::diffuseOuterFilterChanged);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     setReflectionMap(new Empty2DTexture());
+#endif
 }
 
 IroGlassAddProperties::~IroGlassAddProperties() = default;
