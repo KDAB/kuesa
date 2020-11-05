@@ -145,7 +145,7 @@ private:
     void createTransform(const TreeNode &node);
     void createLayers(const TreeNode &node);
     void createLight(const TreeNode &node);
-    void createMesh(const TreeNode &node, PrimitiveBuilder *builder);
+    void createMesh(const TreeNode &node);
 
     void createSkin(const TreeNode &node,
                     Qt3DCore::QArmature **armaturePtr,

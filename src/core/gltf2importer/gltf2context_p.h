@@ -111,6 +111,7 @@ public:
     void addMesh(const Mesh &mesh);
     const Mesh mesh(qint32 id) const;
     Mesh &mesh(qint32 id);
+    Qt3DRender::QGeometryRenderer *getOrAllocateGeometryRenderer(Primitive &primitive);
 
     size_t treeNodeCount() const;
     void addTreeNode(const TreeNode &treeNode);
@@ -230,6 +231,9 @@ private:
     // Caches to avoid recreating assets
     AssetCache<Image, Qt3DRender::QAbstractTextureImage> m_sharedImages;
     AssetCache<Texture, Qt3DRender::QAbstractTexture> m_sharedTextures;
+    AssetCache<Primitive, Qt3DRender::QGeometryRenderer> m_sharedPrimitives;
+
+    std::unique_ptr<PrimitiveBuilder> m_primitiveBuilder;
 };
 
 template<>

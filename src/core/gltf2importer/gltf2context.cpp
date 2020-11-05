@@ -43,6 +43,7 @@ GLTF2Context::GLTF2Context()
     : m_options()
     , m_defaultScene(-1)
     , m_effectLibrary(new EffectsLibrary())
+    , m_primitiveBuilder(new PrimitiveBuilder(this))
 {
 }
 
@@ -285,6 +286,27 @@ const Mesh GLTF2Context::mesh(qint32 id) const
 Mesh &GLTF2Context::mesh(qint32 id)
 {
     return m_meshes[id];
+}
+
+Qt3DRender::QGeometryRenderer *GLTF2Context::getOrAllocateGeometryRenderer(Primitive &primitive)
+{
+    if (primitive.primitiveRenderer)
+        return primitive.primitiveRenderer;
+
+    Qt3DRender::QGeometryRenderer *renderer = m_sharedPrimitives.getResourceFromCache(primitive);
+    // Use Resource from Cache
+    if (renderer) {
+        primitive.primitiveRenderer = renderer;
+        return primitive.primitiveRenderer;
+    }
+
+    // Create the geometry renderer and store it in the cache if succesful
+    if (m_primitiveBuilder->generateGeometryRendererForPrimitive(primitive)) {
+        m_sharedPrimitives.addResourceToCache(primitive, primitive.primitiveRenderer);
+        return primitive.primitiveRenderer;
+    }
+
+    return nullptr;
 }
 
 size_t GLTF2Context::layersCount() const
@@ -579,7 +601,11 @@ void GLTF2Context::reset(SceneEntity *sceneEntity)
     // Resets everything but the options;
     m_sharedImages.setSceneEntity(sceneEntity); // so that they don't get deleted with the scene graph
     m_sharedTextures.setSceneEntity(sceneEntity);
+    m_sharedPrimitives.setSceneEntity(sceneEntity);
     m_effectLibrary->reset();
+
+    // Reset Primitive Builder
+    m_primitiveBuilder.reset(new PrimitiveBuilder(this));
 
     m_accessors.clear();
     m_buffers.clear();

@@ -1000,8 +1000,6 @@ void GLTF2Parser::generateTreeNodeContent()
     m_contentRootEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
     m_contentRootEntity->setObjectName(QStringLiteral("GLTF2Scene"));
 
-    PrimitiveBuilder primitiveBuilder(m_context);
-
     for (int i = 0, m = m_context->treeNodeCount(); i < m; ++i) {
         TreeNode &node = m_context->treeNode(i);
         // Build Entity Content
@@ -1009,7 +1007,7 @@ void GLTF2Parser::generateTreeNodeContent()
             createTransform(node);
             createLayers(node);
             createLight(node);
-            createMesh(node, &primitiveBuilder);
+            createMesh(node);
         }
 
         // Build Joint Content
@@ -1174,7 +1172,7 @@ void GLTF2Parser::createLayers(const TreeNode &node)
     }
 }
 
-void GLTF2Parser::createMesh(const TreeNode &node, PrimitiveBuilder *builder)
+void GLTF2Parser::createMesh(const TreeNode &node)
 {
     Qt3DCore::QEntity *entity = node.entity;
 
@@ -1193,7 +1191,7 @@ void GLTF2Parser::createMesh(const TreeNode &node, PrimitiveBuilder *builder)
         // Generate QGeometryRenderer for the primitives
         for (Primitive &primitiveData : meshData.meshPrimitives) {
             // Create Qt3D GeometryRenderer/Geometry/Attributes only now
-            if (!builder->generateGeometryRendererForPrimitive(primitiveData)) {
+            if (!m_context->getOrAllocateGeometryRenderer(primitiveData)) {
                 qCWarning(kuesa) << "Failed to generate GeometryRenderer for primitive" << meshData.name;
                 continue;
             }

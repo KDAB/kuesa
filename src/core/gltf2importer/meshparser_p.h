@@ -88,6 +88,7 @@ struct MorphTarget {
 };
 
 struct Primitive {
+    QString key;
     Qt3DRender::QGeometryRenderer *primitiveRenderer = nullptr;
     qint32 materialIdx = -1;
     bool hasColorAttr = false;
