@@ -27,6 +27,7 @@
 */
 
 #include "bufferviewsparser_p.h"
+#include "assetkeyparser_p.h"
 
 #include <QJsonArray>
 #include <QJsonObject>
@@ -94,6 +95,10 @@ bool BufferViewsParser::parse(const QJsonArray &bufferViewsArray, GLTF2Context *
             view.byteOffset = byteOffset;
             view.byteLength = byteLength;
             view.byteStride = byteStride;
+
+            // Parse Share Key Extension
+            AssetKeyParser::parse(view, viewObject);
+
             context->addBufferView(view);
         } else {
             return false;

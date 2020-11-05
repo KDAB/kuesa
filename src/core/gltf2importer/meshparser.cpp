@@ -32,6 +32,7 @@
 #include "gltf2context_p.h"
 #include "kuesa_p.h"
 #include "meshparser_utils_p.h"
+#include "assetkeyparser_p.h"
 
 #if defined(KUESA_DRACO_COMPRESSION)
 #include <Kuesa/private/draco_prefix_p.h>
@@ -166,6 +167,9 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
         for (qint32 primitiveId = 0; primitiveId < primitiveCount; ++primitiveId) {
             Primitive &primitive = mesh.meshPrimitives[primitiveId];
             const QJsonObject &primitivesObject = primitivesArray[primitiveId].toObject();
+
+            // Parse Share Key Extension
+            AssetKeyParser::parse(primitive, primitivesObject);
 
 #if defined(KUESA_DRACO_COMPRESSION)
             const QJsonObject extensions = primitivesObject.value(KEY_EXTENSIONS).toObject();

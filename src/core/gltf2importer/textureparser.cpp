@@ -32,6 +32,7 @@
 #include "kuesa_p.h"
 #include "texturesamplerparser_p.h"
 #include "embeddedtextureimage_p.h"
+#include "assetkeyparser_p.h"
 
 #include <Qt3DRender/QTexture>
 #include <Qt3DRender/QTextureWrapMode>
@@ -58,6 +59,9 @@ bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context
 
         auto texture = Texture();
         texture.name = textureObject[KEY_NAME].toString();
+
+        // Parse Share Key Extension
+        AssetKeyParser::parse(texture, textureObject);
 
         auto sourceValue = textureObject[KEY_SOURCE];
 

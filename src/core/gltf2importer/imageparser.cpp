@@ -28,6 +28,7 @@
 
 #include "imageparser_p.h"
 #include "gltf2uri_p.h"
+#include "assetkeyparser_p.h"
 
 #include <kuesa_p.h>
 #include <gltf2context_p.h>
@@ -82,7 +83,6 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
                 break;
             }
             }
-            image.key = uriString;
         } else {
             const BufferView bufferData = context->bufferView(bufferViewValue.toInt());
             image.data = bufferData.bufferData;
@@ -93,10 +93,11 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
                 return false;
             }
             image.mimeType = mimeTypeValue.toString();
-            image.key = bufferViewValue.toString();
         }
 
         image.name = imageObject[KEY_NAME].toString();
+        // Parse Share Key Extension
+        AssetKeyParser::parse(image, imageObject);
 
         context->addImage(image);
     }

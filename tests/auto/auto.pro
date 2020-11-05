@@ -96,7 +96,8 @@ qtConfig(private_tests) {
         empty2dtexture \
         transformtracker \
         fovadapter \
-        assetcache
+        assetcache  \
+        assetkeyparser
 
     greaterThan(QT_MAJOR_VERSION, 5):
         SUBDIRS += fboresolver

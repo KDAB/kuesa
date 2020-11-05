@@ -1,5 +1,5 @@
 /*
-    bufferviewsparser_p.h
+    assetkeyparser_p.h
 
     This file is part of Kuesa.
 
@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_GLTF2IMPORT_BUFFERVIEWSPARSER_P_H
-#define KUESA_GLTF2IMPORT_BUFFERVIEWSPARSER_P_H
+#ifndef KUESA_GLTF2IMPORT_ASSETKEYPARSER_H
+#define KUESA_GLTF2IMPORT_ASSETKEYPARSER_H
 
 //
 //  NOTICE
@@ -37,55 +37,28 @@
 // modified without notice
 //
 
-#include <QByteArray>
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#include <Qt3DCore/QBuffer>
-#include <Qt3DCore/QAttribute>
-#else
-#include <Qt3DRender/QBuffer>
-#include <Qt3DRender/QAttribute>
-#endif
+#include <QJsonObject>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-namespace Qt3DGeometry = Qt3DCore;
-#else
-namespace Qt3DGeometry = Qt3DRender;
-#endif
 
 namespace Kuesa {
 namespace GLTF2Import {
 
-class GLTF2Context;
-
-/*!
- * \brief It contains the information parsed by the BufferViewParser.
- *
- * An invalid BufferView can be constructed if the data referenced by the buffer view does not exist.
- * In this case, the \a bufferData property will be a default constructed QByteArray and the rest of properties will be -1.
- */
-struct Q_AUTOTEST_EXPORT BufferView {
-    BufferView();
-
-    QByteArray bufferData;
-    qint16 byteStride;
-    qint32 bufferIdx;
-    qint32 byteOffset;
-    qint32 byteLength;
-    QString key;
-};
-
-class Q_AUTOTEST_EXPORT BufferViewsParser
+class AssetKeyParser
 {
 public:
-    BufferViewsParser();
+    template<typename Asset>
+    static void parse(Asset &asset, const QJsonObject &json)
+    {
+        const QLatin1String KEY_EXTENSIONS = QLatin1String("extensions");
+        const QLatin1String KEY_ASSET_KEY_EXTENSION = QLatin1String("KDAB_asset_key");
+        const QLatin1String KEY_KEY = QLatin1String("key");
 
-    bool parse(const QJsonArray &bufferViewsArray, GLTF2Context *context);
-    QVector<BufferView> parse(const QJsonArray &bufferViewsArray, const QVector<QByteArray> &buffers);
-
-private:
-    Qt3DGeometry::QAttribute::AttributeType viewTargetFromJSON(int target);
+        const QJsonObject extensionObj = json.value(KEY_EXTENSIONS).toObject();
+        const QJsonObject sharedKeyExtensionObj = extensionObj.value(KEY_ASSET_KEY_EXTENSION).toObject();
+        asset.key = sharedKeyExtensionObj.value(KEY_KEY).toString();
+    }
 };
 
 } // namespace GLTF2Import
@@ -93,4 +66,4 @@ private:
 
 QT_END_NAMESPACE
 
-#endif // KUESA_GLTF2IMPORT_BUFFERVIEWSPARSER_P_H
+#endif // KUESA_GLTF2IMPORT_ASSETKEYPARSER_H

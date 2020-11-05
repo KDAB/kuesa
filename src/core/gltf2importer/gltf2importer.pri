@@ -54,6 +54,7 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/assetcache_p.h \
+    $$PWD/assetkeyparser_p.h \
     $$PWD/bufferparser_p.h \
     $$PWD/bufferviewsparser_p.h \
     $$PWD/cameraparser_p.h \

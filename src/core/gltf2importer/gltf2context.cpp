@@ -653,9 +653,6 @@ Qt3DRender::QAbstractTexture *GLTF2Context::getOrAllocateTexture(Texture &textur
     if (image.url.isEmpty() && image.data.isEmpty())
         return nullptr;
 
-    // TODO: Fix this, use a proper gltf extension to set the key
-    texture.key = image.key;
-
     auto texture2d = std::unique_ptr<Qt3DRender::QAbstractTexture>(m_sharedTextures.getResourceFromCache(texture));
 
     // Use cached resource if it existed
