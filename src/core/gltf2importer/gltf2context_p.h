@@ -80,7 +80,7 @@ public:
     ~GLTF2Context();
 
     template<typename Asset>
-    int count() const
+    size_t count() const
     {
         return 0;
     }
@@ -91,75 +91,76 @@ public:
         return {};
     }
 
-    int bufferCount() const;
+    size_t bufferCount() const;
     const QByteArray buffer(qint32 id) const;
     void addBuffer(const QByteArray &buffer);
 
-    int bufferViewCount() const;
+    size_t bufferViewCount() const;
     const BufferView bufferView(qint32 id) const;
     void addBufferView(const BufferView &bufferView);
 
-    int cameraCount() const;
+    size_t cameraCount() const;
     const Camera camera(qint32 id) const;
     void addCamera(const Camera &camera);
 
-    int accessorCount() const;
+    size_t accessorCount() const;
     void addAccessor(const Accessor &accessor);
     const Accessor accessor(qint32 id) const;
 
-    int meshesCount() const;
+    size_t meshesCount() const;
     void addMesh(const Mesh &mesh);
-    const Mesh mesh(int id) const;
+    const Mesh mesh(qint32 id) const;
+    Mesh &mesh(qint32 id);
 
-    int treeNodeCount() const;
+    size_t treeNodeCount() const;
     void addTreeNode(const TreeNode &treeNode);
     const TreeNode treeNode(qint32 id) const;
     TreeNode &treeNode(qint32 id);
-    const QVector<TreeNode> &treeNodes() const;
+    const std::vector<TreeNode> &treeNodes() const;
 
-    int layersCount() const;
+    size_t layersCount() const;
     void addLayer(const Layer &layer);
     Layer layer(qint32 id) const;
 
-    int imagesCount() const;
+    size_t imagesCount() const;
     void addImage(const Image &image);
     const Image image(qint32 id) const;
 
-    int textureSamplersCount() const;
+    size_t textureSamplersCount() const;
     void addTextureSampler(const TextureSampler &textureSampler);
     const TextureSampler textureSampler(qint32 id) const;
 
-    int texturesCount() const;
+    size_t texturesCount() const;
     void addTexture(const Texture &texture);
     const Texture texture(qint32 id) const;
     Qt3DRender::QAbstractTexture *getOrAllocateTexture(qint32 id);
     Qt3DRender::QAbstractTexture *getOrAllocateTexture(Texture &texture);
 
-    int animationsCount() const;
+    size_t animationsCount() const;
     void addAnimation(const Animation &animation);
     const Animation animation(qint32 id) const;
     Animation &animation(qint32 id);
 
-    int scenesCount() const;
+    size_t scenesCount() const;
     void addScene(const Scene &scene);
     const Scene scene(qint32 id) const;
 
     void setDefaultScene(qint32 id);
     qint32 defaultScene() const;
 
-    int materialsCount() const;
+    size_t materialsCount() const;
     void addMaterial(const Material &material);
     const Material material(qint32 id) const;
     Material &material(qint32 id);
     Kuesa::GLTF2MaterialProperties *getOrAllocateMaterial(qint32 id);
     Kuesa::GLTF2MaterialProperties *getOrAllocateMaterial(Material &material);
 
-    int skinsCount() const;
+    size_t skinsCount() const;
     void addSkin(const Skin &skin);
     const Skin skin(qint32 id) const;
     Skin &skin(qint32 id);
 
-    int lightCount() const;
+    size_t lightCount() const;
     void addLight(const Light &light);
     const Light light(qint32 id) const;
     Light &light(qint32 id);
@@ -197,21 +198,21 @@ public:
     void addPrimitiveEntityToEntity(Qt3DCore::QEntity *e, Qt3DCore::QEntity *primitive);
 
 private:
-    QVector<Accessor> m_accessors;
-    QVector<QByteArray> m_buffers;
-    QVector<BufferView> m_bufferViews;
-    QVector<Camera> m_cameras;
-    QVector<Mesh> m_meshes;
-    QVector<TreeNode> m_treeNodes;
-    QVector<Layer> m_layers;
-    QVector<Image> m_images;
-    QVector<TextureSampler> m_textureSamplers;
-    QVector<Texture> m_textures;
-    QVector<Animation> m_animations;
-    QVector<Scene> m_scenes;
-    QVector<Material> m_materials;
-    QVector<Skin> m_skins;
-    QVector<Light> m_lights;
+    std::vector<Accessor> m_accessors;
+    std::vector<QByteArray> m_buffers;
+    std::vector<BufferView> m_bufferViews;
+    std::vector<Camera> m_cameras;
+    std::vector<Mesh> m_meshes;
+    std::vector<TreeNode> m_treeNodes;
+    std::vector<Layer> m_layers;
+    std::vector<Image> m_images;
+    std::vector<TextureSampler> m_textureSamplers;
+    std::vector<Texture> m_textures;
+    std::vector<Animation> m_animations;
+    std::vector<Scene> m_scenes;
+    std::vector<Material> m_materials;
+    std::vector<Skin> m_skins;
+    std::vector<Light> m_lights;
     QStringList m_usedExtensions;
     QStringList m_requiredExtensions;
     QString m_filename;
@@ -232,46 +233,46 @@ private:
 };
 
 template<>
-int GLTF2Context::count<Mesh>() const;
+size_t GLTF2Context::count<Mesh>() const;
 
 template<>
-Mesh GLTF2Context::assetAt<Mesh>(int i) const;
+Mesh GLTF2Context::assetAt<Mesh>(qint32 i) const;
 
 template<>
-int GLTF2Context::count<Layer>() const;
+size_t GLTF2Context::count<Layer>() const;
 
 template<>
-Layer GLTF2Context::assetAt<Layer>(int i) const;
+Layer GLTF2Context::assetAt<Layer>(qint32 i) const;
 
 template<>
-int GLTF2Context::count<TreeNode>() const;
+size_t GLTF2Context::count<TreeNode>() const;
 
 template<>
-TreeNode GLTF2Context::assetAt<TreeNode>(int i) const;
+TreeNode GLTF2Context::assetAt<TreeNode>(qint32 i) const;
 
 template<>
-int GLTF2Context::count<Texture>() const;
+size_t GLTF2Context::count<Texture>() const;
 
 template<>
-Texture GLTF2Context::assetAt<Texture>(int i) const;
+Texture GLTF2Context::assetAt<Texture>(qint32 i) const;
 
 template<>
-int GLTF2Context::count<Animation>() const;
+size_t GLTF2Context::count<Animation>() const;
 
 template<>
-Animation GLTF2Context::assetAt<Animation>(int i) const;
+Animation GLTF2Context::assetAt<Animation>(qint32 i) const;
 
 template<>
-int GLTF2Context::count<Material>() const;
+size_t GLTF2Context::count<Material>() const;
 
 template<>
-Material GLTF2Context::assetAt<Material>(int i) const;
+Material GLTF2Context::assetAt<Material>(qint32 i) const;
 
 template<>
-int GLTF2Context::count<Skin>() const;
+size_t GLTF2Context::count<Skin>() const;
 
 template<>
-Skin GLTF2Context::assetAt<Skin>(int i) const;
+Skin GLTF2Context::assetAt<Skin>(qint32 i) const;
 
 } // namespace GLTF2Import
 } // namespace Kuesa

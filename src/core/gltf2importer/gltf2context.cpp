@@ -50,14 +50,14 @@ GLTF2Context::~GLTF2Context()
 {
 }
 
-int GLTF2Context::bufferCount() const
+size_t GLTF2Context::bufferCount() const
 {
     return m_buffers.size();
 }
 
 const QByteArray GLTF2Context::buffer(qint32 id) const
 {
-    if (id >= 0 && id < m_buffers.size())
+    if (id >= 0 && id < qint32(m_buffers.size()))
         return m_buffers.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid buffer id");
@@ -69,14 +69,14 @@ void GLTF2Context::addBuffer(const QByteArray &buffer)
     m_buffers.push_back(buffer);
 }
 
-int GLTF2Context::bufferViewCount() const
+size_t GLTF2Context::bufferViewCount() const
 {
     return m_bufferViews.size();
 }
 
 const BufferView GLTF2Context::bufferView(qint32 id) const
 {
-    if (id >= 0 && id < m_bufferViews.size())
+    if (id >= 0 && id < qint32(m_bufferViews.size()))
         return m_bufferViews.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid buffer view id");
@@ -88,14 +88,14 @@ void GLTF2Context::addBufferView(const BufferView &bufferView)
     m_bufferViews.push_back(bufferView);
 }
 
-int GLTF2Context::cameraCount() const
+size_t GLTF2Context::cameraCount() const
 {
     return m_cameras.size();
 }
 
 const Camera GLTF2Context::camera(qint32 id) const
 {
-    if (id >= 0 && id < m_cameras.size())
+    if (id >= 0 && id < qint32(m_cameras.size()))
         return m_cameras.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid camera id");
@@ -107,14 +107,14 @@ void GLTF2Context::addCamera(const Camera &camera)
     m_cameras.push_back(camera);
 }
 
-int GLTF2Context::treeNodeCount() const
+size_t GLTF2Context::treeNodeCount() const
 {
     return m_treeNodes.size();
 }
 
 const TreeNode GLTF2Context::treeNode(qint32 id) const
 {
-    if (id >= 0 && id < m_treeNodes.size())
+    if (id >= 0 && id < qint32(m_treeNodes.size()))
         return m_treeNodes.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid tree node id");
@@ -123,11 +123,11 @@ const TreeNode GLTF2Context::treeNode(qint32 id) const
 
 TreeNode &GLTF2Context::treeNode(qint32 id)
 {
-    Q_ASSERT(id >= 0 && id < m_treeNodes.size());
+    Q_ASSERT(id >= 0 && id < qint32(m_treeNodes.size()));
     return m_treeNodes[id];
 }
 
-const QVector<TreeNode> &GLTF2Context::treeNodes() const
+const std::vector<TreeNode> &GLTF2Context::treeNodes() const
 {
     return m_treeNodes;
 }
@@ -137,7 +137,7 @@ void GLTF2Context::addTreeNode(const TreeNode &treeNode)
     m_treeNodes.push_back(treeNode);
 }
 
-int GLTF2Context::imagesCount() const
+size_t GLTF2Context::imagesCount() const
 {
     return m_images.size();
 }
@@ -149,14 +149,14 @@ void GLTF2Context::addImage(const Image &image)
 
 const Image GLTF2Context::image(qint32 id) const
 {
-    if (id >= 0 && id < m_images.size())
+    if (id >= 0 && id < qint32(m_images.size()))
         return m_images.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid image id");
     return Image();
 }
 
-int GLTF2Context::textureSamplersCount() const
+size_t GLTF2Context::textureSamplersCount() const
 {
     return m_textureSamplers.size();
 }
@@ -168,14 +168,14 @@ void GLTF2Context::addTextureSampler(const TextureSampler &textureSampler)
 
 const TextureSampler GLTF2Context::textureSampler(qint32 id) const
 {
-    if (id >= 0 && id < m_textureSamplers.size())
+    if (id >= 0 && id < qint32(m_textureSamplers.size()))
         return m_textureSamplers.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid texture sampler id");
     return TextureSampler();
 }
 
-int GLTF2Context::texturesCount() const
+size_t GLTF2Context::texturesCount() const
 {
     return m_textures.size();
 }
@@ -187,14 +187,14 @@ void GLTF2Context::addTexture(const Texture &texture)
 
 const Texture GLTF2Context::texture(qint32 id) const
 {
-    if (id >= 0 && id < m_textures.size())
+    if (id >= 0 && id < qint32(m_textures.size()))
         return m_textures.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid texture id");
     return Texture();
 }
 
-int GLTF2Context::animationsCount() const
+size_t GLTF2Context::animationsCount() const
 {
     return m_animations.size();
 }
@@ -206,7 +206,7 @@ void GLTF2Context::addAnimation(const Animation &animation)
 
 const Animation GLTF2Context::animation(qint32 id) const
 {
-    if (id >= 0 && id < m_animations.size())
+    if (id >= 0 && id < qint32(m_animations.size()))
         return m_animations.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid animation id");
@@ -215,11 +215,11 @@ const Animation GLTF2Context::animation(qint32 id) const
 
 Animation &GLTF2Context::animation(qint32 id)
 {
-    Q_ASSERT(id >= 0 && id < m_animations.size());
+    Q_ASSERT(id >= 0 && id < qint32(m_animations.size()));
     return m_animations[id];
 }
 
-int GLTF2Context::materialsCount() const
+size_t GLTF2Context::materialsCount() const
 {
     return m_materials.size();
 }
@@ -232,7 +232,7 @@ void GLTF2Context::addMaterial(const Material &material)
 const Material GLTF2Context::material(qint32 id) const
 {
 
-    if (id >= 0 && id < m_materials.size())
+    if (id >= 0 && id < qint32(m_materials.size()))
         return m_materials.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid material id");
@@ -244,14 +244,14 @@ Material &GLTF2Context::material(qint32 id)
     return m_materials[id];
 }
 
-int GLTF2Context::accessorCount() const
+size_t GLTF2Context::accessorCount() const
 {
     return m_accessors.size();
 }
 
 const Accessor GLTF2Context::accessor(qint32 id) const
 {
-    if (id >= 0 && id < m_accessors.size())
+    if (id >= 0 && id < qint32(m_accessors.size()))
         return m_accessors.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid accessor id");
@@ -263,7 +263,7 @@ void GLTF2Context::addAccessor(const Accessor &accessor)
     m_accessors.push_back(accessor);
 }
 
-int GLTF2Context::meshesCount() const
+size_t GLTF2Context::meshesCount() const
 {
     return m_meshes.size();
 }
@@ -275,14 +275,19 @@ void GLTF2Context::addMesh(const Mesh &mesh)
 
 const Mesh GLTF2Context::mesh(qint32 id) const
 {
-    if (id >= 0 && id < m_meshes.size())
+    if (id >= 0 && id < qint32(m_meshes.size()))
         return m_meshes.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid mesh id");
     return Mesh();
 }
 
-int GLTF2Context::layersCount() const
+Mesh &GLTF2Context::mesh(qint32 id)
+{
+    return m_meshes[id];
+}
+
+size_t GLTF2Context::layersCount() const
 {
     return m_layers.size();
 }
@@ -301,14 +306,14 @@ void GLTF2Context::addLayer(const Layer &layer)
 
 Layer GLTF2Context::layer(qint32 id) const
 {
-    if (id >= 0 && id < m_layers.size())
+    if (id >= 0 && id < qint32(m_layers.size()))
         return m_layers.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid layer id");
     return {};
 }
 
-int GLTF2Context::scenesCount() const
+size_t GLTF2Context::scenesCount() const
 {
     return m_scenes.size();
 }
@@ -337,7 +342,7 @@ qint32 GLTF2Context::defaultScene() const
     return m_defaultScene;
 }
 
-int GLTF2Context::skinsCount() const
+size_t GLTF2Context::skinsCount() const
 {
     return m_skins.size();
 }
@@ -358,13 +363,13 @@ const Skin GLTF2Context::skin(qint32 id) const
 
 Skin &GLTF2Context::skin(qint32 id)
 {
-    Q_ASSERT(id >= 0 && id < m_skins.size());
+    Q_ASSERT(id >= 0 && id < qint32(m_skins.size()));
     return m_skins[id];
 }
 
-int GLTF2Context::lightCount() const
+size_t GLTF2Context::lightCount() const
 {
-    return m_lights.count();
+    return m_lights.size();
 }
 
 void GLTF2Context::addLight(const Light &light)
@@ -374,7 +379,7 @@ void GLTF2Context::addLight(const Light &light)
 
 const Light GLTF2Context::light(qint32 id) const
 {
-    if (id >= 0 && id < m_lights.size())
+    if (id >= 0 && id < qint32(m_lights.size()))
         return m_lights.at(id);
 
     qCWarning(Kuesa::kuesa, "Invalid light id");
@@ -383,7 +388,7 @@ const Light GLTF2Context::light(qint32 id) const
 
 Light &GLTF2Context::light(qint32 id)
 {
-    Q_ASSERT(id >= 0 && id < m_lights.size());
+    Q_ASSERT(id >= 0 && id < qint32(m_lights.size()));
     return m_lights[id];
 }
 
@@ -458,9 +463,9 @@ void GLTF2Context::setBufferChunk(const QByteArray &bufferChunk)
 }
 
 template<>
-int GLTF2Context::count<Mesh>() const
+size_t GLTF2Context::count<Mesh>() const
 {
-    return m_meshes.count();
+    return m_meshes.size();
 }
 
 template<>
@@ -470,9 +475,9 @@ Mesh GLTF2Context::assetAt<Mesh>(qint32 i) const
 }
 
 template<>
-int GLTF2Context::count<Layer>() const
+size_t GLTF2Context::count<Layer>() const
 {
-    return m_layers.count();
+    return m_layers.size();
 }
 
 template<>
@@ -482,9 +487,9 @@ Layer GLTF2Context::assetAt<Layer>(qint32 i) const
 }
 
 template<>
-int GLTF2Context::count<TreeNode>() const
+size_t GLTF2Context::count<TreeNode>() const
 {
-    return m_treeNodes.count();
+    return m_treeNodes.size();
 }
 
 template<>
@@ -494,9 +499,9 @@ TreeNode GLTF2Context::assetAt<TreeNode>(qint32 i) const
 }
 
 template<>
-int GLTF2Context::count<Texture>() const
+size_t GLTF2Context::count<Texture>() const
 {
-    return m_textures.count();
+    return m_textures.size();
 }
 
 template<>
@@ -506,9 +511,9 @@ Texture GLTF2Context::assetAt<Texture>(qint32 i) const
 }
 
 template<>
-int GLTF2Context::count<Animation>() const
+size_t GLTF2Context::count<Animation>() const
 {
-    return m_animations.count();
+    return m_animations.size();
 }
 
 template<>
@@ -518,9 +523,9 @@ Animation GLTF2Context::assetAt<Animation>(qint32 i) const
 }
 
 template<>
-int GLTF2Context::count<Material>() const
+size_t GLTF2Context::count<Material>() const
 {
-    return m_materials.count();
+    return m_materials.size();
 }
 
 template<>
@@ -530,9 +535,9 @@ Material GLTF2Context::assetAt<Material>(qint32 i) const
 }
 
 template<>
-int GLTF2Context::count<Skin>() const
+size_t GLTF2Context::count<Skin>() const
 {
-    return m_skins.count();
+    return m_skins.size();
 }
 
 template<>
@@ -608,7 +613,7 @@ GLTF2Context *GLTF2Context::fromImporter(GLTF2Importer *importer)
 
 Qt3DRender::QAbstractTexture *GLTF2Context::getOrAllocateTexture(qint32 id)
 {
-    if (id < 0 || id >= m_textures.size())
+    if (id < 0 || id >= qint32(m_textures.size()))
         return nullptr;
     return getOrAllocateTexture(m_textures[id]);
 }
@@ -693,7 +698,7 @@ Qt3DRender::QAbstractTexture *GLTF2Context::getOrAllocateTexture(Texture &textur
 
 GLTF2MaterialProperties *GLTF2Context::getOrAllocateMaterial(qint32 id)
 {
-    if (id < 0 || id >= m_materials.size())
+    if (id < 0 || id >= qint32(m_materials.size()))
         return nullptr;
     return getOrAllocateMaterial(m_materials[id]);
 }

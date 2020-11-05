@@ -532,7 +532,7 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
         m_defaultSceneIdx = rootObject.value(KEY_SCENE).toInt(0);
         m_context->setDefaultScene(m_defaultSceneIdx);
 
-        if (m_defaultSceneIdx < 0 || m_defaultSceneIdx > m_context->scenesCount()) {
+        if (m_defaultSceneIdx < 0 || m_defaultSceneIdx > qint32(m_context->scenesCount())) {
             qCWarning(Kuesa::kuesa) << "Invalid default scene reference";
             return false;
         }
@@ -641,8 +641,8 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
 
         // For TreeNode we use our local copy and not the entries on the context
         if (m_sceneEntity->entities()) {
-            const QVector<TreeNode> threeNodes = m_context->treeNodes();
-            for (const TreeNode &treeNode : threeNodes) {
+            const std::vector<TreeNode> &treeNodes = m_context->treeNodes();
+            for (const TreeNode &treeNode : treeNodes) {
                 if (treeNode.entity != nullptr && !treeNode.name.isEmpty()) {
                     addToCollectionWithUniqueName(m_sceneEntity->entities(), treeNode.name, treeNode.entity);
 
@@ -663,8 +663,8 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
 
             if (m_assignNames) {
                 int j = 0;
-                const QVector<TreeNode> threeNodes = m_context->treeNodes();
-                for (const TreeNode &treeNode : threeNodes) {
+                const std::vector<TreeNode> &treeNodes = m_context->treeNodes();
+                for (const TreeNode &treeNode : treeNodes) {
                     if (treeNode.entity != nullptr && treeNode.name.isEmpty()) {
                         addToCollectionWithUniqueName(m_sceneEntity->entities(), QStringLiteral("KuesaEntity_%1").arg(j), treeNode.entity);
 
@@ -1107,7 +1107,7 @@ void GLTF2Parser::createTransform(const TreeNode &node)
     // The QCamera node already contains a lens + transform components
     if (camera != nullptr) {
         const qint32 cameraId = node.cameraIdx;
-        if (cameraId >= 0 && cameraId < m_context->cameraCount()) {
+        if (cameraId >= 0 && cameraId < qint32(m_context->cameraCount())) {
             const Camera cam = m_context->camera(cameraId);
             // Note: we need to keep the lens in cam around as that one will be added
             // into the collection
@@ -1160,7 +1160,7 @@ void GLTF2Parser::createLayers(const TreeNode &node)
     // If the node references Kuesa Layers, add them
     const QVector<int> layerIds = node.layerIndices;
     for (const qint32 layerId : layerIds) {
-        if (layerId >= 0 && layerId < m_context->layersCount()) {
+        if (layerId >= 0 && layerId < qint32(m_context->layersCount())) {
             const Layer layer = m_context->layer(layerId);
             if (layer.layer) {
                 // Make it recursive so it affects subentities and in particular primitive entities
@@ -1427,7 +1427,7 @@ void GLTF2Parser::createLight(const TreeNode &node)
     Qt3DCore::QEntity *entity = node.entity;
 
     // If the node references Light (KHR_lights_punctual extension), add them
-    if (node.lightIdx != -1 && node.lightIdx < m_context->lightCount()) {
+    if (node.lightIdx != -1 && node.lightIdx < qint32(m_context->lightCount())) {
         const Light lightDefinition = m_context->light(node.lightIdx);
         Qt3DRender::QAbstractLight *light = lightDefinition.lightComponent;
         if (light == nullptr) {

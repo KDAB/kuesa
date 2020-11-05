@@ -193,7 +193,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        for (int meshNo = 0; meshNo < context.meshesCount(); ++meshNo) {
+        for (size_t meshNo = 0; meshNo < context.meshesCount(); ++meshNo) {
             auto parsedMesh = context.mesh(meshNo);
             QCOMPARE(meshNo, parsedMesh.meshIdx);
             for (auto primitive : parsedMesh.meshPrimitives) {
