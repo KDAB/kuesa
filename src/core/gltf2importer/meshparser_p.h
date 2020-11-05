@@ -74,8 +74,17 @@ struct MorphTargetAttribute {
     qint32 accessorIdx = -1;
 };
 
+struct AttributeInfo {
+    bool isDracoAttribute = false;
+    bool isIndexAttribute = false;
+    QString name; // GLTF Semantic Name
+    QString attributeName; // Qt3D Attribute Name
+    qint32 accessorIdx = -1;
+    qint32 dracoAttributeId = -1;
+};
+
 struct MorphTarget {
-    QVector<MorphTargetAttribute> attributes;
+    std::vector<MorphTargetAttribute> attributes;
 };
 
 struct Primitive {
@@ -86,8 +95,13 @@ struct Primitive {
     bool hasTangentAttr = false;
     bool hasTexCoordAttr = false;
     bool hasTexCoord1Attr = false;
+    bool isDracoCompressed = false;
+    bool hasMorphTargets = false;
+    qint32 dracoBufferViewIdx = -1;
+    Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType = Qt3DRender::QGeometryRenderer::Triangles;
 
-    QVector<MorphTarget> morphTargets;
+    std::vector<MorphTarget> morphTargets;
+    std::vector<AttributeInfo> attributeInfo;
 };
 
 struct Mesh {
@@ -98,6 +112,29 @@ struct Mesh {
     qint32 meshIdx = -1;
 };
 
+class Q_AUTOTEST_EXPORT PrimitiveBuilder
+{
+public:
+    explicit PrimitiveBuilder(GLTF2Context *context);
+
+    bool generateGeometryRendererForPrimitive(Primitive &primitive);
+
+private:
+    bool generateAttributes(Qt3DGeometry::QGeometry *geometry,
+                            const Primitive &primitive);
+    bool generateDracoAttributes(Qt3DGeometry::QGeometry *geometry,
+                                 const Primitive &primitive);
+    bool generateMorphTargetAttributes(Qt3DGeometry::QGeometry *geometry,
+                                       const Primitive &primitive);
+    Qt3DGeometry::QAttribute *createAttribute(qint32 accessorIndex,
+                                              const QString &attributeName,
+                                              const QString &semanticName);
+private:
+    GLTF2Context *m_context;
+    QHash<qint32, Qt3DGeometry::QBuffer *> m_qViewBuffers;
+    QHash<qint32, Qt3DGeometry::QBuffer *> m_qAccessorBuffers;
+};
+
 class Q_AUTOTEST_EXPORT MeshParser
 {
 public:
@@ -106,32 +143,22 @@ public:
     bool parse(const QJsonArray &meshArray, GLTF2Context *context);
 
 private:
-    Qt3DGeometry::QAttribute *createAttribute(qint32 accessorIndex,
-                                const QString &attributeName,
-                                const QString &semanticName);
-    bool geometryFromJSON(Qt3DGeometry::QGeometry *geometry,
-                          const QJsonObject &json,
+
+    bool geometryFromJSON(const QJsonObject &json,
                           Primitive &primitive);
-    bool geometryAttributesFromJSON(Qt3DGeometry::QGeometry *geometry,
-                                    const QJsonObject &json,
+    bool geometryAttributesFromJSON(const QJsonObject &json,
                                     QStringList existingAttributes,
                                     Primitive &primitive);
-    std::tuple<bool, QVector<MorphTarget>> geometryMorphTargetsFromJSON(Qt3DGeometry::QGeometry *geometry,
-                                                                        const QJsonObject &json);
+    bool geometryMorphTargetsFromJSON(const QJsonObject &json,
+                                      Primitive &primitive);
 #if defined(KUESA_DRACO_COMPRESSION)
-    bool geometryDracoFromJSON(Qt3DGeometry::QGeometry *geometry,
-                               const QJsonObject &json,
+    bool geometryDracoFromJSON(const QJsonObject &json,
                                Primitive &primitive);
-    bool geometryAttributesDracoFromJSON(Qt3DGeometry::QGeometry *geometry,
-                                         const QJsonObject &json,
-                                         const draco::PointCloud *pointCloud,
+    bool geometryAttributesDracoFromJSON(const QJsonObject &json,
                                          QStringList &existingAttributes,
                                          Primitive &primitive);
 #endif
-
     GLTF2Context *m_context;
-    QHash<qint32, Qt3DGeometry::QBuffer *> m_qViewBuffers;
-    QHash<qint32, Qt3DGeometry::QBuffer *> m_qAccessorBuffers;
 };
 
 } // namespace GLTF2Import

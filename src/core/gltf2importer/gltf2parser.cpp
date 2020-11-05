@@ -1000,6 +1000,8 @@ void GLTF2Parser::generateTreeNodeContent()
     m_contentRootEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
     m_contentRootEntity->setObjectName(QStringLiteral("GLTF2Scene"));
 
+    PrimitiveBuilder primitiveBuilder(m_context);
+
     for (int i = 0, m = m_context->treeNodeCount(); i < m; ++i) {
         TreeNode &node = m_context->treeNode(i);
         // Build Entity Content
@@ -1007,7 +1009,7 @@ void GLTF2Parser::generateTreeNodeContent()
             createTransform(node);
             createLayers(node);
             createLight(node);
-            createMesh(node);
+            createMesh(node, &primitiveBuilder);
         }
 
         // Build Joint Content
@@ -1172,21 +1174,30 @@ void GLTF2Parser::createLayers(const TreeNode &node)
     }
 }
 
-void GLTF2Parser::createMesh(const TreeNode &node)
+void GLTF2Parser::createMesh(const TreeNode &node, PrimitiveBuilder *builder)
 {
     Qt3DCore::QEntity *entity = node.entity;
 
     // If the node has a mesh, add it
     const qint32 meshId = node.meshIdx;
-    if (meshId >= 0 && meshId < m_context->meshesCount()) {
-        const Mesh &meshData = m_context->mesh(meshId);
+    if (meshId >= 0 && meshId <  qint32(m_context->meshesCount())) {
+        Mesh &meshData = m_context->mesh(meshId);
         const qint32 skinId = node.skinIdx;
-        const bool isSkinned = skinId >= 0 && skinId < m_context->skinsCount();
+        const bool isSkinned = skinId >= 0 && skinId < qint32(m_context->skinsCount());
         const bool hasMorphTargets = meshData.morphTargetCount > 0;
 
         Qt3DCore::QArmature *armature = nullptr;
         Qt3DCore::QEntity *skinRootJointEntity = nullptr;
         MorphController *morphController = nullptr;
+
+        // Generate QGeometryRenderer for the primitives
+        for (Primitive &primitiveData : meshData.meshPrimitives) {
+            // Create Qt3D GeometryRenderer/Geometry/Attributes only now
+            if (!builder->generateGeometryRendererForPrimitive(primitiveData)) {
+                qCWarning(kuesa) << "Failed to generate GeometryRenderer for primitive" << meshData.name;
+                continue;
+            }
+        }
 
         // Create armature if node references a skin
         if (isSkinned)
@@ -1197,7 +1208,7 @@ void GLTF2Parser::createMesh(const TreeNode &node)
             morphController = createMorphTarget(node);
 
         // Generate one Entity per primitive (1 primitive == 1 geometry renderer)
-        for (const Primitive &primitiveData : meshData.meshPrimitives) {
+        for (Primitive &primitiveData : meshData.meshPrimitives) {
             Qt3DCore::QEntity *primitiveEntity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
 
             // If the mesh is skinned, the parent of the primitiveEntity wont be the treeNode

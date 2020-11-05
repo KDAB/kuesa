@@ -167,69 +167,37 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             Primitive &primitive = mesh.meshPrimitives[primitiveId];
             const QJsonObject &primitivesObject = primitivesArray[primitiveId].toObject();
 
-            auto geometry = std::unique_ptr<QGeometry>(new QGeometry);
-
 #if defined(KUESA_DRACO_COMPRESSION)
             const QJsonObject extensions = primitivesObject.value(KEY_EXTENSIONS).toObject();
 
             // Draco Extensions
             if (extensions.contains(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION)) {
-                if (!geometryDracoFromJSON(geometry.get(), primitivesObject, primitive) &&
-                    geometry->attributes().isEmpty()) {
+                primitive.isDracoCompressed = true;
+                if (!geometryDracoFromJSON(primitivesObject, primitive) &&
+                    primitive.attributeInfo.empty()) {
                     qCWarning(Kuesa::kuesa) << "Failed to parse draco compressed mesh primitive";
                     return false;
                 }
             } else
 #endif
             {
-                if (!geometryFromJSON(geometry.get(), primitivesObject, primitive) &&
-                    geometry->attributes().isEmpty()) {
+                if (!geometryFromJSON(primitivesObject, primitive) &&
+                    primitive.attributeInfo.empty()) {
                     qCWarning(Kuesa::kuesa) << "Failed to parse mesh primitive";
                     return false;
                 }
 
                 if (primitivesObject.contains(KEY_TARGETS)) {
                     hasMorphTargets = true;
-
-                    bool morphTargetsAreValid = false;
-                    QVector<MorphTarget> morphTargets;
-                    std::tie(morphTargetsAreValid, morphTargets) =
-                            geometryMorphTargetsFromJSON(geometry.get(),
-                                                         primitivesObject);
-                    if (!morphTargetsAreValid) {
+                    primitive.hasMorphTargets = true;
+                    if (!geometryMorphTargetsFromJSON(primitivesObject, primitive)) {
                         qCWarning(Kuesa::kuesa) << "Failed to parse Mesh Primitive morph targets";
                         return false;
                     }
-
-                    primitive.morphTargets = std::move(morphTargets);
                 }
             }
 
-            if (!Kuesa::GLTF2Import::MeshParserUtils::geometryIsGLTF2Valid(geometry.get())) {
-                qCWarning(Kuesa::kuesa) << QLatin1String("Geometry doesn't meet glTF 2.0 requirements");
-                return false;
-            }
-
-            auto primitiveType = static_cast<QGeometryRenderer::PrimitiveType>(primitivesObject.value(KEY_MODE).toInt(GL_TRIANGLES));
-            if (m_context->options()->generateNormals()) {
-                if (MeshParserUtils::needsNormalAttribute(geometry.get(), primitiveType)) {
-                    Kuesa::GLTF2Import::MeshParserUtils::createNormalsForGeometry(geometry.get(), primitiveType);
-                    // The generation of normal forces the primitive type to be Triangles
-                    primitiveType = QGeometryRenderer::Triangles;
-                    primitive.hasNormalAttr = true;
-                }
-            }
-            if (m_context->options()->generateTangents()) {
-                if (MeshParserUtils::needsTangentAttribute(geometry.get(), primitiveType)) {
-                    Kuesa::GLTF2Import::MeshParserUtils::createTangentForGeometry(geometry.get(), primitiveType);
-                    primitive.hasTangentAttr = true;
-                }
-            }
-
-            QGeometryRenderer *renderer = new QGeometryRenderer;
-            renderer->setPrimitiveType(primitiveType);
-            renderer->setGeometry(geometry.release());
-            primitive.primitiveRenderer = renderer;
+            primitive.primitiveType = static_cast<QGeometryRenderer::PrimitiveType>(primitivesObject.value(KEY_MODE).toInt(GL_TRIANGLES));
             primitive.materialIdx = primitivesObject.value(KEY_MATERIAL).toInt(-1);
         }
 
@@ -245,8 +213,8 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
             for (int i = 1, m = mesh.meshPrimitives.size(); i < m; ++i) {
                 const Primitive &previousPrimitive = mesh.meshPrimitives.at(i - 1);
                 const Primitive &currentPrimitive = mesh.meshPrimitives.at(i);
-                const QVector<MorphTarget> previousPrimitiveMorphTargets = previousPrimitive.morphTargets;
-                const QVector<MorphTarget> currentPrimitiveMorphTargets = currentPrimitive.morphTargets;
+                const std::vector<MorphTarget> &previousPrimitiveMorphTargets = previousPrimitive.morphTargets;
+                const std::vector<MorphTarget> &currentPrimitiveMorphTargets = currentPrimitive.morphTargets;
 
                 if (previousPrimitiveMorphTargets.size() != currentPrimitiveMorphTargets.size()) {
                     qWarning(kuesa) << "Mesh primitives should all define the same number of morph targets";
@@ -256,8 +224,8 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
                 // Check that the first MorphTargets of each primitive define the same attributes
                 // Note: we already check that within a Primitive, all MorphTargets define are compatible
 
-                const MorphTarget firstPreviousMorphTarget = previousPrimitiveMorphTargets.first();
-                const MorphTarget firstCurrentMorphTarget = currentPrimitiveMorphTargets.first();
+                const MorphTarget &firstPreviousMorphTarget = previousPrimitiveMorphTargets.front();
+                const MorphTarget &firstCurrentMorphTarget = currentPrimitiveMorphTargets.front();
 
                 if (firstPreviousMorphTarget.attributes.size() != firstCurrentMorphTarget.attributes.size()) {
                     qWarning(kuesa) << "Morph target attribute counts mismatch between different primitives of the same mesh";
@@ -309,36 +277,31 @@ bool MeshParser::parse(const QJsonArray &meshArray, GLTF2Context *context)
     return meshSize > 0;
 }
 
-bool MeshParser::geometryFromJSON(QGeometry *geometry,
-                                  const QJsonObject &json,
+bool MeshParser::geometryFromJSON(const QJsonObject &json,
                                   Primitive &primitive)
 {
     // Parse vertex attributes
-    if (!geometryAttributesFromJSON(geometry, json, {}, primitive))
+    if (!geometryAttributesFromJSON(json, {}, primitive))
         return false;
 
     // Index attribute
     const QJsonValue &indices = json.value(KEY_INDICES);
     if (!indices.isUndefined()) {
-        QAttribute *indexAttribute = createAttribute(indices.toInt(-1), {}, {});
-        indexAttribute->setAttributeType(QAttribute::IndexAttribute);
-        geometry->addAttribute(indexAttribute);
+        AttributeInfo attrInfo { false, true, {}, {}, indices.toInt(-1) };
+        primitive.attributeInfo.push_back(attrInfo);
     }
     return true;
 }
 
-std::tuple<bool, QVector<MorphTarget>>
-MeshParser::geometryMorphTargetsFromJSON(QGeometry *geometry,
-                                         const QJsonObject &json)
+bool MeshParser::geometryMorphTargetsFromJSON(const QJsonObject &json,
+                                              Primitive &primitive)
 {
     const QJsonArray &morphTargetsJsonArray = json.value(KEY_TARGETS).toArray();
 
     const auto morphAttribNamesCbeg = std::begin(morphTargetAttributeNames);
     const auto morphAttribNamesCend = std::end(morphTargetAttributeNames);
-    const QVector<QAttribute *> primitiveAttributes =
-            geometry->attributes();
 
-    QVector<MorphTarget> morphTargets;
+    std::vector<MorphTarget> morphTargets;
     morphTargets.reserve(morphTargetsJsonArray.size());
 
     for (const QJsonValue &morphTargetJsonValue : morphTargetsJsonArray) {
@@ -362,7 +325,7 @@ MeshParser::geometryMorphTargetsFromJSON(QGeometry *geometry,
                 qWarning(kuesa) << "Morph target attribute"
                                 << morphTargetAttributeName
                                 << "references an invalid accessor";
-                return std::make_tuple(false, morphTargets);
+                return false;
             }
 
             // Currently we will only handle POSITION/TANGENT/NORMAL
@@ -372,36 +335,7 @@ MeshParser::geometryMorphTargetsFromJSON(QGeometry *geometry,
                           morphTargetAttributeName) == morphAttribNamesCend) {
                 qWarning(kuesa) << morphTargetAttributeName
                                 << "isn't a valid morph target attribute";
-                return std::make_tuple(false, morphTargets);
-            }
-
-            // Check that we have an attribute Name that exists in the geometry
-            const QString standardAttributeName =
-                    standardAttributeNameFromSemantic(morphTargetAttributeName);
-
-            QAttribute *referenceAttributeInPrimitive = nullptr;
-            for (QAttribute *attribute : primitiveAttributes) {
-                if (attribute->name() == standardAttributeName) {
-                    referenceAttributeInPrimitive = attribute;
-                    break;
-                }
-            }
-
-            if (referenceAttributeInPrimitive == nullptr) {
-                qWarning(kuesa) << "Morph target attribute" << morphTargetAttributeName
-                                << "isn't an attribute referenced in the primitive";
-                return std::make_tuple(false, morphTargets);
-            }
-
-            // The accessor count must match that of the primitive's attribute
-            // accessor count
-            const Accessor &accessor =
-                    m_context->accessor(morphTargetAttributeAccessorIdx);
-            if (referenceAttributeInPrimitive->count() != accessor.count) {
-                qWarning(kuesa) << "Morph target attribute" << morphTargetAttributeName
-                                << " count doesn't match count for the reference "
-                                   "attribute in the primitive";
-                return std::make_tuple(false, morphTargets);
+                return false;
             }
 
             // Record Morph Target Attribute
@@ -417,13 +351,13 @@ MeshParser::geometryMorphTargetsFromJSON(QGeometry *geometry,
             // Compare the morphTarget we are about to insert against the last
             // inserted to make sure they have a similar layout
 
-            const MorphTarget &lastInsertedMorphTarget = morphTargets.last();
+            const MorphTarget &lastInsertedMorphTarget = morphTargets.back();
 
             if (lastInsertedMorphTarget.attributes.size() !=
                 morphTarget.attributes.size()) {
                 qWarning(kuesa) << "Morph targets attribute count mismatch, all "
                                    "targets should define the same attributes";
-                return std::make_tuple(false, morphTargets);
+                return false;
             }
 
             for (const MorphTargetAttribute &currentMorphTargetAttr : lastInsertedMorphTarget.attributes) {
@@ -438,7 +372,7 @@ MeshParser::geometryMorphTargetsFromJSON(QGeometry *geometry,
                     qWarning(kuesa) << "Morph target attribute name, all "
                                        "targets should define the same "
                                        "attributes names";
-                    return std::make_tuple(false, morphTargets);
+                    return false;
                 }
             }
         }
@@ -447,25 +381,12 @@ MeshParser::geometryMorphTargetsFromJSON(QGeometry *geometry,
         morphTargets.push_back(morphTarget);
     }
 
-    // Add the additional morph target attributes to the geometry
-    for (int i = 0, m = morphTargets.size(); i < m; ++i) {
-        const MorphTarget &morphTarget = morphTargets.at(i);
-        for (const MorphTargetAttribute &morphTargetAttribute : morphTarget.attributes) {
-            const QString semanticName = morphTargetAttribute.name;
-            const QString attributeName = QStringLiteral("%1_%2")
-                                                  .arg(standardAttributeNameFromSemantic(semanticName))
-                                                  .arg(i + 1);
-            QAttribute *attribute = createAttribute(morphTargetAttribute.accessorIdx,
-                                                                attributeName,
-                                                                semanticName);
-            geometry->addAttribute(attribute);
-        }
-    }
-    return std::make_tuple(true, morphTargets);
+    primitive.morphTargets = std::move(morphTargets);
+
+    return true;
 }
 
-bool MeshParser::geometryAttributesFromJSON(QGeometry *geometry,
-                                            const QJsonObject &json,
+bool MeshParser::geometryAttributesFromJSON(const QJsonObject &json,
                                             QStringList existingAttributes,
                                             Primitive &primitive)
 {
@@ -497,16 +418,335 @@ bool MeshParser::geometryAttributesFromJSON(QGeometry *geometry,
             primitive.hasTexCoord1Attr = true;
 
         const qint32 accessorIdx = it.value().toInt(-1);
-        QAttribute *attribute = createAttribute(accessorIdx,
-                                                            attributeName,
-                                                            attrName);
+        AttributeInfo attrInfo { false, false, attrName, attributeName, accessorIdx, -1 };
+        primitive.attributeInfo.push_back(attrInfo);
+    }
+
+    return true;
+}
+
+#if defined(KUESA_DRACO_COMPRESSION)
+bool MeshParser::geometryDracoFromJSON(const QJsonObject &json,
+                                       Primitive &primitive)
+{
+    const QJsonObject extensions = json.value(KEY_EXTENSIONS).toObject();
+    const QJsonObject dracoExtensionObject = extensions.value(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION).toObject();
+
+    // Get the compressed data
+    qint32 bufferViewIndex = dracoExtensionObject.value(KEY_BUFFERVIEW).toInt(-1);
+    if (bufferViewIndex == -1) {
+        qCWarning(Kuesa::kuesa) << "Draco extension referencing invalid buffer view";
+        return false;
+    }
+    primitive.dracoBufferViewIdx = bufferViewIndex;
+
+    const BufferView &viewData = m_context->bufferView(bufferViewIndex);
+    draco::DecoderBuffer dBuffer;
+    dBuffer.Init(viewData.bufferData.constData(), static_cast<size_t>(viewData.bufferData.size()));
+
+    // Check data
+    const draco::StatusOr<draco::EncodedGeometryType> geom_type = draco::Decoder::GetEncodedGeometryType(&dBuffer);
+    if (!geom_type.ok()) {
+        qCWarning(Kuesa::kuesa) << geom_type.status().error_msg();
+        return false;
+    }
+
+    if (geom_type.value() != draco::TRIANGULAR_MESH && geom_type.value() != draco::POINT_CLOUD) {
+        qCWarning(Kuesa::kuesa) << QLatin1String("Draco data is not a mesh nor a point cloud");
+        return false;
+    }
+
+    QStringList existingAttributes;
+
+    // Parse draco vertex attributes
+    if (!geometryAttributesDracoFromJSON(json,
+                                         existingAttributes,
+                                         primitive))
+        return false;
+
+    // Parse any additional non draco vertex attributes that may be present
+    const QJsonObject &attrs = json.value(KEY_ATTRIBUTES).toObject();
+    if (attrs.size() != 0)
+        return geometryAttributesFromJSON(json, existingAttributes, primitive);
+
+    return true;
+}
+
+bool MeshParser::geometryAttributesDracoFromJSON(const QJsonObject &json,
+                                                 QStringList &existingAttributes,
+                                                 Primitive &primitive)
+{
+    const QJsonObject extensions = json.value(KEY_EXTENSIONS).toObject();
+    const QJsonObject dracoExtensionObject = extensions.value(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION).toObject();
+    const QJsonObject attrs = json.value(KEY_ATTRIBUTES).toObject();
+    const QJsonObject dracoAttrs = dracoExtensionObject.value(KEY_ATTRIBUTES).toObject();
+
+    if (attrs.size() == 0 || dracoAttrs.size() == 0) {
+        qCWarning(Kuesa::kuesa) << "Draco primitive not referencing any attributes";
+        return false;
+    }
+
+    existingAttributes.reserve(attrs.size());
+    for (auto it = attrs.begin(), end = attrs.end(); it != end; ++it) {
+
+        const QString attrName = it.key();
+        QString attributeName = standardAttributeNameFromSemantic(attrName);
+        if (attributeName.isEmpty())
+            attributeName = attrName;
+
+        if (attributeName == QAttribute::defaultColorAttributeName())
+            primitive.hasColorAttr = true;
+        else if (attributeName == QAttribute::defaultNormalAttributeName())
+            primitive.hasNormalAttr = true;
+        else if (attributeName == QAttribute::defaultTangentAttributeName())
+            primitive.hasTangentAttr = true;
+        else if (attributeName == QAttribute::defaultTextureCoordinateAttributeName())
+            primitive.hasTexCoordAttr = true;
+        else if (attributeName == QAttribute::defaultTextureCoordinate1AttributeName())
+            primitive.hasTexCoord1Attr = true;
+
+        existingAttributes << attributeName;
+
+        // Get Draco attribute id
+        const int dracoAttributeId = dracoAttrs.value(attrName).toInt(-1);
+        if (dracoAttributeId < 0) {
+            qCWarning(Kuesa::kuesa) << "Failed to parse draco attribute";
+            return false;
+        }
+
+        const int accessorIndex = it.value().toInt();
+        AttributeInfo attrInfo { true, false, attrName, attributeName, accessorIndex, dracoAttributeId };
+        primitive.attributeInfo.push_back(attrInfo);
+    }
+    return true;
+}
+#endif
+
+PrimitiveBuilder::PrimitiveBuilder(GLTF2Context *context)
+    : m_context(context)
+{
+}
+
+bool PrimitiveBuilder::generateGeometryRendererForPrimitive(Primitive &primitive)
+{
+    auto geometry = std::unique_ptr<QGeometry>(new QGeometry);
+
+#if defined(KUESA_DRACO_COMPRESSION)
+    // Draco Extensions
+    if (primitive.isDracoCompressed) {
+        if (!generateDracoAttributes(geometry.get(), primitive) &&
+            geometry->attributes().isEmpty()) {
+            qCWarning(Kuesa::kuesa) << "Failed to generate draco compressed mesh primitive attributes";
+            return false;
+        }
+    } else
+#endif
+    {
+        if (!generateAttributes(geometry.get(), primitive) &&
+            geometry->attributes().isEmpty()) {
+            qCWarning(Kuesa::kuesa) << "Failed to generate mesh primitive attributes";
+            return false;
+        }
+    }
+
+    if (!Kuesa::GLTF2Import::MeshParserUtils::geometryIsGLTF2Valid(geometry.get())) {
+        qCWarning(Kuesa::kuesa) << QLatin1String("Geometry doesn't meet glTF 2.0 requirements");
+        return false;
+    }
+
+    if (m_context->options()->generateNormals()) {
+        if (MeshParserUtils::needsNormalAttribute(geometry.get(), primitive.primitiveType)) {
+            Kuesa::GLTF2Import::MeshParserUtils::createNormalsForGeometry(geometry.get(), primitive.primitiveType);
+            // The generation of normal forces the primitive type to be Triangles
+            primitive.primitiveType = QGeometryRenderer::Triangles;
+            primitive.hasNormalAttr = true;
+        }
+    }
+    if (m_context->options()->generateTangents()) {
+        if (MeshParserUtils::needsTangentAttribute(geometry.get(), primitive.primitiveType)) {
+            Kuesa::GLTF2Import::MeshParserUtils::createTangentForGeometry(geometry.get(), primitive.primitiveType);
+            primitive.hasTangentAttr = true;
+        }
+    }
+
+    if (primitive.hasMorphTargets) {
+        if (!generateMorphTargetAttributes(geometry.get(), primitive)) {
+            qCWarning(Kuesa::kuesa) << QLatin1String("Failed to generate morph target attributes");
+            return false;
+        }
+    }
+
+    QGeometryRenderer *renderer = new QGeometryRenderer;
+    renderer->setPrimitiveType(primitive.primitiveType);
+    renderer->setGeometry(geometry.release());
+    primitive.primitiveRenderer = renderer;
+    return true;
+}
+
+bool PrimitiveBuilder::generateAttributes(QGeometry *geometry,
+                                    const Primitive &primitive)
+{
+    for (const AttributeInfo &attrInfo : primitive.attributeInfo) {
+        QAttribute *attribute = createAttribute(attrInfo.accessorIdx,
+                                                attrInfo.attributeName,
+                                                attrInfo.name);
+        if (attrInfo.isIndexAttribute)
+            attribute->setAttributeType(QAttribute::IndexAttribute);
+        geometry->addAttribute(attribute);
+    }
+    return true;
+}
+
+bool PrimitiveBuilder::generateDracoAttributes(QGeometry *geometry,
+                                         const Primitive &primitive)
+{
+    const BufferView &viewData = m_context->bufferView(primitive.dracoBufferViewIdx);
+    draco::DecoderBuffer dBuffer;
+    dBuffer.Init(viewData.bufferData.constData(), static_cast<size_t>(viewData.bufferData.size()));
+
+    // Decompress
+    draco::Decoder decoder;
+    std::unique_ptr<draco::PointCloud> pointCloud;
+    const draco::StatusOr<draco::EncodedGeometryType> geom_type = draco::Decoder::GetEncodedGeometryType(&dBuffer);
+
+    // Draco supports triangular meshes or point clouds
+    if (geom_type.value() == draco::TRIANGULAR_MESH)
+        pointCloud = decoder.DecodeMeshFromBuffer(&dBuffer).value();
+    else if (geom_type.value() == draco::POINT_CLOUD)
+        pointCloud = decoder.DecodePointCloudFromBuffer(&dBuffer).value();
+
+    if (!pointCloud) {
+        qCWarning(Kuesa::kuesa) << "Failed to decode Draco geometry";
+        return false;
+    }
+
+    for (const AttributeInfo &attrInfo : primitive.attributeInfo) {
+        QAttribute *attribute = nullptr;
+        if (attrInfo.isDracoAttribute) {
+            const draco::PointAttribute *dracoAttribute = attrInfo.dracoAttributeId < 0 ? nullptr : pointCloud->GetAttributeByUniqueId(static_cast<uint32_t>(attrInfo.dracoAttributeId));
+            if (dracoAttribute) {
+                switch (dracoAttribute->data_type()) {
+                case draco::DT_INT8:
+                    attribute = decodeAttribute<qint8, QAttribute::Byte>(pointCloud.get(), dracoAttribute, attrInfo.attributeName);
+                    break;
+                case draco::DT_UINT8:
+                    attribute = decodeAttribute<quint8, QAttribute::UnsignedByte>(pointCloud.get(), dracoAttribute, attrInfo.attributeName);
+                    break;
+                case draco::DT_INT16:
+                    attribute = decodeAttribute<qint16, QAttribute::Short>(pointCloud.get(), dracoAttribute, attrInfo.attributeName);
+                    break;
+                case draco::DT_UINT16:
+                    attribute = decodeAttribute<quint16, QAttribute::UnsignedShort>(pointCloud.get(), dracoAttribute, attrInfo.attributeName);
+                    break;
+                case draco::DT_INT32:
+                    attribute = decodeAttribute<qint32, QAttribute::Int>(pointCloud.get(), dracoAttribute, attrInfo.attributeName);
+                    break;
+                case draco::DT_UINT32:
+                    attribute = decodeAttribute<quint32, QAttribute::UnsignedInt>(pointCloud.get(), dracoAttribute, attrInfo.attributeName);
+                    break;
+                case draco::DT_FLOAT32:
+                    attribute = decodeAttribute<float, QAttribute::Float>(pointCloud.get(), dracoAttribute, attrInfo.attributeName);
+                    break;
+                case draco::DT_FLOAT64:
+                    attribute = decodeAttribute<double, QAttribute::Double>(pointCloud.get(), dracoAttribute, attrInfo.attributeName);
+                    break;
+                default:
+                    qCWarning(Kuesa::kuesa) << "unsupported data type:" << dracoAttribute->data_type();
+                    break;
+                }
+            } else {
+                qCWarning(Kuesa::kuesa) << "Failed to parse draco attribute";
+                return false;
+            }
+        } else { // Regular Attribute
+            attribute = createAttribute(attrInfo.accessorIdx,
+                                        attrInfo.attributeName,
+                                        attrInfo.name);
+        }
+        geometry->addAttribute(attribute);
+    }
+
+    // Create Index attribute if we are dealing with a triangular mesh
+    if (geom_type.value() == draco::TRIANGULAR_MESH) {
+        draco::Mesh *mesh = static_cast<draco::Mesh *>(pointCloud.get());
+        QByteArray qbuffer;
+        qbuffer.resize(static_cast<int>(3 * sizeof(GLuint) * mesh->num_faces()));
+        GLuint *bufferData = reinterpret_cast<GLuint *>(qbuffer.data());
+        for (uint32_t i = 0; i < mesh->num_faces(); ++i) {
+            const auto &face = mesh->face(draco::FaceIndex(i));
+            bufferData[i * 3 + 0] = face[0].value();
+            bufferData[i * 3 + 1] = face[1].value();
+            bufferData[i * 3 + 2] = face[2].value();
+        }
+
+        Qt3DGeometry::QBuffer *buffer = new Qt3DGeometry::QBuffer();
+        buffer->setData(qbuffer);
+        QAttribute *attribute = new QAttribute(buffer,
+                                               QAttribute::UnsignedInt,
+                                               1,
+                                               mesh->num_faces() * 3,
+                                               0,
+                                               0);
+        attribute->setAttributeType(QAttribute::IndexAttribute);
         geometry->addAttribute(attribute);
     }
 
     return true;
 }
 
-QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
+bool PrimitiveBuilder::generateMorphTargetAttributes(QGeometry *geometry,
+                                               const Primitive &primitive)
+{
+    const std::vector<MorphTarget> &morphTargets = primitive.morphTargets;
+
+    // Add the additional morph target attributes to the geometry
+    for (size_t i = 0, m = morphTargets.size(); i < m; ++i) {
+        const MorphTarget &morphTarget = morphTargets[i];
+        for (const MorphTargetAttribute &morphTargetAttribute : morphTarget.attributes) {
+            const QString semanticName = morphTargetAttribute.name;
+            const QString attributeName = QStringLiteral("%1_%2")
+                                                  .arg(standardAttributeNameFromSemantic(semanticName))
+                                                  .arg(i + 1);
+
+            // Check that we have an attribute Name that exists in the geometry
+            const QString targetStandardAttributeName =
+                    standardAttributeNameFromSemantic(semanticName);
+
+            QAttribute *referenceAttributeInPrimitive = nullptr;
+            for (QAttribute *attribute : geometry->attributes()) {
+                if (attribute->name() == targetStandardAttributeName) {
+                    referenceAttributeInPrimitive = attribute;
+                    break;
+                }
+            }
+
+            if (referenceAttributeInPrimitive == nullptr) {
+                qCWarning(kuesa) << "Morph target attribute" << semanticName
+                                 << "isn't an attribute referenced in the primitive";
+                return false;
+            }
+
+            // The accessor count must match that of the primitive's attribute
+            // accessor count
+            const Accessor &accessor =
+                    m_context->accessor(morphTargetAttribute.accessorIdx);
+            if (referenceAttributeInPrimitive->count() != accessor.count) {
+                qCWarning(kuesa) << "Morph target attribute" << semanticName
+                                 << " count doesn't match count for the reference "
+                                    "attribute in the primitive";
+                return false;
+            }
+
+            QAttribute *attribute = createAttribute(morphTargetAttribute.accessorIdx,
+                                                    attributeName,
+                                                    semanticName);
+            geometry->addAttribute(attribute);
+        }
+    }
+    return true;
+}
+
+QAttribute *PrimitiveBuilder::createAttribute(qint32 accessorIndex,
                                         const QString &attributeName,
                                         const QString &semanticName)
 {
@@ -567,187 +807,5 @@ QAttribute *MeshParser::createAttribute(qint32 accessorIndex,
 
     return attribute;
 }
-
-#if defined(KUESA_DRACO_COMPRESSION)
-bool MeshParser::geometryDracoFromJSON(QGeometry *geometry,
-                                       const QJsonObject &json,
-                                       Primitive &primitive)
-{
-    const QJsonObject extensions = json.value(KEY_EXTENSIONS).toObject();
-    const QJsonObject dracoExtensionObject = extensions.value(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION).toObject();
-
-    // Get the compressed data
-    qint32 bufferViewIndex = dracoExtensionObject.value(KEY_BUFFERVIEW).toInt(-1);
-    if (bufferViewIndex == -1) {
-        qCWarning(Kuesa::kuesa) << "Draco extension referencing invalid buffer view";
-        return false;
-    }
-
-    const BufferView &viewData = m_context->bufferView(bufferViewIndex);
-    draco::DecoderBuffer dBuffer;
-    dBuffer.Init(viewData.bufferData.constData(), static_cast<size_t>(viewData.bufferData.size()));
-
-    // Check data
-    const draco::StatusOr<draco::EncodedGeometryType> geom_type = draco::Decoder::GetEncodedGeometryType(&dBuffer);
-    if (!geom_type.ok()) {
-        qCWarning(Kuesa::kuesa) << geom_type.status().error_msg();
-        return false;
-    }
-
-    if (geom_type.value() != draco::TRIANGULAR_MESH && geom_type.value() != draco::POINT_CLOUD) {
-        qCWarning(Kuesa::kuesa) << QLatin1String("Draco data is not a mesh nor a point cloud");
-        return false;
-    }
-
-    // Decompress
-    draco::Decoder decoder;
-    std::unique_ptr<draco::PointCloud> geometryData;
-
-    // Draco supports triangular meshes or point clouds
-    if (geom_type.value() == draco::TRIANGULAR_MESH)
-        geometryData = decoder.DecodeMeshFromBuffer(&dBuffer).value();
-    else if (geom_type.value() == draco::POINT_CLOUD)
-        geometryData = decoder.DecodePointCloudFromBuffer(&dBuffer).value();
-
-    if (!geometryData) {
-        qCWarning(Kuesa::kuesa) << "Failed to decode Draco geometry";
-        return false;
-    }
-
-    QStringList existingAttributes;
-
-    // Parse draco vertex attributes
-    if (!geometryAttributesDracoFromJSON(geometry,
-                                         json,
-                                         geometryData.get(),
-                                         existingAttributes,
-                                         primitive))
-        return false;
-
-    // Create Index attribute if we are dealing with a triangular mesh
-    if (geom_type.value() == draco::TRIANGULAR_MESH) {
-        draco::Mesh *mesh = static_cast<draco::Mesh *>(geometryData.get());
-        QByteArray qbuffer;
-        qbuffer.resize(static_cast<int>(3 * sizeof(GLuint) * mesh->num_faces()));
-        GLuint *bufferData = reinterpret_cast<GLuint *>(qbuffer.data());
-        for (uint32_t i = 0; i < mesh->num_faces(); ++i) {
-            const auto &face = mesh->face(draco::FaceIndex(i));
-            bufferData[i * 3 + 0] = face[0].value();
-            bufferData[i * 3 + 1] = face[1].value();
-            bufferData[i * 3 + 2] = face[2].value();
-        }
-
-        Qt3DGeometry::QBuffer *buffer = new Qt3DGeometry::QBuffer();
-        buffer->setData(qbuffer);
-        QAttribute *attribute = new QAttribute(buffer,
-                                                                       QAttribute::UnsignedInt,
-                                                                       1,
-                                                                       mesh->num_faces() * 3,
-                                                                       0,
-                                                                       0);
-        attribute->setAttributeType(QAttribute::IndexAttribute);
-        geometry->addAttribute(attribute);
-    }
-
-    // Parse any additional non draco vertex attributes that may be present
-    const QJsonObject &attrs = json.value(KEY_ATTRIBUTES).toObject();
-    if (attrs.size() != 0)
-        return geometryAttributesFromJSON(geometry, json, existingAttributes, primitive);
-
-    return true;
-}
-
-bool MeshParser::geometryAttributesDracoFromJSON(QGeometry *geometry,
-                                                 const QJsonObject &json,
-                                                 const draco::PointCloud *pointCloud,
-                                                 QStringList &existingAttributes,
-                                                 Primitive &primitive)
-{
-    const QJsonObject extensions = json.value(KEY_EXTENSIONS).toObject();
-    const QJsonObject dracoExtensionObject = extensions.value(KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION).toObject();
-    const QJsonObject attrs = json.value(KEY_ATTRIBUTES).toObject();
-    const QJsonObject dracoAttrs = dracoExtensionObject.value(KEY_ATTRIBUTES).toObject();
-
-    if (attrs.size() == 0 || dracoAttrs.size() == 0) {
-        qCWarning(Kuesa::kuesa) << "Draco primitive not referencing any attributes";
-        return false;
-    }
-
-    existingAttributes.reserve(attrs.size());
-    for (auto it = attrs.begin(), end = attrs.end(); it != end; ++it) {
-
-        const QString attrName = it.key();
-        QString attributeName = standardAttributeNameFromSemantic(attrName);
-        if (attributeName.isEmpty())
-            attributeName = attrName;
-
-        if (attributeName == QAttribute::defaultColorAttributeName())
-            primitive.hasColorAttr = true;
-        else if (attributeName == QAttribute::defaultNormalAttributeName())
-            primitive.hasNormalAttr = true;
-        else if (attributeName == QAttribute::defaultTangentAttributeName())
-            primitive.hasTangentAttr = true;
-        else if (attributeName == QAttribute::defaultTextureCoordinateAttributeName())
-            primitive.hasTexCoordAttr = true;
-        else if (attributeName == QAttribute::defaultTextureCoordinate1AttributeName())
-            primitive.hasTexCoord1Attr = true;
-
-        existingAttributes << attributeName;
-
-        // Get Draco attribute
-        QAttribute *attribute = nullptr;
-        const int attributeId = dracoAttrs.value(attrName).toInt(-1);
-        const draco::PointAttribute *dracoAttribute = attributeId < 0 ? nullptr : pointCloud->GetAttributeByUniqueId(static_cast<uint32_t>(attributeId));
-        if (dracoAttribute) {
-            switch (dracoAttribute->data_type()) {
-            case draco::DT_INT8:
-                attribute = decodeAttribute<qint8, QAttribute::Byte>(pointCloud, dracoAttribute, attributeName);
-                break;
-            case draco::DT_UINT8:
-                attribute = decodeAttribute<quint8, QAttribute::UnsignedByte>(pointCloud, dracoAttribute, attributeName);
-                break;
-            case draco::DT_INT16:
-                attribute = decodeAttribute<qint16, QAttribute::Short>(pointCloud, dracoAttribute, attributeName);
-                break;
-            case draco::DT_UINT16:
-                attribute = decodeAttribute<quint16, QAttribute::UnsignedShort>(pointCloud, dracoAttribute, attributeName);
-                break;
-            case draco::DT_INT32:
-                attribute = decodeAttribute<qint32, QAttribute::Int>(pointCloud, dracoAttribute, attributeName);
-                break;
-            case draco::DT_UINT32:
-                attribute = decodeAttribute<quint32, QAttribute::UnsignedInt>(pointCloud, dracoAttribute, attributeName);
-                break;
-            case draco::DT_FLOAT32:
-                attribute = decodeAttribute<float, QAttribute::Float>(pointCloud, dracoAttribute, attributeName);
-                break;
-            case draco::DT_FLOAT64:
-                attribute = decodeAttribute<double, QAttribute::Double>(pointCloud, dracoAttribute, attributeName);
-                break;
-            default:
-                qCWarning(Kuesa::kuesa) << "unsupported data type:" << dracoAttribute->data_type();
-                break;
-            }
-        } else {
-            qCWarning(Kuesa::kuesa) << "Failed to parse draco attribute";
-            return false;
-        }
-
-        const int accessorIndex = it.value().toInt();
-        const Accessor accessor = m_context->accessor(accessorIndex);
-
-        attribute->setAttributeType(QAttribute::VertexAttribute);
-        // store some GLTF metadata for glTF editor
-        attribute->setProperty("bufferIndex", -1);
-        attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);
-        attribute->setProperty("bufferViewOffset", accessor.offset);
-        attribute->setProperty("bufferName", accessor.name);
-        attribute->setProperty("semanticName", attrName);
-
-        geometry->addAttribute(attribute);
-    }
-    return true;
-}
-#endif
 
 QT_END_NAMESPACE

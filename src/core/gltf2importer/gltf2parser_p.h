@@ -72,6 +72,7 @@ namespace GLTF2Import {
 struct TreeNode;
 struct Mesh;
 struct Primitive;
+class PrimitiveBuilder;
 
 struct HierarchyNode {
     int nodeIdx = -1;
@@ -144,7 +145,7 @@ private:
     void createTransform(const TreeNode &node);
     void createLayers(const TreeNode &node);
     void createLight(const TreeNode &node);
-    void createMesh(const TreeNode &node);
+    void createMesh(const TreeNode &node, PrimitiveBuilder *builder);
 
     void createSkin(const TreeNode &node,
                     Qt3DCore::QArmature **armaturePtr,
