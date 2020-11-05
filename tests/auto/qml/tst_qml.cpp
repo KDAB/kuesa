@@ -40,6 +40,7 @@ public:
 public slots:
     void qmlEngineAvailable(QQmlEngine *engine)
     {
+        Q_UNUSED(engine);
     }
 };
 
