@@ -124,6 +124,11 @@ void GLTF2Context::addCamera(const Camera &camera)
     m_cameras.push_back(camera);
 }
 
+Camera &GLTF2Context::camera(qint32 id)
+{
+    return m_cameras[id];
+}
+
 size_t GLTF2Context::treeNodeCount() const
 {
     return m_treeNodes.size();

@@ -78,6 +78,7 @@ bool CameraParser::parse(const QJsonArray &cameras, Kuesa::GLTF2Import::GLTF2Con
 
         std::unique_ptr<Qt3DRender::QCameraLens> lens(new Qt3DRender::QCameraLens());
         if (cameraObject.value(KEY_TYPE).toString() == QStringLiteral("perspective")) {
+            camera.isPerspective = true;
             if (!cameraObject.contains(KEY_PERSPECTIVE))
                 return false;
             const QJsonObject &perspectiveObject = cameraObject.value(KEY_PERSPECTIVE).toObject();
@@ -85,36 +86,33 @@ bool CameraParser::parse(const QJsonArray &cameras, Kuesa::GLTF2Import::GLTF2Con
                 !perspectiveObject.contains(KEY_Z_NEAR))
                 return false;
             lens->setProjectionType(Qt3DRender::QCameraLens::PerspectiveProjection);
+
             float v = perspectiveObject.value(KEY_Z_NEAR).toDouble();
             if (v <= 0.f)
                 return false;
-            lens->setNearPlane(v);
+            camera.zNear = v;
+
             v = perspectiveObject.value(KEY_Y_FOV).toDouble();
             if (v <= 0.f)
                 return false;
-            lens->setFieldOfView(qRadiansToDegrees(v));
+            camera.yFov = qRadiansToDegrees(v);
+
             if (perspectiveObject.contains(KEY_ASPECT_RATIO)) {
                 v = perspectiveObject.value(KEY_ASPECT_RATIO).toDouble();
                 if (v <= 0.f)
                     return false;
-                lens->setAspectRatio(v);
+                camera.aspectRatio = v;
             }
+
             if (perspectiveObject.contains(KEY_Z_FAR)) {
                 v = perspectiveObject.value(KEY_Z_FAR).toDouble();
                 if (v <= 0.f)
                     return false;
-                lens->setFarPlane(v);
-            } else {
-                v = std::tan(qDegreesToRadians(lens->fieldOfView()) * 0.5f);
-                QMatrix4x4 projectionMatrix;
-                projectionMatrix(0, 0) = 1.f / (lens->aspectRatio() * v);
-                projectionMatrix(1, 1) = 1.f / v;
-                projectionMatrix(2, 2) = -1.f;
-                projectionMatrix(2, 3) = -2.f * lens->nearPlane();
-                projectionMatrix(3, 2) = -1.f;
-                lens->setProjectionMatrix(projectionMatrix);
+                camera.zFar = v;
             }
+
         } else if (cameraObject.value(KEY_TYPE).toString() == QStringLiteral("orthographic")) {
+            camera.isPerspective = false;
             if (!cameraObject.contains(KEY_ORTHOGRAPHIC))
                 return false;
             const QJsonObject &orthographicObject = cameraObject.value(KEY_ORTHOGRAPHIC).toObject();
@@ -127,39 +125,72 @@ bool CameraParser::parse(const QJsonArray &cameras, Kuesa::GLTF2Import::GLTF2Con
             float v = orthographicObject.value(KEY_Z_NEAR).toDouble();
             if (v < 0.f)
                 return false;
-            lens->setNearPlane(v);
+            camera.zNear = v;
+
             v = orthographicObject.value(KEY_Z_FAR).toDouble();
             if (v <= 0.f)
                 return false;
-            lens->setFarPlane(v);
+            camera.zFar = v;
 
-            QMatrix4x4 projectionMatrix;
-            const float zFar = lens->farPlane();
-            const float zNear = lens->nearPlane();
             v = orthographicObject.value(KEY_X_MAG).toDouble(1.0);
             if (qFuzzyIsNull(v))
                 return false;
-            const float xMag = v;
+            camera.xMag = v;
+
             v = orthographicObject.value(KEY_Y_MAG).toDouble(1.0);
             if (qFuzzyIsNull(v))
                 return false;
-            const float yMag = v;
-            projectionMatrix(0, 0) = 1.0f / xMag;
-            projectionMatrix(1, 1) = 1.0f / yMag;
-            projectionMatrix(2, 2) = 2.0f / (zNear - zFar);
-            projectionMatrix(3, 3) = 1.0f;
-            projectionMatrix(2, 3) = (zFar + zNear) / (zNear - zFar);
-
-            lens->setProjectionMatrix(projectionMatrix);
+            camera.yMag = v;
         } else {
             return false;
         }
 
-        camera.lens = lens.release();
         context->addCamera(camera);
     }
 
     return true;
+}
+
+void CameraParser::setupLens(Camera &camera, Qt3DRender::QCameraLens *lens)
+{
+    if (camera.isPerspective) {
+        lens->setNearPlane(camera.zNear);
+        lens->setFieldOfView(camera.yFov);
+
+        if (camera.aspectRatio > 0.0f)
+            lens->setAspectRatio(camera.aspectRatio);
+
+        if (camera.zFar > 0.0f) {
+            lens->setFarPlane(camera.zFar);
+        } else {
+            const float v = std::tan(qDegreesToRadians(lens->fieldOfView()) * 0.5f);
+            QMatrix4x4 projectionMatrix;
+            projectionMatrix(0, 0) = 1.f / (camera.aspectRatio * v);
+            projectionMatrix(1, 1) = 1.f / v;
+            projectionMatrix(2, 2) = -1.f;
+            projectionMatrix(2, 3) = -2.f * camera.zNear;
+            projectionMatrix(3, 2) = -1.f;
+            lens->setProjectionMatrix(projectionMatrix);
+        }
+
+    } else { // Orthographic
+
+        lens->setNearPlane(camera.zNear);
+        lens->setFarPlane(camera.zFar);
+
+        QMatrix4x4 projectionMatrix;
+        projectionMatrix(0, 0) = 1.0f / camera.xMag;
+        projectionMatrix(1, 1) = 1.0f / camera.yMag;
+        projectionMatrix(2, 2) = 2.0f / (camera.zNear - camera.zFar);
+        projectionMatrix(3, 3) = 1.0f;
+        projectionMatrix(2, 3) = (camera.zFar + camera.zNear) / (camera.zNear - camera.zFar);
+
+        lens->setProjectionMatrix(projectionMatrix);
+    }
+
+    // We store the lens on the camera so that we can generate animation bindings
+    // for camera lens properties easily
+    camera.lens = lens;
 }
 
 QT_END_NAMESPACE

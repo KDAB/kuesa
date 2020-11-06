@@ -104,6 +104,7 @@ public:
     size_t cameraCount() const;
     const Camera camera(qint32 id) const;
     void addCamera(const Camera &camera);
+    Camera &camera(qint32 id);
 
     size_t accessorCount() const;
     void addAccessor(const Accessor &accessor);

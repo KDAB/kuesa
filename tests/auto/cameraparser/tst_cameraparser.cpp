@@ -65,7 +65,14 @@ private Q_SLOTS:
         QVERIFY(success);
         QCOMPARE(context.cameraCount(), 1);
 
-        Camera camera = context.camera(0);
+        Camera &camera = context.camera(0);
+        QVERIFY(!camera.lens);
+
+        // WHEN
+        Qt3DRender::QCameraLens lens;
+        CameraParser::setupLens(camera, &lens);
+
+        // THEN
         QVERIFY(camera.lens);
         QVERIFY(!camera.name.isEmpty());
         QCOMPARE(camera.lens->projectionType(), Qt3DRender::QCameraLens::PerspectiveProjection);
@@ -95,7 +102,14 @@ private Q_SLOTS:
         QVERIFY(success);
         QCOMPARE(context.cameraCount(), 1);
 
-        Camera camera = context.camera(0);
+        Camera &camera = context.camera(0);
+        QVERIFY(!camera.lens);
+
+        // WHEN
+        Qt3DRender::QCameraLens lens;
+        CameraParser::setupLens(camera, &lens);
+
+        // THEN
         QVERIFY(camera.lens);
         QVERIFY(!camera.name.isEmpty());
         QCOMPARE(camera.lens->projectionType(), Qt3DRender::QCameraLens::CustomProjection);
