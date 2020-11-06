@@ -824,9 +824,9 @@ private Q_SLOTS:
         QVERIFY(parsingSuccesful);
         QVERIFY(res != nullptr);
 
-        QCOMPARE(expectedLayersName.size(), scene.layers()->size());
-        if (scene.layers()->size()) {
-            for (const auto &layerName : qAsConst(expectedLayersName)) {
+        QCOMPARE(expectedLayersName.size(), qint32(ctx.layersCount()));
+        if (ctx.layersCount()) {
+            for (const auto &layerName : qAsConst(expectedAssignedLayers)) {
                 const auto *layer = scene.layer(layerName);
                 QVERIFY(layer != nullptr);
             }

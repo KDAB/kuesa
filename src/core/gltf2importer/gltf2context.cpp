@@ -356,6 +356,11 @@ Layer GLTF2Context::layer(qint32 id) const
     return {};
 }
 
+Layer &GLTF2Context::layer(qint32 id)
+{
+    return m_layers[id];
+}
+
 size_t GLTF2Context::scenesCount() const
 {
     return m_scenes.size();

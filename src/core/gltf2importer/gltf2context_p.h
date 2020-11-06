@@ -125,6 +125,7 @@ public:
     size_t layersCount() const;
     void addLayer(const Layer &layer);
     Layer layer(qint32 id) const;
+    Layer &layer(qint32 id);
 
     size_t imagesCount() const;
     void addImage(const Image &image);

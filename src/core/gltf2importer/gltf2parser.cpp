@@ -1145,13 +1145,14 @@ void GLTF2Parser::createLayers(const TreeNode &node)
     const QVector<int> layerIds = node.layerIndices;
     for (const qint32 layerId : layerIds) {
         if (layerId >= 0 && layerId < qint32(m_context->layersCount())) {
-            const Layer layer = m_context->layer(layerId);
-            if (layer.layer) {
+            Layer &layer = m_context->layer(layerId);
+            if (!layer.layer) {
                 // Make it recursive so it affects subentities and in particular primitive entities
+                layer.layer = new Qt3DRender::QLayer();
                 layer.layer->setRecursive(true);
                 layer.layer->setParent(m_contentRootEntity);
-                entity->addComponent(layer.layer);
             }
+            entity->addComponent(layer.layer);
         }
     }
 }

@@ -48,7 +48,6 @@ bool LayerParser::parse(const QJsonArray &layerArray, GLTF2Context *context) con
         if (layerName.isEmpty())
             return false;
         Layer layer;
-        layer.layer = new Qt3DRender::QLayer();
         layer.name = layerName;
         context->addLayer(layer);
     }
