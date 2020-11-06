@@ -173,6 +173,9 @@ private Q_SLOTS:
         context.getOrAllocateTexture(1);
 
         // THEN
+        QVERIFY(context.texture(0).texture);
+        QVERIFY(context.texture(1).texture);
+        QVERIFY(context.texture(0).texture != context.texture(1).texture);
         QCOMPARE(context.texture(0).texture->textureImages().size(),
                  context.texture(1).texture->textureImages().size());
         QCOMPARE(context.texture(0).texture->textureImages()[0],
@@ -204,6 +207,54 @@ private Q_SLOTS:
 
         // THEN -> Should issue a warning but still return true
         QVERIFY(TextureParser::ensureImageIsCompatibleWithTexture(&img2, &tex2dArray));
+    }
+
+    void checkTextureSharing()
+    {
+        // GIVEN
+        GLTF2Context context;
+        QFile file(QStringLiteral(ASSETS "simple_cube_with_textures_shared.gltf"));
+        file.open(QIODevice::ReadOnly);
+
+        // THEN
+        QVERIFY(file.isOpen());
+
+        // WHEN
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        QVERIFY(!json.isNull());
+
+        ImageParser imgParser(QDir(QString(ASSETS)));
+        bool success = imgParser.parse(json[KEY_IMAGES].toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+
+        // WHEN
+        TextureSamplerParser samplerParser;
+        success = samplerParser.parse(json[KEY_TEXTURE_SAMPLERS].toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+
+        // WHEN
+        TextureParser parser;
+        success = parser.parse(json[KEY_TEXTURES].toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.texturesCount(), 2);
+
+        QVERIFY(!context.texture(0).texture);
+        QVERIFY(!context.texture(1).texture);
+
+        // WHEN
+        context.getOrAllocateTexture(0);
+        context.getOrAllocateTexture(1);
+
+        // THEN
+        QVERIFY(context.texture(0).texture);
+        QVERIFY(context.texture(1).texture);
+        QCOMPARE(context.texture(0).texture, context.texture(1).texture);
     }
 };
 

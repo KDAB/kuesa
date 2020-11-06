@@ -228,12 +228,10 @@ private Q_SLOTS:
         QVERIFY(success);
 
         // WHEN
-        PrimitiveBuilder builder(&context);
-
         for (size_t i = 0; i < size_t(context.meshesCount()); ++i) {
             Mesh &mesh = context.mesh(i);
             for (Primitive &p : mesh.meshPrimitives)
-                QVERIFY(builder.generateGeometryRendererForPrimitive(p));
+                QVERIFY(context.getOrAllocateGeometryRenderer(p));
         }
 
         // THEN
@@ -316,12 +314,11 @@ private Q_SLOTS:
         QCOMPARE(context.meshesCount(), 1);
 
         // WHEN
-        PrimitiveBuilder builder(&context);
 
         for (size_t i = 0; i < size_t(context.meshesCount()); ++i) {
             Mesh &mesh = context.mesh(i);
             for (Primitive &p : mesh.meshPrimitives)
-                QVERIFY(builder.generateGeometryRendererForPrimitive(p));
+                QVERIFY(context.getOrAllocateGeometryRenderer(p));
         }
 
         // THEN
@@ -451,7 +448,7 @@ private Q_SLOTS:
         for (size_t i = 0; i < size_t(context.meshesCount()); ++i) {
             Mesh &mesh = context.mesh(i);
             for (Primitive &p : mesh.meshPrimitives)
-                QVERIFY(builder.generateGeometryRendererForPrimitive(p));
+                QVERIFY(context.getOrAllocateGeometryRenderer(p));
         }
 
         // THEN
@@ -517,7 +514,132 @@ private Q_SLOTS:
         QCOMPARE(indexAttribute->buffer()->data(), fakeIndexData.mid(2500));
         QCOMPARE(indexAttribute->buffer()->data().size(), 356);
         QCOMPARE(indexAttribute->count(), 128);
+    }
 
+    void checkPrimitiveNonSharingWithDifferentKeys()
+    {
+        // GIVEN
+        Kuesa::SceneEntity s;
+        GLTF2Context context;
+        context.reset(&s);
+
+        Accessor positionAccessor;
+        positionAccessor.dataSize = 3;
+
+        Accessor normalAccessor;
+        normalAccessor.dataSize = 3;
+
+        Accessor indicesAccessor;
+        indicesAccessor.dataSize = 1;
+        indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
+
+        context.addAccessor(normalAccessor);
+        context.addAccessor(positionAccessor);
+        context.addAccessor(indicesAccessor);
+
+        MeshParser parser;
+        QFile file(ASSETS "simple_cube_primitive_no_sharing.gltf");
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        // WHEN
+        QJsonParseError e;
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll(), &e);
+        const QJsonObject gltfJson = json.object();
+
+        // THEN
+        QVERIFY(!json.isNull() && json.isObject());
+        QVERIFY(gltfJson.contains(QLatin1String("meshes")));
+
+        // WHEN
+        bool success = parser.parse(gltfJson.value(QLatin1String("meshes")).toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.meshesCount(), 1);
+
+        // WHEN
+        Mesh &mesh = context.mesh(0);
+
+        // THEN
+        QCOMPARE(mesh.meshPrimitives.size(), 2);
+
+        for (Primitive &p : mesh.meshPrimitives) {
+            if (!context.getOrAllocateGeometryRenderer(p)) {
+                success = false;
+                break;
+            }
+        }
+
+        // THEN
+        const Primitive &p1 = mesh.meshPrimitives[0];
+        const Primitive &p2 = mesh.meshPrimitives[1];
+        QVERIFY(p1.primitiveRenderer);
+        QVERIFY(p2.primitiveRenderer);
+        QVERIFY(p1.primitiveRenderer != p2.primitiveRenderer);
+    }
+
+    void checkPrimitiveSharingWithSameKeys()
+    {
+        // GIVEN
+        Kuesa::SceneEntity s;
+        GLTF2Context context;
+        context.reset(&s);
+
+        Accessor positionAccessor;
+        positionAccessor.dataSize = 3;
+
+        Accessor normalAccessor;
+        normalAccessor.dataSize = 3;
+
+        Accessor indicesAccessor;
+        indicesAccessor.dataSize = 1;
+        indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
+
+        context.addAccessor(normalAccessor);
+        context.addAccessor(positionAccessor);
+        context.addAccessor(indicesAccessor);
+
+        MeshParser parser;
+        QFile file(ASSETS "simple_cube_primitive_sharing.gltf");
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        // WHEN
+        QJsonParseError e;
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll(), &e);
+        const QJsonObject gltfJson = json.object();
+
+        // THEN
+        QVERIFY(!json.isNull() && json.isObject());
+        QVERIFY(gltfJson.contains(QLatin1String("meshes")));
+
+        // WHEN
+        bool success = parser.parse(gltfJson.value(QLatin1String("meshes")).toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.meshesCount(), 1);
+
+        // WHEN
+        Mesh &mesh = context.mesh(0);
+
+        // THEN
+        QCOMPARE(mesh.meshPrimitives.size(), 2);
+
+        for (Primitive &p : mesh.meshPrimitives) {
+            if (!context.getOrAllocateGeometryRenderer(p)) {
+                success = false;
+                break;
+            }
+        }
+
+        // THEN
+        const Primitive &p1 = mesh.meshPrimitives[0];
+        const Primitive &p2 = mesh.meshPrimitives[1];
+        QVERIFY(p1.primitiveRenderer);
+        QVERIFY(p2.primitiveRenderer);
+        QCOMPARE(p1.primitiveRenderer, p2.primitiveRenderer);
     }
 };
 
