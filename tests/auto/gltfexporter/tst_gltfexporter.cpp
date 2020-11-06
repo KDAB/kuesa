@@ -286,6 +286,7 @@ private Q_SLOTS:
         {
             const bool res = parser.parse(asset);
             QVERIFY(res);
+            parser.generateContent();
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -335,6 +336,7 @@ private Q_SLOTS:
         {
             const bool res = parser.parse(asset);
             QVERIFY(res);
+            parser.generateContent();
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -409,6 +411,7 @@ private Q_SLOTS:
         {
             const bool res = parser.parse(asset);
             QVERIFY(res);
+            parser.generateContent();
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -470,6 +473,7 @@ private Q_SLOTS:
         {
             const bool res = parser.parse(asset);
             QVERIFY(res);
+            parser.generateContent();
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -529,6 +533,7 @@ private Q_SLOTS:
             const QString asset = tmp.absolutePath() + "/Box.gltf";
             const bool res = parser.parse(asset);
             QVERIFY(res);
+            parser.generateContent();
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -563,6 +568,6 @@ private Q_SLOTS:
 #endif
 };
 
-QTEST_APPLESS_MAIN(tst_GLTFExporter)
+QTEST_MAIN(tst_GLTFExporter)
 
 #include "tst_gltfexporter.moc"

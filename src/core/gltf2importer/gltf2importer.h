@@ -115,6 +115,7 @@ private Q_SLOTS:
 private:
     void clear();
     void setStatus(Status status);
+    void handleGLTFParsingCompleted(bool parsingSucceeded);
 
     friend class GLTF2Exporter;
     friend class Kuesa::GLTF2Import::GLTF2Context;
@@ -129,6 +130,9 @@ private:
     Kuesa::GLTF2Import::GLTF2Options m_options;
     int m_activeSceneIndex;
     QStringList m_availableScenes;
+
+    Kuesa::GLTF2Import::GLTF2Parser *m_parser = nullptr;
+
 
     friend class Kuesa::GLTF2Import::MaterialParser;
     struct CustomMaterialClassesTypeInfo {

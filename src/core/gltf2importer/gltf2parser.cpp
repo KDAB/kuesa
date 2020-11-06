@@ -259,6 +259,49 @@ bool GLTF2Parser::parse(const QString &filePath)
     return parse(data, prefix + finfo.absolutePath(), finfo.fileName());
 }
 
+void GLTF2Parser::generateContent()
+{
+    QElapsedTimer t;
+    qint64 elapsed = 0;
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Scene contruction starting";
+    t.start();
+
+    // Build hierarchies for Entities and QJoints
+    buildEntitiesAndJointsGraph();
+    elapsed = t.elapsed();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Entities and Joints Graphes in (" << elapsed << "ms)";
+
+    // Generate Qt3D content for skeletons
+    generateSkeletonContent();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Skeleton in (" << t.elapsed() - elapsed << "ms)";
+    elapsed = t.elapsed();
+
+    // Generate Qt3D data for the nodes based on their type
+    generateTreeNodeContent();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Entities Tree Content in (" << t.elapsed() - elapsed << "ms)";
+    elapsed = t.elapsed();
+
+    // Generate Qt3D content for animations
+    generateAnimationContent();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Animation Content in (" << t.elapsed() - elapsed << "ms)";
+    elapsed = t.elapsed();
+
+    // Build Scene Roots
+    buildSceneRootEntities();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Scene Roots in (" << t.elapsed() - elapsed << "ms)";
+    elapsed = t.elapsed();
+
+    m_context->effectLibrary()->cleanUp();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Content generated in (" << t.elapsed() - elapsed << "ms)";
+    elapsed = t.elapsed();
+
+    // Fill in Asset Collections
+    addResourcesToSceneEntityCollections();
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Resources added to collection (" << t.elapsed() - elapsed << "ms)";
+
+    qCDebug(gltf2_parser_profiling) << "GLTF2 Parsing total (" << t.elapsed() << "ms)";
+}
+
 /*!
  * \internal
  *
@@ -275,12 +318,9 @@ bool GLTF2Parser::parse(const QByteArray &data, const QString &basePath, const Q
     qCDebug(gltf2_parser_profiling) << "GLTF2 Parsing starting";
     t.start();
     const bool isValid = detectTypeAndParse(data, basePath, filename);
+    emit gltfFileParsingCompleted(isValid);
     const qint64 elapsedAfterParsing = t.elapsed();
     qCDebug(gltf2_parser_profiling) << "GLTF2 Parsing completed (" << elapsedAfterParsing << "ms)";
-    if (isValid)
-        addResourcesToSceneEntityCollections();
-    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Resources added to collection (" << t.elapsed() - elapsedAfterParsing << "ms)";
-    qCDebug(gltf2_parser_profiling) << "GLTF2 Parsing total (" << t.elapsed() << "ms)";
     return isValid;
 }
 
@@ -538,38 +578,6 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
         }
     }
 
-    QElapsedTimer t;
-    qint64 elapsed = 0;
-    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Scene contruction starting";
-    t.start();
-
-    // Build hierarchies for Entities and QJoints
-    buildEntitiesAndJointsGraph();
-    elapsed = t.elapsed();
-    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Entities and Joints Graphes in (" << elapsed << "ms)";
-
-    // Generate Qt3D content for skeletons
-    generateSkeletonContent();
-    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Skeleton in (" << t.elapsed() - elapsed << "ms)";
-    elapsed = t.elapsed();
-
-    // Generate Qt3D data for the nodes based on their type
-    generateTreeNodeContent();
-    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Entities Tree Content in (" << t.elapsed() - elapsed << "ms)";
-    elapsed = t.elapsed();
-
-    // Generate Qt3D content for animations
-    generateAnimationContent();
-    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Animation Content in (" << t.elapsed() - elapsed << "ms)";
-    elapsed = t.elapsed();
-
-    // Build Scene Roots
-    buildSceneRootEntities();
-    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Building Scene Roots in (" << t.elapsed() - elapsed << "ms)";
-
-    m_context->effectLibrary()->cleanUp();
-
-    qCDebug(gltf2_parser_profiling) << "GLTF2 Qt3D Content generated in (" << t.elapsed() << "ms)";
     return true;
 }
 
@@ -1472,72 +1480,72 @@ QVector<SceneRootEntity *> GLTF2Parser::sceneRoots() const
     return m_sceneRootEntities;
 }
 
-ThreadedGLTF2Parser::ThreadedGLTF2Parser(
-        GLTF2Context *context,
-        SceneEntity *sceneEntity,
-        bool assignNames)
-    : m_parser{ sceneEntity, assignNames }
-{
-    m_parser.setContext(context);
+//ThreadedGLTF2Parser::ThreadedGLTF2Parser(
+//        GLTF2Context *context,
+//        SceneEntity *sceneEntity,
+//        bool assignNames)
+//    : m_parser{ sceneEntity, assignNames }
+//{
+//    m_parser.setContext(context);
 
-    m_parser.moveToThread(&m_thread);
-    m_thread.start();
-}
+//    m_parser.moveToThread(&m_thread);
+//    m_thread.start();
+//}
 
-ThreadedGLTF2Parser::~ThreadedGLTF2Parser()
-{
-    m_thread.exit(0);
-    m_thread.wait();
-}
+//ThreadedGLTF2Parser::~ThreadedGLTF2Parser()
+//{
+//    m_thread.exit(0);
+//    m_thread.wait();
+//}
 
-void ThreadedGLTF2Parser::on_parsingFinished()
-{
-    Qt3DCore::QEntity *root = m_parser.m_contentRootEntity;
+//void ThreadedGLTF2Parser::on_parsingFinished()
+//{
+//    Qt3DCore::QEntity *root = m_parser.m_contentRootEntity;
 
-    if (root) {
-        m_parser.addResourcesToSceneEntityCollections();
-        root->setParent((Qt3DCore::QNode *)nullptr);
-        root->moveToThread(this->thread());
-    }
-    emit parsingFinished(root);
-}
+//    if (root) {
+//        m_parser.addResourcesToSceneEntityCollections();
+//        root->setParent((Qt3DCore::QNode *)nullptr);
+//        root->moveToThread(this->thread());
+//    }
+//    emit parsingFinished(root);
+//}
 
-void ThreadedGLTF2Parser::parse(const QString &path)
-{
-    QMetaObject::invokeMethod(&m_parser, [=] {
-        QFile f(path);
-        f.open(QIODevice::ReadOnly);
-        if (!f.isOpen()) {
-            qCWarning(Kuesa::kuesa) << "Can't read file" << path;
-            return;
-        }
+//void ThreadedGLTF2Parser::parse(const QString &path)
+//{
+//    QMetaObject::invokeMethod(&m_parser, [=] {
+//        QFile f(path);
+//        f.open(QIODevice::ReadOnly);
+//        if (!f.isOpen()) {
+//            qCWarning(Kuesa::kuesa) << "Can't read file" << path;
+//            return;
+//        }
 
-        QFileInfo finfo(path);
-        const QByteArray jsonData = f.readAll();
-        bool isValid = m_parser.detectTypeAndParse(jsonData, finfo.absolutePath(), finfo.fileName());
+//        QFileInfo finfo(path);
+//        const QByteArray jsonData = f.readAll();
+//        bool isValid = m_parser.detectTypeAndParse(jsonData, finfo.absolutePath(), finfo.fileName());
 
-        m_parser.moveToThread(this->thread());
+//        m_parser.moveToThread(this->thread());
 
-        if (isValid)
-            QMetaObject::invokeMethod(this, &ThreadedGLTF2Parser::on_parsingFinished);
-        else
-            emit parsingFinished(nullptr);
-        return;
-    });
-}
+//        if (isValid)
+//            QMetaObject::invokeMethod(this, &ThreadedGLTF2Parser::on_parsingFinished);
+//        else
+//            emit parsingFinished(nullptr);
+//        return;
+//    });
+//}
 
-void ThreadedGLTF2Parser::parse(const QByteArray &data, const QString &basePath, const QString &filename)
-{
-    QMetaObject::invokeMethod(&m_parser, [=] {
-        bool isValid = m_parser.detectTypeAndParse(data, basePath, filename);
+//void ThreadedGLTF2Parser::parse(const QByteArray &data, const QString &basePath, const QString &filename)
+//{
+//    QMetaObject::invokeMethod(&m_parser, [=] {
+//        bool isValid = m_parser.detectTypeAndParse(data, basePath, filename);
 
-        m_parser.moveToThread(this->thread());
+//        m_parser.moveToThread(this->thread());
 
-        if (isValid)
-            QMetaObject::invokeMethod(this, &ThreadedGLTF2Parser::on_parsingFinished);
-        else
-            emit parsingFinished(nullptr);
-    });
-}
+//        if (isValid)
+//            QMetaObject::invokeMethod(this, &ThreadedGLTF2Parser::on_parsingFinished);
+//        else
+//            emit parsingFinished(nullptr);
+//    });
+//}
 
 QT_END_NAMESPACE

@@ -105,10 +105,10 @@ private:
 };
 
 using KeyParserFuncPair = QPair<QLatin1String, std::function<bool(const QJsonValue &)>>;
-class ThreadedGLTF2Parser;
 class KUESA_PRIVATE_EXPORT GLTF2Parser
     : public QObject
 {
+    Q_OBJECT
 public:
     GLTF2Parser(SceneEntity *sceneEntity = nullptr, bool assignNames = false);
     virtual ~GLTF2Parser();
@@ -116,12 +116,16 @@ public:
     virtual QVector<KeyParserFuncPair> prepareParsers();
     bool parse(const QString &filePath);
     bool parse(const QByteArray &data, const QString &basePath, const QString &filename = {});
+    void generateContent();
 
     void setContext(GLTF2Context *);
     const GLTF2Context *context() const;
 
     Qt3DCore::QEntity *contentRoot() const;
     QVector<SceneRootEntity *> sceneRoots() const;
+
+signals:
+    void gltfFileParsingCompleted(bool parsingSucceeded);
 
 private:
     bool isBinaryGLTF(const QByteArray &data, bool &isValid);
@@ -186,26 +190,6 @@ private:
     int m_defaultSceneIdx;
     bool m_assignNames;
     QVector<QHash<int, int>> m_gltfJointIdxToSkeletonJointIdxPerSkeleton;
-};
-
-class KUESA_PRIVATE_EXPORT ThreadedGLTF2Parser
-    : public QObject
-{
-    Q_OBJECT
-public:
-    ThreadedGLTF2Parser(GLTF2Context *context, SceneEntity *sceneEntity = nullptr, bool assignNames = false);
-    ~ThreadedGLTF2Parser();
-
-    Q_INVOKABLE void parse(const QString &path);
-    Q_INVOKABLE void parse(const QByteArray &data, const QString &basePath, const QString &filename = {});
-
-signals:
-    void parsingFinished(Qt3DCore::QEntity *);
-
-private:
-    void on_parsingFinished();
-    GLTF2Parser m_parser;
-    QThread m_thread;
 };
 
 } // namespace GLTF2Import

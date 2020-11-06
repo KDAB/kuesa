@@ -63,7 +63,13 @@ private Q_SLOTS:
         GLTF2Context ctx;
         GLTF2Parser parser;
         parser.setContext(&ctx);
-        parser.parse(QString(ASSETS "simple_cube_uv.gltf"));
+        const bool parsingSuccessful = parser.parse(QString(ASSETS "simple_cube_uv.gltf"));
+
+        // THEN
+        QVERIFY(parsingSuccessful);
+
+        // WHEN
+        parser.generateContent();
 
         QVERIFY(ctx.meshesCount() == 1);
         auto mesh = ctx.mesh(0);
@@ -95,7 +101,13 @@ private Q_SLOTS:
             GLTF2Context ctx;
             GLTF2Parser parser;
             parser.setContext(&ctx);
-            parser.parse(QString(ASSETS "simple_cube_uv.gltf"));
+            const bool parsingSuccessful = parser.parse(QString(ASSETS "simple_cube_uv.gltf"));
+
+            // THEN
+            QVERIFY(parsingSuccessful);
+
+            // WHEN
+            parser.generateContent();
 
             QVERIFY(ctx.meshesCount() == 1);
             auto mesh = ctx.mesh(0);
@@ -138,7 +150,13 @@ private Q_SLOTS:
         GLTF2Parser parser;
         GLTF2Context ctx;
         parser.setContext(&ctx);
-        parser.parse(gltfPath);
+        const bool parsingSuccessful = parser.parse(gltfPath);
+
+        // THEN
+        QVERIFY(parsingSuccessful);
+
+        // WHEN
+        parser.generateContent();
 
         QVERIFY(ctx.meshesCount() == 1);
         auto mesh = ctx.mesh(0);
@@ -151,6 +169,6 @@ private Q_SLOTS:
     }
 };
 
-QTEST_APPLESS_MAIN(tst_TangentGenerator)
+QTEST_MAIN(tst_TangentGenerator)
 
 #include "tst_tangentgenerator.moc"

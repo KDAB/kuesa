@@ -433,58 +433,53 @@ void GLTF2Importer::load()
 
     // Ensure clear has been called before reloading
     Q_ASSERT(m_root == nullptr);
-#ifdef USE_THREADED_PARSER
-    auto parser = new GLTF2Import::ThreadedGLTF2Parser(m_context, m_sceneEntity, m_assignNames);
+    Q_ASSERT(m_parser == nullptr);
 
-    connect(
-            parser, &GLTF2Import::ThreadedGLTF2Parser::parsingFinished,
-            this, [this, parser](Qt3DCore::QEntity *root) {
-                m_root = root;
+    m_parser = new GLTF2Import::GLTF2Parser(m_sceneEntity, m_assignNames);
+    QObject::connect(m_parser, &GLTF2Import::GLTF2Parser::gltfFileParsingCompleted,
+                     this, &GLTF2Importer::handleGLTFParsingCompleted);
 
-                if (m_root) {
-                    m_root->setParent(this);
-                    if (m_sceneEntity)
-                        emit m_sceneEntity->loadingDone();
-                    setStatus(GLTF2Importer::Status::Ready);
-                } else {
-                    setStatus(GLTF2Importer::Status::Error);
-                }
+    m_parser->setContext(m_context);
+    m_parser->parse(path);
+}
 
-                parser->deleteLater();
-            },
-            Qt::QueuedConnection);
 
-    parser->parse(path);
-#else
-    GLTF2Import::GLTF2Parser parser(m_sceneEntity, m_assignNames);
-    parser.setContext(m_context);
-    const bool parsingSucceeded = parser.parse(path);
-    m_root = parser.contentRoot();
+void GLTF2Importer::handleGLTFParsingCompleted(bool parsingSucceeded)
+{
+    m_availableScenes.clear();
 
-    if (parsingSucceeded && m_root) {
+    if (parsingSucceeded) {
+        m_parser->generateContent();
+        m_root = m_parser->contentRoot();
 
-        for (int i = 0, m = m_context->scenesCount(); i < m; ++i) {
-            const GLTF2Import::Scene scene = m_context->scene(i);
-            m_availableScenes << scene.name;
+        if (m_root) {
+            for (int i = 0, m = m_context->scenesCount(); i < m; ++i) {
+                const GLTF2Import::Scene scene = m_context->scene(i);
+                m_availableScenes << scene.name;
+            }
+
+            // Load scene
+            m_sceneRootEntities = m_parser->sceneRoots();
+            setupActiveScene();
+
+            // Set parent on root content
+            m_root->setParent(this);
+
+            if (m_sceneEntity)
+                emit m_sceneEntity->loadingDone();
+            setStatus(GLTF2Importer::Status::Ready);
         }
-
-        // Load scene
-        m_sceneRootEntities = parser.sceneRoots();
-        setupActiveScene();
-
-        // Set parent on root content
-        m_root->setParent(this);
-
-        if (m_sceneEntity)
-            emit m_sceneEntity->loadingDone();
-        setStatus(GLTF2Importer::Status::Ready);
-    } else {
-        setStatus(GLTF2Importer::Status::Error);
     }
-#endif
+
+    if (!parsingSucceeded || !m_root)
+        setStatus(GLTF2Importer::Status::Error);
 
     emit availableScenesChanged(m_availableScenes);
+
+    delete m_parser;
+    m_parser = nullptr;
 }
+
 
 void GLTF2Importer::setupActiveScene()
 {
@@ -518,6 +513,9 @@ void GLTF2Importer::setupActiveScene()
 
 void GLTF2Importer::clear()
 {
+    delete m_parser;
+    m_parser = nullptr;
+
     m_context->reset(m_sceneEntity);
     if (m_root != nullptr) {
         for (GLTF2Import::SceneRootEntity *sceneRoot : qAsConst(m_sceneRootEntities))

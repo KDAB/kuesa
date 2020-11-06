@@ -59,8 +59,10 @@ private Q_SLOTS:
     {
         // GIVEN
         GLTF2Importer importer;
+        QSignalSpy statusChangedSpy(&importer, &GLTF2Importer::statusChanged);
 
         // THEN
+        QVERIFY(statusChangedSpy.isValid());
         QCOMPARE(importer.status(), GLTF2Importer::None);
 
         // WHEN
@@ -69,6 +71,8 @@ private Q_SLOTS:
 
         // THEN -> No SceneEntity
         QCOMPARE(importer.status(), GLTF2Importer::Error);
+        QCOMPARE(statusChangedSpy.count(), 2); // Loading, Error
+        statusChangedSpy.clear();
 
         // WHEN
         SceneEntity e;
@@ -77,6 +81,8 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(importer.status(), GLTF2Importer::Ready);
+        QCOMPARE(statusChangedSpy.count(), 3); // None, Loading, Ready
+        statusChangedSpy.clear();
 
         // WHEN
         importer.setSource(QUrl());
@@ -84,13 +90,17 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(importer.status(), GLTF2Importer::None);
+        QCOMPARE(statusChangedSpy.count(), 1); // None
+        statusChangedSpy.clear();
 
         // WHEN
         importer.setSource(QUrl("file:///" ASSETS "simple_cube_with_images_invalid_scene_negative.gltf"));
         QCoreApplication::processEvents();
+        statusChangedSpy.wait();
 
         // THEN
         QCOMPARE(importer.status(), GLTF2Importer::Error);
+        QCOMPARE(statusChangedSpy.count(), 2); // Loading, Error
     }
 
     void checkScenes()
