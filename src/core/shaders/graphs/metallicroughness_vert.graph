@@ -3115,7 +3115,7 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "unform $type $name[$size];"
+                        "uniform $type $name[$size];"
                     ],
                     "substitution": "$type $value = $name;"
                 },
