@@ -761,7 +761,8 @@ QAttribute *PrimitiveBuilder::createAttribute(qint32 accessorIndex,
     quint32 bufferViewByteOffset = 0;
     qint32 bufferIdx = -1;
 
-    if (accessor.bufferViewIndex >= 0) {
+    const bool referencesValidBufferView = accessor.bufferViewIndex >= 0;
+    if (referencesValidBufferView) {
         const BufferView &viewData = m_context->bufferView(accessor.bufferViewIndex);
         byteStride = static_cast<quint32>(!viewData.bufferData.isEmpty() && viewData.byteStride > 0 ? viewData.byteStride : 0);
         bufferViewByteOffset = static_cast<quint32>(viewData.byteOffset);
@@ -786,9 +787,14 @@ QAttribute *PrimitiveBuilder::createAttribute(qint32 accessorIndex,
             byteOffset = 0;
             qCWarning(kuesa) << "Accessor byteOffset too large, consider splitting bufferViews";
         } else if (buffer == nullptr) {
-            buffer = new Qt3DGeometry::QBuffer;
-            buffer->setData(accessor.bufferData);
-            m_qViewBuffers.insert(accessor.bufferViewIndex, buffer);
+            // Try to leverage cache to reuse buffers when possible
+            if (referencesValidBufferView) {
+                BufferView &bufferView = m_context->bufferView(accessor.bufferViewIndex);
+                buffer = m_context->getOrAllocateBuffer(bufferView);
+                m_qViewBuffers.insert(accessor.bufferViewIndex, buffer);
+            } else {
+                qCWarning(kuesa) << "Accessor references an invalid buffer view";
+            }
         }
     }
 

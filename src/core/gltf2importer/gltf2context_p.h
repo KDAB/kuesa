@@ -98,6 +98,8 @@ public:
     size_t bufferViewCount() const;
     const BufferView bufferView(qint32 id) const;
     void addBufferView(const BufferView &bufferView);
+    BufferView &bufferView(qint32 id);
+    Qt3DGeometry::QBuffer *getOrAllocateBuffer(BufferView &bufferView);
 
     size_t cameraCount() const;
     const Camera camera(qint32 id) const;
@@ -232,6 +234,7 @@ private:
     AssetCache<Image, Qt3DRender::QAbstractTextureImage> m_sharedImages;
     AssetCache<Texture, Qt3DRender::QAbstractTexture> m_sharedTextures;
     AssetCache<Primitive, Qt3DRender::QGeometryRenderer> m_sharedPrimitives;
+    AssetCache<BufferView, Qt3DGeometry::QBuffer> m_sharedBufferViews;
 
     std::unique_ptr<PrimitiveBuilder> m_primitiveBuilder;
 };

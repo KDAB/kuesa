@@ -151,7 +151,7 @@ bool Kuesa::GLTF2Import::BufferAccessorParser::parse(const QJsonArray &bufferAcc
 
         Accessor accessor;
         accessor.bufferViewIndex = json.value(KEY_BUFFERVIEW).toInt(-1);
-        if (accessor.bufferViewIndex >= 0)
+        if (accessor.bufferViewIndex >= 0 && accessor.bufferViewIndex < qint32(context->bufferViewCount()))
             accessor.bufferData = context->bufferView(accessor.bufferViewIndex).bufferData;
         accessor.type = accessorTypeFromJSON(json.value(KEY_COMPONENTTYPE).toInt(GL_FLOAT));
         accessor.dataSize = accessorDataSizeFromJson(json.value(KEY_TYPE).toString());

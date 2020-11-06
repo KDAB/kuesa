@@ -84,8 +84,13 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
             }
             }
         } else {
-            const BufferView bufferData = context->bufferView(bufferViewValue.toInt());
-            image.data = bufferData.bufferData;
+            const qint32 bufferViewIdx = bufferViewValue.toInt();
+            if (bufferViewIdx >= 0 && bufferViewIdx < qint32(context->bufferViewCount())) {
+                const BufferView &bufferData = context->bufferView(bufferViewValue.toInt());
+                image.data = bufferData.bufferData;
+            } else {
+                qCWarning(Kuesa::kuesa) << "Image references an invalid buffer view";
+            }
 
             const auto &mimeTypeValue = imageObject.value(KEY_MIMETYPE);
             if (mimeTypeValue.isUndefined()) {

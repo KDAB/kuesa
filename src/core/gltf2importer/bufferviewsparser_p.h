@@ -82,7 +82,6 @@ public:
     BufferViewsParser();
 
     bool parse(const QJsonArray &bufferViewsArray, GLTF2Context *context);
-    QVector<BufferView> parse(const QJsonArray &bufferViewsArray, const QVector<QByteArray> &buffers);
 
 private:
     Qt3DGeometry::QAttribute::AttributeType viewTargetFromJSON(int target);

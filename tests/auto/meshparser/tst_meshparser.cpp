@@ -138,17 +138,23 @@ private Q_SLOTS:
 
         Accessor positionAccessor;
         positionAccessor.dataSize = 3;
+        positionAccessor.bufferViewIndex = 0;
 
         Accessor normalAccessor;
         normalAccessor.dataSize = 3;
+        normalAccessor.bufferViewIndex = 0;
 
         Accessor indicesAccessor;
         indicesAccessor.dataSize = 1;
         indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
+        indicesAccessor.bufferViewIndex = 0;
 
         context.addAccessor(normalAccessor);
         context.addAccessor(positionAccessor);
         context.addAccessor(indicesAccessor);
+
+        BufferView view0;
+        context.addBufferView(view0);
 
         MeshParser parser;
         QFile file(filePath);
@@ -198,17 +204,23 @@ private Q_SLOTS:
 
         Accessor positionAccessor;
         positionAccessor.dataSize = 3;
+        positionAccessor.bufferViewIndex = 0;
 
         Accessor normalAccessor;
         normalAccessor.dataSize = 3;
+        normalAccessor.bufferViewIndex = 0;
 
         Accessor indicesAccessor;
         indicesAccessor.dataSize = 1;
         indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
+        indicesAccessor.bufferViewIndex = 0;
 
         context.addAccessor(normalAccessor);
         context.addAccessor(positionAccessor);
         context.addAccessor(indicesAccessor);
+
+        BufferView view0;
+        context.addBufferView(view0);
 
         MeshParser parser;
 
@@ -264,6 +276,11 @@ private Q_SLOTS:
         view.byteStride = 24;
         view.byteOffset = 0;
 
+        BufferView view2;
+        view2.bufferData = fakeIndexData;
+        view2.byteStride = 0;
+        view2.byteOffset = 0;
+
         Accessor positionAccessor;
         positionAccessor.dataSize = 3;
         positionAccessor.bufferData = fakeVertexData;
@@ -284,8 +301,10 @@ private Q_SLOTS:
         indicesAccessor.bufferData = fakeIndexData;
         indicesAccessor.offset = 0;
         indicesAccessor.count = 128;
+        indicesAccessor.bufferViewIndex = 1;
 
         context.addBufferView(view);
+        context.addBufferView(view2);
         context.addAccessor(positionAccessor);
         context.addAccessor(normalAccessor);
         context.addAccessor(indicesAccessor);
@@ -525,17 +544,23 @@ private Q_SLOTS:
 
         Accessor positionAccessor;
         positionAccessor.dataSize = 3;
+        positionAccessor.bufferViewIndex = 0;
 
         Accessor normalAccessor;
         normalAccessor.dataSize = 3;
+        normalAccessor.bufferViewIndex = 0;
 
         Accessor indicesAccessor;
         indicesAccessor.dataSize = 1;
         indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
+        indicesAccessor.bufferViewIndex = 0;
 
         context.addAccessor(normalAccessor);
         context.addAccessor(positionAccessor);
         context.addAccessor(indicesAccessor);
+
+        BufferView view0;
+        context.addBufferView(view0);
 
         MeshParser parser;
         QFile file(ASSETS "simple_cube_primitive_no_sharing.gltf");
@@ -588,17 +613,23 @@ private Q_SLOTS:
 
         Accessor positionAccessor;
         positionAccessor.dataSize = 3;
+        positionAccessor.bufferViewIndex = 0;
 
         Accessor normalAccessor;
         normalAccessor.dataSize = 3;
+        normalAccessor.bufferViewIndex = 0;
 
         Accessor indicesAccessor;
         indicesAccessor.dataSize = 1;
         indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
+        indicesAccessor.bufferViewIndex = 0;
 
         context.addAccessor(normalAccessor);
         context.addAccessor(positionAccessor);
         context.addAccessor(indicesAccessor);
+
+        BufferView view0;
+        context.addBufferView(view0);
 
         MeshParser parser;
         QFile file(ASSETS "simple_cube_primitive_sharing.gltf");
@@ -640,6 +671,208 @@ private Q_SLOTS:
         QVERIFY(p1.primitiveRenderer);
         QVERIFY(p2.primitiveRenderer);
         QCOMPARE(p1.primitiveRenderer, p2.primitiveRenderer);
+    }
+
+    void checkBufferSharingWithSameKeys()
+    {
+        // GIVEN
+        Kuesa::SceneEntity s;
+        GLTF2Context context;
+        context.reset(&s);
+
+        QByteArray fakeVertexData(4800, '\0');
+        QByteArray fakeIndexData(2856, '1');
+
+        BufferView view;
+        view.bufferData = fakeVertexData;
+        view.byteStride = 0;
+        view.byteOffset = 0;
+        view.key = QStringLiteral("buffer_key_1");
+
+        BufferView view2;
+        view2.bufferData = fakeVertexData;
+        view2.byteStride = 0;
+        view2.byteOffset = 0;
+        view2.key = QStringLiteral("buffer_key_1");
+
+        BufferView view3;
+        view3.bufferData = fakeIndexData;
+        view3.byteStride = 0;
+        view3.byteOffset = 0;
+
+        Accessor positionAccessor;
+        positionAccessor.dataSize = 3;
+        positionAccessor.bufferViewIndex = 0;
+
+        Accessor normalAccessor;
+        normalAccessor.dataSize = 3;
+        normalAccessor.bufferViewIndex = 1;
+
+        Accessor indicesAccessor;
+        indicesAccessor.dataSize = 1;
+        indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
+        indicesAccessor.bufferViewIndex = 2;
+
+        context.addBufferView(view);
+        context.addBufferView(view2);
+        context.addBufferView(view3);
+        context.addAccessor(normalAccessor);
+        context.addAccessor(positionAccessor);
+        context.addAccessor(indicesAccessor);
+
+        MeshParser parser;
+        QFile file(ASSETS "simple_cube.gltf");
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        // WHEN
+        QJsonParseError e;
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll(), &e);
+        const QJsonObject gltfJson = json.object();
+
+        // THEN
+        QVERIFY(!json.isNull() && json.isObject());
+        QVERIFY(gltfJson.contains(QLatin1String("meshes")));
+
+        // WHEN
+        bool success = parser.parse(gltfJson.value(QLatin1String("meshes")).toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.meshesCount(), 1);
+
+        // WHEN
+        Mesh &mesh = context.mesh(0);
+
+        // THEN
+        QCOMPARE(mesh.meshPrimitives.size(), 1);
+
+        // WHEN
+        Primitive &p1 = mesh.meshPrimitives[0];
+        QVERIFY(context.getOrAllocateGeometryRenderer(p1));
+
+        // THEN
+        QVERIFY(p1.primitiveRenderer);
+
+        const QVector<QAttribute *> attributes = p1.primitiveRenderer->geometry()->attributes();
+        QCOMPARE(attributes.size(), 3);
+
+        auto findAttributeWithName = [&] (const QString &name) {
+            return *std::find_if(attributes.begin(), attributes.end(), [&] (Qt3DGeometry::QAttribute *a) {
+                return a->name() == name;
+            });
+        };
+
+        auto normalAttribute = findAttributeWithName(Qt3DGeometry::QAttribute::defaultNormalAttributeName());
+        auto positionAttribute = findAttributeWithName(Qt3DGeometry::QAttribute::defaultPositionAttributeName());
+
+        QVERIFY(normalAttribute);
+        QVERIFY(positionAttribute);
+        QVERIFY(positionAttribute != normalAttribute);
+
+        QVERIFY(normalAttribute->buffer());
+        QVERIFY(positionAttribute->buffer());
+        QCOMPARE(positionAttribute->buffer(), normalAttribute->buffer());
+    }
+
+    void checkBufferNoSharing()
+    {
+        // GIVEN
+        Kuesa::SceneEntity s;
+        GLTF2Context context;
+        context.reset(&s);
+
+        QByteArray fakeVertexData(4800, '\0');
+        QByteArray fakeIndexData(2856, '1');
+
+        BufferView view;
+        view.bufferData = fakeVertexData;
+        view.byteStride = 0;
+        view.byteOffset = 0;
+
+        BufferView view2;
+        view2.bufferData = fakeVertexData;
+        view2.byteStride = 0;
+        view2.byteOffset = 0;
+
+        BufferView view3;
+        view3.bufferData = fakeIndexData;
+        view3.byteStride = 0;
+        view3.byteOffset = 0;
+
+        Accessor positionAccessor;
+        positionAccessor.dataSize = 3;
+        positionAccessor.bufferViewIndex = 0;
+
+        Accessor normalAccessor;
+        normalAccessor.dataSize = 3;
+        normalAccessor.bufferViewIndex = 1;
+
+        Accessor indicesAccessor;
+        indicesAccessor.dataSize = 1;
+        indicesAccessor.type = QAttribute::VertexBaseType::UnsignedShort;
+        indicesAccessor.bufferViewIndex = 2;
+
+        context.addBufferView(view);
+        context.addBufferView(view2);
+        context.addBufferView(view3);
+        context.addAccessor(normalAccessor);
+        context.addAccessor(positionAccessor);
+        context.addAccessor(indicesAccessor);
+
+        MeshParser parser;
+        QFile file(ASSETS "simple_cube.gltf");
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        // WHEN
+        QJsonParseError e;
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll(), &e);
+        const QJsonObject gltfJson = json.object();
+
+        // THEN
+        QVERIFY(!json.isNull() && json.isObject());
+        QVERIFY(gltfJson.contains(QLatin1String("meshes")));
+
+        // WHEN
+        bool success = parser.parse(gltfJson.value(QLatin1String("meshes")).toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.meshesCount(), 1);
+
+        // WHEN
+        Mesh &mesh = context.mesh(0);
+
+        // THEN
+        QCOMPARE(mesh.meshPrimitives.size(), 1);
+
+        // WHEN
+        Primitive &p1 = mesh.meshPrimitives[0];
+        QVERIFY(context.getOrAllocateGeometryRenderer(p1));
+
+        // THEN
+        QVERIFY(p1.primitiveRenderer);
+
+        const QVector<QAttribute *> attributes = p1.primitiveRenderer->geometry()->attributes();
+        QCOMPARE(attributes.size(), 3);
+
+        auto findAttributeWithName = [&] (const QString &name) {
+            return *std::find_if(attributes.begin(), attributes.end(), [&] (Qt3DGeometry::QAttribute *a) {
+                return a->name() == name;
+            });
+        };
+
+        auto normalAttribute = findAttributeWithName(Qt3DGeometry::QAttribute::defaultNormalAttributeName());
+        auto positionAttribute = findAttributeWithName(Qt3DGeometry::QAttribute::defaultPositionAttributeName());
+
+        QVERIFY(normalAttribute);
+        QVERIFY(positionAttribute);
+        QVERIFY(positionAttribute != normalAttribute);
+
+        QVERIFY(normalAttribute->buffer());
+        QVERIFY(positionAttribute->buffer());
+        QVERIFY(positionAttribute->buffer() != normalAttribute->buffer());
     }
 };
 

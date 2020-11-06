@@ -58,6 +58,9 @@ private Q_SLOTS:
         Kuesa::GLTF2Import::GLTF2Context context;
         Kuesa::GLTF2Import::BufferAccessorParser parser;
 
+        Kuesa::GLTF2Import::BufferView view;
+        context.addBufferView(view);
+
         // WHEN
         bool result = parser.parse(accessorsArray, &context);
 

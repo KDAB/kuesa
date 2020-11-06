@@ -89,6 +89,22 @@ void GLTF2Context::addBufferView(const BufferView &bufferView)
     m_bufferViews.push_back(bufferView);
 }
 
+BufferView &GLTF2Context::bufferView(qint32 id)
+{
+    return m_bufferViews[id];
+}
+
+Qt3DGeometry::QBuffer *GLTF2Context::getOrAllocateBuffer(BufferView &view)
+{
+    Qt3DGeometry::QBuffer *buffer = m_sharedBufferViews.getResourceFromCache(view);
+    if (buffer)
+        return buffer;
+    buffer = new Qt3DGeometry::QBuffer();
+    buffer->setData(view.bufferData);
+    m_sharedBufferViews.addResourceToCache(view, buffer);
+    return buffer;
+}
+
 size_t GLTF2Context::cameraCount() const
 {
     return m_cameras.size();
@@ -602,6 +618,7 @@ void GLTF2Context::reset(SceneEntity *sceneEntity)
     m_sharedImages.setSceneEntity(sceneEntity); // so that they don't get deleted with the scene graph
     m_sharedTextures.setSceneEntity(sceneEntity);
     m_sharedPrimitives.setSceneEntity(sceneEntity);
+    m_sharedBufferViews.setSceneEntity(sceneEntity);
     m_effectLibrary->reset();
 
     // Reset Primitive Builder
