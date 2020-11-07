@@ -46,8 +46,9 @@ Entity
             Kuesa.MetallicRoughnessMaterial {
                 effect: Kuesa.MetallicRoughnessEffect {
                     opaque: false
+                    usingNormalAttribute: true
                 }
-                metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                materialProperties: Kuesa.MetallicRoughnessProperties {
                     baseColorFactor: Qt.rgba(1, 0, 0, .5)
                     metallicFactor: .5
                     roughnessFactor: .25
@@ -62,8 +63,9 @@ Entity
             Kuesa.MetallicRoughnessMaterial {
                 effect: Kuesa.MetallicRoughnessEffect {
                     opaque: false
+                    usingNormalAttribute: true
                 }
-                metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                materialProperties: Kuesa.MetallicRoughnessProperties {
                     baseColorFactor: Qt.rgba(0, 1, 0, .5)
                     metallicFactor: .5
                     roughnessFactor: .25
@@ -79,8 +81,9 @@ Entity
             Kuesa.MetallicRoughnessMaterial {
                 effect: Kuesa.MetallicRoughnessEffect {
                     opaque: false
+                    usingNormalAttribute: true
                 }
-                metallicRoughnessProperties: Kuesa.MetallicRoughnessProperties {
+                materialProperties: Kuesa.MetallicRoughnessProperties {
                     baseColorFactor: Qt.rgba(0, 0, 1, .5)
                     metallicFactor: .5
                     roughnessFactor: .25
