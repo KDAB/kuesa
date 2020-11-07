@@ -44,6 +44,7 @@
 #include "opaquerenderstage_p.h"
 #include "transparentrenderstage_p.h"
 
+#include <private/particlerenderstage_p.h>
 #include <Qt3DCore/private/qnode_p.h>
 
 QT_BEGIN_NAMESPACE
@@ -79,6 +80,11 @@ bool SceneFeaturedRenderStageBase::frustumCulling() const
 bool SceneFeaturedRenderStageBase::backToFrontSorting() const
 {
     return m_features & BackToFrontSorting;
+}
+
+bool SceneFeaturedRenderStageBase::particlesEnabled() const
+{
+    return m_features & Particles;
 }
 
 SceneFeaturedRenderStageBase::Features SceneFeaturedRenderStageBase::features() const
@@ -118,6 +124,13 @@ void SceneFeaturedRenderStageBase::setBackToFrontSorting(bool backToFrontSorting
     reconfigure(m_features);
 }
 
+void SceneFeaturedRenderStageBase::setParticlesEnabled(bool enabled)
+{
+    if (enabled == bool(m_features & Particles))
+        return;
+    m_features.setFlag(Particles, enabled);
+    reconfigure(m_features);
+}
 
 /*!
     \internal
@@ -288,6 +301,7 @@ SceneStages::SceneStages(Qt3DRender::QFrameGraphNode *parent)
     m_zFillStage = ScenePassPtr::create(ScenePass::ZFill);
     m_opaqueStage = ScenePassPtr::create(ScenePass::Opaque);
     m_transparentStage = ScenePassPtr::create(ScenePass::Transparent);
+    m_particleRenderStage = ParticleRenderStagePtr::create();
 
     m_reflectiveEnabledParameter = new Qt3DRender::QParameter(QStringLiteral("isReflective"), false, this);
     m_reflectivePlaneParameter = new Qt3DRender::QParameter(QStringLiteral("reflectionPlane"), QVector4D(), this);
@@ -319,11 +333,13 @@ void SceneStages::reconfigure(const Features features)
     const bool useZFilling = bool(features & ZFilling);
     const bool sortBackToFront = bool(features & BackToFrontSorting);
     const bool useFrustumCulling = bool(features & FrustumCulling);
+    const bool useParticles = bool(features & Particles);
 
     // Unparent each stages to make sure they are added in correct order
     m_zFillStage->setParent(Q_NODE_NULLPTR);
     m_opaqueStage->setParent(Q_NODE_NULLPTR);
     m_transparentStage->setParent(Q_NODE_NULLPTR);
+    m_particleRenderStage->setParent(Q_NODE_NULLPTR);
 
     // Set features on stages which will update accordingly
     const ScenePassPtr passStages[] { m_zFillStage, m_opaqueStage, m_transparentStage };
@@ -353,6 +369,8 @@ void SceneStages::reconfigure(const Features features)
         m_zFillStage->setParent(stageRoot);
     m_opaqueStage->setParent(stageRoot);
     m_transparentStage->setParent(stageRoot);
+    if (useParticles)
+        m_particleRenderStage->setParent(stageRoot);
 }
 
 void SceneStages::addLayer(Qt3DRender::QLayer *layer)

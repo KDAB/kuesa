@@ -594,9 +594,9 @@ private Q_SLOTS:
         // THEN
         QCoreApplication::processEvents();
 
-        QCOMPARE(v.children().size(), 2);
+        QCOMPARE(v.children().size(), 1);
         Kuesa::SceneStages *child0 = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
-        Kuesa::ParticleRenderStage *child1 = qobject_cast<Kuesa::ParticleRenderStage *>(v.children()[1]);
+        Kuesa::ParticleRenderStage *child1 = child0->findChild<Kuesa::ParticleRenderStage *>();
         QVERIFY(child0);
         QVERIFY(child1);
     }
@@ -616,11 +616,11 @@ private Q_SLOTS:
         // THEN
         QCoreApplication::processEvents();
 
-        QCOMPARE(v.children().size(), 4);
+        QCOMPARE(v.children().size(), 3);
         QCOMPARE(v.children()[0], &plane);
         Kuesa::ReflectionStages *child1 = qobject_cast<Kuesa::ReflectionStages *>(v.children()[1]);
         Kuesa::SceneStages *child2 = qobject_cast<Kuesa::SceneStages *>(v.children()[2]);
-        Kuesa::ParticleRenderStage *child3 = qobject_cast<Kuesa::ParticleRenderStage *>(v.children()[3]);
+        Kuesa::ParticleRenderStage *child3 = child2->findChild<Kuesa::ParticleRenderStage *>();
         QVERIFY(child1);
         QVERIFY(child2);
         QVERIFY(child3);

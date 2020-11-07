@@ -74,6 +74,9 @@ class AbstractRenderStage;
 class OpaqueRenderStage;
 class TransparentRenderStage;
 class ZFillRenderStage;
+class ParticleRenderStage;
+
+using ParticleRenderStagePtr = QSharedPointer<ParticleRenderStage>;
 
 class KUESA_PRIVATE_EXPORT SceneFeaturedRenderStageBase : public AbstractRenderStage
 {
@@ -86,6 +89,7 @@ public:
         Skinning           = (1 << 1),
         FrustumCulling     = (1 << 2),
         ZFilling           = (1 << 3),
+        Particles          = (1 << 4),
     };
     Q_DECLARE_FLAGS(Features, Feature)
 
@@ -102,6 +106,9 @@ public:
 
     void setBackToFrontSorting(bool backToFrontSorting);
     bool backToFrontSorting() const;
+
+    void setParticlesEnabled(bool enabled);
+    bool particlesEnabled() const;
 
 private:
     Features m_features;
@@ -173,6 +180,7 @@ protected:
     ScenePassPtr m_zFillStage;
     ScenePassPtr m_opaqueStage;
     ScenePassPtr m_transparentStage;
+    ParticleRenderStagePtr m_particleRenderStage;
 
     Qt3DRender::QParameter *m_reflectiveEnabledParameter = nullptr;
     Qt3DRender::QParameter *m_reflectivePlaneParameter = nullptr;

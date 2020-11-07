@@ -48,12 +48,10 @@ class SceneStages;
 class ReflectionStages;
 class EffectsStages;
 class ReflectionPlane;
-class ParticleRenderStage;
 
 using SceneStagesPtr = QSharedPointer<SceneStages>;
 using ReflectionStagesPtr = QSharedPointer<ReflectionStages>;
 using EffectsStagesPtr = QSharedPointer<EffectsStages>;
-using ParticleRenderStagePtr = QSharedPointer<ParticleRenderStage>;
 
 class KUESASHARED_EXPORT View : public Qt3DRender::QFrameGraphNode
 {
@@ -134,7 +132,6 @@ private:
 
     SceneStagesPtr m_sceneStages;
     ReflectionStagesPtr m_reflectionStages;
-    ParticleRenderStagePtr m_particleRenderStage;
     EffectsStagesPtr m_fxStages;
 
     Qt3DCore::QEntity *m_camera = nullptr;

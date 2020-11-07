@@ -116,7 +116,6 @@ View::View(Qt3DCore::QNode *parent)
     : Qt3DRender::QFrameGraphNode(parent)
     , m_sceneStages(SceneStagesPtr::create())
     , m_reflectionStages(ReflectionStagesPtr::create())
-    , m_particleRenderStage(ParticleRenderStagePtr::create())
     , m_fxStages(EffectsStagesPtr::create())
 {
     rebuildFGTree();
@@ -504,12 +503,14 @@ void View::reconfigureStages()
     const bool useZFilling = bool(m_features & ZFilling);
     const bool sortBackToFront = bool(m_features & BackToFrontSorting);
     const bool useFrustumCulling = bool(m_features & FrustumCulling);
+    const bool useParticles = bool(m_features & Particles);
 
     // Scene Stages
     m_sceneStages->setBackToFrontSorting(sortBackToFront);
     m_sceneStages->setSkinning(useSkinning);
     m_sceneStages->setZFilling(useZFilling);
     m_sceneStages->setFrustumCulling(useFrustumCulling);
+    m_sceneStages->setParticlesEnabled(useParticles);
     m_sceneStages->setCamera(m_camera);
     m_sceneStages->setViewport(m_viewport);
 
@@ -570,7 +571,6 @@ void View::reconfigureFrameGraphHelper(Qt3DRender::QFrameGraphNode *stageRoot)
 {
     m_sceneStages->setParent(Q_NODE_NULLPTR);
     m_reflectionStages->setParent(Q_NODE_NULLPTR);
-    m_particleRenderStage->setParent(Q_NODE_NULLPTR);
 
     // We draw reflections prior to drawing the scene
     const bool needsReflections = m_reflectionPlanes.size() > 0;
@@ -579,11 +579,6 @@ void View::reconfigureFrameGraphHelper(Qt3DRender::QFrameGraphNode *stageRoot)
 
     // Draw scene
     m_sceneStages->setParent(stageRoot);
-
-    // Draw particles if enabled
-    const bool useParticles = bool(m_features & Particles);
-    if (useParticles)
-        m_particleRenderStage->setParent(stageRoot);
 
     // FXs
     // Those are handled by the ForwardRenderer

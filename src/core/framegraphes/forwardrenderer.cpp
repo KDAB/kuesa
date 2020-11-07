@@ -729,7 +729,6 @@ void ForwardRenderer::reconfigureFrameGraph()
     // Unparent stages for the ForwardRenderer View
     m_sceneStages->setParent(Q_NODE_NULLPTR);
     m_reflectionStages->setParent(Q_NODE_NULLPTR);
-    m_particleRenderStage->setParent(Q_NODE_NULLPTR);
 
     // Scene Stages
     for (View *v : m_views)
