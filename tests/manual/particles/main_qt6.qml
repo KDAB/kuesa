@@ -88,7 +88,9 @@ Scene3D {
                     translation: Qt.vector3d(0, -0.5, 0)
                 },
                 Kuesa.MetallicRoughnessMaterial {
-                    effect: Kuesa.MetallicRoughnessEffect { }
+                    effect: Kuesa.MetallicRoughnessEffect {
+                        usingNormalAttribute: true
+                    }
                     materialProperties: Kuesa.MetallicRoughnessProperties {
                         baseColorFactor: Qt.rgba(1, 1, 1)
                         metallicFactor: .5
