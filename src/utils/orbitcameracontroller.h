@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef ORBITCAMERACONTROLLER_H
-#define ORBITCAMERACONTROLLER_H
+#ifndef KUESA_KUESA_UTILS_ORBITCAMERACONTROLLER_H
+#define KUESA_KUESA_UTILS_ORBITCAMERACONTROLLER_H
 
 #include <KuesaUtils/kuesa_utils_global.h>
 #include <Qt3DCore/QEntity>
@@ -150,4 +150,4 @@ private:
 
 QT_END_NAMESPACE
 
-#endif // ORBITCAMERACONTROLLER_H
+#endif // KUESA_KUESA_UTILS_ORBITCAMERACONTROLLER_H

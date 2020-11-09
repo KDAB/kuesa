@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef BOUNDINGVOLUMERENDERER_H
-#define BOUNDINGVOLUMERENDERER_H
+#ifndef KUESA_KUESA_UTILS_BOUNDINGVOLUMERENDERER_H
+#define KUESA_KUESA_UTILS_BOUNDINGVOLUMERENDERER_H
 
 #include <KuesaUtils/kuesa_utils_global.h>
 #include <Qt3DCore/QEntity>
@@ -116,4 +116,4 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(BoundingVolumeRenderer::SelectionModes)
 
 QT_END_NAMESPACE
 
-#endif // BOUNDINGVOLUMERENDERER_H
+#endif // KUESA_KUESA_UTILS_BOUNDINGVOLUMERENDERER_H

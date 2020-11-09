@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef VIEW3DSCENE_H
-#define VIEW3DSCENE_H
+#ifndef KUESA_KUESA_UTILS_VIEW3DSCENE_H
+#define KUESA_KUESA_UTILS_VIEW3DSCENE_H
 
 #include <QObject>
 #include <KuesaUtils/kuesa_utils_global.h>
@@ -125,4 +125,4 @@ private:
 
 QT_END_NAMESPACE
 
-#endif // VIEW3D_H
+#endif // KUESA_KUESA_UTILS_VIEW3DSCENE_H
