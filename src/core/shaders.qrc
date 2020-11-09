@@ -81,8 +81,10 @@
         <file>shaders/gl3/particlesimulate.comp</file>
         <file>shaders/gl3/particlesort.comp</file>
         <file>shaders/gl3/particle.vert</file>
-        <file>shaders/gl3/particle.geom</file>
         <file>shaders/gl3/particle.frag</file>
+        <file>shaders/gl3/kuesa_particleVertexData.inc.geom</file>
+        <file>shaders/gl3/kuesa_emitParticleBillboard.inc.geom</file>
+        <file>shaders/graphs/particle.geom.json</file>
         <file>shaders/gl45/kuesa_metallicRoughnessShaderData.inc.frag</file>
         <file>shaders/gl45/kuesa_morphtargets_weights.inc.vert</file>
         <file>shaders/gl45/generate-shaders.sh</file>

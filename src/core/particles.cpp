@@ -150,6 +150,7 @@ Particles::Particles(Qt3DCore::QEntity *parent)
     connect(m_material, &ParticleMaterial::rotationRateChanged, this, &Particles::rotationRateChanged);
     connect(m_material, &ParticleMaterial::rotationRateRandomChanged, this, &Particles::rotationRateRandomChanged);
     connect(m_material, &ParticleMaterial::spriteTextureChanged, this, &Particles::spriteTextureChanged);
+    connect(m_material, &ParticleMaterial::alignModeChanged, this, &Particles::alignModeChanged);
 
     m_mesh->setVertexBuffer(m_material->sortKeyBuffer());
     m_mesh->setParticleCount(m_material->particleCount());
@@ -526,6 +527,48 @@ Qt3DRender::QAbstractTexture *Particles::spriteTexture() const
     return m_material->spriteTexture();
 }
 
+/*!
+    \enum Particles::AlignMode
+
+    This enum type describes the available particle alignment modes.
+    \value FaceCamera The particle faces the camera at all times.
+    \value Velocity The particle's local Y axis is aligned to its direction.
+ */
+
+/*!
+    \property Kuesa::Particles::alignMode
+
+    Holds the alignment mode for the particles.
+
+    \list
+    \li FaceCamera The particle faces the camera at all times.
+    \li Velocity The particle's local Y axis is aligned to its direction.
+
+    If the Velocity alignment mode is used, the initialAngle and rotationRate properties are
+    ignored.
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \qmlproperty enumeration Kuesa::Particles::alignMode
+
+    Holds the alignment mode for the particles.
+
+    \list
+    \li FaceCamera The particle faces the camera at all times.
+    \li Velocity The particle's local Y axis is aligned to its direction.
+
+    If the Velocity alignment mode is used, the initialAngle and rotationRate properties are
+    ignored.
+
+    \since Kuesa 1.3
+ */
+Particles::AlignMode Particles::alignMode() const
+{
+    return m_material->alignMode();
+}
+
 void Particles::setParticleCount(int particleCount)
 {
     m_material->setParticleCount(particleCount);
@@ -619,6 +662,11 @@ void Particles::setRotationRateRandom(float rotationRateRandom)
 void Particles::setSpriteTexture(Qt3DRender::QAbstractTexture *spriteTexture)
 {
     m_material->setSpriteTexture(spriteTexture);
+}
+
+void Particles::setAlignMode(AlignMode alignMode)
+{
+    m_material->setAlignMode(alignMode);
 }
 
 void Particles::updateWorkGroupCount()

@@ -40,6 +40,7 @@
 #include <Qt3DRender/QBlendEquationArguments>
 #include <Qt3DRender/QBlendEquation>
 #include <Qt3DRender/QTexture>
+#include <Qt3DRender/QShaderProgramBuilder>
 
 #include <numeric>
 
@@ -86,6 +87,7 @@ ParticleMaterial::ParticleMaterial(Qt3DCore::QNode *parent)
     , m_rotationRate(new QParameter(QStringLiteral("rotationRate"), 0.0f))
     , m_rotationRateRandom(new QParameter(QStringLiteral("rotationRateRandom"), 0.0f))
     , m_spriteTexture(new QParameter(QStringLiteral("spriteTexture"), QVariant::fromValue(new QTexture2D)))
+    , m_alignMode(Particles::AlignMode::FaceCamera)
 {
     connect(m_particleCount, &QParameter::valueChanged, this,
             [this](const QVariant &v) { emit particleCountChanged(v.toInt()); });
@@ -182,10 +184,14 @@ ParticleMaterial::ParticleMaterial(Qt3DCore::QNode *parent)
     auto renderShaderProgram = new QShaderProgram;
     renderShaderProgram->setVertexShaderCode(
             QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/particle.vert"))));
-    renderShaderProgram->setGeometryShaderCode(
-            QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/particle.geom"))));
     renderShaderProgram->setFragmentShaderCode(
             QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/particle.frag"))));
+
+    m_renderShaderProgramBuilder = new QShaderProgramBuilder(this);
+    m_renderShaderProgramBuilder->setShaderProgram(renderShaderProgram);
+    m_renderShaderProgramBuilder->setGeometryShaderGraph(
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/particle.geom.json")));
+    m_renderShaderProgramBuilder->setEnabledLayers({ QStringLiteral("alignModeFaceCamera") });
 
     auto renderPass = new QRenderPass;
     addFilterKey(renderPass, QStringLiteral("KuesaDrawStage"), QStringLiteral("ParticleRender"));
@@ -425,6 +431,31 @@ QAbstractTexture *ParticleMaterial::spriteTexture() const
 void ParticleMaterial::setSpriteTexture(QAbstractTexture *spriteTexture)
 {
     m_spriteTexture->setValue(QVariant::fromValue(spriteTexture));
+}
+
+Particles::AlignMode ParticleMaterial::alignMode() const
+{
+    return m_alignMode;
+}
+
+void ParticleMaterial::setAlignMode(Particles::AlignMode alignMode)
+{
+    if (m_alignMode == alignMode)
+        return;
+    const auto layerName = [alignMode] {
+        switch (alignMode) {
+        case Particles::AlignMode::FaceCamera:
+            return QStringLiteral("alignModeFaceCamera");
+        case Particles::AlignMode::Velocity:
+            return QStringLiteral("alignModeVelocity");
+        default:
+            break;
+        }
+        Q_UNREACHABLE();
+    }();
+    m_renderShaderProgramBuilder->setEnabledLayers({ layerName });
+    m_alignMode = alignMode;
+    emit alignModeChanged(alignMode);
 }
 
 Qt3DGeometry::QBuffer *ParticleMaterial::particleBuffer() const

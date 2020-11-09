@@ -35,6 +35,8 @@
 #include <QFormLayout>
 #include <QSpinBox>
 #include <QDoubleSpinBox>
+#include <QComboBox>
+#include <QMetaEnum>
 
 namespace {
 QDoubleSpinBox *makeVectorComponentSpinBox(double minimum, double maximum)
@@ -263,6 +265,17 @@ ControllerWidget::ControllerWidget(SceneController *controller, QWidget *parent)
     rotationRateRandom->setValue(m_controller->rotationRateRandom());
     connect(rotationRateRandom, QOverload<double>::of(&QDoubleSpinBox::valueChanged), m_controller, &SceneController::setRotationRateRandom);
 
+    auto *alignMode = new QComboBox(this);
+    const auto alignModes = QMetaEnum::fromType<Kuesa::Particles::AlignMode>();
+    for (int i = 0; i < alignModes.keyCount(); ++i) {
+        alignMode->addItem(alignModes.key(i), QVariant::fromValue(static_cast<Kuesa::Particles::AlignMode>(alignModes.value(i))));
+    }
+    alignMode->setCurrentIndex(alignMode->findData(QVariant::fromValue(m_controller->alignMode())));
+    connect(alignMode, QOverload<int>::of(&QComboBox::currentIndexChanged), m_controller, [this, alignMode](int index) {
+        const auto mode = alignMode->itemData(index).value<Kuesa::Particles::AlignMode>();
+        m_controller->setAlignMode(mode);
+    });
+
     auto *layout = new QFormLayout(this);
     layout->addRow(tr("Particle count:"), particleCount);
     layout->addRow(tr("Max particles emitted per frame:"), maxParticlesEmittedPerFrame);
@@ -281,6 +294,7 @@ ControllerWidget::ControllerWidget(SceneController *controller, QWidget *parent)
     layout->addRow(tr("Initial angle random:"), initialAngleRandom);
     layout->addRow(tr("Rotation rate:"), rotationRate);
     layout->addRow(tr("Rotation rate random:"), rotationRateRandom);
+    layout->addRow(tr("Align mode:"), alignMode);
 }
 
 #include "controllerwidget.moc"

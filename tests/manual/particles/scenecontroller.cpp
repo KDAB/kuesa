@@ -47,6 +47,7 @@ SceneController::SceneController(QObject *parent)
     , m_initialAngleRandom(3.15159265)
     , m_rotationRate(3.14159265)
     , m_rotationRateRandom(1.0)
+    , m_alignMode(Kuesa::Particles::AlignMode::FaceCamera)
 {
 }
 
@@ -133,6 +134,11 @@ float SceneController::rotationRate() const
 float SceneController::rotationRateRandom() const
 {
     return m_rotationRateRandom;
+}
+
+Kuesa::Particles::AlignMode SceneController::alignMode() const
+{
+    return m_alignMode;
 }
 
 void SceneController::setParticleCount(int particleCount)
@@ -269,4 +275,12 @@ void SceneController::setRotationRateRandom(float rotationRateRandom)
         return;
     m_rotationRateRandom = rotationRateRandom;
     emit rotationRateRandomChanged(rotationRateRandom);
+}
+
+void SceneController::setAlignMode(Kuesa::Particles::AlignMode alignMode)
+{
+    if (m_alignMode == alignMode)
+        return;
+    m_alignMode = alignMode;
+    emit alignModeChanged(alignMode);
 }

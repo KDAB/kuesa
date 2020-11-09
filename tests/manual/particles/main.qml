@@ -117,6 +117,7 @@ Scene3D {
             initialAngleRandom: _controller.initialAngleRandom
             rotationRate: _controller.rotationRate
             rotationRateRandom: _controller.rotationRateRandom
+            alignMode: _controller.alignMode
             spriteTexture: TextureLoader {
                 source: "kuesa-logo.png"
             }

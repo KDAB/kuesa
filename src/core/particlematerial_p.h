@@ -40,6 +40,8 @@
 // We mean it.
 //
 
+#include "particles.h"
+
 #include <Qt3DRender/QMaterial>
 #include <Qt3DRender/QAbstractTexture>
 #include <QVector2D>
@@ -56,6 +58,10 @@
 #endif
 
 QT_BEGIN_NAMESPACE
+
+namespace Qt3DRender {
+class QShaderProgramBuilder;
+}
 
 namespace Kuesa {
 
@@ -81,6 +87,7 @@ class ParticleMaterial : public Qt3DRender::QMaterial
     Q_PROPERTY(float rotationRate READ rotationRate WRITE setRotationRate NOTIFY rotationRateChanged)
     Q_PROPERTY(float rotationRateRandom READ rotationRateRandom WRITE setRotationRateRandom NOTIFY rotationRateRandomChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *spriteTexture READ spriteTexture WRITE setSpriteTexture NOTIFY spriteTextureChanged)
+    Q_PROPERTY(Particles::AlignMode alignMode READ alignMode WRITE setAlignMode NOTIFY alignModeChanged)
     Q_PROPERTY(Qt3DGeometry::QBuffer *particleBuffer READ particleBuffer CONSTANT)
     Q_PROPERTY(Qt3DGeometry::QBuffer *deadListBuffer READ deadListBuffer CONSTANT)
     Q_PROPERTY(Qt3DGeometry::QBuffer *sortKeyBuffer READ sortKeyBuffer CONSTANT)
@@ -107,6 +114,7 @@ public:
     float rotationRate() const;
     float rotationRateRandom() const;
     Qt3DRender::QAbstractTexture *spriteTexture() const;
+    Particles::AlignMode alignMode() const;
     Qt3DGeometry::QBuffer *particleBuffer() const;
     Qt3DGeometry::QBuffer *deadListBuffer() const;
     Qt3DGeometry::QBuffer *sortKeyBuffer() const;
@@ -131,6 +139,7 @@ public Q_SLOTS:
     void setRotationRate(float rotationRate);
     void setRotationRateRandom(float rotationRateRandom);
     void setSpriteTexture(Qt3DRender::QAbstractTexture *spriteTexture);
+    void setAlignMode(Particles::AlignMode alignMode);
 
 Q_SIGNALS:
     void particleCountChanged(int particleCount);
@@ -152,10 +161,12 @@ Q_SIGNALS:
     void rotationRateChanged(float rotationRate);
     void rotationRateRandomChanged(float rotationRateRandom);
     void spriteTextureChanged(const Qt3DRender::QAbstractTexture *spriteTexture);
+    void alignModeChanged(Particles::AlignMode alignMode);
 
 private:
     void updateBuffers();
 
+    Qt3DRender::QShaderProgramBuilder *m_renderShaderProgramBuilder;
     Qt3DRender::QParameter *m_particleCount;
     Qt3DRender::QParameter *m_particleBuffer;
     Qt3DRender::QParameter *m_deadListBuffer;
@@ -179,6 +190,7 @@ private:
     Qt3DRender::QParameter *m_rotationRate;
     Qt3DRender::QParameter *m_rotationRateRandom;
     Qt3DRender::QParameter *m_spriteTexture;
+    Particles::AlignMode m_alignMode;
 };
 
 } // namespace Kuesa

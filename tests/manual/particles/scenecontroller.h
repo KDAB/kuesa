@@ -28,6 +28,8 @@
 
 #pragma once
 
+#include <Kuesa/particles.h>
+
 #include <QObject>
 #include <QVector2D>
 #include <QVector3D>
@@ -53,6 +55,7 @@ class SceneController : public QObject
     Q_PROPERTY(float initialAngleRandom READ initialAngleRandom WRITE setInitialAngleRandom NOTIFY initialAngleRandomChanged)
     Q_PROPERTY(float rotationRate READ rotationRate WRITE setRotationRate NOTIFY rotationRateChanged)
     Q_PROPERTY(float rotationRateRandom READ rotationRateRandom WRITE setRotationRateRandom NOTIFY rotationRateRandomChanged)
+    Q_PROPERTY(Kuesa::Particles::AlignMode alignMode READ alignMode WRITE setAlignMode NOTIFY alignModeChanged)
 
 public:
     explicit SceneController(QObject *parent = nullptr);
@@ -74,6 +77,7 @@ public:
     float initialAngleRandom() const;
     float rotationRate() const;
     float rotationRateRandom() const;
+    Kuesa::Particles::AlignMode alignMode() const;
 
 public slots:
     void setParticleCount(int particleCount);
@@ -93,6 +97,7 @@ public slots:
     void setInitialAngleRandom(float initialAngleRandom);
     void setRotationRate(float rotationRate);
     void setRotationRateRandom(float rotationRateRandom);
+    void setAlignMode(Kuesa::Particles::AlignMode alignMode);
 
 signals:
     void particleCountChanged(int particleCount);
@@ -112,6 +117,7 @@ signals:
     void initialAngleRandomChanged(float initialAngleRandom);
     void rotationRateChanged(float rotationRate);
     void rotationRateRandomChanged(float rotationRateRandom);
+    void alignModeChanged(Kuesa::Particles::AlignMode alignMode);
 
 private:
     int m_particleCount;
@@ -131,4 +137,5 @@ private:
     float m_initialAngleRandom;
     float m_rotationRate;
     float m_rotationRateRandom;
+    Kuesa::Particles::AlignMode m_alignMode;
 };

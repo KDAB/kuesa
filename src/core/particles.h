@@ -70,8 +70,15 @@ public:
     Q_PROPERTY(float rotationRate READ rotationRate WRITE setRotationRate NOTIFY rotationRateChanged)
     Q_PROPERTY(float rotationRateRandom READ rotationRateRandom WRITE setRotationRateRandom NOTIFY rotationRateRandomChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *spriteTexture READ spriteTexture WRITE setSpriteTexture NOTIFY spriteTextureChanged)
+    Q_PROPERTY(AlignMode alignMode READ alignMode WRITE setAlignMode NOTIFY alignModeChanged)
 
 public:
+    enum class AlignMode {
+        FaceCamera,
+        Velocity
+    };
+    Q_ENUM(AlignMode);
+
     explicit Particles(Qt3DCore::QEntity *parent = nullptr);
 
     int particleCount() const;
@@ -93,6 +100,7 @@ public:
     float rotationRate() const;
     float rotationRateRandom() const;
     Qt3DRender::QAbstractTexture *spriteTexture() const;
+    AlignMode alignMode() const;
 
 public Q_SLOTS:
     void setParticleCount(int particleCount);
@@ -114,6 +122,7 @@ public Q_SLOTS:
     void setRotationRate(float rotationRate);
     void setRotationRateRandom(float rotationRateRandom);
     void setSpriteTexture(Qt3DRender::QAbstractTexture *spriteTexture);
+    void setAlignMode(AlignMode alignMode);
 
 Q_SIGNALS:
     void particleCountChanged(int particleCount);
@@ -135,6 +144,7 @@ Q_SIGNALS:
     void rotationRateChanged(float rotationRate);
     void rotationRateRandomChanged(float rotationRateRandom);
     void spriteTextureChanged(const Qt3DRender::QAbstractTexture *spriteTexture);
+    void alignModeChanged(AlignMode alignMode);
 
 private:
     void updateWorkGroupCount();

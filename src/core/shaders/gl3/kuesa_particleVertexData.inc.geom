@@ -1,7 +1,5 @@
-#version 430 core
-
 /*
-    particle.vert
+    kuesa_particleVertexData.inc.geom
 
     This file is part of Kuesa.
 
@@ -28,47 +26,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#pragma include particle.inc
+layout(points) in;
 
-layout (std430, binding=0) buffer particleBuffer
-{
-    Particle particles[];
-};
-
-layout (location=0) in vec2 vertexPosition;
-
-uniform vec2 initialSize;
-uniform vec2 finalSize;
-uniform vec4 initialColor;
-uniform vec4 finalColor;
-
-out ParticleVertex
-{
+in ParticleVertex {
     bool alive;
     vec4 position;
     vec4 velocity;
     vec2 size;
     vec4 color;
     float rotation;
-} vs_out;
-
-void main()
-{
-    int particleIndex = int(vertexPosition.y);
-    if (particleIndex < 0)
-    {
-        vs_out.alive = false;
-        return;
-    }
-
-    Particle p = particles[particleIndex];
-
-    vs_out.alive = true;
-    vs_out.position = p.position;
-    vs_out.velocity = p.velocity;
-    vs_out.rotation = p.rotation;
-
-    float normalizedAge = max(1.0 - (p.age / p.lifespan), 0.0);
-    vs_out.size = mix(initialSize, finalSize, normalizedAge);
-    vs_out.color = mix(initialColor, finalColor, normalizedAge);
-}
+} gs_in[];

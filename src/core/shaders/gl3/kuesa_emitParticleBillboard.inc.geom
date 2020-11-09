@@ -1,7 +1,5 @@
-#version 430 core
-
 /*
-    particle.geom
+    kuesa_emitParticleBillboard.inc.geom
 
     This file is part of Kuesa.
 
@@ -28,56 +26,38 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-layout(points) in;
 layout(triangle_strip, max_vertices=4) out;
-
-uniform vec3 eyePosition;
-
-uniform mat4 viewMatrix;
-uniform mat4 projectionMatrix;
-
-in WorldVertex {
-    bool alive;
-    vec4 position;
-    vec4 velocity;
-    vec2 size;
-    vec4 color;
-    float rotation;
-} gs_in[];
 
 out SpriteVertex {
     vec2 texCoord;
     vec4 color;
 } gs_out;
 
-void emitVertex(vec3 position, vec2 offs, vec2 uv, vec4 color)
+uniform mat4 projectionMatrix;
+
+bool emitBillboard(bool alive, vec3 position, mat2 rotation, vec2 size, vec4 color)
 {
-    position.xy += offs;
-    gl_Position = projectionMatrix * vec4(position, 1.0);
-    gs_out.texCoord = uv;
-    gs_out.color = color;
-    EmitVertex();
-}
+    if (!alive) {
+        return true;
+    }
 
-void main(void)
-{
-    if (gs_in[0].alive == false)
-        return;
+    const vec2 xyOffsets[4] = vec2[](
+        vec2(-1, -1),
+        vec2(1, -1),
+        vec2(-1, 1),
+        vec2(1, 1)
+    );
 
-    vec3 worldPosition = gs_in[0].position.xyz;
-    vec3 viewSpacePosition = (viewMatrix * vec4(worldPosition, 1.0)).xyz;
+    for (int i = 0; i < 4; i++) {
+        vec2 xyOffset = 0.5 * size * xyOffsets[i];
+        vec2 texCoord = vec2(0.5) + 0.5 * xyOffsets[i];
+        vec3 position = vec3(position.xy + rotation * xyOffset, position.z);
 
-    vec4 color = gs_in[0].color;
+        gl_Position = projectionMatrix * vec4(position, 1.0);
+        gs_out.texCoord = texCoord;
+        gs_out.color = color;
+        EmitVertex();
+    }
 
-    float w = gs_in[0].size.x;
-    float h = gs_in[0].size.y;
-
-    float c = cos(gs_in[0].rotation);
-    float s = sin(gs_in[0].rotation);
-    mat2 r = mat2(c, s, -s, c);
-
-    emitVertex(viewSpacePosition, r * vec2(-0.5 * w, -0.5 * h), vec2(0, 0), color);
-    emitVertex(viewSpacePosition, r * vec2(0.5 * w, -0.5 * h), vec2(1, 0), color);
-    emitVertex(viewSpacePosition, r * vec2(-0.5 * w, 0.5 * h), vec2(0, 1), color);
-    emitVertex(viewSpacePosition, r * vec2(0.5 * w, 0.5 * h), vec2(1, 1), color);
+    return true;
 }
