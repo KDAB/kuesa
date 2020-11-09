@@ -1,32 +1,3 @@
-[
-    {
-        "bufferView": 0,
-        "byteOffset": 0,
-        "componentType": 5123,
-        "count": 12636,
-        "max": [
-            4212
-        ],
-        "min": [
-            0
-        ],
-        "type": "SCALAR"
-    },
-    {
-    "bufferView": 1,
-    "byteOffset": 0,
-    "componentType": 5126,
-    "count": 2399,
-    "max": [
-        0.961799,
-        1.6397,
-        0.539252
-    ],
-    "min": [
-        -0.692985,
-        0.0992937,
-        -0.613282
-    ],
-    "type": "VEC3"
-    }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:182ac75518e6f158d3ddcae129e665c9d0609edca5e50c4abeec995a72471e7c
+size 500

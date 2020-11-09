@@ -1,12 +1,3 @@
-[
-    {
-        "name": "Camera",
-        "perspective": {
-            "aspectRatio": 2.,
-            "yfov": 1.,
-            "zfar": 100.,
-            "znear": 1.
-        },
-        "type": "perspective"
-    }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:0d2a79cdb5adccf634339ace8fe0c9d87f295f1a3271e2b33a1f6cb2b32aaa22
+size 213

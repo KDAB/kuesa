@@ -1,20 +1,3 @@
-{
-    "asset" : {
-        "generator" : "Khronos Blender glTF 2.0 exporter",
-        "version" : "2.0"
-    },
-    "nodes" : [
-        {
-            "name" : "entity"
-        }
-    ],
-    "scene" : 0,
-    "scenes" : [
-        {
-            "name" : "Scene",
-            "nodes" : [
-                0
-            ]
-        }
-    ]
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:23bf1732bee4bf9796b8f792bc13cabbde9d43cebac2dc0539e9baeda0da5859
+size 331

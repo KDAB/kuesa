@@ -1,24 +1,3 @@
-{
-"buffers": [
-    {
-        "byteLength": 5,
-        "name": "buffer_data",
-        "uri": "data:application/octet-stream;base64,S3Vlc2E="
-    },
-    {
-        "byteLength": 5,
-        "name": "buffer_file",
-        "uri": "uri_qrc_test.bin"
-    }
-],
-"images": [
-    {
-        "name": "image_data",
-        "uri": "data:application/octet-stream;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNcrd3/HwAFVAJmXFyG2AAAAABJRU5ErkJggg=="
-    },
-    {
-        "name": "image_file",
-        "uri": "GeneratedAssets/Texture_Sampler/Textures/BaseColor_Plane.png"
-    }
-]
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:4053e1ffdff8ad18ed0268fb1d93b5ee9ad58512426ec41f22437cfea1d5c735
+size 582

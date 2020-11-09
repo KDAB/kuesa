@@ -1,36 +1,3 @@
-{
-    "asset": {
-        "copyright": "",
-        "generator": "blendergltf v1.2.0",
-        "version": "2.0"
-    },
-    "buffers": [
-    ],
-    "cameras": [
-    ],
-    "materials": [
-    ],
-    "meshes": [
-        {
-            "name": "Cube"
-        }
-    ],
-    "nodes": [
-    ],
-    "scene": 0,
-    "scenes": [
-        {
-            "extras": {
-                "active_camera": 0,
-                "background_color": [
-                    0.05087608844041824,
-                    0.05087608844041824,
-                    0.05087608844041824
-                ],
-                "frames_per_second": 24
-            },
-            "name": "Scene",
-            "nodes": [ ]
-        }
-    ]
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:734a18ae08e9a4b618660ebbf8d1d7915cea81986d4456cfb01db2458a3664d0
+size 691
