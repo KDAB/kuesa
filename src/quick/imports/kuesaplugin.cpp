@@ -90,7 +90,9 @@
 #include <Kuesa/KuesaNode>
 #include <Kuesa/View>
 #include <Kuesa/ReflectionPlane>
+#ifdef KUESA_KTX
 #include <Kuesa/KTXTexture>
+#endif
 
 #include <QtQml/qqml.h>
 
@@ -207,7 +209,9 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterType<Kuesa::IroDiffuseAlphaProperties>("Kuesa.Iro", 1, 0, "IroDiffuseAlphaProperties");
     qmlRegisterType<Kuesa::IroDiffuseAlphaEffect>("Kuesa.Iro", 1, 0, "IroDiffuseAlphaEffect");
 
+#ifdef KUESA_KTX
     qmlRegisterType<Kuesa::KTXTexture>("Kuesa", 1, 0, "KTXTexture");
+#endif
 
     // Post FX
     qmlRegisterUncreatableType<Kuesa::AbstractPostProcessingEffect>("Kuesa.Effects", 1, 0, "AbstractPostProcessingEffect", QStringLiteral("AbstractPostProcessingEffect is abstract"));
