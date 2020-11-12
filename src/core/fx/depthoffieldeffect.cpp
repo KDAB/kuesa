@@ -49,6 +49,7 @@
 #include <Qt3DRender/qrenderpassfilter.h>
 #include <Qt3DRender/qrendertarget.h>
 #include <QTimer>
+#include <QVector2D>
 
 QT_BEGIN_NAMESPACE
 /**
@@ -455,7 +456,7 @@ float DepthOfFieldEffect::focusDistance() const
 void DepthOfFieldEffect::updateTextureSizeParam(const QSize &sceneSize,
                                                 const QRectF &normalizedVP)
 {
-    m_textureSizeParam->setValue(QSize(sceneSize.width() * normalizedVP.width(),
+    m_textureSizeParam->setValue(QVector2D(sceneSize.width() * normalizedVP.width(),
                                        sceneSize.height() * normalizedVP.height()));
 }
 
