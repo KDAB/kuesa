@@ -31,6 +31,7 @@
 #include <Qt3DRender/private/qabstracttexture_p.h>
 #include <Qt3DRender/QTextureDataUpdate>
 #include <Qt3DRender/private/qtextureimagedata_p.h>
+#include <Kuesa/private/logging_p.h>
 #include <QSharedPointer>
 #include <QFile>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -47,8 +48,26 @@ namespace QUrlHelperNS = Qt3DRender;
 
 #include <vk_format.h>
 #include <ktx.h>
+#include <QMetaObject>
 
 QT_BEGIN_NAMESPACE
+
+namespace
+{
+
+bool isInternalFormatValid(const int internalFormat)
+{
+    const static int enumIdx = QOpenGLTexture::staticMetaObject.indexOfEnumerator("TextureFormat");
+    const static auto &enumerator = QOpenGLTexture::staticMetaObject.enumerator(enumIdx);
+    for (int i = 0, m = enumerator.keyCount(); i < m; ++i) {
+        const auto enumValue = enumerator.value(i);
+        if (enumValue == internalFormat)
+            return true;
+    }
+    return false;
+}
+
+}
 
 namespace Kuesa
 {
@@ -174,9 +193,9 @@ void KTXTexture::generateData()
         }
     }
     static_cast<Qt3DRender::QAbstractTexturePrivate*>(Qt3DRender::QAbstractTexturePrivate::get(this))->m_target = target;
-    for (int level = 0; level < m_ktxTexture->numLevels; ++level) {
-        for (int layer = 0; layer < m_ktxTexture->numLayers; ++layer) {
-            for (int face = 0; face < m_ktxTexture->numFaces; ++face) {
+    for (size_t level = 0; level < m_ktxTexture->numLevels; ++level) {
+        for (size_t layer = 0; layer < m_ktxTexture->numLayers; ++layer) {
+            for (size_t face = 0; face < m_ktxTexture->numFaces; ++face) {
                 Qt3DRender::QTextureDataUpdate updateData;
                 updateData.setFace(QAbstractTexture::CubeMapFace(QAbstractTexture::CubeMapFace::CubeMapPositiveX + face));
                 updateData.setLayer(layer);
@@ -193,15 +212,35 @@ void KTXTexture::generateData()
 
                 if (m_ktxTexture->classId == ktxTexture2_c) {
                     ktxTexture2 *m_ktxTexture2 = (ktxTexture2*)m_ktxTexture;
+                    if (m_ktxTexture2->vkFormat == VkFormat::VK_FORMAT_UNDEFINED) {
+                        qCWarning(kuesa) << "KTX v2 VK_FORMAT_UNDEFINED is not supported by libktx yet";
+                        setStatus(KTXTexture::Status::Error);
+                        return;
+                    }
+
                     const auto internalFormat = glGetInternalFormatFromVkFormat((VkFormat)m_ktxTexture2->vkFormat);
                     const auto type = glGetTypeFromInternalFormat(internalFormat);
                     const auto format = glGetFormatFromInternalFormat(internalFormat);
+
+                    if (!::isInternalFormatValid(internalFormat)) {
+                        const QString source = QUrlHelperNS::QUrlHelper::urlToLocalFileOrQrc(m_source);
+                        qCWarning(kuesa) << "Internal format used by KTX texture" << source << "is not supported";
+                        setStatus(KTXTexture::Status::Error);
+                        return;
+                    }
 
                     imageData->setPixelFormat(static_cast<QOpenGLTexture::PixelFormat>(format));
                     imageData->setPixelType(static_cast<QOpenGLTexture::PixelType>(type));
                     imageData->setFormat(static_cast<QOpenGLTexture::TextureFormat>(internalFormat));
                 } else {
                     ktxTexture1 *m_ktxTexture1 = (ktxTexture1*)m_ktxTexture;
+                    if (!::isInternalFormatValid(m_ktxTexture1->glInternalformat)) {
+                        const QString source = QUrlHelperNS::QUrlHelper::urlToLocalFileOrQrc(m_source);
+                        qCWarning(kuesa) << "Internal format used by KTX texture" << source << "is not supported";
+                        setStatus(KTXTexture::Status::Error);
+                        return;
+                    }
+
                     imageData->setPixelFormat(static_cast<QOpenGLTexture::PixelFormat>(m_ktxTexture1->glBaseInternalformat));
                     imageData->setPixelType(static_cast<QOpenGLTexture::PixelType>(m_ktxTexture1->glType));
                     imageData->setFormat(static_cast<QOpenGLTexture::TextureFormat>(m_ktxTexture1->glInternalformat));
