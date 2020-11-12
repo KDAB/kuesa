@@ -97,8 +97,10 @@ BufferView &GLTF2Context::bufferView(qint32 id)
 Qt3DGeometry::QBuffer *GLTF2Context::getOrAllocateBuffer(BufferView &view)
 {
     Qt3DGeometry::QBuffer *buffer = m_sharedBufferViews.getResourceFromCache(view);
-    if (buffer)
+    if (buffer) {
+        qCDebug(Kuesa::kuesa) << "Reusing cached buffer";
         return buffer;
+    }
     buffer = new Qt3DGeometry::QBuffer();
     buffer->setData(view.bufferData);
     m_sharedBufferViews.addResourceToCache(view, buffer);
@@ -318,6 +320,7 @@ Qt3DRender::QGeometryRenderer *GLTF2Context::getOrAllocateGeometryRenderer(Primi
     // Use Resource from Cache
     if (renderer) {
         primitive.primitiveRenderer = renderer;
+        qCDebug(Kuesa::kuesa) << "Reusing cached geometry renderer";
         return primitive.primitiveRenderer;
     }
 
@@ -684,6 +687,7 @@ Qt3DRender::QAbstractTexture *GLTF2Context::getOrAllocateTexture(Texture &textur
 
     // Use cached resource if it existed
     if (texture2d) {
+        qCDebug(Kuesa::kuesa) << "Reusing cached texture";
         texture.texture = texture2d.release();
         return texture.texture;
     }
@@ -697,6 +701,9 @@ Qt3DRender::QAbstractTexture *GLTF2Context::getOrAllocateTexture(Texture &textur
     } else {
         texture2d.reset(new Qt3DRender::QTexture2D);
         auto *textureImage = m_sharedImages.getResourceFromCache(image);
+
+        if (textureImage)
+            qCDebug(Kuesa::kuesa) << "Reusing cached texture image";
 
         if (textureImage == nullptr) {
             if (image.data.isEmpty()) {
