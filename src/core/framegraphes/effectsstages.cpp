@@ -278,6 +278,7 @@ void EffectsStages::reconfigure()
         fx->setInputTexture(FrameGraphUtils::findRenderTargetTexture(previousRenderTarget, Qt3DRender::QRenderTargetOutput::Color0));
         fx->setDepthTexture(m_depthTexture);
         fx->setCamera(m_camera);
+        fx->setWindowSize(m_windowSize);
 
         // Parent last effect to render to screen by default
         Qt3DRender::QFrameGraphNode *fxFGParent = m_viewport;

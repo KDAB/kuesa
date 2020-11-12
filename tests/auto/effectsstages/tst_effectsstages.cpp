@@ -81,6 +81,12 @@ public:
     void setWindowSize(const QSize &size) override
     {
         emit sceneSizeChanged(size);
+        m_windowSize = size;
+    }
+
+    QSize windowSize() const
+    {
+        return m_windowSize;
     }
 
 Q_SIGNALS:
@@ -89,6 +95,7 @@ Q_SIGNALS:
 private:
     FrameGraphNodePtr m_rootNode;
     Qt3DRender::QAbstractTexture *m_inputTexture;
+    QSize m_windowSize;
 };
 
 } // namespace
@@ -357,6 +364,15 @@ private Q_SLOTS:
             QCOMPARE(rtS->children().first(), fx1.frameGraphSubTree().data());
             QCOMPARE(rtS->target(), &rt1);
             QCOMPARE(vp->children().last(), fx2.frameGraphSubTree().data());
+        }
+
+        // WHEN
+        e.setWindowSize(QSize(1024, 1024));
+
+        // THEN
+        {
+            QCOMPARE(fx1.windowSize(), QSize(1024, 1024));
+            QCOMPARE(fx2.windowSize(), QSize(1024, 1024));
         }
     }
 
