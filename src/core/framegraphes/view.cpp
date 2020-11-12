@@ -498,18 +498,6 @@ void View::rebuildFGTree()
     reconfigureFrameGraph();
 }
 
-/*!
- * \internal
- *
- * Returns the root pointer of the FrameGraph subtree registered by the \a
- * effect. nullptr will be returned if no subtree has been registered or if the
- * effect is invalid.
- */
-AbstractPostProcessingEffect::FrameGraphNodePtr View::frameGraphSubtreeForPostProcessingEffect(AbstractPostProcessingEffect *effect) const
-{
-    return m_effectFGSubtrees.value(effect, nullptr);
-}
-
 void View::reconfigureStages()
 {
     const bool useSkinning = bool(m_features & Skinning);

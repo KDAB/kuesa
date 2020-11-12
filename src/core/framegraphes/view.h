@@ -142,7 +142,6 @@ private:
 
     std::vector<Qt3DRender::QLayer *> m_layers;
     std::vector<AbstractPostProcessingEffect *> m_fxs;
-    QHash<AbstractPostProcessingEffect *, AbstractPostProcessingEffect::FrameGraphNodePtr> m_effectFGSubtrees;
 
     std::vector<ReflectionPlane *> m_reflectionPlanes;
 

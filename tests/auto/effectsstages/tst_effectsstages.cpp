@@ -359,6 +359,29 @@ private Q_SLOTS:
             QCOMPARE(vp->children().last(), fx2.frameGraphSubTree().data());
         }
     }
+
+    void checkUnparentsFGSubtreeOnDestruction()
+    {
+        // GIVEN
+        tst_FX fx;
+        Qt3DRender::QFrameGraphNode fgRoot;
+        Qt3DRender::QRenderTarget *rtA = new Qt3DRender::QRenderTarget(&fgRoot);
+        Qt3DRender::QRenderTarget *rtB = new Qt3DRender::QRenderTarget(&fgRoot);
+
+        {
+            Kuesa::EffectsStages e;
+
+            // WHEN
+            e.addEffect(&fx);
+            e.setRenderTargets(rtA, rtB);
+
+            // THEN
+            QVERIFY(fx.frameGraphSubTree()->parent() != nullptr);
+        }
+
+        // THEN
+        QVERIFY(fx.frameGraphSubTree()->parent() == nullptr);
+    }
 };
 
 QTEST_MAIN(tst_EffectsStages)

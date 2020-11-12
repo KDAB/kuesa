@@ -51,6 +51,13 @@ EffectsStages::EffectsStages(Qt3DRender::QFrameGraphNode *parent)
     m_viewport->setObjectName(QLatin1String("KuesaFXViewport"));
 }
 
+EffectsStages::~EffectsStages()
+{
+    // unparent the effect subtrees or they'll be deleted twice
+    for (auto &framegraph : qAsConst(m_effectFGSubtrees))
+        framegraph->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+}
+
 void EffectsStages::setCamera(Qt3DCore::QEntity *camera)
 {
     if (camera == m_camera)

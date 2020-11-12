@@ -62,6 +62,7 @@ class KUESA_PRIVATE_EXPORT EffectsStages : public AbstractRenderStage
     Q_OBJECT
 public:
     explicit EffectsStages(Qt3DRender::QFrameGraphNode *parent = nullptr);
+    ~EffectsStages();
 
     void setCamera(Qt3DCore::QEntity *camera);
     Qt3DCore::QEntity *camera() const;
