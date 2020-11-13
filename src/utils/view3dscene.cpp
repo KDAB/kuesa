@@ -60,6 +60,7 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
 
     auto renderSettings = new QRenderSettings;
     renderSettings->setActiveFrameGraph(m_frameGraph);
+    renderSettings->setRenderPolicy(QRenderSettings::OnDemand);
     addComponent(renderSettings);
     addComponent(new Qt3DInput::QInputSettings);
 
@@ -72,7 +73,12 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     connect(m_importer, &GLTF2Importer::asynchronousChanged, this, &View3DScene::asynchronousChanged);
     connect(m_frameGraph, &ForwardRenderer::showDebugOverlayChanged, this, &View3DScene::showDebugOverlayChanged);
     connect(m_frameGraph, &ForwardRenderer::cameraChanged, this, &View3DScene::updateTrackers);
-    connect(this, &SceneEntity::loadingDone, this, &View3DScene::onSceneLoaded);
+
+    QObject::connect(m_importer, &GLTF2Importer::statusChanged,
+                     this, [this] () {
+        if (m_importer->status() == GLTF2Importer::Ready)
+            onSceneLoaded();
+    });
 }
 
 View3DScene::~View3DScene() = default;
@@ -84,12 +90,25 @@ QUrl View3DScene::source() const
 
 void View3DScene::setSource(const QUrl &source)
 {
-    m_importer->setSource(source);
-    m_ready = false;
-    m_frameCount = 0;
-    emit readyChanged(false);
-    emit loadedChanged(false);
-    m_frameAction->setEnabled(true);
+    if (source != m_importer->source()) {
+        // Clear assets from the collections
+        // This avoids name collisions if new scene defines an element with the
+        // same name as one from the previous scene.
+        clearCollections();
+
+        m_importer->setSource(source);
+        m_ready = false;
+        m_frameCount = 0;
+        emit readyChanged(false);
+        emit loadedChanged(false);
+        m_frameAction->setEnabled(true);
+    } else {
+        // If we switch activeScene but activeScene references the same
+        // source, there's no point in reloading it
+        emit readyChanged(m_ready);
+        if (m_importer->status() == GLTF2Importer::Ready)
+            onSceneLoaded();
+    }
 }
 
 QString View3DScene::cameraName() const
@@ -154,6 +173,24 @@ void View3DScene::onSceneLoaded()
             m_frameGraph->setCamera(camera);
     }
 
+    if (m_activeScene) {
+        // Add resources from the ActiveScene
+        QObject::connect(m_activeScene, &SceneConfiguration::animationPlayerAdded, this, &View3DScene::addAnimationPlayer);
+        QObject::connect(m_activeScene, &SceneConfiguration::animationPlayerRemoved, this, &View3DScene::removeAnimationPlayer);
+        QObject::connect(m_activeScene, &SceneConfiguration::transformTrackerAdded, this, &View3DScene::addTransformTracker);
+        QObject::connect(m_activeScene, &SceneConfiguration::transformTrackerRemoved, this, &View3DScene::removeTransformTracker);
+
+        const auto &newAnimations = m_activeScene->animations();
+        for (auto a : newAnimations)
+            addAnimationPlayer(a);
+
+        const auto newTrackers = m_activeScene->transformTrackers();
+        for (auto t : newTrackers)
+            addTransformTracker(t);
+
+        emit m_activeScene->loadingDone();
+    }
+
     emit loadedChanged(true);
 }
 
@@ -207,6 +244,8 @@ void View3DScene::addTransformTracker(TransformTracker *tracker)
         d->registerDestructionHelper(tracker, &View3DScene::removeTransformTracker, tracker);
         if (tracker->parentNode() == nullptr)
             tracker->setParent(this);
+        if (tracker->sceneEntity() == nullptr)
+            tracker->setSceneEntity(this);
         m_trackers.push_back(tracker);
         updateTrackers();
     }
@@ -227,15 +266,22 @@ void View3DScene::clearTransformTrackers()
 
 void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
 {
-    if (nullptr == m_clock)
+    if (m_clock == nullptr)
         m_clock = new Qt3DAnimation::QClock(this);
     if (std::find(std::begin(m_animations), std::end(m_animations), animation) == std::end(m_animations)) {
         Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
         d->registerDestructionHelper(animation, &View3DScene::removeAnimationPlayer, animation);
+
         if (animation->parentNode() == nullptr)
             animation->setParent(this);
+        if (animation->sceneEntity() == nullptr)
+            animation->setSceneEntity(this);
+
         m_animations.push_back(animation);
-        animation->setClock(m_clock);
+
+        //if Animation has no Clock, set one
+        if (animation->clock() == nullptr)
+            animation->setClock(m_clock);
     }
 }
 
@@ -243,10 +289,15 @@ void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
 {
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
     d->unregisterDestructionHelper(animation);
-    m_animations.erase(std::remove_if(std::begin(m_animations), std::end(m_animations), [animation](AnimationPlayer *a) {
-                           return a == animation;
-                       }),
-                       std::end(m_animations));
+    auto it = std::remove_if(std::begin(m_animations), std::end(m_animations), [animation](AnimationPlayer *a) {
+            return a == animation;
+    });
+    if (it != m_animations.end()) {
+        if (animation->clock() == m_clock)
+            animation->setClock(nullptr);
+
+        m_animations.erase(it, std::end(m_animations));
+    }
 }
 
 void View3DScene::clearAnimationPlayers()
@@ -262,27 +313,62 @@ SceneConfiguration *View3DScene::activeScene() const
 void View3DScene::setActiveScene(SceneConfiguration *scene)
 {
     if (m_activeScene != scene) {
+
+        if (m_activeScene) {
+            // Unregister previous resources
+            const auto &oldAnimations = m_activeScene->animations();
+            const auto &oldTrackers = m_activeScene->transformTrackers();
+
+            for (auto a : oldAnimations)
+                removeAnimationPlayer(a);
+            for (auto a : oldTrackers)
+                removeTransformTracker(a);
+
+            Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+            d->unregisterDestructionHelper(m_activeScene);
+
+            QObject::disconnect(m_activeScene);
+
+            // If we took ownership of the SceneConfiguration -> restore parent
+            if (m_activeSceneOwner) {
+                // Make sure we unset the QNode * parent if it was overridden
+                QNode *originalNodeParent = qobject_cast<QNode *>(m_activeSceneOwner.data());
+                // In case parent is a QNode *
+                if (originalNodeParent) {
+                    m_activeScene->setParent(originalNodeParent);
+                } else {// Parent was not a QNode
+                    // Reset QNode parent
+                    m_activeScene->setParent(Q_NODE_NULLPTR);
+                    static_cast<QObject *>(m_activeScene)->setParent(m_activeSceneOwner.data());
+                }
+            }
+        }
+
         m_activeScene = scene;
+        m_activeSceneOwner.clear();
         emit activeSceneChanged(m_activeScene);
 
         if (m_activeScene) {
+            // Ensure we parent the scene to a valid QNode so that resources
+            // are properly added to the scene
+            m_activeSceneOwner = scene->parent();
+
+            if (!m_activeScene->parentNode())
+                m_activeScene->setParent(this);
+
+            if (!m_activeScene->sceneEntity())
+                m_activeScene->setSceneEntity(this);
+
+            Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+            d->registerDestructionHelper(m_activeScene, &View3DScene::setActiveScene, m_activeScene);
+
             setSource(m_activeScene->source());
             setCameraName(m_activeScene->cameraName());
 
-            clearAnimationPlayers();
-            const auto &newAnimations = m_activeScene->animations();
-            for (auto a : newAnimations) {
-                a->setParent(this);
-                addAnimationPlayer(a);
-            }
-
-            clearTransformTrackers();
-            const auto newTrackers = m_activeScene->transformTrackers();
-            for (auto t : newTrackers) {
-                t->setParent(this);
-                addTransformTracker(t);
-            }
-            updateTrackers();
+            // ActiveScene resources (animations, transformTrackers ....) will be loaded
+            // Once the scene will have been loaded
+            // Otherwise we could end up having an AnimationPlayer that references a yet to be loaded
+            // AnimationClip, which Qt3D might complain about
         }
     }
 }

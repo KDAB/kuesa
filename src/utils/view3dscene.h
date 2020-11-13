@@ -30,6 +30,7 @@
 #define KUESA_KUESA_UTILS_VIEW3DSCENE_H
 
 #include <QObject>
+#include <QPointer>
 #include <KuesaUtils/kuesa_utils_global.h>
 #include <KuesaUtils/sceneconfiguration.h>
 
@@ -127,6 +128,7 @@ private:
     Qt3DAnimation::QClock *m_clock;
     QSize m_screenSize;
     SceneConfiguration *m_activeScene;
+    QPointer<QObject> m_activeSceneOwner;
 
     bool m_ready;
     int m_frameCount;

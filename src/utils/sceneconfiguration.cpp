@@ -36,7 +36,7 @@ using namespace Kuesa;
 using namespace KuesaUtils;
 
 SceneConfiguration::SceneConfiguration(Qt3DCore::QNode *parent)
-    : Qt3DCore::QNode(parent)
+    : KuesaNode(parent)
 {
 }
 
@@ -74,6 +74,7 @@ void SceneConfiguration::addTransformTracker(TransformTracker *tracker)
         if (tracker->parentNode() == nullptr)
             tracker->setParent(this);
         m_trackers.push_back(tracker);
+        emit transformTrackerAdded(tracker);
     }
 }
 
@@ -83,6 +84,7 @@ void SceneConfiguration::removeTransformTracker(TransformTracker *tracker)
     d->unregisterDestructionHelper(tracker);
     m_trackers.erase(std::remove(std::begin(m_trackers), std::end(m_trackers), tracker),
                      std::end(m_trackers));
+    emit transformTrackerRemoved(tracker);
 }
 
 void SceneConfiguration::clearTransformTrackers()
@@ -98,6 +100,7 @@ void SceneConfiguration::addAnimationPlayer(AnimationPlayer *animation)
         if (animation->parentNode() == nullptr)
             animation->setParent(this);
         m_animations.push_back(animation);
+        emit animationPlayerAdded(animation);
     }
 }
 
@@ -109,6 +112,7 @@ void SceneConfiguration::removeAnimationPlayer(AnimationPlayer *animation)
                            return a == animation;
                        }),
                        std::end(m_animations));
+    emit animationPlayerRemoved(animation);
 }
 
 void SceneConfiguration::clearAnimationPlayers()

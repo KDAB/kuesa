@@ -26,11 +26,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.12
-import QtQuick.Scene3D 2.12
-import Qt3D.Core 2.12
-import Qt3D.Render 2.12
-import Qt3D.Extras 2.12
+import QtQuick 2.15
+import QtQuick.Scene3D 2.15
+import Qt3D.Core 2.15
+import Qt3D.Render 2.15
+import Qt3D.Extras 2.15
 import Kuesa 1.3 as Kuesa
 import Kuesa.Utils 1.3 as KuesaUtils
 

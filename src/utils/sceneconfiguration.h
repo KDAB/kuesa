@@ -36,12 +36,13 @@
 
 #include <Kuesa/animationplayer.h>
 #include <Kuesa/transformtracker.h>
+#include <Kuesa/kuesanode.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace KuesaUtils {
 
-class KUESAUTILS_SHARED_EXPORT SceneConfiguration : public Qt3DCore::QNode
+class KUESAUTILS_SHARED_EXPORT SceneConfiguration : public Kuesa::KuesaNode
 {
     Q_OBJECT
     Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
@@ -69,6 +70,14 @@ public Q_SLOTS:
 Q_SIGNALS:
     void sourceChanged(const QUrl &source);
     void cameraNameChanged(const QString &cameraName);
+
+    void animationPlayerAdded(Kuesa::AnimationPlayer *player);
+    void animationPlayerRemoved(Kuesa::AnimationPlayer *player);
+
+    void transformTrackerAdded(Kuesa::TransformTracker *tracker);
+    void transformTrackerRemoved(Kuesa::TransformTracker *tracker);
+
+    void loadingDone();
 
 private:
     QUrl m_source;
