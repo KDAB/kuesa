@@ -45,7 +45,7 @@ Item {
         focus: true
         multisample: true
         showDebugOverlay: true
-
+        asynchronous: true
         activeScene: scene1
 
         Kuesa.SceneConfiguration {
