@@ -68,6 +68,7 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     m_frameAction->setEnabled(false);
 
     connect(m_importer, &GLTF2Importer::sourceChanged, this, &View3DScene::sourceChanged);
+    connect(m_importer, &GLTF2Importer::asynchronousChanged, this, &View3DScene::asynchronousChanged);
     connect(m_frameGraph, &ForwardRenderer::showDebugOverlayChanged, this, &View3DScene::showDebugOverlayChanged);
     connect(m_frameGraph, &ForwardRenderer::cameraChanged, this, &View3DScene::updateTrackers);
     connect(this, &SceneEntity::loadingDone, this, &View3DScene::onSceneLoaded);
@@ -113,6 +114,11 @@ QSize View3DScene::screenSize() const
     return m_screenSize;
 }
 
+bool View3DScene::asynchronous() const
+{
+    return m_importer->asynchronous();
+}
+
 void View3DScene::setScreenSize(const QSize &screenSize)
 {
     if (m_screenSize != screenSize) {
@@ -120,6 +126,11 @@ void View3DScene::setScreenSize(const QSize &screenSize)
         emit screenSizeChanged(m_screenSize);
         updateTrackers();
     }
+}
+
+void View3DScene::setAsynchronous(bool asynchronous)
+{
+    m_importer->setAsynchronous(asynchronous);
 }
 
 void View3DScene::setShowDebugOverlay(bool showDebugOverlay)

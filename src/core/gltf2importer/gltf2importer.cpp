@@ -207,6 +207,13 @@ using namespace Kuesa;
  */
 
 /*!
+    \property Kuesa::GLTF2Importer::asynchronous
+
+    \brief if true, parsing is performed in a non blocking manner from a
+    secondary thread.
+ */
+
+/*!
     \qmlproperty url GLTF2Importer::source
     \brief the source of the glTF file
  */
@@ -228,6 +235,13 @@ using namespace Kuesa;
 
     \brief if true, assets with no names will be added to collections with
     default names (default is false)
+ */
+
+/*!
+    \qmlproperty bool GLTF2Importer::asynchronous
+
+    \brief if true, parsing is performed in a non blocking manner from a
+    secondary thread.
  */
 
 /*!
@@ -281,6 +295,7 @@ GLTF2Importer::GLTF2Importer(Qt3DCore::QNode *parent)
     , m_status(None)
     , m_assignNames(true)
     , m_activeSceneIndex(DefaultScene)
+    , m_asynchronous(false)
 {
 }
 
@@ -343,6 +358,11 @@ bool GLTF2Importer::assignNames() const
     return m_assignNames;
 }
 
+bool GLTF2Importer::asynchronous() const
+{
+    return m_asynchronous;
+}
+
 Kuesa::GLTF2Import::GLTF2Options *GLTF2Importer::options()
 {
     return m_context->options();
@@ -397,6 +417,14 @@ void GLTF2Importer::setActiveSceneIndex(int index)
     }
 }
 
+void GLTF2Importer::setAsynchronous(bool asynchronous)
+{
+    if (asynchronous == m_asynchronous)
+        return;
+    m_asynchronous = asynchronous;
+    emit asynchronousChanged(asynchronous);
+}
+
 /*!
  * Reloads the current glTF file.
  */
@@ -440,7 +468,7 @@ void GLTF2Importer::load()
                      this, &GLTF2Importer::handleGLTFParsingCompleted);
 
     m_parser->setContext(m_context);
-    m_parser->parse(path);
+    m_parser->parse(path, m_asynchronous);
 }
 
 

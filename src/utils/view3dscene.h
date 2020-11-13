@@ -58,6 +58,8 @@ class KUESAUTILS_SHARED_EXPORT View3DScene : public Kuesa::SceneEntity
     Q_PROPERTY(QSize screenSize READ screenSize WRITE setScreenSize NOTIFY screenSizeChanged)
     Q_PROPERTY(bool ready READ isReady NOTIFY readyChanged)
     Q_PROPERTY(bool loaded READ isLoaded NOTIFY loadedChanged)
+    Q_PROPERTY(bool asynchronous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
+
 public:
     explicit View3DScene(Qt3DCore::QNode *parent = nullptr);
     ~View3DScene();
@@ -68,6 +70,7 @@ public:
     QString cameraName() const;
     bool showDebugOverlay() const;
     QSize screenSize() const;
+    bool asynchronous() const;
 
     void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);
@@ -85,6 +88,7 @@ public Q_SLOTS:
     void setCameraName(const QString &cameraName);
     void setShowDebugOverlay(bool showDebugOverlay);
     void setScreenSize(const QSize &screenSize);
+    void setAsynchronous(bool asynchronous);
 
     void adoptNode(QObject *object);
 
@@ -102,6 +106,7 @@ Q_SIGNALS:
     void screenSizeChanged(const QSize &screenSize);
     void readyChanged(bool ready);
     void loadedChanged(bool loaded);
+    void asynchronousChanged(bool asynchronous);
 
 private:
     void onSceneLoaded();

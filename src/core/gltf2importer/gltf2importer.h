@@ -58,6 +58,7 @@ class KUESASHARED_EXPORT GLTF2Importer : public KuesaNode
     Q_PROPERTY(Kuesa::GLTF2Import::GLTF2Options *options READ options CONSTANT)
     Q_PROPERTY(int activeSceneIndex READ activeSceneIndex WRITE setActiveSceneIndex NOTIFY activeSceneIndexChanged)
     Q_PROPERTY(QStringList availableScenes READ availableScenes NOTIFY availableScenesChanged)
+    Q_PROPERTY(bool asynchronous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
 public:
     enum Status {
         None,
@@ -79,6 +80,7 @@ public:
     QUrl source() const;
     GLTF2Importer::Status status() const;
     bool assignNames() const;
+    bool asynchronous() const;
     Kuesa::GLTF2Import::GLTF2Options *options();
     const Kuesa::GLTF2Import::GLTF2Options *options() const;
     int activeSceneIndex() const;
@@ -99,6 +101,7 @@ public Q_SLOTS:
     void setAssignNames(bool assignNames);
     void setOptions(const Kuesa::GLTF2Import::GLTF2Options &options);
     void setActiveSceneIndex(int index);
+    void setAsynchronous(bool asynchronous);
     void reload();
 
 Q_SIGNALS:
@@ -107,6 +110,7 @@ Q_SIGNALS:
     void assignNamesChanged(bool assignNames);
     void activeSceneIndexChanged(int activeSceneIndex);
     void availableScenesChanged(const QStringList &availableScenes);
+    void asynchronousChanged(bool asynchronous);
 
 private Q_SLOTS:
     void load();
@@ -130,6 +134,7 @@ private:
     Kuesa::GLTF2Import::GLTF2Options m_options;
     int m_activeSceneIndex;
     QStringList m_availableScenes;
+    bool m_asynchronous = false;
 
     Kuesa::GLTF2Import::GLTF2Parser *m_parser = nullptr;
 

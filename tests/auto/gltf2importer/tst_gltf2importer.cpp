@@ -53,6 +53,29 @@ private Q_SLOTS:
         QCOMPARE(importer.options()->generateTangents(), false);
         QCOMPARE(importer.options()->generateNormals(), false);
         QVERIFY(importer.availableScenes().empty());
+        QCOMPARE(importer.asynchronous(), false);
+    }
+
+    void checkAsynchronous()
+    {
+        // GIVEN
+        GLTF2Importer importer;
+        QSignalSpy asynchronousChangedSpy(&importer, &GLTF2Importer::asynchronousChanged);
+
+        // THEN
+        QVERIFY(asynchronousChangedSpy.isValid());
+
+        // WHEN
+        importer.setAsynchronous(true);
+
+        // THEN
+        QCOMPARE(asynchronousChangedSpy.count(), 1);
+
+        // WHEN
+        importer.setAsynchronous(true);
+
+        // THEN
+        QCOMPARE(asynchronousChangedSpy.count(), 1);
     }
 
     void checkStatus()

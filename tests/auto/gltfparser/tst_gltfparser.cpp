@@ -1218,41 +1218,46 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-        const bool parsingSuccessful = parser.parse(data, {});
+        const bool parsingSuccessful = parser.doParse(data, {});
 
         // THEN
         QCOMPARE(parsingSuccessful, success);
     }
 
-//    void checkThreadedParser()
-//    {
-//        constexpr int N = 64;
-//        struct GLTFParsingTester {
-//            SceneEntity scene;
-//            GLTF2Context ctx;
-//            ThreadedGLTF2Parser parser{ &ctx, &scene };
-//        };
+    void checkThreadedParser()
+    {
+        // GIVEN
+        constexpr int N = 64;
+        struct GLTFParsingTester {
+            SceneEntity scene;
+            GLTF2Context ctx;
+            GLTF2Parser parser;
+        };
 
-//        std::atomic_int amount_successful{};
-//        std::atomic_int amount_failed{};
-//        std::array<GLTFParsingTester, N> testers;
-//        for (auto &tester : testers) {
-//            connect(&tester.parser, &ThreadedGLTF2Parser::parsingFinished,
-//                    [&](Qt3DCore::QEntity *node) {
-//                        if (node) {
-//                            ++amount_successful;
-//                            node->setParent(&tester.scene);
-//                        } else {
-//                            ++amount_failed;
-//                        }
-//                    });
-//            tester.parser.parse(ASSETS "car/DodgeViper.gltf");
-//        }
-//        while (amount_successful < N && amount_failed == 0) {
-//            std::this_thread::sleep_for(std::chrono::milliseconds(500));
-//            qApp->processEvents();
-//        }
-//    }
+        // WHEN
+        std::atomic_int amount_successful{};
+        std::atomic_int amount_failed{};
+        std::array<GLTFParsingTester, N> testers;
+        for (auto &tester : testers) {
+            connect(&tester.parser, &GLTF2Parser::gltfFileParsingCompleted,
+                    [&](bool parsingSucceeded) {
+                        if (parsingSucceeded)
+                            ++amount_successful;
+                        else
+                            ++amount_failed;
+                    });
+            tester.parser.setContext(&tester.ctx);
+            tester.parser.parse(ASSETS "car/DodgeViper.gltf", true);
+        }
+
+        // THEN
+        while (amount_successful < N && amount_failed == 0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            qApp->processEvents();
+        }
+        QCOMPARE(int(amount_failed), 0);
+        QCOMPARE(int(amount_successful), 64);
+    }
 };
 
 QTEST_MAIN(tst_GLTFParser)

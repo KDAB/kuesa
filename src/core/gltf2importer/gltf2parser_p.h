@@ -43,6 +43,7 @@
 #include <QtCore/QByteArray>
 #include <Qt3DCore/QEntity>
 #include <QThread>
+#include <QPointer>
 #include "gltf2context_p.h"
 
 class tst_GLTFExporter;
@@ -104,6 +105,25 @@ private:
     QVector<Qt3DCore::QEntity *> m_rootNodes;
 };
 
+
+class KUESA_PRIVATE_EXPORT ParseWorker : public QObject
+{
+    Q_OBJECT
+public:
+    explicit ParseWorker(GLTF2Parser *parser, const std::function<bool (GLTF2Parser*)> &parseFunc);
+    ~ParseWorker();
+
+public Q_SLOTS:
+    bool work();
+
+Q_SIGNALS:
+    void workDone(bool result);
+
+private:
+    QPointer<GLTF2Parser> m_parser;
+    std::function<bool (GLTF2Parser*)> m_func;
+};
+
 using KeyParserFuncPair = QPair<QLatin1String, std::function<bool(const QJsonValue &)>>;
 class KUESA_PRIVATE_EXPORT GLTF2Parser
     : public QObject
@@ -114,8 +134,9 @@ public:
     virtual ~GLTF2Parser();
 
     virtual QVector<KeyParserFuncPair> prepareParsers();
-    bool parse(const QString &filePath);
-    bool parse(const QByteArray &data, const QString &basePath, const QString &filename = {});
+    bool parse(const QString &filePath, bool async=false);
+    bool parse(const QByteArray &data, const QString &basePath, const QString &filename = {}, bool async=false);
+
     void generateContent();
 
     void setContext(GLTF2Context *);
@@ -128,11 +149,14 @@ signals:
     void gltfFileParsingCompleted(bool parsingSucceeded);
 
 private:
+    QThread m_workerThread;
+
+    bool performParsing(const std::function<bool(GLTF2Parser*)> &parsingFunc, bool async);
+    bool doParse(const QString &filePath);
+    bool doParse(const QByteArray &data, const QString &basePath, const QString &filename = {});
     bool isBinaryGLTF(const QByteArray &data, bool &isValid);
-    friend class ThreadedGLTF2Parser;
     friend class ::tst_GLTFExporter;
     friend class ::tst_GLTFParser;
-    void moveToThread(QThread *targetThread);
     bool detectTypeAndParse(const QByteArray &data, const QString &basePath, const QString &filename = {});
     bool parseJSON(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
     bool parseBinary(const QByteArray &data, const QString &basePath, const QString &filename = {});
@@ -190,6 +214,8 @@ private:
     int m_defaultSceneIdx;
     bool m_assignNames;
     QVector<QHash<int, int>> m_gltfJointIdxToSkeletonJointIdxPerSkeleton;
+
+    friend class ParseWorker;
 };
 
 } // namespace GLTF2Import

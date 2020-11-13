@@ -62,6 +62,7 @@ Scene3D {
     property alias animationMappings: scene.animationMappings
     property alias lights: scene.lights
     property alias transforms: scene.transforms
+    property alias asynchronous: scene.asynchronous
     default property alias children: scene.data
 
     signal loadingDone()
