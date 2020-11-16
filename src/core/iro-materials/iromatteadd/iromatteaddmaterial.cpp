@@ -102,7 +102,7 @@ void IroMatteAddMaterial::setMaterialProperties(Kuesa::IroMatteAddProperties *ma
 
         if (m_materialProperties) {
             QObject::connect(m_materialProperties, &IroMatteAddProperties::matteMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_matteMapParameter->setValue(QVariant::fromValue(t)); });
-            
+
             m_matteMapParameter->setValue(QVariant::fromValue(m_materialProperties->matteMap()));
 
             m_shaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));

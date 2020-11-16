@@ -48,6 +48,8 @@ QVector<Qt3DRender::QSortPolicy::SortType> sortTypes(bool backToFrontSorting)
     return { Qt3DRender::QSortPolicy::Material, Qt3DRender::QSortPolicy::Texture };
 }
 
+constexpr size_t MAX_RENDER_PASS_COUNT = 8;
+
 } // anonymous
 
 
@@ -75,12 +77,21 @@ TransparentRenderStage::TransparentRenderStage(Qt3DRender::QFrameGraphNode *pare
     m_alphaSortPolicy = new Qt3DRender::QSortPolicy(states);
     m_alphaSortPolicy->setSortTypes(sortTypes(true));
 
-    auto passFilter = new Qt3DRender::QRenderPassFilter(m_alphaSortPolicy);
+    auto transparentFilter = new Qt3DRender::QRenderPassFilter(m_alphaSortPolicy);
     auto filterKey = new Qt3DRender::QFilterKey(this);
     filterKey->setName(QStringLiteral("KuesaDrawStage"));
     filterKey->setValue(QStringLiteral("Transparent"));
 
-    passFilter->addMatch(filterKey);
+    transparentFilter->addMatch(filterKey);
+
+    for (size_t i = 0; i < MAX_RENDER_PASS_COUNT; ++i) {
+        auto passFilter = new Qt3DRender::QRenderPassFilter(transparentFilter);
+        auto filterKey = new Qt3DRender::QFilterKey(this);
+        filterKey->setName(QStringLiteral("Pass"));
+        filterKey->setValue(QStringLiteral("pass%1").arg(i));
+
+        passFilter->addMatch(filterKey);
+    }
 }
 
 TransparentRenderStage::~TransparentRenderStage()

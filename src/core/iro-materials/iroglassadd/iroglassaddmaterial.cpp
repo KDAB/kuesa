@@ -104,7 +104,7 @@ void IroGlassAddMaterial::setMaterialProperties(Kuesa::IroGlassAddProperties *ma
 
         if (m_materialProperties) {
             QObject::connect(m_materialProperties, &IroGlassAddProperties::reflectionMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
-            
+
             m_reflectionMapParameter->setValue(QVariant::fromValue(m_materialProperties->reflectionMap()));
 
             m_shaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));

@@ -53,20 +53,23 @@ private Q_SLOTS:
         QCOMPARE(stage.objectName(), QStringLiteral("KuesaTransparentRenderStage"));
 
         Qt3DRender::QRenderStateSet *stateSet = stage.findChild<Qt3DRender::QRenderStateSet *>();
-        Qt3DRender::QRenderPassFilter *passFilter = stage.findChild<Qt3DRender::QRenderPassFilter *>();
+        Qt3DRender::QRenderPassFilter *transparentFilter = stage.findChild<Qt3DRender::QRenderPassFilter *>();
         Qt3DRender::QDepthTest *depthTest = stage.findChild<Qt3DRender::QDepthTest *>();
         Qt3DRender::QNoDepthMask *noDepthMask = stage.findChild<Qt3DRender::QNoDepthMask *>();
         Qt3DRender::QMultiSampleAntiAliasing *msaa = stage.findChild<Qt3DRender::QMultiSampleAntiAliasing *>();
         Qt3DRender::QSortPolicy *sortPolicy = stage.findChild<Qt3DRender::QSortPolicy *>();
-        Qt3DRender::QFilterKey *filterKey = stage.findChild<Qt3DRender::QFilterKey *>();
+        Qt3DRender::QFilterKey *transparentFilterKey = stage.findChild<Qt3DRender::QFilterKey *>();
 
-        QVERIFY(passFilter);
+        QVERIFY(transparentFilter);
         QVERIFY(stateSet);
         QVERIFY(depthTest);
         QVERIFY(noDepthMask);
         QVERIFY(msaa);
         QVERIFY(sortPolicy);
-        QVERIFY(filterKey);
+        QVERIFY(transparentFilterKey);
+
+        const auto passFilters = transparentFilter->findChildren<Qt3DRender::QRenderPassFilter *>();
+        QVERIFY(passFilters.count() > 0);
 
         QCOMPARE(stateSet->parentFrameGraphNode(), &stage);
         QVERIFY(stateSet->renderStates().contains(depthTest));
@@ -77,10 +80,17 @@ private Q_SLOTS:
         QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::BackToFront));
         QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::Material));
         QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::Texture));
-        QCOMPARE(passFilter->parentFrameGraphNode(), sortPolicy);
-        QVERIFY(passFilter->matchAny().contains(filterKey));
-        QCOMPARE(filterKey->name(), QStringLiteral("KuesaDrawStage"));
-        QCOMPARE(filterKey->value(), QStringLiteral("Transparent"));
+        QCOMPARE(transparentFilter->parentFrameGraphNode(), sortPolicy);
+        QVERIFY(transparentFilter->matchAny().contains(transparentFilterKey));
+        QCOMPARE(transparentFilterKey->name(), QStringLiteral("KuesaDrawStage"));
+        QCOMPARE(transparentFilterKey->value(), QStringLiteral("Transparent"));
+
+        for (int i = 0; i < passFilters.count(); ++i) {
+            const auto &passFilter = passFilters.at(i);
+            QCOMPARE(passFilter->matchAny().size(), 1);
+            QCOMPARE(passFilter->matchAny().at(0)->name(), QStringLiteral("Pass"));
+            QCOMPARE(passFilter->matchAny().at(0)->value(), QStringLiteral("pass%1").arg(i));
+        }
 
         // WHEN
         stage.setBackToFrontSorting(false);
@@ -96,10 +106,17 @@ private Q_SLOTS:
         QCOMPARE(sortPolicy->parentFrameGraphNode(), stateSet);
         QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::Material));
         QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::Texture));
-        QCOMPARE(passFilter->parentFrameGraphNode(), sortPolicy);
-        QVERIFY(passFilter->matchAny().contains(filterKey));
-        QCOMPARE(filterKey->name(), QStringLiteral("KuesaDrawStage"));
-        QCOMPARE(filterKey->value(), QStringLiteral("Transparent"));
+        QCOMPARE(transparentFilter->parentFrameGraphNode(), sortPolicy);
+        QVERIFY(transparentFilter->matchAny().contains(transparentFilterKey));
+        QCOMPARE(transparentFilterKey->name(), QStringLiteral("KuesaDrawStage"));
+        QCOMPARE(transparentFilterKey->value(), QStringLiteral("Transparent"));
+
+        for (int i = 0; i < passFilters.count(); ++i) {
+            const auto &passFilter = passFilters.at(i);
+            QCOMPARE(passFilter->matchAny().size(), 1);
+            QCOMPARE(passFilter->matchAny().at(0)->name(), QStringLiteral("Pass"));
+            QCOMPARE(passFilter->matchAny().at(0)->value(), QStringLiteral("pass%1").arg(i));
+        }
     }
 };
 

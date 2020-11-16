@@ -105,7 +105,7 @@ void IroDiffuseMaterial::setMaterialProperties(Kuesa::IroDiffuseProperties *mate
         if (m_materialProperties) {
             QObject::connect(m_materialProperties, &IroDiffuseProperties::reflectionMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
             QObject::connect(m_materialProperties, &IroDiffuseProperties::diffuseMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_diffuseMapParameter->setValue(QVariant::fromValue(t)); });
-            
+
             m_reflectionMapParameter->setValue(QVariant::fromValue(m_materialProperties->reflectionMap()));
             m_diffuseMapParameter->setValue(QVariant::fromValue(m_materialProperties->diffuseMap()));
 

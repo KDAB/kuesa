@@ -144,6 +144,10 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
     transparentFilterKey->setValue(QStringLiteral("Transparent"));
 
+    auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
+    transparentPassFilterKey->setName(QStringLiteral("Pass"));
+    transparentPassFilterKey->setValue(QStringLiteral("pass0"));
+
     m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::Add);
     m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::SourceAlpha);
     m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::SourceAlpha);
@@ -155,6 +159,7 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     m_transparentRenderPass->addRenderState(m_blendEquation);
     m_transparentRenderPass->addRenderState(m_blendArguments);
     m_transparentRenderPass->addFilterKey(transparentFilterKey);
+    m_transparentRenderPass->addFilterKey(transparentPassFilterKey);
     m_transparentRenderPass->setEnabled(false);
     addRenderPass(m_transparentRenderPass);
 }
