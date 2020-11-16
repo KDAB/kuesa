@@ -334,9 +334,9 @@ void IroDiffuseAlphaEffect::updateUsingNormalAttribute(bool usingNormalAttribute
 void IroDiffuseAlphaEffect::updateUsingTangentAttribute(bool usingTangentAttribute)
 {
     auto layers = m_gl3Technique->enabledLayers();
-    layers.removeAll(QStringLiteral("hasTangentNormal"));
+    layers.removeAll(QStringLiteral("hasVertexTangent"));
     if (usingTangentAttribute)
-        layers.append(QStringLiteral("hasTangentNormal"));
+        layers.append(QStringLiteral("hasVertexTangent"));
 
     updateLayersOnTechniques(layers);
 }
