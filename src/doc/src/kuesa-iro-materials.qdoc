@@ -70,15 +70,40 @@
                 \caption PBR Comparison
     \endtable
 
-    \section1 Available Iro Materials
+    \section1 Current Iro Materials
+
+    \section2 Iro2 Materials
+
+    A second revision of the Iro materials have been introduced in Kuesa 1.3.
+    They provide support for normal maps and IroDiffuseHemi-like shadowing.
+
+    \list
+    \li \l {Iro2DiffuseSem}
+    \li \l {Iro2DiffuseEquiRect}
+    \li \l {Iro2AlphaSem}
+    \li \l {Iro2AlphaEquiRect}
+    \li \l {Iro2GlassSem}
+    \li \l {Iro2GlassEquiRect}
+    \li \l {Iro2MatteAlpha}
+    \endlist
+
+    \section2 Original Iro Materials
+
+    \list
+    \li \l {IroMatteOpaqueMaterial}
+    \li \l {IroMatteSkyboxMaterial}
+    \li \l {IroMatteBackgroundMaterial}
+    \endlist
+
+    \section1 Deprecated Iro Materials
+
+    Those materials are kept for compatibility reasons. Use the corresponding
+    Iro2 materials when possible.
 
     \list
     \li \l {IroDiffuseMaterial}
     \li \l {IroDiffuseHemiMaterial}
     \li \l {IroGlassAddMaterial}
-    \li \l {IroMatteOpaqueMaterial}
     \li \l {IroMatteAlphaMaterial}
-    \li \l {IroMatteSkyboxMaterial}
-    \li \l {IroMatteBackgroundMaterial}
     \endlist
 */

@@ -1,4 +1,5 @@
-# core.pro
+
+# iro2alphasem.pri
 #
 # This file is part of Kuesa.
 #
@@ -24,46 +25,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TARGET     = Kuesa
-MODULE     = kuesa
+INCLUDEPATH += $$PWD
 
-# Kuesa is free of Q_FOREACH - make sure it stays that way:
-DEFINES += QT_NO_FOREACH
-DEFINES += QT_BUILD_KUESA_LIB
+QT += 3dcore-private
 
-# Avoid windows defines
-win32:DEFINES += WIN32_LEAN_AND_MEAN
+SOURCES += \
+    $$PWD/iro2alphasemmaterial.cpp \
+    $$PWD/iro2alphasemeffect.cpp \
+    $$PWD/iro2alphasemproperties.cpp \
+    $$PWD/iro2alphasemshaderdata.cpp
 
-QT += qml 3dcore 3dcore-private 3drender 3drender-private 3dquickextras 3danimation
-
-qtConfig(draco) {
-    win32:CONFIG -= precompile_header
-    include(../3rdparty/draco/draco_dependency.pri)
-}
-
-qtConfig(ktx) {
-    QMAKE_USE_PRIVATE += ktx
-    include(../3rdparty/ktx/ktx.pri)
-}
-
-include(core.pri)
-include(materials/materials.pri)
-include(iro-materials/iro-materials.pri)
-include(iro2-materials/iro2-materials.pri)
-include(collections/collections.pri)
-include(gltf2importer/gltf2importer.pri)
-include(gltf2exporter/gltf2exporter.pri)
-include(framegraphes/framegraphes.pri)
-include(lights/lights.pri)
-include(fx/fx.pri)
-include(../3rdparty/mikktspace/mikktspace.pri)
-
-RESOURCES += \
-    shaders.qrc
-
-OTHER_FILES += \
-    configure.pri \
-    configure.json
-
-
-load(qt_module)
+HEADERS += \
+    $$PWD/iro2alphasemmaterial.h \
+    $$PWD/iro2alphasemeffect.h \
+    $$PWD/iro2alphasemproperties.h \
+    $$PWD/iro2alphasemshaderdata_p.h

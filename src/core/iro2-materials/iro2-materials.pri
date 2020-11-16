@@ -1,9 +1,9 @@
-# core.pro
+# iro-materials.pri
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# Author: Nicolas Guichard <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,46 +24,21 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TARGET     = Kuesa
-MODULE     = kuesa
 
-# Kuesa is free of Q_FOREACH - make sure it stays that way:
-DEFINES += QT_NO_FOREACH
-DEFINES += QT_BUILD_KUESA_LIB
+INCLUDEPATH += $$PWD
 
-# Avoid windows defines
-win32:DEFINES += WIN32_LEAN_AND_MEAN
+include(iro2diffusesem/iro2diffusesem.pri)
+include(iro2diffuseequirect/iro2diffuseequirect.pri)
 
-QT += qml 3dcore 3dcore-private 3drender 3drender-private 3dquickextras 3danimation
+include(iro2alphasem/iro2alphasem.pri)
+include(iro2alphaequirect/iro2alphaequirect.pri)
 
-qtConfig(draco) {
-    win32:CONFIG -= precompile_header
-    include(../3rdparty/draco/draco_dependency.pri)
-}
+include(iro2glasssem/iro2glasssem.pri)
+include(iro2glassequirect/iro2glassequirect.pri)
 
-qtConfig(ktx) {
-    QMAKE_USE_PRIVATE += ktx
-    include(../3rdparty/ktx/ktx.pri)
-}
+include(iro2mattealpha/iro2mattealpha.pri)
 
-include(core.pri)
-include(materials/materials.pri)
-include(iro-materials/iro-materials.pri)
-include(iro2-materials/iro2-materials.pri)
-include(collections/collections.pri)
-include(gltf2importer/gltf2importer.pri)
-include(gltf2exporter/gltf2exporter.pri)
-include(framegraphes/framegraphes.pri)
-include(lights/lights.pri)
-include(fx/fx.pri)
-include(../3rdparty/mikktspace/mikktspace.pri)
+SOURCES += $$PWD/iro2-materials.cpp
+HEADERS += $$PWD/iro2-materials_p.h
 
-RESOURCES += \
-    shaders.qrc
-
-OTHER_FILES += \
-    configure.pri \
-    configure.json
-
-
-load(qt_module)
+OTHER_FILES += $$PWD/*.json

@@ -109,5 +109,14 @@
         <file>shaders/gl3/kuesa_reflectedViewMatrix.inc</file>
         <file>shaders/gl45/kuesa_reflectedViewMatrix.inc</file>
         <file>shaders/gl45/fboresolver.frag</file>
+        <file>shaders/graphs/iro2diffusesem.frag.json</file>
+        <file>shaders/graphs/iro2diffuseequirect.frag.json</file>
+        <file>shaders/graphs/iro2alphaequirect.frag.json</file>
+        <file>shaders/graphs/iro2alphasem.frag.json</file>
+        <file>shaders/graphs/iro2glassequirect.frag.json</file>
+        <file>shaders/graphs/iro2glasssem.frag.json</file>
+        <file>shaders/graphs/iro2mattealpha.frag.json</file>
+        <file>shaders/graphs/iro2reflectionequirect.frag.json</file>
+        <file>shaders/graphs/iro2reflectionsem.frag.json</file>
     </qresource>
 </RCC>
