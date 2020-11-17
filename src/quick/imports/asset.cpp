@@ -177,7 +177,7 @@ void Asset::setNode(Qt3DCore::QNode *node)
                     }
                 }
             }
-            m_releaseAssetPropertiesConnection = QObject::connect(m_node, &QNode::nodeDestroyed, [this]() {
+            m_releaseAssetPropertiesConnection = QObject::connect(m_node, &QNode::nodeDestroyed, this, [this]() {
                 setNode(nullptr);
             });
         }
