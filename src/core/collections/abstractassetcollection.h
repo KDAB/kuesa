@@ -65,11 +65,11 @@ Q_SIGNALS:
 private:
     void handleAssetDestruction(const QString &name);
     void addDestructionConnection(const QString &name, Qt3DCore::QNode *asset);
-    void removeDestructionConnection(Qt3DCore::QNode *asset);
+    void removeDestructionConnection(const QString &name, Qt3DCore::QNode *asset);
     void clearDestructionConnections();
 
     QMap<QString, Qt3DCore::QNode *> m_assets;
-    QHash<QNode *, QMetaObject::Connection> m_destructionConnections;
+    QHash<std::pair<QString, QNode *>, QMetaObject::Connection> m_destructionConnections;
 };
 
 } // namespace Kuesa

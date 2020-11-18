@@ -206,6 +206,38 @@ private Q_SLOTS:
         QCOMPARE(nameChangeSpy.count(), 2);
     }
 
+    void handleSameAssetRegisteredTwice()
+    {
+        // GIVEN
+        DummyAssetCollection collection;
+        QSignalSpy nameChangeSpy(&collection, SIGNAL(namesChanged()));
+
+        // THEN
+        QVERIFY(nameChangeSpy.isValid());
+
+        // WHEN
+        {
+            Qt3DCore::QEntity entity;
+            auto asset = new Qt3DRender::QMaterial(&entity); // has a parent, will not be deleted when replaced in the collection
+
+            // WHEN
+            collection.add("asset_name1", asset);
+            collection.add("asset_name2", asset);
+
+            // THEN
+            QCOMPARE(collection.names().size(), 2);
+            QCOMPARE(collection.find("asset_name1"), asset);
+            QCOMPARE(collection.find("asset_name2"), asset);
+            QCOMPARE(nameChangeSpy.count(), 2);
+        }
+
+        // THEN
+        QCOMPARE(nameChangeSpy.count(), 4);
+        QVERIFY(collection.find("asset_name1") == nullptr);
+        QVERIFY(collection.find("asset_name2") == nullptr);
+        QCOMPARE(collection.names().size(), 0);
+    }
+
     void ensureAssetsAreSortedByName()
     {
         // GIVEN
