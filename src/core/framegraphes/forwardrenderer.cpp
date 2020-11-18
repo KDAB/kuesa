@@ -613,6 +613,11 @@ void ForwardRenderer::removeView(View *view)
         auto d = Qt3DCore::QNodePrivate::get(this);
         d->unregisterDestructionHelper(view);
         m_views.erase(it);
+
+        // Ensure we remove the View from the FG
+        view->setParent(Q_NODE_NULLPTR);
+        view->m_fxStages->setParent(Q_NODE_NULLPTR);
+
         reconfigureFrameGraph();
     }
 }

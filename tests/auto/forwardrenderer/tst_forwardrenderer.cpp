@@ -728,6 +728,49 @@ private Q_SLOTS:
         QCOMPARE(effectsViewport->children()[2], f.m_internalFXStages.data());
     }
 
+    void testHandleViewCountChanges()
+    {
+        // GIVEN (Views with FX)
+        Kuesa::ForwardRenderer f;
+        Qt3DRender::QFrameGraphNode *stageRoot = f.m_stagesRoot;
+        Qt3DRender::QViewport *fxViewport = f.m_effectsViewport;
+
+        Kuesa::View v1;
+        Kuesa::View v2;
+        tst_FX fx;
+
+        v1.addPostProcessingEffect(&fx);
+        v2.addPostProcessingEffect(&fx);
+
+        // WHEN -> add views
+        f.addView(&v1);
+        f.addView(&v2);
+
+        // THEN
+        QVERIFY(v1.parent() == stageRoot);
+        QVERIFY(v2.parent() == stageRoot);
+        QVERIFY(v1.m_fxStages->parent() == fxViewport);
+        QVERIFY(v2.m_fxStages->parent() == fxViewport);
+
+        // WHEN -> remove views
+        f.removeView(&v1);
+
+        // THEN
+        QVERIFY(v1.parent() == nullptr);
+        QVERIFY(v2.parent() == stageRoot);
+        QVERIFY(v1.m_fxStages->parent() == nullptr);
+        QVERIFY(v2.m_fxStages->parent() == fxViewport);
+
+        // WHEN
+        f.removeView(&v2);
+
+        // THEN
+        QVERIFY(v1.parent() == nullptr);
+        QVERIFY(v2.parent() == nullptr);
+        QVERIFY(v1.m_fxStages->parent() == nullptr);
+        QVERIFY(v2.m_fxStages->parent() == nullptr);
+    }
+
     void testRenderTargetsNoEffect()
     {
         // GIVEN
