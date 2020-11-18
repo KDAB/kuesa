@@ -118,6 +118,8 @@ private:
     bool m_running;
     float m_runToTimeFraction = -1;
     QMetaObject::Connection m_loadingDoneConnection;
+    QMetaObject::Connection m_clipDestroyedConnection;
+    QMetaObject::Connection m_mapperDestroyedConnection;
 };
 
 } // namespace Kuesa

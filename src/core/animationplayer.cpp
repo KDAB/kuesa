@@ -473,36 +473,37 @@ void AnimationPlayer::run(float fromTimeFraction, float toTimeFraction)
 
 void AnimationPlayer::matchClipAndTargets()
 {
-    if (m_sceneEntity == nullptr) {
-        if (m_animator->clip()) {
-            m_animator->setClip(nullptr);
-            emit durationChanged(0.f);
-        }
-        return;
-    }
+    QObject::disconnect(m_clipDestroyedConnection);
+    QObject::disconnect(m_mapperDestroyedConnection);
 
-    if (m_clip.isEmpty() && m_mapper.isEmpty()) {
+    auto resetAnimator = [this] () {
         setStatus(Error);
+        m_animator->setRunning(false);
         if (m_animator->clip()) {
             m_animator->setClip(nullptr);
             emit durationChanged(0.f);
         }
-        return;
-    }
+    };
+
+    if (m_sceneEntity == nullptr)
+        return resetAnimator();
+
+    if (m_clip.isEmpty() && m_mapper.isEmpty())
+        return resetAnimator();
 
     Qt3DAnimation::QAnimationClip *clip = qobject_cast<Qt3DAnimation::QAnimationClip *>(m_sceneEntity->animationClip(m_clip));
+
     const QString mapperName = m_mapper.isEmpty() ? m_clip : m_mapper;
     Qt3DAnimation::QChannelMapper *mapper = m_sceneEntity->animationMapping(mapperName);
 
     if (!clip || !mapper) {
         qCWarning(kuesa) << "Undefined clip or mapper in AnimationPlayer for clip:" << m_clip << "and mapper:" << mapperName;
-        setStatus(Error);
-        if (m_animator->clip()) {
-            m_animator->setClip(nullptr);
-            emit durationChanged(0.f);
-        }
-        return;
+        return resetAnimator();
     }
+
+    // Watch for clip being destroyed
+    m_clipDestroyedConnection = QObject::connect(clip, &Qt3DCore::QNode::destroyed, this, &AnimationPlayer::matchClipAndTargets);
+    m_mapperDestroyedConnection = QObject::connect(mapper, &Qt3DCore::QNode::destroyed, this, &AnimationPlayer::matchClipAndTargets);
 
     const QVector<QAbstractChannelMapping *> mappings = mapper->mappings();
     const auto numMappings = mappings.size();
