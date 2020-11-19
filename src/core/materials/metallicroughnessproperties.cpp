@@ -384,7 +384,6 @@ MetallicRoughnessProperties::MetallicRoughnessProperties(Qt3DCore::QNode *parent
     , m_normalMapTextureTransform(new Kuesa::TextureTransform(this))
     , m_ambientOcclusionMapTextureTransform(new Kuesa::TextureTransform(this))
     , m_emissiveMapTextureTransform(new Kuesa::TextureTransform(this))
-    , m_baseColorMap(nullptr)
     , m_emissiveMap(nullptr)
     , m_normalMap(nullptr)
     , m_metalRoughMap(nullptr)

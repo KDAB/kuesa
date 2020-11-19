@@ -143,7 +143,6 @@ private:
     Kuesa::TextureTransform *m_ambientOcclusionMapTextureTransform;
     Kuesa::TextureTransform *m_emissiveMapTextureTransform;
 
-    Qt3DRender::QAbstractTexture *m_baseColorMap;
     Qt3DRender::QAbstractTexture *m_emissiveMap;
     Qt3DRender::QAbstractTexture *m_normalMap;
     Qt3DRender::QAbstractTexture *m_metalRoughMap;
