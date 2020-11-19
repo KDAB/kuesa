@@ -59,6 +59,7 @@ private:
 
     UnlitProperties *m_materialProperties;
     Qt3DRender::QParameter *m_unlitShaderDataParameter;
+    Qt3DRender::QParameter *m_baseColorMapParameter;
     QMetaObject::Connection m_textureTransformChangedConnection;
 };
 

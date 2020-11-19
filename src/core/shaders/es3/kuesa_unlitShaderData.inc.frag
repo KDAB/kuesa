@@ -28,7 +28,6 @@
 
 struct Unlit {
     highp vec4 baseColorFactor;
-    highp sampler2D baseColorMap;
     highp float alphaCutoff;
     bool baseColorUsesTexCoord1;
 };

@@ -3284,7 +3284,7 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "#pragma include :/kuesa/shaders/gl3/kuesa_unlitShaderData.inc.frag"
+                        "#pragma include :/kuesa/shaders/gl45/kuesa_unlitShaderData.inc.frag"
                     ],
                     "substitution": "Unlit $shaderData = unlit;"
                 }

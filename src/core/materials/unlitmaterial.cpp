@@ -108,8 +108,10 @@ UnlitMaterial::UnlitMaterial(Qt3DCore::QNode *parent)
     : GLTF2Material(parent)
     , m_materialProperties(nullptr)
     , m_unlitShaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("unlit"), {}))
+    , m_baseColorMapParameter(new Qt3DRender::QParameter(QStringLiteral("baseColorMap"), {}))
 {
     addParameter(m_unlitShaderDataParameter);
+    addParameter(m_baseColorMapParameter);
 }
 
 UnlitMaterial::~UnlitMaterial()
@@ -125,11 +127,18 @@ void UnlitMaterial::setMaterialProperties(UnlitProperties *unlitProperties)
 {
     if (m_materialProperties != unlitProperties) {
 
+        if (m_materialProperties)
+            m_materialProperties->disconnect(this);
+
         m_materialProperties = unlitProperties;
         emit materialPropertiesChanged(unlitProperties);
 
         if (m_materialProperties) {
+            QObject::connect(m_materialProperties, &UnlitProperties::baseColorMapChanged,
+                             this, [this](Qt3DRender::QAbstractTexture *t) { m_baseColorMapParameter->setValue(QVariant::fromValue(t)); });
+
             m_unlitShaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));
+            m_baseColorMapParameter->setValue(QVariant::fromValue(m_materialProperties->baseColorMap()));
             m_materialProperties->addClientMaterial(this);
         }
     }

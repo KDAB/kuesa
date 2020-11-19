@@ -32,4 +32,6 @@ struct Unlit {
     bool baseColorUsesTexCoord1;
 };
 
-uniform Unlit unlit;
+layout(std140, binding = auto) uniform UnlitBlock {
+    Unlit unlit;
+};
