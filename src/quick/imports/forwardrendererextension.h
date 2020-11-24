@@ -34,6 +34,12 @@
 
 QT_BEGIN_NAMESPACE
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+using qt_size_type = qsizetype;
+#else
+using qt_size_type = int;
+#endif
+
 namespace Kuesa {
 
 class View;
@@ -49,8 +55,8 @@ public:
 
 private:
     static void appendView(QQmlListProperty<Kuesa::View> *list, Kuesa::View *layer);
-    static Kuesa::View *viewAt(QQmlListProperty<Kuesa::View> *list, int index);
-    static int viewCount(QQmlListProperty<Kuesa::View> *list);
+    static Kuesa::View *viewAt(QQmlListProperty<Kuesa::View> *list, qt_size_type index);
+    static qt_size_type viewCount(QQmlListProperty<Kuesa::View> *list);
     static void clearViews(QQmlListProperty<Kuesa::View> *list);
 };
 

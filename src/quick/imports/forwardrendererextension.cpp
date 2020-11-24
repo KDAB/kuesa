@@ -77,7 +77,7 @@ void ForwardRendererExtension::appendView(QQmlListProperty<Kuesa::View> *list, K
     return kuesaFG->addView(view);
 }
 
-Kuesa::View *ForwardRendererExtension::viewAt(QQmlListProperty<Kuesa::View> *list, int index)
+Kuesa::View *ForwardRendererExtension::viewAt(QQmlListProperty<Kuesa::View> *list, qt_size_type index)
 {
     ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());
@@ -86,7 +86,7 @@ Kuesa::View *ForwardRendererExtension::viewAt(QQmlListProperty<Kuesa::View> *lis
     return kuesaFG->views().at(index);
 }
 
-int ForwardRendererExtension::viewCount(QQmlListProperty<Kuesa::View> *list)
+qt_size_type ForwardRendererExtension::viewCount(QQmlListProperty<Kuesa::View> *list)
 {
     ForwardRendererExtension *self = static_cast<ForwardRendererExtension *>(list->object);
     auto kuesaFG = kuesaFrameGraph(self->parent());

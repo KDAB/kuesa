@@ -110,7 +110,7 @@ void ViewExtension::appendFX(QQmlListProperty<AbstractPostProcessingEffect> *lis
     kuesaFG->addPostProcessingEffect(fx);
 }
 
-AbstractPostProcessingEffect *ViewExtension::fxAt(QQmlListProperty<AbstractPostProcessingEffect> *list, int index)
+AbstractPostProcessingEffect *ViewExtension::fxAt(QQmlListProperty<AbstractPostProcessingEffect> *list, qt_size_type index)
 {
     ViewExtension *self = static_cast<ViewExtension *>(list->object);
     View *kuesaFG = view(self->parent());
@@ -119,7 +119,7 @@ AbstractPostProcessingEffect *ViewExtension::fxAt(QQmlListProperty<AbstractPostP
     return kuesaFG->postProcessingEffects().at(index);
 }
 
-int ViewExtension::fxCount(QQmlListProperty<AbstractPostProcessingEffect> *list)
+qt_size_type ViewExtension::fxCount(QQmlListProperty<AbstractPostProcessingEffect> *list)
 {
     ViewExtension *self = static_cast<ViewExtension *>(list->object);
     auto kuesaFG = view(self->parent());
@@ -148,7 +148,7 @@ void ViewExtension::appendLayer(QQmlListProperty<Qt3DRender::QLayer> *list, Qt3D
     return kuesaFG->addLayer(layer);
 }
 
-Qt3DRender::QLayer *ViewExtension::layerAt(QQmlListProperty<Qt3DRender::QLayer> *list, int index)
+Qt3DRender::QLayer *ViewExtension::layerAt(QQmlListProperty<Qt3DRender::QLayer> *list, qt_size_type index)
 {
     ViewExtension *self = static_cast<ViewExtension *>(list->object);
     View *kuesaFG = view(self->parent());
@@ -157,7 +157,7 @@ Qt3DRender::QLayer *ViewExtension::layerAt(QQmlListProperty<Qt3DRender::QLayer> 
     return kuesaFG->layers().at(index);
 }
 
-int ViewExtension::layersCount(QQmlListProperty<Qt3DRender::QLayer> *list)
+qt_size_type ViewExtension::layersCount(QQmlListProperty<Qt3DRender::QLayer> *list)
 {
     ViewExtension *self = static_cast<ViewExtension *>(list->object);
     View *kuesaFG = view(self->parent());
@@ -186,7 +186,7 @@ void ViewExtension::appendReflectionPlane(QQmlListProperty<ReflectionPlane> *lis
     return kuesaFG->addReflectionPlane(plane);
 }
 
-ReflectionPlane *ViewExtension::reflectionPlaneAt(QQmlListProperty<ReflectionPlane> *list, int index)
+ReflectionPlane *ViewExtension::reflectionPlaneAt(QQmlListProperty<ReflectionPlane> *list, qt_size_type index)
 {
     ViewExtension *self = static_cast<ViewExtension *>(list->object);
     View *kuesaFG = view(self->parent());
@@ -195,7 +195,7 @@ ReflectionPlane *ViewExtension::reflectionPlaneAt(QQmlListProperty<ReflectionPla
     return kuesaFG->reflectionPlanes().at(index);
 }
 
-int ViewExtension::reflectionPlaneCount(QQmlListProperty<ReflectionPlane> *list)
+qt_size_type ViewExtension::reflectionPlaneCount(QQmlListProperty<ReflectionPlane> *list)
 {
     ViewExtension *self = static_cast<ViewExtension *>(list->object);
     View *kuesaFG = view(self->parent());

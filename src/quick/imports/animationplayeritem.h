@@ -34,6 +34,12 @@
 #include <Qt3DCore/QNode>
 #include <Kuesa/AnimationPlayer>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+using qt_size_type = qsizetype;
+#else
+using qt_size_type = int;
+#endif
+
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -61,8 +67,8 @@ Q_SIGNALS:
 
 private:
     static void qmlAppendTarget(QQmlListProperty<Qt3DCore::QNode> *list, Qt3DCore::QNode *node);
-    static Qt3DCore::QNode *qmlTargetAt(QQmlListProperty<Qt3DCore::QNode> *list, int index);
-    static int qmlTargetCount(QQmlListProperty<Qt3DCore::QNode> *list);
+    static Qt3DCore::QNode *qmlTargetAt(QQmlListProperty<Qt3DCore::QNode> *list, qt_size_type index);
+    static qt_size_type qmlTargetCount(QQmlListProperty<Qt3DCore::QNode> *list);
     static void qmlClearTargets(QQmlListProperty<Qt3DCore::QNode> *list);
 
     QVector<Qt3DCore::QNode *> m_managedTargets;

@@ -37,6 +37,12 @@
 
 #include <vector>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+using qt_size_type = qsizetype;
+#else
+using qt_size_type = int;
+#endif
+
 QT_BEGIN_NAMESPACE
 
 namespace KuesaUtils {
@@ -57,12 +63,12 @@ public:
 
 private:
     static void qmlAppendAnimation(QQmlListProperty<Kuesa::AnimationPlayer> *list, Kuesa::AnimationPlayer *node);
-    static Kuesa::AnimationPlayer *qmlAnimationAt(QQmlListProperty<Kuesa::AnimationPlayer> *list, int index);
-    static int qmlAnimationCount(QQmlListProperty<Kuesa::AnimationPlayer> *list);
+    static Kuesa::AnimationPlayer *qmlAnimationAt(QQmlListProperty<Kuesa::AnimationPlayer> *list, qt_size_type index);
+    static qt_size_type qmlAnimationCount(QQmlListProperty<Kuesa::AnimationPlayer> *list);
     static void qmlClearAnimations(QQmlListProperty<Kuesa::AnimationPlayer> *list);
     static void qmlAppendTrackers(QQmlListProperty<Kuesa::TransformTracker> *list, Kuesa::TransformTracker *node);
-    static Kuesa::TransformTracker *qmlTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, int index);
-    static int qmlTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list);
+    static Kuesa::TransformTracker *qmlTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, qt_size_type index);
+    static qt_size_type qmlTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list);
     static void qmlClearTrackers(QQmlListProperty<Kuesa::TransformTracker> *list);
 
     std::vector<Kuesa::AnimationPlayer *> m_managedAnimations;

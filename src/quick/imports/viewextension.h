@@ -32,6 +32,12 @@
 #include <QObject>
 #include <QtQml/QQmlListProperty>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+using qt_size_type = qsizetype;
+#else
+using qt_size_type = int;
+#endif
+
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
@@ -58,18 +64,18 @@ public:
 
 private:
     static void appendFX(QQmlListProperty<AbstractPostProcessingEffect> *list, AbstractPostProcessingEffect *fx);
-    static AbstractPostProcessingEffect *fxAt(QQmlListProperty<AbstractPostProcessingEffect> *list, int index);
-    static int fxCount(QQmlListProperty<AbstractPostProcessingEffect> *list);
+    static AbstractPostProcessingEffect *fxAt(QQmlListProperty<AbstractPostProcessingEffect> *list, qt_size_type index);
+    static qt_size_type fxCount(QQmlListProperty<AbstractPostProcessingEffect> *list);
     static void clearFx(QQmlListProperty<AbstractPostProcessingEffect> *list);
 
     static void appendLayer(QQmlListProperty<Qt3DRender::QLayer> *list, Qt3DRender::QLayer *layer);
-    static Qt3DRender::QLayer *layerAt(QQmlListProperty<Qt3DRender::QLayer> *list, int index);
-    static int layersCount(QQmlListProperty<Qt3DRender::QLayer> *list);
+    static Qt3DRender::QLayer *layerAt(QQmlListProperty<Qt3DRender::QLayer> *list, qt_size_type index);
+    static qt_size_type layersCount(QQmlListProperty<Qt3DRender::QLayer> *list);
     static void clearLayers(QQmlListProperty<Qt3DRender::QLayer> *list);
 
     static void appendReflectionPlane(QQmlListProperty<Kuesa::ReflectionPlane> *list, Kuesa::ReflectionPlane *plane);
-    static Kuesa::ReflectionPlane *reflectionPlaneAt(QQmlListProperty<Kuesa::ReflectionPlane> *list, int index);
-    static int reflectionPlaneCount(QQmlListProperty<Kuesa::ReflectionPlane> *list);
+    static Kuesa::ReflectionPlane *reflectionPlaneAt(QQmlListProperty<Kuesa::ReflectionPlane> *list, qt_size_type index);
+    static qt_size_type reflectionPlaneCount(QQmlListProperty<Kuesa::ReflectionPlane> *list);
     static void clearReflectionPlanes(QQmlListProperty<Kuesa::ReflectionPlane> *list);
 };
 

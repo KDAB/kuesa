@@ -55,13 +55,13 @@ void SceneConfigurationItem::qmlAppendAnimation(QQmlListProperty<Kuesa::Animatio
     self->parentSceneConfiguration()->addAnimationPlayer(node);
 }
 
-Kuesa::AnimationPlayer *SceneConfigurationItem::qmlAnimationAt(QQmlListProperty<Kuesa::AnimationPlayer> *list, int index)
+Kuesa::AnimationPlayer *SceneConfigurationItem::qmlAnimationAt(QQmlListProperty<Kuesa::AnimationPlayer> *list, qt_size_type index)
 {
     SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
     return self->m_managedAnimations.at(size_t(index));
 }
 
-int SceneConfigurationItem::qmlAnimationCount(QQmlListProperty<Kuesa::AnimationPlayer> *list)
+qt_size_type SceneConfigurationItem::qmlAnimationCount(QQmlListProperty<Kuesa::AnimationPlayer> *list)
 {
     SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
     return int(self->m_managedAnimations.size());
@@ -92,13 +92,13 @@ void SceneConfigurationItem::qmlAppendTrackers(QQmlListProperty<Kuesa::Transform
     self->parentSceneConfiguration()->addTransformTracker(node);
 }
 
-Kuesa::TransformTracker *SceneConfigurationItem::qmlTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, int index)
+Kuesa::TransformTracker *SceneConfigurationItem::qmlTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, qt_size_type index)
 {
     SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
     return self->m_managedTrackers.at(size_t(index));
 }
 
-int SceneConfigurationItem::qmlTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list)
+qt_size_type SceneConfigurationItem::qmlTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list)
 {
     SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
     return int(self->m_managedTrackers.size());

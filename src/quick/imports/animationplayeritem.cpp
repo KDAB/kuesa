@@ -68,13 +68,13 @@ void AnimationPlayerItem::qmlAppendTarget(QQmlListProperty<Qt3DCore::QNode> *lis
     self->parentAnimationPlayer()->addTarget(node);
 }
 
-Qt3DCore::QNode *AnimationPlayerItem::qmlTargetAt(QQmlListProperty<Qt3DCore::QNode> *list, int index)
+Qt3DCore::QNode *AnimationPlayerItem::qmlTargetAt(QQmlListProperty<Qt3DCore::QNode> *list, qt_size_type index)
 {
     AnimationPlayerItem *self = static_cast<AnimationPlayerItem *>(list->object);
     return self->parentAnimationPlayer()->targets().at(index);
 }
 
-int AnimationPlayerItem::qmlTargetCount(QQmlListProperty<Qt3DCore::QNode> *list)
+qt_size_type AnimationPlayerItem::qmlTargetCount(QQmlListProperty<Qt3DCore::QNode> *list)
 {
     AnimationPlayerItem *self = static_cast<AnimationPlayerItem *>(list->object);
     return self->parentAnimationPlayer()->targets().size();

@@ -55,13 +55,13 @@ void View3DSceneItem::qmlAppendAnimation(QQmlListProperty<Kuesa::AnimationPlayer
     self->parent3DScene()->addAnimationPlayer(node);
 }
 
-Kuesa::AnimationPlayer *View3DSceneItem::qmlAnimationAt(QQmlListProperty<Kuesa::AnimationPlayer> *list, int index)
+Kuesa::AnimationPlayer *View3DSceneItem::qmlAnimationAt(QQmlListProperty<Kuesa::AnimationPlayer> *list, qt_size_type index)
 {
     View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
     return self->m_managedAnimations.at(size_t(index));
 }
 
-int View3DSceneItem::qmlAnimationCount(QQmlListProperty<Kuesa::AnimationPlayer> *list)
+qt_size_type View3DSceneItem::qmlAnimationCount(QQmlListProperty<Kuesa::AnimationPlayer> *list)
 {
     View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
     return int(self->m_managedAnimations.size());
@@ -92,13 +92,13 @@ void View3DSceneItem::qmlAppendTrackers(QQmlListProperty<Kuesa::TransformTracker
     self->parent3DScene()->addTransformTracker(node);
 }
 
-Kuesa::TransformTracker *View3DSceneItem::qmlTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, int index)
+Kuesa::TransformTracker *View3DSceneItem::qmlTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, qt_size_type index)
 {
     View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
     return self->m_managedTrackers.at(size_t(index));
 }
 
-int View3DSceneItem::qmlTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list)
+qt_size_type View3DSceneItem::qmlTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list)
 {
     View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
     return int(self->m_managedTrackers.size());

@@ -79,7 +79,7 @@ void ReflectionPlaneExtension::appendLayer(QQmlListProperty<Qt3DRender::QLayer> 
     return plane->addLayer(layer);
 }
 
-Qt3DRender::QLayer *ReflectionPlaneExtension::layerAt(QQmlListProperty<Qt3DRender::QLayer> *list, int index)
+Qt3DRender::QLayer *ReflectionPlaneExtension::layerAt(QQmlListProperty<Qt3DRender::QLayer> *list, qt_size_type index)
 {
     ReflectionPlaneExtension *self = static_cast<ReflectionPlaneExtension *>(list->object);
     ReflectionPlane *plane = reflectionPlane(self->parent());
@@ -88,7 +88,7 @@ Qt3DRender::QLayer *ReflectionPlaneExtension::layerAt(QQmlListProperty<Qt3DRende
     return plane->layers().at(index);
 }
 
-int ReflectionPlaneExtension::layersCount(QQmlListProperty<Qt3DRender::QLayer> *list)
+qt_size_type ReflectionPlaneExtension::layersCount(QQmlListProperty<Qt3DRender::QLayer> *list)
 {
     ReflectionPlaneExtension *self = static_cast<ReflectionPlaneExtension *>(list->object);
     ReflectionPlane *plane = reflectionPlane(self->parent());
