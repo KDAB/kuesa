@@ -604,6 +604,7 @@ bool PrimitiveBuilder::generateAttributes(QGeometry *geometry,
 bool PrimitiveBuilder::generateDracoAttributes(QGeometry *geometry,
                                          const Primitive &primitive)
 {
+#if defined(KUESA_DRACO_COMPRESSION)
     const BufferView &viewData = m_context->bufferView(primitive.dracoBufferViewIdx);
     draco::DecoderBuffer dBuffer;
     dBuffer.Init(viewData.bufferData.constData(), static_cast<size_t>(viewData.bufferData.size()));
@@ -696,6 +697,9 @@ bool PrimitiveBuilder::generateDracoAttributes(QGeometry *geometry,
     }
 
     return true;
+#else
+    return false;
+#endif
 }
 
 bool PrimitiveBuilder::generateMorphTargetAttributes(QGeometry *geometry,
