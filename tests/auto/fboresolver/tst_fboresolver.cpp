@@ -47,7 +47,6 @@ private Q_SLOTS:
         // THEN
         QVERIFY(resolver.source() == nullptr);
         QVERIFY(resolver.destination() == nullptr);
-        QCOMPARE(resolver.yFlip(), false);
         QCOMPARE(resolver.targetHasSamples(), false);
     }
 

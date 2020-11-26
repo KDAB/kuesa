@@ -64,15 +64,10 @@ layout(std140, binding = 1) uniform qt3d_command_uniforms {
   mat4 inverseModelViewProjectionMatrix;
 };
 
-
-layout(std140, binding = 2) uniform flip_controls {
-  float yFlip;
-};
-
 void main()
 {
     // Pass through the texture coords
-    texCoord = (yUpInFBO != 0.0 || yFlip == 0.0) ? vertexTexCoord : vec2(vertexTexCoord.x, 1.0 - vertexTexCoord.y);
+    texCoord = (yUpInFBO != 0.0) ? vertexTexCoord : vec2(vertexTexCoord.x, 1.0 - vertexTexCoord.y);
 
     // Calculate the clip-space coordinates
     gl_Position = modelViewProjection * vec4(vertexPosition, 1.0);

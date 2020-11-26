@@ -50,7 +50,6 @@ FBOResolver::FBOResolver(Qt3DCore::QNode *parent)
     : Qt3DRender::QRenderTargetSelector(parent)
     , m_material(new Qt3DRender::QMaterial(this))
     , m_sourceTextureParameter(new Qt3DRender::QParameter(this))
-    , m_yFlipTextureParameter(new Qt3DRender::QParameter(QStringLiteral("yFlip"), 0.0f, this))
     , m_shader(new Qt3DRender::QShaderProgram())
 {
     m_sourceTextureParameter->setName(QStringLiteral("source"));
@@ -83,7 +82,6 @@ FBOResolver::FBOResolver(Qt3DCore::QNode *parent)
 
     m_material->setEffect(effect);
     m_material->addParameter(m_sourceTextureParameter);
-    m_material->addParameter(m_yFlipTextureParameter);
 
     FullScreenQuad *fsQuad = new FullScreenQuad(m_material, this);
 
@@ -104,11 +102,6 @@ void FBOResolver::setDestination(Qt3DRender::QRenderTarget *destination)
     setTarget(destination);
 }
 
-void FBOResolver::setYFlip(bool yFlip)
-{
-    m_yFlipTextureParameter->setValue(yFlip ? 1.0f : 0.0f);
-}
-
 Qt3DRender::QAbstractTexture *FBOResolver::source() const
 {
     return m_sourceTextureParameter->value().value<Qt3DRender::QAbstractTexture *>();
@@ -117,11 +110,6 @@ Qt3DRender::QAbstractTexture *FBOResolver::source() const
 Qt3DRender::QRenderTarget *FBOResolver::destination() const
 {
     return Qt3DRender::QRenderTargetSelector:: target();
-}
-
-bool FBOResolver::yFlip() const
-{
-    return m_yFlipTextureParameter->value().toFloat() != 0.0f;
 }
 
 bool FBOResolver::targetHasSamples() const

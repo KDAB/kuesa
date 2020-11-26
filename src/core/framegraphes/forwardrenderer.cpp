@@ -931,7 +931,6 @@ void ForwardRenderer::setupRenderTargets(Qt3DRender::QRenderTargetSelector *scen
             m_msaaResolver->setParent(sceneTargetSelector);
             m_msaaResolver->setSource(FrameGraphUtils::findRenderTargetTexture(m_multisampleTarget, Qt3DRender::QRenderTargetOutput::Color0));
             m_msaaResolver->setDestination(m_renderTargets[0]);
-            m_msaaResolver->setYFlip(totalFXCount % 2 != 0);
         } else {
             // Blit into regular Tex2D FBO
             if (!m_blitFramebufferNodeFromMSToFBO0) {
@@ -965,9 +964,6 @@ void ForwardRenderer::setupRenderTargets(Qt3DRender::QRenderTargetSelector *scen
             m_rt0rt1Resolver->setParent(sceneTargetSelector);
             m_rt0rt1Resolver->setSource(FrameGraphUtils::findRenderTargetTexture(m_renderTargets[0], Qt3DRender::QRenderTargetOutput::Color0));
             m_rt0rt1Resolver->setDestination(m_renderTargets[1]);
-            // Set flip based on msaaResolver if used, otherwise we flip by default
-            // so that rt0 and rt1 contain exactly the same thing
-            m_rt0rt1Resolver->setYFlip(useMSAA ? m_msaaResolver->yFlip() : true);
         } else {
             // Blit FBO 0 to FBO 1 to be able to access stencil of the render in post fx
             if (!m_blitFramebufferNodeFromFBO0ToFBO1) {

@@ -62,17 +62,14 @@ public:
 
     void setSource(Qt3DRender::QAbstractTexture *source);
     void setDestination(Qt3DRender::QRenderTarget *destination);
-    void setYFlip(bool yFlip);
 
     Qt3DRender::QAbstractTexture *source() const;
     Qt3DRender::QRenderTarget *destination() const;
-    bool yFlip() const;
     bool targetHasSamples() const;
 
 private:
     Qt3DRender::QMaterial *m_material = nullptr;
     Qt3DRender::QParameter *m_sourceTextureParameter = nullptr;
-    Qt3DRender::QParameter *m_yFlipTextureParameter = nullptr;
     Qt3DRender::QShaderProgram *m_shader = nullptr;
 
     void updateFragmentShader();

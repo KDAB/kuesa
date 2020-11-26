@@ -60,9 +60,6 @@ public:
 
     float threshold() const;
 
-    void setYFlip(bool yFlip);
-    bool yFlip() const;
-
 public Q_SLOTS:
     void setThreshold(float threshold);
 
@@ -75,7 +72,6 @@ private:
 
     Qt3DRender::QParameter *m_thresholdParameter;
     Qt3DRender::QParameter *m_textureParam;
-    Qt3DRender::QParameter *m_yFlipParam;
     FullScreenQuad *m_fsQuad;
 };
 } // namespace Kuesa
