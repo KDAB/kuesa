@@ -56,11 +56,7 @@ int main(int argc, char *argv[])
     context->setContextProperty(QStringLiteral("_controller"), &controller);
     qmlRegisterType<KuesaUtils::OrbitCameraController>("Controllers", 1, 0, "OrbitCameraController");
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    view.setSource(QUrl("qrc:/main_qt6.qml"));
-#else
-    view.setSource(QUrl("qrc:/main_qt5.qml"));
-#endif
+    view.setSource(QUrl("qrc:/main.qml"));
     view.resize(1024, 512);
     view.show();
 

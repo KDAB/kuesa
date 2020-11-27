@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>kuesa-logo.png</file>
-        <file>main_qt6.qml</file>
-        <file>main_qt5.qml</file>
+        <file>main.qml</file>
     </qresource>
 </RCC>
