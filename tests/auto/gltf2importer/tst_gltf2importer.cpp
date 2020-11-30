@@ -81,6 +81,7 @@ private Q_SLOTS:
     void checkStatus()
     {
         // GIVEN
+        qRegisterMetaType<GLTF2Importer::Status>();
         GLTF2Importer importer;
         QSignalSpy statusChangedSpy(&importer, &GLTF2Importer::statusChanged);
 
