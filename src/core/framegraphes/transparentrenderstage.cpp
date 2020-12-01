@@ -48,7 +48,7 @@ QVector<Qt3DRender::QSortPolicy::SortType> sortTypes(bool backToFrontSorting)
     return { Qt3DRender::QSortPolicy::Material, Qt3DRender::QSortPolicy::Texture };
 }
 
-constexpr size_t MAX_RENDER_PASS_COUNT = 8;
+constexpr size_t MAX_RENDER_PASS_COUNT = 2;
 
 } // anonymous
 
