@@ -165,6 +165,6 @@ private Q_SLOTS:
     }
 };
 
-QTEST_APPLESS_MAIN(tst_NormalGenerator)
+QTEST_MAIN(tst_NormalGenerator)
 
 #include "tst_normalgenerator.moc"
