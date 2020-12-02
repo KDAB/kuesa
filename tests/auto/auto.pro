@@ -46,15 +46,15 @@ SUBDIRS = \
     placeholder \
     meshinstantiator
 
-qtHaveModule(quick):lessThan(QT_MAJOR_VERSION, 6) {
-    SUBDIRS += qml
+#qtHaveModule(quick):lessThan(QT_MAJOR_VERSION, 6) {
+#    SUBDIRS += qml
 
-    qtConfig(private_tests) {
-        SUBDIRS += \
-            assetitem \
-            forwardrendererextension
-    }
-}
+#    qtConfig(private_tests) {
+#        SUBDIRS += \
+#            assetitem \
+#            forwardrendererextension
+#    }
+#}
 
 #installed_cmake.depends = cmake
 
