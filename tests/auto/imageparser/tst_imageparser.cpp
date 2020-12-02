@@ -194,12 +194,20 @@ private Q_SLOTS:
         {
             Image image = context.image(2);
             QCOMPARE(image.url.scheme(), QStringLiteral("file"));
+#ifdef Q_OS_WINDOWS
+            QCOMPARE(image.url, QUrl("file:///C:/anImage.png"));
+#else
             QCOMPARE(image.url, QUrl("file:///anImage.png"));
+#endif
         }
         {
             Image image = context.image(3);
             QCOMPARE(image.url.scheme(), QStringLiteral("file"));
+#ifdef Q_OS_WINDOWS
+            QCOMPARE(image.url, QUrl("file:///C:/anImage.png"));
+#else
             QCOMPARE(image.url, QUrl("file:///anImage.png"));
+#endif
         }
         {
             Image image = context.image(4);
