@@ -303,7 +303,7 @@ SceneStages::SceneStages(Qt3DRender::QFrameGraphNode *parent)
     m_transparentStage = ScenePassPtr::create(ScenePass::Transparent);
     m_particleRenderStage = ParticleRenderStagePtr::create();
 
-    m_reflectiveEnabledParameter = new Qt3DRender::QParameter(QStringLiteral("isReflective"), false, this);
+    m_reflectiveEnabledParameter = new Qt3DRender::QParameter(QStringLiteral("isReflective"), QVariant(false), this);
     m_reflectivePlaneParameter = new Qt3DRender::QParameter(QStringLiteral("reflectionPlane"), QVector4D(), this);
 
     // Add parameters to ScenePasses
