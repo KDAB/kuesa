@@ -613,11 +613,6 @@ void ForwardRenderer::removeView(View *view)
         auto d = Qt3DCore::QNodePrivate::get(this);
         d->unregisterDestructionHelper(view);
         m_views.erase(it);
-
-        // Ensure we remove the View from the FG
-        view->setParent(Q_NODE_NULLPTR);
-        view->m_fxStages->setParent(Q_NODE_NULLPTR);
-
         reconfigureFrameGraph();
     }
 }
@@ -735,23 +730,13 @@ void ForwardRenderer::reconfigureFrameGraph()
     m_sceneStages->setParent(Q_NODE_NULLPTR);
     m_reflectionStages->setParent(Q_NODE_NULLPTR);
 
-    // Scene Stages
-    for (View *v : m_views)
-        v->setParent(Q_NODE_NULLPTR);
+    // Unparent previous Scene Stages
+    for (Qt3DCore::QNode *c : m_stagesRoot->childNodes())
+        c->setParent(Q_NODE_NULLPTR);
 
-    // Effects Stages
-    std::vector<View *> fxViews = m_views;
-    if (fxViews.empty())
-        fxViews.push_back(this);
-    size_t userFXCount = 0;
-
-    for (View *v : fxViews) {
-        v->m_fxStages->setParent(Q_NODE_NULLPTR);
-        userFXCount += v->m_fxs.size();
-    }
-    m_fxStages->setParent(Q_NODE_NULLPTR);
-    m_internalFXStages->setParent(Q_NODE_NULLPTR);
-
+    // Unparent Previous Effects Stages
+    for (Qt3DCore::QNode *c : m_effectsViewport->childNodes())
+        c->setParent(Q_NODE_NULLPTR);
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     m_debugOverlay->setParent(Q_NODE_NULLPTR);
@@ -780,6 +765,15 @@ void ForwardRenderer::reconfigureFrameGraph()
         for (View *v : m_views)
             v->setParent(m_stagesRoot);
     }
+
+    // Count User FX
+    std::vector<View *> fxViews = m_views;
+    if (fxViews.empty())
+        fxViews.push_back(this);
+    size_t userFXCount = 0;
+
+    for (View *v : fxViews)
+        userFXCount += v->m_fxs.size();
 
     // 2.3) Set up RenderTargets and optional Blits to RT[0] if using MSAA
     //      and blit between RT[0] and RT[1] to copy stencil mask
