@@ -46,6 +46,12 @@ SUBDIRS = \
 
 qtHaveModule(quick):lessThan(QT_MAJOR_VERSION, 6) {
     SUBDIRS += qml
+
+    qtConfig(private_tests) {
+        SUBDIRS += \
+            assetitem \
+            forwardrendererextension
+    }
 }
 
 #installed_cmake.depends = cmake
@@ -70,8 +76,6 @@ qtConfig(private_tests) {
         sceneparser \
         materialparser \
         skinparser \
-        forwardrendererextension \
-        assetitem \
         forwardrenderer \
         uri \
         metallicroughnesseffect \
