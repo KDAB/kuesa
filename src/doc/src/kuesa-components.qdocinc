@@ -6,10 +6,10 @@ designer facing part of the Kuesa workflow.
 \section3 Kuesa Digital Content Creation Plugins
 
 \list
-\li Blender 2.80
+\li Blender 2.80 or later
     \list
     \li \l {https://github.com/KhronosGroup/glTF-Blender-IO} { Blender 2.8 comes with an official glTF 2.0 export }
-    \li Kuesa add-on for Iro Materials support and dedicated glTF extensions for animations ...
+    \li Kuesa add-on for Iro Materials support and dedicated glTF extensions for animations, layers, reflections...
     \endlist
 \li Blender 2.79 (deprecated)
     \list
@@ -39,6 +39,7 @@ as a library on top of Qt 3D that provides:
 \li \l {Kuesa Iro Materials} {Iro Materials}
 \li \l {Asset Collections} {Asset collections to retrieve assets by name}
 \li \l {Kuesa post-processing effects} {Post Processing Effects}
+\li \l {Kuesa Reflection Planes} {Reflection Planes}
 \endlist
 
 \section3 Tools

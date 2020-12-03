@@ -50,6 +50,8 @@
     Note: You can get imperfect reflections when viewing your model from under,
     if your application allows the user to fully orbit around the model.
 
+    All the Iro Materials are compatbile with OpenGL, Vulkan, Metal and DirectX
+    when used with the latest Qt 3D version.
 
     \table 100%
         \row

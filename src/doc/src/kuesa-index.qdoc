@@ -83,26 +83,12 @@
 
     Kuesa relies on the Qt framework:
     \list
-    \li Kuesa requires the base \l {https://doc.qt.io/qt-5.12/supported-platforms.html} {Qt 5.12 requirements} and OpenGL supports.
-    \li Kuesa requires Qt 3D from Qt 5.12.8 or Qt 5.15
+    \li Kuesa requires the base \l {https://doc.qt.io/qt-5.15/supported-platforms.html} {Qt 5.12 requirements} and OpenGL supports.
+    \li Kuesa requires Qt 3D from Qt 5.15 or Qt 6.0
     \endlist
 
     \note Earlier Qt 3D versions can still be used but might be suffering from bugs
     that have been identified and fixed since.
-
-    \warning not all features are working with Qt 5.12.8.
-
-    Qt 3D suffers from a regression that prevents optional aspects (animations, logic) from running
-    A \l {https://codereview.qt-project.org/c/qt/qt3d/+/297123} {patch} fixes this
-
-    It can be installed by doing the following:
-    \list
-    \li Download and install Qt 5.12.8
-    \li clone Qt3D: git clone git@github.com:qt/qt3d.git
-    \li go to 5.12 branch: git checkout -t origin/5.12
-    \li open a console with Qt setup (should be installed with Qt)
-    \li go to the Qt3D directory, and type: qmake && make - j4 && make install (or qmake; jom; jom install on Windows)
-    \endlist
 
     \section2 OpenGL requirements
     \list
@@ -114,6 +100,10 @@
         \li For anti aliasing, ARB_texture_multisample and GL_EXT_color_buffer_half_float are required
         \endlist
     \endlist
+
+    \section2 Vulkan, Metal, DirectX requirements
+
+    If using Qt 6.0, Kuesa can alternatively run on top of Vulkan, Metal or DirectX.
 
     \section2 Optional Dependencies
 
