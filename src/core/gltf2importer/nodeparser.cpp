@@ -169,10 +169,12 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
                 node.layerIndices.push_back(layerId);
             }
         }
-    } else if (nodeExtensions.contains(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION)) {
+    }
+    if (nodeExtensions.contains(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION)) {
         const QJsonObject lightObject = nodeExtensions.value(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION).toObject();
         node.lightIdx = lightObject.value(KEY_KHR_PUNCTUAL_LIGHT).toInt(-1);
-    } else if (nodeExtensions.contains(KEY_KDAB_REFLECTION_PLANES_EXTENSION)) {
+    }
+    if (nodeExtensions.contains(KEY_KDAB_REFLECTION_PLANES_EXTENSION)) {
         const QJsonObject reflectionPlaneObject = nodeExtensions.value(KEY_KDAB_REFLECTION_PLANES_EXTENSION).toObject();
         const QJsonArray planeEquationValue = reflectionPlaneObject.value(KEY_PLANE).toArray();
         QVector4D planeEquation;

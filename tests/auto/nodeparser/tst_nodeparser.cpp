@@ -232,6 +232,31 @@ private Q_SLOTS:
         QCOMPARE(n.morphTargetWeights.at(1), 0.8f);
         QCOMPARE(n.name, QStringLiteral("Morphed"));
     }
+
+    void checkMultipleExtensionsOnNode()
+    {
+        // GIVEN
+        GLTF2Context context;
+        NodeParser parser;
+        QFile file(QStringLiteral(ASSETS "node_multi_extensions.gltf"));
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        const QJsonValue nodes = json.object().value(QLatin1String("nodes"));
+        QVERIFY(!json.isNull() && nodes.isArray());
+
+        // WHEN
+        const bool success = parser.parse(nodes.toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.treeNodeCount(), 1);
+
+        const TreeNode n = context.treeNode(0);
+        QCOMPARE(n.reflectionPlaneEquation, QVector4D(1.0f, 0.0f, 0.0f, 883.0f));
+        QCOMPARE(n.layerIndices, QVector<int>({0, 1, 2}));
+    }
 };
 
 QTEST_APPLESS_MAIN(tst_NodeParser)
