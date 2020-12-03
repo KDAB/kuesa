@@ -6,3 +6,4 @@
 docs/**/* -filter=lfs -diff=lfs -merge=lfs -text
 *.html diff
 *.css diff
+*.blend filter=lfs diff=lfs merge=lfs -text

@@ -41,49 +41,77 @@ Kuesa.SceneEntity {
         RenderSettings {
             activeFrameGraph: Kuesa.ForwardRenderer {
                 id: frameGraph
-                camera: mainCamera
                 clearColor: "white"
                 showDebugOverlay: true
-                reflectionPlanes: [
-                    Kuesa.ReflectionPlane {
-                        equation: Qt.vector4d(0, 1, 0, 0)
-                        layers: [sphereLayer.node]
+
+                views: [
+                    // Ground Plane
+                    Kuesa.View {
+                        camera: mainCamera.node
+                        layers: planeSceneLayer.node
+                    },
+                    // Scene and Reflection
+                    Kuesa.View {
+                        camera: mainCamera.node
+                        layers: mainSceneLayer.node
+                        reflectionPlanes: sceneReflectionPlane.node
                     }
                 ]
             }
         },
-        InputSettings { }
+        InputSettings { },
+        EnvironmentLight { // For PBR reflections
+            id: envLight
+
+            irradiance: TextureLoader {
+                source: "qrc:/wobbly_bridge_16f_irradiance.dds"
+                wrapMode {
+                    x: WrapMode.ClampToEdge
+                    y: WrapMode.ClampToEdge
+                }
+                generateMipMaps: false
+            }
+            specular: TextureLoader {
+                source: "qrc:/wobbly_bridge_16f_specular.dds"
+                wrapMode {
+                    x: WrapMode.ClampToEdge
+                    y: WrapMode.ClampToEdge
+                }
+                generateMipMaps: false
+            }
+        }
     ]
 
-    Camera {
-        id: mainCamera
-        position: Qt.vector3d(0.0, 0.0, 7.0)
-        upVector: Qt.vector3d(0.0, 1.0, 0.0)
-        viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
-        nearPlane: 0.01
-        farPlane: 1000.0
-    }
-
     Kuesa.Asset {
-        id: sphereLayer
+        id: mainCamera
+        collection: scene.cameras
+        name: "Camera_Orientation"
+    }
+    Kuesa.Asset {
+        id: mainSceneLayer
         collection: scene.layers
-        name: "SphereCollection"
+        name: "MainScene"
+    }
+    Kuesa.Asset {
+        id: planeSceneLayer
+        collection: scene.layers
+        name: "PlaneScene"
+    }
+    Kuesa.Asset {
+        id: sceneReflectionPlane
+        collection: scene.reflectionPlanes
+        name: "ReflectionPlane"
     }
 
     OrbitCameraController {
         id: controller
-        camera: frameGraph.camera
+        camera: mainCamera.node
         linearSpeed: 5
         lookSpeed: 180
     }
-
     Kuesa.GLTF2Importer {
         id: gltf2importer
         sceneEntity: scene
-        source: "file:///" + ASSETS + "manual/assets/PlanarReflections/reflection.gltf"
-    }
-
-    onLoadingDone: {
-        mainCamera.viewAll()
+        source: "file:///" + ASSETS + "manual/assets/PlanarReflections/reflections.gltf"
     }
 }

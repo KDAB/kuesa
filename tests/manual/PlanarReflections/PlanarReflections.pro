@@ -32,6 +32,7 @@ SOURCES += \
     main.cpp
 
 RESOURCES += \
-    main.qrc
+    main.qrc \
+    ../../../examples/kuesa/assets/envmaps/wobbly_bridge/envmap-wobbly-bridge-16f.qrc
 
 DEFINES += ASSETS=\\\"$$KUESA_ROOT/tests/\\\"
