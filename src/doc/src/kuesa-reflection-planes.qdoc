@@ -1,0 +1,168 @@
+/*
+    kuesa-reflection-planes.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \page kuesa-reflection-planes.html
+    \title Kuesa Reflection Planes
+
+    \brief Kuesa provides support for reflection planes provided in glTF files
+    through a custom glTF extension.
+
+    \since Kuesa 1.3
+
+    Kuesa provides support for reflection planes provided in glTF files
+    through a custom glTF extension.
+
+    \section1 Adding Reflection Planes to a glTF scene
+
+    \section2 Using Blender
+
+    Assuming the Kuesa Studio Blender addon has been installed, the use of
+    Reflection plane is straightforward.
+
+    \section3 Adding a Reflection Plane
+    \image blender_reflection_planes_step1.png
+
+    In Blender, reflection planes are found unded the Light Probe section.
+
+    \section3 Previewing Reflections
+
+    Once the plane has been positioned and scaled, make sure to select the
+    Rendered Viewport Shading.
+
+    \image blender_reflection_planes_step2.png
+
+    Next, go to the Object Data Properties tab of the Reflection Plane and
+    enable the Show Preview Plane checkbox.
+
+    \image blender_reflection_planes_step3.png
+
+    \section3 Exporting Reflection Planes
+
+    To export reflection planes, you only need to ensure that the
+    KDAB_kuesa_reflection_planes extension has been selected in the export
+    dialog.
+
+    \image blender_reflection_planes_step4.png
+
+    \section1 Retrieving Reflection Planes
+
+    When loading a glTF file using the \l [CPP] {Kuesa::GLTF2Importer}
+    {GLTF2Importer} referencing a \l [CPP] [Kuesa::SceneEntity] [SceneEntity],
+    all reflection planes found while parsing while be added to the \l [CPP]
+    [Kuesa::ReflectionPlaneCollection] [ReflectionPlaneCollection] of the scene
+    entity.
+
+    This then allows retrieving the \l [CPP] [Kuesa::ReflectionPlane]
+    [ReflectionPlane] instances by name, either directly from the \l [CPP]
+    [Kuesa::ReflectionPlaneCollection] [ReflectionPlaneCollection] if using C++
+    or though the use of the \l [QML] {Asset} element in QML.
+
+    \badcode
+
+    Kuesa::SceneEntity *sceneEntity = new Kuesa::SceneEntity();
+    Kuesa::GLTF2Importer *importer = new GLTF2Importer();
+
+    QObject::connect(sceneEntity, Kuesa::SceneEntity::loadingDone, [&] () {
+        Kuesa::ReflectionPlane *plane = sceneEntity->reflectionPlane("ReflectionPlane");
+        ...
+    });
+
+    importer->setSceneEntity(sceneEntity);
+    importer->setSource(QUrl("file:///reflections.gltf"));
+
+    \endcode
+
+    \badcode
+    import Kuesa 1.3 as Kuesa
+
+    Kuesa.SceneEntity {
+        id: scene
+        ...
+        Kuesa.GLTF2Importer {
+            id: gltf2importer
+            sceneEntity: scene
+            source: "file:///reflections.gltf"
+        }
+        Kuesa.Asset {
+            id: sceneReflectionPlane
+            collection: scene.reflectionPlanes
+            name: "ReflectionPlane"
+        }
+    }
+    \endcode
+
+    \section1 Configuring the Forward Renderer for Reflections
+
+    Once retrieved, the ReflectionPlane can be set on either the \l [CPP]
+    {Kuesa::ForwardRenderer} {ForwardRenderer} or the \l [CPP] {Kuesa::View}
+    {View} instances defined in the framegraph.
+
+    It should then be rendered. Please note however that for more advanced
+    cases, using \l {Kuesa Layers} [Layers] in conjunction with \l [CPP]
+    {Kuesa::Views} {Views} can give you more control on the order in which
+    rendering takes place. For instance, you might want to render the
+    reflections after having rendered a background plane.
+
+    \badcode
+
+    Kuesa::SceneEntity *sceneEntity = new Kuesa::SceneEntity();
+    Kuesa::ForwardRenderer *renderer = new Kuesa::ForwardRenderer();
+    Kuesa::GLTF2Importer *importer = new GLTF2Importer();
+
+    QObject::connect(sceneEntity, Kuesa::SceneEntity::loadingDone, [&] () {
+        Kuesa::ReflectionPlane *plane = sceneEntity->reflectionPlane("ReflectionPlane");
+        renderer->addReflectionPlane(plane);
+        ...
+    });
+    ...
+    \endcode
+
+    \badcode
+    import Kuesa 1.3 as Kuesa
+
+    Kuesa.SceneEntity {
+        id: scene
+        ...
+        components: [
+            RenderSettings {
+                activeFrameGraph: Kuesa.ForwardRenderer {
+                    id: frameGraph
+                    reflectionPlanes: [sceneReflectionPlane.node]
+                }
+            }
+         ]
+        ...
+        Kuesa.Asset {
+            id: sceneReflectionPlane
+            collection: scene.reflectionPlanes
+            name: "ReflectionPlane"
+        }
+    }
+    \endcode
+*/

@@ -105,6 +105,7 @@
         \li \l {https://github.com/KhronosGroup/glTF/blob/master/extensions/2.0/Khronos/KHR_draco_mesh_compression/README.md} {KHR_draco_mesh_compression}
         \li KDAB_custom_material for \l {Kuesa Iro Materials} {Iro Materials} export
         \li KDAB_kuesa_layers for \l {Kuesa Layers} {Qt 3D layer} export
+        \li KDAB_kuesa_reflection_planes for \l {Kuesa Reflection Planes} {Reflection Planes} export
         \endlist
     \endlist
 
@@ -123,6 +124,7 @@
     \li \l [CPP]{Kuesa::SkeletonCollection} {Skeletons}
     \li \l [CPP]{Kuesa::TextureCollection} {Textures}
     \li \l [CPP]{Kuesa::TextureImageCollection} {Images}
+    \li \l [CPP]{Kuesa::ReflectionPlaneCollection} {Reflection Planes}
     \endlist
 
     \section2 Kuesa Optimized Frame Graph
