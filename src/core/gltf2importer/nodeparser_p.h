@@ -52,12 +52,16 @@ class QJoint;
 } // namespace Qt3DCore
 
 namespace Kuesa {
+
+class ReflectionPlane;
+
 namespace GLTF2Import {
 
 class GLTF2Context;
 
 struct TreeNode {
     Qt3DCore::QEntity *entity = nullptr;
+    ReflectionPlane *reflectionPlane = nullptr;
     QVector<Qt3DCore::QJoint *> joints;
 
     struct TransformInfo {
@@ -87,6 +91,7 @@ struct TreeNode {
     QVector<int> childrenIndices;
     QVector<int> layerIndices;
     QVector<float> morphTargetWeights;
+    QVector4D reflectionPlaneEquation;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(TreeNode::TransformInfo::TransformBits)

@@ -174,6 +174,7 @@ private:
     void createLayers(const TreeNode &node);
     void createLight(const TreeNode &node);
     void createMesh(const TreeNode &node);
+    void createReflectionPlane(TreeNode &node);
 
     void createSkin(const TreeNode &node,
                     Qt3DCore::QArmature **armaturePtr,

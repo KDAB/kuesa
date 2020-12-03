@@ -599,7 +599,8 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
             KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION,
             KEY_KDAB_CUSTOM_MATERIAL,
             KEY_EXT_PROPERTY_ANIMATION_EXTENSION,
-            KEY_KHR_TEXTURE_TRANSFORM
+            KEY_KHR_TEXTURE_TRANSFORM,
+            KEY_KDAB_REFLECTION_PLANES_EXTENSION
         };
         for (const auto &e : qAsConst(extensions)) {
             if (supportedExtensions.contains(e))
@@ -689,6 +690,9 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
                     if (light)
                         addToCollectionWithUniqueName(m_sceneEntity->lights(), light->objectName(), light);
 
+                    if (treeNode.reflectionPlane)
+                        addToCollectionWithUniqueName(m_sceneEntity->reflectionPlanes(), treeNode.name, treeNode.reflectionPlane);
+
                     if (m_sceneEntity->transforms()) {
                         Qt3DCore::QTransform *transform = qobject_cast<Qt3DCore::QTransform *>(m_sceneEntity->transformForEntity(treeNode.name));
                         Q_ASSERT(transform != nullptr);
@@ -710,6 +714,9 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
                         auto light = componentFromEntity<Qt3DRender::QAbstractLight>(treeNode.entity);
                         if (light)
                             addToCollectionWithUniqueName(m_sceneEntity->lights(), QStringLiteral("KuesaLight_%1").arg(j), light);
+
+                        if (treeNode.reflectionPlane)
+                            addToCollectionWithUniqueName(m_sceneEntity->reflectionPlanes(), QStringLiteral("KuesaReflectionPlane_%1").arg(j), treeNode.reflectionPlane);
                     }
                     j++;
                 }
@@ -1044,6 +1051,7 @@ void GLTF2Parser::generateTreeNodeContent()
             createLayers(node);
             createLight(node);
             createMesh(node);
+            createReflectionPlane(node);
         }
 
         // Build Joint Content
@@ -1262,6 +1270,29 @@ void GLTF2Parser::createMesh(const TreeNode &node)
             }
         }
     }
+}
+
+void GLTF2Parser::createReflectionPlane(TreeNode &node)
+{
+    if (node.reflectionPlaneEquation.isNull())
+        return;
+
+    Kuesa::ReflectionPlane *reflectionPlane = new Kuesa::ReflectionPlane;
+
+    reflectionPlane->setEquation(node.reflectionPlaneEquation);
+
+    // If the node references Kuesa Layers, add them
+    const QVector<int> layerIds = node.layerIndices;
+    for (const qint32 layerId : layerIds) {
+        if (layerId >= 0 && layerId < qint32(m_context->layersCount())) {
+            const Layer &layer = m_context->layer(layerId);
+            Q_ASSERT(layer.layer); // Layers should already have been created
+            reflectionPlane->addLayer(layer.layer);
+        }
+    }
+
+    // Record reflection plane on node
+    node.reflectionPlane = reflectionPlane;
 }
 
 void GLTF2Parser::createSkin(const TreeNode &node,

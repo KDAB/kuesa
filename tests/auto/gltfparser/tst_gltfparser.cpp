@@ -867,10 +867,11 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(res != nullptr);
-        QCOMPARE(parser.context()->requiredExtensions().size(), 2);
-        QCOMPARE(parser.context()->usedExtension().size(), 2);
+        QCOMPARE(parser.context()->requiredExtensions().size(), 3);
+        QCOMPARE(parser.context()->usedExtension().size(), 3);
         QCOMPARE(parser.context()->usedExtension().front(), QLatin1String("KDAB_kuesa_layers"));
-        QCOMPARE(parser.context()->usedExtension().back(), QLatin1String("EXT_property_animation"));
+        QCOMPARE(parser.context()->usedExtension()[1], QLatin1String("EXT_property_animation"));
+        QCOMPARE(parser.context()->usedExtension().back(), QLatin1String("KDAB_kuesa_reflection_planes"));
     }
 
     void checkLayers_data()
@@ -980,6 +981,33 @@ private Q_SLOTS:
         QCOMPARE(spotLight->innerConeAngle(), 45);
         QCOMPARE(spotLight->outerConeAngle(), 90);
         QCOMPARE(spotLight->localDirection(), QVector3D(0.0, 0.0, -1.0));
+    }
+
+    void checkReflectionPlanes()
+    {
+        SceneEntity scene;
+        GLTF2Context ctx;
+        GLTF2Parser parser(&scene);
+
+        parser.setContext(&ctx);
+
+        // WHEN
+        const bool parsingSuccessful = parser.parse(QString(ASSETS "KDAB_reflection_planes/reflections.gltf"));
+
+        // THEN
+        QVERIFY(parsingSuccessful);
+
+        // WHEN
+        parser.generateContent();
+        Qt3DCore::QEntity *res = parser.contentRoot();
+
+        // THEN
+        QVERIFY(res != nullptr);
+        QCOMPARE(scene.reflectionPlanes()->size(), 1);
+
+        Kuesa::ReflectionPlane *reflectionPlane = qobject_cast<ReflectionPlane *>(scene.reflectionPlane("ReflectionPlane"));
+        QVERIFY(reflectionPlane);
+        QCOMPARE(reflectionPlane->equation(), QVector4D(1.0f, 0.0f, 0.0f, 883.0f));
     }
 
 #if defined(KUESA_DRACO_COMPRESSION)
