@@ -132,7 +132,8 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::TextureImageCollection>(uri, 1, 0, "TextureImageCollection", QStringLiteral("You are not supposed to create a TextureImageCollection"));
     qmlRegisterUncreatableType<Kuesa::AnimationMappingCollection>(uri, 1, 0, "AnimationMappingCollection", QStringLiteral("You are not supposed to create an AnimationMappingCollection"));
     qmlRegisterUncreatableType<Kuesa::AnimationClipCollection>(uri, 1, 0, "AnimationClipCollection", QStringLiteral("You are not supposed to create an AnimationClipCollection"));
-    qmlRegisterUncreatableType<Kuesa::TransformCollection>(uri, 1, 0, "TransformCollection", QStringLiteral("You are not supposed to create an TransformCollection"));
+    qmlRegisterUncreatableType<Kuesa::TransformCollection>(uri, 1, 0, "TransformCollection", QStringLiteral("You are not supposed to create a TransformCollection"));
+    qmlRegisterUncreatableType<Kuesa::ReflectionPlaneCollection>(uri, 1, 0, "ReflectionPlaneCollection", QStringLiteral("You are not supposed to create a ReflectionPlaneCollection"));
 
     // FrameGraphs
     Qt3DCore::Quick::registerExtendedType<Kuesa::ReflectionPlane, Kuesa::ReflectionPlaneExtension>("ReflectionPlane", "Kuesa/ReflectionPlane", uri, 1, 0, "ReflectionPlane");

@@ -30,6 +30,7 @@ SOURCES += \
     $$PWD/layercollection.cpp \
     $$PWD/lightcollection.cpp \
     $$PWD/meshcollection.cpp \
+    $$PWD/reflectionplanecollection.cpp \
     $$PWD/texturecollection.cpp \
     $$PWD/effectcollection.cpp \
     $$PWD/materialcollection.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     $$PWD/layercollection.h \
     $$PWD/lightcollection.h \
     $$PWD/meshcollection.h \
+    $$PWD/reflectionplanecollection.h \
     $$PWD/texturecollection.h \
     $$PWD/effectcollection.h \
     $$PWD/materialcollection.h \

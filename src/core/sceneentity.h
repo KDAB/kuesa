@@ -45,6 +45,7 @@
 #include <Kuesa/transformcollection.h>
 #include <Kuesa/textureimagecollection.h>
 #include <Kuesa/animationmappingcollection.h>
+#include <Kuesa/reflectionplanecollection.h>
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/effectproperties.h>
 
@@ -55,6 +56,8 @@ class QTextureLoader;
 }
 
 namespace Kuesa {
+
+class ReflectionPlane;
 
 namespace GLTF2Import {
 class GLTF2Parser;
@@ -78,6 +81,7 @@ class KUESASHARED_EXPORT SceneEntity : public Qt3DCore::QEntity
     Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLut READ brdfLut CONSTANT)
     Q_PROPERTY(Kuesa::LightCollection *lights READ lights NOTIFY loadingDone)
     Q_PROPERTY(Kuesa::TransformCollection *transforms READ transforms NOTIFY loadingDone)
+    Q_PROPERTY(Kuesa::ReflectionPlaneCollection *reflectionPlanes READ reflectionPlanes NOTIFY loadingDone)
 
 public:
     SceneEntity(Qt3DCore::QNode *parent = nullptr);
@@ -134,6 +138,9 @@ public:
     Kuesa::LightCollection *lights() const;
     Q_INVOKABLE Qt3DRender::QAbstractLight *light(const QString &name) const;
 
+    Kuesa::ReflectionPlaneCollection *reflectionPlanes() const;
+    Q_INVOKABLE Kuesa::ReflectionPlane *reflectionPlane(const QString &name) const;
+
 Q_SIGNALS:
     void loadingDone();
 
@@ -152,6 +159,7 @@ private:
     TransformCollection *m_transforms;
     TextureImageCollection *m_textureImages;
     AnimationMappingCollection *m_animationMappings;
+    ReflectionPlaneCollection *m_reflectionPlanes;
 
     Qt3DRender::QTextureLoader *m_brdfLUT;
 };

@@ -1,5 +1,5 @@
 /*
-    tst_sceneentity.cpp
+    reflectionplanecollection.cpp
 
     This file is part of Kuesa.
 
@@ -26,36 +26,29 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#ifndef KUESA_REFLECTIONPLANECOLLECTION_H
+#define KUESA_REFLECTIONPLANECOLLECTION_H
 
-#include <Kuesa/sceneentity.h>
+#include <Kuesa/abstractassetcollection.h>
+#include <Kuesa/kuesa_global.h>
+#include <Kuesa/reflectionplane.h>
 
-class tst_SceneEntity : public QObject
+QT_BEGIN_NAMESPACE
+
+namespace Kuesa {
+
+class KUESASHARED_EXPORT ReflectionPlaneCollection : public AbstractAssetCollection
 {
     Q_OBJECT
+public:
+    explicit ReflectionPlaneCollection(Qt3DCore::QNode *parent = nullptr);
+    ~ReflectionPlaneCollection();
 
-private Q_SLOTS:
-    void checkInitialState()
-    {
-        // GIVEN
-        Kuesa::SceneEntity sceneEntity;
-
-        // THEN
-        QVERIFY(sceneEntity.animationClips());
-        QVERIFY(sceneEntity.armatures());
-        QVERIFY(sceneEntity.effects());
-        QVERIFY(sceneEntity.layers());
-        QVERIFY(sceneEntity.materials());
-        QVERIFY(sceneEntity.meshes());
-        QVERIFY(sceneEntity.skeletons());
-        QVERIFY(sceneEntity.textures());
-        QVERIFY(sceneEntity.cameras());
-        QVERIFY(sceneEntity.entities());
-        QVERIFY(sceneEntity.textureImages());
-        QVERIFY(sceneEntity.animationMappings());
-        QVERIFY(sceneEntity.reflectionPlanes());
-    }
+    KUESA_ASSET_COLLECTION_IMPLEMENTATION(ReflectionPlane)
 };
 
-QTEST_GUILESS_MAIN(tst_SceneEntity)
-#include "tst_sceneentity.moc"
+} // namespace Kuesa
+
+QT_END_NAMESPACE
+
+#endif // KUESA_REFLECTIONPLANECOLLECTION_H

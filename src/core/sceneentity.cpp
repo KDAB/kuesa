@@ -109,6 +109,7 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     , m_transforms(new TransformCollection(this))
     , m_textureImages(new TextureImageCollection(this))
     , m_animationMappings(new AnimationMappingCollection(this))
+    , m_reflectionPlanes(new ReflectionPlaneCollection(this))
 {
     initResources();
 
@@ -365,6 +366,20 @@ Qt3DRender::QAbstractLight *SceneEntity::light(const QString &name) const
     return m_lights->find(name);
 }
 
+Kuesa::ReflectionPlaneCollection *SceneEntity::reflectionPlanes() const
+{
+    return m_reflectionPlanes;
+}
+
+/*!
+    Utility method returning an instance of Kuesa::ReflectionPlane
+    matching \a name (or nullptr if not found)
+ */
+ReflectionPlane *SceneEntity::reflectionPlane(const QString &name) const
+{
+    return m_reflectionPlanes->find(name);
+}
+
 /*!
     \brief Removes all assets from all the collections.
     \note Assets which are parented with the collection will be deleted.
@@ -384,6 +399,7 @@ void SceneEntity::clearCollections()
     m_entities->clear();
     m_textureImages->clear();
     m_animationMappings->clear();
+    m_reflectionPlanes->clear();
 }
 
 /*!
