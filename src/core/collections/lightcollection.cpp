@@ -40,7 +40,7 @@ using namespace Kuesa;
  * \since Kuesa 1.1
  * \inherits Kuesa::AbstractAssetCollection
  *
- * Kuesa::LightCollection manages a set of Qt3DRender::QCamera assets.
+ * Kuesa::LightCollection manages a set of Qt3DRender::QAbstractLight assets.
  */
 
 /*!
