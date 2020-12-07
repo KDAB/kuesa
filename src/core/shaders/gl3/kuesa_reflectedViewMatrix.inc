@@ -32,10 +32,11 @@ mat4 reflectionMatrix(vec4 n)
     vec4 n2 = n * n;
     // see https://www.euclideanspace.com/maths/geometry/affine/reflection/matrix/index.htm
     // http://khayyam.kaplinski.com/2011/09/reflective-water-with-glsl-part-i.html
-    return mat4(1.0 - 2 * n2.x, -2 * n.x * n.y, -2 * n.x * n.z, -2 * n.x * n.w,
-                -2 * n.x * n.y, 1.0 - 2 * n2.y, -2 * n.y * n.z, -2 * n.y * n.w,
-                -2 * n.x * n.z, -2 * n.y * n.z, 1.0 - 2 * n2.z, -2 * n.z * n.w,
-                0             , 0             , 0             ,  1);
+    // https://developer.arm.com/documentation/100140/0302/advanced-graphics-techniques/combining-reflections/about-combining-reflections
+    return mat4( 1.0 - 2 * n2.x,   -2 * n.x * n.y,     -2 * n.x * n.z,    0,
+                -2 * n.x * n.y,     1.0 - 2 * n2.y,    -2 * n.y * n.z,    0,
+                -2 * n.x * n.z,    -2 * n.y * n.z,      1.0 -2 * n2.z,    0,
+                -2 * n.x * n.w ,   -2 * n.y * n.w,     -2 * n.z * n.w,    1);
 }
 
 mat4 kuesa_reflectedViewMatrix(mat4 viewM, vec4 planeEquation, bool enabled)
@@ -44,5 +45,5 @@ mat4 kuesa_reflectedViewMatrix(mat4 viewM, vec4 planeEquation, bool enabled)
         return viewM;
 
     // planeEquation is (nx, ny, nz, w) where (x * nx + y * ny + z * nz + w = 0)
-    return reflectionMatrix(planeEquation) * viewM;
+    return viewM * reflectionMatrix(planeEquation);
 }
