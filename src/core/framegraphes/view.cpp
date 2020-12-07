@@ -118,6 +118,8 @@ View::View(Qt3DCore::QNode *parent)
     , m_reflectionStages(ReflectionStagesPtr::create())
     , m_fxStages(EffectsStagesPtr::create())
 {
+    QObject::connect(m_reflectionStages.data(), &ReflectionStages::reflectionTextureChanged,
+                     this, &View::reflectionTextureChanged);
     rebuildFGTree();
 }
 
@@ -247,6 +249,42 @@ bool View::particlesEnabled() const
     return m_features & Particles;
 }
 
+/*!
+    \property Kuesa::View::reflectionTexture
+
+    Returns a 2D texture containing the reflections obtained from the
+    reflection planes set for the View.
+*/
+
+/*!
+    \qmlproperty Qt3DRender.AbstractTexture Kuesa::View::reflectionTexture
+
+    Returns a 2D texture containing the reflections obtained from the
+    reflection planes set for the View.
+*/
+Qt3DRender::QAbstractTexture *View::reflectionTexture() const
+{
+    return m_reflectionStages->reflectionTexture();
+}
+
+/*!
+    \property Kuesa::View::reflectionTextureSize
+
+    The size of the reflectionTexture. Defaults to 512x512. Increasing the size
+    will lead to better reflections at the expense of more memory consumption.
+*/
+
+/*!
+    \qmlproperty size Kuesa::View::reflectionTextureSize
+
+    The size of the reflectionTexture. Defaults to 512x512. Increasing the size
+    will lead to better reflections at the expense of more memory consumption.
+*/
+QSize View::reflectionTextureSize() const
+{
+    Qt3DRender::QAbstractTexture *t = m_reflectionStages->reflectionTexture();
+    return {t->width(), t->height()};
+}
 
 /*!
     \qmlproperty list<AbstractPostProcessingEffect> Kuesa::ForwardRenderer::postProcessingEffects
@@ -481,6 +519,14 @@ void View::setParticlesEnabled(bool enabled)
     rebuildFGTree();
 }
 
+void View::setReflectionTextureSize(const QSize &reflectionTextureSize)
+{
+    if (this->reflectionTextureSize() == reflectionTextureSize)
+        return;
+    m_reflectionStages->setReflectionTextureSize(reflectionTextureSize);
+    emit reflectionTextureSizeChanged(reflectionTextureSize);
+}
+
 void View::scheduleFGTreeRebuild()
 {
     if (!m_fgTreeRebuiltScheduled) {
@@ -550,7 +596,10 @@ void View::reconfigureStages()
     m_reflectionStages->setCullingMode(Qt3DRender::QCullFace::Front);
 
     const bool needsReflections = m_reflectionPlanes.size() > 0;
+
     if (needsReflections) {
+        if (m_reflectionPlanes.size() > 1)
+            qCWarning(kuesa) << "Kuesa only handles a single reflection plane per View";
         // Remove layers
         const QVector<Qt3DRender::QLayer *> oldReflectionLayers = m_reflectionStages->layers();
         for (Qt3DRender::QLayer *l : oldLayers)

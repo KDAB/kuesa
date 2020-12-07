@@ -43,20 +43,11 @@ Kuesa.SceneEntity {
                 id: frameGraph
                 clearColor: "white"
                 showDebugOverlay: true
-
-                views: [
-                    // Ground Plane
-                    Kuesa.View {
-                        camera: mainCamera.node
-                        layers: planeSceneLayer.node
-                    },
-                    // Scene and Reflection
-                    Kuesa.View {
-                        camera: mainCamera.node
-                        layers: mainSceneLayer.node
-                        reflectionPlanes: sceneReflectionPlane.node
-                    }
-                ]
+                camera: mainCamera.node
+                // Kuesa currently only handles a single reflection plane
+                // per View
+                reflectionPlanes: [ sceneReflectionPlane.node ]
+                reflectionTextureSize: Qt.size(2048, 2048)
             }
         },
         InputSettings { },
@@ -101,6 +92,18 @@ Kuesa.SceneEntity {
         id: sceneReflectionPlane
         collection: scene.reflectionPlanes
         name: "ReflectionPlane"
+    }
+    Kuesa.Asset {
+        id: planeMaterial
+        collection: scene.materials
+        name: "Material.003"
+        onNodeChanged: {
+            if (node) {
+                console.log(node)
+                console.log(frameGraph.reflectionTexture)
+                node.baseColorMap = frameGraph.reflectionTexture
+            }
+        }
     }
 
     OrbitCameraController {

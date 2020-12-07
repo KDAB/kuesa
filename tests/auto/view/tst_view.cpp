@@ -127,6 +127,7 @@ private Q_SLOTS:
         QCOMPARE(view.layers().size(), 0U);
         QCOMPARE(view.postProcessingEffects().size(), 0U);
         QCOMPARE(view.reflectionPlanes().size(), 0U);
+        QCOMPARE(view.reflectionTextureSize(), QSize(512, 512));
     }
 
     void testChangingViewportRect()
@@ -488,6 +489,26 @@ private Q_SLOTS:
 
         // THEN -> Removed and doesn't crash
         QCOMPARE(view.reflectionPlanes().size(), size_t(0));
+    }
+
+    void testReflectionTextureResized()
+    {
+        // GIVEN
+        Kuesa::View view;
+
+        QSignalSpy reflectionTextureChangedSpy(&view, &Kuesa::View::reflectionTextureChanged);
+        QSignalSpy reflectionTextureSizeChangedSpy(&view, &Kuesa::View::reflectionTextureSizeChanged);
+
+        QVERIFY(reflectionTextureChangedSpy.isValid());
+        QVERIFY(reflectionTextureSizeChangedSpy.isValid());
+
+        // WHEN
+        view.setReflectionTextureSize({1024, 1024});
+
+        // THEN
+        QCOMPARE(reflectionTextureChangedSpy.count(), 1);
+        QCOMPARE(reflectionTextureSizeChangedSpy.count(), 1);
+        QCOMPARE(view.reflectionTextureSize(), QSize(1024, 1024));
     }
 
     void checkGeneratedFrameGraphTreeNoFxNoReflectionNoLayer()

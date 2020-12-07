@@ -42,40 +42,17 @@
 
 #include <Kuesa/private/kuesa_global_p.h>
 #include <Kuesa/private/scenestages_p.h>
-#include <QRectF>
 #include <QMetaObject>
 #include <QSharedPointer>
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DCore {
-class QNode;
-class QEntity;
-}
-
 namespace Qt3DRender {
-class QTechniqueFilter;
-class QRenderPassFilter;
-class QViewport;
-class QCameraSelector;
-class QNoDraw;
-class QSortPolicy;
-class QRenderTarget;
-class QBlitFramebuffer;
-class QLayerFilter;
-class QClearBuffers;
-class QFrameGraphNode;
-class QLayer;
-class QParameter;
+class QRenderTargetSelector;
+class QAbstractTexture;
 } // namespace Qt3DRender
 
 namespace Kuesa {
-
-class AbstractRenderStage;
-class OpaqueRenderStage;
-class TransparentRenderStage;
-class ZFillRenderStage;
-
 class KUESA_PRIVATE_EXPORT ReflectionStages : public SceneStages
 {
     Q_OBJECT
@@ -84,11 +61,17 @@ public:
     ~ReflectionStages();
 
     void setReflectivePlaneEquation(const QVector4D &planeEquation);
+    void setReflectionTextureSize(const QSize &size);
+
+    Qt3DRender::QAbstractTexture *reflectionTexture() const;
+
+signals:
+    void reflectionTextureChanged(Qt3DRender::QAbstractTexture *reflectionTexture);
 
 private:
     void reconfigure(const Features features) override;
 
-    Qt3DRender::QClearBuffers *m_clearDepth;
+    Qt3DRender::QRenderTargetSelector *m_renderTargetSelector = nullptr;
 };
 using ReflectionStagesPtr = QSharedPointer<ReflectionStages>;
 

@@ -28,19 +28,18 @@
 
 #include "reflectionstages_p.h"
 
-#include <Qt3DRender/qlayer.h>
-#include <Qt3DRender/qlayerfilter.h>
-#include <Qt3DRender/qcameraselector.h>
-#include <Qt3DRender/qviewport.h>
-#include <Qt3DRender/qtechniquefilter.h>
-#include <Qt3DRender/qparameter.h>
+#include <Qt3DRender/qrendertargetselector.h>
 #include <Qt3DRender/qclearbuffers.h>
 #include <Qt3DRender/qnodraw.h>
+#include <Qt3DRender/qparameter.h>
+#include <Qt3DRender/qviewport.h>
+#include <Qt3DRender/qrendertarget.h>
 #include <QVector4D>
 
 #include "zfillrenderstage_p.h"
 #include "opaquerenderstage_p.h"
 #include "transparentrenderstage_p.h"
+#include "framegraphutils_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -48,14 +47,23 @@ using namespace Kuesa;
 
 ReflectionStages::ReflectionStages(Qt3DRender::QFrameGraphNode *parent)
     : SceneStages(parent)
-    , m_clearDepth(nullptr)
 {
     // Enable Reflections on the SceneStages
     m_reflectiveEnabledParameter->setValue(true);
 
-    m_clearDepth = new Qt3DRender::QClearBuffers();
-    m_clearDepth->setBuffers(Qt3DRender::QClearBuffers::DepthBuffer);
-    new Qt3DRender::QNoDraw(m_clearDepth);
+    m_renderTargetSelector = new Qt3DRender::QRenderTargetSelector(this);
+    auto clearDepth = new Qt3DRender::QClearBuffers(m_renderTargetSelector);
+    clearDepth->setBuffers(Qt3DRender::QClearBuffers::ColorDepthBuffer);
+    new Qt3DRender::QNoDraw(clearDepth);
+
+    // Move regular SceneStage subtree root to be a child of the RenderTargetSelector
+    m_viewport->setParent(m_renderTargetSelector);
+
+    // Create Render Target
+    Qt3DRender::QRenderTarget *target = FrameGraphUtils::createRenderTarget(FrameGraphUtils::IncludeDepth,
+                                                                            m_renderTargetSelector,
+                                                                            {512, 512});
+    m_renderTargetSelector->setTarget(target);
 
     // Force initial configuration
     reconfigure(SceneFeaturedRenderStageBase::features());
@@ -71,19 +79,32 @@ void ReflectionStages::reconfigure(const Features features)
     Features editedFeatures = features;
     editedFeatures.setFlag(FrustumCulling, false);
 
-    // Remove Clear Node from hierarchy
-    m_clearDepth->setParent(Q_NODE_NULLPTR);
-
     // Rebuild FG hierarchy based on set features
     SceneStages::reconfigure(editedFeatures);
-
-    // Insert Clear Node again so as to clear Depth after having drawn reflections
-    m_clearDepth->setParent(this);
 }
 
 void ReflectionStages::setReflectivePlaneEquation(const QVector4D &planeEquation)
 {
     m_reflectivePlaneParameter->setValue(planeEquation);
+}
+
+void ReflectionStages::setReflectionTextureSize(const QSize &size)
+{
+    Qt3DRender::QRenderTarget *oldTarget = m_renderTargetSelector->target();
+    Qt3DRender::QRenderTarget *target = FrameGraphUtils::createRenderTarget(FrameGraphUtils::IncludeDepth,
+                                                                            m_renderTargetSelector,
+                                                                            size);
+    m_renderTargetSelector->setTarget(target);
+    emit reflectionTextureChanged(reflectionTexture());
+
+    if (oldTarget)
+        oldTarget->deleteLater();
+}
+
+Qt3DRender::QAbstractTexture *ReflectionStages::reflectionTexture() const
+{
+    return FrameGraphUtils::findRenderTargetTexture(m_renderTargetSelector->target(),
+                                                    Qt3DRender::QRenderTargetOutput::Color0);
 }
 
 QT_END_NAMESPACE

@@ -36,6 +36,7 @@
 #include <QVector4D>
 #include <Qt3DCore/QEntity>
 #include <Qt3DRender/QCullFace>
+#include <Qt3DRender/QAbstractTexture>
 
 class tst_View;
 class tst_ForwardRenderer;
@@ -64,6 +65,8 @@ class KUESASHARED_EXPORT View : public Qt3DRender::QFrameGraphNode
     Q_PROPERTY(bool backToFrontSorting READ backToFrontSorting WRITE setBackToFrontSorting NOTIFY backToFrontSortingChanged)
     Q_PROPERTY(bool zFilling READ zFilling WRITE setZFilling NOTIFY zFillingChanged)
     Q_PROPERTY(bool particlesEnabled READ particlesEnabled WRITE setParticlesEnabled NOTIFY particlesEnabledChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *reflectionTexture READ reflectionTexture NOTIFY reflectionTextureChanged)
+    Q_PROPERTY(QSize reflectionTextureSize READ reflectionTextureSize WRITE setReflectionTextureSize NOTIFY reflectionTextureSizeChanged)
 
 public:
     explicit View(Qt3DCore::QNode *parent = nullptr);
@@ -76,6 +79,8 @@ public:
     bool backToFrontSorting() const;
     bool zFilling() const;
     bool particlesEnabled() const;
+    Qt3DRender::QAbstractTexture *reflectionTexture() const;
+    QSize reflectionTextureSize() const;
 
     const std::vector<AbstractPostProcessingEffect *> &postProcessingEffects() const;
     const std::vector<Qt3DRender::QLayer *> &layers() const;
@@ -89,6 +94,7 @@ public Q_SLOTS:
     void setBackToFrontSorting(bool backToFrontSorting);
     void setZFilling(bool zfilling);
     void setParticlesEnabled(bool enabled);
+    void setReflectionTextureSize(const QSize &reflectionTextureSize);
 
     void addPostProcessingEffect(AbstractPostProcessingEffect *effect);
     void removePostProcessingEffect(AbstractPostProcessingEffect *effect);
@@ -107,6 +113,8 @@ Q_SIGNALS:
     void backToFrontSortingChanged(bool backToFrontSorting);
     void zFillingChanged(bool zFilling);
     void particlesEnabledChanged(bool enabled);
+    void reflectionTextureChanged(Qt3DRender::QAbstractTexture *reflectionTexture);
+    void reflectionTextureSizeChanged(const QSize &reflectionTextureSize);
 
 protected:
     void scheduleFGTreeRebuild();
