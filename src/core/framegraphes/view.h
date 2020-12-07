@@ -143,7 +143,7 @@ private:
 
     std::vector<ReflectionPlane *> m_reflectionPlanes;
 
-    Features m_features = Features(FrustumCulling|Skinning);
+    Features m_features = Features(FrustumCulling);
     bool m_fgTreeRebuiltScheduled = false;
 
     friend class ::tst_View;

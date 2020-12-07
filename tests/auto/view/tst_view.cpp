@@ -119,7 +119,7 @@ private Q_SLOTS:
         QCOMPARE(view.viewportRect(), QRectF(0.0f, 0.0f, 1.0f, 1.0f));
         QVERIFY(view.camera() == nullptr);
         QCOMPARE(view.frustumCulling(), true);
-        QCOMPARE(view.skinning(), true);
+        QCOMPARE(view.skinning(), false);
         QCOMPARE(view.backToFrontSorting(), false);
         QCOMPARE(view.zFilling(), false);
         QCOMPARE(view.particlesEnabled(), false);
@@ -223,28 +223,28 @@ private Q_SLOTS:
         QVERIFY(spy.isValid());
 
         // THEN
-        QVERIFY(view.skinning());
-
-        // WHEN
-        view.setSkinning(false);
-
-        // THEN
         QVERIFY(!view.skinning());
-        QCOMPARE(spy.count(), 1);
-
-        // WHEN
-        spy.clear();
-        view.setSkinning(false);
-
-        // THEN
-        QVERIFY(!view.skinning());
-        QCOMPARE(spy.count(), 0);
 
         // WHEN
         view.setSkinning(true);
 
         // THEN
         QVERIFY(view.skinning());
+        QCOMPARE(spy.count(), 1);
+
+        // WHEN
+        spy.clear();
+        view.setSkinning(true);
+
+        // THEN
+        QVERIFY(view.skinning());
+        QCOMPARE(spy.count(), 0);
+
+        // WHEN
+        view.setSkinning(false);
+
+        // THEN
+        QVERIFY(!view.skinning());
         QCOMPARE(spy.count(), 1);
     }
 
