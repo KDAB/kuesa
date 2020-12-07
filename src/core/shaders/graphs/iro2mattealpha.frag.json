@@ -18,13 +18,13 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{a738980b-d909-4cbe-8bc7-7a72cf3c9a00}"
+   "uuid": "{020fff21-9c96-4804-a38e-1e2e750e2b96}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "SEPXYZ",
-   "uuid": "{0eb975d4-36ac-4b4d-b214-741333c84fdb}"
+   "uuid": "{6892c9c7-d693-4fbb-b87b-ed4a4676b089}"
   },
   {
    "layers": [],
@@ -44,7 +44,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{254275b0-5790-4418-936d-6312281887fa}"
+   "uuid": "{212c793f-76e1-4114-a75d-89cdcd491850}"
   },
   {
    "layers": [],
@@ -64,13 +64,13 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{f6da1ade-8f38-4952-bbff-5081111ec55d}"
+   "uuid": "{1ca90ac8-5f69-434a-9552-df23130f83e4}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "VERTEX_COLOR",
-   "uuid": "{6440ecb0-0a8c-4096-8dff-6857a8d97197}"
+   "uuid": "{a5b5a14c-ab8b-4483-b53f-6da7a497340b}"
   },
   {
    "layers": [],
@@ -81,7 +81,7 @@
     }
    },
    "type": "MIX",
-   "uuid": "{7337a1a2-fedc-4b6d-93af-a1f44d4d47d9}"
+   "uuid": "{3a5c1760-d556-43af-88f5-e7171ae482fe}"
   },
   {
    "layers": [],
@@ -105,7 +105,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{682e89c1-3d24-417a-8fec-27e648e32a27}"
+   "uuid": "{2d573d38-ac63-49fe-8e83-47c2fa8d47c0}"
   },
   {
    "layers": [],
@@ -116,7 +116,7 @@
     }
    },
    "type": "MIX",
-   "uuid": "{0112bb48-adc5-4a6b-acb0-87ef0618a641}"
+   "uuid": "{996ee56d-3d24-465c-ba5f-b0b2213b2ce5}"
   },
   {
    "layers": [],
@@ -140,7 +140,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{4779dcd1-15dc-4f61-b648-07d160faae50}"
+   "uuid": "{b16881c0-bb91-4d5b-a4bf-fec68b02f223}"
   },
   {
    "layers": [],
@@ -164,7 +164,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{7321f938-e384-401e-8421-f5952dbbb695}"
+   "uuid": "{0215c579-4457-4535-b570-a38f5f54e757}"
   },
   {
    "layers": [],
@@ -184,37 +184,31 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{94c49f86-b3ae-4bef-9f07-c6022c1d87ac}"
-  },
-  {
-   "layers": [],
-   "parameters": {},
-   "type": "NEW_GEOMETRY",
-   "uuid": "{13704ae9-6aa8-40d5-9ba4-f2078e9161e7}"
+   "uuid": "{b780898e-1637-41b5-9411-ceaac7ed4a6b}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "CLAMP",
-   "uuid": "{f3224224-6d26-42c5-b43d-9a9798f2c53f}"
+   "uuid": "{b206b667-426c-41d1-8754-8fa6aaaab290}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "MATERIAL_OUTPUT",
-   "uuid": "{4e9c0878-9c9f-474a-a8f3-0f934129a035}"
+   "uuid": "{ac78a7f3-867f-4530-a6db-88e7289d2e9b}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "CLAMP_COLOR",
-   "uuid": "{61451c0f-9e65-4627-9b0b-72eb1f2a0543}"
+   "uuid": "{31be6ace-0050-45f5-b885-278bb460f093}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "BLEND_ALPHA",
-   "uuid": "{d77583fc-722f-43df-813e-7e35f592255b}"
+   "uuid": "{f043d907-f685-4a73-99ad-4612550ef35a}"
   },
   {
    "layers": [],
@@ -234,19 +228,19 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{696b4832-0852-4664-95d7-6619ae830068}"
+   "uuid": "{b52af442-0ff9-4f00-82f4-22de533d00b7}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "GLTF_YUP_CORRECTION",
-   "uuid": "{cd0e62b0-bf17-4488-96e0-7ffcaba032f3}"
+   "uuid": "{1fd070ac-635b-485c-992b-355b2589f6f0}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "SEPXYZ",
-   "uuid": "{41a7634e-66ab-4bfb-b2b4-a08ab489d57a}"
+   "uuid": "{77100009-652f-419b-96b8-ed460ed9e7c3}"
   },
   {
    "layers": [],
@@ -270,7 +264,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{b6601e82-d954-4a6c-92ae-0b0a3074fefc}"
+   "uuid": "{d8cd4f50-c7e9-4c20-8592-d17d19bcebb7}"
   },
   {
    "layers": [],
@@ -281,19 +275,13 @@
     }
    },
    "type": "MIX",
-   "uuid": "{01323a9e-f3c1-46dc-a95f-0f5945355da8}"
+   "uuid": "{787d8695-b638-4864-b908-94273471db7d}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "TEX_COORD",
-   "uuid": "{ba273c11-942f-4563-968d-1474538fe054}"
-  },
-  {
-   "layers": [],
-   "parameters": {},
-   "type": "MATERIAL_PROPERTIES",
-   "uuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}"
+   "uuid": "{0cd2a3b2-6254-40b3-8451-229c576922a8}"
   },
   {
    "layers": [],
@@ -304,13 +292,136 @@
     }
    },
    "type": "MIX",
-   "uuid": "{aa1fc5aa-8201-4273-a3f2-fabd3f696289}"
+   "uuid": "{fbb8ddaa-d099-47b3-8083-c2a368739335}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "clamp": {
+     "type": "QShaderLanguage::Bool",
+     "value": "false"
+    },
+    "operation": "*",
+    "firstType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Float"
+    },
+    "secondType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Float"
+    },
+    "outputType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Float"
+    }
+   },
+   "type": "BINARY_MATH_OPERATION",
+   "uuid": "{3e4c7854-5bda-478c-9104-52a2a25decad}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "clamp": {
+     "type": "QShaderLanguage::Bool",
+     "value": "false"
+    },
+    "operation": "*",
+    "firstType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Float"
+    },
+    "secondType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Float"
+    },
+    "outputType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Float"
+    }
+   },
+   "type": "BINARY_MATH_OPERATION",
+   "uuid": "{0569c823-802a-4885-87af-3c115f75be0a}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "operation": "+",
+    "firstType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    },
+    "secondType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    },
+    "outputType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    }
+   },
+   "type": "BINARY_MATH_OPERATION",
+   "uuid": "{ba055503-91ae-426b-8d27-cf92c524f560}"
+  },
+  {
+   "layers": [],
+   "parameters": {},
+   "type": "VEC3_TO_VEC2",
+   "uuid": "{5d43c94b-e3ab-4155-9b9b-a57faa45e140}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "operation": "+",
+    "firstType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    },
+    "secondType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    },
+    "outputType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    }
+   },
+   "type": "BINARY_MATH_OPERATION",
+   "uuid": "{381e25ca-c8ee-4e68-985e-64aa40110e5c}"
+  },
+  {
+   "layers": [],
+   "parameters": {},
+   "type": "VEC3_TO_VEC2",
+   "uuid": "{46581f6a-824a-41f6-a71f-ca5d5b26793c}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "defaultColor": "1.0, 1.0, 1.0, 1.0",
+    "name": "matteMap",
+    "condition": "usesMatteMap",
+    "linearizer": "sRGBtoLinear"
+   },
+   "type": "TEX_IMAGE",
+   "uuid": "{7592c5ae-9b05-486c-ac2a-c2d4b4f130ce}"
+  },
+  {
+   "layers": [],
+   "parameters": {},
+   "type": "NEW_GEOMETRY",
+   "uuid": "{d3f7a839-d5a0-43ae-b581-b17cbafff644}"
+  },
+  {
+   "layers": [],
+   "parameters": {},
+   "type": "MATERIAL_PROPERTIES",
+   "uuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "TEX_COORD",
-   "uuid": "{594d44e9-7251-4425-b8db-cc037c9700b7}"
+   "uuid": "{8a31868c-1b85-473b-8cf1-4ab21b53437b}"
   },
   {
    "layers": [],
@@ -330,7 +441,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{fbc588fb-df43-440b-9bf4-1c7099e15175}"
+   "uuid": "{c66d3cce-958b-41b9-93c1-8a768e44efd3}"
   },
   {
    "layers": [],
@@ -350,7 +461,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{5cd7234b-3b97-487d-9a73-63c45c8415cb}"
+   "uuid": "{48340ad6-09c9-47a8-84ed-c50e3248267e}"
   },
   {
    "layers": [],
@@ -370,7 +481,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{bf2db3db-bed1-4ad1-a8e1-f777ad6d392b}"
+   "uuid": "{72d8dcc7-e2fc-4e93-ad39-d57eb0df9079}"
   },
   {
    "layers": [],
@@ -381,55 +492,7 @@
     "linearizer": ""
    },
    "type": "TEX_IMAGE",
-   "uuid": "{479f96ca-9060-4633-93e5-5ddafdc5def5}"
-  },
-  {
-   "layers": [],
-   "parameters": {
-    "clamp": {
-     "type": "QShaderLanguage::Bool",
-     "value": "false"
-    },
-    "operation": "*",
-    "firstType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Float"
-    },
-    "secondType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Float"
-    },
-    "outputType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Float"
-    }
-   },
-   "type": "BINARY_MATH_OPERATION",
-   "uuid": "{2f83f135-679f-453b-bea3-a1f686da8cb4}"
-  },
-  {
-   "layers": [],
-   "parameters": {
-    "clamp": {
-     "type": "QShaderLanguage::Bool",
-     "value": "false"
-    },
-    "operation": "*",
-    "firstType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Float"
-    },
-    "secondType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Float"
-    },
-    "outputType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Float"
-    }
-   },
-   "type": "BINARY_MATH_OPERATION",
-   "uuid": "{76a9fae4-543b-4a22-87de-ec055bbf4779}"
+   "uuid": "{935f6621-8786-4b81-b09e-4033eb311548}"
   },
   {
    "layers": [],
@@ -449,70 +512,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{6b89e032-d9c6-41e9-a648-1cff993b174d}"
-  },
-  {
-   "layers": [],
-   "parameters": {},
-   "type": "VEC3_TO_VEC2",
-   "uuid": "{2e58ff29-ae32-4d3d-a52f-93edde8d9adf}"
-  },
-  {
-   "layers": [],
-   "parameters": {
-    "operation": "+",
-    "firstType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Vec3"
-    },
-    "secondType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Vec3"
-    },
-    "outputType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Vec3"
-    }
-   },
-   "type": "BINARY_MATH_OPERATION",
-   "uuid": "{996aae29-51c6-452c-8054-5c7bd4cb9087}"
-  },
-  {
-   "layers": [],
-   "parameters": {},
-   "type": "VEC3_TO_VEC2",
-   "uuid": "{ac15362b-c006-4a67-9cbe-5899e81c2c05}"
-  },
-  {
-   "layers": [],
-   "parameters": {
-    "defaultColor": "1.0, 1.0, 1.0, 1.0",
-    "name": "matteMap",
-    "condition": "usesMatteMap",
-    "linearizer": "sRGBtoLinear"
-   },
-   "type": "TEX_IMAGE",
-   "uuid": "{9b53a5db-59a0-435a-9efa-9242e521a87a}"
-  },
-  {
-   "layers": [],
-   "parameters": {
-    "operation": "+",
-    "firstType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Vec3"
-    },
-    "secondType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Vec3"
-    },
-    "outputType": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Vec3"
-    }
-   },
-   "type": "BINARY_MATH_OPERATION",
-   "uuid": "{1e319649-2092-4b5c-bb21-21e9ba248f2d}"
+   "uuid": "{796fa906-d501-4023-8b6e-7dbacb6c11db}"
   },
   {
    "layers": [],
@@ -532,7 +532,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{86cb55fc-b2d6-4d08-94b0-69e38492cc02}"
+   "uuid": "{85043a4f-f30c-4aee-8d5f-db89577b974c}"
   },
   {
    "layers": [],
@@ -552,7 +552,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{dcdbe094-4832-4f44-a730-8027969c36b4}"
+   "uuid": "{9f8037e0-6018-4248-9c71-e0a45a90fbc9}"
   },
   {
    "layers": [],
@@ -572,7 +572,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{bbe41953-fd0b-4e60-b40e-7d45ea243d3f}"
+   "uuid": "{c1c909e6-acee-4960-a692-730edb2a7b54}"
   },
   {
    "layers": [],
@@ -592,13 +592,27 @@
     }
    },
    "type": "UNARY_MATH_FUNCTION",
-   "uuid": "{9d245ebe-5877-40cf-bddc-6c33a4fb1872}"
+   "uuid": "{2589d5cb-42c6-4b87-8eba-139f08c5d43f}"
   },
   {
    "layers": [],
-   "parameters": {},
+   "parameters": {
+    "transformMatrix": "viewMatrix",
+    "preFactor": "vec3(1)",
+    "postFactor": "vec3(1, 1, -1)"
+   },
    "type": "VECT_TRANSFORM",
-   "uuid": "{5a575ef6-2576-4d2f-9102-5a929a357b2a}"
+   "uuid": "{1d6d326b-b51f-49af-ac12-8f1fc937606d}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "transformMatrix": "inverseViewMatrix",
+    "preFactor": "vec3(1, 1, -1)",
+    "postFactor": "vec3(1)"
+   },
+   "type": "VECT_TRANSFORM",
+   "uuid": "{69e608d4-a256-4125-88fe-647629c9d0cd}"
   },
   {
    "layers": [],
@@ -610,7 +624,7 @@
     }
    },
    "type": "constant",
-   "uuid": "{fe92f863-d241-49e4-ac62-27e4d691c52d}"
+   "uuid": "{7b625212-f80a-4ea5-8859-dea8ad2696b4}"
   },
   {
    "layers": [],
@@ -622,7 +636,7 @@
     }
    },
    "type": "constant",
-   "uuid": "{5ac2ad65-4ad8-4dc0-bd07-8fcd884e2ac5}"
+   "uuid": "{d5a40b17-aaea-490b-946b-4aaccbc74956}"
   },
   {
    "layers": [],
@@ -634,7 +648,7 @@
     }
    },
    "type": "constant",
-   "uuid": "{1942ce16-e255-4cc8-b640-fd8cbedd7f5d}"
+   "uuid": "{40d0a3d9-8795-4171-8467-ebf604868b12}"
   },
   {
    "layers": [],
@@ -646,7 +660,7 @@
     }
    },
    "type": "constant",
-   "uuid": "{0837f5c7-5831-4aba-80f9-8a8e2a59e00c}"
+   "uuid": "{cac11ea6-6064-46a7-9785-d62f37516c4d}"
   },
   {
    "layers": [],
@@ -658,7 +672,7 @@
     }
    },
    "type": "constant",
-   "uuid": "{49d7e960-9a6a-4674-81d2-4028aa1980d3}"
+   "uuid": "{75205e62-dc47-4357-8c7c-33b7c6d4b959}"
   },
   {
    "layers": [],
@@ -670,31 +684,7 @@
     }
    },
    "type": "constant",
-   "uuid": "{5dd44002-15c7-473a-aa6f-64d7b9c3928e}"
-  },
-  {
-   "layers": [],
-   "parameters": {
-    "constant": "2.0",
-    "type": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Float"
-    }
-   },
-   "type": "constant",
-   "uuid": "{19ea08b6-b9d8-4c73-afe4-9ea4d08f8f05}"
-  },
-  {
-   "layers": [],
-   "parameters": {
-    "constant": "1.0,1.0,1.0",
-    "type": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Vec3"
-    }
-   },
-   "type": "constant",
-   "uuid": "{b7c85936-1efe-42b6-b3e5-ff509375bcd5}"
+   "uuid": "{564679a3-4045-4fce-a6d8-6bb4564557ed}"
   },
   {
    "layers": [],
@@ -706,7 +696,31 @@
     }
    },
    "type": "constant",
-   "uuid": "{4029cd59-1b5f-4b98-9092-f4652b7baa32}"
+   "uuid": "{6efbee09-38ea-4d80-9553-1a234d9b137f}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "constant": "2.0",
+    "type": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Float"
+    }
+   },
+   "type": "constant",
+   "uuid": "{a52c578c-b678-4fff-a25a-7349f349d3ef}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "constant": "1.0,1.0,1.0",
+    "type": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    }
+   },
+   "type": "constant",
+   "uuid": "{e3ed329e-1fd0-426e-81ae-f6c0f67604f4}"
   },
   {
    "layers": [],
@@ -718,521 +732,528 @@
     }
    },
    "type": "constant",
-   "uuid": "{f778d92b-3e75-48f9-8ee3-264b4fe88927}"
+   "uuid": "{ebd8ba31-ca87-4b6e-859f-cec3c2464190}"
   }
  ],
  "edges": [
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "matteInnerFilter",
-   "targetUuid": "{0112bb48-adc5-4a6b-acb0-87ef0618a641}",
+   "targetUuid": "{996ee56d-3d24-465c-ba5f-b0b2213b2ce5}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "matteOuterFilter",
-   "targetUuid": "{0112bb48-adc5-4a6b-acb0-87ef0618a641}",
+   "targetUuid": "{996ee56d-3d24-465c-ba5f-b0b2213b2ce5}",
    "targetPort": "input2"
   },
   {
    "layers": [],
-   "sourceUuid": "{0112bb48-adc5-4a6b-acb0-87ef0618a641}",
+   "sourceUuid": "{996ee56d-3d24-465c-ba5f-b0b2213b2ce5}",
    "sourcePort": "mixed",
-   "targetUuid": "{254275b0-5790-4418-936d-6312281887fa}",
+   "targetUuid": "{212c793f-76e1-4114-a75d-89cdcd491850}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{254275b0-5790-4418-936d-6312281887fa}",
+   "sourceUuid": "{212c793f-76e1-4114-a75d-89cdcd491850}",
    "sourcePort": "output0",
-   "targetUuid": "{a738980b-d909-4cbe-8bc7-7a72cf3c9a00}",
+   "targetUuid": "{020fff21-9c96-4804-a38e-1e2e750e2b96}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{a738980b-d909-4cbe-8bc7-7a72cf3c9a00}",
+   "sourceUuid": "{020fff21-9c96-4804-a38e-1e2e750e2b96}",
    "sourcePort": "output0",
-   "targetUuid": "{6b89e032-d9c6-41e9-a648-1cff993b174d}",
+   "targetUuid": "{ba055503-91ae-426b-8d27-cf92c524f560}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{6b89e032-d9c6-41e9-a648-1cff993b174d}",
+   "sourceUuid": "{ba055503-91ae-426b-8d27-cf92c524f560}",
    "sourcePort": "output0",
-   "targetUuid": "{94c49f86-b3ae-4bef-9f07-c6022c1d87ac}",
+   "targetUuid": "{b780898e-1637-41b5-9411-ceaac7ed4a6b}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "matteGain",
-   "targetUuid": "{a738980b-d909-4cbe-8bc7-7a72cf3c9a00}",
+   "targetUuid": "{020fff21-9c96-4804-a38e-1e2e750e2b96}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{13704ae9-6aa8-40d5-9ba4-f2078e9161e7}",
+   "sourceUuid": "{d3f7a839-d5a0-43ae-b581-b17cbafff644}",
    "sourcePort": "normal",
-   "targetUuid": "{dcdbe094-4832-4f44-a730-8027969c36b4}",
-   "targetPort": "input0"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{dcdbe094-4832-4f44-a730-8027969c36b4}",
-   "sourcePort": "output0",
-   "targetUuid": "{bbe41953-fd0b-4e60-b40e-7d45ea243d3f}",
-   "targetPort": "input0"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{86cb55fc-b2d6-4d08-94b0-69e38492cc02}",
-   "sourcePort": "output0",
-   "targetUuid": "{bbe41953-fd0b-4e60-b40e-7d45ea243d3f}",
-   "targetPort": "input1"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{bbe41953-fd0b-4e60-b40e-7d45ea243d3f}",
-   "sourcePort": "output0",
-   "targetUuid": "{9d245ebe-5877-40cf-bddc-6c33a4fb1872}",
-   "targetPort": "input0"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{0eb975d4-36ac-4b4d-b214-741333c84fdb}",
-   "sourcePort": "z",
-   "targetUuid": "{7321f938-e384-401e-8421-f5952dbbb695}",
-   "targetPort": "input1"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{7321f938-e384-401e-8421-f5952dbbb695}",
-   "sourcePort": "output0",
-   "targetUuid": "{4779dcd1-15dc-4f61-b648-07d160faae50}",
-   "targetPort": "input0"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{7321f938-e384-401e-8421-f5952dbbb695}",
-   "sourcePort": "output0",
-   "targetUuid": "{4779dcd1-15dc-4f61-b648-07d160faae50}",
-   "targetPort": "input1"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{4779dcd1-15dc-4f61-b648-07d160faae50}",
-   "sourcePort": "output0",
-   "targetUuid": "{0112bb48-adc5-4a6b-acb0-87ef0618a641}",
-   "targetPort": "fac"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{9d245ebe-5877-40cf-bddc-6c33a4fb1872}",
-   "sourcePort": "output0",
-   "targetUuid": "{5a575ef6-2576-4d2f-9102-5a929a357b2a}",
+   "targetUuid": "{1d6d326b-b51f-49af-ac12-8f1fc937606d}",
    "targetPort": "input"
   },
   {
    "layers": [],
-   "sourceUuid": "{6440ecb0-0a8c-4096-8dff-6857a8d97197}",
+   "sourceUuid": "{9f8037e0-6018-4248-9c71-e0a45a90fbc9}",
+   "sourcePort": "output0",
+   "targetUuid": "{c1c909e6-acee-4960-a692-730edb2a7b54}",
+   "targetPort": "input0"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{85043a4f-f30c-4aee-8d5f-db89577b974c}",
+   "sourcePort": "output0",
+   "targetUuid": "{c1c909e6-acee-4960-a692-730edb2a7b54}",
+   "targetPort": "input1"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{c1c909e6-acee-4960-a692-730edb2a7b54}",
+   "sourcePort": "output0",
+   "targetUuid": "{2589d5cb-42c6-4b87-8eba-139f08c5d43f}",
+   "targetPort": "input0"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{6892c9c7-d693-4fbb-b87b-ed4a4676b089}",
+   "sourcePort": "z",
+   "targetUuid": "{0215c579-4457-4535-b570-a38f5f54e757}",
+   "targetPort": "input1"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{0215c579-4457-4535-b570-a38f5f54e757}",
+   "sourcePort": "output0",
+   "targetUuid": "{b16881c0-bb91-4d5b-a4bf-fec68b02f223}",
+   "targetPort": "input0"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{0215c579-4457-4535-b570-a38f5f54e757}",
+   "sourcePort": "output0",
+   "targetUuid": "{b16881c0-bb91-4d5b-a4bf-fec68b02f223}",
+   "targetPort": "input1"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{b16881c0-bb91-4d5b-a4bf-fec68b02f223}",
+   "sourcePort": "output0",
+   "targetUuid": "{996ee56d-3d24-465c-ba5f-b0b2213b2ce5}",
+   "targetPort": "fac"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{a5b5a14c-ab8b-4483-b53f-6da7a497340b}",
    "sourcePort": "color",
-   "targetUuid": "{7337a1a2-fedc-4b6d-93af-a1f44d4d47d9}",
+   "targetUuid": "{3a5c1760-d556-43af-88f5-e7171ae482fe}",
    "targetPort": "input2"
   },
   {
    "layers": [],
-   "sourceUuid": "{7337a1a2-fedc-4b6d-93af-a1f44d4d47d9}",
+   "sourceUuid": "{3a5c1760-d556-43af-88f5-e7171ae482fe}",
    "sourcePort": "mixed",
-   "targetUuid": "{f6da1ade-8f38-4952-bbff-5081111ec55d}",
+   "targetUuid": "{1ca90ac8-5f69-434a-9552-df23130f83e4}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "postVertexColor",
-   "targetUuid": "{7337a1a2-fedc-4b6d-93af-a1f44d4d47d9}",
+   "targetUuid": "{3a5c1760-d556-43af-88f5-e7171ae482fe}",
    "targetPort": "fac"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "postGain",
-   "targetUuid": "{f6da1ade-8f38-4952-bbff-5081111ec55d}",
+   "targetUuid": "{1ca90ac8-5f69-434a-9552-df23130f83e4}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{f6da1ade-8f38-4952-bbff-5081111ec55d}",
+   "sourceUuid": "{1ca90ac8-5f69-434a-9552-df23130f83e4}",
    "sourcePort": "output0",
-   "targetUuid": "{94c49f86-b3ae-4bef-9f07-c6022c1d87ac}",
+   "targetUuid": "{b780898e-1637-41b5-9411-ceaac7ed4a6b}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "innerAlpha",
-   "targetUuid": "{aa1fc5aa-8201-4273-a3f2-fabd3f696289}",
+   "targetUuid": "{fbb8ddaa-d099-47b3-8083-c2a368739335}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "outerAlpha",
-   "targetUuid": "{aa1fc5aa-8201-4273-a3f2-fabd3f696289}",
+   "targetUuid": "{fbb8ddaa-d099-47b3-8083-c2a368739335}",
    "targetPort": "input2"
   },
   {
    "layers": [],
-   "sourceUuid": "{4779dcd1-15dc-4f61-b648-07d160faae50}",
+   "sourceUuid": "{b16881c0-bb91-4d5b-a4bf-fec68b02f223}",
    "sourcePort": "output0",
-   "targetUuid": "{aa1fc5aa-8201-4273-a3f2-fabd3f696289}",
+   "targetUuid": "{fbb8ddaa-d099-47b3-8083-c2a368739335}",
    "targetPort": "fac"
   },
   {
    "layers": [],
-   "sourceUuid": "{aa1fc5aa-8201-4273-a3f2-fabd3f696289}",
+   "sourceUuid": "{fbb8ddaa-d099-47b3-8083-c2a368739335}",
    "sourcePort": "mixed",
-   "targetUuid": "{76a9fae4-543b-4a22-87de-ec055bbf4779}",
+   "targetUuid": "{0569c823-802a-4885-87af-3c115f75be0a}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{76a9fae4-543b-4a22-87de-ec055bbf4779}",
+   "sourceUuid": "{0569c823-802a-4885-87af-3c115f75be0a}",
    "sourcePort": "output0",
-   "targetUuid": "{682e89c1-3d24-417a-8fec-27e648e32a27}",
+   "targetUuid": "{2d573d38-ac63-49fe-8e83-47c2fa8d47c0}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "alphaGain",
-   "targetUuid": "{682e89c1-3d24-417a-8fec-27e648e32a27}",
+   "targetUuid": "{2d573d38-ac63-49fe-8e83-47c2fa8d47c0}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{d77583fc-722f-43df-813e-7e35f592255b}",
+   "sourceUuid": "{f043d907-f685-4a73-99ad-4612550ef35a}",
    "sourcePort": "shader",
-   "targetUuid": "{4e9c0878-9c9f-474a-a8f3-0f934129a035}",
+   "targetUuid": "{ac78a7f3-867f-4530-a6db-88e7289d2e9b}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "normalScaling",
-   "targetUuid": "{dcdbe094-4832-4f44-a730-8027969c36b4}",
+   "targetUuid": "{9f8037e0-6018-4248-9c71-e0a45a90fbc9}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{682e89c1-3d24-417a-8fec-27e648e32a27}",
+   "sourceUuid": "{2d573d38-ac63-49fe-8e83-47c2fa8d47c0}",
    "sourcePort": "output0",
-   "targetUuid": "{2f83f135-679f-453b-bea3-a1f686da8cb4}",
+   "targetUuid": "{3e4c7854-5bda-478c-9104-52a2a25decad}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{61451c0f-9e65-4627-9b0b-72eb1f2a0543}",
+   "sourceUuid": "{31be6ace-0050-45f5-b885-278bb460f093}",
    "sourcePort": "color_out",
-   "targetUuid": "{d77583fc-722f-43df-813e-7e35f592255b}",
+   "targetUuid": "{f043d907-f685-4a73-99ad-4612550ef35a}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{61451c0f-9e65-4627-9b0b-72eb1f2a0543}",
+   "sourceUuid": "{31be6ace-0050-45f5-b885-278bb460f093}",
    "sourcePort": "alpha_out",
-   "targetUuid": "{d77583fc-722f-43df-813e-7e35f592255b}",
+   "targetUuid": "{f043d907-f685-4a73-99ad-4612550ef35a}",
    "targetPort": "alpha"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "normalDisturb",
-   "targetUuid": "{1e319649-2092-4b5c-bb21-21e9ba248f2d}",
+   "targetUuid": "{796fa906-d501-4023-8b6e-7dbacb6c11db}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{1e319649-2092-4b5c-bb21-21e9ba248f2d}",
+   "sourceUuid": "{796fa906-d501-4023-8b6e-7dbacb6c11db}",
    "sourcePort": "output0",
-   "targetUuid": "{86cb55fc-b2d6-4d08-94b0-69e38492cc02}",
+   "targetUuid": "{85043a4f-f30c-4aee-8d5f-db89577b974c}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{b6601e82-d954-4a6c-92ae-0b0a3074fefc}",
+   "sourceUuid": "{d8cd4f50-c7e9-4c20-8592-d17d19bcebb7}",
    "sourcePort": "output0",
-   "targetUuid": "{f3224224-6d26-42c5-b43d-9a9798f2c53f}",
+   "targetUuid": "{b206b667-426c-41d1-8754-8fa6aaaab290}",
    "targetPort": "value"
   },
   {
    "layers": [],
-   "sourceUuid": "{f3224224-6d26-42c5-b43d-9a9798f2c53f}",
+   "sourceUuid": "{b206b667-426c-41d1-8754-8fa6aaaab290}",
    "sourcePort": "result",
-   "targetUuid": "{01323a9e-f3c1-46dc-a95f-0f5945355da8}",
+   "targetUuid": "{787d8695-b638-4864-b908-94273471db7d}",
    "targetPort": "fac"
   },
   {
    "layers": [],
-   "sourceUuid": "{01323a9e-f3c1-46dc-a95f-0f5945355da8}",
+   "sourceUuid": "{787d8695-b638-4864-b908-94273471db7d}",
    "sourcePort": "mixed",
-   "targetUuid": "{696b4832-0852-4664-95d7-6619ae830068}",
+   "targetUuid": "{b52af442-0ff9-4f00-82f4-22de533d00b7}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{cd0e62b0-bf17-4488-96e0-7ffcaba032f3}",
+   "sourceUuid": "{1fd070ac-635b-485c-992b-355b2589f6f0}",
    "sourcePort": "output",
-   "targetUuid": "{41a7634e-66ab-4bfb-b2b4-a08ab489d57a}",
+   "targetUuid": "{77100009-652f-419b-96b8-ed460ed9e7c3}",
    "targetPort": "vector"
   },
   {
    "layers": [],
-   "sourceUuid": "{41a7634e-66ab-4bfb-b2b4-a08ab489d57a}",
+   "sourceUuid": "{77100009-652f-419b-96b8-ed460ed9e7c3}",
    "sourcePort": "z",
-   "targetUuid": "{b6601e82-d954-4a6c-92ae-0b0a3074fefc}",
+   "targetUuid": "{d8cd4f50-c7e9-4c20-8592-d17d19bcebb7}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{94c49f86-b3ae-4bef-9f07-c6022c1d87ac}",
+   "sourceUuid": "{b780898e-1637-41b5-9411-ceaac7ed4a6b}",
    "sourcePort": "output0",
-   "targetUuid": "{696b4832-0852-4664-95d7-6619ae830068}",
+   "targetUuid": "{b52af442-0ff9-4f00-82f4-22de533d00b7}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{696b4832-0852-4664-95d7-6619ae830068}",
+   "sourceUuid": "{b52af442-0ff9-4f00-82f4-22de533d00b7}",
    "sourcePort": "output0",
-   "targetUuid": "{61451c0f-9e65-4627-9b0b-72eb1f2a0543}",
+   "targetUuid": "{31be6ace-0050-45f5-b885-278bb460f093}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "postHemiFilter",
-   "targetUuid": "{01323a9e-f3c1-46dc-a95f-0f5945355da8}",
+   "targetUuid": "{787d8695-b638-4864-b908-94273471db7d}",
    "targetPort": "input2"
   },
   {
    "layers": [],
-   "sourceUuid": "{ba273c11-942f-4563-968d-1474538fe054}",
+   "sourceUuid": "{0cd2a3b2-6254-40b3-8451-229c576922a8}",
    "sourcePort": "uv",
-   "targetUuid": "{996aae29-51c6-452c-8054-5c7bd4cb9087}",
+   "targetUuid": "{381e25ca-c8ee-4e68-985e-64aa40110e5c}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{996aae29-51c6-452c-8054-5c7bd4cb9087}",
+   "sourceUuid": "{381e25ca-c8ee-4e68-985e-64aa40110e5c}",
    "sourcePort": "output0",
-   "targetUuid": "{ac15362b-c006-4a67-9cbe-5899e81c2c05}",
+   "targetUuid": "{46581f6a-824a-41f6-a71f-ca5d5b26793c}",
    "targetPort": "vector3"
   },
   {
    "layers": [],
-   "sourceUuid": "{2e58ff29-ae32-4d3d-a52f-93edde8d9adf}",
+   "sourceUuid": "{5d43c94b-e3ab-4155-9b9b-a57faa45e140}",
    "sourcePort": "vector2",
-   "targetUuid": "{996aae29-51c6-452c-8054-5c7bd4cb9087}",
+   "targetUuid": "{381e25ca-c8ee-4e68-985e-64aa40110e5c}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "uvOffset",
-   "targetUuid": "{2e58ff29-ae32-4d3d-a52f-93edde8d9adf}",
+   "targetUuid": "{5d43c94b-e3ab-4155-9b9b-a57faa45e140}",
    "targetPort": "vector3"
   },
   {
    "layers": [],
-   "sourceUuid": "{594d44e9-7251-4425-b8db-cc037c9700b7}",
+   "sourceUuid": "{8a31868c-1b85-473b-8cf1-4ab21b53437b}",
    "sourcePort": "uv",
-   "targetUuid": "{479f96ca-9060-4633-93e5-5ddafdc5def5}",
+   "targetUuid": "{935f6621-8786-4b81-b09e-4033eb311548}",
    "targetPort": "vector"
   },
   {
    "layers": [],
-   "sourceUuid": "{ac15362b-c006-4a67-9cbe-5899e81c2c05}",
+   "sourceUuid": "{46581f6a-824a-41f6-a71f-ca5d5b26793c}",
    "sourcePort": "vector2",
-   "targetUuid": "{9b53a5db-59a0-435a-9efa-9242e521a87a}",
+   "targetUuid": "{7592c5ae-9b05-486c-ac2a-c2d4b4f130ce}",
    "targetPort": "vector"
   },
   {
    "layers": [],
-   "sourceUuid": "{9b53a5db-59a0-435a-9efa-9242e521a87a}",
+   "sourceUuid": "{7592c5ae-9b05-486c-ac2a-c2d4b4f130ce}",
    "sourcePort": "color",
-   "targetUuid": "{254275b0-5790-4418-936d-6312281887fa}",
+   "targetUuid": "{212c793f-76e1-4114-a75d-89cdcd491850}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{9b53a5db-59a0-435a-9efa-9242e521a87a}",
+   "sourceUuid": "{7592c5ae-9b05-486c-ac2a-c2d4b4f130ce}",
    "sourcePort": "alpha",
-   "targetUuid": "{76a9fae4-543b-4a22-87de-ec055bbf4779}",
+   "targetUuid": "{0569c823-802a-4885-87af-3c115f75be0a}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{fbc588fb-df43-440b-9bf4-1c7099e15175}",
+   "sourceUuid": "{c66d3cce-958b-41b9-93c1-8a768e44efd3}",
    "sourcePort": "output0",
-   "targetUuid": "{5cd7234b-3b97-487d-9a73-63c45c8415cb}",
+   "targetUuid": "{48340ad6-09c9-47a8-84ed-c50e3248267e}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{479f96ca-9060-4633-93e5-5ddafdc5def5}",
+   "sourceUuid": "{935f6621-8786-4b81-b09e-4033eb311548}",
    "sourcePort": "color",
-   "targetUuid": "{fbc588fb-df43-440b-9bf4-1c7099e15175}",
+   "targetUuid": "{c66d3cce-958b-41b9-93c1-8a768e44efd3}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{5cd7234b-3b97-487d-9a73-63c45c8415cb}",
+   "sourceUuid": "{48340ad6-09c9-47a8-84ed-c50e3248267e}",
    "sourcePort": "output0",
-   "targetUuid": "{bf2db3db-bed1-4ad1-a8e1-f777ad6d392b}",
+   "targetUuid": "{72d8dcc7-e2fc-4e93-ad39-d57eb0df9079}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "normalMapGain",
-   "targetUuid": "{bf2db3db-bed1-4ad1-a8e1-f777ad6d392b}",
+   "targetUuid": "{72d8dcc7-e2fc-4e93-ad39-d57eb0df9079}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{bf2db3db-bed1-4ad1-a8e1-f777ad6d392b}",
+   "sourceUuid": "{72d8dcc7-e2fc-4e93-ad39-d57eb0df9079}",
    "sourcePort": "output0",
-   "targetUuid": "{1e319649-2092-4b5c-bb21-21e9ba248f2d}",
+   "targetUuid": "{796fa906-d501-4023-8b6e-7dbacb6c11db}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{2f83f135-679f-453b-bea3-a1f686da8cb4}",
+   "sourceUuid": "{3e4c7854-5bda-478c-9104-52a2a25decad}",
    "sourcePort": "output0",
-   "targetUuid": "{61451c0f-9e65-4627-9b0b-72eb1f2a0543}",
+   "targetUuid": "{31be6ace-0050-45f5-b885-278bb460f093}",
    "targetPort": "alpha"
   },
   {
    "layers": [],
-   "sourceUuid": "{479f96ca-9060-4633-93e5-5ddafdc5def5}",
+   "sourceUuid": "{935f6621-8786-4b81-b09e-4033eb311548}",
    "sourcePort": "alpha",
-   "targetUuid": "{2f83f135-679f-453b-bea3-a1f686da8cb4}",
+   "targetUuid": "{3e4c7854-5bda-478c-9104-52a2a25decad}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{9d245ebe-5877-40cf-bddc-6c33a4fb1872}",
+   "sourceUuid": "{2589d5cb-42c6-4b87-8eba-139f08c5d43f}",
    "sourcePort": "output0",
-   "targetUuid": "{cd0e62b0-bf17-4488-96e0-7ffcaba032f3}",
+   "targetUuid": "{69e608d4-a256-4125-88fe-647629c9d0cd}",
    "targetPort": "input"
   },
   {
    "layers": [],
-   "sourceUuid": "{5a575ef6-2576-4d2f-9102-5a929a357b2a}",
-   "sourcePort": "transformed",
-   "targetUuid": "{0eb975d4-36ac-4b4d-b214-741333c84fdb}",
+   "sourceUuid": "{2589d5cb-42c6-4b87-8eba-139f08c5d43f}",
+   "sourcePort": "output0",
+   "targetUuid": "{6892c9c7-d693-4fbb-b87b-ed4a4676b089}",
    "targetPort": "vector"
   },
   {
    "layers": [],
-   "sourceUuid": "{fe92f863-d241-49e4-ac62-27e4d691c52d}",
-   "sourcePort": "value",
-   "targetUuid": "{7337a1a2-fedc-4b6d-93af-a1f44d4d47d9}",
-   "targetPort": "input1"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{5ac2ad65-4ad8-4dc0-bd07-8fcd884e2ac5}",
-   "sourcePort": "value",
-   "targetUuid": "{7321f938-e384-401e-8421-f5952dbbb695}",
+   "sourceUuid": "{1d6d326b-b51f-49af-ac12-8f1fc937606d}",
+   "sourcePort": "transformed",
+   "targetUuid": "{9f8037e0-6018-4248-9c71-e0a45a90fbc9}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{1942ce16-e255-4cc8-b640-fd8cbedd7f5d}",
+   "sourceUuid": "{69e608d4-a256-4125-88fe-647629c9d0cd}",
+   "sourcePort": "transformed",
+   "targetUuid": "{1fd070ac-635b-485c-992b-355b2589f6f0}",
+   "targetPort": "input"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{7b625212-f80a-4ea5-8859-dea8ad2696b4}",
    "sourcePort": "value",
-   "targetUuid": "{f3224224-6d26-42c5-b43d-9a9798f2c53f}",
+   "targetUuid": "{3a5c1760-d556-43af-88f5-e7171ae482fe}",
+   "targetPort": "input1"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{d5a40b17-aaea-490b-946b-4aaccbc74956}",
+   "sourcePort": "value",
+   "targetUuid": "{0215c579-4457-4535-b570-a38f5f54e757}",
+   "targetPort": "input0"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{40d0a3d9-8795-4171-8467-ebf604868b12}",
+   "sourcePort": "value",
+   "targetUuid": "{b206b667-426c-41d1-8754-8fa6aaaab290}",
    "targetPort": "min"
   },
   {
    "layers": [],
-   "sourceUuid": "{0837f5c7-5831-4aba-80f9-8a8e2a59e00c}",
+   "sourceUuid": "{cac11ea6-6064-46a7-9785-d62f37516c4d}",
    "sourcePort": "value",
-   "targetUuid": "{f3224224-6d26-42c5-b43d-9a9798f2c53f}",
+   "targetUuid": "{b206b667-426c-41d1-8754-8fa6aaaab290}",
    "targetPort": "max"
   },
   {
    "layers": [],
-   "sourceUuid": "{49d7e960-9a6a-4674-81d2-4028aa1980d3}",
+   "sourceUuid": "{75205e62-dc47-4357-8c7c-33b7c6d4b959}",
    "sourcePort": "value",
-   "targetUuid": "{b6601e82-d954-4a6c-92ae-0b0a3074fefc}",
+   "targetUuid": "{d8cd4f50-c7e9-4c20-8592-d17d19bcebb7}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{5dd44002-15c7-473a-aa6f-64d7b9c3928e}",
+   "sourceUuid": "{564679a3-4045-4fce-a6d8-6bb4564557ed}",
    "sourcePort": "value",
-   "targetUuid": "{01323a9e-f3c1-46dc-a95f-0f5945355da8}",
+   "targetUuid": "{787d8695-b638-4864-b908-94273471db7d}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{19ea08b6-b9d8-4c73-afe4-9ea4d08f8f05}",
+   "sourceUuid": "{6efbee09-38ea-4d80-9553-1a234d9b137f}",
    "sourcePort": "value",
-   "targetUuid": "{fbc588fb-df43-440b-9bf4-1c7099e15175}",
+   "targetUuid": "{ba055503-91ae-426b-8d27-cf92c524f560}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{b7c85936-1efe-42b6-b3e5-ff509375bcd5}",
+   "sourceUuid": "{a52c578c-b678-4fff-a25a-7349f349d3ef}",
    "sourcePort": "value",
-   "targetUuid": "{5cd7234b-3b97-487d-9a73-63c45c8415cb}",
+   "targetUuid": "{c66d3cce-958b-41b9-93c1-8a768e44efd3}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{4029cd59-1b5f-4b98-9092-f4652b7baa32}",
+   "sourceUuid": "{e3ed329e-1fd0-426e-81ae-f6c0f67604f4}",
    "sourcePort": "value",
-   "targetUuid": "{6b89e032-d9c6-41e9-a648-1cff993b174d}",
+   "targetUuid": "{48340ad6-09c9-47a8-84ed-c50e3248267e}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{f778d92b-3e75-48f9-8ee3-264b4fe88927}",
+   "sourceUuid": "{ebd8ba31-ca87-4b6e-859f-cec3c2464190}",
    "sourcePort": "value",
-   "targetUuid": "{86cb55fc-b2d6-4d08-94b0-69e38492cc02}",
+   "targetUuid": "{85043a4f-f30c-4aee-8d5f-db89577b974c}",
    "targetPort": "input1"
   },
   {
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
    "sourcePort": "gltfYUp",
-   "targetUuid": "{cd0e62b0-bf17-4488-96e0-7ffcaba032f3}",
+   "targetUuid": "{1fd070ac-635b-485c-992b-355b2589f6f0}",
    "targetPort": "gltfYUp"
   },
   {
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
-   "sourcePort": "usesNormalMap",
-   "targetUuid": "{479f96ca-9060-4633-93e5-5ddafdc5def5}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
+   "sourcePort": "usesMatteMap",
+   "targetUuid": "{7592c5ae-9b05-486c-ac2a-c2d4b4f130ce}",
    "targetPort": "useTexture"
   },
   {
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
-   "sourcePort": "normalMap",
-   "targetUuid": "{479f96ca-9060-4633-93e5-5ddafdc5def5}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
+   "sourcePort": "matteMap",
+   "targetUuid": "{7592c5ae-9b05-486c-ac2a-c2d4b4f130ce}",
    "targetPort": "texture"
   },
   {
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
-   "sourcePort": "usesMatteMap",
-   "targetUuid": "{9b53a5db-59a0-435a-9efa-9242e521a87a}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
+   "sourcePort": "usesNormalMap",
+   "targetUuid": "{935f6621-8786-4b81-b09e-4033eb311548}",
    "targetPort": "useTexture"
   },
   {
-   "sourceUuid": "{46397b3b-92e5-4812-a422-b0da97219a5c}",
-   "sourcePort": "matteMap",
-   "targetUuid": "{9b53a5db-59a0-435a-9efa-9242e521a87a}",
+   "sourceUuid": "{59b75783-b91e-41e7-aaf4-bcee0850bfe8}",
+   "sourcePort": "normalMap",
+   "targetUuid": "{935f6621-8786-4b81-b09e-4033eb311548}",
    "targetPort": "texture"
   }
  ],
@@ -1378,6 +1399,11 @@
    "outputs": [
     "transformed"
    ],
+   "parameters": {
+    "transformMatrix": "viewMatrix",
+    "preFactor": "vec3(1)",
+    "postFactor": "vec3(1)"
+   },
    "rules": [
     {
      "format": {
@@ -1389,9 +1415,10 @@
       "#ifndef VIEW_MATRIX",
       "#define VIEW_MATRIX",
       "uniform highp mat4 viewMatrix;",
+      "uniform highp mat4 inverseViewMatrix;",
       "#endif"
      ],
-     "substitution": "highp vec3 $transformed = (viewMatrix * vec4($input, 0.0)).xyz * vec3(1.0, 1.0, -1.0);"
+     "substitution": "highp vec3 $transformed = ($transformMatrix * vec4($input * $preFactor, 0.0)).xyz * $postFactor;"
     },
     {
      "format": {
@@ -1403,9 +1430,10 @@
       "#ifndef VIEW_MATRIX",
       "#define VIEW_MATRIX",
       "uniform mat4 viewMatrix;",
+      "uniform mat4 inverseViewMatrix;",
       "#endif"
      ],
-     "substitution": "vec3 $transformed = (viewMatrix * vec4($input, 0.0)).xyz * vec3(1.0, 1.0, -1.0);"
+     "substitution": "vec3 $transformed = ($transformMatrix * vec4($input * $preFactor, 0.0)).xyz * $postFactor;"
     },
     {
      "format": {
@@ -1438,7 +1466,7 @@
       "  };",
       "#endif"
      ],
-     "substitution": "vec3 $transformed = (viewMatrix * vec4($input, 0.0)).xyz * vec3(1.0, 1.0, -1.0);"
+     "substitution": "vec3 $transformed = ($transformMatrix * vec4($input * $preFactor, 0.0)).xyz * $postFactor;"
     }
    ]
   },
@@ -2647,6 +2675,8 @@
   "MATERIAL_PROPERTIES": {
    "outputs": [
     "gltfYUp",
+    "usesMatteMap",
+    "matteMap",
     "normalMapGain",
     "normalScaling",
     "normalDisturb",
@@ -2661,9 +2691,7 @@
     "postVertexColor",
     "postGain",
     "usesNormalMap",
-    "normalMap",
-    "usesMatteMap",
-    "matteMap"
+    "normalMap"
    ],
    "rules": [
     {
@@ -2673,9 +2701,9 @@
       "minor": 0
      },
      "headerSnippets": [
-      "struct MaterialProperties {\n    highp vec3 normalScaling;\n    highp vec3 normalDisturb;\n    highp vec3 uvOffset;\n    highp vec3 matteInnerFilter;\n    highp vec3 matteOuterFilter;\n    highp vec3 postHemiFilter;\n    highp float normalMapGain;\n    highp float matteGain;\n    highp float innerAlpha;\n    highp float outerAlpha;\n    highp float alphaGain;\n    highp float postVertexColor;\n    highp float postGain;\n    bool gltfYUp;\n    bool usesNormalMap;\n    bool usesMatteMap;\n};\nuniform MaterialProperties properties;\nuniform highp sampler2D normalMap;\nuniform highp sampler2D matteMap;\n"
+      "struct MaterialProperties {\n    highp vec3 normalScaling;\n    highp vec3 normalDisturb;\n    highp vec3 uvOffset;\n    highp vec3 matteInnerFilter;\n    highp vec3 matteOuterFilter;\n    highp vec3 postHemiFilter;\n    highp float normalMapGain;\n    highp float matteGain;\n    highp float innerAlpha;\n    highp float outerAlpha;\n    highp float alphaGain;\n    highp float postVertexColor;\n    highp float postGain;\n    bool gltfYUp;\n    bool usesMatteMap;\n    bool usesNormalMap;\n};\nuniform MaterialProperties properties;\nuniform highp sampler2D matteMap;\nuniform highp sampler2D normalMap;\n"
      ],
-     "substitution": "highp sampler2D $normalMap = normalMap;highp sampler2D $matteMap = matteMap;highp vec3 $normalScaling = properties.normalScaling;highp vec3 $normalDisturb = properties.normalDisturb;highp vec3 $uvOffset = properties.uvOffset;highp vec3 $matteInnerFilter = properties.matteInnerFilter;highp vec3 $matteOuterFilter = properties.matteOuterFilter;highp vec3 $postHemiFilter = properties.postHemiFilter;highp float $normalMapGain = properties.normalMapGain;highp float $matteGain = properties.matteGain;highp float $innerAlpha = properties.innerAlpha;highp float $outerAlpha = properties.outerAlpha;highp float $alphaGain = properties.alphaGain;highp float $postVertexColor = properties.postVertexColor;highp float $postGain = properties.postGain;bool $gltfYUp = properties.gltfYUp;bool $usesNormalMap = properties.usesNormalMap;bool $usesMatteMap = properties.usesMatteMap;"
+     "substitution": "highp sampler2D $matteMap = matteMap;highp sampler2D $normalMap = normalMap;highp vec3 $normalScaling = properties.normalScaling;highp vec3 $normalDisturb = properties.normalDisturb;highp vec3 $uvOffset = properties.uvOffset;highp vec3 $matteInnerFilter = properties.matteInnerFilter;highp vec3 $matteOuterFilter = properties.matteOuterFilter;highp vec3 $postHemiFilter = properties.postHemiFilter;highp float $normalMapGain = properties.normalMapGain;highp float $matteGain = properties.matteGain;highp float $innerAlpha = properties.innerAlpha;highp float $outerAlpha = properties.outerAlpha;highp float $alphaGain = properties.alphaGain;highp float $postVertexColor = properties.postVertexColor;highp float $postGain = properties.postGain;bool $gltfYUp = properties.gltfYUp;bool $usesMatteMap = properties.usesMatteMap;bool $usesNormalMap = properties.usesNormalMap;"
     },
     {
      "format": {
@@ -2684,9 +2712,9 @@
       "minor": 0
      },
      "headerSnippets": [
-      "struct MaterialProperties {\n    vec3 normalScaling;\n    vec3 normalDisturb;\n    vec3 uvOffset;\n    vec3 matteInnerFilter;\n    vec3 matteOuterFilter;\n    vec3 postHemiFilter;\n    float normalMapGain;\n    float matteGain;\n    float innerAlpha;\n    float outerAlpha;\n    float alphaGain;\n    float postVertexColor;\n    float postGain;\n    bool gltfYUp;\n    bool usesNormalMap;\n    bool usesMatteMap;\n};\nuniform MaterialProperties properties;\nuniform sampler2D normalMap;\nuniform sampler2D matteMap;\n"
+      "struct MaterialProperties {\n    vec3 normalScaling;\n    vec3 normalDisturb;\n    vec3 uvOffset;\n    vec3 matteInnerFilter;\n    vec3 matteOuterFilter;\n    vec3 postHemiFilter;\n    float normalMapGain;\n    float matteGain;\n    float innerAlpha;\n    float outerAlpha;\n    float alphaGain;\n    float postVertexColor;\n    float postGain;\n    bool gltfYUp;\n    bool usesMatteMap;\n    bool usesNormalMap;\n};\nuniform MaterialProperties properties;\nuniform sampler2D matteMap;\nuniform sampler2D normalMap;\n"
      ],
-     "substitution": "sampler2D $normalMap = normalMap;sampler2D $matteMap = matteMap;vec3 $normalScaling = properties.normalScaling;vec3 $normalDisturb = properties.normalDisturb;vec3 $uvOffset = properties.uvOffset;vec3 $matteInnerFilter = properties.matteInnerFilter;vec3 $matteOuterFilter = properties.matteOuterFilter;vec3 $postHemiFilter = properties.postHemiFilter;float $normalMapGain = properties.normalMapGain;float $matteGain = properties.matteGain;float $innerAlpha = properties.innerAlpha;float $outerAlpha = properties.outerAlpha;float $alphaGain = properties.alphaGain;float $postVertexColor = properties.postVertexColor;float $postGain = properties.postGain;bool $gltfYUp = properties.gltfYUp;bool $usesNormalMap = properties.usesNormalMap;bool $usesMatteMap = properties.usesMatteMap;"
+     "substitution": "sampler2D $matteMap = matteMap;sampler2D $normalMap = normalMap;vec3 $normalScaling = properties.normalScaling;vec3 $normalDisturb = properties.normalDisturb;vec3 $uvOffset = properties.uvOffset;vec3 $matteInnerFilter = properties.matteInnerFilter;vec3 $matteOuterFilter = properties.matteOuterFilter;vec3 $postHemiFilter = properties.postHemiFilter;float $normalMapGain = properties.normalMapGain;float $matteGain = properties.matteGain;float $innerAlpha = properties.innerAlpha;float $outerAlpha = properties.outerAlpha;float $alphaGain = properties.alphaGain;float $postVertexColor = properties.postVertexColor;float $postGain = properties.postGain;bool $gltfYUp = properties.gltfYUp;bool $usesMatteMap = properties.usesMatteMap;bool $usesNormalMap = properties.usesNormalMap;"
     },
     {
      "format": {
@@ -2695,9 +2723,9 @@
       "minor": 0
      },
      "headerSnippets": [
-      "struct MaterialProperties {\n    vec3 normalScaling;\n    vec3 normalDisturb;\n    vec3 uvOffset;\n    vec3 matteInnerFilter;\n    vec3 matteOuterFilter;\n    vec3 postHemiFilter;\n    float normalMapGain;\n    float matteGain;\n    float innerAlpha;\n    float outerAlpha;\n    float alphaGain;\n    float postVertexColor;\n    float postGain;\n    bool gltfYUp;\n    bool usesNormalMap;\n    bool usesMatteMap;\n};\nlayout(std140, binding = 2) uniform MaterialPropertiesBlock { MaterialProperties properties; };\nlayout(binding = 3) uniform sampler2D normalMap;\nlayout(binding = 4) uniform sampler2D matteMap;\n"
+      "struct MaterialProperties {\n    vec3 normalScaling;\n    vec3 normalDisturb;\n    vec3 uvOffset;\n    vec3 matteInnerFilter;\n    vec3 matteOuterFilter;\n    vec3 postHemiFilter;\n    float normalMapGain;\n    float matteGain;\n    float innerAlpha;\n    float outerAlpha;\n    float alphaGain;\n    float postVertexColor;\n    float postGain;\n    bool gltfYUp;\n    bool usesMatteMap;\n    bool usesNormalMap;\n};\nlayout(std140, binding = 2) uniform MaterialPropertiesBlock { MaterialProperties properties; };\nlayout(binding = 3) uniform sampler2D matteMap;\nlayout(binding = 4) uniform sampler2D normalMap;\n"
      ],
-     "substitution": "sampler2D $normalMap = normalMap;sampler2D $matteMap = matteMap;vec3 $normalScaling = properties.normalScaling;vec3 $normalDisturb = properties.normalDisturb;vec3 $uvOffset = properties.uvOffset;vec3 $matteInnerFilter = properties.matteInnerFilter;vec3 $matteOuterFilter = properties.matteOuterFilter;vec3 $postHemiFilter = properties.postHemiFilter;float $normalMapGain = properties.normalMapGain;float $matteGain = properties.matteGain;float $innerAlpha = properties.innerAlpha;float $outerAlpha = properties.outerAlpha;float $alphaGain = properties.alphaGain;float $postVertexColor = properties.postVertexColor;float $postGain = properties.postGain;bool $gltfYUp = properties.gltfYUp;bool $usesNormalMap = properties.usesNormalMap;bool $usesMatteMap = properties.usesMatteMap;"
+     "substitution": "sampler2D $matteMap = matteMap;sampler2D $normalMap = normalMap;vec3 $normalScaling = properties.normalScaling;vec3 $normalDisturb = properties.normalDisturb;vec3 $uvOffset = properties.uvOffset;vec3 $matteInnerFilter = properties.matteInnerFilter;vec3 $matteOuterFilter = properties.matteOuterFilter;vec3 $postHemiFilter = properties.postHemiFilter;float $normalMapGain = properties.normalMapGain;float $matteGain = properties.matteGain;float $innerAlpha = properties.innerAlpha;float $outerAlpha = properties.outerAlpha;float $alphaGain = properties.alphaGain;float $postVertexColor = properties.postVertexColor;float $postGain = properties.postGain;bool $gltfYUp = properties.gltfYUp;bool $usesMatteMap = properties.usesMatteMap;bool $usesNormalMap = properties.usesNormalMap;"
     }
    ]
   }
