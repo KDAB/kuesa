@@ -35,6 +35,7 @@
 #include <QRectF>
 #include <QVector4D>
 #include <Qt3DCore/QEntity>
+#include <Qt3DRender/QCullFace>
 
 class tst_View;
 class tst_ForwardRenderer;

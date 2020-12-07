@@ -61,8 +61,21 @@ ZFillRenderStage::ZFillRenderStage(Qt3DRender::QFrameGraphNode *parent)
     states->addRenderState(depthTest);
     auto msaa = new Qt3DRender::QMultiSampleAntiAliasing();
     states->addRenderState(msaa);
+    m_cullFace = new Qt3DRender::QCullFace;
+    m_cullFace->setMode(Qt3DRender::QCullFace::Back);
+    states->addRenderState(m_cullFace);
 }
 
 ZFillRenderStage::~ZFillRenderStage()
 {
+}
+
+void ZFillRenderStage::setCullingMode(Qt3DRender::QCullFace::CullingMode mode)
+{
+    m_cullFace->setMode(mode);
+}
+
+Qt3DRender::QCullFace::CullingMode ZFillRenderStage::cullingMode() const
+{
+    return m_cullFace->mode();
 }

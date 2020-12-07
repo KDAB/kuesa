@@ -44,6 +44,7 @@
 #include <QRectF>
 #include <QSharedPointer>
 #include <private/abstractrenderstage_p.h>
+#include <Qt3DRender/QCullFace>
 
 QT_BEGIN_NAMESPACE
 
@@ -136,6 +137,9 @@ public:
     void addParameter(Qt3DRender::QParameter *parameter);
     void removeParameter(Qt3DRender::QParameter *parameter);
 
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode cullingMode);
+    Qt3DRender::QCullFace::CullingMode cullingMode() const;
+
 private:
     void reconfigure(const Features features) override;
 
@@ -147,6 +151,7 @@ private:
     AbstractRenderStage *m_skinnedStage = nullptr;
 
     const SceneStageType m_type;
+    Qt3DRender::QCullFace::CullingMode m_cullingMode = Qt3DRender::QCullFace::NoCulling;
 };
 using ScenePassPtr = QSharedPointer<ScenePass>;
 
@@ -165,6 +170,9 @@ public:
     QRectF viewport() const;
 
     QVector<Qt3DRender::QLayer *> layers() const;
+
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode cullingMode);
+    Qt3DRender::QCullFace::CullingMode cullingMode() const;
 
 public Q_SLOTS:
     void addLayer(Qt3DRender::QLayer *layer);

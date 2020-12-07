@@ -170,6 +170,7 @@ private Q_SLOTS:
         QCOMPARE(p.zFilling(), false);
         QCOMPARE(p.frustumCulling(), false);
         QCOMPARE(p.backToFrontSorting(), false);
+        QCOMPARE(p.cullingMode(), Qt3DRender::QCullFace::NoCulling);
 
         // THEN -> No skinning, no frustum culling
         {
@@ -195,6 +196,7 @@ private Q_SLOTS:
             QCOMPARE(nonSkinnedTechniqueFilter->children().size(), 1);
             Kuesa::ZFillRenderStage *zFillStage = qobject_cast<Kuesa::ZFillRenderStage *>(nonSkinnedTechniqueFilter->childNodes().first());
             QVERIFY(zFillStage);
+            QCOMPARE(zFillStage->cullingMode(), Qt3DRender::QCullFace::NoCulling);
         }
 
         // WHEN
@@ -228,10 +230,12 @@ private Q_SLOTS:
             QCOMPARE(nonSkinnedTechniqueFilter->children().size(), 1);
             Kuesa::ZFillRenderStage *zFillStageNonSkinned = qobject_cast<Kuesa::ZFillRenderStage *>(nonSkinnedTechniqueFilter->childNodes().first());
             QVERIFY(zFillStageNonSkinned);
+            QCOMPARE(zFillStageNonSkinned->cullingMode(), Qt3DRender::QCullFace::NoCulling);
 
             QCOMPARE(skinnedTechniqueFilter->children().size(), 1);
             Kuesa::ZFillRenderStage *zFillStageSkinned = qobject_cast<Kuesa::ZFillRenderStage *>(skinnedTechniqueFilter->childNodes().first());
             QVERIFY(zFillStageSkinned);
+            QCOMPARE(zFillStageSkinned->cullingMode(), Qt3DRender::QCullFace::NoCulling);
         }
 
         // WHEN
@@ -267,10 +271,36 @@ private Q_SLOTS:
             QVERIFY(nonSkinnedFrustumCulling);
             Kuesa::ZFillRenderStage *zFillStageNonSkinned = qobject_cast<Kuesa::ZFillRenderStage *>(nonSkinnedFrustumCulling->childNodes().first());
             QVERIFY(zFillStageNonSkinned);
+            QCOMPARE(zFillStageNonSkinned->cullingMode(), Qt3DRender::QCullFace::NoCulling);
 
             QCOMPARE(skinnedTechniqueFilter->children().size(), 1);
             Kuesa::ZFillRenderStage *zFillStageSkinned = qobject_cast<Kuesa::ZFillRenderStage *>(skinnedTechniqueFilter->childNodes().first());
             QVERIFY(zFillStageSkinned);
+            QCOMPARE(zFillStageSkinned->cullingMode(), Qt3DRender::QCullFace::NoCulling);
+        }
+
+        // WHEN
+        p.setCullingMode(Qt3DRender::QCullFace::Back);
+
+        // THEN
+        {
+            Qt3DRender::QTechniqueFilter *nonSkinnedTechniqueFilter = qobject_cast<Qt3DRender::QTechniqueFilter *>(p.children()[3]);
+            QVERIFY(nonSkinnedTechniqueFilter);
+
+            Qt3DRender::QTechniqueFilter *skinnedTechniqueFilter = qobject_cast<Qt3DRender::QTechniqueFilter *>(p.childNodes().last());
+            QVERIFY(skinnedTechniqueFilter);
+
+            QCOMPARE(nonSkinnedTechniqueFilter->children().size(), 1);
+            Qt3DRender::QFrustumCulling *nonSkinnedFrustumCulling = qobject_cast<Qt3DRender::QFrustumCulling *>(nonSkinnedTechniqueFilter->childNodes().first());
+            QVERIFY(nonSkinnedFrustumCulling);
+            Kuesa::ZFillRenderStage *zFillStageNonSkinned = qobject_cast<Kuesa::ZFillRenderStage *>(nonSkinnedFrustumCulling->childNodes().first());
+            QVERIFY(zFillStageNonSkinned);
+            QCOMPARE(zFillStageNonSkinned->cullingMode(), Qt3DRender::QCullFace::Back);
+
+            QCOMPARE(skinnedTechniqueFilter->children().size(), 1);
+            Kuesa::ZFillRenderStage *zFillStageSkinned = qobject_cast<Kuesa::ZFillRenderStage *>(skinnedTechniqueFilter->childNodes().first());
+            QVERIFY(zFillStageSkinned);
+            QCOMPARE(zFillStageSkinned->cullingMode(), Qt3DRender::QCullFace::Back);
         }
     }
 
@@ -285,6 +315,7 @@ private Q_SLOTS:
         QCOMPARE(p.zFilling(), false);
         QCOMPARE(p.frustumCulling(), false);
         QCOMPARE(p.backToFrontSorting(), false);
+        QCOMPARE(p.cullingMode(), Qt3DRender::QCullFace::NoCulling);
 
         // THEN -> No ZFilling, No skinning, no frustum culling
         {
@@ -313,6 +344,7 @@ private Q_SLOTS:
             QVERIFY(opaqueStage);
 
             QCOMPARE(opaqueStage->zFilling(), false);
+            QCOMPARE(opaqueStage->cullingMode(), Qt3DRender::QCullFace::NoCulling);
         }
 
         // WHEN
@@ -344,6 +376,7 @@ private Q_SLOTS:
             Kuesa::OpaqueRenderStage *opaqueStage = qobject_cast<Kuesa::OpaqueRenderStage *>(nonSkinnedTechniqueFilter->childNodes().first());
             QVERIFY(opaqueStage);
             QCOMPARE(opaqueStage->zFilling(), true);
+            QCOMPARE(opaqueStage->cullingMode(), Qt3DRender::QCullFace::NoCulling);
         }
 
         // WHEN
@@ -379,10 +412,12 @@ private Q_SLOTS:
             Kuesa::OpaqueRenderStage *nonSkinnedOpaqueStage = qobject_cast<Kuesa::OpaqueRenderStage *>(nonSkinnedTechniqueFilter->childNodes().first());
             QVERIFY(nonSkinnedOpaqueStage);
             QCOMPARE(nonSkinnedOpaqueStage->zFilling(), true);
+            QCOMPARE(nonSkinnedOpaqueStage->cullingMode(), Qt3DRender::QCullFace::NoCulling);
 
             Kuesa::OpaqueRenderStage *skinnedOpaqueStage = qobject_cast<Kuesa::OpaqueRenderStage *>(skinnedTechniqueFilter->childNodes().first());
             QVERIFY(skinnedOpaqueStage);
             QCOMPARE(skinnedOpaqueStage->zFilling(), true);
+            QCOMPARE(skinnedOpaqueStage->cullingMode(), Qt3DRender::QCullFace::NoCulling);
         }
 
         // WHEN
@@ -422,10 +457,42 @@ private Q_SLOTS:
             Kuesa::OpaqueRenderStage *nonSkinnedOpaqueStage = qobject_cast<Kuesa::OpaqueRenderStage *>(nonSkinnedFrustumCulling->childNodes().first());
             QVERIFY(nonSkinnedOpaqueStage);
             QCOMPARE(nonSkinnedOpaqueStage->zFilling(), true);
+            QCOMPARE(nonSkinnedOpaqueStage->cullingMode(), Qt3DRender::QCullFace::NoCulling);
 
             Kuesa::OpaqueRenderStage *skinnedOpaqueStage = qobject_cast<Kuesa::OpaqueRenderStage *>(skinnedTechniqueFilter->childNodes().first());
             QVERIFY(skinnedOpaqueStage);
             QCOMPARE(skinnedOpaqueStage->zFilling(), true);
+            QCOMPARE(skinnedOpaqueStage->cullingMode(), Qt3DRender::QCullFace::NoCulling);
+        }
+
+        // WHEN
+        p.setCullingMode(Qt3DRender::QCullFace::Back);
+
+        // THEN
+        {
+            QCOMPARE(p.children().size(), 5);
+
+            Qt3DRender::QTechniqueFilter *nonSkinnedTechniqueFilter = qobject_cast<Qt3DRender::QTechniqueFilter *>(p.children()[3]);
+            QVERIFY(nonSkinnedTechniqueFilter);
+            QCOMPARE(nonSkinnedTechniqueFilter->children().size(), 1);
+
+            Qt3DRender::QTechniqueFilter *skinnedTechniqueFilter = qobject_cast<Qt3DRender::QTechniqueFilter *>(p.childNodes().last());
+            QVERIFY(skinnedTechniqueFilter);
+            QCOMPARE(skinnedTechniqueFilter->children().size(), 1);
+
+            Qt3DRender::QFrustumCulling *nonSkinnedFrustumCulling = qobject_cast<Qt3DRender::QFrustumCulling *>(nonSkinnedTechniqueFilter->childNodes().first());
+            QVERIFY(nonSkinnedFrustumCulling);
+            QCOMPARE(skinnedTechniqueFilter->children().size(), 1);
+
+            Kuesa::OpaqueRenderStage *nonSkinnedOpaqueStage = qobject_cast<Kuesa::OpaqueRenderStage *>(nonSkinnedFrustumCulling->childNodes().first());
+            QVERIFY(nonSkinnedOpaqueStage);
+            QCOMPARE(nonSkinnedOpaqueStage->zFilling(), true);
+            QCOMPARE(nonSkinnedOpaqueStage->cullingMode(), Qt3DRender::QCullFace::Back);
+
+            Kuesa::OpaqueRenderStage *skinnedOpaqueStage = qobject_cast<Kuesa::OpaqueRenderStage *>(skinnedTechniqueFilter->childNodes().first());
+            QVERIFY(skinnedOpaqueStage);
+            QCOMPARE(skinnedOpaqueStage->zFilling(), true);
+            QCOMPARE(skinnedOpaqueStage->cullingMode(), Qt3DRender::QCullFace::Back);
         }
     }
 
@@ -651,16 +718,19 @@ private Q_SLOTS:
             QVERIFY(zFillPass);
             QCOMPARE(zFillPass->type(), Kuesa::ScenePass::ZFill);
             QCOMPARE(zFillPass->zFilling(), true);
+            QCOMPARE(zFillPass->cullingMode(), Qt3DRender::QCullFace::NoCulling);
 
             Kuesa::ScenePass *opaquePass = qobject_cast<Kuesa::ScenePass *>(cameraSelector->children()[1]);
             QVERIFY(opaquePass);
             QCOMPARE(opaquePass->type(), Kuesa::ScenePass::Opaque);
             QCOMPARE(opaquePass->zFilling(), true);
+            QCOMPARE(opaquePass->cullingMode(), Qt3DRender::QCullFace::NoCulling);
 
             Kuesa::ScenePass *transparentPass = qobject_cast<Kuesa::ScenePass *>(cameraSelector->children().last());
             QVERIFY(transparentPass);
             QCOMPARE(transparentPass->type(), Kuesa::ScenePass::Transparent);
             QCOMPARE(transparentPass->zFilling(), true);
+            QCOMPARE(transparentPass->cullingMode(), Qt3DRender::QCullFace::NoCulling);
         }
 
         // WHEN
@@ -699,16 +769,19 @@ private Q_SLOTS:
                 QVERIFY(zFillPass);
                 QCOMPARE(zFillPass->type(), Kuesa::ScenePass::ZFill);
                 QCOMPARE(zFillPass->zFilling(), true);
+                QCOMPARE(zFillPass->cullingMode(), Qt3DRender::QCullFace::NoCulling);
 
                 Kuesa::ScenePass *opaquePass = qobject_cast<Kuesa::ScenePass *>(layerFilter->children()[2]);
                 QVERIFY(opaquePass);
                 QCOMPARE(opaquePass->type(), Kuesa::ScenePass::Opaque);
                 QCOMPARE(opaquePass->zFilling(), true);
+                QCOMPARE(opaquePass->cullingMode(), Qt3DRender::QCullFace::NoCulling);
 
                 Kuesa::ScenePass *transparentPass = qobject_cast<Kuesa::ScenePass *>(layerFilter->children().last());
                 QVERIFY(transparentPass);
                 QCOMPARE(transparentPass->type(), Kuesa::ScenePass::Transparent);
                 QCOMPARE(transparentPass->zFilling(), true);
+                QCOMPARE(transparentPass->cullingMode(), Qt3DRender::QCullFace::NoCulling);
             }
 
             // THEN -> layer destroyed
@@ -745,6 +818,39 @@ private Q_SLOTS:
             QVERIFY(transparentPass);
             QCOMPARE(transparentPass->type(), Kuesa::ScenePass::Transparent);
             QCOMPARE(transparentPass->zFilling(), true);
+        }
+
+        // WHEN
+        stages.setCullingMode(Qt3DRender::QCullFace::Front);
+
+        // THEN
+        {
+            QCOMPARE(stages.children().size(), 3);
+            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(stages.children().first());
+            QVERIFY(vp);
+
+            QCOMPARE(vp->children().size(), 1);
+            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(vp->children().first());
+            QVERIFY(cameraSelector);
+
+            QCOMPARE(cameraSelector->children().size(), 3);
+            Kuesa::ScenePass *zFillPass = qobject_cast<Kuesa::ScenePass *>(cameraSelector->children().first());
+            QVERIFY(zFillPass);
+            QCOMPARE(zFillPass->type(), Kuesa::ScenePass::ZFill);
+            QCOMPARE(zFillPass->zFilling(), true);
+            QCOMPARE(zFillPass->cullingMode(), Qt3DRender::QCullFace::Front);
+
+            Kuesa::ScenePass *opaquePass = qobject_cast<Kuesa::ScenePass *>(cameraSelector->children()[1]);
+            QVERIFY(opaquePass);
+            QCOMPARE(opaquePass->type(), Kuesa::ScenePass::Opaque);
+            QCOMPARE(opaquePass->zFilling(), true);
+            QCOMPARE(opaquePass->cullingMode(), Qt3DRender::QCullFace::Front);
+
+            Kuesa::ScenePass *transparentPass = qobject_cast<Kuesa::ScenePass *>(cameraSelector->children().last());
+            QVERIFY(transparentPass);
+            QCOMPARE(transparentPass->type(), Kuesa::ScenePass::Transparent);
+            QCOMPARE(transparentPass->zFilling(), true);
+            QCOMPARE(transparentPass->cullingMode(), Qt3DRender::QCullFace::NoCulling);
         }
     }
 };

@@ -513,6 +513,7 @@ void View::reconfigureStages()
     m_sceneStages->setParticlesEnabled(useParticles);
     m_sceneStages->setCamera(m_camera);
     m_sceneStages->setViewport(m_viewport);
+    m_sceneStages->setCullingMode(Qt3DRender::QCullFace::Back);
 
     // Update layers on sceneStages
     // Remove old layers
@@ -545,6 +546,8 @@ void View::reconfigureStages()
     m_reflectionStages->setFrustumCulling(useFrustumCulling);
     m_reflectionStages->setCamera(m_camera);
     m_reflectionStages->setViewport(m_viewport);
+    // We need to cull Front faces for reflections
+    m_reflectionStages->setCullingMode(Qt3DRender::QCullFace::Front);
 
     const bool needsReflections = m_reflectionPlanes.size() > 0;
     if (needsReflections) {

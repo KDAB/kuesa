@@ -58,6 +58,7 @@ private Q_SLOTS:
         Qt3DRender::QColorMask *colorMask = stage.findChild<Qt3DRender::QColorMask *>();
         Qt3DRender::QMultiSampleAntiAliasing *msaa = stage.findChild<Qt3DRender::QMultiSampleAntiAliasing *>();
         Qt3DRender::QFilterKey *filterKey = stage.findChild<Qt3DRender::QFilterKey *>();
+        Qt3DRender::QCullFace *cullFace = stage.findChild<Qt3DRender::QCullFace *>();
 
         QVERIFY(passFilter);
         QVERIFY(stateSet);
@@ -65,6 +66,7 @@ private Q_SLOTS:
         QVERIFY(colorMask);
         QVERIFY(msaa);
         QVERIFY(filterKey);
+        QVERIFY(cullFace);
 
         QCOMPARE(passFilter->parentFrameGraphNode(), &stage);
         QVERIFY(passFilter->matchAny().contains(filterKey));
@@ -79,6 +81,7 @@ private Q_SLOTS:
         QVERIFY(!colorMask->isGreenMasked());
         QVERIFY(!colorMask->isBlueMasked());
         QVERIFY(!colorMask->isAlphaMasked());
+        QCOMPARE(cullFace->mode(), Qt3DRender::QCullFace::Back);
     }
 };
 

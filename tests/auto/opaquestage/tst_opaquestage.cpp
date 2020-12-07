@@ -55,6 +55,7 @@ private Q_SLOTS:
         Qt3DRender::QRenderPassFilter *passFilter = stage.findChild<Qt3DRender::QRenderPassFilter *>();
         Qt3DRender::QRenderStateSet *stateSet = stage.findChild<Qt3DRender::QRenderStateSet *>();
         Qt3DRender::QDepthTest *depthTest = stage.findChild<Qt3DRender::QDepthTest *>();
+        Qt3DRender::QCullFace *cullFace = stage.findChild<Qt3DRender::QCullFace *>();
         Qt3DRender::QNoDepthMask *noDepthMask = stage.findChild<Qt3DRender::QNoDepthMask *>();
         Qt3DRender::QMultiSampleAntiAliasing *msaa = stage.findChild<Qt3DRender::QMultiSampleAntiAliasing *>();
         Qt3DRender::QSortPolicy *sortPolicy = stage.findChild<Qt3DRender::QSortPolicy *>();
@@ -63,6 +64,7 @@ private Q_SLOTS:
         QVERIFY(passFilter);
         QVERIFY(stateSet);
         QVERIFY(depthTest);
+        QVERIFY(cullFace);
         QVERIFY(noDepthMask);
         QVERIFY(msaa);
         QVERIFY(sortPolicy);
@@ -74,8 +76,10 @@ private Q_SLOTS:
         QCOMPARE(filterKey->value(), QStringLiteral("Opaque"));
         QCOMPARE(stateSet->parentFrameGraphNode(), passFilter);
         QCOMPARE(depthTest->depthFunction(), Qt3DRender::QDepthTest::Less);
+        QCOMPARE(cullFace->mode(), Qt3DRender::QCullFace::Back);
         QVERIFY(stateSet->renderStates().contains(depthTest));
         QVERIFY(stateSet->renderStates().contains(msaa));
+        QVERIFY(stateSet->renderStates().contains(cullFace));
         QVERIFY(!stateSet->renderStates().contains(noDepthMask));
         QCOMPARE(sortPolicy->parentFrameGraphNode(), stateSet);
         QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::Material));
@@ -92,8 +96,10 @@ private Q_SLOTS:
         QCOMPARE(filterKey->value(), QStringLiteral("Opaque"));
         QCOMPARE(stateSet->parentFrameGraphNode(), passFilter);
         QCOMPARE(depthTest->depthFunction(), Qt3DRender::QDepthTest::Equal);
+        QCOMPARE(cullFace->mode(), Qt3DRender::QCullFace::Back);
         QVERIFY(stateSet->renderStates().contains(depthTest));
         QVERIFY(stateSet->renderStates().contains(msaa));
+        QVERIFY(stateSet->renderStates().contains(cullFace));
         QVERIFY(stateSet->renderStates().contains(noDepthMask));
         QCOMPARE(sortPolicy->parentFrameGraphNode(), stateSet);
         QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::Material));

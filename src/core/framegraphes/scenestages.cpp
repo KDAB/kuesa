@@ -227,6 +227,19 @@ void ScenePass::removeParameter(Qt3DRender::QParameter *parameter)
     m_skinnedTechniqueFilter->removeParameter(parameter);
 }
 
+void ScenePass::setCullingMode(Qt3DRender::QCullFace::CullingMode cullingMode)
+{
+    if (cullingMode == m_cullingMode)
+        return;
+    m_cullingMode = cullingMode;
+    reconfigure(features());
+}
+
+Qt3DRender::QCullFace::CullingMode ScenePass::cullingMode() const
+{
+    return m_cullingMode;
+}
+
 void ScenePass::reconfigure(const Features features)
 {
     const bool useSkinning = bool(features & Skinning);
@@ -251,7 +264,14 @@ void ScenePass::reconfigure(const Features features)
     }
     case Opaque: {
         static_cast<OpaqueRenderStage *>(m_nonSkinnedStage)->setZFilling(useZFilling);
+        static_cast<OpaqueRenderStage *>(m_nonSkinnedStage)->setCullingMode(m_cullingMode);
         static_cast<OpaqueRenderStage *>(m_skinnedStage)->setZFilling(useZFilling);
+        static_cast<OpaqueRenderStage *>(m_skinnedStage)->setCullingMode(m_cullingMode);
+        break;
+    }
+    case ZFill: {
+        static_cast<ZFillRenderStage *>(m_nonSkinnedStage)->setCullingMode(m_cullingMode);
+        static_cast<ZFillRenderStage *>(m_skinnedStage)->setCullingMode(m_cullingMode);
         break;
     }
     default:
@@ -402,6 +422,17 @@ void SceneStages::removeLayer(Qt3DRender::QLayer *layer)
 QVector<Qt3DRender::QLayer *> SceneStages::layers() const
 {
     return m_layerFilter->layers();
+}
+
+void SceneStages::setCullingMode(Qt3DRender::QCullFace::CullingMode cullingMode)
+{
+    m_zFillStage->setCullingMode(cullingMode);
+    m_opaqueStage->setCullingMode(cullingMode);
+}
+
+Qt3DRender::QCullFace::CullingMode SceneStages::cullingMode() const
+{
+    return m_opaqueStage->cullingMode();
 }
 
 void SceneStages::setCamera(Qt3DCore::QEntity *camera)

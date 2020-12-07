@@ -42,6 +42,7 @@
 
 #include <Kuesa/private/kuesa_global_p.h>
 #include "abstractrenderstage_p.h"
+#include <Qt3DRender/QCullFace>
 
 QT_BEGIN_NAMESPACE
 
@@ -53,6 +54,12 @@ class KUESA_PRIVATE_EXPORT ZFillRenderStage : public AbstractRenderStage
 public:
     explicit ZFillRenderStage(Qt3DRender::QFrameGraphNode *parent = nullptr);
     ~ZFillRenderStage();
+
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode);
+    Qt3DRender::QCullFace::CullingMode cullingMode() const;
+
+private:
+    Qt3DRender::QCullFace *m_cullFace;
 };
 } // namespace Kuesa
 

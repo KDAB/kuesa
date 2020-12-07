@@ -60,6 +60,9 @@ OpaqueRenderStage::OpaqueRenderStage(Qt3DRender::QFrameGraphNode *parent)
                                ({Qt3DRender::QSortPolicy::Material
                                  , Qt3DRender::QSortPolicy::Texture
                                 }));
+    m_cullFace = new Qt3DRender::QCullFace;
+    m_cullFace->setMode(Qt3DRender::QCullFace::Back);
+    m_states->addRenderState(m_cullFace);
 }
 
 OpaqueRenderStage::~OpaqueRenderStage()
@@ -83,4 +86,14 @@ void OpaqueRenderStage::setZFilling(bool zFill)
 bool OpaqueRenderStage::zFilling() const
 {
     return m_depthTest->depthFunction() == Qt3DRender::QDepthTest::Equal;
+}
+
+void OpaqueRenderStage::setCullingMode(Qt3DRender::QCullFace::CullingMode mode)
+{
+    m_cullFace->setMode(mode);
+}
+
+Qt3DRender::QCullFace::CullingMode OpaqueRenderStage::cullingMode() const
+{
+    return m_cullFace->mode();
 }

@@ -42,6 +42,7 @@
 
 #include <Kuesa/private/kuesa_global_p.h>
 #include "abstractrenderstage_p.h"
+#include <Qt3DRender/QCullFace>
 
 QT_BEGIN_NAMESPACE
 
@@ -64,11 +65,15 @@ public:
     void setZFilling(bool zFill);
     bool zFilling() const;
 
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode);
+    Qt3DRender::QCullFace::CullingMode cullingMode() const;
+
 private:
     Qt3DRender::QRenderStateSet *m_states;
     Qt3DRender::QDepthTest *m_depthTest;
     Qt3DRender::QNoDepthMask *m_noDepthWrite;
     Qt3DRender::QSortPolicy *m_sortPolicy;
+    Qt3DRender::QCullFace *m_cullFace;
 };
 } // namespace Kuesa
 
