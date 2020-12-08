@@ -39,13 +39,18 @@ Kuesa::AssetProperty::AssetProperty(Kuesa::Asset *asset)
 
 void Kuesa::AssetProperty::setQmlProperty()
 {
-    if (qmlProperty.isValid() && nodeProperty.isValid())
-        qmlProperty.write(asset, nodeProperty.read(node));
+    if (qmlProperty.isValid() && qmlProperty.isWritable() && nodeProperty.isValid()) {
+        const QVariant &v = nodeProperty.read(node);
+        if (v.isValid())
+            qmlProperty.write(asset, v);
+    }
 }
 
 void Kuesa::AssetProperty::setNodeProperty()
 {
-
-    if (qmlProperty.isValid() && nodeProperty.isValid())
-        nodeProperty.write(node, qmlProperty.read(asset));
+    if (qmlProperty.isValid() && nodeProperty.isValid() && nodeProperty.isWritable()) {
+        const QVariant &v = qmlProperty.read(asset);
+        if (v.isValid())
+            nodeProperty.write(node, v);
+    }
 }

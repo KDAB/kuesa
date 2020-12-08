@@ -171,7 +171,11 @@ void Asset::setNode(Qt3DCore::QNode *node)
                                              nodeProperty.notifySignal(),
                                              assetProperty,
                                              assetProperty->metaObject()->method(assetProperty->metaObject()->indexOfMethod("setQmlProperty()")));
+                            // Set values on QML properties from Node properties
+                            // This can only be done if the QML property is not marked as readonly
                             assetProperty->setQmlProperty();
+                            // Set values (if valid) from QML properties to Node properties
+                            assetProperty->setNodeProperty();
                             m_assetProperties.push_back(assetProperty);
                         }
                     }
