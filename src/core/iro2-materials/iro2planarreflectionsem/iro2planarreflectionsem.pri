@@ -1,9 +1,10 @@
-# iro-materials.pri
+
+# iro2planarreflectionsem.pri
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Nicolas Guichard <paul.lemire@kdab.com>
+# Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,24 +25,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 INCLUDEPATH += $$PWD
 
-include(iro2diffusesem/iro2diffusesem.pri)
-include(iro2diffuseequirect/iro2diffuseequirect.pri)
+QT += 3dcore-private
 
-include(iro2alphasem/iro2alphasem.pri)
-include(iro2alphaequirect/iro2alphaequirect.pri)
+SOURCES += \
+    $$PWD/iro2planarreflectionsemmaterial.cpp \
+    $$PWD/iro2planarreflectionsemeffect.cpp \
+    $$PWD/iro2planarreflectionsemproperties.cpp \
+    $$PWD/iro2planarreflectionsemshaderdata.cpp
 
-include(iro2glasssem/iro2glasssem.pri)
-include(iro2glassequirect/iro2glassequirect.pri)
-
-include(iro2mattealpha/iro2mattealpha.pri)
-
-include(iro2planarreflectionsem/iro2planarreflectionsem.pri)
-include(iro2planarreflectionequirect/iro2planarreflectionequirect.pri)
-
-SOURCES += $$PWD/iro2-materials.cpp
-HEADERS += $$PWD/iro2-materials_p.h
-
-OTHER_FILES += $$PWD/*.json
+HEADERS += \
+    $$PWD/iro2planarreflectionsemmaterial.h \
+    $$PWD/iro2planarreflectionsemeffect.h \
+    $$PWD/iro2planarreflectionsemproperties.h \
+    $$PWD/iro2planarreflectionsemshaderdata_p.h

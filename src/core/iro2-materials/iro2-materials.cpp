@@ -57,6 +57,14 @@
 #include <Kuesa/Iro2MatteAlphaEffect>
 #include <Kuesa/Iro2MatteAlphaProperties>
 
+#include <Kuesa/Iro2PlanarReflectionEquiRectMaterial>
+#include <Kuesa/Iro2PlanarReflectionEquiRectEffect>
+#include <Kuesa/Iro2PlanarReflectionEquiRectProperties>
+
+#include <Kuesa/Iro2PlanarReflectionSemMaterial>
+#include <Kuesa/Iro2PlanarReflectionSemEffect>
+#include <Kuesa/Iro2PlanarReflectionSemProperties>
+
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -75,6 +83,9 @@ void registerIro2Materials()
     GLTF2Importer::registerCustomMaterial<Iro2GlassSemMaterial, Iro2GlassSemProperties, Iro2GlassSemEffect>(QStringLiteral("Iro2GlassSem"));
 
     GLTF2Importer::registerCustomMaterial<Iro2MatteAlphaMaterial, Iro2MatteAlphaProperties, Iro2MatteAlphaEffect>(QStringLiteral("Iro2MatteAlpha"));
+
+    GLTF2Importer::registerCustomMaterial<Iro2PlanarReflectionEquiRectMaterial, Iro2PlanarReflectionEquiRectProperties, Iro2PlanarReflectionEquiRectEffect>(QStringLiteral("Iro2PlanarReflectionEquiRect"));
+    GLTF2Importer::registerCustomMaterial<Iro2PlanarReflectionSemMaterial, Iro2PlanarReflectionSemProperties, Iro2PlanarReflectionSemEffect>(QStringLiteral("Iro2PlanarReflectionSem"));
 }
 
 // This will call registerIroMaterials on startup automatically

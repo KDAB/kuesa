@@ -54,6 +54,7 @@ ReflectionStages::ReflectionStages(Qt3DRender::QFrameGraphNode *parent)
     m_renderTargetSelector = new Qt3DRender::QRenderTargetSelector(this);
     auto clearDepth = new Qt3DRender::QClearBuffers(m_renderTargetSelector);
     clearDepth->setBuffers(Qt3DRender::QClearBuffers::ColorDepthBuffer);
+    clearDepth->setClearColor(QColor(0, 0, 0, 0));
     new Qt3DRender::QNoDraw(clearDepth);
 
     // Move regular SceneStage subtree root to be a child of the RenderTargetSelector
@@ -64,6 +65,10 @@ ReflectionStages::ReflectionStages(Qt3DRender::QFrameGraphNode *parent)
                                                                             m_renderTargetSelector,
                                                                             {512, 512});
     m_renderTargetSelector->setTarget(target);
+
+    auto colorTexture = reflectionTexture();
+    colorTexture->setMagnificationFilter(Qt3DRender::QAbstractTexture::Linear);
+    colorTexture->setMinificationFilter(Qt3DRender::QAbstractTexture::Linear);
 
     // Force initial configuration
     reconfigure(SceneFeaturedRenderStageBase::features());

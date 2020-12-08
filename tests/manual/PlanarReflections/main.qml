@@ -79,16 +79,6 @@ Kuesa.SceneEntity {
         name: "Camera_Orientation"
     }
     Kuesa.Asset {
-        id: mainSceneLayer
-        collection: scene.layers
-        name: "MainScene"
-    }
-    Kuesa.Asset {
-        id: planeSceneLayer
-        collection: scene.layers
-        name: "PlaneScene"
-    }
-    Kuesa.Asset {
         id: sceneReflectionPlane
         collection: scene.reflectionPlanes
         name: "ReflectionPlane"
@@ -99,9 +89,8 @@ Kuesa.SceneEntity {
         name: "Material.003"
         onNodeChanged: {
             if (node) {
-                console.log(node)
-                console.log(frameGraph.reflectionTexture)
-                node.baseColorMap = frameGraph.reflectionTexture
+                node.reflectionMap = frameGraph.reflectionTexture
+                node.reflectionPlane = sceneReflectionPlane.node.equation
             }
         }
     }
