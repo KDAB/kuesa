@@ -1366,7 +1366,7 @@ private:
 
     The properties defining the appearance of the material.
 
-    \since Kuesa 1.2
+    \since Kuesa 1.3
  */
 
 /*!
@@ -1374,7 +1374,7 @@ private:
 
     The properties defining the appearance of the material.
 
-    \since Kuesa 1.2
+    \since Kuesa 1.3
  */
 
 Kuesa::%sProperties *%sMaterial::materialProperties() const
@@ -1643,7 +1643,7 @@ HEADERS += \\
     \inheaderfile Kuesa/%s
     \inherits %s
     \inmodule Kuesa
-    \since Kuesa 1.2
+    \since Kuesa 1.3
 
     \\brief Kuesa::%s %s
 */
@@ -1652,7 +1652,7 @@ HEADERS += \\
     \qmltype %s
     \instantiates Kuesa::%s
     \inqmlmodule Kuesa
-    \since Kuesa 1.2
+    \since Kuesa 1.3
 
     \\brief Kuesa::%s %s
 */
