@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <QQmlComponent>
 #include <QQmlEngine>
 #include <Kuesa/gltf2importer.h>

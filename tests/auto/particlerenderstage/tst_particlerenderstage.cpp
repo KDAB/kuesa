@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 
 #include <Qt3DRender/QFilterKey>
 #include <Qt3DRender/QDispatchCompute>

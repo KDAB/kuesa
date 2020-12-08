@@ -26,8 +26,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 #include <QDir>
+#include <QStandardPaths>
 #include <Kuesa/private/gltf2exporter_p.h>
 #include <Kuesa/private/gltf2parser_p.h>
 #include <Kuesa/private/meshparser_utils_p.h>

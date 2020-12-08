@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <Kuesa/FullScreenQuad>
 #include <Qt3DRender/QMaterial>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)

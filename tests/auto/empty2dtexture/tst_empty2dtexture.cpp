@@ -26,7 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 #include <Kuesa/private/empty2dtexture_p.h>
 
 class tst_Empty2DTexture : public QObject

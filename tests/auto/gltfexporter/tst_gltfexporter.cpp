@@ -27,7 +27,8 @@
 */
 
 #include <qtkuesa-config.h>
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QStandardPaths>
 #include <Kuesa/SceneEntity>
 #include <Kuesa/GLTF2Importer>
 #include <Kuesa/private/gltf2context_p.h>

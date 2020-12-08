@@ -26,7 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 
 #include <Kuesa/abstractassetcollection.h>
 #include <Qt3DRender/qmaterial.h>
@@ -42,8 +43,8 @@ class tst_AssetCollection : public QObject
 {
     Q_OBJECT
 public:
-    tst_AssetCollection() {}
-    ~tst_AssetCollection() {}
+    tst_AssetCollection() { }
+    ~tst_AssetCollection() { }
 
 private Q_SLOTS:
     void shouldHaveDefaultState()

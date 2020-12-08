@@ -26,7 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 
 #include <Qt3DRender/QTexture>
 #include <Kuesa/gltf2materialproperties.h>

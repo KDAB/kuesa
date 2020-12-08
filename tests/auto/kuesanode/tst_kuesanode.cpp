@@ -27,7 +27,8 @@
 */
 
 #include <qtkuesa-config.h>
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 #include <Kuesa/KuesaNode>
 #include <QUrl>
 

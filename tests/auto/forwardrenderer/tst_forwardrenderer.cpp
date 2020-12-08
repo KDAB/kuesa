@@ -26,7 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 
 #include <Kuesa/forwardrenderer.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
@@ -243,7 +244,6 @@ private Q_SLOTS:
         QVERIFY(it != filters.end());
     }
 
-
     void testAddView()
     {
         // GIVEN
@@ -309,8 +309,9 @@ private Q_SLOTS:
         QVERIFY(f.m_multisampleTarget == nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_renderTargets[0],
-                 Qt3DRender::QRenderTargetOutput::Depth), true);
+                         f.m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 true);
 
         // THEN
         QCOMPARE(rtSelector.target(), f.m_renderTargets[0]);
@@ -341,11 +342,13 @@ private Q_SLOTS:
         QVERIFY(f.m_multisampleTarget != nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_renderTargets[0],
-                 Qt3DRender::QRenderTargetOutput::Depth), true);
+                         f.m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 true);
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_multisampleTarget,
-                     Qt3DRender::QRenderTargetOutput::Depth), true);
+                         f.m_multisampleTarget,
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 true);
 
         QCOMPARE(rtSelector.target(), f.m_multisampleTarget);
         QCOMPARE(rtSelector.children().size(), 1); // Blit of MSAAFBOResolver
@@ -378,8 +381,9 @@ private Q_SLOTS:
         QVERIFY(f.m_multisampleTarget == nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_renderTargets[0],
-                 Qt3DRender::QRenderTargetOutput::Depth), true);
+                         f.m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 true);
 
         // THEN
         QCOMPARE(rtSelector.target(), f.m_renderTargets[0]);
@@ -412,11 +416,13 @@ private Q_SLOTS:
         QVERIFY(f.m_multisampleTarget == nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_renderTargets[0],
-                 Qt3DRender::QRenderTargetOutput::Depth), true);
+                         f.m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 true);
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_renderTargets[1],
-                 Qt3DRender::QRenderTargetOutput::Depth), false);
+                         f.m_renderTargets[1],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 false);
 
         // THEN
         QCOMPARE(rtSelector.target(), f.m_renderTargets[0]);
@@ -455,11 +461,13 @@ private Q_SLOTS:
         QVERIFY(f.m_multisampleTarget == nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_renderTargets[0],
-                 Qt3DRender::QRenderTargetOutput::DepthStencil), true);
+                         f.m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 true);
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_renderTargets[1],
-                 Qt3DRender::QRenderTargetOutput::DepthStencil), false);
+                         f.m_renderTargets[1],
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 false);
 
         // THEN
         QCOMPARE(rtSelector.target(), f.m_renderTargets[0]);
@@ -496,14 +504,17 @@ private Q_SLOTS:
         QVERIFY(f.m_multisampleTarget != nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_renderTargets[0],
-                 Qt3DRender::QRenderTargetOutput::DepthStencil), true);
+                         f.m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 true);
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_multisampleTarget,
-                     Qt3DRender::QRenderTargetOutput::DepthStencil), true);
+                         f.m_multisampleTarget,
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 true);
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_renderTargets[1],
-                 Qt3DRender::QRenderTargetOutput::DepthStencil), false);
+                         f.m_renderTargets[1],
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 false);
 
         QCOMPARE(rtSelector.target(), f.m_multisampleTarget);
         QCOMPARE(rtSelector.children().size(), 2); // Blit of MSAAFBOResolver
@@ -930,7 +941,6 @@ private Q_SLOTS:
     //        QCOMPARE(renderer.reflectionPlanes().first(), QVector4D(0.0f, 1.0f, 0.0f, 0.0f));
     //        QCOMPARE(renderer.m_reflectionStages.size(), 1U);
     //    }
-
 
 private:
     template<class T>

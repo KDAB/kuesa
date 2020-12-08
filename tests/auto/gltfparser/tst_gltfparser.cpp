@@ -27,7 +27,7 @@
 */
 
 #include <qtkuesa-config.h>
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <QJsonDocument>
 #include <QFile>
 #include <QLatin1String>

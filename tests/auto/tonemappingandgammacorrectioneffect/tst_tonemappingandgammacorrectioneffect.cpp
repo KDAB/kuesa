@@ -26,7 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 #include <Kuesa/ToneMappingAndGammaCorrectionEffect>
 
 using namespace Kuesa;
@@ -111,8 +112,7 @@ private Q_SLOTS:
             // THEN
             QCOMPARE(signalSpy.count(), 0);
         }
-
-      }
+    }
 };
 
 QTEST_MAIN(tst_ToneMappingAndGammaCorrectionEffect)

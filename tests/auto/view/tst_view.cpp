@@ -26,7 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 
 #include <Kuesa/view.h>
 #include <Kuesa/reflectionplane.h>
@@ -445,7 +446,7 @@ private Q_SLOTS:
         // WHEN -> Plane destroyed
 
         // THEN
-         QCOMPARE(view.reflectionPlanes().size(), 0U);
+        QCOMPARE(view.reflectionPlanes().size(), 0U);
     }
 
     void testMultipleReflectionPlanes()
@@ -486,7 +487,7 @@ private Q_SLOTS:
         }
 
         // THEN -> Removed and doesn't crash
-         QCOMPARE(view.reflectionPlanes().size(), size_t(0));
+        QCOMPARE(view.reflectionPlanes().size(), size_t(0));
     }
 
     void checkGeneratedFrameGraphTreeNoFxNoReflectionNoLayer()
@@ -531,7 +532,6 @@ private Q_SLOTS:
         QCOMPARE(v.m_fxStages->effects().size(), size_t(0));
         QCOMPARE(v.m_fxs.size(), size_t(0));
     }
-
 
     void checkGeneratedFrameGraphTreeNoFxReflectionNoLayer()
     {
@@ -695,7 +695,6 @@ private Q_SLOTS:
             QCOMPARE(rV, &root);
         }
     }
-
 
 private:
     template<class T>

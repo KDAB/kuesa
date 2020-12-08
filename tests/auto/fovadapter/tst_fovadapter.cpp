@@ -26,9 +26,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 
 #include <Kuesa/private/fovadaptor_p.h>
+#include <cmath>
 
 class tst_FOVAdaptor : public QObject
 {

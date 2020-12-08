@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 
 #include <Kuesa/private/framegraphutils_p.h>
 #include <Qt3DRender/QAbstractTexture>

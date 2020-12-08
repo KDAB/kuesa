@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <Kuesa/private/meshparser_utils_p.h>
 #include <Kuesa/private/kuesa_global_p.h>
 
@@ -40,7 +40,7 @@
 #include <Qt3DRender/QAttribute>
 #endif
 #include <cstring>
-
+#include <cmath>
 #include <iostream>
 
 using namespace Kuesa;

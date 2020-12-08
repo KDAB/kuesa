@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <Kuesa/private/fboresolver_p.h>
 #include <Qt3DRender/QShaderProgram>
 #include <Qt3DRender/QTexture>

@@ -26,7 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 
 #include <Qt3DRender/QTexture>
 #include <Kuesa/metallicroughnesseffect.h>
@@ -43,9 +44,9 @@ namespace {
 class FakeRenderer : public Qt3DRender::Render::AbstractRenderer
 {
 public:
-    void dumpInfo() const override {}
+    void dumpInfo() const override { }
     Qt3DRender::API api() const override { return Qt3DRender::API::OpenGL; }
-    void setRenderDriver(AbstractRenderer::RenderDriver) override {};
+    void setRenderDriver(AbstractRenderer::RenderDriver) override{};
     AbstractRenderer::RenderDriver renderDriver() const override { return Qt3D; }
     qint64 time() const override { return 0; }
     void setTime(qint64 time) override { Q_UNUSED(time); }
@@ -57,14 +58,14 @@ public:
     Qt3DRender::QRenderAspect *aspect() const override { return m_aspect; }
     Qt3DRender::Render::NodeManagers *nodeManagers() const override { return m_managers; }
     Qt3DCore::QServiceLocator *services() const override { return nullptr; }
-    void initialize() override {}
-    void shutdown() override {}
-    void releaseGraphicsResources() override {}
+    void initialize() override { }
+    void shutdown() override { }
+    void releaseGraphicsResources() override { }
     void render(bool swapBuffers) override { Q_UNUSED(swapBuffers); }
-    void cleanGraphicsResources() override {}
+    void cleanGraphicsResources() override { }
     bool isRunning() const override { return true; }
     bool shouldRender() const override { return true; }
-    void skipNextFrame() override {}
+    void skipNextFrame() override { }
     void jobsDone(Qt3DCore::QAspectManager *manager) override { Q_UNUSED(manager); }
     std::vector<Qt3DCore::QAspectJobPtr> preRenderingJobs() override { return {}; }
     std::vector<Qt3DCore::QAspectJobPtr> renderBinJobs() override { return {}; }
@@ -80,19 +81,25 @@ public:
     void markDirty(Qt3DRender::Render::AbstractRenderer::BackendNodeDirtySet changes, Qt3DRender::Render::BackendNode *) override { m_changes |= changes; }
     Qt3DRender::Render::AbstractRenderer::BackendNodeDirtySet dirtyBits() override { return m_changes; }
 #if defined(QT_BUILD_INTERNAL)
-    void clearDirtyBits(Qt3DRender::Render::AbstractRenderer::BackendNodeDirtySet changes) override { m_changes &= ~changes; }
+    void clearDirtyBits(Qt3DRender::Render::AbstractRenderer::BackendNodeDirtySet changes) override
+    {
+        m_changes &= ~changes;
+    }
 #endif
-    QVariant executeCommand(const QStringList &) override { return {}; }
+    QVariant executeCommand(const QStringList &) override
+    {
+        return {};
+    }
     QOpenGLContext *shareContext() const override { return nullptr; }
-    const Qt3DRender::GraphicsApiFilterData *contextInfo() const override { return  nullptr; }
+    const Qt3DRender::GraphicsApiFilterData *contextInfo() const override { return nullptr; }
 
-    void setOffscreenSurfaceHelper(Qt3DRender::Render::OffscreenSurfaceHelper *) override {};
+    void setOffscreenSurfaceHelper(Qt3DRender::Render::OffscreenSurfaceHelper *) override{};
     QSurfaceFormat format() override { return {}; }
 
-    void setOpenGLContext(QOpenGLContext *) override {}
-    void setRHIContext(QRhi *) override {}
-    void setDefaultRHIRenderTarget(QRhiRenderTarget *) override {};
-    void setRHICommandBuffer(QRhiCommandBuffer *) override {};
+    void setOpenGLContext(QOpenGLContext *) override { }
+    void setRHIContext(QRhi *) override { }
+    void setDefaultRHIRenderTarget(QRhiRenderTarget *) override{};
+    void setRHICommandBuffer(QRhiCommandBuffer *) override{};
     bool accessOpenGLTexture(Qt3DCore::QNodeId, QOpenGLTexture **, QMutex **, bool) override { return false; }
     QSharedPointer<Qt3DRender::Render::RenderBackendResourceAccessor> resourceAccessor() const override { return {}; }
 
@@ -103,7 +110,7 @@ protected:
     Qt3DRender::Render::RenderSettings *m_settings = nullptr;
 };
 
-} // anonymous
+} // namespace
 
 #endif
 
@@ -372,11 +379,11 @@ private Q_SLOTS:
         QTest::newRow("VertexTexCoord1") << EffectProperties::Properties(EffectProperties::VertexTexCoord1);
         QTest::newRow("Skinning") << EffectProperties::Properties(EffectProperties::Skinning);
         QTest::newRow("MorphTargets") << EffectProperties::Properties(EffectProperties::MorphTargets);
-        QTest::newRow("NoSkinningWithBaseEmissiveAndNormalMaps") << EffectProperties::Properties(EffectProperties::BaseColorMap|
-                                                                                                 EffectProperties::MetalRoughnessMap|
-                                                                                                 EffectProperties::NormalMap|
-                                                                                                 EffectProperties::EmissiveMap|
-                                                                                                 EffectProperties::VertexNormal|
+        QTest::newRow("NoSkinningWithBaseEmissiveAndNormalMaps") << EffectProperties::Properties(EffectProperties::BaseColorMap |
+                                                                                                 EffectProperties::MetalRoughnessMap |
+                                                                                                 EffectProperties::NormalMap |
+                                                                                                 EffectProperties::EmissiveMap |
+                                                                                                 EffectProperties::VertexNormal |
                                                                                                  EffectProperties::VertexTexCoord);
     }
 
