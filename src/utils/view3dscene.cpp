@@ -469,7 +469,7 @@ void View3DScene::addTransformTracker(TransformTracker *tracker)
 {
     if (std::find(std::begin(m_trackers), std::end(m_trackers), tracker) == std::end(m_trackers)) {
         Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-        d->registerDestructionHelper(tracker, &View3DScene::removeTransformTracker, tracker);
+        d->registerDestructionHelper(tracker, &View3DScene::removeTransformTracker, m_trackers);
         if (tracker->parentNode() == nullptr)
             tracker->setParent(this);
         if (tracker->sceneEntity() == nullptr)
@@ -497,7 +497,18 @@ void View3DScene::removeTransformTracker(TransformTracker *tracker)
  */
 void View3DScene::clearTransformTrackers()
 {
-    m_trackers.clear();
+    const std::vector<Kuesa::TransformTracker *> trackersCopy = m_trackers;
+    for (Kuesa::TransformTracker *t : trackersCopy)
+        removeTransformTracker(t);
+}
+
+/*!
+    \brief Returns the \l {Kuesa::TransformTracker} instances referenced by the
+    View3DScene instance.
+ */
+const std::vector<TransformTracker *> &View3DScene::transformTrackers() const
+{
+    return m_trackers;
 }
 
 /*!
@@ -510,7 +521,7 @@ void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
         m_clock = new Qt3DAnimation::QClock(this);
     if (std::find(std::begin(m_animations), std::end(m_animations), animation) == std::end(m_animations)) {
         Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-        d->registerDestructionHelper(animation, &View3DScene::removeAnimationPlayer, animation);
+        d->registerDestructionHelper(animation, &View3DScene::removeAnimationPlayer, m_animations);
 
         if (animation->parentNode() == nullptr)
             animation->setParent(this);
@@ -551,7 +562,18 @@ void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
  */
 void View3DScene::clearAnimationPlayers()
 {
-    m_animations.clear();
+    const std::vector<Kuesa::AnimationPlayer *> animCopy = m_animations;
+    for (Kuesa::AnimationPlayer *a : animCopy)
+        removeAnimationPlayer(a);
+}
+
+/*!
+    \brief Returns the \l {Kuesa::AnimationPlayer} instances referenced by the
+    View3DScene instance.
+ */
+const std::vector<AnimationPlayer *> &View3DScene::animationPlayers() const
+{
+    return m_animations;
 }
 
 SceneConfiguration *View3DScene::activeScene() const

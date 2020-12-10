@@ -77,10 +77,12 @@ public:
     void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void clearAnimationPlayers();
+    const std::vector<Kuesa::AnimationPlayer *> &animationPlayers() const;
 
     void addTransformTracker(Kuesa::TransformTracker *tracker);
     void removeTransformTracker(Kuesa::TransformTracker *tracker);
     void clearTransformTrackers();
+    const std::vector<Kuesa::TransformTracker *> &transformTrackers() const;
 
     SceneConfiguration *activeScene() const;
 

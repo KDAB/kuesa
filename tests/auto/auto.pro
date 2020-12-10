@@ -101,7 +101,8 @@ qtConfig(private_tests) {
         transformtracker \
         fovadapter \
         assetcache  \
-        assetkeyparser
+        assetkeyparser \
+        view3dscene
 
     greaterThan(QT_MAJOR_VERSION, 5):
         SUBDIRS += fboresolver
