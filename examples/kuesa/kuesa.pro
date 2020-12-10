@@ -27,14 +27,18 @@
 TEMPLATE = subdirs
 
 qtHaveModule(quick) {
+    qtHaveModule(quickcontrols2) {
+        SUBDIRS += \
+            car-scene \
+            tonemapping \
+            simple-qml \
+            multi-scene
+    }
+
     SUBDIRS += \
-        car-scene \
-        tonemapping \
         manyducks \
         music-box \
-        iro-materials-gallery \
-        simple-qml \
-        multi-scene
+        iro-materials-gallery
 }
 
 demo_assets.path = $$[QT_INSTALL_EXAMPLES]/kuesa/assets

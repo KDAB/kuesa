@@ -34,7 +34,7 @@ DEFINES += QT_BUILD_KUESA_LIB
 # Avoid windows defines
 win32:DEFINES += WIN32_LEAN_AND_MEAN
 
-QT += qml 3dcore 3dcore-private 3drender 3drender-private 3dquickextras 3danimation
+QT += qml 3dcore 3dcore-private 3drender 3drender-private 3danimation 3dextras
 
 qtConfig(draco) {
     win32:CONFIG -= precompile_header
