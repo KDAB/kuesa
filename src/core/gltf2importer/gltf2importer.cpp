@@ -210,7 +210,7 @@ using namespace Kuesa;
     \property Kuesa::GLTF2Importer::asynchronous
 
     \brief if true, parsing is performed in a non blocking manner from a
-    secondary thread.
+    secondary thread. This is false by default.
  */
 
 /*!
@@ -241,7 +241,7 @@ using namespace Kuesa;
     \qmlproperty bool GLTF2Importer::asynchronous
 
     \brief if true, parsing is performed in a non blocking manner from a
-    secondary thread.
+    secondary thread. This is false by default.
  */
 
 /*!
