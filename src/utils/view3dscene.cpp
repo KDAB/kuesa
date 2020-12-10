@@ -36,10 +36,14 @@
 #include <Kuesa/forwardrenderer.h>
 #include <Kuesa/gltf2importer.h>
 
+#include <Kuesa/private/kuesa_utils_p.h>
 #include <Qt3DCore/private/qnode_p.h>
 #include <Qt3DCore/private/qabstractnodefactory_p.h>
 #include <Qt3DRender/qrendersettings.h>
 #include <Qt3DInput/qinputsettings.h>
+
+#include <Kuesa/Iro2PlanarReflectionEquiRectProperties>
+#include <Kuesa/Iro2PlanarReflectionSemProperties>
 
 using namespace Kuesa;
 using namespace KuesaUtils;
@@ -165,6 +169,15 @@ using namespace Qt3DRender;
     multiple scenes.
  */
 
+
+/*!
+    \property KuesaUtils::View3DScene::reflectionPlaneName
+
+    \brief If non empty, the View3DScene will try to load the \l
+    {Kuesa.ReflectionPlane} matching the name from the collection and set it on
+    the ForwardRenderer framegraph views.
+ */
+
 /*!
     \qmltype View3DScene
     \inqmlmodule KuesaUtils
@@ -284,6 +297,15 @@ using namespace Qt3DRender;
     dealing with multiple scenes.
  */
 
+/*!
+    \qmlproperty string KuesaUtils::View3DScene::reflectionPlaneName
+
+    \brief If non empty, the View3DScene will try to load the \l
+    {Kuesa.ReflectionPlane} matching the name from the collection and set it on
+    the ForwardRenderer framegraph views.
+ */
+
+
 View3DScene::View3DScene(Qt3DCore::QNode *parent)
     : Kuesa::SceneEntity(parent)
     , m_importer(new GLTF2Importer(this))
@@ -377,6 +399,11 @@ bool View3DScene::asynchronous() const
     return m_importer->asynchronous();
 }
 
+QString View3DScene::reflectionPlaneName() const
+{
+    return m_reflectionPlaneName;
+}
+
 void View3DScene::setScreenSize(const QSize &screenSize)
 {
     if (m_screenSize != screenSize) {
@@ -389,6 +416,17 @@ void View3DScene::setScreenSize(const QSize &screenSize)
 void View3DScene::setAsynchronous(bool asynchronous)
 {
     m_importer->setAsynchronous(asynchronous);
+}
+
+void View3DScene::setReflectionPlaneName(const QString &reflectionPlaneName)
+{
+    if (m_reflectionPlaneName == reflectionPlaneName)
+        return;
+    m_reflectionPlaneName = reflectionPlaneName;
+    emit reflectionPlaneNameChanged(reflectionPlaneName);
+
+    if (isLoaded())
+        loadReflections();
 }
 
 void View3DScene::setShowDebugOverlay(bool showDebugOverlay)
@@ -428,6 +466,7 @@ void View3DScene::onSceneLoaded()
 
         emit m_activeScene->loadingDone();
     }
+    loadReflections();
 
     emit loadedChanged(true);
 }
@@ -475,6 +514,27 @@ void View3DScene::updateFrame(float dt)
         m_ready = true;
         emit readyChanged(true);
         m_frameAction->setEnabled(false);
+    }
+}
+
+void View3DScene::loadReflections()
+{
+    if (reflectionPlanes()->size() == 0 || m_reflectionPlaneName.isEmpty())
+        return;
+
+    // Find matching ReflectionPlane
+    Kuesa::ReflectionPlane *p = reflectionPlane(m_reflectionPlaneName);
+
+    auto setReflectionPlaneOnView = [&] (View *v) {
+        if (p && !Utils::contains(v->reflectionPlanes(), p))
+            v->addReflectionPlane(p);
+    };
+
+    if (m_frameGraph->views().size() > 0) {
+        for (View *v : m_frameGraph->views())
+            setReflectionPlaneOnView(v);
+    } else {
+        setReflectionPlaneOnView(m_frameGraph);
     }
 }
 

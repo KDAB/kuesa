@@ -105,7 +105,7 @@ void ReflectionPlane::setEquation(const QVector4D &equation)
     if (equation == m_equation)
         return;
     m_equation = equation;
-    emit equationChanged();
+    emit equationChanged(equation);
 }
 
 QVector4D ReflectionPlane::equation() const

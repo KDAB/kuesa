@@ -29,6 +29,7 @@
 #include <QtTest/QTest>
 #include <QtTest/QSignalSpy>
 #include <KuesaUtils/view3dscene.h>
+#include <Kuesa/Iro2PlanarReflectionSemProperties>
 
 class tst_View3DScene : public QObject
 {
@@ -53,6 +54,7 @@ private Q_SLOTS:
         QVERIFY(view.activeScene() == nullptr);
         QVERIFY(view.animationPlayers().empty());
         QVERIFY(view.transformTrackers().empty());
+        QVERIFY(view.reflectionPlaneName().isEmpty());
     }
 
     void checkSetSource()
@@ -96,6 +98,24 @@ private Q_SLOTS:
         QCOMPARE(view.cameraName(), newCameraName);
         QCOMPARE(cameraNameChangedSpy.count(), 1);
     }
+
+    void checkSetAutoloadReflections()
+    {
+        // GIVEN
+        KuesaUtils::View3DScene view;
+        QSignalSpy reflectionPlaneNameChangedSpy(&view, &KuesaUtils::View3DScene::reflectionPlaneNameChanged);
+
+        // THEN
+        QVERIFY(reflectionPlaneNameChangedSpy.isValid());
+
+        // WHEN
+        view.setReflectionPlaneName(QStringLiteral("reflection"));
+
+        // THEN
+        QCOMPARE(view.reflectionPlaneName(), QStringLiteral("reflection"));
+        QCOMPARE(reflectionPlaneNameChangedSpy.count(), 1);
+    }
+
 
     void checkSetScreenSize()
     {
@@ -450,6 +470,68 @@ private Q_SLOTS:
         QCOMPARE(view.transformTrackers().size(), 0);
         QCOMPARE(view.source(), QUrl());
         QCOMPARE(view.cameraName(), QString());
+    }
+
+    void checkAutoloadReflections()
+    {
+        // Loading with autoloadReflection set to false initially
+        {
+            // GIVEN
+            KuesaUtils::View3DScene view;
+            KuesaUtils::SceneConfiguration scene;
+            QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadedChanged);
+
+            // THEN
+            QVERIFY(loadedSpy.isValid());
+
+            // WHEN
+            scene.setCameraName(QStringLiteral("Camera_Orientation"));
+            scene.setSource(QUrl("file:///" ASSETS "KDAB_reflection_planes/reflections_scene.gltf"));
+            view.setActiveScene(&scene);
+            loadedSpy.wait();
+
+            // THEN
+            QVERIFY(view.isLoaded());
+            QCOMPARE(view.reflectionPlanes()->size(), 1);
+            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 0);
+
+            Kuesa::Iro2PlanarReflectionSemProperties *material = qobject_cast<Kuesa::Iro2PlanarReflectionSemProperties *>(view.material(QStringLiteral("MaterialReflection")));
+            QVERIFY(material);
+            QCOMPARE(material->reflectionPlane(), QVector4D());
+            QVERIFY(material->reflectionMap() == nullptr);
+
+            // WHEN
+            view.setReflectionPlaneName(QStringLiteral("ReflectionPlane"));
+
+            // THEN
+            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 1);
+        }
+
+        // Loading with autoloadReflection set to true
+        {
+            // GIVEN
+            KuesaUtils::View3DScene view;
+            KuesaUtils::SceneConfiguration scene;
+            QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadedChanged);
+
+            // THEN
+            QVERIFY(loadedSpy.isValid());
+
+            // WHEN
+            view.setReflectionPlaneName(QStringLiteral("ReflectionPlane"));
+            scene.setCameraName(QStringLiteral("Camera_Orientation"));
+            scene.setSource(QUrl("file:///" ASSETS "KDAB_reflection_planes/reflections_scene.gltf"));
+            view.setActiveScene(&scene);
+            loadedSpy.wait();
+
+            // THEN
+            QVERIFY(view.isLoaded());
+            QCOMPARE(view.reflectionPlanes()->size(), 1);
+            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 1);
+
+            Kuesa::Iro2PlanarReflectionSemProperties *material = qobject_cast<Kuesa::Iro2PlanarReflectionSemProperties *>(view.material(QStringLiteral("MaterialReflection")));
+            QVERIFY(material);
+        }
     }
 };
 

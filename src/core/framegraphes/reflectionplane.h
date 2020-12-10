@@ -56,7 +56,7 @@ public:
     const std::vector<Qt3DRender::QLayer *> &layers() const;
 
 Q_SIGNALS:
-    void equationChanged();
+    void equationChanged(const QVector4D &equation);
     void layersChanged();
 
 private:

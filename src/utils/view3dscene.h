@@ -62,6 +62,7 @@ class KUESAUTILS_SHARED_EXPORT View3DScene : public Kuesa::SceneEntity
     Q_PROPERTY(bool loaded READ isLoaded NOTIFY loadedChanged)
     Q_PROPERTY(bool asynchronous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
     Q_PROPERTY(KuesaUtils::SceneConfiguration *activeScene READ activeScene WRITE setActiveScene NOTIFY activeSceneChanged)
+    Q_PROPERTY(QString reflectionPlaneName READ reflectionPlaneName WRITE setReflectionPlaneName NOTIFY reflectionPlaneNameChanged)
 public:
     explicit View3DScene(Qt3DCore::QNode *parent = nullptr);
     ~View3DScene();
@@ -73,6 +74,7 @@ public:
     bool showDebugOverlay() const;
     QSize screenSize() const;
     bool asynchronous() const;
+    QString reflectionPlaneName() const;
 
     const std::vector<Kuesa::AnimationPlayer *> &animationPlayers() const;
     const std::vector<Kuesa::TransformTracker *> &transformTrackers() const;
@@ -86,11 +88,13 @@ public Q_SLOTS:
     void setShowDebugOverlay(bool showDebugOverlay);
     void setScreenSize(const QSize &screenSize);
     void setAsynchronous(bool asynchronous);
+    void setReflectionPlaneName(const QString &reflectionPlaneName);
 
     void setActiveScene(SceneConfiguration *scene);
 
     void adoptNode(QObject *object);
 
+    // Animation Controls
     void start();
     void restart();
     void stop();
@@ -107,6 +111,7 @@ Q_SIGNALS:
     void loadedChanged(bool loaded);
     void asynchronousChanged(bool asynchronous);
     void activeSceneChanged(SceneConfiguration *activeScene);
+    void reflectionPlaneNameChanged(const QString &reflectionPlaneName);
 
 private:
     void setSource(const QUrl &source);
@@ -123,6 +128,7 @@ private:
     void onSceneLoaded();
     void updateTrackers();
     void updateFrame(float dt);
+    void loadReflections();
 
     Kuesa::GLTF2Importer *m_importer;
     Kuesa::ForwardRenderer *m_frameGraph;
@@ -135,6 +141,7 @@ private:
     QPointer<QObject> m_activeSceneOwner;
 
     bool m_ready;
+    QString m_reflectionPlaneName;
     int m_frameCount;
     Qt3DLogic::QFrameAction *m_frameAction;
 };
