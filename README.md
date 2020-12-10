@@ -131,6 +131,17 @@ To install the Qt Creator template, copy the entire kuesa folder
 from ``tools/qtc_templates`` to the ``templates/wizards`` folder inside
 the Qt Creator install location.
 
+### Clearing Stale Caches
+
+If you've updated Kuesa or have used Kuesa previously, it is recommended to
+clear the Qt 3D cached shader files.
+
+These cache is located at Qt::TempLocation which is usually
+""C:/Users/<USER>/AppData/Local/Temp" on Windows and "/tmp" on Linux.
+
+Remove all the .qt3d files present at that location to ensure Kuesa rebuilds
+all the shaders with all the updates.
+
 ## Documentation
 
 The reference documentation is available at: https://kdab.github.io/kuesa/
