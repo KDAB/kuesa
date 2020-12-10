@@ -37,6 +37,12 @@ View3DSceneItem::View3DSceneItem(QObject *parent)
 
 View3DSceneItem::~View3DSceneItem() = default;
 
+/*!
+    \qmlproperty list<Kuesa.AnimationPlayer> View3D::aninations
+
+    \brief Holds the list of \l {Kuesa.AnimationPlayer} instances referenced by
+    the View3D.
+ */
 QQmlListProperty<Kuesa::AnimationPlayer> View3DSceneItem::animations()
 {
     return QQmlListProperty<Kuesa::AnimationPlayer>(this, nullptr,
@@ -74,6 +80,12 @@ void View3DSceneItem::qmlClearAnimations(QQmlListProperty<Kuesa::AnimationPlayer
     self->m_managedAnimations.clear();
 }
 
+/*!
+    \qmlproperty list<Kuesa.TransformTracker> View3D::transformTrackers
+
+    \brief Holds the list of \l {Kuesa.TransformTracker} instances referenced by
+    the View3D.
+ */
 QQmlListProperty<Kuesa::TransformTracker> View3DSceneItem::transformTrackers()
 {
     return QQmlListProperty<Kuesa::TransformTracker>(this, nullptr,

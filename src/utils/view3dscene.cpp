@@ -46,6 +46,227 @@ using namespace KuesaUtils;
 using namespace Qt3DCore;
 using namespace Qt3DRender;
 
+/*!
+    \class KuesaUtils::View3DScene
+    \brief View3DScene is a convenience wrapper aiming at simplifying the set
+    up of a 3D scene and the loading of a glTF 2 scene file.
+
+    \inmodule Kuesa
+    \since Kuesa 1.3
+    \inherits Kuesa::SceneEntity
+
+    View3DScene is a convenience wrapper aiming at simplifying the set
+    up of a 3D scene and the loading of a glTF 2 scene file.
+
+    It is a subclass of \l {Kuesa::SceneEntity} which grants access to the
+    various asset collections. Aditionnaly it contains a \l
+    {Kuesa::GLTF2Importer} and sets up a \l {Kuesa::ForwardRenderer} framegraph.
+
+    The property \l {KuesaUtils::View3DScene::ready} and signal \l
+    {KuesaUtils::View3DScene::readyChanged} can be used to detect when the
+    scene is visible on screen and therefore synchronize with other aspect of
+    your application.
+
+    When \l {Kuesa::AnimationPlayer} and \l {Kuesa::TransformTracker} instances
+    are added, the View3DScene will take care of population the camera,
+    screenSize and sceneEntity properties.
+
+    Furthermore, animation playback and control is abstracted by convenience
+    methods on the View3DScene instance.
+
+    When used in conjunction with \l {KuesaUtils::SceneConfiguration} this
+    class makes it convenient to set up a Kuesa renderer that can easily load
+    and unload scenes.
+*/
+
+/*!
+    \property KuesaUtils::View3DScene::importer
+
+    \brief Points to the \l {Kuesa::GLTF2Importer} instance wrapped around by
+    the View3DScene.
+ */
+
+/*!
+    \property KuesaUtils::View3DScene::frameGraph
+
+    \brief Points to the \l {Kuesa::ForwardRenderer} frame graph instance
+    wrapped around by the View3DScene.
+ */
+
+/*!
+    \property KuesaUtils::View3DScene::source
+
+    \brief The source of the glTF file to be loaded.
+ */
+
+
+/*!
+    \property KuesaUtils::View3DScene::cameraName
+
+    \brief The name of the camera asset that should be used to view the scene.
+    If the name references a valid camera, the camera will automatically be
+    set on the ForwardRenderer frameGraph and other internal assets such as
+    \l {Kuesa::TransformTracker}.
+ */
+
+/*!
+    \property KuesaUtils::View3DScene::showDebugOverlay
+
+    \brief Specifies whether the Qt 3D debug overlay should be displayed.
+    \note this only works when Qt is running with its OpenGL backend.
+ */
+
+/*!
+    \property KuesaUtils::View3DScene::screenSize
+
+    \brief Holds the size in pixels of the rendered area. When set, this
+    automatically updates the \l {Kuesa::TransformTracker} instances referenced
+    by the View3DScene with the new value for proper coodinate projection.
+ */
+
+/*!
+    \property KuesaUtils::View3DScene::ready
+
+    \brief This is true once the glTF file has been properly loaded and that
+    Qt 3D GPU resources have been succesfully loaded onto the GPU. The scene
+    should be visible on screen when this becomes true.
+ */
+
+/*!
+    \property KuesaUtils::View3DScene::loaded
+
+    \brief This is true once the glTF file has been properly loaded. The
+    scene might not be visible on screen when this becomes true.
+ */
+
+/*!
+    \property KuesaUtils::View3DScene::asynchronous
+
+    \brief If true, glTF parsing is performed in a non blocking manner from a
+    secondary thread. This is false by default.
+ */
+
+/*!
+    \property KuesaUtils::View3DScene::activeScene
+
+    \brief If this points to a valid \l {Kuesa::SceneConfiguration} instance,
+    the \l {Kuesa::View3DScene::source}, \l {Kuesa::View3DScene::cameraName} as
+    well as the \l {Kuesa::AnimationPlayer} and \l {Kuesa::TransformTracker}
+    instances will be automatically set based on the values provided by the
+    SceneConfiguration. This offers a more convenient way of specifying content
+    when dealing with multiple scenes.
+ */
+
+/*!
+    \qmltype View3D
+    \inqmlmodule KuesaUtils
+    \since Kuesa 1.3
+    \inherits Kuesa::SceneEntity
+    \instantiates KuesaUtils::View3DScene
+
+    \brief View3D is a convenience wrapper aiming at simplifying the set up of
+    a 3D scene and the loading of a glTF 2 scene file.
+
+    View3D is a convenience wrapper aiming at simplifying the set up of a 3D
+    scene and the loading of a glTF 2 scene file.
+
+    It is a subclass of \l {Kuesa::SceneEntity} which grants access to the
+    various asset collections. Aditionnaly it contains a \l
+    {Kuesa.GLTF2Importer} and sets up a \l {Kuesa.ForwardRenderer} framegraph.
+
+    The property \l {ready} and signal \l {readyChanged} can be used to detect
+    when the scene is visible on screen and therefore synchronize with other
+    aspect of your application.
+
+    When \l {Kuesa.AnimationPlayer} and \l {Kuesa.TransformTracker} instances
+    are added, the View3DScene will take care of population the camera,
+    screenSize and sceneEntity properties.
+
+    Furthermore, animation playback and control is abstracted by convenience
+    methods on the View3DScene instance.
+
+    When used in conjunction with \l {KuesaUtils.SceneConfiguration} this
+    class makes it convenient to set up a Kuesa renderer that can easily load
+    and unload scenes.
+*/
+
+/*!
+    \qmlproperty Kuesa.GLTF2Importer KuesaUtils::View3DScene::importer
+
+    \brief Points to the \l {Kuesa::GLTF2Importer} instance wrapped around by
+    the View3D.
+ */
+
+/*!
+    \qmlproperty Kuesa.ForwardRenderer KuesaUtils::View3DScene::frameGraph
+
+    \brief Points to the \l {Kuesa::ForwardRenderer} frame graph instance
+    wrapped around by the View3DScene.
+ */
+
+/*!
+    \qmlproperty url KuesaUtils::View3DScene::source
+
+    \brief The source of the glTF file to be loaded.
+ */
+
+
+/*!
+    \qmlproperty string KuesaUtils::View3DScene::cameraName
+
+    \brief The name of the camera asset that should be used to view the scene.
+    If the name references a valid camera, the camera will automatically be
+    set on the ForwardRenderer frameGraph and other internal assets such as
+    \l {Kuesa.TransformTracker}.
+ */
+
+/*!
+    \qmlproperty bool KuesaUtils::View3DScene::showDebugOverlay
+
+    \brief Specifies whether the Qt 3D debug overlay should be displayed.
+    \note this only works when Qt is running with its OpenGL backend.
+ */
+
+/*!
+    \qmlproperty size KuesaUtils::View3DScene::screenSize
+
+    \brief Holds the size in pixels of the rendered area. When set, this
+    automatically updates the \l {Kuesa::TransformTracker} instances referenced
+    by the View3D with the new value for proper coodinate projection.
+ */
+
+/*!
+    \qmlproperty bool KuesaUtils::View3DScene::ready
+
+    \brief This is true once the glTF file has been properly loaded and that
+    Qt 3D GPU resources have been succesfully loaded onto the GPU. The scene
+    should be visible on screen when this becomes true.
+ */
+
+/*!
+    \qmlproperty bool KuesaUtils::View3DScene::loaded
+
+    \brief This is true once the glTF file has been properly loaded. The
+    scene might not be visible on screen when this becomes true.
+ */
+
+/*!
+    \qmlproperty bool KuesaUtils::View3DScene::asynchronous
+
+    \brief If true, glTF parsing is performed in a non blocking manner from a
+    secondary thread. This is false by default.
+ */
+
+/*!
+    \qmlproperty KuesaUtils.SceneConfiguration KuesaUtils::View3DScene::activeScene
+
+    \brief If this points to a valid \l {Kuesa.SceneConfiguration} instance,
+    the \l {source}, \l {cameraName} as well as the \l {Kuesa.AnimationPlayer}
+    and \l {Kuesa.TransformTracker} instances will be automatically set based
+    on the values provided by the SceneConfiguration. This offers a more
+    convenient way of specifying content when dealing with multiple scenes.
+ */
+
 View3DScene::View3DScene(Qt3DCore::QNode *parent)
     : Kuesa::SceneEntity(parent)
     , m_importer(new GLTF2Importer(this))
@@ -202,6 +423,9 @@ void View3DScene::updateTrackers()
     }
 }
 
+/*!
+    \internal
+*/
 void View3DScene::updateFrame(float dt)
 {
     Q_UNUSED(dt);
@@ -237,6 +461,10 @@ void View3DScene::updateFrame(float dt)
     }
 }
 
+/*!
+    \brief Adds \a tracker to the list of managed \l {Kuesa::TransformTracker}
+    instances of the View3DScene.
+ */
 void View3DScene::addTransformTracker(TransformTracker *tracker)
 {
     if (std::find(std::begin(m_trackers), std::end(m_trackers), tracker) == std::end(m_trackers)) {
@@ -251,6 +479,10 @@ void View3DScene::addTransformTracker(TransformTracker *tracker)
     }
 }
 
+/*!
+    \brief Removes \a tracker from the list of managed \l
+    {Kuesa::TransformTracker} instances of the View3DScene.
+ */
 void View3DScene::removeTransformTracker(TransformTracker *tracker)
 {
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
@@ -259,11 +491,19 @@ void View3DScene::removeTransformTracker(TransformTracker *tracker)
                      std::end(m_trackers));
 }
 
+/*!
+    \brief Clears the list of managed \l {Kuesa::TransformTracker} instances of
+    the View3DScene.
+ */
 void View3DScene::clearTransformTrackers()
 {
     m_trackers.clear();
 }
 
+/*!
+    \brief Adds \a animation to the list of managed \l {Kuesa::AnimationPlayer}
+    instances of the View3DScene.
+ */
 void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
 {
     if (m_clock == nullptr)
@@ -285,6 +525,10 @@ void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
     }
 }
 
+/*!
+    \brief Removes \a animation from the list of managed \l {Kuesa::AnimationPlayer}
+    instances of the View3DScene.
+ */
 void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
 {
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
@@ -300,6 +544,11 @@ void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
     }
 }
 
+
+/*!
+    \brief Clears the list of managed \l {Kuesa::AnimationPlayer} instances of
+    the View3DScene.
+ */
 void View3DScene::clearAnimationPlayers()
 {
     m_animations.clear();
@@ -310,6 +559,13 @@ SceneConfiguration *View3DScene::activeScene() const
     return m_activeScene;
 }
 
+/*!
+    \brief Sets the active scene configuration to \a scene. If \a scene is a valid
+    non null instance, the \l {Kuesa::View3DScene::source}, \l
+    {Kuesa::View3DScene::cameraName} as well as the \l {Kuesa::AnimationPlayer}
+    and \l {Kuesa::TransformTracker} instances will be automatically set based on
+    the values provided by the SceneConfiguration
+ */
 void View3DScene::setActiveScene(SceneConfiguration *scene)
 {
     if (m_activeScene != scene) {
@@ -383,35 +639,65 @@ bool View3DScene::isLoaded() const
     return m_importer->status() == GLTF2Importer::Ready;
 }
 
+/*!
+    \brief Starts all the \l {Kuesa::AnimationPlayer} instances referenced by
+    the View3DScene instance.
+
+     \sa View3DScene::stop, View3DScene::restart
+ */
 void View3DScene::start()
 {
     for (auto a : m_animations)
         a->start();
 }
 
+/*!
+    \brief Restarts all the \l {Kuesa::AnimationPlayer} instances referenced by
+    the View3DScene instance.
+
+    \sa View3DScene::stop, View3DScene::start
+ */
 void View3DScene::restart()
 {
     for (auto a : m_animations)
         a->restart();
 }
 
+/*!
+    \brief Stops all the \l {Kuesa::AnimationPlayer} instances referenced by
+    the View3DScene instance.
+
+    \sa View3DScene::start
+ */
 void View3DScene::stop()
 {
     for (auto a : m_animations)
         a->stop();
 }
 
+/*!
+    \brief Set the normalized time of all the \l {Kuesa::AnimationPlayer}
+    instances referenced by the View3DScene instance to \a time.
+ */
 void View3DScene::gotoNormalizedTime(float time)
 {
     for (auto a : m_animations)
         a->setNormalizedTime(time);
 }
 
+/*!
+    \brief Set the normalized time of all the \l {Kuesa::AnimationPlayer}
+    instances referenced by the View3DScene instance to 0.
+ */
 void View3DScene::gotoStart()
 {
     gotoNormalizedTime(0.f);
 }
 
+/*!
+    \brief Set the normalized time of all the \l {Kuesa::AnimationPlayer}
+    instances referenced by the View3DScene instance to 1.
+ */
 void View3DScene::gotoEnd()
 {
     gotoNormalizedTime(1.f);
