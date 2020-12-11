@@ -48,6 +48,7 @@ Kuesa.SceneEntity {
             activeFrameGraph: Kuesa.ForwardRenderer {
                 id: frameGraph
                 camera: camera
+                skinning: true // Needed for IroSkybox/IroBackground
                 clearColor: Qt.rgba(0.1, 0.1, 0.1, 1.0)
             }
 //! [2.2]
