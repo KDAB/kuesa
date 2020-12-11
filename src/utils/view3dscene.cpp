@@ -401,7 +401,7 @@ void View3DScene::onSceneLoaded()
         QObject::connect(m_activeScene, &SceneConfiguration::transformTrackerAdded, this, &View3DScene::addTransformTracker);
         QObject::connect(m_activeScene, &SceneConfiguration::transformTrackerRemoved, this, &View3DScene::removeTransformTracker);
 
-        const auto &newAnimations = m_activeScene->animations();
+        const auto &newAnimations = m_activeScene->animationPlayers();
         for (auto a : newAnimations)
             addAnimationPlayer(a);
 
@@ -594,7 +594,7 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
 
         if (m_activeScene) {
             // Unregister previous resources
-            const auto &oldAnimations = m_activeScene->animations();
+            const auto &oldAnimations = m_activeScene->animationPlayers();
             const auto &oldTrackers = m_activeScene->transformTrackers();
 
             for (auto a : oldAnimations)

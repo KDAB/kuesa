@@ -53,7 +53,7 @@ public:
     QUrl source() const;
     QString cameraName() const;
 
-    const std::vector<Kuesa::AnimationPlayer *> &animations() const { return m_animations; }
+    const std::vector<Kuesa::AnimationPlayer *> &animationPlayers() const { return m_animations; }
     void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void clearAnimationPlayers();

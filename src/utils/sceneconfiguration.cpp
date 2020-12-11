@@ -70,7 +70,7 @@ void SceneConfiguration::addTransformTracker(TransformTracker *tracker)
 {
     if (std::find(std::begin(m_trackers), std::end(m_trackers), tracker) == std::end(m_trackers)) {
         Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-        d->registerDestructionHelper(tracker, &SceneConfiguration::removeTransformTracker, tracker);
+        d->registerDestructionHelper(tracker, &SceneConfiguration::removeTransformTracker, m_trackers);
         if (tracker->parentNode() == nullptr)
             tracker->setParent(this);
         m_trackers.push_back(tracker);
@@ -89,14 +89,16 @@ void SceneConfiguration::removeTransformTracker(TransformTracker *tracker)
 
 void SceneConfiguration::clearTransformTrackers()
 {
-    m_trackers.clear();
+    const std::vector<Kuesa::TransformTracker *> trackersCopy = m_trackers;
+    for (Kuesa::TransformTracker *t : trackersCopy)
+        removeTransformTracker(t);
 }
 
 void SceneConfiguration::addAnimationPlayer(AnimationPlayer *animation)
 {
     if (std::find(std::begin(m_animations), std::end(m_animations), animation) == std::end(m_animations)) {
         Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-        d->registerDestructionHelper(animation, &SceneConfiguration::removeAnimationPlayer, animation);
+        d->registerDestructionHelper(animation, &SceneConfiguration::removeAnimationPlayer, m_animations);
         if (animation->parentNode() == nullptr)
             animation->setParent(this);
         m_animations.push_back(animation);
@@ -117,7 +119,9 @@ void SceneConfiguration::removeAnimationPlayer(AnimationPlayer *animation)
 
 void SceneConfiguration::clearAnimationPlayers()
 {
-    m_animations.clear();
+    const std::vector<Kuesa::AnimationPlayer *> animCopy = m_animations;
+    for (Kuesa::AnimationPlayer *a : animCopy)
+        removeAnimationPlayer(a);
 }
 
 QT_END_NAMESPACE
