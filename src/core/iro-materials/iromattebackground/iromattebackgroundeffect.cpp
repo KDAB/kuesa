@@ -210,7 +210,11 @@ private:
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteBackgroundEffect is the effect for the IroMatteBackgroundMaterial class.
+    \brief Kuesa::IroMatteBackgroundEffect is the effect for the
+    IroMatteBackgroundMaterial class.
+
+    \note The View or ForwardRenderer should have its \l [QML]
+    {Kuesa::View::skinning} property set to true to be visible.
 */
 
 /*!
@@ -219,7 +223,11 @@ private:
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteBackgroundEffect is the effect for the IroMatteBackgroundMaterial class.
+    \brief Kuesa::IroMatteBackgroundEffect is the effect for the
+    IroMatteBackgroundMaterial class.
+
+    \note The View or ForwardRenderer should have its \l [QML]
+    {Kuesa::View::skinning} property set to true to be visible.
 */
 
 
