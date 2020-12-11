@@ -4,6 +4,55 @@ import Qt3D.Render 2.12
 import QtQuick.Scene2D 2.12
 import Kuesa 1.3 as Kuesa
 
+/*!
+    \qmltype QuickSceneMaterial
+    \inqmlmodule Kuesa
+    \inherits Entity
+
+    \brief Convenience wrapper that renders QtQuick content onto a Qt 3D
+    texture set on a Kuesa Material as the diffuseMap property.
+
+    QuickSceneMaterial takes care of instantiating a Scene2D with a proper
+    RenderTarget and Texture2D color attachment. The Texture2D is then set on a
+    Kuesa::GLTF2MaterialProperties node as the diffuseMap if present, otherwise
+    as the baseColorMap.
+
+    \qml
+    import QtQuick 2.15
+    import Kuesa 1.3 as Kuesa
+
+    Item {
+        id: root
+
+        Kuesa.View3D {
+            id: scene3D
+            anchors.fill: parent
+            source: "qrc:/car.gltf"
+            camera: "CamSweep_Orientation"
+
+            // Renders QtQuick into a Texture and set it as the diffuseMap
+            // property of the MatScreen material
+            Kuesa.QuickSceneMaterial {
+                name: "MatScreen"
+                collection: scene3D.materials
+
+                Item {
+                    width: 512
+                    height: 512
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: "Hello! I'm a QtQuick Text Item"
+                        font.pixelSize: 36
+                        color: "white"
+                    }
+                }
+            }
+        }
+    }
+    \endqml
+ */
+
 Entity {
     id: root
     property alias collection: asset.collection
@@ -23,7 +72,12 @@ Entity {
     Kuesa.Asset {
         id: asset
         onNodeChanged: if (node) {
-            node.diffuseMap = offscreenTexture
+           // Note all materials have a diffuseMap property
+           // but they all have a baseColorMap
+           if (node.diffuseMap !== undefined)
+               node.diffuseMap = offscreenTexture
+           else if (node.baseColorMap !== undefined)
+               node.baseColorMap = offscreenTexture
             offscreenTexture.width = node.diffuseMap.width
             offscreenTexture.height = node.diffuseMap.height
         }
