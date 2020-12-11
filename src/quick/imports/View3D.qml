@@ -35,6 +35,49 @@ import Qt3D.Extras 2.15
 import Kuesa 1.3 as Kuesa
 import Kuesa.Utils 1.3 as KuesaUtils
 
+/*!
+    \qmltype View3D
+    \inqmlmodule Kuesa
+    \inherits Scene3D
+    \brief Convenience wrapper around Scene3D and KuesaUtils::View3DScene.
+
+    View3D forwards all properties defined on View3DScene. It makes it
+    convenient to instantiate a Kuesa 3D view capable of being integrated in a
+    QtQuick application.
+
+    \qml
+    import QtQuick 2.15
+    import Kuesa 1.3 as Kuesa
+
+    Item {
+        id: root
+
+        Kuesa.View3D {
+            id: scene3D
+            anchors.fill: parent
+            source: "qrc:/car.gltf"
+            camera: "CamSweep_Orientation"
+            animations: [
+                Kuesa.AnimationPlayer { name: "SomeAnimation"; loops: 2; running: true }
+            ]
+            transformTrackers: [
+                Kuesa.TransformTracker { id: myTracker; name: "SomeNodeName" },
+            ]
+        }
+
+        Text {
+            id: innerText
+            // Bind position and opacity to myTracker' properties
+            readonly property point position: motorTracker.screenPosition
+            x: position.x - implicitWidth * 0.5
+            y: position.y - implicitHeight * 0.5
+            opacity: 0.5 * motorTracker.translation.y
+        }
+    }
+
+    \endqml
+ */
+
 Scene3D {
     id: root
     property alias source: scene.source
