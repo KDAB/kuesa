@@ -35,6 +35,92 @@ QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 using namespace KuesaUtils;
 
+/*!
+    \class KuesaUtils::SceneConfiguration
+    \brief SceneConfiguration provides a way of conveniently specifying
+    information about a glTF2 file and accompanying helpers to be loaded.
+
+    \inmodule Kuesa
+    \since Kuesa 1.3
+    \inherits Kuesa::KuesaNode
+
+    SceneConfiguration provides a way of conveniently specifying
+    information about a glTF2 file and accompanying helpers to be loaded.
+
+    When building an application that should display different scenes at
+    different moments in time, recreating a new Qt 3D view with its FrameGraph,
+    \l {Kuesa::GLTF2Importer} and other assets can be costly and unnecessary.
+    Yet, that approach is still often favored as it can be seen as more
+    convenient for the developer from an architecture point of view.
+
+    The \l {KuesaUtils::SceneConfiguration} used in conjunction with \l
+    {KuesaUtils::View3DScene} provides a new way to architecture such type of
+    applications. The idea is to instantiate the View3DScene once and use its
+    \l {KuesaUtils::View3DScene::activeScene} property to point to different \l
+    {KuessUtils::SceneConfiguration} instances. Internally, when the active
+    scene is changed, the new glTF2 file will be loaded and assets needed
+    created while previous glTF2 file and assets unloaded.
+*/
+
+/*!
+    \property KuesaUtils::SceneConfiguration::source
+
+    \brief The source of the glTF file to be loaded.
+ */
+
+/*!
+    \property KuesaUtils::SceneConfiguration::cameraName
+
+    \brief The name of the camera asset that should be used to view the scene.
+    If the name references a valid camera, the camera will automatically be
+    set on the ForwardRenderer frameGraph and other internal assets such as
+    \l {Kuesa::TransformTracker}.
+ */
+
+/*!
+    \qmltype SceneConfiguration
+    \instantiates KuesaUtils::SceneConfiguration
+    \inqmlmodule KuesaUtils
+    \since Kuesa 1.3
+    \inherits Kuesa::KuesaNode
+
+    \brief SceneConfiguration provides a way of conveniently specifying
+    information about a glTF2 file and accompanying helpers to be loaded.
+
+    SceneConfiguration provides a way of conveniently specifying
+    information about a glTF2 file and accompanying helpers to be loaded.
+
+    When building an application that should display different scenes at
+    different moments in time, recreating a new Qt 3D view with its FrameGraph,
+    \l [QML] {Kuesa::GLTF2Importer} and other assets can be costly and
+    unnecessary. Yet, that approach is still often favored as it can be seen as
+    more convenient for the developer from an architecture point of view.
+
+    The \l [QML] {KuesaUtils::SceneConfiguration} used in conjunction with \l
+    [QML] {KuesaUtils::View3DScene} provides a new way to architecture such
+    type of applications. The idea is to instantiate the View3D once and use
+    its \l [QML] {KuesaUtils::View3DScene::activeScene} property to point to
+    different \l [QML] {KuesaUtils::SceneConfiguration} instances. Internally,
+    when the active scene is changed, the new glTF2 file will be loaded and
+    assets needed created while previous glTF2 file and assets unloaded.
+*/
+
+/*!
+    \qmlproperty url KuesaUtils::SceneConfiguration::source
+
+    \brief The source of the glTF file to be loaded.
+ */
+
+
+/*!
+    \qmlproperty string KuesaUtils::SceneConfiguration::cameraName
+
+    \brief The name of the camera asset that should be used to view the scene.
+    If the name references a valid camera, the camera will automatically be
+    set on the ForwardRenderer frameGraph and other internal assets such as
+    \l [QML] {Kuesa::TransformTracker}.
+ */
+
 SceneConfiguration::SceneConfiguration(Qt3DCore::QNode *parent)
     : KuesaNode(parent)
 {
