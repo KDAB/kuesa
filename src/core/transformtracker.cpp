@@ -324,7 +324,7 @@ void TransformTracker::setName(const QString &name)
 }
 
 /*!
-    \property Kuesa::TransformTracker::::matrix
+    \property Kuesa::TransformTracker::matrix
 
     Holds the local transformation matrix associated to the tracker's
     referenced QTransform instance.
@@ -342,7 +342,7 @@ QMatrix4x4 TransformTracker::matrix() const
 }
 
 /*!
-    \property Kuesa::TransformTracker::::worldMatrix
+    \property Kuesa::TransformTracker::worldMatrix
 
     Holds the world transformation matrix associated to the tracker's
     referenced QTransform instance.
@@ -364,7 +364,7 @@ QMatrix4x4 TransformTracker::worldMatrix() const
 }
 
 /*!
-    \property Kuesa::TransformTracker::::rotation
+    \property Kuesa::TransformTracker::rotation
 
     Holds the local rotation associated to the tracker's referenced QTransform
     instance.
@@ -382,7 +382,7 @@ QQuaternion TransformTracker::rotation() const
 }
 
 /*!
-    \property Kuesa::TransformTracker::::rotationX
+    \property Kuesa::TransformTracker::rotationX
 
     Holds the local x rotation (euler angle) associated to the tracker's
     referenced QTransform instance.
@@ -400,7 +400,7 @@ float TransformTracker::rotationX() const
 }
 
 /*!
-    \property Kuesa::TransformTracker::::rotationY
+    \property Kuesa::TransformTracker::rotationY
 
     Holds the local y rotation (euler angle) associated to the tracker's
     referenced QTransform instance.
@@ -418,7 +418,7 @@ float TransformTracker::rotationY() const
 }
 
 /*!
-    \property Kuesa::TransformTracker::::rotationZ
+    \property Kuesa::TransformTracker::rotationZ
 
     Holds the local z rotation (euler angle) associated to the tracker's
     referenced QTransform instance.
@@ -436,7 +436,7 @@ float TransformTracker::rotationZ() const
 }
 
 /*!
-    \property Kuesa::TransformTracker::::scale
+    \property Kuesa::TransformTracker::scale
 
     Holds the local uniform scale associated to the tracker's referenced
     QTransform instance.
@@ -454,7 +454,7 @@ float TransformTracker::scale() const
 }
 
 /*!
-    \property Kuesa::TransformTracker::::scale3D
+    \property Kuesa::TransformTracker::scale3D
 
     Holds the local 3D scale associated to the tracker's referenced
     QTransform instance.
@@ -472,7 +472,7 @@ QVector3D TransformTracker::scale3D() const
 }
 
 /*!
-    \property Kuesa::TransformTracker::::translation
+    \property Kuesa::TransformTracker::translation
 
     Holds the local translation associated to the tracker's referenced
     QTransform instance.
@@ -490,7 +490,7 @@ QVector3D TransformTracker::translation() const
 }
 
 /*!
-    \property Kuesa::TransformTracker::::screenPosition
+    \property Kuesa::TransformTracker::screenPosition
 
     Holds the 2D screen position computed from the transformation in world
     space obtained from the tracker's referenced Transform, the camera, the

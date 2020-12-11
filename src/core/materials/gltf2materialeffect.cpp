@@ -86,7 +86,7 @@ namespace Kuesa {
 */
 
 /*!
-    \property MetallicRoughnessEffect::usingColorAttribute
+    \property GLTF2MaterialEffect::usingColorAttribute
 
     If true, the base color property is multiplied by the color interpolated
     attribute of the mesh
@@ -95,7 +95,7 @@ namespace Kuesa {
  */
 
 /*!
-    \property MetallicRoughnessEffect::usingNormalAttribute
+    \property GLTF2MaterialEffect::usingNormalAttribute
 
     If true, the normal attribute provided by the mesh is used.
 
@@ -103,7 +103,7 @@ namespace Kuesa {
  */
 
 /*!
-    \property MetallicRoughnessEffect::usingTangentAttribute
+    \property GLTF2MaterialEffect::usingTangentAttribute
 
     If true, the tangent attribute provided by the mesh is used.
 
@@ -111,7 +111,7 @@ namespace Kuesa {
  */
 
 /*!
-    \property MetallicRoughnessEffect::usingTexCoordAttribute
+    \property GLTF2MaterialEffect::usingTexCoordAttribute
 
     If true, the texCoord attribute provided by the mesh is used.
 
@@ -119,7 +119,7 @@ namespace Kuesa {
  */
 
 /*!
-    \property MetallicRoughnessEffect::usingTexCoord1Attribute
+    \property GLTF2MaterialEffect::usingTexCoord1Attribute
 
     If true, the texCoord1 attribute provided by the mesh is used.
 
@@ -127,7 +127,7 @@ namespace Kuesa {
  */
 
 /*!
-    \property MetallicRoughnessEffect::usingMorphTargets
+    \property GLTF2MaterialEffect::usingMorphTargets
 
     If true, the morphtarget support is enabled.
 
@@ -188,7 +188,7 @@ namespace Kuesa {
 */
 
 /*!
-    \qmlproperty bool MetallicRoughnessEffect::usingColorAttribute
+    \qmlproperty bool GLTF2MaterialEffect::usingColorAttribute
 
     If true, the base color property is multiplied by the color interpolated
     attribute of the mesh
@@ -197,7 +197,7 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty bool MetallicRoughnessEffect::usingNormalAttribute
+    \qmlproperty bool GLTF2MaterialEffect::usingNormalAttribute
 
     If true, the normal attribute provided by the mesh is used.
 
@@ -205,7 +205,7 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty bool MetallicRoughnessEffect::usingTangentAttribute
+    \qmlproperty bool GLTF2MaterialEffect::usingTangentAttribute
 
     If true, the tangent attribute provided by the mesh is used.
 
@@ -213,7 +213,7 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty bool MetallicRoughnessEffect::usingTexCoordAttribute
+    \qmlproperty bool GLTF2MaterialEffect::usingTexCoordAttribute
 
     If true, the texCoord attribute provided by the mesh is used.
 
@@ -221,7 +221,7 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty bool MetallicRoughnessEffect::usingTexCoord1Attribute
+    \qmlproperty bool GLTF2MaterialEffect::usingTexCoord1Attribute
 
     If true, the texCoord1 attribute provided by the mesh is used.
 
@@ -229,7 +229,7 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty bool MetallicRoughnessEffect::usingMorphTargets
+    \qmlproperty bool GLTF2MaterialEffect::usingMorphTargets
 
     If true, the morphtarget support is enabled.
 

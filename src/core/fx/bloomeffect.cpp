@@ -113,7 +113,7 @@ using namespace Kuesa;
  *
  * \badcode
  * import Kuesa 1.1 as Kuesa
- *
+ * import Kuesa.Effects 1.1
  * Kuesa.SceneEnity {
  *     id: root
  *     components: [
@@ -297,7 +297,7 @@ Qt3DRender::QRenderTarget *BloomEffect::createRenderTarget(Qt3DRender::QAbstract
 /*!
  * Returns the frame graph subtree corresponding to the effect's implementation.
  *
- * \sa AbstractPostProcessingEffect::frameGraphSubTree
+ * \sa Kuesa::AbstractPostProcessingEffect::frameGraphSubTree
  */
 AbstractPostProcessingEffect::FrameGraphNodePtr BloomEffect::frameGraphSubTree() const
 {
@@ -307,7 +307,7 @@ AbstractPostProcessingEffect::FrameGraphNodePtr BloomEffect::frameGraphSubTree()
 /*!
  * Sets the size of the rendered scene in pixels to \a size.
  *
- * \sa AbstractPostProcessingEffect::setSceneSize
+ * \sa Kuesa::AbstractPostProcessingEffect::setSceneSize
  */
 void BloomEffect::setWindowSize(const QSize &size)
 {
@@ -320,7 +320,7 @@ void BloomEffect::setWindowSize(const QSize &size)
 /*!
  * Sets the input texture for the effect to \a texture.
  *
- * \sa AbstractPostProcessingEffect::setInputTexture
+ * \sa Kuesa::AbstractPostProcessingEffect::setInputTexture
  */
 void BloomEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
 {
@@ -331,7 +331,7 @@ void BloomEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
 /*!
  * Sets the normalized viewport rect to \a vp.
  *
- * \sa AbstractPostProcessingEffect::setViewportRect
+ * \sa Kuesa::AbstractPostProcessingEffect::setViewportRect
  */
 void BloomEffect::setViewportRect(const QRectF &vp)
 {

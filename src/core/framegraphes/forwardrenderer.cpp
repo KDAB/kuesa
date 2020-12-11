@@ -264,21 +264,6 @@ using namespace Kuesa;
 */
 
 /*!
-    \property Kuesa::ForwardRenderer::viewportRect
-
-    Holds the rectangle within the current render surface where
-    rendering will occur. Rectangle is in normalized coordinates.
-*/
-
-/*!
-    \qmlproperty size Kuesa::ForwardRenderer::viewportRect
-
-    Holds the rectangle within the current render surface where
-    rendering will occur. Rectangle is in normalized coordinates.
-*/
-
-
-/*!
     \property Kuesa::ForwardRenderer::clearColor
 
     Holds the color used to clear the screen at the start of each frame.

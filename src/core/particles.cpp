@@ -543,6 +543,7 @@ Qt3DRender::QAbstractTexture *Particles::spriteTexture() const
     \list
     \li FaceCamera The particle faces the camera at all times.
     \li Velocity The particle's local Y axis is aligned to its direction.
+    \endlist
 
     If the Velocity alignment mode is used, the initialAngle and rotationRate properties are
     ignored.
@@ -558,6 +559,7 @@ Qt3DRender::QAbstractTexture *Particles::spriteTexture() const
     \list
     \li FaceCamera The particle faces the camera at all times.
     \li Velocity The particle's local Y axis is aligned to its direction.
+    \endlist
 
     If the Velocity alignment mode is used, the initialAngle and rotationRate properties are
     ignored.

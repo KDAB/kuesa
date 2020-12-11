@@ -54,7 +54,7 @@ namespace Kuesa {
     Pointer to the SceneEntity with which assets are registered as they are
     loaded from the glTF file.
 
-    \sa Kuesa::SceneEnity
+    \sa Kuesa::SceneEntity
 */
 
 /*!
@@ -81,7 +81,7 @@ namespace Kuesa {
     Pointer to the SceneEntity with which assets are registered as they are
     loaded from the glTF file.
 
-    \sa Kuesa::SceneEnity
+    \sa Kuesa::SceneEntity
  */
 
 KuesaNode::KuesaNode(Qt3DCore::QNode *parent)

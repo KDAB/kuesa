@@ -114,7 +114,7 @@ using namespace Kuesa;
  *
  * \badcode
  * import Kuesa 1.1 as Kuesa
- *
+ * import Kuesa.Effects 1.1
  * Kuesa.SceneEnity {
  *     id: root
  *     components: [

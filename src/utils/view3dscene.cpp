@@ -149,56 +149,58 @@ using namespace Qt3DRender;
 /*!
     \property KuesaUtils::View3DScene::activeScene
 
-    \brief If this points to a valid \l {Kuesa::SceneConfiguration} instance,
-    the \l {Kuesa::View3DScene::source}, \l {Kuesa::View3DScene::cameraName} as
-    well as the \l {Kuesa::AnimationPlayer} and \l {Kuesa::TransformTracker}
-    instances will be automatically set based on the values provided by the
-    SceneConfiguration. This offers a more convenient way of specifying content
-    when dealing with multiple scenes.
+    \brief If this points to a valid \l {KuesaUtils::SceneConfiguration} instance,
+    the \l {KuesaUtils::View3DScene::source}, \l
+    {KuesaUtils::View3DScene::cameraName} as well as the \l
+    {Kuesa::AnimationPlayer} and \l {Kuesa::TransformTracker} instances will be
+    automatically set based on the values provided by the SceneConfiguration.
+    This offers a more convenient way of specifying content when dealing with
+    multiple scenes.
  */
 
 /*!
-    \qmltype View3D
+    \qmltype View3DScene
     \inqmlmodule KuesaUtils
     \since Kuesa 1.3
     \inherits Kuesa::SceneEntity
     \instantiates KuesaUtils::View3DScene
 
-    \brief View3D is a convenience wrapper aiming at simplifying the set up of
-    a 3D scene and the loading of a glTF 2 scene file.
+    \brief View3DScene is a convenience wrapper aiming at simplifying the set
+    up of a 3D scene and the loading of a glTF 2 scene file.
 
     View3D is a convenience wrapper aiming at simplifying the set up of a 3D
     scene and the loading of a glTF 2 scene file.
 
     It is a subclass of \l {Kuesa::SceneEntity} which grants access to the
     various asset collections. Aditionnaly it contains a \l
-    {Kuesa.GLTF2Importer} and sets up a \l {Kuesa.ForwardRenderer} framegraph.
+    {Kuesa::GLTF2Importer} and sets up a \l {Kuesa::ForwardRenderer} framegraph.
 
-    The property \l {ready} and signal \l {readyChanged} can be used to detect
-    when the scene is visible on screen and therefore synchronize with other
-    aspect of your application.
+    The property \l [QML] {KuesaUtils::View3DScene::ready} and signal \l [QML]
+    {KuesaUtils::View3DScene::readyChanged} can be used to detect when the
+    scene is visible on screen and therefore synchronize with other aspect of
+    your application.
 
-    When \l {Kuesa.AnimationPlayer} and \l {Kuesa.TransformTracker} instances
-    are added, the View3DScene will take care of population the camera,
-    screenSize and sceneEntity properties.
+    When \l [QML] {Kuesa::AnimationPlayer} and \l [QML]
+    {Kuesa::TransformTracker} instances are added, the View3DScene will take
+    care of population the camera, screenSize and sceneEntity properties.
 
     Furthermore, animation playback and control is abstracted by convenience
     methods on the View3DScene instance.
 
-    When used in conjunction with \l {KuesaUtils.SceneConfiguration} this
+    When used in conjunction with \l [QML] {KuesaUtils::SceneConfiguration} this
     class makes it convenient to set up a Kuesa renderer that can easily load
     and unload scenes.
 */
 
 /*!
-    \qmlproperty Kuesa.GLTF2Importer KuesaUtils::View3DScene::importer
+    \qmlproperty Kuesa::GLTF2Importer KuesaUtils::View3DScene::importer
 
     \brief Points to the \l {Kuesa::GLTF2Importer} instance wrapped around by
     the View3D.
  */
 
 /*!
-    \qmlproperty Kuesa.ForwardRenderer KuesaUtils::View3DScene::frameGraph
+    \qmlproperty Kuesa::ForwardRenderer KuesaUtils::View3DScene::frameGraph
 
     \brief Points to the \l {Kuesa::ForwardRenderer} frame graph instance
     wrapped around by the View3DScene.
@@ -217,7 +219,7 @@ using namespace Qt3DRender;
     \brief The name of the camera asset that should be used to view the scene.
     If the name references a valid camera, the camera will automatically be
     set on the ForwardRenderer frameGraph and other internal assets such as
-    \l {Kuesa.TransformTracker}.
+    \l [QML] {Kuesa::TransformTracker}.
  */
 
 /*!
@@ -231,8 +233,9 @@ using namespace Qt3DRender;
     \qmlproperty size KuesaUtils::View3DScene::screenSize
 
     \brief Holds the size in pixels of the rendered area. When set, this
-    automatically updates the \l {Kuesa::TransformTracker} instances referenced
-    by the View3D with the new value for proper coodinate projection.
+    automatically updates the \l [QML] {Kuesa::TransformTracker} instances
+    referenced by the View3D with the new value for proper coodinate
+    projection.
  */
 
 /*!
@@ -260,11 +263,13 @@ using namespace Qt3DRender;
 /*!
     \qmlproperty KuesaUtils.SceneConfiguration KuesaUtils::View3DScene::activeScene
 
-    \brief If this points to a valid \l {Kuesa.SceneConfiguration} instance,
-    the \l {source}, \l {cameraName} as well as the \l {Kuesa.AnimationPlayer}
-    and \l {Kuesa.TransformTracker} instances will be automatically set based
-    on the values provided by the SceneConfiguration. This offers a more
-    convenient way of specifying content when dealing with multiple scenes.
+    \brief If this points to a valid \l [QML] {Kuesa::SceneConfiguration}
+    instance, the \l [QML] {KuesaUtils::View3DScene::source}, \l [QML]
+    {KuesaUtils::View3DScene::cameraName} as well as the \l [QML]
+    {Kuesa::AnimationPlayer} and \l [QML] {Kuesa::TransformTracker} instances
+    will be automatically set based on the values provided by the
+    SceneConfiguration. This offers a more convenient way of specifying content
+    when dealing with multiple scenes.
  */
 
 View3DScene::View3DScene(Qt3DCore::QNode *parent)

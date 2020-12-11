@@ -53,7 +53,7 @@ namespace Kuesa {
 */
 
 /*!
-    \qmlproperty vector3d DirectionalLight::direction
+    \qmlproperty vector3d Kuesa::DirectionalLight::direction
     Specifies the direction of the light. If the directionType is
     Local, the light direction wil lbe transformed by any rotations
     in parent nodes. If the directionType is World, the direction
@@ -61,7 +61,7 @@ namespace Kuesa {
 */
 
 /*!
-    \property DirectionalLight::direction
+    \property Kuesa::DirectionalLight::direction
     Specifies the direction of the light. If the directionType is
     Local, the light direction wil lbe transformed by any rotations
     in parent nodes. If the directionType is World, the direction
@@ -69,7 +69,7 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty vector3d DirectionalLight::directionMode
+    \qmlproperty vector3d Kuesa::DirectionalLight::directionMode
     Specifies whether the direction property should be interpreted
     as a world or local direction. Local directions inherit parent
     node rotation transformations and World directions do not.
@@ -77,7 +77,7 @@ namespace Kuesa {
 */
 
 /*!
-    \property DirectionalLight::directionMode
+    \property Kuesa::DirectionalLight::directionMode
     Specifies the direction of the light. If the directionType is
     Specifies whether the direction property should be interpreted
     as a world or local direction. Local directions inherit parent

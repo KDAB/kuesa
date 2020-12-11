@@ -53,54 +53,54 @@ namespace Kuesa {
 */
 
 /*!
-    \qmlproperty vector3d SpotLight::localDirection
+    \qmlproperty vector3d Kuesa::SpotLight::localDirection
     Specifies the local direction of the spot light.  Local
     direction is affected by parent transform rotations.
 */
 
 /*!
-    \property SpotLight::localDirection
+    \property Kuesa::SpotLight::localDirection
     Specifies the local direction of the spot light. Local
     direction is affected by parent transform rotations.
  */
 
 /*!
-    \property SpotLight::innerConeAngle
+    \property Kuesa::SpotLight::innerConeAngle
     Specifies the angle from center of the spot light where light
     begins to fall off.  The value must be greater than or equal to 0
     and less than outerConeAngle.
  */
 
 /*!
-    \qmlproperty float SpotLight::innerConeAngle
+    \qmlproperty float Kuesa::SpotLight::innerConeAngle
     Specifies the angle from center of the spot light where light
     begins to fall off.  The value must be greater than or equal to 0
     and less than outerConeAngle.
 */
 
 /*!
-    \qmlproperty float SpotLight::outerConeAngle
+    \qmlproperty float Kuesa::SpotLight::outerConeAngle
     Specifies the cut off angle of the spot light. Objects outside
     this angle receives no light from the SpotLight. The value must be
     greater than innerConeAngle and less than or equal to 180.
 */
 
 /*!
-    \property SpotLight::outerConeAngle
+    \property Kuesa::SpotLight::outerConeAngle
     Specifies the cut off angle of the spot light.  Objects outside
     this angle receives no light from the SpotLight. The value must be
     greater than innerConeAngle and less than or equal to 180.
  */
 
 /*!
-    \qmlproperty float SpotLight::range
+    \qmlproperty float Kuesa::SpotLight::range
     Specifies the destance at which the light intensity may be considered
     to have reached zero and has no effect. A range of 0 (default) indicates
     infinite range
 */
 
 /*!
-    \property SpotLight::range
+    \property Kuesa::SpotLight::range
     Specifies the destance at which the light intensity may be considered
     to have reached zero and has no effect. A range of 0 (default) indicates
     infinite range

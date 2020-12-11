@@ -64,15 +64,6 @@ namespace Kuesa {
  * A Qt3DRender::QLayer is added to the FullScreenQuad entity which can be retrieved with layer().
  */
 
-/*!
- * \brief FullScreenQuad::FullScreenQuad
- * \param material A material to be aggregated to the quad entity.
- *
- *This material \a material can be used to implement a gradient color
- *background or a screen space effect
- *
- * \param parent The parent node for the quad entity.
- */
 
 namespace {
 
@@ -84,6 +75,14 @@ static_assert(sizeof(V) == 5 * sizeof(float), "Unexpected size for struct V");
 
 } // anonymous
 
+/*!
+ * \param material A material to be aggregated to the quad entity.
+ *
+ *This material \a material can be used to implement a gradient color
+ *background or a screen space effect
+ *
+ * \param parent The parent node for the quad entity.
+ */
 FullScreenQuad::FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode *parent)
     : Qt3DCore::QEntity(parent)
     , m_buffer(new Qt3DGeometry::QBuffer())

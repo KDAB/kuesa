@@ -80,13 +80,15 @@
     They provide support for normal maps and IroDiffuseHemi-like shadowing.
 
     \list
-    \li \l {Iro2DiffuseSem}
-    \li \l {Iro2DiffuseEquiRect}
-    \li \l {Iro2AlphaSem}
-    \li \l {Iro2AlphaEquiRect}
-    \li \l {Iro2GlassSem}
-    \li \l {Iro2GlassEquiRect}
-    \li \l {Iro2MatteAlpha}
+    \li \l {Iro2DiffuseSemMaterial}
+    \li \l {Iro2DiffuseEquiRectMaterial}
+    \li \l {Iro2AlphaSemMaterial}
+    \li \l {Iro2AlphaEquiRectMaterial}
+    \li \l {Iro2GlassSemMaterial}
+    \li \l {Iro2GlassEquiRectMaterial}
+    \li \l {Iro2MatteAlphaMaterial}
+    \li \l {Iro2PlanarReflectionSemMaterial}
+    \li \l {Iro2PlanarReflectionEquiRectMaterial}
     \endlist
 
     \section2 Original Iro Materials

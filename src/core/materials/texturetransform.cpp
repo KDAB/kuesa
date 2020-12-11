@@ -88,22 +88,22 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty Kuesa::TextureTransform::offset
+    \qmlproperty vector2d Kuesa::TextureTransform::offset
     \since Kuesa 1.3
  */
 
 /*!
-    \qmlproperty Kuesa::TextureTransform::rotation
+    \qmlproperty float Kuesa::TextureTransform::rotation
     \since Kuesa 1.3
  */
 
 /*!
-    \qmlproperty Kuesa::TextureTransform::scale
+    \qmlproperty vector3d Kuesa::TextureTransform::scale
     \since Kuesa 1.3
  */
 
 /*!
-    \qmlproperty Kuesa::TextureTransform::matrix
+    \qmlproperty matrix3x3 Kuesa::TextureTransform::matrix
     \since Kuesa 1.3
  */
 

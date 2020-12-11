@@ -4,8 +4,8 @@ include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
 
 project                 = Kuesa
 description             = Kuesa Runtime Reference Documentation
-version                 = 1.2
-buildversion            = "Kuesa Runtime 1.2 Reference Documentation"
+version                 = 1.3
+buildversion            = "Kuesa Runtime 1.3 Reference Documentation"
 includepaths            =  . \
                            ..
 
@@ -17,19 +17,19 @@ examplesinstallpath       = kuesa
 
 qhp.projects              = Kuesa
 qhp.Kuesa.file            = kuesa.qhp
-qhp.Kuesa.namespace       = com.kdab.kuesa.1.2
+qhp.Kuesa.namespace       = com.kdab.kuesa.1.3
 qhp.Kuesa.virtualFolder   = kuesa
 qhp.Kuesa.indexTitle      = Kuesa
 qhp.Kuesa.subprojects     = classes qmltypes examples
 qhp.Kuesa.indexRoot       =
 
 qhp.Kuesa.subprojects.classes.title       = C++ Classes
-qhp.Kuesa.subprojects.classes.indexTitle  = Kuesa Runtime C++ Classes
+qhp.Kuesa.subprojects.classes.indexTitle  = Kuesa C++ Classes
 qhp.Kuesa.subprojects.classes.selectors   = class doc:headerfile
 qhp.Kuesa.subprojects.classes.sortPages   = true
 
 qhp.Kuesa.subprojects.qmltypes.title      = QML Types
-qhp.Kuesa.subprojects.qmltypes.indexTitle = Kuesa Runtime QML Types
+qhp.Kuesa.subprojects.qmltypes.indexTitle = Kuesa QML Types
 qhp.Kuesa.subprojects.qmltypes.selectors  = qmlclass
 qhp.Kuesa.subprojects.qmltypes.sortPages  = true
 
@@ -38,7 +38,7 @@ qhp.Kuesa.subprojects.examples.indexTitle = Kuesa Runtime Examples
 qhp.Kuesa.subprojects.examples.selectors  = doc:example
 qhp.Kuesa.subprojects.examples.sortPages  = true
 
-navigation.hometitle = "Kuesa Runtime 1.2"
+navigation.hometitle = "Kuesa Runtime 1.3"
 dita.metadata.default.publisher   = KDAB
 dita.metadata.default.copyrholder = KDAB
 dita.metadata.default.author = KDAB
@@ -47,11 +47,13 @@ depends                                   += kuesa
 
 headerdirs += . \
               ../core \
-              ../quick
+              ../quick \
+              ../utils
 
 sourcedirs += . \
             ../core \
-            ../quick
+            ../quick \
+            ../utils
 
 imagedirs += ./images
 
@@ -71,8 +73,8 @@ Cpp.ignoretokens                         += KUESASHARED_EXPORT Q_INVOKABLE
 Cpp.ignoredirectives                     += Q_DECLARE_LOGGING_CATEGORY Q_INVOKABLE
 
 navigation.landingpage = "Kuesa Runtime"
-navigation.cppclassespage = "Kuesa Runtime C++ Classes"
-navigation.qmltypespage = "Kuesa Runtime QML Types"
+navigation.cppclassespage = "Kuesa C++ Classes"
+navigation.qmltypespage = "Kuesa QML Types"
 
 HTML.headerstyles = "<link rel='stylesheet' href='style/bootstrap.min.css'>" \
                     "<link rel='stylesheet' href='style/dracula.css'>" \
