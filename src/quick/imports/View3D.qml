@@ -109,6 +109,7 @@ Scene3D {
     property alias transforms: scene.transforms
     property alias asynchronous: scene.asynchronous
     property alias reflectionPlanes: scene.reflectionPlanes
+    property list<Kuesa.View> views
     default property alias children: scene.data
 
     signal loadingDone()
@@ -138,6 +139,9 @@ Scene3D {
         id: scene
 
         screenSize: Qt.size(root.width, root.height)
+        frameGraph {
+            views: root.views
+        }
 
         Binding {
             when: root.cameraAspectRatioMode == Scene3D.AutomaticAspectRatio
