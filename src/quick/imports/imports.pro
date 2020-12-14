@@ -55,7 +55,10 @@ HEADERS += \
 
 QML_FILES += \
     QuickSceneMaterial.qml \
-    View3D.qml
+    View3D.qml \
+    CameraAsset.qml \
+    LayerAsset.qml \
+    MaterialAsset.qml
 
 OTHER_FILES += \
     qmldir \
