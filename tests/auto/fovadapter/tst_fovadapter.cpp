@@ -26,11 +26,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include <QtTest/QTest>
 #include <QtTest/QSignalSpy>
-
 #include <Kuesa/private/fovadaptor_p.h>
-#include <cmath>
+
 
 class tst_FOVAdaptor : public QObject
 {
