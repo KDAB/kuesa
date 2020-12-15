@@ -117,15 +117,5 @@ void AbstractPostProcessingEffect::setWindowSize(const QSize &sceneSize)
     Q_UNUSED(sceneSize);
 }
 
-/*!
- * Sets the normalized viewport rect \a vp. This can be useful to know
- * when rendering effects for a subset of the screen to adjust things
- * like texture coordinates for instance.
- */
-void AbstractPostProcessingEffect::setViewportRect(const QRectF &vp)
-{
-    Q_UNUSED(vp);
-}
-
 } // namespace Kuesa
 QT_END_NAMESPACE

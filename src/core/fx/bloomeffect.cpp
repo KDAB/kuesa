@@ -328,18 +328,6 @@ void BloomEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
     m_sceneTextureParam->setValue(QVariant::fromValue(texture));
 }
 
-/*!
- * Sets the normalized viewport rect to \a vp.
- *
- * \sa Kuesa::AbstractPostProcessingEffect::setViewportRect
- */
-void BloomEffect::setViewportRect(const QRectF &vp)
-{
-    m_fsQuad->setViewportRect(vp);
-    m_blurEffect->setViewportRect(vp);
-    m_thresholdEffect->setViewportRect(vp);
-}
-
 QVector<Qt3DRender::QLayer *> BloomEffect::layers() const
 {
     return m_layers;

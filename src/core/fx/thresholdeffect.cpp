@@ -273,14 +273,4 @@ void ThresholdEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
     m_textureParam->setValue(QVariant::fromValue(texture));
 }
 
-/*!
- * Sets the normalized viewport rect to \a vp.
- *
- * \sa AbstractPostProcessingEffect::setViewportRect
- */
-void ThresholdEffect::setViewportRect(const QRectF &vp)
-{
-    m_fsQuad->setViewportRect(vp);
-}
-
 QT_END_NAMESPACE

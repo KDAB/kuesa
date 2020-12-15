@@ -61,14 +61,11 @@ public:
     ~FullScreenQuad();
 
     Qt3DRender::QLayer *layer() const;
-    virtual void setViewportRect(const QRectF &vp);
-    QRectF viewportRect() const;
     Qt3DGeometry::QBuffer *buffer() const;
 
 private:
     Qt3DGeometry::QBuffer *m_buffer;
     Qt3DRender::QLayer *m_layer;
-    QRectF m_viewportRect;
 
     void updateBufferData();
 };

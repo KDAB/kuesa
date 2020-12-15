@@ -86,7 +86,6 @@ static_assert(sizeof(V) == 5 * sizeof(float), "Unexpected size for struct V");
 FullScreenQuad::FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode *parent)
     : Qt3DCore::QEntity(parent)
     , m_buffer(new Qt3DGeometry::QBuffer())
-    , m_viewportRect(QRectF(0.0f, 0.0f, 1.0f, 1.0f))
 {
     m_layer = new Qt3DRender::QLayer(this);
 
@@ -141,25 +140,6 @@ Qt3DRender::QLayer *FullScreenQuad::layer() const
     return m_layer;
 }
 
-/*!
- *
- * Specifies the normalized coordinate rectangle subset of the input texture
- * on which to apply the material. This usually should match the viewport
- * rect used to render the scene.
- */
-void FullScreenQuad::setViewportRect(const QRectF &vp)
-{
-    if (vp != m_viewportRect) {
-        m_viewportRect = vp;//QRectF(0.0f, 0.5f, 0.5f, 0.5f);
-        updateBufferData();
-    }
-}
-
-QRectF FullScreenQuad::viewportRect() const
-{
-    return m_viewportRect;
-}
-
 Qt3DGeometry::QBuffer *FullScreenQuad::buffer() const
 {
     return m_buffer;
@@ -172,17 +152,12 @@ void FullScreenQuad::updateBufferData()
 
     V *vertices = reinterpret_cast<V *>(rawData.data());
 
-    const float tX0 = m_viewportRect.x();
-    const float tY0 = 1.0f - (m_viewportRect.y() + m_viewportRect.width());
-    const float tX1 = m_viewportRect.x() + m_viewportRect.width();
-    const float tY1 = tY0 + m_viewportRect.height();
-
-    vertices[0] = { { -1.0, 1.0, 0.0 }, { tX0, tY1 } };
-    vertices[1] = { { -1.0, -1.0, 0.0 }, { tX0, tY0 } };
-    vertices[2] = { { 1.0, 1.0, 0.0 }, { tX1, tY1 } };
-    vertices[3] = { { 1.0, 1.0, 0.0 }, { tX1, tY1 } };
-    vertices[4] = { { -1.0, -1.0, 0.0 }, { tX0, tY0 } };
-    vertices[5] = { { 1.0, -1.0, 0.0 }, { tX1, tY0 } };
+    vertices[0] = { { -1.0, 1.0, 0.0 }, { 0.0, 1.0 } };
+    vertices[1] = { { -1.0, -1.0, 0.0 }, { 0.0, 0.0 } };
+    vertices[2] = { { 1.0, 1.0, 0.0 }, { 1.0, 1.0 } };
+    vertices[3] = { { 1.0, 1.0, 0.0 }, { 1.0, 1.0 } };
+    vertices[4] = { { -1.0, -1.0, 0.0 }, { 0.0, 0.0 } };
+    vertices[5] = { { 1.0, -1.0, 0.0 }, { 1.0, 0.0 } };
 
     m_buffer->setData(rawData);
 }

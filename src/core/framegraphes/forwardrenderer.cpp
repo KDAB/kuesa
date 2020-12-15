@@ -28,40 +28,18 @@
 
 #include "forwardrenderer.h"
 #include <Qt3DCore/qentity.h>
-#include <Qt3DRender/qviewport.h>
-#include <Qt3DRender/qcameraselector.h>
-#include <Qt3DRender/qtechniquefilter.h>
-#include <Qt3DRender/qrendersurfaceselector.h>
-#include <Qt3DRender/qfilterkey.h>
-#include <Qt3DRender/qfrustumculling.h>
-#include <Qt3DRender/qnodraw.h>
-#include <Qt3DRender/qlayerfilter.h>
-#include <Qt3DRender/qtexture.h>
-#include <Qt3DRender/qrendertarget.h>
-#include <Qt3DRender/qrendertargetselector.h>
-#include <Qt3DRender/qblitframebuffer.h>
-#include <Qt3DRender/qlayer.h>
-#include <Qt3DRender/qparameter.h>
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 #include <Qt3DRender/qdebugoverlay.h>
 #include <private/qrhi_p.h>
 #endif
 #include <QWindow>
 #include <QScreen>
+#include <Qt3DRender/qnodraw.h>
 
-#include <Kuesa/abstractpostprocessingeffect.h>
-#include <Kuesa/particles.h>
-#include "particlerenderstage_p.h"
-#include "tonemappingandgammacorrectioneffect.h"
-#include "fboresolver_p.h"
 #include "kuesa_p.h"
-#include <cmath>
 
 #include <Qt3DCore/private/qnode_p.h>
-#include <private/scenestages_p.h>
-#include <private/reflectionstages_p.h>
-#include <private/effectsstages_p.h>
-#include <private/framegraphutils_p.h>
 #include <Qt3DRender/private/qframegraphnode_p.h>
 
 QT_BEGIN_NAMESPACE
@@ -287,129 +265,27 @@ using namespace Kuesa;
     Holds which buffers will be cleared at the start of each frame.
 */
 
-/*!
-    \property Kuesa::ForwardRenderer::gamma
-
-    Holds the gamma value to use for gamma correction that brings linear colors
-    to sRGB colors.
-    \default 2.2
-    \since Kuesa 1.1
- */
-
-/*!
-    \qmlproperty real Kuesa::ForwardRenderer::gamma
-
-    Holds the gamma value to use for gamma correction that brings linear colors
-    to sRGB colors.
-    \default 2.2
-    \since Kuesa 1.1
- */
-
-/*!
-    \property Kuesa::ForwardRenderer::exposure
-    Exposure correction factor used before the linear to sRGB conversion.
-    \default 0
-    \since Kuesa 1.1
- */
-
-/*!
-    \qmlproperty real Kuesa::ForwardRenderer::exposure
-    Exposure correction factor used before the linear to sRGB conversion.
-    \default 0
-    \since Kuesa 1.1
- */
-
-/*!
-    \property Kuesa::ForwardRenderer::toneMappingAlgorithm
-
-    Tone mapping specifies how we perform color conversion from HDR (high
-    dynamic range) content to LDR (low dynamic range) content which our monitor
-    displays.
-
-    \since Kuesa 1.1
-    \default ToneMappingAndGammaCorrectionEffect::None
- */
-
-/*!
-    \qmlproperty ToneMappingAndGammaCorrectionEffect.ToneMapping Kuesa::ForwardRenderer::toneMappingAlgorithm
-
-    Tone mapping specifies how we perform color conversion from HDR (high
-    dynamic range) content to LDR (low dynamic range) content which our monitor
-    displays.
-
-    \since Kuesa 1.1
-    \default ToneMappingAndGammaCorrectionEffect.None
- */
-
-/*!
-    \property bool Kuesa::ForwardRenderer::usesStencilMask
-
-    Enables/disables stencil buffers. If true, stencil operations be used during the render phase to modify the stencil buffer.
-    The resulting stencil buffer can later be used to apply post process effect to only part of the scene
-
-    \since Kuesa 1.3
-    \default False
- */
-
-/*!
-    \qmlproperty bool Kuesa::ForwardRenderer::usesStencilMask
-
-    Enables/disables stencil buffers. If true, stencil operations be used during the render phase to modify the stencil buffer.
-    The resulting stencil buffer can later be used to apply post process effect to only part of the scene
-
-    \since Kuesa 1.3
-    \default False
- */
-
 ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     : View(parent)
-    , m_surfaceSelector(new Qt3DRender::QRenderSurfaceSelector())
-    , m_effectsViewport(new Qt3DRender::QViewport())
-    , m_stagesRoot(new Qt3DRender::QFrameGraphNode())
+    , m_surfaceSelector(new Qt3DRender::QRenderSurfaceSelector(this))
     , m_clearBuffers(new Qt3DRender::QClearBuffers())
-    , m_clearRT0(new Qt3DRender::QClearBuffers())
-    , m_internalFXStages(EffectsStagesPtr::create())
-    , m_renderToTextureRootNode(new Qt3DRender::QRenderTargetSelector())
-    , m_mainSceneLayerFilter(new Qt3DRender::QLayerFilter())
-    , m_multisampleTarget(nullptr)
-    , m_blitFramebufferNodeFromMSToFBO0(nullptr)
-    , m_blitFramebufferNodeFromFBO0ToFBO1(nullptr)
-    , m_msaaResolver(nullptr)
-    , m_rt0rt1Resolver(nullptr)
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     , m_debugOverlay(new Qt3DRender::QDebugOverlay)
 #endif
-    , m_usesStencilMask(false)
-    , m_gammaCorrectionFX(new ToneMappingAndGammaCorrectionEffect())
 {
-    m_effectsViewport->setObjectName(QLatin1String("KuesaPostProcessing"));
-    m_stagesRoot->setObjectName(QLatin1String("KuesaStagesRoot"));
-    m_renderToTextureRootNode->setObjectName(QLatin1String("KuesaMainSceneRenderToTexture"));
-    m_mainSceneLayerFilter->setObjectName(QLatin1String("MainSceneLayerFilter"));
-
-    m_mainSceneLayerFilter->setFilterMode(Qt3DRender::QLayerFilter::DiscardAnyMatchingLayers);
-
-    m_renderTargets[0] = nullptr;
-    m_renderTargets[1] = nullptr;
+    m_surfaceSelector->setObjectName(QStringLiteral("ForwardRenderer RenderSurfaceSelector"));
 
     m_clearBuffers->setBuffers(Qt3DRender::QClearBuffers::ColorDepthStencilBuffer);
+    m_clearBuffers->setObjectName(QStringLiteral("ForwardRenderer ClearBuffers"));
     new Qt3DRender::QNoDraw(m_clearBuffers);
 
-    m_clearRT0->setBuffers(Qt3DRender::QClearBuffers::ColorDepthStencilBuffer);
-    new Qt3DRender::QNoDraw(m_clearRT0);
-
-
-    connect(m_clearBuffers, &Qt3DRender::QClearBuffers::clearColorChanged, m_clearRT0, &Qt3DRender::QClearBuffers::setClearColor);
     connect(m_clearBuffers, &Qt3DRender::QClearBuffers::clearColorChanged, this, &ForwardRenderer::clearColorChanged);
     connect(m_clearBuffers, &Qt3DRender::QClearBuffers::buffersChanged, this, &ForwardRenderer::clearBuffersChanged);
-    connect(m_effectsViewport, &Qt3DRender::QViewport::normalizedRectChanged, this, &ForwardRenderer::viewportRectChanged);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::renderSurfaceChanged);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::handleSurfaceChange);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::externalRenderTargetSizeChanged);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::updateTextureSizes);
-    connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::gammaChanged, this, &ForwardRenderer::gammaChanged);
-    connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::exposureChanged, this, &ForwardRenderer::exposureChanged);
-    connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::toneMappingAlgorithmChanged, this, &ForwardRenderer::toneMappingAlgorithmChanged);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     m_debugOverlay->setEnabled(false);
     // Add a NoDraw to the debug overlay FG branch to ensure nothing but the
@@ -418,31 +294,11 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     connect(m_debugOverlay, &Qt3DRender::QDebugOverlay::enabledChanged, this, &ForwardRenderer::showDebugOverlayChanged);
 #endif
 
-    {
-        m_internalFXStages->setObjectName(QLatin1String("InternalFXStage"));
-        // Add internal post FX to the pipeline
-        m_internalFXStages->addEffect(m_gammaCorrectionFX);
-    }
-
     rebuildFGTree();
 }
 
 ForwardRenderer::~ForwardRenderer()
 {
-}
-
-/*!
- * Returns the color used to clear the screen at the start of each frame. The
- * color is returned in sRGB color space.
- */
-QColor ForwardRenderer::clearColor() const
-{
-    const QColor linearColor = m_clearBuffers->clearColor();
-    const float oneOverGamma = 1.0f / 2.2f;
-    return QColor::fromRgbF(powf(linearColor.redF(), oneOverGamma),
-                            powf(linearColor.greenF(), oneOverGamma),
-                            powf(linearColor.blueF(), oneOverGamma),
-                            linearColor.alphaF());
 }
 
 /*!
@@ -453,25 +309,6 @@ Qt3DRender::QClearBuffers::BufferType ForwardRenderer::clearBuffers() const
     return m_clearBuffers->buffers();
 }
 
-/*!
-    Exposure correction factor used before the linear to sRGB conversion.
-
-    \default 0.0
-*/
-float ForwardRenderer::exposure() const
-{
-    return m_gammaCorrectionFX->exposure();
-}
-
-/*!
-    Gamma correction value used for the linear to sRGB conversion.
-    \default 2.2
-    \since Kuesa 1.1
-*/
-float ForwardRenderer::gamma() const
-{
-    return m_gammaCorrectionFX->gamma();
-}
 
 bool ForwardRenderer::showDebugOverlay() const
 {
@@ -483,40 +320,11 @@ bool ForwardRenderer::showDebugOverlay() const
 }
 
 /*!
-    Returns the tone mapping algorithm used by the shader.
-    \default ToneMappingAndGammaCorrectionEffect::None
-    \since Kuesa 1.1
- */
-ToneMappingAndGammaCorrectionEffect::ToneMapping ForwardRenderer::toneMappingAlgorithm() const
-{
-    return m_gammaCorrectionFX->toneMappingAlgorithm();
-}
-
-bool ForwardRenderer::usesStencilMask() const
-{
-    return m_usesStencilMask;
-}
-
-/*!
  * Returns the surface where rendering will occur.
  */
 QObject *ForwardRenderer::renderSurface() const
 {
     return m_surfaceSelector->surface();
-}
-
-/*!
- * Sets the \a clearColor used to clear the screen at the start of each frame.
- * The color is expected to be in sRGB color space.
- */
-void ForwardRenderer::setClearColor(const QColor &clearColor)
-{
-    // Convert QColor from sRGB to Linear
-    const QColor linearColor = QColor::fromRgbF(std::pow(clearColor.redF(), 2.2),
-                                                std::pow(clearColor.greenF(), 2.2),
-                                                std::pow(clearColor.blueF(), 2.2),
-                                                clearColor.alphaF());
-    m_clearBuffers->setClearColor(linearColor);
 }
 
 /*!
@@ -527,33 +335,6 @@ void ForwardRenderer::setClearBuffers(Qt3DRender::QClearBuffers::BufferType clea
     m_clearBuffers->setBuffers(clearBuffers);
 }
 
-/*!
-    Sets the \a gamma value to use for gamma correction that brings linear
-    colors to sRGB colors.
-    \default 2.2
- */
-void ForwardRenderer::setGamma(float gamma)
-{
-    m_gammaCorrectionFX->setGamma(gamma);
-}
-
-/*!
-    Sets the \a exposure value to use for exposure correction
-    \default 0
- */
-void ForwardRenderer::setExposure(float exposure)
-{
-    m_gammaCorrectionFX->setExposure(exposure);
-}
-
-/*!
-    Sets the tone mapping algorithm to \a toneMappingAlgorithm.
-    \since Kuesa 1.1
-*/
-void ForwardRenderer::setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm)
-{
-    m_gammaCorrectionFX->setToneMappingAlgorithm(toneMappingAlgorithm);
-}
 
 void ForwardRenderer::setShowDebugOverlay(bool showDebugOverlay)
 {
@@ -562,22 +343,6 @@ void ForwardRenderer::setShowDebugOverlay(bool showDebugOverlay)
 #else
     Q_UNUSED(showDebugOverlay)
 #endif
-}
-
-/*!
-    Allows to use stencil buffer during the render phase. The resulting
-    stencil buffer is then accesible from the post processing effects.
-    This allows to apply post process effects only to part of the scene.
-
-    \since Kuesa 1.3
-*/
-void ForwardRenderer::setUsesStencilMask(bool usesStencilMask)
-{
-    if (usesStencilMask == m_usesStencilMask)
-        return;
-    m_usesStencilMask = usesStencilMask;
-    scheduleFGTreeRebuild();
-    emit usesStencilMaskChanged(m_usesStencilMask);
 }
 
 void ForwardRenderer::addView(View *view)
@@ -614,47 +379,6 @@ void ForwardRenderer::dump()
 /*!
  * \internal
  *
- * Updates all the off-screen rendering textures whenever the render surface
- * size changes
- */
-void ForwardRenderer::updateTextureSizes()
-{
-    const QSize targetSize = currentSurfaceSize();
-
-    QVector<Qt3DRender::QRenderTargetOutput *> outputs;
-    for (auto target : m_renderTargets) {
-        if (target != nullptr)
-            outputs += target->outputs();
-    }
-    if (m_multisampleTarget != nullptr) {
-        outputs += m_multisampleTarget->outputs();
-        const QRect blitRect(QPoint(), targetSize);
-        if (m_blitFramebufferNodeFromMSToFBO0) {
-            m_blitFramebufferNodeFromMSToFBO0->setSourceRect(blitRect);
-            m_blitFramebufferNodeFromMSToFBO0->setDestinationRect(blitRect);
-        }
-    }
-
-    if (m_blitFramebufferNodeFromFBO0ToFBO1) {
-        const QRect blitRect(QPoint(), targetSize);
-        m_blitFramebufferNodeFromFBO0ToFBO1->setSourceRect(blitRect);
-        m_blitFramebufferNodeFromFBO0ToFBO1->setDestinationRect(blitRect);
-    }
-
-    for (auto output : qAsConst(outputs))
-        output->texture()->setSize(targetSize.width(), targetSize.height());
-
-    // TO DO: Do that recursively for effects in the child views
-    for (auto effect : m_fxs)
-        effect->setWindowSize(targetSize);
-
-    for (const View *v : m_views)
-        v->m_fxStages->setWindowSize(targetSize);
-}
-
-/*!
- * \internal
- *
  * Connects to the appropriate signal for the surface type to know when
  * know when the surface size has changed so offscreen buffers can be resized.
  */
@@ -678,153 +402,41 @@ void ForwardRenderer::handleSurfaceChange()
 
 /*!
  * \internal
+ */
+void ForwardRenderer::updateTextureSizes()
+{
+    const QSize surfaceSize = currentSurfaceSize();
+    for (View *v : m_views)
+        v->setSurfaceSize(surfaceSize);
+    View::setSurfaceSize(surfaceSize);
+}
+
+/*!
+ * \internal
  *
  * Rebuild FrameGraph tree based on selected effects in the correct order.
  */
 void ForwardRenderer::reconfigureFrameGraph()
 {
-    // I)
-    // The idea is to render the Scenes for this main View and subViews
-    // into a texture
-
-    // II)
-    // Perform blit to non MS texture if using MSAA
-
-    // III)
-    // Execute Local Effects for each View
-    //    This might mean copying RT0 to RT1 as we need to make sure
-    //    that even if we perform the FX for a subpart part of the entire viewport,
-    //    we want content for the areas outside the viewport to be populated
-    // Execute Global Effects
-    // Render to Screen
-
     m_clearBuffers->setParent(Q_NODE_NULLPTR);
-    m_clearRT0->setParent(Q_NODE_NULLPTR);
-
-    m_effectsViewport->setParent(Q_NODE_NULLPTR);
-    m_stagesRoot->setParent(Q_NODE_NULLPTR);
-    m_renderToTextureRootNode->setParent(Q_NODE_NULLPTR);
-    m_mainSceneLayerFilter->setParent(Q_NODE_NULLPTR);
-
-    // Clear all layers on mainSceneFilter
-    const QVector<Qt3DRender::QLayer *> fxLayers = m_mainSceneLayerFilter->layers();
-    for (Qt3DRender::QLayer *l : fxLayers)
-        m_mainSceneLayerFilter->removeLayer(l);
-
-    // Unparent stages for the ForwardRenderer View
-    m_sceneStages->setParent(Q_NODE_NULLPTR);
-    m_reflectionStages->setParent(Q_NODE_NULLPTR);
-
-    // Unparent previous Scene Stages
-    for (Qt3DCore::QNode *c : m_stagesRoot->childNodes())
-        c->setParent(Q_NODE_NULLPTR);
-
-    // Unparent Previous Effects Stages
-    for (Qt3DCore::QNode *c : m_effectsViewport->childNodes())
-        c->setParent(Q_NODE_NULLPTR);
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     m_debugOverlay->setParent(Q_NODE_NULLPTR);
 #endif
 
-    // 1) Clear Screen
-    m_surfaceSelector->setParent(this);
+    // Unparent previous View Stages
+    for (Qt3DCore::QNode *c : m_surfaceSelector->childNodes())
+        c->setParent(Q_NODE_NULLPTR);
+
+    // Rebuild FG Tree
     m_clearBuffers->setParent(m_surfaceSelector);
 
-
-    // 2) Render SceneStages into Texture
-
-    // 2.1 Clear FBO Texture
-    m_renderToTextureRootNode->setParent(m_surfaceSelector);
-    m_clearRT0->setParent(m_renderToTextureRootNode);
-
-    // 2.2) Parent scenes stages to layer filter that discards effects
-
-    // We need to exclude the effects layers from being drawn in the main scene
-    m_mainSceneLayerFilter->setParent(m_renderToTextureRootNode);
-    m_stagesRoot->setParent(m_mainSceneLayerFilter);
-
     if (m_views.empty()) {
-        View::reconfigureFrameGraphHelper(m_stagesRoot);
+        View::reconfigureFrameGraphHelper(m_surfaceSelector);
     } else {
         for (View *v : m_views)
-            v->setParent(m_stagesRoot);
+            v->setParent(m_surfaceSelector);
     }
-
-    // Count User FX
-    std::vector<View *> fxViews = m_views;
-    if (fxViews.empty())
-        fxViews.push_back(this);
-    size_t userFXCount = 0;
-
-    for (View *v : fxViews)
-        userFXCount += v->m_fxs.size();
-
-    // 2.3) Set up RenderTargets and optional Blits to RT[0] if using MSAA
-    //      and blit between RT[0] and RT[1] to copy stencil mask
-    const size_t totalFXCount = userFXCount + m_internalFXStages->effects().size();
-    // Configure effects and create or recreate Render Targets
-    setupRenderTargets(m_renderToTextureRootNode, totalFXCount);
-
-
-    // 3) Set up Post Processing Effects
-    Qt3DRender::QAbstractTexture *depthTex = nullptr;
-    const auto &target0outputs = m_renderTargets[0]->outputs();
-    // Output #0 is the color
-    // Output #1 is the depth
-    if (!target0outputs.empty())
-        depthTex = target0outputs[1]->texture();
-
-    // create a node to hold all the effect subtrees, under the main viewport. They don't need camera, alpha, frustum, etc.
-    m_effectsViewport->setParent(m_surfaceSelector);
-
-    auto setUpEffectStage = [&] (EffectsStagesPtr &stage,
-            Qt3DRender::QRenderTarget *rtA,
-            Qt3DRender::QRenderTarget *rtB,
-            bool blitRts = true,
-            bool presentLastFXToScreen = false) {
-        // Don't add the effect stage it if has no effects
-        if (stage->effects().size() == 0)
-            return;
-
-        const QSize surfaceSize = currentSurfaceSize();
-        stage->setWindowSize(surfaceSize);
-        stage->setDepthTexture(depthTex);
-        stage->setRenderTargets(rtA, rtB);
-        stage->setPresentToScreen(presentLastFXToScreen);
-        stage->setParent(m_effectsViewport);
-        stage->setBlitFinalRT(blitRts);
-
-        // Exclude fx layers from the main scene
-        const std::vector<Qt3DRender::QLayer *> &layers = stage->layers();
-        for (Qt3DRender::QLayer *layer : layers)
-            m_mainSceneLayerFilter->addLayer(layer);
-    };
-
-    // Setup RenderTargets for Effects
-    int currentRT = 0;
-    const bool hasMultipleViews = fxViews.size() > 1;
-    for (View *v : fxViews) {
-        // When we have effects in different views, we need to blit
-        // RTA and RTB after we have performed all the FX for a given view
-        // This is because effects are only applied to the region the view targets
-        // and we flip flop between buffers
-        setUpEffectStage(v->m_fxStages,
-                         m_renderTargets[currentRT],
-                         m_renderTargets[1 - currentRT],
-                         hasMultipleViews);
-        if (v->m_fxs.size()  % 2 != 0)
-            currentRT = 1 - currentRT;
-    }
-
-    // Internal FXs
-    setUpEffectStage(m_internalFXStages,
-                     m_renderTargets[currentRT],
-                     m_renderTargets[1 - currentRT],
-                     false,
-            true);
-    // We shoud always have at least 1 internalFX (for Gamma/Exposure)
-    Q_ASSERT(m_internalFXStages->effects().size() > 0);
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     m_debugOverlay->setParent(m_surfaceSelector);
@@ -834,140 +446,7 @@ void ForwardRenderer::reconfigureFrameGraph()
     emit frameGraphTreeReconfigured();
     blockNotifications(blocked);
 
-//    dump();
-}
-
-void ForwardRenderer::setupRenderTargets(Qt3DRender::QRenderTargetSelector *sceneTargetSelector,
-                                         size_t totalFXCount)
-{
-    // Render Targets are owned by the FrameGraph itself There should be few
-    // reasons that requires them to be recreatd when the FrameGraph tree has
-    // to be rebuild. One of them is when we need to add a Stencil Attachment.
-    // Resize of the attachments when the surface size changes is handled by
-    // handleSurfaceChange and updateTextureSizes
-    const bool fboHasStencilAttachment =
-            (FrameGraphUtils::renderTargetHasAttachmentOfType(m_renderTargets[0], Qt3DRender::QRenderTargetOutput::Stencil) ||
-             FrameGraphUtils::renderTargetHasAttachmentOfType(m_renderTargets[0], Qt3DRender::QRenderTargetOutput::DepthStencil));
-    const QSize surfaceSize = currentSurfaceSize();
-    const FrameGraphUtils::RenderingFeatures glFeatures = FrameGraphUtils::checkRenderingFeatures();
-
-    FrameGraphUtils::RenderTargetFlags baseRtFlags;
-    if (FrameGraphUtils::hasHalfFloatRenderable())
-        baseRtFlags |= FrameGraphUtils::HalfFloatAttachments;
-    if (m_usesStencilMask)
-        baseRtFlags |= FrameGraphUtils::IncludeStencil;
-
-    const bool recreateRenderTargets = (m_usesStencilMask != fboHasStencilAttachment);
-    if (recreateRenderTargets) {
-        delete m_renderTargets[0];
-        delete m_renderTargets[1];
-        delete m_multisampleTarget;
-        delete m_blitFramebufferNodeFromFBO0ToFBO1;
-        delete m_msaaResolver;
-        m_renderTargets[0] = nullptr;
-        m_renderTargets[1] = nullptr;
-        m_multisampleTarget = nullptr;
-        m_blitFramebufferNodeFromFBO0ToFBO1 = nullptr;
-        m_msaaResolver = nullptr;
-    }
-
-    // Unparent nodes
-    if (m_msaaResolver)
-        m_msaaResolver->setParent(Q_NODE_NULLPTR);
-    if (m_blitFramebufferNodeFromMSToFBO0)
-        m_blitFramebufferNodeFromMSToFBO0->setParent(Q_NODE_NULLPTR);
-    if (m_blitFramebufferNodeFromFBO0ToFBO1)
-        m_blitFramebufferNodeFromFBO0ToFBO1->setParent(Q_NODE_NULLPTR);
-
-    // Recreate RenderTargets if required
-    if (!m_renderTargets[0]) {
-        // create a render target for main scene
-        m_renderTargets[0] = FrameGraphUtils::createRenderTarget(baseRtFlags|FrameGraphUtils::IncludeDepth,
-                                                this, surfaceSize);
-    }
-    if (!m_renderTargets[1] && totalFXCount > 1) {
-        m_renderTargets[1] = FrameGraphUtils::createRenderTarget(baseRtFlags, this, surfaceSize);
-        // create a secondary render target to do ping-pong when we have
-        // more than 1 fx
-    }
-
-    const int samples = QSurfaceFormat::defaultFormat().samples();
-    const bool useMSAA = glFeatures.hasMultisampledFBO && samples > 1;
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    const bool usesRHI = qgetenv("QT3D_RENDERER") == QByteArray("rhi");
-#else
-    const bool usesRHI = false;
-#endif
-
-    // If we support MSAA FBO -> Then render into it and Blit into regular non FBO
-    // for post FX
-    if (useMSAA) {
-        if (!m_multisampleTarget)
-            m_multisampleTarget = FrameGraphUtils::createRenderTarget(baseRtFlags|FrameGraphUtils::Multisampled|FrameGraphUtils::IncludeDepth,
-                                                                      this,
-                                                                      surfaceSize,
-                                                                      samples);
-        // RHI has no Blit operations so we manually resolve the multisampled
-        // FBO into renderTarget[0]
-        if (usesRHI) {
-            if (!m_msaaResolver)
-                m_msaaResolver = new FBOResolver();
-            m_msaaResolver->setParent(sceneTargetSelector);
-            m_msaaResolver->setSource(FrameGraphUtils::findRenderTargetTexture(m_multisampleTarget, Qt3DRender::QRenderTargetOutput::Color0));
-            m_msaaResolver->setDestination(m_renderTargets[0]);
-        } else {
-            // Blit into regular Tex2D FBO
-            if (!m_blitFramebufferNodeFromMSToFBO0) {
-                m_blitFramebufferNodeFromMSToFBO0 = new Qt3DRender::QBlitFramebuffer();
-                auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromMSToFBO0);
-                Q_UNUSED(noDraw);
-            }
-            m_blitFramebufferNodeFromMSToFBO0->setParent(sceneTargetSelector);
-            m_blitFramebufferNodeFromMSToFBO0->setSource(m_multisampleTarget);
-            m_blitFramebufferNodeFromMSToFBO0->setDestination(m_renderTargets[0]);
-            m_blitFramebufferNodeFromMSToFBO0->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
-            m_blitFramebufferNodeFromMSToFBO0->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
-
-            const QRect blitRect(QPoint(), surfaceSize);
-            m_blitFramebufferNodeFromMSToFBO0->setSourceRect(blitRect);
-            m_blitFramebufferNodeFromMSToFBO0->setDestinationRect(blitRect);
-
-        }
-        // Setup Scene RenderTarget Selector
-        sceneTargetSelector->setTarget(m_multisampleTarget);
-    } else {
-        // Render into non MSAA FBO directly
-        sceneTargetSelector->setTarget(m_renderTargets[0]);
-    }
-
-    // Blit RT0 into RT1
-    if (m_renderTargets[1]) {
-        if (usesRHI) {
-            if (!m_rt0rt1Resolver)
-                m_rt0rt1Resolver = new FBOResolver();
-            m_rt0rt1Resolver->setParent(sceneTargetSelector);
-            m_rt0rt1Resolver->setSource(FrameGraphUtils::findRenderTargetTexture(m_renderTargets[0], Qt3DRender::QRenderTargetOutput::Color0));
-            m_rt0rt1Resolver->setDestination(m_renderTargets[1]);
-        } else {
-            // Blit FBO 0 to FBO 1 to be able to access stencil of the render in post fx
-            if (!m_blitFramebufferNodeFromFBO0ToFBO1) {
-                m_blitFramebufferNodeFromFBO0ToFBO1 = new Qt3DRender::QBlitFramebuffer();
-                auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromFBO0ToFBO1);
-                Q_UNUSED(noDraw);
-            }
-
-            m_blitFramebufferNodeFromFBO0ToFBO1->setParent(sceneTargetSelector);
-            m_blitFramebufferNodeFromFBO0ToFBO1->setSource(m_renderTargets[0]);
-            m_blitFramebufferNodeFromFBO0ToFBO1->setDestination(m_renderTargets[1]);
-            m_blitFramebufferNodeFromFBO0ToFBO1->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
-            m_blitFramebufferNodeFromFBO0ToFBO1->setDestinationAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
-
-            const QRect blitRect(QPoint(), surfaceSize);
-            m_blitFramebufferNodeFromFBO0ToFBO1->setSourceRect(blitRect);
-            m_blitFramebufferNodeFromFBO0ToFBO1->setDestinationRect(blitRect);
-        }
-    }
+    //    dump();
 }
 
 const std::vector<View *> &ForwardRenderer::views() const

@@ -62,13 +62,11 @@ private Q_SLOTS:
         QCOMPARE(stages.backToFrontSorting(), false);
         QVERIFY(stages.camera() == nullptr);
         QCOMPARE(stages.layers().size(), 0);
-        QCOMPARE(stages.viewport(), QRectF(0.0f, 0.0f, 1.0f, 1.0f));
         QVERIFY(stages.reflectionTexture() != nullptr);
 
         // THEN
         {
             QCOMPARE(stages.children().size(), 3);
-            qDebug() << stages.children();
 
             Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[0]);
             QVERIFY(reflectiveEnabledParameter);
@@ -88,13 +86,10 @@ private Q_SLOTS:
             Qt3DRender::QClearBuffers *clearBuffers = qobject_cast<Qt3DRender::QClearBuffers *>(rtSelector->children().first());
             QVERIFY(clearBuffers);
 
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(rtSelector->children()[1]);
-            QVERIFY(vp);
-
             Qt3DRender::QRenderTarget *rt = qobject_cast<Qt3DRender::QRenderTarget *>(rtSelector->children().last());
             QVERIFY(rt);
 
-            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(vp->children().first());
+            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(rtSelector->children().at(1));
             QVERIFY(cameraSelector);
 
             QCOMPARE(cameraSelector->children().size(), 2);
@@ -131,14 +126,11 @@ private Q_SLOTS:
             Qt3DRender::QClearBuffers *clearBuffers = qobject_cast<Qt3DRender::QClearBuffers *>(rtSelector->children().first());
             QVERIFY(clearBuffers);
 
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(rtSelector->children()[1]);
-            QVERIFY(vp);
-
             Qt3DRender::QRenderTarget *rt = qobject_cast<Qt3DRender::QRenderTarget *>(rtSelector->children().last());
             QVERIFY(rt);
 
-            QCOMPARE(vp->children().size(), 1);
-            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(vp->children().first());
+            QCOMPARE(rtSelector->children().size(), 3);
+            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(rtSelector->children().at(1));
             QVERIFY(cameraSelector);
 
             QCOMPARE(cameraSelector->children().size(), 3);

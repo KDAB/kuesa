@@ -31,6 +31,7 @@
 
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
+#include <Kuesa/tonemappingandgammacorrectioneffect.h>
 #include <QFlags>
 #include <QRectF>
 #include <QVector4D>
@@ -43,6 +44,18 @@ class tst_ForwardRenderer;
 
 QT_BEGIN_NAMESPACE
 
+namespace Qt3DRender {
+class QRenderTargetSelector;
+class QNoDraw;
+class QBlitFramebuffer;
+class QRenderTarget;
+class QLayerFilter;
+class QCameraSelector;
+class QRenderSurfaceSelector;
+class QViewport;
+class QClearBuffers;
+}
+
 namespace Kuesa {
 
 class AbstractPostProcessingEffect;
@@ -50,6 +63,7 @@ class SceneStages;
 class ReflectionStages;
 class EffectsStages;
 class ReflectionPlane;
+class FBOResolver;
 
 using SceneStagesPtr = QSharedPointer<SceneStages>;
 using ReflectionStagesPtr = QSharedPointer<ReflectionStages>;
@@ -67,6 +81,11 @@ class KUESASHARED_EXPORT View : public Qt3DRender::QFrameGraphNode
     Q_PROPERTY(bool particlesEnabled READ particlesEnabled WRITE setParticlesEnabled NOTIFY particlesEnabledChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *reflectionTexture READ reflectionTexture NOTIFY reflectionTextureChanged)
     Q_PROPERTY(QSize reflectionTextureSize READ reflectionTextureSize WRITE setReflectionTextureSize NOTIFY reflectionTextureSizeChanged)
+    Q_PROPERTY(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged)
+    Q_PROPERTY(bool usesStencilMask READ usesStencilMask WRITE setUsesStencilMask NOTIFY usesStencilMaskChanged)
+    Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
+    Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged)
+    Q_PROPERTY(QColor clearColor READ clearColor WRITE setClearColor NOTIFY clearColorChanged)
 
 public:
     explicit View(Qt3DCore::QNode *parent = nullptr);
@@ -81,6 +100,11 @@ public:
     bool particlesEnabled() const;
     Qt3DRender::QAbstractTexture *reflectionTexture() const;
     QSize reflectionTextureSize() const;
+    QColor clearColor() const;
+    float exposure() const;
+    float gamma() const;
+    ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
+    bool usesStencilMask() const;
 
     const std::vector<AbstractPostProcessingEffect *> &postProcessingEffects() const;
     const std::vector<Qt3DRender::QLayer *> &layers() const;
@@ -95,6 +119,11 @@ public Q_SLOTS:
     void setZFilling(bool zfilling);
     void setParticlesEnabled(bool enabled);
     void setReflectionTextureSize(const QSize &reflectionTextureSize);
+    void setClearColor(const QColor &clearColor);
+    void setGamma(float gamma);
+    void setExposure(float exposure);
+    void setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
+    void setUsesStencilMask(bool usesStencilMask);
 
     void addPostProcessingEffect(AbstractPostProcessingEffect *effect);
     void removePostProcessingEffect(AbstractPostProcessingEffect *effect);
@@ -104,6 +133,8 @@ public Q_SLOTS:
 
     void addReflectionPlane(ReflectionPlane *plane);
     void removeReflectionPlane(ReflectionPlane *plane);
+
+    void dump();
 
 Q_SIGNALS:
     void viewportRectChanged(const QRectF &viewportRect);
@@ -115,6 +146,12 @@ Q_SIGNALS:
     void particlesEnabledChanged(bool enabled);
     void reflectionTextureChanged(Qt3DRender::QAbstractTexture *reflectionTexture);
     void reflectionTextureSizeChanged(const QSize &reflectionTextureSize);
+    void clearColorChanged(const QColor &clearColor);
+    void gammaChanged(float gamma);
+    void exposureChanged(float exposure);
+    void toneMappingAlgorithmChanged(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
+    void usesStencilMaskChanged(bool usesStencilMask);
+    void frameGraphTreeReconfigured();
 
 protected:
     void scheduleFGTreeRebuild();
@@ -137,11 +174,16 @@ protected:
     Q_DECLARE_FLAGS(Features, Feature)
 
 private:
-    void reconfigureFrameGraphHelper(Qt3DRender::QFrameGraphNode *stageRoot);
+    void reconfigureFrameGraphHelper(Qt3DRender::QFrameGraphNode *fgRoot);
+
+    void setSurfaceSize(const QSize &size);
+    QSize surfaceSize() const;
+    QSize currentTargetSize() const;
 
     SceneStagesPtr m_sceneStages;
     ReflectionStagesPtr m_reflectionStages;
-    EffectsStagesPtr m_fxStages;
+    EffectsStagesPtr m_fxStages; // User Specified FX
+    EffectsStagesPtr m_internalFXStages; // Mandatory FX (ToneMapping)
 
     Qt3DCore::QEntity *m_camera = nullptr;
     QRectF m_viewport = QRectF(0.0f, 0.0f, 1.0f, 1.0f);
@@ -153,6 +195,37 @@ private:
 
     Features m_features = Features(FrustumCulling);
     bool m_fgTreeRebuiltScheduled = false;
+    bool m_usesStencilMask = false;
+
+    // GammaCorrection
+    ToneMappingAndGammaCorrectionEffect *m_gammaCorrectionFX;
+    QSize m_surfaceSize;
+
+    struct ViewForward {
+        // Interface
+        explicit ViewForward(View *v);
+        void setClearColor(const QColor &color);
+        QColor clearColor();
+        void reconfigure(Qt3DRender::QFrameGraphNode *fgRoot);
+
+        // Implementation Details (kept public for now)
+        void setupRenderTargets(Qt3DRender::QRenderTargetSelector *sceneTargetSelector,
+                                size_t fxCount);
+        void updateTextureSizes();
+
+        Qt3DRender::QRenderTargetSelector *m_renderToTextureRootNode = nullptr;
+        Qt3DRender::QClearBuffers *m_clearRT0 = nullptr;
+        Qt3DRender::QLayerFilter *m_mainSceneLayerFilter = nullptr;
+        Qt3DRender::QRenderTarget *m_renderTargets[2] = {nullptr, nullptr};
+        Qt3DRender::QRenderTarget *m_multisampleTarget = nullptr;
+        Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromMSToFBO0 = nullptr;
+        Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromFBO0ToFBO1 = nullptr;
+        FBOResolver *m_msaaResolver = nullptr;
+        FBOResolver *m_rt0rt1Resolver = nullptr;
+
+        View *m_view = nullptr;
+    };
+    ViewForward *m_fg = nullptr;
 
     friend class ::tst_View;
     friend class ::tst_ForwardRenderer;

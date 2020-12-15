@@ -117,7 +117,6 @@ private Q_SLOTS:
         QVERIFY(e.camera() == nullptr);
         QCOMPARE(e.renderTargets(), emptyRts);
         QVERIFY(e.depthTexture() == nullptr);
-        QCOMPARE(e.viewport(), QRectF(0.0f, 0.0f, 1.0f, 1.0f));
         QCOMPARE(e.effects().size(), size_t(0));
         QCOMPARE(e.presentToScreen(), false);
     }
@@ -242,12 +241,9 @@ private Q_SLOTS:
 
         // THEN -> No FX, No RT, No Present to Screen
         {
-            QCOMPARE(e.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().first());
-            QCOMPARE(e.children().at(1), &rt0);
-            QCOMPARE(e.children().at(2), &rt1);
-            QVERIFY(vp != nullptr);
-            QCOMPARE(vp->children().size(), 0);
+            QCOMPARE(e.children().size(), 2);
+            QCOMPARE(e.children().at(0), &rt0);
+            QCOMPARE(e.children().at(1), &rt1);
         }
 
         // WHEN
@@ -256,12 +252,9 @@ private Q_SLOTS:
 
         // THEN -> FX(1), Not RT, No Present to Screen
         {
-            QCOMPARE(e.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().first());
-            QCOMPARE(e.children().at(1), &rt0);
-            QCOMPARE(e.children().at(2), &rt1);
-            QVERIFY(vp != nullptr);
-            QCOMPARE(vp->children().size(), 0);
+            QCOMPARE(e.children().size(), 2);
+            QCOMPARE(e.children().at(0), &rt0);
+            QCOMPARE(e.children().at(1), &rt1);
         }
 
         // WHEN
@@ -269,12 +262,9 @@ private Q_SLOTS:
 
         // THEN -> FX(1), RT(1), No Present to Screen
         {
-            QCOMPARE(e.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().first());
-            QCOMPARE(e.children().at(1), &rt0);
-            QCOMPARE(e.children().at(2), &rt1);
-            QVERIFY(vp != nullptr);
-            QCOMPARE(vp->children().size(), 0);
+            QCOMPARE(e.children().size(), 2);
+            QCOMPARE(e.children().at(0), &rt0);
+            QCOMPARE(e.children().at(1), &rt1);
         }
 
         // WHEN
@@ -283,12 +273,9 @@ private Q_SLOTS:
         // THEN -> FX(1), RT(2), No Present to Screen
         {
             QCOMPARE(e.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().first());
-            QCOMPARE(e.children().at(1), &rt0);
-            QCOMPARE(e.children().at(2), &rt1);
-            QVERIFY(vp != nullptr);
-            QCOMPARE(vp->children().size(), 1);
-            Qt3DRender::QRenderTargetSelector *rtS = qobject_cast<Qt3DRender::QRenderTargetSelector *>(vp->children().first());
+            QCOMPARE(e.children().at(0), &rt0);
+            QCOMPARE(e.children().at(1), &rt1);
+            Qt3DRender::QRenderTargetSelector *rtS = qobject_cast<Qt3DRender::QRenderTargetSelector *>(e.children().last());
             QVERIFY(rtS != nullptr);
             QCOMPARE(rtS->children().size(), 1);
             QCOMPARE(rtS->children().last(), fx1.frameGraphSubTree().data());
@@ -302,9 +289,9 @@ private Q_SLOTS:
         // THEN -> FX(1), RT(1), Present to Screen
         {
             QCOMPARE(e.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().first());
-            QCOMPARE(e.children().at(1), &rt0);
-            QCOMPARE(e.children().at(2), &rt1);
+            QCOMPARE(e.children().at(0), &rt0);
+            QCOMPARE(e.children().at(1), &rt1);
+            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().last());
             QVERIFY(vp != nullptr);
             QCOMPARE(vp->children().size(), 1);
             QCOMPARE(vp->children().first(), fx1.frameGraphSubTree().data());
@@ -317,12 +304,9 @@ private Q_SLOTS:
 
         // THEN -> FX(2), RT(1), No Present to Screen
         {
-            QCOMPARE(e.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().first());
-            QCOMPARE(e.children().at(1), &rt0);
-            QCOMPARE(e.children().at(2), &rt1);
-            QVERIFY(vp != nullptr);
-            QCOMPARE(vp->children().size(), 0);
+            QCOMPARE(e.children().size(), 2);
+            QCOMPARE(e.children().at(0), &rt0);
+            QCOMPARE(e.children().at(1), &rt1);
         }
 
         // WHEN
@@ -330,14 +314,11 @@ private Q_SLOTS:
 
         // THEN -> FX(2), RT(2), No Present to Screen
         {
-            QCOMPARE(e.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().first());
-            QCOMPARE(e.children().at(1), &rt0);
-            QCOMPARE(e.children().at(2), &rt1);
-            QVERIFY(vp != nullptr);
-            QCOMPARE(vp->children().size(), 2);
-            Qt3DRender::QRenderTargetSelector *rtS0 = qobject_cast<Qt3DRender::QRenderTargetSelector *>(vp->children().first());
-            Qt3DRender::QRenderTargetSelector *rtS1 = qobject_cast<Qt3DRender::QRenderTargetSelector *>(vp->children().last());
+            QCOMPARE(e.children().size(), 4);
+            QCOMPARE(e.children().at(0), &rt0);
+            QCOMPARE(e.children().at(1), &rt1);
+            Qt3DRender::QRenderTargetSelector *rtS0 = qobject_cast<Qt3DRender::QRenderTargetSelector *>(e.children().at(2));
+            Qt3DRender::QRenderTargetSelector *rtS1 = qobject_cast<Qt3DRender::QRenderTargetSelector *>(e.children().at(3));
             QVERIFY(rtS0 != nullptr && rtS1 != nullptr);
             QCOMPARE(rtS0->children().size(), 1);
             QCOMPARE(rtS1->children().size(), 1);
@@ -352,17 +333,15 @@ private Q_SLOTS:
 
         // THEN -> FX(2), RT(2), Present to Screen
         {
-            QCOMPARE(e.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().first());
-            QCOMPARE(e.children().at(1), &rt0);
-            QCOMPARE(e.children().at(2), &rt1);
-            QVERIFY(vp != nullptr);
-            QCOMPARE(vp->children().size(), 2);
-            Qt3DRender::QRenderTargetSelector *rtS = qobject_cast<Qt3DRender::QRenderTargetSelector *>(vp->children().first());
+            QCOMPARE(e.children().size(), 4);
+            QCOMPARE(e.children().at(0), &rt0);
+            QCOMPARE(e.children().at(1), &rt1);
+            Qt3DRender::QRenderTargetSelector *rtS = qobject_cast<Qt3DRender::QRenderTargetSelector *>(e.children().at(2));
             QVERIFY(rtS != nullptr);
             QCOMPARE(rtS->children().size(), 1);
             QCOMPARE(rtS->children().first(), fx1.frameGraphSubTree().data());
             QCOMPARE(rtS->target(), &rt1);
+            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().last());
             QCOMPARE(vp->children().last(), fx2.frameGraphSubTree().data());
         }
 

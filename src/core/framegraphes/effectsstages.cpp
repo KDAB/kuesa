@@ -47,12 +47,13 @@ EffectsStages::EffectsStages(Qt3DRender::QFrameGraphNode *parent)
     : AbstractRenderStage(parent)
 {
     setObjectName(QLatin1String("ViewFXStage"));
-    m_viewport = new Qt3DRender::QViewport(this);
+    m_viewport = new Qt3DRender::QViewport();
     m_viewport->setObjectName(QLatin1String("KuesaFXViewport"));
 }
 
 EffectsStages::~EffectsStages()
 {
+    delete m_viewport;
     // unparent the effect subtrees or they'll be deleted twice
     for (auto &framegraph : qAsConst(m_effectFGSubtrees))
         framegraph->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
@@ -131,6 +132,20 @@ void EffectsStages::removeEffect(AbstractPostProcessingEffect *effect)
 const std::vector<AbstractPostProcessingEffect *> EffectsStages::effects() const
 {
     return m_effects;
+}
+
+void EffectsStages::clearEffects()
+{
+    const std::vector<AbstractPostProcessingEffect *> fXs = m_effects;
+
+    for (AbstractPostProcessingEffect *fx: fXs) {
+        Utils::removeAll(m_effects, fx);
+        m_effectFGSubtrees.take(fx)->setParent(Q_NODE_NULLPTR);
+        // Stop watching for effect destruction
+        auto d = Qt3DCore::QNodePrivate::get(this);
+        d->unregisterDestructionHelper(fx);
+    }
+    m_effects.clear();
 }
 
 std::vector<Qt3DRender::QLayer *> EffectsStages::layers() const
@@ -232,6 +247,8 @@ bool EffectsStages::blitFinalRT() const
 
 void EffectsStages::reconfigure()
 {
+    m_viewport->setParent(Q_NODE_NULLPTR);
+
     for (AbstractPostProcessingEffect *fx : m_effects)
         m_effectFGSubtrees[fx]->setParent(Q_NODE_NULLPTR);
 
@@ -288,7 +305,7 @@ void EffectsStages::reconfigure()
             Qt3DRender::QRenderTargetSelector *renderTargetSelector = m_rtSelectors[i];
             renderTargetSelector->setTarget(currentRenderTarget);
             renderTargetSelector->setObjectName(QStringLiteral("RenderToTexture %1").arg(currentRenderTargetIndex));
-            renderTargetSelector->setParent(m_viewport);
+            renderTargetSelector->setParent(this);
             fxFGParent = renderTargetSelector;
         }
 
@@ -300,7 +317,7 @@ void EffectsStages::reconfigure()
                 auto noDraw = new Qt3DRender::QNoDraw(m_blitRt);
                 Q_UNUSED(noDraw);
             }
-            m_blitRt->setParent(m_viewport);
+            m_blitRt->setParent(this);
             m_blitRt->setSource(currentRenderTarget);
             m_blitRt->setDestination(previousRenderTarget);
             m_blitRt->setSourceAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
@@ -316,6 +333,9 @@ void EffectsStages::reconfigure()
         // Flip previousRenderTargetIndex
         previousRenderTargetIndex = currentRenderTargetIndex;
     }
+
+    if (m_presentToScreen)
+        m_viewport->setParent(this);
 }
 
 } // namespace Kuesa

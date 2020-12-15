@@ -68,7 +68,6 @@ public:
 
     void setWindowSize(const QSize &sceneSize) override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
-    void setViewportRect(const QRectF &vp) override;
 
     float threshold() const;
     int blurPassCount() const;

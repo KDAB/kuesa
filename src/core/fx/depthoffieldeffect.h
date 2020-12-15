@@ -63,7 +63,6 @@ public:
     float focusRange() const;
     float radius() const;
     float focusDistance() const;
-    void setViewportRect(const QRectF &vp) override;
 
 public Q_SLOTS:
     void setFocusRange(float focusRange);
@@ -82,8 +81,6 @@ private:
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
     void setDepthTexture(Qt3DRender::QAbstractTexture *texture) override;
     void setCamera(Qt3DCore::QEntity *camera) override;
-    void updateTextureSizeParam(const QSize &s,
-                                const QRectF &normalizedVP);
 
     FrameGraphNodePtr m_rootFrameGraphNode;
     Qt3DRender::QLayer *m_layer;

@@ -181,7 +181,6 @@ public Q_SLOTS:
 protected:
     void reconfigure(const Features features) override;
 
-    Qt3DRender::QViewport *m_viewport = nullptr;
     Qt3DRender::QCameraSelector *m_cameraSelector = nullptr;
     Qt3DRender::QLayerFilter *m_layerFilter = nullptr;
 

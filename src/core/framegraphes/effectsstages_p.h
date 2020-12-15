@@ -73,6 +73,7 @@ public:
     void addEffect(AbstractPostProcessingEffect *effect);
     void removeEffect(AbstractPostProcessingEffect *effect);
     const std::vector<AbstractPostProcessingEffect *> effects() const;
+    void clearEffects();
 
     std::vector<Qt3DRender::QLayer *> layers() const;
 

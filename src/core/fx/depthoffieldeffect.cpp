@@ -454,26 +454,6 @@ float DepthOfFieldEffect::focusDistance() const
     return m_focusDistance;
 }
 
-void DepthOfFieldEffect::updateTextureSizeParam(const QSize &sceneSize,
-                                                const QRectF &normalizedVP)
-{
-    m_textureSizeParam->setValue(QVector2D(sceneSize.width() * normalizedVP.width(),
-                                       sceneSize.height() * normalizedVP.height()));
-}
-
-
-/*!
- * Sets the normalized viewport rect to \a vp.
- *
- * \sa AbstractPostProcessingEffect::setViewportRect
- */
-void DepthOfFieldEffect::setViewportRect(const QRectF &vp)
-{
-    m_fsQuad->setViewportRect(vp);
-    updateTextureSizeParam({m_dofTexture->width(), m_dofTexture->height()},
-                           vp);
-}
-
 /*!
  * Sets the focal range to \a focusRange.
  *
@@ -521,8 +501,8 @@ void DepthOfFieldEffect::setFocusDistance(float focusDistance)
 
 void DepthOfFieldEffect::setWindowSize(const QSize &size)
 {
+    m_textureSizeParam->setValue(QSizeF(size));
     m_dofTexture->setSize(size.width(), size.height());
-    updateTextureSizeParam(size, m_fsQuad->viewportRect());
 }
 
 QT_END_NAMESPACE

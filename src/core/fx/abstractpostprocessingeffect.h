@@ -64,7 +64,6 @@ public:
     virtual void setCamera(Qt3DCore::QEntity *camera);
     virtual void setWindowSize(const QSize &sceneSize);
     virtual QVector<Qt3DRender::QLayer *> layers() const = 0;
-    virtual void setViewportRect(const QRectF &vp);
 
 protected:
     explicit AbstractPostProcessingEffect(Qt3DCore::QNode *parent = nullptr, Type = Custom);

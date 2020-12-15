@@ -43,6 +43,8 @@
 #include <Qt3DRender/QViewport>
 #include <Qt3DRender/QCameraSelector>
 #include <Qt3DRender/QCamera>
+#include <Qt3DRender/QClearBuffers>
+#include <Qt3DRender/QBlitFramebuffer>
 #include <Qt3DRender/QRenderSurfaceSelector>
 #include <Qt3DRender/QFilterKey>
 #include <Qt3DRender/QTechniqueFilter>
@@ -518,8 +520,15 @@ private Q_SLOTS:
         // WHEN -> No Effects, No Reflection, No Layer
 
         // THEN
-        QCOMPARE(v.children().size(), 1);
-        Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
+        QCOMPARE(v.children().size(), 3);
+        QCOMPARE(v.children()[0], v.m_fg->m_renderToTextureRootNode);
+        QCOMPARE(v.children()[1], v.m_fg->m_renderTargets[0]);
+        QCOMPARE(v.children()[2], v.m_internalFXStages);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().size(), 2);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().first(), v.m_fg->m_clearRT0);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children()[1], v.m_fg->m_mainSceneLayerFilter);
+        QCOMPARE(v.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+        Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.m_fg->m_mainSceneLayerFilter->children().first());
         QVERIFY(child);
 
         QVERIFY(v.m_fxStages->parent() == nullptr);
@@ -538,15 +547,29 @@ private Q_SLOTS:
             v.addLayer(&l);
 
             // THEN
-            QCOMPARE(v.children().size(), 2);
-            Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
-            QVERIFY(child);
+            QCOMPARE(v.children().size(), 4);
+            QCOMPARE(v.children()[0], v.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v.children()[1], v.m_fg->m_renderTargets[0]);
+            QCOMPARE(v.children()[2], v.m_internalFXStages);
             QCOMPARE(v.children().last(), &l);
+            QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().size(), 2);
+            QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().first(), v.m_fg->m_clearRT0);
+            QCOMPARE(v.m_fg->m_renderToTextureRootNode->children()[1], v.m_fg->m_mainSceneLayerFilter);
+            QCOMPARE(v.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.m_fg->m_mainSceneLayerFilter->children().first());
+            QVERIFY(child);
         }
 
         // THEN
-        QCOMPARE(v.children().size(), 1);
-        Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
+        QCOMPARE(v.children().size(), 3);
+        QCOMPARE(v.children()[0], v.m_fg->m_renderToTextureRootNode);
+        QCOMPARE(v.children()[1], v.m_fg->m_renderTargets[0]);
+        QCOMPARE(v.children()[2], v.m_internalFXStages);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().size(), 2);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().first(), v.m_fg->m_clearRT0);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children()[1], v.m_fg->m_mainSceneLayerFilter);
+        QCOMPARE(v.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+        Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.m_fg->m_mainSceneLayerFilter->children().first());
         QVERIFY(child);
 
         QVERIFY(v.m_fxStages->parent() == nullptr);
@@ -565,19 +588,33 @@ private Q_SLOTS:
             v.addReflectionPlane(&plane);
 
             // THEN
-            QCOMPARE(v.children().size(), 3);
-
+            QCOMPARE(v.children().size(), 4);
+            QCOMPARE(v.children()[0], v.m_fg->m_renderTargets[0]);
             // We parent plane if it has no parent
-            QCOMPARE(v.children()[0], &plane);
-            Kuesa::ReflectionStages *child1 = qobject_cast<Kuesa::ReflectionStages *>(v.children()[1]);
-            Kuesa::SceneStages *child2 = qobject_cast<Kuesa::SceneStages *>(v.children()[2]);
+            QCOMPARE(v.children()[1], &plane);
+            QCOMPARE(v.children()[2], v.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v.children()[3], v.m_internalFXStages);
+            QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().size(), 2);
+            QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().first(), v.m_fg->m_clearRT0);
+            QCOMPARE(v.m_fg->m_renderToTextureRootNode->children()[1], v.m_fg->m_mainSceneLayerFilter);
+            QCOMPARE(v.m_fg->m_mainSceneLayerFilter->children().size(), 2);
+            Kuesa::ReflectionStages *child1 = qobject_cast<Kuesa::ReflectionStages *>(v.m_fg->m_mainSceneLayerFilter->children()[0]);
+            Kuesa::SceneStages *child2 = qobject_cast<Kuesa::SceneStages *>(v.m_fg->m_mainSceneLayerFilter->children()[1]);
             QVERIFY(child1);
             QVERIFY(child2);
         }
 
         // THEN
-        QCOMPARE(v.children().size(), 1);
-        QVERIFY(qobject_cast<Kuesa::SceneStages *>(v.children()[0]));
+        QCOMPARE(v.children().size(), 3);
+        QCOMPARE(v.children()[0], v.m_fg->m_renderTargets[0]);
+        QCOMPARE(v.children()[1], v.m_fg->m_renderToTextureRootNode);
+        QCOMPARE(v.children()[2], v.m_internalFXStages);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().size(), 2);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().first(), v.m_fg->m_clearRT0);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children()[1], v.m_fg->m_mainSceneLayerFilter);
+        QCOMPARE(v.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+        Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.m_fg->m_mainSceneLayerFilter->children().first());
+        QVERIFY(child);
     }
 
     void checkGeneratedFrameGraphTreeFxRNoeflectionNoLayer()
@@ -592,16 +629,26 @@ private Q_SLOTS:
         // THEN
         QCoreApplication::processEvents();
 
-        QCOMPARE(v.children().size(), 1);
-        Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
+        QCOMPARE(v.children().size(), 5);
+        QCOMPARE(v.children()[0], v.m_fg->m_renderTargets[0]);
+        QCOMPARE(v.children()[1], v.m_fg->m_renderToTextureRootNode);
+        QCOMPARE(v.children()[2], v.m_fg->m_renderTargets[1]);
+        QCOMPARE(v.children()[3], v.m_fxStages);
+        QCOMPARE(v.children()[4], v.m_internalFXStages);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().size(), 3);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().first(), v.m_fg->m_clearRT0);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children()[1], v.m_fg->m_mainSceneLayerFilter);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().last(), v.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1);
+        QCOMPARE(v.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+        Kuesa::SceneStages *child = qobject_cast<Kuesa::SceneStages *>(v.m_fg->m_mainSceneLayerFilter->children()[0]);
         QVERIFY(child);
 
         QCOMPARE(v.m_fxStages->effects().size(), size_t(1));
         QCOMPARE(v.m_fxs.size(), size_t(1));
         QCOMPARE(v.m_fxStages->children().size(), 1);
 
-        Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(v.m_fxStages->children().first());
-        QVERIFY(vp);
+        Qt3DRender::QRenderTargetSelector *rtSelectorEffects = qobject_cast<Qt3DRender::QRenderTargetSelector *>(v.m_fxStages->children().first());
+        QVERIFY(rtSelectorEffects);
     }
 
     void checkGeneratedFrameGraphTreeParticlesNoFxNoReflectionNoLayer()
@@ -615,10 +662,18 @@ private Q_SLOTS:
         // THEN
         QCoreApplication::processEvents();
 
-        QCOMPARE(v.children().size(), 1);
-        Kuesa::SceneStages *child0 = qobject_cast<Kuesa::SceneStages *>(v.children()[0]);
-        Kuesa::ParticleRenderStage *child1 = child0->findChild<Kuesa::ParticleRenderStage *>();
+        QCOMPARE(v.children().size(), 3);
+        QCOMPARE(v.children()[0], v.m_fg->m_renderTargets[0]);
+        QCOMPARE(v.children()[1], v.m_fg->m_renderToTextureRootNode);
+        QCOMPARE(v.children()[2], v.m_internalFXStages);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().size(), 2);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().first(), v.m_fg->m_clearRT0);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children()[1], v.m_fg->m_mainSceneLayerFilter);
+        QCOMPARE(v.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+
+        Kuesa::SceneStages *child0 = qobject_cast<Kuesa::SceneStages *>(v.m_fg->m_mainSceneLayerFilter->children()[0]);
         QVERIFY(child0);
+        Kuesa::ParticleRenderStage *child1 = child0->findChild<Kuesa::ParticleRenderStage *>();
         QVERIFY(child1);
     }
 
@@ -637,21 +692,32 @@ private Q_SLOTS:
         // THEN
         QCoreApplication::processEvents();
 
-        QCOMPARE(v.children().size(), 3);
-        QCOMPARE(v.children()[0], &plane);
-        Kuesa::ReflectionStages *child1 = qobject_cast<Kuesa::ReflectionStages *>(v.children()[1]);
-        Kuesa::SceneStages *child2 = qobject_cast<Kuesa::SceneStages *>(v.children()[2]);
-        Kuesa::ParticleRenderStage *child3 = child2->findChild<Kuesa::ParticleRenderStage *>();
+        QCOMPARE(v.children().size(), 6);
+        QCOMPARE(v.children()[0], v.m_fg->m_renderTargets[0]);
+        QCOMPARE(v.children()[1], &plane);
+        QCOMPARE(v.children()[2], v.m_fg->m_renderToTextureRootNode);
+        QCOMPARE(v.children()[3], v.m_fg->m_renderTargets[1]);
+        QCOMPARE(v.children()[4], v.m_fxStages);
+        QCOMPARE(v.children()[5], v.m_internalFXStages);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().size(), 3);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().first(), v.m_fg->m_clearRT0);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children()[1], v.m_fg->m_mainSceneLayerFilter);
+        QCOMPARE(v.m_fg->m_renderToTextureRootNode->children().last(), v.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1);
+        QCOMPARE(v.m_fg->m_mainSceneLayerFilter->children().size(), 2);
+        Kuesa::ReflectionStages *child1 = qobject_cast<Kuesa::ReflectionStages *>(v.m_fg->m_mainSceneLayerFilter->children()[0]);
+        Kuesa::SceneStages *child2 = qobject_cast<Kuesa::SceneStages *>(v.m_fg->m_mainSceneLayerFilter->children()[1]);
         QVERIFY(child1);
         QVERIFY(child2);
+
+        Kuesa::ParticleRenderStage *child3 = child2->findChild<Kuesa::ParticleRenderStage *>();
         QVERIFY(child3);
 
         QCOMPARE(v.m_fxStages->effects().size(), size_t(1));
         QCOMPARE(v.m_fxs.size(), size_t(1));
         QCOMPARE(v.m_fxStages->children().size(), 1);
 
-        Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(v.m_fxStages->children().first());
-        QVERIFY(vp);
+        Qt3DRender::QRenderTargetSelector *rtSelectorEffects = qobject_cast<Qt3DRender::QRenderTargetSelector *>(v.m_fxStages->children().first());
+        QVERIFY(rtSelectorEffects);
     }
 
     void checkRootView()

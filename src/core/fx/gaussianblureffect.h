@@ -63,7 +63,6 @@ public:
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
     void setWindowSize(const QSize &size) override;
     int blurPassCount() const;
-    void setViewportRect(const QRectF &vp) override;
 
 public Q_SLOTS:
     void setBlurPassCount(int blurPassCount);
@@ -73,8 +72,6 @@ Q_SIGNALS:
 
 private:
     void createBlurPasses();
-    void updateTextureSizeParam(const QSize &s,
-                                const QRectF &normalizedVP);
     QString passName() const;
 
     FrameGraphNodePtr m_rootFrameGraphNode;

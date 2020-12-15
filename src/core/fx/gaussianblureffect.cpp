@@ -300,13 +300,6 @@ void GaussianBlurEffect::createBlurPasses()
     blurPassFilterB->setParent(m_blurPassRoot);
 }
 
-void GaussianBlurEffect::updateTextureSizeParam(const QSize &sceneSize,
-                                                const QRectF &normalizedVP)
-{
-    m_heightParameter->setValue(sceneSize.height() * normalizedVP.height());
-    m_widthParameter->setValue(sceneSize.width() * normalizedVP.width());
-}
-
 /*!
  * Returns the frame graph subtree corresponding to the effect's implementation.
  *
@@ -343,10 +336,12 @@ void GaussianBlurEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
  */
 void GaussianBlurEffect::setWindowSize(const QSize &size)
 {
+    m_heightParameter->setValue(size.height());
+    m_widthParameter->setValue(size.width());
     // only need to resize texture 2.
     // texture 1 is passed as "input texture" so should be resized elsewhere
     m_blurTexture2->setSize(size.width(), size.height());
-    updateTextureSizeParam(size, m_fsQuad->viewportRect());
+
 }
 
 /*!
@@ -357,18 +352,6 @@ void GaussianBlurEffect::setWindowSize(const QSize &size)
 int GaussianBlurEffect::blurPassCount() const
 {
     return m_blurPassCount;
-}
-
-/*!
- * Sets the normalized viewport rect to \a vp.
- *
- * \sa AbstractPostProcessingEffect::setViewportRect
- */
-void GaussianBlurEffect::setViewportRect(const QRectF &vp)
-{
-    m_fsQuad->setViewportRect(vp);
-    updateTextureSizeParam({m_blurTexture2->width(), m_blurTexture2->height()},
-                           vp);
 }
 
 /*!

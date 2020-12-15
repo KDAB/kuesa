@@ -658,13 +658,12 @@ private Q_SLOTS:
         QCOMPARE(stages.backToFrontSorting(), false);
         QVERIFY(stages.camera() == nullptr);
         QCOMPARE(stages.layers().size(), 0);
-        QCOMPARE(stages.viewport(), QRectF(0.0f, 0.0f, 1.0f, 1.0f));
 
         // THEN -> No Layers, No ZFilling
         {
             QCOMPARE(stages.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(stages.children().first());
-            QVERIFY(vp);
+            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(stages.children().first());
+            QVERIFY(cameraSelector);
 
             Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[1]);
             QVERIFY(reflectiveEnabledParameter);
@@ -675,10 +674,6 @@ private Q_SLOTS:
             QVERIFY(reflectivePlaneParameter);
             QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
             QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
-
-            QCOMPARE(vp->children().size(), 1);
-            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(vp->children().first());
-            QVERIFY(cameraSelector);
 
             QCOMPARE(cameraSelector->children().size(), 2);
             Kuesa::ScenePass *opaquePass = qobject_cast<Kuesa::ScenePass *>(cameraSelector->children().first());
@@ -696,8 +691,8 @@ private Q_SLOTS:
         // THEN
         {
             QCOMPARE(stages.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(stages.children().first());
-            QVERIFY(vp);
+            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(stages.children().first());
+            QVERIFY(cameraSelector);
 
             Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[1]);
             QVERIFY(reflectiveEnabledParameter);
@@ -708,10 +703,6 @@ private Q_SLOTS:
             QVERIFY(reflectivePlaneParameter);
             QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
             QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
-
-            QCOMPARE(vp->children().size(), 1);
-            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(vp->children().first());
-            QVERIFY(cameraSelector);
 
             QCOMPARE(cameraSelector->children().size(), 3);
             Kuesa::ScenePass *zFillPass = qobject_cast<Kuesa::ScenePass *>(cameraSelector->children().first());
@@ -741,8 +732,8 @@ private Q_SLOTS:
 
                 // THEN
                 QCOMPARE(stages.children().size(), 3);
-                Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(stages.children().first());
-                QVERIFY(vp);
+                Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(stages.children().first());
+                QVERIFY(cameraSelector);
 
                 Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[1]);
                 QVERIFY(reflectiveEnabledParameter);
@@ -753,10 +744,6 @@ private Q_SLOTS:
                 QVERIFY(reflectivePlaneParameter);
                 QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
                 QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
-
-                QCOMPARE(vp->children().size(), 1);
-                Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(vp->children().first());
-                QVERIFY(cameraSelector);
 
                 Qt3DRender::QLayerFilter *layerFilter = qobject_cast<Qt3DRender::QLayerFilter *>(cameraSelector->children().first());
                 QVERIFY(layerFilter);
@@ -786,8 +773,8 @@ private Q_SLOTS:
 
             // THEN -> layer destroyed
             QCOMPARE(stages.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(stages.children().first());
-            QVERIFY(vp);
+            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(stages.children().first());
+            QVERIFY(cameraSelector);
 
             Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[1]);
             QVERIFY(reflectiveEnabledParameter);
@@ -798,10 +785,6 @@ private Q_SLOTS:
             QVERIFY(reflectivePlaneParameter);
             QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
             QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
-
-            QCOMPARE(vp->children().size(), 1);
-            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(vp->children().first());
-            QVERIFY(cameraSelector);
 
             QCOMPARE(cameraSelector->children().size(), 3);
             Kuesa::ScenePass *zFillPass = qobject_cast<Kuesa::ScenePass *>(cameraSelector->children().first());
@@ -826,11 +809,7 @@ private Q_SLOTS:
         // THEN
         {
             QCOMPARE(stages.children().size(), 3);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(stages.children().first());
-            QVERIFY(vp);
-
-            QCOMPARE(vp->children().size(), 1);
-            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(vp->children().first());
+            Qt3DRender::QCameraSelector *cameraSelector = qobject_cast<Qt3DRender::QCameraSelector *>(stages.children().first());
             QVERIFY(cameraSelector);
 
             QCOMPARE(cameraSelector->children().size(), 3);

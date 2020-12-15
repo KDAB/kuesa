@@ -72,7 +72,6 @@ public:
     FrameGraphNodePtr frameGraphSubTree() const override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
     QVector<Qt3DRender::QLayer *> layers() const override;
-    void setViewportRect(const QRectF &vp) override;
 
 public Q_SLOTS:
     void setExposure(float exposure);

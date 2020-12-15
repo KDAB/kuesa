@@ -302,16 +302,6 @@ void OpacityMask::setInputTexture(Qt3DRender::QAbstractTexture *texture)
     m_inputTextureParameter->setValue(QVariant::fromValue(texture));
 }
 
-/*!
- * Sets the normalized viewport rect to \a vp.
- *
- * \sa AbstractPostProcessingEffect::setViewportRect
- */
-void OpacityMask::setViewportRect(const QRectF &vp)
-{
-    m_fsQuad->setViewportRect(vp);
-}
-
 void OpacityMask::setMask(Qt3DRender::QAbstractTexture *mask)
 {
     if (this->mask() == mask)

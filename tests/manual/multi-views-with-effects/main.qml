@@ -50,11 +50,6 @@ Kuesa.SceneEntity {
                         viewportRect: Qt.rect(0, 0, 0.5, 0.5)
                         camera: mainCamera.node
                         layers: [mainLayer.node]
-                        postProcessingEffects: [
-                            FX.ThresholdEffect {
-                                threshold: 0.85
-                            }
-                        ]
                         reflectionPlanes: [
                             Kuesa.ReflectionPlane {
                                 equation: Qt.vector4d(0.0, 1.0, 0.0, 0.0)

@@ -304,16 +304,6 @@ QVector<Qt3DRender::QLayer *> ToneMappingAndGammaCorrectionEffect::layers() cons
     return { m_layer };
 }
 
-/*!
- * Sets the normalized viewport rect to \a vp.
- *
- * \sa AbstractPostProcessingEffect::setViewportRect
- */
-void ToneMappingAndGammaCorrectionEffect::setViewportRect(const QRectF &vp)
-{
-    m_fsQuad->setViewportRect(vp);
-}
-
 void ToneMappingAndGammaCorrectionEffect::setExposure(float exposure)
 {
     m_exposureParameter->setValue(exposure);

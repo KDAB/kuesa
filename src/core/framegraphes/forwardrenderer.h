@@ -31,7 +31,6 @@
 
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/view.h>
-#include <Kuesa/tonemappingandgammacorrectioneffect.h>
 #include <Qt3DRender/qrendersurfaceselector.h>
 #include <Qt3DRender/qclearbuffers.h>
 #include <Qt3DRender/qrendertargetoutput.h>
@@ -64,7 +63,6 @@ class QLayerFilter;
 namespace Kuesa {
 
 class ParticleRenderStage;
-class FBOResolver;
 class SceneStages;
 class ReflectionStages;
 class View;
@@ -76,38 +74,23 @@ class KUESASHARED_EXPORT ForwardRenderer : public View
 {
     Q_OBJECT
     Q_PROPERTY(QObject *renderSurface READ renderSurface WRITE setRenderSurface NOTIFY renderSurfaceChanged)
-    Q_PROPERTY(QColor clearColor READ clearColor WRITE setClearColor NOTIFY clearColorChanged)
     Q_PROPERTY(Qt3DRender::QClearBuffers::BufferType clearBuffers READ clearBuffers WRITE setClearBuffers NOTIFY clearBuffersChanged)
-    Q_PROPERTY(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged)
-    Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
-    Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged)
     Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay WRITE setShowDebugOverlay NOTIFY showDebugOverlayChanged)
-    Q_PROPERTY(bool usesStencilMask READ usesStencilMask WRITE setUsesStencilMask NOTIFY usesStencilMaskChanged)
 
 public:
     explicit ForwardRenderer(Qt3DCore::QNode *parent = nullptr);
     ~ForwardRenderer();
 
     QObject *renderSurface() const;
-    QColor clearColor() const;
     Qt3DRender::QClearBuffers::BufferType clearBuffers() const;
-    float exposure() const;
-    float gamma() const;
-    ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm() const;
-    bool showDebugOverlay() const;
-    bool usesStencilMask() const;
 
+    bool showDebugOverlay() const;
     const std::vector<View *> &views() const;
 
 public Q_SLOTS:
     void setRenderSurface(QObject *renderSurface);
-    void setClearColor(const QColor &clearColor);
     void setClearBuffers(Qt3DRender::QClearBuffers::BufferType clearBuffers);
-    void setGamma(float gamma);
-    void setExposure(float exposure);
-    void setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
     void setShowDebugOverlay(bool showDebugOverlay);
-    void setUsesStencilMask(bool usesStencilMask);
 
     void addView(View *view);
     void removeView(View *view);
@@ -116,58 +99,28 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void renderSurfaceChanged(QObject *renderSurface);
-    void clearColorChanged(const QColor &clearColor);
     void clearBuffersChanged(Qt3DRender::QClearBuffers::BufferType clearBuffers);
-    void frameGraphTreeReconfigured();
-    void gammaChanged(float gamma);
-    void exposureChanged(float exposure);
-    void toneMappingAlgorithmChanged(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
     void showDebugOverlayChanged(bool showDebugOverlay);
-    void particlesEnabledChanged(bool enabled);
-    void usesStencilMaskChanged(bool usesStencilMask);
     void externalRenderTargetSizeChanged(const QSize &renderTargetSize);
 
 private:
-    void updateTextureSizes();
     void handleSurfaceChange();
     QSize currentSurfaceSize() const;
+    void updateTextureSizes();
 
     void reconfigureFrameGraph() override;
 
-    void setupRenderTargets(Qt3DRender::QRenderTargetSelector *sceneTargetSelector,
-                            size_t fxCount);
-
     Qt3DRender::QRenderSurfaceSelector *m_surfaceSelector;
-    Qt3DRender::QViewport *m_effectsViewport;
-    Qt3DRender::QFrameGraphNode *m_stagesRoot;
-    Qt3DCore::QEntity *m_camera;
     Qt3DRender::QClearBuffers *m_clearBuffers;
-    Qt3DRender::QClearBuffers *m_clearRT0;
-    EffectsStagesPtr m_internalFXStages;
 
     QVector<QMetaObject::Connection> m_resizeConnections;
 
-    //For rendering scene when useing post-processing effects
-    Qt3DRender::QRenderTargetSelector *m_renderToTextureRootNode;
-    Qt3DRender::QLayerFilter *m_mainSceneLayerFilter;
-    Qt3DRender::QRenderTarget *m_renderTargets[2];
-    Qt3DRender::QRenderTarget *m_multisampleTarget;
-    Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromMSToFBO0;
-    Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromFBO0ToFBO1;
-
-    FBOResolver *m_msaaResolver;
-    FBOResolver *m_rt0rt1Resolver;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     Qt3DRender::QDebugOverlay *m_debugOverlay;
 #endif
     bool m_fgTreeRebuiltScheduled;
 
     std::vector<View *> m_views;
-
-    bool m_usesStencilMask;
-
-    // GammaCorrection
-    ToneMappingAndGammaCorrectionEffect *m_gammaCorrectionFX;
 
     friend class ::tst_ForwardRenderer;
 };

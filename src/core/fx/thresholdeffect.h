@@ -56,7 +56,6 @@ public:
     FrameGraphNodePtr frameGraphSubTree() const override;
     QVector<Qt3DRender::QLayer *> layers() const override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
-    void setViewportRect(const QRectF &vp) override;
 
     float threshold() const;
 

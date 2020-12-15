@@ -314,8 +314,7 @@ void ScenePass::reconfigure(const Features features)
 SceneStages::SceneStages(Qt3DRender::QFrameGraphNode *parent)
     : SceneFeaturedRenderStageBase(parent)
 {
-    m_viewport = new Qt3DRender::QViewport(this);
-    m_cameraSelector = new Qt3DRender::QCameraSelector(m_viewport);
+    m_cameraSelector = new Qt3DRender::QCameraSelector(this);
     m_layerFilter = new Qt3DRender::QLayerFilter();
 
     m_zFillStage = ScenePassPtr::create(ScenePass::ZFill);
@@ -443,16 +442,6 @@ void SceneStages::setCamera(Qt3DCore::QEntity *camera)
 Qt3DCore::QEntity *SceneStages::camera() const
 {
     return m_cameraSelector->camera();
-}
-
-void SceneStages::setViewport(const QRectF &vp)
-{
-    m_viewport->setNormalizedRect(vp);
-}
-
-QRectF SceneStages::viewport() const
-{
-    return m_viewport->normalizedRect();
 }
 
 QT_END_NAMESPACE

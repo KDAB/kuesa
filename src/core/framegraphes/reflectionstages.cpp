@@ -32,7 +32,7 @@
 #include <Qt3DRender/qclearbuffers.h>
 #include <Qt3DRender/qnodraw.h>
 #include <Qt3DRender/qparameter.h>
-#include <Qt3DRender/qviewport.h>
+#include <Qt3DRender/qcameraselector.h>
 #include <Qt3DRender/qrendertarget.h>
 #include <QVector4D>
 
@@ -57,7 +57,7 @@ ReflectionStages::ReflectionStages(Qt3DRender::QFrameGraphNode *parent)
     new Qt3DRender::QNoDraw(clearDepth);
 
     // Move regular SceneStage subtree root to be a child of the RenderTargetSelector
-    m_viewport->setParent(m_renderTargetSelector);
+    m_cameraSelector->setParent(m_renderTargetSelector);
 
     // Create Render Target
     Qt3DRender::QRenderTarget *target = FrameGraphUtils::createRenderTarget(FrameGraphUtils::IncludeDepth,
