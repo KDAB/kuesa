@@ -207,6 +207,7 @@ Kuesa.SceneEntity {
                         effects.push(opacityMaskEffect)
                     return effects
                 }
+                skinning: showSkybox
                 backToFrontSorting: true
                 toneMappingAlgorithm: Effects.ToneMappingAndGammaCorrectionEffect.Reinhard
 //                showDebugOverlay: true
