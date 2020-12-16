@@ -3908,9 +3908,9 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "uniform highp $type $name;"
+                        "uniform $type $name;"
                     ],
-                    "substitution": "highp $type $value = $name;"
+                    "substitution": "$type $value = $name;"
                 },
                 {
                     "format": {

@@ -3825,9 +3825,20 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "uniform highp $type $name;"
+                        "uniform $type $name;"
                     ],
-                    "substitution": "highp $type $value = $name;"
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "uniform $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
                 },
                 {
                     "format": {

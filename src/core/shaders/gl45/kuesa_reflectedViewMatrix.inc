@@ -33,10 +33,10 @@ mat4 reflectionMatrix(vec4 n)
     // see https://www.euclideanspace.com/maths/geometry/affine/reflection/matrix/index.htm
     // http://khayyam.kaplinski.com/2011/09/reflective-water-with-glsl-part-i.html
     // https://developer.arm.com/documentation/100140/0302/advanced-graphics-techniques/combining-reflections/about-combining-reflections
-    return mat4( 1.0 - 2 * n2.x,   -2 * n.x * n.y,     -2 * n.x * n.z,    0,
-                -2 * n.x * n.y,     1.0 - 2 * n2.y,    -2 * n.y * n.z,    0,
-                -2 * n.x * n.z,    -2 * n.y * n.z,      1.0 -2 * n2.z,    0,
-                -2 * n.x * n.w ,   -2 * n.y * n.w,     -2 * n.z * n.w,    1);
+    return mat4( 1.0 - 2.0 * n2.x,   -2.0 * n.x * n.y,     -2.0 * n.x * n.z,    0.0,
+                -2.0 * n.x * n.y,     1.0 - 2.0 * n2.y,    -2.0 * n.y * n.z,    0.0,
+                -2.0 * n.x * n.z,    -2.0 * n.y * n.z,      1.0 - 2.0 * n2.z,   0.0,
+                -2.0 * n.x * n.w ,   -2.0 * n.y * n.w,     -2.0 * n.z * n.w,    1.0);
 }
 
 mat4 kuesa_reflectedViewMatrix(mat4 viewM, vec4 planeEquation, bool enabled)
