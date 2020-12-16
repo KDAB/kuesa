@@ -219,6 +219,12 @@ Qt3DRender::QAbstractTexture *EffectsStages::depthTexture() const
     return m_depthTexture;
 }
 
+Qt3DRender::QAbstractTexture *EffectsStages::finalColorTexture() const
+{
+    return FrameGraphUtils::findRenderTargetTexture(m_rt[m_finalRTIndex],
+                                                    Qt3DRender::QRenderTargetOutput::Color0);
+}
+
 void EffectsStages::setPresentToScreen(bool presentToScreen)
 {
     if (presentToScreen == m_presentToScreen)
@@ -333,6 +339,9 @@ void EffectsStages::reconfigure()
         // Flip previousRenderTargetIndex
         previousRenderTargetIndex = currentRenderTargetIndex;
     }
+
+    // Record final RT index to make it easier to retrieve the final color attachment
+    m_finalRTIndex = previousRenderTargetIndex;
 
     if (m_presentToScreen)
         m_viewport->setParent(this);

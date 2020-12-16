@@ -1,5 +1,5 @@
 /*
-    fboresolver.cpp
+    viewresolver.cpp
 
     This file is part of Kuesa.
 
@@ -26,10 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "fboresolver_p.h"
+#include "viewresolver_p.h"
 #include <QUrl>
-#include <Qt3DRender/qlayer.h>
-#include <Qt3DRender/qlayerfilter.h>
 #include <Qt3DRender/qparameter.h>
 #include <Qt3DRender/qmaterial.h>
 #include <Qt3DRender/qeffect.h>
@@ -39,15 +37,20 @@
 #include <Qt3DRender/qdepthtest.h>
 #include <Qt3DRender/qnodepthmask.h>
 #include <Qt3DRender/qgraphicsapifilter.h>
-#include <fullscreenquad.h>
+#include <Qt3DRender/qlayerfilter.h>
 
+#include <Kuesa/fullscreenquad.h>
+#include <Kuesa/view.h>
+
+#include <Qt3DCore/private/qnode_p.h>
+#include <Kuesa/private/effectsstages_p.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-FBOResolver::FBOResolver(Qt3DCore::QNode *parent)
-    : Qt3DRender::QRenderTargetSelector(parent)
+ViewResolver::ViewResolver(Qt3DCore::QNode *parent)
+    : Qt3DRender::QFrameGraphNode(parent)
     , m_material(new Qt3DRender::QMaterial(this))
     , m_sourceTextureParameter(new Qt3DRender::QParameter(this))
     , m_shader(new Qt3DRender::QShaderProgram())
@@ -66,9 +69,9 @@ FBOResolver::FBOResolver(Qt3DCore::QNode *parent)
     Qt3DRender::QRenderPass *pass = new Qt3DRender::QRenderPass();
 
     m_shader->setShaderCode(Qt3DRender::QShaderProgram::Vertex,
-                          Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"))));
-
-    updateFragmentShader();
+                            Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"))));
+    m_shader->setShaderCode(Qt3DRender::QShaderProgram::Fragment,
+                            Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fboresolver.frag"))));
 
     Qt3DRender::QDepthTest *depthTest = new Qt3DRender::QDepthTest();
     depthTest->setDepthFunction(Qt3DRender::QDepthTest::Always);
@@ -89,55 +92,37 @@ FBOResolver::FBOResolver(Qt3DCore::QNode *parent)
     layerFilter->addLayer(m_fsQuad->layer());
 }
 
-void FBOResolver::setSource(Qt3DRender::QAbstractTexture *source)
+void ViewResolver::setView(View *view)
 {
-    m_sourceTextureParameter->setValue(QVariant::fromValue(source));
+    if (view == m_view)
+        return;
 
-    // Check and if needed update the shader
-    updateFragmentShader();
+    auto d = Qt3DCore::QNodePrivate::get(this);
+    if (m_view) {
+        d->unregisterDestructionHelper(m_view);
+        m_view->disconnect();
+    }
+
+    m_view = view;
+
+    if (m_view) {
+        d->registerDestructionHelper(view, &ViewResolver::setView, view);
+        QObject::connect(m_view, &View::viewportRectChanged, this, [this] {
+            m_fsQuad->setViewportRect(m_view->viewportRect());
+        });
+        QObject::connect(m_view, &View::frameGraphTreeReconfigured, this, [this] {
+            m_sourceTextureParameter->setValue(QVariant::fromValue(m_view->m_internalFXStages->finalColorTexture()));
+        });
+        m_fsQuad->setViewportRect(m_view->viewportRect());
+        m_sourceTextureParameter->setValue(QVariant::fromValue(m_view->m_internalFXStages->finalColorTexture()));
+    }
 }
 
-void FBOResolver::setDestination(Qt3DRender::QRenderTarget *destination)
+View *ViewResolver::view() const
 {
-    setTarget(destination);
+    return m_view;
 }
 
-void FBOResolver::setViewportRect(const QRectF &vp)
-{
-    m_fsQuad->setViewportRect(vp);
-}
+} // Kuesa
 
-QRectF FBOResolver::viewportRect() const
-{
-    return m_fsQuad->viewportRect();
-}
-
-Qt3DRender::QAbstractTexture *FBOResolver::source() const
-{
-    return m_sourceTextureParameter->value().value<Qt3DRender::QAbstractTexture *>();
-}
-
-Qt3DRender::QRenderTarget *FBOResolver::destination() const
-{
-    return Qt3DRender::QRenderTargetSelector:: target();
-}
-
-bool FBOResolver::targetHasSamples() const
-{
-    Qt3DRender::QAbstractTexture *target = m_sourceTextureParameter->value().value<Qt3DRender::QAbstractTexture *>();
-    if (!target)
-        return false;
-
-    return target->target() == Qt3DRender::QAbstractTexture::Target2DMultisample;
-}
-
-void FBOResolver::updateFragmentShader()
-{
-    const bool hasSamples = targetHasSamples();
-    m_shader->setShaderCode(Qt3DRender::QShaderProgram::Fragment,
-                            hasSamples ? Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/msaaresolver.frag")))
-                                       : Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fboresolver.frag"))));
-}
-
-} // namespace Kuesa
 QT_END_NAMESPACE

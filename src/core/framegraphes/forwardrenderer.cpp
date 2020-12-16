@@ -36,7 +36,7 @@
 #include <QWindow>
 #include <QScreen>
 #include <Qt3DRender/qnodraw.h>
-
+#include <Kuesa/private/viewresolver_p.h>
 #include "kuesa_p.h"
 
 #include <Qt3DCore/private/qnode_p.h>
@@ -436,6 +436,27 @@ void ForwardRenderer::reconfigureFrameGraph()
     } else {
         for (View *v : m_views)
             v->setParent(m_surfaceSelector);
+    }
+
+    // When using RHI, we need a dedicated pass to render
+    // FBO associated with each view back to the main surface
+    if (m_fg->m_usesRHI) {
+        const std::vector<View *> &views = (m_views.empty()) ? std::vector<View  *>({this}) : m_views;
+        const size_t viewCount = views.size();
+
+        while (m_viewRenderers.size() > viewCount) {
+            delete m_viewRenderers.back();
+            m_viewRenderers.pop_back();
+        }
+        while (m_viewRenderers.size() < viewCount)
+            m_viewRenderers.push_back(new ViewResolver());
+
+        for (size_t i = 0; i < viewCount; ++i) {
+            View *v = views[i];
+            ViewResolver *resolver = m_viewRenderers[i];
+            resolver->setView(v);
+            resolver->setParent(m_surfaceSelector);
+        }
     }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)

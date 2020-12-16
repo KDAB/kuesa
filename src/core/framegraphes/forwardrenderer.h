@@ -66,6 +66,7 @@ class ParticleRenderStage;
 class SceneStages;
 class ReflectionStages;
 class View;
+class ViewResolver;
 
 using SceneStagesPtr = QSharedPointer<SceneStages>;
 using ReflectionStagesPtr = QSharedPointer<ReflectionStages>;
@@ -121,6 +122,7 @@ private:
     bool m_fgTreeRebuiltScheduled;
 
     std::vector<View *> m_views;
+    std::vector<ViewResolver *> m_viewRenderers;
 
     friend class ::tst_ForwardRenderer;
 };

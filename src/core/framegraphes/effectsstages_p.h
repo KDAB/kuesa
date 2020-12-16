@@ -89,6 +89,7 @@ public:
 
     void setDepthTexture(Qt3DRender::QAbstractTexture *depthTexture);
     Qt3DRender::QAbstractTexture *depthTexture() const;
+    Qt3DRender::QAbstractTexture *finalColorTexture() const;
 
     void setPresentToScreen(bool presentToScreen);
     bool presentToScreen() const;
@@ -113,6 +114,7 @@ private:
     QSize m_windowSize;
     bool m_presentToScreen = false;
     bool m_blitFinalRT = false;
+    int m_finalRTIndex = 0;
 };
 
 using EffectsStagesPtr = QSharedPointer<EffectsStages>;

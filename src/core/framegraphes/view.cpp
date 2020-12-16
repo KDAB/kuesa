@@ -77,7 +77,11 @@ View::ViewForward::ViewForward(View *v)
     , m_clearRT0(new Qt3DRender::QClearBuffers())
     , m_mainSceneLayerFilter(new Qt3DRender::QLayerFilter())
     , m_view(v)
+    #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    , m_usesRHI(qgetenv("QT3D_RENDERER") == QByteArray("rhi"))
+    #endif
 {
+
     m_renderToTextureRootNode->setObjectName(QLatin1String("KuesaViewMainSceneRenderToTexture"));
     m_mainSceneLayerFilter->setObjectName(QLatin1String("ViewMainSceneLayerFilter"));
 
@@ -146,7 +150,8 @@ void View::ViewForward::setupRenderTargets(Qt3DRender::QRenderTargetSelector *sc
         m_renderTargets[0] = FrameGraphUtils::createRenderTarget(baseRtFlags|FrameGraphUtils::IncludeDepth,
                                                 m_view, targetSize);
     }
-    if (!m_renderTargets[1] && totalFXCount > 1) {
+    const bool needsRT1 = totalFXCount > 1 || m_usesRHI;
+    if (!m_renderTargets[1] && needsRT1) {
         m_renderTargets[1] = FrameGraphUtils::createRenderTarget(baseRtFlags, m_view, targetSize);
         // create a secondary render target to do ping-pong when we have
         // more than 1 fx
@@ -154,12 +159,6 @@ void View::ViewForward::setupRenderTargets(Qt3DRender::QRenderTargetSelector *sc
 
     const int samples = QSurfaceFormat::defaultFormat().samples();
     const bool useMSAA = glFeatures.hasMultisampledFBO && samples > 1;
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    const bool usesRHI = qgetenv("QT3D_RENDERER") == QByteArray("rhi");
-#else
-    const bool usesRHI = false;
-#endif
 
     // If we support MSAA FBO -> Then render into it and Blit into regular non FBO
     // for post FX
@@ -171,9 +170,11 @@ void View::ViewForward::setupRenderTargets(Qt3DRender::QRenderTargetSelector *sc
                                                                       samples);
         // RHI has no Blit operations so we manually resolve the multisampled
         // FBO into renderTarget[0]
-        if (usesRHI) {
-            if (!m_msaaResolver)
+        if (m_usesRHI) {
+            if (!m_msaaResolver) {
                 m_msaaResolver = new FBOResolver();
+                m_msaaResolver->setObjectName(QStringLiteral("Kuesa::FBOResolve MSAA -> RT0"));
+            }
             m_msaaResolver->setParent(sceneTargetSelector);
             m_msaaResolver->setSource(FrameGraphUtils::findRenderTargetTexture(m_multisampleTarget, Qt3DRender::QRenderTargetOutput::Color0));
             m_msaaResolver->setDestination(m_renderTargets[0]);
@@ -181,6 +182,7 @@ void View::ViewForward::setupRenderTargets(Qt3DRender::QRenderTargetSelector *sc
             // Blit into regular Tex2D FBO
             if (!m_blitFramebufferNodeFromMSToFBO0) {
                 m_blitFramebufferNodeFromMSToFBO0 = new Qt3DRender::QBlitFramebuffer();
+                m_blitFramebufferNodeFromMSToFBO0->setObjectName(QStringLiteral("Qt3DRender::QBlitFramebuffer MSAA -> RT0"));
                 auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromMSToFBO0);
                 Q_UNUSED(noDraw);
             }
@@ -204,9 +206,11 @@ void View::ViewForward::setupRenderTargets(Qt3DRender::QRenderTargetSelector *sc
 
     // Blit RT0 into RT1
     if (m_renderTargets[1]) {
-        if (usesRHI) {
-            if (!m_rt0rt1Resolver)
+        if (m_usesRHI) {
+            if (!m_rt0rt1Resolver) {
                 m_rt0rt1Resolver = new FBOResolver();
+                m_rt0rt1Resolver->setObjectName(QStringLiteral("Kuesa::FBOResolve RT0 -> RT1"));
+            }
             m_rt0rt1Resolver->setParent(sceneTargetSelector);
             m_rt0rt1Resolver->setSource(FrameGraphUtils::findRenderTargetTexture(m_renderTargets[0], Qt3DRender::QRenderTargetOutput::Color0));
             m_rt0rt1Resolver->setDestination(m_renderTargets[1]);
@@ -214,6 +218,7 @@ void View::ViewForward::setupRenderTargets(Qt3DRender::QRenderTargetSelector *sc
             // Blit FBO 0 to FBO 1 to be able to access stencil of the render in post fx
             if (!m_blitFramebufferNodeFromFBO0ToFBO1) {
                 m_blitFramebufferNodeFromFBO0ToFBO1 = new Qt3DRender::QBlitFramebuffer();
+                m_blitFramebufferNodeFromFBO0ToFBO1->setObjectName(QStringLiteral("Qt3DRender::QBlitFramebuffer RT0 -> RT1"));
                 auto noDraw = new Qt3DRender::QNoDraw(m_blitFramebufferNodeFromFBO0ToFBO1);
                 Q_UNUSED(noDraw);
             }
@@ -363,7 +368,13 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
                      m_renderTargets[currentRT],
                      m_renderTargets[1 - currentRT],
                     false,
-                    true); // Present to screen
+                    !m_usesRHI); // Present to screen if not using RHI
+
+    // Note: RHI isn't able to draw without clearing the back buffer
+    // first. This means we need an additional Render Pass that
+    // will draw the last RenderTarget's Color Attachment of each View
+    // in a sequence when rendering with RHI
+
     // We shoud always have at least 1 internalFX (for Gamma/Exposure)
     Q_ASSERT(m_view->m_internalFXStages->effects().size() > 0);
 }

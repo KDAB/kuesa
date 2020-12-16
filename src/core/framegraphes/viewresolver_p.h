@@ -1,10 +1,10 @@
 /*
-    fullscreenquad.h
+    viewresolver_p.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Jim Albamont <jim.albamont@kdab.com>
+    Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,56 +26,56 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_FULLSCREENQUAD_H
-#define KUESA_FULLSCREENQUAD_H
+#ifndef KUESA_VIEWRESOLVER_H
+#define KUESA_VIEWRESOLVER_H
 
-#include <Kuesa/kuesa_global.h>
-#include <Qt3DCore/QEntity>
-#include <QRectF>
+#include <Kuesa/private/kuesa_global_p.h>
+#include <Qt3DRender/qframegraphnode.h>
+
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the Kuesa API.  It exists for the convenience
+// of other Kuesa classes.  This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
+//
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
-class QLayer;
-class QCamera;
 class QMaterial;
-} // namespace Qt3DRender
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-namespace Qt3DGeometry = Qt3DCore;
-namespace Qt3DCore {
-#else
-namespace Qt3DGeometry = Qt3DRender;
-namespace Qt3DRender {
-#endif
-class QBuffer;
+class QParameter;
+class QAbstractTexture;
+class QShaderProgram;
 }
 
 namespace Kuesa {
 
-class KUESASHARED_EXPORT FullScreenQuad : public Qt3DCore::QEntity
+class View;
+class FullScreenQuad;
+
+class KUESA_PRIVATE_EXPORT ViewResolver : public Qt3DRender::QFrameGraphNode
 {
     Q_OBJECT
 public:
-    explicit FullScreenQuad(Qt3DRender::QMaterial *material, Qt3DCore::QNode *parent = nullptr);
-    ~FullScreenQuad();
+    explicit ViewResolver(Qt3DCore::QNode *parent = nullptr);
 
-    Qt3DRender::QLayer *layer() const;
-    Qt3DGeometry::QBuffer *buffer() const;
-
-    void setViewportRect(const QRectF &vp);
-    QRectF viewportRect() const;
+    void setView(View *view);
+    View *view() const;
 
 private:
-    Qt3DGeometry::QBuffer *m_buffer;
-    Qt3DRender::QLayer *m_layer;
-    QRectF m_viewportRect = QRectF(0.0f, 0.0f, 1.0f, 1.0f);
-
-    void updateBufferData();
+    Qt3DRender::QMaterial *m_material = nullptr;
+    Qt3DRender::QParameter *m_sourceTextureParameter = nullptr;
+    Qt3DRender::QShaderProgram *m_shader = nullptr;
+    FullScreenQuad *m_fsQuad = nullptr;
+    View *m_view = nullptr;
 };
 
 } // namespace Kuesa
 
 QT_END_NAMESPACE
 
-#endif // KUESA_FULLSCREENQUAD_H
+#endif // KUESA_VIEWRESOLVER_H

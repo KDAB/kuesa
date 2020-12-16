@@ -224,12 +224,14 @@ private:
         FBOResolver *m_rt0rt1Resolver = nullptr;
 
         View *m_view = nullptr;
+        const bool m_usesRHI = false;
     };
     ViewForward *m_fg = nullptr;
 
     friend class ::tst_View;
     friend class ::tst_ForwardRenderer;
     friend class ForwardRenderer;
+    friend class ViewResolver;
 };
 
 } // Kuesa

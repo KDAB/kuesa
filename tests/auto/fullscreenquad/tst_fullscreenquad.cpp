@@ -96,6 +96,72 @@ private Q_SLOTS:
             QCOMPARE(v4.tCoord, v1.tCoord);
             QCOMPARE(v5.tCoord, QVector2D(1.0f, 0.0f));
         }
+
+        // WHEN
+        effect.setViewportRect(QRectF(0.0f, 0.0f, 0.5f, 0.5f));
+
+        // THEN
+        {
+            const QByteArray data = effect.buffer()->data();
+
+            QCOMPARE(data.size(), sizeof(V) * 6);
+
+            const V* vertices = reinterpret_cast<const V *>(data.data());
+
+            const V v0 = vertices[0];
+            const V v1 = vertices[1];
+            const V v2 = vertices[2];
+            const V v3 = vertices[3];
+            const V v4 = vertices[4];
+            const V v5 = vertices[5];
+
+            QCOMPARE(v0.pos, QVector3D(-1.0f, 1.0f, 0.0f));
+            QCOMPARE(v1.pos, QVector3D(-1.0f, 0.0f, 0.0f));
+            QCOMPARE(v2.pos, QVector3D(0.0f, 1.0f, 0.0f));
+            QCOMPARE(v3.pos, v2.pos);
+            QCOMPARE(v4.pos, v1.pos);
+            QCOMPARE(v5.pos, QVector3D(0.0f, 0.0f, 0.0f));
+
+            QCOMPARE(v0.tCoord, QVector2D(0.0f, 1.0f));
+            QCOMPARE(v1.tCoord, QVector2D(0.0f, 0.0f));
+            QCOMPARE(v2.tCoord, QVector2D(1.0f, 1.0f));
+            QCOMPARE(v3.tCoord, v2.tCoord);
+            QCOMPARE(v4.tCoord, v1.tCoord);
+            QCOMPARE(v5.tCoord, QVector2D(1.0f, 0.0f));
+        }
+
+        // WHEN
+        effect.setViewportRect(QRectF(0.5f, 0.5f, 0.5f, 0.5f));
+
+        // THEN
+        {
+            const QByteArray data = effect.buffer()->data();
+
+            QCOMPARE(data.size(), sizeof(V) * 6);
+
+            const V* vertices = reinterpret_cast<const V *>(data.data());
+
+            const V v0 = vertices[0];
+            const V v1 = vertices[1];
+            const V v2 = vertices[2];
+            const V v3 = vertices[3];
+            const V v4 = vertices[4];
+            const V v5 = vertices[5];
+
+            QCOMPARE(v0.pos, QVector3D(0.0f, 0.0f, 0.0f));
+            QCOMPARE(v1.pos, QVector3D(0.0f, -1.0f, 0.0f));
+            QCOMPARE(v2.pos, QVector3D(1.0f, 0.0f, 0.0f));
+            QCOMPARE(v3.pos, v2.pos);
+            QCOMPARE(v4.pos, v1.pos);
+            QCOMPARE(v5.pos, QVector3D(1.0f, -1.0f, 0.0f));
+
+            QCOMPARE(v0.tCoord, QVector2D(0.0f, 1.0f));
+            QCOMPARE(v1.tCoord, QVector2D(0.0f, 0.0f));
+            QCOMPARE(v2.tCoord, QVector2D(1.0f, 1.0f));
+            QCOMPARE(v3.tCoord, v2.tCoord);
+            QCOMPARE(v4.tCoord, v1.tCoord);
+            QCOMPARE(v5.tCoord, QVector2D(1.0f, 0.0f));
+        }
     }
 };
 

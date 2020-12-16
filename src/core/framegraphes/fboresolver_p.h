@@ -54,6 +54,8 @@ class QShaderProgram;
 
 namespace Kuesa {
 
+class FullScreenQuad;
+
 class KUESA_PRIVATE_EXPORT FBOResolver : public Qt3DRender::QRenderTargetSelector
 {
     Q_OBJECT
@@ -62,6 +64,9 @@ public:
 
     void setSource(Qt3DRender::QAbstractTexture *source);
     void setDestination(Qt3DRender::QRenderTarget *destination);
+
+    void setViewportRect(const QRectF &vp);
+    QRectF viewportRect() const;
 
     Qt3DRender::QAbstractTexture *source() const;
     Qt3DRender::QRenderTarget *destination() const;
@@ -73,6 +78,8 @@ private:
     Qt3DRender::QShaderProgram *m_shader = nullptr;
 
     void updateFragmentShader();
+
+    FullScreenQuad *m_fsQuad = nullptr;
 };
 
 } // namespace Kuesa

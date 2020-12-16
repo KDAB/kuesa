@@ -212,6 +212,8 @@ bool FrameGraphUtils::renderTargetHasAttachmentOfType(const Qt3DRender::QRenderT
 Qt3DRender::QAbstractTexture *FrameGraphUtils::findRenderTargetTexture(Qt3DRender::QRenderTarget *target,
                                                                        Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint)
 {
+    if (!target)
+        return nullptr;
     auto outputs = target->outputs();
     auto attachment = std::find_if(outputs.begin(), outputs.end(), [attachmentPoint](Qt3DRender::QRenderTargetOutput *output) {
         return output->attachmentPoint() == attachmentPoint;

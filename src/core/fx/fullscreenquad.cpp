@@ -145,6 +145,25 @@ Qt3DGeometry::QBuffer *FullScreenQuad::buffer() const
     return m_buffer;
 }
 
+/*!
+ *
+ * Specifies the normalized coordinate rectangle subset of the input texture
+ * on which to apply the material. This usually should match the viewport
+ * rect used to render the scene.
+ */
+void FullScreenQuad::setViewportRect(const QRectF &vp)
+{
+    if (vp != m_viewportRect) {
+        m_viewportRect = vp;
+        updateBufferData();
+    }
+}
+
+QRectF FullScreenQuad::viewportRect() const
+{
+    return m_viewportRect;
+}
+
 void FullScreenQuad::updateBufferData()
 {
     QByteArray rawData;
@@ -152,12 +171,17 @@ void FullScreenQuad::updateBufferData()
 
     V *vertices = reinterpret_cast<V *>(rawData.data());
 
-    vertices[0] = { { -1.0, 1.0, 0.0 }, { 0.0, 1.0 } };
-    vertices[1] = { { -1.0, -1.0, 0.0 }, { 0.0, 0.0 } };
-    vertices[2] = { { 1.0, 1.0, 0.0 }, { 1.0, 1.0 } };
-    vertices[3] = { { 1.0, 1.0, 0.0 }, { 1.0, 1.0 } };
-    vertices[4] = { { -1.0, -1.0, 0.0 }, { 0.0, 0.0 } };
-    vertices[5] = { { 1.0, -1.0, 0.0 }, { 1.0, 0.0 } };
+    const float xMin = -1.0f + 2.0f * m_viewportRect.x();
+    const float xMax = xMin + 2.0f * m_viewportRect.width();
+    const float yMin = -1.0f + 2.0f * (1.0 - m_viewportRect.y() - m_viewportRect.height());
+    const float yMax = yMin + 2.0f * m_viewportRect.height();
+
+    vertices[0] = { { xMin, yMax, 0.0 }, { 0.0, 1.0 } };
+    vertices[1] = { { xMin, yMin, 0.0 }, { 0.0, 0.0 } };
+    vertices[2] = { { xMax, yMax, 0.0 }, { 1.0, 1.0 } };
+    vertices[3] = { { xMax, yMax, 0.0 }, { 1.0, 1.0 } };
+    vertices[4] = { { xMin, yMin, 0.0 }, { 0.0, 0.0 } };
+    vertices[5] = { { xMax, yMin, 0.0 }, { 1.0, 0.0 } };
 
     m_buffer->setData(rawData);
 }

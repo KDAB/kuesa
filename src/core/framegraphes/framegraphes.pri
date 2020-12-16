@@ -36,6 +36,7 @@ SOURCES += \
     $$PWD/reflectionstages.cpp \
     $$PWD/scenestages.cpp \
     $$PWD/view.cpp \
+    $$PWD/viewresolver.cpp \
     $$PWD/zfillrenderstage.cpp \
     $$PWD/opaquerenderstage.cpp \
     $$PWD/transparentrenderstage.cpp \
@@ -51,6 +52,7 @@ HEADERS += \
     $$PWD/reflectionstages_p.h \
     $$PWD/scenestages_p.h \
     $$PWD/view.h \
+    $$PWD/viewresolver_p.h \
     $$PWD/zfillrenderstage_p.h \
     $$PWD/opaquerenderstage_p.h \
     $$PWD/transparentrenderstage_p.h \
