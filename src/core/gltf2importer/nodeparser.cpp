@@ -189,6 +189,13 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
         node.reflectionPlaneEquation = planeEquation;
     }
 
+    if (nodeExtensions.contains(KEY_KDAB_PLACEHOLDER)) {
+        const QJsonObject placeHolderObject = nodeExtensions.value(KEY_KDAB_PLACEHOLDER).toObject();
+        const unsigned int cameraNode = placeHolderObject.value(KEY_KDAB_PLACEHOLDER_CAMERANODE).toInt();
+        node.placeHolder = TreeNode::KDAB_2d_placeholder{cameraNode};
+        node.hasPlaceholder = true;
+    }
+
     const QJsonArray morphTargetWeights = nodeObj.value(KEY_WEIGHTS).toArray();
     node.morphTargetWeights.reserve(morphTargetWeights.size());
     for (const QJsonValue &weight : morphTargetWeights)

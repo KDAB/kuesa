@@ -54,6 +54,7 @@
 #include "directionallight.h"
 #include "pointlight.h"
 #include "spotlight.h"
+#include "placeholder.h"
 
 #include <QElapsedTimer>
 #include <QFile>
@@ -601,7 +602,8 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
             KEY_KDAB_CUSTOM_MATERIAL,
             KEY_EXT_PROPERTY_ANIMATION_EXTENSION,
             KEY_KHR_TEXTURE_TRANSFORM,
-            KEY_KDAB_REFLECTION_PLANES_EXTENSION
+            KEY_KDAB_REFLECTION_PLANES_EXTENSION,
+            KEY_KDAB_PLACEHOLDER
         };
         for (const auto &e : qAsConst(extensions)) {
             if (supportedExtensions.contains(e))
@@ -699,6 +701,10 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
                         Q_ASSERT(transform != nullptr);
                         addToCollectionWithUniqueName(m_sceneEntity->transforms(), treeNode.name, transform);
                     }
+
+                    auto placeholder = treeNode.entity->findChild<Kuesa::Placeholder*>();
+                    if (placeholder)
+                        addToCollectionWithUniqueName(m_sceneEntity->placeholders(), treeNode.name, placeholder);
                 }
             }
 
@@ -1049,6 +1055,7 @@ void GLTF2Parser::generateTreeNodeContent()
         // Build Entity Content
         if (node.entity) {
             createTransform(node);
+            createPlaceholder(node);
             createLayers(node);
             createLight(node);
             createMesh(node);
@@ -1179,6 +1186,29 @@ void GLTF2Parser::createTransform(const TreeNode &node)
         // Don't forget to add transform as a component
         // if we aren't a QCamera
         entity->addComponent(transform);
+    }
+}
+
+void GLTF2Parser::createPlaceholder(const TreeNode &node)
+{
+    if (node.hasPlaceholder) {
+        Qt3DCore::QEntity *entity = node.entity;
+
+        Kuesa::Placeholder *placeHolder = new Kuesa::Placeholder(entity);
+
+        // Get the ith camera node
+        std::vector<Qt3DRender::QCamera *> cameraNodes;
+        for (const auto &node : m_context->treeNodes()) {
+            auto *camera = qobject_cast<Qt3DRender::QCamera*>(node.entity);
+            if (camera != nullptr) {
+                cameraNodes.push_back(camera);
+            }
+        }
+
+        Q_ASSERT(node.placeHolder.cameraNode < cameraNodes.size());
+        const auto cameraEntity = qobject_cast<Qt3DRender::QCamera *>(cameraNodes[node.placeHolder.cameraNode]);
+        if (cameraEntity)
+            placeHolder->setCamera(cameraEntity);
     }
 }
 

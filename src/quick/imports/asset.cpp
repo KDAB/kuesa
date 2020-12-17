@@ -216,7 +216,8 @@ void Asset::findAsset()
                     << m_sceneEntity->cameras()
                     << m_sceneEntity->entities()
                     << m_sceneEntity->textureImages()
-                    << m_sceneEntity->animationMappings();
+                    << m_sceneEntity->animationMappings()
+                    << m_sceneEntity->placeholders();
     }
 
     for (AbstractAssetCollection *c : qAsConst(collections)) {

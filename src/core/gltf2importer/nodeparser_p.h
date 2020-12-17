@@ -92,6 +92,13 @@ struct TreeNode {
     QVector<int> layerIndices;
     QVector<float> morphTargetWeights;
     QVector4D reflectionPlaneEquation;
+
+    struct KDAB_2d_placeholder
+    {
+        qint32 cameraNode;
+    };
+    KDAB_2d_placeholder placeHolder;
+    bool hasPlaceholder = false;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(TreeNode::TransformInfo::TransformBits)

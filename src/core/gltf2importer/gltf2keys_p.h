@@ -123,6 +123,8 @@ const QLatin1String KEY_CAMERA = QLatin1String("camera");
 const QLatin1String KEY_SKIN = QLatin1String("skin");
 const QLatin1String KEY_CHILDREN = QLatin1String("children");
 const QLatin1String KEY_NODE_KUESA_LAYERS = QLatin1String("layers");
+const QLatin1String KEY_KDAB_PLACEHOLDER = QLatin1String("KDAB_placeholder");
+const QLatin1String KEY_KDAB_PLACEHOLDER_CAMERANODE = QLatin1String("cameraNode");
 
 } // namespace GLTF2Import
 } // namespace Kuesa

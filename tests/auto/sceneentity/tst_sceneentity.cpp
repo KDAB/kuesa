@@ -54,6 +54,7 @@ private Q_SLOTS:
         QVERIFY(sceneEntity.textureImages());
         QVERIFY(sceneEntity.animationMappings());
         QVERIFY(sceneEntity.reflectionPlanes());
+        QVERIFY(sceneEntity.placeholders());
     }
 };
 

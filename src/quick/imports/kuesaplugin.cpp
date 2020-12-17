@@ -92,6 +92,7 @@
 #include <Kuesa/KuesaNode>
 #include <Kuesa/View>
 #include <Kuesa/ReflectionPlane>
+#include <Kuesa/Placeholder>
 #include <qtkuesa-config.h>
 #ifdef KUESA_KTX
 #include <Kuesa/KTXTexture>
@@ -173,6 +174,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::EffectProperties>(uri, 1, 0, "EffectProperties", QStringLiteral("Cannot be instantiated"));
     qRegisterMetaType<Kuesa::EffectProperties::Properties>("EffectProperties::Properties");
     qmlRegisterType<Kuesa::TransformTracker>(uri, 1, 0, "TransformTracker");
+    qmlRegisterUncreatableType<Kuesa::Placeholder>(uri, 1, 0, "Placeholder", QStringLiteral("You are not supposed to create a Placeholder instance"));
 
     // Custom Simple Materials
     qmlRegisterType<Kuesa::IroDiffuseMaterial>("Kuesa.Iro", 1, 0, "IroDiffuseMaterial");

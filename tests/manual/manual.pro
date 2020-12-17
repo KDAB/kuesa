@@ -57,7 +57,8 @@ qtHaveModule(quick) {
         stencil \
         PlanarReflections \
         multi-views \
-        multi-views-with-effects
+        multi-views-with-effects \
+        KDAB_placeholder
 }
 
 qtConfig(ktx) {

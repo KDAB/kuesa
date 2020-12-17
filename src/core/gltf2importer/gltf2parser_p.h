@@ -171,6 +171,7 @@ private:
     void generateAnimationContent();
 
     void createTransform(const TreeNode &node);
+    void createPlaceholder(const TreeNode &node);
     void createLayers(const TreeNode &node);
     void createLight(const TreeNode &node);
     void createMesh(const TreeNode &node);

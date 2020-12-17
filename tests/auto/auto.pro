@@ -42,7 +42,8 @@ SUBDIRS = \
     tonemappingandgammacorrectioneffect \
     kuesanode \
     fullscreenquad \
-    reflectionplane
+    reflectionplane \
+    placeholder
 
 qtHaveModule(quick):lessThan(QT_MAJOR_VERSION, 6) {
     SUBDIRS += qml

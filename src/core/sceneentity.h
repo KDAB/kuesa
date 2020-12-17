@@ -43,6 +43,7 @@
 #include <Kuesa/cameracollection.h>
 #include <Kuesa/entitycollection.h>
 #include <Kuesa/transformcollection.h>
+#include <Kuesa/placeholdercollection.h>
 #include <Kuesa/textureimagecollection.h>
 #include <Kuesa/animationmappingcollection.h>
 #include <Kuesa/reflectionplanecollection.h>
@@ -82,6 +83,7 @@ class KUESASHARED_EXPORT SceneEntity : public Qt3DCore::QEntity
     Q_PROPERTY(Kuesa::LightCollection *lights READ lights NOTIFY loadingDone)
     Q_PROPERTY(Kuesa::TransformCollection *transforms READ transforms NOTIFY loadingDone)
     Q_PROPERTY(Kuesa::ReflectionPlaneCollection *reflectionPlanes READ reflectionPlanes NOTIFY loadingDone)
+    Q_PROPERTY(Kuesa::PlaceholderCollection *placeholders READ placeholders NOTIFY loadingDone)
 
 public:
     SceneEntity(Qt3DCore::QNode *parent = nullptr);
@@ -121,6 +123,9 @@ public:
     TransformCollection *transforms() const;
     Q_INVOKABLE Qt3DCore::QTransform *transform(const QString &name) const;
 
+    PlaceholderCollection *placeholders() const;
+    Q_INVOKABLE Kuesa::Placeholder *placeholder(const QString &name) const;
+
     TextureImageCollection *textureImages() const;
     Q_INVOKABLE Qt3DRender::QAbstractTextureImage *textureImage(const QString &name);
 
@@ -157,6 +162,7 @@ private:
     CameraCollection *m_cameras;
     EntityCollection *m_entities;
     TransformCollection *m_transforms;
+    PlaceholderCollection *m_placeholders;
     TextureImageCollection *m_textureImages;
     AnimationMappingCollection *m_animationMappings;
     ReflectionPlaneCollection *m_reflectionPlanes;

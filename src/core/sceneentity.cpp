@@ -110,6 +110,7 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     , m_cameras(new CameraCollection(this))
     , m_entities(new EntityCollection(this))
     , m_transforms(new TransformCollection(this))
+    , m_placeholders(new PlaceholderCollection(this))
     , m_textureImages(new TextureImageCollection(this))
     , m_animationMappings(new AnimationMappingCollection(this))
     , m_reflectionPlanes(new ReflectionPlaneCollection(this))
@@ -428,6 +429,7 @@ void SceneEntity::clearCollections()
     m_textureImages->clear();
     m_animationMappings->clear();
     m_reflectionPlanes->clear();
+    m_placeholders->clear();
 }
 
 /*!
@@ -478,6 +480,18 @@ Kuesa::SceneEntity *Kuesa::SceneEntity::findParentSceneEntity(Qt3DCore::QEntity 
         return findParentSceneEntity(parentEntity);
     }
     return nullptr;
+}
+
+
+
+Kuesa::PlaceholderCollection *Kuesa::SceneEntity::placeholders() const
+{
+    return m_placeholders;
+}
+
+Kuesa::Placeholder *SceneEntity::placeholder(const QString &name) const
+{
+    return m_placeholders->find(name);
 }
 
 QT_END_NAMESPACE

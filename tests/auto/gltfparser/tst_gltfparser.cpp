@@ -1010,6 +1010,35 @@ private Q_SLOTS:
         QCOMPARE(reflectionPlane->equation(), QVector4D(1.0f, 0.0f, 0.0f, 883.0f));
     }
 
+    void checkPlaceholder()
+    {
+        SceneEntity scene;
+        GLTF2Context ctx;
+        GLTF2Parser parser(&scene);
+
+        parser.setContext(&ctx);
+
+        // WHEN
+        const bool parsingSuccessful = parser.parse(QString(ASSETS "KDAB_placeholder/placeholder.gltf"));
+
+        // THEN
+        QVERIFY(parsingSuccessful);
+
+        // WHEN
+        parser.generateContent();
+        Qt3DCore::QEntity *res = parser.contentRoot();
+
+        // THEN
+        QVERIFY(res != nullptr);
+        QCOMPARE(scene.placeholders()->size(), 1);
+
+        Kuesa::Placeholder *placeholder = qobject_cast<Kuesa::Placeholder *>(scene.placeholder("placeholder"));
+        QVERIFY(placeholder);
+        QCOMPARE(placeholder->camera(), scene.camera("camera"));
+        QCOMPARE(placeholder->viewport(), QRect());
+        QCOMPARE(placeholder->target(), nullptr);
+    }
+
 #if defined(KUESA_DRACO_COMPRESSION)
     void checkDracoCompression()
     {

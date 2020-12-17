@@ -42,7 +42,8 @@ SOURCES += \
     $$PWD/entitycollection.cpp \
     $$PWD/textureimagecollection.cpp \
     $$PWD/animationmappingcollection.cpp \
-    $$PWD/transformcollection.cpp
+    $$PWD/transformcollection.cpp \
+    $$PWD/placeholdercollection.cpp
 
 HEADERS += \
     $$PWD/layercollection.h \
@@ -60,4 +61,5 @@ HEADERS += \
     $$PWD/entitycollection.h \
     $$PWD/textureimagecollection.h \
     $$PWD/animationmappingcollection.h \
-    $$PWD/transformcollection.h
+    $$PWD/transformcollection.h \
+    $$PWD/placeholdercollection.h
