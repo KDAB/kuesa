@@ -34,6 +34,9 @@
 #include <Qt3DRender/QBlitFramebuffer>
 #include <Qt3DRender/QNoDraw>
 #include <Qt3DRender/QRenderTarget>
+#include <Qt3DRender/QRenderStateSet>
+#include <Qt3DRender/QDepthTest>
+#include <Qt3DRender/QNoDepthMask>
 
 #include <Qt3DCore/private/qnode_p.h>
 #include <private/kuesa_utils_p.h>
@@ -47,16 +50,23 @@ EffectsStages::EffectsStages(Qt3DRender::QFrameGraphNode *parent)
     : AbstractRenderStage(parent)
 {
     setObjectName(QLatin1String("ViewFXStage"));
-    m_viewport = new Qt3DRender::QViewport();
+    m_stateSet = new Qt3DRender::QRenderStateSet();
+
+    m_stateSet->addRenderState(new Qt3DRender::QNoDepthMask());
+    Qt3DRender::QDepthTest *depthTest = new Qt3DRender::QDepthTest();
+    depthTest->setDepthFunction(Qt3DRender::QDepthTest::Always);
+    m_stateSet->addRenderState(depthTest);
+
+    m_viewport = new Qt3DRender::QViewport(m_stateSet);
     m_viewport->setObjectName(QLatin1String("KuesaFXViewport"));
 }
 
 EffectsStages::~EffectsStages()
 {
-    delete m_viewport;
     // unparent the effect subtrees or they'll be deleted twice
     for (auto &framegraph : qAsConst(m_effectFGSubtrees))
         framegraph->setParent(static_cast<Qt3DCore::QNode *>(nullptr));
+    delete m_stateSet;
 }
 
 void EffectsStages::setCamera(Qt3DCore::QEntity *camera)
@@ -253,7 +263,7 @@ bool EffectsStages::blitFinalRT() const
 
 void EffectsStages::reconfigure()
 {
-    m_viewport->setParent(Q_NODE_NULLPTR);
+    m_stateSet->setParent(Q_NODE_NULLPTR);
 
     for (AbstractPostProcessingEffect *fx : m_effects)
         m_effectFGSubtrees[fx]->setParent(Q_NODE_NULLPTR);
@@ -344,7 +354,7 @@ void EffectsStages::reconfigure()
     m_finalRTIndex = previousRenderTargetIndex;
 
     if (m_presentToScreen)
-        m_viewport->setParent(this);
+        m_stateSet->setParent(this);
 }
 
 } // namespace Kuesa

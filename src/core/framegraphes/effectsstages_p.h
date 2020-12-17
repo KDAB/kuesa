@@ -53,6 +53,7 @@ class QCameraSelector;
 class QRenderTarget;
 class QRenderTargetSelector;
 class QBlitFramebuffer;
+class QRenderStateSet;
 } // Qt3DRender
 
 namespace Kuesa {
@@ -100,6 +101,7 @@ public:
 private:
     void reconfigure();
 
+    Qt3DRender::QRenderStateSet *m_stateSet = nullptr;
     Qt3DRender::QViewport *m_viewport = nullptr;
     Qt3DCore::QEntity *m_camera = nullptr;
 

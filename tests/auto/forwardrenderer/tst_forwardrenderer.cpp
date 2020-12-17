@@ -112,6 +112,16 @@ class tst_ForwardRenderer : public QObject
 {
     Q_OBJECT
 private Q_SLOTS:
+
+    void testAllocAndDestruction()
+    {
+        // GIVEN
+        {
+            Kuesa::ForwardRenderer r;
+        }
+        // THEN -> Should not crash
+    }
+
     void testChangingViewportRect()
     {
         // GIVEN

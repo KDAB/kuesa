@@ -37,7 +37,10 @@
 #include <Qt3DRender/QLayerFilter>
 #include <Qt3DRender/QRenderTarget>
 #include <Qt3DRender/QRenderTargetSelector>
+#include <Qt3DRender/QRenderStateSet>
 #include <Qt3DRender/QTexture>
+#include <Qt3DRender/QDepthTest>
+#include <Qt3DRender/QNoDepthMask>
 
 #include <Kuesa/forwardrenderer.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
@@ -291,7 +294,14 @@ private Q_SLOTS:
             QCOMPARE(e.children().size(), 3);
             QCOMPARE(e.children().at(0), &rt0);
             QCOMPARE(e.children().at(1), &rt1);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().last());
+            Qt3DRender::QRenderStateSet *stateSet = qobject_cast<Qt3DRender::QRenderStateSet *>(e.children().last());
+            QVERIFY(stateSet != nullptr);
+            QCOMPARE(stateSet->children().size(), 3);
+            Qt3DRender::QNoDepthMask *noDepthWrite = qobject_cast<Qt3DRender::QNoDepthMask *>(stateSet->children()[0]);
+            QVERIFY(noDepthWrite != nullptr);
+            Qt3DRender::QDepthTest *depthTest = qobject_cast<Qt3DRender::QDepthTest *>(stateSet->children()[1]);
+            QVERIFY(depthTest != nullptr);
+            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(stateSet->children().last());
             QVERIFY(vp != nullptr);
             QCOMPARE(vp->children().size(), 1);
             QCOMPARE(vp->children().first(), fx1.frameGraphSubTree().data());
@@ -341,7 +351,17 @@ private Q_SLOTS:
             QCOMPARE(rtS->children().size(), 1);
             QCOMPARE(rtS->children().first(), fx1.frameGraphSubTree().data());
             QCOMPARE(rtS->target(), &rt1);
-            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(e.children().last());
+
+            Qt3DRender::QRenderStateSet *stateSet = qobject_cast<Qt3DRender::QRenderStateSet *>(e.children().last());
+            QVERIFY(stateSet != nullptr);
+            QCOMPARE(stateSet->children().size(), 3);
+            Qt3DRender::QNoDepthMask *noDepthWrite = qobject_cast<Qt3DRender::QNoDepthMask *>(stateSet->children()[0]);
+            QVERIFY(noDepthWrite != nullptr);
+            Qt3DRender::QDepthTest *depthTest = qobject_cast<Qt3DRender::QDepthTest *>(stateSet->children()[1]);
+            QVERIFY(depthTest != nullptr);
+            Qt3DRender::QViewport *vp = qobject_cast<Qt3DRender::QViewport *>(stateSet->children().last());
+            QVERIFY(vp != nullptr);
+            QCOMPARE(vp->children().size(), 1);
             QCOMPARE(vp->children().last(), fx2.frameGraphSubTree().data());
         }
 
