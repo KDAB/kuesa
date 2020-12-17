@@ -62,17 +62,10 @@ public:
     View3DScene *parent3DScene() const { return qobject_cast<View3DScene *>(parent()); }
 
 private:
-    static void qmlAppendAnimation(QQmlListProperty<Kuesa::AnimationPlayer> *list, Kuesa::AnimationPlayer *node);
     static Kuesa::AnimationPlayer *qmlAnimationAt(QQmlListProperty<Kuesa::AnimationPlayer> *list, qt_size_type index);
     static qt_size_type qmlAnimationCount(QQmlListProperty<Kuesa::AnimationPlayer> *list);
-    static void qmlClearAnimations(QQmlListProperty<Kuesa::AnimationPlayer> *list);
-    static void qmlAppendTrackers(QQmlListProperty<Kuesa::TransformTracker> *list, Kuesa::TransformTracker *node);
     static Kuesa::TransformTracker *qmlTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, qt_size_type index);
     static qt_size_type qmlTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list);
-    static void qmlClearTrackers(QQmlListProperty<Kuesa::TransformTracker> *list);
-
-    std::vector<Kuesa::AnimationPlayer *> m_managedAnimations;
-    std::vector<Kuesa::TransformTracker *> m_managedTrackers;
 };
 
 } // namespace KuesaUtils

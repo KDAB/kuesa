@@ -80,7 +80,7 @@ import Kuesa.Utils 1.3 as KuesaUtils
 
 Scene3D {
     id: root
-    property alias source: scene.source
+    property alias source: sceneConfiguration.source
     property var camera: ""
     property color backgroundColor: "white"
     readonly property real aspectRatio: width / Math.max(1, height)
@@ -92,8 +92,8 @@ Scene3D {
     property alias activeScene: scene.activeScene
     property alias components: scene.components
     property alias showDebugOverlay: scene.showDebugOverlay
-    property alias animations: scene.animations
-    property alias transformTrackers: scene.transformTrackers
+    property alias animations: sceneConfiguration.animations
+    property alias transformTrackers: sceneConfiguration.transformTrackers
     property alias animationClips: scene.animationClips
     property alias armatures: scene.armatures
     property alias layers: scene.layers
@@ -118,7 +118,7 @@ Scene3D {
 
     onCameraChanged: {
         if (typeof(camera) === 'string') {
-            scene.cameraName = camera
+            sceneConfiguration.cameraName = camera
         } else {
             scene.frameGraph.camera = camera
         }
@@ -141,6 +141,9 @@ Scene3D {
         screenSize: Qt.size(root.width, root.height)
         frameGraph {
             views: root.views
+        }
+        activeScene: KuesaUtils.SceneConfiguration {
+            id: sceneConfiguration
         }
 
         Binding {

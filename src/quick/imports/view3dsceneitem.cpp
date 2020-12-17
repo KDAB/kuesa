@@ -42,42 +42,25 @@ View3DSceneItem::~View3DSceneItem() = default;
 
     \brief Holds the list of \l [QML] {Kuesa::AnimationPlayer} instances referenced by
     the View3DScene.
+    \readonly
  */
 QQmlListProperty<Kuesa::AnimationPlayer> View3DSceneItem::animations()
 {
     return QQmlListProperty<Kuesa::AnimationPlayer>(this, nullptr,
-                                                    View3DSceneItem::qmlAppendAnimation,
                                                     View3DSceneItem::qmlAnimationCount,
-                                                    View3DSceneItem::qmlAnimationAt,
-                                                    View3DSceneItem::qmlClearAnimations);
-}
-
-void View3DSceneItem::qmlAppendAnimation(QQmlListProperty<Kuesa::AnimationPlayer> *list, Kuesa::AnimationPlayer *node)
-{
-    if (node == nullptr)
-        return;
-    View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
-    self->m_managedAnimations.push_back(node);
-    self->parent3DScene()->addAnimationPlayer(node);
+                                                    View3DSceneItem::qmlAnimationAt);
 }
 
 Kuesa::AnimationPlayer *View3DSceneItem::qmlAnimationAt(QQmlListProperty<Kuesa::AnimationPlayer> *list, qt_size_type index)
 {
     View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
-    return self->m_managedAnimations.at(size_t(index));
+    return self->parent3DScene()->animationPlayers().at(size_t(index));
 }
 
 qt_size_type View3DSceneItem::qmlAnimationCount(QQmlListProperty<Kuesa::AnimationPlayer> *list)
 {
     View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
-    return int(self->m_managedAnimations.size());
-}
-
-void View3DSceneItem::qmlClearAnimations(QQmlListProperty<Kuesa::AnimationPlayer> *list)
-{
-    View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
-    self->parent3DScene()->clearAnimationPlayers();
-    self->m_managedAnimations.clear();
+    return int(self->parent3DScene()->animationPlayers().size());
 }
 
 /*!
@@ -85,40 +68,23 @@ void View3DSceneItem::qmlClearAnimations(QQmlListProperty<Kuesa::AnimationPlayer
 
     \brief Holds the list of \l {Kuesa.TransformTracker} instances referenced by
     the View3DScene.
+    \readonly
  */
 QQmlListProperty<Kuesa::TransformTracker> View3DSceneItem::transformTrackers()
 {
     return QQmlListProperty<Kuesa::TransformTracker>(this, nullptr,
-                                                     View3DSceneItem::qmlAppendTrackers,
                                                      View3DSceneItem::qmlTrackersCount,
-                                                     View3DSceneItem::qmlTrackersAt,
-                                                     View3DSceneItem::qmlClearTrackers);
-}
-
-void View3DSceneItem::qmlAppendTrackers(QQmlListProperty<Kuesa::TransformTracker> *list, Kuesa::TransformTracker *node)
-{
-    if (node == nullptr)
-        return;
-    View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
-    self->m_managedTrackers.push_back(node);
-    self->parent3DScene()->addTransformTracker(node);
+                                                     View3DSceneItem::qmlTrackersAt);
 }
 
 Kuesa::TransformTracker *View3DSceneItem::qmlTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, qt_size_type index)
 {
     View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
-    return self->m_managedTrackers.at(size_t(index));
+    return self->parent3DScene()->transformTrackers().at(size_t(index));
 }
 
 qt_size_type View3DSceneItem::qmlTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list)
 {
     View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
-    return int(self->m_managedTrackers.size());
-}
-
-void View3DSceneItem::qmlClearTrackers(QQmlListProperty<Kuesa::TransformTracker> *list)
-{
-    View3DSceneItem *self = static_cast<View3DSceneItem *>(list->object);
-    self->parent3DScene()->clearAnimationPlayers();
-    self->m_managedTrackers.clear();
+    return int(self->parent3DScene()->transformTrackers().size());
 }

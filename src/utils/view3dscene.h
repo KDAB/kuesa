@@ -54,8 +54,8 @@ class KUESAUTILS_SHARED_EXPORT View3DScene : public Kuesa::SceneEntity
     Q_OBJECT
     Q_PROPERTY(Kuesa::GLTF2Importer *importer READ importer CONSTANT)
     Q_PROPERTY(Kuesa::ForwardRenderer *frameGraph READ frameGraph CONSTANT)
-    Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
-    Q_PROPERTY(QString cameraName READ cameraName WRITE setCameraName NOTIFY cameraNameChanged)
+    Q_PROPERTY(QUrl source READ source NOTIFY sourceChanged)
+    Q_PROPERTY(QString cameraName READ cameraName NOTIFY cameraNameChanged)
     Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay WRITE setShowDebugOverlay NOTIFY showDebugOverlayChanged)
     Q_PROPERTY(QSize screenSize READ screenSize WRITE setScreenSize NOTIFY screenSizeChanged)
     Q_PROPERTY(bool ready READ isReady NOTIFY readyChanged)
@@ -74,14 +74,7 @@ public:
     QSize screenSize() const;
     bool asynchronous() const;
 
-    void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
-    void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);
-    void clearAnimationPlayers();
     const std::vector<Kuesa::AnimationPlayer *> &animationPlayers() const;
-
-    void addTransformTracker(Kuesa::TransformTracker *tracker);
-    void removeTransformTracker(Kuesa::TransformTracker *tracker);
-    void clearTransformTrackers();
     const std::vector<Kuesa::TransformTracker *> &transformTrackers() const;
 
     SceneConfiguration *activeScene() const;
@@ -90,8 +83,6 @@ public:
     bool isLoaded() const;
 
 public Q_SLOTS:
-    void setSource(const QUrl &source);
-    void setCameraName(const QString &cameraName);
     void setShowDebugOverlay(bool showDebugOverlay);
     void setScreenSize(const QSize &screenSize);
     void setAsynchronous(bool asynchronous);
@@ -118,6 +109,17 @@ Q_SIGNALS:
     void activeSceneChanged(SceneConfiguration *activeScene);
 
 private:
+    void setSource(const QUrl &source);
+    void setCameraName(const QString &cameraName);
+
+    void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
+    void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);
+    void clearAnimationPlayers();
+
+    void addTransformTracker(Kuesa::TransformTracker *tracker);
+    void removeTransformTracker(Kuesa::TransformTracker *tracker);
+    void clearTransformTrackers();
+
     void onSceneLoaded();
     void updateTrackers();
     void updateFrame(float dt);

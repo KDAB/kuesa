@@ -67,16 +67,21 @@ using namespace Qt3DRender;
     scene is visible on screen and therefore synchronize with other aspect of
     your application.
 
-    When \l {Kuesa::AnimationPlayer} and \l {Kuesa::TransformTracker} instances
-    are added, the View3DScene will take care of population the camera,
-    screenSize and sceneEntity properties.
+    When used in conjunction with \l {KuesaUtils::SceneConfiguration} this
+    class makes it convenient to set up a Kuesa renderer that can easily load
+    and unload scenes.
+
+    To set the scene to be loaded by the View3DScene, an instance of
+    \l {Kuesa::SceneConfiguration} must be set as the activeScene property.
+
+    \l {Kuesa::AnimationPlayer} and \l {Kuesa::TransformTracker} instances
+    defined on the activeScene will be added. Additionally, the View3DScene
+    will take care of population the camera, screenSize and sceneEntity
+    properties.
 
     Furthermore, animation playback and control is abstracted by convenience
     methods on the View3DScene instance.
 
-    When used in conjunction with \l {KuesaUtils::SceneConfiguration} this
-    class makes it convenient to set up a Kuesa renderer that can easily load
-    and unload scenes.
 */
 
 /*!
@@ -97,6 +102,7 @@ using namespace Qt3DRender;
     \property KuesaUtils::View3DScene::source
 
     \brief The source of the glTF file to be loaded.
+    \readonly
  */
 
 
@@ -107,6 +113,7 @@ using namespace Qt3DRender;
     If the name references a valid camera, the camera will automatically be
     set on the ForwardRenderer frameGraph and other internal assets such as
     \l {Kuesa::TransformTracker}.
+    \readonly
  */
 
 /*!
@@ -154,7 +161,7 @@ using namespace Qt3DRender;
     {KuesaUtils::View3DScene::cameraName} as well as the \l
     {Kuesa::AnimationPlayer} and \l {Kuesa::TransformTracker} instances will be
     automatically set based on the values provided by the SceneConfiguration.
-    This offers a more convenient way of specifying content when dealing with
+    This a more convenient way of specifying content when dealing with
     multiple scenes.
  */
 
@@ -180,16 +187,20 @@ using namespace Qt3DRender;
     scene is visible on screen and therefore synchronize with other aspect of
     your application.
 
-    When \l [QML] {Kuesa::AnimationPlayer} and \l [QML]
-    {Kuesa::TransformTracker} instances are added, the View3DScene will take
-    care of population the camera, screenSize and sceneEntity properties.
-
-    Furthermore, animation playback and control is abstracted by convenience
-    methods on the View3DScene instance.
-
     When used in conjunction with \l [QML] {KuesaUtils::SceneConfiguration} this
     class makes it convenient to set up a Kuesa renderer that can easily load
     and unload scenes.
+
+    To set the scene to be loaded by the View3DScene, an instance of
+    \l {Kuesa::SceneConfiguration} must be set as the activeScene property.
+
+    \l [QML] {Kuesa::AnimationPlayer} and \l [QML] {Kuesa::TransformTracker}
+    instances defined on the activeScene will be added. Additionally, the
+    View3DScene will take care of population the camera, screenSize and
+    sceneEntity properties.
+
+    Furthermore, animation playback and control is abstracted by convenience
+    methods on the View3DScene instance.
 */
 
 /*!
@@ -210,8 +221,8 @@ using namespace Qt3DRender;
     \qmlproperty url KuesaUtils::View3DScene::source
 
     \brief The source of the glTF file to be loaded.
+    \readonly
  */
-
 
 /*!
     \qmlproperty string KuesaUtils::View3DScene::cameraName
@@ -220,6 +231,7 @@ using namespace Qt3DRender;
     If the name references a valid camera, the camera will automatically be
     set on the ForwardRenderer frameGraph and other internal assets such as
     \l [QML] {Kuesa::TransformTracker}.
+    \readonly
  */
 
 /*!
@@ -268,8 +280,8 @@ using namespace Qt3DRender;
     {KuesaUtils::View3DScene::cameraName} as well as the \l [QML]
     {Kuesa::AnimationPlayer} and \l [QML] {Kuesa::TransformTracker} instances
     will be automatically set based on the values provided by the
-    SceneConfiguration. This offers a more convenient way of specifying content
-    when dealing with multiple scenes.
+    SceneConfiguration. This offers a convenient way of specifying content when
+    dealing with multiple scenes.
  */
 
 View3DScene::View3DScene(Qt3DCore::QNode *parent)
@@ -467,6 +479,7 @@ void View3DScene::updateFrame(float dt)
 }
 
 /*!
+    \internal
     \brief Adds \a tracker to the list of managed \l {Kuesa::TransformTracker}
     instances of the View3DScene.
  */
@@ -485,6 +498,7 @@ void View3DScene::addTransformTracker(TransformTracker *tracker)
 }
 
 /*!
+    \internal
     \brief Removes \a tracker from the list of managed \l
     {Kuesa::TransformTracker} instances of the View3DScene.
  */
@@ -497,6 +511,7 @@ void View3DScene::removeTransformTracker(TransformTracker *tracker)
 }
 
 /*!
+    \internal
     \brief Clears the list of managed \l {Kuesa::TransformTracker} instances of
     the View3DScene.
  */
@@ -517,6 +532,7 @@ const std::vector<TransformTracker *> &View3DScene::transformTrackers() const
 }
 
 /*!
+    \internal
     \brief Adds \a animation to the list of managed \l {Kuesa::AnimationPlayer}
     instances of the View3DScene.
  */
@@ -542,6 +558,7 @@ void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
 }
 
 /*!
+    \internal
     \brief Removes \a animation from the list of managed \l {Kuesa::AnimationPlayer}
     instances of the View3DScene.
  */
@@ -562,6 +579,7 @@ void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
 
 
 /*!
+    \internal
     \brief Clears the list of managed \l {Kuesa::AnimationPlayer} instances of
     the View3DScene.
  */
@@ -591,7 +609,8 @@ SceneConfiguration *View3DScene::activeScene() const
     non null instance, the \l {Kuesa::View3DScene::source}, \l
     {Kuesa::View3DScene::cameraName} as well as the \l {Kuesa::AnimationPlayer}
     and \l {Kuesa::TransformTracker} instances will be automatically set based on
-    the values provided by the SceneConfiguration
+    the values provided by the SceneConfiguration. If null, all of these will
+    be cleared.
  */
 void View3DScene::setActiveScene(SceneConfiguration *scene)
 {
@@ -648,10 +667,17 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
             setSource(m_activeScene->source());
             setCameraName(m_activeScene->cameraName());
 
+            QObject::connect(m_activeScene, &SceneConfiguration::sourceChanged, this, &View3DScene::setSource);
+            QObject::connect(m_activeScene, &SceneConfiguration::cameraNameChanged, this, &View3DScene::setCameraName);
+
             // ActiveScene resources (animations, transformTrackers ....) will be loaded
             // Once the scene will have been loaded
             // Otherwise we could end up having an AnimationPlayer that references a yet to be loaded
             // AnimationClip, which Qt3D might complain about
+        } else {
+            // Set empty sources / camera
+            setSource(QUrl());
+            setCameraName(QString());
         }
     }
 }

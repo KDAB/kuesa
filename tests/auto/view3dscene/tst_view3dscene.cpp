@@ -59,6 +59,8 @@ private Q_SLOTS:
     {
         // GIVEN
         KuesaUtils::View3DScene view;
+        KuesaUtils::SceneConfiguration scene;
+
         QSignalSpy sourceChangedSpy(&view, &KuesaUtils::View3DScene::sourceChanged);
 
         // THEN
@@ -66,7 +68,8 @@ private Q_SLOTS:
 
         // WHEN
         const QUrl newSource = QUrl("some/bad/path");
-        view.setSource(newSource);
+        scene.setSource(newSource);
+        view.setActiveScene(&scene);
 
         // THEN
         QCOMPARE(view.source(), newSource);
@@ -78,6 +81,7 @@ private Q_SLOTS:
     {
         // GIVEN
         KuesaUtils::View3DScene view;
+        KuesaUtils::SceneConfiguration scene;
         QSignalSpy cameraNameChangedSpy(&view, &KuesaUtils::View3DScene::cameraNameChanged);
 
         // THEN
@@ -85,7 +89,8 @@ private Q_SLOTS:
 
         // WHEN
         const QString newCameraName = QStringLiteral("Camera_Orientation");
-        view.setCameraName(newCameraName);
+        scene.setCameraName(newCameraName);
+        view.setActiveScene(&scene);
 
         // THEN
         QCOMPARE(view.cameraName(), newCameraName);
@@ -96,10 +101,20 @@ private Q_SLOTS:
     {
         // GIVEN
         KuesaUtils::View3DScene view;
+        KuesaUtils::SceneConfiguration scene;
         Kuesa::TransformTracker tracker;
         QSignalSpy screenSizeChangedSpy(&view, &KuesaUtils::View3DScene::screenSizeChanged);
+        QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadingDone);
 
-        view.addTransformTracker(&tracker);
+        // THEN
+        QVERIFY(loadedSpy.isValid());
+        scene.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+        scene.addTransformTracker(&tracker);
+
+        view.setActiveScene(&scene);
+
+        // WHEN
+        loadedSpy.wait();
 
         // THEN
         QCOMPARE(tracker.screenSize(), QSize());
@@ -158,14 +173,22 @@ private Q_SLOTS:
     {
         // GIVEN
         KuesaUtils::View3DScene view;
+        KuesaUtils::SceneConfiguration scene;
+        QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadingDone);
 
+        QVERIFY(loadedSpy.isValid());
+        scene.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+        view.setActiveScene(&scene);
+        loadedSpy.wait();
+
+        // WHEN
         {
             // WHEN
             Kuesa::TransformTracker t1;
             Kuesa::TransformTracker t2;
 
-            view.addTransformTracker(&t1);
-            view.addTransformTracker(&t2);
+            scene.addTransformTracker(&t1);
+            scene.addTransformTracker(&t2);
 
             // THEN
             QCOMPARE(view.transformTrackers().size(), 2);
@@ -179,14 +202,14 @@ private Q_SLOTS:
             Kuesa::TransformTracker t1;
             Kuesa::TransformTracker t2;
 
-            view.addTransformTracker(&t1);
-            view.addTransformTracker(&t1);
+            scene.addTransformTracker(&t1);
+            scene.addTransformTracker(&t1);
 
             // THEN
             QCOMPARE(view.transformTrackers().size(), 1);
 
             //WHEN
-            view.removeTransformTracker(&t2);
+            scene.removeTransformTracker(&t2);
 
             // THEN
             QCOMPARE(view.transformTrackers().size(), 1);
@@ -197,14 +220,14 @@ private Q_SLOTS:
             Kuesa::TransformTracker t1;
             Kuesa::TransformTracker t2;
 
-            view.addTransformTracker(&t1);
-            view.addTransformTracker(&t2);
+            scene.addTransformTracker(&t1);
+            scene.addTransformTracker(&t2);
 
             // THEN
             QCOMPARE(view.transformTrackers().size(), 2);
 
             // WHEN
-            view.clearTransformTrackers();
+            scene.clearTransformTrackers();
 
             // THEN
             QCOMPARE(view.transformTrackers().size(), 0);
@@ -217,14 +240,14 @@ private Q_SLOTS:
             Kuesa::TransformTracker t1;
             Kuesa::TransformTracker t2;
 
-            view.addTransformTracker(&t1);
-            view.addTransformTracker(&t2);
+            scene.addTransformTracker(&t1);
+            scene.addTransformTracker(&t2);
 
             // THEN
             QCOMPARE(view.transformTrackers().size(), 2);
 
             // WHEN
-            view.removeTransformTracker(&t1);
+            scene.removeTransformTracker(&t1);
 
             // THEN
             QCOMPARE(view.transformTrackers().size(), 1);
@@ -238,14 +261,21 @@ private Q_SLOTS:
     {
         // GIVEN
         KuesaUtils::View3DScene view;
+        KuesaUtils::SceneConfiguration scene;
+        QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadingDone);
+
+        QVERIFY(loadedSpy.isValid());
+        scene.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+        view.setActiveScene(&scene);
+        loadedSpy.wait();
 
         {
             // WHEN
             Kuesa::AnimationPlayer t1;
             Kuesa::AnimationPlayer t2;
 
-            view.addAnimationPlayer(&t1);
-            view.addAnimationPlayer(&t2);
+            scene.addAnimationPlayer(&t1);
+            scene.addAnimationPlayer(&t2);
 
             // THEN
             QCOMPARE(view.animationPlayers().size(), 2);
@@ -259,14 +289,14 @@ private Q_SLOTS:
             Kuesa::AnimationPlayer t1;
             Kuesa::AnimationPlayer t2;
 
-            view.addAnimationPlayer(&t1);
-            view.addAnimationPlayer(&t1);
+            scene.addAnimationPlayer(&t1);
+            scene.addAnimationPlayer(&t1);
 
             // THEN
             QCOMPARE(view.animationPlayers().size(), 1);
 
             // WHEN
-            view.removeAnimationPlayer(&t2);
+            scene.removeAnimationPlayer(&t2);
             QCOMPARE(view.animationPlayers().size(), 1);
         }
 
@@ -275,14 +305,14 @@ private Q_SLOTS:
             Kuesa::AnimationPlayer t1;
             Kuesa::AnimationPlayer t2;
 
-            view.addAnimationPlayer(&t1);
-            view.addAnimationPlayer(&t2);
+            scene.addAnimationPlayer(&t1);
+            scene.addAnimationPlayer(&t2);
 
             // THEN
             QCOMPARE(view.animationPlayers().size(), 2);
 
             // WHEN
-            view.clearAnimationPlayers();
+            scene.clearAnimationPlayers();
 
             // THEN
             QCOMPARE(view.animationPlayers().size(), 0);
@@ -295,14 +325,14 @@ private Q_SLOTS:
             Kuesa::AnimationPlayer t1;
             Kuesa::AnimationPlayer t2;
 
-            view.addAnimationPlayer(&t1);
-            view.addAnimationPlayer(&t2);
+            scene.addAnimationPlayer(&t1);
+            scene.addAnimationPlayer(&t2);
 
             // THEN
             QCOMPARE(view.animationPlayers().size(), 2);
 
             // WHEN
-            view.removeAnimationPlayer(&t1);
+            scene.removeAnimationPlayer(&t1);
 
             // THEN
             QCOMPARE(view.animationPlayers().size(), 1);
@@ -316,11 +346,18 @@ private Q_SLOTS:
     {
         // GIVEN
         KuesaUtils::View3DScene view;
+        KuesaUtils::SceneConfiguration scene;
         Kuesa::AnimationPlayer t1;
         Kuesa::AnimationPlayer t2;
+        QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadingDone);
 
-        view.addAnimationPlayer(&t1);
-        view.addAnimationPlayer(&t2);
+        QVERIFY(loadedSpy.isValid());
+        scene.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+        view.setActiveScene(&scene);
+        loadedSpy.wait();
+
+        scene.addAnimationPlayer(&t1);
+        scene.addAnimationPlayer(&t2);
 
         // THEN
         QCOMPARE(view.animationPlayers().size(), 2);
@@ -411,8 +448,8 @@ private Q_SLOTS:
         QVERIFY(view.activeScene() == nullptr);
         QCOMPARE(view.animationPlayers().size(), 0);
         QCOMPARE(view.transformTrackers().size(), 0);
-        QCOMPARE(view.source(), QUrl("file:///" ASSETS "Box.gltf"));
-        QCOMPARE(view.cameraName(), QStringLiteral("Camera_Orientation"));
+        QCOMPARE(view.source(), QUrl());
+        QCOMPARE(view.cameraName(), QString());
     }
 };
 
