@@ -38,7 +38,6 @@ namespace Kuesa {
 
 Iro2PlanarReflectionSemShaderData::Iro2PlanarReflectionSemShaderData(Qt3DCore::QNode *parent)
     : Qt3DRender::QShaderData(parent)
-    , m_reflectionPlane()
     , m_reflectionGain()
     , m_reflectionInnerFilter()
     , m_reflectionOuterFilter()
@@ -55,11 +54,6 @@ Iro2PlanarReflectionSemShaderData::Iro2PlanarReflectionSemShaderData(Qt3DCore::Q
 {}
 
 Iro2PlanarReflectionSemShaderData::~Iro2PlanarReflectionSemShaderData() = default;
-
-QVector4D Iro2PlanarReflectionSemShaderData::reflectionPlane() const
-{
-    return m_reflectionPlane;
-}
 
 float Iro2PlanarReflectionSemShaderData::reflectionGain() const
 {
@@ -126,14 +120,6 @@ bool Iro2PlanarReflectionSemShaderData::gltfYUp() const
     return m_gltfYUp;
 }
 
-
-void Iro2PlanarReflectionSemShaderData::setReflectionPlane(const QVector4D &reflectionPlane)
-{
-    if (m_reflectionPlane == reflectionPlane)
-        return;
-    m_reflectionPlane = reflectionPlane;
-    emit reflectionPlaneChanged(reflectionPlane);
-}
 
 void Iro2PlanarReflectionSemShaderData::setReflectionGain(float reflectionGain)
 {

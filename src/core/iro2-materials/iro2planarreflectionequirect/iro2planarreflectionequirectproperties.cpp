@@ -62,10 +62,8 @@ namespace Kuesa {
 Iro2PlanarReflectionEquiRectProperties::Iro2PlanarReflectionEquiRectProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_shaderData(new Iro2PlanarReflectionEquiRectShaderData(this))
-    , m_reflectionMap(nullptr)
     , m_normalMap(nullptr)
 {
-    QObject::connect(m_shaderData, &Iro2PlanarReflectionEquiRectShaderData::reflectionPlaneChanged, this, &Iro2PlanarReflectionEquiRectProperties::reflectionPlaneChanged);
     QObject::connect(m_shaderData, &Iro2PlanarReflectionEquiRectShaderData::reflectionGainChanged, this, &Iro2PlanarReflectionEquiRectProperties::reflectionGainChanged);
     QObject::connect(m_shaderData, &Iro2PlanarReflectionEquiRectShaderData::reflectionInnerFilterChanged, this, &Iro2PlanarReflectionEquiRectProperties::reflectionInnerFilterChanged);
     QObject::connect(m_shaderData, &Iro2PlanarReflectionEquiRectShaderData::reflectionOuterFilterChanged, this, &Iro2PlanarReflectionEquiRectProperties::reflectionOuterFilterChanged);
@@ -80,7 +78,6 @@ Iro2PlanarReflectionEquiRectProperties::Iro2PlanarReflectionEquiRectProperties(Q
     QObject::connect(m_shaderData, &Iro2PlanarReflectionEquiRectShaderData::postGainChanged, this, &Iro2PlanarReflectionEquiRectProperties::postGainChanged);
     QObject::connect(m_shaderData, &Iro2PlanarReflectionEquiRectShaderData::gltfYUpChanged, this, &Iro2PlanarReflectionEquiRectProperties::gltfYUpChanged);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    setReflectionMap(new Empty2DTexture());
     setNormalMap(new Empty2DTexture());
 #endif
 }
@@ -90,11 +87,6 @@ Iro2PlanarReflectionEquiRectProperties::~Iro2PlanarReflectionEquiRectProperties(
 Qt3DRender::QShaderData *Iro2PlanarReflectionEquiRectProperties::shaderData() const
 {
     return m_shaderData;
-}
-
-void Iro2PlanarReflectionEquiRectProperties::setReflectionPlane(const QVector4D &reflectionPlane)
-{
-    m_shaderData->setReflectionPlane(reflectionPlane);
 }
 
 void Iro2PlanarReflectionEquiRectProperties::setReflectionGain(float reflectionGain)
@@ -162,23 +154,6 @@ void Iro2PlanarReflectionEquiRectProperties::setGltfYUp(bool gltfYUp)
     m_shaderData->setGltfYUp(gltfYUp);
 }
 
-void Iro2PlanarReflectionEquiRectProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
-{
-    if (m_reflectionMap == reflectionMap)
-        return;
-
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    if (m_reflectionMap != nullptr)
-        d->unregisterDestructionHelper(m_reflectionMap);
-    m_reflectionMap = reflectionMap;
-    if (m_reflectionMap != nullptr) {
-        if (m_reflectionMap->parent() == nullptr)
-            m_reflectionMap->setParent(this);
-        d->registerDestructionHelper(m_reflectionMap, &Iro2PlanarReflectionEquiRectProperties::setReflectionMap, m_reflectionMap);
-    }
-    emit reflectionMapChanged(m_reflectionMap);
-}
-
 void Iro2PlanarReflectionEquiRectProperties::setNormalMap(Qt3DRender::QAbstractTexture * normalMap)
 {
     if (m_normalMap == normalMap)
@@ -196,19 +171,6 @@ void Iro2PlanarReflectionEquiRectProperties::setNormalMap(Qt3DRender::QAbstractT
     emit normalMapChanged(m_normalMap);
 }
 
-
-/*!
-    \qmlproperty QVector4D Iro2PlanarReflectionEquiRectProperties::reflectionPlane
-    Specifies the equation of the reflection plane.
-*/
-/*!
-    \property Iro2PlanarReflectionEquiRectProperties::reflectionPlane
-    Specifies the equation of the reflection plane.
-*/
-QVector4D Iro2PlanarReflectionEquiRectProperties::reflectionPlane() const
-{
-    return m_shaderData->reflectionPlane();
-}
 
 /*!
     \qmlproperty float Iro2PlanarReflectionEquiRectProperties::reflectionGain
@@ -377,11 +339,6 @@ float Iro2PlanarReflectionEquiRectProperties::postGain() const
 bool Iro2PlanarReflectionEquiRectProperties::gltfYUp() const
 {
     return m_shaderData->gltfYUp();
-}
-
-Qt3DRender::QAbstractTexture * Iro2PlanarReflectionEquiRectProperties::reflectionMap() const
-{
-    return m_reflectionMap;
 }
 
 Qt3DRender::QAbstractTexture * Iro2PlanarReflectionEquiRectProperties::normalMap() const

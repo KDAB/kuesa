@@ -66,7 +66,7 @@ private Q_SLOTS:
 
         // THEN
         {
-            QCOMPARE(stages.children().size(), 3);
+            QCOMPARE(stages.children().size(), 4);
 
             Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[0]);
             QVERIFY(reflectiveEnabledParameter);
@@ -77,6 +77,11 @@ private Q_SLOTS:
             QVERIFY(reflectivePlaneParameter);
             QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
             QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
+
+            Qt3DRender::QParameter *reflectivePlaneTextureParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[2]);
+            QVERIFY(reflectivePlaneTextureParameter);
+            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("reflectionMap"));
+            QVERIFY(reflectivePlaneTextureParameter->value().value<Qt3DRender::QAbstractTexture *>() != nullptr);
 
             Qt3DRender::QRenderTargetSelector *rtSelector = qobject_cast<Qt3DRender::QRenderTargetSelector *>(stages.children().last());
             QVERIFY(rtSelector);
@@ -107,7 +112,7 @@ private Q_SLOTS:
 
         // THEN
         {
-            QCOMPARE(stages.children().size(), 3);
+            QCOMPARE(stages.children().size(), 4);
 
             Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[0]);
             QVERIFY(reflectiveEnabledParameter);
@@ -118,6 +123,11 @@ private Q_SLOTS:
             QVERIFY(reflectivePlaneParameter);
             QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
             QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
+
+            Qt3DRender::QParameter *reflectivePlaneTextureParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[2]);
+            QVERIFY(reflectivePlaneTextureParameter);
+            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("reflectionMap"));
+            QVERIFY(reflectivePlaneTextureParameter->value().value<Qt3DRender::QAbstractTexture *>() != nullptr);
 
             Qt3DRender::QRenderTargetSelector *rtSelector = qobject_cast<Qt3DRender::QRenderTargetSelector *>(stages.children().last());
             QVERIFY(rtSelector);
@@ -170,6 +180,21 @@ private Q_SLOTS:
         QVERIFY(t2 != t);
         QCOMPARE(t2->width(), 1024);
         QCOMPARE(t2->height(), 1024);
+    }
+
+    void checkReflectionPlaneChanged()
+    {
+        // GIVEN
+        Kuesa::ReflectionStages stages;
+
+        // THEN
+        QCOMPARE(stages.reflectivePlaneEquation(), QVector3D());
+
+        // WHEN
+        stages.setReflectivePlaneEquation(QVector3D(1.0f, 1.0f, 1.0f));
+
+        // THEN
+        QCOMPARE(stages.reflectivePlaneEquation(), QVector3D(1.0f, 1.0f, 1.0f));
     }
 };
 

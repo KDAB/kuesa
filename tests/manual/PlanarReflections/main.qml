@@ -83,17 +83,6 @@ Kuesa.SceneEntity {
         collection: scene.reflectionPlanes
         name: "ReflectionPlane"
     }
-    Kuesa.Asset {
-        id: planeMaterial
-        collection: scene.materials
-        name: "Material.003"
-        onNodeChanged: {
-            if (node) {
-                node.reflectionMap = frameGraph.reflectionTexture
-                node.reflectionPlane = sceneReflectionPlane.node.equation
-            }
-        }
-    }
 
     OrbitCameraController {
         id: controller

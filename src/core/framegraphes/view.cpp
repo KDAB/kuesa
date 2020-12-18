@@ -1154,7 +1154,10 @@ void View::reconfigureStages()
         for (Qt3DRender::QLayer *l : reflectionVisibleLayers)
             m_reflectionStages->addLayer(l);
         // Set equation
-        m_reflectionStages->setReflectivePlaneEquation(m_reflectionPlanes[0]->equation());
+        const QVector4D planeEquation = m_reflectionPlanes[0]->equation();
+        m_reflectionStages->setReflectivePlaneEquation(planeEquation);
+        m_sceneStages->setReflectivePlaneEquation(planeEquation);
+        m_sceneStages->setReflectivePlaneTexture(m_reflectionStages->reflectionTexture());
     }
 }
 

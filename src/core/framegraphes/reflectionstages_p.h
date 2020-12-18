@@ -60,7 +60,6 @@ public:
     explicit ReflectionStages(Qt3DRender::QFrameGraphNode *parent = nullptr);
     ~ReflectionStages();
 
-    void setReflectivePlaneEquation(const QVector4D &planeEquation);
     void setReflectionTextureSize(const QSize &size);
 
     Qt3DRender::QAbstractTexture *reflectionTexture() const;

@@ -32,7 +32,6 @@
 
 #include <QVector2D>
 #include <QVector3D>
-#include <QVector4D>
 #include <Qt3DRender/QAbstractTexture>
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>
@@ -47,8 +46,6 @@ class Iro2PlanarReflectionEquiRectShaderData;
 class KUESASHARED_EXPORT Iro2PlanarReflectionEquiRectProperties : public GLTF2MaterialProperties
 {
     Q_OBJECT
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
-    Q_PROPERTY(QVector4D reflectionPlane READ reflectionPlane WRITE setReflectionPlane NOTIFY reflectionPlaneChanged)
     Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
@@ -69,8 +66,6 @@ public:
     ~Iro2PlanarReflectionEquiRectProperties();
 
     Qt3DRender::QShaderData *shaderData() const override;
-    Qt3DRender::QAbstractTexture * reflectionMap() const;
-    QVector4D reflectionPlane() const;
     float reflectionGain() const;
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
@@ -87,8 +82,6 @@ public:
     bool gltfYUp() const;
 
 public Q_SLOTS:
-    void setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap);
-    void setReflectionPlane(const QVector4D &reflectionPlane);
     void setReflectionGain(float reflectionGain);
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
@@ -105,8 +98,6 @@ public Q_SLOTS:
     void setGltfYUp(bool gltfYUp);
 
 Q_SIGNALS:
-    void reflectionMapChanged(Qt3DRender::QAbstractTexture *);
-    void reflectionPlaneChanged(QVector4D);
     void reflectionGainChanged(float);
     void reflectionInnerFilterChanged(QVector3D);
     void reflectionOuterFilterChanged(QVector3D);
@@ -124,7 +115,6 @@ Q_SIGNALS:
 
 private:
     Iro2PlanarReflectionEquiRectShaderData *m_shaderData;
-    Qt3DRender::QAbstractTexture * m_reflectionMap;
     Qt3DRender::QAbstractTexture * m_normalMap;
 
 };

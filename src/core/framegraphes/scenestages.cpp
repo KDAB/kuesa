@@ -37,12 +37,14 @@
 #include <Qt3DRender/qfilterkey.h>
 #include <Qt3DRender/qtechniquefilter.h>
 #include <Qt3DRender/qfrustumculling.h>
+#include <Qt3DRender/qabstracttexture.h>
 #include <QVector4D>
 #include <QMetaEnum>
 
 #include "zfillrenderstage_p.h"
 #include "opaquerenderstage_p.h"
 #include "transparentrenderstage_p.h"
+#include <Kuesa/private/empty2dtexture_p.h>
 
 #include <private/particlerenderstage_p.h>
 #include <Qt3DCore/private/qnode_p.h>
@@ -322,8 +324,10 @@ SceneStages::SceneStages(Qt3DRender::QFrameGraphNode *parent)
     m_transparentStage = ScenePassPtr::create(ScenePass::Transparent);
     m_particleRenderStage = ParticleRenderStagePtr::create();
 
+    m_defaultReflectivePlaneTexture = new Empty2DTexture();
     m_reflectiveEnabledParameter = new Qt3DRender::QParameter(QStringLiteral("isReflective"), QVariant(false), this);
     m_reflectivePlaneParameter = new Qt3DRender::QParameter(QStringLiteral("reflectionPlane"), QVector4D(), this);
+    m_reflectivePlaneTextureParameter = new Qt3DRender::QParameter(QStringLiteral("reflectionMap"), m_defaultReflectivePlaneTexture, this);
 
     // Add parameters to ScenePasses
     m_zFillStage->addParameter(m_reflectiveEnabledParameter);
@@ -333,6 +337,10 @@ SceneStages::SceneStages(Qt3DRender::QFrameGraphNode *parent)
     m_zFillStage->addParameter(m_reflectivePlaneParameter);
     m_opaqueStage->addParameter(m_reflectivePlaneParameter);
     m_transparentStage->addParameter(m_reflectivePlaneParameter);
+
+    m_zFillStage->addParameter(m_reflectivePlaneTextureParameter);
+    m_opaqueStage->addParameter(m_reflectivePlaneTextureParameter);
+    m_transparentStage->addParameter(m_reflectivePlaneTextureParameter);
 
     // Force initial configuration
     reconfigure(SceneFeaturedRenderStageBase::features());
@@ -442,6 +450,40 @@ void SceneStages::setCamera(Qt3DCore::QEntity *camera)
 Qt3DCore::QEntity *SceneStages::camera() const
 {
     return m_cameraSelector->camera();
+}
+
+void SceneStages::setReflectivePlaneEquation(const QVector4D &planeEquation)
+{
+    m_reflectivePlaneParameter->setValue(planeEquation);
+}
+
+QVector4D SceneStages::reflectivePlaneEquation() const
+{
+    return m_reflectivePlaneParameter->value().value<QVector4D>();
+}
+
+void SceneStages::setReflectivePlaneTexture(Qt3DRender::QAbstractTexture *t)
+{
+    Qt3DRender::QAbstractTexture *currentT = reflectivePlaneTexture();
+    if (t == currentT)
+        return;
+
+    auto d = Qt3DCore::QNodePrivate::get(this);
+
+    if (currentT && currentT != m_defaultReflectivePlaneTexture)
+        d->unregisterDestructionHelper(currentT);
+
+    if (t) {
+        d->registerDestructionHelper(t, &SceneStages::setReflectivePlaneTexture, t);
+        m_reflectivePlaneTextureParameter->setValue(QVariant::fromValue(t));
+    } else {
+        m_reflectivePlaneTextureParameter->setValue(QVariant::fromValue(m_defaultReflectivePlaneTexture));
+    }
+}
+
+Qt3DRender::QAbstractTexture *SceneStages::reflectivePlaneTexture() const
+{
+    return m_reflectivePlaneTextureParameter->value().value<Qt3DRender::QAbstractTexture *>();
 }
 
 QT_END_NAMESPACE

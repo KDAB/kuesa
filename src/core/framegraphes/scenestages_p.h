@@ -66,7 +66,7 @@ class QLayerFilter;
 class QClearBuffers;
 class QLayer;
 class QFrustumCulling;
-
+class QAbstractTexture;
 } // namespace Qt3DRender
 
 namespace Kuesa {
@@ -174,6 +174,12 @@ public:
     void setCullingMode(Qt3DRender::QCullFace::CullingMode cullingMode);
     Qt3DRender::QCullFace::CullingMode cullingMode() const;
 
+    void setReflectivePlaneEquation(const QVector4D &planeEquation);
+    QVector4D reflectivePlaneEquation() const;
+
+    void setReflectivePlaneTexture(Qt3DRender::QAbstractTexture *t);
+    Qt3DRender::QAbstractTexture *reflectivePlaneTexture() const;
+
 public Q_SLOTS:
     void addLayer(Qt3DRender::QLayer *layer);
     void removeLayer(Qt3DRender::QLayer *layer);
@@ -191,7 +197,8 @@ protected:
 
     Qt3DRender::QParameter *m_reflectiveEnabledParameter = nullptr;
     Qt3DRender::QParameter *m_reflectivePlaneParameter = nullptr;
-
+    Qt3DRender::QParameter *m_reflectivePlaneTextureParameter = nullptr;
+    Qt3DRender::QAbstractTexture *m_defaultReflectivePlaneTexture = nullptr;
 };
 using SceneStagesPtr = QSharedPointer<SceneStages>;
 

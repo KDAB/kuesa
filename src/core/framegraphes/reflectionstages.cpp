@@ -88,11 +88,6 @@ void ReflectionStages::reconfigure(const Features features)
     SceneStages::reconfigure(editedFeatures);
 }
 
-void ReflectionStages::setReflectivePlaneEquation(const QVector4D &planeEquation)
-{
-    m_reflectivePlaneParameter->setValue(planeEquation);
-}
-
 void ReflectionStages::setReflectionTextureSize(const QSize &size)
 {
     Qt3DRender::QRenderTarget *oldTarget = m_renderTargetSelector->target();

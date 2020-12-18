@@ -62,7 +62,6 @@ Q_SIGNALS:
 private:
     Iro2PlanarReflectionEquiRectProperties *m_materialProperties = nullptr;
     Qt3DRender::QParameter *m_shaderDataParameter;
-    Qt3DRender::QParameter *m_reflectionMapParameter;
     Qt3DRender::QParameter *m_normalMapParameter;
 
 };

@@ -62,11 +62,9 @@ namespace Kuesa {
 Iro2PlanarReflectionEquiRectMaterial::Iro2PlanarReflectionEquiRectMaterial(Qt3DCore::QNode *parent)
     : GLTF2Material(parent)
     , m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("properties"), {}))
-    , m_reflectionMapParameter(new Qt3DRender::QParameter(QStringLiteral("reflectionMap"), {}))
     , m_normalMapParameter(new Qt3DRender::QParameter(QStringLiteral("normalMap"), {}))
 {
     addParameter(m_shaderDataParameter);
-    addParameter(m_reflectionMapParameter);
     addParameter(m_normalMapParameter);
 }
 
@@ -103,10 +101,8 @@ void Iro2PlanarReflectionEquiRectMaterial::setMaterialProperties(Kuesa::Iro2Plan
         emit materialPropertiesChanged(materialProperties);
 
         if (m_materialProperties) {
-            QObject::connect(m_materialProperties, &Iro2PlanarReflectionEquiRectProperties::reflectionMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
             QObject::connect(m_materialProperties, &Iro2PlanarReflectionEquiRectProperties::normalMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_normalMapParameter->setValue(QVariant::fromValue(t)); });
 
-            m_reflectionMapParameter->setValue(QVariant::fromValue(m_materialProperties->reflectionMap()));
             m_normalMapParameter->setValue(QVariant::fromValue(m_materialProperties->normalMap()));
 
             m_shaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));

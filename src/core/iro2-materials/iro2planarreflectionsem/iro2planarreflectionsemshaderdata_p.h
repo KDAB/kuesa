@@ -44,7 +44,6 @@
 
 #include <QVector2D>
 #include <QVector3D>
-#include <QVector4D>
 #include <Qt3DRender/QShaderData>
 
 QT_BEGIN_NAMESPACE
@@ -54,7 +53,6 @@ namespace Kuesa {
 class Iro2PlanarReflectionSemShaderData : public Qt3DRender::QShaderData
 {
     Q_OBJECT
-    Q_PROPERTY(QVector4D reflectionPlane READ reflectionPlane WRITE setReflectionPlane NOTIFY reflectionPlaneChanged)
     Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
@@ -72,7 +70,6 @@ class Iro2PlanarReflectionSemShaderData : public Qt3DRender::QShaderData
 public:
     explicit Iro2PlanarReflectionSemShaderData(Qt3DCore::QNode *parent = nullptr);
     ~Iro2PlanarReflectionSemShaderData();
-    QVector4D reflectionPlane() const;
     float reflectionGain() const;
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
@@ -88,7 +85,6 @@ public:
     bool gltfYUp() const;
 
 public Q_SLOTS:
-    void setReflectionPlane(const QVector4D &reflectionPlane);
     void setReflectionGain(float reflectionGain);
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
@@ -104,7 +100,6 @@ public Q_SLOTS:
     void setGltfYUp(bool gltfYUp);
 
 Q_SIGNALS:
-    void reflectionPlaneChanged(QVector4D);
     void reflectionGainChanged(float);
     void reflectionInnerFilterChanged(QVector3D);
     void reflectionOuterFilterChanged(QVector3D);
@@ -120,7 +115,6 @@ Q_SIGNALS:
     void gltfYUpChanged(bool);
 
 private:
-    QVector4D m_reflectionPlane;
     float m_reflectionGain;
     QVector3D m_reflectionInnerFilter;
     QVector3D m_reflectionOuterFilter;

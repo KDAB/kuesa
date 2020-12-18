@@ -497,8 +497,6 @@ private Q_SLOTS:
 
             Kuesa::Iro2PlanarReflectionSemProperties *material = qobject_cast<Kuesa::Iro2PlanarReflectionSemProperties *>(view.material(QStringLiteral("MaterialReflection")));
             QVERIFY(material);
-            QCOMPARE(material->reflectionPlane(), QVector4D());
-            QVERIFY(material->reflectionMap() == nullptr);
 
             // WHEN
             view.setReflectionPlaneName(QStringLiteral("ReflectionPlane"));
@@ -528,9 +526,6 @@ private Q_SLOTS:
             QVERIFY(view.isLoaded());
             QCOMPARE(view.reflectionPlanes()->size(), 1);
             QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 1);
-
-            Kuesa::Iro2PlanarReflectionSemProperties *material = qobject_cast<Kuesa::Iro2PlanarReflectionSemProperties *>(view.material(QStringLiteral("MaterialReflection")));
-            QVERIFY(material);
         }
     }
 };
