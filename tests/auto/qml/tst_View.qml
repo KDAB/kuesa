@@ -150,14 +150,14 @@ TestCase {
         verify(skinningSpy.valid)
 
         // WHEN
-        view.skinning = false
+        view.skinning = true
         // THEN
         compare(skinningSpy.count, 1)
-        compare(skinningSpy.signalArguments[0][0], false)
+        compare(skinningSpy.signalArguments[0][0], true)
 
         // WHEN
         skinningSpy.clear()
-        view.skinning = false
+        view.skinning = true
         // THEN
         compare(skinningSpy.count, 0)
     }
