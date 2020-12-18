@@ -126,6 +126,7 @@ public:
         fg->setGamma(2.2f);
         fg->setExposure(1.f);
         fg->setClearColor("white");
+        fg->setSkinning(true);
         setActiveFrameGraph(fg);
         //! [0.3]
 
