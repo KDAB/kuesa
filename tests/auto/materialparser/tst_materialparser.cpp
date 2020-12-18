@@ -95,17 +95,20 @@ private Q_SLOTS:
         QTest::newRow("KHR_materials_unlit") << QStringLiteral(ASSETS "materialparser_KHR_materials_unlit.gltf")
                                              << true
                                              << 1;
-
+#ifdef Q_OS_LINUX
         QTest::newRow("KDAB_custom_material") << QStringLiteral(ASSETS "materialparser_KDAB_custom_material.gltf")
                                               << true
                                               << 1;
+#endif
     }
 
     void checkParse()
     {
+#ifdef Q_OS_LINUX
         GLTF2Importer::registerCustomMaterial<MyTestCustomMaterial,
                                               MyTestCustomProperties,
                                               MyTestCustomEffect>(QStringLiteral("MyTestCustom"));
+#endif
 
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
@@ -253,6 +256,7 @@ private Q_SLOTS:
         QVERIFY(context.material(0).extensions.KHR_materials_unlit == true);
     }
 
+#ifdef Q_OS_LINUX
     void checkCustomMaterial()
     {
         // GIVEN
@@ -273,6 +277,7 @@ private Q_SLOTS:
         // THEN
         QVERIFY(context.material(0).extensions.KDAB_custom_material == true);
     }
+#endif
 };
 
 QTEST_APPLESS_MAIN(tst_MaterialParser)
