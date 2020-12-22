@@ -135,5 +135,11 @@
         <file>shaders/gl45/kuesa_unlitShaderData.inc.frag</file>
         <file>shaders/gl45/kuesa_shadowmap.inc.frag</file>
         <file>shaders/gl45/shadow_cube.geom</file>
+        <file>shaders/graphs/iro2planarreflectionsem.frag.json</file>
+        <file>shaders/graphs/iro2planarreflectionequirect.frag.json</file>
+        <file>shaders/es2/kuesa_modelMatrix.inc</file>
+        <file>shaders/es3/kuesa_modelMatrix.inc</file>
+        <file>shaders/gl3/kuesa_modelMatrix.inc</file>
+        <file>shaders/gl45/kuesa_modelMatrix.inc</file>
     </qresource>
 </RCC>

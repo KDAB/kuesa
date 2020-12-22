@@ -376,6 +376,16 @@ void Iro2MatteAlphaEffect::updateUsingMorphTargets(bool usingMorphTargets)
     updateLayersOnTechniques(layers);
 }
 
+void Iro2MatteAlphaEffect::updateInstanced(bool instanced)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
+
+    updateLayersOnTechniques(layers);
+}
+
 void Iro2MatteAlphaEffect::updateLayersOnTechniques(const QStringList &layers)
 {
     m_gl3Technique->setEnabledLayers(layers);

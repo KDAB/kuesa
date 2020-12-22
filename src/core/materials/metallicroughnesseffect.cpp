@@ -720,6 +720,16 @@ void MetallicRoughnessEffect::updateUsingCubeMapArrays(bool usingCubeMapArrays)
     updateLayersOnTechniques(layers);
 }
 
+void MetallicRoughnessEffect::updateInstanced(bool instanced)
+{
+    auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
+
+    updateLayersOnTechniques(layers);
+}
+
 Qt3DRender::QAbstractTexture *MetallicRoughnessEffect::brdfLUT() const
 {
     return m_brdfLUTParameter->value().value<Qt3DRender::QAbstractTexture *>();

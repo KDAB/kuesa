@@ -249,6 +249,7 @@ GLTF2MaterialEffect::GLTF2MaterialEffect(Qt3DCore::QNode *parent)
     , m_usingTexCoordAttribute(false)
     , m_usingTexCoord1Attribute(false)
     , m_usingMorphTargets(false)
+    , m_instanced(false)
 {
     // Call the update methods once the subclass instances has been created
     QTimer::singleShot(0, this, &GLTF2MaterialEffect::initialize);
@@ -308,6 +309,10 @@ bool GLTF2MaterialEffect::isUsingMorphTargets() const
     return m_usingMorphTargets;
 }
 
+bool GLTF2MaterialEffect::isInstanced() const
+{
+    return m_instanced;
+}
 
 void GLTF2MaterialEffect::setDoubleSided(bool doubleSided)
 {
@@ -418,6 +423,16 @@ void GLTF2MaterialEffect::updateUsingCubeMapArrays(bool usingCubeMapArrays)
     Q_UNUSED(usingCubeMapArrays);
 }
 
+void GLTF2MaterialEffect::setInstanced(bool instanced)
+{
+    if (m_instanced == instanced)
+        return;
+    m_instanced = instanced;
+    emit instancedChanged(instanced);
+
+    updateInstanced(instanced);
+}
+
 void GLTF2MaterialEffect::initialize()
 {
     updateOpaque(GLTF2MaterialEffect::isOpaque());
@@ -430,9 +445,9 @@ void GLTF2MaterialEffect::initialize()
     updateUsingTexCoordAttribute(GLTF2MaterialEffect::isUsingTexCoordAttribute());
     updateUsingTexCoord1Attribute(GLTF2MaterialEffect::isUsingTexCoord1Attribute());
     updateUsingMorphTargets(GLTF2MaterialEffect::isUsingMorphTargets());
-
     // whether to use cubeMapArrays is only set once at startup and does change
     updateUsingCubeMapArrays(FrameGraphUtils::hasCubeMapArrayTextures());
+    updateInstanced(GLTF2MaterialEffect::isInstanced());
 }
 
 } // Kuesa

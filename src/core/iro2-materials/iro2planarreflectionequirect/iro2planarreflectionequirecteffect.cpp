@@ -376,6 +376,16 @@ void Iro2PlanarReflectionEquiRectEffect::updateUsingMorphTargets(bool usingMorph
     updateLayersOnTechniques(layers);
 }
 
+void Iro2PlanarReflectionEquiRectEffect::updateInstanced(bool instanced)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
+
+    updateLayersOnTechniques(layers);
+}
+
 void Iro2PlanarReflectionEquiRectEffect::updateLayersOnTechniques(const QStringList &layers)
 {
     m_gl3Technique->setEnabledLayers(layers);

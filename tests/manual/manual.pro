@@ -58,7 +58,8 @@ qtHaveModule(quick) {
         PlanarReflections \
         multi-views \
         multi-views-with-effects \
-        KDAB_placeholder
+        KDAB_placeholder \
+        instanced-rocks
 }
 
 qtConfig(ktx) {

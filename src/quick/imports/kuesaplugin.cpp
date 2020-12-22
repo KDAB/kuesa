@@ -34,6 +34,7 @@
 #include "forwardrendererextension.h"
 #include "viewextension.h"
 #include "reflectionplaneextension.h"
+#include "meshinstantiatorextension.h"
 
 #include <Kuesa/SceneEntity>
 #include <Kuesa/TransformTracker>
@@ -93,6 +94,7 @@
 #include <Kuesa/View>
 #include <Kuesa/ReflectionPlane>
 #include <Kuesa/Placeholder>
+#include <Kuesa/MeshInstantiator>
 #include <qtkuesa-config.h>
 #ifdef KUESA_KTX
 #include <Kuesa/KTXTexture>
@@ -175,6 +177,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qRegisterMetaType<Kuesa::EffectProperties::Properties>("EffectProperties::Properties");
     qmlRegisterType<Kuesa::TransformTracker>(uri, 1, 0, "TransformTracker");
     qmlRegisterUncreatableType<Kuesa::Placeholder>(uri, 1, 0, "Placeholder", QStringLiteral("You are not supposed to create a Placeholder instance"));
+    qmlRegisterExtendedType<Kuesa::MeshInstantiator, Kuesa::MeshInstantiatorExtension>(uri, 1, 0, "MeshInstantiator");
 
     // Custom Simple Materials
     qmlRegisterType<Kuesa::IroDiffuseMaterial>("Kuesa.Iro", 1, 0, "IroDiffuseMaterial");

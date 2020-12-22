@@ -49,6 +49,7 @@ class KUESASHARED_EXPORT GLTF2MaterialEffect : public Qt3DRender::QEffect
     Q_PROPERTY(bool usingTexCoordAttribute READ isUsingTexCoordAttribute WRITE setUsingTexCoordAttribute NOTIFY usingTexCoordAttributeChanged)
     Q_PROPERTY(bool usingTexCoord1Attribute READ isUsingTexCoord1Attribute WRITE setUsingTexCoord1Attribute NOTIFY usingTexCoord1AttributeChanged)
     Q_PROPERTY(bool usingMorphTargets READ isUsingMorphTargets WRITE setUsingMorphTargets NOTIFY usingMorphTargetsChanged)
+    Q_PROPERTY(bool instanced READ isInstanced WRITE setInstanced NOTIFY instancedChanged)
 
 public:
     explicit GLTF2MaterialEffect(Qt3DCore::QNode *parent = nullptr);
@@ -64,6 +65,7 @@ public:
     bool isUsingTexCoordAttribute() const;
     bool isUsingTexCoord1Attribute() const;
     bool isUsingMorphTargets() const;
+    bool isInstanced() const;
 
 public Q_SLOTS:
     void setDoubleSided(bool doubleSided);
@@ -76,6 +78,7 @@ public Q_SLOTS:
     void setUsingTexCoordAttribute(bool usingTexCoordAttribute);
     void setUsingTexCoord1Attribute(bool usingTexCoord1Attribute);
     void setUsingMorphTargets(bool usingMorphTargets);
+    void setInstanced(bool instanced);
 
 protected:
     virtual void updateDoubleSided(bool doubleSided) = 0;
@@ -88,6 +91,7 @@ protected:
     virtual void updateUsingTexCoordAttribute(bool enabled) = 0;
     virtual void updateUsingTexCoord1Attribute(bool enabled) = 0;
     virtual void updateUsingMorphTargets(bool usingMorphTargets) = 0;
+    virtual void updateInstanced(bool instanced) = 0;
 
     // Todo: make this pure virtual and implement in iro materials
     virtual void updateUsingCubeMapArrays(bool usingCubeMapArrays);
@@ -103,6 +107,7 @@ Q_SIGNALS:
     void usingTexCoordAttributeChanged(bool usingTexCoordAttribute);
     void usingTexCoord1AttributeChanged(bool usingTexCoord1Attribute);
     void usingMorphTargetsChanged(bool usingMorphTargets);
+    void instancedChanged(bool instanced);
 
 private:
     bool m_usingSkinning;
@@ -115,6 +120,7 @@ private:
     bool m_usingTexCoordAttribute;
     bool m_usingTexCoord1Attribute;
     bool m_usingMorphTargets;
+    bool m_instanced;
 
     void initialize();
 };

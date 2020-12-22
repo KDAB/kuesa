@@ -153,6 +153,7 @@ private:
     void updateUsingTexCoord1Attribute(bool enabled) override;
     void updateUsingMorphTargets(bool usingMorphTargets) override;
     void updateUsingCubeMapArrays(bool usingCubeMapArrays) override;
+    void updateInstanced(bool instanced) override;
 };
 
 } // namespace Kuesa

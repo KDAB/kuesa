@@ -250,6 +250,7 @@ private:
     void updateUsingTexCoordAttribute(bool enabled) override;
     void updateUsingTexCoord1Attribute(bool enabled) override;
     void updateUsingMorphTargets(bool enabled) override;
+    void updateInstanced(bool instanced) override;
 };
 """
 
@@ -1305,6 +1306,16 @@ void {2}Effect::updateUsingMorphTargets(bool usingMorphTargets)
     layers.removeAll(QStringLiteral("morphtargets"));
     if (usingMorphTargets)
         layers.append(QStringLiteral("morphtargets"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateInstanced(bool instanced)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
 
     updateLayersOnTechniques(layers);
 }}

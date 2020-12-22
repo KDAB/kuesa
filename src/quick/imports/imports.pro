@@ -37,6 +37,7 @@ SOURCES += \
     forwardrendererextension.cpp \
     kuesaplugin.cpp \
     asset.cpp \
+    meshinstantiatorextension.cpp \
     reflectionplaneextension.cpp \
     view3dsceneitem.cpp \
     viewextension.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     forwardrendererextension.h \
     kuesaplugin.h \
     asset.h \
+    meshinstantiatorextension.h \
     reflectionplaneextension.h \
     view3dsceneitem.h \
     viewextension.h \

@@ -376,6 +376,16 @@ void IroMatteMultEffect::updateUsingMorphTargets(bool usingMorphTargets)
     updateLayersOnTechniques(layers);
 }
 
+void IroMatteMultEffect::updateInstanced(bool instanced)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
+
+    updateLayersOnTechniques(layers);
+}
+
 void IroMatteMultEffect::updateLayersOnTechniques(const QStringList &layers)
 {
     m_gl3Technique->setEnabledLayers(layers);

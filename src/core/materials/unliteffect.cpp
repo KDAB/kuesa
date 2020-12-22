@@ -466,6 +466,16 @@ void UnlitEffect::updateUsingMorphTargets(bool usingMorphTargets)
     updateLayersOnTechniques(layers);
 }
 
+void UnlitEffect::updateInstanced(bool instanced)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
+
+    updateLayersOnTechniques(layers);
+}
+
 void UnlitEffect::updateLayersOnTechniques(const QStringList &layers)
 {
     m_unlitGL3Technique->setEnabledLayers(layers);

@@ -43,7 +43,8 @@ SUBDIRS = \
     kuesanode \
     fullscreenquad \
     reflectionplane \
-    placeholder
+    placeholder \
+    meshinstantiator
 
 qtHaveModule(quick):lessThan(QT_MAJOR_VERSION, 6) {
     SUBDIRS += qml

@@ -398,6 +398,16 @@ void Iro2DiffuseEquiRectEffect::updateUsingMorphTargets(bool usingMorphTargets)
     updateLayersOnTechniques(layers);
 }
 
+void Iro2DiffuseEquiRectEffect::updateInstanced(bool instanced)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
+
+    updateLayersOnTechniques(layers);
+}
+
 void Iro2DiffuseEquiRectEffect::updateLayersOnTechniques(const QStringList &layers)
 {
     m_gl3Technique->setEnabledLayers(layers);

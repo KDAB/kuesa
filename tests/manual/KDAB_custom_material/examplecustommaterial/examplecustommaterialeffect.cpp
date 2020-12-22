@@ -352,6 +352,11 @@ void ExampleCustomMaterialEffect::updateUsingMorphTargets(bool enabled)
     Q_UNUSED(enabled)
 }
 
+void ExampleCustomMaterialEffect::updateInstanced(bool instanced)
+{
+    Q_UNUSED(instanced);
+}
+
 } // namespace Kuesa
 
 QT_END_NAMESPACE

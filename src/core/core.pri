@@ -32,6 +32,7 @@ SOURCES += \
     $$PWD/kuesa_utils.cpp \
     $$PWD/logging.cpp \
     $$PWD/placeholder.cpp \
+    $$PWD/meshinstantiator.cpp \
     $$PWD/sceneentity.cpp \
     $$PWD/animationplayer.cpp \
     $$PWD/skybox.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     $$PWD/kuesanode.h \
     $$PWD/logging_p.h \
     $$PWD/placeholder.h \
+    $$PWD/meshinstantiator.h \
     $$PWD/sceneentity.h \
     $$PWD/factory.h \
     $$PWD/kuesa_p.h \
