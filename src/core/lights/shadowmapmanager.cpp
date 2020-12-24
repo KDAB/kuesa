@@ -26,22 +26,18 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "shadowmapmanager.h"
+#include "shadowmapmanager_p.h"
 #include "directionallight.h"
 #include "spotlight.h"
 #include "pointlight.h"
 #include <Kuesa/private/framegraphutils_p.h>
+#include <Kuesa/private/kuesa_utils_p.h>
+#include <Qt3DRender/private/entity_p.h>
 
 #include <QCamera>
-#include <QAspectEngine>
 #include <QFrameAction>
 #include <QTexture>
-#include <Qt3DCore/private/qscene_p.h>
-#include <Qt3DRender/private/qrenderaspect_p.h>
-#include <Qt3DCore/private/qaspectengine_p.h>
-#include <Qt3DRender/private/abstractrenderer_p.h>
 #include <Qt3DRender/private/sphere_p.h>
-#include <Qt3DRender/private/entity_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -273,25 +269,12 @@ float ShadowMapLightDataEntity::sceneRadius() const
 
 void ShadowMapLightDataEntity::updateSceneInfo()
 {
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    auto scene = d->scene();
-    if (!scene)
+    auto rootEntity = Utils::findBackendRootEntity(this);
+    if (!rootEntity)
         return;
 
-    auto engine = scene->engine();
-    auto aspects = engine->aspects();
-    auto renderAspectIt = std::find_if(aspects.cbegin(), aspects.cend(), [](Qt3DCore::QAbstractAspect *aspect) {
-        return qobject_cast<Qt3DRender::QRenderAspect *>(aspect);
-    });
-
-    Qt3DRender::QRenderAspect *const renderAspect = renderAspectIt == aspects.end() ? nullptr : qobject_cast<Qt3DRender::QRenderAspect *>(*renderAspectIt);
-    Q_ASSERT(renderAspect);
-
-    auto *rap = static_cast<Qt3DRender::QRenderAspectPrivate *>(Qt3DRender::QRenderAspectPrivate::get(renderAspect));
-    auto renderer = rap->m_renderer;
-
     auto toQVector3D = [](const auto &v) { return QVector3D(v.x(), v.y(), v.z()); };
-    auto rootEntity = renderer->sceneRoot();
+
     const auto boundingSphere = rootEntity->worldBoundingVolumeWithChildren();
     const auto sceneCenter = toQVector3D(boundingSphere->center());
     const auto sceneRadius = boundingSphere->radius();

@@ -28,8 +28,11 @@
 
 #include "sceneentity.h"
 #include "kuesa_utils_p.h"
+#include <Kuesa/forwardrenderer.h>
+#include <Kuesa/private/shadowmapmanager_p.h>
 
 #include <Qt3DCore/QTransform>
+#include <Qt3DLogic/QFrameAction>
 
 QT_BEGIN_NAMESPACE
 
@@ -121,6 +124,21 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
 
     // Add ShadowMap backend light info gatherer entity to scene.
     m_lights->shadowMapManager()->setSceneEntity(this);
+
+    // Need to connect the ShadowMapManager to the ForwardRenderer while keeping the ShadowMapmanager
+    // private. Create a QFrameAction to do this once renderer is up and running
+    auto initAction = new Qt3DLogic::QFrameAction(this);
+    addComponent(initAction);
+
+    auto initForwardRenderer = [this, initAction](){
+        auto forwardRenderer = Kuesa::Utils::findForwardRenderer(this);
+        Q_ASSERT(forwardRenderer);
+        forwardRenderer->setShadowMaps(m_lights->shadowMapManager()->activeShadowMaps());
+        connect(m_lights->shadowMapManager(), &ShadowMapManager::shadowMapsChanged, forwardRenderer, &ForwardRenderer::setShadowMaps);
+        initAction->disconnect();
+        initAction->deleteLater();
+    };
+    connect(initAction, &Qt3DLogic::QFrameAction::triggered, this, initForwardRenderer);
 
     connect(m_materials, &AbstractAssetCollection::assetAdded, [this](const QString &name) {
         const auto material = qobject_cast<GLTF2MaterialProperties *>(m_materials->findAsset(name));
@@ -374,11 +392,6 @@ Kuesa::LightCollection *SceneEntity::lights() const
 Qt3DRender::QAbstractLight *SceneEntity::light(const QString &name) const
 {
     return m_lights->find(name);
-}
-
-ShadowMapManager *SceneEntity::shadowMapManager() const
-{
-    return m_lights->shadowMapManager();
 }
 
 Kuesa::ReflectionPlaneCollection *SceneEntity::reflectionPlanes() const

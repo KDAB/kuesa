@@ -48,7 +48,6 @@
 #include <Kuesa/reflectionplanecollection.h>
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/effectproperties.h>
-#include <Kuesa/shadowmapmanager.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -83,7 +82,6 @@ class KUESASHARED_EXPORT SceneEntity : public Qt3DCore::QEntity
     Q_PROPERTY(Kuesa::LightCollection *lights READ lights NOTIFY loadingDone)
     Q_PROPERTY(Kuesa::TransformCollection *transforms READ transforms NOTIFY loadingDone)
     Q_PROPERTY(Kuesa::ReflectionPlaneCollection *reflectionPlanes READ reflectionPlanes NOTIFY loadingDone)
-    Q_PROPERTY(Kuesa::ShadowMapManager *shadowMapManager READ shadowMapManager NOTIFY loadingDone)
 
 public:
     SceneEntity(Qt3DCore::QNode *parent = nullptr);
@@ -139,8 +137,6 @@ public:
 
     Kuesa::LightCollection *lights() const;
     Q_INVOKABLE Qt3DRender::QAbstractLight *light(const QString &name) const;
-
-    Kuesa::ShadowMapManager *shadowMapManager() const;
 
     Kuesa::ReflectionPlaneCollection *reflectionPlanes() const;
     Q_INVOKABLE Kuesa::ReflectionPlane *reflectionPlane(const QString &name) const;

@@ -32,13 +32,13 @@
 #include <Kuesa/abstractassetcollection.h>
 #include <Kuesa/kuesa_global.h>
 
-#include <Kuesa/shadowmapmanager.h>
 #include <Kuesa/shadowcastinglight.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
+class ShadowMapManager;
 class KUESASHARED_EXPORT LightCollection : public AbstractAssetCollection
 {
     Q_OBJECT
@@ -47,7 +47,7 @@ public:
     explicit LightCollection(Qt3DCore::QNode *parent = nullptr);
     ~LightCollection();
 
-    Kuesa::ShadowMapManager *shadowMapManager() const;
+    ShadowMapManager *shadowMapManager() const;
 
     KUESA_ASSET_COLLECTION_IMPLEMENTATION(ShadowCastingLight)
 private:

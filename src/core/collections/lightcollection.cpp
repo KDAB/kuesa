@@ -29,6 +29,7 @@
 #include "lightcollection.h"
 #include <Qt3DCore/QEntity>
 #include <Kuesa/shadowcastinglight.h>
+#include <Kuesa/private/shadowmapmanager_p.h>
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;

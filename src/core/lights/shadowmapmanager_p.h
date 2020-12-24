@@ -1,5 +1,5 @@
 /*
-    shadowmapmanager.h
+    shadowmapmanager_p.h
 
     This file is part of Kuesa.
 
@@ -29,7 +29,18 @@
 #ifndef KUESA_SHADOWMAPMANAGER_H
 #define KUESA_SHADOWMAPMANAGER_H
 
-#include <Kuesa/kuesa_global.h>
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the Kuesa API.  It exists for the convenience
+// of other Kuesa classes.  This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
+//
+
+#include <Kuesa/private/kuesa_global_p.h>
 #include <Kuesa/shadowmap.h>
 #include <QEntity>
 
@@ -52,7 +63,7 @@ namespace Kuesa {
 class ShadowCastingLight;
 class ShadowMapLightDataEntity;
 
-class KUESASHARED_EXPORT ShadowMapManager : public QObject
+class KUESA_PRIVATE_EXPORT ShadowMapManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QVector3D sceneCenter READ sceneCenter NOTIFY sceneCenterChanged)

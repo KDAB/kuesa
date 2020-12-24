@@ -48,7 +48,14 @@
 
 QT_BEGIN_NAMESPACE
 
+namespace Qt3DRender {
+namespace Render {
+class Entity;
+}
+} // namespace Qt3DRender
 namespace Kuesa {
+
+class ForwardRenderer;
 
 template<typename ComponentType>
 inline ComponentType *componentFromEntity(Qt3DCore::QEntity *e)
@@ -82,8 +89,15 @@ size_t removeAll(std::vector<T>& destination, const U& element) noexcept
     return elementsRemoved;
 }
 
-} // namespace Utils
+// Find ForwardRenderer. This uses Qt3D's backend, so only works once the scene is
+// rendering.
+ForwardRenderer *findForwardRenderer(Qt3DCore::QNode *nodeInScene);
 
+// Find the root backend entity, which can be used to find the world bounding
+// volume
+Qt3DRender::Render::Entity *findBackendRootEntity(Qt3DCore::QNode *nodeInScene);
+
+} // namespace Utils
 
 } // namespace Kuesa
 

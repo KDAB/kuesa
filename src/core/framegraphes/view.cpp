@@ -1229,21 +1229,6 @@ View *View::rootView() const
     return const_cast<View *>(this);
 }
 
-void View::setShadowMapManager(ShadowMapManager *shadowMapManager)
-{
-    if (shadowMapManager == m_shadowMapManager)
-        return;
-
-    m_shadowMapManager = shadowMapManager;
-    connect(shadowMapManager, &ShadowMapManager::shadowMapsChanged, this, &View::setShadowMaps);
-    emit shadowMapManagerChanged(shadowMapManager);
-}
-
-ShadowMapManager *View::shadowMapManager() const
-{
-    return m_shadowMapManager;
-}
-
 void View::setShadowMaps(const QVector<ShadowMapPtr> &activeShadowMaps)
 {
     m_shadowMapStages->setShadowMaps(activeShadowMaps);

@@ -32,7 +32,6 @@
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
 #include <Kuesa/tonemappingandgammacorrectioneffect.h>
-#include <Kuesa/shadowmapmanager.h>
 #include <Kuesa/shadowmap.h>
 #include <QFlags>
 #include <QRectF>
@@ -88,7 +87,6 @@ class KUESASHARED_EXPORT View : public Qt3DRender::QFrameGraphNode
     Q_PROPERTY(QSize reflectionTextureSize READ reflectionTextureSize WRITE setReflectionTextureSize NOTIFY reflectionTextureSizeChanged)
     Q_PROPERTY(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged)
     Q_PROPERTY(bool usesStencilMask READ usesStencilMask WRITE setUsesStencilMask NOTIFY usesStencilMaskChanged)
-    Q_PROPERTY(ShadowMapManager *shadowMapManager READ shadowMapManager WRITE setShadowMapManager NOTIFY shadowMapManagerChanged)
     Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
     Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged)
     Q_PROPERTY(QColor clearColor READ clearColor WRITE setClearColor NOTIFY clearColorChanged)
@@ -116,7 +114,6 @@ public:
     const std::vector<Qt3DRender::QLayer *> &layers() const;
     const std::vector<ReflectionPlane *> &reflectionPlanes() const;
 
-    ShadowMapManager *shadowMapManager() const;
     QVector<ShadowMapPtr> shadowMaps() const;
 
 public Q_SLOTS:
@@ -143,7 +140,6 @@ public Q_SLOTS:
     void addReflectionPlane(ReflectionPlane *plane);
     void removeReflectionPlane(ReflectionPlane *plane);
 
-    void setShadowMapManager(ShadowMapManager *shadowMapManager);
     void setShadowMaps(const QVector<ShadowMapPtr> &activeShadowMaps);
 
     void dump();
@@ -160,7 +156,6 @@ Q_SIGNALS:
     void reflectionTextureSizeChanged(const QSize &reflectionTextureSize);
     void clearColorChanged(const QColor &clearColor);
     void gammaChanged(float gamma);
-    void shadowMapManagerChanged(ShadowMapManager *shadowMapManager);
     void shadowMapsChanged(const QVector<ShadowMapPtr> &shadowMaps);
     void exposureChanged(float exposure);
     void toneMappingAlgorithmChanged(ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm);
@@ -247,8 +242,6 @@ private:
     friend class ::tst_ForwardRenderer;
     friend class ForwardRenderer;
     friend class ViewResolver;
-
-    ShadowMapManager *m_shadowMapManager = nullptr;
 };
 
 } // Kuesa

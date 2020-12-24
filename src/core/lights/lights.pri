@@ -36,7 +36,7 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/shadowmap.h \
-    $$PWD/shadowmapmanager.h \
+    $$PWD/shadowmapmanager_p.h \
     $$PWD/shadowcastinglight.h \
     $$PWD/directionallight.h \
     $$PWD/directionallight_p.h \

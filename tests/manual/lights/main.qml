@@ -218,7 +218,6 @@ Kuesa.SceneEntity {
                 id: frameGraph
                 camera: mainCamera
                 clearColor: "black"
-                shadowMapManager: scene.shadowMapManager
             }
         },
         InputSettings { },
