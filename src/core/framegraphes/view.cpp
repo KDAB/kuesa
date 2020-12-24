@@ -42,7 +42,6 @@
 #include <Qt3DRender/qblitframebuffer.h>
 #include <Qt3DRender/qlayer.h>
 #include <Qt3DRender/qparameter.h>
-#include <Qt3DRender/qlayer.h>
 #include <Qt3DRender/qclearbuffers.h>
 
 #include <Kuesa/reflectionplane.h>
@@ -375,7 +374,7 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
     // will draw the last RenderTarget's Color Attachment of each View
     // in a sequence when rendering with RHI
 
-    // We shoud always have at least 1 internalFX (for Gamma/Exposure)
+    // We should always have at least 1 internalFX (for Gamma/Exposure)
     Q_ASSERT(m_view->m_internalFXStages->effects().size() > 0);
 }
 
@@ -1044,7 +1043,7 @@ void View::setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapp
 
 /*!
     Allows to use stencil buffer during the render phase. The resulting
-    stencil buffer is then accesible from the post processing effects.
+    stencil buffer is then accessible from the post processing effects.
     This allows to apply post process effects only to part of the scene.
 
     \since Kuesa 1.3
