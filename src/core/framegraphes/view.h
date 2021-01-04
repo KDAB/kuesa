@@ -211,7 +211,7 @@ private:
     ToneMappingAndGammaCorrectionEffect *m_gammaCorrectionFX;
     QSize m_surfaceSize;
 
-    struct ViewForward {
+    struct KUESASHARED_EXPORT ViewForward {
         // Interface
         explicit ViewForward(View *v);
         void setClearColor(const QColor &color);
