@@ -334,7 +334,7 @@ private Q_SLOTS:
                        &MetallicRoughnessProperties::setReceivesShadows,
                        &MetallicRoughnessProperties::receivesShadows,
                        &MetallicRoughnessProperties::receivesShadowsChanged,
-                       false, true);
+                       true, false);
     }
 
     void checkTextureBookeeping()
@@ -399,6 +399,6 @@ private Q_SLOTS:
     }
 };
 
-QTEST_APPLESS_MAIN(tst_MetallicRoughnessProperties)
+QTEST_MAIN(tst_MetallicRoughnessProperties)
 
 #include "tst_metallicroughnessproperties.moc"

@@ -876,6 +876,6 @@ private Q_SLOTS:
     }
 };
 
-QTEST_GUILESS_MAIN(tst_MeshParser)
+QTEST_MAIN(tst_MeshParser)
 
 #include "tst_meshparser.moc"
