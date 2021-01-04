@@ -191,8 +191,8 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
 
     if (nodeExtensions.contains(KEY_KDAB_PLACEHOLDER)) {
         const QJsonObject placeHolderObject = nodeExtensions.value(KEY_KDAB_PLACEHOLDER).toObject();
-        const unsigned int cameraNode = placeHolderObject.value(KEY_KDAB_PLACEHOLDER_CAMERANODE).toInt();
-        node.placeHolder = TreeNode::KDAB_2d_placeholder{cameraNode};
+        const auto cameraNode = placeHolderObject.value(KEY_KDAB_PLACEHOLDER_CAMERANODE).toInt();
+        node.placeHolder = TreeNode::KDAB_2d_placeholder{static_cast<qint32>(cameraNode)};
         node.hasPlaceholder = true;
     }
 
