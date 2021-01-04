@@ -34,12 +34,12 @@
 */
 
 #ifdef LAYER_useCubeMapArrays
-uniform samplerCubeArrayShadow shadowMapCubeDepthTexture;
+layout(binding = auto) uniform samplerCubeArrayShadow shadowMapCubeDepthTexture;
 #else
-uniform samplerCubeShadow shadowMapCubeDepthTexture;
+layout(binding = auto) uniform samplerCubeShadow shadowMapCubeDepthTexture;
 #endif
 
-uniform samplerCubeShadow shadowMapCubeDepthTexture;
+layout(binding = auto) uniform sampler2DArrayShadow shadowMapDepthTextureArray;
 
 const int NUM_POINTLIGHT_PCF_SAMPLES = 20;
 
@@ -85,7 +85,8 @@ float shadowMapCoverage(const in Light l, const in vec3 worldPosition, const in 
                 shadowCoverage += texture(shadowMapCubeDepthTexture, vec4(lightToFragPCF, l.depthArrayIndex), fragDepth - bias);
 #else
                 shadowCoverage += texture(shadowMapCubeDepthTexture, vec4(lightToFragPCF, fragDepth - bias));
-#endif            }
+#endif
+            }
             return shadowCoverage / float(NUM_POINTLIGHT_PCF_SAMPLES);
         }
         else
@@ -95,7 +96,8 @@ float shadowMapCoverage(const in Light l, const in vec3 worldPosition, const in 
             return texture(shadowMapCubeDepthTexture, vec4(lightToFrag, l.depthArrayIndex), fragDepth - bias);
 #else
             return texture(shadowMapCubeDepthTexture, vec4(lightToFrag, fragDepth - bias));
-#endif        }
+#endif
+        }
     }
     else
     {
