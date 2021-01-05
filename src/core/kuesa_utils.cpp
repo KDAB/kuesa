@@ -72,7 +72,14 @@ Kuesa::ForwardRenderer *findForwardRenderer(Qt3DCore::QNode *nodeInScene)
         return nullptr;
 
     const auto renderer = getRenderer(scene);
-    return qobject_cast<Kuesa::ForwardRenderer *>(scene->lookupNode(renderer->frameGraphRoot()->peerId()));
+    Qt3DRender::QFrameGraphNode *fg = qobject_cast<Qt3DRender::QFrameGraphNode *>(scene->lookupNode(renderer->frameGraphRoot()->peerId()));
+    if (fg) {
+        Kuesa::ForwardRenderer *fR = qobject_cast<Kuesa::ForwardRenderer *>(fg);
+        if (fR)
+            return fR;
+        return fg->findChild<Kuesa::ForwardRenderer *>();
+    }
+    return nullptr;
 }
 
 Qt3DRender::Render::Entity *findBackendRootEntity(Qt3DCore::QNode *nodeInScene)

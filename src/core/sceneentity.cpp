@@ -28,6 +28,7 @@
 
 #include "sceneentity.h"
 #include "kuesa_utils_p.h"
+#include "logging_p.h"
 #include <Kuesa/forwardrenderer.h>
 #include <Kuesa/private/shadowmapmanager_p.h>
 
@@ -133,9 +134,13 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
 
     auto initForwardRenderer = [this, initAction](){
         auto forwardRenderer = Kuesa::Utils::findForwardRenderer(this);
-        Q_ASSERT(forwardRenderer);
-        forwardRenderer->setShadowMaps(m_lights->shadowMapManager()->activeShadowMaps());
-        connect(m_lights->shadowMapManager(), &ShadowMapManager::shadowMapsChanged, forwardRenderer, &ForwardRenderer::setShadowMaps);
+        // If no forwardRenderer yet, we want to keep running
+        if (forwardRenderer) {
+            forwardRenderer->setShadowMaps(m_lights->shadowMapManager()->activeShadowMaps());
+            connect(m_lights->shadowMapManager(), &ShadowMapManager::shadowMapsChanged, forwardRenderer, &ForwardRenderer::setShadowMaps);
+        } else {
+            qCWarning(kuesa) << "No ForwardRenderer found: shadow support disabled";
+        }
         initAction->disconnect();
         initAction->deleteLater();
     };
