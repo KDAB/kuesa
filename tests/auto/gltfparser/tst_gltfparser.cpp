@@ -1304,7 +1304,7 @@ private Q_SLOTS:
                             ++amount_failed;
                     });
             tester.parser.setContext(&tester.ctx);
-            tester.parser.parse(ASSETS "car/DodgeViper.gltf", true);
+            tester.parser.parse(QString(ASSETS "car/DodgeViper.gltf"), true);
         }
 
         // THEN
