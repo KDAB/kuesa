@@ -106,7 +106,8 @@ qtConfig(private_tests) {
         assetcache  \
         assetkeyparser \
         view3dscene \
-        sceneconfiguration
+        sceneconfiguration \
+        gaussianblureffect
 
     greaterThan(QT_MAJOR_VERSION, 5):
         SUBDIRS += fboresolver

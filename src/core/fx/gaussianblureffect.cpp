@@ -163,8 +163,8 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     , m_blurTexture2(nullptr)
     , m_blurTextureParam1(new Qt3DRender::QParameter(QStringLiteral("textureSampler"), nullptr))
     , m_blurTextureParam2(new Qt3DRender::QParameter(QStringLiteral("textureSampler"), nullptr))
-    , m_widthParameter(new Qt3DRender::QParameter(QStringLiteral("width"), 1))
-    , m_heightParameter(new Qt3DRender::QParameter(QStringLiteral("height"), 1))
+    , m_widthParameter(new Qt3DRender::QParameter(QStringLiteral("width"), 512.0f))
+    , m_heightParameter(new Qt3DRender::QParameter(QStringLiteral("height"), 512.0f))
     , m_fsQuad(nullptr)
 {
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode);
@@ -336,8 +336,9 @@ void GaussianBlurEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
  */
 void GaussianBlurEffect::setWindowSize(const QSize &size)
 {
-    m_heightParameter->setValue(size.height());
-    m_widthParameter->setValue(size.width());
+    // Uniforms on the shader side are expected as floats
+    m_heightParameter->setValue(float(size.height()));
+    m_widthParameter->setValue(float(size.width()));
     // only need to resize texture 2.
     // texture 1 is passed as "input texture" so should be resized elsewhere
     m_blurTexture2->setSize(size.width(), size.height());
