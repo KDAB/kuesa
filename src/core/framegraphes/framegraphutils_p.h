@@ -72,6 +72,7 @@ public:
     static bool hasHalfFloatRenderable();
     static bool hasCubeMapArrayTextures();
     static bool hasGeometryShaderSupport();
+    static bool hasMSAASupport();
 
     enum RenderTargetFlag {
         IncludeDepth = (1 << 0),

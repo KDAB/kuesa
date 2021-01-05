@@ -143,6 +143,12 @@ bool FrameGraphUtils::hasGeometryShaderSupport()
     return features.hasGeometryShader;
 }
 
+bool FrameGraphUtils::hasMSAASupport()
+{
+    const FrameGraphUtils::RenderingFeatures features = FrameGraphUtils::checkRenderingFeatures();
+    return features.hasMultisampledFBO;
+}
+
 Qt3DRender::QRenderTarget *FrameGraphUtils::createRenderTarget(RenderTargetFlags flags,
                                                                Qt3DCore::QNode *owner,
                                                                const QSize surfaceSize,

@@ -330,6 +330,9 @@ private Q_SLOTS:
 
     void testSetupRenderTargetsNoFXMSAA()
     {
+        if (!Kuesa::FrameGraphUtils::hasMSAASupport())
+            QSKIP("Device has no MSAA support, skipping");
+
         Kuesa::ForwardRenderer f;
         Qt3DRender::QRenderTargetSelector rtSelector;
 
@@ -490,6 +493,9 @@ private Q_SLOTS:
 
     void testSetupRenderTargetsFXsMSAAStencil()
     {
+        if (!Kuesa::FrameGraphUtils::hasMSAASupport())
+            QSKIP("Device has no MSAA support, skipping");
+
         Kuesa::ForwardRenderer f;
         Qt3DRender::QRenderTargetSelector rtSelector;
 
@@ -559,7 +565,6 @@ private Q_SLOTS:
 
         QCOMPARE(surfaceSelector->children()[0], clearSurface);
         QCOMPARE(surfaceSelector->children()[1], renderToTexture);
-        qDebug() << surfaceSelector->children();
         QCOMPARE(surfaceSelector->children()[2], f.m_internalFXStages);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         QCOMPARE(surfaceSelector->children()[3], overlay);
@@ -648,30 +653,55 @@ private Q_SLOTS:
         QCOMPARE(surfaceSelector->children()[3], overlay);
 #endif
 
-        QCOMPARE(v1.children().size(), 4);
-        QCOMPARE(v1.children()[0], v1.m_fg->m_renderToTextureRootNode);
-        QCOMPARE(v1.children()[1], v1.m_fg->m_renderTargets[0]);
-        QCOMPARE(v1.children()[2], v1.m_fg->m_multisampleTarget);
-        QCOMPARE(v1.children()[3], v1.m_internalFXStages);
-        QCOMPARE(v2.children().size(), 4);
-        QCOMPARE(v2.children()[0], v2.m_fg->m_renderToTextureRootNode);
-        QCOMPARE(v2.children()[1], v2.m_fg->m_renderTargets[0]);
-        QCOMPARE(v2.children()[2], v2.m_fg->m_multisampleTarget);
-        QCOMPARE(v2.children()[3], v2.m_internalFXStages);
+        if (Kuesa::FrameGraphUtils::hasMSAASupport()) {
+            QCOMPARE(v1.children().size(), 4);
+            QCOMPARE(v1.children()[0], v1.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v1.children()[1], v1.m_fg->m_renderTargets[0]);
+            QCOMPARE(v1.children()[2], v1.m_fg->m_multisampleTarget);
+            QCOMPARE(v1.children()[3], v1.m_internalFXStages);
+            QCOMPARE(v2.children().size(), 4);
+            QCOMPARE(v2.children()[0], v2.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v2.children()[1], v2.m_fg->m_renderTargets[0]);
+            QCOMPARE(v2.children()[2], v2.m_fg->m_multisampleTarget);
+            QCOMPARE(v2.children()[3], v2.m_internalFXStages);
 
-        QVERIFY(v1.m_fg->m_renderToTextureRootNode->children().size() >= 2);
-        QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[0], v1.m_fg->m_clearRT0);
-        QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[1], v1.m_fg->m_mainSceneLayerFilter);
+            QVERIFY(v1.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[0], v1.m_fg->m_clearRT0);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[1], v1.m_fg->m_mainSceneLayerFilter);
 
-        QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children().size(), 1);
-        QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children()[0], v1.m_sceneStages);
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children()[0], v1.m_sceneStages);
 
-        QVERIFY(v2.m_fg->m_renderToTextureRootNode->children().size() >= 2);
-        QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[0], v2.m_fg->m_clearRT0);
-        QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[1], v2.m_fg->m_mainSceneLayerFilter);
+            QVERIFY(v2.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[0], v2.m_fg->m_clearRT0);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[1], v2.m_fg->m_mainSceneLayerFilter);
 
-        QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children().size(), 1);
-        QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children()[0], v2.m_sceneStages);
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children()[0], v2.m_sceneStages);
+        } else {
+            QCOMPARE(v1.children().size(), 3);
+            QCOMPARE(v1.children()[0], v1.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v1.children()[1], v1.m_fg->m_renderTargets[0]);
+            QCOMPARE(v1.children()[2], v1.m_internalFXStages);
+            QCOMPARE(v2.children().size(), 3);
+            QCOMPARE(v2.children()[0], v2.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v2.children()[1], v2.m_fg->m_renderTargets[0]);
+            QCOMPARE(v2.children()[2], v2.m_internalFXStages);
+
+            QVERIFY(v1.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[0], v1.m_fg->m_clearRT0);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[1], v1.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children()[0], v1.m_sceneStages);
+
+            QVERIFY(v2.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[0], v2.m_fg->m_clearRT0);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[1], v2.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children()[0], v2.m_sceneStages);
+        }
     }
 
     void testFrameGraphViewsAndFX()
@@ -712,34 +742,63 @@ private Q_SLOTS:
         QCOMPARE(surfaceSelector->children()[3], overlay);
 #endif
 
-        QCOMPARE(v1.children().size(), 6);
-        QCOMPARE(v1.children()[0], v1.m_fg->m_renderTargets[0]);
-        QCOMPARE(v1.children()[1], v1.m_fg->m_multisampleTarget);
-        QCOMPARE(v1.children()[2], v1.m_fg->m_renderToTextureRootNode);
-        QCOMPARE(v1.children()[3], v1.m_fg->m_renderTargets[1]);
-        QCOMPARE(v1.children()[4], v1.m_fxStages);
-        QCOMPARE(v1.children()[5], v1.m_internalFXStages);
-        QCOMPARE(v2.children().size(), 6);
-        QCOMPARE(v2.children()[0], v2.m_fg->m_renderTargets[0]);
-        QCOMPARE(v2.children()[1], v2.m_fg->m_multisampleTarget);
-        QCOMPARE(v2.children()[2], v2.m_fg->m_renderToTextureRootNode);
-        QCOMPARE(v2.children()[3], v2.m_fg->m_renderTargets[1]);
-        QCOMPARE(v2.children()[4], v2.m_fxStages);
-        QCOMPARE(v2.children()[5], v2.m_internalFXStages);
+        if (Kuesa::FrameGraphUtils::hasMSAASupport()) {
+            QCOMPARE(v1.children().size(), 6);
+            QCOMPARE(v1.children()[0], v1.m_fg->m_renderTargets[0]);
+            QCOMPARE(v1.children()[1], v1.m_fg->m_multisampleTarget);
+            QCOMPARE(v1.children()[2], v1.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v1.children()[3], v1.m_fg->m_renderTargets[1]);
+            QCOMPARE(v1.children()[4], v1.m_fxStages);
+            QCOMPARE(v1.children()[5], v1.m_internalFXStages);
+            QCOMPARE(v2.children().size(), 6);
+            QCOMPARE(v2.children()[0], v2.m_fg->m_renderTargets[0]);
+            QCOMPARE(v2.children()[1], v2.m_fg->m_multisampleTarget);
+            QCOMPARE(v2.children()[2], v2.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v2.children()[3], v2.m_fg->m_renderTargets[1]);
+            QCOMPARE(v2.children()[4], v2.m_fxStages);
+            QCOMPARE(v2.children()[5], v2.m_internalFXStages);
 
-        QVERIFY(v1.m_fg->m_renderToTextureRootNode->children().size() >= 2);
-        QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[0], v1.m_fg->m_clearRT0);
-        QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[1], v1.m_fg->m_mainSceneLayerFilter);
+            QVERIFY(v1.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[0], v1.m_fg->m_clearRT0);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[1], v1.m_fg->m_mainSceneLayerFilter);
 
-        QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children().size(), 1);
-        QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children()[0], v1.m_sceneStages);
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children()[0], v1.m_sceneStages);
 
-        QVERIFY(v2.m_fg->m_renderToTextureRootNode->children().size() >= 2);
-        QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[0], v2.m_fg->m_clearRT0);
-        QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[1], v2.m_fg->m_mainSceneLayerFilter);
+            QVERIFY(v2.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[0], v2.m_fg->m_clearRT0);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[1], v2.m_fg->m_mainSceneLayerFilter);
 
-        QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children().size(), 1);
-        QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children()[0], v2.m_sceneStages);
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children()[0], v2.m_sceneStages);
+        } else {
+            QCOMPARE(v1.children().size(), 5);
+            QCOMPARE(v1.children()[0], v1.m_fg->m_renderTargets[0]);
+            QCOMPARE(v1.children()[1], v1.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v1.children()[2], v1.m_fg->m_renderTargets[1]);
+            QCOMPARE(v1.children()[3], v1.m_fxStages);
+            QCOMPARE(v1.children()[4], v1.m_internalFXStages);
+            QCOMPARE(v2.children().size(), 5);
+            QCOMPARE(v2.children()[0], v2.m_fg->m_renderTargets[0]);
+            QCOMPARE(v2.children()[1], v2.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v2.children()[2], v2.m_fg->m_renderTargets[1]);
+            QCOMPARE(v2.children()[3], v2.m_fxStages);
+            QCOMPARE(v2.children()[4], v2.m_internalFXStages);
+
+            QVERIFY(v1.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[0], v1.m_fg->m_clearRT0);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[1], v1.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children()[0], v1.m_sceneStages);
+
+            QVERIFY(v2.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[0], v2.m_fg->m_clearRT0);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[1], v2.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children()[0], v2.m_sceneStages);
+        }
     }
 
     void testHandleViewCountChanges()
