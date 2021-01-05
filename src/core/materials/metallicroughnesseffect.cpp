@@ -41,6 +41,7 @@
 #include <Qt3DRender/qdepthtest.h>
 #include <Qt3DRender/qblendequation.h>
 #include <Qt3DRender/qblendequationarguments.h>
+#include <private/framegraphutils_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -165,21 +166,23 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     m_transparentRenderPass->setEnabled(false);
     addRenderPass(m_transparentRenderPass);
 
-    auto cubeShadowShaderProg = new Qt3DRender::QShaderProgram(this);
-    m_cubeMapShadowShaderBuilder->setShaderProgram(cubeShadowShaderProg);
-    m_cubeMapShadowShaderBuilder->setVertexShaderGraph(vertexShaderGraph);
-    cubeShadowShaderProg->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl("qrc:/kuesa/shaders/gl3/shadow_cube.geom")));
-    cubeShadowShaderProg->setFragmentShaderCode(zFillFragmentShaderCode[version]);
+    if (FrameGraphUtils::hasGeometryShaderSupport()) {
+        auto cubeShadowShaderProg = new Qt3DRender::QShaderProgram(this);
+        m_cubeMapShadowShaderBuilder->setShaderProgram(cubeShadowShaderProg);
+        m_cubeMapShadowShaderBuilder->setVertexShaderGraph(vertexShaderGraph);
+        cubeShadowShaderProg->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl("qrc:/kuesa/shaders/gl3/shadow_cube.geom")));
+        cubeShadowShaderProg->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
-    m_cubeMapShadowRenderPass->setShaderProgram(cubeShadowShaderProg);
+        m_cubeMapShadowRenderPass->setShaderProgram(cubeShadowShaderProg);
 
-    auto cubeShadowMapFilterKey = new Qt3DRender::QFilterKey(this);
-    cubeShadowMapFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-    cubeShadowMapFilterKey->setValue(QStringLiteral("CubeShadowMap"));
-    m_cubeMapShadowRenderPass->addFilterKey(cubeShadowMapFilterKey);
-    m_cubeMapShadowRenderPass->addRenderState(m_backFaceCulling);
+        auto cubeShadowMapFilterKey = new Qt3DRender::QFilterKey(this);
+        cubeShadowMapFilterKey->setName(QStringLiteral("KuesaDrawStage"));
+        cubeShadowMapFilterKey->setValue(QStringLiteral("CubeShadowMap"));
+        m_cubeMapShadowRenderPass->addFilterKey(cubeShadowMapFilterKey);
+        m_cubeMapShadowRenderPass->addRenderState(m_backFaceCulling);
 
-    addRenderPass(m_cubeMapShadowRenderPass);
+        addRenderPass(m_cubeMapShadowRenderPass);
+    }
 }
 
 QStringList MetallicRoughnessTechnique::enabledLayers() const

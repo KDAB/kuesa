@@ -45,6 +45,12 @@ namespace Kuesa {
     \since Kuesa 1.3
     \brief Encapsulate a light object that is able to cast shadows
     in a Qt 3D scene.
+
+    Shadow are currently only supported with Qt3D running with the OpenGL
+    backend which supports geometry shaders when running on devices supporting
+    OpenGL 3.2 or OpenGL ES 3.2. When Qt3D is using the Qt RHI (rendering
+    abstraction interface) backend. shadows are not supported due to the lack
+    of geometry shader support in RHI.
  */
 
 /*!
@@ -56,6 +62,11 @@ namespace Kuesa {
     \brief Encapsulate a light object that is able to cast shadows
     in a Qt 3D scene.
 
+    Shadow are currently only supported with Qt3D running with the OpenGL
+    backend which supports geometry shaders when running on devices supporting
+    OpenGL 3.2 or OpenGL ES 3.2. When Qt3D is using the Qt RHI (rendering
+    abstraction interface) backend. shadows are not supported due to the lack
+    of geometry shader support in RHI.
 */
 
 /*!

@@ -87,6 +87,9 @@ FrameGraphUtils::RenderingFeatures FrameGraphUtils::checkRenderingFeatures()
             const bool forceMultisampledFBO = qgetenv("KUESA_FORCE_MULTISAMPLING").length() > 0;
             features.hasMultisampledFBO |= forceMultisampledFBO;
 
+            features.hasGeometryShader = (ctx.isOpenGLES() ? (format.majorVersion() == 3 && format.minorVersion() >= 2)
+                                                           : format.majorVersion() >= 3);
+
             // cubeMapArray textures were broken in Qt3D prior to 5.15.2 and in 6.0.0
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 2) && QT_VERSION != QT_VERSION_CHECK(6, 0, 0)
             // Since ES 3.2, GL 4.0 or extension
@@ -116,7 +119,8 @@ FrameGraphUtils::RenderingFeatures FrameGraphUtils::checkRenderingFeatures()
                    << "hasHalfFloatRenderable" << features.hasHalfFloatRenderable << "\n"
                    << "hasMultisampledTexture" << features.hasMultisampledTexture << "\n"
                    << "hasMultisampledFBO" << features.hasMultisampledFBO << "\n"
-                   << "hasCubeMapArrayTextures" << features.hasCubeMapArrayTextures;
+                   << "hasCubeMapArrayTextures" << features.hasCubeMapArrayTextures << "\n"
+                   << "hasGeometryShaderSupport" << features.hasGeometryShader;
 
     return features;
 }
@@ -131,6 +135,12 @@ bool FrameGraphUtils::hasCubeMapArrayTextures()
 {
     const FrameGraphUtils::RenderingFeatures features = FrameGraphUtils::checkRenderingFeatures();
     return features.hasCubeMapArrayTextures;
+}
+
+bool FrameGraphUtils::hasGeometryShaderSupport()
+{
+    const FrameGraphUtils::RenderingFeatures features = FrameGraphUtils::checkRenderingFeatures();
+    return features.hasGeometryShader;
 }
 
 Qt3DRender::QRenderTarget *FrameGraphUtils::createRenderTarget(RenderTargetFlags flags,
