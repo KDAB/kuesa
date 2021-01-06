@@ -381,7 +381,7 @@ void ForwardRenderer::removeView(View *view)
  */
 void ForwardRenderer::dump()
 {
-    qDebug() << Qt3DRender::QFrameGraphNodePrivate::get(this)->dumpFrameGraph();
+    qDebug() << qPrintable(Qt3DRender::QFrameGraphNodePrivate::get(this)->dumpFrameGraph());
 }
 
 /*!
