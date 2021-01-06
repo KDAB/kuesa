@@ -55,7 +55,7 @@ class QCameraSelector;
 class QRenderSurfaceSelector;
 class QViewport;
 class QClearBuffers;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 
@@ -175,10 +175,10 @@ protected:
 
     enum Feature {
         BackToFrontSorting = (1 << 0),
-        Skinning           = (1 << 1),
-        FrustumCulling     = (1 << 2),
-        ZFilling           = (1 << 3),
-        Particles          = (1 << 4),
+        Skinning = (1 << 1),
+        FrustumCulling = (1 << 2),
+        ZFilling = (1 << 3),
+        Particles = (1 << 4),
     };
     Q_DECLARE_FLAGS(Features, Feature)
 
@@ -214,6 +214,7 @@ private:
     struct KUESASHARED_EXPORT ViewForward {
         // Interface
         explicit ViewForward(View *v);
+        ~ViewForward();
         void setClearColor(const QColor &color);
         QColor clearColor();
         void reconfigure(Qt3DRender::QFrameGraphNode *fgRoot);
@@ -226,7 +227,7 @@ private:
         Qt3DRender::QRenderTargetSelector *m_renderToTextureRootNode = nullptr;
         Qt3DRender::QClearBuffers *m_clearRT0 = nullptr;
         Qt3DRender::QLayerFilter *m_mainSceneLayerFilter = nullptr;
-        Qt3DRender::QRenderTarget *m_renderTargets[2] = {nullptr, nullptr};
+        Qt3DRender::QRenderTarget *m_renderTargets[2] = { nullptr, nullptr };
         Qt3DRender::QRenderTarget *m_multisampleTarget = nullptr;
         Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromMSToFBO0 = nullptr;
         Qt3DRender::QBlitFramebuffer *m_blitFramebufferNodeFromFBO0ToFBO1 = nullptr;
@@ -244,7 +245,7 @@ private:
     friend class ViewResolver;
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

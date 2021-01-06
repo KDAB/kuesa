@@ -317,6 +317,8 @@ private Q_SLOTS:
         QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
         QVERIFY(f.m_fg->m_renderTargets[1] == nullptr);
         QVERIFY(f.m_fg->m_multisampleTarget == nullptr);
+        QVERIFY(f.m_fg->m_rt0rt1Resolver == nullptr);
+        QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 == nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
                          f.m_fg->m_renderTargets[0],
@@ -353,6 +355,8 @@ private Q_SLOTS:
         QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
         QVERIFY(f.m_fg->m_renderTargets[1] == nullptr);
         QVERIFY(f.m_fg->m_multisampleTarget != nullptr);
+        QVERIFY(f.m_fg->m_rt0rt1Resolver == nullptr);
+        QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 == nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
                          f.m_fg->m_renderTargets[0],
@@ -392,6 +396,8 @@ private Q_SLOTS:
         QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
         QVERIFY(f.m_fg->m_renderTargets[1] == nullptr);
         QVERIFY(f.m_fg->m_multisampleTarget == nullptr);
+        QVERIFY(f.m_fg->m_rt0rt1Resolver == nullptr);
+        QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 == nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
                          f.m_fg->m_renderTargets[0],
@@ -427,6 +433,10 @@ private Q_SLOTS:
         QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
         QVERIFY(f.m_fg->m_renderTargets[1] != nullptr);
         QVERIFY(f.m_fg->m_multisampleTarget == nullptr);
+        if (f.m_fg->m_usesRHI)
+            QVERIFY(f.m_fg->m_rt0rt1Resolver != nullptr);
+        else
+            QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 != nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
                          f.m_fg->m_renderTargets[0],
@@ -472,6 +482,10 @@ private Q_SLOTS:
         QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
         QVERIFY(f.m_fg->m_renderTargets[1] != nullptr);
         QVERIFY(f.m_fg->m_multisampleTarget == nullptr);
+        if (f.m_fg->m_usesRHI)
+            QVERIFY(f.m_fg->m_rt0rt1Resolver != nullptr);
+        else
+            QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 != nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
                          f.m_fg->m_renderTargets[0],
@@ -518,6 +532,10 @@ private Q_SLOTS:
         QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
         QVERIFY(f.m_fg->m_renderTargets[1] != nullptr);
         QVERIFY(f.m_fg->m_multisampleTarget != nullptr);
+        if (f.m_fg->m_usesRHI)
+            QVERIFY(f.m_fg->m_rt0rt1Resolver != nullptr);
+        else
+            QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 != nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
                          f.m_fg->m_renderTargets[0],

@@ -61,7 +61,6 @@
 
 #include <cmath>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -77,9 +76,9 @@ View::ViewForward::ViewForward(View *v)
     , m_clearRT0(new Qt3DRender::QClearBuffers())
     , m_mainSceneLayerFilter(new Qt3DRender::QLayerFilter())
     , m_view(v)
-    #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     , m_usesRHI(qgetenv("QT3D_RENDERER") == QByteArray("rhi"))
-    #endif
+#endif
 {
 
     m_renderToTextureRootNode->setObjectName(QLatin1String("KuesaViewMainSceneRenderToTexture"));
@@ -89,6 +88,11 @@ View::ViewForward::ViewForward(View *v)
 
     m_clearRT0->setBuffers(Qt3DRender::QClearBuffers::ColorDepthStencilBuffer);
     new Qt3DRender::QNoDraw(m_clearRT0);
+}
+
+View::ViewForward::~ViewForward()
+{
+    delete m_rt0rt1Resolver;
 }
 
 void View::ViewForward::setClearColor(const QColor &color)
@@ -143,12 +147,14 @@ void View::ViewForward::setupRenderTargets(Qt3DRender::QRenderTargetSelector *sc
         m_blitFramebufferNodeFromMSToFBO0->setParent(Q_NODE_NULLPTR);
     if (m_blitFramebufferNodeFromFBO0ToFBO1)
         m_blitFramebufferNodeFromFBO0ToFBO1->setParent(Q_NODE_NULLPTR);
+    if (m_rt0rt1Resolver)
+        m_rt0rt1Resolver->setParent(Q_NODE_NULLPTR);
 
     // Recreate RenderTargets if required
     if (!m_renderTargets[0]) {
         // create a render target for main scene
-        m_renderTargets[0] = FrameGraphUtils::createRenderTarget(baseRtFlags|FrameGraphUtils::IncludeDepth,
-                                                m_view, targetSize);
+        m_renderTargets[0] = FrameGraphUtils::createRenderTarget(baseRtFlags | FrameGraphUtils::IncludeDepth,
+                                                                 m_view, targetSize);
     }
     const bool needsRT1 = totalFXCount > 1 || m_usesRHI;
     if (!m_renderTargets[1] && needsRT1) {
@@ -164,7 +170,7 @@ void View::ViewForward::setupRenderTargets(Qt3DRender::QRenderTargetSelector *sc
     // for post FX
     if (useMSAA) {
         if (!m_multisampleTarget)
-            m_multisampleTarget = FrameGraphUtils::createRenderTarget(baseRtFlags|FrameGraphUtils::Multisampled|FrameGraphUtils::IncludeDepth,
+            m_multisampleTarget = FrameGraphUtils::createRenderTarget(baseRtFlags | FrameGraphUtils::Multisampled | FrameGraphUtils::IncludeDepth,
                                                                       m_view,
                                                                       targetSize,
                                                                       samples);
@@ -195,7 +201,6 @@ void View::ViewForward::setupRenderTargets(Qt3DRender::QRenderTargetSelector *sc
             const QRect blitRect(QPoint(), targetSize);
             m_blitFramebufferNodeFromMSToFBO0->setSourceRect(blitRect);
             m_blitFramebufferNodeFromMSToFBO0->setDestinationRect(blitRect);
-
         }
         // Setup Scene RenderTarget Selector
         sceneTargetSelector->setTarget(m_multisampleTarget);
@@ -333,11 +338,11 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
     if (!target0outputs.empty())
         depthTex = target0outputs[1]->texture();
 
-    auto setUpEffectStage = [&] (EffectsStagesPtr &stage,
-            Qt3DRender::QRenderTarget *rtA,
-            Qt3DRender::QRenderTarget *rtB,
-            bool blitRts = true,
-            bool presentLastFXToScreen = false) {
+    auto setUpEffectStage = [&](EffectsStagesPtr &stage,
+                                Qt3DRender::QRenderTarget *rtA,
+                                Qt3DRender::QRenderTarget *rtB,
+                                bool blitRts = true,
+                                bool presentLastFXToScreen = false) {
         // Don't add the effect stage it if has no effects
         if (stage->effects().size() == 0)
             return;
@@ -360,15 +365,15 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
                      m_renderTargets[currentRT],
                      m_renderTargets[1 - currentRT],
                      false);
-    if (m_view->m_fxs.size()  % 2 != 0)
+    if (m_view->m_fxs.size() % 2 != 0)
         currentRT = 1 - currentRT;
 
     // Internal FXs
     setUpEffectStage(m_view->m_internalFXStages,
                      m_renderTargets[currentRT],
                      m_renderTargets[1 - currentRT],
-                    false,
-                    !m_usesRHI); // Present to screen if not using RHI
+                     false,
+                     !m_usesRHI); // Present to screen if not using RHI
 
     // Note: RHI isn't able to draw without clearing the back buffer
     // first. This means we need an additional Render Pass that
@@ -639,7 +644,7 @@ Qt3DRender::QAbstractTexture *View::reflectionTexture() const
 QSize View::reflectionTextureSize() const
 {
     Qt3DRender::QAbstractTexture *t = m_reflectionStages->reflectionTexture();
-    return {t->width(), t->height()};
+    return { t->width(), t->height() };
 }
 /*!
  * Returns the color used to clear the screen at the start of each frame. The
@@ -654,7 +659,6 @@ QColor View::clearColor() const
                             powf(linearColor.blueF(), oneOverGamma),
                             linearColor.alphaF());
 }
-
 
 /*!
     \property Kuesa::View::gamma
@@ -780,7 +784,6 @@ void View::setClearColor(const QColor &clearColor)
     m_fg->setClearColor(linearColor);
     emit clearColorChanged(clearColor);
 }
-
 
 /*!
     \qmlproperty list<AbstractPostProcessingEffect> Kuesa::View::postProcessingEffects
@@ -1070,7 +1073,6 @@ void View::dump()
     qDebug() << Qt3DRender::QFrameGraphNodePrivate::get(this)->dumpFrameGraph();
 }
 
-
 void View::setReflectionTextureSize(const QSize &reflectionTextureSize)
 {
     if (this->reflectionTextureSize() == reflectionTextureSize)
@@ -1238,7 +1240,6 @@ QVector<ShadowMapPtr> View::shadowMaps() const
 {
     return m_shadowMapStages->shadowMaps();
 }
-
 
 } // namespace Kuesa
 
