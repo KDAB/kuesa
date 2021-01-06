@@ -48,7 +48,7 @@ Item {
         asynchronous: true
         activeScene: scene1
 
-        Kuesa.SceneConfiguration {
+        KuesaUtils.SceneConfiguration {
             id: scene1
             source: "qrc:/car.gltf"
             cameraName: "CamSweep_Orientation"
@@ -71,7 +71,7 @@ Item {
             ]
         }
 
-        Kuesa.SceneConfiguration {
+        KuesaUtils.SceneConfiguration {
             id: scene2
             source: "qrc:/car2.gltf"
             cameraName: "CamCockpit_Orientation"
