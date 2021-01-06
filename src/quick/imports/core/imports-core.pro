@@ -1,9 +1,9 @@
-# src.pro
+# imports-core.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Kevin Ottens <kevin.ottens@kdab.com>
+# Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,25 +24,41 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = subdirs
+CXX_MODULE = qml
+TARGET = quickkuesaplugin
+TARGETPATH = Kuesa
+IMPORT_VERSION = 1.3
 
-src_core.subdir = $$PWD/core
-src_core.target = sub-core
+QT += kuesa kuesautils qml quick 3dquick 3dquick_private
 
-src_utils.subdir = $$PWD/utils
-src_utils.target = sub-utils
-src_utils.depends = src_core
+SOURCES += \
+    animationplayeritem.cpp \
+    assetproperty.cpp \
+    forwardrendererextension.cpp \
+    kuesaplugin.cpp \
+    asset.cpp \
+    meshinstantiatorextension.cpp \
+    reflectionplaneextension.cpp \
+    viewextension.cpp
 
-SUBDIRS += src_core doc src_utils
+HEADERS += \
+    animationplayeritem.h \
+    assetproperty_p.h \
+    forwardrendererextension.h \
+    kuesaplugin.h \
+    asset.h \
+    meshinstantiatorextension.h \
+    reflectionplaneextension.h \
+    viewextension.h
 
-qtHaveModule(quick) {
-    src_quick_imports.file = $$PWD/quick/imports/core/imports-core.pro
-    src_quick_imports.target = sub-quick
-    src_quick_imports.depends = src_core
+QML_FILES += \
+    QuickSceneMaterial.qml \
+    CameraAsset.qml \
+    LayerAsset.qml \
+    MaterialAsset.qml
 
-    src_quick_utils_imports.file = $$PWD/quick/imports/utils/imports-utils.pro
-    src_quick_utils_imports.target = sub-quick-utils
-    src_quick_utils_imports.depends = src_core src_utils
+OTHER_FILES += \
+    qmldir \
+    QuickSceneMaterial.qml
 
-    SUBDIRS += src_quick_imports src_quick_utils_imports
-}
+load(qml_plugin)

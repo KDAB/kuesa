@@ -39,7 +39,7 @@ Item {
     id: mainRoot
 
     // 3D Content
-    Kuesa.View3D {
+    KuesaUtils.View3D {
         id: scene3D
         anchors.fill: parent
         focus: true

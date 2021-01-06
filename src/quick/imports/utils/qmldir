@@ -1,0 +1,11 @@
+module Kuesa.Utils
+plugin quickkuesautilsplugin
+classname KuesaUtilsPlugin
+depends Qt3D.Core 2.12
+depends Qt3D.Render 2.12
+depends Qt3D.Input 2.12
+depends Qt3D.Extras 2.12
+depends Qt3D.Animation 2.12
+depends QtQuick.Scene3D 2.12
+depends Kuesa 1.3
+View3D 1.3 View3D.qml

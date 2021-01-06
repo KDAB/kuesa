@@ -1,4 +1,4 @@
-# imports.pro
+# imports-utils.pro
 #
 # This file is part of Kuesa.
 #
@@ -25,46 +25,27 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 CXX_MODULE = qml
-TARGET = quickkuesaplugin
-TARGETPATH = Kuesa
+TARGET = quickkuesautilsplugin
+TARGETPATH = Kuesa/Utils
 IMPORT_VERSION = 1.3
 
 QT += kuesa kuesautils qml quick 3dquick 3dquick_private
 
 SOURCES += \
-    animationplayeritem.cpp \
-    assetproperty.cpp \
-    forwardrendererextension.cpp \
-    kuesaplugin.cpp \
-    asset.cpp \
-    meshinstantiatorextension.cpp \
-    reflectionplaneextension.cpp \
+    kuesautilsplugin.cpp \
     view3dsceneitem.cpp \
-    viewextension.cpp \
     sceneconfigurationitem.cpp
 
 HEADERS += \
-    animationplayeritem.h \
-    assetproperty_p.h \
-    forwardrendererextension.h \
-    kuesaplugin.h \
-    asset.h \
-    meshinstantiatorextension.h \
-    reflectionplaneextension.h \
+    kuesautilsplugin.h \
     view3dsceneitem.h \
-    viewextension.h \
     sceneconfigurationitem.h
 
 QML_FILES += \
-    QuickSceneMaterial.qml \
-    View3D.qml \
-    CameraAsset.qml \
-    LayerAsset.qml \
-    MaterialAsset.qml
+    View3D.qml
 
 OTHER_FILES += \
     qmldir \
-    QuickSceneMaterial.qml \
     View3D.qml
 
 load(qml_plugin)

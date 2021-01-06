@@ -52,7 +52,7 @@ import Kuesa 1.3 as Kuesa
     Item {
         id: root
 
-        Kuesa.View3D {
+        KuesaUtils.View3D {
             id: scene3D
             anchors.fill: parent
             source: "qrc:/car.gltf"

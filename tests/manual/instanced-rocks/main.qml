@@ -34,7 +34,7 @@ import Qt3D.Animation 2.10
 import QtQuick 2.10 as QQ2
 import Kuesa 1.3 as Kuesa
 
-Kuesa.View3D {
+KuesaUtils.View3D {
     id: scene
     camera: "Camera_Orientation"
     source: "file:///" + ASSETS + "manual/assets/Rock/rock.gltf"
