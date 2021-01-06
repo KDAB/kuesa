@@ -667,17 +667,17 @@ private Q_SLOTS:
 
             Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[1]);
             QVERIFY(reflectiveEnabledParameter);
-            QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("isReflective"));
+            QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("kuesa_isReflective"));
             QCOMPARE(reflectiveEnabledParameter->value(), false);
 
             Qt3DRender::QParameter *reflectivePlaneParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[2]);
             QVERIFY(reflectivePlaneParameter);
-            QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
+            QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("kuesa_reflectionPlane"));
             QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
 
             Qt3DRender::QParameter *reflectivePlaneTextureParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[3]);
             QVERIFY(reflectivePlaneTextureParameter);
-            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("reflectionMap"));
+            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("kuesa_reflectionPlaneMap"));
             QVERIFY(reflectivePlaneTextureParameter->value().value<Qt3DRender::QAbstractTexture *>() != nullptr);
 
             QCOMPARE(cameraSelector->children().size(), 2);
@@ -701,17 +701,17 @@ private Q_SLOTS:
 
             Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[1]);
             QVERIFY(reflectiveEnabledParameter);
-            QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("isReflective"));
+            QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("kuesa_isReflective"));
             QCOMPARE(reflectiveEnabledParameter->value(), false);
 
             Qt3DRender::QParameter *reflectivePlaneParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[2]);
             QVERIFY(reflectivePlaneParameter);
-            QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
+            QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("kuesa_reflectionPlane"));
             QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
 
             Qt3DRender::QParameter *reflectivePlaneTextureParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[3]);
             QVERIFY(reflectivePlaneTextureParameter);
-            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("reflectionMap"));
+            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("kuesa_reflectionPlaneMap"));
             QVERIFY(reflectivePlaneTextureParameter->value().value<Qt3DRender::QAbstractTexture *>() != nullptr);
 
             QCOMPARE(cameraSelector->children().size(), 3);
@@ -747,17 +747,17 @@ private Q_SLOTS:
 
                 Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[1]);
                 QVERIFY(reflectiveEnabledParameter);
-                QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("isReflective"));
+                QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("kuesa_isReflective"));
                 QCOMPARE(reflectiveEnabledParameter->value(), false);
 
                 Qt3DRender::QParameter *reflectivePlaneParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[2]);
                 QVERIFY(reflectivePlaneParameter);
-                QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
+                QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("kuesa_reflectionPlane"));
                 QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
 
                 Qt3DRender::QParameter *reflectivePlaneTextureParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[3]);
                 QVERIFY(reflectivePlaneTextureParameter);
-                QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("reflectionMap"));
+                QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("kuesa_reflectionPlaneMap"));
                 QVERIFY(reflectivePlaneTextureParameter->value().value<Qt3DRender::QAbstractTexture *>() != nullptr);
 
                 Qt3DRender::QLayerFilter *layerFilter = qobject_cast<Qt3DRender::QLayerFilter *>(cameraSelector->children().first());
@@ -793,17 +793,17 @@ private Q_SLOTS:
 
             Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[1]);
             QVERIFY(reflectiveEnabledParameter);
-            QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("isReflective"));
+            QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("kuesa_isReflective"));
             QCOMPARE(reflectiveEnabledParameter->value(), false);
 
             Qt3DRender::QParameter *reflectivePlaneParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[2]);
             QVERIFY(reflectivePlaneParameter);
-            QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
+            QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("kuesa_reflectionPlane"));
             QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
 
             Qt3DRender::QParameter *reflectivePlaneTextureParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[3]);
             QVERIFY(reflectivePlaneTextureParameter);
-            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("reflectionMap"));
+            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("kuesa_reflectionPlaneMap"));
             QVERIFY(reflectivePlaneTextureParameter->value().value<Qt3DRender::QAbstractTexture *>() != nullptr);
 
             QCOMPARE(cameraSelector->children().size(), 3);

@@ -70,17 +70,17 @@ private Q_SLOTS:
 
             Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[0]);
             QVERIFY(reflectiveEnabledParameter);
-            QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("isReflective"));
+            QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("kuesa_isReflective"));
             QCOMPARE(reflectiveEnabledParameter->value(), true);
 
             Qt3DRender::QParameter *reflectivePlaneParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[1]);
             QVERIFY(reflectivePlaneParameter);
-            QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
+            QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("kuesa_reflectionPlane"));
             QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
 
             Qt3DRender::QParameter *reflectivePlaneTextureParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[2]);
             QVERIFY(reflectivePlaneTextureParameter);
-            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("reflectionMap"));
+            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("kuesa_reflectionPlaneMap"));
             QVERIFY(reflectivePlaneTextureParameter->value().value<Qt3DRender::QAbstractTexture *>() != nullptr);
 
             Qt3DRender::QRenderTargetSelector *rtSelector = qobject_cast<Qt3DRender::QRenderTargetSelector *>(stages.children().last());
@@ -116,17 +116,17 @@ private Q_SLOTS:
 
             Qt3DRender::QParameter *reflectiveEnabledParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[0]);
             QVERIFY(reflectiveEnabledParameter);
-            QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("isReflective"));
+            QCOMPARE(reflectiveEnabledParameter->name(), QStringLiteral("kuesa_isReflective"));
             QCOMPARE(reflectiveEnabledParameter->value(), true);
 
             Qt3DRender::QParameter *reflectivePlaneParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[1]);
             QVERIFY(reflectivePlaneParameter);
-            QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("reflectionPlane"));
+            QCOMPARE(reflectivePlaneParameter->name(), QStringLiteral("kuesa_reflectionPlane"));
             QCOMPARE(reflectivePlaneParameter->value(), QVector4D());
 
             Qt3DRender::QParameter *reflectivePlaneTextureParameter = qobject_cast<Qt3DRender::QParameter *>(stages.children()[2]);
             QVERIFY(reflectivePlaneTextureParameter);
-            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("reflectionMap"));
+            QCOMPARE(reflectivePlaneTextureParameter->name(), QStringLiteral("kuesa_reflectionPlaneMap"));
             QVERIFY(reflectivePlaneTextureParameter->value().value<Qt3DRender::QAbstractTexture *>() != nullptr);
 
             Qt3DRender::QRenderTargetSelector *rtSelector = qobject_cast<Qt3DRender::QRenderTargetSelector *>(stages.children().last());

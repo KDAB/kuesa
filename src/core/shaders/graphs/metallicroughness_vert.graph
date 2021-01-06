@@ -1636,7 +1636,7 @@
             "layers": [
             ],
             "parameterValues": {
-                "0": "isReflective",
+                "0": "kuesa_isReflective",
                 "1": "QShaderLanguage::Bool"
             },
             "position": {
@@ -1887,7 +1887,7 @@
             "layers": [
             ],
             "parameterValues": {
-                "0": "reflectionPlane",
+                "0": "kuesa_reflectionPlane",
                 "1": "QShaderLanguage::Vec4"
             },
             "position": {

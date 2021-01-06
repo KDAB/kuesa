@@ -169,8 +169,8 @@ ShadowMapStages::ShadowMapStages(Qt3DRender::QFrameGraphNode *parent)
     : SceneFeaturedRenderStageBase(parent)
 {
     m_layerFilter = new Qt3DRender::QLayerFilter;
-    m_reflectiveEnabledParameter = new Qt3DRender::QParameter(QStringLiteral("isReflective"), QVariant(false), this);
-    m_reflectivePlaneParameter = new Qt3DRender::QParameter(QStringLiteral("reflectionPlane"), QVector4D(), this);
+    m_reflectiveEnabledParameter = new Qt3DRender::QParameter(QStringLiteral("kuesa_isReflective"), QVariant(false), this);
+    m_reflectivePlaneParameter = new Qt3DRender::QParameter(QStringLiteral("kuesa_reflectionPlane"), QVector4D(), this);
 }
 
 ShadowMapStages::~ShadowMapStages()

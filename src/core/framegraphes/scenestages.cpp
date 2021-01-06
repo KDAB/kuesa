@@ -351,9 +351,9 @@ SceneStages::SceneStages(Qt3DRender::QFrameGraphNode *parent)
     m_particleRenderStage = ParticleRenderStagePtr::create();
 
     m_defaultReflectivePlaneTexture = new Empty2DTexture();
-    m_reflectiveEnabledParameter = new Qt3DRender::QParameter(QStringLiteral("isReflective"), QVariant(false), this);
-    m_reflectivePlaneParameter = new Qt3DRender::QParameter(QStringLiteral("reflectionPlane"), QVector4D(), this);
-    m_reflectivePlaneTextureParameter = new Qt3DRender::QParameter(QStringLiteral("reflectionMap"), m_defaultReflectivePlaneTexture, this);
+    m_reflectiveEnabledParameter = new Qt3DRender::QParameter(QStringLiteral("kuesa_isReflective"), QVariant(false), this);
+    m_reflectivePlaneParameter = new Qt3DRender::QParameter(QStringLiteral("kuesa_reflectionPlane"), QVector4D(), this);
+    m_reflectivePlaneTextureParameter = new Qt3DRender::QParameter(QStringLiteral("kuesa_reflectionPlaneMap"), m_defaultReflectivePlaneTexture, this);
 
     // Add parameters to ScenePasses
     m_zFillStage->addParameter(m_reflectiveEnabledParameter);

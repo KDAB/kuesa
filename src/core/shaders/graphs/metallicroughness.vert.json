@@ -1709,7 +1709,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "isReflective",
+                "name": "kuesa_isReflective",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Bool"
@@ -2226,7 +2226,7 @@
             "layers": [
             ],
             "parameters": {
-                "name": "reflectionPlane",
+                "name": "kuesa_reflectionPlane",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec4"
