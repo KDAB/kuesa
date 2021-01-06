@@ -74,6 +74,7 @@ Kuesa.SceneEntity {
                         return KuesaFX.ToneMappingAndGammaCorrectionEffect.Uncharted
                     return KuesaFX.ToneMappingAndGammaCorrectionEffect.None
                 }
+                skinning: true
             }
             //! [2.2]
         },
