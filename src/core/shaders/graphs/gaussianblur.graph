@@ -2670,14 +2670,14 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "attribute highp $type $name;"
+                        "varying highp $type $name;"
                     ],
                     "substitution": "highp $type $value = $name;"
                 },
                 {
                     "format": {
                         "api": "OpenGLES",
-                        "major": 2,
+                        "major": 3,
                         "minor": 0
                     },
                     "headerSnippets": [
