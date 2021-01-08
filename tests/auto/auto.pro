@@ -67,7 +67,7 @@ qtConfig(private_tests) {
         meshparser \
         nodeparser \
         gltfparser \
-        gltfexporter \
+#        gltfexporter \
         layerparser \
         lightparser \
         shadowparser \
