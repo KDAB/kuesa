@@ -26,7 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 
 #include <Kuesa/Placeholder>
 
@@ -85,7 +86,7 @@ private Q_SLOTS:
         QVERIFY(spy.isValid());
 
         // WHEN
-        QRect viewport(0,0,101,10);
+        QRect viewport(0, 0, 101, 10);
         placeholder.setViewport(viewport);
 
         // THEN
