@@ -982,8 +982,8 @@ private Q_SLOTS:
 
         // THEN - fx and textures get notified of screen size when changing render surface
         QVERIFY(spy.size() >= 1);
-        QCOMPARE(fx1Texture->width(), window->width());
-        QCOMPARE(fx1Texture->height(), window->height());
+        QCOMPARE(fx1Texture->width(), window->width() * window->devicePixelRatio());
+        QCOMPARE(fx1Texture->height(), window->height() * window->devicePixelRatio());
 
         // WHEN
         spy.clear();
@@ -991,8 +991,8 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(spy.size() >= 1);
-        QCOMPARE(fx1Texture->width(), window->width());
-        QCOMPARE(fx1Texture->height(), window->height());
+        QCOMPARE(fx1Texture->width(), window->width() * window->devicePixelRatio());
+        QCOMPARE(fx1Texture->height(), window->height() * window->devicePixelRatio());
 
         // WHEN - setting offscreen surface
         spy.clear();

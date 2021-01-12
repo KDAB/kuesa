@@ -116,7 +116,6 @@ private Q_SLOTS:
         QCOMPARE(reflectionPlaneNameChangedSpy.count(), 1);
     }
 
-
     void checkSetScreenSize()
     {
         // GIVEN
@@ -139,7 +138,7 @@ private Q_SLOTS:
         // THEN
         QCOMPARE(tracker.screenSize(), QSize());
         QVERIFY(screenSizeChangedSpy.isValid());
-        QCOMPARE(view.transformTrackers().size(), 1);
+        QCOMPARE(view.transformTrackers().size(), 1UL);
 
         // WHEN
         const QSize newScreenSize(512, 512);
@@ -211,11 +210,11 @@ private Q_SLOTS:
             scene.addTransformTracker(&t2);
 
             // THEN
-            QCOMPARE(view.transformTrackers().size(), 2);
+            QCOMPARE(view.transformTrackers().size(), 2UL);
         }
 
         // THEN -> Shouldn't crash and should have remove trackers
-        QCOMPARE(view.transformTrackers().size(), 0);
+        QCOMPARE(view.transformTrackers().size(), 0UL);
 
         {
             // WHEN
@@ -226,13 +225,13 @@ private Q_SLOTS:
             scene.addTransformTracker(&t1);
 
             // THEN
-            QCOMPARE(view.transformTrackers().size(), 1);
+            QCOMPARE(view.transformTrackers().size(), 1UL);
 
             //WHEN
             scene.removeTransformTracker(&t2);
 
             // THEN
-            QCOMPARE(view.transformTrackers().size(), 1);
+            QCOMPARE(view.transformTrackers().size(), 1UL);
         }
 
         {
@@ -244,13 +243,13 @@ private Q_SLOTS:
             scene.addTransformTracker(&t2);
 
             // THEN
-            QCOMPARE(view.transformTrackers().size(), 2);
+            QCOMPARE(view.transformTrackers().size(), 2UL);
 
             // WHEN
             scene.clearTransformTrackers();
 
             // THEN
-            QCOMPARE(view.transformTrackers().size(), 0);
+            QCOMPARE(view.transformTrackers().size(), 0UL);
         }
 
         // THEN -> Shouldn't crash
@@ -264,13 +263,13 @@ private Q_SLOTS:
             scene.addTransformTracker(&t2);
 
             // THEN
-            QCOMPARE(view.transformTrackers().size(), 2);
+            QCOMPARE(view.transformTrackers().size(), 2UL);
 
             // WHEN
             scene.removeTransformTracker(&t1);
 
             // THEN
-            QCOMPARE(view.transformTrackers().size(), 1);
+            QCOMPARE(view.transformTrackers().size(), 1UL);
             QCOMPARE(view.transformTrackers().front(), &t2);
         }
 
@@ -298,11 +297,11 @@ private Q_SLOTS:
             scene.addAnimationPlayer(&t2);
 
             // THEN
-            QCOMPARE(view.animationPlayers().size(), 2);
+            QCOMPARE(view.animationPlayers().size(), 2UL);
         }
 
         // THEN -> Shouldn't crash and should have remove trackers
-        QCOMPARE(view.animationPlayers().size(), 0);
+        QCOMPARE(view.animationPlayers().size(), 0UL);
 
         {
             // WHEN
@@ -313,11 +312,11 @@ private Q_SLOTS:
             scene.addAnimationPlayer(&t1);
 
             // THEN
-            QCOMPARE(view.animationPlayers().size(), 1);
+            QCOMPARE(view.animationPlayers().size(), 1UL);
 
             // WHEN
             scene.removeAnimationPlayer(&t2);
-            QCOMPARE(view.animationPlayers().size(), 1);
+            QCOMPARE(view.animationPlayers().size(), 1UL);
         }
 
         {
@@ -329,13 +328,13 @@ private Q_SLOTS:
             scene.addAnimationPlayer(&t2);
 
             // THEN
-            QCOMPARE(view.animationPlayers().size(), 2);
+            QCOMPARE(view.animationPlayers().size(), 2UL);
 
             // WHEN
             scene.clearAnimationPlayers();
 
             // THEN
-            QCOMPARE(view.animationPlayers().size(), 0);
+            QCOMPARE(view.animationPlayers().size(), 0UL);
         }
 
         // THEN -> Shouldn't crash
@@ -349,13 +348,13 @@ private Q_SLOTS:
             scene.addAnimationPlayer(&t2);
 
             // THEN
-            QCOMPARE(view.animationPlayers().size(), 2);
+            QCOMPARE(view.animationPlayers().size(), 2UL);
 
             // WHEN
             scene.removeAnimationPlayer(&t1);
 
             // THEN
-            QCOMPARE(view.animationPlayers().size(), 1);
+            QCOMPARE(view.animationPlayers().size(), 1UL);
             QCOMPARE(view.animationPlayers().front(), &t2);
         }
 
@@ -380,7 +379,7 @@ private Q_SLOTS:
         scene.addAnimationPlayer(&t2);
 
         // THEN
-        QCOMPARE(view.animationPlayers().size(), 2);
+        QCOMPARE(view.animationPlayers().size(), 2UL);
 
         // WHEN
         view.gotoEnd();
@@ -458,16 +457,16 @@ private Q_SLOTS:
 
             // THEN
             QCOMPARE(view.activeScene(), &c1);
-            QCOMPARE(view.animationPlayers().size(), 2);
-            QCOMPARE(view.transformTrackers().size(), 2);
+            QCOMPARE(view.animationPlayers().size(), 2UL);
+            QCOMPARE(view.transformTrackers().size(), 2UL);
             QCOMPARE(view.source(), QUrl("file:///" ASSETS "Box.gltf"));
             QCOMPARE(view.cameraName(), QStringLiteral("Camera_Orientation"));
         }
 
         // THEN
         QVERIFY(view.activeScene() == nullptr);
-        QCOMPARE(view.animationPlayers().size(), 0);
-        QCOMPARE(view.transformTrackers().size(), 0);
+        QCOMPARE(view.animationPlayers().size(), 0UL);
+        QCOMPARE(view.transformTrackers().size(), 0UL);
         QCOMPARE(view.source(), QUrl());
         QCOMPARE(view.cameraName(), QString());
     }
@@ -493,7 +492,7 @@ private Q_SLOTS:
             // THEN
             QVERIFY(view.isLoaded());
             QCOMPARE(view.reflectionPlanes()->size(), 1);
-            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 0);
+            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 0UL);
 
             Kuesa::Iro2PlanarReflectionSemProperties *material = qobject_cast<Kuesa::Iro2PlanarReflectionSemProperties *>(view.material(QStringLiteral("MaterialReflection")));
             QVERIFY(material);
@@ -502,7 +501,7 @@ private Q_SLOTS:
             view.setReflectionPlaneName(QStringLiteral("ReflectionPlane"));
 
             // THEN
-            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 1);
+            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 1UL);
         }
 
         // Loading with autoloadReflection set to true
@@ -525,7 +524,7 @@ private Q_SLOTS:
             // THEN
             QVERIFY(view.isLoaded());
             QCOMPARE(view.reflectionPlanes()->size(), 1);
-            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 1);
+            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 1UL);
         }
     }
 };
