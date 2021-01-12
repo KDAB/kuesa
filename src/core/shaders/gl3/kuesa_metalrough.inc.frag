@@ -27,7 +27,10 @@
 */
 
 #pragma include light.inc.frag
+
+#ifdef LAYER_shadows
 #pragma include kuesa_shadowmap.inc.frag
+#endif
 
 const float M_PI = 3.141592653589793;
 
@@ -203,8 +206,10 @@ vec3 pbrModel(const in int lightIndex,
     vec3 color = att * sDotN * lights[lightIndex].intensity * lights[lightIndex].color
                  * (diffuseContrib + specularContrib);
 
+#ifdef LAYER_shadows
     float shadowCoverage = light.castsShadows && receivesShadows ? shadowMapCoverage(light, wPosition, wNormal, wView) : 1.0;
     color *= shadowCoverage;
+#endif
 
     return color;
 }

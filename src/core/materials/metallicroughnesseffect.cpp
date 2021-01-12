@@ -426,7 +426,10 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
         QStringLiteral("noHasColorAttr"),
         QStringLiteral("noDoubleSided"),
         QStringLiteral("noHasAlphaCutoff"),
-        QStringLiteral("metalRoughFunction_unroll")
+        QStringLiteral("metalRoughFunction_unroll"),
+        #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 3) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+            QStringLiteral("shadows")
+        #endif
     };
 
     m_metalRoughGL3Technique = new MetallicRoughnessTechnique(MetallicRoughnessTechnique::GL3, this);

@@ -301,6 +301,7 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
     m_view->m_reflectionStages->setParent(Q_NODE_NULLPTR);
     m_view->m_fxStages->setParent(Q_NODE_NULLPTR);
     m_view->m_internalFXStages->setParent(Q_NODE_NULLPTR);
+    m_view->m_shadowMapStages->setParent(Q_NODE_NULLPTR);
 
     // Rebuild FG
 
@@ -323,6 +324,14 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
     // The scene is drawn with a viewport of (0, 0, 1, 1) regardless of the
     // viewport rect set on the View as this parts gets rendered into a texture.
     m_view->m_sceneStages->setParent(m_mainSceneLayerFilter);
+
+    // Put shadowmap render passes first.  There is one pass per shadow-casting light.
+    // These passes renderer the scene with simple z-fill shader from the light's perspective
+    // into shadowmaps which are passed into the regular render passes defined below.
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 3) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    if (m_view->m_shadowMapStages->shadowMaps().count() > 0)
+        m_view->m_shadowMapStages->setParent(fgRoot);
+#endif
 
     // 2.3) Set up RenderTargets and optional Blits to RT[0] if using MSAA
     // and blit between RT[0] and RT[1] to copy stencil mask
@@ -1183,13 +1192,6 @@ void View::reconfigureFrameGraphHelper(Qt3DRender::QFrameGraphNode *fgRoot)
 {
     // Reconfigure our FG
     m_fg->reconfigure(fgRoot);
-    m_shadowMapStages->setParent(Q_NODE_NULLPTR);
-
-    // Put shadowmap render passes first.  There is one pass per shadow-casting light.
-    // These passes renderer the scene with simple z-fill shader from the light's perspective
-    // into shadowmaps which are passed into the regular render passes defined below.
-    if (m_shadowMapStages->shadowMaps().count() > 0)
-        m_shadowMapStages->setParent(fgRoot);
 
     const bool blocked = blockNotifications(true);
     emit frameGraphTreeReconfigured();
