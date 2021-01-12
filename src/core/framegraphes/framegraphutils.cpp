@@ -94,7 +94,7 @@ FrameGraphUtils::RenderingFeatures FrameGraphUtils::checkRenderingFeatures()
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 2) && QT_VERSION != QT_VERSION_CHECK(6, 0, 0)
             // Since ES 3.2, GL 4.0 or extension
             features.hasCubeMapArrayTextures = (ctx.isOpenGLES() ? (format.majorVersion() >= 3 && format.minorVersion() >= 2)
-                                                                 : format.majorVersion() >= 4) ||
+                                                                 : format.majorVersion() >= 4 && format.minorVersion() >= 3) ||
                     ctx.hasExtension(QByteArray("ARB_texture_cube_map_array"));
 #endif
             ctx.doneCurrent();
@@ -167,8 +167,8 @@ Qt3DRender::QRenderTarget *FrameGraphUtils::createRenderTarget(RenderTargetFlags
     // gamma correct
     // This requires support for extension OES_texture_half_float on ES2 platforms
     colorTexture->setFormat((flags & RenderTargetFlag::HalfFloatAttachments)
-                            ? Qt3DRender::QAbstractTexture::RGBA16F
-                            : Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+                                    ? Qt3DRender::QAbstractTexture::RGBA16F
+                                    : Qt3DRender::QAbstractTexture::RGBA8_UNorm);
     colorTexture->setGenerateMipMaps(false);
     colorTexture->setSize(surfaceSize.width(), surfaceSize.height());
     auto colorOutput = new Qt3DRender::QRenderTargetOutput;
@@ -252,6 +252,6 @@ Qt3DRender::QAbstractTexture *FrameGraphUtils::findRenderTargetTexture(Qt3DRende
     return attachment == outputs.end() ? nullptr : (*attachment)->texture();
 }
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
