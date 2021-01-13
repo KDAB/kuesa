@@ -37,3 +37,8 @@ and `BackTab` keys will cycle through available cameras.
 To play an animation, use the `--play <name>` argument. The animation
 will play once. To play it continuously, use the `--loop` argument.
 The `Space` key can be used to pause or resume the current animation.
+
+By default, the first available reflection plane is selected to render
+reflections. To specify a reflection plane, use the `--reflectionPlane <plane
+name>` argument. If a reflection plane matching the specified name exists, it
+will be used to render reflections.

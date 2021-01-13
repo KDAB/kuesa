@@ -112,7 +112,14 @@ Kuesa.SceneEntity {
 
     Kuesa.Asset {
         id: reflectionPlaneAsset
-        name: root.reflectionPlanes.names.length > 0 ? root.reflectionPlanes.names[0] : ""
+        name: {
+            if (root.reflectionPlanes.names.length > 0) {
+                if (_gltfReflectionPlane)
+                    return _gltfReflectionPlane
+                return root.reflectionPlanes.names[0]
+            }
+            return ""
+        }
         collection: root.reflectionPlanes
     }
 
