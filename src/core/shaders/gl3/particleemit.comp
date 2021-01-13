@@ -5,7 +5,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mauro Persano <mauro.persano@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in

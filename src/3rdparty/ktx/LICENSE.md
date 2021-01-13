@@ -3,7 +3,7 @@ LICENSE file for the KhronosGroup/KTX-Software project    {#license}
 
 <!--
  Can't put at start. Doxygen requires page title on first line.
- Copyright 2013-2020 Mark Callow 
+ Copyright 2013-2021 Mark Callow 
  SPDX-License-Identifier: Apache-2.0
 -->
 
