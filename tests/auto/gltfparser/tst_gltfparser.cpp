@@ -867,11 +867,12 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(res != nullptr);
-        QCOMPARE(parser.context()->requiredExtensions().size(), 3);
-        QCOMPARE(parser.context()->usedExtension().size(), 3);
+        QCOMPARE(parser.context()->requiredExtensions().size(), 4);
+        QCOMPARE(parser.context()->usedExtension().size(), 4);
         QCOMPARE(parser.context()->usedExtension().front(), QLatin1String("KDAB_kuesa_layers"));
         QCOMPARE(parser.context()->usedExtension()[1], QLatin1String("EXT_property_animation"));
-        QCOMPARE(parser.context()->usedExtension().back(), QLatin1String("KDAB_kuesa_reflection_planes"));
+        QCOMPARE(parser.context()->usedExtension()[2], QLatin1String("KDAB_kuesa_reflection_planes"));
+        QCOMPARE(parser.context()->usedExtension().back(), QLatin1String("KHR_texture_transform"));
     }
 
     void checkLayers_data()
