@@ -58,6 +58,7 @@ Kuesa.SceneEntity {
                 id: frameGraph
                 camera: cameraAsset.node ? cameraAsset.node : fallbackCamera
                 clearColor: "white"
+                reflectionPlanes: [ reflectionPlaneAsset.node ]
             }
         },
         InputSettings { },
@@ -107,6 +108,12 @@ Kuesa.SceneEntity {
             if (node)
                 node.aspectRatio = _winSize.width / _winSize.height
         }
+    }
+
+    Kuesa.Asset {
+        id: reflectionPlaneAsset
+        name: root.reflectionPlanes.names.length > 0 ? root.reflectionPlanes.names[0] : ""
+        collection: root.reflectionPlanes
     }
 
     Kuesa.GLTF2Importer {
