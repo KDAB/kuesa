@@ -31,6 +31,19 @@
 
 #include <QtCore/qglobal.h>
 
+#define KUESA_VERSION_MAJOR 1
+#define KUESA_VERSION_MINOR 3
+#define KUESA_VERSION_PATCH 0
+
+//    KUESA_VERSION is (major << 16) + (minor << 8) + patch.
+#define KUESA_VERSION      QT_VERSION_CHECK(KUESA_VERSION_MAJOR, KUESA_VERSION_MINOR, KUESA_VERSION_PATCH)
+//    can be used like #if (KUESA_VERSION >= KUESA_VERSION_CHECK(1, 3, 0))
+#define KUESA_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
+
+#define KUESA_TO_STR2(x) #x
+#define KUESA_TO_STR(x) KUESA_TO_STR2(x)
+#define KUESA_VERSION_STRING (KUESA_TO_STR(KUESA_VERSION_MAJOR) "." KUESA_TO_STR(KUESA_VERSION_MINOR) "." KUESA_TO_STR(KUESA_VERSION_PATCH))
+
 QT_BEGIN_NAMESPACE
 
 #if defined(QT_SHARED) || !defined(QT_STATIC)

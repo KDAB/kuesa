@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("gltfViewer");
     QCoreApplication::setOrganizationDomain("kdab.com");
     QCoreApplication::setOrganizationName("KDAB");
-    QCoreApplication::setApplicationVersion(QStringLiteral("1.0"));
+    QCoreApplication::setApplicationVersion(KUESA_VERSION_STRING);
 
     ViewerApplication app(argc, argv);
 
