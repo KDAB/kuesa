@@ -62,7 +62,7 @@ class Window(Qt3DExtras.Qt3DWindow):
         self.gltfImporter.setSceneEntity(self.rootEntity)
         self.gltfImporter.setSource(assetsUrl() + "/models/InterpolationTest.glb")
 
-        # When opening this model in gltfEditor, we can see :
+        # When opening this model in gltfInspector, we can see :
         # - Multiple entities :
         #   Cube, Cube.001, Cube.002, Light, Plane...
         # - Multiple meshes :

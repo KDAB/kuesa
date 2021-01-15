@@ -106,7 +106,7 @@
 <a name="extracting-assets-from-collections"></a>
 <h4 id="extracting-assets-from-collections">Extracting Assets from Collections</h4>
 <p>Usually, you will want to interact with some elements of your scene.</p>
-<p>You can use the Kuesa Studio gltfEditor to introspect a glTF2 scene files and find the names of the various assets it contains.</p>
+<p>You can use the Kuesa Studio gltfInspector to introspect a glTF2 scene files and find the names of the various assets it contains.</p>
 <p>Upon successful loading of our glTF2 file, we will be able to proceed with asset retrieval.</p>
 <pre class="cpp">
  <span class="type">void</span> on_sceneLoaded(Kuesa<span class="operator">::</span>GLTF2Importer<span class="operator">::</span>Status status)
@@ -115,7 +115,7 @@
 </pre>
 <a name="retrieving-geometries-and-material"></a>
 <h5 id="retrieving-geometries-and-material">Retrieving Geometries and Material</h5>
-<p>Using the gltfEditor we know our scene files contains a Duck Entity name &quot;KuesaEntity_0&quot;..</p>
+<p>Using the gltfInspector we know our scene files contains a Duck Entity name &quot;KuesaEntity_0&quot;..</p>
 <p>We can therefore retrieve it with:</p>
 <pre class="cpp">
  <span class="comment">// First let's take the components that we are going to use to create our clones</span>

@@ -76,7 +76,7 @@ class Window(Qt3DExtras.Qt3DWindow):
             return
 
         # In this tutorial, we are going to trigger glTF animations.
-        # The list of available animations can be checked with the gltfEditor,
+        # The list of available animations can be checked with the gltfInspector,
         # in the Animation dock.
         self.animationClock = Qt3DAnimation.QClock(self.rootEntity)
         self.animationClock.setPlaybackRate(1)
