@@ -38,6 +38,7 @@
 #include <Qt3DAnimation/QAnimationAspect>
 #include <Qt3DQuickExtras/Qt3DQuickWindow>
 #include <Kuesa/GLTF2Importer>
+#include <Kuesa/kuesaversion.h>
 
 class ViewerApplication : public QGuiApplication
 {
@@ -179,7 +180,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("gltfViewer");
     QCoreApplication::setOrganizationDomain("kdab.com");
     QCoreApplication::setOrganizationName("KDAB");
-    QCoreApplication::setApplicationVersion(KUESA_VERSION_STRING);
+    QCoreApplication::setApplicationVersion(KUESA_VERSION_STR);
 
     ViewerApplication app(argc, argv);
 
