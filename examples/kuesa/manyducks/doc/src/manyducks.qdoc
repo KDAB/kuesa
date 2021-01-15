@@ -83,16 +83,18 @@
 
     Usually, you will want to interact with some elements of your scene.
 
-    You can use the Kuesa Studio gltfEditor to introspect a glTF2 scene files
+    You can use the Kuesa Studio gltfInspector to introspect a glTF2 scene files
     and find the names of the various assets it contains.
 
     Upon successful loading of our glTF2 file, we will be able to proceed with
     asset retrieval.
     \snippet manyducks/main.cpp 1
 
-    \section2 Retrieving Geometries and Material
+    \section2 Manually Instancing Meshes
 
-    Using the gltfEditor we know our scene files contains a Duck Entity name
+    \section3 Retrieving Geometries and Material
+
+    Using the gltfInspector we know our scene files contains a Duck Entity name
     "KuesaEntity_0"..
 
     We can therefore retrieve it with:
@@ -104,6 +106,23 @@
 
     Then, we can create several entities referencing the same material and geometry.
     \snippet manyducks/main.cpp 1.3
+
+    \section2 Relying on GPU based instancing
+
+    A more efficient approach to drawing multiple instances of the same
+    geometry is to rely on GPU based instancing. In Kuesa, assuming the GPU
+    supports that feature, this can easily be leveraged by using the \l
+    {Kuesa::MeshInstantiator} class.
+
+    We need to generate a transformation matrix for each of the instances.
+    \snippet manyducks/main.cpp 1.4
+
+    Then we can create our MeshInstantiator, specify the name of the Entity to
+    instantiate and set the transformation matrices on it.
+    \snippet manyducks/main.cpp 1.5
+
+    This approach greatly reduces CPU usage compared to the manual
+    approach.
 
     \section1 Animating our Scene
 
