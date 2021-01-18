@@ -1,0 +1,235 @@
+/*
+    kuesa-placeholders.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \page kuesa-placeholders.html
+    \title Kuesa Placeholders
+
+    \brief Kuesa provides handling for mapping placeholders defined in glTF files to
+    QObject or QQuickItem.
+
+    \since Kuesa 1.3
+
+    Often times, 3D artist will want to position 2D UI placeholders within the
+    3D scene. In turn, the developer will want to map some custom UI element,
+    usually developed in QML to the area defined by the placeholder. In
+    addition, the content should always remain facing the camera in use.
+
+    Kuesa provides handling for mapping placeholders defined in glTF files to
+    QObject or QQuickItem. This is achieved by relying on a custom
+    KDAB_placeholder glTF extension and the \l {Kuesa::Placeholder} and \l
+    {Kuesa::PlaceholderTracker} objects.
+
+    Whereas \l {Kuesa::TransformTracker} allows to retrieve the screen space
+    position of an Entity in the scene, \l {Kuesa::PlaceholderTracker} goes
+    beyong that by providing access to positioning as well as sizing
+    informations.
+
+    \section1 Adding Placeholders to a glTF scene
+
+    \section2 Using Blender
+
+    \section3 Adding a Placeholder
+
+    Placeholders can be added by opening the add menu in Blender (Shift + A)
+    and selection Placeholder in the Kuesa entry.
+
+    \image blender_placeholder_step1.png
+
+    The placeholder is materialized as a 3D plane. It might be hidden by
+    existing geometry in the scene. If that's the case, it can be selected from
+    the Blender Scene outline and moved (G) or rotated (R) until it becomes
+    visible.
+
+    \image blender_placeholder_step2.png
+    \image blender_placeholder_step3.png
+
+    With the placeholder selected in the outliner, it is possible to
+    select the Camera it should be facing.
+
+    \image blender_placeholder_step4.png
+    \image blender_placeholder_step5.png
+
+    The placement and transformations of the placeholder can be fine tuned
+    further by viewing the scene from the Camera's point of View (Num 0).
+
+    \image blender_placeholder_step6.png
+    \image blender_placeholder_step7.png
+
+    One thing to keep in mind is that Placeholders in Blender are 3D objects.
+    For that reason, they can be hidden by other 3D objects placed in front.
+    However once exported and used from the KuesaRuntime, Placeholders are
+    merely a way of mapping 2D UI obects to the 3D scene. They have therefore no
+    physical appearanced and given UI is usually rendered as an overlay, the
+    target item will likely be drawn on top of any 3D object.
+
+    \image blender_placeholder_step8.png
+
+    \section3 Exporting Placeholders
+
+    Select the gltf 2.0 exporter.
+
+    \image blender_placeholder_step9.png
+
+    Make sure the KDAB_kuesa_placeholder extension is enabled.
+
+    \image blender_placeholder_step10.png
+
+    \section1 Retrieving and tracking Placeholders
+
+    \section2 C++
+
+    Upon loading of a gltf file, placeholder instances will have to be
+    retrieved from their collection, and tracked to update the screen space
+    location. This can be achieved though the use of the \l
+    {Kuesa::PlaceholderTracker}. On the tracker, scene size and camera should
+    be specified. Optionally a target can be set on which the x, y, width and
+    height properties will be set automatically.
+
+    \badcode
+
+    Kuesa::SceneEntity *sceneEntity = new Kuesa::SceneEntity();
+    Kuesa::GLTF2Importer *importer = new Kuesa::GLTF2Importer();
+
+    QObject *uiTarget = new QObject();
+
+    Kuesa::PlaceholderTracker *placeholderTracker = new Kuesa::PlaceholderTracker();
+    placeholderTracker->setSceneEntity(sceneEntity);
+    placeholderTracker->setName(QStringliteral("PlaceHolder"));
+    placeholderTracker->setSceneSize({view.width(), view.height()});
+    placeholderTracker->setTarget(uiTarget);
+    placeholderTracker->setCamera(camera);
+
+    importer->setSceneEntity(sceneEntity);
+    importer->setSource(QUrl("file:///placeholder.gltf"));
+
+    \endcode
+
+    Alternatively a simpler approach when using \l [CPP] {View3DScene} is to
+    simply do:
+
+    \badcode
+    QObject *uiTarget = new QObject();
+
+    KuesaUtils::SceneConfiguration sceneConfiguration;
+    sceneConf.setSource(QUrl("file:///placeholder.gltf));
+    sceneConf.setCameraName("CameraName");
+
+    Kuesa::PlaceholderTracker *placeholderTracker = new Kuesa::PlaceholderTracker();
+    placeholderTracker->setTarget(uiTarget);
+    placeholderTracker->setName(QStringliteral("PlaceHolder"));
+
+    sceneConf.addPlaceholderTracker(placeholderTracker);
+
+    KuesaUtils::View3DScene view3d;
+    view3d.setActiveScene(&sceneConfiguration);
+    ...
+    \endcode
+
+    The \l {Kuesa::View3DScene} will take care of handling the current camera
+    and viewport size.
+
+    \note This was intented to use with QQuickItems as targets. For widgets,
+    this might not work as well as Qt 3D currently requires a window container
+    to integrate into widget applications. Window containers do not allow
+    overlapping widgets.
+
+    \section2 QML
+
+    Upon loading of a gltf file, placeholder instances will have to be
+    retrieved from their collection, and tracked to update the screen space
+    location. This can be achieved though the use of the \l [QML]
+    {Kuesa::PlaceholderTracker}. On the tracker, scene size and camera should
+    be specified. Optionally a target can be set on which the x, y, width and
+    height properties will be set automatically.
+
+    \badcode
+    import QtQuick 2.0
+    import Kuesa 1.3 as Kuesa
+
+    Item {
+        id: sceneRoot
+
+        Rectangle {
+            id: myItem
+        }
+
+        ...
+
+        Kuesa.SceneEntity {
+            id: scene
+            ...
+            Kuesa.GLTF2Importer {
+                id: gltf2importer
+                sceneEntity: scene
+                source: "file:///placeholder.gltf"
+            }
+            PlaceholderTracker {
+                name: "PlaceHolder"
+                camera: camera
+                screenSize: Qt.size(512, 512)
+                target: uiTarget
+            }
+        }
+    }
+    \endcode
+
+    Alternatively a simpler approach when using \l [QML] {View3D} is to do:
+
+    \badcode
+    import QtQuick 2.0
+    import Kuesa 1.3 as Kuesa
+    import Kuesa.Utils 1.3 as KuesaUtils
+
+    Item {
+        id: sceneRoot
+
+        Rectangle {
+            id: myItem
+        }
+
+        KuesaUtils.View3D {
+            id: scene3D
+            anchors.fill: parent
+            multisample: true
+
+            source: "qrc:/placeholder.gltf"
+            camera: "CameraName"
+            placeholderTrackers: [
+                Kuesa.PlaceholderTracker {
+                    name: "PlaceHolder"
+                    target: myItem
+                }
+            ]
+        }
+    }
+    \endcode
+
+    The \l [QML] {View3D} will take care of handling the current camera and
+    viewport size.
+ */
