@@ -56,7 +56,7 @@ class KUESASHARED_EXPORT Placeholder : public Qt3DCore::QEntity
     Q_PROPERTY(Qt3DRender::QCamera *camera READ camera WRITE setCamera NOTIFY cameraChanged)
     Q_PROPERTY(QObject *target READ target WRITE setTarget NOTIFY targetChanged)
 public:
-    explicit Placeholder(Qt3DCore::QEntity *parent);
+    explicit Placeholder(Qt3DCore::QNode *parent = nullptr);
 
     Qt3DRender::QCamera *camera() const;
     void setCamera(Qt3DRender::QCamera *camera);

@@ -73,7 +73,7 @@ QT_BEGIN_NAMESPACE
     instantiate this object on your own but rather rely on retrieving it from
     the \l {Kuesa::PlaceholderCollection} upon loading.
 */
-Kuesa::Placeholder::Placeholder(Qt3DCore::QEntity *parent)
+Kuesa::Placeholder::Placeholder(Qt3DCore::QNode *parent)
     : Qt3DCore::QEntity(parent)
     , m_transform(new Qt3DCore::QTransform)
     , m_camera(nullptr)
