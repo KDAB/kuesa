@@ -27,11 +27,11 @@
 */
 
 #include "kuesautilsplugin.h"
-#include "view3dsceneitem.h"
 #include "sceneconfigurationitem.h"
 
 #include <KuesaUtils/boundingvolumerenderer.h>
 #include <KuesaUtils/orbitcameracontroller.h>
+#include <KuesaUtils/view3dscene.h>
 
 #include <QtQml/qqml.h>
 #include <Qt3DQuick/private/qt3dquick_global_p.h>
@@ -55,7 +55,7 @@ void KuesaUtilsPlugin::registerTypes(const char *uri)
     // Utils
     qmlRegisterType<KuesaUtils::BoundingVolumeRenderer>(uri, 1, 0, "BoundingVolumeRenderer");
     qmlRegisterType<KuesaUtils::OrbitCameraController>(uri, 1, 0, "OrbitCameraController");
-    qmlRegisterExtendedType<KuesaUtils::View3DScene, KuesaUtils::View3DSceneItem>(uri, 1, 0, "View3DScene");
+    qmlRegisterType<KuesaUtils::View3DScene>(uri, 1, 0, "View3DScene");
     qmlRegisterExtendedType<KuesaUtils::SceneConfiguration, KuesaUtils::SceneConfigurationItem>(uri, 1, 0, "SceneConfiguration");
 }
 
