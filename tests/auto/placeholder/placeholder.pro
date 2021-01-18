@@ -28,7 +28,7 @@ TEMPLATE = app
 
 TARGET = tst_placeholder
 
-QT += testlib kuesa kuesa-private 3dcore 3drender
+QT += testlib kuesa kuesa-private 3dcore 3dcore-private 3drender
 
 CONFIG += testcase
 

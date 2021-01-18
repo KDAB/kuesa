@@ -43,7 +43,6 @@ SUBDIRS = \
     kuesanode \
     fullscreenquad \
     reflectionplane \
-    placeholder \
     meshinstantiator
 
 #qtHaveModule(quick):lessThan(QT_MAJOR_VERSION, 6) {
@@ -107,7 +106,8 @@ qtConfig(private_tests) {
         assetkeyparser \
         view3dscene \
         sceneconfiguration \
-        gaussianblureffect
+        gaussianblureffect \
+        placeholder
 
     greaterThan(QT_MAJOR_VERSION, 5):
         SUBDIRS += fboresolver

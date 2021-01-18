@@ -35,8 +35,11 @@
 #include <kuesa_utils_p.h>
 #include <Qt3DCore/private/qmath3d_p.h>
 #include <Qt3DCore/private/qnode_p.h>
+#include <Kuesa/private/logging_p.h>
 
 QT_BEGIN_NAMESPACE
+
+namespace Kuesa {
 
 /*!
     \class Kuesa::Placeholder
@@ -73,25 +76,21 @@ QT_BEGIN_NAMESPACE
     instantiate this object on your own but rather rely on retrieving it from
     the \l {Kuesa::PlaceholderCollection} upon loading.
 */
-Kuesa::Placeholder::Placeholder(Qt3DCore::QNode *parent)
+Placeholder::Placeholder(Qt3DCore::QNode *parent)
     : Qt3DCore::QEntity(parent)
     , m_transform(new Qt3DCore::QTransform)
-    , m_camera(nullptr)
-    , m_cameraTransform(nullptr)
-    , m_target(nullptr)
 {
 
     // Add a transform so we can pick the world transform of this entity
     addComponent(m_transform);
 
     QObject::connect(m_transform, &Qt3DCore::QTransform::worldMatrixChanged,
-                     this, &Kuesa::Placeholder::updatePlaceholder);
+                     this, &Placeholder::updatePlaceholder);
 }
 
-void Kuesa::Placeholder::updatePlaceholder()
+void Placeholder::updatePlaceholder()
 {
-    if (m_camera && m_target) {
-
+    if (m_camera && m_target && m_cameraTransform && m_cameraLens) {
         QVector3D position;
         QQuaternion orientation;
         QVector3D scale;
@@ -111,11 +110,11 @@ void Kuesa::Placeholder::updatePlaceholder()
         const auto viewMatrix = m_cameraTransform->worldMatrix().inverted();
 
         const QVector3D aViewportSpace = aWorldSpace.project(viewMatrix,
-                                                             m_camera->projectionMatrix(),
+                                                             m_cameraLens->projectionMatrix(),
                                                              m_viewport);
 
         const QVector3D bViewportSpace = bWorldSpace.project(viewMatrix,
-                                                             m_camera->projectionMatrix(),
+                                                             m_cameraLens->projectionMatrix(),
                                                              m_viewport);
 
         const auto a = aViewportSpace.toPoint();
@@ -169,12 +168,12 @@ void Kuesa::Placeholder::updatePlaceholder()
     }
     \endcode
 */
-QObject *Kuesa::Placeholder::target() const
+QObject *Placeholder::target() const
 {
     return m_target;
 }
 
-void Kuesa::Placeholder::setTarget(QObject *target)
+void Placeholder::setTarget(QObject *target)
 {
     if (m_target != target) {
             m_target = target;
@@ -192,8 +191,8 @@ void Kuesa::Placeholder::setTarget(QObject *target)
 /*!
     \property Kuesa::Placeholder::camera
 
-    Holds the Qt3DRender::QCamera to which the plane is facing and which is
-    used to project the plane to screen space.
+    Holds the camera to which the plane is facing and which is used to project
+    the plane to screen space.
 
     It is set automatically by the glTF 2.0 importer but can be modified by the
     user to face different cameras.
@@ -212,10 +211,10 @@ void Kuesa::Placeholder::setTarget(QObject *target)
 */
 
 /*!
-    \qmlproperty Qt3DRender.Camera Kuesa::Placeholder::camera
+    \qmlproperty Qt3DCore.Entity Kuesa::Placeholder::camera
 
-    Holds the Qt3DRender::QCamera to which the plane is facing and which is
-    used to project the plane to screen space.
+    Holds the camera to which the plane is facing and which is used to project
+    the plane to screen space.
 
     It is set automatically by the glTF 2.0 importer but can be modified by the
     user to face different cameras.
@@ -243,43 +242,52 @@ void Kuesa::Placeholder::setTarget(QObject *target)
     }
     \endcode
 
-    \note using a Qt3DRender::QCamera for the placeholder different than the
-    one being used for the render might give unexpected results.
+    \note using a camera for the placeholder different than the one being used
+    for the render might give unexpected results.
 */
-Qt3DRender::QCamera *Kuesa::Placeholder::camera() const
+Qt3DCore::QEntity *Placeholder::camera() const
 {
     return m_camera;
 }
 
-void Kuesa::Placeholder::setCamera(Qt3DRender::QCamera *camera)
+void Placeholder::setCamera(Qt3DCore::QEntity *camera)
 {
     if (camera != m_camera) {
+        auto d = Qt3DCore::QNodePrivate::get(this);
 
         if (m_cameraTransform)
             QObject::disconnect(m_cameraTransform, &Qt3DCore::QTransform::worldMatrixChanged,
-                                this, &Kuesa::Placeholder::updatePlaceholder);
-
+                                this, &Placeholder::updatePlaceholder);
+        if (m_cameraLens)
+            QObject::disconnect(m_cameraLens, &Qt3DRender::QCameraLens::projectionMatrixChanged,
+                                this, &Placeholder::updatePlaceholder);
         if (m_camera) {
-            QObject::disconnect(m_camera, &Qt3DRender::QCamera::projectionMatrixChanged,
-                                this, &Kuesa::Placeholder::updatePlaceholder);
-            auto d = Qt3DCore::QNodePrivate::get(this);
             d->unregisterDestructionHelper(m_camera);
+            m_cameraTransform = nullptr;
+            m_cameraLens = nullptr;
         }
 
         m_camera = camera;
-        m_cameraTransform = nullptr;
 
         if (m_camera) {
-            // The camera has a QTransform
-            m_cameraTransform = m_camera->transform();
-            QObject::connect(m_cameraTransform, &Qt3DCore::QTransform::worldMatrixChanged,
-                             this, &Kuesa::Placeholder::updatePlaceholder);
+            // Note: it is expected the camera is already parented
 
-            QObject::connect(m_camera, &Qt3DRender::QCamera::projectionMatrixChanged,
-                             this, &Kuesa::Placeholder::updatePlaceholder);
+            d->registerDestructionHelper(m_camera, &Placeholder::setCamera, m_camera);
 
-            auto d = Qt3DCore::QNodePrivate::get(this);
-            d->registerDestructionHelper(m_camera, &Kuesa::Placeholder::setCamera, m_camera);
+            m_cameraTransform = componentFromEntity<Qt3DCore::QTransform>(m_camera);
+            m_cameraLens = componentFromEntity<Qt3DRender::QCameraLens>(m_camera);
+
+            if (m_cameraTransform)
+                QObject::connect(m_cameraTransform, &Qt3DCore::QTransform::worldMatrixChanged,
+                                 this, &Placeholder::updatePlaceholder);
+            else
+                qCWarning(kuesa) << "Placeholder camera has no transform component";
+
+            if (m_cameraLens)
+                QObject::connect(m_cameraLens, &Qt3DRender::QCameraLens::projectionMatrixChanged,
+                                 this, &Placeholder::updatePlaceholder);
+            else
+                qCWarning(kuesa) << "Placeholder camera has no camera lens component";
 
             updatePlaceholder();
         }
@@ -315,12 +323,12 @@ void Kuesa::Placeholder::setCamera(Qt3DRender::QCamera *camera)
     unexpected results.
 */
 
-QRect Kuesa::Placeholder::viewport() const
+QRect Placeholder::viewport() const
 {
     return m_viewport;
 }
 
-void Kuesa::Placeholder::setViewport(QRect viewport)
+void Placeholder::setViewport(QRect viewport)
 {
     if (m_viewport != viewport) {
         m_viewport = viewport;
@@ -329,5 +337,7 @@ void Kuesa::Placeholder::setViewport(QRect viewport)
         emit viewportChanged(viewport);
     }
 }
+
+} // namespace Kuesa
 
 QT_END_NAMESPACE

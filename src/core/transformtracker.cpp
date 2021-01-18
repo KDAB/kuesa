@@ -166,8 +166,6 @@ void TransformTracker::setCamera(Qt3DCore::QEntity *camera)
         emit cameraChanged(m_camera);
 
         if (m_camera) {
-            if (!m_camera->parent())
-                m_camera->setParent(this);
             d->registerDestructionHelper(m_camera, &TransformTracker::setCamera, m_camera);
 
             m_cameraTransform = componentFromEntity<Qt3DCore::QTransform>(m_camera);
