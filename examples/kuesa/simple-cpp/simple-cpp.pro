@@ -1,9 +1,9 @@
-# kuesa.pro
+# simple-cpp.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Mike Krus <mike.krus@kdab.com>
+# Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,26 +24,17 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = subdirs
+TEMPLATE = app
 
-qtHaveModule(quick) {
-    qtHaveModule(quickcontrols2) {
-        SUBDIRS += \
-            car-scene \
-            tonemapping \
-            simple-qml \
-            multi-scene
-    }
+QT += 3dcore 3drender 3dextras kuesa kuesautils
 
-    SUBDIRS += \
-        manyducks \
-        music-box \
-        iro-materials-gallery \
-        simple-cpp
-}
+CONFIG += resources_big
 
-demo_assets.path = $$[QT_INSTALL_EXAMPLES]/kuesa/assets
-demo_assets.files = assets/envmaps assets/models assets/resources
-demo_shared.path = $$[QT_INSTALL_EXAMPLES]/kuesa
-demo_shared.files = shared-utils
-INSTALLS += demo_assets demo_shared
+SOURCES += main.cpp
+
+RESOURCES += \
+    asset/asset.qrc
+
+target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
+target.files = $$PWD/*
+INSTALLS += target
