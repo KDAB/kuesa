@@ -2,6 +2,6 @@ TEMPLATE = aux
 
 QMAKE_DOCS = $$PWD/kuesa.qdocconf
 
-OTHER_FILES += $$PWD/src/*.qdoc $$PWD/*.qdocconf
+OTHER_FILES += $$PWD/src/*.qdoc $$PWD/*.qdocconf $$PWD/src/*.qdocinc
 
 CONFIG += force_qt
