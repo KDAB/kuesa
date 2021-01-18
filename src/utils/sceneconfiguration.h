@@ -63,6 +63,11 @@ public:
     void removeTransformTracker(Kuesa::TransformTracker *tracker);
     void clearTransformTrackers();
 
+    const std::vector<Kuesa::Placeholder *> &placeholders() const { return m_placeholders; }
+    void addPlaceholder(Kuesa::Placeholder *placeholder);
+    void removePlaceholder(Kuesa::Placeholder *placeholder);
+    void clearPlaceholders();
+
 public Q_SLOTS:
     void setSource(const QUrl &source);
     void setCameraName(const QString &cameraName);
@@ -77,6 +82,9 @@ Q_SIGNALS:
     void transformTrackerAdded(Kuesa::TransformTracker *tracker);
     void transformTrackerRemoved(Kuesa::TransformTracker *tracker);
 
+    void placeholderAdded(Kuesa::Placeholder *placeholder);
+    void placeholderRemoved(Kuesa::Placeholder *placeholder);
+
     void loadingDone();
 
 private:
@@ -84,6 +92,7 @@ private:
     QString m_cameraName;
     std::vector<Kuesa::AnimationPlayer *> m_animations;
     std::vector<Kuesa::TransformTracker *> m_trackers;
+    std::vector<Kuesa::Placeholder *> m_placeholders;
 };
 
 } // namespace KuesaUtils

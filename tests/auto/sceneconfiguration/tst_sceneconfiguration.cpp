@@ -31,6 +31,7 @@
 #include <KuesaUtils/sceneconfiguration.h>
 #include <Kuesa/animationplayer.h>
 #include <Kuesa/transformtracker.h>
+#include <Kuesa/placeholder.h>
 
 class tst_SceneConfiguration : public QObject
 {
@@ -47,6 +48,7 @@ private Q_SLOTS:
         QCOMPARE(sceneConfiguration.cameraName(), QString());
         QVERIFY(sceneConfiguration.animationPlayers().empty());
         QVERIFY(sceneConfiguration.transformTrackers().empty());
+        QVERIFY(sceneConfiguration.placeholders().empty());
     }
 
     void checkSetSource()
@@ -241,6 +243,117 @@ private Q_SLOTS:
         }
 
         // THEN -> Shouldn't crash
+    }
+
+    void checkPlaceholders()
+    {
+        // GIVEN
+        KuesaUtils::SceneConfiguration sceneConfiguration;
+        QSignalSpy placeholderAddedSpy(&sceneConfiguration, &KuesaUtils::SceneConfiguration::placeholderAdded);
+        QSignalSpy placeholderRemovedSpy(&sceneConfiguration, &KuesaUtils::SceneConfiguration::placeholderRemoved);
+
+        // THEN
+        QVERIFY(placeholderAddedSpy.isValid());
+        QVERIFY(placeholderRemovedSpy.isValid());
+
+        {
+            // WHEN
+            Kuesa::Placeholder p1;
+            Kuesa::Placeholder p2;
+
+            sceneConfiguration.addPlaceholder(&p1);
+            sceneConfiguration.addPlaceholder(&p2);
+
+            // THEN
+            QCOMPARE(sceneConfiguration.placeholders().size(), 2);
+            QCOMPARE(placeholderAddedSpy.count(), 2);
+        }
+
+        // THEN -> Shouldn't crash and should have removed placeholders
+        QCOMPARE(sceneConfiguration.placeholders().size(), 0);
+        QCOMPARE(placeholderRemovedSpy.count(), 2);
+
+        placeholderAddedSpy.clear();
+        placeholderRemovedSpy.clear();
+
+        {
+            // WHEN
+            Kuesa::Placeholder p1;
+            Kuesa::Placeholder p2;
+
+            sceneConfiguration.addPlaceholder(&p1);
+            sceneConfiguration.addPlaceholder(&p1);
+
+            // THEN
+            QCOMPARE(sceneConfiguration.placeholders().size(), 1);
+            QCOMPARE(placeholderAddedSpy.count(), 1);
+
+            // WHEN
+            sceneConfiguration.removePlaceholder(&p2);
+
+            // THEN
+            QCOMPARE(sceneConfiguration.placeholders().size(), 1);
+            QCOMPARE(placeholderRemovedSpy.count(), 0);
+        }
+
+        // THEN -> Shouldn't crash and should have removed placeholders
+        QCOMPARE(sceneConfiguration.placeholders().size(), 0);
+        QCOMPARE(placeholderRemovedSpy.count(), 1);
+
+        placeholderAddedSpy.clear();
+        placeholderRemovedSpy.clear();
+
+        {
+            // WHEN
+            Kuesa::Placeholder p1;
+            Kuesa::Placeholder p2;
+
+            sceneConfiguration.addPlaceholder(&p1);
+            sceneConfiguration.addPlaceholder(&p2);
+
+            // THEN
+            QCOMPARE(sceneConfiguration.placeholders().size(), 2);
+            QCOMPARE(placeholderAddedSpy.count(), 2);
+
+            // WHEN
+            sceneConfiguration.clearPlaceholders();
+
+            // THEN
+            QCOMPARE(sceneConfiguration.placeholders().size(), 0);
+            QCOMPARE(placeholderRemovedSpy.count(), 2);
+        }
+
+        // THEN -> Shouldn't crash
+        placeholderAddedSpy.clear();
+        placeholderRemovedSpy.clear();
+
+        {
+            // WHEN
+            Kuesa::Placeholder p1;
+            Kuesa::Placeholder p2;
+
+            sceneConfiguration.addPlaceholder(&p1);
+            sceneConfiguration.addPlaceholder(&p2);
+
+            // THEN
+            QCOMPARE(sceneConfiguration.placeholders().size(), 2);
+            QCOMPARE(placeholderAddedSpy.count(), 2);
+
+            // WHEN
+            sceneConfiguration.removePlaceholder(&p1);
+
+            // THEN
+            QCOMPARE(sceneConfiguration.placeholders().size(), 1);
+            QCOMPARE(sceneConfiguration.placeholders().front(), &p2);
+            QCOMPARE(placeholderRemovedSpy.count(), 1);
+        }
+
+        // THEN -> Shouldn't crash
+        QCOMPARE(sceneConfiguration.placeholders().size(), 0);
+        QCOMPARE(placeholderRemovedSpy.count(), 2);
+
+        placeholderAddedSpy.clear();
+        placeholderRemovedSpy.clear();
     }
 };
 

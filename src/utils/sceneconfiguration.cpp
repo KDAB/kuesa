@@ -180,6 +180,37 @@ void SceneConfiguration::clearTransformTrackers()
         removeTransformTracker(t);
 }
 
+void SceneConfiguration::addPlaceholder(Placeholder *placeholder)
+{
+    if (std::find(std::begin(m_placeholders), std::end(m_placeholders), placeholder) == std::end(m_placeholders)) {
+        Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+        d->registerDestructionHelper(placeholder, &SceneConfiguration::removePlaceholder, m_placeholders);
+        if (placeholder->parentNode() == nullptr)
+            placeholder->setParent(this);
+        m_placeholders.push_back(placeholder);
+        emit placeholderAdded(placeholder);
+    }
+}
+
+void SceneConfiguration::removePlaceholder(Placeholder *placeholder)
+{
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    d->unregisterDestructionHelper(placeholder);
+    auto it = std::remove(std::begin(m_placeholders), std::end(m_placeholders), placeholder);
+    if (it != std::end(m_placeholders)) {
+        m_placeholders.erase(it,
+                             std::end(m_placeholders));
+        emit placeholderRemoved(placeholder);
+    }
+}
+
+void SceneConfiguration::clearPlaceholders()
+{
+    const std::vector<Kuesa::Placeholder *> placeholdersCopy = m_placeholders;
+    for (Kuesa::Placeholder *p : placeholdersCopy)
+        removePlaceholder(p);
+}
+
 void SceneConfiguration::addAnimationPlayer(AnimationPlayer *animation)
 {
     if (std::find(std::begin(m_animations), std::end(m_animations), animation) == std::end(m_animations)) {
