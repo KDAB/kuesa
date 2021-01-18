@@ -30,6 +30,36 @@
 
 using namespace KuesaUtils;
 
+/*!
+ * \class KuesaUtils::SceneConfigurationItem
+ * \internal
+ */
+
+/*!
+    \qmlproperty list<AnimationPlayer>
+    KuesaUtils::SceneConfigurationItem::animations
+
+    List of \l [QML] {Kuesa::AnimationPlayer} instances referenced by the
+    SceneConfiguration.
+*/
+
+/*!
+    \qmlproperty list<TransformTracker>
+    KuesaUtils::SceneConfigurationItem::transformTrackers
+
+    List of \l [QML] {Kuesa::TransformTracker} instances referenced by the
+    SceneConfiguration.
+*/
+
+
+/*!
+    \qmlproperty list<Placeholder> KuesaUtils::SceneConfigurationItem::placeholders
+
+    List of \l [QML] {Kuesa::Placeholder} instances referenced by the
+    SceneConfiguration.
+*/
+
+
 SceneConfigurationItem::SceneConfigurationItem(QObject *parent)
     : QObject(parent)
 {
