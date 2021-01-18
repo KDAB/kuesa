@@ -55,6 +55,7 @@ private Q_SLOTS:
         QVERIFY(view.animationPlayers().empty());
         QVERIFY(view.transformTrackers().empty());
         QVERIFY(view.reflectionPlaneName().isEmpty());
+        QVERIFY(view.activePlaceholders().empty());
     }
 
     void checkSetSource()
@@ -122,6 +123,7 @@ private Q_SLOTS:
         KuesaUtils::View3DScene view;
         KuesaUtils::SceneConfiguration scene;
         Kuesa::TransformTracker tracker;
+        Kuesa::Placeholder placeHolder;
         QSignalSpy screenSizeChangedSpy(&view, &KuesaUtils::View3DScene::screenSizeChanged);
         QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadingDone);
 
@@ -129,6 +131,7 @@ private Q_SLOTS:
         QVERIFY(loadedSpy.isValid());
         scene.setSource(QUrl("file:///" ASSETS "Box.gltf"));
         scene.addTransformTracker(&tracker);
+        scene.addPlaceholder(&placeHolder);
 
         view.setActiveScene(&scene);
 
@@ -137,6 +140,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(tracker.screenSize(), QSize());
+        QCOMPARE(placeHolder.viewport(), QRect({0, 0}, QSize()));
         QVERIFY(screenSizeChangedSpy.isValid());
         QCOMPARE(view.transformTrackers().size(), 1UL);
 
@@ -148,6 +152,7 @@ private Q_SLOTS:
         QCOMPARE(view.screenSize(), newScreenSize);
         QCOMPARE(screenSizeChangedSpy.count(), 1);
         QCOMPARE(tracker.screenSize(), newScreenSize);
+        QCOMPARE(placeHolder.viewport(), QRect({0, 0}, newScreenSize));
     }
 
     void checkSetDebugOverlay()
@@ -356,6 +361,91 @@ private Q_SLOTS:
             // THEN
             QCOMPARE(view.animationPlayers().size(), 1UL);
             QCOMPARE(view.animationPlayers().front(), &t2);
+        }
+
+        // THEN -> Shouldn't crash
+    }
+
+    void checkActivePlaceholders()
+    {
+        // GIVEN
+        KuesaUtils::View3DScene view;
+        KuesaUtils::SceneConfiguration scene;
+        QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadingDone);
+
+        QVERIFY(loadedSpy.isValid());
+        scene.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+        view.setActiveScene(&scene);
+        loadedSpy.wait();
+
+        {
+            // WHEN
+            Kuesa::Placeholder p1;
+            Kuesa::Placeholder p2;
+
+            scene.addPlaceholder(&p1);
+            scene.addPlaceholder(&p2);
+
+            // THEN
+            QCOMPARE(view.activePlaceholders().size(), 2UL);
+        }
+
+        // THEN -> Shouldn't crash and should have removed placeholders
+        QCOMPARE(view.activePlaceholders().size(), 0UL);
+
+        {
+            // WHEN
+            Kuesa::Placeholder p1;
+            Kuesa::Placeholder p2;
+
+            scene.addPlaceholder(&p1);
+            scene.addPlaceholder(&p1);
+
+            // THEN
+            QCOMPARE(view.activePlaceholders().size(), 1UL);
+
+            // WHEN
+            scene.removePlaceholder(&p2);
+            QCOMPARE(view.activePlaceholders().size(), 1UL);
+        }
+
+        {
+            // WHEN
+            Kuesa::Placeholder p1;
+            Kuesa::Placeholder p2;
+
+            scene.addPlaceholder(&p1);
+            scene.addPlaceholder(&p2);
+
+            // THEN
+            QCOMPARE(view.activePlaceholders().size(), 2UL);
+
+            // WHEN
+            scene.clearPlaceholders();
+
+            // THEN
+            QCOMPARE(view.activePlaceholders().size(), 0UL);
+        }
+
+        // THEN -> Shouldn't crash
+
+        {
+            // WHEN
+            Kuesa::Placeholder p1;
+            Kuesa::Placeholder p2;
+
+            scene.addPlaceholder(&p1);
+            scene.addPlaceholder(&p2);
+
+            // THEN
+            QCOMPARE(view.activePlaceholders().size(), 2UL);
+
+            // WHEN
+            scene.removePlaceholder(&p1);
+
+            // THEN
+            QCOMPARE(view.activePlaceholders().size(), 1UL);
+            QCOMPARE(view.activePlaceholders().front(), &p2);
         }
 
         // THEN -> Shouldn't crash

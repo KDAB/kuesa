@@ -78,6 +78,7 @@ public:
 
     const std::vector<Kuesa::AnimationPlayer *> &animationPlayers() const;
     const std::vector<Kuesa::TransformTracker *> &transformTrackers() const;
+    const std::vector<Kuesa::Placeholder *> &activePlaceholders() const;
 
     SceneConfiguration *activeScene() const;
 
@@ -125,8 +126,13 @@ private:
     void removeTransformTracker(Kuesa::TransformTracker *tracker);
     void clearTransformTrackers();
 
+    void addActivePlaceholder(Kuesa::Placeholder *placeholder);
+    void removeActivePlaceholder(Kuesa::Placeholder *placeholder);
+    void clearActivePlaceholders();
+
     void onSceneLoaded();
     void updateTrackers();
+    void updatePlaceholders();
     void updateFrame(float dt);
     void loadReflections();
 
@@ -135,6 +141,7 @@ private:
     QString m_cameraName;
     std::vector<Kuesa::AnimationPlayer *> m_animations;
     std::vector<Kuesa::TransformTracker *> m_trackers;
+    std::vector<Kuesa::Placeholder *> m_placeholders;
     Qt3DAnimation::QClock *m_clock;
     QSize m_screenSize;
     SceneConfiguration *m_activeScene;

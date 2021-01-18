@@ -1,4 +1,4 @@
-/*
+﻿/*
     view3dscene.cpp
 
     This file is part of Kuesa.
@@ -333,6 +333,7 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     connect(m_importer, &GLTF2Importer::asynchronousChanged, this, &View3DScene::asynchronousChanged);
     connect(m_frameGraph, &ForwardRenderer::showDebugOverlayChanged, this, &View3DScene::showDebugOverlayChanged);
     connect(m_frameGraph, &ForwardRenderer::cameraChanged, this, &View3DScene::updateTrackers);
+    connect(m_frameGraph, &ForwardRenderer::cameraChanged, this, &View3DScene::updatePlaceholders);
 
     QObject::connect(m_importer, &GLTF2Importer::statusChanged,
                      this, [this] () {
@@ -410,6 +411,7 @@ void View3DScene::setScreenSize(const QSize &screenSize)
         m_screenSize = screenSize;
         emit screenSizeChanged(m_screenSize);
         updateTrackers();
+        updatePlaceholders();
     }
 }
 
@@ -455,6 +457,8 @@ void View3DScene::onSceneLoaded()
         QObject::connect(m_activeScene, &SceneConfiguration::animationPlayerRemoved, this, &View3DScene::removeAnimationPlayer);
         QObject::connect(m_activeScene, &SceneConfiguration::transformTrackerAdded, this, &View3DScene::addTransformTracker);
         QObject::connect(m_activeScene, &SceneConfiguration::transformTrackerRemoved, this, &View3DScene::removeTransformTracker);
+        QObject::connect(m_activeScene, &SceneConfiguration::placeholderAdded, this, &View3DScene::addActivePlaceholder);
+        QObject::connect(m_activeScene, &SceneConfiguration::placeholderRemoved, this, &View3DScene::removeActivePlaceholder);
 
         const auto &newAnimations = m_activeScene->animationPlayers();
         for (auto a : newAnimations)
@@ -463,6 +467,10 @@ void View3DScene::onSceneLoaded()
         const auto newTrackers = m_activeScene->transformTrackers();
         for (auto t : newTrackers)
             addTransformTracker(t);
+
+        const auto newPlaceholders = m_activeScene->placeholders();
+        for (auto p : newPlaceholders)
+            addActivePlaceholder(p);
 
         emit m_activeScene->loadingDone();
     }
@@ -476,6 +484,14 @@ void View3DScene::updateTrackers()
     for (auto t : m_trackers) {
         t->setScreenSize(m_screenSize);
         t->setCamera(m_frameGraph->camera());
+    }
+}
+
+void View3DScene::updatePlaceholders()
+{
+    for (Kuesa::Placeholder *p : m_placeholders) {
+        p->setCamera(m_frameGraph->camera());
+        p->setViewport(QRect({0, 0}, m_screenSize));
     }
 }
 
@@ -583,12 +599,65 @@ void View3DScene::clearTransformTrackers()
 }
 
 /*!
+    \internal
+    \brief Adds \a placeholder to the list of managed \l {Kuesa::Placeholder}
+    instances of the View3DScene.
+ */
+void View3DScene::addActivePlaceholder(Placeholder *placeholder)
+{
+    if (std::find(std::begin(m_placeholders), std::end(m_placeholders), placeholder) == std::end(m_placeholders)) {
+        Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+        d->registerDestructionHelper(placeholder, &View3DScene::removeActivePlaceholder, m_placeholders);
+
+        if (placeholder->parentNode() == nullptr)
+            placeholder->setParent(this);
+
+        m_placeholders.push_back(placeholder);
+        updatePlaceholders();
+    }
+}
+
+/*!
+    \internal
+    \brief Removes \a placeholder from the list of managed \l
+    {Kuesa::Placeholder} instances of the View3DScene.
+ */
+void View3DScene::removeActivePlaceholder(Placeholder *placeholder)
+{
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    d->unregisterDestructionHelper(placeholder);
+    m_placeholders.erase(std::remove(std::begin(m_placeholders), std::end(m_placeholders), placeholder),
+                         std::end(m_placeholders));
+}
+
+/*!
+    \internal
+    \brief Clears the list of managed \l {Kuesa::Placeholder} instances of
+    the View3DScene.
+ */
+void View3DScene::clearActivePlaceholders()
+{
+    const std::vector<Kuesa::Placeholder *> placeholdersCopy = m_placeholders;
+    for (Kuesa::Placeholder *p : placeholdersCopy)
+        removeActivePlaceholder(p);
+}
+
+/*!
     \brief Returns the \l {Kuesa::TransformTracker} instances referenced by the
     View3DScene instance.
  */
 const std::vector<TransformTracker *> &View3DScene::transformTrackers() const
 {
     return m_trackers;
+}
+
+/*!
+    \brief Returns the \l {Kuesa::Placeholder} instances referenced by the
+    View3DScene instance.
+ */
+const std::vector<Placeholder *> &View3DScene::activePlaceholders() const
+{
+    return m_placeholders;
 }
 
 /*!
