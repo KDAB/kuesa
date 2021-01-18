@@ -40,7 +40,7 @@
  */
 
 /*!
- * \fn EntityCollection::add
+ * \fn TransformCollection::add
  *
  * Adds an \a asset to the collection with key \a name.
  *
@@ -52,7 +52,7 @@
  */
 
 /*!
- * \fn EntityCollection::find
+ * \fn TransformCollection::find
  *
  * Returns the asset previously registered with the collection with \a name, if
  * it exists. Otherwise, returns nullptr.

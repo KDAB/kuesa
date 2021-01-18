@@ -79,18 +79,18 @@ using namespace Kuesa;
     The Asset and AnimationPlayer classes will also use the SceneEntity to
     access the collections and find assets.
 
-    \sa AnimationPlayer, Asset, GLTF2Importer
+    \sa Kuesa::AnimationPlayer, Asset, Kuesa::GLTF2Importer
 */
 
 /*!
-    \fn SceneEntity::loadingDone()
+    \fn Kuesa::SceneEntity::loadingDone()
 
     This signal is emitted when a glTF file is successfully loaded using a
     GLTFImporter instance which sceneEntity points to this entity.
 */
 
 /*!
-  \qmlsignal SceneEntity::loadingDone()
+  \qmlsignal Kuesa::SceneEntity::loadingDone()
 
     This signal is emitted when a glTF file is successfully loaded using a
     GLTFImporter instance which sceneEntity points to this entity.

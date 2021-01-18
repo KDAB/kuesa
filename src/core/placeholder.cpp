@@ -62,7 +62,7 @@ namespace Kuesa {
 /*!
     \qmltype Placeholder
     \brief Specifies a placeholder which can be used to anchor QtQuick elements.
-    \inmodule Kuesa
+    \inqmlmodule Kuesa
     \since Kuesa 1.3
     \instantiates Kuesa::Placeholder
 

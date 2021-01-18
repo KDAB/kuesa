@@ -242,18 +242,6 @@ using namespace Kuesa;
 */
 
 /*!
-    \property Kuesa::ForwardRenderer::clearColor
-
-    Holds the color used to clear the screen at the start of each frame.
-*/
-
-/*!
-    \qmlproperty color Kuesa::ForwardRenderer::clearColor
-
-    Holds the color used to clear the screen at the start of each frame.
-*/
-
-/*!
     \property Kuesa::ForwardRenderer::clearBuffers
 
     Holds which buffers will be cleared at the start of each frame.

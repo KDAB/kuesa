@@ -187,7 +187,8 @@ QString MeshInstantiator::entityName() const
 }
 
 /*!
-    Set the transformation matrices to be associated and applied to the instances.
+    Set the transformation matrices \a transformationMatrices to be associated
+    and applied to the instances.
  */
 void MeshInstantiator::setTransformationMatrices(const std::vector<QMatrix4x4> &transformationMatrices)
 {

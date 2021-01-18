@@ -109,7 +109,7 @@ void AbstractPostProcessingEffect::setCamera(Qt3DCore::QEntity *camera)
 }
 
 /*!
- * Sets the \a size of the rendered scene (in pixels) that the effect
+ * Sets the \a sceneSize of the rendered scene (in pixels) that the effect
  * will be applied to. This is necessary for effects to render correctly.
  */
 void AbstractPostProcessingEffect::setWindowSize(const QSize &sceneSize)

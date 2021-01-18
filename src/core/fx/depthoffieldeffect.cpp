@@ -172,7 +172,7 @@ using namespace Kuesa;
 /*!
  \qmltype DepthOfFieldEffect
  \inherits AbstractPostProcessingEffect
- \inmodule Kuesa
+ \inqmlmodule Kuesa
  \since Kuesa 1.1
  \brief Post-processing effect implementation of a depth of field.
 

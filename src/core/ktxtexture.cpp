@@ -74,7 +74,7 @@ namespace Kuesa
 
 /*!
     \class Kuesa::KTXTexture
-    \brief Texture subclass that handles loading ktx files (both KTX1 and KTX2)
+    \brief Texture subclass that handles loading ktx files (both KTX1 and KTX2).
 
     \inmodule Kuesa
     \since Kuesa 1.3
@@ -87,7 +87,7 @@ namespace Kuesa
 
 /*!
     \qmltype KTXTexture
-    \brief Texture subclass that handles loading ktx files (both KTX1 and KTX2)
+    \brief Texture subclass that handles loading ktx files (both KTX1 and KTX2).
 
     \inqmlmodule Kuesa
     \since Kuesa 1.3

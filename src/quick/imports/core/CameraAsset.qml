@@ -34,7 +34,7 @@ import Kuesa 1.3 as Kuesa
     \inherits Entity
 
     \brief Convenience wrapper to retrieve an asset from the \l
-    {Kuesa::SceneEntity::cameraCollection}
+    {Kuesa::SceneEntity::cameraCollection}.
 
     \qml
     import Kuesa 1.3 as Kuesa

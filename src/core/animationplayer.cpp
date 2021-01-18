@@ -412,7 +412,7 @@ void AnimationPlayer::setNormalizedTime(float timeFraction)
 }
 
 /*!
- * \brief Starts the animation
+ * Starts the animation
  */
 void AnimationPlayer::start()
 {
@@ -423,7 +423,7 @@ void AnimationPlayer::start()
 }
 
 /*!
- * \brief Stops the animation
+ * Stops the animation
  */
 void AnimationPlayer::stop()
 {
@@ -434,8 +434,9 @@ void AnimationPlayer::stop()
 }
 
 /*!
- * \brief Stops the animation and resets the normalised time to 0. The next time the
- * animation plays it will start from 0 rather than the current normalised time.
+ * Stops the animation and resets the normalised time to 0. The next time the
+ * animation plays it will start from 0 rather than the current normalised
+ * time.
  */
 void AnimationPlayer::reset()
 {
@@ -447,7 +448,7 @@ void AnimationPlayer::reset()
 }
 
 /*!
- * \brief Sets the normalised to 0 and runs the animation.
+ * Sets the normalised to 0 and runs the animation.
  */
 void AnimationPlayer::restart()
 {
@@ -459,7 +460,8 @@ void AnimationPlayer::restart()
 }
 
 /*!
- * \brief Run the animation from fromTimeFraction to toTimeFraction. Both times are normalized time.
+ * Run the animation from \a fromTimeFraction to \a toTimeFraction. Both times
+ * are normalized time.
  */
 void AnimationPlayer::run(float fromTimeFraction, float toTimeFraction)
 {

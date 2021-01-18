@@ -655,6 +655,19 @@ QSize View::reflectionTextureSize() const
     Qt3DRender::QAbstractTexture *t = m_reflectionStages->reflectionTexture();
     return { t->width(), t->height() };
 }
+
+/*!
+    \property Kuesa::View::clearColor
+
+    Holds the color used to clear the screen at the start of each frame.
+*/
+
+/*!
+    \qmlproperty color Kuesa::View::clearColor
+
+    Holds the color used to clear the screen at the start of each frame.
+*/
+
 /*!
  * Returns the color used to clear the screen at the start of each frame. The
  * color is returned in sRGB color space.
@@ -1058,9 +1071,10 @@ void View::setToneMappingAlgorithm(ToneMappingAndGammaCorrectionEffect::ToneMapp
 }
 
 /*!
-    Allows to use stencil buffer during the render phase. The resulting
-    stencil buffer is then accessible from the post processing effects.
-    This allows to apply post process effects only to part of the scene.
+    Allows to use stencil buffer during the render phase depending on the value
+    of \a usesStencilMask. The resulting stencil buffer is then accessible from
+    the post processing effects. This allows to apply post process effects only
+    to part of the scene.
 
     \since Kuesa 1.3
 */

@@ -76,7 +76,7 @@ using namespace Qt3DRender;
     and unload scenes.
 
     To set the scene to be loaded by the View3DScene, an instance of
-    \l {Kuesa::SceneConfiguration} must be set as the activeScene property.
+    \l {KuesaUtils::SceneConfiguration} must be set as the activeScene property.
 
     \l {Kuesa::AnimationPlayer} and \l {Kuesa::TransformTracker} instances
     defined on the activeScene will be added. Additionally, the View3DScene
@@ -174,7 +174,7 @@ using namespace Qt3DRender;
     \property KuesaUtils::View3DScene::reflectionPlaneName
 
     \brief If non empty, the View3DScene will try to load the \l
-    {Kuesa.ReflectionPlane} matching the name from the collection and set it on
+    {Kuesa::ReflectionPlane} matching the name from the collection and set it on
     the ForwardRenderer framegraph views.
  */
 
@@ -205,7 +205,7 @@ using namespace Qt3DRender;
     and unload scenes.
 
     To set the scene to be loaded by the View3DScene, an instance of
-    \l {Kuesa::SceneConfiguration} must be set as the activeScene property.
+    \l {KuesaUtils::SceneConfiguration} must be set as the activeScene property.
 
     \l [QML] {Kuesa::AnimationPlayer} and \l [QML] {Kuesa::TransformTracker}
     instances defined on the activeScene will be added. Additionally, the
@@ -286,9 +286,9 @@ using namespace Qt3DRender;
  */
 
 /*!
-    \qmlproperty KuesaUtils.SceneConfiguration KuesaUtils::View3DScene::activeScene
+    \qmlproperty KuesaUtils::SceneConfiguration KuesaUtils::View3DScene::activeScene
 
-    \brief If this points to a valid \l [QML] {Kuesa::SceneConfiguration}
+    \brief If this points to a valid \l [QML] {KuesaUtils::SceneConfiguration}
     instance, the \l [QML] {KuesaUtils::View3DScene::source}, \l [QML]
     {KuesaUtils::View3DScene::cameraName} as well as the \l [QML]
     {Kuesa::AnimationPlayer} and \l [QML] {Kuesa::TransformTracker} instances
@@ -300,8 +300,8 @@ using namespace Qt3DRender;
 /*!
     \qmlproperty string KuesaUtils::View3DScene::reflectionPlaneName
 
-    \brief If non empty, the View3DScene will try to load the \l
-    {Kuesa.ReflectionPlane} matching the name from the collection and set it on
+    \brief If non empty, the View3DScene will try to load the \l [QML]
+    {Kuesa::ReflectionPlane} matching the name from the collection and set it on
     the ForwardRenderer framegraph views.
  */
 
@@ -735,8 +735,8 @@ SceneConfiguration *View3DScene::activeScene() const
 
 /*!
     \brief Sets the active scene configuration to \a scene. If \a scene is a valid
-    non null instance, the \l {Kuesa::View3DScene::source}, \l
-    {Kuesa::View3DScene::cameraName} as well as the \l {Kuesa::AnimationPlayer}
+    non null instance, the \l [QML] {KuesaUtils::View3DScene::source}, \l
+    {KuesaUtils::View3DScene::cameraName} as well as the \l {Kuesa::AnimationPlayer}
     and \l {Kuesa::TransformTracker} instances will be automatically set based on
     the values provided by the SceneConfiguration. If null, all of these will
     be cleared.

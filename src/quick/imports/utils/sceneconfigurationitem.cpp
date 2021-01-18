@@ -36,7 +36,7 @@ using namespace KuesaUtils;
  */
 
 /*!
-    \qmlproperty list<AnimationPlayer>
+    \qmlproperty list<Kuesa::AnimationPlayer>
     KuesaUtils::SceneConfigurationItem::animations
 
     List of \l [QML] {Kuesa::AnimationPlayer} instances referenced by the
@@ -44,7 +44,7 @@ using namespace KuesaUtils;
 */
 
 /*!
-    \qmlproperty list<TransformTracker>
+    \qmlproperty list<Kuesa::TransformTracker>
     KuesaUtils::SceneConfigurationItem::transformTrackers
 
     List of \l [QML] {Kuesa::TransformTracker} instances referenced by the
@@ -53,7 +53,7 @@ using namespace KuesaUtils;
 
 
 /*!
-    \qmlproperty list<Placeholder> KuesaUtils::SceneConfigurationItem::placeholders
+    \qmlproperty list<Kuesa::Placeholder> KuesaUtils::SceneConfigurationItem::placeholders
 
     List of \l [QML] {Kuesa::Placeholder} instances referenced by the
     SceneConfiguration.

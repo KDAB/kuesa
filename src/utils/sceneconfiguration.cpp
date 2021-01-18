@@ -57,7 +57,7 @@ using namespace KuesaUtils;
     {KuesaUtils::View3DScene} provides a new way to architecture such type of
     applications. The idea is to instantiate the View3DScene once and use its
     \l {KuesaUtils::View3DScene::activeScene} property to point to different \l
-    {KuessUtils::SceneConfiguration} instances. Internally, when the active
+    {KuesaUtils::SceneConfiguration} instances. Internally, when the active
     scene is changed, the new glTF2 file will be loaded and assets needed
     created while previous glTF2 file and assets unloaded.
 */
