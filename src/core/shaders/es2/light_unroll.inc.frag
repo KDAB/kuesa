@@ -1,5 +1,5 @@
 /*
-    light.inc.frag
+    light_unroll.inc.frag
 
     This file is part of Kuesa.
 

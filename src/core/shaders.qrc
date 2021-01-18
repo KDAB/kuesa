@@ -9,7 +9,6 @@
         <file>shaders/es2/kuesa_iroDiffuseShaderData.inc.frag</file>
         <file>shaders/es2/kuesa_iroGlassAddShaderData.inc.frag</file>
         <file>shaders/es2/kuesa_metallicRoughnessShaderData.inc.frag</file>
-        <file>shaders/es2/kuesa_metalrough.inc.frag</file>
         <file>shaders/es2/kuesa_metalrough_unroll.inc.frag</file>
         <file>shaders/es2/kuesa_modelMatrix.inc</file>
         <file>shaders/es2/kuesa_morphtargets_normal.inc.vert</file>
@@ -18,7 +17,6 @@
         <file>shaders/es2/kuesa_morphtargets_weights.inc.vert</file>
         <file>shaders/es2/kuesa_reflectedViewMatrix.inc</file>
         <file>shaders/es2/kuesa_unlitShaderData.inc.frag</file>
-        <file>shaders/es2/light.inc.frag</file>
         <file>shaders/es2/light_unroll.inc.frag</file>
         <file>shaders/es2/passthrough.vert</file>
         <file>shaders/es2/qt3d_default_uniforms.inc</file>
@@ -31,7 +29,6 @@
         <file>shaders/es3/kuesa_iroDiffuseShaderData.inc.frag</file>
         <file>shaders/es3/kuesa_iroGlassAddShaderData.inc.frag</file>
         <file>shaders/es3/kuesa_metallicRoughnessShaderData.inc.frag</file>
-        <file>shaders/es3/kuesa_metalrough.inc.frag</file>
         <file>shaders/es3/kuesa_metalrough_unroll.inc.frag</file>
         <file>shaders/es3/kuesa_modelMatrix.inc</file>
         <file>shaders/es3/kuesa_morphtargets_normal.inc.vert</file>
@@ -40,7 +37,6 @@
         <file>shaders/es3/kuesa_morphtargets_weights.inc.vert</file>
         <file>shaders/es3/kuesa_reflectedViewMatrix.inc</file>
         <file>shaders/es3/kuesa_unlitShaderData.inc.frag</file>
-        <file>shaders/es3/light.inc.frag</file>
         <file>shaders/es3/light_unroll.inc.frag</file>
         <file>shaders/es3/passthrough.vert</file>
         <file>shaders/es3/qt3d_default_uniforms.inc</file>
@@ -54,7 +50,6 @@
         <file>shaders/gl3/kuesa_iroDiffuseShaderData.inc.frag</file>
         <file>shaders/gl3/kuesa_iroGlassAddShaderData.inc.frag</file>
         <file>shaders/gl3/kuesa_metallicRoughnessShaderData.inc.frag</file>
-        <file>shaders/gl3/kuesa_metalrough.inc.frag</file>
         <file>shaders/gl3/kuesa_metalrough_unroll.inc.frag</file>
         <file>shaders/gl3/kuesa_modelMatrix.inc</file>
         <file>shaders/gl3/kuesa_morphtargets_normal.inc.vert</file>
@@ -65,7 +60,6 @@
         <file>shaders/gl3/kuesa_reflectedViewMatrix.inc</file>
         <file>shaders/gl3/kuesa_shadowmap.inc.frag</file>
         <file>shaders/gl3/kuesa_unlitShaderData.inc.frag</file>
-        <file>shaders/gl3/light.inc.frag</file>
         <file>shaders/gl3/light_unroll.inc.frag</file>
         <file>shaders/gl3/particle.frag</file>
         <file>shaders/gl3/particle.inc</file>
