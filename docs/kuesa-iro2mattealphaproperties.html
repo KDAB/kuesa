@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- iro2mattealphaproperties.cpp -->
+  <title>Iro2MatteAlphaProperties Class | Kuesa Runtime 1.3</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<li>Iro2MatteAlphaProperties</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Iro2MatteAlphaProperties Class</h1>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesa">Kuesa</a>::Iro2MatteAlphaProperties</span>
+<!-- $$$Iro2MatteAlphaProperties-brief -->
+<p><a href="qml-iro2mattealphaproperties.html">Kuesa::Iro2MatteAlphaProperties</a> holds the properties controlling the visual appearance of a <a href="kuesa-iro2mattealphamaterial.html">Iro2MatteAlphaMaterial</a> instance. <a href="#details">More...</a></p>
+<!-- @@@Iro2MatteAlphaProperties -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/Iro2MatteAlphaProperties&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.3</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-iro2mattealphaproperties.html">Iro2MatteAlphaProperties</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-gltf2materialproperties.html">Kuesa::GLTF2MaterialProperties</a></td></tr></table></div><p>This class was introduced in Kuesa 1.3.</p>
+<ul>
+<li><a href="kuesa-iro2mattealphaproperties-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary">
+<tr><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#alphaGain-prop">alphaGain</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#gltfYUp-prop">gltfYUp</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#innerAlpha-prop">innerAlpha</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#matteGain-prop">matteGain</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#matteInnerFilter-prop">matteInnerFilter</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#matteOuterFilter-prop">matteOuterFilter</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#normalDisturb-prop">normalDisturb</a></b> : QVector2D</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#normalMapGain-prop">normalMapGain</a></b> : float</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#normalScaling-prop">normalScaling</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#outerAlpha-prop">outerAlpha</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#postGain-prop">postGain</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#postHemiFilter-prop">postHemiFilter</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#postVertexColor-prop">postVertexColor</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#usesMatteMap-prop">usesMatteMap</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#usesNormalMap-prop">usesNormalMap</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-iro2mattealphaproperties.html#uvOffset-prop">uvOffset</a></b> : QVector2D</li>
+</ul>
+</td></tr>
+</table></div>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#alphaGain-prop">alphaGain</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#gltfYUp-prop">gltfYUp</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#innerAlpha-prop">innerAlpha</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#matteGain-prop">matteGain</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#matteInnerFilter-prop">matteInnerFilter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#matteOuterFilter-prop">matteOuterFilter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector2D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#normalDisturb-prop">normalDisturb</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#normalMapGain-prop">normalMapGain</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#normalScaling-prop">normalScaling</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#outerAlpha-prop">outerAlpha</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#postGain-prop">postGain</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#postHemiFilter-prop">postHemiFilter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#postVertexColor-prop">postVertexColor</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#usesMatteMap-prop">usesMatteMap</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#usesNormalMap-prop">usesNormalMap</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector2D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#uvOffset-prop">uvOffset</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#alphaGain-prop">setAlphaGain</a></b>(float <i>alphaGain</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#gltfYUp-prop">setGltfYUp</a></b>(bool <i>gltfYUp</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#innerAlpha-prop">setInnerAlpha</a></b>(float <i>innerAlpha</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#matteGain-prop">setMatteGain</a></b>(float <i>matteGain</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#matteInnerFilter-prop">setMatteInnerFilter</a></b>(const QVector3D &amp;<i>matteInnerFilter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#matteOuterFilter-prop">setMatteOuterFilter</a></b>(const QVector3D &amp;<i>matteOuterFilter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#normalDisturb-prop">setNormalDisturb</a></b>(const QVector2D &amp;<i>normalDisturb</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#normalMapGain-prop">setNormalMapGain</a></b>(float <i>normalMapGain</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#normalScaling-prop">setNormalScaling</a></b>(const QVector3D &amp;<i>normalScaling</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#outerAlpha-prop">setOuterAlpha</a></b>(float <i>outerAlpha</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#postGain-prop">setPostGain</a></b>(float <i>postGain</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#postHemiFilter-prop">setPostHemiFilter</a></b>(const QVector3D &amp;<i>postHemiFilter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#postVertexColor-prop">setPostVertexColor</a></b>(float <i>postVertexColor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#usesMatteMap-prop">setUsesMatteMap</a></b>(bool <i>usesMatteMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#usesNormalMap-prop">setUsesNormalMap</a></b>(bool <i>usesNormalMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#uvOffset-prop">setUvOffset</a></b>(const QVector2D &amp;<i>uvOffset</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#alphaGain-prop">alphaGainChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#gltfYUp-prop">gltfYUpChanged</a></b>(<i>bool</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#innerAlpha-prop">innerAlphaChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#matteGain-prop">matteGainChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#matteInnerFilter-prop">matteInnerFilterChanged</a></b>(<i>QVector3D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#matteOuterFilter-prop">matteOuterFilterChanged</a></b>(<i>QVector3D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#normalDisturb-prop">normalDisturbChanged</a></b>(<i>QVector2D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#normalMapGain-prop">normalMapGainChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#normalScaling-prop">normalScalingChanged</a></b>(<i>QVector3D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#outerAlpha-prop">outerAlphaChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#postGain-prop">postGainChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#postHemiFilter-prop">postHemiFilterChanged</a></b>(<i>QVector3D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#postVertexColor-prop">postVertexColorChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#usesMatteMap-prop">usesMatteMapChanged</a></b>(<i>bool</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#usesNormalMap-prop">usesNormalMapChanged</a></b>(<i>bool</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2mattealphaproperties.html#uvOffset-prop">uvOffsetChanged</a></b>(<i>QVector2D</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$Iro2MatteAlphaProperties-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+</div>
+<!-- @@@Iro2MatteAlphaProperties -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$alphaGain-prop$$$alphaGain$$$setAlphaGainfloat$$$alphaGainChangedfloat -->
+<h3 class="fn" id="alphaGain-prop"><a name="alphaGain-prop"></a><span class="name">alphaGain</span> : <span class="type">float</span></h3>
+<p>Specifies the overall gain factor to apply to the alpha channel.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>alphaGain</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setAlphaGain</b></span>(float <i>alphaGain</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>alphaGainChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@alphaGain -->
+<!-- $$$gltfYUp-prop$$$gltfYUp$$$setGltfYUpbool$$$gltfYUpChangedbool -->
+<h3 class="fn" id="gltfYUp-prop"><a name="gltfYUp-prop"></a><span class="name">gltfYUp</span> : <span class="type">bool</span></h3>
+<p>Specifies whether this material should consider the Y and Z axis as being inverted.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>gltfYUp</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setGltfYUp</b></span>(bool <i>gltfYUp</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>gltfYUpChanged</b></span>(<i>bool</i>)</td></tr>
+</table></div>
+<!-- @@@gltfYUp -->
+<!-- $$$innerAlpha-prop$$$innerAlpha$$$setInnerAlphafloat$$$innerAlphaChangedfloat -->
+<h3 class="fn" id="innerAlpha-prop"><a name="innerAlpha-prop"></a><span class="name">innerAlpha</span> : <span class="type">float</span></h3>
+<p>Specifies the inner alpha factor to be applied.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>innerAlpha</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setInnerAlpha</b></span>(float <i>innerAlpha</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>innerAlphaChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@innerAlpha -->
+<!-- $$$matteGain-prop$$$matteGain$$$setMatteGainfloat$$$matteGainChangedfloat -->
+<h3 class="fn" id="matteGain-prop"><a name="matteGain-prop"></a><span class="name">matteGain</span> : <span class="type">float</span></h3>
+<p>Specifies the gain to apply to the matte color.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>matteGain</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMatteGain</b></span>(float <i>matteGain</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>matteGainChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@matteGain -->
+<!-- $$$matteInnerFilter-prop$$$matteInnerFilter$$$setMatteInnerFilterconstQVector3D&$$$matteInnerFilterChangedQVector3D -->
+<h3 class="fn" id="matteInnerFilter-prop"><a name="matteInnerFilter-prop"></a><span class="name">matteInnerFilter</span> : <span class="type">QVector3D</span></h3>
+<p>Specifies the inner color filter to be applied based on fresnel on the matte map lookup.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>matteInnerFilter</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMatteInnerFilter</b></span>(const QVector3D &amp;<i>matteInnerFilter</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>matteInnerFilterChanged</b></span>(<i>QVector3D</i>)</td></tr>
+</table></div>
+<!-- @@@matteInnerFilter -->
+<!-- $$$matteOuterFilter-prop$$$matteOuterFilter$$$setMatteOuterFilterconstQVector3D&$$$matteOuterFilterChangedQVector3D -->
+<h3 class="fn" id="matteOuterFilter-prop"><a name="matteOuterFilter-prop"></a><span class="name">matteOuterFilter</span> : <span class="type">QVector3D</span></h3>
+<p>Specifies the outer color filter to be applied based on fresnel on the matte map lookup.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>matteOuterFilter</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMatteOuterFilter</b></span>(const QVector3D &amp;<i>matteOuterFilter</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>matteOuterFilterChanged</b></span>(<i>QVector3D</i>)</td></tr>
+</table></div>
+<!-- @@@matteOuterFilter -->
+<!-- $$$normalDisturb-prop$$$normalDisturb$$$setNormalDisturbconstQVector2D&$$$normalDisturbChangedQVector2D -->
+<h3 class="fn" id="normalDisturb-prop"><a name="normalDisturb-prop"></a><span class="name">normalDisturb</span> : <span class="type">QVector2D</span></h3>
+<p>Specifies a disturbance factor that will be added to the normal</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector2D </td><td class="memItemRight bottomAlign"><span class="name"><b>normalDisturb</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNormalDisturb</b></span>(const QVector2D &amp;<i>normalDisturb</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>normalDisturbChanged</b></span>(<i>QVector2D</i>)</td></tr>
+</table></div>
+<!-- @@@normalDisturb -->
+<!-- $$$normalMapGain-prop$$$normalMapGain$$$setNormalMapGainfloat$$$normalMapGainChangedfloat -->
+<h3 class="fn" id="normalMapGain-prop"><a name="normalMapGain-prop"></a><span class="name">normalMapGain</span> : <span class="type">float</span></h3>
+<p>Specifies the strength of the normal map.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>normalMapGain</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNormalMapGain</b></span>(float <i>normalMapGain</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>normalMapGainChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@normalMapGain -->
+<!-- $$$normalScaling-prop$$$normalScaling$$$setNormalScalingconstQVector3D&$$$normalScalingChangedQVector3D -->
+<h3 class="fn" id="normalScaling-prop"><a name="normalScaling-prop"></a><span class="name">normalScaling</span> : <span class="type">QVector3D</span></h3>
+<p>Specifies a factor to be applied to the normal.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>normalScaling</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNormalScaling</b></span>(const QVector3D &amp;<i>normalScaling</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>normalScalingChanged</b></span>(<i>QVector3D</i>)</td></tr>
+</table></div>
+<!-- @@@normalScaling -->
+<!-- $$$outerAlpha-prop$$$outerAlpha$$$setOuterAlphafloat$$$outerAlphaChangedfloat -->
+<h3 class="fn" id="outerAlpha-prop"><a name="outerAlpha-prop"></a><span class="name">outerAlpha</span> : <span class="type">float</span></h3>
+<p>Specifies the outer alpha factor to be applied.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>outerAlpha</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setOuterAlpha</b></span>(float <i>outerAlpha</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>outerAlphaChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@outerAlpha -->
+<!-- $$$postGain-prop$$$postGain$$$setPostGainfloat$$$postGainChangedfloat -->
+<h3 class="fn" id="postGain-prop"><a name="postGain-prop"></a><span class="name">postGain</span> : <span class="type">float</span></h3>
+<p>Specifies the gain factor to be applied to the final result.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>postGain</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setPostGain</b></span>(float <i>postGain</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>postGainChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@postGain -->
+<!-- $$$postHemiFilter-prop$$$postHemiFilter$$$setPostHemiFilterconstQVector3D&$$$postHemiFilterChangedQVector3D -->
+<h3 class="fn" id="postHemiFilter-prop"><a name="postHemiFilter-prop"></a><span class="name">postHemiFilter</span> : <span class="type">QVector3D</span></h3>
+<p>Specifies the color to be applied to the lower hemisphere. It is multiplied like a negative diffuse light coming from below.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>postHemiFilter</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setPostHemiFilter</b></span>(const QVector3D &amp;<i>postHemiFilter</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>postHemiFilterChanged</b></span>(<i>QVector3D</i>)</td></tr>
+</table></div>
+<!-- @@@postHemiFilter -->
+<!-- $$$postVertexColor-prop$$$postVertexColor$$$setPostVertexColorfloat$$$postVertexColorChangedfloat -->
+<h3 class="fn" id="postVertexColor-prop"><a name="postVertexColor-prop"></a><span class="name">postVertexColor</span> : <span class="type">float</span></h3>
+<p>Specifies the factor which controls how much of the per vertex color we want to transmit.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>postVertexColor</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setPostVertexColor</b></span>(float <i>postVertexColor</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>postVertexColorChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@postVertexColor -->
+<!-- $$$usesMatteMap-prop$$$usesMatteMap$$$setUsesMatteMapbool$$$usesMatteMapChangedbool -->
+<h3 class="fn" id="usesMatteMap-prop"><a name="usesMatteMap-prop"></a><span class="name">usesMatteMap</span> : <span class="type">bool</span></h3>
+<p>Specifies whether we use a matte map or not.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>usesMatteMap</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setUsesMatteMap</b></span>(bool <i>usesMatteMap</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>usesMatteMapChanged</b></span>(<i>bool</i>)</td></tr>
+</table></div>
+<!-- @@@usesMatteMap -->
+<!-- $$$usesNormalMap-prop$$$usesNormalMap$$$setUsesNormalMapbool$$$usesNormalMapChangedbool -->
+<h3 class="fn" id="usesNormalMap-prop"><a name="usesNormalMap-prop"></a><span class="name">usesNormalMap</span> : <span class="type">bool</span></h3>
+<p>Specifies whether we use a normal map or not.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>usesNormalMap</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setUsesNormalMap</b></span>(bool <i>usesNormalMap</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>usesNormalMapChanged</b></span>(<i>bool</i>)</td></tr>
+</table></div>
+<!-- @@@usesNormalMap -->
+<!-- $$$uvOffset-prop$$$uvOffset$$$setUvOffsetconstQVector2D&$$$uvOffsetChangedQVector2D -->
+<h3 class="fn" id="uvOffset-prop"><a name="uvOffset-prop"></a><span class="name">uvOffset</span> : <span class="type">QVector2D</span></h3>
+<p>Applies an offset to texture lookup.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector2D </td><td class="memItemRight bottomAlign"><span class="name"><b>uvOffset</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setUvOffset</b></span>(const QVector2D &amp;<i>uvOffset</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>uvOffsetChanged</b></span>(<i>QVector2D</i>)</td></tr>
+</table></div>
+<!-- @@@uvOffset -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

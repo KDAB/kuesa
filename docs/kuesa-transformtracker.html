@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- transformtracker.cpp -->
+  <title>TransformTracker Class | Kuesa Runtime 1.3</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<li>TransformTracker</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">TransformTracker Class</h1>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesa">Kuesa</a>::TransformTracker</span>
+<!-- $$$TransformTracker-brief -->
+<p>TransformTracker allows watching a transform for change and computing a projected screen position given a window size and a camera. <a href="#details">More...</a></p>
+<!-- @@@TransformTracker -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;TransformTracker&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.3</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-transformtracker.html">TransformTracker</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-kuesanode.html">Kuesa::KuesaNode</a></td></tr></table></div><p>This class was introduced in Kuesa 1.3.</p>
+<ul>
+<li><a href="kuesa-transformtracker-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary">
+<tr><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-transformtracker.html#camera-prop">camera</a></b> : Qt3DCore::QEntity*</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#matrix-prop">matrix</a></b> : QMatrix4x4</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#name-prop">name</a></b> : QString</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#rotation-prop">rotation</a></b> : QQuaternion</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#rotationX-prop">rotationX</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#rotationY-prop">rotationY</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#rotationZ-prop">rotationZ</a></b> : float</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-transformtracker.html#scale-prop">scale</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#scale3D-prop">scale3D</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#screenPosition-prop">screenPosition</a></b> : const QPointF</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#screenSize-prop">screenSize</a></b> : QSize</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#translation-prop">translation</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#viewportRect-prop">viewportRect</a></b> : QRectF</li>
+<li class="fn"><b><a href="kuesa-transformtracker.html#worldMatrix-prop">worldMatrix</a></b> : const QMatrix4x4</li>
+</ul>
+</td></tr>
+</table></div>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DCore::QEntity *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#camera-prop">camera</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMatrix4x4 </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#matrix-prop">matrix</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#name-prop">name</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotation-prop">rotation</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotationX-prop">rotationX</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotationY-prop">rotationY</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotationZ-prop">rotationZ</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#scale-prop">scale</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#scale3D-prop">scale3D</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPointF </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#screenPosition-prop">screenPosition</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSize </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#screenSize-prop">screenSize</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#translation-prop">translation</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#viewportRect-prop">viewportRect</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMatrix4x4 </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#worldMatrix-prop">worldMatrix</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#camera-prop">setCamera</a></b>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#matrix-prop">setMatrix</a></b>(const QMatrix4x4 &amp;<i>matrix</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#name-prop">setName</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotation-prop">setRotation</a></b>(const QQuaternion &amp;<i>rotation</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotationX-prop">setRotationX</a></b>(float <i>rotationX</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotationY-prop">setRotationY</a></b>(float <i>rotationY</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotationZ-prop">setRotationZ</a></b>(float <i>rotationZ</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#scale-prop">setScale</a></b>(float <i>scale</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#scale3D-prop">setScale3D</a></b>(const QVector3D &amp;<i>scale3D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#screenSize-prop">setScreenSize</a></b>(const QSize &amp;<i>screenSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#translation-prop">setTranslation</a></b>(const QVector3D &amp;<i>translation</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#viewportRect-prop">setViewportRect</a></b>(qreal <i>x</i>, qreal <i>y</i>, qreal <i>width</i>, qreal <i>height</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#viewportRect-prop">setViewportRect</a></b>(const QRectF &amp;<i>viewportRect</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#camera-prop">cameraChanged</a></b>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#matrix-prop">matrixChanged</a></b>(const QMatrix4x4 &amp;<i>matrix</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#name-prop">nameChanged</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotation-prop">rotationChanged</a></b>(const QQuaternion &amp;<i>rotation</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotationX-prop">rotationXChanged</a></b>(float <i>rotationX</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotationY-prop">rotationYChanged</a></b>(float <i>rotationY</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#rotationZ-prop">rotationZChanged</a></b>(float <i>rotationZ</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#scale3D-prop">scale3DChanged</a></b>(const QVector3D &amp;<i>scale</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#scale-prop">scaleChanged</a></b>(float <i>scale</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#screenPosition-prop">screenPositionChanged</a></b>(const QPointF &amp;<i>screenPosition</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#screenSize-prop">screenSizeChanged</a></b>(const QSize &amp;<i>screenSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#translation-prop">translationChanged</a></b>(const QVector3D &amp;<i>translation</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#viewportRect-prop">viewportRectChanged</a></b>(QRectF <i>viewportRect</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-transformtracker.html#worldMatrix-prop">worldMatrixChanged</a></b>(const QMatrix4x4 &amp;<i>worldMatrix</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$TransformTracker-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>TransformTracker allows watching a transform for change and computing a projected screen position given a window size and a camera.</p>
+<p>This is especially useful to place 2D content based on a 3D position.</p>
+<pre class="cpp plain">
+ Kuesa::SceneEntity *sceneEntity = new Kuesa::SceneEntity();
+ Kuesa::TransformTracker *tracker = new Kuesa::TransformTracker();
+ Qt3DRender::QCamera *camera = new Qt3DRender::Camera();
+
+
+ tracker-&gt;setSceneEntity(sceneEntity);
+ tracker-&gt;setName(QStringLiteral(&quot;MyTransform&quot;);
+ tracker-&gt;setCamera(camera);
+ tracker-&gt;setScreenSize({512, 512});
+
+ QObject::connect(tracker, &amp;Kuesa::TransformTracker::screenPositionChanged,
+                  this, [this] (const QPointF &amp;screenPosition) {
+                     // Reacts to new position
+                     ..&#x2e;&#x2e;
+                  });
+</pre>
+</div>
+<!-- @@@TransformTracker -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$camera-prop$$$camera$$$setCameraQt3DCore::QEntity*$$$cameraChangedQt3DCore::QEntity* -->
+<h3 class="fn" id="camera-prop"><a name="camera-prop"></a><span class="name">camera</span> : <span class="type">Qt3DCore::QEntity</span>*</h3>
+<p>Holds the camera entity from which we should compute the screen position.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Qt3DCore::QEntity *</td><td class="memItemRight bottomAlign"><span class="name"><b>camera</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setCamera</b></span>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>cameraChanged</b></span>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
+</table></div>
+<!-- @@@camera -->
+<!-- $$$matrix-prop$$$matrix$$$setMatrixconstQMatrix4x4&$$$matrixChangedconstQMatrix4x4& -->
+<h3 class="fn" id="matrix-prop"><a name="matrix-prop"></a><span class="name">matrix</span> : <span class="type">QMatrix4x4</span></h3>
+<p>Holds the local transformation matrix associated to the tracker's referenced QTransform instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QMatrix4x4 </td><td class="memItemRight bottomAlign"><span class="name"><b>matrix</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMatrix</b></span>(const QMatrix4x4 &amp;<i>matrix</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>matrixChanged</b></span>(const QMatrix4x4 &amp;<i>matrix</i>)</td></tr>
+</table></div>
+<!-- @@@matrix -->
+<!-- $$$name-prop$$$name$$$setNameconstQString&$$$nameChangedconstQString& -->
+<h3 class="fn" id="name-prop"><a name="name-prop"></a><span class="name">name</span> : <span class="type">QString</span></h3>
+<p>Holds the name of the Qt3DCore::QTransform instance to retrieve from the <a href="qml-sceneentity.html">Kuesa::SceneEntity</a>.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>name</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setName</b></span>(const QString &amp;<i>name</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>nameChanged</b></span>(const QString &amp;<i>name</i>)</td></tr>
+</table></div>
+<!-- @@@name -->
+<!-- $$$rotation-prop$$$rotation$$$setRotationconstQQuaternion&$$$rotationChangedconstQQuaternion& -->
+<h3 class="fn" id="rotation-prop"><a name="rotation-prop"></a><span class="name">rotation</span> : <span class="type">QQuaternion</span></h3>
+<p>Holds the local rotation associated to the tracker's referenced QTransform instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><span class="name"><b>rotation</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setRotation</b></span>(const QQuaternion &amp;<i>rotation</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>rotationChanged</b></span>(const QQuaternion &amp;<i>rotation</i>)</td></tr>
+</table></div>
+<!-- @@@rotation -->
+<!-- $$$rotationX-prop$$$rotationX$$$setRotationXfloat$$$rotationXChangedfloat -->
+<h3 class="fn" id="rotationX-prop"><a name="rotationX-prop"></a><span class="name">rotationX</span> : <span class="type">float</span></h3>
+<p>Holds the local x rotation (euler angle) associated to the tracker's referenced QTransform instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>rotationX</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setRotationX</b></span>(float <i>rotationX</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>rotationXChanged</b></span>(float <i>rotationX</i>)</td></tr>
+</table></div>
+<!-- @@@rotationX -->
+<!-- $$$rotationY-prop$$$rotationY$$$setRotationYfloat$$$rotationYChangedfloat -->
+<h3 class="fn" id="rotationY-prop"><a name="rotationY-prop"></a><span class="name">rotationY</span> : <span class="type">float</span></h3>
+<p>Holds the local y rotation (euler angle) associated to the tracker's referenced QTransform instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>rotationY</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setRotationY</b></span>(float <i>rotationY</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>rotationYChanged</b></span>(float <i>rotationY</i>)</td></tr>
+</table></div>
+<!-- @@@rotationY -->
+<!-- $$$rotationZ-prop$$$rotationZ$$$setRotationZfloat$$$rotationZChangedfloat -->
+<h3 class="fn" id="rotationZ-prop"><a name="rotationZ-prop"></a><span class="name">rotationZ</span> : <span class="type">float</span></h3>
+<p>Holds the local z rotation (euler angle) associated to the tracker's referenced QTransform instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>rotationZ</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setRotationZ</b></span>(float <i>rotationZ</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>rotationZChanged</b></span>(float <i>rotationZ</i>)</td></tr>
+</table></div>
+<!-- @@@rotationZ -->
+<!-- $$$scale-prop$$$scale$$$setScalefloat$$$scaleChangedfloat -->
+<h3 class="fn" id="scale-prop"><a name="scale-prop"></a><span class="name">scale</span> : <span class="type">float</span></h3>
+<p>Holds the local uniform scale associated to the tracker's referenced QTransform instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>scale</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setScale</b></span>(float <i>scale</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>scaleChanged</b></span>(float <i>scale</i>)</td></tr>
+</table></div>
+<!-- @@@scale -->
+<!-- $$$scale3D-prop$$$scale3D$$$setScale3DconstQVector3D&$$$scale3DChangedconstQVector3D& -->
+<h3 class="fn" id="scale3D-prop"><a name="scale3D-prop"></a><span class="name">scale3D</span> : <span class="type">QVector3D</span></h3>
+<p>Holds the local 3D scale associated to the tracker's referenced QTransform instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>scale3D</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setScale3D</b></span>(const QVector3D &amp;<i>scale3D</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>scale3DChanged</b></span>(const QVector3D &amp;<i>scale</i>)</td></tr>
+</table></div>
+<!-- @@@scale3D -->
+<!-- $$$screenPosition-prop$$$screenPosition$$$screenPositionChangedconstQPointF& -->
+<h3 class="fn" id="screenPosition-prop"><a name="screenPosition-prop"></a><span class="name">screenPosition</span> : const <span class="type">QPointF</span></h3>
+<p>Holds the 2D screen position computed from the transformation in world space obtained from the tracker's referenced Transform, the camera, the sceneSize and <a href="kuesa-transformtracker.html#viewportRect-prop">viewportRect</a>.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QPointF </td><td class="memItemRight bottomAlign"><span class="name"><b>screenPosition</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>screenPositionChanged</b></span>(const QPointF &amp;<i>screenPosition</i>)</td></tr>
+</table></div>
+<!-- @@@screenPosition -->
+<!-- $$$screenSize-prop$$$screenSize$$$setScreenSizeconstQSize&$$$screenSizeChangedconstQSize& -->
+<h3 class="fn" id="screenSize-prop"><a name="screenSize-prop"></a><span class="name">screenSize</span> : <span class="type">QSize</span></h3>
+<p>Holds the size of the area within which we should compute screen positions. This would usually be the size of the window or the size of the sub view within the window.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QSize </td><td class="memItemRight bottomAlign"><span class="name"><b>screenSize</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setScreenSize</b></span>(const QSize &amp;<i>screenSize</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>screenSizeChanged</b></span>(const QSize &amp;<i>screenSize</i>)</td></tr>
+</table></div>
+<!-- @@@screenSize -->
+<!-- $$$translation-prop$$$translation$$$setTranslationconstQVector3D&$$$translationChangedconstQVector3D& -->
+<h3 class="fn" id="translation-prop"><a name="translation-prop"></a><span class="name">translation</span> : <span class="type">QVector3D</span></h3>
+<p>Holds the local translation associated to the tracker's referenced QTransform instance.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>translation</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setTranslation</b></span>(const QVector3D &amp;<i>translation</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>translationChanged</b></span>(const QVector3D &amp;<i>translation</i>)</td></tr>
+</table></div>
+<!-- @@@translation -->
+<!-- $$$viewportRect-prop$$$viewportRect$$$setViewportRectconstQRectF&$$$setViewportRectqrealqrealqrealqreal$$$viewportRectChangedQRectF -->
+<h3 class="fn" id="viewportRect-prop"><a name="viewportRect-prop"></a><span class="name">viewportRect</span> : <span class="type">QRectF</span></h3>
+<p>Holds the normalized viewport rectangle defining the area into which screen positions should be computed. If unspecified QRectF(0.0f, 0.0f, 1.0f, 1.0f) will be used.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QRectF </td><td class="memItemRight bottomAlign"><span class="name"><b>viewportRect</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setViewportRect</b></span>(const QRectF &amp;<i>viewportRect</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setViewportRect</b></span>(qreal <i>x</i>, qreal <i>y</i>, qreal <i>width</i>, qreal <i>height</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>viewportRectChanged</b></span>(QRectF <i>viewportRect</i>)</td></tr>
+</table></div>
+<!-- @@@viewportRect -->
+<!-- $$$worldMatrix-prop$$$worldMatrix$$$worldMatrixChangedconstQMatrix4x4& -->
+<h3 class="fn" id="worldMatrix-prop"><a name="worldMatrix-prop"></a><span class="name">worldMatrix</span> : const <span class="type">QMatrix4x4</span></h3>
+<p>Holds the world transformation matrix associated to the tracker's referenced QTransform instance.</p>
+<p>This property is readonly.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QMatrix4x4 </td><td class="memItemRight bottomAlign"><span class="name"><b>worldMatrix</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>worldMatrixChanged</b></span>(const QMatrix4x4 &amp;<i>worldMatrix</i>)</td></tr>
+</table></div>
+<!-- @@@worldMatrix -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

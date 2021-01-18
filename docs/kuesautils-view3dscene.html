@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- view3dscene.cpp -->
+  <title>View3DScene Class | Kuesa Runtime 1.3</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<li>View3DScene</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">View3DScene Class</h1>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesautils">KuesaUtils</a>::View3DScene</span>
+<!-- $$$View3DScene-brief -->
+<p>View3DScene is a convenience wrapper aiming at simplifying the set up of a 3D scene and the loading of a glTF 2 scene file. <a href="#details">More...</a></p>
+<!-- @@@View3DScene -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;View3DScene&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.3</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-view3dscene.html">View3DScene</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-sceneentity.html">Kuesa::SceneEntity</a></td></tr></table></div><p>This class was introduced in Kuesa 1.3.</p>
+<ul>
+<li><a href="kuesautils-view3dscene-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary">
+<tr><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesautils-view3dscene.html#activeScene-prop">activeScene</a></b> : KuesaUtils::SceneConfiguration*</li>
+<li class="fn"><b><a href="kuesautils-view3dscene.html#asynchronous-prop">asynchronous</a></b> : bool</li>
+<li class="fn"><b><a href="kuesautils-view3dscene.html#cameraName-prop">cameraName</a></b> : const QString</li>
+<li class="fn"><b><a href="kuesautils-view3dscene.html#frameGraph-prop">frameGraph</a></b> : Kuesa::ForwardRenderer* const</li>
+<li class="fn"><b><a href="kuesautils-view3dscene.html#importer-prop">importer</a></b> : Kuesa::GLTF2Importer* const</li>
+<li class="fn"><b><a href="kuesautils-view3dscene.html#loaded-prop">loaded</a></b> : const bool</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesautils-view3dscene.html#ready-prop">ready</a></b> : const bool</li>
+<li class="fn"><b><a href="kuesautils-view3dscene.html#reflectionPlaneName-prop">reflectionPlaneName</a></b> : QString</li>
+<li class="fn"><b><a href="kuesautils-view3dscene.html#screenSize-prop">screenSize</a></b> : QSize</li>
+<li class="fn"><b><a href="kuesautils-view3dscene.html#showDebugOverlay-prop">showDebugOverlay</a></b> : bool</li>
+<li class="fn"><b><a href="kuesautils-view3dscene.html#source-prop">source</a></b> : const QUrl</li>
+</ul>
+</td></tr>
+</table></div>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> KuesaUtils::SceneConfiguration *</td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#activeScene-prop">activeScene</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> const std::vector&lt;Kuesa::AnimationPlayer *&gt; &amp;</td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#animationPlayers">animationPlayers</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#asynchronous-prop">asynchronous</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#cameraName-prop">cameraName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::ForwardRenderer *</td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#frameGraph-prop">frameGraph</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::GLTF2Importer *</td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#importer-prop">importer</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#loaded-prop">isLoaded</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#ready-prop">isReady</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> const std::vector&lt;Kuesa::PlaceholderTracker *&gt; &amp;</td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#placeholderTrackers">placeholderTrackers</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#reflectionPlaneName-prop">reflectionPlaneName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSize </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#screenSize-prop">screenSize</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#showDebugOverlay-prop">showDebugOverlay</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QUrl </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#source-prop">source</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> const std::vector&lt;Kuesa::TransformTracker *&gt; &amp;</td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#transformTrackers">transformTrackers</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#gotoEnd">gotoEnd</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#gotoNormalizedTime">gotoNormalizedTime</a></b>(float <i>time</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#gotoStart">gotoStart</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#restart">restart</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#setActiveScene">setActiveScene</a></b>(KuesaUtils::SceneConfiguration *<i>scene</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#asynchronous-prop">setAsynchronous</a></b>(bool <i>asynchronous</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#reflectionPlaneName-prop">setReflectionPlaneName</a></b>(const QString &amp;<i>reflectionPlaneName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#screenSize-prop">setScreenSize</a></b>(const QSize &amp;<i>screenSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#showDebugOverlay-prop">setShowDebugOverlay</a></b>(bool <i>showDebugOverlay</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#start">start</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#stop">stop</a></b>()</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#activeScene-prop">activeSceneChanged</a></b>(KuesaUtils::SceneConfiguration *<i>activeScene</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#asynchronous-prop">asynchronousChanged</a></b>(bool <i>asynchronous</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#cameraName-prop">cameraNameChanged</a></b>(const QString &amp;<i>cameraName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#loaded-prop">loadedChanged</a></b>(bool <i>loaded</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#ready-prop">readyChanged</a></b>(bool <i>ready</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#reflectionPlaneName-prop">reflectionPlaneNameChanged</a></b>(const QString &amp;<i>reflectionPlaneName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#screenSize-prop">screenSizeChanged</a></b>(const QSize &amp;<i>screenSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#showDebugOverlay-prop">showDebugOverlayChanged</a></b>(bool <i>showDebugOverlay</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-view3dscene.html#source-prop">sourceChanged</a></b>(const QUrl &amp;<i>source</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$View3DScene-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>View3DScene is a convenience wrapper aiming at simplifying the set up of a 3D scene and the loading of a glTF 2 scene file.</p>
+<p>It is a subclass of <a href="qml-sceneentity.html">Kuesa::SceneEntity</a> which grants access to the various asset collections. Aditionnaly it contains a <a href="qml-gltf2importer.html">Kuesa::GLTF2Importer</a> and sets up a <a href="qml-forwardrenderer.html">Kuesa::ForwardRenderer</a> framegraph.</p>
+<p>The property <a href="qml-view3dscene.html#ready-prop">KuesaUtils::View3DScene::ready</a> and signal <a href="kuesautils-view3dscene.html#ready-prop">View3DScene::readyChanged</a> can be used to detect when the scene is visible on screen and therefore synchronize with other aspect of your application.</p>
+<p>When used in conjunction with <a href="qml-sceneconfiguration.html">KuesaUtils::SceneConfiguration</a> this class makes it convenient to set up a Kuesa renderer that can easily load and unload scenes.</p>
+<p>To set the scene to be loaded by the View3DScene, an instance of <a href="qml-sceneconfiguration.html">KuesaUtils::SceneConfiguration</a> must be set as the <a href="kuesautils-view3dscene.html#activeScene-prop">activeScene</a> property.</p>
+<p><a href="qml-animationplayer.html">Kuesa::AnimationPlayer</a> and <a href="qml-transformtracker.html">Kuesa::TransformTracker</a> instances defined on the <a href="kuesautils-view3dscene.html#activeScene-prop">activeScene</a> will be added. Additionally, the View3DScene will take care of population the camera, <a href="kuesautils-view3dscene.html#screenSize-prop">screenSize</a> and <a href="kuesa-tonemapping-example.html#sceneentity">sceneEntity</a> properties.</p>
+<p>Furthermore, animation playback and control is abstracted by convenience methods on the View3DScene instance.</p>
+</div>
+<!-- @@@View3DScene -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$activeScene-prop$$$activeScene$$$setActiveSceneKuesaUtils::SceneConfiguration*$$$activeSceneChangedKuesaUtils::SceneConfiguration* -->
+<h3 class="fn" id="activeScene-prop"><a name="activeScene-prop"></a><span class="name">activeScene</span> : <span class="type"><a href="kuesautils-sceneconfiguration.html">KuesaUtils::SceneConfiguration</a></span>*</h3>
+<p>If this points to a valid <a href="qml-sceneconfiguration.html">KuesaUtils::SceneConfiguration</a> instance, the <a href="qml-view3dscene.html#source-prop">KuesaUtils::View3DScene::source</a>, <a href="qml-view3dscene.html#cameraName-prop">KuesaUtils::View3DScene::cameraName</a> as well as the <a href="qml-animationplayer.html">Kuesa::AnimationPlayer</a> and <a href="qml-transformtracker.html">Kuesa::TransformTracker</a> instances will be automatically set based on the values provided by the <a href="kuesautils-sceneconfiguration.html">SceneConfiguration</a>. This a more convenient way of specifying content when dealing with multiple scenes.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> KuesaUtils::SceneConfiguration *</td><td class="memItemRight bottomAlign"><span class="name"><b>activeScene</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesautils-view3dscene.html#setActiveScene">setActiveScene</a></b></span>(KuesaUtils::SceneConfiguration *<i>scene</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>activeSceneChanged</b></span>(KuesaUtils::SceneConfiguration *<i>activeScene</i>)</td></tr>
+</table></div>
+<!-- @@@activeScene -->
+<!-- $$$asynchronous-prop$$$asynchronous$$$setAsynchronousbool$$$asynchronousChangedbool -->
+<h3 class="fn" id="asynchronous-prop"><a name="asynchronous-prop"></a><span class="name">asynchronous</span> : <span class="type">bool</span></h3>
+<p>If true, glTF parsing is performed in a non blocking manner from a secondary thread. This is false by default.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>asynchronous</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setAsynchronous</b></span>(bool <i>asynchronous</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>asynchronousChanged</b></span>(bool <i>asynchronous</i>)</td></tr>
+</table></div>
+<!-- @@@asynchronous -->
+<!-- $$$cameraName-prop$$$cameraName$$$cameraNameChangedconstQString& -->
+<h3 class="fn" id="cameraName-prop"><a name="cameraName-prop"></a><span class="name">cameraName</span> : const <span class="type">QString</span></h3>
+<p>This property holds the name of the camera asset that should be used to view the scene. If the name references a valid camera, the camera will automatically be set on the <a href="qml-forwardrenderer.html">ForwardRenderer</a> <a href="kuesautils-view3dscene.html#frameGraph-prop">frameGraph</a> and other internal assets such as <a href="qml-transformtracker.html">Kuesa::TransformTracker</a>.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>cameraName</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>cameraNameChanged</b></span>(const QString &amp;<i>cameraName</i>)</td></tr>
+</table></div>
+<!-- @@@cameraName -->
+<!-- $$$frameGraph-prop$$$frameGraph -->
+<h3 class="fn" id="frameGraph-prop"><a name="frameGraph-prop"></a><span class="name">frameGraph</span> : <span class="type"><a href="kuesa-forwardrenderer.html">Kuesa::ForwardRenderer</a></span>* const</h3>
+<p>Points to the <a href="qml-forwardrenderer.html">Kuesa::ForwardRenderer</a> frame graph instance wrapped around by the <a href="kuesautils-view3dscene.html">View3DScene</a>.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::ForwardRenderer *</td><td class="memItemRight bottomAlign"><span class="name"><b>frameGraph</b></span>() const</td></tr>
+</table></div>
+<!-- @@@frameGraph -->
+<!-- $$$importer-prop$$$importer -->
+<h3 class="fn" id="importer-prop"><a name="importer-prop"></a><span class="name">importer</span> : <span class="type"><a href="kuesa-gltf2importer.html">Kuesa::GLTF2Importer</a></span>* const</h3>
+<p>Points to the <a href="qml-gltf2importer.html">Kuesa::GLTF2Importer</a> instance wrapped around by the <a href="kuesautils-view3dscene.html">View3DScene</a>.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::GLTF2Importer *</td><td class="memItemRight bottomAlign"><span class="name"><b>importer</b></span>() const</td></tr>
+</table></div>
+<!-- @@@importer -->
+<!-- $$$loaded-prop$$$isLoaded$$$loadedChangedbool -->
+<h3 class="fn" id="loaded-prop"><a name="loaded-prop"></a><span class="name">loaded</span> : const <span class="type">bool</span></h3>
+<p>This is true once the glTF file has been properly loaded. The scene might not be visible on screen when this becomes true.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>isLoaded</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>loadedChanged</b></span>(bool <i>loaded</i>)</td></tr>
+</table></div>
+<!-- @@@loaded -->
+<!-- $$$ready-prop$$$isReady$$$readyChangedbool -->
+<h3 class="fn" id="ready-prop"><a name="ready-prop"></a><span class="name">ready</span> : const <span class="type">bool</span></h3>
+<p>This is true once the glTF file has been properly loaded and that Qt 3D GPU resources have been succesfully loaded onto the GPU. The scene should be visible on screen when this becomes true.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>isReady</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>readyChanged</b></span>(bool <i>ready</i>)</td></tr>
+</table></div>
+<!-- @@@ready -->
+<!-- $$$reflectionPlaneName-prop$$$reflectionPlaneName$$$setReflectionPlaneNameconstQString&$$$reflectionPlaneNameChangedconstQString& -->
+<h3 class="fn" id="reflectionPlaneName-prop"><a name="reflectionPlaneName-prop"></a><span class="name">reflectionPlaneName</span> : <span class="type">QString</span></h3>
+<p>If non empty, the <a href="kuesautils-view3dscene.html">View3DScene</a> will try to load the <a href="qml-reflectionplane.html">Kuesa::ReflectionPlane</a> matching the name from the collection and set it on the <a href="qml-forwardrenderer.html">ForwardRenderer</a> framegraph views.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>reflectionPlaneName</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setReflectionPlaneName</b></span>(const QString &amp;<i>reflectionPlaneName</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>reflectionPlaneNameChanged</b></span>(const QString &amp;<i>reflectionPlaneName</i>)</td></tr>
+</table></div>
+<!-- @@@reflectionPlaneName -->
+<!-- $$$screenSize-prop$$$screenSize$$$setScreenSizeconstQSize&$$$screenSizeChangedconstQSize& -->
+<h3 class="fn" id="screenSize-prop"><a name="screenSize-prop"></a><span class="name">screenSize</span> : <span class="type">QSize</span></h3>
+<p>Holds the size in pixels of the rendered area. When set, this automatically updates the <a href="qml-transformtracker.html">Kuesa::TransformTracker</a> instances referenced by the <a href="kuesautils-view3dscene.html">View3DScene</a> with the new value for proper coodinate projection.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QSize </td><td class="memItemRight bottomAlign"><span class="name"><b>screenSize</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setScreenSize</b></span>(const QSize &amp;<i>screenSize</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>screenSizeChanged</b></span>(const QSize &amp;<i>screenSize</i>)</td></tr>
+</table></div>
+<!-- @@@screenSize -->
+<!-- $$$showDebugOverlay-prop$$$showDebugOverlay$$$setShowDebugOverlaybool$$$showDebugOverlayChangedbool -->
+<h3 class="fn" id="showDebugOverlay-prop"><a name="showDebugOverlay-prop"></a><span class="name">showDebugOverlay</span> : <span class="type">bool</span></h3>
+<p>Specifies whether the Qt 3D debug overlay should be displayed.</p>
+<p><b>Note: </b>this only works when Qt is running with its OpenGL backend.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>showDebugOverlay</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setShowDebugOverlay</b></span>(bool <i>showDebugOverlay</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>showDebugOverlayChanged</b></span>(bool <i>showDebugOverlay</i>)</td></tr>
+</table></div>
+<!-- @@@showDebugOverlay -->
+<!-- $$$source-prop$$$source$$$sourceChangedconstQUrl& -->
+<h3 class="fn" id="source-prop"><a name="source-prop"></a><span class="name">source</span> : const <span class="type">QUrl</span></h3>
+<p>This property holds the source of the glTF file to be loaded.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QUrl </td><td class="memItemRight bottomAlign"><span class="name"><b>source</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>sourceChanged</b></span>(const QUrl &amp;<i>source</i>)</td></tr>
+</table></div>
+<!-- @@@source -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$gotoEnd[overload1]$$$gotoEnd -->
+<h3 class="fn" id="gotoEnd"><a name="gotoEnd"></a><code>[slot] </code><span class="type">void</span> View3DScene::<span class="name">gotoEnd</span>()</h3>
+<p>Set the normalized time of all the <a href="qml-animationplayer.html">Kuesa::AnimationPlayer</a> instances referenced by the <a href="kuesautils-view3dscene.html">View3DScene</a> instance to 1.</p>
+<!-- @@@gotoEnd -->
+<!-- $$$gotoNormalizedTime[overload1]$$$gotoNormalizedTimefloat -->
+<h3 class="fn" id="gotoNormalizedTime"><a name="gotoNormalizedTime"></a><code>[slot] </code><span class="type">void</span> View3DScene::<span class="name">gotoNormalizedTime</span>(<span class="type">float</span> <i>time</i>)</h3>
+<p>Set the normalized time of all the <a href="qml-animationplayer.html">Kuesa::AnimationPlayer</a> instances referenced by the <a href="kuesautils-view3dscene.html">View3DScene</a> instance to <i>time</i>.</p>
+<!-- @@@gotoNormalizedTime -->
+<!-- $$$gotoStart[overload1]$$$gotoStart -->
+<h3 class="fn" id="gotoStart"><a name="gotoStart"></a><code>[slot] </code><span class="type">void</span> View3DScene::<span class="name">gotoStart</span>()</h3>
+<p>Set the normalized time of all the <a href="qml-animationplayer.html">Kuesa::AnimationPlayer</a> instances referenced by the <a href="kuesautils-view3dscene.html">View3DScene</a> instance to 0.</p>
+<!-- @@@gotoStart -->
+<!-- $$$restart[overload1]$$$restart -->
+<h3 class="fn" id="restart"><a name="restart"></a><code>[slot] </code><span class="type">void</span> View3DScene::<span class="name">restart</span>()</h3>
+<p>Restarts all the <a href="qml-animationplayer.html">Kuesa::AnimationPlayer</a> instances referenced by the <a href="kuesautils-view3dscene.html">View3DScene</a> instance.</p>
+<p><b>See also </b><a href="kuesautils-view3dscene.html#stop">View3DScene::stop</a> and <a href="kuesautils-view3dscene.html#start">View3DScene::start</a>.</p>
+<!-- @@@restart -->
+<!-- $$$setActiveScene -->
+<h3 class="fn" id="setActiveScene"><a name="setActiveScene"></a><code>[slot] </code><span class="type">void</span> View3DScene::<span class="name">setActiveScene</span>(<span class="type"><a href="kuesautils-sceneconfiguration.html">KuesaUtils::SceneConfiguration</a></span> *<i>scene</i>)</h3>
+<p>Sets the active scene configuration to <i>scene</i>. If <i>scene</i> is a valid non null instance, the <a href="qml-view3dscene.html#source-prop">KuesaUtils::View3DScene::source</a>, <a href="qml-view3dscene.html#cameraName-prop">KuesaUtils::View3DScene::cameraName</a> as well as the <a href="qml-animationplayer.html">Kuesa::AnimationPlayer</a> and <a href="qml-transformtracker.html">Kuesa::TransformTracker</a> instances will be automatically set based on the values provided by the <a href="kuesautils-sceneconfiguration.html">SceneConfiguration</a>. If null, all of these will be cleared.</p>
+<p><b>Note: </b>Setter function for property <a href="kuesautils-view3dscene.html#activeScene-prop">activeScene</a>. </p>
+<p><b>See also </b><a href="kuesautils-view3dscene.html#activeScene-prop">activeScene</a>().</p>
+<!-- @@@setActiveScene -->
+<!-- $$$start[overload1]$$$start -->
+<h3 class="fn" id="start"><a name="start"></a><code>[slot] </code><span class="type">void</span> View3DScene::<span class="name">start</span>()</h3>
+<p>Starts all the <a href="qml-animationplayer.html">Kuesa::AnimationPlayer</a> instances referenced by the <a href="kuesautils-view3dscene.html">View3DScene</a> instance.</p>
+<p><b>See also </b><a href="kuesautils-view3dscene.html#stop">View3DScene::stop</a> and <a href="kuesautils-view3dscene.html#restart">View3DScene::restart</a>.</p>
+<!-- @@@start -->
+<!-- $$$stop[overload1]$$$stop -->
+<h3 class="fn" id="stop"><a name="stop"></a><code>[slot] </code><span class="type">void</span> View3DScene::<span class="name">stop</span>()</h3>
+<p>Stops all the <a href="qml-animationplayer.html">Kuesa::AnimationPlayer</a> instances referenced by the <a href="kuesautils-view3dscene.html">View3DScene</a> instance.</p>
+<p><b>See also </b><a href="kuesautils-view3dscene.html#start">View3DScene::start</a>.</p>
+<!-- @@@stop -->
+<!-- $$$animationPlayers[overload1]$$$animationPlayers -->
+<h3 class="fn" id="animationPlayers"><a name="animationPlayers"></a>const <span class="type">std::vector</span>&lt;<span class="type"><a href="kuesa-animationplayer.html">Kuesa::AnimationPlayer</a></span> *&gt; &amp;View3DScene::<span class="name">animationPlayers</span>() const</h3>
+<p>Returns the <a href="qml-animationplayer.html">Kuesa::AnimationPlayer</a> instances referenced by the <a href="kuesautils-view3dscene.html">View3DScene</a> instance.</p>
+<!-- @@@animationPlayers -->
+<!-- $$$placeholderTrackers[overload1]$$$placeholderTrackers -->
+<h3 class="fn" id="placeholderTrackers"><a name="placeholderTrackers"></a>const <span class="type">std::vector</span>&lt;<span class="type"><a href="kuesa-placeholdertracker.html">Kuesa::PlaceholderTracker</a></span> *&gt; &amp;View3DScene::<span class="name">placeholderTrackers</span>() const</h3>
+<p>Returns the <a href="qml-placeholdertracker.html">Kuesa::PlaceholderTracker</a> instances referenced by the <a href="kuesautils-view3dscene.html">View3DScene</a> instance.</p>
+<!-- @@@placeholderTrackers -->
+<!-- $$$transformTrackers[overload1]$$$transformTrackers -->
+<h3 class="fn" id="transformTrackers"><a name="transformTrackers"></a>const <span class="type">std::vector</span>&lt;<span class="type"><a href="kuesa-transformtracker.html">Kuesa::TransformTracker</a></span> *&gt; &amp;View3DScene::<span class="name">transformTrackers</span>() const</h3>
+<p>Returns the <a href="qml-transformtracker.html">Kuesa::TransformTracker</a> instances referenced by the <a href="kuesautils-view3dscene.html">View3DScene</a> instance.</p>
+<!-- @@@transformTrackers -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

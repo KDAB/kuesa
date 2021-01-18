@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
 <!-- metallicroughnesseffect.cpp -->
-  <title>MetallicRoughnessEffect Class | Kuesa Runtime 1.2</title>
+  <title>MetallicRoughnessEffect Class | Kuesa Runtime 1.3</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
-<li>C++ Classes</li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
 <li>MetallicRoughnessEffect</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><div class="sidebar">
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
@@ -23,7 +23,7 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">MetallicRoughnessEffect Class</h1>
-<span class="small-subtitle">class <a href="kuesa.html">Kuesa</a>::MetallicRoughnessEffect</span>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesa">Kuesa</a>::MetallicRoughnessEffect</span>
 <!-- $$$MetallicRoughnessEffect-brief -->
 <p><a href="qml-metallicroughnesseffect.html">Kuesa::MetallicRoughnessEffect</a> is a Qt3DRender::QEffect for <a href="qml-metallicroughnessmaterial.html">Kuesa::MetallicRoughnessMaterial</a>. It provides several properties used to configure the material effect. This is done using a custom shader graph and activating/deactivating different set of nodes of the graph depending on the effect configuration. <a href="#details">More...</a></p>
 <!-- @@@MetallicRoughnessEffect -->
@@ -40,11 +40,10 @@
 <li class="fn"><b><a href="kuesa-metallicroughnesseffect.html#ambientOcclusionMapEnabled-prop">ambientOcclusionMapEnabled</a></b> : bool</li>
 <li class="fn"><b><a href="kuesa-metallicroughnesseffect.html#baseColorMapEnabled-prop">baseColorMapEnabled</a></b> : bool</li>
 <li class="fn"><b><a href="kuesa-metallicroughnesseffect.html#brdfLUT-prop">brdfLUT</a></b> : Qt3DRender::QAbstractTexture*</li>
-<li class="fn"><b><a href="kuesa-metallicroughnesseffect.html#emissiveMapEnabled-prop">emissiveMapEnabled</a></b> : bool</li>
 </ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-metallicroughnesseffect.html#emissiveMapEnabled-prop">emissiveMapEnabled</a></b> : bool</li>
 <li class="fn"><b><a href="kuesa-metallicroughnesseffect.html#metalRoughMapEnabled-prop">metalRoughMapEnabled</a></b> : bool</li>
 <li class="fn"><b><a href="kuesa-metallicroughnesseffect.html#normalMapEnabled-prop">normalMapEnabled</a></b> : bool</li>
-<li class="fn"><b><a href="kuesa-metallicroughnesseffect.html#usingColorAttribute-prop">usingColorAttribute</a></b> : bool</li>
 </ul>
 </td></tr>
 </table></div>
@@ -57,7 +56,6 @@
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#emissiveMapEnabled-prop">isEmissiveMapEnabled</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#metalRoughMapEnabled-prop">isMetalRoughMapEnabled</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#normalMapEnabled-prop">isNormalMapEnabled</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#usingColorAttribute-prop">isUsingColorAttribute</a></b>() const</td></tr>
 </table></div>
 <a name="public-slots"></a>
 <h2 id="public-slots">Public Slots</h2>
@@ -68,7 +66,6 @@
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#emissiveMapEnabled-prop">setEmissiveMapEnabled</a></b>(bool <i>enabled</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#metalRoughMapEnabled-prop">setMetalRoughMapEnabled</a></b>(bool <i>enabled</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#normalMapEnabled-prop">setNormalMapEnabled</a></b>(bool <i>enabled</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#usingColorAttribute-prop">setUsingColorAttribute</a></b>(bool <i>usingColorAttribute</i>)</td></tr>
 </table></div>
 <a name="signals"></a>
 <h2 id="signals">Signals</h2>
@@ -79,7 +76,6 @@
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#emissiveMapEnabled-prop">emissiveMapEnabledChanged</a></b>(bool <i>enabled</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#metalRoughMapEnabled-prop">metalRoughMapEnabledChanged</a></b>(bool <i>enabled</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#normalMapEnabled-prop">normalMapEnabledChanged</a></b>(bool <i>enabled</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-metallicroughnesseffect.html#usingColorAttribute-prop">usingColorAttributeChanged</a></b>(bool <i>usingColorAttribute</i>)</td></tr>
 </table></div>
 <a name="details"></a>
 <!-- $$$MetallicRoughnessEffect-description -->
@@ -170,19 +166,6 @@
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>normalMapEnabledChanged</b></span>(bool <i>enabled</i>)</td></tr>
 </table></div>
 <!-- @@@normalMapEnabled -->
-<!-- $$$usingColorAttribute-prop$$$isUsingColorAttribute$$$setUsingColorAttributebool$$$usingColorAttributeChangedbool -->
-<h3 class="fn" id="usingColorAttribute-prop"><a name="usingColorAttribute-prop"></a><span class="name">usingColorAttribute</span> : <span class="type">bool</span></h3>
-<p>If true, the base color property is multiplied by the color interpolated attribute of the mesh</p>
-<p><b>Access functions:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>isUsingColorAttribute</b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setUsingColorAttribute</b></span>(bool <i>usingColorAttribute</i>)</td></tr>
-</table></div>
-<p><b>Notifier signal:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>usingColorAttributeChanged</b></span>(bool <i>usingColorAttribute</i>)</td></tr>
-</table></div>
-<!-- @@@usingColorAttribute -->
 </div>
         </div>
        </div>

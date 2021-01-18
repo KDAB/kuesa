@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- placeholdertracker.cpp -->
+  <title>PlaceholderTracker Class | Kuesa Runtime 1.3</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<li>PlaceholderTracker</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">PlaceholderTracker Class</h1>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesa">Kuesa</a>::PlaceholderTracker</span>
+<!-- $$$PlaceholderTracker-brief -->
+<p>PlaceholderTracker allows watching a placeholder for changes and computing a screen position changes given a window size and a camera. <a href="#details">More...</a></p>
+<!-- @@@PlaceholderTracker -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;PlaceholderTracker&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.3</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-placeholdertracker.html">PlaceholderTracker</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-kuesanode.html">Kuesa::KuesaNode</a></td></tr></table></div><p>This class was introduced in Kuesa 1.3.</p>
+<ul>
+<li><a href="kuesa-placeholdertracker-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary">
+<tr><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-placeholdertracker.html#camera-prop">camera</a></b> : Qt3DCore::QEntity*</li>
+<li class="fn"><b><a href="kuesa-placeholdertracker.html#height-prop">height</a></b> : const int</li>
+<li class="fn"><b><a href="kuesa-placeholdertracker.html#name-prop">name</a></b> : QString</li>
+<li class="fn"><b><a href="kuesa-placeholdertracker.html#screenPosition-prop">screenPosition</a></b> : const QPointF</li>
+<li class="fn"><b><a href="kuesa-placeholdertracker.html#screenSize-prop">screenSize</a></b> : QSize</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-placeholdertracker.html#target-prop">target</a></b> : QObject*</li>
+<li class="fn"><b><a href="kuesa-placeholdertracker.html#viewportRect-prop">viewportRect</a></b> : QRectF</li>
+<li class="fn"><b><a href="kuesa-placeholdertracker.html#width-prop">width</a></b> : const int</li>
+<li class="fn"><b><a href="kuesa-placeholdertracker.html#x-prop">x</a></b> : const int</li>
+<li class="fn"><b><a href="kuesa-placeholdertracker.html#y-prop">y</a></b> : const int</li>
+</ul>
+</td></tr>
+</table></div>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DCore::QEntity *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#camera-prop">camera</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#height-prop">height</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#name-prop">name</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPointF </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#screenPosition-prop">screenPosition</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSize </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#screenSize-prop">screenSize</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QObject *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#target-prop">target</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#viewportRect-prop">viewportRect</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#width-prop">width</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#x-prop">x</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#y-prop">y</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#camera-prop">setCamera</a></b>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#name-prop">setName</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#screenSize-prop">setScreenSize</a></b>(const QSize &amp;<i>screenSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#target-prop">setTarget</a></b>(QObject *<i>target</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#viewportRect-prop">setViewportRect</a></b>(qreal <i>x</i>, qreal <i>y</i>, qreal <i>width</i>, qreal <i>height</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#viewportRect-prop">setViewportRect</a></b>(const QRectF &amp;<i>viewportRect</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#camera-prop">cameraChanged</a></b>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#height-prop">heightChanged</a></b>(int <i>height</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#name-prop">nameChanged</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#screenPosition-prop">screenPositionChanged</a></b>(const QPointF &amp;<i>screenPosition</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#screenSize-prop">screenSizeChanged</a></b>(const QSize &amp;<i>screenSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#target-prop">targetChanged</a></b>(QObject *<i>target</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#viewportRect-prop">viewportRectChanged</a></b>(QRectF <i>viewportRect</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#width-prop">widthChanged</a></b>(int <i>width</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#x-prop">xChanged</a></b>(int <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-placeholdertracker.html#y-prop">yChanged</a></b>(int <i>y</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$PlaceholderTracker-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>PlaceholderTracker allows watching a placeholder for changes and computing a screen position changes given a window size and a camera.</p>
+<p>This is especially useful to easily map 2D content based on a 3D placeholder. It does so by projecting a plane defined by the <a href="qml-placeholder.html">Kuesa::Placeholder</a> facing the camera to screen space. setting the x, y, width and height properties of a target QObject to match the projected rectangle</p>
+<pre class="cpp plain">
+ Kuesa::SceneEntity *sceneEntity = new Kuesa::SceneEntity();
+ Kuesa::PlaceholderTracker *tracker = new Kuesa::PlaceholderTracker();
+ Qt3DRender::QCamera *camera = new Qt3DRender::Camera();
+ QObject *target = new QObject(); // Our UI target
+
+ tracker-&gt;setSceneEntity(sceneEntity);
+ tracker-&gt;setName(QStringLiteral(&quot;MyPlaceholder&quot;);
+ tracker-&gt;setCamera(camera);
+ tracker-&gt;setScreenSize({512, 512});
+ tracker-&gt;setTarget(target);
+</pre>
+<p>Read more about <a href="kuesa-placeholders.html">Kuesa Placeholders</a>.</p>
+</div>
+<p><b>See also </b><a href="qml-placeholder.html">Kuesa::Placeholder</a>.</p>
+<!-- @@@PlaceholderTracker -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$camera-prop$$$camera$$$setCameraQt3DCore::QEntity*$$$cameraChangedQt3DCore::QEntity* -->
+<h3 class="fn" id="camera-prop"><a name="camera-prop"></a><span class="name">camera</span> : <span class="type">Qt3DCore::QEntity</span>*</h3>
+<p>Holds the camera the placeholder is facing and which is used to project the plane to screen space.</p>
+<pre class="cpp plain">
+ QQuickItem *target = view-&gt;rootItem();
+ Kuesa::PlaceholderTracker *placeholderTracker = new Kuesa::PlaceholderTracker();
+ placeholderTracker-&gt;setName(QStringliteral(&quot;placeholder&quot;));
+ Qt3DRender::QCamera *camera = sceneEntity-&gt;camera(QStringliteral(&quot;Camera_Orientation&quot;));
+ placeholderTracker-&gt;setSceneSize({view.width(), view.height()});
+ placeholderTracker-&gt;setTarget(target);
+ placeholderTracker-&gt;setCamera(camera);
+</pre>
+<p><b>Note: </b>using a Qt3DRender::QCamera for the placeholderTracker different than the one being used for the render might give unexpected results.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Qt3DCore::QEntity *</td><td class="memItemRight bottomAlign"><span class="name"><b>camera</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setCamera</b></span>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>cameraChanged</b></span>(Qt3DCore::QEntity *<i>camera</i>)</td></tr>
+</table></div>
+<!-- @@@camera -->
+<!-- $$$height-prop$$$height$$$heightChangedint -->
+<h3 class="fn" id="height-prop"><a name="height-prop"></a><span class="name">height</span> : const <span class="type">int</span></h3>
+<p>Holds the height in screen coordinates computed from the placeholder.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b>height</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>heightChanged</b></span>(int <i>height</i>)</td></tr>
+</table></div>
+<!-- @@@height -->
+<!-- $$$name-prop$$$name$$$setNameconstQString&$$$nameChangedconstQString& -->
+<h3 class="fn" id="name-prop"><a name="name-prop"></a><span class="name">name</span> : <span class="type">QString</span></h3>
+<p>Holds the name of the Placeholder instance to retrieve from the <a href="qml-sceneentity.html">Kuesa::SceneEntity</a>.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>name</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setName</b></span>(const QString &amp;<i>name</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>nameChanged</b></span>(const QString &amp;<i>name</i>)</td></tr>
+</table></div>
+<!-- @@@name -->
+<!-- $$$screenPosition-prop$$$screenPosition$$$screenPositionChangedconstQPointF& -->
+<h3 class="fn" id="screenPosition-prop"><a name="screenPosition-prop"></a><span class="name">screenPosition</span> : const <span class="type">QPointF</span></h3>
+<p>Holds the screenPosition computed from the placeholder.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QPointF </td><td class="memItemRight bottomAlign"><span class="name"><b>screenPosition</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>screenPositionChanged</b></span>(const QPointF &amp;<i>screenPosition</i>)</td></tr>
+</table></div>
+<!-- @@@screenPosition -->
+<!-- $$$screenSize-prop$$$screenSize$$$setScreenSizeconstQSize&$$$screenSizeChangedconstQSize& -->
+<h3 class="fn" id="screenSize-prop"><a name="screenSize-prop"></a><span class="name">screenSize</span> : <span class="type">QSize</span></h3>
+<p>Holds the size of the area within which we should compute screen positions. This would usually be the size of the window or the size of the sub view within the window.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QSize </td><td class="memItemRight bottomAlign"><span class="name"><b>screenSize</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setScreenSize</b></span>(const QSize &amp;<i>screenSize</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>screenSizeChanged</b></span>(const QSize &amp;<i>screenSize</i>)</td></tr>
+</table></div>
+<!-- @@@screenSize -->
+<!-- $$$target-prop$$$target$$$setTargetQObject*$$$targetChangedQObject* -->
+<h3 class="fn" id="target-prop"><a name="target-prop"></a><span class="name">target</span> : <span class="type">QObject</span>*</h3>
+<p>Holds the target object on which to set x, y, width and height properties computed from the Placeholder and Camera transformations.</p>
+<p>Commonly it would be a QtQuick element and should be used as</p>
+<pre class="cpp plain">
+ QQuickItem *target = view-&gt;rootItem();
+ Kuesa::PlaceholderTracker *placeholderTracker = new Kuesa::PlaceholderTracker();
+ placeholder-&gt;setName(QStringliteral(&quot;placeholder&quot;));
+ placeholder-&gt;setScreenSize({view.width(), view.height()});
+ placeholder-&gt;setTarget(target);
+</pre>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QObject *</td><td class="memItemRight bottomAlign"><span class="name"><b>target</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setTarget</b></span>(QObject *<i>target</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>targetChanged</b></span>(QObject *<i>target</i>)</td></tr>
+</table></div>
+<!-- @@@target -->
+<!-- $$$viewportRect-prop$$$viewportRect$$$setViewportRectconstQRectF&$$$setViewportRectqrealqrealqrealqreal$$$viewportRectChangedQRectF -->
+<h3 class="fn" id="viewportRect-prop"><a name="viewportRect-prop"></a><span class="name">viewportRect</span> : <span class="type">QRectF</span></h3>
+<p>Holds the normalized viewport rectangle defining the area into which screen positions should be computed. If unspecified QRectF(0.0f, 0.0f, 1.0f, 1.0f) will be used.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QRectF </td><td class="memItemRight bottomAlign"><span class="name"><b>viewportRect</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setViewportRect</b></span>(const QRectF &amp;<i>viewportRect</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setViewportRect</b></span>(qreal <i>x</i>, qreal <i>y</i>, qreal <i>width</i>, qreal <i>height</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>viewportRectChanged</b></span>(QRectF <i>viewportRect</i>)</td></tr>
+</table></div>
+<!-- @@@viewportRect -->
+<!-- $$$width-prop$$$width$$$widthChangedint -->
+<h3 class="fn" id="width-prop"><a name="width-prop"></a><span class="name">width</span> : const <span class="type">int</span></h3>
+<p>Holds the width in screen coordinates computed from the placeholder.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b>width</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>widthChanged</b></span>(int <i>width</i>)</td></tr>
+</table></div>
+<!-- @@@width -->
+<!-- $$$x-prop$$$x$$$xChangedint -->
+<h3 class="fn" id="x-prop"><a name="x-prop"></a><span class="name">x</span> : const <span class="type">int</span></h3>
+<p>Holds the top left x screen position coordinate computed from the placeholder.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b>x</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>xChanged</b></span>(int <i>x</i>)</td></tr>
+</table></div>
+<!-- @@@x -->
+<!-- $$$y-prop$$$y$$$yChangedint -->
+<h3 class="fn" id="y-prop"><a name="y-prop"></a><span class="name">y</span> : const <span class="type">int</span></h3>
+<p>Holds the top left y screen position coordinate computed from the placeholder.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b>y</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>yChanged</b></span>(int <i>y</i>)</td></tr>
+</table></div>
+<!-- @@@y -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

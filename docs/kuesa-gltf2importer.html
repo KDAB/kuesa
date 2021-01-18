@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
 <!-- gltf2importer.cpp -->
-  <title>GLTF2Importer Class | Kuesa Runtime 1.2</title>
+  <title>GLTF2Importer Class | Kuesa Runtime 1.3</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
-<li>C++ Classes</li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
 <li>GLTF2Importer</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><div class="sidebar">
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
@@ -24,13 +24,13 @@
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">GLTF2Importer Class</h1>
-<span class="small-subtitle">class <a href="kuesa.html">Kuesa</a>::GLTF2Importer</span>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesa">Kuesa</a>::GLTF2Importer</span>
 <!-- $$$GLTF2Importer-brief -->
 <p>Imports glTF 2 scenes into a Qt 3D Scene. <a href="#details">More...</a></p>
 <!-- @@@GLTF2Importer -->
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/GLTF2Importer&gt;</span>
-</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-gltf2importer.html">GLTF2Importer</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-gltf2importer.html">GLTF2Importer</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-kuesanode.html">Kuesa::KuesaNode</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
 <ul>
 <li><a href="kuesa-gltf2importer-members.html">List of all members, including inherited members</a></li>
 </ul>
@@ -46,10 +46,10 @@
 <tr><td class="topAlign"><ul>
 <li class="fn"><b><a href="kuesa-gltf2importer.html#activeSceneIndex-prop">activeSceneIndex</a></b> : int</li>
 <li class="fn"><b><a href="kuesa-gltf2importer.html#assignNames-prop">assignNames</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-gltf2importer.html#asynchronous-prop">asynchronous</a></b> : bool</li>
 <li class="fn"><b><a href="kuesa-gltf2importer.html#availableScenes-prop">availableScenes</a></b> : const QStringList</li>
-<li class="fn"><b><a href="kuesa-gltf2importer.html#options-prop">options</a></b> : Kuesa::GLTF2Import::GLTF2Options* const</li>
 </ul></td><td class="topAlign"><ul>
-<li class="fn"><b><a href="kuesa-gltf2importer.html#sceneEntity-prop">sceneEntity</a></b> : Kuesa::SceneEntity*</li>
+<li class="fn"><b><a href="kuesa-gltf2importer.html#options-prop">options</a></b> : Kuesa::GLTF2Import::GLTF2Options* const</li>
 <li class="fn"><b><a href="kuesa-gltf2importer.html#source-prop">source</a></b> : QUrl</li>
 <li class="fn"><b><a href="kuesa-gltf2importer.html#status-prop">status</a></b> : const Kuesa::GLTF2Importer::Status</li>
 </ul>
@@ -60,19 +60,20 @@
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#activeSceneIndex-prop">activeSceneIndex</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#assignNames">assignNames</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#asynchronous-prop">asynchronous</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#availableScenes-prop">availableScenes</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Kuesa::GLTF2Import::GLTF2Options *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#options-prop">options</a></b>()</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> const Kuesa::GLTF2Import::GLTF2Options *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#options-prop">options</a></b>() const</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::SceneEntity *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#sceneEntity">sceneEntity</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QUrl </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#source">source</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> GLTF2Importer::Status </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#status">status</a></b>() const</td></tr>
 </table></div>
 <a name="public-slots"></a>
 <h2 id="public-slots">Public Slots</h2>
 <div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#reload">reload</a></b>()</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#activeSceneIndex-prop">setActiveSceneIndex</a></b>(int <i>index</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#setAssignNames">setAssignNames</a></b>(bool <i>assignNames</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#setSceneEntity">setSceneEntity</a></b>(Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#asynchronous-prop">setAsynchronous</a></b>(bool <i>asynchronous</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#setSource">setSource</a></b>(const QUrl &amp;<i>source</i>)</td></tr>
 </table></div>
 <a name="signals"></a>
@@ -80,8 +81,8 @@
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#activeSceneIndex-prop">activeSceneIndexChanged</a></b>(int <i>activeSceneIndex</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#assignNames-prop">assignNamesChanged</a></b>(bool <i>assignNames</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#asynchronous-prop">asynchronousChanged</a></b>(bool <i>asynchronous</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#availableScenes-prop">availableScenesChanged</a></b>(const QStringList &amp;<i>availableScenes</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#sceneEntity-prop">sceneEntityChanged</a></b>(Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#source-prop">sourceChanged</a></b>(const QUrl &amp;<i>source</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-gltf2importer.html#status-prop">statusChanged</a></b>(const Kuesa::GLTF2Importer::Status <i>status</i>)</td></tr>
 </table></div>
@@ -168,6 +169,19 @@
 <tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>assignNamesChanged</b></span>(bool <i>assignNames</i>)</td></tr>
 </table></div>
 <!-- @@@assignNames -->
+<!-- $$$asynchronous-prop$$$asynchronous$$$setAsynchronousbool$$$asynchronousChangedbool -->
+<h3 class="fn" id="asynchronous-prop"><a name="asynchronous-prop"></a><span class="name">asynchronous</span> : <span class="type">bool</span></h3>
+<p>if true, parsing is performed in a non blocking manner from a secondary thread. This is false by default.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>asynchronous</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setAsynchronous</b></span>(bool <i>asynchronous</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>asynchronousChanged</b></span>(bool <i>asynchronous</i>)</td></tr>
+</table></div>
+<!-- @@@asynchronous -->
 <!-- $$$availableScenes-prop$$$availableScenes$$$availableScenesChangedconstQStringList& -->
 <h3 class="fn" id="availableScenes-prop"><a name="availableScenes-prop"></a><span class="name">availableScenes</span> : const <span class="type">QStringList</span></h3>
 <p>Holds the names of the available glTF scenes.</p>
@@ -189,19 +203,6 @@
 <tr><td class="memItemLeft topAlign rightAlign"> const Kuesa::GLTF2Import::GLTF2Options *</td><td class="memItemRight bottomAlign"><span class="name"><b>options</b></span>() const</td></tr>
 </table></div>
 <!-- @@@options -->
-<!-- $$$sceneEntity-prop$$$sceneEntity$$$setSceneEntityKuesa::SceneEntity*$$$sceneEntityChangedKuesa::SceneEntity* -->
-<h3 class="fn" id="sceneEntity-prop"><a name="sceneEntity-prop"></a><span class="name">sceneEntity</span> : <span class="type"><a href="kuesa-sceneentity.html">Kuesa::SceneEntity</a></span>*</h3>
-<p>pointer to the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> with which assets will be registered as they are loaded from the glTF file.</p>
-<p><b>Access functions:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::SceneEntity *</td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-gltf2importer.html#sceneEntity">sceneEntity</a></b></span>() const</td></tr>
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="kuesa-gltf2importer.html#setSceneEntity">setSceneEntity</a></b></span>(Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
-</table></div>
-<p><b>Notifier signal:</b></p>
-<div class="table"><table class="alignedsummary">
-<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>sceneEntityChanged</b></span>(Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
-</table></div>
-<!-- @@@sceneEntity -->
 <!-- $$$source-prop$$$source$$$setSourceconstQUrl&$$$sourceChangedconstQUrl& -->
 <h3 class="fn" id="source-prop"><a name="source-prop"></a><span class="name">source</span> : <span class="type">QUrl</span></h3>
 <p>This property holds the source of the glTF file</p>
@@ -231,6 +232,10 @@
 </div>
 <div class="func">
 <h2>Member Function Documentation</h2>
+<!-- $$$reload[overload1]$$$reload -->
+<h3 class="fn" id="reload"><a name="reload"></a><code>[slot] </code><span class="type">void</span> GLTF2Importer::<span class="name">reload</span>()</h3>
+<p>Reloads the current glTF file.</p>
+<!-- @@@reload -->
 <!-- $$$setAssignNames -->
 <h3 class="fn" id="setAssignNames"><a name="setAssignNames"></a><code>[slot] </code><span class="type">void</span> GLTF2Importer::<span class="name">setAssignNames</span>(<span class="type">bool</span> <i>assignNames</i>)</h3>
 <p>If <i>assignNames</i> is true, assets with no names will be added to collections with default names.</p>
@@ -238,12 +243,6 @@
 <p><b>Note: </b>Setter function for property <a href="kuesa-gltf2importer.html#assignNames">assignNames</a>. </p>
 <p><b>See also </b><a href="kuesa-gltf2importer.html#assignNames">assignNames</a>().</p>
 <!-- @@@setAssignNames -->
-<!-- $$$setSceneEntity -->
-<h3 class="fn" id="setSceneEntity"><a name="setSceneEntity"></a><code>[slot] </code><span class="type">void</span> GLTF2Importer::<span class="name">setSceneEntity</span>(<span class="type"><a href="kuesa-sceneentity.html">Kuesa::SceneEntity</a></span> *<i>sceneEntity</i>)</h3>
-<p>Set the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> instance which should be used to access the collections loaded assets will be registered with to <i>sceneEntity</i>.</p>
-<p><b>Note: </b>Setter function for property <a href="kuesa-tonemapping-example.html#sceneentity">sceneEntity</a>. </p>
-<p><b>See also </b><a href="kuesa-gltf2importer.html#sceneEntity">sceneEntity</a>().</p>
-<!-- @@@setSceneEntity -->
 <!-- $$$setSource -->
 <h3 class="fn" id="setSource"><a name="setSource"></a><code>[slot] </code><span class="type">void</span> GLTF2Importer::<span class="name">setSource</span>(const <span class="type">QUrl</span> &amp;<i>source</i>)</h3>
 <p>Load the glTF file from the given url <i>source</i>.</p>
@@ -257,12 +256,6 @@
 <p><b>Note: </b>Getter function for property assignNames. </p>
 <p><b>See also </b><a href="kuesa-gltf2importer.html#setAssignNames">setAssignNames</a>().</p>
 <!-- @@@assignNames -->
-<!-- $$$sceneEntity -->
-<h3 class="fn" id="sceneEntity"><a name="sceneEntity"></a><span class="type"><a href="kuesa-sceneentity.html">Kuesa::SceneEntity</a></span> *GLTF2Importer::<span class="name">sceneEntity</span>() const</h3>
-<p>Returns the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> used to access asset collections</p>
-<p><b>Note: </b>Getter function for property <a href="kuesa-tonemapping-example.html#sceneentity">sceneEntity</a>. </p>
-<p><b>See also </b><a href="kuesa-gltf2importer.html#setSceneEntity">setSceneEntity</a>().</p>
-<!-- @@@sceneEntity -->
 <!-- $$$source -->
 <h3 class="fn" id="source"><a name="source"></a><span class="type">QUrl</span> GLTF2Importer::<span class="name">source</span>() const</h3>
 <p>Returns the url of the glTF file</p>

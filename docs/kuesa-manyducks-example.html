@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
 <!-- manyducks.qdoc -->
-  <title>Kuesa Many Ducks C++ Example | Kuesa Runtime 1.2</title>
+  <title>Kuesa Many Ducks C++ Example | Kuesa Runtime 1.3</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Many Ducks C++ Example</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><div class="sidebar">
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
@@ -22,7 +22,8 @@
 <li class="level2"><a href="#adding-a-skybox">Adding a Skybox</a></li>
 <li class="level2"><a href="#adding-a-postprocessing-effect">Adding a PostProcessing Effect</a></li>
 <li class="level1"><a href="#extracting-assets-from-collections">Extracting Assets from Collections</a></li>
-<li class="level2"><a href="#retrieving-geometries-and-material">Retrieving Geometries and Material</a></li>
+<li class="level2"><a href="#manually-instancing-meshes">Manually Instancing Meshes</a></li>
+<li class="level2"><a href="#relying-on-gpu-based-instancing">Relying on GPU based instancing</a></li>
 <li class="level1"><a href="#animating-our-scene">Animating our Scene</a></li>
 </ul>
 </div>
@@ -70,6 +71,9 @@
  fg<span class="operator">-</span><span class="operator">&gt;</span>setGamma(<span class="number">2.2f</span>);
  fg<span class="operator">-</span><span class="operator">&gt;</span>setExposure(<span class="number">1.f</span>);
  fg<span class="operator">-</span><span class="operator">&gt;</span>setClearColor(<span class="string">&quot;white&quot;</span>);
+ fg<span class="operator">-</span><span class="operator">&gt;</span>setSkinning(<span class="keyword">true</span>);
+ <span class="comment">// We disable frustum culling if using instancing</span>
+ fg<span class="operator">-</span><span class="operator">&gt;</span>setFrustumCulling(<span class="operator">!</span>usesInstancing);
  setActiveFrameGraph(fg);
 </pre>
 <a name="importing-a-gltf2-file"></a>
@@ -113,8 +117,10 @@
  {
      <span class="keyword">if</span> (status <span class="operator">=</span><span class="operator">=</span> Kuesa<span class="operator">::</span>GLTF2Importer<span class="operator">::</span>Ready) {
 </pre>
+<a name="manually-instancing-meshes"></a>
+<h5 id="manually-instancing-meshes">Manually Instancing Meshes</h5>
 <a name="retrieving-geometries-and-material"></a>
-<h5 id="retrieving-geometries-and-material">Retrieving Geometries and Material</h5>
+<h6 id="retrieving-geometries-and-material">Retrieving Geometries and Material</h6>
 <p>Using the gltfInspector we know our scene files contains a Duck Entity name &quot;KuesaEntity_0&quot;..</p>
 <p>We can therefore retrieve it with:</p>
 <pre class="cpp">
@@ -122,7 +128,7 @@
  <span class="comment">// Gotten from gammaray</span>
  <span class="keyword">auto</span> parent <span class="operator">=</span> m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_0&quot;</span>);
 </pre>
-<p>In turn, using Qt3D Component API, we can retrieve the Qt3DRender::QGeometry, Qt3DRender::QMaterial components of the previously retrieved entity.</p>
+<p>In turn, using Qt3D Component API, we can retrieve the QGeometry, Qt3DRender::QMaterial components of the previously retrieved entity.</p>
 <pre class="cpp">
  <span class="keyword">auto</span> <span class="operator">*</span>orig_entity <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span><span class="operator">&gt;</span>(m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_2&quot;</span>)<span class="operator">-</span><span class="operator">&gt;</span>childNodes()<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>);
  <span class="keyword">auto</span> <span class="operator">*</span>orig_geometry <span class="operator">=</span> componentFromEntity<span class="operator">&lt;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QGeometryRenderer</span><span class="operator">&gt;</span>(orig_entity);
@@ -131,6 +137,7 @@
 <p>Then, we can create several entities referencing the same material and geometry.</p>
 <pre class="cpp">
  <span class="comment">// Then create clones by giving them a custom transform, and the same components than before</span>
+
  <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> Ducks; i<span class="operator">+</span><span class="operator">+</span>) {
      <span class="keyword">auto</span> new_entity <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span>{ parent };
      <span class="keyword">auto</span> new_transform <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QTransform</span>;
@@ -148,6 +155,37 @@
      m_transforms<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">=</span> new_transform;
  }
 </pre>
+<a name="relying-on-gpu-based-instancing"></a>
+<h5 id="relying-on-gpu-based-instancing">Relying on GPU based instancing</h5>
+<p>A more efficient approach to drawing multiple instances of the same geometry is to rely on GPU based instancing. In Kuesa, assuming the GPU supports that feature, this can easily be leveraged by using the <a href="qml-meshinstantiator.html">Kuesa::MeshInstantiator</a> class.</p>
+<p>We need to generate a transformation matrix for each of the instances.</p>
+<pre class="cpp">
+ <span class="comment">// Build base transformation matrices for each instance</span>
+ m_matrices<span class="operator">.</span>reserve(Ducks <span class="operator">+</span> <span class="number">1</span>);
+ <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> Ducks; i<span class="operator">+</span><span class="operator">+</span>) {
+     QMatrix4x4 m;
+
+     <span class="keyword">const</span> <span class="type">int</span> extent <span class="operator">=</span> r <span class="operator">/</span> <span class="number">20</span>;
+     m<span class="operator">.</span>translate(QVector3D(rand() <span class="operator">%</span> extent <span class="operator">-</span> extent <span class="operator">*</span> <span class="number">0.5</span><span class="operator">,</span> rand() <span class="operator">%</span> extent <span class="operator">-</span> extent <span class="operator">*</span> <span class="number">0.5</span><span class="operator">,</span> rand() <span class="operator">%</span> extent <span class="operator">-</span> extent <span class="operator">*</span> <span class="number">0.5</span>));
+     m<span class="operator">.</span>rotate(rand() <span class="operator">%</span> <span class="number">360</span><span class="operator">,</span> QVector3D(<span class="number">1.0f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span>));
+     m<span class="operator">.</span>rotate(rand() <span class="operator">%</span> <span class="number">360</span><span class="operator">,</span> QVector3D(<span class="number">0.0f</span><span class="operator">,</span> <span class="number">1.0f</span><span class="operator">,</span> <span class="number">0.0f</span>));
+     m<span class="operator">.</span>rotate(rand() <span class="operator">%</span> <span class="number">360</span><span class="operator">,</span> QVector3D(<span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">1.0f</span>));
+
+     m_matrices<span class="operator">.</span>push_back(m);
+ }
+ <span class="comment">// Add an extra matrices to have one instance placed at the origin</span>
+ m_matrices<span class="operator">.</span>push_back({});
+</pre>
+<p>Then we can create our <a href="qml-meshinstantiator.html">MeshInstantiator</a>, specify the name of the Entity to instantiate and set the transformation matrices on it.</p>
+<pre class="cpp">
+ <span class="comment">// Create MeshInstantiator</span>
+ m_meshInstantiator <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>MeshInstantiator(m_scene);
+ <span class="comment">// Specify which Entity with a Mesh needs to be instanced</span>
+ m_meshInstantiator<span class="operator">-</span><span class="operator">&gt;</span>setEntityName(<span class="type">QStringLiteral</span>(<span class="string">&quot;KuesaEntity_2&quot;</span>));
+ <span class="comment">// Set transformation matrices</span>
+ m_meshInstantiator<span class="operator">-</span><span class="operator">&gt;</span>setTransformationMatrices(m_matrices);
+</pre>
+<p>This approach greatly reduces CPU usage compared to the manual approach.</p>
 <a name="animating-our-scene"></a>
 <h4 id="animating-our-scene">Animating our Scene</h4>
 <p>Subclassing the timerEvent function on Qt3DExtras::Qt3DWindow allows us to add some logic to be executed at every frame.</p>
@@ -155,10 +193,29 @@
  <span class="type">void</span> timerEvent(<span class="type">QTimerEvent</span> <span class="operator">*</span>event) override
  {
      Q_UNUSED(event)
-     <span class="keyword">for</span> (<span class="keyword">auto</span> transform : m_transforms) {
-         transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationX(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationX() <span class="operator">+</span> <span class="number">0.1f</span>);
-         transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationY(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationY() <span class="operator">+</span> <span class="number">0.1f</span>);
-         transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationZ(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationZ() <span class="operator">+</span> <span class="number">0.1f</span>);
+     <span class="keyword">if</span> (<span class="operator">!</span>m_usesInstancing) {
+         <span class="keyword">for</span> (<span class="keyword">auto</span> transform : m_transforms) {
+             transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationX(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationX() <span class="operator">+</span> <span class="number">0.1f</span>);
+             transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationY(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationY() <span class="operator">+</span> <span class="number">0.1f</span>);
+             transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationZ(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationZ() <span class="operator">+</span> <span class="number">0.1f</span>);
+         }
+     } <span class="keyword">else</span> {
+         <span class="keyword">static</span> bool wasInitialized <span class="operator">=</span> <span class="keyword">false</span>;
+         <span class="keyword">static</span> QMatrix4x4 rotationIncrementMatrix;
+
+         <span class="keyword">if</span> (<span class="operator">!</span>wasInitialized) {
+             rotationIncrementMatrix<span class="operator">.</span>rotate(<span class="number">0.1f</span><span class="operator">,</span> QVector3D(<span class="number">1.0f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span>));
+             rotationIncrementMatrix<span class="operator">.</span>rotate(<span class="number">0.1f</span><span class="operator">,</span> QVector3D(<span class="number">0.0f</span><span class="operator">,</span> <span class="number">1.0f</span><span class="operator">,</span> <span class="number">0.0f</span>));
+             rotationIncrementMatrix<span class="operator">.</span>rotate(<span class="number">0.1f</span><span class="operator">,</span> QVector3D(<span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">1.0f</span>));
+             wasInitialized <span class="operator">=</span> <span class="keyword">true</span>;
+         }
+
+         <span class="comment">// Apply rotation transform to all matrices</span>
+         <span class="comment">// This accumulates over time</span>
+         <span class="keyword">for</span> (QMatrix4x4 <span class="operator">&amp;</span>m : m_matrices)
+             m <span class="operator">*</span><span class="operator">=</span> rotationIncrementMatrix;
+
+         m_meshInstantiator<span class="operator">-</span><span class="operator">&gt;</span>setTransformationMatrices(m_matrices);
      }
  }
 </pre>

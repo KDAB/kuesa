@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- particles.cpp -->
+  <title>Particles Class | Kuesa Runtime 1.3</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<li>Particles</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Particles Class</h1>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesa">Kuesa</a>::Particles</span>
+<!-- $$$Particles-brief -->
+<p>Particle system that controls emission and the various properties or particles over their lifetime. <a href="#details">More...</a></p>
+<!-- @@@Particles -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/Particles&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.3</td></tr></table></div><p>This class was introduced in Kuesa 1.3.</p>
+<ul>
+<li><a href="kuesa-particles-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#AlignMode-enum">AlignMode</a></b> { FaceCamera, Velocity }</td></tr>
+</table></div>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary">
+<tr><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-particles.html#alignMode-prop">alignMode</a></b> : AlignMode</li>
+<li class="fn"><b><a href="kuesa-particles.html#emitterPosition-prop">emitterPosition</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-particles.html#emitterPositionRandom-prop">emitterPositionRandom</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-particles.html#emitterVelocity-prop">emitterVelocity</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-particles.html#emitterVelocityRandom-prop">emitterVelocityRandom</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-particles.html#finalColor-prop">finalColor</a></b> : QVector4D</li>
+<li class="fn"><b><a href="kuesa-particles.html#finalSize-prop">finalSize</a></b> : QVector2D</li>
+<li class="fn"><b><a href="kuesa-particles.html#frameTime-prop">frameTime</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-particles.html#gravity-prop">gravity</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-particles.html#initialAngle-prop">initialAngle</a></b> : float</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-particles.html#initialAngleRandom-prop">initialAngleRandom</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-particles.html#initialColor-prop">initialColor</a></b> : QVector4D</li>
+<li class="fn"><b><a href="kuesa-particles.html#initialSize-prop">initialSize</a></b> : QVector2D</li>
+<li class="fn"><b><a href="kuesa-particles.html#maxParticlesEmittedPerFrame-prop">maxParticlesEmittedPerFrame</a></b> : int</li>
+<li class="fn"><b><a href="kuesa-particles.html#particleCount-prop">particleCount</a></b> : int</li>
+<li class="fn"><b><a href="kuesa-particles.html#particleLifespan-prop">particleLifespan</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-particles.html#particleLifespanRandom-prop">particleLifespanRandom</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-particles.html#rotationRate-prop">rotationRate</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-particles.html#rotationRateRandom-prop">rotationRateRandom</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-particles.html#spriteTexture-prop">spriteTexture</a></b> : Qt3DRender::QAbstractTexture*</li>
+</ul>
+</td></tr>
+</table></div>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::Particles::AlignMode </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#alignMode-prop">alignMode</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterPosition-prop">emitterPosition</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterPositionRandom-prop">emitterPositionRandom</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterVelocity-prop">emitterVelocity</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterVelocityRandom-prop">emitterVelocityRandom</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector4D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#finalColor-prop">finalColor</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector2D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#finalSize-prop">finalSize</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#frameTime-prop">frameTime</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#gravity-prop">gravity</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialAngle-prop">initialAngle</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialAngleRandom-prop">initialAngleRandom</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector4D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialColor-prop">initialColor</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector2D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialSize-prop">initialSize</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#maxParticlesEmittedPerFrame-prop">maxParticlesEmittedPerFrame</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#particleCount-prop">particleCount</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#particleLifespan-prop">particleLifespan</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#particleLifespanRandom-prop">particleLifespanRandom</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#rotationRate-prop">rotationRate</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#rotationRateRandom-prop">rotationRateRandom</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#spriteTexture-prop">spriteTexture</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#alignMode-prop">setAlignMode</a></b>(Kuesa::Particles::AlignMode <i>alignMode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterPosition-prop">setEmitterPosition</a></b>(const QVector3D &amp;<i>emitterPosition</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterPositionRandom-prop">setEmitterPositionRandom</a></b>(const QVector3D &amp;<i>emitterPositionRandom</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterVelocity-prop">setEmitterVelocity</a></b>(const QVector3D &amp;<i>emitterVelocity</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterVelocityRandom-prop">setEmitterVelocityRandom</a></b>(const QVector3D &amp;<i>emitterVelocityRandom</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#finalColor-prop">setFinalColor</a></b>(const QVector4D &amp;<i>finalColor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#finalSize-prop">setFinalSize</a></b>(const QVector2D &amp;<i>finalSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#frameTime-prop">setFrameTime</a></b>(float <i>frameTime</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#gravity-prop">setGravity</a></b>(const QVector3D &amp;<i>gravity</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialAngle-prop">setInitialAngle</a></b>(float <i>initialAngle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialAngleRandom-prop">setInitialAngleRandom</a></b>(float <i>initialAngleRandom</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialColor-prop">setInitialColor</a></b>(const QVector4D &amp;<i>initialColor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialSize-prop">setInitialSize</a></b>(const QVector2D &amp;<i>initialSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#maxParticlesEmittedPerFrame-prop">setMaxParticlesEmittedPerFrame</a></b>(int <i>maxParticlesEmittedPerFrame</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#particleCount-prop">setParticleCount</a></b>(int <i>particleCount</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#particleLifespan-prop">setParticleLifespan</a></b>(float <i>lifespan</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#particleLifespanRandom-prop">setParticleLifespanRandom</a></b>(float <i>lifespanRandom</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#rotationRate-prop">setRotationRate</a></b>(float <i>rotationRate</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#rotationRateRandom-prop">setRotationRateRandom</a></b>(float <i>rotationRateRandom</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#spriteTexture-prop">setSpriteTexture</a></b>(Qt3DRender::QAbstractTexture *<i>spriteTexture</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#alignMode-prop">alignModeChanged</a></b>(Kuesa::Particles::AlignMode <i>alignMode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterPosition-prop">emitterPositionChanged</a></b>(const QVector3D &amp;<i>emitterPosition</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterPositionRandom-prop">emitterPositionRandomChanged</a></b>(const QVector3D &amp;<i>emitterPositionRandom</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterVelocity-prop">emitterVelocityChanged</a></b>(const QVector3D &amp;<i>emitterVelocity</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#emitterVelocityRandom-prop">emitterVelocityRandomChanged</a></b>(const QVector3D &amp;<i>emitterVelocityRandom</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#finalColor-prop">finalColorChanged</a></b>(const QVector4D &amp;<i>finalColor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#finalSize-prop">finalSizeChanged</a></b>(const QVector2D &amp;<i>finalSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#frameTime-prop">frameTimeChanged</a></b>(float <i>frameTime</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#gravity-prop">gravityChanged</a></b>(const QVector3D &amp;<i>gravity</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialAngle-prop">initialAngleChanged</a></b>(float <i>initialAngle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialAngleRandom-prop">initialAngleRandomChanged</a></b>(float <i>initialAngleRandom</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialColor-prop">initialColorChanged</a></b>(const QVector4D &amp;<i>initialColor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#initialSize-prop">initialSizeChanged</a></b>(const QVector2D &amp;<i>initialSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#maxParticlesEmittedPerFrame-prop">maxParticlesEmittedPerFrameChanged</a></b>(int <i>maxParticlesEmittedPerFrame</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#particleCount-prop">particleCountChanged</a></b>(int <i>particleCount</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#particleLifespan-prop">particleLifespanChanged</a></b>(float <i>particleLifespan</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#particleLifespanRandom-prop">particleLifespanRandomChanged</a></b>(float <i>particleLifespanRandom</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#rotationRate-prop">rotationRateChanged</a></b>(float <i>rotationRate</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#rotationRateRandom-prop">rotationRateRandomChanged</a></b>(float <i>rotationRateRandom</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-particles.html#spriteTexture-prop">spriteTextureChanged</a></b>(const Qt3DRender::QAbstractTexture *<i>spriteTexture</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$Particles-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<pre class="cpp plain">
+ #include &lt;Qt3DExtras/Qt3DWindow&gt;
+ #include &lt;ForwardRenderer&gt;
+ #include &lt;SceneEntity&gt;
+ #include &lt;Particles&gt;
+
+ Qt3DExtras::Qt3DWindow win;
+ Kuesa::SceneEntity *root = new Kuesa::SceneEntity();
+ Kuesa::ForwardRenderer *frameGraph = new Kuesa::ForwardRenderer();
+ frameGraph-&gt;setParticlesEnabled(true)
+
+ Kuesa::Particles *particles = new Kuesa::Particles(root);
+ particles-&gt;setParticleCount(128);
+ particles-&gt;setMaxParticlesEmittedPerFrame(4);
+ particles-&gt;setGravity(QVector3D(0.0f, -1.0f, 0.0f));
+ ..&#x2e;
+
+ win-&gt;setRootEntity(root);
+ win-&gt;setActiveFrameGraph(forwardRenderer);
+ ..&#x2e;
+</pre>
+</div>
+<!-- @@@Particles -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$AlignMode$$$FaceCamera$$$Velocity -->
+<h3 class="fn" id="AlignMode-enum"><a name="AlignMode-enum"></a>enum class Particles::<span class="name">AlignMode</span></h3>
+<p>This enum type describes the available particle alignment modes.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code>Kuesa::Particles::AlignMode::FaceCamera</code></td><td class="topAlign tblval"><code>0</code></td><td class="topAlign">The particle faces the camera at all times.</td></tr>
+<tr><td class="topAlign"><code>Kuesa::Particles::AlignMode::Velocity</code></td><td class="topAlign tblval"><code>1</code></td><td class="topAlign">The particle's local Y axis is aligned to its direction.</td></tr>
+</table></div>
+<!-- @@@AlignMode -->
+</div>
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$alignMode-prop$$$alignMode$$$setAlignModeKuesa::Particles::AlignMode$$$alignModeChangedKuesa::Particles::AlignMode -->
+<h3 class="fn" id="alignMode-prop"><a name="alignMode-prop"></a><span class="name">alignMode</span> : <span class="type"><a href="kuesa-particles.html#AlignMode-enum">AlignMode</a></span></h3>
+<p>Holds the alignment mode for the particles.</p>
+<ul>
+<li><a href="kuesa-particles.html#AlignMode-enum">FaceCamera</a> The particle faces the camera at all times.</li>
+<li>Velocity The particle's local Y axis is aligned to its direction.</li>
+</ul>
+<p>If the Velocity alignment mode is used, the <a href="kuesa-particles.html#initialAngle-prop">initialAngle</a> and <a href="kuesa-particles.html#rotationRate-prop">rotationRate</a> properties are ignored.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::Particles::AlignMode </td><td class="memItemRight bottomAlign"><span class="name"><b>alignMode</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setAlignMode</b></span>(Kuesa::Particles::AlignMode <i>alignMode</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>alignModeChanged</b></span>(Kuesa::Particles::AlignMode <i>alignMode</i>)</td></tr>
+</table></div>
+<!-- @@@alignMode -->
+<!-- $$$emitterPosition-prop$$$emitterPosition$$$setEmitterPositionconstQVector3D&$$$emitterPositionChangedconstQVector3D& -->
+<h3 class="fn" id="emitterPosition-prop"><a name="emitterPosition-prop"></a><span class="name">emitterPosition</span> : <span class="type">QVector3D</span></h3>
+<p>Holds the world position of the particle emitter.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>emitterPosition</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setEmitterPosition</b></span>(const QVector3D &amp;<i>emitterPosition</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>emitterPositionChanged</b></span>(const QVector3D &amp;<i>emitterPosition</i>)</td></tr>
+</table></div>
+<!-- @@@emitterPosition -->
+<!-- $$$emitterPositionRandom-prop$$$emitterPositionRandom$$$setEmitterPositionRandomconstQVector3D&$$$emitterPositionRandomChangedconstQVector3D& -->
+<h3 class="fn" id="emitterPositionRandom-prop"><a name="emitterPositionRandom-prop"></a><span class="name">emitterPositionRandom</span> : <span class="type">QVector3D</span></h3>
+<p>Holds the randomness factor applied to the world position.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>emitterPositionRandom</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setEmitterPositionRandom</b></span>(const QVector3D &amp;<i>emitterPositionRandom</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>emitterPositionRandomChanged</b></span>(const QVector3D &amp;<i>emitterPositionRandom</i>)</td></tr>
+</table></div>
+<!-- @@@emitterPositionRandom -->
+<!-- $$$emitterVelocity-prop$$$emitterVelocity$$$setEmitterVelocityconstQVector3D&$$$emitterVelocityChangedconstQVector3D& -->
+<h3 class="fn" id="emitterVelocity-prop"><a name="emitterVelocity-prop"></a><span class="name">emitterVelocity</span> : <span class="type">QVector3D</span></h3>
+<p>Holds the velocity applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>emitterVelocity</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setEmitterVelocity</b></span>(const QVector3D &amp;<i>emitterVelocity</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>emitterVelocityChanged</b></span>(const QVector3D &amp;<i>emitterVelocity</i>)</td></tr>
+</table></div>
+<!-- @@@emitterVelocity -->
+<!-- $$$emitterVelocityRandom-prop$$$emitterVelocityRandom$$$setEmitterVelocityRandomconstQVector3D&$$$emitterVelocityRandomChangedconstQVector3D& -->
+<h3 class="fn" id="emitterVelocityRandom-prop"><a name="emitterVelocityRandom-prop"></a><span class="name">emitterVelocityRandom</span> : <span class="type">QVector3D</span></h3>
+<p>Holds the velocity randomness factor applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>emitterVelocityRandom</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setEmitterVelocityRandom</b></span>(const QVector3D &amp;<i>emitterVelocityRandom</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>emitterVelocityRandomChanged</b></span>(const QVector3D &amp;<i>emitterVelocityRandom</i>)</td></tr>
+</table></div>
+<!-- @@@emitterVelocityRandom -->
+<!-- $$$finalColor-prop$$$finalColor$$$setFinalColorconstQVector4D&$$$finalColorChangedconstQVector4D& -->
+<h3 class="fn" id="finalColor-prop"><a name="finalColor-prop"></a><span class="name">finalColor</span> : <span class="type">QVector4D</span></h3>
+<p>Holds the final color of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector4D </td><td class="memItemRight bottomAlign"><span class="name"><b>finalColor</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setFinalColor</b></span>(const QVector4D &amp;<i>finalColor</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>finalColorChanged</b></span>(const QVector4D &amp;<i>finalColor</i>)</td></tr>
+</table></div>
+<!-- @@@finalColor -->
+<!-- $$$finalSize-prop$$$finalSize$$$setFinalSizeconstQVector2D&$$$finalSizeChangedconstQVector2D& -->
+<h3 class="fn" id="finalSize-prop"><a name="finalSize-prop"></a><span class="name">finalSize</span> : <span class="type">QVector2D</span></h3>
+<p>Holds the final size of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector2D </td><td class="memItemRight bottomAlign"><span class="name"><b>finalSize</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setFinalSize</b></span>(const QVector2D &amp;<i>finalSize</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>finalSizeChanged</b></span>(const QVector2D &amp;<i>finalSize</i>)</td></tr>
+</table></div>
+<!-- @@@finalSize -->
+<!-- $$$frameTime-prop$$$frameTime$$$setFrameTimefloat$$$frameTimeChangedfloat -->
+<h3 class="fn" id="frameTime-prop"><a name="frameTime-prop"></a><span class="name">frameTime</span> : <span class="type">float</span></h3>
+<p>Holds the speed at which updates need to be made in milliseconds.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>frameTime</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setFrameTime</b></span>(float <i>frameTime</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>frameTimeChanged</b></span>(float <i>frameTime</i>)</td></tr>
+</table></div>
+<!-- @@@frameTime -->
+<!-- $$$gravity-prop$$$gravity$$$setGravityconstQVector3D&$$$gravityChangedconstQVector3D& -->
+<h3 class="fn" id="gravity-prop"><a name="gravity-prop"></a><span class="name">gravity</span> : <span class="type">QVector3D</span></h3>
+<p>Holds the gravity value to apply to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>gravity</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setGravity</b></span>(const QVector3D &amp;<i>gravity</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>gravityChanged</b></span>(const QVector3D &amp;<i>gravity</i>)</td></tr>
+</table></div>
+<!-- @@@gravity -->
+<!-- $$$initialAngle-prop$$$initialAngle$$$setInitialAnglefloat$$$initialAngleChangedfloat -->
+<h3 class="fn" id="initialAngle-prop"><a name="initialAngle-prop"></a><span class="name">initialAngle</span> : <span class="type">float</span></h3>
+<p>Holds the initial rotation angle in radians of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>initialAngle</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setInitialAngle</b></span>(float <i>initialAngle</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>initialAngleChanged</b></span>(float <i>initialAngle</i>)</td></tr>
+</table></div>
+<!-- @@@initialAngle -->
+<!-- $$$initialAngleRandom-prop$$$initialAngleRandom$$$setInitialAngleRandomfloat$$$initialAngleRandomChangedfloat -->
+<h3 class="fn" id="initialAngleRandom-prop"><a name="initialAngleRandom-prop"></a><span class="name">initialAngleRandom</span> : <span class="type">float</span></h3>
+<p>Holds the initial rotation randomness factor applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>initialAngleRandom</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setInitialAngleRandom</b></span>(float <i>initialAngleRandom</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>initialAngleRandomChanged</b></span>(float <i>initialAngleRandom</i>)</td></tr>
+</table></div>
+<!-- @@@initialAngleRandom -->
+<!-- $$$initialColor-prop$$$initialColor$$$setInitialColorconstQVector4D&$$$initialColorChangedconstQVector4D& -->
+<h3 class="fn" id="initialColor-prop"><a name="initialColor-prop"></a><span class="name">initialColor</span> : <span class="type">QVector4D</span></h3>
+<p>Holds the initial color of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector4D </td><td class="memItemRight bottomAlign"><span class="name"><b>initialColor</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setInitialColor</b></span>(const QVector4D &amp;<i>initialColor</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>initialColorChanged</b></span>(const QVector4D &amp;<i>initialColor</i>)</td></tr>
+</table></div>
+<!-- @@@initialColor -->
+<!-- $$$initialSize-prop$$$initialSize$$$setInitialSizeconstQVector2D&$$$initialSizeChangedconstQVector2D& -->
+<h3 class="fn" id="initialSize-prop"><a name="initialSize-prop"></a><span class="name">initialSize</span> : <span class="type">QVector2D</span></h3>
+<p>Holds the initial size of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector2D </td><td class="memItemRight bottomAlign"><span class="name"><b>initialSize</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setInitialSize</b></span>(const QVector2D &amp;<i>initialSize</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>initialSizeChanged</b></span>(const QVector2D &amp;<i>initialSize</i>)</td></tr>
+</table></div>
+<!-- @@@initialSize -->
+<!-- $$$maxParticlesEmittedPerFrame-prop$$$maxParticlesEmittedPerFrame$$$setMaxParticlesEmittedPerFrameint$$$maxParticlesEmittedPerFrameChangedint -->
+<h3 class="fn" id="maxParticlesEmittedPerFrame-prop"><a name="maxParticlesEmittedPerFrame-prop"></a><span class="name">maxParticlesEmittedPerFrame</span> : <span class="type">int</span></h3>
+<p>Holds the maximum number of new particles that can be created each frame.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b>maxParticlesEmittedPerFrame</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setMaxParticlesEmittedPerFrame</b></span>(int <i>maxParticlesEmittedPerFrame</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>maxParticlesEmittedPerFrameChanged</b></span>(int <i>maxParticlesEmittedPerFrame</i>)</td></tr>
+</table></div>
+<!-- @@@maxParticlesEmittedPerFrame -->
+<!-- $$$particleCount-prop$$$particleCount$$$setParticleCountint$$$particleCountChangedint -->
+<h3 class="fn" id="particleCount-prop"><a name="particleCount-prop"></a><span class="name">particleCount</span> : <span class="type">int</span></h3>
+<p>Holds the maximum number of particles the system can handle. Currently the maximum value is 2048.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b>particleCount</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setParticleCount</b></span>(int <i>particleCount</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>particleCountChanged</b></span>(int <i>particleCount</i>)</td></tr>
+</table></div>
+<!-- @@@particleCount -->
+<!-- $$$particleLifespan-prop$$$particleLifespan$$$setParticleLifespanfloat$$$particleLifespanChangedfloat -->
+<h3 class="fn" id="particleLifespan-prop"><a name="particleLifespan-prop"></a><span class="name">particleLifespan</span> : <span class="type">float</span></h3>
+<p>Holds the lifetime of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>particleLifespan</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setParticleLifespan</b></span>(float <i>lifespan</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>particleLifespanChanged</b></span>(float <i>particleLifespan</i>)</td></tr>
+</table></div>
+<!-- @@@particleLifespan -->
+<!-- $$$particleLifespanRandom-prop$$$particleLifespanRandom$$$setParticleLifespanRandomfloat$$$particleLifespanRandomChangedfloat -->
+<h3 class="fn" id="particleLifespanRandom-prop"><a name="particleLifespanRandom-prop"></a><span class="name">particleLifespanRandom</span> : <span class="type">float</span></h3>
+<p>Holds the lifetime randomness factor applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>particleLifespanRandom</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setParticleLifespanRandom</b></span>(float <i>lifespanRandom</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>particleLifespanRandomChanged</b></span>(float <i>particleLifespanRandom</i>)</td></tr>
+</table></div>
+<!-- @@@particleLifespanRandom -->
+<!-- $$$rotationRate-prop$$$rotationRate$$$setRotationRatefloat$$$rotationRateChangedfloat -->
+<h3 class="fn" id="rotationRate-prop"><a name="rotationRate-prop"></a><span class="name">rotationRate</span> : <span class="type">float</span></h3>
+<p>Holds the rotation speed applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>rotationRate</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setRotationRate</b></span>(float <i>rotationRate</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>rotationRateChanged</b></span>(float <i>rotationRate</i>)</td></tr>
+</table></div>
+<!-- @@@rotationRate -->
+<!-- $$$rotationRateRandom-prop$$$rotationRateRandom$$$setRotationRateRandomfloat$$$rotationRateRandomChangedfloat -->
+<h3 class="fn" id="rotationRateRandom-prop"><a name="rotationRateRandom-prop"></a><span class="name">rotationRateRandom</span> : <span class="type">float</span></h3>
+<p>Holds the rotation speed randomness factor applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>rotationRateRandom</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setRotationRateRandom</b></span>(float <i>rotationRateRandom</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>rotationRateRandomChanged</b></span>(float <i>rotationRateRandom</i>)</td></tr>
+</table></div>
+<!-- @@@rotationRateRandom -->
+<!-- $$$spriteTexture-prop$$$spriteTexture$$$setSpriteTextureQt3DRender::QAbstractTexture*$$$spriteTextureChangedconstQt3DRender::QAbstractTexture* -->
+<h3 class="fn" id="spriteTexture-prop"><a name="spriteTexture-prop"></a><span class="name">spriteTexture</span> : <span class="type">Qt3DRender::QAbstractTexture</span>*</h3>
+<p>Holds the 2D sprite texture to apply to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Qt3DRender::QAbstractTexture *</td><td class="memItemRight bottomAlign"><span class="name"><b>spriteTexture</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setSpriteTexture</b></span>(Qt3DRender::QAbstractTexture *<i>spriteTexture</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>spriteTextureChanged</b></span>(const Qt3DRender::QAbstractTexture *<i>spriteTexture</i>)</td></tr>
+</table></div>
+<!-- @@@spriteTexture -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

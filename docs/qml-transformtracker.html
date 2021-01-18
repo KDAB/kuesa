@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- transformtracker.cpp -->
+  <title>TransformTracker QML Type | Kuesa Runtime 1.3</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-qml.html">QML Types</a></li>
+<li>TransformTracker QML Type</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">TransformTracker QML Type</h1>
+<span class="subtitle"></span>
+<!-- $$$TransformTracker-brief -->
+<p>TransformTracker allows watching a transform for change and computing a projected screen position given a window size and a camera. <a href="#details">More...</a></p>
+<!-- @@@TransformTracker -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.3</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-transformtracker.html"><a href="kuesa-transformtracker.html">TransformTracker</a></td></tr></table></div><ul>
+<li><a href="qml-transformtracker-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><b><a href="qml-transformtracker.html#camera-prop">camera</a></b></b> : Entity</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#matrix-prop">matrix</a></b></b> : matrix4x4</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#name-prop">name</a></b></b> : string</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#rotation-prop">rotation</a></b></b> : quaternion</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#rotationX-prop">rotationX</a></b></b> : float</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#rotationY-prop">rotationY</a></b></b> : float</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#rotationZ-prop">rotationZ</a></b></b> : float</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#scale-prop">scale</a></b></b> : float</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#scale3D-prop">scale3D</a></b></b> : vector3d</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#screenPosition-prop">screenPosition</a></b></b> : point</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#screenSize-prop">screenSize</a></b></b> : size</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#translation-prop">translation</a></b></b> : vector3d</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#viewportRect-prop">viewportRect</a></b></b> : rect</li>
+<li class="fn"><b><b><a href="qml-transformtracker.html#worldMatrix-prop">worldMatrix</a></b></b> : matrix4x4</li>
+</ul>
+<!-- $$$TransformTracker-description -->
+<a name="details"></a>
+<h2 id="details">Detailed Description</h2>
+<p>TransformTracker allows watching a transform for change and computing a projected screen position given a window size and a camera.</p>
+<p>This is especially useful to place 2D content based on a 3D position.</p>
+<pre class="cpp plain">
+ SceneEntity {
+     id: sceneEntity
+
+     Camera {
+         id: camera
+     }
+
+     TransformTracker {
+         name: &quot;MyTransform&quot;
+         camera: camera
+         screenSize: Qt.size(512, 512)
+         onScreenPositionChanged: {
+             // Reacts to new position
+             ..&#x2e;
+         }
+     }
+ }
+</pre>
+<!-- @@@TransformTracker -->
+<h2>Property Documentation</h2>
+<!-- $$$camera -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="camera-prop">
+<td class="tblQmlPropNode"><p>
+<a name="camera-prop"></a><span class="name">camera</span> : <span class="type">Entity</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the camera entity from which we should compute the screen position.</p>
+</div></div><!-- @@@camera -->
+<br/>
+<!-- $$$matrix -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="matrix-prop">
+<td class="tblQmlPropNode"><p>
+<a name="matrix-prop"></a><span class="name">matrix</span> : <span class="type">matrix4x4</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the local transformation matrix associated to the tracker's referenced Transform instance.</p>
+</div></div><!-- @@@matrix -->
+<br/>
+<!-- $$$name -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="name-prop">
+<td class="tblQmlPropNode"><p>
+<a name="name-prop"></a><span class="name">name</span> : <span class="type">string</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the name of theTransform instance to retrieve from the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a>.</p>
+</div></div><!-- @@@name -->
+<br/>
+<!-- $$$rotation -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="rotation-prop">
+<td class="tblQmlPropNode"><p>
+<a name="rotation-prop"></a><span class="name">rotation</span> : <span class="type">quaternion</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the local rotation associated to the tracker's referenced Transform instance.</p>
+</div></div><!-- @@@rotation -->
+<br/>
+<!-- $$$rotationX -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="rotationX-prop">
+<td class="tblQmlPropNode"><p>
+<a name="rotationX-prop"></a><span class="name">rotationX</span> : <span class="type">float</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the local x rotation (euler angle) associated to the tracker's referenced Transform instance.</p>
+</div></div><!-- @@@rotationX -->
+<br/>
+<!-- $$$rotationY -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="rotationY-prop">
+<td class="tblQmlPropNode"><p>
+<a name="rotationY-prop"></a><span class="name">rotationY</span> : <span class="type">float</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the local y rotation (euler angle) associated to the tracker's referenced Transform instance.</p>
+</div></div><!-- @@@rotationY -->
+<br/>
+<!-- $$$rotationZ -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="rotationZ-prop">
+<td class="tblQmlPropNode"><p>
+<a name="rotationZ-prop"></a><span class="name">rotationZ</span> : <span class="type">float</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the local z rotation (euler angle) associated to the tracker's referenced Transform instance.</p>
+</div></div><!-- @@@rotationZ -->
+<br/>
+<!-- $$$scale -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="scale-prop">
+<td class="tblQmlPropNode"><p>
+<a name="scale-prop"></a><span class="name">scale</span> : <span class="type">float</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the local uniform scale associated to the tracker's referenced Transform instance.</p>
+</div></div><!-- @@@scale -->
+<br/>
+<!-- $$$scale3D -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="scale3D-prop">
+<td class="tblQmlPropNode"><p>
+<a name="scale3D-prop"></a><span class="name">scale3D</span> : <span class="type">vector3d</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the local 3D scale associated to the tracker's referenced Transform instance.</p>
+</div></div><!-- @@@scale3D -->
+<br/>
+<!-- $$$screenPosition -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="screenPosition-prop">
+<td class="tblQmlPropNode"><p>
+<a name="screenPosition-prop"></a><span class="name">screenPosition</span> : <span class="type">point</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the 2D screen position computed from the transformation in world space obtained from the tracker's referenced Transform, the camera, the sceneSize and <a href="qml-transformtracker.html#viewportRect-prop">viewportRect</a>.</p>
+</div></div><!-- @@@screenPosition -->
+<br/>
+<!-- $$$screenSize -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="screenSize-prop">
+<td class="tblQmlPropNode"><p>
+<a name="screenSize-prop"></a><span class="name">screenSize</span> : <span class="type">size</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the size of the area within which we should compute screen positions. This would usually be the size of the window or the size of the sub view within the window.</p>
+</div></div><!-- @@@screenSize -->
+<br/>
+<!-- $$$translation -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="translation-prop">
+<td class="tblQmlPropNode"><p>
+<a name="translation-prop"></a><span class="name">translation</span> : <span class="type">vector3d</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the local translation associated to the tracker's referenced Transform instance.</p>
+</div></div><!-- @@@translation -->
+<br/>
+<!-- $$$viewportRect -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="viewportRect-prop">
+<td class="tblQmlPropNode"><p>
+<a name="viewportRect-prop"></a><span class="name">viewportRect</span> : <span class="type">rect</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the normalized viewport rectangle defining the area into which screen positions should be computed. If unspecified Qt.rect(0.0, 0.0, 1.0, 1.0) will be used.</p>
+</div></div><!-- @@@viewportRect -->
+<br/>
+<!-- $$$worldMatrix -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="worldMatrix-prop">
+<td class="tblQmlPropNode"><p>
+<a name="worldMatrix-prop"></a><span class="qmlreadonly">[read-only] </span><span class="name">worldMatrix</span> : <span class="type">matrix4x4</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the world transformation matrix associated to the tracker's referenced Transform instance.</p>
+</div></div><!-- @@@worldMatrix -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

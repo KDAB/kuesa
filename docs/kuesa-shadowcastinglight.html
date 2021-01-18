@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- shadowcastinglight.cpp -->
+  <title>ShadowCastingLight Class | Kuesa Runtime 1.3</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<li>ShadowCastingLight</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">ShadowCastingLight Class</h1>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesa">Kuesa</a>::ShadowCastingLight</span>
+<!-- $$$ShadowCastingLight-brief -->
+<p>Encapsulate a light object that is able to cast shadows in a Qt 3D scene. <a href="#details">More...</a></p>
+<!-- @@@ShadowCastingLight -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/ShadowCastingLight&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.3</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-shadowcastinglight.html">ShadowCastingLight</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="kuesa-spotlight.html">Kuesa::SpotLight</a></p>
+</td></tr></table></div><p>This class was introduced in Kuesa 1.3.</p>
+<ul>
+<li><a href="kuesa-shadowcastinglight-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary">
+<tr><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-shadowcastinglight.html#castsShadows-prop">castsShadows</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-shadowcastinglight.html#nearPlane-prop">nearPlane</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-shadowcastinglight.html#shadowMapBias-prop">shadowMapBias</a></b> : float</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-shadowcastinglight.html#softShadows-prop">softShadows</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-shadowcastinglight.html#textureSize-prop">textureSize</a></b> : QSize</li>
+</ul>
+</td></tr>
+</table></div>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#castsShadows-prop">castsShadows</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#nearPlane-prop">nearPlane</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#shadowMapBias-prop">shadowMapBias</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#softShadows-prop">softShadows</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSize </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#textureSize-prop">textureSize</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#castsShadows-prop">setCastsShadows</a></b>(bool <i>castsShadows</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#nearPlane-prop">setNearPlane</a></b>(float <i>nearPlane</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#shadowMapBias-prop">setShadowMapBias</a></b>(float <i>bias</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#softShadows-prop">setSoftShadows</a></b>(bool <i>softShadows</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#textureSize-prop">setTextureSize</a></b>(const QSize &amp;<i>textureSize</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#shadowMapBias-prop">biasChanged</a></b>(float <i>bias</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#castsShadows-prop">castsShadowsChanged</a></b>(bool <i>castsShadows</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#nearPlane-prop">nearPlaneChanged</a></b>(float <i>nearPlane</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#softShadows-prop">softShadowsChanged</a></b>(bool <i>softShadows</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-shadowcastinglight.html#textureSize-prop">textureSizeChanged</a></b>(const QSize &amp;<i>textureSize</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$ShadowCastingLight-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Shadow are currently only supported with Qt3D running with the OpenGL backend which supports geometry shaders when running on devices supporting OpenGL 3.2 or OpenGL ES 3.2&#x2e; When Qt3D is using the Qt RHI (rendering abstraction interface) backend. shadows are not supported due to the lack of geometry shader support in RHI.</p>
+</div>
+<!-- @@@ShadowCastingLight -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$castsShadows-prop$$$castsShadows$$$setCastsShadowsbool$$$castsShadowsChangedbool -->
+<h3 class="fn" id="castsShadows-prop"><a name="castsShadows-prop"></a><span class="name">castsShadows</span> : <span class="type">bool</span></h3>
+<p>Specifies whether or not the light casts shadows.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>castsShadows</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setCastsShadows</b></span>(bool <i>castsShadows</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>castsShadowsChanged</b></span>(bool <i>castsShadows</i>)</td></tr>
+</table></div>
+<!-- @@@castsShadows -->
+<!-- $$$nearPlane-prop$$$nearPlane$$$setNearPlanefloat$$$nearPlaneChangedfloat -->
+<h3 class="fn" id="nearPlane-prop"><a name="nearPlane-prop"></a><span class="name">nearPlane</span> : <span class="type">float</span></h3>
+<p>Holds the distance from the light at which it should begin casting shadows. Setting this as large as possible while still including all shadow-casting objects will increase the precision of the shadowMap depth texture, reducing self-shadowing and &quot;shadow-acne&quot;</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>nearPlane</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNearPlane</b></span>(float <i>nearPlane</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>nearPlaneChanged</b></span>(float <i>nearPlane</i>)</td></tr>
+</table></div>
+<!-- @@@nearPlane -->
+<!-- $$$shadowMapBias-prop$$$shadowMapBias$$$setShadowMapBiasfloat$$$biasChangedfloat -->
+<h3 class="fn" id="shadowMapBias-prop"><a name="shadowMapBias-prop"></a><span class="name">shadowMapBias</span> : <span class="type">float</span></h3>
+<p>Holds the amount to offset the shadow map perpendicular to the surface when checking whether a surface is in shadow. This helps eliminate self-shadowing and &quot;shadow-acne&quot;. Larger values reduce these effects but if the value is too large, objects can appear to float above their shadows.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>shadowMapBias</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setShadowMapBias</b></span>(float <i>bias</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>biasChanged</b></span>(float <i>bias</i>)</td></tr>
+</table></div>
+<!-- @@@shadowMapBias -->
+<!-- $$$softShadows-prop$$$softShadows$$$setSoftShadowsbool$$$softShadowsChangedbool -->
+<h3 class="fn" id="softShadows-prop"><a name="softShadows-prop"></a><span class="name">softShadows</span> : <span class="type">bool</span></h3>
+<p>Determines whether shadow edges are soft or hard. Soft shadows look more realistic but can impact rendering performance</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>softShadows</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setSoftShadows</b></span>(bool <i>softShadows</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>softShadowsChanged</b></span>(bool <i>softShadows</i>)</td></tr>
+</table></div>
+<!-- @@@softShadows -->
+<!-- $$$textureSize-prop$$$textureSize$$$setTextureSizeconstQSize&$$$textureSizeChangedconstQSize& -->
+<h3 class="fn" id="textureSize-prop"><a name="textureSize-prop"></a><span class="name">textureSize</span> : <span class="type">QSize</span></h3>
+<p>Specifies the size of the texture to use for the shadowmap. Larger textures result in higher quality shadows</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QSize </td><td class="memItemRight bottomAlign"><span class="name"><b>textureSize</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setTextureSize</b></span>(const QSize &amp;<i>textureSize</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>textureSizeChanged</b></span>(const QSize &amp;<i>textureSize</i>)</td></tr>
+</table></div>
+<!-- @@@textureSize -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

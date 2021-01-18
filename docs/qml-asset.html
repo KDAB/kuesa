@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
 <!-- asset.cpp -->
-  <title>Asset QML Type | Kuesa Runtime 1.2</title>
+  <title>Asset QML Type | Kuesa Runtime 1.3</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
-<li>QML Types</li>
+<li><a href="kuesa-qml.html">QML Types</a></li>
 <li>Asset QML Type</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><div class="sidebar">
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
@@ -24,7 +24,9 @@
 <!-- $$$Asset-brief -->
 <p>Asset is to access names nodes loaded from a glTF 2 file in a <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a>. <a href="#details">More...</a></p>
 <!-- @@@Asset -->
-<ul>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-kuesanode.html">KuesaNode</a></p>
+</td></tr></table></div><ul>
 <li><a href="qml-asset-members.html">List of all members, including inherited members</a></li>
 </ul>
 <a name="properties"></a>
@@ -33,7 +35,6 @@
 <li class="fn"><b><b><a href="qml-asset.html#collection-prop">collection</a></b></b> : Kuesa::AbstractAssetCollection</li>
 <li class="fn"><b><b><a href="qml-asset.html#name-prop">name</a></b></b> : string</li>
 <li class="fn"><b><b><a href="qml-asset.html#node-prop">node</a></b></b> : Qt3D.Core::Node</li>
-<li class="fn"><b><b><a href="qml-asset.html#sceneEntity-prop">sceneEntity</a></b></b> : Kuesa::SceneEntity</li>
 </ul>
 <!-- $$$Asset-description -->
 <a name="details"></a>
@@ -41,6 +42,24 @@
 <p>When loading a scene from a glTF 2 file, the resulting nodes are inserted into various collections. They can then searched for by name within these collections.</p>
 <p>Asset provides a declarative way of retrieving assets by name within a specified collection or the entire scene.</p>
 <p>If a collection is provided, the search will be limited to that collection. Otherwise, the search will be done in all collections, returning the first asset matching the name.</p>
+<p>Conveniently, to set or retrieve properties from the node, a property forwarding mechanism is available.</p>
+<p>To set values on a the asset node, one can simply do:</p>
+<pre class="cpp plain">
+ Asset {
+     collection: scene.cameras
+     name: &quot;CameraName&quot;
+     readonly property float aspectRatio: 16/9
+ }
+</pre>
+<p>The node's matching property is initialized if a valid default value is provided.</p>
+<p>For properties that should be read from the node and not necessarely used to initialize the node, omit the readonly keyword.</p>
+<pre class="cpp plain">
+ Asset {
+     collection: scene.cameras
+     name: &quot;CameraName&quot;
+     property float aspectRatio
+ }
+</pre>
 <p><b>See also </b><a href="qml-sceneentity.html">Kuesa::SceneEntity</a> and <a href="kuesa-abstractassetcollection.html">Kuesa::AbstractAssetCollection</a>.</p>
 <!-- @@@Asset -->
 <h2>Property Documentation</h2>
@@ -74,16 +93,6 @@
 </table></div></div>
 <div class="qmldoc"><p>The resulting asset. Will be null if no scene is loaded or if the names asset is not found.</p>
 </div></div><!-- @@@node -->
-<br/>
-<!-- $$$sceneEntity -->
-<div class="qmlitem"><div class="qmlproto">
-<div class="table"><table class="qmlname">
-<tr valign="top" class="odd" id="sceneEntity-prop">
-<td class="tblQmlPropNode"><p>
-<a name="sceneEntity-prop"></a><span class="name">sceneEntity</span> : <span class="type"><a href="qml-sceneentity.html">Kuesa::SceneEntity</a></span></p></td></tr>
-</table></div></div>
-<div class="qmldoc"><p>The scene in which assets are loaded.</p>
-</div></div><!-- @@@sceneEntity -->
 <br/>
         </div>
        </div>

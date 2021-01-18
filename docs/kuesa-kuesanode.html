@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- kuesanode.cpp -->
+  <title>KuesaNode Class | Kuesa Runtime 1.3</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<li>KuesaNode</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">KuesaNode Class</h1>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesa">Kuesa</a>::KuesaNode</span>
+<!-- $$$KuesaNode-brief -->
+<p>Base class for nodes that require a Kuesa::SceneEnity for assets * insertion or retrieval. * * The KuesaNode class is a convenience wrapper that handles setting a * <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> property on a node. It also automatically traverse the QObject * tree hierarchy to find if a <a href="qml-sceneentity.html">Kuesa::SceneEntity</a> is part of the hierarchy. If * so and if no <a href="qml-sceneentity.html">Kuesa::SceneEntity</a> was provided by the user, it will set the * <a href="kuesa-tonemapping-example.html#sceneentity">sceneEntity</a> property to that. <a href="#details">More...</a></p>
+<!-- @@@KuesaNode -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/KuesaNode&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.3</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-kuesanode.html">KuesaNode</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="kuesa-animationplayer.html">Kuesa::AnimationPlayer</a>, <a href="kuesa-gltf2importer.html">Kuesa::GLTF2Importer</a>, <a href="kuesa-meshinstantiator.html">Kuesa::MeshInstantiator</a>, <a href="kuesa-placeholdertracker.html">Kuesa::PlaceholderTracker</a>, <a href="kuesa-transformtracker.html">Kuesa::TransformTracker</a>, and <a href="kuesautils-sceneconfiguration.html">KuesaUtils::SceneConfiguration</a></p>
+</td></tr></table></div><p>This class was introduced in Kuesa 1.3.</p>
+<ul>
+<li><a href="kuesa-kuesanode-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><a href="kuesa-kuesanode.html#sceneEntity-prop">sceneEntity</a></b> : Kuesa::SceneEntity*</li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::SceneEntity *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-kuesanode.html#sceneEntity-prop">sceneEntity</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-kuesanode.html#sceneEntity-prop">setSceneEntity</a></b>(Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-kuesanode.html#sceneEntity-prop">sceneEntityChanged</a></b>(Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$KuesaNode-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>* * * * * *</p>
+</div>
+<!-- @@@KuesaNode -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$sceneEntity-prop$$$sceneEntity$$$setSceneEntityKuesa::SceneEntity*$$$sceneEntityChangedKuesa::SceneEntity* -->
+<h3 class="fn" id="sceneEntity-prop"><a name="sceneEntity-prop"></a><span class="name">sceneEntity</span> : <span class="type"><a href="kuesa-sceneentity.html">Kuesa::SceneEntity</a></span>*</h3>
+<p>Pointer to the <a href="kuesa-tonemapping-example.html#sceneentity">SceneEntity</a> with which assets are registered as they are loaded from the glTF file.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::SceneEntity *</td><td class="memItemRight bottomAlign"><span class="name"><b>sceneEntity</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setSceneEntity</b></span>(Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>sceneEntityChanged</b></span>(Kuesa::SceneEntity *<i>sceneEntity</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="qml-sceneentity.html">Kuesa::SceneEntity</a>.</p>
+<!-- @@@sceneEntity -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>
