@@ -58,11 +58,38 @@
     C++:
     \badcode
     #include <Kuesa>
+
+    int main(int ac, char **av)
+    {
+        QGuiApplication app(ac, av);
+        Qt3DExtras::Qt3DWindow w;
+
+        KuesaUtils::SceneConfiguration sceneConfiguration;
+        sceneConf.setSource(QUrl("file:///path/to/file.gltf));
+        sceneConf.setCameraName("CameraNameInGLTF");
+
+        KuesaUtils::View3DScene view3d;
+        view3d.setActiveScene(&sceneConfiguration);
+
+        w.setRootEntity(&view3d);
+        w.setActiveFrameGraph(view3d.frameGraph());
+        w.show();
+
+        return app.exec();
+    }
     \endcode
 
     QML:
     \badcode
     import Kuesa 1.3
+    import Kuesa.Utils 1.3
+
+    View3D {
+        id: scene3D
+        multisample: true
+        source: "file:///path/to/file.gltf"
+        camera: "cameraNameInGLTF"
+    }
     \endcode
 
     \section1 Quick Overview
