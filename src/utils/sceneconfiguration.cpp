@@ -168,9 +168,11 @@ void SceneConfiguration::removeTransformTracker(TransformTracker *tracker)
 {
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
     d->unregisterDestructionHelper(tracker);
-    m_trackers.erase(std::remove(std::begin(m_trackers), std::end(m_trackers), tracker),
-                     std::end(m_trackers));
-    emit transformTrackerRemoved(tracker);
+    auto it = std::remove(std::begin(m_trackers), std::end(m_trackers), tracker);
+    if (it != std::end(m_trackers)) {
+        m_trackers.erase(it);
+        emit transformTrackerRemoved(tracker);
+    }
 }
 
 void SceneConfiguration::clearTransformTrackers()
@@ -227,11 +229,12 @@ void SceneConfiguration::removeAnimationPlayer(AnimationPlayer *animation)
 {
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
     d->unregisterDestructionHelper(animation);
-    m_animations.erase(std::remove_if(std::begin(m_animations), std::end(m_animations), [animation](AnimationPlayer *a) {
-                           return a == animation;
-                       }),
-                       std::end(m_animations));
-    emit animationPlayerRemoved(animation);
+    auto it = std::remove(std::begin(m_animations), std::end(m_animations), animation);
+    if (it != std::end(m_animations)) {
+        m_animations.erase(it,
+                           std::end(m_animations));
+        emit animationPlayerRemoved(animation);
+    }
 }
 
 void SceneConfiguration::clearAnimationPlayers()

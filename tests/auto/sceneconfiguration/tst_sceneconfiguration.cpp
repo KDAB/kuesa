@@ -91,6 +91,12 @@ private Q_SLOTS:
     {
         // GIVEN
         KuesaUtils::SceneConfiguration sceneConfiguration;
+        QSignalSpy trackerAddedSpy(&sceneConfiguration, &KuesaUtils::SceneConfiguration::transformTrackerAdded);
+        QSignalSpy trackerRemovedSpy(&sceneConfiguration, &KuesaUtils::SceneConfiguration::transformTrackerRemoved);
+
+        // THEN
+        QVERIFY(trackerAddedSpy.isValid());
+        QVERIFY(trackerRemovedSpy.isValid());
 
         {
             // WHEN
@@ -102,10 +108,15 @@ private Q_SLOTS:
 
             // THEN
             QCOMPARE(sceneConfiguration.transformTrackers().size(), 2);
+            QCOMPARE(trackerAddedSpy.count(), 2);
         }
 
         // THEN -> Shouldn't crash and should have remove trackers
         QCOMPARE(sceneConfiguration.transformTrackers().size(), 0);
+        QCOMPARE(trackerRemovedSpy.count(), 2);
+
+        trackerAddedSpy.clear();
+        trackerRemovedSpy.clear();
 
         {
             // WHEN
@@ -117,13 +128,22 @@ private Q_SLOTS:
 
             // THEN
             QCOMPARE(sceneConfiguration.transformTrackers().size(), 1);
+            QCOMPARE(trackerAddedSpy.count(), 1);
 
             //WHEN
             sceneConfiguration.removeTransformTracker(&t2);
 
             // THEN
             QCOMPARE(sceneConfiguration.transformTrackers().size(), 1);
+            QCOMPARE(trackerRemovedSpy.count(), 0);
         }
+
+        // THEN -> Shouldn't crash and should have remove trackers
+        QCOMPARE(sceneConfiguration.transformTrackers().size(), 0);
+        QCOMPARE(trackerRemovedSpy.count(), 1);
+
+        trackerAddedSpy.clear();
+        trackerRemovedSpy.clear();
 
         {
             // WHEN
@@ -135,15 +155,19 @@ private Q_SLOTS:
 
             // THEN
             QCOMPARE(sceneConfiguration.transformTrackers().size(), 2);
+            QCOMPARE(trackerAddedSpy.count(), 2);
 
             // WHEN
             sceneConfiguration.clearTransformTrackers();
 
             // THEN
             QCOMPARE(sceneConfiguration.transformTrackers().size(), 0);
+            QCOMPARE(trackerRemovedSpy.count(), 2);
         }
 
         // THEN -> Shouldn't crash
+        trackerAddedSpy.clear();
+        trackerRemovedSpy.clear();
 
         {
             // WHEN
@@ -155,6 +179,7 @@ private Q_SLOTS:
 
             // THEN
             QCOMPARE(sceneConfiguration.transformTrackers().size(), 2);
+            QCOMPARE(trackerAddedSpy.count(), 2);
 
             // WHEN
             sceneConfiguration.removeTransformTracker(&t1);
@@ -162,15 +187,27 @@ private Q_SLOTS:
             // THEN
             QCOMPARE(sceneConfiguration.transformTrackers().size(), 1);
             QCOMPARE(sceneConfiguration.transformTrackers().front(), &t2);
+            QCOMPARE(trackerRemovedSpy.count(), 1);
         }
 
         // THEN -> Shouldn't crash
+        QCOMPARE(sceneConfiguration.transformTrackers().size(), 0);
+        QCOMPARE(trackerRemovedSpy.count(), 2);
+
+        trackerAddedSpy.clear();
+        trackerRemovedSpy.clear();
     }
 
     void checkAnimationPlayers()
     {
         // GIVEN
         KuesaUtils::SceneConfiguration sceneConfiguration;
+        QSignalSpy animationPlayerAddedSpy(&sceneConfiguration, &KuesaUtils::SceneConfiguration::animationPlayerAdded);
+        QSignalSpy animationPlayerRemovedSpy(&sceneConfiguration, &KuesaUtils::SceneConfiguration::animationPlayerRemoved);
+
+        // THEN
+        QVERIFY(animationPlayerAddedSpy.isValid());
+        QVERIFY(animationPlayerRemovedSpy.isValid());
 
         {
             // WHEN
@@ -182,10 +219,15 @@ private Q_SLOTS:
 
             // THEN
             QCOMPARE(sceneConfiguration.animationPlayers().size(), 2);
+            QCOMPARE(animationPlayerAddedSpy.count(), 2);
         }
 
-        // THEN -> Shouldn't crash and should have remove trackers
+        // THEN -> Shouldn't crash and should have removed animation
         QCOMPARE(sceneConfiguration.animationPlayers().size(), 0);
+        QCOMPARE(animationPlayerRemovedSpy.count(), 2);
+
+        animationPlayerAddedSpy.clear();
+        animationPlayerRemovedSpy.clear();
 
         {
             // WHEN
@@ -197,11 +239,20 @@ private Q_SLOTS:
 
             // THEN
             QCOMPARE(sceneConfiguration.animationPlayers().size(), 1);
+            QCOMPARE(animationPlayerAddedSpy.count(), 1);
 
             // WHEN
             sceneConfiguration.removeAnimationPlayer(&t2);
             QCOMPARE(sceneConfiguration.animationPlayers().size(), 1);
+            QCOMPARE(animationPlayerRemovedSpy.count(), 0);
         }
+
+        // THEN -> Shouldn't crash and should have removed animation
+        QCOMPARE(sceneConfiguration.animationPlayers().size(), 0);
+        QCOMPARE(animationPlayerRemovedSpy.count(), 1);
+
+        animationPlayerAddedSpy.clear();
+        animationPlayerRemovedSpy.clear();
 
         {
             // WHEN
@@ -213,15 +264,19 @@ private Q_SLOTS:
 
             // THEN
             QCOMPARE(sceneConfiguration.animationPlayers().size(), 2);
+            QCOMPARE(animationPlayerAddedSpy.count(), 2);
 
             // WHEN
             sceneConfiguration.clearAnimationPlayers();
 
             // THEN
             QCOMPARE(sceneConfiguration.animationPlayers().size(), 0);
+            QCOMPARE(animationPlayerRemovedSpy.count(), 2);
         }
 
         // THEN -> Shouldn't crash
+        animationPlayerAddedSpy.clear();
+        animationPlayerRemovedSpy.clear();
 
         {
             // WHEN
@@ -233,6 +288,7 @@ private Q_SLOTS:
 
             // THEN
             QCOMPARE(sceneConfiguration.animationPlayers().size(), 2);
+            QCOMPARE(animationPlayerAddedSpy.count(), 2);
 
             // WHEN
             sceneConfiguration.removeAnimationPlayer(&t1);
@@ -240,9 +296,15 @@ private Q_SLOTS:
             // THEN
             QCOMPARE(sceneConfiguration.animationPlayers().size(), 1);
             QCOMPARE(sceneConfiguration.animationPlayers().front(), &t2);
+            QCOMPARE(animationPlayerRemovedSpy.count(), 1);
         }
 
         // THEN -> Shouldn't crash
+        QCOMPARE(sceneConfiguration.animationPlayers().size(), 0);
+        QCOMPARE(animationPlayerRemovedSpy.count(), 2);
+
+        animationPlayerAddedSpy.clear();
+        animationPlayerRemovedSpy.clear();
     }
 
     void checkPlaceholders()
