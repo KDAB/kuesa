@@ -18,7 +18,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{fde284fb-3d12-41e0-a4f4-c52a982e21c5}"
+   "uuid": "{24f4f228-dd54-47cd-9d37-b8415d79f683}"
   },
   {
    "layers": [],
@@ -38,7 +38,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{c76cda45-03f3-426f-88cd-ed4b05d5bcf0}"
+   "uuid": "{06064b98-6685-4077-a5b7-f03f00105e90}"
   },
   {
    "layers": [],
@@ -58,13 +58,13 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{d23a81e8-7a8b-48c8-9c60-f65b403bc1e1}"
+   "uuid": "{c3c9d32d-1cd1-4d37-b53e-eec771548e96}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "VERTEX_COLOR",
-   "uuid": "{136c687e-4609-409c-8315-b9f5ff2716d9}"
+   "uuid": "{995b19eb-0b09-4710-83e7-83bcd122c5a2}"
   },
   {
    "layers": [],
@@ -75,7 +75,7 @@
     }
    },
    "type": "MIX",
-   "uuid": "{ed13ab60-2854-4a14-8d3c-0c92ad735e5e}"
+   "uuid": "{4c5393d8-ed13-40fc-8d10-8854cb8fff92}"
   },
   {
    "layers": [],
@@ -86,7 +86,7 @@
     }
    },
    "type": "MIX",
-   "uuid": "{7c576881-dfd8-4a29-a460-f05b276c744e}"
+   "uuid": "{b4f626b4-167f-40a5-a43a-ee8004f26cde}"
   },
   {
    "layers": [],
@@ -106,25 +106,25 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{eac8edc3-b3ec-454a-946e-bdd6625e4f08}"
+   "uuid": "{d235c2b2-5b6e-4ec1-a5b2-717ff462e7a2}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "TEX_COORD",
-   "uuid": "{9806780a-cc49-4547-ad26-aa1f0a47d0e1}"
+   "uuid": "{9e79eade-28e2-47dc-b5ef-2da68f1f780c}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "MATERIAL_PROPERTIES",
-   "uuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}"
+   "uuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "TEX_COORD",
-   "uuid": "{27a6c643-febf-40b9-8c25-6c74aa0936a1}"
+   "uuid": "{73d7d623-c007-4dca-9876-be52d142995b}"
   },
   {
    "layers": [],
@@ -144,7 +144,7 @@
     }
    },
    "type": "BINARY_MATH_FUNCTION",
-   "uuid": "{b80501d3-5f53-4199-8da8-ad41941918d6}"
+   "uuid": "{7e5f9983-0a30-4c33-8e18-cd291717ee98}"
   },
   {
    "layers": [],
@@ -155,7 +155,7 @@
     "linearizer": "sRGBtoLinear"
    },
    "type": "EQUI_RECT_ENV_TEX_IMAGE",
-   "uuid": "{625a1f4f-28dc-481c-ab9b-10bdc58dcd0e}"
+   "uuid": "{247bdc29-c087-4c93-9395-ccfb75bb8989}"
   },
   {
    "layers": [],
@@ -175,7 +175,7 @@
     }
    },
    "type": "BINARY_MATH_FUNCTION",
-   "uuid": "{b8cc772d-7315-42cf-8f02-cb9c11940710}"
+   "uuid": "{bd6f3f68-89ec-4898-ab15-689136d772ce}"
   },
   {
    "layers": [],
@@ -186,13 +186,13 @@
     "linearizer": ""
    },
    "type": "TEX_IMAGE",
-   "uuid": "{fa9d5b8d-872b-4dd9-8863-68749c71e866}"
+   "uuid": "{d2cf9052-8eef-49c6-b75b-2ebeb2dd24a0}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "NORMAL_MAP",
-   "uuid": "{39c15325-b080-4e82-ac1b-16de5cdab76e}"
+   "uuid": "{04ccb038-05be-45d6-b01d-ed9694f17bce}"
   },
   {
    "layers": [],
@@ -216,13 +216,13 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{6ac8f9ac-15ae-4b88-b438-0326256c7be2}"
+   "uuid": "{695448de-7415-444b-aff7-7b8f028a0530}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "SEPXYZ",
-   "uuid": "{d4be843d-e626-4dbf-9627-3cda4295eace}"
+   "uuid": "{dad91f91-4c21-475e-8e3d-7466dd28c6a0}"
   },
   {
    "layers": [],
@@ -246,25 +246,19 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{7a92d882-97b3-4bca-9258-cdf22757d38a}"
+   "uuid": "{886378f2-be8b-4b11-947c-62b18368b413}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "MATERIAL_OUTPUT",
-   "uuid": "{266c292c-b18c-49ac-a83c-2c1636b3668a}"
-  },
-  {
-   "layers": [],
-   "parameters": {},
-   "type": "CLAMP_COLOR",
-   "uuid": "{1628b63a-6d46-4874-9a0b-1f4e4cd40387}"
+   "uuid": "{deaf395e-635b-4c57-bc5b-0d0a8bc70fca}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "COLOR_TO_SHADER",
-   "uuid": "{11571fef-7e1e-462d-866f-686b825306e0}"
+   "uuid": "{398116dc-a646-496b-92ac-e9845f6a9d28}"
   },
   {
    "layers": [],
@@ -274,7 +268,7 @@
     "postFactor": "vec3(1)"
    },
    "type": "VECT_TRANSFORM",
-   "uuid": "{75c5342a-1a5c-48f6-adf9-acc0a273b533}"
+   "uuid": "{3b2df86d-cebc-4753-bcc6-4efb79fbc895}"
   },
   {
    "layers": [],
@@ -294,7 +288,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{5f65f74e-282d-4aba-8def-b81e71308a90}"
+   "uuid": "{2cdfc4ac-2fd9-4931-9143-12e692480c92}"
   },
   {
    "layers": [],
@@ -314,7 +308,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{a447e232-e6cf-4045-b21a-6bb499309e4d}"
+   "uuid": "{b1f70365-4b6a-4457-82cc-9155304114ae}"
   },
   {
    "layers": [],
@@ -334,7 +328,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{6d369f56-371e-4760-a628-cd8c926b94c4}"
+   "uuid": "{7c630eed-3bc4-4f73-9a10-b9c1c2d8b399}"
   },
   {
    "layers": [],
@@ -354,7 +348,7 @@
     }
    },
    "type": "UNARY_MATH_FUNCTION",
-   "uuid": "{615f5c95-f5bd-42b2-b3cf-12f2868db1ec}"
+   "uuid": "{262ad564-d7c2-4eec-952b-cee9d1795ac8}"
   },
   {
    "layers": [],
@@ -364,7 +358,27 @@
     "postFactor": "vec3(1, 1, -1)"
    },
    "type": "VECT_TRANSFORM",
-   "uuid": "{d2396b9d-5544-46a9-9ac7-9300887b2df0}"
+   "uuid": "{cf4a98d1-05e6-46f8-b368-0fd2a89c70ba}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "operation": "max",
+    "firstType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    },
+    "secondType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    },
+    "outputType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    }
+   },
+   "type": "BINARY_MATH_FUNCTION",
+   "uuid": "{119596d3-48d1-4a21-ad82-6a4a3544c932}"
   },
   {
    "layers": [],
@@ -376,7 +390,7 @@
     }
    },
    "type": "constant",
-   "uuid": "{702825f1-8499-45af-8d19-7c033b507fe0}"
+   "uuid": "{42e5fe98-ecbe-4988-8015-23d47e886dbe}"
   },
   {
    "layers": [],
@@ -388,19 +402,7 @@
     }
    },
    "type": "constant",
-   "uuid": "{0e685ac0-b514-45f0-a8c6-4a55fd9541a5}"
-  },
-  {
-   "layers": [],
-   "parameters": {
-    "constant": "1.0",
-    "type": {
-     "type": "QShaderLanguage::VariableType",
-     "value": "QShaderLanguage::Float"
-    }
-   },
-   "type": "constant",
-   "uuid": "{0ac9fc5e-a5ee-4a09-8be3-707b614eef5c}"
+   "uuid": "{405a9d52-4389-42f9-9967-06a6a0d005d7}"
   },
   {
    "layers": [],
@@ -412,312 +414,324 @@
     }
    },
    "type": "constant",
-   "uuid": "{9f6613fc-e9af-4e65-88d3-dd1d7c1bdd5d}"
+   "uuid": "{5232be77-b801-4438-8b53-c6cfedb5163a}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "constant": "0.0,0.0,0.0",
+    "type": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    }
+   },
+   "type": "constant",
+   "uuid": "{8aa4968e-40c7-4a07-8fc4-0816849cfc7c}"
   }
  ],
  "edges": [
   {
    "layers": [],
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "reflectionInnerFilter",
-   "targetUuid": "{7c576881-dfd8-4a29-a460-f05b276c744e}",
+   "targetUuid": "{b4f626b4-167f-40a5-a43a-ee8004f26cde}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "reflectionOuterFilter",
-   "targetUuid": "{7c576881-dfd8-4a29-a460-f05b276c744e}",
+   "targetUuid": "{b4f626b4-167f-40a5-a43a-ee8004f26cde}",
    "targetPort": "input2"
   },
   {
    "layers": [],
-   "sourceUuid": "{7c576881-dfd8-4a29-a460-f05b276c744e}",
+   "sourceUuid": "{b4f626b4-167f-40a5-a43a-ee8004f26cde}",
    "sourcePort": "mixed",
-   "targetUuid": "{c76cda45-03f3-426f-88cd-ed4b05d5bcf0}",
+   "targetUuid": "{06064b98-6685-4077-a5b7-f03f00105e90}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{c76cda45-03f3-426f-88cd-ed4b05d5bcf0}",
+   "sourceUuid": "{06064b98-6685-4077-a5b7-f03f00105e90}",
    "sourcePort": "output0",
-   "targetUuid": "{fde284fb-3d12-41e0-a4f4-c52a982e21c5}",
+   "targetUuid": "{24f4f228-dd54-47cd-9d37-b8415d79f683}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{fde284fb-3d12-41e0-a4f4-c52a982e21c5}",
+   "sourceUuid": "{24f4f228-dd54-47cd-9d37-b8415d79f683}",
    "sourcePort": "output0",
-   "targetUuid": "{eac8edc3-b3ec-454a-946e-bdd6625e4f08}",
+   "targetUuid": "{d235c2b2-5b6e-4ec1-a5b2-717ff462e7a2}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "reflectionGain",
-   "targetUuid": "{fde284fb-3d12-41e0-a4f4-c52a982e21c5}",
+   "targetUuid": "{24f4f228-dd54-47cd-9d37-b8415d79f683}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{39c15325-b080-4e82-ac1b-16de5cdab76e}",
+   "sourceUuid": "{04ccb038-05be-45d6-b01d-ed9694f17bce}",
    "sourcePort": "normal",
-   "targetUuid": "{d2396b9d-5544-46a9-9ac7-9300887b2df0}",
+   "targetUuid": "{cf4a98d1-05e6-46f8-b368-0fd2a89c70ba}",
    "targetPort": "input"
   },
   {
    "layers": [],
-   "sourceUuid": "{5f65f74e-282d-4aba-8def-b81e71308a90}",
+   "sourceUuid": "{2cdfc4ac-2fd9-4931-9143-12e692480c92}",
    "sourcePort": "output0",
-   "targetUuid": "{6d369f56-371e-4760-a628-cd8c926b94c4}",
+   "targetUuid": "{7c630eed-3bc4-4f73-9a10-b9c1c2d8b399}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{a447e232-e6cf-4045-b21a-6bb499309e4d}",
+   "sourceUuid": "{b1f70365-4b6a-4457-82cc-9155304114ae}",
    "sourcePort": "output0",
-   "targetUuid": "{6d369f56-371e-4760-a628-cd8c926b94c4}",
+   "targetUuid": "{7c630eed-3bc4-4f73-9a10-b9c1c2d8b399}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{6d369f56-371e-4760-a628-cd8c926b94c4}",
+   "sourceUuid": "{7c630eed-3bc4-4f73-9a10-b9c1c2d8b399}",
    "sourcePort": "output0",
-   "targetUuid": "{615f5c95-f5bd-42b2-b3cf-12f2868db1ec}",
+   "targetUuid": "{262ad564-d7c2-4eec-952b-cee9d1795ac8}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{d4be843d-e626-4dbf-9627-3cda4295eace}",
+   "sourceUuid": "{dad91f91-4c21-475e-8e3d-7466dd28c6a0}",
    "sourcePort": "z",
-   "targetUuid": "{6ac8f9ac-15ae-4b88-b438-0326256c7be2}",
+   "targetUuid": "{695448de-7415-444b-aff7-7b8f028a0530}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{6ac8f9ac-15ae-4b88-b438-0326256c7be2}",
+   "sourceUuid": "{695448de-7415-444b-aff7-7b8f028a0530}",
    "sourcePort": "output0",
-   "targetUuid": "{7a92d882-97b3-4bca-9258-cdf22757d38a}",
+   "targetUuid": "{886378f2-be8b-4b11-947c-62b18368b413}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{6ac8f9ac-15ae-4b88-b438-0326256c7be2}",
+   "sourceUuid": "{695448de-7415-444b-aff7-7b8f028a0530}",
    "sourcePort": "output0",
-   "targetUuid": "{7a92d882-97b3-4bca-9258-cdf22757d38a}",
+   "targetUuid": "{886378f2-be8b-4b11-947c-62b18368b413}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{7a92d882-97b3-4bca-9258-cdf22757d38a}",
+   "sourceUuid": "{886378f2-be8b-4b11-947c-62b18368b413}",
    "sourcePort": "output0",
-   "targetUuid": "{7c576881-dfd8-4a29-a460-f05b276c744e}",
+   "targetUuid": "{b4f626b4-167f-40a5-a43a-ee8004f26cde}",
    "targetPort": "fac"
   },
   {
    "layers": [],
-   "sourceUuid": "{136c687e-4609-409c-8315-b9f5ff2716d9}",
+   "sourceUuid": "{995b19eb-0b09-4710-83e7-83bcd122c5a2}",
    "sourcePort": "color",
-   "targetUuid": "{ed13ab60-2854-4a14-8d3c-0c92ad735e5e}",
+   "targetUuid": "{4c5393d8-ed13-40fc-8d10-8854cb8fff92}",
    "targetPort": "input2"
   },
   {
    "layers": [],
-   "sourceUuid": "{ed13ab60-2854-4a14-8d3c-0c92ad735e5e}",
+   "sourceUuid": "{4c5393d8-ed13-40fc-8d10-8854cb8fff92}",
    "sourcePort": "mixed",
-   "targetUuid": "{d23a81e8-7a8b-48c8-9c60-f65b403bc1e1}",
+   "targetUuid": "{c3c9d32d-1cd1-4d37-b53e-eec771548e96}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "postVertexColor",
-   "targetUuid": "{ed13ab60-2854-4a14-8d3c-0c92ad735e5e}",
+   "targetUuid": "{4c5393d8-ed13-40fc-8d10-8854cb8fff92}",
    "targetPort": "fac"
   },
   {
    "layers": [],
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "postGain",
-   "targetUuid": "{d23a81e8-7a8b-48c8-9c60-f65b403bc1e1}",
+   "targetUuid": "{c3c9d32d-1cd1-4d37-b53e-eec771548e96}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{d23a81e8-7a8b-48c8-9c60-f65b403bc1e1}",
+   "sourceUuid": "{c3c9d32d-1cd1-4d37-b53e-eec771548e96}",
    "sourcePort": "output0",
-   "targetUuid": "{eac8edc3-b3ec-454a-946e-bdd6625e4f08}",
+   "targetUuid": "{d235c2b2-5b6e-4ec1-a5b2-717ff462e7a2}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "normalScaling",
-   "targetUuid": "{5f65f74e-282d-4aba-8def-b81e71308a90}",
+   "targetUuid": "{2cdfc4ac-2fd9-4931-9143-12e692480c92}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "normalDisturb",
-   "targetUuid": "{a447e232-e6cf-4045-b21a-6bb499309e4d}",
+   "targetUuid": "{b1f70365-4b6a-4457-82cc-9155304114ae}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{eac8edc3-b3ec-454a-946e-bdd6625e4f08}",
-   "sourcePort": "output0",
-   "targetUuid": "{1628b63a-6d46-4874-9a0b-1f4e4cd40387}",
-   "targetPort": "color"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{9806780a-cc49-4547-ad26-aa1f0a47d0e1}",
+   "sourceUuid": "{9e79eade-28e2-47dc-b5ef-2da68f1f780c}",
    "sourcePort": "uv",
-   "targetUuid": "{fa9d5b8d-872b-4dd9-8863-68749c71e866}",
+   "targetUuid": "{d2cf9052-8eef-49c6-b75b-2ebeb2dd24a0}",
    "targetPort": "vector"
   },
   {
    "layers": [],
-   "sourceUuid": "{fa9d5b8d-872b-4dd9-8863-68749c71e866}",
+   "sourceUuid": "{d2cf9052-8eef-49c6-b75b-2ebeb2dd24a0}",
    "sourcePort": "color",
-   "targetUuid": "{39c15325-b080-4e82-ac1b-16de5cdab76e}",
+   "targetUuid": "{04ccb038-05be-45d6-b01d-ed9694f17bce}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "normalMapGain",
-   "targetUuid": "{39c15325-b080-4e82-ac1b-16de5cdab76e}",
+   "targetUuid": "{04ccb038-05be-45d6-b01d-ed9694f17bce}",
    "targetPort": "strength"
   },
   {
    "layers": [],
-   "sourceUuid": "{b8cc772d-7315-42cf-8f02-cb9c11940710}",
+   "sourceUuid": "{bd6f3f68-89ec-4898-ab15-689136d772ce}",
    "sourcePort": "output0",
-   "targetUuid": "{b80501d3-5f53-4199-8da8-ad41941918d6}",
+   "targetUuid": "{7e5f9983-0a30-4c33-8e18-cd291717ee98}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{27a6c643-febf-40b9-8c25-6c74aa0936a1}",
+   "sourceUuid": "{73d7d623-c007-4dca-9876-be52d142995b}",
    "sourcePort": "reflection",
-   "targetUuid": "{b8cc772d-7315-42cf-8f02-cb9c11940710}",
+   "targetUuid": "{bd6f3f68-89ec-4898-ab15-689136d772ce}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{625a1f4f-28dc-481c-ab9b-10bdc58dcd0e}",
+   "sourceUuid": "{247bdc29-c087-4c93-9395-ccfb75bb8989}",
    "sourcePort": "color",
-   "targetUuid": "{c76cda45-03f3-426f-88cd-ed4b05d5bcf0}",
+   "targetUuid": "{06064b98-6685-4077-a5b7-f03f00105e90}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{b80501d3-5f53-4199-8da8-ad41941918d6}",
+   "sourceUuid": "{7e5f9983-0a30-4c33-8e18-cd291717ee98}",
    "sourcePort": "output0",
-   "targetUuid": "{625a1f4f-28dc-481c-ab9b-10bdc58dcd0e}",
+   "targetUuid": "{247bdc29-c087-4c93-9395-ccfb75bb8989}",
    "targetPort": "position"
   },
   {
    "layers": [],
-   "sourceUuid": "{27a6c643-febf-40b9-8c25-6c74aa0936a1}",
+   "sourceUuid": "{73d7d623-c007-4dca-9876-be52d142995b}",
    "sourcePort": "normal",
-   "targetUuid": "{b8cc772d-7315-42cf-8f02-cb9c11940710}",
+   "targetUuid": "{bd6f3f68-89ec-4898-ab15-689136d772ce}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{615f5c95-f5bd-42b2-b3cf-12f2868db1ec}",
+   "sourceUuid": "{262ad564-d7c2-4eec-952b-cee9d1795ac8}",
    "sourcePort": "output0",
-   "targetUuid": "{75c5342a-1a5c-48f6-adf9-acc0a273b533}",
+   "targetUuid": "{3b2df86d-cebc-4753-bcc6-4efb79fbc895}",
    "targetPort": "input"
   },
   {
    "layers": [],
-   "sourceUuid": "{615f5c95-f5bd-42b2-b3cf-12f2868db1ec}",
+   "sourceUuid": "{262ad564-d7c2-4eec-952b-cee9d1795ac8}",
    "sourcePort": "output0",
-   "targetUuid": "{d4be843d-e626-4dbf-9627-3cda4295eace}",
+   "targetUuid": "{dad91f91-4c21-475e-8e3d-7466dd28c6a0}",
    "targetPort": "vector"
   },
   {
    "layers": [],
-   "sourceUuid": "{1628b63a-6d46-4874-9a0b-1f4e4cd40387}",
-   "sourcePort": "color_out",
-   "targetUuid": "{11571fef-7e1e-462d-866f-686b825306e0}",
-   "targetPort": "color"
+   "sourceUuid": "{d235c2b2-5b6e-4ec1-a5b2-717ff462e7a2}",
+   "sourcePort": "output0",
+   "targetUuid": "{119596d3-48d1-4a21-ad82-6a4a3544c932}",
+   "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{11571fef-7e1e-462d-866f-686b825306e0}",
+   "sourceUuid": "{398116dc-a646-496b-92ac-e9845f6a9d28}",
    "sourcePort": "shader",
-   "targetUuid": "{266c292c-b18c-49ac-a83c-2c1636b3668a}",
+   "targetUuid": "{deaf395e-635b-4c57-bc5b-0d0a8bc70fca}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{75c5342a-1a5c-48f6-adf9-acc0a273b533}",
+   "sourceUuid": "{3b2df86d-cebc-4753-bcc6-4efb79fbc895}",
    "sourcePort": "transformed",
-   "targetUuid": "{b80501d3-5f53-4199-8da8-ad41941918d6}",
+   "targetUuid": "{7e5f9983-0a30-4c33-8e18-cd291717ee98}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{d2396b9d-5544-46a9-9ac7-9300887b2df0}",
+   "sourceUuid": "{cf4a98d1-05e6-46f8-b368-0fd2a89c70ba}",
    "sourcePort": "transformed",
-   "targetUuid": "{5f65f74e-282d-4aba-8def-b81e71308a90}",
+   "targetUuid": "{2cdfc4ac-2fd9-4931-9143-12e692480c92}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{702825f1-8499-45af-8d19-7c033b507fe0}",
+   "sourceUuid": "{119596d3-48d1-4a21-ad82-6a4a3544c932}",
+   "sourcePort": "output0",
+   "targetUuid": "{398116dc-a646-496b-92ac-e9845f6a9d28}",
+   "targetPort": "color"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{42e5fe98-ecbe-4988-8015-23d47e886dbe}",
    "sourcePort": "value",
-   "targetUuid": "{ed13ab60-2854-4a14-8d3c-0c92ad735e5e}",
+   "targetUuid": "{4c5393d8-ed13-40fc-8d10-8854cb8fff92}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{0e685ac0-b514-45f0-a8c6-4a55fd9541a5}",
+   "sourceUuid": "{405a9d52-4389-42f9-9967-06a6a0d005d7}",
    "sourcePort": "value",
-   "targetUuid": "{6ac8f9ac-15ae-4b88-b438-0326256c7be2}",
+   "targetUuid": "{695448de-7415-444b-aff7-7b8f028a0530}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{0ac9fc5e-a5ee-4a09-8be3-707b614eef5c}",
+   "sourceUuid": "{5232be77-b801-4438-8b53-c6cfedb5163a}",
    "sourcePort": "value",
-   "targetUuid": "{1628b63a-6d46-4874-9a0b-1f4e4cd40387}",
-   "targetPort": "alpha"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{9f6613fc-e9af-4e65-88d3-dd1d7c1bdd5d}",
-   "sourcePort": "value",
-   "targetUuid": "{a447e232-e6cf-4045-b21a-6bb499309e4d}",
+   "targetUuid": "{b1f70365-4b6a-4457-82cc-9155304114ae}",
    "targetPort": "input1"
   },
   {
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "layers": [],
+   "sourceUuid": "{8aa4968e-40c7-4a07-8fc4-0816849cfc7c}",
+   "sourcePort": "value",
+   "targetUuid": "{119596d3-48d1-4a21-ad82-6a4a3544c932}",
+   "targetPort": "input1"
+  },
+  {
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "usesReflectionMap",
-   "targetUuid": "{625a1f4f-28dc-481c-ab9b-10bdc58dcd0e}",
+   "targetUuid": "{247bdc29-c087-4c93-9395-ccfb75bb8989}",
    "targetPort": "useTexture"
   },
   {
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "reflectionMap",
-   "targetUuid": "{625a1f4f-28dc-481c-ab9b-10bdc58dcd0e}",
+   "targetUuid": "{247bdc29-c087-4c93-9395-ccfb75bb8989}",
    "targetPort": "texture"
   },
   {
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "usesNormalMap",
-   "targetUuid": "{fa9d5b8d-872b-4dd9-8863-68749c71e866}",
+   "targetUuid": "{d2cf9052-8eef-49c6-b75b-2ebeb2dd24a0}",
    "targetPort": "useTexture"
   },
   {
-   "sourceUuid": "{001eec26-271a-436e-9263-50b0e5f4ad4b}",
+   "sourceUuid": "{8770f24e-aa6e-4110-be00-2ae96aeda887}",
    "sourcePort": "normalMap",
-   "targetUuid": "{fa9d5b8d-872b-4dd9-8863-68749c71e866}",
+   "targetUuid": "{d2cf9052-8eef-49c6-b75b-2ebeb2dd24a0}",
    "targetPort": "texture"
   }
  ],
@@ -1260,16 +1274,16 @@
       "#ifndef NEW_GEOMETRY",
       "#define NEW_GEOMETRY",
       "varying highp vec3 worldPosition;",
-      "#ifdef LAYER_hasVertexNormal",
-      "varying highp vec3 worldNormal;",
-      "#else",
-      "const lowp vec3 worldNormal = vec3(0.0);",
-      "#endif",
-      "#ifdef LAYER_hasVertexTangent",
-      "varying highp vec4 worldTangent;",
-      "#else",
-      "const lowp vec4 worldTangent = vec4(0.0);",
-      "#endif",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       varying highp vec3 worldNormal;",
+      "   #else",
+      "       const lowp vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       varying highp vec4 worldTangent;",
+      "   #else",
+      "       const lowp vec4 worldTangent = vec4(0.0);",
+      "   #endif",
       "#endif"
      ],
      "substitution": "highp vec3 $position = worldPosition;highp vec3 $normal = normalize(worldNormal);highp vec3 $tangent = worldTangent.xyz;"
@@ -1284,16 +1298,16 @@
       "#ifndef NEW_GEOMETRY",
       "#define NEW_GEOMETRY",
       "in highp vec3 worldPosition;",
-      "#ifdef LAYER_hasVertexNormal",
-      "in highp vec3 worldNormal;",
-      "#else",
-      "const lowp vec3 worldNormal = vec3(0.0);",
-      "#endif",
-      "#ifdef LAYER_hasVertexTangent",
-      "in highp vec4 worldTangent;",
-      "#else",
-      "const lowp vec4 worldTangent = vec4(0.0);",
-      "#endif",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       in highp vec3 worldNormal;",
+      "   #else",
+      "       const lowp vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       in highp vec4 worldTangent;",
+      "   #else",
+      "       const lowp vec4 worldTangent = vec4(0.0);",
+      "   #endif",
       "#endif"
      ],
      "substitution": "highp vec3 $position = worldPosition;highp vec3 $normal = normalize(worldNormal);highp vec3 $tangent = worldTangent.xyz;"
@@ -1308,16 +1322,16 @@
       "#ifndef NEW_GEOMETRY",
       "#define NEW_GEOMETRY",
       "in vec3 worldPosition;",
-      "#ifdef LAYER_hasVertexNormal",
-      "in vec3 worldNormal;",
-      "#else",
-      "const vec3 worldNormal = vec3(0.0);",
-      "#endif",
-      "#ifdef LAYER_hasVertexTangent",
-      "in vec4 worldTangent;",
-      "#else",
-      "const vec4 worldTangent = vec4(0.0);",
-      "#endif",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
       "#endif"
      ],
      "substitution": "vec3 $position = worldPosition;vec3 $normal = normalize(worldNormal);vec3 $tangent = worldTangent.xyz;"
@@ -1332,16 +1346,16 @@
       "#ifndef NEW_GEOMETRY",
       "#define NEW_GEOMETRY",
       "layout(location = 4) in vec3 worldPosition;",
-      "#ifdef LAYER_hasVertexNormal",
-      "layout(location = 3) in vec3 worldNormal;",
-      "#else",
-      "const vec3 worldNormal = vec3(0.0);",
-      "#endif",
-      "#ifdef LAYER_hasVertexTangent",
-      "layout(location = 2) in vec4 worldTangent;",
-      "#else",
-      "const vec4 worldTangent = vec4(0.0);",
-      "#endif",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       layout(location = 3) in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       layout(location = 2) in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
       "#endif"
      ],
      "substitution": "vec3 $position = worldPosition;vec3 $normal = normalize(worldNormal);vec3 $tangent = worldTangent.xyz;"
@@ -1929,17 +1943,17 @@
      "headerSnippets": [
       "#ifndef NEW_GEOMETRY",
       "#define NEW_GEOMETRY",
-      "varying highp vec3 worldPosition;",
-      "#ifdef LAYER_hasVertexNormal",
-      "varying highp vec3 worldNormal;",
-      "#else",
-      "const lowp vec3 worldNormal = vec3(0.0);",
-      "#endif",
-      "#ifdef LAYER_hasVertexTangent",
-      "varying highp vec4 worldTangent;",
-      "#else",
-      "const lowp vec4 worldTangent = vec4(0.0);",
-      "#endif",
+      "   varying highp vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       varying highp vec3 worldNormal;",
+      "   #else",
+      "       const lowp vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       varying highp vec4 worldTangent;",
+      "   #else",
+      "       const lowp vec4 worldTangent = vec4(0.0);",
+      "   #endif",
       "#endif"
      ],
      "substitution": "highp vec3 $tangentSpaceNormal = $color.xyz * vec3(2) - vec3(1); highp vec3 $normal = normalize(mix(worldNormal, normalize($tangentSpaceNormal.x * worldTangent.xyz + $tangentSpaceNormal.y * cross(worldNormal, worldTangent.xyz) + $tangentSpaceNormal.z * worldNormal), max($strength, 0.0)));"
@@ -1954,16 +1968,16 @@
       "#ifndef NEW_GEOMETRY",
       "#define NEW_GEOMETRY",
       "in highp vec3 worldPosition;",
-      "#ifdef LAYER_hasVertexNormal",
-      "in highp vec3 worldNormal;",
-      "#else",
-      "const lowp vec3 worldNormal = vec3(0.0);",
-      "#endif",
-      "#ifdef LAYER_hasVertexTangent",
-      "in highp vec4 worldTangent;",
-      "#else",
-      "const lowp vec4 worldTangent = vec4(0.0);",
-      "#endif",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       in highp vec3 worldNormal;",
+      "   #else",
+      "       const lowp vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       in highp vec4 worldTangent;",
+      "   #else",
+      "       const lowp vec4 worldTangent = vec4(0.0);",
+      "   #endif",
       "#endif"
      ],
      "substitution": "highp vec3 $tangentSpaceNormal = $color.xyz * vec3(2) - vec3(1); highp vec3 $normal = normalize(mix(worldNormal, normalize($tangentSpaceNormal.x * worldTangent.xyz + $tangentSpaceNormal.y * cross(worldNormal, worldTangent.xyz) + $tangentSpaceNormal.z * worldNormal), max($strength, 0.0)));"
@@ -1977,17 +1991,17 @@
      "headerSnippets": [
       "#ifndef NEW_GEOMETRY",
       "#define NEW_GEOMETRY",
-      "in vec3 worldPosition;",
-      "#ifdef LAYER_hasVertexNormal",
-      "in vec3 worldNormal;",
-      "#else",
-      "const vec3 worldNormal = vec3(0.0);",
-      "#endif",
-      "#ifdef LAYER_hasVertexTangent",
-      "in vec4 worldTangent;",
-      "#else",
-      "const vec4 worldTangent = vec4(0.0);",
-      "#endif",
+      "   in vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
       "#endif"
      ],
      "substitution": "vec3 $tangentSpaceNormal = $color.xyz * vec3(2) - vec3(1); vec3 $normal = normalize(mix(worldNormal, normalize($tangentSpaceNormal.x * worldTangent.xyz + $tangentSpaceNormal.y * cross(worldNormal, worldTangent.xyz) + $tangentSpaceNormal.z * worldNormal), max($strength, 0.0)));"
@@ -2002,16 +2016,16 @@
       "#ifndef NEW_GEOMETRY",
       "#define NEW_GEOMETRY",
       "layout(location = 4) in vec3 worldPosition;",
-      "#ifdef LAYER_hasVertexNormal",
-      "layout(location = 3) in vec3 worldNormal;",
-      "#else",
-      "const vec3 worldNormal = vec3(0.0);",
-      "#endif",
-      "#ifdef LAYER_hasVertexTangent",
-      "layout(location = 2) in vec4 worldTangent;",
-      "#else",
-      "const vec4 worldTangent = vec4(0.0);",
-      "#endif",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       layout(location = 3) in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       layout(location = 2) in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
       "#endif"
      ],
      "substitution": "vec3 $tangentSpaceNormal = $color.xyz * vec3(2) - vec3(1); vec3 $normal = normalize(mix(worldNormal, normalize($tangentSpaceNormal.x * worldTangent.xyz + $tangentSpaceNormal.y * cross(worldNormal, worldTangent.xyz) + $tangentSpaceNormal.z * worldNormal), max($strength, 0.0)));"
@@ -2095,6 +2109,195 @@
       "#endif"
      ],
      "substitution": "vec3 $color = color.rgb;float $alpha = color.a;"
+    }
+   ]
+  },
+  "PLANAR_REFLECTION_ALPHA_BLEND": {
+   "inputs": [
+    "color",
+    "alpha"
+   ],
+   "outputs": [
+    "shader"
+   ],
+   "rules": [
+    {
+     "format": {
+      "api": "OpenGLES",
+      "major": 2,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef VIEW_MATRIX",
+      "#define VIEW_MATRIX",
+      "   uniform highp mat4 viewMatrix;",
+      "   uniform highp mat4 inverseViewMatrix;",
+      "#endif",
+      "#ifndef PROJECTION_MATRIX",
+      "#define PROJECTION_MATRIX",
+      "   uniform highp mat4 projectionMatrix;",
+      "#endif",
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "   varying highp vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       varying highp vec3 worldNormal;",
+      "   #else",
+      "       const lowp vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       varying highp vec4 worldTangent;",
+      "   #else",
+      "       const lowp vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif",
+      "#ifndef PLANAR_REFLECTION",
+      "#define PLANAR_REFLECTION",
+      "uniform highp sampler2D kuesa_reflectionPlaneMap;",
+      "uniform highp vec4 kuesa_reflectionPlane;",
+      "highp mat4 reflectionMatrix(vec4 n)",
+      "{",
+      "    highp vec4 n2 = n * n;",
+      "    return mat4(1.0 - 2 * n2.x,    -2 * n.x * n.y,     -2 * n.x * n.z,    0,",
+      "                -2 * n.x * n.y,     1.0 - 2 * n2.y,    -2 * n.y * n.z,    0,",
+      "                -2 * n.x * n.z,    -2 * n.y * n.z,      1.0 -2 * n2.z,    0,",
+      "                -2 * n.x * n.w ,   -2 * n.y * n.w,     -2 * n.z * n.w,    1);",
+      "}",
+      "highp vec4 reflectedColor(vec4 c)",
+      "{",
+      "    highp vec4 clipReflection = projectionMatrix * viewMatrix * reflectionMatrix(kuesa_reflectionPlane) * vec4(worldPosition, 1.0);",
+      "    highp vec2 refCoords = clipReflection.xy / clipReflection.w;",
+      "    highp vec2 texCoords = vec2(0.5) + 0.5 * refCoords;",
+      "    highp vec4 reflectedColor = texture(kuesa_reflectionPlaneMap, texCoords);",
+      "    return c * reflectedColor;",
+      "}",
+      "#endif"
+     ],
+     "substitution": "highp vec4 $shader = reflectedColor(vec4($color, pow($alpha, 2.4)));"
+    },
+    {
+     "format": {
+      "api": "OpenGLCoreProfile",
+      "major": 3,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef VIEW_MATRIX",
+      "#define VIEW_MATRIX",
+      "   uniform mat4 viewMatrix;",
+      "   uniform mat4 inverseViewMatrix;",
+      "#endif",
+      "#ifndef PROJECTION_MATRIX",
+      "#define PROJECTION_MATRIX",
+      "   uniform mat4 projectionMatrix;",
+      "#endif",
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "   in vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif",
+      "#ifndef PLANAR_REFLECTION",
+      "#define PLANAR_REFLECTION",
+      "uniform sampler2D kuesa_reflectionPlaneMap;",
+      "uniform vec4 kuesa_reflectionPlane;",
+      "mat4 reflectionMatrix(vec4 n)",
+      "{",
+      "    vec4 n2 = n * n;",
+      "    return mat4(1.0 - 2 * n2.x,    -2 * n.x * n.y,     -2 * n.x * n.z,    0,",
+      "                -2 * n.x * n.y,     1.0 - 2 * n2.y,    -2 * n.y * n.z,    0,",
+      "                -2 * n.x * n.z,    -2 * n.y * n.z,      1.0 -2 * n2.z,    0,",
+      "                -2 * n.x * n.w ,   -2 * n.y * n.w,     -2 * n.z * n.w,    1);",
+      "}",
+      "vec4 reflectedColor(vec4 c)",
+      "{",
+      "    vec4 clipReflection = projectionMatrix * viewMatrix * reflectionMatrix(kuesa_reflectionPlane) * vec4(worldPosition, 1.0);",
+      "    vec2 refCoords = clipReflection.xy / clipReflection.w;",
+      "    vec2 texCoords = vec2(0.5) + 0.5 * refCoords;",
+      "    vec4 reflectedColor = texture(kuesa_reflectionPlaneMap, texCoords);",
+      "    return c * reflectedColor;",
+      "}",
+      "#endif"
+     ],
+     "substitution": "vec4 $shader = reflectedColor(vec4($color, pow($alpha, 2.4)));"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef RV_UNIFORMS",
+      "#define RV_UNIFORMS",
+      "layout(std140, binding = 0) uniform qt3d_render_view_uniforms {",
+      "    mat4 viewMatrix;",
+      "    mat4 projectionMatrix;",
+      "    mat4 uncorrectedProjectionMatrix;",
+      "    mat4 clipCorrectionMatrix;",
+      "    mat4 viewProjectionMatrix;",
+      "    mat4 inverseViewMatrix;",
+      "    mat4 inverseProjectionMatrix;",
+      "    mat4 inverseViewProjectionMatrix;",
+      "    mat4 viewportMatrix;",
+      "    mat4 inverseViewportMatrix;",
+      "    vec4 textureTransformMatrix;",
+      "    vec3 eyePosition;",
+      "    float aspectRatio;",
+      "    float gamma;",
+      "    float exposure;",
+      "    float time;",
+      "    float yUpInNDC;",
+      "    float yUpInFBO;",
+      "  };",
+      "#endif",
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "layout(location = 4) in vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       layout(location = 3) in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       layout(location = 2) in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif",
+      "#ifndef PLANAR_REFLECTION",
+      "#define PLANAR_REFLECTION",
+      "layout(binding=0) uniform sampler2D kuesa_reflectionPlaneMap;",
+      "layout(std140, binding = 12) uniform qt3d_shadergraph_reflection_plane_uniforms {",
+      "    vec4 kuesa_reflectionPlane;",
+      "};",
+      "mat4 reflectionMatrix(vec4 n)",
+      "{",
+      "    vec4 n2 = n * n;",
+      "    return mat4(1.0 - 2 * n2.x,    -2 * n.x * n.y,     -2 * n.x * n.z,    0,",
+      "                -2 * n.x * n.y,     1.0 - 2 * n2.y,    -2 * n.y * n.z,    0,",
+      "                -2 * n.x * n.z,    -2 * n.y * n.z,      1.0 -2 * n2.z,    0,",
+      "                -2 * n.x * n.w ,   -2 * n.y * n.w,     -2 * n.z * n.w,    1);",
+      "}",
+      "vec4 reflectedColor(vec4 c)",
+      "{",
+      "    vec4 clipReflection = projectionMatrix * viewMatrix * reflectionMatrix(kuesa_reflectionPlane) * vec4(worldPosition, 1.0);",
+      "    vec2 refCoords = clipReflection.xy / clipReflection.w;",
+      "    vec2 texCoords = vec2(0.5) + 0.5 * refCoords;",
+      "    vec4 reflectedColor = texture(kuesa_reflectionPlaneMap, texCoords);",
+      "    return c * reflectedColor;",
+      "}",
+      "#endif"
+     ],
+     "substitution": "vec4 $shader = reflectedColor(vec4($color, pow($alpha, 2.4)));"
     }
    ]
   },
