@@ -127,7 +127,7 @@ vec3 pbrModel(const in int lightIndex,
               const in float metalness,
               const in float alpha,
               const in float ambientOcclusion,
-              const in bool receivesShadows)
+              const in int receivesShadows)
 {
     // Calculate some useful quantities
     vec3 n = wNormal;

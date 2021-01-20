@@ -2946,7 +2946,7 @@
                 "name": "receivesShadows",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
+                    "value": "QShaderLanguage::Int"
                 }
             },
             "type": "kuesa_ShaderDataInput",

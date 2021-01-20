@@ -55,11 +55,8 @@ uniform Light light_7;
 uniform int lightCount;
 
 // Pre-convolved environment maps
-struct EnvironmentLight {
-    FP vec3 irradianceSize;
-    FP vec3 specularSize;
-};
-uniform EnvironmentLight envLight;
+uniform FP vec3 envLightIrradianceSize;
+uniform FP vec3 envLightSpecularSize;
 uniform sampler2D envLightIrradiance; // For diffuse contribution
 uniform sampler2D envLightSpecular; // For specular contribution
 uniform int envLightCount;

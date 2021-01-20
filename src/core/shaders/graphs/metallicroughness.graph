@@ -3441,7 +3441,7 @@
             ],
             "parameterValues": {
                 "0": "receivesShadows",
-                "1": "QShaderLanguage::Bool"
+                "1": "QShaderLanguage::Int"
             },
             "position": {
                 "x": -4074,
@@ -4326,7 +4326,7 @@
                 {
                     "defaultValue": "",
                     "name": "receivesShadows",
-                    "type": "QShaderLanguage::Bool"
+                    "type": "QShaderLanguage::Int"
                 }
             ],
             "name": "kuesa_metalRoughFunction_unroll",
@@ -7364,7 +7364,7 @@
                 {
                     "defaultValue": "",
                     "name": "receivesShadows",
-                    "type": "QShaderLanguage::Bool"
+                    "type": "QShaderLanguage::Int"
                 }
             ],
             "name": "kuesa_metalRoughFunction",
