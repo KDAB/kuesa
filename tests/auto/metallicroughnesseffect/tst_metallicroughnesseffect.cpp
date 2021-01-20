@@ -37,7 +37,6 @@
 
 using namespace Kuesa;
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 
 namespace {
 
@@ -46,8 +45,25 @@ class FakeRenderer : public Qt3DRender::Render::AbstractRenderer
 public:
     void dumpInfo() const override { }
     Qt3DRender::API api() const override { return Qt3DRender::API::OpenGL; }
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     void setRenderDriver(AbstractRenderer::RenderDriver) override{};
     AbstractRenderer::RenderDriver renderDriver() const override { return Qt3D; }
+    void render(bool swapBuffers) override { Q_UNUSED(swapBuffers); }
+    std::vector<Qt3DCore::QAspectJobPtr> preRenderingJobs() override { return {}; }
+    std::vector<Qt3DCore::QAspectJobPtr> renderBinJobs() override { return {}; }
+    bool processMouseEvent(QObject *, QMouseEvent *) override { return false; }
+    bool processKeyEvent(QObject *, QKeyEvent *) override { return false; }
+    void setRHIContext(QRhi *) override { }
+    void setDefaultRHIRenderTarget(QRhiRenderTarget *) override{};
+    void setRHICommandBuffer(QRhiCommandBuffer *) override{};
+#else
+    void doRender(bool swapBuffers) override { Q_UNUSED(swapBuffers); };
+    void setPendingEvents(const QList<QPair<QObject *, QMouseEvent> > &, const QList<QKeyEvent> &) override {}
+    void loadShader(Qt3DRender::Render::Shader *, Qt3DRender::Render::HShader ) override {};
+    void render() override { }
+    QVector<Qt3DCore::QAspectJobPtr> preRenderingJobs() override { return {}; }
+    QVector<Qt3DCore::QAspectJobPtr> renderBinJobs() override { return {}; }
+#endif
     qint64 time() const override { return 0; }
     void setTime(qint64 time) override { Q_UNUSED(time); }
     void setAspect(Qt3DRender::QRenderAspect *aspect) override { m_aspect = aspect; }
@@ -61,22 +77,17 @@ public:
     void initialize() override { }
     void shutdown() override { }
     void releaseGraphicsResources() override { }
-    void render(bool swapBuffers) override { Q_UNUSED(swapBuffers); }
     void cleanGraphicsResources() override { }
     bool isRunning() const override { return true; }
     bool shouldRender() const override { return true; }
     void skipNextFrame() override { }
     void jobsDone(Qt3DCore::QAspectManager *manager) override { Q_UNUSED(manager); }
-    std::vector<Qt3DCore::QAspectJobPtr> preRenderingJobs() override { return {}; }
-    std::vector<Qt3DCore::QAspectJobPtr> renderBinJobs() override { return {}; }
     void setSceneRoot(Qt3DRender::Render::Entity *root) override { Q_UNUSED(root); }
     Qt3DRender::Render::Entity *sceneRoot() const override { return nullptr; }
     Qt3DRender::Render::FrameGraphNode *frameGraphRoot() const override { return nullptr; }
     Qt3DCore::QAbstractFrameAdvanceService *frameAdvanceService() const override { return nullptr; }
     void setSettings(Qt3DRender::Render::RenderSettings *settings) override { m_settings = settings; }
     Qt3DRender::Render::RenderSettings *settings() const override { return m_settings; }
-    bool processMouseEvent(QObject *, QMouseEvent *) override { return false; }
-    bool processKeyEvent(QObject *, QKeyEvent *) override { return false; }
 
     void markDirty(Qt3DRender::Render::AbstractRenderer::BackendNodeDirtySet changes, Qt3DRender::Render::BackendNode *) override { m_changes |= changes; }
     Qt3DRender::Render::AbstractRenderer::BackendNodeDirtySet dirtyBits() override { return m_changes; }
@@ -97,9 +108,6 @@ public:
     QSurfaceFormat format() override { return {}; }
 
     void setOpenGLContext(QOpenGLContext *) override { }
-    void setRHIContext(QRhi *) override { }
-    void setDefaultRHIRenderTarget(QRhiRenderTarget *) override{};
-    void setRHICommandBuffer(QRhiCommandBuffer *) override{};
     bool accessOpenGLTexture(Qt3DCore::QNodeId, QOpenGLTexture **, QMutex **, bool) override { return false; }
     QSharedPointer<Qt3DRender::Render::RenderBackendResourceAccessor> resourceAccessor() const override { return {}; }
 
@@ -111,8 +119,6 @@ protected:
 };
 
 } // namespace
-
-#endif
 
 class tst_MetallicRoughnessEffect : public QObject
 {
@@ -359,7 +365,6 @@ private Q_SLOTS:
         }
     }
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     void checkShaderGeneration_data()
     {
         QTest::addColumn<EffectProperties::Properties>("props");
@@ -415,7 +420,6 @@ private Q_SLOTS:
             builder.generateCode(Qt3DRender::QShaderProgram::Fragment);
         }
     }
-#endif
 };
 
 QTEST_MAIN(tst_MetallicRoughnessEffect)
