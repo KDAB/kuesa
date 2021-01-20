@@ -64,6 +64,7 @@ private Q_SLOTS:
         QCOMPARE(effect.isOpaque(), true);
         QCOMPARE(effect.isAlphaCutoffEnabled(), false);
         QCOMPARE(effect.brdfLUT(), nullptr);
+        QCOMPARE(effect.isInstanced(), false);
     }
 
     void checkEffectProperties()
@@ -87,6 +88,7 @@ private Q_SLOTS:
         QSignalSpy opaqueSpy(&effect, &Kuesa::MetallicRoughnessEffect::opaqueChanged);
         QSignalSpy alphaCutoffSpy(&effect, &Kuesa::MetallicRoughnessEffect::alphaCutoffEnabledChanged);
         QSignalSpy brdfLUTSpy(&effect, &Kuesa::MetallicRoughnessEffect::brdfLUTChanged);
+        QSignalSpy instancedSpy(&effect, &Kuesa::MetallicRoughnessEffect::instancedChanged);
 
         // THEN
         QVERIFY(baseColorMapSpy.isValid());
@@ -104,6 +106,7 @@ private Q_SLOTS:
         QVERIFY(opaqueSpy.isValid());
         QVERIFY(alphaCutoffSpy.isValid());
         QVERIFY(brdfLUTSpy.isValid());
+        QVERIFY(instancedSpy.isValid());
 
         {
             // WHEN
@@ -281,6 +284,17 @@ private Q_SLOTS:
             QCOMPARE(effect.brdfLUT(), texture2D);
             QCOMPARE(brdfLUTSpy.count(), 1);
         }
+
+        {
+            // WHEN
+            effect.setInstanced(false);
+            effect.setInstanced(true);
+            effect.setInstanced(true);
+
+            // THEN
+            QCOMPARE(effect.isInstanced(), true);
+            QCOMPARE(instancedSpy.count(), 1);
+        }
     }
 
     void checkShaderGeneration_data()
@@ -316,27 +330,39 @@ private Q_SLOTS:
         QFETCH(EffectProperties::Properties, props);
         FakeRenderer renderer;
 
+        auto testEffectGenerator = [&] (Kuesa::MetallicRoughnessEffect *e) {
+            for (Qt3DRender::QTechnique *t : e->techniques()) {
+                Kuesa::MetallicRoughnessTechnique *technique = qobject_cast<Kuesa::MetallicRoughnessTechnique *>(t);
+
+                // THEN
+                QVERIFY(t != nullptr);
+
+                // WHEN
+                Qt3DRender::QShaderProgramBuilder *frontendBuilder = technique->metalRoughShaderBuilder();
+                Qt3DRender::Render::ShaderBuilder builder;
+                builder.setEnabled(true);
+                builder.setRenderer(&renderer);
+                builder.syncFromFrontEnd(frontendBuilder, true);
+
+                // THEN -> Shouldn't crash
+                builder.setGraphicsApi(Qt3DRender::QGraphicsApiFilterPrivate::get(t->graphicsApiFilter())->m_data);
+                builder.generateCode(Qt3DRender::QShaderProgram::Vertex);
+                builder.generateCode(Qt3DRender::QShaderProgram::Fragment);
+            }
+        };
+
         // WHEN
-        MetallicRoughnessEffect *e = EffectsLibrary::createMetallicRoughnessEffectWithKey(props);
-
-        for (Qt3DRender::QTechnique *t : e->techniques()) {
-            Kuesa::MetallicRoughnessTechnique *technique = qobject_cast<Kuesa::MetallicRoughnessTechnique *>(t);
-
-            // THEN
-            QVERIFY(t != nullptr);
-
-            // WHEN
-            Qt3DRender::QShaderProgramBuilder *frontendBuilder = technique->metalRoughShaderBuilder();
-            Qt3DRender::Render::ShaderBuilder builder;
-            builder.setEnabled(true);
-            builder.setRenderer(&renderer);
-            builder.syncFromFrontEnd(frontendBuilder, true);
-
-            // THEN -> Shouldn't crash
-            builder.setGraphicsApi(Qt3DRender::QGraphicsApiFilterPrivate::get(t->graphicsApiFilter())->m_data);
-            builder.generateCode(Qt3DRender::QShaderProgram::Vertex);
-            builder.generateCode(Qt3DRender::QShaderProgram::Fragment);
+        {
+            MetallicRoughnessEffect *e = EffectsLibrary::createMetallicRoughnessEffectWithKey(props);
+            testEffectGenerator(e);
         }
+        // WHEN
+        {
+            MetallicRoughnessEffect *e = EffectsLibrary::createMetallicRoughnessEffectWithKey(props);
+            e->setInstanced(true);
+            testEffectGenerator(e);
+        }
+
     }
 };
 
