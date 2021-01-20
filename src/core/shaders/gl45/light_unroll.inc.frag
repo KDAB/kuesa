@@ -31,20 +31,20 @@ const int TYPE_POINT = 0;
 const int TYPE_DIRECTIONAL = 1;
 const int TYPE_SPOT = 2;
 struct Light {
-    int type;
     vec3 position;
-    vec3 color;
-    vec3 direction;
     float intensity;
+    vec3 color;
     float range;
+    vec3 direction;
     float lightAngleScale;
     float lightAngleOffset;
     float shadowBias;
+    int type;
+    int depthArrayIndex;
     bool castsShadows;
     bool usePCF;
     mat4 lightProjectionMatrix;
     vec2 nearFarPlanes;
-    int depthArrayIndex;
 };
 
 layout(std140, binding = auto) uniform LightBlock {
