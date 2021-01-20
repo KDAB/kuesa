@@ -74,6 +74,8 @@ Item {
             Item {
                 width: 512
                 height: 512
+                // To mirror content vertically
+                transform: Scale { origin.x: 256; origin.y: 256; xScale: 1; yScale: -1 }
 
                 Text {
                     anchors.centerIn: parent
