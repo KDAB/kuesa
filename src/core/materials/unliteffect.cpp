@@ -29,7 +29,6 @@
 #include "unliteffect.h"
 
 #include <Qt3DCore/private/qnode_p.h>
-#include <Qt3DRender/qcullface.h>
 #include <Qt3DRender/qfilterkey.h>
 #include <Qt3DRender/qgraphicsapifilter.h>
 #include <Qt3DRender/qparameter.h>
@@ -48,40 +47,6 @@ QT_BEGIN_NAMESPACE
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
-class UnlitTechnique : public Qt3DRender::QTechnique
-{
-public:
-    enum Version {
-        GL3 = 0,
-        ES3,
-        ES2,
-        RHI
-    };
-
-    explicit UnlitTechnique(Version version, Qt3DCore::QNode *parent = nullptr);
-
-    QStringList enabledLayers() const;
-    void setEnabledLayers(const QStringList &layers);
-    void setOpaque(bool opaque);
-    void setCullingMode(QCullFace::CullingMode mode);
-    QCullFace::CullingMode cullingMode() const;
-    void setAllowCulling(bool allowCulling);
-
-private:
-    Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QBlendEquation *m_blendEquation;
-    Qt3DRender::QBlendEquationArguments *m_blendArguments;
-    Qt3DRender::QShaderProgramBuilder *m_unlitShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
-    Qt3DRender::QShaderProgram *m_unlitShader;
-    Qt3DRender::QShaderProgram *m_zfillShader;
-    Qt3DRender::QRenderPass *m_zfillRenderPass;
-    Qt3DRender::QRenderPass *m_opaqueRenderPass;
-    Qt3DRender::QRenderPass *m_transparentRenderPass;
-    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
-};
-
 
 /*!
     \class Kuesa::UnlitEffect
@@ -269,6 +234,10 @@ void UnlitTechnique::setAllowCulling(bool allowCulling)
     m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
 }
 
+QShaderProgramBuilder *UnlitTechnique::unlitShaderBuilder() const
+{
+    return m_unlitShaderBuilder;
+}
 
 UnlitEffect::UnlitEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)

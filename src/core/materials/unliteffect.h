@@ -32,6 +32,8 @@
 #include <QtGui/qcolor.h>
 #include <Kuesa/gltf2materialeffect.h>
 #include <Kuesa/kuesa_global.h>
+#include <Qt3DRender/qcullface.h>
+#include <Qt3DRender/qtechnique.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -39,12 +41,49 @@ namespace Qt3DRender {
 class QAbstractTexture;
 class QShaderProgramBuilder;
 class QShaderProgram;
-class QCullFace;
 class QRenderPass;
+class QBlendEquation;
+class QBlendEquationArguments;
+class QFilterKey;
 } // namespace Qt3DRender
 
 namespace Kuesa {
-class UnlitTechnique;
+
+class KUESASHARED_EXPORT UnlitTechnique : public Qt3DRender::QTechnique
+{
+    Q_OBJECT
+public:
+    enum Version {
+        GL3 = 0,
+        ES3,
+        ES2,
+        RHI
+    };
+
+    explicit UnlitTechnique(Version version, Qt3DCore::QNode *parent = nullptr);
+
+    QStringList enabledLayers() const;
+    void setEnabledLayers(const QStringList &layers);
+    void setOpaque(bool opaque);
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode);
+    Qt3DRender::QCullFace::CullingMode cullingMode() const;
+    void setAllowCulling(bool allowCulling);
+
+    Qt3DRender::QShaderProgramBuilder *unlitShaderBuilder() const;
+
+private:
+    Qt3DRender::QCullFace *m_backFaceCulling;
+    Qt3DRender::QBlendEquation *m_blendEquation;
+    Qt3DRender::QBlendEquationArguments *m_blendArguments;
+    Qt3DRender::QShaderProgramBuilder *m_unlitShaderBuilder;
+    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
+    Qt3DRender::QShaderProgram *m_unlitShader;
+    Qt3DRender::QShaderProgram *m_zfillShader;
+    Qt3DRender::QRenderPass *m_zfillRenderPass;
+    Qt3DRender::QRenderPass *m_opaqueRenderPass;
+    Qt3DRender::QRenderPass *m_transparentRenderPass;
+    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
+};
 
 class KUESASHARED_EXPORT UnlitEffect : public GLTF2MaterialEffect
 {

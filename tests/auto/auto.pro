@@ -107,7 +107,8 @@ qtConfig(private_tests) {
         view3dscene \
         sceneconfiguration \
         gaussianblureffect \
-        placeholder
+        placeholder \
+        unliteffect
 
     greaterThan(QT_MAJOR_VERSION, 5):
         SUBDIRS += fboresolver
