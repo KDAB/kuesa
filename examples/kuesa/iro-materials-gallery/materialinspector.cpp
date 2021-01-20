@@ -93,13 +93,13 @@ QString valueIntrospector(const QVariant &value)
                 .arg(color.alphaF());
     }
     case QVariant::Vector2D: {
-        const QVector4D v2 = value.value<QVector2D>();
+        const QVector2D v2 = value.value<QVector2D>();
         return QString("[%1, %2]")
                 .arg(v2.x())
                 .arg(v2.y());
     }
     case QVariant::Vector3D: {
-        const QVector4D v3 = value.value<QVector3D>();
+        const QVector3D v3 = value.value<QVector3D>();
         return QString("[%1, %2, %3]")
                 .arg(v3.x())
                 .arg(v3.y())
