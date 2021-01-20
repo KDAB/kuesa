@@ -43,6 +43,8 @@ Kuesa.SceneEntity {
                 id: frameGraph
                 camera: mainCamera
                 clearColor: "white"
+                frustumCulling: false
+                skinning: true
             }
         },
         InputSettings { }
