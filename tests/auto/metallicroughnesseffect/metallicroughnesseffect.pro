@@ -35,3 +35,4 @@ CONFIG += testcase
 SOURCES += tst_metallicroughnesseffect.cpp
 
 include(../assets/assets.pri)
+include(../common/common.pri)
