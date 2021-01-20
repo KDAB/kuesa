@@ -193,7 +193,7 @@ void MetallicRoughnessMaterial::enforceSRGBOnTexture(QAbstractTexture *t) const
 {
     if (!t)
         return;
-#ifndef QT_OPENGL_ES_2
+#ifndef KUESA_OPENGL_ES_2
     const bool isSRGB = true;
 #else
     const bool isSRGB = false;

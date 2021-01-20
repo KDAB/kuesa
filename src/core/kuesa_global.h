@@ -30,12 +30,22 @@
 #define KUESA_KUESA_GLOBAL_H
 
 #include <QtCore/qglobal.h>
+#include <QtGui/qtgui-config.h>
 
 // Note: qmake generates kuesaversion.h with defines KUESA_VERSION and
 // KUESA_VERSION_STR
 
 //    can be used like #if (KUESA_VERSION >= KUESA_VERSION_CHECK(1, 3, 0))
 #define KUESA_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
+
+// Works for both Qt 5 and Qt 6
+#if QT_CONFIG(opengles2)
+#define KUESA_OPENGL_ES_2
+#endif
+
+#if QT_CONFIG(opengles3)
+#define KUESA_OPENGL_ES_3
+#endif
 
 QT_BEGIN_NAMESPACE
 

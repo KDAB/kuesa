@@ -71,7 +71,7 @@ int main(int ac, char **av)
     {
         // Set OpenGL requirements
         QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-#ifndef QT_OPENGL_ES_2
+#ifndef KUESA_OPENGL_ES_2
         format.setVersion(4, 1);
         format.setProfile(QSurfaceFormat::CoreProfile);
 #else

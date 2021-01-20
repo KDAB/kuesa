@@ -89,7 +89,7 @@ void UnlitShaderData::setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap
         d->unregisterDestructionHelper(m_baseColorMap);
     m_baseColorMap = baseColorMap;
     if (m_baseColorMap != nullptr) {
-#ifndef QT_OPENGL_ES_2
+#ifndef KUESA_OPENGL_ES_2
         m_baseColorMap->setFormat(Qt3DRender::QAbstractTexture::TextureFormat::SRGB8_Alpha8);
 #endif
         if (m_baseColorMap->parent() == nullptr)

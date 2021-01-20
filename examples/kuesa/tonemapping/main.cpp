@@ -35,6 +35,7 @@
 #include <QCommandLineOption>
 #include <QStandardPaths>
 #include <QQuickStyle>
+#include <Kuesa/kuesa_global.h>
 
 #ifdef Q_OS_ANDROID
 #include <QOpenGLContext>
@@ -46,12 +47,12 @@ int main(int ac, char **av)
     {
         // Set OpenGL requirements
         QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-#ifndef QT_OPENGL_ES_2
+#ifndef KUESA_OPENGL_ES_2
         format.setVersion(4, 1);
         format.setProfile(QSurfaceFormat::CoreProfile);
         format.setSamples(4);
 #else
-#ifndef QT_OPENGL_ES_3
+#ifndef KUESA_OPENGL_ES_3
         isES2 = true;
 #endif
         format.setVersion(3, 0);
@@ -94,7 +95,7 @@ int main(int ac, char **av)
 
     QQuickView view;
 #ifdef Q_OS_ANDROID
-    // Qt builds for android may not define QT_OPENGL_ES_3
+    // Qt builds for android may not define KUESA_OPENGL_ES_3
     // Therefore we need a runtime check to see whether we can use ES 3.0 or not
     QOpenGLContext ctx;
     ctx.setFormat(QSurfaceFormat::defaultFormat());
