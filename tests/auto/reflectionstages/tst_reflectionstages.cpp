@@ -188,13 +188,13 @@ private Q_SLOTS:
         Kuesa::ReflectionStages stages;
 
         // THEN
-        QCOMPARE(stages.reflectivePlaneEquation(), QVector3D());
+        QCOMPARE(stages.reflectivePlaneEquation(), QVector4D());
 
         // WHEN
-        stages.setReflectivePlaneEquation(QVector3D(1.0f, 1.0f, 1.0f));
+        stages.setReflectivePlaneEquation(QVector4D(1.0f, 1.0f, 1.0f, 0.0f));
 
         // THEN
-        QCOMPARE(stages.reflectivePlaneEquation(), QVector3D(1.0f, 1.0f, 1.0f));
+        QCOMPARE(stages.reflectivePlaneEquation(), QVector4D(1.0f, 1.0f, 1.0f, 0.0f));
     }
 };
 

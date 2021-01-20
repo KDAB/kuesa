@@ -739,13 +739,13 @@ private Q_SLOTS:
         const QByteArray rawMorphData = tangentMorphBuffer->data();
         const QVector3D *morphTangents = reinterpret_cast<const QVector3D *>(rawMorphData.constData());
 
-        QVERIFY(qFuzzyCompare(tangents[0] + morphTangents[0], QVector4D(1, 0, 0, 1)));
-        QVERIFY(qFuzzyCompare(tangents[1] + morphTangents[1], QVector4D(1, 0, 0, 1)));
-        QVERIFY(qFuzzyCompare(tangents[2] + morphTangents[2], QVector4D(1, 0, 0, 1)));
+        QVERIFY(qFuzzyCompare(tangents[0] + QVector4D(morphTangents[0], 0.0f), QVector4D(1, 0, 0, 1)));
+        QVERIFY(qFuzzyCompare(tangents[1] + QVector4D(morphTangents[1], 0.0f), QVector4D(1, 0, 0, 1)));
+        QVERIFY(qFuzzyCompare(tangents[2] + QVector4D(morphTangents[2], 0.0f), QVector4D(1, 0, 0, 1)));
 
-        QVERIFY(qFuzzyCompare(tangents[3] + morphTangents[3], QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
-        QVERIFY(qFuzzyCompare(tangents[4] + morphTangents[4], QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
-        QVERIFY(qFuzzyCompare(tangents[5] + morphTangents[5], QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
+        QVERIFY(qFuzzyCompare(tangents[3] + QVector4D(morphTangents[3], 0.0f), QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
+        QVERIFY(qFuzzyCompare(tangents[4] + QVector4D(morphTangents[4], 0.0f), QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
+        QVERIFY(qFuzzyCompare(tangents[5] + QVector4D(morphTangents[5], 0.0f), QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
     }
 };
 
