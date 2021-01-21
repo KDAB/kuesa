@@ -34,20 +34,22 @@ DEFINES += QT_BUILD_KUESA_UTILS_LIB
 # Avoid windows defines
 win32:DEFINES += WIN32_LEAN_AND_MEAN
 
-QT += kuesa kuesa-private 3dcore-private
+QT += core-private kuesa kuesa-private 3dcore-private
 
 HEADERS += \
     boundingvolumerenderer.h \
     kuesa_utils_global.h \
     orbitcameracontroller.h \
     sceneconfiguration.h \
-    view3dscene.h
+    view3dscene.h \
+    window.h
 
 SOURCES += \
     boundingvolumerenderer.cpp \
     orbitcameracontroller.cpp \
     sceneconfiguration.cpp \
-    view3dscene.cpp
+    view3dscene.cpp \
+    window.cpp
 
 RESOURCES += \
     utils.qrc

@@ -27,12 +27,7 @@
 */
 
 #include <QGuiApplication>
-#include <KuesaUtils/view3dscene.h>
-#include <Qt3DExtras/Qt3DWindow>
-
-#ifdef Q_OS_ANDROID
-#include <QOpenGLContext>
-#endif
+#include <KuesaUtils/window.h>
 
 namespace {
 
@@ -88,8 +83,7 @@ int main(int ac, char **av)
 #endif
 
     QGuiApplication app(ac, av);
-    Qt3DExtras::Qt3DWindow view;
-    view.registerAspect(QStringLiteral("animation"));
+    KuesaUtils::Window view;
 #ifdef Q_OS_IOS
     view.setFlags(view.flags() | Qt::MaximizeUsingFullscreenGeometryHint);
 #endif
@@ -98,22 +92,9 @@ int main(int ac, char **av)
     KuesaUtils::SceneConfiguration *sceneConfiguration = prepareScene();
 
     // Set SceneConfiguration on 3D View
-    KuesaUtils::View3DScene *view3d = new KuesaUtils::View3DScene();
-    view3d->setActiveScene(sceneConfiguration);
+    view.scene()->setActiveScene(sceneConfiguration);
 
-    // Handle Aspect Ratio for the camera
-    auto updateAspectRatio = [&] () {
-        Qt3DRender::QCamera *camera = qobject_cast<decltype(camera)>(view3d->frameGraph()->camera());
-        if (camera)
-            camera->setAspectRatio(float(view.width()) / float(view.height()));
-    };
-    QObject::connect(&view, &QWindow::widthChanged, updateAspectRatio);
-    QObject::connect(&view, &QWindow::heightChanged, updateAspectRatio);
-    QObject::connect(sceneConfiguration, &KuesaUtils::SceneConfiguration::loadingDone, updateAspectRatio);
-
-    // Parent View3D to window and set Qt 3D FrameGraph
-    view.setRootEntity(view3d);
-    view.setActiveFrameGraph(view3d->frameGraph());
+    // Show the window
     view.show();
 
     return app.exec();
