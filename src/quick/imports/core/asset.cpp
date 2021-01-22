@@ -57,6 +57,33 @@ using namespace Kuesa;
     Otherwise, the search will be done in all collections, returning the first
     asset matching the name.
 
+    Conveniently, to set or retrieve properties from the node, a property forwarding
+    mechanism is available.
+
+    To set values on a the asset node, one can simply do:
+
+    \badcode
+    Asset {
+        collection: scene.cameras
+        name: "CameraName"
+        readonly property float aspectRatio: 16/9
+    }
+    \endcode
+
+    The node's matching property is initialized if a valid default value
+    is provided.
+
+    For properties that should be read from the node and not necessarely used
+    to initialize the node, omit the readonly keyword.
+
+    \badcode
+    Asset {
+        collection: scene.cameras
+        name: "CameraName"
+        property float aspectRatio
+    }
+    \endcode
+
     \sa Kuesa::SceneEntity, Kuesa::AbstractAssetCollection
  */
 
