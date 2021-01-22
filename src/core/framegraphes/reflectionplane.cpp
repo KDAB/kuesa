@@ -56,6 +56,7 @@ namespace Kuesa {
     frameGraph->addReflectionPlane(reflectionPlane);
     \endcode
 
+    Read more about \l {Kuesa Reflection Planes}.
 */
 
 /*!
@@ -80,6 +81,8 @@ namespace Kuesa {
         ]
     }
     \endcode
+
+    Read more about \l {Kuesa Reflection Planes}.
 */
 
 ReflectionPlane::ReflectionPlane(Qt3DCore::QNode *parent)
