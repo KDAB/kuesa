@@ -81,7 +81,7 @@ public Q_SLOTS:
     void setName(const QString &name);
     void setCamera(Qt3DCore::QEntity *camera);
     void setScreenSize(const QSize &screenSize);
-    void setViewportRect(QRectF viewportRect);
+    void setViewportRect(const QRectF &viewportRect);
     void setViewportRect(qreal x, qreal y, qreal width, qreal height);
     void setMatrix(const QMatrix4x4 &matrix);
     void setRotation(const QQuaternion &rotation);

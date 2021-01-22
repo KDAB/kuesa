@@ -188,7 +188,7 @@ void TransformTracker::setCamera(Qt3DCore::QEntity *camera)
     \property Kuesa::TransformTracker::screenSize
 
     Holds the size of the area within which we should compute screen positions.
-    This would usually be the size of the window of the size of the sub view
+    This would usually be the size of the window or the size of the sub view
     within the window.
 */
 
@@ -196,7 +196,7 @@ void TransformTracker::setCamera(Qt3DCore::QEntity *camera)
     \qmlproperty size Kuesa::TransformTracker::screenSize
 
     Holds the size of the area within which we should compute screen positions.
-    This would usually be the size of the window of the size of the sub view
+    This would usually be the size of the window or the size of the sub view
     within the window.
 */
 QSize TransformTracker::screenSize() const
@@ -233,7 +233,7 @@ void TransformTracker::setScreenSize(const QSize &screenSize)
     }
 }
 
-void TransformTracker::setViewportRect(QRectF viewportRect)
+void TransformTracker::setViewportRect(const QRectF &viewportRect)
 {
     if (m_viewportRect == viewportRect)
         return;
