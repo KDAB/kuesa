@@ -182,35 +182,35 @@ void SceneConfiguration::clearTransformTrackers()
         removeTransformTracker(t);
 }
 
-void SceneConfiguration::addPlaceholder(Placeholder *placeholder)
+void SceneConfiguration::addPlaceholderTracker(PlaceholderTracker *placeholder)
 {
-    if (std::find(std::begin(m_placeholders), std::end(m_placeholders), placeholder) == std::end(m_placeholders)) {
+    if (std::find(std::begin(m_placeholderTrackers), std::end(m_placeholderTrackers), placeholder) == std::end(m_placeholderTrackers)) {
         Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-        d->registerDestructionHelper(placeholder, &SceneConfiguration::removePlaceholder, m_placeholders);
+        d->registerDestructionHelper(placeholder, &SceneConfiguration::removePlaceholderTracker, m_placeholderTrackers);
         if (placeholder->parentNode() == nullptr)
             placeholder->setParent(this);
-        m_placeholders.push_back(placeholder);
-        emit placeholderAdded(placeholder);
+        m_placeholderTrackers.push_back(placeholder);
+        emit placeholderTrackerAdded(placeholder);
     }
 }
 
-void SceneConfiguration::removePlaceholder(Placeholder *placeholder)
+void SceneConfiguration::removePlaceholderTracker(PlaceholderTracker *placeholder)
 {
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
     d->unregisterDestructionHelper(placeholder);
-    auto it = std::remove(std::begin(m_placeholders), std::end(m_placeholders), placeholder);
-    if (it != std::end(m_placeholders)) {
-        m_placeholders.erase(it,
-                             std::end(m_placeholders));
-        emit placeholderRemoved(placeholder);
+    auto it = std::remove(std::begin(m_placeholderTrackers), std::end(m_placeholderTrackers), placeholder);
+    if (it != std::end(m_placeholderTrackers)) {
+        m_placeholderTrackers.erase(it,
+                             std::end(m_placeholderTrackers));
+        emit placeholderTrackerRemoved(placeholder);
     }
 }
 
-void SceneConfiguration::clearPlaceholders()
+void SceneConfiguration::clearPlaceholderTrackers()
 {
-    const std::vector<Kuesa::Placeholder *> placeholdersCopy = m_placeholders;
-    for (Kuesa::Placeholder *p : placeholdersCopy)
-        removePlaceholder(p);
+    const std::vector<Kuesa::PlaceholderTracker *> placeholdersCopy = m_placeholderTrackers;
+    for (Kuesa::PlaceholderTracker *p : placeholdersCopy)
+        removePlaceholderTracker(p);
 }
 
 void SceneConfiguration::addAnimationPlayer(AnimationPlayer *animation)

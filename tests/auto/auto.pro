@@ -108,7 +108,8 @@ qtConfig(private_tests) {
         sceneconfiguration \
         gaussianblureffect \
         placeholder \
-        unliteffect
+        unliteffect \
+        placeholdertracker
 
     greaterThan(QT_MAJOR_VERSION, 5):
         SUBDIRS += fboresolver

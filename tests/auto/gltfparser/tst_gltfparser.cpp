@@ -1035,9 +1035,6 @@ private Q_SLOTS:
 
         Kuesa::Placeholder *placeholder = qobject_cast<Kuesa::Placeholder *>(scene.placeholder("placeholder"));
         QVERIFY(placeholder);
-        QCOMPARE(placeholder->camera(), scene.camera("camera"));
-        QCOMPARE(placeholder->viewport(), QRect());
-        QCOMPARE(placeholder->target(), nullptr);
     }
 
 #if defined(KUESA_DRACO_COMPRESSION)

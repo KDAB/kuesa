@@ -55,7 +55,7 @@ private Q_SLOTS:
         QVERIFY(view.animationPlayers().empty());
         QVERIFY(view.transformTrackers().empty());
         QVERIFY(view.reflectionPlaneName().isEmpty());
-        QVERIFY(view.activePlaceholders().empty());
+        QVERIFY(view.placeholderTrackers().empty());
     }
 
     void checkSetSource()
@@ -122,16 +122,16 @@ private Q_SLOTS:
         // GIVEN
         KuesaUtils::View3DScene view;
         KuesaUtils::SceneConfiguration scene;
-        Kuesa::TransformTracker tracker;
-        Kuesa::Placeholder placeHolder;
+        Kuesa::TransformTracker transformTracker;
+        Kuesa::PlaceholderTracker placeholderTracker;
         QSignalSpy screenSizeChangedSpy(&view, &KuesaUtils::View3DScene::screenSizeChanged);
         QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadingDone);
 
         // THEN
         QVERIFY(loadedSpy.isValid());
         scene.setSource(QUrl("file:///" ASSETS "Box.gltf"));
-        scene.addTransformTracker(&tracker);
-        scene.addPlaceholder(&placeHolder);
+        scene.addTransformTracker(&transformTracker);
+        scene.addPlaceholderTracker(&placeholderTracker);
 
         view.setActiveScene(&scene);
 
@@ -139,8 +139,8 @@ private Q_SLOTS:
         loadedSpy.wait();
 
         // THEN
-        QCOMPARE(tracker.screenSize(), QSize());
-        QCOMPARE(placeHolder.viewport(), QRect({0, 0}, QSize()));
+        QCOMPARE(transformTracker.screenSize(), QSize());
+        QCOMPARE(placeholderTracker.screenSize(), QSize());
         QVERIFY(screenSizeChangedSpy.isValid());
         QCOMPARE(view.transformTrackers().size(), 1UL);
 
@@ -151,8 +151,8 @@ private Q_SLOTS:
         // THEN
         QCOMPARE(view.screenSize(), newScreenSize);
         QCOMPARE(screenSizeChangedSpy.count(), 1);
-        QCOMPARE(tracker.screenSize(), newScreenSize);
-        QCOMPARE(placeHolder.viewport(), QRect({0, 0}, newScreenSize));
+        QCOMPARE(transformTracker.screenSize(), newScreenSize);
+        QCOMPARE(placeholderTracker.screenSize(), newScreenSize);
     }
 
     void checkSetDebugOverlay()
@@ -366,7 +366,7 @@ private Q_SLOTS:
         // THEN -> Shouldn't crash
     }
 
-    void checkActivePlaceholders()
+    void checkActivePlaceholderTrackers()
     {
         // GIVEN
         KuesaUtils::View3DScene view;
@@ -380,72 +380,72 @@ private Q_SLOTS:
 
         {
             // WHEN
-            Kuesa::Placeholder p1;
-            Kuesa::Placeholder p2;
+            Kuesa::PlaceholderTracker p1;
+            Kuesa::PlaceholderTracker p2;
 
-            scene.addPlaceholder(&p1);
-            scene.addPlaceholder(&p2);
+            scene.addPlaceholderTracker(&p1);
+            scene.addPlaceholderTracker(&p2);
 
             // THEN
-            QCOMPARE(view.activePlaceholders().size(), 2UL);
+            QCOMPARE(view.placeholderTrackers().size(), 2UL);
         }
 
-        // THEN -> Shouldn't crash and should have removed placeholders
-        QCOMPARE(view.activePlaceholders().size(), 0UL);
+        // THEN -> Shouldn't crash and should have removed placeholderTrackerss
+        QCOMPARE(view.placeholderTrackers().size(), 0UL);
 
         {
             // WHEN
-            Kuesa::Placeholder p1;
-            Kuesa::Placeholder p2;
+            Kuesa::PlaceholderTracker p1;
+            Kuesa::PlaceholderTracker p2;
 
-            scene.addPlaceholder(&p1);
-            scene.addPlaceholder(&p1);
+            scene.addPlaceholderTracker(&p1);
+            scene.addPlaceholderTracker(&p1);
 
             // THEN
-            QCOMPARE(view.activePlaceholders().size(), 1UL);
+            QCOMPARE(view.placeholderTrackers().size(), 1UL);
 
             // WHEN
-            scene.removePlaceholder(&p2);
-            QCOMPARE(view.activePlaceholders().size(), 1UL);
+            scene.removePlaceholderTracker(&p2);
+            QCOMPARE(view.placeholderTrackers().size(), 1UL);
         }
 
         {
             // WHEN
-            Kuesa::Placeholder p1;
-            Kuesa::Placeholder p2;
+            Kuesa::PlaceholderTracker p1;
+            Kuesa::PlaceholderTracker p2;
 
-            scene.addPlaceholder(&p1);
-            scene.addPlaceholder(&p2);
+            scene.addPlaceholderTracker(&p1);
+            scene.addPlaceholderTracker(&p2);
 
             // THEN
-            QCOMPARE(view.activePlaceholders().size(), 2UL);
+            QCOMPARE(view.placeholderTrackers().size(), 2UL);
 
             // WHEN
-            scene.clearPlaceholders();
+            scene.clearPlaceholderTrackers();
 
             // THEN
-            QCOMPARE(view.activePlaceholders().size(), 0UL);
+            QCOMPARE(view.placeholderTrackers().size(), 0UL);
         }
 
         // THEN -> Shouldn't crash
 
         {
             // WHEN
-            Kuesa::Placeholder p1;
-            Kuesa::Placeholder p2;
+            Kuesa::PlaceholderTracker p1;
+            Kuesa::PlaceholderTracker p2;
 
-            scene.addPlaceholder(&p1);
-            scene.addPlaceholder(&p2);
+            scene.addPlaceholderTracker(&p1);
+            scene.addPlaceholderTracker(&p2);
 
             // THEN
-            QCOMPARE(view.activePlaceholders().size(), 2UL);
+            QCOMPARE(view.placeholderTrackers().size(), 2UL);
 
             // WHEN
-            scene.removePlaceholder(&p1);
+            scene.removePlaceholderTracker(&p1);
 
             // THEN
-            QCOMPARE(view.activePlaceholders().size(), 1UL);
-            QCOMPARE(view.activePlaceholders().front(), &p2);
+            QCOMPARE(view.placeholderTrackers().size(), 1UL);
+            QCOMPARE(view.placeholderTrackers().front(), &p2);
         }
 
         // THEN -> Shouldn't crash

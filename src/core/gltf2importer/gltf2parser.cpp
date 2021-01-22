@@ -1192,23 +1192,9 @@ void GLTF2Parser::createTransform(const TreeNode &node)
 void GLTF2Parser::createPlaceholder(const TreeNode &node)
 {
     if (node.hasPlaceholder) {
+        Kuesa::Placeholder *placeHolder = new Kuesa::Placeholder();
         Qt3DCore::QEntity *entity = node.entity;
-
-        Kuesa::Placeholder *placeHolder = new Kuesa::Placeholder(entity);
-
-        // Get the ith camera node
-        std::vector<Qt3DRender::QCamera *> cameraNodes;
-        for (const auto &node : m_context->treeNodes()) {
-            auto *camera = qobject_cast<Qt3DRender::QCamera*>(node.entity);
-            if (camera != nullptr) {
-                cameraNodes.push_back(camera);
-            }
-        }
-
-        Q_ASSERT(node.placeHolder.cameraNode < cameraNodes.size());
-        const auto cameraEntity = qobject_cast<Qt3DRender::QCamera *>(cameraNodes[node.placeHolder.cameraNode]);
-        if (cameraEntity)
-            placeHolder->setCamera(cameraEntity);
+        placeHolder->setParent(entity);
     }
 }
 

@@ -52,36 +52,13 @@ namespace Kuesa
 class KUESASHARED_EXPORT Placeholder : public Qt3DCore::QEntity
 {
     Q_OBJECT
-    Q_PROPERTY(QRect viewport READ viewport WRITE setViewport NOTIFY viewportChanged)
-    Q_PROPERTY(Qt3DCore::QEntity *camera READ camera WRITE setCamera NOTIFY cameraChanged)
-    Q_PROPERTY(QObject *target READ target WRITE setTarget NOTIFY targetChanged)
 public:
     explicit Placeholder(Qt3DCore::QNode *parent = nullptr);
-
-    Qt3DCore::QEntity *camera() const;
-    void setCamera(Qt3DCore::QEntity *camera);
-
-    QRect viewport() const;
-    void setViewport(QRect viewport);
-
-    QObject *target() const;
-    void setTarget(QObject *target);
-
-Q_SIGNALS:
-    void viewportChanged(QRect viewport);
-    void cameraChanged(Qt3DCore::QEntity *camera);
-    void targetChanged(QObject *target);
 
 private:
     void updatePlaceholder();
 
     Qt3DCore::QTransform *m_transform = nullptr;
-    Qt3DCore::QEntity *m_camera = nullptr;
-    Qt3DRender::QCameraLens *m_cameraLens = nullptr;
-    Qt3DCore::QTransform *m_cameraTransform = nullptr;
-    QObject *m_target = nullptr;
-    QRect m_viewport;
-    QMetaObject::Connection m_targetDestroyedConnection;
 };
 
 } // Kuesa

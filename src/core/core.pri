@@ -33,6 +33,7 @@ SOURCES += \
     $$PWD/logging.cpp \
     $$PWD/placeholder.cpp \
     $$PWD/meshinstantiator.cpp \
+    $$PWD/placeholdertracker.cpp \
     $$PWD/sceneentity.cpp \
     $$PWD/animationplayer.cpp \
     $$PWD/skybox.cpp \
@@ -50,6 +51,7 @@ HEADERS += \
     $$PWD/logging_p.h \
     $$PWD/placeholder.h \
     $$PWD/meshinstantiator.h \
+    $$PWD/placeholdertracker.h \
     $$PWD/sceneentity.h \
     $$PWD/factory.h \
     $$PWD/kuesa_p.h \

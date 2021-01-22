@@ -32,6 +32,7 @@ import QtQuick.Scene3D 2.15
 import Qt3D.Core 2.15
 import Qt3D.Render 2.15
 import Qt3D.Input 2.15
+import Qt3D.Extras 2.15
 import Kuesa 1.3 as Kuesa
 
 Item {
@@ -39,6 +40,8 @@ Item {
 
     Scene3D {
         anchors.fill: parent
+        focus: true
+        aspects: ["input", "logic"]
         Kuesa.SceneEntity {
             id: scene
 
@@ -50,28 +53,35 @@ Item {
                         showDebugOverlay: true
                         camera: mainCamera.node
                     }
-                }
+                },
+                InputSettings { }
             ]
 
-            Kuesa.Asset {
-                id: placeholder
-                collection: scene.placeholders
+            // Track a Placeholder
+            Kuesa.PlaceholderTracker {
                 name: "placeholder"
-                readonly property QtObject target: rect
-                readonly property Camera camera: mainCamera.node
-                readonly property rect viewport: Qt.rect(0,0,root.width, root.height)
+                target: rect
+                camera: mainCamera.node
+                screenSize: Qt.size(root.width, root.height)
             }
 
             Kuesa.Asset {
                 id: mainCamera
                 collection: scene.cameras
                 name: "Camera_Orientation"
-                onNodeChanged: console.log(mainCamera.node)
             }
 
             Kuesa.GLTF2Importer {
                 id: gltf2importer
                 source: "qrc:/placeholder.gltf"
+            }
+
+
+            OrbitCameraController {
+                id: controller
+                camera: mainCamera.node
+                linearSpeed: 5
+                lookSpeed: 180
             }
         }
     }

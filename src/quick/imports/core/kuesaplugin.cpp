@@ -92,6 +92,7 @@
 #include <Kuesa/View>
 #include <Kuesa/ReflectionPlane>
 #include <Kuesa/Placeholder>
+#include <Kuesa/PlaceholderTracker>
 #include <Kuesa/MeshInstantiator>
 #include <qtkuesa-config.h>
 #ifdef KUESA_KTX
@@ -136,7 +137,8 @@ void KuesaPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Kuesa::AnimationClipCollection>(uri, 1, 0, "AnimationClipCollection", QStringLiteral("You are not supposed to create an AnimationClipCollection"));
     qmlRegisterUncreatableType<Kuesa::TransformCollection>(uri, 1, 0, "TransformCollection", QStringLiteral("You are not supposed to create a TransformCollection"));
     qmlRegisterUncreatableType<Kuesa::ReflectionPlaneCollection>(uri, 1, 0, "ReflectionPlaneCollection", QStringLiteral("You are not supposed to create a ReflectionPlaneCollection"));
-    qmlRegisterUncreatableType<Kuesa::LightCollection>(uri, 1, 3, "LightCollection", QStringLiteral("You are not supposed to create an LightCollection"));
+    qmlRegisterUncreatableType<Kuesa::LightCollection>(uri, 1, 0, "LightCollection", QStringLiteral("You are not supposed to create an LightCollection"));
+    qmlRegisterUncreatableType<Kuesa::PlaceholderCollection>(uri, 1, 0, "PlaceholderCollection", QStringLiteral("You are not supposed to create an PlaceholderCollection"));
 
     // FrameGraphs
     Qt3DCore::Quick::registerExtendedType<Kuesa::ReflectionPlane, Kuesa::ReflectionPlaneExtension>("ReflectionPlane", "Kuesa/ReflectionPlane", uri, 1, 0, "ReflectionPlane");
@@ -175,6 +177,7 @@ void KuesaPlugin::registerTypes(const char *uri)
     qRegisterMetaType<Kuesa::EffectProperties::Properties>("EffectProperties::Properties");
     qmlRegisterType<Kuesa::TransformTracker>(uri, 1, 0, "TransformTracker");
     qmlRegisterUncreatableType<Kuesa::Placeholder>(uri, 1, 0, "Placeholder", QStringLiteral("You are not supposed to create a Placeholder instance"));
+    qmlRegisterType<Kuesa::PlaceholderTracker>(uri, 1, 0, "PlaceholderTracker");
     qmlRegisterExtendedType<Kuesa::MeshInstantiator, Kuesa::MeshInstantiatorExtension>(uri, 1, 0, "MeshInstantiator");
 
     // Custom Simple Materials

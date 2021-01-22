@@ -31,7 +31,7 @@
 #include <KuesaUtils/sceneconfiguration.h>
 #include <Kuesa/animationplayer.h>
 #include <Kuesa/transformtracker.h>
-#include <Kuesa/placeholder.h>
+#include <Kuesa/placeholdertracker.h>
 
 class tst_SceneConfiguration : public QObject
 {
@@ -48,7 +48,7 @@ private Q_SLOTS:
         QCOMPARE(sceneConfiguration.cameraName(), QString());
         QVERIFY(sceneConfiguration.animationPlayers().empty());
         QVERIFY(sceneConfiguration.transformTrackers().empty());
-        QVERIFY(sceneConfiguration.placeholders().empty());
+        QVERIFY(sceneConfiguration.placeholderTrackers().empty());
     }
 
     void checkSetSource()
@@ -307,115 +307,115 @@ private Q_SLOTS:
         animationPlayerRemovedSpy.clear();
     }
 
-    void checkPlaceholders()
+    void checkPlaceholderTrackers()
     {
         // GIVEN
         KuesaUtils::SceneConfiguration sceneConfiguration;
-        QSignalSpy placeholderAddedSpy(&sceneConfiguration, &KuesaUtils::SceneConfiguration::placeholderAdded);
-        QSignalSpy placeholderRemovedSpy(&sceneConfiguration, &KuesaUtils::SceneConfiguration::placeholderRemoved);
+        QSignalSpy placeholderTrackerAddedSpy(&sceneConfiguration, &KuesaUtils::SceneConfiguration::placeholderTrackerAdded);
+        QSignalSpy placeholderTrackerRemovedSpy(&sceneConfiguration, &KuesaUtils::SceneConfiguration::placeholderTrackerRemoved);
 
         // THEN
-        QVERIFY(placeholderAddedSpy.isValid());
-        QVERIFY(placeholderRemovedSpy.isValid());
+        QVERIFY(placeholderTrackerAddedSpy.isValid());
+        QVERIFY(placeholderTrackerRemovedSpy.isValid());
 
         {
             // WHEN
-            Kuesa::Placeholder p1;
-            Kuesa::Placeholder p2;
+            Kuesa::PlaceholderTracker p1;
+            Kuesa::PlaceholderTracker p2;
 
-            sceneConfiguration.addPlaceholder(&p1);
-            sceneConfiguration.addPlaceholder(&p2);
+            sceneConfiguration.addPlaceholderTracker(&p1);
+            sceneConfiguration.addPlaceholderTracker(&p2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholders().size(), 2);
-            QCOMPARE(placeholderAddedSpy.count(), 2);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 2);
+            QCOMPARE(placeholderTrackerAddedSpy.count(), 2);
         }
 
-        // THEN -> Shouldn't crash and should have removed placeholders
-        QCOMPARE(sceneConfiguration.placeholders().size(), 0);
-        QCOMPARE(placeholderRemovedSpy.count(), 2);
+        // THEN -> Shouldn't crash and should have removed placeholderTrackers
+        QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 0);
+        QCOMPARE(placeholderTrackerRemovedSpy.count(), 2);
 
-        placeholderAddedSpy.clear();
-        placeholderRemovedSpy.clear();
+        placeholderTrackerAddedSpy.clear();
+        placeholderTrackerRemovedSpy.clear();
 
         {
             // WHEN
-            Kuesa::Placeholder p1;
-            Kuesa::Placeholder p2;
+            Kuesa::PlaceholderTracker p1;
+            Kuesa::PlaceholderTracker p2;
 
-            sceneConfiguration.addPlaceholder(&p1);
-            sceneConfiguration.addPlaceholder(&p1);
+            sceneConfiguration.addPlaceholderTracker(&p1);
+            sceneConfiguration.addPlaceholderTracker(&p1);
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholders().size(), 1);
-            QCOMPARE(placeholderAddedSpy.count(), 1);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 1);
+            QCOMPARE(placeholderTrackerAddedSpy.count(), 1);
 
             // WHEN
-            sceneConfiguration.removePlaceholder(&p2);
+            sceneConfiguration.removePlaceholderTracker(&p2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholders().size(), 1);
-            QCOMPARE(placeholderRemovedSpy.count(), 0);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 1);
+            QCOMPARE(placeholderTrackerRemovedSpy.count(), 0);
         }
 
-        // THEN -> Shouldn't crash and should have removed placeholders
-        QCOMPARE(sceneConfiguration.placeholders().size(), 0);
-        QCOMPARE(placeholderRemovedSpy.count(), 1);
+        // THEN -> Shouldn't crash and should have removed placeholderTrackers
+        QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 0);
+        QCOMPARE(placeholderTrackerRemovedSpy.count(), 1);
 
-        placeholderAddedSpy.clear();
-        placeholderRemovedSpy.clear();
-
-        {
-            // WHEN
-            Kuesa::Placeholder p1;
-            Kuesa::Placeholder p2;
-
-            sceneConfiguration.addPlaceholder(&p1);
-            sceneConfiguration.addPlaceholder(&p2);
-
-            // THEN
-            QCOMPARE(sceneConfiguration.placeholders().size(), 2);
-            QCOMPARE(placeholderAddedSpy.count(), 2);
-
-            // WHEN
-            sceneConfiguration.clearPlaceholders();
-
-            // THEN
-            QCOMPARE(sceneConfiguration.placeholders().size(), 0);
-            QCOMPARE(placeholderRemovedSpy.count(), 2);
-        }
-
-        // THEN -> Shouldn't crash
-        placeholderAddedSpy.clear();
-        placeholderRemovedSpy.clear();
+        placeholderTrackerAddedSpy.clear();
+        placeholderTrackerRemovedSpy.clear();
 
         {
             // WHEN
-            Kuesa::Placeholder p1;
-            Kuesa::Placeholder p2;
+            Kuesa::PlaceholderTracker p1;
+            Kuesa::PlaceholderTracker p2;
 
-            sceneConfiguration.addPlaceholder(&p1);
-            sceneConfiguration.addPlaceholder(&p2);
+            sceneConfiguration.addPlaceholderTracker(&p1);
+            sceneConfiguration.addPlaceholderTracker(&p2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholders().size(), 2);
-            QCOMPARE(placeholderAddedSpy.count(), 2);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 2);
+            QCOMPARE(placeholderTrackerAddedSpy.count(), 2);
 
             // WHEN
-            sceneConfiguration.removePlaceholder(&p1);
+            sceneConfiguration.clearPlaceholderTrackers();
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholders().size(), 1);
-            QCOMPARE(sceneConfiguration.placeholders().front(), &p2);
-            QCOMPARE(placeholderRemovedSpy.count(), 1);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 0);
+            QCOMPARE(placeholderTrackerRemovedSpy.count(), 2);
         }
 
         // THEN -> Shouldn't crash
-        QCOMPARE(sceneConfiguration.placeholders().size(), 0);
-        QCOMPARE(placeholderRemovedSpy.count(), 2);
+        placeholderTrackerAddedSpy.clear();
+        placeholderTrackerRemovedSpy.clear();
 
-        placeholderAddedSpy.clear();
-        placeholderRemovedSpy.clear();
+        {
+            // WHEN
+            Kuesa::PlaceholderTracker p1;
+            Kuesa::PlaceholderTracker p2;
+
+            sceneConfiguration.addPlaceholderTracker(&p1);
+            sceneConfiguration.addPlaceholderTracker(&p2);
+
+            // THEN
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 2);
+            QCOMPARE(placeholderTrackerAddedSpy.count(), 2);
+
+            // WHEN
+            sceneConfiguration.removePlaceholderTracker(&p1);
+
+            // THEN
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 1);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().front(), &p2);
+            QCOMPARE(placeholderTrackerRemovedSpy.count(), 1);
+        }
+
+        // THEN -> Shouldn't crash
+        QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 0);
+        QCOMPARE(placeholderTrackerRemovedSpy.count(), 2);
+
+        placeholderTrackerAddedSpy.clear();
+        placeholderTrackerRemovedSpy.clear();
     }
 };
 

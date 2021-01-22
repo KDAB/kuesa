@@ -110,7 +110,7 @@ Scene3D {
     property alias asynchronous: scene.asynchronous
     property alias reflectionPlanes: scene.reflectionPlanes
     property alias placeholders: scene.placeholders
-    property alias activePlaceholders: sceneConfiguration.placeholders
+    property alias placeholderTrackers: sceneConfiguration.placeholderTrackers
     property list<Kuesa.View> views
     property alias reflectionPlaneName: scene.reflectionPlaneName
     default property alias children: scene.data

@@ -36,6 +36,7 @@
 
 #include <Kuesa/animationplayer.h>
 #include <Kuesa/transformtracker.h>
+#include <Kuesa/placeholdertracker.h>
 #include <Kuesa/kuesanode.h>
 
 QT_BEGIN_NAMESPACE
@@ -63,10 +64,10 @@ public:
     void removeTransformTracker(Kuesa::TransformTracker *tracker);
     void clearTransformTrackers();
 
-    const std::vector<Kuesa::Placeholder *> &placeholders() const { return m_placeholders; }
-    void addPlaceholder(Kuesa::Placeholder *placeholder);
-    void removePlaceholder(Kuesa::Placeholder *placeholder);
-    void clearPlaceholders();
+    const std::vector<Kuesa::PlaceholderTracker *> &placeholderTrackers() const { return m_placeholderTrackers; }
+    void addPlaceholderTracker(Kuesa::PlaceholderTracker *placeholder);
+    void removePlaceholderTracker(Kuesa::PlaceholderTracker *placeholder);
+    void clearPlaceholderTrackers();
 
 public Q_SLOTS:
     void setSource(const QUrl &source);
@@ -82,8 +83,8 @@ Q_SIGNALS:
     void transformTrackerAdded(Kuesa::TransformTracker *tracker);
     void transformTrackerRemoved(Kuesa::TransformTracker *tracker);
 
-    void placeholderAdded(Kuesa::Placeholder *placeholder);
-    void placeholderRemoved(Kuesa::Placeholder *placeholder);
+    void placeholderTrackerAdded(Kuesa::PlaceholderTracker *placeholder);
+    void placeholderTrackerRemoved(Kuesa::PlaceholderTracker *placeholder);
 
     void loadingDone();
 
@@ -92,7 +93,7 @@ private:
     QString m_cameraName;
     std::vector<Kuesa::AnimationPlayer *> m_animations;
     std::vector<Kuesa::TransformTracker *> m_trackers;
-    std::vector<Kuesa::Placeholder *> m_placeholders;
+    std::vector<Kuesa::PlaceholderTracker *> m_placeholderTrackers;
 };
 
 } // namespace KuesaUtils
