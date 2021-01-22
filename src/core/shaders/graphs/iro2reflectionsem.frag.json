@@ -1666,7 +1666,7 @@
       "#ifdef LAYER_hasTexCoord",
       "layout(location = 0) in vec2 texCoord;",
       "#else",
-      "const lowp vec2 texCoord = vec2(0.0);",
+      "const vec2 texCoord = vec2(0.0);",
       "#endif",
       "#endif",
       "#ifndef RV_UNIFORMS",
