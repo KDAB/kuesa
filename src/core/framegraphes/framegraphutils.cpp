@@ -187,7 +187,7 @@ Qt3DRender::QRenderTarget *FrameGraphUtils::createRenderTarget(RenderTargetFlags
         Qt3DRender::QAbstractTexture::TextureFormat textureFormat = Qt3DRender::QAbstractTexture::NoFormat;
         Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint = Qt3DRender::QRenderTargetOutput::Color0;
         if (depthStencilFlags == RenderTargetFlag::IncludeDepth) {
-            textureFormat = Qt3DRender::QAbstractTexture::D24;
+            textureFormat = Qt3DRender::QAbstractTexture::D16;
             attachmentPoint = Qt3DRender::QRenderTargetOutput::Depth;
         }
         if (depthStencilFlags == RenderTargetFlag::IncludeStencil) {
