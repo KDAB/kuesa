@@ -50,8 +50,8 @@ namespace Kuesa {
 /*!
     \class Kuesa::MeshInstantiator
     \inheaderfile Kuesa/MeshInstantiator
-    \inmodule Kuesa4
-     \inherits Kuesa::KuesaNode
+    \inmodule Kuesa
+    \inherits Kuesa::KuesaNode
     \since Kuesa 1.3
 
     \brief Kuesa::MeshInstantiator allows to render several instances of a same
