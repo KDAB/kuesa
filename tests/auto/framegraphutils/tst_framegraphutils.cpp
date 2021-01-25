@@ -122,7 +122,7 @@ private Q_SLOTS:
             Qt3DRender::QAbstractTexture::TextureFormat expectedFormat =
                     (hasStencil) ?
                         Qt3DRender::QAbstractTexture::D24S8 :
-                        Qt3DRender::QAbstractTexture::D24;
+                        Qt3DRender::QAbstractTexture::D16;
 
             if (flags & Kuesa::FrameGraphUtils::Multisampled) {
                 Qt3DRender::QTexture2DMultisample *t = qobject_cast<Qt3DRender::QTexture2DMultisample *>(depthStencilOutput->texture());
@@ -172,7 +172,7 @@ private Q_SLOTS:
         QVERIFY(colorTexture != nullptr);
         QVERIFY(depthTexture != nullptr);
         QCOMPARE(colorTexture->format(), Qt3DRender::QAbstractTexture::RGBA8_UNorm);
-        QCOMPARE(depthTexture->format(), Qt3DRender::QAbstractTexture::D24);
+        QCOMPARE(depthTexture->format(), Qt3DRender::QAbstractTexture::D16);
     }
 
 };
