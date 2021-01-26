@@ -56,7 +56,17 @@ namespace Kuesa {
 /*!
     \property GLTF2MaterialEffect::usingSkinning
 
-    Returns whether vertex skinning is enabled or not.
+    Returns whether vertex skinning is enabled or not. If true, a skinning
+    enabled vertex shader is used instead of the default one. This allows to
+    use this effect for rendering skinned meshes
+
+    \note If enabled, CPU side frustum culling is not performed for the
+    entities using that effect. Therefore, this should be enabled on effects
+    used to render geometries where the CPU side computed bounding volume
+    doesn't match what a standard vertex shader would compute (skyboxes,
+    instancing ...). Additionally, the \l {View::skinning} property needs to be
+    enabled on the \l {View} or \l {ForwardRenderer} for skinning effects to be
+    taken into account.
 
     \since Kuesa 1.2
 */
@@ -64,15 +74,22 @@ namespace Kuesa {
 /*!
     \property GLTF2MaterialEffect::opaque
 
-    Returns whether the content to be draw is opaque or transparent.
+    Returns whether the content to be draw is opaque or transparent. If false,
+    alpha blending is enabled for this effect
 
     \since Kuesa 1.2
 */
 
 /*!
-    \property GLTF2MaterialEffect::alphaCutOffEnabled
+    \property GLTF2MaterialEffect::alphaCutoffEnabled
 
-    Returns whether alphaCutOffIsEnabled or not.
+    Returns whether alphaCutOffIsEnabled or not. If true, alpha cutoff is
+    enabled. Fragments with an alpha value above a threshold are rendered as
+    opaque while fragment an alpha value below the threshold are discarded
+
+    \note The threshold value used will be
+    \l{GLTF2MaterialProperties::alphaCutoff} of the material properties set on
+    the material that uses the effect.
 
     \since Kuesa 1.2
 */
@@ -158,7 +175,17 @@ namespace Kuesa {
 /*!
     \qmlproperty bool GLTF2MaterialEffect::usingSkinning
 
-    Returns whether vertex skinning is enabled or not.
+    Returns whether vertex skinning is enabled or not. If true, a skinning
+    enabled vertex shader is used instead of the default one. This allows to
+    use this effect for rendering skinned meshes
+
+    \note If enabled, CPU side frustum culling is not performed for the
+    entities using that effect. Therefore, this should be enabled on effects
+    used to render geometries where the CPU side computed bounding volume
+    doesn't match what a standard vertex shader would compute (skyboxes,
+    instancing ...). Additionally, the \l {View::skinning} property needs to be
+    enabled on the \l {View} or \l {ForwardRenderer} for skinning effects to be
+    taken into account.
 
     \since Kuesa 1.2
 */
@@ -166,15 +193,22 @@ namespace Kuesa {
 /*!
     \qmlproperty bool GLTF2MaterialEffect::opaque
 
-    Returns whether the content to be draw is opaque or transparent.
+    Returns whether the content to be draw is opaque or transparent. If false,
+    alpha blending is enabled for this effect
 
     \since Kuesa 1.2
 */
 
 /*!
-    \qmlproperty bool GLTF2MaterialEffect::alphaCutOffEnabled
+    \qmlproperty bool GLTF2MaterialEffect::alphaCutoffEnabled
 
-    Returns whether alphaCutOffIsEnabled or not.
+    Returns whether alphaCutOffIsEnabled or not. If true, alpha cutoff is
+    enabled. Fragments with an alpha value above a threshold are rendered as
+    opaque while fragment an alpha value below the threshold are discarded.
+
+    \note The threshold value used will be
+    \l{GLTF2MaterialProperties::alphaCutoff} of the material properties set on
+    the material that uses the effect.
 
     \since Kuesa 1.2
 */
@@ -183,7 +217,8 @@ namespace Kuesa {
     \qmlproperty bool GLTF2MaterialEffect::doubleSided
 
     Returns whether the meshes to be rendered with this effect are double
-    sided.
+    sided. If true, back face culling is disabled and the normals for the back
+    faces are the same as for the front faces mulplied by -1
 
     \since Kuesa 1.2
 */

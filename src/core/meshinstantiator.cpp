@@ -81,14 +81,14 @@ namespace Kuesa {
 */
 
 /*!
-    \property Kuesa::KuesaNode::entityName
+    \property MeshInstantiator::entityName
 
     The name of the entity to be retrieved from the \l {Kuesa::EntityCollection}
     and instantiated.
 */
 
 /*!
-    \property Kuesa::KuesaNode::count
+    \property MeshInstantiator::count
     \readonly
 
     The number of instances being drawn. The number of instances being drawn.
@@ -129,14 +129,14 @@ namespace Kuesa {
 */
 
 /*!
-    \qmlproperty string Kuesa::KuesaNode::entityName
+    \qmlproperty string MeshInstantiator::entityName
 
     The name of the entity to be retrieved from the \l {Kuesa::EntityCollection}
     and instantiated.
  */
 
 /*!
-    \qmlproperty int Kuesa::KuesaNode::count
+    \qmlproperty int MeshInstantiator::count
     \readonly
 
     The number of instances being drawn. It will be at least 1 even if no

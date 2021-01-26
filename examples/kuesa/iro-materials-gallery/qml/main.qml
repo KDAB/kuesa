@@ -61,3 +61,4 @@ Item {
         id: inspectorView
     }
 }
+//! [0]

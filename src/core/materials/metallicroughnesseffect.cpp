@@ -271,34 +271,6 @@ QShaderProgramBuilder *MetallicRoughnessTechnique::metalRoughShaderBuilder() con
  */
 
 /*!
- * \property MetallicRoughnessEffect::doubleSided
-
-    If true, back face culling is disabled and the normals for the back faces
-    are the same as for the front faces mulplied by -1
- */
-
-/*!
-    \property MetallicRoughnessEffect::useSkinning
-
-    If true, a skinning enabled vertex shader is used instead of the default
-    one. This allows to use this effect for rendering skinned meshes
- */
-
-/*!
-    \property MetallicRoughnessEffect::opaque
-
-    If false, alpha blending is enabled for this effect
- */
-
-/*!
-    \property MetallicRoughnessEffect::alphaCutoffEnabled
-
-    If true, alpha cutoff is enabled. Fragments with an alpha value above a
-    threshold are rendered as opaque while fragment an alpha value below the
-    threshold are discarded
- */
-
-/*!
     \property MetallicRoughnessEffect::brdfLUT
 
     brdfLUT references a texture containing lookup tables for the split sum approximation
@@ -361,34 +333,6 @@ QShaderProgramBuilder *MetallicRoughnessTechnique::metalRoughShaderBuilder() con
     \qmlproperty bool MetallicRoughnessEffect::emissiveMapEnabled
 
     True to enable the effect support to specify emissive property with txtures
- */
-
-/*!
-    \qmlproperty bool MetallicRoughnessEffect::doubleSided
-
-    If true, back face culling is disabled and the normals for the back faces
-    are the same as for the front faces mulplied by -1
- */
-
-/*!
-    \qmlproperty bool MetallicRoughnessEffect::useSkinning
-
-    If true, a skinning enabled vertex shader is used instead of the default
-    one. This allows to use this effect for rendering skinned meshes
- */
-
-/*!
-    \qmlproperty bool MetallicRoughnessEffect::opaque
-
-     If false, alpha blending is enabled for this effect
- */
-
-/*!
-    \qmlproperty bool MetallicRoughnessEffect::alphaCutoffEnabled
-
-    If true, alpha cutoff is enabled. Fragments with an alpha value above a
-    threshold are rendered as opaque while fragment an alpha value below the
-    threshold are discarded
  */
 
 /*!

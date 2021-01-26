@@ -767,7 +767,7 @@ ToneMappingAndGammaCorrectionEffect::ToneMapping View::toneMappingAlgorithm() co
 }
 
 /*!
-    \property bool Kuesa::View::usesStencilMask
+    \property Kuesa::View::usesStencilMask
 
     Enables/disables stencil buffers. If true, stencil operations be used during the render phase to modify the stencil buffer.
     The resulting stencil buffer can later be used to apply post process effect to only part of the scene

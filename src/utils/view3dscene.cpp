@@ -67,9 +67,8 @@ using namespace Qt3DRender;
     {Kuesa::GLTF2Importer} and sets up a \l {Kuesa::ForwardRenderer} framegraph.
 
     The property \l {KuesaUtils::View3DScene::ready} and signal \l
-    {KuesaUtils::View3DScene::readyChanged} can be used to detect when the
-    scene is visible on screen and therefore synchronize with other aspect of
-    your application.
+    {View3DScene::readyChanged} can be used to detect when the scene is visible
+    on screen and therefore synchronize with other aspect of your application.
 
     When used in conjunction with \l {KuesaUtils::SceneConfiguration} this
     class makes it convenient to set up a Kuesa renderer that can easily load
@@ -196,9 +195,8 @@ using namespace Qt3DRender;
     {Kuesa::GLTF2Importer} and sets up a \l {Kuesa::ForwardRenderer} framegraph.
 
     The property \l [QML] {KuesaUtils::View3DScene::ready} and signal \l [QML]
-    {KuesaUtils::View3DScene::readyChanged} can be used to detect when the
-    scene is visible on screen and therefore synchronize with other aspect of
-    your application.
+    {View3DScene::readyChanged} can be used to detect when the scene is visible
+    on screen and therefore synchronize with other aspect of your application.
 
     When used in conjunction with \l [QML] {KuesaUtils::SceneConfiguration} this
     class makes it convenient to set up a Kuesa renderer that can easily load

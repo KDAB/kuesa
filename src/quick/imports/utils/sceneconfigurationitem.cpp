@@ -36,16 +36,14 @@ using namespace KuesaUtils;
  */
 
 /*!
-    \qmlproperty list<Kuesa::AnimationPlayer>
-    KuesaUtils::SceneConfigurationItem::animations
+    \qmlproperty list<Kuesa::AnimationPlayer> KuesaUtils::SceneConfigurationItem::animations
 
     List of \l [QML] {Kuesa::AnimationPlayer} instances referenced by the
     SceneConfiguration.
 */
 
 /*!
-    \qmlproperty list<Kuesa::TransformTracker>
-    KuesaUtils::SceneConfigurationItem::transformTrackers
+    \qmlproperty list<Kuesa::TransformTracker> KuesaUtils::SceneConfigurationItem::transformTrackers
 
     List of \l [QML] {Kuesa::TransformTracker} instances referenced by the
     SceneConfiguration.

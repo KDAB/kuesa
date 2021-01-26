@@ -130,8 +130,8 @@
 
     \endcode
 
-    Alternatively a simpler approach when using \l [CPP] {View3DScene} is to
-    simply do:
+    Alternatively a simpler approach when using \l [CPP]
+    {KuesaUtils::View3DScene} is to simply do:
 
     \badcode
     QObject *uiTarget = new QObject();
@@ -151,8 +151,8 @@
     ...
     \endcode
 
-    The \l {Kuesa::View3DScene} will take care of handling the current camera
-    and viewport size.
+    The \l {KuesaUtils::View3DScene} will take care of handling the current
+    camera and viewport size.
 
     \note This was intented to use with QQuickItems as targets. For widgets,
     this might not work as well as Qt 3D currently requires a window container

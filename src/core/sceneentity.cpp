@@ -83,14 +83,14 @@ using namespace Kuesa;
 */
 
 /*!
-    \fn Kuesa::SceneEntity::loadingDone()
+    \fn SceneEntity::loadingDone()
 
     This signal is emitted when a glTF file is successfully loaded using a
     GLTFImporter instance which sceneEntity points to this entity.
 */
 
 /*!
-  \qmlsignal Kuesa::SceneEntity::loadingDone()
+  \qmlsignal SceneEntity::loadingDone()
 
     This signal is emitted when a glTF file is successfully loaded using a
     GLTFImporter instance which sceneEntity points to this entity.
