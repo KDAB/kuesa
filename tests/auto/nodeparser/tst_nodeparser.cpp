@@ -62,7 +62,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.treeNodeCount(), 5);
+        QCOMPARE(context.treeNodeCount(), size_t(5));
 
         const QVector<QString> names = {
             QLatin1String("Car"),
@@ -99,7 +99,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.treeNodeCount(), 1);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
 
         const TreeNode::TransformInfo transform = context.treeNode(0).transformInfo;
 
@@ -126,7 +126,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.treeNodeCount(), 1);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
 
         const TreeNode::TransformInfo transform = context.treeNode(0).transformInfo;
         QVERIFY(transform.bits == TreeNode::TransformInfo::MatrixSet);
@@ -200,7 +200,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.treeNodeCount(), 1);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
 
         const TreeNode n = context.treeNode(0);
         QVERIFY(n.cameraIdx != -1);
@@ -225,7 +225,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.treeNodeCount(), 1);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
 
         const TreeNode n = context.treeNode(0);
         QCOMPARE(n.morphTargetWeights.size(), 2);
@@ -252,7 +252,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.treeNodeCount(), 1);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
 
         const TreeNode n = context.treeNode(0);
         QCOMPARE(n.reflectionPlaneEquation, QVector4D(1.0f, 0.0f, 0.0f, 883.0f));

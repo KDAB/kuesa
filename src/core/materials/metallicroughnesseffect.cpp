@@ -170,7 +170,7 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
         auto cubeShadowShaderProg = new Qt3DRender::QShaderProgram(this);
         m_cubeMapShadowShaderBuilder->setShaderProgram(cubeShadowShaderProg);
         m_cubeMapShadowShaderBuilder->setVertexShaderGraph(vertexShaderGraph);
-        cubeShadowShaderProg->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl("qrc:/kuesa/shaders/gl3/shadow_cube.geom")));
+        cubeShadowShaderProg->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/shadow_cube.geom"))));
         cubeShadowShaderProg->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
         m_cubeMapShadowRenderPass->setShaderProgram(cubeShadowShaderProg);

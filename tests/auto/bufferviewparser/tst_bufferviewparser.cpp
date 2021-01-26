@@ -98,7 +98,7 @@ private Q_SLOTS:
         // THEN
         QCOMPARE(parseResult, expectedParseResult);
         if (parseResult) {
-            QCOMPARE(context.bufferViewCount(), 1);
+            QCOMPARE(context.bufferViewCount(), size_t(1));
             QCOMPARE(context.bufferView(0).bufferIdx, bufferIdx);
             QCOMPARE(context.bufferView(0).byteLength, byteLength);
             QCOMPARE(context.bufferView(0).byteOffset, byteOffset);

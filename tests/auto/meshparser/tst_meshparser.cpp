@@ -58,72 +58,72 @@ private Q_SLOTS:
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("parsingSucceeded");
         QTest::addColumn<bool>("generationSucceeded");
-        QTest::addColumn<int>("meshesCount");
+        QTest::addColumn<size_t>("meshesCount");
 
         QTest::newRow("Valid") << QStringLiteral(ASSETS "simple_cube.gltf")
                                << true
                                << true
-                               << 1;
+                               << size_t(1);
 
         QTest::newRow("Empty") << QStringLiteral(ASSETS "meshparser_empty.gltf")
                                << false
                                << false
-                               << 0;
+                               << size_t(0);
 
         QTest::newRow("No_Primitive") << QStringLiteral(ASSETS "meshparser_no_primitive.gltf")
                                       << false
                                       << false
-                                      << 0;
+                                      << size_t(0);
 
         QTest::newRow("Empty_Primitive") << QStringLiteral(ASSETS "meshparser_empty_primitive.gltf")
                                          << false
                                          << false
-                                         << 0;
+                                         << size_t(0);
 
         QTest::newRow("No_Attribute") << QStringLiteral(ASSETS "meshparser_no_attribute.gltf")
                                       << false
                                       << false
-                                      << 0;
+                                      << size_t(0);
 
         QTest::newRow("Valid_MorphTargets") << QStringLiteral(ASSETS "meshparser_valid_morphtargets.gltf")
                                             << true
                                             << true
-                                            << 1;
+                                            << size_t(1);
 
         QTest::newRow("Invalid_MorphTargets_Mistmatch_Count_Primitive") << QStringLiteral(ASSETS "meshparser_morphtargets_mismatch_count_primitive.gltf")
                                                                         << false
                                                                         << false
-                                                                        << 0;
+                                                                        << size_t(0);
 
         QTest::newRow("Invalid_MorphTargets_Mistmatch_Content_Primitive") << QStringLiteral(ASSETS "meshparser_morphtargets_mismatch_content_primitive.gltf")
                                                                           << false
                                                                           << false
-                                                                          << 0;
+                                                                          << size_t(0);
 
         QTest::newRow("Invalid_MorphTargets_Mistmatch_Attributes") << QStringLiteral(ASSETS "meshparser_morphtargets_mismatch_attributes.gltf")
                                                                    << false
                                                                    << false
-                                                                   << 0;
+                                                                   << size_t(0);
 
         QTest::newRow("Invalid_MorphTargets_Invalid_Attribute") << QStringLiteral(ASSETS "meshparser_morphtargets_invalid_attribute.gltf")
                                                                 << false
                                                                 << false
-                                                                << 0;
+                                                                << size_t(0);
 
         QTest::newRow("Invalid_MorphTargets_Invalid_Accessor") << QStringLiteral(ASSETS "meshparser_morphtargets_invalid_accessor.gltf")
                                                                << false
                                                                << false
-                                                               << 0;
+                                                               << size_t(0);
 
         QTest::newRow("Invalid_MorphTargets_Attribute_Not_In_Primitive") << QStringLiteral(ASSETS "meshparser_morphtargets_attribute_not_in_primitive.gltf")
                                                                          << true
                                                                          << false
-                                                                         << 1;
+                                                                         << size_t(1);
 
         QTest::newRow("Invalid_MorphTargets_Default_Weights_Size_Mismatch") << QStringLiteral(ASSETS "meshparser_morphtargets_default_weights_size_mismatch.gltf")
                                                                             << false
                                                                             << false
-                                                                            << 0;
+                                                                            << size_t(0);
     }
 
     void checkParseAndGenerate()
@@ -131,7 +131,7 @@ private Q_SLOTS:
         QFETCH(QString, filePath);
         QFETCH(bool, parsingSucceeded);
         QFETCH(bool, generationSucceeded);
-        QFETCH(int, meshesCount);
+        QFETCH(size_t, meshesCount);
 
         // GIVEN
         GLTF2Context context;
@@ -249,7 +249,7 @@ private Q_SLOTS:
         // THEN
         for (size_t meshNo = 0; meshNo < context.meshesCount(); ++meshNo) {
             auto parsedMesh = context.mesh(meshNo);
-            QCOMPARE(meshNo, parsedMesh.meshIdx);
+            QCOMPARE(meshNo, size_t(parsedMesh.meshIdx));
             for (auto primitive : parsedMesh.meshPrimitives) {
                 auto qMesh = primitive.primitiveRenderer;
                 QVERIFY(qMesh);
@@ -330,7 +330,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.meshesCount(), 1);
+        QCOMPARE(context.meshesCount(), size_t(1));
 
         // WHEN
 
@@ -396,7 +396,7 @@ private Q_SLOTS:
         QCOMPARE(indexAttribute->byteStride(), 0U);
         QCOMPARE(indexAttribute->byteOffset(), 0U);
         QCOMPARE(indexAttribute->buffer()->data(), fakeIndexData);
-        QCOMPARE(indexAttribute->count(), 128);
+        QCOMPARE(indexAttribute->count(), 128U);
 
     }
 
@@ -459,7 +459,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.meshesCount(), 1);
+        QCOMPARE(context.meshesCount(), size_t(1));
 
         // WHEN
         PrimitiveBuilder builder(&context);
@@ -532,7 +532,7 @@ private Q_SLOTS:
         QCOMPARE(indexAttribute->byteOffset(), 0U);
         QCOMPARE(indexAttribute->buffer()->data(), fakeIndexData.mid(2500));
         QCOMPARE(indexAttribute->buffer()->data().size(), 356);
-        QCOMPARE(indexAttribute->count(), 128);
+        QCOMPARE(indexAttribute->count(), 128U);
     }
 
     void checkPrimitiveNonSharingWithDifferentKeys()
@@ -581,7 +581,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.meshesCount(), 1);
+        QCOMPARE(context.meshesCount(), size_t(1));
 
         // WHEN
         Mesh &mesh = context.mesh(0);
@@ -650,7 +650,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.meshesCount(), 1);
+        QCOMPARE(context.meshesCount(), size_t(1));
 
         // WHEN
         Mesh &mesh = context.mesh(0);
@@ -739,7 +739,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.meshesCount(), 1);
+        QCOMPARE(context.meshesCount(), size_t(1));
 
         // WHEN
         Mesh &mesh = context.mesh(0);
@@ -839,7 +839,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.meshesCount(), 1);
+        QCOMPARE(context.meshesCount(), size_t(1));
 
         // WHEN
         Mesh &mesh = context.mesh(0);

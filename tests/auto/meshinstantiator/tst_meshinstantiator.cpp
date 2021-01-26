@@ -110,7 +110,7 @@ private Q_SLOTS:
         instantiator.setTransformationMatrices({m1, m2});
 
         // THEN
-        QCOMPARE(instantiator.transformationMatrices().size(), 2);
+        QCOMPARE(instantiator.transformationMatrices().size(), size_t(2));
         QCOMPARE(instantiator.transformationMatrices().front(), m1);
         QCOMPARE(instantiator.transformationMatrices().back(), m2);
         QCOMPARE(instantiator.count(), 2);
@@ -182,9 +182,9 @@ private Q_SLOTS:
 
         auto *attr = ge->attributes().first();
         QCOMPARE(attr->name(), QStringLiteral("perInstanceTransform"));
-        QCOMPARE(attr->vertexSize(), 16);
-        QCOMPARE(attr->divisor(), 1);
-        QCOMPARE(attr->buffer()->data().size(), 2 * 16 * sizeof(float));
+        QCOMPARE(attr->vertexSize(), 16U);
+        QCOMPARE(attr->divisor(), 1U);
+        QCOMPARE(attr->buffer()->data().size(), int(2 * 16 * sizeof(float)));
     }
 };
 

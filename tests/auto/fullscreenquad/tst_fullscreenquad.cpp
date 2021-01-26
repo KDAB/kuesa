@@ -71,7 +71,7 @@ private Q_SLOTS:
         {
             const QByteArray data = effect.buffer()->data();
 
-            QCOMPARE(data.size(), sizeof(V) * 6);
+            QCOMPARE(data.size(), int(sizeof(V) * 6));
 
             const V* vertices = reinterpret_cast<const V *>(data.data());
 
@@ -104,7 +104,7 @@ private Q_SLOTS:
         {
             const QByteArray data = effect.buffer()->data();
 
-            QCOMPARE(data.size(), sizeof(V) * 6);
+            QCOMPARE(data.size(), int(sizeof(V) * 6));
 
             const V* vertices = reinterpret_cast<const V *>(data.data());
 
@@ -137,7 +137,7 @@ private Q_SLOTS:
         {
             const QByteArray data = effect.buffer()->data();
 
-            QCOMPARE(data.size(), sizeof(V) * 6);
+            QCOMPARE(data.size(), int(sizeof(V) * 6));
 
             const V* vertices = reinterpret_cast<const V *>(data.data());
 

@@ -47,42 +47,42 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("succeeded");
-        QTest::addColumn<int>("bufferCount");
+        QTest::addColumn<size_t>("bufferCount");
 
         QTest::newRow("Valid") << QStringLiteral(ASSETS "bufferparser_valid.gltf")
                                << true
-                               << 1;
+                               << size_t(1);
 
         QTest::newRow("Valid Data URI") << QStringLiteral(ASSETS "bufferparser_valid_datauri.gltf")
                                         << true
-                                        << 1;
+                                        << size_t(1);
 
         QTest::newRow("Empty") << QStringLiteral(ASSETS "bufferparser_empty.gltf")
                                << false
-                               << 0;
+                               << size_t(0);
 
         QTest::newRow("Non Existent") << QStringLiteral(ASSETS "bufferparser_nothere.gltf")
                                       << false
-                                      << 0;
+                                      << size_t(0);
 
         QTest::newRow("PartiallyIncomplete") << QStringLiteral(ASSETS "bufferparser_incomplete.gltf")
                                              << false
-                                             << 1;
+                                             << size_t(1);
 
         QTest::newRow("EmptyUri") << QStringLiteral(ASSETS "bufferparser_empty_uri.gltf")
                                   << false
-                                  << 1;
+                                  << size_t(1);
 
         QTest::newRow("WrongSize") << QStringLiteral(ASSETS "bufferparser_wrong_size.gltf")
                                    << false
-                                   << 0;
+                                   << size_t(0);
     }
 
     void checkParse()
     {
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
-        QFETCH(int, bufferCount);
+        QFETCH(size_t, bufferCount);
 
         // GIVEN
         GLTF2Context context;

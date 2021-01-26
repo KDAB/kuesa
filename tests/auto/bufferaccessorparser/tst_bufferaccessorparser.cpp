@@ -66,7 +66,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(result, true);
-        QCOMPARE(context.accessorCount(), 1);
+        QCOMPARE(context.accessorCount(), size_t(1));
 
         const Kuesa::GLTF2Import::Accessor accessor = context.accessor(0);
         QCOMPARE(accessor.bufferViewIndex, 0);
@@ -156,7 +156,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(result, false);
-        QCOMPARE(context.accessorCount(), 0);
+        QCOMPARE(context.accessorCount(), size_t(0));
     }
 
     void shouldHandleComponentTypes_data()
@@ -195,30 +195,30 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(result, true);
-        QCOMPARE(context.accessorCount(), 1);
+        QCOMPARE(context.accessorCount(), size_t(1));
         QCOMPARE(context.accessor(0).type, expectedType);
     }
 
     void shouldProvideDataSize_data()
     {
         QTest::addColumn<QString>("dataType");
-        QTest::addColumn<int>("expectedDataSize");
+        QTest::addColumn<uint>("expectedDataSize");
 
-        QTest::addRow("SCALAR") << "SCALAR" << 1;
-        QTest::addRow("VEC2") << "VEC2" << 2;
-        QTest::addRow("VEC3") << "VEC3" << 3;
-        QTest::addRow("VEC4") << "VEC4" << 4;
-        QTest::addRow("MAT2") << "MAT2" << 4;
-        QTest::addRow("MAT3") << "MAT3" << 9;
-        QTest::addRow("MAT4") << "MAT4" << 16;
-        QTest::addRow("Invalid") << "INVALID" << 0;
+        QTest::addRow("SCALAR") << "SCALAR" << 1U;
+        QTest::addRow("VEC2") << "VEC2" << 2U;
+        QTest::addRow("VEC3") << "VEC3" << 3U;
+        QTest::addRow("VEC4") << "VEC4" << 4U;
+        QTest::addRow("MAT2") << "MAT2" << 4U;
+        QTest::addRow("MAT3") << "MAT3" << 9U;
+        QTest::addRow("MAT4") << "MAT4" << 16U;
+        QTest::addRow("Invalid") << "INVALID" << 0U;
     }
 
     void shouldProvideDataSize()
     {
         // GIVEN
         QFETCH(QString, dataType);
-        QFETCH(int, expectedDataSize);
+        QFETCH(uint, expectedDataSize);
 
         QJsonObject json;
         json["componentType"] = GL_FLOAT;
@@ -236,7 +236,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(result, true);
-        QCOMPARE(context.accessorCount(), 1);
+        QCOMPARE(context.accessorCount(), size_t(1));
         QCOMPARE(context.accessor(0).dataSize, expectedDataSize);
     }
 
@@ -280,7 +280,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(result, true);
-        QCOMPARE(context.accessorCount(), 2);
+        QCOMPARE(context.accessorCount(), size_t(2));
         const Kuesa::GLTF2Import::Accessor firstAccessor = context.accessor(0);
         const Kuesa::GLTF2Import::Accessor secondAccessor = context.accessor(1);
         QCOMPARE(firstAccessor.dataSize, 2);
@@ -324,7 +324,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(result, true);
-        QCOMPARE(context.accessorCount(), 1);
+        QCOMPARE(context.accessorCount(), size_t(1));
 
         const Kuesa::GLTF2Import::Accessor firstAccessor = context.accessor(0);
         QCOMPARE(firstAccessor.type, QAttribute::Float);

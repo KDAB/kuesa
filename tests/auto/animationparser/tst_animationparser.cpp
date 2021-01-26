@@ -55,63 +55,63 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("succeeded");
-        QTest::addColumn<int>("animationCount");
+        QTest::addColumn<size_t>("animationCount");
 
         QTest::newRow("Valid") << QStringLiteral(ASSETS "animated_cube_lot_rot_scale.gltf")
                                << true
-                               << 1;
+                               << size_t(1);
         QTest::newRow("Empty") << QStringLiteral(ASSETS "animated_cube_empty.gltf")
                                << false
-                               << 0;
+                               << size_t(0);
         QTest::newRow("Missing-Channels") << QStringLiteral(ASSETS "animated_cube_missing_channels.gltf")
                                           << false
-                                          << 0;
+                                          << size_t(0);
         QTest::newRow("Missing-Samplers") << QStringLiteral(ASSETS "animated_cube_missing_samplers.gltf")
                                           << false
-                                          << 0;
+                                          << size_t(0);
         QTest::newRow("Invalid-Sampler") << QStringLiteral(ASSETS "animated_cube_invalid_sampler_index.gltf")
                                          << false
-                                         << 0;
+                                         << size_t(0);
         QTest::newRow("Invalid-Input-Accessor") << QStringLiteral(ASSETS "animated_cube_invalid_input_accessor_index.gltf")
                                                 << false
-                                                << 0;
+                                                << size_t(0);
         QTest::newRow("Invalid-Output-Accessor") << QStringLiteral(ASSETS "animated_cube_invalid_output_accessor_index.gltf")
                                                  << false
-                                                 << 0;
+                                                 << size_t(0);
         QTest::newRow("Invalid-Target-Node") << QStringLiteral(ASSETS "animated_cube_invalid_target_node_index.gltf")
                                              << false
-                                             << 0;
+                                             << size_t(0);
         QTest::newRow("Invalid-Interpolation") << QStringLiteral(ASSETS "animated_cube_invalid_sampler_interpolation.gltf")
                                                << false
-                                               << 0;
+                                               << size_t(0);
         QTest::newRow("Sampler-Missing-InputAccessor") << QStringLiteral(ASSETS "animated_cube_sampler_missing_input.gltf")
                                                        << false
-                                                       << 0;
+                                                       << size_t(0);
         QTest::newRow("Sampler-Missing-OutputAccessor") << QStringLiteral(ASSETS "animated_cube_sampler_missing_output.gltf")
                                                         << false
-                                                        << 0;
+                                                        << size_t(0);
         QTest::newRow("Sampler-Missing-Interpolation") << QStringLiteral(ASSETS "animated_cube_sampler_missing_interpolation.gltf")
                                                        << true
-                                                       << 1;
+                                                       << size_t(1);
         QTest::newRow("Channel-Missing-Target") << QStringLiteral(ASSETS "animated_cube_channel_missing_target.gltf")
                                                 << false
-                                                << 0;
+                                                << size_t(0);
         QTest::newRow("Channel-Missing-Sampler") << QStringLiteral(ASSETS "animated_cube_channel_missing_sampler.gltf")
                                                  << false
-                                                 << 0;
+                                                 << size_t(0);
         QTest::newRow("Incompatible-Input-Output-Accessors") << QStringLiteral(ASSETS "animated_cube_sampler_incompatible_input_output.gltf")
                                                              << false
-                                                             << 0;
+                                                             << size_t(0);
         QTest::newRow("Cubic-Animation") << QStringLiteral(ASSETS "animationparser_cubic.gltf")
                                          << true
-                                         << 1;
+                                         << size_t(1);
     }
 
     void checkParse()
     {
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
-        QFETCH(int, animationCount);
+        QFETCH(size_t, animationCount);
 
         // GIVEN
         GLTF2Context context;
@@ -208,7 +208,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(success, succeeded);
-        QCOMPARE(context.animationsCount(), 1);
+        QCOMPARE(context.animationsCount(), size_t(1));
 
         Animation animation = context.animation(0);
         QCOMPARE(animation.clipData.channelCount(), 1);

@@ -340,11 +340,11 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("parsingSucceeded");
-        QTest::addColumn<int>("imageCount");
+        QTest::addColumn<size_t>("imageCount");
 
-        QTest::newRow("Valid") << "simple_cube_with_images.gtlf" << true << 2;
-        QTest::newRow("BufferView") << "simple_cube_with_images_buffer_view.gtlf" << false << 0;
-        QTest::newRow("WrongKey") << "simple_cube_with_images_wrong_key.gltf" << true << 0;
+        QTest::newRow("Valid") << "simple_cube_with_images.gtlf" << true << size_t(2);
+        QTest::newRow("BufferView") << "simple_cube_with_images_buffer_view.gtlf" << false << size_t(0);
+        QTest::newRow("WrongKey") << "simple_cube_with_images_wrong_key.gltf" << true << size_t(0);
     }
 
     void checkImageParsing()
@@ -352,7 +352,7 @@ private Q_SLOTS:
         // GIVEN
         QFETCH(QString, filePath);
         QFETCH(bool, parsingSucceeded);
-        QFETCH(int, imageCount);
+        QFETCH(size_t, imageCount);
 
         GLTF2Context ctx;
         GLTF2ParserNoTextures parser;
@@ -371,62 +371,62 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("parsingSucceeded");
-        QTest::addColumn<int>("samplerCount");
+        QTest::addColumn<size_t>("samplerCount");
         QTest::addColumn<Qt3DRender::QAbstractTexture::Filter>("minFilter");
         QTest::addColumn<Qt3DRender::QAbstractTexture::Filter>("magFilter");
         QTest::addColumn<Qt3DRender::QTextureWrapMode::WrapMode>("wrapS");
         QTest::addColumn<Qt3DRender::QTextureWrapMode::WrapMode>("wrapT");
 
         QTest::newRow("NEAREST_LINEAR_CLAMP_CLAMP") << "simple_cube_with_samplers_nearest_linear_clamp_clamp.gltf"
-                                                    << true << 2
+                                                    << true << size_t(2)
                                                     << Qt3DRender::QAbstractTexture::Nearest
                                                     << Qt3DRender::QAbstractTexture::Linear
                                                     << Qt3DRender::QTextureWrapMode::ClampToEdge
                                                     << Qt3DRender::QTextureWrapMode::ClampToEdge;
 
         QTest::newRow("NEAREST_LINEAR_REPEAT_CLAMP") << "simple_cube_with_samplers_nearest_linear_repeat_clamp.gltf"
-                                                     << true << 2
+                                                     << true << size_t(2)
                                                      << Qt3DRender::QAbstractTexture::Nearest
                                                      << Qt3DRender::QAbstractTexture::Linear
                                                      << Qt3DRender::QTextureWrapMode::Repeat
                                                      << Qt3DRender::QTextureWrapMode::ClampToEdge;
 
         QTest::newRow("NEAREST_MIPMAP_NEAREST_LINEAR_REPEAT_MIRRORED") << "simple_cube_with_samplers_nearest_mipmap_nearest_linear_repeat_mirrored.gltf"
-                                                                       << true << 2
+                                                                       << true << size_t(2)
                                                                        << Qt3DRender::QAbstractTexture::NearestMipMapNearest
                                                                        << Qt3DRender::QAbstractTexture::Linear
                                                                        << Qt3DRender::QTextureWrapMode::Repeat
                                                                        << Qt3DRender::QTextureWrapMode::MirroredRepeat;
 
         QTest::newRow("LINEAR_MIPMAP_NEAREST_LINEAR_REPEAT_MIRRORED") << "simple_cube_with_samplers_linear_mipmap_nearest_linear_repeat_mirrored.gltf"
-                                                                      << true << 2
+                                                                      << true << size_t(2)
                                                                       << Qt3DRender::QAbstractTexture::LinearMipMapNearest
                                                                       << Qt3DRender::QAbstractTexture::Linear
                                                                       << Qt3DRender::QTextureWrapMode::Repeat
                                                                       << Qt3DRender::QTextureWrapMode::MirroredRepeat;
 
         QTest::newRow("LINEAR_MIPMAP_LINEAR_LINEAR_REPEAT_MIRRORED") << "simple_cube_with_samplers_linear_mipmap_linear_linear_repeat_mirrored.gltf"
-                                                                     << true << 2
+                                                                     << true << size_t(2)
                                                                      << Qt3DRender::QAbstractTexture::LinearMipMapLinear
                                                                      << Qt3DRender::QAbstractTexture::Linear
                                                                      << Qt3DRender::QTextureWrapMode::Repeat
                                                                      << Qt3DRender::QTextureWrapMode::MirroredRepeat;
 
         QTest::newRow("NEAREST_MIPMAP_LINEAR_LINEAR_REPEAT_MIRRORED") << "simple_cube_with_samplers_nearest_mipmap_linear_linear_repeat_mirrored.gltf"
-                                                                      << true << 2
+                                                                      << true << size_t(2)
                                                                       << Qt3DRender::QAbstractTexture::NearestMipMapLinear
                                                                       << Qt3DRender::QAbstractTexture::Linear
                                                                       << Qt3DRender::QTextureWrapMode::Repeat
                                                                       << Qt3DRender::QTextureWrapMode::MirroredRepeat;
 
         QTest::newRow("INVALID_INVALID_INVALID_INVALID") << "simple_cube_with_samplers_invalid_invalid_invalid_invalid.gltf"
-                                                         << false << 0
+                                                         << false << size_t(0)
                                                          << Qt3DRender::QAbstractTexture::Linear
                                                          << Qt3DRender::QAbstractTexture::Linear
                                                          << Qt3DRender::QTextureWrapMode::ClampToEdge
                                                          << Qt3DRender::QTextureWrapMode::ClampToEdge;
 
-        QTest::newRow("WrongKey") << "simple_cube_with_samplers_wrong_key.gltf" << true << 0
+        QTest::newRow("WrongKey") << "simple_cube_with_samplers_wrong_key.gltf" << true << size_t(0)
                                   << Qt3DRender::QAbstractTexture::Linear
                                   << Qt3DRender::QAbstractTexture::Linear
                                   << Qt3DRender::QTextureWrapMode::ClampToEdge
@@ -438,7 +438,7 @@ private Q_SLOTS:
         // GIVEN
         QFETCH(QString, filePath);
         QFETCH(bool, parsingSucceeded);
-        QFETCH(int, samplerCount);
+        QFETCH(size_t, samplerCount);
         QFETCH(Qt3DRender::QAbstractTexture::Filter, minFilter);
         QFETCH(Qt3DRender::QAbstractTexture::Filter, magFilter);
         QFETCH(Qt3DRender::QTextureWrapMode::WrapMode, wrapS);
@@ -455,7 +455,7 @@ private Q_SLOTS:
        // THEN
        QCOMPARE(parsingSuccessful, parsingSucceeded);
        QCOMPARE(parser.context()->textureSamplersCount(), samplerCount);
-       for (int i = 0; i < samplerCount; ++i) {
+       for (size_t i = 0; i < samplerCount; ++i) {
            const TextureSampler s = parser.context()->textureSampler(i);
            QCOMPARE(s.minificationFilter, minFilter);
            QCOMPARE(s.magnificationFilter, magFilter);
@@ -514,7 +514,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(res);
-        QCOMPARE(parser.context()->imagesCount(), 2);
+        QCOMPARE(parser.context()->imagesCount(), size_t(2));
         QCOMPARE(parser.context()->image(0).name, QStringLiteral("diffuse.png"));
         QCOMPARE(parser.context()->image(1).name, QStringLiteral("normal.png"));
     }
@@ -523,14 +523,14 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("parsingSucceeded");
-        QTest::addColumn<int>("textureCount");
+        QTest::addColumn<size_t>("textureCount");
 
-        QTest::newRow("Valid") << "simple_cube_with_textures.gltf" << true << 2;
-        QTest::newRow("ValidDDSTexture") << "simple_cube_with_textures_dds.gltf" << true << 1;
-        QTest::newRow("NoSource") << "simple_cube_with_textures_no_source.gltf" << true << 2;
-        QTest::newRow("NoSampler") << "simple_cube_with_textures_no_sampler.gltf" << true << 2;
-        QTest::newRow("InvalidSource") << "simple_cube_with_textures_invalid_source.gltf" << false << 1;
-        QTest::newRow("InvalidSampler") << "simple_cube_with_textures_invalid_sampler.gltf" << false << 1;
+        QTest::newRow("Valid") << "simple_cube_with_textures.gltf" << true << size_t(2);
+        QTest::newRow("ValidDDSTexture") << "simple_cube_with_textures_dds.gltf" << true << size_t(1);
+        QTest::newRow("NoSource") << "simple_cube_with_textures_no_source.gltf" << true << size_t(2);
+        QTest::newRow("NoSampler") << "simple_cube_with_textures_no_sampler.gltf" << true << size_t(2);
+        QTest::newRow("InvalidSource") << "simple_cube_with_textures_invalid_source.gltf" << false << size_t(1);
+        QTest::newRow("InvalidSampler") << "simple_cube_with_textures_invalid_sampler.gltf" << false << size_t(1);
     }
 
     void checkTextureParsing()
@@ -538,7 +538,7 @@ private Q_SLOTS:
         // GIVEN
         QFETCH(QString, filePath);
         QFETCH(bool, parsingSucceeded);
-        QFETCH(int, textureCount);
+        QFETCH(size_t, textureCount);
 
         GLTF2Context ctx;
         GLTF2Parser parser;
@@ -657,10 +657,10 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("parsingSucceeded");
-        QTest::addColumn<int>("materialCount");
+        QTest::addColumn<size_t>("materialCount");
 
-        QTest::newRow("Valid_PBR") << "simple_cube_with_textures.gltf" << true << 1;
-        QTest::newRow("Empty_Material") << "simple_cube_with_default_material.gltf" << true << 1;
+        QTest::newRow("Valid_PBR") << "simple_cube_with_textures.gltf" << true << size_t(1);
+        QTest::newRow("Empty_Material") << "simple_cube_with_default_material.gltf" << true << size_t(1);
     }
 
     void checkMaterialParsing()
@@ -668,7 +668,7 @@ private Q_SLOTS:
         // GIVEN
         QFETCH(QString, filePath);
         QFETCH(bool, parsingSucceeded);
-        QFETCH(int, materialCount);
+        QFETCH(size_t, materialCount);
 
         GLTF2Context ctx;
         GLTF2Parser parser;

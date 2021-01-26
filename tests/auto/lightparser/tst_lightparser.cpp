@@ -129,7 +129,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(success, succeeded);
-        QCOMPARE(context.lightCount(), 1);
+        QCOMPARE(context.lightCount(), size_t(1));
         QCOMPARE(context.light(0).name, name);
         QCOMPARE(context.light(0).type, type);
         QCOMPARE(context.light(0).color, color);

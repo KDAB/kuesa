@@ -63,7 +63,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.cameraCount(), 1);
+        QCOMPARE(context.cameraCount(), size_t(1));
 
         Camera &camera = context.camera(0);
         QVERIFY(!camera.lens);
@@ -100,7 +100,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.cameraCount(), 1);
+        QCOMPARE(context.cameraCount(), size_t(1));
 
         Camera &camera = context.camera(0);
         QVERIFY(!camera.lens);
@@ -164,7 +164,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(!success);
-        QCOMPARE(context.cameraCount(), 0);
+        QCOMPARE(context.cameraCount(), size_t(0));
     }
 };
 

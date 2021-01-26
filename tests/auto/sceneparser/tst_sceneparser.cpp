@@ -53,30 +53,30 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("succeeded");
-        QTest::addColumn<int>("sceneCount");
+        QTest::addColumn<size_t>("sceneCount");
 
         QTest::newRow("Valid") << QStringLiteral(ASSETS "scenes_valid.gltf")
                                << true
-                               << 1;
+                               << size_t(1);
 
         QTest::newRow("Invalid-Missing-Nodes") << QStringLiteral(ASSETS "scenes_missing_nodes.gltf")
                                                << false
-                                               << 0;
+                                               << size_t(0);
 
         QTest::newRow("Invalid-Empty-Nodes") << QStringLiteral(ASSETS "scenes_empty_nodes.gltf")
                                              << false
-                                             << 0;
+                                             << size_t(0);
 
         QTest::newRow("Invalid-Duplicate-Nodes") << QStringLiteral(ASSETS "scenes_duplicate_nodes.gltf")
                                                  << false
-                                                 << 0;
+                                                 << size_t(0);
     }
 
     void checkParse()
     {
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
-        QFETCH(int, sceneCount);
+        QFETCH(size_t, sceneCount);
 
         // GIVEN
         GLTF2Context context;

@@ -56,37 +56,37 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("succeeded");
-        QTest::addColumn<int>("texturesCount");
+        QTest::addColumn<size_t>("texturesCount");
         QTest::addColumn<bool>("shouldHaveImage");
 
         QTest::newRow("Complete") << QStringLiteral(ASSETS "texture_complete.gltf")
                                   << true
-                                  << 1
+                                  << size_t(1)
                                   << true;
 
         QTest::newRow("Empty") << QStringLiteral(ASSETS "texture_empty.gltf")
                                << false
-                               << 0
+                               << size_t(0)
                                << false;
 
         QTest::newRow("NoSource") << QStringLiteral(ASSETS "texture_no_source.gltf")
                                   << true
-                                  << 1
+                                  << size_t(1)
                                   << false;
 
         QTest::newRow("NoSampler") << QStringLiteral(ASSETS "texture_no_sampler.gltf")
                                    << true
-                                   << 1
+                                   << size_t(1)
                                    << true;
 
         QTest::newRow("InvalidSource") << QStringLiteral(ASSETS "texture_invalid_source.gltf")
                                        << false
-                                       << 0
+                                       << size_t(0)
                                        << false;
 
         QTest::newRow("InvalidSampler") << QStringLiteral(ASSETS "texture_invalid_sampler.gltf")
                                         << false
-                                        << 0
+                                        << size_t(0)
                                         << false;
     }
 
@@ -94,7 +94,7 @@ private Q_SLOTS:
     {
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
-        QFETCH(int, texturesCount);
+        QFETCH(size_t, texturesCount);
         QFETCH(bool, shouldHaveImage);
 
         // GIVEN
@@ -163,7 +163,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.texturesCount(), 2);
+        QCOMPARE(context.texturesCount(), size_t(2));
 
         QVERIFY(!context.texture(0).texture);
         QVERIFY(!context.texture(1).texture);
@@ -242,7 +242,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.texturesCount(), 2);
+        QCOMPARE(context.texturesCount(), size_t(2));
 
         QVERIFY(!context.texture(0).texture);
         QVERIFY(!context.texture(1).texture);

@@ -107,12 +107,12 @@ private Q_SLOTS:
             sceneConfiguration.addTransformTracker(&t2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.transformTrackers().size(), 2);
+            QCOMPARE(sceneConfiguration.transformTrackers().size(), size_t(2));
             QCOMPARE(trackerAddedSpy.count(), 2);
         }
 
         // THEN -> Shouldn't crash and should have remove trackers
-        QCOMPARE(sceneConfiguration.transformTrackers().size(), 0);
+        QCOMPARE(sceneConfiguration.transformTrackers().size(), size_t(0));
         QCOMPARE(trackerRemovedSpy.count(), 2);
 
         trackerAddedSpy.clear();
@@ -127,19 +127,19 @@ private Q_SLOTS:
             sceneConfiguration.addTransformTracker(&t1);
 
             // THEN
-            QCOMPARE(sceneConfiguration.transformTrackers().size(), 1);
+            QCOMPARE(sceneConfiguration.transformTrackers().size(), size_t(1));
             QCOMPARE(trackerAddedSpy.count(), 1);
 
             //WHEN
             sceneConfiguration.removeTransformTracker(&t2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.transformTrackers().size(), 1);
+            QCOMPARE(sceneConfiguration.transformTrackers().size(), size_t(1));
             QCOMPARE(trackerRemovedSpy.count(), 0);
         }
 
         // THEN -> Shouldn't crash and should have remove trackers
-        QCOMPARE(sceneConfiguration.transformTrackers().size(), 0);
+        QCOMPARE(sceneConfiguration.transformTrackers().size(), size_t(0));
         QCOMPARE(trackerRemovedSpy.count(), 1);
 
         trackerAddedSpy.clear();
@@ -154,14 +154,14 @@ private Q_SLOTS:
             sceneConfiguration.addTransformTracker(&t2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.transformTrackers().size(), 2);
+            QCOMPARE(sceneConfiguration.transformTrackers().size(), size_t(2));
             QCOMPARE(trackerAddedSpy.count(), 2);
 
             // WHEN
             sceneConfiguration.clearTransformTrackers();
 
             // THEN
-            QCOMPARE(sceneConfiguration.transformTrackers().size(), 0);
+            QCOMPARE(sceneConfiguration.transformTrackers().size(), size_t(0));
             QCOMPARE(trackerRemovedSpy.count(), 2);
         }
 
@@ -178,20 +178,20 @@ private Q_SLOTS:
             sceneConfiguration.addTransformTracker(&t2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.transformTrackers().size(), 2);
+            QCOMPARE(sceneConfiguration.transformTrackers().size(), size_t(2));
             QCOMPARE(trackerAddedSpy.count(), 2);
 
             // WHEN
             sceneConfiguration.removeTransformTracker(&t1);
 
             // THEN
-            QCOMPARE(sceneConfiguration.transformTrackers().size(), 1);
+            QCOMPARE(sceneConfiguration.transformTrackers().size(), size_t(1));
             QCOMPARE(sceneConfiguration.transformTrackers().front(), &t2);
             QCOMPARE(trackerRemovedSpy.count(), 1);
         }
 
         // THEN -> Shouldn't crash
-        QCOMPARE(sceneConfiguration.transformTrackers().size(), 0);
+        QCOMPARE(sceneConfiguration.transformTrackers().size(), size_t(0));
         QCOMPARE(trackerRemovedSpy.count(), 2);
 
         trackerAddedSpy.clear();
@@ -218,12 +218,12 @@ private Q_SLOTS:
             sceneConfiguration.addAnimationPlayer(&t2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.animationPlayers().size(), 2);
+            QCOMPARE(sceneConfiguration.animationPlayers().size(), size_t(2));
             QCOMPARE(animationPlayerAddedSpy.count(), 2);
         }
 
         // THEN -> Shouldn't crash and should have removed animation
-        QCOMPARE(sceneConfiguration.animationPlayers().size(), 0);
+        QCOMPARE(sceneConfiguration.animationPlayers().size(), size_t(0));
         QCOMPARE(animationPlayerRemovedSpy.count(), 2);
 
         animationPlayerAddedSpy.clear();
@@ -238,17 +238,17 @@ private Q_SLOTS:
             sceneConfiguration.addAnimationPlayer(&t1);
 
             // THEN
-            QCOMPARE(sceneConfiguration.animationPlayers().size(), 1);
+            QCOMPARE(sceneConfiguration.animationPlayers().size(), size_t(1));
             QCOMPARE(animationPlayerAddedSpy.count(), 1);
 
             // WHEN
             sceneConfiguration.removeAnimationPlayer(&t2);
-            QCOMPARE(sceneConfiguration.animationPlayers().size(), 1);
+            QCOMPARE(sceneConfiguration.animationPlayers().size(), size_t(1));
             QCOMPARE(animationPlayerRemovedSpy.count(), 0);
         }
 
         // THEN -> Shouldn't crash and should have removed animation
-        QCOMPARE(sceneConfiguration.animationPlayers().size(), 0);
+        QCOMPARE(sceneConfiguration.animationPlayers().size(), size_t(0));
         QCOMPARE(animationPlayerRemovedSpy.count(), 1);
 
         animationPlayerAddedSpy.clear();
@@ -263,14 +263,14 @@ private Q_SLOTS:
             sceneConfiguration.addAnimationPlayer(&t2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.animationPlayers().size(), 2);
+            QCOMPARE(sceneConfiguration.animationPlayers().size(), size_t(2));
             QCOMPARE(animationPlayerAddedSpy.count(), 2);
 
             // WHEN
             sceneConfiguration.clearAnimationPlayers();
 
             // THEN
-            QCOMPARE(sceneConfiguration.animationPlayers().size(), 0);
+            QCOMPARE(sceneConfiguration.animationPlayers().size(), size_t(0));
             QCOMPARE(animationPlayerRemovedSpy.count(), 2);
         }
 
@@ -287,20 +287,20 @@ private Q_SLOTS:
             sceneConfiguration.addAnimationPlayer(&t2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.animationPlayers().size(), 2);
+            QCOMPARE(sceneConfiguration.animationPlayers().size(), size_t(2));
             QCOMPARE(animationPlayerAddedSpy.count(), 2);
 
             // WHEN
             sceneConfiguration.removeAnimationPlayer(&t1);
 
             // THEN
-            QCOMPARE(sceneConfiguration.animationPlayers().size(), 1);
+            QCOMPARE(sceneConfiguration.animationPlayers().size(), size_t(1));
             QCOMPARE(sceneConfiguration.animationPlayers().front(), &t2);
             QCOMPARE(animationPlayerRemovedSpy.count(), 1);
         }
 
         // THEN -> Shouldn't crash
-        QCOMPARE(sceneConfiguration.animationPlayers().size(), 0);
+        QCOMPARE(sceneConfiguration.animationPlayers().size(), size_t(0));
         QCOMPARE(animationPlayerRemovedSpy.count(), 2);
 
         animationPlayerAddedSpy.clear();
@@ -327,12 +327,12 @@ private Q_SLOTS:
             sceneConfiguration.addPlaceholderTracker(&p2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 2);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), size_t(2));
             QCOMPARE(placeholderTrackerAddedSpy.count(), 2);
         }
 
         // THEN -> Shouldn't crash and should have removed placeholderTrackers
-        QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 0);
+        QCOMPARE(sceneConfiguration.placeholderTrackers().size(), size_t(0));
         QCOMPARE(placeholderTrackerRemovedSpy.count(), 2);
 
         placeholderTrackerAddedSpy.clear();
@@ -347,19 +347,19 @@ private Q_SLOTS:
             sceneConfiguration.addPlaceholderTracker(&p1);
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 1);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), size_t(1));
             QCOMPARE(placeholderTrackerAddedSpy.count(), 1);
 
             // WHEN
             sceneConfiguration.removePlaceholderTracker(&p2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 1);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), size_t(1));
             QCOMPARE(placeholderTrackerRemovedSpy.count(), 0);
         }
 
         // THEN -> Shouldn't crash and should have removed placeholderTrackers
-        QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 0);
+        QCOMPARE(sceneConfiguration.placeholderTrackers().size(), size_t(0));
         QCOMPARE(placeholderTrackerRemovedSpy.count(), 1);
 
         placeholderTrackerAddedSpy.clear();
@@ -374,14 +374,14 @@ private Q_SLOTS:
             sceneConfiguration.addPlaceholderTracker(&p2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 2);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), size_t(2));
             QCOMPARE(placeholderTrackerAddedSpy.count(), 2);
 
             // WHEN
             sceneConfiguration.clearPlaceholderTrackers();
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 0);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), size_t(0));
             QCOMPARE(placeholderTrackerRemovedSpy.count(), 2);
         }
 
@@ -398,20 +398,20 @@ private Q_SLOTS:
             sceneConfiguration.addPlaceholderTracker(&p2);
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 2);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), size_t(2));
             QCOMPARE(placeholderTrackerAddedSpy.count(), 2);
 
             // WHEN
             sceneConfiguration.removePlaceholderTracker(&p1);
 
             // THEN
-            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 1);
+            QCOMPARE(sceneConfiguration.placeholderTrackers().size(), size_t(1));
             QCOMPARE(sceneConfiguration.placeholderTrackers().front(), &p2);
             QCOMPARE(placeholderTrackerRemovedSpy.count(), 1);
         }
 
         // THEN -> Shouldn't crash
-        QCOMPARE(sceneConfiguration.placeholderTrackers().size(), 0);
+        QCOMPARE(sceneConfiguration.placeholderTrackers().size(), size_t(0));
         QCOMPARE(placeholderTrackerRemovedSpy.count(), 2);
 
         placeholderTrackerAddedSpy.clear();

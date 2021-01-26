@@ -37,16 +37,6 @@
 #include <Qt3DCore/private/qtransform_p.h>
 #include <Kuesa/private/kuesa_utils_p.h>
 
-namespace {
-
-void updateWorldMatrixOnTransform(Qt3DCore::QTransform *t)
-{
-    Qt3DCore::QTransformPrivate *d = static_cast<Qt3DCore::QTransformPrivate *>(Qt3DCore::QNodePrivate::get(t));
-    d->setWorldMatrix(t->matrix());
-}
-
-}
-
 class tst_PlaceholderTracker : public QObject
 {
     Q_OBJECT
@@ -348,7 +338,7 @@ private Q_SLOTS:
             Qt3DCore::QEntity e;
             placeholderTracker.setCamera(&e);
 
-            // THEN -> shouldnt Crash
+            // THEN -> shouldn't Crash
         }
 
         {
@@ -358,7 +348,7 @@ private Q_SLOTS:
             e.addComponent(transform);
             placeholderTracker.setCamera(&e);
 
-            // THEN -> shouldnt Crash
+            // THEN -> shouldn't Crash
         }
 
         {
@@ -368,7 +358,7 @@ private Q_SLOTS:
             e.addComponent(lens);
             placeholderTracker.setCamera(&e);
 
-            // THEN -> shouldnt Crash
+            // THEN -> shouldn't Crash
         }
     }
 

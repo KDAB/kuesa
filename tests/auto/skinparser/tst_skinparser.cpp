@@ -168,7 +168,7 @@ private Q_SLOTS:
         QCOMPARE(success, succeeded);
 
         if (succeeded) {
-            QCOMPARE(context.skinsCount(), skins.size());
+            QCOMPARE(context.skinsCount(), size_t(skins.size()));
 
             for (int i = 0; i < skins.size(); ++i) {
                 const Kuesa::GLTF2Import::Skin skin = context.skin(i);

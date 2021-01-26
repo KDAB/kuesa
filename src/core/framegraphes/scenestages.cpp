@@ -163,13 +163,13 @@ ScenePass::ScenePass(ScenePass::SceneStageType type, Qt3DRender::QFrameGraphNode
     static const QMetaEnum metaEnum = QMetaEnum::fromType<ScenePass::SceneStageType>();
 
     m_nonSkinnedTechniqueFilter = new Qt3DRender::QTechniqueFilter();
-    m_nonSkinnedTechniqueFilter->setObjectName(QLatin1String("KuesaNonSkinnedTechniqueFilter(%1)").arg(metaEnum.valueToKey(type)));
+    m_nonSkinnedTechniqueFilter->setObjectName(QLatin1String("KuesaNonSkinnedTechniqueFilter(%1)").arg(QString::fromUtf8(metaEnum.valueToKey(type))));
 
     m_skinnedTechniqueFilter = new Qt3DRender::QTechniqueFilter();
-    m_skinnedTechniqueFilter->setObjectName(QLatin1String("KuesaSkinnedTechniqueFilter(%1)").arg(metaEnum.valueToKey(type)));
+    m_skinnedTechniqueFilter->setObjectName(QLatin1String("KuesaSkinnedTechniqueFilter(%1)").arg(QString::fromUtf8(metaEnum.valueToKey(type))));
 
     m_frustumCulling = new Qt3DRender::QFrustumCulling();
-    m_frustumCulling->setObjectName(QLatin1String("KuesaFrustrumCulling(%1)").arg(metaEnum.valueToKey(type)));
+    m_frustumCulling->setObjectName(QLatin1String("KuesaFrustrumCulling(%1)").arg(QString::fromUtf8(metaEnum.valueToKey(type))));
 
     // Both techniques are forward
     {

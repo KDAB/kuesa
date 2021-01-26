@@ -98,7 +98,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(success, succeeded);
-        QCOMPARE(context.lightCount(), 1);
+        QCOMPARE(context.lightCount(), size_t(1));
         QCOMPARE(context.light(0).castsShadows, castsShadows);
         QCOMPARE(context.light(0).softShadows, softShadows);
         QCOMPARE(context.light(0).shadowMapTextureSize, textureSize);
