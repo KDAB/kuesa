@@ -84,9 +84,6 @@
 #include <Kuesa/IroDiffuseAlphaEffect>
 #include <Kuesa/IroDiffuseAlphaProperties>
 #include <Kuesa/ShadowMap>
-#include <KuesaUtils/orbitcameracontroller.h>
-#include <KuesaUtils/boundingvolumerenderer.h>
-#include <KuesaUtils/view3dscene.h>
 #include <Kuesa/Particles>
 #include <Kuesa/KuesaNode>
 #include <Kuesa/View>
