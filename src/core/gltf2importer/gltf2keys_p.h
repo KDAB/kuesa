@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -53,8 +53,10 @@ const QLatin1String KEY_MESHES = QLatin1String("meshes");
 const QLatin1String KEY_SCENE = QLatin1String("scene");
 const QLatin1String KEY_SCENES = QLatin1String("scenes");
 const QLatin1String KEY_KDAB_KUESA_LAYER_EXTENSION = QLatin1String("KDAB_kuesa_layers");
+const QLatin1String KEY_KDAB_KUESA_SHADOWS_EXTENSION = QLatin1String("KDAB_kuesa_shadows");
 const QLatin1String KEY_MSFT_DDS_EXTENSION = QLatin1String("MSFT_texture_dds");
 const QLatin1String KEY_KUESA_LAYERS = QLatin1String("layers");
+const QLatin1String KEY_KUESA_SHADOWS = QLatin1String("shadows");
 const QLatin1String KEY_CAMERAS = QLatin1String("cameras");
 const QLatin1String KEY_IMAGES = QLatin1String("images");
 const QLatin1String KEY_TEXTURE_SAMPLERS = QLatin1String("samplers");
@@ -85,8 +87,11 @@ const QLatin1String KEY_KHR_MATERIALS_UNLIT = QLatin1String("KHR_materials_unlit
 const QLatin1String KEY_KDAB_CUSTOM_MATERIAL = QLatin1String("KDAB_custom_material");
 const QLatin1String KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION = QLatin1String("KHR_lights_punctual");
 const QLatin1String KEY_EXT_PROPERTY_ANIMATION_EXTENSION = QLatin1String("EXT_property_animation");
+const QLatin1String KEY_KHR_TEXTURE_TRANSFORM = QLatin1String("KHR_texture_transform");
 const QLatin1String KEY_KHR_PUNCTUAL_LIGHTS = QLatin1String("lights");
 const QLatin1String KEY_KHR_PUNCTUAL_LIGHT = QLatin1String("light");
+const QLatin1String KEY_KDAB_REFLECTION_PLANES_EXTENSION = QLatin1String("KDAB_kuesa_reflection_planes");
+const QLatin1String KEY_PLANE = QLatin1String("plane");
 const QLatin1String KEY_BUFFERVIEWTARGET = QLatin1String("target");
 const QLatin1String KEY_COMPONENTTYPE = QLatin1String("componentType");
 const QLatin1String KEY_COUNT = QLatin1String("count");
@@ -118,6 +123,8 @@ const QLatin1String KEY_CAMERA = QLatin1String("camera");
 const QLatin1String KEY_SKIN = QLatin1String("skin");
 const QLatin1String KEY_CHILDREN = QLatin1String("children");
 const QLatin1String KEY_NODE_KUESA_LAYERS = QLatin1String("layers");
+const QLatin1String KEY_KDAB_PLACEHOLDER = QLatin1String("KDAB_placeholder");
+const QLatin1String KEY_KDAB_PLACEHOLDER_CAMERANODE = QLatin1String("cameraNode");
 
 } // namespace GLTF2Import
 } // namespace Kuesa

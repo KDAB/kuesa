@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -40,7 +40,9 @@
 // We mean it.
 //
 
+#include <Kuesa/private/kuesa_global_p.h>
 #include "abstractrenderstage_p.h"
+#include <Qt3DRender/QCullFace>
 
 QT_BEGIN_NAMESPACE
 
@@ -53,21 +55,25 @@ class QSortPolicy;
 
 namespace Kuesa {
 
-class Q_AUTOTEST_EXPORT OpaqueRenderStage : public AbstractRenderStage
+class KUESA_PRIVATE_EXPORT OpaqueRenderStage : public AbstractRenderStage
 {
     Q_OBJECT
 public:
-    OpaqueRenderStage(Qt3DCore::QNode *parent = nullptr);
+    explicit OpaqueRenderStage(Qt3DRender::QFrameGraphNode *parent = nullptr);
     ~OpaqueRenderStage();
 
     void setZFilling(bool zFill);
     bool zFilling() const;
+
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode);
+    Qt3DRender::QCullFace::CullingMode cullingMode() const;
 
 private:
     Qt3DRender::QRenderStateSet *m_states;
     Qt3DRender::QDepthTest *m_depthTest;
     Qt3DRender::QNoDepthMask *m_noDepthWrite;
     Qt3DRender::QSortPolicy *m_sortPolicy;
+    Qt3DRender::QCullFace *m_cullFace;
 };
 } // namespace Kuesa
 

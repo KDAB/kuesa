@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -37,7 +37,7 @@
 // modified without notice
 //
 
-#include <Qt3DRender/private/qabstractlight_p.h>
+#include <Kuesa/private/shadowcastinglight_p.h>
 #include <Kuesa/private/kuesa_global_p.h>
 
 QT_BEGIN_NAMESPACE
@@ -46,7 +46,7 @@ namespace Kuesa {
 
 class DirectionalLight;
 
-class KUESA_PRIVATE_EXPORT DirectionalLightPrivate : Qt3DRender::QAbstractLightPrivate
+class KUESA_PRIVATE_EXPORT DirectionalLightPrivate : public ShadowCastingLightPrivate
 {
 public:
     DirectionalLightPrivate();

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Robert Brock <robert.brock@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -35,7 +35,7 @@ import QtQuick 2.12
 
 import Kuesa 1.1 as Kuesa
 import Kuesa.Effects 1.1 as KuesaFX
-import KuesaDemo 1.0 as KuesaDemo
+import Kuesa.Utils 1.3 as KuesaUtils
 
 Kuesa.SceneEntity {
     id: root3D
@@ -53,7 +53,7 @@ Kuesa.SceneEntity {
 
     Kuesa.Skybox {
         // Optional: Use the irradiance instead of the radiance for a simple blurry background
-        baseName: _assetsPrefix + "pink_sunrise_16f_radiance"
+        baseName: "qrc:/pink_sunrise_16f_radiance"
         extension: ".dds"
     }
 
@@ -74,13 +74,14 @@ Kuesa.SceneEntity {
                         return KuesaFX.ToneMappingAndGammaCorrectionEffect.Uncharted
                     return KuesaFX.ToneMappingAndGammaCorrectionEffect.None
                 }
+                skinning: true
             }
             //! [2.2]
         },
         InputSettings { },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise_16f_irradiance" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+                source: "qrc:/pink_sunrise_16f_irradiance" + ((!root3D.es2) ? ".dds" : "_es2.dds")
 
                 minificationFilter: Texture.LinearMipMapLinear
                 magnificationFilter: Texture.Linear
@@ -91,7 +92,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise_16f_specular" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+                source: "qrc:/pink_sunrise_16f_specular" + ((!root3D.es2) ? ".dds" : "_es2.dds")
 
                 minificationFilter: Texture.LinearMipMapLinear
                 magnificationFilter: Texture.Linear
@@ -144,7 +145,7 @@ Kuesa.SceneEntity {
         aspectRatio: root3D.__winSize.width / root3D.__winSize.height
     }
 
-    KuesaDemo.OrbitCameraController {
+    KuesaUtils.OrbitCameraController {
         id: controller
         camera: frameGraph.camera
         windowSize: root3D.__winSize
@@ -181,7 +182,7 @@ Kuesa.SceneEntity {
         id: gltf2importer
         sceneEntity: root3D
         assignNames: true
-        source: _assetsPrefix + "RotatingHelmet.gltf"
+        source: "qrc:/RotatingHelmet.gltf"
         options.generateTangents: true
     }
 //! [1]

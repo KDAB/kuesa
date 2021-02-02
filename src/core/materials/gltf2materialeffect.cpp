@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -27,6 +27,7 @@
 */
 
 #include "gltf2materialeffect.h"
+#include <Kuesa/private/framegraphutils_p.h>
 #include <QTimer>
 
 QT_BEGIN_NAMESPACE
@@ -48,13 +49,24 @@ namespace Kuesa {
     \li Opaque
     \li Alpha Cut off
     \li Double Sided
+    \li Vertex Attributes provides by the mesh
     \endlist
 */
 
 /*!
-    \property GLTF2MaterialEffect::useSkinning
+    \property GLTF2MaterialEffect::usingSkinning
 
-    Returns whether vertex skinning is enabled or not.
+    Returns whether vertex skinning is enabled or not. If true, a skinning
+    enabled vertex shader is used instead of the default one. This allows to
+    use this effect for rendering skinned meshes
+
+    \note If enabled, CPU side frustum culling is not performed for the
+    entities using that effect. Therefore, this should be enabled on effects
+    used to render geometries where the CPU side computed bounding volume
+    doesn't match what a standard vertex shader would compute (skyboxes,
+    instancing ...). Additionally, the \l {View::skinning} property needs to be
+    enabled on the \l {View} or \l {ForwardRenderer} for skinning effects to be
+    taken into account.
 
     \since Kuesa 1.2
 */
@@ -62,15 +74,22 @@ namespace Kuesa {
 /*!
     \property GLTF2MaterialEffect::opaque
 
-    Returns whether the content to be draw is opaque or transparent.
+    Returns whether the content to be draw is opaque or transparent. If false,
+    alpha blending is enabled for this effect
 
     \since Kuesa 1.2
 */
 
 /*!
-    \property GLTF2MaterialEffect::alphaCutOffEnabled
+    \property GLTF2MaterialEffect::alphaCutoffEnabled
 
-    Returns whether alphaCutOffIsEnabled or not.
+    Returns whether alphaCutOffIsEnabled or not. If true, alpha cutoff is
+    enabled. Fragments with an alpha value above a threshold are rendered as
+    opaque while fragment an alpha value below the threshold are discarded
+
+    \note The threshold value used will be
+    \l{GLTF2MaterialProperties::alphaCutoff} of the material properties set on
+    the material that uses the effect.
 
     \since Kuesa 1.2
 */
@@ -83,6 +102,56 @@ namespace Kuesa {
 
     \since Kuesa 1.2
 */
+
+/*!
+    \property GLTF2MaterialEffect::usingColorAttribute
+
+    If true, the base color property is multiplied by the color interpolated
+    attribute of the mesh
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \property GLTF2MaterialEffect::usingNormalAttribute
+
+    If true, the normal attribute provided by the mesh is used.
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \property GLTF2MaterialEffect::usingTangentAttribute
+
+    If true, the tangent attribute provided by the mesh is used.
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \property GLTF2MaterialEffect::usingTexCoordAttribute
+
+    If true, the texCoord attribute provided by the mesh is used.
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \property GLTF2MaterialEffect::usingTexCoord1Attribute
+
+    If true, the texCoord1 attribute provided by the mesh is used.
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \property GLTF2MaterialEffect::usingMorphTargets
+
+    If true, the morphtarget support is enabled.
+
+    \since Kuesa 1.3
+ */
+
 
 /*!
     \qmltype GLTF2MaterialEffect
@@ -99,13 +168,24 @@ namespace Kuesa {
     \li Opaque
     \li Alpha Cut off
     \li Double Sided
+    \li Vertex Attributes provides by the mesh
     \endlist
  */
 
 /*!
-    \qmlproperty bool GLTF2MaterialEffect::useSkinning
+    \qmlproperty bool GLTF2MaterialEffect::usingSkinning
 
-    Returns whether vertex skinning is enabled or not.
+    Returns whether vertex skinning is enabled or not. If true, a skinning
+    enabled vertex shader is used instead of the default one. This allows to
+    use this effect for rendering skinned meshes
+
+    \note If enabled, CPU side frustum culling is not performed for the
+    entities using that effect. Therefore, this should be enabled on effects
+    used to render geometries where the CPU side computed bounding volume
+    doesn't match what a standard vertex shader would compute (skyboxes,
+    instancing ...). Additionally, the \l {View::skinning} property needs to be
+    enabled on the \l {View} or \l {ForwardRenderer} for skinning effects to be
+    taken into account.
 
     \since Kuesa 1.2
 */
@@ -113,15 +193,22 @@ namespace Kuesa {
 /*!
     \qmlproperty bool GLTF2MaterialEffect::opaque
 
-    Returns whether the content to be draw is opaque or transparent.
+    Returns whether the content to be draw is opaque or transparent. If false,
+    alpha blending is enabled for this effect
 
     \since Kuesa 1.2
 */
 
 /*!
-    \qmlproperty bool GLTF2MaterialEffect::alphaCutOffEnabled
+    \qmlproperty bool GLTF2MaterialEffect::alphaCutoffEnabled
 
-    Returns whether alphaCutOffIsEnabled or not.
+    Returns whether alphaCutOffIsEnabled or not. If true, alpha cutoff is
+    enabled. Fragments with an alpha value above a threshold are rendered as
+    opaque while fragment an alpha value below the threshold are discarded.
+
+    \note The threshold value used will be
+    \l{GLTF2MaterialProperties::alphaCutoff} of the material properties set on
+    the material that uses the effect.
 
     \since Kuesa 1.2
 */
@@ -130,18 +217,74 @@ namespace Kuesa {
     \qmlproperty bool GLTF2MaterialEffect::doubleSided
 
     Returns whether the meshes to be rendered with this effect are double
-    sided.
+    sided. If true, back face culling is disabled and the normals for the back
+    faces are the same as for the front faces mulplied by -1
 
     \since Kuesa 1.2
 */
 
+/*!
+    \qmlproperty bool GLTF2MaterialEffect::usingColorAttribute
+
+    If true, the base color property is multiplied by the color interpolated
+    attribute of the mesh
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \qmlproperty bool GLTF2MaterialEffect::usingNormalAttribute
+
+    If true, the normal attribute provided by the mesh is used.
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \qmlproperty bool GLTF2MaterialEffect::usingTangentAttribute
+
+    If true, the tangent attribute provided by the mesh is used.
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \qmlproperty bool GLTF2MaterialEffect::usingTexCoordAttribute
+
+    If true, the texCoord attribute provided by the mesh is used.
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \qmlproperty bool GLTF2MaterialEffect::usingTexCoord1Attribute
+
+    If true, the texCoord1 attribute provided by the mesh is used.
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \qmlproperty bool GLTF2MaterialEffect::usingMorphTargets
+
+    If true, the morphtarget support is enabled.
+
+    \since Kuesa 1.3
+ */
 
 GLTF2MaterialEffect::GLTF2MaterialEffect(Qt3DCore::QNode *parent)
     : Qt3DRender::QEffect(parent)
-    , m_useSkinning(false)
+    , m_usingSkinning(false)
     , m_opaque(true)
     , m_alphaCutoffEnabled(false)
     , m_doubleSided(false)
+    , m_usingColorAttribute(false)
+    , m_usingNormalAttribute(false)
+    , m_usingTangentAttribute(false)
+    , m_usingTexCoordAttribute(false)
+    , m_usingTexCoord1Attribute(false)
+    , m_usingMorphTargets(false)
+    , m_instanced(false)
 {
     // Call the update methods once the subclass instances has been created
     QTimer::singleShot(0, this, &GLTF2MaterialEffect::initialize);
@@ -156,9 +299,9 @@ bool GLTF2MaterialEffect::isDoubleSided() const
     return m_doubleSided;
 }
 
-bool GLTF2MaterialEffect::useSkinning() const
+bool GLTF2MaterialEffect::isUsingSkinning() const
 {
-    return m_useSkinning;
+    return m_usingSkinning;
 }
 
 bool GLTF2MaterialEffect::isOpaque() const
@@ -171,6 +314,41 @@ bool GLTF2MaterialEffect::isAlphaCutoffEnabled() const
     return m_alphaCutoffEnabled;
 }
 
+bool GLTF2MaterialEffect::isUsingColorAttribute() const
+{
+    return m_usingColorAttribute;
+}
+
+bool GLTF2MaterialEffect::isUsingNormalAttribute() const
+{
+    return m_usingNormalAttribute;
+}
+
+bool GLTF2MaterialEffect::isUsingTangentAttribute() const
+{
+    return m_usingTangentAttribute;
+}
+
+bool GLTF2MaterialEffect::isUsingTexCoordAttribute() const
+{
+    return m_usingTexCoordAttribute;
+}
+
+bool GLTF2MaterialEffect::isUsingTexCoord1Attribute() const
+{
+    return m_usingTexCoord1Attribute;
+}
+
+bool GLTF2MaterialEffect::isUsingMorphTargets() const
+{
+    return m_usingMorphTargets;
+}
+
+bool GLTF2MaterialEffect::isInstanced() const
+{
+    return m_instanced;
+}
+
 void GLTF2MaterialEffect::setDoubleSided(bool doubleSided)
 {
     if (doubleSided == m_doubleSided)
@@ -181,14 +359,14 @@ void GLTF2MaterialEffect::setDoubleSided(bool doubleSided)
     updateDoubleSided(m_doubleSided);
 }
 
-void GLTF2MaterialEffect::setUseSkinning(bool useSkinning)
+void GLTF2MaterialEffect::setUsingSkinning(bool useSkinning)
 {
-    if (useSkinning == m_useSkinning)
+    if (useSkinning == m_usingSkinning)
         return;
-    m_useSkinning = useSkinning;
-    emit useSkinningChanged(m_useSkinning);
+    m_usingSkinning = useSkinning;
+    emit usingSkinningChanged(m_usingSkinning);
 
-    updateSkinning(m_useSkinning);
+    updateUsingSkinning(m_usingSkinning);
 }
 
 void GLTF2MaterialEffect::setOpaque(bool opaque)
@@ -214,32 +392,97 @@ void GLTF2MaterialEffect::setAlphaCutoffEnabled(bool enabled)
     updateAlphaCutoffEnabled(m_alphaCutoffEnabled);
 }
 
-void GLTF2MaterialEffect::updateDoubleSided(bool doubleSided)
+void GLTF2MaterialEffect::setUsingColorAttribute(bool usingColorAttribute)
 {
-    Q_UNUSED(doubleSided);
+    if (m_usingColorAttribute == usingColorAttribute)
+        return;
+
+    m_usingColorAttribute = usingColorAttribute;
+    emit usingColorAttributeChanged(usingColorAttribute);
+
+    updateUsingColorAttribute(m_usingColorAttribute);
 }
 
-void GLTF2MaterialEffect::updateSkinning(bool useSkinning)
+void GLTF2MaterialEffect::setUsingNormalAttribute(bool usingNormalAttribute)
 {
-    Q_UNUSED(useSkinning);
+    if (m_usingNormalAttribute == usingNormalAttribute)
+        return;
+    m_usingNormalAttribute = usingNormalAttribute;
+    emit usingNormalAttributeChanged(usingNormalAttribute);
+
+    updateUsingNormalAttribute(m_usingNormalAttribute);
 }
 
-void GLTF2MaterialEffect::updateOpaque(bool opaque)
+void GLTF2MaterialEffect::setUsingTangentAttribute(bool usingTangentAttribute)
 {
-    Q_UNUSED(opaque);
+    if (m_usingTangentAttribute == usingTangentAttribute)
+        return;
+    m_usingTangentAttribute = usingTangentAttribute;
+    emit usingTangentAttributeChanged(usingTangentAttribute);
+
+    updateUsingTangentAttribute(usingTangentAttribute);
 }
 
-void GLTF2MaterialEffect::updateAlphaCutoffEnabled(bool enabled)
+void GLTF2MaterialEffect::setUsingTexCoordAttribute(bool usingTexCoordAttribute)
 {
-    Q_UNUSED(enabled);
+    if (m_usingTexCoordAttribute == usingTexCoordAttribute)
+        return;
+    m_usingTexCoordAttribute = usingTexCoordAttribute;
+    emit usingTexCoordAttributeChanged(usingTexCoordAttribute);
+
+    updateUsingTexCoordAttribute(m_usingTexCoordAttribute);
+}
+
+void GLTF2MaterialEffect::setUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
+{
+    if (m_usingTexCoord1Attribute == usingTexCoord1Attribute)
+        return;
+    m_usingTexCoord1Attribute = usingTexCoord1Attribute;
+    emit usingTexCoord1AttributeChanged(usingTexCoord1Attribute);
+
+    updateUsingTexCoord1Attribute(m_usingTexCoord1Attribute);
+}
+
+void GLTF2MaterialEffect::setUsingMorphTargets(bool usingMorphTargets)
+{
+    if (m_usingMorphTargets == usingMorphTargets)
+        return;
+    m_usingMorphTargets = usingMorphTargets;
+    emit usingMorphTargetsChanged(usingMorphTargets);
+
+    updateUsingMorphTargets(m_usingMorphTargets);
+}
+
+void GLTF2MaterialEffect::updateUsingCubeMapArrays(bool usingCubeMapArrays)
+{
+    Q_UNUSED(usingCubeMapArrays);
+}
+
+void GLTF2MaterialEffect::setInstanced(bool instanced)
+{
+    if (m_instanced == instanced)
+        return;
+    m_instanced = instanced;
+    emit instancedChanged(instanced);
+
+    updateInstanced(instanced);
 }
 
 void GLTF2MaterialEffect::initialize()
 {
     updateOpaque(GLTF2MaterialEffect::isOpaque());
-    updateSkinning(GLTF2MaterialEffect::useSkinning());
+    updateUsingSkinning(GLTF2MaterialEffect::isUsingSkinning());
     updateDoubleSided(GLTF2MaterialEffect::isDoubleSided());
     updateAlphaCutoffEnabled(GLTF2MaterialEffect::isAlphaCutoffEnabled());
+    updateUsingColorAttribute(GLTF2MaterialEffect::isUsingColorAttribute());
+    updateUsingNormalAttribute(GLTF2MaterialEffect::isUsingNormalAttribute());
+    updateUsingTangentAttribute(GLTF2MaterialEffect::isUsingTangentAttribute());
+    updateUsingTexCoordAttribute(GLTF2MaterialEffect::isUsingTexCoordAttribute());
+    updateUsingTexCoord1Attribute(GLTF2MaterialEffect::isUsingTexCoord1Attribute());
+    updateUsingMorphTargets(GLTF2MaterialEffect::isUsingMorphTargets());
+    // whether to use cubeMapArrays is only set once at startup and does change
+    updateUsingCubeMapArrays(FrameGraphUtils::hasCubeMapArrayTextures());
+    updateInstanced(GLTF2MaterialEffect::isInstanced());
 }
 
 } // Kuesa

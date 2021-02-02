@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
 <!-- music-box.qdoc -->
-  <title>Kuesa Music Box QML Example | Kuesa Runtime 1.2</title>
+  <title>Kuesa Music Box QML Example | Kuesa Runtime 1.3</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Music Box QML Example</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><h1 class="title">Kuesa Music Box QML Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
@@ -17,7 +17,7 @@
 
      This file is part of Kuesa.
 
-     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
      Author: Mauro Persano &lt;mauro.persano@kdab.com&gt;
 
      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -43,8 +43,7 @@
  <span class="preprocessor">#include &lt;QQuickView&gt;</span>
  <span class="preprocessor">#include &lt;QQmlEngine&gt;</span>
  <span class="preprocessor">#include &lt;QQmlContext&gt;</span>
- <span class="preprocessor">#include &lt;QResource&gt;</span>
- <span class="preprocessor">#include &lt;QDir&gt;</span>
+ <span class="preprocessor">#include &lt;Kuesa/kuesa_global.h&gt;</span>
 
  <span class="preprocessor">#include &quot;sampler.h&quot;</span>
 
@@ -52,41 +51,18 @@
  <span class="preprocessor">#include &lt;QOpenGLContext&gt;</span>
  <span class="preprocessor">#endif</span>
 
- <span class="keyword">namespace</span> {
-
- bool initializeAssetResources(<span class="keyword">const</span> <span class="type">QVector</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">&gt;</span> <span class="operator">&amp;</span>fileNames)
- {
- <span class="preprocessor">#ifdef Q_OS_MACOS</span>
-     <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/../Resources&quot;</span>));
- <span class="preprocessor">#elif defined(Q_OS_IOS)</span>
-     <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/Library/Application Support&quot;</span>));
- <span class="preprocessor">#else</span>
-     <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/resources&quot;</span>));
- <span class="preprocessor">#endif</span>
-     bool b <span class="operator">=</span> <span class="keyword">true</span>;
-     <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>fileName : fileNames) {
-         <span class="keyword">auto</span> f <span class="operator">=</span> resourceDir<span class="operator">.</span>path() <span class="operator">+</span> <span class="type">QDir</span><span class="operator">::</span>separator() <span class="operator">+</span> fileName;
-         b <span class="operator">&amp;</span><span class="operator">=</span> <span class="type">QResource</span><span class="operator">::</span>registerResource(f);
-         <span class="keyword">if</span> (<span class="operator">!</span>b)
-             qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Failed to load assets from&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> f;
-     }
-     <span class="keyword">return</span> b;
- }
-
- } <span class="comment">// namespace</span>
-
  <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
  {
      bool isES2 <span class="operator">=</span> <span class="keyword">false</span>;
      {
          <span class="comment">// Set OpenGL requirements</span>
          <span class="type">QSurfaceFormat</span> format <span class="operator">=</span> <span class="type">QSurfaceFormat</span><span class="operator">::</span>defaultFormat();
- <span class="preprocessor">#ifndef QT_OPENGL_ES_2</span>
+ <span class="preprocessor">#ifndef KUESA_OPENGL_ES_2</span>
          format<span class="operator">.</span>setVersion(<span class="number">4</span><span class="operator">,</span> <span class="number">1</span>);
          format<span class="operator">.</span>setProfile(<span class="type">QSurfaceFormat</span><span class="operator">::</span>CoreProfile);
          format<span class="operator">.</span>setSamples(<span class="number">4</span>);
  <span class="preprocessor">#else</span>
- <span class="preprocessor">#ifndef QT_OPENGL_ES_3</span>
+ <span class="preprocessor">#ifndef KUESA_OPENGL_ES_3</span>
          isES2 <span class="operator">=</span> <span class="keyword">true</span>;
  <span class="preprocessor">#endif</span>
          format<span class="operator">.</span>setVersion(<span class="number">3</span><span class="operator">,</span> <span class="number">0</span>);
@@ -98,8 +74,6 @@
 
      <span class="type">QGuiApplication</span> app(argc<span class="operator">,</span> argv);
 
-     initializeAssetResources({ <span class="type">QStringLiteral</span>(<span class="string">&quot;music-box.qrb&quot;</span>) });
-     initializeAssetResources({ <span class="type">QStringLiteral</span>(<span class="string">&quot;envmap-pink-sunrise-16f.qrb&quot;</span>) });
      qmlRegisterType<span class="operator">&lt;</span>Sampler<span class="operator">&gt;</span>(<span class="string">&quot;MusicBox&quot;</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="string">&quot;Sampler&quot;</span>);
 
      <span class="type">QQuickView</span> view;
@@ -111,8 +85,7 @@
  <span class="preprocessor">#endif</span>
 
  <span class="preprocessor">#ifdef Q_OS_ANDROID</span>
-     <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;assets:/&quot;</span>);
-     <span class="comment">// Qt builds for android may not define QT_OPENGL_ES_3</span>
+     <span class="comment">// Qt builds for android may not define KUESA_OPENGL_ES_3</span>
      <span class="comment">// Therefore we need a runtime check to see whether we can use ES 3.0 or not</span>
      <span class="type">QOpenGLContext</span> ctx;
      ctx<span class="operator">.</span>setFormat(<span class="type">QSurfaceFormat</span><span class="operator">::</span>defaultFormat());
@@ -120,11 +93,8 @@
          <span class="keyword">const</span> <span class="type">QSurfaceFormat</span> androidFormat <span class="operator">=</span> ctx<span class="operator">.</span>format();
          isES2 <span class="operator">=</span> (androidFormat<span class="operator">.</span>majorVersion() <span class="operator">=</span><span class="operator">=</span> <span class="number">2</span>);
      }
- <span class="preprocessor">#else</span>
-     <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/&quot;</span>);
  <span class="preprocessor">#endif</span>
      view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_isES2&quot;</span>)<span class="operator">,</span> isES2);
-     view<span class="operator">.</span>engine()<span class="operator">-</span><span class="operator">&gt;</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="type">QStringLiteral</span>(<span class="string">&quot;_assetsPrefix&quot;</span>)<span class="operator">,</span> assetsPrefix);
 
      view<span class="operator">.</span>setResizeMode(<span class="type">QQuickView</span><span class="operator">::</span>SizeRootObjectToView);
      view<span class="operator">.</span>setSource(<span class="type">QUrl</span>(<span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/main.qml&quot;</span>)));

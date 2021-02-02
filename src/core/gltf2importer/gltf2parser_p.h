@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -43,6 +43,7 @@
 #include <QtCore/QByteArray>
 #include <Qt3DCore/QEntity>
 #include <QThread>
+#include <QPointer>
 #include "gltf2context_p.h"
 
 class tst_GLTFExporter;
@@ -64,11 +65,15 @@ class QChannelMapper;
 namespace Kuesa {
 class SceneEntity;
 class AbstractAssetCollection;
+class MorphController;
+class GLTF2Material;
 
 namespace GLTF2Import {
 
 struct TreeNode;
 struct Mesh;
+struct Primitive;
+class PrimitiveBuilder;
 
 struct HierarchyNode {
     int nodeIdx = -1;
@@ -100,18 +105,39 @@ private:
     QVector<Qt3DCore::QEntity *> m_rootNodes;
 };
 
+
+class KUESA_PRIVATE_EXPORT ParseWorker : public QObject
+{
+    Q_OBJECT
+public:
+    explicit ParseWorker(GLTF2Parser *parser, const std::function<bool (GLTF2Parser*)> &parseFunc);
+    ~ParseWorker();
+
+public Q_SLOTS:
+    bool work();
+
+Q_SIGNALS:
+    void workDone(bool result);
+
+private:
+    QPointer<GLTF2Parser> m_parser;
+    std::function<bool (GLTF2Parser*)> m_func;
+};
+
 using KeyParserFuncPair = QPair<QLatin1String, std::function<bool(const QJsonValue &)>>;
-class ThreadedGLTF2Parser;
 class KUESA_PRIVATE_EXPORT GLTF2Parser
     : public QObject
 {
+    Q_OBJECT
 public:
     GLTF2Parser(SceneEntity *sceneEntity = nullptr, bool assignNames = false);
     virtual ~GLTF2Parser();
 
     virtual QVector<KeyParserFuncPair> prepareParsers();
-    bool parse(const QString &filePath);
-    bool parse(const QByteArray &data, const QString &basePath, const QString &filename = {});
+    bool parse(const QString &filePath, bool async=false);
+    bool parse(const QByteArray &data, const QString &basePath, const QString &filename = {}, bool async=false);
+
+    void generateContent();
 
     void setContext(GLTF2Context *);
     const GLTF2Context *context() const;
@@ -119,12 +145,18 @@ public:
     Qt3DCore::QEntity *contentRoot() const;
     QVector<SceneRootEntity *> sceneRoots() const;
 
+signals:
+    void gltfFileParsingCompleted(bool parsingSucceeded);
+
 private:
+    QThread m_workerThread;
+
+    bool performParsing(const std::function<bool(GLTF2Parser*)> &parsingFunc, bool async);
+    bool doParse(const QString &filePath);
+    bool doParse(const QByteArray &data, const QString &basePath, const QString &filename = {});
     bool isBinaryGLTF(const QByteArray &data, bool &isValid);
-    friend class ThreadedGLTF2Parser;
     friend class ::tst_GLTFExporter;
     friend class ::tst_GLTFParser;
-    void moveToThread(QThread *targetThread);
     bool detectTypeAndParse(const QByteArray &data, const QString &basePath, const QString &filename = {});
     bool parseJSON(const QByteArray &jsonData, const QString &basePath, const QString &filename = {});
     bool parseBinary(const QByteArray &data, const QString &basePath, const QString &filename = {});
@@ -138,8 +170,24 @@ private:
     void generateSkeletonContent();
     void generateAnimationContent();
 
+    void createTransform(const TreeNode &node);
+    void createPlaceholder(const TreeNode &node);
+    void createLayers(const TreeNode &node);
+    void createLight(const TreeNode &node);
+    void createMesh(const TreeNode &node);
+    void createReflectionPlane(TreeNode &node);
+
+    void createSkin(const TreeNode &node,
+                    Qt3DCore::QArmature **armaturePtr,
+                    Qt3DCore::QEntity **skinRootJointEntityPtr);
+    MorphController *createMorphTarget(const TreeNode &node);
+    GLTF2Material *createMaterial(const Mesh &meshData,
+                                  const Primitive &primitiveData,
+                                  bool isSkinned,
+                                  bool hasMorphTarget);
+
     template<class T>
-    void updateDataForJointsAttr(Qt3DRender::QAttribute *attr, int skinId);
+    void updateDataForJointsAttr(Qt3DGeometry::QAttribute *attr, int skinId);
 
     template<typename Asset>
     void addAssetsIntoCollection(std::function<void(const Asset &, int)> namedAdd,
@@ -168,26 +216,8 @@ private:
     int m_defaultSceneIdx;
     bool m_assignNames;
     QVector<QHash<int, int>> m_gltfJointIdxToSkeletonJointIdxPerSkeleton;
-};
 
-class KUESA_PRIVATE_EXPORT ThreadedGLTF2Parser
-    : public QObject
-{
-    Q_OBJECT
-public:
-    ThreadedGLTF2Parser(GLTF2Context *context, SceneEntity *sceneEntity = nullptr, bool assignNames = false);
-    ~ThreadedGLTF2Parser();
-
-    Q_INVOKABLE void parse(const QString &path);
-    Q_INVOKABLE void parse(const QByteArray &data, const QString &basePath, const QString &filename = {});
-
-signals:
-    void parsingFinished(Qt3DCore::QEntity *);
-
-private:
-    void on_parsingFinished();
-    GLTF2Parser m_parser;
-    QThread m_thread;
+    friend class ParseWorker;
 };
 
 } // namespace GLTF2Import

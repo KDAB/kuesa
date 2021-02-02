@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -34,7 +34,6 @@
 #include <QQmlAspectEngine>
 #include <QApplication>
 #include <QQmlContext>
-#include "../../../tools/gltfViewer/orbitcameracontroller.h"
 
 #include "controllerwidget.h"
 #include "scenecontroller.h"
@@ -53,7 +52,7 @@ int main(int argc, char *argv[])
     Qt3DExtras::Quick::Qt3DQuickWindow view;
     auto context = view.engine()->qmlEngine()->rootContext();
     context->setContextProperty("_controller", &controller);
-    qmlRegisterType<OrbitCameraController>("Controllers", 1, 0, "OrbitCameraController");
+    context->setContextProperty("_view", &view);
 
     view.setSource(QUrl("qrc:/main.qml"));
     view.resize(1920, 1080);

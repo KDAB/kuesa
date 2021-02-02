@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Jose Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <QJsonDocument>
 #include <QFile>
 #include <QLatin1String>
@@ -47,7 +47,7 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("succeeded");
-        QTest::addColumn<int>("samplersCount");
+        QTest::addColumn<size_t>("samplersCount");
         QTest::addColumn<Qt3DRender::QAbstractTexture::Filter>("minFilter");
         QTest::addColumn<Qt3DRender::QAbstractTexture::Filter>("magFilter");
         QTest::addColumn<Qt3DRender::QTextureWrapMode::WrapMode>("wrapS");
@@ -55,7 +55,7 @@ private Q_SLOTS:
 
         QTest::newRow("Complete") << QStringLiteral(ASSETS "texturesampler_complete.gltf")
                                   << true
-                                  << 1
+                                  << size_t(1)
                                   << Qt3DRender::QAbstractTexture::Linear
                                   << Qt3DRender::QAbstractTexture::Nearest
                                   << Qt3DRender::QTextureWrapMode::Repeat
@@ -63,7 +63,7 @@ private Q_SLOTS:
 
         QTest::newRow("Invalid_Mag") << QStringLiteral(ASSETS "texturesampler_invalid_magnification.gltf")
                                      << false
-                                     << 0
+                                     << size_t(0)
                                      << Qt3DRender::QAbstractTexture::Linear
                                      << Qt3DRender::QAbstractTexture::Nearest
                                      << Qt3DRender::QTextureWrapMode::Repeat
@@ -71,7 +71,7 @@ private Q_SLOTS:
 
         QTest::newRow("Invalid_Min") << QStringLiteral(ASSETS "texturesampler_invalid_minification.gltf")
                                      << false
-                                     << 0
+                                     << size_t(0)
                                      << Qt3DRender::QAbstractTexture::Linear
                                      << Qt3DRender::QAbstractTexture::Nearest
                                      << Qt3DRender::QTextureWrapMode::Repeat
@@ -79,7 +79,7 @@ private Q_SLOTS:
 
         QTest::newRow("Invalid_WrapModeS") << QStringLiteral(ASSETS "texturesampler_invalid_wraps.gltf")
                                            << false
-                                           << 0
+                                           << size_t(0)
                                            << Qt3DRender::QAbstractTexture::Linear
                                            << Qt3DRender::QAbstractTexture::Nearest
                                            << Qt3DRender::QTextureWrapMode::Repeat
@@ -87,7 +87,7 @@ private Q_SLOTS:
 
         QTest::newRow("Invalid_WrapModeT") << QStringLiteral(ASSETS "texturesampler_invalid_wrapt.gltf")
                                            << false
-                                           << 0
+                                           << size_t(0)
                                            << Qt3DRender::QAbstractTexture::Linear
                                            << Qt3DRender::QAbstractTexture::Nearest
                                            << Qt3DRender::QTextureWrapMode::Repeat
@@ -95,7 +95,7 @@ private Q_SLOTS:
 
         QTest::newRow("Empty") << QStringLiteral(ASSETS "texturesampler_empty.gltf")
                                << false
-                               << 0
+                               << size_t(0)
                                << Qt3DRender::QAbstractTexture::Linear
                                << Qt3DRender::QAbstractTexture::Nearest
                                << Qt3DRender::QTextureWrapMode::Repeat
@@ -103,7 +103,7 @@ private Q_SLOTS:
 
         QTest::newRow("Empty_Sampler") << QStringLiteral(ASSETS "texturesampler_empty_sampler.gltf")
                                        << true
-                                       << 1
+                                       << size_t(1)
                                        << Qt3DRender::QAbstractTexture::Linear
                                        << Qt3DRender::QAbstractTexture::Linear
                                        << Qt3DRender::QTextureWrapMode::Repeat
@@ -114,7 +114,7 @@ private Q_SLOTS:
     {
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
-        QFETCH(int, samplersCount);
+        QFETCH(size_t, samplersCount);
         QFETCH(Qt3DRender::QAbstractTexture::Filter, minFilter);
         QFETCH(Qt3DRender::QAbstractTexture::Filter, magFilter);
         QFETCH(Qt3DRender::QTextureWrapMode::WrapMode, wrapS);

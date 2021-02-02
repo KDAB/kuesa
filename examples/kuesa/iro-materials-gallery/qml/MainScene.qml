@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -35,6 +35,7 @@ import QtQuick 2.12
 
 import Kuesa 1.2 as Kuesa
 import Kuesa.Effects 1.1 as KuesaFX
+import Kuesa.Utils 1.3 as KuesaUtils
 
 Kuesa.SceneEntity {
     id: root3D
@@ -47,6 +48,7 @@ Kuesa.SceneEntity {
             activeFrameGraph: Kuesa.ForwardRenderer {
                 id: frameGraph
                 camera: camera
+                skinning: true // Needed for IroSkybox/IroBackground
                 clearColor: Qt.rgba(0.1, 0.1, 0.1, 1.0)
             }
 //! [2.2]
@@ -55,7 +57,7 @@ Kuesa.SceneEntity {
         InputSettings { },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise_16f_irradiance" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+                source: "pink_sunrise_16f_irradiance" + ((!root3D.es2) ? ".dds" : "_es2.dds")
 
                 minificationFilter: Texture.LinearMipMapLinear
                 magnificationFilter: Texture.Linear
@@ -66,7 +68,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise_16f_specular" + ((!root3D.es2) ? ".dds" : "_es2.dds")
+                source: "pink_sunrise_16f_specular" + ((!root3D.es2) ? ".dds" : "_es2.dds")
 
                 minificationFilter: Texture.LinearMipMapLinear
                 magnificationFilter: Texture.Linear
@@ -96,8 +98,9 @@ Kuesa.SceneEntity {
         aspectRatio: _view.width / _view.height
     }
 
-    OrbitCameraController {
+    KuesaUtils.OrbitCameraController {
         camera: camera
+        windowSize: Qt.size(_view.width, _view.height)
     }
 //! [2.1]
 
@@ -106,7 +109,7 @@ Kuesa.SceneEntity {
         id: gltf2importer
         sceneEntity: root3D
         assignNames: true
-        source: _assetsPrefix + "iro-materials-gallery.gltf"
+        source: "qrc:/iro-materials-gallery.gltf"
         options.generateTangents: true
     }
 //! [1]

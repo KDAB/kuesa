@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -32,12 +32,11 @@
 #include <Kuesa/gltf2material.h>
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/UnlitEffect>
+#include <Kuesa/UnlitProperties>
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-
-class UnlitProperties;
 
 class KUESASHARED_EXPORT UnlitMaterial : public GLTF2Material
 {
@@ -60,6 +59,7 @@ private:
 
     UnlitProperties *m_materialProperties;
     Qt3DRender::QParameter *m_unlitShaderDataParameter;
+    Qt3DRender::QParameter *m_baseColorMapParameter;
     QMetaObject::Connection m_textureTransformChangedConnection;
 };
 

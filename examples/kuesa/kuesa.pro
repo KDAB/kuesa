@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Mike Krus <mike.krus@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -27,12 +27,19 @@
 TEMPLATE = subdirs
 
 qtHaveModule(quick) {
+    qtHaveModule(quickcontrols2) {
+        SUBDIRS += \
+            car-scene \
+            tonemapping \
+            simple-qml \
+            multi-scene
+    }
+
     SUBDIRS += \
-        car-scene \
-        tonemapping \
         manyducks \
         music-box \
-        iro-materials-gallery
+        iro-materials-gallery \
+        simple-cpp
 }
 
 demo_assets.path = $$[QT_INSTALL_EXAMPLES]/kuesa/assets

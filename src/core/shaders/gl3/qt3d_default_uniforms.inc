@@ -1,0 +1,24 @@
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 viewProjectionMatrix;
+uniform mat4 inverseViewMatrix;
+uniform mat4 inverseProjectionMatrix;
+uniform mat4 inverseViewProjectionMatrix;
+uniform mat4 viewportMatrix;
+uniform mat4 inverseViewportMatrix;
+uniform vec4 textureTransformMatrix;
+uniform vec3 eyePosition;
+uniform float aspectRatio;
+uniform float gamma;
+uniform float exposure;
+uniform float time;
+uniform float yUpInNDC;
+uniform float yUpInFBO;
+
+uniform mat4 modelMatrix;
+uniform mat4 inverseModelMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat3 modelNormalMatrix;
+uniform mat4 inverseModelViewMatrix;
+uniform mat4 mvp;
+uniform mat4 inverseModelViewProjectionMatrix;

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -37,19 +37,18 @@ QT_USE_NAMESPACE
 
 using namespace Kuesa;
 
-ZFillRenderStage::ZFillRenderStage(Qt3DCore::QNode *parent)
+ZFillRenderStage::ZFillRenderStage(Qt3DRender::QFrameGraphNode *parent)
     : AbstractRenderStage(parent)
 {
     setObjectName(QStringLiteral("KuesaZFillRenderStage"));
-    auto passFilter = new Qt3DRender::QRenderPassFilter(this);
+    m_passFilter = new Qt3DRender::QRenderPassFilter(this);
 
+    m_filterKey = new Qt3DRender::QFilterKey(this);
+    m_filterKey->setName(QStringLiteral("KuesaDrawStage"));
+    m_filterKey->setValue(QStringLiteral("ZFill"));
+    m_passFilter->addMatch(m_filterKey);
 
-    auto filterKey = new Qt3DRender::QFilterKey(this);
-    filterKey->setName(QStringLiteral("KuesaDrawStage"));
-    filterKey->setValue(QStringLiteral("ZFill"));
-    passFilter->addMatch(filterKey);
-
-    auto states = new Qt3DRender::QRenderStateSet(passFilter);
+    auto states = new Qt3DRender::QRenderStateSet(m_passFilter);
     auto colorMask = new Qt3DRender::QColorMask;
     colorMask->setRedMasked(false);
     colorMask->setGreenMasked(false);
@@ -61,8 +60,31 @@ ZFillRenderStage::ZFillRenderStage(Qt3DCore::QNode *parent)
     states->addRenderState(depthTest);
     auto msaa = new Qt3DRender::QMultiSampleAntiAliasing();
     states->addRenderState(msaa);
+    m_cullFace = new Qt3DRender::QCullFace;
+    m_cullFace->setMode(Qt3DRender::QCullFace::Back);
+    states->addRenderState(m_cullFace);
 }
 
 ZFillRenderStage::~ZFillRenderStage()
 {
+}
+
+void ZFillRenderStage::setCullingMode(Qt3DRender::QCullFace::CullingMode mode)
+{
+    m_cullFace->setMode(mode);
+}
+
+Qt3DRender::QCullFace::CullingMode ZFillRenderStage::cullingMode() const
+{
+    return m_cullFace->mode();
+}
+
+void ZFillRenderStage::setFilterKeyValue(const QString &value)
+{
+    m_filterKey->setValue(value);
+}
+
+void ZFillRenderStage::addParameter(Qt3DRender::QParameter *parameter)
+{
+    m_passFilter->addParameter(parameter);
 }

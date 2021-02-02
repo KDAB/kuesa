@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -44,7 +44,6 @@
 
 #include <QVector2D>
 #include <QVector3D>
-#include <Qt3DRender/QAbstractTexture>
 #include <Qt3DRender/QShaderData>
 
 QT_BEGIN_NAMESPACE
@@ -59,14 +58,12 @@ class IroDiffuseShaderData : public Qt3DRender::QShaderData
     Q_PROPERTY(float postVertexColor READ postVertexColor WRITE setPostVertexColor NOTIFY postVertexColorChanged)
     Q_PROPERTY(float postGain READ postGain WRITE setPostGain NOTIFY postGainChanged)
     Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
     Q_PROPERTY(bool usesReflectionMap READ usesReflectionMap WRITE setUsesReflectionMap NOTIFY usesReflectionMapChanged)
     Q_PROPERTY(bool projectReflectionMap READ projectReflectionMap WRITE setProjectReflectionMap NOTIFY projectReflectionMapChanged)
     Q_PROPERTY(QVector3D diffuseInnerFilter READ diffuseInnerFilter WRITE setDiffuseInnerFilter NOTIFY diffuseInnerFilterChanged)
     Q_PROPERTY(QVector3D diffuseOuterFilter READ diffuseOuterFilter WRITE setDiffuseOuterFilter NOTIFY diffuseOuterFilterChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * diffuseMap READ diffuseMap WRITE setDiffuseMap NOTIFY diffuseMapChanged)
     Q_PROPERTY(float diffuseGain READ diffuseGain WRITE setDiffuseGain NOTIFY diffuseGainChanged)
     Q_PROPERTY(bool usesDiffuseMap READ usesDiffuseMap WRITE setUsesDiffuseMap NOTIFY usesDiffuseMapChanged)
 
@@ -78,14 +75,12 @@ public:
     float postVertexColor() const;
     float postGain() const;
     float reflectionGain() const;
-    Qt3DRender::QAbstractTexture * reflectionMap() const;
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
     bool usesReflectionMap() const;
     bool projectReflectionMap() const;
     QVector3D diffuseInnerFilter() const;
     QVector3D diffuseOuterFilter() const;
-    Qt3DRender::QAbstractTexture * diffuseMap() const;
     float diffuseGain() const;
     bool usesDiffuseMap() const;
 
@@ -95,14 +90,12 @@ public Q_SLOTS:
     void setPostVertexColor(float postVertexColor);
     void setPostGain(float postGain);
     void setReflectionGain(float reflectionGain);
-    void setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap);
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
     void setUsesReflectionMap(bool usesReflectionMap);
     void setProjectReflectionMap(bool projectReflectionMap);
     void setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter);
     void setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter);
-    void setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap);
     void setDiffuseGain(float diffuseGain);
     void setUsesDiffuseMap(bool usesDiffuseMap);
 
@@ -112,14 +105,12 @@ Q_SIGNALS:
     void postVertexColorChanged(float);
     void postGainChanged(float);
     void reflectionGainChanged(float);
-    void reflectionMapChanged(Qt3DRender::QAbstractTexture *);
     void reflectionInnerFilterChanged(QVector3D);
     void reflectionOuterFilterChanged(QVector3D);
     void usesReflectionMapChanged(bool);
     void projectReflectionMapChanged(bool);
     void diffuseInnerFilterChanged(QVector3D);
     void diffuseOuterFilterChanged(QVector3D);
-    void diffuseMapChanged(Qt3DRender::QAbstractTexture *);
     void diffuseGainChanged(float);
     void usesDiffuseMapChanged(bool);
 
@@ -129,14 +120,12 @@ private:
     float m_postVertexColor;
     float m_postGain;
     float m_reflectionGain;
-    Qt3DRender::QAbstractTexture * m_reflectionMap;
     QVector3D m_reflectionInnerFilter;
     QVector3D m_reflectionOuterFilter;
     bool m_usesReflectionMap;
     bool m_projectReflectionMap;
     QVector3D m_diffuseInnerFilter;
     QVector3D m_diffuseOuterFilter;
-    Qt3DRender::QAbstractTexture * m_diffuseMap;
     float m_diffuseGain;
     bool m_usesDiffuseMap;
 

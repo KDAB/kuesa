@@ -1,0 +1,13 @@
+{
+    "Id": "ktx",
+    "Name": "KTX texture",
+    "QDocModule": "kuesa",
+    "Description": "KTX is a generic container format for textures (compressed and uncompressed).",
+    "QtUsage": "Used in Kuesa",
+
+    "Homepage": "https://github.com/KhronosGroup/KTX-Software",
+    "License": "Apache License 2.0",
+    "LicenseId": "Apache-2.0",
+    "LicenseFile": "LICENSE.md",
+    "Copyright": "Copyright 2010-2021 The Khronos Group, Inc."
+}

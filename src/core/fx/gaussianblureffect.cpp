@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -27,9 +27,10 @@
 */
 
 #include "gaussianblureffect.h"
-#include "forwardrenderer.h"
 #include "fullscreenquad.h"
 #include "fxutils_p.h"
+#include "framegraphutils_p.h"
+
 #include <Qt3DRender/qtexture.h>
 #include <Qt3DRender/qrendertarget.h>
 #include <Qt3DRender/qmaterial.h>
@@ -114,6 +115,7 @@ using namespace Kuesa;
  *
  * \badcode
  * import Kuesa 1.1 as Kuesa
+ * import Kuesa.Effects 1.1
  *
  * Kuesa.SceneEnity {
  *     id: root
@@ -161,8 +163,9 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     , m_blurTexture2(nullptr)
     , m_blurTextureParam1(new Qt3DRender::QParameter(QStringLiteral("textureSampler"), nullptr))
     , m_blurTextureParam2(new Qt3DRender::QParameter(QStringLiteral("textureSampler"), nullptr))
-    , m_widthParameter(new Qt3DRender::QParameter(QStringLiteral("width"), 1))
-    , m_heightParameter(new Qt3DRender::QParameter(QStringLiteral("height"), 1))
+    , m_widthParameter(new Qt3DRender::QParameter(QStringLiteral("width"), 512.0f))
+    , m_heightParameter(new Qt3DRender::QParameter(QStringLiteral("height"), 512.0f))
+    , m_fsQuad(nullptr)
 {
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode);
     m_rootFrameGraphNode->setObjectName(QLatin1String("Gaussian Blur Effect"));
@@ -182,7 +185,7 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     m_blurTarget2->addOutput(blurOutput2);
 
     m_blurTexture2 = new Qt3DRender::QTexture2D;
-    m_blurTexture2->setFormat(ForwardRenderer::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+    m_blurTexture2->setFormat(FrameGraphUtils::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8_UNorm);
     m_blurTexture2->setGenerateMipMaps(false);
     m_blurTexture2->setSize(512, 512);
     blurOutput2->setTexture(m_blurTexture2);
@@ -225,32 +228,40 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     auto *gl3Technique = makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
                                        3, 2,
                                        Qt3DRender::QGraphicsApiFilter::CoreProfile,
-                                       QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"));
+                                       QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert"));
 
     effect->addTechnique(gl3Technique);
 
     auto *es3Technique = makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                        3, 0,
                                        Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                       QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"));
+                                       QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert"));
 
     effect->addTechnique(es3Technique);
 
     auto *es2Technique = makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                        2, 0,
                                        Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                       QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"));
+                                       QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert"));
 
     effect->addTechnique(es2Technique);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    auto rhiTechnique = makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI, 1, 0,
+                                      Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                      QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"));
+
+    effect->addTechnique(rhiTechnique);
+#endif
 
     blurMaterial->addParameter(m_widthParameter);
     blurMaterial->addParameter(m_heightParameter);
 
-    auto blurQuad = new FullScreenQuad(blurMaterial, m_rootFrameGraphNode.data());
-    m_layer = blurQuad->layer();
+    m_fsQuad = new FullScreenQuad(blurMaterial, m_rootFrameGraphNode.data());
+    m_layer = m_fsQuad->layer();
 
     auto blurLayerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
-    blurLayerFilter->addLayer(blurQuad->layer());
+    blurLayerFilter->addLayer(m_fsQuad->layer());
 
     m_blurPassRoot = new Qt3DRender::QFrameGraphNode(blurLayerFilter);
 
@@ -323,13 +334,15 @@ void GaussianBlurEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
  *
  * \sa AbstractPostProcessingEffect::setSceneSize
  */
-void GaussianBlurEffect::setSceneSize(const QSize &size)
+void GaussianBlurEffect::setWindowSize(const QSize &size)
 {
-    m_heightParameter->setValue(size.height());
-    m_widthParameter->setValue(size.width());
+    // Uniforms on the shader side are expected as floats
+    m_heightParameter->setValue(float(size.height()));
+    m_widthParameter->setValue(float(size.width()));
     // only need to resize texture 2.
     // texture 1 is passed as "input texture" so should be resized elsewhere
     m_blurTexture2->setSize(size.width(), size.height());
+
 }
 
 /*!

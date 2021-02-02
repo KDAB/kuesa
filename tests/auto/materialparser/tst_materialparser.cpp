@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <QJsonDocument>
 #include <QFile>
 #include <QLatin1String>
@@ -54,62 +54,65 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("succeeded");
-        QTest::addColumn<int>("materialCount");
+        QTest::addColumn<size_t>("materialCount");
 
         QTest::newRow("Valid") << QStringLiteral(ASSETS "materialparser_valid.gltf")
                                << true
-                               << 1;
+                               << size_t(1);
 
         QTest::newRow("Empty") << QStringLiteral(ASSETS "materialparser_empty.gltf")
                                << false
-                               << 0;
+                               << size_t(0);
 
         QTest::newRow("Empty Material") << QStringLiteral(ASSETS "materialparser_empty_material.gltf")
                                         << true
-                                        << 1;
+                                        << size_t(1);
 
         QTest::newRow("PartiallyComplete") << QStringLiteral(ASSETS "materialparser_partially_complete.gltf")
                                            << true
-                                           << 1;
+                                           << size_t(1);
 
         QTest::newRow("Invalid_AlphaMode") << QStringLiteral(ASSETS "materialparser_invalid_alpha_mode.gltf")
                                            << false
-                                           << 0;
+                                           << size_t(0);
 
         QTest::newRow("Invalid_BaseColorArray") << QStringLiteral(ASSETS "materialparser_invalid_basecolorarray.gltf")
                                                 << false
-                                                << 0;
+                                                << size_t(0);
 
         QTest::newRow("Invalid_BaseColorArray2") << QStringLiteral(ASSETS "materialparser_invalid_basecolorarray2.gltf")
                                                  << false
-                                                 << 0;
+                                                 << size_t(0);
 
         QTest::newRow("Invalid_EmissiveFactor") << QStringLiteral(ASSETS "materialparser_invalid_emissivefactor.gltf")
                                                 << false
-                                                << 0;
+                                                << size_t(0);
 
         QTest::newRow("Invalid_EmissiveFactor2") << QStringLiteral(ASSETS "materialparser_invalid_emissivefactor2.gltf")
                                                  << false
-                                                 << 0;
+                                                 << size_t(0);
 
         QTest::newRow("KHR_materials_unlit") << QStringLiteral(ASSETS "materialparser_KHR_materials_unlit.gltf")
                                              << true
-                                             << 1;
-
+                                             << size_t(1);
+#ifdef Q_OS_LINUX
         QTest::newRow("KDAB_custom_material") << QStringLiteral(ASSETS "materialparser_KDAB_custom_material.gltf")
                                               << true
-                                              << 1;
+                                              << size_t(1);
+#endif
     }
 
     void checkParse()
     {
+#ifdef Q_OS_LINUX
         GLTF2Importer::registerCustomMaterial<MyTestCustomMaterial,
                                               MyTestCustomProperties,
                                               MyTestCustomEffect>(QStringLiteral("MyTestCustom"));
+#endif
 
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
-        QFETCH(int, materialCount);
+        QFETCH(size_t, materialCount);
 
         // GIVEN
         GLTF2Context context;
@@ -174,9 +177,66 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.materialsCount(), 1);
+        QCOMPARE(context.materialsCount(), size_t(1));
         QCOMPARE(context.material(0).alpha.alphaCutoff, expectedAlphaCutoff);
         QCOMPARE(int(context.material(0).alpha.mode), expectedBlendMode);
+    }
+
+    void checkKHR_texture_transform_data()
+    {
+        QTest::addColumn<QString>("filePath");
+        QTest::addColumn<QVector2D>("offset");
+        QTest::addColumn<float>("rotation");
+        QTest::addColumn<QVector2D>("scale");
+        QTest::addColumn<int>("texCoord");
+
+        QTest::newRow("hasTexCoord") << QStringLiteral(ASSETS "KHR_texture_transform_texCoord.gltf")
+                                     << QVector2D(0.5, 0.6)
+                                     << 0.1f
+                                     << QVector2D(0.3, 0.4)
+                                     << 2;
+        QTest::newRow("noHasTexCoord") << QStringLiteral(ASSETS "KHR_texture_transform_noTexCoord.gltf")
+                                       << QVector2D(0.5, 0.6)
+                                       << 0.1f
+                                       << QVector2D(0.3, 0.4)
+                                       << 0;
+        QTest::newRow("defaults") << QStringLiteral(ASSETS "KHR_texture_transform_defaults.gltf")
+                                  << QVector2D(0.0, 0.0)
+                                  << 0.0f
+                                  << QVector2D(1.0, 1.0)
+                                  << 0;
+    }
+
+    void checkKHR_texture_transform()
+    {
+        QFETCH(QString, filePath);
+        QFETCH(QVector2D, offset);
+        QFETCH(float, rotation);
+        QFETCH(QVector2D, scale);
+        QFETCH(int, texCoord);
+
+        // GIVEN
+        GLTF2Context context;
+        MaterialParser parser;
+        QFile file(filePath);
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        // WHEN
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        // THEN
+        QVERIFY(!json.isNull() && json.isArray());
+
+        // WHEN
+        bool success = parser.parse(json.array(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.materialsCount(), size_t(1));
+        QCOMPARE(context.material(0).pbr.baseColorTexture.khr_texture_transform.offset, offset);
+        QCOMPARE(context.material(0).pbr.baseColorTexture.khr_texture_transform.rotation, rotation);
+        QCOMPARE(context.material(0).pbr.baseColorTexture.khr_texture_transform.scale, scale);
+        QCOMPARE(context.material(0).pbr.baseColorTexture.texCoord, texCoord);
     }
 
     void checkUnlit()
@@ -196,6 +256,7 @@ private Q_SLOTS:
         QVERIFY(context.material(0).extensions.KHR_materials_unlit == true);
     }
 
+#ifdef Q_OS_LINUX
     void checkCustomMaterial()
     {
         // GIVEN
@@ -216,6 +277,7 @@ private Q_SLOTS:
         // THEN
         QVERIFY(context.material(0).extensions.KDAB_custom_material == true);
     }
+#endif
 };
 
 QTEST_APPLESS_MAIN(tst_MaterialParser)

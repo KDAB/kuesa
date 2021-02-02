@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -65,7 +65,7 @@ using namespace Qt3DAnimation;
 
 /*!
     \qmltype AnimationPlayer
-    \inherits Kuesa::AnimationPlayer
+    \inherits Kuesa::KuesaNode
     \inqmlmodule Kuesa
     \since Kuesa 1.0
     \instantiates Kuesa::AnimationPlayer
@@ -97,18 +97,6 @@ using namespace Qt3DAnimation;
                     if they have been defined).
     \value Error  An error occurred when looking for assets or trying to match clip and mapper properties.
 */
-
-/*!
-    \property AnimationPlayer::sceneEntity
-    \brief pointer to the SceneEntity which contains the collections used to look up clip and mapper data
-
-    \sa GLTF2Importer::sceneEntity()
- */
-
-/*!
-    \qmlproperty Entity AnimationPlayer::sceneEntity
-    \brief pointer to the SceneEntity which contains the collections used to look up clip and mapper data
- */
 
 /*!
     \property AnimationPlayer::status
@@ -254,24 +242,23 @@ using namespace Qt3DAnimation;
 */
 
 AnimationPlayer::AnimationPlayer(Qt3DCore::QNode *parent)
-    : Qt3DCore::QNode(parent)
-    , m_sceneEntity(nullptr)
+    : KuesaNode(parent)
     , m_status(None)
     , m_animator(new Qt3DAnimation::QClipAnimator(this))
     , m_running(false)
 {
-    // For Qt < 5.14 we need to make sure we track normalizedTime on the frontend
-    m_animator->setPropertyTracking(QStringLiteral("normalizedTime"), Qt3DCore::QNode::TrackAllValues);
-    updateSceneFromParent(parent);
-    connect(this, &Qt3DCore::QNode::parentChanged, this, [this](QObject *parent) {
-        auto parentNode = qobject_cast<Qt3DCore::QNode *>(parent);
-        this->updateSceneFromParent(parentNode);
-    });
-
     connect(m_animator, &QClipAnimator::runningChanged, this, &AnimationPlayer::runningChanged);
     connect(m_animator, &QClipAnimator::loopCountChanged, this, &AnimationPlayer::loopCountChanged);
     connect(m_animator, &QClipAnimator::clockChanged, this, &AnimationPlayer::clockChanged);
-    connect(m_animator, &QClipAnimator::normalizedTimeChanged, this, &AnimationPlayer::normalizedTimeChanged);
+    connect(m_animator, &QClipAnimator::normalizedTimeChanged, this, &AnimationPlayer::updateNormalizedTime);
+    QObject::connect(this, &KuesaNode::sceneEntityChanged,
+                     this, [this] {
+                         disconnect(m_loadingDoneConnection);
+                         if (m_sceneEntity)
+                             m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone, this, &AnimationPlayer::matchClipAndTargets);
+                         if (!m_sceneEntity || m_sceneEntity->animationClips()->size() != 0)
+                             matchClipAndTargets(); // cleanup or setup
+                     });
 }
 
 AnimationPlayer::~AnimationPlayer()
@@ -289,41 +276,6 @@ void AnimationPlayer::setStatus(AnimationPlayer::Status status)
         m_status = status;
         emit statusChanged(m_status);
     }
-}
-
-void AnimationPlayer::updateSceneFromParent(Qt3DCore::QNode *parent)
-{
-    if (m_sceneEntity)
-        return;
-
-    while (parent) {
-        auto scene = qobject_cast<SceneEntity *>(parent);
-        if (scene) {
-            setSceneEntity(scene);
-            break;
-        }
-        parent = parent->parentNode();
-    }
-}
-
-SceneEntity *AnimationPlayer::sceneEntity() const
-{
-    return m_sceneEntity;
-}
-
-void AnimationPlayer::setSceneEntity(SceneEntity *sceneEntity)
-{
-    if (sceneEntity == m_sceneEntity)
-        return;
-
-    if (m_sceneEntity)
-        disconnect(m_sceneEntity, &SceneEntity::loadingDone, this, &AnimationPlayer::matchClipAndTargets);
-
-    m_sceneEntity = sceneEntity;
-    connect(m_sceneEntity, &SceneEntity::loadingDone, this, &AnimationPlayer::matchClipAndTargets);
-
-    emit sceneEntityChanged(sceneEntity);
-    matchClipAndTargets();
 }
 
 QString AnimationPlayer::clip() const
@@ -418,7 +370,8 @@ bool AnimationPlayer::isRunning() const
 
 void AnimationPlayer::setRunning(bool running)
 {
-    m_animator->setRunning(running);
+    if (m_animator->clip())
+       m_animator->setRunning(running);
     m_running = running;
 }
 
@@ -454,57 +407,105 @@ float AnimationPlayer::duration() const
 
 void AnimationPlayer::setNormalizedTime(float timeFraction)
 {
+    m_runToTimeFraction = -1;
     m_animator->setNormalizedTime(timeFraction);
 }
 
 /*!
- * \brief Starts the animation
+ * Starts the animation
  */
 void AnimationPlayer::start()
 {
-    m_animator->start();
+    m_runToTimeFraction = -1;
+    if (m_animator->clip())
+        m_animator->start();
+    m_running = true;
 }
 
 /*!
- * \brief Stops the animation
+ * Stops the animation
  */
 void AnimationPlayer::stop()
 {
-    m_animator->stop();
+    m_runToTimeFraction = -1;
+    if (m_animator->clip())
+        m_animator->stop();
+    m_running = false;
 }
+
+/*!
+ * Stops the animation and resets the normalised time to 0. The next time the
+ * animation plays it will start from 0 rather than the current normalised
+ * time.
+ */
+void AnimationPlayer::reset()
+{
+    m_runToTimeFraction = -1;
+    m_animator->setNormalizedTime(0.f);
+    if (m_animator->clip())
+        m_animator->stop();
+    m_running = false;
+}
+
+/*!
+ * Sets the normalised to 0 and runs the animation.
+ */
+void AnimationPlayer::restart()
+{
+    m_runToTimeFraction = -1;
+    m_animator->setNormalizedTime(0.f);
+    if (m_animator->clip())
+        m_animator->start();
+    m_running = true;
+}
+
+/*!
+ * Run the animation from \a fromTimeFraction to \a toTimeFraction. Both times
+ * are normalized time.
+ */
+void AnimationPlayer::run(float fromTimeFraction, float toTimeFraction)
+{
+    m_runToTimeFraction = toTimeFraction;
+    m_animator->setNormalizedTime(fromTimeFraction);
+    if (m_animator->clip())
+        m_animator->start();
+    m_running = true;
+}
+
 
 void AnimationPlayer::matchClipAndTargets()
 {
-    if (m_sceneEntity == nullptr) {
-        setStatus(Error);
-        if (m_animator->clip()) {
-            m_animator->setClip(nullptr);
-            emit durationChanged(0.f);
-        }
-        return;
-    }
+    QObject::disconnect(m_clipDestroyedConnection);
+    QObject::disconnect(m_mapperDestroyedConnection);
 
-    if (m_clip.isEmpty() && m_mapper.isEmpty()) {
+    auto resetAnimator = [this] () {
         setStatus(Error);
+        m_animator->setRunning(false);
         if (m_animator->clip()) {
             m_animator->setClip(nullptr);
             emit durationChanged(0.f);
         }
-        return;
-    }
+    };
+
+    if (m_sceneEntity == nullptr)
+        return resetAnimator();
+
+    if (m_clip.isEmpty() && m_mapper.isEmpty())
+        return resetAnimator();
 
     Qt3DAnimation::QAnimationClip *clip = qobject_cast<Qt3DAnimation::QAnimationClip *>(m_sceneEntity->animationClip(m_clip));
-    Qt3DAnimation::QChannelMapper *mapper = m_sceneEntity->animationMapping(m_mapper.isEmpty() ? m_clip : m_mapper);
+
+    const QString mapperName = m_mapper.isEmpty() ? m_clip : m_mapper;
+    Qt3DAnimation::QChannelMapper *mapper = m_sceneEntity->animationMapping(mapperName);
 
     if (!clip || !mapper) {
-        qCWarning(kuesa, "Undefined clip or mapper in AnimationPlayer");
-        setStatus(Error);
-        if (m_animator->clip()) {
-            m_animator->setClip(nullptr);
-            emit durationChanged(0.f);
-        }
-        return;
+        qCWarning(kuesa) << "Undefined clip or mapper in AnimationPlayer for clip:" << m_clip << "and mapper:" << mapperName;
+        return resetAnimator();
     }
+
+    // Watch for clip being destroyed
+    m_clipDestroyedConnection = QObject::connect(clip, &Qt3DCore::QNode::destroyed, this, &AnimationPlayer::matchClipAndTargets);
+    m_mapperDestroyedConnection = QObject::connect(mapper, &Qt3DCore::QNode::destroyed, this, &AnimationPlayer::matchClipAndTargets);
 
     const QVector<QAbstractChannelMapping *> mappings = mapper->mappings();
     const auto numMappings = mappings.size();
@@ -578,4 +579,15 @@ void AnimationPlayer::matchClipAndTargets()
 
     m_animator->setRunning(m_running);
     setStatus(Ready);
+}
+
+
+void AnimationPlayer::updateNormalizedTime(float index)
+{
+    if (m_running && m_runToTimeFraction > 0. && index >= m_runToTimeFraction) {
+        if (m_animator->clip())
+            m_animator->stop();
+        m_runToTimeFraction = -1;
+    }
+    emit normalizedTimeChanged(index);
 }

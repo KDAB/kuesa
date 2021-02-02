@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- sceneconfiguration.cpp -->
+  <title>SceneConfiguration Class | Kuesa Runtime 1.3</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<li>SceneConfiguration</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">SceneConfiguration Class</h1>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesautils">KuesaUtils</a>::SceneConfiguration</span>
+<!-- $$$SceneConfiguration-brief -->
+<p>SceneConfiguration provides a way of conveniently specifying information about a glTF2 file and accompanying helpers to be loaded. <a href="#details">More...</a></p>
+<!-- @@@SceneConfiguration -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;SceneConfiguration&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.3</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-sceneconfiguration.html">SceneConfiguration</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-kuesanode.html">Kuesa::KuesaNode</a></td></tr></table></div><p>This class was introduced in Kuesa 1.3.</p>
+<ul>
+<li><a href="kuesautils-sceneconfiguration-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><a href="kuesautils-sceneconfiguration.html#cameraName-prop">cameraName</a></b> : QString</li>
+<li class="fn"><b><a href="kuesautils-sceneconfiguration.html#source-prop">source</a></b> : QUrl</li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-sceneconfiguration.html#cameraName-prop">cameraName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QUrl </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-sceneconfiguration.html#source-prop">source</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-sceneconfiguration.html#cameraName-prop">setCameraName</a></b>(const QString &amp;<i>cameraName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-sceneconfiguration.html#source-prop">setSource</a></b>(const QUrl &amp;<i>source</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-sceneconfiguration.html#cameraName-prop">cameraNameChanged</a></b>(const QString &amp;<i>cameraName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-sceneconfiguration.html#source-prop">sourceChanged</a></b>(const QUrl &amp;<i>source</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$SceneConfiguration-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>SceneConfiguration provides a way of conveniently specifying information about a glTF2 file and accompanying helpers to be loaded.</p>
+<p>When building an application that should display different scenes at different moments in time, recreating a new Qt 3D view with its FrameGraph, <a href="qml-gltf2importer.html">Kuesa::GLTF2Importer</a> and other assets can be costly and unnecessary. Yet, that approach is still often favored as it can be seen as more convenient for the developer from an architecture point of view.</p>
+<p>The <a href="qml-sceneconfiguration.html">KuesaUtils::SceneConfiguration</a> used in conjunction with <a href="qml-view3dscene.html">KuesaUtils::View3DScene</a> provides a new way to architecture such type of applications. The idea is to instantiate the <a href="kuesautils-view3dscene.html">View3DScene</a> once and use its <a href="qml-view3dscene.html#activeScene-prop">KuesaUtils::View3DScene::activeScene</a> property to point to different <a href="qml-sceneconfiguration.html">KuesaUtils::SceneConfiguration</a> instances. Internally, when the active scene is changed, the new glTF2 file will be loaded and assets needed created while previous glTF2 file and assets unloaded.</p>
+</div>
+<!-- @@@SceneConfiguration -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$cameraName-prop$$$cameraName$$$setCameraNameconstQString&$$$cameraNameChangedconstQString& -->
+<h3 class="fn" id="cameraName-prop"><a name="cameraName-prop"></a><span class="name">cameraName</span> : <span class="type">QString</span></h3>
+<p>This property holds the name of the camera asset that should be used to view the scene. If the name references a valid camera, the camera will automatically be set on the <a href="qml-forwardrenderer.html">ForwardRenderer</a> frameGraph and other internal assets such as <a href="qml-transformtracker.html">Kuesa::TransformTracker</a>.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>cameraName</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setCameraName</b></span>(const QString &amp;<i>cameraName</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>cameraNameChanged</b></span>(const QString &amp;<i>cameraName</i>)</td></tr>
+</table></div>
+<!-- @@@cameraName -->
+<!-- $$$source-prop$$$source$$$setSourceconstQUrl&$$$sourceChangedconstQUrl& -->
+<h3 class="fn" id="source-prop"><a name="source-prop"></a><span class="name">source</span> : <span class="type">QUrl</span></h3>
+<p>This property holds the source of the glTF file to be loaded.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QUrl </td><td class="memItemRight bottomAlign"><span class="name"><b>source</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setSource</b></span>(const QUrl &amp;<i>source</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>sourceChanged</b></span>(const QUrl &amp;<i>source</i>)</td></tr>
+</table></div>
+<!-- @@@source -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

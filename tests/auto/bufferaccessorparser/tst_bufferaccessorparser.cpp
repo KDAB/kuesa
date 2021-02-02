@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Jose Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 
 #include <QVector>
 #include <QByteArray>
@@ -35,6 +35,8 @@
 
 #include <Kuesa/private/bufferaccessorparser_p.h>
 #include <Kuesa/private/gltf2context_p.h>
+
+using namespace Qt3DGeometry;
 
 class tst_BufferAccessorParser : public QObject
 {
@@ -56,16 +58,19 @@ private Q_SLOTS:
         Kuesa::GLTF2Import::GLTF2Context context;
         Kuesa::GLTF2Import::BufferAccessorParser parser;
 
+        Kuesa::GLTF2Import::BufferView view;
+        context.addBufferView(view);
+
         // WHEN
         bool result = parser.parse(accessorsArray, &context);
 
         // THEN
         QCOMPARE(result, true);
-        QCOMPARE(context.accessorCount(), 1);
+        QCOMPARE(context.accessorCount(), size_t(1));
 
         const Kuesa::GLTF2Import::Accessor accessor = context.accessor(0);
         QCOMPARE(accessor.bufferViewIndex, 0);
-        QCOMPARE(accessor.type, Qt3DRender::QAttribute::Float);
+        QCOMPARE(accessor.type, QAttribute::Float);
         QCOMPARE(accessor.count, 0U);
         QCOMPARE(accessor.dataSize, 1);
         QCOMPARE(accessor.offset, 0U);
@@ -151,28 +156,28 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(result, false);
-        QCOMPARE(context.accessorCount(), 0);
+        QCOMPARE(context.accessorCount(), size_t(0));
     }
 
     void shouldHandleComponentTypes_data()
     {
         QTest::addColumn<int>("componentType");
-        QTest::addColumn<Qt3DRender::QAttribute::VertexBaseType>("expectedType");
+        QTest::addColumn<QAttribute::VertexBaseType>("expectedType");
 
-        QTest::addRow("byte") << GL_BYTE << Qt3DRender::QAttribute::Byte;
-        QTest::addRow("unsignedByte") << GL_UNSIGNED_BYTE << Qt3DRender::QAttribute::UnsignedByte;
-        QTest::addRow("short") << GL_SHORT << Qt3DRender::QAttribute::Short;
-        QTest::addRow("unsignedShort") << GL_UNSIGNED_SHORT << Qt3DRender::QAttribute::UnsignedShort;
-        QTest::addRow("unsiginedInt") << GL_UNSIGNED_INT << Qt3DRender::QAttribute::UnsignedInt;
-        QTest::addRow("float") << GL_FLOAT << Qt3DRender::QAttribute::Float;
-        QTest::addRow("invalid") << 0 << Qt3DRender::QAttribute::Float;
+        QTest::addRow("byte") << GL_BYTE << QAttribute::Byte;
+        QTest::addRow("unsignedByte") << GL_UNSIGNED_BYTE << QAttribute::UnsignedByte;
+        QTest::addRow("short") << GL_SHORT << QAttribute::Short;
+        QTest::addRow("unsignedShort") << GL_UNSIGNED_SHORT << QAttribute::UnsignedShort;
+        QTest::addRow("unsiginedInt") << GL_UNSIGNED_INT << QAttribute::UnsignedInt;
+        QTest::addRow("float") << GL_FLOAT << QAttribute::Float;
+        QTest::addRow("invalid") << 0 << QAttribute::Float;
     }
 
     void shouldHandleComponentTypes()
     {
         // GIVEN
         QFETCH(int, componentType);
-        QFETCH(Qt3DRender::QAttribute::VertexBaseType, expectedType);
+        QFETCH(QAttribute::VertexBaseType, expectedType);
 
         QJsonObject json;
         json["componentType"] = componentType;
@@ -190,30 +195,30 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(result, true);
-        QCOMPARE(context.accessorCount(), 1);
+        QCOMPARE(context.accessorCount(), size_t(1));
         QCOMPARE(context.accessor(0).type, expectedType);
     }
 
     void shouldProvideDataSize_data()
     {
         QTest::addColumn<QString>("dataType");
-        QTest::addColumn<int>("expectedDataSize");
+        QTest::addColumn<uint>("expectedDataSize");
 
-        QTest::addRow("SCALAR") << "SCALAR" << 1;
-        QTest::addRow("VEC2") << "VEC2" << 2;
-        QTest::addRow("VEC3") << "VEC3" << 3;
-        QTest::addRow("VEC4") << "VEC4" << 4;
-        QTest::addRow("MAT2") << "MAT2" << 4;
-        QTest::addRow("MAT3") << "MAT3" << 9;
-        QTest::addRow("MAT4") << "MAT4" << 16;
-        QTest::addRow("Invalid") << "INVALID" << 0;
+        QTest::addRow("SCALAR") << "SCALAR" << 1U;
+        QTest::addRow("VEC2") << "VEC2" << 2U;
+        QTest::addRow("VEC3") << "VEC3" << 3U;
+        QTest::addRow("VEC4") << "VEC4" << 4U;
+        QTest::addRow("MAT2") << "MAT2" << 4U;
+        QTest::addRow("MAT3") << "MAT3" << 9U;
+        QTest::addRow("MAT4") << "MAT4" << 16U;
+        QTest::addRow("Invalid") << "INVALID" << 0U;
     }
 
     void shouldProvideDataSize()
     {
         // GIVEN
         QFETCH(QString, dataType);
-        QFETCH(int, expectedDataSize);
+        QFETCH(uint, expectedDataSize);
 
         QJsonObject json;
         json["componentType"] = GL_FLOAT;
@@ -231,7 +236,7 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(result, true);
-        QCOMPARE(context.accessorCount(), 1);
+        QCOMPARE(context.accessorCount(), size_t(1));
         QCOMPARE(context.accessor(0).dataSize, expectedDataSize);
     }
 
@@ -275,13 +280,13 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(result, true);
-        QCOMPARE(context.accessorCount(), 2);
+        QCOMPARE(context.accessorCount(), size_t(2));
         const Kuesa::GLTF2Import::Accessor firstAccessor = context.accessor(0);
         const Kuesa::GLTF2Import::Accessor secondAccessor = context.accessor(1);
         QCOMPARE(firstAccessor.dataSize, 2);
         QCOMPARE(firstAccessor.bufferViewIndex, 1);
         QCOMPARE(firstAccessor.count, 128U);
-        QCOMPARE(firstAccessor.type, Qt3DRender::QAttribute::Float);
+        QCOMPARE(firstAccessor.type, QAttribute::Float);
         QCOMPARE(firstAccessor.offset, 32U);
         QCOMPARE(firstAccessor.max.size(), 2);
         QCOMPARE(firstAccessor.min.size(), 2);
@@ -319,10 +324,10 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(result, true);
-        QCOMPARE(context.accessorCount(), 1);
+        QCOMPARE(context.accessorCount(), size_t(1));
 
         const Kuesa::GLTF2Import::Accessor firstAccessor = context.accessor(0);
-        QCOMPARE(firstAccessor.type, Qt3DRender::QAttribute::Float);
+        QCOMPARE(firstAccessor.type, QAttribute::Float);
         QCOMPARE(firstAccessor.dataSize, 2);
         QCOMPARE(firstAccessor.count, 128U);
 

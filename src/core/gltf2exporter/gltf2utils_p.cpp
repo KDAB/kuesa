@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -34,6 +34,9 @@
 #include <private/kuesa_p.h>
 
 QT_BEGIN_NAMESPACE
+
+using namespace Qt3DGeometry;
+
 namespace Kuesa {
 /*!
  * Add an extension to a glTF object if it is not already registered
@@ -84,23 +87,23 @@ int addToJsonChildArray(QJsonObject &object, const QString &name, const QJsonObj
     return index;
 }
 
-quint8 accessorDataTypeToBytes(Qt3DRender::QAttribute::VertexBaseType type)
+quint8 accessorDataTypeToBytes(QAttribute::VertexBaseType type)
 {
     switch (type) {
-    case Qt3DRender::QAttribute::Byte:
-    case Qt3DRender::QAttribute::UnsignedByte:
+    case QAttribute::Byte:
+    case QAttribute::UnsignedByte:
         return 1;
-    case Qt3DRender::QAttribute::Short:
-    case Qt3DRender::QAttribute::UnsignedShort:
+    case QAttribute::Short:
+    case QAttribute::UnsignedShort:
         return 2;
-    case Qt3DRender::QAttribute::Float:
-    case Qt3DRender::QAttribute::UnsignedInt:
-    case Qt3DRender::QAttribute::Int:
+    case QAttribute::Float:
+    case QAttribute::UnsignedInt:
+    case QAttribute::Int:
         return 4;
-    case Qt3DRender::QAttribute::Double:
+    case QAttribute::Double:
         return 8;
     default:
-        qCWarning(kuesa, "Invalid data type");
+        qCWarning(Kuesa::kuesa, "Invalid data type");
         return 0;
     }
 }

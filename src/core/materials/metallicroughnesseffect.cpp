@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,7 +29,6 @@
 #include "metallicroughnesseffect.h"
 
 #include <Qt3DCore/private/qnode_p.h>
-#include <Qt3DRender/qcullface.h>
 #include <Qt3DRender/qfilterkey.h>
 #include <Qt3DRender/qgraphicsapifilter.h>
 #include <Qt3DRender/qparameter.h>
@@ -42,43 +41,13 @@
 #include <Qt3DRender/qdepthtest.h>
 #include <Qt3DRender/qblendequation.h>
 #include <Qt3DRender/qblendequationarguments.h>
+#include <private/framegraphutils_p.h>
 
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
-class MetallicRoughnessTechnique : public Qt3DRender::QTechnique
-{
-public:
-    enum Version {
-        GL3 = 0,
-        ES3,
-        ES2
-    };
-
-    explicit MetallicRoughnessTechnique(Version version, Qt3DCore::QNode *parent = nullptr);
-
-    QStringList enabledLayers() const;
-    void setEnabledLayers(const QStringList &layers);
-    void setOpaque(bool opaque);
-    void setCullingMode(QCullFace::CullingMode mode);
-    void setAllowCulling(bool allowCulling);
-
-private:
-    Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QBlendEquation *m_blendEquation;
-    Qt3DRender::QBlendEquationArguments *m_blendArguments;
-    Qt3DRender::QShaderProgramBuilder *m_metalRoughShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
-    Qt3DRender::QShaderProgram *m_metalRoughShader;
-    Qt3DRender::QShaderProgram *m_zfillShader;
-    Qt3DRender::QRenderPass *m_zfillRenderPass;
-    Qt3DRender::QRenderPass *m_opaqueRenderPass;
-    Qt3DRender::QRenderPass *m_transparentRenderPass;
-    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
-};
 
 MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore::QNode *parent)
     : QTechnique(parent)
@@ -87,11 +56,13 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     , m_blendArguments(new Qt3DRender::QBlendEquationArguments(this))
     , m_metalRoughShaderBuilder(new QShaderProgramBuilder(this))
     , m_zfillShaderBuilder(new QShaderProgramBuilder(this))
+    , m_cubeMapShadowShaderBuilder(new QShaderProgramBuilder(this))
     , m_metalRoughShader(new QShaderProgram(this))
     , m_zfillShader(new QShaderProgram(this))
     , m_zfillRenderPass(new QRenderPass(this))
     , m_opaqueRenderPass(new QRenderPass(this))
     , m_transparentRenderPass(new QRenderPass(this))
+    , m_cubeMapShadowRenderPass(new QRenderPass(this))
     , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
 {
     struct ApiFilterInfo {
@@ -105,6 +76,9 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
         { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
         { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
         { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+    #if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+        { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+    #endif
     };
 
     graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -113,11 +87,7 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
 
     const auto vertexShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"));
-#if (QT_VERSION >= QT_VERSION_CHECK(5,13,2))
-    const auto fragmentShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness_unroll.frag.json"));
-#else
     const auto fragmentShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.frag.json"));
-#endif
 
     const QByteArray zFillFragmentShaderCode[] = {
         QByteArray(R"(
@@ -130,6 +100,10 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
                    )"),
         QByteArray(R"(
                    #version 100
+                   void main() { }
+                   )"),
+        QByteArray(R"(
+                   #version 450
                    void main() { }
                    )")
     };
@@ -173,6 +147,10 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
     transparentFilterKey->setValue(QStringLiteral("Transparent"));
 
+    auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
+    transparentPassFilterKey->setName(QStringLiteral("Pass"));
+    transparentPassFilterKey->setValue(QStringLiteral("pass0"));
+
     m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::Add);
     m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::SourceAlpha);
     m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::SourceAlpha);
@@ -184,8 +162,27 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     m_transparentRenderPass->addRenderState(m_blendEquation);
     m_transparentRenderPass->addRenderState(m_blendArguments);
     m_transparentRenderPass->addFilterKey(transparentFilterKey);
+    m_transparentRenderPass->addFilterKey(transparentPassFilterKey);
     m_transparentRenderPass->setEnabled(false);
     addRenderPass(m_transparentRenderPass);
+
+    if (FrameGraphUtils::hasGeometryShaderSupport()) {
+        auto cubeShadowShaderProg = new Qt3DRender::QShaderProgram(this);
+        m_cubeMapShadowShaderBuilder->setShaderProgram(cubeShadowShaderProg);
+        m_cubeMapShadowShaderBuilder->setVertexShaderGraph(vertexShaderGraph);
+        cubeShadowShaderProg->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/shadow_cube.geom"))));
+        cubeShadowShaderProg->setFragmentShaderCode(zFillFragmentShaderCode[version]);
+
+        m_cubeMapShadowRenderPass->setShaderProgram(cubeShadowShaderProg);
+
+        auto cubeShadowMapFilterKey = new Qt3DRender::QFilterKey(this);
+        cubeShadowMapFilterKey->setName(QStringLiteral("KuesaDrawStage"));
+        cubeShadowMapFilterKey->setValue(QStringLiteral("CubeShadowMap"));
+        m_cubeMapShadowRenderPass->addFilterKey(cubeShadowMapFilterKey);
+        m_cubeMapShadowRenderPass->addRenderState(m_backFaceCulling);
+
+        addRenderPass(m_cubeMapShadowRenderPass);
+    }
 }
 
 QStringList MetallicRoughnessTechnique::enabledLayers() const
@@ -197,11 +194,13 @@ void MetallicRoughnessTechnique::setEnabledLayers(const QStringList &layers)
 {
     m_metalRoughShaderBuilder->setEnabledLayers(layers);
     m_zfillShaderBuilder->setEnabledLayers(layers);
+    m_cubeMapShadowShaderBuilder->setEnabledLayers(layers);
 }
 
 void MetallicRoughnessTechnique::setOpaque(bool opaque)
 {
     m_zfillRenderPass->setEnabled(opaque);
+    m_cubeMapShadowRenderPass->setEnabled(opaque);
     m_opaqueRenderPass->setEnabled(opaque);
     m_transparentRenderPass->setEnabled(!opaque);
 }
@@ -214,6 +213,11 @@ void MetallicRoughnessTechnique::setCullingMode(QCullFace::CullingMode mode)
 void MetallicRoughnessTechnique::setAllowCulling(bool allowCulling)
 {
     m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
+}
+
+QShaderProgramBuilder *MetallicRoughnessTechnique::metalRoughShaderBuilder() const
+{
+    return m_metalRoughShaderBuilder;
 }
 
 /*!
@@ -264,41 +268,6 @@ void MetallicRoughnessTechnique::setAllowCulling(bool allowCulling)
     \property MetallicRoughnessEffect::emissiveMapEnabled
 
     True to enable the effect support to specify emissive property with txtures
- */
-
-/*!
-    \property MetallicRoughnessEffect::usingColorAttribute
-
-    If true, the base color property is multiplied by the color interpolated
-    attribute of the mesh
- */
-
-/*!
- * \property MetallicRoughnessEffect::doubleSided
-
-    If true, back face culling is disabled and the normals for the back faces
-    are the same as for the front faces mulplied by -1
- */
-
-/*!
-    \property MetallicRoughnessEffect::useSkinning
-
-    If true, a skinning enabled vertex shader is used instead of the default
-    one. This allows to use this effect for rendering skinned meshes
- */
-
-/*!
-    \property MetallicRoughnessEffect::opaque
-
-    If false, alpha blending is enabled for this effect
- */
-
-/*!
-    \property MetallicRoughnessEffect::alphaCutoffEnabled
-
-    If true, alpha cutoff is enabled. Fragments with an alpha value above a
-    threshold are rendered as opaque while fragment an alpha value below the
-    threshold are discarded
  */
 
 /*!
@@ -367,41 +336,6 @@ void MetallicRoughnessTechnique::setAllowCulling(bool allowCulling)
  */
 
 /*!
-    \qmlproperty bool MetallicRoughnessEffect::usingColorAttribute
-
-    If true, the base color property is multiplied by the color interpolated
-    attribute of the mesh
- */
-
-/*!
-    \qmlproperty bool MetallicRoughnessEffect::doubleSided
-
-    If true, back face culling is disabled and the normals for the back faces
-    are the same as for the front faces mulplied by -1
- */
-
-/*!
-    \qmlproperty bool MetallicRoughnessEffect::useSkinning
-
-    If true, a skinning enabled vertex shader is used instead of the default
-    one. This allows to use this effect for rendering skinned meshes
- */
-
-/*!
-    \qmlproperty bool MetallicRoughnessEffect::opaque
-
-     If false, alpha blending is enabled for this effect
- */
-
-/*!
-    \qmlproperty bool MetallicRoughnessEffect::alphaCutoffEnabled
-
-    If true, alpha cutoff is enabled. Fragments with an alpha value above a
-    threshold are rendered as opaque while fragment an alpha value below the
-    threshold are discarded
- */
-
-/*!
     \qmlproperty Qt3DRender.AbstractTexture MetallicRoughnessEffect::brdfLUT
 
     brdfLUT references a texture containing lookup tables for the split sum approximation
@@ -422,7 +356,6 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     , m_normalMapEnabled(false)
     , m_ambientOcclusionMapEnabled(false)
     , m_emissiveMapEnabled(false)
-    , m_usingColorAttribute(false)
     , m_brdfLUTParameter(new QParameter(this))
 {
     const auto enabledLayers = QStringList{
@@ -437,6 +370,9 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
         QStringLiteral("noHasColorAttr"),
         QStringLiteral("noDoubleSided"),
         QStringLiteral("noHasAlphaCutoff"),
+        #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 3) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+            QStringLiteral("shadows")
+        #endif
     };
 
     m_metalRoughGL3Technique = new MetallicRoughnessTechnique(MetallicRoughnessTechnique::GL3, this);
@@ -452,29 +388,21 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     addTechnique(m_metalRoughES3Technique);
     addTechnique(m_metalRoughES2Technique);
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_metalRoughRHITechnique = new MetallicRoughnessTechnique(MetallicRoughnessTechnique::RHI, this);
+    m_metalRoughRHITechnique->setEnabledLayers(enabledLayers);
+
+    addTechnique(m_metalRoughRHITechnique);
+#endif
+
     // Note that even though those parameters are not exposed in the API,
     // they need to be kept around for now due to a bug in some drivers/GPUs
     // (at least Intel) which cause issues with unbound textures even if you
     // don't try to sample from them.
     // Can probably go away once we generate the shaders and deal in this
     // case in a better way.
-#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
-    addParameter(new QParameter(QStringLiteral("envLight.irradiance"), new QTexture2D));
-    addParameter(new QParameter(QStringLiteral("envLight.specular"), new QTexture2D));
-#endif
-
     m_brdfLUTParameter->setName(QLatin1String("brdfLUT"));
     addParameter(m_brdfLUTParameter);
-
-    QObject::connect(this, &GLTF2MaterialEffect::alphaCutoffEnabledChanged, this, &MetallicRoughnessEffect::updateAlphaCutoffEnabled);
-    QObject::connect(this, &GLTF2MaterialEffect::opaqueChanged, this, &MetallicRoughnessEffect::updateOpaque);
-    QObject::connect(this, &GLTF2MaterialEffect::doubleSidedChanged, this, &MetallicRoughnessEffect::updateDoubleSided);
-    QObject::connect(this, &GLTF2MaterialEffect::useSkinningChanged, this, &MetallicRoughnessEffect::updateSkinning);
-
-    updateOpaque(GLTF2MaterialEffect::isOpaque());
-    updateSkinning(GLTF2MaterialEffect::useSkinning());
-    updateDoubleSided(GLTF2MaterialEffect::isDoubleSided());
-    updateAlphaCutoffEnabled(GLTF2MaterialEffect::isAlphaCutoffEnabled());
 }
 
 MetallicRoughnessEffect::~MetallicRoughnessEffect()
@@ -506,28 +434,21 @@ bool MetallicRoughnessEffect::isEmissiveMapEnabled() const
     return m_emissiveMapEnabled;
 }
 
-bool MetallicRoughnessEffect::isUsingColorAttribute() const
-{
-    return m_usingColorAttribute;
-}
-
 void MetallicRoughnessEffect::setBaseColorMapEnabled(bool enabled)
 {
     if (m_baseColorMapEnabled == enabled)
         return;
 
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noBaseColorMap"));
+    layers.removeAll(QStringLiteral("baseColorMap"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noBaseColorMap"));
         layers.append(QStringLiteral("baseColorMap"));
     } else {
-        layers.removeAll(QStringLiteral("baseColorMap"));
         layers.append(QStringLiteral("noBaseColorMap"));
     }
+    updateLayersOnTechniques(layers);
     m_baseColorMapEnabled = enabled;
-    m_metalRoughGL3Technique->setEnabledLayers(layers);
-    m_metalRoughES3Technique->setEnabledLayers(layers);
-    m_metalRoughES2Technique->setEnabledLayers(layers);
     emit baseColorMapEnabledChanged(enabled);
 }
 
@@ -537,17 +458,15 @@ void MetallicRoughnessEffect::setMetalRoughMapEnabled(bool enabled)
         return;
 
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noMetalRoughMap"));
+    layers.removeAll(QStringLiteral("metalRoughMap"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noMetalRoughMap"));
         layers.append(QStringLiteral("metalRoughMap"));
     } else {
-        layers.removeAll(QStringLiteral("metalRoughMap"));
         layers.append(QStringLiteral("noMetalRoughMap"));
     }
+    updateLayersOnTechniques(layers);
     m_metalRoughMapEnabled = enabled;
-    m_metalRoughGL3Technique->setEnabledLayers(layers);
-    m_metalRoughES3Technique->setEnabledLayers(layers);
-    m_metalRoughES2Technique->setEnabledLayers(layers);
     emit metalRoughMapEnabledChanged(enabled);
 }
 
@@ -557,17 +476,15 @@ void MetallicRoughnessEffect::setNormalMapEnabled(bool enabled)
         return;
 
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noNormalMap"));
+    layers.removeAll(QStringLiteral("normalMap"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noNormalMap"));
         layers.append(QStringLiteral("normalMap"));
     } else {
-        layers.removeAll(QStringLiteral("normalMap"));
         layers.append(QStringLiteral("noNormalMap"));
     }
+    updateLayersOnTechniques(layers);
     m_normalMapEnabled = enabled;
-    m_metalRoughGL3Technique->setEnabledLayers(layers);
-    m_metalRoughES3Technique->setEnabledLayers(layers);
-    m_metalRoughES2Technique->setEnabledLayers(layers);
     emit normalMapEnabledChanged(enabled);
 }
 
@@ -577,17 +494,15 @@ void MetallicRoughnessEffect::setAmbientOcclusionMapEnabled(bool enabled)
         return;
 
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noAmbientOcclusionMap"));
+    layers.removeAll(QStringLiteral("ambientOcclusionMap"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noAmbientOcclusionMap"));
         layers.append(QStringLiteral("ambientOcclusionMap"));
     } else {
-        layers.removeAll(QStringLiteral("ambientOcclusionMap"));
         layers.append(QStringLiteral("noAmbientOcclusionMap"));
     }
+    updateLayersOnTechniques(layers);
     m_ambientOcclusionMapEnabled = enabled;
-    m_metalRoughGL3Technique->setEnabledLayers(layers);
-    m_metalRoughES3Technique->setEnabledLayers(layers);
-    m_metalRoughES2Technique->setEnabledLayers(layers);
     emit ambientOcclusionMapEnabledChanged(enabled);
 }
 
@@ -597,77 +512,117 @@ void MetallicRoughnessEffect::setEmissiveMapEnabled(bool enabled)
         return;
 
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noEmissiveMap"));
+    layers.removeAll(QStringLiteral("emissiveMap"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noEmissiveMap"));
         layers.append(QStringLiteral("emissiveMap"));
     } else {
-        layers.removeAll(QStringLiteral("emissiveMap"));
         layers.append(QStringLiteral("noEmissiveMap"));
     }
+    updateLayersOnTechniques(layers);
     m_emissiveMapEnabled = enabled;
-    m_metalRoughGL3Technique->setEnabledLayers(layers);
-    m_metalRoughES3Technique->setEnabledLayers(layers);
-    m_metalRoughES2Technique->setEnabledLayers(layers);
     emit emissiveMapEnabledChanged(enabled);
 }
 
-void MetallicRoughnessEffect::setUsingColorAttribute(bool usingColorAttribute)
+void MetallicRoughnessEffect::updateUsingColorAttribute(bool usingColorAttribute)
 {
-    if (m_usingColorAttribute == usingColorAttribute)
-        return;
-
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noHasColorAttr"));
+    layers.removeAll(QStringLiteral("hasColorAttr"));
+    layers.removeAll(QStringLiteral("hasVertexColor"));
     if (usingColorAttribute) {
-        layers.removeAll(QStringLiteral("noHasColorAttr"));
         layers.append(QStringLiteral("hasColorAttr"));
+        layers.append(QStringLiteral("hasVertexColor"));
     } else {
-        layers.removeAll(QStringLiteral("hasColorAttr"));
         layers.append(QStringLiteral("noHasColorAttr"));
     }
-    m_usingColorAttribute = usingColorAttribute;
-    m_metalRoughGL3Technique->setEnabledLayers(layers);
-    m_metalRoughES3Technique->setEnabledLayers(layers);
-    m_metalRoughES2Technique->setEnabledLayers(layers);
-    emit usingColorAttributeChanged(usingColorAttribute);
+    updateLayersOnTechniques(layers);
+}
+
+void MetallicRoughnessEffect::updateUsingNormalAttribute(bool usingNormalAttribute)
+{
+    auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexNormal"));
+    if (usingNormalAttribute)
+        layers.append(QStringLiteral("hasVertexNormal"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void MetallicRoughnessEffect::updateUsingTangentAttribute(bool usingTangentAttribute)
+{
+    auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexTangent"));
+    if (usingTangentAttribute)
+        layers.append(QStringLiteral("hasVertexTangent"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void MetallicRoughnessEffect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
+{
+    auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord"));
+    if (usingTexCoordAttribute)
+        layers.append(QStringLiteral("hasTexCoord"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void MetallicRoughnessEffect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
+{
+    auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord1"));
+    if (usingTexCoord1Attribute)
+        layers.append(QStringLiteral("hasTexCoord1"));
+
+    updateLayersOnTechniques(layers);
 }
 
 void MetallicRoughnessEffect::updateDoubleSided(bool doubleSided)
 {
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noDoubleSided"));
+    layers.removeAll(QStringLiteral("doubleSided"));
     if (doubleSided) {
-        layers.removeAll(QStringLiteral("noDoubleSided"));
         layers.append(QStringLiteral("doubleSided"));
     } else {
-        layers.removeAll(QStringLiteral("doubleSided"));
         layers.append(QStringLiteral("noDoubleSided"));
     }
-    m_metalRoughGL3Technique->setEnabledLayers(layers);
-    m_metalRoughES3Technique->setEnabledLayers(layers);
-    m_metalRoughES2Technique->setEnabledLayers(layers);
+
+    updateLayersOnTechniques(layers);
+
     const auto cullingMode = doubleSided ? QCullFace::NoCulling : QCullFace::Back;
     m_metalRoughGL3Technique->setCullingMode(cullingMode);
     m_metalRoughES3Technique->setCullingMode(cullingMode);
     m_metalRoughES2Technique->setCullingMode(cullingMode);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_metalRoughRHITechnique->setCullingMode(cullingMode);
+#endif
 }
 
-void MetallicRoughnessEffect::updateSkinning(bool useSkinning)
+void MetallicRoughnessEffect::updateUsingSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("no-skinning"));
+    layers.removeAll(QStringLiteral("skinning"));
     if (useSkinning) {
-        layers.removeAll(QStringLiteral("no-skinning"));
         layers.append(QStringLiteral("skinning"));
     } else {
-        layers.removeAll(QStringLiteral("skinning"));
         layers.append(QStringLiteral("no-skinning"));
     }
 
-    m_metalRoughGL3Technique->setEnabledLayers(layers);
-    m_metalRoughES3Technique->setEnabledLayers(layers);
-    m_metalRoughES2Technique->setEnabledLayers(layers);
+    updateLayersOnTechniques(layers);
+
     m_metalRoughGL3Technique->setAllowCulling(!useSkinning);
     m_metalRoughES3Technique->setAllowCulling(!useSkinning);
     m_metalRoughES2Technique->setAllowCulling(!useSkinning);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_metalRoughRHITechnique->setAllowCulling(!useSkinning);
+#endif
 }
 
 void MetallicRoughnessEffect::updateOpaque(bool opaque)
@@ -675,21 +630,53 @@ void MetallicRoughnessEffect::updateOpaque(bool opaque)
     m_metalRoughGL3Technique->setOpaque(opaque);
     m_metalRoughES3Technique->setOpaque(opaque);
     m_metalRoughES2Technique->setOpaque(opaque);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_metalRoughRHITechnique->setOpaque(opaque);
+#endif
 }
 
 void MetallicRoughnessEffect::updateAlphaCutoffEnabled(bool enabled)
 {
     auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
+    layers.removeAll(QStringLiteral("hasAlphaCutoff"));
     if (enabled) {
-        layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
         layers.append(QStringLiteral("hasAlphaCutoff"));
     } else {
-        layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
     }
-    m_metalRoughGL3Technique->setEnabledLayers(layers);
-    m_metalRoughES3Technique->setEnabledLayers(layers);
-    m_metalRoughES2Technique->setEnabledLayers(layers);
+    updateLayersOnTechniques(layers);
+}
+
+void MetallicRoughnessEffect::updateUsingMorphTargets(bool usingMorphTargets)
+{
+    auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("morphtargets"));
+    if (usingMorphTargets)
+        layers.append(QStringLiteral("morphtargets"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void MetallicRoughnessEffect::updateUsingCubeMapArrays(bool usingCubeMapArrays)
+{
+    auto layers = m_metalRoughGL3Technique->enabledLayers();
+    //    layers.removeAll(QStringLiteral("noCubeMapArrays"));
+    layers.removeAll(QStringLiteral("useCubeMapArrays"));
+    if (usingCubeMapArrays)
+        layers.append(QStringLiteral("useCubeMapArrays"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void MetallicRoughnessEffect::updateInstanced(bool instanced)
+{
+    auto layers = m_metalRoughGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
+
+    updateLayersOnTechniques(layers);
 }
 
 Qt3DRender::QAbstractTexture *MetallicRoughnessEffect::brdfLUT() const
@@ -713,6 +700,16 @@ void MetallicRoughnessEffect::setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT)
     m_brdfLUTParameter->setValue(QVariant::fromValue(brdfLUT));
 
     emit brdfLUTChanged(brdfLUT);
+}
+
+void MetallicRoughnessEffect::updateLayersOnTechniques(const QStringList &layers)
+{
+    m_metalRoughGL3Technique->setEnabledLayers(layers);
+    m_metalRoughES3Technique->setEnabledLayers(layers);
+    m_metalRoughES2Technique->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_metalRoughRHITechnique->setEnabledLayers(layers);
+#endif
 }
 
 } // namespace Kuesa

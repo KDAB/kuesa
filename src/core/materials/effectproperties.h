@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -61,10 +61,16 @@ public:
 
         // Mesh properties
         VertexColor = 1 << 13,
-        Skinning = 1 << 14
+        Skinning = 1 << 14,
+        VertexNormal = 1 << 15,
+        VertexTangent = 1 << 16,
+        VertexTexCoord = 1 << 17,
+        VertexTexCoord1 = 1 << 18,
+        MorphTargets = 1 << 19,
     };
     Q_DECLARE_FLAGS(Properties, Property)
     Q_FLAG(Properties)
+    Q_ENUM(Property)
 };
 
 } // namespace Kuesa

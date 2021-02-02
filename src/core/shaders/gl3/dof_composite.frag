@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -37,7 +37,6 @@ uniform sampler2D depthTexture;
 uniform float focusDistance;
 uniform float focusRange;
 uniform float bokehRadius;
-uniform vec2 textureSize;
 uniform sampler2D textureSampler;
 uniform sampler2D dofTexture;
 in vec2 texCoord;

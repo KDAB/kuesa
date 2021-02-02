@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -69,9 +69,9 @@ FP float alphaToMipLevel(FP float alpha)
     FP float glossiness = (pow(2.0, -10.0 / sqrt(specPower)) - k0) / k1;
 
     // TODO: Optimize by doing this on CPU and set as
-    // uniform int envLight.specularMipLevels say (if present in shader).
+    // uniform int envLightSpecularMipLevels say (if present in shader).
     // Lookup the number of mips in the specular envmap
-    int mipLevels = mipLevelCount(envLight.specular);
+    int mipLevels = mipLevelCount(envLightSpecular);
 
     // Offset of smallest miplevel we should use (corresponds to specular
     // power of 1). I.e. in the 32x32 sized mip.
@@ -233,7 +233,7 @@ FP vec3 pbrIblModel(const in FP vec3 wNormal,
     FP vec2 brdfUV = clamp(vec2(vDotN, 1.0 - sqrt(alpha)), vec2(0.0), vec2(1.0));
     FP vec2 brdf = texture(brdfLUT, brdfUV).rg;
 
-    FP vec3 diffuseLight = texture(envLight.irradiance, l).rgb;
+    FP vec3 diffuseLight = texture(envLightIrradiance, l).rgb;
     FP float lod = alphaToMipLevel(alpha);
 //#define DEBUG_SPECULAR_LODS
 #ifdef DEBUG_SPECULAR_LODS
@@ -254,7 +254,7 @@ FP vec3 pbrIblModel(const in FP vec3 wNormal,
     else if (lod > 0.0)
         return vec3(1.0, 0.0, 1.0);
 #endif
-    FP vec3 specularLight = textureLod(envLight.specular, l, lod).rgb;
+    FP vec3 specularLight = textureLod(envLightSpecular, l, lod).rgb;
 
     FP vec3 diffuse = diffuseLight * diffuseColor;
     FP vec3 specular = specularLight * (F0 * brdf.x + brdf.y);

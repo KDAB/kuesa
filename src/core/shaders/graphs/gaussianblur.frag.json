@@ -3,17 +3,9 @@
         {
             "layers": [
             ],
-            "sourcePort": "outputColor",
-            "sourceUuid": "{72c4ce9a-b3c4-44a7-af9b-0a8fea5369a2}",
-            "targetPort": "fragColor",
-            "targetUuid": "{19eb6d90-0989-47b9-8d3e-5a737ef298cb}"
-        },
-        {
-            "layers": [
-            ],
             "sourcePort": "value",
-            "sourceUuid": "{bae7e373-14c8-4add-8da5-ccbd76db15a5}",
-            "targetPort": "width",
+            "sourceUuid": "{ce6a2a50-d39a-4498-a195-34370060e16a}",
+            "targetPort": "pass",
             "targetUuid": "{72c4ce9a-b3c4-44a7-af9b-0a8fea5369a2}"
         },
         {
@@ -28,9 +20,17 @@
             "layers": [
             ],
             "sourcePort": "value",
-            "sourceUuid": "{ce6a2a50-d39a-4498-a195-34370060e16a}",
-            "targetPort": "pass",
+            "sourceUuid": "{bae7e373-14c8-4add-8da5-ccbd76db15a5}",
+            "targetPort": "width",
             "targetUuid": "{72c4ce9a-b3c4-44a7-af9b-0a8fea5369a2}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "outputColor",
+            "sourceUuid": "{72c4ce9a-b3c4-44a7-af9b-0a8fea5369a2}",
+            "targetPort": "fragColor",
+            "targetUuid": "{19eb6d90-0989-47b9-8d3e-5a737ef298cb}"
         },
         {
             "layers": [
@@ -46,45 +46,28 @@
             "layers": [
             ],
             "parameters": {
-                "name": "height",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Uniform"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
             },
-            "type": "input",
-            "uuid": "{921468b2-0e93-4194-bf18-c87f3cadd796}"
+            "type": "fragColor",
+            "uuid": "{19eb6d90-0989-47b9-8d3e-5a737ef298cb}"
         },
         {
             "layers": [
             ],
             "parameters": {
-                "name": "width",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Uniform"
-                },
+                "name": "pass",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
+                    "value": "QShaderLanguage::Int"
                 }
             },
-            "type": "input",
-            "uuid": "{bae7e373-14c8-4add-8da5-ccbd76db15a5}"
+            "type": "uniformInput",
+            "uuid": "{ce6a2a50-d39a-4498-a195-34370060e16a}"
         },
         {
             "layers": [
             ],
             "parameters": {
                 "name": "texCoord",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec2"
@@ -97,51 +80,35 @@
             "layers": [
             ],
             "parameters": {
-                "name": "textureSampler",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Uniform"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Sampler2D"
-                }
-            },
-            "type": "input",
-            "uuid": "{346effd4-0265-4b44-91fc-def99f6ea8a4}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "pass",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Uniform"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Int"
-                }
-            },
-            "type": "input",
-            "uuid": "{ce6a2a50-d39a-4498-a195-34370060e16a}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-            },
-            "type": "fragColor",
-            "uuid": "{19eb6d90-0989-47b9-8d3e-5a737ef298cb}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
             },
             "type": "kuesa_gaussianBlur",
             "uuid": "{72c4ce9a-b3c4-44a7-af9b-0a8fea5369a2}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "width",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "uniformInput",
+            "uuid": "{bae7e373-14c8-4add-8da5-ccbd76db15a5}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "height",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "uniformInput",
+            "uuid": "{921468b2-0e93-4194-bf18-c87f3cadd796}"
         }
     ],
     "prototypes": {
@@ -149,6 +116,11 @@
             "inputs": [
                 "fragColor"
             ],
+            "name": "fragColor",
+            "outputs": [
+            ],
+            "parameters": {
+            },
             "rules": [
                 {
                     "format": {
@@ -156,6 +128,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "gl_FragColor = $fragColor;"
                 },
                 {
@@ -179,18 +153,35 @@
                         "out vec4 fragColor;"
                     ],
                     "substitution": "fragColor = $fragColor;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "layout(location=0) out vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
                 }
             ]
         },
         "input": {
+            "inputs": [
+            ],
+            "name": "input",
             "outputs": [
                 "value"
             ],
             "parameters": {
-                "name": "defaultName",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
+                "location": {
+                    "type": "QString",
+                    "value": "0"
+                },
+                "name": {
+                    "type": "QString",
+                    "value": "defaultName"
                 },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
@@ -205,7 +196,18 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "$qualifier highp $type $name;"
+                        "varying highp $type $name;"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "in highp $type $name;"
                     ],
                     "substitution": "highp $type $value = $name;"
                 },
@@ -216,7 +218,18 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "$qualifier $type $name;"
+                        "in $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "layout(location = $location) in $type $name;"
                     ],
                     "substitution": "$type $value = $name;"
                 }
@@ -229,9 +242,12 @@
                 "texCoord",
                 "width"
             ],
+            "name": "kuesa_gaussianBlur",
             "outputs": [
                 "outputColor"
             ],
+            "parameters": {
+            },
             "rules": [
                 {
                     "format": {
@@ -246,17 +262,6 @@
                 },
                 {
                     "format": {
-                    "api": "OpenGLES",
-                    "major": 2,
-                    "minor": 0
-                    },
-                    "headerSnippets": [
-                        "#pragma include :/kuesa/shaders/es2/kuesa_gaussianblur.inc.frag"
-                    ],
-                    "substitution": "highp vec4 $outputColor = kuesa_gaussianBlur($pass, $width, $height, $texCoord);"
-                },
-                {
-                    "format": {
                         "api": "OpenGLES",
                         "major": 3,
                         "minor": 0
@@ -265,6 +270,81 @@
                         "#pragma include :/kuesa/shaders/es3/kuesa_gaussianblur.inc.frag"
                     ],
                     "substitution": "highp vec4 $outputColor = kuesa_gaussianBlur($pass, $width, $height, $texCoord);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es2/kuesa_gaussianblur.inc.frag"
+                    ],
+                    "substitution": "highp vec4 $outputColor = kuesa_gaussianBlur($pass, $width, $height, $texCoord);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl45/kuesa_gaussianblur.inc.frag"
+                    ],
+                    "substitution": "vec4 $outputColor = kuesa_gaussianBlur($pass, $width, $height, $texCoord);"
+                }
+            ]
+        },
+        "uniformInput": {
+            "inputs": [
+            ],
+            "name": "uniformInput",
+            "outputs": [
+                "value"
+            ],
+            "parameters": {
+                "name": {
+                    "type": "QString",
+                    "value": "defaultName"
+                },
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "uniform highp $type $name;"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "uniform $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "add-uniform $type $name"
+                    ],
+                    "substitution": "$type $value = $name;"
                 }
             ]
         }

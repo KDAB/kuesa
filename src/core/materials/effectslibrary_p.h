@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -48,41 +48,49 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DRender {
-class QEffect;
-};
-
 namespace Kuesa {
+
+class GLTF2MaterialEffect;
+class MetallicRoughnessEffect;
+class UnlitEffect;
 
 class KUESA_PRIVATE_EXPORT EffectsLibrary
 {
 public:
     EffectsLibrary();
+    ~EffectsLibrary();
 
-    struct CustomEffectKey
-    {
+    struct CustomEffectKey {
         const QMetaObject *effectClassMetaObject;
         EffectProperties::Properties properties;
     };
-    using CustomEffectKeyPair = std::pair<CustomEffectKey, Qt3DRender::QEffect *>;
+    using CustomEffectKeyPair = std::pair<CustomEffectKey, GLTF2MaterialEffect *>;
 
-    Qt3DRender::QEffect *getOrCreateCustomEffect(CustomEffectKey customEffectKey,
+    GLTF2MaterialEffect *getOrCreateCustomEffect(CustomEffectKey customEffectKey,
                                                  Qt3DCore::QNode *effectOwner);
 
-    Qt3DRender::QEffect *getOrCreateEffect(EffectProperties::Properties properties,
+    GLTF2MaterialEffect *getOrCreateEffect(EffectProperties::Properties properties,
                                            Qt3DCore::QNode *effectOwner);
     int count() const;
     void clear();
 
-    QHash<EffectProperties::Properties, Qt3DRender::QEffect *> effects() const;
+    void reset();
+    void cleanUp();
+
+    QHash<EffectProperties::Properties, GLTF2MaterialEffect *> effects() const;
     QVector<CustomEffectKeyPair> customEffects() const;
 
+    static GLTF2MaterialEffect *createEffectWithKey(EffectProperties::Properties properties);
+    static MetallicRoughnessEffect *createMetallicRoughnessEffectWithKey(EffectProperties::Properties properties);
+    static UnlitEffect *createUnlitEffectWithKey(EffectProperties::Properties properties);
+
 private:
-    QHash<EffectProperties::Properties, Qt3DRender::QEffect *> m_effects;
+    Qt3DCore::QNode *m_dummyRootNode;
+    QHash<EffectProperties::Properties, GLTF2MaterialEffect *> m_effects;
     QVector<CustomEffectKeyPair> m_customEffects;
 };
 
-bool operator ==(const EffectsLibrary::CustomEffectKey &a, const EffectsLibrary::CustomEffectKey &b);
+bool operator==(const EffectsLibrary::CustomEffectKey &a, const EffectsLibrary::CustomEffectKey &b);
 
 } // namespace Kuesa
 

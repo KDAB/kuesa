@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -64,16 +64,15 @@ namespace Kuesa {
  */
 
 PointLightPrivate::PointLightPrivate()
-    : QAbstractLightPrivate(Qt3DRender::QAbstractLight::PointLight)
+    : ShadowCastingLightPrivate(Qt3DRender::QAbstractLight::PointLight)
 {
-    m_shaderData->setProperty("range", 0.0f);
 }
 
 /*!
     Constructs a new PointLight with the specified \a parent.
  */
 PointLight::PointLight(QNode *parent)
-    : QAbstractLight(*new PointLightPrivate, parent)
+    : ShadowCastingLight(*new PointLightPrivate, parent)
 {
 }
 
@@ -84,7 +83,7 @@ PointLight::~PointLight()
 
 /*! \internal */
 PointLight::PointLight(PointLightPrivate &dd, QNode *parent)
-    : QAbstractLight(dd, parent)
+    : ShadowCastingLight(dd, parent)
 {
 }
 

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -27,7 +27,8 @@
 */
 
 #include <qtkuesa-config.h>
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 #include <Kuesa/GLTF2Importer>
 #include <QUrl>
 
@@ -40,20 +41,73 @@ class tst_GLTF2Importer : public QObject
 
 private Q_SLOTS:
 
-    void checkStatus()
+    void checkDefaults()
     {
         // GIVEN
         GLTF2Importer importer;
 
         // THEN
+        QVERIFY(importer.sceneEntity() == nullptr);
+        QCOMPARE(importer.status(), GLTF2Importer::None);
+        QCOMPARE(importer.assignNames(), true);
+        QCOMPARE(importer.activeSceneIndex(), GLTF2Importer::DefaultScene);
+        QCOMPARE(importer.options()->generateTangents(), false);
+        QCOMPARE(importer.options()->generateNormals(), false);
+        QVERIFY(importer.availableScenes().empty());
+        QCOMPARE(importer.asynchronous(), false);
+    }
+
+    void checkAsynchronous()
+    {
+        // GIVEN
+        GLTF2Importer importer;
+        QSignalSpy asynchronousChangedSpy(&importer, &GLTF2Importer::asynchronousChanged);
+
+        // THEN
+        QVERIFY(asynchronousChangedSpy.isValid());
+
+        // WHEN
+        importer.setAsynchronous(true);
+
+        // THEN
+        QCOMPARE(asynchronousChangedSpy.count(), 1);
+
+        // WHEN
+        importer.setAsynchronous(true);
+
+        // THEN
+        QCOMPARE(asynchronousChangedSpy.count(), 1);
+    }
+
+    void checkStatus()
+    {
+        // GIVEN
+        qRegisterMetaType<GLTF2Importer::Status>();
+        GLTF2Importer importer;
+        QSignalSpy statusChangedSpy(&importer, &GLTF2Importer::statusChanged);
+
+        // THEN
+        QVERIFY(statusChangedSpy.isValid());
         QCOMPARE(importer.status(), GLTF2Importer::None);
 
         // WHEN
         importer.setSource(QUrl("file:///" ASSETS "Box.gltf"));
         QCoreApplication::processEvents();
 
+        // THEN -> No SceneEntity
+        QCOMPARE(importer.status(), GLTF2Importer::Error);
+        QCOMPARE(statusChangedSpy.count(), 2); // Loading, Error
+        statusChangedSpy.clear();
+
+        // WHEN
+        SceneEntity e;
+        importer.setSceneEntity(&e);
+        importer.reload();
+
         // THEN
         QCOMPARE(importer.status(), GLTF2Importer::Ready);
+        QCOMPARE(statusChangedSpy.count(), 3); // None, Loading, Ready
+        statusChangedSpy.clear();
 
         // WHEN
         importer.setSource(QUrl());
@@ -61,13 +115,17 @@ private Q_SLOTS:
 
         // THEN
         QCOMPARE(importer.status(), GLTF2Importer::None);
+        QCOMPARE(statusChangedSpy.count(), 1); // None
+        statusChangedSpy.clear();
 
         // WHEN
         importer.setSource(QUrl("file:///" ASSETS "simple_cube_with_images_invalid_scene_negative.gltf"));
         QCoreApplication::processEvents();
+        statusChangedSpy.wait();
 
         // THEN
         QCOMPARE(importer.status(), GLTF2Importer::Error);
+        QCOMPARE(statusChangedSpy.count(), 2); // Loading, Error
     }
 
     void checkScenes()
@@ -80,9 +138,11 @@ private Q_SLOTS:
 
         {
             // GIVEN
+            SceneEntity scene;
             GLTF2Importer importer;
 
             // WHEN
+            importer.setSceneEntity(&scene);
             importer.setActiveSceneIndex(GLTF2Importer::DefaultScene);
             importer.setSource(QUrl("file:///" ASSETS "BoxMultipleScenes.gltf"));
             QCoreApplication::processEvents();
@@ -96,9 +156,11 @@ private Q_SLOTS:
         }
         {
             // GIVEN
+            SceneEntity scene;
             GLTF2Importer importer;
 
             // WHEN
+            importer.setSceneEntity(&scene);
             importer.setActiveSceneIndex(GLTF2Importer::EmptyScene);
             importer.setSource(QUrl("file:///" ASSETS "BoxMultipleScenes.gltf"));
             QCoreApplication::processEvents();
@@ -112,9 +174,11 @@ private Q_SLOTS:
         }
         {
             // GIVEN
+            SceneEntity scene;
             GLTF2Importer importer;
 
             // WHEN
+            importer.setSceneEntity(&scene);
             importer.setActiveSceneIndex(0);
             importer.setSource(QUrl("file:///" ASSETS "BoxMultipleScenes.gltf"));
             QCoreApplication::processEvents();
@@ -125,6 +189,26 @@ private Q_SLOTS:
             QCOMPARE(importer.availableScenes().size(), 3);
             QCOMPARE(importer.availableScenes(), expectedSceneNames);
             QCOMPARE(importer.activeSceneIndex(), 0);
+        }
+    }
+
+    void checkAutoSetSceneEntityIfParentIsASceneEntity()
+    {
+        {
+            // GIVEN
+            SceneEntity s;
+            GLTF2Importer importer(&s);
+
+            // THEN
+            QVERIFY(importer.sceneEntity() == &s);
+        }
+        {
+            // GIVEN
+            Qt3DCore::QEntity e;
+            GLTF2Importer importer(&e);
+
+            // THEN
+            QVERIFY(importer.sceneEntity() == nullptr);
         }
     }
 };

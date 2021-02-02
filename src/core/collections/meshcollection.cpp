@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -34,12 +34,12 @@ using namespace Kuesa;
 /*!
  * \class Kuesa::MeshCollection
  * \inheaderfile Kuesa/MeshCollection
- * \brief A collection of assets of type Qt3DRender::QGeometryRenderer.
+ * \brief A collection of assets of type QGeometryRenderer.
  * \inmodule Kuesa
  * \since Kuesa 1.0
  * \inherits Kuesa::AbstractAssetCollection
  *
- * Kuesa::MeshCollection manages a set of Qt3DRender::QGeometryRenderer assets.
+ * Kuesa::MeshCollection manages a set of QGeometryRenderer assets.
  */
 
 /*!

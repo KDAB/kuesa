@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -52,12 +52,16 @@ class QJoint;
 } // namespace Qt3DCore
 
 namespace Kuesa {
+
+class ReflectionPlane;
+
 namespace GLTF2Import {
 
 class GLTF2Context;
 
 struct TreeNode {
     Qt3DCore::QEntity *entity = nullptr;
+    ReflectionPlane *reflectionPlane = nullptr;
     QVector<Qt3DCore::QJoint *> joints;
 
     struct TransformInfo {
@@ -87,6 +91,14 @@ struct TreeNode {
     QVector<int> childrenIndices;
     QVector<int> layerIndices;
     QVector<float> morphTargetWeights;
+    QVector4D reflectionPlaneEquation;
+
+    struct KDAB_2d_placeholder
+    {
+        qint32 cameraNode;
+    };
+    KDAB_2d_placeholder placeHolder;
+    bool hasPlaceholder = false;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(TreeNode::TransformInfo::TransformBits)

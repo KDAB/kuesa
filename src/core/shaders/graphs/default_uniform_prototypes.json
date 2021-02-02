@@ -1,0 +1,159 @@
+{
+    "prototypes": [
+        {
+            "name": "qt3d_default_uniforms",
+            "inputs": [],
+            "parameters": [],
+            "outputs": [
+                { "name": "viewMatrix", "type": "QShaderLanguage::Mat4", "value": "" },
+                { "name": "projectionMatrix", "type": "QShaderLanguage::Mat4", "value": "" },
+                { "name": "viewProjectionMatrix", "type": "QShaderLanguage::Mat4", "value": "" },
+                { "name": "inverseViewMatrix", "type": "QShaderLanguage::Mat4", "value": "" },
+                { "name": "inverseProjectionMatrix", "type": "QShaderLanguage::Mat4", "value": "" },
+                { "name": "inverseViewProjectionMatrix", "type": "QShaderLanguage::Mat4", "value": "" },
+                { "name": "textureTransformMatrix", "type": "QShaderLanguage::Mat4", "value": "" },
+                { "name": "eyePosition", "type": "QShaderLanguage::Vec3", "value": "" },
+                { "name": "aspectRatio", "type": "QShaderLanguage::Float", "value": "" },
+                { "name": "gamma", "type": "QShaderLanguage::Float", "value": "" },
+                { "name": "exposure", "type": "QShaderLanguage::Float", "value": "" },
+                { "name": "time", "type": "QShaderLanguage::Float", "value": "" },
+                { "name": "modelMatrix", "type": "QShaderLanguage::Mat4", "value": "" },
+                { "name": "inverseModelMatrix", "type": "QShaderLanguage::Mat4", "value": "" },
+                { "name": "modelViewMatrix", "type": "QShaderLanguage::Mat4", "value": "" },
+                { "name": "modelNormalMatrix", "type": "QShaderLanguage::Mat3", "value": "" },
+                { "name": "mvp", "type": "QShaderLanguage::Mat4", "value": "" },
+                { "name": "inverseModelViewProjectionMatrix", "type": "QShaderLanguage::Mat4", "value": "" }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es2/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "
+                        highp mat4 $viewMatrix = viewMatrix;
+                        highp mat4 $projectionMatrix = projectionMatrix;
+                        highp mat4 $viewProjectionMatrix = viewProjectionMatrix;
+                        highp mat4 $inverseViewMatrix = inverseViewMatrix;
+                        highp mat4 $inverseProjectionMatrix = inverseProjectionMatrix;
+                        highp mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;
+                        highp mat4 $viewportMatrix = viewportMatrix;
+                        highp mat4 $inverseViewportMatrix = inverseViewportMatrix;
+                        highp vec4 $textureTransformMatrix = textureTransformMatrix;
+                        highp vec3 $eyePosition = eyePosition;
+                        highp float $aspectRatio = aspectRatio;
+                        highp float $gamma = gamma;
+                        highp float $exposure = exposure;
+                        highp float $time = time;
+                        highp mat4 $modelMatrix = modelMatrix;
+                        highp mat4 $inverseModelMatrix = inverseModelMatrix;
+                        highp mat4 $modelViewMatrix = modelViewMatrix;
+                        highp mat3 $modelNormalMatrix = modelNormalMatrix;
+                        highp mat4 $inverseModelViewMatrix = inverseModelViewMatrix;
+                        highp mat4 $mvp = mvp;
+                        highp mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es3/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "
+                        highp mat4 $viewMatrix = viewMatrix;
+                        highp mat4 $projectionMatrix = projectionMatrix;
+                        highp mat4 $viewProjectionMatrix = viewProjectionMatrix;
+                        highp mat4 $inverseViewMatrix = inverseViewMatrix;
+                        highp mat4 $inverseProjectionMatrix = inverseProjectionMatrix;
+                        highp mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;
+                        highp mat4 $viewportMatrix = viewportMatrix;
+                        highp mat4 $inverseViewportMatrix = inverseViewportMatrix;
+                        highp vec4 $textureTransformMatrix = textureTransformMatrix;
+                        highp vec3 $eyePosition = eyePosition;
+                        highp float $aspectRatio = aspectRatio;
+                        highp float $gamma = gamma;
+                        highp float $exposure = exposure;
+                        highp float $time = time;
+                        highp mat4 $modelMatrix = modelMatrix;
+                        highp mat4 $inverseModelMatrix = inverseModelMatrix;
+                        highp mat4 $modelViewMatrix = modelViewMatrix;
+                        highp mat3 $modelNormalMatrix = modelNormalMatrix;
+                        highp mat4 $inverseModelViewMatrix = inverseModelViewMatrix;
+                        highp mat4 $mvp = mvp;
+                        highp mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl3/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "
+                        mat4 $viewMatrix = viewMatrix;
+                        mat4 $projectionMatrix = projectionMatrix;
+                        mat4 $viewProjectionMatrix = viewProjectionMatrix;
+                        mat4 $inverseViewMatrix = inverseViewMatrix;
+                        mat4 $inverseProjectionMatrix = inverseProjectionMatrix;
+                        mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;
+                        mat4 $viewportMatrix = viewportMatrix;
+                        mat4 $inverseViewportMatrix = inverseViewportMatrix;
+                        vec4 $textureTransformMatrix = textureTransformMatrix;
+                        vec3 $eyePosition = eyePosition;
+                        float $aspectRatio = aspectRatio;
+                        float $gamma = gamma;
+                        float $exposure = exposure;
+                        float $time = time;
+                        mat4 $modelMatrix = modelMatrix;
+                        mat4 $inverseModelMatrix = inverseModelMatrix;
+                        mat4 $modelViewMatrix = modelViewMatrix;
+                        mat3 $modelNormalMatrix = modelNormalMatrix;
+                        mat4 $inverseModelViewMatrix = inverseModelViewMatrix;
+                        mat4 $mvp = mvp;
+                        mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl45/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "
+                        mat4 $viewMatrix = viewMatrix;
+                        mat4 $projectionMatrix = projectionMatrix;
+                        mat4 $viewProjectionMatrix = viewProjectionMatrix;
+                        mat4 $inverseViewMatrix = inverseViewMatrix;
+                        mat4 $inverseProjectionMatrix = inverseProjectionMatrix;
+                        mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;
+                        mat4 $viewportMatrix = viewportMatrix;
+                        mat4 $inverseViewportMatrix = inverseViewportMatrix;
+                        vec4 $textureTransformMatrix = textureTransformMatrix;
+                        vec3 $eyePosition = eyePosition;
+                        float $aspectRatio = aspectRatio;
+                        float $gamma = gamma;
+                        float $exposure = exposure;
+                        float $time = time;
+                        mat4 $modelMatrix = modelMatrix;
+                        mat4 $inverseModelMatrix = inverseModelMatrix;
+                        mat4 $modelViewMatrix = modelViewMatrix;
+                        mat3 $modelNormalMatrix = modelNormalMatrix;
+                        mat4 $inverseModelViewMatrix = inverseModelViewMatrix;
+                        mat4 $mvp = mvp;
+                        mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
+                }
+            ]
+        }
+    ]
+}

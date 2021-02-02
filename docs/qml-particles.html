@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- particles.cpp -->
+  <title>Particles QML Type | Kuesa Runtime 1.3</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-qml.html">QML Types</a></li>
+<li>Particles QML Type</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Particles QML Type</h1>
+<span class="subtitle"></span>
+<!-- $$$Particles-brief -->
+<p>Particle system that controls emission and the various properties or particles over their lifetime. <a href="#details">More...</a></p>
+<!-- @@@Particles -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.3</td></tr></table></div><ul>
+<li><a href="qml-particles-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><b><a href="qml-particles.html#alignMode-prop">alignMode</a></b></b> : enumeration</li>
+<li class="fn"><b><b><a href="qml-particles.html#emitterPosition-prop">emitterPosition</a></b></b> : vector3d</li>
+<li class="fn"><b><b><a href="qml-particles.html#emitterPositionRandom-prop">emitterPositionRandom</a></b></b> : vector3d</li>
+<li class="fn"><b><b><a href="qml-particles.html#emitterVelocity-prop">emitterVelocity</a></b></b> : vector3d</li>
+<li class="fn"><b><b><a href="qml-particles.html#emitterVelocityRandom-prop">emitterVelocityRandom</a></b></b> : vector3d</li>
+<li class="fn"><b><b><a href="qml-particles.html#finalColor-prop">finalColor</a></b></b> : vector3d</li>
+<li class="fn"><b><b><a href="qml-particles.html#finalSize-prop">finalSize</a></b></b> : vector2d</li>
+<li class="fn"><b><b><a href="qml-particles.html#frameTime-prop">frameTime</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-particles.html#gravity-prop">gravity</a></b></b> : vector3d</li>
+<li class="fn"><b><b><a href="qml-particles.html#initialAngle-prop">initialAngle</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-particles.html#initialAngleRandom-prop">initialAngleRandom</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-particles.html#initialColor-prop">initialColor</a></b></b> : vector3d</li>
+<li class="fn"><b><b><a href="qml-particles.html#initialSize-prop">initialSize</a></b></b> : vector2d</li>
+<li class="fn"><b><b><a href="qml-particles.html#maxParticlesEmittedPerFrame-prop">maxParticlesEmittedPerFrame</a></b></b> : int</li>
+<li class="fn"><b><b><a href="qml-particles.html#particleCount-prop">particleCount</a></b></b> : int</li>
+<li class="fn"><b><b><a href="qml-particles.html#particleLifespan-prop">particleLifespan</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-particles.html#particleLifespanRandom-prop">particleLifespanRandom</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-particles.html#rotationRate-prop">rotationRate</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-particles.html#rotationRateRandom-prop">rotationRateRandom</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-particles.html#spriteTexture-prop">spriteTexture</a></b></b> : Qt3DRender.AbstractTexture</li>
+</ul>
+<!-- $$$Particles-description -->
+<a name="details"></a>
+<h2 id="details">Detailed Description</h2>
+<pre class="cpp plain">
+ import Kuesa 1.3 as Kuesa
+
+ Kuesa.SceneEnity {
+     id: root
+     components: [
+         RenderSettings {
+             Kuesa.ForwardRenderer {
+                    particlesEnabled: true
+                    camera: ..&#x2e;
+             }
+         }
+     ]
+
+    Kuesa.Particles {
+        particleCount: 128
+        maxParticlesEmittedPerFrame: 4
+        gravity: Qt.vector3d(0, -1, 0)
+        emitterPosition: Qt.vector3d(0, 0, 0)
+        emitterPositionRandom:  Qt.vector3d(0, 0, 0)
+        emitterVelocity:  Qt.vector3d(0, 1, 0)
+        emitterVelocityRandom: Qt.vector3d(0, 0, 0)
+        particleLifespan: 10
+        particleLifespanRandom: 3
+        initialSize: Qt.vector2d(0.1, 0.1)
+        finalSize: Qt.vector2d(1, 1)
+        initialColor: Qt.vector4d(1.0, 0.0, 0.0, 1.0)
+        finalColor: Qt.vector4d(0.0, 1.0, 0.0, 1.0)
+        initialAngle: 0
+        initialAngleRandom: 0
+        rotationRate: 0
+        rotationRateRandom: 0
+        spriteTexture: TextureLoader {
+            source: &quot;kuesa-logo.png&quot;
+        }
+    }
+ }
+</pre>
+<!-- @@@Particles -->
+<h2>Property Documentation</h2>
+<!-- $$$alignMode -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="alignMode-prop">
+<td class="tblQmlPropNode"><p>
+<a name="alignMode-prop"></a><span class="name">alignMode</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the alignment mode for the particles.</p>
+<ul>
+<li>FaceCamera The particle faces the camera at all times.</li>
+<li>Velocity The particle's local Y axis is aligned to its direction.</li>
+</ul>
+<p>If the Velocity alignment mode is used, the <a href="qml-particles.html#initialAngle-prop">initialAngle</a> and <a href="qml-particles.html#rotationRate-prop">rotationRate</a> properties are ignored.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@alignMode -->
+<br/>
+<!-- $$$emitterPosition -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="emitterPosition-prop">
+<td class="tblQmlPropNode"><p>
+<a name="emitterPosition-prop"></a><span class="name">emitterPosition</span> : <span class="type">vector3d</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the world position of the particle emitter.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@emitterPosition -->
+<br/>
+<!-- $$$emitterPositionRandom -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="emitterPositionRandom-prop">
+<td class="tblQmlPropNode"><p>
+<a name="emitterPositionRandom-prop"></a><span class="name">emitterPositionRandom</span> : <span class="type">vector3d</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the randomness factor applied to the world position.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@emitterPositionRandom -->
+<br/>
+<!-- $$$emitterVelocity -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="emitterVelocity-prop">
+<td class="tblQmlPropNode"><p>
+<a name="emitterVelocity-prop"></a><span class="name">emitterVelocity</span> : <span class="type">vector3d</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the velocity applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@emitterVelocity -->
+<br/>
+<!-- $$$emitterVelocityRandom -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="emitterVelocityRandom-prop">
+<td class="tblQmlPropNode"><p>
+<a name="emitterVelocityRandom-prop"></a><span class="name">emitterVelocityRandom</span> : <span class="type">vector3d</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the velocity randomness factor applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@emitterVelocityRandom -->
+<br/>
+<!-- $$$finalColor -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="finalColor-prop">
+<td class="tblQmlPropNode"><p>
+<a name="finalColor-prop"></a><span class="name">finalColor</span> : <span class="type">vector3d</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the final color of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@finalColor -->
+<br/>
+<!-- $$$finalSize -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="finalSize-prop">
+<td class="tblQmlPropNode"><p>
+<a name="finalSize-prop"></a><span class="name">finalSize</span> : <span class="type">vector2d</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the final size of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@finalSize -->
+<br/>
+<!-- $$$frameTime -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="frameTime-prop">
+<td class="tblQmlPropNode"><p>
+<a name="frameTime-prop"></a><span class="qmldefault">[default] </span><span class="name">frameTime</span> : <span class="type">real</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the speed at which updates need to be made in milliseconds.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@frameTime -->
+<br/>
+<!-- $$$gravity -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="gravity-prop">
+<td class="tblQmlPropNode"><p>
+<a name="gravity-prop"></a><span class="name">gravity</span> : <span class="type">vector3d</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the gravity value to apply to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@gravity -->
+<br/>
+<!-- $$$initialAngle -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="initialAngle-prop">
+<td class="tblQmlPropNode"><p>
+<a name="initialAngle-prop"></a><span class="name">initialAngle</span> : <span class="type">real</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the initial rotation angle in radians of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@initialAngle -->
+<br/>
+<!-- $$$initialAngleRandom -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="initialAngleRandom-prop">
+<td class="tblQmlPropNode"><p>
+<a name="initialAngleRandom-prop"></a><span class="name">initialAngleRandom</span> : <span class="type">real</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the initial rotation randomness factor applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@initialAngleRandom -->
+<br/>
+<!-- $$$initialColor -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="initialColor-prop">
+<td class="tblQmlPropNode"><p>
+<a name="initialColor-prop"></a><span class="name">initialColor</span> : <span class="type">vector3d</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the initial color of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@initialColor -->
+<br/>
+<!-- $$$initialSize -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="initialSize-prop">
+<td class="tblQmlPropNode"><p>
+<a name="initialSize-prop"></a><span class="qmldefault">[default] </span><span class="name">initialSize</span> : <span class="type">vector2d</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the initial size of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@initialSize -->
+<br/>
+<!-- $$$maxParticlesEmittedPerFrame -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="maxParticlesEmittedPerFrame-prop">
+<td class="tblQmlPropNode"><p>
+<a name="maxParticlesEmittedPerFrame-prop"></a><span class="qmldefault">[default] </span><span class="name">maxParticlesEmittedPerFrame</span> : <span class="type">int</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the maximum number of new particles that can be created each frame.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@maxParticlesEmittedPerFrame -->
+<br/>
+<!-- $$$particleCount -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="particleCount-prop">
+<td class="tblQmlPropNode"><p>
+<a name="particleCount-prop"></a><span class="qmldefault">[default] </span><span class="name">particleCount</span> : <span class="type">int</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the maximum number of particles the system can handle. Currently the maximum value is 2048.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@particleCount -->
+<br/>
+<!-- $$$particleLifespan -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="particleLifespan-prop">
+<td class="tblQmlPropNode"><p>
+<a name="particleLifespan-prop"></a><span class="qmldefault">[default] </span><span class="name">particleLifespan</span> : <span class="type">real</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the lifetime of the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@particleLifespan -->
+<br/>
+<!-- $$$particleLifespanRandom -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="particleLifespanRandom-prop">
+<td class="tblQmlPropNode"><p>
+<a name="particleLifespanRandom-prop"></a><span class="name">particleLifespanRandom</span> : <span class="type">real</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the lifetime randomness factor applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@particleLifespanRandom -->
+<br/>
+<!-- $$$rotationRate -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="rotationRate-prop">
+<td class="tblQmlPropNode"><p>
+<a name="rotationRate-prop"></a><span class="name">rotationRate</span> : <span class="type">real</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the rotation speed applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@rotationRate -->
+<br/>
+<!-- $$$rotationRateRandom -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="rotationRateRandom-prop">
+<td class="tblQmlPropNode"><p>
+<a name="rotationRateRandom-prop"></a><span class="name">rotationRateRandom</span> : <span class="type">real</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the rotation speed randomness factor applied to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@rotationRateRandom -->
+<br/>
+<!-- $$$spriteTexture -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="spriteTexture-prop">
+<td class="tblQmlPropNode"><p>
+<a name="spriteTexture-prop"></a><span class="name">spriteTexture</span> : <span class="type">Qt3DRender</span>.<span class="type">AbstractTexture</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the 2D sprite texture to apply to the particles.</p>
+<p>This property was introduced in Kuesa 1.3.</p>
+</div></div><!-- @@@spriteTexture -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

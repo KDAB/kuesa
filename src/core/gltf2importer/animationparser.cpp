@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -30,8 +30,10 @@
 
 #include "gltf2context_p.h"
 #include "kuesa_p.h"
+#include "fovadaptor_p.h"
 #include <private/gltf2utils_p.h>
 #include <private/kuesa_utils_p.h>
+#include <private/kuesa_global_p.h>
 
 #include <QJsonValue>
 #include <QJsonObject>
@@ -50,7 +52,9 @@
 
 QT_BEGIN_NAMESPACE
 
+using namespace Kuesa;
 using namespace Kuesa::GLTF2Import;
+using namespace Qt3DGeometry;
 
 namespace {
 
@@ -69,7 +73,7 @@ AnimationParser::InterpolationMethod interpolationMethodFromSemantic(const QStri
 QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
 {
     if (accessor.bufferData.isEmpty()) {
-        qCWarning(kuesa, "No Buffer found for accessor");
+        qCWarning(Kuesa::kuesa, "No Buffer found for accessor");
         return {};
     }
 
@@ -83,13 +87,13 @@ QByteArray rawDataFromAccessor(const Accessor &accessor, GLTF2Context *ctx)
     const qint16 byteStride = (!bufferViewData.bufferData.isEmpty() && bufferViewData.byteStride > 0 ? bufferViewData.byteStride : qint16(accessor.dataSize * elemByteSize));
 
     if (byteStride < qint16(elemByteSize * accessor.dataSize)) {
-        qCWarning(kuesa, "Buffer Data byteStride doesn't match accessor dataSize and byte size for type");
+        qCWarning(Kuesa::kuesa, "Buffer Data byteStride doesn't match accessor dataSize and byte size for type");
         return {};
     }
 
     const qint32 subBufferByteLen = accessor.count * byteStride;
     if (byteOffset + subBufferByteLen > bufferData.size()) {
-        qCWarning(kuesa, "Buffer Data size incompatible with accessor requirement");
+        qCWarning(Kuesa::kuesa, "Buffer Data size incompatible with accessor requirement");
         return {};
     }
 
@@ -160,15 +164,15 @@ quint8 expectedComponentsCountForChannel(const ChannelInfo &channelInfo)
     const AnimationTarget &target = channelInfo.target;
     const quint8 componentCount = AnimatablePropertiesCache::registeredAnimatables().value(target.path).componentCount;
     if (componentCount == 0)
-        qCWarning(kuesa) << "Unrecognized animation channel" << target.path;
+        qCWarning(Kuesa::kuesa) << "Unrecognized animation channel" << target.path;
     return componentCount;
 }
 
-QVector<Qt3DAnimation::QChannelMapping *> mappingsForTransformTargetNode(const GLTF2Context *ctx,
-                                                                         const ChannelMapping &mapping)
+std::vector<Qt3DAnimation::QChannelMapping *> mappingsForTransformTargetNode(const GLTF2Context *ctx,
+                                                                             const ChannelMapping &mapping)
 {
     const TreeNode targetNode = ctx->treeNode(mapping.target.targetNodeId);
-    QVector<Qt3DAnimation::QChannelMapping *> mappings;
+    std::vector<Qt3DAnimation::QChannelMapping *> mappings;
 
     // Map channel to joint
     for (auto &joint : targetNode.joints) {
@@ -184,7 +188,7 @@ QVector<Qt3DAnimation::QChannelMapping *> mappingsForTransformTargetNode(const G
     if (targetNode.entity != nullptr) {
         auto transformComponent = Kuesa::componentFromEntity<Qt3DCore::QTransform>(targetNode.entity);
         if (!transformComponent) {
-            qCWarning(kuesa, "Target node doesn't have a transform component");
+            qCWarning(Kuesa::kuesa, "Target node doesn't have a transform component");
             return mappings;
         }
         auto channelMapping = new Qt3DAnimation::QChannelMapping();
@@ -197,11 +201,11 @@ QVector<Qt3DAnimation::QChannelMapping *> mappingsForTransformTargetNode(const G
     return mappings;
 }
 
-QVector<Qt3DAnimation::QChannelMapping *> mappingsForMorphTargetWeights(const GLTF2Context *ctx,
-                                                                        const ChannelMapping &mapping)
+std::vector<Qt3DAnimation::QChannelMapping *> mappingsForMorphTargetWeights(const GLTF2Context *ctx,
+                                                                            const ChannelMapping &mapping)
 {
     const TreeNode targetNode = ctx->treeNode(mapping.target.targetNodeId);
-    QVector<Qt3DAnimation::QChannelMapping *> mappings;
+    std::vector<Qt3DAnimation::QChannelMapping *> mappings;
 
     if (targetNode.entity != nullptr) {
         // The actual entities to animate are those which render the
@@ -214,7 +218,7 @@ QVector<Qt3DAnimation::QChannelMapping *> mappingsForMorphTargetWeights(const GL
             Kuesa::MorphController *morphControllerComponent =
                     Kuesa::componentFromEntity<Kuesa::MorphController>(primitiveEntity);
             if (!morphControllerComponent) {
-                qCWarning(kuesa) << "Target node doesn't have a morph "
+                qCWarning(Kuesa::kuesa) << "Target node doesn't have a morph "
                                     "controller component to animate";
                 continue;
             }
@@ -229,8 +233,36 @@ QVector<Qt3DAnimation::QChannelMapping *> mappingsForMorphTargetWeights(const GL
     return mappings;
 }
 
-QVector<Qt3DAnimation::QChannelMapping *> mappingsForGenericTargetNode(const GLTF2Context *ctx,
-                                                                       const ChannelMapping &mapping)
+std::vector<Qt3DAnimation::QChannelMapping *> mappingForFieldOfView(const GLTF2Context *ctx,
+                                                                    const ChannelMapping &mapping)
+{
+    Qt3DCore::QNode *target = nullptr;
+    switch (mapping.target.type) {
+    case AnimationTarget::Camera: {
+        const Camera &cam = ctx->camera(mapping.target.targetNodeId);
+        FOVAdaptor *adaptor = new FOVAdaptor(cam.lens);
+        target = adaptor;
+        QObject::connect(adaptor, &FOVAdaptor::degreesChanged,
+                         cam.lens, &Qt3DRender::QCameraLens::setFieldOfView);
+        break;
+    }
+    default:
+        break;
+    }
+
+    if (!target)
+        return {};
+
+    auto channelMapping = new Qt3DAnimation::QChannelMapping();
+    channelMapping->setTarget(target);
+    channelMapping->setChannelName(mapping.name);
+    channelMapping->setProperty(QLatin1String("radians"));
+
+    return { channelMapping };
+}
+
+std::vector<Qt3DAnimation::QChannelMapping *> mappingsForGenericTargetNode(const GLTF2Context *ctx,
+                                                                           const ChannelMapping &mapping)
 {
     Qt3DCore::QNode *target = nullptr;
     switch (mapping.target.type) {
@@ -243,6 +275,7 @@ QVector<Qt3DAnimation::QChannelMapping *> mappingsForGenericTargetNode(const GLT
     case AnimationTarget::Camera: {
         const Camera &cam = ctx->camera(mapping.target.targetNodeId);
         target = cam.lens;
+        break;
     }
     case AnimationTarget::Light: {
         const Light &light = ctx->light(mapping.target.targetNodeId);
@@ -277,7 +310,7 @@ void registerDefaultAnimatables()
     AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/zfar"), 1, QStringLiteral("farPlane"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/znear"), 1, QStringLiteral("nearPlane"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/aspectRatio"), 1, QStringLiteral("aspectRatio"), &mappingsForGenericTargetNode);
-    AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/yfov"), 1, QStringLiteral("fieldOfView"), &mappingsForGenericTargetNode);
+    AnimationParser::registerAnimatableProperty(QStringLiteral("perspective/yfov"), 1, QStringLiteral("fieldOfView"), &mappingForFieldOfView);
     AnimationParser::registerAnimatableProperty(QStringLiteral("pbrMetallicRoughness/baseColorFactor"), 4, QStringLiteral("baseColorFactor"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("pbrMetallicRoughness/metallicFactor"), 1, QStringLiteral("metallicFactor"), &mappingsForGenericTargetNode);
     AnimationParser::registerAnimatableProperty(QStringLiteral("pbrMetallicRoughness/roughnessFactor"), 1, QStringLiteral("roughnessFactor"), &mappingsForGenericTargetNode);
@@ -312,7 +345,7 @@ std::tuple<int, std::vector<float>> AnimationParser::animationChannelDataFromDat
 {
     std::vector<float> channelData;
     if (sampler.outputAccessor < 0 || sampler.outputAccessor > m_context->accessorCount()) {
-        qCWarning(kuesa, "Invalid input accessor id");
+        qCWarning(Kuesa::kuesa, "Invalid input accessor id");
         return std::make_tuple(0, channelData);
     }
     const Accessor outputAccessor = m_context->accessor(sampler.outputAccessor);
@@ -323,29 +356,29 @@ std::tuple<int, std::vector<float>> AnimationParser::animationChannelDataFromDat
     // ensure the output buffer has all the data
     // TODO Check the size when doing cubic interpolation
     if (outputRawData.size() != nbComponents * nbFrames * accessorDataTypeToBytes(outputAccessor.type)) {
-        qCWarning(kuesa, "Output buffer doesn't have enough data for the animation");
+        qCWarning(Kuesa::kuesa, "Output buffer doesn't have enough data for the animation");
         return std::make_tuple(0, channelData);
     }
 
     switch (outputAccessor.type) {
-    case Qt3DRender::QAttribute::Float:
+    case QAttribute::Float:
         channelData.resize(static_cast<size_t>(outputRawData.size()) / sizeof(float));
         std::memcpy(channelData.data(), outputRawData.constData(), static_cast<size_t>(outputRawData.size()));
         break;
-    case Qt3DRender::QAttribute::Byte:
+    case QAttribute::Byte:
         channelData = normalizeTypedChannelData<qint8>(outputRawData);
         break;
-    case Qt3DRender::QAttribute::UnsignedByte:
+    case QAttribute::UnsignedByte:
         channelData = normalizeTypedChannelData<quint8>(outputRawData);
         break;
-    case Qt3DRender::QAttribute::Short:
+    case QAttribute::Short:
         channelData = normalizeTypedChannelData<qint16>(outputRawData);
         break;
-    case Qt3DRender::QAttribute::UnsignedShort:
+    case QAttribute::UnsignedShort:
         channelData = normalizeTypedChannelData<quint16>(outputRawData);
         break;
     default:
-        qCWarning(kuesa, "Output buffer data type is not correct");
+        qCWarning(Kuesa::kuesa, "Output buffer data type is not correct");
         return std::make_tuple(0, std::vector<float>());
     }
 
@@ -361,20 +394,20 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const Ch
     auto channel = Qt3DAnimation::QChannel(channelName);
     const Accessor inputAccessor = m_context->accessor(sampler.inputAccessor);
 
-    if (inputAccessor.type != Qt3DRender::QAttribute::Float) {
-        qCWarning(kuesa, "Input accessor have a float component type");
+    if (inputAccessor.type != QAttribute::Float) {
+        qCWarning(Kuesa::kuesa, "Input accessor have a float component type");
         return channel;
     }
 
     if (inputAccessor.dataSize != 1) {
-        qCWarning(kuesa, "Input accessor data size must be 1");
+        qCWarning(Kuesa::kuesa, "Input accessor data size must be 1");
         return channel;
     }
 
     const QByteArray inputRawData = rawDataFromAccessor(inputAccessor, m_context);
     const qint32 nKeyframes = inputAccessor.count;
     if (inputRawData.size() != nKeyframes * accessorDataTypeToBytes(inputAccessor.type)) {
-        qCWarning(kuesa, "Input buffer doesn't have enough data for the animation");
+        qCWarning(Kuesa::kuesa, "Input buffer doesn't have enough data for the animation");
         return channel;
     }
 
@@ -391,7 +424,7 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const Ch
         return channel;
 
     if (nbComponents != expectedComponents) {
-        qCWarning(kuesa) << "Channel components for" << channelPath << "expected" << expectedComponents << "but obtained" << nbComponents;
+        qCWarning(Kuesa::kuesa) << "Channel components for" << channelPath << "expected" << expectedComponents << "but obtained" << nbComponents;
         return channel;
     }
 
@@ -430,7 +463,7 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const Ch
     case AnimationParser::Linear: {
         // Verify we have the same number of keyframes as values
         if (nbComponents * timeStamps.size() != valueStamps.size()) {
-            qCWarning(kuesa, "Input and output buffers have different number of key frames");
+            qCWarning(Kuesa::kuesa, "Input and output buffers have different number of key frames");
             return channel;
         }
 
@@ -448,7 +481,7 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const Ch
         // Verify we have the same number of keyframes as values
         // As we are using cubic spline interpolation, each keyframe has 3 values (p0, lDerivative, rDerivative)
         if (3 * nbComponents * timeStamps.size() != valueStamps.size()) {
-            qCWarning(kuesa, "Input and output buffers have different number of key frames");
+            qCWarning(Kuesa::kuesa, "Input and output buffers have different number of key frames");
             return channel;
         }
 
@@ -508,26 +541,26 @@ bool AnimationParser::checkSamplerJSON(const QJsonObject &samplerObject) const
     const QJsonValue outputValue = samplerObject.value(KEY_OUTPUT);
 
     if (inputValue.isUndefined()) {
-        qCWarning(kuesa, "Missing input buffer in animation sampler");
+        qCWarning(Kuesa::kuesa, "Missing input buffer in animation sampler");
         return false;
     }
 
     if (outputValue.isUndefined()) {
-        qCWarning(kuesa, "Missing output buffer in animation sampler");
+        qCWarning(Kuesa::kuesa, "Missing output buffer in animation sampler");
         return false;
     }
 
     const int inputAccessorIdx = inputValue.toInt(-1);
 
     if (inputAccessorIdx < 0 || inputAccessorIdx > m_context->accessorCount()) {
-        qCWarning(kuesa, "Invalid input accessor index");
+        qCWarning(Kuesa::kuesa, "Invalid input accessor index");
         return false;
     }
 
     const int outputAccessorIdx = outputValue.toInt(-1);
 
     if (outputAccessorIdx < 0 || outputAccessorIdx > m_context->accessorCount()) {
-        qCWarning(kuesa, "Invalid output accessor index");
+        qCWarning(Kuesa::kuesa, "Invalid output accessor index");
         return false;
     }
 
@@ -542,7 +575,7 @@ std::tuple<bool, AnimationParser::AnimationSampler> AnimationParser::animationSa
     animationSampler.interpolationMethod = interpolationMethodFromSemantic(samplerObject.value(KEY_INTERPOLATION).toString(QStringLiteral("LINEAR")));
 
     if (animationSampler.interpolationMethod == AnimationParser::Unknown) {
-        qCWarning(kuesa, "Invalid interpolation method");
+        qCWarning(Kuesa::kuesa, "Invalid interpolation method");
         return std::make_tuple(false, animationSampler);
     }
 
@@ -553,24 +586,24 @@ bool AnimationParser::checkChannelInfo(const ChannelInfo &channelInfo) const
 {
     const int samplerIdx = channelInfo.sampler;
     if (samplerIdx < 0 || samplerIdx > m_context->accessorCount()) {
-        qCWarning(kuesa, "Invalid input accessor id for channel");
+        qCWarning(Kuesa::kuesa, "Invalid input accessor id for channel");
         return false;
     }
 
     const AnimationTarget &target = channelInfo.target;
     if (target.type == AnimationTarget::UnknownType) {
-        qCWarning(kuesa, "Missing target for animation channel");
+        qCWarning(Kuesa::kuesa, "Missing target for animation channel");
         return false;
     }
 
     if (target.path.isEmpty()) {
-        qCWarning(kuesa, "Missing path for channel's animation target");
+        qCWarning(Kuesa::kuesa, "Missing path for channel's animation target");
         return false;
     }
 
     // Verify path is a valid value
     if (!AnimatablePropertiesCache::registeredAnimatables().contains(target.path)) {
-        qCWarning(kuesa, "Channel Path value is not valid");
+        qCWarning(Kuesa::kuesa, "Channel Path value is not valid");
         return false;
     }
 
@@ -598,7 +631,7 @@ AnimationParser::channelFromChannelInfo(const ChannelInfo &channelInfo) const
     channel = animationChannelDataFromBuffer(channelInfo, sampler);
 
     if (channel.channelComponentCount() == 0) {
-        qCWarning(kuesa, "Channel doesn't have components");
+        qCWarning(Kuesa::kuesa, "Channel doesn't have components");
         return std::make_tuple(false, channel);
     }
 
@@ -614,28 +647,28 @@ AnimationParser::mappingForChannel(const ChannelInfo &channelInfo, const QString
     switch (target.type) {
     case AnimationTarget::Node: {
         if (target.targetNodeId < 0 || target.targetNodeId > m_context->treeNodeCount()) {
-            qCWarning(kuesa, "Invalid node for animation target");
+            qCWarning(Kuesa::kuesa, "Invalid node for animation target");
             return std::make_tuple(false, mapping);
         }
         break;
     }
     case AnimationTarget::Camera: {
         if (target.targetNodeId < 0 || target.targetNodeId > m_context->cameraCount()) {
-            qCWarning(kuesa, "Invalid camera for animation target");
+            qCWarning(Kuesa::kuesa, "Invalid camera for animation target");
             return std::make_tuple(false, mapping);
         }
         break;
     }
     case AnimationTarget::Light: {
         if (target.targetNodeId < 0 || target.targetNodeId > m_context->lightCount()) {
-            qCWarning(kuesa, "Invalid light for animation target");
+            qCWarning(Kuesa::kuesa, "Invalid light for animation target");
             return std::make_tuple(false, mapping);
         }
         break;
     }
     case AnimationTarget::Material: {
         if (target.targetNodeId < 0 || target.targetNodeId > m_context->materialsCount()) {
-            qCWarning(kuesa, "Invalid material for animation target");
+            qCWarning(Kuesa::kuesa, "Invalid material for animation target");
             return std::make_tuple(false, mapping);
         }
         break;
@@ -665,12 +698,12 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
         const QJsonValue samplersValue = animationObject.value(KEY_SAMPLERS);
 
         if (channelsValue.isUndefined()) {
-            qCWarning(kuesa, "Missing channels array");
+            qCWarning(Kuesa::kuesa, "Missing channels array");
             return false;
         }
 
         if (samplersValue.isUndefined()) {
-            qCWarning(kuesa, "Missing samplers array");
+            qCWarning(Kuesa::kuesa, "Missing samplers array");
             return false;
         }
 
@@ -680,7 +713,7 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
         // Check Sampler Objects have a correct structure
         for (const auto &samplerValue : samplersArray) {
             if (!checkSamplerJSON(samplerValue.toObject())) {
-                qCWarning(kuesa, "An animation sampler is incorrect");
+                qCWarning(Kuesa::kuesa, "An animation sampler is incorrect");
                 return false;
             }
         }
@@ -691,7 +724,7 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
             bool samplersIsValid = false;
             std::tie(samplersIsValid, sampler) = animationSamplersFromJson(samplerValue.toObject());
             if (!samplersIsValid) {
-                qCWarning(kuesa, "An animation sampler is incorrect");
+                qCWarning(Kuesa::kuesa, "An animation sampler is incorrect");
                 return false;
             }
             m_samplers.push_back(sampler);
@@ -706,7 +739,7 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
         if (!extPropertyAnimationObj.empty()) {
             ExtPropertyAnimationHandler propertyAnimationParser;
             if (!propertyAnimationParser.parse(extPropertyAnimationObj)) {
-                qCWarning(kuesa, "An animation channel is incorrect");
+                qCWarning(Kuesa::kuesa, "An animation channel is incorrect");
                 return false;
             }
             channelsInfo += propertyAnimationParser.channelsInfo();
@@ -727,7 +760,7 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
         // Check Channel Objects have a correct structure
         for (const ChannelInfo &channelInfo : channelsInfo) {
             if (!checkChannelInfo(channelInfo)) {
-                qCWarning(kuesa, "An animation channel is incorrect");
+                qCWarning(Kuesa::kuesa, "An animation channel is incorrect");
                 return false;
             }
         }
@@ -743,7 +776,7 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
             Qt3DAnimation::QChannel channel;
             std::tie(channelIsCorrect, channel) = channelFromChannelInfo(channelInfo);
             if (!channelIsCorrect) {
-                qCWarning(kuesa, "An animation channel is incorrect");
+                qCWarning(Kuesa::kuesa, "An animation channel is incorrect");
                 return false;
             }
             clipData.appendChannel(channel);
@@ -753,7 +786,7 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
             ChannelMapping mapping;
             std::tie(channelMappingIsCorrect, mapping) = mappingForChannel(channelInfo, channel.name());
             if (!channelMappingIsCorrect) {
-                qCWarning(kuesa, "An animation mapping is incorrect");
+                qCWarning(Kuesa::kuesa, "An animation mapping is incorrect");
                 return false;
             }
             animation.mappings.push_back(mapping);
@@ -800,7 +833,7 @@ bool ExtPropertyAnimationHandler::parse(const QJsonObject &extensionObject)
             const ChannelInfo channelInfo = { samplerIdx, target };
             m_channelsInfo.push_back(channelInfo);
         } else {
-            qCWarning(kuesa) << "Failed to parse EXT_property_animation path";
+            qCWarning(Kuesa::kuesa) << "Failed to parse EXT_property_animation path";
             return false;
         }
     }

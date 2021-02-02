@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mauro Persano <mauro.persano@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -36,7 +36,7 @@ import QtQml 2.2
 import QtQuick 2.12
 
 //![0]
-import Kuesa 1.1 as Kuesa
+import Kuesa 1.2 as Kuesa
 import Kuesa.Effects 1.1 as KuesaFX
 import MusicBox 1.0 as MusicBox
 
@@ -197,7 +197,7 @@ Kuesa.SceneEntity {
         },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise_16f_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")
+                source: "pink_sunrise_16f_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -205,7 +205,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: _assetsPrefix + "pink_sunrise_16f_specular" + ((!scene.es2) ? ".dds" : "_es2.dds")
+                source: "pink_sunrise_16f_specular" + ((!scene.es2) ? ".dds" : "_es2.dds")
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -262,7 +262,7 @@ Kuesa.SceneEntity {
     Kuesa.GLTF2Importer {
         id: importer
         sceneEntity: scene
-        source: _assetsPrefix + "RobotArm.gltf"
+        source: "qrc:/RobotArm.gltf"
 //!    [1]
 //!    [2.3]
         onStatusChanged: {
@@ -282,7 +282,7 @@ Kuesa.SceneEntity {
 
     Kuesa.Skybox {
         id: skybox
-        baseName: _assetsPrefix + "pink_sunrise_skybox"
+        baseName: "qrc:/pink_sunrise_skybox"
         extension: ".dds"
     }
 

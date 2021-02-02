@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -54,6 +54,10 @@ class GLTF2Context;
 struct Texture {
     Qt3DRender::QAbstractTexture *texture = nullptr;
     QString name;
+    QString key;
+    int sourceImage = -1;
+    int sampler = -1;
+    bool isDDSTexture = false;
 };
 
 class Q_AUTOTEST_EXPORT TextureParser
@@ -64,18 +68,6 @@ public:
     bool parse(const QJsonArray &texturesArray, GLTF2Context *context) const;
     static bool ensureImageIsCompatibleWithTexture(Qt3DRender::QAbstractTextureImage *image,
                                                    Qt3DRender::QAbstractTexture *texture);
-
-    class EmbeddedTextureImage : public Qt3DRender::QAbstractTextureImage
-    {
-    public:
-        EmbeddedTextureImage(const QImage &image, QNode *parent = nullptr);
-        Qt3DRender::QTextureImageDataGeneratorPtr dataGenerator() const;
-
-        QImage image();
-
-    private:
-        QImage m_image;
-    };
 };
 
 } // namespace GLTF2Import

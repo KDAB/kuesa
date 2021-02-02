@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,9 +29,10 @@
 #include "bloomeffect.h"
 #include "gaussianblureffect.h"
 #include "thresholdeffect.h"
-#include "forwardrenderer.h"
 #include "fullscreenquad.h"
 #include "fxutils_p.h"
+#include "framegraphutils_p.h"
+
 #include <Qt3DRender/qcameraselector.h>
 #include <Qt3DRender/qrendersurfaceselector.h>
 #include <Qt3DRender/qfilterkey.h>
@@ -49,6 +50,7 @@
 #include <Qt3DRender/qlayerfilter.h>
 #include <Qt3DRender/qrenderpassfilter.h>
 #include <Qt3DRender/qrendertarget.h>
+#include "framegraphutils_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -111,7 +113,7 @@ using namespace Kuesa;
  *
  * \badcode
  * import Kuesa 1.1 as Kuesa
- *
+ * import Kuesa.Effects 1.1
  * Kuesa.SceneEnity {
  *     id: root
  *     components: [
@@ -175,6 +177,7 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     : AbstractPostProcessingEffect(parent)
     , m_sceneTextureParam(new Qt3DRender::QParameter(QStringLiteral("texture0"), nullptr))
     , m_blurredBrightTextureParam(new Qt3DRender::QParameter(QStringLiteral("texture1"), nullptr))
+    , m_fsQuad(nullptr)
 {
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode);
     m_rootFrameGraphNode->setObjectName(QStringLiteral("Bloom Effect"));
@@ -207,7 +210,7 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     auto *gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
                                                 3, 2,
                                                 Qt3DRender::QGraphicsApiFilter::CoreProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert"),
                                                 graphPath,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(gl3Technique);
@@ -215,7 +218,7 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     auto *es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                 3, 0,
                                                 Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert"),
                                                 graphPath,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es3Technique);
@@ -223,17 +226,26 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
     auto *es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                 2, 0,
                                                 Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert"),
                                                 graphPath,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es2Technique);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    auto rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI, 1, 0,
+                                               Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                               QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"),
+                                               graphPath,
+                                               passFilterName, passFilterValue);
+    effect->addTechnique(rhiTechnique);
+#endif
 
     m_blurredBrightTextureParam->setValue(QVariant::fromValue(m_blurredBrightTexture));
     effect->addParameter(m_sceneTextureParam);
     effect->addParameter(m_blurredBrightTextureParam);
 
-    auto bloomQuad = new FullScreenQuad(bloomMaterial, m_rootFrameGraphNode.data());
-    m_layers.push_back(bloomQuad->layer());
+    m_fsQuad = new FullScreenQuad(bloomMaterial, m_rootFrameGraphNode.data());
+    m_layers.push_back(m_fsQuad->layer());
 
     connect(m_thresholdEffect, &ThresholdEffect::thresholdChanged, this, &BloomEffect::thresholdChanged);
     connect(m_blurEffect, &GaussianBlurEffect::blurPassCountChanged, this, &BloomEffect::blurPassCountChanged);
@@ -256,7 +268,7 @@ BloomEffect::BloomEffect(Qt3DCore::QNode *parent)
 
     // Bloom Pass
     auto bloomLayerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
-    bloomLayerFilter->addLayer(bloomQuad->layer());
+    bloomLayerFilter->addLayer(m_fsQuad->layer());
 
     //create RenderPassFilter parented to layerFilter
     FXUtils::createRenderPassFilter(passFilterName, passFilterValue, bloomLayerFilter);
@@ -275,7 +287,7 @@ Qt3DRender::QRenderTarget *BloomEffect::createRenderTarget(Qt3DRender::QAbstract
     auto output = new Qt3DRender::QRenderTargetOutput;
     output->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
     renderTarget->addOutput(output);
-    texture->setFormat(ForwardRenderer::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+    texture->setFormat(FrameGraphUtils::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8_UNorm);
     texture->setSize(512, 512);
     texture->setGenerateMipMaps(false);
     output->setTexture(texture);
@@ -285,7 +297,7 @@ Qt3DRender::QRenderTarget *BloomEffect::createRenderTarget(Qt3DRender::QAbstract
 /*!
  * Returns the frame graph subtree corresponding to the effect's implementation.
  *
- * \sa AbstractPostProcessingEffect::frameGraphSubTree
+ * \sa Kuesa::AbstractPostProcessingEffect::frameGraphSubTree
  */
 AbstractPostProcessingEffect::FrameGraphNodePtr BloomEffect::frameGraphSubTree() const
 {
@@ -295,12 +307,12 @@ AbstractPostProcessingEffect::FrameGraphNodePtr BloomEffect::frameGraphSubTree()
 /*!
  * Sets the size of the rendered scene in pixels to \a size.
  *
- * \sa AbstractPostProcessingEffect::setSceneSize
+ * \sa Kuesa::AbstractPostProcessingEffect::setSceneSize
  */
-void BloomEffect::setSceneSize(const QSize &size)
+void BloomEffect::setWindowSize(const QSize &size)
 {
-    m_blurEffect->setSceneSize(size);
-    m_thresholdEffect->setSceneSize(size);
+    m_blurEffect->setWindowSize(size);
+    m_thresholdEffect->setWindowSize(size);
     m_brightTexture->setSize(size.width(), size.height());
     m_blurredBrightTexture->setSize(size.width(), size.height());
 }
@@ -308,7 +320,7 @@ void BloomEffect::setSceneSize(const QSize &size)
 /*!
  * Sets the input texture for the effect to \a texture.
  *
- * \sa AbstractPostProcessingEffect::setInputTexture
+ * \sa Kuesa::AbstractPostProcessingEffect::setInputTexture
  */
 void BloomEffect::setInputTexture(Qt3DRender::QAbstractTexture *texture)
 {

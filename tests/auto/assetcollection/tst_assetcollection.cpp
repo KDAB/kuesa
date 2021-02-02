@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 
 #include <Kuesa/abstractassetcollection.h>
 #include <Qt3DRender/qmaterial.h>
@@ -42,8 +43,8 @@ class tst_AssetCollection : public QObject
 {
     Q_OBJECT
 public:
-    tst_AssetCollection() {}
-    ~tst_AssetCollection() {}
+    tst_AssetCollection() { }
+    ~tst_AssetCollection() { }
 
 private Q_SLOTS:
     void shouldHaveDefaultState()
@@ -204,6 +205,38 @@ private Q_SLOTS:
         QCOMPARE(collection.names().size(), 0);
         QCOMPARE(collection.find("asset"), nullptr);
         QCOMPARE(nameChangeSpy.count(), 2);
+    }
+
+    void handleSameAssetRegisteredTwice()
+    {
+        // GIVEN
+        DummyAssetCollection collection;
+        QSignalSpy nameChangeSpy(&collection, SIGNAL(namesChanged()));
+
+        // THEN
+        QVERIFY(nameChangeSpy.isValid());
+
+        // WHEN
+        {
+            Qt3DCore::QEntity entity;
+            auto asset = new Qt3DRender::QMaterial(&entity); // has a parent, will not be deleted when replaced in the collection
+
+            // WHEN
+            collection.add("asset_name1", asset);
+            collection.add("asset_name2", asset);
+
+            // THEN
+            QCOMPARE(collection.names().size(), 2);
+            QCOMPARE(collection.find("asset_name1"), asset);
+            QCOMPARE(collection.find("asset_name2"), asset);
+            QCOMPARE(nameChangeSpy.count(), 2);
+        }
+
+        // THEN
+        QCOMPARE(nameChangeSpy.count(), 4);
+        QVERIFY(collection.find("asset_name1") == nullptr);
+        QVERIFY(collection.find("asset_name2") == nullptr);
+        QCOMPARE(collection.names().size(), 0);
     }
 
     void ensureAssetsAreSortedByName()

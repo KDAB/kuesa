@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -50,7 +50,7 @@ class KUESASHARED_EXPORT AbstractRenderStage : public Qt3DRender::QFrameGraphNod
 {
     Q_OBJECT
 public:
-    AbstractRenderStage(Qt3DCore::QNode *parent = nullptr);
+    explicit AbstractRenderStage(Qt3DRender::QFrameGraphNode *parent = nullptr);
     ~AbstractRenderStage();
 };
 } // namespace Kuesa

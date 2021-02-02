@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -49,7 +49,7 @@ namespace {
 QMatrix4x4 matrixFromArray(const QJsonArray &matrixValues)
 {
     if (matrixValues.size() != 16) {
-        qCWarning(kuesa) << "Matrix arrays should contain 16 elements";
+        qCWarning(Kuesa::kuesa) << "Matrix arrays should contain 16 elements";
         return {};
     }
 
@@ -83,11 +83,11 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
     for (const QJsonValue &v : childrenArray) {
         const qint32 childIdx = v.toInt(-1);
         if (childIdx < 0) {
-            qCWarning(kuesa, "Node referencing invalid child");
+            qCWarning(Kuesa::kuesa, "Node referencing invalid child");
             return QPair<bool, TreeNode>(false, node);
         }
         if (node.childrenIndices.contains(childIdx)) {
-            qCWarning(kuesa, "Node referencing same child twice");
+            qCWarning(Kuesa::kuesa, "Node referencing same child twice");
             return QPair<bool, TreeNode>(false, node);
         }
         node.childrenIndices.push_back(childIdx);
@@ -109,7 +109,7 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
                      node.transformInfo.bits |= TreeNode::TransformInfo::ScaleSet;
                      return true;
                  } else {
-                     qCWarning(kuesa, "Node Wrong scale size");
+                     qCWarning(Kuesa::kuesa, "Node Wrong scale size");
                      return false;
                  }
              } },
@@ -123,7 +123,7 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
                      node.transformInfo.bits |= TreeNode::TransformInfo::RotationSet;
                      return true;
                  } else {
-                     qCWarning(kuesa, "Node Wrong rotation size");
+                     qCWarning(Kuesa::kuesa, "Node Wrong rotation size");
                      return false;
                  }
              } },
@@ -136,7 +136,7 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
                      node.transformInfo.bits |= TreeNode::TransformInfo::TranslationSet;
                      return true;
                  } else {
-                     qCWarning(kuesa, "Node Wrong translation size");
+                     qCWarning(Kuesa::kuesa, "Node Wrong translation size");
                      return false;
                  }
              } }
@@ -163,15 +163,37 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
             for (const QJsonValue &layerValue : layerIds) {
                 const int layerId = layerValue.toInt(-1);
                 if (layerId < 0) {
-                    qCWarning(kuesa, "Node referencing invalid Kuesa Layer");
+                    qCWarning(Kuesa::kuesa, "Node referencing invalid Kuesa Layer");
                     return QPair<bool, TreeNode>(false, node);
                 }
                 node.layerIndices.push_back(layerId);
             }
         }
-    } else if (nodeExtensions.contains(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION)) {
+    }
+    if (nodeExtensions.contains(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION)) {
         const QJsonObject lightObject = nodeExtensions.value(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION).toObject();
         node.lightIdx = lightObject.value(KEY_KHR_PUNCTUAL_LIGHT).toInt(-1);
+    }
+    if (nodeExtensions.contains(KEY_KDAB_REFLECTION_PLANES_EXTENSION)) {
+        const QJsonObject reflectionPlaneObject = nodeExtensions.value(KEY_KDAB_REFLECTION_PLANES_EXTENSION).toObject();
+        const QJsonArray planeEquationValue = reflectionPlaneObject.value(KEY_PLANE).toArray();
+        QVector4D planeEquation;
+        if (planeEquationValue.size() == 4) {
+            planeEquation = QVector4D(planeEquationValue[0].toDouble(),
+                    planeEquationValue[1].toDouble(),
+                    planeEquationValue[2].toDouble(),
+                    planeEquationValue[3].toDouble());
+        }
+        if (planeEquation.isNull())
+            qCWarning(Kuesa::kuesa, "Invalid Plane Equation for Reflection Plane");
+        node.reflectionPlaneEquation = planeEquation;
+    }
+
+    if (nodeExtensions.contains(KEY_KDAB_PLACEHOLDER)) {
+        const QJsonObject placeHolderObject = nodeExtensions.value(KEY_KDAB_PLACEHOLDER).toObject();
+        const auto cameraNode = placeHolderObject.value(KEY_KDAB_PLACEHOLDER_CAMERANODE).toInt();
+        node.placeHolder = TreeNode::KDAB_2d_placeholder{static_cast<qint32>(cameraNode)};
+        node.hasPlaceholder = true;
     }
 
     const QJsonArray morphTargetWeights = nodeObj.value(KEY_WEIGHTS).toArray();

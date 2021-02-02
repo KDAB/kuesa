@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Kevin Ottens <kevin.ottens@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -24,7 +24,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-lessThan(QT_MAJOR_VERSION, 5) | lessThan(QT_MINOR_VERSION, 12): error("This project requires Qt 5.12")
+lessThan(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 15): error("This project requires Qt 5.15")
 requires(qtHaveModule(3drender):qtHaveModule(3danimation))
 
 OTHER_FILES += \
@@ -39,3 +39,10 @@ load(qt_parts)
 
 PACKAGE_NAME=KuesaRuntime
 include(package.pri)
+
+include($$OUT_PWD/src/core/qtkuesa-config.pri)
+
+CONFIG(gcov): {
+    QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+    QMAKE_LFLAGS += -fprofile-arcs -ftest-coverage
+}

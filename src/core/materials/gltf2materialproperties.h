@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -34,29 +34,25 @@
 #include <QVector>
 #include <QColor>
 #include <QtGui/QMatrix3x3>
+#include <Qt3DRender/QAbstractTexture>
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
 class QMaterial;
 class QShaderData;
-class QAbstractTexture;
 } // namespace Qt3DRender
 
 namespace Kuesa {
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-class DummyObserver;
-#endif
-
 class KUESASHARED_EXPORT GLTF2MaterialProperties : public Qt3DCore::QNode
 {
     Q_OBJECT
-    Q_PROPERTY(QMatrix3x3 textureTransform READ textureTransform WRITE setTextureTransform NOTIFY textureTransformChanged)
     Q_PROPERTY(bool baseColorUsesTexCoord1 READ isBaseColorUsingTexCoord1 WRITE setBaseColorUsesTexCoord1 NOTIFY baseColorUsesTexCoord1Changed)
     Q_PROPERTY(QColor baseColorFactor READ baseColorFactor WRITE setBaseColorFactor NOTIFY baseColorFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *baseColorMap READ baseColorMap WRITE setBaseColorMap NOTIFY baseColorMapChanged)
     Q_PROPERTY(float alphaCutoff READ alphaCutoff WRITE setAlphaCutoff NOTIFY alphaCutoffChanged)
+    Q_PROPERTY(bool receivesShadows READ receivesShadows WRITE setReceivesShadows NOTIFY receivesShadowsChanged)
 
 public:
     explicit GLTF2MaterialProperties(Qt3DCore::QNode *parent = nullptr);
@@ -66,26 +62,34 @@ public:
     QColor baseColorFactor() const;
     Qt3DRender::QAbstractTexture *baseColorMap() const;
     float alphaCutoff() const;
-    QMatrix3x3 textureTransform() const;
 
     void addClientMaterial(Qt3DRender::QMaterial *material);
     QVector<Qt3DRender::QMaterial *> clientMaterials() const;
 
     virtual Qt3DRender::QShaderData *shaderData() const = 0;
 
+    bool receivesShadows() const;
+    Qt3DRender::QAbstractTexture *shadowMapDepthTexture() const;
+    Qt3DRender::QAbstractTexture *shadowMapCubeDepthTexture() const;
+
 public Q_SLOTS:
     void setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1);
     void setBaseColorFactor(const QColor &baseColorFactor);
     void setBaseColorMap(Qt3DRender::QAbstractTexture *baseColorMap);
     void setAlphaCutoff(float alphaCutoff);
-    void setTextureTransform(const QMatrix3x3 &textureTransform);
+
+    void setReceivesShadows(bool receivesShadows);
+    void setShadowMapDepthTexture(Qt3DRender::QAbstractTexture *depthTexture);
+    void setShadowMapCubeDepthTexture(Qt3DRender::QAbstractTexture *cubeMapDepthTexture);
 
 Q_SIGNALS:
     void baseColorUsesTexCoord1Changed(bool);
     void baseColorFactorChanged(const QColor &baseColorFactor);
     void baseColorMapChanged(Qt3DRender::QAbstractTexture *baseColorMap);
     void alphaCutoffChanged(float alphaCutoff);
-    void textureTransformChanged(const QMatrix3x3 &textureTransform);
+    void receivesShadowsChanged(bool receivesShadows);
+    void shadowMapDepthTextureChanged(Qt3DRender::QAbstractTexture *depthTexture);
+    void shadowMapCubeDepthTextureChanged(Qt3DRender::QAbstractTexture *cubeMapDepthTexture);
 
 private:
     QVector<Qt3DRender::QMaterial *> m_clientMaterials;
@@ -93,14 +97,12 @@ private:
 
     float m_alphaCutOff;
     bool m_usesTexCoord1;
+    bool m_receivesShadows;
     Qt3DRender::QAbstractTexture *m_baseColorTexture;
     QColor m_baseColorFactor;
-    QMatrix3x3 m_textureTransform;
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    mutable DummyObserver *m_dummyObserver;
-    Qt3DCore::QNodeCreatedChangeBasePtr createNodeCreationChange() const override;
-#endif
+    Qt3DRender::QAbstractTexture *m_shadowMapTexture = nullptr;
+    Qt3DRender::QAbstractTexture *m_shadowMapCubeTexture = nullptr;
 };
 } // namespace Kuesa
 

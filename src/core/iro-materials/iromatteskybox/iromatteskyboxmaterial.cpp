@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -47,7 +47,12 @@ namespace Kuesa {
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteSkyboxMaterial is a simple material in terms of rendering that allows to render a skybox for arbitrary meshes by translating the vertices to the eye position.
+    \brief Kuesa::IroMatteSkyboxMaterial is a simple material in terms of
+    rendering that allows to render a skybox for arbitrary meshes by
+    translating the vertices to the eye position.
+
+    \note The View or ForwardRenderer should have its \l
+    {Kuesa::View::skinning} property set to true to be visible.
 */
 
 /*!
@@ -56,14 +61,21 @@ namespace Kuesa {
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteSkyboxMaterial is a simple material in terms of rendering that allows to render a skybox for arbitrary meshes by translating the vertices to the eye position.
+    \brief Kuesa::IroMatteSkyboxMaterial is a simple material in terms of
+    rendering that allows to render a skybox for arbitrary meshes by
+    translating the vertices to the eye position.
+
+    \note The View or ForwardRenderer should have its \l [QML]
+    {Kuesa::View::skinning} property set to true to be visible.
 */
 
 IroMatteSkyboxMaterial::IroMatteSkyboxMaterial(Qt3DCore::QNode *parent)
-    : GLTF2Material(parent),
-    m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("properties"), {}))
+    : GLTF2Material(parent)
+    , m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("properties"), {}))
+    , m_matteMapParameter(new Qt3DRender::QParameter(QStringLiteral("matteMap"), {}))
 {
     addParameter(m_shaderDataParameter);
+    addParameter(m_matteMapParameter);
 }
 
 IroMatteSkyboxMaterial::~IroMatteSkyboxMaterial() = default;
@@ -92,10 +104,17 @@ Kuesa::IroMatteSkyboxProperties *IroMatteSkyboxMaterial::materialProperties() co
 void IroMatteSkyboxMaterial::setMaterialProperties(Kuesa::IroMatteSkyboxProperties *materialProperties)
 {
     if (m_materialProperties != materialProperties) {
+        if (m_materialProperties)
+            m_materialProperties->disconnect(this);
+
         m_materialProperties = materialProperties;
         emit materialPropertiesChanged(materialProperties);
 
         if (m_materialProperties) {
+            QObject::connect(m_materialProperties, &IroMatteSkyboxProperties::matteMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_matteMapParameter->setValue(QVariant::fromValue(t)); });
+
+            m_matteMapParameter->setValue(QVariant::fromValue(m_materialProperties->matteMap()));
+
             m_shaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));
             m_materialProperties->addClientMaterial(this);
         }

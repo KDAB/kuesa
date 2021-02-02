@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,7 +29,7 @@
 #include "depthoffieldeffect.h"
 #include "fullscreenquad.h"
 #include "fx/fxutils_p.h"
-#include "forwardrenderer.h"
+#include "framegraphutils_p.h"
 
 #include <Qt3DRender/qcameraselector.h>
 #include <Qt3DRender/qrendersurfaceselector.h>
@@ -49,6 +49,7 @@
 #include <Qt3DRender/qrenderpassfilter.h>
 #include <Qt3DRender/qrendertarget.h>
 #include <QTimer>
+#include <QVector2D>
 
 QT_BEGIN_NAMESPACE
 /**
@@ -109,7 +110,6 @@ using namespace Kuesa;
  \image fx/dof/dof_distance_5.png
  \caption Depth-of-field effect applied on a Kuesa scene.
 */
-
 
 /*!
  \property DepthOfFieldEffect::focusRange
@@ -172,7 +172,7 @@ using namespace Kuesa;
 /*!
  \qmltype DepthOfFieldEffect
  \inherits AbstractPostProcessingEffect
- \inmodule Kuesa
+ \inqmlmodule Kuesa
  \since Kuesa 1.1
  \brief Post-processing effect implementation of a depth of field.
 
@@ -182,6 +182,7 @@ using namespace Kuesa;
 
  \badcode
  import Kuesa 1.1 as Kuesa
+ import Kuesa.Effects 1.1
 
  Kuesa.SceneEnity {
      id: root
@@ -206,7 +207,6 @@ using namespace Kuesa;
  \image fx/dof/dof_distance_5.png
  \caption Depth-of-field effect applied on a Kuesa scene.
 */
-
 
 /*!
  \qmlproperty float DepthOfFieldEffect::focusRange
@@ -270,7 +270,7 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     : AbstractPostProcessingEffect(parent)
     , m_layer(nullptr)
     , m_textureParam(new Qt3DRender::QParameter(QStringLiteral("textureSampler"), nullptr))
-    , m_textureSizeParam(new Qt3DRender::QParameter(QStringLiteral("textureSize"), nullptr))
+    , m_textureSizeParam(new Qt3DRender::QParameter(QStringLiteral("texSize"), nullptr))
     , m_depthParam(new Qt3DRender::QParameter(QStringLiteral("depthTexture"), nullptr))
     , m_nearPlaneParam(new Qt3DRender::QParameter(QStringLiteral("nearPlane"), nullptr))
     , m_farPlaneParam(new Qt3DRender::QParameter(QStringLiteral("farPlane"), nullptr))
@@ -278,6 +278,7 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     , m_focusDistanceParam(new Qt3DRender::QParameter(QStringLiteral("focusDistance"), nullptr))
     , m_radiusParam(new Qt3DRender::QParameter(QStringLiteral("bokehRadius"), nullptr))
     , m_dofTextureParam(new Qt3DRender::QParameter(QStringLiteral("dofTexture"), nullptr))
+    , m_fsQuad(nullptr)
 {
     setFocusRange(3.f);
     setFocusDistance(8.f);
@@ -291,7 +292,7 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     auto dofOutput = new Qt3DRender::QRenderTargetOutput;
     dofOutput->setAttachmentPoint(Qt3DRender::QRenderTargetOutput::Color0);
     dofOutput->setTexture(m_dofTexture);
-    m_dofTexture->setFormat(ForwardRenderer::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F : Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+    m_dofTexture->setFormat(FrameGraphUtils::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F : Qt3DRender::QAbstractTexture::RGBA8_UNorm);
     m_dofTexture->setSize(512, 512);
     m_dofTexture->setGenerateMipMaps(false);
     blurRenderTarget->addOutput(dofOutput);
@@ -333,12 +334,12 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     auto gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL, 3, 2,
                                                Qt3DRender::QGraphicsApiFilter::CoreProfile);
     gl3Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/dof_blur.frag")),
             dofBlurPassName));
 
     gl3Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/dof_composite.frag")),
             dofCompositionPassName));
 
@@ -347,12 +348,12 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     auto es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES, 2, 0,
                                                Qt3DRender::QGraphicsApiFilter::NoProfile);
     es2Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/dof_blur.frag")),
             dofBlurPassName));
 
     es2Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/es2/dof_composite.frag")),
             dofCompositionPassName));
 
@@ -361,31 +362,49 @@ DepthOfFieldEffect::DepthOfFieldEffect(Qt3DCore::QNode *parent)
     auto es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES, 3, 0,
                                                Qt3DRender::QGraphicsApiFilter::CoreProfile);
     es3Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/dof_blur.frag")),
             dofBlurPassName));
 
     es3Technique->addRenderPass(createRenderPass(
-            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/es3/dof_composite.frag")),
             dofCompositionPassName));
 
     effect->addTechnique(es3Technique);
 
-    auto dofQuad = new FullScreenQuad(dofMaterial, m_rootFrameGraphNode.data());
-    m_layer = dofQuad->layer();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    auto rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI, 1, 0,
+                                               Qt3DRender::QGraphicsApiFilter::NoProfile);
+    rhiTechnique->addRenderPass(createRenderPass(
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/dof_blur.frag")),
+            dofBlurPassName));
+
+    rhiTechnique->addRenderPass(createRenderPass(
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/dof_composite.frag")),
+            dofCompositionPassName));
+
+    effect->addTechnique(rhiTechnique);
+#endif
+
+    m_fsQuad = new FullScreenQuad(dofMaterial, m_rootFrameGraphNode.data());
+    m_layer = m_fsQuad->layer();
 
     //
     //  FrameGraph Construction
     //
     auto layerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
-    layerFilter->addLayer(dofQuad->layer());
+    layerFilter->addLayer(m_fsQuad->layer());
 
     auto blurTargetSelector = new Qt3DRender::QRenderTargetSelector(layerFilter);
     blurTargetSelector->setTarget(blurRenderTarget);
 
     auto blurPassFilter = FXUtils::createRenderPassFilter(passFilterName, dofBlurPassName, blurTargetSelector);
     auto compositePassFilter = FXUtils::createRenderPassFilter(passFilterName, dofCompositionPassName, layerFilter);
+    Q_UNUSED(compositePassFilter);
+    Q_UNUSED(blurPassFilter);
 }
 
 DepthOfFieldEffect::~DepthOfFieldEffect()
@@ -414,6 +433,8 @@ void DepthOfFieldEffect::setDepthTexture(Qt3DRender::QAbstractTexture *texture)
 
 void DepthOfFieldEffect::setCamera(Qt3DCore::QEntity *camera)
 {
+    if (camera == nullptr)
+        return;
     m_nearPlaneParam->setValue(camera->property("nearPlane").toFloat());
     m_farPlaneParam->setValue(camera->property("farPlane").toFloat());
 }
@@ -478,7 +499,7 @@ void DepthOfFieldEffect::setFocusDistance(float focusDistance)
     emit focusDistanceChanged(m_focusDistance);
 }
 
-void DepthOfFieldEffect::setSceneSize(const QSize &size)
+void DepthOfFieldEffect::setWindowSize(const QSize &size)
 {
     m_textureSizeParam->setValue(QSizeF(size));
     m_dofTexture->setSize(size.width(), size.height());

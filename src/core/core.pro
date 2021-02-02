@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -34,17 +34,22 @@ DEFINES += QT_BUILD_KUESA_LIB
 # Avoid windows defines
 win32:DEFINES += WIN32_LEAN_AND_MEAN
 
-QT += qml 3dcore 3dcore-private 3drender 3drender-private 3dquickextras 3danimation
+QT += qml 3dcore 3dcore-private 3drender 3drender-private 3danimation 3dextras 3dlogic
 
-include($$OUT_PWD/qtkuesa-config.pri)
 qtConfig(draco) {
     win32:CONFIG -= precompile_header
     include(../3rdparty/draco/draco_dependency.pri)
 }
 
+qtConfig(ktx) {
+    QMAKE_USE_PRIVATE += ktx
+    include(../3rdparty/ktx/ktx.pri)
+}
+
 include(core.pri)
 include(materials/materials.pri)
 include(iro-materials/iro-materials.pri)
+include(iro2-materials/iro2-materials.pri)
 include(collections/collections.pri)
 include(gltf2importer/gltf2importer.pri)
 include(gltf2exporter/gltf2exporter.pri)
@@ -59,5 +64,6 @@ RESOURCES += \
 OTHER_FILES += \
     configure.pri \
     configure.json
+
 
 load(qt_module)

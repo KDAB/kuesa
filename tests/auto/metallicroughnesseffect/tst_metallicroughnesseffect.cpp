@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,10 +26,15 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 
 #include <Qt3DRender/QTexture>
 #include <Kuesa/metallicroughnesseffect.h>
+#include <Qt3DRender/private/shaderbuilder_p.h>
+#include <Qt3DRender/qshaderprogrambuilder.h>
+#include <Kuesa/private/effectslibrary_p.h>
+#include "fakerenderer.h"
 
 using namespace Kuesa;
 
@@ -50,11 +55,16 @@ private Q_SLOTS:
         QCOMPARE(effect.isAmbientOcclusionMapEnabled(), false);
         QCOMPARE(effect.isEmissiveMapEnabled(), false);
         QCOMPARE(effect.isUsingColorAttribute(), false);
+        QCOMPARE(effect.isUsingNormalAttribute(), false);
+        QCOMPARE(effect.isUsingTangentAttribute(), false);
+        QCOMPARE(effect.isUsingTexCoordAttribute(), false);
+        QCOMPARE(effect.isUsingTexCoord1Attribute(), false);
         QCOMPARE(effect.isDoubleSided(), false);
-        QCOMPARE(effect.useSkinning(), false);
+        QCOMPARE(effect.isUsingSkinning(), false);
         QCOMPARE(effect.isOpaque(), true);
         QCOMPARE(effect.isAlphaCutoffEnabled(), false);
         QCOMPARE(effect.brdfLUT(), nullptr);
+        QCOMPARE(effect.isInstanced(), false);
     }
 
     void checkEffectProperties()
@@ -68,11 +78,35 @@ private Q_SLOTS:
         QSignalSpy ambientOcclusionMapSpy(&effect, &Kuesa::MetallicRoughnessEffect::ambientOcclusionMapEnabledChanged);
         QSignalSpy emissiveMapSpy(&effect, &Kuesa::MetallicRoughnessEffect::emissiveMapEnabledChanged);
         QSignalSpy usingColorAttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingColorAttributeChanged);
+        QSignalSpy usingNormalAttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingNormalAttributeChanged);
+        QSignalSpy usingTangentAttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingTangentAttributeChanged);
+        QSignalSpy usingTexCoordAttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingTexCoordAttributeChanged);
+        QSignalSpy usingTexCoord1AttributeSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingTexCoord1AttributeChanged);
         QSignalSpy doubleSidedSpy(&effect, &Kuesa::MetallicRoughnessEffect::doubleSidedChanged);
-        QSignalSpy useSkinningSpy(&effect, &Kuesa::MetallicRoughnessEffect::useSkinningChanged);
+        QSignalSpy useSkinningSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingSkinningChanged);
+        QSignalSpy useMorphTargetsSpy(&effect, &Kuesa::MetallicRoughnessEffect::usingMorphTargetsChanged);
         QSignalSpy opaqueSpy(&effect, &Kuesa::MetallicRoughnessEffect::opaqueChanged);
         QSignalSpy alphaCutoffSpy(&effect, &Kuesa::MetallicRoughnessEffect::alphaCutoffEnabledChanged);
         QSignalSpy brdfLUTSpy(&effect, &Kuesa::MetallicRoughnessEffect::brdfLUTChanged);
+        QSignalSpy instancedSpy(&effect, &Kuesa::MetallicRoughnessEffect::instancedChanged);
+
+        // THEN
+        QVERIFY(baseColorMapSpy.isValid());
+        QVERIFY(metalRoughMapSpy.isValid());
+        QVERIFY(normalMapSpy.isValid());
+        QVERIFY(ambientOcclusionMapSpy.isValid());
+        QVERIFY(usingColorAttributeSpy.isValid());
+        QVERIFY(usingNormalAttributeSpy.isValid());
+        QVERIFY(usingTangentAttributeSpy.isValid());
+        QVERIFY(usingTexCoordAttributeSpy.isValid());
+        QVERIFY(usingTexCoord1AttributeSpy.isValid());
+        QVERIFY(doubleSidedSpy.isValid());
+        QVERIFY(useSkinningSpy.isValid());
+        QVERIFY(useMorphTargetsSpy.isValid());
+        QVERIFY(opaqueSpy.isValid());
+        QVERIFY(alphaCutoffSpy.isValid());
+        QVERIFY(brdfLUTSpy.isValid());
+        QVERIFY(instancedSpy.isValid());
 
         {
             // WHEN
@@ -142,6 +176,50 @@ private Q_SLOTS:
 
         {
             // WHEN
+            effect.setUsingNormalAttribute(false);
+            effect.setUsingNormalAttribute(true);
+            effect.setUsingNormalAttribute(true);
+
+            // THEN
+            QCOMPARE(effect.isUsingNormalAttribute(), true);
+            QCOMPARE(usingNormalAttributeSpy.count(), 1);
+        }
+
+        {
+            // WHEN
+            effect.setUsingTangentAttribute(false);
+            effect.setUsingTangentAttribute(true);
+            effect.setUsingTangentAttribute(true);
+
+            // THEN
+            QCOMPARE(effect.isUsingTangentAttribute(), true);
+            QCOMPARE(usingTangentAttributeSpy.count(), 1);
+        }
+
+        {
+            // WHEN
+            effect.setUsingTexCoordAttribute(false);
+            effect.setUsingTexCoordAttribute(true);
+            effect.setUsingTexCoordAttribute(true);
+
+            // THEN
+            QCOMPARE(effect.isUsingTexCoordAttribute(), true);
+            QCOMPARE(usingTexCoordAttributeSpy.count(), 1);
+        }
+
+        {
+            // WHEN
+            effect.setUsingTexCoord1Attribute(false);
+            effect.setUsingTexCoord1Attribute(true);
+            effect.setUsingTexCoord1Attribute(true);
+
+            // THEN
+            QCOMPARE(effect.isUsingTexCoord1Attribute(), true);
+            QCOMPARE(usingTexCoord1AttributeSpy.count(), 1);
+        }
+
+        {
+            // WHEN
             effect.setDoubleSided(false);
             effect.setDoubleSided(true);
             effect.setDoubleSided(true);
@@ -153,13 +231,24 @@ private Q_SLOTS:
 
         {
             // WHEN
-            effect.setUseSkinning(false);
-            effect.setUseSkinning(true);
-            effect.setUseSkinning(true);
+            effect.setUsingSkinning(false);
+            effect.setUsingSkinning(true);
+            effect.setUsingSkinning(true);
 
             // THEN
-            QCOMPARE(effect.useSkinning(), true);
+            QCOMPARE(effect.isUsingSkinning(), true);
             QCOMPARE(useSkinningSpy.count(), 1);
+        }
+
+        {
+            // WHEN
+            effect.setUsingMorphTargets(false);
+            effect.setUsingMorphTargets(true);
+            effect.setUsingMorphTargets(true);
+
+            // THEN
+            QCOMPARE(effect.isUsingMorphTargets(), true);
+            QCOMPARE(useMorphTargetsSpy.count(), 1);
         }
 
         {
@@ -195,9 +284,89 @@ private Q_SLOTS:
             QCOMPARE(effect.brdfLUT(), texture2D);
             QCOMPARE(brdfLUTSpy.count(), 1);
         }
+
+        {
+            // WHEN
+            effect.setInstanced(false);
+            effect.setInstanced(true);
+            effect.setInstanced(true);
+
+            // THEN
+            QCOMPARE(effect.isInstanced(), true);
+            QCOMPARE(instancedSpy.count(), 1);
+        }
+    }
+
+    void checkShaderGeneration_data()
+    {
+        QTest::addColumn<EffectProperties::Properties>("props");
+
+        QTest::newRow("BaseColorMap") << EffectProperties::Properties(EffectProperties::BaseColorMap);
+        QTest::newRow("MetalRoughnessMap") << EffectProperties::Properties(EffectProperties::MetalRoughnessMap);
+        QTest::newRow("AmbientOcclusionMap") << EffectProperties::Properties(EffectProperties::AOMap);
+        QTest::newRow("NormalMap") << EffectProperties::Properties(EffectProperties::NormalMap);
+        QTest::newRow("EmissiveMap") << EffectProperties::Properties(EffectProperties::EmissiveMap);
+        QTest::newRow("Blend") << EffectProperties::Properties(EffectProperties::Blend);
+        QTest::newRow("Mask") << EffectProperties::Properties(EffectProperties::Mask);
+        QTest::newRow("DoubleSided") << EffectProperties::Properties(EffectProperties::DoubleSided);
+        QTest::newRow("VertexColor") << EffectProperties::Properties(EffectProperties::VertexColor);
+        QTest::newRow("VertexNormal") << EffectProperties::Properties(EffectProperties::VertexNormal);
+        QTest::newRow("VertexTangent") << EffectProperties::Properties(EffectProperties::VertexTangent);
+        QTest::newRow("VertexTexCoord") << EffectProperties::Properties(EffectProperties::VertexTexCoord);
+        QTest::newRow("VertexTexCoord1") << EffectProperties::Properties(EffectProperties::VertexTexCoord1);
+        QTest::newRow("Skinning") << EffectProperties::Properties(EffectProperties::Skinning);
+        QTest::newRow("MorphTargets") << EffectProperties::Properties(EffectProperties::MorphTargets);
+        QTest::newRow("NoSkinningWithBaseEmissiveAndNormalMaps") << EffectProperties::Properties(EffectProperties::BaseColorMap |
+                                                                                                 EffectProperties::MetalRoughnessMap |
+                                                                                                 EffectProperties::NormalMap |
+                                                                                                 EffectProperties::EmissiveMap |
+                                                                                                 EffectProperties::VertexNormal |
+                                                                                                 EffectProperties::VertexTexCoord);
+    }
+
+    void checkShaderGeneration()
+    {
+        // GIVEN
+        QFETCH(EffectProperties::Properties, props);
+        FakeRenderer renderer;
+        qputenv("QT3D_REBUILD_SHADER_CACHE", "1");
+
+        auto testEffectGenerator = [&] (Kuesa::MetallicRoughnessEffect *e) {
+            for (Qt3DRender::QTechnique *t : e->techniques()) {
+                Kuesa::MetallicRoughnessTechnique *technique = qobject_cast<Kuesa::MetallicRoughnessTechnique *>(t);
+
+                // THEN
+                QVERIFY(t != nullptr);
+
+                // WHEN
+                Qt3DRender::QShaderProgramBuilder *frontendBuilder = technique->metalRoughShaderBuilder();
+                Qt3DRender::Render::ShaderBuilder builder;
+                builder.setEnabled(true);
+                builder.setRenderer(&renderer);
+                builder.syncFromFrontEnd(frontendBuilder, true);
+
+                // THEN -> Shouldn't crash
+                builder.setGraphicsApi(Qt3DRender::QGraphicsApiFilterPrivate::get(t->graphicsApiFilter())->m_data);
+                builder.generateCode(Qt3DRender::QShaderProgram::Vertex);
+                builder.generateCode(Qt3DRender::QShaderProgram::Fragment);
+            }
+        };
+
+        // WHEN
+        {
+            MetallicRoughnessEffect *e = EffectsLibrary::createMetallicRoughnessEffectWithKey(props);
+            testEffectGenerator(e);
+        }
+        // WHEN
+        {
+            MetallicRoughnessEffect *e = EffectsLibrary::createMetallicRoughnessEffectWithKey(props);
+            e->setInstanced(true);
+            testEffectGenerator(e);
+        }
+
     }
 };
 
-QTEST_APPLESS_MAIN(tst_MetallicRoughnessEffect)
+QTEST_MAIN(tst_MetallicRoughnessEffect)
 
 #include "tst_metallicroughnesseffect.moc"

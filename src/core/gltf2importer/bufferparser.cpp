@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -94,7 +94,7 @@ bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) 
                 if (hasExpectedSize) {
                     context->addBuffer(data);
                 } else {
-                    qCWarning(kuesa) << "Unexpected size of" << data.size() << "bytes for buffer" << bufferName << " expected" << expectedSize << "bytes";
+                    qCWarning(Kuesa::kuesa) << "Unexpected size of" << data.size() << "bytes for buffer" << bufferName << " expected" << expectedSize << "bytes";
                     return false;
                 }
             }
@@ -104,7 +104,7 @@ bool BufferParser::parse(const QJsonArray &buffersArray, GLTF2Context *context) 
         }
 
         if (!readSuccess) {
-            qCWarning(kuesa) << "Failed to read buffer" << bufferName << " (" << bufferId << ")";
+            qCWarning(Kuesa::kuesa) << "Failed to read buffer" << bufferName << " (" << bufferId << ")";
             return false;
         }
     }

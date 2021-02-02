@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -32,7 +32,7 @@ import Qt3D.Animation 2.12
 import Qt3D.Input 2.12
 import Qt3D.Extras 2.12
 import Kuesa 1.1 as Kuesa
-import KuesaViewer 1.0 as KuesaViewer
+import Kuesa.Utils 1.3 as KuesaUtils
 
 Kuesa.SceneEntity {
     id: root
@@ -58,6 +58,7 @@ Kuesa.SceneEntity {
                 id: frameGraph
                 camera: cameraAsset.node ? cameraAsset.node : fallbackCamera
                 clearColor: "white"
+                reflectionPlanes: [ reflectionPlaneAsset.node ]
             }
         },
         InputSettings { },
@@ -93,7 +94,7 @@ Kuesa.SceneEntity {
         aspectRatio: _winSize.width / _winSize.height
     }
 
-    KuesaViewer.OrbitCameraController {
+    KuesaUtils.OrbitCameraController {
         id: controller
         camera: frameGraph.camera
         windowSize: _winSize
@@ -107,6 +108,19 @@ Kuesa.SceneEntity {
             if (node)
                 node.aspectRatio = _winSize.width / _winSize.height
         }
+    }
+
+    Kuesa.Asset {
+        id: reflectionPlaneAsset
+        name: {
+            if (root.reflectionPlanes.names.length > 0) {
+                if (_gltfReflectionPlane)
+                    return _gltfReflectionPlane
+                return root.reflectionPlanes.names[0]
+            }
+            return ""
+        }
+        collection: root.reflectionPlanes
     }
 
     Kuesa.GLTF2Importer {

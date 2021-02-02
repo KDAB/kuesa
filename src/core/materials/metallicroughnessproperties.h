@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -32,12 +32,10 @@
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/GLTF2MaterialProperties>
 #include <QColor>
+#include <Qt3DRender/qabstracttexture.h>
+#include <Kuesa/TextureTransform>
 
 QT_BEGIN_NAMESPACE
-
-namespace Qt3DRender {
-class QAbstractTexture;
-}
 
 namespace Kuesa {
 class MetallicRoughnessMaterial;
@@ -50,18 +48,23 @@ class KUESASHARED_EXPORT MetallicRoughnessProperties : public GLTF2MaterialPrope
     Q_PROPERTY(bool normalUsesTexCoord1 READ isNormalUsingTexCoord1 WRITE setNormalUsesTexCoord1 NOTIFY normalUsesTexCoord1Changed)
     Q_PROPERTY(bool aoUsesTexCoord1 READ isAOUsingTexCoord1 WRITE setAOUsesTexCoord1 NOTIFY aoUsesTexCoord1Changed)
     Q_PROPERTY(bool emissiveUsesTexCoord1 READ isEmissiveUsingTexCoord1 WRITE setEmissiveUsesTexCoord1 NOTIFY emissiveUsesTexCoord1Changed)
+    Q_PROPERTY(Kuesa::TextureTransform *baseColorMapTextureTransform READ baseColorMapTextureTransform)
 
     Q_PROPERTY(float metallicFactor READ metallicFactor WRITE setMetallicFactor NOTIFY metallicFactorChanged)
     Q_PROPERTY(float roughnessFactor READ roughnessFactor WRITE setRoughnessFactor NOTIFY roughnessFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *metalRoughMap READ metalRoughMap WRITE setMetalRoughMap NOTIFY metalRoughMapChanged)
+    Q_PROPERTY(Kuesa::TextureTransform *metalRoughMapTextureTransform READ metalRoughMapTextureTransform)
 
     Q_PROPERTY(float normalScale READ normalScale WRITE setNormalScale NOTIFY normalScaleChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
+    Q_PROPERTY(Kuesa::TextureTransform *normalMapTextureTransform READ normalMapTextureTransform)
 
     Q_PROPERTY(Qt3DRender::QAbstractTexture *ambientOcclusionMap READ ambientOcclusionMap WRITE setAmbientOcclusionMap NOTIFY ambientOcclusionMapChanged)
+    Q_PROPERTY(Kuesa::TextureTransform *ambientOcclusionMapTextureTransform READ ambientOcclusionMapTextureTransform)
 
     Q_PROPERTY(QColor emissiveFactor READ emissiveFactor WRITE setEmissiveFactor NOTIFY emissiveFactorChanged)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *emissiveMap READ emissiveMap WRITE setEmissiveMap NOTIFY emissiveMapChanged)
+    Q_PROPERTY(Kuesa::TextureTransform *emissiveMapTextureTransform READ emissiveMapTextureTransform)
 
 public:
     explicit MetallicRoughnessProperties(Qt3DCore::QNode *parent = nullptr);
@@ -74,17 +77,25 @@ public:
     bool isAOUsingTexCoord1() const;
     bool isEmissiveUsingTexCoord1() const;
 
+    Kuesa::TextureTransform *baseColorMapTextureTransform() const;
+
     float metallicFactor() const;
     float roughnessFactor() const;
     Qt3DRender::QAbstractTexture *metalRoughMap() const;
+    Kuesa::TextureTransform *metalRoughMapTextureTransform() const;
+
 
     float normalScale() const;
     Qt3DRender::QAbstractTexture *normalMap() const;
+    Kuesa::TextureTransform *normalMapTextureTransform() const;
 
     Qt3DRender::QAbstractTexture *ambientOcclusionMap() const;
+    Kuesa::TextureTransform *ambientOcclusionMapTextureTransform() const;
 
     QColor emissiveFactor() const;
     Qt3DRender::QAbstractTexture *emissiveMap() const;
+    Kuesa::TextureTransform *emissiveMapTextureTransform() const;
+
 
 public Q_SLOTS:
     void setMetallicRoughnessUsesTexCoord1(bool metallicRoughnessUsesTexCoord1);
@@ -125,6 +136,18 @@ Q_SIGNALS:
 private:
     friend class MetallicRoughnessMaterial;
     MetallicRoughnessShaderData *m_metallicRoughnessShaderData;
+
+    Kuesa::TextureTransform *m_baseColorMapTextureTransform;
+    Kuesa::TextureTransform *m_metalRoughMapTextureTransform;
+    Kuesa::TextureTransform *m_normalMapTextureTransform;
+    Kuesa::TextureTransform *m_ambientOcclusionMapTextureTransform;
+    Kuesa::TextureTransform *m_emissiveMapTextureTransform;
+
+    Qt3DRender::QAbstractTexture *m_emissiveMap;
+    Qt3DRender::QAbstractTexture *m_normalMap;
+    Qt3DRender::QAbstractTexture *m_metalRoughMap;
+    Qt3DRender::QAbstractTexture *m_ambientOcclusionMap;
+
 };
 } // namespace Kuesa
 

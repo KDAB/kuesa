@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -51,6 +51,7 @@ namespace Kuesa {
 class ThresholdEffect;
 class GaussianBlurEffect;
 class BloomMaterial;
+class FullScreenQuad;
 
 class KUESASHARED_EXPORT BloomEffect : public AbstractPostProcessingEffect
 {
@@ -65,7 +66,7 @@ public:
     FrameGraphNodePtr frameGraphSubTree() const override;
     QVector<Qt3DRender::QLayer *> layers() const override;
 
-    void setSceneSize(const QSize &size) override;
+    void setWindowSize(const QSize &sceneSize) override;
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
 
     float threshold() const;
@@ -94,6 +95,7 @@ private:
 
     Qt3DRender::QParameter *m_sceneTextureParam;
     Qt3DRender::QParameter *m_blurredBrightTextureParam;
+    FullScreenQuad *m_fsQuad;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

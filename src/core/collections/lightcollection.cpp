@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -28,6 +28,8 @@
 
 #include "lightcollection.h"
 #include <Qt3DCore/QEntity>
+#include <Kuesa/shadowcastinglight.h>
+#include <Kuesa/private/shadowmapmanager_p.h>
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
@@ -40,7 +42,7 @@ using namespace Kuesa;
  * \since Kuesa 1.1
  * \inherits Kuesa::AbstractAssetCollection
  *
- * Kuesa::LightCollection manages a set of Qt3DRender::QCamera assets.
+ * Kuesa::LightCollection manages a set of Qt3DRender::QAbstractLight assets.
  */
 
 /*!
@@ -65,7 +67,26 @@ using namespace Kuesa;
 
 LightCollection::LightCollection(Qt3DCore::QNode *parent)
     : AbstractAssetCollection(parent)
+    , m_shadowMapManager(new ShadowMapManager(this))
 {
+    connect(this, &AbstractAssetCollection::namesChanged, this, &LightCollection::updateLights);
+}
+
+ShadowMapManager *LightCollection::shadowMapManager() const
+{
+    return m_shadowMapManager;
+}
+
+void LightCollection::updateLights()
+{
+    const auto lightNames = names();
+    QVector<ShadowCastingLight *> lights;
+    lights.reserve(lightNames.size());
+    std::transform(lightNames.cbegin(), lightNames.cend(), std::back_inserter(lights),
+                   [this](const QString &lightName) {
+                       return find(lightName);
+                   });
+    m_shadowMapManager->setLights(lights);
 }
 
 LightCollection::~LightCollection() = default;

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -31,6 +31,8 @@
 #include "gltf2context_p.h"
 #include "kuesa_p.h"
 #include "texturesamplerparser_p.h"
+#include "embeddedtextureimage_p.h"
+#include "assetkeyparser_p.h"
 
 #include <Qt3DRender/QTexture>
 #include <Qt3DRender/QTextureWrapMode>
@@ -46,55 +48,7 @@ const QLatin1String KEY_NAME = QLatin1String("name");
 const QLatin1String KEY_GLTF_EXTENSION = QLatin1String("extensions");
 const QLatin1String KEY_MSFT_DDS_EXTENSION = QLatin1String("MSFT_texture_dds");
 
-class EmbeddedTextureImageFunctor : public Qt3DRender::QTextureImageDataGenerator
-{
-public:
-    QT_WARNING_PUSH
-    QT_WARNING_DISABLE_DEPRECATED
-    EmbeddedTextureImageFunctor(const QImage &image)
-        : m_image(image)
-    {
-    }
-    QT_WARNING_POP
-
-    Qt3DRender::QTextureImageDataPtr operator()() override
-    {
-        Qt3DRender::QTextureImageDataPtr dataPtr = Qt3DRender::QTextureImageDataPtr::create();
-        dataPtr->setImage(m_image);
-        return dataPtr;
-    }
-
-    bool operator==(const Qt3DRender::QTextureImageDataGenerator &other) const override
-    {
-        const EmbeddedTextureImageFunctor *otherFunctor = functor_cast<EmbeddedTextureImageFunctor>(&other);
-        return (otherFunctor != nullptr && otherFunctor->m_image == m_image);
-    }
-
-    QT_WARNING_PUSH
-    QT_WARNING_DISABLE_DEPRECATED
-    QT3D_FUNCTOR(EmbeddedTextureImageFunctor)
-    QT_WARNING_POP
-
-private:
-    QImage m_image;
-};
-
 } // namespace
-
-TextureParser::EmbeddedTextureImage::EmbeddedTextureImage(const QImage &image, Qt3DCore::QNode *parent)
-    : Qt3DRender::QAbstractTextureImage(parent), m_image(image)
-{
-}
-
-Qt3DRender::QTextureImageDataGeneratorPtr TextureParser::EmbeddedTextureImage::dataGenerator() const
-{
-    return Qt3DRender::QTextureImageDataGeneratorPtr(new EmbeddedTextureImageFunctor(m_image));
-}
-
-QImage TextureParser::EmbeddedTextureImage::image()
-{
-    return m_image;
-}
 
 bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context) const
 {
@@ -106,89 +60,41 @@ bool TextureParser::parse(const QJsonArray &texturesArray, GLTF2Context *context
         auto texture = Texture();
         texture.name = textureObject[KEY_NAME].toString();
 
+        // Parse Share Key Extension
+        AssetKeyParser::parse(texture, textureObject);
+
         auto sourceValue = textureObject[KEY_SOURCE];
 
         //Check whether there is a compressed texture available and if so, use it instead
-        bool isDDSTexture = false;
         if (textureObject.contains(KEY_GLTF_EXTENSION)) {
             const auto &ddsExtension = textureObject[KEY_GLTF_EXTENSION][KEY_MSFT_DDS_EXTENSION];
             if (!ddsExtension.isUndefined()) {
-                isDDSTexture = true;
+                texture.isDDSTexture = true;
                 sourceValue = ddsExtension[KEY_SOURCE];
             }
         }
 
         if (sourceValue.isUndefined()) {
-            qCWarning(kuesa, "Unknown image source for texture");
+            qCWarning(Kuesa::kuesa, "Unknown image source for texture");
             context->addTexture(texture);
             continue;
         }
 
+        texture.sourceImage = sourceValue.toInt();
         const auto image = context->image(sourceValue.toInt());
         if (image.url.isEmpty() && image.data.isEmpty()) {
-            qCWarning(kuesa) << "Invalid image source index for texture:" << sourceValue.toInt();
+            qCWarning(Kuesa::kuesa) << "Invalid image source index for texture:" << sourceValue.toInt();
             return false; // Not a valid image
         }
 
-        auto texture2d = std::unique_ptr<Qt3DRender::QAbstractTexture>(nullptr);
-        if (isDDSTexture) {
-            if (image.data.isEmpty()) {
-                auto textureLoader = new Qt3DRender::QTextureLoader;
-                texture2d.reset(textureLoader);
-                textureLoader->setSource(image.url);
-            } else {
-                // embedded DDS images not supported for now
-                qCWarning(kuesa) << "Embedded DDS images are not currently supported";
-                return false;
-            }
-        } else {
-            texture2d.reset(new Qt3DRender::QTexture2D);
-            auto *textureImage = image.key.isEmpty() ? nullptr : sharedImages.value(image.key);
-
-            if (textureImage == nullptr) {
-                if (image.data.isEmpty()) {
-                    auto ti = new Qt3DRender::QTextureImage();
-                    ti->setSource(image.url);
-                    ti->setMirrored(false);
-                    textureImage = ti;
-                } else {
-                    QImage qimage;
-                    if (!qimage.loadFromData(image.data)) {
-                        qCWarning(kuesa) << "Failed to decode image " << sourceValue.toInt() << "from buffer";
-                        return false;
-                    }
-                    textureImage = new EmbeddedTextureImage(qimage);
-                }
-                if (!image.key.isEmpty())
-                    sharedImages.insert(image.key, textureImage);
-            }
-
-            // Add Image to Texture if compatible
-            if (ensureImageIsCompatibleWithTexture(textureImage, texture2d.get()))
-                texture2d->addTextureImage(textureImage);
-            else
-                qCWarning(kuesa) << "Image with source" << image.url << "is incompatbile with texture" << texture2d->objectName();
-        }
-
         const auto &samplerValue = textureObject[KEY_SAMPLER];
-        if (samplerValue.isUndefined()) {
-            // Repeat wrappring and auto filtering should be used
-            texture2d->setWrapMode(Qt3DRender::QTextureWrapMode(Qt3DRender::QTextureWrapMode::Repeat));
-            texture2d->setGenerateMipMaps(true);
-            texture2d->setMinificationFilter(Qt3DRender::QAbstractTexture::LinearMipMapLinear);
-            texture2d->setMagnificationFilter(Qt3DRender::QAbstractTexture::Linear);
-        } else {
+        if (!samplerValue.isUndefined()) {
             const auto sampler = context->textureSampler(samplerValue.toInt());
             if (!sampler.textureWrapMode)
                 return false; // We could use default wrapping, but the file is wrong, so we reject it
 
-            texture2d->setWrapMode(*sampler.textureWrapMode.get());
-            texture2d->setMinificationFilter(sampler.minificationFilter);
-            texture2d->setMagnificationFilter(sampler.magnificationFilter);
+            texture.sampler = samplerValue.toInt();
         }
-
-        texture2d->setObjectName(textureObject[KEY_NAME].toString());
-        texture.texture = texture2d.release();
 
         context->addTexture(texture);
     }
@@ -211,7 +117,7 @@ bool TextureParser::ensureImageIsCompatibleWithTexture(Qt3DRender::QAbstractText
         std::find(std::begin(arrayTargets),
                   std::end(arrayTargets),
                   texture->target()) == std::end(arrayTargets)) {
-        qCWarning(kuesa) << "Using an image with layer specified for a non array texture" << texture->objectName();
+        qCWarning(Kuesa::kuesa) << "Using an image with layer specified for a non array texture" << texture->objectName();
         return false;
     } else {
         const auto textureImages = texture->textureImages();
@@ -220,7 +126,7 @@ bool TextureParser::ensureImageIsCompatibleWithTexture(Qt3DRender::QAbstractText
             if (img->layer() == image->layer() &&
                 img->mipLevel() == image->mipLevel() &&
                 img->face() == image->face()) {
-                qCWarning(kuesa) << "Texture contains two images for the same layer and mipmap level";
+                qCWarning(Kuesa::kuesa) << "Texture contains two images for the same layer and mipmap level";
                 break;
             }
         }

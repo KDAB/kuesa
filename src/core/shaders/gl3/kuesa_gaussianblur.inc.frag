@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -33,6 +33,8 @@ const float weight[samples] = float[]( 0.2270270270,
                                        0.1216216216,
                                        0.0540540541,
                                        0.0162162162 );
+
+uniform sampler2D textureSampler;
 
 vec4 kuesa_gaussianBlur(const in int pass,
                         const in float width,

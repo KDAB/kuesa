@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
 <!-- iro-materials-gallery.qdoc -->
-  <title>Kuesa Iro-Materials-Gallery QML Example | Kuesa Runtime 1.2</title>
+  <title>Kuesa Iro-Materials-Gallery QML Example | Kuesa Runtime 1.3</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Iro-Materials-Gallery QML Example</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><h1 class="title">Kuesa Iro-Materials-Gallery QML Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
@@ -17,7 +17,7 @@
 
      This file is part of Kuesa.
 
-     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
      Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
 
      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -62,21 +62,8 @@
  <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> ComponentType<span class="operator">&gt;</span>
  <span class="keyword">inline</span> ComponentType <span class="operator">*</span>componentFromEntity(<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>e)
  {
- <span class="preprocessor">#if QT_VERSION &gt;= QT_VERSION_CHECK(5, 13, 0)</span>
      <span class="keyword">const</span> <span class="keyword">auto</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>componentsOfType<span class="operator">&lt;</span>ComponentType<span class="operator">&gt;</span>();
      <span class="keyword">return</span> cmps<span class="operator">.</span>size() <span class="operator">&gt;</span> <span class="number">0</span> <span class="operator">?</span> cmps<span class="operator">.</span>first() : nullptr;
- <span class="preprocessor">#else</span>
-     ComponentType <span class="operator">*</span>typedComponent <span class="operator">=</span> nullptr;
-     <span class="keyword">const</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponentVector</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>components();
-
-     <span class="keyword">for</span> (<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponent</span> <span class="operator">*</span>c : cmps) {
-         typedComponent <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>ComponentType <span class="operator">*</span><span class="operator">&gt;</span>(c);
-         <span class="keyword">if</span> (typedComponent <span class="operator">!</span><span class="operator">=</span> nullptr)
-             <span class="keyword">break</span>;
-     }
-
-     <span class="keyword">return</span> typedComponent;
- <span class="preprocessor">#endif</span>
  }
 
  <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> ComponentType<span class="operator">&gt;</span>
@@ -120,13 +107,13 @@
                  <span class="operator">.</span>arg(color<span class="operator">.</span>alphaF());
      }
      <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Vector2D: {
-         <span class="keyword">const</span> QVector4D v2 <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span>QVector2D<span class="operator">&gt;</span>();
+         <span class="keyword">const</span> QVector2D v2 <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span>QVector2D<span class="operator">&gt;</span>();
          <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;[%1, %2]&quot;</span>)
                  <span class="operator">.</span>arg(v2<span class="operator">.</span>x())
                  <span class="operator">.</span>arg(v2<span class="operator">.</span>y());
      }
      <span class="keyword">case</span> <span class="type">QVariant</span><span class="operator">::</span>Vector3D: {
-         <span class="keyword">const</span> QVector4D v3 <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span>QVector3D<span class="operator">&gt;</span>();
+         <span class="keyword">const</span> QVector3D v3 <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span>QVector3D<span class="operator">&gt;</span>();
          <span class="keyword">return</span> <span class="type">QString</span>(<span class="string">&quot;[%1, %2, %3]&quot;</span>)
                  <span class="operator">.</span>arg(v3<span class="operator">.</span>x())
                  <span class="operator">.</span>arg(v3<span class="operator">.</span>y())
@@ -171,10 +158,6 @@
 
  <span class="type">void</span> MaterialInspector<span class="operator">::</span>inspect(<span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QPickEvent</span> <span class="operator">*</span>pick)
  {
- <span class="preprocessor">#if QT_VERSION &lt; QT_VERSION_CHECK(5, 14, 0)</span>
-     qWarning() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Picking materials only available since 5.14&quot;</span>;
-     <span class="keyword">return</span>;
- <span class="preprocessor">#else</span>
      <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>entity <span class="operator">=</span> pick<span class="operator">-</span><span class="operator">&gt;</span>entity();
 
      <span class="keyword">if</span> (entity <span class="operator">=</span><span class="operator">=</span> nullptr) {
@@ -184,7 +167,6 @@
 
      Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material <span class="operator">=</span> findFirstComponentInstanceInHierarchy<span class="operator">&lt;</span>Kuesa<span class="operator">::</span>GLTF2Material<span class="operator">&gt;</span>(entity);
      setMaterial(material);
- <span class="preprocessor">#endif</span>
  }
 
  <span class="type">void</span> MaterialInspector<span class="operator">::</span>setMaterial(Kuesa<span class="operator">::</span>GLTF2Material <span class="operator">*</span>material)

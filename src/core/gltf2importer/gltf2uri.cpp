@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -108,7 +108,7 @@ QByteArray parseEmbeddedData(const QString &uri)
 
     const QByteArray header = data.left(separatorPos);
     if (!header.endsWith(QByteArray(";base64"))) {
-        qCWarning(kuesa, "URI Embedded data currently only supports Base64 encoding");
+        qCWarning(Kuesa::kuesa, "URI Embedded data currently only supports Base64 encoding");
         return {};
     }
 
@@ -142,7 +142,7 @@ QByteArray fetchData(const QString &uri, const QDir &basePath, bool &success)
         if (success)
             return dataFile.readAll();
         else
-            qCWarning(kuesa) << "Failed to open" << uri;
+            qCWarning(Kuesa::kuesa) << "Failed to open" << uri;
     }
     }
 

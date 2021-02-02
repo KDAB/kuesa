@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -40,18 +40,31 @@
 // We mean it.
 //
 
+#include <Kuesa/private/kuesa_global_p.h>
 #include "abstractrenderstage_p.h"
+#include <Qt3DRender/QCullFace>
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-class Q_AUTOTEST_EXPORT ZFillRenderStage : public AbstractRenderStage
+class KUESA_PRIVATE_EXPORT ZFillRenderStage : public AbstractRenderStage
 {
     Q_OBJECT
 public:
-    ZFillRenderStage(Qt3DCore::QNode *parent = nullptr);
+    explicit ZFillRenderStage(Qt3DRender::QFrameGraphNode *parent = nullptr);
     ~ZFillRenderStage();
+
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode);
+    Qt3DRender::QCullFace::CullingMode cullingMode() const;
+
+    void setFilterKeyValue(const QString &value);
+    void addParameter(Qt3DRender::QParameter *parameter);
+
+private:
+    Qt3DRender::QCullFace *m_cullFace;
+    Qt3DRender::QRenderPassFilter *m_passFilter = nullptr;
+    Qt3DRender::QFilterKey *m_filterKey = nullptr;
 };
 } // namespace Kuesa
 

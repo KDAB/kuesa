@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -28,8 +28,12 @@
 
 #include "sceneentity.h"
 #include "kuesa_utils_p.h"
+#include "logging_p.h"
+#include <Kuesa/forwardrenderer.h>
+#include <Kuesa/private/shadowmapmanager_p.h>
 
 #include <Qt3DCore/QTransform>
+#include <Qt3DLogic/QFrameAction>
 
 QT_BEGIN_NAMESPACE
 
@@ -75,7 +79,7 @@ using namespace Kuesa;
     The Asset and AnimationPlayer classes will also use the SceneEntity to
     access the collections and find assets.
 
-    \sa AnimationPlayer, Asset, GLTF2Importer
+    \sa Kuesa::AnimationPlayer, Asset, Kuesa::GLTF2Importer
 */
 
 /*!
@@ -107,8 +111,10 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     , m_cameras(new CameraCollection(this))
     , m_entities(new EntityCollection(this))
     , m_transforms(new TransformCollection(this))
+    , m_placeholders(new PlaceholderCollection(this))
     , m_textureImages(new TextureImageCollection(this))
     , m_animationMappings(new AnimationMappingCollection(this))
+    , m_reflectionPlanes(new ReflectionPlaneCollection(this))
 {
     initResources();
 
@@ -117,6 +123,35 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     m_brdfLUT->setObjectName(QLatin1String("_kuesa_brdfLUT"));
     m_brdfLUT->setSource(QUrl(QLatin1String("qrc:/kuesa/shaders/brdfLUT.png")));
     m_brdfLUT->setWrapMode(Qt3DRender::QTextureWrapMode(Qt3DRender::QTextureWrapMode::ClampToEdge));
+
+    // Add ShadowMap backend light info gatherer entity to scene.
+    m_lights->shadowMapManager()->setSceneEntity(this);
+
+    // Need to connect the ShadowMapManager to the ForwardRenderer while keeping the ShadowMapmanager
+    // private. Create a QFrameAction to do this once renderer is up and running
+    auto initAction = new Qt3DLogic::QFrameAction(this);
+    addComponent(initAction);
+
+    auto initForwardRenderer = [this, initAction](){
+        auto forwardRenderer = Kuesa::Utils::findForwardRenderer(this);
+        // If no forwardRenderer yet, we want to keep running
+        if (forwardRenderer) {
+            forwardRenderer->setShadowMaps(m_lights->shadowMapManager()->activeShadowMaps());
+            connect(m_lights->shadowMapManager(), &ShadowMapManager::shadowMapsChanged, forwardRenderer, &ForwardRenderer::setShadowMaps);
+        } else {
+            qCWarning(kuesa) << "No ForwardRenderer found: shadow support disabled";
+        }
+        initAction->disconnect();
+        initAction->deleteLater();
+    };
+    connect(initAction, &Qt3DLogic::QFrameAction::triggered, this, initForwardRenderer);
+
+    connect(m_materials, &AbstractAssetCollection::assetAdded, [this](const QString &name) {
+        const auto material = qobject_cast<GLTF2MaterialProperties *>(m_materials->findAsset(name));
+        Q_ASSERT(material);
+        material->setShadowMapDepthTexture(m_lights->shadowMapManager()->depthTexture());
+        material->setShadowMapCubeDepthTexture(m_lights->shadowMapManager()->cubeDepthTexture());
+    });
 }
 
 SceneEntity::~SceneEntity() = default;
@@ -216,7 +251,7 @@ GLTF2MaterialProperties *SceneEntity::material(const QString &name) const
 }
 
 /*!
-    Returns instance of collection of Qt3DRender::QGeometryRenderer assets
+    Returns instance of collection of QGeometryRenderer assets
  */
 MeshCollection *SceneEntity::meshes() const
 {
@@ -224,7 +259,7 @@ MeshCollection *SceneEntity::meshes() const
 }
 
 /*!
-    Utility method returning an instance of Qt3DRender::QGeometryRenderer
+    Utility method returning an instance of QGeometryRenderer
     matching \a name (or nullptr if not found)
  */
 Qt3DRender::QGeometryRenderer *SceneEntity::mesh(const QString &name) const
@@ -365,6 +400,20 @@ Qt3DRender::QAbstractLight *SceneEntity::light(const QString &name) const
     return m_lights->find(name);
 }
 
+Kuesa::ReflectionPlaneCollection *SceneEntity::reflectionPlanes() const
+{
+    return m_reflectionPlanes;
+}
+
+/*!
+    Utility method returning an instance of Kuesa::ReflectionPlane
+    matching \a name (or nullptr if not found)
+ */
+ReflectionPlane *SceneEntity::reflectionPlane(const QString &name) const
+{
+    return m_reflectionPlanes->find(name);
+}
+
 /*!
     \brief Removes all assets from all the collections.
     \note Assets which are parented with the collection will be deleted.
@@ -384,6 +433,8 @@ void SceneEntity::clearCollections()
     m_entities->clear();
     m_textureImages->clear();
     m_animationMappings->clear();
+    m_reflectionPlanes->clear();
+    m_placeholders->clear();
 }
 
 /*!
@@ -434,6 +485,18 @@ Kuesa::SceneEntity *Kuesa::SceneEntity::findParentSceneEntity(Qt3DCore::QEntity 
         return findParentSceneEntity(parentEntity);
     }
     return nullptr;
+}
+
+
+
+Kuesa::PlaceholderCollection *Kuesa::SceneEntity::placeholders() const
+{
+    return m_placeholders;
+}
+
+Kuesa::Placeholder *SceneEntity::placeholder(const QString &name) const
+{
+    return m_placeholders->find(name);
 }
 
 QT_END_NAMESPACE

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -47,6 +47,7 @@ class QFrameGraphNode;
 namespace Kuesa {
 
 class GaussianBlurMaterial;
+class FullScreenQuad;
 
 class KUESASHARED_EXPORT GaussianBlurEffect : public AbstractPostProcessingEffect
 {
@@ -60,7 +61,7 @@ public:
     QVector<Qt3DRender::QLayer *> layers() const override;
 
     void setInputTexture(Qt3DRender::QAbstractTexture *texture) override;
-    void setSceneSize(const QSize &size) override;
+    void setWindowSize(const QSize &size) override;
     int blurPassCount() const;
 
 public Q_SLOTS:
@@ -92,6 +93,7 @@ private:
     Qt3DRender::QParameter *m_blurTextureParam2;
     Qt3DRender::QParameter *m_widthParameter;
     Qt3DRender::QParameter *m_heightParameter;
+    FullScreenQuad *m_fsQuad;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

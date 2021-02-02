@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Jim Albamont <jim.albamont@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -31,8 +31,7 @@ QT += 3dcore 3dcore-private 3drender 3dinput 3dextras 3dquick qml quick 3dquicke
 SOURCES += \
     main.cpp \
     scenecontroller.cpp \
-    controllerwidget.cpp \
-   ../../../tools/gltfViewer/orbitcameracontroller.cpp
+    controllerwidget.cpp
 
 OTHER_FILES += \
     main.qml
@@ -42,8 +41,7 @@ RESOURCES += \
 
 HEADERS += \
     scenecontroller.h \
-    controllerwidget.h \
-    ../../../tools/gltfViewer/orbitcameracontroller.h
+    controllerwidget.h
 
 FORMS += \
     controllerwidget.ui

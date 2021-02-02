@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -76,7 +76,7 @@ class Window(Qt3DExtras.Qt3DWindow):
             return
 
         # In this tutorial, we are going to trigger glTF animations.
-        # The list of available animations can be checked with the gltfEditor,
+        # The list of available animations can be checked with the gltfInspector,
         # in the Animation dock.
         self.animationClock = Qt3DAnimation.QClock(self.rootEntity)
         self.animationClock.setPlaybackRate(1)

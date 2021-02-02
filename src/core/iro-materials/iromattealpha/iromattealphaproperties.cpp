@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,6 +29,8 @@
 
 #include "iromattealphaproperties.h"
 #include "iromattealphashaderdata_p.h"
+#include <Qt3DCore/private/qnode_p.h>
+#include <Kuesa/private/empty2dtexture_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -60,16 +62,18 @@ namespace Kuesa {
 IroMatteAlphaProperties::IroMatteAlphaProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_shaderData(new IroMatteAlphaShaderData(this))
+    , m_matteMap(nullptr)
 {
     QObject::connect(m_shaderData, &IroMatteAlphaShaderData::postVertexColorChanged, this, &IroMatteAlphaProperties::postVertexColorChanged);
     QObject::connect(m_shaderData, &IroMatteAlphaShaderData::postGainChanged, this, &IroMatteAlphaProperties::postGainChanged);
-    QObject::connect(m_shaderData, &IroMatteAlphaShaderData::matteMapChanged, this, &IroMatteAlphaProperties::matteMapChanged);
     QObject::connect(m_shaderData, &IroMatteAlphaShaderData::usesMatteMapChanged, this, &IroMatteAlphaProperties::usesMatteMapChanged);
     QObject::connect(m_shaderData, &IroMatteAlphaShaderData::matteFilterChanged, this, &IroMatteAlphaProperties::matteFilterChanged);
     QObject::connect(m_shaderData, &IroMatteAlphaShaderData::matteGainChanged, this, &IroMatteAlphaProperties::matteGainChanged);
     QObject::connect(m_shaderData, &IroMatteAlphaShaderData::matteAlphaGainChanged, this, &IroMatteAlphaProperties::matteAlphaGainChanged);
     QObject::connect(m_shaderData, &IroMatteAlphaShaderData::uvOffsetChanged, this, &IroMatteAlphaProperties::uvOffsetChanged);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    setMatteMap(new Empty2DTexture());
+#endif
 }
 
 IroMatteAlphaProperties::~IroMatteAlphaProperties() = default;
@@ -87,11 +91,6 @@ void IroMatteAlphaProperties::setPostVertexColor(float postVertexColor)
 void IroMatteAlphaProperties::setPostGain(float postGain)
 {
     m_shaderData->setPostGain(postGain);
-}
-
-void IroMatteAlphaProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
-{
-    m_shaderData->setMatteMap(matteMap);
 }
 
 void IroMatteAlphaProperties::setUsesMatteMap(bool usesMatteMap)
@@ -119,6 +118,23 @@ void IroMatteAlphaProperties::setUvOffset(const QVector2D &uvOffset)
     m_shaderData->setUvOffset(uvOffset);
 }
 
+void IroMatteAlphaProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
+{
+    if (m_matteMap == matteMap)
+        return;
+
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_matteMap != nullptr)
+        d->unregisterDestructionHelper(m_matteMap);
+    m_matteMap = matteMap;
+    if (m_matteMap != nullptr) {
+        if (m_matteMap->parent() == nullptr)
+            m_matteMap->setParent(this);
+        d->registerDestructionHelper(m_matteMap, &IroMatteAlphaProperties::setMatteMap, m_matteMap);
+    }
+    emit matteMapChanged(m_matteMap);
+}
+
 
 /*!
     \qmlproperty float IroMatteAlphaProperties::postVertexColor
@@ -144,19 +160,6 @@ float IroMatteAlphaProperties::postVertexColor() const
 float IroMatteAlphaProperties::postGain() const
 {
     return m_shaderData->postGain();
-}
-
-/*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroMatteAlphaProperties::matteMap
-    Specifies the matte map to use. It is expected to be in sRGB color space.
-*/
-/*!
-    \property IroMatteAlphaProperties::matteMap
-    Specifies the matte map to use. It is expected to be in sRGB color space.
-*/
-Qt3DRender::QAbstractTexture * IroMatteAlphaProperties::matteMap() const
-{
-    return m_shaderData->matteMap();
 }
 
 /*!
@@ -222,6 +225,11 @@ float IroMatteAlphaProperties::matteAlphaGain() const
 QVector2D IroMatteAlphaProperties::uvOffset() const
 {
     return m_shaderData->uvOffset();
+}
+
+Qt3DRender::QAbstractTexture * IroMatteAlphaProperties::matteMap() const
+{
+    return m_matteMap;
 }
 
 

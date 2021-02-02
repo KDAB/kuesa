@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Jim Albamont <jim.albamont@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -27,11 +27,17 @@
 INCLUDEPATH += $$PWD
 
 SOURCES += \
+    $$PWD/shadowmap.cpp \
+    $$PWD/shadowmapmanager.cpp \
+    $$PWD/shadowcastinglight.cpp \
     $$PWD/directionallight.cpp \
     $$PWD/pointlight.cpp \
     $$PWD/spotlight.cpp
 
 HEADERS += \
+    $$PWD/shadowmap.h \
+    $$PWD/shadowmapmanager_p.h \
+    $$PWD/shadowcastinglight.h \
     $$PWD/directionallight.h \
     $$PWD/directionallight_p.h \
     $$PWD/pointlight.h \

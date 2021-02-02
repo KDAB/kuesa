@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -48,21 +48,8 @@ namespace {
 template<typename ComponentType>
 inline ComponentType *componentFromEntity(Qt3DCore::QEntity *e)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
     const auto cmps = e->componentsOfType<ComponentType>();
     return cmps.size() > 0 ? cmps.first() : nullptr;
-#else
-    ComponentType *typedComponent = nullptr;
-    const Qt3DCore::QComponentVector cmps = e->components();
-
-    for (Qt3DCore::QComponent *c : cmps) {
-        typedComponent = qobject_cast<ComponentType *>(c);
-        if (typedComponent != nullptr)
-            break;
-    }
-
-    return typedComponent;
-#endif
 }
 
 template<typename ComponentType>
@@ -106,13 +93,13 @@ QString valueIntrospector(const QVariant &value)
                 .arg(color.alphaF());
     }
     case QVariant::Vector2D: {
-        const QVector4D v2 = value.value<QVector2D>();
+        const QVector2D v2 = value.value<QVector2D>();
         return QString("[%1, %2]")
                 .arg(v2.x())
                 .arg(v2.y());
     }
     case QVariant::Vector3D: {
-        const QVector4D v3 = value.value<QVector3D>();
+        const QVector3D v3 = value.value<QVector3D>();
         return QString("[%1, %2, %3]")
                 .arg(v3.x())
                 .arg(v3.y())
@@ -157,10 +144,6 @@ QString MaterialInspector::description() const
 
 void MaterialInspector::inspect(Qt3DRender::QPickEvent *pick)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    qWarning() << "Picking materials only available since 5.14";
-    return;
-#else
     Qt3DCore::QEntity *entity = pick->entity();
 
     if (entity == nullptr) {
@@ -170,7 +153,6 @@ void MaterialInspector::inspect(Qt3DRender::QPickEvent *pick)
 
     Kuesa::GLTF2Material *material = findFirstComponentInstanceInHierarchy<Kuesa::GLTF2Material>(entity);
     setMaterial(material);
-#endif
 }
 
 void MaterialInspector::setMaterial(Kuesa::GLTF2Material *material)

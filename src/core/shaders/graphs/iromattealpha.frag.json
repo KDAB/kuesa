@@ -3,8 +3,20 @@
   {
    "layers": [],
    "parameters": {},
+   "type": "MATERIAL_OUTPUT",
+   "uuid": "{c8fab589-c91d-4ab1-90a3-714ded500287}"
+  },
+  {
+   "layers": [],
+   "parameters": {},
+   "type": "MATERIAL_PROPERTIES",
+   "uuid": "{db8450fd-26d6-4e78-8982-103aac1b8dd2}"
+  },
+  {
+   "layers": [],
+   "parameters": {},
    "type": "VERTEX_COLOR",
-   "uuid": "{1882bde9-1a79-4de6-ab33-e5534e9e2a1a}"
+   "uuid": "{cb8d76f2-e224-4307-8d73-f24b84b4c1e0}"
   },
   {
    "layers": [],
@@ -15,7 +27,7 @@
     }
    },
    "type": "MIX",
-   "uuid": "{e1ab9116-ea5c-4e33-bf07-832021772227}"
+   "uuid": "{b0f6e9f4-7da7-4ba6-b787-499e275aa865}"
   },
   {
    "layers": [],
@@ -35,7 +47,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{b0c213ce-e05e-433e-bf2c-23b4db09af85}"
+   "uuid": "{14125e84-508c-4f7e-9a94-6475c2ddbee4}"
   },
   {
    "layers": [],
@@ -55,7 +67,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{7270f0c8-fa68-4caf-a5db-2bd75d5f6913}"
+   "uuid": "{a2d978c1-5992-421e-b6a6-0efc29d4fca7}"
   },
   {
    "layers": [],
@@ -66,7 +78,7 @@
     }
    },
    "type": "MIX",
-   "uuid": "{80bcfeb9-1477-4e05-944b-b1ae10146e55}"
+   "uuid": "{2b390534-900a-45f1-ae66-e84ae61e45dc}"
   },
   {
    "layers": [],
@@ -90,7 +102,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{f9d8f776-82e2-4e03-8383-ce7d2f9561e1}"
+   "uuid": "{76ffff18-34da-4d5e-8d8a-2f0d0a0ef466}"
   },
   {
    "layers": [],
@@ -114,7 +126,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{10a4c887-7146-4427-aa7b-9732612e69ed}"
+   "uuid": "{80cb1913-d263-44c8-a3d9-47c37197aa50}"
   },
   {
    "layers": [],
@@ -138,7 +150,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{3a644d52-56c7-4a74-8dc4-5013e3e5f7ed}"
+   "uuid": "{ae4b4a66-a71c-4737-a95b-60a898864c09}"
   },
   {
    "layers": [],
@@ -150,7 +162,7 @@
     }
    },
    "type": "constant",
-   "uuid": "{94007644-a426-4680-ac47-9d4d09584c1c}"
+   "uuid": "{bf8d8f88-8d90-4dd7-92fd-5db8c8cb6171}"
   },
   {
    "layers": [],
@@ -161,7 +173,7 @@
     "linearizer": "sRGBtoLinear"
    },
    "type": "TEX_IMAGE",
-   "uuid": "{039a47bb-329f-4c88-96d9-c7e8ace7a022}"
+   "uuid": "{0ce0610d-30e5-46b5-bd4f-04179de5f104}"
   },
   {
    "layers": [],
@@ -181,19 +193,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{25b12cc3-5b2b-4ae6-b3c4-69177950116c}"
-  },
-  {
-   "layers": [],
-   "parameters": {},
-   "type": "MATERIAL_OUTPUT",
-   "uuid": "{e1bef0f4-40b9-415f-9f3b-4d3ae12fab18}"
-  },
-  {
-   "layers": [],
-   "parameters": {},
-   "type": "CLAMP_COLOR",
-   "uuid": "{d610fe2c-af1a-4e20-a00e-266fb6d6dcb1}"
+   "uuid": "{511adad3-ef36-49b6-95f6-a6aa66788c94}"
   },
   {
    "layers": [],
@@ -213,19 +213,19 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{ff99b44e-24cc-44aa-9209-21117bb713dc}"
+   "uuid": "{d1d9dd18-7186-45e6-badf-d007586a8afe}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "BLEND_ALPHA",
-   "uuid": "{55210531-c536-4163-a220-2066b55559b7}"
+   "uuid": "{78429c33-3001-4cde-8d4e-26b252ca580f}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "TEX_COORD",
-   "uuid": "{d0e0d6ef-dc2e-4912-9a88-fb44683d4b41}"
+   "uuid": "{87f0e96c-582e-4fdf-a62b-b6981002c265}"
   },
   {
    "layers": [],
@@ -245,25 +245,45 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{0361aa8f-04ab-4f17-99d2-d9240e90d6c7}"
-  },
-  {
-   "layers": [],
-   "parameters": {},
-   "type": "MATERIAL_PROPERTIES",
-   "uuid": "{c149127e-bafb-4f3a-b621-a3c4b73d84b2}"
+   "uuid": "{9491300b-4e04-450e-a70e-8372e13943eb}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "VEC3_TO_VEC2",
-   "uuid": "{0654961d-8fb8-4589-9ae8-7638d17c478e}"
+   "uuid": "{accb3a8c-6dd9-4201-b5c5-a834d392f502}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "VEC3_TO_VEC2",
-   "uuid": "{71d0ca1a-38f2-45d9-9763-108009bfedcf}"
+   "uuid": "{b6337359-dd91-4ccc-9e85-650482de6639}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "operation": "max",
+    "firstType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    },
+    "secondType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    },
+    "outputType": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    }
+   },
+   "type": "BINARY_MATH_FUNCTION",
+   "uuid": "{cc1bcce1-5ac6-4708-a003-ca4925ebe434}"
+  },
+  {
+   "layers": [],
+   "parameters": {},
+   "type": "CLAMP",
+   "uuid": "{c59ee458-c744-49e0-8f6b-fecb995baefc}"
   },
   {
    "layers": [],
@@ -275,230 +295,287 @@
     }
    },
    "type": "constant",
-   "uuid": "{683d92d3-bd9c-4ce7-a9e8-3c3472fd38ba}"
+   "uuid": "{719d3de6-c198-4211-a79f-ce3ece0f28bc}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "constant": "0.0,0.0,0.0",
+    "type": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Vec3"
+    }
+   },
+   "type": "constant",
+   "uuid": "{bcc93b9e-13dd-45f3-bf72-a51dd1339a89}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "constant": "0.0",
+    "type": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Float"
+    }
+   },
+   "type": "constant",
+   "uuid": "{e74065d3-4fbb-49da-acaf-4be568794905}"
+  },
+  {
+   "layers": [],
+   "parameters": {
+    "constant": "1.0",
+    "type": {
+     "type": "QShaderLanguage::VariableType",
+     "value": "QShaderLanguage::Float"
+    }
+   },
+   "type": "constant",
+   "uuid": "{c2bc6098-b91e-4f10-a783-b289b11ffe31}"
   }
  ],
  "edges": [
   {
    "layers": [],
-   "sourceUuid": "{1882bde9-1a79-4de6-ab33-e5534e9e2a1a}",
+   "sourceUuid": "{cb8d76f2-e224-4307-8d73-f24b84b4c1e0}",
    "sourcePort": "color",
-   "targetUuid": "{80bcfeb9-1477-4e05-944b-b1ae10146e55}",
+   "targetUuid": "{2b390534-900a-45f1-ae66-e84ae61e45dc}",
    "targetPort": "input2"
   },
   {
    "layers": [],
-   "sourceUuid": "{80bcfeb9-1477-4e05-944b-b1ae10146e55}",
+   "sourceUuid": "{2b390534-900a-45f1-ae66-e84ae61e45dc}",
    "sourcePort": "mixed",
-   "targetUuid": "{b0c213ce-e05e-433e-bf2c-23b4db09af85}",
+   "targetUuid": "{14125e84-508c-4f7e-9a94-6475c2ddbee4}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{25b12cc3-5b2b-4ae6-b3c4-69177950116c}",
+   "sourceUuid": "{511adad3-ef36-49b6-95f6-a6aa66788c94}",
    "sourcePort": "output0",
-   "targetUuid": "{7270f0c8-fa68-4caf-a5db-2bd75d5f6913}",
+   "targetUuid": "{a2d978c1-5992-421e-b6a6-0efc29d4fca7}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{c149127e-bafb-4f3a-b621-a3c4b73d84b2}",
+   "sourceUuid": "{db8450fd-26d6-4e78-8982-103aac1b8dd2}",
    "sourcePort": "matteAlphaGain",
-   "targetUuid": "{10a4c887-7146-4427-aa7b-9732612e69ed}",
+   "targetUuid": "{80cb1913-d263-44c8-a3d9-47c37197aa50}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{c149127e-bafb-4f3a-b621-a3c4b73d84b2}",
+   "sourceUuid": "{db8450fd-26d6-4e78-8982-103aac1b8dd2}",
    "sourcePort": "postVertexColor",
-   "targetUuid": "{e1ab9116-ea5c-4e33-bf07-832021772227}",
+   "targetUuid": "{b0f6e9f4-7da7-4ba6-b787-499e275aa865}",
    "targetPort": "fac"
   },
   {
    "layers": [],
-   "sourceUuid": "{c149127e-bafb-4f3a-b621-a3c4b73d84b2}",
+   "sourceUuid": "{db8450fd-26d6-4e78-8982-103aac1b8dd2}",
    "sourcePort": "postVertexColor",
-   "targetUuid": "{80bcfeb9-1477-4e05-944b-b1ae10146e55}",
+   "targetUuid": "{2b390534-900a-45f1-ae66-e84ae61e45dc}",
    "targetPort": "fac"
   },
   {
    "layers": [],
-   "sourceUuid": "{c149127e-bafb-4f3a-b621-a3c4b73d84b2}",
+   "sourceUuid": "{db8450fd-26d6-4e78-8982-103aac1b8dd2}",
    "sourcePort": "matteFilter",
-   "targetUuid": "{25b12cc3-5b2b-4ae6-b3c4-69177950116c}",
+   "targetUuid": "{511adad3-ef36-49b6-95f6-a6aa66788c94}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{c149127e-bafb-4f3a-b621-a3c4b73d84b2}",
+   "sourceUuid": "{db8450fd-26d6-4e78-8982-103aac1b8dd2}",
    "sourcePort": "matteGain",
-   "targetUuid": "{25b12cc3-5b2b-4ae6-b3c4-69177950116c}",
+   "targetUuid": "{511adad3-ef36-49b6-95f6-a6aa66788c94}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{c149127e-bafb-4f3a-b621-a3c4b73d84b2}",
+   "sourceUuid": "{db8450fd-26d6-4e78-8982-103aac1b8dd2}",
    "sourcePort": "postGain",
-   "targetUuid": "{b0c213ce-e05e-433e-bf2c-23b4db09af85}",
+   "targetUuid": "{14125e84-508c-4f7e-9a94-6475c2ddbee4}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{1882bde9-1a79-4de6-ab33-e5534e9e2a1a}",
+   "sourceUuid": "{cb8d76f2-e224-4307-8d73-f24b84b4c1e0}",
    "sourcePort": "alpha",
-   "targetUuid": "{e1ab9116-ea5c-4e33-bf07-832021772227}",
+   "targetUuid": "{b0f6e9f4-7da7-4ba6-b787-499e275aa865}",
    "targetPort": "input2"
   },
   {
    "layers": [],
-   "sourceUuid": "{55210531-c536-4163-a220-2066b55559b7}",
+   "sourceUuid": "{78429c33-3001-4cde-8d4e-26b252ca580f}",
    "sourcePort": "shader",
-   "targetUuid": "{e1bef0f4-40b9-415f-9f3b-4d3ae12fab18}",
+   "targetUuid": "{c8fab589-c91d-4ab1-90a3-714ded500287}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{7270f0c8-fa68-4caf-a5db-2bd75d5f6913}",
+   "sourceUuid": "{a2d978c1-5992-421e-b6a6-0efc29d4fca7}",
    "sourcePort": "output0",
-   "targetUuid": "{ff99b44e-24cc-44aa-9209-21117bb713dc}",
+   "targetUuid": "{d1d9dd18-7186-45e6-badf-d007586a8afe}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{b0c213ce-e05e-433e-bf2c-23b4db09af85}",
+   "sourceUuid": "{14125e84-508c-4f7e-9a94-6475c2ddbee4}",
    "sourcePort": "output0",
-   "targetUuid": "{ff99b44e-24cc-44aa-9209-21117bb713dc}",
+   "targetUuid": "{d1d9dd18-7186-45e6-badf-d007586a8afe}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{e1ab9116-ea5c-4e33-bf07-832021772227}",
+   "sourceUuid": "{b0f6e9f4-7da7-4ba6-b787-499e275aa865}",
    "sourcePort": "mixed",
-   "targetUuid": "{f9d8f776-82e2-4e03-8383-ce7d2f9561e1}",
+   "targetUuid": "{76ffff18-34da-4d5e-8d8a-2f0d0a0ef466}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{c149127e-bafb-4f3a-b621-a3c4b73d84b2}",
+   "sourceUuid": "{db8450fd-26d6-4e78-8982-103aac1b8dd2}",
    "sourcePort": "postGain",
-   "targetUuid": "{f9d8f776-82e2-4e03-8383-ce7d2f9561e1}",
+   "targetUuid": "{76ffff18-34da-4d5e-8d8a-2f0d0a0ef466}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{f9d8f776-82e2-4e03-8383-ce7d2f9561e1}",
+   "sourceUuid": "{76ffff18-34da-4d5e-8d8a-2f0d0a0ef466}",
    "sourcePort": "output0",
-   "targetUuid": "{3a644d52-56c7-4a74-8dc4-5013e3e5f7ed}",
+   "targetUuid": "{ae4b4a66-a71c-4737-a95b-60a898864c09}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{10a4c887-7146-4427-aa7b-9732612e69ed}",
+   "sourceUuid": "{80cb1913-d263-44c8-a3d9-47c37197aa50}",
    "sourcePort": "output0",
-   "targetUuid": "{3a644d52-56c7-4a74-8dc4-5013e3e5f7ed}",
+   "targetUuid": "{ae4b4a66-a71c-4737-a95b-60a898864c09}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{94007644-a426-4680-ac47-9d4d09584c1c}",
+   "sourceUuid": "{bf8d8f88-8d90-4dd7-92fd-5db8c8cb6171}",
    "sourcePort": "value",
-   "targetUuid": "{e1ab9116-ea5c-4e33-bf07-832021772227}",
+   "targetUuid": "{b0f6e9f4-7da7-4ba6-b787-499e275aa865}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{039a47bb-329f-4c88-96d9-c7e8ace7a022}",
-   "sourcePort": "color",
-   "targetUuid": "{7270f0c8-fa68-4caf-a5db-2bd75d5f6913}",
-   "targetPort": "input0"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{d0e0d6ef-dc2e-4912-9a88-fb44683d4b41}",
+   "sourceUuid": "{87f0e96c-582e-4fdf-a62b-b6981002c265}",
    "sourcePort": "uv",
-   "targetUuid": "{0361aa8f-04ab-4f17-99d2-d9240e90d6c7}",
+   "targetUuid": "{9491300b-4e04-450e-a70e-8372e13943eb}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{039a47bb-329f-4c88-96d9-c7e8ace7a022}",
-   "sourcePort": "alpha",
-   "targetUuid": "{10a4c887-7146-4427-aa7b-9732612e69ed}",
+   "sourceUuid": "{d1d9dd18-7186-45e6-badf-d007586a8afe}",
+   "sourcePort": "output0",
+   "targetUuid": "{cc1bcce1-5ac6-4708-a003-ca4925ebe434}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{d610fe2c-af1a-4e20-a00e-266fb6d6dcb1}",
-   "sourcePort": "color_out",
-   "targetUuid": "{55210531-c536-4163-a220-2066b55559b7}",
-   "targetPort": "color"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{d610fe2c-af1a-4e20-a00e-266fb6d6dcb1}",
-   "sourcePort": "alpha_out",
-   "targetUuid": "{55210531-c536-4163-a220-2066b55559b7}",
-   "targetPort": "alpha"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{3a644d52-56c7-4a74-8dc4-5013e3e5f7ed}",
+   "sourceUuid": "{ae4b4a66-a71c-4737-a95b-60a898864c09}",
    "sourcePort": "output0",
-   "targetUuid": "{d610fe2c-af1a-4e20-a00e-266fb6d6dcb1}",
-   "targetPort": "alpha"
+   "targetUuid": "{c59ee458-c744-49e0-8f6b-fecb995baefc}",
+   "targetPort": "value"
   },
   {
    "layers": [],
-   "sourceUuid": "{ff99b44e-24cc-44aa-9209-21117bb713dc}",
+   "sourceUuid": "{9491300b-4e04-450e-a70e-8372e13943eb}",
    "sourcePort": "output0",
-   "targetUuid": "{d610fe2c-af1a-4e20-a00e-266fb6d6dcb1}",
-   "targetPort": "color"
-  },
-  {
-   "layers": [],
-   "sourceUuid": "{0361aa8f-04ab-4f17-99d2-d9240e90d6c7}",
-   "sourcePort": "output0",
-   "targetUuid": "{71d0ca1a-38f2-45d9-9763-108009bfedcf}",
+   "targetUuid": "{b6337359-dd91-4ccc-9e85-650482de6639}",
    "targetPort": "vector3"
   },
   {
    "layers": [],
-   "sourceUuid": "{c149127e-bafb-4f3a-b621-a3c4b73d84b2}",
+   "sourceUuid": "{db8450fd-26d6-4e78-8982-103aac1b8dd2}",
    "sourcePort": "uvOffset",
-   "targetUuid": "{0654961d-8fb8-4589-9ae8-7638d17c478e}",
+   "targetUuid": "{accb3a8c-6dd9-4201-b5c5-a834d392f502}",
    "targetPort": "vector3"
   },
   {
    "layers": [],
-   "sourceUuid": "{0654961d-8fb8-4589-9ae8-7638d17c478e}",
+   "sourceUuid": "{accb3a8c-6dd9-4201-b5c5-a834d392f502}",
    "sourcePort": "vector2",
-   "targetUuid": "{0361aa8f-04ab-4f17-99d2-d9240e90d6c7}",
+   "targetUuid": "{9491300b-4e04-450e-a70e-8372e13943eb}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{71d0ca1a-38f2-45d9-9763-108009bfedcf}",
+   "sourceUuid": "{b6337359-dd91-4ccc-9e85-650482de6639}",
    "sourcePort": "vector2",
-   "targetUuid": "{039a47bb-329f-4c88-96d9-c7e8ace7a022}",
+   "targetUuid": "{0ce0610d-30e5-46b5-bd4f-04179de5f104}",
    "targetPort": "vector"
   },
   {
    "layers": [],
-   "sourceUuid": "{683d92d3-bd9c-4ce7-a9e8-3c3472fd38ba}",
+   "sourceUuid": "{0ce0610d-30e5-46b5-bd4f-04179de5f104}",
+   "sourcePort": "color",
+   "targetUuid": "{a2d978c1-5992-421e-b6a6-0efc29d4fca7}",
+   "targetPort": "input0"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{0ce0610d-30e5-46b5-bd4f-04179de5f104}",
+   "sourcePort": "alpha",
+   "targetUuid": "{80cb1913-d263-44c8-a3d9-47c37197aa50}",
+   "targetPort": "input0"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{cc1bcce1-5ac6-4708-a003-ca4925ebe434}",
+   "sourcePort": "output0",
+   "targetUuid": "{78429c33-3001-4cde-8d4e-26b252ca580f}",
+   "targetPort": "color"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{c59ee458-c744-49e0-8f6b-fecb995baefc}",
+   "sourcePort": "result",
+   "targetUuid": "{78429c33-3001-4cde-8d4e-26b252ca580f}",
+   "targetPort": "alpha"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{719d3de6-c198-4211-a79f-ce3ece0f28bc}",
    "sourcePort": "value",
-   "targetUuid": "{80bcfeb9-1477-4e05-944b-b1ae10146e55}",
+   "targetUuid": "{2b390534-900a-45f1-ae66-e84ae61e45dc}",
    "targetPort": "input1"
   },
   {
-   "sourceUuid": "{c149127e-bafb-4f3a-b621-a3c4b73d84b2}",
+   "layers": [],
+   "sourceUuid": "{bcc93b9e-13dd-45f3-bf72-a51dd1339a89}",
+   "sourcePort": "value",
+   "targetUuid": "{cc1bcce1-5ac6-4708-a003-ca4925ebe434}",
+   "targetPort": "input1"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{e74065d3-4fbb-49da-acaf-4be568794905}",
+   "sourcePort": "value",
+   "targetUuid": "{c59ee458-c744-49e0-8f6b-fecb995baefc}",
+   "targetPort": "min"
+  },
+  {
+   "layers": [],
+   "sourceUuid": "{c2bc6098-b91e-4f10-a783-b289b11ffe31}",
+   "sourcePort": "value",
+   "targetUuid": "{c59ee458-c744-49e0-8f6b-fecb995baefc}",
+   "targetPort": "max"
+  },
+  {
+   "sourceUuid": "{db8450fd-26d6-4e78-8982-103aac1b8dd2}",
    "sourcePort": "usesMatteMap",
-   "targetUuid": "{039a47bb-329f-4c88-96d9-c7e8ace7a022}",
+   "targetUuid": "{0ce0610d-30e5-46b5-bd4f-04179de5f104}",
    "targetPort": "useTexture"
   },
   {
-   "sourceUuid": "{c149127e-bafb-4f3a-b621-a3c4b73d84b2}",
+   "sourceUuid": "{db8450fd-26d6-4e78-8982-103aac1b8dd2}",
    "sourcePort": "matteMap",
-   "targetUuid": "{039a47bb-329f-4c88-96d9-c7e8ace7a022}",
+   "targetUuid": "{0ce0610d-30e5-46b5-bd4f-04179de5f104}",
    "targetPort": "texture"
   }
  ],
@@ -539,6 +616,14 @@
      "format": {
       "api": "OpenGLCoreProfile",
       "major": 3,
+      "minor": 0
+     },
+     "substitution": "$outputType $output0 = $operation($input0, $input1);"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
       "minor": 0
      },
      "substitution": "$outputType $output0 = $operation($input0, $input1);"
@@ -584,6 +669,14 @@
       "minor": 0
      },
      "substitution": "$outputType $output0 = ($input0) $operation ($input1);"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "substitution": "$outputType $output0 = ($input0) $operation ($input1);"
     }
    ]
   },
@@ -610,6 +703,14 @@
       "minor": 0
      },
      "substitution": "vec4 $bsdf = vec4($color.rgb, 1 - ($color.r + $color.g + $color.b) / 3);"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "substitution": "vec4 $bsdf = vec4($color.rgb, 1 - ($color.r + $color.g + $color.b) / 3);"
     }
    ]
   },
@@ -620,6 +721,11 @@
    "outputs": [
     "transformed"
    ],
+   "parameters": {
+    "transformMatrix": "viewMatrix",
+    "preFactor": "vec3(1)",
+    "postFactor": "vec3(1)"
+   },
    "rules": [
     {
      "format": {
@@ -631,9 +737,10 @@
       "#ifndef VIEW_MATRIX",
       "#define VIEW_MATRIX",
       "uniform highp mat4 viewMatrix;",
+      "uniform highp mat4 inverseViewMatrix;",
       "#endif"
      ],
-     "substitution": "highp vec3 $transformed = (viewMatrix * vec4($input, 0.0)).xyz * vec3(1.0, 1.0, -1.0);"
+     "substitution": "highp vec3 $transformed = ($transformMatrix * vec4($input * $preFactor, 0.0)).xyz * $postFactor;"
     },
     {
      "format": {
@@ -645,9 +752,43 @@
       "#ifndef VIEW_MATRIX",
       "#define VIEW_MATRIX",
       "uniform mat4 viewMatrix;",
+      "uniform mat4 inverseViewMatrix;",
       "#endif"
      ],
-     "substitution": "vec3 $transformed = (viewMatrix * vec4($input, 0.0)).xyz * vec3(1.0, 1.0, -1.0);"
+     "substitution": "vec3 $transformed = ($transformMatrix * vec4($input * $preFactor, 0.0)).xyz * $postFactor;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef RV_UNIFORMS",
+      "#define RV_UNIFORMS",
+      "layout(std140, binding = 0) uniform qt3d_render_view_uniforms {",
+      "    mat4 viewMatrix;",
+      "    mat4 projectionMatrix;",
+      "    mat4 uncorrectedProjectionMatrix;",
+      "    mat4 clipCorrectionMatrix;",
+      "    mat4 viewProjectionMatrix;",
+      "    mat4 inverseViewMatrix;",
+      "    mat4 inverseProjectionMatrix;",
+      "    mat4 inverseViewProjectionMatrix;",
+      "    mat4 viewportMatrix;",
+      "    mat4 inverseViewportMatrix;",
+      "    vec4 textureTransformMatrix;",
+      "    vec3 eyePosition;",
+      "    float aspectRatio;",
+      "    float gamma;",
+      "    float exposure;",
+      "    float time;",
+      "    float yUpInNDC;",
+      "    float yUpInFBO;",
+      "  };",
+      "#endif"
+     ],
+     "substitution": "vec3 $transformed = ($transformMatrix * vec4($input * $preFactor, 0.0)).xyz * $postFactor;"
     }
    ]
   },
@@ -671,6 +812,14 @@
      "format": {
       "api": "OpenGLCoreProfile",
       "major": 3,
+      "minor": 0
+     },
+     "substitution": "vec4 $shader = vec4($color, 1.0);"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
       "minor": 0
      },
      "substitution": "vec4 $shader = vec4($color, 1.0);"
@@ -702,6 +851,14 @@
       "minor": 0
      },
      "substitution": "vec3 $color_out = clamp($color, 0.0, 1.0); float $alpha_out = clamp($alpha, 0.0, 1.0);"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "substitution": "vec3 $color_out = clamp($color, 0.0, 1.0); float $alpha_out = clamp($alpha, 0.0, 1.0);"
     }
    ]
   },
@@ -726,6 +883,14 @@
      "format": {
       "api": "OpenGLCoreProfile",
       "major": 3,
+      "minor": 0
+     },
+     "substitution": "vec4 $shader = vec4($color, pow($alpha, 2.4));"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
       "minor": 0
      },
      "substitution": "vec4 $shader = vec4($color, pow($alpha, 2.4));"
@@ -757,6 +922,14 @@
       "minor": 0
      },
      "substitution": "vec3 $image = vec3($r, $g, $b);"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "substitution": "vec3 $image = vec3($r, $g, $b);"
     }
    ]
   },
@@ -782,6 +955,14 @@
      "format": {
       "api": "OpenGLCoreProfile",
       "major": 3,
+      "minor": 0
+     },
+     "substitution": "vec3 $vector = vec3($x, $y, $z);"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
       "minor": 0
      },
      "substitution": "vec3 $vector = vec3($x, $y, $z);"
@@ -822,6 +1003,17 @@
       "out vec4 fragColor;"
      ],
      "substitution": "fragColor = $color;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "layout(location = 0) out vec4 fragColor;"
+     ],
+     "substitution": "fragColor = $color;"
     }
    ]
   },
@@ -853,6 +1045,14 @@
      "format": {
       "api": "OpenGLCoreProfile",
       "major": 3,
+      "minor": 0
+     },
+     "substitution": "$type $mixed = mix($input1, $input2, $fac);"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
       "minor": 0
      },
      "substitution": "$type $mixed = mix($input1, $input2, $fac);"
@@ -890,6 +1090,14 @@
       "minor": 0
      },
      "substitution": "$type $result = clamp($value, $min, $max);"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "substitution": "$type $result = clamp($value, $min, $max);"
     }
    ]
   },
@@ -910,8 +1118,16 @@
       "#ifndef NEW_GEOMETRY",
       "#define NEW_GEOMETRY",
       "varying highp vec3 worldPosition;",
-      "varying highp vec3 worldNormal;",
-      "varying highp vec4 worldTangent;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       varying highp vec3 worldNormal;",
+      "   #else",
+      "       const lowp vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       varying highp vec4 worldTangent;",
+      "   #else",
+      "       const lowp vec4 worldTangent = vec4(0.0);",
+      "   #endif",
       "#endif"
      ],
      "substitution": "highp vec3 $position = worldPosition;highp vec3 $normal = normalize(worldNormal);highp vec3 $tangent = worldTangent.xyz;"
@@ -926,8 +1142,16 @@
       "#ifndef NEW_GEOMETRY",
       "#define NEW_GEOMETRY",
       "in highp vec3 worldPosition;",
-      "in highp vec3 worldNormal;",
-      "in highp vec4 worldTangent;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       in highp vec3 worldNormal;",
+      "   #else",
+      "       const lowp vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       in highp vec4 worldTangent;",
+      "   #else",
+      "       const lowp vec4 worldTangent = vec4(0.0);",
+      "   #endif",
       "#endif"
      ],
      "substitution": "highp vec3 $position = worldPosition;highp vec3 $normal = normalize(worldNormal);highp vec3 $tangent = worldTangent.xyz;"
@@ -942,8 +1166,40 @@
       "#ifndef NEW_GEOMETRY",
       "#define NEW_GEOMETRY",
       "in vec3 worldPosition;",
-      "in vec3 worldNormal;",
-      "in vec4 vertexTan;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif"
+     ],
+     "substitution": "vec3 $position = worldPosition;vec3 $normal = normalize(worldNormal);vec3 $tangent = worldTangent.xyz;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "layout(location = 4) in vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       layout(location = 3) in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       layout(location = 2) in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
       "#endif"
      ],
      "substitution": "vec3 $position = worldPosition;vec3 $normal = normalize(worldNormal);vec3 $tangent = worldTangent.xyz;"
@@ -975,6 +1231,14 @@
       "minor": 0
      },
      "substitution": "float $r = $color.r;float $g = $color.g;float $b = $color.b;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "substitution": "float $r = $color.r;float $g = $color.g;float $b = $color.b;"
     }
    ]
   },
@@ -1003,13 +1267,22 @@
       "minor": 0
      },
      "substitution": "float $x = $vector.x;float $y = $vector.y;float $z = $vector.z;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "substitution": "float $x = $vector.x;float $y = $vector.y;float $z = $vector.z;"
     }
    ]
   },
   "TEX_COORD": {
    "outputs": [
     "uv",
-    "reflection"
+    "reflection",
+    "normal"
    ],
    "rules": [
     {
@@ -1021,14 +1294,18 @@
      "headerSnippets": [
       "#ifndef TEX_COORD",
       "#define TEX_COORD",
+      "#ifdef LAYER_hasTexCoord",
       "varying highp vec2 texCoord;",
+      "#else",
+      "const lowp vec2 texCoord = vec2(0.0);",
+      "#endif",
       "#endif",
       "#ifndef EYE_POSITION",
       "#define EYE_POSITION",
       "uniform highp vec3 eyePosition;",
       "#endif"
      ],
-     "substitution": "highp vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);highp vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);"
+     "substitution": "highp vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);highp vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);highp vec3 $normal = worldNormal;"
     },
     {
      "format": {
@@ -1039,14 +1316,18 @@
      "headerSnippets": [
       "#ifndef TEX_COORD",
       "#define TEX_COORD",
+      "#ifdef LAYER_hasTexCoord",
       "in highp vec2 texCoord;",
+      "#else",
+      "const lowp vec2 texCoord = vec2(0.0);",
+      "#endif",
       "#endif",
       "#ifndef EYE_POSITION",
       "#define EYE_POSITION",
       "uniform highp vec3 eyePosition;",
       "#endif"
      ],
-     "substitution": "highp vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);highp vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);"
+     "substitution": "highp vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);highp vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);vec3 $normal = worldNormal;"
     },
     {
      "format": {
@@ -1057,14 +1338,57 @@
      "headerSnippets": [
       "#ifndef TEX_COORD",
       "#define TEX_COORD",
+      "#ifdef LAYER_hasTexCoord",
       "in vec2 texCoord;",
+      "#else",
+      "const vec2 texCoord = vec2(0.0);",
+      "#endif",
       "#endif",
       "#ifndef EYE_POSITION",
       "#define EYE_POSITION",
       "uniform vec3 eyePosition;",
       "#endif"
      ],
-     "substitution": "vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);"
+     "substitution": "vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);vec3 $normal = worldNormal;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef TEX_COORD",
+      "#define TEX_COORD",
+      "#ifdef LAYER_hasTexCoord",
+      "layout(location = 0) in vec2 texCoord;",
+      "#else",
+      "const vec2 texCoord = vec2(0.0);",
+      "#endif",
+      "#endif",
+      "#ifndef RV_UNIFORMS",
+      "#define RV_UNIFORMS",
+      "layout(std140, binding = 0) uniform qt3d_render_view_uniforms {",
+      "    mat4 viewMatrix;",
+      "    mat4 projectionMatrix;",
+      "    mat4 viewProjectionMatrix;",
+      "    mat4 inverseViewMatrix;",
+      "    mat4 inverseProjectionMatrix;",
+      "    mat4 inverseViewProjectionMatrix;",
+      "    mat4 viewportMatrix;",
+      "    mat4 inverseViewportMatrix;",
+      "    vec4 textureTransformMatrix;",
+      "    vec3 eyePosition;",
+      "    float aspectRatio;",
+      "    float gamma;",
+      "    float exposure;",
+      "    float time;",
+      "    float yUpInNDC;",
+      "    float yUpInFBO;",
+      "  };",
+      "#endif"
+     ],
+     "substitution": "vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);vec3 $normal = worldNormal;"
     }
    ]
   },
@@ -1089,6 +1413,14 @@
      "format": {
       "api": "OpenGLCoreProfile",
       "major": 3,
+      "minor": 0
+     },
+     "substitution": "vec3 $output = $gltfYUp ? vec3($input.x, -$input.z, $input.y) : $input;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
       "minor": 0
      },
      "substitution": "vec3 $output = $gltfYUp ? vec3($input.x, -$input.z, $input.y) : $input;"
@@ -1145,6 +1477,20 @@
      "format": {
       "api": "OpenGLCoreProfile",
       "major": 3,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef SRGB_TO_LINEAR",
+      "#define SRGB_TO_LINEAR",
+      "vec3 sRGBtoLinear(vec3 srgb) { return pow(srgb, vec3(2.2)); }",
+      "#endif"
+     ],
+     "substitution": "vec4 $inter = $useTexture ? texture($texture, vec2($vector.x, 1.0 - $vector.y)) : vec4($defaultColor); vec3 $color = $linearizer($inter.rgb); float $alpha = $inter.a;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
       "minor": 0
      },
      "headerSnippets": [
@@ -1231,6 +1577,115 @@
       "#endif"
      ],
      "substitution": "vec4 $inter = $useTexture ? texture($texture, $projectTexture ? $projection($position) : vec2($uv.x, 1.0 - $uv.y)) : vec4($defaultColor);vec3 $color = $linearizer($inter.rgb);float $alpha = $inter.a;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef SRGB_TO_LINEAR",
+      "#define SRGB_TO_LINEAR",
+      "vec3 sRGBtoLinear(vec3 srgb) { return pow(srgb, vec3(2.2)); }",
+      "#endif",
+      "#ifndef EQUI_RECTANGULAR",
+      "#define EQUI_RECTANGULAR",
+      "vec2 equiRectangular(vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#endif"
+     ],
+     "substitution": "vec4 $inter = $useTexture ? texture($texture, $projectTexture ? $projection($position) : vec2($uv.x, 1.0 - $uv.y)) : vec4($defaultColor);vec3 $color = $linearizer($inter.rgb);float $alpha = $inter.a;"
+    }
+   ]
+  },
+  "EQUI_RECT_ENV_TEX_IMAGE": {
+   "inputs": [
+    "texture",
+    "useTexture",
+    "position"
+   ],
+   "outputs": [
+    "color",
+    "alpha",
+    "inter"
+   ],
+   "parameters": {
+    "defaultColor": "1.0, 1.0, 1.0, 1.0",
+    "name": "",
+    "linearizer": ""
+   },
+   "rules": [
+    {
+     "format": {
+      "api": "OpenGLES",
+      "major": 2,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef SRGB_TO_LINEAR",
+      "#define SRGB_TO_LINEAR",
+      "highp vec3 sRGBtoLinear(highp vec3 srgb) { return pow(srgb, vec3(2.2)); }",
+      "#endif",
+      "#ifndef EQUI_RECTANGULAR",
+      "#define EQUI_RECTANGULAR",
+      "highp vec2 equiRectangular(highp vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#endif"
+     ],
+     "substitution": "highp vec4 $inter = $useTexture ? texture2D($texture, equiRectangular($position)) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
+    },
+    {
+     "format": {
+      "api": "OpenGLES",
+      "major": 3,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef SRGB_TO_LINEAR",
+      "#define SRGB_TO_LINEAR",
+      "highp vec3 sRGBtoLinear(highp vec3 srgb) { return pow(srgb, vec3(2.2)); }",
+      "#endif",
+      "#ifndef EQUI_RECTANGULAR",
+      "#define EQUI_RECTANGULAR",
+      "highp vec2 equiRectangular(highp vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#endif"
+     ],
+     "substitution": "highp vec4 $inter = $useTexture ? texture($texture, equiRectangular($position)) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
+    },
+    {
+     "format": {
+      "api": "OpenGLCoreProfile",
+      "major": 3,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef SRGB_TO_LINEAR",
+      "#define SRGB_TO_LINEAR",
+      "vec3 sRGBtoLinear(vec3 srgb) { return pow(srgb, vec3(2.2)); }",
+      "#endif",
+      "#ifndef EQUI_RECTANGULAR",
+      "#define EQUI_RECTANGULAR",
+      "vec2 equiRectangular(vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#endif"
+     ],
+     "substitution": "vec4 $inter = $useTexture ? texture($texture, equiRectangular($position)) : vec4($defaultColor);vec3 $color = $linearizer($inter.rgb);float $alpha = $inter.a;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef SRGB_TO_LINEAR",
+      "#define SRGB_TO_LINEAR",
+      "vec3 sRGBtoLinear(vec3 srgb) { return pow(srgb, vec3(2.2)); }",
+      "#endif",
+      "#ifndef EQUI_RECTANGULAR",
+      "#define EQUI_RECTANGULAR",
+      "vec2 equiRectangular(vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#endif"
+     ],
+     "substitution": "vec4 $inter = $useTexture ? texture($texture, equiRectangular($position)) : vec4($defaultColor);vec3 $color = $linearizer($inter.rgb);float $alpha = $inter.a;"
     }
    ]
   },
@@ -1268,6 +1723,14 @@
       "minor": 0
      },
      "substitution": "$outputType $output0 = $operation($input0);"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "substitution": "$outputType $output0 = $operation($input0);"
     }
    ]
   },
@@ -1294,6 +1757,122 @@
       "minor": 0
      },
      "substitution": "vec2 $vector2 = $vector3.xy;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "substitution": "vec2 $vector2 = $vector3.xy;"
+    }
+   ]
+  },
+  "NORMAL_MAP": {
+   "inputs": [
+    "strength",
+    "color"
+   ],
+   "outputs": [
+    "tangentSpaceNormal",
+    "normal"
+   ],
+   "rules": [
+    {
+     "format": {
+      "api": "OpenGLES",
+      "major": 2,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "   varying highp vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       varying highp vec3 worldNormal;",
+      "   #else",
+      "       const lowp vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       varying highp vec4 worldTangent;",
+      "   #else",
+      "       const lowp vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif"
+     ],
+     "substitution": "highp vec3 $tangentSpaceNormal = $color.xyz * vec3(2) - vec3(1); highp vec3 $normal = normalize(mix(worldNormal, normalize($tangentSpaceNormal.x * worldTangent.xyz + $tangentSpaceNormal.y * cross(worldNormal, worldTangent.xyz) + $tangentSpaceNormal.z * worldNormal), max($strength, 0.0)));"
+    },
+    {
+     "format": {
+      "api": "OpenGLES",
+      "major": 3,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "in highp vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       in highp vec3 worldNormal;",
+      "   #else",
+      "       const lowp vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       in highp vec4 worldTangent;",
+      "   #else",
+      "       const lowp vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif"
+     ],
+     "substitution": "highp vec3 $tangentSpaceNormal = $color.xyz * vec3(2) - vec3(1); highp vec3 $normal = normalize(mix(worldNormal, normalize($tangentSpaceNormal.x * worldTangent.xyz + $tangentSpaceNormal.y * cross(worldNormal, worldTangent.xyz) + $tangentSpaceNormal.z * worldNormal), max($strength, 0.0)));"
+    },
+    {
+     "format": {
+      "api": "OpenGLCoreProfile",
+      "major": 3,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "   in vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif"
+     ],
+     "substitution": "vec3 $tangentSpaceNormal = $color.xyz * vec3(2) - vec3(1); vec3 $normal = normalize(mix(worldNormal, normalize($tangentSpaceNormal.x * worldTangent.xyz + $tangentSpaceNormal.y * cross(worldNormal, worldTangent.xyz) + $tangentSpaceNormal.z * worldNormal), max($strength, 0.0)));"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "layout(location = 4) in vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       layout(location = 3) in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       layout(location = 2) in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif"
+     ],
+     "substitution": "vec3 $tangentSpaceNormal = $color.xyz * vec3(2) - vec3(1); vec3 $normal = normalize(mix(worldNormal, normalize($tangentSpaceNormal.x * worldTangent.xyz + $tangentSpaceNormal.y * cross(worldNormal, worldTangent.xyz) + $tangentSpaceNormal.z * worldNormal), max($strength, 0.0)));"
     }
    ]
   },
@@ -1312,7 +1891,11 @@
      "headerSnippets": [
       "#ifndef VERTEX_COLOR",
       "#define VERTEX_COLOR",
+      "#ifdef LAYER_hasVertexColor",
       "varying highp vec4 color;",
+      "#else",
+      "const lowp vec4 color = vec4(1.0);",
+      "#endif",
       "#endif"
      ],
      "substitution": "highp vec3 $color = color.rgb;highp float $alpha = color.a;"
@@ -1326,7 +1909,11 @@
      "headerSnippets": [
       "#ifndef VERTEX_COLOR",
       "#define VERTEX_COLOR",
+      "#ifdef LAYER_hasVertexColor",
       "in highp vec4 color;",
+      "#else",
+      "const lowp vec4 color = vec4(1.0);",
+      "#endif",
       "#endif"
      ],
      "substitution": "highp vec3 $color = color.rgb;highp float $alpha = color.a;"
@@ -1340,10 +1927,221 @@
      "headerSnippets": [
       "#ifndef VERTEX_COLOR",
       "#define VERTEX_COLOR",
+      "#ifdef LAYER_hasVertexColor",
       "in vec4 color;",
+      "#else",
+      "const vec4 color = vec4(1.0);",
+      "#endif",
       "#endif"
      ],
      "substitution": "vec3 $color = color.rgb;float $alpha = color.a;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef VERTEX_COLOR",
+      "#define VERTEX_COLOR",
+      "#ifdef LAYER_hasVertexColor",
+      "layout(location = 1) in vec4 color;",
+      "#else",
+      "const vec4 color = vec4(1.0);",
+      "#endif",
+      "#endif"
+     ],
+     "substitution": "vec3 $color = color.rgb;float $alpha = color.a;"
+    }
+   ]
+  },
+  "PLANAR_REFLECTION_ALPHA_BLEND": {
+   "inputs": [
+    "color",
+    "alpha"
+   ],
+   "outputs": [
+    "shader"
+   ],
+   "rules": [
+    {
+     "format": {
+      "api": "OpenGLES",
+      "major": 2,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef VIEW_MATRIX",
+      "#define VIEW_MATRIX",
+      "   uniform highp mat4 viewMatrix;",
+      "   uniform highp mat4 inverseViewMatrix;",
+      "#endif",
+      "#ifndef PROJECTION_MATRIX",
+      "#define PROJECTION_MATRIX",
+      "   uniform highp mat4 projectionMatrix;",
+      "#endif",
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "   varying highp vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       varying highp vec3 worldNormal;",
+      "   #else",
+      "       const lowp vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       varying highp vec4 worldTangent;",
+      "   #else",
+      "       const lowp vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif",
+      "#ifndef PLANAR_REFLECTION",
+      "#define PLANAR_REFLECTION",
+      "uniform highp sampler2D kuesa_reflectionPlaneMap;",
+      "uniform highp vec4 kuesa_reflectionPlane;",
+      "highp mat4 reflectionMatrix(vec4 n)",
+      "{",
+      "    highp vec4 n2 = n * n;",
+      "    return mat4(1.0 - 2 * n2.x,    -2 * n.x * n.y,     -2 * n.x * n.z,    0,",
+      "                -2 * n.x * n.y,     1.0 - 2 * n2.y,    -2 * n.y * n.z,    0,",
+      "                -2 * n.x * n.z,    -2 * n.y * n.z,      1.0 -2 * n2.z,    0,",
+      "                -2 * n.x * n.w ,   -2 * n.y * n.w,     -2 * n.z * n.w,    1);",
+      "}",
+      "highp vec4 reflectedColor(vec4 c)",
+      "{",
+      "    highp vec4 clipReflection = projectionMatrix * viewMatrix * reflectionMatrix(kuesa_reflectionPlane) * vec4(worldPosition, 1.0);",
+      "    highp vec2 refCoords = clipReflection.xy / clipReflection.w;",
+      "    highp vec2 texCoords = vec2(0.5) + 0.5 * refCoords;",
+      "    highp vec4 reflectedColor = texture(kuesa_reflectionPlaneMap, texCoords);",
+      "    return c * reflectedColor;",
+      "}",
+      "#endif"
+     ],
+     "substitution": "highp vec4 $shader = reflectedColor(vec4($color, pow($alpha, 2.4)));"
+    },
+    {
+     "format": {
+      "api": "OpenGLCoreProfile",
+      "major": 3,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef VIEW_MATRIX",
+      "#define VIEW_MATRIX",
+      "   uniform mat4 viewMatrix;",
+      "   uniform mat4 inverseViewMatrix;",
+      "#endif",
+      "#ifndef PROJECTION_MATRIX",
+      "#define PROJECTION_MATRIX",
+      "   uniform mat4 projectionMatrix;",
+      "#endif",
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "   in vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif",
+      "#ifndef PLANAR_REFLECTION",
+      "#define PLANAR_REFLECTION",
+      "uniform sampler2D kuesa_reflectionPlaneMap;",
+      "uniform vec4 kuesa_reflectionPlane;",
+      "mat4 reflectionMatrix(vec4 n)",
+      "{",
+      "    vec4 n2 = n * n;",
+      "    return mat4(1.0 - 2 * n2.x,    -2 * n.x * n.y,     -2 * n.x * n.z,    0,",
+      "                -2 * n.x * n.y,     1.0 - 2 * n2.y,    -2 * n.y * n.z,    0,",
+      "                -2 * n.x * n.z,    -2 * n.y * n.z,      1.0 -2 * n2.z,    0,",
+      "                -2 * n.x * n.w ,   -2 * n.y * n.w,     -2 * n.z * n.w,    1);",
+      "}",
+      "vec4 reflectedColor(vec4 c)",
+      "{",
+      "    vec4 clipReflection = projectionMatrix * viewMatrix * reflectionMatrix(kuesa_reflectionPlane) * vec4(worldPosition, 1.0);",
+      "    vec2 refCoords = clipReflection.xy / clipReflection.w;",
+      "    vec2 texCoords = vec2(0.5) + 0.5 * refCoords;",
+      "    vec4 reflectedColor = texture(kuesa_reflectionPlaneMap, texCoords);",
+      "    return c * reflectedColor;",
+      "}",
+      "#endif"
+     ],
+     "substitution": "vec4 $shader = reflectedColor(vec4($color, pow($alpha, 2.4)));"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef RV_UNIFORMS",
+      "#define RV_UNIFORMS",
+      "layout(std140, binding = 0) uniform qt3d_render_view_uniforms {",
+      "    mat4 viewMatrix;",
+      "    mat4 projectionMatrix;",
+      "    mat4 uncorrectedProjectionMatrix;",
+      "    mat4 clipCorrectionMatrix;",
+      "    mat4 viewProjectionMatrix;",
+      "    mat4 inverseViewMatrix;",
+      "    mat4 inverseProjectionMatrix;",
+      "    mat4 inverseViewProjectionMatrix;",
+      "    mat4 viewportMatrix;",
+      "    mat4 inverseViewportMatrix;",
+      "    vec4 textureTransformMatrix;",
+      "    vec3 eyePosition;",
+      "    float aspectRatio;",
+      "    float gamma;",
+      "    float exposure;",
+      "    float time;",
+      "    float yUpInNDC;",
+      "    float yUpInFBO;",
+      "  };",
+      "#endif",
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "layout(location = 4) in vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       layout(location = 3) in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       layout(location = 2) in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif",
+      "#ifndef PLANAR_REFLECTION",
+      "#define PLANAR_REFLECTION",
+      "layout(binding=0) uniform sampler2D kuesa_reflectionPlaneMap;",
+      "layout(std140, binding = 12) uniform qt3d_shadergraph_reflection_plane_uniforms {",
+      "    vec4 kuesa_reflectionPlane;",
+      "};",
+      "mat4 reflectionMatrix(vec4 n)",
+      "{",
+      "    vec4 n2 = n * n;",
+      "    return mat4(1.0 - 2 * n2.x,    -2 * n.x * n.y,     -2 * n.x * n.z,    0,",
+      "                -2 * n.x * n.y,     1.0 - 2 * n2.y,    -2 * n.y * n.z,    0,",
+      "                -2 * n.x * n.z,    -2 * n.y * n.z,      1.0 -2 * n2.z,    0,",
+      "                -2 * n.x * n.w ,   -2 * n.y * n.w,     -2 * n.z * n.w,    1);",
+      "}",
+      "vec4 reflectedColor(vec4 c)",
+      "{",
+      "    vec4 clipReflection = projectionMatrix * viewMatrix * reflectionMatrix(kuesa_reflectionPlane) * vec4(worldPosition, 1.0);",
+      "    vec2 refCoords = clipReflection.xy / clipReflection.w;",
+      "    vec2 texCoords = vec2(0.5) + 0.5 * refCoords;",
+      "    vec4 reflectedColor = texture(kuesa_reflectionPlaneMap, texCoords);",
+      "    return c * reflectedColor;",
+      "}",
+      "#endif"
+     ],
+     "substitution": "vec4 $shader = reflectedColor(vec4($color, pow($alpha, 2.4)));"
     }
    ]
   },
@@ -1374,19 +2172,27 @@
       "minor": 0
      },
      "substitution": "$type $value = $type($constant);"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "substitution": "$type $value = $type($constant);"
     }
    ]
   },
   "MATERIAL_PROPERTIES": {
    "outputs": [
-    "usesMatteMap",
-    "matteMap",
     "matteFilter",
     "matteAlphaGain",
     "matteGain",
     "postVertexColor",
     "postGain",
-    "uvOffset"
+    "uvOffset",
+    "usesMatteMap",
+    "matteMap"
    ],
    "rules": [
     {
@@ -1396,9 +2202,9 @@
       "minor": 0
      },
      "headerSnippets": [
-      "struct MaterialProperties {\n    bool usesMatteMap;\n    highp sampler2D matteMap;\n    highp vec3 matteFilter;\n    highp float matteAlphaGain;\n    highp float matteGain;\n    highp float postVertexColor;\n    highp float postGain;\n    highp vec3 uvOffset;\n};\nuniform MaterialProperties properties;"
+      "struct MaterialProperties {\n    highp vec3 matteFilter;\n    highp vec3 uvOffset;\n    highp float matteAlphaGain;\n    highp float matteGain;\n    highp float postVertexColor;\n    highp float postGain;\n    bool usesMatteMap;\n};\nuniform MaterialProperties properties;\nuniform highp sampler2D matteMap;\n"
      ],
-     "substitution": "bool $usesMatteMap = properties.usesMatteMap;highp sampler2D $matteMap = properties.matteMap;highp vec3 $matteFilter = properties.matteFilter;highp float $matteAlphaGain = properties.matteAlphaGain;highp float $matteGain = properties.matteGain;highp float $postVertexColor = properties.postVertexColor;highp float $postGain = properties.postGain;highp vec3 $uvOffset = properties.uvOffset;"
+     "substitution": "highp sampler2D $matteMap = matteMap;highp vec3 $matteFilter = properties.matteFilter;highp vec3 $uvOffset = properties.uvOffset;highp float $matteAlphaGain = properties.matteAlphaGain;highp float $matteGain = properties.matteGain;highp float $postVertexColor = properties.postVertexColor;highp float $postGain = properties.postGain;bool $usesMatteMap = properties.usesMatteMap;"
     },
     {
      "format": {
@@ -1407,9 +2213,20 @@
       "minor": 0
      },
      "headerSnippets": [
-      "struct MaterialProperties {\n    bool usesMatteMap;\n    sampler2D matteMap;\n    vec3 matteFilter;\n    float matteAlphaGain;\n    float matteGain;\n    float postVertexColor;\n    float postGain;\n    vec3 uvOffset;\n};\nuniform MaterialProperties properties;"
+      "struct MaterialProperties {\n    vec3 matteFilter;\n    vec3 uvOffset;\n    float matteAlphaGain;\n    float matteGain;\n    float postVertexColor;\n    float postGain;\n    bool usesMatteMap;\n};\nuniform MaterialProperties properties;\nuniform sampler2D matteMap;\n"
      ],
-     "substitution": "bool $usesMatteMap = properties.usesMatteMap;sampler2D $matteMap = properties.matteMap;vec3 $matteFilter = properties.matteFilter;float $matteAlphaGain = properties.matteAlphaGain;float $matteGain = properties.matteGain;float $postVertexColor = properties.postVertexColor;float $postGain = properties.postGain;vec3 $uvOffset = properties.uvOffset;"
+     "substitution": "sampler2D $matteMap = matteMap;vec3 $matteFilter = properties.matteFilter;vec3 $uvOffset = properties.uvOffset;float $matteAlphaGain = properties.matteAlphaGain;float $matteGain = properties.matteGain;float $postVertexColor = properties.postVertexColor;float $postGain = properties.postGain;bool $usesMatteMap = properties.usesMatteMap;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "struct MaterialProperties {\n    vec3 matteFilter;\n    vec3 uvOffset;\n    float matteAlphaGain;\n    float matteGain;\n    float postVertexColor;\n    float postGain;\n    bool usesMatteMap;\n};\nlayout(std140, binding = 2) uniform MaterialPropertiesBlock { MaterialProperties properties; };\nlayout(binding = 3) uniform sampler2D matteMap;\n"
+     ],
+     "substitution": "sampler2D $matteMap = matteMap;vec3 $matteFilter = properties.matteFilter;vec3 $uvOffset = properties.uvOffset;float $matteAlphaGain = properties.matteAlphaGain;float $matteGain = properties.matteGain;float $postVertexColor = properties.postVertexColor;float $postGain = properties.postGain;bool $usesMatteMap = properties.usesMatteMap;"
     }
    ]
   }

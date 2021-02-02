@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -32,15 +32,60 @@
 #include <QtGui/qcolor.h>
 #include <Kuesa/gltf2materialeffect.h>
 #include <Kuesa/kuesa_global.h>
+#include <Qt3DRender/qabstracttexture.h>
+#include <Qt3DRender/qcullface.h>
+#include <Qt3DRender/qtechnique.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
 class QAbstractTexture;
+class QBlendEquation;
+class QBlendEquationArguments;
+class QShaderProgramBuilder;
+class QShaderProgram;
+class QRenderPass;
+class QFilterKey;
 } // namespace Qt3DRender
 
 namespace Kuesa {
-class MetallicRoughnessTechnique;
+
+class KUESASHARED_EXPORT MetallicRoughnessTechnique : public Qt3DRender::QTechnique
+{
+    Q_OBJECT
+public:
+    enum Version {
+        GL3 = 0,
+        ES3,
+        ES2,
+        RHI
+    };
+
+    explicit MetallicRoughnessTechnique(Version version, Qt3DCore::QNode *parent = nullptr);
+
+    QStringList enabledLayers() const;
+    void setEnabledLayers(const QStringList &layers);
+    void setOpaque(bool opaque);
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode);
+    void setAllowCulling(bool allowCulling);
+
+    Qt3DRender::QShaderProgramBuilder *metalRoughShaderBuilder() const;
+
+private:
+    Qt3DRender::QCullFace *m_backFaceCulling;
+    Qt3DRender::QBlendEquation *m_blendEquation;
+    Qt3DRender::QBlendEquationArguments *m_blendArguments;
+    Qt3DRender::QShaderProgramBuilder *m_metalRoughShaderBuilder;
+    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
+    Qt3DRender::QShaderProgramBuilder *m_cubeMapShadowShaderBuilder;
+    Qt3DRender::QShaderProgram *m_metalRoughShader;
+    Qt3DRender::QShaderProgram *m_zfillShader;
+    Qt3DRender::QRenderPass *m_zfillRenderPass;
+    Qt3DRender::QRenderPass *m_opaqueRenderPass;
+    Qt3DRender::QRenderPass *m_transparentRenderPass;
+    Qt3DRender::QRenderPass *m_cubeMapShadowRenderPass;
+    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
+};
 
 class KUESASHARED_EXPORT MetallicRoughnessEffect : public GLTF2MaterialEffect
 {
@@ -50,8 +95,7 @@ class KUESASHARED_EXPORT MetallicRoughnessEffect : public GLTF2MaterialEffect
     Q_PROPERTY(bool normalMapEnabled READ isNormalMapEnabled WRITE setNormalMapEnabled NOTIFY normalMapEnabledChanged)
     Q_PROPERTY(bool ambientOcclusionMapEnabled READ isAmbientOcclusionMapEnabled WRITE setAmbientOcclusionMapEnabled NOTIFY ambientOcclusionMapEnabledChanged)
     Q_PROPERTY(bool emissiveMapEnabled READ isEmissiveMapEnabled WRITE setEmissiveMapEnabled NOTIFY emissiveMapEnabledChanged)
-    Q_PROPERTY(bool usingColorAttribute READ isUsingColorAttribute WRITE setUsingColorAttribute NOTIFY usingColorAttributeChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLUT READ brdfLUT WRITE setBrdfLUT NOTIFY brdfLUTChanged REVISION 1)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLUT READ brdfLUT WRITE setBrdfLUT NOTIFY brdfLUTChanged)
 
 public:
     explicit MetallicRoughnessEffect(Qt3DCore::QNode *parent = nullptr);
@@ -62,7 +106,6 @@ public:
     bool isNormalMapEnabled() const;
     bool isAmbientOcclusionMapEnabled() const;
     bool isEmissiveMapEnabled() const;
-    bool isUsingColorAttribute() const;
     Qt3DRender::QAbstractTexture *brdfLUT() const;
 
 public Q_SLOTS:
@@ -71,7 +114,6 @@ public Q_SLOTS:
     void setNormalMapEnabled(bool enabled);
     void setAmbientOcclusionMapEnabled(bool enabled);
     void setEmissiveMapEnabled(bool enabled);
-    void setUsingColorAttribute(bool usingColorAttribute);
     void setBrdfLUT(Qt3DRender::QAbstractTexture *brdfLUT);
 
 Q_SIGNALS:
@@ -80,7 +122,6 @@ Q_SIGNALS:
     void normalMapEnabledChanged(bool enabled);
     void ambientOcclusionMapEnabledChanged(bool enabled);
     void emissiveMapEnabledChanged(bool enabled);
-    void usingColorAttributeChanged(bool usingColorAttribute);
     void brdfLUTChanged(Qt3DRender::QAbstractTexture *brdfLUT);
 
 private:
@@ -89,17 +130,30 @@ private:
     bool m_normalMapEnabled;
     bool m_ambientOcclusionMapEnabled;
     bool m_emissiveMapEnabled;
-    bool m_usingColorAttribute;
+
 
     MetallicRoughnessTechnique *m_metalRoughGL3Technique;
     MetallicRoughnessTechnique *m_metalRoughES3Technique;
     MetallicRoughnessTechnique *m_metalRoughES2Technique;
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    MetallicRoughnessTechnique *m_metalRoughRHITechnique;
+#endif
     Qt3DRender::QParameter *m_brdfLUTParameter;
 
-    void updateDoubleSided(bool doubleSided);
-    void updateSkinning(bool useSkinning);
-    void updateOpaque(bool opaque);
-    void updateAlphaCutoffEnabled(bool enabled);
+    void updateLayersOnTechniques(const QStringList &layers);
+
+    void updateDoubleSided(bool doubleSided) override;
+    void updateUsingSkinning(bool useSkinning) override;
+    void updateOpaque(bool opaque) override;
+    void updateAlphaCutoffEnabled(bool enabled) override;
+    void updateUsingColorAttribute(bool enabled) override;
+    void updateUsingNormalAttribute(bool enabled) override;
+    void updateUsingTangentAttribute(bool enabled) override;
+    void updateUsingTexCoordAttribute(bool enabled) override;
+    void updateUsingTexCoord1Attribute(bool enabled) override;
+    void updateUsingMorphTargets(bool usingMorphTargets) override;
+    void updateUsingCubeMapArrays(bool usingCubeMapArrays) override;
+    void updateInstanced(bool instanced) override;
 };
 
 } // namespace Kuesa

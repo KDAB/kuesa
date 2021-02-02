@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -34,6 +34,7 @@ SOURCES += \
     $$PWD/metallicroughnessmaterial.cpp \
     $$PWD/metallicroughnessshaderdata.cpp \
     $$PWD/metallicroughnessproperties.cpp \
+    $$PWD/texturetransform.cpp \
     $$PWD/unliteffect.cpp \
     $$PWD/unlitmaterial.cpp \
     $$PWD/unlitshaderdata.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     $$PWD/metallicroughnessmaterial.h \
     $$PWD/metallicroughnessshaderdata_p.h \
     $$PWD/metallicroughnessproperties.h \
+    $$PWD/texturetransform.h \
     $$PWD/unliteffect.h \
     $$PWD/unlitmaterial.h \
     $$PWD/unlitproperties.h \

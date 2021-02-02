@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -50,6 +50,8 @@
     Note: You can get imperfect reflections when viewing your model from under,
     if your application allows the user to fully orbit around the model.
 
+    All the Iro Materials are compatbile with OpenGL, Vulkan, Metal and DirectX
+    when used with the latest Qt 3D version.
 
     \table 100%
         \row
@@ -70,15 +72,42 @@
                 \caption PBR Comparison
     \endtable
 
-    \section1 Available Iro Materials
+    \section1 Current Iro Materials
+
+    \section2 Iro2 Materials
+
+    A second revision of the Iro materials have been introduced in Kuesa 1.3.
+    They provide support for normal maps and IroDiffuseHemi-like shadowing.
+
+    \list
+    \li \l {Iro2DiffuseSemMaterial}
+    \li \l {Iro2DiffuseEquiRectMaterial}
+    \li \l {Iro2AlphaSemMaterial}
+    \li \l {Iro2AlphaEquiRectMaterial}
+    \li \l {Iro2GlassSemMaterial}
+    \li \l {Iro2GlassEquiRectMaterial}
+    \li \l {Iro2MatteAlphaMaterial}
+    \li \l {Iro2PlanarReflectionSemMaterial}
+    \li \l {Iro2PlanarReflectionEquiRectMaterial}
+    \endlist
+
+    \section2 Original Iro Materials
+
+    \list
+    \li \l {IroMatteOpaqueMaterial}
+    \li \l {IroMatteSkyboxMaterial}
+    \li \l {IroMatteBackgroundMaterial}
+    \endlist
+
+    \section1 Deprecated Iro Materials
+
+    Those materials are kept for compatibility reasons. Use the corresponding
+    Iro2 materials when possible.
 
     \list
     \li \l {IroDiffuseMaterial}
     \li \l {IroDiffuseHemiMaterial}
     \li \l {IroGlassAddMaterial}
-    \li \l {IroMatteOpaqueMaterial}
     \li \l {IroMatteAlphaMaterial}
-    \li \l {IroMatteSkyboxMaterial}
-    \li \l {IroMatteBackgroundMaterial}
     \endlist
 */

@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -62,10 +62,12 @@ It performs 2 render passes. The first one performs multiplicative blending usin
 */
 
 IroGlassAddMaterial::IroGlassAddMaterial(Qt3DCore::QNode *parent)
-    : GLTF2Material(parent),
-    m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("properties"), {}))
+    : GLTF2Material(parent)
+    , m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("properties"), {}))
+    , m_reflectionMapParameter(new Qt3DRender::QParameter(QStringLiteral("reflectionMap"), {}))
 {
     addParameter(m_shaderDataParameter);
+    addParameter(m_reflectionMapParameter);
 }
 
 IroGlassAddMaterial::~IroGlassAddMaterial() = default;
@@ -94,10 +96,17 @@ Kuesa::IroGlassAddProperties *IroGlassAddMaterial::materialProperties() const
 void IroGlassAddMaterial::setMaterialProperties(Kuesa::IroGlassAddProperties *materialProperties)
 {
     if (m_materialProperties != materialProperties) {
+        if (m_materialProperties)
+            m_materialProperties->disconnect(this);
+
         m_materialProperties = materialProperties;
         emit materialPropertiesChanged(materialProperties);
 
         if (m_materialProperties) {
+            QObject::connect(m_materialProperties, &IroGlassAddProperties::reflectionMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
+
+            m_reflectionMapParameter->setValue(QVariant::fromValue(m_materialProperties->reflectionMap()));
+
             m_shaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));
             m_materialProperties->addClientMaterial(this);
         }

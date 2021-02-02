@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michael Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -38,7 +38,7 @@ uniform highp sampler2D depthTexture;
 uniform highp float focusDistance;
 uniform highp float focusRange;
 uniform highp float bokehRadius;
-uniform highp vec2 textureSize;
+uniform highp vec2 texSize;
 uniform highp sampler2D textureSampler;
 
 varying highp vec2 texCoord;
@@ -199,7 +199,7 @@ highp vec4 depthOfField()
     {
         highp vec2 sampledPoint = _451[k] * bokehRadius;
         highp float radius = length(sampledPoint);
-        sampledPoint /= textureSize;
+        sampledPoint /= texSize;
         highp vec4 s = texture2D(textureSampler, texCoord + sampledPoint);
 
         //Find CoC of sampled point. if it's > CoC at this point it will contribute

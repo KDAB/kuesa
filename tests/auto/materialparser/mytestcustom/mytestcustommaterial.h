@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -32,14 +32,11 @@
 
 #include <Kuesa/GLTF2Material>
 #include <Kuesa/kuesa_global.h>
-
+#include "mytestcustomproperties.h"
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-
-class MyTestCustomProperties;
-class GLTF2MaterialProperties;
 
 class MyTestCustomMaterial : public GLTF2Material
 {

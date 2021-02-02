@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,13 +26,18 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 
 #include <Kuesa/forwardrenderer.h>
 #include <Kuesa/abstractpostprocessingeffect.h>
 #include <Kuesa/private/opaquerenderstage_p.h>
 #include <Kuesa/private/zfillrenderstage_p.h>
 #include <Kuesa/private/transparentrenderstage_p.h>
+#include <Kuesa/private/scenestages_p.h>
+#include <Kuesa/private/reflectionstages_p.h>
+#include <Kuesa/private/framegraphutils_p.h>
+#include <Kuesa/private/effectsstages_p.h>
 #include <Qt3DRender/QViewport>
 #include <Qt3DRender/QCameraSelector>
 #include <Qt3DRender/QCamera>
@@ -46,7 +51,11 @@
 #include <Qt3DRender/QFrustumCulling>
 #include <Qt3DRender/QLayerFilter>
 #include <Qt3DRender/QLayer>
+#include <Qt3DRender/QBlitFramebuffer>
+#include <Qt3DRender/QDebugOverlay>
+#include <Qt3DRender/QNoDraw>
 #include <QWindow>
+#include <QSurfaceFormat>
 #include <QOffscreenSurface>
 
 namespace {
@@ -84,7 +93,7 @@ public:
         return m_inputTexture;
     }
 
-    void setSceneSize(const QSize &size) override
+    void setWindowSize(const QSize &size) override
     {
         emit sceneSizeChanged(size);
     }
@@ -103,6 +112,16 @@ class tst_ForwardRenderer : public QObject
 {
     Q_OBJECT
 private Q_SLOTS:
+
+    void testAllocAndDestruction()
+    {
+        // GIVEN
+        {
+            Kuesa::ForwardRenderer r;
+        }
+        // THEN -> Should not crash
+    }
+
     void testChangingViewportRect()
     {
         // GIVEN
@@ -129,19 +148,21 @@ private Q_SLOTS:
     {
         // GIVEN
         Kuesa::ForwardRenderer renderer;
-        QSignalSpy spy(&renderer, SIGNAL(externalRenderTargetSizeChanged(const QSize &)));
+        Qt3DRender::QRenderSurfaceSelector *surfaceSelector = renderer.m_surfaceSelector;
+
+        QSignalSpy spy(&renderer, &Kuesa::ForwardRenderer::externalRenderTargetSizeChanged);
         QVERIFY(spy.isValid());
 
         // WHEN
         QSize newSize(123, 456);
-        renderer.setExternalRenderTargetSize(newSize);
+        surfaceSelector->setExternalRenderTargetSize(newSize);
 
         // THEN
-        QCOMPARE(renderer.externalRenderTargetSize(), newSize);
+        QCOMPARE(surfaceSelector->externalRenderTargetSize(), newSize);
         QCOMPARE(spy.count(), 1);
 
         // WHEN
-        renderer.setExternalRenderTargetSize(newSize);
+        surfaceSelector->setExternalRenderTargetSize(newSize);
 
         // THEN
         QCOMPARE(spy.count(), 1);
@@ -233,212 +254,708 @@ private Q_SLOTS:
         QVERIFY(it != filters.end());
     }
 
-    void testChangingFrustumCulling()
+    void testAddView()
     {
         // GIVEN
-        Kuesa::ForwardRenderer renderer;
-        QSignalSpy spy(&renderer, SIGNAL(frustumCullingChanged(bool)));
-
-        QVERIFY(spy.isValid());
-
-        // THEN
-        QVERIFY(renderer.frustumCulling());
-
-        // WHEN
-        renderer.setFrustumCulling(false);
-
-        // THEN
-        QVERIFY(!renderer.frustumCulling());
-        QCOMPARE(spy.count(), 1);
-
-        // WHEN
-        spy.clear();
-        renderer.setFrustumCulling(false);
-
-        // THEN
-        QVERIFY(!renderer.frustumCulling());
-        QCOMPARE(spy.count(), 0);
-
-        // WHEN
-        renderer.setFrustumCulling(true);
-
-        // THEN
-        QVERIFY(renderer.frustumCulling());
-        QCOMPARE(spy.count(), 1);
-    }
-
-    void testChangingAlpha()
-    {
-        // GIVEN
-        Kuesa::ForwardRenderer renderer;
-        QSignalSpy spy(&renderer, SIGNAL(backToFrontSortingChanged(bool)));
-
-        QVERIFY(spy.isValid());
-
-        // THEN
-        QVERIFY(renderer.backToFrontSorting());
-
-        // WHEN
-        renderer.setBackToFrontSorting(false);
-
-        // THEN
-        QVERIFY(!renderer.backToFrontSorting());
-        QCOMPARE(spy.count(), 1);
-
-        // WHEN
-        spy.clear();
-        renderer.setBackToFrontSorting(false);
-
-        // THEN
-        QVERIFY(!renderer.backToFrontSorting());
-        QCOMPARE(spy.count(), 0);
-
-        // WHEN
-        renderer.setBackToFrontSorting(true);
-
-        // THEN
-        QVERIFY(renderer.backToFrontSorting());
-        QCOMPARE(spy.count(), 1);
-    }
-
-    void testChangingZFilling()
-    {
-        // GIVEN
-        Kuesa::ForwardRenderer renderer;
-        QSignalSpy spy(&renderer, SIGNAL(zFillingChanged(bool)));
-
-        QVERIFY(spy.isValid());
-
-        // THEN
-        QVERIFY(!renderer.zFilling());
-
-        // WHEN
-        renderer.setZFilling(true);
-
-        // THEN
-        QVERIFY(renderer.zFilling());
-        QCOMPARE(spy.count(), 1);
-
-        // WHEN
-        spy.clear();
-        renderer.setZFilling(true);
-
-        // THEN
-        QVERIFY(renderer.zFilling());
-        QCOMPARE(spy.count(), 0);
-
-        // WHEN
-        renderer.setZFilling(false);
-
-        // THEN
-        QVERIFY(!renderer.zFilling());
-        QCOMPARE(spy.count(), 1);
-    }
-
-    void testRegisterPostProcessingEffect()
-    {
-        // GIVEN
-        Kuesa::ForwardRenderer renderer;
-        QSignalSpy spy(&renderer, SIGNAL(frameGraphTreeReconfigured()));
-
-        QVERIFY(spy.isValid());
+        Kuesa::ForwardRenderer f;
 
         {
-            tst_FX fx;
+            Kuesa::View v;
 
             // WHEN
-            renderer.addPostProcessingEffect(&fx);
+            f.addView(&v);
             QCoreApplication::processEvents();
 
             // THEN
-            QCOMPARE(renderer.postProcessingEffects().size(), 1);
-            QCOMPARE(renderer.postProcessingEffects().first(), &fx);
-            // QVERIFY(renderer.frameGraphSubtreeForPostProcessingEffect(&fx) != nullptr);
-            QCOMPARE(spy.size(), 1);
-            spy.clear();
+            QCOMPARE(f.views().size(), 1U);
+            QCOMPARE(f.views().front(), &v);
         }
         QCoreApplication::processEvents();
 
         // THEN
-        QCOMPARE(renderer.postProcessingEffects().size(), 0);
-        QCOMPARE(spy.size(), 1);
+        QCOMPARE(f.views().size(), 0U);
     }
 
-    void testUnregisterPostProcessingEffect()
+    void testRemoveView()
     {
         // GIVEN
-        Kuesa::ForwardRenderer renderer;
+        Kuesa::ForwardRenderer f;
+        Kuesa::View v;
+
+        // WHEN
+        f.addView(&v);
+        QCoreApplication::processEvents();
+
+        f.removeView(&v);
+        QCoreApplication::processEvents();
+
+        // THEN
+        QCOMPARE(f.views().size(), 0U);
+    }
+
+    void testSetupRenderTargetsNoFXNoMSAA()
+    {
+        // GIVEN
+        Kuesa::ForwardRenderer f;
+        Qt3DRender::QRenderTargetSelector rtSelector;
+
+        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
+        format.setSamples(1);
+        QSurfaceFormat::setDefaultFormat(format);
+
+        delete f.m_fg->m_multisampleTarget;
+        delete f.m_fg->m_renderTargets[0];
+        delete f.m_fg->m_renderTargets[1];
+        f.m_fg->m_multisampleTarget = nullptr;
+        f.m_fg->m_renderTargets[0] = nullptr;
+        f.m_fg->m_renderTargets[1] = nullptr;
+
+        // WHEN -> No Stencil, No MSAA, No FX
+        f.m_fg->setupRenderTargets(&rtSelector, 0);
+
+        // THEN
+        QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
+        QVERIFY(f.m_fg->m_renderTargets[1] == nullptr);
+        QVERIFY(f.m_fg->m_multisampleTarget == nullptr);
+        QVERIFY(f.m_fg->m_rt0rt1Resolver == nullptr);
+        QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 == nullptr);
+
+        QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
+                         f.m_fg->m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 true);
+
+        // THEN
+        QCOMPARE(rtSelector.target(), f.m_fg->m_renderTargets[0]);
+        QCOMPARE(rtSelector.children().size(), 0);
+    }
+
+    void testSetupRenderTargetsNoFXMSAA()
+    {
+        if (!Kuesa::FrameGraphUtils::hasMSAASupport())
+            QSKIP("Device has no MSAA support, skipping");
+
+        Kuesa::ForwardRenderer f;
+        Qt3DRender::QRenderTargetSelector rtSelector;
+
+        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
+        format.setSamples(4);
+        QSurfaceFormat::setDefaultFormat(format);
+
+        delete f.m_fg->m_multisampleTarget;
+        delete f.m_fg->m_renderTargets[0];
+        delete f.m_fg->m_renderTargets[1];
+        f.m_fg->m_multisampleTarget = nullptr;
+        f.m_fg->m_renderTargets[0] = nullptr;
+        f.m_fg->m_renderTargets[1] = nullptr;
+
+        // WHEN -> No Stencil, MSAA, No FX
+        f.m_fg->setupRenderTargets(&rtSelector, 0);
+
+        QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
+        QVERIFY(f.m_fg->m_renderTargets[1] == nullptr);
+        QVERIFY(f.m_fg->m_multisampleTarget != nullptr);
+        QVERIFY(f.m_fg->m_rt0rt1Resolver == nullptr);
+        QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 == nullptr);
+
+        QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
+                         f.m_fg->m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 true);
+        QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
+                         f.m_fg->m_multisampleTarget,
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 true);
+
+        QCOMPARE(rtSelector.target(), f.m_fg->m_multisampleTarget);
+        QCOMPARE(rtSelector.children().size(), 1); // Blit of MSAAFBOResolver
+        QVERIFY(qobject_cast<Qt3DRender::QFrameGraphNode *>(rtSelector.children()[0]));
+    }
+
+    void testSetupRenderTargetsFXNoMSAA()
+    {
+        // GIVEN
+        Kuesa::ForwardRenderer f;
+        Qt3DRender::QRenderTargetSelector rtSelector;
+
+        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
+        format.setSamples(1);
+        QSurfaceFormat::setDefaultFormat(format);
+
+        delete f.m_fg->m_multisampleTarget;
+        delete f.m_fg->m_renderTargets[0];
+        delete f.m_fg->m_renderTargets[1];
+        f.m_fg->m_multisampleTarget = nullptr;
+        f.m_fg->m_renderTargets[0] = nullptr;
+        f.m_fg->m_renderTargets[1] = nullptr;
+
+        // WHEN -> No Stencil, No MSAA, FX(1)
+        f.m_fg->setupRenderTargets(&rtSelector, 1);
+
+        // THEN
+        QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
+        QVERIFY(f.m_fg->m_renderTargets[1] == nullptr);
+        QVERIFY(f.m_fg->m_multisampleTarget == nullptr);
+        QVERIFY(f.m_fg->m_rt0rt1Resolver == nullptr);
+        QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 == nullptr);
+
+        QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
+                         f.m_fg->m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 true);
+
+        // THEN
+        QCOMPARE(rtSelector.target(), f.m_fg->m_renderTargets[0]);
+        QCOMPARE(rtSelector.children().size(), 0);
+    }
+
+    void testSetupRenderTargetsFXsNoMSAA()
+    {
+        // GIVEN
+        Kuesa::ForwardRenderer f;
+        Qt3DRender::QRenderTargetSelector rtSelector;
+
+        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
+        format.setSamples(1);
+        QSurfaceFormat::setDefaultFormat(format);
+
+        delete f.m_fg->m_multisampleTarget;
+        delete f.m_fg->m_renderTargets[0];
+        delete f.m_fg->m_renderTargets[1];
+        f.m_fg->m_multisampleTarget = nullptr;
+        f.m_fg->m_renderTargets[0] = nullptr;
+        f.m_fg->m_renderTargets[1] = nullptr;
+
+        // WHEN -> No Stencil, No MSAA, FX(2)
+        f.m_fg->setupRenderTargets(&rtSelector, 2);
+
+        // THEN
+        QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
+        QVERIFY(f.m_fg->m_renderTargets[1] != nullptr);
+        QVERIFY(f.m_fg->m_multisampleTarget == nullptr);
+        if (f.m_fg->m_usesRHI)
+            QVERIFY(f.m_fg->m_rt0rt1Resolver != nullptr);
+        else
+            QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 != nullptr);
+
+        QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
+                         f.m_fg->m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 true);
+        QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
+                         f.m_fg->m_renderTargets[1],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 false);
+
+        // THEN
+        QCOMPARE(rtSelector.target(), f.m_fg->m_renderTargets[0]);
+        QCOMPARE(rtSelector.children().size(), 1);
+        Qt3DRender::QBlitFramebuffer *blit = qobject_cast<Qt3DRender::QBlitFramebuffer *>(rtSelector.children()[0]);
+        QVERIFY(blit != nullptr);
+        QCOMPARE(blit->children().size(), 1);
+        QVERIFY(qobject_cast<Qt3DRender::QNoDraw *>(blit->children().first()) != nullptr);
+    }
+
+    void testSetupRenderTargetsFXsNoMSAAStencil()
+    {
+        // GIVEN
+        Kuesa::ForwardRenderer f;
+        Qt3DRender::QRenderTargetSelector rtSelector;
+
+        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
+        format.setSamples(1);
+        QSurfaceFormat::setDefaultFormat(format);
+
+        f.m_usesStencilMask = true;
+
+        delete f.m_fg->m_multisampleTarget;
+        delete f.m_fg->m_renderTargets[0];
+        delete f.m_fg->m_renderTargets[1];
+        f.m_fg->m_multisampleTarget = nullptr;
+        f.m_fg->m_renderTargets[0] = nullptr;
+        f.m_fg->m_renderTargets[1] = nullptr;
+
+        // WHEN -> Stencil, No MSAA, FX(2)
+        f.m_fg->setupRenderTargets(&rtSelector, 2);
+
+        // THEN
+        QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
+        QVERIFY(f.m_fg->m_renderTargets[1] != nullptr);
+        QVERIFY(f.m_fg->m_multisampleTarget == nullptr);
+        if (f.m_fg->m_usesRHI)
+            QVERIFY(f.m_fg->m_rt0rt1Resolver != nullptr);
+        else
+            QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 != nullptr);
+
+        QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
+                         f.m_fg->m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 true);
+        QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
+                         f.m_fg->m_renderTargets[1],
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 false);
+
+        // THEN
+        QCOMPARE(rtSelector.target(), f.m_fg->m_renderTargets[0]);
+        QCOMPARE(rtSelector.children().size(), 1);
+        Qt3DRender::QBlitFramebuffer *blit = qobject_cast<Qt3DRender::QBlitFramebuffer *>(rtSelector.children()[0]);
+        QVERIFY(blit != nullptr);
+        QCOMPARE(blit->children().size(), 1);
+        QVERIFY(qobject_cast<Qt3DRender::QNoDraw *>(blit->children().first()) != nullptr);
+    }
+
+    void testSetupRenderTargetsFXsMSAAStencil()
+    {
+        if (!Kuesa::FrameGraphUtils::hasMSAASupport())
+            QSKIP("Device has no MSAA support, skipping");
+
+        Kuesa::ForwardRenderer f;
+        Qt3DRender::QRenderTargetSelector rtSelector;
+
+        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
+        format.setSamples(4);
+        QSurfaceFormat::setDefaultFormat(format);
+
+        f.m_usesStencilMask = true;
+
+        delete f.m_fg->m_multisampleTarget;
+        delete f.m_fg->m_renderTargets[0];
+        delete f.m_fg->m_renderTargets[1];
+        f.m_fg->m_multisampleTarget = nullptr;
+        f.m_fg->m_renderTargets[0] = nullptr;
+        f.m_fg->m_renderTargets[1] = nullptr;
+
+        // WHEN -> Stencil, MSAA, FX(2)
+        f.m_fg->setupRenderTargets(&rtSelector, 2);
+
+        QVERIFY(f.m_fg->m_renderTargets[0] != nullptr);
+        QVERIFY(f.m_fg->m_renderTargets[1] != nullptr);
+        QVERIFY(f.m_fg->m_multisampleTarget != nullptr);
+        if (f.m_fg->m_usesRHI)
+            QVERIFY(f.m_fg->m_rt0rt1Resolver != nullptr);
+        else
+            QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 != nullptr);
+
+        QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
+                         f.m_fg->m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 true);
+        QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
+                         f.m_fg->m_multisampleTarget,
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 true);
+        QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
+                         f.m_fg->m_renderTargets[1],
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 false);
+
+        QCOMPARE(rtSelector.target(), f.m_fg->m_multisampleTarget);
+        QCOMPARE(rtSelector.children().size(), 2); // Blit of MSAAFBOResolver
+        QVERIFY(qobject_cast<Qt3DRender::QFrameGraphNode *>(rtSelector.children()[0]));
+        Qt3DRender::QBlitFramebuffer *blit = qobject_cast<Qt3DRender::QBlitFramebuffer *>(rtSelector.children()[1]);
+        QVERIFY(blit != nullptr);
+        QCOMPARE(blit->children().size(), 1);
+        QVERIFY(qobject_cast<Qt3DRender::QNoDraw *>(blit->children().first()) != nullptr);
+    }
+
+    void testReconfigureFrameGraphNoViewNoFX()
+    {
+        // GIVEN (No View, No Fx)
+        Kuesa::ForwardRenderer f;
+
+        Qt3DRender::QRenderSurfaceSelector *surfaceSelector = f.m_surfaceSelector;
+        Qt3DRender::QRenderTargetSelector *renderToTexture = f.m_fg->m_renderToTextureRootNode;
+        Qt3DRender::QClearBuffers *clearSurface = f.m_clearBuffers;
+        Qt3DRender::QClearBuffers *clearRenderTarget = f.m_fg->m_clearRT0;
+        Qt3DRender::QLayerFilter *sceneLayerFilter = f.m_fg->m_mainSceneLayerFilter;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        Qt3DRender::QDebugOverlay *overlay = f.m_debugOverlay;
+#endif
+
+        // THEN
+        QCOMPARE(surfaceSelector->parent(), &f);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        QCOMPARE(surfaceSelector->children().size(), 4);
+#else
+        QCOMPARE(surfaceSelector->children().size(), 3);
+#endif
+
+        QCOMPARE(surfaceSelector->children()[0], clearSurface);
+        QCOMPARE(surfaceSelector->children()[1], renderToTexture);
+        QCOMPARE(surfaceSelector->children()[2], f.m_internalFXStages);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        QCOMPARE(surfaceSelector->children()[3], overlay);
+#endif
+
+        QVERIFY(renderToTexture->children().size() >= 2);
+        QCOMPARE(renderToTexture->children()[0], clearRenderTarget);
+        QCOMPARE(renderToTexture->children()[1], sceneLayerFilter);
+
+        // Single SceneStages
+        QCOMPARE(sceneLayerFilter->children().size(), 1);
+    }
+
+    void testReconfigureFrameGraphNoViewFX()
+    {
+        // GIVEN (No View, FX)
+        Kuesa::ForwardRenderer f;
         tst_FX fx;
-        QSignalSpy spy(&renderer, SIGNAL(frameGraphTreeReconfigured()));
+
+        Qt3DRender::QRenderSurfaceSelector *surfaceSelector = f.m_surfaceSelector;
+        Qt3DRender::QRenderTargetSelector *renderToTexture = f.m_fg->m_renderToTextureRootNode;
+        Qt3DRender::QClearBuffers *clearSurface = f.m_clearBuffers;
+        Qt3DRender::QClearBuffers *clearRenderTarget = f.m_fg->m_clearRT0;
+        Qt3DRender::QLayerFilter *sceneLayerFilter = f.m_fg->m_mainSceneLayerFilter;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        Qt3DRender::QDebugOverlay *overlay = f.m_debugOverlay;
+#endif
 
         // WHEN
-        renderer.addPostProcessingEffect(&fx);
+        f.addPostProcessingEffect(&fx);
         QCoreApplication::processEvents();
 
         // THEN
-        QVERIFY(renderer.frameGraphSubtreeForPostProcessingEffect(&fx) != nullptr);
-        QCOMPARE(spy.size(), 1);
-        spy.clear();
+        QCOMPARE(surfaceSelector->parent(), &f);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        QCOMPARE(surfaceSelector->children().size(), 5);
+#else
+        QCOMPARE(surfaceSelector->children().size(), 3);
+#endif
 
-        // WHEN
-        renderer.removePostProcessingEffect(&fx);
-        QCoreApplication::processEvents();
+        QCOMPARE(surfaceSelector->children()[0], clearSurface);
+        QCOMPARE(surfaceSelector->children()[1], renderToTexture);
+        QCOMPARE(surfaceSelector->children()[2], f.m_fxStages);
+        QCOMPARE(surfaceSelector->children()[3], f.m_internalFXStages);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        QCOMPARE(surfaceSelector->children()[4], overlay);
+#endif
 
-        // THEN
-        QCOMPARE(renderer.postProcessingEffects().size(), 0);
-        QVERIFY(renderer.frameGraphSubtreeForPostProcessingEffect(&fx) == nullptr);
+        QVERIFY(renderToTexture->children().size() >= 2);
+        QCOMPARE(renderToTexture->children()[0], clearRenderTarget);
+        QCOMPARE(renderToTexture->children()[1], sceneLayerFilter);
+
+        // Single SceneStages
+        QCOMPARE(sceneLayerFilter->children().size(), 1);
     }
 
-    void testAddingMultipleEffects()
+    void testFrameGraphViewsNoFX()
     {
-        // GIVEN
-        Kuesa::ForwardRenderer renderer;
-        tst_FX fx1, fx2, fx3;
+        // GIVEN (Views, No FX)
+        Kuesa::ForwardRenderer f;
+        Kuesa::View v1;
+        Kuesa::View v2;
 
         // WHEN
-        renderer.addPostProcessingEffect(&fx3);
-        renderer.addPostProcessingEffect(&fx1);
-        renderer.addPostProcessingEffect(&fx2);
+        f.addView(&v1);
+        f.addView(&v2);
+
+        Qt3DRender::QRenderSurfaceSelector *surfaceSelector = f.m_surfaceSelector;
+        Qt3DRender::QClearBuffers *clearSurface = f.m_clearBuffers;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        Qt3DRender::QDebugOverlay *overlay = f.m_debugOverlay;
+#endif
+
+        // THEN
+        QCOMPARE(surfaceSelector->parent(), &f);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        QCOMPARE(surfaceSelector->children().size(), 4);
+#else
+        QCOMPARE(surfaceSelector->children().size(), 5);
+#endif
+
+        QCOMPARE(surfaceSelector->children()[0], clearSurface);
+        QCOMPARE(surfaceSelector->children()[1], &v1);
+        QCOMPARE(surfaceSelector->children()[2], &v2);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        QCOMPARE(surfaceSelector->children()[3], overlay);
+#endif
+
+        if (Kuesa::FrameGraphUtils::hasMSAASupport()) {
+            QCOMPARE(v1.children().size(), 4);
+            QCOMPARE(v1.children()[0], v1.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v1.children()[1], v1.m_fg->m_renderTargets[0]);
+            QCOMPARE(v1.children()[2], v1.m_fg->m_multisampleTarget);
+            QCOMPARE(v1.children()[3], v1.m_internalFXStages);
+            QCOMPARE(v2.children().size(), 4);
+            QCOMPARE(v2.children()[0], v2.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v2.children()[1], v2.m_fg->m_renderTargets[0]);
+            QCOMPARE(v2.children()[2], v2.m_fg->m_multisampleTarget);
+            QCOMPARE(v2.children()[3], v2.m_internalFXStages);
+
+            QVERIFY(v1.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[0], v1.m_fg->m_clearRT0);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[1], v1.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children()[0], v1.m_sceneStages);
+
+            QVERIFY(v2.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[0], v2.m_fg->m_clearRT0);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[1], v2.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children()[0], v2.m_sceneStages);
+        } else {
+            QCOMPARE(v1.children().size(), 3);
+            QCOMPARE(v1.children()[0], v1.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v1.children()[1], v1.m_fg->m_renderTargets[0]);
+            QCOMPARE(v1.children()[2], v1.m_internalFXStages);
+            QCOMPARE(v2.children().size(), 3);
+            QCOMPARE(v2.children()[0], v2.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v2.children()[1], v2.m_fg->m_renderTargets[0]);
+            QCOMPARE(v2.children()[2], v2.m_internalFXStages);
+
+            QVERIFY(v1.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[0], v1.m_fg->m_clearRT0);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[1], v1.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children()[0], v1.m_sceneStages);
+
+            QVERIFY(v2.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[0], v2.m_fg->m_clearRT0);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[1], v2.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children()[0], v2.m_sceneStages);
+        }
+    }
+
+    void testFrameGraphViewsAndFX()
+    {
+        // GIVEN (Views with FX)
+        Kuesa::ForwardRenderer f;
+        Kuesa::View v1;
+        Kuesa::View v2;
+        tst_FX fxV1;
+        tst_FX fxV2;
+
+        // WHEN
+        f.addView(&v1);
+        f.addView(&v2);
+
+        v1.addPostProcessingEffect(&fxV1);
+        v2.addPostProcessingEffect(&fxV2);
+
+        Qt3DRender::QRenderSurfaceSelector *surfaceSelector = f.m_surfaceSelector;
+        Qt3DRender::QClearBuffers *clearSurface = f.m_clearBuffers;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        Qt3DRender::QDebugOverlay *overlay = f.m_debugOverlay;
+#endif
+
+        // THEN
+        QCOMPARE(surfaceSelector->parent(), &f);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        QCOMPARE(surfaceSelector->children().size(), 4);
+#else
+        QCOMPARE(surfaceSelector->children().size(), 3);
+#endif
+
+        QCOMPARE(surfaceSelector->children()[0], clearSurface);
+        QCOMPARE(surfaceSelector->children()[1], &v1);
+        QCOMPARE(surfaceSelector->children()[2], &v2);
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        QCOMPARE(surfaceSelector->children()[3], overlay);
+#endif
+
+        if (Kuesa::FrameGraphUtils::hasMSAASupport()) {
+            QCOMPARE(v1.children().size(), 6);
+            QCOMPARE(v1.children()[0], v1.m_fg->m_renderTargets[0]);
+            QCOMPARE(v1.children()[1], v1.m_fg->m_multisampleTarget);
+            QCOMPARE(v1.children()[2], v1.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v1.children()[3], v1.m_fg->m_renderTargets[1]);
+            QCOMPARE(v1.children()[4], v1.m_fxStages);
+            QCOMPARE(v1.children()[5], v1.m_internalFXStages);
+            QCOMPARE(v2.children().size(), 6);
+            QCOMPARE(v2.children()[0], v2.m_fg->m_renderTargets[0]);
+            QCOMPARE(v2.children()[1], v2.m_fg->m_multisampleTarget);
+            QCOMPARE(v2.children()[2], v2.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v2.children()[3], v2.m_fg->m_renderTargets[1]);
+            QCOMPARE(v2.children()[4], v2.m_fxStages);
+            QCOMPARE(v2.children()[5], v2.m_internalFXStages);
+
+            QVERIFY(v1.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[0], v1.m_fg->m_clearRT0);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[1], v1.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children()[0], v1.m_sceneStages);
+
+            QVERIFY(v2.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[0], v2.m_fg->m_clearRT0);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[1], v2.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children()[0], v2.m_sceneStages);
+        } else {
+            QCOMPARE(v1.children().size(), 5);
+            QCOMPARE(v1.children()[0], v1.m_fg->m_renderTargets[0]);
+            QCOMPARE(v1.children()[1], v1.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v1.children()[2], v1.m_fg->m_renderTargets[1]);
+            QCOMPARE(v1.children()[3], v1.m_fxStages);
+            QCOMPARE(v1.children()[4], v1.m_internalFXStages);
+            QCOMPARE(v2.children().size(), 5);
+            QCOMPARE(v2.children()[0], v2.m_fg->m_renderTargets[0]);
+            QCOMPARE(v2.children()[1], v2.m_fg->m_renderToTextureRootNode);
+            QCOMPARE(v2.children()[2], v2.m_fg->m_renderTargets[1]);
+            QCOMPARE(v2.children()[3], v2.m_fxStages);
+            QCOMPARE(v2.children()[4], v2.m_internalFXStages);
+
+            QVERIFY(v1.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[0], v1.m_fg->m_clearRT0);
+            QCOMPARE(v1.m_fg->m_renderToTextureRootNode->children()[1], v1.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v1.m_fg->m_mainSceneLayerFilter->children()[0], v1.m_sceneStages);
+
+            QVERIFY(v2.m_fg->m_renderToTextureRootNode->children().size() >= 2);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[0], v2.m_fg->m_clearRT0);
+            QCOMPARE(v2.m_fg->m_renderToTextureRootNode->children()[1], v2.m_fg->m_mainSceneLayerFilter);
+
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children().size(), 1);
+            QCOMPARE(v2.m_fg->m_mainSceneLayerFilter->children()[0], v2.m_sceneStages);
+        }
+    }
+
+    void testHandleViewCountChanges()
+    {
+        // GIVEN (Views with FX)
+        Kuesa::ForwardRenderer f;
+
+        Kuesa::View v1;
+        Kuesa::View v2;
+        tst_FX fx;
+
+        v1.addPostProcessingEffect(&fx);
+        v2.addPostProcessingEffect(&fx);
+
+        // WHEN -> add views
+        f.addView(&v1);
+        f.addView(&v2);
+
+        // THEN
+        QVERIFY(v1.parent() == f.m_surfaceSelector);
+        QVERIFY(v2.parent() == f.m_surfaceSelector);
+        QVERIFY(v1.m_fxStages->parent() == v1.m_fg->m_view);
+        QVERIFY(v2.m_fxStages->parent() == v2.m_fg->m_view);
+        QVERIFY(v1.m_fg->m_view->parent() == f.m_surfaceSelector);
+        QVERIFY(v2.m_fg->m_view->parent() == f.m_surfaceSelector);
+
+        // WHEN -> remove views
+        f.removeView(&v1);
+
+        // THEN
+        QVERIFY(v1.parent() == nullptr);
+        QVERIFY(v2.parent() == f.m_surfaceSelector);
+        QVERIFY(v1.m_fxStages->parent() == v1.m_fg->m_view);
+        QVERIFY(v1.m_fg->m_view->parent() == nullptr);
+        QVERIFY(v2.m_fxStages->parent() == v2.m_fg->m_view);
+        QVERIFY(v2.m_fg->m_view->parent() == f.m_surfaceSelector);
+
+        // WHEN
+        f.removeView(&v2);
+
+        // THEN
+        QVERIFY(v1.parent() == nullptr);
+        QVERIFY(v2.parent() == nullptr);
+        QVERIFY(v1.m_fxStages->parent() == v1.m_fg->m_view);
+        QVERIFY(v1.m_fg->m_view->parent() == nullptr);
+        QVERIFY(v2.m_fxStages->parent() == v2.m_fg->m_view);
+        QVERIFY(v2.m_fg->m_view->parent() == nullptr);
+    }
+
+    void testRenderTargetsNoEffect()
+    {
+        // GIVEN
+        Kuesa::ForwardRenderer f;
+
+        // THEN
+        const auto rtPair = f.m_internalFXStages->renderTargets();
+        QVERIFY(std::get<0>(rtPair) == f.m_fg->m_renderTargets[0]);
+        QVERIFY(std::get<1>(rtPair) == f.m_fg->m_renderTargets[1]);
+    }
+
+    void testRenderTargetsSingleEffect()
+    {
+        // GIVEN
+        Kuesa::ForwardRenderer f;
+        tst_FX fx;
+
+        // WHEN
+        f.addPostProcessingEffect(&fx);
         QCoreApplication::processEvents();
 
         // THEN
-        QCOMPARE(renderer.postProcessingEffects().size(), 3);
-        QCOMPARE(renderer.postProcessingEffects().at(0), &fx3);
-        QCOMPARE(renderer.postProcessingEffects().at(1), &fx1);
-        QCOMPARE(renderer.postProcessingEffects().at(2), &fx2);
+        const auto rtPairFx = f.m_fxStages->renderTargets();
+        QVERIFY(std::get<0>(rtPairFx) == f.m_fg->m_renderTargets[0]);
+        QVERIFY(std::get<1>(rtPairFx) == f.m_fg->m_renderTargets[1]);
 
-        // WHEN - removing and re-adding fx3
-        renderer.removePostProcessingEffect(&fx3);
-        renderer.addPostProcessingEffect(&fx3);
+        const auto rtPairInFx = f.m_internalFXStages->renderTargets();
+        QVERIFY(std::get<0>(rtPairInFx) == f.m_fg->m_renderTargets[1]);
+        QVERIFY(std::get<1>(rtPairInFx) == f.m_fg->m_renderTargets[0]);
+    }
+
+    void testRenderTargetsMultiEffects()
+    {
+        // GIVEN
+        Kuesa::ForwardRenderer f;
+        Kuesa::View v1;
+        Kuesa::View v2;
+        tst_FX *fx1 = new tst_FX();
+        tst_FX *fx2 = new tst_FX();
+        tst_FX *fx3 = new tst_FX();
+
+        // WHEN
+        v1.addPostProcessingEffect(fx1);
+        v2.addPostProcessingEffect(fx2);
+        v2.addPostProcessingEffect(fx3);
+
+        f.addView(&v1);
+        f.addView(&v2);
         QCoreApplication::processEvents();
 
-        // THEN - fx3 should go at end and order should now be 1, 2, 3
-        QCOMPARE(renderer.postProcessingEffects().size(), 3);
-        QCOMPARE(renderer.postProcessingEffects().at(0), &fx1);
-        QCOMPARE(renderer.postProcessingEffects().at(1), &fx2);
-        QCOMPARE(renderer.postProcessingEffects().at(2), &fx3);
+        // THEN
+        const auto rtPairFxV1 = v1.m_fxStages->renderTargets();
+        QVERIFY(std::get<0>(rtPairFxV1) == v1.m_fg->m_renderTargets[0]);
+        QVERIFY(std::get<1>(rtPairFxV1) == v1.m_fg->m_renderTargets[1]);
 
-        // THEN - fx1 should have a valid input texture (main scene)
-        QVERIFY(fx1.inputTexture());
+        const auto rtPairFxV2 = v2.m_fxStages->renderTargets();
+        QVERIFY(std::get<0>(rtPairFxV2) == v2.m_fg->m_renderTargets[0]);
+        QVERIFY(std::get<1>(rtPairFxV2) == v2.m_fg->m_renderTargets[1]);
 
-        // THEN - fx1 is rendered into a texture which is used for input texture for fx2.
-        auto renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx1.frameGraphSubTree().data());
+        const auto rtPairInFxV1 = v1.m_internalFXStages->renderTargets();
+        QVERIFY(std::get<0>(rtPairInFxV1) == v1.m_fg->m_renderTargets[1]);
+        QVERIFY(std::get<1>(rtPairInFxV1) == v1.m_fg->m_renderTargets[0]);
+
+        const auto rtPairInFxV2 = v2.m_internalFXStages->renderTargets();
+        QVERIFY(std::get<0>(rtPairInFxV2) == v2.m_fg->m_renderTargets[0]);
+        QVERIFY(std::get<1>(rtPairInFxV2) == v2.m_fg->m_renderTargets[1]);
+
+        QVERIFY(fx1->inputTexture());
+        QCOMPARE(fx1->inputTexture(), Kuesa::FrameGraphUtils::findRenderTargetTexture(v1.m_fg->m_renderTargets[0], Qt3DRender::QRenderTargetOutput::Color0));
+
+        // THEN - fx1 is rendered into a texture which is not used for input texture for fx2.
+        auto renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx1->frameGraphSubTree().data());
         QVERIFY(renderTargetSelector);
 
-        auto outputTexture = Kuesa::ForwardRenderer::findRenderTargetTexture(renderTargetSelector->target(), Qt3DRender::QRenderTargetOutput::Color0);
+        auto outputTexture = Kuesa::FrameGraphUtils::findRenderTargetTexture(renderTargetSelector->target(), Qt3DRender::QRenderTargetOutput::Color0);
         QVERIFY(outputTexture);
-        QCOMPARE(outputTexture, fx2.inputTexture());
+        QVERIFY(outputTexture != fx2->inputTexture());
+        QCOMPARE(fx2->inputTexture(), Kuesa::FrameGraphUtils::findRenderTargetTexture(v2.m_fg->m_renderTargets[0], Qt3DRender::QRenderTargetOutput::Color0));
 
         // THEN - fx2 is rendered into a texture which is used for input texture for fx3.
-        renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx2.frameGraphSubTree().data());
+        renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx2->frameGraphSubTree().data());
         QVERIFY(renderTargetSelector);
 
-        outputTexture = Kuesa::ForwardRenderer::findRenderTargetTexture(renderTargetSelector->target(), Qt3DRender::QRenderTargetOutput::Color0);
+        outputTexture = Kuesa::FrameGraphUtils::findRenderTargetTexture(renderTargetSelector->target(), Qt3DRender::QRenderTargetOutput::Color0);
         QVERIFY(outputTexture);
-        QCOMPARE(outputTexture, fx3.inputTexture());
+        QCOMPARE(outputTexture, fx3->inputTexture());
+        QCOMPARE(fx3->inputTexture(), Kuesa::FrameGraphUtils::findRenderTargetTexture(v2.m_fg->m_renderTargets[1], Qt3DRender::QRenderTargetOutput::Color0));
 
         // THEN - fx3 is rendered into a texture which will be used as the input for the final tone mapping / gamma correction
-        renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx3.frameGraphSubTree().data());
+        renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx3->frameGraphSubTree().data());
         QVERIFY(renderTargetSelector != nullptr);
     }
 
@@ -446,15 +963,16 @@ private Q_SLOTS:
     {
         // GIVEN
         Kuesa::ForwardRenderer renderer;
-        tst_FX fx1, fx2;
-        renderer.addPostProcessingEffect(&fx1);
-        renderer.addPostProcessingEffect(&fx2);
+        tst_FX *fx1 = new tst_FX();
+        tst_FX *fx2 = new tst_FX();
+        renderer.addPostProcessingEffect(fx1);
+        renderer.addPostProcessingEffect(fx2);
         QCoreApplication::processEvents();
 
-        auto renderTargetSelector = findParentSGNode<Qt3DRender::QRenderTargetSelector>(fx1.frameGraphSubTree().data());
+        auto renderTargetSelector = renderer.m_fg->m_renderToTextureRootNode;
         auto fx1Texture = renderTargetSelector->target()->outputs().first()->texture();
 
-        QSignalSpy spy(&fx1, SIGNAL(sceneSizeChanged(const QSize &)));
+        QSignalSpy spy(fx1, &tst_FX::sceneSizeChanged);
         QVERIFY(spy.isValid());
 
         // WHEN
@@ -464,8 +982,8 @@ private Q_SLOTS:
 
         // THEN - fx and textures get notified of screen size when changing render surface
         QVERIFY(spy.size() >= 1);
-        QCOMPARE(fx1Texture->width(), window->width());
-        QCOMPARE(fx1Texture->height(), window->height());
+        QCOMPARE(fx1Texture->width(), window->width() * window->devicePixelRatio());
+        QCOMPARE(fx1Texture->height(), window->height() * window->devicePixelRatio());
 
         // WHEN
         spy.clear();
@@ -473,12 +991,12 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(spy.size() >= 1);
-        QCOMPARE(fx1Texture->width(), window->width());
-        QCOMPARE(fx1Texture->height(), window->height());
+        QCOMPARE(fx1Texture->width(), window->width() * window->devicePixelRatio());
+        QCOMPARE(fx1Texture->height(), window->height() * window->devicePixelRatio());
 
         // WHEN - setting offscreen surface
         spy.clear();
-        renderer.setExternalRenderTargetSize(QSize(32, 32));
+        renderer.m_surfaceSelector->setExternalRenderTargetSize(QSize(32, 32));
         auto surface = new QOffscreenSurface;
         renderer.setRenderSurface(surface);
 
@@ -489,7 +1007,7 @@ private Q_SLOTS:
 
         // WHEN
         spy.clear();
-        renderer.setExternalRenderTargetSize(QSize(64, 64));
+        renderer.m_surfaceSelector->setExternalRenderTargetSize(QSize(64, 64));
 
         // THEN
         QVERIFY(spy.size() >= 1);
@@ -497,106 +1015,22 @@ private Q_SLOTS:
         QCOMPARE(fx1Texture->height(), 64);
     }
 
-    void testRenderStagesNoLayers()
-    {
-        // GIVEN
-        Kuesa::ForwardRenderer renderer;
+    //    void testReflectionStages()
+    //    {
+    //        // GIVEN
+    //        Kuesa::ForwardRenderer renderer;
 
-        // THEN
-        QCOMPARE(renderer.m_sceneStages.size(), 2);
+    //        // THEN
+    //        QCOMPARE(renderer.m_reflectionStages.size(), 0U);
 
-        Kuesa::ForwardRenderer::SceneStagesPtr sceneStage = renderer.m_sceneStages.first();
-        QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->opaqueStagesRoot()->parent()) != nullptr);
-        QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->transparentStagesRoot()->parent()) != nullptr);
+    //        // WHEN
+    //        renderer.addReflectionPlane({0.0f, 1.0f, 0.0f, 0.0f}, nullptr);
 
-        Kuesa::OpaqueRenderStage *opaqueStage = sceneStage->opaqueStage();
-        Kuesa::TransparentRenderStage *transparentStage = sceneStage->transparentStage();
-        QVERIFY(sceneStage->zFillStage() == nullptr);
-
-        QVERIFY(qobject_cast<Qt3DRender::QLayerFilter *>(opaqueStage->parent()) != nullptr);
-        QVERIFY(qobject_cast<Qt3DRender::QLayerFilter *>(transparentStage->parent()) != nullptr);
-
-        QVERIFY(!sceneStage->opaqueStagesRoot()->isEnabled());
-        QVERIFY(!sceneStage->transparentStagesRoot()->isEnabled());
-
-        QCOMPARE(opaqueStage->zFilling(), false);
-        QCOMPARE(transparentStage->backToFrontSorting(), true);
-
-        // WHEN
-        renderer.setBackToFrontSorting(false);
-
-        // THEN
-        QCOMPARE(opaqueStage->zFilling(), false);
-        QCOMPARE(transparentStage->backToFrontSorting(), false);
-
-        // WHEN
-        renderer.setZFilling(true);
-
-        // THEN
-        sceneStage = renderer.m_sceneStages.first();
-
-        QVERIFY(sceneStage->zFillStage() != nullptr);
-        QCOMPARE(opaqueStage->zFilling(), true);
-        QCOMPARE(transparentStage->backToFrontSorting(), false);
-
-        QCOMPARE(sceneStage->opaqueStage(), opaqueStage);
-        QCOMPARE(sceneStage->transparentStage(), transparentStage);
-
-        // WHEN
-        renderer.setZFilling(false);
-
-        // THEN
-        sceneStage = renderer.m_sceneStages.first();
-
-        QVERIFY(sceneStage->zFillStage() == nullptr);
-        QCOMPARE(sceneStage->opaqueStage(), opaqueStage);
-        QCOMPARE(sceneStage->transparentStage(), transparentStage);
-    }
-
-    void testRenderStagesWidthLayers()
-    {
-        // GIVEN
-        Kuesa::ForwardRenderer renderer;
-        QScopedPointer<Qt3DRender::QLayer> layer1(new Qt3DRender::QLayer());
-        QScopedPointer<Qt3DRender::QLayer> layer2(new Qt3DRender::QLayer());
-
-        // WHEN
-        renderer.addLayer(layer1.data());
-        renderer.addLayer(layer2.data());
-
-        // THEN
-        QCOMPARE(renderer.m_sceneStages.size(), 4);
-
-        QVector<Qt3DRender::QLayer *> expectedLayers = {
-            layer1.data(),
-            layer1.data(),
-            layer2.data(),
-            layer2.data()
-        };
-
-        for (int i = 0, m = expectedLayers.size(); i < m; ++i) {
-            Qt3DRender::QLayer *expectedLayer = expectedLayers.at(i);
-            Kuesa::ForwardRenderer::SceneStagesPtr sceneStage = renderer.m_sceneStages.at(i);
-
-            QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->opaqueStagesRoot()->parent()) != nullptr);
-            QVERIFY(qobject_cast<Qt3DRender::QTechniqueFilter *>(sceneStage->transparentStagesRoot()->parent()) != nullptr);
-
-            QVERIFY(sceneStage->opaqueStagesRoot()->isEnabled());
-            QCOMPARE(sceneStage->opaqueStagesRoot()->layers().size(), 1);
-            QCOMPARE(sceneStage->opaqueStagesRoot()->layers().first(), expectedLayer);
-            QVERIFY(sceneStage->transparentStagesRoot()->isEnabled());
-            QCOMPARE(sceneStage->transparentStagesRoot()->layers().size(), 1);
-            QCOMPARE(sceneStage->transparentStagesRoot()->layers().first(), expectedLayer);
-        }
-
-        // WHEN
-        layer1.reset();
-
-        // THEN
-        QCOMPARE(renderer.m_sceneStages.size(), 2);
-    }
-
-
+    //        // THEN
+    //        QCOMPARE(renderer.reflectionPlanes().size(), 1);
+    //        QCOMPARE(renderer.reflectionPlanes().first(), QVector4D(0.0f, 1.0f, 0.0f, 0.0f));
+    //        QCOMPARE(renderer.m_reflectionStages.size(), 1U);
+    //    }
 
 private:
     template<class T>

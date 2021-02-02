@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -27,14 +27,14 @@
 */
 
 struct MetallicRoughness {
+    highp mat3 baseColorMapTextureTransform;
+    highp mat3 metalRoughMapTextureTransform;
+    highp mat3 normalMapTextureTransform;
+    highp mat3 ambientOcclusionMapTextureTransform;
+    highp mat3 emissiveMapTextureTransform;
+
     highp vec4 baseColorFactor;
     highp vec4 emissiveFactor;
-
-    highp sampler2D baseColorMap;
-    highp sampler2D metalRoughMap;
-    highp sampler2D normalMap;
-    highp sampler2D ambientOcclusionMap;
-    highp sampler2D emissiveMap;
 
     highp float metallicFactor;
     highp float roughnessFactor;
@@ -46,6 +46,7 @@ struct MetallicRoughness {
     bool normalUsesTexCoord1;
     bool aoUsesTexCoord1;
     bool emissiveUsesTexCoord1;
+    lowp int receivesShadows;
 };
 
 uniform MetallicRoughness metallicRoughness;

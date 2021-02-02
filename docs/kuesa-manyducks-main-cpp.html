@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
 <!-- manyducks.qdoc -->
-  <title>Kuesa Many Ducks C++ Example | Kuesa Runtime 1.2</title>
+  <title>Kuesa Many Ducks C++ Example | Kuesa Runtime 1.3</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Many Ducks C++ Example</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><h1 class="title">Kuesa Many Ducks C++ Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
@@ -17,7 +17,7 @@
 
      This file is part of Kuesa.
 
-     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
      Author: Jean-Michaël Celerier &lt;jean-michael.celerier@kdab.com&gt;
 
      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -47,6 +47,7 @@
  <span class="preprocessor">#include &lt;GLTF2Importer&gt;</span>
  <span class="preprocessor">#include &lt;Skybox&gt;</span>
  <span class="preprocessor">#include &lt;QScreen&gt;</span>
+ <span class="preprocessor">#include &lt;MeshInstantiator&gt;</span>
  <span class="comment">// Qt3D</span>
  <span class="preprocessor">#include &lt;Qt3DCore/QEntity&gt;</span>
  <span class="preprocessor">#include &lt;Qt3DCore/QTransform&gt;</span>
@@ -59,8 +60,6 @@
 
  <span class="comment">// Qt &amp; std</span>
  <span class="preprocessor">#include &lt;QGuiApplication&gt;</span>
- <span class="preprocessor">#include &lt;QResource&gt;</span>
- <span class="preprocessor">#include &lt;QDir&gt;</span>
  <span class="preprocessor">#include &lt;QTimer&gt;</span>
  <span class="preprocessor">#include &lt;array&gt;</span>
  <span class="preprocessor">#ifdef Q_OS_ANDROID</span>
@@ -72,41 +71,8 @@
  <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> ComponentType<span class="operator">&gt;</span>
  <span class="keyword">inline</span> ComponentType <span class="operator">*</span>componentFromEntity(<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>e)
  {
- <span class="preprocessor">#if QT_VERSION &gt;= QT_VERSION_CHECK(5, 13, 0)</span>
      <span class="keyword">const</span> <span class="keyword">auto</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>componentsOfType<span class="operator">&lt;</span>ComponentType<span class="operator">&gt;</span>();
      <span class="keyword">return</span> cmps<span class="operator">.</span>size() <span class="operator">&gt;</span> <span class="number">0</span> <span class="operator">?</span> cmps<span class="operator">.</span>first() : nullptr;
- <span class="preprocessor">#else</span>
-     ComponentType <span class="operator">*</span>typedComponent <span class="operator">=</span> nullptr;
-     <span class="keyword">const</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponentVector</span> cmps <span class="operator">=</span> e<span class="operator">-</span><span class="operator">&gt;</span>components();
-
-     <span class="keyword">for</span> (<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QComponent</span> <span class="operator">*</span>c : cmps) {
-         typedComponent <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>ComponentType <span class="operator">*</span><span class="operator">&gt;</span>(c);
-         <span class="keyword">if</span> (typedComponent <span class="operator">!</span><span class="operator">=</span> nullptr)
-             <span class="keyword">break</span>;
-     }
-
-     <span class="keyword">return</span> typedComponent;
- <span class="preprocessor">#endif</span>
- }
-
- <span class="comment">// Helper to load .qrb files, used for large environment maps</span>
- bool initializeAssetResources(<span class="keyword">const</span> <span class="type">QVector</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">&gt;</span> <span class="operator">&amp;</span>fileNames)
- {
- <span class="preprocessor">#ifdef Q_OS_MACOS</span>
-     <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/../Resources&quot;</span>));
- <span class="preprocessor">#elif defined(Q_OS_IOS)</span>
-     <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/Library/Application Support&quot;</span>));
- <span class="preprocessor">#else</span>
-     <span class="type">QDir</span> resourceDir(qApp<span class="operator">-</span><span class="operator">&gt;</span>applicationDirPath() <span class="operator">+</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;/resources&quot;</span>));
- <span class="preprocessor">#endif</span>
-     bool b <span class="operator">=</span> <span class="keyword">true</span>;
-     <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>fileName : fileNames) {
-         <span class="keyword">auto</span> f <span class="operator">=</span> resourceDir<span class="operator">.</span>path() <span class="operator">+</span> <span class="type">QDir</span><span class="operator">::</span>separator() <span class="operator">+</span> fileName;
-         b <span class="operator">&amp;</span><span class="operator">=</span> <span class="type">QResource</span><span class="operator">::</span>registerResource(f);
-         <span class="keyword">if</span> (<span class="operator">!</span>b)
-             qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Failed to load assets from&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> f;
-     }
-     <span class="keyword">return</span> b;
  }
 
  <span class="keyword">static</span> <span class="type">QString</span> envmap(<span class="type">QString</span> name)
@@ -148,7 +114,8 @@
      <span class="keyword">static</span> constexpr <span class="type">int</span> Ducks <span class="operator">=</span> <span class="number">2000</span>;
      <span class="keyword">static</span> constexpr <span class="type">int</span> r <span class="operator">=</span> <span class="number">2000</span>;
 
-     Window()
+     <span class="keyword">explicit</span> Window(<span class="keyword">const</span> bool usesInstancing)
+         : m_usesInstancing(usesInstancing)
      {
          <span class="comment">// Default set-up - here we create an empty entity,</span>
          <span class="comment">// which will contain one scene per glTF object.</span>
@@ -168,6 +135,9 @@
          fg<span class="operator">-</span><span class="operator">&gt;</span>setGamma(<span class="number">2.2f</span>);
          fg<span class="operator">-</span><span class="operator">&gt;</span>setExposure(<span class="number">1.f</span>);
          fg<span class="operator">-</span><span class="operator">&gt;</span>setClearColor(<span class="string">&quot;white&quot;</span>);
+         fg<span class="operator">-</span><span class="operator">&gt;</span>setSkinning(<span class="keyword">true</span>);
+         <span class="comment">// We disable frustum culling if using instancing</span>
+         fg<span class="operator">-</span><span class="operator">&gt;</span>setFrustumCulling(<span class="operator">!</span>usesInstancing);
          setActiveFrameGraph(fg);
 
          <span class="comment">// Load a glTF models</span>
@@ -197,30 +167,58 @@
      <span class="type">void</span> on_sceneLoaded(Kuesa<span class="operator">::</span>GLTF2Importer<span class="operator">::</span>Status status)
      {
          <span class="keyword">if</span> (status <span class="operator">=</span><span class="operator">=</span> Kuesa<span class="operator">::</span>GLTF2Importer<span class="operator">::</span>Ready) {
-             <span class="comment">// First let's take the components that we are going to use to create our clones</span>
-             <span class="comment">// Gotten from gammaray</span>
-             <span class="keyword">auto</span> parent <span class="operator">=</span> m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_0&quot;</span>);
 
-             <span class="keyword">auto</span> <span class="operator">*</span>orig_entity <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span><span class="operator">&gt;</span>(m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_2&quot;</span>)<span class="operator">-</span><span class="operator">&gt;</span>childNodes()<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>);
-             <span class="keyword">auto</span> <span class="operator">*</span>orig_geometry <span class="operator">=</span> componentFromEntity<span class="operator">&lt;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QGeometryRenderer</span><span class="operator">&gt;</span>(orig_entity);
-             <span class="keyword">auto</span> <span class="operator">*</span>orig_material <span class="operator">=</span> componentFromEntity<span class="operator">&lt;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QMaterial</span><span class="operator">&gt;</span>(orig_entity);
+             <span class="keyword">if</span> (<span class="operator">!</span>m_usesInstancing) {
+                 <span class="comment">// First let's take the components that we are going to use to create our clones</span>
+                 <span class="comment">// Gotten from gammaray</span>
+                 <span class="keyword">auto</span> parent <span class="operator">=</span> m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_0&quot;</span>);
 
-             <span class="comment">// Then create clones by giving them a custom transform, and the same components than before</span>
-             <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> Ducks; i<span class="operator">+</span><span class="operator">+</span>) {
-                 <span class="keyword">auto</span> new_entity <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span>{ parent };
-                 <span class="keyword">auto</span> new_transform <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QTransform</span>;
-                 new_transform<span class="operator">-</span><span class="operator">&gt;</span>setScale(<span class="number">0.2f</span>);
-                 new_transform<span class="operator">-</span><span class="operator">&gt;</span>setTranslation(QVector3D(rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span><span class="operator">,</span> rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span><span class="operator">,</span> rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span>));
+                 <span class="keyword">auto</span> <span class="operator">*</span>orig_entity <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span><span class="operator">&gt;</span>(m_scene<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="string">&quot;KuesaEntity_2&quot;</span>)<span class="operator">-</span><span class="operator">&gt;</span>childNodes()<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>);
+                 <span class="keyword">auto</span> <span class="operator">*</span>orig_geometry <span class="operator">=</span> componentFromEntity<span class="operator">&lt;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QGeometryRenderer</span><span class="operator">&gt;</span>(orig_entity);
+                 <span class="keyword">auto</span> <span class="operator">*</span>orig_material <span class="operator">=</span> componentFromEntity<span class="operator">&lt;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QMaterial</span><span class="operator">&gt;</span>(orig_entity);
 
-                 new_transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationX(rand() <span class="operator">%</span> <span class="number">360</span>);
-                 new_transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationY(rand() <span class="operator">%</span> <span class="number">360</span>);
-                 new_transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationZ(rand() <span class="operator">%</span> <span class="number">360</span>);
+                 <span class="comment">// Then create clones by giving them a custom transform, and the same components than before</span>
 
-                 new_entity<span class="operator">-</span><span class="operator">&gt;</span>addComponent(new_transform);
-                 new_entity<span class="operator">-</span><span class="operator">&gt;</span>addComponent(orig_geometry);
-                 new_entity<span class="operator">-</span><span class="operator">&gt;</span>addComponent(orig_material);
+                 <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> Ducks; i<span class="operator">+</span><span class="operator">+</span>) {
+                     <span class="keyword">auto</span> new_entity <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span>{ parent };
+                     <span class="keyword">auto</span> new_transform <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QTransform</span>;
+                     new_transform<span class="operator">-</span><span class="operator">&gt;</span>setScale(<span class="number">0.2f</span>);
+                     new_transform<span class="operator">-</span><span class="operator">&gt;</span>setTranslation(QVector3D(rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span><span class="operator">,</span> rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span><span class="operator">,</span> rand() <span class="operator">%</span> r <span class="operator">-</span> r <span class="operator">/</span> <span class="number">2</span>));
 
-                 m_transforms<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">=</span> new_transform;
+                     new_transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationX(rand() <span class="operator">%</span> <span class="number">360</span>);
+                     new_transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationY(rand() <span class="operator">%</span> <span class="number">360</span>);
+                     new_transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationZ(rand() <span class="operator">%</span> <span class="number">360</span>);
+
+                     new_entity<span class="operator">-</span><span class="operator">&gt;</span>addComponent(new_transform);
+                     new_entity<span class="operator">-</span><span class="operator">&gt;</span>addComponent(orig_geometry);
+                     new_entity<span class="operator">-</span><span class="operator">&gt;</span>addComponent(orig_material);
+
+                     m_transforms<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">=</span> new_transform;
+                 }
+
+             } <span class="keyword">else</span> {
+                 <span class="comment">// Build base transformation matrices for each instance</span>
+                 m_matrices<span class="operator">.</span>reserve(Ducks <span class="operator">+</span> <span class="number">1</span>);
+                 <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> Ducks; i<span class="operator">+</span><span class="operator">+</span>) {
+                     QMatrix4x4 m;
+
+                     <span class="keyword">const</span> <span class="type">int</span> extent <span class="operator">=</span> r <span class="operator">/</span> <span class="number">20</span>;
+                     m<span class="operator">.</span>translate(QVector3D(rand() <span class="operator">%</span> extent <span class="operator">-</span> extent <span class="operator">*</span> <span class="number">0.5</span><span class="operator">,</span> rand() <span class="operator">%</span> extent <span class="operator">-</span> extent <span class="operator">*</span> <span class="number">0.5</span><span class="operator">,</span> rand() <span class="operator">%</span> extent <span class="operator">-</span> extent <span class="operator">*</span> <span class="number">0.5</span>));
+                     m<span class="operator">.</span>rotate(rand() <span class="operator">%</span> <span class="number">360</span><span class="operator">,</span> QVector3D(<span class="number">1.0f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span>));
+                     m<span class="operator">.</span>rotate(rand() <span class="operator">%</span> <span class="number">360</span><span class="operator">,</span> QVector3D(<span class="number">0.0f</span><span class="operator">,</span> <span class="number">1.0f</span><span class="operator">,</span> <span class="number">0.0f</span>));
+                     m<span class="operator">.</span>rotate(rand() <span class="operator">%</span> <span class="number">360</span><span class="operator">,</span> QVector3D(<span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">1.0f</span>));
+
+                     m_matrices<span class="operator">.</span>push_back(m);
+                 }
+                 <span class="comment">// Add an extra matrices to have one instance placed at the origin</span>
+                 m_matrices<span class="operator">.</span>push_back({});
+
+                 <span class="comment">// Create MeshInstantiator</span>
+                 m_meshInstantiator <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>MeshInstantiator(m_scene);
+                 <span class="comment">// Specify which Entity with a Mesh needs to be instanced</span>
+                 m_meshInstantiator<span class="operator">-</span><span class="operator">&gt;</span>setEntityName(<span class="type">QStringLiteral</span>(<span class="string">&quot;KuesaEntity_2&quot;</span>));
+                 <span class="comment">// Set transformation matrices</span>
+                 m_meshInstantiator<span class="operator">-</span><span class="operator">&gt;</span>setTransformationMatrices(m_matrices);
              }
 
              <span class="comment">// Animate everyone</span>
@@ -232,15 +230,37 @@
      <span class="type">void</span> timerEvent(<span class="type">QTimerEvent</span> <span class="operator">*</span>event) override
      {
          Q_UNUSED(event)
-         <span class="keyword">for</span> (<span class="keyword">auto</span> transform : m_transforms) {
-             transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationX(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationX() <span class="operator">+</span> <span class="number">0.1f</span>);
-             transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationY(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationY() <span class="operator">+</span> <span class="number">0.1f</span>);
-             transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationZ(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationZ() <span class="operator">+</span> <span class="number">0.1f</span>);
+         <span class="keyword">if</span> (<span class="operator">!</span>m_usesInstancing) {
+             <span class="keyword">for</span> (<span class="keyword">auto</span> transform : m_transforms) {
+                 transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationX(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationX() <span class="operator">+</span> <span class="number">0.1f</span>);
+                 transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationY(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationY() <span class="operator">+</span> <span class="number">0.1f</span>);
+                 transform<span class="operator">-</span><span class="operator">&gt;</span>setRotationZ(transform<span class="operator">-</span><span class="operator">&gt;</span>rotationZ() <span class="operator">+</span> <span class="number">0.1f</span>);
+             }
+         } <span class="keyword">else</span> {
+             <span class="keyword">static</span> bool wasInitialized <span class="operator">=</span> <span class="keyword">false</span>;
+             <span class="keyword">static</span> QMatrix4x4 rotationIncrementMatrix;
+
+             <span class="keyword">if</span> (<span class="operator">!</span>wasInitialized) {
+                 rotationIncrementMatrix<span class="operator">.</span>rotate(<span class="number">0.1f</span><span class="operator">,</span> QVector3D(<span class="number">1.0f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span>));
+                 rotationIncrementMatrix<span class="operator">.</span>rotate(<span class="number">0.1f</span><span class="operator">,</span> QVector3D(<span class="number">0.0f</span><span class="operator">,</span> <span class="number">1.0f</span><span class="operator">,</span> <span class="number">0.0f</span>));
+                 rotationIncrementMatrix<span class="operator">.</span>rotate(<span class="number">0.1f</span><span class="operator">,</span> QVector3D(<span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">1.0f</span>));
+                 wasInitialized <span class="operator">=</span> <span class="keyword">true</span>;
+             }
+
+             <span class="comment">// Apply rotation transform to all matrices</span>
+             <span class="comment">// This accumulates over time</span>
+             <span class="keyword">for</span> (QMatrix4x4 <span class="operator">&amp;</span>m : m_matrices)
+                 m <span class="operator">*</span><span class="operator">=</span> rotationIncrementMatrix;
+
+             m_meshInstantiator<span class="operator">-</span><span class="operator">&gt;</span>setTransformationMatrices(m_matrices);
          }
      }
 
+     <span class="keyword">const</span> bool m_usesInstancing;
      Kuesa<span class="operator">::</span>SceneEntity <span class="operator">*</span>m_scene{};
      std<span class="operator">::</span>array<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QTransform</span> <span class="operator">*</span><span class="operator">,</span> Ducks<span class="operator">&gt;</span> m_transforms;
+     std<span class="operator">::</span>vector<span class="operator">&lt;</span>QMatrix4x4<span class="operator">&gt;</span> m_matrices;
+     Kuesa<span class="operator">::</span>MeshInstantiator <span class="operator">*</span>m_meshInstantiator <span class="operator">=</span> nullptr;
  };
 
  <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
@@ -248,7 +268,7 @@
      {
          <span class="comment">// Set OpenGL requirements</span>
          <span class="type">QSurfaceFormat</span> format <span class="operator">=</span> <span class="type">QSurfaceFormat</span><span class="operator">::</span>defaultFormat();
- <span class="preprocessor">#ifndef QT_OPENGL_ES_2</span>
+ <span class="preprocessor">#ifndef KUESA_OPENGL_ES_2</span>
          format<span class="operator">.</span>setVersion(<span class="number">4</span><span class="operator">,</span> <span class="number">1</span>);
          format<span class="operator">.</span>setProfile(<span class="type">QSurfaceFormat</span><span class="operator">::</span>CoreProfile);
          format<span class="operator">.</span>setSamples(<span class="number">4</span>);
@@ -262,22 +282,8 @@
 
      <span class="type">QGuiApplication</span> app(argc<span class="operator">,</span> argv);
 
-     initializeAssetResources({ <span class="type">QStringLiteral</span>(<span class="string">&quot;Duck.qrb&quot;</span>) });
-     initializeAssetResources({ <span class="type">QStringLiteral</span>(<span class="string">&quot;envmap-pink-sunrise-16f.qrb&quot;</span>) });
-
- <span class="preprocessor">#ifdef Q_OS_ANDROID</span>
-     <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;assets:/&quot;</span>);
-     <span class="comment">// Qt builds for android may not define QT_OPENGL_ES_3</span>
-     <span class="comment">// Therefore we need a runtime check to see whether we can use ES 3.0 or not</span>
-     <span class="type">QOpenGLContext</span> ctx;
-     ctx<span class="operator">.</span>setFormat(<span class="type">QSurfaceFormat</span><span class="operator">::</span>defaultFormat());
-     <span class="keyword">if</span> (ctx<span class="operator">.</span>create())
-         <span class="keyword">const</span> <span class="type">QSurfaceFormat</span> androidFormat <span class="operator">=</span> ctx<span class="operator">.</span>format();
- <span class="preprocessor">#else</span>
-     <span class="keyword">const</span> <span class="type">QString</span> assetsPrefix <span class="operator">=</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/&quot;</span>);
- <span class="preprocessor">#endif</span>
-
-     Window window;
+     constexpr bool useInstancing <span class="operator">=</span> <span class="keyword">true</span>;
+     Window window(useInstancing);
 
      window<span class="operator">.</span>show();
 

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <QJsonDocument>
 #include <QFile>
 #include <QLatin1String>
@@ -63,9 +63,16 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.cameraCount(), 1);
+        QCOMPARE(context.cameraCount(), size_t(1));
 
-        Camera camera = context.camera(0);
+        Camera &camera = context.camera(0);
+        QVERIFY(!camera.lens);
+
+        // WHEN
+        Qt3DRender::QCameraLens lens;
+        CameraParser::setupLens(camera, &lens);
+
+        // THEN
         QVERIFY(camera.lens);
         QVERIFY(!camera.name.isEmpty());
         QCOMPARE(camera.lens->projectionType(), Qt3DRender::QCameraLens::PerspectiveProjection);
@@ -93,9 +100,16 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.cameraCount(), 1);
+        QCOMPARE(context.cameraCount(), size_t(1));
 
-        Camera camera = context.camera(0);
+        Camera &camera = context.camera(0);
+        QVERIFY(!camera.lens);
+
+        // WHEN
+        Qt3DRender::QCameraLens lens;
+        CameraParser::setupLens(camera, &lens);
+
+        // THEN
         QVERIFY(camera.lens);
         QVERIFY(!camera.name.isEmpty());
         QCOMPARE(camera.lens->projectionType(), Qt3DRender::QCameraLens::CustomProjection);
@@ -150,7 +164,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(!success);
-        QCOMPARE(context.cameraCount(), 0);
+        QCOMPARE(context.cameraCount(), size_t(0));
     }
 };
 

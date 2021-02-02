@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -56,16 +56,14 @@ const QLatin1String KEY_BASE_COLOR_TEXTURE = QLatin1String("baseColorTexture");
 const QLatin1String KEY_ROUGHNESS_FACTOR = QLatin1String("roughnessFactor");
 const QLatin1String KEY_ROUGHNESS_TEXTURE = QLatin1String("metallicRoughnessTexture");
 const QLatin1String KEY_METALLIC_FACTOR = QLatin1String("metallicFactor");
-const QLatin1String KEY_INDEX = QLatin1String("index");
-const QLatin1String KEY_TEXCOORD = QLatin1String("texCoord");
 const QLatin1String KEY_NORMAL_TEXTURE = QLatin1String("normalTexture");
 const QLatin1String KEY_OCCLUSION_TEXTURE = QLatin1String("occlusionTexture");
 const QLatin1String KEY_EMISSIVE_TEXTURE = QLatin1String("emissiveTexture");
 const QLatin1String KEY_EMISSIVE_FACTOR = QLatin1String("emissiveFactor");
 const QLatin1String KEY_PROPERTIES = QLatin1String("properties");
 
-QVector<Qt3DAnimation::QChannelMapping *> iroMappingGenerator(const GLTF2Context *ctx,
-                                                              const ChannelMapping &mapping)
+std::vector<Qt3DAnimation::QChannelMapping *> iroMappingGenerator(const GLTF2Context *ctx,
+                                                                  const ChannelMapping &mapping)
 {
     Qt3DCore::QNode *target = nullptr;
     const Material &mat = ctx->material(mapping.target.targetNodeId);
@@ -83,12 +81,6 @@ QVector<Qt3DAnimation::QChannelMapping *> iroMappingGenerator(const GLTF2Context
     return { channelMapping };
 }
 
-void parseTextureInfo(TextureInfo &info, const QJsonObject &textureInfoObj)
-{
-    info.index = textureInfoObj.value(KEY_INDEX).toInt(-1);
-    info.texCoord = std::max(textureInfoObj.value(KEY_TEXCOORD).toInt(0), 0);
-}
-
 template<typename T>
 T clamp(T val, T min, T max)
 {
@@ -102,11 +94,11 @@ bool parseFloatArray(Vector &v,
                      float minValue, float maxValue)
 {
     if (array.size() < minItems || array.size() > maxItems) {
-        qCWarning(kuesa) << "array size doesn't satisfy min/maximum requirements";
+        qCWarning(Kuesa::kuesa) << "array size doesn't satisfy min/maximum requirements";
         return false;
     }
 
-    const qint32 entryCount = std::min(maxItems, array.size());
+    const qint32 entryCount = std::min(maxItems, qint32(array.size()));
     for (qint32 i = 0; i < entryCount; ++i)
         v[i] = clamp(float(array.at(i).toDouble(v[i])), minValue, maxValue);
 
@@ -121,7 +113,7 @@ QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
                              4, 4,
                              std::numeric_limits<float>::lowest(),
                              std::numeric_limits<float>::max()))
-            qCWarning(kuesa()) << "Failed to parse value of type vec4 with" << rawValue;
+            qCWarning(Kuesa::kuesa) << "Failed to parse value of type vec4 with" << rawValue;
         return QVariant::fromValue(v);
     } else if (typeId == qMetaTypeId<QVector3D>()) {
         QVector3D v;
@@ -129,7 +121,7 @@ QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
                              3, 3,
                              std::numeric_limits<float>::lowest(),
                              std::numeric_limits<float>::max()))
-            qCWarning(kuesa()) << "Failed to parse value of type vec3 with" << rawValue;
+            qCWarning(Kuesa::kuesa) << "Failed to parse value of type vec3 with" << rawValue;
         return QVariant::fromValue(v);
     } else if (typeId == qMetaTypeId<QVector2D>()) {
         QVector2D v;
@@ -137,7 +129,7 @@ QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
                              2, 2,
                              std::numeric_limits<float>::lowest(),
                              std::numeric_limits<float>::max()))
-            qCWarning(kuesa()) << "Failed to parse value of type vec2 with" << rawValue;
+            qCWarning(Kuesa::kuesa) << "Failed to parse value of type vec2 with" << rawValue;
         return QVariant::fromValue(v);
     } else if (typeId == qMetaTypeId<float>() || typeId == qMetaTypeId<double>()) {
         return QVariant::fromValue(rawValue.toDouble());
@@ -146,11 +138,10 @@ QVariant customPropertyValue(const int typeId, const QJsonValue &rawValue)
     } else if (typeId == qMetaTypeId<bool>()) {
         return QVariant::fromValue(rawValue.toBool());
     } else if (typeId == qMetaTypeId<Qt3DRender::QAbstractTexture *>()) {
-        TextureInfo info;
-        parseTextureInfo(info, rawValue.toObject());
+        TextureInfo info = TextureInfo::parse(rawValue.toObject());
         return QVariant::fromValue(info);
     }
-    qCWarning(kuesa()) << "Failed to parse value of typeId" << typeId << "with" << rawValue;
+    qCWarning(Kuesa::kuesa) << "Failed to parse value of typeId" << typeId << "with" << rawValue;
     return QVariant();
 }
 
@@ -277,7 +268,6 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
         if (materialObject.isEmpty()) {
             // Having an empty object is allowed
             // Skip parsing and use default material values if that happens
-            mat.materialProperties(*context);
             context->addMaterial(mat);
             continue;
         }
@@ -289,7 +279,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
         {
             const QString modeStr = materialObject.value(KEY_ALPHA_MODE).toString();
             if (!modeStr.isEmpty() && !modeEnumMap.contains(modeStr)) {
-                qCWarning(kuesa) << "Invalid material alpha mode";
+                qCWarning(Kuesa::kuesa) << "Invalid material alpha mode";
                 return false;
             }
 
@@ -306,11 +296,11 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
 
             const QJsonObject baseColorTextureObject = pbrMetallicRoughnessObject.value(KEY_BASE_COLOR_TEXTURE).toObject();
             if (!baseColorTextureObject.isEmpty())
-                parseTextureInfo(mat.pbr.baseColorTexture, baseColorTextureObject);
+                mat.pbr.baseColorTexture = TextureInfo::parse(baseColorTextureObject);
 
             const QJsonObject metallicRoughnessTextureObject = pbrMetallicRoughnessObject.value(KEY_ROUGHNESS_TEXTURE).toObject();
             if (!metallicRoughnessTextureObject.isEmpty())
-                parseTextureInfo(mat.pbr.metallicRoughnessTexture, metallicRoughnessTextureObject);
+                mat.pbr.metallicRoughnessTexture = TextureInfo::parse(metallicRoughnessTextureObject);
 
             const QJsonValue baseColorFactors = pbrMetallicRoughnessObject.value(KEY_BASE_COLOR_FACTOR);
             if (!baseColorFactors.isUndefined()) {
@@ -325,7 +315,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
         {
             const QJsonObject normalTextureObject = materialObject.value(KEY_NORMAL_TEXTURE).toObject();
             if (!normalTextureObject.isEmpty()) {
-                parseTextureInfo(mat.normalTexture, normalTextureObject);
+                mat.normalTexture = TextureInfo::parse(normalTextureObject);
                 mat.normalTexture.scale = static_cast<float>(normalTextureObject.value(KEY_SCALE).toDouble(0.25));
             }
         }
@@ -334,7 +324,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
         {
             const QJsonObject emissiveTextureObject = materialObject.value(KEY_EMISSIVE_TEXTURE).toObject();
             if (!emissiveTextureObject.isEmpty())
-                parseTextureInfo(mat.emissiveTexture, emissiveTextureObject);
+                mat.emissiveTexture = TextureInfo::parse(emissiveTextureObject);
 
             const QJsonValue emissiveFactors = materialObject.value(KEY_EMISSIVE_FACTOR);
             if (!emissiveFactors.isUndefined()) {
@@ -350,7 +340,7 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
             const QJsonObject occlusionTextureObject = materialObject.value(KEY_OCCLUSION_TEXTURE).toObject();
 
             if (!occlusionTextureObject.isEmpty()) {
-                parseTextureInfo(mat.occlusionTexture, occlusionTextureObject);
+                mat.occlusionTexture = TextureInfo::parse(occlusionTextureObject);
                 mat.occlusionTexture.strength = clamp(float(occlusionTextureObject.value(KEY_SCALE).toDouble(1.0)), 0.0f, 1.0f);
             }
         }
@@ -402,26 +392,24 @@ bool MaterialParser::parse(const QJsonArray &materials, GLTF2Context *context)
                         ++it;
                     }
                 } else {
-                    qCWarning(kuesa) << "No custom material registered for" << mat.customMaterial.type;
+                    qCWarning(Kuesa::kuesa) << "No custom material registered for" << mat.customMaterial.type;
                     return false;
                 }
             }
         }
 
-        mat.materialProperties(*context);
         context->addMaterial(mat);
     }
 
     return materials.size() > 0;
 }
 
-Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context &context)
+Kuesa::GLTF2MaterialProperties *Material::getOrAllocateProperties(GLTF2Context &context)
 {
     if (m_materialProperties)
         return m_materialProperties;
 
     if (extensions.KDAB_custom_material) { // Custom Material
-
         // Check if we find a registered custom material that matches
         const QByteArray className = QByteArray(customMaterial.propertiesClassMetaObject->className());
         if (className.isEmpty())
@@ -433,7 +421,6 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
 
         // Fill materialProperty class
         for (const KDABCustomMaterial::Property &prop : customMaterial.properties) {
-
             // Is property a texture
             static const int textureInfoTypeId = qMetaTypeId<TextureInfo>();
             const QByteArray propName = prop.name.toLatin1();
@@ -442,7 +429,7 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
                 const qint32 textureIdx = info.index;
                 if (textureIdx > -1)
                     materialProperties->setProperty(propName,
-                                                    QVariant::fromValue(context.texture(textureIdx).texture));
+                                                    QVariant::fromValue(context.getOrAllocateTexture(textureIdx)));
                 // TO DO: Use the specified texCoords
             } else {
                 materialProperties->setProperty(propName, prop.value);
@@ -459,7 +446,7 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
 
         const qint32 baseColorTextureIdx = pbr.baseColorTexture.index;
         if (baseColorTextureIdx > -1) {
-            materialProperties->setBaseColorMap(context.texture(baseColorTextureIdx).texture);
+            materialProperties->setBaseColorMap(context.getOrAllocateTexture(baseColorTextureIdx));
             materialProperties->setBaseColorUsesTexCoord1(pbr.baseColorTexture.texCoord == 1);
         }
 
@@ -467,7 +454,6 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
 
         m_materialProperties = materialProperties;
     } else { // PBR Material
-
         auto *materialProperties = new Kuesa::MetallicRoughnessProperties;
         materialProperties->setMetallicFactor(pbr.metallicFactor);
         materialProperties->setRoughnessFactor(pbr.roughtnessFactor);
@@ -484,32 +470,52 @@ Kuesa::GLTF2MaterialProperties *Material::materialProperties(const GLTF2Context 
 
         const qint32 baseColorTextureIdx = pbr.baseColorTexture.index;
         if (baseColorTextureIdx > -1) {
-            materialProperties->setBaseColorMap(context.texture(baseColorTextureIdx).texture);
+            TextureInfo texInfo = pbr.baseColorTexture;
+            materialProperties->setBaseColorMap(context.getOrAllocateTexture(baseColorTextureIdx));
             materialProperties->setBaseColorUsesTexCoord1(pbr.baseColorTexture.texCoord == 1);
+            materialProperties->baseColorMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
+            materialProperties->baseColorMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
+            materialProperties->baseColorMapTextureTransform()->setRotation(texInfo.khr_texture_transform.rotation);
         }
 
         const qint32 metallicRoughnessTextureIdx = pbr.metallicRoughnessTexture.index;
         if (metallicRoughnessTextureIdx > -1) {
-            materialProperties->setMetalRoughMap(context.texture(metallicRoughnessTextureIdx).texture);
+            TextureInfo texInfo = pbr.metallicRoughnessTexture;
+            materialProperties->setMetalRoughMap(context.getOrAllocateTexture(metallicRoughnessTextureIdx));
             materialProperties->setMetallicRoughnessUsesTexCoord1(pbr.metallicRoughnessTexture.texCoord == 1);
+            materialProperties->metalRoughMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
+            materialProperties->metalRoughMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
+            materialProperties->metalRoughMapTextureTransform()->setRotation(texInfo.khr_texture_transform.rotation);
         }
 
         const qint32 normalMapTextureIdx = normalTexture.index;
         if (normalMapTextureIdx > -1) {
-            materialProperties->setNormalMap(context.texture(normalMapTextureIdx).texture);
+            TextureInfo texInfo = normalTexture;
+            materialProperties->setNormalMap(context.getOrAllocateTexture(normalMapTextureIdx));
             materialProperties->setNormalUsesTexCoord1(normalTexture.texCoord == 1);
+            materialProperties->normalMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
+            materialProperties->normalMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
+            materialProperties->normalMapTextureTransform()->setRotation(texInfo.khr_texture_transform.rotation);
         }
 
         const qint32 emissiveMapTextureIdx = emissiveTexture.index;
         if (emissiveMapTextureIdx > -1) {
-            materialProperties->setEmissiveMap(context.texture(emissiveMapTextureIdx).texture);
+            TextureInfo texInfo = emissiveTexture;
+            materialProperties->setEmissiveMap(context.getOrAllocateTexture(emissiveMapTextureIdx));
             materialProperties->setEmissiveUsesTexCoord1(emissiveTexture.index == 1);
+            materialProperties->emissiveMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
+            materialProperties->emissiveMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
+            materialProperties->emissiveMapTextureTransform()->setRotation(texInfo.khr_texture_transform.rotation);
         }
 
         const qint32 occulsionMapTextureIdx = occlusionTexture.index;
         if (occulsionMapTextureIdx > -1) {
-            materialProperties->setAmbientOcclusionMap(context.texture(occulsionMapTextureIdx).texture);
+            TextureInfo texInfo = occlusionTexture;
+            materialProperties->setAmbientOcclusionMap(context.getOrAllocateTexture(occulsionMapTextureIdx));
             materialProperties->setAOUsesTexCoord1(occlusionTexture.texCoord == 1);
+            materialProperties->ambientOcclusionMapTextureTransform()->setOffset(texInfo.khr_texture_transform.offset);
+            materialProperties->ambientOcclusionMapTextureTransform()->setScale(texInfo.khr_texture_transform.scale);
+            materialProperties->ambientOcclusionMapTextureTransform()->setRotation(texInfo.khr_texture_transform.rotation);
         }
 
         materialProperties->setAlphaCutoff(alpha.alphaCutoff);

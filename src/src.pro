@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Kevin Ottens <kevin.ottens@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,14 +29,20 @@ TEMPLATE = subdirs
 src_core.subdir = $$PWD/core
 src_core.target = sub-core
 
+src_utils.subdir = $$PWD/utils
+src_utils.target = sub-utils
+src_utils.depends = src_core
+
+SUBDIRS += src_core doc src_utils
+
 qtHaveModule(quick) {
-    src_quick_imports.file = $$PWD/quick/imports/imports.pro
+    src_quick_imports.file = $$PWD/quick/imports/core/imports-core.pro
     src_quick_imports.target = sub-quick
     src_quick_imports.depends = src_core
-}
 
-SUBDIRS += src_core doc
+    src_quick_utils_imports.file = $$PWD/quick/imports/utils/imports-utils.pro
+    src_quick_utils_imports.target = sub-quick-utils
+    src_quick_utils_imports.depends = src_core src_utils
 
-qtHaveModule(quick) {
-    SUBDIRS += src_quick_imports
+    SUBDIRS += src_quick_imports src_quick_utils_imports
 }

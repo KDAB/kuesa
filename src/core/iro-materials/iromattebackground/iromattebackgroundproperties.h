@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -87,6 +87,8 @@ Q_SIGNALS:
 
 private:
     IroMatteBackgroundShaderData *m_shaderData;
+    Qt3DRender::QAbstractTexture * m_matteMap;
+
 };
 } // namespace Kuesa
 

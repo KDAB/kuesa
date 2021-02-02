@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -27,10 +27,10 @@
 */
 
 #include "bufferviewsparser_p.h"
+#include "assetkeyparser_p.h"
 
 #include <QJsonArray>
 #include <QJsonObject>
-#include <Qt3DRender/QAttribute>
 #include <QLoggingCategory>
 
 #include "gltf2context_p.h"
@@ -38,6 +38,7 @@
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 using namespace GLTF2Import;
+using namespace Qt3DGeometry;
 
 namespace {
 const QLatin1String KEY_BUFFER = QLatin1String("buffer");
@@ -46,7 +47,6 @@ const QLatin1String KEY_BYTELENGTH = QLatin1String("byteLength");
 const QLatin1String KEY_BYTESTRIDE = QLatin1String("byteStride");
 } // namespace
 
-Q_LOGGING_CATEGORY(bufferviewsparser, "BufferViewsParser")
 
 BufferView::BufferView()
     : byteStride(-1)
@@ -95,6 +95,10 @@ bool BufferViewsParser::parse(const QJsonArray &bufferViewsArray, GLTF2Context *
             view.byteOffset = byteOffset;
             view.byteLength = byteLength;
             view.byteStride = byteStride;
+
+            // Parse Share Key Extension
+            AssetKeyParser::parse(view, viewObject);
+
             context->addBufferView(view);
         } else {
             return false;

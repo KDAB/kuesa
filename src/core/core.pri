@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -27,12 +27,31 @@
 INCLUDEPATH += $$PWD
 
 SOURCES += \
+    $$PWD/empty2dtexture.cpp \
+    $$PWD/kuesanode.cpp \
+    $$PWD/kuesa_utils.cpp \
+    $$PWD/logging.cpp \
+    $$PWD/placeholder.cpp \
+    $$PWD/meshinstantiator.cpp \
+    $$PWD/placeholdertracker.cpp \
     $$PWD/sceneentity.cpp \
     $$PWD/animationplayer.cpp \
     $$PWD/skybox.cpp \
-    $$PWD/morphcontroller.cpp
+    $$PWD/morphcontroller.cpp \
+    $$PWD/particlemesh.cpp \
+    $$PWD/particlegeometry.cpp \
+    $$PWD/particlematerial.cpp \
+    $$PWD/noisetextureimage.cpp \
+    $$PWD/particles.cpp \
+    $$PWD/transformtracker.cpp
 
 HEADERS += \
+    $$PWD/empty2dtexture_p.h \
+    $$PWD/kuesanode.h \
+    $$PWD/logging_p.h \
+    $$PWD/placeholder.h \
+    $$PWD/meshinstantiator.h \
+    $$PWD/placeholdertracker.h \
     $$PWD/sceneentity.h \
     $$PWD/factory.h \
     $$PWD/kuesa_p.h \
@@ -41,8 +60,19 @@ HEADERS += \
     $$PWD/kuesa_utils_p.h \
     $$PWD/animationplayer.h \
     $$PWD/skybox.h \
-    $$PWD/morphcontroller.h
+    $$PWD/morphcontroller.h \
+    $$PWD/particlemesh_p.h \
+    $$PWD/particlegeometry_p.h \
+    $$PWD/particlematerial_p.h \
+    $$PWD/noisetextureimage_p.h \
+    $$PWD/particles.h \
+    $$PWD/transformtracker.h
 
 qtConfig(draco) {
     HEADERS += $$PWD/draco_prefix_p.h
+}
+
+qtConfig(ktx) {
+    HEADERS += $$PWD/ktxtexture.h
+    SOURCES += $$PWD/ktxtexture.cpp
 }

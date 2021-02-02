@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Kevin Ottens <kevin.ottens@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -25,6 +25,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 TEMPLATE = subdirs
+
+QT_FOR_CONFIG += kuesa
 
 qtHaveModule(widgets) {
     SUBDIRS += \
@@ -49,6 +51,18 @@ qtHaveModule(quick) {
         IroMatteAddMaterial \
         IroMatteMultMaterial \
         IroDiffuseAlphaMaterial \
-        layered_framegraph
+        layered_framegraph \
+        lights \
+        particles \
+        stencil \
+        PlanarReflections \
+        multi-views \
+        multi-views-with-effects \
+        KDAB_placeholder \
+        instanced-rocks
+}
+
+qtConfig(ktx) {
+    SUBDIRS += KTXTextures
 }
 

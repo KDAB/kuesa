@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.11
-import "controls" as Controls
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 
 Item {
     id: root
@@ -219,7 +219,7 @@ Item {
             opacity = 0
         }
 
-        Controls.StyledLabel {
+        Label {
             id: titleLabel
             x: 10
             y: 10

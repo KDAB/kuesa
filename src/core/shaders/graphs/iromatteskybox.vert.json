@@ -4,33 +4,9 @@
             "layers": [
             ],
             "sourcePort": "value",
-            "sourceUuid": "{a6a804b8-6560-488b-8409-72f0e3461cbb}",
-            "targetPort": "input",
-            "targetUuid": "{78db0604-f1c7-4343-9191-f1a936820e0b}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{78db0604-f1c7-4343-9191-f1a936820e0b}",
-            "targetPort": "input",
-            "targetUuid": "{2606ee2f-e7c7-4c32-9287-304951d0aa40}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{027d6fec-ff28-453d-9097-d6fb1c35f806}",
-            "targetPort": "first",
-            "targetUuid": "{82fa83d1-f824-429c-9df8-e48afa59bb00}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{2606ee2f-e7c7-4c32-9287-304951d0aa40}",
+            "sourceUuid": "{6ee5da50-fc8c-4d34-a0a1-c22b4373530c}",
             "targetPort": "second",
-            "targetUuid": "{82fa83d1-f824-429c-9df8-e48afa59bb00}"
+            "targetUuid": "{00c30ec0-689d-4f9c-8e85-ba11b102e938}"
         },
         {
             "layers": [
@@ -38,63 +14,7 @@
             "sourcePort": "product",
             "sourceUuid": "{82fa83d1-f824-429c-9df8-e48afa59bb00}",
             "targetPort": "first",
-            "targetUuid": "{6e38b553-3aed-4f06-911b-55f5a79f42b0}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{c11aaa05-c686-49c0-8819-da01f0564269}",
-            "targetPort": "second",
-            "targetUuid": "{6e38b553-3aed-4f06-911b-55f5a79f42b0}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{6e38b553-3aed-4f06-911b-55f5a79f42b0}",
-            "targetPort": "first",
             "targetUuid": "{9083907f-ad8b-4933-8a6d-96764fb14b0c}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{1357e61f-4d8f-4638-8501-2f69e7bb1bf6}",
-            "targetPort": "second",
-            "targetUuid": "{00c30ec0-689d-4f9c-8e85-ba11b102e938}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{00c30ec0-689d-4f9c-8e85-ba11b102e938}",
-            "targetPort": "second",
-            "targetUuid": "{9083907f-ad8b-4933-8a6d-96764fb14b0c}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "value",
-            "sourceUuid": "{6a8287cd-5f77-4357-8006-d40aea9ec762}",
-            "targetPort": "value",
-            "targetUuid": "{ea6dec60-87b9-45ab-a6e1-fb1e0b55eb7c}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "product",
-            "sourceUuid": "{9083907f-ad8b-4933-8a6d-96764fb14b0c}",
-            "targetPort": "input",
-            "targetUuid": "{8dae1328-145f-42bb-998c-0bb17be6c636}"
-        },
-        {
-            "layers": [
-            ],
-            "sourcePort": "output",
-            "sourceUuid": "{8dae1328-145f-42bb-998c-0bb17be6c636}",
-            "targetPort": "position",
-            "targetUuid": "{b750802b-b2c6-4ba3-9f59-9ce6d4155802}"
         },
         {
             "layers": [
@@ -111,6 +31,70 @@
             "sourceUuid": "{a52e2790-c970-4c17-97f8-53c4669b104d}",
             "targetPort": "value",
             "targetUuid": "{43a0231d-a27e-4fed-8439-284131d634b8}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{00c30ec0-689d-4f9c-8e85-ba11b102e938}",
+            "targetPort": "second",
+            "targetUuid": "{9083907f-ad8b-4933-8a6d-96764fb14b0c}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{8dae1328-145f-42bb-998c-0bb17be6c636}",
+            "targetPort": "position",
+            "targetUuid": "{b750802b-b2c6-4ba3-9f59-9ce6d4155802}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{2606ee2f-e7c7-4c32-9287-304951d0aa40}",
+            "targetPort": "second",
+            "targetUuid": "{82fa83d1-f824-429c-9df8-e48afa59bb00}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "output",
+            "sourceUuid": "{78db0604-f1c7-4343-9191-f1a936820e0b}",
+            "targetPort": "input",
+            "targetUuid": "{2606ee2f-e7c7-4c32-9287-304951d0aa40}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "value",
+            "sourceUuid": "{6a8287cd-5f77-4357-8006-d40aea9ec762}",
+            "targetPort": "value",
+            "targetUuid": "{ea6dec60-87b9-45ab-a6e1-fb1e0b55eb7c}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "viewMatrix",
+            "sourceUuid": "{b597ac42-39ab-4ec9-b819-61977916c578}",
+            "targetPort": "input",
+            "targetUuid": "{78db0604-f1c7-4343-9191-f1a936820e0b}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "projectionMatrix",
+            "sourceUuid": "{b597ac42-39ab-4ec9-b819-61977916c578}",
+            "targetPort": "first",
+            "targetUuid": "{82fa83d1-f824-429c-9df8-e48afa59bb00}"
+        },
+        {
+            "layers": [
+            ],
+            "sourcePort": "product",
+            "sourceUuid": "{9083907f-ad8b-4933-8a6d-96764fb14b0c}",
+            "targetPort": "input",
+            "targetUuid": "{8dae1328-145f-42bb-998c-0bb17be6c636}"
         }
     ],
     "nodes": [
@@ -118,93 +102,29 @@
             "layers": [
             ],
             "parameters": {
-                "name": "vertexPosition",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
+                "location": "1",
+                "name": "vertexColor",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Vec4"
                 }
             },
             "type": "input",
-            "uuid": "{0b59e4be-97be-4a98-9f53-df1081f19791}"
+            "uuid": "{6a8287cd-5f77-4357-8006-d40aea9ec762}"
         },
         {
             "layers": [
             ],
             "parameters": {
-                "name": "modelMatrix",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Uniform"
-                },
+                "location": "2",
+                "name": "vertexTexCoord",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Mat4"
+                    "value": "QShaderLanguage::Vec2"
                 }
             },
             "type": "input",
-            "uuid": "{c11aaa05-c686-49c0-8819-da01f0564269}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "viewMatrix",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Uniform"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Mat4"
-                }
-            },
-            "type": "input",
-            "uuid": "{a6a804b8-6560-488b-8409-72f0e3461cbb}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "projectionMatrix",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Uniform"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Mat4"
-                }
-            },
-            "type": "input",
-            "uuid": "{027d6fec-ff28-453d-9097-d6fb1c35f806}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-            },
-            "type": "gl_Position",
-            "uuid": "{b750802b-b2c6-4ba3-9f59-9ce6d4155802}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Mat4"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Mat3"
-                }
-            },
-            "type": "cast",
-            "uuid": "{78db0604-f1c7-4343-9191-f1a936820e0b}"
+            "uuid": "{a52e2790-c970-4c17-97f8-53c4669b104d}"
         },
         {
             "layers": [
@@ -230,6 +150,20 @@
             "layers": [
             ],
             "parameters": {
+                "location": "1",
+                "name": "color",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            },
+            "type": "output",
+            "uuid": "{ea6dec60-87b9-45ab-a6e1-fb1e0b55eb7c}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
                 "inputType": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Mat3"
@@ -246,41 +180,39 @@
             "layers": [
             ],
             "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Mat4"
-                },
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Mat4"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Mat4"
-                }
+                "name": "vertexPosition"
             },
-            "type": "multiply",
-            "uuid": "{6e38b553-3aed-4f06-911b-55f5a79f42b0}"
+            "type": "input",
+            "uuid": "{0b59e4be-97be-4a98-9f53-df1081f19791}"
         },
         {
             "layers": [
             ],
             "parameters": {
+            },
+            "type": "qt3d_default_uniforms",
+            "uuid": "{b597ac42-39ab-4ec9-b819-61977916c578}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "name": "texCoord",
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                },
-                "typeOfFirst": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "typeOfSecond": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
+                    "value": "QShaderLanguage::Vec2"
                 }
             },
-            "type": "join2",
-            "uuid": "{00c30ec0-689d-4f9c-8e85-ba11b102e938}"
+            "type": "output",
+            "uuid": "{43a0231d-a27e-4fed-8439-284131d634b8}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+            },
+            "type": "gl_Position",
+            "uuid": "{b750802b-b2c6-4ba3-9f59-9ce6d4155802}"
         },
         {
             "layers": [
@@ -306,62 +238,6 @@
             "layers": [
             ],
             "parameters": {
-                "name": "texCoord",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
-            },
-            "type": "output",
-            "uuid": "{43a0231d-a27e-4fed-8439-284131d634b8}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "constant": "1.0",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "type": "constant",
-            "uuid": "{1357e61f-4d8f-4638-8501-2f69e7bb1bf6}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "vertexColor",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "type": "input",
-            "uuid": "{6a8287cd-5f77-4357-8006-d40aea9ec762}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
-                "name": "color",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "type": "output",
-            "uuid": "{ea6dec60-87b9-45ab-a6e1-fb1e0b55eb7c}"
-        },
-        {
-            "layers": [
-            ],
-            "parameters": {
                 "fields": "xyww",
                 "inputType": {
                     "type": "QShaderLanguage::VariableType",
@@ -379,18 +255,46 @@
             "layers": [
             ],
             "parameters": {
-                "name": "vertexTexCoord",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                "typeOfFirst": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            },
+            "type": "join2",
+            "uuid": "{00c30ec0-689d-4f9c-8e85-ba11b102e938}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "constant": "1.0",
+                "type": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            },
+            "type": "constant",
+            "uuid": "{6ee5da50-fc8c-4d34-a0a1-c22b4373530c}"
+        },
+        {
+            "layers": [
+            ],
+            "parameters": {
+                "inputType": {
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Mat4"
                 },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
+                    "value": "QShaderLanguage::Mat3"
                 }
             },
-            "type": "input",
-            "uuid": "{a52e2790-c970-4c17-97f8-53c4669b104d}"
+            "type": "cast",
+            "uuid": "{78db0604-f1c7-4343-9191-f1a936820e0b}"
         }
     ],
     "prototypes": {
@@ -398,6 +302,7 @@
             "inputs": [
                 "input"
             ],
+            "name": "cast",
             "outputs": [
                 "output"
             ],
@@ -418,6 +323,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $output = $type($input);"
                 },
                 {
@@ -426,16 +333,34 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $type($input);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $output = $type($input);"
                 }
             ]
         },
         "constant": {
+            "inputs": [
+            ],
+            "name": "constant",
             "outputs": [
                 "value"
             ],
             "parameters": {
-                "constant": "0.0",
+                "constant": {
+                    "type": "QString",
+                    "value": "0.0"
+                },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Float"
@@ -448,6 +373,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $value = $type($constant);"
                 },
                 {
@@ -456,6 +383,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $value = $type($constant);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $value = $type($constant);"
                 }
             ]
@@ -464,6 +403,11 @@
             "inputs": [
                 "position"
             ],
+            "name": "gl_Position",
+            "outputs": [
+            ],
+            "parameters": {
+            },
             "rules": [
                 {
                     "format": {
@@ -471,6 +415,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "gl_Position = $position;"
                 },
                 {
@@ -479,6 +425,8 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "gl_Position = $position;"
                 },
                 {
@@ -487,19 +435,37 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "gl_Position = $position;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "gl_Position = $position;"
                 }
             ]
         },
         "input": {
+            "inputs": [
+            ],
+            "name": "input",
             "outputs": [
                 "value"
             ],
             "parameters": {
-                "name": "defaultName",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
+                "location": {
+                    "type": "QString",
+                    "value": "0"
+                },
+                "name": {
+                    "type": "QString",
+                    "value": "defaultName"
                 },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
@@ -514,7 +480,18 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "$qualifier highp $type $name;"
+                        "attribute highp $type $name;"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "in highp $type $name;"
                     ],
                     "substitution": "highp $type $value = $name;"
                 },
@@ -525,7 +502,18 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "$qualifier $type $name;"
+                        "in $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "layout(location = $location) in $type $name;"
                     ],
                     "substitution": "$type $value = $name;"
                 }
@@ -536,6 +524,7 @@
                 "first",
                 "second"
             ],
+            "name": "join2",
             "outputs": [
                 "output"
             ],
@@ -560,6 +549,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $output = $type($first, $second);"
                 },
                 {
@@ -568,6 +559,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $type($first, $second);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $output = $type($first, $second);"
                 }
             ]
@@ -577,6 +580,7 @@
                 "first",
                 "second"
             ],
+            "name": "multiply",
             "outputs": [
                 "product"
             ],
@@ -601,6 +605,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $product = $first * $second;"
                 },
                 {
@@ -609,6 +615,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $product = $first * $second;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $product = $first * $second;"
                 }
             ]
@@ -617,8 +635,18 @@
             "inputs": [
                 "value"
             ],
+            "name": "output",
+            "outputs": [
+            ],
             "parameters": {
-                "name": "defaultName",
+                "location": {
+                    "type": "QString",
+                    "value": "0"
+                },
+                "name": {
+                    "type": "QString",
+                    "value": "defaultName"
+                },
                 "type": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -657,6 +685,90 @@
                         "out $type $name;"
                     ],
                     "substitution": "$name = $value;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "layout(location = $location) out $type $name;"
+                    ],
+                    "substitution": "$name = $value;"
+                }
+            ]
+        },
+        "qt3d_default_uniforms": {
+            "inputs": [
+            ],
+            "name": "qt3d_default_uniforms",
+            "outputs": [
+                "viewMatrix",
+                "projectionMatrix",
+                "viewProjectionMatrix",
+                "inverseViewMatrix",
+                "inverseProjectionMatrix",
+                "inverseViewProjectionMatrix",
+                "textureTransformMatrix",
+                "eyePosition",
+                "aspectRatio",
+                "gamma",
+                "exposure",
+                "time",
+                "modelMatrix",
+                "inverseModelMatrix",
+                "modelViewMatrix",
+                "modelNormalMatrix",
+                "mvp",
+                "inverseModelViewProjectionMatrix"
+            ],
+            "parameters": {
+            },
+            "rules": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es2/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "\n                        highp mat4 $viewMatrix = viewMatrix;\n                        highp mat4 $projectionMatrix = projectionMatrix;\n                        highp mat4 $viewProjectionMatrix = viewProjectionMatrix;\n                        highp mat4 $inverseViewMatrix = inverseViewMatrix;\n                        highp mat4 $inverseProjectionMatrix = inverseProjectionMatrix;\n                        highp mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;\n                        highp mat4 $viewportMatrix = viewportMatrix;\n                        highp mat4 $inverseViewportMatrix = inverseViewportMatrix;\n                        highp vec4 $textureTransformMatrix = textureTransformMatrix;\n                        highp vec3 $eyePosition = eyePosition;\n                        highp float $aspectRatio = aspectRatio;\n                        highp float $gamma = gamma;\n                        highp float $exposure = exposure;\n                        highp float $time = time;\n                        highp mat4 $modelMatrix = modelMatrix;\n                        highp mat4 $inverseModelMatrix = inverseModelMatrix;\n                        highp mat4 $modelViewMatrix = modelViewMatrix;\n                        highp mat3 $modelNormalMatrix = modelNormalMatrix;\n                        highp mat4 $inverseModelViewMatrix = inverseModelViewMatrix;\n                        highp mat4 $mvp = mvp;\n                        highp mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es3/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "\n                        highp mat4 $viewMatrix = viewMatrix;\n                        highp mat4 $projectionMatrix = projectionMatrix;\n                        highp mat4 $viewProjectionMatrix = viewProjectionMatrix;\n                        highp mat4 $inverseViewMatrix = inverseViewMatrix;\n                        highp mat4 $inverseProjectionMatrix = inverseProjectionMatrix;\n                        highp mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;\n                        highp mat4 $viewportMatrix = viewportMatrix;\n                        highp mat4 $inverseViewportMatrix = inverseViewportMatrix;\n                        highp vec4 $textureTransformMatrix = textureTransformMatrix;\n                        highp vec3 $eyePosition = eyePosition;\n                        highp float $aspectRatio = aspectRatio;\n                        highp float $gamma = gamma;\n                        highp float $exposure = exposure;\n                        highp float $time = time;\n                        highp mat4 $modelMatrix = modelMatrix;\n                        highp mat4 $inverseModelMatrix = inverseModelMatrix;\n                        highp mat4 $modelViewMatrix = modelViewMatrix;\n                        highp mat3 $modelNormalMatrix = modelNormalMatrix;\n                        highp mat4 $inverseModelViewMatrix = inverseModelViewMatrix;\n                        highp mat4 $mvp = mvp;\n                        highp mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl3/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "\n                        mat4 $viewMatrix = viewMatrix;\n                        mat4 $projectionMatrix = projectionMatrix;\n                        mat4 $viewProjectionMatrix = viewProjectionMatrix;\n                        mat4 $inverseViewMatrix = inverseViewMatrix;\n                        mat4 $inverseProjectionMatrix = inverseProjectionMatrix;\n                        mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;\n                        mat4 $viewportMatrix = viewportMatrix;\n                        mat4 $inverseViewportMatrix = inverseViewportMatrix;\n                        vec4 $textureTransformMatrix = textureTransformMatrix;\n                        vec3 $eyePosition = eyePosition;\n                        float $aspectRatio = aspectRatio;\n                        float $gamma = gamma;\n                        float $exposure = exposure;\n                        float $time = time;\n                        mat4 $modelMatrix = modelMatrix;\n                        mat4 $inverseModelMatrix = inverseModelMatrix;\n                        mat4 $modelViewMatrix = modelViewMatrix;\n                        mat3 $modelNormalMatrix = modelNormalMatrix;\n                        mat4 $inverseModelViewMatrix = inverseModelViewMatrix;\n                        mat4 $mvp = mvp;\n                        mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl45/qt3d_default_uniforms.inc"
+                    ],
+                    "substitution": "\n                        mat4 $viewMatrix = viewMatrix;\n                        mat4 $projectionMatrix = projectionMatrix;\n                        mat4 $viewProjectionMatrix = viewProjectionMatrix;\n                        mat4 $inverseViewMatrix = inverseViewMatrix;\n                        mat4 $inverseProjectionMatrix = inverseProjectionMatrix;\n                        mat4 $inverseViewProjectionMatrix = inverseViewProjectionMatrix;\n                        mat4 $viewportMatrix = viewportMatrix;\n                        mat4 $inverseViewportMatrix = inverseViewportMatrix;\n                        vec4 $textureTransformMatrix = textureTransformMatrix;\n                        vec3 $eyePosition = eyePosition;\n                        float $aspectRatio = aspectRatio;\n                        float $gamma = gamma;\n                        float $exposure = exposure;\n                        float $time = time;\n                        mat4 $modelMatrix = modelMatrix;\n                        mat4 $inverseModelMatrix = inverseModelMatrix;\n                        mat4 $modelViewMatrix = modelViewMatrix;\n                        mat3 $modelNormalMatrix = modelNormalMatrix;\n                        mat4 $inverseModelViewMatrix = inverseModelViewMatrix;\n                        mat4 $mvp = mvp;\n                        mat4 $inverseModelViewProjectionMatrix = inverseModelViewProjectionMatrix;"
                 }
             ]
         },
@@ -664,11 +776,15 @@
             "inputs": [
                 "input"
             ],
+            "name": "swizzle",
             "outputs": [
                 "output"
             ],
             "parameters": {
-                "fields": "x",
+                "fields": {
+                    "type": "QString",
+                    "value": "xyz"
+                },
                 "inputType": {
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
@@ -685,6 +801,8 @@
                         "major": 2,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $output = ($input).$fields;"
                 },
                 {
@@ -693,6 +811,18 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = ($input).$fields;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $output = ($input).$fields;"
                 }
             ]

@@ -1,9 +1,9 @@
 /*
-    light.inc.frag
+    light_unroll.inc.frag
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -34,11 +34,17 @@ struct Light {
     int type;
     vec3 position;
     vec3 color;
-    float intensity;
     vec3 direction;
+    float intensity;
     float range;
     float lightAngleScale;
     float lightAngleOffset;
+    float shadowBias;
+    bool castsShadows;
+    bool usePCF;
+    mat4 lightProjectionMatrix;
+    vec2 nearFarPlanes;
+    int depthArrayIndex;
 };
 uniform Light light_0;
 uniform Light light_1;
@@ -51,9 +57,6 @@ uniform Light light_7;
 uniform int lightCount;
 
 // Pre-convolved environment maps
-struct EnvironmentLight {
-    samplerCube irradiance; // For diffuse contribution
-    samplerCube specular; // For specular contribution
-};
-uniform EnvironmentLight envLight;
+uniform samplerCube envLightIrradiance; // For diffuse contribution
+uniform samplerCube envLightSpecular; // For specular contribution
 uniform int envLightCount = 0;

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,15 +26,18 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick.Scene3D 2.0
-import QtQuick 2.11
-import "controls" as Controls
+import QtQuick.Scene3D 2.12
+import QtQuick 2.12
+import QtQuick.Controls.Material 2.12
 
 //! [0]
 Item {
     id: mainRoot
 
     // 3D Content
+
+    Material.theme: Material.Dark
+    Material.accent: Material.Blue
 
     Item {
         id: baseUI

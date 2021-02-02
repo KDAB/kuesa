@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,14 +29,15 @@
 #ifndef KUESA_POINTLIGHT_H
 #define KUESA_POINTLIGHT_H
 
-#include <Qt3DRender/QAbstractLight>
+#include <Kuesa/shadowcastinglight.h>
 #include <Kuesa/kuesa_global.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
+class ShadowMapData;
 class PointLightPrivate;
-class KUESASHARED_EXPORT PointLight : public Qt3DRender::QAbstractLight
+class KUESASHARED_EXPORT PointLight : public ShadowCastingLight
 {
     Q_OBJECT
     Q_PROPERTY(float range READ range WRITE setRange NOTIFY rangeChanged)

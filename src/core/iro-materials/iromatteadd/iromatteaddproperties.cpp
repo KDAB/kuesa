@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,6 +29,8 @@
 
 #include "iromatteaddproperties.h"
 #include "iromatteaddshaderdata_p.h"
+#include <Qt3DCore/private/qnode_p.h>
+#include <Kuesa/private/empty2dtexture_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -60,15 +62,17 @@ namespace Kuesa {
 IroMatteAddProperties::IroMatteAddProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_shaderData(new IroMatteAddShaderData(this))
+    , m_matteMap(nullptr)
 {
     QObject::connect(m_shaderData, &IroMatteAddShaderData::postVertexColorChanged, this, &IroMatteAddProperties::postVertexColorChanged);
     QObject::connect(m_shaderData, &IroMatteAddShaderData::postGainChanged, this, &IroMatteAddProperties::postGainChanged);
-    QObject::connect(m_shaderData, &IroMatteAddShaderData::matteMapChanged, this, &IroMatteAddProperties::matteMapChanged);
     QObject::connect(m_shaderData, &IroMatteAddShaderData::usesMatteMapChanged, this, &IroMatteAddProperties::usesMatteMapChanged);
     QObject::connect(m_shaderData, &IroMatteAddShaderData::matteFilterChanged, this, &IroMatteAddProperties::matteFilterChanged);
     QObject::connect(m_shaderData, &IroMatteAddShaderData::matteGainChanged, this, &IroMatteAddProperties::matteGainChanged);
     QObject::connect(m_shaderData, &IroMatteAddShaderData::uvOffsetChanged, this, &IroMatteAddProperties::uvOffsetChanged);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    setMatteMap(new Empty2DTexture());
+#endif
 }
 
 IroMatteAddProperties::~IroMatteAddProperties() = default;
@@ -86,11 +90,6 @@ void IroMatteAddProperties::setPostVertexColor(float postVertexColor)
 void IroMatteAddProperties::setPostGain(float postGain)
 {
     m_shaderData->setPostGain(postGain);
-}
-
-void IroMatteAddProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
-{
-    m_shaderData->setMatteMap(matteMap);
 }
 
 void IroMatteAddProperties::setUsesMatteMap(bool usesMatteMap)
@@ -111,6 +110,23 @@ void IroMatteAddProperties::setMatteGain(float matteGain)
 void IroMatteAddProperties::setUvOffset(const QVector2D &uvOffset)
 {
     m_shaderData->setUvOffset(uvOffset);
+}
+
+void IroMatteAddProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
+{
+    if (m_matteMap == matteMap)
+        return;
+
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_matteMap != nullptr)
+        d->unregisterDestructionHelper(m_matteMap);
+    m_matteMap = matteMap;
+    if (m_matteMap != nullptr) {
+        if (m_matteMap->parent() == nullptr)
+            m_matteMap->setParent(this);
+        d->registerDestructionHelper(m_matteMap, &IroMatteAddProperties::setMatteMap, m_matteMap);
+    }
+    emit matteMapChanged(m_matteMap);
 }
 
 
@@ -138,19 +154,6 @@ float IroMatteAddProperties::postVertexColor() const
 float IroMatteAddProperties::postGain() const
 {
     return m_shaderData->postGain();
-}
-
-/*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroMatteAddProperties::matteMap
-    Specifies the matte map to use. It is expected to be in sRGB color space.
-*/
-/*!
-    \property IroMatteAddProperties::matteMap
-    Specifies the matte map to use. It is expected to be in sRGB color space.
-*/
-Qt3DRender::QAbstractTexture * IroMatteAddProperties::matteMap() const
-{
-    return m_shaderData->matteMap();
 }
 
 /*!
@@ -203,6 +206,11 @@ float IroMatteAddProperties::matteGain() const
 QVector2D IroMatteAddProperties::uvOffset() const
 {
     return m_shaderData->uvOffset();
+}
+
+Qt3DRender::QAbstractTexture * IroMatteAddProperties::matteMap() const
+{
+    return m_matteMap;
 }
 
 

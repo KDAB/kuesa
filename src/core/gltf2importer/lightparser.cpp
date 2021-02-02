@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -28,6 +28,7 @@
 
 #include "lightparser_p.h"
 #include "gltf2context_p.h"
+#include "gltf2keys_p.h"
 #include "kuesa_p.h"
 
 #include <QJsonValue>
@@ -48,6 +49,12 @@ const QLatin1String KEY_OUTER_CONE_ANGLE = QLatin1String("outerConeAngle");
 const QLatin1String KEY_LIGHT_DIRECTIONAL = QLatin1String("directional");
 const QLatin1String KEY_LIGHT_POINT = QLatin1String("point");
 const QLatin1String KEY_LIGHT_SPOT = QLatin1String("spot");
+const QLatin1String KEY_CASTS_SHADOWS = QLatin1String("castsShadows");
+const QLatin1String KEY_SOFT_SHADOWS = QLatin1String("softShadows");
+const QLatin1String KEY_SHADOWMAP_TEXTURE_WIDTH = QLatin1String("shadowMapTextureWidth");
+const QLatin1String KEY_SHADOWMAP_TEXTURE_HEIGHT = QLatin1String("shadowMapTextureHeight");
+const QLatin1String KEY_SHADOWMAP_BIAS = QLatin1String("shadowMapBias");
+const QLatin1String KEY_SHADOWMAP_NEAR_PLANE = QLatin1String("nearPlane");
 
 } // namespace
 
@@ -65,7 +72,7 @@ bool Kuesa::GLTF2Import::LightParser::parse(const QJsonArray &lights, Kuesa::GLT
         else if (typeValue == KEY_LIGHT_SPOT)
             light.type = Qt3DRender::QAbstractLight::SpotLight;
         else {
-            qCWarning(kuesa) << "unknown KHR_lights_punctual light type: " << typeValue.toString();
+            qCWarning(Kuesa::kuesa) << "unknown KHR_lights_punctual light type: " << typeValue.toString();
             continue;
         }
 
@@ -94,11 +101,24 @@ bool Kuesa::GLTF2Import::LightParser::parse(const QJsonArray &lights, Kuesa::GLT
             light.innerConeAngleRadians = spotObject.value(KEY_INNER_CONE_ANGLE).toDouble(light.innerConeAngleRadians);
             light.outerConeAngleRadians = spotObject.value(KEY_OUTER_CONE_ANGLE).toDouble(light.outerConeAngleRadians);
             if (light.innerConeAngleRadians >= light.outerConeAngleRadians || light.innerConeAngleRadians < 0)
-                qCWarning(kuesa) << "KHR_lights_punctual SpotLight innerConeAngle must be between 0 and outerConeAngle. Invalid light: " << light.name;
+                qCWarning(Kuesa::kuesa) << "KHR_lights_punctual SpotLight innerConeAngle must be between 0 and outerConeAngle. Invalid light: " << light.name;
             if (light.outerConeAngleRadians > static_cast<float>(M_PI_2))
-                qCWarning(kuesa) << "KHR_lights_punctual SpotLight outerConeAngle must be less than PI/2. Invalid light: " << light.name;
+                qCWarning(Kuesa::kuesa) << "KHR_lights_punctual SpotLight outerConeAngle must be less than PI/2. Invalid light: " << light.name;
         }
 
+        // Shadows extension
+        const QJsonObject extensions = lightObject.value(KEY_EXTENSIONS).toObject();
+        if (extensions.contains(KEY_KDAB_KUESA_SHADOWS_EXTENSION)) {
+            const QJsonObject kdabShadowsExtension = extensions.value(KEY_KDAB_KUESA_SHADOWS_EXTENSION).toObject();
+            light.castsShadows = kdabShadowsExtension.value(KEY_CASTS_SHADOWS).toBool(light.castsShadows);
+            light.softShadows = kdabShadowsExtension.value(KEY_SOFT_SHADOWS).toBool(light.softShadows);
+            light.shadowMapBias = kdabShadowsExtension.value(KEY_SHADOWMAP_BIAS).toDouble(light.shadowMapBias);
+            light.nearPlane = kdabShadowsExtension.value(KEY_SHADOWMAP_NEAR_PLANE).toDouble(light.nearPlane);
+            QSize textureSize = light.shadowMapTextureSize;
+            textureSize.setWidth(kdabShadowsExtension.value(KEY_SHADOWMAP_TEXTURE_WIDTH).toInt(textureSize.width()));
+            textureSize.setHeight(kdabShadowsExtension.value(KEY_SHADOWMAP_TEXTURE_HEIGHT).toInt(textureSize.height()));
+            light.shadowMapTextureSize = textureSize;
+        }
         context->addLight(light);
     }
     return true;

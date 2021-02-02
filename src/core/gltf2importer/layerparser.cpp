@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -48,7 +48,6 @@ bool LayerParser::parse(const QJsonArray &layerArray, GLTF2Context *context) con
         if (layerName.isEmpty())
             return false;
         Layer layer;
-        layer.layer = new Qt3DRender::QLayer();
         layer.name = layerName;
         context->addLayer(layer);
     }

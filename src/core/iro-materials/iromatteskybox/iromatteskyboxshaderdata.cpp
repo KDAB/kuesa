@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -28,7 +28,6 @@
 */
 
 #include "iromatteskyboxshaderdata_p.h"
-#include <Qt3DCore/private/qnode_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -41,7 +40,6 @@ IroMatteSkyboxShaderData::IroMatteSkyboxShaderData(Qt3DCore::QNode *parent)
     : Qt3DRender::QShaderData(parent)
     , m_postVertexColor()
     , m_postGain()
-    , m_matteMap(nullptr)
     , m_usesMatteMap()
     , m_matteFilter()
     , m_matteGain()
@@ -58,11 +56,6 @@ float IroMatteSkyboxShaderData::postVertexColor() const
 float IroMatteSkyboxShaderData::postGain() const
 {
     return m_postGain;
-}
-
-Qt3DRender::QAbstractTexture * IroMatteSkyboxShaderData::matteMap() const
-{
-    return m_matteMap;
 }
 
 bool IroMatteSkyboxShaderData::usesMatteMap() const
@@ -100,23 +93,6 @@ void IroMatteSkyboxShaderData::setPostGain(float postGain)
         return;
     m_postGain = postGain;
     emit postGainChanged(postGain);
-}
-
-void IroMatteSkyboxShaderData::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
-{
-    if (m_matteMap == matteMap)
-        return;
-
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    if (m_matteMap != nullptr)
-        d->unregisterDestructionHelper(m_matteMap);
-    m_matteMap = matteMap;
-    if (m_matteMap != nullptr) {
-        if (m_matteMap->parent() == nullptr)
-            m_matteMap->setParent(this);
-        d->registerDestructionHelper(m_matteMap, &IroMatteSkyboxShaderData::setMatteMap, m_matteMap);
-    }
-    emit matteMapChanged(m_matteMap);
 }
 
 void IroMatteSkyboxShaderData::setUsesMatteMap(bool usesMatteMap)

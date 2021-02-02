@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -53,13 +53,14 @@
 
     \section2 Options:
     \list
-    \li -h, --help               Displays this help.
-    \li -v, --version            Displays version information.
-    \li -f, --fullScreen         show full screen.
-    \li -p, --play <animations>  play named animation
-    \li -l, --loop               loop animations
-    \li -c, --camera <camera>    use named camera
-    \li -s, --scene <scene>      index of the glTF scene to load
+    \li -h, --help                          Displays this help.
+    \li -v, --version                       Displays version information.
+    \li -f, --fullScreen                    show full screen.
+    \li -p, --play <animations>             play named animation
+    \li -l, --loop                          loop animations
+    \li -c, --camera <camera>               use named camera
+    \li -s, --scene <scene>                 index of the glTF scene to load
+    \li -r, --reflectionPlane <plane name>  use named reflection plane
     \endlist
 
     \section2: Arguments:

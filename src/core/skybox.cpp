@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -43,6 +43,7 @@
 #include <Qt3DRender/qseamlesscubemap.h>
 #include <Qt3DRender/qshaderprogram.h>
 #include <Qt3DRender/qshaderprogrambuilder.h>
+#include <Qt3DRender/qgeometryrenderer.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -154,7 +155,15 @@ Skybox::Skybox(QNode *parent)
           2, 0,
           QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.vert.json")),
           QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json"))
+        },
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+        { QGraphicsApiFilter::RHI,
+          QGraphicsApiFilter::NoProfile,
+          1, 0,
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.vert.json")),
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json"))
         }
+#endif
     };
 
     auto effect = new QEffect();

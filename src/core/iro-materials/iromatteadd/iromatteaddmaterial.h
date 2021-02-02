@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -32,13 +32,13 @@
 
 #include <Kuesa/GLTF2Material>
 #include <Kuesa/kuesa_global.h>
+#include <Kuesa/IroMatteAddProperties>
 
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-class IroMatteAddProperties;
 class GLTF2MaterialProperties;
 
 class KUESASHARED_EXPORT IroMatteAddMaterial : public GLTF2Material
@@ -62,6 +62,8 @@ Q_SIGNALS:
 private:
     IroMatteAddProperties *m_materialProperties = nullptr;
     Qt3DRender::QParameter *m_shaderDataParameter;
+    Qt3DRender::QParameter *m_matteMapParameter;
+
 };
 
 } // namespace Kuesa

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Jose Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <QJsonDocument>
 #include <QFile>
 #include <QLatin1String>
@@ -48,32 +48,32 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("succeeded");
-        QTest::addColumn<int>("imageCount");
+        QTest::addColumn<size_t>("imageCount");
         QTest::addColumn<QString>("imageFile");
 
         QTest::newRow("Valid") << QStringLiteral(ASSETS "imageparser_valid.gltf")
                                << true
-                               << 1
+                               << size_t(1)
                                << ASSETS "aBasePath/anImage.png";
 
         QTest::newRow("Empty") << QStringLiteral(ASSETS "imageparser_empty.gltf")
                                << false
-                               << 0
+                               << size_t(0)
                                << QString();
 
         QTest::newRow("PartiallyIncomplete") << QStringLiteral(ASSETS "imageparser_incomplete.gltf")
                                              << false
-                                             << 0
+                                             << size_t(0)
                                              << QString();
 
         QTest::newRow("UriAndBufferView") << QStringLiteral(ASSETS "imageparser_uri_and_bufferview.gltf")
                                           << false
-                                          << 0
+                                          << size_t(0)
                                           << QString();
 
         QTest::newRow("UriAndBufferView") << QStringLiteral(ASSETS "imageparser_bufferview.gltf")
                                           << false
-                                          << 0
+                                          << size_t(0)
                                           << QString();
     }
 
@@ -81,7 +81,7 @@ private Q_SLOTS:
     {
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
-        QFETCH(int, imageCount);
+        QFETCH(size_t, imageCount);
         QFETCH(QString, imageFile);
 
         // GIVEN
@@ -157,7 +157,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.imagesCount(), 1);
+        QCOMPARE(context.imagesCount(), size_t(1));
         Image image = context.image(0);
         QCOMPARE(image.url.scheme(), QStringLiteral("qrc"));
         QCOMPARE(image.url, QUrl("qrc:/anImage.png"));
@@ -180,7 +180,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.imagesCount(), 7);
+        QCOMPARE(context.imagesCount(), size_t(7));
         {
             Image image = context.image(0);
             QCOMPARE(image.url.scheme(), QStringLiteral("file"));
@@ -194,12 +194,20 @@ private Q_SLOTS:
         {
             Image image = context.image(2);
             QCOMPARE(image.url.scheme(), QStringLiteral("file"));
+#ifdef Q_OS_WINDOWS
+            QCOMPARE(image.url, QUrl("file:///C:/anImage.png"));
+#else
             QCOMPARE(image.url, QUrl("file:///anImage.png"));
+#endif
         }
         {
             Image image = context.image(3);
             QCOMPARE(image.url.scheme(), QStringLiteral("file"));
+#ifdef Q_OS_WINDOWS
+            QCOMPARE(image.url, QUrl("file:///C:/anImage.png"));
+#else
             QCOMPARE(image.url, QUrl("file:///anImage.png"));
+#endif
         }
         {
             Image image = context.image(4);

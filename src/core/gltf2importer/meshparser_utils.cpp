@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -33,9 +33,15 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QBuffer>
+#include <Qt3DCore/QGeometry>
+#include <Qt3DCore/QAttribute>
+#else
 #include <Qt3DRender/QBuffer>
 #include <Qt3DRender/QGeometry>
 #include <Qt3DRender/QAttribute>
+#endif
 #include <Qt3DRender/QGeometryRenderer>
 
 #include <array>
@@ -50,6 +56,8 @@
 
 QT_BEGIN_NAMESPACE
 
+using namespace Qt3DGeometry;
+
 namespace {
 
 const QLatin1String ATTR_TANGENT = QLatin1String("TANGENT");
@@ -57,9 +65,9 @@ const QLatin1String ATTR_TANGENT = QLatin1String("TANGENT");
 const auto morphTargetAttributeRegExps = []() {
     const QString morphTargetAttributePattern = QStringLiteral(R"(%1(_\d+)?)");
     const QString morphTargetBaseAttributeNames[]{
-        Qt3DRender::QAttribute::defaultPositionAttributeName(),
-        Qt3DRender::QAttribute::defaultNormalAttributeName(),
-        Qt3DRender::QAttribute::defaultTangentAttributeName()
+        QAttribute::defaultPositionAttributeName(),
+        QAttribute::defaultNormalAttributeName(),
+        QAttribute::defaultTangentAttributeName()
     };
 
     // Morph Target Attributes
@@ -75,38 +83,38 @@ const auto morphTargetAttributeRegExps = []() {
     return regExps;
 }();
 
-QVarLengthArray<Qt3DRender::QAttribute::VertexBaseType, 3> validVertexBaseTypesForAttribute(const QString &attributeName)
+QVarLengthArray<QAttribute::VertexBaseType, 3> validVertexBaseTypesForAttribute(const QString &attributeName)
 {
     {
         // Morph Target Attributes
         for (const QRegularExpression &re : morphTargetAttributeRegExps) {
             if (re.match(attributeName).hasMatch())
-                return { Qt3DRender::QAttribute::Float };
+                return { QAttribute::Float };
         }
     }
 
     // Standard Attributes
-    if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName())
-        return { Qt3DRender::QAttribute::Float,
-                 Qt3DRender::QAttribute::UnsignedByte,
-                 Qt3DRender::QAttribute::UnsignedShort };
-    if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName())
-        return { Qt3DRender::QAttribute::Float,
-                 Qt3DRender::QAttribute::UnsignedByte,
-                 Qt3DRender::QAttribute::UnsignedShort };
-    if (attributeName == Qt3DRender::QAttribute::defaultColorAttributeName())
-        return { Qt3DRender::QAttribute::Float,
-                 Qt3DRender::QAttribute::UnsignedByte,
-                 Qt3DRender::QAttribute::UnsignedShort };
-    if (attributeName == Qt3DRender::QAttribute::defaultJointIndicesAttributeName())
-        return { Qt3DRender::QAttribute::UnsignedByte,
-                 Qt3DRender::QAttribute::UnsignedShort };
-    if (attributeName == Qt3DRender::QAttribute::defaultJointWeightsAttributeName())
-        return { Qt3DRender::QAttribute::Float,
-                 Qt3DRender::QAttribute::UnsignedByte,
-                 Qt3DRender::QAttribute::UnsignedShort };
+    if (attributeName == QAttribute::defaultTextureCoordinateAttributeName())
+        return { QAttribute::Float,
+                 QAttribute::UnsignedByte,
+                 QAttribute::UnsignedShort };
+    if (attributeName == QAttribute::defaultTextureCoordinate1AttributeName())
+        return { QAttribute::Float,
+                 QAttribute::UnsignedByte,
+                 QAttribute::UnsignedShort };
+    if (attributeName == QAttribute::defaultColorAttributeName())
+        return { QAttribute::Float,
+                 QAttribute::UnsignedByte,
+                 QAttribute::UnsignedShort };
+    if (attributeName == QAttribute::defaultJointIndicesAttributeName())
+        return { QAttribute::UnsignedByte,
+                 QAttribute::UnsignedShort };
+    if (attributeName == QAttribute::defaultJointWeightsAttributeName())
+        return { QAttribute::Float,
+                 QAttribute::UnsignedByte,
+                 QAttribute::UnsignedShort };
 
-    return QVarLengthArray<Qt3DRender::QAttribute::VertexBaseType, 3>();
+    return QVarLengthArray<QAttribute::VertexBaseType, 3>();
 }
 
 QVarLengthArray<uint, 2> validVertexSizesForAttribute(const QString &attributeName)
@@ -117,7 +125,7 @@ QVarLengthArray<uint, 2> validVertexSizesForAttribute(const QString &attributeNa
         for (const QRegularExpression &re : morphTargetAttributeRegExps) {
             if (re.match(attributeName).hasMatch()) {
                 // Tangent attribute size is 4, all others are 3
-                if (attributeName.startsWith(Qt3DRender::QAttribute::defaultTangentAttributeName()))
+                if (attributeName.startsWith(QAttribute::defaultTangentAttributeName()))
                     return { 3, 4 };
                 return { 3 };
             }
@@ -125,49 +133,49 @@ QVarLengthArray<uint, 2> validVertexSizesForAttribute(const QString &attributeNa
     }
 
     // Standard Attributes
-    if (attributeName == Qt3DRender::QAttribute::defaultPositionAttributeName())
+    if (attributeName == QAttribute::defaultPositionAttributeName())
         return { 3 };
-    if (attributeName == Qt3DRender::QAttribute::defaultNormalAttributeName())
+    if (attributeName == QAttribute::defaultNormalAttributeName())
         return { 3 };
-    if (attributeName == Qt3DRender::QAttribute::defaultTangentAttributeName())
+    if (attributeName == QAttribute::defaultTangentAttributeName())
         return { 3, 4 };
-    if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName())
+    if (attributeName == QAttribute::defaultTextureCoordinateAttributeName())
         return { 2 };
-    if (attributeName == Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName())
+    if (attributeName == QAttribute::defaultTextureCoordinate1AttributeName())
         return { 2 };
-    if (attributeName == Qt3DRender::QAttribute::defaultColorAttributeName())
+    if (attributeName == QAttribute::defaultColorAttributeName())
         return { 3, 4 };
-    if (attributeName == Qt3DRender::QAttribute::defaultJointIndicesAttributeName())
+    if (attributeName == QAttribute::defaultJointIndicesAttributeName())
         return { 4 };
-    if (attributeName == Qt3DRender::QAttribute::defaultJointWeightsAttributeName())
+    if (attributeName == QAttribute::defaultJointWeightsAttributeName())
         return { 4 };
 
     return QVarLengthArray<uint, 2>();
 }
 
-uint vertexBaseTypeSize(Qt3DRender::QAttribute::VertexBaseType vertexBaseType)
+uint vertexBaseTypeSize(QAttribute::VertexBaseType vertexBaseType)
 {
     switch (vertexBaseType) {
-    case Qt3DRender::QAttribute::UnsignedByte:
+    case QAttribute::UnsignedByte:
         return 1U;
-    case Qt3DRender::QAttribute::UnsignedShort:
+    case QAttribute::UnsignedShort:
         return 2U;
-    case Qt3DRender::QAttribute::UnsignedInt:
-    case Qt3DRender::QAttribute::Float:
+    case QAttribute::UnsignedInt:
+    case QAttribute::Float:
         return 4U;
     default:
         Q_UNREACHABLE();
     }
 }
 
-Qt3DRender::QAttribute *attributeFromGeometry(const QString &name,
-                                              const Qt3DRender::QGeometry *geometry)
+QAttribute *attributeFromGeometry(const QString &name,
+                                  const QGeometry *geometry)
 {
     const auto attributes = geometry->attributes();
     const auto end = std::end(attributes);
     auto it = std::find_if(std::begin(attributes),
                            end,
-                           [name](const Qt3DRender::QAttribute *attr) {
+                           [name](const QAttribute *attr) {
                                return attr->name() == name;
                            });
     if (it == end)
@@ -204,17 +212,17 @@ struct FindVertexIndicesInFaceHelper {
 
         const auto *iFaceHead = data.constData() + (indexAttribute.byteOffset + iFace * indexAttribute.byteStride);
         switch (vertexBaseType) {
-        case Qt3DRender::QAttribute::UnsignedByte: {
+        case QAttribute::UnsignedByte: {
             const auto *typedIndices = reinterpret_cast<const unsigned char *>(iFaceHead);
             verticesForLastFace = { typedIndices[0], typedIndices[1], typedIndices[2] };
             break;
         }
-        case Qt3DRender::QAttribute::UnsignedShort: {
+        case QAttribute::UnsignedShort: {
             const auto *typedIndices = reinterpret_cast<const unsigned short *>(iFaceHead);
             verticesForLastFace = { typedIndices[0], typedIndices[1], typedIndices[2] };
             break;
         }
-        case Qt3DRender::QAttribute::UnsignedInt: {
+        case QAttribute::UnsignedInt: {
             const auto *typedIndices = reinterpret_cast<const unsigned int *>(iFaceHead);
             verticesForLastFace = { typedIndices[0], typedIndices[1], typedIndices[2] };
             break;
@@ -226,7 +234,7 @@ struct FindVertexIndicesInFaceHelper {
     }
 
     Attribute indexAttribute;
-    Qt3DRender::QAttribute::VertexBaseType vertexBaseType;
+    QAttribute::VertexBaseType vertexBaseType;
     mutable int lastFace;
     mutable std::array<unsigned int, 3> verticesForLastFace;
 };
@@ -245,22 +253,22 @@ struct MikkTSpaceUserData {
 
     int nFaces;
     int nVertices;
-    Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType;
-    Qt3DRender::QAttribute::VertexBaseType vertexBaseTypeForUVAttribute;
+    QGeometryRenderer::PrimitiveType primitiveType;
+    QAttribute::VertexBaseType vertexBaseTypeForUVAttribute;
 
     FindVertexIndicesInFaceHelper vertexIndicesFinder;
     QByteArray tangentBufferData;
 };
 
-MikkTSpaceUserData precomputeMikkTSpaceUserData(Qt3DRender::QGeometry *geometry,
-                                                Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+MikkTSpaceUserData precomputeMikkTSpaceUserData(QGeometry *geometry,
+                                                QGeometryRenderer::PrimitiveType primitiveType)
 {
     // Precompute some data
     MikkTSpaceUserData userData;
 
     const auto &attributes = geometry->attributes();
     for (const auto attr : attributes) {
-        if (attr->attributeType() == Qt3DRender::QAttribute::IndexAttribute) {
+        if (attr->attributeType() == QAttribute::IndexAttribute) {
             userData.indexAttribute.byteOffset = attr->byteOffset();
             constexpr auto NumberVerticesInFace = 3;
             userData.indexAttribute.byteStride = attr->byteStride() == 0 ? NumberVerticesInFace * vertexBaseTypeSize(attr->vertexBaseType()) : attr->byteStride();
@@ -268,12 +276,12 @@ MikkTSpaceUserData precomputeMikkTSpaceUserData(Qt3DRender::QGeometry *geometry,
             userData.vertexIndicesFinder.vertexBaseType = attr->vertexBaseType();
             userData.vertexIndicesFinder.indexAttribute = userData.indexAttribute;
             switch (primitiveType) {
-            case Qt3DRender::QGeometryRenderer::Triangles:
+            case QGeometryRenderer::Triangles:
                 // Triangles has 3N faces, begin N the number of vertices
                 userData.nFaces = attr->count() / 3;
                 break;
-            case Qt3DRender::QGeometryRenderer::TriangleFan:
-            case Qt3DRender::QGeometryRenderer::TriangleStrip:
+            case QGeometryRenderer::TriangleFan:
+            case QGeometryRenderer::TriangleStrip:
                 // TriangleFan and TriangleStrip have N+2 faces, begin N the number of vertices
                 userData.nFaces = attr->count() - 2;
                 break;
@@ -281,7 +289,7 @@ MikkTSpaceUserData precomputeMikkTSpaceUserData(Qt3DRender::QGeometry *geometry,
                 userData.nFaces = 0;
             }
         }
-        if (attr->name() == Qt3DRender::QAttribute::defaultPositionAttributeName()) {
+        if (attr->name() == QAttribute::defaultPositionAttributeName()) {
             userData.positionAttribute.byteOffset = attr->byteOffset();
             userData.positionAttribute.byteStride = attr->byteStride() == 0 ? attr->vertexSize() * vertexBaseTypeSize(attr->vertexBaseType()) : attr->byteStride();
             userData.positionAttribute.bufferData = attr->buffer()->data();
@@ -290,12 +298,12 @@ MikkTSpaceUserData precomputeMikkTSpaceUserData(Qt3DRender::QGeometry *geometry,
                 userData.nFaces = userData.nVertices / 3;
             }
         }
-        if (attr->name() == Qt3DRender::QAttribute::defaultNormalAttributeName()) {
+        if (attr->name() == QAttribute::defaultNormalAttributeName()) {
             userData.normalAttribute.byteOffset = attr->byteOffset();
             userData.normalAttribute.byteStride = attr->byteStride() == 0 ? attr->vertexSize() * vertexBaseTypeSize(attr->vertexBaseType()) : attr->byteStride();
             userData.normalAttribute.bufferData = attr->buffer()->data();
         }
-        if (attr->name() == Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName()) {
+        if (attr->name() == QAttribute::defaultTextureCoordinateAttributeName()) {
             userData.uvAttribute.byteOffset = attr->byteOffset();
             userData.uvAttribute.byteStride = attr->byteStride() == 0 ? attr->vertexSize() * vertexBaseTypeSize(attr->vertexBaseType()) : attr->byteStride();
             userData.uvAttribute.bufferData = attr->buffer()->data();
@@ -406,20 +414,20 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
 
         // data type can be different from float in UV attribute
         switch (userData->vertexBaseTypeForUVAttribute) {
-        case Qt3DRender::QAttribute::VertexBaseType::Float: {
+        case QAttribute::VertexBaseType::Float: {
             const auto *typedUvHead = reinterpret_cast<const float *>(uvHead);
             fvPosOut[0] = typedUvHead[0];
             fvPosOut[1] = typedUvHead[1];
             break;
         }
-        case Qt3DRender::QAttribute::UnsignedByte: {
+        case QAttribute::UnsignedByte: {
             const auto *typedUvHead = reinterpret_cast<const unsigned char *>(uvHead);
             const auto div = 1.0f / static_cast<float>(std::numeric_limits<unsigned char>::max());
             fvPosOut[0] = div * static_cast<float>(typedUvHead[0]);
             fvPosOut[1] = div * static_cast<float>(typedUvHead[1]);
             break;
         }
-        case Qt3DRender::QAttribute::UnsignedShort: {
+        case QAttribute::UnsignedShort: {
             const auto *typedUvHead = reinterpret_cast<const unsigned short *>(uvHead);
             const auto div = 1.0f / static_cast<float>(std::numeric_limits<unsigned short>::max());
             fvPosOut[0] = div * static_cast<float>(typedUvHead[0]);
@@ -454,9 +462,9 @@ SMikkTSpaceInterface createMikkTSpaceInterface()
     return interface;
 }
 
-bool vertexBaseTypeForAttributesAreValid(const QVector<Qt3DRender::QAttribute *> &attributes)
+bool vertexBaseTypeForAttributesAreValid(const QVector<QAttribute *> &attributes)
 {
-    for (Qt3DRender::QAttribute *attribute : attributes) {
+    for (QAttribute *attribute : attributes) {
         const auto validVertexBaseTypes = validVertexBaseTypesForAttribute(attribute->name());
         const auto vertexBaseType = attribute->vertexBaseType();
         if (!validVertexBaseTypes.isEmpty() && !validVertexBaseTypes.contains(vertexBaseType))
@@ -465,9 +473,9 @@ bool vertexBaseTypeForAttributesAreValid(const QVector<Qt3DRender::QAttribute *>
     return true;
 }
 
-bool vertexSizesForAttributesAreValid(const QVector<Qt3DRender::QAttribute *> &attributes)
+bool vertexSizesForAttributesAreValid(const QVector<QAttribute *> &attributes)
 {
-    for (Qt3DRender::QAttribute *attribute : attributes) {
+    for (QAttribute *attribute : attributes) {
         const auto validVertexSizes = validVertexSizesForAttribute(attribute->name());
         const auto vertexSize = attribute->vertexSize();
         if (!validVertexSizes.isEmpty() && !validVertexSizes.contains(vertexSize))
@@ -476,7 +484,7 @@ bool vertexSizesForAttributesAreValid(const QVector<Qt3DRender::QAttribute *> &a
     return true;
 }
 
-bool getMeshGLTFInformation(const Qt3DRender::QGeometryRenderer *primitiveRenderer,
+bool getMeshGLTFInformation(const QGeometryRenderer *primitiveRenderer,
                             const Kuesa::GLTF2Import::GLTF2Context *context,
                             Kuesa::GLTF2Import::Mesh &mesh, int &primitiveNumber)
 {
@@ -484,7 +492,7 @@ bool getMeshGLTFInformation(const Qt3DRender::QGeometryRenderer *primitiveRender
         const Kuesa::GLTF2Import::Mesh gltf2Mesh = context->mesh(i);
 
         for (int nPriv = 0; nPriv < gltf2Mesh.meshPrimitives.size(); ++nPriv) {
-            const Qt3DRender::QGeometryRenderer *primitive = gltf2Mesh.meshPrimitives.at(nPriv).primitiveRenderer;
+            const QGeometryRenderer *primitive = gltf2Mesh.meshPrimitives.at(nPriv).primitiveRenderer;
 
             if (primitive != primitiveRenderer)
                 continue;
@@ -498,34 +506,34 @@ bool getMeshGLTFInformation(const Qt3DRender::QGeometryRenderer *primitiveRender
     return false;
 }
 
-QLatin1String glTFAttributeNameFromQt3DAttribute(const Qt3DRender::QAttribute *attribute)
+QLatin1String glTFAttributeNameFromQt3DAttribute(const QAttribute *attribute)
 {
     const QString attributeName = attribute->name();
     // Standard Attributes
-    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultPositionAttributeName()))
+    if (attributeName.startsWith(QAttribute::defaultPositionAttributeName()))
         return QLatin1String("POSITION");
-    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultNormalAttributeName()))
+    if (attributeName.startsWith(QAttribute::defaultNormalAttributeName()))
         return QLatin1String("NORMAL");
-    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultTangentAttributeName()))
+    if (attributeName.startsWith(QAttribute::defaultTangentAttributeName()))
         return QLatin1String("TANGENT");
-    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName()))
+    if (attributeName.startsWith(QAttribute::defaultTextureCoordinateAttributeName()))
         return QLatin1String("TEXCOORD_0");
-    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultTextureCoordinate1AttributeName()))
+    if (attributeName.startsWith(QAttribute::defaultTextureCoordinate1AttributeName()))
         return QLatin1String("TEXCOORD_1");
-    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultTextureCoordinate2AttributeName()))
+    if (attributeName.startsWith(QAttribute::defaultTextureCoordinate2AttributeName()))
         return QLatin1String("TEXCOORD_2");
-    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultColorAttributeName()))
+    if (attributeName.startsWith(QAttribute::defaultColorAttributeName()))
         return QLatin1String("COLOR_0");
-    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultJointIndicesAttributeName()))
+    if (attributeName.startsWith(QAttribute::defaultJointIndicesAttributeName()))
         return QLatin1String("JOINTS_0");
-    if (attributeName.startsWith(Qt3DRender::QAttribute::defaultJointWeightsAttributeName()))
+    if (attributeName.startsWith(QAttribute::defaultJointWeightsAttributeName()))
         return QLatin1String("WEIGHTS_0");
     return QLatin1String();
 }
 
-QLatin1String glTFTypeForAttribute(const Qt3DRender::QAttribute *attribute)
+QLatin1String glTFTypeForAttribute(const QAttribute *attribute)
 {
-    Q_ASSERT(attribute->vertexBaseType() == Qt3DRender::QAttribute::Float);
+    Q_ASSERT(attribute->vertexBaseType() == QAttribute::Float);
     switch (attribute->vertexSize()) {
     case 1:
         return QLatin1String("SCALAR");
@@ -563,7 +571,7 @@ int addJsonBufferView(QJsonObject &rootObject,
 
 int addJsonAccessor(QJsonObject &rootObject,
                     int bufferViewIndex,
-                    const Qt3DRender::QAttribute *attribute)
+                    const QAttribute *attribute)
 {
     // add accessor
     QJsonObject jsonAccessor;
@@ -583,7 +591,7 @@ int addJsonBuffer(QJsonObject &rootObject,
 {
     QFile bufferFile(pathPrefix + bufferFileName);
     if (!bufferFile.open(QFile::WriteOnly)) {
-        qCWarning(kuesa) << "Can't open" << bufferFile.fileName() << "for writing tangent buffer";
+        qCWarning(Kuesa::kuesa) << "Can't open" << bufferFile.fileName() << "for writing tangent buffer";
         return -1;
     }
     bufferFile.write(data);
@@ -594,7 +602,7 @@ int addJsonBuffer(QJsonObject &rootObject,
     return bufferIndex;
 }
 
-Qt3DRender::QAttribute *generateTangentForBaseMesh(MikkTSpaceUserData *mikkTSpaceUserData, SMikkTSpaceInterface *interface)
+QAttribute *generateTangentForBaseMesh(MikkTSpaceUserData *mikkTSpaceUserData, SMikkTSpaceInterface *interface)
 {
     ::SMikkTSpaceContext mikkContext;
     mikkContext.m_pUserData = mikkTSpaceUserData;
@@ -602,24 +610,24 @@ Qt3DRender::QAttribute *generateTangentForBaseMesh(MikkTSpaceUserData *mikkTSpac
     mikkContext.m_pInterface = interface;
     genTangSpaceDefault(&mikkContext);
 
-    auto *tangentBuffer = new Qt3DRender::QBuffer;
+    auto *tangentBuffer = new Qt3DGeometry::QBuffer;
     constexpr auto NumberValuesPerTangent = 4;
     tangentBuffer->setData(mikkTSpaceUserData->tangentBufferData);
-    auto *tangentAttribute = new Qt3DRender::QAttribute(tangentBuffer,
-                                                        Qt3DRender::QAttribute::defaultTangentAttributeName(),
-                                                        Qt3DRender::QAttribute::Float,
+    auto *tangentAttribute = new QAttribute(tangentBuffer,
+                                                        QAttribute::defaultTangentAttributeName(),
+                                                        QAttribute::Float,
                                                         NumberValuesPerTangent,
                                                         mikkTSpaceUserData->nVertices);
 
     return tangentAttribute;
 }
 
-Qt3DRender::QAttribute *generateTangentForMorphTarget(Qt3DRender::QGeometry *geometry, MikkTSpaceUserData *mikkTSpaceUserData, SMikkTSpaceInterface *interface, int morphTargetId)
+QAttribute *generateTangentForMorphTarget(QGeometry *geometry, MikkTSpaceUserData *mikkTSpaceUserData, SMikkTSpaceInterface *interface, int morphTargetId)
 {
     // Update userdata to add the morphed attributes
-    QString positionMorphName = Qt3DRender::QAttribute::defaultPositionAttributeName() + QStringLiteral("_") + QString::number(morphTargetId + 1);
-    QString normalMorphName = Qt3DRender::QAttribute::defaultNormalAttributeName() + QStringLiteral("_") + QString::number(morphTargetId + 1);
-    QString tangentName = Qt3DRender::QAttribute::defaultTangentAttributeName();
+    QString positionMorphName = QAttribute::defaultPositionAttributeName() + QStringLiteral("_") + QString::number(morphTargetId + 1);
+    QString normalMorphName = QAttribute::defaultNormalAttributeName() + QStringLiteral("_") + QString::number(morphTargetId + 1);
+    QString tangentName = QAttribute::defaultTangentAttributeName();
 
     auto *positionMorphAttribute = attributeFromGeometry(positionMorphName, geometry);
     auto *normalMorphAttribute = attributeFromGeometry(normalMorphName, geometry);
@@ -681,12 +689,12 @@ Qt3DRender::QAttribute *generateTangentForMorphTarget(Qt3DRender::QGeometry *geo
                     - QVector3D{ tangentValue.x(), tangentValue.y(), tangentValue.z() };
         }
 
-        auto *tangentBuffer = new Qt3DRender::QBuffer;
+        auto *tangentBuffer = new Qt3DGeometry::QBuffer;
         constexpr auto NumberValuesPerMorphTangent = 3;
         tangentBuffer->setData(morphTargetTangentMorphData);
-        auto *tangentAttribute = new Qt3DRender::QAttribute(tangentBuffer,
-                                                            Qt3DRender::QAttribute::defaultTangentAttributeName() + QStringLiteral("_") + QString::number(morphTargetId + 1),
-                                                            Qt3DRender::QAttribute::Float,
+        auto *tangentAttribute = new QAttribute(tangentBuffer,
+                                                            QAttribute::defaultTangentAttributeName() + QStringLiteral("_") + QString::number(morphTargetId + 1),
+                                                            QAttribute::Float,
                                                             NumberValuesPerMorphTangent,
                                                             mikkTSpaceUserData->nVertices);
 
@@ -703,7 +711,7 @@ namespace Kuesa {
 namespace GLTF2Import {
 namespace MeshParserUtils {
 
-void createTangentForGeometry(Qt3DRender::QGeometry *geometry, Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+void createTangentForGeometry(QGeometry *geometry, QGeometryRenderer::PrimitiveType primitiveType)
 {
     auto mikkTSpaceUserData = precomputeMikkTSpaceUserData(geometry, primitiveType);
 
@@ -721,30 +729,30 @@ void createTangentForGeometry(Qt3DRender::QGeometry *geometry, Qt3DRender::QGeom
     }
 }
 
-bool needsTangentAttribute(const Qt3DRender::QGeometry *geometry,
-                           Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+bool needsTangentAttribute(const QGeometry *geometry,
+                           QGeometryRenderer::PrimitiveType primitiveType)
 {
     // only generate tangents for triangles
-    if (primitiveType != Qt3DRender::QGeometryRenderer::Triangles &&
-        primitiveType != Qt3DRender::QGeometryRenderer::TriangleStrip &&
-        primitiveType != Qt3DRender::QGeometryRenderer::TriangleFan)
+    if (primitiveType != QGeometryRenderer::Triangles &&
+        primitiveType != QGeometryRenderer::TriangleStrip &&
+        primitiveType != QGeometryRenderer::TriangleFan)
         return false;
 
     if (!geometry)
         return false;
 
-    const auto positionAttr = attributeFromGeometry(Qt3DRender::QAttribute::defaultPositionAttributeName(), geometry);
-    const auto normalAttr = attributeFromGeometry(Qt3DRender::QAttribute::defaultNormalAttributeName(), geometry);
-    const auto uvAttr = attributeFromGeometry(Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName(), geometry);
-    const auto tangentAttr = attributeFromGeometry(Qt3DRender::QAttribute::defaultTangentAttributeName(), geometry);
+    const auto positionAttr = attributeFromGeometry(QAttribute::defaultPositionAttributeName(), geometry);
+    const auto normalAttr = attributeFromGeometry(QAttribute::defaultNormalAttributeName(), geometry);
+    const auto uvAttr = attributeFromGeometry(QAttribute::defaultTextureCoordinateAttributeName(), geometry);
+    const auto tangentAttr = attributeFromGeometry(QAttribute::defaultTangentAttributeName(), geometry);
 
     return positionAttr && normalAttr && uvAttr && (tangentAttr == nullptr);
 }
 
-bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
+bool generatePrecomputedTangentAttribute(QGeometryRenderer *mesh,
                                          GLTF2Context *context)
 {
-    Qt3DRender::QGeometry *geometry = mesh->geometry();
+    QGeometry *geometry = mesh->geometry();
     if (!GLTF2Import::MeshParserUtils::needsTangentAttribute(geometry,
                                                              mesh->primitiveType()))
         return false;
@@ -755,7 +763,7 @@ bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
     if (!getMeshGLTFInformation(mesh, context, gltfMesh, primitiveNumber))
         return false;
     if (gltfMesh.meshIdx < 0) {
-        qCWarning(kuesa) << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
+        qCWarning(Kuesa::kuesa) << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
         return false;
     }
 
@@ -764,7 +772,7 @@ bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
 
     // create new attribute
     createTangentForGeometry(mesh->geometry(), mesh->primitiveType());
-    auto *newTangentAttr = attributeFromGeometry(Qt3DRender::QAttribute::defaultTangentAttributeName(), mesh->geometry());
+    auto *newTangentAttr = attributeFromGeometry(QAttribute::defaultTangentAttributeName(), mesh->geometry());
     if (newTangentAttr == nullptr)
         return false;
 
@@ -778,7 +786,7 @@ bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
                                         bufferFileName,
                                         basePath + QDir::separator());
     if (bufferIdx < 0) {
-        qCWarning(kuesa) << "unable to insert new buffer";
+        qCWarning(Kuesa::kuesa) << "unable to insert new buffer";
         return false;
     }
     context->addLocalFile(bufferFileName);
@@ -812,7 +820,7 @@ bool generatePrecomputedTangentAttribute(Qt3DRender::QGeometryRenderer *mesh,
     return true;
 }
 
-bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry)
+bool geometryIsGLTF2Valid(QGeometry *geometry)
 {
     const auto &attributes = geometry->attributes();
     const bool vertexBaseTypesAreValid = vertexBaseTypeForAttributesAreValid(attributes);
@@ -820,54 +828,54 @@ bool geometryIsGLTF2Valid(Qt3DRender::QGeometry *geometry)
     return vertexSizesAreValid && vertexBaseTypesAreValid;
 }
 
-bool needsNormalAttribute(const Qt3DRender::QGeometry *geometry,
-                          Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+bool needsNormalAttribute(const QGeometry *geometry,
+                          QGeometryRenderer::PrimitiveType primitiveType)
 {
     // only generate tangents for triangles
-    if (primitiveType != Qt3DRender::QGeometryRenderer::Triangles &&
-        primitiveType != Qt3DRender::QGeometryRenderer::TriangleStrip &&
-        primitiveType != Qt3DRender::QGeometryRenderer::TriangleFan)
+    if (primitiveType != QGeometryRenderer::Triangles &&
+        primitiveType != QGeometryRenderer::TriangleStrip &&
+        primitiveType != QGeometryRenderer::TriangleFan)
         return false;
 
     if (!geometry)
         return false;
 
-    return attributeFromGeometry(Qt3DRender::QAttribute::defaultNormalAttributeName(),
+    return attributeFromGeometry(QAttribute::defaultNormalAttributeName(),
                                  geometry) == nullptr &&
-            attributeFromGeometry(Qt3DRender::QAttribute::defaultPositionAttributeName(),
+            attributeFromGeometry(QAttribute::defaultPositionAttributeName(),
                                   geometry) != nullptr;
 }
 
 namespace {
 
-quint32 indexValueAt(Qt3DRender::QAttribute::VertexBaseType type, const char *rawValue)
+quint32 indexValueAt(QAttribute::VertexBaseType type, const char *rawValue)
 {
     switch (type) {
-    case Qt3DRender::QAttribute::UnsignedInt:
+    case QAttribute::UnsignedInt:
         return *reinterpret_cast<const quint32*>(rawValue);
-    case Qt3DRender::QAttribute::Int:
+    case QAttribute::Int:
         return *reinterpret_cast<const qint32*>(rawValue);
-    case Qt3DRender::QAttribute::UnsignedShort:
+    case QAttribute::UnsignedShort:
         return *reinterpret_cast<const quint16*>(rawValue);
-    case Qt3DRender::QAttribute::Short:
+    case QAttribute::Short:
         return *reinterpret_cast<const qint16*>(rawValue);
-    case Qt3DRender::QAttribute::UnsignedByte:
+    case QAttribute::UnsignedByte:
         return *reinterpret_cast<const quint8*>(rawValue);
-    case Qt3DRender::QAttribute::Byte:
+    case QAttribute::Byte:
         return *reinterpret_cast<const qint8*>(rawValue);
     default:
         Q_UNREACHABLE();
     }
 }
 
-template<Qt3DRender::QGeometryRenderer::PrimitiveType>
-void convertIndexedGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *)
+template<QGeometryRenderer::PrimitiveType>
+void convertIndexedGeometryToTriangleBasedGeometry(QGeometry *)
 {
     Q_UNREACHABLE();
 }
 
-template<Qt3DRender::QGeometryRenderer::PrimitiveType>
-void convertNonIndexedGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *)
+template<QGeometryRenderer::PrimitiveType>
+void convertNonIndexedGeometryToTriangleBasedGeometry(QGeometry *)
 {
     Q_UNREACHABLE();
 }
@@ -879,17 +887,17 @@ struct NormalGenerationContext {
     int newVertexCount = 0;
 
     struct VertexAttrInfo {
-        Qt3DRender::QAttribute *attr;
+        QAttribute *attr;
         uint originalByteOffset;
         uint originalByteStride;
         uint actualByteSize;
         const char *rawData;
     };
-    Qt3DRender::QAttribute *indexAttribute = nullptr;
+    QAttribute *indexAttribute = nullptr;
     QVector<VertexAttrInfo> vertexAttributes;
-    Qt3DRender::QGeometry *geometry = nullptr;
+    QGeometry *geometry = nullptr;
 
-    void prepareFromIndexed(Qt3DRender::QGeometry *g)
+    void prepareFromIndexed(QGeometry *g)
     {
         geometry = g;
         const auto &attributes = geometry->attributes();
@@ -897,9 +905,9 @@ struct NormalGenerationContext {
 
         // Compute Vertex Stride out of all Vertex Attributes
         // And retrive count of vertices
-        for (Qt3DRender::QAttribute *attr : attributes) {
+        for (QAttribute *attr : attributes) {
             switch (attr->attributeType()) {
-            case Qt3DRender::QAttribute::VertexAttribute: {
+            case QAttribute::VertexAttribute: {
                 const uint rawSize = attr->vertexSize() * vertexBaseTypeSize(attr->vertexBaseType());
                 vertexByteSize += rawSize;
                 vertexAttributes.push_back({ attr,
@@ -909,7 +917,7 @@ struct NormalGenerationContext {
                                              attr->buffer()->data().constData() });
                 break;
             }
-            case Qt3DRender::QAttribute::IndexAttribute: {
+            case QAttribute::IndexAttribute: {
                 vertexCount = attr->count();
                 indexByteStride = std::max(attr->byteStride(), vertexBaseTypeSize(attr->vertexBaseType()));
                 indexAttribute = attr;
@@ -920,7 +928,7 @@ struct NormalGenerationContext {
         }
     }
 
-    void prepareFromNonIndexed(Qt3DRender::QGeometry *g)
+    void prepareFromNonIndexed(QGeometry *g)
     {
         geometry = g;
         const auto &attributes = geometry->attributes();
@@ -928,9 +936,9 @@ struct NormalGenerationContext {
 
         // Compute Vertex Stride out of all Vertex Attributes
         // And retrive count of vertices
-        for (Qt3DRender::QAttribute *attr : attributes) {
+        for (QAttribute *attr : attributes) {
             switch (attr->attributeType()) {
-            case Qt3DRender::QAttribute::VertexAttribute: {
+            case QAttribute::VertexAttribute: {
                 const uint rawSize = attr->vertexSize() * vertexBaseTypeSize(attr->vertexBaseType());
                 vertexByteSize += rawSize;
                 vertexAttributes.push_back({ attr,
@@ -938,7 +946,7 @@ struct NormalGenerationContext {
                                              std::max(attr->byteStride(), rawSize),
                                              rawSize,
                                              attr->buffer()->data().constData() });
-                if (attr->name() == Qt3DRender::QAttribute::defaultPositionAttributeName())
+                if (attr->name() == QAttribute::defaultPositionAttributeName())
                     vertexCount = attr->count();
                 break;
             }
@@ -954,15 +962,15 @@ struct NormalGenerationContext {
     {
         Q_ASSERT(newVertexCount > 0);
         // Generate a new QBuffer to hold the data and set it on the attributes
-        Qt3DRender::QBuffer *buffer = new Qt3DRender::QBuffer();
+        Qt3DGeometry::QBuffer *buffer = new Qt3DGeometry::QBuffer();
         buffer->setData(newVertexData);
 
         const auto &attributes = geometry->attributes();
 
         int byteOffset = 0;
-        for (Qt3DRender::QAttribute *attr : attributes) {
+        for (QAttribute *attr : attributes) {
             switch (attr->attributeType()) {
-            case Qt3DRender::QAttribute::VertexAttribute: {
+            case QAttribute::VertexAttribute: {
                 // Update attributes to map properly against new buffer
                 attr->setBuffer(buffer);
                 attr->setByteStride(vertexByteSize);
@@ -971,7 +979,7 @@ struct NormalGenerationContext {
                 byteOffset += attr->vertexSize() * vertexBaseTypeSize(attr->vertexBaseType());
                 break;
             }
-            case Qt3DRender::QAttribute::IndexAttribute: {
+            case QAttribute::IndexAttribute: {
                 // Remove Index Attribute
                 geometry->removeAttribute(attr);
             }
@@ -983,7 +991,7 @@ struct NormalGenerationContext {
 };
 
 template<>
-void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::Triangles>(Qt3DRender::QGeometry *geometry)
+void convertIndexedGeometryToTriangleBasedGeometry<QGeometryRenderer::Triangles>(QGeometry *geometry)
 {
     NormalGenerationContext ctx;
     ctx.prepareFromIndexed(geometry);
@@ -997,7 +1005,7 @@ void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer
     char *rawData = newVertexData.data();
 
     // Copy all vertex attributes data into new buffer
-    Qt3DRender::QAttribute *indexAttribute = ctx.indexAttribute;
+    QAttribute *indexAttribute = ctx.indexAttribute;
     const QByteArray &indexBufferData = indexAttribute->buffer()->data();
     const char *rawIndexData = indexBufferData.constData();
     for (uint i = 0, m = indexAttribute->count(); i < m; ++i) {
@@ -1015,7 +1023,7 @@ void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer
 }
 
 template<>
-void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleStrip>(Qt3DRender::QGeometry *geometry)
+void convertIndexedGeometryToTriangleBasedGeometry<QGeometryRenderer::TriangleStrip>(QGeometry *geometry)
 {
     NormalGenerationContext ctx;
     ctx.prepareFromIndexed(geometry);
@@ -1030,7 +1038,7 @@ void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer
     char *rawData = newVertexData.data();
 
     // Copy all vertex attributes data into new buffer
-    Qt3DRender::QAttribute *indexAttribute = ctx.indexAttribute;
+    QAttribute *indexAttribute = ctx.indexAttribute;
     const QByteArray &indexBufferData = indexAttribute->buffer()->data();
     const char *rawIndexData = indexBufferData.constData();
 
@@ -1059,7 +1067,7 @@ void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer
 }
 
 template<>
-void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleFan>(Qt3DRender::QGeometry *geometry)
+void convertIndexedGeometryToTriangleBasedGeometry<QGeometryRenderer::TriangleFan>(QGeometry *geometry)
 {
     NormalGenerationContext ctx;
     ctx.prepareFromIndexed(geometry);
@@ -1074,7 +1082,7 @@ void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer
     char *rawData = newVertexData.data();
 
     // Copy all vertex attributes data into new buffer
-    Qt3DRender::QAttribute *indexAttribute = ctx.indexAttribute;
+    QAttribute *indexAttribute = ctx.indexAttribute;
     const QByteArray &indexBufferData = indexAttribute->buffer()->data();
     const char *rawIndexData = indexBufferData.constData();
 
@@ -1107,7 +1115,7 @@ void convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer
 }
 
 template<>
-void convertNonIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleStrip>(Qt3DRender::QGeometry *geometry)
+void convertNonIndexedGeometryToTriangleBasedGeometry<QGeometryRenderer::TriangleStrip>(QGeometry *geometry)
 {
     NormalGenerationContext ctx;
     ctx.prepareFromNonIndexed(geometry);
@@ -1143,7 +1151,7 @@ void convertNonIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRende
 }
 
 template<>
-void convertNonIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleFan>(Qt3DRender::QGeometry *geometry)
+void convertNonIndexedGeometryToTriangleBasedGeometry<QGeometryRenderer::TriangleFan>(QGeometry *geometry)
 {
     NormalGenerationContext ctx;
     ctx.prepareFromNonIndexed(geometry);
@@ -1180,7 +1188,7 @@ void convertNonIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRende
     ctx.updateAttributes(newVertexData);
 }
 
-bool geometryHasIndexAttribute(Qt3DRender::QGeometry *geometry)
+bool geometryHasIndexAttribute(QGeometry *geometry)
 {
     const auto &attributes = geometry->attributes();
 
@@ -1188,47 +1196,47 @@ bool geometryHasIndexAttribute(Qt3DRender::QGeometry *geometry)
     // have an IndexAttribute or if the primitive type is a TriangleStrip or
     // TriangleFan
     const bool hasIndexAttribute = std::find_if(std::begin(attributes), std::end(attributes),
-                                                [](const Qt3DRender::QAttribute *attr) {
-                                                    return attr->attributeType() == Qt3DRender::QAttribute::IndexAttribute;
+                                                [](const QAttribute *attr) {
+                                                    return attr->attributeType() == QAttribute::IndexAttribute;
                                                 }) != std::end(attributes);
     return hasIndexAttribute;
 }
 
-bool geometryHasSharedVertices(Qt3DRender::QGeometry *geometry,
-                               Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+bool geometryHasSharedVertices(QGeometry *geometry,
+                               QGeometryRenderer::PrimitiveType primitiveType)
 {
     // Check if we are sharing vertices between faces. This is the case if we
     // have an IndexAttribute or if the primitive type is a TriangleStrip or
     // TriangleFan
     const bool hasIndexAttribute = geometryHasIndexAttribute(geometry);
-    return (primitiveType != Qt3DRender::QGeometryRenderer::Triangles) || hasIndexAttribute;
+    return (primitiveType != QGeometryRenderer::Triangles) || hasIndexAttribute;
 }
 
-void convertGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *geometry,
-                                            Qt3DRender::QGeometryRenderer::PrimitiveType primitive)
+void convertGeometryToTriangleBasedGeometry(QGeometry *geometry,
+                                            QGeometryRenderer::PrimitiveType primitive)
 {
     const bool hasIndexAttribute = geometryHasIndexAttribute(geometry);
     if (hasIndexAttribute) {
         switch (primitive) {
-        case Qt3DRender::QGeometryRenderer::Triangles:
-            convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::Triangles>(geometry);
+        case QGeometryRenderer::Triangles:
+            convertIndexedGeometryToTriangleBasedGeometry<QGeometryRenderer::Triangles>(geometry);
             break;
-        case Qt3DRender::QGeometryRenderer::TriangleStrip:
-            convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleStrip>(geometry);
+        case QGeometryRenderer::TriangleStrip:
+            convertIndexedGeometryToTriangleBasedGeometry<QGeometryRenderer::TriangleStrip>(geometry);
             break;
-        case Qt3DRender::QGeometryRenderer::TriangleFan:
-            convertIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleFan>(geometry);
+        case QGeometryRenderer::TriangleFan:
+            convertIndexedGeometryToTriangleBasedGeometry<QGeometryRenderer::TriangleFan>(geometry);
             break;
         default:
             Q_UNREACHABLE();
         }
     } else {
         switch (primitive) {
-        case Qt3DRender::QGeometryRenderer::TriangleStrip:
-            convertNonIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleStrip>(geometry);
+        case QGeometryRenderer::TriangleStrip:
+            convertNonIndexedGeometryToTriangleBasedGeometry<QGeometryRenderer::TriangleStrip>(geometry);
             break;
-        case Qt3DRender::QGeometryRenderer::TriangleFan:
-            convertNonIndexedGeometryToTriangleBasedGeometry<Qt3DRender::QGeometryRenderer::TriangleFan>(geometry);
+        case QGeometryRenderer::TriangleFan:
+            convertNonIndexedGeometryToTriangleBasedGeometry<QGeometryRenderer::TriangleFan>(geometry);
             break;
         default:
             Q_UNREACHABLE();
@@ -1236,11 +1244,11 @@ void convertGeometryToTriangleBasedGeometry(Qt3DRender::QGeometry *geometry,
     }
 }
 
-Qt3DRender::QAttribute *generateNormalsForBaseMesh(const Qt3DRender::QAttribute *positionAttribute)
+QAttribute *generateNormalsForBaseMesh(const QAttribute *positionAttribute)
 {
-    if (positionAttribute->vertexBaseType() != Qt3DRender::QAttribute::Float ||
+    if (positionAttribute->vertexBaseType() != QAttribute::Float ||
         positionAttribute->vertexSize() != 3) {
-        qCWarning(kuesa) << "Currently only vec3 positions are supported, unable to generate normals.";
+        qCWarning(Kuesa::kuesa) << "Currently only vec3 positions are supported, unable to generate normals.";
         return nullptr;
     }
 
@@ -1283,24 +1291,24 @@ Qt3DRender::QAttribute *generateNormalsForBaseMesh(const Qt3DRender::QAttribute 
     // directly when converting from indexed of triangle stip/fan
     // However in the case the mesh was already provided as triangles this would
     // be a bit prolematic, this would have to be handled as well
-    Qt3DRender::QBuffer *buffer = new Qt3DRender::QBuffer();
+    Qt3DGeometry::QBuffer *buffer = new Qt3DGeometry::QBuffer();
     buffer->setData(rawNormals);
 
-    Qt3DRender::QAttribute *normalsAttribute = new Qt3DRender::QAttribute();
-    normalsAttribute->setName(Qt3DRender::QAttribute::defaultNormalAttributeName());
+    QAttribute *normalsAttribute = new QAttribute();
+    normalsAttribute->setName(QAttribute::defaultNormalAttributeName());
     normalsAttribute->setCount(positionAttribute->count());
     normalsAttribute->setByteOffset(0);
     normalsAttribute->setByteStride(3 * sizeof(float));
-    normalsAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+    normalsAttribute->setVertexBaseType(QAttribute::Float);
     normalsAttribute->setVertexSize(3);
     normalsAttribute->setBuffer(buffer);
-    normalsAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+    normalsAttribute->setAttributeType(QAttribute::VertexAttribute);
 
     return normalsAttribute;
 }
 
-Qt3DRender::QAttribute *generateNormalsForMorphTarget(const Qt3DRender::QAttribute *positionAttribute, const Qt3DRender::QAttribute *normalsAttribute,
-                                                      const Qt3DRender::QAttribute *positionMorphAttribute, int morphTargetId)
+QAttribute *generateNormalsForMorphTarget(const QAttribute *positionAttribute, const QAttribute *normalsAttribute,
+                                          const QAttribute *positionMorphAttribute, int morphTargetId)
 {
     QByteArray rawMorphNormals;
     rawMorphNormals.resize(positionAttribute->count() * sizeof(QVector3D));
@@ -1361,33 +1369,33 @@ Qt3DRender::QAttribute *generateNormalsForMorphTarget(const Qt3DRender::QAttribu
     // directly when converting from indexed of triangle stip/fan
     // However in the case the mesh was already provided as triangles this would
     // be a bit prolematic, this would have to be handled as well
-    Qt3DRender::QBuffer *buffer = new Qt3DRender::QBuffer();
+    Qt3DGeometry::QBuffer *buffer = new Qt3DGeometry::QBuffer();
     buffer->setData(rawMorphNormals);
 
     const QString attributeName = QStringLiteral("%1_%2")
-                                          .arg(Qt3DRender::QAttribute::defaultNormalAttributeName())
+                                          .arg(QAttribute::defaultNormalAttributeName())
                                           .arg(morphTargetId + 1);
 
-    Qt3DRender::QAttribute *normalsMorphAttribute = new Qt3DRender::QAttribute();
+    QAttribute *normalsMorphAttribute = new QAttribute();
     normalsMorphAttribute->setName(attributeName);
     normalsMorphAttribute->setCount(positionAttribute->count());
     normalsMorphAttribute->setByteOffset(0);
     normalsMorphAttribute->setByteStride(3 * sizeof(float));
-    normalsMorphAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+    normalsMorphAttribute->setVertexBaseType(QAttribute::Float);
     normalsMorphAttribute->setVertexSize(3);
     normalsMorphAttribute->setBuffer(buffer);
-    normalsMorphAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+    normalsMorphAttribute->setAttributeType(QAttribute::VertexAttribute);
 
     return normalsMorphAttribute;
 }
 
-void generateNormals(Qt3DRender::QGeometry *geometry)
+void generateNormals(QGeometry *geometry)
 {
-    const Qt3DRender::QAttribute *positionAttribute = attributeFromGeometry(Qt3DRender::QAttribute::defaultPositionAttributeName(),
-                                                                            geometry);
+    const QAttribute *positionAttribute = attributeFromGeometry(QAttribute::defaultPositionAttributeName(),
+                                                                geometry);
 
     if (positionAttribute == nullptr) {
-        qCWarning(kuesa) << "No position attribute found on geometry, unable to generate normals.";
+        qCWarning(Kuesa::kuesa) << "No position attribute found on geometry, unable to generate normals.";
         Q_UNREACHABLE();
     }
 
@@ -1400,9 +1408,9 @@ void generateNormals(Qt3DRender::QGeometry *geometry)
     // Compute normals for morph targets
     for (int morphTargetId = 0; morphTargetId < 8; ++morphTargetId) {
         const QString attributeName = QStringLiteral("%1_%2")
-                                              .arg(Qt3DRender::QAttribute::defaultPositionAttributeName())
+                                              .arg(QAttribute::defaultPositionAttributeName())
                                               .arg(morphTargetId + 1);
-        const Qt3DRender::QAttribute *positionMorphAttribute = attributeFromGeometry(attributeName,
+        const QAttribute *positionMorphAttribute = attributeFromGeometry(attributeName,
                                                                                      geometry);
         if (positionMorphAttribute != nullptr) {
             auto normalMorphAttribute = generateNormalsForMorphTarget(positionAttribute, normalsAttribute, positionMorphAttribute, morphTargetId);
@@ -1413,8 +1421,8 @@ void generateNormals(Qt3DRender::QGeometry *geometry)
 
 } // namespace
 
-void createNormalsForGeometry(Qt3DRender::QGeometry *geometry,
-                              Qt3DRender::QGeometryRenderer::PrimitiveType primitiveType)
+void createNormalsForGeometry(QGeometry *geometry,
+                              QGeometryRenderer::PrimitiveType primitiveType)
 {
     const bool hasSharedVertices = geometryHasSharedVertices(geometry, primitiveType);
     if (hasSharedVertices) {
@@ -1428,9 +1436,9 @@ void createNormalsForGeometry(Qt3DRender::QGeometry *geometry,
     generateNormals(geometry);
 }
 
-bool generatePrecomputedNormalAttribute(Qt3DRender::QGeometryRenderer *mesh, GLTF2Context *context)
+bool generatePrecomputedNormalAttribute(QGeometryRenderer *mesh, GLTF2Context *context)
 {
-    Qt3DRender::QGeometry *geometry = mesh->geometry();
+    QGeometry *geometry = mesh->geometry();
     if (!GLTF2Import::MeshParserUtils::needsNormalAttribute(geometry,
                                                             mesh->primitiveType()))
         return false;
@@ -1441,7 +1449,7 @@ bool generatePrecomputedNormalAttribute(Qt3DRender::QGeometryRenderer *mesh, GLT
     if (!getMeshGLTFInformation(mesh, context, gltfMesh, primitiveNumber))
         return false;
     if (gltfMesh.meshIdx < 0) {
-        qCWarning(kuesa) << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
+        qCWarning(Kuesa::kuesa) << "Unable to find corresponding glTF Mesh for QGeometryRenderer";
         return false;
     }
 
@@ -1475,10 +1483,10 @@ bool generatePrecomputedNormalAttribute(Qt3DRender::QGeometryRenderer *mesh, GLT
         // Remove index buffer reference in jsonPrimitive
         jsonPrimitive.remove(KEY_INDICES);
 
-        for (const Qt3DRender::QAttribute *attr : attributes) {
+        for (const QAttribute *attr : attributes) {
             // All attributes are backed by the same buffer except the normal
             // attribute which uses its own buffer
-            if (attr->name() != Qt3DRender::QAttribute::defaultNormalAttributeName()) {
+            if (attr->name() != QAttribute::defaultNormalAttributeName()) {
                 // Write buffer if not done already
                 if (bufferIdx < 0) {
                     const QByteArray bufferData = attr->buffer()->data();
@@ -1492,7 +1500,7 @@ bool generatePrecomputedNormalAttribute(Qt3DRender::QGeometryRenderer *mesh, GLT
                                               bufferFileName,
                                               basePath + QDir::separator());
                     if (bufferIdx < 0) {
-                        qCWarning(kuesa) << "unable to insert new buffer";
+                        qCWarning(Kuesa::kuesa) << "unable to insert new buffer";
                         return false;
                     }
                     context->addLocalFile(bufferFileName);
@@ -1513,7 +1521,7 @@ bool generatePrecomputedNormalAttribute(Qt3DRender::QGeometryRenderer *mesh, GLT
     // Write Normals Attribute
     {
         // We can get away by writing only the normals attribute
-        Qt3DRender::QAttribute *normalAttribute = attributeFromGeometry(Qt3DRender::QAttribute::defaultNormalAttributeName(),
+        QAttribute *normalAttribute = attributeFromGeometry(QAttribute::defaultNormalAttributeName(),
                                                                         geometry);
         if (!normalAttribute)
             return false;
@@ -1528,7 +1536,7 @@ bool generatePrecomputedNormalAttribute(Qt3DRender::QGeometryRenderer *mesh, GLT
                                             bufferFileName,
                                             basePath + QDir::separator());
         if (bufferIdx < 0) {
-            qCWarning(kuesa) << "unable to insert new buffer";
+            qCWarning(Kuesa::kuesa) << "unable to insert new buffer";
             return false;
         }
         context->addLocalFile(bufferFileName);

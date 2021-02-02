@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: David Morgan <david.morgan@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,8 +26,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <QDir>
+#include <QStandardPaths>
 #include <Kuesa/private/gltf2exporter_p.h>
 #include <Kuesa/private/gltf2parser_p.h>
 #include <Kuesa/private/meshparser_utils_p.h>
@@ -63,7 +64,13 @@ private Q_SLOTS:
         GLTF2Context ctx;
         GLTF2Parser parser;
         parser.setContext(&ctx);
-        parser.parse(QString(ASSETS "simple_cube_uv.gltf"));
+        const bool parsingSuccessful = parser.parse(QString(ASSETS "simple_cube_uv.gltf"));
+
+        // THEN
+        QVERIFY(parsingSuccessful);
+
+        // WHEN
+        parser.generateContent();
 
         QVERIFY(ctx.meshesCount() == 1);
         auto mesh = ctx.mesh(0);
@@ -95,7 +102,13 @@ private Q_SLOTS:
             GLTF2Context ctx;
             GLTF2Parser parser;
             parser.setContext(&ctx);
-            parser.parse(QString(ASSETS "simple_cube_uv.gltf"));
+            const bool parsingSuccessful = parser.parse(QString(ASSETS "simple_cube_uv.gltf"));
+
+            // THEN
+            QVERIFY(parsingSuccessful);
+
+            // WHEN
+            parser.generateContent();
 
             QVERIFY(ctx.meshesCount() == 1);
             auto mesh = ctx.mesh(0);
@@ -138,7 +151,13 @@ private Q_SLOTS:
         GLTF2Parser parser;
         GLTF2Context ctx;
         parser.setContext(&ctx);
-        parser.parse(gltfPath);
+        const bool parsingSuccessful = parser.parse(gltfPath);
+
+        // THEN
+        QVERIFY(parsingSuccessful);
+
+        // WHEN
+        parser.generateContent();
 
         QVERIFY(ctx.meshesCount() == 1);
         auto mesh = ctx.mesh(0);
@@ -151,6 +170,6 @@ private Q_SLOTS:
     }
 };
 
-QTEST_APPLESS_MAIN(tst_TangentGenerator)
+QTEST_MAIN(tst_TangentGenerator)
 
 #include "tst_tangentgenerator.moc"

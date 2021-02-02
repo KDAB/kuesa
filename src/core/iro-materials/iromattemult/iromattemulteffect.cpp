@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -53,7 +53,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit IroMatteMultTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -77,6 +78,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -87,10 +91,12 @@ public:
         const QUrl vertexShaderGraph[] = {
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"))
         };
 
         const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iromattemult.frag.json")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iromattemult.frag.json")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iromattemult.frag.json")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/iromattemult.frag.json"))
@@ -99,16 +105,19 @@ public:
         const QByteArray renderableVertexShaderCode[] = {
             QByteArray(R"()"),
             QByteArray(R"()"),
+            QByteArray(R"()"),
             QByteArray(R"()")
         };
 
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"()"),
             QByteArray(R"()"),
+            QByteArray(R"()"),
             QByteArray(R"()")
         };
 
          const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()")
@@ -145,6 +154,10 @@ public:
         transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
         transparentFilterKey->setValue(QStringLiteral("Transparent"));
 
+        auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
+        transparentPassFilterKey->setName(QStringLiteral("Pass"));
+        transparentPassFilterKey->setValue(QStringLiteral("pass0"));
+
         m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::Add);
         m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::Zero);
         m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::One);
@@ -156,6 +169,7 @@ public:
         m_transparentRenderPass->addRenderState(m_blendEquation);
         m_transparentRenderPass->addRenderState(m_blendArguments);
         m_transparentRenderPass->addFilterKey(transparentFilterKey);
+        m_transparentRenderPass->addFilterKey(transparentPassFilterKey);
         addRenderPass(m_transparentRenderPass);
     }
 
@@ -229,6 +243,11 @@ IroMatteMultEffect::IroMatteMultEffect(Qt3DCore::QNode *parent)
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique = new IroMatteMultTechnique(IroMatteMultTechnique::RHI, this);
+    addTechnique(m_rhiTechnique);
+#endif
 }
 
 IroMatteMultEffect::~IroMatteMultEffect() = default;
@@ -240,9 +259,12 @@ void IroMatteMultEffect::updateDoubleSided(bool doubleSided)
     m_gl3Technique->setCullingMode(cullingMode);
     m_es3Technique->setCullingMode(cullingMode);
     m_es2Technique->setCullingMode(cullingMode);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setCullingMode(cullingMode);
+#endif
 }
 
-void IroMatteMultEffect::updateSkinning(bool useSkinning)
+void IroMatteMultEffect::updateUsingSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();
@@ -254,12 +276,15 @@ void IroMatteMultEffect::updateSkinning(bool useSkinning)
         layers.append(QStringLiteral("no-skinning"));
     }
 
-    m_gl3Technique->setEnabledLayers(layers);
-    m_es3Technique->setEnabledLayers(layers);
-    m_es2Technique->setEnabledLayers(layers);
+    updateLayersOnTechniques(layers);
+
     m_gl3Technique->setAllowCulling(!useSkinning);
     m_es3Technique->setAllowCulling(!useSkinning);
     m_es2Technique->setAllowCulling(!useSkinning);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setAllowCulling(!useSkinning);
+#endif
 }
 
 void IroMatteMultEffect::updateOpaque(bool opaque)
@@ -267,6 +292,10 @@ void IroMatteMultEffect::updateOpaque(bool opaque)
     m_gl3Technique->setOpaque(opaque);
     m_es3Technique->setOpaque(opaque);
     m_es2Technique->setOpaque(opaque);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setOpaque(opaque);
+#endif
 }
 
 void IroMatteMultEffect::updateAlphaCutoffEnabled(bool enabled)
@@ -279,10 +308,94 @@ void IroMatteMultEffect::updateAlphaCutoffEnabled(bool enabled)
         layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
     }
+    updateLayersOnTechniques(layers);
+}
+
+void IroMatteMultEffect::updateUsingColorAttribute(bool usingColorAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noHasColorAttr"));
+    layers.removeAll(QStringLiteral("hasColorAttr"));
+    layers.removeAll(QStringLiteral("hasVertexColor"));
+    if (usingColorAttribute) {
+        layers.append(QStringLiteral("hasColorAttr"));
+        layers.append(QStringLiteral("hasVertexColor"));
+    } else {
+        layers.append(QStringLiteral("noHasColorAttr"));
+    }
+    updateLayersOnTechniques(layers);
+}
+
+void IroMatteMultEffect::updateUsingNormalAttribute(bool usingNormalAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexNormal"));
+    if (usingNormalAttribute)
+        layers.append(QStringLiteral("hasVertexNormal"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroMatteMultEffect::updateUsingTangentAttribute(bool usingTangentAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexTangent"));
+    if (usingTangentAttribute)
+        layers.append(QStringLiteral("hasVertexTangent"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroMatteMultEffect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord"));
+    if (usingTexCoordAttribute)
+        layers.append(QStringLiteral("hasTexCoord"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroMatteMultEffect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord1"));
+    if (usingTexCoord1Attribute)
+        layers.append(QStringLiteral("hasTexCoord1"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroMatteMultEffect::updateUsingMorphTargets(bool usingMorphTargets)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("morphtargets"));
+    if (usingMorphTargets)
+        layers.append(QStringLiteral("morphtargets"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroMatteMultEffect::updateInstanced(bool instanced)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroMatteMultEffect::updateLayersOnTechniques(const QStringList &layers)
+{
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_rhiTechnique->setEnabledLayers(layers);
+#endif
 }
+
 
 } // namespace Kuesa
 

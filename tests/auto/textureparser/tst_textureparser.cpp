@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Jose Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <QJsonDocument>
 #include <QFile>
 #include <QLatin1String>
@@ -56,37 +56,37 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("succeeded");
-        QTest::addColumn<int>("texturesCount");
+        QTest::addColumn<size_t>("texturesCount");
         QTest::addColumn<bool>("shouldHaveImage");
 
         QTest::newRow("Complete") << QStringLiteral(ASSETS "texture_complete.gltf")
                                   << true
-                                  << 1
+                                  << size_t(1)
                                   << true;
 
         QTest::newRow("Empty") << QStringLiteral(ASSETS "texture_empty.gltf")
                                << false
-                               << 0
+                               << size_t(0)
                                << false;
 
         QTest::newRow("NoSource") << QStringLiteral(ASSETS "texture_no_source.gltf")
                                   << true
-                                  << 1
+                                  << size_t(1)
                                   << false;
 
         QTest::newRow("NoSampler") << QStringLiteral(ASSETS "texture_no_sampler.gltf")
                                    << true
-                                   << 1
+                                   << size_t(1)
                                    << true;
 
         QTest::newRow("InvalidSource") << QStringLiteral(ASSETS "texture_invalid_source.gltf")
                                        << false
-                                       << 0
+                                       << size_t(0)
                                        << false;
 
         QTest::newRow("InvalidSampler") << QStringLiteral(ASSETS "texture_invalid_sampler.gltf")
                                         << false
-                                        << 0
+                                        << size_t(0)
                                         << false;
     }
 
@@ -94,7 +94,7 @@ private Q_SLOTS:
     {
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
-        QFETCH(int, texturesCount);
+        QFETCH(size_t, texturesCount);
         QFETCH(bool, shouldHaveImage);
 
         // GIVEN
@@ -119,8 +119,15 @@ private Q_SLOTS:
         // THEN
         QCOMPARE(success, succeeded);
         QCOMPARE(context.texturesCount(), texturesCount);
-        if (texturesCount > 0 && shouldHaveImage)
+        if (texturesCount > 0 && shouldHaveImage) {
+            QVERIFY(!context.texture(0).texture);
+
+            // WHEN
+            context.getOrAllocateTexture(0);
+
+            // THEN
             QVERIFY(context.texture(0).texture->textureImages()[0]);
+        }
     }
 
     void checkTextureImageSharing()
@@ -156,7 +163,19 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.texturesCount(), 2);
+        QCOMPARE(context.texturesCount(), size_t(2));
+
+        QVERIFY(!context.texture(0).texture);
+        QVERIFY(!context.texture(1).texture);
+
+        // WHEN
+        context.getOrAllocateTexture(0);
+        context.getOrAllocateTexture(1);
+
+        // THEN
+        QVERIFY(context.texture(0).texture);
+        QVERIFY(context.texture(1).texture);
+        QVERIFY(context.texture(0).texture != context.texture(1).texture);
         QCOMPARE(context.texture(0).texture->textureImages().size(),
                  context.texture(1).texture->textureImages().size());
         QCOMPARE(context.texture(0).texture->textureImages()[0],
@@ -189,8 +208,56 @@ private Q_SLOTS:
         // THEN -> Should issue a warning but still return true
         QVERIFY(TextureParser::ensureImageIsCompatibleWithTexture(&img2, &tex2dArray));
     }
+
+    void checkTextureSharing()
+    {
+        // GIVEN
+        GLTF2Context context;
+        QFile file(QStringLiteral(ASSETS "simple_cube_with_textures_shared.gltf"));
+        file.open(QIODevice::ReadOnly);
+
+        // THEN
+        QVERIFY(file.isOpen());
+
+        // WHEN
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        QVERIFY(!json.isNull());
+
+        ImageParser imgParser(QDir(QString(ASSETS)));
+        bool success = imgParser.parse(json[KEY_IMAGES].toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+
+        // WHEN
+        TextureSamplerParser samplerParser;
+        success = samplerParser.parse(json[KEY_TEXTURE_SAMPLERS].toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+
+        // WHEN
+        TextureParser parser;
+        success = parser.parse(json[KEY_TEXTURES].toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.texturesCount(), size_t(2));
+
+        QVERIFY(!context.texture(0).texture);
+        QVERIFY(!context.texture(1).texture);
+
+        // WHEN
+        context.getOrAllocateTexture(0);
+        context.getOrAllocateTexture(1);
+
+        // THEN
+        QVERIFY(context.texture(0).texture);
+        QVERIFY(context.texture(1).texture);
+        QCOMPARE(context.texture(0).texture, context.texture(1).texture);
+    }
 };
 
-QTEST_APPLESS_MAIN(tst_TextureParser)
+QTEST_MAIN(tst_TextureParser)
 
 #include "tst_textureparser.moc"

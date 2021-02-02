@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -62,8 +62,7 @@ public:
     virtual void setInputTexture(Qt3DRender::QAbstractTexture *texture) = 0;
     virtual void setDepthTexture(Qt3DRender::QAbstractTexture *texture);
     virtual void setCamera(Qt3DCore::QEntity *camera);
-
-    virtual void setSceneSize(const QSize &size);
+    virtual void setWindowSize(const QSize &sceneSize);
     virtual QVector<Qt3DRender::QLayer *> layers() const = 0;
 
 protected:

@@ -1,0 +1,12 @@
+module Kuesa
+plugin quickkuesaplugin
+classname KuesaPlugin
+depends Qt3D.Core 2.12
+depends Qt3D.Render 2.12
+depends Qt3D.Input 2.12
+depends Qt3D.Extras 2.12
+depends Qt3D.Animation 2.12
+QuickSceneMaterial 1.3 QuickSceneMaterial.qml
+CameraAsset 1.3 CameraAsset.qml
+LayerAsset 1.3 LayerAsset.qml
+MaterialAsset 1.3 MaterialAsset.qml

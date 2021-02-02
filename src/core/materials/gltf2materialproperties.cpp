@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -36,26 +36,6 @@
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-
-// Qt < 5.14 has a bug where change messages will not be
-// delivered to frontend nodes if these don't have a
-// backend equivalent. This prevents animation changes
-// from being delivered to the frontend.
-//
-// Work around this by creating a dummy observer
-
-class DummyObserver : public Qt3DCore::QObserverInterface
-{
-public:
-    DummyObserver() {}
-    ~DummyObserver() override;
-    void sceneChangeEvent(const Qt3DCore::QSceneChangePtr &) override {}
-};
-
-DummyObserver::~DummyObserver() = default;
-#endif
 
 /*!
     \class Kuesa::GLTF2MaterialProperties
@@ -121,52 +101,80 @@ DummyObserver::~DummyObserver() = default;
  */
 
 /*!
-    \qmlproperty matrix3 GLTF2MaterialProperties::textureTransform
+    \qmlproperty bool GLTF2MaterialProperties::receivesShadows
 
-    Specifies the transform of the texture. This allows to scale, transform or
-    rotate the textures of the material.
+    Specifies whether a surface should show any shadows that are cast on it.  This
+    Default is true
+ */
+
+/*!
+    \property GLTF2MaterialProperties::receivesShadows
+
+    Specifies whether a surface should show any shadows that are cast on it.  This
+    Default is true
  */
 
 GLTF2MaterialProperties::GLTF2MaterialProperties(Qt3DCore::QNode *parent)
     : Qt3DCore::QNode(parent)
     , m_alphaCutOff(0.0f)
     , m_usesTexCoord1(false)
+    , m_receivesShadows(true)
     , m_baseColorTexture(nullptr)
     , m_baseColorFactor(QColor("gray"))
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    , m_dummyObserver(nullptr)
-#endif
 {
-    setDefaultPropertyTrackingMode(QNode::TrackAllValues);
 }
 
 GLTF2MaterialProperties::~GLTF2MaterialProperties()
 {
     for (auto &connection : m_connections)
         QObject::disconnect(connection);
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    if (m_dummyObserver) {
-        auto d = Qt3DCore::QNodePrivate::get(this);
-        if (d->m_changeArbiter)
-            static_cast<Qt3DCore::QChangeArbiter *>(d->m_changeArbiter)->unregisterObserver(m_dummyObserver, id());
-        delete m_dummyObserver;
-    }
-#endif
 }
 
 void GLTF2MaterialProperties::addClientMaterial(Qt3DRender::QMaterial *material)
 {
     m_clientMaterials.push_back(material);
     m_connections.push_back(QObject::connect(material, &Qt3DRender::QMaterial::nodeDestroyed,
-                                             [this, material]() {
-                                                 m_clientMaterials.removeAll(material);
-                                             }));
+                         [this, material]() {
+        m_clientMaterials.removeAll(material);
+    }));
 }
 
 QVector<Qt3DRender::QMaterial *> GLTF2MaterialProperties::clientMaterials() const
 {
     return m_clientMaterials;
+}
+
+void GLTF2MaterialProperties::setShadowMapDepthTexture(Qt3DRender::QAbstractTexture *depthTexture)
+{
+    if (m_shadowMapTexture == depthTexture)
+        return;
+
+    m_shadowMapTexture = depthTexture;
+    emit shadowMapDepthTextureChanged(m_shadowMapTexture);
+}
+
+void GLTF2MaterialProperties::setShadowMapCubeDepthTexture(Qt3DRender::QAbstractTexture *cubeMapDepthTexture)
+{
+    if (m_shadowMapCubeTexture == cubeMapDepthTexture)
+        return;
+
+    m_shadowMapCubeTexture = cubeMapDepthTexture;
+    emit shadowMapCubeDepthTextureChanged(m_shadowMapCubeTexture);
+}
+
+Qt3DRender::QAbstractTexture *GLTF2MaterialProperties::shadowMapDepthTexture() const
+{
+    return m_shadowMapTexture;
+}
+
+Qt3DRender::QAbstractTexture *GLTF2MaterialProperties::shadowMapCubeDepthTexture() const
+{
+    return m_shadowMapCubeTexture;
+}
+
+bool GLTF2MaterialProperties::receivesShadows() const
+{
+    return m_receivesShadows;
 }
 
 bool GLTF2MaterialProperties::isBaseColorUsingTexCoord1() const
@@ -187,11 +195,6 @@ Qt3DRender::QAbstractTexture *GLTF2MaterialProperties::baseColorMap() const
 float GLTF2MaterialProperties::alphaCutoff() const
 {
     return m_alphaCutOff;
-}
-
-QMatrix3x3 GLTF2MaterialProperties::textureTransform() const
-{
-    return m_textureTransform;
 }
 
 void GLTF2MaterialProperties::setBaseColorUsesTexCoord1(bool baseColorUsesTexCoord1)
@@ -231,28 +234,14 @@ void GLTF2MaterialProperties::setAlphaCutoff(float alphaCutoff)
     emit alphaCutoffChanged(m_alphaCutOff);
 }
 
-void GLTF2MaterialProperties::setTextureTransform(const QMatrix3x3 &textureTransform)
+void Kuesa::GLTF2MaterialProperties::setReceivesShadows(bool receivesShadows)
 {
-    if (m_textureTransform == textureTransform)
+    if (m_receivesShadows == receivesShadows)
         return;
-    m_textureTransform = textureTransform;
-    emit textureTransformChanged(m_textureTransform);
-}
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-Qt3DCore::QNodeCreatedChangeBasePtr GLTF2MaterialProperties::createNodeCreationChange() const
-{
-    if (m_dummyObserver == nullptr) {
-        // do this now since the change arbiter is not set yet when in the constructor
-        m_dummyObserver = new DummyObserver;
-        auto d = Qt3DCore::QNodePrivate::get(const_cast<Qt3DCore::QNode *>(static_cast<const Qt3DCore::QNode *>(this)));
-        Q_ASSERT(d->m_changeArbiter);
-        static_cast<Qt3DCore::QChangeArbiter *>(d->m_changeArbiter)->registerObserver(m_dummyObserver, id());
-    }
-
-    return Qt3DCore::QNodeCreatedChangeBasePtr::create(this);
+    m_receivesShadows = receivesShadows;
+    emit receivesShadowsChanged(m_receivesShadows);
 }
-#endif
 
 } // namespace Kuesa
 

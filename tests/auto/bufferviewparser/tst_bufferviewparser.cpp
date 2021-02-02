@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Jose Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 
 #include <QVector>
 #include <QByteArray>
@@ -98,7 +98,7 @@ private Q_SLOTS:
         // THEN
         QCOMPARE(parseResult, expectedParseResult);
         if (parseResult) {
-            QCOMPARE(context.bufferViewCount(), 1);
+            QCOMPARE(context.bufferViewCount(), size_t(1));
             QCOMPARE(context.bufferView(0).bufferIdx, bufferIdx);
             QCOMPARE(context.bufferView(0).byteLength, byteLength);
             QCOMPARE(context.bufferView(0).byteOffset, byteOffset);

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -78,6 +78,7 @@ namespace Kuesa {
 
     \badcode
     import Kuesa 1.1 as Kuesa
+    import Kuesa.Effects 1.1
 
     Kuesa.SceneEnity {
         id: root
@@ -184,8 +185,12 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     , m_gl3ShaderBuilder(nullptr)
     , m_es3ShaderBuilder(nullptr)
     , m_es2ShaderBuilder(nullptr)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    , m_rhiShaderBuilder(nullptr)
+#endif
     , m_maskParameter(new Qt3DRender::QParameter(QStringLiteral("maskTexture"), nullptr))
     , m_inputTextureParameter(new Qt3DRender::QParameter(QStringLiteral("inputTexture"), nullptr))
+    , m_fsQuad(nullptr)
 {
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode());
     m_rootFrameGraphNode->setObjectName(QStringLiteral("Opacity Mask Effect"));
@@ -214,7 +219,7 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     auto *gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
                                                 3, 2,
                                                 Qt3DRender::QGraphicsApiFilter::CoreProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert"),
                                                 m_gl3ShaderBuilder,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(gl3Technique);
@@ -222,7 +227,7 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     auto *es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                 3, 0,
                                                 Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert"),
                                                 m_es3ShaderBuilder,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es3Technique);
@@ -230,16 +235,30 @@ OpacityMask::OpacityMask(Qt3DCore::QNode *parent)
     auto *es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                 2, 0,
                                                 Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert"),
                                                 m_es2ShaderBuilder,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es2Technique);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiShaderBuilder = new Qt3DRender::QShaderProgramBuilder();
+    m_rhiShaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/opacitymask.frag.json")));
+    m_rhiShaderBuilder->setEnabledLayers(QStringList() << QStringLiteral("regular"));
+
+    auto *rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI,
+                                                1, 0,
+                                                Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                                QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"),
+                                                m_rhiShaderBuilder,
+                                                passFilterName, passFilterValue);
+    effect->addTechnique(rhiTechnique);
+#endif
+
     effect->addParameter(m_maskParameter);
     effect->addParameter(m_inputTextureParameter);
 
-    auto fullScreenQuad = new FullScreenQuad(opacityMaskMaterial, m_rootFrameGraphNode.data());
-    m_layer = fullScreenQuad->layer();
+    m_fsQuad = new FullScreenQuad(opacityMaskMaterial, m_rootFrameGraphNode.data());
+    m_layer = m_fsQuad->layer();
 
     // Set up FrameGraph
     auto layerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
@@ -306,6 +325,9 @@ void OpacityMask::setPremultipliedAlpha(bool premultipliedAlpha)
     const QString layer = m_premultipliedAlpha ? QStringLiteral("premultiplied_alpha") : QStringLiteral("regular");
     m_gl3ShaderBuilder->setEnabledLayers({ layer });
     m_es3ShaderBuilder->setEnabledLayers({ layer });
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiShaderBuilder->setEnabledLayers({ layer });
+#endif
     m_blendRenderState->setEnabled(!m_premultipliedAlpha);
 }
 

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -30,6 +30,8 @@ precision highp float;
 
 // Use non-filtered texture fetches
 const int samples = 5;
+
+uniform highp sampler2D textureSampler;
 
 vec4 kuesa_gaussianBlur(const in int pass,
                         const in float width,

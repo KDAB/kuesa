@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -40,7 +40,7 @@
  */
 
 /*!
- * \fn EntityCollection::add
+ * \fn TransformCollection::add
  *
  * Adds an \a asset to the collection with key \a name.
  *
@@ -52,7 +52,7 @@
  */
 
 /*!
- * \fn EntityCollection::find
+ * \fn TransformCollection::find
  *
  * Returns the asset previously registered with the collection with \a name, if
  * it exists. Otherwise, returns nullptr.

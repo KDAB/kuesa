@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -33,6 +33,7 @@
 #include <Kuesa/gltf2material.h>
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/metallicroughnesseffect.h>
+#include <Kuesa/metallicroughnessproperties.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -49,13 +50,11 @@ class QCullFace;
 
 namespace Kuesa {
 
-class MetallicRoughnessProperties;
-
 class KUESASHARED_EXPORT MetallicRoughnessMaterial : public GLTF2Material
 {
     Q_OBJECT
 
-    Q_PROPERTY(Kuesa::MetallicRoughnessProperties *materialProperties READ materialProperties WRITE setMaterialProperties NOTIFY materialPropertiesChanged)
+    Q_PROPERTY(MetallicRoughnessProperties *materialProperties READ materialProperties WRITE setMaterialProperties NOTIFY materialPropertiesChanged)
 
 public:
     explicit MetallicRoughnessMaterial(Qt3DCore::QNode *parent = nullptr);
@@ -70,9 +69,16 @@ Q_SIGNALS:
     void materialPropertiesChanged(Kuesa::MetallicRoughnessProperties *materialProperties);
 
 private:
+    void enforceSRGBOnTexture(Qt3DRender::QAbstractTexture *t) const;
+
     MetallicRoughnessProperties *m_materialProperties;
     Qt3DRender::QParameter *m_metallicRoughnessShaderDataParameter;
     QMetaObject::Connection m_textureTransformChangedConnection;
+    Qt3DRender::QParameter *m_baseColorMapParameter;
+    Qt3DRender::QParameter *m_normalMapParameter;
+    Qt3DRender::QParameter *m_emissiveMapParameter;
+    Qt3DRender::QParameter *m_ambientOcclusionMapParameter;
+    Qt3DRender::QParameter *m_metalRoughMapParameter;
 };
 
 } // namespace Kuesa

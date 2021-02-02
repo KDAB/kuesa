@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -51,7 +51,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit IroDiffuseTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -76,6 +77,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -86,10 +90,12 @@ public:
         const QUrl vertexShaderGraph[] = {
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.vert.json"))
         };
 
         const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffuse.frag.json")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffuse.frag.json")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffuse.frag.json")),
             QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/irodiffuse.frag.json"))
@@ -107,10 +113,15 @@ public:
             QByteArray(R"(
                        #version 100
                        void main() { }
+                       )"),
+            QByteArray(R"(
+                       #version 450
+                       void main() { }
                        )")
         };
 
         const QByteArray renderableVertexShaderCode[] = {
+            QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()")
@@ -119,10 +130,12 @@ public:
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"()"),
             QByteArray(R"()"),
+            QByteArray(R"()"),
             QByteArray(R"()")
         };
 
          const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()")
@@ -252,6 +265,11 @@ IroDiffuseEffect::IroDiffuseEffect(Qt3DCore::QNode *parent)
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique = new IroDiffuseTechnique(IroDiffuseTechnique::RHI, this);
+    addTechnique(m_rhiTechnique);
+#endif
 }
 
 IroDiffuseEffect::~IroDiffuseEffect() = default;
@@ -263,9 +281,12 @@ void IroDiffuseEffect::updateDoubleSided(bool doubleSided)
     m_gl3Technique->setCullingMode(cullingMode);
     m_es3Technique->setCullingMode(cullingMode);
     m_es2Technique->setCullingMode(cullingMode);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setCullingMode(cullingMode);
+#endif
 }
 
-void IroDiffuseEffect::updateSkinning(bool useSkinning)
+void IroDiffuseEffect::updateUsingSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();
@@ -277,12 +298,15 @@ void IroDiffuseEffect::updateSkinning(bool useSkinning)
         layers.append(QStringLiteral("no-skinning"));
     }
 
-    m_gl3Technique->setEnabledLayers(layers);
-    m_es3Technique->setEnabledLayers(layers);
-    m_es2Technique->setEnabledLayers(layers);
+    updateLayersOnTechniques(layers);
+
     m_gl3Technique->setAllowCulling(!useSkinning);
     m_es3Technique->setAllowCulling(!useSkinning);
     m_es2Technique->setAllowCulling(!useSkinning);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setAllowCulling(!useSkinning);
+#endif
 }
 
 void IroDiffuseEffect::updateOpaque(bool opaque)
@@ -290,6 +314,10 @@ void IroDiffuseEffect::updateOpaque(bool opaque)
     m_gl3Technique->setOpaque(opaque);
     m_es3Technique->setOpaque(opaque);
     m_es2Technique->setOpaque(opaque);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setOpaque(opaque);
+#endif
 }
 
 void IroDiffuseEffect::updateAlphaCutoffEnabled(bool enabled)
@@ -302,10 +330,94 @@ void IroDiffuseEffect::updateAlphaCutoffEnabled(bool enabled)
         layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
     }
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseEffect::updateUsingColorAttribute(bool usingColorAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noHasColorAttr"));
+    layers.removeAll(QStringLiteral("hasColorAttr"));
+    layers.removeAll(QStringLiteral("hasVertexColor"));
+    if (usingColorAttribute) {
+        layers.append(QStringLiteral("hasColorAttr"));
+        layers.append(QStringLiteral("hasVertexColor"));
+    } else {
+        layers.append(QStringLiteral("noHasColorAttr"));
+    }
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseEffect::updateUsingNormalAttribute(bool usingNormalAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexNormal"));
+    if (usingNormalAttribute)
+        layers.append(QStringLiteral("hasVertexNormal"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseEffect::updateUsingTangentAttribute(bool usingTangentAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexTangent"));
+    if (usingTangentAttribute)
+        layers.append(QStringLiteral("hasVertexTangent"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseEffect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord"));
+    if (usingTexCoordAttribute)
+        layers.append(QStringLiteral("hasTexCoord"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseEffect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord1"));
+    if (usingTexCoord1Attribute)
+        layers.append(QStringLiteral("hasTexCoord1"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseEffect::updateUsingMorphTargets(bool usingMorphTargets)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("morphtargets"));
+    if (usingMorphTargets)
+        layers.append(QStringLiteral("morphtargets"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseEffect::updateInstanced(bool instanced)
+{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void IroDiffuseEffect::updateLayersOnTechniques(const QStringList &layers)
+{
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_rhiTechnique->setEnabledLayers(layers);
+#endif
 }
+
 
 } // namespace Kuesa
 

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -42,6 +42,8 @@ class QFrameGraphNode;
 
 namespace Kuesa {
 
+class FullScreenQuad;
+
 class KUESASHARED_EXPORT ThresholdEffect : public AbstractPostProcessingEffect
 {
     Q_OBJECT
@@ -69,6 +71,7 @@ private:
 
     Qt3DRender::QParameter *m_thresholdParameter;
     Qt3DRender::QParameter *m_textureParam;
+    FullScreenQuad *m_fsQuad;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

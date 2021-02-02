@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>textures/501_bcmp.ktx2</file>
+        <file>textures/501_uastc.ktx2</file>
+        <file>textures/501_zcmp.ktx2</file>
+        <file>textures/501.ktx</file>
+        <file>textures/501.ktx2</file>
+        <file>textures/cube.ktx</file>
+        <file>textures/disturb_ASTC4x4.ktx</file>
+        <file>textures/disturb_BC1.ktx</file>
+        <file>textures/disturb_ETC1.ktx</file>
+        <file>textures/disturb_PVR2bpp.ktx</file>
+        <file>textures/lensflare_ASTC8x8.ktx</file>
+        <file>textures/lensflare_BC3.ktx</file>
+        <file>textures/lensflare_PVR4bpp 2.ktx</file>
+        <file>textures/lensflare_PVR4bpp.ktx</file>
+        <file>textures/mipmaps.ktx</file>
+        <file>textures/out.ktx</file>
+        <file>textures/rect.ktx</file>
+        <file>textures/rgb-reference.ktx</file>
+        <file>textures/sample_etc1s.ktx2</file>
+        <file>textures/sample_uastc.ktx2</file>
+        <file>textures/test.ktx</file>
+    </qresource>
+</RCC>

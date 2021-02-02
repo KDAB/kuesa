@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <QJsonDocument>
 #include <QFile>
 #include <QLatin1String>
@@ -62,7 +62,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.treeNodeCount(), 5);
+        QCOMPARE(context.treeNodeCount(), size_t(5));
 
         const QVector<QString> names = {
             QLatin1String("Car"),
@@ -75,6 +75,7 @@ private Q_SLOTS:
             const auto &node = context.treeNode(i);
             QVERIFY(!node.entity);
             QCOMPARE(node.name, names.at(i));
+            QCOMPARE(node.hasPlaceholder, false);
 
             for (auto &joint : node.joints)
                 QVERIFY(!joint);
@@ -98,7 +99,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.treeNodeCount(), 1);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
 
         const TreeNode::TransformInfo transform = context.treeNode(0).transformInfo;
 
@@ -125,7 +126,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.treeNodeCount(), 1);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
 
         const TreeNode::TransformInfo transform = context.treeNode(0).transformInfo;
         QVERIFY(transform.bits == TreeNode::TransformInfo::MatrixSet);
@@ -199,7 +200,7 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.treeNodeCount(), 1);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
 
         const TreeNode n = context.treeNode(0);
         QVERIFY(n.cameraIdx != -1);
@@ -224,13 +225,40 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(success);
-        QCOMPARE(context.treeNodeCount(), 1);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
 
         const TreeNode n = context.treeNode(0);
         QCOMPARE(n.morphTargetWeights.size(), 2);
         QCOMPARE(n.morphTargetWeights.at(0), 0.5f);
         QCOMPARE(n.morphTargetWeights.at(1), 0.8f);
         QCOMPARE(n.name, QStringLiteral("Morphed"));
+    }
+
+    void checkMultipleExtensionsOnNode()
+    {
+        // GIVEN
+        GLTF2Context context;
+        NodeParser parser;
+        QFile file(QStringLiteral(ASSETS "node_multi_extensions.gltf"));
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        const QJsonValue nodes = json.object().value(QLatin1String("nodes"));
+        QVERIFY(!json.isNull() && nodes.isArray());
+
+        // WHEN
+        const bool success = parser.parse(nodes.toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
+
+        const TreeNode n = context.treeNode(0);
+        QCOMPARE(n.reflectionPlaneEquation, QVector4D(1.0f, 0.0f, 0.0f, 883.0f));
+        QCOMPARE(n.layerIndices, QVector<int>({0, 1, 2}));
+        QCOMPARE(n.hasPlaceholder, true);
+        QCOMPARE(n.placeHolder.cameraNode, 1);
     }
 };
 

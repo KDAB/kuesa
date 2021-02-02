@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -33,11 +33,12 @@
 #include <QQmlEngine>
 #include <QQmlContext>
 #include <QMimeData>
+#include <Qt3DRender/QCamera>
 #include <Qt3DQuick/QQmlAspectEngine>
 #include <Qt3DAnimation/QAnimationAspect>
 #include <Qt3DQuickExtras/Qt3DQuickWindow>
 #include <Kuesa/GLTF2Importer>
-#include "orbitcameracontroller.h"
+#include <Kuesa/kuesaversion.h>
 
 class ViewerApplication : public QGuiApplication
 {
@@ -164,7 +165,7 @@ int main(int argc, char *argv[])
     {
         // Set OpenGL requirements
         QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-#ifndef QT_OPENGL_ES_2
+#ifndef KUESA_OPENGL_ES_2
         format.setVersion(4, 1);
         format.setProfile(QSurfaceFormat::CoreProfile);
         format.setSamples(4);
@@ -179,9 +180,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("gltfViewer");
     QCoreApplication::setOrganizationDomain("kdab.com");
     QCoreApplication::setOrganizationName("KDAB");
-    QCoreApplication::setApplicationVersion(QStringLiteral("1.0"));
-
-    qmlRegisterType<OrbitCameraController>("KuesaViewer", 1, 0, "OrbitCameraController");
+    QCoreApplication::setApplicationVersion(KUESA_VERSION_STR);
 
     ViewerApplication app(argc, argv);
 
@@ -199,7 +198,9 @@ int main(int argc, char *argv[])
     QCommandLineOption loopOption({ "l", "loop" }, QObject::tr("loop animations"));
     QCommandLineOption sceneOption({ "s", "scene" }, QObject::tr("index of the glTF scene to load"),
                                    QObject::tr("scene"), QString::number(Kuesa::GLTF2Importer::DefaultScene));
-    cmdline.addOptions({ fullScreenOption, animationsOption, loopOption, cameraOption, sceneOption });
+    QCommandLineOption reflectionPlaneOption({ "r", "reflectionPlane" }, QObject::tr("use named reflection plane"),
+                                   QObject::tr("plane name"), QString());
+    cmdline.addOptions({ fullScreenOption, animationsOption, loopOption, cameraOption, sceneOption, reflectionPlaneOption });
 
     cmdline.process(app);
 
@@ -236,6 +237,7 @@ int main(int argc, char *argv[])
     context->setContextProperty("_gltfAnimations", cmdline.values(animationsOption));
     context->setContextProperty("_gltfLoopAnimations", cmdline.isSet(loopOption));
     context->setContextProperty("_sceneIndex", cmdline.value(sceneOption));
+    context->setContextProperty("_gltfReflectionPlane", cmdline.value(reflectionPlaneOption));
     view.setSource(QUrl("qrc:/main.qml"));
 
     view.resize(1920, 1080);

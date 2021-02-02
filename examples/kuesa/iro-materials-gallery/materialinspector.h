@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -30,6 +30,7 @@
 #define MATERIALINSPECTOR_H
 
 #include<QObject>
+#include <Kuesa/GLTF2Material>
 
 namespace Qt3DCore {
 class QEntity;
@@ -37,10 +38,6 @@ class QEntity;
 
 namespace Qt3DRender {
 class QPickEvent;
-}
-
-namespace Kuesa {
-class GLTF2Material;
 }
 
 class MaterialInspector : public QObject

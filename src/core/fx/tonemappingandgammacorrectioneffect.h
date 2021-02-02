@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -43,12 +43,14 @@ class QShaderProgramBuilder;
 
 namespace Kuesa {
 
+class FullScreenQuad;
+
 class KUESASHARED_EXPORT ToneMappingAndGammaCorrectionEffect : public AbstractPostProcessingEffect
 {
     Q_OBJECT
     Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
     Q_PROPERTY(float gamma READ gamma WRITE setGamma NOTIFY gammaChanged)
-    Q_PROPERTY(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged REVISION 1)
+    Q_PROPERTY(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping toneMappingAlgorithm READ toneMappingAlgorithm WRITE setToneMappingAlgorithm NOTIFY toneMappingAlgorithmChanged)
 
 public:
     enum ToneMapping {
@@ -84,6 +86,9 @@ Q_SIGNALS:
 private:
     FrameGraphNodePtr m_rootFrameGraphNode;
     Qt3DRender::QLayer *m_layer;
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    Qt3DRender::QShaderProgramBuilder *m_rhiShaderBuilder;
+#endif
     Qt3DRender::QShaderProgramBuilder *m_gl3ShaderBuilder;
     Qt3DRender::QShaderProgramBuilder *m_es3ShaderBuilder;
     Qt3DRender::QShaderProgramBuilder *m_es2ShaderBuilder;
@@ -91,6 +96,7 @@ private:
     Qt3DRender::QParameter *m_gammaParameter;
     Qt3DRender::QParameter *m_inputTextureParameter;
     ToneMapping m_toneMappingAlgorithm;
+    FullScreenQuad *m_fsQuad;
 };
 
 } // namespace Kuesa

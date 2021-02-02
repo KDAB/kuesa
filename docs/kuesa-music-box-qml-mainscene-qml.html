@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
 <!-- music-box.qdoc -->
-  <title>Kuesa Music Box QML Example | Kuesa Runtime 1.2</title>
+  <title>Kuesa Music Box QML Example | Kuesa Runtime 1.3</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Music Box QML Example</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><h1 class="title">Kuesa Music Box QML Example</h1>
 <span class="subtitle"></span>
 <pre class="qml">
@@ -17,7 +17,7 @@
 
      This file is part of Kuesa.
 
-     Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
      Author: Mauro Persano &lt;mauro.persano@kdab.com&gt;
 
      Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -49,7 +49,7 @@
  import QtQml 2.2
  import QtQuick 2.12
 
- import Kuesa 1.1 as <a href="kuesa.html">Kuesa</a>
+ import Kuesa 1.2 as <a href="kuesa.html">Kuesa</a>
  import Kuesa.Effects 1.1 as KuesaFX
  import MusicBox 1.0 as MusicBox
 
@@ -207,7 +207,7 @@
          },
          <span class="type">EnvironmentLight</span> {
              <span class="name">irradiance</span>: <span class="name">TextureLoader</span> {
-                 <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_16f_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+                 <span class="name">source</span>: <span class="string">&quot;pink_sunrise_16f_irradiance&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
                  <span class="type">wrapMode</span> {
                      <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
                      <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
@@ -215,7 +215,7 @@
                  <span class="name">generateMipMaps</span>: <span class="number">false</span>
              }
              <span class="name">specular</span>: <span class="name">TextureLoader</span> {
-                 <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_16f_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
+                 <span class="name">source</span>: <span class="string">&quot;pink_sunrise_16f_specular&quot;</span> <span class="operator">+</span> ((!<span class="name">scene</span>.<span class="name">es2</span>) ? <span class="string">&quot;.dds&quot;</span> : <span class="string">&quot;_es2.dds&quot;</span>)
                  <span class="type">wrapMode</span> {
                      <span class="name">x</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
                      <span class="name">y</span>: <span class="name">WrapMode</span>.<span class="name">ClampToEdge</span>
@@ -271,7 +271,7 @@
      <span class="type">Kuesa</span>.GLTF2Importer {
          <span class="name">id</span>: <span class="name">importer</span>
          <span class="name">sceneEntity</span>: <span class="name">scene</span>
-         <span class="name">source</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;RobotArm.gltf&quot;</span>
+         <span class="name">source</span>: <span class="string">&quot;qrc:/RobotArm.gltf&quot;</span>
          <span class="name">onStatusChanged</span>: {
              <span class="keyword">if</span> (<span class="name">status</span> <span class="operator">==</span> <span class="name">Kuesa</span>.<span class="name">GLTF2Importer</span>.<span class="name">Ready</span>) {
                  <span class="comment">// start robot arm animation</span>
@@ -288,7 +288,7 @@
 
      <span class="type">Kuesa</span>.Skybox {
          <span class="name">id</span>: <span class="name">skybox</span>
-         <span class="name">baseName</span>: <span class="name">_assetsPrefix</span> <span class="operator">+</span> <span class="string">&quot;pink_sunrise_skybox&quot;</span>
+         <span class="name">baseName</span>: <span class="string">&quot;qrc:/pink_sunrise_skybox&quot;</span>
          <span class="name">extension</span>: <span class="string">&quot;.dds&quot;</span>
      }
 
@@ -388,7 +388,7 @@
      <span class="type">Kuesa</span>.MetallicRoughnessMaterial {
          <span class="name">id</span>: <span class="name">material</span>
          <span class="name">effect</span>: <span class="name">Kuesa</span>.MetallicRoughnessEffect { }
-         <span class="name">metallicRoughnessProperties</span>: <span class="name">Kuesa</span>.MetallicRoughnessProperties {
+         <span class="name">materialProperties</span>: <span class="name">Kuesa</span>.MetallicRoughnessProperties {
              <span class="name">baseColorFactor</span>: <span class="string">&quot;gray&quot;</span>
          }
      }

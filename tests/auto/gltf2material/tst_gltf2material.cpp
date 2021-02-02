@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 #include <Kuesa/gltf2material.h>
 #include <Kuesa/morphcontroller.h>
 
@@ -62,7 +63,8 @@ class MyGLTF2Material : public GLTF2Material
 public:
     explicit MyGLTF2Material(Qt3DCore::QNode *parent = nullptr)
         : GLTF2Material(parent)
-    {}
+    {
+    }
 };
 
 class tst_GLTF2Material : public QObject
@@ -73,7 +75,7 @@ private Q_SLOTS:
 
     void initTestCase()
     {
-        qRegisterMetaType<Kuesa::MorphController*>("MorphController*");
+        qRegisterMetaType<Kuesa::MorphController *>("MorphController*");
     }
 
     void checkDefaultState()

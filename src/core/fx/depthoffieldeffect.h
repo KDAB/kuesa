@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -48,6 +48,8 @@ class QCamera;
 
 namespace Kuesa {
 
+class FullScreenQuad;
+
 class KUESASHARED_EXPORT DepthOfFieldEffect : public AbstractPostProcessingEffect
 {
     Q_OBJECT
@@ -91,14 +93,14 @@ private:
     Qt3DRender::QParameter *m_focusRangeParam;
     Qt3DRender::QParameter *m_focusDistanceParam;
     Qt3DRender::QParameter *m_radiusParam;
-    Qt3DCore::QEntity *m_camera;
-    void setSceneSize(const QSize &size) override;
+    void setWindowSize(const QSize &sceneSize) override;
     float m_focusRange;
     float m_radius;
     float m_focusDistance;
 
     Qt3DRender::QParameter *m_dofTextureParam;
     Qt3DRender::QAbstractTexture *m_dofTexture = nullptr;
+    FullScreenQuad *m_fsQuad = nullptr;
 };
 } // namespace Kuesa
 QT_END_NAMESPACE

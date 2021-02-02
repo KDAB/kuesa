@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -171,6 +171,9 @@ QString shaderGraphLayerForToneMappingAlgorithm(ToneMappingAndGammaCorrectionEff
 ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCore::QNode *parent)
     : AbstractPostProcessingEffect(parent)
     , m_layer(nullptr)
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    , m_rhiShaderBuilder(nullptr)
+#endif
     , m_gl3ShaderBuilder(nullptr)
     , m_es3ShaderBuilder(nullptr)
     , m_es2ShaderBuilder(nullptr)
@@ -179,6 +182,7 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
     , m_gammaParameter(new Qt3DRender::QParameter(QStringLiteral("gamma"), 2.2f))
     , m_inputTextureParameter(new Qt3DRender::QParameter(QStringLiteral("inputTexture"), nullptr))
     , m_toneMappingAlgorithm(ToneMapping::None)
+    , m_fsQuad(nullptr)
 {
     QObject::connect(m_gammaParameter, &Qt3DRender::QParameter::valueChanged,
                      this, [this](QVariant value) { emit gammaChanged(value.toFloat()); });
@@ -212,7 +216,7 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
         auto *gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
                                                     3, 2,
                                                     Qt3DRender::QGraphicsApiFilter::CoreProfile,
-                                                    QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"),
+                                                    QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert"),
                                                     m_gl3ShaderBuilder,
                                                     passName, passFilterValue);
         effect->addTechnique(gl3Technique);
@@ -220,7 +224,7 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
         auto *es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                     3, 0,
                                                     Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                    QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"),
+                                                    QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert"),
                                                     m_es3ShaderBuilder,
                                                     passName, passFilterValue);
         effect->addTechnique(es3Technique);
@@ -228,10 +232,25 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
         auto *es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                     2, 0,
                                                     Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                    QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"),
+                                                    QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert"),
                                                     m_es2ShaderBuilder,
                                                     passName, passFilterValue);
         effect->addTechnique(es2Technique);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        m_rhiShaderBuilder = new Qt3DRender::QShaderProgramBuilder();
+        m_rhiShaderBuilder->setEnabledLayers(enabledShaderLayers);
+        m_rhiShaderBuilder->setFragmentShaderGraph(QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/gammacorrection.frag.json")));
+
+        auto *rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI,
+                                                    1, 0,
+                                                    Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                                    QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"),
+                                                    m_rhiShaderBuilder,
+                                                    passName, passFilterValue);
+        effect->addTechnique(rhiTechnique);
+#endif
+
         effect->addParameter(m_gammaParameter);
         effect->addParameter(m_inputTextureParameter);
         effect->addParameter(m_exposureParameter);
@@ -239,8 +258,8 @@ ToneMappingAndGammaCorrectionEffect::ToneMappingAndGammaCorrectionEffect(Qt3DCor
 
     // Set up FrameGraph
     {
-        auto fullScreenQuad = new FullScreenQuad(gammaCorrectionMaterial, m_rootFrameGraphNode.data());
-        m_layer = fullScreenQuad->layer();
+        m_fsQuad = new FullScreenQuad(gammaCorrectionMaterial, m_rootFrameGraphNode.data());
+        m_layer = m_fsQuad->layer();
 
         // Set up FrameGraph
         auto layerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
@@ -318,6 +337,9 @@ void ToneMappingAndGammaCorrectionEffect::setToneMappingAlgorithm(ToneMappingAnd
     m_es2ShaderBuilder->setEnabledLayers(layers);
     m_es3ShaderBuilder->setEnabledLayers(layers);
     m_gl3ShaderBuilder->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    m_rhiShaderBuilder->setEnabledLayers(layers);
+#endif
 
     m_toneMappingAlgorithm = algorithm;
     emit toneMappingAlgorithmChanged(algorithm);

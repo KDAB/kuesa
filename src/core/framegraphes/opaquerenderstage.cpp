@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -38,7 +38,7 @@ QT_USE_NAMESPACE
 
 using namespace Kuesa;
 
-OpaqueRenderStage::OpaqueRenderStage(Qt3DCore::QNode *parent)
+OpaqueRenderStage::OpaqueRenderStage(Qt3DRender::QFrameGraphNode *parent)
     : AbstractRenderStage(parent)
 {
     setObjectName(QStringLiteral("KuesaOpaqueRenderStage"));
@@ -58,10 +58,11 @@ OpaqueRenderStage::OpaqueRenderStage(Qt3DCore::QNode *parent)
     m_sortPolicy = new Qt3DRender::QSortPolicy(m_states);
     m_sortPolicy->setSortTypes(QVector<Qt3DRender::QSortPolicy::SortType>
                                ({Qt3DRender::QSortPolicy::Material
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
                                  , Qt3DRender::QSortPolicy::Texture
-#endif
                                 }));
+    m_cullFace = new Qt3DRender::QCullFace;
+    m_cullFace->setMode(Qt3DRender::QCullFace::Back);
+    m_states->addRenderState(m_cullFace);
 }
 
 OpaqueRenderStage::~OpaqueRenderStage()
@@ -85,4 +86,14 @@ void OpaqueRenderStage::setZFilling(bool zFill)
 bool OpaqueRenderStage::zFilling() const
 {
     return m_depthTest->depthFunction() == Qt3DRender::QDepthTest::Equal;
+}
+
+void OpaqueRenderStage::setCullingMode(Qt3DRender::QCullFace::CullingMode mode)
+{
+    m_cullFace->setMode(mode);
+}
+
+Qt3DRender::QCullFace::CullingMode OpaqueRenderStage::cullingMode() const
+{
+    return m_cullFace->mode();
 }

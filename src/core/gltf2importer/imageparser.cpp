@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -28,6 +28,7 @@
 
 #include "imageparser_p.h"
 #include "gltf2uri_p.h"
+#include "assetkeyparser_p.h"
 
 #include <kuesa_p.h>
 #include <gltf2context_p.h>
@@ -56,12 +57,12 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
         const auto &bufferViewValue = imageObject.value(KEY_BUFFER_VIEW);
 
         if (uriValue.isUndefined() && bufferViewValue.isUndefined()) {
-            qCWarning(kuesa, "An image needs an uri or a bufferView");
+            qCWarning(Kuesa::kuesa, "An image needs an uri or a bufferView");
             return false;
         }
 
         if (!uriValue.isUndefined() && !bufferViewValue.isUndefined()) {
-            qCWarning(kuesa, "An image needs only a bufferView or an uri");
+            qCWarning(Kuesa::kuesa, "An image needs only a bufferView or an uri");
             return false;
         }
 
@@ -82,21 +83,26 @@ bool ImageParser::parse(const QJsonArray &imageArray, GLTF2Context *context) con
                 break;
             }
             }
-            image.key = uriString;
         } else {
-            const BufferView bufferData = context->bufferView(bufferViewValue.toInt());
-            image.data = bufferData.bufferData;
+            const qint32 bufferViewIdx = bufferViewValue.toInt();
+            if (bufferViewIdx >= 0 && bufferViewIdx < qint32(context->bufferViewCount())) {
+                const BufferView &bufferData = context->bufferView(bufferViewValue.toInt());
+                image.data = bufferData.bufferData;
+            } else {
+                qCWarning(Kuesa::kuesa) << "Image references an invalid buffer view";
+            }
 
             const auto &mimeTypeValue = imageObject.value(KEY_MIMETYPE);
             if (mimeTypeValue.isUndefined()) {
-                qCWarning(kuesa, "Missing mime type for image buffer");
+                qCWarning(Kuesa::kuesa, "Missing mime type for image buffer");
                 return false;
             }
             image.mimeType = mimeTypeValue.toString();
-            image.key = bufferViewValue.toString();
         }
 
         image.name = imageObject[KEY_NAME].toString();
+        // Parse Share Key Extension
+        AssetKeyParser::parse(image, imageObject);
 
         context->addImage(image);
     }

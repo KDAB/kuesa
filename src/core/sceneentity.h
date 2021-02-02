@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -30,6 +30,7 @@
 #define KUESA_SCENEENTITY_H
 
 #include <Qt3DCore/qentity.h>
+#include <Qt3DRender/qabstracttexture.h>
 #include <Kuesa/animationclipcollection.h>
 #include <Kuesa/armaturecollection.h>
 #include <Kuesa/effectcollection.h>
@@ -42,18 +43,22 @@
 #include <Kuesa/cameracollection.h>
 #include <Kuesa/entitycollection.h>
 #include <Kuesa/transformcollection.h>
+#include <Kuesa/placeholdercollection.h>
 #include <Kuesa/textureimagecollection.h>
 #include <Kuesa/animationmappingcollection.h>
+#include <Kuesa/reflectionplanecollection.h>
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/effectproperties.h>
 
 QT_BEGIN_NAMESPACE
 
-namespace QtDRender {
+namespace Qt3DRender {
 class QTextureLoader;
 }
 
 namespace Kuesa {
+
+class ReflectionPlane;
 
 namespace GLTF2Import {
 class GLTF2Parser;
@@ -76,7 +81,9 @@ class KUESASHARED_EXPORT SceneEntity : public Qt3DCore::QEntity
     Q_PROPERTY(Kuesa::AnimationMappingCollection *animationMappings READ animationMappings NOTIFY loadingDone)
     Q_PROPERTY(Qt3DRender::QAbstractTexture *brdfLut READ brdfLut CONSTANT)
     Q_PROPERTY(Kuesa::LightCollection *lights READ lights NOTIFY loadingDone)
-    Q_PROPERTY(Kuesa::TransformCollection *transforms READ transforms NOTIFY loadingDone REVISION 2)
+    Q_PROPERTY(Kuesa::TransformCollection *transforms READ transforms NOTIFY loadingDone)
+    Q_PROPERTY(Kuesa::ReflectionPlaneCollection *reflectionPlanes READ reflectionPlanes NOTIFY loadingDone)
+    Q_PROPERTY(Kuesa::PlaceholderCollection *placeholders READ placeholders NOTIFY loadingDone)
 
 public:
     SceneEntity(Qt3DCore::QNode *parent = nullptr);
@@ -113,8 +120,11 @@ public:
     EntityCollection *entities() const;
     Q_INVOKABLE Qt3DCore::QEntity *entity(const QString &name) const;
 
-    Q_REVISION(2) TransformCollection *transforms() const;
-    Q_REVISION(2) Q_INVOKABLE Qt3DCore::QTransform *transform(const QString &name) const;
+    TransformCollection *transforms() const;
+    Q_INVOKABLE Qt3DCore::QTransform *transform(const QString &name) const;
+
+    PlaceholderCollection *placeholders() const;
+    Q_INVOKABLE Kuesa::Placeholder *placeholder(const QString &name) const;
 
     TextureImageCollection *textureImages() const;
     Q_INVOKABLE Qt3DRender::QAbstractTextureImage *textureImage(const QString &name);
@@ -133,6 +143,9 @@ public:
     Kuesa::LightCollection *lights() const;
     Q_INVOKABLE Qt3DRender::QAbstractLight *light(const QString &name) const;
 
+    Kuesa::ReflectionPlaneCollection *reflectionPlanes() const;
+    Q_INVOKABLE Kuesa::ReflectionPlane *reflectionPlane(const QString &name) const;
+
 Q_SIGNALS:
     void loadingDone();
 
@@ -149,8 +162,10 @@ private:
     CameraCollection *m_cameras;
     EntityCollection *m_entities;
     TransformCollection *m_transforms;
+    PlaceholderCollection *m_placeholders;
     TextureImageCollection *m_textureImages;
     AnimationMappingCollection *m_animationMappings;
+    ReflectionPlaneCollection *m_reflectionPlanes;
 
     Qt3DRender::QTextureLoader *m_brdfLUT;
 };

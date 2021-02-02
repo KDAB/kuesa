@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
 <!-- iro-materials-gallery.qdoc -->
-  <title>Kuesa Iro-Materials-Gallery QML Example | Kuesa Runtime 1.2</title>
+  <title>Kuesa Iro-Materials-Gallery QML Example | Kuesa Runtime 1.3</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.2</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li>Kuesa Iro-Materials-Gallery QML Example</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.2 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><h1 class="title">Kuesa Iro-Materials-Gallery QML Example</h1>
 <span class="subtitle"></span>
 <pre class="cpp">
@@ -16,7 +16,7 @@
  #
  # This file is part of Kuesa.
  #
- # Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+ # Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
  # Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
  #
  # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -50,70 +50,12 @@
      main.cpp \
      materialinspector.cpp
 
- include($$KUESA_ROOT/kuesa-global.pri)
-
  RESOURCES += \
-     qml/qml.qrc
-
- gltf_dir = ../assets/models/iro-materials/
- gltf.files = \
-     $${gltf_dir}/iro-materials-gallery.bin \
-     $${gltf_dir}/iro-materials-gallery.gltf \
-     $${gltf_dir}/carpaint.png
-
- envmaps_dir = ../assets/envmaps/pink_sunrise
- envmaps.files = \
-     $${envmaps_dir}/pink_sunrise_16f_irradiance.dds \
-     $${envmaps_dir}/pink_sunrise_16f_radiance.dds \
-     $${envmaps_dir}/pink_sunrise_16f_specular.dds \
-     $${envmaps_dir}/pink_sunrise_skybox.dds
-
- android {
-     gltf.path = /assets
-     INSTALLS += gltf envmaps
-     DISTFILES += android/AndroidManifest.xml
-     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
- } else:ios {
-     gltf.path = &quot;/Library/Application Support&quot;
-     envmaps.path = &quot;/Library/Application Support&quot;
-     QMAKE_BUNDLE_DATA += gltf envmaps
-     OTHER_FILES += Info-ios.plist
-     QMAKE_INFO_PLIST = Info-ios.plist
-     OBJECTIVE_SOURCES += ios/iosutils.mm
-     QMAKE_ASSET_CATALOGS += ios/Images.xcassets
- } else:osx {
-     gltf.path = &quot;/Contents/Resources&quot;
-     envmaps.path = &quot;/Contents/Resources&quot;
-     QMAKE_BUNDLE_DATA += gltf envmaps
-     ICON = ../shared-utils/kuesa.icns
-     OTHER_FILES += Info-macos.plist
-     QMAKE_INFO_PLIST = Info-macos.plist
- } else {
-     RCC_BINARY_SOURCES += \
-         ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc \
-         ../assets/models/iro-materials/gltf.qrc
-
-     windows {
-         RC_ICONS = ../shared-utils/kuesa.ico
-         DESTDIR = $$KUESA_BUILD_ROOT/examples/kuesa/$$TARGET
-     }
-
-     # Build resources as external files
-     asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
-     asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
-     asset_builder.input = RCC_BINARY_SOURCES
-     asset_builder.output = $$OUT_PWD/resources/${QMAKE_FILE_IN_BASE}.qrb
-     asset_builder.CONFIG += no_link target_predeps
-     QMAKE_EXTRA_COMPILERS += asset_builder
-
-     ext_resources.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-     ext_resources.files = $$OUT_PWD/resources
-
-     INSTALLS += ext_resources
- }
+     qml/qml.qrc \
+     ../assets/models/iro-materials/gltf.qrc \
+     ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 
  target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
- target.files = $$PWD/*
  INSTALLS += target
 
  OTHER_FILES += doc/src/*

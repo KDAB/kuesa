@@ -1,9 +1,9 @@
 /*
-    light.inc.frag
+    light_unroll.inc.frag
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -55,9 +55,6 @@ uniform Light light_7;
 uniform int lightCount;
 
 // Pre-convolved environment maps
-struct EnvironmentLight {
-    FP samplerCube irradiance; // For diffuse contribution
-    FP samplerCube specular; // For specular contribution
-};
-uniform EnvironmentLight envLight;
+uniform FP samplerCube envLightIrradiance; // For diffuse contribution
+uniform FP samplerCube envLightSpecular; // For specular contribution
 uniform int envLightCount;

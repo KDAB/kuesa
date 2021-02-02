@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,7 +29,6 @@
 #include "abstractassetcollection.h"
 #include "kuesa_p.h"
 
-Q_LOGGING_CATEGORY(kuesa, "Kuesa", QtWarningMsg)
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
@@ -107,6 +106,17 @@ bool AbstractAssetCollection::contains(const QString &name) const
 }
 
 /*!
+ * Returns true if the asset \a asset exists in the collection
+ */
+bool AbstractAssetCollection::contains(Qt3DCore::QNode *asset) const
+{
+    for (const auto a : m_assets)
+        if (a == asset)
+            return true;
+    return false;
+}
+
+/*!
  * Removes the asset corresponding to \a name, if it exists
  */
 void AbstractAssetCollection::remove(const QString &name)
@@ -114,11 +124,11 @@ void AbstractAssetCollection::remove(const QString &name)
     auto asset = m_assets.take(name);
     if (asset) {
         //remove connection before deleting so handleAssetDestruction() is not called
-        removeDestructionConnection(asset);
+        removeDestructionConnection(name, asset);
         if (asset->parent() == this)
             delete asset;
-        emit namesChanged();
     }
+    emit namesChanged();
 }
 
 /*!
@@ -146,7 +156,7 @@ void AbstractAssetCollection::addAsset(const QString &name, Qt3DCore::QNode *ass
     if (nameExists) {
         auto oldAsset = it.value();
         //remove connection before deleting so handleAssetDestruction() is not called
-        removeDestructionConnection(oldAsset);
+        removeDestructionConnection(name, oldAsset);
         if (oldAsset->parent() == this)
             delete oldAsset;
     }
@@ -155,33 +165,33 @@ void AbstractAssetCollection::addAsset(const QString &name, Qt3DCore::QNode *ass
     if (asset->parent() == nullptr)
         asset->setParent(this);
     m_assets.insert(name, asset);
+    addDestructionConnection(name, asset);
 
     if (!nameExists)
         emit namesChanged();
 
-    addDestructionConnection(name, asset);
+    emit assetAdded(name);
 }
 
 void AbstractAssetCollection::handleAssetDestruction(const QString &name)
 {
     auto asset = m_assets.take(name);
-    Q_ASSERT(asset);
-    if (asset) {
-        removeDestructionConnection(asset);
-        emit namesChanged();
-    }
+    // Asset could be null if we have registered the same asset with 2 different names
+    if (asset)
+        removeDestructionConnection(name, asset);
+    emit namesChanged();
 }
 
 void AbstractAssetCollection::addDestructionConnection(const QString &name, Qt3DCore::QNode *asset)
 {
     // Remove destroyed nodes from our collection so we don't keep dangling pointer
     auto f = [this, name]() { handleAssetDestruction(name); };
-    m_destructionConnections.insert(asset, connect(asset, &Qt3DCore::QNode::nodeDestroyed, this, f));
+    m_destructionConnections.insert({ name, asset }, connect(asset, &Qt3DCore::QNode::nodeDestroyed, this, f));
 }
 
-void AbstractAssetCollection::removeDestructionConnection(Qt3DCore::QNode *asset)
+void AbstractAssetCollection::removeDestructionConnection(const QString &name, Qt3DCore::QNode *asset)
 {
-    QObject::disconnect(m_destructionConnections.take(asset));
+    QObject::disconnect(m_destructionConnections.take({ name, asset }));
 }
 
 void AbstractAssetCollection::clearDestructionConnections()

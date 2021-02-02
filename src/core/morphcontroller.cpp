@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -367,7 +367,7 @@ void MorphController::setMorphWeights(const QVariantList &morphWeights)
     };
 
     m_shouldEmitMorphWeights = false;
-    for (int i = 0, m = std::min(morphWeights.size(), m_count); i < m; ++i) {
+    for (int i = 0, m = std::min(int(morphWeights.size()), m_count); i < m; ++i) {
         const float w = morphWeights.at(i).toFloat();
         (this->*weightSetterFuncs[i])(w);
     }

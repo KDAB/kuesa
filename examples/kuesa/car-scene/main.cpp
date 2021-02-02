@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -33,10 +33,8 @@
 #include <QQmlContext>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
-#include <QStandardPaths>
-#include <QDir>
-#include <QDirIterator>
-#include <QResource>
+#include <QQuickStyle>
+#include <Kuesa/kuesa_global.h>
 
 #ifdef Q_OS_ANDROID
 #include <QOpenGLContext>
@@ -49,11 +47,11 @@ int main(int ac, char **av)
     {
         // Set OpenGL requirements
         QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-#ifndef QT_OPENGL_ES_2
+#ifndef KUESA_OPENGL_ES_2
         format.setVersion(4, 1);
         format.setProfile(QSurfaceFormat::CoreProfile);
 #else
-#ifndef QT_OPENGL_ES_3
+#ifndef KUESA_OPENGL_ES_3
         isES2 = true;
 #endif
         format.setVersion(3, 0);
@@ -64,18 +62,11 @@ int main(int ac, char **av)
         QSurfaceFormat::setDefaultFormat(format);
     }
 
+    QQuickStyle::setStyle("Material");
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
     QGuiApplication app(ac, av);
-
-    QDir resourceDir(app.applicationDirPath() + QStringLiteral("/resources"));
-    QDirIterator it(resourceDir, QDirIterator::IteratorFlag::NoIteratorFlags);
-    while (it.hasNext()) {
-        QString path = it.next();
-        if (!QResource::registerResource(path))
-            qWarning() << "Failed to load binary resources: " << path;
-        else
-            qDebug() << "Loaded binary resources: " << path;
-    }
 
     QCommandLineParser parser;
     parser.setApplicationDescription("KDAB Kuesa Demo");
@@ -105,9 +96,7 @@ int main(int ac, char **av)
     QQuickView view;
 
 #ifdef Q_OS_ANDROID
-    const QString assetsPrefix = QStringLiteral("assets:/");
-
-    // Qt builds for android may not define QT_OPENGL_ES_3
+    // Qt builds for android may not define KUESA_OPENGL_ES_3
     // Therefore we need a runtime check to see whether we can use ES 3.0 or not
     QOpenGLContext ctx;
     ctx.setFormat(QSurfaceFormat::defaultFormat());
@@ -115,13 +104,6 @@ int main(int ac, char **av)
         const QSurfaceFormat androidFormat = ctx.format();
         isES2 = (androidFormat.majorVersion() == 2);
     }
-
-#elif defined(Q_OS_IOS)
-    const QString assetsPrefix = QString(QStringLiteral("file://%1/Library/Application Support/")).arg(QGuiApplication::applicationDirPath());
-#elif defined(Q_OS_OSX)
-    const QString assetsPrefix = QString(QStringLiteral("file://%1/../Resources/")).arg(QGuiApplication::applicationDirPath());
-#else
-    const QString assetsPrefix = QStringLiteral("qrc:/");
 #endif
 
 #if defined(KUESA_DRACO_COMPRESSION)
@@ -143,7 +125,6 @@ int main(int ac, char **av)
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_view"), &view);
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_screenHeightScale"), screenHeightScale);
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_isFullScreen"), parser.isSet(fullscreenOption));
-    view.engine()->rootContext()->setContextProperty(QStringLiteral("_assetsPrefix"), assetsPrefix);
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_modelSuffix"), modelSuffix);
 
 #ifdef Q_OS_IOS

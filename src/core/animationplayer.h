@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -31,21 +31,20 @@
 
 #include <Qt3DCore/QNode>
 #include <Kuesa/kuesa_global.h>
+#include <Kuesa/KuesaNode>
+#include <Qt3DAnimation/qclock.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DAnimation {
 class QClipAnimator;
-class QClock;
 } // namespace Qt3DAnimation
 
 namespace Kuesa {
-class SceneEntity;
 
-class KUESASHARED_EXPORT AnimationPlayer : public Qt3DCore::QNode
+class KUESASHARED_EXPORT AnimationPlayer : public KuesaNode
 {
     Q_OBJECT
-    Q_PROPERTY(Kuesa::SceneEntity *sceneEntity READ sceneEntity WRITE setSceneEntity NOTIFY sceneEntityChanged)
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString clip READ clip WRITE setClip NOTIFY clipChanged)
     Q_PROPERTY(QString mapper READ mapper WRITE setMapper NOTIFY mapperChanged)
@@ -53,7 +52,7 @@ class KUESASHARED_EXPORT AnimationPlayer : public Qt3DCore::QNode
     Q_PROPERTY(int loops READ loopCount WRITE setLoopCount NOTIFY loopCountChanged)
     Q_PROPERTY(Qt3DAnimation::QClock *clock READ clock WRITE setClock NOTIFY clockChanged)
     Q_PROPERTY(float normalizedTime READ normalizedTime WRITE setNormalizedTime NOTIFY normalizedTimeChanged)
-    Q_PROPERTY(float duration READ duration NOTIFY durationChanged REVISION 1)
+    Q_PROPERTY(float duration READ duration NOTIFY durationChanged)
 public:
     enum Loops { Infinite = -1 };
     Q_ENUM(Loops) // LCOV_EXCL_LINE
@@ -68,7 +67,6 @@ public:
     explicit AnimationPlayer(Qt3DCore::QNode *parent = nullptr);
     ~AnimationPlayer();
 
-    SceneEntity *sceneEntity() const;
     Status status() const;
     QString clip() const;
     QString mapper() const;
@@ -83,7 +81,6 @@ public:
     void removeTarget(Qt3DCore::QNode *target);
 
 public Q_SLOTS:
-    void setSceneEntity(Kuesa::SceneEntity *sceneEntity);
     void setClip(const QString &clip);
     void setMapper(const QString &mapper);
     void setRunning(bool running);
@@ -93,9 +90,11 @@ public Q_SLOTS:
 
     void start();
     void stop();
+    void reset();
+    void restart();
+    void run(float fromTimeFraction, float toTimeFraction);
 
 Q_SIGNALS:
-    void sceneEntityChanged(const Kuesa::SceneEntity *sceneEntity);
     void statusChanged(Kuesa::AnimationPlayer::Status status);
     void clipChanged(const QString &clip);
     void mapperChanged(const QString &mapper);
@@ -109,14 +108,18 @@ private:
     void matchClipAndTargets();
     void setStatus(Status status);
     void updateSceneFromParent(Qt3DCore::QNode *parent);
+    void updateNormalizedTime(float index);
 
-    SceneEntity *m_sceneEntity;
     Status m_status;
     QString m_clip;
     QString m_mapper;
     QVector<Qt3DCore::QNode *> m_targets;
     Qt3DAnimation::QClipAnimator *m_animator;
     bool m_running;
+    float m_runToTimeFraction = -1;
+    QMetaObject::Connection m_loadingDoneConnection;
+    QMetaObject::Connection m_clipDestroyedConnection;
+    QMetaObject::Connection m_mapperDestroyedConnection;
 };
 
 } // namespace Kuesa

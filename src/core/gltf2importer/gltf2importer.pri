@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Mike Krus <mike.krus@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -30,6 +30,7 @@ SOURCES += \
     $$PWD/bufferparser.cpp \
     $$PWD/bufferviewsparser.cpp \
     $$PWD/cameraparser.cpp \
+    $$PWD/fovadaptor.cpp \
     $$PWD/gltf2context.cpp \
     $$PWD/bufferaccessorparser.cpp \
     $$PWD/meshparser.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
     $$PWD/layerparser.cpp \
     $$PWD/lightparser.cpp \
     $$PWD/imageparser.cpp \
+    $$PWD/textureinfoparser.cpp \
     $$PWD/texturesamplerparser.cpp \
     $$PWD/textureparser.cpp \
     $$PWD/animationparser.cpp \
@@ -47,12 +49,16 @@ SOURCES += \
     $$PWD/skinparser.cpp \
     $$PWD/gltf2uri.cpp \
     $$PWD/meshparser_utils.cpp \
-    $$PWD/gltf2options.cpp
+    $$PWD/gltf2options.cpp \
+    $$PWD/embeddedtextureimage.cpp
 
 HEADERS += \
+    $$PWD/assetcache_p.h \
+    $$PWD/assetkeyparser_p.h \
     $$PWD/bufferparser_p.h \
     $$PWD/bufferviewsparser_p.h \
     $$PWD/cameraparser_p.h \
+    $$PWD/fovadaptor_p.h \
     $$PWD/gltf2context_p.h \
     $$PWD/bufferaccessorparser_p.h \
     $$PWD/meshparser_p.h \
@@ -62,6 +68,7 @@ HEADERS += \
     $$PWD/layerparser_p.h \
     $$PWD/lightparser_p.h \
     $$PWD/imageparser_p.h \
+    $$PWD/textureinfoparser_p.h \
     $$PWD/texturesamplerparser_p.h \
     $$PWD/textureparser_p.h \
     $$PWD/animationparser_p.h \
@@ -71,4 +78,6 @@ HEADERS += \
     $$PWD/gltf2keys_p.h \
     $$PWD/gltf2uri_p.h \
     $$PWD/meshparser_utils_p.h \
-    $$PWD/gltf2options.h
+    $$PWD/gltf2options.h \
+    $$PWD/embeddedtextureimage_p.h
+

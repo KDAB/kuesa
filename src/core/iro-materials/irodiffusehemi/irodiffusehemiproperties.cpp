@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,6 +29,8 @@
 
 #include "irodiffusehemiproperties.h"
 #include "irodiffusehemishaderdata_p.h"
+#include <Qt3DCore/private/qnode_p.h>
+#include <Kuesa/private/empty2dtexture_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -60,13 +62,14 @@ namespace Kuesa {
 IroDiffuseHemiProperties::IroDiffuseHemiProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
     , m_shaderData(new IroDiffuseHemiShaderData(this))
+    , m_reflectionMap(nullptr)
+    , m_diffuseMap(nullptr)
 {
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::normalScalingChanged, this, &IroDiffuseHemiProperties::normalScalingChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::normalDisturbChanged, this, &IroDiffuseHemiProperties::normalDisturbChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::postVertexColorChanged, this, &IroDiffuseHemiProperties::postVertexColorChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::postHemiFilterChanged, this, &IroDiffuseHemiProperties::postHemiFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::postGainChanged, this, &IroDiffuseHemiProperties::postGainChanged);
-    QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::reflectionMapChanged, this, &IroDiffuseHemiProperties::reflectionMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::reflectionGainChanged, this, &IroDiffuseHemiProperties::reflectionGainChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::reflectionInnerFilterChanged, this, &IroDiffuseHemiProperties::reflectionInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::reflectionOuterFilterChanged, this, &IroDiffuseHemiProperties::reflectionOuterFilterChanged);
@@ -74,11 +77,13 @@ IroDiffuseHemiProperties::IroDiffuseHemiProperties(Qt3DCore::QNode *parent)
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::projectReflectionMapChanged, this, &IroDiffuseHemiProperties::projectReflectionMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseInnerFilterChanged, this, &IroDiffuseHemiProperties::diffuseInnerFilterChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseOuterFilterChanged, this, &IroDiffuseHemiProperties::diffuseOuterFilterChanged);
-    QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseMapChanged, this, &IroDiffuseHemiProperties::diffuseMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::diffuseGainChanged, this, &IroDiffuseHemiProperties::diffuseGainChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::usesDiffuseMapChanged, this, &IroDiffuseHemiProperties::usesDiffuseMapChanged);
     QObject::connect(m_shaderData, &IroDiffuseHemiShaderData::gltfYUpChanged, this, &IroDiffuseHemiProperties::gltfYUpChanged);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    setReflectionMap(new Empty2DTexture());
+    setDiffuseMap(new Empty2DTexture());
+#endif
 }
 
 IroDiffuseHemiProperties::~IroDiffuseHemiProperties() = default;
@@ -111,11 +116,6 @@ void IroDiffuseHemiProperties::setPostHemiFilter(const QVector3D &postHemiFilter
 void IroDiffuseHemiProperties::setPostGain(float postGain)
 {
     m_shaderData->setPostGain(postGain);
-}
-
-void IroDiffuseHemiProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
-{
-    m_shaderData->setReflectionMap(reflectionMap);
 }
 
 void IroDiffuseHemiProperties::setReflectionGain(float reflectionGain)
@@ -153,11 +153,6 @@ void IroDiffuseHemiProperties::setDiffuseOuterFilter(const QVector3D &diffuseOut
     m_shaderData->setDiffuseOuterFilter(diffuseOuterFilter);
 }
 
-void IroDiffuseHemiProperties::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
-{
-    m_shaderData->setDiffuseMap(diffuseMap);
-}
-
 void IroDiffuseHemiProperties::setDiffuseGain(float diffuseGain)
 {
     m_shaderData->setDiffuseGain(diffuseGain);
@@ -171,6 +166,40 @@ void IroDiffuseHemiProperties::setUsesDiffuseMap(bool usesDiffuseMap)
 void IroDiffuseHemiProperties::setGltfYUp(bool gltfYUp)
 {
     m_shaderData->setGltfYUp(gltfYUp);
+}
+
+void IroDiffuseHemiProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
+{
+    if (m_reflectionMap == reflectionMap)
+        return;
+
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_reflectionMap != nullptr)
+        d->unregisterDestructionHelper(m_reflectionMap);
+    m_reflectionMap = reflectionMap;
+    if (m_reflectionMap != nullptr) {
+        if (m_reflectionMap->parent() == nullptr)
+            m_reflectionMap->setParent(this);
+        d->registerDestructionHelper(m_reflectionMap, &IroDiffuseHemiProperties::setReflectionMap, m_reflectionMap);
+    }
+    emit reflectionMapChanged(m_reflectionMap);
+}
+
+void IroDiffuseHemiProperties::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
+{
+    if (m_diffuseMap == diffuseMap)
+        return;
+
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    if (m_diffuseMap != nullptr)
+        d->unregisterDestructionHelper(m_diffuseMap);
+    m_diffuseMap = diffuseMap;
+    if (m_diffuseMap != nullptr) {
+        if (m_diffuseMap->parent() == nullptr)
+            m_diffuseMap->setParent(this);
+        d->registerDestructionHelper(m_diffuseMap, &IroDiffuseHemiProperties::setDiffuseMap, m_diffuseMap);
+    }
+    emit diffuseMapChanged(m_diffuseMap);
 }
 
 
@@ -237,19 +266,6 @@ QVector3D IroDiffuseHemiProperties::postHemiFilter() const
 float IroDiffuseHemiProperties::postGain() const
 {
     return m_shaderData->postGain();
-}
-
-/*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroDiffuseHemiProperties::reflectionMap
-    Specifies the spherical environment map to use. It is expected to be in sRGB color space.
-*/
-/*!
-    \property IroDiffuseHemiProperties::reflectionMap
-    Specifies the spherical environment map to use. It is expected to be in sRGB color space.
-*/
-Qt3DRender::QAbstractTexture * IroDiffuseHemiProperties::reflectionMap() const
-{
-    return m_shaderData->reflectionMap();
 }
 
 /*!
@@ -344,19 +360,6 @@ QVector3D IroDiffuseHemiProperties::diffuseOuterFilter() const
 }
 
 /*!
-    \qmlproperty Qt3DRender::QAbstractTexture * IroDiffuseHemiProperties::diffuseMap
-    Specifies the diffuse map to use. It is expected to be in sRGB color space.
-*/
-/*!
-    \property IroDiffuseHemiProperties::diffuseMap
-    Specifies the diffuse map to use. It is expected to be in sRGB color space.
-*/
-Qt3DRender::QAbstractTexture * IroDiffuseHemiProperties::diffuseMap() const
-{
-    return m_shaderData->diffuseMap();
-}
-
-/*!
     \qmlproperty float IroDiffuseHemiProperties::diffuseGain
     Specifies the gain factor to be applied to the diffuse map lookup.
 */
@@ -393,6 +396,16 @@ bool IroDiffuseHemiProperties::usesDiffuseMap() const
 bool IroDiffuseHemiProperties::gltfYUp() const
 {
     return m_shaderData->gltfYUp();
+}
+
+Qt3DRender::QAbstractTexture * IroDiffuseHemiProperties::reflectionMap() const
+{
+    return m_reflectionMap;
+}
+
+Qt3DRender::QAbstractTexture * IroDiffuseHemiProperties::diffuseMap() const
+{
+    return m_diffuseMap;
 }
 
 

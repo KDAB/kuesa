@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -67,6 +67,7 @@ using namespace Kuesa;
  * \class Kuesa::GLTF2Importer
  * \inheaderfile Kuesa/GLTF2Importer
  * \inmodule Kuesa
+ * \inherits KuesaNode
  * \since Kuesa 1.0
  * \brief Imports glTF 2 scenes into a Qt 3D Scene.
  *
@@ -121,6 +122,7 @@ using namespace Kuesa;
  * \qmltype GLTF2Importer
  * \instantiates Kuesa::GLTF2Importer
  * \inqmlmodule Kuesa
+ * \inherits KuesaNode
  * \since Kuesa 1.0
  * \brief Imports glTF 2 scenes into a Qt 3D Scene.
  *
@@ -198,17 +200,17 @@ using namespace Kuesa;
  */
 
 /*!
-    \property Kuesa::GLTF2Importer::sceneEntity
-
-    \brief pointer to the SceneEntity with which assets will be registered as
-    they are loaded from the glTF file.
- */
-
-/*!
     \property Kuesa::GLTF2Importer::assignNames
 
     \brief if true, assets with no names will be added to collections with
     default names (default is false)
+ */
+
+/*!
+    \property Kuesa::GLTF2Importer::asynchronous
+
+    \brief if true, parsing is performed in a non blocking manner from a
+    secondary thread. This is false by default.
  */
 
 /*!
@@ -233,6 +235,13 @@ using namespace Kuesa;
 
     \brief if true, assets with no names will be added to collections with
     default names (default is false)
+ */
+
+/*!
+    \qmlproperty bool GLTF2Importer::asynchronous
+
+    \brief if true, parsing is performed in a non blocking manner from a
+    secondary thread. This is false by default.
  */
 
 /*!
@@ -279,14 +288,14 @@ using namespace Kuesa;
  */
 
 GLTF2Importer::GLTF2Importer(Qt3DCore::QNode *parent)
-    : Qt3DCore::QNode(parent)
+    : KuesaNode(parent)
     , m_context(new GLTF2Import::GLTF2Context)
     , m_root(nullptr)
     , m_currentSceneEntity(nullptr)
     , m_status(None)
-    , m_sceneEntity(nullptr)
     , m_assignNames(true)
     , m_activeSceneIndex(DefaultScene)
+    , m_asynchronous(false)
 {
 }
 
@@ -342,40 +351,16 @@ void GLTF2Importer::setStatus(Status status)
 }
 
 /*!
- * Returns the SceneEntity used to access asset collections
- */
-SceneEntity *GLTF2Importer::sceneEntity() const
-{
-    return m_sceneEntity;
-}
-
-/*!
- * Set the SceneEntity instance which should be used to access the collections
- * loaded assets will be registered with to \a sceneEntity.
- */
-void GLTF2Importer::setSceneEntity(SceneEntity *sceneEntity)
-{
-    if (m_sceneEntity == sceneEntity)
-        return;
-
-    if (m_sceneEntity)
-        disconnect(m_sceneEntityDestructionConnection);
-
-    m_sceneEntity = sceneEntity;
-    if (m_sceneEntity) {
-        auto f = [this]() { setSceneEntity(nullptr); };
-        m_sceneEntityDestructionConnection = connect(m_sceneEntity, &Qt3DCore::QNode::nodeDestroyed, this, f);
-    }
-
-    emit sceneEntityChanged(m_sceneEntity);
-}
-
-/*!
  * Returns \c true if assets with no names should be added to collections
  */
 bool GLTF2Importer::assignNames() const
 {
     return m_assignNames;
+}
+
+bool GLTF2Importer::asynchronous() const
+{
+    return m_asynchronous;
 }
 
 Kuesa::GLTF2Import::GLTF2Options *GLTF2Importer::options()
@@ -432,14 +417,42 @@ void GLTF2Importer::setActiveSceneIndex(int index)
     }
 }
 
+void GLTF2Importer::setAsynchronous(bool asynchronous)
+{
+    if (asynchronous == m_asynchronous)
+        return;
+    m_asynchronous = asynchronous;
+    emit asynchronousChanged(asynchronous);
+}
+
+/*!
+ * Reloads the current glTF file.
+ */
+void GLTF2Importer::reload()
+{
+    // Deletes the scene and reset it to nullptr
+    clear();
+
+    // Load only if the path is non empty
+    if (!m_source.isEmpty())
+        load();
+}
+
 void GLTF2Importer::load()
 {
     if (status() == Status::Loading)
         return;
 
     setStatus(GLTF2Importer::Status::Loading);
+
+    if (m_sceneEntity == nullptr) {
+        qCWarning(kuesa) << "No SceneEntity set on GLTF2Importer, aborting";
+        setStatus(GLTF2Importer::Status::Error);
+        return;
+    }
+
     // Reset context (except options)
-    m_context->reset();
+    m_context->reset(m_sceneEntity);
 
     // Clear list of available scenes
     m_availableScenes.clear();
@@ -448,58 +461,53 @@ void GLTF2Importer::load()
 
     // Ensure clear has been called before reloading
     Q_ASSERT(m_root == nullptr);
-#ifdef USE_THREADED_PARSER
-    auto parser = new GLTF2Import::ThreadedGLTF2Parser(m_context, m_sceneEntity, m_assignNames);
+    Q_ASSERT(m_parser == nullptr);
 
-    connect(
-            parser, &GLTF2Import::ThreadedGLTF2Parser::parsingFinished,
-            this, [this, parser](Qt3DCore::QEntity *root) {
-                m_root = root;
+    m_parser = new GLTF2Import::GLTF2Parser(m_sceneEntity, m_assignNames);
+    QObject::connect(m_parser, &GLTF2Import::GLTF2Parser::gltfFileParsingCompleted,
+                     this, &GLTF2Importer::handleGLTFParsingCompleted);
 
-                if (m_root) {
-                    m_root->setParent(this);
-                    if (m_sceneEntity)
-                        emit m_sceneEntity->loadingDone();
-                    setStatus(GLTF2Importer::Status::Ready);
-                } else {
-                    setStatus(GLTF2Importer::Status::Error);
-                }
+    m_parser->setContext(m_context);
+    m_parser->parse(path, m_asynchronous);
+}
 
-                parser->deleteLater();
-            },
-            Qt::QueuedConnection);
 
-    parser->parse(path);
-#else
-    GLTF2Import::GLTF2Parser parser(m_sceneEntity, m_assignNames);
-    parser.setContext(m_context);
-    const bool parsingSucceeded = parser.parse(path);
-    m_root = parser.contentRoot();
+void GLTF2Importer::handleGLTFParsingCompleted(bool parsingSucceeded)
+{
+    m_availableScenes.clear();
 
-    if (parsingSucceeded && m_root) {
+    if (parsingSucceeded) {
+        m_parser->generateContent();
+        m_root = m_parser->contentRoot();
 
-        for (int i = 0, m = m_context->scenesCount(); i < m; ++i) {
-            const GLTF2Import::Scene scene = m_context->scene(i);
-            m_availableScenes << scene.name;
+        if (m_root) {
+            for (int i = 0, m = m_context->scenesCount(); i < m; ++i) {
+                const GLTF2Import::Scene scene = m_context->scene(i);
+                m_availableScenes << scene.name;
+            }
+
+            // Load scene
+            m_sceneRootEntities = m_parser->sceneRoots();
+            setupActiveScene();
+
+            // Set parent on root content
+            m_root->setParent(this);
+
+            if (m_sceneEntity)
+                emit m_sceneEntity->loadingDone();
+            setStatus(GLTF2Importer::Status::Ready);
         }
-
-        // Load scene
-        m_sceneRootEntities = parser.sceneRoots();
-        setupActiveScene();
-
-        // Set parent on root content
-        m_root->setParent(this);
-
-        if (m_sceneEntity)
-            emit m_sceneEntity->loadingDone();
-        setStatus(GLTF2Importer::Status::Ready);
-    } else {
-        setStatus(GLTF2Importer::Status::Error);
     }
-#endif
+
+    if (!parsingSucceeded || !m_root)
+        setStatus(GLTF2Importer::Status::Error);
 
     emit availableScenesChanged(m_availableScenes);
+
+    delete m_parser;
+    m_parser = nullptr;
 }
+
 
 void GLTF2Importer::setupActiveScene()
 {
@@ -522,7 +530,7 @@ void GLTF2Importer::setupActiveScene()
     // Retrieve new scene tree
     if (m_activeSceneIndex > m_sceneRootEntities.size() ||
         m_activeSceneIndex < 0) {
-        qCWarning(kuesa) << "Unable to load glTF scene for index" << m_activeSceneIndex;
+        qCWarning(Kuesa::kuesa) << "Unable to load glTF scene for index" << m_activeSceneIndex;
         return;
     }
 
@@ -533,6 +541,10 @@ void GLTF2Importer::setupActiveScene()
 
 void GLTF2Importer::clear()
 {
+    delete m_parser;
+    m_parser = nullptr;
+
+    m_context->reset(m_sceneEntity);
     if (m_root != nullptr) {
         for (GLTF2Import::SceneRootEntity *sceneRoot : qAsConst(m_sceneRootEntities))
             sceneRoot->deleteLater();

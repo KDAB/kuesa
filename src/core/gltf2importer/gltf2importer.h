@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -32,13 +32,14 @@
 #include <Kuesa/kuesa_global.h>
 #include <QUrl>
 #include <QHash>
-#include <Qt3DCore/QNode>
+#include <Qt3DCore/QEntity>
 #include <Kuesa/GLTF2Options>
+#include <Kuesa/SceneEntity>
+#include <Kuesa/KuesaNode>
 
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-class SceneEntity;
 class GLTF2Exporter;
 
 namespace GLTF2Import {
@@ -48,16 +49,16 @@ class MaterialParser;
 class SceneRootEntity;
 }
 
-class KUESASHARED_EXPORT GLTF2Importer : public Qt3DCore::QNode
+class KUESASHARED_EXPORT GLTF2Importer : public KuesaNode
 {
     Q_OBJECT
     Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(Kuesa::GLTF2Importer::Status status READ status NOTIFY statusChanged)
-    Q_PROPERTY(Kuesa::SceneEntity *sceneEntity READ sceneEntity WRITE setSceneEntity NOTIFY sceneEntityChanged)
     Q_PROPERTY(bool assignNames READ assignNames WRITE setAssignNames NOTIFY assignNamesChanged)
     Q_PROPERTY(Kuesa::GLTF2Import::GLTF2Options *options READ options CONSTANT)
     Q_PROPERTY(int activeSceneIndex READ activeSceneIndex WRITE setActiveSceneIndex NOTIFY activeSceneIndexChanged)
     Q_PROPERTY(QStringList availableScenes READ availableScenes NOTIFY availableScenesChanged)
+    Q_PROPERTY(bool asynchronous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
 public:
     enum Status {
         None,
@@ -78,8 +79,8 @@ public:
 
     QUrl source() const;
     GLTF2Importer::Status status() const;
-    Kuesa::SceneEntity *sceneEntity() const;
     bool assignNames() const;
+    bool asynchronous() const;
     Kuesa::GLTF2Import::GLTF2Options *options();
     const Kuesa::GLTF2Import::GLTF2Options *options() const;
     int activeSceneIndex() const;
@@ -97,18 +98,19 @@ public:
 
 public Q_SLOTS:
     void setSource(const QUrl &source);
-    void setSceneEntity(Kuesa::SceneEntity *sceneEntity);
     void setAssignNames(bool assignNames);
     void setOptions(const Kuesa::GLTF2Import::GLTF2Options &options);
     void setActiveSceneIndex(int index);
+    void setAsynchronous(bool asynchronous);
+    void reload();
 
 Q_SIGNALS:
     void sourceChanged(const QUrl &source);
     void statusChanged(const Kuesa::GLTF2Importer::Status status);
-    void sceneEntityChanged(Kuesa::SceneEntity *sceneEntity);
     void assignNamesChanged(bool assignNames);
     void activeSceneIndexChanged(int activeSceneIndex);
     void availableScenesChanged(const QStringList &availableScenes);
+    void asynchronousChanged(bool asynchronous);
 
 private Q_SLOTS:
     void load();
@@ -117,6 +119,7 @@ private Q_SLOTS:
 private:
     void clear();
     void setStatus(Status status);
+    void handleGLTFParsingCompleted(bool parsingSucceeded);
 
     friend class GLTF2Exporter;
     friend class Kuesa::GLTF2Import::GLTF2Context;
@@ -127,12 +130,14 @@ private:
     GLTF2Import::SceneRootEntity *m_currentSceneEntity;
     QVector<GLTF2Import::SceneRootEntity *> m_sceneRootEntities;
     Status m_status;
-    Kuesa::SceneEntity *m_sceneEntity;
-    QMetaObject::Connection m_sceneEntityDestructionConnection;
     bool m_assignNames;
     Kuesa::GLTF2Import::GLTF2Options m_options;
     int m_activeSceneIndex;
     QStringList m_availableScenes;
+    bool m_asynchronous = false;
+
+    Kuesa::GLTF2Import::GLTF2Parser *m_parser = nullptr;
+
 
     friend class Kuesa::GLTF2Import::MaterialParser;
     struct CustomMaterialClassesTypeInfo {

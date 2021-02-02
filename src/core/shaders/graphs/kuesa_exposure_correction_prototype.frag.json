@@ -32,6 +32,16 @@
                         "minor": 0
                     },
                     "substitution": "highp vec3 $outputColor = $color * pow(2.0, $exposure);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "vec3 $outputColor = $color * pow(2.0, $exposure);"
                 }
             ]
         }

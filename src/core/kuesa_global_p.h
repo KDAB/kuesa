@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -45,6 +45,14 @@
 QT_BEGIN_NAMESPACE
 
 #define KUESA_PRIVATE_EXPORT KUESASHARED_EXPORT
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QGeometry>
+namespace Qt3DGeometry = Qt3DCore;
+#else
+#include <Qt3DRender/QGeometry>
+namespace Qt3DGeometry = Qt3DRender;
+#endif
 
 QT_END_NAMESPACE
 

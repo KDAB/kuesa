@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -29,7 +29,6 @@
 #include "unliteffect.h"
 
 #include <Qt3DCore/private/qnode_p.h>
-#include <Qt3DRender/qcullface.h>
 #include <Qt3DRender/qfilterkey.h>
 #include <Qt3DRender/qgraphicsapifilter.h>
 #include <Qt3DRender/qparameter.h>
@@ -48,39 +47,6 @@ QT_BEGIN_NAMESPACE
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
-class UnlitTechnique : public Qt3DRender::QTechnique
-{
-public:
-    enum Version {
-        GL3 = 0,
-        ES3,
-        ES2
-    };
-
-    explicit UnlitTechnique(Version version, Qt3DCore::QNode *parent = nullptr);
-
-    QStringList enabledLayers() const;
-    void setEnabledLayers(const QStringList &layers);
-    void setOpaque(bool opaque);
-    void setCullingMode(QCullFace::CullingMode mode);
-    QCullFace::CullingMode cullingMode() const;
-    void setAllowCulling(bool allowCulling);
-
-private:
-    Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QBlendEquation *m_blendEquation;
-    Qt3DRender::QBlendEquationArguments *m_blendArguments;
-    Qt3DRender::QShaderProgramBuilder *m_unlitShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
-    Qt3DRender::QShaderProgram *m_unlitShader;
-    Qt3DRender::QShaderProgram *m_zfillShader;
-    Qt3DRender::QRenderPass *m_zfillRenderPass;
-    Qt3DRender::QRenderPass *m_opaqueRenderPass;
-    Qt3DRender::QRenderPass *m_transparentRenderPass;
-    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
-};
-
 
 /*!
     \class Kuesa::UnlitEffect
@@ -144,6 +110,9 @@ UnlitTechnique::UnlitTechnique(UnlitTechnique::Version version, Qt3DCore::QNode 
         { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
         { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
         { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+    #if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+        { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+    #endif
     };
 
     graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -165,6 +134,10 @@ UnlitTechnique::UnlitTechnique(UnlitTechnique::Version version, Qt3DCore::QNode 
                    )"),
         QByteArray(R"(
                    #version 100
+                   void main() { }
+                   )"),
+        QByteArray(R"(
+                   #version 450
                    void main() { }
                    )")
     };
@@ -208,6 +181,10 @@ UnlitTechnique::UnlitTechnique(UnlitTechnique::Version version, Qt3DCore::QNode 
     transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
     transparentFilterKey->setValue(QStringLiteral("Transparent"));
 
+    auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
+    transparentPassFilterKey->setName(QStringLiteral("Pass"));
+    transparentPassFilterKey->setValue(QStringLiteral("pass0"));
+
     m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::Add);
     m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::SourceAlpha);
     m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::SourceAlpha);
@@ -219,6 +196,7 @@ UnlitTechnique::UnlitTechnique(UnlitTechnique::Version version, Qt3DCore::QNode 
     m_transparentRenderPass->addRenderState(m_blendEquation);
     m_transparentRenderPass->addRenderState(m_blendArguments);
     m_transparentRenderPass->addFilterKey(transparentFilterKey);
+    m_transparentRenderPass->addFilterKey(transparentPassFilterKey);
     m_transparentRenderPass->setEnabled(false);
     addRenderPass(m_transparentRenderPass);
 }
@@ -256,11 +234,14 @@ void UnlitTechnique::setAllowCulling(bool allowCulling)
     m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
 }
 
+QShaderProgramBuilder *UnlitTechnique::unlitShaderBuilder() const
+{
+    return m_unlitShaderBuilder;
+}
 
 UnlitEffect::UnlitEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
     , m_baseColorMapEnabled(false)
-    , m_usingColorAttribute(false)
 {
 
     const auto enabledLayers = QStringList{
@@ -285,10 +266,12 @@ UnlitEffect::UnlitEffect(Qt3DCore::QNode *parent)
     addTechnique(m_unlitES3Technique);
     addTechnique(m_unlitES2Technique);
 
-    QObject::connect(this, &GLTF2MaterialEffect::alphaCutoffEnabledChanged, this, &UnlitEffect::updateAlphaCutoffEnabled);
-    QObject::connect(this, &GLTF2MaterialEffect::opaqueChanged, this, &UnlitEffect::updateOpaque);
-    QObject::connect(this, &GLTF2MaterialEffect::doubleSidedChanged, this, &UnlitEffect::updateDoubleSided);
-    QObject::connect(this, &GLTF2MaterialEffect::useSkinningChanged, this, &UnlitEffect::updateSkinning);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique = new UnlitTechnique(UnlitTechnique::RHI, this);
+    m_unlitRHITechnique->setEnabledLayers(enabledLayers);
+
+    addTechnique(m_unlitRHITechnique);
+#endif
 }
 
 UnlitEffect::~UnlitEffect()
@@ -298,11 +281,6 @@ UnlitEffect::~UnlitEffect()
 bool UnlitEffect::isBaseColorMapEnabled() const
 {
     return m_baseColorMapEnabled;
-}
-
-bool UnlitEffect::isUsingColorAttribute() const
-{
-    return m_usingColorAttribute;
 }
 
 void UnlitEffect::setBaseColorMapEnabled(bool enabled)
@@ -322,27 +300,10 @@ void UnlitEffect::setBaseColorMapEnabled(bool enabled)
     m_unlitGL3Technique->setEnabledLayers(layers);
     m_unlitES3Technique->setEnabledLayers(layers);
     m_unlitES2Technique->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setEnabledLayers(layers);
+#endif
     emit baseColorMapEnabledChanged(enabled);
-}
-
-void UnlitEffect::setUsingColorAttribute(bool usingColorAttribute)
-{
-    if (m_usingColorAttribute == usingColorAttribute)
-        return;
-
-    auto layers = m_unlitGL3Technique->enabledLayers();
-    if (usingColorAttribute) {
-        layers.removeAll(QStringLiteral("noHasColorAttr"));
-        layers.append(QStringLiteral("hasColorAttr"));
-    } else {
-        layers.removeAll(QStringLiteral("hasColorAttr"));
-        layers.append(QStringLiteral("noHasColorAttr"));
-    }
-    m_usingColorAttribute = usingColorAttribute;
-    m_unlitGL3Technique->setEnabledLayers(layers);
-    m_unlitES3Technique->setEnabledLayers(layers);
-    m_unlitES2Technique->setEnabledLayers(layers);
-    emit usingColorAttributeChanged(usingColorAttribute);
 }
 
 void UnlitEffect::updateDoubleSided(bool doubleSided)
@@ -351,9 +312,12 @@ void UnlitEffect::updateDoubleSided(bool doubleSided)
     m_unlitGL3Technique->setCullingMode(cullingMode);
     m_unlitES3Technique->setCullingMode(cullingMode);
     m_unlitES2Technique->setCullingMode(cullingMode);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setCullingMode(cullingMode);
+#endif
 }
 
-void UnlitEffect::updateSkinning(bool useSkinning)
+void UnlitEffect::updateUsingSkinning(bool useSkinning)
 {
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_unlitGL3Technique->enabledLayers();
@@ -371,6 +335,11 @@ void UnlitEffect::updateSkinning(bool useSkinning)
     m_unlitGL3Technique->setAllowCulling(!useSkinning);
     m_unlitES3Technique->setAllowCulling(!useSkinning);
     m_unlitES2Technique->setAllowCulling(!useSkinning);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setEnabledLayers(layers);
+    m_unlitRHITechnique->setAllowCulling(!useSkinning);
+#endif
 }
 
 void UnlitEffect::updateOpaque(bool opaque)
@@ -378,6 +347,9 @@ void UnlitEffect::updateOpaque(bool opaque)
     m_unlitGL3Technique->setOpaque(opaque);
     m_unlitES3Technique->setOpaque(opaque);
     m_unlitES2Technique->setOpaque(opaque);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setOpaque(opaque);
+#endif
 }
 
 void UnlitEffect::updateAlphaCutoffEnabled(bool enabled)
@@ -393,6 +365,94 @@ void UnlitEffect::updateAlphaCutoffEnabled(bool enabled)
     m_unlitGL3Technique->setEnabledLayers(layers);
     m_unlitES3Technique->setEnabledLayers(layers);
     m_unlitES2Technique->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setEnabledLayers(layers);
+#endif
+}
+
+void UnlitEffect::updateUsingColorAttribute(bool usingColorAttribute)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noHasColorAttr"));
+    layers.removeAll(QStringLiteral("hasColorAttr"));
+    layers.removeAll(QStringLiteral("hasVertexColor"));
+    if (usingColorAttribute) {
+        layers.append(QStringLiteral("hasColorAttr"));
+        layers.append(QStringLiteral("hasVertexColor"));
+    } else {
+        layers.append(QStringLiteral("noHasColorAttr"));
+    }
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateUsingNormalAttribute(bool usingNormalAttribute)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexNormal"));
+    if (usingNormalAttribute)
+        layers.append(QStringLiteral("hasVertexNormal"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateUsingTangentAttribute(bool usingTangentAttribute)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexTangent"));
+    if (usingTangentAttribute)
+        layers.append(QStringLiteral("hasVertexTangent"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord"));
+    if (usingTexCoordAttribute)
+        layers.append(QStringLiteral("hasTexCoord"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord1"));
+    if (usingTexCoord1Attribute)
+        layers.append(QStringLiteral("hasTexCoord1"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateUsingMorphTargets(bool usingMorphTargets)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("morphtargets"));
+    if (usingMorphTargets)
+        layers.append(QStringLiteral("morphtargets"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateInstanced(bool instanced)
+{
+    auto layers = m_unlitGL3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
+
+    updateLayersOnTechniques(layers);
+}
+
+void UnlitEffect::updateLayersOnTechniques(const QStringList &layers)
+{
+    m_unlitGL3Technique->setEnabledLayers(layers);
+    m_unlitES3Technique->setEnabledLayers(layers);
+    m_unlitES2Technique->setEnabledLayers(layers);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_unlitRHITechnique->setEnabledLayers(layers);
+#endif
 }
 
 } // namespace Kuesa

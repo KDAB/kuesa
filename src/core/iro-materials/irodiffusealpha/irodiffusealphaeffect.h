@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -52,11 +52,22 @@ private:
     IroDiffuseAlphaTechnique *m_gl3Technique;
     IroDiffuseAlphaTechnique *m_es3Technique;
     IroDiffuseAlphaTechnique *m_es2Technique;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    IroDiffuseAlphaTechnique *m_rhiTechnique;
+#endif
+    void updateLayersOnTechniques(const QStringList &layers);
 
     void updateDoubleSided(bool doubleSided) override;
-    void updateSkinning(bool useSkinning) override;
+    void updateUsingSkinning(bool useSkinning) override;
     void updateOpaque(bool opaque) override;
     void updateAlphaCutoffEnabled(bool enabled) override;
+    void updateUsingColorAttribute(bool enabled) override;
+    void updateUsingNormalAttribute(bool enabled) override;
+    void updateUsingTangentAttribute(bool enabled) override;
+    void updateUsingTexCoordAttribute(bool enabled) override;
+    void updateUsingTexCoord1Attribute(bool enabled) override;
+    void updateUsingMorphTargets(bool enabled) override;
+    void updateInstanced(bool instanced) override;
 };
 
 } // namespace Kuesa

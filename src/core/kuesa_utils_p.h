@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -43,50 +43,61 @@
 #include <QtCore/QtGlobal>
 #include <QtCore/QVector>
 #include <Qt3DCore/QEntity>
+#include <vector>
+#include <algorithm>
 
 QT_BEGIN_NAMESPACE
 
+namespace Qt3DRender {
+namespace Render {
+class Entity;
+}
+} // namespace Qt3DRender
 namespace Kuesa {
+
+class ForwardRenderer;
 
 template<typename ComponentType>
 inline ComponentType *componentFromEntity(Qt3DCore::QEntity *e)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
     const auto cmps = e->componentsOfType<ComponentType>();
     return cmps.size() > 0 ? cmps.first() : nullptr;
-#else
-    ComponentType *typedComponent = nullptr;
-    const Qt3DCore::QComponentVector cmps = e->components();
-
-    for (Qt3DCore::QComponent *c : cmps) {
-        typedComponent = qobject_cast<ComponentType *>(c);
-        if (typedComponent != nullptr)
-            break;
-    }
-
-    return typedComponent;
-#endif
 }
 
 template<typename ComponentType>
 inline QVector<ComponentType *> componentsFromEntity(const Qt3DCore::QEntity *e)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
     return e->componentsOfType<ComponentType>();
-#else
-    QVector<ComponentType *> res;
-    ComponentType *typedComponent = nullptr;
-    const Qt3DCore::QComponentVector cmps = e->components();
-
-    for (Qt3DCore::QComponent *c : cmps) {
-        typedComponent = qobject_cast<ComponentType *>(c);
-        if (typedComponent != nullptr)
-            res << typedComponent;
-    }
-
-    return res;
-#endif
 }
+
+namespace Utils {
+
+template<typename T, typename U>
+bool contains(const std::vector<T>& destination, const U& element) noexcept
+{
+    return std::find(destination.begin(), destination.end(), element) != destination.end();
+}
+
+template<typename T, typename U>
+size_t removeAll(std::vector<T>& destination, const U& element) noexcept
+{
+    auto it = std::remove(destination.begin(), destination.end(), element);
+    if (it == destination.end())
+        return 0;
+    const size_t elementsRemoved = std::distance(it, destination.end());
+    destination.erase(it, destination.end());
+    return elementsRemoved;
+}
+
+// Find ForwardRenderer. This uses Qt3D's backend, so only works once the scene is
+// rendering.
+ForwardRenderer *findForwardRenderer(Qt3DCore::QNode *nodeInScene);
+
+// Find the root backend entity, which can be used to find the world bounding
+// volume
+Qt3DRender::Render::Entity *findBackendRootEntity(Qt3DCore::QNode *nodeInScene);
+
+} // namespace Utils
 
 } // namespace Kuesa
 

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -116,6 +116,8 @@ GLTF2Material::GLTF2Material(Qt3DCore::QNode *parent)
     : Qt3DRender::QMaterial(parent)
     , m_morphControllerParameter(new Qt3DRender::QParameter(QStringLiteral("morphWeights"), QVariant()))
     , m_textureTransformParameter(new Qt3DRender::QParameter(QStringLiteral("texCoordTransform"), QVariant::fromValue(QMatrix3x3())))
+    , m_shadowMapDepthTextureParameter(new Qt3DRender::QParameter(QStringLiteral("shadowMapDepthTextureArray"), {}))
+    , m_shadowMapCubeDepthTextureParameter(new Qt3DRender::QParameter(QStringLiteral("shadowMapCubeDepthTexture"), {}))
 {
     QObject::connect(m_morphControllerParameter, &Qt3DRender::QParameter::valueChanged,
                      this, wrapParameterSignal(this, &GLTF2Material::morphControllerChanged));
@@ -126,6 +128,8 @@ GLTF2Material::GLTF2Material(Qt3DCore::QNode *parent)
 
     addParameter(m_morphControllerParameter);
     addParameter(m_textureTransformParameter);
+    addParameter(m_shadowMapDepthTextureParameter);
+    addParameter(m_shadowMapCubeDepthTextureParameter);
 }
 
 GLTF2Material::~GLTF2Material()
@@ -143,6 +147,16 @@ void GLTF2Material::setMorphController(MorphController *morphController)
         return;
 
     m_morphControllerParameter->setValue(QVariant::fromValue(morphController));
+}
+
+void GLTF2Material::setShadowMapDepthTexture(Qt3DRender::QAbstractTexture *depthTexture)
+{
+    m_shadowMapDepthTextureParameter->setValue(QVariant::fromValue(depthTexture));
+}
+
+void GLTF2Material::setShadowMapCubeDepthTexture(Qt3DRender::QAbstractTexture *cubeDepthTexture)
+{
+    m_shadowMapCubeDepthTextureParameter->setValue(QVariant::fromValue(cubeDepthTexture));
 }
 
 } // namespace Kuesa

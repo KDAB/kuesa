@@ -1,4 +1,4 @@
-QT += 3danimation 3dquickextras kuesa kuesa-private
+QT += 3danimation 3dquickextras kuesa kuesa-private kuesautils
 CONFIG += resources_big
 VERSION = 1.0.0
 
@@ -6,11 +6,7 @@ include($$KUESA_ROOT/kuesa-global.pri)
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-SOURCES += main.cpp \
-    orbitcameracontroller.cpp
-
-HEADERS += \
-    orbitcameracontroller.h
+SOURCES += main.cpp
 
 RESOURCES += qml.qrc \
     ../../resources/resources.qrc \

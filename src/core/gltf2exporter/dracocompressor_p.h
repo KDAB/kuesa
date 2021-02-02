@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Jose Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -39,6 +39,7 @@
 
 #include <Kuesa/private/draco_prefix_p.h>
 #include <qtkuesa-config.h>
+#include <kuesa_global_p.h>
 #include <draco/compression/encode.h>
 #include <memory>
 #include <vector>
@@ -50,9 +51,6 @@ class EncoderBuffer;
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DRender {
-class QGeometry;
-}
 namespace Kuesa {
 class GLTF2ExportConfiguration;
 namespace DracoCompression {
@@ -62,7 +60,7 @@ struct CompressedMesh {
     std::vector<std::pair<QString, int>> attributes;
 };
 
-CompressedMesh compressMesh(const Qt3DRender::QGeometry &geometry, const GLTF2ExportConfiguration &);
+CompressedMesh compressMesh(const Qt3DGeometry::QGeometry &geometry, const GLTF2ExportConfiguration &);
 } // namespace DracoCompression
 } // namespace Kuesa
 

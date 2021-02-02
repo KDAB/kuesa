@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -38,10 +38,21 @@
 //
 
 #include <QByteArray>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QBuffer>
+#include <Qt3DCore/QAttribute>
+#else
 #include <Qt3DRender/QBuffer>
 #include <Qt3DRender/QAttribute>
+#endif
 
 QT_BEGIN_NAMESPACE
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+namespace Qt3DGeometry = Qt3DCore;
+#else
+namespace Qt3DGeometry = Qt3DRender;
+#endif
 
 namespace Kuesa {
 namespace GLTF2Import {
@@ -54,7 +65,7 @@ class GLTF2Context;
  * An invalid BufferView can be constructed if the data referenced by the buffer view does not exist.
  * In this case, the \a bufferData property will be a default constructed QByteArray and the rest of properties will be -1.
  */
-struct BufferView {
+struct Q_AUTOTEST_EXPORT BufferView {
     BufferView();
 
     QByteArray bufferData;
@@ -62,6 +73,7 @@ struct BufferView {
     qint32 bufferIdx;
     qint32 byteOffset;
     qint32 byteLength;
+    QString key;
 };
 
 class Q_AUTOTEST_EXPORT BufferViewsParser
@@ -70,10 +82,9 @@ public:
     BufferViewsParser();
 
     bool parse(const QJsonArray &bufferViewsArray, GLTF2Context *context);
-    QVector<BufferView> parse(const QJsonArray &bufferViewsArray, const QVector<QByteArray> &buffers);
 
 private:
-    Qt3DRender::QAttribute::AttributeType viewTargetFromJSON(int target);
+    Qt3DGeometry::QAttribute::AttributeType viewTargetFromJSON(int target);
 };
 
 } // namespace GLTF2Import

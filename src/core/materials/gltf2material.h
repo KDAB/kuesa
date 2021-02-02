@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -31,11 +31,11 @@
 
 #include <Qt3DRender/qmaterial.h>
 #include <Kuesa/kuesa_global.h>
+#include <Kuesa/morphcontroller.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
-class QAbstractTexture;
 class QParameter;
 } // namespace Qt3DRender
 
@@ -61,8 +61,13 @@ Q_SIGNALS:
 protected:
     explicit GLTF2Material(Qt3DCore::QNode *parent = nullptr);
 
+    void setShadowMapDepthTexture(Qt3DRender::QAbstractTexture *depthTexture);
+    void setShadowMapCubeDepthTexture(Qt3DRender::QAbstractTexture *cubeDepthTexture);
+
     Qt3DRender::QParameter *m_morphControllerParameter;
     Qt3DRender::QParameter *m_textureTransformParameter;
+    Qt3DRender::QParameter *m_shadowMapDepthTextureParameter;
+    Qt3DRender::QParameter *m_shadowMapCubeDepthTextureParameter;
 };
 
 } // namespace Kuesa

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -40,6 +40,7 @@
 // We mean it.
 //
 
+#include <Kuesa/private/kuesa_global_p.h>
 #include "abstractrenderstage_p.h"
 
 QT_BEGIN_NAMESPACE
@@ -50,20 +51,16 @@ class QSortPolicy;
 
 namespace Kuesa {
 
-class Q_AUTOTEST_EXPORT TransparentRenderStage : public AbstractRenderStage
+class KUESA_PRIVATE_EXPORT TransparentRenderStage : public AbstractRenderStage
 {
     Q_OBJECT
-    Q_PROPERTY(bool backToFrontSorting READ backToFrontSorting WRITE setBackToFrontSorting NOTIFY backToFrontSortingChanged)
 
 public:
-    TransparentRenderStage(Qt3DCore::QNode *parent = nullptr);
+    explicit TransparentRenderStage(Qt3DRender::QFrameGraphNode *parent = nullptr);
     ~TransparentRenderStage();
 
     bool backToFrontSorting() const;
     void setBackToFrontSorting(bool backToFrontSorting);
-
-Q_SIGNALS:
-    void backToFrontSortingChanged(bool backToFrontSorting);
 
 private:
     Qt3DRender::QSortPolicy *m_alphaSortPolicy;

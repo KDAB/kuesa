@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,17 +26,27 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <Kuesa/private/meshparser_utils_p.h>
-#include <Qt3DRender/QAttribute>
-#include <Qt3DRender/QGeometry>
-#include <Qt3DRender/QBuffer>
-#include <cstring>
+#include <Kuesa/private/kuesa_global_p.h>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QBuffer>
+#include <Qt3DCore/QGeometry>
+#include <Qt3DCore/QAttribute>
+#else
+#include <Qt3DRender/QBuffer>
+#include <Qt3DRender/QGeometry>
+#include <Qt3DRender/QAttribute>
+#endif
+#include <cstring>
+#include <cmath>
 #include <iostream>
 
 using namespace Kuesa;
 using namespace GLTF2Import;
+using namespace Qt3DRender;
+using namespace Qt3DGeometry;
 
 class tst_MeshParserUtils : public QObject
 {
@@ -47,95 +57,95 @@ private Q_SLOTS:
     void checkNeedsTangentAttribute()
     {
         // GIVEN
-        QScopedPointer<Qt3DRender::QGeometry> geo(new Qt3DRender::QGeometry());
+        QScopedPointer<QGeometry> geo(new QGeometry());
 
         // WHEN
         bool needsTangents = MeshParserUtils::needsTangentAttribute(geo.data(),
-                                                                    Qt3DRender::QGeometryRenderer::Triangles);
+                                                                    QGeometryRenderer::Triangles);
 
         // THEN
         QCOMPARE(needsTangents, false);
 
         // GIVEN
-        Qt3DRender::QAttribute *posAttr = new Qt3DRender::QAttribute();
-        posAttr->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
-        Qt3DRender::QAttribute *normalAttr = new Qt3DRender::QAttribute();
-        normalAttr->setName(Qt3DRender::QAttribute::defaultNormalAttributeName());
-        Qt3DRender::QAttribute *uvAttr = new Qt3DRender::QAttribute();
-        uvAttr->setName(Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName());
+        QAttribute *posAttr = new QAttribute();
+        posAttr->setName(QAttribute::defaultPositionAttributeName());
+        QAttribute *normalAttr = new QAttribute();
+        normalAttr->setName(QAttribute::defaultNormalAttributeName());
+        QAttribute *uvAttr = new QAttribute();
+        uvAttr->setName(QAttribute::defaultTextureCoordinateAttributeName());
         geo->addAttribute(posAttr);
         geo->addAttribute(normalAttr);
         geo->addAttribute(uvAttr);
 
         // WHEN
         needsTangents = MeshParserUtils::needsTangentAttribute(geo.data(),
-                                                               Qt3DRender::QGeometryRenderer::Triangles);
+                                                               QGeometryRenderer::Triangles);
 
         // THEN
         QCOMPARE(needsTangents, true);
 
         // WHEN
         needsTangents = MeshParserUtils::needsTangentAttribute(geo.data(),
-                                                               Qt3DRender::QGeometryRenderer::Lines);
+                                                               QGeometryRenderer::Lines);
 
         // THEN
         QCOMPARE(needsTangents, false);
 
         // WHEN
-        Qt3DRender::QAttribute *tangentAttr = new Qt3DRender::QAttribute();
-        tangentAttr->setName(Qt3DRender::QAttribute::defaultTangentAttributeName());
+        QAttribute *tangentAttr = new QAttribute();
+        tangentAttr->setName(QAttribute::defaultTangentAttributeName());
         geo->addAttribute(tangentAttr);
         needsTangents = MeshParserUtils::needsTangentAttribute(geo.data(),
-                                                               Qt3DRender::QGeometryRenderer::Triangles);
+                                                               QGeometryRenderer::Triangles);
         QCOMPARE(needsTangents, false);
     }
 
     void checkNeedsNormalAttribute()
     {
         // GIVEN
-        QScopedPointer<Qt3DRender::QGeometry> geo(new Qt3DRender::QGeometry());
+        QScopedPointer<QGeometry> geo(new QGeometry());
 
         // WHEN
         bool needsNormals = MeshParserUtils::needsNormalAttribute(geo.data(),
-                                                                  Qt3DRender::QGeometryRenderer::Triangles);
+                                                                  QGeometryRenderer::Triangles);
 
         // THEN
         QCOMPARE(needsNormals, false);
 
         // WHEN
-        Qt3DRender::QAttribute *posAttr = new Qt3DRender::QAttribute();
-        posAttr->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+        QAttribute *posAttr = new QAttribute();
+        posAttr->setName(QAttribute::defaultPositionAttributeName());
         geo->addAttribute(posAttr);
         needsNormals = MeshParserUtils::needsNormalAttribute(geo.data(),
-                                                             Qt3DRender::QGeometryRenderer::Triangles);
+                                                             QGeometryRenderer::Triangles);
 
         // THEN
         QCOMPARE(needsNormals, true);
 
         // WHEN
         needsNormals = MeshParserUtils::needsNormalAttribute(geo.data(),
-                                                             Qt3DRender::QGeometryRenderer::Lines);
+                                                             QGeometryRenderer::Lines);
 
         // THEN
         QCOMPARE(needsNormals, false);
 
         // WHEN
-        Qt3DRender::QAttribute *normalsAttr = new Qt3DRender::QAttribute();
-        normalsAttr->setName(Qt3DRender::QAttribute::defaultNormalAttributeName());
+        QAttribute *normalsAttr = new QAttribute();
+        normalsAttr->setName(QAttribute::defaultNormalAttributeName());
         geo->addAttribute(normalsAttr);
         needsNormals = MeshParserUtils::needsNormalAttribute(geo.data(),
-                                                             Qt3DRender::QGeometryRenderer::Triangles);
+                                                             QGeometryRenderer::Triangles);
         QCOMPARE(needsNormals, false);
     }
 
     void checkNormalGeneration_data()
     {
-        QTest::addColumn<Qt3DRender::QGeometry *>("geometry");
-        QTest::addColumn<Qt3DRender::QGeometryRenderer::PrimitiveType>("primitiveType");
+        QTest::addColumn<QGeometry *>("geometry");
+        QTest::addColumn<QGeometryRenderer::PrimitiveType>("primitiveType");
         QTest::addColumn<QVector<QVector3D>>("expectedNormals");
 
         {
-            Qt3DRender::QGeometry *geometry = new Qt3DRender::QGeometry();
+            QGeometry *geometry = new QGeometry();
 
             QVector<QVector3D> positions;
             QVector<QVector3D> normals;
@@ -159,27 +169,27 @@ private Q_SLOTS:
             rawData.resize(positions.size() * sizeof(QVector3D));
             std::memcpy(rawData.data(), positions.data(), positions.size() * sizeof(QVector3D));
 
-            Qt3DRender::QBuffer *buffer = new Qt3DRender::QBuffer();
+            Qt3DGeometry::QBuffer *buffer = new Qt3DGeometry::QBuffer();
             buffer->setData(rawData);
 
-            Qt3DRender::QAttribute *posAttribute = new Qt3DRender::QAttribute();
-            posAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+            QAttribute *posAttribute = new QAttribute();
+            posAttribute->setName(QAttribute::defaultPositionAttributeName());
             posAttribute->setBuffer(buffer);
             posAttribute->setByteOffset(0);
             posAttribute->setByteStride(0);
-            posAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+            posAttribute->setVertexBaseType(QAttribute::Float);
             posAttribute->setVertexSize(3);
-            posAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+            posAttribute->setAttributeType(QAttribute::VertexAttribute);
             posAttribute->setCount(6);
 
             geometry->addAttribute(posAttribute);
 
             QTest::newRow("NonIndexedTriangles") << geometry
-                                                 << Qt3DRender::QGeometryRenderer::Triangles
+                                                 << QGeometryRenderer::Triangles
                                                  << normals;
         }
         {
-            Qt3DRender::QGeometry *geometry = new Qt3DRender::QGeometry();
+            QGeometry *geometry = new QGeometry();
 
             QVector<QVector3D> positions;
             QVector<QVector3D> normals;
@@ -202,27 +212,27 @@ private Q_SLOTS:
             rawData.resize(positions.size() * sizeof(QVector3D));
             std::memcpy(rawData.data(), positions.data(), positions.size() * sizeof(QVector3D));
 
-            Qt3DRender::QBuffer *buffer = new Qt3DRender::QBuffer();
+            Qt3DGeometry::QBuffer *buffer = new Qt3DGeometry::QBuffer();
             buffer->setData(rawData);
 
-            Qt3DRender::QAttribute *posAttribute = new Qt3DRender::QAttribute();
-            posAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+            QAttribute *posAttribute = new QAttribute();
+            posAttribute->setName(QAttribute::defaultPositionAttributeName());
             posAttribute->setBuffer(buffer);
             posAttribute->setByteOffset(0);
             posAttribute->setByteStride(0);
-            posAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+            posAttribute->setVertexBaseType(QAttribute::Float);
             posAttribute->setVertexSize(3);
-            posAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+            posAttribute->setAttributeType(QAttribute::VertexAttribute);
             posAttribute->setCount(4);
 
             geometry->addAttribute(posAttribute);
 
             QTest::newRow("NonIndexedTriangleStrip") << geometry
-                                                     << Qt3DRender::QGeometryRenderer::TriangleStrip
+                                                     << QGeometryRenderer::TriangleStrip
                                                      << normals;
         }
         {
-            Qt3DRender::QGeometry *geometry = new Qt3DRender::QGeometry();
+            QGeometry *geometry = new QGeometry();
 
             QVector<QVector3D> positions;
             QVector<QVector3D> normals;
@@ -245,27 +255,27 @@ private Q_SLOTS:
             rawData.resize(positions.size() * sizeof(QVector3D));
             std::memcpy(rawData.data(), positions.data(), positions.size() * sizeof(QVector3D));
 
-            Qt3DRender::QBuffer *buffer = new Qt3DRender::QBuffer();
+            Qt3DGeometry::QBuffer *buffer = new Qt3DGeometry::QBuffer();
             buffer->setData(rawData);
 
-            Qt3DRender::QAttribute *posAttribute = new Qt3DRender::QAttribute();
-            posAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+            QAttribute *posAttribute = new QAttribute();
+            posAttribute->setName(QAttribute::defaultPositionAttributeName());
             posAttribute->setBuffer(buffer);
             posAttribute->setByteOffset(0);
             posAttribute->setByteStride(0);
-            posAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+            posAttribute->setVertexBaseType(QAttribute::Float);
             posAttribute->setVertexSize(3);
-            posAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+            posAttribute->setAttributeType(QAttribute::VertexAttribute);
             posAttribute->setCount(4);
 
             geometry->addAttribute(posAttribute);
 
             QTest::newRow("NonIndexedTriangleFan") << geometry
-                                                   << Qt3DRender::QGeometryRenderer::TriangleFan
+                                                   << QGeometryRenderer::TriangleFan
                                                    << normals;
         }
         {
-            Qt3DRender::QGeometry *geometry = new Qt3DRender::QGeometry();
+            QGeometry *geometry = new QGeometry();
 
             QVector<QVector3D> positions;
             QVector<ushort> indices;
@@ -297,40 +307,40 @@ private Q_SLOTS:
             rawIndexData.resize(indices.size() * sizeof(indices[0]));
             std::memcpy(rawIndexData.data(), indices.data(), indices.size() * sizeof(indices[0]));
 
-            Qt3DRender::QBuffer *vertexBuffer = new Qt3DRender::QBuffer();
+            Qt3DGeometry::QBuffer *vertexBuffer = new Qt3DGeometry::QBuffer();
             vertexBuffer->setData(rawPositionData);
 
-            Qt3DRender::QBuffer *indexBuffer = new Qt3DRender::QBuffer();
+            Qt3DGeometry::QBuffer *indexBuffer = new Qt3DGeometry::QBuffer();
             indexBuffer->setData(rawIndexData);
 
-            Qt3DRender::QAttribute *posAttribute = new Qt3DRender::QAttribute();
-            posAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+            QAttribute *posAttribute = new QAttribute();
+            posAttribute->setName(QAttribute::defaultPositionAttributeName());
             posAttribute->setBuffer(vertexBuffer);
             posAttribute->setByteOffset(0);
             posAttribute->setByteStride(0);
-            posAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+            posAttribute->setVertexBaseType(QAttribute::Float);
             posAttribute->setVertexSize(3);
-            posAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+            posAttribute->setAttributeType(QAttribute::VertexAttribute);
             posAttribute->setCount(4);
 
-            Qt3DRender::QAttribute *indexAttribute = new Qt3DRender::QAttribute();
+            QAttribute *indexAttribute = new QAttribute();
             indexAttribute->setBuffer(indexBuffer);
             indexAttribute->setByteOffset(0);
             indexAttribute->setByteStride(0);
-            indexAttribute->setVertexBaseType(Qt3DRender::QAttribute::UnsignedShort);
+            indexAttribute->setVertexBaseType(QAttribute::UnsignedShort);
             indexAttribute->setVertexSize(1);
-            indexAttribute->setAttributeType(Qt3DRender::QAttribute::IndexAttribute);
+            indexAttribute->setAttributeType(QAttribute::IndexAttribute);
             indexAttribute->setCount(6);
 
             geometry->addAttribute(indexAttribute);
             geometry->addAttribute(posAttribute);
 
             QTest::newRow("IndexedTriangles") << geometry
-                                              << Qt3DRender::QGeometryRenderer::Triangles
+                                              << QGeometryRenderer::Triangles
                                               << normals;
         }
         {
-            Qt3DRender::QGeometry *geometry = new Qt3DRender::QGeometry();
+            QGeometry *geometry = new QGeometry();
 
             QVector<QVector3D> positions;
             QVector<ushort> indices;
@@ -361,40 +371,40 @@ private Q_SLOTS:
             rawIndexData.resize(indices.size() * sizeof(indices[0]));
             std::memcpy(rawIndexData.data(), indices.data(), indices.size() * sizeof(indices[0]));
 
-            Qt3DRender::QBuffer *vertexBuffer = new Qt3DRender::QBuffer();
+            Qt3DGeometry::QBuffer *vertexBuffer = new Qt3DGeometry::QBuffer();
             vertexBuffer->setData(rawPositionData);
 
-            Qt3DRender::QBuffer *indexBuffer = new Qt3DRender::QBuffer();
+            Qt3DGeometry::QBuffer *indexBuffer = new Qt3DGeometry::QBuffer();
             indexBuffer->setData(rawIndexData);
 
-            Qt3DRender::QAttribute *posAttribute = new Qt3DRender::QAttribute();
-            posAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+            QAttribute *posAttribute = new QAttribute();
+            posAttribute->setName(QAttribute::defaultPositionAttributeName());
             posAttribute->setBuffer(vertexBuffer);
             posAttribute->setByteOffset(0);
             posAttribute->setByteStride(0);
-            posAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+            posAttribute->setVertexBaseType(QAttribute::Float);
             posAttribute->setVertexSize(3);
-            posAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+            posAttribute->setAttributeType(QAttribute::VertexAttribute);
             posAttribute->setCount(4);
 
-            Qt3DRender::QAttribute *indexAttribute = new Qt3DRender::QAttribute();
+            QAttribute *indexAttribute = new QAttribute();
             indexAttribute->setBuffer(indexBuffer);
             indexAttribute->setByteOffset(0);
             indexAttribute->setByteStride(0);
-            indexAttribute->setVertexBaseType(Qt3DRender::QAttribute::UnsignedShort);
+            indexAttribute->setVertexBaseType(QAttribute::UnsignedShort);
             indexAttribute->setVertexSize(1);
-            indexAttribute->setAttributeType(Qt3DRender::QAttribute::IndexAttribute);
+            indexAttribute->setAttributeType(QAttribute::IndexAttribute);
             indexAttribute->setCount(4);
 
             geometry->addAttribute(indexAttribute);
             geometry->addAttribute(posAttribute);
 
             QTest::newRow("IndexedTriangleStrip") << geometry
-                                                  << Qt3DRender::QGeometryRenderer::TriangleStrip
+                                                  << QGeometryRenderer::TriangleStrip
                                                   << normals;
         }
         {
-            Qt3DRender::QGeometry *geometry = new Qt3DRender::QGeometry();
+            QGeometry *geometry = new QGeometry();
 
             QVector<QVector3D> positions;
             QVector<ushort> indices;
@@ -425,36 +435,36 @@ private Q_SLOTS:
             rawIndexData.resize(indices.size() * sizeof(indices[0]));
             std::memcpy(rawIndexData.data(), indices.data(), indices.size() * sizeof(indices[0]));
 
-            Qt3DRender::QBuffer *vertexBuffer = new Qt3DRender::QBuffer();
+            Qt3DGeometry::QBuffer *vertexBuffer = new Qt3DGeometry::QBuffer();
             vertexBuffer->setData(rawPositionData);
 
-            Qt3DRender::QBuffer *indexBuffer = new Qt3DRender::QBuffer();
+            Qt3DGeometry::QBuffer *indexBuffer = new Qt3DGeometry::QBuffer();
             indexBuffer->setData(rawIndexData);
 
-            Qt3DRender::QAttribute *posAttribute = new Qt3DRender::QAttribute();
-            posAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+            QAttribute *posAttribute = new QAttribute();
+            posAttribute->setName(QAttribute::defaultPositionAttributeName());
             posAttribute->setBuffer(vertexBuffer);
             posAttribute->setByteOffset(0);
             posAttribute->setByteStride(0);
-            posAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+            posAttribute->setVertexBaseType(QAttribute::Float);
             posAttribute->setVertexSize(3);
-            posAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+            posAttribute->setAttributeType(QAttribute::VertexAttribute);
             posAttribute->setCount(4);
 
-            Qt3DRender::QAttribute *indexAttribute = new Qt3DRender::QAttribute();
+            QAttribute *indexAttribute = new QAttribute();
             indexAttribute->setBuffer(indexBuffer);
             indexAttribute->setByteOffset(0);
             indexAttribute->setByteStride(0);
-            indexAttribute->setVertexBaseType(Qt3DRender::QAttribute::UnsignedShort);
+            indexAttribute->setVertexBaseType(QAttribute::UnsignedShort);
             indexAttribute->setVertexSize(1);
-            indexAttribute->setAttributeType(Qt3DRender::QAttribute::IndexAttribute);
+            indexAttribute->setAttributeType(QAttribute::IndexAttribute);
             indexAttribute->setCount(4);
 
             geometry->addAttribute(indexAttribute);
             geometry->addAttribute(posAttribute);
 
             QTest::newRow("IndexedTriangleFan") << geometry
-                                                << Qt3DRender::QGeometryRenderer::TriangleFan
+                                                << QGeometryRenderer::TriangleFan
                                                 << normals;
         }
     }
@@ -462,8 +472,8 @@ private Q_SLOTS:
     void checkNormalGeneration()
     {
         // GIVEN
-        QFETCH(Qt3DRender::QGeometry *, geometry);
-        QFETCH(Qt3DRender::QGeometryRenderer::PrimitiveType, primitiveType);
+        QFETCH(QGeometry *, geometry);
+        QFETCH(QGeometryRenderer::PrimitiveType, primitiveType);
         QFETCH(QVector<QVector3D>, expectedNormals);
 
         // THEN
@@ -476,19 +486,19 @@ private Q_SLOTS:
         // Check we have no IndexAttribute
         const auto attributes = geometry->attributes();
         QVERIFY(std::find_if(std::begin(attributes), std::end(attributes),
-                             [](Qt3DRender::QAttribute *attr) {
-                                 return attr->attributeType() == Qt3DRender::QAttribute::IndexAttribute;
+                             [](QAttribute *attr) {
+                                 return attr->attributeType() == QAttribute::IndexAttribute;
                              }) == std::end(attributes));
 
-        QVERIFY(!MeshParserUtils::needsNormalAttribute(geometry, Qt3DRender::QGeometryRenderer::Triangles));
+        QVERIFY(!MeshParserUtils::needsNormalAttribute(geometry, QGeometryRenderer::Triangles));
 
         auto normalAttrIt = std::find_if(std::begin(attributes), std::end(attributes),
-                                         [](Qt3DRender::QAttribute *attr) {
-                                             return attr->name() == Qt3DRender::QAttribute::defaultNormalAttributeName();
+                                         [](QAttribute *attr) {
+                                             return attr->name() == QAttribute::defaultNormalAttributeName();
                                          });
         QVERIFY(normalAttrIt != std::end(attributes));
-        Qt3DRender::QAttribute *normalAttribute = *normalAttrIt;
-        Qt3DRender::QBuffer *normalBuffer = normalAttribute->buffer();
+        QAttribute *normalAttribute = *normalAttrIt;
+        Qt3DGeometry::QBuffer *normalBuffer = normalAttribute->buffer();
         const QByteArray rawData = normalBuffer->data();
         const QVector3D *normals = reinterpret_cast<const QVector3D *>(rawData.constData());
 
@@ -501,7 +511,7 @@ private Q_SLOTS:
     void checkNormalMorphTargetGeneration()
     {
         // GIVEN
-        Qt3DRender::QGeometry *geometry = new Qt3DRender::QGeometry();
+        QGeometry *geometry = new QGeometry();
 
         QVector<QVector3D> positions;
         QVector<QVector3D> morphPositions;
@@ -531,64 +541,64 @@ private Q_SLOTS:
         rawMorphPositionData.resize(morphPositions.size() * sizeof(QVector3D));
         std::memcpy(rawMorphPositionData.data(), morphPositions.data(), morphPositions.size() * sizeof(QVector3D));
 
-        Qt3DRender::QBuffer *vertexBuffer = new Qt3DRender::QBuffer();
+        Qt3DGeometry::QBuffer *vertexBuffer = new Qt3DGeometry::QBuffer();
         vertexBuffer->setData(rawPositionData);
 
-        Qt3DRender::QBuffer *morphVertexBuffer = new Qt3DRender::QBuffer();
+        Qt3DGeometry::QBuffer *morphVertexBuffer = new Qt3DGeometry::QBuffer();
         morphVertexBuffer->setData(rawMorphPositionData);
 
-        Qt3DRender::QAttribute *posAttribute = new Qt3DRender::QAttribute();
-        posAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+        QAttribute *posAttribute = new QAttribute();
+        posAttribute->setName(QAttribute::defaultPositionAttributeName());
         posAttribute->setBuffer(vertexBuffer);
         posAttribute->setByteOffset(0);
         posAttribute->setByteStride(0);
-        posAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+        posAttribute->setVertexBaseType(QAttribute::Float);
         posAttribute->setVertexSize(3);
-        posAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+        posAttribute->setAttributeType(QAttribute::VertexAttribute);
         posAttribute->setCount(6);
 
-        Qt3DRender::QAttribute *posMorphAttribute = new Qt3DRender::QAttribute();
-        posMorphAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName() + QStringLiteral("_1"));
+        QAttribute *posMorphAttribute = new QAttribute();
+        posMorphAttribute->setName(QAttribute::defaultPositionAttributeName() + QStringLiteral("_1"));
         posMorphAttribute->setBuffer(morphVertexBuffer);
         posMorphAttribute->setByteOffset(0);
         posMorphAttribute->setByteStride(0);
-        posMorphAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+        posMorphAttribute->setVertexBaseType(QAttribute::Float);
         posMorphAttribute->setVertexSize(3);
-        posMorphAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+        posMorphAttribute->setAttributeType(QAttribute::VertexAttribute);
         posMorphAttribute->setCount(6);
 
         geometry->addAttribute(posAttribute);
         geometry->addAttribute(posMorphAttribute);
 
         // THEN
-        QVERIFY(MeshParserUtils::needsNormalAttribute(geometry, Qt3DRender::QGeometryRenderer::Triangles));
+        QVERIFY(MeshParserUtils::needsNormalAttribute(geometry, QGeometryRenderer::Triangles));
 
         // WHEN
-        MeshParserUtils::createNormalsForGeometry(geometry, Qt3DRender::QGeometryRenderer::Triangles);
+        MeshParserUtils::createNormalsForGeometry(geometry, QGeometryRenderer::Triangles);
 
         // THEN
-        QVERIFY(!MeshParserUtils::needsNormalAttribute(geometry, Qt3DRender::QGeometryRenderer::Triangles));
+        QVERIFY(!MeshParserUtils::needsNormalAttribute(geometry, QGeometryRenderer::Triangles));
 
         const auto attributes = geometry->attributes();
         auto normalMorphAttrIt = std::find_if(std::begin(attributes), std::end(attributes),
-                                              [](Qt3DRender::QAttribute *attr) {
-                                                  return attr->name() == Qt3DRender::QAttribute::defaultNormalAttributeName() + QStringLiteral("_1");
+                                              [](QAttribute *attr) {
+                                                  return attr->name() == QAttribute::defaultNormalAttributeName() + QStringLiteral("_1");
                                               });
 
         auto normalAttrIt = std::find_if(std::begin(attributes), std::end(attributes),
-                                         [](Qt3DRender::QAttribute *attr) {
-                                             return attr->name() == Qt3DRender::QAttribute::defaultNormalAttributeName();
+                                         [](QAttribute *attr) {
+                                             return attr->name() == QAttribute::defaultNormalAttributeName();
                                          });
         QVERIFY(normalAttrIt != std::end(attributes));
         QVERIFY(normalMorphAttrIt != std::end(attributes));
 
-        Qt3DRender::QAttribute *normalAttribute = *normalAttrIt;
-        Qt3DRender::QBuffer *normalBuffer = normalAttribute->buffer();
+        QAttribute *normalAttribute = *normalAttrIt;
+        Qt3DGeometry::QBuffer *normalBuffer = normalAttribute->buffer();
         const QByteArray rawData = normalBuffer->data();
         const QVector3D *normals = reinterpret_cast<const QVector3D *>(rawData.constData());
 
-        Qt3DRender::QAttribute *normalMorphAttribute = *normalMorphAttrIt;
-        Qt3DRender::QBuffer *normalMorphBuffer = normalMorphAttribute->buffer();
+        QAttribute *normalMorphAttribute = *normalMorphAttrIt;
+        Qt3DGeometry::QBuffer *normalMorphBuffer = normalMorphAttribute->buffer();
         const QByteArray rawMorphData = normalMorphBuffer->data();
         const QVector3D *morphNormals = reinterpret_cast<const QVector3D *>(rawMorphData.constData());
 
@@ -604,7 +614,7 @@ private Q_SLOTS:
     void checkTangentMorphTargetGeneration()
     {
         // GIVEN
-        Qt3DRender::QGeometry *geometry = new Qt3DRender::QGeometry();
+        QGeometry *geometry = new QGeometry();
 
         QVector<QVector3D> positions;
         QVector<QVector2D> uv;
@@ -646,43 +656,43 @@ private Q_SLOTS:
         rawUVData.resize(uv.size() * sizeof(QVector2D));
         std::memcpy(rawUVData.data(), uv.data(), uv.size() * sizeof(QVector2D));
 
-        Qt3DRender::QBuffer *vertexBuffer = new Qt3DRender::QBuffer();
+        Qt3DGeometry::QBuffer *vertexBuffer = new Qt3DGeometry::QBuffer();
         vertexBuffer->setData(rawPositionData);
 
-        Qt3DRender::QBuffer *morphVertexBuffer = new Qt3DRender::QBuffer();
+        Qt3DGeometry::QBuffer *morphVertexBuffer = new Qt3DGeometry::QBuffer();
         morphVertexBuffer->setData(rawMorphPositionData);
 
-        Qt3DRender::QBuffer *uvBuffer = new Qt3DRender::QBuffer();
+        Qt3DGeometry::QBuffer *uvBuffer = new Qt3DGeometry::QBuffer();
         uvBuffer->setData(rawUVData);
 
-        Qt3DRender::QAttribute *posAttribute = new Qt3DRender::QAttribute();
-        posAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName());
+        QAttribute *posAttribute = new QAttribute();
+        posAttribute->setName(QAttribute::defaultPositionAttributeName());
         posAttribute->setBuffer(vertexBuffer);
         posAttribute->setByteOffset(0);
         posAttribute->setByteStride(0);
-        posAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+        posAttribute->setVertexBaseType(QAttribute::Float);
         posAttribute->setVertexSize(3);
-        posAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+        posAttribute->setAttributeType(QAttribute::VertexAttribute);
         posAttribute->setCount(6);
 
-        Qt3DRender::QAttribute *posMorphAttribute = new Qt3DRender::QAttribute();
-        posMorphAttribute->setName(Qt3DRender::QAttribute::defaultPositionAttributeName() + QStringLiteral("_1"));
+        QAttribute *posMorphAttribute = new QAttribute();
+        posMorphAttribute->setName(QAttribute::defaultPositionAttributeName() + QStringLiteral("_1"));
         posMorphAttribute->setBuffer(morphVertexBuffer);
         posMorphAttribute->setByteOffset(0);
         posMorphAttribute->setByteStride(0);
-        posMorphAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+        posMorphAttribute->setVertexBaseType(QAttribute::Float);
         posMorphAttribute->setVertexSize(3);
-        posMorphAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+        posMorphAttribute->setAttributeType(QAttribute::VertexAttribute);
         posMorphAttribute->setCount(6);
 
-        Qt3DRender::QAttribute *uvAttribute = new Qt3DRender::QAttribute();
-        uvAttribute->setName(Qt3DRender::QAttribute::defaultTextureCoordinateAttributeName());
+        QAttribute *uvAttribute = new QAttribute();
+        uvAttribute->setName(QAttribute::defaultTextureCoordinateAttributeName());
         uvAttribute->setBuffer(vertexBuffer);
         uvAttribute->setByteOffset(0);
         uvAttribute->setByteStride(0);
-        uvAttribute->setVertexBaseType(Qt3DRender::QAttribute::Float);
+        uvAttribute->setVertexBaseType(QAttribute::Float);
         uvAttribute->setVertexSize(2);
-        uvAttribute->setAttributeType(Qt3DRender::QAttribute::VertexAttribute);
+        uvAttribute->setAttributeType(QAttribute::VertexAttribute);
         uvAttribute->setCount(6);
 
         geometry->addAttribute(posAttribute);
@@ -690,52 +700,52 @@ private Q_SLOTS:
         geometry->addAttribute(uvAttribute);
 
         // THEN
-        QVERIFY(MeshParserUtils::needsNormalAttribute(geometry, Qt3DRender::QGeometryRenderer::Triangles));
+        QVERIFY(MeshParserUtils::needsNormalAttribute(geometry, QGeometryRenderer::Triangles));
 
         // WHEN
-        MeshParserUtils::createNormalsForGeometry(geometry, Qt3DRender::QGeometryRenderer::Triangles);
+        MeshParserUtils::createNormalsForGeometry(geometry, QGeometryRenderer::Triangles);
 
         // THEN
-        QVERIFY(MeshParserUtils::needsTangentAttribute(geometry, Qt3DRender::QGeometryRenderer::Triangles));
+        QVERIFY(MeshParserUtils::needsTangentAttribute(geometry, QGeometryRenderer::Triangles));
 
         // WHEN
-        MeshParserUtils::createTangentForGeometry(geometry, Qt3DRender::QGeometryRenderer::Triangles);
+        MeshParserUtils::createTangentForGeometry(geometry, QGeometryRenderer::Triangles);
 
         // THEN
-        QVERIFY(!MeshParserUtils::needsTangentAttribute(geometry, Qt3DRender::QGeometryRenderer::Triangles));
+        QVERIFY(!MeshParserUtils::needsTangentAttribute(geometry, QGeometryRenderer::Triangles));
 
         const auto attributes = geometry->attributes();
         auto tangentMorphAttrIt = std::find_if(std::begin(attributes), std::end(attributes),
-                                               [](Qt3DRender::QAttribute *attr) {
-                                                   return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName() + QStringLiteral("_1");
+                                               [](QAttribute *attr) {
+                                                   return attr->name() == QAttribute::defaultTangentAttributeName() + QStringLiteral("_1");
                                                });
 
         auto tangentAttrIt = std::find_if(std::begin(attributes), std::end(attributes),
-                                          [](Qt3DRender::QAttribute *attr) {
-                                              return attr->name() == Qt3DRender::QAttribute::defaultTangentAttributeName();
+                                          [](QAttribute *attr) {
+                                              return attr->name() == QAttribute::defaultTangentAttributeName();
                                           });
         QVERIFY(tangentAttrIt != std::end(attributes));
         QVERIFY(tangentMorphAttrIt != std::end(attributes));
 
-        Qt3DRender::QAttribute *tangentAttribute = *tangentAttrIt;
+        QAttribute *tangentAttribute = *tangentAttrIt;
         QVERIFY(tangentAttribute->vertexSize() == 4);
-        Qt3DRender::QBuffer *tangentBuffer = tangentAttribute->buffer();
+        Qt3DGeometry::QBuffer *tangentBuffer = tangentAttribute->buffer();
         const QByteArray rawData = tangentBuffer->data();
         const QVector4D *tangents = reinterpret_cast<const QVector4D *>(rawData.constData());
 
-        Qt3DRender::QAttribute *tangentMorphAttribute = *tangentMorphAttrIt;
-        Qt3DRender::QBuffer *tangentMorphBuffer = tangentMorphAttribute->buffer();
+        QAttribute *tangentMorphAttribute = *tangentMorphAttrIt;
+        Qt3DGeometry::QBuffer *tangentMorphBuffer = tangentMorphAttribute->buffer();
         QVERIFY(tangentMorphAttribute->vertexSize() == 3);
         const QByteArray rawMorphData = tangentMorphBuffer->data();
         const QVector3D *morphTangents = reinterpret_cast<const QVector3D *>(rawMorphData.constData());
 
-        QVERIFY(qFuzzyCompare(tangents[0] + morphTangents[0], QVector4D(1, 0, 0, 1)));
-        QVERIFY(qFuzzyCompare(tangents[1] + morphTangents[1], QVector4D(1, 0, 0, 1)));
-        QVERIFY(qFuzzyCompare(tangents[2] + morphTangents[2], QVector4D(1, 0, 0, 1)));
+        QVERIFY(qFuzzyCompare(tangents[0] + QVector4D(morphTangents[0], 0.0f), QVector4D(1, 0, 0, 1)));
+        QVERIFY(qFuzzyCompare(tangents[1] + QVector4D(morphTangents[1], 0.0f), QVector4D(1, 0, 0, 1)));
+        QVERIFY(qFuzzyCompare(tangents[2] + QVector4D(morphTangents[2], 0.0f), QVector4D(1, 0, 0, 1)));
 
-        QVERIFY(qFuzzyCompare(tangents[3] + morphTangents[3], QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
-        QVERIFY(qFuzzyCompare(tangents[4] + morphTangents[4], QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
-        QVERIFY(qFuzzyCompare(tangents[5] + morphTangents[5], QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
+        QVERIFY(qFuzzyCompare(tangents[3] + QVector4D(morphTangents[3], 0.0f), QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
+        QVERIFY(qFuzzyCompare(tangents[4] + QVector4D(morphTangents[4], 0.0f), QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
+        QVERIFY(qFuzzyCompare(tangents[5] + QVector4D(morphTangents[5], 0.0f), QVector4D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f, 0, -1)));
     }
 };
 

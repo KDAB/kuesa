@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -69,7 +69,7 @@
     for a given name really exist in the specified \a collection, the \a node
     property allows you to access the underlying asset instance.
 
-    You can use the Kuesa Studio gltfEditor to introspect a glTF2 scene files
+    You can use the Kuesa Studio gltfInspector to introspect a glTF2 scene files
     and find the names of the various assets it contains.
 
     For instance you might want to select a Camera by name.

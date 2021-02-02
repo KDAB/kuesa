@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -28,7 +28,6 @@
 
 struct Unlit {
     highp vec4 baseColorFactor;
-    highp sampler2D baseColorMap;
     highp float alphaCutoff;
     bool baseColorUsesTexCoord1;
 };

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -30,17 +30,15 @@
 #include <QQuickView>
 #include <QQmlEngine>
 #include <QQmlContext>
-#include <QDir>
-#include <QDirIterator>
-#include <QResource>
 #include "materialinspector.h"
+#include <Kuesa/kuesa_global.h>
 
 int main(int ac, char **av)
 {
     {
         // Set OpenGL requirements
         QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-#ifndef QT_OPENGL_ES_2
+#ifndef KUESA_OPENGL_ES_2
         format.setVersion(4, 1);
         format.setProfile(QSurfaceFormat::CoreProfile);
         format.setSamples(4);
@@ -52,38 +50,18 @@ int main(int ac, char **av)
         QSurfaceFormat::setDefaultFormat(format);
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
     QGuiApplication app(ac, av);
 
-    // Load external resources
-    QDir resourceDir(app.applicationDirPath() + QStringLiteral("/resources"));
-    QDirIterator it(resourceDir, QDirIterator::IteratorFlag::NoIteratorFlags);
-    while (it.hasNext()) {
-        QString path = it.next();
-        if (!QResource::registerResource(path))
-            qWarning() << "Failed to load binary resources: " << path;
-        else
-            qDebug() << "Loaded binary resources: " << path;
-    }
-
     QQuickView view;
-#ifdef Q_OS_ANDROID
-    const QString assetsPrefix = QStringLiteral("assets:/");
-#elif defined(Q_OS_IOS)
-    const QString assetsPrefix = QString(QStringLiteral("file://%1/Library/Application Support/")).arg(QGuiApplication::applicationDirPath());
-#elif defined(Q_OS_OSX)
-    const QString assetsPrefix = QString(QStringLiteral("file://%1/../Resources/")).arg(QGuiApplication::applicationDirPath());
-#else
-    const QString assetsPrefix = QStringLiteral("qrc:/");
-#endif
-
 #ifdef KUESA_BUILD_ROOT
     view.engine()->addImportPath(QStringLiteral(KUESA_BUILD_ROOT "/qml"));
 #endif
 
     MaterialInspector inspector;
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_materialInspector"), &inspector);
-    view.engine()->rootContext()->setContextProperty(QStringLiteral("_assetsPrefix"), assetsPrefix);
     view.engine()->rootContext()->setContextProperty(QStringLiteral("_view"), &view);
 
     view.setResizeMode(QQuickView::SizeRootObjectToView);

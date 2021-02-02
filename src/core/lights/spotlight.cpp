@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -31,7 +31,6 @@
 #include <qmath.h>
 #include <cmath>
 #include <Qt3DRender/private/shaderdata_p.h>
-#include <Qt3DCore/qpropertyupdatedchange.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -54,65 +53,63 @@ namespace Kuesa {
 */
 
 /*!
-    \qmlproperty vector3d SpotLight::localDirection
+    \qmlproperty vector3d Kuesa::SpotLight::localDirection
     Specifies the local direction of the spot light.  Local
     direction is affected by parent transform rotations.
 */
 
 /*!
-    \property SpotLight::localDirection
+    \property Kuesa::SpotLight::localDirection
     Specifies the local direction of the spot light. Local
     direction is affected by parent transform rotations.
  */
 
 /*!
-    \property SpotLight::innerConeAngle
+    \property Kuesa::SpotLight::innerConeAngle
     Specifies the angle from center of the spot light where light
     begins to fall off.  The value must be greater than or equal to 0
     and less than outerConeAngle.
  */
 
 /*!
-    \qmlproperty float SpotLight::innerConeAngle
+    \qmlproperty float Kuesa::SpotLight::innerConeAngle
     Specifies the angle from center of the spot light where light
     begins to fall off.  The value must be greater than or equal to 0
     and less than outerConeAngle.
 */
 
 /*!
-    \qmlproperty float SpotLight::outerConeAngle
+    \qmlproperty float Kuesa::SpotLight::outerConeAngle
     Specifies the cut off angle of the spot light. Objects outside
     this angle receives no light from the SpotLight. The value must be
     greater than innerConeAngle and less than or equal to 180.
 */
 
 /*!
-    \property SpotLight::outerConeAngle
+    \property Kuesa::SpotLight::outerConeAngle
     Specifies the cut off angle of the spot light.  Objects outside
     this angle receives no light from the SpotLight. The value must be
     greater than innerConeAngle and less than or equal to 180.
  */
 
 /*!
-    \qmlproperty float SpotLight::range
+    \qmlproperty float Kuesa::SpotLight::range
     Specifies the destance at which the light intensity may be considered
     to have reached zero and has no effect. A range of 0 (default) indicates
     infinite range
 */
 
 /*!
-    \property SpotLight::range
+    \property Kuesa::SpotLight::range
     Specifies the destance at which the light intensity may be considered
     to have reached zero and has no effect. A range of 0 (default) indicates
     infinite range
  */
 
 SpotLightPrivate::SpotLightPrivate()
-    : QAbstractLightPrivate(Qt3DRender::QAbstractLight::SpotLight)
+    : ShadowCastingLightPrivate(Qt3DRender::QAbstractLight::SpotLight)
 {
-    m_shaderData->setProperty("direction", QVector3D(0.0f, -1.0f, 0.0f));
     m_shaderData->setProperty("directionTransformed", Qt3DRender::Render::ShaderData::ModelToWorldDirection);
-    m_shaderData->setProperty("range", 0.0f);
 }
 
 /*!
@@ -121,7 +118,7 @@ SpotLightPrivate::SpotLightPrivate()
     of its containing Entity.
  */
 SpotLight::SpotLight(QNode *parent)
-    : QAbstractLight(*new SpotLightPrivate, parent)
+    : ShadowCastingLight(*new SpotLightPrivate, parent)
     , m_innerConeAngle(90.0f)
     , m_outerConeAngle(90.0f)
 {
@@ -135,7 +132,7 @@ SpotLight::~SpotLight()
 
 /*! \internal */
 SpotLight::SpotLight(SpotLightPrivate &dd, QNode *parent)
-    : QAbstractLight(dd, parent)
+    : ShadowCastingLight(dd, parent)
 {
 }
 

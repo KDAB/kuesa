@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2019-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -68,7 +68,7 @@ class CustomMaterialGenerator:
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -113,7 +113,7 @@ QT_END_NAMESPACE
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -168,13 +168,14 @@ Q_SIGNALS:
 %s
 private:
     %sShaderData *m_shaderData;
+%s
 };"""
 
     propertiesClassCppContent = """
 %s
 %sProperties::%sProperties(Qt3DCore::QNode *parent)
     : GLTF2MaterialProperties(parent)
-    , m_shaderData(new %sShaderData(this))
+    , m_shaderData(new %sShaderData(this))%s
 {
 %s
 }
@@ -234,11 +235,22 @@ private:
     %sTechnique *m_gl3Technique;
     %sTechnique *m_es3Technique;
     %sTechnique *m_es2Technique;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    %sTechnique *m_rhiTechnique;
+#endif
+    void updateLayersOnTechniques(const QStringList &layers);
 
     void updateDoubleSided(bool doubleSided) override;
-    void updateSkinning(bool useSkinning) override;
+    void updateUsingSkinning(bool useSkinning) override;
     void updateOpaque(bool opaque) override;
     void updateAlphaCutoffEnabled(bool enabled) override;
+    void updateUsingColorAttribute(bool enabled) override;
+    void updateUsingNormalAttribute(bool enabled) override;
+    void updateUsingTangentAttribute(bool enabled) override;
+    void updateUsingTexCoordAttribute(bool enabled) override;
+    void updateUsingTexCoord1Attribute(bool enabled) override;
+    void updateUsingMorphTargets(bool enabled) override;
+    void updateInstanced(bool instanced) override;
 };
 """
 
@@ -248,7 +260,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -276,6 +289,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -286,10 +302,12 @@ public:
         const QUrl vertexShaderGraph[] = {
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
         };
 
         const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
@@ -307,10 +325,15 @@ public:
             QByteArray(R"(
                        #version 100
                        void main() { }
-                       )")
+                       )"),
+            QByteArray(R"(
+                       #version 450
+                       void main() { }
+                       )"),
         };
 
         const QByteArray renderableVertexShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -319,10 +342,12 @@ public:
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
          const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -383,6 +408,10 @@ public:
         transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
         transparentFilterKey->setValue(QStringLiteral("Transparent"));
 
+        auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
+        transparentPassFilterKey->setName(QStringLiteral("Pass"));
+        transparentPassFilterKey->setValue(QStringLiteral("pass0"));
+
         m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::%s);
         m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::%s);
         m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::%s);
@@ -394,6 +423,7 @@ public:
         m_transparentRenderPass->addRenderState(m_blendEquation);
         m_transparentRenderPass->addRenderState(m_blendArguments);
         m_transparentRenderPass->addFilterKey(transparentFilterKey);
+        m_transparentRenderPass->addFilterKey(transparentPassFilterKey);
         m_transparentRenderPass->setEnabled(false);
         addRenderPass(m_transparentRenderPass);
     }
@@ -452,7 +482,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -477,6 +508,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -487,10 +521,12 @@ public:
         const QUrl vertexShaderGraph[] = {
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
         };
 
         const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
@@ -508,10 +544,15 @@ public:
             QByteArray(R"(
                        #version 100
                        void main() { }
+                       )"),
+            QByteArray(R"(
+                       #version 450
+                       void main() { }
                        )")
         };
 
         const QByteArray renderableVertexShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -520,10 +561,12 @@ public:
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
          const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -629,7 +672,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -653,6 +697,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -663,10 +710,12 @@ public:
         const QUrl vertexShaderGraph[] = {
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
         };
 
         const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
@@ -675,16 +724,19 @@ public:
         const QByteArray renderableVertexShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
          const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -776,7 +828,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -800,6 +853,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -810,10 +866,12 @@ public:
         const QUrl vertexShaderGraph[] = {
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
         };
 
         const QUrl fragmentShaderGraph[] = {
+            QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s")),
             QUrl(QStringLiteral("%s"))
@@ -822,16 +880,19 @@ public:
         const QByteArray renderableVertexShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
         const QByteArray renderableFragmentShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
         };
 
          const QByteArray renderableGeometryShaderCode[] = {
+            QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)")
@@ -868,6 +929,10 @@ public:
         transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
         transparentFilterKey->setValue(QStringLiteral("Transparent"));
 
+        auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
+        transparentPassFilterKey->setName(QStringLiteral("Pass"));
+        transparentPassFilterKey->setValue(QStringLiteral("pass0"));
+
         m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::%s);
         m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::%s);
         m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::%s);
@@ -879,6 +944,7 @@ public:
         m_transparentRenderPass->addRenderState(m_blendEquation);
         m_transparentRenderPass->addRenderState(m_blendArguments);
         m_transparentRenderPass->addFilterKey(transparentFilterKey);
+        m_transparentRenderPass->addFilterKey(transparentPassFilterKey);
         addRenderPass(m_transparentRenderPass);
     }
 
@@ -927,10 +993,12 @@ private:
             const QUrl vertexShaderGraph[] = {
                 QUrl(QStringLiteral("%s")),
                 QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s")),
                 QUrl(QStringLiteral("%s"))
             };
 
             const QUrl fragmentShaderGraph[] = {
+                QUrl(QStringLiteral("%s")),
                 QUrl(QStringLiteral("%s")),
                 QUrl(QStringLiteral("%s")),
                 QUrl(QStringLiteral("%s"))
@@ -939,16 +1007,19 @@ private:
             const QByteArray renderableVertexShaderCode[] = {
                 QByteArray(R"(%s)"),
                 QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
                 QByteArray(R"(%s)")
             };
 
             const QByteArray renderableFragmentShaderCode[] = {
                 QByteArray(R"(%s)"),
                 QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
                 QByteArray(R"(%s)")
             };
 
             const QByteArray renderableGeometryShaderCode[] = {
+                QByteArray(R"(%s)"),
                 QByteArray(R"(%s)"),
                 QByteArray(R"(%s)"),
                 QByteArray(R"(%s)")
@@ -995,6 +1066,11 @@ private:
             transparentFilterKey->setValue(QStringLiteral("Transparent"));
             transparentRenderPass->addFilterKey(transparentFilterKey);
 
+            auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
+            transparentPassFilterKey->setName(QStringLiteral("Pass"));
+            transparentPassFilterKey->setValue(QStringLiteral("pass%s"));
+            transparentRenderPass->addFilterKey(transparentPassFilterKey);
+
             addRenderPass(transparentRenderPass);
         }"""
 
@@ -1004,7 +1080,8 @@ public:
     enum Version {
         GL3 = 0,
         ES3,
-        ES2
+        ES2,
+        RHI
     };
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
@@ -1023,6 +1100,9 @@ public:
             { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
             { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
             { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+#endif
         };
 
         graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -1084,78 +1164,176 @@ private:
 
 
     effectClassCppContent = """
-%s
-%s
+{0}
+{1}
 
-%sEffect::%sEffect(Qt3DCore::QNode *parent)
+{2}Effect::{2}Effect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
-{
-    m_gl3Technique = new %sTechnique(%sTechnique::GL3, this);
-    m_es3Technique = new %sTechnique(%sTechnique::ES3, this);
-    m_es2Technique = new %sTechnique(%sTechnique::ES2, this);
+{{
+    m_gl3Technique = new {2}Technique({2}Technique::GL3, this);
+    m_es3Technique = new {2}Technique({2}Technique::ES3, this);
+    m_es2Technique = new {2}Technique({2}Technique::ES2, this);
 
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
-}
 
-%sEffect::~%sEffect() = default;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique = new {2}Technique({2}Technique::RHI, this);
+    addTechnique(m_rhiTechnique);
+#endif
+}}
+
+{2}Effect::~{2}Effect() = default;
 
 
-void %sEffect::updateDoubleSided(bool doubleSided)
-{
+void {2}Effect::updateDoubleSided(bool doubleSided)
+{{
     const auto cullingMode = doubleSided ? QCullFace::NoCulling : QCullFace::Back;
     m_gl3Technique->setCullingMode(cullingMode);
     m_es3Technique->setCullingMode(cullingMode);
     m_es2Technique->setCullingMode(cullingMode);
-}
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setCullingMode(cullingMode);
+#endif
+}}
 
-void %sEffect::updateSkinning(bool useSkinning)
-{
+void {2}Effect::updateUsingSkinning(bool useSkinning)
+{{
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();
-    if (useSkinning) {
+    if (useSkinning) {{
         layers.removeAll(QStringLiteral("no-skinning"));
         layers.append(QStringLiteral("skinning"));
-    } else {
+    }} else {{
         layers.removeAll(QStringLiteral("skinning"));
         layers.append(QStringLiteral("no-skinning"));
-    }
+    }}
 
-    m_gl3Technique->setEnabledLayers(layers);
-    m_es3Technique->setEnabledLayers(layers);
-    m_es2Technique->setEnabledLayers(layers);
+    updateLayersOnTechniques(layers);
+
     m_gl3Technique->setAllowCulling(!useSkinning);
     m_es3Technique->setAllowCulling(!useSkinning);
     m_es2Technique->setAllowCulling(!useSkinning);
-}
 
-void %sEffect::updateOpaque(bool opaque)
-{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setAllowCulling(!useSkinning);
+#endif
+}}
+
+void {2}Effect::updateOpaque(bool opaque)
+{{
     m_gl3Technique->setOpaque(opaque);
     m_es3Technique->setOpaque(opaque);
     m_es2Technique->setOpaque(opaque);
-}
 
-void %sEffect::updateAlphaCutoffEnabled(bool enabled)
-{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_rhiTechnique->setOpaque(opaque);
+#endif
+}}
+
+void {2}Effect::updateAlphaCutoffEnabled(bool enabled)
+{{
     auto layers = m_gl3Technique->enabledLayers();
-    if (enabled) {
+    if (enabled) {{
         layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
         layers.append(QStringLiteral("hasAlphaCutoff"));
-    } else {
+    }} else {{
         layers.removeAll(QStringLiteral("hasAlphaCutoff"));
         layers.append(QStringLiteral("noHasAlphaCutoff"));
-    }
+    }}
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingColorAttribute(bool usingColorAttribute)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("noHasColorAttr"));
+    layers.removeAll(QStringLiteral("hasColorAttr"));
+    layers.removeAll(QStringLiteral("hasVertexColor"));
+    if (usingColorAttribute) {{
+        layers.append(QStringLiteral("hasColorAttr"));
+        layers.append(QStringLiteral("hasVertexColor"));
+    }} else {{
+        layers.append(QStringLiteral("noHasColorAttr"));
+    }}
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingNormalAttribute(bool usingNormalAttribute)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexNormal"));
+    if (usingNormalAttribute)
+        layers.append(QStringLiteral("hasVertexNormal"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingTangentAttribute(bool usingTangentAttribute)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasVertexTangent"));
+    if (usingTangentAttribute)
+        layers.append(QStringLiteral("hasVertexTangent"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord"));
+    if (usingTexCoordAttribute)
+        layers.append(QStringLiteral("hasTexCoord"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("hasTexCoord1"));
+    if (usingTexCoord1Attribute)
+        layers.append(QStringLiteral("hasTexCoord1"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateUsingMorphTargets(bool usingMorphTargets)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("morphtargets"));
+    if (usingMorphTargets)
+        layers.append(QStringLiteral("morphtargets"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateInstanced(bool instanced)
+{{
+    auto layers = m_gl3Technique->enabledLayers();
+    layers.removeAll(QStringLiteral("instanced"));
+    if (instanced)
+        layers.append(QStringLiteral("instanced"));
+
+    updateLayersOnTechniques(layers);
+}}
+
+void {2}Effect::updateLayersOnTechniques(const QStringList &layers)
+{{
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-}
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    m_rhiTechnique->setEnabledLayers(layers);
+#endif
+}}
+
 """
 
 
     materialClassHeaderContent = """
-class %sProperties;
 class GLTF2MaterialProperties;
 
 class KUESASHARED_EXPORT %sMaterial : public GLTF2Material
@@ -1179,16 +1357,17 @@ Q_SIGNALS:
 private:
     %sProperties *m_materialProperties = nullptr;
     Qt3DRender::QParameter *m_shaderDataParameter;
+%s
 };
 """
 
     materialClassCppContent = """
 %s
 %sMaterial::%sMaterial(Qt3DCore::QNode *parent)
-    : GLTF2Material(parent),
-    m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral(\"properties\"), {}))
+    : GLTF2Material(parent)
+    , m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral(\"properties\"), {}))%s
 {
-    addParameter(m_shaderDataParameter);
+    addParameter(m_shaderDataParameter);%s
 }
 
 %sMaterial::~%sMaterial() = default;
@@ -1198,7 +1377,7 @@ private:
 
     The properties defining the appearance of the material.
 
-    \since Kuesa 1.2
+    \since Kuesa 1.3
  */
 
 /*!
@@ -1206,7 +1385,7 @@ private:
 
     The properties defining the appearance of the material.
 
-    \since Kuesa 1.2
+    \since Kuesa 1.3
  */
 
 Kuesa::%sProperties *%sMaterial::materialProperties() const
@@ -1217,10 +1396,15 @@ Kuesa::%sProperties *%sMaterial::materialProperties() const
 void %sMaterial::setMaterialProperties(Kuesa::%sProperties *materialProperties)
 {
     if (m_materialProperties != materialProperties) {
+        if (m_materialProperties)
+            m_materialProperties->disconnect(this);
+
         m_materialProperties = materialProperties;
         emit materialPropertiesChanged(materialProperties);
 
-        if (m_materialProperties) {
+        if (m_materialProperties) {%s
+%s
+
             m_shaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));
             m_materialProperties->addClientMaterial(this);
         }
@@ -1238,7 +1422,7 @@ void %sMaterial::setMaterialProperties(Kuesa::GLTF2MaterialProperties *materialP
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -1289,30 +1473,27 @@ HEADERS += \\
         except IOError as e:
             print("Couldn't open file (%s)." % e)
 
-    def propertySetters(self, properties, declarationOnly = True, className = ""):
-        content = ""
-
+    def propertySetter(self, prop, declarationOnly = True, className = ""):
         doNotConvertToRefTypes = ["float", "int", "bool", "texture2d"]
-
-        for prop in properties:
-            rawPropType = prop.get("type", "")
-            propType = CustomMaterialGenerator.propertyTypesToQtType[rawPropType]
-            paramType = ("%s " if rawPropType in doNotConvertToRefTypes else "const %s &") % (propType)
-            propName = prop.get("name", "")
-            if declarationOnly:
-                content += " " * 4 + "void set%s(%s%s);\n" % (propName[0].upper() + propName[1:],
-                                                              paramType,
-                                                              propName)
-            else:
-                setterName = "%s::set%s" % (className, propName[0].upper() + propName[1:])
-                contentStr = "void %s(%s%s)\n{\n    if (m_%s == %s)\n        return;\n"
-                content += contentStr % (setterName,
-                                         paramType,
-                                         propName,
-                                         propName,
-                                         propName)
-                if rawPropType.startswith("texture"):
-                    contentStr = """
+        content = ""
+        rawPropType = prop.get("type", "")
+        propType = CustomMaterialGenerator.propertyTypesToQtType[rawPropType]
+        paramType = ("%s " if rawPropType in doNotConvertToRefTypes else "const %s &") % (propType)
+        propName = prop.get("name", "")
+        if declarationOnly:
+            content += " " * 4 + "void set%s(%s%s);\n" % (propName[0].upper() + propName[1:],
+                                                          paramType,
+                                                          propName)
+        else:
+            setterName = "%s::set%s" % (className, propName[0].upper() + propName[1:])
+            contentStr = "void %s(%s%s)\n{\n    if (m_%s == %s)\n        return;\n"
+            content += contentStr % (setterName,
+                                        paramType,
+                                        propName,
+                                        propName,
+                                        propName)
+            if rawPropType.startswith("texture"):
+                contentStr = """
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
     if (m_%s != nullptr)
         d->unregisterDestructionHelper(m_%s);
@@ -1326,22 +1507,29 @@ HEADERS += \\
 }
 
 """
-                    content += contentStr % (propName,
-                                             propName,
-                                             propName,
-                                             propName,
-                                             propName,
-                                             propName,
-                                             propName,
-                                             propName,
-                                             setterName,
-                                             propName,
-                                             propName,
-                                             propName)
+                content += contentStr % (propName,
+                                            propName,
+                                            propName,
+                                            propName,
+                                            propName,
+                                            propName,
+                                            propName,
+                                            propName,
+                                            setterName,
+                                            propName,
+                                            propName,
+                                            propName)
 
-                else:
-                    contentStr = " " * 4 + "m_%s = %s;\n    emit %sChanged(%s);\n}\n\n"
-                    content += contentStr % (propName, propName, propName, propName)
+            else:
+                contentStr = " " * 4 + "m_%s = %s;\n    emit %sChanged(%s);\n}\n\n"
+                content += contentStr % (propName, propName, propName, propName)
+        return content
+
+    def propertySetters(self, properties, declarationOnly = True, className = ""):
+        content = ""
+
+        for prop in properties:
+            content += self.propertySetter(prop, declarationOnly, className)
         return content
 
     def propertySettersShaderDataForwarding(self, properties, className = ""):
@@ -1356,30 +1544,36 @@ HEADERS += \\
                 propName = prop.get("name", "")
                 setterSig = "set%s" % (propName[0].upper() + propName[1:])
                 content += "void %s::%s(%s%s)\n{\n    m_shaderData->%s(%s);\n}\n\n" % (className,
-                                                                                       setterSig,
-                                                                                       paramType,
-                                                                                       propName,
-                                                                                       setterSig,
-                                                                                       propName)
+                                                                                    setterSig,
+                                                                                    paramType,
+                                                                                    propName,
+                                                                                    setterSig,
+                                                                                    propName)
             return content
+
+    def propertyGetter(self, prop, declarationOnly = True, className = ""):
+        content = ""
+        propName = prop.get("name", "")
+        propType = CustomMaterialGenerator.propertyTypesToQtType.get(prop.get("type", ""), "")
+        if declarationOnly:
+            content += " " * 4 + "%s %s() const;\n" % (propType, propName)
+        else:
+            contentStr = "%s %s::%s() const\n{\n    return m_%s;\n}\n\n"
+            content += contentStr % (propType, className, propName, propName)
+        return content
 
     def propertyGetters(self, properties, declarationOnly = True, className = ""):
         content = ""
         for prop in properties:
-            propName = prop.get("name", "")
-            propType = CustomMaterialGenerator.propertyTypesToQtType.get(prop.get("type", ""), "")
-            if declarationOnly:
-                content += " " * 4 + "%s %s() const;\n" % (propType, propName)
-            else:
-                contentStr = "%s %s::%s() const\n{\n    return m_%s;\n}\n\n"
-                content += contentStr % (propType, className, propName, propName)
+            content += self.propertyGetter(prop, declarationOnly, className)
         return content
 
     def propertyGettersShaderDataForwarding(self, properties, className):
         content = ""
         for prop in properties:
             propName = prop.get("name", "")
-            propType = CustomMaterialGenerator.propertyTypesToQtType.get(prop.get("type", ""), "")
+            rawPropType = prop.get("type", "")
+            propType = CustomMaterialGenerator.propertyTypesToQtType.get(rawPropType, "")
             doc = prop.get("doc", "")
             qmlDocStr = "/*!\n    \\qmlproperty %s %s::%s\n    %s\n*/\n" % (propType,
                                                                             className,
@@ -1388,13 +1582,19 @@ HEADERS += \\
             cppDocStr = "/*!\n    \\property %s::%s\n    %s\n*/\n" % (className,
                                                                       propName,
                                                                       doc)
-            contentStr = "%s%s%s %s::%s() const\n{\n    return m_shaderData->%s();\n}\n\n"
-            content += contentStr % (qmlDocStr,
-                                     cppDocStr,
-                                     propType,
-                                     className,
-                                     propName,
-                                     propName)
+
+            # We don't forward texture properties to the shader data
+            # as UBO can't have sampler based members
+            if rawPropType.startswith("texture"):
+                content += self.propertyGetter(prop, False, className)
+            else:
+                contentStr = "%s%s%s %s::%s() const\n{\n    return m_shaderData->%s();\n}\n\n"
+                content += contentStr % (qmlDocStr,
+                                        cppDocStr,
+                                        propType,
+                                        className,
+                                        propName,
+                                        propName)
         return content
 
 
@@ -1454,7 +1654,7 @@ HEADERS += \\
     \inheaderfile Kuesa/%s
     \inherits %s
     \inmodule Kuesa
-    \since Kuesa 1.2
+    \since Kuesa 1.3
 
     \\brief Kuesa::%s %s
 */
@@ -1463,7 +1663,7 @@ HEADERS += \\
     \qmltype %s
     \instantiates Kuesa::%s
     \inqmlmodule Kuesa
-    \since Kuesa 1.2
+    \since Kuesa 1.3
 
     \\brief Kuesa::%s %s
 */
@@ -1507,6 +1707,9 @@ HEADERS += \\
         matName = self.rawJson.get("type", "")
         className = matName + "ShaderData"
 
+        # Remove texture from props as ShaderData should only contain the scalar properties
+        props = [p for p in props if not p.get("type", "").startswith("texture")]
+
         def generateHeader():
             setters = self.propertySetters(props, True)
             getters = self.propertyGetters(props, True)
@@ -1534,7 +1737,6 @@ HEADERS += \\
             setters = self.propertySetters(props, False, className)
             getters = self.propertyGetters(props, False, className)
             includes = "#include \"%s\"\n" % (className.lower() + "_p.h")
-            includes += "#include <Qt3DCore/private/qnode_p.h>\n"
             content = CustomMaterialGenerator.shaderDataClassCppContent % (matName,
                                                                            matName,
                                                                            initializations,
@@ -1552,11 +1754,15 @@ HEADERS += \\
         matName = self.rawJson.get("type", "")
         className = matName + "Properties"
 
+        # Texture props are not stored in the shaderData
+        texture_props = [p for p in props if p.get("type", "").startswith("texture")]
+
         def generateHeader():
             setters = self.propertySetters(props, True)
             getters = self.propertyGetters(props, True)
             signals = self.propertySignals(props)
             propDeclarations = self.propertyDeclarations(props)
+            texture_members = self.propertyMembers(texture_props)
             content = CustomMaterialGenerator.propertiesClassHeaderContent % (matName,
                                                                               matName,
                                                                               propDeclarations,
@@ -1565,7 +1771,8 @@ HEADERS += \\
                                                                               getters,
                                                                               setters,
                                                                               signals,
-                                                                              matName)
+                                                                              matName,
+                                                                              texture_members)
             includes = self.includesForProperties(props)
             includes += "#include <Kuesa/GLTF2MaterialProperties>\n"
             includes += "#include <Kuesa/kuesa_global.h>\n"
@@ -1577,12 +1784,31 @@ HEADERS += \\
         generateHeader()
 
         def generateCpp():
-            setters = self.propertySettersShaderDataForwarding(props, className)
-            getters = self.propertyGettersShaderDataForwarding(props, className)
+            # We don't forward texture properties to the shader data
+            # as UBO can't have sampler based members
+
+            texture_props = [p for p in props if p.get("type", "").startswith("texture")]
+            shaderdata_props = [p for p in props if not p.get("type", "").startswith("texture")]
+
+            setters = self.propertySettersShaderDataForwarding(shaderdata_props, className) + self.propertySetters(texture_props, False, className)
+            getters = self.propertyGettersShaderDataForwarding(shaderdata_props, className) + self.propertyGetters(texture_props, False, className)
+            initializations = self.memberInitializations(texture_props)
+
+            def setDefaultEmptyTextures(props):
+                if len(props) == 0:
+                    return ""
+                content = "#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)"
+                for texture_prop in props:
+                    propName = texture_prop.get("name", "")
+                    content += "\n    set%s(new Empty2DTexture());" % (propName[0].upper() + propName[1:])
+                content += "\n#endif"
+                return content
+
+            default_textures = setDefaultEmptyTextures(texture_props)
 
             connectionStatements = ""
             connectionStatementsStr = "    QObject::connect(m_shaderData, &%sShaderData::%sChanged, this, &%sProperties::%sChanged);\n"
-            for p in props:
+            for p in shaderdata_props:
                 propName = p.get("name", "")
                 connectionStatements += connectionStatementsStr % (matName,
                                                                    propName,
@@ -1597,7 +1823,8 @@ HEADERS += \\
                                                                            matName,
                                                                            matName,
                                                                            matName,
-                                                                           connectionStatements,
+                                                                           initializations,
+                                                                           connectionStatements + default_textures,
                                                                            matName,
                                                                            matName,
                                                                            matName,
@@ -1605,6 +1832,9 @@ HEADERS += \\
                                                                            getters)
             includes = "#include \"%sproperties.h\"\n" % (matName.lower())
             includes += "#include \"%sshaderdata_p.h\"\n" % (matName.lower())
+            includes += "#include <Qt3DCore/private/qnode_p.h>\n"
+            if len(texture_props) > 0:
+                includes += "#include <Kuesa/private/empty2dtexture_p.h>\n"
 
             self.generateCppFile(content,
                                  className,
@@ -1617,6 +1847,7 @@ HEADERS += \\
 
         def generateHeader():
             content = CustomMaterialGenerator.effectClassHeaderContent % (matName,
+                                                                          matName,
                                                                           matName,
                                                                           matName,
                                                                           matName,
@@ -1640,18 +1871,23 @@ HEADERS += \\
                 gl3FragCode = ""
                 es3FragCode = ""
                 es2FragCode = ""
+                rhiFragCode = ""
                 gl3VertCode = ""
                 es3VertCode = ""
                 es2VertCode = ""
+                rhiVertCode = ""
                 gl3GeometryCode = ""
                 es3GeometryCode = ""
                 es2GeometryCode = ""
+                rhiGeometryCode = ""
                 es2VertexShaderGraph = ""
                 es2FragmentShaderGraph = ""
                 es3VertexShaderGraph = ""
+                rhiVertexShaderGraph = ""
                 es3FragmentShaderGraph = ""
                 gl3VertexShaderGraph = ""
                 gl3FragmentShaderGraph = ""
+                rhiFragmentShaderGraph = ""
                 blendFunction = ""
                 blendSourceRGB = ""
                 blendSourceAlpha = ""
@@ -1695,6 +1931,10 @@ HEADERS += \\
                             if majorVersion == 3:
                                 pass_info.gl3FragCode = code
                                 pass_info.gl3FragmentShaderGraph = graph
+                        elif api == "RHI":
+                            if majorVersion == 1:
+                                pass_info.rhiFragCode = code
+                                pass_info.rhiFragmentShaderGraph = graph
                     elif shaderType == "Vertex":
                         if api == "OpenGLES":
                             if majorVersion == 3:
@@ -1707,6 +1947,10 @@ HEADERS += \\
                             if majorVersion == 3:
                                 pass_info.gl3VertCode = code
                                 pass_info.gl3VertexShaderGraph = graph
+                        elif api == "RHI":
+                            if majorVersion == 1:
+                                pass_info.rhiVertCode = code
+                                pass_info.rhiVertexShaderGraph = graph
                     elif shaderType == "Geometry":
                         if api == "OpenGLES":
                             if majorVersion == 3:
@@ -1715,6 +1959,9 @@ HEADERS += \\
                         elif api == "OpenGL":
                             if majorVersion == 3:
                                 pass_info.gl3GeometryCode = code
+                        elif api == "RHI":
+                            if majorVersion == 1:
+                                pass_info.rhiGeometryCode = code
                 passes_info.append(pass_info)
 
 
@@ -1736,18 +1983,23 @@ HEADERS += \\
                                                                                 pass_info.gl3VertexShaderGraph,
                                                                                 pass_info.es3VertexShaderGraph,
                                                                                 pass_info.es2VertexShaderGraph,
+                                                                                pass_info.rhiVertexShaderGraph,
                                                                                 pass_info.gl3FragmentShaderGraph,
                                                                                 pass_info.es3FragmentShaderGraph,
                                                                                 pass_info.es2FragmentShaderGraph,
+                                                                                pass_info.rhiFragmentShaderGraph,
                                                                                 pass_info.gl3VertCode,
                                                                                 pass_info.es3VertCode,
                                                                                 pass_info.es2VertCode,
+                                                                                pass_info.rhiVertCode,
                                                                                 pass_info.gl3FragCode,
                                                                                 pass_info.es3FragCode,
                                                                                 pass_info.es2FragCode,
+                                                                                pass_info.rhiFragCode,
                                                                                 pass_info.gl3GeometryCode,
                                                                                 pass_info.es3GeometryCode,
                                                                                 pass_info.es2GeometryCode,
+                                                                                pass_info.rhiGeometryCode,
                                                                                 pass_info.blendFunction,
                                                                                 pass_info.blendSourceRGB,
                                                                                 pass_info.blendSourceAlpha,
@@ -1761,18 +2013,23 @@ HEADERS += \\
                                                                            pass_info.gl3VertexShaderGraph,
                                                                            pass_info.es3VertexShaderGraph,
                                                                            pass_info.es2VertexShaderGraph,
+                                                                           pass_info.rhiVertexShaderGraph,
                                                                            pass_info.gl3FragmentShaderGraph,
                                                                            pass_info.es3FragmentShaderGraph,
                                                                            pass_info.es2FragmentShaderGraph,
+                                                                           pass_info.rhiFragmentShaderGraph,
                                                                            pass_info.gl3VertCode,
                                                                            pass_info.es3VertCode,
                                                                            pass_info.es2VertCode,
+                                                                           pass_info.rhiVertCode,
                                                                            pass_info.gl3FragCode,
                                                                            pass_info.es3FragCode,
                                                                            pass_info.es2FragCode,
+                                                                           pass_info.rhiFragCode,
                                                                            pass_info.gl3GeometryCode,
                                                                            pass_info.es3GeometryCode,
                                                                            pass_info.es2GeometryCode,
+                                                                           pass_info.rhiGeometryCode,
                                                                            pass_info.blendFunction,
                                                                            pass_info.blendSourceRGB,
                                                                            pass_info.blendSourceAlpha,
@@ -1787,18 +2044,23 @@ HEADERS += \\
                                                                       pass_info.gl3VertexShaderGraph,
                                                                       pass_info.es3VertexShaderGraph,
                                                                       pass_info.es2VertexShaderGraph,
+                                                                      pass_info.rhiVertexShaderGraph,
                                                                       pass_info.gl3FragmentShaderGraph,
                                                                       pass_info.es3FragmentShaderGraph,
                                                                       pass_info.es2FragmentShaderGraph,
+                                                                      pass_info.rhiFragmentShaderGraph,
                                                                       pass_info.gl3VertCode,
                                                                       pass_info.es3VertCode,
                                                                       pass_info.es2VertCode,
+                                                                      pass_info.rhiVertCode,
                                                                       pass_info.gl3FragCode,
                                                                       pass_info.es3FragCode,
                                                                       pass_info.es2FragCode,
+                                                                      pass_info.rhiFragCode,
                                                                       pass_info.gl3GeometryCode,
                                                                       pass_info.es3GeometryCode,
-                                                                      pass_info.es2GeometryCode)
+                                                                      pass_info.es2GeometryCode,
+                                                                      pass_info.rhiGeometryCode)
 
 
             def multiTransparentTechnique(passes_info):
@@ -1808,23 +2070,29 @@ HEADERS += \\
                     innerPassContent +=  CustomMaterialGenerator.techniqueMultiTransparentInnerPass % (pass_info.gl3VertexShaderGraph,
                                                                                                        pass_info.es3VertexShaderGraph,
                                                                                                        pass_info.es2VertexShaderGraph,
+                                                                                                       pass_info.rhiVertexShaderGraph,
                                                                                                        pass_info.gl3FragmentShaderGraph,
                                                                                                        pass_info.es3FragmentShaderGraph,
                                                                                                        pass_info.es2FragmentShaderGraph,
+                                                                                                       pass_info.rhiFragmentShaderGraph,
                                                                                                        pass_info.gl3VertCode,
                                                                                                        pass_info.es3VertCode,
                                                                                                        pass_info.es2VertCode,
+                                                                                                       pass_info.rhiVertCode,
                                                                                                        pass_info.gl3FragCode,
                                                                                                        pass_info.es3FragCode,
                                                                                                        pass_info.es2FragCode,
+                                                                                                       pass_info.rhiFragCode,
                                                                                                        pass_info.gl3GeometryCode,
                                                                                                        pass_info.es3GeometryCode,
                                                                                                        pass_info.es2GeometryCode,
+                                                                                                       pass_info.rhiGeometryCode,
                                                                                                        pass_info.blendFunction,
                                                                                                        pass_info.blendSourceRGB,
                                                                                                        pass_info.blendSourceAlpha,
                                                                                                        pass_info.blendDestinationRGB,
-                                                                                                       pass_info.blendDestinationAlpha)
+                                                                                                       pass_info.blendDestinationAlpha,
+                                                                                                       idx)
                 return CustomMaterialGenerator.techniqueMultiTransparent % (matName,
                                                                             matName,
                                                                             innerPassContent)
@@ -1836,18 +2104,23 @@ HEADERS += \\
                                                                           pass_info.gl3VertexShaderGraph,
                                                                           pass_info.es3VertexShaderGraph,
                                                                           pass_info.es2VertexShaderGraph,
+                                                                          pass_info.rhiVertexShaderGraph,
                                                                           pass_info.gl3FragmentShaderGraph,
                                                                           pass_info.es3FragmentShaderGraph,
                                                                           pass_info.es2FragmentShaderGraph,
+                                                                          pass_info.rhiFragmentShaderGraph,
                                                                           pass_info.gl3VertCode,
                                                                           pass_info.es3VertCode,
                                                                           pass_info.es2VertCode,
+                                                                          pass_info.rhiVertCode,
                                                                           pass_info.gl3FragCode,
                                                                           pass_info.es3FragCode,
                                                                           pass_info.es2FragCode,
+                                                                          pass_info.rhiFragCode,
                                                                           pass_info.gl3GeometryCode,
                                                                           pass_info.es3GeometryCode,
-                                                                          pass_info.es2GeometryCode)
+                                                                          pass_info.es2GeometryCode,
+                                                                          pass_info.rhiGeometryCode)
 
 
             def generateTechnique(passes_info):
@@ -1866,22 +2139,7 @@ HEADERS += \\
 
 
             technique_content, technique_name = generateTechnique(passes_info)
-            content = CustomMaterialGenerator.effectClassCppContent % (technique_content,
-                                                                       doc,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName,
-                                                                       matName)
+            content = CustomMaterialGenerator.effectClassCppContent.format(technique_content, doc, matName)
 
             includes = "#include \"%s.h\"\n\n" % (className.lower())
             includes += "#include <Qt3DRender/QEffect>\n"
@@ -1912,8 +2170,52 @@ HEADERS += \\
     def generateMaterial(self):
         matName = self.rawJson.get("type", "")
         className = matName + "Material"
+        props = self.rawJson.get("properties", [])
+        texture_props = [p for p in props if p.get("type", "").startswith("texture")]
+
+        def generateTextureParameters(properties):
+            content = ""
+            param_str = 4 * ' ' + "Qt3DRender::QParameter *m_%sParameter;\n"
+            for p in properties:
+                content += param_str % p.get("name", "")
+            return content
+
+        def generateInitializeParameters(properties):
+            content = ""
+            param_str = '\n' + 4 * ' ' + ", m_%sParameter(new Qt3DRender::QParameter(QStringLiteral(\"%s\"), {}))"
+            for p in properties:
+                name =  p.get("name", "")
+                content += param_str % (name, name)
+            return content
+
+        def generateAddParameters(properties):
+            content = ""
+            param_str = '\n' + 4 * ' ' + "addParameter(m_%sParameter);"
+            for p in properties:
+                content += param_str % p.get("name", "")
+            return content
+
+        def generateParametersConnection(properties, propertiesClassName):
+            content = ""
+            connect_str = '\n' + 12 * ' ' + "QObject::connect(m_materialProperties, &%s::%sChanged, this, [this] (%s t) { m_%sParameter->setValue(QVariant::fromValue(t)); });"
+            for p in properties:
+                name =  p.get("name", "")
+                propType = CustomMaterialGenerator.propertyTypesToQtType.get(p.get("type", ""), "")
+                content += connect_str % (propertiesClassName, name, propType, name)
+            return content
+
+        def generateParameterSetValues(properties):
+            content = ""
+            set_str = '\n' + 12 * ' ' + "m_%sParameter->setValue(QVariant::fromValue(m_materialProperties->%s()));"
+            for p in properties:
+                name =  p.get("name", "")
+                content += set_str % (name, name)
+            return content
+
 
         def generateHeader():
+            texture_parameters = generateTextureParameters(texture_props)
+
             content = CustomMaterialGenerator.materialClassHeaderContent % (matName,
                                                                             matName,
                                                                             matName,
@@ -1922,18 +2224,24 @@ HEADERS += \\
                                                                             matName,
                                                                             matName,
                                                                             matName,
-                                                                            matName)
+                                                                            texture_parameters)
             self.generateHeaderFile(content,
                                     className,
-                                    "#include <Kuesa/GLTF2Material>\n#include <Kuesa/kuesa_global.h>\n")
+                                    "#include <Kuesa/GLTF2Material>\n#include <Kuesa/kuesa_global.h>\n#include <Kuesa/%sProperties>\n" % matName)
         generateHeader()
 
         def generateCpp():
             matName = self.rawJson.get("type", "")
             doc = self.docForClass(className, "Kuesa::GLTF2Material", self.rawJson.get("doc", ""))
+            parameters_init = generateInitializeParameters(texture_props)
+            add_parameters = generateAddParameters(texture_props)
+            param_connections = generateParametersConnection(texture_props, matName + "Properties")
+            param_setValues = generateParameterSetValues(texture_props)
             content = CustomMaterialGenerator.materialClassCppContent % (doc,
                                                                          matName,
                                                                          matName,
+                                                                         parameters_init,
+                                                                         add_parameters,
                                                                          matName,
                                                                          matName,
                                                                          matName,
@@ -1943,6 +2251,8 @@ HEADERS += \\
                                                                          matName,
                                                                          matName,
                                                                          matName,
+                                                                         param_connections,
+                                                                         param_setValues,
                                                                          matName,
                                                                          matName)
             includes = "#include \"%smaterial.h\"\n" % (matName.lower())

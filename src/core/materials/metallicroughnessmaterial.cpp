@@ -1,9 +1,9 @@
-﻿/*
+/*
     metallicroughnessmaterial.cpp
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -118,8 +118,19 @@ MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     : GLTF2Material(parent)
     , m_materialProperties(nullptr)
     , m_metallicRoughnessShaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("metallicRoughness"), {}))
+    , m_baseColorMapParameter(new Qt3DRender::QParameter(QStringLiteral("baseColorMap"), {}))
+    , m_normalMapParameter(new Qt3DRender::QParameter(QStringLiteral("normalMap"), {}))
+    , m_emissiveMapParameter(new Qt3DRender::QParameter(QStringLiteral("emissiveMap"), {}))
+    , m_ambientOcclusionMapParameter(new Qt3DRender::QParameter(QStringLiteral("ambientOcclusionMap"), {}))
+    , m_metalRoughMapParameter(new Qt3DRender::QParameter(QStringLiteral("metalRoughMap"), {}))
+
 {
     addParameter(m_metallicRoughnessShaderDataParameter);
+    addParameter(m_baseColorMapParameter);
+    addParameter(m_normalMapParameter);
+    addParameter(m_emissiveMapParameter);
+    addParameter(m_ambientOcclusionMapParameter);
+    addParameter(m_metalRoughMapParameter);
 }
 
 MetallicRoughnessMaterial::~MetallicRoughnessMaterial()
@@ -134,25 +145,61 @@ MetallicRoughnessProperties *MetallicRoughnessMaterial::materialProperties() con
 void MetallicRoughnessMaterial::setMaterialProperties(MetallicRoughnessProperties *metallicRoughnessProperties)
 {
     if (m_materialProperties != metallicRoughnessProperties) {
-
         if (m_materialProperties)
-            QObject::disconnect(m_textureTransformChangedConnection);
+            m_materialProperties->disconnect(this);
 
         m_materialProperties = metallicRoughnessProperties;
         emit materialPropertiesChanged(metallicRoughnessProperties);
 
         if (m_materialProperties) {
+            QObject::connect(m_materialProperties, &MetallicRoughnessProperties::baseColorMapChanged,
+                             this, [this](Qt3DRender::QAbstractTexture *t) { m_baseColorMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &MetallicRoughnessProperties::emissiveMapChanged,
+                             this, [this](Qt3DRender::QAbstractTexture *t) { m_emissiveMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &MetallicRoughnessProperties::normalMapChanged,
+                             this, [this](Qt3DRender::QAbstractTexture *t) { m_normalMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &MetallicRoughnessProperties::metalRoughMapChanged,
+                             this, [this](Qt3DRender::QAbstractTexture *t) { m_metalRoughMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &MetallicRoughnessProperties::ambientOcclusionMapChanged,
+                             this, [this](Qt3DRender::QAbstractTexture *t) { m_ambientOcclusionMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &MetallicRoughnessProperties::shadowMapDepthTextureChanged,
+                             this, &MetallicRoughnessMaterial::setShadowMapDepthTexture);
+            QObject::connect(m_materialProperties, &MetallicRoughnessProperties::shadowMapCubeDepthTextureChanged,
+                             this, &MetallicRoughnessMaterial::setShadowMapCubeDepthTexture);
+
+            // Enforce sRGB for baseColorMap and emissiveMap
+            QObject::connect(m_materialProperties, &MetallicRoughnessProperties::baseColorMapChanged, this, &MetallicRoughnessMaterial::enforceSRGBOnTexture);
+            QObject::connect(m_materialProperties, &MetallicRoughnessProperties::emissiveMapChanged, this, &MetallicRoughnessMaterial::enforceSRGBOnTexture);
+
+            m_baseColorMapParameter->setValue(QVariant::fromValue(m_materialProperties->baseColorMap()));
+            m_emissiveMapParameter->setValue(QVariant::fromValue(m_materialProperties->emissiveMap()));
+            m_normalMapParameter->setValue(QVariant::fromValue(m_materialProperties->normalMap()));
+            m_metalRoughMapParameter->setValue(QVariant::fromValue(m_materialProperties->metalRoughMap()));
+            m_ambientOcclusionMapParameter->setValue(QVariant::fromValue(m_materialProperties->ambientOcclusionMap()));
+
+            enforceSRGBOnTexture(m_materialProperties->baseColorMap());
+            enforceSRGBOnTexture(m_materialProperties->emissiveMap());
+
             m_metallicRoughnessShaderDataParameter->setValue(QVariant::fromValue(metallicRoughnessProperties->shaderData()));
             metallicRoughnessProperties->addClientMaterial(this);
 
-            m_textureTransformChangedConnection = QObject::connect(m_materialProperties,
-                                                                   &MetallicRoughnessProperties::textureTransformChanged,
-                                                                   this,
-                                                                   [this] (const QMatrix3x3 &m) {
-                m_textureTransformParameter->setValue(QVariant::fromValue(m));
-            });
+            setShadowMapDepthTexture(m_materialProperties->shadowMapDepthTexture());
+            setShadowMapCubeDepthTexture(m_materialProperties->shadowMapCubeDepthTexture());
         }
     }
+}
+
+void MetallicRoughnessMaterial::enforceSRGBOnTexture(QAbstractTexture *t) const
+{
+    if (!t)
+        return;
+#ifndef KUESA_OPENGL_ES_2
+    const bool isSRGB = true;
+#else
+    const bool isSRGB = false;
+#endif
+    if (isSRGB)
+        t->setFormat(Qt3DRender::QAbstractTexture::TextureFormat::SRGB8_Alpha8);
 }
 
 } // namespace Kuesa

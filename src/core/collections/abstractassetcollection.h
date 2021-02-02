@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -47,6 +47,7 @@ public:
     QStringList names();
     int size();
     bool contains(const QString &name) const;
+    bool contains(Qt3DCore::QNode *asset) const;
     Qt3DCore::QNode *findAsset(const QString &name);
 
     void remove(const QString &name);
@@ -60,15 +61,16 @@ protected:
 Q_SIGNALS:
     void namesChanged();
     void sizeChanged();
+    void assetAdded(const QString &name);
 
 private:
     void handleAssetDestruction(const QString &name);
     void addDestructionConnection(const QString &name, Qt3DCore::QNode *asset);
-    void removeDestructionConnection(Qt3DCore::QNode *asset);
+    void removeDestructionConnection(const QString &name, Qt3DCore::QNode *asset);
     void clearDestructionConnections();
 
     QMap<QString, Qt3DCore::QNode *> m_assets;
-    QHash<QNode *, QMetaObject::Connection> m_destructionConnections;
+    QHash<std::pair<QString, QNode *>, QMetaObject::Connection> m_destructionConnections;
 };
 
 } // namespace Kuesa
@@ -78,7 +80,7 @@ QT_END_NAMESPACE
 #define KUESA_ASSET_COLLECTION_IMPLEMENTATION(AssetType)                       \
 public:                                                                        \
     using ContentType = AssetType;                                             \
-    void add(const QString &name, AssetType *asset) { addAsset(name, asset); } \
+    Q_INVOKABLE void add(const QString &name, AssetType *asset) { addAsset(name, asset); } \
     Q_INVOKABLE AssetType *find(const QString &name) { return static_cast<AssetType *>(findAsset(name)); }
 
 #endif // KUESA_ABSTRACTASSETCOLLECTION_H

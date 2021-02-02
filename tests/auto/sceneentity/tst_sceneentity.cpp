@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 
 #include <Kuesa/sceneentity.h>
 
@@ -53,8 +53,10 @@ private Q_SLOTS:
         QVERIFY(sceneEntity.entities());
         QVERIFY(sceneEntity.textureImages());
         QVERIFY(sceneEntity.animationMappings());
+        QVERIFY(sceneEntity.reflectionPlanes());
+        QVERIFY(sceneEntity.placeholders());
     }
 };
 
-QTEST_GUILESS_MAIN(tst_SceneEntity)
+QTEST_MAIN(tst_SceneEntity)
 #include "tst_sceneentity.moc"

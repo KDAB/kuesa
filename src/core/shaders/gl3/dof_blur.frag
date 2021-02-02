@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michael Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -38,7 +38,7 @@ uniform sampler2D depthTexture;
 uniform float focusDistance;
 uniform float focusRange;
 uniform float bokehRadius;
-uniform vec2 textureSize;
+uniform vec2 texSize;
 uniform sampler2D textureSampler;
 
 in vec2 texCoord;
@@ -54,7 +54,7 @@ float mapZ(float z)
 float confusionCircle(vec2 texturePos)
 {
     float param = texture(depthTexture, texturePos).x;
-    float depth = mapZ(param);    
+    float depth = mapZ(param);
 
     // points in front: negative coc. points behind: positive coc
     float coc = (depth - focusDistance) / focusRange;
@@ -85,28 +85,28 @@ vec4 depthOfField()
     {
         vec2 sampledPoint = _451[k] * bokehRadius;
         float radius = length(sampledPoint);
-        sampledPoint /= textureSize;
+        sampledPoint /= texSize;
         vec4 s = texture(textureSampler, texCoord + sampledPoint);
-        
+
         //Find CoC of sampled point. if it's > CoC at this point it will contribute
         float cocSampledPoint = confusionCircle(texCoord + sampledPoint);
 
-        // Background color and weight.  (CoC > 0) 
+        // Background color and weight.  (CoC > 0)
         // For BG, use CoC of closes point (current point or sampled point)
         // because things behind don't blur into things in front.
         float bgCoC = min(cocCenter, cocSampledPoint);
-        
+
         // only keep if it's in background.  CoC > 0
         float bgw = weigh(max(0, bgCoC), radius);
         bgColor += (s.rgb * bgw);
         bgWeight += bgw;
 
-        // Foreground color and weight. (CoC < 0) 
+        // Foreground color and weight. (CoC < 0)
         float fgw = weigh(-cocSampledPoint, radius);
         fgColor += (s.rgb * fgw);
         fgWeight += fgw;
     }
-    
+
     bgColor = bgColor/ vec3(bgWeight + (bgWeight == 0 ? 1 : 0));
     fgColor = fgColor/ vec3(fgWeight + (fgWeight == 0 ? 1 : 0));
 

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -27,7 +27,8 @@
 */
 
 #include <qtkuesa-config.h>
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QStandardPaths>
 #include <Kuesa/SceneEntity>
 #include <Kuesa/GLTF2Importer>
 #include <Kuesa/private/gltf2context_p.h>
@@ -286,6 +287,7 @@ private Q_SLOTS:
         {
             const bool res = parser.parse(asset);
             QVERIFY(res);
+            parser.generateContent();
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -306,7 +308,7 @@ private Q_SLOTS:
         {
             QVERIFY(exported.success());
 
-            ctx.reset();
+            ctx.reset(&scene);
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
             parser.addResourcesToSceneEntityCollections();
             const auto res = parser.contentRoot();
@@ -335,6 +337,7 @@ private Q_SLOTS:
         {
             const bool res = parser.parse(asset);
             QVERIFY(res);
+            parser.generateContent();
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -384,7 +387,7 @@ private Q_SLOTS:
             QVERIFY(comp_info.size() < 1024 * 1024);
 
             // Check that we can reload the mesh properly
-            ctx.reset();
+            ctx.reset(&scene);
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
 
             auto res = parser.contentRoot();
@@ -409,6 +412,7 @@ private Q_SLOTS:
         {
             const bool res = parser.parse(asset);
             QVERIFY(res);
+            parser.generateContent();
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -441,7 +445,7 @@ private Q_SLOTS:
             QVERIFY(tmp.count() == 0);
 
             // Check that we can reload the mesh properly
-            ctx.reset();
+            ctx.reset(&scene);
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), tmp.absolutePath(), QStringLiteral("test.gltf"));
             parser.addResourcesToSceneEntityCollections();
             auto res = parser.contentRoot();
@@ -470,6 +474,7 @@ private Q_SLOTS:
         {
             const bool res = parser.parse(asset);
             QVERIFY(res);
+            parser.generateContent();
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -529,6 +534,7 @@ private Q_SLOTS:
             const QString asset = tmp.absolutePath() + "/Box.gltf";
             const bool res = parser.parse(asset);
             QVERIFY(res);
+            parser.generateContent();
 
             GLTF2ExportConfiguration configuration;
             configuration.setMeshCompressionEnabled(true);
@@ -553,7 +559,7 @@ private Q_SLOTS:
             QVERIFY(!sub.exists("Box0.bin"));
             QCOMPARE(sub.count(), 1U);
 
-            ctx.reset();
+            ctx.reset(&scene);
             parser.parseJSON(QJsonDocument{ exported.json() }.toJson(), sub.absolutePath(), QStringLiteral("test.gltf"));
             parser.addResourcesToSceneEntityCollections();
             auto res = parser.contentRoot();
@@ -563,6 +569,6 @@ private Q_SLOTS:
 #endif
 };
 
-QTEST_APPLESS_MAIN(tst_GLTFExporter)
+QTEST_MAIN(tst_GLTFExporter)
 
 #include "tst_gltfexporter.moc"

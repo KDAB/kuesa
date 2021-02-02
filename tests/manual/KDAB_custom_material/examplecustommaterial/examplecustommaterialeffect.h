@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -30,8 +30,8 @@
 #ifndef KUESA_EXAMPLECUSTOMMATERIALEFFECT_H
 #define KUESA_EXAMPLECUSTOMMATERIALEFFECT_H
 
-#include <Qt3DRender/QEffect>
 #include <Kuesa/kuesa_global.h>
+#include <Kuesa/GLTF2MaterialEffect>
 
 
 QT_BEGIN_NAMESPACE
@@ -40,39 +40,27 @@ namespace Kuesa {
 
 class ExampleCustomMaterialTechnique;
 
-class ExampleCustomMaterialEffect : public Qt3DRender::QEffect
+class ExampleCustomMaterialEffect : public GLTF2MaterialEffect
 {
     Q_OBJECT
-    Q_PROPERTY(bool doubleSided READ isDoubleSided WRITE setDoubleSided NOTIFY doubleSidedChanged)
-    Q_PROPERTY(bool useSkinning READ useSkinning WRITE setUseSkinning NOTIFY useSkinningChanged)
-    Q_PROPERTY(bool opaque READ isOpaque WRITE setOpaque NOTIFY opaqueChanged)
-    Q_PROPERTY(bool alphaCutoffEnabled READ isAlphaCutoffEnabled WRITE setAlphaCutoffEnabled NOTIFY alphaCutoffEnabledChanged)
 
 public:
     Q_INVOKABLE explicit ExampleCustomMaterialEffect(Qt3DCore::QNode *parent = nullptr);
     ~ExampleCustomMaterialEffect();
 
-    bool isDoubleSided() const;
-    bool useSkinning() const;
-    bool isOpaque() const;
-    bool isAlphaCutoffEnabled() const;
-
-public Q_SLOTS:
-    void setDoubleSided(bool doubleSided);
-    void setUseSkinning(bool useSkinning);
-    void setOpaque(bool opaque);
-    void setAlphaCutoffEnabled(bool enabled);
-
-Q_SIGNALS:
-    void doubleSidedChanged(bool doubleSided);
-    void useSkinningChanged(bool useSkinning);
-    void opaqueChanged(bool opaque);
-    void alphaCutoffEnabledChanged(bool enabled);
-
 private:
-    bool m_useSkinning;
-    bool m_opaque;
-    bool m_alphaCutoffEnabled;
+    void updateDoubleSided(bool doubleSided) override;
+    void updateUsingSkinning(bool useSkinning) override;
+    void updateOpaque(bool opaque) override;
+    void updateAlphaCutoffEnabled(bool enabled) override;
+    void updateUsingColorAttribute(bool enabled) override;
+    void updateUsingNormalAttribute(bool enabled) override;
+    void updateUsingTangentAttribute(bool enabled) override;
+    void updateUsingTexCoordAttribute(bool enabled) override;
+    void updateUsingTexCoord1Attribute(bool enabled) override;
+    void updateUsingMorphTargets(bool enabled) override;
+    void updateInstanced(bool instanced) override;
+
     ExampleCustomMaterialTechnique *m_gl3Technique;
     ExampleCustomMaterialTechnique *m_es3Technique;
     ExampleCustomMaterialTechnique *m_es2Technique;

@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,12 +26,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Qt3D.Core 2.10
-import Qt3D.Render 2.10
-import Qt3D.Input 2.1
-import Qt3D.Logic 2.0
-import QtQml 2.11
-import QtQuick 2.11 as QQ2
+import Qt3D.Core 2.12
+import Qt3D.Render 2.12
+import Qt3D.Input 2.12
+import Qt3D.Logic 2.2
+import QtQml 2.12
+import QtQuick 2.12 as QQ2
 
 Entity {
     id: root

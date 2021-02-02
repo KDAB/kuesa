@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -40,8 +40,6 @@
 // We mean it.
 //
 
-#include <QLoggingCategory>
-
-Q_DECLARE_LOGGING_CATEGORY(kuesa)
+#include <logging_p.h>
 
 #endif // KUESA_P_H

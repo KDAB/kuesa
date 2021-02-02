@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Paul Lemire <paul.lemire@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -30,6 +30,7 @@ SOURCES += \
     $$PWD/layercollection.cpp \
     $$PWD/lightcollection.cpp \
     $$PWD/meshcollection.cpp \
+    $$PWD/reflectionplanecollection.cpp \
     $$PWD/texturecollection.cpp \
     $$PWD/effectcollection.cpp \
     $$PWD/materialcollection.cpp \
@@ -41,12 +42,14 @@ SOURCES += \
     $$PWD/entitycollection.cpp \
     $$PWD/textureimagecollection.cpp \
     $$PWD/animationmappingcollection.cpp \
-    $$PWD/transformcollection.cpp
+    $$PWD/transformcollection.cpp \
+    $$PWD/placeholdercollection.cpp
 
 HEADERS += \
     $$PWD/layercollection.h \
     $$PWD/lightcollection.h \
     $$PWD/meshcollection.h \
+    $$PWD/reflectionplanecollection.h \
     $$PWD/texturecollection.h \
     $$PWD/effectcollection.h \
     $$PWD/materialcollection.h \
@@ -58,4 +61,5 @@ HEADERS += \
     $$PWD/entitycollection.h \
     $$PWD/textureimagecollection.h \
     $$PWD/animationmappingcollection.h \
-    $$PWD/transformcollection.h
+    $$PWD/transformcollection.h \
+    $$PWD/placeholdercollection.h

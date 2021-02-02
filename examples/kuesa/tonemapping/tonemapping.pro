@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Robert Brock <robert.brock@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,97 +26,18 @@
 
 TEMPLATE = app
 
-QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa
+QT += 3dcore 3drender 3dinput 3dextras 3dquick qml quick 3dquickextras 3danimation kuesa quickcontrols2
 QT_FOR_CONFIG += kuesa
 
-SOURCES += main.cpp \
-    ../../../tools/gltfViewer/orbitcameracontroller.cpp
-
-HEADERS += \
-    ../../../tools/gltfViewer/orbitcameracontroller.h
+SOURCES += main.cpp
 
 include(../shared-utils/shared-utils.pri)
 
 RESOURCES += \
     assets/assets.qrc \
     qml/qml.qrc \
-
-macos: APP_PWD=$$OUT_PWD/$${TARGET}.app/Contents
-else:windows:APP_PWD=$$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-else: APP_PWD=$$OUT_PWD
-RES_PWD=$$APP_PWD/resources
-
-envmaps_dir = ../assets/envmaps/pink_sunrise
-envmaps.files = \
-    $${envmaps_dir}/pink_sunrise_16f_irradiance.dds \
-    $${envmaps_dir}/pink_sunrise_16f_radiance.dds \
-    $${envmaps_dir}/pink_sunrise_16f_specular.dds \
-    $${envmaps_dir}/pink_sunrise_skybox.dds
-
-helmet_dir = ../assets/models/damagedhelmet/rotating_glTF
-helmet.files = \
-    $${helmet_dir}/Default_albedo.png \
-    $${helmet_dir}/Default_emissive.png \
-    $${helmet_dir}/Default_metalRoughness.png \
-    $${helmet_dir}/Default_normal.png \
-    $${helmet_dir}/RotatingHelmet.bin \
-    $${helmet_dir}/RotatingHelmet.gltf
-
-android {
-    envmaps.path = /assets
-    helmet.path = /assets
-
-    INSTALLS += helmet envmaps
-
-    DISTFILES += android/AndroidManifest.xml
-    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-} else:ios {
-    envmaps.path = "/Library/Application Support"
-    helmet.path = "/Library/Application Support"
-
-    QMAKE_BUNDLE_DATA += helmet envmaps
-
-    OTHER_FILES += Info-ios.plist
-    QMAKE_INFO_PLIST = Info-ios.plist
-
-    OBJECTIVE_SOURCES += ios/iosutils.mm
-    QMAKE_ASSET_CATALOGS += ios/Images.xcassets
-} else:osx {
-    envmaps.path = "/Contents/Resources"
-    helmet.path = "/Contents/Resources"
-
-    QMAKE_BUNDLE_DATA += helmet envmaps
-
-    ICON = ../shared-utils/kuesa.icns
-    OTHER_FILES += Info-macos.plist
-    QMAKE_INFO_PLIST = Info-macos.plist
-} else {
-    RCC_BINARY_SOURCES += \
-        ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc \
-        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
-
-    windows {
-        RC_ICONS = ../shared-utils/kuesa.ico
-        DESTDIR = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-    }
-
-    # Build resources as external files
-    asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
-    asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
-    asset_builder.input = RCC_BINARY_SOURCES
-    asset_builder.output = $$RES_PWD/${QMAKE_FILE_IN_BASE}.qrb
-    asset_builder.CONFIG += no_link target_predeps
-    QMAKE_EXTRA_COMPILERS += asset_builder
-
-    ext_resources.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-    ext_resources.files = $$RES_PWD
-
-    INSTALLS += ext_resources
-
-    OTHER_FILES += \
-        ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc \
-        ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
-}
+    ../assets/models/damagedhelmet/rotating_glTF/helmet.qrc \
+    ../assets/envmaps/pink_sunrise/envmap-pink-sunrise-16f.qrc
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 INSTALLS += target

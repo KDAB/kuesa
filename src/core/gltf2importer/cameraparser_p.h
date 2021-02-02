@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -54,6 +54,14 @@ class GLTF2Context;
 struct Camera {
     Qt3DRender::QCameraLens *lens = nullptr;
     QString name;
+
+    bool isPerspective = true;
+    float yFov = 45.0f;
+    float aspectRatio = 0.0f;
+    float zNear = 1.0f;
+    float zFar = 0.0f;
+    float xMag = 1.0f;
+    float yMag = 1.0f;
 };
 
 class Q_AUTOTEST_EXPORT CameraParser
@@ -63,6 +71,8 @@ public:
     ~CameraParser();
 
     bool parse(const QJsonArray &cameras, GLTF2Context *context);
+
+    static void setupLens(Camera &camera, Qt3DRender::QCameraLens *lens);
 };
 
 } // namespace GLTF2Import

@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -28,7 +28,6 @@
 */
 
 #include "irodiffusealphashaderdata_p.h"
-#include <Qt3DCore/private/qnode_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -44,7 +43,6 @@ IroDiffuseAlphaShaderData::IroDiffuseAlphaShaderData(Qt3DCore::QNode *parent)
     , m_postVertexColor()
     , m_postGain()
     , m_reflectionGain()
-    , m_reflectionMap(nullptr)
     , m_reflectionInnerFilter()
     , m_reflectionOuterFilter()
     , m_usesReflectionMap()
@@ -79,11 +77,6 @@ float IroDiffuseAlphaShaderData::postGain() const
 float IroDiffuseAlphaShaderData::reflectionGain() const
 {
     return m_reflectionGain;
-}
-
-Qt3DRender::QAbstractTexture * IroDiffuseAlphaShaderData::reflectionMap() const
-{
-    return m_reflectionMap;
 }
 
 QVector3D IroDiffuseAlphaShaderData::reflectionInnerFilter() const
@@ -160,23 +153,6 @@ void IroDiffuseAlphaShaderData::setReflectionGain(float reflectionGain)
         return;
     m_reflectionGain = reflectionGain;
     emit reflectionGainChanged(reflectionGain);
-}
-
-void IroDiffuseAlphaShaderData::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
-{
-    if (m_reflectionMap == reflectionMap)
-        return;
-
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    if (m_reflectionMap != nullptr)
-        d->unregisterDestructionHelper(m_reflectionMap);
-    m_reflectionMap = reflectionMap;
-    if (m_reflectionMap != nullptr) {
-        if (m_reflectionMap->parent() == nullptr)
-            m_reflectionMap->setParent(this);
-        d->registerDestructionHelper(m_reflectionMap, &IroDiffuseAlphaShaderData::setReflectionMap, m_reflectionMap);
-    }
-    emit reflectionMapChanged(m_reflectionMap);
 }
 
 void IroDiffuseAlphaShaderData::setReflectionInnerFilter(const QVector3D &reflectionInnerFilter)

@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Mike Krus <mike.krus@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -39,7 +39,21 @@ SUBDIRS = \
     morphcontroller \
     gltf2importer \
     gltf2options \
-    tonemappingandgammacorrectioneffect
+    tonemappingandgammacorrectioneffect \
+    kuesanode \
+    fullscreenquad \
+    reflectionplane \
+    meshinstantiator
+
+#qtHaveModule(quick):lessThan(QT_MAJOR_VERSION, 6) {
+#    SUBDIRS += qml
+
+#    qtConfig(private_tests) {
+#        SUBDIRS += \
+#            assetitem \
+#            forwardrendererextension
+#    }
+#}
 
 #installed_cmake.depends = cmake
 
@@ -52,9 +66,10 @@ qtConfig(private_tests) {
         meshparser \
         nodeparser \
         gltfparser \
-        gltfexporter \
+#        gltfexporter \
         layerparser \
         lightparser \
+        shadowparser \
         imageparser \
         tangentgenerator \
         texturesamplerparser \
@@ -63,8 +78,6 @@ qtConfig(private_tests) {
         sceneparser \
         materialparser \
         skinparser \
-        postfxlistextension \
-        assetitem \
         forwardrenderer \
         uri \
         metallicroughnesseffect \
@@ -75,5 +88,29 @@ qtConfig(private_tests) {
         meshparser_utils \
         normalgenerator \
         gltf2material \
-        effectslibrary
+        effectslibrary \
+        texturetransform \
+        opaquestage \
+        transparentstage \
+        zfillstage \
+        view \
+        scenestages \
+        framegraphutils \
+        effectsstages \
+        reflectionstages \
+        particlerenderstage \
+        empty2dtexture \
+        transformtracker \
+        fovadapter \
+        assetcache  \
+        assetkeyparser \
+        view3dscene \
+        sceneconfiguration \
+        gaussianblureffect \
+        placeholder \
+        unliteffect \
+        placeholdertracker
+
+    greaterThan(QT_MAJOR_VERSION, 5):
+        SUBDIRS += fboresolver
 }

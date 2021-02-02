@@ -1,23 +1,3 @@
-[
-    {
-        "alphaMode": "OPAQUE",
-        "doubleSided": false,
-        "emissiveFactor": [
-            0.0,
-            0.0,
-            0.0
-        ],
-        "name": "Material",
-        "pbrMetallicRoughness": {
-            "baseColorFactor": [
-                0.64000004529953,
-                0.64000004529953,
-                0.64000004529953,
-                1.0,
-                1.0
-            ],
-            "metallicFactor": 0.0,
-            "roughnessFactor": 1.0
-        }
-    }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:3ac6300dbd79f842d9ec5436a0831fff5f36ff3d3f2d01a1aed86925dd770ced
+size 499

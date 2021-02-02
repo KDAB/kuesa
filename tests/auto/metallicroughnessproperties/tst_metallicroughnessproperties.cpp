@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Juan Casafranca <juan.casafranca@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
+#include <QtTest/QSignalSpy>
 
 #include <Qt3DRender/QTexture>
 #include <Qt3DRender/QParameter>
@@ -59,6 +60,14 @@ void testProperty(Kuesa::MetallicRoughnessProperties *mat,
 
 } // namespace
 
+bool operator==(const TextureTransform &a, const TextureTransform &b)
+{
+    return a.scale() == b.scale() &&
+            qFuzzyCompare(a.rotation(), b.rotation()) &&
+            a.offset() == b.offset() &&
+            a.matrix() == b.matrix();
+}
+
 class tst_MetallicRoughnessProperties : public QObject
 {
     Q_OBJECT
@@ -79,22 +88,27 @@ private Q_SLOTS:
         QCOMPARE(mat.isBaseColorUsingTexCoord1(), false);
         QCOMPARE(mat.baseColorFactor(), QColor("gray"));
         QCOMPARE(mat.baseColorMap(), nullptr);
+        QCOMPARE(*mat.baseColorMapTextureTransform(), TextureTransform{});
 
         QCOMPARE(mat.isMetallicRoughnessUsingTexCoord1(), false);
         QCOMPARE(mat.metallicFactor(), 0.0f);
         QCOMPARE(mat.roughnessFactor(), 0.0f);
         QCOMPARE(mat.metalRoughMap(), nullptr);
+        QCOMPARE(*mat.metalRoughMapTextureTransform(), TextureTransform{});
 
         QCOMPARE(mat.isNormalUsingTexCoord1(), false);
         QCOMPARE(mat.normalScale(), 1.0f);
         QCOMPARE(mat.normalMap(), nullptr);
+        QCOMPARE(*mat.normalMapTextureTransform(), TextureTransform{});
 
         QCOMPARE(mat.isAOUsingTexCoord1(), false);
         QCOMPARE(mat.ambientOcclusionMap(), nullptr);
+        QCOMPARE(*mat.ambientOcclusionMapTextureTransform(), TextureTransform{});
 
         QCOMPARE(mat.isEmissiveUsingTexCoord1(), false);
         QCOMPARE(mat.emissiveFactor(), QColor("black"));
         QCOMPARE(mat.emissiveMap(), nullptr);
+        QCOMPARE(*mat.emissiveMapTextureTransform(), TextureTransform{});
 
         QCOMPARE(mat.alphaCutoff(), 0.0f);
     }
@@ -297,22 +311,6 @@ private Q_SLOTS:
                        new Qt3DRender::QTexture2D());
     }
 
-    void checkTextureTransform()
-    {
-        // GIVEN
-        Kuesa::MetallicRoughnessProperties mat;
-
-        QMatrix3x3 matrix;
-        matrix.fill(5.0);
-
-        // THEN
-        ::testProperty(&mat,
-                       &MetallicRoughnessProperties::setTextureTransform,
-                       &MetallicRoughnessProperties::textureTransform,
-                       &MetallicRoughnessProperties::textureTransformChanged,
-                       QMatrix3x3{}, matrix);
-    }
-
     void checkAlphaCutoff()
     {
         // GIVEN
@@ -324,6 +322,19 @@ private Q_SLOTS:
                        &MetallicRoughnessProperties::alphaCutoff,
                        &MetallicRoughnessProperties::alphaCutoffChanged,
                        0.0f, 0.5f);
+    }
+
+    void checkReceivesShadows()
+    {
+        // GIVEN
+        Kuesa::MetallicRoughnessProperties mat;
+
+        // THEN
+        ::testProperty(&mat,
+                       &MetallicRoughnessProperties::setReceivesShadows,
+                       &MetallicRoughnessProperties::receivesShadows,
+                       &MetallicRoughnessProperties::receivesShadowsChanged,
+                       true, false);
     }
 
     void checkTextureBookeeping()
@@ -375,7 +386,6 @@ private Q_SLOTS:
         // THEN
         QVERIFY(mat.metalRoughMap() == nullptr);
 
-
         // WHEN
         {
             Qt3DRender::QTexture2D t;
@@ -389,6 +399,6 @@ private Q_SLOTS:
     }
 };
 
-QTEST_APPLESS_MAIN(tst_MetallicRoughnessProperties)
+QTEST_MAIN(tst_MetallicRoughnessProperties)
 
 #include "tst_metallicroughnessproperties.moc"

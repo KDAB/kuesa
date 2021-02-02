@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Mike Krus <mike.krus@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,16 +26,16 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Qt3D.Core 2.10
-import Qt3D.Render 2.11
-import Qt3D.Input 2.0
-import Qt3D.Extras 2.11
-import Qt3D.Animation 2.10
-import QtQuick 2.11 as QQ2
+import Qt3D.Core 2.12
+import Qt3D.Render 2.12
+import Qt3D.Input 2.12
+import Qt3D.Extras 2.12
+import Qt3D.Animation 2.12
+import QtQuick 2.12 as QQ2
 
 //! [0]
 import Kuesa 1.2 as Kuesa
-import Kuesa.Effects 1.1 as Effects
+import Kuesa.Effects 1.2 as Effects
 
 
 Kuesa.SceneEntity {
@@ -207,6 +207,7 @@ Kuesa.SceneEntity {
                         effects.push(opacityMaskEffect)
                     return effects
                 }
+                skinning: showSkybox
                 backToFrontSorting: true
                 toneMappingAlgorithm: Effects.ToneMappingAndGammaCorrectionEffect.Reinhard
 //                showDebugOverlay: true
@@ -216,7 +217,7 @@ Kuesa.SceneEntity {
         InputSettings { },
         EnvironmentLight {
             irradiance: TextureLoader {
-                source: _assetsPrefix + environmentMap + "_16f_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")
+                source: "qrc:/" + environmentMap + "_16f_irradiance" + ((!scene.es2) ? ".dds" : "_es2.dds")
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -224,7 +225,7 @@ Kuesa.SceneEntity {
                 generateMipMaps: false
             }
             specular: TextureLoader {
-                source: _assetsPrefix + environmentMap + "_16f_specular" + ((!scene.es2) ? ".dds" : "_es2.dds")
+                source: "qrc:/" + environmentMap + "_16f_specular" + ((!scene.es2) ? ".dds" : "_es2.dds")
                 wrapMode {
                     x: WrapMode.ClampToEdge
                     y: WrapMode.ClampToEdge
@@ -276,13 +277,13 @@ Kuesa.SceneEntity {
     // Loads GLTF 2.0 asset
     Kuesa.GLTF2Importer {
         sceneEntity: scene
-        source: _assetsPrefix + "DodgeViper" + _modelSuffix + ".gltf"
+        source: "qrc:/DodgeViper" + _modelSuffix + ".gltf"
     }
 //! [1]
 
     Kuesa.Skybox {
         id: skybox
-        baseName: _assetsPrefix + environmentMap + "_skybox"
+        baseName: "qrc:/" + environmentMap + "_skybox"
         extension: ".dds"
     }
 }

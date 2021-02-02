@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -31,6 +31,7 @@
 
 #include <Kuesa/kuesa_global.h>
 #include <Qt3DCore/QEntity>
+#include <QRectF>
 
 QT_BEGIN_NAMESPACE
 
@@ -39,6 +40,16 @@ class QLayer;
 class QCamera;
 class QMaterial;
 } // namespace Qt3DRender
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+namespace Qt3DGeometry = Qt3DCore;
+namespace Qt3DCore {
+#else
+namespace Qt3DGeometry = Qt3DRender;
+namespace Qt3DRender {
+#endif
+class QBuffer;
+}
 
 namespace Kuesa {
 
@@ -50,9 +61,17 @@ public:
     ~FullScreenQuad();
 
     Qt3DRender::QLayer *layer() const;
+    Qt3DGeometry::QBuffer *buffer() const;
+
+    void setViewportRect(const QRectF &vp);
+    QRectF viewportRect() const;
 
 private:
+    Qt3DGeometry::QBuffer *m_buffer;
     Qt3DRender::QLayer *m_layer;
+    QRectF m_viewportRect = QRectF(0.0f, 0.0f, 1.0f, 1.0f);
+
+    void updateBufferData();
 };
 
 } // namespace Kuesa

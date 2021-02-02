@@ -4,7 +4,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -28,7 +28,6 @@
 */
 
 #include "irodiffusehemishaderdata_p.h"
-#include <Qt3DCore/private/qnode_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -44,7 +43,6 @@ IroDiffuseHemiShaderData::IroDiffuseHemiShaderData(Qt3DCore::QNode *parent)
     , m_postVertexColor()
     , m_postHemiFilter()
     , m_postGain()
-    , m_reflectionMap(nullptr)
     , m_reflectionGain()
     , m_reflectionInnerFilter()
     , m_reflectionOuterFilter()
@@ -52,7 +50,6 @@ IroDiffuseHemiShaderData::IroDiffuseHemiShaderData(Qt3DCore::QNode *parent)
     , m_projectReflectionMap()
     , m_diffuseInnerFilter()
     , m_diffuseOuterFilter()
-    , m_diffuseMap(nullptr)
     , m_diffuseGain()
     , m_usesDiffuseMap()
     , m_gltfYUp()
@@ -83,11 +80,6 @@ QVector3D IroDiffuseHemiShaderData::postHemiFilter() const
 float IroDiffuseHemiShaderData::postGain() const
 {
     return m_postGain;
-}
-
-Qt3DRender::QAbstractTexture * IroDiffuseHemiShaderData::reflectionMap() const
-{
-    return m_reflectionMap;
 }
 
 float IroDiffuseHemiShaderData::reflectionGain() const
@@ -123,11 +115,6 @@ QVector3D IroDiffuseHemiShaderData::diffuseInnerFilter() const
 QVector3D IroDiffuseHemiShaderData::diffuseOuterFilter() const
 {
     return m_diffuseOuterFilter;
-}
-
-Qt3DRender::QAbstractTexture * IroDiffuseHemiShaderData::diffuseMap() const
-{
-    return m_diffuseMap;
 }
 
 float IroDiffuseHemiShaderData::diffuseGain() const
@@ -186,23 +173,6 @@ void IroDiffuseHemiShaderData::setPostGain(float postGain)
     emit postGainChanged(postGain);
 }
 
-void IroDiffuseHemiShaderData::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
-{
-    if (m_reflectionMap == reflectionMap)
-        return;
-
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    if (m_reflectionMap != nullptr)
-        d->unregisterDestructionHelper(m_reflectionMap);
-    m_reflectionMap = reflectionMap;
-    if (m_reflectionMap != nullptr) {
-        if (m_reflectionMap->parent() == nullptr)
-            m_reflectionMap->setParent(this);
-        d->registerDestructionHelper(m_reflectionMap, &IroDiffuseHemiShaderData::setReflectionMap, m_reflectionMap);
-    }
-    emit reflectionMapChanged(m_reflectionMap);
-}
-
 void IroDiffuseHemiShaderData::setReflectionGain(float reflectionGain)
 {
     if (m_reflectionGain == reflectionGain)
@@ -257,23 +227,6 @@ void IroDiffuseHemiShaderData::setDiffuseOuterFilter(const QVector3D &diffuseOut
         return;
     m_diffuseOuterFilter = diffuseOuterFilter;
     emit diffuseOuterFilterChanged(diffuseOuterFilter);
-}
-
-void IroDiffuseHemiShaderData::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
-{
-    if (m_diffuseMap == diffuseMap)
-        return;
-
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    if (m_diffuseMap != nullptr)
-        d->unregisterDestructionHelper(m_diffuseMap);
-    m_diffuseMap = diffuseMap;
-    if (m_diffuseMap != nullptr) {
-        if (m_diffuseMap->parent() == nullptr)
-            m_diffuseMap->setParent(this);
-        d->registerDestructionHelper(m_diffuseMap, &IroDiffuseHemiShaderData::setDiffuseMap, m_diffuseMap);
-    }
-    emit diffuseMapChanged(m_diffuseMap);
 }
 
 void IroDiffuseHemiShaderData::setDiffuseGain(float diffuseGain)

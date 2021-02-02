@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -44,6 +44,7 @@
 #include <QMap>
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/private/kuesa_global_p.h>
+#include <Kuesa/SceneEntity>
 
 QT_BEGIN_NAMESPACE
 
@@ -52,8 +53,6 @@ class GLTF2Importer;
 namespace GLTF2Import {
 class GLTF2Context;
 }
-class SceneEntity;
-
 class KUESA_PRIVATE_EXPORT GLTF2ExportConfiguration
 {
 public:

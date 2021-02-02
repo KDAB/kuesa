@@ -1,17 +1,3 @@
-[
-        {
-          "color": [
-            0.3,
-            0.7,
-            1.0
-          ],
-          "name": "Spot",
-          "intensity": 40.0,
-          "type": "spot",
-          "spot": {
-            "innerConeAngle": 0.785398163397448,
-            "outerConeAngle": 1.57079632679
-          },
-		  "range": 10
-        }
-]
+version https://git-lfs.github.com/spec/v1
+oid sha256:80bb2155310f132e646d8b231a8319497ecece24de6b9351f208f2a4d6a494e5
+size 330

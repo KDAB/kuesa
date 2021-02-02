@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -52,11 +52,32 @@
    The Kuesa QML types are imported with
 
    \qml
-   import Kuesa 1.0
+   import Kuesa 1.3
+   \endqml
+
+   The Kuesa Effects QML types are imported with
+
+   \qml
+   import Kuesa.Effects 1.3
+   \endqml
+
+   The Kuesa Iro QML types are imported with
+
+   \qml
+   import Kuesa.Iro 1.3
+   \endqml
+
+   The Kuesa Utils QML types are imported with
+
+   \qml
+   import Kuesa.Utils 1.3
    \endqml
 
    \section1 QML Types
+   \section2 Kuesa
    \generatelist {qmltypesbymodule Kuesa}
+   \section2 KuesaUtils
+   \generatelist {qmltypesbymodule KuesaUtils}
 */
 
 /*!
@@ -76,4 +97,10 @@
     \namespace Kuesa::GLTF2Import
     \inmodule Kuesa
     \brief Contains glTF2 import related classes.
+ */
+
+/*!
+    \namespace KuesaUtils
+    \inmodule KuesaUtils
+    \brief Contains conveniences helpers and wrappers around the Kuesa API.
  */

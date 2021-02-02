@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -109,12 +109,12 @@ void AbstractPostProcessingEffect::setCamera(Qt3DCore::QEntity *camera)
 }
 
 /*!
- * Sets the \a size of the rendered scene (in pixels) that the effect will be
- * applied to. This is necessary for effects to render correctly.
+ * Sets the \a sceneSize of the rendered scene (in pixels) that the effect
+ * will be applied to. This is necessary for effects to render correctly.
  */
-void AbstractPostProcessingEffect::setSceneSize(const QSize &size)
+void AbstractPostProcessingEffect::setWindowSize(const QSize &sceneSize)
 {
-    Q_UNUSED(size);
+    Q_UNUSED(sceneSize);
 }
 
 } // namespace Kuesa

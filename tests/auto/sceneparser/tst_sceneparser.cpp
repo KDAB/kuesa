@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -26,7 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <QtTest/QtTest>
+#include <QtTest/QTest>
 #include <QJsonDocument>
 #include <QFile>
 #include <QLatin1String>
@@ -53,30 +53,30 @@ private Q_SLOTS:
     {
         QTest::addColumn<QString>("filePath");
         QTest::addColumn<bool>("succeeded");
-        QTest::addColumn<int>("sceneCount");
+        QTest::addColumn<size_t>("sceneCount");
 
         QTest::newRow("Valid") << QStringLiteral(ASSETS "scenes_valid.gltf")
                                << true
-                               << 1;
+                               << size_t(1);
 
         QTest::newRow("Invalid-Missing-Nodes") << QStringLiteral(ASSETS "scenes_missing_nodes.gltf")
                                                << false
-                                               << 0;
+                                               << size_t(0);
 
         QTest::newRow("Invalid-Empty-Nodes") << QStringLiteral(ASSETS "scenes_empty_nodes.gltf")
                                              << false
-                                             << 0;
+                                             << size_t(0);
 
         QTest::newRow("Invalid-Duplicate-Nodes") << QStringLiteral(ASSETS "scenes_duplicate_nodes.gltf")
                                                  << false
-                                                 << 0;
+                                                 << size_t(0);
     }
 
     void checkParse()
     {
         QFETCH(QString, filePath);
         QFETCH(bool, succeeded);
-        QFETCH(int, sceneCount);
+        QFETCH(size_t, sceneCount);
 
         // GIVEN
         GLTF2Context context;

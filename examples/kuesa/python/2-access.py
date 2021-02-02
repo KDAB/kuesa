@@ -2,7 +2,7 @@
 #
 # This file is part of Kuesa.
 #
-# Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 # Author: Jean-Michaël Celerier <jean-michael.celerier@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -62,7 +62,7 @@ class Window(Qt3DExtras.Qt3DWindow):
         self.gltfImporter.setSceneEntity(self.rootEntity)
         self.gltfImporter.setSource(assetsUrl() + "/models/InterpolationTest.glb")
 
-        # When opening this model in gltfEditor, we can see :
+        # When opening this model in gltfInspector, we can see :
         # - Multiple entities :
         #   Cube, Cube.001, Cube.002, Light, Plane...
         # - Multiple meshes :

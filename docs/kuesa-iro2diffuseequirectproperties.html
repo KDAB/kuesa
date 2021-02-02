@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- iro2diffuseequirectproperties.cpp -->
+  <title>Iro2DiffuseEquiRectProperties Class | Kuesa Runtime 1.3</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<li>Iro2DiffuseEquiRectProperties</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Iro2DiffuseEquiRectProperties Class</h1>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesa">Kuesa</a>::Iro2DiffuseEquiRectProperties</span>
+<!-- $$$Iro2DiffuseEquiRectProperties-brief -->
+<p><a href="qml-iro2diffuseequirectproperties.html">Kuesa::Iro2DiffuseEquiRectProperties</a> holds the properties controlling the visual appearance of a <a href="kuesa-iro2diffuseequirectmaterial.html">Iro2DiffuseEquiRectMaterial</a> instance. <a href="#details">More...</a></p>
+<!-- @@@Iro2DiffuseEquiRectProperties -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/Iro2DiffuseEquiRectProperties&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.3</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-iro2diffuseequirectproperties.html">Iro2DiffuseEquiRectProperties</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-gltf2materialproperties.html">Kuesa::GLTF2MaterialProperties</a></td></tr></table></div><p>This class was introduced in Kuesa 1.3.</p>
+<ul>
+<li><a href="kuesa-iro2diffuseequirectproperties-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary">
+<tr><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseGain-prop">diffuseGain</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseInnerFilter-prop">diffuseInnerFilter</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseOuterFilter-prop">diffuseOuterFilter</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#gltfYUp-prop">gltfYUp</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalDisturb-prop">normalDisturb</a></b> : QVector2D</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalMapGain-prop">normalMapGain</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalScaling-prop">normalScaling</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#postGain-prop">postGain</a></b> : float</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#postHemiFilter-prop">postHemiFilter</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#postVertexColor-prop">postVertexColor</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionGain-prop">reflectionGain</a></b> : float</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionInnerFilter-prop">reflectionInnerFilter</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionOuterFilter-prop">reflectionOuterFilter</a></b> : QVector3D</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesDiffuseMap-prop">usesDiffuseMap</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesNormalMap-prop">usesNormalMap</a></b> : bool</li>
+<li class="fn"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesReflectionMap-prop">usesReflectionMap</a></b> : bool</li>
+</ul>
+</td></tr>
+</table></div>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseGain-prop">diffuseGain</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseInnerFilter-prop">diffuseInnerFilter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseOuterFilter-prop">diffuseOuterFilter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#gltfYUp-prop">gltfYUp</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector2D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalDisturb-prop">normalDisturb</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalMapGain-prop">normalMapGain</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalScaling-prop">normalScaling</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#postGain-prop">postGain</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#postHemiFilter-prop">postHemiFilter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#postVertexColor-prop">postVertexColor</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionGain-prop">reflectionGain</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionInnerFilter-prop">reflectionInnerFilter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionOuterFilter-prop">reflectionOuterFilter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesDiffuseMap-prop">usesDiffuseMap</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesNormalMap-prop">usesNormalMap</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesReflectionMap-prop">usesReflectionMap</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseGain-prop">setDiffuseGain</a></b>(float <i>diffuseGain</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseInnerFilter-prop">setDiffuseInnerFilter</a></b>(const QVector3D &amp;<i>diffuseInnerFilter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseOuterFilter-prop">setDiffuseOuterFilter</a></b>(const QVector3D &amp;<i>diffuseOuterFilter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#gltfYUp-prop">setGltfYUp</a></b>(bool <i>gltfYUp</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalDisturb-prop">setNormalDisturb</a></b>(const QVector2D &amp;<i>normalDisturb</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalMapGain-prop">setNormalMapGain</a></b>(float <i>normalMapGain</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalScaling-prop">setNormalScaling</a></b>(const QVector3D &amp;<i>normalScaling</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#postGain-prop">setPostGain</a></b>(float <i>postGain</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#postHemiFilter-prop">setPostHemiFilter</a></b>(const QVector3D &amp;<i>postHemiFilter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#postVertexColor-prop">setPostVertexColor</a></b>(float <i>postVertexColor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionGain-prop">setReflectionGain</a></b>(float <i>reflectionGain</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionInnerFilter-prop">setReflectionInnerFilter</a></b>(const QVector3D &amp;<i>reflectionInnerFilter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionOuterFilter-prop">setReflectionOuterFilter</a></b>(const QVector3D &amp;<i>reflectionOuterFilter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesDiffuseMap-prop">setUsesDiffuseMap</a></b>(bool <i>usesDiffuseMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesNormalMap-prop">setUsesNormalMap</a></b>(bool <i>usesNormalMap</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesReflectionMap-prop">setUsesReflectionMap</a></b>(bool <i>usesReflectionMap</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseGain-prop">diffuseGainChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseInnerFilter-prop">diffuseInnerFilterChanged</a></b>(<i>QVector3D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#diffuseOuterFilter-prop">diffuseOuterFilterChanged</a></b>(<i>QVector3D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#gltfYUp-prop">gltfYUpChanged</a></b>(<i>bool</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalDisturb-prop">normalDisturbChanged</a></b>(<i>QVector2D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalMapGain-prop">normalMapGainChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#normalScaling-prop">normalScalingChanged</a></b>(<i>QVector3D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#postGain-prop">postGainChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#postHemiFilter-prop">postHemiFilterChanged</a></b>(<i>QVector3D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#postVertexColor-prop">postVertexColorChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionGain-prop">reflectionGainChanged</a></b>(<i>float</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionInnerFilter-prop">reflectionInnerFilterChanged</a></b>(<i>QVector3D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#reflectionOuterFilter-prop">reflectionOuterFilterChanged</a></b>(<i>QVector3D</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesDiffuseMap-prop">usesDiffuseMapChanged</a></b>(<i>bool</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesNormalMap-prop">usesNormalMapChanged</a></b>(<i>bool</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-iro2diffuseequirectproperties.html#usesReflectionMap-prop">usesReflectionMapChanged</a></b>(<i>bool</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$Iro2DiffuseEquiRectProperties-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+</div>
+<!-- @@@Iro2DiffuseEquiRectProperties -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$diffuseGain-prop$$$diffuseGain$$$setDiffuseGainfloat$$$diffuseGainChangedfloat -->
+<h3 class="fn" id="diffuseGain-prop"><a name="diffuseGain-prop"></a><span class="name">diffuseGain</span> : <span class="type">float</span></h3>
+<p>Specifies the gain to apply to the diffuse color.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>diffuseGain</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setDiffuseGain</b></span>(float <i>diffuseGain</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>diffuseGainChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@diffuseGain -->
+<!-- $$$diffuseInnerFilter-prop$$$diffuseInnerFilter$$$setDiffuseInnerFilterconstQVector3D&$$$diffuseInnerFilterChangedQVector3D -->
+<h3 class="fn" id="diffuseInnerFilter-prop"><a name="diffuseInnerFilter-prop"></a><span class="name">diffuseInnerFilter</span> : <span class="type">QVector3D</span></h3>
+<p>Specifies the inner color filter to be applied based on fresnel on the diffuse map lookup.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>diffuseInnerFilter</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setDiffuseInnerFilter</b></span>(const QVector3D &amp;<i>diffuseInnerFilter</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>diffuseInnerFilterChanged</b></span>(<i>QVector3D</i>)</td></tr>
+</table></div>
+<!-- @@@diffuseInnerFilter -->
+<!-- $$$diffuseOuterFilter-prop$$$diffuseOuterFilter$$$setDiffuseOuterFilterconstQVector3D&$$$diffuseOuterFilterChangedQVector3D -->
+<h3 class="fn" id="diffuseOuterFilter-prop"><a name="diffuseOuterFilter-prop"></a><span class="name">diffuseOuterFilter</span> : <span class="type">QVector3D</span></h3>
+<p>Specifies the outer color filter to be applied based on fresnel on the diffuse map lookup.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>diffuseOuterFilter</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setDiffuseOuterFilter</b></span>(const QVector3D &amp;<i>diffuseOuterFilter</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>diffuseOuterFilterChanged</b></span>(<i>QVector3D</i>)</td></tr>
+</table></div>
+<!-- @@@diffuseOuterFilter -->
+<!-- $$$gltfYUp-prop$$$gltfYUp$$$setGltfYUpbool$$$gltfYUpChangedbool -->
+<h3 class="fn" id="gltfYUp-prop"><a name="gltfYUp-prop"></a><span class="name">gltfYUp</span> : <span class="type">bool</span></h3>
+<p>Specifies whether this material should consider the Y and Z axis as being inverted.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>gltfYUp</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setGltfYUp</b></span>(bool <i>gltfYUp</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>gltfYUpChanged</b></span>(<i>bool</i>)</td></tr>
+</table></div>
+<!-- @@@gltfYUp -->
+<!-- $$$normalDisturb-prop$$$normalDisturb$$$setNormalDisturbconstQVector2D&$$$normalDisturbChangedQVector2D -->
+<h3 class="fn" id="normalDisturb-prop"><a name="normalDisturb-prop"></a><span class="name">normalDisturb</span> : <span class="type">QVector2D</span></h3>
+<p>Specifies a disturbance factor that will be added to the normal</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector2D </td><td class="memItemRight bottomAlign"><span class="name"><b>normalDisturb</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNormalDisturb</b></span>(const QVector2D &amp;<i>normalDisturb</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>normalDisturbChanged</b></span>(<i>QVector2D</i>)</td></tr>
+</table></div>
+<!-- @@@normalDisturb -->
+<!-- $$$normalMapGain-prop$$$normalMapGain$$$setNormalMapGainfloat$$$normalMapGainChangedfloat -->
+<h3 class="fn" id="normalMapGain-prop"><a name="normalMapGain-prop"></a><span class="name">normalMapGain</span> : <span class="type">float</span></h3>
+<p>Specifies the strength of the normal map.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>normalMapGain</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNormalMapGain</b></span>(float <i>normalMapGain</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>normalMapGainChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@normalMapGain -->
+<!-- $$$normalScaling-prop$$$normalScaling$$$setNormalScalingconstQVector3D&$$$normalScalingChangedQVector3D -->
+<h3 class="fn" id="normalScaling-prop"><a name="normalScaling-prop"></a><span class="name">normalScaling</span> : <span class="type">QVector3D</span></h3>
+<p>Specifies a factor to be applied to the normal.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>normalScaling</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNormalScaling</b></span>(const QVector3D &amp;<i>normalScaling</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>normalScalingChanged</b></span>(<i>QVector3D</i>)</td></tr>
+</table></div>
+<!-- @@@normalScaling -->
+<!-- $$$postGain-prop$$$postGain$$$setPostGainfloat$$$postGainChangedfloat -->
+<h3 class="fn" id="postGain-prop"><a name="postGain-prop"></a><span class="name">postGain</span> : <span class="type">float</span></h3>
+<p>Specifies the gain factor to be applied to the final result.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>postGain</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setPostGain</b></span>(float <i>postGain</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>postGainChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@postGain -->
+<!-- $$$postHemiFilter-prop$$$postHemiFilter$$$setPostHemiFilterconstQVector3D&$$$postHemiFilterChangedQVector3D -->
+<h3 class="fn" id="postHemiFilter-prop"><a name="postHemiFilter-prop"></a><span class="name">postHemiFilter</span> : <span class="type">QVector3D</span></h3>
+<p>Specifies the color to be applied to the lower hemisphere. It is multiplied like a negative diffuse light coming from below.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>postHemiFilter</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setPostHemiFilter</b></span>(const QVector3D &amp;<i>postHemiFilter</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>postHemiFilterChanged</b></span>(<i>QVector3D</i>)</td></tr>
+</table></div>
+<!-- @@@postHemiFilter -->
+<!-- $$$postVertexColor-prop$$$postVertexColor$$$setPostVertexColorfloat$$$postVertexColorChangedfloat -->
+<h3 class="fn" id="postVertexColor-prop"><a name="postVertexColor-prop"></a><span class="name">postVertexColor</span> : <span class="type">float</span></h3>
+<p>Specifies the factor which controls how much of the per vertex color we want to transmit.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>postVertexColor</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setPostVertexColor</b></span>(float <i>postVertexColor</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>postVertexColorChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@postVertexColor -->
+<!-- $$$reflectionGain-prop$$$reflectionGain$$$setReflectionGainfloat$$$reflectionGainChangedfloat -->
+<h3 class="fn" id="reflectionGain-prop"><a name="reflectionGain-prop"></a><span class="name">reflectionGain</span> : <span class="type">float</span></h3>
+<p>Specifies the gain factor to be applied to the spherical environment map lookup.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>reflectionGain</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setReflectionGain</b></span>(float <i>reflectionGain</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>reflectionGainChanged</b></span>(<i>float</i>)</td></tr>
+</table></div>
+<!-- @@@reflectionGain -->
+<!-- $$$reflectionInnerFilter-prop$$$reflectionInnerFilter$$$setReflectionInnerFilterconstQVector3D&$$$reflectionInnerFilterChangedQVector3D -->
+<h3 class="fn" id="reflectionInnerFilter-prop"><a name="reflectionInnerFilter-prop"></a><span class="name">reflectionInnerFilter</span> : <span class="type">QVector3D</span></h3>
+<p>Specifies the inner color filter to be applied based on fresnel on the spherical environment map lookup.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>reflectionInnerFilter</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setReflectionInnerFilter</b></span>(const QVector3D &amp;<i>reflectionInnerFilter</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>reflectionInnerFilterChanged</b></span>(<i>QVector3D</i>)</td></tr>
+</table></div>
+<!-- @@@reflectionInnerFilter -->
+<!-- $$$reflectionOuterFilter-prop$$$reflectionOuterFilter$$$setReflectionOuterFilterconstQVector3D&$$$reflectionOuterFilterChangedQVector3D -->
+<h3 class="fn" id="reflectionOuterFilter-prop"><a name="reflectionOuterFilter-prop"></a><span class="name">reflectionOuterFilter</span> : <span class="type">QVector3D</span></h3>
+<p>Specifies the outer color filter to be applied based on fresnel on the spherical environment map lookup.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QVector3D </td><td class="memItemRight bottomAlign"><span class="name"><b>reflectionOuterFilter</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setReflectionOuterFilter</b></span>(const QVector3D &amp;<i>reflectionOuterFilter</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>reflectionOuterFilterChanged</b></span>(<i>QVector3D</i>)</td></tr>
+</table></div>
+<!-- @@@reflectionOuterFilter -->
+<!-- $$$usesDiffuseMap-prop$$$usesDiffuseMap$$$setUsesDiffuseMapbool$$$usesDiffuseMapChangedbool -->
+<h3 class="fn" id="usesDiffuseMap-prop"><a name="usesDiffuseMap-prop"></a><span class="name">usesDiffuseMap</span> : <span class="type">bool</span></h3>
+<p>Specifies whether we use a diffuse map or not.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>usesDiffuseMap</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setUsesDiffuseMap</b></span>(bool <i>usesDiffuseMap</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>usesDiffuseMapChanged</b></span>(<i>bool</i>)</td></tr>
+</table></div>
+<!-- @@@usesDiffuseMap -->
+<!-- $$$usesNormalMap-prop$$$usesNormalMap$$$setUsesNormalMapbool$$$usesNormalMapChangedbool -->
+<h3 class="fn" id="usesNormalMap-prop"><a name="usesNormalMap-prop"></a><span class="name">usesNormalMap</span> : <span class="type">bool</span></h3>
+<p>Specifies whether we use a normal map or not.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>usesNormalMap</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setUsesNormalMap</b></span>(bool <i>usesNormalMap</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>usesNormalMapChanged</b></span>(<i>bool</i>)</td></tr>
+</table></div>
+<!-- @@@usesNormalMap -->
+<!-- $$$usesReflectionMap-prop$$$usesReflectionMap$$$setUsesReflectionMapbool$$$usesReflectionMapChangedbool -->
+<h3 class="fn" id="usesReflectionMap-prop"><a name="usesReflectionMap-prop"></a><span class="name">usesReflectionMap</span> : <span class="type">bool</span></h3>
+<p>Specifies whether we use a reflection map or not.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>usesReflectionMap</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setUsesReflectionMap</b></span>(bool <i>usesReflectionMap</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>usesReflectionMapChanged</b></span>(<i>bool</i>)</td></tr>
+</table></div>
+<!-- @@@usesReflectionMap -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

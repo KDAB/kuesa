@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -114,7 +114,7 @@ using namespace Kuesa;
  *
  * \badcode
  * import Kuesa 1.1 as Kuesa
- *
+ * import Kuesa.Effects 1.1
  * Kuesa.SceneEnity {
  *     id: root
  *     components: [
@@ -157,6 +157,7 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
     , m_layer(nullptr)
     , m_thresholdParameter(new Qt3DRender::QParameter(QStringLiteral("threshold"), 1.0f))
     , m_textureParam(new Qt3DRender::QParameter(QStringLiteral("textureSampler"), nullptr))
+    , m_fsQuad(nullptr)
 {
     m_rootFrameGraphNode.reset(new Qt3DRender::QFrameGraphNode);
     m_rootFrameGraphNode->setObjectName(QStringLiteral("Threshold Effect"));
@@ -174,7 +175,7 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
     auto *gl3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGL,
                                                 3, 2,
                                                 Qt3DRender::QGraphicsApiFilter::CoreProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/gl3/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/gl3/fullscreen.vert"),
                                                 graphPath,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(gl3Technique);
@@ -182,7 +183,7 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
     auto *es3Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                 3, 0,
                                                 Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es3/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/es3/fullscreen.vert"),
                                                 graphPath,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es3Technique);
@@ -190,22 +191,34 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
     auto *es2Technique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::OpenGLES,
                                                 2, 0,
                                                 Qt3DRender::QGraphicsApiFilter::NoProfile,
-                                                QStringLiteral("qrc:/kuesa/shaders/es2/passthrough.vert"),
+                                                QStringLiteral("qrc:/kuesa/shaders/es2/fullscreen.vert"),
                                                 graphPath,
                                                 passFilterName, passFilterValue);
     effect->addTechnique(es2Technique);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    auto rhiTechnique = FXUtils::makeTechnique(Qt3DRender::QGraphicsApiFilter::RHI,
+                                               1, 0,
+                                               Qt3DRender::QGraphicsApiFilter::NoProfile,
+                                               QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"),
+                                               graphPath,
+                                               passFilterName, passFilterValue);
+
+    effect->addTechnique(rhiTechnique);
+#endif
+
+
     effect->addParameter(m_textureParam);
     effect->addParameter(m_thresholdParameter);
 
-    auto thresholdQuad = new FullScreenQuad(thresholdMaterial, m_rootFrameGraphNode.data());
-    m_layer = thresholdQuad->layer();
+    m_fsQuad = new FullScreenQuad(thresholdMaterial, m_rootFrameGraphNode.data());
+    m_layer = m_fsQuad->layer();
 
     //
     //  FrameGraph Construction
     //
     auto thresholdLayerFilter = new Qt3DRender::QLayerFilter(m_rootFrameGraphNode.data());
-    thresholdLayerFilter->addLayer(thresholdQuad->layer());
+    thresholdLayerFilter->addLayer(m_fsQuad->layer());
 
     //create RenderPassFilter parented to layerFilter
     FXUtils::createRenderPassFilter(passFilterName, passFilterValue, thresholdLayerFilter);

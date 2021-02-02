@@ -3,7 +3,7 @@
 
     This file is part of Kuesa.
 
-    Copyright (C) 2018-2020 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
     Author: Jim Albamont <jim.albamont@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
@@ -28,7 +28,6 @@
 
 #include "directionallight.h"
 #include "directionallight_p.h"
-#include <Qt3DCore/qpropertyupdatedchange.h>
 #include <Qt3DRender/private/shaderdata_p.h>
 
 QT_BEGIN_NAMESPACE
@@ -54,7 +53,7 @@ namespace Kuesa {
 */
 
 /*!
-    \qmlproperty vector3d DirectionalLight::direction
+    \qmlproperty vector3d Kuesa::DirectionalLight::direction
     Specifies the direction of the light. If the directionType is
     Local, the light direction wil lbe transformed by any rotations
     in parent nodes. If the directionType is World, the direction
@@ -62,7 +61,7 @@ namespace Kuesa {
 */
 
 /*!
-    \property DirectionalLight::direction
+    \property Kuesa::DirectionalLight::direction
     Specifies the direction of the light. If the directionType is
     Local, the light direction wil lbe transformed by any rotations
     in parent nodes. If the directionType is World, the direction
@@ -70,7 +69,7 @@ namespace Kuesa {
  */
 
 /*!
-    \qmlproperty vector3d DirectionalLight::directionMode
+    \qmlproperty vector3d Kuesa::DirectionalLight::directionMode
     Specifies whether the direction property should be interpreted
     as a world or local direction. Local directions inherit parent
     node rotation transformations and World directions do not.
@@ -78,7 +77,7 @@ namespace Kuesa {
 */
 
 /*!
-    \property DirectionalLight::directionMode
+    \property Kuesa::DirectionalLight::directionMode
     Specifies the direction of the light. If the directionType is
     Specifies whether the direction property should be interpreted
     as a world or local direction. Local directions inherit parent
@@ -87,9 +86,8 @@ namespace Kuesa {
  */
 
 DirectionalLightPrivate::DirectionalLightPrivate()
-    : QAbstractLightPrivate(Qt3DRender::QAbstractLight::DirectionalLight)
+    : ShadowCastingLightPrivate(Qt3DRender::QAbstractLight::DirectionalLight)
 {
-    m_shaderData->setProperty("direction", QVector3D(0.0f, -1.0f, 0.0f));
     m_shaderData->setProperty("directionTransformed", Qt3DRender::Render::ShaderData::NoTransform);
 }
 
@@ -97,7 +95,7 @@ DirectionalLightPrivate::DirectionalLightPrivate()
     Constructs a new DirectionalLight with the specified \a parent.
  */
 DirectionalLight::DirectionalLight(QNode *parent)
-    : QAbstractLight(*new DirectionalLightPrivate, parent)
+    : ShadowCastingLight(*new DirectionalLightPrivate, parent)
 {
 }
 
@@ -108,7 +106,7 @@ DirectionalLight::~DirectionalLight()
 
 /*! \internal */
 DirectionalLight::DirectionalLight(DirectionalLightPrivate &dd, QNode *parent)
-    : QAbstractLight(dd, parent)
+    : ShadowCastingLight(dd, parent)
 {
 }
 
