@@ -29,6 +29,7 @@
 #include "lightparser_p.h"
 #include "gltf2context_p.h"
 #include "gltf2keys_p.h"
+#include "gltf2utils_p.h"
 #include "kuesa_p.h"
 
 #include <QJsonValue>
@@ -36,27 +37,6 @@
 
 QT_BEGIN_NAMESPACE
 using namespace Kuesa::GLTF2Import;
-
-namespace {
-const QLatin1String KEY_NAME = QLatin1String("name");
-const QLatin1String KEY_TYPE = QLatin1String("type");
-const QLatin1String KEY_COLOR = QLatin1String("color");
-const QLatin1String KEY_INTENSITY = QLatin1String("intensity");
-const QLatin1String KEY_RANGE = QLatin1String("range");
-const QLatin1String KEY_SPOT = QLatin1String("spot");
-const QLatin1String KEY_INNER_CONE_ANGLE = QLatin1String("innerConeAngle");
-const QLatin1String KEY_OUTER_CONE_ANGLE = QLatin1String("outerConeAngle");
-const QLatin1String KEY_LIGHT_DIRECTIONAL = QLatin1String("directional");
-const QLatin1String KEY_LIGHT_POINT = QLatin1String("point");
-const QLatin1String KEY_LIGHT_SPOT = QLatin1String("spot");
-const QLatin1String KEY_CASTS_SHADOWS = QLatin1String("castsShadows");
-const QLatin1String KEY_SOFT_SHADOWS = QLatin1String("softShadows");
-const QLatin1String KEY_SHADOWMAP_TEXTURE_WIDTH = QLatin1String("shadowMapTextureWidth");
-const QLatin1String KEY_SHADOWMAP_TEXTURE_HEIGHT = QLatin1String("shadowMapTextureHeight");
-const QLatin1String KEY_SHADOWMAP_BIAS = QLatin1String("shadowMapBias");
-const QLatin1String KEY_SHADOWMAP_NEAR_PLANE = QLatin1String("nearPlane");
-
-} // namespace
 
 bool Kuesa::GLTF2Import::LightParser::parse(const QJsonArray &lights, Kuesa::GLTF2Import::GLTF2Context *context)
 {
@@ -108,8 +88,11 @@ bool Kuesa::GLTF2Import::LightParser::parse(const QJsonArray &lights, Kuesa::GLT
 
         // Shadows extension
         const QJsonObject extensions = lightObject.value(KEY_EXTENSIONS).toObject();
-        if (extensions.contains(KEY_KDAB_KUESA_SHADOWS_EXTENSION)) {
-            const QJsonObject kdabShadowsExtension = extensions.value(KEY_KDAB_KUESA_SHADOWS_EXTENSION).toObject();
+        const QString shadowExtensionKey = getNewOrDeprecatedExtensionKey(KEY_KDAB_SHADOWS_EXTENSION,
+                                                                          KEY_KDAB_KUESA_SHADOWS_EXTENSION,
+                                                                          extensions);
+        if (!shadowExtensionKey.isEmpty()) {
+            const QJsonObject kdabShadowsExtension = extensions.value(shadowExtensionKey).toObject();
             light.castsShadows = kdabShadowsExtension.value(KEY_CASTS_SHADOWS).toBool(light.castsShadows);
             light.softShadows = kdabShadowsExtension.value(KEY_SOFT_SHADOWS).toBool(light.softShadows);
             light.shadowMapBias = kdabShadowsExtension.value(KEY_SHADOWMAP_BIAS).toDouble(light.shadowMapBias);
