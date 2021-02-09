@@ -1,0 +1,62 @@
+/*
+    drill-experience.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \example drill-experience
+    \title Kuesa Drill-Experience QML Example
+    \ingroup kuesa-examples-qml
+
+    \brief Demonstrates the use of the Kuesa Runtime API to create a real world
+    application
+
+    \section1 Structure of the Application
+
+    This demo is structured around 3 main screens
+    \list
+    \li A interactive Drill manual screen
+    \li A guide to drilling into different type of materials screen
+    \li A real time Drill status screen
+    \endlist
+
+    \section1 QtQuick and Qt3D integration
+
+    The Drill-Experience example relies on the new simplified \l [QML] {Kuesa::View3D}
+    API introduced in Kuesa 1.3.
+
+    \snippet drill-experience/qml/main.qml 1
+
+    \section1 DrillScene
+
+    Kuesa provides the \l [QML] {SceneEntity} element which holds collections
+    of Qt 3D assets accessible by name.
+
+    This elements acts as the root elements of our DrillScene element.
+
+    \snippet drill-experience/qml/DrillScene.qml 0
+    \dots 3
+*/

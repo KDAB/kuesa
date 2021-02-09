@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/">
+        <file>drill/Animation_AnimCamera.bin</file>
+        <file>drill/Animation_AnimChangeDirection.bin</file>
+        <file>drill/Animation_AnimChuck.bin</file>
+        <file>drill/Animation_AnimDrill.bin</file>
+        <file>drill/chrome-aniso.png</file>
+        <file>drill/dark-diffuse.png</file>
+        <file>drill/drill-body_normal.png</file>
+        <file>drill/drill-body-diff.png</file>
+        <file>drill/drill.gltf</file>
+        <file>drill/highlights.png</file>
+        <file>drill/kdab-studiosky-small-blurry2.png</file>
+        <file>drill/Mesh_BatteryShape.bin</file>
+        <file>drill/Mesh_BitHolderShape.bin</file>
+        <file>drill/Mesh_BodyShape.bin</file>
+        <file>drill/Mesh_ChuckShape1.bin</file>
+        <file>drill/Mesh_ChuckShape2.bin</file>
+        <file>drill/Mesh_ChuckShape3.bin</file>
+        <file>drill/Mesh_DirectionKnobsShape.bin</file>
+        <file>drill/Mesh_EnvShape.bin</file>
+        <file>drill/Mesh_KnobShape.bin</file>
+        <file>drill/Mesh_RingShape0.bin</file>
+        <file>drill/Mesh_RingShape1.bin</file>
+        <file>drill/Mesh_RingShape2.bin</file>
+        <file>drill/Mesh_RingShape3.bin</file>
+        <file>drill/Mesh_RingShape4.bin</file>
+        <file>drill/Mesh_ScrewsShape.bin</file>
+        <file>drill/Mesh_ShadowPlaneShape.bin</file>
+        <file>drill/shadow-plane.png</file>
+    </qresource>
+</RCC>
