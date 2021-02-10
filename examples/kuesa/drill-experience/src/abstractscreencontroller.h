@@ -1,5 +1,5 @@
 /*
-    DrillScene.qml
+    abstractscreencontroller.h
 
     This file is part of Kuesa.
 
@@ -26,34 +26,30 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Kuesa 1.3
-import Kuesa.Utils 1.3
-import Drill 1.0
+#ifndef ABSTRACTSCREENCONTROLLER_H
+#define ABSTRACTSCREENCONTROLLER_H
 
-//! [0]
-View3D {
-    id: view3D
-    focus: true
-    source: "qrc:/drill/drill.gltf"
-    camera: "|CamCenter|OrbitCam"
+#include <KuesaUtils/sceneconfiguration.h>
+#include <Kuesa/KuesaNode>
 
-    //! [1]
-    StatusScreenController {
-        id: statusScreenController
 
-        drillStatus.onRpmChanged: console.log("RPM " + drillStatus.rpm)
-        drillStatus.onTorqueChanged: console.log("Torque " + drillStatus.torque)
-        drillStatus.onCurrentDrawChanged: console.log("Current Draw " + drillStatus.currentDraw)
-        drillStatus.onBatteryLifeChanged: console.log("BatteryLife " + drillStatus.batteryLife)
-    }
+class AbstractScreenController : public Kuesa::KuesaNode
+{
+    Q_OBJECT
+    Q_PROPERTY(KuesaUtils::SceneConfiguration *sceneConfiguration READ sceneConfiguration NOTIFY sceneConfigurationChanged)
 
-    UserManualScreenController {
-        id: userManualScreenController
-    }
+public:
+    KuesaUtils::SceneConfiguration *sceneConfiguration() const;
 
-    GuidedDrillingScreenController {
-        id: guidedDrillingScreenController
-    }
-    //! [1]
-}
-//! [0]
+protected:
+    explicit AbstractScreenController(Qt3DCore::QNode *parent = nullptr);
+    void setSceneConfiguration(KuesaUtils::SceneConfiguration *sceneConfiguration);
+
+signals:
+    void sceneConfigurationChanged();
+
+private:
+    KuesaUtils::SceneConfiguration *m_sceneConfiguration = nullptr;
+};
+
+#endif // ABSTRACTSCREENCONTROLLER_H

@@ -1,4 +1,4 @@
-# drill-experience.pro
+# src.pri
 #
 # This file is part of Kuesa.
 #
@@ -24,18 +24,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-TEMPLATE = app
+INCLUDEPATH += $$PWD
 
-QT += 3dcore 3danimation 3dquick qml quick  kuesa kuesautils quickcontrols2
-QT_FOR_CONFIG += kuesa
+SOURCES += $$PWD/main.cpp \
+    $$PWD/abstractscreencontroller.cpp \
+    $$PWD/guideddrillingscreencontroller.cpp \
+    $$PWD/statusscreencontroller.cpp \
+    $$PWD/usermanualscreencontroller.cpp
 
-include(src/src.pri)
-
-RESOURCES += \
-    assets/assets.qrc \
-    qml/qml.qrc \
-
-target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-INSTALLS += target
-
-OTHER_FILES += doc/src/*
+HEADERS += \
+    $$PWD/abstractscreencontroller.h \
+    $$PWD/guideddrillingscreencontroller.h \
+    $$PWD/statusscreencontroller.h \
+    $$PWD/usermanualscreencontroller.h

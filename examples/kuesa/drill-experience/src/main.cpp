@@ -31,6 +31,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+#include "usermanualscreencontroller.h"
+#include "statusscreencontroller.h"
+#include "guideddrillingscreencontroller.h"
+
 namespace {
 
 void setupSurfaceFormat()
@@ -46,6 +50,15 @@ void setupSurfaceFormat()
 #endif
     format.setSamples(4);
     QSurfaceFormat::setDefaultFormat(format);
+}
+
+void registerQMLTypes()
+{
+    qmlRegisterUncreatableType<AbstractScreenController>("Drill", 1, 0, "AbstractScreenController", QStringLiteral("AbstractScreenController is abstract"));
+    qmlRegisterUncreatableType<DrillStatus>("Drill", 1, 0, "DrillStatus", QStringLiteral("DrillStatus shouldn't be instantiated"));
+    qmlRegisterType<UserManualScreenController>("Drill", 1, 0, "UserManualScreenController");
+    qmlRegisterType<StatusScreenController>("Drill", 1, 0, "StatusScreenController");
+    qmlRegisterType<GuidedDrillingScreenController>("Drill", 1, 0, "GuidedDrillingScreenController");
 }
 
 } // anonymous
@@ -64,6 +77,10 @@ int main(int ac, char **av)
 #endif
 
     QGuiApplication app(ac, av);
+
+    // Register QML Types
+    registerQMLTypes();
+
     QQmlApplicationEngine engine;
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

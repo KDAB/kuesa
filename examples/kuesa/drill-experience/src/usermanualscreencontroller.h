@@ -1,5 +1,5 @@
 /*
-    DrillScene.qml
+    usermanualscreencontroller.h
 
     This file is part of Kuesa.
 
@@ -26,34 +26,41 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Kuesa 1.3
-import Kuesa.Utils 1.3
-import Drill 1.0
+#ifndef USERMANUALSCREENCONTROLLER_H
+#define USERMANUALSCREENCONTROLLER_H
 
-//! [0]
-View3D {
-    id: view3D
-    focus: true
-    source: "qrc:/drill/drill.gltf"
-    camera: "|CamCenter|OrbitCam"
+#include "abstractscreencontroller.h"
+#include <QHash>
 
-    //! [1]
-    StatusScreenController {
-        id: statusScreenController
+class UserManualScreenController : public AbstractScreenController
+{
+    Q_OBJECT
+    Q_PROPERTY(SelectablePart selectedPart READ selectedPart WRITE setSelectedPart NOTIFY selectedPartChanged)
+public:
+    enum SelectablePart {
+        Trigger,
+        Clutch,
+        Chuck,
+        DirectionSwitch,
+        SpeedSwitch,
+        BatteryPack,
+        NoPartSelected
+    };
+    Q_ENUM(SelectablePart)
 
-        drillStatus.onRpmChanged: console.log("RPM " + drillStatus.rpm)
-        drillStatus.onTorqueChanged: console.log("Torque " + drillStatus.torque)
-        drillStatus.onCurrentDrawChanged: console.log("Current Draw " + drillStatus.currentDraw)
-        drillStatus.onBatteryLifeChanged: console.log("BatteryLife " + drillStatus.batteryLife)
-    }
+    explicit UserManualScreenController(Qt3DCore::QNode *parent = nullptr);
 
-    UserManualScreenController {
-        id: userManualScreenController
-    }
+    void setSelectedPart(SelectablePart selectedPart);
+    SelectablePart selectedPart() const;
 
-    GuidedDrillingScreenController {
-        id: guidedDrillingScreenController
-    }
-    //! [1]
-}
-//! [0]
+signals:
+    void selectedPartChanged();
+
+private:
+    void updateSceneConfiguration();
+
+    SelectablePart m_selectedPart = NoPartSelected;
+    QHash<SelectablePart, KuesaUtils::SceneConfiguration *> m_sceneConfigurationsTable;
+};
+
+#endif // USERMANUALSCREENCONTROLLER_H
