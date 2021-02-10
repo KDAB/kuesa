@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_IRO_MATERIALS_P_H
-#define KUESA_IRO_MATERIALS_P_H
+#ifndef KUESA_IRO_2_MATERIALS_P_H
+#define KUESA_IRO_2_MATERIALS_P_H
 
 //
 //  W A R N I N G

@@ -114,7 +114,6 @@ private Q_SLOTS:
         GLTF2Context context;
         LightParser parser;
         QFile file(filePath);
-        qDebug() << "File path " << file.fileName();
         file.open(QIODevice::ReadOnly);
         QVERIFY(file.isOpen());
 
@@ -137,6 +136,89 @@ private Q_SLOTS:
         QCOMPARE(context.light(0).range, range);
         QCOMPARE(context.light(0).innerConeAngleRadians, innerConeAngle);
         QCOMPARE(context.light(0).outerConeAngleRadians, outerConeAngle);
+    }
+
+    void checkParseShadowExtension_data()
+    {
+        QTest::addColumn<QString>("filePath");
+        QTest::addColumn<bool>("succeeded");
+        QTest::addColumn<QString>("name");
+        QTest::addColumn<int>("type");
+        QTest::addColumn<bool>("castsShadows");
+        QTest::addColumn<bool>("softShadows");
+        QTest::addColumn<float>("shadowMapBias");
+        QTest::addColumn<float>("nearPlane");
+        QTest::addColumn<QSize>("shadowMapTextureSize");
+
+        QTest::newRow("Valid Deprecated Extension") << QStringLiteral(ASSETS "KHR_lights_punctual/deprecated_shadows.gltf")
+                                                    << true
+                                                    << "DeprecatedShadow"
+                                                    << static_cast<int>(Qt3DRender::QAbstractLight::SpotLight)
+                                                    << true
+                                                    << true
+                                                    << 0.5f
+                                                    << 1.0f
+                                                    << QSize(128, 256);
+
+        QTest::newRow("Valid") << QStringLiteral(ASSETS "KHR_lights_punctual/shadows.gltf")
+                               << true
+                               << "Shadow"
+                               << static_cast<int>(Qt3DRender::QAbstractLight::SpotLight)
+                               << true
+                               << true
+                               << 0.5f
+                               << 1.0f
+                               << QSize(128, 256);
+
+        QTest::newRow("Default Values") << QStringLiteral(ASSETS "KHR_lights_punctual/default_shadows.gltf")
+                                        << true
+                                        << "DefaultShadow"
+                                        << static_cast<int>(Qt3DRender::QAbstractLight::SpotLight)
+                                        << false
+                                        << false
+                                        << 0.005f
+                                        << 0.0f
+                                        << QSize(512, 512);
+    }
+
+    void checkParseShadowExtension()
+    {
+        QFETCH(QString, filePath);
+        QFETCH(bool, succeeded);
+        QFETCH(QString, name);
+        QFETCH(int, type);
+        QFETCH(bool, castsShadows);
+        QFETCH(bool, softShadows);
+        QFETCH(float, shadowMapBias);
+        QFETCH(float, nearPlane);
+        QFETCH(QSize, shadowMapTextureSize);
+
+        // GIVEN
+        GLTF2Context context;
+        LightParser parser;
+        QFile file(filePath);
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        // WHEN
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        // THEN
+        QVERIFY(!json.isNull());
+        QVERIFY(json.isArray());
+
+        // WHEN
+        bool success = parser.parse(json.array(), &context);
+
+        // THEN
+        QCOMPARE(success, succeeded);
+        QCOMPARE(context.lightCount(), size_t(1));
+        QCOMPARE(context.light(0).name, name);
+        QCOMPARE(context.light(0).type, type);
+        QCOMPARE(context.light(0).castsShadows, castsShadows);
+        QCOMPARE(context.light(0).softShadows, softShadows);
+        QCOMPARE(context.light(0).shadowMapBias, shadowMapBias);
+        QCOMPARE(context.light(0).nearPlane, nearPlane);
+        QCOMPARE(context.light(0).shadowMapTextureSize, shadowMapTextureSize);
     }
 };
 

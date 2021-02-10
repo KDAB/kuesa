@@ -234,6 +234,33 @@ private Q_SLOTS:
         QCOMPARE(n.name, QStringLiteral("Morphed"));
     }
 
+    void checkDeprecatedMultipleExtensionsOnNode()
+    {
+        // GIVEN
+        GLTF2Context context;
+        NodeParser parser;
+        QFile file(QStringLiteral(ASSETS "node_multi_extensions_deprecated.gltf"));
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        const QJsonValue nodes = json.object().value(QLatin1String("nodes"));
+        QVERIFY(!json.isNull() && nodes.isArray());
+
+        // WHEN
+        const bool success = parser.parse(nodes.toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
+
+        const TreeNode n = context.treeNode(0);
+        QCOMPARE(n.reflectionPlaneEquation, QVector4D(1.0f, 0.0f, 0.0f, 883.0f));
+        QCOMPARE(n.layerIndices, QVector<int>({0, 1, 2}));
+        QCOMPARE(n.hasPlaceholder, true);
+        QCOMPARE(n.placeHolder.cameraNode, 1);
+    }
+
     void checkMultipleExtensionsOnNode()
     {
         // GIVEN

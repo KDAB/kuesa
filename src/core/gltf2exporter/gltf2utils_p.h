@@ -67,6 +67,10 @@ int addToJsonChildArray(QJsonObject &object, const QString &name, const QJsonObj
 
 quint8 accessorDataTypeToBytes(Qt3DGeometry::QAttribute::VertexBaseType type);
 
+QString getNewOrDeprecatedExtensionKey(const QString &newExtensionKey,
+                                       const QString &deprecatedExtensionKey,
+                                       const QJsonObject &extensions);
+
 } // namespace Kuesa
 QT_END_NAMESPACE
 #endif // KUESA_GLTF2EXPORTER_GLTF2UTILS_P_H

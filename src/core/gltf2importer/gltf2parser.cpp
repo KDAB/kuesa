@@ -526,6 +526,15 @@ QVector<KeyParserFuncPair> GLTF2Parser::prepareParsers()
         { KEY_EXTENSIONS, [this](const QJsonValue &value) {
              const QVector<KeyParserFuncPair> extensionParsers = {
                  { KEY_KDAB_KUESA_LAYER_EXTENSION, [this](const QJsonValue &value) {
+                      qCWarning(Kuesa::kuesa, "KDAB_kuesa_layers is deprecated. Use KDAB_layers");
+                      const QJsonObject obj = value.toObject();
+                      const QJsonArray layers = obj.value(KEY_KUESA_LAYERS).toArray();
+                      if (layers.size() == 0)
+                          return true;
+                      LayerParser parser;
+                      return parser.parse(layers, m_context);
+                  } },
+                 { KEY_KDAB_LAYERS_EXTENSION, [this](const QJsonValue &value) {
                       const QJsonObject obj = value.toObject();
                       const QJsonArray layers = obj.value(KEY_KUESA_LAYERS).toArray();
                       if (layers.size() == 0)
@@ -592,7 +601,9 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
         QStringList unsupportedExtensions;
         const QStringList supportedExtensions = {
             KEY_KDAB_KUESA_LAYER_EXTENSION,
+            KEY_KDAB_LAYERS_EXTENSION,
             KEY_KDAB_KUESA_SHADOWS_EXTENSION,
+            KEY_KDAB_SHADOWS_EXTENSION,
             KEY_MSFT_DDS_EXTENSION,
 #if defined(KUESA_DRACO_COMPRESSION)
             KEY_KHR_DRACO_MESH_COMPRESSION_EXTENSION,
@@ -602,6 +613,7 @@ bool GLTF2Parser::parseJSON(const QByteArray &jsonData, const QString &basePath,
             KEY_KDAB_CUSTOM_MATERIAL,
             KEY_EXT_PROPERTY_ANIMATION_EXTENSION,
             KEY_KHR_TEXTURE_TRANSFORM,
+            KEY_KDAB_KUESA_REFLECTION_PLANES_EXTENSION,
             KEY_KDAB_REFLECTION_PLANES_EXTENSION,
             KEY_KDAB_PLACEHOLDER
         };

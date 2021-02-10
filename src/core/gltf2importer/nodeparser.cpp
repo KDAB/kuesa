@@ -37,6 +37,7 @@
 #include <QPair>
 #include <Qt3DCore/private/qmath3d_p.h>
 #include <gltf2keys_p.h>
+#include <gltf2utils_p.h>
 #include <functional>
 #include <memory>
 
@@ -153,10 +154,13 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
     }
 
     const QJsonObject nodeExtensions = nodeObj.value(KEY_EXTENSIONS).toObject();
+    const QString layerExtensionKey = getNewOrDeprecatedExtensionKey(KEY_KDAB_LAYERS_EXTENSION,
+                                                                     KEY_KDAB_KUESA_LAYER_EXTENSION,
+                                                                     nodeExtensions);
 
     // Layer Extensions
-    if (nodeExtensions.contains(KEY_KDAB_KUESA_LAYER_EXTENSION)) {
-        const QJsonObject kdabLayerExtension = nodeExtensions.value(KEY_KDAB_KUESA_LAYER_EXTENSION).toObject();
+    if (!layerExtensionKey.isEmpty()) {
+        const QJsonObject kdabLayerExtension = nodeExtensions.value(layerExtensionKey).toObject();
         // If the node references layers, add them
         if (kdabLayerExtension.contains(KEY_NODE_KUESA_LAYERS)) {
             const QJsonArray layerIds = kdabLayerExtension.value(KEY_NODE_KUESA_LAYERS).toArray();
@@ -174,8 +178,12 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
         const QJsonObject lightObject = nodeExtensions.value(KEY_KHR_LIGHTS_PUNCTUAL_EXTENSION).toObject();
         node.lightIdx = lightObject.value(KEY_KHR_PUNCTUAL_LIGHT).toInt(-1);
     }
-    if (nodeExtensions.contains(KEY_KDAB_REFLECTION_PLANES_EXTENSION)) {
-        const QJsonObject reflectionPlaneObject = nodeExtensions.value(KEY_KDAB_REFLECTION_PLANES_EXTENSION).toObject();
+
+    const QString reflectionPlaneExtensionKey = getNewOrDeprecatedExtensionKey(KEY_KDAB_REFLECTION_PLANES_EXTENSION,
+                                                                               KEY_KDAB_KUESA_REFLECTION_PLANES_EXTENSION,
+                                                                               nodeExtensions);
+    if (!reflectionPlaneExtensionKey.isEmpty()) {
+        const QJsonObject reflectionPlaneObject = nodeExtensions.value(reflectionPlaneExtensionKey).toObject();
         const QJsonArray planeEquationValue = reflectionPlaneObject.value(KEY_PLANE).toArray();
         QVector4D planeEquation;
         if (planeEquationValue.size() == 4) {

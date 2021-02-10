@@ -108,5 +108,21 @@ quint8 accessorDataTypeToBytes(QAttribute::VertexBaseType type)
     }
 }
 
+/*!
+    \internal
+ */
+QString getNewOrDeprecatedExtensionKey(const QString &newExtensionKey,
+                                       const QString &deprecatedExtensionKey,
+                                       const QJsonObject &extensions)
+{
+    if (extensions.contains(newExtensionKey))
+        return newExtensionKey;
+    if (extensions.contains(deprecatedExtensionKey)) {
+        qCWarning(Kuesa::kuesa) << deprecatedExtensionKey << "extension is deprecated. Use" << newExtensionKey;
+        return deprecatedExtensionKey;
+    }
+    return {};
+}
+
 } // namespace Kuesa
 QT_END_NAMESPACE
