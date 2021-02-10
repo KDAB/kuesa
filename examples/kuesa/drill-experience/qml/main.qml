@@ -29,6 +29,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
+import Drill 1.0
 
 //! [0]
 ApplicationWindow {
@@ -37,10 +38,81 @@ ApplicationWindow {
     visible: true
     visibility: ApplicationWindow.Maximized
 
+    readonly property int _DRILL_STATUS_SCREEN: 0
+    readonly property int _GUIDED_DRILLING_SCREEN: 1
+    readonly property int _USER_MANUAL_SCREEN: 1
+
+    Material.theme: Material.Dark
+    Material.accent: Material.Blue
+
+    menuBar: ToolBar {
+        Label {
+            text: mainRoot.title
+            font.pixelSize: 20
+            anchors.centerIn: parent
+        }
+    }
+
+    header: TabBar {
+        TabButton { text: "Drill Status" }
+        TabButton { text: "Guided Drilling" }
+        TabButton { text: "User Manual" }
+    }
+
     //! [1]
-    DrillScene {
-        id: view3D
+    Item {
+        id: contentItem
         anchors.fill: parent
+
+
+        //! [2]
+        DrillScene {
+            id: view3D
+            anchors.fill: parent
+            screen: header.currentIndex
+            onScreenChanged: opacityAnimation.restart()
+
+            SequentialAnimation on opacity {
+                id: opacityAnimation
+                running: false
+                OpacityAnimator { from: 1; to: 0; duration: 450; easing.type: Easing.OutQuad }
+                OpacityAnimator { from: 0; to: 1; duration: 450; easing.type: Easing.InQuad }
+            }
+        }
+        //! [2]
+
+        //! [3.1]
+        Component {
+            id: statusUI
+            StatusUI {
+                batteryLife: view3D.statusScreenController.drillStatus.batteryLife
+                torque: view3D.statusScreenController.drillStatus.torque
+                rpm: view3D.statusScreenController.drillStatus.rpm
+
+            }
+        }
+        Component {
+            id: guidedDrillingUI
+            GuidedDrillingUI {
+
+            }
+        }
+        Component {
+            id: userManualUI
+            UserManualUI {
+
+            }
+        }
+        //! [3.1]
+
+        //! [3.2]
+        Loader {
+            id: uiLoader
+            anchors.fill: parent
+            readonly property var sources: [statusUI, guidedDrillingUI, userManualUI]
+            sourceComponent: sources[header.currentIndex]
+        }
+        //! [3.2]
     }
     //! [1]
 }

@@ -228,6 +228,11 @@ StatusScreenController::StatusScreenController(Qt3DCore::QNode *parent)
     // for it to be picked up by Qt 3D
     Qt3DCore::QEntity *e = new Qt3DCore::QEntity(this);
     e->addComponent(animator);
+
+    KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
+    configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
+    configuration->setCameraName(QStringLiteral("|CamCenter|OrbitCam"));
+    setSceneConfiguration(configuration);
 }
 
 DrillStatus *StatusScreenController::drillStatus() const

@@ -48,8 +48,8 @@ UserManualScreenController::UserManualScreenController(Qt3DCore::QNode *parent)
     // Table containing the various scene configurations for each on selectable part
     {
         KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
-        configuration->setSource(QUrl(QStringLiteral("")));
-        configuration->setCameraName(QStringLiteral(""));
+        configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
+        configuration->setCameraName(QStringLiteral("|CamCenter|OrbitCam"));
         m_sceneConfigurationsTable[NoPartSelected] = configuration;
     }
     {
@@ -88,6 +88,9 @@ UserManualScreenController::UserManualScreenController(Qt3DCore::QNode *parent)
         configuration->setCameraName(QStringLiteral(""));
         m_sceneConfigurationsTable[BatteryPack] = configuration;
     }
+
+    // Set default scene configuration
+    updateSceneConfiguration();
 }
 
 void UserManualScreenController::setSelectedPart(UserManualScreenController::SelectablePart selectedPart)

@@ -34,25 +34,45 @@ import Drill 1.0
 View3D {
     id: view3D
     focus: true
-    source: "qrc:/drill/drill.gltf"
-    camera: "|CamCenter|OrbitCam"
+    asynchronous: true
+    backgroundColor: "#666"
+
+    property int screen: 0
 
     //! [1]
-    StatusScreenController {
-        id: statusScreenController
+    readonly property AbstractScreenController controller: {
+        if (screen === _DRILL_STATUS_SCREEN)
+            return statusScreenController
+        if (screen === _GUIDED_DRILLING_SCREEN)
+            return guidedDrillingScreenController
+        // _USER_MANUAL_SCREEN
+        return userManualScreenController
+    }
 
-        drillStatus.onRpmChanged: console.log("RPM " + drillStatus.rpm)
-        drillStatus.onTorqueChanged: console.log("Torque " + drillStatus.torque)
-        drillStatus.onCurrentDrawChanged: console.log("Current Draw " + drillStatus.currentDraw)
-        drillStatus.onBatteryLifeChanged: console.log("BatteryLife " + drillStatus.batteryLife)
+    // We rely on each controller providing the scene configuration
+    // This provides the source, camera, trackers, animation players...
+    activeScene: controller.sceneConfiguration
+
+    // Controllers
+    // Properties to expose controllers for external access
+    readonly property StatusScreenController statusScreenController: _statusScreenController
+    readonly property UserManualScreenController userManualScreenController: _userManualScreenController
+    readonly property GuidedDrillingScreenController guidedDrillingScreenController: _guidedDrillingScreenController
+
+    StatusScreenController {
+        id: _statusScreenController
+        //        drillStatus.onRpmChanged: console.log("RPM " + drillStatus.rpm)
+        //        drillStatus.onTorqueChanged: console.log("Torque " + drillStatus.torque)
+        //        drillStatus.onCurrentDrawChanged: console.log("Current Draw " + drillStatus.currentDraw)
+        //        drillStatus.onBatteryLifeChanged: console.log("BatteryLife " + drillStatus.batteryLife)
     }
 
     UserManualScreenController {
-        id: userManualScreenController
+        id: _userManualScreenController
     }
 
     GuidedDrillingScreenController {
-        id: guidedDrillingScreenController
+        id: _guidedDrillingScreenController
     }
     //! [1]
 }
