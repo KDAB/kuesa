@@ -37,9 +37,13 @@ class AbstractScreenController : public Kuesa::KuesaNode
 {
     Q_OBJECT
     Q_PROPERTY(KuesaUtils::SceneConfiguration *sceneConfiguration READ sceneConfiguration NOTIFY sceneConfigurationChanged)
+    Q_PROPERTY(bool isActive READ isActive WRITE setActive NOTIFY isActiveChanged)
 
 public:
     KuesaUtils::SceneConfiguration *sceneConfiguration() const;
+
+    bool isActive() const;
+    void setActive(bool active);
 
 protected:
     explicit AbstractScreenController(Qt3DCore::QNode *parent = nullptr);
@@ -47,9 +51,11 @@ protected:
 
 signals:
     void sceneConfigurationChanged();
+    void isActiveChanged();
 
 private:
     KuesaUtils::SceneConfiguration *m_sceneConfiguration = nullptr;
+    bool m_active = false;
 };
 
 #endif // ABSTRACTSCREENCONTROLLER_H

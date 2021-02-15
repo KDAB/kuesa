@@ -42,6 +42,19 @@ KuesaUtils::SceneConfiguration *AbstractScreenController::sceneConfiguration() c
     return m_sceneConfiguration;
 }
 
+bool AbstractScreenController::isActive() const
+{
+    return m_active;
+}
+
+void AbstractScreenController::setActive(bool active)
+{
+    if (active == m_active)
+        return;
+    m_active = active;
+    emit isActiveChanged();
+}
+
 void AbstractScreenController::setSceneConfiguration(KuesaUtils::SceneConfiguration *sceneConfiguration)
 {
     if (sceneConfiguration == m_sceneConfiguration)

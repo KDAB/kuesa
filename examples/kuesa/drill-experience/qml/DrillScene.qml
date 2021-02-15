@@ -61,14 +61,17 @@ View3D {
 
     StatusScreenController {
         id: _statusScreenController
+        isActive: screen === _DRILL_STATUS_SCREEN
     }
 
     UserManualScreenController {
         id: _userManualScreenController
+        isActive: screen === _USER_MANUAL_SCREEN
     }
 
     GuidedDrillingScreenController {
         id: _guidedDrillingScreenController
+        isActive: screen === _GUIDED_DRILLING_SCREEN
     }
     //! [1]
 }
