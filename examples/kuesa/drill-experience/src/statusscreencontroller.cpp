@@ -31,6 +31,7 @@
 #include <Qt3DAnimation/QAnimationClip>
 #include <Qt3DAnimation/QChannelMapping>
 #include <Qt3DAnimation/QClipAnimator>
+#include <Qt3DAnimation/QClock>
 
 using namespace Qt3DAnimation;
 
@@ -117,15 +118,8 @@ void DrillStatus::setMode(DrillStatus::Mode mode)
     emit modeChanged();
 }
 
-StatusScreenController::StatusScreenController(Qt3DCore::QNode *parent)
-    : AbstractScreenController(parent)
-    , m_status(new DrillStatus(this))
+void StatusScreenController::createDrillStatusSimulationAnimation()
 {
-    // We simulate various RPM/Torque/Current Draw values ... overtime
-
-    // For this, we make use of the Qt 3D Animation API which makes these
-    // type of things easy to materialize
-
     // Drilling into wood
     QAnimationClipData drillIntoWoodClipData;
     {
@@ -198,7 +192,6 @@ StatusScreenController::StatusScreenController(Qt3DCore::QNode *parent)
         drillIntoWoodClipData.appendChannel(batteryLifeChannel);
     }
 
-
     auto makeMapping = [this] (const QString &property) {
         QChannelMapping *mapping = new QChannelMapping;
         mapping->setTarget(m_status);
@@ -228,10 +221,47 @@ StatusScreenController::StatusScreenController(Qt3DCore::QNode *parent)
     // for it to be picked up by Qt 3D
     Qt3DCore::QEntity *e = new Qt3DCore::QEntity(this);
     e->addComponent(animator);
+}
+
+StatusScreenController::StatusScreenController(Qt3DCore::QNode *parent)
+    : AbstractScreenController(parent)
+    , m_status(new DrillStatus(this))
+{
+    // We simulate various RPM/Torque/Current Draw values ... overtime
+
+    // For this, we make use of the Qt 3D Animation API which makes these
+    // type of things easy to materialize
+    createDrillStatusSimulationAnimation();
 
     KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
     configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
     configuration->setCameraName(QStringLiteral("|CamCenter|OrbitCam"));
+
+    // Add Animations Players on SceneConfiguration
+    m_cameraAnimationPlayer = new Kuesa::AnimationPlayer;
+    m_cameraAnimationPlayer->setClip(QStringLiteral("AnimCamera"));
+    m_cameraAnimationPlayer->setLoopCount(Kuesa::AnimationPlayer::Infinite);
+    m_cameraAnimationPlayer->setRunning(true);
+
+    // Use a custom clock to reduce animation playback speed
+    QClock *cameraAnimationClock = new QClock;
+    cameraAnimationClock->setPlaybackRate(0.1);
+    m_cameraAnimationPlayer->setClock(cameraAnimationClock);
+
+    m_runningDrillPlayer = new Kuesa::AnimationPlayer;
+    m_runningDrillPlayer->setClip(QStringLiteral("AnimDrill"));
+    m_runningDrillPlayer->setLoopCount(Kuesa::AnimationPlayer::Infinite);
+
+    QObject::connect(m_status, &DrillStatus::rpmChanged, this, [this] () {
+        const bool shouldRun = m_status->rpm() > 0.0f;
+        if (m_runningDrillPlayer->isRunning() != shouldRun)
+            m_runningDrillPlayer->setRunning(shouldRun);
+    });
+
+    configuration->addAnimationPlayer(m_cameraAnimationPlayer);
+    configuration->addAnimationPlayer(m_runningDrillPlayer);
+
+    // Set SceneConfiguration onController
     setSceneConfiguration(configuration);
 }
 

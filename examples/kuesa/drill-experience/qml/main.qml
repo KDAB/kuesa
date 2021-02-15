@@ -88,7 +88,8 @@ ApplicationWindow {
                 batteryLife: view3D.statusScreenController.drillStatus.batteryLife
                 torque: view3D.statusScreenController.drillStatus.torque
                 rpm: view3D.statusScreenController.drillStatus.rpm
-
+                mode: view3D.statusScreenController.drillStatus.mode
+                direction: view3D.statusScreenController.drillStatus.direction
             }
         }
         Component {

@@ -31,6 +31,10 @@
 
 #include "abstractscreencontroller.h"
 
+namespace Kuesa {
+    class AnimationPlayer;
+}
+
 class DrillStatus : public Qt3DCore::QNode
 {
     Q_OBJECT
@@ -97,8 +101,13 @@ public:
 
     DrillStatus *drillStatus() const;
 
+
 private:
+    void createDrillStatusSimulationAnimation();
+
     DrillStatus *m_status = nullptr;
+    Kuesa::AnimationPlayer *m_cameraAnimationPlayer = nullptr;
+    Kuesa::AnimationPlayer *m_runningDrillPlayer = nullptr;
 };
 
 #endif // STATUSSCREENCONTROLLER_H

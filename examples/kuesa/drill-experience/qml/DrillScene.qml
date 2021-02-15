@@ -61,10 +61,6 @@ View3D {
 
     StatusScreenController {
         id: _statusScreenController
-        //        drillStatus.onRpmChanged: console.log("RPM " + drillStatus.rpm)
-        //        drillStatus.onTorqueChanged: console.log("Torque " + drillStatus.torque)
-        //        drillStatus.onCurrentDrawChanged: console.log("Current Draw " + drillStatus.currentDraw)
-        //        drillStatus.onBatteryLifeChanged: console.log("BatteryLife " + drillStatus.batteryLife)
     }
 
     UserManualScreenController {

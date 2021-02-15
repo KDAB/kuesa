@@ -29,12 +29,15 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import Drill 1.0
 
 Item {
     id: root
     property real batteryLife
     property real rpm
     property real torque
+    property int direction
+    property int mode
 
     ToolBar {
         anchors {
@@ -45,6 +48,31 @@ Item {
 
         RowLayout {
             anchors.fill: parent
+            ToolButton {
+                icon {
+                    width: 32
+                    height: 32
+                    source: {
+                        if (mode === DrillStatus.HammerDrill)
+                            return "icons/hammer-solid.svg"
+                        if (mode === DrillStatus.ScrewDriving)
+                            return "icons/screwdriver-solid.svg"
+                        // TO DO: Add Icon for regular drilling
+                        return "icons/screwdriver-solid.svg"
+                    }
+                }
+                display: ToolButton.IconOnly
+            }
+            ToolSeparator {}
+            ToolButton {
+                icon {
+                    width: 32
+                    height: 32
+                    source: direction === DrillStatus.Clockwise ? "icons/redo-solid.svg" : "icons/undo-solid.svg"
+                }
+                display: ToolButton.IconOnly
+            }
+            ToolSeparator {}
             ToolButton {
                 icon {
                     width: 32
