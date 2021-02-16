@@ -35,6 +35,7 @@
 #include <Kuesa/sceneentity.h>
 #include <Kuesa/forwardrenderer.h>
 #include <Kuesa/gltf2importer.h>
+#include <Kuesa/private/logging_p.h>
 
 #include <Kuesa/private/kuesa_utils_p.h>
 #include <Qt3DCore/private/qnode_p.h>
@@ -49,6 +50,9 @@ using namespace Kuesa;
 using namespace KuesaUtils;
 using namespace Qt3DCore;
 using namespace Qt3DRender;
+
+Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
+
 
 /*!
     \class KuesaUtils::View3DScene
@@ -762,17 +766,15 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
             QObject::disconnect(m_activeScene);
 
             // If we took ownership of the SceneConfiguration -> restore parent
-            if (m_activeSceneOwner) {
-                // Make sure we unset the QNode * parent if it was overridden
-                QNode *originalNodeParent = qobject_cast<QNode *>(m_activeSceneOwner.data());
-                // In case parent is a QNode *
-                if (originalNodeParent) {
-                    m_activeScene->setParent(originalNodeParent);
-                } else {// Parent was not a QNode
-                    // Reset QNode parent
-                    m_activeScene->setParent(Q_NODE_NULLPTR);
-                    static_cast<QObject *>(m_activeScene)->setParent(m_activeSceneOwner.data());
-                }
+            // Make sure we unset the QNode * parent if it was overridden
+            QNode *originalNodeParent = qobject_cast<QNode *>(m_activeSceneOwner.data());
+            // In case parent is a QNode *
+            if (originalNodeParent) {
+                m_activeScene->setParent(originalNodeParent);
+            } else {// Parent was not a QNode or our scene had no parent/owner at all when set
+                // Reset QNode parent
+                m_activeScene->setParent(Q_NODE_NULLPTR);
+                static_cast<QObject *>(m_activeScene)->setParent(m_activeSceneOwner.data());
             }
         }
 
@@ -784,6 +786,9 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
             // Ensure we parent the scene to a valid QNode so that resources
             // are properly added to the scene
             m_activeSceneOwner = scene->parent();
+
+            if (m_activeSceneOwner && !qobject_cast<Qt3DCore::QNode *>(m_activeSceneOwner))
+                qCWarning(kuesa_utils()) << "SceneConfiguration is parented by a non Qt3DCore::QNode object. View3DScene will reparent the SceneConfiguration and restore the original parent when switching back to a new activeScene";
 
             if (!m_activeScene->parentNode())
                 m_activeScene->setParent(this);

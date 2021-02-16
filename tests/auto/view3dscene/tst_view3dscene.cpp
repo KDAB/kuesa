@@ -561,6 +561,84 @@ private Q_SLOTS:
         QCOMPARE(view.cameraName(), QString());
     }
 
+    void checkSceneConfigurationParenting()
+    {
+        // GIVEN
+        KuesaUtils::View3DScene view;
+
+        {
+            // WHEN -> Scene with no parent
+            KuesaUtils::SceneConfiguration conf;
+
+            // THEN
+            QVERIFY(conf.parentNode() == nullptr);
+            QVERIFY(conf.parent() == nullptr);
+
+            // WHEN
+            view.setActiveScene(&conf);
+
+            // THEN
+            QVERIFY(conf.parentNode() == &view);
+            QVERIFY(conf.parent() == &view);
+
+            // WHEN -> Switching scene
+            view.setActiveScene(nullptr);
+
+            // THEN -> Parent should have been reset
+            QVERIFY(conf.parentNode() == nullptr);
+            QVERIFY(conf. parent() == nullptr);
+        }
+
+        {
+            // WHEN -> Scene with QNode parent
+            Qt3DCore::QNode node;
+            KuesaUtils::SceneConfiguration *conf = new KuesaUtils::SceneConfiguration(&node);
+
+            // THEN
+            QVERIFY(conf->parentNode() == &node);
+            QVERIFY(conf->parent() == &node);
+
+            // WHEN
+            view.setActiveScene(conf);
+
+            // THEN
+            QVERIFY(conf->parentNode() == &node);
+            QVERIFY(conf->parent() == &node);
+
+            // WHEN -> Switching scene
+            view.setActiveScene(nullptr);
+
+            // THEN -> Parent should have been restored/untouched
+            QVERIFY(conf->parentNode() == &node);
+            QVERIFY(conf->parent() == &node);
+        }
+
+        {
+            // WHEN -> Scene with QNode parent
+            QObject node;
+            KuesaUtils::SceneConfiguration *conf = new KuesaUtils::SceneConfiguration();
+            static_cast<QObject *>(conf)->setParent(&node);
+
+            // THEN
+            QVERIFY(conf->parentNode() == nullptr);
+            QVERIFY(conf->parent() == &node);
+
+            // WHEN
+            view.setActiveScene(conf);
+
+            // THEN -> Was parented to view to be picked up by Qt 3D
+            QVERIFY(conf->parentNode() == &view);
+            QVERIFY(conf->parent() == &view);
+
+            // WHEN -> Switching scene
+            view.setActiveScene(nullptr);
+
+            // THEN -> Parent should have been restored/untouched
+            QVERIFY(conf->parentNode() == nullptr);
+            QVERIFY(conf->parent() == &node);
+        }
+    }
+
     void checkAutoloadReflections()
     {
         // Loading with autoloadReflection set to false initially
