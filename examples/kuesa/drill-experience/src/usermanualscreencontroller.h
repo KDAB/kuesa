@@ -48,7 +48,7 @@ public:
     };
     Q_ENUM(SelectablePart)
 
-    explicit UserManualScreenController(Qt3DCore::QNode *parent = nullptr);
+    explicit UserManualScreenController(QObject *parent = nullptr);
 
     void setSelectedPart(SelectablePart selectedPart);
     SelectablePart selectedPart() const;

@@ -118,7 +118,7 @@ void DrillStatus::setMode(DrillStatus::Mode mode)
     emit modeChanged();
 }
 
-void StatusScreenController::createDrillStatusSimulationAnimation()
+void StatusScreenController::createDrillStatusSimulationAnimation(Qt3DCore::QNode *parentNode)
 {
     // Drilling into wood
     QAnimationClipData drillIntoWoodClipData;
@@ -217,25 +217,25 @@ void StatusScreenController::createDrillStatusSimulationAnimation()
     animator->setLoopCount(QClipAnimator::Infinite);
     animator->setRunning(true);
 
-    // Add an entity that references the animator component
-    // for it to be picked up by Qt 3D
-    Qt3DCore::QEntity *e = new Qt3DCore::QEntity(this);
+    // Add an entity that references the animator component and parent it as a
+    // child of the sceneConfiguration for it to be picked up by Qt 3D
+    Qt3DCore::QEntity *e = new Qt3DCore::QEntity(parentNode);
     e->addComponent(animator);
 }
 
-StatusScreenController::StatusScreenController(Qt3DCore::QNode *parent)
+StatusScreenController::StatusScreenController(QObject *parent)
     : AbstractScreenController(parent)
-    , m_status(new DrillStatus(this))
 {
-    // We simulate various RPM/Torque/Current Draw values ... overtime
-
-    // For this, we make use of the Qt 3D Animation API which makes these
-    // type of things easy to materialize
-    createDrillStatusSimulationAnimation();
-
-    KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
+    KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
     configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
     configuration->setCameraName(QStringLiteral("|CamCenter|OrbitCam"));
+
+    m_status = new DrillStatus(configuration);
+
+    // We simulate various RPM/Torque/Current Draw values ... over time
+    // For this, we make use of the Qt 3D Animation API which makes these
+    // type of things easy to materialize
+    createDrillStatusSimulationAnimation(configuration);
 
     // Add Animations Players on SceneConfiguration
     m_cameraAnimationPlayer = new Kuesa::AnimationPlayer;

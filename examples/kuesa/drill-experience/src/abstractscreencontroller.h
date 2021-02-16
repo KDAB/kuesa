@@ -33,7 +33,7 @@
 #include <Kuesa/KuesaNode>
 
 
-class AbstractScreenController : public Kuesa::KuesaNode
+class AbstractScreenController : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(KuesaUtils::SceneConfiguration *sceneConfiguration READ sceneConfiguration NOTIFY sceneConfigurationChanged)
@@ -41,12 +41,13 @@ class AbstractScreenController : public Kuesa::KuesaNode
 
 public:
     KuesaUtils::SceneConfiguration *sceneConfiguration() const;
+    virtual ~AbstractScreenController();
 
     bool isActive() const;
     void setActive(bool active);
 
 protected:
-    explicit AbstractScreenController(Qt3DCore::QNode *parent = nullptr);
+    explicit AbstractScreenController(QObject *parent = nullptr);
     void setSceneConfiguration(KuesaUtils::SceneConfiguration *sceneConfiguration);
 
 signals:

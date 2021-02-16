@@ -97,13 +97,13 @@ class StatusScreenController : public AbstractScreenController
     Q_OBJECT
     Q_PROPERTY(DrillStatus *drillStatus READ drillStatus CONSTANT)
 public:
-    explicit StatusScreenController(Qt3DCore::QNode *parent = nullptr);
+    explicit StatusScreenController(QObject *parent = nullptr);
 
     DrillStatus *drillStatus() const;
 
 
 private:
-    void createDrillStatusSimulationAnimation();
+    void createDrillStatusSimulationAnimation(Qt3DCore::QNode *parentNode);
 
     DrillStatus *m_status = nullptr;
     Kuesa::AnimationPlayer *m_cameraAnimationPlayer = nullptr;

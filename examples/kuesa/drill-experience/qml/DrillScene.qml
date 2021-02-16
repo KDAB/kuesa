@@ -54,25 +54,19 @@ View3D {
     activeScene: controller.sceneConfiguration
 
     // Controllers
-    // Properties to expose controllers for external access
-    readonly property StatusScreenController statusScreenController: _statusScreenController
-    readonly property UserManualScreenController userManualScreenController: _userManualScreenController
-    readonly property GuidedDrillingScreenController guidedDrillingScreenController: _guidedDrillingScreenController
-
-    StatusScreenController {
-        id: _statusScreenController
+    // Readonly properties to expose controllers for external access
+    readonly property StatusScreenController statusScreenController: StatusScreenController {
         isActive: screen === _DRILL_STATUS_SCREEN
     }
 
-    UserManualScreenController {
-        id: _userManualScreenController
+    readonly property UserManualScreenController userManualScreenController: UserManualScreenController {
         isActive: screen === _USER_MANUAL_SCREEN
     }
 
-    GuidedDrillingScreenController {
-        id: _guidedDrillingScreenController
+    readonly property GuidedDrillingScreenController guidedDrillingScreenController: GuidedDrillingScreenController {
         isActive: screen === _GUIDED_DRILLING_SCREEN
     }
+
     //! [1]
 }
 //! [0]

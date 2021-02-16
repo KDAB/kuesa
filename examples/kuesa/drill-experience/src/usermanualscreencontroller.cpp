@@ -39,7 +39,7 @@
     This makes it convenient to store the assets and watchers we need when
     selecting different parts.
  */
-UserManualScreenController::UserManualScreenController(Qt3DCore::QNode *parent)
+UserManualScreenController::UserManualScreenController(QObject *parent)
     : AbstractScreenController(parent)
 {
     QObject::connect(this, &UserManualScreenController::selectedPartChanged,
@@ -47,43 +47,43 @@ UserManualScreenController::UserManualScreenController(Qt3DCore::QNode *parent)
 
     // Table containing the various scene configurations for each on selectable part
     {
-        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
+        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
         configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
         configuration->setCameraName(QStringLiteral("|CamCenter|OrbitCam"));
         m_sceneConfigurationsTable[NoPartSelected] = configuration;
     }
     {
-        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
+        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
         configuration->setSource(QUrl(QStringLiteral("")));
         configuration->setCameraName(QStringLiteral(""));
         m_sceneConfigurationsTable[Trigger] = configuration;
     }
     {
-        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
+        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
         configuration->setSource(QUrl(QStringLiteral("")));
         configuration->setCameraName(QStringLiteral(""));
         m_sceneConfigurationsTable[Clutch] = configuration;
     }
     {
-        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
+        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
         configuration->setSource(QUrl(QStringLiteral("")));
         configuration->setCameraName(QStringLiteral(""));
         m_sceneConfigurationsTable[Chuck] = configuration;
     }
     {
-        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
+        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
         configuration->setSource(QUrl(QStringLiteral("")));
         configuration->setCameraName(QStringLiteral(""));
         m_sceneConfigurationsTable[DirectionSwitch] = configuration;
     }
     {
-        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
+        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
         configuration->setSource(QUrl(QStringLiteral("")));
         configuration->setCameraName(QStringLiteral(""));
         m_sceneConfigurationsTable[SpeedSwitch] = configuration;
     }
     {
-        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
+        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
         configuration->setSource(QUrl(QStringLiteral("")));
         configuration->setCameraName(QStringLiteral(""));
         m_sceneConfigurationsTable[BatteryPack] = configuration;

@@ -32,14 +32,20 @@
     Base class for the various screen controllers of the Drill-Experience
     application.
  */
-AbstractScreenController::AbstractScreenController(Qt3DCore::QNode *parent)
-    : Kuesa::KuesaNode(parent)
+AbstractScreenController::AbstractScreenController(QObject *parent)
+    : QObject(parent)
 {
 }
 
 KuesaUtils::SceneConfiguration *AbstractScreenController::sceneConfiguration() const
 {
     return m_sceneConfiguration;
+}
+
+AbstractScreenController::~AbstractScreenController()
+{
+    if (!m_sceneConfiguration->parent())
+        delete m_sceneConfiguration;
 }
 
 bool AbstractScreenController::isActive() const

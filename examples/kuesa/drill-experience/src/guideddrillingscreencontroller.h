@@ -66,7 +66,7 @@ public:
     };
     Q_ENUM(Step)
 
-    explicit GuidedDrillingScreenController(Qt3DCore::QNode *parent = nullptr);
+    explicit GuidedDrillingScreenController(QObject *parent = nullptr);
 
     Step currentStep() const;
     Mode mode() const;

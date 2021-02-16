@@ -28,10 +28,10 @@
 
 #include "guideddrillingscreencontroller.h"
 
-GuidedDrillingScreenController::GuidedDrillingScreenController(Qt3DCore::QNode *parent)
+GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
     : AbstractScreenController(parent)
 {
-    KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration(this);
+    KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
     configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
     configuration->setCameraName(QStringLiteral("|CamCenter|OrbitCam"));
     setSceneConfiguration(configuration);
