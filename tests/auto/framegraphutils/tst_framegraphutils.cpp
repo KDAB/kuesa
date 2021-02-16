@@ -35,6 +35,14 @@
 #include <Qt3DRender/QRenderTargetOutput>
 #include <Qt3DRender/QTexture>
 
+namespace {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0) && defined(Q_OS_WINDOWS)
+    const Qt3DRender::QAbstractTexture::TextureFormat defaultDepthFormat = Qt3DRender::QAbstractTexture::D16;
+#else
+    const Qt3DRender::QAbstractTexture::TextureFormat defaultDepthFormat = Qt3DRender::QAbstractTexture::D24;
+#endif
+}
+
 class tst_FrameGraphUtils : public QObject
 {
     Q_OBJECT
@@ -122,7 +130,7 @@ private Q_SLOTS:
             Qt3DRender::QAbstractTexture::TextureFormat expectedFormat =
                     (hasStencil) ?
                         Qt3DRender::QAbstractTexture::D24S8 :
-                        Qt3DRender::QAbstractTexture::D16;
+                        defaultDepthFormat;
 
             if (flags & Kuesa::FrameGraphUtils::Multisampled) {
                 Qt3DRender::QTexture2DMultisample *t = qobject_cast<Qt3DRender::QTexture2DMultisample *>(depthStencilOutput->texture());
@@ -172,7 +180,7 @@ private Q_SLOTS:
         QVERIFY(colorTexture != nullptr);
         QVERIFY(depthTexture != nullptr);
         QCOMPARE(colorTexture->format(), Qt3DRender::QAbstractTexture::RGBA8_UNorm);
-        QCOMPARE(depthTexture->format(), Qt3DRender::QAbstractTexture::D16);
+        QCOMPARE(depthTexture->format(), defaultDepthFormat);
     }
 
 };
