@@ -40,7 +40,7 @@ ApplicationWindow {
 
     readonly property int _DRILL_STATUS_SCREEN: 0
     readonly property int _GUIDED_DRILLING_SCREEN: 1
-    readonly property int _USER_MANUAL_SCREEN: 1
+    readonly property int _USER_MANUAL_SCREEN: 2
 
     Material.theme: Material.Dark
     Material.accent: Material.Blue
