@@ -27,6 +27,7 @@
 */
 
 #include "abstractscreencontroller.h"
+#include <Kuesa/View>
 
 /*
     Base class for the various screen controllers of the Drill-Experience
@@ -61,11 +62,34 @@ void AbstractScreenController::setActive(bool active)
     emit isActiveChanged();
 }
 
+const std::vector<Kuesa::View *> &AbstractScreenController::views()
+{
+    return m_views;
+}
+
 void AbstractScreenController::setSceneConfiguration(KuesaUtils::SceneConfiguration *sceneConfiguration)
 {
     if (sceneConfiguration == m_sceneConfiguration)
         return;
     m_sceneConfiguration = sceneConfiguration;
     emit sceneConfigurationChanged();
+}
+
+void AbstractScreenController::addView(Kuesa::View *v)
+{
+    auto it = std::find(m_views.begin(), m_views.end(), v);
+    if (it == m_views.end()) {
+        m_views.push_back(v);
+        emit viewsChanged();
+    }
+}
+
+void AbstractScreenController::removeView(Kuesa::View *v)
+{
+    auto it = std::remove(m_views.begin(), m_views.end(), v);
+    if (it != m_views.end()) {
+        m_views.erase(it);
+        emit viewsChanged();
+    }
 }
 

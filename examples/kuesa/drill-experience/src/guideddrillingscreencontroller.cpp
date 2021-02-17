@@ -27,6 +27,7 @@
 */
 
 #include "guideddrillingscreencontroller.h"
+#include <Kuesa/View>
 
 GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
     : AbstractScreenController(parent)
@@ -35,6 +36,11 @@ GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
     configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
     configuration->setCameraName(QStringLiteral("|CamCenter|OrbitCam"));
     setSceneConfiguration(configuration);
+
+    Kuesa::View *view = new Kuesa::View;
+    view->setViewportRect({0.5f, 0.25f, 0.5f, 0.5f});
+
+    addView(view);
 }
 
 GuidedDrillingScreenController::Step GuidedDrillingScreenController::currentStep() const

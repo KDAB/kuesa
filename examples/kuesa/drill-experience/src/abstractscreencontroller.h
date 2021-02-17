@@ -32,6 +32,9 @@
 #include <KuesaUtils/sceneconfiguration.h>
 #include <Kuesa/KuesaNode>
 
+namespace Kuesa {
+class View;
+} // Kuesa
 
 class AbstractScreenController : public QObject
 {
@@ -46,17 +49,24 @@ public:
     bool isActive() const;
     void setActive(bool active);
 
+    const std::vector<Kuesa::View *> &views();
+
 protected:
     explicit AbstractScreenController(QObject *parent = nullptr);
     void setSceneConfiguration(KuesaUtils::SceneConfiguration *sceneConfiguration);
 
+    void addView(Kuesa::View *v);
+    void removeView(Kuesa::View *v);
+
 signals:
     void sceneConfigurationChanged();
     void isActiveChanged();
+    void viewsChanged();
 
 private:
     KuesaUtils::SceneConfiguration *m_sceneConfiguration = nullptr;
     bool m_active = false;
+    std::vector<Kuesa::View *> m_views;
 };
 
 #endif // ABSTRACTSCREENCONTROLLER_H

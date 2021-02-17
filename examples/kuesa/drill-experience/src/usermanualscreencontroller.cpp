@@ -27,6 +27,7 @@
 */
 
 #include "usermanualscreencontroller.h"
+#include <Kuesa/View>
 
 /*
     Controller for the UserManual screen.
@@ -45,7 +46,7 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
     QObject::connect(this, &UserManualScreenController::selectedPartChanged,
                      this, &UserManualScreenController::updateSceneConfiguration);
 
-    // Table containing the various scene configurations for each on selectable part
+    // Table containing the various scene configurations for each selectable part
     {
         KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
         configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
@@ -88,6 +89,16 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
         configuration->setCameraName(QStringLiteral(""));
         m_sceneConfigurationsTable[BatteryPack] = configuration;
     }
+
+    Kuesa::View *view = new Kuesa::View;
+    view->setClearColor(QColor(Qt::transparent));
+    addView(view);
+
+    Kuesa::View *detailView = new Kuesa::View;
+    detailView->setViewportRect({0.7f, 0.0f, 0.3f, 0.3f});
+    detailView->setClearColor(QColor(Qt::gray));
+
+    addView(detailView);
 
     // Set default scene configuration
     updateSceneConfiguration();

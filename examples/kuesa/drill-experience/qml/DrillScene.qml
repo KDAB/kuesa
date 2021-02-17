@@ -67,7 +67,15 @@ View3D {
     readonly property GuidedDrillingScreenController guidedDrillingScreenController: GuidedDrillingScreenController {
         isActive: screen === _GUIDED_DRILLING_SCREEN
     }
-
     //! [1]
+
+    //! [2]
+    // Allow to specify rendering viewports based on current controller
+    ViewportManager {
+        id: viewportManager
+        controller: view3D.controller
+        frameGraph: view3D.frameGraph
+    }
+    //! [2]
 }
 //! [0]

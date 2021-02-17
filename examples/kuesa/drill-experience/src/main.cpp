@@ -34,6 +34,7 @@
 #include "usermanualscreencontroller.h"
 #include "statusscreencontroller.h"
 #include "guideddrillingscreencontroller.h"
+#include "viewportmanager.h"
 
 namespace {
 
@@ -59,6 +60,7 @@ void registerQMLTypes()
     qmlRegisterType<UserManualScreenController>("Drill", 1, 0, "UserManualScreenController");
     qmlRegisterType<StatusScreenController>("Drill", 1, 0, "StatusScreenController");
     qmlRegisterType<GuidedDrillingScreenController>("Drill", 1, 0, "GuidedDrillingScreenController");
+    qmlRegisterType<ViewportManager>("Drill", 1, 0, "ViewportManager");
 }
 
 } // anonymous
