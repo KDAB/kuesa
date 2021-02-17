@@ -66,7 +66,7 @@ Item {
 
         Component {
             id: modeSelector
-            Pane {
+            Frame {
                 ColumnLayout {
                     anchors.fill: parent
                     Label {
@@ -104,7 +104,7 @@ Item {
 
         Component {
             id: materialSelector
-            Pane {
+            Frame {
                 ColumnLayout {
                     anchors.fill: parent
                     Label {
@@ -159,7 +159,7 @@ Item {
 
         Component {
             id: bitSelector
-            Pane {
+            Frame {
                 ColumnLayout {
                     anchors.fill: parent
                     Label {
@@ -190,7 +190,7 @@ Item {
 
         Component {
             id: insertDrillStep
-            Pane {
+            Frame {
                 ColumnLayout {
                     anchors.fill: parent
                     Label {
@@ -221,7 +221,7 @@ Item {
 
         Component {
             id: setModeStep
-            Pane {
+            Frame {
                 ColumnLayout {
                     anchors.fill: parent
                     Label {
@@ -252,7 +252,7 @@ Item {
 
         Component {
             id: drillStep
-            Pane {
+            Frame {
                 ColumnLayout {
                     anchors.fill: parent
                     Label {

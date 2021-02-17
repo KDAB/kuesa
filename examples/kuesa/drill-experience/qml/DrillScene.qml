@@ -35,7 +35,8 @@ View3D {
     id: view3D
     focus: true
     asynchronous: true
-    backgroundColor: "#666"
+    backgroundColor: "transparent"
+    opacity: ready ? 1.0 : 0.0
 
     property int screen: 0
 
