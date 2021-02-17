@@ -175,5 +175,14 @@ Scene3D {
 
             root.loadingDone()
         }
+
+        // Force firing of signals attached to properties on the root element
+        // when they are fired from View3DScene even if the property value
+        // hasn't changed.
+        // This can happen when switching activeScene using the same source
+        // where ready remains true but it's still useful to be notified about
+        // the fact that the loading is completed
+        onLoadedChanged: root.loadedChanged()
+        onReadyChanged: root.readyChanged()
     }
 }
