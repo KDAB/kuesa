@@ -113,6 +113,9 @@ private:
 
     Qt3DRender::QRenderSurfaceSelector *m_surfaceSelector;
     Qt3DRender::QClearBuffers *m_clearBuffers;
+    Qt3DRender::QFrameGraphNode *m_defaultViewHolder;
+    Qt3DRender::QFrameGraphNode *m_viewsHolder;
+    Qt3DRender::QFrameGraphNode *m_rhiViewResolver;
 
     QVector<QMetaObject::Connection> m_resizeConnections;
 
