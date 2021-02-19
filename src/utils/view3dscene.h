@@ -117,6 +117,7 @@ Q_SIGNALS:
 private:
     void setSource(const QUrl &source);
     void setCameraName(const QString &cameraName);
+    void retrieveAndSetCamera();
 
     void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);

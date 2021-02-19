@@ -639,6 +639,35 @@ private Q_SLOTS:
         }
     }
 
+    void checkCameraReloadOnCameraNameChange()
+    {
+        // GIVEN
+        KuesaUtils::View3DScene view;
+        KuesaUtils::SceneConfiguration conf;
+        QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadedChanged);
+
+        // THEN
+        QVERIFY(loadedSpy.isValid());
+
+        // WHEN
+        conf.setCameraName(QStringLiteral("Camera_First"));
+        conf.setSource(QUrl("file:///" ASSETS "simple_cube_multi_cameras.gltf"));
+        view.setActiveScene(&conf);
+        loadedSpy.wait();
+
+        // THEN
+        auto *firstCamera = view.frameGraph()->camera();
+        QVERIFY(firstCamera != nullptr);
+
+        // WHEN
+        conf.setCameraName(QStringLiteral("Camera_Second"));
+
+        // THEN
+        auto *secondCamera = view.frameGraph()->camera();
+        QVERIFY(secondCamera != nullptr);
+        QVERIFY(firstCamera != secondCamera);
+    }
+
     void checkAutoloadReflections()
     {
         // Loading with autoloadReflection set to false initially

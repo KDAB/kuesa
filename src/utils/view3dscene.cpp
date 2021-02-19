@@ -385,6 +385,9 @@ void View3DScene::setCameraName(const QString &cameraName)
     if (cameraName != m_cameraName) {
         m_cameraName = cameraName;
         emit cameraNameChanged(m_cameraName);
+
+        if (isLoaded())
+            retrieveAndSetCamera();
     }
 }
 
@@ -446,13 +449,18 @@ void View3DScene::adoptNode(QObject *object)
         node->setParent(this);
 }
 
-void View3DScene::onSceneLoaded()
+void KuesaUtils::View3DScene::retrieveAndSetCamera()
 {
     if (!m_cameraName.isEmpty()) {
         auto camera = SceneEntity::camera(m_cameraName);
         if (camera)
             m_frameGraph->setCamera(camera);
     }
+}
+
+void View3DScene::onSceneLoaded()
+{
+    retrieveAndSetCamera();
 
     if (m_activeScene) {
         // Add resources from the ActiveScene
