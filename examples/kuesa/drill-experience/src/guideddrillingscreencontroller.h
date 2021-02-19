@@ -37,6 +37,7 @@ class GuidedDrillingScreenController : public AbstractScreenController
     Q_PROPERTY(Step currentStep READ currentStep NOTIFY currentStepChanged)
     Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
     Q_PROPERTY(MaterialType material READ material WRITE setMaterial NOTIFY materialChanged)
+    Q_PROPERTY(QString bitName READ bitName WRITE setBitName NOTIFY bitNameChanged)
 
 public:
 
@@ -71,25 +72,42 @@ public:
     Step currentStep() const;
     Mode mode() const;
     MaterialType material() const;
+    QString bitName() const;
 
     void setMode(Mode mode);
     void setMaterial(MaterialType material);
+    void setBitName(const QString &bitName);
 
-    Q_INVOKABLE void nextStep();
-    Q_INVOKABLE void previousStep();
-    Q_INVOKABLE void reset();
+    Q_INVOKABLE Step nextStep();
+    Q_INVOKABLE Step previousStep();
+    Q_INVOKABLE Step reset();
 
 signals:
     void currentStepChanged();
     void modeChanged();
     void materialChanged();
+    void bitNameChanged();
 
 private:
     Step m_currentStep = ModeSelection;
     Mode m_mode = Drill;
     MaterialType m_material = Wood;
+    QString m_bitName;
 
     std::vector<Step> m_history;
+
+    // Owned by the sceneConfiguration
+    Kuesa::AnimationPlayer *m_drillAnimation = nullptr;
+    Kuesa::AnimationPlayer *m_triggerPressAnimation = nullptr;
+    Kuesa::AnimationPlayer *m_directionSwitchAnimation = nullptr;
+    Kuesa::AnimationPlayer *m_drillInsertAnimation = nullptr;
+    Kuesa::AnimationPlayer *m_drillRemoveAnimation = nullptr;
+
+    Qt3DCore::QEntity *m_originalDrillBitParent = nullptr;
+
+    void loadDrillBit();
+    void addObjectPickersOnBit();
+    void syncViewToStep();
 };
 
 #endif // GUIDEDDRILLINGSCREENCONTROLLER_H

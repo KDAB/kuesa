@@ -64,11 +64,15 @@ ApplicationWindow {
         id: contentItem
         anchors.fill: parent
 
+        MouseArea {
+            enabled: !view3D.activeFocus
+            anchors.fill: parent
+            onClicked: view3D.forceActiveFocus();
+        }
 
         //! [2]
         DrillScene {
             id: view3D
-            anchors.fill: parent
             screen: header.currentIndex
             onScreenChanged: opacityAnimation.restart()
 
@@ -95,7 +99,7 @@ ApplicationWindow {
         Component {
             id: guidedDrillingUI
             GuidedDrillingUI {
-
+                controller: view3D.guidedDrillingScreenController
             }
         }
         Component {
@@ -114,6 +118,41 @@ ApplicationWindow {
             sourceComponent: sources[header.currentIndex]
         }
         //! [3.2]
+
+        //! [3.3]
+        states: [
+            State {
+                when: header.currentIndex === _DRILL_STATUS_SCREEN
+                AnchorChanges {
+                    target: view3D
+                    anchors {
+                        top: contentItem.top; bottom: contentItem.bottom
+                        left:contentItem.left; right: contentItem.right
+                    }
+                }
+            },
+            State {
+                when: header.currentIndex === _GUIDED_DRILLING_SCREEN
+                AnchorChanges {
+                    target: view3D
+                    anchors {
+                        top: contentItem.top; bottom: contentItem.bottom
+                        left:contentItem.horizontalCenter; right: contentItem.right
+                    }
+                }
+            },
+            State {
+                when: header.currentIndex === _USER_MANUAL_SCREEN
+                AnchorChanges {
+                    target: view3D
+                    anchors {
+                        top: contentItem.top; bottom: contentItem.bottom
+                        left:contentItem.left; right: contentItem.right
+                    }
+                }
+            }
+        ]
+        //! [3.3]
     }
     //! [1]
 }

@@ -29,12 +29,14 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import Drill 1.0
 
 Item {
     property int selectedMode
     property int selectedMaterial
 
-    readonly property int currentStep: Math.max(guidedDrillingWizardStackView.depth - 1, 0)
+    property GuidedDrillingScreenController controller
+    readonly property int currentStep: controller.currentStep
 
     readonly property int _MODE_SELECTOR_STEP: 0
     readonly property int _MATERIAL_SELECTOR_STEP: 1
@@ -43,8 +45,41 @@ Item {
     readonly property int _SET_MODE_STEP: 4
     readonly property int _DRILL_STEP: 5
 
-    onCurrentStepChanged: {
+    function viewForStep(step) {
         // TO DO: Sync with 3D view based on the currentStep
+        switch (step) {
+        case GuidedDrillingScreenController.ModeSelection:
+            return modeSelector;
+        case GuidedDrillingScreenController.MaterialSelection:
+            return materialSelector;
+        case GuidedDrillingScreenController.BitSelection:
+            return bitSelector;
+        case GuidedDrillingScreenController.SetupBit:
+            return insertDrillStep;
+        case GuidedDrillingScreenController.SetupClutch:
+            return setModeStep;
+        case GuidedDrillingScreenController.SetupSpeed:
+            return setSpeedStep;
+        case GuidedDrillingScreenController.SetupDirection:
+            return setDirectionStep;
+        case GuidedDrillingScreenController.CompletionStep:
+            return drillStep;
+        }
+    }
+
+    function next() {
+        guidedDrillingWizardStackView.push(viewForStep(controller.nextStep()))
+    }
+
+    function back() {
+        guidedDrillingWizardStackView.pop();
+        controller.previousStep()
+    }
+
+    function restart() {
+        guidedDrillingWizardStackView.clear()
+        controller.reset();
+        guidedDrillingWizardStackView.push(modeSelector)
     }
 
     StackView {
@@ -57,12 +92,6 @@ Item {
         }
         width: parent.width * 0.3
         initialItem: modeSelector
-
-        // Handle restarts of the wizard
-        onDepthChanged: {
-            if (depth === 0)
-                push(modeSelector)
-        }
 
         Component {
             id: modeSelector
@@ -95,7 +124,9 @@ Item {
                         Button {
                             text: "Next"
                             enabled: screwDrivingModeButton.checked || drillingModeButton.checked
-                            onClicked: guidedDrillingWizardStackView.push(materialSelector)
+                            onClicked: {
+                                next()
+                            }
                         }
                     }
                 }
@@ -141,7 +172,7 @@ Item {
                         Button {
                             Layout.alignment: Qt.AlignLeft
                             text: "Back"
-                            onClicked: guidedDrillingWizardStackView.pop()
+                            onClicked: back()
                         }
                         Item {
                             Layout.fillWidth: true
@@ -150,7 +181,7 @@ Item {
                             enabled: woodMaterialButton.checked || concreteMaterialButton.checked || metalMaterialButton.checked
                             Layout.alignment: Qt.AlignRight
                             text: "Next"
-                            onClicked: guidedDrillingWizardStackView.push(bitSelector)
+                            onClicked: next()
                         }
                     }
                 }
@@ -173,7 +204,7 @@ Item {
                         Button {
                             Layout.alignment: Qt.AlignLeft
                             text: "Back"
-                            onClicked: guidedDrillingWizardStackView.pop()
+                            onClicked: back()
                         }
                         Item {
                             Layout.fillWidth: true
@@ -181,7 +212,7 @@ Item {
                         Button {
                             Layout.alignment: Qt.AlignRight
                             text: "Next"
-                            onClicked: guidedDrillingWizardStackView.push(insertDrillStep)
+                            onClicked: next()
                         }
                     }
                 }
@@ -204,7 +235,7 @@ Item {
                         Button {
                             Layout.alignment: Qt.AlignLeft
                             text: "Back"
-                            onClicked: guidedDrillingWizardStackView.pop()
+                            onClicked: back()
                         }
                         Item {
                             Layout.fillWidth: true
@@ -212,7 +243,7 @@ Item {
                         Button {
                             Layout.alignment: Qt.AlignRight
                             text: "Next"
-                            onClicked: guidedDrillingWizardStackView.push(setModeStep)
+                            onClicked: next()
                         }
                     }
                 }
@@ -235,7 +266,7 @@ Item {
                         Button {
                             Layout.alignment: Qt.AlignLeft
                             text: "Back"
-                            onClicked: guidedDrillingWizardStackView.pop()
+                            onClicked: back()
                         }
                         Item {
                             Layout.fillWidth: true
@@ -243,7 +274,69 @@ Item {
                         Button {
                             Layout.alignment: Qt.AlignRight
                             text: "Next"
-                            onClicked: guidedDrillingWizardStackView.push(drillStep)
+                            onClicked: next()
+                        }
+                    }
+                }
+            }
+        }
+
+        Component {
+            id: setSpeedStep
+            Frame {
+                ColumnLayout {
+                    anchors.fill: parent
+                    Label {
+                        Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
+                        text: "Set Speed"
+                        font.pointSize: 20
+                    }
+
+                    RowLayout {
+                        Layout.alignment: Qt.AlignBottom
+                        Button {
+                            Layout.alignment: Qt.AlignLeft
+                            text: "Back"
+                            onClicked: back()
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        Button {
+                            Layout.alignment: Qt.AlignRight
+                            text: "Next"
+                            onClicked: next()
+                        }
+                    }
+                }
+            }
+        }
+
+        Component {
+            id: setDirectionStep
+            Frame {
+                ColumnLayout {
+                    anchors.fill: parent
+                    Label {
+                        Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
+                        text: "Set Direction"
+                        font.pointSize: 20
+                    }
+
+                    RowLayout {
+                        Layout.alignment: Qt.AlignBottom
+                        Button {
+                            Layout.alignment: Qt.AlignLeft
+                            text: "Back"
+                            onClicked: back()
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        Button {
+                            Layout.alignment: Qt.AlignRight
+                            text: "Next"
+                            onClicked: next()
                         }
                     }
                 }
@@ -266,7 +359,7 @@ Item {
                         Button {
                             Layout.alignment: Qt.AlignLeft
                             text: "Back"
-                            onClicked: guidedDrillingWizardStackView.pop()
+                            onClicked: back()
                         }
                         Item {
                             Layout.fillWidth: true
@@ -274,9 +367,7 @@ Item {
                         Button {
                             Layout.alignment: Qt.AlignRight
                             text: "Restart"
-                            onClicked: {
-                                guidedDrillingWizardStackView.clear()
-                            }
+                            onClicked: restart()
                         }
                     }
                 }
