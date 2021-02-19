@@ -228,7 +228,7 @@ StatusScreenController::StatusScreenController(QObject *parent)
 {
     KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
     configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
-    configuration->setCameraName(QStringLiteral("|CamCenter|OrbitCam"));
+    configuration->setCameraName(QStringLiteral("CamOrbitCenter.CamOrbit"));
 
     m_status = new DrillStatus(configuration);
 
@@ -239,7 +239,7 @@ StatusScreenController::StatusScreenController(QObject *parent)
 
     // Add Animations Players on SceneConfiguration
     m_cameraAnimationPlayer = new Kuesa::AnimationPlayer;
-    m_cameraAnimationPlayer->setClip(QStringLiteral("AnimCamera"));
+    m_cameraAnimationPlayer->setClip(QStringLiteral("AnimCamOrbit"));
     m_cameraAnimationPlayer->setLoopCount(Kuesa::AnimationPlayer::Infinite);
     m_cameraAnimationPlayer->setRunning(true);
 
@@ -249,7 +249,7 @@ StatusScreenController::StatusScreenController(QObject *parent)
     m_cameraAnimationPlayer->setClock(cameraAnimationClock);
 
     m_runningDrillPlayer = new Kuesa::AnimationPlayer;
-    m_runningDrillPlayer->setClip(QStringLiteral("AnimDrill"));
+    m_runningDrillPlayer->setClip(QStringLiteral("AnimDrillCW"));
     m_runningDrillPlayer->setLoopCount(Kuesa::AnimationPlayer::Infinite);
 
     QObject::connect(m_status, &DrillStatus::rpmChanged, this, [this] () {

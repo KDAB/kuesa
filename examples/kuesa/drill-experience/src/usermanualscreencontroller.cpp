@@ -50,7 +50,7 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
     {
         KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
         configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
-        configuration->setCameraName(QStringLiteral("|CamCenter|OrbitCam"));
+        configuration->setCameraName(QStringLiteral("CamOrbiteCenter.CamOrbit"));
         m_sceneConfigurationsTable[NoPartSelected] = configuration;
     }
     {
