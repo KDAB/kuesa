@@ -54,11 +54,11 @@ Item {
                     height: 32
                     source: {
                         if (mode === DrillStatus.HammerDrill)
-                            return "icons/hammer-solid.svg"
+                            return "qrc:/icons/hammer-solid.svg"
                         if (mode === DrillStatus.ScrewDriving)
-                            return "icons/screwdriver-solid.svg"
+                            return "qrc:/icons/screwdriver-solid.svg"
                         // TO DO: Add Icon for regular drilling
-                        return "icons/screwdriver-solid.svg"
+                        return "qrc:/icons/screwdriver-solid.svg"
                     }
                 }
                 display: ToolButton.IconOnly
@@ -68,7 +68,7 @@ Item {
                 icon {
                     width: 32
                     height: 32
-                    source: direction === DrillStatus.Clockwise ? "icons/redo-solid.svg" : "icons/undo-solid.svg"
+                    source: direction === DrillStatus.Clockwise ? "qrc:/icons/redo-solid.svg" : "qrc:/icons/undo-solid.svg"
                 }
                 display: ToolButton.IconOnly
             }
@@ -77,7 +77,7 @@ Item {
                 icon {
                     width: 32
                     height: 32
-                    source: "icons/tachometer-alt-solid.svg"
+                    source: "qrc:/icons/tachometer-alt-solid.svg"
                 }
                 text: "%1 RPM".arg(root.rpm.toFixed(0))
             }
@@ -86,7 +86,7 @@ Item {
                 icon {
                     width: 32
                     height: 32
-                    source: "icons/superpowers-brands.svg"
+                    source: "qrc:/icons/superpowers-brands.svg"
                 }
                 text: "%1 N.m".arg(root.torque.toFixed(2))
             }
@@ -98,14 +98,14 @@ Item {
                     height: 32
                     source: {
                         if (batteryLife > 95)
-                            return "icons/battery-full-solid.svg"
+                            return "qrc:/icons/battery-full-solid.svg"
                         if (batteryLife >= 75)
-                            return "icons/battery-three-quarters-solid.svg"
+                            return "qrc:/icons/battery-three-quarters-solid.svg"
                         if (batteryLife >= 50)
-                            return "icons/battery-half-solid.svg"
+                            return "qrc:/icons/battery-half-solid.svg"
                         if (batteryLife >= 25)
-                            return "icons/battery-quarter-solid.svg"
-                        return "icons/battery-empty-solid.svg"
+                            return "qrc:/icons/battery-quarter-solid.svg"
+                        return "qrc:/icons/battery-empty-solid.svg"
                     }
                 }
                 text: "%1 %".arg(root.batteryLife.toFixed(0))
