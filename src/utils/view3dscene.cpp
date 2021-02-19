@@ -319,6 +319,7 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     auto renderSettings = new QRenderSettings;
     renderSettings->setActiveFrameGraph(m_frameGraph);
     renderSettings->setRenderPolicy(QRenderSettings::OnDemand);
+    renderSettings->pickingSettings()->setPickMethod(QPickingSettings::TrianglePicking);
     addComponent(renderSettings);
     addComponent(new Qt3DInput::QInputSettings);
 
