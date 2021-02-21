@@ -36,13 +36,17 @@ class UserManualScreenController : public AbstractScreenController
 {
     Q_OBJECT
     Q_PROPERTY(SelectablePart selectedPart READ selectedPart WRITE setSelectedPart NOTIFY selectedPartChanged)
+    Q_PROPERTY(QPointF triggerPosition READ triggerPosition NOTIFY triggerPositionChanged)
+    Q_PROPERTY(QPointF clutchPosition READ clutchPosition NOTIFY clutchPositionChanged)
+    Q_PROPERTY(QPointF chuckPosition READ chuckPosition NOTIFY chuckPositionChanged)
+    Q_PROPERTY(QPointF directionSwitchPosition READ directionSwitchPosition NOTIFY directionSwitchPositionChanged)
+    Q_PROPERTY(QPointF batteryPackPosition READ batteryPackPosition NOTIFY batteryPackPositionChanged)
 public:
     enum SelectablePart {
         Trigger,
         Clutch,
         Chuck,
         DirectionSwitch,
-        SpeedSwitch,
         BatteryPack,
         NoPartSelected
     };
@@ -53,14 +57,33 @@ public:
     void setSelectedPart(SelectablePart selectedPart);
     SelectablePart selectedPart() const;
 
+    QPointF triggerPosition() const;
+    QPointF clutchPosition() const;
+    QPointF chuckPosition() const;
+    QPointF directionSwitchPosition() const;
+    QPointF speedSwitchPosition() const;
+    QPointF batteryPackPosition() const;
+
 signals:
     void selectedPartChanged();
+    void triggerPositionChanged(const QPointF &screenPosition);
+    void clutchPositionChanged(const QPointF &screenPosition);
+    void chuckPositionChanged(const QPointF &screenPosition);
+    void directionSwitchPositionChanged(const QPointF &screenPosition);
+    void batteryPackPositionChanged(const QPointF &screenPosition);
 
 private:
     void updateSceneConfiguration();
 
     SelectablePart m_selectedPart = NoPartSelected;
     QHash<SelectablePart, KuesaUtils::SceneConfiguration *> m_sceneConfigurationsTable;
+
+    // Trackers owned by the SceneConfiguration
+    Kuesa::TransformTracker *m_triggerTracker;
+    Kuesa::TransformTracker *m_clutchTracker;
+    Kuesa::TransformTracker *m_chuckTracker;
+    Kuesa::TransformTracker *m_directionSwitchTracker;
+    Kuesa::TransformTracker *m_batteryPackTracker;
 };
 
 #endif // USERMANUALSCREENCONTROLLER_H

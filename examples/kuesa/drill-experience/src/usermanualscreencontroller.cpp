@@ -27,7 +27,6 @@
 */
 
 #include "usermanualscreencontroller.h"
-#include <Kuesa/View>
 
 /*
     Controller for the UserManual screen.
@@ -46,11 +45,53 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
     QObject::connect(this, &UserManualScreenController::selectedPartChanged,
                      this, &UserManualScreenController::updateSceneConfiguration);
 
-    // Table containing the various scene configurations for each selectable part
+    // Table containing the various scene configurations for each on selectable part
     {
         KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
         configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
         configuration->setCameraName(QStringLiteral("CamOrbiteCenter.CamOrbit"));
+
+        {
+            m_triggerTracker = new Kuesa::TransformTracker();
+            m_triggerTracker->setName(QStringLiteral("Drill.LocTrigger"));
+            configuration->addTransformTracker(m_triggerTracker);
+            QObject::connect(m_triggerTracker, &Kuesa::TransformTracker::screenPositionChanged,
+                             this, &UserManualScreenController::triggerPositionChanged);
+        }
+
+        {
+            m_clutchTracker = new Kuesa::TransformTracker();
+            m_clutchTracker->setName(QStringLiteral("Drill.Ring1"));
+            configuration->addTransformTracker(m_clutchTracker);
+            QObject::connect(m_clutchTracker, &Kuesa::TransformTracker::screenPositionChanged,
+                             this, &UserManualScreenController::clutchPositionChanged);
+        }
+
+        {
+            m_chuckTracker = new Kuesa::TransformTracker();
+            m_chuckTracker->setName(QStringLiteral("Drill.LABEL_Chuck"));
+            configuration->addTransformTracker(m_chuckTracker);
+            QObject::connect(m_chuckTracker, &Kuesa::TransformTracker::screenPositionChanged,
+                             this, &UserManualScreenController::chuckPositionChanged);
+        }
+
+        {
+            m_directionSwitchTracker = new Kuesa::TransformTracker();
+            m_directionSwitchTracker->setName(QStringLiteral("Drill.LocDirectionKnobs"));
+            configuration->addTransformTracker(m_directionSwitchTracker);
+            QObject::connect(m_directionSwitchTracker, &Kuesa::TransformTracker::screenPositionChanged,
+                             this, &UserManualScreenController::directionSwitchPositionChanged);
+        }
+
+        {
+            m_batteryPackTracker = new Kuesa::TransformTracker();
+            m_batteryPackTracker->setName(QStringLiteral("Drill.LABEL_Battery"));
+            configuration->addTransformTracker(m_batteryPackTracker);
+            QObject::connect(m_batteryPackTracker, &Kuesa::TransformTracker::screenPositionChanged,
+                             this, &UserManualScreenController::batteryPackPositionChanged);
+        }
+
+
         m_sceneConfigurationsTable[NoPartSelected] = configuration;
     }
     {
@@ -81,24 +122,8 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
         KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
         configuration->setSource(QUrl(QStringLiteral("")));
         configuration->setCameraName(QStringLiteral(""));
-        m_sceneConfigurationsTable[SpeedSwitch] = configuration;
-    }
-    {
-        KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
-        configuration->setSource(QUrl(QStringLiteral("")));
-        configuration->setCameraName(QStringLiteral(""));
         m_sceneConfigurationsTable[BatteryPack] = configuration;
     }
-
-    Kuesa::View *view = new Kuesa::View;
-    view->setClearColor(QColor(Qt::transparent));
-    addView(view);
-
-    Kuesa::View *detailView = new Kuesa::View;
-    detailView->setViewportRect({0.7f, 0.0f, 0.3f, 0.3f});
-    detailView->setClearColor(QColor(Qt::gray));
-
-    addView(detailView);
 
     // Set default scene configuration
     updateSceneConfiguration();
@@ -115,6 +140,31 @@ void UserManualScreenController::setSelectedPart(UserManualScreenController::Sel
 UserManualScreenController::SelectablePart UserManualScreenController::selectedPart() const
 {
     return m_selectedPart;
+}
+
+QPointF UserManualScreenController::triggerPosition() const
+{
+    return m_triggerTracker->screenPosition();
+}
+
+QPointF UserManualScreenController::clutchPosition() const
+{
+    return m_clutchTracker->screenPosition();
+}
+
+QPointF UserManualScreenController::chuckPosition() const
+{
+    return m_chuckTracker->screenPosition();
+}
+
+QPointF UserManualScreenController::directionSwitchPosition() const
+{
+    return m_directionSwitchTracker->screenPosition();
+}
+
+QPointF UserManualScreenController::batteryPackPosition() const
+{
+    return m_batteryPackTracker->screenPosition();
 }
 
 void UserManualScreenController::updateSceneConfiguration()

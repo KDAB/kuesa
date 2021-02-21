@@ -27,7 +27,51 @@
 */
 
 import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
+import Drill 1.0
 
 Item {
 
+    property UserManualScreenController controller
+    readonly property point triggerPosition: controller.triggerPosition
+    readonly property point clutchPosition: controller.clutchPosition
+    readonly property point chuckPosition: controller.chuckPosition
+    readonly property point directionSwitchPosition: controller.directionSwitchPosition
+    readonly property point batteryPackPosition: controller.batteryPackPosition
+
+    Repeater {
+        id: labelsRepeater
+        readonly property var parts: [
+            UserManualScreenController.Trigger,
+            UserManualScreenController.Clutch,
+            UserManualScreenController.Chuck,
+            UserManualScreenController.DirectionSwitch,
+            UserManualScreenController.BatteryPack
+        ]
+        readonly property var positions: [
+            triggerPosition,
+            clutchPosition,
+            chuckPosition,
+            directionSwitchPosition,
+            batteryPackPosition
+        ]
+        readonly property var names: [
+            "Trigger",
+            "Clutch",
+            "Chuck",
+            "Direction switch",
+            "Battery pack"
+        ]
+
+        model: names.length
+
+        Button {
+            Layout.alignment: Qt.AlignHCenter
+            text: labelsRepeater.names[model.index]
+            x: labelsRepeater.positions[model.index].x
+            y: labelsRepeater.positions[model.index].y
+            onClicked: controller.selectedPart = labelsRepeater.parts[model.index]
+        }
+    }
 }

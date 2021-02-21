@@ -101,7 +101,7 @@ ApplicationWindow {
         Component {
             id: userManualUI
             UserManualUI {
-
+                controller: view3D.userManualScreenController
             }
         }
         //! [3.1]
