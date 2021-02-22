@@ -31,6 +31,7 @@
 
 #include "abstractscreencontroller.h"
 #include <QHash>
+#include <QPointer>
 
 class UserManualScreenController : public AbstractScreenController
 {
@@ -53,6 +54,7 @@ public:
     Q_ENUM(SelectablePart)
 
     explicit UserManualScreenController(QObject *parent = nullptr);
+    ~UserManualScreenController();
 
     void setSelectedPart(SelectablePart selectedPart);
     SelectablePart selectedPart() const;
@@ -74,16 +76,30 @@ signals:
 
 private:
     void updateSceneConfiguration();
+    void showDetailView(const QString &camera);
+    void hideDetailView();
 
     SelectablePart m_selectedPart = NoPartSelected;
     QHash<SelectablePart, KuesaUtils::SceneConfiguration *> m_sceneConfigurationsTable;
 
     // Trackers owned by the SceneConfiguration
-    Kuesa::TransformTracker *m_triggerTracker;
-    Kuesa::TransformTracker *m_clutchTracker;
-    Kuesa::TransformTracker *m_chuckTracker;
-    Kuesa::TransformTracker *m_directionSwitchTracker;
-    Kuesa::TransformTracker *m_batteryPackTracker;
+    Kuesa::TransformTracker *m_triggerTracker = nullptr;
+    Kuesa::TransformTracker *m_clutchTracker = nullptr;
+    Kuesa::TransformTracker *m_chuckTracker = nullptr;
+    Kuesa::TransformTracker *m_directionSwitchTracker = nullptr;
+    Kuesa::TransformTracker *m_batteryPackTracker = nullptr;
+
+    // Animations owned by the SceneConfiguration
+    Kuesa::AnimationPlayer *m_cameraAnimationPlayer = nullptr;
+    Kuesa::AnimationPlayer *m_batteryInOutAnimationPlayer = nullptr;
+    Kuesa::AnimationPlayer *m_directionSwitchAnimationPlayer = nullptr;
+    Kuesa::AnimationPlayer *m_triggerAnimationPlayer = nullptr;
+    Kuesa::AnimationPlayer *m_drillAnimationPlayer = nullptr;
+    Kuesa::AnimationPlayer *m_toolInOutAnimationPlayer = nullptr;
+
+    // Views owned by the FrameGraph if parented, by us otherwise
+    QPointer<Kuesa::View> m_mainView;
+    QPointer<Kuesa::View> m_detailView;
 };
 
 #endif // USERMANUALSCREENCONTROLLER_H
