@@ -254,10 +254,6 @@ void GuidedDrillingScreenController::loadDrillBit()
         // Retrieve Drill given its name and parent it
         Qt3DCore::QEntity *drillBit = sceneEntity->entity(gltfBitName(m_bit));
         if (drillBit) {
-            // Record Drill Bits original parent to restore parenting
-            // when switching between bits
-            if (!m_originalDrillBitParent)
-                m_originalDrillBitParent = drillBit->parentEntity();
             drillBit->setParent(drillBitHolder);
         }
     }
@@ -307,6 +303,11 @@ void GuidedDrillingScreenController::addObjectPickersOnBit()
 
     for (const auto bit : bits) {
         Qt3DCore::QEntity *drillBit = sceneEntity->entity(gltfBitName(bit));
+
+        // Record Drill Bits original parent to restore parenting
+        // when switching between bits
+        if (!m_originalDrillBitParent)
+            m_originalDrillBitParent = drillBit->parentEntity();
 
         if (drillBit->componentsOfType<Qt3DRender::QObjectPicker>().empty()) {
             Qt3DRender::QObjectPicker *picker = new Qt3DRender::QObjectPicker();
