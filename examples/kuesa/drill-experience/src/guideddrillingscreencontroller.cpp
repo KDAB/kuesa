@@ -61,6 +61,45 @@ constexpr std::array<Bit, 20> bits = {
     Bit::ScrewFlatMedium,
     Bit::ScrewFlatSmall,
 };
+constexpr std::array<Bit, 14> screwDriverBits = {
+    Bit::ScrewHex,
+    Bit::ScrewHexMedium,
+    Bit::ScrewHexSmall,
+    Bit::ScrewHexTiny,
+
+    Bit::ScrewTorx,
+    Bit::ScrewTorxMedium,
+    Bit::ScrewTorxSmall,
+    Bit::ScrewTorxTiny,
+
+    Bit::ScrewPhilips,
+    Bit::ScrewPhilipsMedium,
+    Bit::ScrewPhilipsSmall,
+
+    Bit::ScrewFlat,
+    Bit::ScrewFlatMedium,
+    Bit::ScrewFlatSmall,
+};
+constexpr std::array<Bit, 6> drillingBits = {
+    Bit::Drill1,
+    Bit::Drill2,
+    Bit::Drill3,
+    Bit::Drill4,
+    Bit::Drill5,
+    Bit::Drill6,
+};
+constexpr std::array<Bit, 2> metalDrillingBits = {
+    Bit::Drill1,
+    Bit::Drill2,
+};
+constexpr std::array<Bit, 2> concreteDrillingBits = {
+    Bit::Drill5,
+    Bit::Drill6,
+};
+constexpr std::array<Bit, 2> woodDrillingBits = {
+    Bit::Drill3,
+    Bit::Drill4,
+};
 
 // Must be kept in sync between the gltf file and the Bit enum
 QString gltfBitName(Bit bit)
@@ -155,6 +194,10 @@ GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
                      this, &GuidedDrillingScreenController::addObjectPickersOnBit);
     QObject::connect(this, &GuidedDrillingScreenController::bitChanged,
                      this, &GuidedDrillingScreenController::loadDrillBit);
+    QObject::connect(this, &GuidedDrillingScreenController::modeChanged,
+                     this, &GuidedDrillingScreenController::filterBits);
+    QObject::connect(this, &GuidedDrillingScreenController::materialChanged,
+                     this, &GuidedDrillingScreenController::filterBits);
 }
 
 GuidedDrillingScreenController::Step GuidedDrillingScreenController::currentStep() const
@@ -183,6 +226,8 @@ void GuidedDrillingScreenController::setMode(GuidedDrillingScreenController::Mod
         return;
     m_mode = mode;
     emit modeChanged();
+    setMaterial(MaterialType::None);
+    setBit(Bit::None);
 }
 
 void GuidedDrillingScreenController::setMaterial(MaterialType material)
@@ -191,6 +236,7 @@ void GuidedDrillingScreenController::setMaterial(MaterialType material)
         return;
     m_material = material;
     emit materialChanged();
+    setBit(Bit::None);
 }
 
 void GuidedDrillingScreenController::setBit(Bit bit)
@@ -317,5 +363,47 @@ void GuidedDrillingScreenController::addObjectPickersOnBit()
             });
             drillBit->addComponent(picker);
         }
+    }
+}
+
+void GuidedDrillingScreenController::filterBits()
+{
+    // C++20: std::span
+    const auto filteredBits = [&]() -> std::vector<Bit> {
+        switch (m_mode) {
+        case Mode::None:
+            return {bits.cbegin(), bits.cend()};
+        case Mode::Screw:
+            return {screwDriverBits.cbegin(), screwDriverBits.cend()};
+        case Mode::Drill:
+            switch (m_material) {
+            case MaterialType::None:
+                return {drillingBits.cbegin(), drillingBits.cend()};
+            case MaterialType::Wood:
+                return {woodDrillingBits.cbegin(), woodDrillingBits.cend()};
+            case MaterialType::Concrete:
+                return {concreteDrillingBits.cbegin(), concreteDrillingBits.cend()};
+            case MaterialType::Metal:
+                return {metalDrillingBits.cbegin(), metalDrillingBits.cend()};
+            }
+
+            Q_UNREACHABLE();
+        }
+
+        Q_UNREACHABLE();
+    }();
+
+    Kuesa::SceneEntity *sceneEntity = sceneConfiguration()->sceneEntity();
+    if (!sceneEntity)
+        return;
+
+    for (const auto bit : bits) {
+        Qt3DCore::QEntity *drillBit = sceneEntity->entity(gltfBitName(bit));
+        drillBit->setEnabled(false);
+    }
+
+    for (const auto bit : filteredBits) {
+        Qt3DCore::QEntity *drillBit = sceneEntity->entity(gltfBitName(bit));
+        drillBit->setEnabled(true);
     }
 }

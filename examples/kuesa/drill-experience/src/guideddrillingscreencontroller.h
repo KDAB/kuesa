@@ -139,6 +139,7 @@ private:
     void loadDrillBit();
     void addObjectPickersOnBit();
     void syncViewToStep();
+    void filterBits();
 };
 
 #endif // GUIDEDDRILLINGSCREENCONTROLLER_H
