@@ -127,6 +127,9 @@ private:
 
     std::vector<Step> m_history;
 
+    // Owned by the sceneEntity
+    Qt3DCore::QTransform *m_insertedDrillBitTranform;
+
     // Owned by the sceneConfiguration
     Kuesa::AnimationPlayer *m_drillAnimation = nullptr;
     Kuesa::AnimationPlayer *m_triggerPressAnimation = nullptr;
@@ -134,7 +137,10 @@ private:
     Kuesa::AnimationPlayer *m_drillInsertAnimation = nullptr;
     Kuesa::AnimationPlayer *m_drillRemoveAnimation = nullptr;
 
+    // Weak pointers
+    Qt3DCore::QEntity *m_insertedDrillBit = nullptr;
     Qt3DCore::QEntity *m_originalDrillBitParent = nullptr;
+    Qt3DCore::QTransform *m_originalDrillBitTransform = nullptr;
 
     void loadDrillBit();
     void addObjectPickersOnBit();

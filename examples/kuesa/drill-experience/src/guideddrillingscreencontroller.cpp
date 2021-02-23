@@ -188,6 +188,10 @@ GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
 
     setSceneConfiguration(configuration);
 
+    m_insertedDrillBitTranform = new Qt3DCore::QTransform();
+    m_insertedDrillBitTranform->setParent(sceneConfiguration()->sceneEntity());
+    m_insertedDrillBitTranform->setRotationX(90);
+
     QObject::connect(this, &GuidedDrillingScreenController::currentStepChanged,
                      this, &GuidedDrillingScreenController::syncViewToStep);
     QObject::connect(configuration, &KuesaUtils::SceneConfiguration::loadingDone,
@@ -290,18 +294,23 @@ void GuidedDrillingScreenController::loadDrillBit()
         return;
     Qt3DCore::QEntity *drillBitHolder = sceneEntity->entity(QStringLiteral("Drill.DrillAxis.DrillHelper.ToolHelper"));
     if (drillBitHolder) {
-        const auto childNodes = drillBitHolder->childNodes();
-        for (Qt3DCore::QNode *c : childNodes)
-            c->setParent(m_originalDrillBitParent);
+        if (m_insertedDrillBit) {
+            m_insertedDrillBit->setParent(m_originalDrillBitParent);
+            m_insertedDrillBit->removeComponent(m_insertedDrillBitTranform);
+            m_insertedDrillBit->addComponent(m_originalDrillBitTransform);
+
+            m_insertedDrillBit = nullptr;
+        }
 
         if (m_bit == Bit::None)
             return;
 
         // Retrieve Drill given its name and parent it
-        Qt3DCore::QEntity *drillBit = sceneEntity->entity(gltfBitName(m_bit));
-        if (drillBit) {
-            drillBit->setParent(drillBitHolder);
-        }
+        m_insertedDrillBit = sceneEntity->entity(gltfBitName(m_bit));
+        m_insertedDrillBit->setParent(drillBitHolder);
+        m_originalDrillBitTransform = m_insertedDrillBit->componentsOfType<Qt3DCore::QTransform>().at(0);
+        m_insertedDrillBit->removeComponent(m_originalDrillBitTransform);
+        m_insertedDrillBit->addComponent(m_insertedDrillBitTranform);
     }
 
 }
