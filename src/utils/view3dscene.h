@@ -143,7 +143,6 @@ private:
     std::vector<Kuesa::AnimationPlayer *> m_animations;
     std::vector<Kuesa::TransformTracker *> m_transformTrackers;
     std::vector<Kuesa::PlaceholderTracker *> m_placeholderTrackers;
-    Qt3DAnimation::QClock *m_clock;
     QSize m_screenSize;
     SceneConfiguration *m_activeScene;
     QPointer<QObject> m_activeSceneOwner;

@@ -312,7 +312,6 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     : Kuesa::SceneEntity(parent)
     , m_importer(new GLTF2Importer(this))
     , m_frameGraph(nullptr)
-    , m_clock(nullptr)
     , m_activeScene(nullptr)
     , m_ready(false)
     , m_frameCount(0)
@@ -680,8 +679,6 @@ const std::vector<PlaceholderTracker *> &View3DScene::placeholderTrackers() cons
  */
 void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
 {
-    if (m_clock == nullptr)
-        m_clock = new Qt3DAnimation::QClock(this);
     if (std::find(std::begin(m_animations), std::end(m_animations), animation) == std::end(m_animations)) {
         Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
         d->registerDestructionHelper(animation, &View3DScene::removeAnimationPlayer, m_animations);
@@ -692,10 +689,6 @@ void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
             animation->setSceneEntity(this);
 
         m_animations.push_back(animation);
-
-        //if Animation has no Clock, set one
-        if (animation->clock() == nullptr)
-            animation->setClock(m_clock);
     }
 }
 
@@ -708,15 +701,8 @@ void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
 {
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
     d->unregisterDestructionHelper(animation);
-    auto it = std::remove_if(std::begin(m_animations), std::end(m_animations), [animation](AnimationPlayer *a) {
-            return a == animation;
-    });
-    if (it != m_animations.end()) {
-        if (animation->clock() == m_clock)
-            animation->setClock(nullptr);
-
-        m_animations.erase(it, std::end(m_animations));
-    }
+    m_animations.erase(std::remove(std::begin(m_animations), std::end(m_animations), animation),
+                       std::end(m_animations));
 }
 
 
