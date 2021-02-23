@@ -99,11 +99,6 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
         m_cameraAnimationPlayer->setClip(QStringLiteral("AnimCamOrbit"));
         m_cameraAnimationPlayer->setLoopCount(Kuesa::AnimationPlayer::Infinite);
         m_cameraAnimationPlayer->setRunning(true);
-        {
-            Qt3DAnimation::QClock *cameraAnimClock = new Qt3DAnimation::QClock;
-            cameraAnimClock->setPlaybackRate(0.1f);
-            m_cameraAnimationPlayer->setClock(cameraAnimClock);
-        }
 
         configuration->addAnimationPlayer(m_cameraAnimationPlayer);
 

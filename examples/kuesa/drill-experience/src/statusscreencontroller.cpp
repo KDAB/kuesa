@@ -243,11 +243,6 @@ StatusScreenController::StatusScreenController(QObject *parent)
     m_cameraAnimationPlayer->setLoopCount(Kuesa::AnimationPlayer::Infinite);
     m_cameraAnimationPlayer->setRunning(true);
 
-    // Use a custom clock to reduce animation playback speed
-    QClock *cameraAnimationClock = new QClock;
-    cameraAnimationClock->setPlaybackRate(0.1);
-    m_cameraAnimationPlayer->setClock(cameraAnimationClock);
-
     m_runningDrillPlayer = new Kuesa::AnimationPlayer;
     m_runningDrillPlayer->setClip(QStringLiteral("AnimDrillCW"));
     m_runningDrillPlayer->setLoopCount(Kuesa::AnimationPlayer::Infinite);
