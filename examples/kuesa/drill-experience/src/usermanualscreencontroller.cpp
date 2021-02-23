@@ -164,23 +164,37 @@ namespace {
 void playAnimationBackAndForth(Kuesa::AnimationPlayer *player, int delay = 0)
 {
     Qt3DAnimation::QClock *c = player->clock();
+
+    // Make sure player has a clock
     const bool hasClock = c != nullptr;
     if (!hasClock) {
         c = new Qt3DAnimation::QClock;
         player->setClock(c);
-
-        QObject::connect(player, &Kuesa::AnimationPlayer::runningChanged, player, [player] {
-            qDebug() << Q_FUNC_INFO;
-            if (player->isRunning())
-                return;
-            Qt3DAnimation::QClock *c = player->clock();
-            // Player animation backward once completed
-            c->setPlaybackRate(c->playbackRate() * -1.0f);
-            if (c->playbackRate() < 0.0f)
-                player->setNormalizedTime(1.0f);
-            player->start();
-        });
     }
+
+    // Connect to running changed
+    auto connection = std::make_shared<QMetaObject::Connection>();
+    *connection = QObject::connect(player, &Kuesa::AnimationPlayer::runningChanged, player, [player, connection] {
+        // We only want to do something if we are not running (meaning we were done playing)
+        if (player->isRunning())
+            return;
+
+        Qt3DAnimation::QClock *c = player->clock();
+        const bool wasReversed = c->playbackRate() < 0.0;
+
+        // Reverse playback speed and set normalized time based on playback direction
+        c->setPlaybackRate(c->playbackRate() * -1.0f);
+        player->setNormalizedTime(c->playbackRate() > 0.0f ? 0.0f : 1.0f);
+
+        // If we were done playing in reverse, then return early
+        if (wasReversed) {
+            QObject::disconnect(*connection);
+            return;
+        }
+
+        // Otherwise, play animation backward
+        player->start();
+    });
 
     QTimer::singleShot(delay, player, &Kuesa::AnimationPlayer::restart);
 }

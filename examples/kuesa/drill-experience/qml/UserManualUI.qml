@@ -72,6 +72,8 @@ Item {
             x: labelsRepeater.positions[model.index].x
             y: labelsRepeater.positions[model.index].y
             onClicked: controller.selectedPart = labelsRepeater.parts[model.index]
+            enabled: controller.selectedPart !== labelsRepeater.parts[model.index]
+
         }
     }
 }
