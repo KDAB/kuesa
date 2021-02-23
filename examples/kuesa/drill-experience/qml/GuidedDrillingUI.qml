@@ -96,6 +96,14 @@ Item {
         Component {
             id: modeSelector
             Frame {
+                ButtonGroup {
+                    id: modeSelectorButtons
+
+                    onClicked: (button) => {
+                                   controller.mode = button.value
+                               }
+                }
+
                 ColumnLayout {
                     anchors.fill: parent
                     Label {
@@ -105,25 +113,29 @@ Item {
                     }
 
                     Button {
-                        id: drillingModeButton
+                        ButtonGroup.group: modeSelectorButtons
                         Layout.alignment: Qt.AlignHCenter
                         text: "Drilling"
                         checkable: true
-                        autoExclusive: true
+
+                        readonly property int value: GuidedDrillingScreenController.Mode.Drill
+                        checked: controller.mode === value
                     }
                     Button {
-                        id: screwDrivingModeButton
+                        ButtonGroup.group: modeSelectorButtons
                         Layout.alignment: Qt.AlignHCenter
                         text: "Screw Driving"
                         checkable: true
-                        autoExclusive: true
+
+                        readonly property int value: GuidedDrillingScreenController.Mode.Screw
+                        checked: controller.mode === value
                     }
 
                     RowLayout {
                         Layout.alignment: Qt.AlignRight|Qt.AlignBottom
                         Button {
                             text: "Next"
-                            enabled: screwDrivingModeButton.checked || drillingModeButton.checked
+                            enabled: controller.mode !== GuidedDrillingScreenController.Mode.None
                             onClicked: {
                                 next()
                             }
@@ -135,7 +147,16 @@ Item {
 
         Component {
             id: materialSelector
+
             Frame {
+                ButtonGroup {
+                    id: materialSelectorButtons
+
+                    onClicked: (button) => {
+                                   controller.material = button.value
+                               }
+                }
+
                 ColumnLayout {
                     anchors.fill: parent
                     Label {
@@ -145,25 +166,31 @@ Item {
                     }
 
                     Button {
-                        id: woodMaterialButton
+                        ButtonGroup.group: materialSelectorButtons
                         Layout.alignment: Qt.AlignHCenter
                         text: "Wood"
                         checkable: true
-                        autoExclusive: true
+
+                        readonly property int value: GuidedDrillingScreenController.MaterialType.Wood
+                        checked: controller.material === value
                     }
                     Button {
-                        id: concreteMaterialButton
+                        ButtonGroup.group: materialSelectorButtons
                         Layout.alignment: Qt.AlignHCenter
                         text: "Concrete"
                         checkable: true
-                        autoExclusive: true
+
+                        readonly property int value: GuidedDrillingScreenController.MaterialType.Concrete
+                        checked: controller.material === value
                     }
                     Button {
-                        id: metalMaterialButton
+                        ButtonGroup.group: materialSelectorButtons
                         Layout.alignment: Qt.AlignHCenter
                         text: "Metal"
                         checkable: true
-                        autoExclusive: true
+
+                        readonly property int value: GuidedDrillingScreenController.MaterialType.Metal
+                        checked: controller.material === value
                     }
 
 
@@ -178,7 +205,7 @@ Item {
                             Layout.fillWidth: true
                         }
                         Button {
-                            enabled: woodMaterialButton.checked || concreteMaterialButton.checked || metalMaterialButton.checked
+                            enabled: controller.material !== GuidedDrillingScreenController.MaterialType.None
                             Layout.alignment: Qt.AlignRight
                             text: "Next"
                             onClicked: next()

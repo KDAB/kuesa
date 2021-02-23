@@ -26,10 +26,98 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <array>
+
 #include "guideddrillingscreencontroller.h"
 #include <Kuesa/View>
 #include <Qt3DRender/QObjectPicker>
 #include <Qt3DRender/QPickEvent>
+
+namespace {
+using Bit = GuidedDrillingScreenController::Bit;
+constexpr std::array<Bit, 20> bits = {
+    Bit::Drill1,
+    Bit::Drill2,
+    Bit::Drill3,
+    Bit::Drill4,
+    Bit::Drill5,
+    Bit::Drill6,
+
+    Bit::ScrewHex,
+    Bit::ScrewHexMedium,
+    Bit::ScrewHexSmall,
+    Bit::ScrewHexTiny,
+
+    Bit::ScrewTorx,
+    Bit::ScrewTorxMedium,
+    Bit::ScrewTorxSmall,
+    Bit::ScrewTorxTiny,
+
+    Bit::ScrewPhilips,
+    Bit::ScrewPhilipsMedium,
+    Bit::ScrewPhilipsSmall,
+
+    Bit::ScrewFlat,
+    Bit::ScrewFlatMedium,
+    Bit::ScrewFlatSmall,
+};
+
+// Must be kept in sync between the gltf file and the Bit enum
+QString gltfBitName(Bit bit)
+{
+    switch (bit) {
+    case Bit::None:
+        Q_UNREACHABLE();
+
+    case Bit::Drill1:
+        return QStringLiteral("Tool_Drill1");
+    case Bit::Drill2:
+        return QStringLiteral("Tool_Drill2");
+    case Bit::Drill3:
+        return QStringLiteral("Tool_Drill3");
+    case Bit::Drill4:
+        return QStringLiteral("Tool_Drill4");
+    case Bit::Drill5:
+        return QStringLiteral("Tool_Drill5");
+    case Bit::Drill6:
+        return QStringLiteral("Tool_Drill6");
+
+    case Bit::ScrewHex:
+        return QStringLiteral("Tool_Hex");
+    case Bit::ScrewHexMedium:
+        return QStringLiteral("Tool_HexMed");
+    case Bit::ScrewHexSmall:
+        return QStringLiteral("Tool_HexSmall");
+    case Bit::ScrewHexTiny:
+        return QStringLiteral("Tool_HexTiny");
+
+    case Bit::ScrewTorx:
+        return QStringLiteral("Tool_Torx");
+    case Bit::ScrewTorxMedium:
+        return QStringLiteral("Tool_TorxMed");
+    case Bit::ScrewTorxSmall:
+        return QStringLiteral("Tool_TorxSmall");
+    case Bit::ScrewTorxTiny:
+        return QStringLiteral("Tool_TorxTiny");
+
+    case Bit::ScrewPhilips:
+        return QStringLiteral("Tool_Philips");
+    case Bit::ScrewPhilipsMedium:
+        return QStringLiteral("Tool_PhilipsMed");
+    case Bit::ScrewPhilipsSmall:
+        return QStringLiteral("Tool_PhilipsSmall");
+
+    case Bit::ScrewFlat:
+        return QStringLiteral("Tool_Flat");
+    case Bit::ScrewFlatMedium:
+        return QStringLiteral("Tool_FlatMed");
+    case Bit::ScrewFlatSmall:
+        return QStringLiteral("Tool_FlatSmall");
+    }
+
+    Q_UNREACHABLE();
+}
+} // anonymous namespace
 
 GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
     : AbstractScreenController(parent)
@@ -64,12 +152,9 @@ GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
     QObject::connect(this, &GuidedDrillingScreenController::currentStepChanged,
                      this, &GuidedDrillingScreenController::syncViewToStep);
     QObject::connect(configuration, &KuesaUtils::SceneConfiguration::loadingDone,
-                     this, &GuidedDrillingScreenController::loadDrillBit);
-    QObject::connect(configuration, &KuesaUtils::SceneConfiguration::loadingDone,
                      this, &GuidedDrillingScreenController::addObjectPickersOnBit);
-    QObject::connect(this, &GuidedDrillingScreenController::bitNameChanged,
+    QObject::connect(this, &GuidedDrillingScreenController::bitChanged,
                      this, &GuidedDrillingScreenController::loadDrillBit);
-    setBitName(QStringLiteral("Tool_Hex"));
 }
 
 GuidedDrillingScreenController::Step GuidedDrillingScreenController::currentStep() const
@@ -87,9 +172,9 @@ GuidedDrillingScreenController::MaterialType GuidedDrillingScreenController::mat
     return m_material;
 }
 
-QString GuidedDrillingScreenController::bitName() const
+GuidedDrillingScreenController::Bit GuidedDrillingScreenController::bit() const
 {
-    return m_bitName;
+    return m_bit;
 }
 
 void GuidedDrillingScreenController::setMode(GuidedDrillingScreenController::Mode mode)
@@ -108,12 +193,12 @@ void GuidedDrillingScreenController::setMaterial(MaterialType material)
     emit materialChanged();
 }
 
-void GuidedDrillingScreenController::setBitName(const QString &bitName)
+void GuidedDrillingScreenController::setBit(Bit bit)
 {
-    if (bitName == m_bitName)
+    if (bit == m_bit)
         return;
-    m_bitName = bitName;
-    emit bitNameChanged();
+    m_bit = bit;
+    emit bitChanged();
 }
 
 GuidedDrillingScreenController::Step GuidedDrillingScreenController::nextStep()
@@ -163,8 +248,11 @@ void GuidedDrillingScreenController::loadDrillBit()
         for (Qt3DCore::QNode *c : childNodes)
             c->setParent(m_originalDrillBitParent);
 
+        if (m_bit == Bit::None)
+            return;
+
         // Retrieve Drill given its name and parent it
-        Qt3DCore::QEntity *drillBit = sceneEntity->entity(m_bitName);
+        Qt3DCore::QEntity *drillBit = sceneEntity->entity(gltfBitName(m_bit));
         if (drillBit) {
             // Record Drill Bits original parent to restore parenting
             // when switching between bits
@@ -217,34 +305,14 @@ void GuidedDrillingScreenController::addObjectPickersOnBit()
     if (!sceneEntity)
         return;
 
-    static const QString drillBitNames[] = {
-        QStringLiteral("Tool_Drill1"),
-        QStringLiteral("Tool_Drill2"),
-        QStringLiteral("Tool_Drill3"),
-        QStringLiteral("Tool_Drill4"),
-        QStringLiteral("Tool_Drill5"),
-        QStringLiteral("Tool_Drill6"),
-        QStringLiteral("Tool_Hex"),
-        QStringLiteral("Tool_HexMed"),
-        QStringLiteral("Tool_HexSmall"),
-        QStringLiteral("Tool_Torx"),
-        QStringLiteral("Tool_TorxMed"),
-        QStringLiteral("Tool_TorxSmall"),
-        QStringLiteral("Tool_TorxTiny"),
-        QStringLiteral("Tool_Philips"),
-        QStringLiteral("Tool_PhilipsMed"),
-        QStringLiteral("Tool_PhilipsSmall"),
-        QStringLiteral("Tool_Flat"),
-        QStringLiteral("Tool_FlatMed"),
-        QStringLiteral("Tool_FlatSmall"),
-    };
+    for (const auto bit : bits) {
+        Qt3DCore::QEntity *drillBit = sceneEntity->entity(gltfBitName(bit));
 
-    for (const QString &name : drillBitNames) {
-        Qt3DCore::QEntity *drillBit = sceneEntity->entity(name);
         if (drillBit->componentsOfType<Qt3DRender::QObjectPicker>().empty()) {
             Qt3DRender::QObjectPicker *picker = new Qt3DRender::QObjectPicker();
-            QObject::connect(picker, &Qt3DRender::QObjectPicker::clicked, this, [this, name] {
-                setBitName(name);
+            picker->setHoverEnabled(true);
+            QObject::connect(picker, &Qt3DRender::QObjectPicker::clicked, this, [this, bit] {
+                setBit(bit);
             });
             drillBit->addComponent(picker);
         }

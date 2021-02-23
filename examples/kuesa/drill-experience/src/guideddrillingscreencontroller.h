@@ -37,18 +37,19 @@ class GuidedDrillingScreenController : public AbstractScreenController
     Q_PROPERTY(Step currentStep READ currentStep NOTIFY currentStepChanged)
     Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
     Q_PROPERTY(MaterialType material READ material WRITE setMaterial NOTIFY materialChanged)
-    Q_PROPERTY(QString bitName READ bitName WRITE setBitName NOTIFY bitNameChanged)
+    Q_PROPERTY(Bit bit READ bit WRITE setBit NOTIFY bitChanged)
 
 public:
 
-    enum Mode {
+    enum class Mode {
+        None,
         Drill,
         Screw,
-        Unscrew
     };
     Q_ENUM(Mode)
 
-    enum MaterialType {
+    enum class MaterialType {
+        None,
         Wood,
         Concrete,
         Metal
@@ -67,16 +68,46 @@ public:
     };
     Q_ENUM(Step)
 
+    enum class Bit {
+        None,
+
+        Drill1,
+        Drill2,
+        Drill3,
+        Drill4,
+        Drill5,
+        Drill6,
+
+        ScrewHex,
+        ScrewHexMedium,
+        ScrewHexSmall,
+        ScrewHexTiny,
+
+        ScrewTorx,
+        ScrewTorxMedium,
+        ScrewTorxSmall,
+        ScrewTorxTiny,
+
+        ScrewPhilips,
+        ScrewPhilipsMedium,
+        ScrewPhilipsSmall,
+
+        ScrewFlat,
+        ScrewFlatMedium,
+        ScrewFlatSmall,
+    };
+    Q_ENUM(Bit)
+
     explicit GuidedDrillingScreenController(QObject *parent = nullptr);
 
     Step currentStep() const;
     Mode mode() const;
     MaterialType material() const;
-    QString bitName() const;
+    Bit bit() const;
 
     void setMode(Mode mode);
     void setMaterial(MaterialType material);
-    void setBitName(const QString &bitName);
+    void setBit(Bit bit);
 
     Q_INVOKABLE Step nextStep();
     Q_INVOKABLE Step previousStep();
@@ -86,13 +117,13 @@ signals:
     void currentStepChanged();
     void modeChanged();
     void materialChanged();
-    void bitNameChanged();
+    void bitChanged();
 
 private:
     Step m_currentStep = ModeSelection;
-    Mode m_mode = Drill;
-    MaterialType m_material = Wood;
-    QString m_bitName;
+    Mode m_mode = Mode::None;
+    MaterialType m_material = MaterialType::None;
+    Bit m_bit = Bit::None;
 
     std::vector<Step> m_history;
 
