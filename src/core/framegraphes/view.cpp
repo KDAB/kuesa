@@ -416,11 +416,11 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
 
     Kuesa::View *view1 = new Kuesa::View();
     view1->setCamera(sceneCamera1);
-    view1->setViewport(QRectF(0, 0, 0.5, 1);
+    view1->setViewportRect(QRectF(0, 0, 0.5, 1);
 
     Kuesa::View *view2 = new Kuesa::View();
     view2->setCamera(sceneCamera2);
-    view2->setViewport(QRectF(0.5, 0, 0.5, 1);
+    view2->setViewportRect(QRectF(0.5, 0, 0.5, 1);
     view2->addLayer(groundLayer);
 
     frameGraph->addView(view1);
@@ -451,11 +451,11 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
         views: [
             View {
                 camera: sceneCamera1
-                viewport: Qt.rectf(0, 0, 0.5, 1)
+                viewportRect: Qt.rect(0, 0, 0.5, 1)
             },
             View {
                 camera: sceneCamera2
-                viewport: Qt.rectf(0.5, 0, 0.5, 1)
+                viewportRect: Qt.rect(0.5, 0, 0.5, 1)
                 layers: [ groundLayer ]
             }
         ]
