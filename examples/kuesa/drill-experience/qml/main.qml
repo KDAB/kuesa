@@ -70,18 +70,20 @@ ApplicationWindow {
             onClicked: view3D.forceActiveFocus();
         }
 
+        readonly property int headerIndex: header.currentIndex
+        onHeaderIndexChanged: screenSwitchAnimation.restart()
+
+        SequentialAnimation {
+            id: screenSwitchAnimation
+            running: false
+            OpacityAnimator { target: contentItem; from: 1; to: 0; duration: 450; easing.type: Easing.OutQuad }
+            ScriptAction { script: view3D.screen = contentItem.headerIndex }
+            OpacityAnimator { target: contentItem; from: 0; to: 1; duration: 850; easing.type: Easing.InQuad }
+        }
+
         //! [2]
         DrillScene {
             id: view3D
-            screen: header.currentIndex
-            onScreenChanged: opacityAnimation.restart()
-
-            SequentialAnimation on opacity {
-                id: opacityAnimation
-                running: false
-                OpacityAnimator { from: 1; to: 0; duration: 450; easing.type: Easing.OutQuad }
-                OpacityAnimator { from: 0; to: 1; duration: 450; easing.type: Easing.InQuad }
-            }
         }
         //! [2]
 
@@ -122,7 +124,7 @@ ApplicationWindow {
         //! [3.3]
         states: [
             State {
-                when: header.currentIndex === _DRILL_STATUS_SCREEN
+                when: view3D.screen === _DRILL_STATUS_SCREEN
                 AnchorChanges {
                     target: view3D
                     anchors {
@@ -132,7 +134,7 @@ ApplicationWindow {
                 }
             },
             State {
-                when: header.currentIndex === _GUIDED_DRILLING_SCREEN
+                when: view3D.screen === _GUIDED_DRILLING_SCREEN
                 AnchorChanges {
                     target: view3D
                     anchors {
@@ -142,7 +144,7 @@ ApplicationWindow {
                 }
             },
             State {
-                when: header.currentIndex === _USER_MANUAL_SCREEN
+                when: view3D.screen === _USER_MANUAL_SCREEN
                 AnchorChanges {
                     target: view3D
                     anchors {
