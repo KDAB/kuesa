@@ -76,6 +76,9 @@ Item {
         controller.previousStep()
     }
 
+    // Always start in a correct state
+    Component.onCompleted: restart()
+
     function restart() {
         guidedDrillingWizardStackView.clear()
         controller.reset();
@@ -237,6 +240,7 @@ Item {
                             Layout.fillWidth: true
                         }
                         Button {
+                            enabled: controller.bit !== GuidedDrillingScreenController.Bit.None
                             Layout.alignment: Qt.AlignRight
                             text: "Next"
                             onClicked: next()

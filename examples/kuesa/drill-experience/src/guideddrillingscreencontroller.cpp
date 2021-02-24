@@ -283,6 +283,11 @@ GuidedDrillingScreenController::Step GuidedDrillingScreenController::previousSte
 GuidedDrillingScreenController::Step GuidedDrillingScreenController::reset()
 {
     m_history.clear();
+
+    setBit(Bit::None);
+    setMode(Mode::None);
+    setMaterial(MaterialType::None);
+
     m_currentStep = ModeSelection;
     emit currentStepChanged();
     return m_currentStep;
