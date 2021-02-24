@@ -26,9 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <array>
-
 #include "guideddrillingscreencontroller.h"
+#include <array>
 #include <Kuesa/View>
 #include <Qt3DRender/QObjectPicker>
 #include <Qt3DRender/QPickEvent>
