@@ -50,7 +50,7 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
 
     KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
     configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
-    configuration->setCameraName(QStringLiteral("CamOrbiteCenter.CamOrbit"));
+    configuration->setCameraName(QStringLiteral("CamOrbitCenter.CamOrbit"));
     setSceneConfiguration(configuration);
 
     {
@@ -135,16 +135,25 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
     }
 
     // Scene Set up once SceneEnity is available for collection lookups
+    // TO DO: Cleans this up with improved SceneConfiguration API KUE-1148
     QObject::connect(configuration, &KuesaUtils::SceneConfiguration::loadingDone, this, [this] {
         KuesaUtils::SceneConfiguration *configuration = sceneConfiguration();
         Kuesa::SceneEntity *sceneEntity = configuration->sceneEntity();
-        if (sceneEntity && m_mainView->layers().empty()) {
-            Qt3DRender::QLayer *drillLayer = sceneEntity->layer(QStringLiteral("LayerDevice"));
-            m_mainView->addLayer(drillLayer);
-            m_detailView->addLayer(drillLayer);
+        if (sceneEntity) {
+            if (m_mainView->layers().empty()) {
+                Qt3DRender::QLayer *drillLayer = sceneEntity->layer(QStringLiteral("LayerDevice"));
+                m_mainView->addLayer(drillLayer);
+                m_detailView->addLayer(drillLayer);
+            }
+            if (!m_mainView->camera()) {
+                m_mainView->setCamera(sceneEntity->camera(QStringLiteral("CamOrbitCenter.CamOrbit")));
+            }
         }
     });
 
+    QObject::connect(configuration, &KuesaUtils::SceneConfiguration::unloadingDone, this, [this] {
+        setSelectedPart(NoPartSelected);
+    });
 
     // Set default scene configuration
     updateSceneConfiguration();

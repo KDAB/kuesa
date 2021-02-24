@@ -195,6 +195,8 @@ GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
                      this, &GuidedDrillingScreenController::syncViewToStep);
     QObject::connect(configuration, &KuesaUtils::SceneConfiguration::loadingDone,
                      this, &GuidedDrillingScreenController::addObjectPickersOnBit);
+    QObject::connect(configuration, &KuesaUtils::SceneConfiguration::unloadingDone,
+                     this, [this] { m_originalDrillBitParent = nullptr; });
     QObject::connect(this, &GuidedDrillingScreenController::bitChanged,
                      this, &GuidedDrillingScreenController::loadDrillBit);
     QObject::connect(this, &GuidedDrillingScreenController::modeChanged,
