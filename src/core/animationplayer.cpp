@@ -35,6 +35,7 @@
 #include <Qt3DAnimation/QChannelMapping>
 #include <Qt3DAnimation/QAnimationClip>
 #include <Qt3DAnimation/QClock>
+#include <QTimer>
 
 QT_USE_NAMESPACE
 using namespace Kuesa;
@@ -412,14 +413,17 @@ void AnimationPlayer::setNormalizedTime(float timeFraction)
 }
 
 /*!
- * Starts the animation
+ * Starts the animation after \a delay in msec.
+ * \a delay defaults to 0.
  */
-void AnimationPlayer::start()
+void AnimationPlayer::start(int delay)
 {
-    m_runToTimeFraction = -1;
-    if (m_animator->clip())
-        m_animator->start();
-    m_running = true;
+    QTimer::singleShot(delay, this, [this] {
+        m_runToTimeFraction = -1;
+        if (m_animator->clip())
+            m_animator->start();
+        m_running = true;
+    });
 }
 
 /*!
@@ -448,15 +452,18 @@ void AnimationPlayer::reset()
 }
 
 /*!
- * Sets the normalised to 0 and runs the animation.
+ * Sets the normalised to 0 and runs the animation after \a delay in msec.
+ * \a delay defaults to 0.
  */
-void AnimationPlayer::restart()
+void AnimationPlayer::restart(int delay)
 {
-    m_runToTimeFraction = -1;
-    m_animator->setNormalizedTime(0.f);
-    if (m_animator->clip())
-        m_animator->start();
-    m_running = true;
+    QTimer::singleShot(delay, this, [this] {
+        m_runToTimeFraction = -1;
+        m_animator->setNormalizedTime(0.f);
+        if (m_animator->clip())
+            m_animator->start();
+        m_running = true;
+    });
 }
 
 /*!

@@ -204,7 +204,7 @@ void UserManualScreenController::playAnimationBackAndForth(Kuesa::AnimationPlaye
         player->start();
     });
 
-    QTimer::singleShot(delay, player, &Kuesa::AnimationPlayer::restart);
+    player->restart(delay);
 }
 
 void UserManualScreenController::setSelectedPart(UserManualScreenController::SelectablePart selectedPart)

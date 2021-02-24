@@ -88,10 +88,10 @@ public Q_SLOTS:
     void setClock(Qt3DAnimation::QClock *clock);
     void setNormalizedTime(float timeFraction);
 
-    void start();
+    void start(int delay = 0);
     void stop();
     void reset();
-    void restart();
+    void restart(int delay = 0);
     void run(float fromTimeFraction, float toTimeFraction);
 
 Q_SIGNALS:
