@@ -33,11 +33,14 @@ import Drill 1.0
 
 Item {
     id: root
-    property real batteryLife
-    property real rpm
-    property real torque
-    property int direction
-    property int mode
+
+    property StatusScreenController controller
+
+    readonly property real batteryLife: controller.drillStatus.batteryLife
+    readonly property real rpm: controller.drillStatus.rpm
+    readonly property real torque: controller.drillStatus.torque
+    readonly property int direction: controller.drillStatus.direction
+    readonly property int mode: controller.drillStatus.mode
 
     ToolBar {
         anchors {
