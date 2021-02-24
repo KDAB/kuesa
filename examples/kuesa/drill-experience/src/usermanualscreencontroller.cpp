@@ -55,7 +55,7 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
 
     {
         m_triggerTracker = new Kuesa::TransformTracker();
-        m_triggerTracker->setName(QStringLiteral("Drill.LocTrigger"));
+        m_triggerTracker->setName(QStringLiteral("Drill.LABEL_Trigger"));
         configuration->addTransformTracker(m_triggerTracker);
         QObject::connect(m_triggerTracker, &Kuesa::TransformTracker::screenPositionChanged,
                          this, &UserManualScreenController::triggerPositionChanged);
@@ -63,7 +63,7 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
 
     {
         m_clutchTracker = new Kuesa::TransformTracker();
-        m_clutchTracker->setName(QStringLiteral("Drill.Ring1"));
+        m_clutchTracker->setName(QStringLiteral("Drill.LABEL_Clutch"));
         configuration->addTransformTracker(m_clutchTracker);
         QObject::connect(m_clutchTracker, &Kuesa::TransformTracker::screenPositionChanged,
                          this, &UserManualScreenController::clutchPositionChanged);
@@ -79,7 +79,7 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
 
     {
         m_directionSwitchTracker = new Kuesa::TransformTracker();
-        m_directionSwitchTracker->setName(QStringLiteral("Drill.LocDirectionKnobs"));
+        m_directionSwitchTracker->setName(QStringLiteral("Drill.LABEL_DirSwitch"));
         configuration->addTransformTracker(m_directionSwitchTracker);
         QObject::connect(m_directionSwitchTracker, &Kuesa::TransformTracker::screenPositionChanged,
                          this, &UserManualScreenController::directionSwitchPositionChanged);
