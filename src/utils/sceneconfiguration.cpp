@@ -60,6 +60,10 @@ using namespace KuesaUtils;
     {KuesaUtils::SceneConfiguration} instances. Internally, when the active
     scene is changed, the new glTF2 file will be loaded and assets needed
     created while previous glTF2 file and assets unloaded.
+
+    The signals \l {KuesaUtils::SceneConfiguration::loadingDone} and \l
+    {KuesaUtils::SceneConfiguration::unloadingDone} can be used to watch which
+    state the SceneConfiguration is in and react accordingly.
 */
 
 /*!
@@ -103,6 +107,10 @@ using namespace KuesaUtils;
     different \l [QML] {KuesaUtils::SceneConfiguration} instances. Internally,
     when the active scene is changed, the new glTF2 file will be loaded and
     assets needed created while previous glTF2 file and assets unloaded.
+
+    The signals \l {KuesaUtils::SceneConfiguration::loadingDone} and \l
+    {KuesaUtils::SceneConfiguration::unloadingDone} can be used to watch which
+    state the SceneConfiguration is in and react accordingly.
 */
 
 /*!

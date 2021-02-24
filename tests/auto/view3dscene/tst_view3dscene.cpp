@@ -561,6 +561,71 @@ private Q_SLOTS:
         QCOMPARE(view.cameraName(), QString());
     }
 
+    void checkClearAndUnloadOnSceneConfigurationChange()
+    {
+        // GIVEN
+        KuesaUtils::View3DScene view;
+
+        {
+            // WHEN
+            KuesaUtils::SceneConfiguration c1;
+            KuesaUtils::SceneConfiguration c2;
+
+            c1.setCameraName(QStringLiteral("Camera_Orientation"));
+            c1.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+
+            c2.setCameraName(QStringLiteral("Camera_Orientation"));
+            c2.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+
+            QSignalSpy c1LoadingDoneSpy(&c1, &KuesaUtils::SceneConfiguration::loadingDone);
+            QSignalSpy c1UnloadingDoneSpy(&c1, &KuesaUtils::SceneConfiguration::unloadingDone);
+
+            QSignalSpy c2LoadingDoneSpy(&c2, &KuesaUtils::SceneConfiguration::loadingDone);
+            QSignalSpy c2UnloadingDoneSpy(&c2, &KuesaUtils::SceneConfiguration::unloadingDone);
+
+            // THEN
+            QVERIFY(c1LoadingDoneSpy.isValid());
+            QVERIFY(c1UnloadingDoneSpy.isValid());
+
+            QVERIFY(c2LoadingDoneSpy.isValid());
+            QVERIFY(c2UnloadingDoneSpy.isValid());
+
+            // WHEN
+            view.setActiveScene(&c1);
+            c1LoadingDoneSpy.wait();
+
+            // THEN
+            QCOMPARE(c1LoadingDoneSpy.count(), 1);
+            QCOMPARE(c1UnloadingDoneSpy.count(), 0);
+            QCOMPARE(c2LoadingDoneSpy.count(), 0);
+            QCOMPARE(c2UnloadingDoneSpy.count(), 0);
+            Qt3DRender::QGeometryRenderer *mesh0C1 = view.mesh(QStringLiteral("Mesh_0"));
+            QVERIFY(mesh0C1);
+
+            // WHEN
+            view.setActiveScene(&c2);
+            c2LoadingDoneSpy.wait();
+
+            // THEN
+            QCOMPARE(c1LoadingDoneSpy.count(), 1);
+            QCOMPARE(c1UnloadingDoneSpy.count(), 1);
+            QCOMPARE(c2LoadingDoneSpy.count(), 1);
+            QCOMPARE(c2UnloadingDoneSpy.count(), 0);
+            Qt3DRender::QGeometryRenderer *mesh0C2 = view.mesh(QStringLiteral("Mesh_0"));
+            QVERIFY(mesh0C1);
+
+            // Different pointers because collection was cleared and reloaded
+            QVERIFY(mesh0C1 != mesh0C2);
+        }
+
+        // THEN
+        QVERIFY(view.activeScene() == nullptr);
+        QCOMPARE(view.animationPlayers().size(), 0UL);
+        QCOMPARE(view.transformTrackers().size(), 0UL);
+        QCOMPARE(view.source(), QUrl());
+        QCOMPARE(view.cameraName(), QString());
+    }
+
     void checkSceneConfigurationParenting()
     {
         // GIVEN

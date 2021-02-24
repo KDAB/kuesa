@@ -739,6 +739,10 @@ SceneConfiguration *View3DScene::activeScene() const
     and \l {Kuesa::TransformTracker} instances will be automatically set based on
     the values provided by the SceneConfiguration. If null, all of these will
     be cleared.
+
+    When switching between two \l {KuesaUtils::SceneConfiguration} instances,
+    the collections, assets and gltf files are clear prior to being reloaded,
+    even if both instances reference the same source file.
  */
 void View3DScene::setActiveScene(SceneConfiguration *scene)
 {
@@ -770,11 +774,17 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
                 m_activeScene->setParent(Q_NODE_NULLPTR);
                 static_cast<QObject *>(m_activeScene)->setParent(m_activeSceneOwner.data());
             }
+
+            emit m_activeScene->unloadingDone();
         }
 
         m_activeScene = scene;
         m_activeSceneOwner.clear();
         emit activeSceneChanged(m_activeScene);
+
+        // Set empty sources / camera to force a scene reset
+        setSource(QUrl());
+        setCameraName(QString());
 
         if (m_activeScene) {
             // Ensure we parent the scene to a valid QNode so that resources
@@ -803,10 +813,6 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
             // Once the scene will have been loaded
             // Otherwise we could end up having an AnimationPlayer that references a yet to be loaded
             // AnimationClip, which Qt3D might complain about
-        } else {
-            // Set empty sources / camera
-            setSource(QUrl());
-            setCameraName(QString());
         }
     }
 }

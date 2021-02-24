@@ -87,6 +87,7 @@ Q_SIGNALS:
     void placeholderTrackerRemoved(Kuesa::PlaceholderTracker *placeholder);
 
     void loadingDone();
+    void unloadingDone();
 
 private:
     QUrl m_source;
