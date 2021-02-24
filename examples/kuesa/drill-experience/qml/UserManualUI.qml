@@ -73,7 +73,7 @@ Item {
             y: labelsRepeater.positions[model.index].y
             onClicked: controller.selectedPart = labelsRepeater.parts[model.index]
             enabled: controller.selectedPart !== labelsRepeater.parts[model.index]
-
+            visible: controller.selectedPart === UserManualScreenController.NoPartSelected
         }
     }
 }

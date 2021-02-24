@@ -168,9 +168,7 @@ UserManualScreenController::~UserManualScreenController()
         delete m_detailView.data();
 }
 
-namespace {
-
-void playAnimationBackAndForth(Kuesa::AnimationPlayer *player, int delay = 0)
+void UserManualScreenController::playAnimationBackAndForth(Kuesa::AnimationPlayer *player, int delay)
 {
     Qt3DAnimation::QClock *c = player->clock();
 
@@ -183,7 +181,7 @@ void playAnimationBackAndForth(Kuesa::AnimationPlayer *player, int delay = 0)
 
     // Connect to running changed
     auto connection = std::make_shared<QMetaObject::Connection>();
-    *connection = QObject::connect(player, &Kuesa::AnimationPlayer::runningChanged, player, [player, connection] {
+    *connection = QObject::connect(player, &Kuesa::AnimationPlayer::runningChanged, player, [this, player, connection] {
         // We only want to do something if we are not running (meaning we were done playing)
         if (player->isRunning())
             return;
@@ -198,6 +196,7 @@ void playAnimationBackAndForth(Kuesa::AnimationPlayer *player, int delay = 0)
         // If we were done playing in reverse, then return early
         if (wasReversed) {
             QObject::disconnect(*connection);
+            setSelectedPart(NoPartSelected);
             return;
         }
 
@@ -207,8 +206,6 @@ void playAnimationBackAndForth(Kuesa::AnimationPlayer *player, int delay = 0)
 
     QTimer::singleShot(delay, player, &Kuesa::AnimationPlayer::restart);
 }
-
-} // anonymous
 
 void UserManualScreenController::setSelectedPart(UserManualScreenController::SelectablePart selectedPart)
 {

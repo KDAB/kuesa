@@ -78,6 +78,7 @@ private:
     void updateSceneConfiguration();
     void showDetailView(const QString &camera);
     void hideDetailView();
+    void playAnimationBackAndForth(Kuesa::AnimationPlayer *player, int delay = 0);
 
     SelectablePart m_selectedPart = NoPartSelected;
     QHash<SelectablePart, KuesaUtils::SceneConfiguration *> m_sceneConfigurationsTable;
