@@ -344,15 +344,19 @@ void GuidedDrillingScreenController::syncViewToStep()
     case SetupSpeed:
         configuration->setCameraName(QStringLiteral("CamChuck"));
         break;
-    case SetupDirection:
+    case SetupDirection: {
         configuration->setCameraName(QStringLiteral("CamDirectionSwitch"));
-        m_directionSwitchAnimation->restart();
+        constexpr int delay = 750;
+        m_directionSwitchAnimation->restart(delay);
         break;
-    case CompletionStep:
+    }
+    case CompletionStep: {
         configuration->setCameraName(QStringLiteral("CamTrigger"));
-        m_triggerPressAnimation->restart();
-        m_drillAnimation->restart();
+        constexpr int delay = 750;
+        m_triggerPressAnimation->restart(delay);
+        m_drillAnimation->restart(delay);
         break;
+    }
     }
 }
 

@@ -29,7 +29,6 @@
 #include "usermanualscreencontroller.h"
 #include <Kuesa/View>
 #include <Kuesa/TransformTracker>
-#include <QTimer>
 
 /*
     Controller for the UserManual screen.
