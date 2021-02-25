@@ -32,6 +32,8 @@
 #include <Qt3DAnimation/QChannelMapping>
 #include <Qt3DAnimation/QClipAnimator>
 #include <Qt3DAnimation/QClock>
+#include <Kuesa/Iro2DiffuseSemProperties>
+#include <QPropertyAnimation>
 
 using namespace Qt3DAnimation;
 
@@ -70,6 +72,32 @@ DrillStatus::Mode DrillStatus::mode() const
     return m_mode;
 }
 
+bool DrillStatus::torqueWarning() const
+{
+    return m_torqueWarning;
+}
+
+bool DrillStatus::currentDrawWarning() const
+{
+    return m_currentDrawWarning;
+}
+
+void DrillStatus::setCurrentDrawWarning(bool warning)
+{
+    if (warning == m_currentDrawWarning)
+        return;
+    m_currentDrawWarning = warning;
+    emit currentDrawWarningChanged();
+}
+
+void DrillStatus::setTorqueWarning(bool warning)
+{
+    if (warning == m_torqueWarning)
+        return;
+    m_torqueWarning = warning;
+    emit torqueWarningChanged();
+}
+
 void DrillStatus::setRPM(float rpm)
 {
     if (rpm == m_rpm)
@@ -84,6 +112,8 @@ void DrillStatus::setCurrentDraw(float currentDraw)
         return;
     m_currentDraw = currentDraw;
     emit currentDrawChanged();
+
+    setCurrentDrawWarning(m_currentDraw > 5.0f);
 }
 
 void DrillStatus::setTorque(float torque)
@@ -92,6 +122,8 @@ void DrillStatus::setTorque(float torque)
         return;
     m_torque = torque;
     emit torqueChanged();
+
+    setTorqueWarning(m_torque > 30.0f);
 }
 
 void DrillStatus::setBatteryLife(float batteryLife)
@@ -134,13 +166,13 @@ void StatusScreenController::createDrillStatusSimulationAnimation(Qt3DCore::QNod
         torqueChannel.setName(QStringLiteral("torque"));
 
         QChannel currentDrawChannel;
-        currentDrawChannel.setName(QStringLiteral("torque"));
+        currentDrawChannel.setName(QStringLiteral("currentDraw"));
 
         QChannel batteryLifeChannel;
         batteryLifeChannel.setName(QStringLiteral("batteryLife"));
 
         QChannelComponent rpmCmp;
-        // Keyframe bezier curve coord, left handle, right handle
+        // Keyframe bezier curve coord(time,.value), left handle, right handle
         // T0
         rpmCmp.appendKeyFrame(QKeyFrame({0.0f, 0.0f}, {-1.0f, 0.0f}, {1.0f, 0.0f}));
         // T1 -> Starting, not yet drilling into material (high no load RPM)
@@ -156,11 +188,11 @@ void StatusScreenController::createDrillStatusSimulationAnimation(Qt3DCore::QNod
         // T1 -> Starting, not yet drilling into material (almost no torque)
         torqueCmp.appendKeyFrame(QKeyFrame({2.0f, 2.0f}, {1.0f, 3.0f}, {3.0f, 3.0f}));
         // T2 -> Starting to drill into material (torque increases)
-        torqueCmp.appendKeyFrame(QKeyFrame({3.0f, 15.0f}, {2.0f, 15.0f}, {4.0f, 12.0f}));
+        torqueCmp.appendKeyFrame(QKeyFrame({3.0f, 25.0f}, {2.0f, 15.0f}, {4.0f, 12.0f}));
         // T3 -> Slowly increasing torque as we drill
-        torqueCmp.appendKeyFrame(QKeyFrame({10.0f, 22.0f}, {5.0f, 22.0f}, {8.0f, 15.0f}));
+        torqueCmp.appendKeyFrame(QKeyFrame({10.0f, 42.0f}, {5.0f, 22.0f}, {8.0f, 15.0f}));
 
-        QChannelComponent currentDrawCmp; // in A/h
+        QChannelComponent currentDrawCmp; // in A
         // T0
         currentDrawCmp.appendKeyFrame(QKeyFrame({0.0f, 0.0f}, {-1.0f, 0.0f}, {1.0f, 0.0f}));
         // T1 -> Starting, not yet drilling into material (low current draw)
@@ -238,24 +270,114 @@ StatusScreenController::StatusScreenController(QObject *parent)
     // type of things easy to materialize
     createDrillStatusSimulationAnimation(configuration);
 
-    // Add Animations Players on SceneConfiguration
-    m_cameraAnimationPlayer = new Kuesa::AnimationPlayer;
-    m_cameraAnimationPlayer->setClip(QStringLiteral("AnimCamOrbit"));
-    m_cameraAnimationPlayer->setLoopCount(Kuesa::AnimationPlayer::Infinite);
-    m_cameraAnimationPlayer->setRunning(true);
+    {
+        // Add Animations Players on SceneConfiguration
+        m_cameraAnimationPlayer = new Kuesa::AnimationPlayer;
+        m_cameraAnimationPlayer->setClip(QStringLiteral("AnimCamOrbit"));
+        m_cameraAnimationPlayer->setLoopCount(Kuesa::AnimationPlayer::Infinite);
+        m_cameraAnimationPlayer->setRunning(true);
 
-    m_runningDrillPlayer = new Kuesa::AnimationPlayer;
-    m_runningDrillPlayer->setClip(QStringLiteral("AnimDrillCW"));
-    m_runningDrillPlayer->setLoopCount(Kuesa::AnimationPlayer::Infinite);
+        m_runningDrillPlayer = new Kuesa::AnimationPlayer;
+        m_runningDrillPlayer->setClip(QStringLiteral("AnimDrillCW"));
+        m_runningDrillPlayer->setLoopCount(Kuesa::AnimationPlayer::Infinite);
 
+        configuration->addAnimationPlayer(m_cameraAnimationPlayer);
+        configuration->addAnimationPlayer(m_runningDrillPlayer);
+    }
+
+    {
+        // Add Transform Trackers on SceneConfiguration
+
+        m_chuckTracker = new Kuesa::TransformTracker();
+        m_chuckTracker->setName(QStringLiteral("Drill.LABEL_Chuck"));
+        configuration->addTransformTracker(m_chuckTracker);
+        QObject::connect(m_chuckTracker, &Kuesa::TransformTracker::screenPositionChanged,
+                         this, &StatusScreenController::chuckPositionChanged);
+
+        m_batteryPackTracker = new Kuesa::TransformTracker();
+        m_batteryPackTracker->setName(QStringLiteral("Drill.LABEL_Battery"));
+        configuration->addTransformTracker(m_batteryPackTracker);
+        QObject::connect(m_batteryPackTracker, &Kuesa::TransformTracker::screenPositionChanged,
+                         this, &StatusScreenController::batteryPackPositionChanged);
+    }
+
+    // Retrieve Assets upon loading
+    QObject::connect(configuration, &KuesaUtils::SceneConfiguration::loadingDone, this, [this] {
+        Kuesa::SceneEntity *sceneEntity = sceneConfiguration()->sceneEntity();
+        if (!sceneEntity)
+            return;
+        m_batteryMaterialProperties = qobject_cast<Kuesa::Iro2DiffuseSemProperties *>(sceneEntity->material(QStringLiteral("MatIro2BlackBattery")));
+        m_chuckMaterialProperties = qobject_cast<Kuesa::Iro2DiffuseSemProperties *>(sceneEntity->material(QStringLiteral("MatIro2BlackChuck")));
+
+        m_chuckColorBlinkAnimation->setTargetObject(m_chuckMaterialProperties);
+        m_batteryColorBlinkAnimation->setTargetObject(m_batteryMaterialProperties);
+    });
+
+    // Clear references to assets upon unloading
+    QObject::connect(configuration, &KuesaUtils::SceneConfiguration::unloadingDone, this, [this] {
+        m_batteryMaterialProperties = nullptr;
+        m_chuckMaterialProperties = nullptr;
+
+        m_chuckColorBlinkAnimation->setTargetObject(m_chuckMaterialProperties);
+        m_batteryColorBlinkAnimation->setTargetObject(m_batteryMaterialProperties);
+    });
+
+    // Handle RPM change to trigger animations
     QObject::connect(m_status, &DrillStatus::rpmChanged, this, [this] () {
         const bool shouldRun = m_status->rpm() > 0.0f;
         if (m_runningDrillPlayer->isRunning() != shouldRun)
             m_runningDrillPlayer->setRunning(shouldRun);
     });
 
-    configuration->addAnimationPlayer(m_cameraAnimationPlayer);
-    configuration->addAnimationPlayer(m_runningDrillPlayer);
+    // Handle Torque Warning animations
+    m_chuckColorBlinkAnimation = new QPropertyAnimation(this);
+    m_chuckColorBlinkAnimation->setPropertyName("diffuseInnerFilter");
+    m_chuckColorBlinkAnimation->setKeyValueAt(0.0f, QVector3D(0.0f, 0.0f, 0.0f)); // black
+    m_chuckColorBlinkAnimation->setKeyValueAt(0.5f, QVector3D(1.0f, 0.0f, 0.0f)); // red
+    m_chuckColorBlinkAnimation->setKeyValueAt(1.0f, QVector3D(0.0f, 0.0f, 0.0f)); // black
+    m_chuckColorBlinkAnimation->setLoopCount(-1);
+    m_chuckColorBlinkAnimation->setEasingCurve(QEasingCurve::OutCubic);
+    m_chuckColorBlinkAnimation->setDuration(1500);
+
+    QObject::connect(m_status, &DrillStatus::torqueChanged, this, [this] () {
+        const bool shouldRun = m_status->torqueWarning();
+        if (shouldRun) {
+            if (m_chuckColorBlinkAnimation->state() != QAbstractAnimation::Running)
+                m_chuckColorBlinkAnimation->start();
+        } else {
+            if (m_chuckColorBlinkAnimation->state() == QAbstractAnimation::Running) {
+                m_chuckColorBlinkAnimation->stop();
+                // Reset material to default values (black)
+                if (m_chuckMaterialProperties)
+                    m_chuckMaterialProperties->setDiffuseInnerFilter(QVector3D());
+            }
+        }
+    });
+
+    // Handle Current draw warning animations
+    m_batteryColorBlinkAnimation = new QPropertyAnimation(this);
+    m_batteryColorBlinkAnimation->setPropertyName("diffuseInnerFilter");
+    m_batteryColorBlinkAnimation->setKeyValueAt(0.0f, QVector3D(0.0f, 0.0f, 0.0f)); // black
+    m_batteryColorBlinkAnimation->setKeyValueAt(0.5f, QVector3D(1.0f, 0.0f, 0.0f)); // red
+    m_batteryColorBlinkAnimation->setKeyValueAt(1.0f, QVector3D(0.0f, 0.0f, 0.0f)); // black
+    m_batteryColorBlinkAnimation->setLoopCount(-1);
+    m_batteryColorBlinkAnimation->setEasingCurve(QEasingCurve::OutCubic);
+    m_batteryColorBlinkAnimation->setDuration(1500);
+
+    QObject::connect(m_status, &DrillStatus::currentDrawChanged, this, [this] () {
+        const bool shouldRun = m_status->currentDrawWarning();
+        if (shouldRun) {
+            if (m_batteryColorBlinkAnimation->state() != QAbstractAnimation::Running)
+                m_batteryColorBlinkAnimation->start();
+        } else {
+            if (m_batteryColorBlinkAnimation->state() == QAbstractAnimation::Running) {
+                m_batteryColorBlinkAnimation->stop();
+                // Reset material to default values (black)
+                if (m_batteryMaterialProperties)
+                    m_batteryMaterialProperties->setDiffuseInnerFilter(QVector3D());
+            }
+        }
+    });
 
     // Set SceneConfiguration onController
     setSceneConfiguration(configuration);
@@ -264,4 +386,14 @@ StatusScreenController::StatusScreenController(QObject *parent)
 DrillStatus *StatusScreenController::drillStatus() const
 {
     return m_status;
+}
+
+QPointF StatusScreenController::chuckPosition() const
+{
+    return m_chuckTracker->screenPosition();
+}
+
+QPointF StatusScreenController::batteryPackPosition() const
+{
+    return m_batteryPackTracker->screenPosition();
 }

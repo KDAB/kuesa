@@ -31,8 +31,11 @@
 
 #include "abstractscreencontroller.h"
 
+class QPropertyAnimation;
+
 namespace Kuesa {
     class AnimationPlayer;
+    class Iro2DiffuseSemProperties;
 }
 
 class DrillStatus : public Qt3DCore::QNode
@@ -44,6 +47,8 @@ class DrillStatus : public Qt3DCore::QNode
     Q_PROPERTY(float batteryLife READ batteryLife WRITE setBatteryLife NOTIFY batteryLifeChanged)
     Q_PROPERTY(Direction direction READ direction WRITE setDirection NOTIFY directionChanged)
     Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
+    Q_PROPERTY(bool torqueWarning READ torqueWarning NOTIFY torqueWarningChanged)
+    Q_PROPERTY(bool currentDrawWarning READ currentDrawWarning NOTIFY currentDrawWarningChanged)
 
 public:
     explicit DrillStatus(Qt3DCore::QNode *parent = nullptr);
@@ -74,40 +79,69 @@ public:
     float batteryLife() const;
     Direction direction() const;
     Mode mode() const;
+    bool torqueWarning() const;
+    bool currentDrawWarning() const;
 
-    signals:
+signals:
     void rpmChanged();
     void currentDrawChanged();
     void torqueChanged();
     void batteryLifeChanged();
     void directionChanged();
     void modeChanged();
+    void torqueWarningChanged();
+    void currentDrawWarningChanged();
 
 private:
+    void setCurrentDrawWarning(bool warning);
+    void setTorqueWarning(bool warning);
+
     float m_rpm = 0.0f;
     float m_currentDraw = 0.0f;
     float m_torque = 0.0f;
     float m_batteryLife = 100.0f;
     Direction m_direction = Clockwise;
     Mode m_mode = Drill;
+    bool m_torqueWarning = false;
+    bool m_currentDrawWarning = false;
 };
 
 class StatusScreenController : public AbstractScreenController
 {
     Q_OBJECT
     Q_PROPERTY(DrillStatus *drillStatus READ drillStatus CONSTANT)
+    Q_PROPERTY(QPointF chuckPosition READ chuckPosition NOTIFY chuckPositionChanged)
+    Q_PROPERTY(QPointF batteryPackPosition READ batteryPackPosition NOTIFY batteryPackPositionChanged)
+
 public:
     explicit StatusScreenController(QObject *parent = nullptr);
 
     DrillStatus *drillStatus() const;
 
+    QPointF chuckPosition() const;
+    QPointF batteryPackPosition() const;
+
+signals:
+    void chuckPositionChanged();
+    void batteryPackPositionChanged();
 
 private:
     void createDrillStatusSimulationAnimation(Qt3DCore::QNode *parentNode);
 
-    DrillStatus *m_status = nullptr;
+    // Owned by SceneConfiguration
     Kuesa::AnimationPlayer *m_cameraAnimationPlayer = nullptr;
     Kuesa::AnimationPlayer *m_runningDrillPlayer = nullptr;
+    Kuesa::TransformTracker *m_chuckTracker = nullptr;
+    Kuesa::TransformTracker *m_batteryPackTracker = nullptr;
+
+    // Owned by SceneEntity
+    Kuesa::Iro2DiffuseSemProperties *m_batteryMaterialProperties = nullptr;
+    Kuesa::Iro2DiffuseSemProperties *m_chuckMaterialProperties = nullptr;
+
+    // Owned by controller
+    DrillStatus *m_status = nullptr;
+    QPropertyAnimation *m_batteryColorBlinkAnimation = nullptr;
+    QPropertyAnimation *m_chuckColorBlinkAnimation = nullptr;
 };
 
 #endif // STATUSSCREENCONTROLLER_H

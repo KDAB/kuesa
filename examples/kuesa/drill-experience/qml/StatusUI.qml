@@ -41,6 +41,7 @@ Item {
     readonly property real torque: controller.drillStatus.torque
     readonly property int direction: controller.drillStatus.direction
     readonly property int mode: controller.drillStatus.mode
+    readonly property real currentDraw: controller.drillStatus.currentDraw
 
     ToolBar {
         anchors {
@@ -93,6 +94,15 @@ Item {
                 }
                 text: "%1 N.m".arg(root.torque.toFixed(2))
             }
+            ToolSeparator {}
+            ToolButton {
+                icon {
+                    width: 32
+                    height: 32
+                    source: "qrc:/icons/bolt-solid.svg"
+                }
+                text: "%1 A".arg(root.currentDraw.toFixed(2))
+            }
 
             Item { Layout.fillWidth: true }
             ToolButton {
@@ -114,5 +124,24 @@ Item {
                 text: "%1 %".arg(root.batteryLife.toFixed(0))
             }
         }
+    }
+
+    // Labels for warnings
+    Label {
+        id: torqueWarningLabel
+        x: controller.chuckPosition.x
+        y: controller.chuckPosition.y - implicitHeight * 0.5
+        text: "Elevated Torque Detected!"
+        visible: controller.drillStatus.torqueWarning
+        font.pointSize: 15
+    }
+
+    Label {
+        id: currentWarningLabel
+        x: controller.batteryPackPosition.x
+        y: controller.batteryPackPosition.y - implicitHeight * 0.5
+        text: "Elevated Current Draw Detected!"
+        visible: controller.drillStatus.currentDrawWarning
+        font.pointSize: 15
     }
 }
