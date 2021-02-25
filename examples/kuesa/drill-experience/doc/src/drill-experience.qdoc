@@ -43,20 +43,80 @@
     \li A real time Drill status screen
     \endlist
 
+    \section1 Architecture of the Application
+
+    The demo has a strong split between the UI defined in QML and logic
+    handling done in C++.
+
+    Each screen of the application provides its UI through a dedicated QML
+    file. Each QML file takes care of providing elements such as Labels and
+    Buttons which are either placed at predefined positions of the screen or
+    tied to properties fed by the logic.
+
+    When it comes to the logic handling, similarly to the UI, each screen has a
+    dedicated controller. The controller takes care of providing a \l
+    {KuesaUtils::SceneConfiguration} defining which glTF file to load, which
+    camera to use for rendering as well as the a list of \l
+    Kuesa::AnimationPlayers to control animations or \l
+    Kuesa::TransformTrackers to retrieve the screen positions of 3D entities.
+
+    Additionally, the controller relies on \l
+    {KuesaUtils::SceneConfiguration::loadingDone} and \l
+    {KuesUtils::SceneConfiguration::unloadingDone} to retrieve Kuesa assets
+    from the \l Kuesa::SceneEntity collections upon loading and clearing any
+    reference to such object upon unloading.
+
+    Though the use of properties and upon those being modified by the UI, each
+    controller will react and might launch animations
+
+    \section1 Implementation
+
+    \section2 main.qml
+
+    This is the entry point of our Application.
+
+    First we instantiate an ApplicationWindow
+    \snippet drill-experience/qml/main.qml 0
+    \dots: 5
+
+    A TabBar is declared as our header to switch between our application
+    screens.
+
+    \snippet drill-experience/qml/main.qml 0.1
+
+    Each screen UI is declared as a commponent.
+
+    \snippet drill-experience/qml/main.qml 3.1
+
+    In turn, we can rely on a QML Loader to load the property screen UI
+    Component based on the current tab being selected.
+
+    \snippet drill-experience/qml/main.qml 3.2
+
     \section1 QtQuick and Qt3D integration
 
-    The Drill-Experience example relies on the new simplified \l [QML] {Kuesa::View3D}
-    API introduced in Kuesa 1.3.
-
-    \snippet drill-experience/qml/main.qml 1
-
-    \section1 DrillScene
-
-    Kuesa provides the \l [QML] {SceneEntity} element which holds collections
-    of Qt 3D assets accessible by name.
-
-    This elements acts as the root elements of our DrillScene element.
+    The Drill-Experience example relies on the new simplified \l [QML]
+    {Kuesa::View3D} API introduced in Kuesa 1.3.
 
     \snippet drill-experience/qml/DrillScene.qml 0
-    \dots 3
+    \dots 1
+
+    \section2 DrillScene
+
+    This is the QML file in charge of setting up the 3D View.
+
+    \l {Kuesa::View3D} is a subclass of the \l [QML] {SceneEntity} element which
+    holds collections of Qt 3D assets accessible by name.
+
+    This elements acts as the root elements of our DrillScene element. The \l
+    [QML] {KuesaUtils::View3DScene::activeScene} property is bound to the
+    sceneConfiguraiton instanced returned by the current controller. This
+    ensure that when we switch screen and controller, we automatically switch
+    to another SceneConfiguration.
+
+    \snippet drill-experience/qml/DrillScene.qml 1
+
+    It is instantiated in the main.qml file
+
+    \snippet drill-experience/qml/main.qml 2
 */

@@ -38,21 +38,8 @@ View3D {
     backgroundColor: "transparent"
     opacity: ready ? 1.0 : 0.0
 
-    property int screen: 0
-
     //! [1]
-    readonly property AbstractScreenController controller: {
-        if (screen === _DRILL_STATUS_SCREEN)
-            return statusScreenController
-        if (screen === _GUIDED_DRILLING_SCREEN)
-            return guidedDrillingScreenController
-        // _USER_MANUAL_SCREEN
-        return userManualScreenController
-    }
-
-    // We rely on each controller providing the scene configuration
-    // This provides the source, camera, trackers, animation players...
-    activeScene: controller.sceneConfiguration
+    property int screen: 0
 
     // Controllers
     // Readonly properties to expose controllers for external access
@@ -67,6 +54,19 @@ View3D {
     readonly property GuidedDrillingScreenController guidedDrillingScreenController: GuidedDrillingScreenController {
         isActive: screen === _GUIDED_DRILLING_SCREEN
     }
+
+    readonly property AbstractScreenController controller: {
+        if (screen === _DRILL_STATUS_SCREEN)
+            return statusScreenController
+        if (screen === _GUIDED_DRILLING_SCREEN)
+            return guidedDrillingScreenController
+        // _USER_MANUAL_SCREEN
+        return userManualScreenController
+    }
+
+    // We rely on each controller providing the scene configuration
+    // This provides the source, camera, trackers, animation players...
+    activeScene: controller.sceneConfiguration
     //! [1]
 
     //! [2]

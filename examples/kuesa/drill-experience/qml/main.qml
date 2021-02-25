@@ -53,11 +53,13 @@ ApplicationWindow {
         }
     }
 
+    //! [0.1]
     header: TabBar {
         TabButton { text: "Drill Status" }
         TabButton { text: "Guided Drilling" }
         TabButton { text: "User Manual" }
     }
+    //! [0.1]
 
     //! [1]
     Item {
