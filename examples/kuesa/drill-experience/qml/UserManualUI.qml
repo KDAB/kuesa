@@ -66,14 +66,67 @@ Item {
 
         model: names.length
 
-        Button {
+        Item {
             Layout.alignment: Qt.AlignHCenter
-            text: labelsRepeater.names[model.index]
             x: labelsRepeater.positions[model.index].x
             y: labelsRepeater.positions[model.index].y
-            onClicked: controller.selectedPart = labelsRepeater.parts[model.index]
-            enabled: controller.selectedPart !== labelsRepeater.parts[model.index]
-            visible: controller.selectedPart === UserManualScreenController.NoPartSelected
+            scale: mouseArea.pressed ? 0.9 : 1
+            Behavior on scale { ScaleAnimator { duration: 300 } }
+
+            width: label.implicitWidth * 2
+            height: label.implicitHeight
+
+            visible: controller.selectedPart === UserManualScreenController.NoPartSelected ||
+                     labelsRepeater.parts[model.index] === controller.selectedPart
+
+            // Left Side Handle
+            Rectangle {
+                id: handle
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    bottom: parent.bottom
+                    margins: 2
+                }
+                width: height
+                radius: width * 0.5
+                color: "transparent"
+                border {
+                    width: 1
+                    color: "white"
+                }
+
+                Rectangle {
+                    anchors {
+                        fill: parent
+                        margins: 5
+                    }
+                    radius: width * 0.5
+                    color: "white"
+                    opacity: mouseArea.containsMouse ? 1 : 0
+                    Behavior on opacity { OpacityAnimator { duration: 300 } }
+                }
+            }
+
+            // Text Label
+            Label {
+                id: label
+                text: labelsRepeater.names[model.index]
+                anchors {
+                    left: handle.right
+                    leftMargin: 15
+                    verticalCenter: parent.verticalCenter
+                }
+                font.pointSize: 15
+                font.bold: mouseArea.containsMouse
+            }
+
+            MouseArea {
+                id: mouseArea
+                anchors.fill: parent
+                onClicked: controller.selectedPart = labelsRepeater.parts[model.index]
+                hoverEnabled: true
+            }
         }
     }
 }
