@@ -137,7 +137,13 @@ ApplicationWindow {
                     target: view3D
                     anchors {
                         top: contentItem.top; bottom: contentItem.bottom
-                        left:contentItem.horizontalCenter; right: contentItem.right
+                        left: contentItem.left; right: contentItem.right
+                    }
+                }
+                PropertyChanges {
+                    target: view3D
+                    anchors {
+                        bottomMargin: uiLoader.item.content.height
                     }
                 }
             },

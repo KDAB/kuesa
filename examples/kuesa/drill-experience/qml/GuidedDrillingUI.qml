@@ -85,15 +85,16 @@ Item {
         guidedDrillingWizardStackView.push(modeSelector)
     }
 
+    property Item content: guidedDrillingWizardStackView
+
     StackView {
         id: guidedDrillingWizardStackView
         anchors {
-            top: parent.top
+            right: parent.right
             bottom: parent.bottom
             left: parent.left
-            margins: 50
         }
-        width: parent.width * 0.3
+        height: currentItem ? currentItem.implicitHeight : 0
         initialItem: modeSelector
 
         Component {
@@ -115,23 +116,25 @@ Item {
                         font.pointSize: 20
                     }
 
-                    Button {
-                        ButtonGroup.group: modeSelectorButtons
+                    RowLayout {
                         Layout.alignment: Qt.AlignHCenter
-                        text: "Drilling"
-                        checkable: true
 
-                        readonly property int value: GuidedDrillingScreenController.Mode.Drill
-                        checked: controller.mode === value
-                    }
-                    Button {
-                        ButtonGroup.group: modeSelectorButtons
-                        Layout.alignment: Qt.AlignHCenter
-                        text: "Screw Driving"
-                        checkable: true
+                        Button {
+                            ButtonGroup.group: modeSelectorButtons
+                            text: "Drilling"
+                            checkable: true
 
-                        readonly property int value: GuidedDrillingScreenController.Mode.Screw
-                        checked: controller.mode === value
+                            readonly property int value: GuidedDrillingScreenController.Mode.Drill
+                            checked: controller.mode === value
+                        }
+                        Button {
+                            ButtonGroup.group: modeSelectorButtons
+                            text: "Screw Driving"
+                            checkable: true
+
+                            readonly property int value: GuidedDrillingScreenController.Mode.Screw
+                            checked: controller.mode === value
+                        }
                     }
 
                     RowLayout {
@@ -168,34 +171,34 @@ Item {
                         font.pointSize: 20
                     }
 
-                    Button {
-                        ButtonGroup.group: materialSelectorButtons
+                    RowLayout {
                         Layout.alignment: Qt.AlignHCenter
-                        text: "Wood"
-                        checkable: true
 
-                        readonly property int value: GuidedDrillingScreenController.MaterialType.Wood
-                        checked: controller.material === value
+                        Button {
+                            ButtonGroup.group: materialSelectorButtons
+                            text: "Wood"
+                            checkable: true
+
+                            readonly property int value: GuidedDrillingScreenController.MaterialType.Wood
+                            checked: controller.material === value
+                        }
+                        Button {
+                            ButtonGroup.group: materialSelectorButtons
+                            text: "Concrete"
+                            checkable: true
+
+                            readonly property int value: GuidedDrillingScreenController.MaterialType.Concrete
+                            checked: controller.material === value
+                        }
+                        Button {
+                            ButtonGroup.group: materialSelectorButtons
+                            text: "Metal"
+                            checkable: true
+
+                            readonly property int value: GuidedDrillingScreenController.MaterialType.Metal
+                            checked: controller.material === value
+                        }
                     }
-                    Button {
-                        ButtonGroup.group: materialSelectorButtons
-                        Layout.alignment: Qt.AlignHCenter
-                        text: "Concrete"
-                        checkable: true
-
-                        readonly property int value: GuidedDrillingScreenController.MaterialType.Concrete
-                        checked: controller.material === value
-                    }
-                    Button {
-                        ButtonGroup.group: materialSelectorButtons
-                        Layout.alignment: Qt.AlignHCenter
-                        text: "Metal"
-                        checkable: true
-
-                        readonly property int value: GuidedDrillingScreenController.MaterialType.Metal
-                        checked: controller.material === value
-                    }
-
 
                     RowLayout {
                         Layout.alignment: Qt.AlignBottom
