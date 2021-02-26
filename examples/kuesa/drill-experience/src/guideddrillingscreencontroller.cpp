@@ -400,7 +400,7 @@ void GuidedDrillingScreenController::syncViewToStep(Step previousStep)
             return m_cameraTransitionAnimationSideToBit;
         case BitSelection:
             return m_cameraTransitionAnimationBitToChuck;
-        case SetupSpeed:
+        case SetupBit:
             return m_cameraTransitionAnimationChuckToRear;
         case SetupDirection:
             return m_cameraTransitionAnimationRearToTrigger;
@@ -436,10 +436,6 @@ void GuidedDrillingScreenController::syncViewToStep(Step previousStep)
         m_drillInsertAnimation->restart(delay);
         break;
     }
-    case SetupClutch:
-        break;
-    case SetupSpeed:
-        break;
     case SetupDirection: {
         constexpr int delay = 1250;
         m_directionSwitchAnimation->restart(delay);

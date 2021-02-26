@@ -61,8 +61,6 @@ public:
         MaterialSelection,
         BitSelection,
         SetupBit,
-        SetupClutch,
-        SetupSpeed,
         SetupDirection,
         CompletionStep
     };

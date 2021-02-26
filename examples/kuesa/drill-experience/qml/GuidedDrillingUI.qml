@@ -282,68 +282,6 @@ Item {
         }
 
         Component {
-            id: setModeStep
-            Frame {
-                ColumnLayout {
-                    anchors.fill: parent
-                    Label {
-                        Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
-                        text: "Set Drill Mode"
-                        font.pointSize: 20
-                    }
-
-                    RowLayout {
-                        Layout.alignment: Qt.AlignBottom
-                        Button {
-                            Layout.alignment: Qt.AlignLeft
-                            text: "Back"
-                            onClicked: back()
-                        }
-                        Item {
-                            Layout.fillWidth: true
-                        }
-                        Button {
-                            Layout.alignment: Qt.AlignRight
-                            text: "Next"
-                            onClicked: next()
-                        }
-                    }
-                }
-            }
-        }
-
-        Component {
-            id: setSpeedStep
-            Frame {
-                ColumnLayout {
-                    anchors.fill: parent
-                    Label {
-                        Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
-                        text: "Set Speed"
-                        font.pointSize: 20
-                    }
-
-                    RowLayout {
-                        Layout.alignment: Qt.AlignBottom
-                        Button {
-                            Layout.alignment: Qt.AlignLeft
-                            text: "Back"
-                            onClicked: back()
-                        }
-                        Item {
-                            Layout.fillWidth: true
-                        }
-                        Button {
-                            Layout.alignment: Qt.AlignRight
-                            text: "Next"
-                            onClicked: next()
-                        }
-                    }
-                }
-            }
-        }
-
-        Component {
             id: setDirectionStep
             Frame {
                 ColumnLayout {
