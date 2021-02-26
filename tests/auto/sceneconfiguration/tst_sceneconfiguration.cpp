@@ -49,6 +49,7 @@ private Q_SLOTS:
         QVERIFY(sceneConfiguration.animationPlayers().empty());
         QVERIFY(sceneConfiguration.transformTrackers().empty());
         QVERIFY(sceneConfiguration.placeholderTrackers().empty());
+        QVERIFY(sceneConfiguration.layerNames().empty());
     }
 
     void checkSetSource()
@@ -416,6 +417,31 @@ private Q_SLOTS:
 
         placeholderTrackerAddedSpy.clear();
         placeholderTrackerRemovedSpy.clear();
+    }
+
+    void checkLayerNames()
+    {
+        // GIVEN
+        KuesaUtils::SceneConfiguration sceneConfiguration;
+        QSignalSpy layerNamesChangedSpy(&sceneConfiguration, &KuesaUtils::SceneConfiguration::layerNamesChanged);
+
+        // THEN
+        QVERIFY(layerNamesChangedSpy.isValid());
+
+        // WHEN
+        const QStringList layerNames = { QStringLiteral("layer_1"), QStringLiteral("layer_2") };
+        sceneConfiguration.setLayerNames(layerNames);
+
+        // THEN
+        QCOMPARE(sceneConfiguration.layerNames(), layerNames);
+        QCOMPARE(layerNamesChangedSpy.count(), 1);
+
+        // WHEN
+        sceneConfiguration.setLayerNames(layerNames);
+
+        // THEN -> Signal not emitted again
+        QCOMPARE(sceneConfiguration.layerNames(), layerNames);
+        QCOMPARE(layerNamesChangedSpy.count(), 1);
     }
 };
 

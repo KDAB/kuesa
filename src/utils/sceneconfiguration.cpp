@@ -82,6 +82,14 @@ using namespace KuesaUtils;
  */
 
 /*!
+    \property KuesaUtils::SceneConfiguration::layerNames
+
+    \brief The list of KDAB_layers layer names to be selected for rendering.
+    This allows selecting only a sub part of a glTF 2 model to only render parts
+    that are linked to a specific layer.
+ */
+
+/*!
     \qmltype SceneConfiguration
     \instantiates KuesaUtils::SceneConfiguration
     \inqmlmodule KuesaUtils
@@ -129,6 +137,14 @@ using namespace KuesaUtils;
     \l [QML] {Kuesa::TransformTracker}.
  */
 
+/*!
+    \qmlproperty list<string> KuesaUtils::SceneConfiguration::layerNames
+
+    \brief The list of KDAB_layers layer names to be selected for rendering.
+    This allows selecting only a sub part of a glTF 2 model to only render parts
+    that are linked to a specific layer.
+ */
+
 SceneConfiguration::SceneConfiguration(Qt3DCore::QNode *parent)
     : KuesaNode(parent)
 {
@@ -152,12 +168,25 @@ QString SceneConfiguration::cameraName() const
     return m_cameraName;
 }
 
+QStringList SceneConfiguration::layerNames() const
+{
+    return m_layerNames;
+}
+
 void SceneConfiguration::setCameraName(const QString &cameraName)
 {
     if (cameraName != m_cameraName) {
         m_cameraName = cameraName;
         emit cameraNameChanged(m_cameraName);
     }
+}
+
+void SceneConfiguration::setLayerNames(const QStringList &layerNames)
+{
+    if (layerNames == m_layerNames)
+        return;
+    m_layerNames = layerNames;
+    emit layerNamesChanged(m_layerNames);
 }
 
 void SceneConfiguration::addTransformTracker(TransformTracker *tracker)

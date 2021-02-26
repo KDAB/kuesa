@@ -48,11 +48,13 @@ class KUESAUTILS_SHARED_EXPORT SceneConfiguration : public Kuesa::KuesaNode
     Q_OBJECT
     Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(QString cameraName READ cameraName WRITE setCameraName NOTIFY cameraNameChanged)
+    Q_PROPERTY(QStringList layerNames READ layerNames WRITE setLayerNames NOTIFY layerNamesChanged)
 public:
     explicit SceneConfiguration(Qt3DCore::QNode *parent = nullptr);
 
     QUrl source() const;
     QString cameraName() const;
+    QStringList layerNames() const;
 
     const std::vector<Kuesa::AnimationPlayer *> &animationPlayers() const { return m_animations; }
     void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
@@ -72,10 +74,12 @@ public:
 public Q_SLOTS:
     void setSource(const QUrl &source);
     void setCameraName(const QString &cameraName);
+    void setLayerNames(const QStringList &layerNames);
 
 Q_SIGNALS:
     void sourceChanged(const QUrl &source);
     void cameraNameChanged(const QString &cameraName);
+    void layerNamesChanged(const QStringList &layerNames);
 
     void animationPlayerAdded(Kuesa::AnimationPlayer *player);
     void animationPlayerRemoved(Kuesa::AnimationPlayer *player);
@@ -92,6 +96,7 @@ Q_SIGNALS:
 private:
     QUrl m_source;
     QString m_cameraName;
+    QStringList m_layerNames;
     std::vector<Kuesa::AnimationPlayer *> m_animations;
     std::vector<Kuesa::TransformTracker *> m_trackers;
     std::vector<Kuesa::PlaceholderTracker *> m_placeholderTrackers;
