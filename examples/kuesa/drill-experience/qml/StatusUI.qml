@@ -43,19 +43,16 @@ Item {
     readonly property int mode: controller.drillStatus.mode
     readonly property real currentDraw: controller.drillStatus.currentDraw
 
-    ToolBar {
-        anchors {
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
-        }
+    readonly property bool isPortrait: root.height > root.width
 
-        RowLayout {
-            anchors.fill: parent
+    Component {
+        id: statusIndicators
+
+        GridLayout {
+            flow: isPortrait ? GridLayout.TopToBottom : GridLayout.LeftToRight
+
             ToolButton {
                 icon {
-                    width: 32
-                    height: 32
                     source: {
                         if (mode === DrillStatus.HammerDrill)
                             return "qrc:/icons/hammer-solid.svg"
@@ -66,8 +63,9 @@ Item {
                     }
                 }
                 display: ToolButton.IconOnly
+                Layout.fillWidth: isPortrait
             }
-            ToolSeparator {}
+            ToolSeparator { visible: !isPortrait }
             ToolButton {
                 icon {
                     width: 32
@@ -75,8 +73,9 @@ Item {
                     source: direction === DrillStatus.Clockwise ? "qrc:/icons/redo-solid.svg" : "qrc:/icons/undo-solid.svg"
                 }
                 display: ToolButton.IconOnly
+                Layout.fillWidth: isPortrait
             }
-            ToolSeparator {}
+            ToolSeparator { visible: !isPortrait }
             ToolButton {
                 icon {
                     width: 32
@@ -84,8 +83,9 @@ Item {
                     source: "qrc:/icons/tachometer-alt-solid.svg"
                 }
                 text: "%1 RPM".arg(root.rpm.toFixed(0))
+                Layout.fillWidth: isPortrait
             }
-            ToolSeparator {}
+            ToolSeparator { visible: !isPortrait }
             ToolButton {
                 icon {
                     width: 32
@@ -93,8 +93,9 @@ Item {
                     source: "qrc:/icons/superpowers-brands.svg"
                 }
                 text: "%1 N.m".arg(root.torque.toFixed(2))
+                Layout.fillWidth: isPortrait
             }
-            ToolSeparator {}
+            ToolSeparator { visible: !isPortrait }
             ToolButton {
                 icon {
                     width: 32
@@ -102,9 +103,13 @@ Item {
                     source: "qrc:/icons/bolt-solid.svg"
                 }
                 text: "%1 A".arg(root.currentDraw.toFixed(2))
+                Layout.fillWidth: isPortrait
             }
 
-            Item { Layout.fillWidth: true }
+            Item {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
             ToolButton {
                 icon {
                     width: 32
@@ -122,7 +127,46 @@ Item {
                     }
                 }
                 text: "%1 %".arg(root.batteryLife.toFixed(0))
+                Layout.fillWidth: isPortrait
             }
+        }
+    }
+
+    Drawer {
+        id: statusDrawer
+
+        height: root.height
+        y: parent.height - height
+        visible: isPortrait
+        interactive: isPortrait
+
+        Loader {
+            sourceComponent: statusIndicators
+            anchors.fill: parent
+        }
+    }
+
+    RoundButton {
+        visible: isPortrait
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+        }
+        text: "☰"
+        onClicked: statusDrawer.open()
+    }
+
+    ToolBar {
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+        visible: !isPortrait
+
+        Loader {
+            sourceComponent: statusIndicators
+            anchors.fill: parent
         }
     }
 
