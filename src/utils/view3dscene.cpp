@@ -124,6 +124,14 @@ Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
  */
 
 /*!
+    \property KuesaUtils::View3DScene::layerNames
+
+    \brief The names of the layer assets that should be used to select objects
+    to render in the scene. If the name references a valid layer, it will
+    automatically be set on the ForwardRenderer frameGraph.
+ */
+
+/*!
     \property KuesaUtils::View3DScene::showDebugOverlay
 
     \brief Specifies whether the Qt 3D debug overlay should be displayed.
@@ -247,6 +255,14 @@ Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
     set on the ForwardRenderer frameGraph and other internal assets such as
     \l [QML] {Kuesa::TransformTracker}.
     \readonly
+ */
+
+/*!
+    \qmlproperty list<string> KuesaUtils::View3DScene::layerNames
+
+    \brief The names of the layer assets that should be used to select objects
+    to render in the scene. If the name references a valid layer, it will
+    automatically be set on the ForwardRenderer frameGraph.
  */
 
 /*!
@@ -379,6 +395,11 @@ QString View3DScene::cameraName() const
     return m_cameraName;
 }
 
+QStringList View3DScene::layerNames() const
+{
+    return m_layerNames;
+}
+
 void View3DScene::setCameraName(const QString &cameraName)
 {
     if (cameraName != m_cameraName) {
@@ -457,9 +478,58 @@ void KuesaUtils::View3DScene::retrieveAndSetCamera()
     }
 }
 
+void View3DScene::retrieveAndSetLayers()
+{
+    std::vector<Qt3DRender::QLayer *> currentLayers = m_frameGraph->layers();
+    std::vector<Qt3DRender::QLayer *> requiredLayers;
+    for (const QString &name : m_layerNames) {
+        Qt3DRender::QLayer *l = layer(name);
+        if (l)
+            requiredLayers.push_back(l);
+    }
+
+    std::sort(currentLayers.begin(), currentLayers.end());
+    std::sort(requiredLayers.begin(), requiredLayers.end());
+
+    // Existing layers -> intersection between currentLayers and requiredLayers
+    std::vector<Qt3DRender::QLayer *> existingLayers;
+    std::set_intersection(currentLayers.begin(), currentLayers.end(),
+                          requiredLayers.begin(), requiredLayers.end(),
+                          std::back_inserter(existingLayers));
+
+    // Layers to remove -> difference between currentLayers and requiredLayers
+    std::vector<Qt3DRender::QLayer *> layersToRemove;
+    std::set_difference(currentLayers.begin(), currentLayers.end(),
+                        requiredLayers.begin(), requiredLayers.end(),
+                        std::back_inserter(layersToRemove));
+
+    // Layers to add -> different between requiredLayers and existingLayers
+    std::vector<Qt3DRender::QLayer *> layersToAdd;
+    std::set_difference(requiredLayers.begin(), requiredLayers.end(),
+                        existingLayers.begin(), existingLayers.end(),
+                        std::back_inserter(layersToAdd));
+
+    for (Qt3DRender::QLayer *layerToRemove : layersToRemove)
+        m_frameGraph->removeLayer(layerToRemove);
+    for (Qt3DRender::QLayer *layerToAdd : layersToAdd)
+        m_frameGraph->addLayer(layerToAdd);
+}
+
+void View3DScene::setLayerNames(const QStringList &layerNames)
+{
+    if (layerNames != m_layerNames) {
+        m_layerNames = layerNames;
+        emit layerNamesChanged(m_layerNames);
+
+        if (isLoaded())
+            retrieveAndSetLayers();
+    }
+}
+
 void View3DScene::onSceneLoaded()
 {
     retrieveAndSetCamera();
+    retrieveAndSetLayers();
 
     if (m_activeScene) {
         // Add resources from the ActiveScene
@@ -785,6 +855,7 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
         // Set empty sources / camera to force a scene reset
         setSource(QUrl());
         setCameraName(QString());
+        setLayerNames({});
 
         if (m_activeScene) {
             // Ensure we parent the scene to a valid QNode so that resources
@@ -805,9 +876,11 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
 
             setSource(m_activeScene->source());
             setCameraName(m_activeScene->cameraName());
+            setLayerNames(m_activeScene->layerNames());
 
             QObject::connect(m_activeScene, &SceneConfiguration::sourceChanged, this, &View3DScene::setSource);
             QObject::connect(m_activeScene, &SceneConfiguration::cameraNameChanged, this, &View3DScene::setCameraName);
+            QObject::connect(m_activeScene, &SceneConfiguration::layerNamesChanged, this, &View3DScene::setLayerNames);
 
             // ActiveScene resources (animations, transformTrackers ....) will be loaded
             // Once the scene will have been loaded

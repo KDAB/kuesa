@@ -113,6 +113,7 @@ Scene3D {
     property alias placeholderTrackers: sceneConfiguration.placeholderTrackers
     property list<Kuesa.View> views
     property alias reflectionPlaneName: scene.reflectionPlaneName
+    property alias layerNames: sceneConfiguration.layerNames
     default property alias children: scene.data
 
     signal loadingDone()

@@ -63,6 +63,7 @@ class KUESAUTILS_SHARED_EXPORT View3DScene : public Kuesa::SceneEntity
     Q_PROPERTY(bool asynchronous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
     Q_PROPERTY(KuesaUtils::SceneConfiguration *activeScene READ activeScene WRITE setActiveScene NOTIFY activeSceneChanged)
     Q_PROPERTY(QString reflectionPlaneName READ reflectionPlaneName WRITE setReflectionPlaneName NOTIFY reflectionPlaneNameChanged)
+    Q_PROPERTY(QStringList layerNames READ layerNames NOTIFY layerNamesChanged)
 public:
     explicit View3DScene(Qt3DCore::QNode *parent = nullptr);
     ~View3DScene();
@@ -71,6 +72,7 @@ public:
     Kuesa::ForwardRenderer *frameGraph() const { return m_frameGraph; }
     QUrl source() const;
     QString cameraName() const;
+    QStringList layerNames() const;
     bool showDebugOverlay() const;
     QSize screenSize() const;
     bool asynchronous() const;
@@ -113,11 +115,14 @@ Q_SIGNALS:
     void asynchronousChanged(bool asynchronous);
     void activeSceneChanged(SceneConfiguration *activeScene);
     void reflectionPlaneNameChanged(const QString &reflectionPlaneName);
+    void layerNamesChanged(const QStringList &layerNames);
 
 private:
     void setSource(const QUrl &source);
     void setCameraName(const QString &cameraName);
+    void setLayerNames(const QStringList &layerNames);
     void retrieveAndSetCamera();
+    void retrieveAndSetLayers();
 
     void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);
@@ -140,6 +145,7 @@ private:
     Kuesa::GLTF2Importer *m_importer;
     Kuesa::ForwardRenderer *m_frameGraph;
     QString m_cameraName;
+    QStringList m_layerNames;
     std::vector<Kuesa::AnimationPlayer *> m_animations;
     std::vector<Kuesa::TransformTracker *> m_transformTrackers;
     std::vector<Kuesa::PlaceholderTracker *> m_placeholderTrackers;

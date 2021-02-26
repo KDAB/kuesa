@@ -789,6 +789,79 @@ private Q_SLOTS:
             QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 1UL);
         }
     }
+
+    void checkLayerNames()
+    {
+        // GIVEN
+        KuesaUtils::View3DScene view;
+        QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadedChanged);
+        QSignalSpy layerNamesChangedSpy(&view, &KuesaUtils::View3DScene::layerNamesChanged);
+
+        QVERIFY(loadedSpy.isValid());
+        QVERIFY(layerNamesChangedSpy.isValid());
+
+        {
+            // WHEN
+            KuesaUtils::SceneConfiguration scene;
+            scene.setCameraName(QStringLiteral("Camera_Orientation"));
+            scene.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+
+            view.setActiveScene(&scene);
+            loadedSpy.wait();
+
+            // WHEN
+            // Owned by collection
+            Qt3DRender::QLayer *layer1 = new Qt3DRender::QLayer;
+            Qt3DRender::QLayer *layer2 = new Qt3DRender::QLayer;
+            Qt3DRender::QLayer *layer3 = new Qt3DRender::QLayer;
+
+            view.layers()->add(QStringLiteral("layer1"), layer1);
+            view.layers()->add(QStringLiteral("layer2"), layer2);
+            view.layers()->add(QStringLiteral("layer3"), layer3);
+
+            // THEN
+            QCOMPARE(view.layers()->size(), 3);
+            QCOMPARE(view.frameGraph()->layers().size(), size_t(0));
+            QCOMPARE(layerNamesChangedSpy.count(), 0);
+
+            // WHEN -> Add layer
+            QStringList names = { QStringLiteral("layer2") };
+            scene.setLayerNames(names);
+
+            // THEN
+            QCOMPARE(layerNamesChangedSpy.count(), 1);
+            QCOMPARE(view.layerNames(), names);
+            QCOMPARE(view.frameGraph()->layers().size(), size_t(1));
+            QCOMPARE(view.frameGraph()->layers().front(), layer2);
+
+            // WHEN -> Add and preserve existing
+            names = QStringList { QStringLiteral("layer2"), QStringLiteral("layer3") };
+            scene.setLayerNames(names);
+
+            // THEN
+            QCOMPARE(layerNamesChangedSpy.count(), 2);
+            QCOMPARE(view.layerNames(), names);
+            QCOMPARE(view.frameGraph()->layers().size(), size_t(2));
+            QCOMPARE(view.frameGraph()->layers().front(), layer2);
+            QCOMPARE(view.frameGraph()->layers().back(), layer3);
+
+            // WHEN -> Remove and Add and Preserve
+            names = QStringList { QStringLiteral("layer1"), QStringLiteral("layer3") };
+            scene.setLayerNames(names);
+
+            // THEN
+            QCOMPARE(layerNamesChangedSpy.count(), 3);
+            QCOMPARE(view.layerNames(), names);
+            QCOMPARE(view.frameGraph()->layers().size(), size_t(2));
+            QCOMPARE(view.frameGraph()->layers().front(), layer3);
+            QCOMPARE(view.frameGraph()->layers().back(), layer1);
+        }
+
+        // THEN
+        QCOMPARE(layerNamesChangedSpy.count(), 4);
+        QCOMPARE(view.layerNames(), {});
+        QCOMPARE(view.frameGraph()->layers().size(), size_t(0));
+    }
 };
 
 QTEST_MAIN(tst_View3DScene)
