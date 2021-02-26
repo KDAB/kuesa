@@ -243,6 +243,13 @@ GuidedDrillingScreenController::Bit GuidedDrillingScreenController::bit() const
     return m_bit;
 }
 
+std::vector<int> GuidedDrillingScreenController::filteredBits() const
+{
+    std::vector<int> bits;
+    std::transform(std::begin(m_filteredBits), std::end(m_filteredBits), std::back_inserter(bits), [](Bit bit) { return int(bit); });
+    return bits;
+}
+
 void GuidedDrillingScreenController::setMode(GuidedDrillingScreenController::Mode mode)
 {
     if (mode == m_mode)
@@ -315,6 +322,61 @@ GuidedDrillingScreenController::Step GuidedDrillingScreenController::reset()
     syncViewToStep(lastStep);
 
     return m_currentStep;
+}
+
+QString GuidedDrillingScreenController::bitName(Bit bit)
+{
+    switch (bit) {
+    case Bit::None:
+        return QLatin1String("");
+
+    case Bit::Drill1:
+        return QStringLiteral("Metal drill 1");
+    case Bit::Drill2:
+        return QStringLiteral("Metal drill 2");
+    case Bit::Drill3:
+        return QStringLiteral("Wood drill 1");
+    case Bit::Drill4:
+        return QStringLiteral("Wood drill 2");
+    case Bit::Drill5:
+        return QStringLiteral("Concrete drill 1");
+    case Bit::Drill6:
+        return QStringLiteral("Concrete drill 2");
+
+    case Bit::ScrewHex:
+        return QStringLiteral("Hex");
+    case Bit::ScrewHexMedium:
+        return QStringLiteral("Medium hex");
+    case Bit::ScrewHexSmall:
+        return QStringLiteral("Small hex");
+    case Bit::ScrewHexTiny:
+        return QStringLiteral("Tiny hex");
+
+    case Bit::ScrewTorx:
+        return QStringLiteral("Torx");
+    case Bit::ScrewTorxMedium:
+        return QStringLiteral("Medium Torx");
+    case Bit::ScrewTorxSmall:
+        return QStringLiteral("Small Torx");
+    case Bit::ScrewTorxTiny:
+        return QStringLiteral("Tiny Torx");
+
+    case Bit::ScrewPhilips:
+        return QStringLiteral("Philips");
+    case Bit::ScrewPhilipsMedium:
+        return QStringLiteral("Medium Philips");
+    case Bit::ScrewPhilipsSmall:
+        return QStringLiteral("Small Philips");
+
+    case Bit::ScrewFlat:
+        return QStringLiteral("Flat");
+    case Bit::ScrewFlatMedium:
+        return QStringLiteral("Medium flat");
+    case Bit::ScrewFlatSmall:
+        return QStringLiteral("Small flat");
+    }
+
+    Q_UNREACHABLE();
 }
 
 void GuidedDrillingScreenController::loadDrillBit()
@@ -477,8 +539,7 @@ void GuidedDrillingScreenController::addObjectPickersOnBit()
 
 void GuidedDrillingScreenController::filterBits()
 {
-    // C++20: std::span
-    const auto filteredBits = [&]() -> std::vector<Bit> {
+    m_filteredBits = [&]() -> std::vector<Bit> {
         switch (m_mode) {
         case Mode::None:
             return {bits.cbegin(), bits.cend()};
@@ -501,6 +562,7 @@ void GuidedDrillingScreenController::filterBits()
 
         Q_UNREACHABLE();
     }();
+    Q_EMIT filteredBitsChanged();
 
     Kuesa::SceneEntity *sceneEntity = sceneConfiguration()->sceneEntity();
     if (!sceneEntity)
@@ -511,7 +573,7 @@ void GuidedDrillingScreenController::filterBits()
         drillBit->setEnabled(false);
     }
 
-    for (const auto bit : filteredBits) {
+    for (const auto bit : m_filteredBits) {
         Qt3DCore::QEntity *drillBit = sceneEntity->entity(gltfBitName(bit));
         drillBit->setEnabled(true);
     }

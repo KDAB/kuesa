@@ -229,6 +229,23 @@ Item {
                         font.pointSize: 20
                     }
 
+                    ComboBox {
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: 250
+
+                        model: Array(...controller.filteredBits)
+
+                        delegate: ItemDelegate {
+                            width: parent.width
+                            text: controller.bitName(modelData)
+                        }
+
+                        displayText: controller.bitName(currentValue)
+
+                        onActivated: (index) => controller.bit = model[index]
+                        currentIndex: indexOfValue(controller.bit)
+                    }
+
                     RowLayout {
                         Layout.alignment: Qt.AlignBottom
                         Button {

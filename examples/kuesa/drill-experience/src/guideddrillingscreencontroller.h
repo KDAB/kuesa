@@ -38,6 +38,7 @@ class GuidedDrillingScreenController : public AbstractScreenController
     Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
     Q_PROPERTY(MaterialType material READ material WRITE setMaterial NOTIFY materialChanged)
     Q_PROPERTY(Bit bit READ bit WRITE setBit NOTIFY bitChanged)
+    Q_PROPERTY(std::vector<int> filteredBits READ filteredBits NOTIFY filteredBitsChanged)
 
 public:
 
@@ -102,6 +103,7 @@ public:
     Mode mode() const;
     MaterialType material() const;
     Bit bit() const;
+    std::vector<int> filteredBits() const;
 
     void setMode(Mode mode);
     void setMaterial(MaterialType material);
@@ -111,17 +113,21 @@ public:
     Q_INVOKABLE Step previousStep();
     Q_INVOKABLE Step reset();
 
+    Q_INVOKABLE QString bitName(Bit bit);
+
 signals:
     void currentStepChanged();
     void modeChanged();
     void materialChanged();
     void bitChanged();
+    void filteredBitsChanged();
 
 private:
     Step m_currentStep = ModeSelection;
     Mode m_mode = Mode::None;
     MaterialType m_material = MaterialType::None;
     Bit m_bit = Bit::None;
+    std::vector<Bit> m_filteredBits;
 
     std::vector<Step> m_history;
 
