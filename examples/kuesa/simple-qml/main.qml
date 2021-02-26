@@ -47,7 +47,22 @@ Item {
         // showDebugOverlay: true
 
         source: "qrc:/car.gltf"
-        camera: "CamSweep_Orientation"
+
+        views: [
+            KuesaUtils.ViewConfiguration {
+                cameraName: "CamSweep_Orientation"
+                transformTrackers: [
+                    Kuesa.TransformTracker { id: motorTracker; name: "TriggerMotorInfo" },
+                    Kuesa.TransformTracker { id: motorEntityTracker; name: "MotorBlock" }
+                ]
+                clearColor: "white"
+            },
+            KuesaUtils.ViewConfiguration {
+                cameraName: "CamDefault_Orientation"
+                viewportRect: Qt.rect(0.8,0.05,0.15, 0.15)
+                clearColor: "white"
+            }
+        ]
 
         // Adding animation
         property bool running: true
@@ -62,10 +77,6 @@ Item {
             Kuesa.AnimationPlayer { name: "SweepCamPitchAction"; loops: Kuesa.AnimationPlayer.Infinite; running: scene3D.running }
         ]
 
-        transformTrackers: [
-            Kuesa.TransformTracker { id: motorTracker; name: "TriggerMotorInfo" },
-            Kuesa.TransformTracker { id: motorEntityTracker; name: "MotorBlock" }
-        ]
 
         Kuesa.QuickSceneMaterial {
             name: "MatScreen"

@@ -28,6 +28,7 @@
 
 #include <QGuiApplication>
 #include <KuesaUtils/window.h>
+#include <KuesaUtils/viewconfiguration.h>
 
 namespace {
 
@@ -35,7 +36,10 @@ KuesaUtils::SceneConfiguration *prepareScene()
 {
     KuesaUtils::SceneConfiguration *sceneConfiguration = new KuesaUtils::SceneConfiguration;
     sceneConfiguration->setSource(QUrl("qrc:/car.gltf"));
-    sceneConfiguration->setCameraName("CamSweep_Orientation");
+
+    KuesaUtils::ViewConfiguration *mainViewConfiguration = new KuesaUtils::ViewConfiguration;
+    mainViewConfiguration->setCameraName(QStringLiteral("CamSweep_Orientation"));
+    sceneConfiguration->addViewConfiguration(mainViewConfiguration);
 
     // List of animations to play
     const QString animationNames[] = {

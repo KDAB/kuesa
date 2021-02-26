@@ -29,6 +29,7 @@
 #include "usermanualscreencontroller.h"
 #include <Kuesa/View>
 #include <Kuesa/TransformTracker>
+#include <KuesaUtils/viewconfiguration.h>
 
 /*
     Controller for the UserManual screen.
@@ -49,13 +50,25 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
 
     KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
     configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
-    configuration->setCameraName(QStringLiteral("CamOrbitCenter.CamOrbit"));
     setSceneConfiguration(configuration);
 
+    // Views
+    m_mainViewConfiguration = new KuesaUtils::ViewConfiguration;
+    m_mainViewConfiguration->setClearColor(QColor(Qt::transparent));
+    m_mainViewConfiguration->setCameraName(QStringLiteral("CamOrbitCenter.CamOrbit"));
+    m_mainViewConfiguration->setLayerNames({ QStringLiteral("LayerDevice") });
+    configuration->addViewConfiguration(m_mainViewConfiguration);
+
+    m_detailViewConfiguration = new KuesaUtils::ViewConfiguration;
+    m_detailViewConfiguration->setViewportRect({ 0.7f, 0.0f, 0.3f, 0.3f });
+    m_detailViewConfiguration->setClearColor(QColor(Qt::gray));
+    m_detailViewConfiguration->setLayerNames({ QStringLiteral("LayerDevice") });
+
+    // Trackers
     {
         m_triggerTracker = new Kuesa::TransformTracker();
         m_triggerTracker->setName(QStringLiteral("Drill.LABEL_Trigger"));
-        configuration->addTransformTracker(m_triggerTracker);
+        m_mainViewConfiguration->addTransformTracker(m_triggerTracker);
         QObject::connect(m_triggerTracker, &Kuesa::TransformTracker::screenPositionChanged,
                          this, &UserManualScreenController::triggerPositionChanged);
     }
@@ -63,7 +76,7 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
     {
         m_clutchTracker = new Kuesa::TransformTracker();
         m_clutchTracker->setName(QStringLiteral("Drill.LABEL_Clutch"));
-        configuration->addTransformTracker(m_clutchTracker);
+        m_mainViewConfiguration->addTransformTracker(m_clutchTracker);
         QObject::connect(m_clutchTracker, &Kuesa::TransformTracker::screenPositionChanged,
                          this, &UserManualScreenController::clutchPositionChanged);
     }
@@ -71,7 +84,7 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
     {
         m_chuckTracker = new Kuesa::TransformTracker();
         m_chuckTracker->setName(QStringLiteral("Drill.LABEL_Chuck"));
-        configuration->addTransformTracker(m_chuckTracker);
+        m_mainViewConfiguration->addTransformTracker(m_chuckTracker);
         QObject::connect(m_chuckTracker, &Kuesa::TransformTracker::screenPositionChanged,
                          this, &UserManualScreenController::chuckPositionChanged);
     }
@@ -79,7 +92,7 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
     {
         m_directionSwitchTracker = new Kuesa::TransformTracker();
         m_directionSwitchTracker->setName(QStringLiteral("Drill.LABEL_DirSwitch"));
-        configuration->addTransformTracker(m_directionSwitchTracker);
+        m_mainViewConfiguration->addTransformTracker(m_directionSwitchTracker);
         QObject::connect(m_directionSwitchTracker, &Kuesa::TransformTracker::screenPositionChanged,
                          this, &UserManualScreenController::directionSwitchPositionChanged);
     }
@@ -87,7 +100,7 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
     {
         m_batteryPackTracker = new Kuesa::TransformTracker();
         m_batteryPackTracker->setName(QStringLiteral("Drill.LABEL_Battery"));
-        configuration->addTransformTracker(m_batteryPackTracker);
+        m_mainViewConfiguration->addTransformTracker(m_batteryPackTracker);
         QObject::connect(m_batteryPackTracker, &Kuesa::TransformTracker::screenPositionChanged,
                          this, &UserManualScreenController::batteryPackPositionChanged);
     }
@@ -122,34 +135,6 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
         configuration->addAnimationPlayer(m_toolInOutAnimationPlayer);
     }
 
-    // Views
-    {
-        m_mainView = new Kuesa::View;
-        m_mainView->setClearColor(QColor(Qt::transparent));
-        addView(m_mainView);
-
-        m_detailView = new Kuesa::View;
-        m_detailView->setViewportRect({ 0.7f, 0.0f, 0.3f, 0.3f });
-        m_detailView->setClearColor(QColor(Qt::gray));
-    }
-
-    // Scene Set up once SceneEnity is available for collection lookups
-    // TO DO: Cleans this up with improved SceneConfiguration API KUE-1148
-    QObject::connect(configuration, &KuesaUtils::SceneConfiguration::loadingDone, this, [this] {
-        KuesaUtils::SceneConfiguration *configuration = sceneConfiguration();
-        Kuesa::SceneEntity *sceneEntity = configuration->sceneEntity();
-        if (sceneEntity) {
-            if (m_mainView->layers().empty()) {
-                Qt3DRender::QLayer *drillLayer = sceneEntity->layer(QStringLiteral("LayerDevice"));
-                m_mainView->addLayer(drillLayer);
-                m_detailView->addLayer(drillLayer);
-            }
-            if (!m_mainView->camera()) {
-                m_mainView->setCamera(sceneEntity->camera(QStringLiteral("CamOrbitCenter.CamOrbit")));
-            }
-        }
-    });
-
     QObject::connect(configuration, &KuesaUtils::SceneConfiguration::unloadingDone, this, [this] {
         setSelectedPart(NoPartSelected);
     });
@@ -160,11 +145,11 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
 
 UserManualScreenController::~UserManualScreenController()
 {
-    // We own the views if they are not parented to the FrameGraph
-    if (m_mainView && !m_mainView->parent())
-        delete m_mainView.data();
-    if (m_detailView && !m_detailView->parent())
-        delete m_detailView.data();
+    // We own the view configurations if they are not parented
+    if (m_mainViewConfiguration && !m_mainViewConfiguration->parent())
+        delete m_mainViewConfiguration;
+    if (m_detailViewConfiguration && !m_detailViewConfiguration->parent())
+        delete m_detailViewConfiguration;
 }
 
 void UserManualScreenController::playAnimationBackAndForth(Kuesa::AnimationPlayer *player, int delay)
@@ -284,18 +269,12 @@ void UserManualScreenController::updateSceneConfiguration()
 void UserManualScreenController::showDetailView(const QString &cameraName)
 {
     KuesaUtils::SceneConfiguration *conf = sceneConfiguration();
-    Kuesa::SceneEntity *sceneEntity = conf->sceneEntity();
-
-    if (sceneEntity) {
-        Qt3DRender::QCamera *camera = sceneEntity->camera(cameraName);
-        if (camera)
-            m_detailView->setCamera(camera);
-    }
-
-    addView(m_detailView);
+    m_detailViewConfiguration->setCameraName(cameraName);
+    conf->addViewConfiguration(m_detailViewConfiguration);
 }
 
 void UserManualScreenController::hideDetailView()
 {
-    removeView(m_detailView);
+    KuesaUtils::SceneConfiguration *conf = sceneConfiguration();
+    conf->removeViewConfiguration(m_detailViewConfiguration);
 }

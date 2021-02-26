@@ -68,14 +68,5 @@ View3D {
     // This provides the source, camera, trackers, animation players...
     activeScene: controller.sceneConfiguration
     //! [1]
-
-    //! [2]
-    // Allow to specify rendering viewports based on current controller
-    ViewportManager {
-        id: viewportManager
-        controller: view3D.controller
-        frameGraph: view3D.frameGraph
-    }
-    //! [2]
 }
 //! [0]

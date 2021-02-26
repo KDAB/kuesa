@@ -29,6 +29,7 @@
 #include "sceneconfiguration.h"
 
 #include <Qt3DCore/private/qnode_p.h>
+#include "viewconfiguration.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -64,29 +65,16 @@ using namespace KuesaUtils;
     The signals \l {KuesaUtils::SceneConfiguration::loadingDone} and \l
     {KuesaUtils::SceneConfiguration::unloadingDone} can be used to watch which
     state the SceneConfiguration is in and react accordingly.
+
+    \l {KuesaUtils::SceneConfiguration} can also specify different viewports for
+    showing different parts of a glTF2 scene at the same moment in time. This is
+    done by adding or removing \l {KuesaUtils::ViewConfiguration}.
 */
 
 /*!
     \property KuesaUtils::SceneConfiguration::source
 
     \brief The source of the glTF file to be loaded.
- */
-
-/*!
-    \property KuesaUtils::SceneConfiguration::cameraName
-
-    \brief The name of the camera asset that should be used to view the scene.
-    If the name references a valid camera, the camera will automatically be
-    set on the ForwardRenderer frameGraph and other internal assets such as
-    \l {Kuesa::TransformTracker}.
- */
-
-/*!
-    \property KuesaUtils::SceneConfiguration::layerNames
-
-    \brief The list of KDAB_layers layer names to be selected for rendering.
-    This allows selecting only a sub part of a glTF 2 model to only render parts
-    that are linked to a specific layer.
  */
 
 /*!
@@ -119,29 +107,16 @@ using namespace KuesaUtils;
     The signals \l {KuesaUtils::SceneConfiguration::loadingDone} and \l
     {KuesaUtils::SceneConfiguration::unloadingDone} can be used to watch which
     state the SceneConfiguration is in and react accordingly.
+
+    \l {KuesaUtils::SceneConfiguration} can also specify different viewports for
+    showing different parts of a glTF2 scene at the same moment in time. This is
+    done by adding or removing \l {KuesaUtils::ViewConfiguration}.
 */
 
 /*!
     \qmlproperty url KuesaUtils::SceneConfiguration::source
 
     \brief The source of the glTF file to be loaded.
- */
-
-/*!
-    \qmlproperty string KuesaUtils::SceneConfiguration::cameraName
-
-    \brief The name of the camera asset that should be used to view the scene.
-    If the name references a valid camera, the camera will automatically be
-    set on the ForwardRenderer frameGraph and other internal assets such as
-    \l [QML] {Kuesa::TransformTracker}.
- */
-
-/*!
-    \qmlproperty list<string> KuesaUtils::SceneConfiguration::layerNames
-
-    \brief The list of KDAB_layers layer names to be selected for rendering.
-    This allows selecting only a sub part of a glTF 2 model to only render parts
-    that are linked to a specific layer.
  */
 
 SceneConfiguration::SceneConfiguration(Qt3DCore::QNode *parent)
@@ -162,91 +137,45 @@ void SceneConfiguration::setSource(const QUrl &source)
     }
 }
 
-QString SceneConfiguration::cameraName() const
+const std::vector<ViewConfiguration *> &SceneConfiguration::viewConfigurations() const
 {
-    return m_cameraName;
+    return m_viewConfigurations;
 }
 
-QStringList SceneConfiguration::layerNames() const
+void SceneConfiguration::addViewConfiguration(ViewConfiguration *viewConfiguration)
 {
-    return m_layerNames;
-}
-
-void SceneConfiguration::setCameraName(const QString &cameraName)
-{
-    if (cameraName != m_cameraName) {
-        m_cameraName = cameraName;
-        emit cameraNameChanged(m_cameraName);
-    }
-}
-
-void SceneConfiguration::setLayerNames(const QStringList &layerNames)
-{
-    if (layerNames == m_layerNames)
-        return;
-    m_layerNames = layerNames;
-    emit layerNamesChanged(m_layerNames);
-}
-
-void SceneConfiguration::addTransformTracker(TransformTracker *tracker)
-{
-    if (std::find(std::begin(m_trackers), std::end(m_trackers), tracker) == std::end(m_trackers)) {
+    if (std::find(std::begin(m_viewConfigurations), std::end(m_viewConfigurations), viewConfiguration) == std::end(m_viewConfigurations)) {
         Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-        d->registerDestructionHelper(tracker, &SceneConfiguration::removeTransformTracker, m_trackers);
-        if (tracker->parentNode() == nullptr)
-            tracker->setParent(this);
-        m_trackers.push_back(tracker);
-        emit transformTrackerAdded(tracker);
+        d->registerDestructionHelper(viewConfiguration, &SceneConfiguration::removeViewConfiguration, m_viewConfigurations);
+        if (viewConfiguration->parentNode() == nullptr)
+            viewConfiguration->setParent(this);
+        m_viewConfigurations.push_back(viewConfiguration);
+        emit viewConfigurationAdded(viewConfiguration);
     }
 }
 
-void SceneConfiguration::removeTransformTracker(TransformTracker *tracker)
+void SceneConfiguration::removeViewConfiguration(ViewConfiguration *viewConfiguration)
 {
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    d->unregisterDestructionHelper(tracker);
-    auto it = std::remove(std::begin(m_trackers), std::end(m_trackers), tracker);
-    if (it != std::end(m_trackers)) {
-        m_trackers.erase(it);
-        emit transformTrackerRemoved(tracker);
+    d->unregisterDestructionHelper(viewConfiguration);
+    auto it = std::remove(std::begin(m_viewConfigurations), std::end(m_viewConfigurations), viewConfiguration);
+    if (it != std::end(m_viewConfigurations)) {
+        m_viewConfigurations.erase(it,
+                                   std::end(m_viewConfigurations));
+        emit viewConfigurationRemoved(viewConfiguration);
     }
 }
 
-void SceneConfiguration::clearTransformTrackers()
+void SceneConfiguration::clearViewConfigurations()
 {
-    const std::vector<Kuesa::TransformTracker *> trackersCopy = m_trackers;
-    for (Kuesa::TransformTracker *t : trackersCopy)
-        removeTransformTracker(t);
+    const std::vector<KuesaUtils::ViewConfiguration *> viewsCopy = m_viewConfigurations;
+    for (auto *v : viewsCopy)
+        removeViewConfiguration(v);
 }
 
-void SceneConfiguration::addPlaceholderTracker(PlaceholderTracker *placeholder)
+const std::vector<AnimationPlayer *> &SceneConfiguration::animationPlayers() const
 {
-    if (std::find(std::begin(m_placeholderTrackers), std::end(m_placeholderTrackers), placeholder) == std::end(m_placeholderTrackers)) {
-        Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-        d->registerDestructionHelper(placeholder, &SceneConfiguration::removePlaceholderTracker, m_placeholderTrackers);
-        if (placeholder->parentNode() == nullptr)
-            placeholder->setParent(this);
-        m_placeholderTrackers.push_back(placeholder);
-        emit placeholderTrackerAdded(placeholder);
-    }
-}
-
-void SceneConfiguration::removePlaceholderTracker(PlaceholderTracker *placeholder)
-{
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    d->unregisterDestructionHelper(placeholder);
-    auto it = std::remove(std::begin(m_placeholderTrackers), std::end(m_placeholderTrackers), placeholder);
-    if (it != std::end(m_placeholderTrackers)) {
-        m_placeholderTrackers.erase(it,
-                                    std::end(m_placeholderTrackers));
-        emit placeholderTrackerRemoved(placeholder);
-    }
-}
-
-void SceneConfiguration::clearPlaceholderTrackers()
-{
-    const std::vector<Kuesa::PlaceholderTracker *> placeholdersCopy = m_placeholderTrackers;
-    for (Kuesa::PlaceholderTracker *p : placeholdersCopy)
-        removePlaceholderTracker(p);
+    return m_animations;
 }
 
 void SceneConfiguration::addAnimationPlayer(AnimationPlayer *animation)

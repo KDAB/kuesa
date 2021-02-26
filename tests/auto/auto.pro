@@ -107,6 +107,7 @@ qtConfig(private_tests) {
         assetkeyparser \
         view3dscene \
         sceneconfiguration \
+        viewconfiguration \
         gaussianblureffect \
         placeholder \
         unliteffect \

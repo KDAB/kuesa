@@ -34,6 +34,7 @@
 #include <Qt3DAnimation/QClock>
 #include <Kuesa/Iro2DiffuseSemProperties>
 #include <QPropertyAnimation>
+#include <KuesaUtils/viewconfiguration.h>
 
 using namespace Qt3DAnimation;
 
@@ -260,8 +261,12 @@ StatusScreenController::StatusScreenController(QObject *parent)
 {
     KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
     configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
-    configuration->setCameraName(QStringLiteral("CamOrbitCenter.CamOrbit"));
-    configuration->setLayerNames({ QStringLiteral("LayerDevice") });
+
+    KuesaUtils::ViewConfiguration *mainViewConfiguration = new KuesaUtils::ViewConfiguration;
+    mainViewConfiguration->setCameraName(QStringLiteral("CamOrbitCenter.CamOrbit"));
+    mainViewConfiguration->setLayerNames({ QStringLiteral("LayerDevice") });
+    mainViewConfiguration->setClearColor(QColor(Qt::transparent));
+    configuration->addViewConfiguration(mainViewConfiguration);
 
     m_status = new DrillStatus(configuration);
 
@@ -290,13 +295,13 @@ StatusScreenController::StatusScreenController(QObject *parent)
 
         m_chuckTracker = new Kuesa::TransformTracker();
         m_chuckTracker->setName(QStringLiteral("Drill.LABEL_Chuck"));
-        configuration->addTransformTracker(m_chuckTracker);
+        mainViewConfiguration->addTransformTracker(m_chuckTracker);
         QObject::connect(m_chuckTracker, &Kuesa::TransformTracker::screenPositionChanged,
                          this, &StatusScreenController::chuckPositionChanged);
 
         m_batteryPackTracker = new Kuesa::TransformTracker();
         m_batteryPackTracker->setName(QStringLiteral("Drill.LABEL_Battery"));
-        configuration->addTransformTracker(m_batteryPackTracker);
+        mainViewConfiguration->addTransformTracker(m_batteryPackTracker);
         QObject::connect(m_batteryPackTracker, &Kuesa::TransformTracker::screenPositionChanged,
                          this, &StatusScreenController::batteryPackPositionChanged);
     }

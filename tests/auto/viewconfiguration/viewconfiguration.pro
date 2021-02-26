@@ -1,9 +1,9 @@
-# imports-utils.pro
+# viewconfiguration.pro
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# Author: Juan Casafranca <juan.casafranca@kdab.com>
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -24,28 +24,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-CXX_MODULE = qml
-TARGET = quickkuesautilsplugin
-TARGETPATH = Kuesa/Utils
-IMPORT_VERSION = 1.3
+TEMPLATE = app
 
-QT += kuesa kuesautils qml quick 3dquick 3dquick_private
+TARGET = tst_viewconfiguration
 
-SOURCES += \
-    kuesautilsplugin.cpp \
-    sceneconfigurationitem.cpp \
-    viewconfigurationitem.cpp
+QT += testlib kuesa kuesautils 3dcore 3drender
 
-HEADERS += \
-    kuesautilsplugin.h \
-    sceneconfigurationitem.h \
-    viewconfigurationitem.h
+CONFIG += testcase
 
-QML_FILES += \
-    View3D.qml
-
-OTHER_FILES += \
-    qmldir \
-    View3D.qml
-
-load(qml_plugin)
+SOURCES += tst_viewconfiguration.cpp

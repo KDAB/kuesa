@@ -98,9 +98,9 @@ private:
     Kuesa::AnimationPlayer *m_drillAnimationPlayer = nullptr;
     Kuesa::AnimationPlayer *m_toolInOutAnimationPlayer = nullptr;
 
-    // Views owned by the FrameGraph if parented, by us otherwise
-    QPointer<Kuesa::View> m_mainView;
-    QPointer<Kuesa::View> m_detailView;
+    // Views owned by the SceneConfiguration if parented, by us otherwise
+    KuesaUtils::ViewConfiguration *m_mainViewConfiguration = nullptr;
+    KuesaUtils::ViewConfiguration *m_detailViewConfiguration = nullptr;
 };
 
 #endif // USERMANUALSCREENCONTROLLER_H

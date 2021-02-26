@@ -29,6 +29,8 @@
 #include <QtTest/QTest>
 #include <QtTest/QSignalSpy>
 #include <KuesaUtils/view3dscene.h>
+#include <KuesaUtils/sceneconfiguration.h>
+#include <KuesaUtils/viewconfiguration.h>
 #include <Kuesa/Iro2PlanarReflectionSemProperties>
 
 class tst_View3DScene : public QObject
@@ -45,7 +47,6 @@ private Q_SLOTS:
         QVERIFY(view.importer());
         QVERIFY(view.frameGraph());
         QCOMPARE(view.source(), QUrl());
-        QCOMPARE(view.cameraName(), QString());
         QCOMPARE(view.showDebugOverlay(), false);
         QCOMPARE(view.screenSize(), QSize());
         QCOMPARE(view.isReady(), false);
@@ -53,9 +54,7 @@ private Q_SLOTS:
         QCOMPARE(view.asynchronous(), false);
         QVERIFY(view.activeScene() == nullptr);
         QVERIFY(view.animationPlayers().empty());
-        QVERIFY(view.transformTrackers().empty());
         QVERIFY(view.reflectionPlaneName().isEmpty());
-        QVERIFY(view.placeholderTrackers().empty());
     }
 
     void checkSetSource()
@@ -63,7 +62,6 @@ private Q_SLOTS:
         // GIVEN
         KuesaUtils::View3DScene view;
         KuesaUtils::SceneConfiguration scene;
-
         QSignalSpy sourceChangedSpy(&view, &KuesaUtils::View3DScene::sourceChanged);
 
         // THEN
@@ -78,26 +76,6 @@ private Q_SLOTS:
         QCOMPARE(view.source(), newSource);
         QCOMPARE(sourceChangedSpy.count(), 1);
         QCOMPARE(view.source(), view.importer()->source());
-    }
-
-    void checkSetCameraName()
-    {
-        // GIVEN
-        KuesaUtils::View3DScene view;
-        KuesaUtils::SceneConfiguration scene;
-        QSignalSpy cameraNameChangedSpy(&view, &KuesaUtils::View3DScene::cameraNameChanged);
-
-        // THEN
-        QVERIFY(cameraNameChangedSpy.isValid());
-
-        // WHEN
-        const QString newCameraName = QStringLiteral("Camera_Orientation");
-        scene.setCameraName(newCameraName);
-        view.setActiveScene(&scene);
-
-        // THEN
-        QCOMPARE(view.cameraName(), newCameraName);
-        QCOMPARE(cameraNameChangedSpy.count(), 1);
     }
 
     void checkSetAutoloadReflections()
@@ -122,6 +100,7 @@ private Q_SLOTS:
         // GIVEN
         KuesaUtils::View3DScene view;
         KuesaUtils::SceneConfiguration scene;
+        KuesaUtils::ViewConfiguration viewConfiguration;
         Kuesa::TransformTracker transformTracker;
         Kuesa::PlaceholderTracker placeholderTracker;
         QSignalSpy screenSizeChangedSpy(&view, &KuesaUtils::View3DScene::screenSizeChanged);
@@ -129,9 +108,10 @@ private Q_SLOTS:
 
         // THEN
         QVERIFY(loadedSpy.isValid());
+        viewConfiguration.addTransformTracker(&transformTracker);
+        viewConfiguration.addPlaceholderTracker(&placeholderTracker);
+        scene.addViewConfiguration(&viewConfiguration);
         scene.setSource(QUrl("file:///" ASSETS "Box.gltf"));
-        scene.addTransformTracker(&transformTracker);
-        scene.addPlaceholderTracker(&placeholderTracker);
 
         view.setActiveScene(&scene);
 
@@ -142,7 +122,6 @@ private Q_SLOTS:
         QCOMPARE(transformTracker.screenSize(), QSize());
         QCOMPARE(placeholderTracker.screenSize(), QSize());
         QVERIFY(screenSizeChangedSpy.isValid());
-        QCOMPARE(view.transformTrackers().size(), 1UL);
 
         // WHEN
         const QSize newScreenSize(512, 512);
@@ -193,11 +172,15 @@ private Q_SLOTS:
         QVERIFY(view.importer()->asynchronous());
     }
 
-    void checkTransformTrackers()
+    void checkTransformTrackersInViews()
     {
         // GIVEN
         KuesaUtils::View3DScene view;
         KuesaUtils::SceneConfiguration scene;
+        KuesaUtils::ViewConfiguration v1;
+        KuesaUtils::ViewConfiguration v2;
+        scene.addViewConfiguration(&v1);
+        scene.addViewConfiguration(&v2);
         QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadingDone);
 
         QVERIFY(loadedSpy.isValid());
@@ -205,38 +188,35 @@ private Q_SLOTS:
         view.setActiveScene(&scene);
         loadedSpy.wait();
 
-        // WHEN
         {
             // WHEN
             Kuesa::TransformTracker t1;
             Kuesa::TransformTracker t2;
 
-            scene.addTransformTracker(&t1);
-            scene.addTransformTracker(&t2);
+            v1.addTransformTracker(&t1);
+            v2.addTransformTracker(&t2);
 
             // THEN
-            QCOMPARE(view.transformTrackers().size(), 2UL);
+            // Both trackers should have an undefined camera since we haven't set any in the ViewConfiguration
+            QCOMPARE(t1.camera(), nullptr);
+            QCOMPARE(t2.camera(), nullptr);
         }
 
         // THEN -> Shouldn't crash and should have remove trackers
-        QCOMPARE(view.transformTrackers().size(), 0UL);
 
         {
             // WHEN
             Kuesa::TransformTracker t1;
             Kuesa::TransformTracker t2;
 
-            scene.addTransformTracker(&t1);
-            scene.addTransformTracker(&t1);
+            v1.addTransformTracker(&t1);
+            view.setScreenSize(QSize(100, 100));
+            v2.addTransformTracker(&t2);
 
             // THEN
-            QCOMPARE(view.transformTrackers().size(), 1UL);
-
-            //WHEN
-            scene.removeTransformTracker(&t2);
-
-            // THEN
-            QCOMPARE(view.transformTrackers().size(), 1UL);
+            // Trackers should have been notified about the new screen size
+            QCOMPARE(t1.screenSize(), QSize(100, 100));
+            QCOMPARE(t2.screenSize(), QSize(100, 100));
         }
 
         {
@@ -244,41 +224,16 @@ private Q_SLOTS:
             Kuesa::TransformTracker t1;
             Kuesa::TransformTracker t2;
 
-            scene.addTransformTracker(&t1);
-            scene.addTransformTracker(&t2);
+            v1.setViewportRect(QRectF(0, 0, 1, 1));
+            v1.addTransformTracker(&t1);
+            v2.addTransformTracker(&t2);
+            v2.setViewportRect(QRectF(0, 0, 0.5, 0.5));
 
             // THEN
-            QCOMPARE(view.transformTrackers().size(), 2UL);
-
-            // WHEN
-            scene.clearTransformTrackers();
-
-            // THEN
-            QCOMPARE(view.transformTrackers().size(), 0UL);
+            // Trackers should have been notified about the new screen size
+            QCOMPARE(t1.viewportRect(), QRectF(0, 0, 1, 1));
+            QCOMPARE(t2.viewportRect(), QRectF(0, 0, 0.5, 0.5));
         }
-
-        // THEN -> Shouldn't crash
-
-        {
-            // WHEN
-            Kuesa::TransformTracker t1;
-            Kuesa::TransformTracker t2;
-
-            scene.addTransformTracker(&t1);
-            scene.addTransformTracker(&t2);
-
-            // THEN
-            QCOMPARE(view.transformTrackers().size(), 2UL);
-
-            // WHEN
-            scene.removeTransformTracker(&t1);
-
-            // THEN
-            QCOMPARE(view.transformTrackers().size(), 1UL);
-            QCOMPARE(view.transformTrackers().front(), &t2);
-        }
-
-        // THEN -> Shouldn't crash
     }
 
     void checkAnimationPlayers()
@@ -366,91 +321,6 @@ private Q_SLOTS:
         // THEN -> Shouldn't crash
     }
 
-    void checkActivePlaceholderTrackers()
-    {
-        // GIVEN
-        KuesaUtils::View3DScene view;
-        KuesaUtils::SceneConfiguration scene;
-        QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadingDone);
-
-        QVERIFY(loadedSpy.isValid());
-        scene.setSource(QUrl("file:///" ASSETS "Box.gltf"));
-        view.setActiveScene(&scene);
-        loadedSpy.wait();
-
-        {
-            // WHEN
-            Kuesa::PlaceholderTracker p1;
-            Kuesa::PlaceholderTracker p2;
-
-            scene.addPlaceholderTracker(&p1);
-            scene.addPlaceholderTracker(&p2);
-
-            // THEN
-            QCOMPARE(view.placeholderTrackers().size(), 2UL);
-        }
-
-        // THEN -> Shouldn't crash and should have removed placeholderTrackerss
-        QCOMPARE(view.placeholderTrackers().size(), 0UL);
-
-        {
-            // WHEN
-            Kuesa::PlaceholderTracker p1;
-            Kuesa::PlaceholderTracker p2;
-
-            scene.addPlaceholderTracker(&p1);
-            scene.addPlaceholderTracker(&p1);
-
-            // THEN
-            QCOMPARE(view.placeholderTrackers().size(), 1UL);
-
-            // WHEN
-            scene.removePlaceholderTracker(&p2);
-            QCOMPARE(view.placeholderTrackers().size(), 1UL);
-        }
-
-        {
-            // WHEN
-            Kuesa::PlaceholderTracker p1;
-            Kuesa::PlaceholderTracker p2;
-
-            scene.addPlaceholderTracker(&p1);
-            scene.addPlaceholderTracker(&p2);
-
-            // THEN
-            QCOMPARE(view.placeholderTrackers().size(), 2UL);
-
-            // WHEN
-            scene.clearPlaceholderTrackers();
-
-            // THEN
-            QCOMPARE(view.placeholderTrackers().size(), 0UL);
-        }
-
-        // THEN -> Shouldn't crash
-
-        {
-            // WHEN
-            Kuesa::PlaceholderTracker p1;
-            Kuesa::PlaceholderTracker p2;
-
-            scene.addPlaceholderTracker(&p1);
-            scene.addPlaceholderTracker(&p2);
-
-            // THEN
-            QCOMPARE(view.placeholderTrackers().size(), 2UL);
-
-            // WHEN
-            scene.removePlaceholderTracker(&p1);
-
-            // THEN
-            QCOMPARE(view.placeholderTrackers().size(), 1UL);
-            QCOMPARE(view.placeholderTrackers().front(), &p2);
-        }
-
-        // THEN -> Shouldn't crash
-    }
-
     void checkAnimationPlayback()
     {
         // GIVEN
@@ -532,14 +402,9 @@ private Q_SLOTS:
 
             Kuesa::AnimationPlayer a1;
             Kuesa::AnimationPlayer a2;
-            Kuesa::TransformTracker t1;
-            Kuesa::TransformTracker t2;
 
             c1.addAnimationPlayer(&a1);
             c1.addAnimationPlayer(&a2);
-            c1.addTransformTracker(&t1);
-            c1.addTransformTracker(&t2);
-            c1.setCameraName(QStringLiteral("Camera_Orientation"));
             c1.setSource(QUrl("file:///" ASSETS "Box.gltf"));
 
             view.setActiveScene(&c1);
@@ -548,17 +413,93 @@ private Q_SLOTS:
             // THEN
             QCOMPARE(view.activeScene(), &c1);
             QCOMPARE(view.animationPlayers().size(), 2UL);
-            QCOMPARE(view.transformTrackers().size(), 2UL);
             QCOMPARE(view.source(), QUrl("file:///" ASSETS "Box.gltf"));
-            QCOMPARE(view.cameraName(), QStringLiteral("Camera_Orientation"));
         }
 
         // THEN
         QVERIFY(view.activeScene() == nullptr);
         QCOMPARE(view.animationPlayers().size(), 0UL);
-        QCOMPARE(view.transformTrackers().size(), 0UL);
         QCOMPARE(view.source(), QUrl());
-        QCOMPARE(view.cameraName(), QString());
+    }
+
+    void checkSceneConfigurationWithViews()
+    {
+        // GIVEN
+        KuesaUtils::View3DScene view;
+        QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadingDone);
+
+        // THEN
+        QVERIFY(loadedSpy.isValid());
+
+        {
+            // WHEN
+            KuesaUtils::SceneConfiguration c1;
+            KuesaUtils::SceneConfiguration c2;
+
+            KuesaUtils::ViewConfiguration v1;
+            v1.setViewportRect({ 0.5f, 0.5f, 1.0f, 1.0f });
+            KuesaUtils::ViewConfiguration v2;
+            v2.setViewportRect({ 0.25f, 0.25f, 1.0f, 1.0f });
+            KuesaUtils::ViewConfiguration v3;
+
+            c1.addViewConfiguration(&v1);
+            c2.addViewConfiguration(&v2);
+            c2.addViewConfiguration(&v3);
+
+            c1.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+            c2.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+
+            view.setActiveScene(&c1);
+            loadedSpy.wait();
+
+            // THEN
+            QCOMPARE(view.activeScene(), &c1);
+            QCOMPARE(view.frameGraph()->views().size(), size_t(1));
+            QCOMPARE(view.frameGraph()->views()[0]->viewportRect(), v1.viewportRect());
+
+            // WHEN
+            view.setActiveScene(&c2);
+            loadedSpy.wait();
+
+            // THEN
+            QCOMPARE(view.activeScene(), &c2);
+            QCOMPARE(view.frameGraph()->views().size(), size_t(2));
+            QCOMPARE(view.frameGraph()->views()[0]->viewportRect(), v2.viewportRect());
+            QCOMPARE(view.frameGraph()->views()[1]->viewportRect(), v3.viewportRect());
+
+            // WHEN
+            view.setActiveScene(&c1);
+            loadedSpy.wait();
+
+            // THEN
+            QCOMPARE(view.activeScene(), &c1);
+            QCOMPARE(view.frameGraph()->views().size(), size_t(1));
+            QCOMPARE(view.frameGraph()->views()[0]->viewportRect(), v1.viewportRect());
+
+            // WHEN
+            view.setActiveScene(&c2);
+            loadedSpy.wait();
+            c2.removeViewConfiguration(&v2);
+
+            // THEN
+            QCOMPARE(view.activeScene(), &c2);
+            QCOMPARE(view.frameGraph()->views().size(), size_t(1));
+            QCOMPARE(view.frameGraph()->views()[0]->viewportRect(), v3.viewportRect());
+
+            // WHEN
+            c2.addViewConfiguration(&v2);
+
+            // THEN
+            QCOMPARE(view.frameGraph()->views().size(), size_t(2));
+            QCOMPARE(view.frameGraph()->views()[0]->viewportRect(), v3.viewportRect());
+            QCOMPARE(view.frameGraph()->views()[1]->viewportRect(), v2.viewportRect());
+        }
+
+        // THEN
+        QVERIFY(view.activeScene() == nullptr);
+        QCOMPARE(view.frameGraph()->views().size(), size_t(0));
+        QCOMPARE(view.animationPlayers().size(), 0UL);
+        QCOMPARE(view.source(), QUrl());
     }
 
     void checkClearAndUnloadOnSceneConfigurationChange()
@@ -569,12 +510,16 @@ private Q_SLOTS:
         {
             // WHEN
             KuesaUtils::SceneConfiguration c1;
+            KuesaUtils::ViewConfiguration v1;
+            c1.addViewConfiguration(&v1);
             KuesaUtils::SceneConfiguration c2;
+            KuesaUtils::ViewConfiguration v2;
+            c2.addViewConfiguration(&v2);
 
-            c1.setCameraName(QStringLiteral("Camera_Orientation"));
+            v1.setCameraName(QStringLiteral("Camera_Orientation"));
             c1.setSource(QUrl("file:///" ASSETS "Box.gltf"));
 
-            c2.setCameraName(QStringLiteral("Camera_Orientation"));
+            v2.setCameraName(QStringLiteral("Camera_Orientation"));
             c2.setSource(QUrl("file:///" ASSETS "Box.gltf"));
 
             QSignalSpy c1LoadingDoneSpy(&c1, &KuesaUtils::SceneConfiguration::loadingDone);
@@ -621,9 +566,7 @@ private Q_SLOTS:
         // THEN
         QVERIFY(view.activeScene() == nullptr);
         QCOMPARE(view.animationPlayers().size(), 0UL);
-        QCOMPARE(view.transformTrackers().size(), 0UL);
         QCOMPARE(view.source(), QUrl());
-        QCOMPARE(view.cameraName(), QString());
     }
 
     void checkSceneConfigurationParenting()
@@ -708,27 +651,30 @@ private Q_SLOTS:
     {
         // GIVEN
         KuesaUtils::View3DScene view;
-        KuesaUtils::SceneConfiguration conf;
+        KuesaUtils::SceneConfiguration sceneConfiguration;
+        KuesaUtils::ViewConfiguration viewConfiguration;
         QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadedChanged);
 
         // THEN
         QVERIFY(loadedSpy.isValid());
 
         // WHEN
-        conf.setCameraName(QStringLiteral("Camera_First"));
-        conf.setSource(QUrl("file:///" ASSETS "simple_cube_multi_cameras.gltf"));
-        view.setActiveScene(&conf);
+        viewConfiguration.setCameraName(QStringLiteral("Camera_First"));
+        sceneConfiguration.setSource(QUrl("file:///" ASSETS "simple_cube_multi_cameras.gltf"));
+        view.setActiveScene(&sceneConfiguration);
+        sceneConfiguration.addViewConfiguration(&viewConfiguration);
         loadedSpy.wait();
 
         // THEN
-        auto *firstCamera = view.frameGraph()->camera();
+        QCOMPARE(view.frameGraph()->views().size(), size_t(1));
+        auto *firstCamera = view.frameGraph()->views()[0]->camera();
         QVERIFY(firstCamera != nullptr);
 
         // WHEN
-        conf.setCameraName(QStringLiteral("Camera_Second"));
+        viewConfiguration.setCameraName(QStringLiteral("Camera_Second"));
 
         // THEN
-        auto *secondCamera = view.frameGraph()->camera();
+        auto *secondCamera = view.frameGraph()->views()[0]->camera();
         QVERIFY(secondCamera != nullptr);
         QVERIFY(firstCamera != secondCamera);
     }
@@ -740,21 +686,23 @@ private Q_SLOTS:
             // GIVEN
             KuesaUtils::View3DScene view;
             KuesaUtils::SceneConfiguration scene;
+            KuesaUtils::ViewConfiguration viewConfiguration;
             QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadedChanged);
 
             // THEN
             QVERIFY(loadedSpy.isValid());
 
             // WHEN
-            scene.setCameraName(QStringLiteral("Camera_Orientation"));
+            viewConfiguration.setCameraName(QStringLiteral("Camera_Orientation"));
             scene.setSource(QUrl("file:///" ASSETS "KDAB_reflection_planes/reflections_scene.gltf"));
+            scene.addViewConfiguration(&viewConfiguration);
             view.setActiveScene(&scene);
             loadedSpy.wait();
 
             // THEN
             QVERIFY(view.isLoaded());
             QCOMPARE(view.reflectionPlanes()->size(), 1);
-            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 0UL);
+            QCOMPARE(view.frameGraph()->views()[0]->reflectionPlanes().size(), 0UL);
 
             Kuesa::Iro2PlanarReflectionSemProperties *material = qobject_cast<Kuesa::Iro2PlanarReflectionSemProperties *>(view.material(QStringLiteral("MaterialReflection")));
             QVERIFY(material);
@@ -763,7 +711,7 @@ private Q_SLOTS:
             view.setReflectionPlaneName(QStringLiteral("ReflectionPlane"));
 
             // THEN
-            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 1UL);
+            QCOMPARE(view.frameGraph()->views()[0]->reflectionPlanes().size(), 1UL);
         }
 
         // Loading with autoloadReflection set to true
@@ -771,6 +719,7 @@ private Q_SLOTS:
             // GIVEN
             KuesaUtils::View3DScene view;
             KuesaUtils::SceneConfiguration scene;
+            KuesaUtils::ViewConfiguration viewConfiguration;
             QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadedChanged);
 
             // THEN
@@ -778,15 +727,16 @@ private Q_SLOTS:
 
             // WHEN
             view.setReflectionPlaneName(QStringLiteral("ReflectionPlane"));
-            scene.setCameraName(QStringLiteral("Camera_Orientation"));
+            viewConfiguration.setCameraName(QStringLiteral("Camera_Orientation"));
             scene.setSource(QUrl("file:///" ASSETS "KDAB_reflection_planes/reflections_scene.gltf"));
+            scene.addViewConfiguration(&viewConfiguration);
             view.setActiveScene(&scene);
             loadedSpy.wait();
 
             // THEN
             QVERIFY(view.isLoaded());
             QCOMPARE(view.reflectionPlanes()->size(), 1);
-            QCOMPARE(view.frameGraph()->reflectionPlanes().size(), 1UL);
+            QCOMPARE(view.frameGraph()->views()[0]->reflectionPlanes().size(), 1UL);
         }
     }
 
@@ -794,22 +744,31 @@ private Q_SLOTS:
     {
         // GIVEN
         KuesaUtils::View3DScene view;
+        KuesaUtils::SceneConfiguration sceneConfiguration;
         QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadedChanged);
-        QSignalSpy layerNamesChangedSpy(&view, &KuesaUtils::View3DScene::layerNamesChanged);
 
         QVERIFY(loadedSpy.isValid());
-        QVERIFY(layerNamesChangedSpy.isValid());
 
         {
             // WHEN
-            KuesaUtils::SceneConfiguration scene;
-            scene.setCameraName(QStringLiteral("Camera_Orientation"));
-            scene.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+            KuesaUtils::ViewConfiguration viewConfiguration1;
+            KuesaUtils::ViewConfiguration viewConfiguration2;
+            sceneConfiguration.addViewConfiguration(&viewConfiguration1);
+            sceneConfiguration.addViewConfiguration(&viewConfiguration2);
+            QSignalSpy layerNames1ChangedSpy(&viewConfiguration1, &KuesaUtils::ViewConfiguration::layerNamesChanged);
+            QSignalSpy layerNames2ChangedSpy(&viewConfiguration2, &KuesaUtils::ViewConfiguration::layerNamesChanged);
 
-            view.setActiveScene(&scene);
-            loadedSpy.wait();
+            // THEN
+            QVERIFY(layerNames1ChangedSpy.isValid());
+            QVERIFY(layerNames2ChangedSpy.isValid());
 
             // WHEN
+            viewConfiguration1.setCameraName(QStringLiteral("Camera_Orientation"));
+            sceneConfiguration.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+
+            view.setActiveScene(&sceneConfiguration);
+            loadedSpy.wait();
+
             // Owned by collection
             Qt3DRender::QLayer *layer1 = new Qt3DRender::QLayer;
             Qt3DRender::QLayer *layer2 = new Qt3DRender::QLayer;
@@ -820,47 +779,79 @@ private Q_SLOTS:
             view.layers()->add(QStringLiteral("layer3"), layer3);
 
             // THEN
+            QCOMPARE(view.frameGraph()->views().size(), size_t(2));
             QCOMPARE(view.layers()->size(), 3);
+            for (Kuesa::View *view : view.frameGraph()->views()) {
+                QCOMPARE(view->layers().size(), size_t(0));
+            }
             QCOMPARE(view.frameGraph()->layers().size(), size_t(0));
-            QCOMPARE(layerNamesChangedSpy.count(), 0);
+            QCOMPARE(layerNames1ChangedSpy.count(), 0);
+            QCOMPARE(layerNames2ChangedSpy.count(), 0);
 
             // WHEN -> Add layer
-            QStringList names = { QStringLiteral("layer2") };
-            scene.setLayerNames(names);
+            QStringList names1 = { QStringLiteral("layer2") };
+            QStringList names2 = { QStringLiteral("layer2"), QStringLiteral("layer3") };
+            viewConfiguration1.setLayerNames(names1);
+            viewConfiguration2.setLayerNames(names2);
 
             // THEN
-            QCOMPARE(layerNamesChangedSpy.count(), 1);
-            QCOMPARE(view.layerNames(), names);
-            QCOMPARE(view.frameGraph()->layers().size(), size_t(1));
-            QCOMPARE(view.frameGraph()->layers().front(), layer2);
+            QCOMPARE(layerNames1ChangedSpy.count(), 1);
+            QCOMPARE(layerNames2ChangedSpy.count(), 1);
+            QCOMPARE(viewConfiguration1.layerNames(), names1);
+            QCOMPARE(viewConfiguration2.layerNames(), names2);
+
+            // View0 should contain layer2
+            {
+                auto view0 = view.frameGraph()->views()[0];
+                auto it2 = std::find(view0->layers().begin(), view0->layers().end(), layer2);
+                QVERIFY(it2 != view0->layers().end());
+            }
+
+            // View1 should contain layer2 and layer3
+            {
+                auto view1 = view.frameGraph()->views()[1];
+                auto it2 = std::find(view1->layers().begin(), view1->layers().end(), layer2);
+                auto it3 = std::find(view1->layers().begin(), view1->layers().end(), layer3);
+                QVERIFY(it2 != view1->layers().end());
+                QVERIFY(it3 != view1->layers().end());
+            }
 
             // WHEN -> Add and preserve existing
-            names = QStringList{ QStringLiteral("layer2"), QStringLiteral("layer3") };
-            scene.setLayerNames(names);
+            names1 = QStringList{ QStringLiteral("layer2"), QStringLiteral("layer3") };
+            viewConfiguration1.setLayerNames(names1);
 
             // THEN
-            QCOMPARE(layerNamesChangedSpy.count(), 2);
-            QCOMPARE(view.layerNames(), names);
-            QCOMPARE(view.frameGraph()->layers().size(), size_t(2));
-            QCOMPARE(view.frameGraph()->layers().front(), layer2);
-            QCOMPARE(view.frameGraph()->layers().back(), layer3);
+            QCOMPARE(layerNames1ChangedSpy.count(), 2);
+            QCOMPARE(viewConfiguration1.layerNames(), names1);
+            // View0 should now contain layer2 and layer3
+            {
+                auto view0 = view.frameGraph()->views()[0];
+                auto it2 = std::find(view0->layers().begin(), view0->layers().end(), layer2);
+                auto it3 = std::find(view0->layers().begin(), view0->layers().end(), layer3);
+                QVERIFY(it2 != view0->layers().end());
+                QVERIFY(it3 != view0->layers().end());
+            }
 
             // WHEN -> Remove and Add and Preserve
-            names = QStringList{ QStringLiteral("layer1"), QStringLiteral("layer3") };
-            scene.setLayerNames(names);
+            names1 = QStringList{ QStringLiteral("layer1"), QStringLiteral("layer3") };
+            viewConfiguration1.setLayerNames(names1);
 
             // THEN
-            QCOMPARE(layerNamesChangedSpy.count(), 3);
-            QCOMPARE(view.layerNames(), names);
-            QCOMPARE(view.frameGraph()->layers().size(), size_t(2));
-            QCOMPARE(view.frameGraph()->layers().front(), layer3);
-            QCOMPARE(view.frameGraph()->layers().back(), layer1);
+            QCOMPARE(layerNames1ChangedSpy.count(), 3);
+            QCOMPARE(viewConfiguration1.layerNames(), names1);
+            // View0 should now contain layer1 and layer3
+            {
+                auto view0 = view.frameGraph()->views()[0];
+                auto it1 = std::find(view0->layers().begin(), view0->layers().end(), layer1);
+                auto it3 = std::find(view0->layers().begin(), view0->layers().end(), layer3);
+                QVERIFY(it1 != view0->layers().end());
+                QVERIFY(it3 != view0->layers().end());
+            }
         }
 
         // THEN
-        QCOMPARE(layerNamesChangedSpy.count(), 4);
-        QCOMPARE(view.layerNames(), {});
-        QCOMPARE(view.frameGraph()->layers().size(), size_t(0));
+        // ViewConfigurations are destroyed and framegraph shouldn't contain views
+        QCOMPARE(view.frameGraph()->views().size(), size_t(0));
     }
 };
 

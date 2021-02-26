@@ -31,6 +31,7 @@
 #include <Kuesa/View>
 #include <Qt3DRender/QObjectPicker>
 #include <Qt3DRender/QPickEvent>
+#include <KuesaUtils/viewconfiguration.h>
 
 namespace {
 using Bit = GuidedDrillingScreenController::Bit;
@@ -162,7 +163,11 @@ GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
 {
     KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
     configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
-    configuration->setCameraName(QStringLiteral("CamTransition"));
+
+    KuesaUtils::ViewConfiguration *mainViewConfiguration = new KuesaUtils::ViewConfiguration;
+    mainViewConfiguration->setCameraName(QStringLiteral("CamTransition"));
+    mainViewConfiguration->setClearColor(QColor(Qt::transparent));
+    configuration->addViewConfiguration(mainViewConfiguration);
 
     m_drillAnimation = new Kuesa::AnimationPlayer();
     m_drillAnimation->setClip(QStringLiteral("AnimDrillCW"));
