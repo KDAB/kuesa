@@ -137,6 +137,12 @@ private:
     Kuesa::AnimationPlayer *m_drillInsertAnimation = nullptr;
     Kuesa::AnimationPlayer *m_drillRemoveAnimation = nullptr;
 
+    Kuesa::AnimationPlayer *m_cameraTransitionAnimationSideToBit = nullptr;
+    Kuesa::AnimationPlayer *m_cameraTransitionAnimationBitToChuck = nullptr;
+    Kuesa::AnimationPlayer *m_cameraTransitionAnimationChuckToRear = nullptr;
+    Kuesa::AnimationPlayer *m_cameraTransitionAnimationRearToTrigger = nullptr;
+    Kuesa::AnimationPlayer *m_cameraTransitionAnimationTriggerToSide = nullptr;
+
     // Weak pointers
     Qt3DCore::QEntity *m_insertedDrillBit = nullptr;
     Qt3DCore::QEntity *m_originalDrillBitParent = nullptr;
@@ -144,7 +150,7 @@ private:
 
     void loadDrillBit();
     void addObjectPickersOnBit();
-    void syncViewToStep();
+    void syncViewToStep(Step previousStep);
     void filterBits();
 };
 

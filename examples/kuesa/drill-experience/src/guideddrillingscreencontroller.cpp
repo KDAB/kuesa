@@ -162,7 +162,7 @@ GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
 {
     KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
     configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
-    configuration->setCameraName(QStringLiteral("CamOrbitCenter.CamOrbit"));
+    configuration->setCameraName(QStringLiteral("CamTransition"));
 
     m_drillAnimation = new Kuesa::AnimationPlayer();
     m_drillAnimation->setClip(QStringLiteral("AnimDrillCW"));
@@ -179,11 +179,31 @@ GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
     m_drillRemoveAnimation = new Kuesa::AnimationPlayer();
     m_drillRemoveAnimation->setClip(QStringLiteral("AnimToolOut"));
 
+    m_cameraTransitionAnimationSideToBit = new Kuesa::AnimationPlayer();
+    m_cameraTransitionAnimationSideToBit->setClip(QStringLiteral("AnimTransition01"));
+
+    m_cameraTransitionAnimationBitToChuck = new Kuesa::AnimationPlayer();
+    m_cameraTransitionAnimationBitToChuck->setClip(QStringLiteral("AnimTransition02"));
+
+    m_cameraTransitionAnimationChuckToRear = new Kuesa::AnimationPlayer();
+    m_cameraTransitionAnimationChuckToRear->setClip(QStringLiteral("AnimTransition03"));
+
+    m_cameraTransitionAnimationRearToTrigger = new Kuesa::AnimationPlayer();
+    m_cameraTransitionAnimationRearToTrigger->setClip(QStringLiteral("AnimTransition04"));
+
+    m_cameraTransitionAnimationTriggerToSide = new Kuesa::AnimationPlayer();
+    m_cameraTransitionAnimationTriggerToSide->setClip(QStringLiteral("AnimTransition05"));
+
     configuration->addAnimationPlayer(m_drillAnimation);
     configuration->addAnimationPlayer(m_triggerPressAnimation);
     configuration->addAnimationPlayer(m_directionSwitchAnimation);
     configuration->addAnimationPlayer(m_drillInsertAnimation);
     configuration->addAnimationPlayer(m_drillRemoveAnimation);
+    configuration->addAnimationPlayer(m_cameraTransitionAnimationSideToBit);
+    configuration->addAnimationPlayer(m_cameraTransitionAnimationBitToChuck);
+    configuration->addAnimationPlayer(m_cameraTransitionAnimationChuckToRear);
+    configuration->addAnimationPlayer(m_cameraTransitionAnimationRearToTrigger);
+    configuration->addAnimationPlayer(m_cameraTransitionAnimationTriggerToSide);
 
     setSceneConfiguration(configuration);
 
@@ -191,8 +211,6 @@ GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
     m_insertedDrillBitTranform->setParent(sceneConfiguration()->sceneEntity());
     m_insertedDrillBitTranform->setRotationX(90);
 
-    QObject::connect(this, &GuidedDrillingScreenController::currentStepChanged,
-                     this, &GuidedDrillingScreenController::syncViewToStep);
     QObject::connect(configuration, &KuesaUtils::SceneConfiguration::loadingDone,
                      this, &GuidedDrillingScreenController::addObjectPickersOnBit);
     QObject::connect(configuration, &KuesaUtils::SceneConfiguration::unloadingDone,
@@ -266,6 +284,7 @@ GuidedDrillingScreenController::Step GuidedDrillingScreenController::nextStep()
         m_history.push_back(m_currentStep);
         m_currentStep = findNextStep();
         emit currentStepChanged();
+        syncViewToStep(m_history.back());
     }
     return m_currentStep;
 }
@@ -273,9 +292,11 @@ GuidedDrillingScreenController::Step GuidedDrillingScreenController::nextStep()
 GuidedDrillingScreenController::Step GuidedDrillingScreenController::previousStep()
 {
     if (m_history.size() > 0) {
+        const Step lastStep = m_currentStep;
         m_currentStep = m_history.back();
         m_history.pop_back();
         emit currentStepChanged();
+        syncViewToStep(lastStep);
     }
     return m_currentStep;
 }
@@ -288,8 +309,11 @@ GuidedDrillingScreenController::Step GuidedDrillingScreenController::reset()
     setMode(Mode::None);
     setMaterial(MaterialType::None);
 
+    const Step lastStep = m_currentStep;
     m_currentStep = ModeSelection;
     emit currentStepChanged();
+    syncViewToStep(lastStep);
+
     return m_currentStep;
 }
 
@@ -321,38 +345,108 @@ void GuidedDrillingScreenController::loadDrillBit()
 
 }
 
-void GuidedDrillingScreenController::syncViewToStep()
+namespace {
+
+void launchCameraAnimation(Kuesa::AnimationPlayer *player, bool reversed)
 {
-    KuesaUtils::SceneConfiguration *configuration = sceneConfiguration();
-    switch (currentStep()) {
+    if (!player)
+        return;
+
+    Qt3DAnimation::QClock *c = player->clock();
+
+    // Make sure player has a clock
+    const bool hasClock = c != nullptr;
+    if (!hasClock) {
+        c = new Qt3DAnimation::QClock;
+        player->setClock(c);
+    }
+
+    if (reversed) {
+        c->setPlaybackRate(-1.0f);
+        player->setNormalizedTime(1.0f);
+    } else {
+        c->setPlaybackRate(1.0f);
+        player->setNormalizedTime(0.0f);
+    }
+    player->start();
+}
+
+} // anonymous
+
+void GuidedDrillingScreenController::syncViewToStep(Step previousStep)
+{
+    const bool forward = previousStep < m_currentStep || previousStep == CompletionStep;
+
+    auto forwardAnimationForStep = [this] (Step step) -> Kuesa::AnimationPlayer * {
+        switch (step) {
+        case ModeSelection:
+            return m_cameraTransitionAnimationTriggerToSide;
+        case BitSelection:
+            return m_cameraTransitionAnimationSideToBit;
+        case SetupBit:
+            return m_cameraTransitionAnimationBitToChuck;
+        case SetupDirection:
+            return m_cameraTransitionAnimationChuckToRear;
+        case CompletionStep:
+            return m_cameraTransitionAnimationRearToTrigger;
+        default:
+            return nullptr;
+        }
+    };
+
+    auto backwardAnimationForStep = [this] (Step step) -> Kuesa::AnimationPlayer * {
+        switch (step) {
+        case MaterialSelection:
+            return m_cameraTransitionAnimationSideToBit;
+        case BitSelection:
+            return m_cameraTransitionAnimationBitToChuck;
+        case SetupSpeed:
+            return m_cameraTransitionAnimationChuckToRear;
+        case SetupDirection:
+            return m_cameraTransitionAnimationRearToTrigger;
+        default:
+            return nullptr;
+        }
+    };
+
+    auto animationForStep = [&] (Step step) {
+        if (forward)
+            return forwardAnimationForStep(step);
+        return backwardAnimationForStep(step);
+    };
+
+    // Camera Animations
+    if (m_currentStep != previousStep)
+        launchCameraAnimation(animationForStep(m_currentStep), !forward);
+
+    // Handling of Initial Starting case
+    if (m_currentStep == ModeSelection && previousStep == m_currentStep)
+        m_cameraTransitionAnimationTriggerToSide->run(0.99f, 1.0f);
+
+    // Other animations
+    switch (m_currentStep) {
     case ModeSelection:
-        configuration->setCameraName(QStringLiteral("CamOrbitCenter.CamOrbit"));
         break;
     case MaterialSelection:
-        configuration->setCameraName(QStringLiteral("CamOrbitCenter.CamOrbit"));
         break;
     case BitSelection:
-        configuration->setCameraName(QStringLiteral("CamTools"));
         break;
-    case SetupBit:
-        configuration->setCameraName(QStringLiteral("CamChuck"));
-        m_drillInsertAnimation->restart();
+    case SetupBit: {
+        constexpr int delay = 500;
+        m_drillInsertAnimation->restart(delay);
         break;
+    }
     case SetupClutch:
-        configuration->setCameraName(QStringLiteral("CamChuck"));
         break;
     case SetupSpeed:
-        configuration->setCameraName(QStringLiteral("CamChuck"));
         break;
     case SetupDirection: {
-        configuration->setCameraName(QStringLiteral("CamDirectionSwitch"));
-        constexpr int delay = 750;
+        constexpr int delay = 1250;
         m_directionSwitchAnimation->restart(delay);
         break;
     }
     case CompletionStep: {
-        configuration->setCameraName(QStringLiteral("CamTrigger"));
-        constexpr int delay = 750;
+        constexpr int delay = 1250;
         m_triggerPressAnimation->restart(delay);
         m_drillAnimation->restart(delay);
         break;
