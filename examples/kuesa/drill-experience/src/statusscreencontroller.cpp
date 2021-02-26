@@ -229,6 +229,7 @@ StatusScreenController::StatusScreenController(QObject *parent)
     KuesaUtils::SceneConfiguration *configuration = new KuesaUtils::SceneConfiguration();
     configuration->setSource(QUrl(QStringLiteral("qrc:/drill/drill.gltf")));
     configuration->setCameraName(QStringLiteral("CamOrbitCenter.CamOrbit"));
+    configuration->setLayerNames({ QStringLiteral("LayerDevice") });
 
     m_status = new DrillStatus(configuration);
 
