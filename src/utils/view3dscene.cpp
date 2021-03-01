@@ -40,7 +40,6 @@
 #include <Kuesa/private/kuesa_utils_p.h>
 #include <Qt3DCore/private/qnode_p.h>
 #include <Qt3DCore/private/qabstractnodefactory_p.h>
-#include <Qt3DRender/qrendersettings.h>
 #include <Qt3DInput/qinputsettings.h>
 
 #include <Kuesa/Iro2PlanarReflectionEquiRectProperties>
@@ -104,6 +103,13 @@ Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
 
     \brief Points to the \l {Kuesa::ForwardRenderer} frame graph instance
     wrapped around by the View3DScene.
+ */
+
+/*!
+    \property KuesaUtils::View3DScene::renderSettings
+
+    \brief Points to the \l {Qt3DRender::QRenderSettings} render settings
+    instance wrapped around by the View3DScene.
  */
 
 /*!
@@ -240,6 +246,13 @@ Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
  */
 
 /*!
+    \qmlproperty Qt3DRender::QRenderSettings KuesaUtils::View3DScene::renderSettings
+
+    \brief Points to the \l {Qt3DRender::QRenderSettings} render settings
+    instance wrapped around by the View3DScene.
+ */
+
+/*!
     \qmlproperty url KuesaUtils::View3DScene::source
 
     \brief The source of the glTF file to be loaded.
@@ -326,6 +339,7 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     : Kuesa::SceneEntity(parent)
     , m_importer(new GLTF2Importer(this))
     , m_frameGraph(nullptr)
+    , m_renderSettings(new QRenderSettings)
     , m_activeScene(nullptr)
     , m_ready(false)
     , m_frameCount(0)
@@ -333,11 +347,10 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     m_frameGraph = Qt3DCore::QAbstractNodeFactory::createNode<Kuesa::ForwardRenderer>("ForwardRenderer");
     m_importer->setSceneEntity(this);
 
-    auto renderSettings = new QRenderSettings;
-    renderSettings->setActiveFrameGraph(m_frameGraph);
-    renderSettings->setRenderPolicy(QRenderSettings::OnDemand);
-    renderSettings->pickingSettings()->setPickMethod(QPickingSettings::TrianglePicking);
-    addComponent(renderSettings);
+    m_renderSettings->setActiveFrameGraph(m_frameGraph);
+    m_renderSettings->setRenderPolicy(QRenderSettings::OnDemand);
+    m_renderSettings->pickingSettings()->setPickMethod(QPickingSettings::TrianglePicking);
+    addComponent(m_renderSettings);
     addComponent(new Qt3DInput::QInputSettings);
 
     m_frameAction = new Qt3DLogic::QFrameAction;

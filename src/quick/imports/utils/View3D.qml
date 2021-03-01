@@ -95,6 +95,7 @@ Scene3D {
     readonly property real aspectRatio: width / Math.max(1, height)
     readonly property KuesaUtils.View3DScene scene: scene
     property alias frameGraph: scene.frameGraph
+    property alias renderSettings: scene.renderSettings
     readonly property Entity activeCamera: scene.frameGraph.camera
     readonly property bool loaded: scene.importer.status === Kuesa.GLTF2Importer.Ready
     readonly property bool ready: scene.ready

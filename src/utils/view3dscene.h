@@ -42,6 +42,7 @@
 
 #include <Qt3DAnimation/qclock.h>
 #include <Qt3DLogic/qframeaction.h>
+#include <Qt3DRender/qrendersettings.h>
 
 #include <vector>
 
@@ -54,6 +55,7 @@ class KUESAUTILS_SHARED_EXPORT View3DScene : public Kuesa::SceneEntity
     Q_OBJECT
     Q_PROPERTY(Kuesa::GLTF2Importer *importer READ importer CONSTANT)
     Q_PROPERTY(Kuesa::ForwardRenderer *frameGraph READ frameGraph CONSTANT)
+    Q_PROPERTY(Qt3DRender::QRenderSettings *renderSettings READ renderSettings CONSTANT)
     Q_PROPERTY(QUrl source READ source NOTIFY sourceChanged)
     Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay WRITE setShowDebugOverlay NOTIFY showDebugOverlayChanged)
     Q_PROPERTY(QSize screenSize READ screenSize WRITE setScreenSize NOTIFY screenSizeChanged)
@@ -69,6 +71,7 @@ public:
 
     Kuesa::GLTF2Importer *importer() const { return m_importer; }
     Kuesa::ForwardRenderer *frameGraph() const { return m_frameGraph; }
+    Qt3DRender::QRenderSettings *renderSettings() const { return m_renderSettings; }
     QUrl source() const;
     bool showDebugOverlay() const;
     QSize screenSize() const;
@@ -146,6 +149,7 @@ private:
 
     Kuesa::GLTF2Importer *m_importer;
     Kuesa::ForwardRenderer *m_frameGraph;
+    Qt3DRender::QRenderSettings *m_renderSettings;
     std::vector<Kuesa::AnimationPlayer *> m_animations;
     std::vector<ViewConfigurationResources> m_viewConfigurationsResources;
     QSize m_screenSize;
