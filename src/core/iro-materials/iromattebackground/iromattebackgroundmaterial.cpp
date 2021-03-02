@@ -32,13 +32,11 @@
 #include "iromattebackgroundshaderdata_p.h"
 #include <Qt3DRender/qparameter.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::IroMatteBackgroundMaterial
@@ -101,7 +99,7 @@ void IroMatteBackgroundMaterial::setMaterialProperties(Kuesa::IroMatteBackground
         emit materialPropertiesChanged(materialProperties);
 
         if (m_materialProperties) {
-            QObject::connect(m_materialProperties, &IroMatteBackgroundProperties::matteMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_matteMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &IroMatteBackgroundProperties::matteMapChanged, this, [this](Qt3DRender::QAbstractTexture *t) { m_matteMapParameter->setValue(QVariant::fromValue(t)); });
 
             m_matteMapParameter->setValue(QVariant::fromValue(m_materialProperties->matteMap()));
 

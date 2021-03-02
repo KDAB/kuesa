@@ -29,7 +29,6 @@
 
 #include "iro2glasssemshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -51,7 +50,8 @@ Iro2GlassSemShaderData::Iro2GlassSemShaderData(Qt3DCore::QNode *parent)
     , m_postVertexColor()
     , m_postGain()
     , m_gltfYUp()
-{}
+{
+}
 
 Iro2GlassSemShaderData::~Iro2GlassSemShaderData() = default;
 
@@ -119,7 +119,6 @@ bool Iro2GlassSemShaderData::gltfYUp() const
 {
     return m_gltfYUp;
 }
-
 
 void Iro2GlassSemShaderData::setGlassInnerFilter(const QVector3D &glassInnerFilter)
 {
@@ -224,8 +223,6 @@ void Iro2GlassSemShaderData::setGltfYUp(bool gltfYUp)
     m_gltfYUp = gltfYUp;
     emit gltfYUpChanged(gltfYUp);
 }
-
-
 
 } // namespace Kuesa
 

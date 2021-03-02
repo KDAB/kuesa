@@ -33,7 +33,6 @@
 #include <QtTest/QSignalSpy>
 #include <Kuesa/private/fovadaptor_p.h>
 
-
 class tst_FOVAdaptor : public QObject
 {
     Q_OBJECT

@@ -44,7 +44,6 @@
 using namespace Kuesa;
 using namespace GLTF2Import;
 
-
 class tst_AnimationParser : public QObject
 {
     Q_OBJECT
@@ -224,39 +223,39 @@ private Q_SLOTS:
 
         QTest::addRow("simple_material_target")
                 << QStringLiteral(ASSETS "ext_property_animation_simple_material.json")
-                << QVector<ChannelInfo> {
-                      { 883, { AnimationTarget::Material, 883, QStringLiteral("alphaCutoff") } }
+                << QVector<ChannelInfo>{
+                       { 883, { AnimationTarget::Material, 883, QStringLiteral("alphaCutoff") } }
                    }
                 << true;
         QTest::addRow("simple_to_complex_all_targets")
                 << QStringLiteral(ASSETS "ext_property_animation_simple_to_complex.json")
-                << QVector<ChannelInfo> {
-                        { 26, { AnimationTarget::Node, 1, QStringLiteral("translation") } },
-                        { 25, { AnimationTarget::Node, 2, QStringLiteral("rotation") } },
-                        { 24, { AnimationTarget::Node, 3, QStringLiteral("scale") } },
-                        { 23, { AnimationTarget::Camera, 4, QStringLiteral("orthographic/xmag") } },
-                        { 22, { AnimationTarget::Camera, 5, QStringLiteral("orthographic/ymag") } },
-                        { 21, { AnimationTarget::Camera, 6, QStringLiteral("orthographic/zfar") } },
-                        { 20, { AnimationTarget::Camera, 7, QStringLiteral("orthographic/znear") } },
-                        { 19, { AnimationTarget::Camera, 8, QStringLiteral("perspective/aspectRatio") } },
-                        { 18, { AnimationTarget::Camera, 9, QStringLiteral("perspective/yfov") } },
-                        { 17, { AnimationTarget::Camera, 10, QStringLiteral("perspective/zfar") } },
-                        { 16, { AnimationTarget::Camera, 11, QStringLiteral("perspective/znear") } },
-                        { 15, { AnimationTarget::Material, 12, QStringLiteral("pbrMetallicRoughness/baseColorFactor") } },
-                        { 14, { AnimationTarget::Material, 13, QStringLiteral("pbrMetallicRoughness/metallicFactor") } },
-                        { 13, { AnimationTarget::Material, 14, QStringLiteral("pbrMetallicRoughness/roughnessFactor") } },
-                        { 12, { AnimationTarget::Material, 15, QStringLiteral("alphaCutoff") } },
-                        { 11, { AnimationTarget::Material, 16, QStringLiteral("emissiveFactor") } },
-                        { 10, { AnimationTarget::Material, 17, QStringLiteral("normalTexture/scale") } },
-                        { 9, { AnimationTarget::Material, 18, QStringLiteral("occlusionTexture/strength") } },
-                        { 8, { AnimationTarget::Material, 19, QStringLiteral("extensions/KHR_materials_pbrSpecularGlossiness/diffuseFactor") } },
-                        { 7, { AnimationTarget::Material, 20, QStringLiteral("extensions/KHR_materials_pbrSpecularGlossiness/specularFactor") } },
-                        { 6, { AnimationTarget::Material, 21, QStringLiteral("extensions/KHR_materials_pbrSpecularGlossiness/glossinessFactor") } },
-                        { 5, { AnimationTarget::Light, 22, QStringLiteral("color") } },
-                        { 4, { AnimationTarget::Light, 23, QStringLiteral("intensity") } },
-                        { 3, { AnimationTarget::Light, 24, QStringLiteral("innerConeAngle") } },
-                        { 2, { AnimationTarget::Light, 25, QStringLiteral("outerConeAngle") } },
-                        { 1, { AnimationTarget::Node, 26, QStringLiteral("extensions/AVR_lights_static/strength") } }
+                << QVector<ChannelInfo>{
+                       { 26, { AnimationTarget::Node, 1, QStringLiteral("translation") } },
+                       { 25, { AnimationTarget::Node, 2, QStringLiteral("rotation") } },
+                       { 24, { AnimationTarget::Node, 3, QStringLiteral("scale") } },
+                       { 23, { AnimationTarget::Camera, 4, QStringLiteral("orthographic/xmag") } },
+                       { 22, { AnimationTarget::Camera, 5, QStringLiteral("orthographic/ymag") } },
+                       { 21, { AnimationTarget::Camera, 6, QStringLiteral("orthographic/zfar") } },
+                       { 20, { AnimationTarget::Camera, 7, QStringLiteral("orthographic/znear") } },
+                       { 19, { AnimationTarget::Camera, 8, QStringLiteral("perspective/aspectRatio") } },
+                       { 18, { AnimationTarget::Camera, 9, QStringLiteral("perspective/yfov") } },
+                       { 17, { AnimationTarget::Camera, 10, QStringLiteral("perspective/zfar") } },
+                       { 16, { AnimationTarget::Camera, 11, QStringLiteral("perspective/znear") } },
+                       { 15, { AnimationTarget::Material, 12, QStringLiteral("pbrMetallicRoughness/baseColorFactor") } },
+                       { 14, { AnimationTarget::Material, 13, QStringLiteral("pbrMetallicRoughness/metallicFactor") } },
+                       { 13, { AnimationTarget::Material, 14, QStringLiteral("pbrMetallicRoughness/roughnessFactor") } },
+                       { 12, { AnimationTarget::Material, 15, QStringLiteral("alphaCutoff") } },
+                       { 11, { AnimationTarget::Material, 16, QStringLiteral("emissiveFactor") } },
+                       { 10, { AnimationTarget::Material, 17, QStringLiteral("normalTexture/scale") } },
+                       { 9, { AnimationTarget::Material, 18, QStringLiteral("occlusionTexture/strength") } },
+                       { 8, { AnimationTarget::Material, 19, QStringLiteral("extensions/KHR_materials_pbrSpecularGlossiness/diffuseFactor") } },
+                       { 7, { AnimationTarget::Material, 20, QStringLiteral("extensions/KHR_materials_pbrSpecularGlossiness/specularFactor") } },
+                       { 6, { AnimationTarget::Material, 21, QStringLiteral("extensions/KHR_materials_pbrSpecularGlossiness/glossinessFactor") } },
+                       { 5, { AnimationTarget::Light, 22, QStringLiteral("color") } },
+                       { 4, { AnimationTarget::Light, 23, QStringLiteral("intensity") } },
+                       { 3, { AnimationTarget::Light, 24, QStringLiteral("innerConeAngle") } },
+                       { 2, { AnimationTarget::Light, 25, QStringLiteral("outerConeAngle") } },
+                       { 1, { AnimationTarget::Node, 26, QStringLiteral("extensions/AVR_lights_static/strength") } }
                    }
                 << true;
     }

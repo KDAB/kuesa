@@ -29,7 +29,6 @@
 
 #include "irodiffusehemishaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -53,7 +52,8 @@ IroDiffuseHemiShaderData::IroDiffuseHemiShaderData(Qt3DCore::QNode *parent)
     , m_diffuseGain()
     , m_usesDiffuseMap()
     , m_gltfYUp()
-{}
+{
+}
 
 IroDiffuseHemiShaderData::~IroDiffuseHemiShaderData() = default;
 
@@ -131,7 +131,6 @@ bool IroDiffuseHemiShaderData::gltfYUp() const
 {
     return m_gltfYUp;
 }
-
 
 void IroDiffuseHemiShaderData::setNormalScaling(const QVector3D &normalScaling)
 {
@@ -252,8 +251,6 @@ void IroDiffuseHemiShaderData::setGltfYUp(bool gltfYUp)
     m_gltfYUp = gltfYUp;
     emit gltfYUpChanged(gltfYUp);
 }
-
-
 
 } // namespace Kuesa
 

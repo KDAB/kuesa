@@ -148,7 +148,7 @@ void EffectsStages::clearEffects()
 {
     const std::vector<AbstractPostProcessingEffect *> fXs = m_effects;
 
-    for (AbstractPostProcessingEffect *fx: fXs) {
+    for (AbstractPostProcessingEffect *fx : fXs) {
         Utils::removeAll(m_effects, fx);
         m_effectFGSubtrees.take(fx)->setParent(Q_NODE_NULLPTR);
         // Stop watching for effect destruction
@@ -210,7 +210,7 @@ void EffectsStages::setRenderTargets(Qt3DRender::QRenderTarget *rtA, Qt3DRender:
 
 std::pair<Qt3DRender::QRenderTarget *, Qt3DRender::QRenderTarget *> EffectsStages::renderTargets() const
 {
-    return {m_rt[0], m_rt[1]};
+    return { m_rt[0], m_rt[1] };
 }
 
 void EffectsStages::setDepthTexture(Qt3DRender::QAbstractTexture *depthTexture)
@@ -274,7 +274,7 @@ void EffectsStages::reconfigure()
     if (m_blitRt) {
         m_blitRt->setParent(Q_NODE_NULLPTR);
         if (!m_blitFinalRT) {
-            delete  m_blitRt;
+            delete m_blitRt;
             m_blitRt = nullptr;
         }
     }

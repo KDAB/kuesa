@@ -30,7 +30,6 @@
 #ifndef KUESA_IROGLASSADDSHADERDATA_P_H
 #define KUESA_IROGLASSADDSHADERDATA_P_H
 
-
 //
 //  W A R N I N G
 //  -------------
@@ -128,7 +127,6 @@ private:
     QVector3D m_glassOuterFilter;
     QVector3D m_diffuseInnerFilter;
     QVector3D m_diffuseOuterFilter;
-
 };
 
 } // namespace Kuesa

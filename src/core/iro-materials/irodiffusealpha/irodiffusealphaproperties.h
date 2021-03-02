@@ -36,7 +36,6 @@
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -51,7 +50,7 @@ class KUESASHARED_EXPORT IroDiffuseAlphaProperties : public GLTF2MaterialPropert
     Q_PROPERTY(float postVertexColor READ postVertexColor WRITE setPostVertexColor NOTIFY postVertexColorChanged)
     Q_PROPERTY(float postGain READ postGain WRITE setPostGain NOTIFY postGainChanged)
     Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
     Q_PROPERTY(bool usesReflectionMap READ usesReflectionMap WRITE setUsesReflectionMap NOTIFY usesReflectionMapChanged)
@@ -70,7 +69,7 @@ public:
     float postVertexColor() const;
     float postGain() const;
     float reflectionGain() const;
-    Qt3DRender::QAbstractTexture * reflectionMap() const;
+    Qt3DRender::QAbstractTexture *reflectionMap() const;
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
     bool usesReflectionMap() const;
@@ -85,7 +84,7 @@ public Q_SLOTS:
     void setPostVertexColor(float postVertexColor);
     void setPostGain(float postGain);
     void setReflectionGain(float reflectionGain);
-    void setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap);
+    void setReflectionMap(Qt3DRender::QAbstractTexture *reflectionMap);
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
     void setUsesReflectionMap(bool usesReflectionMap);
@@ -111,11 +110,10 @@ Q_SIGNALS:
 
 private:
     IroDiffuseAlphaShaderData *m_shaderData;
-    Qt3DRender::QAbstractTexture * m_reflectionMap;
-
+    Qt3DRender::QAbstractTexture *m_reflectionMap;
 };
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-Q_DECLARE_METATYPE(Kuesa::IroDiffuseAlphaProperties*)
+Q_DECLARE_METATYPE(Kuesa::IroDiffuseAlphaProperties *)
 #endif // KUESA_IRODIFFUSEALPHAPROPERTIES_H

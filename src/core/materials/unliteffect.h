@@ -108,7 +108,7 @@ private:
     UnlitTechnique *m_unlitGL3Technique;
     UnlitTechnique *m_unlitES3Technique;
     UnlitTechnique *m_unlitES2Technique;
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     UnlitTechnique *m_unlitRHITechnique;
 #endif
     void updateLayersOnTechniques(const QStringList &layers);

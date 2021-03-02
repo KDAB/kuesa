@@ -390,44 +390,44 @@ MetallicRoughnessProperties::MetallicRoughnessProperties(Qt3DCore::QNode *parent
     , m_ambientOcclusionMap(nullptr)
 {
     QObject::connect(this, &GLTF2MaterialProperties::baseColorFactorChanged,
-             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorFactor);
+                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorFactor);
     QObject::connect(this, &GLTF2MaterialProperties::baseColorUsesTexCoord1Changed,
-             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorUsesTexCoord1);
+                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorUsesTexCoord1);
     QObject::connect(this, &GLTF2MaterialProperties::alphaCutoffChanged,
-             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setAlphaCutoff);
+                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setAlphaCutoff);
     QObject::connect(this, &GLTF2MaterialProperties::receivesShadowsChanged,
                      m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setReceivesShadows);
 
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::metallicRoughnessUsesTexCoord1Changed,
-             this, &MetallicRoughnessProperties::metallicRoughnessUsesTexCoord1Changed);
+                     this, &MetallicRoughnessProperties::metallicRoughnessUsesTexCoord1Changed);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::normalUsesTexCoord1Changed,
-             this, &MetallicRoughnessProperties::normalUsesTexCoord1Changed);
+                     this, &MetallicRoughnessProperties::normalUsesTexCoord1Changed);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::aoUsesTexCoord1Changed,
-             this, &MetallicRoughnessProperties::aoUsesTexCoord1Changed);
+                     this, &MetallicRoughnessProperties::aoUsesTexCoord1Changed);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::emissiveUsesTexCoord1Changed,
-             this, &MetallicRoughnessProperties::emissiveUsesTexCoord1Changed);
+                     this, &MetallicRoughnessProperties::emissiveUsesTexCoord1Changed);
 
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::metallicFactorChanged,
-             this, &MetallicRoughnessProperties::metallicFactorChanged);
+                     this, &MetallicRoughnessProperties::metallicFactorChanged);
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::roughnessFactorChanged,
-             this, &MetallicRoughnessProperties::roughnessFactorChanged);
+                     this, &MetallicRoughnessProperties::roughnessFactorChanged);
 
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::normalScaleChanged,
-             this, &MetallicRoughnessProperties::normalScaleChanged);
+                     this, &MetallicRoughnessProperties::normalScaleChanged);
 
     QObject::connect(m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::emissiveFactorChanged,
-             this, &MetallicRoughnessProperties::emissiveFactorChanged);
+                     this, &MetallicRoughnessProperties::emissiveFactorChanged);
 
     QObject::connect(m_baseColorMapTextureTransform, &Kuesa::TextureTransform::matrixChanged,
-             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorMapTextureTransform);
+                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setBaseColorMapTextureTransform);
     QObject::connect(m_metalRoughMapTextureTransform, &Kuesa::TextureTransform::matrixChanged,
-             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setMetalRoughMapTextureTransform);
+                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setMetalRoughMapTextureTransform);
     QObject::connect(m_normalMapTextureTransform, &Kuesa::TextureTransform::matrixChanged,
-             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setNormalMapTextureTransform);
+                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setNormalMapTextureTransform);
     QObject::connect(m_ambientOcclusionMapTextureTransform, &Kuesa::TextureTransform::matrixChanged,
-             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setAmbientOcclusionMapTextureTransform);
+                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setAmbientOcclusionMapTextureTransform);
     QObject::connect(m_emissiveMapTextureTransform, &Kuesa::TextureTransform::matrixChanged,
-             m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setEmissiveMapTextureTransform);
+                     m_metallicRoughnessShaderData, &MetallicRoughnessShaderData::setEmissiveMapTextureTransform);
 }
 
 MetallicRoughnessProperties::~MetallicRoughnessProperties() = default;

@@ -54,7 +54,6 @@
 
 QT_BEGIN_NAMESPACE
 
-
 #if defined(KUESA_DRACO_COMPRESSION)
 namespace draco {
 class PointCloud;
@@ -130,6 +129,7 @@ private:
     Qt3DGeometry::QAttribute *createAttribute(qint32 accessorIndex,
                                               const QString &attributeName,
                                               const QString &semanticName);
+
 private:
     GLTF2Context *m_context;
     QHash<qint32, Qt3DGeometry::QBuffer *> m_qViewBuffers;
@@ -144,7 +144,6 @@ public:
     bool parse(const QJsonArray &meshArray, GLTF2Context *context);
 
 private:
-
     bool geometryFromJSON(const QJsonObject &json,
                           Primitive &primitive);
     bool geometryAttributesFromJSON(const QJsonObject &json,

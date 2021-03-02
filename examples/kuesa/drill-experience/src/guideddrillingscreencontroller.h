@@ -41,7 +41,6 @@ class GuidedDrillingScreenController : public AbstractScreenController
     Q_PROPERTY(std::vector<int> filteredBits READ filteredBits NOTIFY filteredBitsChanged)
 
 public:
-
     enum class Mode {
         None,
         Drill,

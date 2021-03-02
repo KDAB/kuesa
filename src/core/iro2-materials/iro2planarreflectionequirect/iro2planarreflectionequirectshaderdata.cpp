@@ -29,7 +29,6 @@
 
 #include "iro2planarreflectionequirectshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -51,7 +50,8 @@ Iro2PlanarReflectionEquiRectShaderData::Iro2PlanarReflectionEquiRectShaderData(Q
     , m_postVertexColor()
     , m_postGain()
     , m_gltfYUp()
-{}
+{
+}
 
 Iro2PlanarReflectionEquiRectShaderData::~Iro2PlanarReflectionEquiRectShaderData() = default;
 
@@ -119,7 +119,6 @@ bool Iro2PlanarReflectionEquiRectShaderData::gltfYUp() const
 {
     return m_gltfYUp;
 }
-
 
 void Iro2PlanarReflectionEquiRectShaderData::setReflectionGain(float reflectionGain)
 {
@@ -224,8 +223,6 @@ void Iro2PlanarReflectionEquiRectShaderData::setGltfYUp(bool gltfYUp)
     m_gltfYUp = gltfYUp;
     emit gltfYUpChanged(gltfYUp);
 }
-
-
 
 } // namespace Kuesa
 

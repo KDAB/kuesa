@@ -32,13 +32,11 @@
 #include "iro2planarreflectionequirectshaderdata_p.h"
 #include <Qt3DRender/qparameter.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::Iro2PlanarReflectionEquiRectMaterial
@@ -101,7 +99,7 @@ void Iro2PlanarReflectionEquiRectMaterial::setMaterialProperties(Kuesa::Iro2Plan
         emit materialPropertiesChanged(materialProperties);
 
         if (m_materialProperties) {
-            QObject::connect(m_materialProperties, &Iro2PlanarReflectionEquiRectProperties::normalMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_normalMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &Iro2PlanarReflectionEquiRectProperties::normalMapChanged, this, [this](Qt3DRender::QAbstractTexture *t) { m_normalMapParameter->setValue(QVariant::fromValue(t)); });
 
             m_normalMapParameter->setValue(QVariant::fromValue(m_materialProperties->normalMap()));
 

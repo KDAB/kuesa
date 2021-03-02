@@ -302,7 +302,6 @@ private:
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
-
 /*!
     \class Kuesa::Iro2GlassEquiRectEffect
     \inheaderfile Kuesa/Iro2GlassEquiRectEffect
@@ -322,7 +321,6 @@ private:
     \brief Kuesa::Iro2GlassEquiRectEffect is the effect for the Iro2GlassEquiRectMaterial class.
 */
 
-
 Iro2GlassEquiRectEffect::Iro2GlassEquiRectEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
 {
@@ -341,7 +339,6 @@ Iro2GlassEquiRectEffect::Iro2GlassEquiRectEffect(Qt3DCore::QNode *parent)
 }
 
 Iro2GlassEquiRectEffect::~Iro2GlassEquiRectEffect() = default;
-
 
 void Iro2GlassEquiRectEffect::updateDoubleSided(bool doubleSided)
 {
@@ -481,11 +478,10 @@ void Iro2GlassEquiRectEffect::updateLayersOnTechniques(const QStringList &layers
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_rhiTechnique->setEnabledLayers(layers);
 #endif
 }
-
 
 } // namespace Kuesa
 

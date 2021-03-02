@@ -36,7 +36,6 @@
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -47,17 +46,17 @@ class KUESASHARED_EXPORT Iro2DiffuseSemProperties : public GLTF2MaterialProperti
 {
     Q_OBJECT
     Q_PROPERTY(bool usesDiffuseMap READ usesDiffuseMap WRITE setUsesDiffuseMap NOTIFY usesDiffuseMapChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * diffuseMap READ diffuseMap WRITE setDiffuseMap NOTIFY diffuseMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *diffuseMap READ diffuseMap WRITE setDiffuseMap NOTIFY diffuseMapChanged)
     Q_PROPERTY(float diffuseGain READ diffuseGain WRITE setDiffuseGain NOTIFY diffuseGainChanged)
     Q_PROPERTY(QVector3D diffuseInnerFilter READ diffuseInnerFilter WRITE setDiffuseInnerFilter NOTIFY diffuseInnerFilterChanged)
     Q_PROPERTY(QVector3D diffuseOuterFilter READ diffuseOuterFilter WRITE setDiffuseOuterFilter NOTIFY diffuseOuterFilterChanged)
     Q_PROPERTY(bool usesReflectionMap READ usesReflectionMap WRITE setUsesReflectionMap NOTIFY usesReflectionMapChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
     Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
     Q_PROPERTY(bool usesNormalMap READ usesNormalMap WRITE setUsesNormalMap NOTIFY usesNormalMapChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
     Q_PROPERTY(float normalMapGain READ normalMapGain WRITE setNormalMapGain NOTIFY normalMapGainChanged)
     Q_PROPERTY(QVector3D normalScaling READ normalScaling WRITE setNormalScaling NOTIFY normalScalingChanged)
     Q_PROPERTY(QVector2D normalDisturb READ normalDisturb WRITE setNormalDisturb NOTIFY normalDisturbChanged)
@@ -72,17 +71,17 @@ public:
 
     Qt3DRender::QShaderData *shaderData() const override;
     bool usesDiffuseMap() const;
-    Qt3DRender::QAbstractTexture * diffuseMap() const;
+    Qt3DRender::QAbstractTexture *diffuseMap() const;
     float diffuseGain() const;
     QVector3D diffuseInnerFilter() const;
     QVector3D diffuseOuterFilter() const;
     bool usesReflectionMap() const;
-    Qt3DRender::QAbstractTexture * reflectionMap() const;
+    Qt3DRender::QAbstractTexture *reflectionMap() const;
     float reflectionGain() const;
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
     bool usesNormalMap() const;
-    Qt3DRender::QAbstractTexture * normalMap() const;
+    Qt3DRender::QAbstractTexture *normalMap() const;
     float normalMapGain() const;
     QVector3D normalScaling() const;
     QVector2D normalDisturb() const;
@@ -93,17 +92,17 @@ public:
 
 public Q_SLOTS:
     void setUsesDiffuseMap(bool usesDiffuseMap);
-    void setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap);
+    void setDiffuseMap(Qt3DRender::QAbstractTexture *diffuseMap);
     void setDiffuseGain(float diffuseGain);
     void setDiffuseInnerFilter(const QVector3D &diffuseInnerFilter);
     void setDiffuseOuterFilter(const QVector3D &diffuseOuterFilter);
     void setUsesReflectionMap(bool usesReflectionMap);
-    void setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap);
+    void setReflectionMap(Qt3DRender::QAbstractTexture *reflectionMap);
     void setReflectionGain(float reflectionGain);
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
     void setUsesNormalMap(bool usesNormalMap);
-    void setNormalMap(Qt3DRender::QAbstractTexture * normalMap);
+    void setNormalMap(Qt3DRender::QAbstractTexture *normalMap);
     void setNormalMapGain(float normalMapGain);
     void setNormalScaling(const QVector3D &normalScaling);
     void setNormalDisturb(const QVector2D &normalDisturb);
@@ -135,13 +134,12 @@ Q_SIGNALS:
 
 private:
     Iro2DiffuseSemShaderData *m_shaderData;
-    Qt3DRender::QAbstractTexture * m_diffuseMap;
-    Qt3DRender::QAbstractTexture * m_reflectionMap;
-    Qt3DRender::QAbstractTexture * m_normalMap;
-
+    Qt3DRender::QAbstractTexture *m_diffuseMap;
+    Qt3DRender::QAbstractTexture *m_reflectionMap;
+    Qt3DRender::QAbstractTexture *m_normalMap;
 };
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-Q_DECLARE_METATYPE(Kuesa::Iro2DiffuseSemProperties*)
+Q_DECLARE_METATYPE(Kuesa::Iro2DiffuseSemProperties *)
 #endif // KUESA_IRO2DIFFUSESEMPROPERTIES_H

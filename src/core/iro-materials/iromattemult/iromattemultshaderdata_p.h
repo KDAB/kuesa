@@ -30,7 +30,6 @@
 #ifndef KUESA_IROMATTEMULTSHADERDATA_P_H
 #define KUESA_IROMATTEMULTSHADERDATA_P_H
 
-
 //
 //  W A R N I N G
 //  -------------
@@ -93,7 +92,6 @@ private:
     QVector3D m_matteFilter;
     float m_matteGain;
     QVector2D m_uvOffset;
-
 };
 
 } // namespace Kuesa

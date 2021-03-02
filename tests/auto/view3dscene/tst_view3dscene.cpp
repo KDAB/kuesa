@@ -651,7 +651,7 @@ private Q_SLOTS:
 
             // THEN -> Parent should have been reset
             QVERIFY(conf.parentNode() == nullptr);
-            QVERIFY(conf. parent() == nullptr);
+            QVERIFY(conf.parent() == nullptr);
         }
 
         {
@@ -835,7 +835,7 @@ private Q_SLOTS:
             QCOMPARE(view.frameGraph()->layers().front(), layer2);
 
             // WHEN -> Add and preserve existing
-            names = QStringList { QStringLiteral("layer2"), QStringLiteral("layer3") };
+            names = QStringList{ QStringLiteral("layer2"), QStringLiteral("layer3") };
             scene.setLayerNames(names);
 
             // THEN
@@ -846,7 +846,7 @@ private Q_SLOTS:
             QCOMPARE(view.frameGraph()->layers().back(), layer3);
 
             // WHEN -> Remove and Add and Preserve
-            names = QStringList { QStringLiteral("layer1"), QStringLiteral("layer3") };
+            names = QStringList{ QStringLiteral("layer1"), QStringLiteral("layer3") };
             scene.setLayerNames(names);
 
             // THEN

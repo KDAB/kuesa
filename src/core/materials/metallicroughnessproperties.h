@@ -84,7 +84,6 @@ public:
     Qt3DRender::QAbstractTexture *metalRoughMap() const;
     Kuesa::TextureTransform *metalRoughMapTextureTransform() const;
 
-
     float normalScale() const;
     Qt3DRender::QAbstractTexture *normalMap() const;
     Kuesa::TextureTransform *normalMapTextureTransform() const;
@@ -95,7 +94,6 @@ public:
     QColor emissiveFactor() const;
     Qt3DRender::QAbstractTexture *emissiveMap() const;
     Kuesa::TextureTransform *emissiveMapTextureTransform() const;
-
 
 public Q_SLOTS:
     void setMetallicRoughnessUsesTexCoord1(bool metallicRoughnessUsesTexCoord1);
@@ -147,7 +145,6 @@ private:
     Qt3DRender::QAbstractTexture *m_normalMap;
     Qt3DRender::QAbstractTexture *m_metalRoughMap;
     Qt3DRender::QAbstractTexture *m_ambientOcclusionMap;
-
 };
 } // namespace Kuesa
 

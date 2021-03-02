@@ -34,7 +34,7 @@
 
 namespace Kuesa {
 class View;
-} // Kuesa
+} // namespace Kuesa
 
 class AbstractScreenController : public QObject
 {

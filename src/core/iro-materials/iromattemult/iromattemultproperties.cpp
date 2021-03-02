@@ -32,13 +32,11 @@
 #include <Qt3DCore/private/qnode_p.h>
 #include <Kuesa/private/empty2dtexture_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::IroMatteMultProperties
@@ -112,7 +110,7 @@ void IroMatteMultProperties::setUvOffset(const QVector2D &uvOffset)
     m_shaderData->setUvOffset(uvOffset);
 }
 
-void IroMatteMultProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
+void IroMatteMultProperties::setMatteMap(Qt3DRender::QAbstractTexture *matteMap)
 {
     if (m_matteMap == matteMap)
         return;
@@ -128,7 +126,6 @@ void IroMatteMultProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap
     }
     emit matteMapChanged(m_matteMap);
 }
-
 
 /*!
     \qmlproperty float IroMatteMultProperties::postVertexColor
@@ -208,11 +205,10 @@ QVector2D IroMatteMultProperties::uvOffset() const
     return m_shaderData->uvOffset();
 }
 
-Qt3DRender::QAbstractTexture * IroMatteMultProperties::matteMap() const
+Qt3DRender::QAbstractTexture *IroMatteMultProperties::matteMap() const
 {
     return m_matteMap;
 }
-
 
 } // namespace Kuesa
 

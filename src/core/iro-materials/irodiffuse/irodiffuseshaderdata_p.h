@@ -30,7 +30,6 @@
 #ifndef KUESA_IRODIFFUSESHADERDATA_P_H
 #define KUESA_IRODIFFUSESHADERDATA_P_H
 
-
 //
 //  W A R N I N G
 //  -------------
@@ -128,7 +127,6 @@ private:
     QVector3D m_diffuseOuterFilter;
     float m_diffuseGain;
     bool m_usesDiffuseMap;
-
 };
 
 } // namespace Kuesa

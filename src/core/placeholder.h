@@ -36,18 +36,15 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Qt3DRender
-{
+namespace Qt3DRender {
 class QCamera;
 }
 
-namespace Qt3DCore
-{
+namespace Qt3DCore {
 class QTransform;
 }
 
-namespace Kuesa
-{
+namespace Kuesa {
 
 class KUESASHARED_EXPORT Placeholder : public Qt3DCore::QEntity
 {
@@ -61,7 +58,7 @@ private:
     Qt3DCore::QTransform *m_transform = nullptr;
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

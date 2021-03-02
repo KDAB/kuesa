@@ -64,9 +64,8 @@ private:
     QVector4D m_equation;
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
-
 
 #endif // KUESA_REFLECTIONPLANE_H

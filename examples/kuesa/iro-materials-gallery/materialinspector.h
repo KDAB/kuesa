@@ -29,7 +29,7 @@
 #ifndef MATERIALINSPECTOR_H
 #define MATERIALINSPECTOR_H
 
-#include<QObject>
+#include <QObject>
 #include <Kuesa/GLTF2Material>
 
 namespace Qt3DCore {

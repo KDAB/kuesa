@@ -32,13 +32,11 @@
 #include "iro2diffuseequirectshaderdata_p.h"
 #include <Qt3DRender/qparameter.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::Iro2DiffuseEquiRectMaterial
@@ -105,9 +103,9 @@ void Iro2DiffuseEquiRectMaterial::setMaterialProperties(Kuesa::Iro2DiffuseEquiRe
         emit materialPropertiesChanged(materialProperties);
 
         if (m_materialProperties) {
-            QObject::connect(m_materialProperties, &Iro2DiffuseEquiRectProperties::diffuseMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_diffuseMapParameter->setValue(QVariant::fromValue(t)); });
-            QObject::connect(m_materialProperties, &Iro2DiffuseEquiRectProperties::reflectionMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
-            QObject::connect(m_materialProperties, &Iro2DiffuseEquiRectProperties::normalMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_normalMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &Iro2DiffuseEquiRectProperties::diffuseMapChanged, this, [this](Qt3DRender::QAbstractTexture *t) { m_diffuseMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &Iro2DiffuseEquiRectProperties::reflectionMapChanged, this, [this](Qt3DRender::QAbstractTexture *t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &Iro2DiffuseEquiRectProperties::normalMapChanged, this, [this](Qt3DRender::QAbstractTexture *t) { m_normalMapParameter->setValue(QVariant::fromValue(t)); });
 
             m_diffuseMapParameter->setValue(QVariant::fromValue(m_materialProperties->diffuseMap()));
             m_reflectionMapParameter->setValue(QVariant::fromValue(m_materialProperties->reflectionMap()));

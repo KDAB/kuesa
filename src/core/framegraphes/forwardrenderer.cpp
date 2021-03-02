@@ -304,7 +304,6 @@ Qt3DRender::QClearBuffers::BufferType ForwardRenderer::clearBuffers() const
     return m_clearBuffers->buffers();
 }
 
-
 bool ForwardRenderer::showDebugOverlay() const
 {
     return m_debugOverlay->isEnabled();
@@ -325,7 +324,6 @@ void ForwardRenderer::setClearBuffers(Qt3DRender::QClearBuffers::BufferType clea
 {
     m_clearBuffers->setBuffers(clearBuffers);
 }
-
 
 void ForwardRenderer::setShowDebugOverlay(bool showDebugOverlay)
 {
@@ -437,7 +435,7 @@ void ForwardRenderer::reconfigureFrameGraph()
         for (Qt3DCore::QNode *c : m_rhiViewResolver->childNodes())
             c->setParent(Q_NODE_NULLPTR);
 
-        const std::vector<View *> &views = (m_views.empty()) ? std::vector<View  *>({this}) : m_views;
+        const std::vector<View *> &views = (m_views.empty()) ? std::vector<View *>({ this }) : m_views;
         const size_t viewCount = views.size();
 
         while (m_viewRenderers.size() > viewCount) {

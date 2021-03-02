@@ -36,7 +36,6 @@
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -53,7 +52,7 @@ class KUESASHARED_EXPORT Iro2PlanarReflectionSemProperties : public GLTF2Materia
     Q_PROPERTY(float outerAlpha READ outerAlpha WRITE setOuterAlpha NOTIFY outerAlphaChanged)
     Q_PROPERTY(float alphaGain READ alphaGain WRITE setAlphaGain NOTIFY alphaGainChanged)
     Q_PROPERTY(bool usesNormalMap READ usesNormalMap WRITE setUsesNormalMap NOTIFY usesNormalMapChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
     Q_PROPERTY(float normalMapGain READ normalMapGain WRITE setNormalMapGain NOTIFY normalMapGainChanged)
     Q_PROPERTY(QVector3D normalScaling READ normalScaling WRITE setNormalScaling NOTIFY normalScalingChanged)
     Q_PROPERTY(QVector2D normalDisturb READ normalDisturb WRITE setNormalDisturb NOTIFY normalDisturbChanged)
@@ -73,7 +72,7 @@ public:
     float outerAlpha() const;
     float alphaGain() const;
     bool usesNormalMap() const;
-    Qt3DRender::QAbstractTexture * normalMap() const;
+    Qt3DRender::QAbstractTexture *normalMap() const;
     float normalMapGain() const;
     QVector3D normalScaling() const;
     QVector2D normalDisturb() const;
@@ -89,7 +88,7 @@ public Q_SLOTS:
     void setOuterAlpha(float outerAlpha);
     void setAlphaGain(float alphaGain);
     void setUsesNormalMap(bool usesNormalMap);
-    void setNormalMap(Qt3DRender::QAbstractTexture * normalMap);
+    void setNormalMap(Qt3DRender::QAbstractTexture *normalMap);
     void setNormalMapGain(float normalMapGain);
     void setNormalScaling(const QVector3D &normalScaling);
     void setNormalDisturb(const QVector2D &normalDisturb);
@@ -115,11 +114,10 @@ Q_SIGNALS:
 
 private:
     Iro2PlanarReflectionSemShaderData *m_shaderData;
-    Qt3DRender::QAbstractTexture * m_normalMap;
-
+    Qt3DRender::QAbstractTexture *m_normalMap;
 };
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-Q_DECLARE_METATYPE(Kuesa::Iro2PlanarReflectionSemProperties*)
+Q_DECLARE_METATYPE(Kuesa::Iro2PlanarReflectionSemProperties *)
 #endif // KUESA_IRO2PLANARREFLECTIONSEMPROPERTIES_H

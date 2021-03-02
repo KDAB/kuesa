@@ -150,12 +150,12 @@ MeshInstantiator::MeshInstantiator(Qt3DCore::QNode *parent)
 {
     QObject::connect(this, &KuesaNode::sceneEntityChanged,
                      this, [this] {
-        disconnect(m_loadingDoneConnection);
-        if (m_sceneEntity)
-            m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone,
-                                              this, &MeshInstantiator::update);
-        update();
-    });
+                         disconnect(m_loadingDoneConnection);
+                         if (m_sceneEntity)
+                             m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone,
+                                                               this, &MeshInstantiator::update);
+                         update();
+                     });
 
     m_perInstanceTransformationAttribute->setAttributeType(Qt3DGeometry::QAttribute::VertexAttribute);
     m_perInstanceTransformationAttribute->setDivisor(1);
@@ -209,7 +209,7 @@ const std::vector<QMatrix4x4> &MeshInstantiator::transformationMatrices() const
 
 void MeshInstantiator::updateTransformBuffer()
 {
-    const std::vector<QMatrix4x4> &matrices = m_transformations.empty() ? std::vector<QMatrix4x4>({QMatrix4x4()}) : m_transformations;
+    const std::vector<QMatrix4x4> &matrices = m_transformations.empty() ? std::vector<QMatrix4x4>({ QMatrix4x4() }) : m_transformations;
 
     QByteArray rawData;
     rawData.resize(16 * sizeof(float) * matrices.size());
@@ -269,9 +269,9 @@ void MeshInstantiator::update()
                 if (r->geometry()) {
                     const auto &attrs = r->geometry()->attributes();
                     auto it = std::find_if(attrs.cbegin(),
-                                           attrs.cend(), [] (const Qt3DGeometry::QAttribute *attr) {
-                        return attr->name() == QStringLiteral("perInstanceTransform");
-                    });
+                                           attrs.cend(), [](const Qt3DGeometry::QAttribute *attr) {
+                                               return attr->name() == QStringLiteral("perInstanceTransform");
+                                           });
                     if (it == attrs.end())
                         r->geometry()->addAttribute(m_perInstanceTransformationAttribute);
                 }

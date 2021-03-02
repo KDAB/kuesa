@@ -116,7 +116,7 @@ public:
             QByteArray(R"()")
         };
 
-         const QByteArray renderableGeometryShaderCode[] = {
+        const QByteArray renderableGeometryShaderCode[] = {
             QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()"),
@@ -138,7 +138,7 @@ public:
             m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
         }
 
-         // Set geometry shader code if one was specified
+        // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
         auto filterKey = new QFilterKey(this);
@@ -212,7 +212,6 @@ private:
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
-
 /*!
     \class Kuesa::Iro2PlanarReflectionSemEffect
     \inheaderfile Kuesa/Iro2PlanarReflectionSemEffect
@@ -232,7 +231,6 @@ private:
     \brief Kuesa::Iro2PlanarReflectionSemEffect is the effect for the Iro2PlanarReflectionSemMaterial class.
 */
 
-
 Iro2PlanarReflectionSemEffect::Iro2PlanarReflectionSemEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
 {
@@ -251,7 +249,6 @@ Iro2PlanarReflectionSemEffect::Iro2PlanarReflectionSemEffect(Qt3DCore::QNode *pa
 }
 
 Iro2PlanarReflectionSemEffect::~Iro2PlanarReflectionSemEffect() = default;
-
 
 void Iro2PlanarReflectionSemEffect::updateDoubleSided(bool doubleSided)
 {
@@ -391,11 +388,10 @@ void Iro2PlanarReflectionSemEffect::updateLayersOnTechniques(const QStringList &
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_rhiTechnique->setEnabledLayers(layers);
 #endif
 }
-
 
 } // namespace Kuesa
 

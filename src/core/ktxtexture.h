@@ -37,8 +37,7 @@ class ktxTexture;
 
 QT_BEGIN_NAMESPACE
 
-namespace Kuesa
-{
+namespace Kuesa {
 
 class KUESASHARED_EXPORT KTXTexture : public Qt3DRender::QAbstractTexture
 {
@@ -59,13 +58,12 @@ Q_SIGNALS:
 private:
     void generateData();
 
-
 private:
     QUrl m_source;
     ktxTexture *m_ktxTexture;
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

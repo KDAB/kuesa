@@ -53,7 +53,6 @@ using namespace Qt3DRender;
 
 Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
 
-
 /*!
     \class KuesaUtils::View3DScene
     \brief View3DScene is a convenience wrapper aiming at simplifying the set
@@ -111,7 +110,6 @@ Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
     \brief The source of the glTF file to be loaded.
     \readonly
  */
-
 
 /*!
     \property KuesaUtils::View3DScene::cameraName
@@ -179,7 +177,6 @@ Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
     This a more convenient way of specifying content when dealing with
     multiple scenes.
  */
-
 
 /*!
     \property KuesaUtils::View3DScene::reflectionPlaneName
@@ -323,7 +320,6 @@ Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
     the ForwardRenderer framegraph views.
  */
 
-
 View3DScene::View3DScene(Qt3DCore::QNode *parent)
     : Kuesa::SceneEntity(parent)
     , m_importer(new GLTF2Importer(this))
@@ -354,10 +350,10 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     connect(m_frameGraph, &ForwardRenderer::cameraChanged, this, &View3DScene::updatePlaceholderTrackers);
 
     QObject::connect(m_importer, &GLTF2Importer::statusChanged,
-                     this, [this] () {
-        if (m_importer->status() == GLTF2Importer::Ready)
-            onSceneLoaded();
-    });
+                     this, [this]() {
+                         if (m_importer->status() == GLTF2Importer::Ready)
+                             onSceneLoaded();
+                     });
 }
 
 View3DScene::~View3DScene() = default;
@@ -621,7 +617,7 @@ void View3DScene::loadReflections()
     // Find matching ReflectionPlane
     Kuesa::ReflectionPlane *p = reflectionPlane(m_reflectionPlaneName);
 
-    auto setReflectionPlaneOnView = [&] (View *v) {
+    auto setReflectionPlaneOnView = [&](View *v) {
         if (p && !Utils::contains(v->reflectionPlanes(), p))
             v->addReflectionPlane(p);
     };
@@ -663,7 +659,7 @@ void View3DScene::removeTransformTracker(TransformTracker *tracker)
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
     d->unregisterDestructionHelper(tracker);
     m_transformTrackers.erase(std::remove(std::begin(m_transformTrackers), std::end(m_transformTrackers), tracker),
-                     std::end(m_transformTrackers));
+                              std::end(m_transformTrackers));
 }
 
 /*!
@@ -709,7 +705,7 @@ void View3DScene::removePlaceholderTracker(PlaceholderTracker *placeholderTracke
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
     d->unregisterDestructionHelper(placeholderTracker);
     m_placeholderTrackers.erase(std::remove(std::begin(m_placeholderTrackers), std::end(m_placeholderTrackers), placeholderTracker),
-                         std::end(m_placeholderTrackers));
+                                std::end(m_placeholderTrackers));
 }
 
 /*!
@@ -775,7 +771,6 @@ void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
                        std::end(m_animations));
 }
 
-
 /*!
     \internal
     \brief Clears the list of managed \l {Kuesa::AnimationPlayer} instances of
@@ -839,7 +834,7 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
             // In case parent is a QNode *
             if (originalNodeParent) {
                 m_activeScene->setParent(originalNodeParent);
-            } else {// Parent was not a QNode or our scene had no parent/owner at all when set
+            } else { // Parent was not a QNode or our scene had no parent/owner at all when set
                 // Reset QNode parent
                 m_activeScene->setParent(Q_NODE_NULLPTR);
                 static_cast<QObject *>(m_activeScene)->setParent(m_activeSceneOwner.data());

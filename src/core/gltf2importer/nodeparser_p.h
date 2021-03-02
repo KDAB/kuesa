@@ -93,8 +93,7 @@ struct TreeNode {
     QVector<float> morphTargetWeights;
     QVector4D reflectionPlaneEquation;
 
-    struct KDAB_2d_placeholder
-    {
+    struct KDAB_2d_placeholder {
         qint32 cameraNode;
     };
     KDAB_2d_placeholder placeHolder;

@@ -64,7 +64,7 @@ private:
     float m_radians = 0.0f;
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

@@ -134,7 +134,7 @@ public:
             QByteArray(R"()")
         };
 
-         const QByteArray renderableGeometryShaderCode[] = {
+        const QByteArray renderableGeometryShaderCode[] = {
             QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()"),
@@ -161,7 +161,7 @@ public:
         }
         m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
-         // Set geometry shader code if one was specified
+        // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
         m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
@@ -234,7 +234,6 @@ private:
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
-
 /*!
     \class Kuesa::IroMatteOpaqueEffect
     \inheaderfile Kuesa/IroMatteOpaqueEffect
@@ -254,7 +253,6 @@ private:
     \brief Kuesa::IroMatteOpaqueEffect is the effect for the IroMatteOpaqueMaterial class.
 */
 
-
 IroMatteOpaqueEffect::IroMatteOpaqueEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
 {
@@ -273,7 +271,6 @@ IroMatteOpaqueEffect::IroMatteOpaqueEffect(Qt3DCore::QNode *parent)
 }
 
 IroMatteOpaqueEffect::~IroMatteOpaqueEffect() = default;
-
 
 void IroMatteOpaqueEffect::updateDoubleSided(bool doubleSided)
 {
@@ -413,11 +410,10 @@ void IroMatteOpaqueEffect::updateLayersOnTechniques(const QStringList &layers)
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_rhiTechnique->setEnabledLayers(layers);
 #endif
 }
-
 
 } // namespace Kuesa
 

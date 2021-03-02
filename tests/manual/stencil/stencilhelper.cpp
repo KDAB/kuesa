@@ -16,7 +16,7 @@ ComponentType *componentFromEntity(Qt3DCore::QEntity *e)
     const auto cmps = e->componentsOfType<ComponentType>();
     return cmps.size() > 0 ? cmps.first() : nullptr;
 }
-}
+} // namespace
 
 StencilHelper::StencilHelper(QObject *parent)
     : QObject(parent)
@@ -31,13 +31,12 @@ Qt3DCore::QEntity *StencilHelper::entity() const
 
 void StencilHelper::setEntity(Qt3DCore::QEntity *entity)
 {
-    if (entity != m_entity)
-    {
+    if (entity != m_entity) {
         m_entity = entity;
 
         // Search for all the QMaterials that exist under this entity
         std::vector<Qt3DRender::QMaterial *> materials;
-        const auto entities = m_entity->findChildren<Qt3DCore::QEntity*>();
+        const auto entities = m_entity->findChildren<Qt3DCore::QEntity *>();
 
         Qt3DRender::QStencilTest *stencilTest = new Qt3DRender::QStencilTest(m_entity);
         stencilTest->front()->setStencilFunction(Qt3DRender::QStencilTestArguments::Always);
@@ -49,7 +48,7 @@ void StencilHelper::setEntity(Qt3DCore::QEntity *entity)
         for (auto *childEntity : entities) {
             auto material = componentFromEntity<Qt3DRender::QMaterial>(childEntity);
             if (material) {
-                auto *effect = qobject_cast<Qt3DRender::QEffect*>(material->effect()->metaObject()->newInstance());
+                auto *effect = qobject_cast<Qt3DRender::QEffect *>(material->effect()->metaObject()->newInstance());
                 material->setEffect(effect);
                 const auto &techniques = effect->techniques();
                 for (auto *technique : techniques) {

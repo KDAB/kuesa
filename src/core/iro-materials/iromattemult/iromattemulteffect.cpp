@@ -116,7 +116,7 @@ public:
             QByteArray(R"()")
         };
 
-         const QByteArray renderableGeometryShaderCode[] = {
+        const QByteArray renderableGeometryShaderCode[] = {
             QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()"),
@@ -138,7 +138,7 @@ public:
             m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
         }
 
-         // Set geometry shader code if one was specified
+        // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
         auto filterKey = new QFilterKey(this);
@@ -212,7 +212,6 @@ private:
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
-
 /*!
     \class Kuesa::IroMatteMultEffect
     \inheaderfile Kuesa/IroMatteMultEffect
@@ -232,7 +231,6 @@ private:
     \brief Kuesa::IroMatteMultEffect is the effect for the IroMatteMultMaterial class.
 */
 
-
 IroMatteMultEffect::IroMatteMultEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
 {
@@ -251,7 +249,6 @@ IroMatteMultEffect::IroMatteMultEffect(Qt3DCore::QNode *parent)
 }
 
 IroMatteMultEffect::~IroMatteMultEffect() = default;
-
 
 void IroMatteMultEffect::updateDoubleSided(bool doubleSided)
 {
@@ -391,11 +388,10 @@ void IroMatteMultEffect::updateLayersOnTechniques(const QStringList &layers)
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_rhiTechnique->setEnabledLayers(layers);
 #endif
 }
-
 
 } // namespace Kuesa
 

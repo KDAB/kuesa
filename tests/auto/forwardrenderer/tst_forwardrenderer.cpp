@@ -118,7 +118,7 @@ private Q_SLOTS:
     void initTestCase()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    qputenv("QT3D_RENDERER", QByteArray("rhi"));
+        qputenv("QT3D_RENDERER", QByteArray("rhi"));
 #endif
     }
 
@@ -305,7 +305,7 @@ private Q_SLOTS:
     void testSetupRenderTargetsNoFXNoMSAA()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 5.15");
+        QSKIP("This tests targets Qt 5.15");
 #endif
         // GIVEN
         Kuesa::ForwardRenderer f;
@@ -345,7 +345,7 @@ private Q_SLOTS:
     void testSetupRenderTargetsNoFXNoMSAARHI()
     {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 6.0");
+        QSKIP("This tests targets Qt 6.0");
 #endif
         // GIVEN
         Kuesa::ForwardRenderer f;
@@ -387,11 +387,10 @@ private Q_SLOTS:
         QCOMPARE(rtSelector.children()[0], f.m_fg->m_rt0rt1Resolver);
     }
 
-
     void testSetupRenderTargetsNoFXMSAA()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 5.15");
+        QSKIP("This tests targets Qt 5.15");
 #endif
         if (!Kuesa::FrameGraphUtils::hasMSAASupport())
             QSKIP("Device has no MSAA support, skipping");
@@ -436,7 +435,7 @@ private Q_SLOTS:
     void testSetupRenderTargetsNoFXMSAARHI()
     {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 6");
+        QSKIP("This tests targets Qt 6");
 #endif
         if (!Kuesa::FrameGraphUtils::hasMSAASupport())
             QSKIP("Device has no MSAA support, skipping");
@@ -469,9 +468,9 @@ private Q_SLOTS:
                          Qt3DRender::QRenderTargetOutput::Depth),
                  true);
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_fg->m_renderTargets[1],
-                 Qt3DRender::QRenderTargetOutput::Depth),
-                false);
+                         f.m_fg->m_renderTargets[1],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 false);
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
                          f.m_fg->m_multisampleTarget,
                          Qt3DRender::QRenderTargetOutput::Depth),
@@ -486,7 +485,7 @@ private Q_SLOTS:
     void testSetupRenderTargetsFXNoMSAA()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 5.15");
+        QSKIP("This tests targets Qt 5.15");
 #endif
         // GIVEN
         Kuesa::ForwardRenderer f;
@@ -526,7 +525,7 @@ private Q_SLOTS:
     void testSetupRenderTargetsFXNoMSAARHI()
     {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 6");
+        QSKIP("This tests targets Qt 6");
 #endif
         // GIVEN
         Kuesa::ForwardRenderer f;
@@ -558,9 +557,9 @@ private Q_SLOTS:
                          Qt3DRender::QRenderTargetOutput::Depth),
                  true);
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_fg->m_renderTargets[1],
-                 Qt3DRender::QRenderTargetOutput::Depth),
-                false);
+                         f.m_fg->m_renderTargets[1],
+                         Qt3DRender::QRenderTargetOutput::Depth),
+                 false);
 
         // THEN
         QCOMPARE(rtSelector.target(), f.m_fg->m_renderTargets[0]);
@@ -571,7 +570,7 @@ private Q_SLOTS:
     void testSetupRenderTargetsFXsNoMSAA()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 5.15");
+        QSKIP("This tests targets Qt 5.15");
 #endif
         // GIVEN
         Kuesa::ForwardRenderer f;
@@ -619,7 +618,7 @@ private Q_SLOTS:
     void testSetupRenderTargetsFXsNoMSAARHI()
     {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 6");
+        QSKIP("This tests targets Qt 6");
 #endif
         // GIVEN
         Kuesa::ForwardRenderer f;
@@ -658,14 +657,14 @@ private Q_SLOTS:
         // THEN
         QCOMPARE(rtSelector.target(), f.m_fg->m_renderTargets[0]);
         QCOMPARE(rtSelector.children().size(), 1);
-        Kuesa::FBOResolver *blit = qobject_cast<Kuesa::FBOResolver*>(rtSelector.children()[0]);
+        Kuesa::FBOResolver *blit = qobject_cast<Kuesa::FBOResolver *>(rtSelector.children()[0]);
         QVERIFY(blit != nullptr);
     }
 
     void testSetupRenderTargetsFXsNoMSAAStencil()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 5.15");
+        QSKIP("This tests targets Qt 5.15");
 #endif
         // GIVEN
         Kuesa::ForwardRenderer f;
@@ -712,7 +711,6 @@ private Q_SLOTS:
         QVERIFY(qobject_cast<Qt3DRender::QNoDraw *>(blit->children().first()) != nullptr);
     }
 
-
     void testSetupRenderTargetsFXsNoMSAAStencilRHI()
     {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -746,13 +744,13 @@ private Q_SLOTS:
         QVERIFY(f.m_fg->m_blitFramebufferNodeFromFBO0ToFBO1 == nullptr);
 
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_fg->m_renderTargets[0],
-                 Qt3DRender::QRenderTargetOutput::DepthStencil),
-                true);
+                         f.m_fg->m_renderTargets[0],
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 true);
         QCOMPARE(Kuesa::FrameGraphUtils::renderTargetHasAttachmentOfType(
-                     f.m_fg->m_renderTargets[1],
-                 Qt3DRender::QRenderTargetOutput::DepthStencil),
-                false);
+                         f.m_fg->m_renderTargets[1],
+                         Qt3DRender::QRenderTargetOutput::DepthStencil),
+                 false);
 
         // THEN
         QCOMPARE(rtSelector.target(), f.m_fg->m_renderTargets[0]);
@@ -763,7 +761,7 @@ private Q_SLOTS:
     void testSetupRenderTargetsFXsMSAAStencil()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 5.15");
+        QSKIP("This tests targets Qt 5.15");
 #endif
         if (!Kuesa::FrameGraphUtils::hasMSAASupport())
             QSKIP("Device has no MSAA support, skipping");
@@ -820,7 +818,7 @@ private Q_SLOTS:
     void testSetupRenderTargetsFXsMSAAStencilRHI()
     {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 6");
+        QSKIP("This tests targets Qt 6");
 #endif
         if (!Kuesa::FrameGraphUtils::hasMSAASupport())
             QSKIP("Device has no MSAA support, skipping");
@@ -871,11 +869,10 @@ private Q_SLOTS:
         QCOMPARE(rtSelector.children()[1], f.m_fg->m_rt0rt1Resolver);
     }
 
-
     void testReconfigureFrameGraphNoViewNoFX()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 5.15");
+        QSKIP("This tests targets Qt 5.15");
 #endif
         // GIVEN (No View, No Fx)
         Kuesa::ForwardRenderer f;
@@ -911,7 +908,7 @@ private Q_SLOTS:
     void testReconfigureFrameGraphNoViewNoFXRHI()
     {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 6");
+        QSKIP("This tests targets Qt 6");
 #endif
         // GIVEN (No View, No Fx)
         Kuesa::ForwardRenderer f;
@@ -952,7 +949,7 @@ private Q_SLOTS:
     void testReconfigureFrameGraphNoViewFX()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 5.15");
+        QSKIP("This tests targets Qt 5.15");
 #endif
         // GIVEN (No View, FX)
         Kuesa::ForwardRenderer f;
@@ -994,7 +991,7 @@ private Q_SLOTS:
     void testReconfigureFrameGraphNoViewFXRHI()
     {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 6");
+        QSKIP("This tests targets Qt 6");
 #endif
         // GIVEN (No View, FX)
 
@@ -1042,7 +1039,7 @@ private Q_SLOTS:
     void testFrameGraphViewsNoFX()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 5.15");
+        QSKIP("This tests targets Qt 5.15");
 #endif
         // GIVEN (Views, No FX)
         Kuesa::ForwardRenderer f;
@@ -1124,7 +1121,7 @@ private Q_SLOTS:
     void testFrameGraphViewsNoFXRHI()
     {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 6");
+        QSKIP("This tests targets Qt 6");
 #endif
         // GIVEN (Views, No FX)
         Kuesa::ForwardRenderer f;
@@ -1213,11 +1210,10 @@ private Q_SLOTS:
         QCOMPARE(viewsResolver->children()[1], f.m_viewRenderers[1]);
     }
 
-
     void testFrameGraphViewsAndFX()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QSKIP("This tests targets Qt 5.15");
+        QSKIP("This tests targets Qt 5.15");
 #endif
         // GIVEN (Views with FX)
         Kuesa::ForwardRenderer f;

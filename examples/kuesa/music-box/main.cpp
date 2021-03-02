@@ -70,7 +70,6 @@ int main(int argc, char *argv[])
     view.setFlags(view.flags() | Qt::MaximizeUsingFullscreenGeometryHint);
 #endif
 
-
 #ifdef Q_OS_ANDROID
     // Qt builds for android may not define KUESA_OPENGL_ES_3
     // Therefore we need a runtime check to see whether we can use ES 3.0 or not

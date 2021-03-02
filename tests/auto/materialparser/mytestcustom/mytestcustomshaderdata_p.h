@@ -41,7 +41,7 @@ namespace Kuesa {
 
 class MyTestCustomShaderData : public Qt3DRender::QShaderData
 {
-   Q_OBJECT
+    Q_OBJECT
     Q_PROPERTY(QVector4D customVec4Parameter READ customVec4Parameter WRITE setCustomVec4Parameter NOTIFY customVec4ParameterChanged)
     Q_PROPERTY(QVector3D customVec3Parameter READ customVec3Parameter WRITE setCustomVec3Parameter NOTIFY customVec3ParameterChanged)
     Q_PROPERTY(QVector2D customVec2Parameter READ customVec2Parameter WRITE setCustomVec2Parameter NOTIFY customVec2ParameterChanged)
@@ -72,7 +72,6 @@ private:
     QVector3D m_customVec3Parameter;
     QVector2D m_customVec2Parameter;
     float m_customFloatParameter;
-
 };
 
 } // namespace Kuesa

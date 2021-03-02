@@ -29,7 +29,6 @@
 
 #include "iro2diffuseequirectshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -54,7 +53,8 @@ Iro2DiffuseEquiRectShaderData::Iro2DiffuseEquiRectShaderData(Qt3DCore::QNode *pa
     , m_postHemiFilter()
     , m_postGain()
     , m_gltfYUp()
-{}
+{
+}
 
 Iro2DiffuseEquiRectShaderData::~Iro2DiffuseEquiRectShaderData() = default;
 
@@ -137,7 +137,6 @@ bool Iro2DiffuseEquiRectShaderData::gltfYUp() const
 {
     return m_gltfYUp;
 }
-
 
 void Iro2DiffuseEquiRectShaderData::setUsesDiffuseMap(bool usesDiffuseMap)
 {
@@ -266,8 +265,6 @@ void Iro2DiffuseEquiRectShaderData::setGltfYUp(bool gltfYUp)
     m_gltfYUp = gltfYUp;
     emit gltfYUpChanged(gltfYUp);
 }
-
-
 
 } // namespace Kuesa
 

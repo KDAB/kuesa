@@ -68,6 +68,6 @@ void FOVAdaptor::setRadians(float radians)
     Q_EMIT degreesChanged(degrees());
 }
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE

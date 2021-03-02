@@ -29,7 +29,6 @@
 
 #include "iro2diffusesemshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -54,7 +53,8 @@ Iro2DiffuseSemShaderData::Iro2DiffuseSemShaderData(Qt3DCore::QNode *parent)
     , m_postHemiFilter()
     , m_postGain()
     , m_gltfYUp()
-{}
+{
+}
 
 Iro2DiffuseSemShaderData::~Iro2DiffuseSemShaderData() = default;
 
@@ -137,7 +137,6 @@ bool Iro2DiffuseSemShaderData::gltfYUp() const
 {
     return m_gltfYUp;
 }
-
 
 void Iro2DiffuseSemShaderData::setUsesDiffuseMap(bool usesDiffuseMap)
 {
@@ -266,8 +265,6 @@ void Iro2DiffuseSemShaderData::setGltfYUp(bool gltfYUp)
     m_gltfYUp = gltfYUp;
     emit gltfYUpChanged(gltfYUp);
 }
-
-
 
 } // namespace Kuesa
 

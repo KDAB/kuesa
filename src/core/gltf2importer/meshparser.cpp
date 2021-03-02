@@ -117,10 +117,10 @@ QAttribute *decodeAttribute(const draco::PointCloud *pointCould,
     Qt3DGeometry::QBuffer *buffer = new Qt3DGeometry::QBuffer();
     buffer->setData(qbuffer);
     QAttribute *attribute = new QAttribute(buffer,
-                                                                   attributeName,
-                                                                   ComponentType,
-                                                                   static_cast<uint>(components),
-                                                                   num_points);
+                                           attributeName,
+                                           ComponentType,
+                                           static_cast<uint>(components),
+                                           num_points);
 
     return attribute;
 }
@@ -291,7 +291,7 @@ bool MeshParser::geometryFromJSON(const QJsonObject &json,
     // Index attribute
     const QJsonValue &indices = json.value(KEY_INDICES);
     if (!indices.isUndefined()) {
-        AttributeInfo attrInfo { false, true, {}, {}, indices.toInt(-1) };
+        AttributeInfo attrInfo{ false, true, {}, {}, indices.toInt(-1) };
         primitive.attributeInfo.push_back(attrInfo);
     }
     return true;
@@ -422,7 +422,7 @@ bool MeshParser::geometryAttributesFromJSON(const QJsonObject &json,
             primitive.hasTexCoord1Attr = true;
 
         const qint32 accessorIdx = it.value().toInt(-1);
-        AttributeInfo attrInfo { false, false, attrName, attributeName, accessorIdx, -1 };
+        AttributeInfo attrInfo{ false, false, attrName, attributeName, accessorIdx, -1 };
         primitive.attributeInfo.push_back(attrInfo);
     }
 
@@ -519,7 +519,7 @@ bool MeshParser::geometryAttributesDracoFromJSON(const QJsonObject &json,
         }
 
         const int accessorIndex = it.value().toInt();
-        AttributeInfo attrInfo { true, false, attrName, attributeName, accessorIndex, dracoAttributeId };
+        AttributeInfo attrInfo{ true, false, attrName, attributeName, accessorIndex, dracoAttributeId };
         primitive.attributeInfo.push_back(attrInfo);
     }
     return true;
@@ -588,7 +588,7 @@ bool PrimitiveBuilder::generateGeometryRendererForPrimitive(Primitive &primitive
 }
 
 bool PrimitiveBuilder::generateAttributes(QGeometry *geometry,
-                                    const Primitive &primitive)
+                                          const Primitive &primitive)
 {
     for (const AttributeInfo &attrInfo : primitive.attributeInfo) {
         QAttribute *attribute = createAttribute(attrInfo.accessorIdx,
@@ -602,7 +602,7 @@ bool PrimitiveBuilder::generateAttributes(QGeometry *geometry,
 }
 
 bool PrimitiveBuilder::generateDracoAttributes(QGeometry *geometry,
-                                         const Primitive &primitive)
+                                               const Primitive &primitive)
 {
 #if defined(KUESA_DRACO_COMPRESSION)
     const BufferView &viewData = m_context->bufferView(primitive.dracoBufferViewIdx);
@@ -703,7 +703,7 @@ bool PrimitiveBuilder::generateDracoAttributes(QGeometry *geometry,
 }
 
 bool PrimitiveBuilder::generateMorphTargetAttributes(QGeometry *geometry,
-                                               const Primitive &primitive)
+                                                     const Primitive &primitive)
 {
     const std::vector<MorphTarget> &morphTargets = primitive.morphTargets;
 
@@ -755,8 +755,8 @@ bool PrimitiveBuilder::generateMorphTargetAttributes(QGeometry *geometry,
 }
 
 QAttribute *PrimitiveBuilder::createAttribute(qint32 accessorIndex,
-                                        const QString &attributeName,
-                                        const QString &semanticName)
+                                              const QString &attributeName,
+                                              const QString &semanticName)
 {
     const Accessor &accessor = m_context->accessor(accessorIndex);
 
@@ -810,8 +810,8 @@ QAttribute *PrimitiveBuilder::createAttribute(qint32 accessorIndex,
                                            byteOffset,
                                            byteStride);
     attribute->setAttributeType(attributeName.isEmpty()
-                                ? QAttribute::IndexAttribute
-                                : QAttribute::VertexAttribute);
+                                        ? QAttribute::IndexAttribute
+                                        : QAttribute::VertexAttribute);
     // store some GLTF metadata for glTF editor
     attribute->setProperty("bufferIndex", bufferIdx);
     attribute->setProperty("bufferViewIndex", accessor.bufferViewIndex);

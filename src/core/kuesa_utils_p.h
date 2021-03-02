@@ -73,13 +73,13 @@ inline QVector<ComponentType *> componentsFromEntity(const Qt3DCore::QEntity *e)
 namespace Utils {
 
 template<typename T, typename U>
-bool contains(const std::vector<T>& destination, const U& element) noexcept
+bool contains(const std::vector<T> &destination, const U &element) noexcept
 {
     return std::find(destination.begin(), destination.end(), element) != destination.end();
 }
 
 template<typename T, typename U>
-size_t removeAll(std::vector<T>& destination, const U& element) noexcept
+size_t removeAll(std::vector<T> &destination, const U &element) noexcept
 {
     auto it = std::remove(destination.begin(), destination.end(), element);
     if (it == destination.end())

@@ -49,14 +49,12 @@ using namespace KuesaUtils;
     SceneConfiguration.
 */
 
-
 /*!
     \qmlproperty list<Kuesa::PlaceholderTracker> KuesaUtils::SceneConfigurationItem::placeholders
 
     List of \l [QML] {Kuesa::PlaceholderTracker} instances referenced by the
     SceneConfiguration.
 */
-
 
 SceneConfigurationItem::SceneConfigurationItem(QObject *parent)
     : QObject(parent)

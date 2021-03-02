@@ -34,7 +34,6 @@
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/IroMatteAddProperties>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -63,7 +62,6 @@ private:
     IroMatteAddProperties *m_materialProperties = nullptr;
     Qt3DRender::QParameter *m_shaderDataParameter;
     Qt3DRender::QParameter *m_matteMapParameter;
-
 };
 
 } // namespace Kuesa

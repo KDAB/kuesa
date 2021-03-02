@@ -331,7 +331,7 @@ private Q_SLOTS:
         FakeRenderer renderer;
         qputenv("QT3D_REBUILD_SHADER_CACHE", "1");
 
-        auto testEffectGenerator = [&] (Kuesa::MetallicRoughnessEffect *e) {
+        auto testEffectGenerator = [&](Kuesa::MetallicRoughnessEffect *e) {
             for (Qt3DRender::QTechnique *t : e->techniques()) {
                 Kuesa::MetallicRoughnessTechnique *technique = qobject_cast<Kuesa::MetallicRoughnessTechnique *>(t);
 
@@ -363,7 +363,6 @@ private Q_SLOTS:
             e->setInstanced(true);
             testEffectGenerator(e);
         }
-
     }
 };
 

@@ -134,7 +134,7 @@ public:
             QByteArray(R"()")
         };
 
-         const QByteArray renderableGeometryShaderCode[] = {
+        const QByteArray renderableGeometryShaderCode[] = {
             QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()"),
@@ -161,7 +161,7 @@ public:
         }
         m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
-         // Set geometry shader code if one was specified
+        // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
         m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
@@ -234,7 +234,6 @@ private:
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
-
 /*!
     \class Kuesa::Iro2DiffuseEquiRectEffect
     \inheaderfile Kuesa/Iro2DiffuseEquiRectEffect
@@ -254,7 +253,6 @@ private:
     \brief Kuesa::Iro2DiffuseEquiRectEffect is the effect for the Iro2DiffuseEquiRectMaterial class.
 */
 
-
 Iro2DiffuseEquiRectEffect::Iro2DiffuseEquiRectEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
 {
@@ -273,7 +271,6 @@ Iro2DiffuseEquiRectEffect::Iro2DiffuseEquiRectEffect(Qt3DCore::QNode *parent)
 }
 
 Iro2DiffuseEquiRectEffect::~Iro2DiffuseEquiRectEffect() = default;
-
 
 void Iro2DiffuseEquiRectEffect::updateDoubleSided(bool doubleSided)
 {
@@ -413,11 +410,10 @@ void Iro2DiffuseEquiRectEffect::updateLayersOnTechniques(const QStringList &laye
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_rhiTechnique->setEnabledLayers(layers);
 #endif
 }
-
 
 } // namespace Kuesa
 

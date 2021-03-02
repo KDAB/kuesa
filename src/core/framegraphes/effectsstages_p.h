@@ -54,7 +54,7 @@ class QRenderTarget;
 class QRenderTargetSelector;
 class QBlitFramebuffer;
 class QRenderStateSet;
-} // Qt3DRender
+} // namespace Qt3DRender
 
 namespace Kuesa {
 
@@ -86,7 +86,8 @@ public:
     void setRenderTargets(Qt3DRender::QRenderTarget *rtA,
                           Qt3DRender::QRenderTarget *rtB);
     std::pair<Qt3DRender::QRenderTarget *,
-              Qt3DRender::QRenderTarget *> renderTargets() const;
+              Qt3DRender::QRenderTarget *>
+    renderTargets() const;
 
     void setDepthTexture(Qt3DRender::QAbstractTexture *depthTexture);
     Qt3DRender::QAbstractTexture *depthTexture() const;
@@ -109,7 +110,7 @@ private:
     QHash<AbstractPostProcessingEffect *, AbstractPostProcessingEffect::FrameGraphNodePtr> m_effectFGSubtrees;
     std::vector<Qt3DRender::QRenderTargetSelector *> m_rtSelectors;
 
-    Qt3DRender::QRenderTarget *m_rt[2] = {nullptr, nullptr};
+    Qt3DRender::QRenderTarget *m_rt[2] = { nullptr, nullptr };
     Qt3DRender::QAbstractTexture *m_depthTexture = nullptr;
     Qt3DRender::QBlitFramebuffer *m_blitRt = nullptr;
 

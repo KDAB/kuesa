@@ -207,7 +207,6 @@ void SpotLight::updateAngularAttenuationUniforms()
     d->m_shaderData->setProperty("lightAngleOffset", lightAngleOffset);
 }
 
-
 float SpotLight::range() const
 {
     Q_D(const SpotLight);

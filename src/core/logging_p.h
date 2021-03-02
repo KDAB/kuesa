@@ -49,7 +49,7 @@ namespace Kuesa {
 Q_DECLARE_LOGGING_CATEGORY(kuesa)
 Q_DECLARE_LOGGING_CATEGORY(gltf2_parser_profiling)
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

@@ -302,7 +302,6 @@ private:
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
-
 /*!
     \class Kuesa::Iro2GlassSemEffect
     \inheaderfile Kuesa/Iro2GlassSemEffect
@@ -322,7 +321,6 @@ private:
     \brief Kuesa::Iro2GlassSemEffect is the effect for the Iro2GlassSemMaterial class.
 */
 
-
 Iro2GlassSemEffect::Iro2GlassSemEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
 {
@@ -341,7 +339,6 @@ Iro2GlassSemEffect::Iro2GlassSemEffect(Qt3DCore::QNode *parent)
 }
 
 Iro2GlassSemEffect::~Iro2GlassSemEffect() = default;
-
 
 void Iro2GlassSemEffect::updateDoubleSided(bool doubleSided)
 {
@@ -481,11 +478,10 @@ void Iro2GlassSemEffect::updateLayersOnTechniques(const QStringList &layers)
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_rhiTechnique->setEnabledLayers(layers);
 #endif
 }
-
 
 } // namespace Kuesa
 

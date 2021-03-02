@@ -279,7 +279,7 @@ void GuidedDrillingScreenController::setBit(Bit bit)
 
 GuidedDrillingScreenController::Step GuidedDrillingScreenController::nextStep()
 {
-    auto findNextStep = [this] () -> Step {
+    auto findNextStep = [this]() -> Step {
         // Note: maybe we later will need to skip some steps based on what
         // previous steps were selected
 
@@ -404,7 +404,6 @@ void GuidedDrillingScreenController::loadDrillBit()
         m_insertedDrillBit->removeComponent(m_originalDrillBitTransform);
         m_insertedDrillBit->addComponent(m_insertedDrillBitTranform);
     }
-
 }
 
 namespace {
@@ -433,13 +432,13 @@ void launchCameraAnimation(Kuesa::AnimationPlayer *player, bool reversed)
     player->start();
 }
 
-} // anonymous
+} // namespace
 
 void GuidedDrillingScreenController::syncViewToStep(Step previousStep)
 {
     const bool forward = previousStep < m_currentStep || previousStep == CompletionStep;
 
-    auto forwardAnimationForStep = [this] (Step step) -> Kuesa::AnimationPlayer * {
+    auto forwardAnimationForStep = [this](Step step) -> Kuesa::AnimationPlayer * {
         switch (step) {
         case ModeSelection:
             return m_cameraTransitionAnimationTriggerToSide;
@@ -456,7 +455,7 @@ void GuidedDrillingScreenController::syncViewToStep(Step previousStep)
         }
     };
 
-    auto backwardAnimationForStep = [this] (Step step) -> Kuesa::AnimationPlayer * {
+    auto backwardAnimationForStep = [this](Step step) -> Kuesa::AnimationPlayer * {
         switch (step) {
         case MaterialSelection:
             return m_cameraTransitionAnimationSideToBit;
@@ -471,7 +470,7 @@ void GuidedDrillingScreenController::syncViewToStep(Step previousStep)
         }
     };
 
-    auto animationForStep = [&] (Step step) {
+    auto animationForStep = [&](Step step) {
         if (forward)
             return forwardAnimationForStep(step);
         return backwardAnimationForStep(step);
@@ -542,19 +541,19 @@ void GuidedDrillingScreenController::filterBits()
     m_filteredBits = [&]() -> std::vector<Bit> {
         switch (m_mode) {
         case Mode::None:
-            return {bits.cbegin(), bits.cend()};
+            return { bits.cbegin(), bits.cend() };
         case Mode::Screw:
-            return {screwDriverBits.cbegin(), screwDriverBits.cend()};
+            return { screwDriverBits.cbegin(), screwDriverBits.cend() };
         case Mode::Drill:
             switch (m_material) {
             case MaterialType::None:
-                return {drillingBits.cbegin(), drillingBits.cend()};
+                return { drillingBits.cbegin(), drillingBits.cend() };
             case MaterialType::Wood:
-                return {woodDrillingBits.cbegin(), woodDrillingBits.cend()};
+                return { woodDrillingBits.cbegin(), woodDrillingBits.cend() };
             case MaterialType::Concrete:
-                return {concreteDrillingBits.cbegin(), concreteDrillingBits.cend()};
+                return { concreteDrillingBits.cbegin(), concreteDrillingBits.cend() };
             case MaterialType::Metal:
-                return {metalDrillingBits.cbegin(), metalDrillingBits.cend()};
+                return { metalDrillingBits.cbegin(), metalDrillingBits.cend() };
             }
 
             Q_UNREACHABLE();

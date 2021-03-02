@@ -94,7 +94,6 @@ Placeholder::Placeholder(Qt3DCore::QNode *parent)
 
 void Placeholder::updatePlaceholder()
 {
-
 }
 
 } // namespace Kuesa

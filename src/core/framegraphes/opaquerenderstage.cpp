@@ -56,10 +56,7 @@ OpaqueRenderStage::OpaqueRenderStage(Qt3DRender::QFrameGraphNode *parent)
     m_states->addRenderState(msaa);
     m_noDepthWrite = new Qt3DRender::QNoDepthMask(m_states);
     m_sortPolicy = new Qt3DRender::QSortPolicy(m_states);
-    m_sortPolicy->setSortTypes(QVector<Qt3DRender::QSortPolicy::SortType>
-                               ({Qt3DRender::QSortPolicy::Material
-                                 , Qt3DRender::QSortPolicy::Texture
-                                }));
+    m_sortPolicy->setSortTypes(QVector<Qt3DRender::QSortPolicy::SortType>({ Qt3DRender::QSortPolicy::Material, Qt3DRender::QSortPolicy::Texture }));
     m_cullFace = new Qt3DRender::QCullFace;
     m_cullFace->setMode(Qt3DRender::QCullFace::Back);
     m_states->addRenderState(m_cullFace);

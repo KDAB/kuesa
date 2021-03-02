@@ -123,6 +123,6 @@ View *ViewResolver::view() const
     return m_view;
 }
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE

@@ -30,7 +30,6 @@
 #ifndef KUESA_IRODIFFUSEHEMISHADERDATA_P_H
 #define KUESA_IRODIFFUSEHEMISHADERDATA_P_H
 
-
 //
 //  W A R N I N G
 //  -------------
@@ -138,7 +137,6 @@ private:
     float m_diffuseGain;
     bool m_usesDiffuseMap;
     bool m_gltfYUp;
-
 };
 
 } // namespace Kuesa

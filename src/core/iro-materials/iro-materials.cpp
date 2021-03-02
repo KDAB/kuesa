@@ -82,7 +82,7 @@ void registerIroMaterials()
 // This will call registerIroMaterials on startup automatically
 Q_CONSTRUCTOR_FUNCTION(registerIroMaterials)
 
-} // namespace SimpleMaterials
+} // namespace IroMaterials
 
 } // namespace Kuesa
 

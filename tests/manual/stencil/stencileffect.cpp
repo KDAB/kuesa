@@ -16,8 +16,8 @@ StencilEffect::StencilEffect()
 {
     QObject::connect(m_color, &Qt3DRender::QParameter::valueChanged,
                      [this]() {
-        emit colorChanged(color());
-    });
+                         emit colorChanged(color());
+                     });
 
     m_rootFramegraphNode.reset(new Qt3DRender::QFrameGraphNode());
     m_rootFramegraphNode->setObjectName(QStringLiteral("Opacity Mask Effect"));

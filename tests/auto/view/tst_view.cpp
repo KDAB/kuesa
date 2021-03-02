@@ -505,7 +505,7 @@ private Q_SLOTS:
         QVERIFY(reflectionTextureSizeChangedSpy.isValid());
 
         // WHEN
-        view.setReflectionTextureSize({1024, 1024});
+        view.setReflectionTextureSize({ 1024, 1024 });
 
         // THEN
         QCOMPARE(reflectionTextureChangedSpy.count(), 1);

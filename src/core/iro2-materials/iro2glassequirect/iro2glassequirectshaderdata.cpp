@@ -29,7 +29,6 @@
 
 #include "iro2glassequirectshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -51,7 +50,8 @@ Iro2GlassEquiRectShaderData::Iro2GlassEquiRectShaderData(Qt3DCore::QNode *parent
     , m_postVertexColor()
     , m_postGain()
     , m_gltfYUp()
-{}
+{
+}
 
 Iro2GlassEquiRectShaderData::~Iro2GlassEquiRectShaderData() = default;
 
@@ -119,7 +119,6 @@ bool Iro2GlassEquiRectShaderData::gltfYUp() const
 {
     return m_gltfYUp;
 }
-
 
 void Iro2GlassEquiRectShaderData::setGlassInnerFilter(const QVector3D &glassInnerFilter)
 {
@@ -224,8 +223,6 @@ void Iro2GlassEquiRectShaderData::setGltfYUp(bool gltfYUp)
     m_gltfYUp = gltfYUp;
     emit gltfYUpChanged(gltfYUp);
 }
-
-
 
 } // namespace Kuesa
 

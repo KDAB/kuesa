@@ -32,13 +32,11 @@
 #include <Qt3DCore/private/qnode_p.h>
 #include <Kuesa/private/empty2dtexture_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::Iro2PlanarReflectionEquiRectProperties
@@ -154,7 +152,7 @@ void Iro2PlanarReflectionEquiRectProperties::setGltfYUp(bool gltfYUp)
     m_shaderData->setGltfYUp(gltfYUp);
 }
 
-void Iro2PlanarReflectionEquiRectProperties::setNormalMap(Qt3DRender::QAbstractTexture * normalMap)
+void Iro2PlanarReflectionEquiRectProperties::setNormalMap(Qt3DRender::QAbstractTexture *normalMap)
 {
     if (m_normalMap == normalMap)
         return;
@@ -170,7 +168,6 @@ void Iro2PlanarReflectionEquiRectProperties::setNormalMap(Qt3DRender::QAbstractT
     }
     emit normalMapChanged(m_normalMap);
 }
-
 
 /*!
     \qmlproperty float Iro2PlanarReflectionEquiRectProperties::reflectionGain
@@ -341,11 +338,10 @@ bool Iro2PlanarReflectionEquiRectProperties::gltfYUp() const
     return m_shaderData->gltfYUp();
 }
 
-Qt3DRender::QAbstractTexture * Iro2PlanarReflectionEquiRectProperties::normalMap() const
+Qt3DRender::QAbstractTexture *Iro2PlanarReflectionEquiRectProperties::normalMap() const
 {
     return m_normalMap;
 }
-
 
 } // namespace Kuesa
 

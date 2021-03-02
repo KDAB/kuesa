@@ -29,7 +29,6 @@
 
 #include "irodiffuseshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -51,7 +50,8 @@ IroDiffuseShaderData::IroDiffuseShaderData(Qt3DCore::QNode *parent)
     , m_diffuseOuterFilter()
     , m_diffuseGain()
     , m_usesDiffuseMap()
-{}
+{
+}
 
 IroDiffuseShaderData::~IroDiffuseShaderData() = default;
 
@@ -119,7 +119,6 @@ bool IroDiffuseShaderData::usesDiffuseMap() const
 {
     return m_usesDiffuseMap;
 }
-
 
 void IroDiffuseShaderData::setNormalScaling(const QVector3D &normalScaling)
 {
@@ -224,8 +223,6 @@ void IroDiffuseShaderData::setUsesDiffuseMap(bool usesDiffuseMap)
     m_usesDiffuseMap = usesDiffuseMap;
     emit usesDiffuseMapChanged(usesDiffuseMap);
 }
-
-
 
 } // namespace Kuesa
 

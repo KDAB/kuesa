@@ -32,13 +32,11 @@
 #include <Qt3DCore/private/qnode_p.h>
 #include <Kuesa/private/empty2dtexture_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::Iro2MatteAlphaProperties
@@ -174,7 +172,7 @@ void Iro2MatteAlphaProperties::setGltfYUp(bool gltfYUp)
     m_shaderData->setGltfYUp(gltfYUp);
 }
 
-void Iro2MatteAlphaProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
+void Iro2MatteAlphaProperties::setMatteMap(Qt3DRender::QAbstractTexture *matteMap)
 {
     if (m_matteMap == matteMap)
         return;
@@ -191,7 +189,7 @@ void Iro2MatteAlphaProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteM
     emit matteMapChanged(m_matteMap);
 }
 
-void Iro2MatteAlphaProperties::setNormalMap(Qt3DRender::QAbstractTexture * normalMap)
+void Iro2MatteAlphaProperties::setNormalMap(Qt3DRender::QAbstractTexture *normalMap)
 {
     if (m_normalMap == normalMap)
         return;
@@ -207,7 +205,6 @@ void Iro2MatteAlphaProperties::setNormalMap(Qt3DRender::QAbstractTexture * norma
     }
     emit normalMapChanged(m_normalMap);
 }
-
 
 /*!
     \qmlproperty bool Iro2MatteAlphaProperties::usesMatteMap
@@ -417,16 +414,15 @@ bool Iro2MatteAlphaProperties::gltfYUp() const
     return m_shaderData->gltfYUp();
 }
 
-Qt3DRender::QAbstractTexture * Iro2MatteAlphaProperties::matteMap() const
+Qt3DRender::QAbstractTexture *Iro2MatteAlphaProperties::matteMap() const
 {
     return m_matteMap;
 }
 
-Qt3DRender::QAbstractTexture * Iro2MatteAlphaProperties::normalMap() const
+Qt3DRender::QAbstractTexture *Iro2MatteAlphaProperties::normalMap() const
 {
     return m_normalMap;
 }
-
 
 } // namespace Kuesa
 

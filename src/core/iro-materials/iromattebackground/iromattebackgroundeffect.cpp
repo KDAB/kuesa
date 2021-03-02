@@ -116,7 +116,7 @@ public:
             QByteArray(R"()")
         };
 
-         const QByteArray renderableGeometryShaderCode[] = {
+        const QByteArray renderableGeometryShaderCode[] = {
             QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()"),
@@ -138,7 +138,7 @@ public:
             m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
         }
 
-         // Set geometry shader code if one was specified
+        // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
         auto filterKey = new QFilterKey(this);
@@ -202,7 +202,6 @@ private:
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
-
 /*!
     \class Kuesa::IroMatteBackgroundEffect
     \inheaderfile Kuesa/IroMatteBackgroundEffect
@@ -230,7 +229,6 @@ private:
     {Kuesa::View::skinning} property set to true to be visible.
 */
 
-
 IroMatteBackgroundEffect::IroMatteBackgroundEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
 {
@@ -249,7 +247,6 @@ IroMatteBackgroundEffect::IroMatteBackgroundEffect(Qt3DCore::QNode *parent)
 }
 
 IroMatteBackgroundEffect::~IroMatteBackgroundEffect() = default;
-
 
 void IroMatteBackgroundEffect::updateDoubleSided(bool doubleSided)
 {
@@ -389,11 +386,10 @@ void IroMatteBackgroundEffect::updateLayersOnTechniques(const QStringList &layer
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_rhiTechnique->setEnabledLayers(layers);
 #endif
 }
-
 
 } // namespace Kuesa
 

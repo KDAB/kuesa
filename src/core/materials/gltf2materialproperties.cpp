@@ -134,9 +134,9 @@ void GLTF2MaterialProperties::addClientMaterial(Qt3DRender::QMaterial *material)
 {
     m_clientMaterials.push_back(material);
     m_connections.push_back(QObject::connect(material, &Qt3DRender::QMaterial::nodeDestroyed,
-                         [this, material]() {
-        m_clientMaterials.removeAll(material);
-    }));
+                                             [this, material]() {
+                                                 m_clientMaterials.removeAll(material);
+                                             }));
 }
 
 QVector<Qt3DRender::QMaterial *> GLTF2MaterialProperties::clientMaterials() const

@@ -29,7 +29,6 @@
 
 #include "iro2alphaequirectshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -53,7 +52,8 @@ Iro2AlphaEquiRectShaderData::Iro2AlphaEquiRectShaderData(Qt3DCore::QNode *parent
     , m_postHemiFilter()
     , m_postGain()
     , m_gltfYUp()
-{}
+{
+}
 
 Iro2AlphaEquiRectShaderData::~Iro2AlphaEquiRectShaderData() = default;
 
@@ -131,7 +131,6 @@ bool Iro2AlphaEquiRectShaderData::gltfYUp() const
 {
     return m_gltfYUp;
 }
-
 
 void Iro2AlphaEquiRectShaderData::setUsesReflectionMap(bool usesReflectionMap)
 {
@@ -252,8 +251,6 @@ void Iro2AlphaEquiRectShaderData::setGltfYUp(bool gltfYUp)
     m_gltfYUp = gltfYUp;
     emit gltfYUpChanged(gltfYUp);
 }
-
-
 
 } // namespace Kuesa
 

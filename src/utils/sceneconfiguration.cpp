@@ -127,7 +127,6 @@ using namespace KuesaUtils;
     \brief The source of the glTF file to be loaded.
  */
 
-
 /*!
     \qmlproperty string KuesaUtils::SceneConfiguration::cameraName
 
@@ -238,7 +237,7 @@ void SceneConfiguration::removePlaceholderTracker(PlaceholderTracker *placeholde
     auto it = std::remove(std::begin(m_placeholderTrackers), std::end(m_placeholderTrackers), placeholder);
     if (it != std::end(m_placeholderTrackers)) {
         m_placeholderTrackers.erase(it,
-                             std::end(m_placeholderTrackers));
+                                    std::end(m_placeholderTrackers));
         emit placeholderTrackerRemoved(placeholder);
     }
 }

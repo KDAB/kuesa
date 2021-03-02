@@ -50,14 +50,14 @@ struct Q_AUTOTEST_EXPORT TextureInfo {
     qint32 texCoord = 0; // Attribute will be TEXCOORD_<texCoord>
 
     struct KHR_texture_transform {
-        QVector2D offset = {0.0f, 0.0f};
+        QVector2D offset = { 0.0f, 0.0f };
         float rotation = 0.0f;
-        QVector2D scale = {1.0f, 1.0f};
+        QVector2D scale = { 1.0f, 1.0f };
     };
 
     KHR_texture_transform khr_texture_transform;
 
-    static  TextureInfo parse(const QJsonObject &textureInfoObj);
+    static TextureInfo parse(const QJsonObject &textureInfoObj);
 };
 } // namespace GLTF2Import
 } // namespace Kuesa

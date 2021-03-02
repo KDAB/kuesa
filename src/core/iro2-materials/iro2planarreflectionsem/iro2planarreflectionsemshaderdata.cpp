@@ -29,7 +29,6 @@
 
 #include "iro2planarreflectionsemshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -51,7 +50,8 @@ Iro2PlanarReflectionSemShaderData::Iro2PlanarReflectionSemShaderData(Qt3DCore::Q
     , m_postVertexColor()
     , m_postGain()
     , m_gltfYUp()
-{}
+{
+}
 
 Iro2PlanarReflectionSemShaderData::~Iro2PlanarReflectionSemShaderData() = default;
 
@@ -119,7 +119,6 @@ bool Iro2PlanarReflectionSemShaderData::gltfYUp() const
 {
     return m_gltfYUp;
 }
-
 
 void Iro2PlanarReflectionSemShaderData::setReflectionGain(float reflectionGain)
 {
@@ -224,8 +223,6 @@ void Iro2PlanarReflectionSemShaderData::setGltfYUp(bool gltfYUp)
     m_gltfYUp = gltfYUp;
     emit gltfYUpChanged(gltfYUp);
 }
-
-
 
 } // namespace Kuesa
 

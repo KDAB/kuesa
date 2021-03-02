@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
     QCommandLineOption sceneOption({ "s", "scene" }, QObject::tr("index of the glTF scene to load"),
                                    QObject::tr("scene"), QString::number(Kuesa::GLTF2Importer::DefaultScene));
     QCommandLineOption reflectionPlaneOption({ "r", "reflectionPlane" }, QObject::tr("use named reflection plane"),
-                                   QObject::tr("plane name"), QString());
+                                             QObject::tr("plane name"), QString());
     cmdline.addOptions({ fullScreenOption, animationsOption, loopOption, cameraOption, sceneOption, reflectionPlaneOption });
 
     cmdline.process(app);

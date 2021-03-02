@@ -450,18 +450,18 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-       const bool parsingSuccessful = parser.parse(QString(ASSETS + filePath));
+        const bool parsingSuccessful = parser.parse(QString(ASSETS + filePath));
 
-       // THEN
-       QCOMPARE(parsingSuccessful, parsingSucceeded);
-       QCOMPARE(parser.context()->textureSamplersCount(), samplerCount);
-       for (size_t i = 0; i < samplerCount; ++i) {
-           const TextureSampler s = parser.context()->textureSampler(i);
-           QCOMPARE(s.minificationFilter, minFilter);
-           QCOMPARE(s.magnificationFilter, magFilter);
-           QCOMPARE(s.textureWrapMode->x(), wrapS);
-           QCOMPARE(s.textureWrapMode->y(), wrapT);
-       }
+        // THEN
+        QCOMPARE(parsingSuccessful, parsingSucceeded);
+        QCOMPARE(parser.context()->textureSamplersCount(), samplerCount);
+        for (size_t i = 0; i < samplerCount; ++i) {
+            const TextureSampler s = parser.context()->textureSampler(i);
+            QCOMPARE(s.minificationFilter, minFilter);
+            QCOMPARE(s.magnificationFilter, magFilter);
+            QCOMPARE(s.textureWrapMode->x(), wrapS);
+            QCOMPARE(s.textureWrapMode->y(), wrapT);
+        }
     }
 
     void checkSceneParsing_data()

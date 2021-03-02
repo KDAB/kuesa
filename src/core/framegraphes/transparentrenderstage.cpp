@@ -34,7 +34,6 @@
 #include <Qt3DRender/QDepthTest>
 #include <Qt3DRender/QMultiSampleAntiAliasing>
 
-
 QT_USE_NAMESPACE
 
 using namespace Kuesa;
@@ -50,8 +49,7 @@ QVector<Qt3DRender::QSortPolicy::SortType> sortTypes(bool backToFrontSorting)
 
 constexpr size_t MAX_RENDER_PASS_COUNT = 2;
 
-} // anonymous
-
+} // namespace
 
 TransparentRenderStage::TransparentRenderStage(Qt3DRender::QFrameGraphNode *parent)
     : AbstractRenderStage(parent)

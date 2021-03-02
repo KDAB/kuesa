@@ -302,7 +302,6 @@ private:
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
-
 /*!
     \class Kuesa::IroGlassAddEffect
     \inheaderfile Kuesa/IroGlassAddEffect
@@ -322,7 +321,6 @@ private:
     \brief Kuesa::IroGlassAddEffect is the effect for the IroGlassAddMaterial class.
 */
 
-
 IroGlassAddEffect::IroGlassAddEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
 {
@@ -341,7 +339,6 @@ IroGlassAddEffect::IroGlassAddEffect(Qt3DCore::QNode *parent)
 }
 
 IroGlassAddEffect::~IroGlassAddEffect() = default;
-
 
 void IroGlassAddEffect::updateDoubleSided(bool doubleSided)
 {
@@ -481,11 +478,10 @@ void IroGlassAddEffect::updateLayersOnTechniques(const QStringList &layers)
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
     m_es2Technique->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_rhiTechnique->setEnabledLayers(layers);
 #endif
 }
-
 
 } // namespace Kuesa
 

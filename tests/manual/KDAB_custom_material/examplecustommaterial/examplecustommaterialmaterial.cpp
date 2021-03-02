@@ -32,13 +32,11 @@
 #include "examplecustommaterialshaderdata_p.h"
 #include <Qt3DRender/qparameter.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::ExampleCustomMaterialMaterial
@@ -60,8 +58,7 @@ namespace Kuesa {
 */
 
 ExampleCustomMaterialMaterial::ExampleCustomMaterialMaterial(Qt3DCore::QNode *parent)
-    : GLTF2Material(parent),
-    m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("properties"), {}))
+    : GLTF2Material(parent), m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("properties"), {}))
 {
     addParameter(m_shaderDataParameter);
 }

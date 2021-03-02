@@ -207,7 +207,6 @@ ThresholdEffect::ThresholdEffect(Qt3DCore::QNode *parent)
     effect->addTechnique(rhiTechnique);
 #endif
 
-
     effect->addParameter(m_textureParam);
     effect->addParameter(m_thresholdParameter);
 

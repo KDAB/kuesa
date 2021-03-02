@@ -30,7 +30,6 @@
 #ifndef KUESA_IRODIFFUSEALPHASHADERDATA_P_H
 #define KUESA_IRODIFFUSEALPHASHADERDATA_P_H
 
-
 //
 //  W A R N I N G
 //  -------------
@@ -123,7 +122,6 @@ private:
     float m_reflectionInnerAlpha;
     float m_reflectionOuterAlpha;
     float m_alphaGain;
-
 };
 
 } // namespace Kuesa

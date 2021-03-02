@@ -321,7 +321,7 @@ private Q_SLOTS:
                                                   "    }"
                                                   "]");
         // THEN
-        const QJsonArray meshesArray =  QJsonDocument::fromJson(json).array();
+        const QJsonArray meshesArray = QJsonDocument::fromJson(json).array();
         QVERIFY(!meshesArray.empty());
 
         // WHEN
@@ -355,12 +355,12 @@ private Q_SLOTS:
         Qt3DGeometry::QGeometry *geometry = renderer->geometry();
         QCOMPARE(geometry->attributes().size(), 3);
 
-        auto findAttribute = [&geometry] (const QString &name) -> Qt3DGeometry::QAttribute* {
+        auto findAttribute = [&geometry](const QString &name) -> Qt3DGeometry::QAttribute * {
             const auto &attributes = geometry->attributes();
             auto it = std::find_if(attributes.begin(), attributes.end(),
-                         [&name] (const Qt3DGeometry::QAttribute *a) {
-                return a->name() == name;
-            });
+                                   [&name](const Qt3DGeometry::QAttribute *a) {
+                                       return a->name() == name;
+                                   });
             if (it != attributes.end())
                 return *it;
             return nullptr;
@@ -397,7 +397,6 @@ private Q_SLOTS:
         QCOMPARE(indexAttribute->byteOffset(), 0U);
         QCOMPARE(indexAttribute->buffer()->data(), fakeIndexData);
         QCOMPARE(indexAttribute->count(), 128U);
-
     }
 
     void checkBufferSplittingForLargetAccessorOffsets()
@@ -450,7 +449,7 @@ private Q_SLOTS:
                                                   "    }"
                                                   "]");
         // THEN
-        const QJsonArray meshesArray =  QJsonDocument::fromJson(json).array();
+        const QJsonArray meshesArray = QJsonDocument::fromJson(json).array();
         QVERIFY(!meshesArray.empty());
 
         // WHEN
@@ -485,12 +484,12 @@ private Q_SLOTS:
         Qt3DGeometry::QGeometry *geometry = renderer->geometry();
         QCOMPARE(geometry->attributes().size(), 3);
 
-        auto findAttribute = [&geometry] (const QString &name) -> Qt3DGeometry::QAttribute* {
+        auto findAttribute = [&geometry](const QString &name) -> Qt3DGeometry::QAttribute * {
             const auto &attributes = geometry->attributes();
             auto it = std::find_if(attributes.begin(), attributes.end(),
-                         [&name] (const Qt3DGeometry::QAttribute *a) {
-                return a->name() == name;
-            });
+                                   [&name](const Qt3DGeometry::QAttribute *a) {
+                                       return a->name() == name;
+                                   });
             if (it != attributes.end())
                 return *it;
             return nullptr;
@@ -757,8 +756,8 @@ private Q_SLOTS:
         const QVector<QAttribute *> attributes = p1.primitiveRenderer->geometry()->attributes();
         QCOMPARE(attributes.size(), 3);
 
-        auto findAttributeWithName = [&] (const QString &name) {
-            return *std::find_if(attributes.begin(), attributes.end(), [&] (Qt3DGeometry::QAttribute *a) {
+        auto findAttributeWithName = [&](const QString &name) {
+            return *std::find_if(attributes.begin(), attributes.end(), [&](Qt3DGeometry::QAttribute *a) {
                 return a->name() == name;
             });
         };
@@ -857,8 +856,8 @@ private Q_SLOTS:
         const QVector<QAttribute *> attributes = p1.primitiveRenderer->geometry()->attributes();
         QCOMPARE(attributes.size(), 3);
 
-        auto findAttributeWithName = [&] (const QString &name) {
-            return *std::find_if(attributes.begin(), attributes.end(), [&] (Qt3DGeometry::QAttribute *a) {
+        auto findAttributeWithName = [&](const QString &name) {
+            return *std::find_if(attributes.begin(), attributes.end(), [&](Qt3DGeometry::QAttribute *a) {
                 return a->name() == name;
             });
         };

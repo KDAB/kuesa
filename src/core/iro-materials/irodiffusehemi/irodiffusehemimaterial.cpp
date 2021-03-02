@@ -32,13 +32,11 @@
 #include "irodiffusehemishaderdata_p.h"
 #include <Qt3DRender/qparameter.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::IroDiffuseHemiMaterial
@@ -103,8 +101,8 @@ void IroDiffuseHemiMaterial::setMaterialProperties(Kuesa::IroDiffuseHemiProperti
         emit materialPropertiesChanged(materialProperties);
 
         if (m_materialProperties) {
-            QObject::connect(m_materialProperties, &IroDiffuseHemiProperties::reflectionMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
-            QObject::connect(m_materialProperties, &IroDiffuseHemiProperties::diffuseMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_diffuseMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &IroDiffuseHemiProperties::reflectionMapChanged, this, [this](Qt3DRender::QAbstractTexture *t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &IroDiffuseHemiProperties::diffuseMapChanged, this, [this](Qt3DRender::QAbstractTexture *t) { m_diffuseMapParameter->setValue(QVariant::fromValue(t)); });
 
             m_reflectionMapParameter->setValue(QVariant::fromValue(m_materialProperties->reflectionMap()));
             m_diffuseMapParameter->setValue(QVariant::fromValue(m_materialProperties->diffuseMap()));

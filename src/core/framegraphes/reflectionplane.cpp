@@ -34,7 +34,6 @@ QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
 
-
 /*!
     \class Kuesa::ReflectionPlane
     \brief Specifies a reflection plane for a View of the scene.
@@ -153,6 +152,6 @@ const std::vector<Qt3DRender::QLayer *> &ReflectionPlane::layers() const
     return m_layers;
 }
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE

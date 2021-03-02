@@ -59,7 +59,7 @@ KuesaUtils::SceneConfiguration *prepareScene()
     return sceneConfiguration;
 }
 
-} // anonymous
+} // namespace
 
 int main(int ac, char **av)
 {

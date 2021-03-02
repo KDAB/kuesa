@@ -63,7 +63,7 @@ ReflectionStages::ReflectionStages(Qt3DRender::QFrameGraphNode *parent)
     // Create Render Target
     Qt3DRender::QRenderTarget *target = FrameGraphUtils::createRenderTarget(FrameGraphUtils::IncludeDepth,
                                                                             m_renderTargetSelector,
-                                                                            {512, 512});
+                                                                            { 512, 512 });
     m_renderTargetSelector->setTarget(target);
 
     auto colorTexture = reflectionTexture();

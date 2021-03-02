@@ -107,7 +107,7 @@ private Q_SLOTS:
 
         m1.translate(QVector3D(1, 1, 1));
         m2.translate(QVector3D(0, 1, 0));
-        instantiator.setTransformationMatrices({m1, m2});
+        instantiator.setTransformationMatrices({ m1, m2 });
 
         // THEN
         QCOMPARE(instantiator.transformationMatrices().size(), size_t(2));
@@ -118,7 +118,7 @@ private Q_SLOTS:
         QCOMPARE(countSpy.count(), 1);
 
         // WHEN
-        instantiator.setTransformationMatrices({m1, m2});
+        instantiator.setTransformationMatrices({ m1, m2 });
 
         // THEN
         QCOMPARE(transformsSpy.count(), 1);
@@ -166,7 +166,7 @@ private Q_SLOTS:
 
         // WHEN
         instantiator.setEntityName(QStringLiteral("MyEntity"));
-        instantiator.setTransformationMatrices({QMatrix4x4(), QMatrix4x4()});
+        instantiator.setTransformationMatrices({ QMatrix4x4(), QMatrix4x4() });
 
         // THEN
         QCOMPARE(g->instanceCount(), 1);

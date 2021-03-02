@@ -35,6 +35,6 @@ namespace Kuesa {
 Q_LOGGING_CATEGORY(kuesa, "Kuesa", QtWarningMsg)
 Q_LOGGING_CATEGORY(gltf2_parser_profiling, "Kuesa.Profiling.GLTF2", QtWarningMsg)
 
-}
+} // namespace Kuesa
 
 QT_END_NAMESPACE

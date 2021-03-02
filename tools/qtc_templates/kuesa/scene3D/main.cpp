@@ -7,14 +7,14 @@ int main(int argc, char *argv[])
     // Qt3D will resolve the highest version actually available at runtime
     QSurfaceFormat format = QSurfaceFormat::defaultFormat();
 #ifndef QT_OPENGL_ES_2
-        format.setVersion(4, 6);
-        format.setProfile(QSurfaceFormat::CoreProfile);
+    format.setVersion(4, 6);
+    format.setProfile(QSurfaceFormat::CoreProfile);
 #else
-        format.setVersion(3, 0);
-        format.setProfile(QSurfaceFormat::NoProfile);
-        format.setRenderableType(QSurfaceFormat::OpenGLES);
+    format.setVersion(3, 0);
+    format.setProfile(QSurfaceFormat::NoProfile);
+    format.setRenderableType(QSurfaceFormat::OpenGLES);
 #endif
-        QSurfaceFormat::setDefaultFormat(format);
+    QSurfaceFormat::setDefaultFormat(format);
 
     // Manages the GUI application's control flow and main settings.
     QGuiApplication app(argc, argv);

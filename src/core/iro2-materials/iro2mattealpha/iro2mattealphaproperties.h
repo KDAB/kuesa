@@ -36,7 +36,6 @@
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -47,7 +46,7 @@ class KUESASHARED_EXPORT Iro2MatteAlphaProperties : public GLTF2MaterialProperti
 {
     Q_OBJECT
     Q_PROPERTY(bool usesMatteMap READ usesMatteMap WRITE setUsesMatteMap NOTIFY usesMatteMapChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * matteMap READ matteMap WRITE setMatteMap NOTIFY matteMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *matteMap READ matteMap WRITE setMatteMap NOTIFY matteMapChanged)
     Q_PROPERTY(float matteGain READ matteGain WRITE setMatteGain NOTIFY matteGainChanged)
     Q_PROPERTY(QVector3D matteInnerFilter READ matteInnerFilter WRITE setMatteInnerFilter NOTIFY matteInnerFilterChanged)
     Q_PROPERTY(QVector3D matteOuterFilter READ matteOuterFilter WRITE setMatteOuterFilter NOTIFY matteOuterFilterChanged)
@@ -56,7 +55,7 @@ class KUESASHARED_EXPORT Iro2MatteAlphaProperties : public GLTF2MaterialProperti
     Q_PROPERTY(float outerAlpha READ outerAlpha WRITE setOuterAlpha NOTIFY outerAlphaChanged)
     Q_PROPERTY(float alphaGain READ alphaGain WRITE setAlphaGain NOTIFY alphaGainChanged)
     Q_PROPERTY(bool usesNormalMap READ usesNormalMap WRITE setUsesNormalMap NOTIFY usesNormalMapChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
     Q_PROPERTY(float normalMapGain READ normalMapGain WRITE setNormalMapGain NOTIFY normalMapGainChanged)
     Q_PROPERTY(QVector3D normalScaling READ normalScaling WRITE setNormalScaling NOTIFY normalScalingChanged)
     Q_PROPERTY(QVector2D normalDisturb READ normalDisturb WRITE setNormalDisturb NOTIFY normalDisturbChanged)
@@ -71,7 +70,7 @@ public:
 
     Qt3DRender::QShaderData *shaderData() const override;
     bool usesMatteMap() const;
-    Qt3DRender::QAbstractTexture * matteMap() const;
+    Qt3DRender::QAbstractTexture *matteMap() const;
     float matteGain() const;
     QVector3D matteInnerFilter() const;
     QVector3D matteOuterFilter() const;
@@ -80,7 +79,7 @@ public:
     float outerAlpha() const;
     float alphaGain() const;
     bool usesNormalMap() const;
-    Qt3DRender::QAbstractTexture * normalMap() const;
+    Qt3DRender::QAbstractTexture *normalMap() const;
     float normalMapGain() const;
     QVector3D normalScaling() const;
     QVector2D normalDisturb() const;
@@ -91,7 +90,7 @@ public:
 
 public Q_SLOTS:
     void setUsesMatteMap(bool usesMatteMap);
-    void setMatteMap(Qt3DRender::QAbstractTexture * matteMap);
+    void setMatteMap(Qt3DRender::QAbstractTexture *matteMap);
     void setMatteGain(float matteGain);
     void setMatteInnerFilter(const QVector3D &matteInnerFilter);
     void setMatteOuterFilter(const QVector3D &matteOuterFilter);
@@ -100,7 +99,7 @@ public Q_SLOTS:
     void setOuterAlpha(float outerAlpha);
     void setAlphaGain(float alphaGain);
     void setUsesNormalMap(bool usesNormalMap);
-    void setNormalMap(Qt3DRender::QAbstractTexture * normalMap);
+    void setNormalMap(Qt3DRender::QAbstractTexture *normalMap);
     void setNormalMapGain(float normalMapGain);
     void setNormalScaling(const QVector3D &normalScaling);
     void setNormalDisturb(const QVector2D &normalDisturb);
@@ -131,12 +130,11 @@ Q_SIGNALS:
 
 private:
     Iro2MatteAlphaShaderData *m_shaderData;
-    Qt3DRender::QAbstractTexture * m_matteMap;
-    Qt3DRender::QAbstractTexture * m_normalMap;
-
+    Qt3DRender::QAbstractTexture *m_matteMap;
+    Qt3DRender::QAbstractTexture *m_normalMap;
 };
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-Q_DECLARE_METATYPE(Kuesa::Iro2MatteAlphaProperties*)
+Q_DECLARE_METATYPE(Kuesa::Iro2MatteAlphaProperties *)
 #endif // KUESA_IRO2MATTEALPHAPROPERTIES_H

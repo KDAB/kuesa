@@ -147,7 +147,6 @@ void SceneFeaturedRenderStageBase::setCubeShadowMap(bool cubeShadowMap)
     reconfigure(m_features);
 }
 
-
 /*!
     \internal
 
@@ -315,7 +314,6 @@ void ScenePass::reconfigure(const Features features)
         m_nonSkinnedStage->setParent(m_nonSkinnedTechniqueFilter);
     }
 
-
     // Skinned Meshes are not checked against frustum culling as the skinning
     // could actually make them still be in the view frustum even if their
     // transform technically makes them out of sight
@@ -324,8 +322,6 @@ void ScenePass::reconfigure(const Features features)
         m_skinnedStage->setParent(m_skinnedTechniqueFilter);
     }
 }
-
-
 
 /*!
     \internal
@@ -395,7 +391,7 @@ void SceneStages::reconfigure(const Features features)
     m_particleRenderStage->setParent(Q_NODE_NULLPTR);
 
     // Set features on stages which will update accordingly
-    const ScenePassPtr passStages[] { m_zFillStage, m_opaqueStage, m_transparentStage };
+    const ScenePassPtr passStages[]{ m_zFillStage, m_opaqueStage, m_transparentStage };
     for (const ScenePassPtr &passStage : passStages) {
         passStage->setFrustumCulling(useFrustumCulling);
         passStage->setSkinning(useSkinning);

@@ -47,7 +47,6 @@ const QLatin1String KEY_BYTELENGTH = QLatin1String("byteLength");
 const QLatin1String KEY_BYTESTRIDE = QLatin1String("byteStride");
 } // namespace
 
-
 BufferView::BufferView()
     : byteStride(-1)
     , bufferIdx(-1)

@@ -53,14 +53,14 @@ private Q_SLOTS:
         QVERIFY(effect == nullptr);
 
         // WHEN
-        effectProps = EffectProperties::MetallicRoughness|EffectProperties::VertexColor;
+        effectProps = EffectProperties::MetallicRoughness | EffectProperties::VertexColor;
         auto effects2 = effectsLib.getOrCreateEffect(effectProps, nullptr);
 
         // THEN
         QVERIFY(effects2 != nullptr);
 
         // WHEN
-        effectProps = EffectProperties::MetallicRoughness|EffectProperties::Skinning;
+        effectProps = EffectProperties::MetallicRoughness | EffectProperties::Skinning;
         auto effects3 = effectsLib.getOrCreateEffect(effectProps, nullptr);
 
         // THEN
@@ -70,7 +70,7 @@ private Q_SLOTS:
         // WHEN
         {
             EffectProperties::Properties props;
-            props |= EffectProperties::MetallicRoughness|EffectProperties::VertexColor;
+            props |= EffectProperties::MetallicRoughness | EffectProperties::VertexColor;
             auto tmpEffect = effectsLib.getOrCreateEffect(props, nullptr);
             // THEN
             QCOMPARE(tmpEffect, effects2);
@@ -78,7 +78,7 @@ private Q_SLOTS:
         // WHEN
         {
             EffectProperties::Properties props;
-            props |= EffectProperties::MetallicRoughness|EffectProperties::Skinning;
+            props |= EffectProperties::MetallicRoughness | EffectProperties::Skinning;
             auto tmpEffect = effectsLib.getOrCreateEffect(props, nullptr);
             // THEN
             QCOMPARE(tmpEffect, effects3);
@@ -268,10 +268,9 @@ private Q_SLOTS:
 
         // WHEN
 
-        GLTF2MaterialEffect *e = library.getOrCreateCustomEffect({
-                                                                     &IroDiffuseEffect::staticMetaObject,
-                                                                     EffectProperties::Custom|props
-                                                                 }, nullptr);
+        GLTF2MaterialEffect *e = library.getOrCreateCustomEffect({ &IroDiffuseEffect::staticMetaObject,
+                                                                   EffectProperties::Custom | props },
+                                                                 nullptr);
 
         // THEN
         QVERIFY(e);

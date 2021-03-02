@@ -116,7 +116,7 @@ private Q_SLOTS:
                 QCOMPARE(barrier->children().size(), 1);
                 Qt3DRender::QRenderStateSet *stateSet = qobject_cast<Qt3DRender::QRenderStateSet *>(barrier->children().last());
                 QVERIFY(stateSet);
-                QCOMPARE(barrier->waitOperations(), Qt3DRender::QMemoryBarrier::VertexAttributeArray|Qt3DRender::QMemoryBarrier::ShaderStorage);
+                QCOMPARE(barrier->waitOperations(), Qt3DRender::QMemoryBarrier::VertexAttributeArray | Qt3DRender::QMemoryBarrier::ShaderStorage);
 
                 QCOMPARE(renderPassFilter->matchAny().size(), 1);
                 QCOMPARE(renderPassFilter->matchAny().first(), filter);

@@ -29,7 +29,6 @@
 
 #include "iromatteaddshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -44,7 +43,8 @@ IroMatteAddShaderData::IroMatteAddShaderData(Qt3DCore::QNode *parent)
     , m_matteFilter()
     , m_matteGain()
     , m_uvOffset()
-{}
+{
+}
 
 IroMatteAddShaderData::~IroMatteAddShaderData() = default;
 
@@ -77,7 +77,6 @@ QVector2D IroMatteAddShaderData::uvOffset() const
 {
     return m_uvOffset;
 }
-
 
 void IroMatteAddShaderData::setPostVertexColor(float postVertexColor)
 {
@@ -126,8 +125,6 @@ void IroMatteAddShaderData::setUvOffset(const QVector2D &uvOffset)
     m_uvOffset = uvOffset;
     emit uvOffsetChanged(uvOffset);
 }
-
-
 
 } // namespace Kuesa
 

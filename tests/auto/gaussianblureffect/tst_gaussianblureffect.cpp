@@ -130,7 +130,7 @@ private Q_SLOTS:
         Qt3DRender::QAbstractTexture *t = rt2->outputs().first()->texture();
         QVERIFY(t != nullptr);
 
-        auto findParameter = [&] (const QString &name) -> Qt3DRender::QParameter * {
+        auto findParameter = [&](const QString &name) -> Qt3DRender::QParameter * {
             for (Qt3DRender::QParameter *p : blurMaterial->parameters())
                 if (p->name() == name)
                     return p;
@@ -175,7 +175,7 @@ private Q_SLOTS:
         Qt3DRender::QFrameGraphNode *blurFGRoot = qobject_cast<Qt3DRender::QFrameGraphNode *>(layerFilter->children().first());
         QVERIFY(blurFGRoot != nullptr);
 
-        auto checkBlurPasses = [&] (int passCount) {
+        auto checkBlurPasses = [&](int passCount) {
             QCOMPARE(blurFGRoot->children().size(), passCount * 2);
 
             const QObjectList &cs = blurFGRoot->children();

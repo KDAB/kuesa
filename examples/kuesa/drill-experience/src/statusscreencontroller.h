@@ -34,9 +34,9 @@
 class QPropertyAnimation;
 
 namespace Kuesa {
-    class AnimationPlayer;
-    class Iro2DiffuseSemProperties;
-}
+class AnimationPlayer;
+class Iro2DiffuseSemProperties;
+} // namespace Kuesa
 
 class DrillStatus : public Qt3DCore::QNode
 {

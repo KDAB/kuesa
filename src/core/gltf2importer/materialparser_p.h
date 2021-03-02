@@ -77,21 +77,21 @@ public:
     struct NormalTextureInfo : public TextureInfo {
         NormalTextureInfo() = default;
         NormalTextureInfo(const TextureInfo &t)
-            : TextureInfo(t) {}
+            : TextureInfo(t) { }
         float scale = 0.25f;
     } normalTexture;
 
     struct OcclusionTextureInfo : public TextureInfo {
         OcclusionTextureInfo() = default;
         OcclusionTextureInfo(const TextureInfo &t)
-            : TextureInfo(t) {}
+            : TextureInfo(t) { }
         float strength = 1.0f;
     } occlusionTexture;
 
     struct EmissiveTextureInfo : public TextureInfo {
         EmissiveTextureInfo() = default;
         EmissiveTextureInfo(const TextureInfo &t)
-            : TextureInfo(t) {}
+            : TextureInfo(t) { }
         QVector3D emissiveFactor = QVector3D(0.0f, 0.0f, 0.0f);
     } emissiveTexture;
 

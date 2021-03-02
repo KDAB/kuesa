@@ -92,4 +92,3 @@ void AbstractScreenController::removeView(Kuesa::View *v)
         emit viewsChanged();
     }
 }
-

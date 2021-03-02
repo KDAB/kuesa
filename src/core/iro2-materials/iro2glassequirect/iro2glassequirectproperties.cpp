@@ -32,13 +32,11 @@
 #include <Qt3DCore/private/qnode_p.h>
 #include <Kuesa/private/empty2dtexture_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::Iro2GlassEquiRectProperties
@@ -156,7 +154,7 @@ void Iro2GlassEquiRectProperties::setGltfYUp(bool gltfYUp)
     m_shaderData->setGltfYUp(gltfYUp);
 }
 
-void Iro2GlassEquiRectProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
+void Iro2GlassEquiRectProperties::setReflectionMap(Qt3DRender::QAbstractTexture *reflectionMap)
 {
     if (m_reflectionMap == reflectionMap)
         return;
@@ -173,7 +171,7 @@ void Iro2GlassEquiRectProperties::setReflectionMap(Qt3DRender::QAbstractTexture 
     emit reflectionMapChanged(m_reflectionMap);
 }
 
-void Iro2GlassEquiRectProperties::setNormalMap(Qt3DRender::QAbstractTexture * normalMap)
+void Iro2GlassEquiRectProperties::setNormalMap(Qt3DRender::QAbstractTexture *normalMap)
 {
     if (m_normalMap == normalMap)
         return;
@@ -189,7 +187,6 @@ void Iro2GlassEquiRectProperties::setNormalMap(Qt3DRender::QAbstractTexture * no
     }
     emit normalMapChanged(m_normalMap);
 }
-
 
 /*!
     \qmlproperty QVector3D Iro2GlassEquiRectProperties::glassInnerFilter
@@ -360,16 +357,15 @@ bool Iro2GlassEquiRectProperties::gltfYUp() const
     return m_shaderData->gltfYUp();
 }
 
-Qt3DRender::QAbstractTexture * Iro2GlassEquiRectProperties::reflectionMap() const
+Qt3DRender::QAbstractTexture *Iro2GlassEquiRectProperties::reflectionMap() const
 {
     return m_reflectionMap;
 }
 
-Qt3DRender::QAbstractTexture * Iro2GlassEquiRectProperties::normalMap() const
+Qt3DRender::QAbstractTexture *Iro2GlassEquiRectProperties::normalMap() const
 {
     return m_normalMap;
 }
-
 
 } // namespace Kuesa
 

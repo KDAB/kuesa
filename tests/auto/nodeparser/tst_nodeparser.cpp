@@ -256,7 +256,7 @@ private Q_SLOTS:
 
         const TreeNode n = context.treeNode(0);
         QCOMPARE(n.reflectionPlaneEquation, QVector4D(1.0f, 0.0f, 0.0f, 883.0f));
-        QCOMPARE(n.layerIndices, QVector<int>({0, 1, 2}));
+        QCOMPARE(n.layerIndices, QVector<int>({ 0, 1, 2 }));
         QCOMPARE(n.hasPlaceholder, true);
         QCOMPARE(n.placeHolder.cameraNode, 1);
     }
@@ -283,7 +283,7 @@ private Q_SLOTS:
 
         const TreeNode n = context.treeNode(0);
         QCOMPARE(n.reflectionPlaneEquation, QVector4D(1.0f, 0.0f, 0.0f, 883.0f));
-        QCOMPARE(n.layerIndices, QVector<int>({0, 1, 2}));
+        QCOMPARE(n.layerIndices, QVector<int>({ 0, 1, 2 }));
         QCOMPARE(n.hasPlaceholder, true);
         QCOMPARE(n.placeHolder.cameraNode, 1);
     }

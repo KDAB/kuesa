@@ -29,7 +29,6 @@
 
 #include "irodiffusealphashaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -50,7 +49,8 @@ IroDiffuseAlphaShaderData::IroDiffuseAlphaShaderData(Qt3DCore::QNode *parent)
     , m_reflectionInnerAlpha()
     , m_reflectionOuterAlpha()
     , m_alphaGain()
-{}
+{
+}
 
 IroDiffuseAlphaShaderData::~IroDiffuseAlphaShaderData() = default;
 
@@ -113,7 +113,6 @@ float IroDiffuseAlphaShaderData::alphaGain() const
 {
     return m_alphaGain;
 }
-
 
 void IroDiffuseAlphaShaderData::setNormalScaling(const QVector3D &normalScaling)
 {
@@ -210,8 +209,6 @@ void IroDiffuseAlphaShaderData::setAlphaGain(float alphaGain)
     m_alphaGain = alphaGain;
     emit alphaGainChanged(alphaGain);
 }
-
-
 
 } // namespace Kuesa
 

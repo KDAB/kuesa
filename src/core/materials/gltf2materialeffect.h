@@ -125,7 +125,7 @@ private:
     void initialize();
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

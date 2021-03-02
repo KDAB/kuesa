@@ -32,13 +32,11 @@
 #include <Qt3DCore/private/qnode_p.h>
 #include <Kuesa/private/empty2dtexture_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::IroDiffuseProperties
@@ -156,7 +154,7 @@ void IroDiffuseProperties::setUsesDiffuseMap(bool usesDiffuseMap)
     m_shaderData->setUsesDiffuseMap(usesDiffuseMap);
 }
 
-void IroDiffuseProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
+void IroDiffuseProperties::setReflectionMap(Qt3DRender::QAbstractTexture *reflectionMap)
 {
     if (m_reflectionMap == reflectionMap)
         return;
@@ -173,7 +171,7 @@ void IroDiffuseProperties::setReflectionMap(Qt3DRender::QAbstractTexture * refle
     emit reflectionMapChanged(m_reflectionMap);
 }
 
-void IroDiffuseProperties::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
+void IroDiffuseProperties::setDiffuseMap(Qt3DRender::QAbstractTexture *diffuseMap)
 {
     if (m_diffuseMap == diffuseMap)
         return;
@@ -189,7 +187,6 @@ void IroDiffuseProperties::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseM
     }
     emit diffuseMapChanged(m_diffuseMap);
 }
-
 
 /*!
     \qmlproperty QVector3D IroDiffuseProperties::normalScaling
@@ -360,16 +357,15 @@ bool IroDiffuseProperties::usesDiffuseMap() const
     return m_shaderData->usesDiffuseMap();
 }
 
-Qt3DRender::QAbstractTexture * IroDiffuseProperties::reflectionMap() const
+Qt3DRender::QAbstractTexture *IroDiffuseProperties::reflectionMap() const
 {
     return m_reflectionMap;
 }
 
-Qt3DRender::QAbstractTexture * IroDiffuseProperties::diffuseMap() const
+Qt3DRender::QAbstractTexture *IroDiffuseProperties::diffuseMap() const
 {
     return m_diffuseMap;
 }
-
 
 } // namespace Kuesa
 

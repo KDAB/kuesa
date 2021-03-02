@@ -129,7 +129,7 @@ UserManualScreenController::UserManualScreenController(QObject *parent)
         addView(m_mainView);
 
         m_detailView = new Kuesa::View;
-        m_detailView->setViewportRect({0.7f, 0.0f, 0.3f, 0.3f});
+        m_detailView->setViewportRect({ 0.7f, 0.0f, 0.3f, 0.3f });
         m_detailView->setClearColor(QColor(Qt::gray));
     }
 
@@ -254,26 +254,26 @@ void UserManualScreenController::updateSceneConfiguration()
         playAnimationBackAndForth(m_triggerAnimationPlayer, 750);
         break;
     }
-    case Clutch:{
+    case Clutch: {
         showDetailView(QStringLiteral("CamChuck"));
         break;
     }
-    case Chuck:{
+    case Chuck: {
         showDetailView(QStringLiteral("CamChuck"));
         playAnimationBackAndForth(m_toolInOutAnimationPlayer);
         break;
     }
-    case DirectionSwitch:{
+    case DirectionSwitch: {
         showDetailView(QStringLiteral("CamDirectionSwitch"));
         playAnimationBackAndForth(m_directionSwitchAnimationPlayer, 750);
         break;
     }
-    case BatteryPack:{
+    case BatteryPack: {
         showDetailView(QStringLiteral("CamBattery"));
         playAnimationBackAndForth(m_batteryInOutAnimationPlayer, 750);
         break;
     }
-    case NoPartSelected:{
+    case NoPartSelected: {
         break;
     }
     default:

@@ -142,27 +142,23 @@ Skybox::Skybox(QNode *parent)
           QGraphicsApiFilter::CoreProfile,
           3, 3,
           QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.vert.json")),
-          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json"))
-        },
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json")) },
         { QGraphicsApiFilter::OpenGLES,
           QGraphicsApiFilter::NoProfile,
           3, 0,
           QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.vert.json")),
-          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json"))
-        },
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json")) },
         { QGraphicsApiFilter::OpenGLES,
           QGraphicsApiFilter::NoProfile,
           2, 0,
           QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.vert.json")),
-          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json"))
-        },
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json")) },
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
         { QGraphicsApiFilter::RHI,
           QGraphicsApiFilter::NoProfile,
           1, 0,
           QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.vert.json")),
-          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json"))
-        }
+          QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/skybox.frag.json")) }
 #endif
     };
 

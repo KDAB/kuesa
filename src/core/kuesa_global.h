@@ -36,7 +36,7 @@
 // KUESA_VERSION_STR
 
 //    can be used like #if (KUESA_VERSION >= KUESA_VERSION_CHECK(1, 3, 0))
-#define KUESA_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
+#define KUESA_VERSION_CHECK(major, minor, patch) ((major << 16) | (minor << 8) | (patch))
 
 // Works for both Qt 5 and Qt 6
 #if QT_CONFIG(opengles2)

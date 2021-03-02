@@ -29,7 +29,6 @@
 
 #include "iroglassaddshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -51,7 +50,8 @@ IroGlassAddShaderData::IroGlassAddShaderData(Qt3DCore::QNode *parent)
     , m_glassOuterFilter()
     , m_diffuseInnerFilter()
     , m_diffuseOuterFilter()
-{}
+{
+}
 
 IroGlassAddShaderData::~IroGlassAddShaderData() = default;
 
@@ -119,7 +119,6 @@ QVector3D IroGlassAddShaderData::diffuseOuterFilter() const
 {
     return m_diffuseOuterFilter;
 }
-
 
 void IroGlassAddShaderData::setNormalScaling(const QVector3D &normalScaling)
 {
@@ -224,8 +223,6 @@ void IroGlassAddShaderData::setDiffuseOuterFilter(const QVector3D &diffuseOuterF
     m_diffuseOuterFilter = diffuseOuterFilter;
     emit diffuseOuterFilterChanged(diffuseOuterFilter);
 }
-
-
 
 } // namespace Kuesa
 

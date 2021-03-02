@@ -372,7 +372,7 @@ bool AnimationPlayer::isRunning() const
 void AnimationPlayer::setRunning(bool running)
 {
     if (m_animator->clip())
-       m_animator->setRunning(running);
+        m_animator->setRunning(running);
     m_running = running;
 }
 
@@ -479,13 +479,12 @@ void AnimationPlayer::run(float fromTimeFraction, float toTimeFraction)
     m_running = true;
 }
 
-
 void AnimationPlayer::matchClipAndTargets()
 {
     QObject::disconnect(m_clipDestroyedConnection);
     QObject::disconnect(m_mapperDestroyedConnection);
 
-    auto resetAnimator = [this] () {
+    auto resetAnimator = [this]() {
         setStatus(Error);
         m_animator->setRunning(false);
         if (m_animator->clip()) {
@@ -587,7 +586,6 @@ void AnimationPlayer::matchClipAndTargets()
     m_animator->setRunning(m_running);
     setStatus(Ready);
 }
-
 
 void AnimationPlayer::updateNormalizedTime(float index)
 {

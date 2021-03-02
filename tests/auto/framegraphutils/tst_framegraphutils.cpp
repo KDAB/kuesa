@@ -37,11 +37,11 @@
 
 namespace {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0) && defined(Q_OS_WINDOWS)
-    const Qt3DRender::QAbstractTexture::TextureFormat defaultDepthFormat = Qt3DRender::QAbstractTexture::D16;
+const Qt3DRender::QAbstractTexture::TextureFormat defaultDepthFormat = Qt3DRender::QAbstractTexture::D16;
 #else
-    const Qt3DRender::QAbstractTexture::TextureFormat defaultDepthFormat = Qt3DRender::QAbstractTexture::D24;
+const Qt3DRender::QAbstractTexture::TextureFormat defaultDepthFormat = Qt3DRender::QAbstractTexture::D24;
 #endif
-}
+} // namespace
 
 class tst_FrameGraphUtils : public QObject
 {
@@ -58,16 +58,16 @@ private Q_SLOTS:
         QTest::newRow("Color No MS with samples") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::RenderTargetFlags()) << 4;
         QTest::newRow("Color MS no samples") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::RenderTargetFlags()) << 0;
         QTest::newRow("Color MS with samples") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::Multisampled) << 4;
-        QTest::newRow("Color MS with samples float") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::Multisampled|Kuesa::FrameGraphUtils::HalfFloatAttachments) << 4;
+        QTest::newRow("Color MS with samples float") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::Multisampled | Kuesa::FrameGraphUtils::HalfFloatAttachments) << 4;
         QTest::newRow("Color Depth no MS") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeDepth) << 0;
         QTest::newRow("Color Stencil no MS") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeStencil) << 0;
-        QTest::newRow("Color Depth Stencil no MS") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeStencil|Kuesa::FrameGraphUtils::IncludeDepth) << 0;
-        QTest::newRow("Color Depth MS") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeDepth|Kuesa::FrameGraphUtils::Multisampled) << 4;
-        QTest::newRow("Color Stencil MS") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeStencil|Kuesa::FrameGraphUtils::Multisampled) << 4;
-        QTest::newRow("Color Depth Stencil MS") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeStencil|Kuesa::FrameGraphUtils::IncludeDepth|Kuesa::FrameGraphUtils::Multisampled) << 4;
-        QTest::newRow("Color Depth MS float") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeDepth|Kuesa::FrameGraphUtils::Multisampled|Kuesa::FrameGraphUtils::HalfFloatAttachments) << 4;
-        QTest::newRow("Color Stencil MS float") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeStencil|Kuesa::FrameGraphUtils::Multisampled|Kuesa::FrameGraphUtils::HalfFloatAttachments) << 4;
-        QTest::newRow("Color Depth Stencil MS float") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeStencil|Kuesa::FrameGraphUtils::IncludeDepth|Kuesa::FrameGraphUtils::Multisampled|Kuesa::FrameGraphUtils::HalfFloatAttachments) << 4;
+        QTest::newRow("Color Depth Stencil no MS") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeStencil | Kuesa::FrameGraphUtils::IncludeDepth) << 0;
+        QTest::newRow("Color Depth MS") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeDepth | Kuesa::FrameGraphUtils::Multisampled) << 4;
+        QTest::newRow("Color Stencil MS") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeStencil | Kuesa::FrameGraphUtils::Multisampled) << 4;
+        QTest::newRow("Color Depth Stencil MS") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeStencil | Kuesa::FrameGraphUtils::IncludeDepth | Kuesa::FrameGraphUtils::Multisampled) << 4;
+        QTest::newRow("Color Depth MS float") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeDepth | Kuesa::FrameGraphUtils::Multisampled | Kuesa::FrameGraphUtils::HalfFloatAttachments) << 4;
+        QTest::newRow("Color Stencil MS float") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeStencil | Kuesa::FrameGraphUtils::Multisampled | Kuesa::FrameGraphUtils::HalfFloatAttachments) << 4;
+        QTest::newRow("Color Depth Stencil MS float") << Kuesa::FrameGraphUtils::RenderTargetFlags(Kuesa::FrameGraphUtils::IncludeStencil | Kuesa::FrameGraphUtils::IncludeDepth | Kuesa::FrameGraphUtils::Multisampled | Kuesa::FrameGraphUtils::HalfFloatAttachments) << 4;
     }
 
     void checkCreateRenderTarget()
@@ -85,7 +85,7 @@ private Q_SLOTS:
 
         // THEN
         if (flags & Kuesa::FrameGraphUtils::IncludeDepth ||
-                flags & Kuesa::FrameGraphUtils::IncludeStencil) {
+            flags & Kuesa::FrameGraphUtils::IncludeStencil) {
             QCOMPARE(rt->outputs().size(), 2);
         } else {
             QCOMPARE(rt->outputs().size(), 1);
@@ -119,18 +119,13 @@ private Q_SLOTS:
             Qt3DRender::QRenderTargetOutput *depthStencilOutput = rt->outputs().last();
             QVERIFY(depthStencilOutput != nullptr);
             Qt3DRender::QRenderTargetOutput::AttachmentPoint expectedAttachmentPoint =
-                    (hasStencil && hasDepth) ?
-                        Qt3DRender::QRenderTargetOutput::DepthStencil :
-                        (hasDepth) ?
-                            Qt3DRender::QRenderTargetOutput::Depth :
-                            Qt3DRender::QRenderTargetOutput::Stencil;
+                    (hasStencil && hasDepth) ? Qt3DRender::QRenderTargetOutput::DepthStencil : (hasDepth) ? Qt3DRender::QRenderTargetOutput::Depth
+                                                                                                          : Qt3DRender::QRenderTargetOutput::Stencil;
 
             QCOMPARE(depthStencilOutput->attachmentPoint(), expectedAttachmentPoint);
 
             Qt3DRender::QAbstractTexture::TextureFormat expectedFormat =
-                    (hasStencil) ?
-                        Qt3DRender::QAbstractTexture::D24S8 :
-                        defaultDepthFormat;
+                    (hasStencil) ? Qt3DRender::QAbstractTexture::D24S8 : defaultDepthFormat;
 
             if (flags & Kuesa::FrameGraphUtils::Multisampled) {
                 Qt3DRender::QTexture2DMultisample *t = qobject_cast<Qt3DRender::QTexture2DMultisample *>(depthStencilOutput->texture());
@@ -170,11 +165,11 @@ private Q_SLOTS:
 
         // WHEN
         Qt3DRender::QAbstractTexture *colorTexture = Kuesa::FrameGraphUtils::findRenderTargetTexture(
-                    rt,
-                    Qt3DRender::QRenderTargetOutput::Color0);
+                rt,
+                Qt3DRender::QRenderTargetOutput::Color0);
         Qt3DRender::QAbstractTexture *depthTexture = Kuesa::FrameGraphUtils::findRenderTargetTexture(
-                    rt,
-                    Qt3DRender::QRenderTargetOutput::Depth);
+                rt,
+                Qt3DRender::QRenderTargetOutput::Depth);
 
         // THEN
         QVERIFY(colorTexture != nullptr);
@@ -182,7 +177,6 @@ private Q_SLOTS:
         QCOMPARE(colorTexture->format(), Qt3DRender::QAbstractTexture::RGBA8_UNorm);
         QCOMPARE(depthTexture->format(), defaultDepthFormat);
     }
-
 };
 
 QTEST_MAIN(tst_FrameGraphUtils)

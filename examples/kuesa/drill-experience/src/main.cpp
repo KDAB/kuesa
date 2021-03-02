@@ -63,7 +63,7 @@ void registerQMLTypes()
     qmlRegisterType<ViewportManager>("Drill", 1, 0, "ViewportManager");
 }
 
-} // anonymous
+} // namespace
 
 int main(int ac, char **av)
 {

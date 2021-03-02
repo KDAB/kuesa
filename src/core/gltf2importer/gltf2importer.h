@@ -47,7 +47,7 @@ class GLTF2Context;
 class GLTF2Parser;
 class MaterialParser;
 class SceneRootEntity;
-}
+} // namespace GLTF2Import
 
 class KUESASHARED_EXPORT GLTF2Importer : public KuesaNode
 {
@@ -91,9 +91,7 @@ public:
     {
         auto &cache = CustomMaterialCache::instance();
 
-        cache.m_registeredCustomMaterial.insert(name, { &MaterialClass::staticMetaObject,
-                                                        &PropertiesClass::staticMetaObject,
-                                                        &EffectClass::staticMetaObject });
+        cache.m_registeredCustomMaterial.insert(name, { &MaterialClass::staticMetaObject, &PropertiesClass::staticMetaObject, &EffectClass::staticMetaObject });
     }
 
 public Q_SLOTS:
@@ -137,7 +135,6 @@ private:
     bool m_asynchronous = false;
 
     Kuesa::GLTF2Import::GLTF2Parser *m_parser = nullptr;
-
 
     friend class Kuesa::GLTF2Import::MaterialParser;
     struct CustomMaterialClassesTypeInfo {

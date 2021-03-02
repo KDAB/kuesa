@@ -83,7 +83,7 @@ private:
     size_t m_instanceCount = 1;
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

@@ -36,7 +36,6 @@
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -49,12 +48,12 @@ class KUESASHARED_EXPORT Iro2GlassEquiRectProperties : public GLTF2MaterialPrope
     Q_PROPERTY(QVector3D glassInnerFilter READ glassInnerFilter WRITE setGlassInnerFilter NOTIFY glassInnerFilterChanged)
     Q_PROPERTY(QVector3D glassOuterFilter READ glassOuterFilter WRITE setGlassOuterFilter NOTIFY glassOuterFilterChanged)
     Q_PROPERTY(bool usesReflectionMap READ usesReflectionMap WRITE setUsesReflectionMap NOTIFY usesReflectionMapChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
     Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
     Q_PROPERTY(bool usesNormalMap READ usesNormalMap WRITE setUsesNormalMap NOTIFY usesNormalMapChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
     Q_PROPERTY(float normalMapGain READ normalMapGain WRITE setNormalMapGain NOTIFY normalMapGainChanged)
     Q_PROPERTY(QVector3D normalScaling READ normalScaling WRITE setNormalScaling NOTIFY normalScalingChanged)
     Q_PROPERTY(QVector2D normalDisturb READ normalDisturb WRITE setNormalDisturb NOTIFY normalDisturbChanged)
@@ -70,12 +69,12 @@ public:
     QVector3D glassInnerFilter() const;
     QVector3D glassOuterFilter() const;
     bool usesReflectionMap() const;
-    Qt3DRender::QAbstractTexture * reflectionMap() const;
+    Qt3DRender::QAbstractTexture *reflectionMap() const;
     float reflectionGain() const;
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
     bool usesNormalMap() const;
-    Qt3DRender::QAbstractTexture * normalMap() const;
+    Qt3DRender::QAbstractTexture *normalMap() const;
     float normalMapGain() const;
     QVector3D normalScaling() const;
     QVector2D normalDisturb() const;
@@ -87,12 +86,12 @@ public Q_SLOTS:
     void setGlassInnerFilter(const QVector3D &glassInnerFilter);
     void setGlassOuterFilter(const QVector3D &glassOuterFilter);
     void setUsesReflectionMap(bool usesReflectionMap);
-    void setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap);
+    void setReflectionMap(Qt3DRender::QAbstractTexture *reflectionMap);
     void setReflectionGain(float reflectionGain);
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
     void setUsesNormalMap(bool usesNormalMap);
-    void setNormalMap(Qt3DRender::QAbstractTexture * normalMap);
+    void setNormalMap(Qt3DRender::QAbstractTexture *normalMap);
     void setNormalMapGain(float normalMapGain);
     void setNormalScaling(const QVector3D &normalScaling);
     void setNormalDisturb(const QVector2D &normalDisturb);
@@ -119,12 +118,11 @@ Q_SIGNALS:
 
 private:
     Iro2GlassEquiRectShaderData *m_shaderData;
-    Qt3DRender::QAbstractTexture * m_reflectionMap;
-    Qt3DRender::QAbstractTexture * m_normalMap;
-
+    Qt3DRender::QAbstractTexture *m_reflectionMap;
+    Qt3DRender::QAbstractTexture *m_normalMap;
 };
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-Q_DECLARE_METATYPE(Kuesa::Iro2GlassEquiRectProperties*)
+Q_DECLARE_METATYPE(Kuesa::Iro2GlassEquiRectProperties *)
 #endif // KUESA_IRO2GLASSEQUIRECTPROPERTIES_H

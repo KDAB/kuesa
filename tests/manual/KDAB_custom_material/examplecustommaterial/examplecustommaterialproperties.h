@@ -34,7 +34,6 @@
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -45,7 +44,7 @@ class ExampleCustomMaterialProperties : public GLTF2MaterialProperties
 {
     Q_OBJECT
     Q_PROPERTY(float modulator READ modulator WRITE setModulator NOTIFY modulatorChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * inputTexture READ inputTexture WRITE setInputTexture NOTIFY inputTextureChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *inputTexture READ inputTexture WRITE setInputTexture NOTIFY inputTextureChanged)
 
 public:
     Q_INVOKABLE explicit ExampleCustomMaterialProperties(Qt3DCore::QNode *parent = nullptr);
@@ -53,11 +52,11 @@ public:
 
     Qt3DRender::QShaderData *shaderData() const override;
     float modulator() const;
-    Qt3DRender::QAbstractTexture * inputTexture() const;
+    Qt3DRender::QAbstractTexture *inputTexture() const;
 
 public Q_SLOTS:
     void setModulator(float modulator);
-    void setInputTexture(Qt3DRender::QAbstractTexture * inputTexture);
+    void setInputTexture(Qt3DRender::QAbstractTexture *inputTexture);
 
 Q_SIGNALS:
     void modulatorChanged(float);

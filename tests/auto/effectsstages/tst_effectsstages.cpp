@@ -116,7 +116,8 @@ private Q_SLOTS:
         // THEN
         std::pair<
                 Qt3DRender::QRenderTarget *,
-                Qt3DRender::QRenderTarget *> emptyRts = { nullptr, nullptr };
+                Qt3DRender::QRenderTarget *>
+                emptyRts = { nullptr, nullptr };
         QVERIFY(e.camera() == nullptr);
         QCOMPARE(e.renderTargets(), emptyRts);
         QVERIFY(e.depthTexture() == nullptr);

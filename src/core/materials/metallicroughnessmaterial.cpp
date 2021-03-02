@@ -113,7 +113,6 @@ namespace Kuesa {
     \since Kuesa 1.2
  */
 
-
 MetallicRoughnessMaterial::MetallicRoughnessMaterial(Qt3DCore::QNode *parent)
     : GLTF2Material(parent)
     , m_materialProperties(nullptr)

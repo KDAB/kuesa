@@ -44,7 +44,7 @@ void updateWorldMatrixOnTransform(Qt3DCore::QTransform *t)
     d->setWorldMatrix(t->matrix());
 }
 
-}
+} // namespace
 
 class tst_TransformTracker : public QObject
 {
@@ -113,14 +113,14 @@ private Q_SLOTS:
         QVERIFY(spy.isValid());
 
         // WHEN
-        tracker.setScreenSize({512, 512});
+        tracker.setScreenSize({ 512, 512 });
 
         // THEN
         QCOMPARE(tracker.screenSize(), QSize(512, 512));
         QCOMPARE(spy.count(), 1);
 
         // WHEN
-        tracker.setScreenSize({512, 512});
+        tracker.setScreenSize({ 512, 512 });
 
         // THEN
         QCOMPARE(spy.count(), 1);
@@ -246,7 +246,7 @@ private Q_SLOTS:
 
             // THEN
             QCOMPARE(spy.count(), 2);
-            QCOMPARE(tracker.rotationY(), 50.0f);\
+            QCOMPARE(tracker.rotationY(), 50.0f);
         }
         // THEN
         QCOMPARE(spy.count(), 3);
@@ -459,7 +459,7 @@ private Q_SLOTS:
         QSignalSpy spy(&tracker, &Kuesa::TransformTracker::screenPositionChanged);
 
         Qt3DCore::QEntity camera;
-        Qt3DCore::QTransform* cameraTransform = new Qt3DCore::QTransform;
+        Qt3DCore::QTransform *cameraTransform = new Qt3DCore::QTransform;
         Qt3DRender::QCameraLens *cameraLens = new Qt3DRender::QCameraLens;
         camera.addComponent(cameraTransform);
         camera.addComponent(cameraLens);
@@ -516,13 +516,13 @@ private Q_SLOTS:
         QCOMPARE(spy.count(), 6);
 
         // WHEN -> SceneSize updated
-        tracker.setScreenSize({512, 512});
+        tracker.setScreenSize({ 512, 512 });
 
         // THEN
         QCOMPARE(spy.count(), 7);
 
         // WHEN -> Viewport updated
-        tracker.setViewportRect({0.0f, 0.5f, 1.0f, 0.5f});
+        tracker.setViewportRect({ 0.0f, 0.5f, 1.0f, 0.5f });
     }
 
     void checkHandlesSceneEntityDestruction()
@@ -557,8 +557,8 @@ private Q_SLOTS:
         QTest::addColumn<QPointF>("expectedScreenPosition");
 
         QTest::newRow("Center") << QVector3D(0.0, 0.0f, 1.0f) << QRectF() << QPointF(256.0f, 256.0f);
-        QTest::newRow("TopLeft") << QVector3D(-0.5, 0.5f, 1.0f) << QRectF() << QPointF(128.0f,128.0f);
-        QTest::newRow("TopRight") << QVector3D(0.5, 0.5f, 1.0f) << QRectF() << QPointF(384.0f,128.0f);
+        QTest::newRow("TopLeft") << QVector3D(-0.5, 0.5f, 1.0f) << QRectF() << QPointF(128.0f, 128.0f);
+        QTest::newRow("TopRight") << QVector3D(0.5, 0.5f, 1.0f) << QRectF() << QPointF(384.0f, 128.0f);
         QTest::newRow("BottomLeft") << QVector3D(-0.5, -0.5f, 1.0f) << QRectF() << QPointF(128.0f, 384.0f);
         QTest::newRow("BottomRight") << QVector3D(0.5, -0.5f, 1.0f) << QRectF() << QPointF(384.0f, 384.0f);
         QTest::newRow("OutsideTopLeft") << QVector3D(-2.0f, 2.0f, 1.0f) << QRectF() << QPointF(0.0f, 0.0f);
@@ -568,11 +568,11 @@ private Q_SLOTS:
 
         QRectF innerViewport(0.25, 0.25, 0.5f, 0.5f);
         QTest::newRow("CenterInnerViewport") << QVector3D(0.0, 0.0f, 1.0f) << innerViewport << QPointF(256.0f, 256.0f);
-        QTest::newRow("TopLeftInnerViewport") << QVector3D(-0.5, 0.5f, 1.0f) << innerViewport << QPointF(192.0f,192.0f);
-        QTest::newRow("TopRightInnerViewport") << QVector3D(0.5, 0.5f, 1.0f) << innerViewport << QPointF(320.0f,192.0f);
+        QTest::newRow("TopLeftInnerViewport") << QVector3D(-0.5, 0.5f, 1.0f) << innerViewport << QPointF(192.0f, 192.0f);
+        QTest::newRow("TopRightInnerViewport") << QVector3D(0.5, 0.5f, 1.0f) << innerViewport << QPointF(320.0f, 192.0f);
         QTest::newRow("BottomLeftInnerViewport") << QVector3D(-0.5, -0.5f, 1.0f) << innerViewport << QPointF(192.0f, 320.0f);
         QTest::newRow("BottomRightInnerViewport") << QVector3D(0.5, -0.5f, 1.0f) << innerViewport << QPointF(320.0f, 320.0f);
-        QTest::newRow("OutsideTopLeftInnerViewport") << QVector3D(-2.0f, 2.0f, 1.0f) << innerViewport<< QPointF(128.0f, 128.0f);
+        QTest::newRow("OutsideTopLeftInnerViewport") << QVector3D(-2.0f, 2.0f, 1.0f) << innerViewport << QPointF(128.0f, 128.0f);
         QTest::newRow("OutsideTopRightInnerViewport") << QVector3D(2.0f, 2.0f, 1.0f) << innerViewport << QPointF(384.0f, 128.0f);
         QTest::newRow("OutsideBottomLeftInnerViewport") << QVector3D(-2.0f, -2.0f, 1.0f) << innerViewport << QPointF(128.0f, 384.0f);
         QTest::newRow("OutsideBottomRightInnerViewport") << QVector3D(2.0f, -2.0f, 1.0f) << innerViewport << QPointF(384.0f, 384.0f);
@@ -606,7 +606,7 @@ private Q_SLOTS:
         tracker.setCamera(&camera);
         tracker.setViewportRect(viewport);
         tracker.setSceneEntity(&scene);
-        tracker.setScreenSize({512, 512});
+        tracker.setScreenSize({ 512, 512 });
 
         // WHEN
         t->setTranslation(translation);

@@ -30,7 +30,6 @@
 #ifndef KUESA_IROMATTEALPHASHADERDATA_P_H
 #define KUESA_IROMATTEALPHASHADERDATA_P_H
 
-
 //
 //  W A R N I N G
 //  -------------
@@ -98,7 +97,6 @@ private:
     float m_matteGain;
     float m_matteAlphaGain;
     QVector2D m_uvOffset;
-
 };
 
 } // namespace Kuesa

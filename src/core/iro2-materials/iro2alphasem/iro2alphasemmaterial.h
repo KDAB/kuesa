@@ -34,7 +34,6 @@
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/Iro2AlphaSemProperties>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -64,7 +63,6 @@ private:
     Qt3DRender::QParameter *m_shaderDataParameter;
     Qt3DRender::QParameter *m_reflectionMapParameter;
     Qt3DRender::QParameter *m_normalMapParameter;
-
 };
 
 } // namespace Kuesa

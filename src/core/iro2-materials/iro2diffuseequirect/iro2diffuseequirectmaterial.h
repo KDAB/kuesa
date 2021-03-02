@@ -34,7 +34,6 @@
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/Iro2DiffuseEquiRectProperties>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -65,7 +64,6 @@ private:
     Qt3DRender::QParameter *m_diffuseMapParameter;
     Qt3DRender::QParameter *m_reflectionMapParameter;
     Qt3DRender::QParameter *m_normalMapParameter;
-
 };
 
 } // namespace Kuesa

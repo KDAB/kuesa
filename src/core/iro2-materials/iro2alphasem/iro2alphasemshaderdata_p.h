@@ -30,7 +30,6 @@
 #ifndef KUESA_IRO2ALPHASEMSHADERDATA_P_H
 #define KUESA_IRO2ALPHASEMSHADERDATA_P_H
 
-
 //
 //  W A R N I N G
 //  -------------
@@ -138,7 +137,6 @@ private:
     QVector3D m_postHemiFilter;
     float m_postGain;
     bool m_gltfYUp;
-
 };
 
 } // namespace Kuesa

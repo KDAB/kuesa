@@ -188,9 +188,9 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
         QVector4D planeEquation;
         if (planeEquationValue.size() == 4) {
             planeEquation = QVector4D(planeEquationValue[0].toDouble(),
-                    planeEquationValue[1].toDouble(),
-                    planeEquationValue[2].toDouble(),
-                    planeEquationValue[3].toDouble());
+                                      planeEquationValue[1].toDouble(),
+                                      planeEquationValue[2].toDouble(),
+                                      planeEquationValue[3].toDouble());
         }
         if (planeEquation.isNull())
             qCWarning(Kuesa::kuesa, "Invalid Plane Equation for Reflection Plane");
@@ -200,7 +200,7 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
     if (nodeExtensions.contains(KEY_KDAB_PLACEHOLDER)) {
         const QJsonObject placeHolderObject = nodeExtensions.value(KEY_KDAB_PLACEHOLDER).toObject();
         const auto cameraNode = placeHolderObject.value(KEY_KDAB_PLACEHOLDER_CAMERANODE).toInt();
-        node.placeHolder = TreeNode::KDAB_2d_placeholder{static_cast<qint32>(cameraNode)};
+        node.placeHolder = TreeNode::KDAB_2d_placeholder{ static_cast<qint32>(cameraNode) };
         node.hasPlaceholder = true;
     }
 

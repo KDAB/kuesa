@@ -239,7 +239,6 @@ GLTF2Parser::~GLTF2Parser()
     m_workerThread.wait();
 }
 
-
 ParseWorker::ParseWorker(GLTF2Parser *parser,
                          const std::function<bool(GLTF2Parser *)> &parseFunc)
     : m_parser(parser)
@@ -263,21 +262,21 @@ bool ParseWorker::ParseWorker::work()
 
 bool GLTF2Parser::parse(const QString &filePath, bool async)
 {
-    return performParsing([filePath] (GLTF2Parser *p) -> bool { return p->doParse(filePath); }, async);
+    return performParsing([filePath](GLTF2Parser *p) -> bool { return p->doParse(filePath); }, async);
 }
 
 bool GLTF2Parser::parse(const QByteArray &data, const QString &basePath, const QString &filename, bool async)
 {
-    return performParsing([data, basePath, filename] (GLTF2Parser *p) -> bool { return p->doParse(data, basePath, filename); }, async);
+    return performParsing([data, basePath, filename](GLTF2Parser *p) -> bool { return p->doParse(data, basePath, filename); }, async);
 }
 
-bool GLTF2Parser::performParsing(const std::function<bool (GLTF2Parser*)> &parsingFunc, bool async)
+bool GLTF2Parser::performParsing(const std::function<bool(GLTF2Parser *)> &parsingFunc, bool async)
 {
     qCDebug(gltf2_parser_profiling) << "GLTF2 Parsing starting";
     QElapsedTimer t;
     t.start();
 
-    auto handleParsingResult = [=] (bool result) {
+    auto handleParsingResult = [=](bool result) {
         const qint64 elapsedAfterParsing = t.elapsed();
         qCDebug(gltf2_parser_profiling) << "GLTF2 Parsing completed (" << elapsedAfterParsing << "ms)";
         emit gltfFileParsingCompleted(result);
@@ -714,7 +713,7 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
                         addToCollectionWithUniqueName(m_sceneEntity->transforms(), treeNode.name, transform);
                     }
 
-                    auto placeholder = treeNode.entity->findChild<Kuesa::Placeholder*>();
+                    auto placeholder = treeNode.entity->findChild<Kuesa::Placeholder *>();
                     if (placeholder)
                         addToCollectionWithUniqueName(m_sceneEntity->placeholders(), treeNode.name, placeholder);
                 }
@@ -1172,7 +1171,7 @@ void GLTF2Parser::createTransform(const TreeNode &node)
     if (camera != nullptr) {
         const qint32 cameraId = node.cameraIdx;
         if (cameraId >= 0 && cameraId < qint32(m_context->cameraCount())) {
-            Camera& cam = m_context->camera(cameraId);
+            Camera &cam = m_context->camera(cameraId);
             // Note: we need to keep the lens in cam around as that one will be added
             // into the collection
             auto lenses = componentsFromEntity<Qt3DRender::QCameraLens>(camera);
@@ -1236,7 +1235,7 @@ void GLTF2Parser::createMesh(const TreeNode &node)
 
     // If the node has a mesh, add it
     const qint32 meshId = node.meshIdx;
-    if (meshId >= 0 && meshId <  qint32(m_context->meshesCount())) {
+    if (meshId >= 0 && meshId < qint32(m_context->meshesCount())) {
         Mesh &meshData = m_context->mesh(meshId);
         const qint32 skinId = node.skinIdx;
         const bool isSkinned = skinId >= 0 && skinId < qint32(m_context->skinsCount());
@@ -1434,7 +1433,7 @@ GLTF2Material *GLTF2Parser::createMaterial(const Mesh &meshData,
         }
     };
 
-    auto createMaterialAndProperties = [&] (Material &mat) {
+    auto createMaterialAndProperties = [&](Material &mat) {
         auto effectProperties = Material::effectPropertiesFromMaterial(mat);
         if (isSkinned)
             effectProperties |= EffectProperties::Skinning;
@@ -1464,7 +1463,7 @@ GLTF2Material *GLTF2Parser::createMaterial(const Mesh &meshData,
 
         if (mat.extensions.KDAB_custom_material) {
             GLTF2Material *specificMaterial = qobject_cast<GLTF2Material *>(
-                        mat.customMaterial.materialClassMetaObject->newInstance());
+                    mat.customMaterial.materialClassMetaObject->newInstance());
             Q_ASSERT(specificMaterial);
             material = specificMaterial;
             materialProperties->setParent(m_contentRootEntity);
@@ -1498,7 +1497,6 @@ GLTF2Material *GLTF2Parser::createMaterial(const Mesh &meshData,
 
         return material;
     };
-
 
     const qint32 materialId = primitiveData.materialIdx;
     const bool hasMaterial = materialId >= 0 && materialId < qint32(m_context->materialsCount());

@@ -32,13 +32,11 @@
 #include <Qt3DCore/private/qnode_p.h>
 #include <Kuesa/private/empty2dtexture_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::IroGlassAddProperties
@@ -154,7 +152,7 @@ void IroGlassAddProperties::setDiffuseOuterFilter(const QVector3D &diffuseOuterF
     m_shaderData->setDiffuseOuterFilter(diffuseOuterFilter);
 }
 
-void IroGlassAddProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
+void IroGlassAddProperties::setReflectionMap(Qt3DRender::QAbstractTexture *reflectionMap)
 {
     if (m_reflectionMap == reflectionMap)
         return;
@@ -170,7 +168,6 @@ void IroGlassAddProperties::setReflectionMap(Qt3DRender::QAbstractTexture * refl
     }
     emit reflectionMapChanged(m_reflectionMap);
 }
-
 
 /*!
     \qmlproperty QVector3D IroGlassAddProperties::normalScaling
@@ -341,11 +338,10 @@ QVector3D IroGlassAddProperties::diffuseOuterFilter() const
     return m_shaderData->diffuseOuterFilter();
 }
 
-Qt3DRender::QAbstractTexture * IroGlassAddProperties::reflectionMap() const
+Qt3DRender::QAbstractTexture *IroGlassAddProperties::reflectionMap() const
 {
     return m_reflectionMap;
 }
-
 
 } // namespace Kuesa
 

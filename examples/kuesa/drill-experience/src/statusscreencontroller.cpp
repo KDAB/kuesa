@@ -174,44 +174,44 @@ void StatusScreenController::createDrillStatusSimulationAnimation(Qt3DCore::QNod
         QChannelComponent rpmCmp;
         // Keyframe bezier curve coord(time,.value), left handle, right handle
         // T0
-        rpmCmp.appendKeyFrame(QKeyFrame({0.0f, 0.0f}, {-1.0f, 0.0f}, {1.0f, 0.0f}));
+        rpmCmp.appendKeyFrame(QKeyFrame({ 0.0f, 0.0f }, { -1.0f, 0.0f }, { 1.0f, 0.0f }));
         // T1 -> Starting, not yet drilling into material (high no load RPM)
-        rpmCmp.appendKeyFrame(QKeyFrame({2.0f, 5000.0f}, {1.0f, 2000.0f}, {3.0f, 5000.0f}));
+        rpmCmp.appendKeyFrame(QKeyFrame({ 2.0f, 5000.0f }, { 1.0f, 2000.0f }, { 3.0f, 5000.0f }));
         // T2 -> Starting to drill into material (RPM reduces)
-        rpmCmp.appendKeyFrame(QKeyFrame({3.0f, 3000.0f}, {2.0f, 5000.0f}, {4.0f, 3000.0f}));
+        rpmCmp.appendKeyFrame(QKeyFrame({ 3.0f, 3000.0f }, { 2.0f, 5000.0f }, { 4.0f, 3000.0f }));
         // T3 -> Slowly reducing RPM as we drill
-        rpmCmp.appendKeyFrame(QKeyFrame({10.0f, 2000.0f}, {5.0f, 2000.0f}, {8.0f, 3000.0f}));
+        rpmCmp.appendKeyFrame(QKeyFrame({ 10.0f, 2000.0f }, { 5.0f, 2000.0f }, { 8.0f, 3000.0f }));
 
         QChannelComponent torqueCmp; // in NM
         // T0
-        torqueCmp.appendKeyFrame(QKeyFrame({0.0f, 0.0f}, {-1.0f, 0.0f}, {1.0f, 0.0f}));
+        torqueCmp.appendKeyFrame(QKeyFrame({ 0.0f, 0.0f }, { -1.0f, 0.0f }, { 1.0f, 0.0f }));
         // T1 -> Starting, not yet drilling into material (almost no torque)
-        torqueCmp.appendKeyFrame(QKeyFrame({2.0f, 2.0f}, {1.0f, 3.0f}, {3.0f, 3.0f}));
+        torqueCmp.appendKeyFrame(QKeyFrame({ 2.0f, 2.0f }, { 1.0f, 3.0f }, { 3.0f, 3.0f }));
         // T2 -> Starting to drill into material (torque increases)
-        torqueCmp.appendKeyFrame(QKeyFrame({3.0f, 25.0f}, {2.0f, 15.0f}, {4.0f, 12.0f}));
+        torqueCmp.appendKeyFrame(QKeyFrame({ 3.0f, 25.0f }, { 2.0f, 15.0f }, { 4.0f, 12.0f }));
         // T3 -> Slowly increasing torque as we drill
-        torqueCmp.appendKeyFrame(QKeyFrame({10.0f, 42.0f}, {5.0f, 22.0f}, {8.0f, 15.0f}));
+        torqueCmp.appendKeyFrame(QKeyFrame({ 10.0f, 42.0f }, { 5.0f, 22.0f }, { 8.0f, 15.0f }));
 
         QChannelComponent currentDrawCmp; // in A
         // T0
-        currentDrawCmp.appendKeyFrame(QKeyFrame({0.0f, 0.0f}, {-1.0f, 0.0f}, {1.0f, 0.0f}));
+        currentDrawCmp.appendKeyFrame(QKeyFrame({ 0.0f, 0.0f }, { -1.0f, 0.0f }, { 1.0f, 0.0f }));
         // T1 -> Starting, not yet drilling into material (low current draw)
-        currentDrawCmp.appendKeyFrame(QKeyFrame({2.0f, 2.0f}, {1.0f, 3.0f}, {3.0f, 3.0f}));
+        currentDrawCmp.appendKeyFrame(QKeyFrame({ 2.0f, 2.0f }, { 1.0f, 3.0f }, { 3.0f, 3.0f }));
         // T2 -> Starting to drill into material (current draw increase)
-        currentDrawCmp.appendKeyFrame(QKeyFrame({3.0f, 20.0f}, {2.0f, 15.0f}, {4.0f, 12.0f}));
+        currentDrawCmp.appendKeyFrame(QKeyFrame({ 3.0f, 20.0f }, { 2.0f, 15.0f }, { 4.0f, 12.0f }));
         // T3 -> Slowly incrasing current draw as we drill (RPM reduces)
-        currentDrawCmp.appendKeyFrame(QKeyFrame({10.0f, 25.0f}, {5.0f, 22.0f}, {8.0f, 15.0f}));
+        currentDrawCmp.appendKeyFrame(QKeyFrame({ 10.0f, 25.0f }, { 5.0f, 22.0f }, { 8.0f, 15.0f }));
 
         QChannelComponent batteryLifeCmp; // in %
         // Use Linear KeyFrames
         // T0
-        batteryLifeCmp.appendKeyFrame(QKeyFrame({0.0f, 100.0f}));
+        batteryLifeCmp.appendKeyFrame(QKeyFrame({ 0.0f, 100.0f }));
         // T1
-        batteryLifeCmp.appendKeyFrame(QKeyFrame({2.0f, 99.5f}));
+        batteryLifeCmp.appendKeyFrame(QKeyFrame({ 2.0f, 99.5f }));
         // T2
-        batteryLifeCmp.appendKeyFrame(QKeyFrame({20.0f, 99.0f}));
+        batteryLifeCmp.appendKeyFrame(QKeyFrame({ 20.0f, 99.0f }));
         // T3
-        batteryLifeCmp.appendKeyFrame(QKeyFrame({25.0f, 95.0f}));
+        batteryLifeCmp.appendKeyFrame(QKeyFrame({ 25.0f, 95.0f }));
 
         rpmChannel.appendChannelComponent(rpmCmp);
         torqueChannel.appendChannelComponent(torqueCmp);
@@ -224,7 +224,7 @@ void StatusScreenController::createDrillStatusSimulationAnimation(Qt3DCore::QNod
         drillIntoWoodClipData.appendChannel(batteryLifeChannel);
     }
 
-    auto makeMapping = [this] (const QString &property) {
+    auto makeMapping = [this](const QString &property) {
         QChannelMapping *mapping = new QChannelMapping;
         mapping->setTarget(m_status);
         mapping->setChannelName(property);
@@ -323,7 +323,7 @@ StatusScreenController::StatusScreenController(QObject *parent)
     });
 
     // Handle RPM change to trigger animations
-    QObject::connect(m_status, &DrillStatus::rpmChanged, this, [this] () {
+    QObject::connect(m_status, &DrillStatus::rpmChanged, this, [this]() {
         const bool shouldRun = m_status->rpm() > 0.0f;
         if (m_runningDrillPlayer->isRunning() != shouldRun)
             m_runningDrillPlayer->setRunning(shouldRun);
@@ -339,7 +339,7 @@ StatusScreenController::StatusScreenController(QObject *parent)
     m_chuckColorBlinkAnimation->setEasingCurve(QEasingCurve::OutCubic);
     m_chuckColorBlinkAnimation->setDuration(1500);
 
-    QObject::connect(m_status, &DrillStatus::torqueChanged, this, [this] () {
+    QObject::connect(m_status, &DrillStatus::torqueChanged, this, [this]() {
         const bool shouldRun = m_status->torqueWarning();
         if (shouldRun) {
             if (m_chuckColorBlinkAnimation->state() != QAbstractAnimation::Running)
@@ -364,7 +364,7 @@ StatusScreenController::StatusScreenController(QObject *parent)
     m_batteryColorBlinkAnimation->setEasingCurve(QEasingCurve::OutCubic);
     m_batteryColorBlinkAnimation->setDuration(1500);
 
-    QObject::connect(m_status, &DrillStatus::currentDrawChanged, this, [this] () {
+    QObject::connect(m_status, &DrillStatus::currentDrawChanged, this, [this]() {
         const bool shouldRun = m_status->currentDrawWarning();
         if (shouldRun) {
             if (m_batteryColorBlinkAnimation->state() != QAbstractAnimation::Running)

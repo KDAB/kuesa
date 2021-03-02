@@ -33,7 +33,6 @@
 #include <Qt3DRender/QEffect>
 #include <Kuesa/kuesa_global.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {

@@ -77,5 +77,4 @@ using ReflectionStagesPtr = QSharedPointer<ReflectionStages>;
 } // namespace Kuesa
 QT_END_NAMESPACE
 
-
 #endif // KUESA_REFLECTIONSTAGES_P_H

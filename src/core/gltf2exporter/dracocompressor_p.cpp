@@ -318,7 +318,7 @@ CompressedMesh compressMesh(
             break;
         }
         case QAttribute::VertexBaseType::Byte: {
-            static_assert (std::numeric_limits<qint8>::min() < 0, "This code only works on platforms with signed char");
+            static_assert(std::numeric_limits<qint8>::min() < 0, "This code only works on platforms with signed char");
             if (!compressAttribute<qint8>(*attribute, dracoMesh, attributes))
                 return {};
             break;

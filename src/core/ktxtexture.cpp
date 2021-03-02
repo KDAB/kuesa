@@ -52,8 +52,7 @@ namespace QUrlHelperNS = Qt3DRender;
 
 QT_BEGIN_NAMESPACE
 
-namespace
-{
+namespace {
 
 bool isInternalFormatValid(const int internalFormat)
 {
@@ -67,10 +66,9 @@ bool isInternalFormatValid(const int internalFormat)
     return false;
 }
 
-}
+} // namespace
 
-namespace Kuesa
-{
+namespace Kuesa {
 
 /*!
     \class Kuesa::KTXTexture
@@ -118,29 +116,28 @@ void KTXTexture::setSource(const QUrl &source)
 {
     if (m_source != source) {
         setStatus(KTXTexture::Status::Loading);
-                m_source = source;
+        m_source = source;
         if (m_source.isLocalFile() || m_source.scheme() == QLatin1String("qrc")
-        #ifdef Q_OS_ANDROID
-                || url.scheme() == QLatin1String("assets")
-        #endif
-                ) {
+#ifdef Q_OS_ANDROID
+            || url.scheme() == QLatin1String("assets")
+#endif
+        ) {
             const QString source = QUrlHelperNS::QUrlHelper::urlToLocalFileOrQrc(m_source);
             QFile f(source);
             if (!f.open(QIODevice::ReadOnly)) {
                 setStatus(KTXTexture::Status::Error);
                 qWarning() << "Failed to open" << source;
-            }
-            else {
+            } else {
                 auto ktxStream = f.readAll();
                 if (m_ktxTexture) {
                     ktxTexture_Destroy(m_ktxTexture);
                     m_ktxTexture = nullptr;
                 }
                 // This should return an error code, but we already check if the pointer is null below.
-                ktxTexture_CreateFromMemory(reinterpret_cast<const unsigned char*>(ktxStream.constData()),
-                                ktxStream.size(),
-                                KTX_TEXTURE_CREATE_LOAD_IMAGE_DATA_BIT,
-                                &m_ktxTexture);
+                ktxTexture_CreateFromMemory(reinterpret_cast<const unsigned char *>(ktxStream.constData()),
+                                            ktxStream.size(),
+                                            KTX_TEXTURE_CREATE_LOAD_IMAGE_DATA_BIT,
+                                            &m_ktxTexture);
             }
         }
         emit sourceChanged(source);
@@ -160,7 +157,7 @@ void KTXTexture::generateData()
     setGenerateMipMaps(m_ktxTexture->generateMipmaps);
     setFormat(QAbstractTexture::TextureFormat::Automatic);
 
-    auto pTexture = static_cast<Qt3DRender::QAbstractTexturePrivate*>(Qt3DRender::QAbstractTexturePrivate::get(this));
+    auto pTexture = static_cast<Qt3DRender::QAbstractTexturePrivate *>(Qt3DRender::QAbstractTexturePrivate::get(this));
     pTexture->m_mipmapLevels = m_ktxTexture->numLevels;
     pTexture->update();
 
@@ -172,27 +169,27 @@ void KTXTexture::generateData()
             target = QAbstractTexture::TargetCubeMapArray;
     } else {
         switch (m_ktxTexture->numDimensions) {
-        case 1:  {
+        case 1: {
             if (!m_ktxTexture->isArray)
                 target = QAbstractTexture::Target1D;
             else
                 target = QAbstractTexture::Target1DArray;
             break;
         }
-        case 2:  {
+        case 2: {
             if (!m_ktxTexture->isArray)
                 target = QAbstractTexture::Target2D;
             else
                 target = QAbstractTexture::Target2DArray;
             break;
         }
-        case 3:  {
+        case 3: {
             target = QAbstractTexture::Target3D;
             break;
         }
         }
     }
-    static_cast<Qt3DRender::QAbstractTexturePrivate*>(Qt3DRender::QAbstractTexturePrivate::get(this))->m_target = target;
+    static_cast<Qt3DRender::QAbstractTexturePrivate *>(Qt3DRender::QAbstractTexturePrivate::get(this))->m_target = target;
     for (size_t level = 0; level < m_ktxTexture->numLevels; ++level) {
         for (size_t layer = 0; layer < m_ktxTexture->numLayers; ++layer) {
             for (size_t face = 0; face < m_ktxTexture->numFaces; ++face) {
@@ -211,7 +208,7 @@ void KTXTexture::generateData()
                 imageData->setLayers(m_ktxTexture->numLayers);
 
                 if (m_ktxTexture->classId == ktxTexture2_c) {
-                    ktxTexture2 *m_ktxTexture2 = (ktxTexture2*)m_ktxTexture;
+                    ktxTexture2 *m_ktxTexture2 = (ktxTexture2 *)m_ktxTexture;
                     if (m_ktxTexture2->vkFormat == VkFormat::VK_FORMAT_UNDEFINED) {
                         qCWarning(kuesa) << "KTX v2 VK_FORMAT_UNDEFINED is not supported by libktx yet";
                         setStatus(KTXTexture::Status::Error);
@@ -233,7 +230,7 @@ void KTXTexture::generateData()
                     imageData->setPixelType(static_cast<QOpenGLTexture::PixelType>(type));
                     imageData->setFormat(static_cast<QOpenGLTexture::TextureFormat>(internalFormat));
                 } else {
-                    ktxTexture1 *m_ktxTexture1 = (ktxTexture1*)m_ktxTexture;
+                    ktxTexture1 *m_ktxTexture1 = (ktxTexture1 *)m_ktxTexture;
                     if (!::isInternalFormatValid(m_ktxTexture1->glInternalformat)) {
                         const QString source = QUrlHelperNS::QUrlHelper::urlToLocalFileOrQrc(m_source);
                         qCWarning(kuesa) << "Internal format used by KTX texture" << source << "is not supported";
@@ -248,16 +245,14 @@ void KTXTexture::generateData()
                 imageData->setTarget(static_cast<QOpenGLTexture::Target>(target));
                 setFormat(static_cast<Qt3DRender::QAbstractTexture::TextureFormat>(imageData->format()));
 
-
                 Qt3DRender::QTextureImageDataPrivate *imagePrivate = nullptr;
                 imagePrivate = Qt3DRender::QTextureImageDataPrivate::get(imageData.get());
                 imagePrivate->m_alignment = m_ktxTexture->classId == ktxTexture1_c ? 4 : 1;
 
-
                 ktx_size_t offset = 0;
                 ktxTexture_GetImageOffset(this->m_ktxTexture, level, layer, face, &offset);
                 int imageSize = ktxTexture_GetImageSize(this->m_ktxTexture, level);
-                QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char*>(ktxTexture_GetData(m_ktxTexture)) + offset, imageSize);
+                QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(ktxTexture_GetData(m_ktxTexture)) + offset, imageSize);
                 imageData->setData(data, 1, m_ktxTexture->isCompressed);
 
                 updateData.setData(imageData);
@@ -269,6 +264,6 @@ void KTXTexture::generateData()
     setStatus(KTXTexture::Status::Ready);
 }
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
