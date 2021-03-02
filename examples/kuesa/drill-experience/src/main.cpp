@@ -38,21 +38,6 @@
 
 namespace {
 
-void setupSurfaceFormat()
-{
-    QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-#ifndef KUESA_OPENGL_ES_2
-    format.setVersion(4, 1);
-    format.setProfile(QSurfaceFormat::CoreProfile);
-#else
-    format.setVersion(3, 0);
-    format.setProfile(QSurfaceFormat::NoProfile);
-    format.setRenderableType(QSurfaceFormat::OpenGLES);
-#endif
-    format.setSamples(4);
-    QSurfaceFormat::setDefaultFormat(format);
-}
-
 void registerQMLTypes()
 {
     qmlRegisterUncreatableType<AbstractScreenController>("Drill", 1, 0, "AbstractScreenController", QStringLiteral("AbstractScreenController is abstract"));
@@ -68,7 +53,7 @@ void registerQMLTypes()
 int main(int ac, char **av)
 {
     // Set OpenGL requirements
-    setupSurfaceFormat();
+    Kuesa::setupDefaultSurfaceFormat();
 
     // Set QtQuick Controls Material Style
     QQuickStyle::setStyle("Material");

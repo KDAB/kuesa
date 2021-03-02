@@ -1,10 +1,10 @@
 /*
-    kuesa_global.h
+    tst_surfaceformat.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Mike Krus <mike.krus@kdab.com>
+    Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,45 +26,34 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_KUESA_GLOBAL_H
-#define KUESA_KUESA_GLOBAL_H
+#include <QtTest/QTest>
+#include <Kuesa/kuesa_global.h>
 
-#include <QtCore/qglobal.h>
-#include <QtGui/qtgui-config.h>
+class tst_SurfaceFormat : public QObject
+{
+    Q_OBJECT
 
-// Note: qmake generates kuesaversion.h with defines KUESA_VERSION and
-// KUESA_VERSION_STR
+private Q_SLOTS:
 
-//    can be used like #if (KUESA_VERSION >= KUESA_VERSION_CHECK(1, 3, 0))
-#define KUESA_VERSION_CHECK(major, minor, patch) ((major << 16) | (minor << 8) | (patch))
+    void checkDefaultSurfaceFormat()
+    {
+        // GIVEN
+        Kuesa::setupDefaultSurfaceFormat();
 
-// Works for both Qt 5 and Qt 6
-#if QT_CONFIG(opengles2)
-#define KUESA_OPENGL_ES_2
-#endif
+        // THEN
+        const QSurfaceFormat f = QSurfaceFormat::defaultFormat();
 
-#if QT_CONFIG(opengles3)
-#define KUESA_OPENGL_ES_3
-#endif
-
-QT_BEGIN_NAMESPACE
-
-#if defined(QT_SHARED) || !defined(QT_STATIC)
-#if defined(QT_BUILD_KUESA_LIB)
-#define KUESASHARED_EXPORT Q_DECL_EXPORT
+#ifndef KUESA_OPENGL_ES_2
+        QCOMPARE(f.majorVersion(), 4);
+        QCOMPARE(f.minorVersion(), 6);
+        QCOMPARE(f.profile(), QSurfaceFormat::CoreProfile);
 #else
-#define KUESASHARED_EXPORT Q_DECL_IMPORT
+        QCOMPARE(f.majorVersion(), 3);
+        QCOMPARE(f.minorVersion(), 0);
+        QCOMPARE(f.profile(), QSurfaceFormat::NoProfile);
 #endif
-#else
-#define KUESASHARED_EXPORT
-#endif
+    }
+};
 
-namespace Kuesa {
-
-void KUESASHARED_EXPORT setupDefaultSurfaceFormat();
-
-}
-
-QT_END_NAMESPACE
-
-#endif // KUESA_KUESA_GLOBAL_H
+QTEST_MAIN(tst_SurfaceFormat)
+#include "tst_surfaceformat.moc"

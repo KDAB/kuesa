@@ -1,10 +1,10 @@
 /*
-    kuesa_global.h
+    kuesa_global.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Mike Krus <mike.krus@kdab.com>
+    Author: Paul Lemire <paul.lemire@kdab.com>
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -26,45 +26,28 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_KUESA_GLOBAL_H
-#define KUESA_KUESA_GLOBAL_H
 
-#include <QtCore/qglobal.h>
-#include <QtGui/qtgui-config.h>
-
-// Note: qmake generates kuesaversion.h with defines KUESA_VERSION and
-// KUESA_VERSION_STR
-
-//    can be used like #if (KUESA_VERSION >= KUESA_VERSION_CHECK(1, 3, 0))
-#define KUESA_VERSION_CHECK(major, minor, patch) ((major << 16) | (minor << 8) | (patch))
-
-// Works for both Qt 5 and Qt 6
-#if QT_CONFIG(opengles2)
-#define KUESA_OPENGL_ES_2
-#endif
-
-#if QT_CONFIG(opengles3)
-#define KUESA_OPENGL_ES_3
-#endif
-
-QT_BEGIN_NAMESPACE
-
-#if defined(QT_SHARED) || !defined(QT_STATIC)
-#if defined(QT_BUILD_KUESA_LIB)
-#define KUESASHARED_EXPORT Q_DECL_EXPORT
-#else
-#define KUESASHARED_EXPORT Q_DECL_IMPORT
-#endif
-#else
-#define KUESASHARED_EXPORT
-#endif
+#include "kuesa_global.h"
+#include <QSurfaceFormat>
 
 namespace Kuesa {
 
-void KUESASHARED_EXPORT setupDefaultSurfaceFormat();
-
+void setupDefaultSurfaceFormat()
+{
+    // Set OpenGL requirements
+    QSurfaceFormat format = QSurfaceFormat::defaultFormat();
+#ifndef KUESA_OPENGL_ES_2
+    format.setVersion(4, 6);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+#else
+    format.setVersion(3, 2);
+    format.setProfile(QSurfaceFormat::NoProfile);
+    format.setRenderableType(QSurfaceFormat::OpenGLES);
+#endif
+    format.setSamples(4);
+    QSurfaceFormat::setDefaultFormat(format);
 }
 
-QT_END_NAMESPACE
+} // Kuesa
 
-#endif // KUESA_KUESA_GLOBAL_H
+

@@ -28,6 +28,7 @@ INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/empty2dtexture.cpp \
+    $$PWD/kuesa_global.cpp \
     $$PWD/kuesanode.cpp \
     $$PWD/kuesa_utils.cpp \
     $$PWD/logging.cpp \
