@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_LOGGING_H
-#define KUESA_LOGGING_H
+#ifndef KUESA_LOGGING_P_H
+#define KUESA_LOGGING_P_H
 
 //
 //  W A R N I N G
@@ -53,4 +53,4 @@ Q_DECLARE_LOGGING_CATEGORY(gltf2_parser_profiling)
 
 QT_END_NAMESPACE
 
-#endif // KUESA_LOGGING_H
+#endif // KUESA_LOGGING_P_H

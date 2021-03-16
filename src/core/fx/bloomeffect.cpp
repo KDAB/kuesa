@@ -50,7 +50,6 @@
 #include <Qt3DRender/qlayerfilter.h>
 #include <Qt3DRender/qrenderpassfilter.h>
 #include <Qt3DRender/qrendertarget.h>
-#include "framegraphutils_p.h"
 
 QT_BEGIN_NAMESPACE
 

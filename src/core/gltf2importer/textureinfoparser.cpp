@@ -26,9 +26,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "textureinfoparser_p.h"
 #include <QJsonObject>
 #include <QJsonArray>
-#include "textureinfoparser_p.h"
 #include "gltf2keys_p.h"
 
 namespace {

@@ -66,7 +66,7 @@ Kuesa.SceneEntity {
     }
 
     Timer {
-// Doesnt work, non full size upload not supported
+// Doesn't work, non full size upload not supported
         property var sources: [
           "501.ktx2",
           "501_bcmp.ktx2", // Not supported yet in libktx

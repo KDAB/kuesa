@@ -43,7 +43,7 @@ namespace Kuesa {
 
     The ReflectionPlane class allows to provide the information required to
     perform planar reflections. It expects a plane equation to be provided.
-    Aditionally, a set of visible layers can also be provided to restrict
+    Additionally, a set of visible layers can also be provided to restrict
     what the reflections will display.
 
     \badcode
@@ -67,7 +67,7 @@ namespace Kuesa {
 
     The ReflectionPlane element allows to provide the information required to
     perform planar reflections. It expects a plane equation to be provided.
-    Aditionally, a set of visible layers can also be provided to restrict what
+    Additionally, a set of visible layers can also be provided to restrict what
     the reflections will display.
 
     \badcode

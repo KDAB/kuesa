@@ -26,12 +26,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "meshinstantiator.h"
 #include <Kuesa/private/kuesa_global_p.h>
 #include <Kuesa/private/kuesa_utils_p.h>
 #include <Qt3DRender/QGeometryRenderer>
 #include <Kuesa/GLTF2Material>
 #include <Kuesa/GLTF2MaterialEffect>
-#include "meshinstantiator.h"
 #include <stdio.h>
 #include <string.h>
 
