@@ -104,7 +104,10 @@ qt_size_type SceneConfigurationItem::qmlAnimationCount(QQmlListProperty<Kuesa::A
 
 void SceneConfigurationItem::qmlClearAnimations(QQmlListProperty<Kuesa::AnimationPlayer> *list)
 {
-
+    SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
+    for (Kuesa::AnimationPlayer *p : self->m_managedAnimations)
+        self->parentSceneConfiguration()->removeAnimationPlayer(p);
+    self->m_managedAnimations.clear();
 }
 
 void SceneConfigurationItem::qmlAppendViewConfiguration(QQmlListProperty<ViewConfiguration> *list, ViewConfiguration *node)
@@ -125,10 +128,13 @@ KuesaUtils::ViewConfiguration *SceneConfigurationItem::qmlViewconfigurationAt(QQ
 qt_size_type SceneConfigurationItem::qmlViewConfigurationCount(QQmlListProperty<ViewConfiguration> *list)
 {
     SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
-    return int(self->m_managedAnimations.size());
+    return int(self->m_managedViewConfigurations.size());
 }
 
 void SceneConfigurationItem::qmlClearViewConfigurations(QQmlListProperty<ViewConfiguration> *list)
 {
-
+    SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
+    for (ViewConfiguration *v : self->m_managedViewConfigurations)
+        self->parentSceneConfiguration()->removeViewConfiguration(v);
+    self->m_managedViewConfigurations.clear();
 }
