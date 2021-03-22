@@ -68,9 +68,6 @@ private Q_SLOTS:
         QVERIFY(sortPolicy);
         QVERIFY(transparentFilterKey);
 
-        const auto passFilters = transparentFilter->findChildren<Qt3DRender::QRenderPassFilter *>();
-        QVERIFY(passFilters.count() > 0);
-
         QCOMPARE(stateSet->parentFrameGraphNode(), &stage);
         QVERIFY(stateSet->renderStates().contains(depthTest));
         QVERIFY(stateSet->renderStates().contains(noDepthMask));
@@ -78,19 +75,11 @@ private Q_SLOTS:
         QCOMPARE(depthTest->depthFunction(), Qt3DRender::QDepthTest::LessOrEqual);
         QCOMPARE(sortPolicy->parentFrameGraphNode(), stateSet);
         QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::BackToFront));
-        QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::Material));
         QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::Texture));
         QCOMPARE(transparentFilter->parentFrameGraphNode(), sortPolicy);
         QVERIFY(transparentFilter->matchAny().contains(transparentFilterKey));
         QCOMPARE(transparentFilterKey->name(), QStringLiteral("KuesaDrawStage"));
         QCOMPARE(transparentFilterKey->value(), QStringLiteral("Transparent"));
-
-        for (int i = 0; i < passFilters.count(); ++i) {
-            const auto &passFilter = passFilters.at(i);
-            QCOMPARE(passFilter->matchAny().size(), 1);
-            QCOMPARE(passFilter->matchAny().at(0)->name(), QStringLiteral("Pass"));
-            QCOMPARE(passFilter->matchAny().at(0)->value(), QStringLiteral("pass%1").arg(i));
-        }
 
         // WHEN
         stage.setBackToFrontSorting(false);
@@ -104,19 +93,11 @@ private Q_SLOTS:
         QVERIFY(stateSet->renderStates().contains(msaa));
         QCOMPARE(depthTest->depthFunction(), Qt3DRender::QDepthTest::LessOrEqual);
         QCOMPARE(sortPolicy->parentFrameGraphNode(), stateSet);
-        QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::Material));
         QVERIFY(sortPolicy->sortTypes().contains(Qt3DRender::QSortPolicy::Texture));
         QCOMPARE(transparentFilter->parentFrameGraphNode(), sortPolicy);
         QVERIFY(transparentFilter->matchAny().contains(transparentFilterKey));
         QCOMPARE(transparentFilterKey->name(), QStringLiteral("KuesaDrawStage"));
         QCOMPARE(transparentFilterKey->value(), QStringLiteral("Transparent"));
-
-        for (int i = 0; i < passFilters.count(); ++i) {
-            const auto &passFilter = passFilters.at(i);
-            QCOMPARE(passFilter->matchAny().size(), 1);
-            QCOMPARE(passFilter->matchAny().at(0)->name(), QStringLiteral("Pass"));
-            QCOMPARE(passFilter->matchAny().at(0)->value(), QStringLiteral("pass%1").arg(i));
-        }
     }
 };
 

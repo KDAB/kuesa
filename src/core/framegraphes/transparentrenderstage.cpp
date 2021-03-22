@@ -43,11 +43,9 @@ namespace {
 QVector<Qt3DRender::QSortPolicy::SortType> sortTypes(bool backToFrontSorting)
 {
     if (backToFrontSorting)
-        return { Qt3DRender::QSortPolicy::BackToFront, Qt3DRender::QSortPolicy::Material, Qt3DRender::QSortPolicy::Texture };
-    return { Qt3DRender::QSortPolicy::Material, Qt3DRender::QSortPolicy::Texture };
+        return { Qt3DRender::QSortPolicy::BackToFront, Qt3DRender::QSortPolicy::Texture };
+    return { Qt3DRender::QSortPolicy::Texture };
 }
-
-constexpr size_t MAX_RENDER_PASS_COUNT = 2;
 
 } // namespace
 
@@ -81,15 +79,6 @@ TransparentRenderStage::TransparentRenderStage(Qt3DRender::QFrameGraphNode *pare
     filterKey->setValue(QStringLiteral("Transparent"));
 
     transparentFilter->addMatch(filterKey);
-
-    for (size_t i = 0; i < MAX_RENDER_PASS_COUNT; ++i) {
-        auto passFilter = new Qt3DRender::QRenderPassFilter(transparentFilter);
-        auto filterKey = new Qt3DRender::QFilterKey(this);
-        filterKey->setName(QStringLiteral("Pass"));
-        filterKey->setValue(QStringLiteral("pass%1").arg(i));
-
-        passFilter->addMatch(filterKey);
-    }
 }
 
 TransparentRenderStage::~TransparentRenderStage()
