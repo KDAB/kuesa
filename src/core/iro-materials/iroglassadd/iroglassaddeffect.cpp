@@ -168,11 +168,6 @@ public:
             transparentFilterKey->setValue(QStringLiteral("Transparent"));
             transparentRenderPass->addFilterKey(transparentFilterKey);
 
-            auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
-            transparentPassFilterKey->setName(QStringLiteral("Pass"));
-            transparentPassFilterKey->setValue(QStringLiteral("pass0"));
-            transparentRenderPass->addFilterKey(transparentPassFilterKey);
-
             addRenderPass(transparentRenderPass);
         }
         {
@@ -251,11 +246,6 @@ public:
             transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
             transparentFilterKey->setValue(QStringLiteral("Transparent"));
             transparentRenderPass->addFilterKey(transparentFilterKey);
-
-            auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
-            transparentPassFilterKey->setName(QStringLiteral("Pass"));
-            transparentPassFilterKey->setValue(QStringLiteral("pass1"));
-            transparentRenderPass->addFilterKey(transparentPassFilterKey);
 
             addRenderPass(transparentRenderPass);
         }

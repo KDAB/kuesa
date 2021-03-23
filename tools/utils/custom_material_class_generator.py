@@ -346,7 +346,7 @@ public:
             QByteArray(R"(%s)")
         };
 
-         const QByteArray renderableGeometryShaderCode[] = {
+        const QByteArray renderableGeometryShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
@@ -373,7 +373,7 @@ public:
         }
         m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
-         // Set geometry shader code if one was specified
+        // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
         m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
@@ -408,10 +408,6 @@ public:
         transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
         transparentFilterKey->setValue(QStringLiteral("Transparent"));
 
-        auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
-        transparentPassFilterKey->setName(QStringLiteral("Pass"));
-        transparentPassFilterKey->setValue(QStringLiteral("pass0"));
-
         m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::%s);
         m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::%s);
         m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::%s);
@@ -423,7 +419,6 @@ public:
         m_transparentRenderPass->addRenderState(m_blendEquation);
         m_transparentRenderPass->addRenderState(m_blendArguments);
         m_transparentRenderPass->addFilterKey(transparentFilterKey);
-        m_transparentRenderPass->addFilterKey(transparentPassFilterKey);
         m_transparentRenderPass->setEnabled(false);
         addRenderPass(m_transparentRenderPass);
     }
@@ -565,7 +560,7 @@ public:
             QByteArray(R"(%s)")
         };
 
-         const QByteArray renderableGeometryShaderCode[] = {
+        const QByteArray renderableGeometryShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
@@ -592,7 +587,7 @@ public:
         }
         m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
-         // Set geometry shader code if one was specified
+        // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
         m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
@@ -735,7 +730,7 @@ public:
             QByteArray(R"(%s)")
         };
 
-         const QByteArray renderableGeometryShaderCode[] = {
+        const QByteArray renderableGeometryShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
@@ -757,7 +752,7 @@ public:
             m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
         }
 
-         // Set geometry shader code if one was specified
+        // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
         auto filterKey = new QFilterKey(this);
@@ -891,7 +886,7 @@ public:
             QByteArray(R"(%s)")
         };
 
-         const QByteArray renderableGeometryShaderCode[] = {
+        const QByteArray renderableGeometryShaderCode[] = {
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
             QByteArray(R"(%s)"),
@@ -913,7 +908,7 @@ public:
             m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
         }
 
-         // Set geometry shader code if one was specified
+        // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
         auto filterKey = new QFilterKey(this);
@@ -929,10 +924,6 @@ public:
         transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
         transparentFilterKey->setValue(QStringLiteral("Transparent"));
 
-        auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
-        transparentPassFilterKey->setName(QStringLiteral("Pass"));
-        transparentPassFilterKey->setValue(QStringLiteral("pass0"));
-
         m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::%s);
         m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::%s);
         m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::%s);
@@ -944,7 +935,6 @@ public:
         m_transparentRenderPass->addRenderState(m_blendEquation);
         m_transparentRenderPass->addRenderState(m_blendArguments);
         m_transparentRenderPass->addFilterKey(transparentFilterKey);
-        m_transparentRenderPass->addFilterKey(transparentPassFilterKey);
         addRenderPass(m_transparentRenderPass);
     }
 
@@ -1065,11 +1055,6 @@ private:
             transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
             transparentFilterKey->setValue(QStringLiteral("Transparent"));
             transparentRenderPass->addFilterKey(transparentFilterKey);
-
-            auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
-            transparentPassFilterKey->setName(QStringLiteral("Pass"));
-            transparentPassFilterKey->setValue(QStringLiteral("pass%s"));
-            transparentRenderPass->addFilterKey(transparentPassFilterKey);
 
             addRenderPass(transparentRenderPass);
         }"""
@@ -2091,8 +2076,7 @@ HEADERS += \\
                                                                                                        pass_info.blendSourceRGB,
                                                                                                        pass_info.blendSourceAlpha,
                                                                                                        pass_info.blendDestinationRGB,
-                                                                                                       pass_info.blendDestinationAlpha,
-                                                                                                       idx)
+                                                                                                       pass_info.blendDestinationAlpha)
                 return CustomMaterialGenerator.techniqueMultiTransparent % (matName,
                                                                             matName,
                                                                             innerPassContent)
