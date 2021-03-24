@@ -169,46 +169,29 @@ GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
     mainViewConfiguration->setClearColor(QColor(Qt::transparent));
     configuration->addViewConfiguration(mainViewConfiguration);
 
-    m_drillAnimation = new Kuesa::AnimationPlayer();
-    m_drillAnimation->setClip(QStringLiteral("AnimDrillCW"));
+    // We have two animations. One with all the steps of the tutorial one after the other
+    // The other animation is a pulse animation that we used to encode events
+    // We create a timeline which emits an "up" signal when the pulse animation goes from 0 to 1
+    // Similarly, the timeline emits a "down" signal when the signal animation goes from 1 to 0
+    // This allows us to stop the tutorial animation when we detect the "up" signal
+    m_stepsAnimation = new Kuesa::AnimationPlayer();
+    m_stepsAnimation->setClip(QStringLiteral("AnimGuideAnim"));
 
-    m_triggerPressAnimation = new Kuesa::AnimationPlayer();
-    m_triggerPressAnimation->setClip(QStringLiteral("AnimTriggerPress"));
+    m_pulse = new Kuesa::AnimationPulse();
+    m_pulse->setClip(QStringLiteral("AnimGuideSteps"));
 
-    m_directionSwitchAnimation = new Kuesa::AnimationPlayer();
-    m_directionSwitchAnimation->setClip(QStringLiteral("AnimChangeDirectionLR"));
+    // Add a clock so we can control forward and backwards
+    m_animationClock = new Qt3DAnimation::QClock;
+    m_stepsAnimation->setClock(m_animationClock);
+    m_pulse->setClock(m_animationClock);
 
-    m_drillInsertAnimation = new Kuesa::AnimationPlayer();
-    m_drillInsertAnimation->setClip(QStringLiteral("AnimToolIn"));
-
-    m_drillRemoveAnimation = new Kuesa::AnimationPlayer();
-    m_drillRemoveAnimation->setClip(QStringLiteral("AnimToolOut"));
-
-    m_cameraTransitionAnimationSideToBit = new Kuesa::AnimationPlayer();
-    m_cameraTransitionAnimationSideToBit->setClip(QStringLiteral("AnimTransition01"));
-
-    m_cameraTransitionAnimationBitToChuck = new Kuesa::AnimationPlayer();
-    m_cameraTransitionAnimationBitToChuck->setClip(QStringLiteral("AnimTransition02"));
-
-    m_cameraTransitionAnimationChuckToRear = new Kuesa::AnimationPlayer();
-    m_cameraTransitionAnimationChuckToRear->setClip(QStringLiteral("AnimTransition03"));
-
-    m_cameraTransitionAnimationRearToTrigger = new Kuesa::AnimationPlayer();
-    m_cameraTransitionAnimationRearToTrigger->setClip(QStringLiteral("AnimTransition04"));
-
-    m_cameraTransitionAnimationTriggerToSide = new Kuesa::AnimationPlayer();
-    m_cameraTransitionAnimationTriggerToSide->setClip(QStringLiteral("AnimTransition05"));
-
-    configuration->addAnimationPlayer(m_drillAnimation);
-    configuration->addAnimationPlayer(m_triggerPressAnimation);
-    configuration->addAnimationPlayer(m_directionSwitchAnimation);
-    configuration->addAnimationPlayer(m_drillInsertAnimation);
-    configuration->addAnimationPlayer(m_drillRemoveAnimation);
-    configuration->addAnimationPlayer(m_cameraTransitionAnimationSideToBit);
-    configuration->addAnimationPlayer(m_cameraTransitionAnimationBitToChuck);
-    configuration->addAnimationPlayer(m_cameraTransitionAnimationChuckToRear);
-    configuration->addAnimationPlayer(m_cameraTransitionAnimationRearToTrigger);
-    configuration->addAnimationPlayer(m_cameraTransitionAnimationTriggerToSide);
+    // Since glTF only allows to animate transforms by default, we use a transform tracker as the target
+    // of the pulse animation.
+    // We monitor the traslation of the transform tracker to emit the "up" and "down" signals
+    configuration->addAnimationPlayer(m_stepsAnimation);
+    configuration->addAnimationPlayer(m_pulse);
+    QObject::connect(m_pulse, &Kuesa::AnimationPulse::up, m_stepsAnimation, &Kuesa::AnimationPlayer::stop);
+    QObject::connect(m_pulse, &Kuesa::AnimationPulse::up, m_pulse, &Kuesa::AnimationPlayer::stop);
 
     setSceneConfiguration(configuration);
 
@@ -296,7 +279,10 @@ GuidedDrillingScreenController::Step GuidedDrillingScreenController::nextStep()
         m_history.push_back(m_currentStep);
         m_currentStep = findNextStep();
         emit currentStepChanged();
-        syncViewToStep(m_history.back());
+
+        m_animationClock->setPlaybackRate(1.0);
+        m_stepsAnimation->start();
+        m_pulse->start();
     }
     return m_currentStep;
 }
@@ -308,7 +294,10 @@ GuidedDrillingScreenController::Step GuidedDrillingScreenController::previousSte
         m_currentStep = m_history.back();
         m_history.pop_back();
         emit currentStepChanged();
-        syncViewToStep(lastStep);
+
+        m_animationClock->setPlaybackRate(-1.0);
+        m_stepsAnimation->start();
+        m_pulse->start();
     }
     return m_currentStep;
 }
@@ -324,7 +313,9 @@ GuidedDrillingScreenController::Step GuidedDrillingScreenController::reset()
     const Step lastStep = m_currentStep;
     m_currentStep = ModeSelection;
     emit currentStepChanged();
-    syncViewToStep(lastStep);
+
+    m_stepsAnimation->setNormalizedTime(0.0);
+    m_pulse->setNormalizedTime(0.0);
 
     return m_currentStep;
 }
@@ -438,83 +429,6 @@ void launchCameraAnimation(Kuesa::AnimationPlayer *player, bool reversed)
 }
 
 } // namespace
-
-void GuidedDrillingScreenController::syncViewToStep(Step previousStep)
-{
-    const bool forward = previousStep < m_currentStep || previousStep == CompletionStep;
-
-    auto forwardAnimationForStep = [this](Step step) -> Kuesa::AnimationPlayer * {
-        switch (step) {
-        case ModeSelection:
-            return m_cameraTransitionAnimationTriggerToSide;
-        case BitSelection:
-            return m_cameraTransitionAnimationSideToBit;
-        case SetupBit:
-            return m_cameraTransitionAnimationBitToChuck;
-        case SetupDirection:
-            return m_cameraTransitionAnimationChuckToRear;
-        case CompletionStep:
-            return m_cameraTransitionAnimationRearToTrigger;
-        default:
-            return nullptr;
-        }
-    };
-
-    auto backwardAnimationForStep = [this](Step step) -> Kuesa::AnimationPlayer * {
-        switch (step) {
-        case MaterialSelection:
-            return m_cameraTransitionAnimationSideToBit;
-        case BitSelection:
-            return m_cameraTransitionAnimationBitToChuck;
-        case SetupBit:
-            return m_cameraTransitionAnimationChuckToRear;
-        case SetupDirection:
-            return m_cameraTransitionAnimationRearToTrigger;
-        default:
-            return nullptr;
-        }
-    };
-
-    auto animationForStep = [&](Step step) {
-        if (forward)
-            return forwardAnimationForStep(step);
-        return backwardAnimationForStep(step);
-    };
-
-    // Camera Animations
-    if (m_currentStep != previousStep)
-        launchCameraAnimation(animationForStep(m_currentStep), !forward);
-
-    // Handling of Initial Starting case
-    if (m_currentStep == ModeSelection && previousStep == m_currentStep)
-        m_cameraTransitionAnimationTriggerToSide->run(0.99f, 1.0f);
-
-    // Other animations
-    switch (m_currentStep) {
-    case ModeSelection:
-        break;
-    case MaterialSelection:
-        break;
-    case BitSelection:
-        break;
-    case SetupBit: {
-        constexpr int delay = 500;
-        m_drillInsertAnimation->restart(delay);
-        break;
-    }
-    case SetupDirection: {
-        constexpr int delay = 1250;
-        m_directionSwitchAnimation->restart(delay);
-        break;
-    }
-    case CompletionStep: {
-        constexpr int delay = 1250;
-        m_triggerPressAnimation->restart(delay);
-        m_drillAnimation->restart(delay);
-        break;
-    }
-    }
-}
 
 void GuidedDrillingScreenController::addObjectPickersOnBit()
 {

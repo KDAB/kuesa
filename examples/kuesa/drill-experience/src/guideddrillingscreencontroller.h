@@ -30,6 +30,7 @@
 #define GUIDEDDRILLINGSCREENCONTROLLER_H
 
 #include "abstractscreencontroller.h"
+#include <Kuesa/AnimationPulse>
 
 class GuidedDrillingScreenController : public AbstractScreenController
 {
@@ -134,17 +135,9 @@ private:
     Qt3DCore::QTransform *m_insertedDrillBitTranform;
 
     // Owned by the sceneConfiguration
-    Kuesa::AnimationPlayer *m_drillAnimation = nullptr;
-    Kuesa::AnimationPlayer *m_triggerPressAnimation = nullptr;
-    Kuesa::AnimationPlayer *m_directionSwitchAnimation = nullptr;
-    Kuesa::AnimationPlayer *m_drillInsertAnimation = nullptr;
-    Kuesa::AnimationPlayer *m_drillRemoveAnimation = nullptr;
-
-    Kuesa::AnimationPlayer *m_cameraTransitionAnimationSideToBit = nullptr;
-    Kuesa::AnimationPlayer *m_cameraTransitionAnimationBitToChuck = nullptr;
-    Kuesa::AnimationPlayer *m_cameraTransitionAnimationChuckToRear = nullptr;
-    Kuesa::AnimationPlayer *m_cameraTransitionAnimationRearToTrigger = nullptr;
-    Kuesa::AnimationPlayer *m_cameraTransitionAnimationTriggerToSide = nullptr;
+    Kuesa::AnimationPlayer *m_stepsAnimation = nullptr;
+    Kuesa::AnimationPulse *m_pulse = nullptr;
+    Qt3DAnimation::QClock *m_animationClock = nullptr;
 
     // Weak pointers
     Qt3DCore::QEntity *m_insertedDrillBit = nullptr;
@@ -153,7 +146,6 @@ private:
 
     void loadDrillBit();
     void addObjectPickersOnBit();
-    void syncViewToStep(Step previousStep);
     void filterBits();
 };
 

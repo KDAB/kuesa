@@ -111,7 +111,8 @@ qtConfig(private_tests) {
         gaussianblureffect \
         placeholder \
         unliteffect \
-        placeholdertracker
+        placeholdertracker \
+	animationpulse
 
     greaterThan(QT_MAJOR_VERSION, 5):
         SUBDIRS += fboresolver

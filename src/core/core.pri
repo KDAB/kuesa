@@ -44,7 +44,8 @@ SOURCES += \
     $$PWD/particlematerial.cpp \
     $$PWD/noisetextureimage.cpp \
     $$PWD/particles.cpp \
-    $$PWD/transformtracker.cpp
+    $$PWD/transformtracker.cpp \
+    $$PWD/animationpulse.cpp
 
 HEADERS += \
     $$PWD/empty2dtexture_p.h \
@@ -67,7 +68,8 @@ HEADERS += \
     $$PWD/particlematerial_p.h \
     $$PWD/noisetextureimage_p.h \
     $$PWD/particles.h \
-    $$PWD/transformtracker.h
+    $$PWD/transformtracker.h \
+    $$PWD/animationpulse.h
 
 qtConfig(draco) {
     HEADERS += $$PWD/draco_prefix_p.h
