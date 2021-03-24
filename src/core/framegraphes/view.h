@@ -203,7 +203,7 @@ private:
 
     std::vector<ReflectionPlane *> m_reflectionPlanes;
 
-    Features m_features = Features(FrustumCulling);
+    Features m_features = Features(FrustumCulling | BackToFrontSorting);
     bool m_fgTreeRebuiltScheduled = false;
     bool m_usesStencilMask = false;
 

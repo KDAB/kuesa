@@ -171,28 +171,28 @@ private Q_SLOTS:
         QVERIFY(spy.isValid());
 
         // THEN
-        QVERIFY(!view.backToFrontSorting());
-
-        // WHEN
-        view.setBackToFrontSorting(true);
-
-        // THEN
         QVERIFY(view.backToFrontSorting());
-        QCOMPARE(spy.count(), 1);
-
-        // WHEN
-        spy.clear();
-        view.setBackToFrontSorting(true);
-
-        // THEN
-        QVERIFY(view.backToFrontSorting());
-        QCOMPARE(spy.count(), 0);
 
         // WHEN
         view.setBackToFrontSorting(false);
 
         // THEN
         QVERIFY(!view.backToFrontSorting());
+        QCOMPARE(spy.count(), 1);
+
+        // WHEN
+        spy.clear();
+        view.setBackToFrontSorting(false);
+
+        // THEN
+        QVERIFY(!view.backToFrontSorting());
+        QCOMPARE(spy.count(), 0);
+
+        // WHEN
+        view.setBackToFrontSorting(true);
+
+        // THEN
+        QVERIFY(view.backToFrontSorting());
         QCOMPARE(spy.count(), 1);
     }
 

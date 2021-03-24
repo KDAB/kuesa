@@ -572,7 +572,7 @@ bool View::skinning() const
 
     Holds whether back to front sorting to render objects in back-to-front
     order is enabled. This is required for proper alpha blending rendering.
-    Disabled by default.
+    Enabled by default.
 */
 
 /*!
@@ -580,7 +580,7 @@ bool View::skinning() const
 
     Holds whether back to front sorting to render objects in back-to-front
     order is enabled. This is required for proper alpha blending rendering.
-    Disabled by default.
+    Enabled by default.
 */
 bool View::backToFrontSorting() const
 {

@@ -133,7 +133,7 @@ private:
     QRectF m_viewportRect = { 0, 0, 1, 1 };
     bool m_frustumCulling = true;
     bool m_skinning = false;
-    bool m_backToFrontSorting = false;
+    bool m_backToFrontSorting = true;
     bool m_zFilling = false;
     bool m_particlesEnabled = false;
     Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping m_toneMappingAlgorithm = Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping::None;
