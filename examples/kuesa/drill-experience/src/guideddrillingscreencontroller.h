@@ -30,7 +30,7 @@
 #define GUIDEDDRILLINGSCREENCONTROLLER_H
 
 #include "abstractscreencontroller.h"
-#include <Kuesa/AnimationPulse>
+#include <Kuesa/steppedanimationplayer.h>
 
 class GuidedDrillingScreenController : public AbstractScreenController
 {
@@ -135,8 +135,7 @@ private:
     Qt3DCore::QTransform *m_insertedDrillBitTranform;
 
     // Owned by the sceneConfiguration
-    Kuesa::AnimationPlayer *m_stepsAnimation = nullptr;
-    Kuesa::AnimationPulse *m_pulse = nullptr;
+    Kuesa::SteppedAnimationPlayer *m_steppedPlayer = nullptr;
     Qt3DAnimation::QClock *m_animationClock = nullptr;
 
     // Weak pointers

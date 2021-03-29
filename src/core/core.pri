@@ -44,6 +44,7 @@ SOURCES += \
     $$PWD/particlematerial.cpp \
     $$PWD/noisetextureimage.cpp \
     $$PWD/particles.cpp \
+    $$PWD/steppedanimationplayer.cpp \
     $$PWD/transformtracker.cpp \
     $$PWD/animationpulse.cpp
 
@@ -68,6 +69,7 @@ HEADERS += \
     $$PWD/particlematerial_p.h \
     $$PWD/noisetextureimage_p.h \
     $$PWD/particles.h \
+    $$PWD/steppedanimationplayer.h \
     $$PWD/transformtracker.h \
     $$PWD/animationpulse.h
 

@@ -174,24 +174,18 @@ GuidedDrillingScreenController::GuidedDrillingScreenController(QObject *parent)
     // We create a timeline which emits an "up" signal when the pulse animation goes from 0 to 1
     // Similarly, the timeline emits a "down" signal when the signal animation goes from 1 to 0
     // This allows us to stop the tutorial animation when we detect the "up" signal
-    m_stepsAnimation = new Kuesa::AnimationPlayer();
-    m_stepsAnimation->setClip(QStringLiteral("AnimGuideAnim"));
-
-    m_pulse = new Kuesa::AnimationPulse();
-    m_pulse->setClip(QStringLiteral("AnimGuideSteps"));
+    m_steppedPlayer = new Kuesa::SteppedAnimationPlayer();
+    m_steppedPlayer->setClip(QStringLiteral("AnimGuideSteps"));
+    m_steppedPlayer->setAnimationNames({ QStringLiteral("AnimGuideAnim") });
 
     // Add a clock so we can control forward and backwards
     m_animationClock = new Qt3DAnimation::QClock;
-    m_stepsAnimation->setClock(m_animationClock);
-    m_pulse->setClock(m_animationClock);
+    m_steppedPlayer->setClock(m_animationClock);
 
     // Since glTF only allows to animate transforms by default, we use a transform tracker as the target
     // of the pulse animation.
     // We monitor the traslation of the transform tracker to emit the "up" and "down" signals
-    configuration->addAnimationPlayer(m_stepsAnimation);
-    configuration->addAnimationPlayer(m_pulse);
-    QObject::connect(m_pulse, &Kuesa::AnimationPulse::up, m_stepsAnimation, &Kuesa::AnimationPlayer::stop);
-    QObject::connect(m_pulse, &Kuesa::AnimationPulse::up, m_pulse, &Kuesa::AnimationPlayer::stop);
+    configuration->addAnimationPlayer(m_steppedPlayer);
 
     setSceneConfiguration(configuration);
 
@@ -281,8 +275,7 @@ GuidedDrillingScreenController::Step GuidedDrillingScreenController::nextStep()
         emit currentStepChanged();
 
         m_animationClock->setPlaybackRate(1.0);
-        m_stepsAnimation->start();
-        m_pulse->start();
+        m_steppedPlayer->start();
     }
     return m_currentStep;
 }
@@ -296,8 +289,7 @@ GuidedDrillingScreenController::Step GuidedDrillingScreenController::previousSte
         emit currentStepChanged();
 
         m_animationClock->setPlaybackRate(-1.0);
-        m_stepsAnimation->start();
-        m_pulse->start();
+        m_steppedPlayer->start();
     }
     return m_currentStep;
 }
@@ -314,8 +306,7 @@ GuidedDrillingScreenController::Step GuidedDrillingScreenController::reset()
     m_currentStep = ModeSelection;
     emit currentStepChanged();
 
-    m_stepsAnimation->setNormalizedTime(0.0);
-    m_pulse->setNormalizedTime(0.0);
+    m_steppedPlayer->setNormalizedTime(0.0);
 
     return m_currentStep;
 }
