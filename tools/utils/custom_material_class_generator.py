@@ -266,17 +266,17 @@ public:
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
         : QTechnique(parent)
-        , m_backFaceCulling(new QCullFace(this))
+        , m_backFaceCulling(new Qt3DRender::QCullFace(this))
         , m_blendEquation(new Qt3DRender::QBlendEquation(this))
         , m_blendArguments(new Qt3DRender::QBlendEquationArguments(this))
-        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
-        , m_zfillShaderBuilder(new QShaderProgramBuilder(this))
-        , m_renderShader(new QShaderProgram(this))
-        , m_zfillShader(new QShaderProgram(this))
-        , m_zfillRenderPass(new QRenderPass(this))
-        , m_opaqueRenderPass(new QRenderPass(this))
-        , m_transparentRenderPass(new QRenderPass(this))
-        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
+        , m_renderShaderBuilder(new Qt3DRender::QShaderProgramBuilder(this))
+        , m_zfillShaderBuilder(new Qt3DRender::QShaderProgramBuilder(this))
+        , m_renderShader(new Qt3DRender::QShaderProgram(this))
+        , m_zfillShader(new Qt3DRender::QShaderProgram(this))
+        , m_zfillRenderPass(new Qt3DRender::QRenderPass(this))
+        , m_opaqueRenderPass(new Qt3DRender::QRenderPass(this))
+        , m_transparentRenderPass(new Qt3DRender::QRenderPass(this))
+        , m_techniqueAllowFrustumCullingFilterKey(new Qt3DRender::QFilterKey(this))
     {
         struct ApiFilterInfo {
             int major;
@@ -286,11 +286,11 @@ public:
         };
 
         const ApiFilterInfo apiFilterInfos[] = {
-            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
-            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+            { 3, 1, Qt3DRender::QGraphicsApiFilter::OpenGL, Qt3DRender::QGraphicsApiFilter::CoreProfile },
+            { 3, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
+            { 2, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+            { 1, 0, Qt3DRender::QGraphicsApiFilter::RHI, Qt3DRender::QGraphicsApiFilter::NoProfile },
 #endif
         };
 
@@ -377,7 +377,7 @@ public:
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
         m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
-        auto filterKey = new QFilterKey(this);
+        auto filterKey = new Qt3DRender::QFilterKey(this);
         filterKey->setName(QStringLiteral("renderingStyle"));
         filterKey->setValue(QStringLiteral("forward"));
         addFilterKey(filterKey);
@@ -483,28 +483,28 @@ public:
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
         : QTechnique(parent)
-        , m_backFaceCulling(new QCullFace(this))
-        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
-        , m_zfillShaderBuilder(new QShaderProgramBuilder(this))
-        , m_renderShader(new QShaderProgram(this))
-        , m_zfillShader(new QShaderProgram(this))
-        , m_zfillRenderPass(new QRenderPass(this))
-        , m_opaqueRenderPass(new QRenderPass(this))
-        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
+        , m_backFaceCulling(new Qt3DRender::QCullFace(this))
+        , m_renderShaderBuilder(new Qt3DRender::QShaderProgramBuilder(this))
+        , m_zfillShaderBuilder(new Qt3DRender::QShaderProgramBuilder(this))
+        , m_renderShader(new Qt3DRender::QShaderProgram(this))
+        , m_zfillShader(new Qt3DRender::QShaderProgram(this))
+        , m_zfillRenderPass(new Qt3DRender::QRenderPass(this))
+        , m_opaqueRenderPass(new Qt3DRender::QRenderPass(this))
+        , m_techniqueAllowFrustumCullingFilterKey(new Qt3DRender::QFilterKey(this))
     {
         struct ApiFilterInfo {
             int major;
             int minor;
-            QGraphicsApiFilter::Api api;
-            QGraphicsApiFilter::OpenGLProfile profile;
+            Qt3DRender::QGraphicsApiFilter::Api api;
+            Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile;
         };
 
         const ApiFilterInfo apiFilterInfos[] = {
-            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
-            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+            { 3, 1, Qt3DRender::QGraphicsApiFilter::OpenGL, Qt3DRender::QGraphicsApiFilter::CoreProfile },
+            { 3, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
+            { 2, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+            { 1, 0, Qt3DRender::QGraphicsApiFilter::RHI, Qt3DRender::QGraphicsApiFilter::NoProfile },
 #endif
         };
 
@@ -591,7 +591,7 @@ public:
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
         m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
-        auto filterKey = new QFilterKey(this);
+        auto filterKey = new Qt3DRender::QFilterKey(this);
         filterKey->setName(QStringLiteral("renderingStyle"));
         filterKey->setValue(QStringLiteral("forward"));
         addFilterKey(filterKey);
@@ -634,12 +634,12 @@ public:
     {
     }
 
-    void setCullingMode(QCullFace::CullingMode mode)
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode)
     {
         m_backFaceCulling->setMode(mode);
     }
 
-    QCullFace::CullingMode cullingMode() const
+    Qt3DRender::QCullFace::CullingMode cullingMode() const
     {
         return m_backFaceCulling->mode();
     }
@@ -673,27 +673,27 @@ public:
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
         : QTechnique(parent)
-        , m_backFaceCulling(new QCullFace(this))
-        , m_noDepthMask(new QNoDepthMask(this))
-        , m_depthTest(new QDepthTest(this))
-        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
-        , m_renderShader(new QShaderProgram(this))
-        , m_backgroundRenderPass(new QRenderPass(this))
-        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
+        , m_backFaceCulling(new Qt3DRender::QCullFace(this))
+        , m_noDepthMask(new Qt3DRender::QNoDepthMask(this))
+        , m_depthTest(new Qt3DRender::QDepthTest(this))
+        , m_renderShaderBuilder(new Qt3DRender::QShaderProgramBuilder(this))
+        , m_renderShader(new Qt3DRender::QShaderProgram(this))
+        , m_backgroundRenderPass(new Qt3DRender::QRenderPass(this))
+        , m_techniqueAllowFrustumCullingFilterKey(new Qt3DRender::QFilterKey(this))
     {
         struct ApiFilterInfo {
             int major;
             int minor;
-            QGraphicsApiFilter::Api api;
-            QGraphicsApiFilter::OpenGLProfile profile;
+            Qt3DRender::QGraphicsApiFilter::Api api;
+            Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile;
         };
 
         const ApiFilterInfo apiFilterInfos[] = {
-            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
-            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+            { 3, 1, Qt3DRender::QGraphicsApiFilter::OpenGL, Qt3DRender::QGraphicsApiFilter::CoreProfile },
+            { 3, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
+            { 2, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+            { 1, 0, Qt3DRender::QGraphicsApiFilter::RHI, Qt3DRender::QGraphicsApiFilter::NoProfile },
 #endif
         };
 
@@ -755,7 +755,7 @@ public:
         // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
-        auto filterKey = new QFilterKey(this);
+        auto filterKey = new Qt3DRender::QFilterKey(this);
         filterKey->setName(QStringLiteral("renderingStyle"));
         filterKey->setValue(QStringLiteral("forward"));
         addFilterKey(filterKey);
@@ -768,7 +768,7 @@ public:
         opaqueFilterKey->setName(QStringLiteral("KuesaDrawStage"));
         opaqueFilterKey->setValue(QStringLiteral("Opaque"));
 
-        m_depthTest->setDepthFunction(QDepthTest::LessOrEqual);
+        m_depthTest->setDepthFunction(Qt3DRender::QDepthTest::LessOrEqual);
 
         m_backgroundRenderPass->setShaderProgram(m_renderShader);
         m_backgroundRenderPass->addRenderState(m_backFaceCulling);
@@ -792,12 +792,12 @@ public:
     {
     }
 
-    void setCullingMode(QCullFace::CullingMode mode)
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode)
     {
         m_backFaceCulling->setMode(mode);
     }
 
-    QCullFace::CullingMode cullingMode() const
+    Qt3DRender::QCullFace::CullingMode cullingMode() const
     {
         return m_backFaceCulling->mode();
     }
@@ -829,27 +829,27 @@ public:
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
         : QTechnique(parent)
-        , m_backFaceCulling(new QCullFace(this))
+        , m_backFaceCulling(new Qt3DRender::QCullFace(this))
         , m_blendEquation(new Qt3DRender::QBlendEquation(this))
         , m_blendArguments(new Qt3DRender::QBlendEquationArguments(this))
-        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
-        , m_renderShader(new QShaderProgram(this))
-        , m_transparentRenderPass(new QRenderPass(this))
-        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
+        , m_renderShaderBuilder(new Qt3DRender::QShaderProgramBuilder(this))
+        , m_renderShader(new Qt3DRender::QShaderProgram(this))
+        , m_transparentRenderPass(new Qt3DRender::QRenderPass(this))
+        , m_techniqueAllowFrustumCullingFilterKey(new Qt3DRender::QFilterKey(this))
     {
         struct ApiFilterInfo {
             int major;
             int minor;
-            QGraphicsApiFilter::Api api;
-            QGraphicsApiFilter::OpenGLProfile profile;
+            Qt3DRender::QGraphicsApiFilter::Api api;
+            Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile;
         };
 
         const ApiFilterInfo apiFilterInfos[] = {
-            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
-            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+            { 3, 1, Qt3DRender::QGraphicsApiFilter::OpenGL, Qt3DRender::QGraphicsApiFilter::CoreProfile },
+            { 3, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
+            { 2, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+            { 1, 0, Qt3DRender::QGraphicsApiFilter::RHI, Qt3DRender::QGraphicsApiFilter::NoProfile },
 #endif
         };
 
@@ -911,7 +911,7 @@ public:
         // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
-        auto filterKey = new QFilterKey(this);
+        auto filterKey = new Qt3DRender::QFilterKey(this);
         filterKey->setName(QStringLiteral("renderingStyle"));
         filterKey->setValue(QStringLiteral("forward"));
         addFilterKey(filterKey);
@@ -952,12 +952,12 @@ public:
     {
     }
 
-    void setCullingMode(QCullFace::CullingMode mode)
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode)
     {
         m_backFaceCulling->setMode(mode);
     }
 
-    QCullFace::CullingMode cullingMode() const
+    Qt3DRender::QCullFace::CullingMode cullingMode() const
     {
         return m_backFaceCulling->mode();
     }
@@ -1015,9 +1015,9 @@ private:
                 QByteArray(R"(%s)")
             };
 
-            auto renderShaderBuilder = new QShaderProgramBuilder(this);
-            auto renderShader = new QShaderProgram(this);
-            auto transparentRenderPass = new QRenderPass(this);
+            auto renderShaderBuilder = new Qt3DRender::QShaderProgramBuilder(this);
+            auto renderShader = new Qt3DRender::QShaderProgram(this);
+            auto transparentRenderPass = new Qt3DRender::QRenderPass(this);
 
             // Use default vertex shader graph if no vertex shader code was specified
             if (renderableVertexShaderCode[version].isEmpty()) {
@@ -1071,22 +1071,22 @@ public:
 
     explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
         : QTechnique(parent)
-        , m_backFaceCulling(new QCullFace(this))
-        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
+        , m_backFaceCulling(new Qt3DRender::QCullFace(this))
+        , m_techniqueAllowFrustumCullingFilterKey(new Qt3DRender::QFilterKey(this))
     {
         struct ApiFilterInfo {
             int major;
             int minor;
-            QGraphicsApiFilter::Api api;
-            QGraphicsApiFilter::OpenGLProfile profile;
+            Qt3DRender::QGraphicsApiFilter::Api api;
+            Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile;
         };
 
         const ApiFilterInfo apiFilterInfos[] = {
-            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
-            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
+            { 3, 1, Qt3DRender::QGraphicsApiFilter::OpenGL, Qt3DRender::QGraphicsApiFilter::CoreProfile },
+            { 3, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
+            { 2, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
+            { 1, 0, Qt3DRender::QGraphicsApiFilter::RHI, Qt3DRender::QGraphicsApiFilter::NoProfile },
 #endif
         };
 
@@ -1099,7 +1099,7 @@ public:
         m_techniqueAllowFrustumCullingFilterKey->setValue(true);
         addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
 
-        auto filterKey = new QFilterKey(this);
+        auto filterKey = new Qt3DRender::QFilterKey(this);
         filterKey->setName(QStringLiteral("renderingStyle"));
         filterKey->setValue(QStringLiteral("forward"));
         addFilterKey(filterKey);%s
@@ -1126,12 +1126,12 @@ public:
     {
     }
 
-    void setCullingMode(QCullFace::CullingMode mode)
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode)
     {
         m_backFaceCulling->setMode(mode);
     }
 
-    QCullFace::CullingMode cullingMode() const
+    Qt3DRender::QCullFace::CullingMode cullingMode() const
     {
         return m_backFaceCulling->mode();
     }
@@ -1150,29 +1150,28 @@ private:
 
     effectClassCppContent = """
 {0}
-{1}
 
-{2}Effect::{2}Effect(Qt3DCore::QNode *parent)
+{1}Effect::{1}Effect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
 {{
-    m_gl3Technique = new {2}Technique({2}Technique::GL3, this);
-    m_es3Technique = new {2}Technique({2}Technique::ES3, this);
-    m_es2Technique = new {2}Technique({2}Technique::ES2, this);
+    m_gl3Technique = new {1}Technique({1}Technique::GL3, this);
+    m_es3Technique = new {1}Technique({1}Technique::ES3, this);
+    m_es2Technique = new {1}Technique({1}Technique::ES2, this);
 
     addTechnique(m_gl3Technique);
     addTechnique(m_es3Technique);
     addTechnique(m_es2Technique);
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    m_rhiTechnique = new {2}Technique({2}Technique::RHI, this);
+    m_rhiTechnique = new {1}Technique({1}Technique::RHI, this);
     addTechnique(m_rhiTechnique);
 #endif
 }}
 
-{2}Effect::~{2}Effect() = default;
+{1}Effect::~{1}Effect() = default;
 
 
-void {2}Effect::updateDoubleSided(bool doubleSided)
+void {1}Effect::updateDoubleSided(bool doubleSided)
 {{
     const auto cullingMode = doubleSided ? QCullFace::NoCulling : QCullFace::Back;
     m_gl3Technique->setCullingMode(cullingMode);
@@ -1183,7 +1182,7 @@ void {2}Effect::updateDoubleSided(bool doubleSided)
 #endif
 }}
 
-void {2}Effect::updateUsingSkinning(bool useSkinning)
+void {1}Effect::updateUsingSkinning(bool useSkinning)
 {{
     // Set Layers on zFill and opaque/Transparent shader builders
     auto layers = m_gl3Technique->enabledLayers();
@@ -1206,7 +1205,7 @@ void {2}Effect::updateUsingSkinning(bool useSkinning)
 #endif
 }}
 
-void {2}Effect::updateOpaque(bool opaque)
+void {1}Effect::updateOpaque(bool opaque)
 {{
     m_gl3Technique->setOpaque(opaque);
     m_es3Technique->setOpaque(opaque);
@@ -1217,7 +1216,7 @@ void {2}Effect::updateOpaque(bool opaque)
 #endif
 }}
 
-void {2}Effect::updateAlphaCutoffEnabled(bool enabled)
+void {1}Effect::updateAlphaCutoffEnabled(bool enabled)
 {{
     auto layers = m_gl3Technique->enabledLayers();
     if (enabled) {{
@@ -1230,7 +1229,7 @@ void {2}Effect::updateAlphaCutoffEnabled(bool enabled)
     updateLayersOnTechniques(layers);
 }}
 
-void {2}Effect::updateUsingColorAttribute(bool usingColorAttribute)
+void {1}Effect::updateUsingColorAttribute(bool usingColorAttribute)
 {{
     auto layers = m_gl3Technique->enabledLayers();
     layers.removeAll(QStringLiteral("noHasColorAttr"));
@@ -1245,7 +1244,7 @@ void {2}Effect::updateUsingColorAttribute(bool usingColorAttribute)
     updateLayersOnTechniques(layers);
 }}
 
-void {2}Effect::updateUsingNormalAttribute(bool usingNormalAttribute)
+void {1}Effect::updateUsingNormalAttribute(bool usingNormalAttribute)
 {{
     auto layers = m_gl3Technique->enabledLayers();
     layers.removeAll(QStringLiteral("hasVertexNormal"));
@@ -1255,7 +1254,7 @@ void {2}Effect::updateUsingNormalAttribute(bool usingNormalAttribute)
     updateLayersOnTechniques(layers);
 }}
 
-void {2}Effect::updateUsingTangentAttribute(bool usingTangentAttribute)
+void {1}Effect::updateUsingTangentAttribute(bool usingTangentAttribute)
 {{
     auto layers = m_gl3Technique->enabledLayers();
     layers.removeAll(QStringLiteral("hasVertexTangent"));
@@ -1265,7 +1264,7 @@ void {2}Effect::updateUsingTangentAttribute(bool usingTangentAttribute)
     updateLayersOnTechniques(layers);
 }}
 
-void {2}Effect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
+void {1}Effect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
 {{
     auto layers = m_gl3Technique->enabledLayers();
     layers.removeAll(QStringLiteral("hasTexCoord"));
@@ -1275,7 +1274,7 @@ void {2}Effect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
     updateLayersOnTechniques(layers);
 }}
 
-void {2}Effect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
+void {1}Effect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
 {{
     auto layers = m_gl3Technique->enabledLayers();
     layers.removeAll(QStringLiteral("hasTexCoord1"));
@@ -1285,7 +1284,7 @@ void {2}Effect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
     updateLayersOnTechniques(layers);
 }}
 
-void {2}Effect::updateUsingMorphTargets(bool usingMorphTargets)
+void {1}Effect::updateUsingMorphTargets(bool usingMorphTargets)
 {{
     auto layers = m_gl3Technique->enabledLayers();
     layers.removeAll(QStringLiteral("morphtargets"));
@@ -1295,7 +1294,7 @@ void {2}Effect::updateUsingMorphTargets(bool usingMorphTargets)
     updateLayersOnTechniques(layers);
 }}
 
-void {2}Effect::updateInstanced(bool instanced)
+void {1}Effect::updateInstanced(bool instanced)
 {{
     auto layers = m_gl3Technique->enabledLayers();
     layers.removeAll(QStringLiteral("instanced"));
@@ -1305,7 +1304,7 @@ void {2}Effect::updateInstanced(bool instanced)
     updateLayersOnTechniques(layers);
 }}
 
-void {2}Effect::updateLayersOnTechniques(const QStringList &layers)
+void {1}Effect::updateLayersOnTechniques(const QStringList &layers)
 {{
     m_gl3Technique->setEnabledLayers(layers);
     m_es3Technique->setEnabledLayers(layers);
@@ -1443,7 +1442,8 @@ HEADERS += \\
     $$PWD/%smaterial.h \\
     $$PWD/%seffect.h \\
     $$PWD/%sproperties.h \\
-    $$PWD/%sshaderdata_p.h
+    $$PWD/%sshaderdata_p.h \\
+    $$PWD/%stechnique_p.h
 """
 
     def __init__(self, jsonDescriptionFilePath):
@@ -1826,29 +1826,11 @@ HEADERS += \\
                                  includes)
         generateCpp()
 
-    def generateEffect(self):
+    def generateTechnique(self):
         matName = self.rawJson.get("type", "")
-        className = matName + "Effect"
+        className = matName + "Technique"
 
         def generateHeader():
-            content = CustomMaterialGenerator.effectClassHeaderContent % (matName,
-                                                                          matName,
-                                                                          matName,
-                                                                          matName,
-                                                                          matName,
-                                                                          matName,
-                                                                          matName,
-                                                                          matName)
-            self.generateHeaderFile(content,
-                                    className,
-                                    "#include <Kuesa/gltf2materialeffect.h>\n#include <Kuesa/kuesa_global.h>\n")
-        generateHeader()
-
-
-        def generateCpp():
-            doc = self.docForClass(className,
-                                   "Qt3DRender::QEffect",
-                                   "is the effect for the %sMaterial class." % (matName))
             passes = self.rawJson.get("passes", [])
             passes_info = []
 
@@ -2121,16 +2103,11 @@ HEADERS += \\
                     return
                 return switcher[pass_type](passes_info), pass_type
 
+            content, technique_name = generateTechnique(passes_info)
 
-            technique_content, technique_name = generateTechnique(passes_info)
-            content = CustomMaterialGenerator.effectClassCppContent.format(technique_content, doc, matName)
-
-            includes = "#include \"%s.h\"\n\n" % (className.lower())
-            includes += "#include <Qt3DRender/QEffect>\n"
-            includes += "#include <Qt3DRender/QTechnique>\n"
+            includes = "#include <Qt3DRender/QTechnique>\n"
             includes += "#include <Qt3DRender/QCullFace>\n"
             includes += "#include <Qt3DRender/QFilterKey>\n"
-            includes += "#include <Qt3DRender/QParameter>\n"
             includes += "#include <Qt3DRender/QRenderPass>\n"
             includes += "#include <Qt3DRender/QShaderProgram>\n"
             includes += "#include <Qt3DRender/QShaderProgramBuilder>\n"
@@ -2145,6 +2122,44 @@ HEADERS += \\
                 includes += "\n"
                 includes += "#include <Qt3DRender/QNoDepthMask>\n"
                 includes += "#include <Qt3DRender/QDepthTest>"
+
+            self.generateHeaderFile(content,
+                                    className,
+                                    includes,
+                                    True)
+        generateHeader()
+
+    def generateEffect(self):
+        matName = self.rawJson.get("type", "")
+        className = matName + "Effect"
+
+        def generateHeader():
+            content = CustomMaterialGenerator.effectClassHeaderContent % (matName,
+                                                                          matName,
+                                                                          matName,
+                                                                          matName,
+                                                                          matName,
+                                                                          matName,
+                                                                          matName,
+                                                                          matName)
+            self.generateHeaderFile(content,
+                                    className,
+                                    "#include <Kuesa/gltf2materialeffect.h>\n#include <Kuesa/kuesa_global.h>\n")
+        generateHeader()
+
+
+        def generateCpp():
+            doc = self.docForClass(className,
+                                   "Qt3DRender::QEffect",
+                                   "is the effect for the %sMaterial class." % (matName))
+
+            content = CustomMaterialGenerator.effectClassCppContent.format(doc, matName)
+
+            includes = "#include \"%s.h\"\n" % (className.lower())
+            includes += "\n"
+            includes += "#include <Qt3DRender/QCullFace>\n"
+            includes += "\n"
+            includes += "#include \"%stechnique_p.h\"" % (matName.lower())
 
             self.generateCppFile(content,
                                  className,
@@ -2258,6 +2273,7 @@ HEADERS += \\
                                                         matName,
                                                         matName,
                                                         matName,
+                                                        matName,
                                                         matName)
         with open(matName + ".pri", 'w') as f:
             f.write(content)
@@ -2276,6 +2292,7 @@ HEADERS += \\
 
         # Generate and write the different classes and files
         self.generateMaterial()
+        self.generateTechnique()
         self.generateEffect()
         self.generateMaterialProperties()
         self.generateShaderData()
