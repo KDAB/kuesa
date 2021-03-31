@@ -1,0 +1,8 @@
+%sShaderData::%sShaderData(Qt3DCore::QNode *parent)
+    : Qt3DRender::QShaderData(parent)%s
+{}
+
+%sShaderData::~%sShaderData() = default;
+
+%s
+%s

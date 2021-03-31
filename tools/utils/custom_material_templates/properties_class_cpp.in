@@ -1,0 +1,17 @@
+%s
+%sProperties::%sProperties(Qt3DCore::QNode *parent)
+    : GLTF2MaterialProperties(parent)
+    , m_shaderData(new %sShaderData(this))%s
+{
+%s
+}
+
+%sProperties::~%sProperties() = default;
+
+Qt3DRender::QShaderData *%sProperties::shaderData() const
+{
+    return m_shaderData;
+}
+
+%s
+%s

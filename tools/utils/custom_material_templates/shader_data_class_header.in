@@ -1,0 +1,15 @@
+class %sShaderData : public Qt3DRender::QShaderData
+{
+    Q_OBJECT
+%s
+public:
+    explicit %sShaderData(Qt3DCore::QNode *parent = nullptr);
+    ~%sShaderData();
+%s
+public Q_SLOTS:
+%s
+Q_SIGNALS:
+%s
+private:
+%s
+};
