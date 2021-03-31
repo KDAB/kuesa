@@ -81,6 +81,9 @@ class CustomMaterialGenerator:
 
     priContent = read_template("pri")
 
+    testProContent = read_template("test_pro")
+    testCppContent = read_template("test_cpp")
+
     def __init__(self, jsonDescriptionFilePath):
         self.jsonDescriptionFilePath = jsonDescriptionFilePath
 
@@ -914,6 +917,37 @@ class CustomMaterialGenerator:
         with open(matName + ".pri", 'w') as f:
             f.write(content)
 
+    def generateTest(self):
+        material_name = self.rawJson.get("type", "")
+        lowercase_material_name = material_name.lower()
+
+        test_dir = f'{CURRENT_FILE_DIR}/../../tests/auto/{lowercase_material_name}'
+
+        try:
+            os.mkdir(test_dir)
+        except FileExistsError:
+            pass
+
+        def generateTestPro():
+            content = CustomMaterialGenerator.testProContent.format(**{
+                'lowercase_material_name': lowercase_material_name,
+            })
+
+            with open(f'{test_dir}/{lowercase_material_name}.pro', 'w') as f:
+                f.write(content)
+
+        def generateTestCpp():
+            content = CustomMaterialGenerator.testCppContent.format(**{
+                'material_name': material_name,
+                'lowercase_material_name': lowercase_material_name,
+            })
+
+            with open(f'{test_dir}/tst_{lowercase_material_name}.cpp', 'w') as f:
+                f.write(content)
+
+        generateTestPro()
+        generateTestCpp()
+
     def generate(self):
         # Parse JSON description file
         self.parseDescription()
@@ -933,6 +967,7 @@ class CustomMaterialGenerator:
         self.generateMaterialProperties()
         self.generateShaderData()
         self.generatePri()
+        self.generateTest()
 
         # Return to previous path
         os.chdir("..")
