@@ -200,6 +200,11 @@ public:
         m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
     }
 
+    QList<Qt3DRender::QShaderProgramBuilder*> shaderBuilders()
+    {
+        return {m_renderShaderBuilder, m_zfillShaderBuilder};
+    }
+
 private:
     Qt3DRender::QCullFace *m_backFaceCulling;
     Qt3DRender::QBlendEquation *m_blendEquation;

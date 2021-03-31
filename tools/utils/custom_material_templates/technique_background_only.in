@@ -143,6 +143,11 @@ public:
     {
     }
 
+    QList<Qt3DRender::QShaderProgramBuilder*> shaderBuilders()
+    {
+        return {m_renderShaderBuilder};
+    }
+
 private:
     Qt3DRender::QCullFace *m_backFaceCulling;
     Qt3DRender::QNoDepthMask *m_noDepthMask;

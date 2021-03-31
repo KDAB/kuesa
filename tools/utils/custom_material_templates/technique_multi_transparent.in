@@ -80,6 +80,11 @@ public:
         m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
     }
 
+    QList<Qt3DRender::QShaderProgramBuilder*> shaderBuilders()
+    {
+        return findChildren<Qt3DRender::QShaderProgramBuilder *>();
+    }
+
 private:
     Qt3DRender::QCullFace *m_backFaceCulling;
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
