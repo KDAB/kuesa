@@ -1,11 +1,10 @@
-
 /*
     irodiffusehemieffect.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -36,7 +35,6 @@
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-
 class IroDiffuseHemiTechnique;
 
 class KUESASHARED_EXPORT IroDiffuseHemiEffect : public GLTF2MaterialEffect

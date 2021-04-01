@@ -1,11 +1,10 @@
-
 /*
     iroglassaddshaderdata_p.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -40,7 +39,6 @@
 //
 // We mean it.
 //
-
 #include <QVector2D>
 #include <QVector3D>
 #include <Qt3DRender/QShaderData>
@@ -48,7 +46,6 @@
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-
 class IroGlassAddShaderData : public Qt3DRender::QShaderData
 {
     Q_OBJECT

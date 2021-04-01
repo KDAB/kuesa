@@ -1,11 +1,10 @@
-
 /*
     iromatteskyboxmaterial.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -45,12 +44,7 @@ namespace Kuesa {
     \inmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteSkyboxMaterial is a simple material in terms of
-    rendering that allows to render a skybox for arbitrary meshes by
-    translating the vertices to the eye position.
-
-    \note The View or ForwardRenderer should have its \l
-    {Kuesa::View::skinning} property set to true to be visible.
+    \brief Kuesa::IroMatteSkyboxMaterial is a simple material in terms of rendering that allows to render a skybox for arbitrary meshes by translating the vertices to the eye position.
 */
 
 /*!
@@ -59,12 +53,7 @@ namespace Kuesa {
     \inqmlmodule Kuesa
     \since Kuesa 1.2
 
-    \brief Kuesa::IroMatteSkyboxMaterial is a simple material in terms of
-    rendering that allows to render a skybox for arbitrary meshes by
-    translating the vertices to the eye position.
-
-    \note The View or ForwardRenderer should have its \l [QML]
-    {Kuesa::View::skinning} property set to true to be visible.
+    \brief Kuesa::IroMatteSkyboxMaterial is a simple material in terms of rendering that allows to render a skybox for arbitrary meshes by translating the vertices to the eye position.
 */
 
 IroMatteSkyboxMaterial::IroMatteSkyboxMaterial(Qt3DCore::QNode *parent)

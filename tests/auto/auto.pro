@@ -112,7 +112,26 @@ qtConfig(private_tests) {
         placeholder \
         unliteffect \
         placeholdertracker \
-	animationpulse
+	animationpulse \
+        iro2alphaequirect \
+        iro2alphasem \
+        iro2diffuseequirect \
+        iro2diffusesem \
+        iro2glassequirect \
+        iro2glasssem \
+        iro2mattealpha \
+        iro2planarreflectionequirect \
+        iro2planarreflectionsem \
+        irodiffuse \
+        irodiffusealpha \
+        irodiffusehemi \
+        iroglassadd \
+        iromatteadd \
+        iromattealpha \
+        iromattebackground \
+        iromattemult \
+        iromatteopaque \
+        iromatteskybox
 
     greaterThan(QT_MAJOR_VERSION, 5):
         SUBDIRS += fboresolver

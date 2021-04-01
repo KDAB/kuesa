@@ -1,11 +1,10 @@
-
 /*
     iro2mattealphamaterial.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Nicolas Guichard <nicolas.guichard@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -75,7 +74,7 @@ Iro2MatteAlphaMaterial::~Iro2MatteAlphaMaterial() = default;
 
     The properties defining the appearance of the material.
 
-    \since Kuesa 1.3
+    \since Kuesa 1.2
  */
 
 /*!
@@ -83,7 +82,7 @@ Iro2MatteAlphaMaterial::~Iro2MatteAlphaMaterial() = default;
 
     The properties defining the appearance of the material.
 
-    \since Kuesa 1.3
+    \since Kuesa 1.2
  */
 
 Kuesa::Iro2MatteAlphaProperties *Iro2MatteAlphaMaterial::materialProperties() const

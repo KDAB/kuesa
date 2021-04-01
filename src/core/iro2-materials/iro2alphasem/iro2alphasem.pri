@@ -1,10 +1,9 @@
-
 # iro2alphasem.pri
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# This file was auto-generated
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -39,4 +38,5 @@ HEADERS += \
     $$PWD/iro2alphasemmaterial.h \
     $$PWD/iro2alphasemeffect.h \
     $$PWD/iro2alphasemproperties.h \
-    $$PWD/iro2alphasemshaderdata_p.h
+    $$PWD/iro2alphasemshaderdata_p.h \
+    $$PWD/iro2alphasemtechnique_p.h
