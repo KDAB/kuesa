@@ -1,625 +1,555 @@
 {
     "edges": [
         {
+            "comment": "",
             "layers": [
             ],
-            "sourcePort": "value",
-            "sourceUuid": "{68d33f0e-8d3c-43f1-b6a0-a34c5d3821b7}",
-            "targetPort": "input",
-            "targetUuid": "{fb5ce649-337d-406f-b519-4686e7033a04}"
+            "selected": false,
+            "sourceNode": "{15206f4a-4ab4-4cda-a7df-461ca22959c5}",
+            "sourcePort": 0,
+            "targetNode": "{7e091d07-037f-4fbc-b4c1-1c8abcf40fd7}",
+            "targetPort": 1
         },
         {
+            "comment": "",
             "layers": [
             ],
-            "sourcePort": "value",
-            "sourceUuid": "{68d33f0e-8d3c-43f1-b6a0-a34c5d3821b7}",
-            "targetPort": "input",
-            "targetUuid": "{952c37cf-7429-47eb-ba3a-ceb47127b541}"
+            "selected": false,
+            "sourceNode": "{fb5ce649-337d-406f-b519-4686e7033a04}",
+            "sourcePort": 0,
+            "targetNode": "{7e091d07-037f-4fbc-b4c1-1c8abcf40fd7}",
+            "targetPort": 0
         },
         {
+            "comment": "",
             "layers": [
+                "hasVertexNormal"
             ],
-            "sourcePort": "value",
-            "sourceUuid": "{68d33f0e-8d3c-43f1-b6a0-a34c5d3821b7}",
-            "targetPort": "input",
-            "targetUuid": "{fe858577-f204-4e2f-840e-ea40e3908e55}"
+            "selected": false,
+            "sourceNode": "{38808987-7611-4ad8-a7e9-716589f4f09b}",
+            "sourcePort": 0,
+            "targetNode": "{f1854be2-0b48-48b7-a335-6d43a5e8a58a}",
+            "targetPort": 0
         },
         {
+            "comment": "",
             "layers": [
             ],
-            "sourcePort": "output",
-            "sourceUuid": "{fe858577-f204-4e2f-840e-ea40e3908e55}",
-            "targetPort": "second",
-            "targetUuid": "{15206f4a-4ab4-4cda-a7df-461ca22959c5}"
+            "selected": false,
+            "sourceNode": "{952c37cf-7429-47eb-ba3a-ceb47127b541}",
+            "sourcePort": 0,
+            "targetNode": "{15206f4a-4ab4-4cda-a7df-461ca22959c5}",
+            "targetPort": 0
         },
         {
+            "comment": "",
             "layers": [
             ],
-            "sourcePort": "output",
-            "sourceUuid": "{952c37cf-7429-47eb-ba3a-ceb47127b541}",
-            "targetPort": "first",
-            "targetUuid": "{15206f4a-4ab4-4cda-a7df-461ca22959c5}"
+            "selected": false,
+            "sourceNode": "{fe858577-f204-4e2f-840e-ea40e3908e55}",
+            "sourcePort": 0,
+            "targetNode": "{15206f4a-4ab4-4cda-a7df-461ca22959c5}",
+            "targetPort": 1
         },
         {
+            "comment": "",
             "layers": [
             ],
-            "sourcePort": "output",
-            "sourceUuid": "{fb5ce649-337d-406f-b519-4686e7033a04}",
-            "targetPort": "first",
-            "targetUuid": "{7e091d07-037f-4fbc-b4c1-1c8abcf40fd7}"
+            "selected": false,
+            "sourceNode": "{68d33f0e-8d3c-43f1-b6a0-a34c5d3821b7}",
+            "sourcePort": 0,
+            "targetNode": "{fe858577-f204-4e2f-840e-ea40e3908e55}",
+            "targetPort": 0
         },
         {
+            "comment": "",
             "layers": [
             ],
-            "sourcePort": "sum",
-            "sourceUuid": "{15206f4a-4ab4-4cda-a7df-461ca22959c5}",
-            "targetPort": "second",
-            "targetUuid": "{7e091d07-037f-4fbc-b4c1-1c8abcf40fd7}"
+            "selected": false,
+            "sourceNode": "{16aafdd6-aacc-4b8d-882e-aa186d4ac149}",
+            "sourcePort": 0,
+            "targetNode": "{7e091d07-037f-4fbc-b4c1-1c8abcf40fd7}",
+            "targetPort": 2
         },
         {
+            "comment": "",
             "layers": [
             ],
-            "sourcePort": "output",
-            "sourceUuid": "{7e091d07-037f-4fbc-b4c1-1c8abcf40fd7}",
-            "targetPort": "position",
-            "targetUuid": "{256da208-a1b2-463e-8152-67758b4ca9b9}"
+            "selected": false,
+            "sourceNode": "{68d33f0e-8d3c-43f1-b6a0-a34c5d3821b7}",
+            "sourcePort": 0,
+            "targetNode": "{952c37cf-7429-47eb-ba3a-ceb47127b541}",
+            "targetPort": 0
         },
         {
+            "comment": "",
             "layers": [
+                "hasVertexTangent"
             ],
-            "sourcePort": "value",
-            "sourceUuid": "{16aafdd6-aacc-4b8d-882e-aa186d4ac149}",
-            "targetPort": "third",
-            "targetUuid": "{7e091d07-037f-4fbc-b4c1-1c8abcf40fd7}"
+            "selected": false,
+            "sourceNode": "{4f35996e-7d98-491d-ad69-eedb28674f73}",
+            "sourcePort": 0,
+            "targetNode": "{48a13c77-3219-4f12-8f7f-0364f4a14a71}",
+            "targetPort": 0
         },
         {
+            "comment": "",
             "layers": [
             ],
-            "sourcePort": "value",
-            "sourceUuid": "{fadffdf8-37f5-4fcc-a163-a67eafe156ab}",
-            "targetPort": "value",
-            "targetUuid": "{01a55fc9-a8a9-460c-b992-dfd6538c73bc}"
+            "selected": false,
+            "sourceNode": "{7e091d07-037f-4fbc-b4c1-1c8abcf40fd7}",
+            "sourcePort": 0,
+            "targetNode": "{256da208-a1b2-463e-8152-67758b4ca9b9}",
+            "targetPort": 0
         },
         {
+            "comment": "",
             "layers": [
             ],
-            "sourcePort": "value",
-            "sourceUuid": "{2005d5dd-87c1-40d2-b8e1-f1a09619ad88}",
-            "targetPort": "value",
-            "targetUuid": "{85aadb5f-041f-4c15-9a6e-340c56d89116}"
+            "selected": false,
+            "sourceNode": "{68d33f0e-8d3c-43f1-b6a0-a34c5d3821b7}",
+            "sourcePort": 0,
+            "targetNode": "{fb5ce649-337d-406f-b519-4686e7033a04}",
+            "targetPort": 0
         },
         {
+            "comment": "",
             "layers": [
+                "hasVertexColor"
             ],
-            "sourcePort": "value",
-            "sourceUuid": "{38808987-7611-4ad8-a7e9-716589f4f09b}",
-            "targetPort": "value",
-            "targetUuid": "{f1854be2-0b48-48b7-a335-6d43a5e8a58a}"
+            "selected": false,
+            "sourceNode": "{fadffdf8-37f5-4fcc-a163-a67eafe156ab}",
+            "sourcePort": 0,
+            "targetNode": "{01a55fc9-a8a9-460c-b992-dfd6538c73bc}",
+            "targetPort": 0
         },
         {
+            "comment": "",
             "layers": [
+                "hasTexCoord"
             ],
-            "sourcePort": "value",
-            "sourceUuid": "{4f35996e-7d98-491d-ad69-eedb28674f73}",
-            "targetPort": "value",
-            "targetUuid": "{48a13c77-3219-4f12-8f7f-0364f4a14a71}"
+            "selected": false,
+            "sourceNode": "{2005d5dd-87c1-40d2-b8e1-f1a09619ad88}",
+            "sourcePort": 0,
+            "targetNode": "{85aadb5f-041f-4c15-9a6e-340c56d89116}",
+            "targetPort": 0
         }
     ],
     "groups": [
     ],
+    "inputs": [
+    ],
     "layers": [
+        {
+            "enabled": true,
+            "name": "hasVertexTangent"
+        },
+        {
+            "enabled": true,
+            "name": "hasVertexColor"
+        },
+        {
+            "enabled": true,
+            "name": "hasVertexNormal"
+        },
+        {
+            "enabled": true,
+            "name": "hasTexCoord"
+        }
     ],
     "nodes": [
         {
             "collapsed": false,
-            "displayName": "input",
-            "group": -1,
-            "id": 0,
-            "inputValues": {
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
             },
             "layers": [
+                "hasVertexNormal"
             ],
-            "parameters": {
-                "name": "vertexPosition",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
+            "parameterValues": {
+                "0": "vertexNormal",
+                "1": "QShaderLanguage::Vec3",
+                "2": "3"
             },
             "position": {
-                "x": 87,
-                "y": 118
+                "x": 62,
+                "y": -345
             },
-            "type": "input",
-            "uuid": "{68d33f0e-8d3c-43f1-b6a0-a34c5d3821b7}"
+            "prototype": "input",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{38808987-7611-4ad8-a7e9-716589f4f09b}"
         },
         {
             "collapsed": false,
-            "displayName": "input",
-            "group": -1,
-            "id": 1,
-            "inputValues": {
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
+                "0": "0.0",
+                "1": "0.0"
             },
             "layers": [
             ],
-            "parameters": {
-                "name": "vertexColor",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "position": {
-                "x": 85,
-                "y": -144
-            },
-            "type": "input",
-            "uuid": "{fadffdf8-37f5-4fcc-a163-a67eafe156ab}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "input",
-            "group": -1,
-            "id": 2,
-            "inputValues": {
-            },
-            "layers": [
-            ],
-            "parameters": {
-                "name": "vertexTexCoord",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
-            },
-            "position": {
-                "x": 84,
-                "y": -15
-            },
-            "type": "input",
-            "uuid": "{2005d5dd-87c1-40d2-b8e1-f1a09619ad88}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "gl_Position",
-            "group": -1,
-            "id": 3,
-            "inputValues": {
-                "position": ""
-            },
-            "layers": [
-            ],
-            "parameters": {
-            },
-            "position": {
-                "x": 1560,
-                "y": 450
-            },
-            "type": "gl_Position",
-            "uuid": "{256da208-a1b2-463e-8152-67758b4ca9b9}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "swizzle",
-            "group": -1,
-            "id": 4,
-            "inputValues": {
-                "input": ""
-            },
-            "layers": [
-            ],
-            "parameters": {
-                "fields": "x",
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "position": {
-                "x": 640,
-                "y": 338
-            },
-            "type": "swizzle",
-            "uuid": "{fb5ce649-337d-406f-b519-4686e7033a04}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "swizzle",
-            "group": -1,
-            "id": 5,
-            "inputValues": {
-                "input": ""
-            },
-            "layers": [
-            ],
-            "parameters": {
-                "fields": "y",
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "position": {
-                "x": 635,
-                "y": 424
-            },
-            "type": "swizzle",
-            "uuid": "{952c37cf-7429-47eb-ba3a-ceb47127b541}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "swizzle",
-            "group": -1,
-            "id": 6,
-            "inputValues": {
-                "input": ""
-            },
-            "layers": [
-            ],
-            "parameters": {
-                "fields": "z",
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "position": {
-                "x": 641,
-                "y": 509
-            },
-            "type": "swizzle",
-            "uuid": "{fe858577-f204-4e2f-840e-ea40e3908e55}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "add",
-            "group": -1,
-            "id": 8,
-            "inputValues": {
-                "first": "0.0",
-                "second": "0.0"
-            },
-            "layers": [
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
+            "parameterValues": {
+                "0": "QShaderLanguage::Float"
             },
             "position": {
                 "x": 981,
                 "y": 480
             },
-            "type": "add",
+            "prototype": "add",
+            "selected": false,
+            "type": "PrototypeBasedNode",
             "uuid": "{15206f4a-4ab4-4cda-a7df-461ca22959c5}"
         },
         {
             "collapsed": false,
-            "displayName": "join3",
-            "group": -1,
-            "id": 9,
-            "inputValues": {
-                "first": "0.0",
-                "second": "0.0",
-                "third": "0.0"
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
             },
             "layers": [
             ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                },
-                "typeOfFirst": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "typeOfSecond": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "typeOfThird": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
+            "parameterValues": {
+                "0": "1.0,1.0",
+                "1": "QShaderLanguage::Vec2"
+            },
+            "position": {
+                "x": 999,
+                "y": 752
+            },
+            "prototype": "constant",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{16aafdd6-aacc-4b8d-882e-aa186d4ac149}"
+        },
+        {
+            "collapsed": false,
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
+            },
+            "layers": [
+            ],
+            "parameterValues": {
+                "0": "QShaderLanguage::Vec3",
+                "1": "z",
+                "2": "QShaderLanguage::Float"
+            },
+            "position": {
+                "x": 613,
+                "y": 566
+            },
+            "prototype": "swizzle",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{fe858577-f204-4e2f-840e-ea40e3908e55}"
+        },
+        {
+            "collapsed": false,
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
+            },
+            "layers": [
+                "hasTexCoord"
+            ],
+            "parameterValues": {
+                "0": "vertexTexCoord",
+                "1": "QShaderLanguage::Vec2",
+                "2": "2"
+            },
+            "position": {
+                "x": 69,
+                "y": 83
+            },
+            "prototype": "input",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{2005d5dd-87c1-40d2-b8e1-f1a09619ad88}"
+        },
+        {
+            "collapsed": false,
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
+                "0": "0.0",
+                "1": "0.0",
+                "2": "0.0"
+            },
+            "layers": [
+            ],
+            "parameterValues": {
+                "0": "QShaderLanguage::Float",
+                "1": "QShaderLanguage::Float",
+                "2": "QShaderLanguage::Vec2",
+                "3": "QShaderLanguage::Vec4"
             },
             "position": {
                 "x": 1322,
                 "y": 423
             },
-            "type": "join3",
+            "prototype": "join3",
+            "selected": false,
+            "type": "PrototypeBasedNode",
             "uuid": "{7e091d07-037f-4fbc-b4c1-1c8abcf40fd7}"
         },
         {
             "collapsed": false,
-            "displayName": "constant",
-            "group": -1,
-            "id": 10,
-            "inputValues": {
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
             },
             "layers": [
             ],
-            "parameters": {
-                "constant": "1.0,1.0",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
+            "parameterValues": {
+                "0": "QShaderLanguage::Vec3",
+                "1": "y",
+                "2": "QShaderLanguage::Float"
             },
             "position": {
-                "x": 1056,
-                "y": 629
+                "x": 641,
+                "y": 805
             },
-            "type": "constant",
-            "uuid": "{16aafdd6-aacc-4b8d-882e-aa186d4ac149}"
+            "prototype": "swizzle",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{952c37cf-7429-47eb-ba3a-ceb47127b541}"
         },
         {
             "collapsed": false,
-            "displayName": "output",
-            "group": -1,
-            "id": 11,
-            "inputValues": {
-                "value": ""
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
             },
             "layers": [
             ],
-            "parameters": {
-                "name": "color",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
+            "parameterValues": {
+                "0": "QShaderLanguage::Vec3",
+                "1": "x",
+                "2": "QShaderLanguage::Float"
             },
             "position": {
-                "x": 787,
-                "y": -111
+                "x": 640,
+                "y": 338
             },
-            "type": "output",
-            "uuid": "{01a55fc9-a8a9-460c-b992-dfd6538c73bc}"
+            "prototype": "swizzle",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{fb5ce649-337d-406f-b519-4686e7033a04}"
         },
         {
             "collapsed": false,
-            "displayName": "output",
-            "group": -1,
-            "id": 12,
-            "inputValues": {
-                "value": ""
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
             },
             "layers": [
+                "hasTexCoord"
             ],
-            "parameters": {
-                "name": "texCoord",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                }
+            "parameterValues": {
+                "0": "texCoord",
+                "1": "QShaderLanguage::Vec2",
+                "2": "1"
             },
             "position": {
                 "x": 778,
                 "y": 25
             },
-            "type": "output",
+            "prototype": "output",
+            "selected": false,
+            "type": "PrototypeBasedNode",
             "uuid": "{85aadb5f-041f-4c15-9a6e-340c56d89116}"
         },
         {
             "collapsed": false,
-            "displayName": "output",
-            "group": -1,
-            "id": 13,
-            "inputValues": {
-                "value": ""
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
             },
             "layers": [
             ],
-            "parameters": {
-                "name": "worldNormal",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
+            "parameterValues": {
             },
             "position": {
-                "x": 792,
-                "y": -278
+                "x": 1768,
+                "y": 475
             },
-            "type": "output",
-            "uuid": "{f1854be2-0b48-48b7-a335-6d43a5e8a58a}"
+            "prototype": "gl_Position",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{256da208-a1b2-463e-8152-67758b4ca9b9}"
         },
         {
             "collapsed": false,
-            "displayName": "input",
-            "group": -1,
-            "id": 14,
-            "inputValues": {
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
             },
             "layers": [
+                "hasVertexTangent"
             ],
-            "parameters": {
-                "name": "vertexNormal",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
+            "parameterValues": {
+                "0": "vertexTangent",
+                "1": "QShaderLanguage::Vec4",
+                "2": "4"
             },
             "position": {
-                "x": 77,
-                "y": -285
+                "x": 56,
+                "y": -541
             },
-            "type": "input",
-            "uuid": "{38808987-7611-4ad8-a7e9-716589f4f09b}"
-        },
-        {
-            "collapsed": false,
-            "displayName": "input",
-            "group": -1,
-            "id": 15,
-            "inputValues": {
-            },
-            "layers": [
-            ],
-            "parameters": {
-                "name": "vertexTangent",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
-            },
-            "position": {
-                "x": 81,
-                "y": -407
-            },
-            "type": "input",
+            "prototype": "input",
+            "selected": false,
+            "type": "PrototypeBasedNode",
             "uuid": "{4f35996e-7d98-491d-ad69-eedb28674f73}"
         },
         {
             "collapsed": false,
-            "displayName": "output",
-            "group": -1,
-            "id": 16,
-            "inputValues": {
-                "value": ""
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
+            },
+            "layers": [
+                "hasVertexTangent"
+            ],
+            "parameterValues": {
+                "0": "worldTangent",
+                "1": "QShaderLanguage::Vec4",
+                "2": "3"
+            },
+            "position": {
+                "x": 838,
+                "y": -575
+            },
+            "prototype": "output",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{48a13c77-3219-4f12-8f7f-0364f4a14a71}"
+        },
+        {
+            "collapsed": false,
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
+            },
+            "layers": [
+                "hasVertexColor"
+            ],
+            "parameterValues": {
+                "0": "color",
+                "1": "QShaderLanguage::Vec4",
+                "2": "0"
+            },
+            "position": {
+                "x": 840,
+                "y": -164
+            },
+            "prototype": "output",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{01a55fc9-a8a9-460c-b992-dfd6538c73bc}"
+        },
+        {
+            "collapsed": false,
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
+            },
+            "layers": [
+                "hasVertexNormal"
+            ],
+            "parameterValues": {
+                "0": "worldNormal",
+                "1": "QShaderLanguage::Vec3",
+                "2": "2"
+            },
+            "position": {
+                "x": 843,
+                "y": -346
+            },
+            "prototype": "output",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{f1854be2-0b48-48b7-a335-6d43a5e8a58a}"
+        },
+        {
+            "collapsed": false,
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
             },
             "layers": [
             ],
-            "parameters": {
-                "name": "worldTangent",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
-                }
+            "parameterValues": {
+                "0": "vertexPosition",
+                "1": "QShaderLanguage::Vec3",
+                "2": "0"
             },
             "position": {
-                "x": 795,
-                "y": -381
+                "x": 64,
+                "y": 296
             },
-            "type": "output",
-            "uuid": "{48a13c77-3219-4f12-8f7f-0364f4a14a71}"
+            "prototype": "input",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{68d33f0e-8d3c-43f1-b6a0-a34c5d3821b7}"
+        },
+        {
+            "collapsed": false,
+            "comment": "",
+            "group": "{00000000-0000-0000-0000-000000000000}",
+            "inputDefaultValues": {
+            },
+            "layers": [
+                "hasVertexColor"
+            ],
+            "parameterValues": {
+                "0": "vertexColor",
+                "1": "QShaderLanguage::Vec4",
+                "2": "1"
+            },
+            "position": {
+                "x": 60,
+                "y": -140
+            },
+            "prototype": "input",
+            "selected": false,
+            "type": "PrototypeBasedNode",
+            "uuid": "{fadffdf8-37f5-4fcc-a163-a67eafe156ab}"
         }
     ],
-    "project": {
-        "position": {
-            "x": 277.624242424243,
-            "y": -292.9212121212122
-        },
-        "scale": 0.6875
-    },
-    "prototypes": {
-        "add": {
+    "outputs": [
+    ],
+    "prototypes": [
+        {
             "inputs": [
-                "first",
-                "second"
-            ],
-            "outputs": [
-                "sum"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "rules": [
                 {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp $type $sum = $first + $second;"
+                    "defaultValue": "",
+                    "name": "base",
+                    "type": "$type"
                 },
                 {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $sum = $first + $second;"
+                    "defaultValue": "",
+                    "name": "power",
+                    "type": "$type"
                 }
-            ]
-        },
-        "and": {
-            "inputs": [
-                "input1",
-                "input2"
             ],
+            "name": "pow",
             "outputs": [
-                "output"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                }
-            },
-            "rules": [
                 {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = $input1 && $input2;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = $input1 && $input2;"
+                    "name": "value",
+                    "type": "$type"
                 }
-            ]
-        },
-        "arrayInput": {
-            "outputs": [
-                "value"
             ],
-            "parameters": {
-                "name": "defaultName",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "size": "1",
-                "type": {
+            "parameters": [
+                {
+                    "name": "type",
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                    "value": "QShaderLanguage::Float"
                 }
-            },
-            "rules": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
@@ -627,9 +557,8 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "$qualifier highp $type $name[$size];"
                     ],
-                    "substitution": "highp $type $value = $name;"
+                    "substitution": "highp $type $value = pow($base, $power);"
                 },
                 {
                     "format": {
@@ -638,138 +567,69 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "$qualifier $type $name[$size];"
                     ],
-                    "substitution": "$type $value = $name;"
-                }
-            ]
-        },
-        "atIndex": {
-            "inputs": [
-                "index",
-                "input"
-            ],
-            "outputs": [
-                "output"
-            ],
-            "parameters": {
-                "indexType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Int"
-                },
-                "inputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "outType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp $outType $output = $input[$index];"
+                    "substitution": "$type $value = pow($base, $power);"
                 },
                 {
                     "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
+                        "api": "RHI",
+                        "major": 1,
                         "minor": 0
                     },
-                    "substitution": "$outType $output = $input[$index];"
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $value = pow($base, $power);"
                 }
             ]
         },
-        "cast": {
+        {
             "inputs": [
-                "input"
+                {
+                    "defaultValue": "",
+                    "name": "first",
+                    "type": "$typeOfFirst"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "second",
+                    "type": "$typeOfSecond"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "third",
+                    "type": "$typeOfThird"
+                }
             ],
+            "name": "join3",
             "outputs": [
-                "output"
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
             ],
-            "parameters": {
-                "inputType": {
+            "parameters": [
+                {
+                    "name": "typeOfFirst",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Float"
                 },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "rules": [
                 {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp $type $output = $type($input);"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = $type($input);"
-                }
-            ]
-        },
-        "constant": {
-            "outputs": [
-                "value"
-            ],
-            "parameters": {
-                "constant": "0.0",
-                "type": {
+                    "name": "typeOfSecond",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Float"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp $type $value = $type($constant);"
                 },
                 {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $value = $type($constant);"
-                }
-            ]
-        },
-        "discard_if": {
-            "inputs": [
-                "condition",
-                "value"
-            ],
-            "outputs": [
-                "output"
-            ],
-            "parameters": {
-                "conditionType": {
+                    "name": "typeOfThird",
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
+                    "value": "QShaderLanguage::Float"
                 },
-                "type": {
+                {
+                    "name": "type",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
                 }
-            },
-            "rules": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
@@ -777,9 +637,8 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "highp $type discard_if_$type(bool shouldDiscard, highp $type value) { if (shouldDiscard) discard; return value; }"
                     ],
-                    "substitution": "highp $type $output = discard_if_$type($condition, $value);"
+                    "substitution": "highp $type $output = $type($first, $second, $third);"
                 },
                 {
                     "format": {
@@ -788,42 +647,63 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "$type discard_if_$type(bool shouldDiscard, $type value) { if (shouldDiscard) discard; return value; }"
                     ],
-                    "substitution": "$type $output = discard_if_$type($condition, $value);"
+                    "substitution": "$type $output = $type($first, $second, $third);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $type($first, $second, $third);"
                 }
             ]
         },
-        "divide": {
+        {
             "inputs": [
-                "first",
-                "second"
+                {
+                    "defaultValue": "",
+                    "name": "input",
+                    "type": "$inputType"
+                }
             ],
+            "name": "swizzle",
             "outputs": [
-                "quotient"
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
             ],
-            "parameters": {
-                "firstType": {
+            "parameters": [
+                {
+                    "name": "inputType",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
                 },
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                {
+                    "name": "fields",
+                    "type": "QString",
+                    "value": "xyz"
                 },
-                "type": {
+                {
+                    "name": "type",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
                 }
-            },
-            "rules": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $quotient = $first / $second;"
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $output = ($input).$fields;"
                 },
                 {
                     "format": {
@@ -831,89 +711,35 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $quotient = $first / $second;"
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = ($input).$fields;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = ($input).$fields;"
                 }
             ]
         },
-        "dot": {
+        {
             "inputs": [
-                "first",
-                "second"
             ],
+            "name": "eyePosition",
             "outputs": [
-                "value"
-            ],
-            "parameters": {
-                "outputType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "rules": [
                 {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp $outputType $value = dot($first, $second);"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$outputType $value = dot($first, $second);"
+                    "name": "eyePosition",
+                    "type": "QShaderLanguage::Vec3"
                 }
-            ]
-        },
-        "equal": {
-            "inputs": [
-                "input1",
-                "input2"
             ],
-            "outputs": [
-                "output"
+            "parameters": [
             ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                },
-                "valueType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = $input1 == $input2;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = $input1 == $input2;"
-                }
-            ]
-        },
-        "eyePosition": {
-            "outputs": [
-                "eyePosition"
-            ],
-            "rules": [
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
@@ -935,168 +761,43 @@
                         "uniform vec3 eyePosition;"
                     ],
                     "substitution": "vec3 $eyePosition = eyePosition;"
-                }
-            ]
-        },
-        "fragColor": {
-            "inputs": [
-                "fragColor"
-            ],
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "gl_FragColor = $fragColor;"
                 },
                 {
                     "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
+                        "api": "RHI",
+                        "major": 1,
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "out highp vec4 fragColor;"
+                        "uniform vec3 eyePosition;"
                     ],
-                    "substitution": "fragColor = $fragColor;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "out vec4 fragColor;"
-                    ],
-                    "substitution": "fragColor = $fragColor;"
+                    "substitution": "vec3 $eyePosition = eyePosition;"
                 }
             ]
         },
-        "gl_Position": {
+        {
             "inputs": [
-                "position"
             ],
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "gl_Position = $position;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "gl_Position = $position;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "gl_Position = $position;"
-                }
-            ]
-        },
-        "greater": {
-            "inputs": [
-                "input1",
-                "input2"
-            ],
+            "name": "uniformInput",
             "outputs": [
-                "output"
+                {
+                    "name": "value",
+                    "type": "$type"
+                }
             ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
+            "parameters": [
+                {
+                    "name": "name",
+                    "type": "QString",
+                    "value": "defaultName"
                 },
-                "valueType": {
+                {
+                    "name": "type",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
                 }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = $input1 > $input2;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = $input1 > $input2;"
-                }
-            ]
-        },
-        "if": {
-            "inputs": [
-                "condition",
-                "false",
-                "true"
             ],
-            "outputs": [
-                "output"
-            ],
-            "parameters": {
-                "conditionType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp $type $output = ($condition) ? $true : $false;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = ($condition) ? $true : $false;"
-                }
-            ]
-        },
-        "input": {
-            "outputs": [
-                "value"
-            ],
-            "parameters": {
-                "name": "defaultName",
-                "qualifier": {
-                    "type": "QShaderLanguage::StorageQualifier",
-                    "value": "QShaderLanguage::Input"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "rules": [
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
@@ -1104,7 +805,7 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "$qualifier highp $type $name;"
+                        "uniform highp $type $name;"
                     ],
                     "substitution": "highp $type $value = $name;"
                 },
@@ -1115,42 +816,46 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "$qualifier $type $name;"
+                        "uniform $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "add-uniform $type $name"
                     ],
                     "substitution": "$type $value = $name;"
                 }
             ]
         },
-        "join2": {
+        {
             "inputs": [
-                "first",
-                "second"
             ],
+            "name": "time",
             "outputs": [
-                "output"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec2"
-                },
-                "typeOfFirst": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "typeOfSecond": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
+                {
+                    "name": "time",
+                    "type": "QShaderLanguage::Float"
                 }
-            },
-            "rules": [
+            ],
+            "parameters": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output = $type($first, $second);"
+                    "headerSnippets": [
+                        "uniform highp float time;"
+                    ],
+                    "substitution": "highp float $time = time;"
                 },
                 {
                     "format": {
@@ -1158,45 +863,210 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output = $type($first, $second);"
+                    "headerSnippets": [
+                        "uniform float time;"
+                    ],
+                    "substitution": "float $time = time;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "uniform float time;"
+                    ],
+                    "substitution": "float $time = time;"
                 }
             ]
         },
-        "join3": {
+        {
             "inputs": [
-                "first",
-                "second",
-                "third"
+                {
+                    "defaultValue": "",
+                    "name": "condition",
+                    "type": "$conditionType"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "value",
+                    "type": "$type"
+                }
             ],
+            "name": "discard_if",
             "outputs": [
-                "output"
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
             ],
-            "parameters": {
-                "type": {
+            "parameters": [
+                {
+                    "name": "conditionType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "highp $type discard_if_$type(bool shouldDiscard, highp $type value) { if (shouldDiscard) discard; return value; }"
+                    ],
+                    "substitution": "highp $type $output = discard_if_$type($condition, $value);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$type discard_if_$type(bool shouldDiscard, $type value) { if (shouldDiscard) discard; return value; }"
+                    ],
+                    "substitution": "$type $output = discard_if_$type($condition, $value);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$type discard_if_$type(bool shouldDiscard, $type value) { if (shouldDiscard) discard; return value; }"
+                    ],
+                    "substitution": "$type $output = discard_if_$type($condition, $value);"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "worldNormal",
+                    "type": "QShaderLanguage::Vec3"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "worldTangent",
+                    "type": "QShaderLanguage::Vec4"
+                }
+            ],
+            "name": "worldSpaceToTangentSpaceMatrix",
+            "outputs": [
+                {
+                    "name": "matrix",
+                    "type": "QShaderLanguage::Mat3"
+                }
+            ],
+            "parameters": [
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/shaders/es2/coordinatesystems.inc"
+                    ],
+                    "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/shaders/es3/coordinatesystems.inc"
+                    ],
+                    "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/shaders/gl3/coordinatesystems.inc"
+                    ],
+                    "substitution": "mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/shaders/gl3/coordinatesystems.inc"
+                    ],
+                    "substitution": "mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
+                }
+            ]
+        },
+        {
+            "inputs": [
+            ],
+            "name": "input",
+            "outputs": [
+                {
+                    "name": "value",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "name",
+                    "type": "QString",
+                    "value": "defaultName"
+                },
+                {
+                    "name": "type",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
                 },
-                "typeOfFirst": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "typeOfSecond": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "typeOfThird": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
+                {
+                    "name": "location",
+                    "type": "QString",
+                    "value": "0"
                 }
-            },
-            "rules": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output = $type($first, $second, $third);"
+                    "headerSnippets": [
+                        "attribute highp $type $name;"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "in highp $type $name;"
+                    ],
+                    "substitution": "highp $type $value = $name;"
                 },
                 {
                     "format": {
@@ -1204,50 +1074,66 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output = $type($first, $second, $third);"
+                    "headerSnippets": [
+                        "in $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "layout(location = $location) in $type $name;"
+                    ],
+                    "substitution": "$type $value = $name;"
                 }
             ]
         },
-        "join4d": {
+        {
             "inputs": [
-                "first",
-                "fourth",
-                "second",
-                "third"
-            ],
-            "outputs": [
-                "output"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec4"
+                {
+                    "defaultValue": "",
+                    "name": "input1",
+                    "type": "$valueType"
                 },
-                "typeOfFirst": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "typeOfFourth": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "typeOfSecond": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                },
-                "typeOfThird": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
+                {
+                    "defaultValue": "",
+                    "name": "input2",
+                    "type": "$valueType"
                 }
-            },
-            "rules": [
+            ],
+            "name": "equal",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "valueType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output = $type($first, $second, $third, $fourth);"
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 == $input2;"
                 },
                 {
                     "format": {
@@ -1255,19 +1141,115 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output = $type($first, $second, $third, $fourth);"
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 == $input2;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 == $input2;"
                 }
             ]
         },
-        "kuesa_morphTargetsNormal": {
+        {
             "inputs": [
-                "vNormal",
-                "weights"
+                {
+                    "defaultValue": "",
+                    "name": "first",
+                    "type": "$firstType"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "second",
+                    "type": "$secondType"
+                }
             ],
+            "name": "divide",
             "outputs": [
-                "normal"
+                {
+                    "name": "quotient",
+                    "type": "$type"
+                }
             ],
-            "rules": [
+            "parameters": [
+                {
+                    "name": "firstType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                {
+                    "name": "secondType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $quotient = $first / $second;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $quotient = $first / $second;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $quotient = $first / $second;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "vNormal",
+                    "type": "QString"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "weights",
+                    "type": "QString"
+                }
+            ],
+            "name": "kuesa_morphTargetsNormal",
+            "outputs": [
+                {
+                    "name": "normal",
+                    "type": "QString"
+                }
+            ],
+            "parameters": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
@@ -1300,18 +1282,113 @@
                         "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_normal.inc.vert"
                     ],
                     "substitution": "vec3 $normal = kuesa_morphNormal($vNormal);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_normal.inc.vert"
+                    ],
+                    "substitution": "vec3 $normal = kuesa_morphNormal($vNormal);"
                 }
             ]
         },
-        "kuesa_morphTargetsPosition": {
+        {
             "inputs": [
-                "vPosition",
-                "weights"
+                {
+                    "defaultValue": "",
+                    "name": "first",
+                    "type": "$typeOfFirst"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "second",
+                    "type": "$typeOfSecond"
+                }
             ],
+            "name": "join2",
             "outputs": [
-                "position"
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
             ],
-            "rules": [
+            "parameters": [
+                {
+                    "name": "typeOfFirst",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                {
+                    "name": "typeOfSecond",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec2"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $output = $type($first, $second);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $type($first, $second);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $type($first, $second);"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "vPosition",
+                    "type": "QString"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "weights",
+                    "type": "QString"
+                }
+            ],
+            "name": "kuesa_morphTargetsPosition",
+            "outputs": [
+                {
+                    "name": "position",
+                    "type": "QString"
+                }
+            ],
+            "parameters": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
@@ -1344,18 +1421,278 @@
                         "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_position.inc.vert"
                     ],
                     "substitution": "vec3 $position = kuesa_morphPosition($vPosition);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_position.inc.vert"
+                    ],
+                    "substitution": "vec3 $position = kuesa_morphPosition($vPosition);"
                 }
             ]
         },
-        "kuesa_morphTargetsTangent": {
+        {
             "inputs": [
-                "vTangent",
-                "weights"
             ],
+            "name": "constant",
             "outputs": [
-                "tangent"
+                {
+                    "name": "value",
+                    "type": "$type"
+                }
             ],
-            "rules": [
+            "parameters": [
+                {
+                    "name": "constant",
+                    "type": "QString",
+                    "value": "0.0"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $value = $type($constant);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $value = $type($constant);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $value = $type($constant);"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "input",
+                    "type": "$type"
+                }
+            ],
+            "name": "transpose",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "QShaderLanguage::Vec3"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Mat3"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $output = transpose($input);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = transpose($input);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = transpose($input);"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "first",
+                    "type": "$type"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "second",
+                    "type": "$secondType"
+                }
+            ],
+            "name": "min",
+            "outputs": [
+                {
+                    "name": "value",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "secondType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $value = min($first, $second);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $value = min($first, $second);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $value = min($first, $second);"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "input1",
+                    "type": "$type"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "input2",
+                    "type": "$type"
+                }
+            ],
+            "name": "and",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 && $input2;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 && $input2;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 && $input2;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "vTangent",
+                    "type": "QString"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "weights",
+                    "type": "QString"
+                }
+            ],
+            "name": "kuesa_morphTargetsTangent",
+            "outputs": [
+                {
+                    "name": "tangent",
+                    "type": "QString"
+                }
+            ],
+            "parameters": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
@@ -1388,58 +1725,43 @@
                         "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_tangent.inc.vert"
                     ],
                     "substitution": "vec4 $tangent = kuesa_morphTangent($vTangent);"
-                }
-            ]
-        },
-        "kuesa_morphTargetsWeights": {
-            "outputs": [
-                "weights"
-            ],
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "#pragma include :/kuesa/shaders/es2/kuesa_morphtargets_weights.inc.vert"
-                    ],
-                    "substitution": ""
                 },
                 {
                     "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
+                        "api": "RHI",
+                        "major": 1,
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "#pragma include :/kuesa/shaders/es3/kuesa_morphtargets_weights.inc.vert"
+                        "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_tangent.inc.vert"
                     ],
-                    "substitution": ""
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 1
-                    },
-                    "headerSnippets": [
-                        "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_weights.inc.vert"
-                    ],
-                    "substitution": ""
+                    "substitution": "vec4 $tangent = kuesa_morphTangent($vTangent);"
                 }
             ]
         },
-        "kuesa_morphWeight": {
+        {
             "inputs": [
-                "index",
-                "weights"
+                {
+                    "defaultValue": "",
+                    "name": "index",
+                    "type": "QString"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "weights",
+                    "type": "QString"
+                }
             ],
+            "name": "kuesa_morphWeight",
             "outputs": [
-                "weight"
+                {
+                    "name": "weight",
+                    "type": "QString"
+                }
             ],
-            "rules": [
+            "parameters": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLCoreProfile",
@@ -1463,14 +1785,415 @@
                         "minor": 0
                     },
                     "substitution": "highp float $weight = morphWeights.weight$index;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "substitution": "float $weight = morphWeights.weight$index;"
                 }
             ]
         },
-        "kuesa_morphWeightsUniform": {
-            "outputs": [
-                "weights"
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "baseColor",
+                    "type": "QShaderLanguage::Vec4"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "metalness",
+                    "type": "QShaderLanguage::Float"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "roughness",
+                    "type": "QShaderLanguage::Float"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "ambientOcclusion",
+                    "type": "QShaderLanguage::Float"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "worldPosition",
+                    "type": "QShaderLanguage::Vec3"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "worldView",
+                    "type": "QShaderLanguage::Vec3"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "worldNormal",
+                    "type": "QShaderLanguage::Vec3"
+                }
             ],
-            "rules": [
+            "name": "metalRoughFunction",
+            "outputs": [
+                {
+                    "name": "outputColor",
+                    "type": "QShaderLanguage::Vec4"
+                }
+            ],
+            "parameters": [
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 1
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/shaders/gl3/metalrough.inc.frag"
+                    ],
+                    "substitution": "vec4 $outputColor = metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/shaders/gl3/metalrough.inc.frag"
+                    ],
+                    "substitution": "vec4 $outputColor = metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "minuend",
+                    "type": "$type"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "subtrahend",
+                    "type": "$type"
+                }
+            ],
+            "name": "subtract",
+            "outputs": [
+                {
+                    "name": "difference",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $difference = $minuend - $subtrahend;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $difference = $minuend - $subtrahend;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $difference = $minuend - $subtrahend;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+            ],
+            "name": "arrayInput",
+            "outputs": [
+                {
+                    "name": "value",
+                    "type": "QString"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "name",
+                    "type": "QString",
+                    "value": "defaultName"
+                },
+                {
+                    "name": "qualifier",
+                    "type": "QShaderLanguage::StorageQualifier",
+                    "value": "QShaderLanguage::Input"
+                },
+                {
+                    "name": "size",
+                    "type": "QString",
+                    "value": "1"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier highp $type $name[$size];"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier $type $name[$size];"
+                    ],
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "$qualifier $type $name[$size];"
+                    ],
+                    "substitution": "$type $value = $name;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "input",
+                    "type": "$type"
+                }
+            ],
+            "name": "normalize",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $output = normalize($input);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = normalize($input);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = normalize($input);"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "first",
+                    "type": "$type"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "second",
+                    "type": "$type"
+                }
+            ],
+            "name": "dot",
+            "outputs": [
+                {
+                    "name": "value",
+                    "type": "QShaderLanguage::Float"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                {
+                    "name": "outputType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $outputType $value = dot($first, $second);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$outputType $value = dot($first, $second);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$outputType $value = dot($first, $second);"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "input1",
+                    "type": "$valueType"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "input2",
+                    "type": "$valueType"
+                }
+            ],
+            "name": "greater",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "valueType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 > $input2;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 > $input2;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 > $input2;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+            ],
+            "name": "kuesa_morphWeightsUniform",
+            "outputs": [
+                {
+                    "name": "weights",
+                    "type": "QString"
+                }
+            ],
+            "parameters": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLCoreProfile",
@@ -1506,40 +2229,86 @@
                         "uniform MorphWeights morphWeights;"
                     ],
                     "substitution": ""
-                }
-            ]
-        },
-        "kuesa_morpthTargetsWeights": {
-            "outputs": [
-                "weights"
-            ]
-        },
-        "max": {
-            "inputs": [
-                "first",
-                "second"
-            ],
-            "outputs": [
-                "value"
-            ],
-            "parameters": {
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
                 },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "struct MorphWeights {\n float weight0;\n float weight1;\n float weight2;\n float weight3; \n float weight4; \n float weight5;\n float weight6;\n float weight7; };",
+                        "uniform MorphWeights morphWeights;"
+                    ],
+                    "substitution": ""
                 }
-            },
-            "rules": [
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "first",
+                    "type": "QString"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "fourth",
+                    "type": "QString"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "second",
+                    "type": "QString"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "third",
+                    "type": "QString"
+                }
+            ],
+            "name": "join4d",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "QString"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                },
+                {
+                    "name": "typeOfFirst",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                {
+                    "name": "typeOfFourth",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                {
+                    "name": "typeOfSecond",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                {
+                    "name": "typeOfThird",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $value = max($first, $second);"
+                    "substitution": "highp $type $output = $type($first, $second, $third, $fourth);"
                 },
                 {
                     "format": {
@@ -1547,24 +2316,172 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $value = max($first, $second);"
+                    "substitution": "$type $output = $type($first, $second, $third, $fourth);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "substitution": "$type $output = $type($first, $second, $third, $fourth);"
                 }
             ]
         },
-        "metalRoughFunction": {
+        {
             "inputs": [
-                "ambientOcclusion",
-                "baseColor",
-                "metalness",
-                "roughness",
-                "worldNormal",
-                "worldPosition",
-                "worldView"
             ],
+            "name": "builtinInput",
             "outputs": [
-                "outputColor"
+                {
+                    "name": "value",
+                    "type": "$type"
+                }
             ],
-            "rules": [
+            "parameters": [
+                {
+                    "name": "name",
+                    "type": "QString",
+                    "value": "defaultName"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "substitution": "$type $value = $name;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "condition",
+                    "type": "$conditionType"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "true",
+                    "type": "$type"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "false",
+                    "type": "$type"
+                }
+            ],
+            "name": "if",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "conditionType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $output = ($condition) ? $true : $false;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = ($condition) ? $true : $false;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = ($condition) ? $true : $false;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+            ],
+            "name": "kuesa_morphTargetsWeights",
+            "outputs": [
+                {
+                    "name": "weights",
+                    "type": "QString"
+                }
+            ],
+            "parameters": [
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es2/kuesa_morphtargets_weights.inc.vert"
+                    ],
+                    "substitution": ""
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/es3/kuesa_morphtargets_weights.inc.vert"
+                    ],
+                    "substitution": ""
+                },
                 {
                     "format": {
                         "api": "OpenGLCoreProfile",
@@ -1572,78 +2489,69 @@
                         "minor": 1
                     },
                     "headerSnippets": [
-                        "#pragma include :/shaders/gl3/metalrough.inc.frag"
+                        "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_weights.inc.vert"
                     ],
-                    "substitution": "vec4 $outputColor = metalRoughFunction($baseColor, $metalness, $roughness, $ambientOcclusion, $worldPosition, $worldView, $worldNormal);"
+                    "substitution": ""
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "#pragma include :/kuesa/shaders/gl3/kuesa_morphtargets_weights.inc.vert"
+                    ],
+                    "substitution": ""
                 }
             ]
         },
-        "min": {
+        {
             "inputs": [
-                "first",
-                "second"
+                {
+                    "defaultValue": "",
+                    "name": "first",
+                    "type": "$firstType"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "second",
+                    "type": "$secondType"
+                }
             ],
+            "name": "multiply",
             "outputs": [
-                "value"
+                {
+                    "name": "product",
+                    "type": "$type"
+                }
             ],
-            "parameters": {
-                "secondType": {
+            "parameters": [
+                {
+                    "name": "firstType",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
                 },
-                "type": {
+                {
+                    "name": "secondType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                {
+                    "name": "type",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
                 }
-            },
-            "rules": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $value = min($first, $second);"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $value = min($first, $second);"
-                }
-            ]
-        },
-        "multiply": {
-            "inputs": [
-                "first",
-                "second"
-            ],
-            "outputs": [
-                "product"
-            ],
-            "parameters": {
-                "firstType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "secondType": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                },
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "highp $type $product = $first * $second;"
                 },
                 {
@@ -1652,198 +2560,45 @@
                         "major": 3,
                         "minor": 0
                     },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $product = $first * $second;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
                     "substitution": "$type $product = $first * $second;"
                 }
             ]
         },
-        "normalize": {
+        {
             "inputs": [
-                "input"
+                {
+                    "defaultValue": "",
+                    "name": "coord",
+                    "type": "QShaderLanguage::Vec2"
+                }
             ],
+            "name": "sampleTexture",
             "outputs": [
-                "output"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
+                {
+                    "name": "color",
+                    "type": "QShaderLanguage::Vec4"
                 }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp $type $output = normalize($input);"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = normalize($input);"
-                }
-            ]
-        },
-        "not": {
-            "inputs": [
-                "input"
             ],
-            "outputs": [
-                "output"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
+            "parameters": [
+                {
+                    "name": "name",
+                    "type": "QString",
+                    "value": "defaultName"
                 }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = !$input1;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = !$input1;"
-                }
-            ]
-        },
-        "or": {
-            "inputs": [
-                "input1",
-                "input2"
             ],
-            "outputs": [
-                "output"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Bool"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = $input1 || $input2;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = $input1 || $input2;"
-                }
-            ]
-        },
-        "output": {
-            "inputs": [
-                "value"
-            ],
-            "parameters": {
-                "name": "defaultName",
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Vec3"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "varying highp $type $name;"
-                    ],
-                    "substitution": "$name = $value;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "out highp $type $name;"
-                    ],
-                    "substitution": "$name = $value;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "out $type $name;"
-                    ],
-                    "substitution": "$name = $value;"
-                }
-            ]
-        },
-        "pow": {
-            "inputs": [
-                "base",
-                "power"
-            ],
-            "outputs": [
-                "value"
-            ],
-            "parameters": {
-                "type": {
-                    "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Float"
-                }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp $type $value = pow($base, $power);"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $value = pow($base, $power);"
-                }
-            ]
-        },
-        "sampleTexture": {
-            "inputs": [
-                "coord"
-            ],
-            "outputs": [
-                "color"
-            ],
-            "parameters": {
-                "name": "defaultName"
-            },
-            "rules": [
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
@@ -1876,36 +2631,112 @@
                         "uniform sampler2D $name;"
                     ],
                     "substitution": "vec4 $color = texture($name, $coord);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "add-sampler sampler2D $name"
+                    ],
+                    "substitution": "vec4 $color = texture($name, $coord);"
                 }
             ]
         },
-        "subgraph": {
-            "parameters": {
-                "Path": "/"
-            }
-        },
-        "subtract": {
+        {
             "inputs": [
-                "minuend",
-                "subtrahend"
+                {
+                    "defaultValue": "",
+                    "name": "input",
+                    "type": "$type"
+                }
             ],
+            "name": "not",
             "outputs": [
-                "difference"
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
             ],
-            "parameters": {
-                "type": {
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = !$input1;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = !$input1;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = !$input1;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "first",
+                    "type": "$type"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "second",
+                    "type": "$type"
+                }
+            ],
+            "name": "add",
+            "outputs": [
+                {
+                    "name": "sum",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "type",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
                 }
-            },
-            "rules": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $difference = $minuend - $subtrahend;"
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $sum = $first + $second;"
                 },
                 {
                     "format": {
@@ -1913,52 +2744,182 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $difference = $minuend - $subtrahend;"
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $sum = $first + $second;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $sum = $first + $second;"
                 }
             ]
         },
-        "swizzle": {
+        {
             "inputs": [
-                "input"
             ],
+            "name": "uniformArrayInput",
             "outputs": [
-                "output"
+                {
+                    "name": "value",
+                    "type": "$type"
+                }
             ],
-            "parameters": {
-                "fields": "x",
-                "inputType": {
+            "parameters": [
+                {
+                    "name": "name",
+                    "type": "QString",
+                    "value": "defaultName"
+                },
+                {
+                    "name": "type",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
                 },
-                "type": {
+                {
+                    "name": "size",
+                    "type": "QString",
+                    "value": "100"
+                },
+                {
+                    "name": "location",
+                    "type": "QString",
+                    "value": "0"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "uniform highp $type $name[$size];"
+                    ],
+                    "substitution": "highp $type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "uniform $type $name[$size];"
+                    ],
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "add-uniform $type $name[$size]"
+                    ],
+                    "substitution": "$type $value = $name;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "fragColor",
+                    "type": "QShaderLanguage::Vec4"
+                }
+            ],
+            "name": "fragColor",
+            "outputs": [
+            ],
+            "parameters": [
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "gl_FragColor = $fragColor;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out highp vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out vec4 fragColor;"
+                    ],
+                    "substitution": "fragColor = $fragColor;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "first",
+                    "type": "$type"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "second",
+                    "type": "$secondType"
+                }
+            ],
+            "name": "max",
+            "outputs": [
+                {
+                    "name": "value",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "secondType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                {
+                    "name": "type",
                     "type": "QShaderLanguage::VariableType",
                     "value": "QShaderLanguage::Vec3"
                 }
-            },
-            "rules": [
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 2,
-                        "minor": 0
-                    },
-                    "substitution": "highp $type $output = ($input).$fields;"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLCoreProfile",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "substitution": "$type $output = ($input).$fields;"
-                }
-            ]
-        },
-        "time": {
-            "outputs": [
-                "time"
             ],
-            "rules": [
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
@@ -1966,9 +2927,8 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "uniform highp float time;"
                     ],
-                    "substitution": "highp float $time = time;"
+                    "substitution": "highp $type $value = max($first, $second);"
                 },
                 {
                     "format": {
@@ -1977,33 +2937,58 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "uniform float time;"
                     ],
-                    "substitution": "float $time = time;"
+                    "substitution": "$type $value = max($first, $second);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $value = max($first, $second);"
                 }
             ]
         },
-        "transpose": {
+        {
             "inputs": [
-                "input"
+                {
+                    "defaultValue": "",
+                    "name": "input",
+                    "type": "$inputType"
+                }
             ],
+            "name": "cast",
             "outputs": [
-                "output"
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
             ],
-            "parameters": {
-                "type": {
+            "parameters": [
+                {
+                    "name": "inputType",
                     "type": "QShaderLanguage::VariableType",
-                    "value": "QShaderLanguage::Mat3"
+                    "value": "QShaderLanguage::Float"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
                 }
-            },
-            "rules": [
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
                         "major": 2,
                         "minor": 0
                     },
-                    "substitution": "highp $type $output = transpose($input);"
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $output = $type($input);"
                 },
                 {
                     "format": {
@@ -2011,19 +2996,45 @@
                         "major": 3,
                         "minor": 0
                     },
-                    "substitution": "$type $output = transpose($input);"
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $type($input);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $type($input);"
                 }
             ]
         },
-        "worldSpaceToTangentSpaceMatrix": {
+        {
             "inputs": [
-                "worldNormal",
-                "worldTangent"
             ],
+            "name": "textureInput",
             "outputs": [
-                "matrix"
+                {
+                    "name": "value",
+                    "type": "$type"
+                }
             ],
-            "rules": [
+            "parameters": [
+                {
+                    "name": "name",
+                    "type": "QString",
+                    "value": "defaultName"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                }
+            ],
+            "rule": [
                 {
                     "format": {
                         "api": "OpenGLES",
@@ -2031,20 +3042,9 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "#pragma include :/shaders/es2/coordinatesystems.inc"
+                        "uniform highp $type $name;"
                     ],
-                    "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
-                },
-                {
-                    "format": {
-                        "api": "OpenGLES",
-                        "major": 3,
-                        "minor": 0
-                    },
-                    "headerSnippets": [
-                        "#pragma include :/shaders/es3/coordinatesystems.inc"
-                    ],
-                    "substitution": "highp mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
+                    "substitution": "highp $type $value = $name;"
                 },
                 {
                     "format": {
@@ -2053,13 +3053,381 @@
                         "minor": 0
                     },
                     "headerSnippets": [
-                        "#pragma include :/shaders/gl3/coordinatesystems.inc"
+                        "uniform $type $name;"
                     ],
-                    "substitution": "mat3 $matrix = calcWorldSpaceToTangentSpaceMatrix($worldNormal, $worldTangent);"
+                    "substitution": "$type $value = $name;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "add-sampler $type $name"
+                    ],
+                    "substitution": "$type $value = $name;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "first",
+                    "type": "$typeOfFirst"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "second",
+                    "type": "$typeOfSecond"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "third",
+                    "type": "$typeOfThird"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "fourth",
+                    "type": "$typeOfFourth"
+                }
+            ],
+            "name": "join4",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "typeOfFirst",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                {
+                    "name": "typeOfSecond",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                {
+                    "name": "typeOfThird",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                {
+                    "name": "typeOfFourth",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec4"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $type $output = $type($first, $second, $third, $fourth);"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $type($first, $second, $third, $fourth);"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $type($first, $second, $third, $fourth);"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "input",
+                    "type": "$inputType"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "index",
+                    "type": "$indexType"
+                }
+            ],
+            "name": "atIndex",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "$outType"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "inputType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                {
+                    "name": "indexType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Int"
+                },
+                {
+                    "name": "outType",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Float"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "highp $outType $output = $input[$index];"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$outType $output = $input[$index];"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$outType $output = $input[$index];"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "value",
+                    "type": "$type"
+                }
+            ],
+            "name": "output",
+            "outputs": [
+            ],
+            "parameters": [
+                {
+                    "name": "name",
+                    "type": "QString",
+                    "value": "defaultName"
+                },
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Vec3"
+                },
+                {
+                    "name": "location",
+                    "type": "QString",
+                    "value": "0"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "varying highp $type $name;"
+                    ],
+                    "substitution": "$name = $value;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out highp $type $name;"
+                    ],
+                    "substitution": "$name = $value;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "out $type $name;"
+                    ],
+                    "substitution": "$name = $value;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                        "layout(location = $location) out $type $name;"
+                    ],
+                    "substitution": "$name = $value;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "position",
+                    "type": "QShaderLanguage::Vec4"
+                }
+            ],
+            "name": "gl_Position",
+            "outputs": [
+            ],
+            "parameters": [
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "gl_Position = $position;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "gl_Position = $position;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "gl_Position = $position;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "gl_Position = $position;"
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "defaultValue": "",
+                    "name": "input1",
+                    "type": "$type"
+                },
+                {
+                    "defaultValue": "",
+                    "name": "input2",
+                    "type": "$type"
+                }
+            ],
+            "name": "or",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "$type"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "type",
+                    "type": "QShaderLanguage::VariableType",
+                    "value": "QShaderLanguage::Bool"
+                }
+            ],
+            "rule": [
+                {
+                    "format": {
+                        "api": "OpenGLES",
+                        "major": 2,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 || $input2;"
+                },
+                {
+                    "format": {
+                        "api": "OpenGLCoreProfile",
+                        "major": 3,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 || $input2;"
+                },
+                {
+                    "format": {
+                        "api": "RHI",
+                        "major": 1,
+                        "minor": 0
+                    },
+                    "headerSnippets": [
+                    ],
+                    "substitution": "$type $output = $input1 || $input2;"
                 }
             ]
         }
-    },
-    "subgraph": [
-    ]
+    ],
+    "version": 2,
+    "viewport": {
+        "topLeft": {
+            "x": -345,
+            "y": -675
+        },
+        "zoomLevel": 53
+    }
 }
