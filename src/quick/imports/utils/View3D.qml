@@ -168,7 +168,7 @@ Scene3D {
         }
 
         Binding {
-            target: scene.frameGraph
+            target: defaultViewConfiguration
             property: "clearColor"
             value: root.backgroundColor
             restoreMode: Binding.RestoreBindingOrValue
