@@ -1,5 +1,5 @@
 /*
-    bufferviewsparser_p.h
+    gltf2parser.cpp
 
     This file is part of Kuesa.
 
