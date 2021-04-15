@@ -1316,6 +1316,32 @@ private Q_SLOTS:
         QCOMPARE(int(amount_failed), 0);
         QCOMPARE(int(amount_successful), 64);
     }
+
+    void checkParseExtras()
+    {
+        SceneEntity scene;
+        GLTF2Context ctx;
+        GLTF2Parser parser(&scene);
+
+        parser.setContext(&ctx);
+
+        // WHEN
+        const bool parsingSuccessful = parser.parse(QString(ASSETS "node_extras.gltf"));
+
+        // THEN
+        QVERIFY(parsingSuccessful);
+
+        // WHEN
+        parser.generateContent();
+        Qt3DCore::QEntity *node = scene.entity(QStringLiteral("MyNode"));
+
+        // THEN
+        QVERIFY(node != nullptr);
+        QCOMPARE(node->property("myBoolProp"), QVariant(true));
+        QCOMPARE(node->property("myDoubleProp"), QVariant(1584.883));
+        QCOMPARE(node->property("myStringProp"), QVariant(QStringLiteral("Kuesa_String")));
+        QCOMPARE(node->property("myUnhandledArrayProp"), QVariant());
+    }
 };
 
 QTEST_MAIN(tst_GLTFParser)

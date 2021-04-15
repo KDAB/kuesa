@@ -49,6 +49,7 @@ const QLatin1String KEY_BUFFERS = QLatin1String("buffers");
 const QLatin1String KEY_BUFFERVIEWS = QLatin1String("bufferViews");
 const QLatin1String KEY_ACCESSORS = QLatin1String("accessors");
 const QLatin1String KEY_NODES = QLatin1String("nodes");
+const QLatin1String KEY_EXTRAS = QLatin1String("extras");
 const QLatin1String KEY_MESHES = QLatin1String("meshes");
 const QLatin1String KEY_SCENE = QLatin1String("scene");
 const QLatin1String KEY_SCENES = QLatin1String("scenes");

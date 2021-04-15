@@ -944,6 +944,9 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
                     node.entity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DRender::QCamera>("QCamera");
                 else
                     node.entity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
+
+                for (const auto &extra : node.extras)
+                    node.entity->setProperty(extra.first.toLocal8Bit().constData(), extra.second);
             }
             // Set ourselves as parent of our last child
             if (lastChild != nullptr)

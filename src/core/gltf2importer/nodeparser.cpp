@@ -209,6 +209,22 @@ QPair<bool, TreeNode> treenodeFromJson(const QJsonObject &nodeObj)
     for (const QJsonValue &weight : morphTargetWeights)
         node.morphTargetWeights.push_back(weight.toDouble(0.0));
 
+    // If the extras is a non empty object, get all the properties inside
+    const QJsonObject extras = nodeObj[KEY_EXTRAS].toObject();
+    for (auto extra = extras.constBegin(), end = extras.constEnd(); extra != end; ++extra) {
+        switch (extra->type()) {
+        case QJsonValue::Type::Bool:
+        case QJsonValue::Type::Double:
+        case QJsonValue::Type::String:
+            // TODO: Handle Arrays of scalars for QVector*D
+            node.extras.emplace_back(extra.key(), extra->toVariant());
+            break;
+        default:
+            qCWarning(Kuesa::kuesa) << "Unhandled extra property type for" << extra.key();
+            break;
+        }
+    }
+
     return QPair<bool, TreeNode>(true, node);
 }
 
