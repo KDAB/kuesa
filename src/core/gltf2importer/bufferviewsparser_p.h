@@ -38,21 +38,11 @@
 //
 
 #include <QByteArray>
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#include <Qt3DCore/QBuffer>
-#include <Qt3DCore/QAttribute>
-#else
-#include <Qt3DRender/QBuffer>
-#include <Qt3DRender/QAttribute>
-#endif
+#include <QString>
 
 QT_BEGIN_NAMESPACE
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-namespace Qt3DGeometry = Qt3DCore;
-#else
-namespace Qt3DGeometry = Qt3DRender;
-#endif
+class QJsonArray;
 
 namespace Kuesa {
 namespace GLTF2Import {
@@ -82,9 +72,6 @@ public:
     BufferViewsParser();
 
     bool parse(const QJsonArray &bufferViewsArray, GLTF2Context *context);
-
-private:
-    Qt3DGeometry::QAttribute::AttributeType viewTargetFromJSON(int target);
 };
 
 } // namespace GLTF2Import
