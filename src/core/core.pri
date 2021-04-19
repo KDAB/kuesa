@@ -46,7 +46,8 @@ SOURCES += \
     $$PWD/particles.cpp \
     $$PWD/steppedanimationplayer.cpp \
     $$PWD/transformtracker.cpp \
-    $$PWD/animationpulse.cpp
+    $$PWD/animationpulse.cpp \
+    $$PWD/kuesaentity.cpp
 
 HEADERS += \
     $$PWD/empty2dtexture_p.h \
@@ -72,6 +73,9 @@ HEADERS += \
     $$PWD/steppedanimationplayer.h \
     $$PWD/transformtracker.h \
     $$PWD/animationpulse.h
+
+# Don't add kuesaentity.h to HEADERS as we already implement the metaobject functions
+#    $$PWD/kuesaentity.h
 
 qtConfig(draco) {
     HEADERS += $$PWD/draco_prefix_p.h

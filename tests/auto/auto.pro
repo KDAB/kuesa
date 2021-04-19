@@ -112,7 +112,7 @@ qtConfig(private_tests) {
         placeholder \
         unliteffect \
         placeholdertracker \
-	animationpulse \
+        animationpulse \
         iro2alphaequirect \
         iro2alphasem \
         iro2diffuseequirect \
@@ -131,7 +131,8 @@ qtConfig(private_tests) {
         iromattebackground \
         iromattemult \
         iromatteopaque \
-        iromatteskybox
+        iromatteskybox \
+        kuesaentity
 
     greaterThan(QT_MAJOR_VERSION, 5):
         SUBDIRS += fboresolver
