@@ -55,6 +55,7 @@
 #include "pointlight.h"
 #include "spotlight.h"
 #include "placeholder.h"
+#include <Kuesa/private/kuesaentity_p.h>
 
 #include <QElapsedTimer>
 #include <QFile>
@@ -220,6 +221,17 @@ const HierarchyNode *multiLCA(const Path &nodes)
     }
 
     return nullptr;
+}
+
+KuesaEntity *createKuesaEntityNodeFromFactory(const char *type)
+{
+    const auto factories = Qt3DCore::QAbstractNodeFactory::nodeFactories();
+    for (Qt3DCore::QAbstractNodeFactory *f : factories) {
+        Qt3DCore::QNode *n = f->createNode(type);
+        if (n)
+            return static_cast<KuesaEntity *>(n);
+    }
+    return new KuesaEntity();
 }
 
 } // namespace
@@ -939,14 +951,24 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
             const bool entityAlreadyCreated = (node.entity != nullptr);
             if (!entityAlreadyCreated) {
                 // If we are dealing with a Camera, we instantiate a QCamera
-                // instead of a QEntity
-                if (node.cameraIdx >= 0)
+                // instead of a KuesaEntity
+                if (node.cameraIdx >= 0) {
                     node.entity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DRender::QCamera>("QCamera");
-                else
-                    node.entity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
-
-                for (const auto &extra : node.extras)
-                    node.entity->setProperty(extra.first.toLocal8Bit().constData(), extra.second);
+                    if (!node.extras.empty())
+                        qCWarning(Kuesa::kuesa) << "Extra properties on Camera node are not handled";
+                } else {
+                    // createKuesaEntityNodeFromFactor does the same thing as
+                    // Qt3DCore::QAbstractNodeFactory::createNode except it
+                    // doesn't rely on qobject_cast as that uses the
+                    // staticQMetaObject and KuesaEntity doesn't provide one
+                    Kuesa::KuesaEntity *e = createKuesaEntityNodeFromFactory("KuesaEntity");
+                    // Add any extra as a dynamic property on e
+                    for (const auto &extra : node.extras)
+                        e->addExtraProperty(extra.first, extra.second);
+                    // Generate MetaObject for Entity now that all custom properties have been added
+                    e->finalize();
+                    node.entity = e;
+                }
             }
             // Set ourselves as parent of our last child
             if (lastChild != nullptr)

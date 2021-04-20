@@ -47,6 +47,8 @@
 #include <Kuesa/SpotLight>
 #include <Kuesa/PointLight>
 #include <Kuesa/private/kuesa_utils_p.h>
+#include <Kuesa/private/kuesaentity_p.h>
+#include <QSignalSpy>
 #include <array>
 #include <atomic>
 
@@ -1341,6 +1343,49 @@ private Q_SLOTS:
         QCOMPARE(node->property("myDoubleProp"), QVariant(1584.883));
         QCOMPARE(node->property("myStringProp"), QVariant(QStringLiteral("Kuesa_String")));
         QCOMPARE(node->property("myUnhandledArrayProp"), QVariant());
+
+        {
+            // WHEN
+            QSignalSpy myBoolPropSpy(node, SIGNAL(myBoolPropChanged()));
+
+            // THEN
+            QVERIFY(myBoolPropSpy.isValid());
+
+            // WHEN
+            node->setProperty("myBoolProp", QVariant(false));
+
+            // THEN
+            QCOMPARE(node->property("myBoolProp").toBool(), false);
+            QCOMPARE(myBoolPropSpy.count(), 1);
+        }
+        {
+            // WHEN
+            QSignalSpy myDoublePropSpy(node, SIGNAL(myDoublePropChanged()));
+
+            // THEN
+            QVERIFY(myDoublePropSpy.isValid());
+
+            // WHEN
+            node->setProperty("myDoubleProp", QVariant(883.0));
+
+            // THEN
+            QCOMPARE(node->property("myDoubleProp").toDouble(), 883.0f);
+            QCOMPARE(myDoublePropSpy.count(), 1);
+        }
+        {
+            // WHEN
+            QSignalSpy myStringPropSpy(node, SIGNAL(myStringPropChanged()));
+
+            // THEN
+            QVERIFY(myStringPropSpy.isValid());
+
+            // WHEN
+            node->setProperty("myStringProp", QVariant(QStringLiteral("Hello")));
+
+            // THEN
+            QCOMPARE(node->property("myStringProp").toString(), QStringLiteral("Hello"));
+            QCOMPARE(myStringPropSpy.count(), 1);
+        }
     }
 };
 
