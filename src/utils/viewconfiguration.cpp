@@ -243,6 +243,8 @@
     Holds the color used to clear the screen at the start of each frame.
 */
 
+QT_BEGIN_NAMESPACE
+
 KuesaUtils::ViewConfiguration::ViewConfiguration(Qt3DCore::QNode *parent)
     : Kuesa::KuesaNode(parent)
 {
@@ -486,3 +488,5 @@ void KuesaUtils::ViewConfiguration::setClearColor(QColor clearColor)
         emit clearColorChanged(clearColor);
     }
 }
+
+QT_END_NAMESPACE
