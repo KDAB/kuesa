@@ -145,6 +145,9 @@ private:
     std::vector<Kuesa::TransformTracker *> m_transformTrackers;
     std::vector<Kuesa::PlaceholderTracker *> m_placeholderTrackers;
 };
+
 } // namespace KuesaUtils
+
+QT_END_NAMESPACE
 
 #endif // VIEWCONFIGURATION_H
