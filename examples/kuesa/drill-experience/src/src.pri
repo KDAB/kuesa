@@ -28,12 +28,8 @@ INCLUDEPATH += $$PWD
 
 SOURCES += $$PWD/main.cpp \
     $$PWD/abstractscreencontroller.cpp \
-    $$PWD/guideddrillingscreencontroller.cpp \
-    $$PWD/statusscreencontroller.cpp \
-    $$PWD/usermanualscreencontroller.cpp
+    $$PWD/screencontroller.cpp
 
 HEADERS += \
     $$PWD/abstractscreencontroller.h \
-    $$PWD/guideddrillingscreencontroller.h \
-    $$PWD/statusscreencontroller.h \
-    $$PWD/usermanualscreencontroller.h
+    $$PWD/screencontroller.h

@@ -32,22 +32,22 @@ import QtQuick.Controls 2.15
 import Drill 1.0
 
 Item {
-
-    property UserManualScreenController controller
+    property ScreenController controller
     readonly property point triggerPosition: controller.triggerPosition
     readonly property point clutchPosition: controller.clutchPosition
     readonly property point chuckPosition: controller.chuckPosition
     readonly property point directionSwitchPosition: controller.directionSwitchPosition
     readonly property point batteryPackPosition: controller.batteryPackPosition
 
+    // 2D Text Labels
     Repeater {
         id: labelsRepeater
         readonly property var parts: [
-            UserManualScreenController.Trigger,
-            UserManualScreenController.Clutch,
-            UserManualScreenController.Chuck,
-            UserManualScreenController.DirectionSwitch,
-            UserManualScreenController.BatteryPack
+            ScreenController.Trigger,
+            ScreenController.Clutch,
+            ScreenController.Chuck,
+            ScreenController.DirectionSwitch,
+            ScreenController.BatteryPack
         ]
         readonly property var positions: [
             triggerPosition,
@@ -64,7 +64,8 @@ Item {
             "Battery pack"
         ]
 
-        model: names.length
+        model: enabled ? names.length : 0
+        enabled: controller.mode === ScreenController.UserManualMode
 
         Item {
             Layout.alignment: Qt.AlignHCenter
@@ -76,7 +77,7 @@ Item {
             width: label.implicitWidth * 2
             height: label.implicitHeight
 
-            visible: controller.selectedPart === UserManualScreenController.NoPartSelected ||
+            visible: controller.selectedPart === ScreenController.NoPartSelected ||
                      labelsRepeater.parts[model.index] === controller.selectedPart
 
             // Left Side Handle

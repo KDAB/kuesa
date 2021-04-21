@@ -36,11 +36,12 @@
 
     \section1 Structure of the Application
 
-    This demo is structured around 3 main screens
+    This demo is structured around a single screen
+    Depending on the user actions, we enter one of 3 modes
     \list
-    \li A interactive Drill manual screen
-    \li A guide to drilling into different type of materials screen
-    \li A real time Drill status screen
+    \li A interactive manual
+    \li A guide to drilling
+    \li An idling mode
     \endlist
 
     \section1 Architecture of the Application
@@ -48,13 +49,10 @@
     The demo has a strong split between the UI defined in QML and logic
     handling done in C++.
 
-    Each screen of the application provides its UI through a dedicated QML
-    file. Each QML file takes care of providing elements such as Labels and
-    Buttons which are either placed at predefined positions of the screen or
-    tied to properties fed by the logic.
+    The UI is provided through a dedicated QML file.
 
-    When it comes to the logic handling, similarly to the UI, each screen has a
-    dedicated controller. The controller takes care of providing a \l
+    When it comes to the logic handling, it's implement through a dedicated
+    controller. The controller takes care of providing a \l
     {KuesaUtils::SceneConfiguration} defining which glTF file to load, which
     camera to use for rendering as well as the a list of \l
     Kuesa::AnimationPlayers to control animations or \l
@@ -79,20 +77,6 @@
     \snippet drill-experience/qml/main.qml 0
     \dots: 5
 
-    A TabBar is declared as our header to switch between our application
-    screens.
-
-    \snippet drill-experience/qml/main.qml 0.1
-
-    Each screen UI is declared as a commponent.
-
-    \snippet drill-experience/qml/main.qml 3.1
-
-    In turn, we can rely on a QML Loader to load the property screen UI
-    Component based on the current tab being selected.
-
-    \snippet drill-experience/qml/main.qml 3.2
-
     \section1 QtQuick and Qt3D integration
 
     The Drill-Experience example relies on the new simplified \l [QML]
@@ -110,9 +94,9 @@
 
     This elements acts as the root elements of our DrillScene element. The \l
     [QML] {KuesaUtils::View3DScene::activeScene} property is bound to the
-    sceneConfiguraiton instanced returned by the current controller. This
-    ensure that when we switch screen and controller, we automatically switch
-    to another SceneConfiguration.
+    sceneConfiguraiton instanced returned by the controller. This ensure that
+    when we switch screen and controller, we automatically switch to another
+    SceneConfiguration.
 
     \snippet drill-experience/qml/DrillScene.qml 1
 

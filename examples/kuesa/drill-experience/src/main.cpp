@@ -31,19 +31,14 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include "usermanualscreencontroller.h"
-#include "statusscreencontroller.h"
-#include "guideddrillingscreencontroller.h"
+#include "screencontroller.h"
 
 namespace {
 
 void registerQMLTypes()
 {
     qmlRegisterUncreatableType<AbstractScreenController>("Drill", 1, 0, "AbstractScreenController", QStringLiteral("AbstractScreenController is abstract"));
-    qmlRegisterUncreatableType<DrillStatus>("Drill", 1, 0, "DrillStatus", QStringLiteral("DrillStatus shouldn't be instantiated"));
-    qmlRegisterType<UserManualScreenController>("Drill", 1, 0, "UserManualScreenController");
-    qmlRegisterType<StatusScreenController>("Drill", 1, 0, "StatusScreenController");
-    qmlRegisterType<GuidedDrillingScreenController>("Drill", 1, 0, "GuidedDrillingScreenController");
+    qmlRegisterType<ScreenController>("Drill", 1, 0, "ScreenController");
 }
 
 } // namespace

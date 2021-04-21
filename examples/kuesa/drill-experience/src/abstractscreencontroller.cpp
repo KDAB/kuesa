@@ -33,8 +33,8 @@
     Base class for the various screen controllers of the Drill-Experience
     application.
  */
-AbstractScreenController::AbstractScreenController(QObject *parent)
-    : QObject(parent)
+AbstractScreenController::AbstractScreenController(Qt3DCore::QNode *parent)
+    : Qt3DCore::QNode(parent)
 {
 }
 

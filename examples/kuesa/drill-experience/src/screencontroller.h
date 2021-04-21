@@ -1,5 +1,5 @@
 /*
-    usermanualscreencontroller.h
+    screencontroller.h
 
     This file is part of Kuesa.
 
@@ -26,24 +26,38 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef USERMANUALSCREENCONTROLLER_H
-#define USERMANUALSCREENCONTROLLER_H
+#ifndef SCREENCONTROLLER_H
+#define SCREENCONTROLLER_H
 
 #include "abstractscreencontroller.h"
 #include <QHash>
 #include <QPointer>
 
-class UserManualScreenController : public AbstractScreenController
+namespace Kuesa {
+class SteppedAnimationPlayer;
+} // namespace Kuesa
+
+class ScreenController : public AbstractScreenController
 {
     Q_OBJECT
+    Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
     Q_PROPERTY(SelectablePart selectedPart READ selectedPart WRITE setSelectedPart NOTIFY selectedPartChanged)
+    Q_PROPERTY(Step guidedDrillingStep READ guidedDrillingStep NOTIFY guidedDrillingStepChanged)
     Q_PROPERTY(QPointF triggerPosition READ triggerPosition NOTIFY triggerPositionChanged)
     Q_PROPERTY(QPointF clutchPosition READ clutchPosition NOTIFY clutchPositionChanged)
     Q_PROPERTY(QPointF chuckPosition READ chuckPosition NOTIFY chuckPositionChanged)
     Q_PROPERTY(QPointF directionSwitchPosition READ directionSwitchPosition NOTIFY directionSwitchPositionChanged)
     Q_PROPERTY(QPointF batteryPackPosition READ batteryPackPosition NOTIFY batteryPackPositionChanged)
+    Q_PROPERTY(float positionOnCameraOrbit READ positionOnCameraOrbit WRITE setPositionOnCameraOrbit NOTIFY positionOnCameraOrbitChanged)
 public:
-    enum SelectablePart {
+    enum class Mode {
+        StatusMode,
+        UserManualMode,
+        GuidedDrillingMode
+    };
+    Q_ENUM(Mode)
+
+    enum class SelectablePart {
         Trigger,
         Clutch,
         Chuck,
@@ -53,11 +67,83 @@ public:
     };
     Q_ENUM(SelectablePart)
 
-    explicit UserManualScreenController(QObject *parent = nullptr);
-    ~UserManualScreenController();
+    enum class DrillMode {
+        None,
+        Drill,
+        Screw,
+    };
+    Q_ENUM(DrillMode)
+
+    enum class MaterialType {
+        None,
+        Wood,
+        Concrete,
+        Metal
+    };
+    Q_ENUM(MaterialType)
+
+    enum class Step : int {
+        None,
+        BitSelection,
+        SetupBit,
+        SetupDirection,
+        CompletionStep
+    };
+    Q_ENUM(Step)
+
+    enum class Bit {
+        None,
+
+        Drill1,
+        Drill2,
+        Drill3,
+        Drill4,
+        Drill5,
+        Drill6,
+
+        ScrewHex,
+        ScrewHexMedium,
+        ScrewHexSmall,
+        ScrewHexTiny,
+
+        ScrewTorx,
+        ScrewTorxMedium,
+        ScrewTorxSmall,
+        ScrewTorxTiny,
+
+        ScrewPhilips,
+        ScrewPhilipsMedium,
+        ScrewPhilipsSmall,
+
+        ScrewFlat,
+        ScrewFlatMedium,
+        ScrewFlatSmall,
+    };
+    Q_ENUM(Bit)
+
+    explicit ScreenController(Qt3DCore::QNode *parent = nullptr);
+    ~ScreenController();
 
     void setSelectedPart(SelectablePart selectedPart);
     SelectablePart selectedPart() const;
+
+    void setMode(Mode mode);
+    Mode mode() const;
+
+    void setBit(Bit bit);
+    Bit bit() const;
+
+    DrillMode drillingMode() const;
+    MaterialType drillingMaterial() const;
+
+    Step guidedDrillingStep() const;
+    Q_INVOKABLE Step nextStep();
+    Q_INVOKABLE Step reset();
+
+    Q_INVOKABLE QString bitName(Bit bit);
+
+    float positionOnCameraOrbit() const;
+    void setPositionOnCameraOrbit(float p);
 
     QPointF triggerPosition() const;
     QPointF clutchPosition() const;
@@ -73,6 +159,12 @@ signals:
     void chuckPositionChanged(const QPointF &screenPosition);
     void directionSwitchPositionChanged(const QPointF &screenPosition);
     void batteryPackPositionChanged(const QPointF &screenPosition);
+    void modeChanged(Mode mode);
+    void guidedDrillingStepChanged();
+    void drillModeChanged();
+    void drillingMaterialChanged();
+    void bitChanged();
+    void positionOnCameraOrbitChanged();
 
 private:
     void updateSceneConfiguration();
@@ -80,7 +172,13 @@ private:
     void hideDetailView();
     void playAnimationBackAndForth(Kuesa::AnimationPlayer *player, int delay = 0);
 
-    SelectablePart m_selectedPart = NoPartSelected;
+    void loadDrillBit();
+    void addObjectPickersOnBit();
+
+    void setDrillMode(DrillMode mode);
+    void setDrillingMaterial(MaterialType material);
+
+    SelectablePart m_selectedPart = SelectablePart::NoPartSelected;
     QHash<SelectablePart, KuesaUtils::SceneConfiguration *> m_sceneConfigurationsTable;
 
     // Trackers owned by the SceneConfiguration
@@ -101,6 +199,37 @@ private:
     // Views owned by the SceneConfiguration if parented, by us otherwise
     KuesaUtils::ViewConfiguration *m_mainViewConfiguration = nullptr;
     KuesaUtils::ViewConfiguration *m_detailViewConfiguration = nullptr;
+
+    // Owned by the sceneEntity
+    Qt3DCore::QTransform *m_insertedDrillBitTranform;
+
+    // Weak pointers
+    Qt3DCore::QEntity *m_insertedDrillBit = nullptr;
+    Qt3DCore::QEntity *m_originalDrillBitParent = nullptr;
+    Qt3DCore::QTransform *m_originalDrillBitTransform = nullptr;
+
+    // Owned by the sceneConfiguration
+    Kuesa::SteppedAnimationPlayer *m_steppedPlayer = nullptr;
+    Qt3DAnimation::QClock *m_animationClock = nullptr;
+
+    Mode m_mode = ScreenController::Mode::StatusMode;
+    Bit m_bit = Bit::None;
+    MaterialType m_drillingMaterial = MaterialType::None;
+    DrillMode m_drillingMode = DrillMode::None;
+
+    Step m_drillingStep = Step::None;
 };
 
-#endif // USERMANUALSCREENCONTROLLER_H
+class CompleteAnimationRunner : public QObject
+{
+    Q_OBJECT
+public:
+    using Callback = std::function<void()>;
+
+    explicit CompleteAnimationRunner(ScreenController *parent,
+                                     Kuesa::AnimationPlayer *p,
+                                     const CompleteAnimationRunner::Callback &callback,
+                                     float speed = 1.0f);
+};
+
+#endif // SCREENCONTROLLER_H

@@ -38,10 +38,6 @@ ApplicationWindow {
     visible: true
     visibility: ApplicationWindow.Maximized
 
-    readonly property int _DRILL_STATUS_SCREEN: 0
-    readonly property int _GUIDED_DRILLING_SCREEN: 1
-    readonly property int _USER_MANUAL_SCREEN: 2
-
     Material.theme: Material.Dark
     Material.accent: Material.Blue
 
@@ -53,112 +49,24 @@ ApplicationWindow {
         }
     }
 
-    //! [0.1]
-    header: TabBar {
-        TabButton { text: "Drill Status" }
-        TabButton { text: "Guided Drilling" }
-        TabButton { text: "User Manual" }
-    }
-    //! [0.1]
-
     //! [1]
     Item {
         id: contentItem
         anchors.fill: parent
 
-        MouseArea {
-            enabled: !view3D.activeFocus
-            anchors.fill: parent
-            onClicked: view3D.forceActiveFocus();
-        }
-
-        readonly property int headerIndex: header.currentIndex
-        onHeaderIndexChanged: screenSwitchAnimation.restart()
-
-        SequentialAnimation {
-            id: screenSwitchAnimation
-            running: false
-            OpacityAnimator { target: contentItem; from: 1; to: 0; duration: 450; easing.type: Easing.OutQuad }
-            ScriptAction { script: view3D.screen = contentItem.headerIndex }
-            OpacityAnimator { target: contentItem; from: 0; to: 1; duration: 850; easing.type: Easing.InQuad }
-        }
-
         //! [2]
         DrillScene {
             id: view3D
+            anchors.fill: parent
         }
         //! [2]
 
-        //! [3.1]
-        Component {
-            id: statusUI
-            StatusUI {
-                controller: view3D.statusScreenController
-            }
-        }
-        Component {
-            id: guidedDrillingUI
-            GuidedDrillingUI {
-                controller: view3D.guidedDrillingScreenController
-            }
-        }
-        Component {
-            id: userManualUI
-            UserManualUI {
-                controller: view3D.userManualScreenController
-            }
-        }
-        //! [3.1]
-
-        //! [3.2]
-        Loader {
-            id: uiLoader
+        //! [3]
+        UserManualUI {
+            controller: view3D.controller
             anchors.fill: parent
-            readonly property var sources: [statusUI, guidedDrillingUI, userManualUI]
-            sourceComponent: sources[header.currentIndex]
         }
-        //! [3.2]
-
-        //! [3.3]
-        states: [
-            State {
-                when: view3D.screen === _DRILL_STATUS_SCREEN
-                AnchorChanges {
-                    target: view3D
-                    anchors {
-                        top: contentItem.top; bottom: contentItem.bottom
-                        left:contentItem.left; right: contentItem.right
-                    }
-                }
-            },
-            State {
-                when: view3D.screen === _GUIDED_DRILLING_SCREEN
-                AnchorChanges {
-                    target: view3D
-                    anchors {
-                        top: contentItem.top; bottom: contentItem.bottom
-                        left: contentItem.left; right: contentItem.right
-                    }
-                }
-                PropertyChanges {
-                    target: view3D
-                    anchors {
-                        bottomMargin: uiLoader.item.content.height
-                    }
-                }
-            },
-            State {
-                when: view3D.screen === _USER_MANUAL_SCREEN
-                AnchorChanges {
-                    target: view3D
-                    anchors {
-                        top: contentItem.top; bottom: contentItem.bottom
-                        left:contentItem.left; right: contentItem.right
-                    }
-                }
-            }
-        ]
-        //! [3.3]
+        //! [3]
     }
     //! [1]
 }

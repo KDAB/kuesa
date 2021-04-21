@@ -26,9 +26,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import Qt3D.Core 2.15
+import Qt3D.Input 2.15
 import Kuesa 1.3
 import Kuesa.Utils 1.3
 import Drill 1.0
+import QtQuick 2.15 as QQ2
 
 //! [0]
 View3D {
@@ -39,34 +42,60 @@ View3D {
     opacity: ready ? 1.0 : 0.0
 
     //! [1]
-    property int screen: 0
 
     // Controllers
     // Readonly properties to expose controllers for external access
-    readonly property StatusScreenController statusScreenController: StatusScreenController {
-        isActive: screen === _DRILL_STATUS_SCREEN
+    readonly property ScreenController controller: _controller
+
+    ScreenController {
+        id: _controller
     }
 
-    readonly property UserManualScreenController userManualScreenController: UserManualScreenController {
-        isActive: screen === _USER_MANUAL_SCREEN
-    }
-
-    readonly property GuidedDrillingScreenController guidedDrillingScreenController: GuidedDrillingScreenController {
-        isActive: screen === _GUIDED_DRILLING_SCREEN
-    }
-
-    readonly property AbstractScreenController controller: {
-        if (screen === _DRILL_STATUS_SCREEN)
-            return statusScreenController
-        if (screen === _GUIDED_DRILLING_SCREEN)
-            return guidedDrillingScreenController
-        // _USER_MANUAL_SCREEN
-        return userManualScreenController
-    }
-
-    // We rely on each controller providing the scene configuration
+    // We rely on the controller providing the scene configuration
     // This provides the source, camera, trackers, animation players...
     activeScene: controller.sceneConfiguration
     //! [1]
+
+    Entity {
+        components: [
+            MouseHandler {
+                id: mouseHandler
+                sourceDevice: MouseDevice {}
+                // Use progress to control the orbit animation when in user manual mode
+                property real progressOffset
+                property bool isPressed: false
+
+                onPressed: {
+                    isPressed = true;
+                    idleDetectionTimer.restart()
+                    // Switch to the User Manual mode when pressing the screen
+                    // while on the status screen
+                    if (controller.mode === ScreenController.StatusMode) {
+                        controller.mode = ScreenController.UserManualMode
+                    } else if (controller.mode === ScreenController.UserManualMode){
+                        // Record camera curve offset
+                        progressOffset = controller.positionOnCameraOrbit + mouse.x / view3D.width
+                    } else { // GuidedDrillingMode
+                        controller.nextStep();
+                    }
+                }
+
+                onReleased: isPressed = false;
+
+                onPositionChanged: {
+                    // Move camera along orbit curve
+                    if (isPressed)
+                        controller.positionOnCameraOrbit = Math.min(1.0, Math.max(0, progressOffset - (mouse.x / view3D.width)))
+                }
+            }
+        ]
+    }
+
+    QQ2.Timer {
+        id: idleDetectionTimer
+        running: controller.mode !== ScreenController.StatusMode
+        interval: 5 * 60 * 1000 // 5 minutes
+        onTriggered: controller.mode = ScreenController.StatusMode
+    }
 }
 //! [0]

@@ -36,7 +36,7 @@ namespace Kuesa {
 class View;
 } // namespace Kuesa
 
-class AbstractScreenController : public QObject
+class AbstractScreenController : public Qt3DCore::QNode
 {
     Q_OBJECT
     Q_PROPERTY(KuesaUtils::SceneConfiguration *sceneConfiguration READ sceneConfiguration NOTIFY sceneConfigurationChanged)
@@ -52,7 +52,7 @@ public:
     const std::vector<Kuesa::View *> &views();
 
 protected:
-    explicit AbstractScreenController(QObject *parent = nullptr);
+    explicit AbstractScreenController(Qt3DCore::QNode *parent = nullptr);
     void setSceneConfiguration(KuesaUtils::SceneConfiguration *sceneConfiguration);
 
 signals:

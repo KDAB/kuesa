@@ -1,25 +1,18 @@
 <RCC>
     <qresource prefix="/">
-        <file>drill/Animation_AnimCamera.bin</file>
-        <file>drill/Animation_AnimChangeDirection.bin</file>
-        <file>drill/Animation_AnimChuck.bin</file>
-        <file>drill/Animation_AnimDrill.bin</file>
         <file>drill/chrome-aniso.png</file>
         <file>drill/dark-diffuse.png</file>
         <file>drill/drill-body_normal.png</file>
         <file>drill/drill-body-diff.png</file>
         <file>drill/drill.gltf</file>
         <file>drill/highlights.png</file>
-        <file>drill/kdab-studiosky-small-blurry2.png</file>
         <file>drill/Mesh_BatteryShape.bin</file>
-        <file>drill/Mesh_BitHolderShape.bin</file>
         <file>drill/Mesh_BodyShape.bin</file>
         <file>drill/Mesh_ChuckShape1.bin</file>
         <file>drill/Mesh_ChuckShape2.bin</file>
         <file>drill/Mesh_ChuckShape3.bin</file>
         <file>drill/Mesh_DirectionKnobsShape.bin</file>
         <file>drill/Mesh_EnvShape.bin</file>
-        <file>drill/Mesh_KnobShape.bin</file>
         <file>drill/Mesh_RingShape0.bin</file>
         <file>drill/Mesh_RingShape1.bin</file>
         <file>drill/Mesh_RingShape2.bin</file>
@@ -32,25 +25,6 @@
         <file>drill/Animation_AnimBatteryOut.bin</file>
         <file>drill/Animation_AnimTriggerPress.bin</file>
         <file>drill/Animation_AnimTriggerRelease.bin</file>
-        <file>drill/Mesh_Bit_Drill_1Shape.bin</file>
-        <file>drill/Mesh_Bit_Drill_2Shape.bin</file>
-        <file>drill/Mesh_Bit_Drill_3Shape.bin</file>
-        <file>drill/Mesh_Bit_Drill_4Shape.bin</file>
-        <file>drill/Mesh_Bit_Drill_5Shape.bin</file>
-        <file>drill/Mesh_Bit_Flat_MedShape.bin</file>
-        <file>drill/Mesh_Bit_Flat_SmallShape.bin</file>
-        <file>drill/Mesh_Bit_FlatShape.bin</file>
-        <file>drill/Mesh_Bit_Hex_MedShape.bin</file>
-        <file>drill/Mesh_Bit_Hex_SmallShape.bin</file>
-        <file>drill/Mesh_Bit_Hex_TinyShape.bin</file>
-        <file>drill/Mesh_Bit_HexShape.bin</file>
-        <file>drill/Mesh_Bit_Philips_MedShape.bin</file>
-        <file>drill/Mesh_Bit_Philips_SmallShape.bin</file>
-        <file>drill/Mesh_Bit_PhilipsShape.bin</file>
-        <file>drill/Mesh_Bit_Torx_MedShape.bin</file>
-        <file>drill/Mesh_Bit_Torx_SmallShape.bin</file>
-        <file>drill/Mesh_Bit_Torx_TinyShape.bin</file>
-        <file>drill/Mesh_Bit_TorxShape.bin</file>
         <file>drill/Mesh_Bit6Shape.bin</file>
         <file>drill/Mesh_TriggerShape.bin</file>
         <file>drill/Animation_AnimCamOrbit.bin</file>
@@ -80,13 +54,9 @@
         <file>drill/Mesh_Tool_TorxTinyShape.bin</file>
         <file>drill/Mesh_ToolHolderShape.bin</file>
         <file>drill/Animation_AnimCamOrbitLinear.bin</file>
-        <file>drill/Animation_AnimTransition01.bin</file>
-        <file>drill/Animation_AnimTransition02.bin</file>
-        <file>drill/Animation_AnimTransition03.bin</file>
-        <file>drill/Animation_AnimTransition04.bin</file>
-        <file>drill/Animation_AnimTransition05.bin</file>
         <file>drill/Animation_AnimGuideAnim.bin</file>
         <file>drill/Animation_AnimGuideCombined.bin</file>
         <file>drill/Animation_AnimGuideSteps.bin</file>
+        <file>drill/kdab-studiosky-small-blurry-dark.png</file>
     </qresource>
 </RCC>
