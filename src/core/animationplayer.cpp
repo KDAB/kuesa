@@ -381,6 +381,11 @@ int AnimationPlayer::loopCount() const
     return m_animator->loopCount();
 }
 
+int AnimationPlayer::currentLoop() const
+{
+    return m_currentLoop;
+}
+
 void AnimationPlayer::setLoopCount(int loops)
 {
     m_animator->setLoopCount(loops);
@@ -409,6 +414,7 @@ float AnimationPlayer::duration() const
 void AnimationPlayer::setNormalizedTime(float timeFraction)
 {
     m_runToTimeFraction = -1;
+    m_lastKnownNormalizedTime = timeFraction;
     m_animator->setNormalizedTime(timeFraction);
 }
 
@@ -444,11 +450,10 @@ void AnimationPlayer::stop()
  */
 void AnimationPlayer::reset()
 {
-    m_runToTimeFraction = -1;
+    stop();
     m_animator->setNormalizedTime(0.f);
-    if (m_animator->clip())
-        m_animator->stop();
-    m_running = false;
+    setCurrentLoop(0);
+    m_lastKnownNormalizedTime = 0.0f;
 }
 
 /*!
@@ -458,11 +463,8 @@ void AnimationPlayer::reset()
 void AnimationPlayer::restart(int delay)
 {
     QTimer::singleShot(delay, this, [this] {
-        m_runToTimeFraction = -1;
-        m_animator->setNormalizedTime(0.f);
-        if (m_animator->clip())
-            m_animator->start();
-        m_running = true;
+        reset();
+        start();
     });
 }
 
@@ -473,6 +475,7 @@ void AnimationPlayer::restart(int delay)
 void AnimationPlayer::run(float fromTimeFraction, float toTimeFraction)
 {
     m_runToTimeFraction = toTimeFraction;
+    m_lastKnownNormalizedTime = fromTimeFraction;
     m_animator->setNormalizedTime(fromTimeFraction);
     if (m_animator->clip())
         m_animator->start();
@@ -589,10 +592,28 @@ void AnimationPlayer::matchClipAndTargets()
 
 void AnimationPlayer::updateNormalizedTime(float index)
 {
-    if (m_running && m_runToTimeFraction > 0. && index >= m_runToTimeFraction) {
-        if (m_animator->clip())
-            m_animator->stop();
-        m_runToTimeFraction = -1;
+    if (m_running) {
+        if (m_runToTimeFraction > 0. && index >= m_runToTimeFraction) {
+            if (m_animator->clip())
+                m_animator->stop();
+            m_runToTimeFraction = -1;
+        }
+        // Have we moved to the next loop?
+        const bool forward = m_animator->clock() ? m_animator->clock()->playbackRate() > 0.0f : true;
+        const bool switchLooped = forward ? index < m_lastKnownNormalizedTime : index > m_lastKnownNormalizedTime;
+        // Use playback direction to properly detect when current loop has increased
+        if (switchLooped)
+            setCurrentLoop(m_currentLoop + 1);
+        m_lastKnownNormalizedTime = index;
     }
+
     emit normalizedTimeChanged(index);
+}
+
+void AnimationPlayer::setCurrentLoop(int loop)
+{
+    if (loop == m_currentLoop)
+        return;
+    m_currentLoop = loop;
+    emit currentLoopChanged(m_currentLoop);
 }

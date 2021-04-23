@@ -50,6 +50,7 @@ class KUESASHARED_EXPORT AnimationPlayer : public KuesaNode
     Q_PROPERTY(QString mapper READ mapper WRITE setMapper NOTIFY mapperChanged)
     Q_PROPERTY(bool running READ isRunning WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(int loops READ loopCount WRITE setLoopCount NOTIFY loopCountChanged)
+    Q_PROPERTY(int currentLoop READ currentLoop NOTIFY currentLoopChanged)
     Q_PROPERTY(Qt3DAnimation::QClock *clock READ clock WRITE setClock NOTIFY clockChanged)
     Q_PROPERTY(float normalizedTime READ normalizedTime WRITE setNormalizedTime NOTIFY normalizedTimeChanged)
     Q_PROPERTY(float duration READ duration NOTIFY durationChanged)
@@ -72,6 +73,7 @@ public:
     QString mapper() const;
     bool isRunning() const;
     int loopCount() const;
+    int currentLoop() const;
     Qt3DAnimation::QClock *clock() const;
     float normalizedTime() const;
     float duration() const;
@@ -103,12 +105,14 @@ Q_SIGNALS:
     void clockChanged(Qt3DAnimation::QClock *clock);
     void normalizedTimeChanged(float index);
     void durationChanged(float duration);
+    void currentLoopChanged(int currentLoop);
 
 private:
     void matchClipAndTargets();
     void setStatus(Status status);
     void updateSceneFromParent(Qt3DCore::QNode *parent);
     void updateNormalizedTime(float index);
+    void setCurrentLoop(int loop);
 
     Status m_status;
     QString m_clip;
@@ -120,6 +124,8 @@ private:
     QMetaObject::Connection m_loadingDoneConnection;
     QMetaObject::Connection m_clipDestroyedConnection;
     QMetaObject::Connection m_mapperDestroyedConnection;
+    int m_currentLoop = 0;
+    float m_lastKnownNormalizedTime = 0.0f;
 };
 
 } // namespace Kuesa
