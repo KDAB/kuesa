@@ -122,8 +122,8 @@ private:
     };
 
     void setSource(const QUrl &source);
-    void retrieveAndSetCamera(QString cameraName, Kuesa::View *view);
-    void retrieveAndSetLayers(QStringList layers, Kuesa::View *view);
+    void retrieveAndSetCamera(const QString &cameraName, Kuesa::View *view);
+    void retrieveAndSetLayers(const QStringList &layers, Kuesa::View *view);
 
     void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);

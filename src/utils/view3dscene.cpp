@@ -455,7 +455,7 @@ void View3DScene::adoptNode(QObject *object)
         node->setParent(this);
 }
 
-void KuesaUtils::View3DScene::retrieveAndSetCamera(QString cameraName, Kuesa::View *view)
+void KuesaUtils::View3DScene::retrieveAndSetCamera(const QString &cameraName, Kuesa::View *view)
 {
     if (!cameraName.isEmpty()) {
         auto camera = SceneEntity::camera(cameraName);
@@ -467,7 +467,7 @@ void KuesaUtils::View3DScene::retrieveAndSetCamera(QString cameraName, Kuesa::Vi
     }
 }
 
-void View3DScene::retrieveAndSetLayers(QStringList layers, Kuesa::View *view)
+void View3DScene::retrieveAndSetLayers(const QStringList &layers, Kuesa::View *view)
 {
     std::vector<Qt3DRender::QLayer *> currentLayers = view->layers();
     std::vector<Qt3DRender::QLayer *> requiredLayers;
