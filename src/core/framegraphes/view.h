@@ -67,12 +67,6 @@ class ReflectionPlane;
 class FBOResolver;
 class ShadowMapStages;
 
-using SceneStagesPtr = QSharedPointer<SceneStages>;
-using ShadowMapStagesPtr = QSharedPointer<ShadowMapStages>;
-using ReflectionStagesPtr = QSharedPointer<ReflectionStages>;
-using EffectsStagesPtr = QSharedPointer<EffectsStages>;
-using ShadowMapPtr = ShadowMapPtr;
-
 class KUESASHARED_EXPORT View : public Qt3DRender::QFrameGraphNode
 {
     Q_OBJECT
@@ -189,11 +183,11 @@ private:
     QSize surfaceSize() const;
     QSize currentTargetSize() const;
 
-    SceneStagesPtr m_sceneStages;
-    ShadowMapStagesPtr m_shadowMapStages;
-    ReflectionStagesPtr m_reflectionStages;
-    EffectsStagesPtr m_fxStages; // User Specified FX
-    EffectsStagesPtr m_internalFXStages; // Mandatory FX (ToneMapping)
+    SceneStages *m_sceneStages = nullptr;
+    ShadowMapStages *m_shadowMapStages = nullptr;
+    ReflectionStages *m_reflectionStages = nullptr;
+    EffectsStages *m_fxStages = nullptr; // User Specified FX
+    EffectsStages *m_internalFXStages = nullptr; // Mandatory FX (ToneMapping)
 
     Qt3DCore::QEntity *m_camera = nullptr;
     QRectF m_viewport = QRectF(0.0f, 0.0f, 1.0f, 1.0f);

@@ -347,7 +347,7 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
     if (!target0outputs.empty())
         depthTex = target0outputs[1]->texture();
 
-    auto setUpEffectStage = [&](EffectsStagesPtr &stage,
+    auto setUpEffectStage = [&](EffectsStages *stage,
                                 Qt3DRender::QRenderTarget *rtA,
                                 Qt3DRender::QRenderTarget *rtB,
                                 bool blitRts = true,
@@ -465,11 +465,11 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
 
 View::View(Qt3DCore::QNode *parent)
     : Qt3DRender::QFrameGraphNode(parent)
-    , m_sceneStages(SceneStagesPtr::create())
-    , m_shadowMapStages(ShadowMapStagesPtr::create())
-    , m_reflectionStages(ReflectionStagesPtr::create())
-    , m_fxStages(EffectsStagesPtr::create())
-    , m_internalFXStages(EffectsStagesPtr::create())
+    , m_sceneStages(new SceneStages())
+    , m_shadowMapStages(new ShadowMapStages())
+    , m_reflectionStages(new ReflectionStages())
+    , m_fxStages(new EffectsStages())
+    , m_internalFXStages(new EffectsStages())
     , m_usesStencilMask(false)
     , m_gammaCorrectionFX(new ToneMappingAndGammaCorrectionEffect())
     , m_fg(new View::ViewForward(this))
@@ -477,11 +477,11 @@ View::View(Qt3DCore::QNode *parent)
     QObject::connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::gammaChanged, this, &View::gammaChanged);
     QObject::connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::exposureChanged, this, &View::exposureChanged);
     QObject::connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::toneMappingAlgorithmChanged, this, &View::toneMappingAlgorithmChanged);
-    QObject::connect(m_reflectionStages.data(), &ReflectionStages::reflectionTextureChanged,
+    QObject::connect(m_reflectionStages, &ReflectionStages::reflectionTextureChanged,
                      this, &View::reflectionTextureChanged);
 
-    connect(m_shadowMapStages.get(), &ShadowMapStages::shadowMapsChanged, this, &View::shadowMapsChanged);
-    connect(m_shadowMapStages.get(), &ShadowMapStages::shadowMapsChanged, this, &View::scheduleFGTreeRebuild);
+    connect(m_shadowMapStages, &ShadowMapStages::shadowMapsChanged, this, &View::shadowMapsChanged);
+    connect(m_shadowMapStages, &ShadowMapStages::shadowMapsChanged, this, &View::scheduleFGTreeRebuild);
 
     // Setup Internal PostFXs
     {
@@ -495,6 +495,18 @@ View::View(Qt3DCore::QNode *parent)
 
 View::~View()
 {
+    // Depending on the configuration, scene stages might not be parented
+    // in which case we are responsible for their lifetime
+    if (!m_sceneStages->parent())
+        delete m_sceneStages;
+    if (!m_shadowMapStages->parent())
+        delete m_shadowMapStages;
+    if (!m_reflectionStages->parent())
+        delete m_reflectionStages;
+    if (!m_fxStages->parent())
+        delete m_fxStages;
+    if (!m_internalFXStages)
+        delete m_internalFXStages;
 }
 
 /*!
