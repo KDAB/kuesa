@@ -47,8 +47,8 @@
 
     Whereas \l {Kuesa::TransformTracker} allows to retrieve the screen space
     position of an Entity in the scene, \l {Kuesa::PlaceholderTracker} goes
-    beyong that by providing access to positioning as well as sizing
-    informations.
+    beyond that by providing access to positioning as well as sizing
+    information.
 
     \section1 Adding Placeholders to a glTF scene
 

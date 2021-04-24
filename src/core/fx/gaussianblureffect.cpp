@@ -295,7 +295,7 @@ void GaussianBlurEffect::createBlurPasses()
     auto blurPassFilterA = FXUtils::createRenderPassFilter(passName(), 1);
     blurPassFilterA->setParent(blurTargetSelectorA);
 
-    //render one final blur, but not into any any render target
+    //render one final blur, but not into any render target
     auto blurPassFilterB = FXUtils::createRenderPassFilter(passName(), 2);
     blurPassFilterB->setParent(m_blurPassRoot);
 }
