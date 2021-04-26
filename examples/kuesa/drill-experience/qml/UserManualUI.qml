@@ -44,21 +44,18 @@ Item {
         id: labelsRepeater
         readonly property var parts: [
             ScreenController.Trigger,
-            ScreenController.Clutch,
             ScreenController.Chuck,
             ScreenController.DirectionSwitch,
             ScreenController.BatteryPack
         ]
         readonly property var positions: [
             triggerPosition,
-            clutchPosition,
             chuckPosition,
             directionSwitchPosition,
             batteryPackPosition
         ]
         readonly property var names: [
             "Trigger",
-            "Clutch",
             "Chuck",
             "Direction switch",
             "Battery pack"
