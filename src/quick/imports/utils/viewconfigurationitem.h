@@ -34,6 +34,7 @@
 #include <KuesaUtils/viewconfiguration.h>
 #include <Kuesa/transformtracker.h>
 #include <Kuesa/placeholdertracker.h>
+#include <Kuesa/abstractpostprocessingeffect.h>
 
 #include <vector>
 
@@ -50,6 +51,7 @@ namespace KuesaUtils {
 class ViewConfigurationItem : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QQmlListProperty<Kuesa::AbstractPostProcessingEffect> postProcessingEffects READ postProcessingEffects CONSTANT)
     Q_PROPERTY(QQmlListProperty<Kuesa::TransformTracker> transformTrackers READ transformTrackers CONSTANT)
     Q_PROPERTY(QQmlListProperty<Kuesa::PlaceholderTracker> placeholderTrackers READ placeholderTrackers CONSTANT)
 public:
@@ -58,10 +60,16 @@ public:
 
     ViewConfiguration *parentViewConfiguration() const;
 
+    QQmlListProperty<Kuesa::AbstractPostProcessingEffect> postProcessingEffects();
     QQmlListProperty<Kuesa::TransformTracker> transformTrackers();
     QQmlListProperty<Kuesa::PlaceholderTracker> placeholderTrackers();
 
 private:
+    static void qmlAppendFX(QQmlListProperty<Kuesa::AbstractPostProcessingEffect> *list, Kuesa::AbstractPostProcessingEffect *fx);
+    static Kuesa::AbstractPostProcessingEffect *qmlFxAt(QQmlListProperty<Kuesa::AbstractPostProcessingEffect> *list, qt_size_type index);
+    static qt_size_type qmlFxCount(QQmlListProperty<Kuesa::AbstractPostProcessingEffect> *list);
+    static void qmlClearFx(QQmlListProperty<Kuesa::AbstractPostProcessingEffect> *list);
+
     static void qmlAppendTransformTrackers(QQmlListProperty<Kuesa::TransformTracker> *list, Kuesa::TransformTracker *node);
     static Kuesa::TransformTracker *qmlTransformTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, qt_size_type index);
     static qt_size_type qmlTransformTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list);
@@ -71,9 +79,6 @@ private:
     static Kuesa::PlaceholderTracker *qmlPlaceholderTrackersAt(QQmlListProperty<Kuesa::PlaceholderTracker> *list, qt_size_type index);
     static qt_size_type qmlPlaceholderTrackersCount(QQmlListProperty<Kuesa::PlaceholderTracker> *list);
     static void qmlClearPlaceholderTrackers(QQmlListProperty<Kuesa::PlaceholderTracker> *list);
-
-    std::vector<Kuesa::TransformTracker *> m_managedTransformTrackers;
-    std::vector<Kuesa::PlaceholderTracker *> m_managedPlaceholderTrackers;
 };
 
 } // namespace KuesaUtils

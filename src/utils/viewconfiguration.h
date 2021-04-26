@@ -37,12 +37,15 @@
 #include <Kuesa/animationplayer.h>
 #include <Kuesa/transformtracker.h>
 #include <Kuesa/placeholdertracker.h>
+#include <Kuesa/abstractpostprocessingeffect.h>
 #include <Kuesa/kuesanode.h>
 #include <Kuesa/ToneMappingAndGammaCorrectionEffect>
 
 QT_BEGIN_NAMESPACE
 
 namespace KuesaUtils {
+
+class AbstractPostProcessingEffect;
 
 class KUESAUTILS_SHARED_EXPORT ViewConfiguration : public Kuesa::KuesaNode
 {
@@ -88,6 +91,11 @@ public:
     void removePlaceholderTracker(Kuesa::PlaceholderTracker *tracker);
     void clearPlaceholderTrackers();
 
+    const std::vector<Kuesa::AbstractPostProcessingEffect *> &postProcessingEffects() const;
+    void addPostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
+    void removePostProcessingEffect(Kuesa::AbstractPostProcessingEffect *effect);
+    void clearPostProcessingEffects();
+
 public Q_SLOTS:
     void setCameraName(const QString &cameraName);
     void setLayerNames(const QStringList &layerNames);
@@ -124,6 +132,9 @@ Q_SIGNALS:
     void placeholderTrackerAdded(Kuesa::PlaceholderTracker *tracker);
     void placeholderTrackerRemoved(Kuesa::PlaceholderTracker *tracker);
 
+    void postProcessingEffectAdded(Kuesa::AbstractPostProcessingEffect *fx);
+    void postProcessingEffectRemoved(Kuesa::AbstractPostProcessingEffect *fx);
+
     void loadingDone();
     void unloadingDone();
 
@@ -144,6 +155,7 @@ private:
 
     std::vector<Kuesa::TransformTracker *> m_transformTrackers;
     std::vector<Kuesa::PlaceholderTracker *> m_placeholderTrackers;
+    std::vector<Kuesa::AbstractPostProcessingEffect *> m_fxs;
 };
 
 } // namespace KuesaUtils

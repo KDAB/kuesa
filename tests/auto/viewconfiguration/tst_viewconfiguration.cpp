@@ -32,6 +32,8 @@
 #include <KuesaUtils/viewconfiguration.h>
 #include <Kuesa/transformtracker.h>
 #include <Kuesa/placeholdertracker.h>
+#include <Kuesa/abstractpostprocessingeffect.h>
+#include <Kuesa/opacitymask.h>
 
 class tst_ViewConfiguration : public QObject
 {
@@ -669,6 +671,117 @@ private Q_SLOTS:
 
         placeholderTrackerAddedSpy.clear();
         placeholderTrackerRemovedSpy.clear();
+    }
+
+    void checkPostProcessingEffects()
+    {
+        // GIVEN
+        KuesaUtils::ViewConfiguration viewConfiguration;
+        QSignalSpy fxAddedSpy(&viewConfiguration, &KuesaUtils::ViewConfiguration::postProcessingEffectAdded);
+        QSignalSpy fxRemovedSpy(&viewConfiguration, &KuesaUtils::ViewConfiguration::postProcessingEffectRemoved);
+
+        // THEN
+        QVERIFY(fxAddedSpy.isValid());
+        QVERIFY(fxRemovedSpy.isValid());
+
+        {
+            // WHEN
+            Kuesa::OpacityMask p1;
+            Kuesa::OpacityMask p2;
+
+            viewConfiguration.addPostProcessingEffect(&p1);
+            viewConfiguration.addPostProcessingEffect(&p2);
+
+            // THEN
+            QCOMPARE(viewConfiguration.postProcessingEffects().size(), size_t(2));
+            QCOMPARE(fxAddedSpy.count(), 2);
+        }
+
+        // THEN -> Shouldn't crash and should have removed fxs
+        QCOMPARE(viewConfiguration.postProcessingEffects().size(), size_t(0));
+        QCOMPARE(fxRemovedSpy.count(), 2);
+
+        fxAddedSpy.clear();
+        fxRemovedSpy.clear();
+
+        {
+            // WHEN
+            Kuesa::OpacityMask p1;
+            Kuesa::OpacityMask p2;
+
+            viewConfiguration.addPostProcessingEffect(&p1);
+            viewConfiguration.addPostProcessingEffect(&p1);
+
+            // THEN
+            QCOMPARE(viewConfiguration.postProcessingEffects().size(), size_t(1));
+            QCOMPARE(fxAddedSpy.count(), 1);
+
+            // WHEN
+            viewConfiguration.removePostProcessingEffect(&p2);
+
+            // THEN
+            QCOMPARE(viewConfiguration.postProcessingEffects().size(), size_t(1));
+            QCOMPARE(fxRemovedSpy.count(), 0);
+        }
+
+        // THEN -> Shouldn't crash and should have removed fxs
+        QCOMPARE(viewConfiguration.postProcessingEffects().size(), size_t(0));
+        QCOMPARE(fxRemovedSpy.count(), 1);
+
+        fxAddedSpy.clear();
+        fxRemovedSpy.clear();
+
+        {
+            // WHEN
+            Kuesa::OpacityMask p1;
+            Kuesa::OpacityMask p2;
+
+            viewConfiguration.addPostProcessingEffect(&p1);
+            viewConfiguration.addPostProcessingEffect(&p2);
+
+            // THEN
+            QCOMPARE(viewConfiguration.postProcessingEffects().size(), size_t(2));
+            QCOMPARE(fxAddedSpy.count(), 2);
+
+            // WHEN
+            viewConfiguration.clearPostProcessingEffects();
+
+            // THEN
+            QCOMPARE(viewConfiguration.postProcessingEffects().size(), size_t(0));
+            QCOMPARE(fxRemovedSpy.count(), 2);
+        }
+
+        // THEN -> Shouldn't crash
+        fxAddedSpy.clear();
+        fxRemovedSpy.clear();
+
+        {
+            // WHEN
+            Kuesa::OpacityMask p1;
+            Kuesa::OpacityMask p2;
+
+            viewConfiguration.addPostProcessingEffect(&p1);
+            viewConfiguration.addPostProcessingEffect(&p2);
+
+            // THEN
+            QCOMPARE(viewConfiguration.postProcessingEffects().size(), size_t(2));
+            QCOMPARE(fxAddedSpy.count(), 2);
+
+            // WHEN
+            viewConfiguration.removePostProcessingEffect(&p1);
+
+            // THEN
+            QCOMPARE(viewConfiguration.postProcessingEffects().size(), size_t(1));
+            QCOMPARE(viewConfiguration.postProcessingEffects().front(), &p2);
+            QCOMPARE(fxRemovedSpy.count(), 1);
+        }
+
+        // THEN -> Shouldn't crash
+        QCOMPARE(viewConfiguration.postProcessingEffects().size(), size_t(0));
+        QCOMPARE(fxRemovedSpy.count(), 2);
+
+        fxAddedSpy.clear();
+        fxRemovedSpy.clear();
     }
 
     void checkLayerNames()

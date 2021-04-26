@@ -385,6 +385,41 @@ void KuesaUtils::ViewConfiguration::clearPlaceholderTrackers()
         removePlaceholderTracker(t);
 }
 
+const std::vector<Kuesa::AbstractPostProcessingEffect *> &KuesaUtils::ViewConfiguration::postProcessingEffects() const
+{
+    return m_fxs;
+}
+
+void KuesaUtils::ViewConfiguration::addPostProcessingEffect(Kuesa::AbstractPostProcessingEffect *fx)
+{
+    if (std::find(std::begin(m_fxs), std::end(m_fxs), fx) == std::end(m_fxs)) {
+        Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+        d->registerDestructionHelper(fx, &ViewConfiguration::removePostProcessingEffect, m_fxs);
+        if (fx->parentNode() == nullptr)
+            fx->setParent(this);
+        m_fxs.push_back(fx);
+        emit postProcessingEffectAdded(fx);
+    }
+}
+
+void KuesaUtils::ViewConfiguration::removePostProcessingEffect(Kuesa::AbstractPostProcessingEffect *fx)
+{
+    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
+    d->unregisterDestructionHelper(fx);
+    auto it = std::remove(std::begin(m_fxs), std::end(m_fxs), fx);
+    if (it != std::end(m_fxs)) {
+        m_fxs.erase(it);
+        emit postProcessingEffectRemoved(fx);
+    }
+}
+
+void KuesaUtils::ViewConfiguration::clearPostProcessingEffects()
+{
+    const std::vector<Kuesa::AbstractPostProcessingEffect *> fxsCopy = m_fxs;
+    for (Kuesa::AbstractPostProcessingEffect *fx : fxsCopy)
+        removePostProcessingEffect(fx);
+}
+
 void KuesaUtils::ViewConfiguration::setCameraName(const QString &cameraName)
 {
     if (m_cameraName != cameraName) {

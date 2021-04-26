@@ -32,6 +32,7 @@
 #include <KuesaUtils/sceneconfiguration.h>
 #include <KuesaUtils/viewconfiguration.h>
 #include <Kuesa/Iro2PlanarReflectionSemProperties>
+#include <Kuesa/opacitymask.h>
 
 class tst_View3DScene : public QObject
 {
@@ -851,6 +852,54 @@ private Q_SLOTS:
 
         // THEN
         // ViewConfigurations are destroyed and framegraph shouldn't contain views
+        QCOMPARE(view.frameGraph()->views().size(), size_t(0));
+    }
+
+    void checkPostProcessingEffects()
+    {
+        // GIVEN
+        KuesaUtils::View3DScene view;
+        KuesaUtils::SceneConfiguration sceneConfiguration;
+        QSignalSpy loadedSpy(&view, &KuesaUtils::View3DScene::loadedChanged);
+
+        QVERIFY(loadedSpy.isValid());
+
+        {
+            // WHEN
+            KuesaUtils::ViewConfiguration viewConfiguration;
+            Kuesa::OpacityMask oM;
+
+            viewConfiguration.addPostProcessingEffect(&oM);
+            viewConfiguration.setCameraName(QStringLiteral("Camera_Orientation"));
+            sceneConfiguration.addViewConfiguration(&viewConfiguration);
+            sceneConfiguration.setSource(QUrl("file:///" ASSETS "Box.gltf"));
+
+            view.setActiveScene(&sceneConfiguration);
+            loadedSpy.wait();
+
+            // THEN
+            QCOMPARE(view.frameGraph()->views().size(), 1);
+            QCOMPARE(view.frameGraph()->views().front()->postProcessingEffects().size(), 1);
+            QCOMPARE(view.frameGraph()->views().front()->postProcessingEffects().front(), &oM);
+
+            // WHEN
+            Kuesa::OpacityMask oM2;
+            viewConfiguration.addPostProcessingEffect(&oM2);
+
+            // THEN
+            QCOMPARE(view.frameGraph()->views().front()->postProcessingEffects().size(), 2);
+            QCOMPARE(view.frameGraph()->views().front()->postProcessingEffects().front(), &oM);
+            QCOMPARE(view.frameGraph()->views().front()->postProcessingEffects().back(), &oM2);
+
+            // WHEN
+            viewConfiguration.removePostProcessingEffect(&oM2);
+
+            // THEN
+            QCOMPARE(view.frameGraph()->views().front()->postProcessingEffects().size(), 1);
+            QCOMPARE(view.frameGraph()->views().front()->postProcessingEffects().front(), &oM);
+        }
+
+        // THEN
         QCOMPARE(view.frameGraph()->views().size(), size_t(0));
     }
 };

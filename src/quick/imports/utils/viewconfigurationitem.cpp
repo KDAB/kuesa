@@ -61,6 +61,15 @@ ViewConfiguration *KuesaUtils::ViewConfigurationItem::parentViewConfiguration() 
     return qobject_cast<ViewConfiguration *>(parent());
 }
 
+QQmlListProperty<Kuesa::AbstractPostProcessingEffect> ViewConfigurationItem::postProcessingEffects()
+{
+    return QQmlListProperty<Kuesa::AbstractPostProcessingEffect>(this, nullptr,
+                                                                 ViewConfigurationItem::qmlAppendFX,
+                                                                 ViewConfigurationItem::qmlFxCount,
+                                                                 ViewConfigurationItem::qmlFxAt,
+                                                                 ViewConfigurationItem::qmlClearFx);
+}
+
 QQmlListProperty<Kuesa::TransformTracker> ViewConfigurationItem::transformTrackers()
 {
     return QQmlListProperty<Kuesa::TransformTracker>(this, nullptr,
@@ -84,27 +93,25 @@ void ViewConfigurationItem::qmlAppendTransformTrackers(QQmlListProperty<Kuesa::T
     if (node == nullptr)
         return;
     ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
-    self->m_managedTransformTrackers.push_back(node);
     self->parentViewConfiguration()->addTransformTracker(node);
 }
 
 Kuesa::TransformTracker *ViewConfigurationItem::qmlTransformTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, qt_size_type index)
 {
     ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
-    return self->m_managedTransformTrackers.at(size_t(index));
+    return self->parentViewConfiguration()->transformTrackers().at(size_t(index));
 }
 
 qt_size_type ViewConfigurationItem::qmlTransformTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list)
 {
     ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
-    return int(self->m_managedTransformTrackers.size());
+    return qt_size_type(self->parentViewConfiguration()->transformTrackers().size());
 }
 
 void ViewConfigurationItem::qmlClearTransformTrackers(QQmlListProperty<Kuesa::TransformTracker> *list)
 {
     ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
     self->parentViewConfiguration()->clearTransformTrackers();
-    self->m_managedTransformTrackers.clear();
 }
 
 void ViewConfigurationItem::qmlAppendPlaceholderTrackers(QQmlListProperty<Kuesa::PlaceholderTracker> *list, Kuesa::PlaceholderTracker *node)
@@ -112,25 +119,49 @@ void ViewConfigurationItem::qmlAppendPlaceholderTrackers(QQmlListProperty<Kuesa:
     if (node == nullptr)
         return;
     ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
-    self->m_managedPlaceholderTrackers.push_back(node);
     self->parentViewConfiguration()->addPlaceholderTracker(node);
 }
 
 Kuesa::PlaceholderTracker *ViewConfigurationItem::qmlPlaceholderTrackersAt(QQmlListProperty<Kuesa::PlaceholderTracker> *list, qt_size_type index)
 {
     ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
-    return self->m_managedPlaceholderTrackers.at(size_t(index));
+    return self->parentViewConfiguration()->placeholderTrackers().at(size_t(index));
 }
 
 qt_size_type ViewConfigurationItem::qmlPlaceholderTrackersCount(QQmlListProperty<Kuesa::PlaceholderTracker> *list)
 {
     ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
-    return int(self->m_managedPlaceholderTrackers.size());
+    return qt_size_type(self->parentViewConfiguration()->placeholderTrackers().size());
 }
 
 void ViewConfigurationItem::qmlClearPlaceholderTrackers(QQmlListProperty<Kuesa::PlaceholderTracker> *list)
 {
     ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
     self->parentViewConfiguration()->clearPlaceholderTrackers();
-    self->m_managedPlaceholderTrackers.clear();
+}
+
+void ViewConfigurationItem::qmlAppendFX(QQmlListProperty<Kuesa::AbstractPostProcessingEffect> *list, Kuesa::AbstractPostProcessingEffect *fx)
+{
+    ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
+    if (fx == nullptr)
+        return;
+    self->parentViewConfiguration()->addPostProcessingEffect(fx);
+}
+
+Kuesa::AbstractPostProcessingEffect *ViewConfigurationItem::qmlFxAt(QQmlListProperty<Kuesa::AbstractPostProcessingEffect> *list, qt_size_type index)
+{
+    ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
+    return self->parentViewConfiguration()->postProcessingEffects().at(index);
+}
+
+qt_size_type ViewConfigurationItem::qmlFxCount(QQmlListProperty<Kuesa::AbstractPostProcessingEffect> *list)
+{
+    ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
+    return qt_size_type(self->parentViewConfiguration()->postProcessingEffects().size());
+}
+
+void ViewConfigurationItem::qmlClearFx(QQmlListProperty<Kuesa::AbstractPostProcessingEffect> *list)
+{
+    ViewConfigurationItem *self = static_cast<ViewConfigurationItem *>(list->object);
+    self->parentViewConfiguration()->clearPostProcessingEffects();
 }

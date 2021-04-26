@@ -683,6 +683,10 @@ void View3DScene::addViewConfiguration(ViewConfiguration *viewConfiguration)
         view->setGamma(viewConfiguration->gamma());
         view->setClearColor(viewConfiguration->clearColor());
 
+        const std::vector<Kuesa::AbstractPostProcessingEffect *> &fxs = viewConfiguration->postProcessingEffects();
+        for (Kuesa::AbstractPostProcessingEffect *fx : fxs)
+            view->addPostProcessingEffect(fx);
+
         retrieveAndSetCamera(viewConfiguration->cameraName(), view);
         retrieveAndSetLayers(viewConfiguration->layerNames(), view);
 
@@ -701,6 +705,12 @@ void View3DScene::addViewConfiguration(ViewConfiguration *viewConfiguration)
         auto triggerRetrieveAndSetLayers = [this, viewConfiguration, view]() {
             retrieveAndSetLayers(viewConfiguration->layerNames(), view);
         };
+        auto removeFx = [view](Kuesa::AbstractPostProcessingEffect *fx) {
+            view->removePostProcessingEffect(fx);
+        };
+        auto addFx = [view](Kuesa::AbstractPostProcessingEffect *fx) {
+            view->addPostProcessingEffect(fx);
+        };
 
         using ConVec = std::vector<QMetaObject::Connection>;
         const std::vector<ConVec> connections = {
@@ -718,7 +728,9 @@ void View3DScene::addViewConfiguration(ViewConfiguration *viewConfiguration)
                                      &ViewConfiguration::viewportRectChanged,
                                      &ViewConfiguration::placeholderTrackerAdded,
                                      &ViewConfiguration::placeholderTrackerRemoved),
-            { QObject::connect(this, &View3DScene::screenSizeChanged, triggerUpdatePlaceholderTracker) }
+            { QObject::connect(this, &View3DScene::screenSizeChanged, triggerUpdatePlaceholderTracker) },
+            { QObject::connect(viewConfiguration, &ViewConfiguration::postProcessingEffectAdded, view, addFx),
+              QObject::connect(viewConfiguration, &ViewConfiguration::postProcessingEffectRemoved, view, removeFx) }
         };
 
         m_viewConfigurationsResources.emplace_back(ViewConfigurationResources{ viewConfiguration,
