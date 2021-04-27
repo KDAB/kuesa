@@ -138,7 +138,7 @@ using namespace Qt3DRender;
     \property KuesaUtils::View3DScene::ready
 
     \brief This is true once the glTF file has been properly loaded and that
-    Qt 3D GPU resources have been successfully loaded onto the GPU. The scene
+    Qt 3D GPU resources have been succesfully loaded onto the GPU. The scene
     should be visible on screen when this becomes true.
  */
 
@@ -265,7 +265,7 @@ using namespace Qt3DRender;
     \qmlproperty bool KuesaUtils::View3DScene::ready
 
     \brief This is true once the glTF file has been properly loaded and that
-    Qt 3D GPU resources have been successfully loaded onto the GPU. The scene
+    Qt 3D GPU resources have been succesfully loaded onto the GPU. The scene
     should be visible on screen when this becomes true.
  */
 
