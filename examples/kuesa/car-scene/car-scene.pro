@@ -49,3 +49,8 @@ target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
 INSTALLS += target
 
 OTHER_FILES += doc/src/*
+
+android {
+    DISTFILES += android/AndroidManifest.xml
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+}
