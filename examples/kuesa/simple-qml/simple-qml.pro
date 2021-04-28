@@ -36,5 +36,4 @@ RESOURCES += \
     simple-qml.qrc
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-target.files = $$PWD/*
 INSTALLS += target
