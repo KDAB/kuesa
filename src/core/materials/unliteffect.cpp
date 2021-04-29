@@ -124,22 +124,14 @@ UnlitTechnique::UnlitTechnique(UnlitTechnique::Version version, Qt3DCore::QNode 
     const auto fragmentShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/unlit.frag.json"));
 
     const QByteArray zFillFragmentShaderCode[] = {
-        QByteArray(R"(
-                   #version 330
-                   void main() { }
-                   )"),
-        QByteArray(R"(
-                   #version 300 es
-                   void main() { }
-                   )"),
-        QByteArray(R"(
-                   #version 100
-                   void main() { }
-                   )"),
-        QByteArray(R"(
-                   #version 450
-                   void main() { }
-                   )")
+        QByteArray(R"(#version 330
+                      void main() { })"),
+        QByteArray(R"(#version 300 es
+                      void main() { })"),
+        QByteArray(R"(#version 100
+                      void main() { })"),
+        QByteArray(R"(#version 450
+                      void main() { })")
     };
 
     m_unlitShaderBuilder->setShaderProgram(m_unlitShader);

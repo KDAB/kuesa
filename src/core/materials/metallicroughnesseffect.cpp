@@ -90,22 +90,14 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     const auto fragmentShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.frag.json"));
 
     const QByteArray zFillFragmentShaderCode[] = {
-        QByteArray(R"(
-                   #version 330
-                   void main() { }
-                   )"),
-        QByteArray(R"(
-                   #version 300 es
-                   void main() { }
-                   )"),
-        QByteArray(R"(
-                   #version 100
-                   void main() { }
-                   )"),
-        QByteArray(R"(
-                   #version 450
-                   void main() { }
-                   )")
+        QByteArray(R"(#version 330
+                      void main() { })"),
+        QByteArray(R"(#version 300 es
+                      void main() { })"),
+        QByteArray(R"(#version 100
+                      void main() { })"),
+        QByteArray(R"(#version 450
+                      void main() { })")
     };
 
     m_metalRoughShaderBuilder->setShaderProgram(m_metalRoughShader);
