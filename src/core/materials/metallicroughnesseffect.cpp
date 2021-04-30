@@ -158,11 +158,17 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     m_transparentRenderPass->setEnabled(false);
     addRenderPass(m_transparentRenderPass);
 
-    if (FrameGraphUtils::hasGeometryShaderSupport()) {
+    static const QString cubeShadowShaderSource[] = {
+        QStringLiteral("qrc:/kuesa/shaders/gl3/shadow_cube.geom"),
+        QStringLiteral("qrc:/kuesa/shaders/es3/shadow_cube.geom"),
+        {}, // ES2 doesn't support geometry shaders
+        QStringLiteral("qrc:/kuesa/shaders/gl3/shadow_cube.geom")
+    };
+    if (FrameGraphUtils::hasGeometryShaderSupport() && !cubeShadowShaderSource[version].isNull()) {
         auto cubeShadowShaderProg = new Qt3DRender::QShaderProgram(this);
         m_cubeMapShadowShaderBuilder->setShaderProgram(cubeShadowShaderProg);
         m_cubeMapShadowShaderBuilder->setVertexShaderGraph(vertexShaderGraph);
-        cubeShadowShaderProg->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/shadow_cube.geom"))));
+        cubeShadowShaderProg->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(cubeShadowShaderSource[version])));
         cubeShadowShaderProg->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
         m_cubeMapShadowRenderPass->setShaderProgram(cubeShadowShaderProg);
