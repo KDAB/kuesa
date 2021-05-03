@@ -497,15 +497,15 @@ View::~View()
 {
     // Depending on the configuration, scene stages might not be parented
     // in which case we are responsible for their lifetime
-    if (!m_sceneStages->parent())
+    if (m_sceneStages && !m_sceneStages->parent())
         delete m_sceneStages;
-    if (!m_shadowMapStages->parent())
+    if (m_shadowMapStages && !m_shadowMapStages->parent())
         delete m_shadowMapStages;
-    if (!m_reflectionStages->parent())
+    if (m_reflectionStages && !m_reflectionStages->parent())
         delete m_reflectionStages;
-    if (!m_fxStages->parent())
+    if (m_fxStages && !m_fxStages->parent())
         delete m_fxStages;
-    if (!m_internalFXStages)
+    if (m_internalFXStages && !m_internalFXStages)
         delete m_internalFXStages;
 }
 

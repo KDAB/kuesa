@@ -39,6 +39,7 @@
 #include <Qt3DCore/QEntity>
 #include <Qt3DRender/QCullFace>
 #include <Qt3DRender/QAbstractTexture>
+#include <QPointer>
 
 class tst_View;
 class tst_ForwardRenderer;
@@ -183,11 +184,11 @@ private:
     QSize surfaceSize() const;
     QSize currentTargetSize() const;
 
-    SceneStages *m_sceneStages = nullptr;
-    ShadowMapStages *m_shadowMapStages = nullptr;
-    ReflectionStages *m_reflectionStages = nullptr;
-    EffectsStages *m_fxStages = nullptr; // User Specified FX
-    EffectsStages *m_internalFXStages = nullptr; // Mandatory FX (ToneMapping)
+    QPointer<SceneStages> m_sceneStages;
+    QPointer<ShadowMapStages> m_shadowMapStages;
+    QPointer<ReflectionStages> m_reflectionStages;
+    QPointer<EffectsStages> m_fxStages; // User Specified FX
+    QPointer<EffectsStages> m_internalFXStages; // Mandatory FX (ToneMapping)
 
     Qt3DCore::QEntity *m_camera = nullptr;
     QRectF m_viewport = QRectF(0.0f, 0.0f, 1.0f, 1.0f);
@@ -218,7 +219,7 @@ private:
                                 size_t fxCount);
         void updateTextureSizes();
 
-        Qt3DRender::QRenderTargetSelector *m_renderToTextureRootNode = nullptr;
+        QPointer<Qt3DRender::QRenderTargetSelector> m_renderToTextureRootNode;
         Qt3DRender::QClearBuffers *m_clearRT0 = nullptr;
         Qt3DRender::QLayerFilter *m_mainSceneLayerFilter = nullptr;
         Qt3DRender::QRenderTarget *m_renderTargets[2] = { nullptr, nullptr };
