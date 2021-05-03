@@ -258,6 +258,12 @@ private Q_SLOTS:
                        { 1, { AnimationTarget::Node, 26, QStringLiteral("extensions/AVR_lights_static/strength") } }
                    }
                 << true;
+        QTest::addRow("extra_property")
+                << QStringLiteral(ASSETS "ext_extra_property_animation.json")
+                << QVector<ChannelInfo>{
+                       { 1, { AnimationTarget::Node, 1, QStringLiteral("extras/health") } }
+                   }
+                << true;
     }
 
     void checkParseEXTPropertyAnimation()
