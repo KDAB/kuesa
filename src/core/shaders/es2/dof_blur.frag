@@ -1,3 +1,5 @@
+#version 100
+
 /*
     dof_blur.frag
 
@@ -26,7 +28,6 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#version 100
 precision mediump float;
 precision highp int;
 

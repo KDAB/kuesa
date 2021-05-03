@@ -1,3 +1,5 @@
+#version 330
+
 /*
     dof_composite.frag
 
@@ -25,8 +27,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#version 330
 
 const float sharpTextureCutoff = .2;
 const float dofTextureCutoff = 1;
