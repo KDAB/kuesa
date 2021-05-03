@@ -475,7 +475,7 @@ const std::vector<View *> &ForwardRenderer::views() const
  */
 QSize ForwardRenderer::currentSurfaceSize() const
 {
-    QSize size = m_surfaceSelector->externalRenderTargetSize();
+    QSize size = m_surfaceSelector->externalRenderTargetSize() * m_surfaceSelector->surfacePixelRatio();
 
     if (!size.isValid()) {
         auto currentSurface = m_surfaceSelector->surface();
