@@ -44,3 +44,7 @@ OTHER_FILES += doc/src/* \
     ../assets/envmaps/pink_sunrise/envmap-pink-sunrise.qrc \
     doc/src/*
 
+android {
+    DISTFILES += android/AndroidManifest.xml
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+}
