@@ -211,45 +211,29 @@ ScreenController::ScreenController(Qt3DCore::QNode *parent)
     m_detailViewConfiguration->setClearColor(QColor(Qt::gray));
     m_detailViewConfiguration->setLayerNames({ QStringLiteral("LayerDevice") });
 
-    // Trackers
+    // Trackers for Part Labels
     {
-        m_triggerTracker = new Kuesa::TransformTracker();
-        m_triggerTracker->setName(QStringLiteral("Drill.LABEL_Trigger"));
-        m_mainViewConfiguration->addTransformTracker(m_triggerTracker);
-        QObject::connect(m_triggerTracker, &Kuesa::TransformTracker::screenPositionChanged,
-                         this, &ScreenController::triggerPositionChanged);
-    }
+        const std::pair<QString, SelectablePart> partLabelNodes[] = {
+            { QStringLiteral("Drill.LABEL_Trigger"), SelectablePart::Trigger },
+            { QStringLiteral("Drill.LABEL_Chuck"), SelectablePart::Chuck },
+            { QStringLiteral("Drill.LABEL_DirSwitch"), SelectablePart::DirectionSwitch },
+            { QStringLiteral("Drill.LABEL_Battery"), SelectablePart::BatteryPack },
+            { QStringLiteral("Drill.LABEL_Clutch"), SelectablePart::NoPartSelected },
+            { QStringLiteral("Drill.LABEL_Kdab"), SelectablePart::NoPartSelected },
+            { QStringLiteral("Drill.LABEL_Motor"), SelectablePart::NoPartSelected },
+            { QStringLiteral("Drill.LABEL_Bits"), SelectablePart::NoPartSelected },
+        };
 
-    {
-        m_clutchTracker = new Kuesa::TransformTracker();
-        m_clutchTracker->setName(QStringLiteral("Drill.LABEL_Clutch"));
-        m_mainViewConfiguration->addTransformTracker(m_clutchTracker);
-        QObject::connect(m_clutchTracker, &Kuesa::TransformTracker::screenPositionChanged,
-                         this, &ScreenController::clutchPositionChanged);
-    }
-
-    {
-        m_chuckTracker = new Kuesa::TransformTracker();
-        m_chuckTracker->setName(QStringLiteral("Drill.LABEL_Chuck"));
-        m_mainViewConfiguration->addTransformTracker(m_chuckTracker);
-        QObject::connect(m_chuckTracker, &Kuesa::TransformTracker::screenPositionChanged,
-                         this, &ScreenController::chuckPositionChanged);
-    }
-
-    {
-        m_directionSwitchTracker = new Kuesa::TransformTracker();
-        m_directionSwitchTracker->setName(QStringLiteral("Drill.LABEL_DirSwitch"));
-        m_mainViewConfiguration->addTransformTracker(m_directionSwitchTracker);
-        QObject::connect(m_directionSwitchTracker, &Kuesa::TransformTracker::screenPositionChanged,
-                         this, &ScreenController::directionSwitchPositionChanged);
-    }
-
-    {
-        m_batteryPackTracker = new Kuesa::TransformTracker();
-        m_batteryPackTracker->setName(QStringLiteral("Drill.LABEL_Battery"));
-        m_mainViewConfiguration->addTransformTracker(m_batteryPackTracker);
-        QObject::connect(m_batteryPackTracker, &Kuesa::TransformTracker::screenPositionChanged,
-                         this, &ScreenController::batteryPackPositionChanged);
+        for (const auto &nodeNamePartPair : partLabelNodes) {
+            auto *tracker = new Kuesa::TransformTracker();
+            tracker->setName(nodeNamePartPair.first);
+            m_mainViewConfiguration->addTransformTracker(tracker);
+            auto *partLabel = new PartLabel(nodeNamePartPair.first,
+                                            nodeNamePartPair.second,
+                                            tracker,
+                                            this);
+            m_partLabels.push_back(partLabel);
+        }
     }
 
     // Animations
@@ -303,7 +287,11 @@ ScreenController::ScreenController(Qt3DCore::QNode *parent)
     }
 
     QObject::connect(configuration, &KuesaUtils::SceneConfiguration::loadingDone,
-                     this, &ScreenController::addObjectPickersOnBit);
+                     this, [this] {
+                         addObjectPickersOnBit();
+                         // Gather labels names
+                         setPartLabelNames();
+                     });
 
     QObject::connect(this, &ScreenController::bitChanged,
                      this, &ScreenController::loadDrillBit);
@@ -630,31 +618,6 @@ void ScreenController::setPositionOnCameraOrbit(float p)
     m_cameraAnimationPlayer->setNormalizedTime(p);
 }
 
-QPointF ScreenController::triggerPosition() const
-{
-    return m_triggerTracker->screenPosition();
-}
-
-QPointF ScreenController::clutchPosition() const
-{
-    return m_clutchTracker->screenPosition();
-}
-
-QPointF ScreenController::chuckPosition() const
-{
-    return m_chuckTracker->screenPosition();
-}
-
-QPointF ScreenController::directionSwitchPosition() const
-{
-    return m_directionSwitchTracker->screenPosition();
-}
-
-QPointF ScreenController::batteryPackPosition() const
-{
-    return m_batteryPackTracker->screenPosition();
-}
-
 void ScreenController::updateSceneConfiguration()
 {
     hideDetailView();
@@ -732,6 +695,21 @@ void ScreenController::loadDrillBit()
     }
 }
 
+void ScreenController::setPartLabelNames()
+{
+    Kuesa::SceneEntity *sceneEntity = sceneConfiguration()->sceneEntity();
+    if (!sceneEntity)
+        return;
+    for (QObject *obj : qAsConst(m_partLabels)) {
+        PartLabel *label = qobject_cast<PartLabel *>(obj);
+        // Retrive label entity
+        Qt3DCore::QEntity *labelEntity = sceneEntity->entity(label->nodeName());
+        // Use extra property on labelEntity to set PartLabel label
+        if (labelEntity != nullptr)
+            label->setLabelName(labelEntity->property("text").toString());
+    }
+}
+
 void ScreenController::addObjectPickersOnBit()
 {
     Kuesa::SceneEntity *sceneEntity = sceneConfiguration()->sceneEntity();
@@ -758,4 +736,50 @@ void ScreenController::addObjectPickersOnBit()
             drillBit->addComponent(picker);
         }
     }
+}
+
+PartLabel::PartLabel(const QString &nodeName,
+                     const ScreenController::SelectablePart part,
+                     Kuesa::TransformTracker *tracker,
+                     QObject *parent)
+    : QObject(parent)
+    , m_nodeName(nodeName)
+    , m_part(part)
+    , m_tracker(tracker)
+{
+    QObject::connect(tracker, &Kuesa::TransformTracker::screenPositionChanged,
+                     this, &PartLabel::positionChanged);
+}
+
+QPointF PartLabel::position() const
+{
+    return m_tracker->screenPosition();
+}
+
+QString PartLabel::labelName() const
+{
+    return m_labelName;
+}
+
+ScreenController::SelectablePart PartLabel::part() const
+{
+    return m_part;
+}
+
+QString PartLabel::nodeName() const
+{
+    return m_nodeName;
+}
+
+void PartLabel::setLabelName(const QString &labelName)
+{
+    if (labelName == m_labelName)
+        return;
+    m_labelName = labelName;
+    emit labelNameChanged();
+}
+
+QObjectList ScreenController::partLabels() const
+{
+    return m_partLabels;
 }

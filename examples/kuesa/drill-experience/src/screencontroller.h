@@ -32,6 +32,7 @@
 #include "abstractscreencontroller.h"
 #include <QHash>
 #include <QPointer>
+#include <QObjectList>
 
 namespace Kuesa {
 class SteppedAnimationPlayer;
@@ -43,11 +44,7 @@ class ScreenController : public AbstractScreenController
     Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
     Q_PROPERTY(SelectablePart selectedPart READ selectedPart WRITE setSelectedPart NOTIFY selectedPartChanged)
     Q_PROPERTY(Step guidedDrillingStep READ guidedDrillingStep NOTIFY guidedDrillingStepChanged)
-    Q_PROPERTY(QPointF triggerPosition READ triggerPosition NOTIFY triggerPositionChanged)
-    Q_PROPERTY(QPointF clutchPosition READ clutchPosition NOTIFY clutchPositionChanged)
-    Q_PROPERTY(QPointF chuckPosition READ chuckPosition NOTIFY chuckPositionChanged)
-    Q_PROPERTY(QPointF directionSwitchPosition READ directionSwitchPosition NOTIFY directionSwitchPositionChanged)
-    Q_PROPERTY(QPointF batteryPackPosition READ batteryPackPosition NOTIFY batteryPackPositionChanged)
+    Q_PROPERTY(QList<QObject *> partLabels READ partLabels CONSTANT)
     Q_PROPERTY(float positionOnCameraOrbit READ positionOnCameraOrbit WRITE setPositionOnCameraOrbit NOTIFY positionOnCameraOrbitChanged)
 public:
     enum class Mode {
@@ -127,6 +124,8 @@ public:
     void setSelectedPart(SelectablePart selectedPart);
     SelectablePart selectedPart() const;
 
+    QObjectList partLabels() const;
+
     void setMode(Mode mode);
     Mode mode() const;
 
@@ -145,20 +144,8 @@ public:
     float positionOnCameraOrbit() const;
     void setPositionOnCameraOrbit(float p);
 
-    QPointF triggerPosition() const;
-    QPointF clutchPosition() const;
-    QPointF chuckPosition() const;
-    QPointF directionSwitchPosition() const;
-    QPointF speedSwitchPosition() const;
-    QPointF batteryPackPosition() const;
-
 signals:
     void selectedPartChanged();
-    void triggerPositionChanged(const QPointF &screenPosition);
-    void clutchPositionChanged(const QPointF &screenPosition);
-    void chuckPositionChanged(const QPointF &screenPosition);
-    void directionSwitchPositionChanged(const QPointF &screenPosition);
-    void batteryPackPositionChanged(const QPointF &screenPosition);
     void modeChanged(Mode mode);
     void guidedDrillingStepChanged();
     void drillModeChanged();
@@ -173,6 +160,7 @@ private:
     void playAnimationBackAndForth(Kuesa::AnimationPlayer *player, int delay = 0);
 
     void loadDrillBit();
+    void setPartLabelNames();
     void addObjectPickersOnBit();
 
     void setDrillMode(DrillMode mode);
@@ -181,12 +169,8 @@ private:
     SelectablePart m_selectedPart = SelectablePart::NoPartSelected;
     QHash<SelectablePart, KuesaUtils::SceneConfiguration *> m_sceneConfigurationsTable;
 
-    // Trackers owned by the SceneConfiguration
-    Kuesa::TransformTracker *m_triggerTracker = nullptr;
-    Kuesa::TransformTracker *m_clutchTracker = nullptr;
-    Kuesa::TransformTracker *m_chuckTracker = nullptr;
-    Kuesa::TransformTracker *m_directionSwitchTracker = nullptr;
-    Kuesa::TransformTracker *m_batteryPackTracker = nullptr;
+    // Labels owned by the SceneConfiguration
+    QObjectList m_partLabels;
 
     // Animations owned by the SceneConfiguration
     Kuesa::AnimationPlayer *m_cameraAnimationPlayer = nullptr;
@@ -230,6 +214,37 @@ public:
                                      Kuesa::AnimationPlayer *p,
                                      const CompleteAnimationRunner::Callback &callback,
                                      float speed = 1.0f);
+};
+
+class PartLabel : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QPointF position READ position NOTIFY positionChanged)
+    Q_PROPERTY(QString labelName READ labelName NOTIFY labelNameChanged)
+    Q_PROPERTY(QString nodeName READ nodeName CONSTANT)
+    Q_PROPERTY(ScreenController::SelectablePart part READ part CONSTANT)
+
+public:
+    explicit PartLabel(const QString &nodeName,
+                       const ScreenController::SelectablePart part,
+                       Kuesa::TransformTracker *tracker,
+                       QObject *parent = nullptr);
+
+    QPointF position() const;
+    QString labelName() const;
+    ScreenController::SelectablePart part() const;
+    QString nodeName() const;
+    void setLabelName(const QString &labelName);
+
+Q_SIGNALS:
+    void labelNameChanged();
+    void positionChanged();
+
+private:
+    const QString m_nodeName;
+    const ScreenController::SelectablePart m_part;
+    Kuesa::TransformTracker *m_tracker = nullptr;
+    QString m_labelName;
 };
 
 #endif // SCREENCONTROLLER_H

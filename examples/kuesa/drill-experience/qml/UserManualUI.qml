@@ -33,59 +33,38 @@ import Drill 1.0
 
 Item {
     property ScreenController controller
-    readonly property point triggerPosition: controller.triggerPosition
-    readonly property point clutchPosition: controller.clutchPosition
-    readonly property point chuckPosition: controller.chuckPosition
-    readonly property point directionSwitchPosition: controller.directionSwitchPosition
-    readonly property point batteryPackPosition: controller.batteryPackPosition
+      // 2D Text Labels
 
-    // 2D Text Labels
     Repeater {
         id: labelsRepeater
-        readonly property var parts: [
-            ScreenController.Trigger,
-            ScreenController.Chuck,
-            ScreenController.DirectionSwitch,
-            ScreenController.BatteryPack
-        ]
-        readonly property var positions: [
-            triggerPosition,
-            chuckPosition,
-            directionSwitchPosition,
-            batteryPackPosition
-        ]
-        readonly property var names: [
-            "Trigger",
-            "Chuck",
-            "Direction switch",
-            "Battery pack"
-        ]
 
-        model: enabled ? names.length : 0
+        model: enabled ? controller.partLabels : 0
         enabled: controller.mode === ScreenController.UserManualMode
 
         Item {
             Layout.alignment: Qt.AlignHCenter
-            x: labelsRepeater.positions[model.index].x
-            y: labelsRepeater.positions[model.index].y
+            x: model.modelData.position.x
+            y: model.modelData.position.y
             scale: mouseArea.pressed ? 0.9 : 1
             Behavior on scale { ScaleAnimator { duration: 300 } }
 
             width: label.implicitWidth * 2
             height: label.implicitHeight
 
+            readonly property bool isClickable:  model.modelData.part !== ScreenController.NoPartSelected
             visible: controller.selectedPart === ScreenController.NoPartSelected ||
-                     labelsRepeater.parts[model.index] === controller.selectedPart
+                     model.modelData.part === controller.selectedPart
 
             // Left Side Handle
             Rectangle {
+                visible: isClickable
                 id: handle
                 anchors {
                     left: parent.left
-                    top: parent.top
-                    bottom: parent.bottom
+                    verticalCenter: parent.verticalCenter
                     margins: 2
                 }
+                height: label.fontInfo.pixelSize * 1.5
                 width: height
                 radius: width * 0.5
                 color: "transparent"
@@ -109,7 +88,7 @@ Item {
             // Text Label
             Label {
                 id: label
-                text: labelsRepeater.names[model.index]
+                text: model.modelData.labelName
                 anchors {
                     left: handle.right
                     leftMargin: 15
@@ -121,8 +100,9 @@ Item {
 
             MouseArea {
                 id: mouseArea
+                enabled: isClickable
                 anchors.fill: parent
-                onClicked: controller.selectedPart = labelsRepeater.parts[model.index]
+                onClicked: controller.selectedPart = model.modelData.part
                 hoverEnabled: true
             }
         }

@@ -38,6 +38,7 @@ namespace {
 void registerQMLTypes()
 {
     qmlRegisterUncreatableType<AbstractScreenController>("Drill", 1, 0, "AbstractScreenController", QStringLiteral("AbstractScreenController is abstract"));
+    qmlRegisterUncreatableType<PartLabel>("Drill", 1, 0, "PartLabel", QStringLiteral("PartLabel is not instantiable"));
     qmlRegisterType<ScreenController>("Drill", 1, 0, "ScreenController");
 }
 
