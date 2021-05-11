@@ -207,9 +207,10 @@ ScreenController::ScreenController(Qt3DCore::QNode *parent)
     configuration->addViewConfiguration(m_mainViewConfiguration);
 
     m_detailViewConfiguration = new KuesaUtils::ViewConfiguration;
-    m_detailViewConfiguration->setViewportRect({ 0.7f, 0.0f, 0.3f, 0.3f });
+    m_detailViewConfiguration->setViewportRect({ 0.7f, 0.0f, 0.0f, 0.0f });
     m_detailViewConfiguration->setClearColor(QColor(Qt::gray));
     m_detailViewConfiguration->setLayerNames({ QStringLiteral("LayerDevice") });
+    configuration->addViewConfiguration(m_detailViewConfiguration);
 
     // Trackers for Part Labels
     {
@@ -657,15 +658,13 @@ void ScreenController::updateSceneConfiguration()
 
 void ScreenController::showDetailView(const QString &cameraName)
 {
-    KuesaUtils::SceneConfiguration *conf = sceneConfiguration();
+    m_detailViewConfiguration->setViewportRect({ 0.7f, 0.0f, 0.3f, 0.3f });
     m_detailViewConfiguration->setCameraName(cameraName);
-    conf->addViewConfiguration(m_detailViewConfiguration);
 }
 
 void ScreenController::hideDetailView()
 {
-    KuesaUtils::SceneConfiguration *conf = sceneConfiguration();
-    conf->removeViewConfiguration(m_detailViewConfiguration);
+    m_detailViewConfiguration->setViewportRect({ 0.7f, 0.0f, 0.0f, 0.0f });
 }
 
 void ScreenController::loadDrillBit()
