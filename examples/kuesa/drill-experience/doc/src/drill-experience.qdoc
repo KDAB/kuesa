@@ -51,7 +51,7 @@
 
     The UI is provided through a dedicated QML file.
 
-    When it comes to the logic handling, it's implement through a dedicated
+    When it comes to the logic handling, it's implemented through a dedicated
     controller. The controller takes care of providing a \l
     {KuesaUtils::SceneConfiguration} defining which glTF file to load, which
     camera to use for rendering as well as the a list of \l
@@ -64,7 +64,7 @@
     from the \l Kuesa::SceneEntity collections upon loading and clearing any
     reference to such object upon unloading.
 
-    Though the use of properties and upon those being modified by the UI, each
+    Through the use of properties and upon those being modified by the UI, the
     controller will react and might launch animations
 
     \section1 Implementation
@@ -75,7 +75,7 @@
 
     First we instantiate an ApplicationWindow
     \snippet drill-experience/qml/main.qml 0
-    \dots: 5
+    \dots 5
 
     \section1 QtQuick and Qt3D integration
 

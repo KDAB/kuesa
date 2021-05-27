@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- viewconfiguration.cpp -->
+  <title>ViewConfiguration Class | Kuesa Runtime 1.4</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.4</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-cpp.html">C++ Classes</a></li>
+<li>ViewConfiguration</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.4 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">ViewConfiguration Class</h1>
+<span class="small-subtitle">class <a href="kuesa-qml.html#kuesautils">KuesaUtils</a>::ViewConfiguration</span>
+<!-- $$$ViewConfiguration-brief -->
+<p>ViewConfiguration provides a way of conveniently specifying different views of the same scene. <a href="#details">More...</a></p>
+<!-- @@@ViewConfiguration -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;ViewConfiguration&gt;</span>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.4</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-viewconfiguration.html">ViewConfiguration</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-kuesanode.html">Kuesa::KuesaNode</a></td></tr></table></div><p>This class was introduced in Kuesa 1.4.</p>
+<ul>
+<li><a href="kuesautils-viewconfiguration-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary">
+<tr><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#backToFrontSorting-prop">backToFrontSorting</a></b> : bool</li>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#cameraName-prop">cameraName</a></b> : QString</li>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#clearColor-prop">clearColor</a></b> : QColor</li>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#exposure-prop">exposure</a></b> : float</li>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#frustumCulling-prop">frustumCulling</a></b> : bool</li>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#gamma-prop">gamma</a></b> : float</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#layerNames-prop">layerNames</a></b> : QStringList</li>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#particlesEnabled-prop">particlesEnabled</a></b> : bool</li>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#toneMappingAlgorithm-prop">toneMappingAlgorithm</a></b> : Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping</li>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#usesStencilMask-prop">usesStencilMask</a></b> : bool</li>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#viewportRect-prop">viewportRect</a></b> : QRectF</li>
+<li class="fn"><b><a href="kuesautils-viewconfiguration.html#zFilling-prop">zFilling</a></b> : bool</li>
+</ul>
+</td></tr>
+</table></div>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#backToFrontSorting-prop">backToFrontSorting</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#cameraName-prop">cameraName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QColor </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#clearColor-prop">clearColor</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#exposure-prop">exposure</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#frustumCulling-prop">frustumCulling</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#gamma-prop">gamma</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#layerNames-prop">layerNames</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#particlesEnabled-prop">particlesEnabled</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#skinning-prop">skinning</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#toneMappingAlgorithm-prop">toneMappingAlgorithm</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#usesStencilMask-prop">usesStencilMask</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#viewportRect-prop">viewportRect</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#zFilling-prop">zFilling</a></b>() const</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#backToFrontSorting-prop">setBackToFrontSorting</a></b>(bool <i>backToFrontSorting</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#cameraName-prop">setCameraName</a></b>(const QString &amp;<i>cameraName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#clearColor-prop">setClearColor</a></b>(QColor <i>clearColor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#exposure-prop">setExposure</a></b>(float <i>exposure</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#frustumCulling-prop">setFrustumCulling</a></b>(bool <i>frustumCulling</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#gamma-prop">setGamma</a></b>(float <i>gamma</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#layerNames-prop">setLayerNames</a></b>(const QStringList &amp;<i>layerNames</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#particlesEnabled-prop">setParticlesEnabled</a></b>(bool <i>particlesEnabled</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#skinning-prop">setSkinning</a></b>(bool <i>skinning</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#toneMappingAlgorithm-prop">setToneMappingAlgorithm</a></b>(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping <i>algorithm</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#usesStencilMask-prop">setUsesStencilMask</a></b>(bool <i>usesStencilMask</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#viewportRect-prop">setViewportRect</a></b>(const QRectF &amp;<i>viewportRect</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#zFilling-prop">setZFilling</a></b>(bool <i>zFilling</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#backToFrontSorting-prop">backToFrontSortingChanged</a></b>(bool <i>backToFrontSorting</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#cameraName-prop">cameraNameChanged</a></b>(const QString &amp;<i>cameraName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#clearColor-prop">clearColorChanged</a></b>(QColor <i>clearColor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#exposure-prop">exposureChanged</a></b>(float <i>exposure</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#frustumCulling-prop">frustumCullingChanged</a></b>(bool <i>frustumCulling</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#gamma-prop">gammaChanged</a></b>(float <i>gamma</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#layerNames-prop">layerNamesChanged</a></b>(const QStringList &amp;<i>layerNames</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#particlesEnabled-prop">particlesEnabledChanged</a></b>(bool <i>particlesEnabled</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#skinning-prop">skinningChanged</a></b>(bool <i>skinning</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#toneMappingAlgorithm-prop">toneMappingAlgorithmChanged</a></b>(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping <i>algorithm</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#usesStencilMask-prop">usesStencilMaskChanged</a></b>(bool <i>usesStencilMask</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#viewportRect-prop">viewportRectChanged</a></b>(QRectF <i>viewportRect</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesautils-viewconfiguration.html#zFilling-prop">zFillingChanged</a></b>(bool <i>zFillingChanged</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$ViewConfiguration-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+</div>
+<!-- @@@ViewConfiguration -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$backToFrontSorting-prop$$$backToFrontSorting$$$setBackToFrontSortingbool$$$backToFrontSortingChangedbool -->
+<h3 class="fn" id="backToFrontSorting-prop"><a name="backToFrontSorting-prop"></a><span class="name">backToFrontSorting</span> : <span class="type">bool</span></h3>
+<p>Holds whether back to front sorting to render objects in back-to-front order is enabled. This is required for proper alpha blending rendering. Enabled by default.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>backToFrontSorting</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setBackToFrontSorting</b></span>(bool <i>backToFrontSorting</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>backToFrontSortingChanged</b></span>(bool <i>backToFrontSorting</i>)</td></tr>
+</table></div>
+<!-- @@@backToFrontSorting -->
+<!-- $$$cameraName-prop$$$cameraName$$$setCameraNameconstQString&$$$cameraNameChangedconstQString& -->
+<h3 class="fn" id="cameraName-prop"><a name="cameraName-prop"></a><span class="name">cameraName</span> : <span class="type">QString</span></h3>
+<p>This property holds the name of the camera asset that should be used to view the scene. If the name references a valid camera, the camera will automatically be set on the <a href="qml-forwardrenderer.html">ForwardRenderer</a> frameGraph and other internal assets such as <a href="qml-transformtracker.html">Kuesa::TransformTracker</a>.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>cameraName</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setCameraName</b></span>(const QString &amp;<i>cameraName</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>cameraNameChanged</b></span>(const QString &amp;<i>cameraName</i>)</td></tr>
+</table></div>
+<!-- @@@cameraName -->
+<!-- $$$clearColor-prop$$$clearColor$$$setClearColorQColor$$$clearColorChangedQColor -->
+<h3 class="fn" id="clearColor-prop"><a name="clearColor-prop"></a><span class="name">clearColor</span> : <span class="type">QColor</span></h3>
+<p>Holds the color used to clear the screen at the start of each frame.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QColor </td><td class="memItemRight bottomAlign"><span class="name"><b>clearColor</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setClearColor</b></span>(QColor <i>clearColor</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>clearColorChanged</b></span>(QColor <i>clearColor</i>)</td></tr>
+</table></div>
+<!-- @@@clearColor -->
+<!-- $$$exposure-prop$$$exposure$$$setExposurefloat$$$exposureChangedfloat -->
+<h3 class="fn" id="exposure-prop"><a name="exposure-prop"></a><span class="name">exposure</span> : <span class="type">float</span></h3>
+<p>Exposure correction factor used before the linear to sRGB conversion.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>exposure</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setExposure</b></span>(float <i>exposure</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>exposureChanged</b></span>(float <i>exposure</i>)</td></tr>
+</table></div>
+<!-- @@@exposure -->
+<!-- $$$frustumCulling-prop$$$frustumCulling$$$setFrustumCullingbool$$$frustumCullingChangedbool -->
+<h3 class="fn" id="frustumCulling-prop"><a name="frustumCulling-prop"></a><span class="name">frustumCulling</span> : <span class="type">bool</span></h3>
+<p>Holds whether frustum culling is enabled or not. Enabled by default.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>frustumCulling</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setFrustumCulling</b></span>(bool <i>frustumCulling</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>frustumCullingChanged</b></span>(bool <i>frustumCulling</i>)</td></tr>
+</table></div>
+<!-- @@@frustumCulling -->
+<!-- $$$gamma-prop$$$gamma$$$setGammafloat$$$gammaChangedfloat -->
+<h3 class="fn" id="gamma-prop"><a name="gamma-prop"></a><span class="name">gamma</span> : <span class="type">float</span></h3>
+<p>Holds the gamma value to use for gamma correction that brings linear colors to sRGB colors.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> float </td><td class="memItemRight bottomAlign"><span class="name"><b>gamma</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setGamma</b></span>(float <i>gamma</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>gammaChanged</b></span>(float <i>gamma</i>)</td></tr>
+</table></div>
+<!-- @@@gamma -->
+<!-- $$$layerNames-prop$$$layerNames$$$setLayerNamesconstQStringList&$$$layerNamesChangedconstQStringList& -->
+<h3 class="fn" id="layerNames-prop"><a name="layerNames-prop"></a><span class="name">layerNames</span> : <span class="type">QStringList</span></h3>
+<p>This property holds the list of KDAB_layers layer names to be selected for rendering. This allows selecting only a sub part of a glTF 2 model to only render parts that are linked to a specific layer.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QStringList </td><td class="memItemRight bottomAlign"><span class="name"><b>layerNames</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setLayerNames</b></span>(const QStringList &amp;<i>layerNames</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>layerNamesChanged</b></span>(const QStringList &amp;<i>layerNames</i>)</td></tr>
+</table></div>
+<!-- @@@layerNames -->
+<!-- $$$particlesEnabled-prop$$$particlesEnabled$$$setParticlesEnabledbool$$$particlesEnabledChangedbool -->
+<h3 class="fn" id="particlesEnabled-prop"><a name="particlesEnabled-prop"></a><span class="name">particlesEnabled</span> : <span class="type">bool</span></h3>
+<p>Holds whether particles support is enabled. Disabled by default.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>particlesEnabled</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setParticlesEnabled</b></span>(bool <i>particlesEnabled</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>particlesEnabledChanged</b></span>(bool <i>particlesEnabled</i>)</td></tr>
+</table></div>
+<!-- @@@particlesEnabled -->
+<!-- $$$toneMappingAlgorithm-prop$$$toneMappingAlgorithm$$$setToneMappingAlgorithmKuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping$$$toneMappingAlgorithmChangedKuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping -->
+<h3 class="fn" id="toneMappingAlgorithm-prop"><a name="toneMappingAlgorithm-prop"></a><span class="name">toneMappingAlgorithm</span> : <span class="type"><a href="kuesa-tonemappingandgammacorrectioneffect.html#ToneMapping-enum">Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping</a></span></h3>
+<p>Tone mapping specifies how we perform color conversion from HDR (high dynamic range) content to LDR (low dynamic range) content which our monitor displays.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping </td><td class="memItemRight bottomAlign"><span class="name"><b>toneMappingAlgorithm</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setToneMappingAlgorithm</b></span>(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping <i>algorithm</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>toneMappingAlgorithmChanged</b></span>(Kuesa::ToneMappingAndGammaCorrectionEffect::ToneMapping <i>algorithm</i>)</td></tr>
+</table></div>
+<!-- @@@toneMappingAlgorithm -->
+<!-- $$$usesStencilMask-prop$$$usesStencilMask$$$setUsesStencilMaskbool$$$usesStencilMaskChangedbool -->
+<h3 class="fn" id="usesStencilMask-prop"><a name="usesStencilMask-prop"></a><span class="name">usesStencilMask</span> : <span class="type">bool</span></h3>
+<p>Enables/disables stencil buffers. If true, stencil operations be used during the render phase to modify the stencil buffer. The resulting stencil buffer can later be used to apply post process effect to only part of the scene</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>usesStencilMask</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setUsesStencilMask</b></span>(bool <i>usesStencilMask</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>usesStencilMaskChanged</b></span>(bool <i>usesStencilMask</i>)</td></tr>
+</table></div>
+<!-- @@@usesStencilMask -->
+<!-- $$$viewportRect-prop$$$viewportRect$$$setViewportRectconstQRectF&$$$viewportRectChangedQRectF -->
+<h3 class="fn" id="viewportRect-prop"><a name="viewportRect-prop"></a><span class="name">viewportRect</span> : <span class="type">QRectF</span></h3>
+<p>Holds the viewport rectangle from within which the rendering will occur. Rectangle is in normalized coordinates.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> QRectF </td><td class="memItemRight bottomAlign"><span class="name"><b>viewportRect</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setViewportRect</b></span>(const QRectF &amp;<i>viewportRect</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>viewportRectChanged</b></span>(QRectF <i>viewportRect</i>)</td></tr>
+</table></div>
+<!-- @@@viewportRect -->
+<!-- $$$zFilling-prop$$$zFilling$$$setZFillingbool$$$zFillingChangedbool -->
+<h3 class="fn" id="zFilling-prop"><a name="zFilling-prop"></a><span class="name">zFilling</span> : <span class="type">bool</span></h3>
+<p>Holds whether multi-pass zFilling support is enabled. Disabled by default.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>zFilling</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setZFilling</b></span>(bool <i>zFilling</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>zFillingChanged</b></span>(bool <i>zFillingChanged</i>)</td></tr>
+</table></div>
+<!-- @@@zFilling -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

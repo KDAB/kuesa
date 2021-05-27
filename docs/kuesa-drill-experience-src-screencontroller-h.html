@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- drill-experience.qdoc -->
+  <title>Kuesa Drill-Experience QML Example | Kuesa Runtime 1.4</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.4</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>Kuesa Drill-Experience QML Example</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.4 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><h1 class="title">Kuesa Drill-Experience QML Example</h1>
+<span class="subtitle"></span>
+<pre class="cpp">
+ <span class="comment">/*
+     screencontroller.h
+
+     This file is part of Kuesa.
+
+     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
+
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
+
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
+
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
+
+ <span class="preprocessor">#ifndef SCREENCONTROLLER_H</span>
+ <span class="preprocessor">#define SCREENCONTROLLER_H</span>
+
+ <span class="preprocessor">#include &quot;abstractscreencontroller.h&quot;</span>
+ <span class="preprocessor">#include &lt;QHash&gt;</span>
+ <span class="preprocessor">#include &lt;QPointer&gt;</span>
+ <span class="preprocessor">#include &lt;QObjectList&gt;</span>
+
+ <span class="keyword">namespace</span> Kuesa {
+ <span class="keyword">class</span> SteppedAnimationPlayer;
+ } <span class="comment">// namespace Kuesa</span>
+
+ <span class="keyword">class</span> ScreenController : <span class="keyword">public</span> AbstractScreenController
+ {
+     Q_OBJECT
+     Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
+     Q_PROPERTY(SelectablePart selectedPart READ selectedPart WRITE setSelectedPart NOTIFY selectedPartChanged)
+     Q_PROPERTY(Step guidedDrillingStep READ guidedDrillingStep NOTIFY guidedDrillingStepChanged)
+     Q_PROPERTY(<span class="type">QList</span><span class="operator">&lt;</span><span class="type">QObject</span> <span class="operator">*</span><span class="operator">&gt;</span> partLabels READ partLabels CONSTANT)
+     Q_PROPERTY(<span class="type">float</span> positionOnCameraOrbit READ positionOnCameraOrbit WRITE setPositionOnCameraOrbit NOTIFY positionOnCameraOrbitChanged)
+ <span class="keyword">public</span>:
+     <span class="keyword">enum</span> <span class="keyword">class</span> Mode {
+         StatusMode<span class="operator">,</span>
+         UserManualMode<span class="operator">,</span>
+         GuidedDrillingMode
+     };
+     Q_ENUM(Mode)
+
+     <span class="keyword">enum</span> <span class="keyword">class</span> SelectablePart {
+         Trigger<span class="operator">,</span>
+         Clutch<span class="operator">,</span>
+         Chuck<span class="operator">,</span>
+         DirectionSwitch<span class="operator">,</span>
+         BatteryPack<span class="operator">,</span>
+         NoPartSelected
+     };
+     Q_ENUM(SelectablePart)
+
+     <span class="keyword">enum</span> <span class="keyword">class</span> DrillMode {
+         None<span class="operator">,</span>
+         Drill<span class="operator">,</span>
+         Screw<span class="operator">,</span>
+     };
+     Q_ENUM(DrillMode)
+
+     <span class="keyword">enum</span> <span class="keyword">class</span> MaterialType {
+         None<span class="operator">,</span>
+         Wood<span class="operator">,</span>
+         Concrete<span class="operator">,</span>
+         Metal
+     };
+     Q_ENUM(MaterialType)
+
+     <span class="keyword">enum</span> <span class="keyword">class</span> Step : <span class="type">int</span> {
+         None<span class="operator">,</span>
+         BitSelection<span class="operator">,</span>
+         SetupBit<span class="operator">,</span>
+         SetupDirection<span class="operator">,</span>
+         CompletionStep
+     };
+     Q_ENUM(Step)
+
+     <span class="keyword">enum</span> <span class="keyword">class</span> Bit {
+         None<span class="operator">,</span>
+
+         Drill1<span class="operator">,</span>
+         Drill2<span class="operator">,</span>
+         Drill3<span class="operator">,</span>
+         Drill4<span class="operator">,</span>
+         Drill5<span class="operator">,</span>
+         Drill6<span class="operator">,</span>
+
+         ScrewHex<span class="operator">,</span>
+         ScrewHexMedium<span class="operator">,</span>
+         ScrewHexSmall<span class="operator">,</span>
+         ScrewHexTiny<span class="operator">,</span>
+
+         ScrewTorx<span class="operator">,</span>
+         ScrewTorxMedium<span class="operator">,</span>
+         ScrewTorxSmall<span class="operator">,</span>
+         ScrewTorxTiny<span class="operator">,</span>
+
+         ScrewPhilips<span class="operator">,</span>
+         ScrewPhilipsMedium<span class="operator">,</span>
+         ScrewPhilipsSmall<span class="operator">,</span>
+
+         ScrewFlat<span class="operator">,</span>
+         ScrewFlatMedium<span class="operator">,</span>
+         ScrewFlatSmall<span class="operator">,</span>
+     };
+     Q_ENUM(Bit)
+
+     <span class="keyword">explicit</span> ScreenController(<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QNode</span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+     <span class="operator">~</span>ScreenController();
+
+     <span class="type">void</span> setSelectedPart(SelectablePart selectedPart);
+     SelectablePart selectedPart() <span class="keyword">const</span>;
+
+     <span class="type">QObjectList</span> partLabels() <span class="keyword">const</span>;
+
+     <span class="type">void</span> setMode(Mode mode);
+     Mode mode() <span class="keyword">const</span>;
+
+     <span class="type">void</span> setBit(Bit bit);
+     Bit bit() <span class="keyword">const</span>;
+
+     DrillMode drillingMode() <span class="keyword">const</span>;
+     MaterialType drillingMaterial() <span class="keyword">const</span>;
+
+     Step guidedDrillingStep() <span class="keyword">const</span>;
+     Q_INVOKABLE Step nextStep();
+     Q_INVOKABLE Step reset();
+
+     Q_INVOKABLE <span class="type">QString</span> bitName(Bit bit);
+
+     <span class="type">float</span> positionOnCameraOrbit() <span class="keyword">const</span>;
+     <span class="type">void</span> setPositionOnCameraOrbit(<span class="type">float</span> p);
+
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> selectedPartChanged();
+     <span class="type">void</span> modeChanged(Mode mode);
+     <span class="type">void</span> guidedDrillingStepChanged();
+     <span class="type">void</span> drillModeChanged();
+     <span class="type">void</span> drillingMaterialChanged();
+     <span class="type">void</span> bitChanged();
+     <span class="type">void</span> positionOnCameraOrbitChanged();
+
+ <span class="keyword">private</span>:
+     <span class="type">void</span> updateSceneConfiguration();
+     <span class="type">void</span> showDetailView(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>camera);
+     <span class="type">void</span> hideDetailView();
+     <span class="type">void</span> playAnimationBackAndForth(Kuesa<span class="operator">::</span>AnimationPlayer <span class="operator">*</span>player<span class="operator">,</span> <span class="type">int</span> delay <span class="operator">=</span> <span class="number">0</span>);
+
+     <span class="type">void</span> loadDrillBit();
+     <span class="type">void</span> setPartLabelNames();
+     <span class="type">void</span> addObjectPickersOnBit();
+
+     <span class="type">void</span> setDrillMode(DrillMode mode);
+     <span class="type">void</span> setDrillingMaterial(MaterialType material);
+
+     SelectablePart m_selectedPart <span class="operator">=</span> SelectablePart<span class="operator">::</span>NoPartSelected;
+     <span class="type">QHash</span><span class="operator">&lt;</span>SelectablePart<span class="operator">,</span> KuesaUtils<span class="operator">::</span>SceneConfiguration <span class="operator">*</span><span class="operator">&gt;</span> m_sceneConfigurationsTable;
+
+     <span class="comment">// Labels owned by the SceneConfiguration</span>
+     <span class="type">QObjectList</span> m_partLabels;
+
+     <span class="comment">// Animations owned by the SceneConfiguration</span>
+     Kuesa<span class="operator">::</span>AnimationPlayer <span class="operator">*</span>m_cameraAnimationPlayer <span class="operator">=</span> nullptr;
+     Kuesa<span class="operator">::</span>AnimationPlayer <span class="operator">*</span>m_batteryInOutAnimationPlayer <span class="operator">=</span> nullptr;
+     Kuesa<span class="operator">::</span>AnimationPlayer <span class="operator">*</span>m_directionSwitchAnimationPlayer <span class="operator">=</span> nullptr;
+     Kuesa<span class="operator">::</span>AnimationPlayer <span class="operator">*</span>m_triggerAnimationPlayer <span class="operator">=</span> nullptr;
+     Kuesa<span class="operator">::</span>AnimationPlayer <span class="operator">*</span>m_drillAnimationPlayer <span class="operator">=</span> nullptr;
+     Kuesa<span class="operator">::</span>AnimationPlayer <span class="operator">*</span>m_toolInOutAnimationPlayer <span class="operator">=</span> nullptr;
+
+     <span class="comment">// Views owned by the SceneConfiguration if parented, by us otherwise</span>
+     KuesaUtils<span class="operator">::</span>ViewConfiguration <span class="operator">*</span>m_mainViewConfiguration <span class="operator">=</span> nullptr;
+     KuesaUtils<span class="operator">::</span>ViewConfiguration <span class="operator">*</span>m_detailViewConfiguration <span class="operator">=</span> nullptr;
+
+     <span class="comment">// Owned by the sceneEntity</span>
+     <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QTransform</span> <span class="operator">*</span>m_insertedDrillBitTranform;
+
+     <span class="comment">// Weak pointers</span>
+     <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>m_insertedDrillBit <span class="operator">=</span> nullptr;
+     <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>m_originalDrillBitParent <span class="operator">=</span> nullptr;
+     <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QTransform</span> <span class="operator">*</span>m_originalDrillBitTransform <span class="operator">=</span> nullptr;
+
+     <span class="comment">// Owned by the sceneConfiguration</span>
+     Kuesa<span class="operator">::</span>SteppedAnimationPlayer <span class="operator">*</span>m_steppedPlayer <span class="operator">=</span> nullptr;
+     <span class="type">Qt3DAnimation</span><span class="operator">::</span><span class="type">QClock</span> <span class="operator">*</span>m_animationClock <span class="operator">=</span> nullptr;
+
+     Mode m_mode <span class="operator">=</span> ScreenController<span class="operator">::</span>Mode<span class="operator">::</span>StatusMode;
+     Bit m_bit <span class="operator">=</span> Bit<span class="operator">::</span>None;
+     MaterialType m_drillingMaterial <span class="operator">=</span> MaterialType<span class="operator">::</span>None;
+     DrillMode m_drillingMode <span class="operator">=</span> DrillMode<span class="operator">::</span>None;
+
+     Step m_drillingStep <span class="operator">=</span> Step<span class="operator">::</span>None;
+ };
+
+ <span class="keyword">class</span> CompleteAnimationRunner : <span class="keyword">public</span> <span class="type">QObject</span>
+ {
+     Q_OBJECT
+ <span class="keyword">public</span>:
+     <span class="keyword">using</span> Callback <span class="operator">=</span> std<span class="operator">::</span>function<span class="operator">&lt;</span><span class="type">void</span>()<span class="operator">&gt;</span>;
+
+     <span class="keyword">explicit</span> CompleteAnimationRunner(ScreenController <span class="operator">*</span>parent<span class="operator">,</span>
+                                      Kuesa<span class="operator">::</span>AnimationPlayer <span class="operator">*</span>p<span class="operator">,</span>
+                                      <span class="keyword">const</span> CompleteAnimationRunner<span class="operator">::</span>Callback <span class="operator">&amp;</span>callback<span class="operator">,</span>
+                                      <span class="type">float</span> speed <span class="operator">=</span> <span class="number">1.0f</span>);
+ };
+
+ <span class="keyword">class</span> PartLabel : <span class="keyword">public</span> <span class="type">QObject</span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type">QPointF</span> position READ position NOTIFY positionChanged)
+     Q_PROPERTY(<span class="type">QString</span> labelName READ labelName NOTIFY labelNameChanged)
+     Q_PROPERTY(<span class="type">QString</span> nodeName READ nodeName CONSTANT)
+     Q_PROPERTY(ScreenController<span class="operator">::</span>SelectablePart part READ part CONSTANT)
+
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> PartLabel(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>nodeName<span class="operator">,</span>
+                        <span class="keyword">const</span> ScreenController<span class="operator">::</span>SelectablePart part<span class="operator">,</span>
+                        Kuesa<span class="operator">::</span>TransformTracker <span class="operator">*</span>tracker<span class="operator">,</span>
+                        <span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+     <span class="type">QPointF</span> position() <span class="keyword">const</span>;
+     <span class="type">QString</span> labelName() <span class="keyword">const</span>;
+     ScreenController<span class="operator">::</span>SelectablePart part() <span class="keyword">const</span>;
+     <span class="type">QString</span> nodeName() <span class="keyword">const</span>;
+     <span class="type">void</span> setLabelName(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>labelName);
+
+ Q_SIGNALS:
+     <span class="type">void</span> labelNameChanged();
+     <span class="type">void</span> positionChanged();
+
+ <span class="keyword">private</span>:
+     <span class="keyword">const</span> <span class="type">QString</span> m_nodeName;
+     <span class="keyword">const</span> ScreenController<span class="operator">::</span>SelectablePart m_part;
+     Kuesa<span class="operator">::</span>TransformTracker <span class="operator">*</span>m_tracker <span class="operator">=</span> nullptr;
+     <span class="type">QString</span> m_labelName;
+ };
+
+ <span class="preprocessor">#endif // SCREENCONTROLLER_H</span>
+</pre>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- drill-experience.qdoc -->
+  <title>Kuesa Drill-Experience QML Example | Kuesa Runtime 1.4</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.4</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>Kuesa Drill-Experience QML Example</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.4 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><h1 class="title">Kuesa Drill-Experience QML Example</h1>
+<span class="subtitle"></span>
+<pre class="cpp">
+ &lt;RCC&gt;
+     &lt;qresource prefix=&quot;/&quot;&gt;
+         &lt;file&gt;drill/chrome-aniso.png&lt;/file&gt;
+         &lt;file&gt;drill/dark-diffuse.png&lt;/file&gt;
+         &lt;file&gt;drill/drill-body_normal.png&lt;/file&gt;
+         &lt;file&gt;drill/drill-body-diff.png&lt;/file&gt;
+         &lt;file&gt;drill/drill.gltf&lt;/file&gt;
+         &lt;file&gt;drill/highlights.png&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_BatteryShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_BodyShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_ChuckShape1.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_ChuckShape2.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_ChuckShape3.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_DirectionKnobsShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_EnvShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_RingShape0.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_RingShape1.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_RingShape2.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_RingShape3.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_RingShape4.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_ScrewsShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_ShadowPlaneShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/shadow-plane.png&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimBatteryIn.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimBatteryOut.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimTriggerPress.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimTriggerRelease.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Bit6Shape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_TriggerShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimCamOrbit.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimChangeDirectionLR.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimChangeDirectionRL.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimDrillCW.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimToolIn.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimToolOut.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_Drill1Shape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_Drill2Shape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_Drill3Shape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_Drill4Shape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_Drill5Shape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_FlatMedShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_FlatShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_FlatSmallShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_HexMedShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_HexShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_HexSmallShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_HexTinyShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_PhilipsMedShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_PhilipsShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_PhilipsSmallShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_TorxMedShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_TorxShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_TorxSmallShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_Tool_TorxTinyShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Mesh_ToolHolderShape.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimCamOrbitLinear.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimGuideAnim.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimGuideCombined.bin&lt;/file&gt;
+         &lt;file&gt;drill/Animation_AnimGuideSteps.bin&lt;/file&gt;
+         &lt;file&gt;drill/kdab-studiosky-small-blurry-dark.png&lt;/file&gt;
+     &lt;/qresource&gt;
+ &lt;/RCC&gt;
+</pre>
