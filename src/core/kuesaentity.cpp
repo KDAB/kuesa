@@ -162,7 +162,10 @@ int KuesaEntity::qt_metacall(QMetaObject::Call call, int id, void **argv)
 {
     const int realId = id - m_metaObject->propertyOffset();
     if (realId < 0 || size_t(realId) >= m_extraProperties.size())
-        return QObject::qt_metacall(call, id, argv);
+        // Ensure we call Qt3DCore::QEntity::qt_metacall here and not QObject
+        // otherwise if we are trying to read the parent property it cannot be
+        // found - as we want QNode's parent Q_PROPERTY.
+        return Qt3DCore::QEntity::qt_metacall(call, id, argv);
 
     if (call == QMetaObject::ReadProperty) {
         const DynamicProperty &property = m_extraProperties.at(static_cast<size_t>(realId));
@@ -192,14 +195,14 @@ int KuesaEntity::qt_metacall(QMetaObject::Call call, int id, void **argv)
         return -1;
     }
 
-    return QObject::qt_metacall(call, id, argv);
+    return Qt3DCore::QEntity::qt_metacall(call, id, argv);
 }
 
 void *KuesaEntity::qt_metacast(const char *name)
 {
     if (std::strcmp(name, m_metaObject->className()) == 0)
         return this;
-    return QObject::qt_metacast(name);
+    return Qt3DCore::QEntity::qt_metacast(name);
 }
 
 // Empty Meta Object
