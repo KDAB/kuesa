@@ -368,7 +368,7 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
                 QStringLiteral("noHasColorAttr"),
                 QStringLiteral("noDoubleSided"),
                 QStringLiteral("noHasAlphaCutoff"),
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 3) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#if defined(ENABLE_SHADOWS)
                 QStringLiteral("shadows")
 #endif
     };

@@ -328,7 +328,7 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
     // Put shadowmap render passes first.  There is one pass per shadow-casting light.
     // These passes renderer the scene with simple z-fill shader from the light's perspective
     // into shadowmaps which are passed into the regular render passes defined below.
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 3) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#if defined(ENABLE_SHADOWS)
     if (m_view->m_shadowMapStages->shadowMaps().count() > 0)
         m_view->m_shadowMapStages->setParent(fgRoot);
 #endif

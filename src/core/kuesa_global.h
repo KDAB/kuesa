@@ -59,6 +59,10 @@ QT_BEGIN_NAMESPACE
 #define KUESASHARED_EXPORT
 #endif
 
+
+// #define ENABLE_SHADOWS QT_VERSION >= QT_VERSION_CHECK(5, 15, 5) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+// To support shadows we need https://codereview.qt-project.org/c/qt/qt3d/+/326691 to be merged
+
 namespace Kuesa {
 
 void KUESASHARED_EXPORT setupDefaultSurfaceFormat();
