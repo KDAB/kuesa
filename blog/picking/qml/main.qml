@@ -36,10 +36,10 @@ Item {
 
         readonly property QtObject picker: QtObject {
             property Entity entity: null
-            readonly property string entityName: entity ? entity.parent.objectName : null
+            readonly property string entityName: entity && entity.parent ? entity.parent.objectName : null
             readonly property var groups: ["Cube1", "Cube2"]
             readonly property string groupName: {
-                for (let entity = scene3D.picker.entity; entity && entity.parent; entity = entity.parent) {
+                for (let entity = scene3D.picker.entity; entity !== null; entity = entity.parent) {
                     if (entity.objectName !== "") {
                         if (groups.indexOf(entity.objectName) !== -1) {
                             return entity.objectName;
