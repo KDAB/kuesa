@@ -43,24 +43,13 @@
 
 int main(int ac, char **av)
 {
+    // Set OpenGL requirements
+    Kuesa::setupDefaultSurfaceFormat();
+
     bool isES2 = false;
-    {
-        // Set OpenGL requirements
-        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-#ifndef KUESA_OPENGL_ES_2
-        format.setVersion(4, 1);
-        format.setProfile(QSurfaceFormat::CoreProfile);
-        format.setSamples(4);
-#else
-#ifndef KUESA_OPENGL_ES_3
-        isES2 = true;
+#if defined(KUESA_OPENGL_ES_2) && !defined (KUESA_OPENGL_ES_3)
+    isES2 = true;
 #endif
-        format.setVersion(3, 0);
-        format.setProfile(QSurfaceFormat::NoProfile);
-        format.setRenderableType(QSurfaceFormat::OpenGLES);
-#endif
-        QSurfaceFormat::setDefaultFormat(format);
-    }
 
     QQuickStyle::setStyle("Material");
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)

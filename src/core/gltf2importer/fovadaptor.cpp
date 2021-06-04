@@ -38,7 +38,7 @@ namespace Kuesa {
     \internal This class is just an adaptor to convert radians coming from the
     yFov animation to degrees, expected by the Qt3DRender::QCamera We need a
     radians property so the Qt3DAnimation aspect can find it and therefore, we
-    need read/write function, but we dont need to actually store any content.
+    need read/write function, but we don't need to actually store any content.
 
     When the radians writer is called, we just convert the radians to degrees and
     emit the degreesChanged function which is connected to the
@@ -68,6 +68,6 @@ void FOVAdaptor::setRadians(float radians)
     Q_EMIT degreesChanged(degrees());
 }
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE

@@ -117,7 +117,7 @@ public:
             QByteArray(R"()")
         };
 
-         const QByteArray renderableGeometryShaderCode[] = {
+        const QByteArray renderableGeometryShaderCode[] = {
             QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()")
@@ -138,7 +138,7 @@ public:
         m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
         m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
-         // Set geometry shader code if one was specified
+        // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
         m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
@@ -225,7 +225,6 @@ private:
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
-
 /*!
     \class Kuesa::ExampleCustomMaterialEffect
     \inheaderfile Kuesa/ExampleCustomMaterialEffect
@@ -245,15 +244,14 @@ private:
     \brief Kuesa::ExampleCustomMaterialEffect is the effect for the ExampleCustomMaterialMaterial class
 */
 
-
 ExampleCustomMaterialEffect::ExampleCustomMaterialEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
 {
     const auto enabledLayers = QStringList{
-            // Vertex Shader layers
-            QStringLiteral("no-skinning"),
-            // Fragment Shader layers
-            QStringLiteral("noHasAlphaCutoff")
+        // Vertex Shader layers
+        QStringLiteral("no-skinning"),
+        // Fragment Shader layers
+        QStringLiteral("noHasAlphaCutoff")
     };
 
     m_gl3Technique = new ExampleCustomMaterialTechnique(ExampleCustomMaterialTechnique::GL3, this);

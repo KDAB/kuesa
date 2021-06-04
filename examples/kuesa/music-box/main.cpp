@@ -39,24 +39,13 @@
 
 int main(int argc, char *argv[])
 {
+    // Set OpenGL requirements
+    Kuesa::setupDefaultSurfaceFormat();
+
     bool isES2 = false;
-    {
-        // Set OpenGL requirements
-        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-#ifndef KUESA_OPENGL_ES_2
-        format.setVersion(4, 1);
-        format.setProfile(QSurfaceFormat::CoreProfile);
-        format.setSamples(4);
-#else
-#ifndef KUESA_OPENGL_ES_3
-        isES2 = true;
+#if defined(KUESA_OPENGL_ES_2) && !defined (KUESA_OPENGL_ES_3)
+    isES2 = true;
 #endif
-        format.setVersion(3, 0);
-        format.setProfile(QSurfaceFormat::NoProfile);
-        format.setRenderableType(QSurfaceFormat::OpenGLES);
-#endif
-        QSurfaceFormat::setDefaultFormat(format);
-    }
 
     QGuiApplication app(argc, argv);
 
@@ -69,7 +58,6 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_IOS
     view.setFlags(view.flags() | Qt::MaximizeUsingFullscreenGeometryHint);
 #endif
-
 
 #ifdef Q_OS_ANDROID
     // Qt builds for android may not define KUESA_OPENGL_ES_3

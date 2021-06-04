@@ -377,7 +377,8 @@ void OrbitCameraController::setZoomCameraLimit(float v)
 inline float clampInputs(float input1, float input2)
 {
     float axisValue = input1 + input2;
-    return (axisValue < -1) ? -1 : (axisValue > 1) ? 1 : axisValue;
+    return (axisValue < -1) ? -1 : (axisValue > 1) ? 1
+                                                   : axisValue;
 }
 
 inline float clamp(float value, float min, float max)

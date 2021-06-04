@@ -4,8 +4,8 @@ include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
 
 project                 = Kuesa
 description             = Kuesa Runtime Reference Documentation
-version                 = 1.3
-buildversion            = "Kuesa Runtime 1.3 Reference Documentation"
+version                 = 1.4
+buildversion            = "Kuesa Runtime 1.4 Reference Documentation"
 includepaths            =  . \
                            ..
 
@@ -17,7 +17,7 @@ examplesinstallpath       = kuesa
 
 qhp.projects              = Kuesa
 qhp.Kuesa.file            = kuesa.qhp
-qhp.Kuesa.namespace       = com.kdab.kuesa.1.3
+qhp.Kuesa.namespace       = com.kdab.kuesa.1.4
 qhp.Kuesa.virtualFolder   = kuesa
 qhp.Kuesa.indexTitle      = Kuesa
 qhp.Kuesa.subprojects     = classes qmltypes examples
@@ -38,7 +38,7 @@ qhp.Kuesa.subprojects.examples.indexTitle = Kuesa Runtime Examples
 qhp.Kuesa.subprojects.examples.selectors  = doc:example
 qhp.Kuesa.subprojects.examples.sortPages  = true
 
-navigation.hometitle = "Kuesa Runtime 1.3"
+navigation.hometitle = "Kuesa Runtime 1.4"
 dita.metadata.default.publisher   = KDAB
 dita.metadata.default.copyrholder = KDAB
 dita.metadata.default.author = KDAB

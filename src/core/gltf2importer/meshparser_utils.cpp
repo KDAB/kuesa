@@ -614,10 +614,10 @@ QAttribute *generateTangentForBaseMesh(MikkTSpaceUserData *mikkTSpaceUserData, S
     constexpr auto NumberValuesPerTangent = 4;
     tangentBuffer->setData(mikkTSpaceUserData->tangentBufferData);
     auto *tangentAttribute = new QAttribute(tangentBuffer,
-                                                        QAttribute::defaultTangentAttributeName(),
-                                                        QAttribute::Float,
-                                                        NumberValuesPerTangent,
-                                                        mikkTSpaceUserData->nVertices);
+                                            QAttribute::defaultTangentAttributeName(),
+                                            QAttribute::Float,
+                                            NumberValuesPerTangent,
+                                            mikkTSpaceUserData->nVertices);
 
     return tangentAttribute;
 }
@@ -693,10 +693,10 @@ QAttribute *generateTangentForMorphTarget(QGeometry *geometry, MikkTSpaceUserDat
         constexpr auto NumberValuesPerMorphTangent = 3;
         tangentBuffer->setData(morphTargetTangentMorphData);
         auto *tangentAttribute = new QAttribute(tangentBuffer,
-                                                            QAttribute::defaultTangentAttributeName() + QStringLiteral("_") + QString::number(morphTargetId + 1),
-                                                            QAttribute::Float,
-                                                            NumberValuesPerMorphTangent,
-                                                            mikkTSpaceUserData->nVertices);
+                                                QAttribute::defaultTangentAttributeName() + QStringLiteral("_") + QString::number(morphTargetId + 1),
+                                                QAttribute::Float,
+                                                NumberValuesPerMorphTangent,
+                                                mikkTSpaceUserData->nVertices);
 
         return tangentAttribute;
     }
@@ -852,17 +852,17 @@ quint32 indexValueAt(QAttribute::VertexBaseType type, const char *rawValue)
 {
     switch (type) {
     case QAttribute::UnsignedInt:
-        return *reinterpret_cast<const quint32*>(rawValue);
+        return *reinterpret_cast<const quint32 *>(rawValue);
     case QAttribute::Int:
-        return *reinterpret_cast<const qint32*>(rawValue);
+        return *reinterpret_cast<const qint32 *>(rawValue);
     case QAttribute::UnsignedShort:
-        return *reinterpret_cast<const quint16*>(rawValue);
+        return *reinterpret_cast<const quint16 *>(rawValue);
     case QAttribute::Short:
-        return *reinterpret_cast<const qint16*>(rawValue);
+        return *reinterpret_cast<const qint16 *>(rawValue);
     case QAttribute::UnsignedByte:
-        return *reinterpret_cast<const quint8*>(rawValue);
+        return *reinterpret_cast<const quint8 *>(rawValue);
     case QAttribute::Byte:
-        return *reinterpret_cast<const qint8*>(rawValue);
+        return *reinterpret_cast<const qint8 *>(rawValue);
     default:
         Q_UNREACHABLE();
     }
@@ -1411,7 +1411,7 @@ void generateNormals(QGeometry *geometry)
                                               .arg(QAttribute::defaultPositionAttributeName())
                                               .arg(morphTargetId + 1);
         const QAttribute *positionMorphAttribute = attributeFromGeometry(attributeName,
-                                                                                     geometry);
+                                                                         geometry);
         if (positionMorphAttribute != nullptr) {
             auto normalMorphAttribute = generateNormalsForMorphTarget(positionAttribute, normalsAttribute, positionMorphAttribute, morphTargetId);
             geometry->addAttribute(normalMorphAttribute);
@@ -1522,7 +1522,7 @@ bool generatePrecomputedNormalAttribute(QGeometryRenderer *mesh, GLTF2Context *c
     {
         // We can get away by writing only the normals attribute
         QAttribute *normalAttribute = attributeFromGeometry(QAttribute::defaultNormalAttributeName(),
-                                                                        geometry);
+                                                            geometry);
         if (!normalAttribute)
             return false;
 

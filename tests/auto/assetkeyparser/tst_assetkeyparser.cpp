@@ -36,8 +36,7 @@
 using namespace Kuesa;
 using namespace GLTF2Import;
 
-struct FakeAsset
-{
+struct FakeAsset {
     QString key;
 };
 

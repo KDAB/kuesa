@@ -39,19 +39,19 @@ namespace Kuesa {
 
 class ExampleCustomMaterialShaderData : public Qt3DRender::QShaderData
 {
-   Q_OBJECT
+    Q_OBJECT
     Q_PROPERTY(float modulator READ modulator WRITE setModulator NOTIFY modulatorChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * inputTexture READ inputTexture WRITE setInputTexture NOTIFY inputTextureChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *inputTexture READ inputTexture WRITE setInputTexture NOTIFY inputTextureChanged)
 
 public:
     explicit ExampleCustomMaterialShaderData(Qt3DCore::QNode *parent = nullptr);
     ~ExampleCustomMaterialShaderData();
     float modulator() const;
-    Qt3DRender::QAbstractTexture * inputTexture() const;
+    Qt3DRender::QAbstractTexture *inputTexture() const;
 
 public Q_SLOTS:
     void setModulator(float modulator);
-    void setInputTexture(Qt3DRender::QAbstractTexture * inputTexture);
+    void setInputTexture(Qt3DRender::QAbstractTexture *inputTexture);
 
 Q_SIGNALS:
     void modulatorChanged(float);
@@ -59,8 +59,7 @@ Q_SIGNALS:
 
 private:
     float m_modulator;
-    Qt3DRender::QAbstractTexture * m_inputTexture;
-
+    Qt3DRender::QAbstractTexture *m_inputTexture;
 };
 
 } // namespace Kuesa

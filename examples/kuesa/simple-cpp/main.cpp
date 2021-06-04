@@ -28,6 +28,7 @@
 
 #include <QGuiApplication>
 #include <KuesaUtils/window.h>
+#include <KuesaUtils/viewconfiguration.h>
 
 namespace {
 
@@ -35,7 +36,10 @@ KuesaUtils::SceneConfiguration *prepareScene()
 {
     KuesaUtils::SceneConfiguration *sceneConfiguration = new KuesaUtils::SceneConfiguration;
     sceneConfiguration->setSource(QUrl("qrc:/car.gltf"));
-    sceneConfiguration->setCameraName("CamSweep_Orientation");
+
+    KuesaUtils::ViewConfiguration *mainViewConfiguration = new KuesaUtils::ViewConfiguration;
+    mainViewConfiguration->setCameraName(QStringLiteral("CamSweep_Orientation"));
+    sceneConfiguration->addViewConfiguration(mainViewConfiguration);
 
     // List of animations to play
     const QString animationNames[] = {
@@ -59,24 +63,12 @@ KuesaUtils::SceneConfiguration *prepareScene()
     return sceneConfiguration;
 }
 
-} // anonymous
+} // namespace
 
 int main(int ac, char **av)
 {
-    {
-        // Set OpenGL requirements
-        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-#ifndef KUESA_OPENGL_ES_2
-        format.setVersion(4, 1);
-        format.setProfile(QSurfaceFormat::CoreProfile);
-#else
-        format.setVersion(3, 0);
-        format.setProfile(QSurfaceFormat::NoProfile);
-        format.setRenderableType(QSurfaceFormat::OpenGLES);
-#endif
-        format.setSamples(4);
-        QSurfaceFormat::setDefaultFormat(format);
-    }
+    // Set OpenGL requirements
+    Kuesa::setupDefaultSurfaceFormat();
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

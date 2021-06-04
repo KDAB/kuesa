@@ -46,7 +46,7 @@ private Q_SLOTS:
 
         // WHEN
         MyGLTFAsset emptyKey;
-        MyGLTFAsset someKey { QStringLiteral("some") };
+        MyGLTFAsset someKey{ QStringLiteral("some") };
 
         // THEN
         QVERIFY(!cache.getResourceFromCache(emptyKey));
@@ -59,7 +59,7 @@ private Q_SLOTS:
         Kuesa::AssetCache<MyGLTFAsset, Qt3DCore::QNode> cache;
 
         // WHEN
-        MyGLTFAsset key { QStringLiteral("key") };
+        MyGLTFAsset key{ QStringLiteral("key") };
         Qt3DCore::QNode *n = new Qt3DCore::QNode();
         cache.addResourceToCache(key, n);
 
@@ -67,7 +67,7 @@ private Q_SLOTS:
         QCOMPARE(n, cache.getResourceFromCache(key));
 
         // WHEN
-        MyGLTFAsset badKey { QStringLiteral("key_bad") };
+        MyGLTFAsset badKey{ QStringLiteral("key_bad") };
 
         // THEN
         QVERIFY(!cache.getResourceFromCache(badKey));
@@ -79,7 +79,7 @@ private Q_SLOTS:
         Kuesa::AssetCache<MyGLTFAsset, Qt3DCore::QNode> cache;
 
         // WHEN
-        MyGLTFAsset key { QStringLiteral("key") };
+        MyGLTFAsset key{ QStringLiteral("key") };
         {
             Qt3DCore::QNode n;
             cache.addResourceToCache(key, &n);
@@ -94,7 +94,7 @@ private Q_SLOTS:
         // GIVEN
         Kuesa::SceneEntity scene;
         Kuesa::AssetCache<MyGLTFAsset, Qt3DCore::QNode> cache;
-        MyGLTFAsset key { QStringLiteral("key") };
+        MyGLTFAsset key{ QStringLiteral("key") };
         Qt3DCore::QNode *n = new Qt3DCore::QNode;
 
         // WHEN

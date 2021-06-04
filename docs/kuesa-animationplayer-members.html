@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
 <!-- animationplayer.cpp -->
-  <title>List of All Members for AnimationPlayer | Kuesa Runtime 1.3</title>
+  <title>List of All Members for AnimationPlayer | Kuesa Runtime 1.4</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.4</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li><a href="kuesa-cpp.html">C++ Classes</a></li>
 <li>AnimationPlayer</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.4 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
 <h1 class="title">List of All Members for AnimationPlayer</h1>
 <p>This is the complete list of members for <a href="kuesa-animationplayer.html">Kuesa::AnimationPlayer</a>, including inherited members.</p>
@@ -18,12 +18,13 @@
 <li class="fn">enum <span class="name"><b><a href="kuesa-animationplayer.html#Status-enum">Status</a></b></span></li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#clip-prop">clipChanged</a></b></span>(const QString &amp;)</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#clock-prop">clockChanged</a></b></span>(Qt3DAnimation::QClock *)</li>
+<li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#currentLoop-prop">currentLoopChanged</a></b></span>(int )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#duration-prop">durationChanged</a></b></span>(float )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#loops-prop">loopCountChanged</a></b></span>(int )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#mapper-prop">mapperChanged</a></b></span>(const QString &amp;)</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#normalizedTime-prop">normalizedTimeChanged</a></b></span>(float )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#reset">reset</a></b></span>()</li>
-<li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#restart">restart</a></b></span>()</li>
+<li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#restart">restart</a></b></span>(int )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#run">run</a></b></span>(float , float )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#running-prop">runningChanged</a></b></span>(bool )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-kuesanode.html#sceneEntity-prop">sceneEntityChanged</a></b></span>(Kuesa::SceneEntity *)</li>
@@ -35,12 +36,13 @@
 </ul></td><td class="topAlign"><ul>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#running-prop">setRunning</a></b></span>(bool )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-kuesanode.html#sceneEntity-prop">setSceneEntity</a></b></span>(Kuesa::SceneEntity *)</li>
-<li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#start">start</a></b></span>()</li>
+<li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#start">start</a></b></span>(int )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#status-prop">statusChanged</a></b></span>(Kuesa::AnimationPlayer::Status )</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#stop">stop</a></b></span>()</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#addTarget">addTarget</a></b></span>(Qt3DCore::QNode *)</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#clip-prop">clip</a></b></span>() const : QString</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#clock-prop">clock</a></b></span>() const : Qt3DAnimation::QClock *</li>
+<li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#currentLoop-prop">currentLoop</a></b></span>() const : int</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#duration-prop">duration</a></b></span>() const : float</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#running-prop">isRunning</a></b></span>() const : bool</li>
 <li class="fn"><span class="name"><b><a href="kuesa-animationplayer.html#loops-prop">loopCount</a></b></span>() const : int</li>

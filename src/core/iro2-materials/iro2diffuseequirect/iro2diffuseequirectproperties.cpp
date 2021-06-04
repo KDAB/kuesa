@@ -1,11 +1,10 @@
-
 /*
     iro2diffuseequirectproperties.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Nicolas Guichard <nicolas.guichard@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -32,13 +31,11 @@
 #include <Qt3DCore/private/qnode_p.h>
 #include <Kuesa/private/empty2dtexture_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::Iro2DiffuseEquiRectProperties
@@ -176,7 +173,7 @@ void Iro2DiffuseEquiRectProperties::setGltfYUp(bool gltfYUp)
     m_shaderData->setGltfYUp(gltfYUp);
 }
 
-void Iro2DiffuseEquiRectProperties::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
+void Iro2DiffuseEquiRectProperties::setDiffuseMap(Qt3DRender::QAbstractTexture *diffuseMap)
 {
     if (m_diffuseMap == diffuseMap)
         return;
@@ -193,7 +190,7 @@ void Iro2DiffuseEquiRectProperties::setDiffuseMap(Qt3DRender::QAbstractTexture *
     emit diffuseMapChanged(m_diffuseMap);
 }
 
-void Iro2DiffuseEquiRectProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
+void Iro2DiffuseEquiRectProperties::setReflectionMap(Qt3DRender::QAbstractTexture *reflectionMap)
 {
     if (m_reflectionMap == reflectionMap)
         return;
@@ -210,7 +207,7 @@ void Iro2DiffuseEquiRectProperties::setReflectionMap(Qt3DRender::QAbstractTextur
     emit reflectionMapChanged(m_reflectionMap);
 }
 
-void Iro2DiffuseEquiRectProperties::setNormalMap(Qt3DRender::QAbstractTexture * normalMap)
+void Iro2DiffuseEquiRectProperties::setNormalMap(Qt3DRender::QAbstractTexture *normalMap)
 {
     if (m_normalMap == normalMap)
         return;
@@ -226,7 +223,6 @@ void Iro2DiffuseEquiRectProperties::setNormalMap(Qt3DRender::QAbstractTexture * 
     }
     emit normalMapChanged(m_normalMap);
 }
-
 
 /*!
     \qmlproperty bool Iro2DiffuseEquiRectProperties::usesDiffuseMap
@@ -436,21 +432,20 @@ bool Iro2DiffuseEquiRectProperties::gltfYUp() const
     return m_shaderData->gltfYUp();
 }
 
-Qt3DRender::QAbstractTexture * Iro2DiffuseEquiRectProperties::diffuseMap() const
+Qt3DRender::QAbstractTexture *Iro2DiffuseEquiRectProperties::diffuseMap() const
 {
     return m_diffuseMap;
 }
 
-Qt3DRender::QAbstractTexture * Iro2DiffuseEquiRectProperties::reflectionMap() const
+Qt3DRender::QAbstractTexture *Iro2DiffuseEquiRectProperties::reflectionMap() const
 {
     return m_reflectionMap;
 }
 
-Qt3DRender::QAbstractTexture * Iro2DiffuseEquiRectProperties::normalMap() const
+Qt3DRender::QAbstractTexture *Iro2DiffuseEquiRectProperties::normalMap() const
 {
     return m_normalMap;
 }
-
 
 } // namespace Kuesa
 

@@ -33,6 +33,7 @@ import Qt3D.Extras 2.10
 import Qt3D.Animation 2.10
 import QtQuick 2.10 as QQ2
 import Kuesa 1.3 as Kuesa
+import Kuesa.Utils 1.3 as KuesaUtils
 
 KuesaUtils.View3D {
     id: scene

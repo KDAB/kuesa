@@ -100,14 +100,14 @@ private Q_SLOTS:
         QVERIFY(spy.isValid());
 
         // WHEN
-        tracker.setScreenSize({512, 512});
+        tracker.setScreenSize({ 512, 512 });
 
         // THEN
         QCOMPARE(tracker.screenSize(), QSize(512, 512));
         QCOMPARE(spy.count(), 1);
 
         // WHEN
-        tracker.setScreenSize({512, 512});
+        tracker.setScreenSize({ 512, 512 });
 
         // THEN
         QCOMPARE(spy.count(), 1);
@@ -141,7 +141,7 @@ private Q_SLOTS:
         Kuesa::SceneEntity scene;
         Kuesa::Placeholder p;
         Qt3DCore::QTransform *placeHolderTransform = Kuesa::componentFromEntity<Qt3DCore::QTransform>(&p);
-        placeHolderTransform->setTranslation({90.0f, 25.0f, 0.0f});
+        placeHolderTransform->setTranslation({ 90.0f, 25.0f, 0.0f });
         scene.placeholders()->add(QStringLiteral("MyPlaceholder2"), &p);
 
         tracker.setSceneEntity(&scene);
@@ -228,7 +228,7 @@ private Q_SLOTS:
         QObject *target = new QObject();
         Qt3DRender::QCamera *camera = new Qt3DRender::QCamera;
 
-        auto simulateBackendWorldMatrixUpdate = [&] (Qt3DCore::QTransform *t) {
+        auto simulateBackendWorldMatrixUpdate = [&](Qt3DCore::QTransform *t) {
             Qt3DCore::QTransformPrivate *d = static_cast<Qt3DCore::QTransformPrivate *>(Qt3DCore::QNodePrivate::get(t));
             d->setWorldMatrix(t->matrix());
         };
@@ -249,7 +249,7 @@ private Q_SLOTS:
 
         placeHolderTransform->setScale(2.0f);
 
-        placeholderTracker.setScreenSize({800, 600});
+        placeholderTracker.setScreenSize({ 800, 600 });
         placeholderTracker.setCamera(camera);
         placeholderTracker.setTarget(target);
         placeholderTracker.setName(QStringLiteral("Placeholder"));
@@ -285,7 +285,7 @@ private Q_SLOTS:
         QCOMPARE(placeholderTracker.height(), target->property("height").toInt());
 
         // WHEN
-        placeholderTracker.setScreenSize({400, 300});
+        placeholderTracker.setScreenSize({ 400, 300 });
 
         // THEN
         QCOMPARE(target->property("x").toInt(), 0);
@@ -298,8 +298,8 @@ private Q_SLOTS:
         QCOMPARE(placeholderTracker.height(), target->property("height").toInt());
 
         // WHEN
-        placeholderTracker.setScreenSize({800, 600});
-        placeholderTracker.setViewportRect({0.5f, 0.5f, 0.5f, 0.5f});
+        placeholderTracker.setScreenSize({ 800, 600 });
+        placeholderTracker.setViewportRect({ 0.5f, 0.5f, 0.5f, 0.5f });
 
         // THEN
         QCOMPARE(target->property("x").toInt(), 400);
@@ -312,13 +312,13 @@ private Q_SLOTS:
         QCOMPARE(placeholderTracker.height(), target->property("height").toInt());
 
         // WHEN
-        placeholderTracker.setViewportRect({0.0f, 0.0f, 1.0f, 1.0f});
+        placeholderTracker.setViewportRect({ 0.0f, 0.0f, 1.0f, 1.0f });
         camera->setProjectionType(Qt3DRender::QCameraLens::PerspectiveProjection);
 
         // THEN
         QCOMPARE(target->property("x").toInt(), 220);
         QCOMPARE(target->property("y").toInt(), 165);
-        QCOMPARE(target->property("width").toInt(),360);
+        QCOMPARE(target->property("width").toInt(), 360);
         QCOMPARE(target->property("height").toInt(), 270);
         QCOMPARE(placeholderTracker.x(), target->property("x").toInt());
         QCOMPARE(placeholderTracker.y(), target->property("y").toInt());

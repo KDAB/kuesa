@@ -1,11 +1,10 @@
-
 /*
     irodiffuseshaderdata.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -29,13 +28,11 @@
 
 #include "irodiffuseshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 IroDiffuseShaderData::IroDiffuseShaderData(Qt3DCore::QNode *parent)
     : Qt3DRender::QShaderData(parent)
     , m_normalScaling()
@@ -51,7 +48,8 @@ IroDiffuseShaderData::IroDiffuseShaderData(Qt3DCore::QNode *parent)
     , m_diffuseOuterFilter()
     , m_diffuseGain()
     , m_usesDiffuseMap()
-{}
+{
+}
 
 IroDiffuseShaderData::~IroDiffuseShaderData() = default;
 
@@ -119,7 +117,6 @@ bool IroDiffuseShaderData::usesDiffuseMap() const
 {
     return m_usesDiffuseMap;
 }
-
 
 void IroDiffuseShaderData::setNormalScaling(const QVector3D &normalScaling)
 {
@@ -224,8 +221,6 @@ void IroDiffuseShaderData::setUsesDiffuseMap(bool usesDiffuseMap)
     m_usesDiffuseMap = usesDiffuseMap;
     emit usesDiffuseMapChanged(usesDiffuseMap);
 }
-
-
 
 } // namespace Kuesa
 

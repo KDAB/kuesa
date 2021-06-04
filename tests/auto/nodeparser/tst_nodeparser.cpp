@@ -256,7 +256,7 @@ private Q_SLOTS:
 
         const TreeNode n = context.treeNode(0);
         QCOMPARE(n.reflectionPlaneEquation, QVector4D(1.0f, 0.0f, 0.0f, 883.0f));
-        QCOMPARE(n.layerIndices, QVector<int>({0, 1, 2}));
+        QCOMPARE(n.layerIndices, QVector<int>({ 0, 1, 2 }));
         QCOMPARE(n.hasPlaceholder, true);
         QCOMPARE(n.placeHolder.cameraNode, 1);
     }
@@ -283,9 +283,41 @@ private Q_SLOTS:
 
         const TreeNode n = context.treeNode(0);
         QCOMPARE(n.reflectionPlaneEquation, QVector4D(1.0f, 0.0f, 0.0f, 883.0f));
-        QCOMPARE(n.layerIndices, QVector<int>({0, 1, 2}));
+        QCOMPARE(n.layerIndices, QVector<int>({ 0, 1, 2 }));
         QCOMPARE(n.hasPlaceholder, true);
         QCOMPARE(n.placeHolder.cameraNode, 1);
+    }
+
+    void checkParsesExtras()
+    {
+        // GIVEN
+        GLTF2Context context;
+        NodeParser parser;
+        QFile file(QStringLiteral(ASSETS "node_extras.gltf"));
+        file.open(QIODevice::ReadOnly);
+        QVERIFY(file.isOpen());
+
+        const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        const QJsonValue nodes = json.object().value(QLatin1String("nodes"));
+        QVERIFY(!json.isNull() && nodes.isArray());
+
+        // WHEN
+        const bool success = parser.parse(nodes.toArray(), &context);
+
+        // THEN
+        QVERIFY(success);
+        QCOMPARE(context.treeNodeCount(), size_t(1));
+
+        const TreeNode n = context.treeNode(0);
+        QCOMPARE(n.extras.size(), 3);
+        const std::pair<QString, QVariant> expectedValues[] = {
+            { QStringLiteral("myBoolProp"), QVariant(true) },
+            { QStringLiteral("myDoubleProp"), QVariant(1584.883) },
+            { QStringLiteral("myStringProp"), QVariant(QStringLiteral("Kuesa_String")) },
+        };
+        QCOMPARE(n.extras[0], expectedValues[0]);
+        QCOMPARE(n.extras[1], expectedValues[1]);
+        QCOMPARE(n.extras[2], expectedValues[2]);
     }
 };
 

@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
 <!-- view.cpp -->
-  <title>View Class | Kuesa Runtime 1.3</title>
+  <title>View Class | Kuesa Runtime 1.4</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.4</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li><a href="kuesa-cpp.html">C++ Classes</a></li>
 <li>View</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.4 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><div class="sidebar">
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
@@ -131,11 +131,11 @@
 
  Kuesa::View *view1 = new Kuesa::View();
  view1-&gt;setCamera(sceneCamera1);
- view1-&gt;setViewport(QRectF(0, 0, 0.5, 1);
+ view1-&gt;setViewportRect(QRectF(0, 0, 0.5, 1);
 
  Kuesa::View *view2 = new Kuesa::View();
  view2-&gt;setCamera(sceneCamera2);
- view2-&gt;setViewport(QRectF(0.5, 0, 0.5, 1);
+ view2-&gt;setViewportRect(QRectF(0.5, 0, 0.5, 1);
  view2-&gt;addLayer(groundLayer);
 
  frameGraph-&gt;addView(view1);
@@ -147,7 +147,7 @@
 <h2>Property Documentation</h2>
 <!-- $$$backToFrontSorting-prop$$$backToFrontSorting$$$setBackToFrontSortingbool$$$backToFrontSortingChangedbool -->
 <h3 class="fn" id="backToFrontSorting-prop"><a name="backToFrontSorting-prop"></a><span class="name">backToFrontSorting</span> : <span class="type">bool</span></h3>
-<p>Holds whether back to front sorting to render objects in back-to-front order is enabled. This is required for proper alpha blending rendering. Disabled by default.</p>
+<p>Holds whether back to front sorting to render objects in back-to-front order is enabled. This is required for proper alpha blending rendering. Enabled by default.</p>
 <p><b>Access functions:</b></p>
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>backToFrontSorting</b></span>() const</td></tr>

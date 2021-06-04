@@ -1,0 +1,25 @@
+class GLTF2MaterialProperties;
+
+class KUESASHARED_EXPORT %sMaterial : public GLTF2Material
+{
+    Q_OBJECT
+    Q_PROPERTY(Kuesa::%sProperties *materialProperties READ materialProperties WRITE setMaterialProperties NOTIFY materialPropertiesChanged)
+
+public:
+    Q_INVOKABLE explicit %sMaterial(Qt3DCore::QNode *parent = nullptr);
+    ~%sMaterial();
+
+    %sProperties *materialProperties() const;
+
+public Q_SLOTS:
+    void setMaterialProperties(Kuesa::%sProperties *materialProperties);
+    void setMaterialProperties(Kuesa::GLTF2MaterialProperties *materialProperties);
+
+Q_SIGNALS:
+    void materialPropertiesChanged(Kuesa::%sProperties *materialProperties);
+
+private:
+    %sProperties *m_materialProperties = nullptr;
+    Qt3DRender::QParameter *m_shaderDataParameter;
+%s
+};

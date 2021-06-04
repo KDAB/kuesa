@@ -1,10 +1,9 @@
-
 # iromatteopaque.pri
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# This file was auto-generated
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -39,4 +38,5 @@ HEADERS += \
     $$PWD/iromatteopaquematerial.h \
     $$PWD/iromatteopaqueeffect.h \
     $$PWD/iromatteopaqueproperties.h \
-    $$PWD/iromatteopaqueshaderdata_p.h
+    $$PWD/iromatteopaqueshaderdata_p.h \
+    $$PWD/iromatteopaquetechnique_p.h

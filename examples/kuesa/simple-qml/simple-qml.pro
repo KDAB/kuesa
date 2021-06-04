@@ -36,5 +36,9 @@ RESOURCES += \
     simple-qml.qrc
 
 target.path = $$[QT_INSTALL_EXAMPLES]/kuesa/$$TARGET
-target.files = $$PWD/*
 INSTALLS += target
+
+android {
+    DISTFILES += android/AndroidManifest.xml
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+}

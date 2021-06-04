@@ -33,11 +33,13 @@ QT += kuesa kuesautils qml quick 3dquick 3dquick_private
 
 SOURCES += \
     kuesautilsplugin.cpp \
-    sceneconfigurationitem.cpp
+    sceneconfigurationitem.cpp \
+    viewconfigurationitem.cpp
 
 HEADERS += \
     kuesautilsplugin.h \
-    sceneconfigurationitem.h
+    sceneconfigurationitem.h \
+    viewconfigurationitem.h
 
 QML_FILES += \
     View3D.qml

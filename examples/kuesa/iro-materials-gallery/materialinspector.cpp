@@ -124,7 +124,7 @@ QString valueIntrospector(const QVariant &value)
     return QStringLiteral("Unknown");
 }
 
-} // anonymous
+} // namespace
 
 MaterialInspector::MaterialInspector(QObject *parent)
     : QObject(parent)
@@ -134,7 +134,7 @@ MaterialInspector::MaterialInspector(QObject *parent)
 
 Kuesa::GLTF2Material *MaterialInspector::material() const
 {
-    return  m_material;
+    return m_material;
 }
 
 QString MaterialInspector::description() const
@@ -189,4 +189,3 @@ void MaterialInspector::introspect()
     }
     emit descriptionChanged();
 }
-

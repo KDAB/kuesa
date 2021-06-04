@@ -48,14 +48,20 @@ public:
     void setDefaultRHIRenderTarget(QRhiRenderTarget *) override{};
     void setRHICommandBuffer(QRhiCommandBuffer *) override{};
 #else
-    void doRender(bool swapBuffers) override { Q_UNUSED(swapBuffers); };
-    void setPendingEvents(const QList<QPair<QObject *, QMouseEvent> > &, const QList<QKeyEvent> &) override {}
-    void loadShader(Qt3DRender::Render::Shader *, Qt3DRender::Render::HShader ) override {};
+    void doRender(bool swapBuffers) override
+    {
+        Q_UNUSED(swapBuffers);
+    };
+    void setPendingEvents(const QList<QPair<QObject *, QMouseEvent>> &, const QList<QKeyEvent> &) override { }
+    void loadShader(Qt3DRender::Render::Shader *, Qt3DRender::Render::HShader) override{};
     void render() override { }
     QVector<Qt3DCore::QAspectJobPtr> preRenderingJobs() override { return {}; }
     QVector<Qt3DCore::QAspectJobPtr> renderBinJobs() override { return {}; }
 #endif
-    qint64 time() const override { return 0; }
+    qint64 time() const override
+    {
+        return 0;
+    }
     void setTime(qint64 time) override { Q_UNUSED(time); }
     void setAspect(Qt3DRender::QRenderAspect *aspect) override { m_aspect = aspect; }
     void setNodeManagers(Qt3DRender::Render::NodeManagers *m) override { m_managers = m; }

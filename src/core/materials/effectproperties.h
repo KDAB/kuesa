@@ -26,7 +26,6 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-
 #ifndef EFFECT_PROPERTIES_H
 #define EFFECT_PROPERTIES_H
 

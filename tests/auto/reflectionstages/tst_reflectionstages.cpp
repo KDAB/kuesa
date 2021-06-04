@@ -173,7 +173,7 @@ private Q_SLOTS:
         QCOMPARE(t->height(), 512);
 
         // WHEN
-        stages.setReflectionTextureSize({1024, 1024});
+        stages.setReflectionTextureSize({ 1024, 1024 });
 
         // THEN
         Qt3DRender::QAbstractTexture *t2 = stages.reflectionTexture();

@@ -1,11 +1,10 @@
-
 /*
     iro2alphasemshaderdata.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Nicolas Guichard <nicolas.guichard@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -29,13 +28,11 @@
 
 #include "iro2alphasemshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 Iro2AlphaSemShaderData::Iro2AlphaSemShaderData(Qt3DCore::QNode *parent)
     : Qt3DRender::QShaderData(parent)
     , m_usesReflectionMap()
@@ -53,7 +50,8 @@ Iro2AlphaSemShaderData::Iro2AlphaSemShaderData(Qt3DCore::QNode *parent)
     , m_postHemiFilter()
     , m_postGain()
     , m_gltfYUp()
-{}
+{
+}
 
 Iro2AlphaSemShaderData::~Iro2AlphaSemShaderData() = default;
 
@@ -131,7 +129,6 @@ bool Iro2AlphaSemShaderData::gltfYUp() const
 {
     return m_gltfYUp;
 }
-
 
 void Iro2AlphaSemShaderData::setUsesReflectionMap(bool usesReflectionMap)
 {
@@ -252,8 +249,6 @@ void Iro2AlphaSemShaderData::setGltfYUp(bool gltfYUp)
     m_gltfYUp = gltfYUp;
     emit gltfYUpChanged(gltfYUp);
 }
-
-
 
 } // namespace Kuesa
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QtHelpProject version="1.0">
-    <namespace>com.kdab.kuesa.1.3</namespace>
+    <namespace>com.kdab.kuesa.1.4</namespace>
     <virtualFolder>kuesa</virtualFolder>
-    <metaData name="version" value="1.3"/>
+    <metaData name="version" value="1.4"/>
     <filterSection>
         <toc>
             <section ref="index.html" title="Kuesa">
@@ -21,6 +21,9 @@
                     </section>
                     <section ref="kuesa-animationplayer.html" title="Kuesa::AnimationPlayer Class Reference">
                         <section ref="kuesa-animationplayer-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="kuesa-animationpulse.html" title="Kuesa::AnimationPulse Class Reference">
+                        <section ref="kuesa-animationpulse-members.html" title="List of all members"/>
                     </section>
                     <section ref="kuesa-armaturecollection.html" title="Kuesa::ArmatureCollection Class Reference">
                         <section ref="kuesa-armaturecollection-members.html" title="List of all members"/>
@@ -304,6 +307,9 @@
                     <section ref="kuesa-spotlight.html" title="Kuesa::SpotLight Class Reference">
                         <section ref="kuesa-spotlight-members.html" title="List of all members"/>
                     </section>
+                    <section ref="kuesa-steppedanimationplayer.html" title="Kuesa::SteppedAnimationPlayer Class Reference">
+                        <section ref="kuesa-steppedanimationplayer-members.html" title="List of all members"/>
+                    </section>
                     <section ref="kuesa-texturecollection.html" title="Kuesa::TextureCollection Class Reference">
                         <section ref="kuesa-texturecollection-members.html" title="List of all members"/>
                     </section>
@@ -343,6 +349,9 @@
                     <section ref="kuesautils-view3dscene.html" title="KuesaUtils::View3DScene Class Reference">
                         <section ref="kuesautils-view3dscene-members.html" title="List of all members"/>
                     </section>
+                    <section ref="kuesautils-viewconfiguration.html" title="KuesaUtils::ViewConfiguration Class Reference">
+                        <section ref="kuesautils-viewconfiguration-members.html" title="List of all members"/>
+                    </section>
                     <section ref="kuesautils-window.html" title="KuesaUtils::Window Class Reference">
                         <section ref="kuesautils-window-members.html" title="List of all members"/>
                     </section>
@@ -350,6 +359,9 @@
                 <section ref="kuesa-qml.html" title="QML Types">
                     <section ref="qml-animationplayer.html" title="AnimationPlayer Type Reference">
                         <section ref="qml-animationplayer-members.html" title="List of all members"/>
+                    </section>
+                    <section ref="qml-animationpulse.html" title="AnimationPulse Type Reference">
+                        <section ref="qml-animationpulse-members.html" title="List of all members"/>
                     </section>
                     <section ref="qml-asset.html" title="Asset Type Reference">
                         <section ref="qml-asset-members.html" title="List of all members"/>
@@ -618,6 +630,9 @@
                     <section ref="qml-spotlight.html" title="SpotLight Type Reference">
                         <section ref="qml-spotlight-members.html" title="List of all members"/>
                     </section>
+                    <section ref="qml-steppedanimationplayer.html" title="SteppedAnimationPlayer Type Reference">
+                        <section ref="qml-steppedanimationplayer-members.html" title="List of all members"/>
+                    </section>
                     <section ref="qml-texturetransform.html" title="TextureTransform Type Reference">
                         <section ref="qml-texturetransform-members.html" title="List of all members"/>
                     </section>
@@ -648,9 +663,13 @@
                     <section ref="qml-view3dscene.html" title="View3DScene Type Reference">
                         <section ref="qml-view3dscene-members.html" title="List of all members"/>
                     </section>
+                    <section ref="qml-viewconfiguration.html" title="ViewConfiguration Type Reference">
+                        <section ref="qml-viewconfiguration-members.html" title="List of all members"/>
+                    </section>
                 </section>
                 <section ref="" title="Examples">
                     <section ref="kuesa-car-scene-example.html" title="Kuesa Car-Scene QML Example"/>
+                    <section ref="kuesa-drill-experience-example.html" title="Kuesa Drill-Experience QML Example"/>
                     <section ref="kuesa-iro-materials-gallery-example.html" title="Kuesa Iro-Materials-Gallery QML Example"/>
                     <section ref="kuesa-manyducks-example.html" title="Kuesa Many Ducks C++ Example"/>
                     <section ref="kuesa-music-box-example.html" title="Kuesa Music Box QML Example"/>
@@ -669,6 +688,8 @@
             <keyword name="AnimationPlayer::None" id="AnimationPlayer::None" ref="kuesa-animationplayer.html#Status-enum"/>
             <keyword name="AnimationPlayer::Ready" id="AnimationPlayer::Ready" ref="kuesa-animationplayer.html#Status-enum"/>
             <keyword name="AnimationPlayer::Status" id="AnimationPlayer::Status" ref="kuesa-animationplayer.html#Status-enum"/>
+            <keyword name="AnimationPulse" id="Kuesa::AnimationPulse" ref="kuesa-animationpulse.html"/>
+            <keyword name="AnimationPulse" id="QML.AnimationPulse" ref="qml-animationpulse.html"/>
             <keyword name="ArmatureCollection" id="Kuesa::ArmatureCollection" ref="kuesa-armaturecollection.html"/>
             <keyword name="Asset" id="QML.Asset" ref="qml-asset.html"/>
             <keyword name="BloomEffect" id="Kuesa::BloomEffect" ref="kuesa-bloomeffect.html"/>
@@ -881,6 +902,8 @@
             <keyword name="Skybox" id="QML.Skybox" ref="qml-skybox.html"/>
             <keyword name="SpotLight" id="Kuesa::SpotLight" ref="kuesa-spotlight.html"/>
             <keyword name="SpotLight" id="QML.SpotLight" ref="qml-spotlight.html"/>
+            <keyword name="SteppedAnimationPlayer" id="Kuesa::SteppedAnimationPlayer" ref="kuesa-steppedanimationplayer.html"/>
+            <keyword name="SteppedAnimationPlayer" id="QML.SteppedAnimationPlayer" ref="qml-steppedanimationplayer.html"/>
             <keyword name="Tangent Space Library" id="Tangent Space Library" ref="kuesa-attribution-mikktspace.html"/>
             <keyword name="TextureCollection" id="Kuesa::TextureCollection" ref="kuesa-texturecollection.html"/>
             <keyword name="TextureImageCollection" id="Kuesa::TextureImageCollection" ref="kuesa-textureimagecollection.html"/>
@@ -910,6 +933,8 @@
             <keyword name="View3DScene" id="KuesaUtils::View3DScene" ref="kuesautils-view3dscene.html"/>
             <keyword name="View3DScene" id="QML.View3DScene" ref="qml-view3dscene.html"/>
             <keyword name="View::Features" id="View::Features" ref="kuesa-view.html#Feature-enum"/>
+            <keyword name="ViewConfiguration" id="KuesaUtils::ViewConfiguration" ref="kuesautils-viewconfiguration.html"/>
+            <keyword name="ViewConfiguration" id="QML.ViewConfiguration" ref="qml-viewconfiguration.html"/>
             <keyword name="Window" id="KuesaUtils::Window" ref="kuesautils-window.html"/>
             <keyword name="activeScene" id="View3DScene::activeScene" ref="kuesautils-view3dscene.html#activeScene-prop"/>
             <keyword name="activeScene" id="View3DScene::activeScene" ref="kuesautils-view3dscene.html#activeScene-prop"/>
@@ -973,6 +998,9 @@
             <keyword name="animationClips" id="SceneEntity::animationClips" ref="kuesa-sceneentity.html#animationClips"/>
             <keyword name="animationMapping" id="SceneEntity::animationMapping" ref="kuesa-sceneentity.html#animationMapping"/>
             <keyword name="animationMappings" id="SceneEntity::animationMappings" ref="kuesa-sceneentity.html#animationMappings"/>
+            <keyword name="animationNames" id="SteppedAnimationPlayer::animationNames" ref="kuesa-steppedanimationplayer.html#animationNames-prop"/>
+            <keyword name="animationNames" id="SteppedAnimationPlayer::animationNames" ref="kuesa-steppedanimationplayer.html#animationNames-prop"/>
+            <keyword name="animationNamesChanged" id="SteppedAnimationPlayer::animationNamesChanged" ref="kuesa-steppedanimationplayer.html#animationNames-prop"/>
             <keyword name="animationPlayers" id="View3DScene::animationPlayers" ref="kuesautils-view3dscene.html#animationPlayers"/>
             <keyword name="aoUsesTexCoord1" id="MetallicRoughnessProperties::aoUsesTexCoord1" ref="kuesa-metallicroughnessproperties.html#aoUsesTexCoord1-prop"/>
             <keyword name="aoUsesTexCoord1" id="MetallicRoughnessProperties::aoUsesTexCoord1" ref="qml-metallicroughnessproperties.html#aoUsesTexCoord1-prop"/>
@@ -998,7 +1026,11 @@
             <keyword name="backToFrontSorting" id="View::backToFrontSorting" ref="kuesa-view.html#backToFrontSorting-prop"/>
             <keyword name="backToFrontSorting" id="View::backToFrontSorting" ref="kuesa-view.html#backToFrontSorting-prop"/>
             <keyword name="backToFrontSorting" id="View::backToFrontSorting" ref="qml-view.html#backToFrontSorting-prop"/>
+            <keyword name="backToFrontSorting" id="ViewConfiguration::backToFrontSorting" ref="kuesautils-viewconfiguration.html#backToFrontSorting-prop"/>
+            <keyword name="backToFrontSorting" id="ViewConfiguration::backToFrontSorting" ref="kuesautils-viewconfiguration.html#backToFrontSorting-prop"/>
+            <keyword name="backToFrontSorting" id="ViewConfiguration::backToFrontSorting" ref="qml-viewconfiguration.html#backToFrontSorting-prop"/>
             <keyword name="backToFrontSortingChanged" id="View::backToFrontSortingChanged" ref="kuesa-view.html#backToFrontSorting-prop"/>
+            <keyword name="backToFrontSortingChanged" id="ViewConfiguration::backToFrontSortingChanged" ref="kuesautils-viewconfiguration.html#backToFrontSorting-prop"/>
             <keyword name="baseColorFactor" id="GLTF2MaterialProperties::baseColorFactor" ref="kuesa-gltf2materialproperties.html#baseColorFactor-prop"/>
             <keyword name="baseColorFactor" id="GLTF2MaterialProperties::baseColorFactor" ref="kuesa-gltf2materialproperties.html#baseColorFactor-prop"/>
             <keyword name="baseColorFactorChanged" id="GLTF2MaterialProperties::baseColorFactorChanged" ref="kuesa-gltf2materialproperties.html#baseColorFactor-prop"/>
@@ -1042,14 +1074,11 @@
             <keyword name="cameraChanged" id="PlaceholderTracker::cameraChanged" ref="kuesa-placeholdertracker.html#camera-prop"/>
             <keyword name="cameraChanged" id="TransformTracker::cameraChanged" ref="kuesa-transformtracker.html#camera-prop"/>
             <keyword name="cameraChanged" id="View::cameraChanged" ref="kuesa-view.html#camera-prop"/>
-            <keyword name="cameraName" id="SceneConfiguration::cameraName" ref="kuesautils-sceneconfiguration.html#cameraName-prop"/>
-            <keyword name="cameraName" id="SceneConfiguration::cameraName" ref="kuesautils-sceneconfiguration.html#cameraName-prop"/>
-            <keyword name="cameraName" id="SceneConfiguration::cameraName" ref="qml-sceneconfiguration.html#cameraName-prop"/>
-            <keyword name="cameraName" id="View3DScene::cameraName" ref="kuesautils-view3dscene.html#cameraName-prop"/>
-            <keyword name="cameraName" id="View3DScene::cameraName" ref="kuesautils-view3dscene.html#cameraName-prop"/>
             <keyword name="cameraName" id="View3DScene::cameraName" ref="qml-view3dscene.html#cameraName-prop"/>
-            <keyword name="cameraNameChanged" id="SceneConfiguration::cameraNameChanged" ref="kuesautils-sceneconfiguration.html#cameraName-prop"/>
-            <keyword name="cameraNameChanged" id="View3DScene::cameraNameChanged" ref="kuesautils-view3dscene.html#cameraName-prop"/>
+            <keyword name="cameraName" id="ViewConfiguration::cameraName" ref="kuesautils-viewconfiguration.html#cameraName-prop"/>
+            <keyword name="cameraName" id="ViewConfiguration::cameraName" ref="kuesautils-viewconfiguration.html#cameraName-prop"/>
+            <keyword name="cameraName" id="ViewConfiguration::cameraName" ref="qml-viewconfiguration.html#cameraName-prop"/>
+            <keyword name="cameraNameChanged" id="ViewConfiguration::cameraNameChanged" ref="kuesautils-viewconfiguration.html#cameraName-prop"/>
             <keyword name="cameras" id="SceneEntity::cameras" ref="kuesa-sceneentity.html#cameras"/>
             <keyword name="castsShadows" id="ShadowCastingLight::castsShadows" ref="kuesa-shadowcastinglight.html#castsShadows-prop"/>
             <keyword name="castsShadows" id="ShadowCastingLight::castsShadows" ref="kuesa-shadowcastinglight.html#castsShadows-prop"/>
@@ -1064,7 +1093,11 @@
             <keyword name="clearColor" id="View::clearColor" ref="kuesa-view.html#clearColor"/>
             <keyword name="clearColor" id="View::clearColor" ref="kuesa-view.html#clearColor-prop"/>
             <keyword name="clearColor" id="View::clearColor" ref="qml-view.html#clearColor-prop"/>
+            <keyword name="clearColor" id="ViewConfiguration::clearColor" ref="kuesautils-viewconfiguration.html#clearColor-prop"/>
+            <keyword name="clearColor" id="ViewConfiguration::clearColor" ref="kuesautils-viewconfiguration.html#clearColor-prop"/>
+            <keyword name="clearColor" id="ViewConfiguration::clearColor" ref="qml-viewconfiguration.html#clearColor-prop"/>
             <keyword name="clearColorChanged" id="View::clearColorChanged" ref="kuesa-view.html#clearColor-prop"/>
+            <keyword name="clearColorChanged" id="ViewConfiguration::clearColorChanged" ref="kuesautils-viewconfiguration.html#clearColor-prop"/>
             <keyword name="clip" id="AnimationPlayer::clip" ref="kuesa-animationplayer.html#clip-prop"/>
             <keyword name="clip" id="AnimationPlayer::clip" ref="kuesa-animationplayer.html#clip-prop"/>
             <keyword name="clip" id="AnimationPlayer::clip" ref="qml-animationplayer.html#clip-prop"/>
@@ -1083,6 +1116,8 @@
             <keyword name="count" id="MorphController::count" ref="qml-morphcontroller.html#count-prop"/>
             <keyword name="countChanged" id="MeshInstantiator::countChanged" ref="kuesa-meshinstantiator.html#count-prop"/>
             <keyword name="countChanged" id="MorphController::countChanged" ref="kuesa-morphcontroller.html#count-prop"/>
+            <keyword name="currentLoop" id="AnimationPlayer::currentLoop" ref="kuesa-animationplayer.html#currentLoop-prop"/>
+            <keyword name="currentLoopChanged" id="AnimationPlayer::currentLoopChanged" ref="kuesa-animationplayer.html#currentLoop-prop"/>
             <keyword name="diffuseGain" id="Iro2DiffuseEquiRectProperties::diffuseGain" ref="kuesa-iro2diffuseequirectproperties.html#diffuseGain-prop"/>
             <keyword name="diffuseGain" id="Iro2DiffuseEquiRectProperties::diffuseGain" ref="kuesa-iro2diffuseequirectproperties.html#diffuseGain-prop"/>
             <keyword name="diffuseGain" id="Iro2DiffuseEquiRectProperties::diffuseGain" ref="qml-iro2diffuseequirectproperties.html#diffuseGain-prop"/>
@@ -1119,6 +1154,14 @@
             <keyword name="diffuseInnerFilterChanged" id="IroDiffuseHemiProperties::diffuseInnerFilterChanged" ref="kuesa-irodiffusehemiproperties.html#diffuseInnerFilter-prop"/>
             <keyword name="diffuseInnerFilterChanged" id="IroDiffuseProperties::diffuseInnerFilterChanged" ref="kuesa-irodiffuseproperties.html#diffuseInnerFilter-prop"/>
             <keyword name="diffuseInnerFilterChanged" id="IroGlassAddProperties::diffuseInnerFilterChanged" ref="kuesa-iroglassaddproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="diffuseMap" id="Iro2DiffuseEquiRectProperties::diffuseMap" ref="kuesa-iro2diffuseequirectproperties.html#diffuseMap-prop"/>
+            <keyword name="diffuseMap" id="Iro2DiffuseSemProperties::diffuseMap" ref="kuesa-iro2diffusesemproperties.html#diffuseMap-prop"/>
+            <keyword name="diffuseMap" id="IroDiffuseHemiProperties::diffuseMap" ref="kuesa-irodiffusehemiproperties.html#diffuseMap-prop"/>
+            <keyword name="diffuseMap" id="IroDiffuseProperties::diffuseMap" ref="kuesa-irodiffuseproperties.html#diffuseMap-prop"/>
+            <keyword name="diffuseMapChanged" id="Iro2DiffuseEquiRectProperties::diffuseMapChanged" ref="kuesa-iro2diffuseequirectproperties.html#diffuseMap-prop"/>
+            <keyword name="diffuseMapChanged" id="Iro2DiffuseSemProperties::diffuseMapChanged" ref="kuesa-iro2diffusesemproperties.html#diffuseMap-prop"/>
+            <keyword name="diffuseMapChanged" id="IroDiffuseHemiProperties::diffuseMapChanged" ref="kuesa-irodiffusehemiproperties.html#diffuseMap-prop"/>
+            <keyword name="diffuseMapChanged" id="IroDiffuseProperties::diffuseMapChanged" ref="kuesa-irodiffuseproperties.html#diffuseMap-prop"/>
             <keyword name="diffuseOuterFilter" id="Iro2DiffuseEquiRectProperties::diffuseOuterFilter" ref="kuesa-iro2diffuseequirectproperties.html#diffuseOuterFilter-prop"/>
             <keyword name="diffuseOuterFilter" id="Iro2DiffuseEquiRectProperties::diffuseOuterFilter" ref="kuesa-iro2diffuseequirectproperties.html#diffuseOuterFilter-prop"/>
             <keyword name="diffuseOuterFilter" id="Iro2DiffuseEquiRectProperties::diffuseOuterFilter" ref="qml-iro2diffuseequirectproperties.html#diffuseOuterFilter-prop"/>
@@ -1199,8 +1242,12 @@
             <keyword name="exposure" id="View::exposure" ref="kuesa-view.html#exposure"/>
             <keyword name="exposure" id="View::exposure" ref="kuesa-view.html#exposure-prop"/>
             <keyword name="exposure" id="View::exposure" ref="qml-view.html#exposure-prop"/>
+            <keyword name="exposure" id="ViewConfiguration::exposure" ref="kuesautils-viewconfiguration.html#exposure-prop"/>
+            <keyword name="exposure" id="ViewConfiguration::exposure" ref="kuesautils-viewconfiguration.html#exposure-prop"/>
+            <keyword name="exposure" id="ViewConfiguration::exposure" ref="qml-viewconfiguration.html#exposure-prop"/>
             <keyword name="exposureChanged" id="ToneMappingAndGammaCorrectionEffect::exposureChanged" ref="kuesa-tonemappingandgammacorrectioneffect.html#exposure-prop"/>
             <keyword name="exposureChanged" id="View::exposureChanged" ref="kuesa-view.html#exposure-prop"/>
+            <keyword name="exposureChanged" id="ViewConfiguration::exposureChanged" ref="kuesautils-viewconfiguration.html#exposure-prop"/>
             <keyword name="extension" id="Skybox::extension" ref="kuesa-skybox.html#extension"/>
             <keyword name="extension" id="Skybox::extension" ref="qml-skybox.html#extension-prop"/>
             <keyword name="extensionChanged" id="Skybox::extensionChanged" ref="kuesa-skybox.html#extension-prop"/>
@@ -1233,15 +1280,23 @@
             <keyword name="frustumCulling" id="View::frustumCulling" ref="kuesa-view.html#frustumCulling-prop"/>
             <keyword name="frustumCulling" id="View::frustumCulling" ref="kuesa-view.html#frustumCulling-prop"/>
             <keyword name="frustumCulling" id="View::frustumCulling" ref="qml-view.html#frustumCulling-prop"/>
+            <keyword name="frustumCulling" id="ViewConfiguration::frustumCulling" ref="kuesautils-viewconfiguration.html#frustumCulling-prop"/>
+            <keyword name="frustumCulling" id="ViewConfiguration::frustumCulling" ref="kuesautils-viewconfiguration.html#frustumCulling-prop"/>
+            <keyword name="frustumCulling" id="ViewConfiguration::frustumCulling" ref="qml-viewconfiguration.html#frustumCulling-prop"/>
             <keyword name="frustumCullingChanged" id="View::frustumCullingChanged" ref="kuesa-view.html#frustumCulling-prop"/>
+            <keyword name="frustumCullingChanged" id="ViewConfiguration::frustumCullingChanged" ref="kuesautils-viewconfiguration.html#frustumCulling-prop"/>
             <keyword name="gamma" id="ToneMappingAndGammaCorrectionEffect::gamma" ref="kuesa-tonemappingandgammacorrectioneffect.html#gamma-prop"/>
             <keyword name="gamma" id="ToneMappingAndGammaCorrectionEffect::gamma" ref="kuesa-tonemappingandgammacorrectioneffect.html#gamma-prop"/>
             <keyword name="gamma" id="ToneMappingAndGammaCorrectionEffect::gamma" ref="qml-tonemappingandgammacorrectioneffect.html#gamma-prop"/>
             <keyword name="gamma" id="View::gamma" ref="kuesa-view.html#gamma"/>
             <keyword name="gamma" id="View::gamma" ref="kuesa-view.html#gamma-prop"/>
             <keyword name="gamma" id="View::gamma" ref="qml-view.html#gamma-prop"/>
+            <keyword name="gamma" id="ViewConfiguration::gamma" ref="kuesautils-viewconfiguration.html#gamma-prop"/>
+            <keyword name="gamma" id="ViewConfiguration::gamma" ref="kuesautils-viewconfiguration.html#gamma-prop"/>
+            <keyword name="gamma" id="ViewConfiguration::gamma" ref="qml-viewconfiguration.html#gamma-prop"/>
             <keyword name="gammaChanged" id="ToneMappingAndGammaCorrectionEffect::gammaChanged" ref="kuesa-tonemappingandgammacorrectioneffect.html#gamma-prop"/>
             <keyword name="gammaChanged" id="View::gammaChanged" ref="kuesa-view.html#gamma-prop"/>
+            <keyword name="gammaChanged" id="ViewConfiguration::gammaChanged" ref="kuesautils-viewconfiguration.html#gamma-prop"/>
             <keyword name="generateNormals" id="GLTF2Options::generateNormals" ref="kuesa-gltf2import-gltf2options.html#generateNormals-prop"/>
             <keyword name="generateNormalsChanged" id="GLTF2Options::generateNormalsChanged" ref="kuesa-gltf2import-gltf2options.html#generateNormals-prop"/>
             <keyword name="generateTangents" id="GLTF2Options::generateTangents" ref="kuesa-gltf2import-gltf2options.html#generateTangents-prop"/>
@@ -1393,6 +1448,11 @@
             <keyword name="isUsingTexCoordAttribute" id="GLTF2MaterialEffect::isUsingTexCoordAttribute" ref="kuesa-gltf2materialeffect.html#usingTexCoordAttribute-prop"/>
             <keyword name="layer" id="FullScreenQuad::layer" ref="kuesa-fullscreenquad.html#layer"/>
             <keyword name="layer" id="SceneEntity::layer" ref="kuesa-sceneentity.html#layer"/>
+            <keyword name="layerNames" id="View3DScene::layerNames" ref="qml-view3dscene.html#layerNames-prop"/>
+            <keyword name="layerNames" id="ViewConfiguration::layerNames" ref="kuesautils-viewconfiguration.html#layerNames-prop"/>
+            <keyword name="layerNames" id="ViewConfiguration::layerNames" ref="kuesautils-viewconfiguration.html#layerNames-prop"/>
+            <keyword name="layerNames" id="ViewConfiguration::layerNames" ref="qml-viewconfiguration.html#layerNames-prop"/>
+            <keyword name="layerNamesChanged" id="ViewConfiguration::layerNamesChanged" ref="kuesautils-viewconfiguration.html#layerNames-prop"/>
             <keyword name="layers" id="ReflectionPlane::layers" ref="kuesa-reflectionplane.html#layers"/>
             <keyword name="layers" id="SceneEntity::layers" ref="kuesa-sceneentity.html#layers"/>
             <keyword name="layers" id="View::layers" ref="kuesa-view.html#layers"/>
@@ -1571,6 +1631,20 @@
             <keyword name="matteInnerFilter" id="Iro2MatteAlphaProperties::matteInnerFilter" ref="kuesa-iro2mattealphaproperties.html#matteInnerFilter-prop"/>
             <keyword name="matteInnerFilter" id="Iro2MatteAlphaProperties::matteInnerFilter" ref="qml-iro2mattealphaproperties.html#matteInnerFilter-prop"/>
             <keyword name="matteInnerFilterChanged" id="Iro2MatteAlphaProperties::matteInnerFilterChanged" ref="kuesa-iro2mattealphaproperties.html#matteInnerFilter-prop"/>
+            <keyword name="matteMap" id="Iro2MatteAlphaProperties::matteMap" ref="kuesa-iro2mattealphaproperties.html#matteMap-prop"/>
+            <keyword name="matteMap" id="IroMatteAddProperties::matteMap" ref="kuesa-iromatteaddproperties.html#matteMap-prop"/>
+            <keyword name="matteMap" id="IroMatteAlphaProperties::matteMap" ref="kuesa-iromattealphaproperties.html#matteMap-prop"/>
+            <keyword name="matteMap" id="IroMatteBackgroundProperties::matteMap" ref="kuesa-iromattebackgroundproperties.html#matteMap-prop"/>
+            <keyword name="matteMap" id="IroMatteMultProperties::matteMap" ref="kuesa-iromattemultproperties.html#matteMap-prop"/>
+            <keyword name="matteMap" id="IroMatteOpaqueProperties::matteMap" ref="kuesa-iromatteopaqueproperties.html#matteMap-prop"/>
+            <keyword name="matteMap" id="IroMatteSkyboxProperties::matteMap" ref="kuesa-iromatteskyboxproperties.html#matteMap-prop"/>
+            <keyword name="matteMapChanged" id="Iro2MatteAlphaProperties::matteMapChanged" ref="kuesa-iro2mattealphaproperties.html#matteMap-prop"/>
+            <keyword name="matteMapChanged" id="IroMatteAddProperties::matteMapChanged" ref="kuesa-iromatteaddproperties.html#matteMap-prop"/>
+            <keyword name="matteMapChanged" id="IroMatteAlphaProperties::matteMapChanged" ref="kuesa-iromattealphaproperties.html#matteMap-prop"/>
+            <keyword name="matteMapChanged" id="IroMatteBackgroundProperties::matteMapChanged" ref="kuesa-iromattebackgroundproperties.html#matteMap-prop"/>
+            <keyword name="matteMapChanged" id="IroMatteMultProperties::matteMapChanged" ref="kuesa-iromattemultproperties.html#matteMap-prop"/>
+            <keyword name="matteMapChanged" id="IroMatteOpaqueProperties::matteMapChanged" ref="kuesa-iromatteopaqueproperties.html#matteMap-prop"/>
+            <keyword name="matteMapChanged" id="IroMatteSkyboxProperties::matteMapChanged" ref="kuesa-iromatteskyboxproperties.html#matteMap-prop"/>
             <keyword name="matteOuterFilter" id="Iro2MatteAlphaProperties::matteOuterFilter" ref="kuesa-iro2mattealphaproperties.html#matteOuterFilter-prop"/>
             <keyword name="matteOuterFilter" id="Iro2MatteAlphaProperties::matteOuterFilter" ref="kuesa-iro2mattealphaproperties.html#matteOuterFilter-prop"/>
             <keyword name="matteOuterFilter" id="Iro2MatteAlphaProperties::matteOuterFilter" ref="qml-iro2mattealphaproperties.html#matteOuterFilter-prop"/>
@@ -1669,9 +1743,27 @@
             <keyword name="normalDisturbChanged" id="IroDiffuseHemiProperties::normalDisturbChanged" ref="kuesa-irodiffusehemiproperties.html#normalDisturb-prop"/>
             <keyword name="normalDisturbChanged" id="IroDiffuseProperties::normalDisturbChanged" ref="kuesa-irodiffuseproperties.html#normalDisturb-prop"/>
             <keyword name="normalDisturbChanged" id="IroGlassAddProperties::normalDisturbChanged" ref="kuesa-iroglassaddproperties.html#normalDisturb-prop"/>
+            <keyword name="normalMap" id="Iro2AlphaEquiRectProperties::normalMap" ref="kuesa-iro2alphaequirectproperties.html#normalMap-prop"/>
+            <keyword name="normalMap" id="Iro2AlphaSemProperties::normalMap" ref="kuesa-iro2alphasemproperties.html#normalMap-prop"/>
+            <keyword name="normalMap" id="Iro2DiffuseEquiRectProperties::normalMap" ref="kuesa-iro2diffuseequirectproperties.html#normalMap-prop"/>
+            <keyword name="normalMap" id="Iro2DiffuseSemProperties::normalMap" ref="kuesa-iro2diffusesemproperties.html#normalMap-prop"/>
+            <keyword name="normalMap" id="Iro2GlassEquiRectProperties::normalMap" ref="kuesa-iro2glassequirectproperties.html#normalMap-prop"/>
+            <keyword name="normalMap" id="Iro2GlassSemProperties::normalMap" ref="kuesa-iro2glasssemproperties.html#normalMap-prop"/>
+            <keyword name="normalMap" id="Iro2MatteAlphaProperties::normalMap" ref="kuesa-iro2mattealphaproperties.html#normalMap-prop"/>
+            <keyword name="normalMap" id="Iro2PlanarReflectionEquiRectProperties::normalMap" ref="kuesa-iro2planarreflectionequirectproperties.html#normalMap-prop"/>
+            <keyword name="normalMap" id="Iro2PlanarReflectionSemProperties::normalMap" ref="kuesa-iro2planarreflectionsemproperties.html#normalMap-prop"/>
             <keyword name="normalMap" id="MetallicRoughnessProperties::normalMap" ref="kuesa-metallicroughnessproperties.html#normalMap-prop"/>
             <keyword name="normalMap" id="MetallicRoughnessProperties::normalMap" ref="kuesa-metallicroughnessproperties.html#normalMap-prop"/>
             <keyword name="normalMap" id="MetallicRoughnessProperties::normalMap" ref="qml-metallicroughnessproperties.html#normalMap-prop"/>
+            <keyword name="normalMapChanged" id="Iro2AlphaEquiRectProperties::normalMapChanged" ref="kuesa-iro2alphaequirectproperties.html#normalMap-prop"/>
+            <keyword name="normalMapChanged" id="Iro2AlphaSemProperties::normalMapChanged" ref="kuesa-iro2alphasemproperties.html#normalMap-prop"/>
+            <keyword name="normalMapChanged" id="Iro2DiffuseEquiRectProperties::normalMapChanged" ref="kuesa-iro2diffuseequirectproperties.html#normalMap-prop"/>
+            <keyword name="normalMapChanged" id="Iro2DiffuseSemProperties::normalMapChanged" ref="kuesa-iro2diffusesemproperties.html#normalMap-prop"/>
+            <keyword name="normalMapChanged" id="Iro2GlassEquiRectProperties::normalMapChanged" ref="kuesa-iro2glassequirectproperties.html#normalMap-prop"/>
+            <keyword name="normalMapChanged" id="Iro2GlassSemProperties::normalMapChanged" ref="kuesa-iro2glasssemproperties.html#normalMap-prop"/>
+            <keyword name="normalMapChanged" id="Iro2MatteAlphaProperties::normalMapChanged" ref="kuesa-iro2mattealphaproperties.html#normalMap-prop"/>
+            <keyword name="normalMapChanged" id="Iro2PlanarReflectionEquiRectProperties::normalMapChanged" ref="kuesa-iro2planarreflectionequirectproperties.html#normalMap-prop"/>
+            <keyword name="normalMapChanged" id="Iro2PlanarReflectionSemProperties::normalMapChanged" ref="kuesa-iro2planarreflectionsemproperties.html#normalMap-prop"/>
             <keyword name="normalMapChanged" id="MetallicRoughnessProperties::normalMapChanged" ref="kuesa-metallicroughnessproperties.html#normalMap-prop"/>
             <keyword name="normalMapEnabled" id="MetallicRoughnessEffect::normalMapEnabled" ref="kuesa-metallicroughnesseffect.html#normalMapEnabled-prop"/>
             <keyword name="normalMapEnabled" id="MetallicRoughnessEffect::normalMapEnabled" ref="qml-metallicroughnesseffect.html#normalMapEnabled-prop"/>
@@ -1825,8 +1917,11 @@
             <keyword name="particlesEnabled" id="View::particlesEnabled" ref="kuesa-view.html#particlesEnabled-prop"/>
             <keyword name="particlesEnabled" id="View::particlesEnabled" ref="kuesa-view.html#particlesEnabled-prop"/>
             <keyword name="particlesEnabled" id="View::particlesEnabled" ref="qml-view.html#particlesEnabled-prop"/>
+            <keyword name="particlesEnabled" id="ViewConfiguration::particlesEnabled" ref="kuesautils-viewconfiguration.html#particlesEnabled-prop"/>
+            <keyword name="particlesEnabled" id="ViewConfiguration::particlesEnabled" ref="kuesautils-viewconfiguration.html#particlesEnabled-prop"/>
+            <keyword name="particlesEnabled" id="ViewConfiguration::particlesEnabled" ref="qml-viewconfiguration.html#particlesEnabled-prop"/>
             <keyword name="particlesEnabledChanged" id="View::particlesEnabledChanged" ref="kuesa-view.html#particlesEnabled-prop"/>
-            <keyword name="placeholderTrackers" id="View3DScene::placeholderTrackers" ref="kuesautils-view3dscene.html#placeholderTrackers"/>
+            <keyword name="particlesEnabledChanged" id="ViewConfiguration::particlesEnabledChanged" ref="kuesautils-viewconfiguration.html#particlesEnabled-prop"/>
             <keyword name="placeholders" id="SceneEntity::placeholders" ref="kuesa-sceneentity.html#placeholders-prop"/>
             <keyword name="postGain" id="Iro2AlphaEquiRectProperties::postGain" ref="kuesa-iro2alphaequirectproperties.html#postGain-prop"/>
             <keyword name="postGain" id="Iro2AlphaEquiRectProperties::postGain" ref="kuesa-iro2alphaequirectproperties.html#postGain-prop"/>
@@ -2025,6 +2120,8 @@
             <keyword name="projectReflectionMapChanged" id="IroDiffuseHemiProperties::projectReflectionMapChanged" ref="kuesa-irodiffusehemiproperties.html#projectReflectionMap-prop"/>
             <keyword name="projectReflectionMapChanged" id="IroDiffuseProperties::projectReflectionMapChanged" ref="kuesa-irodiffuseproperties.html#projectReflectionMap-prop"/>
             <keyword name="projectReflectionMapChanged" id="IroGlassAddProperties::projectReflectionMapChanged" ref="kuesa-iroglassaddproperties.html#projectReflectionMap-prop"/>
+            <keyword name="pulse" id="AnimationPulse::pulse" ref="kuesa-animationpulse.html#pulse-prop"/>
+            <keyword name="pulseChanged" id="AnimationPulse::pulseChanged" ref="kuesa-animationpulse.html#pulse-prop"/>
             <keyword name="radius" id="DepthOfFieldEffect::radius" ref="kuesa-depthoffieldeffect.html#radius-prop"/>
             <keyword name="radius" id="DepthOfFieldEffect::radius" ref="kuesa-depthoffieldeffect.html#radius-prop"/>
             <keyword name="radius" id="DepthOfFieldEffect::radius" ref="qml-depthoffieldeffect.html#radius-prop"/>
@@ -2141,6 +2238,26 @@
             <keyword name="reflectionInnerFilterChanged" id="IroDiffuseHemiProperties::reflectionInnerFilterChanged" ref="kuesa-irodiffusehemiproperties.html#reflectionInnerFilter-prop"/>
             <keyword name="reflectionInnerFilterChanged" id="IroDiffuseProperties::reflectionInnerFilterChanged" ref="kuesa-irodiffuseproperties.html#reflectionInnerFilter-prop"/>
             <keyword name="reflectionInnerFilterChanged" id="IroGlassAddProperties::reflectionInnerFilterChanged" ref="kuesa-iroglassaddproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="reflectionMap" id="Iro2AlphaEquiRectProperties::reflectionMap" ref="kuesa-iro2alphaequirectproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMap" id="Iro2AlphaSemProperties::reflectionMap" ref="kuesa-iro2alphasemproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMap" id="Iro2DiffuseEquiRectProperties::reflectionMap" ref="kuesa-iro2diffuseequirectproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMap" id="Iro2DiffuseSemProperties::reflectionMap" ref="kuesa-iro2diffusesemproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMap" id="Iro2GlassEquiRectProperties::reflectionMap" ref="kuesa-iro2glassequirectproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMap" id="Iro2GlassSemProperties::reflectionMap" ref="kuesa-iro2glasssemproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMap" id="IroDiffuseAlphaProperties::reflectionMap" ref="kuesa-irodiffusealphaproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMap" id="IroDiffuseHemiProperties::reflectionMap" ref="kuesa-irodiffusehemiproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMap" id="IroDiffuseProperties::reflectionMap" ref="kuesa-irodiffuseproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMap" id="IroGlassAddProperties::reflectionMap" ref="kuesa-iroglassaddproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMapChanged" id="Iro2AlphaEquiRectProperties::reflectionMapChanged" ref="kuesa-iro2alphaequirectproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMapChanged" id="Iro2AlphaSemProperties::reflectionMapChanged" ref="kuesa-iro2alphasemproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMapChanged" id="Iro2DiffuseEquiRectProperties::reflectionMapChanged" ref="kuesa-iro2diffuseequirectproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMapChanged" id="Iro2DiffuseSemProperties::reflectionMapChanged" ref="kuesa-iro2diffusesemproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMapChanged" id="Iro2GlassEquiRectProperties::reflectionMapChanged" ref="kuesa-iro2glassequirectproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMapChanged" id="Iro2GlassSemProperties::reflectionMapChanged" ref="kuesa-iro2glasssemproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMapChanged" id="IroDiffuseAlphaProperties::reflectionMapChanged" ref="kuesa-irodiffusealphaproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMapChanged" id="IroDiffuseHemiProperties::reflectionMapChanged" ref="kuesa-irodiffusehemiproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMapChanged" id="IroDiffuseProperties::reflectionMapChanged" ref="kuesa-irodiffuseproperties.html#reflectionMap-prop"/>
+            <keyword name="reflectionMapChanged" id="IroGlassAddProperties::reflectionMapChanged" ref="kuesa-iroglassaddproperties.html#reflectionMap-prop"/>
             <keyword name="reflectionOuterAlpha" id="IroDiffuseAlphaProperties::reflectionOuterAlpha" ref="kuesa-irodiffusealphaproperties.html#reflectionOuterAlpha-prop"/>
             <keyword name="reflectionOuterAlpha" id="IroDiffuseAlphaProperties::reflectionOuterAlpha" ref="kuesa-irodiffusealphaproperties.html#reflectionOuterAlpha-prop"/>
             <keyword name="reflectionOuterAlpha" id="IroDiffuseAlphaProperties::reflectionOuterAlpha" ref="qml-irodiffusealphaproperties.html#reflectionOuterAlpha-prop"/>
@@ -2212,6 +2329,9 @@
             <keyword name="remove" id="AbstractAssetCollection::remove" ref="kuesa-abstractassetcollection.html#remove"/>
             <keyword name="removePostProcessingEffect" id="View::removePostProcessingEffect" ref="kuesa-view.html#removePostProcessingEffect"/>
             <keyword name="removeTarget" id="AnimationPlayer::removeTarget" ref="kuesa-animationplayer.html#removeTarget"/>
+            <keyword name="renderSettings" id="View3DScene::renderSettings" ref="kuesautils-view3dscene.html#renderSettings-prop"/>
+            <keyword name="renderSettings" id="View3DScene::renderSettings" ref="kuesautils-view3dscene.html#renderSettings-prop"/>
+            <keyword name="renderSettings" id="View3DScene::renderSettings" ref="qml-view3dscene.html#renderSettings-prop"/>
             <keyword name="renderSurface" id="ForwardRenderer::renderSurface" ref="kuesa-forwardrenderer.html#renderSurface"/>
             <keyword name="renderSurface" id="ForwardRenderer::renderSurface" ref="kuesa-forwardrenderer.html#renderSurface-prop"/>
             <keyword name="renderSurface" id="ForwardRenderer::renderSurface" ref="qml-forwardrenderer.html#renderSurface-prop"/>
@@ -2306,10 +2426,12 @@
             <keyword name="setAlphaGain" id="IroDiffuseAlphaProperties::setAlphaGain" ref="kuesa-irodiffusealphaproperties.html#alphaGain-prop"/>
             <keyword name="setAmbientOcclusionMap" id="MetallicRoughnessProperties::setAmbientOcclusionMap" ref="kuesa-metallicroughnessproperties.html#ambientOcclusionMap-prop"/>
             <keyword name="setAmbientOcclusionMapEnabled" id="MetallicRoughnessEffect::setAmbientOcclusionMapEnabled" ref="kuesa-metallicroughnesseffect.html#ambientOcclusionMapEnabled-prop"/>
+            <keyword name="setAnimationNames" id="SteppedAnimationPlayer::setAnimationNames" ref="kuesa-steppedanimationplayer.html#animationNames-prop"/>
             <keyword name="setAssignNames" id="GLTF2Importer::setAssignNames" ref="kuesa-gltf2importer.html#setAssignNames"/>
             <keyword name="setAsynchronous" id="GLTF2Importer::setAsynchronous" ref="kuesa-gltf2importer.html#asynchronous-prop"/>
             <keyword name="setAsynchronous" id="View3DScene::setAsynchronous" ref="kuesautils-view3dscene.html#asynchronous-prop"/>
             <keyword name="setBackToFrontSorting" id="View::setBackToFrontSorting" ref="kuesa-view.html#backToFrontSorting-prop"/>
+            <keyword name="setBackToFrontSorting" id="ViewConfiguration::setBackToFrontSorting" ref="kuesautils-viewconfiguration.html#backToFrontSorting-prop"/>
             <keyword name="setBaseColorFactor" id="GLTF2MaterialProperties::setBaseColorFactor" ref="kuesa-gltf2materialproperties.html#baseColorFactor-prop"/>
             <keyword name="setBaseColorMap" id="GLTF2MaterialProperties::setBaseColorMap" ref="kuesa-gltf2materialproperties.html#baseColorMap-prop"/>
             <keyword name="setBaseColorMapEnabled" id="MetallicRoughnessEffect::setBaseColorMapEnabled" ref="kuesa-metallicroughnesseffect.html#baseColorMapEnabled-prop"/>
@@ -2323,10 +2445,11 @@
             <keyword name="setCamera" id="PlaceholderTracker::setCamera" ref="kuesa-placeholdertracker.html#camera-prop"/>
             <keyword name="setCamera" id="TransformTracker::setCamera" ref="kuesa-transformtracker.html#camera-prop"/>
             <keyword name="setCamera" id="View::setCamera" ref="kuesa-view.html#camera-prop"/>
-            <keyword name="setCameraName" id="SceneConfiguration::setCameraName" ref="kuesautils-sceneconfiguration.html#cameraName-prop"/>
+            <keyword name="setCameraName" id="ViewConfiguration::setCameraName" ref="kuesautils-viewconfiguration.html#cameraName-prop"/>
             <keyword name="setCastsShadows" id="ShadowCastingLight::setCastsShadows" ref="kuesa-shadowcastinglight.html#castsShadows-prop"/>
             <keyword name="setClearBuffers" id="ForwardRenderer::setClearBuffers" ref="kuesa-forwardrenderer.html#setClearBuffers"/>
             <keyword name="setClearColor" id="View::setClearColor" ref="kuesa-view.html#setClearColor"/>
+            <keyword name="setClearColor" id="ViewConfiguration::setClearColor" ref="kuesautils-viewconfiguration.html#clearColor-prop"/>
             <keyword name="setClip" id="AnimationPlayer::setClip" ref="kuesa-animationplayer.html#clip-prop"/>
             <keyword name="setClock" id="AnimationPlayer::setClock" ref="kuesa-animationplayer.html#clock-prop"/>
             <keyword name="setDepthTexture" id="AbstractPostProcessingEffect::setDepthTexture" ref="kuesa-abstractpostprocessingeffect.html#setDepthTexture"/>
@@ -2339,6 +2462,10 @@
             <keyword name="setDiffuseInnerFilter" id="IroDiffuseHemiProperties::setDiffuseInnerFilter" ref="kuesa-irodiffusehemiproperties.html#diffuseInnerFilter-prop"/>
             <keyword name="setDiffuseInnerFilter" id="IroDiffuseProperties::setDiffuseInnerFilter" ref="kuesa-irodiffuseproperties.html#diffuseInnerFilter-prop"/>
             <keyword name="setDiffuseInnerFilter" id="IroGlassAddProperties::setDiffuseInnerFilter" ref="kuesa-iroglassaddproperties.html#diffuseInnerFilter-prop"/>
+            <keyword name="setDiffuseMap" id="Iro2DiffuseEquiRectProperties::setDiffuseMap" ref="kuesa-iro2diffuseequirectproperties.html#diffuseMap-prop"/>
+            <keyword name="setDiffuseMap" id="Iro2DiffuseSemProperties::setDiffuseMap" ref="kuesa-iro2diffusesemproperties.html#diffuseMap-prop"/>
+            <keyword name="setDiffuseMap" id="IroDiffuseHemiProperties::setDiffuseMap" ref="kuesa-irodiffusehemiproperties.html#diffuseMap-prop"/>
+            <keyword name="setDiffuseMap" id="IroDiffuseProperties::setDiffuseMap" ref="kuesa-irodiffuseproperties.html#diffuseMap-prop"/>
             <keyword name="setDiffuseOuterFilter" id="Iro2DiffuseEquiRectProperties::setDiffuseOuterFilter" ref="kuesa-iro2diffuseequirectproperties.html#diffuseOuterFilter-prop"/>
             <keyword name="setDiffuseOuterFilter" id="Iro2DiffuseSemProperties::setDiffuseOuterFilter" ref="kuesa-iro2diffusesemproperties.html#diffuseOuterFilter-prop"/>
             <keyword name="setDiffuseOuterFilter" id="IroDiffuseHemiProperties::setDiffuseOuterFilter" ref="kuesa-irodiffusehemiproperties.html#diffuseOuterFilter-prop"/>
@@ -2357,6 +2484,7 @@
             <keyword name="setEquation" id="ReflectionPlane::setEquation" ref="kuesa-reflectionplane.html#equation-prop"/>
             <keyword name="setExposure" id="ToneMappingAndGammaCorrectionEffect::setExposure" ref="kuesa-tonemappingandgammacorrectioneffect.html#exposure-prop"/>
             <keyword name="setExposure" id="View::setExposure" ref="kuesa-view.html#setExposure"/>
+            <keyword name="setExposure" id="ViewConfiguration::setExposure" ref="kuesautils-viewconfiguration.html#exposure-prop"/>
             <keyword name="setExtension" id="Skybox::setExtension" ref="kuesa-skybox.html#setExtension"/>
             <keyword name="setFinalColor" id="Particles::setFinalColor" ref="kuesa-particles.html#finalColor-prop"/>
             <keyword name="setFinalSize" id="Particles::setFinalSize" ref="kuesa-particles.html#finalSize-prop"/>
@@ -2364,8 +2492,10 @@
             <keyword name="setFocusRange" id="DepthOfFieldEffect::setFocusRange" ref="kuesa-depthoffieldeffect.html#setFocusRange"/>
             <keyword name="setFrameTime" id="Particles::setFrameTime" ref="kuesa-particles.html#frameTime-prop"/>
             <keyword name="setFrustumCulling" id="View::setFrustumCulling" ref="kuesa-view.html#frustumCulling-prop"/>
+            <keyword name="setFrustumCulling" id="ViewConfiguration::setFrustumCulling" ref="kuesautils-viewconfiguration.html#frustumCulling-prop"/>
             <keyword name="setGamma" id="ToneMappingAndGammaCorrectionEffect::setGamma" ref="kuesa-tonemappingandgammacorrectioneffect.html#gamma-prop"/>
             <keyword name="setGamma" id="View::setGamma" ref="kuesa-view.html#setGamma"/>
+            <keyword name="setGamma" id="ViewConfiguration::setGamma" ref="kuesautils-viewconfiguration.html#gamma-prop"/>
             <keyword name="setGenerateNormals" id="GLTF2Options::setGenerateNormals" ref="kuesa-gltf2import-gltf2options.html#generateNormals-prop"/>
             <keyword name="setGenerateTangents" id="GLTF2Options::setGenerateTangents" ref="kuesa-gltf2import-gltf2options.html#generateTangents-prop"/>
             <keyword name="setGlassInnerFilter" id="Iro2GlassEquiRectProperties::setGlassInnerFilter" ref="kuesa-iro2glassequirectproperties.html#glassInnerFilter-prop"/>
@@ -2399,6 +2529,7 @@
             <keyword name="setInputTexture" id="GaussianBlurEffect::setInputTexture" ref="kuesa-gaussianblureffect.html#setInputTexture"/>
             <keyword name="setInputTexture" id="ThresholdEffect::setInputTexture" ref="kuesa-thresholdeffect.html#setInputTexture"/>
             <keyword name="setInstanced" id="GLTF2MaterialEffect::setInstanced" ref="kuesa-gltf2materialeffect.html#instanced-prop"/>
+            <keyword name="setLayerNames" id="ViewConfiguration::setLayerNames" ref="kuesautils-viewconfiguration.html#layerNames-prop"/>
             <keyword name="setLocalDirection" id="SpotLight::setLocalDirection" ref="kuesa-spotlight.html#localDirection-prop"/>
             <keyword name="setLoopCount" id="AnimationPlayer::setLoopCount" ref="kuesa-animationplayer.html#loops-prop"/>
             <keyword name="setMapper" id="AnimationPlayer::setMapper" ref="kuesa-animationplayer.html#mapper-prop"/>
@@ -2440,6 +2571,13 @@
             <keyword name="setMatteGain" id="IroMatteOpaqueProperties::setMatteGain" ref="kuesa-iromatteopaqueproperties.html#matteGain-prop"/>
             <keyword name="setMatteGain" id="IroMatteSkyboxProperties::setMatteGain" ref="kuesa-iromatteskyboxproperties.html#matteGain-prop"/>
             <keyword name="setMatteInnerFilter" id="Iro2MatteAlphaProperties::setMatteInnerFilter" ref="kuesa-iro2mattealphaproperties.html#matteInnerFilter-prop"/>
+            <keyword name="setMatteMap" id="Iro2MatteAlphaProperties::setMatteMap" ref="kuesa-iro2mattealphaproperties.html#matteMap-prop"/>
+            <keyword name="setMatteMap" id="IroMatteAddProperties::setMatteMap" ref="kuesa-iromatteaddproperties.html#matteMap-prop"/>
+            <keyword name="setMatteMap" id="IroMatteAlphaProperties::setMatteMap" ref="kuesa-iromattealphaproperties.html#matteMap-prop"/>
+            <keyword name="setMatteMap" id="IroMatteBackgroundProperties::setMatteMap" ref="kuesa-iromattebackgroundproperties.html#matteMap-prop"/>
+            <keyword name="setMatteMap" id="IroMatteMultProperties::setMatteMap" ref="kuesa-iromattemultproperties.html#matteMap-prop"/>
+            <keyword name="setMatteMap" id="IroMatteOpaqueProperties::setMatteMap" ref="kuesa-iromatteopaqueproperties.html#matteMap-prop"/>
+            <keyword name="setMatteMap" id="IroMatteSkyboxProperties::setMatteMap" ref="kuesa-iromatteskyboxproperties.html#matteMap-prop"/>
             <keyword name="setMatteOuterFilter" id="Iro2MatteAlphaProperties::setMatteOuterFilter" ref="kuesa-iro2mattealphaproperties.html#matteOuterFilter-prop"/>
             <keyword name="setMaxParticlesEmittedPerFrame" id="Particles::setMaxParticlesEmittedPerFrame" ref="kuesa-particles.html#maxParticlesEmittedPerFrame-prop"/>
             <keyword name="setMetalRoughMap" id="MetallicRoughnessProperties::setMetalRoughMap" ref="kuesa-metallicroughnessproperties.html#metalRoughMap-prop"/>
@@ -2462,6 +2600,15 @@
             <keyword name="setNormalDisturb" id="IroDiffuseHemiProperties::setNormalDisturb" ref="kuesa-irodiffusehemiproperties.html#normalDisturb-prop"/>
             <keyword name="setNormalDisturb" id="IroDiffuseProperties::setNormalDisturb" ref="kuesa-irodiffuseproperties.html#normalDisturb-prop"/>
             <keyword name="setNormalDisturb" id="IroGlassAddProperties::setNormalDisturb" ref="kuesa-iroglassaddproperties.html#normalDisturb-prop"/>
+            <keyword name="setNormalMap" id="Iro2AlphaEquiRectProperties::setNormalMap" ref="kuesa-iro2alphaequirectproperties.html#normalMap-prop"/>
+            <keyword name="setNormalMap" id="Iro2AlphaSemProperties::setNormalMap" ref="kuesa-iro2alphasemproperties.html#normalMap-prop"/>
+            <keyword name="setNormalMap" id="Iro2DiffuseEquiRectProperties::setNormalMap" ref="kuesa-iro2diffuseequirectproperties.html#normalMap-prop"/>
+            <keyword name="setNormalMap" id="Iro2DiffuseSemProperties::setNormalMap" ref="kuesa-iro2diffusesemproperties.html#normalMap-prop"/>
+            <keyword name="setNormalMap" id="Iro2GlassEquiRectProperties::setNormalMap" ref="kuesa-iro2glassequirectproperties.html#normalMap-prop"/>
+            <keyword name="setNormalMap" id="Iro2GlassSemProperties::setNormalMap" ref="kuesa-iro2glasssemproperties.html#normalMap-prop"/>
+            <keyword name="setNormalMap" id="Iro2MatteAlphaProperties::setNormalMap" ref="kuesa-iro2mattealphaproperties.html#normalMap-prop"/>
+            <keyword name="setNormalMap" id="Iro2PlanarReflectionEquiRectProperties::setNormalMap" ref="kuesa-iro2planarreflectionequirectproperties.html#normalMap-prop"/>
+            <keyword name="setNormalMap" id="Iro2PlanarReflectionSemProperties::setNormalMap" ref="kuesa-iro2planarreflectionsemproperties.html#normalMap-prop"/>
             <keyword name="setNormalMap" id="MetallicRoughnessProperties::setNormalMap" ref="kuesa-metallicroughnessproperties.html#normalMap-prop"/>
             <keyword name="setNormalMapEnabled" id="MetallicRoughnessEffect::setNormalMapEnabled" ref="kuesa-metallicroughnesseffect.html#normalMapEnabled-prop"/>
             <keyword name="setNormalMapGain" id="Iro2AlphaEquiRectProperties::setNormalMapGain" ref="kuesa-iro2alphaequirectproperties.html#normalMapGain-prop"/>
@@ -2501,6 +2648,7 @@
             <keyword name="setParticleLifespan" id="Particles::setParticleLifespan" ref="kuesa-particles.html#particleLifespan-prop"/>
             <keyword name="setParticleLifespanRandom" id="Particles::setParticleLifespanRandom" ref="kuesa-particles.html#particleLifespanRandom-prop"/>
             <keyword name="setParticlesEnabled" id="View::setParticlesEnabled" ref="kuesa-view.html#particlesEnabled-prop"/>
+            <keyword name="setParticlesEnabled" id="ViewConfiguration::setParticlesEnabled" ref="kuesautils-viewconfiguration.html#particlesEnabled-prop"/>
             <keyword name="setPostGain" id="Iro2AlphaEquiRectProperties::setPostGain" ref="kuesa-iro2alphaequirectproperties.html#postGain-prop"/>
             <keyword name="setPostGain" id="Iro2AlphaSemProperties::setPostGain" ref="kuesa-iro2alphasemproperties.html#postGain-prop"/>
             <keyword name="setPostGain" id="Iro2DiffuseEquiRectProperties::setPostGain" ref="kuesa-iro2diffuseequirectproperties.html#postGain-prop"/>
@@ -2578,6 +2726,16 @@
             <keyword name="setReflectionInnerFilter" id="IroDiffuseHemiProperties::setReflectionInnerFilter" ref="kuesa-irodiffusehemiproperties.html#reflectionInnerFilter-prop"/>
             <keyword name="setReflectionInnerFilter" id="IroDiffuseProperties::setReflectionInnerFilter" ref="kuesa-irodiffuseproperties.html#reflectionInnerFilter-prop"/>
             <keyword name="setReflectionInnerFilter" id="IroGlassAddProperties::setReflectionInnerFilter" ref="kuesa-iroglassaddproperties.html#reflectionInnerFilter-prop"/>
+            <keyword name="setReflectionMap" id="Iro2AlphaEquiRectProperties::setReflectionMap" ref="kuesa-iro2alphaequirectproperties.html#reflectionMap-prop"/>
+            <keyword name="setReflectionMap" id="Iro2AlphaSemProperties::setReflectionMap" ref="kuesa-iro2alphasemproperties.html#reflectionMap-prop"/>
+            <keyword name="setReflectionMap" id="Iro2DiffuseEquiRectProperties::setReflectionMap" ref="kuesa-iro2diffuseequirectproperties.html#reflectionMap-prop"/>
+            <keyword name="setReflectionMap" id="Iro2DiffuseSemProperties::setReflectionMap" ref="kuesa-iro2diffusesemproperties.html#reflectionMap-prop"/>
+            <keyword name="setReflectionMap" id="Iro2GlassEquiRectProperties::setReflectionMap" ref="kuesa-iro2glassequirectproperties.html#reflectionMap-prop"/>
+            <keyword name="setReflectionMap" id="Iro2GlassSemProperties::setReflectionMap" ref="kuesa-iro2glasssemproperties.html#reflectionMap-prop"/>
+            <keyword name="setReflectionMap" id="IroDiffuseAlphaProperties::setReflectionMap" ref="kuesa-irodiffusealphaproperties.html#reflectionMap-prop"/>
+            <keyword name="setReflectionMap" id="IroDiffuseHemiProperties::setReflectionMap" ref="kuesa-irodiffusehemiproperties.html#reflectionMap-prop"/>
+            <keyword name="setReflectionMap" id="IroDiffuseProperties::setReflectionMap" ref="kuesa-irodiffuseproperties.html#reflectionMap-prop"/>
+            <keyword name="setReflectionMap" id="IroGlassAddProperties::setReflectionMap" ref="kuesa-iroglassaddproperties.html#reflectionMap-prop"/>
             <keyword name="setReflectionOuterAlpha" id="IroDiffuseAlphaProperties::setReflectionOuterAlpha" ref="kuesa-irodiffusealphaproperties.html#reflectionOuterAlpha-prop"/>
             <keyword name="setReflectionOuterFilter" id="Iro2AlphaEquiRectProperties::setReflectionOuterFilter" ref="kuesa-iro2alphaequirectproperties.html#reflectionOuterFilter-prop"/>
             <keyword name="setReflectionOuterFilter" id="Iro2AlphaSemProperties::setReflectionOuterFilter" ref="kuesa-iro2alphasemproperties.html#reflectionOuterFilter-prop"/>
@@ -2614,6 +2772,7 @@
             <keyword name="setShowDebugOverlay" id="ForwardRenderer::setShowDebugOverlay" ref="kuesa-forwardrenderer.html#showDebugOverlay-prop"/>
             <keyword name="setShowDebugOverlay" id="View3DScene::setShowDebugOverlay" ref="kuesautils-view3dscene.html#showDebugOverlay-prop"/>
             <keyword name="setSkinning" id="View::setSkinning" ref="kuesa-view.html#skinning-prop"/>
+            <keyword name="setSkinning" id="ViewConfiguration::setSkinning" ref="kuesautils-viewconfiguration.html#skinning-prop"/>
             <keyword name="setSoftShadows" id="ShadowCastingLight::setSoftShadows" ref="kuesa-shadowcastinglight.html#softShadows-prop"/>
             <keyword name="setSource" id="GLTF2Importer::setSource" ref="kuesa-gltf2importer.html#setSource"/>
             <keyword name="setSource" id="KTXTexture::setSource" ref="kuesa-ktxtexture.html#source-prop"/>
@@ -2625,6 +2784,7 @@
             <keyword name="setThreshold" id="ThresholdEffect::setThreshold" ref="kuesa-thresholdeffect.html#setThreshold"/>
             <keyword name="setToneMappingAlgorithm" id="ToneMappingAndGammaCorrectionEffect::setToneMappingAlgorithm" ref="kuesa-tonemappingandgammacorrectioneffect.html#setToneMappingAlgorithm"/>
             <keyword name="setToneMappingAlgorithm" id="View::setToneMappingAlgorithm" ref="kuesa-view.html#setToneMappingAlgorithm"/>
+            <keyword name="setToneMappingAlgorithm" id="ViewConfiguration::setToneMappingAlgorithm" ref="kuesautils-viewconfiguration.html#toneMappingAlgorithm-prop"/>
             <keyword name="setTransformationMatrices" id="MeshInstantiator::setTransformationMatrices" ref="kuesa-meshinstantiator.html#setTransformationMatrices"/>
             <keyword name="setTranslation" id="TransformTracker::setTranslation" ref="kuesa-transformtracker.html#translation-prop"/>
             <keyword name="setUsesDiffuseMap" id="Iro2DiffuseEquiRectProperties::setUsesDiffuseMap" ref="kuesa-iro2diffuseequirectproperties.html#usesDiffuseMap-prop"/>
@@ -2658,6 +2818,7 @@
             <keyword name="setUsesReflectionMap" id="IroDiffuseProperties::setUsesReflectionMap" ref="kuesa-irodiffuseproperties.html#usesReflectionMap-prop"/>
             <keyword name="setUsesReflectionMap" id="IroGlassAddProperties::setUsesReflectionMap" ref="kuesa-iroglassaddproperties.html#usesReflectionMap-prop"/>
             <keyword name="setUsesStencilMask" id="View::setUsesStencilMask" ref="kuesa-view.html#setUsesStencilMask"/>
+            <keyword name="setUsesStencilMask" id="ViewConfiguration::setUsesStencilMask" ref="kuesautils-viewconfiguration.html#usesStencilMask-prop"/>
             <keyword name="setUsingColorAttribute" id="GLTF2MaterialEffect::setUsingColorAttribute" ref="kuesa-gltf2materialeffect.html#usingColorAttribute-prop"/>
             <keyword name="setUsingMorphTargets" id="GLTF2MaterialEffect::setUsingMorphTargets" ref="kuesa-gltf2materialeffect.html#usingMorphTargets-prop"/>
             <keyword name="setUsingNormalAttribute" id="GLTF2MaterialEffect::setUsingNormalAttribute" ref="kuesa-gltf2materialeffect.html#usingNormalAttribute-prop"/>
@@ -2676,6 +2837,7 @@
             <keyword name="setViewportRect" id="PlaceholderTracker::setViewportRect" ref="kuesa-placeholdertracker.html#viewportRect-prop"/>
             <keyword name="setViewportRect" id="TransformTracker::setViewportRect" ref="kuesa-transformtracker.html#viewportRect-prop"/>
             <keyword name="setViewportRect" id="View::setViewportRect" ref="kuesa-view.html#viewportRect-prop"/>
+            <keyword name="setViewportRect" id="ViewConfiguration::setViewportRect" ref="kuesautils-viewconfiguration.html#viewportRect-prop"/>
             <keyword name="setWeight0" id="MorphController::setWeight0" ref="kuesa-morphcontroller.html#weight0-prop"/>
             <keyword name="setWeight1" id="MorphController::setWeight1" ref="kuesa-morphcontroller.html#weight1-prop"/>
             <keyword name="setWeight2" id="MorphController::setWeight2" ref="kuesa-morphcontroller.html#weight2-prop"/>
@@ -2688,6 +2850,7 @@
             <keyword name="setWindowSize" id="BloomEffect::setWindowSize" ref="kuesa-bloomeffect.html#setWindowSize"/>
             <keyword name="setWindowSize" id="GaussianBlurEffect::setWindowSize" ref="kuesa-gaussianblureffect.html#setWindowSize"/>
             <keyword name="setZFilling" id="View::setZFilling" ref="kuesa-view.html#zFilling-prop"/>
+            <keyword name="setZFilling" id="ViewConfiguration::setZFilling" ref="kuesautils-viewconfiguration.html#zFilling-prop"/>
             <keyword name="shadowMapBias" id="ShadowCastingLight::shadowMapBias" ref="kuesa-shadowcastinglight.html#shadowMapBias-prop"/>
             <keyword name="shadowMapBias" id="ShadowCastingLight::shadowMapBias" ref="kuesa-shadowcastinglight.html#shadowMapBias-prop"/>
             <keyword name="shadowMapBias" id="ShadowCastingLight::shadowMapBias" ref="qml-shadowcastinglight.html#shadowMapBias-prop"/>
@@ -2704,7 +2867,9 @@
             <keyword name="skinning" id="View::skinning" ref="kuesa-view.html#skinning-prop"/>
             <keyword name="skinning" id="View::skinning" ref="kuesa-view.html#skinning-prop"/>
             <keyword name="skinning" id="View::skinning" ref="qml-view.html#skinning-prop"/>
+            <keyword name="skinning" id="ViewConfiguration::skinning" ref="kuesautils-viewconfiguration.html#skinning-prop"/>
             <keyword name="skinningChanged" id="View::skinningChanged" ref="kuesa-view.html#skinning-prop"/>
+            <keyword name="skinningChanged" id="ViewConfiguration::skinningChanged" ref="kuesautils-viewconfiguration.html#skinning-prop"/>
             <keyword name="softShadows" id="ShadowCastingLight::softShadows" ref="kuesa-shadowcastinglight.html#softShadows-prop"/>
             <keyword name="softShadows" id="ShadowCastingLight::softShadows" ref="kuesa-shadowcastinglight.html#softShadows-prop"/>
             <keyword name="softShadows" id="ShadowCastingLight::softShadows" ref="qml-shadowcastinglight.html#softShadows-prop"/>
@@ -2765,12 +2930,15 @@
             <keyword name="toneMappingAlgorithm" id="View::toneMappingAlgorithm" ref="kuesa-view.html#toneMappingAlgorithm"/>
             <keyword name="toneMappingAlgorithm" id="View::toneMappingAlgorithm" ref="kuesa-view.html#toneMappingAlgorithm-prop"/>
             <keyword name="toneMappingAlgorithm" id="View::toneMappingAlgorithm" ref="qml-view.html#toneMappingAlgorithm-prop"/>
+            <keyword name="toneMappingAlgorithm" id="ViewConfiguration::toneMappingAlgorithm" ref="kuesautils-viewconfiguration.html#toneMappingAlgorithm-prop"/>
+            <keyword name="toneMappingAlgorithm" id="ViewConfiguration::toneMappingAlgorithm" ref="kuesautils-viewconfiguration.html#toneMappingAlgorithm-prop"/>
+            <keyword name="toneMappingAlgorithm" id="ViewConfiguration::toneMappingAlgorithm" ref="qml-viewconfiguration.html#toneMappingAlgorithm-prop"/>
             <keyword name="toneMappingAlgorithmChanged" id="ToneMappingAndGammaCorrectionEffect::toneMappingAlgorithmChanged" ref="kuesa-tonemappingandgammacorrectioneffect.html#toneMappingAlgorithm-prop"/>
             <keyword name="toneMappingAlgorithmChanged" id="View::toneMappingAlgorithmChanged" ref="kuesa-view.html#toneMappingAlgorithm-prop"/>
+            <keyword name="toneMappingAlgorithmChanged" id="ViewConfiguration::toneMappingAlgorithmChanged" ref="kuesautils-viewconfiguration.html#toneMappingAlgorithm-prop"/>
             <keyword name="toneMappingAlgoritm" id="ToneMappingAndGammaCorrectionEffect::toneMappingAlgoritm" ref="qml-tonemappingandgammacorrectioneffect.html#toneMappingAlgoritm-prop"/>
             <keyword name="transform" id="SceneEntity::transform" ref="kuesa-sceneentity.html#transform"/>
             <keyword name="transformForEntity" id="SceneEntity::transformForEntity" ref="kuesa-sceneentity.html#transformForEntity"/>
-            <keyword name="transformTrackers" id="View3DScene::transformTrackers" ref="kuesautils-view3dscene.html#transformTrackers"/>
             <keyword name="transformationMatrices" id="MeshInstantiator::transformationMatrices" ref="kuesa-meshinstantiator.html#transformationMatrices"/>
             <keyword name="transforms" id="SceneEntity::transforms" ref="kuesa-sceneentity.html#transforms"/>
             <keyword name="translation" id="TransformTracker::translation" ref="kuesa-transformtracker.html#translation-prop"/>
@@ -2902,7 +3070,11 @@
             <keyword name="usesStencilMask" id="View::usesStencilMask" ref="kuesa-view.html#usesStencilMask-prop"/>
             <keyword name="usesStencilMask" id="View::usesStencilMask" ref="kuesa-view.html#usesStencilMask-prop"/>
             <keyword name="usesStencilMask" id="View::usesStencilMask" ref="qml-view.html#usesStencilMask-prop"/>
+            <keyword name="usesStencilMask" id="ViewConfiguration::usesStencilMask" ref="kuesautils-viewconfiguration.html#usesStencilMask-prop"/>
+            <keyword name="usesStencilMask" id="ViewConfiguration::usesStencilMask" ref="kuesautils-viewconfiguration.html#usesStencilMask-prop"/>
+            <keyword name="usesStencilMask" id="ViewConfiguration::usesStencilMask" ref="qml-viewconfiguration.html#usesStencilMask-prop"/>
             <keyword name="usesStencilMaskChanged" id="View::usesStencilMaskChanged" ref="kuesa-view.html#usesStencilMask-prop"/>
+            <keyword name="usesStencilMaskChanged" id="ViewConfiguration::usesStencilMaskChanged" ref="kuesautils-viewconfiguration.html#usesStencilMask-prop"/>
             <keyword name="usingColorAttribute" id="GLTF2MaterialEffect::usingColorAttribute" ref="kuesa-gltf2materialeffect.html#usingColorAttribute-prop"/>
             <keyword name="usingColorAttribute" id="GLTF2MaterialEffect::usingColorAttribute" ref="qml-gltf2materialeffect.html#usingColorAttribute-prop"/>
             <keyword name="usingColorAttributeChanged" id="GLTF2MaterialEffect::usingColorAttributeChanged" ref="kuesa-gltf2materialeffect.html#usingColorAttribute-prop"/>
@@ -2961,9 +3133,13 @@
             <keyword name="viewportRect" id="View::viewportRect" ref="kuesa-view.html#viewportRect-prop"/>
             <keyword name="viewportRect" id="View::viewportRect" ref="kuesa-view.html#viewportRect-prop"/>
             <keyword name="viewportRect" id="View::viewportRect" ref="qml-view.html#viewportRect-prop"/>
+            <keyword name="viewportRect" id="ViewConfiguration::viewportRect" ref="kuesautils-viewconfiguration.html#viewportRect-prop"/>
+            <keyword name="viewportRect" id="ViewConfiguration::viewportRect" ref="kuesautils-viewconfiguration.html#viewportRect-prop"/>
+            <keyword name="viewportRect" id="ViewConfiguration::viewportRect" ref="qml-viewconfiguration.html#viewportRect-prop"/>
             <keyword name="viewportRectChanged" id="PlaceholderTracker::viewportRectChanged" ref="kuesa-placeholdertracker.html#viewportRect-prop"/>
             <keyword name="viewportRectChanged" id="TransformTracker::viewportRectChanged" ref="kuesa-transformtracker.html#viewportRect-prop"/>
             <keyword name="viewportRectChanged" id="View::viewportRectChanged" ref="kuesa-view.html#viewportRect-prop"/>
+            <keyword name="viewportRectChanged" id="ViewConfiguration::viewportRectChanged" ref="kuesautils-viewconfiguration.html#viewportRect-prop"/>
             <keyword name="views" id="ForwardRenderer::views" ref="qml-forwardrenderer.html#views-prop"/>
             <keyword name="weight0" id="MorphController::weight0" ref="kuesa-morphcontroller.html#weight0-prop"/>
             <keyword name="weight0" id="MorphController::weight0" ref="kuesa-morphcontroller.html#weight0-prop"/>
@@ -3016,7 +3192,11 @@
             <keyword name="zFilling" id="View::zFilling" ref="kuesa-view.html#zFilling-prop"/>
             <keyword name="zFilling" id="View::zFilling" ref="kuesa-view.html#zFilling-prop"/>
             <keyword name="zFilling" id="View::zFilling" ref="qml-view.html#zFilling-prop"/>
+            <keyword name="zFilling" id="ViewConfiguration::zFilling" ref="kuesautils-viewconfiguration.html#zFilling-prop"/>
+            <keyword name="zFilling" id="ViewConfiguration::zFilling" ref="kuesautils-viewconfiguration.html#zFilling-prop"/>
+            <keyword name="zFilling" id="ViewConfiguration::zFilling" ref="qml-viewconfiguration.html#zFilling-prop"/>
             <keyword name="zFillingChanged" id="View::zFillingChanged" ref="kuesa-view.html#zFilling-prop"/>
+            <keyword name="zFillingChanged" id="ViewConfiguration::zFillingChanged" ref="kuesautils-viewconfiguration.html#zFilling-prop"/>
         </keywords>
         <files>
             <file>gltfviewer.html</file>
@@ -3100,10 +3280,24 @@
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</file>
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</file>
             <file>images/used-in-examples/car-scene/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png</file>
+            <file>images/used-in-examples/drill-experience/assets/drill/chrome-aniso.png</file>
+            <file>images/used-in-examples/drill-experience/assets/drill/dark-diffuse.png</file>
+            <file>images/used-in-examples/drill-experience/assets/drill/drill-body-diff.png</file>
+            <file>images/used-in-examples/drill-experience/assets/drill/drill-body_normal.png</file>
+            <file>images/used-in-examples/drill-experience/assets/drill/highlights.png</file>
+            <file>images/used-in-examples/drill-experience/assets/drill/kdab-studiosky-small-blurry-dark.png</file>
+            <file>images/used-in-examples/drill-experience/assets/drill/shadow-plane.png</file>
             <file>images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png</file>
             <file>images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</file>
             <file>images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</file>
             <file>images/used-in-examples/iro-materials-gallery/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@3x.png</file>
+            <file>images/used-in-examples/manyducks/android/res/drawable-hdpi/icon.png</file>
+            <file>images/used-in-examples/manyducks/android/res/drawable-ldpi/icon.png</file>
+            <file>images/used-in-examples/manyducks/android/res/drawable-mdpi/icon.png</file>
+            <file>images/used-in-examples/manyducks/android/res/drawable-xhdpi/icon.png</file>
+            <file>images/used-in-examples/manyducks/android/res/drawable-xxhdpi/icon.png</file>
+            <file>images/used-in-examples/manyducks/android/res/drawable-xxxhdpi/icon.png</file>
+            <file>images/used-in-examples/manyducks/android/res/drawable/icon.png</file>
             <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad.png</file>
             <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-ipad@2x.png</file>
             <file>images/used-in-examples/manyducks/ios/Images.xcassets/AppIcon.appiconset/kuesa-iphone@2x.png</file>
@@ -3148,6 +3342,8 @@
             <file>kuesa-animationmappingcollection.html</file>
             <file>kuesa-animationplayer-members.html</file>
             <file>kuesa-animationplayer.html</file>
+            <file>kuesa-animationpulse-members.html</file>
+            <file>kuesa-animationpulse.html</file>
             <file>kuesa-armaturecollection-members.html</file>
             <file>kuesa-armaturecollection.html</file>
             <file>kuesa-attribution-bob-dass-equirectangular-env-map.html</file>
@@ -3177,6 +3373,18 @@
             <file>kuesa-custom-materials.html</file>
             <file>kuesa-depthoffieldeffect-members.html</file>
             <file>kuesa-depthoffieldeffect.html</file>
+            <file>kuesa-drill-experience-assets-assets-qrc.html</file>
+            <file>kuesa-drill-experience-drill-experience-pro.html</file>
+            <file>kuesa-drill-experience-example.html</file>
+            <file>kuesa-drill-experience-qml-drillscene-qml.html</file>
+            <file>kuesa-drill-experience-qml-main-qml.html</file>
+            <file>kuesa-drill-experience-qml-qml-qrc.html</file>
+            <file>kuesa-drill-experience-qml-usermanualui-qml.html</file>
+            <file>kuesa-drill-experience-src-abstractscreencontroller-cpp.html</file>
+            <file>kuesa-drill-experience-src-abstractscreencontroller-h.html</file>
+            <file>kuesa-drill-experience-src-main-cpp.html</file>
+            <file>kuesa-drill-experience-src-screencontroller-cpp.html</file>
+            <file>kuesa-drill-experience-src-screencontroller-h.html</file>
             <file>kuesa-effectcollection-members.html</file>
             <file>kuesa-effectcollection.html</file>
             <file>kuesa-entitycollection-members.html</file>
@@ -3333,6 +3541,7 @@
             <file>kuesa-layers.html</file>
             <file>kuesa-lightcollection-members.html</file>
             <file>kuesa-lightcollection.html</file>
+            <file>kuesa-manyducks-android-androidmanifest-xml.html</file>
             <file>kuesa-manyducks-example.html</file>
             <file>kuesa-manyducks-main-cpp.html</file>
             <file>kuesa-manyducks-manyducks-pro.html</file>
@@ -3391,6 +3600,8 @@
             <file>kuesa-skybox.html</file>
             <file>kuesa-spotlight-members.html</file>
             <file>kuesa-spotlight.html</file>
+            <file>kuesa-steppedanimationplayer-members.html</file>
+            <file>kuesa-steppedanimationplayer.html</file>
             <file>kuesa-texturecollection-members.html</file>
             <file>kuesa-texturecollection.html</file>
             <file>kuesa-textureimagecollection-members.html</file>
@@ -3428,9 +3639,13 @@
             <file>kuesautils-sub-kuesa.html</file>
             <file>kuesautils-view3dscene-members.html</file>
             <file>kuesautils-view3dscene.html</file>
+            <file>kuesautils-viewconfiguration-members.html</file>
+            <file>kuesautils-viewconfiguration.html</file>
             <file>kuesautils-window.html</file>
             <file>qml-animationplayer-members.html</file>
             <file>qml-animationplayer.html</file>
+            <file>qml-animationpulse-members.html</file>
+            <file>qml-animationpulse.html</file>
             <file>qml-asset-members.html</file>
             <file>qml-asset.html</file>
             <file>qml-bloomeffect-members.html</file>
@@ -3609,6 +3824,8 @@
             <file>qml-skybox.html</file>
             <file>qml-spotlight-members.html</file>
             <file>qml-spotlight.html</file>
+            <file>qml-steppedanimationplayer-members.html</file>
+            <file>qml-steppedanimationplayer.html</file>
             <file>qml-texturetransform-members.html</file>
             <file>qml-texturetransform.html</file>
             <file>qml-thresholdeffect-members.html</file>
@@ -3629,6 +3846,8 @@
             <file>qml-view3d.html</file>
             <file>qml-view3dscene-members.html</file>
             <file>qml-view3dscene.html</file>
+            <file>qml-viewconfiguration-members.html</file>
+            <file>qml-viewconfiguration.html</file>
             <file>style/offline-simple.css</file>
             <file>style/offline.css</file>
             <file>tools.html</file>

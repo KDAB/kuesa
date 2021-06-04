@@ -49,14 +49,12 @@ using namespace KuesaUtils;
     SceneConfiguration.
 */
 
-
 /*!
     \qmlproperty list<Kuesa::PlaceholderTracker> KuesaUtils::SceneConfigurationItem::placeholders
 
     List of \l [QML] {Kuesa::PlaceholderTracker} instances referenced by the
     SceneConfiguration.
 */
-
 
 SceneConfigurationItem::SceneConfigurationItem(QObject *parent)
     : QObject(parent)
@@ -72,6 +70,15 @@ QQmlListProperty<Kuesa::AnimationPlayer> SceneConfigurationItem::animations()
                                                     SceneConfigurationItem::qmlAnimationCount,
                                                     SceneConfigurationItem::qmlAnimationAt,
                                                     SceneConfigurationItem::qmlClearAnimations);
+}
+
+QQmlListProperty<ViewConfiguration> SceneConfigurationItem::views()
+{
+    return QQmlListProperty<KuesaUtils::ViewConfiguration>(this, nullptr,
+                                                           SceneConfigurationItem::qmlAppendViewConfiguration,
+                                                           SceneConfigurationItem::qmlViewConfigurationCount,
+                                                           SceneConfigurationItem::qmlViewconfigurationAt,
+                                                           SceneConfigurationItem::qmlClearViewConfigurations);
 }
 
 void SceneConfigurationItem::qmlAppendAnimation(QQmlListProperty<Kuesa::AnimationPlayer> *list, Kuesa::AnimationPlayer *node)
@@ -98,80 +105,36 @@ qt_size_type SceneConfigurationItem::qmlAnimationCount(QQmlListProperty<Kuesa::A
 void SceneConfigurationItem::qmlClearAnimations(QQmlListProperty<Kuesa::AnimationPlayer> *list)
 {
     SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
-    self->parentSceneConfiguration()->clearAnimationPlayers();
+    for (Kuesa::AnimationPlayer *p : self->m_managedAnimations)
+        self->parentSceneConfiguration()->removeAnimationPlayer(p);
     self->m_managedAnimations.clear();
 }
 
-QQmlListProperty<Kuesa::TransformTracker> SceneConfigurationItem::transformTrackers()
-{
-    return QQmlListProperty<Kuesa::TransformTracker>(this, nullptr,
-                                                     SceneConfigurationItem::qmlAppendTransformTrackers,
-                                                     SceneConfigurationItem::qmlTransformTrackersCount,
-                                                     SceneConfigurationItem::qmlTransformTrackersAt,
-                                                     SceneConfigurationItem::qmlClearTransformTrackers);
-}
-
-QQmlListProperty<Kuesa::PlaceholderTracker> SceneConfigurationItem::placeholderTrackers()
-{
-    return QQmlListProperty<Kuesa::PlaceholderTracker>(this, nullptr,
-                                                       SceneConfigurationItem::qmlAppendPlaceholderTracker,
-                                                       SceneConfigurationItem::qmlPlaceholderTrackersCount,
-                                                       SceneConfigurationItem::qmlPlaceholderTrackerAt,
-                                                       SceneConfigurationItem::qmlClearPlaceholderTrackers);
-}
-
-void SceneConfigurationItem::qmlAppendTransformTrackers(QQmlListProperty<Kuesa::TransformTracker> *list, Kuesa::TransformTracker *node)
+void SceneConfigurationItem::qmlAppendViewConfiguration(QQmlListProperty<ViewConfiguration> *list, ViewConfiguration *node)
 {
     if (node == nullptr)
         return;
     SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
-    self->m_managedTransformTrackers.push_back(node);
-    self->parentSceneConfiguration()->addTransformTracker(node);
+    self->m_managedViewConfigurations.push_back(node);
+    self->parentSceneConfiguration()->addViewConfiguration(node);
 }
 
-Kuesa::TransformTracker *SceneConfigurationItem::qmlTransformTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, qt_size_type index)
+KuesaUtils::ViewConfiguration *SceneConfigurationItem::qmlViewconfigurationAt(QQmlListProperty<ViewConfiguration> *list, qt_size_type index)
 {
     SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
-    return self->m_managedTransformTrackers.at(size_t(index));
+    return self->m_managedViewConfigurations.at(size_t(index));
 }
 
-qt_size_type SceneConfigurationItem::qmlTransformTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list)
+qt_size_type SceneConfigurationItem::qmlViewConfigurationCount(QQmlListProperty<ViewConfiguration> *list)
 {
     SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
-    return int(self->m_managedTransformTrackers.size());
+    return int(self->m_managedViewConfigurations.size());
 }
 
-void SceneConfigurationItem::qmlClearTransformTrackers(QQmlListProperty<Kuesa::TransformTracker> *list)
+void SceneConfigurationItem::qmlClearViewConfigurations(QQmlListProperty<ViewConfiguration> *list)
 {
     SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
-    self->parentSceneConfiguration()->clearAnimationPlayers();
-    self->m_managedTransformTrackers.clear();
-}
-
-void SceneConfigurationItem::qmlAppendPlaceholderTracker(QQmlListProperty<Kuesa::PlaceholderTracker> *list, Kuesa::PlaceholderTracker *node)
-{
-    if (node == nullptr)
-        return;
-    SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
-    self->m_managedPlaceholderTrackers.push_back(node);
-    self->parentSceneConfiguration()->addPlaceholderTracker(node);
-}
-
-Kuesa::PlaceholderTracker *SceneConfigurationItem::qmlPlaceholderTrackerAt(QQmlListProperty<Kuesa::PlaceholderTracker> *list, qt_size_type index)
-{
-    SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
-    return self->m_managedPlaceholderTrackers.at(size_t(index));
-}
-
-qt_size_type SceneConfigurationItem::qmlPlaceholderTrackersCount(QQmlListProperty<Kuesa::PlaceholderTracker> *list)
-{
-    SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
-    return int(self->m_managedPlaceholderTrackers.size());
-}
-
-void SceneConfigurationItem::qmlClearPlaceholderTrackers(QQmlListProperty<Kuesa::PlaceholderTracker> *list)
-{
-    SceneConfigurationItem *self = static_cast<SceneConfigurationItem *>(list->object);
-    self->parentSceneConfiguration()->clearPlaceholderTrackers();
-    self->m_managedPlaceholderTrackers.clear();
+    for (ViewConfiguration *v : self->m_managedViewConfigurations)
+        self->parentSceneConfiguration()->removeViewConfiguration(v);
+    self->m_managedViewConfigurations.clear();
 }

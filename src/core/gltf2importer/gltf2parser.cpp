@@ -1,5 +1,5 @@
 /*
-    bufferviewsparser_p.h
+    gltf2parser.cpp
 
     This file is part of Kuesa.
 
@@ -55,6 +55,7 @@
 #include "pointlight.h"
 #include "spotlight.h"
 #include "placeholder.h"
+#include <Kuesa/private/kuesaentity_p.h>
 
 #include <QElapsedTimer>
 #include <QFile>
@@ -222,6 +223,17 @@ const HierarchyNode *multiLCA(const Path &nodes)
     return nullptr;
 }
 
+KuesaEntity *createKuesaEntityNodeFromFactory(const char *type)
+{
+    const auto factories = Qt3DCore::QAbstractNodeFactory::nodeFactories();
+    for (Qt3DCore::QAbstractNodeFactory *f : factories) {
+        Qt3DCore::QNode *n = f->createNode(type);
+        if (n)
+            return static_cast<KuesaEntity *>(n);
+    }
+    return new KuesaEntity();
+}
+
 } // namespace
 
 GLTF2Parser::GLTF2Parser(SceneEntity *sceneEntity, bool assignNames)
@@ -238,7 +250,6 @@ GLTF2Parser::~GLTF2Parser()
     m_workerThread.quit();
     m_workerThread.wait();
 }
-
 
 ParseWorker::ParseWorker(GLTF2Parser *parser,
                          const std::function<bool(GLTF2Parser *)> &parseFunc)
@@ -263,21 +274,21 @@ bool ParseWorker::ParseWorker::work()
 
 bool GLTF2Parser::parse(const QString &filePath, bool async)
 {
-    return performParsing([filePath] (GLTF2Parser *p) -> bool { return p->doParse(filePath); }, async);
+    return performParsing([filePath](GLTF2Parser *p) -> bool { return p->doParse(filePath); }, async);
 }
 
 bool GLTF2Parser::parse(const QByteArray &data, const QString &basePath, const QString &filename, bool async)
 {
-    return performParsing([data, basePath, filename] (GLTF2Parser *p) -> bool { return p->doParse(data, basePath, filename); }, async);
+    return performParsing([data, basePath, filename](GLTF2Parser *p) -> bool { return p->doParse(data, basePath, filename); }, async);
 }
 
-bool GLTF2Parser::performParsing(const std::function<bool (GLTF2Parser*)> &parsingFunc, bool async)
+bool GLTF2Parser::performParsing(const std::function<bool(GLTF2Parser *)> &parsingFunc, bool async)
 {
     qCDebug(gltf2_parser_profiling) << "GLTF2 Parsing starting";
     QElapsedTimer t;
     t.start();
 
-    auto handleParsingResult = [=] (bool result) {
+    auto handleParsingResult = [=](bool result) {
         const qint64 elapsedAfterParsing = t.elapsed();
         qCDebug(gltf2_parser_profiling) << "GLTF2 Parsing completed (" << elapsedAfterParsing << "ms)";
         emit gltfFileParsingCompleted(result);
@@ -714,7 +725,7 @@ void GLTF2Parser::addResourcesToSceneEntityCollections()
                         addToCollectionWithUniqueName(m_sceneEntity->transforms(), treeNode.name, transform);
                     }
 
-                    auto placeholder = treeNode.entity->findChild<Kuesa::Placeholder*>();
+                    auto placeholder = treeNode.entity->findChild<Kuesa::Placeholder *>();
                     if (placeholder)
                         addToCollectionWithUniqueName(m_sceneEntity->placeholders(), treeNode.name, placeholder);
                 }
@@ -940,11 +951,24 @@ void GLTF2Parser::buildEntitiesAndJointsGraph()
             const bool entityAlreadyCreated = (node.entity != nullptr);
             if (!entityAlreadyCreated) {
                 // If we are dealing with a Camera, we instantiate a QCamera
-                // instead of a QEntity
-                if (node.cameraIdx >= 0)
+                // instead of a KuesaEntity
+                if (node.cameraIdx >= 0) {
                     node.entity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DRender::QCamera>("QCamera");
-                else
-                    node.entity = Qt3DCore::QAbstractNodeFactory::createNode<Qt3DCore::QEntity>("QEntity");
+                    if (!node.extras.empty())
+                        qCWarning(Kuesa::kuesa) << "Extra properties on Camera node are not handled";
+                } else {
+                    // createKuesaEntityNodeFromFactor does the same thing as
+                    // Qt3DCore::QAbstractNodeFactory::createNode except it
+                    // doesn't rely on qobject_cast as that uses the
+                    // staticQMetaObject and KuesaEntity doesn't provide one
+                    Kuesa::KuesaEntity *e = createKuesaEntityNodeFromFactory("KuesaEntity");
+                    // Add any extra as a dynamic property on e
+                    for (const auto &extra : node.extras)
+                        e->addExtraProperty(extra.first, extra.second);
+                    // Generate MetaObject for Entity now that all custom properties have been added
+                    e->finalize();
+                    node.entity = e;
+                }
             }
             // Set ourselves as parent of our last child
             if (lastChild != nullptr)
@@ -1172,7 +1196,7 @@ void GLTF2Parser::createTransform(const TreeNode &node)
     if (camera != nullptr) {
         const qint32 cameraId = node.cameraIdx;
         if (cameraId >= 0 && cameraId < qint32(m_context->cameraCount())) {
-            Camera& cam = m_context->camera(cameraId);
+            Camera &cam = m_context->camera(cameraId);
             // Note: we need to keep the lens in cam around as that one will be added
             // into the collection
             auto lenses = componentsFromEntity<Qt3DRender::QCameraLens>(camera);
@@ -1236,7 +1260,7 @@ void GLTF2Parser::createMesh(const TreeNode &node)
 
     // If the node has a mesh, add it
     const qint32 meshId = node.meshIdx;
-    if (meshId >= 0 && meshId <  qint32(m_context->meshesCount())) {
+    if (meshId >= 0 && meshId < qint32(m_context->meshesCount())) {
         Mesh &meshData = m_context->mesh(meshId);
         const qint32 skinId = node.skinIdx;
         const bool isSkinned = skinId >= 0 && skinId < qint32(m_context->skinsCount());
@@ -1434,7 +1458,7 @@ GLTF2Material *GLTF2Parser::createMaterial(const Mesh &meshData,
         }
     };
 
-    auto createMaterialAndProperties = [&] (Material &mat) {
+    auto createMaterialAndProperties = [&](Material &mat) {
         auto effectProperties = Material::effectPropertiesFromMaterial(mat);
         if (isSkinned)
             effectProperties |= EffectProperties::Skinning;
@@ -1464,7 +1488,7 @@ GLTF2Material *GLTF2Parser::createMaterial(const Mesh &meshData,
 
         if (mat.extensions.KDAB_custom_material) {
             GLTF2Material *specificMaterial = qobject_cast<GLTF2Material *>(
-                        mat.customMaterial.materialClassMetaObject->newInstance());
+                    mat.customMaterial.materialClassMetaObject->newInstance());
             Q_ASSERT(specificMaterial);
             material = specificMaterial;
             materialProperties->setParent(m_contentRootEntity);
@@ -1498,7 +1522,6 @@ GLTF2Material *GLTF2Parser::createMaterial(const Mesh &meshData,
 
         return material;
     };
-
 
     const qint32 materialId = primitiveData.materialIdx;
     const bool hasMaterial = materialId >= 0 && materialId < qint32(m_context->materialsCount());

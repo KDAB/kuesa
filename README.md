@@ -31,7 +31,9 @@ More information about Kuesa Studio can be found [here](https://www.kdab.com/kue
 
 **Note:** this repository requires [git-lfs](https://git-lfs.github.com) support.
 
-Kuesa Runtime 1.3 requires Qt 3D from Qt 5.15 or Qt 6.0.
+Kuesa Runtime 1.4 requires Qt 3D from Qt 5.15 or Qt 6.0.
+
+**Note:** Latest Qt 3D sources for 5.15 can be freely obtained from [here](https://invent.kde.org/qt/qt/qt3d).
 
 ### Hardware
 

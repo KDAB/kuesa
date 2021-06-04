@@ -110,11 +110,10 @@ namespace Kuesa {
 TextureTransform::TextureTransform(Qt3DCore::QNode *parent)
     : Qt3DCore::QNode(parent)
     , m_offset(QVector2D(0.0f, 0.0f))
-    , m_scale(QVector2D(1.0f ,1.0f))
+    , m_scale(QVector2D(1.0f, 1.0f))
     , m_rotation(0.0f)
 {
 }
-
 
 const QVector2D &TextureTransform::offset() const
 {
@@ -139,14 +138,14 @@ QMatrix3x3 TextureTransform::matrix() const
     translation(1, 2) = m_offset[1];
 
     QMatrix3x3 scale;
-    scale(0,0) = m_scale[0];
-    scale(1,1) = m_scale[1];
+    scale(0, 0) = m_scale[0];
+    scale(1, 1) = m_scale[1];
 
     QMatrix3x3 rotation;
-    rotation(0,0) = std::cos(m_rotation);
-    rotation(1,0) = -std::sin(m_rotation);
-    rotation(1,1) = std::cos(m_rotation);
-    rotation(0,1) = std::sin(m_rotation);
+    rotation(0, 0) = std::cos(m_rotation);
+    rotation(1, 0) = -std::sin(m_rotation);
+    rotation(1, 1) = std::cos(m_rotation);
+    rotation(0, 1) = std::sin(m_rotation);
 
     return translation * rotation * scale;
 }
@@ -178,6 +177,6 @@ void TextureTransform::setRotation(float rotation)
     }
 }
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE

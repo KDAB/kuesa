@@ -49,7 +49,7 @@ namespace Qt3DCore {
 class QSkeleton;
 class QJoint;
 class QEntity;
-}
+} // namespace Qt3DCore
 
 namespace Kuesa {
 namespace GLTF2Import {

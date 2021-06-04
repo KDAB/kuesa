@@ -1,11 +1,10 @@
-
 /*
     iro2planarreflectionequirectshaderdata.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -29,13 +28,11 @@
 
 #include "iro2planarreflectionequirectshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 Iro2PlanarReflectionEquiRectShaderData::Iro2PlanarReflectionEquiRectShaderData(Qt3DCore::QNode *parent)
     : Qt3DRender::QShaderData(parent)
     , m_reflectionGain()
@@ -51,7 +48,8 @@ Iro2PlanarReflectionEquiRectShaderData::Iro2PlanarReflectionEquiRectShaderData(Q
     , m_postVertexColor()
     , m_postGain()
     , m_gltfYUp()
-{}
+{
+}
 
 Iro2PlanarReflectionEquiRectShaderData::~Iro2PlanarReflectionEquiRectShaderData() = default;
 
@@ -119,7 +117,6 @@ bool Iro2PlanarReflectionEquiRectShaderData::gltfYUp() const
 {
     return m_gltfYUp;
 }
-
 
 void Iro2PlanarReflectionEquiRectShaderData::setReflectionGain(float reflectionGain)
 {
@@ -224,8 +221,6 @@ void Iro2PlanarReflectionEquiRectShaderData::setGltfYUp(bool gltfYUp)
     m_gltfYUp = gltfYUp;
     emit gltfYUpChanged(gltfYUp);
 }
-
-
 
 } // namespace Kuesa
 

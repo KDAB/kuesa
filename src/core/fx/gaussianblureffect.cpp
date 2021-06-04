@@ -142,7 +142,6 @@ using namespace Kuesa;
  * rendering performance, especially on lower-end GPUs.
  */
 
-
 /*!
     \qmlproperty int GaussianBlurEffect::blurPassCount
 
@@ -185,7 +184,7 @@ GaussianBlurEffect::GaussianBlurEffect(Qt3DCore::QNode *parent)
     m_blurTarget2->addOutput(blurOutput2);
 
     m_blurTexture2 = new Qt3DRender::QTexture2D;
-    m_blurTexture2->setFormat(FrameGraphUtils::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F :  Qt3DRender::QAbstractTexture::RGBA8_UNorm);
+    m_blurTexture2->setFormat(FrameGraphUtils::hasHalfFloatRenderable() ? Qt3DRender::QAbstractTexture::RGBA16F : Qt3DRender::QAbstractTexture::RGBA8_UNorm);
     m_blurTexture2->setGenerateMipMaps(false);
     m_blurTexture2->setSize(512, 512);
     blurOutput2->setTexture(m_blurTexture2);
@@ -295,7 +294,7 @@ void GaussianBlurEffect::createBlurPasses()
     auto blurPassFilterA = FXUtils::createRenderPassFilter(passName(), 1);
     blurPassFilterA->setParent(blurTargetSelectorA);
 
-    //render one final blur, but not into any any render target
+    //render one final blur, but not into any render target
     auto blurPassFilterB = FXUtils::createRenderPassFilter(passName(), 2);
     blurPassFilterB->setParent(m_blurPassRoot);
 }
@@ -342,7 +341,6 @@ void GaussianBlurEffect::setWindowSize(const QSize &size)
     // only need to resize texture 2.
     // texture 1 is passed as "input texture" so should be resized elsewhere
     m_blurTexture2->setSize(size.width(), size.height());
-
 }
 
 /*!

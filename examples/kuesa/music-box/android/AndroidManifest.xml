@@ -75,7 +75,7 @@
 
     <!-- The following comment will be replaced upon deployment with default features based on the dependencies of the application.
          Remove the comment if you do not require these default features. -->
-        <uses-feature android:glEsVersion="0x00030000" android:required="true"/>
+        <uses-feature android:glEsVersion="0x00030002" android:required="true"/>
 
 <!-- %%INSERT_PERMISSIONS -->
     <!-- %%INSERT_FEATURES -->

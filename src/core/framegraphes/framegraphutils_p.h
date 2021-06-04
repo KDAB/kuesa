@@ -49,7 +49,7 @@ QT_BEGIN_NAMESPACE
 namespace Qt3DRender {
 class QRenderTarget;
 class QAbtractTexture;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 
@@ -57,8 +57,7 @@ class KUESA_PRIVATE_EXPORT FrameGraphUtils
 {
     Q_GADGET
 public:
-    struct RenderingFeatures
-    {
+    struct RenderingFeatures {
         bool hasHalfFloatTexture = false;
         bool hasHalfFloatRenderable = false;
         bool hasMultisampledTexture = false;
@@ -95,12 +94,11 @@ public:
     static Qt3DRender::QAbstractTexture *findRenderTargetTexture(Qt3DRender::QRenderTarget *target,
                                                                  Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint);
 
-
 private:
     static RenderingFeatures m_renderingFeatures;
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Kuesa::FrameGraphUtils::RenderTargetFlags)
 

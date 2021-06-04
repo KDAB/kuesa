@@ -51,7 +51,7 @@ QT_BEGIN_NAMESPACE
 namespace Qt3DCore {
 class QNode;
 class QEntity;
-}
+} // namespace Qt3DCore
 
 namespace Qt3DRender {
 class QTechniqueFilter;
@@ -87,11 +87,11 @@ public:
 
     enum Feature {
         BackToFrontSorting = (1 << 0),
-        Skinning           = (1 << 1),
-        FrustumCulling     = (1 << 2),
-        ZFilling           = (1 << 3),
-        Particles          = (1 << 4),
-        CubeShadowMap      = (1 << 5),
+        Skinning = (1 << 1),
+        FrustumCulling = (1 << 2),
+        ZFilling = (1 << 3),
+        Particles = (1 << 4),
+        CubeShadowMap = (1 << 5),
     };
     Q_DECLARE_FLAGS(Features, Feature)
 
@@ -205,7 +205,6 @@ protected:
     Qt3DRender::QAbstractTexture *m_defaultReflectivePlaneTexture = nullptr;
 };
 using SceneStagesPtr = QSharedPointer<SceneStages>;
-
 
 } // namespace Kuesa
 QT_END_NAMESPACE

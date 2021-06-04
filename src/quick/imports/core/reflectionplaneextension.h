@@ -29,7 +29,6 @@
 #ifndef KUESA_REFLECTIONPLANEEXTENSION_H
 #define KUESA_REFLECTIONPLANEEXTENSION_H
 
-
 #include <QObject>
 #include <QtQml/QQmlListProperty>
 

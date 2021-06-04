@@ -28,6 +28,7 @@ INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/empty2dtexture.cpp \
+    $$PWD/kuesa_global.cpp \
     $$PWD/kuesanode.cpp \
     $$PWD/kuesa_utils.cpp \
     $$PWD/logging.cpp \
@@ -43,7 +44,10 @@ SOURCES += \
     $$PWD/particlematerial.cpp \
     $$PWD/noisetextureimage.cpp \
     $$PWD/particles.cpp \
-    $$PWD/transformtracker.cpp
+    $$PWD/steppedanimationplayer.cpp \
+    $$PWD/transformtracker.cpp \
+    $$PWD/animationpulse.cpp \
+    $$PWD/kuesaentity.cpp
 
 HEADERS += \
     $$PWD/empty2dtexture_p.h \
@@ -66,7 +70,12 @@ HEADERS += \
     $$PWD/particlematerial_p.h \
     $$PWD/noisetextureimage_p.h \
     $$PWD/particles.h \
-    $$PWD/transformtracker.h
+    $$PWD/steppedanimationplayer.h \
+    $$PWD/transformtracker.h \
+    $$PWD/animationpulse.h
+
+# Don't add kuesaentity.h to HEADERS as we already implement the metaobject functions
+#    $$PWD/kuesaentity.h
 
 qtConfig(draco) {
     HEADERS += $$PWD/draco_prefix_p.h

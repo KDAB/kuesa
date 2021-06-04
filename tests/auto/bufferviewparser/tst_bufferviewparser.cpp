@@ -40,8 +40,8 @@ class tst_BufferViewParser : public QObject
 {
     Q_OBJECT
 public:
-    tst_BufferViewParser() {}
-    ~tst_BufferViewParser() {}
+    tst_BufferViewParser() { }
+    ~tst_BufferViewParser() { }
 
 private Q_SLOTS:
     void bufferViewParse_data()

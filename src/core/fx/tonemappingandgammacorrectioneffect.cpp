@@ -95,10 +95,10 @@ namespace Kuesa {
 
     This enum lists the various Tone Mapping Algorithms
 
-    \value None No Tone Mapping (default)
-    \value Reinhard Reinhard Tone Mapping
-    \value Filmic Filmic Tone Mapping
-    \value Uncharted Hable John's Uncharted Tone Mapping
+    \value None - No Tone Mapping (default)
+    \value Reinhard - Reinhard Tone Mapping
+    \value Filmic - Filmic Tone Mapping
+    \value Uncharted - Hable John's Uncharted Tone Mapping
  */
 
 /*!

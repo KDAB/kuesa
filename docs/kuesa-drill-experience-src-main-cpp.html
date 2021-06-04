@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- drill-experience.qdoc -->
+  <title>Kuesa Drill-Experience QML Example | Kuesa Runtime 1.4</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.4</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>Kuesa Drill-Experience QML Example</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.4 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><h1 class="title">Kuesa Drill-Experience QML Example</h1>
+<span class="subtitle"></span>
+<pre class="cpp">
+ <span class="comment">/*
+     main.cpp
+
+     This file is part of Kuesa.
+
+     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
+
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
+
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
+
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
+
+ <span class="preprocessor">#include &lt;QQuickStyle&gt;</span>
+ <span class="preprocessor">#include &lt;QSurfaceFormat&gt;</span>
+ <span class="preprocessor">#include &lt;QGuiApplication&gt;</span>
+ <span class="preprocessor">#include &lt;QQmlApplicationEngine&gt;</span>
+
+ <span class="preprocessor">#include &quot;screencontroller.h&quot;</span>
+
+ <span class="keyword">namespace</span> {
+
+ <span class="type">void</span> registerQMLTypes()
+ {
+     qmlRegisterUncreatableType<span class="operator">&lt;</span>AbstractScreenController<span class="operator">&gt;</span>(<span class="string">&quot;Drill&quot;</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="string">&quot;AbstractScreenController&quot;</span><span class="operator">,</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;AbstractScreenController is abstract&quot;</span>));
+     qmlRegisterUncreatableType<span class="operator">&lt;</span>PartLabel<span class="operator">&gt;</span>(<span class="string">&quot;Drill&quot;</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="string">&quot;PartLabel&quot;</span><span class="operator">,</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;PartLabel is not instantiable&quot;</span>));
+     qmlRegisterType<span class="operator">&lt;</span>ScreenController<span class="operator">&gt;</span>(<span class="string">&quot;Drill&quot;</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="string">&quot;ScreenController&quot;</span>);
+ }
+
+ } <span class="comment">// namespace</span>
+
+ <span class="type">int</span> main(<span class="type">int</span> ac<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>av)
+ {
+     <span class="comment">// Set OpenGL requirements</span>
+     Kuesa<span class="operator">::</span>setupDefaultSurfaceFormat();
+
+     <span class="comment">// Set QtQuick Controls Material Style</span>
+     <span class="type">QQuickStyle</span><span class="operator">::</span>setStyle(<span class="string">&quot;Material&quot;</span>);
+
+     <span class="comment">// Set flag for High DPI support on Qt 5.15</span>
+ <span class="preprocessor">#if QT_VERSION &lt; QT_VERSION_CHECK(6, 0, 0)</span>
+     <span class="type">QGuiApplication</span><span class="operator">::</span>setAttribute(<span class="type">Qt</span><span class="operator">::</span>AA_EnableHighDpiScaling);
+ <span class="preprocessor">#endif</span>
+
+     <span class="type">QGuiApplication</span> app(ac<span class="operator">,</span> av);
+
+     <span class="comment">// Register QML Types</span>
+     registerQMLTypes();
+
+     <span class="type">QQmlApplicationEngine</span> engine;
+
+     engine<span class="operator">.</span>load(<span class="type">QUrl</span>(<span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/main.qml&quot;</span>)));
+
+     <span class="keyword">return</span> app<span class="operator">.</span>exec();
+ }
+</pre>

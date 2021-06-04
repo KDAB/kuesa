@@ -49,7 +49,6 @@ class ParticleMaterial;
 
 class KUESASHARED_EXPORT Particles : public Qt3DCore::QEntity
 {
-public:
     Q_OBJECT
     Q_PROPERTY(int particleCount READ particleCount WRITE setParticleCount NOTIFY particleCountChanged)
     Q_PROPERTY(float frameTime READ frameTime WRITE setFrameTime NOTIFY frameTimeChanged)

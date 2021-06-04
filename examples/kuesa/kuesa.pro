@@ -32,7 +32,8 @@ qtHaveModule(quick) {
             car-scene \
             tonemapping \
             simple-qml \
-            multi-scene
+            multi-scene \
+            drill-experience
     }
 
     SUBDIRS += \

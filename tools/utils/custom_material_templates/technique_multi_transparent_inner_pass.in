@@ -1,0 +1,79 @@
+        {
+            const QUrl vertexShaderGraph[] = {
+                QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s"))
+            };
+
+            const QUrl fragmentShaderGraph[] = {
+                QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s")),
+                QUrl(QStringLiteral("%s"))
+            };
+
+            const QByteArray renderableVertexShaderCode[] = {
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)")
+            };
+
+            const QByteArray renderableFragmentShaderCode[] = {
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)")
+            };
+
+            const QByteArray renderableGeometryShaderCode[] = {
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)"),
+                QByteArray(R"(%s)")
+            };
+
+            auto renderShaderBuilder = new Qt3DRender::QShaderProgramBuilder(this);
+            auto renderShader = new Qt3DRender::QShaderProgram(this);
+            auto transparentRenderPass = new Qt3DRender::QRenderPass(this);
+
+            // Use default vertex shader graph if no vertex shader code was specified
+            if (renderableVertexShaderCode[version].isEmpty()) {
+                renderShaderBuilder->setShaderProgram(renderShader);
+                renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
+            } else {
+                renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
+            }
+
+            if (renderableFragmentShaderCode[version].isEmpty()) {
+                renderShaderBuilder->setShaderProgram(renderShader);
+                renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
+            } else {
+                renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
+            }
+
+            // Set geometry shader code if one was specified
+            renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
+            transparentRenderPass->setShaderProgram(renderShader);
+
+            auto blendEquation = new Qt3DRender::QBlendEquation(this);
+            blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::%s);
+
+            auto blendArguments = new Qt3DRender::QBlendEquationArguments(this);
+            blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::%s);
+            blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::%s);
+            blendArguments->setDestinationRgb(Qt3DRender::QBlendEquationArguments::%s);
+            blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::%s);
+
+            transparentRenderPass->addRenderState(m_backFaceCulling);
+            transparentRenderPass->addRenderState(blendEquation);
+            transparentRenderPass->addRenderState(blendArguments);
+
+            auto transparentFilterKey = new Qt3DRender::QFilterKey(this);
+            transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
+            transparentFilterKey->setValue(QStringLiteral("Transparent"));
+            transparentRenderPass->addFilterKey(transparentFilterKey);
+
+            addRenderPass(transparentRenderPass);
+        }

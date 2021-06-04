@@ -1,0 +1,106 @@
+/*
+    drill-experience.qdoc
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Paul Lemire <paul.lemire@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*!
+    \example drill-experience
+    \title Kuesa Drill-Experience QML Example
+    \ingroup kuesa-examples-qml
+
+    \brief Demonstrates the use of the Kuesa Runtime API to create a real world
+    application
+
+    \section1 Structure of the Application
+
+    This demo is structured around a single screen
+    Depending on the user actions, we enter one of 3 modes
+    \list
+    \li A interactive manual
+    \li A guide to drilling
+    \li An idling mode
+    \endlist
+
+    \section1 Architecture of the Application
+
+    The demo has a strong split between the UI defined in QML and logic
+    handling done in C++.
+
+    The UI is provided through a dedicated QML file.
+
+    When it comes to the logic handling, it's implemented through a dedicated
+    controller. The controller takes care of providing a \l
+    {KuesaUtils::SceneConfiguration} defining which glTF file to load, which
+    camera to use for rendering as well as the a list of \l
+    Kuesa::AnimationPlayers to control animations or \l
+    Kuesa::TransformTrackers to retrieve the screen positions of 3D entities.
+
+    Additionally, the controller relies on \l
+    {KuesaUtils::SceneConfiguration::loadingDone} and \l
+    {KuesUtils::SceneConfiguration::unloadingDone} to retrieve Kuesa assets
+    from the \l Kuesa::SceneEntity collections upon loading and clearing any
+    reference to such object upon unloading.
+
+    Through the use of properties and upon those being modified by the UI, the
+    controller will react and might launch animations
+
+    \section1 Implementation
+
+    \section2 main.qml
+
+    This is the entry point of our Application.
+
+    First we instantiate an ApplicationWindow
+    \snippet drill-experience/qml/main.qml 0
+    \dots 5
+
+    \section1 QtQuick and Qt3D integration
+
+    The Drill-Experience example relies on the new simplified \l [QML]
+    {Kuesa::View3D} API introduced in Kuesa 1.3.
+
+    \snippet drill-experience/qml/DrillScene.qml 0
+    \dots 1
+
+    \section2 DrillScene
+
+    This is the QML file in charge of setting up the 3D View.
+
+    \l {Kuesa::View3D} is a subclass of the \l [QML] {SceneEntity} element which
+    holds collections of Qt 3D assets accessible by name.
+
+    This elements acts as the root elements of our DrillScene element. The \l
+    [QML] {KuesaUtils::View3DScene::activeScene} property is bound to the
+    sceneConfiguraiton instanced returned by the controller. This ensure that
+    when we switch screen and controller, we automatically switch to another
+    SceneConfiguration.
+
+    \snippet drill-experience/qml/DrillScene.qml 1
+
+    It is instantiated in the main.qml file
+
+    \snippet drill-experience/qml/main.qml 2
+*/

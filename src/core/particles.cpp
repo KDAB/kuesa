@@ -122,7 +122,6 @@ constexpr const auto WorkGroupSize = 128;
  \endcode
  */
 
-
 Particles::Particles(Qt3DCore::QEntity *parent)
     : Qt3DCore::QEntity(parent)
     , m_computeCommand(new Qt3DRender::QComputeCommand(this))
@@ -305,7 +304,6 @@ QVector3D Particles::emitterVelocity() const
 {
     return m_material->emitterVelocity();
 }
-
 
 /*!
     \property Kuesa::Particles::emitterVelocityRandom

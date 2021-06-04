@@ -1,5 +1,5 @@
 /*
-    gltf2context_p.cpp
+    gltf2context.cpp
 
     This file is part of Kuesa.
 
@@ -324,7 +324,7 @@ Qt3DRender::QGeometryRenderer *GLTF2Context::getOrAllocateGeometryRenderer(Primi
         return primitive.primitiveRenderer;
     }
 
-    // Create the geometry renderer and store it in the cache if succesful
+    // Create the geometry renderer and store it in the cache if successful
     if (m_primitiveBuilder->generateGeometryRendererForPrimitive(primitive)) {
         m_sharedPrimitives.addResourceToCache(primitive, primitive.primitiveRenderer);
         return primitive.primitiveRenderer;

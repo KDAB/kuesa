@@ -328,7 +328,7 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
     // Put shadowmap render passes first.  There is one pass per shadow-casting light.
     // These passes renderer the scene with simple z-fill shader from the light's perspective
     // into shadowmaps which are passed into the regular render passes defined below.
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 3) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#if defined(ENABLE_SHADOWS)
     if (m_view->m_shadowMapStages->shadowMaps().count() > 0)
         m_view->m_shadowMapStages->setParent(fgRoot);
 #endif
@@ -347,7 +347,7 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
     if (!target0outputs.empty())
         depthTex = target0outputs[1]->texture();
 
-    auto setUpEffectStage = [&](EffectsStagesPtr &stage,
+    auto setUpEffectStage = [&](EffectsStages *stage,
                                 Qt3DRender::QRenderTarget *rtA,
                                 Qt3DRender::QRenderTarget *rtB,
                                 bool blitRts = true,
@@ -416,11 +416,11 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
 
     Kuesa::View *view1 = new Kuesa::View();
     view1->setCamera(sceneCamera1);
-    view1->setViewport(QRectF(0, 0, 0.5, 1);
+    view1->setViewportRect(QRectF(0, 0, 0.5, 1);
 
     Kuesa::View *view2 = new Kuesa::View();
     view2->setCamera(sceneCamera2);
-    view2->setViewport(QRectF(0.5, 0, 0.5, 1);
+    view2->setViewportRect(QRectF(0.5, 0, 0.5, 1);
     view2->addLayer(groundLayer);
 
     frameGraph->addView(view1);
@@ -451,11 +451,11 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
         views: [
             View {
                 camera: sceneCamera1
-                viewport: Qt.rectf(0, 0, 0.5, 1)
+                viewportRect: Qt.rect(0, 0, 0.5, 1)
             },
             View {
                 camera: sceneCamera2
-                viewport: Qt.rectf(0.5, 0, 0.5, 1)
+                viewportRect: Qt.rect(0.5, 0, 0.5, 1)
                 layers: [ groundLayer ]
             }
         ]
@@ -465,11 +465,11 @@ void View::ViewForward::reconfigure(Qt3DRender::QFrameGraphNode *fgRoot)
 
 View::View(Qt3DCore::QNode *parent)
     : Qt3DRender::QFrameGraphNode(parent)
-    , m_sceneStages(SceneStagesPtr::create())
-    , m_shadowMapStages(ShadowMapStagesPtr::create())
-    , m_reflectionStages(ReflectionStagesPtr::create())
-    , m_fxStages(EffectsStagesPtr::create())
-    , m_internalFXStages(EffectsStagesPtr::create())
+    , m_sceneStages(new SceneStages())
+    , m_shadowMapStages(new ShadowMapStages())
+    , m_reflectionStages(new ReflectionStages())
+    , m_fxStages(new EffectsStages())
+    , m_internalFXStages(new EffectsStages())
     , m_usesStencilMask(false)
     , m_gammaCorrectionFX(new ToneMappingAndGammaCorrectionEffect())
     , m_fg(new View::ViewForward(this))
@@ -477,11 +477,11 @@ View::View(Qt3DCore::QNode *parent)
     QObject::connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::gammaChanged, this, &View::gammaChanged);
     QObject::connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::exposureChanged, this, &View::exposureChanged);
     QObject::connect(m_gammaCorrectionFX, &ToneMappingAndGammaCorrectionEffect::toneMappingAlgorithmChanged, this, &View::toneMappingAlgorithmChanged);
-    QObject::connect(m_reflectionStages.data(), &ReflectionStages::reflectionTextureChanged,
+    QObject::connect(m_reflectionStages, &ReflectionStages::reflectionTextureChanged,
                      this, &View::reflectionTextureChanged);
 
-    connect(m_shadowMapStages.get(), &ShadowMapStages::shadowMapsChanged, this, &View::shadowMapsChanged);
-    connect(m_shadowMapStages.get(), &ShadowMapStages::shadowMapsChanged, this, &View::scheduleFGTreeRebuild);
+    connect(m_shadowMapStages, &ShadowMapStages::shadowMapsChanged, this, &View::shadowMapsChanged);
+    connect(m_shadowMapStages, &ShadowMapStages::shadowMapsChanged, this, &View::scheduleFGTreeRebuild);
 
     // Setup Internal PostFXs
     {
@@ -495,6 +495,18 @@ View::View(Qt3DCore::QNode *parent)
 
 View::~View()
 {
+    // Depending on the configuration, scene stages might not be parented
+    // in which case we are responsible for their lifetime
+    if (m_sceneStages && !m_sceneStages->parent())
+        delete m_sceneStages;
+    if (m_shadowMapStages && !m_shadowMapStages->parent())
+        delete m_shadowMapStages;
+    if (m_reflectionStages && !m_reflectionStages->parent())
+        delete m_reflectionStages;
+    if (m_fxStages && !m_fxStages->parent())
+        delete m_fxStages;
+    if (m_internalFXStages && !m_internalFXStages)
+        delete m_internalFXStages;
 }
 
 /*!
@@ -572,7 +584,7 @@ bool View::skinning() const
 
     Holds whether back to front sorting to render objects in back-to-front
     order is enabled. This is required for proper alpha blending rendering.
-    Disabled by default.
+    Enabled by default.
 */
 
 /*!
@@ -580,7 +592,7 @@ bool View::skinning() const
 
     Holds whether back to front sorting to render objects in back-to-front
     order is enabled. This is required for proper alpha blending rendering.
-    Disabled by default.
+    Enabled by default.
 */
 bool View::backToFrontSorting() const
 {

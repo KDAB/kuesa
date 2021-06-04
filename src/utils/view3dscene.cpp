@@ -35,20 +35,24 @@
 #include <Kuesa/sceneentity.h>
 #include <Kuesa/forwardrenderer.h>
 #include <Kuesa/gltf2importer.h>
+#include <Kuesa/private/logging_p.h>
 
 #include <Kuesa/private/kuesa_utils_p.h>
 #include <Qt3DCore/private/qnode_p.h>
 #include <Qt3DCore/private/qabstractnodefactory_p.h>
-#include <Qt3DRender/qrendersettings.h>
 #include <Qt3DInput/qinputsettings.h>
 
 #include <Kuesa/Iro2PlanarReflectionEquiRectProperties>
 #include <Kuesa/Iro2PlanarReflectionSemProperties>
 
+#include <KuesaUtils/viewconfiguration.h>
+
 using namespace Kuesa;
 using namespace KuesaUtils;
 using namespace Qt3DCore;
 using namespace Qt3DRender;
+
+Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
 
 /*!
     \class KuesaUtils::View3DScene
@@ -102,12 +106,18 @@ using namespace Qt3DRender;
  */
 
 /*!
+    \property KuesaUtils::View3DScene::renderSettings
+
+    \brief Points to the \l {Qt3DRender::QRenderSettings} render settings
+    instance wrapped around by the View3DScene.
+ */
+
+/*!
     \property KuesaUtils::View3DScene::source
 
     \brief The source of the glTF file to be loaded.
     \readonly
  */
-
 
 /*!
     \property KuesaUtils::View3DScene::cameraName
@@ -117,6 +127,14 @@ using namespace Qt3DRender;
     set on the ForwardRenderer frameGraph and other internal assets such as
     \l {Kuesa::TransformTracker}.
     \readonly
+ */
+
+/*!
+    \property KuesaUtils::View3DScene::layerNames
+
+    \brief The names of the layer assets that should be used to select objects
+    to render in the scene. If the name references a valid layer, it will
+    automatically be set on the ForwardRenderer frameGraph.
  */
 
 /*!
@@ -137,8 +155,8 @@ using namespace Qt3DRender;
 /*!
     \property KuesaUtils::View3DScene::ready
 
-    \brief This is true once the glTF file has been properly loaded and that
-    Qt 3D GPU resources have been succesfully loaded onto the GPU. The scene
+    \brief This is true once the glTF file has been properly loaded and that Qt
+    3D GPU resources have been successfully loaded onto the GPU. The scene
     should be visible on screen when this becomes true.
  */
 
@@ -167,7 +185,6 @@ using namespace Qt3DRender;
     This a more convenient way of specifying content when dealing with
     multiple scenes.
  */
-
 
 /*!
     \property KuesaUtils::View3DScene::reflectionPlaneName
@@ -229,6 +246,13 @@ using namespace Qt3DRender;
  */
 
 /*!
+    \qmlproperty Qt3DRender::QRenderSettings KuesaUtils::View3DScene::renderSettings
+
+    \brief Points to the \l {Qt3DRender::QRenderSettings} render settings
+    instance wrapped around by the View3DScene.
+ */
+
+/*!
     \qmlproperty url KuesaUtils::View3DScene::source
 
     \brief The source of the glTF file to be loaded.
@@ -243,6 +267,14 @@ using namespace Qt3DRender;
     set on the ForwardRenderer frameGraph and other internal assets such as
     \l [QML] {Kuesa::TransformTracker}.
     \readonly
+ */
+
+/*!
+    \qmlproperty list<string> KuesaUtils::View3DScene::layerNames
+
+    \brief The names of the layer assets that should be used to select objects
+    to render in the scene. If the name references a valid layer, it will
+    automatically be set on the ForwardRenderer frameGraph.
  */
 
 /*!
@@ -264,8 +296,8 @@ using namespace Qt3DRender;
 /*!
     \qmlproperty bool KuesaUtils::View3DScene::ready
 
-    \brief This is true once the glTF file has been properly loaded and that
-    Qt 3D GPU resources have been succesfully loaded onto the GPU. The scene
+    \brief This is true once the glTF file has been properly loaded and that Qt
+    3D GPU resources have been successfully loaded onto the GPU. The scene
     should be visible on screen when this becomes true.
  */
 
@@ -303,12 +335,11 @@ using namespace Qt3DRender;
     the ForwardRenderer framegraph views.
  */
 
-
 View3DScene::View3DScene(Qt3DCore::QNode *parent)
     : Kuesa::SceneEntity(parent)
     , m_importer(new GLTF2Importer(this))
     , m_frameGraph(nullptr)
-    , m_clock(nullptr)
+    , m_renderSettings(new QRenderSettings)
     , m_activeScene(nullptr)
     , m_ready(false)
     , m_frameCount(0)
@@ -316,10 +347,10 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     m_frameGraph = Qt3DCore::QAbstractNodeFactory::createNode<Kuesa::ForwardRenderer>("ForwardRenderer");
     m_importer->setSceneEntity(this);
 
-    auto renderSettings = new QRenderSettings;
-    renderSettings->setActiveFrameGraph(m_frameGraph);
-    renderSettings->setRenderPolicy(QRenderSettings::OnDemand);
-    addComponent(renderSettings);
+    m_renderSettings->setActiveFrameGraph(m_frameGraph);
+    m_renderSettings->setRenderPolicy(QRenderSettings::OnDemand);
+    m_renderSettings->pickingSettings()->setPickMethod(QPickingSettings::TrianglePicking);
+    addComponent(m_renderSettings);
     addComponent(new Qt3DInput::QInputSettings);
 
     m_frameAction = new Qt3DLogic::QFrameAction;
@@ -330,14 +361,12 @@ View3DScene::View3DScene(Qt3DCore::QNode *parent)
     connect(m_importer, &GLTF2Importer::sourceChanged, this, &View3DScene::sourceChanged);
     connect(m_importer, &GLTF2Importer::asynchronousChanged, this, &View3DScene::asynchronousChanged);
     connect(m_frameGraph, &ForwardRenderer::showDebugOverlayChanged, this, &View3DScene::showDebugOverlayChanged);
-    connect(m_frameGraph, &ForwardRenderer::cameraChanged, this, &View3DScene::updateTransformTrackers);
-    connect(m_frameGraph, &ForwardRenderer::cameraChanged, this, &View3DScene::updatePlaceholderTrackers);
 
     QObject::connect(m_importer, &GLTF2Importer::statusChanged,
-                     this, [this] () {
-        if (m_importer->status() == GLTF2Importer::Ready)
-            onSceneLoaded();
-    });
+                     this, [this]() {
+                         if (m_importer->status() == GLTF2Importer::Ready)
+                             onSceneLoaded();
+                     });
 }
 
 View3DScene::~View3DScene() = default;
@@ -370,19 +399,6 @@ void View3DScene::setSource(const QUrl &source)
     }
 }
 
-QString View3DScene::cameraName() const
-{
-    return m_cameraName;
-}
-
-void View3DScene::setCameraName(const QString &cameraName)
-{
-    if (cameraName != m_cameraName) {
-        m_cameraName = cameraName;
-        emit cameraNameChanged(m_cameraName);
-    }
-}
-
 bool View3DScene::showDebugOverlay() const
 {
     return m_frameGraph->showDebugOverlay();
@@ -408,8 +424,6 @@ void View3DScene::setScreenSize(const QSize &screenSize)
     if (m_screenSize != screenSize) {
         m_screenSize = screenSize;
         emit screenSizeChanged(m_screenSize);
-        updateTransformTrackers();
-        updatePlaceholderTrackers();
     }
 }
 
@@ -441,34 +455,73 @@ void View3DScene::adoptNode(QObject *object)
         node->setParent(this);
 }
 
-void View3DScene::onSceneLoaded()
+void KuesaUtils::View3DScene::retrieveAndSetCamera(const QString &cameraName, Kuesa::View *view)
 {
-    if (!m_cameraName.isEmpty()) {
-        auto camera = SceneEntity::camera(m_cameraName);
-        if (camera)
-            m_frameGraph->setCamera(camera);
+    if (!cameraName.isEmpty()) {
+        auto camera = SceneEntity::camera(cameraName);
+        if (camera) {
+            camera->setAspectRatio((static_cast<float>(m_screenSize.width() * view->viewportRect().width())) /
+                                   (static_cast<float>(m_screenSize.height() * view->viewportRect().height())));
+            view->setCamera(camera);
+        }
+    }
+}
+
+void View3DScene::retrieveAndSetLayers(const QStringList &layers, Kuesa::View *view)
+{
+    std::vector<Qt3DRender::QLayer *> currentLayers = view->layers();
+    std::vector<Qt3DRender::QLayer *> requiredLayers;
+    for (const QString &name : layers) {
+        Qt3DRender::QLayer *l = layer(name);
+        if (l)
+            requiredLayers.push_back(l);
     }
 
+    std::sort(currentLayers.begin(), currentLayers.end());
+    std::sort(requiredLayers.begin(), requiredLayers.end());
+
+    // Existing layers -> intersection between currentLayers and requiredLayers
+    std::vector<Qt3DRender::QLayer *> existingLayers;
+    std::set_intersection(currentLayers.begin(), currentLayers.end(),
+                          requiredLayers.begin(), requiredLayers.end(),
+                          std::back_inserter(existingLayers));
+
+    // Layers to remove -> difference between currentLayers and requiredLayers
+    std::vector<Qt3DRender::QLayer *> layersToRemove;
+    std::set_difference(currentLayers.begin(), currentLayers.end(),
+                        requiredLayers.begin(), requiredLayers.end(),
+                        std::back_inserter(layersToRemove));
+
+    // Layers to add -> different between requiredLayers and existingLayers
+    std::vector<Qt3DRender::QLayer *> layersToAdd;
+    std::set_difference(requiredLayers.begin(), requiredLayers.end(),
+                        existingLayers.begin(), existingLayers.end(),
+                        std::back_inserter(layersToAdd));
+
+    for (Qt3DRender::QLayer *layerToRemove : layersToRemove)
+        view->removeLayer(layerToRemove);
+    for (Qt3DRender::QLayer *layerToAdd : layersToAdd)
+        view->addLayer(layerToAdd);
+}
+
+void View3DScene::onSceneLoaded()
+{
     if (m_activeScene) {
         // Add resources from the ActiveScene
         QObject::connect(m_activeScene, &SceneConfiguration::animationPlayerAdded, this, &View3DScene::addAnimationPlayer);
         QObject::connect(m_activeScene, &SceneConfiguration::animationPlayerRemoved, this, &View3DScene::removeAnimationPlayer);
-        QObject::connect(m_activeScene, &SceneConfiguration::transformTrackerAdded, this, &View3DScene::addTransformTracker);
-        QObject::connect(m_activeScene, &SceneConfiguration::transformTrackerRemoved, this, &View3DScene::removeTransformTracker);
-        QObject::connect(m_activeScene, &SceneConfiguration::placeholderTrackerAdded, this, &View3DScene::addPlaceholderTracker);
-        QObject::connect(m_activeScene, &SceneConfiguration::placeholderTrackerRemoved, this, &View3DScene::removePlaceholderTracker);
+        QObject::connect(m_activeScene, &SceneConfiguration::viewConfigurationAdded, this, &View3DScene::addViewConfiguration);
+        QObject::connect(m_activeScene, &SceneConfiguration::viewConfigurationRemoved, this, &View3DScene::removeViewConfiguration);
 
         const auto &newAnimations = m_activeScene->animationPlayers();
         for (auto a : newAnimations)
             addAnimationPlayer(a);
 
-        const auto newTrackers = m_activeScene->transformTrackers();
-        for (auto t : newTrackers)
-            addTransformTracker(t);
+        const auto newViewConfigurations = m_activeScene->viewConfigurations();
+        for (auto v : newViewConfigurations)
+            addViewConfiguration(v);
 
-        const auto newPlaceholderTrackers = m_activeScene->placeholderTrackers();
-        for (auto p : newPlaceholderTrackers)
-            addPlaceholderTracker(p);
+        //Cameras
 
         emit m_activeScene->loadingDone();
     }
@@ -477,19 +530,25 @@ void View3DScene::onSceneLoaded()
     emit loadedChanged(true);
 }
 
-void View3DScene::updateTransformTrackers()
+void View3DScene::updateTransformTrackers(const std::vector<TransformTracker *> &transformTrackers, View *view)
 {
-    for (auto t : m_transformTrackers) {
-        t->setScreenSize(m_screenSize);
-        t->setCamera(m_frameGraph->camera());
+    for (auto *transformTracker : transformTrackers) {
+        if (!transformTracker->sceneEntity())
+            transformTracker->setSceneEntity(this);
+        transformTracker->setViewportRect(view->viewportRect());
+        transformTracker->setCamera(view->camera());
+        transformTracker->setScreenSize(m_screenSize);
     }
 }
 
-void View3DScene::updatePlaceholderTrackers()
+void View3DScene::updatePlaceholderTrackers(const std::vector<PlaceholderTracker *> &placeholderTrackers, View *view)
 {
-    for (Kuesa::PlaceholderTracker *t : m_placeholderTrackers) {
-        t->setScreenSize(m_screenSize);
-        t->setCamera(m_frameGraph->camera());
+    for (auto *tracker : placeholderTrackers) {
+        if (!tracker->sceneEntity())
+            tracker->setSceneEntity(this);
+        tracker->setViewportRect(view->viewportRect());
+        tracker->setCamera(view->camera());
+        tracker->setScreenSize(m_screenSize);
     }
 }
 
@@ -539,7 +598,7 @@ void View3DScene::loadReflections()
     // Find matching ReflectionPlane
     Kuesa::ReflectionPlane *p = reflectionPlane(m_reflectionPlaneName);
 
-    auto setReflectionPlaneOnView = [&] (View *v) {
+    auto setReflectionPlaneOnView = [&](View *v) {
         if (p && !Utils::contains(v->reflectionPlanes(), p))
             v->addReflectionPlane(p);
     };
@@ -552,112 +611,162 @@ void View3DScene::loadReflections()
     }
 }
 
-/*!
-    \internal
-    \brief Adds \a tracker to the list of managed \l {Kuesa::TransformTracker}
-    instances of the View3DScene.
- */
-void View3DScene::addTransformTracker(TransformTracker *tracker)
+namespace {
+
+template<typename Emitter, typename Signal>
+QMetaObject::Connection connectSignalToCallback(Emitter *emitter,
+                                                std::function<void()> callback,
+                                                Signal s)
 {
-    if (std::find(std::begin(m_transformTrackers), std::end(m_transformTrackers), tracker) == std::end(m_transformTrackers)) {
+    return QObject::connect(emitter, s, callback);
+}
+
+template<typename Emitter, typename... Signal>
+std::vector<QMetaObject::Connection> connectSignalsToCallback(Emitter *emitter,
+                                                              std::function<void()> callback,
+                                                              Signal... sigs)
+{
+    return { connectSignalToCallback(emitter, callback, sigs)... };
+}
+
+template<typename T>
+std::vector<T> join(const std::vector<std::vector<T>> &vecs)
+{
+    size_t size = 0;
+    for (auto &v : vecs)
+        size += v.size();
+
+    std::vector<T> mergedVec;
+    mergedVec.reserve(size);
+    for (auto &v : vecs)
+        mergedVec.insert(mergedVec.end(), v.begin(), v.end());
+    return mergedVec;
+}
+
+} // namespace
+
+void View3DScene::addViewConfiguration(ViewConfiguration *viewConfiguration)
+{
+    if (std::find_if(std::begin(m_viewConfigurationsResources),
+                     std::end(m_viewConfigurationsResources),
+                     [viewConfiguration](const auto &v) {
+                         return v.viewConfiguration == viewConfiguration;
+                     }) == std::end(m_viewConfigurationsResources)) {
         Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-        d->registerDestructionHelper(tracker, &View3DScene::removeTransformTracker, m_transformTrackers);
-        if (tracker->parentNode() == nullptr)
-            tracker->setParent(this);
-        if (tracker->sceneEntity() == nullptr)
-            tracker->setSceneEntity(this);
-        m_transformTrackers.push_back(tracker);
-        updateTransformTrackers();
+        auto tag = std::vector<ViewConfiguration *>();
+        d->registerDestructionHelper(viewConfiguration, &View3DScene::removeViewConfiguration, tag);
+
+        // Create a framegraph View matching this ViewConfiguration
+        View *view = new View();
+
+        QObject::connect(viewConfiguration, &ViewConfiguration::viewportRectChanged, view, &View::setViewportRect);
+        QObject::connect(viewConfiguration, &ViewConfiguration::frustumCullingChanged, view, &View::setFrustumCulling);
+        QObject::connect(viewConfiguration, &ViewConfiguration::skinningChanged, view, &View::setSkinning);
+        QObject::connect(viewConfiguration, &ViewConfiguration::backToFrontSortingChanged, view, &View::setBackToFrontSorting);
+        QObject::connect(viewConfiguration, &ViewConfiguration::zFillingChanged, view, &View::setZFilling);
+        QObject::connect(viewConfiguration, &ViewConfiguration::particlesEnabledChanged, view, &View::setParticlesEnabled);
+        QObject::connect(viewConfiguration, &ViewConfiguration::toneMappingAlgorithmChanged, view, &View::setToneMappingAlgorithm);
+        QObject::connect(viewConfiguration, &ViewConfiguration::usesStencilMaskChanged, view, &View::setUsesStencilMask);
+        QObject::connect(viewConfiguration, &ViewConfiguration::exposureChanged, view, &View::setExposure);
+        QObject::connect(viewConfiguration, &ViewConfiguration::gammaChanged, view, &View::setGamma);
+        QObject::connect(viewConfiguration, &ViewConfiguration::clearColorChanged, view, &View::setClearColor);
+
+        view->setViewportRect(viewConfiguration->viewportRect());
+        view->setFrustumCulling(viewConfiguration->frustumCulling());
+        view->setSkinning(viewConfiguration->skinning());
+        view->setBackToFrontSorting(viewConfiguration->backToFrontSorting());
+        view->setZFilling(viewConfiguration->zFilling());
+        view->setParticlesEnabled(viewConfiguration->particlesEnabled());
+        view->setToneMappingAlgorithm(viewConfiguration->toneMappingAlgorithm());
+        view->setUsesStencilMask(viewConfiguration->usesStencilMask());
+        view->setExposure(viewConfiguration->exposure());
+        view->setGamma(viewConfiguration->gamma());
+        view->setClearColor(viewConfiguration->clearColor());
+
+        const std::vector<Kuesa::AbstractPostProcessingEffect *> &fxs = viewConfiguration->postProcessingEffects();
+        for (Kuesa::AbstractPostProcessingEffect *fx : fxs)
+            view->addPostProcessingEffect(fx);
+
+        retrieveAndSetCamera(viewConfiguration->cameraName(), view);
+        retrieveAndSetLayers(viewConfiguration->layerNames(), view);
+
+        updateTransformTrackers(viewConfiguration->transformTrackers(), view);
+        updatePlaceholderTrackers(viewConfiguration->placeholderTrackers(), view);
+
+        auto triggerUpdateTransformTracker = [this, viewConfiguration, view]() {
+            updateTransformTrackers(viewConfiguration->transformTrackers(), view);
+        };
+        auto triggerUpdatePlaceholderTracker = [this, viewConfiguration, view]() {
+            updatePlaceholderTrackers(viewConfiguration->placeholderTrackers(), view);
+        };
+        auto triggerRetrieveAndSetCamera = [this, viewConfiguration, view]() {
+            retrieveAndSetCamera(viewConfiguration->cameraName(), view);
+        };
+        auto triggerRetrieveAndSetLayers = [this, viewConfiguration, view]() {
+            retrieveAndSetLayers(viewConfiguration->layerNames(), view);
+        };
+        auto removeFx = [view](Kuesa::AbstractPostProcessingEffect *fx) {
+            view->removePostProcessingEffect(fx);
+        };
+        auto addFx = [view](Kuesa::AbstractPostProcessingEffect *fx) {
+            view->addPostProcessingEffect(fx);
+        };
+
+        using ConVec = std::vector<QMetaObject::Connection>;
+        const std::vector<ConVec> connections = {
+            { QObject::connect(this, &View3DScene::screenSizeChanged, triggerRetrieveAndSetCamera) },
+            { QObject::connect(viewConfiguration, &ViewConfiguration::cameraNameChanged, triggerRetrieveAndSetCamera) },
+            { QObject::connect(viewConfiguration, &ViewConfiguration::layerNamesChanged, triggerRetrieveAndSetLayers) },
+            connectSignalsToCallback(viewConfiguration, triggerUpdateTransformTracker,
+                                     &ViewConfiguration::cameraNameChanged,
+                                     &ViewConfiguration::viewportRectChanged,
+                                     &ViewConfiguration::transformTrackerAdded,
+                                     &ViewConfiguration::transformTrackerRemoved),
+            { QObject::connect(this, &View3DScene::screenSizeChanged, triggerUpdateTransformTracker) },
+            connectSignalsToCallback(viewConfiguration, triggerUpdatePlaceholderTracker,
+                                     &ViewConfiguration::cameraNameChanged,
+                                     &ViewConfiguration::viewportRectChanged,
+                                     &ViewConfiguration::placeholderTrackerAdded,
+                                     &ViewConfiguration::placeholderTrackerRemoved),
+            { QObject::connect(this, &View3DScene::screenSizeChanged, triggerUpdatePlaceholderTracker) },
+            { QObject::connect(viewConfiguration, &ViewConfiguration::postProcessingEffectAdded, view, addFx),
+              QObject::connect(viewConfiguration, &ViewConfiguration::postProcessingEffectRemoved, view, removeFx) }
+        };
+
+        m_viewConfigurationsResources.emplace_back(ViewConfigurationResources{ viewConfiguration,
+                                                                               view,
+                                                                               join(connections) });
+        // Will automatically set parent on view
+        m_frameGraph->addView(view);
     }
 }
 
-/*!
-    \internal
-    \brief Removes \a tracker from the list of managed \l
-    {Kuesa::TransformTracker} instances of the View3DScene.
- */
-void View3DScene::removeTransformTracker(TransformTracker *tracker)
+void View3DScene::removeViewConfiguration(ViewConfiguration *viewConfiguration)
 {
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    d->unregisterDestructionHelper(tracker);
-    m_transformTrackers.erase(std::remove(std::begin(m_transformTrackers), std::end(m_transformTrackers), tracker),
-                     std::end(m_transformTrackers));
-}
+    d->unregisterDestructionHelper(viewConfiguration);
 
-/*!
-    \internal
-    \brief Clears the list of managed \l {Kuesa::TransformTracker} instances of
-    the View3DScene.
- */
-void View3DScene::clearTransformTrackers()
-{
-    const std::vector<Kuesa::TransformTracker *> trackersCopy = m_transformTrackers;
-    for (Kuesa::TransformTracker *t : trackersCopy)
-        removeTransformTracker(t);
-}
+    auto it = std::find_if(std::begin(m_viewConfigurationsResources),
+                           std::end(m_viewConfigurationsResources),
+                           [viewConfiguration](const auto &v) {
+                               return v.viewConfiguration == viewConfiguration;
+                           });
+    if (it != std::end(m_viewConfigurationsResources)) {
+        m_frameGraph->removeView(it->view);
+        delete it->view;
 
-/*!
-    \internal
-    \brief Adds \a placeholderTracker to the list of managed \l {Kuesa::PlaceholderTracker}
-    instances of the View3DScene.
- */
-void View3DScene::addPlaceholderTracker(PlaceholderTracker *placeholderTracker)
-{
-    if (std::find(std::begin(m_placeholderTrackers), std::end(m_placeholderTrackers), placeholderTracker) == std::end(m_placeholderTrackers)) {
-        Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-        d->registerDestructionHelper(placeholderTracker, &View3DScene::removePlaceholderTracker, m_placeholderTrackers);
+        for (const auto &connection : it->connections)
+            QObject::disconnect(connection);
 
-        if (placeholderTracker->parentNode() == nullptr)
-            placeholderTracker->setParent(this);
-        if (placeholderTracker->sceneEntity() == nullptr)
-            placeholderTracker->setSceneEntity(this);
-
-        m_placeholderTrackers.push_back(placeholderTracker);
-        updatePlaceholderTrackers();
+        m_viewConfigurationsResources.erase(it);
     }
 }
 
-/*!
-    \internal
-    \brief Removes \a placeholderTracker from the list of managed \l
-    {Kuesa::PlaceholderTracker} instances of the View3DScene.
- */
-void View3DScene::removePlaceholderTracker(PlaceholderTracker *placeholderTracker)
+void View3DScene::clearViewConfigurations()
 {
-    Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
-    d->unregisterDestructionHelper(placeholderTracker);
-    m_placeholderTrackers.erase(std::remove(std::begin(m_placeholderTrackers), std::end(m_placeholderTrackers), placeholderTracker),
-                         std::end(m_placeholderTrackers));
-}
-
-/*!
-    \internal
-    \brief Clears the list of managed \l {Kuesa::PlaceholderTracker} instances of
-    the View3DScene.
- */
-void View3DScene::clearPlaceholderTrackers()
-{
-    const std::vector<Kuesa::PlaceholderTracker *> placeholderTrackersCopy = m_placeholderTrackers;
-    for (Kuesa::PlaceholderTracker *p : placeholderTrackersCopy)
-        removePlaceholderTracker(p);
-}
-
-/*!
-    \brief Returns the \l {Kuesa::TransformTracker} instances referenced by the
-    View3DScene instance.
- */
-const std::vector<TransformTracker *> &View3DScene::transformTrackers() const
-{
-    return m_transformTrackers;
-}
-
-/*!
-    \brief Returns the \l {Kuesa::PlaceholderTracker} instances referenced by the
-    View3DScene instance.
- */
-const std::vector<PlaceholderTracker *> &View3DScene::placeholderTrackers() const
-{
-    return m_placeholderTrackers;
+    const auto viewConfigurationsResouces = m_viewConfigurationsResources;
+    for (auto &v : viewConfigurationsResouces)
+        removeViewConfiguration(v.viewConfiguration);
 }
 
 /*!
@@ -667,8 +776,6 @@ const std::vector<PlaceholderTracker *> &View3DScene::placeholderTrackers() cons
  */
 void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
 {
-    if (m_clock == nullptr)
-        m_clock = new Qt3DAnimation::QClock(this);
     if (std::find(std::begin(m_animations), std::end(m_animations), animation) == std::end(m_animations)) {
         Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
         d->registerDestructionHelper(animation, &View3DScene::removeAnimationPlayer, m_animations);
@@ -679,10 +786,6 @@ void View3DScene::addAnimationPlayer(AnimationPlayer *animation)
             animation->setSceneEntity(this);
 
         m_animations.push_back(animation);
-
-        //if Animation has no Clock, set one
-        if (animation->clock() == nullptr)
-            animation->setClock(m_clock);
     }
 }
 
@@ -695,17 +798,9 @@ void View3DScene::removeAnimationPlayer(AnimationPlayer *animation)
 {
     Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
     d->unregisterDestructionHelper(animation);
-    auto it = std::remove_if(std::begin(m_animations), std::end(m_animations), [animation](AnimationPlayer *a) {
-            return a == animation;
-    });
-    if (it != m_animations.end()) {
-        if (animation->clock() == m_clock)
-            animation->setClock(nullptr);
-
-        m_animations.erase(it, std::end(m_animations));
-    }
+    m_animations.erase(std::remove(std::begin(m_animations), std::end(m_animations), animation),
+                       std::end(m_animations));
 }
-
 
 /*!
     \internal
@@ -740,6 +835,10 @@ SceneConfiguration *View3DScene::activeScene() const
     and \l {Kuesa::TransformTracker} instances will be automatically set based on
     the values provided by the SceneConfiguration. If null, all of these will
     be cleared.
+
+    When switching between two \l {KuesaUtils::SceneConfiguration} instances,
+    the collections, assets and gltf files are clear prior to being reloaded,
+    even if both instances reference the same source file.
  */
 void View3DScene::setActiveScene(SceneConfiguration *scene)
 {
@@ -748,12 +847,13 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
         if (m_activeScene) {
             // Unregister previous resources
             const auto &oldAnimations = m_activeScene->animationPlayers();
-            const auto &oldTrackers = m_activeScene->transformTrackers();
+            const auto &oldViews = m_activeScene->viewConfigurations();
 
             for (auto a : oldAnimations)
                 removeAnimationPlayer(a);
-            for (auto a : oldTrackers)
-                removeTransformTracker(a);
+
+            for (auto v : oldViews)
+                removeViewConfiguration(v);
 
             Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
             d->unregisterDestructionHelper(m_activeScene);
@@ -761,28 +861,34 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
             QObject::disconnect(m_activeScene);
 
             // If we took ownership of the SceneConfiguration -> restore parent
-            if (m_activeSceneOwner) {
-                // Make sure we unset the QNode * parent if it was overridden
-                QNode *originalNodeParent = qobject_cast<QNode *>(m_activeSceneOwner.data());
-                // In case parent is a QNode *
-                if (originalNodeParent) {
-                    m_activeScene->setParent(originalNodeParent);
-                } else {// Parent was not a QNode
-                    // Reset QNode parent
-                    m_activeScene->setParent(Q_NODE_NULLPTR);
-                    static_cast<QObject *>(m_activeScene)->setParent(m_activeSceneOwner.data());
-                }
+            // Make sure we unset the QNode * parent if it was overridden
+            QNode *originalNodeParent = qobject_cast<QNode *>(m_activeSceneOwner.data());
+            // In case parent is a QNode *
+            if (originalNodeParent) {
+                m_activeScene->setParent(originalNodeParent);
+            } else { // Parent was not a QNode or our scene had no parent/owner at all when set
+                // Reset QNode parent
+                m_activeScene->setParent(Q_NODE_NULLPTR);
+                static_cast<QObject *>(m_activeScene)->setParent(m_activeSceneOwner.data());
             }
+
+            emit m_activeScene->unloadingDone();
         }
 
         m_activeScene = scene;
         m_activeSceneOwner.clear();
         emit activeSceneChanged(m_activeScene);
 
+        // Set empty sources / camera to force a scene reset
+        setSource(QUrl());
+
         if (m_activeScene) {
             // Ensure we parent the scene to a valid QNode so that resources
             // are properly added to the scene
             m_activeSceneOwner = scene->parent();
+
+            if (m_activeSceneOwner && !qobject_cast<Qt3DCore::QNode *>(m_activeSceneOwner))
+                qCWarning(kuesa_utils()) << "SceneConfiguration is parented by a non Qt3DCore::QNode object. View3DScene will reparent the SceneConfiguration and restore the original parent when switching back to a new activeScene";
 
             if (!m_activeScene->parentNode())
                 m_activeScene->setParent(this);
@@ -790,23 +896,19 @@ void View3DScene::setActiveScene(SceneConfiguration *scene)
             if (!m_activeScene->sceneEntity())
                 m_activeScene->setSceneEntity(this);
 
+            // Create
+
             Qt3DCore::QNodePrivate *d = Qt3DCore::QNodePrivate::get(this);
             d->registerDestructionHelper(m_activeScene, &View3DScene::setActiveScene, m_activeScene);
 
             setSource(m_activeScene->source());
-            setCameraName(m_activeScene->cameraName());
 
             QObject::connect(m_activeScene, &SceneConfiguration::sourceChanged, this, &View3DScene::setSource);
-            QObject::connect(m_activeScene, &SceneConfiguration::cameraNameChanged, this, &View3DScene::setCameraName);
 
             // ActiveScene resources (animations, transformTrackers ....) will be loaded
             // Once the scene will have been loaded
             // Otherwise we could end up having an AnimationPlayer that references a yet to be loaded
             // AnimationClip, which Qt3D might complain about
-        } else {
-            // Set empty sources / camera
-            setSource(QUrl());
-            setCameraName(QString());
         }
     }
 }

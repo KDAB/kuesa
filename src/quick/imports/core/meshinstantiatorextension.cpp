@@ -51,9 +51,9 @@ MeshInstantiatorExtension::MeshInstantiatorExtension(QObject *parent)
 QQmlListProperty<Qt3DCore::QTransform> MeshInstantiatorExtension::transforms()
 {
     return QQmlListProperty<Qt3DCore::QTransform>(this, 0,
-                                             MeshInstantiatorExtension::appendTransform,
-                                             MeshInstantiatorExtension::transformCount,
-                                             MeshInstantiatorExtension::transformAt,
+                                                  MeshInstantiatorExtension::appendTransform,
+                                                  MeshInstantiatorExtension::transformCount,
+                                                  MeshInstantiatorExtension::transformAt,
                                                   MeshInstantiatorExtension::clearTransforms);
 }
 

@@ -35,8 +35,7 @@
 #include <QUrl>
 
 #include <Kuesa/animationplayer.h>
-#include <Kuesa/transformtracker.h>
-#include <Kuesa/placeholdertracker.h>
+#include <KuesaUtils/viewconfiguration.h>
 #include <Kuesa/kuesanode.h>
 
 QT_BEGIN_NAMESPACE
@@ -47,53 +46,40 @@ class KUESAUTILS_SHARED_EXPORT SceneConfiguration : public Kuesa::KuesaNode
 {
     Q_OBJECT
     Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
-    Q_PROPERTY(QString cameraName READ cameraName WRITE setCameraName NOTIFY cameraNameChanged)
 public:
     explicit SceneConfiguration(Qt3DCore::QNode *parent = nullptr);
 
     QUrl source() const;
-    QString cameraName() const;
 
-    const std::vector<Kuesa::AnimationPlayer *> &animationPlayers() const { return m_animations; }
+    const std::vector<KuesaUtils::ViewConfiguration *> &viewConfigurations() const;
+    void addViewConfiguration(KuesaUtils::ViewConfiguration *viewConfiguration);
+    void removeViewConfiguration(KuesaUtils::ViewConfiguration *viewConfiguration);
+    void clearViewConfigurations();
+
+    const std::vector<Kuesa::AnimationPlayer *> &animationPlayers() const;
     void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void clearAnimationPlayers();
 
-    const std::vector<Kuesa::TransformTracker *> &transformTrackers() const { return m_trackers; }
-    void addTransformTracker(Kuesa::TransformTracker *tracker);
-    void removeTransformTracker(Kuesa::TransformTracker *tracker);
-    void clearTransformTrackers();
-
-    const std::vector<Kuesa::PlaceholderTracker *> &placeholderTrackers() const { return m_placeholderTrackers; }
-    void addPlaceholderTracker(Kuesa::PlaceholderTracker *placeholder);
-    void removePlaceholderTracker(Kuesa::PlaceholderTracker *placeholder);
-    void clearPlaceholderTrackers();
-
 public Q_SLOTS:
     void setSource(const QUrl &source);
-    void setCameraName(const QString &cameraName);
 
 Q_SIGNALS:
     void sourceChanged(const QUrl &source);
-    void cameraNameChanged(const QString &cameraName);
+
+    void viewConfigurationAdded(KuesaUtils::ViewConfiguration *viewConfiguration);
+    void viewConfigurationRemoved(KuesaUtils::ViewConfiguration *viewConfiguration);
 
     void animationPlayerAdded(Kuesa::AnimationPlayer *player);
     void animationPlayerRemoved(Kuesa::AnimationPlayer *player);
 
-    void transformTrackerAdded(Kuesa::TransformTracker *tracker);
-    void transformTrackerRemoved(Kuesa::TransformTracker *tracker);
-
-    void placeholderTrackerAdded(Kuesa::PlaceholderTracker *placeholder);
-    void placeholderTrackerRemoved(Kuesa::PlaceholderTracker *placeholder);
-
     void loadingDone();
+    void unloadingDone();
 
 private:
     QUrl m_source;
-    QString m_cameraName;
     std::vector<Kuesa::AnimationPlayer *> m_animations;
-    std::vector<Kuesa::TransformTracker *> m_trackers;
-    std::vector<Kuesa::PlaceholderTracker *> m_placeholderTrackers;
+    std::vector<KuesaUtils::ViewConfiguration *> m_viewConfigurations;
 };
 
 } // namespace KuesaUtils

@@ -42,6 +42,7 @@
 
 #include <Qt3DAnimation/qclock.h>
 #include <Qt3DLogic/qframeaction.h>
+#include <Qt3DRender/qrendersettings.h>
 
 #include <vector>
 
@@ -54,8 +55,8 @@ class KUESAUTILS_SHARED_EXPORT View3DScene : public Kuesa::SceneEntity
     Q_OBJECT
     Q_PROPERTY(Kuesa::GLTF2Importer *importer READ importer CONSTANT)
     Q_PROPERTY(Kuesa::ForwardRenderer *frameGraph READ frameGraph CONSTANT)
+    Q_PROPERTY(Qt3DRender::QRenderSettings *renderSettings READ renderSettings CONSTANT)
     Q_PROPERTY(QUrl source READ source NOTIFY sourceChanged)
-    Q_PROPERTY(QString cameraName READ cameraName NOTIFY cameraNameChanged)
     Q_PROPERTY(bool showDebugOverlay READ showDebugOverlay WRITE setShowDebugOverlay NOTIFY showDebugOverlayChanged)
     Q_PROPERTY(QSize screenSize READ screenSize WRITE setScreenSize NOTIFY screenSizeChanged)
     Q_PROPERTY(bool ready READ isReady NOTIFY readyChanged)
@@ -63,22 +64,21 @@ class KUESAUTILS_SHARED_EXPORT View3DScene : public Kuesa::SceneEntity
     Q_PROPERTY(bool asynchronous READ asynchronous WRITE setAsynchronous NOTIFY asynchronousChanged)
     Q_PROPERTY(KuesaUtils::SceneConfiguration *activeScene READ activeScene WRITE setActiveScene NOTIFY activeSceneChanged)
     Q_PROPERTY(QString reflectionPlaneName READ reflectionPlaneName WRITE setReflectionPlaneName NOTIFY reflectionPlaneNameChanged)
+
 public:
     explicit View3DScene(Qt3DCore::QNode *parent = nullptr);
     ~View3DScene();
 
     Kuesa::GLTF2Importer *importer() const { return m_importer; }
     Kuesa::ForwardRenderer *frameGraph() const { return m_frameGraph; }
+    Qt3DRender::QRenderSettings *renderSettings() const { return m_renderSettings; }
     QUrl source() const;
-    QString cameraName() const;
     bool showDebugOverlay() const;
     QSize screenSize() const;
     bool asynchronous() const;
     QString reflectionPlaneName() const;
 
     const std::vector<Kuesa::AnimationPlayer *> &animationPlayers() const;
-    const std::vector<Kuesa::TransformTracker *> &transformTrackers() const;
-    const std::vector<Kuesa::PlaceholderTracker *> &placeholderTrackers() const;
 
     SceneConfiguration *activeScene() const;
 
@@ -115,8 +115,15 @@ Q_SIGNALS:
     void reflectionPlaneNameChanged(const QString &reflectionPlaneName);
 
 private:
+    struct ViewConfigurationResources {
+        KuesaUtils::ViewConfiguration *viewConfiguration;
+        Kuesa::View *view;
+        std::vector<QMetaObject::Connection> connections;
+    };
+
     void setSource(const QUrl &source);
-    void setCameraName(const QString &cameraName);
+    void retrieveAndSetCamera(const QString &cameraName, Kuesa::View *view);
+    void retrieveAndSetLayers(const QStringList &layers, Kuesa::View *view);
 
     void addAnimationPlayer(Kuesa::AnimationPlayer *animation);
     void removeAnimationPlayer(Kuesa::AnimationPlayer *animation);
@@ -130,19 +137,21 @@ private:
     void removePlaceholderTracker(Kuesa::PlaceholderTracker *placeholder);
     void clearPlaceholderTrackers();
 
+    void addViewConfiguration(KuesaUtils::ViewConfiguration *viewConfiguration);
+    void removeViewConfiguration(KuesaUtils::ViewConfiguration *viewConfiguration);
+    void clearViewConfigurations();
+
     void onSceneLoaded();
-    void updateTransformTrackers();
-    void updatePlaceholderTrackers();
+    void updateTransformTrackers(const std::vector<Kuesa::TransformTracker *> &transformTrackers, Kuesa::View *view);
+    void updatePlaceholderTrackers(const std::vector<Kuesa::PlaceholderTracker *> &placeholderTrackers, Kuesa::View *view);
     void updateFrame(float dt);
     void loadReflections();
 
     Kuesa::GLTF2Importer *m_importer;
     Kuesa::ForwardRenderer *m_frameGraph;
-    QString m_cameraName;
+    Qt3DRender::QRenderSettings *m_renderSettings;
     std::vector<Kuesa::AnimationPlayer *> m_animations;
-    std::vector<Kuesa::TransformTracker *> m_transformTrackers;
-    std::vector<Kuesa::PlaceholderTracker *> m_placeholderTrackers;
-    Qt3DAnimation::QClock *m_clock;
+    std::vector<ViewConfigurationResources> m_viewConfigurationsResources;
     QSize m_screenSize;
     SceneConfiguration *m_activeScene;
     QPointer<QObject> m_activeSceneOwner;

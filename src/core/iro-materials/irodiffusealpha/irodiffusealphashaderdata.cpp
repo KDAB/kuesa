@@ -1,11 +1,10 @@
-
 /*
     irodiffusealphashaderdata.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -29,13 +28,11 @@
 
 #include "irodiffusealphashaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 IroDiffuseAlphaShaderData::IroDiffuseAlphaShaderData(Qt3DCore::QNode *parent)
     : Qt3DRender::QShaderData(parent)
     , m_normalScaling()
@@ -50,7 +47,8 @@ IroDiffuseAlphaShaderData::IroDiffuseAlphaShaderData(Qt3DCore::QNode *parent)
     , m_reflectionInnerAlpha()
     , m_reflectionOuterAlpha()
     , m_alphaGain()
-{}
+{
+}
 
 IroDiffuseAlphaShaderData::~IroDiffuseAlphaShaderData() = default;
 
@@ -113,7 +111,6 @@ float IroDiffuseAlphaShaderData::alphaGain() const
 {
     return m_alphaGain;
 }
-
 
 void IroDiffuseAlphaShaderData::setNormalScaling(const QVector3D &normalScaling)
 {
@@ -210,8 +207,6 @@ void IroDiffuseAlphaShaderData::setAlphaGain(float alphaGain)
     m_alphaGain = alphaGain;
     emit alphaGainChanged(alphaGain);
 }
-
-
 
 } // namespace Kuesa
 

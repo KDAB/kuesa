@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
 <!-- animationplayer.cpp -->
-  <title>AnimationPlayer Class | Kuesa Runtime 1.3</title>
+  <title>AnimationPlayer Class | Kuesa Runtime 1.4</title>
 <link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
-<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.3</a></li>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.4</a></li>
 <li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
 <li><a href="kuesa-cpp.html">C++ Classes</a></li>
 <li>AnimationPlayer</li>
-<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.3 Reference Documentation</a></li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.4 Reference Documentation</a></li>
 </ul></div><div class='doc-content'><div class="sidebar">
 <div class="toc">
 <h3><a name="toc">Contents</a></h3>
@@ -30,7 +30,8 @@
 <!-- @@@AnimationPlayer -->
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">  <span class="preprocessor">#include &lt;Kuesa/AnimationPlayer&gt;</span>
-</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-animationplayer.html">AnimationPlayer</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-kuesanode.html">Kuesa::KuesaNode</a></td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
+</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.0</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiated By:</td><td class="memItemRight bottomAlign"> <a href="qml-animationplayer.html">AnimationPlayer</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="kuesa-kuesanode.html">Kuesa::KuesaNode</a></td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="kuesa-animationpulse.html">Kuesa::AnimationPulse</a></p>
+</td></tr></table></div><p>This class was introduced in Kuesa 1.0.</p>
 <ul>
 <li><a href="kuesa-animationplayer-members.html">List of all members, including inherited members</a></li>
 </ul>
@@ -61,6 +62,7 @@
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#addTarget">addTarget</a></b>(Qt3DCore::QNode *<i>target</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clip-prop">clip</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> Qt3DAnimation::QClock *</td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clock-prop">clock</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#currentLoop-prop">currentLoop</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#duration-prop">duration</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#running-prop">isRunning</a></b>() const</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#loops-prop">loopCount</a></b>() const</td></tr>
@@ -74,7 +76,7 @@
 <h2 id="public-slots">Public Slots</h2>
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#reset">reset</a></b>()</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#restart">restart</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#restart">restart</a></b>(int <i>delay</i> = 0)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#run">run</a></b>(float <i>fromTimeFraction</i>, float <i>toTimeFraction</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clip-prop">setClip</a></b>(const QString &amp;<i>clip</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clock-prop">setClock</a></b>(Qt3DAnimation::QClock *<i>clock</i>)</td></tr>
@@ -82,7 +84,7 @@
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#mapper-prop">setMapper</a></b>(const QString &amp;<i>mapper</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#normalizedTime-prop">setNormalizedTime</a></b>(float <i>timeFraction</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#running-prop">setRunning</a></b>(bool <i>running</i>)</td></tr>
-<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#start">start</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#start">start</a></b>(int <i>delay</i> = 0)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#stop">stop</a></b>()</td></tr>
 </table></div>
 <a name="signals"></a>
@@ -90,6 +92,7 @@
 <div class="table"><table class="alignedsummary">
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clip-prop">clipChanged</a></b>(const QString &amp;<i>clip</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#clock-prop">clockChanged</a></b>(Qt3DAnimation::QClock *<i>clock</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#currentLoop-prop">currentLoopChanged</a></b>(int <i>currentLoop</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#duration-prop">durationChanged</a></b>(float <i>duration</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#loops-prop">loopCountChanged</a></b>(int <i>loops</i>)</td></tr>
 <tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="kuesa-animationplayer.html#mapper-prop">mapperChanged</a></b>(const QString &amp;<i>mapper</i>)</td></tr>
@@ -243,17 +246,17 @@
 <h3 class="fn" id="reset"><a name="reset"></a><code>[slot] </code><span class="type">void</span> AnimationPlayer::<span class="name">reset</span>()</h3>
 <p>Stops the animation and resets the normalised time to 0. The next time the animation plays it will start from 0 rather than the current normalised time.</p>
 <!-- @@@reset -->
-<!-- $$$restart[overload1]$$$restart -->
-<h3 class="fn" id="restart"><a name="restart"></a><code>[slot] </code><span class="type">void</span> AnimationPlayer::<span class="name">restart</span>()</h3>
-<p>Sets the normalised to 0 and runs the animation.</p>
+<!-- $$$restart[overload1]$$$restartint -->
+<h3 class="fn" id="restart"><a name="restart"></a><code>[slot] </code><span class="type">void</span> AnimationPlayer::<span class="name">restart</span>(<span class="type">int</span> <i>delay</i> = 0)</h3>
+<p>Sets the normalised to 0 and runs the animation after <i>delay</i> in msec. <i>delay</i> defaults to 0.</p>
 <!-- @@@restart -->
 <!-- $$$run[overload1]$$$runfloatfloat -->
 <h3 class="fn" id="run"><a name="run"></a><code>[slot] </code><span class="type">void</span> AnimationPlayer::<span class="name">run</span>(<span class="type">float</span> <i>fromTimeFraction</i>, <span class="type">float</span> <i>toTimeFraction</i>)</h3>
 <p>Run the animation from <i>fromTimeFraction</i> to <i>toTimeFraction</i>. Both times are normalized time.</p>
 <!-- @@@run -->
-<!-- $$$start[overload1]$$$start -->
-<h3 class="fn" id="start"><a name="start"></a><code>[slot] </code><span class="type">void</span> AnimationPlayer::<span class="name">start</span>()</h3>
-<p>Starts the animation</p>
+<!-- $$$start[overload1]$$$startint -->
+<h3 class="fn" id="start"><a name="start"></a><code>[slot] </code><span class="type">void</span> AnimationPlayer::<span class="name">start</span>(<span class="type">int</span> <i>delay</i> = 0)</h3>
+<p>Starts the animation after <i>delay</i> in msec. <i>delay</i> defaults to 0.</p>
 <!-- @@@start -->
 <!-- $$$stop[overload1]$$$stop -->
 <h3 class="fn" id="stop"><a name="stop"></a><code>[slot] </code><span class="type">void</span> AnimationPlayer::<span class="name">stop</span>()</h3>

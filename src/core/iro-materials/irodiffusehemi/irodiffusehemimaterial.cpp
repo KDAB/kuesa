@@ -1,11 +1,10 @@
-
 /*
     irodiffusehemimaterial.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -32,13 +31,11 @@
 #include "irodiffusehemishaderdata_p.h"
 #include <Qt3DRender/qparameter.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::IroDiffuseHemiMaterial
@@ -103,8 +100,8 @@ void IroDiffuseHemiMaterial::setMaterialProperties(Kuesa::IroDiffuseHemiProperti
         emit materialPropertiesChanged(materialProperties);
 
         if (m_materialProperties) {
-            QObject::connect(m_materialProperties, &IroDiffuseHemiProperties::reflectionMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
-            QObject::connect(m_materialProperties, &IroDiffuseHemiProperties::diffuseMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_diffuseMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &IroDiffuseHemiProperties::reflectionMapChanged, this, [this](Qt3DRender::QAbstractTexture *t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &IroDiffuseHemiProperties::diffuseMapChanged, this, [this](Qt3DRender::QAbstractTexture *t) { m_diffuseMapParameter->setValue(QVariant::fromValue(t)); });
 
             m_reflectionMapParameter->setValue(QVariant::fromValue(m_materialProperties->reflectionMap()));
             m_diffuseMapParameter->setValue(QVariant::fromValue(m_materialProperties->diffuseMap()));

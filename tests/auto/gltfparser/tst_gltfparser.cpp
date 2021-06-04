@@ -47,6 +47,8 @@
 #include <Kuesa/SpotLight>
 #include <Kuesa/PointLight>
 #include <Kuesa/private/kuesa_utils_p.h>
+#include <Kuesa/private/kuesaentity_p.h>
+#include <QSignalSpy>
 #include <array>
 #include <atomic>
 
@@ -450,18 +452,18 @@ private Q_SLOTS:
         parser.setContext(&ctx);
 
         // WHEN
-       const bool parsingSuccessful = parser.parse(QString(ASSETS + filePath));
+        const bool parsingSuccessful = parser.parse(QString(ASSETS + filePath));
 
-       // THEN
-       QCOMPARE(parsingSuccessful, parsingSucceeded);
-       QCOMPARE(parser.context()->textureSamplersCount(), samplerCount);
-       for (size_t i = 0; i < samplerCount; ++i) {
-           const TextureSampler s = parser.context()->textureSampler(i);
-           QCOMPARE(s.minificationFilter, minFilter);
-           QCOMPARE(s.magnificationFilter, magFilter);
-           QCOMPARE(s.textureWrapMode->x(), wrapS);
-           QCOMPARE(s.textureWrapMode->y(), wrapT);
-       }
+        // THEN
+        QCOMPARE(parsingSuccessful, parsingSucceeded);
+        QCOMPARE(parser.context()->textureSamplersCount(), samplerCount);
+        for (size_t i = 0; i < samplerCount; ++i) {
+            const TextureSampler s = parser.context()->textureSampler(i);
+            QCOMPARE(s.minificationFilter, minFilter);
+            QCOMPARE(s.magnificationFilter, magFilter);
+            QCOMPARE(s.textureWrapMode->x(), wrapS);
+            QCOMPARE(s.textureWrapMode->y(), wrapT);
+        }
     }
 
     void checkSceneParsing_data()
@@ -1315,6 +1317,75 @@ private Q_SLOTS:
         }
         QCOMPARE(int(amount_failed), 0);
         QCOMPARE(int(amount_successful), 64);
+    }
+
+    void checkParseExtras()
+    {
+        SceneEntity scene;
+        GLTF2Context ctx;
+        GLTF2Parser parser(&scene);
+
+        parser.setContext(&ctx);
+
+        // WHEN
+        const bool parsingSuccessful = parser.parse(QString(ASSETS "node_extras.gltf"));
+
+        // THEN
+        QVERIFY(parsingSuccessful);
+
+        // WHEN
+        parser.generateContent();
+        Qt3DCore::QEntity *node = scene.entity(QStringLiteral("MyNode"));
+
+        // THEN
+        QVERIFY(node != nullptr);
+        QCOMPARE(node->property("myBoolProp"), QVariant(true));
+        QCOMPARE(node->property("myDoubleProp"), QVariant(1584.883));
+        QCOMPARE(node->property("myStringProp"), QVariant(QStringLiteral("Kuesa_String")));
+        QCOMPARE(node->property("myUnhandledArrayProp"), QVariant());
+
+        {
+            // WHEN
+            QSignalSpy myBoolPropSpy(node, SIGNAL(myBoolPropChanged()));
+
+            // THEN
+            QVERIFY(myBoolPropSpy.isValid());
+
+            // WHEN
+            node->setProperty("myBoolProp", QVariant(false));
+
+            // THEN
+            QCOMPARE(node->property("myBoolProp").toBool(), false);
+            QCOMPARE(myBoolPropSpy.count(), 1);
+        }
+        {
+            // WHEN
+            QSignalSpy myDoublePropSpy(node, SIGNAL(myDoublePropChanged()));
+
+            // THEN
+            QVERIFY(myDoublePropSpy.isValid());
+
+            // WHEN
+            node->setProperty("myDoubleProp", QVariant(883.0));
+
+            // THEN
+            QCOMPARE(node->property("myDoubleProp").toDouble(), 883.0f);
+            QCOMPARE(myDoublePropSpy.count(), 1);
+        }
+        {
+            // WHEN
+            QSignalSpy myStringPropSpy(node, SIGNAL(myStringPropChanged()));
+
+            // THEN
+            QVERIFY(myStringPropSpy.isValid());
+
+            // WHEN
+            node->setProperty("myStringProp", QVariant(QStringLiteral("Hello")));
+
+            // THEN
+            QCOMPARE(node->property("myStringProp").toString(), QStringLiteral("Hello"));
+            QCOMPARE(myStringPropSpy.count(), 1);
+        }
     }
 };
 

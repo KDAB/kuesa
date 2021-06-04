@@ -59,7 +59,9 @@ qtHaveModule(quick) {
         multi-views \
         multi-views-with-effects \
         KDAB_placeholder \
-        instanced-rocks
+        instanced-rocks \
+        extras \
+        animated_extra
 }
 
 qtConfig(ktx) {

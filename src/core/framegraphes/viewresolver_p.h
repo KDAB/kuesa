@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_VIEWRESOLVER_H
-#define KUESA_VIEWRESOLVER_H
+#ifndef KUESA_VIEWRESOLVER_P_H
+#define KUESA_VIEWRESOLVER_P_H
 
 #include <Kuesa/private/kuesa_global_p.h>
 #include <Qt3DRender/qframegraphnode.h>
@@ -50,7 +50,7 @@ class QMaterial;
 class QParameter;
 class QAbstractTexture;
 class QShaderProgram;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 
@@ -78,4 +78,4 @@ private:
 
 QT_END_NAMESPACE
 
-#endif // KUESA_VIEWRESOLVER_H
+#endif // KUESA_VIEWRESOLVER_P_H

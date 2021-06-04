@@ -86,7 +86,7 @@ Q_SIGNALS:
 private:
     FrameGraphNodePtr m_rootFrameGraphNode;
     Qt3DRender::QLayer *m_layer;
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     Qt3DRender::QShaderProgramBuilder *m_rhiShaderBuilder;
 #endif
     Qt3DRender::QShaderProgramBuilder *m_gl3ShaderBuilder;

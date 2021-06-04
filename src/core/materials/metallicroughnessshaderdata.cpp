@@ -199,8 +199,7 @@ void MetallicRoughnessShaderData::setRoughnessFactor(float roughnessFactor)
 
 void MetallicRoughnessShaderData::setBaseColorMapTextureTransform(const QMatrix3x3 &m)
 {
-    if (m_baseColorMapTextureTransform != m)
-    {
+    if (m_baseColorMapTextureTransform != m) {
         m_baseColorMapTextureTransform = m;
         emit baseColorMapTextureTransform();
     }
@@ -208,8 +207,7 @@ void MetallicRoughnessShaderData::setBaseColorMapTextureTransform(const QMatrix3
 
 void MetallicRoughnessShaderData::setEmissiveMapTextureTransform(const QMatrix3x3 &m)
 {
-    if (m_emissiveMapTextureTransform != m)
-    {
+    if (m_emissiveMapTextureTransform != m) {
         m_emissiveMapTextureTransform = m;
         emit emissiveMapTextureTransform();
     }
@@ -217,8 +215,7 @@ void MetallicRoughnessShaderData::setEmissiveMapTextureTransform(const QMatrix3x
 
 void MetallicRoughnessShaderData::setMetalRoughMapTextureTransform(const QMatrix3x3 &m)
 {
-    if (m_metalRoughMapTextureTransform != m)
-    {
+    if (m_metalRoughMapTextureTransform != m) {
         m_metalRoughMapTextureTransform = m;
         emit metalRoughMapTextureTransform();
     }
@@ -226,8 +223,7 @@ void MetallicRoughnessShaderData::setMetalRoughMapTextureTransform(const QMatrix
 
 void MetallicRoughnessShaderData::setNormalMapTextureTransform(const QMatrix3x3 &m)
 {
-    if (m_normalMapTextureTransform != m)
-    {
+    if (m_normalMapTextureTransform != m) {
         m_normalMapTextureTransform = m;
         emit normalMapTextureTransform();
     }
@@ -235,8 +231,7 @@ void MetallicRoughnessShaderData::setNormalMapTextureTransform(const QMatrix3x3 
 
 void MetallicRoughnessShaderData::setAmbientOcclusionMapTextureTransform(const QMatrix3x3 &m)
 {
-    if (m_ambientOcclusionMapTextureTransform != m)
-    {
+    if (m_ambientOcclusionMapTextureTransform != m) {
         m_ambientOcclusionMapTextureTransform = m;
         emit ambientOcclusionMapTextureTransform();
     }

@@ -1,11 +1,10 @@
-
 /*
     iro2alphasemproperties.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Nicolas Guichard <nicolas.guichard@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -32,13 +31,11 @@
 #include <Qt3DCore/private/qnode_p.h>
 #include <Kuesa/private/empty2dtexture_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::Iro2AlphaSemProperties
@@ -168,7 +165,7 @@ void Iro2AlphaSemProperties::setGltfYUp(bool gltfYUp)
     m_shaderData->setGltfYUp(gltfYUp);
 }
 
-void Iro2AlphaSemProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
+void Iro2AlphaSemProperties::setReflectionMap(Qt3DRender::QAbstractTexture *reflectionMap)
 {
     if (m_reflectionMap == reflectionMap)
         return;
@@ -185,7 +182,7 @@ void Iro2AlphaSemProperties::setReflectionMap(Qt3DRender::QAbstractTexture * ref
     emit reflectionMapChanged(m_reflectionMap);
 }
 
-void Iro2AlphaSemProperties::setNormalMap(Qt3DRender::QAbstractTexture * normalMap)
+void Iro2AlphaSemProperties::setNormalMap(Qt3DRender::QAbstractTexture *normalMap)
 {
     if (m_normalMap == normalMap)
         return;
@@ -201,7 +198,6 @@ void Iro2AlphaSemProperties::setNormalMap(Qt3DRender::QAbstractTexture * normalM
     }
     emit normalMapChanged(m_normalMap);
 }
-
 
 /*!
     \qmlproperty bool Iro2AlphaSemProperties::usesReflectionMap
@@ -398,16 +394,15 @@ bool Iro2AlphaSemProperties::gltfYUp() const
     return m_shaderData->gltfYUp();
 }
 
-Qt3DRender::QAbstractTexture * Iro2AlphaSemProperties::reflectionMap() const
+Qt3DRender::QAbstractTexture *Iro2AlphaSemProperties::reflectionMap() const
 {
     return m_reflectionMap;
 }
 
-Qt3DRender::QAbstractTexture * Iro2AlphaSemProperties::normalMap() const
+Qt3DRender::QAbstractTexture *Iro2AlphaSemProperties::normalMap() const
 {
     return m_normalMap;
 }
-
 
 } // namespace Kuesa
 

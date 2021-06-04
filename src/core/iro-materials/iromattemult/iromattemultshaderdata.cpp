@@ -1,11 +1,10 @@
-
 /*
     iromattemultshaderdata.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -29,13 +28,11 @@
 
 #include "iromattemultshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 IroMatteMultShaderData::IroMatteMultShaderData(Qt3DCore::QNode *parent)
     : Qt3DRender::QShaderData(parent)
     , m_postVertexColor()
@@ -44,7 +41,8 @@ IroMatteMultShaderData::IroMatteMultShaderData(Qt3DCore::QNode *parent)
     , m_matteFilter()
     , m_matteGain()
     , m_uvOffset()
-{}
+{
+}
 
 IroMatteMultShaderData::~IroMatteMultShaderData() = default;
 
@@ -77,7 +75,6 @@ QVector2D IroMatteMultShaderData::uvOffset() const
 {
     return m_uvOffset;
 }
-
 
 void IroMatteMultShaderData::setPostVertexColor(float postVertexColor)
 {
@@ -126,8 +123,6 @@ void IroMatteMultShaderData::setUvOffset(const QVector2D &uvOffset)
     m_uvOffset = uvOffset;
     emit uvOffsetChanged(uvOffset);
 }
-
-
 
 } // namespace Kuesa
 

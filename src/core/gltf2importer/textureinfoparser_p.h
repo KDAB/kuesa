@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_GLTF2IMPORT_TEXTUREINFOPARSER_H
-#define KUESA_GLTF2IMPORT_TEXTUREINFOPARSER_H
+#ifndef KUESA_GLTF2IMPORT_TEXTUREINFOPARSER_P_H
+#define KUESA_GLTF2IMPORT_TEXTUREINFOPARSER_P_H
 
 //
 //  NOTICE
@@ -50,14 +50,14 @@ struct Q_AUTOTEST_EXPORT TextureInfo {
     qint32 texCoord = 0; // Attribute will be TEXCOORD_<texCoord>
 
     struct KHR_texture_transform {
-        QVector2D offset = {0.0f, 0.0f};
+        QVector2D offset = { 0.0f, 0.0f };
         float rotation = 0.0f;
-        QVector2D scale = {1.0f, 1.0f};
+        QVector2D scale = { 1.0f, 1.0f };
     };
 
     KHR_texture_transform khr_texture_transform;
 
-    static  TextureInfo parse(const QJsonObject &textureInfoObj);
+    static TextureInfo parse(const QJsonObject &textureInfoObj);
 };
 } // namespace GLTF2Import
 } // namespace Kuesa
@@ -66,4 +66,4 @@ Q_DECLARE_METATYPE(Kuesa::GLTF2Import::TextureInfo)
 
 QT_END_NAMESPACE
 
-#endif //  KUESA_GLTF2IMPORT_TEXTUREINFOPARSER_H
+#endif //  KUESA_GLTF2IMPORT_TEXTUREINFOPARSER_P_H

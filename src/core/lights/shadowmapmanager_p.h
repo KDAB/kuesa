@@ -26,8 +26,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef KUESA_SHADOWMAPMANAGER_H
-#define KUESA_SHADOWMAPMANAGER_H
+#ifndef KUESA_SHADOWMAPMANAGER_P_H
+#define KUESA_SHADOWMAPMANAGER_P_H
 
 //
 //  W A R N I N G
@@ -132,4 +132,4 @@ private:
 QT_END_NAMESPACE
 Q_DECLARE_METATYPE(Kuesa::ShadowMapManager *)
 
-#endif // KUESA_SHADOWMAPMANAGER_H
+#endif // KUESA_SHADOWMAPMANAGER_P_H

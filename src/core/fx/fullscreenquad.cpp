@@ -64,7 +64,6 @@ namespace Kuesa {
  * A Qt3DRender::QLayer is added to the FullScreenQuad entity which can be retrieved with layer().
  */
 
-
 namespace {
 
 struct V {
@@ -73,7 +72,7 @@ struct V {
 };
 static_assert(sizeof(V) == 5 * sizeof(float), "Unexpected size for struct V");
 
-} // anonymous
+} // namespace
 
 /*!
  * \param material A material to be aggregated to the quad entity.

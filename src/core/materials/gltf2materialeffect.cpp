@@ -152,7 +152,6 @@ namespace Kuesa {
     \since Kuesa 1.3
  */
 
-
 /*!
     \qmltype GLTF2MaterialEffect
     \instantiates Kuesa::GLTF2MaterialEffect
@@ -485,6 +484,6 @@ void GLTF2MaterialEffect::initialize()
     updateInstanced(GLTF2MaterialEffect::isInstanced());
 }
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE

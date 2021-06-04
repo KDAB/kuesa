@@ -71,7 +71,7 @@ public:
         m_assets.insert(asset.key, resource);
 
         if (m_sceneEntity)
-           resource->setParent(m_sceneEntity);
+            resource->setParent(m_sceneEntity);
 
         m_assetDestructionConnections.insert(resource,
                                              QObject::connect(resource, &Qt3DCore::QNode::destroyed,
@@ -104,7 +104,7 @@ private:
     SceneEntity *m_sceneEntity = nullptr;
 };
 
-} // Kuesa
+} // namespace Kuesa
 
 QT_END_NAMESPACE
 

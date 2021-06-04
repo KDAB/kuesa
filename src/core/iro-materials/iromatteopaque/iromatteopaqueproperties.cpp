@@ -1,11 +1,10 @@
-
 /*
     iromatteopaqueproperties.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -32,13 +31,11 @@
 #include <Qt3DCore/private/qnode_p.h>
 #include <Kuesa/private/empty2dtexture_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::IroMatteOpaqueProperties
@@ -112,7 +109,7 @@ void IroMatteOpaqueProperties::setUvOffset(const QVector2D &uvOffset)
     m_shaderData->setUvOffset(uvOffset);
 }
 
-void IroMatteOpaqueProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteMap)
+void IroMatteOpaqueProperties::setMatteMap(Qt3DRender::QAbstractTexture *matteMap)
 {
     if (m_matteMap == matteMap)
         return;
@@ -128,7 +125,6 @@ void IroMatteOpaqueProperties::setMatteMap(Qt3DRender::QAbstractTexture * matteM
     }
     emit matteMapChanged(m_matteMap);
 }
-
 
 /*!
     \qmlproperty float IroMatteOpaqueProperties::postVertexColor
@@ -208,11 +204,10 @@ QVector2D IroMatteOpaqueProperties::uvOffset() const
     return m_shaderData->uvOffset();
 }
 
-Qt3DRender::QAbstractTexture * IroMatteOpaqueProperties::matteMap() const
+Qt3DRender::QAbstractTexture *IroMatteOpaqueProperties::matteMap() const
 {
     return m_matteMap;
 }
-
 
 } // namespace Kuesa
 

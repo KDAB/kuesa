@@ -1,11 +1,10 @@
-
 /*
     iro2planarreflectionsemproperties.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -32,13 +31,11 @@
 #include <Qt3DCore/private/qnode_p.h>
 #include <Kuesa/private/empty2dtexture_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::Iro2PlanarReflectionSemProperties
@@ -154,7 +151,7 @@ void Iro2PlanarReflectionSemProperties::setGltfYUp(bool gltfYUp)
     m_shaderData->setGltfYUp(gltfYUp);
 }
 
-void Iro2PlanarReflectionSemProperties::setNormalMap(Qt3DRender::QAbstractTexture * normalMap)
+void Iro2PlanarReflectionSemProperties::setNormalMap(Qt3DRender::QAbstractTexture *normalMap)
 {
     if (m_normalMap == normalMap)
         return;
@@ -170,7 +167,6 @@ void Iro2PlanarReflectionSemProperties::setNormalMap(Qt3DRender::QAbstractTextur
     }
     emit normalMapChanged(m_normalMap);
 }
-
 
 /*!
     \qmlproperty float Iro2PlanarReflectionSemProperties::reflectionGain
@@ -341,11 +337,10 @@ bool Iro2PlanarReflectionSemProperties::gltfYUp() const
     return m_shaderData->gltfYUp();
 }
 
-Qt3DRender::QAbstractTexture * Iro2PlanarReflectionSemProperties::normalMap() const
+Qt3DRender::QAbstractTexture *Iro2PlanarReflectionSemProperties::normalMap() const
 {
     return m_normalMap;
 }
-
 
 } // namespace Kuesa
 

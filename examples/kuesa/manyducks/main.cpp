@@ -47,6 +47,7 @@
 // Qt & std
 #include <QGuiApplication>
 #include <QTimer>
+#include <QRandomGenerator>
 #include <array>
 #ifdef Q_OS_ANDROID
 #include <QOpenGLContext>
@@ -188,15 +189,16 @@ private:
                 //! [1.3]
                 // Then create clones by giving them a custom transform, and the same components than before
 
+                QRandomGenerator *rand = QRandomGenerator::global();
                 for (int i = 0; i < Ducks; i++) {
                     auto new_entity = new Qt3DCore::QEntity{ parent };
                     auto new_transform = new Qt3DCore::QTransform;
                     new_transform->setScale(0.2f);
-                    new_transform->setTranslation(QVector3D(rand() % r - r / 2, rand() % r - r / 2, rand() % r - r / 2));
+                    new_transform->setTranslation(QVector3D(rand->generate() % r - r / 2, rand->generate() % r - r / 2, rand->generate() % r - r / 2));
 
-                    new_transform->setRotationX(rand() % 360);
-                    new_transform->setRotationY(rand() % 360);
-                    new_transform->setRotationZ(rand() % 360);
+                    new_transform->setRotationX(rand->generate() % 360);
+                    new_transform->setRotationY(rand->generate() % 360);
+                    new_transform->setRotationZ(rand->generate() % 360);
 
                     new_entity->addComponent(new_transform);
                     new_entity->addComponent(orig_geometry);
@@ -209,15 +211,17 @@ private:
             } else {
                 //! [1.4]
                 // Build base transformation matrices for each instance
+
+                QRandomGenerator *rand = QRandomGenerator::global();
                 m_matrices.reserve(Ducks + 1);
                 for (int i = 0; i < Ducks; i++) {
                     QMatrix4x4 m;
 
                     const int extent = r / 20;
-                    m.translate(QVector3D(rand() % extent - extent * 0.5, rand() % extent - extent * 0.5, rand() % extent - extent * 0.5));
-                    m.rotate(rand() % 360, QVector3D(1.0f, 0.0f, 0.0f));
-                    m.rotate(rand() % 360, QVector3D(0.0f, 1.0f, 0.0f));
-                    m.rotate(rand() % 360, QVector3D(0.0f, 0.0f, 1.0f));
+                    m.translate(QVector3D(rand->generate() % extent - extent * 0.5, rand->generate() % extent - extent * 0.5, rand->generate() % extent - extent * 0.5));
+                    m.rotate(rand->generate() % 360, QVector3D(1.0f, 0.0f, 0.0f));
+                    m.rotate(rand->generate() % 360, QVector3D(0.0f, 1.0f, 0.0f));
+                    m.rotate(rand->generate() % 360, QVector3D(0.0f, 0.0f, 1.0f));
 
                     m_matrices.push_back(m);
                 }
@@ -281,20 +285,8 @@ private:
 
 int main(int argc, char *argv[])
 {
-    {
-        // Set OpenGL requirements
-        QSurfaceFormat format = QSurfaceFormat::defaultFormat();
-#ifndef KUESA_OPENGL_ES_2
-        format.setVersion(4, 1);
-        format.setProfile(QSurfaceFormat::CoreProfile);
-        format.setSamples(4);
-#else
-        format.setVersion(3, 0);
-        format.setProfile(QSurfaceFormat::NoProfile);
-        format.setRenderableType(QSurfaceFormat::OpenGLES);
-#endif
-        QSurfaceFormat::setDefaultFormat(format);
-    }
+    // Set OpenGL requirements
+    Kuesa::setupDefaultSurfaceFormat();
 
     QGuiApplication app(argc, argv);
 

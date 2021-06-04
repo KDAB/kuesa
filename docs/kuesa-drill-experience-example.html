@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- drill-experience.qdoc -->
+  <title>Kuesa Drill-Experience QML Example | Kuesa Runtime 1.4</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.4</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>Kuesa Drill-Experience QML Example</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.4 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#structure-of-the-application">Structure of the Application</a></li>
+<li class="level1"><a href="#architecture-of-the-application">Architecture of the Application</a></li>
+<li class="level1"><a href="#implementation">Implementation</a></li>
+<li class="level2"><a href="#main-qml">main.qml</a></li>
+<li class="level1"><a href="#qtquick-and-qt3d-integration">QtQuick and Qt3D integration</a></li>
+<li class="level2"><a href="#drillscene">DrillScene</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Kuesa Drill-Experience QML Example</h1>
+<span class="subtitle"></span>
+<!-- $$$drill-experience-brief -->
+<p>Demonstrates the use of the Kuesa Runtime API to create a real world application.</p>
+<!-- @@@drill-experience -->
+<!-- $$$drill-experience-description -->
+<div class="descr"> <a name="details"></a>
+<a name="structure-of-the-application"></a>
+<h4 id="structure-of-the-application">Structure of the Application</h4>
+<p>This demo is structured around a single screen Depending on the user actions, we enter one of 3 modes</p>
+<ul>
+<li>A interactive manual</li>
+<li>A guide to drilling</li>
+<li>An idling mode</li>
+</ul>
+<a name="architecture-of-the-application"></a>
+<h4 id="architecture-of-the-application">Architecture of the Application</h4>
+<p>The demo has a strong split between the UI defined in QML and logic handling done in C++.</p>
+<p>The UI is provided through a dedicated QML file.</p>
+<p>When it comes to the logic handling, it's implemented through a dedicated controller. The controller takes care of providing a <a href="qml-sceneconfiguration.html">KuesaUtils::SceneConfiguration</a> defining which glTF file to load, which camera to use for rendering as well as the a list of Kuesa::AnimationPlayers to control animations or Kuesa::TransformTrackers to retrieve the screen positions of 3D entities.</p>
+<p>Additionally, the controller relies on KuesaUtils::SceneConfiguration::loadingDone and KuesUtils::SceneConfiguration::unloadingDone to retrieve Kuesa assets from the <a href="qml-sceneentity.html">Kuesa::SceneEntity</a> collections upon loading and clearing any reference to such object upon unloading.</p>
+<p>Through the use of properties and upon those being modified by the UI, the controller will react and might launch animations</p>
+<a name="implementation"></a>
+<h4 id="implementation">Implementation</h4>
+<a name="main-qml"></a>
+<h5 id="main-qml">main.qml</h5>
+<p>This is the entry point of our Application.</p>
+<p>First we instantiate an ApplicationWindow</p>
+<pre class="qml">
+ <span class="type">ApplicationWindow</span> {
+     <span class="name">id</span>: <span class="name">mainRoot</span>
+     <span class="name">title</span>: <span class="string">&quot;Drill-Experience&quot;</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+     <span class="name">visibility</span>: <span class="name">ApplicationWindow</span>.<span class="name">Maximized</span>
+
+     <span class="name">Material</span>.theme: <span class="name">Material</span>.<span class="name">Dark</span>
+     <span class="name">Material</span>.accent: <span class="name">Material</span>.<span class="name">Blue</span>
+
+     <span class="name">menuBar</span>: <span class="name">ToolBar</span> {
+         <span class="type">Label</span> {
+             <span class="name">text</span>: <span class="name">mainRoot</span>.<span class="name">title</span>
+             <span class="name">font</span>.pixelSize: <span class="number">20</span>
+             <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+         }
+     }
+
+     <span class="type">Item</span> {
+         <span class="name">id</span>: <span class="name">contentItem</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="type">DrillScene</span> {
+             <span class="name">id</span>: <span class="name">view3D</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         }
+
+         <span class="type">UserManualUI</span> {
+             <span class="name">controller</span>: <span class="name">view3D</span>.<span class="name">controller</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         }
+     }
+ }
+      ...
+</pre>
+<a name="qtquick-and-qt3d-integration"></a>
+<h4 id="qtquick-and-qt3d-integration">QtQuick and Qt3D integration</h4>
+<p>The Drill-Experience example relies on the new simplified <a href="qml-view3d.html">Kuesa::View3D</a> API introduced in Kuesa 1.3&#x2e;</p>
+<pre class="qml">
+ <span class="type"><a href="qml-view3d.html">View3D</a></span> {
+     <span class="name">id</span>: <span class="name">view3D</span>
+     <span class="name">focus</span>: <span class="number">true</span>
+     <span class="name">asynchronous</span>: <span class="number">true</span>
+     <span class="name">backgroundColor</span>: <span class="string">&quot;transparent&quot;</span>
+     <span class="name">opacity</span>: <span class="name">ready</span> ? <span class="number">1.0</span> : <span class="number">0.0</span>
+
+
+     <span class="comment">// Controllers</span>
+     <span class="comment">// Readonly properties to expose controllers for external access</span>
+     readonly property <span class="type">ScreenController</span> <span class="name">controller</span>: <span class="name">_controller</span>
+
+     <span class="type">ScreenController</span> {
+         <span class="name">id</span>: <span class="name">_controller</span>
+     }
+
+     <span class="comment">// We rely on the controller providing the scene configuration</span>
+     <span class="comment">// This provides the source, camera, trackers, animation players...</span>
+     <span class="name">activeScene</span>: <span class="name">controller</span>.<span class="name">sceneConfiguration</span>
+
+     <span class="type">Entity</span> {
+         <span class="name">components</span>: [
+             <span class="type">MouseHandler</span> {
+                 <span class="name">id</span>: <span class="name">mouseHandler</span>
+                 <span class="name">sourceDevice</span>: <span class="name">MouseDevice</span> {}
+                 <span class="comment">// Use progress to control the orbit animation when in user manual mode</span>
+                 property <span class="type">real</span> <span class="name">progressOffset</span>
+                 property <span class="type">bool</span> <span class="name">isPressed</span>: <span class="number">false</span>
+
+                 <span class="name">onPressed</span>: {
+                     <span class="name">isPressed</span> <span class="operator">=</span> <span class="number">true</span>;
+                     <span class="name">idleDetectionTimer</span>.<span class="name">restart</span>()
+                     <span class="comment">// Switch to the User Manual mode when pressing the screen</span>
+                     <span class="comment">// while on the status screen</span>
+                     <span class="keyword">if</span> (<span class="name">controller</span>.<span class="name">mode</span> <span class="operator">===</span> <span class="name">ScreenController</span>.<span class="name">StatusMode</span>) {
+                         <span class="name">controller</span>.<span class="name">mode</span> <span class="operator">=</span> <span class="name">ScreenController</span>.<span class="name">UserManualMode</span>
+                     } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="name">controller</span>.<span class="name">mode</span> <span class="operator">===</span> <span class="name">ScreenController</span>.<span class="name">UserManualMode</span>){
+                         <span class="comment">// Record camera curve offset</span>
+                         <span class="name">progressOffset</span> <span class="operator">=</span> <span class="name">controller</span>.<span class="name">positionOnCameraOrbit</span> <span class="operator">+</span> <span class="name">mouse</span>.<span class="name">x</span> <span class="operator">/</span> <span class="name">view3D</span>.<span class="name">width</span>
+                     } <span class="keyword">else</span> { <span class="comment">// GuidedDrillingMode</span>
+                         <span class="name">controller</span>.<span class="name">nextStep</span>();
+                     }
+                 }
+
+                 <span class="name">onReleased</span>: <span class="name">isPressed</span> <span class="operator">=</span> <span class="number">false</span>;
+
+                 <span class="name">onPositionChanged</span>: {
+                     <span class="comment">// Move camera along orbit curve</span>
+                     <span class="keyword">if</span> (<span class="name">isPressed</span>)
+                         <span class="name">controller</span>.<span class="name">positionOnCameraOrbit</span> <span class="operator">=</span> <span class="name">Math</span>.<span class="name">min</span>(<span class="number">1.0</span>, <span class="name">Math</span>.<span class="name">max</span>(<span class="number">0</span>, <span class="name">progressOffset</span> <span class="operator">-</span> (<span class="name">mouse</span>.<span class="name">x</span> <span class="operator">/</span> <span class="name">view3D</span>.<span class="name">width</span>)))
+                 }
+             }
+         ]
+     }
+
+     <span class="type">QQ2</span>.Timer {
+         <span class="name">id</span>: <span class="name">idleDetectionTimer</span>
+         <span class="name">running</span>: <span class="name">controller</span>.<span class="name">mode</span> <span class="operator">!==</span> <span class="name">ScreenController</span>.<span class="name">StatusMode</span>
+         <span class="name">interval</span>: <span class="number">5</span> <span class="operator">*</span> <span class="number">60</span> <span class="operator">*</span> <span class="number">1000</span> <span class="comment">// 5 minutes</span>
+         <span class="name">onTriggered</span>: <span class="name">controller</span>.<span class="name">mode</span> <span class="operator">=</span> <span class="name">ScreenController</span>.<span class="name">StatusMode</span>
+     }
+ }
+  ...
+</pre>
+<a name="drillscene"></a>
+<h5 id="drillscene">DrillScene</h5>
+<p>This is the QML file in charge of setting up the 3D View.</p>
+<p><a href="qml-view3d.html">Kuesa::View3D</a> is a subclass of the <a href="qml-sceneentity.html">SceneEntity</a> element which holds collections of Qt 3D assets accessible by name.</p>
+<p>This elements acts as the root elements of our <a href="kuesa-drill-experience-example.html#drillscene">DrillScene</a> element. The <a href="qml-view3dscene.html#activeScene-prop">KuesaUtils::View3DScene::activeScene</a> property is bound to the sceneConfiguraiton instanced returned by the controller. This ensure that when we switch screen and controller, we automatically switch to another <a href="qml-sceneconfiguration.html">SceneConfiguration</a>.</p>
+<pre class="qml">
+ <span class="comment">// Controllers</span>
+ <span class="comment">// Readonly properties to expose controllers for external access</span>
+ readonly property <span class="type">ScreenController</span> <span class="name">controller</span>: <span class="name">_controller</span>
+
+ <span class="type">ScreenController</span> {
+     <span class="name">id</span>: <span class="name">_controller</span>
+ }
+
+ <span class="comment">// We rely on the controller providing the scene configuration</span>
+ <span class="comment">// This provides the source, camera, trackers, animation players...</span>
+ <span class="name">activeScene</span>: <span class="name">controller</span>.<span class="name">sceneConfiguration</span>
+</pre>
+<p>It is instantiated in the main.qml file</p>
+<pre class="qml">
+ <span class="type">DrillScene</span> {
+     <span class="name">id</span>: <span class="name">view3D</span>
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+ }
+</pre>
+<p>Files:</p>
+<ul>
+<li><a href="kuesa-drill-experience-assets-assets-qrc.html">drill-experience/assets/assets.qrc</a></li>
+<li><a href="kuesa-drill-experience-drill-experience-pro.html">drill-experience/drill-experience.pro</a></li>
+<li><a href="kuesa-drill-experience-qml-drillscene-qml.html">drill-experience/qml/DrillScene.qml</a></li>
+<li><a href="kuesa-drill-experience-qml-usermanualui-qml.html">drill-experience/qml/UserManualUI.qml</a></li>
+<li><a href="kuesa-drill-experience-qml-main-qml.html">drill-experience/qml/main.qml</a></li>
+<li><a href="kuesa-drill-experience-qml-qml-qrc.html">drill-experience/qml/qml.qrc</a></li>
+<li><a href="kuesa-drill-experience-src-abstractscreencontroller-cpp.html">drill-experience/src/abstractscreencontroller.cpp</a></li>
+<li><a href="kuesa-drill-experience-src-abstractscreencontroller-h.html">drill-experience/src/abstractscreencontroller.h</a></li>
+<li><a href="kuesa-drill-experience-src-main-cpp.html">drill-experience/src/main.cpp</a></li>
+<li><a href="kuesa-drill-experience-src-screencontroller-cpp.html">drill-experience/src/screencontroller.cpp</a></li>
+<li><a href="kuesa-drill-experience-src-screencontroller-h.html">drill-experience/src/screencontroller.h</a></li>
+</ul>
+<p>Images:</p>
+<ul>
+<li><a href="images/used-in-examples/drill-experience/assets/drill/chrome-aniso.png">drill-experience/assets/drill/chrome-aniso.png</a></li>
+<li><a href="images/used-in-examples/drill-experience/assets/drill/dark-diffuse.png">drill-experience/assets/drill/dark-diffuse.png</a></li>
+<li><a href="images/used-in-examples/drill-experience/assets/drill/drill-body-diff.png">drill-experience/assets/drill/drill-body-diff.png</a></li>
+<li><a href="images/used-in-examples/drill-experience/assets/drill/drill-body_normal.png">drill-experience/assets/drill/drill-body_normal.png</a></li>
+<li><a href="images/used-in-examples/drill-experience/assets/drill/highlights.png">drill-experience/assets/drill/highlights.png</a></li>
+<li><a href="images/used-in-examples/drill-experience/assets/drill/kdab-studiosky-small-blurry-dark.png">drill-experience/assets/drill/kdab-studiosky-small-blurry-dark.png</a></li>
+<li><a href="images/used-in-examples/drill-experience/assets/drill/shadow-plane.png">drill-experience/assets/drill/shadow-plane.png</a></li>
+</ul>
+</div>
+<!-- @@@drill-experience -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

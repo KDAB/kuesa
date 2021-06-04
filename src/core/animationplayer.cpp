@@ -35,6 +35,7 @@
 #include <Qt3DAnimation/QChannelMapping>
 #include <Qt3DAnimation/QAnimationClip>
 #include <Qt3DAnimation/QClock>
+#include <QTimer>
 
 QT_USE_NAMESPACE
 using namespace Kuesa;
@@ -371,13 +372,18 @@ bool AnimationPlayer::isRunning() const
 void AnimationPlayer::setRunning(bool running)
 {
     if (m_animator->clip())
-       m_animator->setRunning(running);
+        m_animator->setRunning(running);
     m_running = running;
 }
 
 int AnimationPlayer::loopCount() const
 {
     return m_animator->loopCount();
+}
+
+int AnimationPlayer::currentLoop() const
+{
+    return m_currentLoop;
 }
 
 void AnimationPlayer::setLoopCount(int loops)
@@ -408,18 +414,22 @@ float AnimationPlayer::duration() const
 void AnimationPlayer::setNormalizedTime(float timeFraction)
 {
     m_runToTimeFraction = -1;
+    m_lastKnownNormalizedTime = timeFraction;
     m_animator->setNormalizedTime(timeFraction);
 }
 
 /*!
- * Starts the animation
+ * Starts the animation after \a delay in msec.
+ * \a delay defaults to 0.
  */
-void AnimationPlayer::start()
+void AnimationPlayer::start(int delay)
 {
-    m_runToTimeFraction = -1;
-    if (m_animator->clip())
-        m_animator->start();
-    m_running = true;
+    QTimer::singleShot(delay, this, [this] {
+        m_runToTimeFraction = -1;
+        if (m_animator->clip())
+            m_animator->start();
+        m_running = true;
+    });
 }
 
 /*!
@@ -440,23 +450,22 @@ void AnimationPlayer::stop()
  */
 void AnimationPlayer::reset()
 {
-    m_runToTimeFraction = -1;
+    stop();
     m_animator->setNormalizedTime(0.f);
-    if (m_animator->clip())
-        m_animator->stop();
-    m_running = false;
+    setCurrentLoop(0);
+    m_lastKnownNormalizedTime = 0.0f;
 }
 
 /*!
- * Sets the normalised to 0 and runs the animation.
+ * Sets the normalised to 0 and runs the animation after \a delay in msec.
+ * \a delay defaults to 0.
  */
-void AnimationPlayer::restart()
+void AnimationPlayer::restart(int delay)
 {
-    m_runToTimeFraction = -1;
-    m_animator->setNormalizedTime(0.f);
-    if (m_animator->clip())
-        m_animator->start();
-    m_running = true;
+    QTimer::singleShot(delay, this, [this] {
+        reset();
+        start();
+    });
 }
 
 /*!
@@ -466,19 +475,19 @@ void AnimationPlayer::restart()
 void AnimationPlayer::run(float fromTimeFraction, float toTimeFraction)
 {
     m_runToTimeFraction = toTimeFraction;
+    m_lastKnownNormalizedTime = fromTimeFraction;
     m_animator->setNormalizedTime(fromTimeFraction);
     if (m_animator->clip())
         m_animator->start();
     m_running = true;
 }
 
-
 void AnimationPlayer::matchClipAndTargets()
 {
     QObject::disconnect(m_clipDestroyedConnection);
     QObject::disconnect(m_mapperDestroyedConnection);
 
-    auto resetAnimator = [this] () {
+    auto resetAnimator = [this]() {
         setStatus(Error);
         m_animator->setRunning(false);
         if (m_animator->clip()) {
@@ -581,13 +590,30 @@ void AnimationPlayer::matchClipAndTargets()
     setStatus(Ready);
 }
 
-
 void AnimationPlayer::updateNormalizedTime(float index)
 {
-    if (m_running && m_runToTimeFraction > 0. && index >= m_runToTimeFraction) {
-        if (m_animator->clip())
-            m_animator->stop();
-        m_runToTimeFraction = -1;
+    if (m_running) {
+        if (m_runToTimeFraction > 0. && index >= m_runToTimeFraction) {
+            if (m_animator->clip())
+                m_animator->stop();
+            m_runToTimeFraction = -1;
+        }
+        // Have we moved to the next loop?
+        const bool forward = m_animator->clock() ? m_animator->clock()->playbackRate() > 0.0f : true;
+        const bool switchLooped = forward ? index < m_lastKnownNormalizedTime : index > m_lastKnownNormalizedTime;
+        // Use playback direction to properly detect when current loop has increased
+        if (switchLooped)
+            setCurrentLoop(m_currentLoop + 1);
+        m_lastKnownNormalizedTime = index;
     }
+
     emit normalizedTimeChanged(index);
+}
+
+void AnimationPlayer::setCurrentLoop(int loop)
+{
+    if (loop == m_currentLoop)
+        return;
+    m_currentLoop = loop;
+    emit currentLoopChanged(m_currentLoop);
 }

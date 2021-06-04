@@ -159,15 +159,6 @@ public:
     }
 };
 
-quint8 expectedComponentsCountForChannel(const ChannelInfo &channelInfo)
-{
-    const AnimationTarget &target = channelInfo.target;
-    const quint8 componentCount = AnimatablePropertiesCache::registeredAnimatables().value(target.path).componentCount;
-    if (componentCount == 0)
-        qCWarning(Kuesa::kuesa) << "Unrecognized animation channel" << target.path;
-    return componentCount;
-}
-
 std::vector<Qt3DAnimation::QChannelMapping *> mappingsForTransformTargetNode(const GLTF2Context *ctx,
                                                                              const ChannelMapping &mapping)
 {
@@ -219,7 +210,7 @@ std::vector<Qt3DAnimation::QChannelMapping *> mappingsForMorphTargetWeights(cons
                     Kuesa::componentFromEntity<Kuesa::MorphController>(primitiveEntity);
             if (!morphControllerComponent) {
                 qCWarning(Kuesa::kuesa) << "Target node doesn't have a morph "
-                                    "controller component to animate";
+                                           "controller component to animate";
                 continue;
             }
             auto channelMapping = new Qt3DAnimation::QChannelMapping();
@@ -295,6 +286,55 @@ std::vector<Qt3DAnimation::QChannelMapping *> mappingsForGenericTargetNode(const
     channelMapping->setProperty(mapping.property);
 
     return { channelMapping };
+}
+
+std::vector<Qt3DAnimation::QChannelMapping *> mappingsForExtras(const GLTF2Context *ctx,
+                                                                const ChannelMapping &mapping)
+{
+
+    Qt3DCore::QNode *target = nullptr;
+    switch (mapping.target.type) {
+    case AnimationTarget::Node: {
+        const TreeNode &node = ctx->treeNode(mapping.target.targetNodeId);
+        target = node.entity;
+        break;
+    }
+
+    default:
+        break;
+    }
+
+    if (!target)
+        return {};
+
+    // Path is extras/propertyName
+    const QString extraPropertyName = mapping.target.path.mid(7);
+
+    auto channelMapping = new Qt3DAnimation::QChannelMapping();
+    channelMapping->setTarget(target);
+    channelMapping->setChannelName(mapping.name);
+    channelMapping->setProperty(extraPropertyName);
+
+    return { channelMapping };
+}
+
+PathInfo pathInfoFromPath(const QString &path)
+{
+    // For extra properties, we can't rely on the usual AnimatableProperty table
+    if (path.startsWith(QStringLiteral("extras/"))) {
+        const QString propertyName = path.mid(7);
+        return { -1, propertyName, propertyName, &mappingsForExtras };
+    }
+    return AnimatablePropertiesCache::registeredAnimatables().value(path);
+}
+
+qint8 expectedComponentsCountForChannel(const ChannelInfo &channelInfo)
+{
+    const AnimationTarget &target = channelInfo.target;
+    const qint8 componentCount = pathInfoFromPath(target.path).componentCount;
+    if (componentCount == 0)
+        qCWarning(Kuesa::kuesa) << "Unrecognized animation channel" << target.path;
+    return componentCount;
 }
 
 void registerDefaultAnimatables()
@@ -390,7 +430,7 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const Ch
 {
     const AnimationTarget &target = channelInfo.target;
     const QString channelPath = channelInfo.target.path;
-    const QString channelName = AnimatablePropertiesCache::registeredAnimatables().value(channelPath).channelBaseName + QStringLiteral("_") + QString::number(target.targetNodeId);
+    const QString channelName = pathInfoFromPath(channelPath).channelBaseName + QStringLiteral("_") + QString::number(target.targetNodeId);
     auto channel = Qt3DAnimation::QChannel(channelName);
     const Accessor inputAccessor = m_context->accessor(sampler.inputAccessor);
 
@@ -414,16 +454,20 @@ Qt3DAnimation::QChannel AnimationParser::animationChannelDataFromBuffer(const Ch
     std::vector<float> timeStamps(nKeyframes);
     std::memcpy(timeStamps.data(), inputRawData.constData(), inputRawData.size());
 
-    quint8 nbComponents = 0;
+    qint8 nbComponents = 0;
     std::vector<float> valueStamps;
     std::tie(nbComponents, valueStamps) = animationChannelDataFromData(sampler);
 
     // Check nbComponent and type are what is expected for a given channel
-    const quint8 expectedComponents = expectedComponentsCountForChannel(channelInfo);
+    const qint8 expectedComponents = expectedComponentsCountForChannel(channelInfo);
     if (expectedComponents == 0)
         return channel;
 
-    if (nbComponents != expectedComponents) {
+    // For animated extra properties, we get -1 as we don't know the type of the property being animated
+    const bool isExtraProperty = expectedComponents == -1;
+
+    // Perform component count check for non extra properties
+    if (!isExtraProperty && nbComponents != expectedComponents) {
         qCWarning(Kuesa::kuesa) << "Channel components for" << channelPath << "expected" << expectedComponents << "but obtained" << nbComponents;
         return channel;
     }
@@ -601,6 +645,9 @@ bool AnimationParser::checkChannelInfo(const ChannelInfo &channelInfo) const
         return false;
     }
 
+    if (target.path.startsWith(QStringLiteral("extras/")))
+        return true;
+
     // Verify path is a valid value
     if (!AnimatablePropertiesCache::registeredAnimatables().contains(target.path)) {
         qCWarning(Kuesa::kuesa, "Channel Path value is not valid");
@@ -678,7 +725,7 @@ AnimationParser::mappingForChannel(const ChannelInfo &channelInfo, const QString
         break;
     }
 
-    const PathInfo info = AnimatablePropertiesCache::registeredAnimatables().value(target.path);
+    const PathInfo info = pathInfoFromPath(target.path);
     mapping.name = channelName;
     mapping.generator = info.mappingGenerator;
     mapping.property = info.propertyName;
@@ -732,7 +779,6 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
 
         QVector<ChannelInfo> channelsInfo;
 
-
         // Parse EXT_property_animation channels
         const QJsonObject extensionsObj = animationObject.value(KEY_EXTENSIONS).toObject();
         const QJsonObject extPropertyAnimationObj = extensionsObj.value(KEY_EXT_PROPERTY_ANIMATION_EXTENSION).toObject();
@@ -750,7 +796,7 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
             const ChannelInfo channelInfo = channelInfoFromJson(channelValue.toObject());
             // If the regular channel uses the same sampler as one of the extension channels,
             // we will ignore it
-            const auto it = std::find_if(channelsInfo.cbegin(), channelsInfo.cend(), [&channelInfo] (const ChannelInfo &a) {
+            const auto it = std::find_if(channelsInfo.cbegin(), channelsInfo.cend(), [&channelInfo](const ChannelInfo &a) {
                 return a.sampler == channelInfo.sampler;
             });
             if (it == channelsInfo.cend())

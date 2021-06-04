@@ -42,6 +42,7 @@ HEADERS += \
     orbitcameracontroller.h \
     sceneconfiguration.h \
     view3dscene.h \
+    viewconfiguration.h \
     window.h
 
 SOURCES += \
@@ -49,6 +50,7 @@ SOURCES += \
     orbitcameracontroller.cpp \
     sceneconfiguration.cpp \
     view3dscene.cpp \
+    viewconfiguration.cpp \
     window.cpp
 
 RESOURCES += \

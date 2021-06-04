@@ -1,8 +1,46 @@
+/*
+    stencileffect.cpp
+
+    This file is part of Kuesa.
+
+    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+    Author: Juan Casafranca <juan.casafranca@kdab.com>
+
+    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+    LICENSE.KUESA.ENTERPRISE file.
+
+    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "stencileffect.h"
 
-#include <Qt3DRender>
 #include <Kuesa/FullScreenQuad>
 
+#include <QUrl>
+#include <Qt3DRender/QEffect>
+#include <Qt3DRender/QTechnique>
+#include <Qt3DRender/QLayerFilter>
+#include <Qt3DRender/QRenderPass>
+#include <Qt3DRender/QShaderProgram>
+#include <Qt3DRender/QGraphicsApiFilter>
+#include <Qt3DRender/QRenderStateSet>
+#include <Qt3DRender/QMaterial>
+#include <Qt3DRender/QLayer>
+#include <Qt3DRender/QAbstractTexture>
 #include <Qt3DRender/QStencilTest>
 #include <Qt3DRender/QStencilTestArguments>
 #include <Qt3DRender/QStencilOperation>
@@ -16,8 +54,8 @@ StencilEffect::StencilEffect()
 {
     QObject::connect(m_color, &Qt3DRender::QParameter::valueChanged,
                      [this]() {
-        emit colorChanged(color());
-    });
+                         emit colorChanged(color());
+                     });
 
     m_rootFramegraphNode.reset(new Qt3DRender::QFrameGraphNode());
     m_rootFramegraphNode->setObjectName(QStringLiteral("Opacity Mask Effect"));

@@ -41,7 +41,6 @@
 #include <Qt3DRender/qgraphicsapifilter.h>
 #include <fullscreenquad.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
@@ -66,7 +65,7 @@ FBOResolver::FBOResolver(Qt3DCore::QNode *parent)
     Qt3DRender::QRenderPass *pass = new Qt3DRender::QRenderPass();
 
     m_shader->setShaderCode(Qt3DRender::QShaderProgram::Vertex,
-                          Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"))));
+                            Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl45/fullscreen.vert"))));
 
     updateFragmentShader();
 
@@ -119,7 +118,7 @@ Qt3DRender::QAbstractTexture *FBOResolver::source() const
 
 Qt3DRender::QRenderTarget *FBOResolver::destination() const
 {
-    return Qt3DRender::QRenderTargetSelector:: target();
+    return Qt3DRender::QRenderTargetSelector::target();
 }
 
 bool FBOResolver::targetHasSamples() const

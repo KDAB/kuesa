@@ -50,7 +50,7 @@ namespace Iro2Materials {
 
 void registerIro2Materials();
 
-} // namespace IroMaterials
+} // namespace Iro2Materials
 
 } // namespace Kuesa
 

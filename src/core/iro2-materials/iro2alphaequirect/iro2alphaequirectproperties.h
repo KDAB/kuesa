@@ -1,11 +1,10 @@
-
 /*
     iro2alphaequirectproperties.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Nicolas Guichard <nicolas.guichard@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -36,18 +35,16 @@
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-
 class Iro2AlphaEquiRectShaderData;
 
 class KUESASHARED_EXPORT Iro2AlphaEquiRectProperties : public GLTF2MaterialProperties
 {
     Q_OBJECT
     Q_PROPERTY(bool usesReflectionMap READ usesReflectionMap WRITE setUsesReflectionMap NOTIFY usesReflectionMapChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
     Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
@@ -55,7 +52,7 @@ class KUESASHARED_EXPORT Iro2AlphaEquiRectProperties : public GLTF2MaterialPrope
     Q_PROPERTY(float outerAlpha READ outerAlpha WRITE setOuterAlpha NOTIFY outerAlphaChanged)
     Q_PROPERTY(float alphaGain READ alphaGain WRITE setAlphaGain NOTIFY alphaGainChanged)
     Q_PROPERTY(bool usesNormalMap READ usesNormalMap WRITE setUsesNormalMap NOTIFY usesNormalMapChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *normalMap READ normalMap WRITE setNormalMap NOTIFY normalMapChanged)
     Q_PROPERTY(float normalMapGain READ normalMapGain WRITE setNormalMapGain NOTIFY normalMapGainChanged)
     Q_PROPERTY(QVector3D normalScaling READ normalScaling WRITE setNormalScaling NOTIFY normalScalingChanged)
     Q_PROPERTY(QVector2D normalDisturb READ normalDisturb WRITE setNormalDisturb NOTIFY normalDisturbChanged)
@@ -70,7 +67,7 @@ public:
 
     Qt3DRender::QShaderData *shaderData() const override;
     bool usesReflectionMap() const;
-    Qt3DRender::QAbstractTexture * reflectionMap() const;
+    Qt3DRender::QAbstractTexture *reflectionMap() const;
     float reflectionGain() const;
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
@@ -78,7 +75,7 @@ public:
     float outerAlpha() const;
     float alphaGain() const;
     bool usesNormalMap() const;
-    Qt3DRender::QAbstractTexture * normalMap() const;
+    Qt3DRender::QAbstractTexture *normalMap() const;
     float normalMapGain() const;
     QVector3D normalScaling() const;
     QVector2D normalDisturb() const;
@@ -89,7 +86,7 @@ public:
 
 public Q_SLOTS:
     void setUsesReflectionMap(bool usesReflectionMap);
-    void setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap);
+    void setReflectionMap(Qt3DRender::QAbstractTexture *reflectionMap);
     void setReflectionGain(float reflectionGain);
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
@@ -97,7 +94,7 @@ public Q_SLOTS:
     void setOuterAlpha(float outerAlpha);
     void setAlphaGain(float alphaGain);
     void setUsesNormalMap(bool usesNormalMap);
-    void setNormalMap(Qt3DRender::QAbstractTexture * normalMap);
+    void setNormalMap(Qt3DRender::QAbstractTexture *normalMap);
     void setNormalMapGain(float normalMapGain);
     void setNormalScaling(const QVector3D &normalScaling);
     void setNormalDisturb(const QVector2D &normalDisturb);
@@ -127,12 +124,12 @@ Q_SIGNALS:
 
 private:
     Iro2AlphaEquiRectShaderData *m_shaderData;
-    Qt3DRender::QAbstractTexture * m_reflectionMap;
-    Qt3DRender::QAbstractTexture * m_normalMap;
-
+    Qt3DRender::QAbstractTexture *m_reflectionMap;
+    Qt3DRender::QAbstractTexture *m_normalMap;
 };
+
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-Q_DECLARE_METATYPE(Kuesa::Iro2AlphaEquiRectProperties*)
+Q_DECLARE_METATYPE(Kuesa::Iro2AlphaEquiRectProperties *)
 #endif // KUESA_IRO2ALPHAEQUIRECTPROPERTIES_H

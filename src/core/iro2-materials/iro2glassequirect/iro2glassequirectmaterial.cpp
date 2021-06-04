@@ -1,11 +1,10 @@
-
 /*
     iro2glassequirectmaterial.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Nicolas Guichard <nicolas.guichard@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -32,13 +31,11 @@
 #include "iro2glassequirectshaderdata_p.h"
 #include <Qt3DRender/qparameter.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::Iro2GlassEquiRectMaterial
@@ -105,8 +102,8 @@ void Iro2GlassEquiRectMaterial::setMaterialProperties(Kuesa::Iro2GlassEquiRectPr
         emit materialPropertiesChanged(materialProperties);
 
         if (m_materialProperties) {
-            QObject::connect(m_materialProperties, &Iro2GlassEquiRectProperties::reflectionMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
-            QObject::connect(m_materialProperties, &Iro2GlassEquiRectProperties::normalMapChanged, this, [this] (Qt3DRender::QAbstractTexture * t) { m_normalMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &Iro2GlassEquiRectProperties::reflectionMapChanged, this, [this](Qt3DRender::QAbstractTexture *t) { m_reflectionMapParameter->setValue(QVariant::fromValue(t)); });
+            QObject::connect(m_materialProperties, &Iro2GlassEquiRectProperties::normalMapChanged, this, [this](Qt3DRender::QAbstractTexture *t) { m_normalMapParameter->setValue(QVariant::fromValue(t)); });
 
             m_reflectionMapParameter->setValue(QVariant::fromValue(m_materialProperties->reflectionMap()));
             m_normalMapParameter->setValue(QVariant::fromValue(m_materialProperties->normalMap()));

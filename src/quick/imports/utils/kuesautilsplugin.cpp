@@ -28,6 +28,7 @@
 
 #include "kuesautilsplugin.h"
 #include "sceneconfigurationitem.h"
+#include "viewconfigurationitem.h"
 
 #include <KuesaUtils/boundingvolumerenderer.h>
 #include <KuesaUtils/orbitcameracontroller.h>
@@ -57,6 +58,7 @@ void KuesaUtilsPlugin::registerTypes(const char *uri)
     qmlRegisterType<KuesaUtils::OrbitCameraController>(uri, 1, 0, "OrbitCameraController");
     qmlRegisterType<KuesaUtils::View3DScene>(uri, 1, 0, "View3DScene");
     qmlRegisterExtendedType<KuesaUtils::SceneConfiguration, KuesaUtils::SceneConfigurationItem>(uri, 1, 0, "SceneConfiguration");
+    qmlRegisterExtendedType<KuesaUtils::ViewConfiguration, KuesaUtils::ViewConfigurationItem>(uri, 1, 0, "ViewConfiguration");
 }
 
 QT_END_NAMESPACE

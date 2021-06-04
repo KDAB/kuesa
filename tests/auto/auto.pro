@@ -43,7 +43,8 @@ SUBDIRS = \
     kuesanode \
     fullscreenquad \
     reflectionplane \
-    meshinstantiator
+    meshinstantiator \
+    surfaceformat
 
 #qtHaveModule(quick):lessThan(QT_MAJOR_VERSION, 6) {
 #    SUBDIRS += qml
@@ -106,10 +107,32 @@ qtConfig(private_tests) {
         assetkeyparser \
         view3dscene \
         sceneconfiguration \
+        viewconfiguration \
         gaussianblureffect \
         placeholder \
         unliteffect \
-        placeholdertracker
+        placeholdertracker \
+        animationpulse \
+        iro2alphaequirect \
+        iro2alphasem \
+        iro2diffuseequirect \
+        iro2diffusesem \
+        iro2glassequirect \
+        iro2glasssem \
+        iro2mattealpha \
+        iro2planarreflectionequirect \
+        iro2planarreflectionsem \
+        irodiffuse \
+        irodiffusealpha \
+        irodiffusehemi \
+        iroglassadd \
+        iromatteadd \
+        iromattealpha \
+        iromattebackground \
+        iromattemult \
+        iromatteopaque \
+        iromatteskybox \
+        kuesaentity
 
     greaterThan(QT_MAJOR_VERSION, 5):
         SUBDIRS += fboresolver

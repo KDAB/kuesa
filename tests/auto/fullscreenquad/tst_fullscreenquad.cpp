@@ -42,7 +42,7 @@ struct V {
     QVector3D pos;
     QVector2D tCoord;
 };
-}
+} // namespace
 
 class tst_FullScreenQuad : public QObject
 {
@@ -73,7 +73,7 @@ private Q_SLOTS:
 
             QCOMPARE(data.size(), int(sizeof(V) * 6));
 
-            const V* vertices = reinterpret_cast<const V *>(data.data());
+            const V *vertices = reinterpret_cast<const V *>(data.data());
 
             const V v0 = vertices[0];
             const V v1 = vertices[1];
@@ -106,7 +106,7 @@ private Q_SLOTS:
 
             QCOMPARE(data.size(), int(sizeof(V) * 6));
 
-            const V* vertices = reinterpret_cast<const V *>(data.data());
+            const V *vertices = reinterpret_cast<const V *>(data.data());
 
             const V v0 = vertices[0];
             const V v1 = vertices[1];
@@ -139,7 +139,7 @@ private Q_SLOTS:
 
             QCOMPARE(data.size(), int(sizeof(V) * 6));
 
-            const V* vertices = reinterpret_cast<const V *>(data.data());
+            const V *vertices = reinterpret_cast<const V *>(data.data());
 
             const V v0 = vertices[0];
             const V v1 = vertices[1];

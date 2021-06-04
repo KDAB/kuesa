@@ -1,0 +1,91 @@
+class %sTechnique : public Qt3DRender::QTechnique
+{
+public:
+    enum Version {
+        GL3 = 0,
+        ES3,
+        ES2,
+        RHI
+    };
+
+    explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
+        : QTechnique(parent)
+        , m_backFaceCulling(new Qt3DRender::QCullFace(this))
+        , m_techniqueAllowFrustumCullingFilterKey(new Qt3DRender::QFilterKey(this))
+    {
+        struct ApiFilterInfo {
+            int major;
+            int minor;
+            Qt3DRender::QGraphicsApiFilter::Api api;
+            Qt3DRender::QGraphicsApiFilter::OpenGLProfile profile;
+        };
+
+        const ApiFilterInfo apiFilterInfos[] = {
+            { 3, 1, Qt3DRender::QGraphicsApiFilter::OpenGL, Qt3DRender::QGraphicsApiFilter::CoreProfile },
+            { 3, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
+            { 2, 0, Qt3DRender::QGraphicsApiFilter::OpenGLES, Qt3DRender::QGraphicsApiFilter::NoProfile },
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            { 1, 0, Qt3DRender::QGraphicsApiFilter::RHI, Qt3DRender::QGraphicsApiFilter::NoProfile },
+#endif
+        };
+
+        graphicsApiFilter()->setApi(apiFilterInfos[version].api);
+        graphicsApiFilter()->setProfile(apiFilterInfos[version].profile);
+        graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
+        graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
+
+        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
+        m_techniqueAllowFrustumCullingFilterKey->setValue(true);
+        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
+
+        auto filterKey = new Qt3DRender::QFilterKey(this);
+        filterKey->setName(QStringLiteral("renderingStyle"));
+        filterKey->setValue(QStringLiteral("forward"));
+        addFilterKey(filterKey);%s
+    }
+
+    QStringList enabledLayers() const
+    {
+        const auto shaderBuilder = findChild<Qt3DRender::QShaderProgramBuilder *>();
+        if (shaderBuilder != nullptr)
+            return shaderBuilder->enabledLayers();
+        return {};
+    }
+
+    void setEnabledLayers(const QStringList &layers)
+    {
+        const auto shaderBuilders = findChildren<Qt3DRender::QShaderProgramBuilder *>();
+        for (auto shaderBuilder : shaderBuilders) {
+            if (shaderBuilder != nullptr)
+                shaderBuilder->setEnabledLayers(layers);
+        }
+    }
+
+    void setOpaque(bool)
+    {
+    }
+
+    void setCullingMode(Qt3DRender::QCullFace::CullingMode mode)
+    {
+        m_backFaceCulling->setMode(mode);
+    }
+
+    Qt3DRender::QCullFace::CullingMode cullingMode() const
+    {
+        return m_backFaceCulling->mode();
+    }
+
+    void setAllowCulling(bool allowCulling)
+    {
+        m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
+    }
+
+    QList<Qt3DRender::QShaderProgramBuilder*> shaderBuilders()
+    {
+        return findChildren<Qt3DRender::QShaderProgramBuilder *>();
+    }
+
+private:
+    Qt3DRender::QCullFace *m_backFaceCulling;
+    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
+};

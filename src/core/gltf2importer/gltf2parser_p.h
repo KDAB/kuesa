@@ -105,12 +105,11 @@ private:
     QVector<Qt3DCore::QEntity *> m_rootNodes;
 };
 
-
 class KUESA_PRIVATE_EXPORT ParseWorker : public QObject
 {
     Q_OBJECT
 public:
-    explicit ParseWorker(GLTF2Parser *parser, const std::function<bool (GLTF2Parser*)> &parseFunc);
+    explicit ParseWorker(GLTF2Parser *parser, const std::function<bool(GLTF2Parser *)> &parseFunc);
     ~ParseWorker();
 
 public Q_SLOTS:
@@ -121,7 +120,7 @@ Q_SIGNALS:
 
 private:
     QPointer<GLTF2Parser> m_parser;
-    std::function<bool (GLTF2Parser*)> m_func;
+    std::function<bool(GLTF2Parser *)> m_func;
 };
 
 using KeyParserFuncPair = QPair<QLatin1String, std::function<bool(const QJsonValue &)>>;
@@ -134,8 +133,8 @@ public:
     virtual ~GLTF2Parser();
 
     virtual QVector<KeyParserFuncPair> prepareParsers();
-    bool parse(const QString &filePath, bool async=false);
-    bool parse(const QByteArray &data, const QString &basePath, const QString &filename = {}, bool async=false);
+    bool parse(const QString &filePath, bool async = false);
+    bool parse(const QByteArray &data, const QString &basePath, const QString &filename = {}, bool async = false);
 
     void generateContent();
 
@@ -151,7 +150,7 @@ signals:
 private:
     QThread m_workerThread;
 
-    bool performParsing(const std::function<bool(GLTF2Parser*)> &parsingFunc, bool async);
+    bool performParsing(const std::function<bool(GLTF2Parser *)> &parsingFunc, bool async);
     bool doParse(const QString &filePath);
     bool doParse(const QByteArray &data, const QString &basePath, const QString &filename = {});
     bool isBinaryGLTF(const QByteArray &data, bool &isValid);

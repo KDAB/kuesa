@@ -1,10 +1,9 @@
-
 # iromattebackground.pri
 #
 # This file is part of Kuesa.
 #
 # Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
+# This file was auto-generated
 #
 # Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
 # accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -39,4 +38,5 @@ HEADERS += \
     $$PWD/iromattebackgroundmaterial.h \
     $$PWD/iromattebackgroundeffect.h \
     $$PWD/iromattebackgroundproperties.h \
-    $$PWD/iromattebackgroundshaderdata_p.h
+    $$PWD/iromattebackgroundshaderdata_p.h \
+    $$PWD/iromattebackgroundtechnique_p.h

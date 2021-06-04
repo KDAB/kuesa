@@ -1,11 +1,10 @@
-
 /*
     iro2diffusesemproperties.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Nicolas Guichard <nicolas.guichard@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -32,13 +31,11 @@
 #include <Qt3DCore/private/qnode_p.h>
 #include <Kuesa/private/empty2dtexture_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 
 /*!
     \class Kuesa::Iro2DiffuseSemProperties
@@ -176,7 +173,7 @@ void Iro2DiffuseSemProperties::setGltfYUp(bool gltfYUp)
     m_shaderData->setGltfYUp(gltfYUp);
 }
 
-void Iro2DiffuseSemProperties::setDiffuseMap(Qt3DRender::QAbstractTexture * diffuseMap)
+void Iro2DiffuseSemProperties::setDiffuseMap(Qt3DRender::QAbstractTexture *diffuseMap)
 {
     if (m_diffuseMap == diffuseMap)
         return;
@@ -193,7 +190,7 @@ void Iro2DiffuseSemProperties::setDiffuseMap(Qt3DRender::QAbstractTexture * diff
     emit diffuseMapChanged(m_diffuseMap);
 }
 
-void Iro2DiffuseSemProperties::setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap)
+void Iro2DiffuseSemProperties::setReflectionMap(Qt3DRender::QAbstractTexture *reflectionMap)
 {
     if (m_reflectionMap == reflectionMap)
         return;
@@ -210,7 +207,7 @@ void Iro2DiffuseSemProperties::setReflectionMap(Qt3DRender::QAbstractTexture * r
     emit reflectionMapChanged(m_reflectionMap);
 }
 
-void Iro2DiffuseSemProperties::setNormalMap(Qt3DRender::QAbstractTexture * normalMap)
+void Iro2DiffuseSemProperties::setNormalMap(Qt3DRender::QAbstractTexture *normalMap)
 {
     if (m_normalMap == normalMap)
         return;
@@ -226,7 +223,6 @@ void Iro2DiffuseSemProperties::setNormalMap(Qt3DRender::QAbstractTexture * norma
     }
     emit normalMapChanged(m_normalMap);
 }
-
 
 /*!
     \qmlproperty bool Iro2DiffuseSemProperties::usesDiffuseMap
@@ -436,21 +432,20 @@ bool Iro2DiffuseSemProperties::gltfYUp() const
     return m_shaderData->gltfYUp();
 }
 
-Qt3DRender::QAbstractTexture * Iro2DiffuseSemProperties::diffuseMap() const
+Qt3DRender::QAbstractTexture *Iro2DiffuseSemProperties::diffuseMap() const
 {
     return m_diffuseMap;
 }
 
-Qt3DRender::QAbstractTexture * Iro2DiffuseSemProperties::reflectionMap() const
+Qt3DRender::QAbstractTexture *Iro2DiffuseSemProperties::reflectionMap() const
 {
     return m_reflectionMap;
 }
 
-Qt3DRender::QAbstractTexture * Iro2DiffuseSemProperties::normalMap() const
+Qt3DRender::QAbstractTexture *Iro2DiffuseSemProperties::normalMap() const
 {
     return m_normalMap;
 }
-
 
 } // namespace Kuesa
 

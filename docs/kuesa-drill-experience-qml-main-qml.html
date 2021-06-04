@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- drill-experience.qdoc -->
+  <title>Kuesa Drill-Experience QML Example | Kuesa Runtime 1.4</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.4</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>Kuesa Drill-Experience QML Example</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.4 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><h1 class="title">Kuesa Drill-Experience QML Example</h1>
+<span class="subtitle"></span>
+<pre class="qml">
+ <span class="comment">/*
+     main.qml
+
+     This file is part of Kuesa.
+
+     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
+
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
+
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
+
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
+
+ import QtQuick 2.15
+ import QtQuick.Controls 2.15
+ import QtQuick.Controls.Material 2.15
+ import Drill 1.0
+
+ <span class="type">ApplicationWindow</span> {
+     <span class="name">id</span>: <span class="name">mainRoot</span>
+     <span class="name">title</span>: <span class="string">&quot;Drill-Experience&quot;</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+     <span class="name">visibility</span>: <span class="name">ApplicationWindow</span>.<span class="name">Maximized</span>
+
+     <span class="name">Material</span>.theme: <span class="name">Material</span>.<span class="name">Dark</span>
+     <span class="name">Material</span>.accent: <span class="name">Material</span>.<span class="name">Blue</span>
+
+     <span class="name">menuBar</span>: <span class="name">ToolBar</span> {
+         <span class="type">Label</span> {
+             <span class="name">text</span>: <span class="name">mainRoot</span>.<span class="name">title</span>
+             <span class="name">font</span>.pixelSize: <span class="number">20</span>
+             <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+         }
+     }
+
+     <span class="type">Item</span> {
+         <span class="name">id</span>: <span class="name">contentItem</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="type">DrillScene</span> {
+             <span class="name">id</span>: <span class="name">view3D</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         }
+
+         <span class="type">UserManualUI</span> {
+             <span class="name">controller</span>: <span class="name">view3D</span>.<span class="name">controller</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         }
+     }
+ }
+</pre>

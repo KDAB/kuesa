@@ -76,6 +76,15 @@ import Kuesa.Utils 1.3 as KuesaUtils
     }
 
     \endqml
+
+    By default it will draw to a single View if no SceneConfiguration
+    referencing one or more ViewConfiguration instances is set on the
+    activeScene.
+
+    Therefore, keep in mind that resources that are camera / view dependent
+    such as those set onto the transformTrackers, placeholderTrackers or
+    layerNames properties of the View3D only work for that default single
+    View.
  */
 
 Scene3D {
@@ -86,6 +95,7 @@ Scene3D {
     readonly property real aspectRatio: width / Math.max(1, height)
     readonly property KuesaUtils.View3DScene scene: scene
     property alias frameGraph: scene.frameGraph
+    property alias renderSettings: scene.renderSettings
     readonly property Entity activeCamera: scene.frameGraph.camera
     readonly property bool loaded: scene.importer.status === Kuesa.GLTF2Importer.Ready
     readonly property bool ready: scene.ready
@@ -93,7 +103,7 @@ Scene3D {
     property alias components: scene.components
     property alias showDebugOverlay: scene.showDebugOverlay
     property alias animations: sceneConfiguration.animations
-    property alias transformTrackers: sceneConfiguration.transformTrackers
+    property alias transformTrackers: defaultViewConfiguration.transformTrackers
     property alias animationClips: scene.animationClips
     property alias armatures: scene.armatures
     property alias layers: scene.layers
@@ -110,9 +120,10 @@ Scene3D {
     property alias asynchronous: scene.asynchronous
     property alias reflectionPlanes: scene.reflectionPlanes
     property alias placeholders: scene.placeholders
-    property alias placeholderTrackers: sceneConfiguration.placeholderTrackers
-    property list<Kuesa.View> views
+    property alias placeholderTrackers: defaultViewConfiguration.placeholderTrackers
+    property alias views: sceneConfiguration.views
     property alias reflectionPlaneName: scene.reflectionPlaneName
+    property alias layerNames: defaultViewConfiguration.layerNames
     default property alias children: scene.data
 
     signal loadingDone()
@@ -121,7 +132,7 @@ Scene3D {
 
     onCameraChanged: {
         if (typeof(camera) === 'string') {
-            sceneConfiguration.cameraName = camera
+            defaultViewConfiguration.cameraName = camera
         } else {
             scene.frameGraph.camera = camera
         }
@@ -142,11 +153,11 @@ Scene3D {
         id: scene
 
         screenSize: Qt.size(root.width, root.height)
-        frameGraph {
-            views: root.views
-        }
         activeScene: KuesaUtils.SceneConfiguration {
             id: sceneConfiguration
+            views: KuesaUtils.ViewConfiguration {
+                id: defaultViewConfiguration
+            }
         }
 
         Binding {
@@ -158,7 +169,7 @@ Scene3D {
         }
 
         Binding {
-            target: scene.frameGraph
+            target: defaultViewConfiguration
             property: "clearColor"
             value: root.backgroundColor
             restoreMode: Binding.RestoreBindingOrValue
@@ -175,5 +186,14 @@ Scene3D {
 
             root.loadingDone()
         }
+
+        // Force firing of signals attached to properties on the root element
+        // when they are fired from View3DScene even if the property value
+        // hasn't changed.
+        // This can happen when switching activeScene using the same source
+        // where ready remains true but it's still useful to be notified about
+        // the fact that the loading is completed
+        onLoadedChanged: root.loadedChanged()
+        onReadyChanged: root.readyChanged()
     }
 }

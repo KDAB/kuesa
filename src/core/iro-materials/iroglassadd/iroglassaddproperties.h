@@ -1,11 +1,10 @@
-
 /*
     iroglassaddproperties.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -36,11 +35,9 @@
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-
 class IroGlassAddShaderData;
 
 class KUESASHARED_EXPORT IroGlassAddProperties : public GLTF2MaterialProperties
@@ -51,7 +48,7 @@ class KUESASHARED_EXPORT IroGlassAddProperties : public GLTF2MaterialProperties
     Q_PROPERTY(float postVertexColor READ postVertexColor WRITE setPostVertexColor NOTIFY postVertexColorChanged)
     Q_PROPERTY(float postGain READ postGain WRITE setPostGain NOTIFY postGainChanged)
     Q_PROPERTY(float reflectionGain READ reflectionGain WRITE setReflectionGain NOTIFY reflectionGainChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *reflectionMap READ reflectionMap WRITE setReflectionMap NOTIFY reflectionMapChanged)
     Q_PROPERTY(QVector3D reflectionInnerFilter READ reflectionInnerFilter WRITE setReflectionInnerFilter NOTIFY reflectionInnerFilterChanged)
     Q_PROPERTY(QVector3D reflectionOuterFilter READ reflectionOuterFilter WRITE setReflectionOuterFilter NOTIFY reflectionOuterFilterChanged)
     Q_PROPERTY(bool usesReflectionMap READ usesReflectionMap WRITE setUsesReflectionMap NOTIFY usesReflectionMapChanged)
@@ -71,7 +68,7 @@ public:
     float postVertexColor() const;
     float postGain() const;
     float reflectionGain() const;
-    Qt3DRender::QAbstractTexture * reflectionMap() const;
+    Qt3DRender::QAbstractTexture *reflectionMap() const;
     QVector3D reflectionInnerFilter() const;
     QVector3D reflectionOuterFilter() const;
     bool usesReflectionMap() const;
@@ -87,7 +84,7 @@ public Q_SLOTS:
     void setPostVertexColor(float postVertexColor);
     void setPostGain(float postGain);
     void setReflectionGain(float reflectionGain);
-    void setReflectionMap(Qt3DRender::QAbstractTexture * reflectionMap);
+    void setReflectionMap(Qt3DRender::QAbstractTexture *reflectionMap);
     void setReflectionInnerFilter(const QVector3D &reflectionInnerFilter);
     void setReflectionOuterFilter(const QVector3D &reflectionOuterFilter);
     void setUsesReflectionMap(bool usesReflectionMap);
@@ -115,11 +112,11 @@ Q_SIGNALS:
 
 private:
     IroGlassAddShaderData *m_shaderData;
-    Qt3DRender::QAbstractTexture * m_reflectionMap;
-
+    Qt3DRender::QAbstractTexture *m_reflectionMap;
 };
+
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-Q_DECLARE_METATYPE(Kuesa::IroGlassAddProperties*)
+Q_DECLARE_METATYPE(Kuesa::IroGlassAddProperties *)
 #endif // KUESA_IROGLASSADDPROPERTIES_H

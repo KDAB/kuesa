@@ -50,7 +50,6 @@
 #include <Qt3DRender/QAttribute>
 #endif
 
-
 #include <QUrl>
 
 using namespace KuesaUtils;

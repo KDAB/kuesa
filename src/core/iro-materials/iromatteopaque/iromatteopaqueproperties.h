@@ -1,11 +1,10 @@
-
 /*
     iromatteopaqueproperties.h
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -36,11 +35,9 @@
 #include <Kuesa/GLTF2MaterialProperties>
 #include <Kuesa/kuesa_global.h>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {
-
 class IroMatteOpaqueShaderData;
 
 class KUESASHARED_EXPORT IroMatteOpaqueProperties : public GLTF2MaterialProperties
@@ -48,7 +45,7 @@ class KUESASHARED_EXPORT IroMatteOpaqueProperties : public GLTF2MaterialProperti
     Q_OBJECT
     Q_PROPERTY(float postVertexColor READ postVertexColor WRITE setPostVertexColor NOTIFY postVertexColorChanged)
     Q_PROPERTY(float postGain READ postGain WRITE setPostGain NOTIFY postGainChanged)
-    Q_PROPERTY(Qt3DRender::QAbstractTexture * matteMap READ matteMap WRITE setMatteMap NOTIFY matteMapChanged)
+    Q_PROPERTY(Qt3DRender::QAbstractTexture *matteMap READ matteMap WRITE setMatteMap NOTIFY matteMapChanged)
     Q_PROPERTY(bool usesMatteMap READ usesMatteMap WRITE setUsesMatteMap NOTIFY usesMatteMapChanged)
     Q_PROPERTY(QVector3D matteFilter READ matteFilter WRITE setMatteFilter NOTIFY matteFilterChanged)
     Q_PROPERTY(float matteGain READ matteGain WRITE setMatteGain NOTIFY matteGainChanged)
@@ -61,7 +58,7 @@ public:
     Qt3DRender::QShaderData *shaderData() const override;
     float postVertexColor() const;
     float postGain() const;
-    Qt3DRender::QAbstractTexture * matteMap() const;
+    Qt3DRender::QAbstractTexture *matteMap() const;
     bool usesMatteMap() const;
     QVector3D matteFilter() const;
     float matteGain() const;
@@ -70,7 +67,7 @@ public:
 public Q_SLOTS:
     void setPostVertexColor(float postVertexColor);
     void setPostGain(float postGain);
-    void setMatteMap(Qt3DRender::QAbstractTexture * matteMap);
+    void setMatteMap(Qt3DRender::QAbstractTexture *matteMap);
     void setUsesMatteMap(bool usesMatteMap);
     void setMatteFilter(const QVector3D &matteFilter);
     void setMatteGain(float matteGain);
@@ -87,11 +84,11 @@ Q_SIGNALS:
 
 private:
     IroMatteOpaqueShaderData *m_shaderData;
-    Qt3DRender::QAbstractTexture * m_matteMap;
-
+    Qt3DRender::QAbstractTexture *m_matteMap;
 };
+
 } // namespace Kuesa
 
 QT_END_NAMESPACE
-Q_DECLARE_METATYPE(Kuesa::IroMatteOpaqueProperties*)
+Q_DECLARE_METATYPE(Kuesa::IroMatteOpaqueProperties *)
 #endif // KUESA_IROMATTEOPAQUEPROPERTIES_H

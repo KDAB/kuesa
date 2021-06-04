@@ -29,10 +29,8 @@
 #include "forwardrenderer.h"
 #include <Qt3DCore/qentity.h>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 #include <Qt3DRender/qdebugoverlay.h>
 #include <private/qrhi_p.h>
-#endif
 #include <QWindow>
 #include <QScreen>
 #include <Qt3DRender/qnodraw.h>
@@ -257,10 +255,10 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     : View(parent)
     , m_surfaceSelector(new Qt3DRender::QRenderSurfaceSelector(this))
     , m_clearBuffers(new Qt3DRender::QClearBuffers())
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    , m_defaultViewHolder(new Qt3DRender::QFrameGraphNode())
+    , m_viewsHolder(new Qt3DRender::QFrameGraphNode())
+    , m_rhiViewResolver(new Qt3DRender::QFrameGraphNode())
     , m_debugOverlay(new Qt3DRender::QDebugOverlay)
-#endif
 {
     m_surfaceSelector->setObjectName(QStringLiteral("ForwardRenderer RenderSurfaceSelector"));
 
@@ -279,19 +277,23 @@ ForwardRenderer::ForwardRenderer(Qt3DCore::QNode *parent)
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::surfaceChanged, this, &ForwardRenderer::handleSurfaceChange);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::externalRenderTargetSizeChanged);
     connect(m_surfaceSelector, &Qt3DRender::QRenderSurfaceSelector::externalRenderTargetSizeChanged, this, &ForwardRenderer::updateTextureSizes);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     m_debugOverlay->setEnabled(false);
     // Add a NoDraw to the debug overlay FG branch to ensure nothing but the
     // overlay will be drawn
     new Qt3DRender::QNoDraw(m_debugOverlay);
     connect(m_debugOverlay, &Qt3DRender::QDebugOverlay::enabledChanged, this, &ForwardRenderer::showDebugOverlayChanged);
-#endif
 
     rebuildFGTree();
 }
 
 ForwardRenderer::~ForwardRenderer()
 {
+    if (!m_viewsHolder->parent())
+        delete m_viewsHolder;
+    if (!m_defaultViewHolder->parent())
+        delete m_defaultViewHolder;
+    if (!m_rhiViewResolver->parent())
+        delete m_rhiViewResolver;
 }
 
 /*!
@@ -302,14 +304,9 @@ Qt3DRender::QClearBuffers::BufferType ForwardRenderer::clearBuffers() const
     return m_clearBuffers->buffers();
 }
 
-
 bool ForwardRenderer::showDebugOverlay() const
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     return m_debugOverlay->isEnabled();
-#else
-    return false;
-#endif
 }
 
 /*!
@@ -328,14 +325,9 @@ void ForwardRenderer::setClearBuffers(Qt3DRender::QClearBuffers::BufferType clea
     m_clearBuffers->setBuffers(clearBuffers);
 }
 
-
 void ForwardRenderer::setShowDebugOverlay(bool showDebugOverlay)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     m_debugOverlay->setEnabled(showDebugOverlay);
-#else
-    Q_UNUSED(showDebugOverlay)
-#endif
 }
 
 void ForwardRenderer::addView(View *view)
@@ -347,6 +339,7 @@ void ForwardRenderer::addView(View *view)
     d->registerDestructionHelper(view, &ForwardRenderer::removeView, m_views);
 
     view->setShadowMaps(shadowMaps());
+    view->setSurfaceSize(m_surfaceSize);
 
     m_views.push_back(view);
     reconfigureFrameGraph();
@@ -415,29 +408,34 @@ void ForwardRenderer::updateTextureSizes()
 void ForwardRenderer::reconfigureFrameGraph()
 {
     m_clearBuffers->setParent(Q_NODE_NULLPTR);
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    m_defaultViewHolder->setParent(Q_NODE_NULLPTR);
+    m_viewsHolder->setParent(Q_NODE_NULLPTR);
     m_debugOverlay->setParent(Q_NODE_NULLPTR);
-#endif
+    m_rhiViewResolver->setParent(Q_NODE_NULLPTR);
 
     // Unparent previous View Stages
-    for (Qt3DCore::QNode *c : m_surfaceSelector->childNodes())
+    for (Qt3DCore::QNode *c : m_viewsHolder->childNodes())
         c->setParent(Q_NODE_NULLPTR);
 
     // Rebuild FG Tree
     m_clearBuffers->setParent(m_surfaceSelector);
 
     if (m_views.empty()) {
-        View::reconfigureFrameGraphHelper(m_surfaceSelector);
+        View::reconfigureFrameGraphHelper(m_defaultViewHolder);
+        m_defaultViewHolder->setParent(m_surfaceSelector);
     } else {
         for (View *v : m_views)
-            v->setParent(m_surfaceSelector);
+            v->setParent(m_viewsHolder);
+        m_viewsHolder->setParent(m_surfaceSelector);
     }
 
     // When using RHI, we need a dedicated pass to render
     // FBO associated with each view back to the main surface
     if (m_fg->m_usesRHI) {
-        const std::vector<View *> &views = (m_views.empty()) ? std::vector<View  *>({this}) : m_views;
+        for (Qt3DCore::QNode *c : m_rhiViewResolver->childNodes())
+            c->setParent(Q_NODE_NULLPTR);
+
+        const std::vector<View *> &views = (m_views.empty()) ? std::vector<View *>({ this }) : m_views;
         const size_t viewCount = views.size();
 
         while (m_viewRenderers.size() > viewCount) {
@@ -451,13 +449,12 @@ void ForwardRenderer::reconfigureFrameGraph()
             View *v = views[i];
             ViewResolver *resolver = m_viewRenderers[i];
             resolver->setView(v);
-            resolver->setParent(m_surfaceSelector);
+            resolver->setParent(m_rhiViewResolver);
         }
+        m_rhiViewResolver->setParent(m_surfaceSelector);
     }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     m_debugOverlay->setParent(m_surfaceSelector);
-#endif
 
     const bool blocked = blockNotifications(true);
     emit frameGraphTreeReconfigured();
@@ -478,7 +475,7 @@ const std::vector<View *> &ForwardRenderer::views() const
  */
 QSize ForwardRenderer::currentSurfaceSize() const
 {
-    QSize size = m_surfaceSelector->externalRenderTargetSize();
+    QSize size = m_surfaceSelector->externalRenderTargetSize() * m_surfaceSelector->surfacePixelRatio();
 
     if (!size.isValid()) {
         auto currentSurface = m_surfaceSelector->surface();

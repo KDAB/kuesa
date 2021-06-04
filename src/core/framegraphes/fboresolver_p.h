@@ -50,7 +50,7 @@ class QMaterial;
 class QParameter;
 class QAbstractTexture;
 class QShaderProgram;
-}
+} // namespace Qt3DRender
 
 namespace Kuesa {
 

@@ -215,8 +215,6 @@ void ViewExtension::clearReflectionPlanes(QQmlListProperty<ReflectionPlane> *lis
         kuesaFG->removeReflectionPlane(plane);
 }
 
-
-
 } // namespace Kuesa
 
 QT_END_NAMESPACE

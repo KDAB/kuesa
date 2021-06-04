@@ -121,11 +121,11 @@ PlaceholderTracker::PlaceholderTracker(Qt3DCore::QNode *parent)
 {
     connect(this, &KuesaNode::sceneEntityChanged,
             this, [this] {
-        disconnect(m_loadingDoneConnection);
-        if (m_sceneEntity)
-            m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone, this, &PlaceholderTracker::matchNode);
-        matchNode();
-    });
+                disconnect(m_loadingDoneConnection);
+                if (m_sceneEntity)
+                    m_loadingDoneConnection = connect(m_sceneEntity, &SceneEntity::loadingDone, this, &PlaceholderTracker::matchNode);
+                matchNode();
+            });
 }
 
 PlaceholderTracker::~PlaceholderTracker()
@@ -307,7 +307,6 @@ QRectF PlaceholderTracker::viewportRect() const
     return m_viewportRect;
 }
 
-
 void PlaceholderTracker::setViewportRect(const QRectF &viewportRect)
 {
     if (viewportRect == m_viewportRect)
@@ -376,11 +375,10 @@ void PlaceholderTracker::setTarget(QObject *target)
 
         if (m_target) {
             updatePlaceholderProjection();
-            m_targetDestroyedConnection = QObject::connect(m_target, &QObject::destroyed, [this]() {setTarget(nullptr);});
+            m_targetDestroyedConnection = QObject::connect(m_target, &QObject::destroyed, [this]() { setTarget(nullptr); });
         }
     }
 }
-
 
 /*!
     \property Kuesa::PlaceholderTracker::x
@@ -459,7 +457,7 @@ int PlaceholderTracker::height() const
 */
 QPointF PlaceholderTracker::screenPosition() const
 {
-    return {float(m_x), float(m_y)};
+    return { float(m_x), float(m_y) };
 }
 
 /*!
@@ -507,13 +505,13 @@ void PlaceholderTracker::updatePlaceholderProjection()
         QQuaternion orientation;
         QVector3D scale;
         decomposeQMatrix4x4(m_placeHolderTransform->worldMatrix(), position, orientation, scale);
-        const auto aLocal = QVector3D{-qAbs(scale.x()), -qAbs(scale.z()), 0};
-        const auto bLocal = QVector3D{qAbs(scale.x()), qAbs(scale.z()), 0};
+        const auto aLocal = QVector3D{ -qAbs(scale.x()), -qAbs(scale.z()), 0 };
+        const auto bLocal = QVector3D{ qAbs(scale.x()), qAbs(scale.z()), 0 };
 
-        const auto centerWorldSpace = m_placeHolderTransform->worldMatrix() * QVector3D(0,0,0);
+        const auto centerWorldSpace = m_placeHolderTransform->worldMatrix() * QVector3D(0, 0, 0);
 
-        const auto getWorldSpaceForPoint = [centerWorldSpace, this] (QVector3D p) {
-            return centerWorldSpace + m_cameraTransform->worldMatrix() * p - m_cameraTransform->worldMatrix() * QVector3D(0,0,0);
+        const auto getWorldSpaceForPoint = [centerWorldSpace, this](QVector3D p) {
+            return centerWorldSpace + m_cameraTransform->worldMatrix() * p - m_cameraTransform->worldMatrix() * QVector3D(0, 0, 0);
         };
 
         const auto aWorldSpace = getWorldSpaceForPoint(aLocal);
@@ -577,7 +575,6 @@ void PlaceholderTracker::setY(int y)
     m_y = y;
     emit yChanged(y);
 }
-
 
 /*!
  * \internal

@@ -29,6 +29,13 @@ import re
 import os
 import json
 import shutil
+import pathlib
+
+CURRENT_FILE_DIR = pathlib.Path(__file__).parent.absolute()
+
+def read_template(name):
+    with open(f'{CURRENT_FILE_DIR}/custom_material_templates/{name}.in', 'r') as f:
+        return f.read()
 
 class CustomMaterialGenerator:
 
@@ -48,1418 +55,34 @@ class CustomMaterialGenerator:
                               'color' : '#include <QColor>',
                               'texture2d' : '#include <Qt3DRender/QAbstractTexture>' }
 
-    headerPrivateWarning = """
-//
-//  W A R N I N G
-//  -------------
-//
-// This file is not part of the Kuesa API.  It exists for the convenience
-// of other Kuesa classes.  This header file may change from version to
-// version without notice, or even be removed.
-//
-// We mean it.
-//
+    headerPrivateWarning = read_template("private_header_warning")
 
-"""
+    headerContent = read_template("header")
+    cppContent = read_template("cpp")
 
-    headerContent = """
-/*
-    %s.h
+    propertiesClassHeaderContent = read_template("properties_class_header")
+    propertiesClassCppContent = read_template("properties_class_cpp")
 
-    This file is part of Kuesa.
+    shaderDataClassHeaderContent = read_template("shader_data_class_header")
+    shaderDataClassCppContent = read_template("shader_data_class_cpp")
 
-    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
+    effectClassHeaderContent = read_template("effect_class_header")
+    effectClassCppContent = read_template("effect_class_cpp")
 
-    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-    LICENSE.KUESA.ENTERPRISE file.
+    techniqueOpaqueAndTransparent = read_template("technique_opaque_and_transparent")
+    techniqueOpaqueOnly = read_template("technique_opaque_only")
+    techniqueBackgroundOnly = read_template("technique_background_only")
+    techniqueTransparentOnly = read_template("technique_transparent_only")
+    techniqueMultiTransparent = read_template("technique_multi_transparent")
+    techniqueMultiTransparentInnerPass = read_template("technique_multi_transparent_inner_pass")
 
-    Contact info@kdab.com if any conditions of this licensing are not clear to you.
+    materialClassHeaderContent = read_template("material_class_header")
+    materialClassCppContent = read_template("material_class_cpp")
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+    priContent = read_template("pri")
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
-
-#ifndef KUESA_%s_H
-#define KUESA_%s_H
-
-%s%s
-
-QT_BEGIN_NAMESPACE
-
-namespace Kuesa {
-%s
-} // namespace Kuesa
-
-QT_END_NAMESPACE
-%s
-#endif // KUESA_%s_H
-"""
-
-    cppContent = """
-/*
-    %s.cpp
-
-    This file is part of Kuesa.
-
-    Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Paul Lemire <paul.lemire@kdab.com>
-
-    Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-    accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-    LICENSE.KUESA.ENTERPRISE file.
-
-    Contact info@kdab.com if any conditions of this licensing are not clear to you.
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
-
-%s
-
-QT_BEGIN_NAMESPACE
-
-using namespace Qt3DRender;
-
-namespace Kuesa {
-%s
-} // namespace Kuesa
-
-QT_END_NAMESPACE
-"""
-
-    propertiesClassHeaderContent = """
-class %sShaderData;
-
-class KUESASHARED_EXPORT %sProperties : public GLTF2MaterialProperties
-{
-    Q_OBJECT
-%s
-public:
-    Q_INVOKABLE explicit %sProperties(Qt3DCore::QNode *parent = nullptr);
-    ~%sProperties();
-
-    Qt3DRender::QShaderData *shaderData() const override;
-%s
-public Q_SLOTS:
-%s
-Q_SIGNALS:
-%s
-private:
-    %sShaderData *m_shaderData;
-%s
-};"""
-
-    propertiesClassCppContent = """
-%s
-%sProperties::%sProperties(Qt3DCore::QNode *parent)
-    : GLTF2MaterialProperties(parent)
-    , m_shaderData(new %sShaderData(this))%s
-{
-%s
-}
-
-%sProperties::~%sProperties() = default;
-
-Qt3DRender::QShaderData *%sProperties::shaderData() const
-{
-    return m_shaderData;
-}
-
-%s
-%s"""
-
-
-    shaderDataClassHeaderContent = """
-class %sShaderData : public Qt3DRender::QShaderData
-{
-    Q_OBJECT
-%s
-public:
-    explicit %sShaderData(Qt3DCore::QNode *parent = nullptr);
-    ~%sShaderData();
-%s
-public Q_SLOTS:
-%s
-Q_SIGNALS:
-%s
-private:
-%s
-};
-"""
-
-    shaderDataClassCppContent = """
-%sShaderData::%sShaderData(Qt3DCore::QNode *parent)
-    : Qt3DRender::QShaderData(parent)%s
-{}
-
-%sShaderData::~%sShaderData() = default;
-
-%s
-%s
-"""
-
-    effectClassHeaderContent = """
-class %sTechnique;
-
-class KUESASHARED_EXPORT %sEffect : public GLTF2MaterialEffect
-{
-    Q_OBJECT
-
-public:
-    Q_INVOKABLE explicit %sEffect(Qt3DCore::QNode *parent = nullptr);
-    ~%sEffect();
-
-private:
-    %sTechnique *m_gl3Technique;
-    %sTechnique *m_es3Technique;
-    %sTechnique *m_es2Technique;
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    %sTechnique *m_rhiTechnique;
-#endif
-    void updateLayersOnTechniques(const QStringList &layers);
-
-    void updateDoubleSided(bool doubleSided) override;
-    void updateUsingSkinning(bool useSkinning) override;
-    void updateOpaque(bool opaque) override;
-    void updateAlphaCutoffEnabled(bool enabled) override;
-    void updateUsingColorAttribute(bool enabled) override;
-    void updateUsingNormalAttribute(bool enabled) override;
-    void updateUsingTangentAttribute(bool enabled) override;
-    void updateUsingTexCoordAttribute(bool enabled) override;
-    void updateUsingTexCoord1Attribute(bool enabled) override;
-    void updateUsingMorphTargets(bool enabled) override;
-    void updateInstanced(bool instanced) override;
-};
-"""
-
-    techniqueOpaqueAndTransparent = """class %sTechnique : public Qt3DRender::QTechnique
-{
-public:
-    enum Version {
-        GL3 = 0,
-        ES3,
-        ES2,
-        RHI
-    };
-
-    explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
-        : QTechnique(parent)
-        , m_backFaceCulling(new QCullFace(this))
-        , m_blendEquation(new Qt3DRender::QBlendEquation(this))
-        , m_blendArguments(new Qt3DRender::QBlendEquationArguments(this))
-        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
-        , m_zfillShaderBuilder(new QShaderProgramBuilder(this))
-        , m_renderShader(new QShaderProgram(this))
-        , m_zfillShader(new QShaderProgram(this))
-        , m_zfillRenderPass(new QRenderPass(this))
-        , m_opaqueRenderPass(new QRenderPass(this))
-        , m_transparentRenderPass(new QRenderPass(this))
-        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
-    {
-        struct ApiFilterInfo {
-            int major;
-            int minor;
-            QGraphicsApiFilter::Api api;
-            QGraphicsApiFilter::OpenGLProfile profile;
-        };
-
-        const ApiFilterInfo apiFilterInfos[] = {
-            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
-            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
-#endif
-        };
-
-        graphicsApiFilter()->setApi(apiFilterInfos[version].api);
-        graphicsApiFilter()->setProfile(apiFilterInfos[version].profile);
-        graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
-        graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
-
-        const QUrl vertexShaderGraph[] = {
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s"))
-        };
-
-        const QUrl fragmentShaderGraph[] = {
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s"))
-        };
-
-        const QByteArray zFillFragmentShaderCode[] = {
-            QByteArray(R"(
-                       #version 330
-                       void main() { }
-                       )"),
-            QByteArray(R"(
-                       #version 300 es
-                       void main() { }
-                       )"),
-            QByteArray(R"(
-                       #version 100
-                       void main() { }
-                       )"),
-            QByteArray(R"(
-                       #version 450
-                       void main() { }
-                       )"),
-        };
-
-        const QByteArray renderableVertexShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-        const QByteArray renderableFragmentShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-         const QByteArray renderableGeometryShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-        // Use default vertex shader graph if no vertex shader code was specified
-        if (renderableVertexShaderCode[version].isEmpty()) {
-            m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
-
-            m_zfillShaderBuilder->setShaderProgram(m_zfillShader);
-            m_zfillShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
-        } else {
-            m_renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
-            m_zfillShader->setVertexShaderCode(renderableVertexShaderCode[version]);
-        }
-
-        if (renderableFragmentShaderCode[version].isEmpty()) {
-            m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
-        } else {
-            m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
-        }
-        m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
-
-         // Set geometry shader code if one was specified
-        m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
-        m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
-
-        auto filterKey = new QFilterKey(this);
-        filterKey->setName(QStringLiteral("renderingStyle"));
-        filterKey->setValue(QStringLiteral("forward"));
-        addFilterKey(filterKey);
-
-        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
-        m_techniqueAllowFrustumCullingFilterKey->setValue(true);
-        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
-
-        auto zfillFilterKey = new Qt3DRender::QFilterKey(this);
-        zfillFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-        zfillFilterKey->setValue(QStringLiteral("ZFill"));
-
-        m_zfillRenderPass->setShaderProgram(m_zfillShader);
-        m_zfillRenderPass->addRenderState(m_backFaceCulling);
-        m_zfillRenderPass->addFilterKey(zfillFilterKey);
-        addRenderPass(m_zfillRenderPass);
-
-        auto opaqueFilterKey = new Qt3DRender::QFilterKey(this);
-        opaqueFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-        opaqueFilterKey->setValue(QStringLiteral("Opaque"));
-
-        m_opaqueRenderPass->setShaderProgram(m_renderShader);
-        m_opaqueRenderPass->addRenderState(m_backFaceCulling);
-        m_opaqueRenderPass->addFilterKey(opaqueFilterKey);
-        addRenderPass(m_opaqueRenderPass);
-
-        auto transparentFilterKey = new Qt3DRender::QFilterKey(this);
-        transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-        transparentFilterKey->setValue(QStringLiteral("Transparent"));
-
-        auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
-        transparentPassFilterKey->setName(QStringLiteral("Pass"));
-        transparentPassFilterKey->setValue(QStringLiteral("pass0"));
-
-        m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::%s);
-        m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::%s);
-        m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::%s);
-        m_blendArguments->setDestinationRgb(Qt3DRender::QBlendEquationArguments::%s);
-        m_blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::%s);
-
-        m_transparentRenderPass->setShaderProgram(m_renderShader);
-        m_transparentRenderPass->addRenderState(m_backFaceCulling);
-        m_transparentRenderPass->addRenderState(m_blendEquation);
-        m_transparentRenderPass->addRenderState(m_blendArguments);
-        m_transparentRenderPass->addFilterKey(transparentFilterKey);
-        m_transparentRenderPass->addFilterKey(transparentPassFilterKey);
-        m_transparentRenderPass->setEnabled(false);
-        addRenderPass(m_transparentRenderPass);
-    }
-
-    QStringList enabledLayers() const
-    {
-        return m_renderShaderBuilder->enabledLayers();
-    }
-
-    void setEnabledLayers(const QStringList &layers)
-    {
-        m_renderShaderBuilder->setEnabledLayers(layers);
-        m_zfillShaderBuilder->setEnabledLayers(layers);
-    }
-
-    void setOpaque(bool opaque)
-    {
-        m_zfillRenderPass->setEnabled(opaque);
-        m_opaqueRenderPass->setEnabled(opaque);
-        m_transparentRenderPass->setEnabled(!opaque);
-    }
-
-    void setCullingMode(QCullFace::CullingMode mode)
-    {
-        m_backFaceCulling->setMode(mode);
-    }
-
-    QCullFace::CullingMode cullingMode() const
-    {
-        return m_backFaceCulling->mode();
-    }
-
-    void setAllowCulling(bool allowCulling)
-    {
-        m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
-    }
-
-private:
-    Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QBlendEquation *m_blendEquation;
-    Qt3DRender::QBlendEquationArguments *m_blendArguments;
-    Qt3DRender::QShaderProgramBuilder *m_renderShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
-    Qt3DRender::QShaderProgram *m_renderShader;
-    Qt3DRender::QShaderProgram *m_zfillShader;
-    Qt3DRender::QRenderPass *m_zfillRenderPass;
-    Qt3DRender::QRenderPass *m_opaqueRenderPass;
-    Qt3DRender::QRenderPass *m_transparentRenderPass;
-    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
-};
-"""
-
-    techniqueOpaqueOnly = """class %sTechnique : public Qt3DRender::QTechnique
-{
-public:
-    enum Version {
-        GL3 = 0,
-        ES3,
-        ES2,
-        RHI
-    };
-
-    explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
-        : QTechnique(parent)
-        , m_backFaceCulling(new QCullFace(this))
-        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
-        , m_zfillShaderBuilder(new QShaderProgramBuilder(this))
-        , m_renderShader(new QShaderProgram(this))
-        , m_zfillShader(new QShaderProgram(this))
-        , m_zfillRenderPass(new QRenderPass(this))
-        , m_opaqueRenderPass(new QRenderPass(this))
-        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
-    {
-        struct ApiFilterInfo {
-            int major;
-            int minor;
-            QGraphicsApiFilter::Api api;
-            QGraphicsApiFilter::OpenGLProfile profile;
-        };
-
-        const ApiFilterInfo apiFilterInfos[] = {
-            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
-            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
-#endif
-        };
-
-        graphicsApiFilter()->setApi(apiFilterInfos[version].api);
-        graphicsApiFilter()->setProfile(apiFilterInfos[version].profile);
-        graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
-        graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
-
-        const QUrl vertexShaderGraph[] = {
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s"))
-        };
-
-        const QUrl fragmentShaderGraph[] = {
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s"))
-        };
-
-        const QByteArray zFillFragmentShaderCode[] = {
-            QByteArray(R"(
-                       #version 330
-                       void main() { }
-                       )"),
-            QByteArray(R"(
-                       #version 300 es
-                       void main() { }
-                       )"),
-            QByteArray(R"(
-                       #version 100
-                       void main() { }
-                       )"),
-            QByteArray(R"(
-                       #version 450
-                       void main() { }
-                       )")
-        };
-
-        const QByteArray renderableVertexShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-        const QByteArray renderableFragmentShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-         const QByteArray renderableGeometryShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-        // Use default vertex shader graph if no vertex shader code was specified
-        if (renderableVertexShaderCode[version].isEmpty()) {
-            m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
-
-            m_zfillShaderBuilder->setShaderProgram(m_zfillShader);
-            m_zfillShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
-        } else {
-            m_renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
-            m_zfillShader->setVertexShaderCode(renderableVertexShaderCode[version]);
-        }
-
-        if (renderableFragmentShaderCode[version].isEmpty()) {
-            m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
-        } else {
-            m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
-        }
-        m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
-
-         // Set geometry shader code if one was specified
-        m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
-        m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
-
-        auto filterKey = new QFilterKey(this);
-        filterKey->setName(QStringLiteral("renderingStyle"));
-        filterKey->setValue(QStringLiteral("forward"));
-        addFilterKey(filterKey);
-
-        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
-        m_techniqueAllowFrustumCullingFilterKey->setValue(true);
-        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
-
-        auto zfillFilterKey = new Qt3DRender::QFilterKey(this);
-        zfillFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-        zfillFilterKey->setValue(QStringLiteral("ZFill"));
-
-        m_zfillRenderPass->setShaderProgram(m_zfillShader);
-        m_zfillRenderPass->addRenderState(m_backFaceCulling);
-        m_zfillRenderPass->addFilterKey(zfillFilterKey);
-        addRenderPass(m_zfillRenderPass);
-
-        auto opaqueFilterKey = new Qt3DRender::QFilterKey(this);
-        opaqueFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-        opaqueFilterKey->setValue(QStringLiteral("Opaque"));
-
-        m_opaqueRenderPass->setShaderProgram(m_renderShader);
-        m_opaqueRenderPass->addRenderState(m_backFaceCulling);
-        m_opaqueRenderPass->addFilterKey(opaqueFilterKey);
-        addRenderPass(m_opaqueRenderPass);
-    }
-
-    QStringList enabledLayers() const
-    {
-        return m_renderShaderBuilder->enabledLayers();
-    }
-
-    void setEnabledLayers(const QStringList &layers)
-    {
-        m_renderShaderBuilder->setEnabledLayers(layers);
-        m_zfillShaderBuilder->setEnabledLayers(layers);
-    }
-
-    void setOpaque(bool)
-    {
-    }
-
-    void setCullingMode(QCullFace::CullingMode mode)
-    {
-        m_backFaceCulling->setMode(mode);
-    }
-
-    QCullFace::CullingMode cullingMode() const
-    {
-        return m_backFaceCulling->mode();
-    }
-
-    void setAllowCulling(bool allowCulling)
-    {
-        m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
-    }
-
-private:
-    Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QShaderProgramBuilder *m_renderShaderBuilder;
-    Qt3DRender::QShaderProgramBuilder *m_zfillShaderBuilder;
-    Qt3DRender::QShaderProgram *m_renderShader;
-    Qt3DRender::QShaderProgram *m_zfillShader;
-    Qt3DRender::QRenderPass *m_zfillRenderPass;
-    Qt3DRender::QRenderPass *m_opaqueRenderPass;
-    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
-};
-"""
-
-    techniqueBackgroundOnly = """class %sTechnique : public Qt3DRender::QTechnique
-{
-public:
-    enum Version {
-        GL3 = 0,
-        ES3,
-        ES2,
-        RHI
-    };
-
-    explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
-        : QTechnique(parent)
-        , m_backFaceCulling(new QCullFace(this))
-        , m_noDepthMask(new QNoDepthMask(this))
-        , m_depthTest(new QDepthTest(this))
-        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
-        , m_renderShader(new QShaderProgram(this))
-        , m_backgroundRenderPass(new QRenderPass(this))
-        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
-    {
-        struct ApiFilterInfo {
-            int major;
-            int minor;
-            QGraphicsApiFilter::Api api;
-            QGraphicsApiFilter::OpenGLProfile profile;
-        };
-
-        const ApiFilterInfo apiFilterInfos[] = {
-            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
-            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
-#endif
-        };
-
-        graphicsApiFilter()->setApi(apiFilterInfos[version].api);
-        graphicsApiFilter()->setProfile(apiFilterInfos[version].profile);
-        graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
-        graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
-
-        const QUrl vertexShaderGraph[] = {
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s"))
-        };
-
-        const QUrl fragmentShaderGraph[] = {
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s"))
-        };
-
-        const QByteArray renderableVertexShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-        const QByteArray renderableFragmentShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-         const QByteArray renderableGeometryShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-        // Use default vertex shader graph if no vertex shader code was specified
-        if (renderableVertexShaderCode[version].isEmpty()) {
-            m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
-        } else {
-            m_renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
-        }
-
-        if (renderableFragmentShaderCode[version].isEmpty()) {
-            m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
-        } else {
-            m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
-        }
-
-         // Set geometry shader code if one was specified
-        m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
-
-        auto filterKey = new QFilterKey(this);
-        filterKey->setName(QStringLiteral("renderingStyle"));
-        filterKey->setValue(QStringLiteral("forward"));
-        addFilterKey(filterKey);
-
-        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
-        m_techniqueAllowFrustumCullingFilterKey->setValue(false);
-        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
-
-        auto opaqueFilterKey = new Qt3DRender::QFilterKey(this);
-        opaqueFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-        opaqueFilterKey->setValue(QStringLiteral("Opaque"));
-
-        m_depthTest->setDepthFunction(QDepthTest::LessOrEqual);
-
-        m_backgroundRenderPass->setShaderProgram(m_renderShader);
-        m_backgroundRenderPass->addRenderState(m_backFaceCulling);
-        m_backgroundRenderPass->addFilterKey(opaqueFilterKey);
-        m_backgroundRenderPass->addRenderState(m_noDepthMask);
-        m_backgroundRenderPass->addRenderState(m_depthTest);
-        addRenderPass(m_backgroundRenderPass);
-    }
-
-    QStringList enabledLayers() const
-    {
-        return m_renderShaderBuilder->enabledLayers();
-    }
-
-    void setEnabledLayers(const QStringList &layers)
-    {
-        m_renderShaderBuilder->setEnabledLayers(layers);
-    }
-
-    void setOpaque(bool)
-    {
-    }
-
-    void setCullingMode(QCullFace::CullingMode mode)
-    {
-        m_backFaceCulling->setMode(mode);
-    }
-
-    QCullFace::CullingMode cullingMode() const
-    {
-        return m_backFaceCulling->mode();
-    }
-
-    void setAllowCulling(bool)
-    {
-    }
-
-private:
-    Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QNoDepthMask *m_noDepthMask;
-    Qt3DRender::QDepthTest *m_depthTest;
-    Qt3DRender::QShaderProgramBuilder *m_renderShaderBuilder;
-    Qt3DRender::QShaderProgram *m_renderShader;
-    Qt3DRender::QRenderPass *m_backgroundRenderPass;
-    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
-};
-"""
-
-    techniqueTransparentOnly = """class %sTechnique : public Qt3DRender::QTechnique
-{
-public:
-    enum Version {
-        GL3 = 0,
-        ES3,
-        ES2,
-        RHI
-    };
-
-    explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
-        : QTechnique(parent)
-        , m_backFaceCulling(new QCullFace(this))
-        , m_blendEquation(new Qt3DRender::QBlendEquation(this))
-        , m_blendArguments(new Qt3DRender::QBlendEquationArguments(this))
-        , m_renderShaderBuilder(new QShaderProgramBuilder(this))
-        , m_renderShader(new QShaderProgram(this))
-        , m_transparentRenderPass(new QRenderPass(this))
-        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
-    {
-        struct ApiFilterInfo {
-            int major;
-            int minor;
-            QGraphicsApiFilter::Api api;
-            QGraphicsApiFilter::OpenGLProfile profile;
-        };
-
-        const ApiFilterInfo apiFilterInfos[] = {
-            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
-            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
-#endif
-        };
-
-        graphicsApiFilter()->setApi(apiFilterInfos[version].api);
-        graphicsApiFilter()->setProfile(apiFilterInfos[version].profile);
-        graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
-        graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
-
-        const QUrl vertexShaderGraph[] = {
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s"))
-        };
-
-        const QUrl fragmentShaderGraph[] = {
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s")),
-            QUrl(QStringLiteral("%s"))
-        };
-
-        const QByteArray renderableVertexShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-        const QByteArray renderableFragmentShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-         const QByteArray renderableGeometryShaderCode[] = {
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)"),
-            QByteArray(R"(%s)")
-        };
-
-        // Use default vertex shader graph if no vertex shader code was specified
-        if (renderableVertexShaderCode[version].isEmpty()) {
-            m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
-        } else {
-            m_renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
-        }
-
-        if (renderableFragmentShaderCode[version].isEmpty()) {
-            m_renderShaderBuilder->setShaderProgram(m_renderShader);
-            m_renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
-        } else {
-            m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
-        }
-
-         // Set geometry shader code if one was specified
-        m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
-
-        auto filterKey = new QFilterKey(this);
-        filterKey->setName(QStringLiteral("renderingStyle"));
-        filterKey->setValue(QStringLiteral("forward"));
-        addFilterKey(filterKey);
-
-        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
-        m_techniqueAllowFrustumCullingFilterKey->setValue(true);
-        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
-
-        auto transparentFilterKey = new Qt3DRender::QFilterKey(this);
-        transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-        transparentFilterKey->setValue(QStringLiteral("Transparent"));
-
-        auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
-        transparentPassFilterKey->setName(QStringLiteral("Pass"));
-        transparentPassFilterKey->setValue(QStringLiteral("pass0"));
-
-        m_blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::%s);
-        m_blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::%s);
-        m_blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::%s);
-        m_blendArguments->setDestinationRgb(Qt3DRender::QBlendEquationArguments::%s);
-        m_blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::%s);
-
-        m_transparentRenderPass->setShaderProgram(m_renderShader);
-        m_transparentRenderPass->addRenderState(m_backFaceCulling);
-        m_transparentRenderPass->addRenderState(m_blendEquation);
-        m_transparentRenderPass->addRenderState(m_blendArguments);
-        m_transparentRenderPass->addFilterKey(transparentFilterKey);
-        m_transparentRenderPass->addFilterKey(transparentPassFilterKey);
-        addRenderPass(m_transparentRenderPass);
-    }
-
-    QStringList enabledLayers() const
-    {
-        return m_renderShaderBuilder->enabledLayers();
-    }
-
-    void setEnabledLayers(const QStringList &layers)
-    {
-        m_renderShaderBuilder->setEnabledLayers(layers);
-    }
-
-    void setOpaque(bool)
-    {
-    }
-
-    void setCullingMode(QCullFace::CullingMode mode)
-    {
-        m_backFaceCulling->setMode(mode);
-    }
-
-    QCullFace::CullingMode cullingMode() const
-    {
-        return m_backFaceCulling->mode();
-    }
-
-    void setAllowCulling(bool allowCulling)
-    {
-        m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
-    }
-
-private:
-    Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QBlendEquation *m_blendEquation;
-    Qt3DRender::QBlendEquationArguments *m_blendArguments;
-    Qt3DRender::QShaderProgramBuilder *m_renderShaderBuilder;
-    Qt3DRender::QShaderProgram *m_renderShader;
-    Qt3DRender::QRenderPass *m_transparentRenderPass;
-    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
-};
-"""
-
-    techniqueMultiTransparentInnerPass = """
-        {
-            const QUrl vertexShaderGraph[] = {
-                QUrl(QStringLiteral("%s")),
-                QUrl(QStringLiteral("%s")),
-                QUrl(QStringLiteral("%s")),
-                QUrl(QStringLiteral("%s"))
-            };
-
-            const QUrl fragmentShaderGraph[] = {
-                QUrl(QStringLiteral("%s")),
-                QUrl(QStringLiteral("%s")),
-                QUrl(QStringLiteral("%s")),
-                QUrl(QStringLiteral("%s"))
-            };
-
-            const QByteArray renderableVertexShaderCode[] = {
-                QByteArray(R"(%s)"),
-                QByteArray(R"(%s)"),
-                QByteArray(R"(%s)"),
-                QByteArray(R"(%s)")
-            };
-
-            const QByteArray renderableFragmentShaderCode[] = {
-                QByteArray(R"(%s)"),
-                QByteArray(R"(%s)"),
-                QByteArray(R"(%s)"),
-                QByteArray(R"(%s)")
-            };
-
-            const QByteArray renderableGeometryShaderCode[] = {
-                QByteArray(R"(%s)"),
-                QByteArray(R"(%s)"),
-                QByteArray(R"(%s)"),
-                QByteArray(R"(%s)")
-            };
-
-            auto renderShaderBuilder = new QShaderProgramBuilder(this);
-            auto renderShader = new QShaderProgram(this);
-            auto transparentRenderPass = new QRenderPass(this);
-
-            // Use default vertex shader graph if no vertex shader code was specified
-            if (renderableVertexShaderCode[version].isEmpty()) {
-                renderShaderBuilder->setShaderProgram(renderShader);
-                renderShaderBuilder->setVertexShaderGraph(vertexShaderGraph[version]);
-            } else {
-                renderShader->setVertexShaderCode(renderableVertexShaderCode[version]);
-            }
-
-            if (renderableFragmentShaderCode[version].isEmpty()) {
-                renderShaderBuilder->setShaderProgram(renderShader);
-                renderShaderBuilder->setFragmentShaderGraph(fragmentShaderGraph[version]);
-            } else {
-                renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
-            }
-
-            // Set geometry shader code if one was specified
-            renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
-            transparentRenderPass->setShaderProgram(renderShader);
-
-            auto blendEquation = new Qt3DRender::QBlendEquation(this);
-            blendEquation->setBlendFunction(Qt3DRender::QBlendEquation::%s);
-
-            auto blendArguments = new Qt3DRender::QBlendEquationArguments(this);
-            blendArguments->setSourceRgb(Qt3DRender::QBlendEquationArguments::%s);
-            blendArguments->setSourceAlpha(Qt3DRender::QBlendEquationArguments::%s);
-            blendArguments->setDestinationRgb(Qt3DRender::QBlendEquationArguments::%s);
-            blendArguments->setDestinationAlpha(Qt3DRender::QBlendEquationArguments::%s);
-
-            transparentRenderPass->addRenderState(m_backFaceCulling);
-            transparentRenderPass->addRenderState(blendEquation);
-            transparentRenderPass->addRenderState(blendArguments);
-
-            auto transparentFilterKey = new Qt3DRender::QFilterKey(this);
-            transparentFilterKey->setName(QStringLiteral("KuesaDrawStage"));
-            transparentFilterKey->setValue(QStringLiteral("Transparent"));
-            transparentRenderPass->addFilterKey(transparentFilterKey);
-
-            auto transparentPassFilterKey = new Qt3DRender::QFilterKey(this);
-            transparentPassFilterKey->setName(QStringLiteral("Pass"));
-            transparentPassFilterKey->setValue(QStringLiteral("pass%s"));
-            transparentRenderPass->addFilterKey(transparentPassFilterKey);
-
-            addRenderPass(transparentRenderPass);
-        }"""
-
-    techniqueMultiTransparent = """class %sTechnique : public Qt3DRender::QTechnique
-{
-public:
-    enum Version {
-        GL3 = 0,
-        ES3,
-        ES2,
-        RHI
-    };
-
-    explicit %sTechnique(Version version, Qt3DCore::QNode *parent = nullptr)
-        : QTechnique(parent)
-        , m_backFaceCulling(new QCullFace(this))
-        , m_techniqueAllowFrustumCullingFilterKey(new QFilterKey(this))
-    {
-        struct ApiFilterInfo {
-            int major;
-            int minor;
-            QGraphicsApiFilter::Api api;
-            QGraphicsApiFilter::OpenGLProfile profile;
-        };
-
-        const ApiFilterInfo apiFilterInfos[] = {
-            { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
-            { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-            { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-            { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
-#endif
-        };
-
-        graphicsApiFilter()->setApi(apiFilterInfos[version].api);
-        graphicsApiFilter()->setProfile(apiFilterInfos[version].profile);
-        graphicsApiFilter()->setMajorVersion(apiFilterInfos[version].major);
-        graphicsApiFilter()->setMinorVersion(apiFilterInfos[version].minor);
-
-        m_techniqueAllowFrustumCullingFilterKey->setName(QStringLiteral("allowCulling"));
-        m_techniqueAllowFrustumCullingFilterKey->setValue(true);
-        addFilterKey(m_techniqueAllowFrustumCullingFilterKey);
-
-        auto filterKey = new QFilterKey(this);
-        filterKey->setName(QStringLiteral("renderingStyle"));
-        filterKey->setValue(QStringLiteral("forward"));
-        addFilterKey(filterKey);%s
-    }
-
-    QStringList enabledLayers() const
-    {
-        const auto shaderBuilder = findChild<Qt3DRender::QShaderProgramBuilder *>();
-        if (shaderBuilder != nullptr)
-            return shaderBuilder->enabledLayers();
-        return {};
-    }
-
-    void setEnabledLayers(const QStringList &layers)
-    {
-        const auto shaderBuilders = findChildren<Qt3DRender::QShaderProgramBuilder *>();
-        for (auto shaderBuilder : shaderBuilders) {
-            if (shaderBuilder != nullptr)
-                shaderBuilder->setEnabledLayers(layers);
-        }
-    }
-
-    void setOpaque(bool)
-    {
-    }
-
-    void setCullingMode(QCullFace::CullingMode mode)
-    {
-        m_backFaceCulling->setMode(mode);
-    }
-
-    QCullFace::CullingMode cullingMode() const
-    {
-        return m_backFaceCulling->mode();
-    }
-
-    void setAllowCulling(bool allowCulling)
-    {
-        m_techniqueAllowFrustumCullingFilterKey->setValue(allowCulling);
-    }
-
-private:
-    Qt3DRender::QCullFace *m_backFaceCulling;
-    Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
-};
-"""
-
-
-    effectClassCppContent = """
-{0}
-{1}
-
-{2}Effect::{2}Effect(Qt3DCore::QNode *parent)
-    : GLTF2MaterialEffect(parent)
-{{
-    m_gl3Technique = new {2}Technique({2}Technique::GL3, this);
-    m_es3Technique = new {2}Technique({2}Technique::ES3, this);
-    m_es2Technique = new {2}Technique({2}Technique::ES2, this);
-
-    addTechnique(m_gl3Technique);
-    addTechnique(m_es3Technique);
-    addTechnique(m_es2Technique);
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    m_rhiTechnique = new {2}Technique({2}Technique::RHI, this);
-    addTechnique(m_rhiTechnique);
-#endif
-}}
-
-{2}Effect::~{2}Effect() = default;
-
-
-void {2}Effect::updateDoubleSided(bool doubleSided)
-{{
-    const auto cullingMode = doubleSided ? QCullFace::NoCulling : QCullFace::Back;
-    m_gl3Technique->setCullingMode(cullingMode);
-    m_es3Technique->setCullingMode(cullingMode);
-    m_es2Technique->setCullingMode(cullingMode);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    m_rhiTechnique->setCullingMode(cullingMode);
-#endif
-}}
-
-void {2}Effect::updateUsingSkinning(bool useSkinning)
-{{
-    // Set Layers on zFill and opaque/Transparent shader builders
-    auto layers = m_gl3Technique->enabledLayers();
-    if (useSkinning) {{
-        layers.removeAll(QStringLiteral("no-skinning"));
-        layers.append(QStringLiteral("skinning"));
-    }} else {{
-        layers.removeAll(QStringLiteral("skinning"));
-        layers.append(QStringLiteral("no-skinning"));
-    }}
-
-    updateLayersOnTechniques(layers);
-
-    m_gl3Technique->setAllowCulling(!useSkinning);
-    m_es3Technique->setAllowCulling(!useSkinning);
-    m_es2Technique->setAllowCulling(!useSkinning);
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    m_rhiTechnique->setAllowCulling(!useSkinning);
-#endif
-}}
-
-void {2}Effect::updateOpaque(bool opaque)
-{{
-    m_gl3Technique->setOpaque(opaque);
-    m_es3Technique->setOpaque(opaque);
-    m_es2Technique->setOpaque(opaque);
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    m_rhiTechnique->setOpaque(opaque);
-#endif
-}}
-
-void {2}Effect::updateAlphaCutoffEnabled(bool enabled)
-{{
-    auto layers = m_gl3Technique->enabledLayers();
-    if (enabled) {{
-        layers.removeAll(QStringLiteral("noHasAlphaCutoff"));
-        layers.append(QStringLiteral("hasAlphaCutoff"));
-    }} else {{
-        layers.removeAll(QStringLiteral("hasAlphaCutoff"));
-        layers.append(QStringLiteral("noHasAlphaCutoff"));
-    }}
-    updateLayersOnTechniques(layers);
-}}
-
-void {2}Effect::updateUsingColorAttribute(bool usingColorAttribute)
-{{
-    auto layers = m_gl3Technique->enabledLayers();
-    layers.removeAll(QStringLiteral("noHasColorAttr"));
-    layers.removeAll(QStringLiteral("hasColorAttr"));
-    layers.removeAll(QStringLiteral("hasVertexColor"));
-    if (usingColorAttribute) {{
-        layers.append(QStringLiteral("hasColorAttr"));
-        layers.append(QStringLiteral("hasVertexColor"));
-    }} else {{
-        layers.append(QStringLiteral("noHasColorAttr"));
-    }}
-    updateLayersOnTechniques(layers);
-}}
-
-void {2}Effect::updateUsingNormalAttribute(bool usingNormalAttribute)
-{{
-    auto layers = m_gl3Technique->enabledLayers();
-    layers.removeAll(QStringLiteral("hasVertexNormal"));
-    if (usingNormalAttribute)
-        layers.append(QStringLiteral("hasVertexNormal"));
-
-    updateLayersOnTechniques(layers);
-}}
-
-void {2}Effect::updateUsingTangentAttribute(bool usingTangentAttribute)
-{{
-    auto layers = m_gl3Technique->enabledLayers();
-    layers.removeAll(QStringLiteral("hasVertexTangent"));
-    if (usingTangentAttribute)
-        layers.append(QStringLiteral("hasVertexTangent"));
-
-    updateLayersOnTechniques(layers);
-}}
-
-void {2}Effect::updateUsingTexCoordAttribute(bool usingTexCoordAttribute)
-{{
-    auto layers = m_gl3Technique->enabledLayers();
-    layers.removeAll(QStringLiteral("hasTexCoord"));
-    if (usingTexCoordAttribute)
-        layers.append(QStringLiteral("hasTexCoord"));
-
-    updateLayersOnTechniques(layers);
-}}
-
-void {2}Effect::updateUsingTexCoord1Attribute(bool usingTexCoord1Attribute)
-{{
-    auto layers = m_gl3Technique->enabledLayers();
-    layers.removeAll(QStringLiteral("hasTexCoord1"));
-    if (usingTexCoord1Attribute)
-        layers.append(QStringLiteral("hasTexCoord1"));
-
-    updateLayersOnTechniques(layers);
-}}
-
-void {2}Effect::updateUsingMorphTargets(bool usingMorphTargets)
-{{
-    auto layers = m_gl3Technique->enabledLayers();
-    layers.removeAll(QStringLiteral("morphtargets"));
-    if (usingMorphTargets)
-        layers.append(QStringLiteral("morphtargets"));
-
-    updateLayersOnTechniques(layers);
-}}
-
-void {2}Effect::updateInstanced(bool instanced)
-{{
-    auto layers = m_gl3Technique->enabledLayers();
-    layers.removeAll(QStringLiteral("instanced"));
-    if (instanced)
-        layers.append(QStringLiteral("instanced"));
-
-    updateLayersOnTechniques(layers);
-}}
-
-void {2}Effect::updateLayersOnTechniques(const QStringList &layers)
-{{
-    m_gl3Technique->setEnabledLayers(layers);
-    m_es3Technique->setEnabledLayers(layers);
-    m_es2Technique->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-    m_rhiTechnique->setEnabledLayers(layers);
-#endif
-}}
-
-"""
-
-
-    materialClassHeaderContent = """
-class GLTF2MaterialProperties;
-
-class KUESASHARED_EXPORT %sMaterial : public GLTF2Material
-{
-    Q_OBJECT
-    Q_PROPERTY(Kuesa::%sProperties *materialProperties READ materialProperties WRITE setMaterialProperties NOTIFY materialPropertiesChanged)
-
-public:
-    Q_INVOKABLE explicit %sMaterial(Qt3DCore::QNode *parent = nullptr);
-    ~%sMaterial();
-
-    %sProperties *materialProperties() const;
-
-public Q_SLOTS:
-    void setMaterialProperties(Kuesa::%sProperties *materialProperties);
-    void setMaterialProperties(Kuesa::GLTF2MaterialProperties *materialProperties);
-
-Q_SIGNALS:
-    void materialPropertiesChanged(Kuesa::%sProperties *materialProperties);
-
-private:
-    %sProperties *m_materialProperties = nullptr;
-    Qt3DRender::QParameter *m_shaderDataParameter;
-%s
-};
-"""
-
-    materialClassCppContent = """
-%s
-%sMaterial::%sMaterial(Qt3DCore::QNode *parent)
-    : GLTF2Material(parent)
-    , m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral(\"properties\"), {}))%s
-{
-    addParameter(m_shaderDataParameter);%s
-}
-
-%sMaterial::~%sMaterial() = default;
-
-/*!
-    \property %sMaterial::materialProperties
-
-    The properties defining the appearance of the material.
-
-    \since Kuesa 1.3
- */
-
-/*!
-    \qmlproperty %sProperties %sMaterial::materialProperties
-
-    The properties defining the appearance of the material.
-
-    \since Kuesa 1.3
- */
-
-Kuesa::%sProperties *%sMaterial::materialProperties() const
-{
-    return m_materialProperties;
-}
-
-void %sMaterial::setMaterialProperties(Kuesa::%sProperties *materialProperties)
-{
-    if (m_materialProperties != materialProperties) {
-        if (m_materialProperties)
-            m_materialProperties->disconnect(this);
-
-        m_materialProperties = materialProperties;
-        emit materialPropertiesChanged(materialProperties);
-
-        if (m_materialProperties) {%s
-%s
-
-            m_shaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));
-            m_materialProperties->addClientMaterial(this);
-        }
-    }
-}
-
-void %sMaterial::setMaterialProperties(Kuesa::GLTF2MaterialProperties *materialProperties)
-{
-    setMaterialProperties(qobject_cast<Kuesa::%sProperties *>(materialProperties));
-}
-"""
-
-    priContent = """
-# %s.pri
-#
-# This file is part of Kuesa.
-#
-# Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-# Author: Paul Lemire <paul.lemire@kdab.com>
-#
-# Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
-# accordance with the Kuesa Enterprise License Agreement provided with the Software in the
-# LICENSE.KUESA.ENTERPRISE file.
-#
-# Contact info@kdab.com if any conditions of this licensing are not clear to you.
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-INCLUDEPATH += $$PWD
-
-QT += 3dcore-private
-
-SOURCES += \\
-    $$PWD/%smaterial.cpp \\
-    $$PWD/%seffect.cpp \\
-    $$PWD/%sproperties.cpp \\
-    $$PWD/%sshaderdata.cpp
-
-HEADERS += \\
-    $$PWD/%smaterial.h \\
-    $$PWD/%seffect.h \\
-    $$PWD/%sproperties.h \\
-    $$PWD/%sshaderdata_p.h
-"""
+    testProContent = read_template("test_pro")
+    testCppContent = read_template("test_cpp")
 
     def __init__(self, jsonDescriptionFilePath):
         self.jsonDescriptionFilePath = jsonDescriptionFilePath
@@ -1841,29 +464,11 @@ HEADERS += \\
                                  includes)
         generateCpp()
 
-    def generateEffect(self):
+    def generateTechnique(self):
         matName = self.rawJson.get("type", "")
-        className = matName + "Effect"
+        className = matName + "Technique"
 
         def generateHeader():
-            content = CustomMaterialGenerator.effectClassHeaderContent % (matName,
-                                                                          matName,
-                                                                          matName,
-                                                                          matName,
-                                                                          matName,
-                                                                          matName,
-                                                                          matName,
-                                                                          matName)
-            self.generateHeaderFile(content,
-                                    className,
-                                    "#include <Kuesa/gltf2materialeffect.h>\n#include <Kuesa/kuesa_global.h>\n")
-        generateHeader()
-
-
-        def generateCpp():
-            doc = self.docForClass(className,
-                                   "Qt3DRender::QEffect",
-                                   "is the effect for the %sMaterial class." % (matName))
             passes = self.rawJson.get("passes", [])
             passes_info = []
 
@@ -2091,8 +696,7 @@ HEADERS += \\
                                                                                                        pass_info.blendSourceRGB,
                                                                                                        pass_info.blendSourceAlpha,
                                                                                                        pass_info.blendDestinationRGB,
-                                                                                                       pass_info.blendDestinationAlpha,
-                                                                                                       idx)
+                                                                                                       pass_info.blendDestinationAlpha)
                 return CustomMaterialGenerator.techniqueMultiTransparent % (matName,
                                                                             matName,
                                                                             innerPassContent)
@@ -2137,16 +741,11 @@ HEADERS += \\
                     return
                 return switcher[pass_type](passes_info), pass_type
 
+            content, technique_name = generateTechnique(passes_info)
 
-            technique_content, technique_name = generateTechnique(passes_info)
-            content = CustomMaterialGenerator.effectClassCppContent.format(technique_content, doc, matName)
-
-            includes = "#include \"%s.h\"\n\n" % (className.lower())
-            includes += "#include <Qt3DRender/QEffect>\n"
-            includes += "#include <Qt3DRender/QTechnique>\n"
+            includes = "#include <Qt3DRender/QTechnique>\n"
             includes += "#include <Qt3DRender/QCullFace>\n"
             includes += "#include <Qt3DRender/QFilterKey>\n"
-            includes += "#include <Qt3DRender/QParameter>\n"
             includes += "#include <Qt3DRender/QRenderPass>\n"
             includes += "#include <Qt3DRender/QShaderProgram>\n"
             includes += "#include <Qt3DRender/QShaderProgramBuilder>\n"
@@ -2161,6 +760,45 @@ HEADERS += \\
                 includes += "\n"
                 includes += "#include <Qt3DRender/QNoDepthMask>\n"
                 includes += "#include <Qt3DRender/QDepthTest>"
+
+            self.generateHeaderFile(content,
+                                    className,
+                                    includes,
+                                    True)
+        generateHeader()
+
+    def generateEffect(self):
+        matName = self.rawJson.get("type", "")
+        className = matName + "Effect"
+
+        def generateHeader():
+            content = CustomMaterialGenerator.effectClassHeaderContent % (matName,
+                                                                          matName,
+                                                                          matName,
+                                                                          matName,
+                                                                          matName,
+                                                                          matName,
+                                                                          matName,
+                                                                          matName)
+            self.generateHeaderFile(content,
+                                    className,
+                                    "#include <Kuesa/gltf2materialeffect.h>\n#include <Kuesa/kuesa_global.h>\n")
+        generateHeader()
+
+
+        def generateCpp():
+            doc = self.docForClass(className,
+                                   "Qt3DRender::QEffect",
+                                   "is the effect for the %sMaterial class." % (matName))
+
+            content = CustomMaterialGenerator.effectClassCppContent.format(doc, matName)
+
+            includes = "#include \"%s.h\"\n" % (className.lower())
+            includes += "\n"
+            includes += "#include <Qt3DRender/QCullFace>\n"
+            includes += "\n"
+            includes += "#include \"%stechnique_p.h\"" % (matName.lower())
+            includes += "\n"
 
             self.generateCppFile(content,
                                  className,
@@ -2274,9 +912,41 @@ HEADERS += \\
                                                         matName,
                                                         matName,
                                                         matName,
+                                                        matName,
                                                         matName)
         with open(matName + ".pri", 'w') as f:
             f.write(content)
+
+    def generateTest(self):
+        material_name = self.rawJson.get("type", "")
+        lowercase_material_name = material_name.lower()
+
+        test_dir = f'{CURRENT_FILE_DIR}/../../tests/auto/{lowercase_material_name}'
+
+        try:
+            os.mkdir(test_dir)
+        except FileExistsError:
+            pass
+
+        def generateTestPro():
+            content = CustomMaterialGenerator.testProContent.format(**{
+                'lowercase_material_name': lowercase_material_name,
+            })
+
+            with open(f'{test_dir}/{lowercase_material_name}.pro', 'w') as f:
+                f.write(content)
+
+        def generateTestCpp():
+            content = CustomMaterialGenerator.testCppContent.format(**{
+                'material_name': material_name,
+                'lowercase_material_name': lowercase_material_name,
+            })
+
+            with open(f'{test_dir}/tst_{lowercase_material_name}.cpp', 'w') as f:
+                f.write(content)
+
+        generateTestPro()
+        generateTestCpp()
 
     def generate(self):
         # Parse JSON description file
@@ -2292,10 +962,12 @@ HEADERS += \\
 
         # Generate and write the different classes and files
         self.generateMaterial()
+        self.generateTechnique()
         self.generateEffect()
         self.generateMaterialProperties()
         self.generateShaderData()
         self.generatePri()
+        self.generateTest()
 
         # Return to previous path
         os.chdir("..")

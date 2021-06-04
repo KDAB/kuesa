@@ -30,7 +30,6 @@
 #include "mytestcustomshaderdata_p.h"
 #include <Qt3DCore/private/qnode_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -43,7 +42,8 @@ MyTestCustomShaderData::MyTestCustomShaderData(Qt3DCore::QNode *parent)
     , m_customVec3Parameter()
     , m_customVec2Parameter()
     , m_customFloatParameter()
-{}
+{
+}
 
 MyTestCustomShaderData::~MyTestCustomShaderData() = default;
 
@@ -66,7 +66,6 @@ float MyTestCustomShaderData::customFloatParameter() const
 {
     return m_customFloatParameter;
 }
-
 
 void MyTestCustomShaderData::setCustomVec4Parameter(const QVector4D &customVec4Parameter)
 {
@@ -99,8 +98,6 @@ void MyTestCustomShaderData::setCustomFloatParameter(float customFloatParameter)
     m_customFloatParameter = customFloatParameter;
     emit customFloatParameterChanged(customFloatParameter);
 }
-
-
 
 } // namespace Kuesa
 

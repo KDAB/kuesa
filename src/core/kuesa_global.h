@@ -36,7 +36,7 @@
 // KUESA_VERSION_STR
 
 //    can be used like #if (KUESA_VERSION >= KUESA_VERSION_CHECK(1, 3, 0))
-#define KUESA_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
+#define KUESA_VERSION_CHECK(major, minor, patch) ((major << 16) | (minor << 8) | (patch))
 
 // Works for both Qt 5 and Qt 6
 #if QT_CONFIG(opengles2)
@@ -58,6 +58,16 @@ QT_BEGIN_NAMESPACE
 #else
 #define KUESASHARED_EXPORT
 #endif
+
+
+// #define ENABLE_SHADOWS QT_VERSION >= QT_VERSION_CHECK(5, 15, 5) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+// To support shadows we need https://codereview.qt-project.org/c/qt/qt3d/+/326691 to be merged
+
+namespace Kuesa {
+
+void KUESASHARED_EXPORT setupDefaultSurfaceFormat();
+
+}
 
 QT_END_NAMESPACE
 

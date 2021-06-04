@@ -132,7 +132,7 @@ SceneEntity::SceneEntity(Qt3DCore::QNode *parent)
     auto initAction = new Qt3DLogic::QFrameAction(this);
     addComponent(initAction);
 
-    auto initForwardRenderer = [this, initAction](){
+    auto initForwardRenderer = [this, initAction]() {
         auto forwardRenderer = Kuesa::Utils::findForwardRenderer(this);
         // If no forwardRenderer yet, we want to keep running
         if (forwardRenderer) {
@@ -486,8 +486,6 @@ Kuesa::SceneEntity *Kuesa::SceneEntity::findParentSceneEntity(Qt3DCore::QEntity 
     }
     return nullptr;
 }
-
-
 
 Kuesa::PlaceholderCollection *Kuesa::SceneEntity::placeholders() const
 {

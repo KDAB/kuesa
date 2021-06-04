@@ -471,7 +471,6 @@ void GLTF2Importer::load()
     m_parser->parse(path, m_asynchronous);
 }
 
-
 void GLTF2Importer::handleGLTFParsingCompleted(bool parsingSucceeded)
 {
     m_availableScenes.clear();
@@ -507,7 +506,6 @@ void GLTF2Importer::handleGLTFParsingCompleted(bool parsingSucceeded)
     delete m_parser;
     m_parser = nullptr;
 }
-
 
 void GLTF2Importer::setupActiveScene()
 {

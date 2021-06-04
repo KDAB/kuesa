@@ -133,7 +133,6 @@ namespace Kuesa {
     precision of the shadowMap depth texture, reducing self-shadowing and "shadow-acne"
 */
 
-
 ShadowCastingLightPrivate::ShadowCastingLightPrivate(Qt3DRender::QAbstractLight::Type type)
     : QAbstractLightPrivate(type)
 {

@@ -38,7 +38,6 @@
 QT_BEGIN_NAMESPACE
 using namespace Kuesa;
 using namespace GLTF2Import;
-using namespace Qt3DGeometry;
 
 namespace {
 const QLatin1String KEY_BUFFER = QLatin1String("buffer");
@@ -46,7 +45,6 @@ const QLatin1String KEY_BYTEOFFSET = QLatin1String("byteOffset");
 const QLatin1String KEY_BYTELENGTH = QLatin1String("byteLength");
 const QLatin1String KEY_BYTESTRIDE = QLatin1String("byteStride");
 } // namespace
-
 
 BufferView::BufferView()
     : byteStride(-1)

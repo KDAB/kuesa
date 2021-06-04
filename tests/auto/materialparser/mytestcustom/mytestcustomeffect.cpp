@@ -113,7 +113,7 @@ public:
             QByteArray(R"(#version ...)")
         };
 
-         const QByteArray renderableGeometryShaderCode[] = {
+        const QByteArray renderableGeometryShaderCode[] = {
             QByteArray(R"()"),
             QByteArray(R"()"),
             QByteArray(R"()")
@@ -134,7 +134,7 @@ public:
         m_renderShader->setFragmentShaderCode(renderableFragmentShaderCode[version]);
         m_zfillShader->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
-         // Set geometry shader code if one was specified
+        // Set geometry shader code if one was specified
         m_renderShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
         m_zfillShader->setGeometryShaderCode(renderableGeometryShaderCode[version]);
 
@@ -221,7 +221,6 @@ private:
     Qt3DRender::QFilterKey *m_techniqueAllowFrustumCullingFilterKey;
 };
 
-
 /*!
     \class Kuesa::MyTestCustomEffect
     \inheaderfile Kuesa/MyTestCustomEffect
@@ -241,7 +240,6 @@ private:
     \brief Kuesa::MyTestCustomEffect is the effect for the MyTestCustomMaterial class
 */
 
-
 MyTestCustomEffect::MyTestCustomEffect(Qt3DCore::QNode *parent)
     : QEffect(parent)
     , m_useSkinning(false)
@@ -249,10 +247,10 @@ MyTestCustomEffect::MyTestCustomEffect(Qt3DCore::QNode *parent)
     , m_alphaCutoffEnabled(false)
 {
     const auto enabledLayers = QStringList{
-            // Vertex Shader layers
-            QStringLiteral("no-skinning"),
-            // Fragment Shader layers
-            QStringLiteral("noHasAlphaCutoff")
+        // Vertex Shader layers
+        QStringLiteral("no-skinning"),
+        // Fragment Shader layers
+        QStringLiteral("noHasAlphaCutoff")
     };
 
     m_gl3Technique = new MyTestCustomTechnique(MyTestCustomTechnique::GL3, this);
@@ -322,7 +320,6 @@ void MyTestCustomEffect::setUseSkinning(bool useSkinning)
     m_gl3Technique->setAllowCulling(!m_useSkinning);
     m_es3Technique->setAllowCulling(!m_useSkinning);
     m_es2Technique->setAllowCulling(!m_useSkinning);
-
 }
 
 void MyTestCustomEffect::setOpaque(bool opaque)

@@ -253,7 +253,7 @@ private Q_SLOTS:
         FakeRenderer renderer;
         qputenv("QT3D_REBUILD_SHADER_CACHE", "1");
 
-        auto testEffectGenerator = [&] (Kuesa::UnlitEffect *e) {
+        auto testEffectGenerator = [&](Kuesa::UnlitEffect *e) {
             for (Qt3DRender::QTechnique *t : e->techniques()) {
                 Kuesa::UnlitTechnique *technique = qobject_cast<decltype(technique)>(t);
 

@@ -1,0 +1,20 @@
+class %sShaderData;
+
+class KUESASHARED_EXPORT %sProperties : public GLTF2MaterialProperties
+{
+    Q_OBJECT
+%s
+public:
+    Q_INVOKABLE explicit %sProperties(Qt3DCore::QNode *parent = nullptr);
+    ~%sProperties();
+
+    Qt3DRender::QShaderData *shaderData() const override;
+%s
+public Q_SLOTS:
+%s
+Q_SIGNALS:
+%s
+private:
+    %sShaderData *m_shaderData;
+%s
+};

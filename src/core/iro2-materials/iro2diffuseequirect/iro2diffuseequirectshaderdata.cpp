@@ -1,11 +1,10 @@
-
 /*
     iro2diffuseequirectshaderdata.cpp
 
     This file is part of Kuesa.
 
     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
-    Author: Nicolas Guichard <nicolas.guichard@kdab.com>
+    This file was auto-generated
 
     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
@@ -29,13 +28,11 @@
 
 #include "iro2diffuseequirectshaderdata_p.h"
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
 
 namespace Kuesa {
-
 Iro2DiffuseEquiRectShaderData::Iro2DiffuseEquiRectShaderData(Qt3DCore::QNode *parent)
     : Qt3DRender::QShaderData(parent)
     , m_usesDiffuseMap()
@@ -54,7 +51,8 @@ Iro2DiffuseEquiRectShaderData::Iro2DiffuseEquiRectShaderData(Qt3DCore::QNode *pa
     , m_postHemiFilter()
     , m_postGain()
     , m_gltfYUp()
-{}
+{
+}
 
 Iro2DiffuseEquiRectShaderData::~Iro2DiffuseEquiRectShaderData() = default;
 
@@ -137,7 +135,6 @@ bool Iro2DiffuseEquiRectShaderData::gltfYUp() const
 {
     return m_gltfYUp;
 }
-
 
 void Iro2DiffuseEquiRectShaderData::setUsesDiffuseMap(bool usesDiffuseMap)
 {
@@ -266,8 +263,6 @@ void Iro2DiffuseEquiRectShaderData::setGltfYUp(bool gltfYUp)
     m_gltfYUp = gltfYUp;
     emit gltfYUpChanged(gltfYUp);
 }
-
-
 
 } // namespace Kuesa
 

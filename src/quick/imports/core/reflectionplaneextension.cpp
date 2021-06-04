@@ -108,7 +108,6 @@ void ReflectionPlaneExtension::clearLayers(QQmlListProperty<Qt3DRender::QLayer> 
         plane->removeLayer(layer);
 }
 
-
 } // namespace Kuesa
 
 QT_END_NAMESPACE

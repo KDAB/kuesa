@@ -33,7 +33,6 @@
 #include <Kuesa/kuesa_global.h>
 #include <Kuesa/GLTF2MaterialEffect>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Kuesa {

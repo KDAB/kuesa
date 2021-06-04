@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- drill-experience.qdoc -->
+  <title>Kuesa Drill-Experience QML Example | Kuesa Runtime 1.4</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.4</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li>Kuesa Drill-Experience QML Example</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.4 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><h1 class="title">Kuesa Drill-Experience QML Example</h1>
+<span class="subtitle"></span>
+<pre class="cpp">
+ <span class="comment">/*
+     screencontroller.cpp
+
+     This file is part of Kuesa.
+
+     Copyright (C) 2018-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+     Author: Paul Lemire &lt;paul.lemire@kdab.com&gt;
+
+     Licensees holding valid proprietary KDAB Kuesa licenses may use this file in
+     accordance with the Kuesa Enterprise License Agreement provided with the Software in the
+     LICENSE.KUESA.ENTERPRISE file.
+
+     Contact info@kdab.com if any conditions of this licensing are not clear to you.
+
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
+
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
+
+ <span class="preprocessor">#include &quot;screencontroller.h&quot;</span>
+ <span class="preprocessor">#include &lt;Kuesa/View&gt;</span>
+ <span class="preprocessor">#include &lt;Kuesa/TransformTracker&gt;</span>
+ <span class="preprocessor">#include &lt;Kuesa/SteppedAnimationPlayer&gt;</span>
+ <span class="preprocessor">#include &lt;KuesaUtils/viewconfiguration.h&gt;</span>
+ <span class="preprocessor">#include &lt;Qt3DRender/QObjectPicker&gt;</span>
+ <span class="preprocessor">#include &lt;Qt3DRender/QPickEvent&gt;</span>
+ <span class="preprocessor">#include &lt;array&gt;</span>
+
+ <span class="keyword">namespace</span> {
+ <span class="keyword">using</span> Bit <span class="operator">=</span> ScreenController<span class="operator">::</span>Bit;
+ constexpr std<span class="operator">::</span>array<span class="operator">&lt;</span>Bit<span class="operator">,</span> <span class="number">20</span><span class="operator">&gt;</span> bits <span class="operator">=</span> {
+     Bit<span class="operator">::</span>Drill1<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill2<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill3<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill4<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill5<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill6<span class="operator">,</span>
+
+     Bit<span class="operator">::</span>ScrewHex<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewHexMedium<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewHexSmall<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewHexTiny<span class="operator">,</span>
+
+     Bit<span class="operator">::</span>ScrewTorx<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewTorxMedium<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewTorxSmall<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewTorxTiny<span class="operator">,</span>
+
+     Bit<span class="operator">::</span>ScrewPhilips<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewPhilipsMedium<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewPhilipsSmall<span class="operator">,</span>
+
+     Bit<span class="operator">::</span>ScrewFlat<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewFlatMedium<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewFlatSmall<span class="operator">,</span>
+ };
+
+ <span class="comment">// By Driving Mode</span>
+ constexpr std<span class="operator">::</span>array<span class="operator">&lt;</span>Bit<span class="operator">,</span> <span class="number">14</span><span class="operator">&gt;</span> screwDriverBits <span class="operator">=</span> {
+     Bit<span class="operator">::</span>ScrewHex<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewHexMedium<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewHexSmall<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewHexTiny<span class="operator">,</span>
+
+     Bit<span class="operator">::</span>ScrewTorx<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewTorxMedium<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewTorxSmall<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewTorxTiny<span class="operator">,</span>
+
+     Bit<span class="operator">::</span>ScrewPhilips<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewPhilipsMedium<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewPhilipsSmall<span class="operator">,</span>
+
+     Bit<span class="operator">::</span>ScrewFlat<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewFlatMedium<span class="operator">,</span>
+     Bit<span class="operator">::</span>ScrewFlatSmall<span class="operator">,</span>
+ };
+ constexpr std<span class="operator">::</span>array<span class="operator">&lt;</span>Bit<span class="operator">,</span> <span class="number">6</span><span class="operator">&gt;</span> drillingBits <span class="operator">=</span> {
+     Bit<span class="operator">::</span>Drill1<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill2<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill3<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill4<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill5<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill6<span class="operator">,</span>
+ };
+
+ <span class="comment">// By Drilling Material</span>
+ constexpr std<span class="operator">::</span>array<span class="operator">&lt;</span>Bit<span class="operator">,</span> <span class="number">2</span><span class="operator">&gt;</span> metalDrillingBits <span class="operator">=</span> {
+     Bit<span class="operator">::</span>Drill1<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill2<span class="operator">,</span>
+ };
+ constexpr std<span class="operator">::</span>array<span class="operator">&lt;</span>Bit<span class="operator">,</span> <span class="number">2</span><span class="operator">&gt;</span> concreteDrillingBits <span class="operator">=</span> {
+     Bit<span class="operator">::</span>Drill5<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill6<span class="operator">,</span>
+ };
+ constexpr std<span class="operator">::</span>array<span class="operator">&lt;</span>Bit<span class="operator">,</span> <span class="number">2</span><span class="operator">&gt;</span> woodDrillingBits <span class="operator">=</span> {
+     Bit<span class="operator">::</span>Drill3<span class="operator">,</span>
+     Bit<span class="operator">::</span>Drill4<span class="operator">,</span>
+ };
+
+ <span class="comment">// Must be kept in sync between the gltf file and the Bit enum</span>
+ <span class="type">QString</span> gltfBitName(Bit bit)
+ {
+     <span class="keyword">switch</span> (bit) {
+     <span class="keyword">case</span> Bit<span class="operator">::</span>None:
+         Q_UNREACHABLE();
+
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill1:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_Drill1&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill2:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_Drill2&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill3:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_Drill3&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill4:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_Drill4&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill5:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_Drill5&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill6:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_Drill6&quot;</span>);
+
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewHex:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_Hex&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewHexMedium:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_HexMed&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewHexSmall:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_HexSmall&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewHexTiny:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_HexTiny&quot;</span>);
+
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewTorx:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_Torx&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewTorxMedium:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_TorxMed&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewTorxSmall:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_TorxSmall&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewTorxTiny:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_TorxTiny&quot;</span>);
+
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewPhilips:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_Philips&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewPhilipsMedium:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_PhilipsMed&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewPhilipsSmall:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_PhilipsSmall&quot;</span>);
+
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewFlat:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_Flat&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewFlatMedium:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_FlatMed&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewFlatSmall:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tool_FlatSmall&quot;</span>);
+     }
+
+     Q_UNREACHABLE();
+ }
+
+ <span class="type">void</span> ensureClockOnAnimationPlayer(Kuesa<span class="operator">::</span>AnimationPlayer <span class="operator">*</span>player)
+ {
+     <span class="type">Qt3DAnimation</span><span class="operator">::</span><span class="type">QClock</span> <span class="operator">*</span>c <span class="operator">=</span> player<span class="operator">-</span><span class="operator">&gt;</span>clock();
+
+     <span class="comment">// Make sure player has a clock</span>
+     <span class="keyword">const</span> bool hasClock <span class="operator">=</span> c <span class="operator">!</span><span class="operator">=</span> nullptr;
+     <span class="keyword">if</span> (<span class="operator">!</span>hasClock) {
+         c <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DAnimation</span><span class="operator">::</span><span class="type">QClock</span>;
+         player<span class="operator">-</span><span class="operator">&gt;</span>setClock(c);
+     }
+ }
+
+ } <span class="comment">// anonymous namespace</span>
+
+ <span class="comment">/*
+     Controller for the UserManual screen.
+
+     We store a dedicated scene configuration for each seletable part of the drill.
+
+     When selecting a new part, we will switch the active scene configuration
+     instance to match the one associated with the part.
+
+     This makes it convenient to store the assets and watchers we need when
+     selecting different parts.
+  */</span>
+ ScreenController<span class="operator">::</span>ScreenController(<span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QNode</span> <span class="operator">*</span>parent)
+     : AbstractScreenController(parent)
+ {
+     <span class="type">QObject</span><span class="operator">::</span>connect(<span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>ScreenController<span class="operator">::</span>selectedPartChanged<span class="operator">,</span>
+                      <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>ScreenController<span class="operator">::</span>updateSceneConfiguration);
+
+     KuesaUtils<span class="operator">::</span>SceneConfiguration <span class="operator">*</span>configuration <span class="operator">=</span> <span class="keyword">new</span> KuesaUtils<span class="operator">::</span>SceneConfiguration();
+     configuration<span class="operator">-</span><span class="operator">&gt;</span>setSource(<span class="type">QUrl</span>(<span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/drill/drill.gltf&quot;</span>)));
+     setSceneConfiguration(configuration);
+
+     <span class="comment">// Views</span>
+     m_mainViewConfiguration <span class="operator">=</span> <span class="keyword">new</span> KuesaUtils<span class="operator">::</span>ViewConfiguration;
+     m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setClearColor(<span class="type">QColor</span>(<span class="type">Qt</span><span class="operator">::</span>transparent));
+     m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setCameraName(<span class="type">QStringLiteral</span>(<span class="string">&quot;CamOrbitCenter.CamOrbit&quot;</span>));
+     m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setLayerNames({ <span class="type">QStringLiteral</span>(<span class="string">&quot;LayerDevice&quot;</span>)<span class="operator">,</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;LayerEnv&quot;</span>) });
+     m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setSkinning(<span class="keyword">true</span>); <span class="comment">// To view cubemap</span>
+     configuration<span class="operator">-</span><span class="operator">&gt;</span>addViewConfiguration(m_mainViewConfiguration);
+
+     m_detailViewConfiguration <span class="operator">=</span> <span class="keyword">new</span> KuesaUtils<span class="operator">::</span>ViewConfiguration;
+     m_detailViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setViewportRect({ <span class="number">0.7f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span> });
+     m_detailViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setClearColor(<span class="type">QColor</span>(<span class="type">Qt</span><span class="operator">::</span>gray));
+     m_detailViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setLayerNames({ <span class="type">QStringLiteral</span>(<span class="string">&quot;LayerDevice&quot;</span>) });
+     configuration<span class="operator">-</span><span class="operator">&gt;</span>addViewConfiguration(m_detailViewConfiguration);
+
+     <span class="comment">// Trackers for Part Labels</span>
+     {
+         <span class="keyword">const</span> std<span class="operator">::</span>pair<span class="operator">&lt;</span><span class="type">QString</span><span class="operator">,</span> SelectablePart<span class="operator">&gt;</span> partLabelNodes<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {
+             { <span class="type">QStringLiteral</span>(<span class="string">&quot;Drill.LABEL_Trigger&quot;</span>)<span class="operator">,</span> SelectablePart<span class="operator">::</span>Trigger }<span class="operator">,</span>
+             { <span class="type">QStringLiteral</span>(<span class="string">&quot;Drill.LABEL_Chuck&quot;</span>)<span class="operator">,</span> SelectablePart<span class="operator">::</span>Chuck }<span class="operator">,</span>
+             { <span class="type">QStringLiteral</span>(<span class="string">&quot;Drill.LABEL_DirSwitch&quot;</span>)<span class="operator">,</span> SelectablePart<span class="operator">::</span>DirectionSwitch }<span class="operator">,</span>
+             { <span class="type">QStringLiteral</span>(<span class="string">&quot;Drill.LABEL_Battery&quot;</span>)<span class="operator">,</span> SelectablePart<span class="operator">::</span>BatteryPack }<span class="operator">,</span>
+             { <span class="type">QStringLiteral</span>(<span class="string">&quot;Drill.LABEL_Clutch&quot;</span>)<span class="operator">,</span> SelectablePart<span class="operator">::</span>NoPartSelected }<span class="operator">,</span>
+             { <span class="type">QStringLiteral</span>(<span class="string">&quot;Drill.LABEL_Kdab&quot;</span>)<span class="operator">,</span> SelectablePart<span class="operator">::</span>NoPartSelected }<span class="operator">,</span>
+             { <span class="type">QStringLiteral</span>(<span class="string">&quot;Drill.LABEL_Motor&quot;</span>)<span class="operator">,</span> SelectablePart<span class="operator">::</span>NoPartSelected }<span class="operator">,</span>
+             { <span class="type">QStringLiteral</span>(<span class="string">&quot;Drill.LABEL_Bits&quot;</span>)<span class="operator">,</span> SelectablePart<span class="operator">::</span>NoPartSelected }<span class="operator">,</span>
+         };
+
+         <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>nodeNamePartPair : partLabelNodes) {
+             <span class="keyword">auto</span> <span class="operator">*</span>tracker <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>TransformTracker();
+             tracker<span class="operator">-</span><span class="operator">&gt;</span>setName(nodeNamePartPair<span class="operator">.</span>first);
+             m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>addTransformTracker(tracker);
+             <span class="keyword">auto</span> <span class="operator">*</span>partLabel <span class="operator">=</span> <span class="keyword">new</span> PartLabel(nodeNamePartPair<span class="operator">.</span>first<span class="operator">,</span>
+                                             nodeNamePartPair<span class="operator">.</span>second<span class="operator">,</span>
+                                             tracker<span class="operator">,</span>
+                                             <span class="keyword">this</span>);
+             m_partLabels<span class="operator">.</span>push_back(partLabel);
+         }
+     }
+
+     <span class="comment">// Animations</span>
+     {
+         m_cameraAnimationPlayer <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>AnimationPlayer;
+         m_cameraAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>setClip(<span class="type">QStringLiteral</span>(<span class="string">&quot;AnimCamOrbit&quot;</span>));
+         m_cameraAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>setLoopCount(Kuesa<span class="operator">::</span>AnimationPlayer<span class="operator">::</span>Infinite);
+         m_cameraAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>setRunning(<span class="keyword">true</span>);
+         configuration<span class="operator">-</span><span class="operator">&gt;</span>addAnimationPlayer(m_cameraAnimationPlayer);
+
+         m_batteryInOutAnimationPlayer <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>AnimationPlayer;
+         m_batteryInOutAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>setClip(<span class="type">QStringLiteral</span>(<span class="string">&quot;AnimBatteryOut&quot;</span>));
+         configuration<span class="operator">-</span><span class="operator">&gt;</span>addAnimationPlayer(m_batteryInOutAnimationPlayer);
+
+         m_directionSwitchAnimationPlayer <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>AnimationPlayer;
+         m_directionSwitchAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>setClip(<span class="type">QStringLiteral</span>(<span class="string">&quot;AnimChangeDirectionLR&quot;</span>));
+         configuration<span class="operator">-</span><span class="operator">&gt;</span>addAnimationPlayer(m_directionSwitchAnimationPlayer);
+
+         m_triggerAnimationPlayer <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>AnimationPlayer;
+         m_triggerAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>setClip(<span class="type">QStringLiteral</span>(<span class="string">&quot;AnimTriggerPress&quot;</span>));
+         configuration<span class="operator">-</span><span class="operator">&gt;</span>addAnimationPlayer(m_triggerAnimationPlayer);
+
+         m_drillAnimationPlayer <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>AnimationPlayer;
+         m_drillAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>setClip(<span class="type">QStringLiteral</span>(<span class="string">&quot;AnimDrillCW&quot;</span>));
+         configuration<span class="operator">-</span><span class="operator">&gt;</span>addAnimationPlayer(m_drillAnimationPlayer);
+
+         m_toolInOutAnimationPlayer <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>AnimationPlayer;
+         m_toolInOutAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>setClip(<span class="type">QStringLiteral</span>(<span class="string">&quot;AnimToolIn&quot;</span>));
+         configuration<span class="operator">-</span><span class="operator">&gt;</span>addAnimationPlayer(m_toolInOutAnimationPlayer);
+
+         <span class="comment">// We have two animations. One with all the steps of the tutorial one after the other</span>
+         <span class="comment">// The other animation is a pulse animation that we used to encode events</span>
+         <span class="comment">// We create a timeline which emits an &quot;up&quot; signal when the pulse animation goes from 0 to 1</span>
+         <span class="comment">// Similarly, the timeline emits a &quot;down&quot; signal when the signal animation goes from 1 to 0</span>
+         <span class="comment">// This allows us to stop the tutorial animation when we detect the &quot;up&quot; signal</span>
+         m_steppedPlayer <span class="operator">=</span> <span class="keyword">new</span> Kuesa<span class="operator">::</span>SteppedAnimationPlayer();
+         m_steppedPlayer<span class="operator">-</span><span class="operator">&gt;</span>setClip(<span class="type">QStringLiteral</span>(<span class="string">&quot;AnimGuideSteps&quot;</span>));
+         m_steppedPlayer<span class="operator">-</span><span class="operator">&gt;</span>setAnimationNames({ <span class="type">QStringLiteral</span>(<span class="string">&quot;AnimGuideAnim&quot;</span>) });
+
+         <span class="comment">// Add a clock so we can control forward and backwards</span>
+         m_animationClock <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DAnimation</span><span class="operator">::</span><span class="type">QClock</span>;
+         m_steppedPlayer<span class="operator">-</span><span class="operator">&gt;</span>setClock(m_animationClock);
+         configuration<span class="operator">-</span><span class="operator">&gt;</span>addAnimationPlayer(m_steppedPlayer);
+     }
+
+     <span class="comment">// Guided Drilling</span>
+     {
+         m_insertedDrillBitTranform <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QTransform</span>();
+         m_insertedDrillBitTranform<span class="operator">-</span><span class="operator">&gt;</span>setParent(sceneConfiguration()<span class="operator">-</span><span class="operator">&gt;</span>sceneEntity());
+         m_insertedDrillBitTranform<span class="operator">-</span><span class="operator">&gt;</span>setRotationX(<span class="number">90</span>);
+     }
+
+     <span class="type">QObject</span><span class="operator">::</span>connect(configuration<span class="operator">,</span> <span class="operator">&amp;</span>KuesaUtils<span class="operator">::</span>SceneConfiguration<span class="operator">::</span>loadingDone<span class="operator">,</span>
+                      <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span> {
+                          addObjectPickersOnBit();
+                          <span class="comment">// Gather labels names</span>
+                          setPartLabelNames();
+                      });
+
+     <span class="type">QObject</span><span class="operator">::</span>connect(<span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>ScreenController<span class="operator">::</span>bitChanged<span class="operator">,</span>
+                      <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>ScreenController<span class="operator">::</span>loadDrillBit);
+     <span class="type">QObject</span><span class="operator">::</span>connect(m_cameraAnimationPlayer<span class="operator">,</span> <span class="operator">&amp;</span>Kuesa<span class="operator">::</span>AnimationPlayer<span class="operator">::</span>normalizedTimeChanged<span class="operator">,</span>
+                      <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>ScreenController<span class="operator">::</span>positionOnCameraOrbitChanged);
+
+     <span class="type">QObject</span><span class="operator">::</span>connect(configuration<span class="operator">,</span> <span class="operator">&amp;</span>KuesaUtils<span class="operator">::</span>SceneConfiguration<span class="operator">::</span>unloadingDone<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span> {
+         setSelectedPart(SelectablePart<span class="operator">::</span>NoPartSelected);
+         m_originalDrillBitParent <span class="operator">=</span> nullptr;
+     });
+
+     <span class="comment">// Set default scene configuration</span>
+     updateSceneConfiguration();
+ }
+
+ ScreenController<span class="operator">::</span><span class="operator">~</span>ScreenController()
+ {
+     <span class="comment">// We own the view configurations if they are not parented</span>
+     <span class="keyword">if</span> (m_mainViewConfiguration <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">!</span>m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>parent())
+         <span class="keyword">delete</span> m_mainViewConfiguration;
+     <span class="keyword">if</span> (m_detailViewConfiguration <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">!</span>m_detailViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>parent())
+         <span class="keyword">delete</span> m_detailViewConfiguration;
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>playAnimationBackAndForth(Kuesa<span class="operator">::</span>AnimationPlayer <span class="operator">*</span>player<span class="operator">,</span> <span class="type">int</span> delay)
+ {
+     ensureClockOnAnimationPlayer(player);
+
+     <span class="comment">// Connect to running changed</span>
+     <span class="keyword">auto</span> connection <span class="operator">=</span> std<span class="operator">::</span>make_shared<span class="operator">&lt;</span><span class="type">QMetaObject</span><span class="operator">::</span>Connection<span class="operator">&gt;</span>();
+     <span class="operator">*</span>connection <span class="operator">=</span> <span class="type">QObject</span><span class="operator">::</span>connect(player<span class="operator">,</span> <span class="operator">&amp;</span>Kuesa<span class="operator">::</span>AnimationPlayer<span class="operator">::</span>runningChanged<span class="operator">,</span> player<span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">,</span> player<span class="operator">,</span> connection<span class="operator">]</span> {
+         <span class="comment">// We only want to do something if we are not running (meaning we were done playing)</span>
+         <span class="keyword">if</span> (player<span class="operator">-</span><span class="operator">&gt;</span>isRunning())
+             <span class="keyword">return</span>;
+
+         <span class="type">Qt3DAnimation</span><span class="operator">::</span><span class="type">QClock</span> <span class="operator">*</span>c <span class="operator">=</span> player<span class="operator">-</span><span class="operator">&gt;</span>clock();
+         <span class="keyword">const</span> bool wasReversed <span class="operator">=</span> c<span class="operator">-</span><span class="operator">&gt;</span>playbackRate() <span class="operator">&lt;</span> <span class="number">0.0</span>;
+
+         <span class="comment">// Reverse playback speed and set normalized time based on playback direction</span>
+         c<span class="operator">-</span><span class="operator">&gt;</span>setPlaybackRate(c<span class="operator">-</span><span class="operator">&gt;</span>playbackRate() <span class="operator">*</span> <span class="operator">-</span><span class="number">1.0f</span>);
+         player<span class="operator">-</span><span class="operator">&gt;</span>setNormalizedTime(c<span class="operator">-</span><span class="operator">&gt;</span>playbackRate() <span class="operator">&gt;</span> <span class="number">0.0f</span> <span class="operator">?</span> <span class="number">0.0f</span> : <span class="number">1.0f</span>);
+
+         <span class="comment">// If we were done playing in reverse, then return early</span>
+         <span class="keyword">if</span> (wasReversed) {
+             <span class="type">QObject</span><span class="operator">::</span>disconnect(<span class="operator">*</span>connection);
+             setSelectedPart(SelectablePart<span class="operator">::</span>NoPartSelected);
+             <span class="keyword">return</span>;
+         }
+
+         <span class="comment">// Otherwise, play animation backward</span>
+         player<span class="operator">-</span><span class="operator">&gt;</span>start();
+     });
+
+     player<span class="operator">-</span><span class="operator">&gt;</span>restart(delay);
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>setSelectedPart(ScreenController<span class="operator">::</span>SelectablePart selectedPart)
+ {
+     <span class="keyword">if</span> (selectedPart <span class="operator">=</span><span class="operator">=</span> m_selectedPart)
+         <span class="keyword">return</span>;
+     m_selectedPart <span class="operator">=</span> selectedPart;
+     <span class="keyword">emit</span> selectedPartChanged();
+ }
+
+ ScreenController<span class="operator">::</span>SelectablePart ScreenController<span class="operator">::</span>selectedPart() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_selectedPart;
+ }
+
+ CompleteAnimationRunner<span class="operator">::</span>CompleteAnimationRunner(ScreenController <span class="operator">*</span>parent<span class="operator">,</span>
+                                                  Kuesa<span class="operator">::</span>AnimationPlayer <span class="operator">*</span>p<span class="operator">,</span>
+                                                  <span class="keyword">const</span> CompleteAnimationRunner<span class="operator">::</span>Callback <span class="operator">&amp;</span>callback<span class="operator">,</span>
+                                                  <span class="type">float</span> speed)
+     : <span class="type">QObject</span>(parent)
+ {
+     <span class="keyword">if</span> (<span class="operator">!</span>p<span class="operator">-</span><span class="operator">&gt;</span>isRunning()) {
+         callback();
+         <span class="keyword">return</span>;
+     }
+
+     p<span class="operator">-</span><span class="operator">&gt;</span>setLoopCount(p<span class="operator">-</span><span class="operator">&gt;</span>currentLoop() <span class="operator">+</span> <span class="number">1</span>);
+     ensureClockOnAnimationPlayer(p);
+     p<span class="operator">-</span><span class="operator">&gt;</span>clock()<span class="operator">-</span><span class="operator">&gt;</span>setPlaybackRate(speed);
+
+     <span class="type">QMetaObject</span><span class="operator">::</span>Connection <span class="operator">*</span>c <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QMetaObject</span><span class="operator">::</span>Connection;
+     <span class="keyword">auto</span> singleShot <span class="operator">=</span> <span class="operator">[</span><span class="operator">=</span><span class="operator">]</span>(bool running) {
+         <span class="keyword">if</span> (<span class="operator">!</span>running) {
+             disconnect(<span class="operator">*</span>c);
+             callback();
+             deleteLater();
+         }
+     };
+     <span class="operator">*</span>c <span class="operator">=</span> <span class="type">QObject</span><span class="operator">::</span>connect(p<span class="operator">,</span> <span class="operator">&amp;</span>Kuesa<span class="operator">::</span>AnimationPlayer<span class="operator">::</span>runningChanged<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> singleShot);
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>setMode(ScreenController<span class="operator">::</span>Mode mode)
+ {
+     <span class="keyword">if</span> (m_mode <span class="operator">=</span><span class="operator">=</span> mode)
+         <span class="keyword">return</span>;
+     m_mode <span class="operator">=</span> mode;
+     <span class="keyword">emit</span> modeChanged(mode);
+
+     <span class="comment">// Update Scene Content based on selected mode</span>
+     <span class="keyword">switch</span> (m_mode) {
+     <span class="keyword">case</span> Mode<span class="operator">::</span>GuidedDrillingMode: {
+         <span class="comment">// Run until end of current loop</span>
+         <span class="keyword">new</span> CompleteAnimationRunner(
+                 <span class="keyword">this</span><span class="operator">,</span>
+                 m_cameraAnimationPlayer<span class="operator">,</span>
+                 <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>() {
+                     m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setLayerNames({ <span class="type">QStringLiteral</span>(<span class="string">&quot;LayerDevice&quot;</span>)<span class="operator">,</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;LayerTools&quot;</span>)<span class="operator">,</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;LayerEnv&quot;</span>) });
+                     m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setCameraName(<span class="type">QStringLiteral</span>(<span class="string">&quot;CamTransition&quot;</span>));
+                     reset();
+                     nextStep();
+                 }<span class="operator">,</span>
+                 <span class="number">10.0f</span>);
+         <span class="keyword">break</span>;
+     }
+     <span class="keyword">case</span> Mode<span class="operator">::</span>UserManualMode: {
+         <span class="comment">// Run until end of current loop</span>
+         <span class="keyword">new</span> CompleteAnimationRunner(
+                 <span class="keyword">this</span><span class="operator">,</span>
+                 m_cameraAnimationPlayer<span class="operator">,</span>
+                 <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>() {
+                     m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setCameraName(<span class="type">QStringLiteral</span>(<span class="string">&quot;CamOrbitCenter.CamOrbit&quot;</span>));
+                     m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setLayerNames({ <span class="type">QStringLiteral</span>(<span class="string">&quot;LayerDevice&quot;</span>)<span class="operator">,</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;LayerTools&quot;</span>)<span class="operator">,</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;LayerEnv&quot;</span>) });
+                     reset();
+                 }<span class="operator">,</span>
+                 <span class="number">10.0f</span>);
+         <span class="keyword">break</span>;
+     }
+     <span class="keyword">case</span> Mode<span class="operator">::</span>StatusMode: {
+         m_cameraAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>setLoopCount(Kuesa<span class="operator">::</span>AnimationPlayer<span class="operator">::</span>Infinite);
+         m_cameraAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>clock()<span class="operator">-</span><span class="operator">&gt;</span>setPlaybackRate(<span class="number">1.0f</span>);
+         m_cameraAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>restart(<span class="keyword">true</span>);
+         m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setCameraName(<span class="type">QStringLiteral</span>(<span class="string">&quot;CamOrbitCenter.CamOrbit&quot;</span>));
+         m_mainViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setLayerNames({ <span class="type">QStringLiteral</span>(<span class="string">&quot;LayerDevice&quot;</span>)<span class="operator">,</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;LayerEnv&quot;</span>) });
+         <span class="keyword">break</span>;
+     }
+     <span class="keyword">default</span>:
+         <span class="keyword">break</span>;
+     }
+ }
+
+ ScreenController<span class="operator">::</span>Mode ScreenController<span class="operator">::</span>mode() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_mode;
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>setBit(ScreenController<span class="operator">::</span>Bit bit)
+ {
+     <span class="keyword">if</span> (bit <span class="operator">=</span><span class="operator">=</span> m_bit)
+         <span class="keyword">return</span>;
+     m_bit <span class="operator">=</span> bit;
+     <span class="keyword">emit</span> bitChanged();
+
+     <span class="comment">// Were we reset ?</span>
+     <span class="keyword">if</span> (m_bit <span class="operator">=</span><span class="operator">=</span> Bit<span class="operator">::</span>None) {
+         setDrillMode(DrillMode<span class="operator">::</span>None);
+         setDrillingMaterial(MaterialType<span class="operator">::</span>None);
+         <span class="keyword">return</span>;
+     }
+
+     <span class="comment">// Deduce Drilling Mode and Material for the bit</span>
+
+     <span class="comment">// Screw driving</span>
+     <span class="keyword">const</span> bool isScrewDriving <span class="operator">=</span> std<span class="operator">::</span>find(std<span class="operator">::</span>begin(screwDriverBits)<span class="operator">,</span> std<span class="operator">::</span>end(screwDriverBits)<span class="operator">,</span> bit) <span class="operator">!</span><span class="operator">=</span> std<span class="operator">::</span>end(screwDriverBits);
+     <span class="keyword">if</span> (isScrewDriving) {
+         setDrillMode(ScreenController<span class="operator">::</span>DrillMode<span class="operator">::</span>Screw);
+         setDrillingMaterial(ScreenController<span class="operator">::</span>MaterialType<span class="operator">::</span>None);
+         <span class="keyword">return</span>;
+     }
+
+     <span class="comment">// Drilling</span>
+     setDrillMode(ScreenController<span class="operator">::</span>DrillMode<span class="operator">::</span>Drill);
+     <span class="keyword">const</span> bool isMetalBit <span class="operator">=</span> std<span class="operator">::</span>find(std<span class="operator">::</span>begin(metalDrillingBits)<span class="operator">,</span> std<span class="operator">::</span>end(metalDrillingBits)<span class="operator">,</span> bit) <span class="operator">!</span><span class="operator">=</span> std<span class="operator">::</span>end(metalDrillingBits);
+     <span class="keyword">if</span> (isMetalBit) {
+         setDrillingMaterial(ScreenController<span class="operator">::</span>MaterialType<span class="operator">::</span>Metal);
+     } <span class="keyword">else</span> {
+         <span class="keyword">const</span> bool isWoodBit <span class="operator">=</span> std<span class="operator">::</span>find(std<span class="operator">::</span>begin(woodDrillingBits)<span class="operator">,</span> std<span class="operator">::</span>end(woodDrillingBits)<span class="operator">,</span> bit) <span class="operator">!</span><span class="operator">=</span> std<span class="operator">::</span>end(woodDrillingBits);
+         <span class="keyword">if</span> (isWoodBit) {
+             setDrillingMaterial(ScreenController<span class="operator">::</span>MaterialType<span class="operator">::</span>Wood);
+         } <span class="keyword">else</span> { <span class="comment">// Masonry</span>
+             setDrillingMaterial(ScreenController<span class="operator">::</span>MaterialType<span class="operator">::</span>Concrete);
+         }
+     }
+ }
+
+ ScreenController<span class="operator">::</span>Bit ScreenController<span class="operator">::</span>bit() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_bit;
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>setDrillMode(ScreenController<span class="operator">::</span>DrillMode mode)
+ {
+     <span class="keyword">if</span> (mode <span class="operator">=</span><span class="operator">=</span> m_drillingMode)
+         <span class="keyword">return</span>;
+     m_drillingMode <span class="operator">=</span> mode;
+     <span class="keyword">emit</span> drillModeChanged();
+ }
+
+ ScreenController<span class="operator">::</span>DrillMode ScreenController<span class="operator">::</span>drillingMode() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_drillingMode;
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>setDrillingMaterial(ScreenController<span class="operator">::</span>MaterialType material)
+ {
+     <span class="keyword">if</span> (material <span class="operator">=</span><span class="operator">=</span> m_drillingMaterial)
+         <span class="keyword">return</span>;
+     m_drillingMaterial <span class="operator">=</span> material;
+     <span class="keyword">emit</span> drillingMaterialChanged();
+ }
+
+ ScreenController<span class="operator">::</span>MaterialType ScreenController<span class="operator">::</span>drillingMaterial() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_drillingMaterial;
+ }
+
+ ScreenController<span class="operator">::</span>Step ScreenController<span class="operator">::</span>guidedDrillingStep() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_drillingStep;
+ }
+
+ ScreenController<span class="operator">::</span>Step ScreenController<span class="operator">::</span>nextStep()
+ {
+     <span class="keyword">if</span> (mode() <span class="operator">!</span><span class="operator">=</span> Mode<span class="operator">::</span>GuidedDrillingMode <span class="operator">|</span><span class="operator">|</span> m_steppedPlayer<span class="operator">-</span><span class="operator">&gt;</span>isRunning())
+         <span class="keyword">return</span> m_drillingStep;
+
+     <span class="keyword">auto</span> findNextStep <span class="operator">=</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>() <span class="operator">-</span><span class="operator">&gt;</span> Step {
+         <span class="comment">// Note: maybe we later will need to skip some steps based on what</span>
+         <span class="comment">// previous steps were selected</span>
+
+         <span class="comment">// We can also update the sceneConfiguration</span>
+         <span class="keyword">return</span> Step(<span class="type">int</span>(m_drillingStep) <span class="operator">+</span> <span class="number">1</span>);
+     };
+
+     <span class="keyword">if</span> (m_drillingStep <span class="operator">&lt;</span> Step<span class="operator">::</span>CompletionStep) {
+         m_drillingStep <span class="operator">=</span> findNextStep();
+         <span class="keyword">emit</span> guidedDrillingStepChanged();
+
+         m_animationClock<span class="operator">-</span><span class="operator">&gt;</span>setPlaybackRate(<span class="number">1.0</span>);
+         m_steppedPlayer<span class="operator">-</span><span class="operator">&gt;</span>start();
+     } <span class="keyword">else</span> {
+         m_steppedPlayer<span class="operator">-</span><span class="operator">&gt;</span>setNormalizedTime(<span class="number">0.0f</span>);
+         setMode(Mode<span class="operator">::</span>UserManualMode);
+     }
+     <span class="keyword">return</span> m_drillingStep;
+ }
+
+ ScreenController<span class="operator">::</span>Step ScreenController<span class="operator">::</span>reset()
+ {
+     setBit(Bit<span class="operator">::</span>None);
+     m_drillingStep <span class="operator">=</span> Step<span class="operator">::</span>None;
+     <span class="keyword">emit</span> guidedDrillingStepChanged();
+
+     m_steppedPlayer<span class="operator">-</span><span class="operator">&gt;</span>setNormalizedTime(<span class="number">0.0</span>);
+
+     <span class="keyword">return</span> m_drillingStep;
+ }
+
+ <span class="type">QString</span> ScreenController<span class="operator">::</span>bitName(ScreenController<span class="operator">::</span>Bit bit)
+ {
+     <span class="keyword">switch</span> (bit) {
+     <span class="keyword">case</span> Bit<span class="operator">::</span>None:
+         <span class="keyword">return</span> QLatin1String(<span class="string">&quot;&quot;</span>);
+
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill1:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Metal drill 1&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill2:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Metal drill 2&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill3:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Wood drill 1&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill4:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Wood drill 2&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill5:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Concrete drill 1&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>Drill6:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Concrete drill 2&quot;</span>);
+
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewHex:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Hex&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewHexMedium:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Medium hex&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewHexSmall:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Small hex&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewHexTiny:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tiny hex&quot;</span>);
+
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewTorx:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Torx&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewTorxMedium:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Medium Torx&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewTorxSmall:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Small Torx&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewTorxTiny:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Tiny Torx&quot;</span>);
+
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewPhilips:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Philips&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewPhilipsMedium:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Medium Philips&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewPhilipsSmall:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Small Philips&quot;</span>);
+
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewFlat:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Flat&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewFlatMedium:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Medium flat&quot;</span>);
+     <span class="keyword">case</span> Bit<span class="operator">::</span>ScrewFlatSmall:
+         <span class="keyword">return</span> <span class="type">QStringLiteral</span>(<span class="string">&quot;Small flat&quot;</span>);
+     }
+
+     Q_UNREACHABLE();
+ }
+
+ <span class="type">float</span> ScreenController<span class="operator">::</span>positionOnCameraOrbit() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_cameraAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>normalizedTime();
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>setPositionOnCameraOrbit(<span class="type">float</span> p)
+ {
+     m_cameraAnimationPlayer<span class="operator">-</span><span class="operator">&gt;</span>setNormalizedTime(p);
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>updateSceneConfiguration()
+ {
+     hideDetailView();
+
+     <span class="keyword">switch</span> (m_selectedPart) {
+     <span class="keyword">case</span> SelectablePart<span class="operator">::</span>Trigger: {
+         showDetailView(<span class="type">QStringLiteral</span>(<span class="string">&quot;CamTrigger&quot;</span>));
+         playAnimationBackAndForth(m_triggerAnimationPlayer<span class="operator">,</span> <span class="number">750</span>);
+         <span class="keyword">break</span>;
+     }
+     <span class="keyword">case</span> SelectablePart<span class="operator">::</span>Clutch: {
+         showDetailView(<span class="type">QStringLiteral</span>(<span class="string">&quot;CamChuck&quot;</span>));
+         <span class="keyword">break</span>;
+     }
+     <span class="keyword">case</span> SelectablePart<span class="operator">::</span>Chuck: {
+         showDetailView(<span class="type">QStringLiteral</span>(<span class="string">&quot;CamChuck&quot;</span>));
+         playAnimationBackAndForth(m_toolInOutAnimationPlayer);
+         <span class="keyword">break</span>;
+     }
+     <span class="keyword">case</span> SelectablePart<span class="operator">::</span>DirectionSwitch: {
+         showDetailView(<span class="type">QStringLiteral</span>(<span class="string">&quot;CamDirectionSwitch&quot;</span>));
+         playAnimationBackAndForth(m_directionSwitchAnimationPlayer<span class="operator">,</span> <span class="number">750</span>);
+         <span class="keyword">break</span>;
+     }
+     <span class="keyword">case</span> SelectablePart<span class="operator">::</span>BatteryPack: {
+         showDetailView(<span class="type">QStringLiteral</span>(<span class="string">&quot;CamBattery&quot;</span>));
+         playAnimationBackAndForth(m_batteryInOutAnimationPlayer<span class="operator">,</span> <span class="number">750</span>);
+         <span class="keyword">break</span>;
+     }
+     <span class="keyword">case</span> SelectablePart<span class="operator">::</span>NoPartSelected: {
+         <span class="keyword">break</span>;
+     }
+     <span class="keyword">default</span>:
+         Q_UNREACHABLE();
+     };
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>showDetailView(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>cameraName)
+ {
+     m_detailViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setViewportRect({ <span class="number">0.7f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.3f</span><span class="operator">,</span> <span class="number">0.3f</span> });
+     m_detailViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setCameraName(cameraName);
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>hideDetailView()
+ {
+     m_detailViewConfiguration<span class="operator">-</span><span class="operator">&gt;</span>setViewportRect({ <span class="number">0.7f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span> });
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>loadDrillBit()
+ {
+     Kuesa<span class="operator">::</span>SceneEntity <span class="operator">*</span>sceneEntity <span class="operator">=</span> sceneConfiguration()<span class="operator">-</span><span class="operator">&gt;</span>sceneEntity();
+     <span class="keyword">if</span> (<span class="operator">!</span>sceneEntity)
+         <span class="keyword">return</span>;
+     <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>drillBitHolder <span class="operator">=</span> sceneEntity<span class="operator">-</span><span class="operator">&gt;</span>entity(<span class="type">QStringLiteral</span>(<span class="string">&quot;Drill.DrillAxis.DrillHelper.ToolHelper&quot;</span>));
+     <span class="keyword">if</span> (drillBitHolder) {
+         <span class="keyword">if</span> (m_insertedDrillBit) {
+             m_insertedDrillBit<span class="operator">-</span><span class="operator">&gt;</span>setParent(m_originalDrillBitParent);
+             m_insertedDrillBit<span class="operator">-</span><span class="operator">&gt;</span>removeComponent(m_insertedDrillBitTranform);
+             m_insertedDrillBit<span class="operator">-</span><span class="operator">&gt;</span>addComponent(m_originalDrillBitTransform);
+
+             m_insertedDrillBit <span class="operator">=</span> nullptr;
+         }
+
+         <span class="keyword">if</span> (m_bit <span class="operator">=</span><span class="operator">=</span> Bit<span class="operator">::</span>None)
+             <span class="keyword">return</span>;
+
+         <span class="comment">// Retrieve Drill given its name and parent it</span>
+         m_insertedDrillBit <span class="operator">=</span> sceneEntity<span class="operator">-</span><span class="operator">&gt;</span>entity(gltfBitName(m_bit));
+         m_insertedDrillBit<span class="operator">-</span><span class="operator">&gt;</span>setParent(drillBitHolder);
+         m_originalDrillBitTransform <span class="operator">=</span> m_insertedDrillBit<span class="operator">-</span><span class="operator">&gt;</span>componentsOfType<span class="operator">&lt;</span><span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QTransform</span><span class="operator">&gt;</span>()<span class="operator">.</span>at(<span class="number">0</span>);
+         m_insertedDrillBit<span class="operator">-</span><span class="operator">&gt;</span>removeComponent(m_originalDrillBitTransform);
+         m_insertedDrillBit<span class="operator">-</span><span class="operator">&gt;</span>addComponent(m_insertedDrillBitTranform);
+     }
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>setPartLabelNames()
+ {
+     Kuesa<span class="operator">::</span>SceneEntity <span class="operator">*</span>sceneEntity <span class="operator">=</span> sceneConfiguration()<span class="operator">-</span><span class="operator">&gt;</span>sceneEntity();
+     <span class="keyword">if</span> (<span class="operator">!</span>sceneEntity)
+         <span class="keyword">return</span>;
+     <span class="keyword">for</span> (<span class="type">QObject</span> <span class="operator">*</span>obj : qAsConst(m_partLabels)) {
+         PartLabel <span class="operator">*</span>label <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>PartLabel <span class="operator">*</span><span class="operator">&gt;</span>(obj);
+         <span class="comment">// Retrive label entity</span>
+         <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>labelEntity <span class="operator">=</span> sceneEntity<span class="operator">-</span><span class="operator">&gt;</span>entity(label<span class="operator">-</span><span class="operator">&gt;</span>nodeName());
+         <span class="comment">// Use extra property on labelEntity to set PartLabel label</span>
+         <span class="keyword">if</span> (labelEntity <span class="operator">!</span><span class="operator">=</span> nullptr)
+             label<span class="operator">-</span><span class="operator">&gt;</span>setLabelName(labelEntity<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;text&quot;</span>)<span class="operator">.</span>toString());
+     }
+ }
+
+ <span class="type">void</span> ScreenController<span class="operator">::</span>addObjectPickersOnBit()
+ {
+     Kuesa<span class="operator">::</span>SceneEntity <span class="operator">*</span>sceneEntity <span class="operator">=</span> sceneConfiguration()<span class="operator">-</span><span class="operator">&gt;</span>sceneEntity();
+     <span class="keyword">if</span> (<span class="operator">!</span>sceneEntity)
+         <span class="keyword">return</span>;
+
+     <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> bit : bits) {
+         <span class="type">Qt3DCore</span><span class="operator">::</span><span class="type">QEntity</span> <span class="operator">*</span>drillBit <span class="operator">=</span> sceneEntity<span class="operator">-</span><span class="operator">&gt;</span>entity(gltfBitName(bit));
+
+         <span class="comment">// Record Drill Bits original parent to restore parenting</span>
+         <span class="comment">// when switching between bits</span>
+         <span class="keyword">if</span> (<span class="operator">!</span>m_originalDrillBitParent)
+             m_originalDrillBitParent <span class="operator">=</span> drillBit<span class="operator">-</span><span class="operator">&gt;</span>parentEntity();
+
+         <span class="keyword">if</span> (drillBit<span class="operator">-</span><span class="operator">&gt;</span>componentsOfType<span class="operator">&lt;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QObjectPicker</span><span class="operator">&gt;</span>()<span class="operator">.</span>empty()) {
+             <span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QObjectPicker</span> <span class="operator">*</span>picker <span class="operator">=</span> <span class="keyword">new</span> <span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QObjectPicker</span>();
+             picker<span class="operator">-</span><span class="operator">&gt;</span>setHoverEnabled(<span class="keyword">true</span>);
+             <span class="type">QObject</span><span class="operator">::</span>connect(picker<span class="operator">,</span> <span class="operator">&amp;</span><span class="type">Qt3DRender</span><span class="operator">::</span><span class="type">QObjectPicker</span><span class="operator">::</span>clicked<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">,</span> bit<span class="operator">]</span> {
+                 <span class="keyword">if</span> (mode() <span class="operator">!</span><span class="operator">=</span> Mode<span class="operator">::</span>GuidedDrillingMode)
+                     setMode(Mode<span class="operator">::</span>GuidedDrillingMode);
+                 <span class="keyword">else</span>
+                     setBit(bit);
+             });
+             drillBit<span class="operator">-</span><span class="operator">&gt;</span>addComponent(picker);
+         }
+     }
+ }
+
+ PartLabel<span class="operator">::</span>PartLabel(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>nodeName<span class="operator">,</span>
+                      <span class="keyword">const</span> ScreenController<span class="operator">::</span>SelectablePart part<span class="operator">,</span>
+                      Kuesa<span class="operator">::</span>TransformTracker <span class="operator">*</span>tracker<span class="operator">,</span>
+                      <span class="type">QObject</span> <span class="operator">*</span>parent)
+     : <span class="type">QObject</span>(parent)
+     <span class="operator">,</span> m_nodeName(nodeName)
+     <span class="operator">,</span> m_part(part)
+     <span class="operator">,</span> m_tracker(tracker)
+ {
+     <span class="type">QObject</span><span class="operator">::</span>connect(tracker<span class="operator">,</span> <span class="operator">&amp;</span>Kuesa<span class="operator">::</span>TransformTracker<span class="operator">::</span>screenPositionChanged<span class="operator">,</span>
+                      <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>PartLabel<span class="operator">::</span>positionChanged);
+ }
+
+ <span class="type">QPointF</span> PartLabel<span class="operator">::</span>position() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_tracker<span class="operator">-</span><span class="operator">&gt;</span>screenPosition();
+ }
+
+ <span class="type">QString</span> PartLabel<span class="operator">::</span>labelName() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_labelName;
+ }
+
+ ScreenController<span class="operator">::</span>SelectablePart PartLabel<span class="operator">::</span>part() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_part;
+ }
+
+ <span class="type">QString</span> PartLabel<span class="operator">::</span>nodeName() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_nodeName;
+ }
+
+ <span class="type">void</span> PartLabel<span class="operator">::</span>setLabelName(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>labelName)
+ {
+     <span class="keyword">if</span> (labelName <span class="operator">=</span><span class="operator">=</span> m_labelName)
+         <span class="keyword">return</span>;
+     m_labelName <span class="operator">=</span> labelName;
+     <span class="keyword">emit</span> labelNameChanged();
+ }
+
+ <span class="type">QObjectList</span> ScreenController<span class="operator">::</span>partLabels() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_partLabels;
+ }
+</pre>

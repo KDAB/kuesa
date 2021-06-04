@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- viewconfiguration.cpp -->
+  <title>ViewConfiguration QML Type | Kuesa Runtime 1.4</title>
+<link rel='stylesheet' href='style/bootstrap.min.css'> <link rel='stylesheet' href='style/dracula.css'> <link rel='stylesheet' href='style/style.css'><script type='text/javascript' src='scripts/jquery.slim.min.js'></script> <script type='text/javascript' src='scripts/bootstrap.bundle.min.js'></script> <script type='text/javascript' src='scripts/highlight.pack.js'></script> <script type='text/javascript' src='scripts/clipboard.min.js'></script> <script type='text/javascript' src='scripts/script.js'></script></head>
+<div id="title"> <div class="logo"> <a href="https://www.kdab.com" target=”_blank” class="ui-link"> <img src="images/kdab-logo.png" alt="KDAB Logo"> </a> </div> <div class="header"> <h1>Kuesa Runtime</h1> </div> </div> <div id="breadcrumbs"><ul><li><a href="index.html">Kuesa Runtime 1.4</a></li>
+<li><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime</a></li>
+<li><a href="kuesa-qml.html">QML Types</a></li>
+<li>ViewConfiguration QML Type</li>
+<li id="buildversion"><a href="kuesa-overview.html#kuesa-runtime">Kuesa Runtime 1.4 Reference Documentation</a></li>
+</ul></div><div class='doc-content'><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">ViewConfiguration QML Type</h1>
+<span class="subtitle"></span>
+<!-- $$$ViewConfiguration-brief -->
+<p>ViewConfiguration provides a way of conveniently specifying different views of the same scene. <a href="#details">More...</a></p>
+<!-- @@@ViewConfiguration -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Kuesa 1.4</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Instantiates:</td><td class="memItemRight bottomAlign"> <a href="qml-viewconfiguration.html"><a href="kuesautils-viewconfiguration.html">ViewConfiguration</a></td></tr></table></div><ul>
+<li><a href="qml-viewconfiguration-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#backToFrontSorting-prop">backToFrontSorting</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#cameraName-prop">cameraName</a></b></b> : string</li>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#clearColor-prop">clearColor</a></b></b> : color</li>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#exposure-prop">exposure</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#frustumCulling-prop">frustumCulling</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#gamma-prop">gamma</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#layerNames-prop">layerNames</a></b></b> : list&lt;string&gt;</li>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#particlesEnabled-prop">particlesEnabled</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#toneMappingAlgorithm-prop">toneMappingAlgorithm</a></b></b> : ToneMappingAndGammaCorrectionEffect.ToneMapping</li>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#usesStencilMask-prop">usesStencilMask</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#viewportRect-prop">viewportRect</a></b></b> : rect</li>
+<li class="fn"><b><b><a href="qml-viewconfiguration.html#zFilling-prop">zFilling</a></b></b> : bool</li>
+</ul>
+<!-- $$$ViewConfiguration-description -->
+<a name="details"></a>
+<h2 id="details">Detailed Description</h2>
+<!-- @@@ViewConfiguration -->
+<h2>Property Documentation</h2>
+<!-- $$$backToFrontSorting -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="backToFrontSorting-prop">
+<td class="tblQmlPropNode"><p>
+<a name="backToFrontSorting-prop"></a><span class="name">backToFrontSorting</span> : <span class="type">bool</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds whether back to front sorting to render objects in back-to-front order is enabled. This is required for proper alpha blending rendering. Enabled by default.</p>
+</div></div><!-- @@@backToFrontSorting -->
+<br/>
+<!-- $$$cameraName -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="cameraName-prop">
+<td class="tblQmlPropNode"><p>
+<a name="cameraName-prop"></a><span class="name">cameraName</span> : <span class="type">string</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The name of the camera asset that should be used to view the scene. If the name references a valid camera, the camera will automatically be set on the <a href="qml-forwardrenderer.html">ForwardRenderer</a> frameGraph and other internal assets such as <a href="qml-transformtracker.html">Kuesa::TransformTracker</a>.</p>
+</div></div><!-- @@@cameraName -->
+<br/>
+<!-- $$$clearColor -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="clearColor-prop">
+<td class="tblQmlPropNode"><p>
+<a name="clearColor-prop"></a><span class="name">clearColor</span> : <span class="type">color</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the color used to clear the screen at the start of each frame.</p>
+</div></div><!-- @@@clearColor -->
+<br/>
+<!-- $$$exposure -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="exposure-prop">
+<td class="tblQmlPropNode"><p>
+<a name="exposure-prop"></a><span class="qmldefault">[default] </span><span class="name">exposure</span> : <span class="type">real</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Exposure correction factor used before the linear to sRGB conversion.</p>
+</div></div><!-- @@@exposure -->
+<br/>
+<!-- $$$frustumCulling -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="frustumCulling-prop">
+<td class="tblQmlPropNode"><p>
+<a name="frustumCulling-prop"></a><span class="name">frustumCulling</span> : <span class="type">bool</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds whether frustum culling is enabled or not. Enabled by default.</p>
+</div></div><!-- @@@frustumCulling -->
+<br/>
+<!-- $$$gamma -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="gamma-prop">
+<td class="tblQmlPropNode"><p>
+<a name="gamma-prop"></a><span class="qmldefault">[default] </span><span class="name">gamma</span> : <span class="type">real</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the gamma value to use for gamma correction that brings linear colors to sRGB colors.</p>
+</div></div><!-- @@@gamma -->
+<br/>
+<!-- $$$layerNames -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="layerNames-prop">
+<td class="tblQmlPropNode"><p>
+<a name="layerNames-prop"></a><span class="name">layerNames</span> : <span class="type">list</span>&lt;<span class="type">string</span>&gt;</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The list of KDAB_layers layer names to be selected for rendering. This allows selecting only a sub part of a glTF 2 model to only render parts that are linked to a specific layer.</p>
+</div></div><!-- @@@layerNames -->
+<br/>
+<!-- $$$particlesEnabled -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="particlesEnabled-prop">
+<td class="tblQmlPropNode"><p>
+<a name="particlesEnabled-prop"></a><span class="name">particlesEnabled</span> : <span class="type">bool</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds whether particles support is enabled. Disabled by default.</p>
+</div></div><!-- @@@particlesEnabled -->
+<br/>
+<!-- $$$toneMappingAlgorithm -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="toneMappingAlgorithm-prop">
+<td class="tblQmlPropNode"><p>
+<a name="toneMappingAlgorithm-prop"></a><span class="qmldefault">[default] </span><span class="name">toneMappingAlgorithm</span> : <span class="type"><a href="qml-tonemappingandgammacorrectioneffect.html">ToneMappingAndGammaCorrectionEffect</a></span>.<span class="type">ToneMapping</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Tone mapping specifies how we perform color conversion from HDR (high dynamic range) content to LDR (low dynamic range) content which our monitor displays.</p>
+</div></div><!-- @@@toneMappingAlgorithm -->
+<br/>
+<!-- $$$usesStencilMask -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="usesStencilMask-prop">
+<td class="tblQmlPropNode"><p>
+<a name="usesStencilMask-prop"></a><span class="qmldefault">[default] </span><span class="name">usesStencilMask</span> : <span class="type">bool</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Enables/disables stencil buffers. If true, stencil operations be used during the render phase to modify the stencil buffer. The resulting stencil buffer can later be used to apply post process effect to only part of the scene</p>
+</div></div><!-- @@@usesStencilMask -->
+<br/>
+<!-- $$$viewportRect -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="viewportRect-prop">
+<td class="tblQmlPropNode"><p>
+<a name="viewportRect-prop"></a><span class="name">viewportRect</span> : <span class="type">rect</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds the viewport rectangle from within which the rendering will occur. Rectangle is in normalized coordinates.</p>
+</div></div><!-- @@@viewportRect -->
+<br/>
+<!-- $$$zFilling -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="zFilling-prop">
+<td class="tblQmlPropNode"><p>
+<a name="zFilling-prop"></a><span class="name">zFilling</span> : <span class="type">bool</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Holds whether multi-pass zFilling support is enabled. Disabled by default.</p>
+</div></div><!-- @@@zFilling -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p class="text-center">
+   <acronym title="Copyright">&copy;</acronym> 2021 KDAB.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br/>    Kuesa and respective logos are trademarks of KDAB.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -30,7 +30,6 @@
 #include "examplecustommaterialshaderdata_p.h"
 #include <Qt3DCore/private/qnode_p.h>
 
-
 QT_BEGIN_NAMESPACE
 
 using namespace Qt3DRender;
@@ -41,7 +40,8 @@ ExampleCustomMaterialShaderData::ExampleCustomMaterialShaderData(Qt3DCore::QNode
     : Qt3DRender::QShaderData(parent)
     , m_modulator()
     , m_inputTexture(nullptr)
-{}
+{
+}
 
 ExampleCustomMaterialShaderData::~ExampleCustomMaterialShaderData() = default;
 
@@ -50,11 +50,10 @@ float ExampleCustomMaterialShaderData::modulator() const
     return m_modulator;
 }
 
-Qt3DRender::QAbstractTexture * ExampleCustomMaterialShaderData::inputTexture() const
+Qt3DRender::QAbstractTexture *ExampleCustomMaterialShaderData::inputTexture() const
 {
     return m_inputTexture;
 }
-
 
 void ExampleCustomMaterialShaderData::setModulator(float modulator)
 {
@@ -64,7 +63,7 @@ void ExampleCustomMaterialShaderData::setModulator(float modulator)
     emit modulatorChanged(modulator);
 }
 
-void ExampleCustomMaterialShaderData::setInputTexture(Qt3DRender::QAbstractTexture * inputTexture)
+void ExampleCustomMaterialShaderData::setInputTexture(Qt3DRender::QAbstractTexture *inputTexture)
 {
     if (m_inputTexture == inputTexture)
         return;
@@ -80,8 +79,6 @@ void ExampleCustomMaterialShaderData::setInputTexture(Qt3DRender::QAbstractTextu
     }
     emit inputTextureChanged(m_inputTexture);
 }
-
-
 
 } // namespace Kuesa
 

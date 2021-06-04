@@ -1,0 +1,53 @@
+%s
+%sMaterial::%sMaterial(Qt3DCore::QNode *parent)
+    : GLTF2Material(parent)
+    , m_shaderDataParameter(new Qt3DRender::QParameter(QStringLiteral("properties"), {}))%s
+{
+    addParameter(m_shaderDataParameter);%s
+}
+
+%sMaterial::~%sMaterial() = default;
+
+/*!
+    \property %sMaterial::materialProperties
+
+    The properties defining the appearance of the material.
+
+    \since Kuesa 1.3
+ */
+
+/*!
+    \qmlproperty %sProperties %sMaterial::materialProperties
+
+    The properties defining the appearance of the material.
+
+    \since Kuesa 1.3
+ */
+
+Kuesa::%sProperties *%sMaterial::materialProperties() const
+{
+    return m_materialProperties;
+}
+
+void %sMaterial::setMaterialProperties(Kuesa::%sProperties *materialProperties)
+{
+    if (m_materialProperties != materialProperties) {
+        if (m_materialProperties)
+            m_materialProperties->disconnect(this);
+
+        m_materialProperties = materialProperties;
+        emit materialPropertiesChanged(materialProperties);
+
+        if (m_materialProperties) {%s
+%s
+
+            m_shaderDataParameter->setValue(QVariant::fromValue(m_materialProperties->shaderData()));
+            m_materialProperties->addClientMaterial(this);
+        }
+    }
+}
+
+void %sMaterial::setMaterialProperties(Kuesa::GLTF2MaterialProperties *materialProperties)
+{
+    setMaterialProperties(qobject_cast<Kuesa::%sProperties *>(materialProperties));
+}

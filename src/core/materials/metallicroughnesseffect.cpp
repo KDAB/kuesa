@@ -76,9 +76,9 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
         { 3, 1, QGraphicsApiFilter::OpenGL, QGraphicsApiFilter::CoreProfile },
         { 3, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
         { 2, 0, QGraphicsApiFilter::OpenGLES, QGraphicsApiFilter::NoProfile },
-    #if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
         { 1, 0, QGraphicsApiFilter::RHI, QGraphicsApiFilter::NoProfile },
-    #endif
+#endif
     };
 
     graphicsApiFilter()->setApi(apiFilterInfos[version].api);
@@ -90,22 +90,14 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     const auto fragmentShaderGraph = QUrl(QStringLiteral("qrc:/kuesa/shaders/graphs/metallicroughness.frag.json"));
 
     const QByteArray zFillFragmentShaderCode[] = {
-        QByteArray(R"(
-                   #version 330
-                   void main() { }
-                   )"),
-        QByteArray(R"(
-                   #version 300 es
-                   void main() { }
-                   )"),
-        QByteArray(R"(
-                   #version 100
-                   void main() { }
-                   )"),
-        QByteArray(R"(
-                   #version 450
-                   void main() { }
-                   )")
+        QByteArray(R"(#version 330
+                      void main() { })"),
+        QByteArray(R"(#version 300 es
+                      void main() { })"),
+        QByteArray(R"(#version 100
+                      void main() { })"),
+        QByteArray(R"(#version 450
+                      void main() { })")
     };
 
     m_metalRoughShaderBuilder->setShaderProgram(m_metalRoughShader);
@@ -166,11 +158,17 @@ MetallicRoughnessTechnique::MetallicRoughnessTechnique(Version version, Qt3DCore
     m_transparentRenderPass->setEnabled(false);
     addRenderPass(m_transparentRenderPass);
 
-    if (FrameGraphUtils::hasGeometryShaderSupport()) {
+    static const QString cubeShadowShaderSource[] = {
+        QStringLiteral("qrc:/kuesa/shaders/gl3/shadow_cube.geom"),
+        QStringLiteral("qrc:/kuesa/shaders/es3/shadow_cube.geom"),
+        {}, // ES2 doesn't support geometry shaders
+        QStringLiteral("qrc:/kuesa/shaders/gl3/shadow_cube.geom")
+    };
+    if (FrameGraphUtils::hasGeometryShaderSupport() && !cubeShadowShaderSource[version].isNull()) {
         auto cubeShadowShaderProg = new Qt3DRender::QShaderProgram(this);
         m_cubeMapShadowShaderBuilder->setShaderProgram(cubeShadowShaderProg);
         m_cubeMapShadowShaderBuilder->setVertexShaderGraph(vertexShaderGraph);
-        cubeShadowShaderProg->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(QStringLiteral("qrc:/kuesa/shaders/gl3/shadow_cube.geom"))));
+        cubeShadowShaderProg->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl(cubeShadowShaderSource[version])));
         cubeShadowShaderProg->setFragmentShaderCode(zFillFragmentShaderCode[version]);
 
         m_cubeMapShadowRenderPass->setShaderProgram(cubeShadowShaderProg);
@@ -348,7 +346,6 @@ QShaderProgramBuilder *MetallicRoughnessTechnique::metalRoughShaderBuilder() con
     \since Kuesa 1.1
  */
 
-
 MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     : GLTF2MaterialEffect(parent)
     , m_baseColorMapEnabled(false)
@@ -358,21 +355,22 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     , m_emissiveMapEnabled(false)
     , m_brdfLUTParameter(new QParameter(this))
 {
-    const auto enabledLayers = QStringList{
+    const auto enabledLayers = QStringList
+    {
         // Vertex Shader layers
         QStringLiteral("no-skinning"),
-        // Fragment Shader layers
-        QStringLiteral("noBaseColorMap"),
-        QStringLiteral("noMetalRoughMap"),
-        QStringLiteral("noAmbientOcclusionMap"),
-        QStringLiteral("noEmissiveMap"),
-        QStringLiteral("noNormalMap"),
-        QStringLiteral("noHasColorAttr"),
-        QStringLiteral("noDoubleSided"),
-        QStringLiteral("noHasAlphaCutoff"),
-        #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 3) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-            QStringLiteral("shadows")
-        #endif
+                // Fragment Shader layers
+                QStringLiteral("noBaseColorMap"),
+                QStringLiteral("noMetalRoughMap"),
+                QStringLiteral("noAmbientOcclusionMap"),
+                QStringLiteral("noEmissiveMap"),
+                QStringLiteral("noNormalMap"),
+                QStringLiteral("noHasColorAttr"),
+                QStringLiteral("noDoubleSided"),
+                QStringLiteral("noHasAlphaCutoff"),
+#if defined(ENABLE_SHADOWS)
+                QStringLiteral("shadows")
+#endif
     };
 
     m_metalRoughGL3Technique = new MetallicRoughnessTechnique(MetallicRoughnessTechnique::GL3, this);
@@ -388,7 +386,7 @@ MetallicRoughnessEffect::MetallicRoughnessEffect(Qt3DCore::QNode *parent)
     addTechnique(m_metalRoughES3Technique);
     addTechnique(m_metalRoughES2Technique);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_metalRoughRHITechnique = new MetallicRoughnessTechnique(MetallicRoughnessTechnique::RHI, this);
     m_metalRoughRHITechnique->setEnabledLayers(enabledLayers);
 
@@ -597,7 +595,7 @@ void MetallicRoughnessEffect::updateDoubleSided(bool doubleSided)
     m_metalRoughES3Technique->setCullingMode(cullingMode);
     m_metalRoughES2Technique->setCullingMode(cullingMode);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_metalRoughRHITechnique->setCullingMode(cullingMode);
 #endif
 }
@@ -620,7 +618,7 @@ void MetallicRoughnessEffect::updateUsingSkinning(bool useSkinning)
     m_metalRoughES3Technique->setAllowCulling(!useSkinning);
     m_metalRoughES2Technique->setAllowCulling(!useSkinning);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_metalRoughRHITechnique->setAllowCulling(!useSkinning);
 #endif
 }
@@ -630,7 +628,7 @@ void MetallicRoughnessEffect::updateOpaque(bool opaque)
     m_metalRoughGL3Technique->setOpaque(opaque);
     m_metalRoughES3Technique->setOpaque(opaque);
     m_metalRoughES2Technique->setOpaque(opaque);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_metalRoughRHITechnique->setOpaque(opaque);
 #endif
 }
@@ -707,7 +705,7 @@ void MetallicRoughnessEffect::updateLayersOnTechniques(const QStringList &layers
     m_metalRoughGL3Technique->setEnabledLayers(layers);
     m_metalRoughES3Technique->setEnabledLayers(layers);
     m_metalRoughES2Technique->setEnabledLayers(layers);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     m_metalRoughRHITechnique->setEnabledLayers(layers);
 #endif
 }

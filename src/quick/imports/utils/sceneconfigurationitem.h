@@ -32,9 +32,8 @@
 #include <QObject>
 #include <QtQml/QQmlListProperty>
 #include <KuesaUtils/sceneconfiguration.h>
+#include <KuesaUtils/viewconfiguration.h>
 #include <Kuesa/animationplayer.h>
-#include <Kuesa/transformtracker.h>
-#include <Kuesa/placeholdertracker.h>
 
 #include <vector>
 
@@ -52,15 +51,13 @@ class SceneConfigurationItem : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QQmlListProperty<Kuesa::AnimationPlayer> animations READ animations CONSTANT)
-    Q_PROPERTY(QQmlListProperty<Kuesa::TransformTracker> transformTrackers READ transformTrackers CONSTANT)
-    Q_PROPERTY(QQmlListProperty<Kuesa::PlaceholderTracker> placeholderTrackers READ placeholderTrackers CONSTANT)
+    Q_PROPERTY(QQmlListProperty<KuesaUtils::ViewConfiguration> views READ views CONSTANT)
 public:
     explicit SceneConfigurationItem(QObject *parent = nullptr);
     ~SceneConfigurationItem();
 
     QQmlListProperty<Kuesa::AnimationPlayer> animations();
-    QQmlListProperty<Kuesa::TransformTracker> transformTrackers();
-    QQmlListProperty<Kuesa::PlaceholderTracker> placeholderTrackers();
+    QQmlListProperty<KuesaUtils::ViewConfiguration> views();
 
     SceneConfiguration *parentSceneConfiguration() const { return qobject_cast<SceneConfiguration *>(parent()); }
 
@@ -69,18 +66,14 @@ private:
     static Kuesa::AnimationPlayer *qmlAnimationAt(QQmlListProperty<Kuesa::AnimationPlayer> *list, qt_size_type index);
     static qt_size_type qmlAnimationCount(QQmlListProperty<Kuesa::AnimationPlayer> *list);
     static void qmlClearAnimations(QQmlListProperty<Kuesa::AnimationPlayer> *list);
-    static void qmlAppendTransformTrackers(QQmlListProperty<Kuesa::TransformTracker> *list, Kuesa::TransformTracker *node);
-    static Kuesa::TransformTracker *qmlTransformTrackersAt(QQmlListProperty<Kuesa::TransformTracker> *list, qt_size_type index);
-    static qt_size_type qmlTransformTrackersCount(QQmlListProperty<Kuesa::TransformTracker> *list);
-    static void qmlClearTransformTrackers(QQmlListProperty<Kuesa::TransformTracker> *list);
-    static void qmlAppendPlaceholderTracker(QQmlListProperty<Kuesa::PlaceholderTracker> *list, Kuesa::PlaceholderTracker *node);
-    static Kuesa::PlaceholderTracker *qmlPlaceholderTrackerAt(QQmlListProperty<Kuesa::PlaceholderTracker> *list, qt_size_type index);
-    static qt_size_type qmlPlaceholderTrackersCount(QQmlListProperty<Kuesa::PlaceholderTracker> *list);
-    static void qmlClearPlaceholderTrackers(QQmlListProperty<Kuesa::PlaceholderTracker> *list);
+
+    static void qmlAppendViewConfiguration(QQmlListProperty<KuesaUtils::ViewConfiguration> *list, KuesaUtils::ViewConfiguration *node);
+    static KuesaUtils::ViewConfiguration *qmlViewconfigurationAt(QQmlListProperty<KuesaUtils::ViewConfiguration> *list, qt_size_type index);
+    static qt_size_type qmlViewConfigurationCount(QQmlListProperty<KuesaUtils::ViewConfiguration> *list);
+    static void qmlClearViewConfigurations(QQmlListProperty<KuesaUtils::ViewConfiguration> *list);
 
     std::vector<Kuesa::AnimationPlayer *> m_managedAnimations;
-    std::vector<Kuesa::TransformTracker *> m_managedTransformTrackers;
-    std::vector<Kuesa::PlaceholderTracker *> m_managedPlaceholderTrackers;
+    std::vector<KuesaUtils::ViewConfiguration *> m_managedViewConfigurations;
 };
 
 } // namespace KuesaUtils
