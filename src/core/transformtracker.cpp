@@ -554,6 +554,8 @@ void TransformTracker::matchNode()
 
 void TransformTracker::updateScreenProjection()
 {
+    if (m_screenSize.width() <= 0 || m_screenSize.height() <= 0)
+        return;
     QRect viewport{ 0, 0, m_screenSize.width(), m_screenSize.height() };
     if (m_viewportRect.isValid()) {
         viewport.setX(int(qreal(m_screenSize.width()) * m_viewportRect.x()));

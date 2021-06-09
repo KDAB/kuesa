@@ -475,17 +475,23 @@ private Q_SLOTS:
         // THEN
         QCOMPARE(spy.count(), 0);
 
+        // WHEN -> SceneSize updated
+        tracker.setScreenSize({ 512, 512 });
+
+        // THEN
+        QCOMPARE(spy.count(), 1);
+
         // WHEN
         tracker.setName(QStringLiteral("MyTransform"));
 
         // THEN
-        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.count(), 2);
 
         // WHEN -> Camera Changed
         tracker.setCamera(&camera);
 
         // THEN
-        QCOMPARE(spy.count(), 2);
+        QCOMPARE(spy.count(), 3);
 
         // WHEN -> Camera Transformed
         cameraTransform->setTranslation(QVector3D(0.0f, 1.0f, 0.0f));
@@ -493,19 +499,19 @@ private Q_SLOTS:
         cameraTransform->worldMatrixChanged(cameraTransform->matrix());
 
         // THEN
-        QCOMPARE(spy.count(), 3);
+        QCOMPARE(spy.count(), 4);
 
         // WHEN -> Camera Lens changed
         cameraLens->setFieldOfView(180.0f);
 
         // THEN
-        QCOMPARE(spy.count(), 4);
+        QCOMPARE(spy.count(), 5);
 
         // WHEN -> Transform Changed
         tracker.setName(QStringLiteral("MyTransform2"));
 
         // THEN
-        QCOMPARE(spy.count(), 5);
+        QCOMPARE(spy.count(), 6);
 
         // WHEN -> Transform Transformed
         t2.setScale(25.0f);
@@ -513,16 +519,19 @@ private Q_SLOTS:
         t2.worldMatrixChanged(t2.matrix());
 
         // THEN
-        QCOMPARE(spy.count(), 6);
-
-        // WHEN -> SceneSize updated
-        tracker.setScreenSize({ 512, 512 });
-
-        // THEN
         QCOMPARE(spy.count(), 7);
 
         // WHEN -> Viewport updated
         tracker.setViewportRect({ 0.0f, 0.5f, 1.0f, 0.5f });
+
+        // THEN
+        QCOMPARE(spy.count(), 7);
+
+        // WHEN -> SceneSize invalid
+        tracker.setScreenSize({ 0, 0 });
+
+        // THEN
+        QCOMPARE(spy.count(), 7);
     }
 
     void checkHandlesSceneEntityDestruction()
