@@ -103,14 +103,16 @@ void setupWindowSurface(QWindow *window, Qt3DRender::API api) noexcept
         qputenv("QSG_RHI_BACKEND", "metal");
         window->setSurfaceType(QSurface::MetalSurface);
         break;
-#if QT_CONFIG(vulkan)
     case Qt3DRender::API::Vulkan: {
         qputenv("QSG_RHI_BACKEND", "vulkan");
         window->setSurfaceType(QSurface::VulkanSurface);
-        window->setVulkanInstance(&Qt3DRender::staticVulkanInstance());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
+    #if QT_CONFIG(qt3d_vulkan)
+            window->setVulkanInstance(&Qt3DRender::staticVulkanInstance());
+    #endif
+#endif
         break;
     }
-#endif
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     case Qt3DRender::API::RHI:
 #endif
