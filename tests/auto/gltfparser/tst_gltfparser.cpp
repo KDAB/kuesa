@@ -51,6 +51,7 @@
 #include <QSignalSpy>
 #include <array>
 #include <atomic>
+#include <thread>
 
 using namespace Kuesa;
 using namespace GLTF2Import;
