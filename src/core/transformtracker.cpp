@@ -305,7 +305,7 @@ void TransformTracker::setTranslation(const QVector3D &translation)
 /*!
     \qmlproperty string Kuesa::TransformTracker::name
 
-    Holds the name of theTransform instance to retrieve from the SceneEntity.
+    Holds the name of the Transform instance to retrieve from the SceneEntity.
 */
 QString TransformTracker::name() const
 {

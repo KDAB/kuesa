@@ -83,7 +83,7 @@ Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
 
     \l {Kuesa::AnimationPlayer} and \l {Kuesa::TransformTracker} instances
     defined on the activeScene will be added. Additionally, the View3DScene
-    will take care of population the camera, screenSize and sceneEntity
+    will take care of populating the camera, screenSize and sceneEntity
     properties.
 
     Furthermore, animation playback and control is abstracted by convenience
@@ -224,7 +224,7 @@ Q_LOGGING_CATEGORY(kuesa_utils, "Kuesa.Utils", QtWarningMsg)
 
     \l [QML] {Kuesa::AnimationPlayer} and \l [QML] {Kuesa::TransformTracker}
     instances defined on the activeScene will be added. Additionally, the
-    View3DScene will take care of population the camera, screenSize and
+    View3DScene will take care of populating the camera, screenSize and
     sceneEntity properties.
 
     Furthermore, animation playback and control is abstracted by convenience

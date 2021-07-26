@@ -168,8 +168,8 @@ void PlaceholderTracker::setName(const QString &name)
     \badcode
     QQuickItem *target = view->rootItem();
     Kuesa::PlaceholderTracker *placeholderTracker = new Kuesa::PlaceholderTracker();
-    placeholderTracker->setName(QStringliteral("placeholder"));
-    Qt3DRender::QCamera *camera = sceneEntity->camera(QStringliteral("Camera_Orientation"));
+    placeholderTracker->setName(QStringLiteral("placeholder"));
+    Qt3DRender::QCamera *camera = sceneEntity->camera(QStringLiteral("Camera_Orientation"));
     placeholderTracker->setSceneSize({view.width(), view.height()});
     placeholderTracker->setTarget(target);
     placeholderTracker->setCamera(camera);
@@ -332,7 +332,7 @@ void PlaceholderTracker::setViewportRect(qreal x, qreal y, qreal width, qreal he
     \badcode
     QQuickItem *target = view->rootItem();
     Kuesa::PlaceholderTracker *placeholderTracker = new Kuesa::PlaceholderTracker();
-    placeholder->setName(QStringliteral("placeholder"));
+    placeholder->setName(QStringLiteral("placeholder"));
     placeholder->setScreenSize({view.width(), view.height()});
     placeholder->setTarget(target);
     \endcode
