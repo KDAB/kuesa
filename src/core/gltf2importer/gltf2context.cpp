@@ -742,6 +742,11 @@ Qt3DRender::QAbstractTexture *GLTF2Context::getOrAllocateTexture(Texture &textur
         if (!sampler.textureWrapMode)
             return nullptr; // We could use default wrapping, but the file is wrong, so we reject it
 
+        // Ask to generate mipMaps if minificationFilter uses MipMaps
+        if (sampler.minificationFilter != Qt3DRender::QAbstractTexture::Nearest &&
+            sampler.minificationFilter != Qt3DRender::QAbstractTexture::Linear)
+            texture2d->setGenerateMipMaps(true);
+
         texture2d->setWrapMode(*sampler.textureWrapMode.get());
         texture2d->setMinificationFilter(sampler.minificationFilter);
         texture2d->setMagnificationFilter(sampler.magnificationFilter);
