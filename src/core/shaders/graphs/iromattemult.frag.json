@@ -18,7 +18,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{1679a72a-a5bf-47c4-92e2-d5bf798100d3}"
+   "uuid": "{73493d0a-0f27-46ab-846b-60e3a98bad9d}"
   },
   {
    "layers": [],
@@ -38,19 +38,19 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{390765d5-31f2-405a-8394-3072c6558c24}"
+   "uuid": "{960726e4-4245-4755-845b-e8a87dc902d6}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "VERTEX_COLOR",
-   "uuid": "{6f751ed4-c297-442b-ab29-3aab62310a64}"
+   "uuid": "{07c7cd5e-d3c6-4dd9-8f5f-60b5ebd5ad2e}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "MATERIAL_OUTPUT",
-   "uuid": "{04eac6dd-c709-4785-a709-bea864ef986d}"
+   "uuid": "{6a0221d7-4500-4328-b8a5-19ba65497ac3}"
   },
   {
    "layers": [],
@@ -70,7 +70,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{bc7a29ee-1864-4841-a3de-594c0396e829}"
+   "uuid": "{dd4b24f3-5513-40ea-9d3a-8a0c8375701d}"
   },
   {
    "layers": [],
@@ -81,7 +81,7 @@
     }
    },
    "type": "MIX",
-   "uuid": "{88cbe0df-73b6-4eb0-b809-4d0d7cd0bfe6}"
+   "uuid": "{46c26916-dcf8-4611-b3cc-0dd540d75c4b}"
   },
   {
    "layers": [],
@@ -101,7 +101,7 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{884e7df2-9d40-4285-97cc-b19ca25f2b61}"
+   "uuid": "{bd4f1b12-773d-42d2-872f-67edc499e920}"
   },
   {
    "layers": [],
@@ -112,19 +112,19 @@
     "linearizer": "sRGBtoLinear"
    },
    "type": "TEX_IMAGE",
-   "uuid": "{137ceb05-3057-412e-8aa7-1e2f1590757f}"
+   "uuid": "{05cc44a1-ceeb-4b1f-8aba-2a661112fdd1}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "COLOR_TO_SHADER",
-   "uuid": "{a2d5475c-7f53-495a-b0df-1e31717d0ae0}"
+   "uuid": "{f9bfb7a3-8ae8-43b6-8b85-24f419b74a0f}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "TEX_COORD",
-   "uuid": "{ab98bdab-e1b2-4ac6-8a56-90df8e6edf0f}"
+   "uuid": "{3ebeebfc-0ec3-48db-8505-f32fcd1c57bb}"
   },
   {
    "layers": [],
@@ -144,25 +144,25 @@
     }
    },
    "type": "BINARY_MATH_OPERATION",
-   "uuid": "{61e3c863-2703-46ad-befe-547722af2bb1}"
+   "uuid": "{b9a62f38-194f-457f-8c97-6333c1433fdf}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "MATERIAL_PROPERTIES",
-   "uuid": "{c8013b9f-10fa-4081-8502-a71c20e5cdff}"
+   "uuid": "{05f18db4-4cec-4faa-8059-d15d1957a321}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "VEC3_TO_VEC2",
-   "uuid": "{6174018d-2a22-4892-9436-5921e7dc7d9b}"
+   "uuid": "{0905b38c-9d27-4cbf-b2c3-ec08b6a92d4d}"
   },
   {
    "layers": [],
    "parameters": {},
    "type": "VEC3_TO_VEC2",
-   "uuid": "{dd7a850e-2d9b-4db2-afcf-7b137999d07d}"
+   "uuid": "{7c2eddf2-16f4-4ca2-a5be-06185aad0ac4}"
   },
   {
    "layers": [],
@@ -182,7 +182,7 @@
     }
    },
    "type": "BINARY_MATH_FUNCTION",
-   "uuid": "{a78119a7-a249-41c5-8493-a5955939cfd4}"
+   "uuid": "{bfbb1a8a-2817-4747-a6db-7000f5bcdfe3}"
   },
   {
    "layers": [],
@@ -194,7 +194,7 @@
     }
    },
    "type": "constant",
-   "uuid": "{341e5241-878a-4096-9df3-208127b2e593}"
+   "uuid": "{05e87da6-4108-4de5-a689-e743c37fbf35}"
   },
   {
    "layers": [],
@@ -206,160 +206,160 @@
     }
    },
    "type": "constant",
-   "uuid": "{feef6bf9-3b89-43c3-855e-bd377582aef8}"
+   "uuid": "{d96f09c0-9437-4e13-b2e7-248a6cdb9f86}"
   }
  ],
  "edges": [
   {
    "layers": [],
-   "sourceUuid": "{6f751ed4-c297-442b-ab29-3aab62310a64}",
+   "sourceUuid": "{07c7cd5e-d3c6-4dd9-8f5f-60b5ebd5ad2e}",
    "sourcePort": "color",
-   "targetUuid": "{88cbe0df-73b6-4eb0-b809-4d0d7cd0bfe6}",
+   "targetUuid": "{46c26916-dcf8-4611-b3cc-0dd540d75c4b}",
    "targetPort": "input2"
   },
   {
    "layers": [],
-   "sourceUuid": "{1679a72a-a5bf-47c4-92e2-d5bf798100d3}",
+   "sourceUuid": "{73493d0a-0f27-46ab-846b-60e3a98bad9d}",
    "sourcePort": "output0",
-   "targetUuid": "{390765d5-31f2-405a-8394-3072c6558c24}",
+   "targetUuid": "{960726e4-4245-4755-845b-e8a87dc902d6}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{c8013b9f-10fa-4081-8502-a71c20e5cdff}",
+   "sourceUuid": "{05f18db4-4cec-4faa-8059-d15d1957a321}",
    "sourcePort": "matteGain",
-   "targetUuid": "{1679a72a-a5bf-47c4-92e2-d5bf798100d3}",
+   "targetUuid": "{73493d0a-0f27-46ab-846b-60e3a98bad9d}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{c8013b9f-10fa-4081-8502-a71c20e5cdff}",
+   "sourceUuid": "{05f18db4-4cec-4faa-8059-d15d1957a321}",
    "sourcePort": "postVertexColor",
-   "targetUuid": "{88cbe0df-73b6-4eb0-b809-4d0d7cd0bfe6}",
+   "targetUuid": "{46c26916-dcf8-4611-b3cc-0dd540d75c4b}",
    "targetPort": "fac"
   },
   {
    "layers": [],
-   "sourceUuid": "{c8013b9f-10fa-4081-8502-a71c20e5cdff}",
+   "sourceUuid": "{05f18db4-4cec-4faa-8059-d15d1957a321}",
    "sourcePort": "matteFilter",
-   "targetUuid": "{1679a72a-a5bf-47c4-92e2-d5bf798100d3}",
+   "targetUuid": "{73493d0a-0f27-46ab-846b-60e3a98bad9d}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{a2d5475c-7f53-495a-b0df-1e31717d0ae0}",
+   "sourceUuid": "{f9bfb7a3-8ae8-43b6-8b85-24f419b74a0f}",
    "sourcePort": "shader",
-   "targetUuid": "{04eac6dd-c709-4785-a709-bea864ef986d}",
+   "targetUuid": "{6a0221d7-4500-4328-b8a5-19ba65497ac3}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{88cbe0df-73b6-4eb0-b809-4d0d7cd0bfe6}",
+   "sourceUuid": "{46c26916-dcf8-4611-b3cc-0dd540d75c4b}",
    "sourcePort": "mixed",
-   "targetUuid": "{884e7df2-9d40-4285-97cc-b19ca25f2b61}",
+   "targetUuid": "{bd4f1b12-773d-42d2-872f-67edc499e920}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{c8013b9f-10fa-4081-8502-a71c20e5cdff}",
+   "sourceUuid": "{05f18db4-4cec-4faa-8059-d15d1957a321}",
    "sourcePort": "postGain",
-   "targetUuid": "{884e7df2-9d40-4285-97cc-b19ca25f2b61}",
+   "targetUuid": "{bd4f1b12-773d-42d2-872f-67edc499e920}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{390765d5-31f2-405a-8394-3072c6558c24}",
+   "sourceUuid": "{960726e4-4245-4755-845b-e8a87dc902d6}",
    "sourcePort": "output0",
-   "targetUuid": "{bc7a29ee-1864-4841-a3de-594c0396e829}",
+   "targetUuid": "{dd4b24f3-5513-40ea-9d3a-8a0c8375701d}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{884e7df2-9d40-4285-97cc-b19ca25f2b61}",
+   "sourceUuid": "{bd4f1b12-773d-42d2-872f-67edc499e920}",
    "sourcePort": "output0",
-   "targetUuid": "{bc7a29ee-1864-4841-a3de-594c0396e829}",
+   "targetUuid": "{dd4b24f3-5513-40ea-9d3a-8a0c8375701d}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{ab98bdab-e1b2-4ac6-8a56-90df8e6edf0f}",
+   "sourceUuid": "{3ebeebfc-0ec3-48db-8505-f32fcd1c57bb}",
    "sourcePort": "uv",
-   "targetUuid": "{61e3c863-2703-46ad-befe-547722af2bb1}",
+   "targetUuid": "{b9a62f38-194f-457f-8c97-6333c1433fdf}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{bc7a29ee-1864-4841-a3de-594c0396e829}",
+   "sourceUuid": "{dd4b24f3-5513-40ea-9d3a-8a0c8375701d}",
    "sourcePort": "output0",
-   "targetUuid": "{a78119a7-a249-41c5-8493-a5955939cfd4}",
+   "targetUuid": "{bfbb1a8a-2817-4747-a6db-7000f5bcdfe3}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{61e3c863-2703-46ad-befe-547722af2bb1}",
+   "sourceUuid": "{b9a62f38-194f-457f-8c97-6333c1433fdf}",
    "sourcePort": "output0",
-   "targetUuid": "{dd7a850e-2d9b-4db2-afcf-7b137999d07d}",
+   "targetUuid": "{7c2eddf2-16f4-4ca2-a5be-06185aad0ac4}",
    "targetPort": "vector3"
   },
   {
    "layers": [],
-   "sourceUuid": "{c8013b9f-10fa-4081-8502-a71c20e5cdff}",
+   "sourceUuid": "{05f18db4-4cec-4faa-8059-d15d1957a321}",
    "sourcePort": "uvOffset",
-   "targetUuid": "{6174018d-2a22-4892-9436-5921e7dc7d9b}",
+   "targetUuid": "{0905b38c-9d27-4cbf-b2c3-ec08b6a92d4d}",
    "targetPort": "vector3"
   },
   {
    "layers": [],
-   "sourceUuid": "{6174018d-2a22-4892-9436-5921e7dc7d9b}",
+   "sourceUuid": "{0905b38c-9d27-4cbf-b2c3-ec08b6a92d4d}",
    "sourcePort": "vector2",
-   "targetUuid": "{61e3c863-2703-46ad-befe-547722af2bb1}",
+   "targetUuid": "{b9a62f38-194f-457f-8c97-6333c1433fdf}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{dd7a850e-2d9b-4db2-afcf-7b137999d07d}",
+   "sourceUuid": "{7c2eddf2-16f4-4ca2-a5be-06185aad0ac4}",
    "sourcePort": "vector2",
-   "targetUuid": "{137ceb05-3057-412e-8aa7-1e2f1590757f}",
+   "targetUuid": "{05cc44a1-ceeb-4b1f-8aba-2a661112fdd1}",
    "targetPort": "vector"
   },
   {
    "layers": [],
-   "sourceUuid": "{137ceb05-3057-412e-8aa7-1e2f1590757f}",
+   "sourceUuid": "{05cc44a1-ceeb-4b1f-8aba-2a661112fdd1}",
    "sourcePort": "color",
-   "targetUuid": "{390765d5-31f2-405a-8394-3072c6558c24}",
+   "targetUuid": "{960726e4-4245-4755-845b-e8a87dc902d6}",
    "targetPort": "input0"
   },
   {
    "layers": [],
-   "sourceUuid": "{a78119a7-a249-41c5-8493-a5955939cfd4}",
+   "sourceUuid": "{bfbb1a8a-2817-4747-a6db-7000f5bcdfe3}",
    "sourcePort": "output0",
-   "targetUuid": "{a2d5475c-7f53-495a-b0df-1e31717d0ae0}",
+   "targetUuid": "{f9bfb7a3-8ae8-43b6-8b85-24f419b74a0f}",
    "targetPort": "color"
   },
   {
    "layers": [],
-   "sourceUuid": "{341e5241-878a-4096-9df3-208127b2e593}",
+   "sourceUuid": "{05e87da6-4108-4de5-a689-e743c37fbf35}",
    "sourcePort": "value",
-   "targetUuid": "{88cbe0df-73b6-4eb0-b809-4d0d7cd0bfe6}",
+   "targetUuid": "{46c26916-dcf8-4611-b3cc-0dd540d75c4b}",
    "targetPort": "input1"
   },
   {
    "layers": [],
-   "sourceUuid": "{feef6bf9-3b89-43c3-855e-bd377582aef8}",
+   "sourceUuid": "{d96f09c0-9437-4e13-b2e7-248a6cdb9f86}",
    "sourcePort": "value",
-   "targetUuid": "{a78119a7-a249-41c5-8493-a5955939cfd4}",
+   "targetUuid": "{bfbb1a8a-2817-4747-a6db-7000f5bcdfe3}",
    "targetPort": "input1"
   },
   {
-   "sourceUuid": "{c8013b9f-10fa-4081-8502-a71c20e5cdff}",
+   "sourceUuid": "{05f18db4-4cec-4faa-8059-d15d1957a321}",
    "sourcePort": "usesMatteMap",
-   "targetUuid": "{137ceb05-3057-412e-8aa7-1e2f1590757f}",
+   "targetUuid": "{05cc44a1-ceeb-4b1f-8aba-2a661112fdd1}",
    "targetPort": "useTexture"
   },
   {
-   "sourceUuid": "{c8013b9f-10fa-4081-8502-a71c20e5cdff}",
+   "sourceUuid": "{05f18db4-4cec-4faa-8059-d15d1957a321}",
    "sourcePort": "matteMap",
-   "targetUuid": "{137ceb05-3057-412e-8aa7-1e2f1590757f}",
+   "targetUuid": "{05cc44a1-ceeb-4b1f-8aba-2a661112fdd1}",
    "targetPort": "texture"
   }
  ],
@@ -498,6 +498,162 @@
     }
    ]
   },
+  "CAMERA": {
+   "outputs": [
+    "view_vector"
+   ],
+   "rules": [
+    {
+     "format": {
+      "api": "OpenGLES",
+      "major": 2,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "varying highp vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       varying highp vec3 worldNormal;",
+      "   #else",
+      "       const lowp vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       varying highp vec4 worldTangent;",
+      "   #else",
+      "       const lowp vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif",
+      "#ifndef EYE_POSITION",
+      "#define EYE_POSITION",
+      "uniform highp vec3 eyePosition;",
+      "#endif",
+      "#ifndef VIEW_MATRIX",
+      "#define VIEW_MATRIX",
+      "uniform highp mat4 viewMatrix;",
+      "uniform highp mat4 inverseViewMatrix;",
+      "#endif"
+     ],
+     "substitution": "highp vec3 $view_vector = (viewMatrix * vec4(normalize(eyePosition - worldPosition), 0.0)).xyz;"
+    },
+    {
+     "format": {
+      "api": "OpenGLCoreProfile",
+      "major": 3,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "in vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif",
+      "#ifndef EYE_POSITION",
+      "#define EYE_POSITION",
+      "uniform vec3 eyePosition;",
+      "#endif",
+      "#ifndef VIEW_MATRIX",
+      "#define VIEW_MATRIX",
+      "   uniform mat4 viewMatrix;",
+      "   uniform mat4 inverseViewMatrix;",
+      "#endif"
+     ],
+     "substitution": "vec3 $view_vector = (viewMatrix * vec4(normalize(eyePosition - worldPosition), 0.0)).xyz;"
+    },
+    {
+     "format": {
+      "api": "RHI",
+      "major": 1,
+      "minor": 0
+     },
+     "headerSnippets": [
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "layout(location = 4) in vec3 worldPosition;",
+      "   #ifdef LAYER_hasVertexNormal",
+      "       layout(location = 3) in vec3 worldNormal;",
+      "   #else",
+      "       const vec3 worldNormal = vec3(0.0);",
+      "   #endif",
+      "   #ifdef LAYER_hasVertexTangent",
+      "       layout(location = 2) in vec4 worldTangent;",
+      "   #else",
+      "       const vec4 worldTangent = vec4(0.0);",
+      "   #endif",
+      "#endif",
+      "#ifndef RV_UNIFORMS",
+      "#define RV_UNIFORMS",
+      "layout(std140, binding = 0) uniform qt3d_render_view_uniforms {",
+      "    mat4 viewMatrix;",
+      "    mat4 projectionMatrix;",
+      "    mat4 viewProjectionMatrix;",
+      "    mat4 inverseViewMatrix;",
+      "    mat4 inverseProjectionMatrix;",
+      "    mat4 inverseViewProjectionMatrix;",
+      "    mat4 viewportMatrix;",
+      "    mat4 inverseViewportMatrix;",
+      "    vec4 textureTransformMatrix;",
+      "    vec3 eyePosition;",
+      "    float aspectRatio;",
+      "    float gamma;",
+      "    float exposure;",
+      "    float time;",
+      "    float yUpInNDC;",
+      "    float yUpInFBO;",
+      "  };",
+      "#endif"
+     ],
+     "substitution": "vec3 $view_vector = (viewMatrix * vec4(normalize(eyePosition - worldPosition), 0.0)).xyz;"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "#ifndef RV_UNIFORMS",
+      "#define RV_UNIFORMS",
+      "layout(set = 0, binding = 1) uniform SerenityEntity {",
+      "    mat4 model;",
+      "} entity;",
+      "layout(set = 1, binding = 0) uniform SerenityCamera {",
+      "    mat4 viewMatrix;",
+      "    mat4 inverseViewMatrix;",
+      "    mat4 projectionMatrix;",
+      "    mat4 inverseProjectionMatrix;",
+      "    mat4 viewProjectionMatrix;",
+      "    mat4 inverseViewProjectionMatrix;",
+      "    mat4 viewportMatrix;",
+      "  } camera;",
+      "#endif",
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "layout(location = 0) in vec3 worldNormal;",
+      "layout(location = 1) in vec3 worldPosition;",
+      "layout(location = 2) in vec2 texCoord;",
+      "layout(location = 3) in vec2 texCoord1;",
+      "layout(location = 4) in vec4 color;",
+      "layout(location = 5) in vec4 tangent;",
+      "#endif",
+      "#ifndef EYE_POSITION",
+      "#define EYE_POSITION",
+      "vec3 eyePosition() { return camera.inverseViewMatrix[3].xyz; }",
+      "#endif"
+     ],
+     "substitution": "vec3 $view_vector = (camera.viewMatrix * vec4(normalize(eyePosition() - worldPosition), 0.0)).xyz;"
+    }
+   ]
+  },
   "VECT_TRANSFORM": {
    "inputs": [
     "input"
@@ -573,6 +729,31 @@
       "#endif"
      ],
      "substitution": "vec3 $transformed = ($transformMatrix * vec4($input * $preFactor, 0.0)).xyz * $postFactor;"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "#ifndef RV_UNIFORMS",
+      "#define RV_UNIFORMS",
+      "layout(set = 0, binding = 1) uniform SerenityEntity {",
+      "    mat4 model;",
+      "} entity;",
+      "layout(set = 1, binding = 0) uniform SerenityCamera {",
+      "    mat4 viewMatrix;",
+      "    mat4 inverseViewMatrix;",
+      "    mat4 projectionMatrix;",
+      "    mat4 inverseProjectionMatrix;",
+      "    mat4 viewProjectionMatrix;",
+      "    mat4 inverseViewProjectionMatrix;",
+      "    mat4 viewportMatrix;",
+      "  } camera;",
+      "#endif"
+     ],
+     "substitution": "vec3 $transformed = (camera.$transformMatrix * vec4($input * $preFactor, 0.0)).xyz * $postFactor;"
     }
    ]
   },
@@ -798,6 +979,17 @@
       "layout(location = 0) out vec4 fragColor;"
      ],
      "substitution": "fragColor = $color;"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "layout(location = 0) out vec4 fragColor;"
+     ],
+     "substitution": "fragColor = $color;"
     }
    ]
   },
@@ -987,6 +1179,25 @@
       "#endif"
      ],
      "substitution": "vec3 $position = worldPosition;vec3 $normal = normalize(worldNormal);vec3 $tangent = worldTangent.xyz;"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "layout(location = 0) in vec3 worldNormal;",
+      "layout(location = 1) in vec3 worldPosition;",
+      "layout(location = 2) in vec2 texCoord;",
+      "layout(location = 3) in vec2 texCoord1;",
+      "layout(location = 4) in vec4 color;",
+      "layout(location = 5) in vec4 tangent;",
+      "#endif"
+     ],
+     "substitution": "vec3 $position = worldPosition;vec3 $normal = normalize(worldNormal);vec3 $tangent = worldTangent.xyz;"
     }
    ]
   },
@@ -1173,6 +1384,44 @@
       "#endif"
      ],
      "substitution": "vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);vec3 $reflection = reflect(normalize(worldPosition - eyePosition), worldNormal);vec3 $normal = worldNormal;"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "#ifndef RV_UNIFORMS",
+      "#define RV_UNIFORMS",
+      "layout(set = 0, binding = 1) uniform SerenityEntity {",
+      "    mat4 model;",
+      "} entity;",
+      "layout(set = 1, binding = 0) uniform SerenityCamera {",
+      "    mat4 viewMatrix;",
+      "    mat4 inverseViewMatrix;",
+      "    mat4 projectionMatrix;",
+      "    mat4 inverseProjectionMatrix;",
+      "    mat4 viewProjectionMatrix;",
+      "    mat4 inverseViewProjectionMatrix;",
+      "    mat4 viewportMatrix;",
+      "  } camera;",
+      "#endif",
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "layout(location = 0) in vec3 worldNormal;",
+      "layout(location = 1) in vec3 worldPosition;",
+      "layout(location = 2) in vec2 texCoord;",
+      "layout(location = 3) in vec2 texCoord1;",
+      "layout(location = 4) in vec4 color;",
+      "layout(location = 5) in vec4 tangent;",
+      "#endif",
+      "#ifndef EYE_POSITION",
+      "#define EYE_POSITION",
+      "vec3 eyePosition() { return camera.inverseViewMatrix[3].xyz; }",
+      "#endif"
+     ],
+     "substitution": "vec2 $uv = vec2(texCoord.x, 1.0 - texCoord.y);vec3 $reflection = reflect(normalize(worldPosition - eyePosition()), worldNormal);vec3 $normal = worldNormal;"
     }
    ]
   },
@@ -1284,6 +1533,23 @@
       "#endif"
      ],
      "substitution": "vec4 $inter = $useTexture ? texture($texture, vec2($vector.x, 1.0 - $vector.y)) : vec4($defaultColor); vec3 $color = $linearizer($inter.rgb); float $alpha = $inter.a;"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "#ifndef SRGB_TO_LINEAR",
+      "#define SRGB_TO_LINEAR",
+      "vec3 sRGBtoLinear(vec3 srgb) { return pow(srgb, vec3(2.2)); }",
+      "#endif",
+      "#ifndef READ_TEXTURE",
+      "#define READ_TEXTURE(S, U, T, D) readTexture_ ## S (U, T, D)",
+      "#endif"
+     ],
+     "substitution": "vec4 $inter = READ_TEXTURE($texture, $useTexture, vec2($vector.x, 1.0 - $vector.y), vec4($defaultColor)); vec3 $color = $linearizer($inter.rgb); float $alpha = $inter.a;"
     }
    ]
   },
@@ -1321,7 +1587,17 @@
       "#endif",
       "#ifndef EQUI_RECTANGULAR",
       "#define EQUI_RECTANGULAR",
-      "highp vec2 equiRectangular(highp vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#define RECIPROCAL_PI 0.318309886",
+      "#define RECIPROCAL_PI_2 0.159154943",
+      "#extension GL_OES_standard_derivatives : enable",
+      "highp vec2 equiRectangular(highp vec3 pos) {",
+      "highp vec2 t = vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(RECIPROCAL_PI_2, RECIPROCAL_PI) + vec2(0.5);",
+      "// Use partial derivative to check that we aren't switching tcoord too abruptly (e.g going from 1 to 0.0 on 2 adjacent fragments)",
+      "// which could result in invalid mipmap selection and artifacts",
+      "if (fwidth(t.x) > 0.25 && t.x < 0.5)",
+      "    t.x += 1.0; // Increase tcoord by 1 which should prevent invalid mipMap selection (and still yield same actual texel if using Repeat wrap mode)",
+      "return t;",
+      "}",
       "#endif"
      ],
      "substitution": "highp vec4 $inter = $useTexture ? texture2D($texture, $projectTexture ? $projection($position) : vec2($uv.x, 1.0-$uv.y)) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
@@ -1339,7 +1615,16 @@
       "#endif",
       "#ifndef EQUI_RECTANGULAR",
       "#define EQUI_RECTANGULAR",
-      "highp vec2 equiRectangular(highp vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#define RECIPROCAL_PI 0.318309886",
+      "#define RECIPROCAL_PI_2 0.159154943",
+      "highp vec2 equiRectangular(highp vec3 pos) {",
+      "highp vec2 t = vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(RECIPROCAL_PI_2, RECIPROCAL_PI) + vec2(0.5);",
+      "// Use partial derivative to check that we aren't switching tcoord too abruptly (e.g going from 1 to 0.0 on 2 adjacent fragments)",
+      "// which could result in invalid mipmap selection and artifacts",
+      "if (fwidth(t.x) > 0.25 && t.x < 0.5)",
+      "    t.x += 1.0; // Increase tcoord by 1 which should prevent invalid mipMap selection (and still yield same actual texel if using Repeat wrap mode)",
+      "return t;",
+      "}",
       "#endif"
      ],
      "substitution": "highp vec4 $inter = $useTexture ? texture($texture, $projectTexture ? $projection($position) : vec2($uv.x, 1.0 - $uv.y)) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
@@ -1357,7 +1642,16 @@
       "#endif",
       "#ifndef EQUI_RECTANGULAR",
       "#define EQUI_RECTANGULAR",
-      "vec2 equiRectangular(vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#define RECIPROCAL_PI 0.318309886",
+      "#define RECIPROCAL_PI_2 0.159154943",
+      "vec2 equiRectangular(vec3 pos) {",
+      "vec2 t = vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(RECIPROCAL_PI_2, RECIPROCAL_PI) + vec2(0.5);",
+      "// Use partial derivative to check that we aren't switching tcoord too abruptly (e.g going from 1 to 0.0 on 2 adjacent fragments)",
+      "// which could result in invalid mipmap selection and artifacts",
+      "if (fwidth(t.x) > 0.25 && t.x < 0.5)",
+      "    t.x += 1.0; // Increase tcoord by 1 which should prevent invalid mipMap selection (and still yield same actual texel if using Repeat wrap mode)",
+      "return t;",
+      "}",
       "#endif"
      ],
      "substitution": "vec4 $inter = $useTexture ? texture($texture, $projectTexture ? $projection($position) : vec2($uv.x, 1.0 - $uv.y)) : vec4($defaultColor);vec3 $color = $linearizer($inter.rgb);float $alpha = $inter.a;"
@@ -1375,10 +1669,49 @@
       "#endif",
       "#ifndef EQUI_RECTANGULAR",
       "#define EQUI_RECTANGULAR",
-      "vec2 equiRectangular(vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#define RECIPROCAL_PI 0.318309886",
+      "#define RECIPROCAL_PI_2 0.159154943",
+      "vec2 equiRectangular(vec3 pos) {",
+      "vec2 t = vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(RECIPROCAL_PI_2, RECIPROCAL_PI) + vec2(0.5);",
+      "// Use partial derivative to check that we aren't switching tcoord too abruptly (e.g going from 1 to 0.0 on 2 adjacent fragments)",
+      "// which could result in invalid mipmap selection and artifacts",
+      "if (fwidth(t.x) > 0.25 && t.x < 0.5)",
+      "    t.x += 1.0; // Increase tcoord by 1 which should prevent invalid mipMap selection (and still yield same actual texel if using Repeat wrap mode)",
+      "return t;",
+      "}",
       "#endif"
      ],
      "substitution": "vec4 $inter = $useTexture ? texture($texture, $projectTexture ? $projection($position) : vec2($uv.x, 1.0 - $uv.y)) : vec4($defaultColor);vec3 $color = $linearizer($inter.rgb);float $alpha = $inter.a;"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "#ifndef SRGB_TO_LINEAR",
+      "#define SRGB_TO_LINEAR",
+      "vec3 sRGBtoLinear(vec3 srgb) { return pow(srgb, vec3(2.2)); }",
+      "#endif",
+      "#ifndef EQUI_RECTANGULAR",
+      "#define EQUI_RECTANGULAR",
+      "#define RECIPROCAL_PI 0.318309886",
+      "#define RECIPROCAL_PI_2 0.159154943",
+      "vec2 equiRectangular(vec3 pos) {",
+      "vec2 t = vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(RECIPROCAL_PI_2, RECIPROCAL_PI) + vec2(0.5);",
+      "// Use partial derivative to check that we aren't switching tcoord too abruptly (e.g going from 1 to 0.0 on 2 adjacent fragments)",
+      "// which could result in invalid mipmap selection and artifacts",
+      "if (fwidth(t.x) > 0.25 && t.x < 0.5)",
+      "    t.x += 1.0; // Increase tcoord by 1 which should prevent invalid mipMap selection (and still yield same actual texel if using Repeat wrap mode)",
+      "return t;",
+      "}",
+      "#endif",
+      "#ifndef READ_TEXTURE",
+      "#define READ_TEXTURE(S, U, T, D) readTexture_ ## S (U, T, D)",
+      "#endif"
+     ],
+     "substitution": "vec4 $inter = READ_TEXTURE($texture, $useTexture, $projectTexture ? $projection($position) : vec2($uv.x, 1.0 - $uv.y), vec4($defaultColor)); vec3 $color = $linearizer($inter.rgb); float $alpha = $inter.a;"
     }
    ]
   },
@@ -1412,7 +1745,17 @@
       "#endif",
       "#ifndef EQUI_RECTANGULAR",
       "#define EQUI_RECTANGULAR",
-      "highp vec2 equiRectangular(highp vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#define RECIPROCAL_PI 0.318309886",
+      "#define RECIPROCAL_PI_2 0.159154943",
+      "#extension GL_OES_standard_derivatives : enable",
+      "highp vec2 equiRectangular(highp vec3 pos) {",
+      "highp vec2 t = vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(RECIPROCAL_PI_2, RECIPROCAL_PI) + vec2(0.5);",
+      "// Use partial derivative to check that we aren't switching tcoord too abruptly (e.g going from 1 to 0.0 on 2 adjacent fragments)",
+      "// which could result in invalid mipmap selection and artifacts",
+      "if (fwidth(t.x) > 0.25 && t.x < 0.5)",
+      "    t.x += 1.0; // Increase tcoord by 1 which should prevent invalid mipMap selection (and still yield same actual texel if using Repeat wrap mode)",
+      "return t;",
+      "}",
       "#endif"
      ],
      "substitution": "highp vec4 $inter = $useTexture ? texture2D($texture, equiRectangular($position)) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
@@ -1430,7 +1773,16 @@
       "#endif",
       "#ifndef EQUI_RECTANGULAR",
       "#define EQUI_RECTANGULAR",
-      "highp vec2 equiRectangular(highp vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#define RECIPROCAL_PI 0.318309886",
+      "#define RECIPROCAL_PI_2 0.159154943",
+      "highp vec2 equiRectangular(highp vec3 pos) {",
+      "highp vec2 t = vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(RECIPROCAL_PI_2, RECIPROCAL_PI) + vec2(0.5);",
+      "// Use partial derivative to check that we aren't switching tcoord too abruptly (e.g going from 1 to 0.0 on 2 adjacent fragments)",
+      "// which could result in invalid mipmap selection and artifacts",
+      "if (fwidth(t.x) > 0.25 && t.x < 0.5)",
+      "    t.x += 1.0; // Increase tcoord by 1 which should prevent invalid mipMap selection (and still yield same actual texel if using Repeat wrap mode)",
+      "return t;",
+      "}",
       "#endif"
      ],
      "substitution": "highp vec4 $inter = $useTexture ? texture($texture, equiRectangular($position)) : vec4($defaultColor);highp vec3 $color = $linearizer($inter.rgb);highp float $alpha = $inter.a;"
@@ -1448,7 +1800,16 @@
       "#endif",
       "#ifndef EQUI_RECTANGULAR",
       "#define EQUI_RECTANGULAR",
-      "vec2 equiRectangular(vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#define RECIPROCAL_PI 0.318309886",
+      "#define RECIPROCAL_PI_2 0.159154943",
+      "vec2 equiRectangular(vec3 pos) {",
+      "vec2 t = vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(RECIPROCAL_PI_2, RECIPROCAL_PI) + vec2(0.5);",
+      "// Use partial derivative to check that we aren't switching tcoord too abruptly (e.g going from 1 to 0.0 on 2 adjacent fragments)",
+      "// which could result in invalid mipmap selection and artifacts",
+      "if (fwidth(t.x) > 0.25 && t.x < 0.5)",
+      "    t.x += 1.0; // Increase tcoord by 1 which should prevent invalid mipMap selection (and still yield same actual texel if using Repeat wrap mode)",
+      "return t;",
+      "}",
       "#endif"
      ],
      "substitution": "vec4 $inter = $useTexture ? texture($texture, equiRectangular($position)) : vec4($defaultColor);vec3 $color = $linearizer($inter.rgb);float $alpha = $inter.a;"
@@ -1466,10 +1827,49 @@
       "#endif",
       "#ifndef EQUI_RECTANGULAR",
       "#define EQUI_RECTANGULAR",
-      "vec2 equiRectangular(vec3 pos) { return vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(0.1591, 0.3183) + vec2(0.5); }",
+      "#define RECIPROCAL_PI 0.318309886",
+      "#define RECIPROCAL_PI_2 0.159154943",
+      "vec2 equiRectangular(vec3 pos) {",
+      "vec2 t = vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(RECIPROCAL_PI_2, RECIPROCAL_PI) + vec2(0.5);",
+      "// Use partial derivative to check that we aren't switching tcoord too abruptly (e.g going from 1 to 0.0 on 2 adjacent fragments)",
+      "// which could result in invalid mipmap selection and artifacts",
+      "if (fwidth(t.x) > 0.25 && t.x < 0.5)",
+      "    t.x += 1.0; // Increase tcoord by 1 which should prevent invalid mipMap selection (and still yield same actual texel if using Repeat wrap mode)",
+      "return t;",
+      "}",
       "#endif"
      ],
      "substitution": "vec4 $inter = $useTexture ? texture($texture, equiRectangular($position)) : vec4($defaultColor);vec3 $color = $linearizer($inter.rgb);float $alpha = $inter.a;"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "#ifndef SRGB_TO_LINEAR",
+      "#define SRGB_TO_LINEAR",
+      "vec3 sRGBtoLinear(vec3 srgb) { return pow(srgb, vec3(2.2)); }",
+      "#endif",
+      "#ifndef EQUI_RECTANGULAR",
+      "#define EQUI_RECTANGULAR",
+      "#define RECIPROCAL_PI 0.318309886",
+      "#define RECIPROCAL_PI_2 0.159154943",
+      "vec2 equiRectangular(vec3 pos) {",
+      "vec2 t = vec2(atan(pos.z, pos.x), -asin(pos.y)) * vec2(RECIPROCAL_PI_2, RECIPROCAL_PI) + vec2(0.5);",
+      "// Use partial derivative to check that we aren't switching tcoord too abruptly (e.g going from 1 to 0.0 on 2 adjacent fragments)",
+      "// which could result in invalid mipmap selection and artifacts",
+      "if (fwidth(t.x) > 0.25 && t.x < 0.5)",
+      "    t.x += 1.0; // Increase tcoord by 1 which should prevent invalid mipMap selection (and still yield same actual texel if using Repeat wrap mode)",
+      "return t;",
+      "}",
+      "#endif",
+      "#ifndef READ_TEXTURE",
+      "#define READ_TEXTURE(S, U, T, D) readTexture_ ## S (U, T, D)",
+      "#endif"
+     ],
+     "substitution": "vec4 $inter = READ_TEXTURE($texture, $useTexture, equiRectangular($position), vec4($defaultColor)); vec3 $color = $linearizer($inter.rgb); float $alpha = $inter.a;"
     }
    ]
   },
@@ -1657,6 +2057,25 @@
       "#endif"
      ],
      "substitution": "vec3 $tangentSpaceNormal = $color.xyz * vec3(2) - vec3(1); vec3 $normal = normalize(mix(worldNormal, normalize($tangentSpaceNormal.x * worldTangent.xyz + $tangentSpaceNormal.y * cross(worldNormal, worldTangent.xyz) + $tangentSpaceNormal.z * worldNormal), max($strength, 0.0)));"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "layout(location = 0) in vec3 worldNormal;",
+      "layout(location = 1) in vec3 worldPosition;",
+      "layout(location = 2) in vec2 texCoord;",
+      "layout(location = 3) in vec2 texCoord1;",
+      "layout(location = 4) in vec4 color;",
+      "layout(location = 5) in vec4 tangent;",
+      "#endif"
+     ],
+     "substitution": "vec3 $tangentSpaceNormal = $color.xyz * vec3(2) - vec3(1); vec3 $normal = normalize(mix(worldNormal, normalize($tangentSpaceNormal.x * worldTangent.xyz + $tangentSpaceNormal.y * cross(worldNormal, worldTangent.xyz) + $tangentSpaceNormal.z * worldNormal), max($strength, 0.0)));"
     }
    ]
   },
@@ -1734,6 +2153,25 @@
       "#else",
       "const vec4 color = vec4(1.0);",
       "#endif",
+      "#endif"
+     ],
+     "substitution": "vec3 $color = color.rgb;float $alpha = color.a;"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "layout(location = 0) in vec3 worldNormal;",
+      "layout(location = 1) in vec3 worldPosition;",
+      "layout(location = 2) in vec2 texCoord;",
+      "layout(location = 3) in vec2 texCoord1;",
+      "layout(location = 4) in vec4 color;",
+      "layout(location = 5) in vec4 tangent;",
       "#endif"
      ],
      "substitution": "vec3 $color = color.rgb;float $alpha = color.a;"
@@ -1926,6 +2364,63 @@
       "#endif"
      ],
      "substitution": "vec4 $shader = reflectedColor(vec4($color, pow($alpha, 2.4)));"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "#ifndef RV_UNIFORMS",
+      "#define RV_UNIFORMS",
+      "layout(set = 0, binding = 1) uniform SerenityEntity {",
+      "    mat4 model;",
+      "} entity;",
+      "layout(set = 1, binding = 0) uniform SerenityCamera {",
+      "    mat4 viewMatrix;",
+      "    mat4 inverseViewMatrix;",
+      "    mat4 projectionMatrix;",
+      "    mat4 inverseProjectionMatrix;",
+      "    mat4 viewProjectionMatrix;",
+      "    mat4 inverseViewProjectionMatrix;",
+      "    mat4 viewportMatrix;",
+      "  } camera;",
+      "#endif",
+      "#ifndef NEW_GEOMETRY",
+      "#define NEW_GEOMETRY",
+      "layout(location = 0) in vec3 worldNormal;",
+      "layout(location = 1) in vec3 worldPosition;",
+      "layout(location = 2) in vec2 texCoord;",
+      "layout(location = 3) in vec2 texCoord1;",
+      "layout(location = 4) in vec4 color;",
+      "layout(location = 5) in vec4 tangent;",
+      "#endif",
+      "#ifndef PLANAR_REFLECTION",
+      "#define PLANAR_REFLECTION",
+      "layout(binding=0) uniform sampler2D kuesa_reflectionPlaneMap;",
+      "layout(std140, binding = 12) uniform qt3d_shadergraph_reflection_plane_uniforms {",
+      "    vec4 kuesa_reflectionPlane;",
+      "};",
+      "mat4 reflectionMatrix(vec4 n)",
+      "{",
+      "    vec4 n2 = n * n;",
+      "    return mat4(1.0 - 2 * n2.x,    -2 * n.x * n.y,     -2 * n.x * n.z,    0,",
+      "                -2 * n.x * n.y,     1.0 - 2 * n2.y,    -2 * n.y * n.z,    0,",
+      "                -2 * n.x * n.z,    -2 * n.y * n.z,      1.0 -2 * n2.z,    0,",
+      "                -2 * n.x * n.w ,   -2 * n.y * n.w,     -2 * n.z * n.w,    1);",
+      "}",
+      "vec4 reflectedColor(vec4 c)",
+      "{",
+      "    vec4 clipReflection = camera.projectionMatrix * camera.viewMatrix * reflectionMatrix(kuesa_reflectionPlane) * vec4(worldPosition, 1.0);",
+      "    vec2 refCoords = clipReflection.xy / clipReflection.w;",
+      "    vec2 texCoords = vec2(0.5) + 0.5 * refCoords;",
+      "    vec4 reflectedColor = texture(kuesa_reflectionPlaneMap, texCoords);",
+      "    return c * reflectedColor;",
+      "}",
+      "#endif"
+     ],
+     "substitution": "vec4 $shader = reflectedColor(vec4($color, pow($alpha, 2.4)));"
     }
    ]
   },
@@ -1985,9 +2480,9 @@
       "minor": 0
      },
      "headerSnippets": [
-      "struct MaterialProperties {\n    highp vec3 matteFilter;\n    highp vec3 uvOffset;\n    highp float matteGain;\n    highp float postVertexColor;\n    highp float postGain;\n    bool usesMatteMap;\n};\nuniform MaterialProperties properties;\nuniform highp sampler2D matteMap;\n"
+      "struct MaterialProperties {\n    highp vec3 matteFilter;\n    highp vec3 uvOffset;\n    highp float matteGain;\n    highp float postGain;\n    highp float postVertexColor;\n    bool usesMatteMap;\n};\nuniform MaterialProperties properties;\nuniform highp sampler2D matteMap;\n"
      ],
-     "substitution": "highp sampler2D $matteMap = matteMap;highp vec3 $matteFilter = properties.matteFilter;highp vec3 $uvOffset = properties.uvOffset;highp float $matteGain = properties.matteGain;highp float $postVertexColor = properties.postVertexColor;highp float $postGain = properties.postGain;bool $usesMatteMap = properties.usesMatteMap;"
+     "substitution": "highp sampler2D $matteMap = matteMap;highp vec3 $matteFilter = properties.matteFilter;highp vec3 $uvOffset = properties.uvOffset;highp float $matteGain = properties.matteGain;highp float $postGain = properties.postGain;highp float $postVertexColor = properties.postVertexColor;bool $usesMatteMap = properties.usesMatteMap;"
     },
     {
      "format": {
@@ -1996,9 +2491,9 @@
       "minor": 0
      },
      "headerSnippets": [
-      "struct MaterialProperties {\n    vec3 matteFilter;\n    vec3 uvOffset;\n    float matteGain;\n    float postVertexColor;\n    float postGain;\n    bool usesMatteMap;\n};\nuniform MaterialProperties properties;\nuniform sampler2D matteMap;\n"
+      "struct MaterialProperties {\n    vec3 matteFilter;\n    vec3 uvOffset;\n    float matteGain;\n    float postGain;\n    float postVertexColor;\n    bool usesMatteMap;\n};\nuniform MaterialProperties properties;\nuniform sampler2D matteMap;\n"
      ],
-     "substitution": "sampler2D $matteMap = matteMap;vec3 $matteFilter = properties.matteFilter;vec3 $uvOffset = properties.uvOffset;float $matteGain = properties.matteGain;float $postVertexColor = properties.postVertexColor;float $postGain = properties.postGain;bool $usesMatteMap = properties.usesMatteMap;"
+     "substitution": "sampler2D $matteMap = matteMap;vec3 $matteFilter = properties.matteFilter;vec3 $uvOffset = properties.uvOffset;float $matteGain = properties.matteGain;float $postGain = properties.postGain;float $postVertexColor = properties.postVertexColor;bool $usesMatteMap = properties.usesMatteMap;"
     },
     {
      "format": {
@@ -2007,9 +2502,20 @@
       "minor": 0
      },
      "headerSnippets": [
-      "struct MaterialProperties {\n    vec3 matteFilter;\n    vec3 uvOffset;\n    float matteGain;\n    float postVertexColor;\n    float postGain;\n    bool usesMatteMap;\n};\nlayout(std140, binding = 2) uniform MaterialPropertiesBlock { MaterialProperties properties; };\nlayout(binding = 3) uniform sampler2D matteMap;\n"
+      "struct MaterialProperties {\n    vec3 matteFilter;\n    vec3 uvOffset;\n    float matteGain;\n    float postGain;\n    float postVertexColor;\n    bool usesMatteMap;\n};\nlayout(std140, binding = 2) uniform MaterialPropertiesBlock { MaterialProperties properties; };\nlayout(binding = 3) uniform sampler2D matteMap;\n"
      ],
-     "substitution": "sampler2D $matteMap = matteMap;vec3 $matteFilter = properties.matteFilter;vec3 $uvOffset = properties.uvOffset;float $matteGain = properties.matteGain;float $postVertexColor = properties.postVertexColor;float $postGain = properties.postGain;bool $usesMatteMap = properties.usesMatteMap;"
+     "substitution": "sampler2D $matteMap = matteMap;vec3 $matteFilter = properties.matteFilter;vec3 $uvOffset = properties.uvOffset;float $matteGain = properties.matteGain;float $postGain = properties.postGain;float $postVertexColor = properties.postVertexColor;bool $usesMatteMap = properties.usesMatteMap;"
+    },
+    {
+     "format": {
+      "api": "VulkanFlavoredGLSL",
+      "major": 4,
+      "minor": 5
+     },
+     "headerSnippets": [
+      "layout(std140, set = 2, binding = 3) uniform Material {\n    vec3 matteFilter;\n    float _pad0;\n    vec3 uvOffset;\n    float matteGain;\n    float postGain;\n    float postVertexColor;\n    bool usesMatteMap;\n} properties;\n#ifndef READ_TEXTURE_IMPL\n#define READ_TEXTURE_IMPL\nvec4 readTexture(const in sampler2D t, bool useTexture, vec2 tCoord, vec4 defaultValue) { return ((useTexture) ? texture(t, tCoord) : defaultValue); }\n#endif\n#ifdef LAYER_matteMap\nlayout(set = 3, binding = 0) uniform sampler2D matteMap;\n#endif\nvec4 readTexture_matteMap(bool useTexture, vec2 tCoord, vec4 defaultValue) {\n#ifdef LAYER_matteMap\n    return readTexture(matteMap, useTexture, tCoord, defaultValue);\n#else\n    return defaultValue;\n#endif\n}\n"
+     ],
+     "substitution": "sampler2D $matteMap = matteMap;vec3 $matteFilter = properties.matteFilter;vec3 $uvOffset = properties.uvOffset;float $matteGain = properties.matteGain;float $postGain = properties.postGain;float $postVertexColor = properties.postVertexColor;bool $usesMatteMap = properties.usesMatteMap;"
     }
    ]
   }
