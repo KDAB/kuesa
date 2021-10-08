@@ -187,10 +187,13 @@ Qt3DRender::QRenderTarget *FrameGraphUtils::createRenderTarget(RenderTargetFlags
         Qt3DRender::QAbstractTexture::TextureFormat textureFormat = Qt3DRender::QAbstractTexture::NoFormat;
         Qt3DRender::QRenderTargetOutput::AttachmentPoint attachmentPoint = Qt3DRender::QRenderTargetOutput::Color0;
         if (depthStencilFlags == RenderTargetFlag::IncludeDepth) {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0) && defined(Q_OS_WINDOWS)
-            textureFormat = Qt3DRender::QAbstractTexture::D16;
-#else
             textureFormat = Qt3DRender::QAbstractTexture::D24;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0) && defined(Q_OS_WINDOWS)
+            // The OpenGL RHI backend targets ES 2.0 and without
+            // OES_depth24, D16 is the only available depth format
+            const bool usingRHI = (qgetenv("QT3D_RENDERER") == QByteArray("rhi"));
+            if (usingRHI)
+                textureFormat = Qt3DRender::QAbstractTexture::D16;
 #endif
             attachmentPoint = Qt3DRender::QRenderTargetOutput::Depth;
         }
