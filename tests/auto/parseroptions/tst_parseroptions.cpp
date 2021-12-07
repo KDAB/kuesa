@@ -26,6 +26,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <thread>
 #include <QtTest/QTest>
 #include <QtTest/QSignalSpy>
 #include <Kuesa/SceneEntity>

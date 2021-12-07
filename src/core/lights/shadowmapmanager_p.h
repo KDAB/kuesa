@@ -125,7 +125,7 @@ private:
     Qt3DLogic::QFrameAction *m_frameAction = nullptr;
 
     QVector3D m_sceneCenter;
-    float m_sceneRadius;
+    float m_sceneRadius = 0.0f;
 };
 
 } // namespace Kuesa

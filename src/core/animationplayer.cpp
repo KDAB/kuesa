@@ -196,7 +196,7 @@ using namespace Qt3DAnimation;
 
 /*!
     \property AnimationPlayer::clock
-    \brief intense of Qt3DAnimation::QClock used to control animation speed and direction
+    \brief instance of Qt3DAnimation::QClock used to control animation speed and direction
 
     A Qt3DAnimation::QClock can be used to control the speed (by setting the playBackRate) and
     direction (like reversing by setting negative playBackRate values) of the animation.
@@ -206,7 +206,7 @@ using namespace Qt3DAnimation;
 
 /*!
     \qmlproperty Clock AnimationPlayer::clock
-    \brief intense of Qt3DAnimation::QClock used to control animation speed and direction
+    \brief instance of Qt3DAnimation::QClock used to control animation speed and direction
 
     A Qt3DAnimation::QClock can be used to control the speed (by setting the playBackRate) and
     direction (like reversing by setting negative playBackRate values) of the animation.

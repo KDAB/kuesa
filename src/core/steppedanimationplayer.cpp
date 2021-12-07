@@ -107,7 +107,7 @@ void SteppedAnimationPlayer::setAnimationNames(const QStringList &animationNames
 void SteppedAnimationPlayer::updateAnimationPlayers()
 {
     // When the animationNames changed, we update all the animationPlayers
-    // If the animations in the animations collection change, we dont need to update again,
+    // If the animations in the animations collection change, we don't need to update again,
     // as each animationPlayer will be updated independently
     for (AnimationPlayer *aPlayer : m_animationPlayers)
         delete aPlayer;

@@ -837,6 +837,64 @@ bool AnimationParser::parse(const QJsonArray &animationsArray, GLTF2Context *con
             }
             animation.mappings.push_back(mapping);
         }
+
+        // For whatever reason the exporter exports animations with an offset (anims start at frame 1 instead of 0)
+        // This means we have to find the minimum keyframe start time and offset all timestamp values by this amount
+        // Note: this has to be the small start t value accross all channels
+        {
+            float minT = 999.0f;
+
+            for (auto channelIt = clipData.begin(), channelEnd = clipData.end(); channelIt != channelEnd; ++channelIt) {
+                for (auto channelCmpIt = channelIt->begin(), channelCmpEnd = channelIt->end(); channelCmpIt != channelCmpEnd; ++channelCmpIt) {
+                    for (auto keyFrameIt = channelCmpIt->begin(), keyFrameEnd = channelCmpIt->end(); keyFrameIt != keyFrameEnd; ++keyFrameIt) {
+                        minT = std::min(minT, keyFrameIt->coordinates().x());
+                        // Should be fair to assume that keyframes are always stored in time increasing order
+                        // so no point in checking beyond the first one really
+                        break;
+                    }
+                }
+            }
+
+            Q_ASSERT(minT >= 0.0f);
+            // If earliest starting keyFrame is at an offset, we will offset keyframe so that
+            // we start at 0.0f;
+            if (minT > 0.0f) {
+                // Not we cannot modify channels, channelComponents of KeyFrames directly
+                // We will therefore have to create copies
+                std::vector<Qt3DAnimation::QChannel> correctedChannels;
+                correctedChannels.reserve(clipData.channelCount());
+
+                for (auto channelIt = clipData.begin(), channelEnd = clipData.end(); channelIt != channelEnd; ++channelIt) {
+                    Qt3DAnimation::QChannel channelCpy;
+                    channelCpy.setName(channelIt->name());
+                    channelCpy.setJointIndex(channelIt->jointIndex());
+                    for (auto channelCmpIt = channelIt->begin(), channelCmpEnd = channelIt->end(); channelCmpIt != channelCmpEnd; ++channelCmpIt) {
+                        Qt3DAnimation::QChannelComponent channelCmpCpy;
+                        channelCmpCpy.setName(channelCmpIt->name());
+                        for (auto keyFrameIt = channelCmpIt->begin(), keyFrameEnd = channelCmpIt->end(); keyFrameIt != keyFrameEnd; ++keyFrameIt) {
+                            Qt3DAnimation::QKeyFrame keyFrameCpy;
+                            // Create copy of keyframe with proper offset timestamp
+                            QVector2D coordinates = keyFrameIt->coordinates();
+                            coordinates.setX(coordinates.x() - minT);
+                            keyFrameCpy.setCoordinates(coordinates);
+                            keyFrameCpy.setInterpolationType(keyFrameIt->interpolationType());
+                            keyFrameCpy.setLeftControlPoint(keyFrameIt->leftControlPoint());
+                            keyFrameCpy.setRightControlPoint(keyFrameIt->rightControlPoint());
+
+                            channelCmpCpy.appendKeyFrame(keyFrameCpy);
+                        }
+                        channelCpy.appendChannelComponent(channelCmpCpy);
+                    }
+                    correctedChannels.emplace_back(channelCpy);
+                }
+
+                // Clear old channels and set corrected channels on AnimationClipData
+                clipData.clearChannels();
+                for (const Qt3DAnimation::QChannel &channel : correctedChannels)
+                    clipData.appendChannel(channel);
+            }
+        }
+
         animation.clipData = clipData;
         context->addAnimation(animation);
     }
