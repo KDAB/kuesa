@@ -1,3 +1,7 @@
+# DEPRECATED
+
+Kuesa Runtime 1.* is deprecated. It has been replaced by Kuesa Runtime 2 available [here](https://www.kuesa.com/).
+
 # Kuesa Runtime module for Qt 3D
 
 **Note**: The `master` branch contains the last stable release. The `dev` branch contain the upcoming release. `dev` might be in an unstable or even broken state during development. Please use [releases][github-release] or `master` to get a stable version.
